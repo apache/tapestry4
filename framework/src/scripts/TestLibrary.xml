@@ -21,6 +21,7 @@
   		<init-parameter
   			name="org.apache.tapestry.application-specification"
   			value="/org/apache/tapestry/junit/mock/app/Mock.application"/>
+      <init-parameter name="org.apache.tapestry.servlet-path" value="/mock"/>
   	</servlet>
   	
   	<request>

@@ -136,9 +136,24 @@
     
     <invoke-factory>
       <construct class="org.apache.tapestry.services.impl.AbsoluteURLBuilderImpl">
-        <set-service property="request" service-id="HttpServletRequest"/>
+        <set-service property="request" service-id="tapestry.globals.HttpServletRequest"/>
       </construct>
     </invoke-factory>
     
   </service-point>
+  
+  <service-point id="RequestCycleFactory" interface="org.apache.tapestry.services.RequestCycleFactory">
+    
+    Creates new IRequestCycle instances.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.RequestCycleFactoryImpl">
+        <set-object property="encoders"
+                    value="service-property:tapestry.url.LinkFactory:serviceEncoders"/>
+        <set-service property="monitorFactory" service-id="tapestry.monitor.MonitorFactory"/>
+        <set-object property="serviceMap" value="infrastructure:serviceMap"/>        
+      </construct>
+    </invoke-factory>
+    
+  </service-point>  
 </module>

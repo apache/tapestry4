@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2004 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<module id="tapestry.monitor" version="3.1.0">
+
+  <service-point id="DefaultMonitorFactory" interface="org.apache.tapestry.engine.IMonitorFactory">
+    
+    Default implemenation of IMonitorFactory, which returns a NullMonitor instance (which
+    does nothing).
+    
+    <create-instance class="org.apache.tapestry.engine.DefaultMonitorFactory"/>
+    
+  </service-point>
+  
+  <service-point id="MonitorFactory" interface="org.apache.tapestry.engine.IMonitorFactory">
+    
+    The actual MonitorFactory for the application, which will be the
+    DefaultMonitorFactory unless overridden as the
+    application extension org.apache.tapestry.monitor-factory.
+    
+    <invoke-factory service-id="tapestry.ExtensionLookupFactory">
+      
+      <lookup extension-name="org.apache.tapestry.monitor-factory"
+        default="service:DefaultMonitorFactory"/>
+      
+    </invoke-factory>
+    
+  </service-point>
+
+</module>

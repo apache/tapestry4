@@ -20,7 +20,6 @@ import org.apache.tapestry.html.BasePage;
  * Used to confirm that we can override the default page class.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 

@@ -40,6 +40,16 @@
   	<url-pattern>/app</url-pattern>
   </servlet-mapping>  
 
+  <servlet-mapping>
+    <servlet-name>workbench</servlet-name>
+    <url-pattern>*.page</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>workbench</servlet-name>
+    <url-pattern>*.direct</url-pattern>
+  </servlet-mapping>
+
   <session-config>
   	<session-timeout>15</session-timeout>
   </session-config>

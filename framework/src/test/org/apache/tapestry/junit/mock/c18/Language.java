@@ -20,7 +20,6 @@ import org.apache.commons.lang.enum.Enum;
  * Identifies different computer languages.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  */
 public class Language extends Enum
 {

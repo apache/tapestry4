@@ -24,6 +24,7 @@ import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ObjectPool;
+import org.apache.tapestry.services.RequestCycleFactory;
 import org.apache.tapestry.services.RequestExceptionReporter;
 import org.apache.tapestry.services.ResetEventCoordinator;
 import org.apache.tapestry.services.ResponseRenderer;
@@ -68,6 +69,8 @@ public class InfrastructureImpl implements Infrastructure
     private ResponseRenderer _responseRenderer;
 
     private LinkFactory _linkFactory;
+
+    private RequestCycleFactory _requestCycleFactory;
 
     public IScriptSource getScriptSource()
     {
@@ -218,5 +221,15 @@ public class InfrastructureImpl implements Infrastructure
     public void setLinkFactory(LinkFactory linkFactory)
     {
         _linkFactory = linkFactory;
+    }
+
+    public RequestCycleFactory getRequestCycleFactory()
+    {
+        return _requestCycleFactory;
+    }
+
+    public void setRequestCycleFactory(RequestCycleFactory requestCycleFactory)
+    {
+        _requestCycleFactory = requestCycleFactory;
     }
 }

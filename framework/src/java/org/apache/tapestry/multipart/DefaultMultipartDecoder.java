@@ -16,9 +16,11 @@ package org.apache.tapestry.multipart;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -31,36 +33,36 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.IUploadFile;
 
 /**
- *  Decodes the data in a <code>multipart/form-data</code> HTTP request, handling
- *  file uploads and multi-valued parameters.  After decoding, the class is used
- *  to access the parameter values.
+ * Decodes the data in a <code>multipart/form-data</code> HTTP request, handling file uploads and
+ * multi-valued parameters. After decoding, the class is used to access the parameter values.
+ * <p>
+ * This implementation is a thin wrapper around the Apache Jakarta <a
+ * href="http://jakarta.apache.org/commons/fileupload/">FileUpload </a>.
+ * <p>
+ * Supports single valued parameters, multi-valued parameters and individual file uploads. That is,
+ * for file uploads, each upload must be a unique parameter (that is all the
+ * {@link org.apache.tapestry.form.Upload}component needs).
  * 
- *  <p>This implementation is a thin wrapper around the Apache Jakarta
- *  <a href="http://jakarta.apache.org/commons/fileupload/">FileUpload</a>. 
- *  
- *  <p>Supports single valued parameters, multi-valued parameters and individual
- *  file uploads.  That is, for file uploads, each upload must be a unique parameter
- *  (that is all the {@link org.apache.tapestry.form.Upload} component needs).
-
- *
- *  @author Joe Panico
- *  @since 2.0.1
- *
- **/
+ * @author Joe Panico
+ * @since 2.0.1
+ */
 public class DefaultMultipartDecoder implements IMultipartDecoder
 {
     /**
-     *  Request attribute key used to store the part map for this request.
-     *  The part map is created in {@link #decode(HttpServletRequest)}.  By storing
-     *  the part map in the request instead of an instance variable, DefaultMultipartDecoder
-     *  becomes threadsafe (no client-specific state in instance variables).
-     * 
-     **/
+     * Request attribute key used to store the part map for this request. The part map is created in
+     * {@link #decode(HttpServletRequest)}. By storing the part map in the request instead of an
+     * instance variable, DefaultMultipartDecoder becomes threadsafe (no client-specific state in
+     * instance variables).
+     */
 
     public static final String PART_MAP_ATTRIBUTE_NAME = "org.apache.tapestry.multipart.part-map";
 
+    public static final String STRING_NAMES_ATTRIBUTE_NAME = "org.apache.tapestry.multipart.parameter-names";
+
     private int _maxSize = 10000000;
+
     private int _thresholdSize = 1024;
+
     private String _repositoryPath = System.getProperty("java.io.tmpdir");
 
     private static DefaultMultipartDecoder _shared;
@@ -109,9 +111,8 @@ public class DefaultMultipartDecoder implements IMultipartDecoder
     }
 
     /**
-     *  Invokes {@link IPart#cleanup()} on each part.
-     * 
-     **/
+     * Invokes {@link IPart#cleanup()}on each part.
+     */
     public void cleanup(HttpServletRequest request)
     {
         Map partMap = getPartMap(request);
@@ -125,13 +126,12 @@ public class DefaultMultipartDecoder implements IMultipartDecoder
     }
 
     /**
-     * Decodes the request, storing the part map (keyed on query parameter name, 
-     * value is {@link IPart} into the request as an attribute.
+     * Decodes the request, storing the part map (keyed on query parameter name, value is
+     * {@link IPart}into the request as an attribute.
      * 
-     * @throws ApplicationRuntimeException if decode fails, for instance the
-     * request exceeds getMaxSize()
-     * 
-     **/
+     * @throws ApplicationRuntimeException
+     *             if decode fails, for instance the request exceeds getMaxSize()
+     */
 
     public void decode(HttpServletRequest request)
     {
@@ -140,7 +140,7 @@ public class DefaultMultipartDecoder implements IMultipartDecoder
         request.setAttribute(PART_MAP_ATTRIBUTE_NAME, partMap);
 
         // The encoding that will be used to decode the string parameters
-        // It should NOT be null at this point, but it may be 
+        // It should NOT be null at this point, but it may be
         // if the older Servlet API 2.2 is used
         String encoding = request.getCharacterEncoding();
 
@@ -159,12 +159,14 @@ public class DefaultMultipartDecoder implements IMultipartDecoder
         }
         catch (FileUploadException ex)
         {
-            throw new ApplicationRuntimeException(
-                Tapestry.format("DefaultMultipartDecoder.unable-to-decode", ex.getMessage()),
-                ex);
+            throw new ApplicationRuntimeException(Tapestry.format(
+                    "DefaultMultipartDecoder.unable-to-decode",
+                    ex.getMessage()), ex);
         }
 
         int count = Tapestry.size(parts);
+
+        Set names = new HashSet();
 
         for (int i = 0; i < count; i++)
         {
@@ -175,13 +177,13 @@ public class DefaultMultipartDecoder implements IMultipartDecoder
                 try
                 {
                     String name = uploadItem.getFieldName();
-                    String value;
-                    if (encoding == null)
-                        value = uploadItem.getString();
-                    else
-                        value = uploadItem.getString(encoding);
-                        
+
+                    names.add(name);
+
+                    String value = extractFileItemValue(uploadItem, encoding);
+
                     ValuePart valuePart = (ValuePart) partMap.get(name);
+
                     if (valuePart != null)
                     {
                         valuePart.add(value);
@@ -194,9 +196,9 @@ public class DefaultMultipartDecoder implements IMultipartDecoder
                 }
                 catch (UnsupportedEncodingException ex)
                 {
-                    throw new ApplicationRuntimeException(
-                        Tapestry.format("illegal-encoding", encoding),
-                        ex);
+                    throw new ApplicationRuntimeException(Tapestry.format(
+                            "illegal-encoding",
+                            encoding), ex);
                 }
             }
             else
@@ -207,6 +209,26 @@ public class DefaultMultipartDecoder implements IMultipartDecoder
             }
         }
 
+        storeNamesIntoRequest(request, names);
+    }
+
+    /** @since 3.1 */
+
+    private void storeNamesIntoRequest(HttpServletRequest request, Set names)
+    {
+        int count = names.size();
+
+        String[] array = (String[]) names.toArray(new String[count]);
+
+        request.setAttribute(STRING_NAMES_ATTRIBUTE_NAME, array);
+    }
+
+    /** @since 3.1 */
+
+    private String extractFileItemValue(FileItem uploadItem, String encoding)
+            throws UnsupportedEncodingException
+    {
+        return (encoding == null) ? uploadItem.getString() : uploadItem.getString(encoding);
     }
 
     public String getString(HttpServletRequest request, String name)
@@ -229,6 +251,12 @@ public class DefaultMultipartDecoder implements IMultipartDecoder
             return part.getValues();
 
         return null;
+    }
+
+    /** @since 3.1 */
+    public String[] getStringParameterNames(HttpServletRequest request)
+    {
+        return (String[]) request.getAttribute(STRING_NAMES_ATTRIBUTE_NAME);
     }
 
     public IUploadFile getUploadFile(HttpServletRequest request, String name)

@@ -21,7 +21,6 @@ import org.apache.tapestry.html.BasePage;
  * Tests for the Hidden component.
  * 
  * @author Tsvetelin Saykov
- * @version $Id$
  * @since 3.0
  */
 

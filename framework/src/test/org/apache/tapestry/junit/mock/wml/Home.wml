@@ -1,6 +1,5 @@
 <?xml version="1.0"?>
-<!-- $Id: Home.wml,v 1.4 2004/01/21 21:16:33 dsolis Exp $ -->
-   <!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.2//EN"
+<!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.2//EN"
    "http://www.wapforum.org/DTD/wml12.dtd">
 <wml>
 

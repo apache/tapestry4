@@ -28,7 +28,6 @@ import org.apache.tapestry.html.InsertTextMode;
  * {@link org.apache.tapestry.html.InsertText}.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 

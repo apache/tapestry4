@@ -21,7 +21,6 @@ import org.apache.tapestry.html.BasePage;
  * Page used to test the Radio and RadioGroup components.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 

@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import javax.servlet.ServletConfig;
@@ -35,6 +36,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.tapestry.ApplicationServlet;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
@@ -44,52 +46,45 @@ import org.apache.tapestry.multipart.IMultipartDecoder;
 import org.apache.tapestry.spec.IApplicationSpecification;
 
 /**
- *  This class encapsulates all the relevant data for one request cycle of an
- *  {@link ApplicationServlet}.  This includes:
- *  <ul>
- *  	<li>{@link HttpServletRequest}
- *		<li>{@link HttpServletResponse}
- *		<li>{@link HttpSession}
- * 		<li>{@link javax.servlet.http.HttpServlet}
- *  </ul>
- *  <p>It also provides methods for:
- *  <ul>
- *  <li>Retrieving the request parameters (even if a file upload is involved)
- *  <li>Getting, setting and removing request attributes
- *  <li>Forwarding requests
- *  <li>Redirecting requests
- *  <li>Getting and setting Cookies
- *  <li>Intepreting the request path info
- *  <li>Writing an HTML description of the <code>RequestContext</code> (for debugging).
- *  </ul>
- *
+ * This class encapsulates all the relevant data for one request cycle of an
+ * {@link ApplicationServlet}. This includes:
+ * <ul>
+ * <li>{@link HttpServletRequest}
+ * <li>{@link HttpServletResponse}
+ * <li>{@link HttpSession}
+ * <li>{@link javax.servlet.http.HttpServlet}
+ * </ul>
+ * <p>
+ * It also provides methods for:
+ * <ul>
+ * <li>Retrieving the request parameters (even if a file upload is involved)
+ * <li>Getting, setting and removing request attributes
+ * <li>Forwarding requests
+ * <li>Redirecting requests
+ * <li>Getting and setting Cookies
+ * <li>Intepreting the request path info
+ * <li>Writing an HTML description of the <code>RequestContext</code> (for debugging).
+ * </ul>
+ * <p>
+ * If some cases, it is necesary to provide an implementation of {@link IRequestDecoder}(often, due
+ * to a firewall). If the application specifification provides an extension named
+ * <code>org.apache.tapestry.request-decoder</code> then it will be used, instead of a default
+ * decoder.
+ * <p>
+ * This class is not a component, but does implement {@link IRender}. When asked to render (perhaps
+ * as the delegate of a {@link org.apache.tapestry.components.Delegator}component} it simply
+ * invokes {@link #write(IMarkupWriter)}to display all debugging output.
+ * <p>
+ * This class is derived from the original class <code>com.primix.servlet.RequestContext</code>,
+ * part of the <b>ServletUtils </b> framework available from <a
+ * href="http://www.gjt.org/servlets/JCVSlet/list/gjt/com/primix/servlet">The Giant Java Tree </a>.
  * 
- *  <p>
- *  If some cases, it is necesary to provide an implementation of
- *  {@link IRequestDecoder} (often, due to a firewall).
- *  If the application specifification
- *  provides an extension named
- *  <code>org.apache.tapestry.request-decoder</code>
- *  then it will be used, instead of a default decoder.
- * 
- *  <p>This class is not a component, but does implement {@link IRender}.  When asked to render
- *  (perhaps as the delegate of a {@link org.apache.tapestry.components.Delegator} component}
- *  it simply invokes {@link #write(IMarkupWriter)} to display all debugging output.
- *
- *  <p>This class is derived from the original class 
- *  <code>com.primix.servlet.RequestContext</code>,
- *  part of the <b>ServletUtils</b> framework available from
- *  <a href="http://www.gjt.org/servlets/JCVSlet/list/gjt/com/primix/servlet">The Giant 
- *  Java Tree</a>.
- *
- *
- *  @author Howard Lewis Ship
- * 
- **/
+ * @author Howard Lewis Ship
+ */
 
 public class RequestContext implements IRender
 {
-    /** @since 2.2 **/
+    /** @since 2.2 * */
 
     private static class DefaultRequestDecoder implements IRequestDecoder
     {
@@ -109,39 +104,40 @@ public class RequestContext implements IRender
     private static final Log LOG = LogFactory.getLog(RequestContext.class);
 
     private HttpSession _session;
+
     private HttpServletRequest _request;
+
     private HttpServletResponse _response;
+
     private HttpServlet _servlet;
+
     private DecodedRequest _decodedRequest;
+
     private IMultipartDecoder _decoder;
+
     private boolean _decoded;
+
     private IApplicationSpecification _specification;
 
     /**
      * A mapping of the cookies available in the request.
-     *
-     **/
+     */
 
     private Map _cookieMap;
 
     /**
-     *  Used during {@link #write(IMarkupWriter)}.
-     * 
-     **/
+     * Used during {@link #write(IMarkupWriter)}.
+     */
 
     private boolean _evenRow;
 
     /**
      * Creates a <code>RequestContext</code> from its components.
-     *
-     **/
+     */
 
-    public RequestContext(
-        HttpServlet servlet,
-        HttpServletRequest request,
-        HttpServletResponse response,
-        IApplicationSpecification specification)
-        throws IOException
+    public RequestContext(HttpServlet servlet, HttpServletRequest request,
+            HttpServletResponse response, IApplicationSpecification specification)
+            throws IOException
     {
         _servlet = servlet;
         _request = request;
@@ -159,42 +155,34 @@ public class RequestContext implements IRender
     }
 
     /**
-     *  Invoked from the constructor to create a {@link DefaultMultipartDecoder} instance.
-     *  Applications with specific upload needs may need to override this to
-     *  provide a subclass instance instead.  The caller will invoke
-     *  {@link IMultipartDecoder#decode(HttpServletRequest)} on the
-     *  returned object.
+     * Invoked from the constructor to create a {@link DefaultMultipartDecoder}instance.
+     * Applications with specific upload needs may need to override this to provide a subclass
+     * instance instead. The caller will invoke {@link IMultipartDecoder#decode(HttpServletRequest)}
+     * on the returned object.
+     * <p>
+     * This implementation checks for application extension
+     * {@link Tapestry#MULTIPART_DECODER_EXTENSION_NAME}. If that is not defined, a shared instance
+     * of {@link DefaultMultipartDecoder}is returned.
      * 
-     *  <p>
-     *  This implementation checks for application extension
-     *  {@link Tapestry#MULTIPART_DECODER_EXTENSION_NAME}.  If that is not
-     *  defined, a shared instance of {@link DefaultMultipartDecoder}
-     *  is returned.  
-     *
-     * 
-     *  @see ApplicationServlet#createRequestContext(HttpServletRequest, HttpServletResponse)
-     *  @since 3.0
-     * 
-     **/
+     * @see ApplicationServlet#createRequestContext(HttpServletRequest, HttpServletResponse)
+     * @since 3.0
+     */
 
-    protected IMultipartDecoder obtainMultipartDecoder(
-        HttpServlet servlet,
-        HttpServletRequest request)
-        throws IOException
+    protected IMultipartDecoder obtainMultipartDecoder(HttpServlet servlet,
+            HttpServletRequest request) throws IOException
     {
         if (_specification.checkExtension(Tapestry.MULTIPART_DECODER_EXTENSION_NAME))
             return (IMultipartDecoder) _specification.getExtension(
-                Tapestry.MULTIPART_DECODER_EXTENSION_NAME,
-                IMultipartDecoder.class);
+                    Tapestry.MULTIPART_DECODER_EXTENSION_NAME,
+                    IMultipartDecoder.class);
 
         return DefaultMultipartDecoder.getSharedInstance();
     }
 
     /**
-     * Adds a simple {@link Cookie}. To set a Cookie with attributes,
-     * use {@link #addCookie(Cookie)}.
-     *
-     **/
+     * Adds a simple {@link Cookie}. To set a Cookie with attributes, use
+     * {@link #addCookie(Cookie)}.
+     */
 
     public void addCookie(String name, String value)
     {
@@ -202,13 +190,12 @@ public class RequestContext implements IRender
     }
 
     /**
-     * Adds a {@link Cookie} to the response. Once added, the
-     * Cookie will also be available to {@link #getCookie(String)} method.
-     *
-     * <p>Cookies should only be added <em>before</em> invoking
+     * Adds a {@link Cookie}to the response. Once added, the Cookie will also be available to
+     * {@link #getCookie(String)}method.
+     * <p>
+     * Cookies should only be added <em>before</em> invoking
      * {@link HttpServletResponse#getWriter()}..
-     *
-     **/
+     */
 
     public void addCookie(Cookie cookie)
     {
@@ -228,7 +215,7 @@ public class RequestContext implements IRender
         pair(writer, name, new Date(value));
     }
 
-    /** @since 2.2 **/
+    /** @since 2.2 * */
 
     private DecodedRequest getDecodedRequest()
     {
@@ -240,8 +227,7 @@ public class RequestContext implements IRender
         if (!_specification.checkExtension(Tapestry.REQUEST_DECODER_EXTENSION_NAME))
             decoder = new DefaultRequestDecoder();
         else
-            decoder =
-                (IRequestDecoder) _specification.getExtension(
+            decoder = (IRequestDecoder) _specification.getExtension(
                     Tapestry.REQUEST_DECODER_EXTENSION_NAME,
                     IRequestDecoder.class);
 
@@ -250,60 +236,52 @@ public class RequestContext implements IRender
         return _decodedRequest;
     }
 
-    /** 
+    /**
+     * Returns the actual scheme, possibly decoded from the request.
      * 
-     *  Returns the actual scheme, possibly decoded from the request.
-     * 
-     *  @see IRequestDecoder
-     *  @see javax.servlet.ServletRequest#getScheme()
-     *  @since 2.2  
-     * 
-     **/
+     * @see IRequestDecoder
+     * @see javax.servlet.ServletRequest#getScheme()
+     * @since 2.2
+     */
 
     public String getScheme()
     {
         return getDecodedRequest().getScheme();
     }
 
-    /** 
+    /**
+     * Returns the actual server name, possibly decoded from the request.
      * 
-     *  Returns the actual server name, possibly decoded from the request.
-     * 
-     *  @see IRequestDecoder
-     *  @see javax.servlet.ServletRequest#getServerName()
-     *  @since 2.2  
-     * 
-     **/
+     * @see IRequestDecoder
+     * @see javax.servlet.ServletRequest#getServerName()
+     * @since 2.2
+     */
 
     public String getServerName()
     {
         return getDecodedRequest().getServerName();
     }
 
-    /** 
+    /**
+     * Returns the actual server port, possibly decoded from the request.
      * 
-     *  Returns the actual server port, possibly decoded from the request.
-     * 
-     *  @see IRequestDecoder
-     *  @see javax.servlet.ServletRequest#getServerPort()
-     *  @since 2.2  
-     * 
-     **/
+     * @see IRequestDecoder
+     * @see javax.servlet.ServletRequest#getServerPort()
+     * @since 2.2
+     */
 
     public int getServerPort()
     {
         return getDecodedRequest().getServerPort();
     }
 
-    /** 
+    /**
+     * Returns the actual request URI, possibly decoded from the request.
      * 
-     *  Returns the actual request URI, possibly decoded from the request.
-     * 
-     *  @see IRequestDecoder
-     *  @see HttpServletRequest#getRequestURI()
-     *  @since 2.2  
-     * 
-     **/
+     * @see IRequestDecoder
+     * @see HttpServletRequest#getRequestURI()
+     * @since 2.2
+     */
 
     public String getRequestURI()
     {
@@ -311,12 +289,11 @@ public class RequestContext implements IRender
     }
 
     /**
-     * Builds an absolute URL from the given URI, using the {@link HttpServletRequest}
-     * as the source for scheme, server name and port.
-     *
-     * @see #getAbsoluteURL(String, String, String, int)
+     * Builds an absolute URL from the given URI, using the {@link HttpServletRequest}as the source
+     * for scheme, server name and port.
      * 
-     **/
+     * @see #getAbsoluteURL(String, String, String, int)
+     */
 
     public String x_getAbsoluteURL(String URI)
     {
@@ -338,16 +315,12 @@ public class RequestContext implements IRender
     /**
      * Does some easy checks to turn a path (or URI) into an absolute URL. We assume
      * <ul>
-     * <li>The presense of a colon means the path is complete already (any other colons
-     * in the URI portion should have been converted to %3A).
-     *
-     * <li>A leading pair of forward slashes means the path is simply missing
-     * the scheme.
-     * <li>Otherwise, we assemble the scheme, server, port (if non-zero) and the URI
-     * as given.
+     * <li>The presense of a colon means the path is complete already (any other colons in the URI
+     * portion should have been converted to %3A).
+     * <li>A leading pair of forward slashes means the path is simply missing the scheme.
+     * <li>Otherwise, we assemble the scheme, server, port (if non-zero) and the URI as given.
      * </ul>
-     *
-     **/
+     */
 
     public String getAbsoluteURL(String URI, String scheme, String server, int port)
     {
@@ -389,12 +362,11 @@ public class RequestContext implements IRender
 
     /**
      * Gets a named {@link Cookie}.
-     *
-     * @param name The name of the Cookie.
-     * @return The Cookie, or null if no Cookie with that
-     * name exists.
-     *
-     **/
+     * 
+     * @param name
+     *            The name of the Cookie.
+     * @return The Cookie, or null if no Cookie with that name exists.
+     */
 
     public Cookie getCookie(String name)
     {
@@ -405,9 +377,9 @@ public class RequestContext implements IRender
     }
 
     /**
-     * Reads the named {@link Cookie} and returns its value (if it exists), or
-     * null if it does not exist.
-     **/
+     * Reads the named {@link Cookie}and returns its value (if it exists), or null if it does not
+     * exist.
+     */
 
     public String getCookieValue(String name)
     {
@@ -422,16 +394,14 @@ public class RequestContext implements IRender
     }
 
     /**
-     *  Returns the named parameter from the {@link HttpServletRequest}.
-     *
-     *  <p>Use {@link #getParameters(String)} for parameters that may
-     *  include multiple values.
-     * 
-     *  <p>This is the preferred way to obtain parameter values (rather than
-     *  obtaining the {@link HttpServletRequest} itself).  For form/multipart-data
-     *  encoded requests, this method will still work.
-     *
-     **/
+     * Returns the named parameter from the {@link HttpServletRequest}.
+     * <p>
+     * Use {@link #getParameters(String)}for parameters that may include multiple values.
+     * <p>
+     * This is the preferred way to obtain parameter values (rather than obtaining the
+     * {@link HttpServletRequest}itself). For form/multipart-data encoded requests, this method
+     * will still work.
+     */
 
     public String getParameter(String name)
     {
@@ -443,11 +413,10 @@ public class RequestContext implements IRender
     }
 
     /**
-     *  Convienience method for getting a {@link HttpServletRequest} attribute.
+     * Convienience method for getting a {@link HttpServletRequest}attribute.
      * 
-     *  @since 2.3
-     * 
-     **/
+     * @since 2.3
+     */
 
     public Object getAttribute(String name)
     {
@@ -455,17 +424,14 @@ public class RequestContext implements IRender
     }
 
     /**
-     * For parameters that are, or are possibly, multi-valued, this
-     * method returns all the values as an array of Strings.
+     * For parameters that are, or are possibly, multi-valued, this method returns all the values as
+     * an array of Strings.
      * 
-     *  @see #getParameter(String)
-     *
-     **/
+     * @see #getParameter(String)
+     */
 
     public String[] getParameters(String name)
     {
-        // Note: this may not be quite how we want it to work; we'll have to see.
-
         IMultipartDecoder decoder = getDecoder();
         if (decoder != null)
             return decoder.getStrings(_request, name);
@@ -473,14 +439,31 @@ public class RequestContext implements IRender
         return _request.getParameterValues(name);
     }
 
+    public String[] getParameterNames()
+    {
+        IMultipartDecoder decoder = getDecoder();
+        if (decoder != null)
+            return decoder.getStringParameterNames(_request);
+
+        Enumeration e = _request.getParameterNames();
+        List names = new ArrayList();
+        
+        while (e.hasMoreElements())
+            names.add(e.nextElement());
+        
+        int count = names.size();
+
+        String[] result = new String[count];
+
+        return (String[]) names.toArray(result);
+    }
+
     /**
-     * Returns the named {@link IUploadFile}, if it exists, or null if it doesn't.
-     * Uploads require an encoding of <code>multipart/form-data</code>
-     * (this is specified in the
-     * form's enctype attribute).  If the encoding type
-     * is not so, or if no upload matches the name, then this method returns null.
-     * 
-     **/
+     * Returns the named {@link IUploadFile}, if it exists, or null if it doesn't. Uploads require
+     * an encoding of <code>multipart/form-data</code> (this is specified in the form's enctype
+     * attribute). If the encoding type is not so, or if no upload matches the name, then this
+     * method returns null.
+     */
 
     public IUploadFile getUploadFile(String name)
     {
@@ -492,11 +475,11 @@ public class RequestContext implements IRender
     }
 
     /**
-     *  Invoked at the end of the request cycle to cleanup and temporary resources.
-     *  This is chained to the {@link DefaultMultipartDecoder}, if there is one.
+     * Invoked at the end of the request cycle to cleanup and temporary resources. This is chained
+     * to the {@link DefaultMultipartDecoder}, if there is one.
      * 
-     *  @since 2.0.1
-     **/
+     * @since 2.0.1
+     */
 
     public void cleanup()
     {
@@ -505,13 +488,11 @@ public class RequestContext implements IRender
     }
 
     /**
-     *  Returns the request which initiated the current request cycle.  Note that
-     *  the methods {@link #getParameter(String)} and {@link #getParameters(String)}
-     *  should be used, rather than obtaining parameters directly from the request
-     *  (since the RequestContext handles the differences between normal and multipart/form
-     *  requests).
-     * 
-     **/
+     * Returns the request which initiated the current request cycle. Note that the methods
+     * {@link #getParameter(String)}and {@link #getParameters(String)}should be used, rather than
+     * obtaining parameters directly from the request (since the RequestContext handles the
+     * differences between normal and multipart/form requests).
+     */
 
     public HttpServletRequest getRequest()
     {
@@ -540,11 +521,10 @@ public class RequestContext implements IRender
     }
 
     /**
-     *  Returns the {@link HttpSession}, if necessary, invoking
-     * {@link HttpServletRequest#getSession(boolean)}.  However,
-     * this method will <em>not</em> create a session.
-     *
-     **/
+     * Returns the {@link HttpSession}, if necessary, invoking
+     * {@link HttpServletRequest#getSession(boolean)}. However, this method will <em>not</em>
+     * create a session.
+     */
 
     public HttpSession getSession()
     {
@@ -555,10 +535,9 @@ public class RequestContext implements IRender
     }
 
     /**
-     *  Like {@link #getSession()}, but forces the creation of
-     *  the {@link HttpSession}, if necessary.
-     *
-     **/
+     * Like {@link #getSession()}, but forces the creation of the {@link HttpSession}, if
+     * necessary.
+     */
 
     public HttpSession createSession()
     {
@@ -675,11 +654,9 @@ public class RequestContext implements IRender
     }
 
     /**
-     * Writes the state of the context to the writer, typically for inclusion
-     * in a HTML page returned to the user. This is useful
-     * when debugging.  The Inspector uses this as well.
-     *
-     **/
+     * Writes the state of the context to the writer, typically for inclusion in a HTML page
+     * returned to the user. This is useful when debugging. The Inspector uses this as well.
+     */
 
     public void write(IMarkupWriter writer)
     {
@@ -786,25 +763,25 @@ public class RequestContext implements IRender
         pair(writer, "remoteAddr", _request.getRemoteAddr());
         pair(writer, "remoteHost", _request.getRemoteHost());
         pair(writer, "remoteUser", _request.getRemoteUser());
-        
+
         String sessionId = _request.getRequestedSessionId();
-        
+
         if (sessionId != null)
         {
             StringBuffer buffer = new StringBuffer(sessionId);
-            
+
             if (_request.isRequestedSessionIdFromCookie())
                 buffer.append(" (from cookie)");
-            
+
             if (_request.isRequestedSessionIdFromURL())
                 buffer.append(" (from URL)");
-            
+
             if (_request.isRequestedSessionIdValid())
                 buffer.append(" (valid)");
-            
+
             pair(writer, "requestedSessionId", buffer.toString());
         }
-                
+
         pair(writer, "requestURI", _request.getRequestURI());
         pair(writer, "scheme", _request.getScheme());
         pair(writer, "serverName", _request.getServerName());
@@ -1023,10 +1000,9 @@ public class RequestContext implements IRender
     }
 
     /**
-     *  Invokes {@link #write(IMarkupWriter)}, which is used for debugging.
-     *  Does nothing if the cycle is rewinding.
-     *
-     **/
+     * Invokes {@link #write(IMarkupWriter)}, which is used for debugging. Does nothing if the
+     * cycle is rewinding.
+     */
 
     public void render(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -1035,14 +1011,14 @@ public class RequestContext implements IRender
     }
 
     /**
-     *  Returns the multipart decoder and lazily decodes the request parameters.
-     *  This allows both for this operation to be performed only when really needed
-     *  and for opening the request for reading much later, so that the Engine can
-     *  have a chance to set the encoding that the request needs to use.
+     * Returns the multipart decoder and lazily decodes the request parameters. This allows both for
+     * this operation to be performed only when really needed and for opening the request for
+     * reading much later, so that the Engine can have a chance to set the encoding that the request
+     * needs to use.
      * 
-     *  @return the multipart decoder or null if not needed for this request
-     *  @since 3.0
-     **/
+     * @return the multipart decoder or null if not needed for this request
+     * @since 3.0
+     */
     private IMultipartDecoder getDecoder()
     {
         if (_decoder != null && !_decoded)
@@ -1055,11 +1031,12 @@ public class RequestContext implements IRender
     }
 
     /**
-     *  Sets the multipart decoder to be used for the request.
+     * Sets the multipart decoder to be used for the request.
      * 
-     *  @param decoder the multipart decoder
-     *  @since 3.0
-     **/
+     * @param decoder
+     *            the multipart decoder
+     * @since 3.0
+     */
     public void setDecoder(IMultipartDecoder decoder)
     {
         _decoder = decoder;

@@ -21,7 +21,6 @@ import org.apache.tapestry.html.BasePage;
  * Tests for the TextField component.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 

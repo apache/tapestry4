@@ -5,14 +5,14 @@
 
 <br/>
 
-<a jwcid="second@DirectLink" renderer="ognl:beans.absoluteRenderer" listener="ognl:listeners.link">Second</a>
+<a jwcid="second@DirectLink" renderer="bean:absoluteRenderer" listener="ognl:listeners.link">Second</a>
 
 <br/>
 
 Expecting: <span jwcid="@Insert" value="ognl:beans.configuredRenderer.scheme"/>://<span jwcid="@Insert" value="ognl:beans.configuredRenderer.serverName"/>:<span jwcid="@Insert" value="ognl:beans.configuredRenderer.port"/>
 
 
-<a jwcid="third@DirectLink" renderer="ognl:beans.configuredRenderer" listener="ognl:listeners.link" anchor="myanchor">Third</a>
+<a jwcid="third@DirectLink" renderer="bean:configuredRenderer" listener="ognl:listeners.link" anchor="myanchor">Third</a>
 
 <br/>
 

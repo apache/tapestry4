@@ -16,6 +16,7 @@ package org.apache.tapestry.binding;
 
 import org.apache.hivemind.impl.MessageFormatter;
 import org.apache.tapestry.IBinding;
+import org.apache.tapestry.IComponent;
 
 /**
  * @author Howard M. Lewis Ship
@@ -29,5 +30,15 @@ class BindingMessages
     public static String convertObjectError(IBinding binding, Throwable cause)
     {
         return _formatter.format("convert-object-error", binding.getParameterName(), cause);
+    }
+
+    public static String readOnlyBinding(IBinding binding)
+    {
+        return _formatter.format("read-only-binding", binding);
+    }
+
+    public static String missingAsset(IComponent component, String assetName)
+    {
+        return _formatter.format("missing-asset", component.getExtendedId(), assetName);
     }
 }

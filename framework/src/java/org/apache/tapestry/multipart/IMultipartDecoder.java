@@ -19,59 +19,56 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.tapestry.request.IUploadFile;
 
 /**
- *  Defines how a multipart HTTP request can be broken into individual
- *  elements (including file uploads).
+ * Defines how a multipart HTTP request can be broken into individual elements (including file
+ * uploads).
+ * <p>
+ * Multipart decoder implementations must be threadsafe.
  * 
- *  <p>Multipart decoder implementations must be threadsafe.
- *  
- *
- *  @author Howard Lewis Ship
- *  @since 2.3
- **/
+ * @author Howard Lewis Ship
+ * @since 2.3
+ */
 
 public interface IMultipartDecoder
 {
     /**
-     *  Decodes the incoming request, identifying all
-     *  the parts (values and uploaded files) contained
-     *  within.
-     * 
-     **/
+     * Decodes the incoming request, identifying all the parts (values and uploaded files) contained
+     * within.
+     */
 
     public void decode(HttpServletRequest request);
 
     /**
-     *  Invoked to release any resources needed by tghe
-     *  decoder.  In some cases, large incoming parts
-     *  are written to temporary files; this method
-     *  ensures those temporary files are deleted.
-     * 
-     **/
+     * Invoked to release any resources needed by tghe decoder. In some cases, large incoming parts
+     * are written to temporary files; this method ensures those temporary files are deleted.
+     */
 
     public void cleanup(HttpServletRequest request);
 
     /**
-     *  Returns the single value (or first value) for the parameter
-     *  with the specified name.  Returns null if no such parameter
-     *  was in the request.
-     * 
-     **/
+     * Returns the single value (or first value) for the parameter with the specified name. Returns
+     * null if no such parameter was in the request.
+     */
 
     public String getString(HttpServletRequest request, String name);
 
     /**
-     *  Returns an array of values (possibly a single element array).
-     *  Returns null if no such parameter was in the request.
-     * 
-     **/
+     * Returns an array of values (possibly a single element array). Returns null if no such
+     * parameter was in the request.
+     */
 
     public String[] getStrings(HttpServletRequest request, String name);
 
     /**
-     *  Returns the uploaded file with the specified parameter name,
-     *  or null if no such parameter was in the request.
-     * 
-     **/
+     * Returns the uploaded file with the specified parameter name, or null if no such parameter was
+     * in the request.
+     */
 
     public IUploadFile getUploadFile(HttpServletRequest request, String name);
+
+    /**
+     * Returns the names of all parameters whose type is string (not file upload).
+     * 
+     * @since 3.1
+     */
+    public String[] getStringParameterNames(HttpServletRequest request);
 }

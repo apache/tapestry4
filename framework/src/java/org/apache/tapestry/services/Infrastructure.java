@@ -124,4 +124,11 @@ public interface Infrastructure
      */
 
     public LinkFactory getLinkFactory();
+
+    /**
+     * Usec by the {@link org.apache.tapestry.IEngine}to create instances of
+     * {@link org.apache.tapestry.IRequestCycle}.
+     */
+
+    public RequestCycleFactory getRequestCycleFactory();
 }

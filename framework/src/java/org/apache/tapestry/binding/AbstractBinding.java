@@ -104,23 +104,22 @@ public abstract class AbstractBinding implements IBinding
     }
 
     /**
-     * Returns the component to which this binding is connected; this is currently
-     * only used when building certain exceptions.  This implementation returns null.
+     * Returns the component to which this binding is connected; this is currently only used when
+     * building certain exceptions. This implementation returns null.
      * 
      * @since 3.1
      */
-    
-    protected Object getComponent()
+
+    public Object getComponent()
     {
         return null;
     }
-    
+
     /** @since 3.0 */
 
     protected BindingException createReadOnlyBindingException(IBinding binding)
     {
-        return new BindingException(Tapestry.getMessage("AbstractBinding.read-only-binding"),
-                binding);
+        return new BindingException(BindingMessages.readOnlyBinding(binding), binding);
     }
 
     /** @since 3.1 */

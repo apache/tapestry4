@@ -20,6 +20,7 @@ import java.util.Map;
 import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.BaseLocatable;
 import org.apache.tapestry.IAsset;
+import org.apache.tapestry.IBeanProvider;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IForm;
@@ -275,4 +276,10 @@ public class MockForm extends BaseLocatable implements IForm
     public void enterActiveState()
     {
     }
+    
+    /** @since 3.1 */
+    public IBeanProvider getBeans()
+    {
+        return null;
+    }    
 }

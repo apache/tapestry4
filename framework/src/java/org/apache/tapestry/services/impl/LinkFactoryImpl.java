@@ -15,16 +15,23 @@
 package org.apache.tapestry.services.impl;
 
 import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.codec.net.URLCodec;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Defense;
+import org.apache.hivemind.ErrorLog;
+import org.apache.hivemind.order.Orderer;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.EngineServiceLink;
 import org.apache.tapestry.engine.ILink;
+import org.apache.tapestry.engine.ServiceEncoder;
+import org.apache.tapestry.engine.ServiceEncoding;
+import org.apache.tapestry.engine.ServiceEncodingImpl;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ServiceConstants;
@@ -37,9 +44,50 @@ public class LinkFactoryImpl implements LinkFactory
 {
     private DataSqueezer _dataSqueezer;
 
+    private ErrorLog _errorLog;
+
+    /**
+     * List of {@link org.apache.tapestry.services.impl.ServiceEncoderContribution}.
+     */
+
+    private List _contributions;
+
+    private ServiceEncoder[] _encoders;
+
+    private String _contextPath;
+
+    private String _servletPath;
+
     private final Object[] EMPTY = new Object[0];
 
     private URLCodec _codec = new URLCodec();
+
+    public void initializeService()
+    {
+        Orderer orderer = new Orderer(_errorLog, "encoder");
+
+        Iterator i = _contributions.iterator();
+
+        while (i.hasNext())
+        {
+            ServiceEncoderContribution c = (ServiceEncoderContribution) i.next();
+
+            orderer.add(c, c.getId(), c.getAfter(), c.getBefore());
+        }
+
+        List ordered = orderer.getOrderedObjects();
+        int count = ordered.size();
+
+        _encoders = new ServiceEncoder[count];
+
+        for (int j = 0; j < count; j++)
+        {
+            ServiceEncoderContribution c = (ServiceEncoderContribution) ordered.get(j);
+
+            _encoders[j] = c.getEncoder();
+        }
+
+    }
 
     public ILink constructLink(IRequestCycle cycle, Map parameters, boolean stateful)
     {
@@ -50,8 +98,36 @@ public class LinkFactoryImpl implements LinkFactory
 
         IEngine engine = cycle.getEngine();
 
-        return new EngineServiceLink(cycle, engine.getServletPath(), engine.getOutputEncoding(),
-                _codec, parameters, stateful);
+        ServiceEncoding serviceEncoding = createServiceEncoding(parameters);
+
+        String fullServletPath = _contextPath + serviceEncoding.getServletPath();
+
+        return new EngineServiceLink(cycle, fullServletPath, engine.getOutputEncoding(), _codec,
+                parameters, stateful);
+    }
+
+    public ServiceEncoder[] getServiceEncoders()
+    {
+        return _encoders;
+    }
+
+    /**
+     * Creates a new service encoding, and allows the encoders to modify it before returning.
+     */
+
+    private ServiceEncoding createServiceEncoding(Map parameters)
+    {
+        ServiceEncodingImpl result = new ServiceEncodingImpl(_servletPath, parameters);
+
+        for (int i = 0; i < _encoders.length; i++)
+        {
+            _encoders[i].encode(result);
+
+            if (result.isModified())
+                break;
+        }
+
+        return result;
     }
 
     private void squeezeServiceParameters(Map parameters)
@@ -100,4 +176,23 @@ public class LinkFactoryImpl implements LinkFactory
         _dataSqueezer = dataSqueezer;
     }
 
+    public void setContributions(List contributions)
+    {
+        _contributions = contributions;
+    }
+
+    public void setErrorLog(ErrorLog errorLog)
+    {
+        _errorLog = errorLog;
+    }
+
+    public void setServletPath(String servletPath)
+    {
+        _servletPath = servletPath;
+    }
+
+    public void setContextPath(String contextPath)
+    {
+        _contextPath = contextPath;
+    }
 }

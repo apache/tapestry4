@@ -22,7 +22,6 @@ import org.apache.tapestry.html.BasePage;
  * Page used to test internal and external redirects.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 
