@@ -1,11 +1,13 @@
 <?xml version="1.0"?>
 <!-- $Id$ -->
-<project name="Tapestry WAP Example" default="install">
+<project name="Wap Demo" default="install">
 
   <property name="root.dir" value="../.."/>
   <property file="${root.dir}/config/Version.properties"/>
   <property file="${root.dir}/config/build.properties"/>
   <property file="${root.dir}/config/common.properties"/>
+  
+  <property name="wap.war" value="wap.war"/>
   
   <path id="project.class.path">
     <pathelement location="${lib.ext.dir}/ejb.jar"/>
@@ -13,14 +15,12 @@
     <pathelement location="${lib.ext.dir}/${log4j.jar}"/>
     <pathelement location="${lib.ext.dir}/javax.xml.jaxp.jar"/>
     <pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
+    <pathelement location="${lib.ext.dir}/${jakarta-oro.jar}"/>
     <pathelement location="${lib.ext.dir}/${ognl.jar}"/>
-    <pathelement location="${lib.ext.dir}/${jakarta-oro.jar}"/> 
-    <pathelement location="${framework.jar}"/>
-    <pathelement location="${contrib.jar}"/>
+    <pathelement location="${framework.jar}"/>   
   </path>
   
   <target name="init">
-    <tstamp/>
     <mkdir dir="${classes.dir}"/>
   </target>
 
@@ -28,20 +28,22 @@
     <delete dir="${classes.dir}"/>
   </target>
 
-  <target name="compile" depends="init" description="Compile all classes in the framework.">
+  <target name="compile" depends="init" description="Compile all classes in the demo.">
     <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="on" target="1.1">
       <classpath refid="project.class.path"/>
     </javac>
   </target>
   
   
-  <target name="install" depends="compile" description="Compile all classes and build the installed WAR including all package resources.">
-    
-    <war warfile="${wap.war}" webxml="web.xml">
+  <target name="install" depends="compile" description="Compile all classes and build the installed WAR.">
+     <war warfile="${wap.war}" webxml="WEB-INF/web.xml">
+
       <fileset dir=".">
-        <include name="images/**"/>
         <include name="*.html"/>
+        <!-- These are left around by Paint Shop Pro -->
+        <exclude name="**/pspbrwse.jbf"/>
       </fileset>
+
       <classes dir="${classes.dir}"/>
       <classes dir="${src.dir}">
         <exclude name="**/*.java"/>
@@ -50,18 +52,32 @@
     </war>
   </target>
 
-  <target name="run" description="Run the WAP application." depends="install">
+  <target name="run" description="Run the WAP demo." depends="compile">
     <java classname="org.mortbay.jetty.Server" fork="true">
       <classpath>
+      	<!-- Favor files in src over copies in classes -->
+      	<pathelement location="${src.dir}"/>
+        <pathelement location="${root.dir}/config"/>
+              	     
         <path refid="project.class.path"/>
         <pathelement location="${lib.ext.dir}/org.mortbay.jetty.jar"/>
-        <pathelement location="${root.dir}/config"/>
+        
+        <pathelement location="${classes.dir}"/>
       </classpath>
+      
       <arg value="jetty.xml"/>
-      <jvmarg value="-showversion"/>
+       
+      <!-- Enable debugging on port 20150 --> 
+       
+      <jvmarg line="-showversion -Xdebug -Xnoagent"/>
+      <jvmarg line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20150"/>
+      <sysproperty key="java.compiler" value="NONE"/>
+      
+      <sysproperty key="net.sf.tapestry.disable-caching" value="true"/>
       <sysproperty key="net.sf.tapestry.enable-reset-service" value="true"/>
  	  <sysproperty key="org.mortbay.util.FileResource.checkAliases" value="false"/>
-   </java>
+
+    </java>
   </target>
 </project>
 
