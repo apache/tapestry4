@@ -58,6 +58,7 @@ abstract public class ApplicationServlet extends HttpServlet
 {
 	private ApplicationSpecification specification;
 	private String attributeName;
+    private ClassLoader classLoader = getClass().getClassLoader();
 
 	/**
 	* Handles the GET and POST requests. Performs the following:
@@ -253,7 +254,7 @@ abstract public class ApplicationServlet extends HttpServlet
             if (className == null)
                 throw new ServletException("Application specification does not specify an engine class name.");
 
-            Class engineClass = Class.forName(className);
+            Class engineClass = Class.forName(className, true, classLoader);
 
             return (IEngine)engineClass.newInstance();
         }
