@@ -1,26 +1,13 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<!--
-	
-	*******************************************************************
-	
-	This file is no longer used! Information within the file is being
-	transferred to ${root.dir}/status.xml!
-	
-	*******************************************************************
--->	
-<!-- $Id$ -->
-<html>
-<head>
-	<title>Tapestry: What's New</title>
-<link rel="STYLESHEET" type="text/css" href="scripts/style_virtlib_pcIE55.css">
-</head>
+<?xml version="1.0"?>
 
-<body leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
-<table width="100%" border="0" cellspacing="0" cellpadding="2">
-	<tr>
-		<td valign="top" align="left"><IMG alt="[Tapestry Banner]" src="images/Tapestry-Banner.png" border="0">
-		
-<h3>Release 2.3-rc-1</h3>
+<document>
+
+ <header>
+  <title>Jakarta Tapestry - What's New</title>
+ </header>
+
+<body>
+<section><title>Release 2.3-rc-1</title>
 
 <ul>
 <li>Installed Apache Foundation license and copyrights into all source files.</li>
@@ -34,40 +21,48 @@
 [ 655089 ] Add ExternalPageCalback
 [ 660372 ] Add Global object
 </pre>
+</section>
 
-<h3>Release 2.3-alpha-1</h3>
+<section><title>Release 2.3-alpha-1</title>
 
 <p>Tapestry is now available under the terms of the Apache Software License.  Previous
 releases were released under the LGPL, but are now retroactively
 licensed under the ASL as well.
+</p>
 
-<p>Added a <A href="dev.html">Developers Page</a>.
+<p>Added a <link href="dev.html">Developers Page</link>.
+</p>
 
 <p>
 Removed code dependency on Log4J, using
 Jakarta's
-<a href="http://jakarta.apache.org/commons/logging.html">commons-logging</a> wrapper layer instead.
+<link href="http://jakarta.apache.org/commons/logging.html">commons-logging</link> wrapper layer instead.
 Use the <code>Enum</code> implementation from Jakarta's
-<a href="http://jakarta.apache.org/commons/lang.html">commons-lang</a> library.
+<link href="http://jakarta.apache.org/commons/lang.html">commons-lang</link> library.
+</p>
 
 <p>
 Rework dynamic code loading so that a subclass of
-<A href="doc/api/net/sf/tapestry/ApplicationServlet.html">ApplicationServlet</a>
+<link href="http://jakarta.apache.org/tapestry/doc/api/net/sf/tapestry/ApplicationServlet.html">ApplicationServlet</link>
 is no longer necessary.
-
+</p>
 <p>Add methods to
-<A href="doc/api/net/sf/tapestry/INamespace.html">INamespace</a> and
-<A href="doc/api/net/sf/tapestry/IPage.html">IPage</a>
+<link href="http://jakarta.apache.org/tapestry/doc/api/net/sf/tapestry/INamespace.html">INamespace</link> and
+<link href="http://jakarta.apache.org/tapestry/doc/api/net/sf/tapestry/IPage.html">IPage</link>
 to make dealing with namespaces and qualified page names easier.
+</p>
 
 <p>
 Joe Panico has contributed the PopupLink component.
+</p>
 
 <p>
 <code>&lt;jwc id="..."&gt;</code> is no longer allowed in HTML templates.
+</p>
 
 <p>
 Upgrade to OGNL 2.3.0.
+</p>
 
 <pre>
 [ 619481 ] use jakarta commons lang Enum
@@ -86,17 +81,20 @@ Upgrade to OGNL 2.3.0.
 [ 633073 ] Rollover doesn't work in form
 [ 631764 ] AbstractComponent API
 </pre>
+</section>
 
-<h3>Release 2.2</h3>
-
+<section><title>Release 2.2</title>
+<p>
 Use the version of Jetty that's compatible with JDK 1.2.
+</p>
 
 <pre>
 [ 619444 ] Contrib:DateField min/max params broken
 [ 620496 ] JS net/sf/tapestry/form/Calendar.js
 </pre>
+</section>
 
-<h3>Release 2.2-rc-1</h3>
+<section><title>Release 2.2-rc-1</title>
 
 <pre>
 [ 616489 ] IPublicBean not accessible.
@@ -109,13 +107,18 @@ Use the version of Jetty that's compatible with JDK 1.2.
 [ 618342 ] NPE in AbstractComponent toString
 </pre>
 
-<h3>Release 2.2-beta-3</h3>
+</section>
 
+<section><title>Release 2.2-beta-3</title>
+
+<p>
 Upgrade to Jetty 4.1.0 and OGNL 2.1.4.
+</p>
 
 <p>
 Mind Bridge has contributed a Table component (really, a complete framework
 for creating sortable tables that present data in page-sized blocks).
+</p>
 
 <pre>
 [ 608368 ] DataSqueezer / ClassLoader
@@ -126,22 +129,28 @@ for creating sortable tables that present data in page-sized blocks).
 [ 604194 ] Specify charset by Shell component
 [ 610376 ] Expose Foreach's index as a property
 </pre>
+</section>
 
+<section><title>Release 2.2-beta-2</title>
 
-<h3>Release 2.2-beta-2</h3>
-
-The <A href="doc/ComponentReference/ValidField.html">ValidField</a> now performs
+<p>
+The <link href="http://jakarta.apache.org/tapestry/doc/ComponentReference/ValidField.html">ValidField</link> now performs
 client-side validation of input.  If a field is in error when the form
 is submitted, then an alert is displayed and the field is selected.
+</p>
 
 <p>Begin making more use of OGNL expressions in place of Java code.
+</p>
 
-<p>Malcom Edgar has contributed a <A href="doc/ComponentReference/DatePicker.html">DatePicker</a>
+<p>Malcom Edgar has contributed a <link href="http://jakarta.apache.org/tapestry/doc/ComponentReference/DatePicker.html">DatePicker</link>
 component.
+</p>
 
 <p>Some more refactorings: IComponent methods  addWrapped()/renderWrapped() -&gt; addBody()/renderBody().
+</p>
 
 <p>Tapestry documentation is now available in PDF format.
+</p>
 
 <pre>
 [ 602881 ] Add hooks for ValidField client-side
@@ -162,50 +171,59 @@ component.
 [ 607451 ] log error when unmatched components
 </pre>
 
-<h3>Release 2.2-beta-1</h3>
+</section>
+
+<section><title>Release 2.2-beta-1</title>
 
 <p>Tapestry has now replaced its simple
 property path support with the far 
-more powerful <a href="http://www.ognl.org">Object Graph
-Navigation Library</a> expressions.  This promises to greatly extend
+more powerful <link href="http://www.ognl.org">Object Graph
+Navigation Library</link> expressions.  This promises to greatly extend
 the expressiveness of the specifications and further reduce
 the need for Java code.  The <code>property-path</code>
 attribute of the <code>&lt;binding&gt;</code> element has been renamed
 to <code>expression</code> (this only affects the latest, 1.3, version
 of the DTD).
+</p>
 
 <p>There are some small costs to using OGNL; the largest being
 a restriction in bean names, component ids and asset names.  All
 of these must now be valid Java identifiers, and so cannot contain the 
 dash ('-') character, which was previously permitted.  This affects all
 specifications, including older versions.
+</p>
 
 <p>Malcolm Edgar has lead the push to provide an excellent
-<A href="doc/ComponentReference">Tapestry Component Reference</a>.
+<link href="http://jakarta.apache.org/tapestry/doc/ComponentReference">Tapestry Component Reference</link>.
+</p>
 
 <p>
 You can now control the exact location of a component template by 
 declaring an asset named <code>$template</code> (which is not normally
 a legal asset name, due to the dollar sign).  If such an asset exists,
 then it is used as the template.
+</p>
 
-<p>A number of poorly named components have been renamed:
+<p>A number of poorly named components have been renamed:</p>
+
 <ul>
-<li>Action -&gt; ActionLink
-<li>Direct -&gt; DirectLink
-<li>InsertBlock -&gt; RenderBlock
-<li>InsertWrapped -&gt; RenderBody
-<li>Page -&gt; PageLink
-<li>Service -&gt; ServiceLink
-<li>ShowInspector -&gt; InspectorButton
-<li>Text -&gt; TextArea< /li> 
+<li>Action -&gt; ActionLink</li>
+<li>Direct -&gt; DirectLink</li>
+<li>InsertBlock -&gt; RenderBlock</li>
+<li>InsertWrapped -&gt; RenderBody</li>
+<li>Page -&gt; PageLink</li>
+<li>Service -&gt; ServiceLink</li>
+<li>ShowInspector -&gt; InspectorButton</li>
+<li>Text -&gt; TextArea</li> 
 </ul>
 
 <p>Previous names will be maintained until at least release 2.3.
+</p>
 
 <p>
 In addition, the documentation has been brought (largely) up to date
 with the significant changes so far in release 2.2.
+</p>
 
 <pre>
 [ 582421 ] Way to specify template location
@@ -220,10 +238,14 @@ with the significant changes so far in release 2.2.
 </pre>
 
 
-<h3>Release 2.2-alpha-4</h3>
+</section>
 
+<section><title>Release 2.2-alpha-4</title>
+
+<p>
 Update to latest versions of JCommon, JFreeChart and Log4J.  Added the
 &lt;extension&gt; element to the application and library specifications.
+</p>
 
 <pre>
 [ 584040 ] Add hooks for custom configuration
@@ -235,15 +257,20 @@ Update to latest versions of JCommon, JFreeChart and Log4J.  Added the
 [ 591801 ] Exception changing log priority
 </pre>
 
-<h3>Release 2.2-alpha-3</h3>
+</section>
 
+<section><title>Release 2.2-alpha-3</title>
+
+<p>
 Tapestry now supports libraries, which can provide components, pages and engine services to
 an application.  Libraries can also include libraries.  The application specification
 has been ammended to include a new &lt;library&gt; element, and a new type of specification,
 the library specification, has been added.
+</p>
 
 <p>
 Renamed all page specifications from ".jwc" to ".page".
+</p>
 
 <pre>
 [ 584466 ] Cant set bean prop from localized string
@@ -253,17 +280,22 @@ Renamed all page specifications from ".jwc" to ".page".
 [ 586171 ] Add namespace/library support
 </pre>
 
-<h3>Release 2.2-alpha-2</h3>
+</section>
 
+<section><title>Release 2.2-alpha-2</title>
+
+<p>
 Revamp how services construct and parse URLs.  Rework service parameters to
 be typed objects, instead of simple strings (this is a change which
 may break some existing code).
+</p>
 
 <p>
 A new version of the DTD may now be used which distinguishes between
 page specifications and component specifications (page specifications
 do not specify several attributes and elements related to 
 component parameters).
+</p>
 
 <pre>
 [ 581199 ] Slashes in service parameters
@@ -277,9 +309,13 @@ component parameters).
 </pre>
 
 
-<h3>Release 2.2-alpha-1</h3>
+</section>
 
+<section><title>Release 2.2-alpha-1</title>
+
+<p>
 Update to Jetty 4.0.4.
+</p>
 
 <pre>
 [ 576523 ] Better syntax for Script documents
@@ -293,11 +329,15 @@ Update to Jetty 4.0.4.
 </pre>
 
 
-<h3>Release 2.1-beta-2</h3>
+</section>
 
+<section><title>Release 2.1-beta-2</title>
+
+<p>
 Note the change in Tapestry release naming,
 described in detail in the
-<a href="doc/ContributorsGuide/releases.html">Tapestry Contributor's Guide</a>.
+<link href="http://jakarta.apache.org/tapestry/doc/ContributorsGuide/releases.html">Tapestry Contributor's Guide</link>.
+</p>
 
 <pre>
 [ 574792 ] localized strings don't work
@@ -309,18 +349,23 @@ described in detail in the
 [ 575228 ] Validation messages not localized
 </pre>
 
-<h3>Release 2.0.5</h3>
+</section>
 
+<section><title>Release 2.0.5</title>
+
+<p>
 Updated Tapestry to automatically configure the demo for
-<a href="http://www.jboss.org">JBoss</a> 3.0.0 (this includes
+<link href="http://www.jboss.org">JBoss</link> 3.0.0 (this includes
 a switch to the JDK 1.3 compiler, for compatibility with
 the JBoss libraries).
+</p>
 
 <p>
 Cleaned up the look of the default exception page.
 Reorganized the home page, to link to the new 
-<a target="_top" href="wiki_frame.html">Tapestry Wiki</a>,
+<link href="site:wiki">Tapestry Wiki</link>,
 and to move more static content onto SourceForge.
+</p>
 
 <pre>
 [ 563552 ] IllegalStateException not beeing caught
@@ -330,13 +375,17 @@ and to move more static content onto SourceForge.
 [ 566000 ] Add field to Spec classed to record DTD
 </pre>
 
-<h3>Release 2.0.4</h3>
+</section>
 
+<section><title>Release 2.0.4</title>
+
+<p>
 Significant improvements to localization support, including support
 for localized properties files for each component, the
 &lt;string-binding&gt; element for accessing localized strings,
 and a new form of markup in the template
 to access localized strings.
+</p>
 
 <pre>
 [ 556766 ] Improve localization support
@@ -349,15 +398,20 @@ to access localized strings.
 [ 550279 ] Define serialVersionUID for classes
 </pre>
 
-<h3>Release 2.0.3</h3>
+</section>
 
+<section><title>Release 2.0.3</title>
+
+<p>
 Renamed Java packages from <code>com.primix.tapestry.*</code>
 to <code>net.sf.tapestry.*</code>, along with some significant other
 reorganizations, especially to the way component parameters are handled.
+</p>
 
 <p>
-Added an initial <a href="doc/ContributorsGuide/ContributorsGuide.html">Contributor's Guide</a> for Developers
+Added an initial <link href="http://jakarta.apache.org/tapestry/doc/ContributorsGuide/ContributorsGuide.html">Contributor's Guide</link> for Developers
 wishing to contribute code to the Tapestry project.
+</p>
 
 <pre>
 [ 549479 ] Rename packages to net.sf.tapestry
@@ -370,20 +424,27 @@ wishing to contribute code to the Tapestry project.
 [ 555167 ] Maintain JDK 1.2.2 compatibility
 </pre>
 
-<h3>Release 2.0.2a</h3>
+</section>
+
+<section><title>Release 2.0.2a</title>
 
 <pre>
 [ 549482 ] NPE in RequestCycle.observeChange()
 </pre>
 
-<h3>Release 2.0.2</h3>
+</section>
 
-Changed the inspector icon into an animated GIF for compatiblility with more browsers.
+<section><title>Release 2.0.2</title>
 
 <p>
-Created the new <a href="doc/api/net/sf/tapestry/link/GenericLink.html">GenericLink</a> component, which allows links to arbitrary URLs (including JavaScript event handlers), but
-is still an <a href="doc/api/net/sf/tapestry/components/IServiceLink.html">IServiceLink</a> which means it can wrap 
-<a href="doc/api/net/sf/tapestry/html/Rollover.html">Rollover</a> components.
+Changed the inspector icon into an animated GIF for compatiblility with more browsers.
+</p>
+
+<p>
+Created the new <link href="http://jakarta.apache.org/tapestry/doc/api/net/sf/tapestry/link/GenericLink.html">GenericLink</link> component, which allows links to arbitrary URLs (including JavaScript event handlers), but
+is still an <link href="http://jakarta.apache.org/tapestry/doc/api/net/sf/tapestry/components/IServiceLink.html">IServiceLink</link> which means it can wrap 
+<link href="http://jakarta.apache.org/tapestry/doc/api/net/sf/tapestry/html/Rollover.html">Rollover</link> components.
+</p>
 
 <pre>
 [ 463649 ] NN6 &amp; ShowInspector
@@ -395,11 +456,13 @@ is still an <a href="doc/api/net/sf/tapestry/components/IServiceLink.html">IServ
 [ 549314 ] Spec parse error
 [ 521456 ] Allow IRequestCycle.discardPage() from listeners
 </pre>
-		
-		
-<h3>Release 2.0.1</h3>
+</section>
 
+<section><title>Release 2.0.1</title>
+
+<p>
 Removed a lot of deprecated code.
+</p>
 
 <pre>
 [ 536289 ] remove Jetty dependencies
@@ -409,25 +472,36 @@ Removed a lot of deprecated code.
 [ 494221 ] Add PDF (or printable) documentation
 </pre>
 
-<h3>Release 2.0.0</h3>	
+</section>
 
-Added the <a target="_top" href="quotes_frame.html">Quotes</a> page to this website.  Added two new tabs to the
+<section><title>Release 2.0.0</title>	
+
+<p>
+Added the <link href="site:quotes">Quotes</link> page to this website.  Added two new tabs to the
 Workbench, demonstrating redirects and exception reporting.  
 Marked a number of methods (related to object pooling) as deprecated.
+</p>
 
 <p>Minor formatting changes to the web site and Virtual Library.
+</p>
 
-<h3>Release 1.0.10</h3>
+</section>
 
+<section><title>Release 1.0.10</title>
+
+<p>
 Changed the build to include debugging symbols with the frameworks.  Fixed a deployment problem with
 the Tutorial.  Added descriptions to most components and parameters.  Modified the Inspector to
 display component and parameter descriptions.
+</p>
 
 <p>Added a new page to the Workbench Tutorial: Chart.  The Chart page allows a user to dynamically
 create a pie chart.
+</p>
 
 <p>Made it easier to create subclasses of 
-<a href="doc/api/net/sf/tapestry/AbstractResponseWriter.html">AbstractResponseWriter</a>.
+<link href="http://jakarta.apache.org/tapestry/doc/api/net/sf/tapestry/AbstractResponseWriter.html">AbstractResponseWriter</link>.
+</p>
 
 <pre>
 [ 532562 ] Submit.jwc contains error
@@ -437,53 +511,66 @@ create a pie chart.
 [ 499655 ] HTMLResponseWriter enhancements
 </pre>
 
-<h3>Release 1.0.9</h3>
+</section>
+
+<section><title>Release 1.0.9</title>
 
 <p>The framework and contrib jar files are now named with the release number (i.e.,
 <code>com.primix.tapestry-1.0.9.jar</code>).  In addition, 
 the source code for these frameworks, and the examples, is now distributed as 
 Jar files instead of directories of files in the <code>src</code> directory. 
 This makes for easier source lookup when using 
-<a target="_top" href="http://www.eclipse.org">Eclipse</a>, and shrinks the size of the distribution
+<link href="http://www.eclipse.org">Eclipse</link>, and shrinks the size of the distribution
 as well.
+</p>
 
-<p>The way engine services are defined and used has been completely overhauled.  
+<p>The way engine services are defined and used has been completely overhauled.  </p>
+
+<p>
 Services are now defined
 in the application specification and a single
 instance of the service object is instantiated
 and shared by all engine instances (for the application).
+</p>
 
 <p>Made it easier to override the creation of the specification source, template source, etc. in subclasses
 of 
-<a href="doc/api/net/sf/tapestry/engine/AbstractApplication.html">AbstractApplication</a>.
+<link href="http://jakarta.apache.org/tapestry/doc/api/net/sf/tapestry/engine/AbstractApplication.html">AbstractApplication</link>.
+</p>
 
-
-<p>The <a href="doc/api/net/sf/tapestry/form/Submit.html">Submit</a> and 
-<a href="doc/api/net/sf/tapestry/form/ImageSubmit.html">ImageSubmit</a> components may now have 
+<p>The <link href="http://jakarta.apache.org/tapestry/doc/api/net/sf/tapestry/form/Submit.html">Submit</link> and 
+<link href="http://jakarta.apache.org/tapestry/doc/api/net/sf/tapestry/form/ImageSubmit.html">ImageSubmit</link> components may now have 
 their own listener, which is notified before the containing form's listener.
+</p>
 
 <p>More reworking of validation; the validation delegate can now
 track errors in any kind of form component and can track errors that
 aren't associated with any particular component.
+</p>
 
 <pre>
 [ #510175 ] add service registration to .application
 [ #511256 ] Enhance Validation Framework
 </pre>
 
-<h3>Release 1.0.8</h3>
+</section>
+
+<section><title>Release 1.0.8</title>
 
 <p>A complete overhaul of the validating text field support.  The previous implementation
 used subclasses of AbstractValidatingTextField (which no longer exists) to add new types
 of validation; the new implementation has a single component, 
-<a href="doc/api/net/sf/tapestry/valid/ValidField.html">ValidField</a>, and many implementations
-of <a href="doc/api/net/sf/tapestry/valid/IValidator.html">IValidator</a>.
+<link href="http://jakarta.apache.org/tapestry/doc/api/net/sf/tapestry/valid/ValidField.html">ValidField</link>, and many implementations
+of <link href="http://jakarta.apache.org/tapestry/doc/api/net/sf/tapestry/valid/IValidator.html">IValidator</link>.
+</p>
 
-<p>At long last, the <a href="doc/api/net/sf/tapestry/form/Upload.html">Upload</a> component.
+<p>At long last, the <link href="http://jakarta.apache.org/tapestry/doc/api/net/sf/tapestry/form/Upload.html">Upload</link> component.
+</p>
 
 <p>Reimplemented the Virtual Library application using
-<a target="_top" href="http://mckoi.com/database/">McKoi Database</a>, to be compatible with JBoss 2.4.3 (which no
+<link href="http://mckoi.com/database/">McKoi Database</link>, to be compatible with JBoss 2.4.3 (which no
 longer includes InstantDB).
+</p>
 
 <pre>
 [ #506661 ] private asset configuration
@@ -497,74 +584,82 @@ longer includes InstantDB).
 </pre>
 
 
-<h3>Release 1.0.7</h3>
+</section>
+
+<section><title>Release 1.0.7</title>
 				
 <p>Removed Primix copyrights, as I no longer work there or do any work on their time.
+</p>
 
 <p>Consolidated and cleaned up many of the tutorials into the new Workbench.
+</p>
 
 <p>Improvements to Inspector's Properties Explorer.  It is now more tolerant of exceptions thrown while
 accessing properties.
+</p>
 
 <p>Streamlined the distribution by removing the source for documentation.
+</p>
 
-
-<PRE>
+<pre>
 [ #480433 ] StatementAssembly - access to JBDC 2.0
 [ #469747 ] more flexible application parser
 [ #484184 ] JavaDoc error
 </pre>
 				
-				<h3>Release 1.0.6</h3>
+				</section><section><title>Release 1.0.6</title>
 				
-				<p>Tapestry now uses <a target="_top" href="http://jakarta.apache.org/ant">Ant</a>
+				<p>Tapestry now uses <link href="http://jakarta.apache.org/ant">Ant</link>
 				as its build tool.  The GNU Makefile Java Build Environment has
 				been removed.
-				
+				</p>
+
 				<p>The Tapestry Inspector now has a powerful Properties Explorer which allows
 				for dynamic navigation and display of an object's properties (similar
 				to what a debugger provides).
-				
+				</p>
+
 				<p>Localization of context assets was broken in Tomcat; it now works
 				in both Tomcat and Jetty.
+				</p>
+
+				</section>
 				
-				<h3>Release 1.0.5</h3>
+				<section><title>Release 1.0.5</title>
 				
 				<p>Added a mechanism to clear out pooled objects when they haven't been used
-				for some time.  The interface <a href="doc/api/net/sf/tapestry/util/ICleanable.html">ICleanable</a>
+				for some time.  The interface <link href="http://jakarta.apache.org/tapestry/doc/api/net/sf/tapestry/util/ICleanable.html">ICleanable</link>
 				has the details.
-				
+				</p>
+
 				<p>Made a number of other efficiency improvements.  Particularily, the page loader now weeds
 				out informal parameters that can't be used (because they conflict with formal parameter names,
 				or because the component owns the attributes), preventing them from being added as component
 				bindings.  The old method was to weed out the unwanted parameters on every
 				render, which was more expensive.
-				
-				<p>Improved the <a href="doc/api/net/sf/tapestry/valid/NumericField.html">NumericField</a>
+				</p>
+
+				<p>Improved the <link href="http://jakarta.apache.org/tapestry/doc/api/net/sf/tapestry/valid/NumericField.html">NumericField</link>
 				component to deal with null values in an intelligent manner.
-				
+				</p>
+
 				<p>It is now possible to set properties of
-				<a href="doc/DevelopersGuide/components.helper-beans.html">helper beans</a>.
-				
+				<link href="http://jakarta.apache.org/tapestry/doc/DevelopersGuide/components.helper-beans.html">helper beans</link>.
+				</p>
+
 				<p>The full distribution now bundles 
-				<a target="_top" href="http://jetty.mortbay.com">Jetty 3.1RC9</a>
+				<link href="http://jetty.mortbay.com">Jetty 3.1RC9</link>
 				and the Virtual Library is now compatible with
-				<a target="_top" href="http://www.jboss.org">JBoss 2.4.0</a>.
-				
-                <h3>Release 1.0.4</h3>
-                
-                <p>Release 1.0.4 debuted the finished Tapestry Home and Virtual Library.
-                
-                <br>
-			<!-- END Content -->
-		</td>
-	</tr>
-</table>
-<!-- ****END BODY WRAPPER**** -->
+				<link href="http://www.jboss.org">JBoss 2.4.0</link>.
+				</p>
 
-<p>
-<a href="http://jakarta.apache.org"><img src="images/jakarta-banner.png" border="0" alt="Jakarta Banner"></a>
-<br>&copy; @COPY_YEARS@ Apache Software Foundation.	All rights reserved.
+                </section>
+                
+                <section><title>Release 1.0.4</title>
+                
+                <p>Release 1.0.4 debuted the finished Tapestry Home and Virtual Library.</p>
 
+                
+</section>
 </body>
-</html>
+</document>
