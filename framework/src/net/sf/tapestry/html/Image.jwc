@@ -1,21 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<!DOCTYPE specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+	
 <specification class="net.sf.tapestry.html.Image" allow-body="no">
 
   <description>
   Displays an image, deriving the source URL for the image from an asset.
   </description>
 
-  <parameter name="image" java-type="net.sf.tapestry.IAsset" required="yes">
+  <parameter name="image" 
+  	java-type="net.sf.tapestry.IAsset" 
+  	required="yes"
+  	direction="in">
     <description>
     The asset to display.
     </description>
   </parameter>
   
-  <parameter name="border">
+  <parameter name="border"
+  	java-type="int"
+  	direction="in">
     <description>
-    If given, the number of pixels of border.  The default is 0 pixels.
+    Number of pixels of border.
     </description>
   </parameter>
   

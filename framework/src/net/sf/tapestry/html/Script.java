@@ -52,7 +52,7 @@ import org.apache.log4j.Category;
  * <tr> 
  *    <th>Property</th>
  *    <th>Type</th>
- *	  <th>Read / Write </th>
+ *	  <th>Direction</th>
  *    <th>Required</th> 
  *    <th>Default</th>
  *    <th>Description</th>
@@ -61,17 +61,16 @@ import org.apache.log4j.Category;
  * <tr>
  *  <td>script</td>
  *  <td>{@link String}</td>
- *  <td>R</td>
+ *  <td>in</td>
  *  <td>yes</td>
  *  <td>&nbsp;</td>
  *  <td>The path of a resource (on the classpath) containing the script.</td>
  * </tr>
  *
- *
  * <tr>
  *  <td>symbols</td>
  *  <td>{@link Map}</td>
- *  <td>R</td>
+ *  <td>in</td>
  *  <td>no</td>
  *  <td>&nbsp;</td>
  *  <td>The base set of symbols to be provided to the {@link IScript}.
@@ -92,68 +91,11 @@ public class Script extends AbstractComponent
 {
     private static final Category CAT = Category.getInstance(Script.class);
 
-    private IBinding scriptBinding;
-
-    private IBinding cautiousBinding;
-    private boolean staticCautious;
-    private boolean cautiousValue;
-
-    private IBinding symbolsBinding;
+	private String lastScriptPath;
+	private String scriptPath;
+	private Map baseSymbols;
 
     private IScript script;
-
-    public void setScriptBinding(IBinding value)
-    {
-        scriptBinding = value;
-    }
-
-    public IBinding getScriptBinding()
-    {
-        return scriptBinding;
-    }
-
-    public void setCautiousBinding(IBinding value)
-    {
-        cautiousBinding = value;
-        staticCautious = value.isStatic();
-        if (staticCautious)
-            cautiousValue = value.getBoolean();
-    }
-
-    public IBinding getCautiousBinding()
-    {
-        return cautiousBinding;
-    }
-
-    public void setSymbolsBinding(IBinding value)
-    {
-        symbolsBinding = value;
-    }
-
-    public IBinding getSymbolsBinding()
-    {
-        return symbolsBinding;
-    }
-
-    /**
-     *  Returns true if the script is configured cautious (may load
-     *  a different script on a subsequent render) or normal
-     *  (once a script is loaded, it is "locked in" for all subsequent
-     *  request cycles).  This is determined by the cautious parameter, which
-     *  defaults off.
-     *
-     **/
-
-    public boolean isCautious()
-    {
-        if (staticCautious)
-            return cautiousValue;
-
-        if (cautiousBinding == null)
-            return false;
-
-        return cautiousBinding.getBoolean();
-    }
 
     /**
      *  Constructs the symbols {@link Map}.  This starts with the
@@ -164,20 +106,20 @@ public class Script extends AbstractComponent
      *
      **/
 
-    public Map getSymbols()
+    private Map getSymbols()
     {
         Map result = null;
         boolean copy = false;
 
-        if (symbolsBinding != null)
+        if (baseSymbols != null)
         {
-            result = (Map) symbolsBinding.getObject("symbols", Map.class);
+            result = baseSymbols;
 
             // Make a writable copy if there are any informal parameters
             copy = true;
         }
 
-        // Now, iterator through all the binding names (which includes both
+        // Now, iterate through all the binding names (which includes both
         // formal and informal parmeters).  Skip the formal ones and
         // access the informal ones.
 
@@ -221,29 +163,19 @@ public class Script extends AbstractComponent
     private IScript getParsedScript(IRequestCycle cycle)
         throws ResourceUnavailableException, RequiredParameterException
     {
-        // If cached (because the script binding is static), then return
-        // the cached value.
-
-        if (script != null)
-            return script;
-
-        String scriptPath = scriptBinding.getString();
-
-        if (scriptPath == null)
-            throw new RequiredParameterException(this, "script", scriptBinding);
-
+        if (script!= null &&
+        	scriptPath.equals(lastScriptPath))
+        	return script;
+        	
         IEngine engine = cycle.getEngine();
         IScriptSource source = engine.getScriptSource();
 
-        IScript result = source.getScript(scriptPath);
-
-        // If the script path is unchanging, then we can hold a reference to
-        // the script for next time.
-
-        if (scriptBinding.isStatic())
-            script = result;
-
-        return result;
+	// Cache for later
+	
+        IScript script = source.getScript(scriptPath);
+		lastScriptPath = scriptPath;
+		
+		return script;
     }
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
@@ -278,4 +210,26 @@ public class Script extends AbstractComponent
 
         // This component is not allowed to have a body.
     }
+
+    public String getScriptPath()
+    {
+        return scriptPath;
+    }
+
+    public void setScriptPath(String scriptPath)
+    {
+        this.scriptPath = scriptPath;
+    }
+
+
+    public Map getBaseSymbols()
+    {
+        return baseSymbols;
+    }
+
+    public void setBaseSymbols(Map baseSymbols)
+    {
+        this.baseSymbols = baseSymbols;
+    }
+
 }

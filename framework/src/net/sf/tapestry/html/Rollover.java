@@ -29,9 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.sf.tapestry.AbstractComponent;
-import net.sf.tapestry.BindingException;
 import net.sf.tapestry.IAsset;
-import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IEngine;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
@@ -53,7 +51,7 @@ import net.sf.tapestry.components.ServiceLinkEventType;
  *  Internet Explorer.
  *
  *  A <code>Rollover</code> must be contained within a {@link Body} and within
- *  an {@link IActionListener}.  The JavaScript handlers for dealing with mouse
+ *  an {@link IServiceLink}.  The JavaScript handlers for dealing with mouse
  *  movement are applied to the &lt;a&gt; created by the {@link IActionListener}.  For compatibility
  *  with Netscape 4, the handlers are attached using HTML attributes (it would cleaner
  *  and easier to do so using the DOM).
@@ -62,7 +60,7 @@ import net.sf.tapestry.components.ServiceLinkEventType;
  * <tr> 
  *    <td>Parameter</td>
  *    <td>Type</td>
- *	  <td>Read / Write </td>
+ *	  <td>Direction </td>
  *    <td>Required</td> 
  *    <td>Default</td>
  *    <td>Description</td>
@@ -71,7 +69,7 @@ import net.sf.tapestry.components.ServiceLinkEventType;
  *  <tr>
  *    <td>image</td>
  *    <td>{@link IAsset}</td>
- *    <td>R</td>
+ *    <td>in</td>
  *   	<td>yes</td>
  *		<td>&nbsp;</td>
  *		<td>The (initial) image to show.</td>
@@ -80,7 +78,7 @@ import net.sf.tapestry.components.ServiceLinkEventType;
  * <tr>
  *		<td>focus</td>
  *		<td>{@link IAsset}</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>&nbsp;</td>
  *		<td>If provided (and the component is not disabled), then a JavaScript <code>onMouseOver</code> event handler
@@ -90,7 +88,7 @@ import net.sf.tapestry.components.ServiceLinkEventType;
  * <tr>
  *		<td>blur</td>
  *		<td>{@link IAsset}</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>&nbsp;</td>
  *		<td>If provided (and the component is not disabled), then a JavaScript <code>onMouseOut</code> event handler
@@ -101,7 +99,7 @@ import net.sf.tapestry.components.ServiceLinkEventType;
  * <tr>
  *		<td>disabled</td>
  *		<td>{@link IAsset}</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>&nbsp;</td>
  *		<td>Image used when the <code>Rollover</code> is disabled.  A <code>Rollover</code>
@@ -125,20 +123,12 @@ import net.sf.tapestry.components.ServiceLinkEventType;
 
 public class Rollover extends AbstractComponent
 {
-    // Shared by all instances of Rollover
+    private IScript parsedScript;
 
-    private static IScript parsedScript;
-
-    // Symbols used when generating the script.
-
-    private Map symbols;
-
-    private static final int MAP_SIZE = 7;
-
-    private IBinding image;
-    private IBinding focus;
-    private IBinding blur;
-    private IBinding disabled;
+    private IAsset image;
+    private IAsset blur;
+    private IAsset focus;
+    private IAsset disabled;
 
     /**
      *  Converts an {@link IAsset} binding into a usable URL.  Returns null
@@ -146,50 +136,14 @@ public class Rollover extends AbstractComponent
      *
      **/
 
-    protected String getAssetURL(
-        String name,
-        IBinding binding,
-        IRequestCycle cycle)
+    protected String getAssetURL(IAsset asset, IRequestCycle cycle)
         throws RequestCycleException
     {
-        IAsset asset;
-
-        if (binding == null)
-            return null;
-
-        try
-        {
-            asset = (IAsset) binding.getObject(name, IAsset.class);
-        }
-        catch (BindingException ex)
-        {
-            throw new RequestCycleException(this, ex);
-        }
 
         if (asset == null)
             return null;
 
         return asset.buildURL(cycle);
-    }
-
-    public IBinding getBlurBinding()
-    {
-        return blur;
-    }
-
-    public IBinding getDisabledBinding()
-    {
-        return disabled;
-    }
-
-    public IBinding getFocusBinding()
-    {
-        return focus;
-    }
-
-    public IBinding getImageBinding()
-    {
-        return image;
     }
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
@@ -202,21 +156,19 @@ public class Rollover extends AbstractComponent
         String onMouseOverName = null;
         boolean dynamic = false;
         String onMouseOutName = null;
-        int borderValue = 0;
-        Body body;
         String focusImageName = null;
         String blurImageName = null;
-        IServiceLink serviceLink;
         String imageName = null;
         String script;
 
-        body = Body.get(cycle);
+        Body body = Body.get(cycle);
         if (body == null)
             throw new RequestCycleException(
                 Tapestry.getString("Rollover.must-be-contained-by-body"),
                 this);
 
-        serviceLink = (IServiceLink) cycle.getAttribute(IServiceLink.ATTRIBUTE_NAME);
+        IServiceLink serviceLink =
+            (IServiceLink) cycle.getAttribute(IServiceLink.ATTRIBUTE_NAME);
         if (serviceLink == null)
             throw new RequestCycleException(
                 Tapestry.getString("Rollover.must-be-contained-by-link"),
@@ -232,16 +184,16 @@ public class Rollover extends AbstractComponent
 
         if (linkDisabled)
         {
-            imageURL = getAssetURL("disabled", disabled, cycle);
+            imageURL = getAssetURL(disabled, cycle);
 
             if (imageURL == null)
-                imageURL = getAssetURL("image", image, cycle);
+                imageURL = getAssetURL(image, cycle);
         }
         else
         {
-            imageURL = getAssetURL("image", image, cycle);
-            focusURL = getAssetURL("focus", focus, cycle);
-            blurURL = getAssetURL("blur", blur, cycle);
+            imageURL = getAssetURL(image, cycle);
+            focusURL = getAssetURL(focus, cycle);
+            blurURL = getAssetURL(blur, cycle);
 
             dynamic = (focusURL != null) || (blurURL != null);
         }
@@ -285,8 +237,6 @@ public class Rollover extends AbstractComponent
 
     }
 
-    private static final String SCRIPT_RESOURCE = "Rollover.script";
-
     private IScript getParsedScript() throws ResourceUnavailableException
     {
         if (parsedScript == null)
@@ -311,10 +261,7 @@ public class Rollover extends AbstractComponent
         String focusImageURL = body.getPreloadedImageReference(focusURL);
         String blurImageURL = body.getPreloadedImageReference(blurURL);
 
-        if (symbols == null)
-            symbols = new HashMap(MAP_SIZE);
-        else
-            symbols.clear();
+        Map symbols = new HashMap();
 
         symbols.put("uniqueId", uniqueId);
         symbols.put("focusImageURL", focusImageURL);
@@ -338,8 +285,6 @@ public class Rollover extends AbstractComponent
 
         String imageName = (String) symbols.get("imageName");
 
-        symbols.clear();
-
         // Return the value that must be assigned to the 'name' attribute
         // of the <img> tag.
 
@@ -347,23 +292,44 @@ public class Rollover extends AbstractComponent
 
     }
 
-    public void setBlurBinding(IBinding newBlur)
+    public IAsset getBlur()
     {
-        blur = newBlur;
+        return blur;
     }
 
-    public void setDisabledBinding(IBinding newDisabled)
+    public void setBlur(IAsset blur)
     {
-        disabled = newDisabled;
+        this.blur = blur;
     }
 
-    public void setFocusBinding(IBinding newFocus)
+    public IAsset getDisabled()
     {
-        focus = newFocus;
+        return disabled;
     }
 
-    public void setImageBinding(IBinding value)
+    public void setDisabled(IAsset disabled)
     {
-        image = value;
+        this.disabled = disabled;
     }
+
+    public IAsset getFocus()
+    {
+        return focus;
+    }
+
+    public void setFocus(IAsset focus)
+    {
+        this.focus = focus;
+    }
+
+    public IAsset getImage()
+    {
+        return image;
+    }
+
+    public void setImage(IAsset image)
+    {
+        this.image = image;
+    }
+
 }

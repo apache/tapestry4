@@ -43,7 +43,7 @@ import net.sf.tapestry.RequiredParameterException;
  * <tr> 
  *    <td>Parameter</td>
  *    <td>Type</td>
- *	  <td>Read / Write </td>
+ *	  <td>Direction</td>
  *    <td>Required</td> 
  *    <td>Default</td>
  *    <td>Description</td>
@@ -52,7 +52,7 @@ import net.sf.tapestry.RequiredParameterException;
  *  <tr>
  *    <td>image</td>
  *    <td>{@link IAsset}</td>
- *    <td>R</td>
+ *    <td>in</td>
  *   	<td>yes</td>
  *		<td>&nbsp;</td>
  *		<td>The image to show.</td>
@@ -62,7 +62,7 @@ import net.sf.tapestry.RequiredParameterException;
  * <tr>
  *		<td>border</td>
  *		<td>int</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>0</td>
  *		<td>Corresponds to the HTML <code>border</code> attribute.</td>
@@ -80,52 +80,8 @@ import net.sf.tapestry.RequiredParameterException;
 
 public class Image extends AbstractComponent
 {
-    private IBinding imageBinding;
-    private IBinding borderBinding;
-    private boolean staticBorder;
-    private int borderValue;
-
-    /**
-     *  Converts an {@link IAsset} binding into a usable URL.  Returns null
-     *  if the binding does not exist or the binding's value is null.
-     *
-     **/
-
-    protected String getAssetURL(
-        String name,
-        IBinding binding,
-        IRequestCycle cycle)
-        throws RequestCycleException
-    {
-        IAsset asset;
-
-        if (binding == null)
-            return null;
-
-        try
-        {
-            asset = (IAsset) binding.getObject(name, IAsset.class);
-        }
-        catch (BindingException ex)
-        {
-            throw new RequestCycleException(this, ex);
-        }
-
-        if (asset == null)
-            return null;
-
-        return asset.buildURL(cycle);
-    }
-
-    public IBinding getBorderBinding()
-    {
-        return borderBinding;
-    }
-
-    public IBinding getImageBinding()
-    {
-        return imageBinding;
-    }
+	private IAsset image;
+	private int border;
 
     /**
      *  Renders the &lt;img&gt; element.
@@ -152,24 +108,7 @@ public class Image extends AbstractComponent
         if (cycle.isRewinding())
             return;
 
-        try
-        {
-            imageAsset = (IAsset) imageBinding.getObject("image", IAsset.class);
-        }
-        catch (BindingException ex)
-        {
-            throw new RequestCycleException(this, ex);
-        }
-
-        if (imageAsset == null)
-            throw new RequiredParameterException(this, "image", imageBinding);
-
-        imageURL = imageAsset.buildURL(cycle);
-
-        if (staticBorder)
-            border = borderValue;
-        else if (borderBinding != null)
-            border = borderBinding.getInt();
+        imageURL = image.buildURL(cycle);
 
         writer.beginEmpty("img");
 
@@ -183,13 +122,24 @@ public class Image extends AbstractComponent
 
     }
 
-    public void setBorderBinding(IBinding value)
+    public int getBorder()
     {
-        borderBinding = value;
+        return border;
     }
 
-    public void setImageBinding(IBinding value)
+    public void setBorder(int border)
     {
-        imageBinding = value;
+        this.border = border;
     }
+
+    public IAsset getImage()
+    {
+        return image;
+    }
+
+    public void setImage(IAsset image)
+    {
+        this.image = image;
+    }
+
 }

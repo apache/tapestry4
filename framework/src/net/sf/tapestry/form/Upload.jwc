@@ -3,8 +3,8 @@
 <!-- $Id$ -->
 
 <!DOCTYPE specification PUBLIC 
-	"-//Howard Ship//Tapestry Specification 1.1//EN" 
-	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
 	
 	
 <specification class="net.sf.tapestry.form.Upload" allow-body="no">
@@ -20,7 +20,7 @@
   	</description>
   </parameter>
 
-  <parameter name="disabled"/>
+  <parameter name="disabled" type="boolean" direction="in"/>
  
   <reserved-parameter name="type"/>
   <reserved-parameter name="name"/>

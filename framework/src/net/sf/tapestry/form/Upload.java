@@ -40,7 +40,7 @@ import net.sf.tapestry.RequestCycleException;
  * <tr> 
  *    <td>Parameter</td>
  *    <td>Type</td>
- *	  <td>Read / Write </td>
+ *	  <td>Direction</td>
  *    <td>Required</td> 
  *    <td>Default</td>
  *    <td>Description</td>
@@ -49,7 +49,7 @@ import net.sf.tapestry.RequestCycleException;
  * 	<tr>
  * 	<td>file</td>
  *  <td>{@link IUploadFile}</td>
- *  <td>W</td>
+ *  <td>out</td>
  *  <td>yes</td>
  *  <td>&nbsp;</td>
  *  <td>Updated, when the form is submitted, with the name and content
@@ -60,7 +60,7 @@ import net.sf.tapestry.RequestCycleException;
  *  <tr>
  * 		<td>disabled</td>
  * 		<td>boolean</td>
- * 		<td>R</td>
+ * 		<td>in</td>
  * 		<td>no</td>
  * 		<td>false</td>
  * 		<td>If true, then (on render) the disabled attribute is written into the tag
@@ -82,18 +82,10 @@ import net.sf.tapestry.RequestCycleException;
 public class Upload extends AbstractFormComponent
 {
     private IBinding fileBinding;
-    private IBinding disabledBinding;
+	private boolean disabled;
     private String name;
 
-    public IBinding getDisabledBinding()
-    {
-        return disabledBinding;
-    }
 
-    public void setDisabledBinding(IBinding value)
-    {
-        disabledBinding = value;
-    }
 
     public String getName()
     {
@@ -114,12 +106,8 @@ public class Upload extends AbstractFormComponent
         throws RequestCycleException
     {
         IForm form = getForm(cycle);
-        boolean disabled = false;
-
+ 
         boolean rewinding = form.isRewinding();
-
-        if (disabledBinding != null)
-            disabled = disabledBinding.getBoolean();
 
         name = form.getElementId(this);
 
@@ -146,6 +134,16 @@ public class Upload extends AbstractFormComponent
         // (Not making the same mistake here I made with Text and friends).
 
         generateAttributes(writer, cycle);
+    }
+
+    public boolean getDisabled()
+    {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled)
+    {
+        this.disabled = disabled;
     }
 
 }
