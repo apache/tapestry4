@@ -11,34 +11,36 @@
   <property-specification name="password2" type="java.lang.String"/>
   <property-specification name="attributes" type="java.util.Map"/>
  
-  <bean name="validator" class="org.apache.tapestry.valid.StringValidator" lifecycle="page">
+  <bean name="required" class="org.apache.tapestry.valid.StringValidator" lifecycle="page">
   	<set-property name="required" expression="true"/>
   	<set-property name="clientScriptingEnabled" expression="true"/>
   </bean>
+  
+  <bean name="optional" class="org.apache.tapestry.valid.StringValidator" lifecycle="page"/>
 
   <component id="inputLastName" type="ValidField">
     <binding name="value" expression="attributes.lastName"/>
     <static-binding name="displayName" value="Last Name"/>   
-    <binding name="validator" expression="beans.validator"/>
+    <binding name="validator" expression="beans.required"/>
   </component>
 
   <component id="inputEmail" type="ValidField">
     <binding name="value" expression="attributes.email"/>
     <static-binding name="displayName" value="E-Mail"/>
-    <binding name="validator" expression="beans.validator"/>
+    <binding name="validator" expression="beans.required"/>
   </component>
 
   <component id="inputPassword1" type="ValidField">
     <binding name="value" expression="password1"/>
     <static-binding name="displayName" value="Password"/> 
-    <binding name="validator" expression="@org.apache.tapestry.valid.StringValidator@OPTIONAL"/>
+    <binding name="validator" expression="beans.optional"/>
     <binding name="hidden" expression="true"/>
   </component>
 
   <component id="inputPassword2" type="ValidField">
     <binding name="value" expression="password2"/>
     <static-binding name="displayName" value="Password (again)"/>  
-    <binding name="validator" expression="@org.apache.tapestry.valid.StringValidator@OPTIONAL"/>
+    <binding name="validator" expression="beans.optional"/>
     <binding name="hidden" expression="true"/>
   </component>
   

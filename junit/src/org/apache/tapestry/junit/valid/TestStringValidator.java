@@ -105,7 +105,23 @@ public class TestStringValidator extends TapestryTestCase
         }
         catch (ValidatorException ex)
         {
+            assertEquals("You must enter a value for requiredField.", ex.getMessage());
             assertEquals(ValidationConstraint.REQUIRED, ex.getConstraint());
+        }
+    }
+
+    public void testOverrideRequiredMessage()
+    {
+        v.setRequired(true);
+        v.setRequiredMessage("Gimme a value for {0} you bastard.");
+
+        try
+        {
+            v.toObject(new TestingField("overrideMessage"), "");
+        }
+        catch (ValidatorException ex)
+        {
+            assertEquals("Gimme a value for overrideMessage you bastard.", ex.getMessage());
         }
     }
 
@@ -124,13 +140,34 @@ public class TestStringValidator extends TapestryTestCase
 
         try
         {
-            v.toObject(new TestingField("minimum"), "short");
+            v.toObject(new TestingField("minimumLength"), "short");
 
             fail("Exception expected.");
         }
         catch (ValidatorException ex)
         {
+            assertEquals(
+                "You must enter at least 10 characters for minimumLength.",
+                ex.getMessage());
             assertEquals(ValidationConstraint.MINIMUM_WIDTH, ex.getConstraint());
+        }
+    }
+
+    public void testOverrideMinimumMessage()
+    {
+        v.setMinimumLength(10);
+        v.setMinimumLengthMessage(
+            "You really think less than 10 characters for {0} is gonna cut it?");
+
+        try
+        {
+            v.toObject(new TestingField("overrideMessage"), "");
+        }
+        catch (ValidatorException ex)
+        {
+            assertEquals(
+                "You really think less than 10 characters for overrideMessage is gonna cut it?",
+                ex.getMessage());
         }
     }
 
@@ -159,62 +196,6 @@ public class TestStringValidator extends TapestryTestCase
         Object out = v.toObject(new TestingField("minimum"), in);
 
         assertNull("Result", out);
-    }
-
-    public void testOptional()
-    {
-        assertEquals(0, StringValidator.OPTIONAL.getMinimumLength());
-        assertEquals(false, StringValidator.OPTIONAL.isClientScriptingEnabled());
-        assertEquals(false, StringValidator.OPTIONAL.isRequired());
-    }
-
-    public void testRequired()
-    {
-        assertEquals(0, StringValidator.REQUIRED.getMinimumLength());
-        assertEquals(false, StringValidator.REQUIRED.isClientScriptingEnabled());
-        assertEquals(true, StringValidator.REQUIRED.isRequired());
-    }
-
-    public void testSetStaticMinimumLength()
-    {
-        try
-        {
-            StringValidator.OPTIONAL.setMinimumLength(1);
-
-            unreachable();
-        }
-        catch (UnsupportedOperationException ex)
-        {
-            checkException(ex, "Changes to property values are not allowed.");
-        }
-    }
-
-    public void testSetStaticClientScripting()
-    {
-        try
-        {
-            StringValidator.OPTIONAL.setClientScriptingEnabled(true);
-
-            unreachable();
-        }
-        catch (UnsupportedOperationException ex)
-        {
-            checkException(ex, "Changes to property values are not allowed.");
-        }
-    }
-
-    public void testSetRequired()
-    {
-        try
-        {
-            StringValidator.OPTIONAL.setRequired(true);
-
-            unreachable();
-        }
-        catch (UnsupportedOperationException ex)
-        {
-            checkException(ex, "Changes to property values are not allowed.");
-        }
     }
 
 }

@@ -78,6 +78,8 @@ import org.apache.tapestry.form.IFormComponent;
 public class EmailValidator extends BaseValidator
 {
     private int _minimumLength;
+    private String _minimumLengthMessage;
+    private String _invalidEmailFormatMessage;
 
     private String _scriptPath = "/org/apache/tapestry/valid/EmailValidator.script";
 
@@ -103,30 +105,15 @@ public class EmailValidator extends BaseValidator
         if (checkRequired(field, input))
             return null;
 
-        input = input.trim();
-
         if (_minimumLength > 0 && input.length() < _minimumLength)
-        {
-            String errorMessage =
-                getString(
-                    "field-too-short",
-                    field.getPage().getLocale(),
-                    Integer.toString(_minimumLength),
-                    field.getDisplayName());
+            throw new ValidatorException(
+                buildMinimumLengthMessage(field),
+                ValidationConstraint.MINIMUM_WIDTH);
 
-            throw new ValidatorException(errorMessage, ValidationConstraint.MINIMUM_WIDTH);
-        }
-
-        if (input.length() > 0 && !isValidEmail(input))
-        {
-            String errorMessage =
-                getString(
-                    "invalid-email-format",
-                    field.getPage().getLocale(),
-                    field.getDisplayName());
-
-            throw new ValidatorException(errorMessage, ValidationConstraint.EMAIL_FORMAT);
-        }
+        if (!isValidEmail(input))
+            throw new ValidatorException(
+                buildInvalidEmailFormatMessage(field),
+                ValidationConstraint.EMAIL_FORMAT);
 
         return input;
     }
@@ -155,18 +142,14 @@ public class EmailValidator extends BaseValidator
         String displayName = field.getDisplayName();
 
         if (isRequired())
-            symbols.put("requiredMessage", getString("field-is-required", locale, displayName));
+            symbols.put("requiredMessage", buildRequiredMessage(field));
 
         if (_minimumLength > 0)
-            symbols.put(
-                "minimumLengthMessage",
-                getString(
-                    "field-too-short",
-                    locale,
-                    Integer.toString(_minimumLength),
-                    displayName));
+            symbols.put("minimumLengthMessage", buildMinimumLengthMessage(field));
 
-        symbols.put("emailFormatMessage", getString("invalid-email-format", locale, displayName));
+        String pattern = getPattern(getInvalidEmailFormatMessage(), "invalid-email-format", locale);
+
+        symbols.put("emailFormatMessage", formatString(pattern, displayName));
 
         processValidatorScript(_scriptPath, cycle, field, symbols);
     }
@@ -208,5 +191,69 @@ public class EmailValidator extends BaseValidator
         {
             return true;
         }
+    }
+
+    /** @since 3.0 */
+
+    public String getInvalidEmailFormatMessage()
+    {
+        return _invalidEmailFormatMessage;
+    }
+
+    /** @since 3.0 */
+
+    public String getMinimumLengthMessage()
+    {
+        return _minimumLengthMessage;
+    }
+
+    /**
+     *  Overrides the <code>invalid-email-format</code>
+     *  bundle key.
+     *  Parameter {0} is the display name of the field.
+     * 
+     *  @since 3.0
+     * 
+     */
+
+    public void setInvalidEmailFormatMessage(String string)
+    {
+        _invalidEmailFormatMessage = string;
+    }
+
+    /**
+     *  Overrides the <code>field-too-short</code> bundle key.
+     *  Parameter {0} is the minimum length.
+     *  Parameter {1} is the display name of the field.
+     * 
+     *  @since 3.0
+     * 
+     */
+    public void setMinimumLengthMessage(String string)
+    {
+        _minimumLengthMessage = string;
+    }
+
+    /** @since 3.0 */
+
+    protected String buildMinimumLengthMessage(IFormComponent field)
+    {
+        String pattern =
+            getPattern(_minimumLengthMessage, "field-too-short", field.getPage().getLocale());
+
+        return formatString(pattern, Integer.toString(_minimumLength), field.getDisplayName());
+    }
+
+    /** @since 3.0 */
+
+    protected String buildInvalidEmailFormatMessage(IFormComponent field)
+    {
+        String pattern =
+            getPattern(
+                _invalidEmailFormatMessage,
+                "invalid-email-format",
+                field.getPage().getLocale());
+
+        return formatString(pattern, field.getDisplayName());
     }
 }

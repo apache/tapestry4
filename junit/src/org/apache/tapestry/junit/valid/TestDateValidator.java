@@ -144,13 +144,33 @@ public class TestDateValidator extends TapestryTestCase
     {
         try
         {
-            v.toObject(new TestingField("toObjectInvalid"), "frankenhooker");
+            v.toObject(new TestingField("badDatesIndy"), "frankenhooker");
 
-            fail("Exception expected.");
+            unreachable();
         }
         catch (ValidatorException ex)
         {
+            assertEquals(
+                "Invalid date format for badDatesIndy.  Format is MM/DD/YYYY.",
+                ex.getMessage());
             assertEquals(ValidationConstraint.DATE_FORMAT, ex.getConstraint());
+        }
+    }
+
+    public void testOverrideInvalidDateFormatMessage()
+    {
+        v.setInvalidDateFormatMessage("Enter a valid date for {0}.");
+
+        try
+        {
+            v.toObject(new TestingField("badDatesIndy"), "frankenhooker");
+
+            unreachable();
+        }
+        catch (ValidatorException ex)
+        {
+            assertEquals("Enter a valid date for badDatesIndy.", ex.getMessage());
+
         }
     }
 
@@ -185,6 +205,23 @@ public class TestDateValidator extends TapestryTestCase
         }
     }
 
+    public void testOverrideDateTooEarlyMessage()
+    {
+        v.setMinimum(buildDate(Calendar.DECEMBER, 24, 2001));
+        v.setDateTooEarlyMessage("Provide a date for {0} after Dec 24 2001.");
+
+        try
+        {
+            v.toObject(new TestingField("inputDate"), "12/8/2001");
+            unreachable();
+        }
+        catch (ValidatorException ex)
+        {
+            assertEquals("Provide a date for inputDate after Dec 24 2001.", ex.getMessage());
+            assertEquals(ValidationConstraint.TOO_SMALL, ex.getConstraint());
+        }
+    }
+
     public void testToObjectMinimumNull() throws ValidatorException
     {
         v.setMinimum(buildDate(Calendar.DECEMBER, 24, 2001));
@@ -200,12 +237,31 @@ public class TestDateValidator extends TapestryTestCase
 
         try
         {
-            v.toObject(new TestingField("toObjectMinimum"), "12/8/2002");
-            fail("Exception expected.");
+            v.toObject(new TestingField("toObjectMaximum"), "12/8/2002");
+            unreachable();
         }
         catch (ValidatorException ex)
         {
+            assertEquals("toObjectMaximum must be on or before 12/24/2001.", ex.getMessage());
             assertEquals(ValidationConstraint.TOO_LARGE, ex.getConstraint());
+        }
+    }
+
+    public void testOverrideDateTooLateMessage()
+    {
+        v.setMaximum(buildDate(Calendar.DECEMBER, 24, 2001));
+        v.setDateTooLateMessage("Try again with a date before Dec 24 2001 in {0}.");
+
+        try
+        {
+            v.toObject(new TestingField("toObjectMaximum"), "12/8/2002");
+            unreachable();
+        }
+        catch (ValidatorException ex)
+        {
+            assertEquals(
+                "Try again with a date before Dec 24 2001 in toObjectMaximum.",
+                ex.getMessage());
         }
     }
 

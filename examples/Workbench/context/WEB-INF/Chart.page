@@ -7,8 +7,12 @@
 <page-specification class="org.apache.tapestry.workbench.chart.ChartPage">
 
   <bean name="delegate" class="org.apache.tapestry.workbench.WorkbenchValidationDelegate"/>
+  
+	<bean name="required" class="org.apache.tapestry.valid.StringValidator" lifecycle="page">
+	  <set-property name="required" expression="true"/>
+	</bean>
 
-  <bean name="intValidator" class="org.apache.tapestry.valid.NumberValidator">
+  <bean name="intValidator" class="org.apache.tapestry.valid.NumberValidator" lifecycle="page">
   	<set-property name="required" expression="true"/>
   	<set-property name="minimum" expression="0"/>
   </bean>
@@ -31,7 +35,7 @@
   <component id="inputName" type="ValidField">
   	<static-binding name="displayName" value="Name"/>
   	<binding name="value" expression="plotValue.name"/>
-  	<binding name="validator" expression="@org.apache.tapestry.valid.StringValidator@REQUIRED"/>
+  	<binding name="validator" expression="beans.required"/>
   </component>
 
   <component id="inputValue" type="ValidField">	

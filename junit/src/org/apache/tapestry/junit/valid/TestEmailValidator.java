@@ -53,24 +53,100 @@
  *
  */
 
-package org.apache.tapestry.spec;
+package org.apache.tapestry.junit.valid;
+
+import org.apache.tapestry.junit.TapestryTestCase;
+import org.apache.tapestry.valid.EmailValidator;
+import org.apache.tapestry.valid.ValidationConstraint;
+import org.apache.tapestry.valid.ValidatorException;
 
 /**
- *  Special interface of {@link org.apache.tapestry.spec.IBindingSpecification} used
- *  to encapsulate additional information the additional information 
- *  specific to listener bindings.  In a IListenerBindingSpecification, the
- *  value property is the actual script (and is aliased as property script), 
- *  but an additional property,
- *  language, (which may be null) is needed.  This is the language
- *  the script is written in. * 
- * 
- * @author glongman@intelligentworks.com
+ * Tests for {@link org.apache.tapestry.valid.EmailValidator}.
+ *
+ * @author Howard Lewis Ship
  * @version $Id$
  * @since 3.0
- */
-public interface IListenerBindingSpecification extends IBindingSpecification
+ *
+ **/
+
+public class TestEmailValidator extends TapestryTestCase
 {
-    public abstract String getLanguage();
-    public abstract String getScript();
-    public abstract void setLanguage(String language);
+    private EmailValidator v = new EmailValidator();
+
+    public TestEmailValidator(String name)
+    {
+        super(name);
+    }
+
+    public void testValidEmail() throws ValidatorException
+    {
+        Object result = v.toObject(new TestingField("email"), "foo@bar.com");
+        assertEquals("foo@bar.com", result);
+    }
+
+    public void testInvalidEmail()
+    {
+        try
+        {
+            v.toObject(new TestingField("email"), "fred");
+            unreachable();
+        }
+        catch (ValidatorException ex)
+        {
+            assertEquals(ValidationConstraint.EMAIL_FORMAT, ex.getConstraint());
+            assertEquals(
+                "Invalid email format for email.  Format is user@hostname.",
+                ex.getMessage());
+        }
+    }
+
+    public void testOverrideInvalidEmailFormatMessage()
+    {
+        v.setInvalidEmailFormatMessage(
+            "Try a valid e-mail address (for {0}), like ''dick@wad.com.''");
+
+        try
+        {
+            v.toObject(new TestingField("email"), "fred");
+            unreachable();
+        }
+        catch (ValidatorException ex)
+        {
+            assertEquals(
+                "Try a valid e-mail address (for email), like 'dick@wad.com.'",
+                ex.getMessage());
+        }
+    }
+
+    public void testTooShort()
+    {
+        v.setMinimumLength(20);
+
+        try
+        {
+            v.toObject(new TestingField("short"), "foo@bar.com");
+            unreachable();
+        }
+        catch (ValidatorException ex)
+        {
+            assertEquals(ValidationConstraint.MINIMUM_WIDTH, ex.getConstraint());
+            assertEquals("You must enter at least 20 characters for short.", ex.getMessage());
+        }
+    }
+
+    public void testOverrideMinimumLengthMessage()
+    {
+        v.setMinimumLength(20);
+        v.setMinimumLengthMessage("E-mail addresses must be at least 20 characters.");
+
+        try
+        {
+            v.toObject(new TestingField("short"), "foo@bar.com");
+            unreachable();
+        }
+        catch (ValidatorException ex)
+        {
+            assertEquals("E-mail addresses must be at least 20 characters.", ex.getMessage());
+        }
+    }
 }
