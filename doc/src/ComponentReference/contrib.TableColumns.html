@@ -1,0 +1,207 @@
+<!--
+Tbis HTML document provides a base template for Component Reference pages.
+
+* All ??? text should be replaced.
+
+* Examples should illustrate near real world use of the component, see other
+  existing component page examples for formatting and style guidelines.
+  
+* Use Tapestry 2.2 Beta 1+ "expression" binding syntax instead of 
+  "property-path" syntax.
+  
+* Include links to Tapestry Javadoc API where appropriate.
+
+* Include Tapestry Developers Guide multi-page version where appropriate.
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- $Id$ --> 
+<html>
+<head>
+<title>contrib:TableColumns</title>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+ <tr>
+  <!-- Previous component in alphabetical order. -->
+  <td align="left"><a href="contrib.Table.html"><img alt="contrib:Table" src="common-images/prev.png"></a></td>  
+  <td align="middle"><a href="index.html"><img alt="Component Index" src="common-images/home.png" ></a></td>
+  <!-- Next component in alphabetical order. -->
+  <td align="right"><a href="contrib.TablePages.html"><img alt="contrib:TablePages" src="common-images/next.png"></a></td>  
+ <tr>
+ <tr>
+  <td colspan="3"><hr></td>  
+ </tr>
+ <tr>
+  <td colspan="3">
+   <table border="0" cellpadding="4" cellspacing="4" width="100%">
+
+<tr valign="top">
+ <td>
+  <table>
+   <tr>
+    <td><font size="+2"><b>contrib:TableColumns</b></font></td>
+   </tr>
+   <tr>
+    <td>
+     <A href="../api/net/sf/tapestry/contrib/table/components/TableColumns.html">net.sf.tapestry.contrib.table.components.TableColumns</a>
+    </td>
+   </tr>
+  </table>
+ </td>
+ <td>
+  <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
+   <tr>
+    <td>
+	<TABLE border=1 cellspacing=0 cellpadding=5>
+	  <TBODY>
+	  <TR>
+	    <TD></TD></TR>
+	  <TR>
+	    <TH>
+	      <TABLE align=center border=0 cellPadding=0 cellSpacing=0>
+	        <TBODY>
+	        <TR>
+	          <TD><A 
+	            href="#">Locale</A> 
+	          </TD></TR></TBODY></TABLE></TH>
+	    <TH>
+	      <TABLE align=center border=0 cellPadding=0 cellSpacing=0>
+	        <TBODY>
+	        <TR>
+	          <TD><A 
+	            href="#">Language</A> 
+	          </TD>
+	          <TD>&nbsp;<IMG align=middle border=0 
+	            src="images/arrow-up.gif"> </TD></TR></TBODY></TABLE></TH>
+	    <TH>
+	      <TABLE align=center border=0 cellPadding=0 cellSpacing=0>
+	        <TBODY>
+	        <TR>
+	          <TD><A 
+	            href="#">Country</A> 
+	          </TD></TR></TBODY></TABLE></TH>
+		</TR></TBODY></TABLE>
+    </td>
+   </tr>
+  </table>
+ </td>
+</tr>
+
+<tr valign="center">
+ <td colspan="2">&nbsp;</td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Description</b>
+  <br> 
+ A low level Table component that renders the column headers in the table.
+ This component must be wrapped by <A HREF="../api/net/sf/tapestry/contrib/table/components/TableView.html"><CODE>TableView</CODE></A>.
+ <p>
+ The component iterates over all column objects in the
+ <A HREF="../api/net/sf/tapestry/contrib/table/model/ITableColumnModel.html"><CODE>ITableColumnModel</CODE></A> and renders
+ a header for each one of them using the renderer provided by the
+ getColumnRender() method in <A HREF="../api/net/sf/tapestry/contrib/table/model/ITableColumn.html"><CODE>ITableColumn</CODE></A>.
+ The headers are wrapped in 'th' tags by default.
+  
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>See Also</b>
+  <br>
+  <A href="contrib.Table.html">Table</a>, 
+  <A href="contrib.TablePages.html">TablePages</a>,
+  <A href="contrib.TableRows.html">TableRows</a>,
+  <A href="contrib.TableValues.html">TableValues</a>,
+  <A href="contrib.TableView.html">TableView</a>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Parameters</b>
+  <br>
+  <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+   <tr> 
+    <th>Name</th>
+    <th>Type</th>
+    <th>Direction</th>
+    <th>Required</th> 
+    <th>Default</th>
+    <th>Description</th>
+   </tr>
+
+ <tr>
+  <td>element</td>
+  <td>String</td>
+  <td>in</td>
+  <td>no</td>
+  <td>th</td>
+  <td align="left">The tag to use to wrap the column headers.</td> 
+ </tr>
+
+ <tr>
+  <td>column</td>
+  <td><A HREF="../api/net/sf/tapestry/contrib/table/model/ITableColumn.html"><CODE>ITableColumn</CODE></A></td>
+  <td>out</td>
+  <td>no</td>
+  <td>&nbsp;</td>
+  <td align="left">The object representing the current column.</td> 
+ </tr>
+
+ <tr>
+  <td>arrowUpAsset</td>
+  <td><A HREF="../api/net/sf/tapestry/IAsset.html"><CODE>IAsset</CODE></A></td>
+  <td>in</td>
+  <td>no</td>
+  <td>&nbsp;</td>
+  <td align="left">The image to use to describe a column sorted in an ascending order.</td> 
+ </tr>
+
+ <tr>
+  <td>arrowDownAsset</td>
+  <td><A HREF="../api/net/sf/tapestry/IAsset.html"><CODE>IAsset</CODE></A></td>
+  <td>in</td>
+  <td>no</td>
+  <td>&nbsp;</td>
+  <td align="left">The image to use to describe a column sorted in a descending order.</td> 
+ </tr>
+
+  </table>
+  <p>
+  Body: <strong>removed</strong><br>
+  Informal parameters: <strong>allowed</strong><br>
+  <!-- component-specification "reserved-parameter" -->
+  Reserved parameters: none
+  </p>    
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Examples</b>
+  <p>
+  This example is under construction.
+  </p>
+      
+
+ </td></tr></table>
+</td></tr>
+<tr>
+ <td colspan="3"><hr></td>  
+</tr>
+<tr>
+  <!-- Previous component in alphabetical order. -->
+  <td align="left"><a href="contrib.Table.html"><img alt="contrib:Table" src="common-images/prev.png"></a></td>  
+  <td align="middle"><a href="index.html"><img alt="Component Index" src="common-images/home.png" ></a></td>
+  <!-- Next component in alphabetical order. -->
+  <td align="right"><a href="contrib.TablePages.html"><img alt="contrib:TablePages" src="common-images/next.png"></a></td>  
+</tr>
+</table>
+
+</body>
+</html>
