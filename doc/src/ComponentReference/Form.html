@@ -38,7 +38,7 @@
  <td colspan="2">
   <b>Description</b>
 	<br>
-  A component that manages an HTML &lt;form&gt;. The other form-related 
+  A component that manages a HTML &lt;form&gt;. The other form-related 
 	components must be wrapped inside the Form.
 	<p>
   When a form is submitted, it continues through the rewind cycle until after 
@@ -46,9 +46,10 @@
 	(in the rewind cycle), they will be updating properties of the containing 
 	page and notifying thier listeners. Again: each form component is responsible 
 	not only for rendering HTML (to present the form), but for handling it's 
-	share of the form submission. 
-	<p>
-  Only after all that is done will the Form notify its listener.	 	
+	share of the form submission. Only after all that is done will the Form 
+  notify its listener.	 	
+  <p>
+  This component may wrap around other components and static HTML. 
  </td>
 </tr>
 
@@ -74,7 +75,7 @@
 
 <tr>
  <td colspan="2">
-  <b>Parameters</b> &nbsp;&nbsp; (no informal parameters)
+  <b>Parameters</b>
 	<br>
   <table border="1" cellpadding="4" cellspacing="4" class="parameters">
   <tr> 
@@ -94,7 +95,7 @@
 		<td>in</td>
 		<td>no</td>
 		<td>&nbsp;</td>
-		<td>The listener, informed <i>after</i> the wrapped components of the form 
+		<td>The listener, informed <u>after</u> the wrapped components of the form 
 		have had a chance to absorb the request.
 		</td>
 	</tr>
@@ -148,6 +149,8 @@
 		</td>
 	</tr>
 	</table>		
+  Informal parameters: allowed<br>
+  Reserved parameters: none
  </td>
 </tr>
 

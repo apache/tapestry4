@@ -40,6 +40,8 @@
 	<br>
 	Makes part of an HTML template conditional. The body of the Conditional 
 	component is only rendered if a specified condition is met.
+  <p>
+  This component may NOT wrap around other components or static HTML. 
  </td>
 </tr>
 
@@ -57,7 +59,7 @@
 
 <tr>
  <td colspan="2">
-  <b>Parameters</b> &nbsp;&nbsp;&nbsp; (no informal parameters) 
+  <b>Parameters</b> 
 	<br>
   <table border="1" cellpadding="4" cellspacing="4" class="parameters">
   <tr> 
@@ -95,7 +97,7 @@
 	</tr>
   <tr>
  		<td>class</td>
-		<td>string</td>
+		<td>String</td>
 		<td>in</td>
 		<td>no</td>
 		<td>&nbsp;</td>
@@ -117,6 +119,8 @@
     </td>
 	</tr>
 	</table>		
+  Informal parameters: NOT allowed<br>
+  Reserved parameters: none
  </td>
 </tr>
 
@@ -148,11 +152,19 @@ The order was due on the &lt;span jwcid="<span class="jwcid">insertDueDate</span
 
 public class EnquiryPage extends BasePage {
     public static final SimpleDateFormat DATE_FORMAT =
-        new SimpleDateFormat("E, dd MMM yyyy");
+        new SimpleDateFormat("dd MMM yyyy");
+    private Date dueDate;
+    private String dueClass;
 
     public Date getDueDate() { return dueDate; }
 
-    public String getDueClass() { return dueClass;  }
+    public String getDueClass() { return dueClass; }
+    
+    public void detach() {
+        dueDate = null;
+        dueClass = null;
+        super.detach();
+    }    
 }
 </pre>
  </td>

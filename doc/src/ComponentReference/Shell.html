@@ -180,7 +180,7 @@
 &lt;h1&gt;Customer Login&lt;/h1&gt;
 Welcome to MyCorp's Customer Portal secure login page.
 &ltp&gt
-&lt;span class="daily-message" jwcid="insertMessage"/&gt;
+&lt;span jwcid="insertDailyMessage"/&gt;
 
 &lt;/body&gt;
 &lt;/span&gt;
@@ -194,8 +194,9 @@ Welcome to MyCorp's Customer Portal secure login page.
 
 &lt;component id="body" type="<a href="Body.html">Body</a>"/&gt;
 
-&lt;component id="insertMessage" type="<a href="Insert.html">Insert</a>"&gt;
+&lt;component id="insertDailyMessage" type="<a href="Insert.html">Insert</a>"&gt;
    &lt;binding name="value" property-path="dailyMessage"/&gt;
+   &lt;binding name="class" property-path="messageClass"/&gt;
 &lt;/component&gt;
 
 &lt;private-asset name="stylesheet" resource-path="/com/mycorp/pages/style.css"/&gt;
@@ -205,11 +206,15 @@ package com.mycorp.pages.customer.login;
 
 public class CustomerLoginPage extends BasePage {
     private String dailyMessage;
-    
+    private String messageClass;
+
     public String getDailyMessage() { return dailyMessage; }
+    
+    public String getMessageClass() { return messageClass; }
     
     public void detach() {
         dailyMessage = null;
+        messageClass = null;
         super.detach();
     }
 }

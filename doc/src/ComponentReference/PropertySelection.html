@@ -137,7 +137,11 @@
  <td colspan="2">
   <b>Examples</b>
   <p>
-The PropertySelection component provides gender selection drop down list.
+  The PropertySelection component provides Gender selection drop down list. In
+  this example the company stores Gender in a 1 CHAR database column, with
+  'U' for unspecified, 'F' for female and 'M' for male. The custom 
+  <tt>GenderPropertySelectionModel</tt> class is used to map these internal 
+  values to the display text: Unspecified, Female and Male.   
   <p>
 
 <table class="examples" valign="middle" cellspacing="8">
@@ -228,7 +232,7 @@ updated. The list of clothing items would typically be loaded from a database.
 <p>
 Note the <a href="Script.html">Script</a> SelectSubmit is used to automatically 
 submit the form when user selects an item. Alternatively in version 2.2 and 
-latter you can simply set the 'submitOnChange' property to true.
+latter you can simply set the component's 'submitOnChange' property to true.
 <p>
 
 <table class="examples" valign="middle" cellspacing="8">

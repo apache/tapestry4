@@ -40,8 +40,10 @@
  <td colspan="2">
   <b>Description</b>
 	<br>
-  Used to implement a checkbox form element (&lt;input type='checkbox'&gt;). 
-	Must be wrapped by a <a href="Form.html">Form</a> component.
+  Used to provide a checkbox form element, &lt;input type="checkbox"&gt;. 
+	The Checkbox component must be wrapped by a <a href="Form.html">Form</a>.
+  <p>
+  This component may NOT wrap around other components or static HTML. 
  </td>
 </tr>
 
@@ -56,7 +58,7 @@
 
 <tr>
  <td colspan="2">
-  <b>Parameters</b> &nbsp;&nbsp;&nbsp; (no informal parameters)
+  <b>Parameters</b>
 	<br>
   <table border="1" cellpadding="4" cellspacing="4" class="parameters">
   <tr> 
@@ -74,7 +76,7 @@
    	<td>yes</td>
 		<td>&nbsp;</td>
 		<td>Indicates whether the checkbox is selected or not.
-		 Corresponds to the 'checked' HTML attribute.
+		 Corresponds to the "checked" HTML attribute.
 		</td>
 	</tr>
   <tr>
@@ -85,10 +87,12 @@
 		<td>false</td>
 		<td>Controls whether the text field is active or not.  If disabled, then
 			any value that comes up when the form is submitted is ignored.			
-			Corresponds to the 'disabled' HTML attribute.
+			Corresponds to the "disabled" HTML attribute.
 		</td>
 	</tr>
-	</table>		
+	</table>
+  Informal parameters: allowed<br>
+  Reserved parameters: "type", "checked", "name"
  </td>
 </tr>
 
@@ -142,7 +146,11 @@ public class EnquiryPage extends BasePage {
         super.detach();
     }
 
-    public void formSubmit(RequestCycle cycle) { }
+    public void formSubmit(RequestCycle cycle) {
+        if (getContactRep()) {
+           // Process contact a sales representative request
+        }
+    }
 }
 </pre>
  </td>
