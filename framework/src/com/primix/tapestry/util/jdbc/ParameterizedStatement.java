@@ -26,8 +26,12 @@
 
 package com.primix.tapestry.util.jdbc;
 
-import java.util.*;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
 
 /**
  *  A wrapper around {@link PreparedStatement}.
@@ -51,6 +55,24 @@ public class ParameterizedStatement implements IStatement
 		this.SQL = SQL;
 
 		statement = connection.prepareStatement(SQL);
+
+		setupParameters(parameters);
+	}
+
+	/** @since 1.0.7 **/
+
+	public ParameterizedStatement(
+		String SQL,
+		Connection connection,
+		List parameters,
+		int resultSetType,
+		int resultSetConcurrency)
+		throws SQLException
+	{
+		this.SQL = SQL;
+
+		statement =
+			connection.prepareStatement(SQL, resultSetType, resultSetConcurrency);
 
 		setupParameters(parameters);
 	}
