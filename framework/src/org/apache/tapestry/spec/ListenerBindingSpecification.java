@@ -57,7 +57,7 @@ package org.apache.tapestry.spec;
 
 /**
  *  Special subclass of {@link org.apache.tapestry.spec.BindingSpecification} used
- *  to encapsulate additional information the additional information 
+ *  to encapsulate the additional information 
  *  specific to listener bindings.  In a ListenerBindingSpecification, the
  *  value property is the actual script (and is aliased as property script), 
  *  but an additional property,
