@@ -273,62 +273,58 @@ public abstract class Palette extends BaseComponent implements IFormComponent
         setControlsWidth(60);
     }
 
-
     public abstract String getName();
     public abstract void setName(String name);
-    
+
     public abstract IForm getForm();
     public abstract void setForm(IForm form);
-    
+
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        IForm form  = Form.get(getPage().getRequestCycle());
+        IForm form = Form.get(getPage().getRequestCycle());
 
         if (form == null)
             throw new ApplicationRuntimeException(
                 "Palette component must be wrapped by a Form.",
                 this);
-                
-		setForm(form);
-		
-    	IValidationDelegate delegate = form.getDelegate();
-    	
-    	if (delegate != null)
-    		delegate.setFormComponent(this);
+
+        setForm(form);
+
+        IValidationDelegate delegate = form.getDelegate();
+
+        if (delegate != null)
+            delegate.setFormComponent(this);
 
         setName(form.getElementId(this));
 
         if (form.isRewinding())
-        {
             handleSubmission(cycle);
-            return;
-        }
 
         // Don't do any additional work if rewinding
         // (some other action or form on the page).
 
-        if (cycle.isRewinding())
-            return;
+        if (!cycle.isRewinding())
+        {
+            // Lots of work to produce JavaScript and HTML for this sucker.
 
-        // Lots of work to produce JavaScript and HTML for this sucker.
+            _symbols = new HashMap(MAP_SIZE);
 
-        _symbols = new HashMap(MAP_SIZE);
+            runScript(cycle);
 
-        runScript(cycle);
+            // Output symbol 'formSubmitFunctionName' is the name
+            // of a JavaScript function to execute when the form
+            // is submitted.  This is also key to the operation
+            // of the PropertySelection.
 
-        // Output symbol 'formSubmitFunctionName' is the name
-        // of a JavaScript function to execute when the form
-        // is submitted.  This is also key to the operation
-        // of the PropertySelection.
+            form.addEventHandler(
+                FormEventType.SUBMIT,
+                (String) _symbols.get("formSubmitFunctionName"));
 
-        form.addEventHandler(
-            FormEventType.SUBMIT,
-            (String) _symbols.get("formSubmitFunctionName"));
+            // Buffer up the HTML for the left and right selects (the available
+            // items and the selected items).
 
-        // Buffer up the HTML for the left and right selects (the available
-        // items and the selected items).
-
-        bufferSelects(writer);
+            bufferSelects(writer);
+        }
 
         super.renderComponent(writer, cycle);
     }
@@ -480,7 +476,8 @@ public abstract class Palette extends BaseComponent implements IFormComponent
         {
             public void render(IMarkupWriter writer, IRequestCycle cycle)
             {
-                _availableWriter.close();
+                if (_availableWriter != null)
+                    _availableWriter.close();
                 _availableWriter = null;
             }
         };
@@ -497,7 +494,8 @@ public abstract class Palette extends BaseComponent implements IFormComponent
         {
             public void render(IMarkupWriter writer, IRequestCycle cycle)
             {
-                _selectedWriter.close();
+                if (_selectedWriter != null)
+                    _selectedWriter.close();
                 _selectedWriter = null;
             }
         };
@@ -615,7 +613,7 @@ public abstract class Palette extends BaseComponent implements IFormComponent
 
     public abstract void setSelected(List selected);
 
-	/** @since 2.4 **/
-	
-	public abstract void setControlsWidth(int controlsWidth);
+    /** @since 2.4 **/
+
+    public abstract void setControlsWidth(int controlsWidth);
 }
