@@ -1,7 +1,6 @@
 package com.primix.tapestry.components;
 
 import com.primix.tapestry.*;
-import com.primix.tapestry.spec.*;
 
 /*
  * Tapestry Web Application Framework
@@ -109,12 +108,6 @@ public class Text extends AbstractFormComponent
 
 	private static final String[] reservedNames =
     { "name", "cols"};
-
-	public Text(IPage page, IComponent container, String id,
-		ComponentSpecification specification)
-	{ 
-		super(page, container, id, specification);
-	}
 
 	public IBinding getColumnsBinding()
 	{

@@ -1,7 +1,6 @@
 package com.primix.tapestry.components;
 
 import com.primix.tapestry.*;
-import com.primix.tapestry.spec.*;
 import com.primix.foundation.*;
 
 /*
@@ -121,12 +120,6 @@ public class PropertySelection extends AbstractFormComponent
 	private static IPropertySelectionRenderer defaultSelectRenderer;
 	private static IPropertySelectionRenderer defaultRadioRenderer;
 	
-	public PropertySelection(IPage page, IComponent container, String id,
-		ComponentSpecification specification)
-	{
-		super(page, container, id, specification);
-	}
-		
 	public IBinding getValueBinding()
 	{
 		return valueBinding;

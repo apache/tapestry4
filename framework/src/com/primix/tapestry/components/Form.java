@@ -1,7 +1,6 @@
 package com.primix.tapestry.components;
 
 import com.primix.tapestry.*;
-import com.primix.tapestry.spec.*;
 
 /*
  * Tapestry Web Application Framework
@@ -106,12 +105,6 @@ public class Form extends AbstractComponent
     */
 
     private static final String ATTRIBUTE_NAME = "com.primix.tapestry.components.Form";
-
-    public Form(IPage page, IComponent container, String id, 
-        ComponentSpecification specification)
-    {
-        super(page, container, id, specification);
-    }
 
     /**
     *  Returns the currently active <code>Form</code>, or null if no <code>Form</code> is

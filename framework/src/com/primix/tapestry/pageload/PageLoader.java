@@ -83,7 +83,6 @@ public class PageLoader
 
 		this.application = application;
         resolver = application.getResourceResolver();
-
 	}
 
 	/**
@@ -257,8 +256,10 @@ public class PageLoader
 	*  Instantitates a component from its specification.  
 	*  <p>Instantiating a page is a bit different that instantitating a component
 	*  because the constructor is different.
-	*
-	* <p>A component requires a constructor that takes the following
+    *
+    *  <p>The new style, using a no-arguments constructor is a bit easier.  The old
+    *  style, using the deprecated constructor, is still supported.
+    *  It requires a constructor that takes the following
 	*  parameters:
 	* <ul>
 	* <li>IPage
@@ -267,6 +268,9 @@ public class PageLoader
 	* <li>ComponentSpecification
 	* </li>
 	*
+    * <p>Using the new style, we instantiate the component object, then
+    * sets its specification, page, container and id.
+    *
 	*  @see AbstractComponent
 	*/
 
@@ -284,6 +288,33 @@ public class PageLoader
 		className = spec.getComponentClassName();
 		componentClass = resolver.findClass(className);
 
+        try
+        {
+            result = (IComponent)componentClass.newInstance();
+
+            result.setSpecification(spec);
+            result.setPage(page);
+            result.setContainer(container);
+            result.setId(id);
+
+            count++;
+
+            return result;
+        }
+        catch (InstantiationException e)
+        {
+            // Ignore and use the older constructor.
+        }
+        catch (Exception e)
+        {
+            throw new PageLoaderException(
+                "Unable to instantiate instance of " + className + ".",
+                this, container, e);
+        }
+
+        // Again, this is deprecated in Tapestry 0.1.6 and will be removed
+        // shortly.
+
 		signature = new Class[] { IPage.class, IComponent.class, String.class,
                                   ComponentSpecification.class };
 
@@ -294,7 +325,7 @@ public class PageLoader
 		catch (NoSuchMethodException e)
 		{
 			throw new PageLoaderException(
-				"Class " + componentClass.getName() + " does not implement a constructor with " +
+				"Class " + className + " does not implement a constructor with " +
 				"the (IPage, IComponent, String, ComponentSpecification) " +
 				"signature.",
 				this, container, e);
@@ -326,18 +357,25 @@ public class PageLoader
 
 	/**
 	*  Instantitates a page from its specification.  
+    
 	*  <p>Instantiating a page is a bit different that instantitating a component
 	*  because the constructor is different.
 	*
-	* <p>A page must implement the <code>IPage</code> interface and
-	* requires a constructor that takes the following
-	*  parameters:
+	* <p>A page must implement the {@link IPage} interface and
+	* requires either a no-arguments constructor (new style)
+	* or a constructor that takes the following
+	*  parameters (deprecated style):
 	* <ul>
 	* <li>IApplication
 	* <li>ComponentSpecification
 	* </li>
 	*
-	* @see IPage
+    * <p>Under the new style, we instantiate the page object, then set its specification, 
+    * name and locale.
+    *
+    * <p>Under the old style, we instantiate the page object (letting its constructor set
+    *  the application, locale and specification), then we set the page's name.
+    *
 	* @see IApplication
 	* @see ChangeObserver
 	*/
@@ -356,6 +394,31 @@ public class PageLoader
         
 		pageClass = resolver.findClass(className);
 
+        try
+        {
+            result  = (IPage)pageClass.newInstance();
+
+            result.setSpecification(spec);
+            result.setName(name);
+            result.setLocale(application.getLocale());
+
+            return result;
+        }
+        catch (InstantiationException e)
+        {
+            // Ignore and use the older constructor.
+        }
+        catch (Exception e)
+        {
+            throw new PageLoaderException(
+                "Unable to instantiate instance of " + className + ".",
+                this, name, e);
+        }
+
+        // For compatibility with older classes.  In Tapestry 0.1.6, we removed
+        // the need for this constructor (with the code above).  This will be maintained
+        // for a very limited amount of time.
+
 		signature = new Class[] { IApplication.class, ComponentSpecification.class };
 
 		try
@@ -366,7 +429,7 @@ public class PageLoader
 		{
 			throw new PageLoaderException(
 
-				"Class " + pageClass.getName() + " does not implement a constructor with " +
+				"Class " + className + " does not implement a constructor with " +
 				"the (IApplication, ComponentSpecification) signature.",
 				this, name, e);
 		}

@@ -50,12 +50,6 @@ implements ILifecycle
 	private List sortedComponents;
 	private IComponent component;
 
-	public ShowComponents(IPage page, IComponent container, String id,
-		ComponentSpecification specification)
-	{
-		super(page, container, id, specification);
-	}
-
 	public void cleanupAfterRender(IRequestCycle cycle)
 	{
 		sortedComponents = null;

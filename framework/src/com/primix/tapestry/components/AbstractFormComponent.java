@@ -1,7 +1,6 @@
 package com.primix.tapestry.components;
 
 import com.primix.tapestry.*;
-import com.primix.tapestry.spec.*;
 
 /*
  * Tapestry Web Application Framework
@@ -44,12 +43,6 @@ import com.primix.tapestry.spec.*;
 public abstract class AbstractFormComponent
     extends AbstractComponent
 {
-	public AbstractFormComponent(IPage page, IComponent container, 
-		String id, ComponentSpecification specification)
-	{
-		super(page, container, id, specification);
-	}
-
     /**
      *  Returns the {@link Form} wrapping this component.
      *

@@ -1,7 +1,6 @@
 package com.primix.tapestry.components;
 
 import com.primix.tapestry.*;
-import com.primix.tapestry.spec.*;
 import java.util.*;
 
 /*
@@ -108,14 +107,6 @@ public class Select extends AbstractFormComponent
 	}
 
 	private static final String[] reservedNames = { "name"};
-
-
-
-	public Select(IPage page, IComponent container, String id,
-		ComponentSpecification specification)
-	{
-		super(page, container, id, specification);
-	}
 
 	public IBinding getDisabledBinding()
 	{

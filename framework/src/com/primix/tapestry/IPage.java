@@ -41,13 +41,13 @@ import java.io.OutputStream;
  *
  * <p>Pages are created dynamically from thier class names (part of the
  * {@link ComponentSpecification}).  Classes which
- * implement <code>IPage</code> must implement a constructor with the
+ * implement <code>IPage</code> must implement either
+ * a no-arguments constructor, or a constructor with the
  * following parameters:
  *
  * <p><code>({@link IApplication}, {@link ComponentSpecification})</code>
  *
- * <p>The constructor is expected to set the traceLogger and locale for the page
- * from application.
+ * <p>The latter case (the complicated constructor) has been deprecated.
  *
  * @see IPageSource
  * @see IPageLoader
@@ -91,23 +91,36 @@ public interface IPage extends IComponent
     public void detachFromApplication();
 
     /**
-     *  Returns the IApplication that the IPage belongs to.
+     *  Returns the {@link IApplication} that the currently IPage belongs to.
      *
      */
  
     public IApplication getApplication();
+    
+    /**
+     *  Returns the object (effectively, an {@link IPageRecorder}) that is notified
+     *  of any changes to persistant properties of the page.
+     *
+     */
 
     public ChangeObserver getChangeObserver();
 
     /**
-     *  Returns the <code>Locale</code> of the page.  A page's locale
-     *  is determined from the application when the page is initially
-     *  loaded.  The locale may be used to determine what template is
+     *  Returns the <code>Locale</code> of the page.
+     *  The locale may be used to determine what template is
      *  used by the page and the components contained by the page.
      *
      */
  
     public Locale getLocale();
+
+    /**
+     *  Updates the page's locale.  This is write-once, a subsequent attempt
+     *  will throw an {@link ApplicationRuntimeException}.
+     *
+     */
+
+    public void setLocale(Locale value);
 
     /**
      *  The logical name is the name given by the application.

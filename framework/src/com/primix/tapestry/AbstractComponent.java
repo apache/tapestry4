@@ -59,7 +59,7 @@ public abstract class AbstractComponent implements IComponent
 	*
 	*/
 
-	protected final ComponentSpecification specification;
+	protected ComponentSpecification specification;
 
 	/**
 	*  The page that contains the component, possibly itself (if the component is
@@ -67,7 +67,7 @@ public abstract class AbstractComponent implements IComponent
 	*
 	*/
 
-	protected final IPage page;
+	protected IPage page;
 
 	/**
 	*  The component which contains the component.  This will only be
@@ -75,14 +75,14 @@ public abstract class AbstractComponent implements IComponent
 	*
 	*/
 
-	private final IComponent container;
+	private IComponent container;
 
 	/**
 	*  The simple id of this component.
 	*
 	*/
 
-	protected final String id;
+	protected String id;
 
 	/**
 	*  The fully qualified id of this component.  This is calculated the first time
@@ -90,7 +90,7 @@ public abstract class AbstractComponent implements IComponent
 	*
 	*/
 
-	protected String idPath;
+	private String idPath;
 
 	private static final int MAP_SIZE = 5;
 
@@ -152,7 +152,7 @@ public abstract class AbstractComponent implements IComponent
 	private static Map maskedAttributesStorage;
 
 	/**
-	*  Standard constructor for all components.
+	*  Deprecated constructor..
 	*
 	*  <p>This constructor also initializes the assets for the
 	*  component from the specification.
@@ -169,6 +169,7 @@ public abstract class AbstractComponent implements IComponent
 	* @param specification The ComponentSpecification for the
 	* component.
 	*
+    * @deprecated
 	*/
 
 	public AbstractComponent(IPage page, IComponent container, String id,
@@ -181,6 +182,15 @@ public abstract class AbstractComponent implements IComponent
 
 		setupAssets();
 	}
+
+    /**
+     *  Standard constructor.
+     *
+     */
+
+    public AbstractComponent()
+    {
+    }
 
 	public void addComponent(String name, IComponent component)
 	{
@@ -592,6 +602,14 @@ public abstract class AbstractComponent implements IComponent
 		return container;
 	}
 
+    public void setContainer(IComponent value)
+    {
+        if (container != null)
+            throw new ApplicationRuntimeException("Attempt to change existing container.");
+
+        container = value;
+    }
+
 	/**
 	*  Returns the name of the page, a slash, and this component's id path.  
 	*  Pages are different, they simply return their name.
@@ -609,6 +627,14 @@ public abstract class AbstractComponent implements IComponent
 	{
 		return id;
 	}
+
+    public void setId(String value)
+    {
+        if (id != null)
+            throw new ApplicationRuntimeException("Attempt to change existing component id.");
+
+        id = value;
+    }
 
 	public String getIdPath()
 	{
@@ -632,10 +658,26 @@ public abstract class AbstractComponent implements IComponent
 		return page;
 	}
 
+    public void setPage(IPage value)
+    {
+        if (page != null)
+            throw new ApplicationRuntimeException("Attempt to change existing containing page.");
+
+        page = value;
+    }
+
 	public ComponentSpecification getSpecification()
 	{
 		return specification;
 	}
+
+    public void setSpecification(ComponentSpecification value)
+    {
+        if (specification != null)
+            throw new ApplicationRuntimeException("Attempt to change existing component specification.");
+
+        specification = value;
+    }
 
 	/**
 	*  Does nothing.  Subclasses may override.
@@ -745,7 +787,13 @@ public abstract class AbstractComponent implements IComponent
 				assets = new HashMap(MAP_SIZE);
 
 			assets.put(name, asset);
-		}			
+		}	
+
+        // If the component has no assets, then create a tiny, empty
+        // HashMap.  Under JDK 1.3, we'd use Collections.EMPTY_MAP.
+		
+	    if (assets == null)
+	        assets = new HashMap(1);		
 	}
 
 	public String toString()
@@ -788,7 +836,7 @@ public abstract class AbstractComponent implements IComponent
         // we're trying for JDK 1.2 compatibility.
         
     	if (assets == null)
-        	return new HashMap();
+        	setupAssets();
             		        
 		if (safeAssets == null)
 			safeAssets = Collections.unmodifiableMap(assets);

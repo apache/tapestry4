@@ -61,9 +61,9 @@ public class BasePage extends BaseComponent implements IPage
 	
 	private static final int LIFECYCLE_INIT_SIZE = 3;
 
-	protected int lifecycleComponentCount = 0;
+	private int lifecycleComponentCount = 0;
 
-	protected ILifecycle[] lifecycleComponents;
+	private ILifecycle[] lifecycleComponents;
 
 	protected String name;
 	
@@ -81,9 +81,19 @@ public class BasePage extends BaseComponent implements IPage
 
 	protected Locale locale;
 
+    /**
+     *  Standard constructor.
+     *
+     */
+
+    public BasePage()
+    {
+    }
+
 	/**
-	*  Standard constructor.  Sets the locale for the page from the applications' locale.
+	*  Deprecated constructor.  Sets the locale for the page from the applications' locale.
 	*
+    *  @deprecated
 	*/
 
 	public BasePage(IApplication application,
@@ -179,6 +189,14 @@ public class BasePage extends BaseComponent implements IPage
 		return locale;
 	}
 
+    public void setLocale(Locale value)
+    {
+        if (locale != null)
+            throw new ApplicationRuntimeException("Attempt to change existing locale for a page.");
+
+        locale = value;
+    }
+
 	public String getName()
 	{
 		return name;
@@ -269,6 +287,9 @@ public class BasePage extends BaseComponent implements IPage
 
 	public void setName(String value)
 	{
+        if (name != null)
+            throw new ApplicationRuntimeException("Attempt to change existing name for a page.");
+
 		name = value;
 	}
 

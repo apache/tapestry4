@@ -2,7 +2,6 @@ package com.primix.tapestry.components;
 
 import com.primix.tapestry.event.ChangeObserver;
 import com.primix.tapestry.*;
-import com.primix.tapestry.spec.*;
 
 /*
  * Tapestry Web Application Framework
@@ -57,12 +56,6 @@ import com.primix.tapestry.spec.*;
 public class InsertURL extends AbstractComponent
 {
 	private IBinding assetBinding;
-
-	public InsertURL(IPage page, IComponent container, String id, 
-		ComponentSpecification specification)
-	{
-		super(page, container, id, specification);
-	}
 
 	public IBinding getAssetBinding()
 	{

@@ -1,7 +1,6 @@
 package com.primix.tapestry.components;
 
 import com.primix.tapestry.*;
-import com.primix.tapestry.spec.*;
 
 /*
  * Tapestry Web Application Framework
@@ -135,12 +134,6 @@ public class TextField extends AbstractFormComponent
 
 	private static final String[] reservedNames =
     	{ "type", "size", "maxlength", "value" };
-
-	public TextField(IPage page, IComponent container, String id,
-		ComponentSpecification specification)
-	{
-		super(page, container, id, specification);
-	}
 
 	public IBinding getDisabledBinding()
 	{

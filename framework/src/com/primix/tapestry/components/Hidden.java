@@ -1,7 +1,6 @@
 package com.primix.tapestry.components;
 
 import com.primix.tapestry.*;
-import com.primix.tapestry.spec.*;
 
 /*
  * Tapestry Web Application Framework
@@ -82,12 +81,6 @@ public class Hidden extends AbstractFormComponent
 {
 	private IBinding valueBinding;
     private IBinding listenerBinding;
-	
-	public Hidden(IPage page, IComponent container, String id,
-		ComponentSpecification specification)
-	{
-		super(page, container, id, specification);
-	}
 	
 	public IBinding getValueBinding()
 	{

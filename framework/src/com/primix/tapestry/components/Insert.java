@@ -2,7 +2,6 @@ package com.primix.tapestry.components;
 
 import com.primix.tapestry.event.ChangeObserver;
 import com.primix.tapestry.*;
-import com.primix.tapestry.spec.*;
 import java.text.Format;
 
 /*
@@ -70,12 +69,6 @@ public class Insert extends AbstractComponent
 {
 	private IBinding valueBinding;
 	private IBinding formatBinding;
-
-	public Insert(IPage page, IComponent container, String id, 
-		ComponentSpecification specification)
-	{
-		super(page, container, id, specification);
-	}
 
 	public IBinding getFormatBinding()
 	{

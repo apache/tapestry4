@@ -2,7 +2,6 @@ package com.primix.tapestry.components;
 
 import java.io.*;
 import com.primix.tapestry.*;
-import com.primix.tapestry.spec.*;
 import java.util.*;
 
 /*
@@ -54,12 +53,6 @@ public class Body extends AbstractComponent
 		"com.primix.tapestry.components.Body";
 
 	private static final String[] reservedNames = { "onLoad" };
-
-	public Body(IPage page, IComponent container, String id, 
-		ComponentSpecification specification)
-	{
-		super(page, container, id, specification);
-	}
 
 	/**
 	*  Adds to the script an initialization for the named variable as

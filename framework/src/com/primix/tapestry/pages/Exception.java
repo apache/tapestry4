@@ -2,7 +2,6 @@ package com.primix.tapestry.pages;
 
 import com.primix.foundation.exception.*;
 import com.primix.foundation.*;
-import com.primix.tapestry.spec.*;
 import com.primix.tapestry.*;
 
 /* Tapestry Web Application Framework
@@ -44,11 +43,6 @@ import com.primix.tapestry.*;
 public class Exception extends BasePage
 {
 	private ExceptionDescription[] exceptions;
-
-	public Exception(IApplication application, ComponentSpecification componentSpecification)
-	{
-		super(application, componentSpecification);
-	}
 
 	public ExceptionDescription[] getExceptions()
 	{

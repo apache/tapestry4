@@ -1,6 +1,5 @@
 package com.primix.tapestry.components;
 
-import com.primix.tapestry.spec.ComponentSpecification;
 import com.primix.tapestry.*;
 import java.util.*;
 
@@ -81,14 +80,6 @@ public class Page extends AbstractServiceLink
 	private String pageValue;
 
 	private String[] context;
-
-	// Each instance gets its own parameter array.
-
-	public Page(IPage page, IComponent container, String name,
-		ComponentSpecification specification)
-	{
-		super(page, container, name, specification);
-	}
 
 	public IBinding getPageBinding()
 	{

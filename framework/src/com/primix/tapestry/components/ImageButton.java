@@ -1,7 +1,6 @@
 package com.primix.tapestry.components;
 
 import com.primix.tapestry.*;
-import com.primix.tapestry.spec.*;
 import java.awt.Point;
 
 /*
@@ -133,12 +132,6 @@ public class ImageButton extends AbstractFormComponent
 	private static final String[] reservedNames = 
 		{ "type", "name", "border", "src" };
 
-	public ImageButton(IPage page, IComponent container, 
-		String id, ComponentSpecification specification)
-	{
-		super(page, container, id, specification);
-	}
-	
 	public void setImageBinding(IBinding value)
 	{
 		imageBinding = value;
