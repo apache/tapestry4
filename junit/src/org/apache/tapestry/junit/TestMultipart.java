@@ -55,13 +55,6 @@
 
 package org.apache.tapestry.junit;
 
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-
-import org.apache.commons.fileupload.DefaultFileItem;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.multipart.UploadPart;
 import org.apache.tapestry.multipart.ValuePart;
 
 /**
@@ -110,53 +103,5 @@ public class TestMultipart extends TapestryTestCase
         p.add("curly");
 
         checkList("values", new String[] { "moe", "larry", "curly" }, p.getValues());
-    }
-
-    public void testGetStreamFailure()
-    {
-        UploadPart aPart =
-            UploadPart.newInstance("DOES-NOT-EXIST", "DOES-NOT-EXIST", "DOES-NOT-EXIST", 1, 0);
-
-        try
-        {
-            aPart.getStream();
-
-            unreachable();
-        }
-        catch (ApplicationRuntimeException ex)
-        {
-            checkException(ex, "Unable to open uploaded file");
-        }
-    }
-
-    public void testUnableToCleanup() throws Exception
-    {
-        FileItem aFileItem =
-            DefaultFileItem.newInstance(
-                System.getProperty("java.io.tmpdir"),
-                "test.txt",
-                "text/plain",
-                1024,
-                0);
-
-        UploadPart aPart = new UploadPart(aFileItem);
-
-        // Open the stream, and leave it open, so the
-        // file can't be deleted.
-        OutputStream anOutStream = aFileItem.getOutputStream();
-        OutputStreamWriter aWriter = new OutputStreamWriter(anOutStream);
-
-        aWriter.write("hello");
-
-        try
-        {
-            aPart.cleanup();
-
-            unreachable();
-        }
-        catch (ApplicationRuntimeException ex)
-        {
-            checkException(ex, "not deleted");
-        }
     }
 }

@@ -50,6 +50,14 @@
 		Name: [message.txt]
 		</assert-output>
 		
+		<assert-output name="Size">
+		Size: [157]
+		</assert-output>		
+		
+		<assert-output name="In Memory">
+		In Memory: [true]
+		</assert-output>	
+		
 		<assert-output name="Match Confirmation">
 		Contents match.
 		</assert-output>
@@ -77,6 +85,14 @@
 		<assert-output name="Name">
 		Name: [long.html]
 		</assert-output>
+		
+		<assert-output name="Size">
+		Size: [5207]
+		</assert-output>		
+		
+		<assert-output name="In Memory">
+		In Memory: [false]
+		</assert-output>	
 		
 		<assert-output name="Match Confirmation">
 		Contents match.

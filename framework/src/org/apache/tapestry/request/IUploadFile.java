@@ -55,6 +55,7 @@
 
 package org.apache.tapestry.request;
 
+import java.io.File;
 import java.io.InputStream;
 
 /**
@@ -110,4 +111,30 @@ public interface IUploadFile
      **/
     
     public String getContentType();
+    
+    /**
+     * Writes the content of the file to a known location.  This should
+     * be invoked at most once.  In a standard
+     * implementation based on Jakarta FileUpload, this will often
+     * be implemented efficiently as a file rename.
+     * 
+     * @since 3.0
+     */
+    
+    public void write(File file);
+    
+    /**
+     * Returns true if the uploaded content is in memory.  False generally
+     * means the content is stored in a temporary file.
+     */
+    
+    public boolean isInMemory();
+    
+    /**
+     * Returns the size, in bytes, of the uploaded content.
+     * 
+     * @since 3.0
+     **/
+    
+    public long getSize(); 
 }

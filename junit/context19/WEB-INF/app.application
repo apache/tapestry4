@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE application PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+
+<application>
+
+	<extension name="org.apache.tapestry.multipart-decoder" 
+		 class="org.apache.tapestry.multipart.DefaultMultipartDecoder">
+		<configure property-name="thresholdSize" type="long" value="1000"/>
+	</extension>
+
+</application>
