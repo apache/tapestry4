@@ -38,7 +38,7 @@
   </target>
 
   <target name="run" depends="compile" description="Run the test suite.">
-  	<junit printsummary="on">
+  	<junit printsummary="on" haltonfailure="on">
   	  <classpath>
   	  	 <path refid="project.class.path"/>
   	  	 <path location="${classes}"/>
@@ -48,8 +48,6 @@
   	  </classpath>
 
   	  <test name="net.sf.tapestry.junit.TapestrySuite">
-  	    	  
-  	  <formatter type="xml"/>
   	  </test>
   	</junit>
   </target>
