@@ -42,6 +42,7 @@ import net.sf.tapestry.util.StringSplitter;
  *  <ul>
  *  <li>Retrieving the request parameters (even if a file upload is involved)
  *  <li>Getting, setting and removing request attributes
+ *  <li>Getting the global object from the servlet context
  *  <li>Forwarding requests
  *  <li>Redirecting requests
  *  <li>Getting and setting Cookies
@@ -107,6 +108,16 @@ public class RequestContext implements IRender
      **/
 
     public static final String REQUEST_DECODER_EXTENSION_NAME = "net.sf.tapestry.request-decoder";
+
+    /**
+     *  Servlet context attribute name used to store the global object:
+     *  <code>net.sf.tapestry.global</code>
+     *
+     *  @since 2.3
+     *
+     **/
+
+    public static final String GLOBAL_OBJECT_NAME = "net.sf.tapestry.global";
 
     private HttpSession _session;
     private HttpServletRequest _request;
@@ -567,6 +578,21 @@ public class RequestContext implements IRender
             return null;
 
         return _decoder.getUploadFile(name);
+    }
+
+    /**
+     *  Returns the global object stored in the servlet context as the
+     *  attribute named {@link #GLOBAL_OBJECT_NAME}.
+     *
+     *  <p>Returns the global object, if it exists, or null if not defined.
+     *
+     *  @since 2.3
+     *
+     **/
+
+    public Object getGlobal()
+    {
+        return _servlet.getServletContext().getAttribute(GLOBAL_OBJECT_NAME);
     }
 
     /**

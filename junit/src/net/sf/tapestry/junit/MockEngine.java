@@ -118,6 +118,11 @@ public class MockEngine implements IEngine
     {
     }
 
+    public Object getGlobal()
+    {
+        return null;
+    }
+
     public boolean isResetServiceEnabled()
     {
         return false;

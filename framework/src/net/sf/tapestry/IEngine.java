@@ -221,6 +221,18 @@ public interface IEngine
     public void setVisit(Object value);
 
     /**
+     *  Returns the globally shared application object. The global object is
+     *  stored in the servlet context.
+     *
+     *  <p>Returns the global object, if it exists, or null if not defined.
+     *
+     *  @since 2.3
+     * 
+     **/
+
+    public Object getGlobal();
+
+    /**
      *  Returns true if the application allows the reset service.
      *
      *  @since 0.2.9

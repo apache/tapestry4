@@ -158,6 +158,15 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     private Object _visit;
 
     /**
+     *  The globally shared application object.
+     *
+     *  @since 2.3
+     *
+     **/
+
+    private transient Object _global;
+
+    /**
      *  The curent locale for the engine, which may be changed at any time.
      *
      **/
@@ -912,6 +921,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      *
      * <p>The context path is retrieved from {@link HttpServletRequest#getContextPath()}.
      *
+     * <p>The global object is retrieved from {@link RequestContext#getGlobal()} method.
+     *
      * <p>The final path is available via the {@link #getServletPath()} method.
      *
      *  <p>In addition, this method locates and/or creates the:
@@ -1074,6 +1085,11 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
                 servletContext.setAttribute(PROPERTY_SOURCE_NAME, _propertySource);
             }
+        }
+        
+        if (_global == null)
+        {
+            _global = context.getGlobal();
         }
     }
 
@@ -1401,6 +1417,11 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         setStateful();
 
         return result;
+    }
+
+    public Object getGlobal()
+    {
+        return _global;    
     }
 
     public IScriptSource getScriptSource()

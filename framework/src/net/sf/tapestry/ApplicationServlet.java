@@ -71,6 +71,16 @@ import net.sf.tapestry.util.xml.DocumentParseException;
 
 public class ApplicationServlet extends HttpServlet
 {
+    /**
+     *  The name of the application specification property used to specify the
+     *  class of the global object: <code>net.sf.tapestry.global-class</code>
+     *
+     *  @since 2.3
+     *
+     **/
+
+    public static final String GLOBAL_CLASS_PROPERTY_NAME = "net.sf.tapestry.global-class";
+
     private static final Log LOG = LogFactory.getLog(ApplicationServlet.class);
 
     /** @since 2.3 **/
@@ -377,6 +387,7 @@ public class ApplicationServlet extends HttpServlet
      *  @see #getApplicationSpecification()
      *  @see #constructApplicationSpecification()
      *  @see #createResourceResolver()
+     *  @see #initializeGlobalObject()
      *
      **/
 
@@ -389,6 +400,8 @@ public class ApplicationServlet extends HttpServlet
         _specification = constructApplicationSpecification();
 
         _attributeName = "net.sf.tapestry.engine." + config.getServletName();
+        
+        initializeGlobalObject();
     }
 
     /**
@@ -564,6 +577,46 @@ public class ApplicationServlet extends HttpServlet
         catch (Exception ex)
         {
             throw new ServletException(ex);
+        }
+    }
+    
+    /**
+     *  Invoked by {@link #init(ServletConfig)} to instantiate the global object 
+     *  and store it in {@link ServletContext} as the attribute named 
+     *  {@link RequestContext#GLOBAL_OBJECT_NAME}.
+     *
+     *  <p>The global object class name is defined an parameter 
+     *  {@link #GLOBAL_CLASS_PROPERTY_NAME} in the application 
+     *  specification.
+     *
+     *  @since 2.3
+     */
+    protected void initializeGlobalObject()
+    {
+        String globalClassName = _specification.getProperty(GLOBAL_CLASS_PROPERTY_NAME);
+        
+        if (globalClassName != null) {
+            if (LOG.isDebugEnabled())
+                LOG.debug("Creating global object as instance of " + globalClassName);
+
+            Class globalClass = _resolver.findClass(globalClassName);
+    
+            try
+            {
+                Object global = globalClass.newInstance();
+
+                getServletContext().setAttribute(RequestContext.GLOBAL_OBJECT_NAME, global);
+            }
+            catch (Throwable t)
+            {
+                throw new ApplicationRuntimeException(
+                    Tapestry.getString("ApplicationEngine.unable-to-instantiate-global", globalClassName),
+                    t);
+            }
+
+        } else {
+            if (LOG.isDebugEnabled())
+                LOG.debug("No global object defined in application specification");
         }
     }
 
