@@ -229,8 +229,14 @@
 &lt;property-specification name=&quot;customerList&quot; type=&quot;java.util.List&quot; persistent=&quot;yes&quot;/&gt;<br>&lt;property-specification name=&quot;customer&quot; type=&quot;Customer&quot;/&gt;<br>
 public abstract class SalesPage extends BasePage {
     public abstract List getCustomerList();
-
     public abstract List setCustomerList(List value);
+
+    public abstract Customer getCustomer();
+
+    public void customerSelectAction(IRequestCycle cycle) {
+       Customer customer = getCustomer();
+       // Do something with customer
+    }
 }
 
 public class Customer implements Serializable {
