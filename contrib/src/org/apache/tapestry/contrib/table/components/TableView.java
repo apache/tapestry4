@@ -60,15 +60,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponent;
+import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.contrib.table.model.IBasicTableModel;
 import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.apache.tapestry.contrib.table.model.ITableColumnModel;
@@ -78,16 +77,13 @@ import org.apache.tapestry.contrib.table.model.ITableModelSource;
 import org.apache.tapestry.contrib.table.model.ITableSessionStateManager;
 import org.apache.tapestry.contrib.table.model.ITableSessionStoreManager;
 import org.apache.tapestry.contrib.table.model.common.BasicTableModelWrap;
-import org.apache.tapestry.contrib.table.model.ognl.ExpressionTableColumn;
 import org.apache.tapestry.contrib.table.model.simple.SimpleListTableDataModel;
-import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumn;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumnModel;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableModel;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableState;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.event.PageRenderListener;
-import org.apache.tapestry.util.prop.OgnlUtils;
 
 /**
  * A low level Table component that wraps all other low level Table components.
@@ -224,6 +220,7 @@ public abstract class TableView
 {
     // Component properties
     private ITableSessionStateManager m_objDefaultSessionStateManager = null;
+    private ITableColumnModel m_objColumnModel = null;
 
     // Persistent properties
     private Serializable m_objSessionState;
@@ -236,6 +233,7 @@ public abstract class TableView
     public abstract ITableModel getTableModelValue();
     public abstract Object getSource();
     public abstract Object getColumns();
+    public abstract IBinding getColumnsBinding();
     public abstract ITableSessionStateManager getTableSessionStateManager();
     public abstract ITableSessionStoreManager getTableSessionStoreManager();
     public abstract IComponent getColumnSettingsContainer();
@@ -313,7 +311,7 @@ public abstract class TableView
             m_objTableModel = generateTableModel(null);
 
         if (m_objTableModel == null)
-            throw new ApplicationRuntimeException(format("missing-table-model", this));
+            throw new ApplicationRuntimeException(TableUtils.format("missing-table-model", this));
 
         return m_objTableModel;
     }
@@ -390,7 +388,7 @@ public abstract class TableView
             for (int i = 0; i < nColumnsNumber; i++)
             {
                 if (!(arrColumnsList.get(i) instanceof ITableColumn))
-                    throw new ApplicationRuntimeException(format("columns-only-please", this));
+                    throw new ApplicationRuntimeException(TableUtils.format("columns-only-please", this));
             }
             //objColumns = arrColumnsList.toArray(new ITableColumn[nColumnsNumber]);
             return new SimpleTableColumnModel(arrColumnsList);
@@ -403,7 +401,16 @@ public abstract class TableView
 
         if (objColumns instanceof String)
         {
-            return generateTableColumnModel((String) objColumns);
+            String strColumns = (String) objColumns;
+            if (getColumnsBinding().isInvariant()) {
+                // if the binding is invariant, create the columns only once
+                if (m_objColumnModel == null)
+                    m_objColumnModel = generateTableColumnModel(strColumns);
+                return m_objColumnModel;
+            }
+
+            // if the binding is not invariant, create them every time
+            return generateTableColumnModel(strColumns);
         }
 
         //throw new ApplicationRuntimeException("The columns binding must contain a list of ITableColumn objects or a description string");
@@ -419,79 +426,13 @@ public abstract class TableView
      *  If the whole description string is prefixed with *, it represents
      *  columns to be included in a Form. 
      * 
-     *  @param strDesc
-     *  @return
+     *  @param strDesc the description of the column model to be generated
+     *  @return a table column model based on the provided description
      */
     protected ITableColumnModel generateTableColumnModel(String strDesc)
     {
-        if (strDesc == null)
-            return null;
-
         IComponent objColumnSettingsContainer = getColumnSettingsContainer();
-        List arrColumns = new ArrayList();
-
-        boolean bFormColumns = false;
-        while (strDesc.startsWith("*"))
-        {
-            strDesc = strDesc.substring(1);
-            bFormColumns = true;
-        }
-
-        StringTokenizer objTokenizer = new StringTokenizer(strDesc, ",");
-        while (objTokenizer.hasMoreTokens())
-        {
-            String strToken = objTokenizer.nextToken().trim();
-
-            if (strToken.startsWith("="))
-            {
-                String strColumnExpression = strToken.substring(1);
-                IResourceResolver objResolver = getPage().getEngine().getResourceResolver();
-
-                Object objColumn =
-                    OgnlUtils.get(strColumnExpression, objResolver, objColumnSettingsContainer);
-                if (!(objColumn instanceof ITableColumn))
-                    throw new ApplicationRuntimeException(
-                        format("not-a-column", this, strColumnExpression));
-
-                arrColumns.add(objColumn);
-                continue;
-            }
-
-            boolean bSortable = true;
-            if (strToken.startsWith("!"))
-            {
-                strToken = strToken.substring(1);
-                bSortable = false;
-            }
-
-            StringTokenizer objColumnTokenizer = new StringTokenizer(strToken, ":");
-
-            String strName = "";
-            if (objColumnTokenizer.hasMoreTokens())
-                strName = objColumnTokenizer.nextToken();
-
-            String strExpression = strName;
-            if (objColumnTokenizer.hasMoreTokens())
-                strExpression = objColumnTokenizer.nextToken();
-
-            String strDisplayName = strName;
-            if (objColumnTokenizer.hasMoreTokens())
-            {
-                strDisplayName = strExpression;
-                strExpression = objColumnTokenizer.nextToken();
-            }
-
-            ExpressionTableColumn objColumn =
-                new ExpressionTableColumn(strName, strDisplayName, strExpression, bSortable);
-            if (bFormColumns)
-                objColumn.setColumnRendererSource(SimpleTableColumn.FORM_COLUMN_RENDERER_SOURCE);
-            if (objColumnSettingsContainer != null)
-                objColumn.loadSettings(objColumnSettingsContainer);
-
-            arrColumns.add(objColumn);
-        }
-
-        return new SimpleTableColumnModel(arrColumns);
+        return TableUtils.generateTableColumnModel(strDesc, this, objColumnSettingsContainer);
     }
 
     /**
@@ -526,10 +467,10 @@ public abstract class TableView
 
     /**
      *  Ensures that the table state is saved at the end of the rewind phase 
-     *  in case there are modifications for which {@link fireObservedStateChange} 
+     *  in case there are modifications for which {@link #fireObservedStateChange()} 
      *  has not been invoked.
      * 
-     *  @see org.apache.tapestry.event.PageRenderListener#pageBeginRender(PageEvent)
+     *  @see org.apache.tapestry.event.PageRenderListener#pageEndRender(PageEvent)
      */
     public void pageEndRender(PageEvent objEvent)
     {

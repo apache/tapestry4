@@ -32,7 +32,7 @@
         </description>
     </parameter>
     
-    <parameter name="columns" type="java.lang.Object" required="no">
+    <parameter name="columns" type="java.lang.Object" required="no" direction="auto" default-value="null">
         <description>
             The table columns to be displayed. 
             The parameter must be an array, a list, or an Iterator of ITableColumn objects,
@@ -114,7 +114,14 @@
 		type="java.lang.String" 
 		required="no"
 		direction="custom"/>
-  
+
+    <parameter name="convertor"
+    	type="org.apache.tapestry.contrib.table.model.IPrimaryKeyConvertor"
+    	required="no"
+    	direction="auto"
+    	default-value="null"
+    />
+    
 
 	<component id="tableElement" type="Any" inherit-informal-parameters="yes">
 		<static-binding name="element">table</static-binding>
@@ -123,7 +130,6 @@
 	<component id="condPages" type="Conditional">
 		<binding name="condition" expression="tableModel.pageCount > 1"/>
 	</component>
-
 
 	<component id="tableView" type="TableView">
 		<inherited-binding name="tableModel" parameter-name="tableModel"/>
@@ -148,6 +154,7 @@
 	<component id="tableRows" type="TableFormRows">
 		<inherited-binding name="row" parameter-name="row"/>
 		<inherited-binding name="class" parameter-name="rowsClass"/>
+        <binding name="convertor" expression="convertor"/>
 	</component>
 
 	<component id="tableValues" type="TableValues">

@@ -232,7 +232,7 @@ public class SimpleTableColumn extends AbstractTableColumn
      *  Use the column name to get the display name, as well as 
      *  the column and renderer sources from the provided component.
      *   
-     *  @param objRendererSourceContainer the component from which to get the settings 
+     *  @param objSettingsContainer the component from which to get the settings 
      */
     public void loadSettings(IComponent objSettingsContainer)
     {

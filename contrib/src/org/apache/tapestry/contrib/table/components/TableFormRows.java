@@ -55,6 +55,12 @@
 
 package org.apache.tapestry.contrib.table.components;
 
+import java.util.Iterator;
+import java.util.Map;
+
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.contrib.table.model.*;
+
 
 /**
  * A low level Table component that generates the rows of the current page in the table.
@@ -109,7 +115,58 @@ package org.apache.tapestry.contrib.table.components;
  * @version $Id$
  *
  */
-public class TableFormRows extends TableRows
+public abstract class TableFormRows extends TableRows
 {
+    //public abstract IPrimaryKeyConvertor getConvertor();
+    public abstract IPrimaryKeyConvertor getConvertorCache();
+    public abstract Map getConvertedValues();
+    
+    public Iterator getConvertedTableRowsIterator()
+    {
+        final Iterator objTableRowsIterator = getTableRowsIterator(); 
+        final IPrimaryKeyConvertor objConvertor = getConvertorCache();
+        if (objConvertor == null)
+            return objTableRowsIterator;
+            
+        return new Iterator()
+        {
+            public boolean hasNext()
+            {
+                return objTableRowsIterator.hasNext();
+            }
 
+            public Object next()
+            {
+                Object objValue = objTableRowsIterator.next();
+                Object objPrimaryKey = objConvertor.getPrimaryKey(objValue);
+                Map mapConvertedValues = getConvertedValues(); 
+                mapConvertedValues.put(objPrimaryKey, objValue);
+                return objPrimaryKey;
+            }
+
+            public void remove()
+            {
+                objTableRowsIterator.remove();
+            }
+        };
+    }
+    
+    public void setConvertedTableRow(Object objConvertedTableRow)
+    {
+        Object objValue = objConvertedTableRow;
+
+        IPrimaryKeyConvertor objConvertor = getConvertorCache();
+        if (objConvertor != null) {
+            IRequestCycle objCycle = getPage().getRequestCycle();
+            if (objCycle.isRewinding()) {
+                objValue = objConvertor.getValue(objConvertedTableRow);  
+            }
+            else {
+                Map mapConvertedValues = getConvertedValues(); 
+                objValue = mapConvertedValues.get(objConvertedTableRow);
+            }
+        }
+
+        setTableRow(objValue);
+    }
 }

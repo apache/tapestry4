@@ -38,8 +38,7 @@
 	</component>
   
 	<component id="condOther" type="Conditional">
-		<binding name="condition" expression="condCurrent"/>
-		<static-binding name="invert">true</static-binding>
+		<binding name="condition" expression="!condCurrent"/>
 	</component>
   
 	<component id="iterPage" type="Foreach">
