@@ -27,6 +27,7 @@
 package tutorial.workbench.fields;
 
 import com.primix.tapestry.*;
+import java.math.BigDecimal;
 import tutorial.workbench.*;
 
 /**
@@ -41,6 +42,12 @@ public class Fields extends BasePage
 {
 	public static final int INT_MIN = 5;
 	public static final int INT_MAX = 20;
+
+	public static final double DOUBLE_MIN = 3.14;
+	public static final double DOUBLE_MAX =  27.5;
+	
+	public static final BigDecimal DECIMAL_MIN = new BigDecimal("2");
+	public static final BigDecimal DECIMAL_MAX = new BigDecimal("100.123456234563456734563456356734567456784567456784567845675678456785678");
 
 	public void formSubmit(IRequestCycle cycle)
 	{

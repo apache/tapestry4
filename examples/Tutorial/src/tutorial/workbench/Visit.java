@@ -27,6 +27,7 @@
 package tutorial.workbench;
 
 import java.io.*;
+import java.math.BigDecimal;
 
 /**
  *
@@ -60,6 +61,8 @@ public class Visit implements Serializable
 	 */
 
 	private Integer intValue;
+	private Double doubleValue;
+	private BigDecimal bigDecimalValue;
 
 	public String getActiveTabName()
 	{
@@ -90,4 +93,26 @@ public class Visit implements Serializable
 	{
 		return intValue;
 	}
+	 
+	 
+	public BigDecimal getBigDecimalValue()
+	{
+		return bigDecimalValue;
+	}
+
+	public void setBigDecimalValue(BigDecimal value)
+	{
+		bigDecimalValue = value;
+	}
+
+	public Double getDoubleValue()
+	{
+		return doubleValue;
+	}
+
+	public void setDoubleValue(Double value)
+	{
+		doubleValue = value;
+	}
+
 }
