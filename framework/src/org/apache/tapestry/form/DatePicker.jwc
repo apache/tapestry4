@@ -28,10 +28,14 @@
   <parameter name="format" direction="in" type="java.lang.String" required="no"/>
   <parameter name="disabled" direction="in" type="boolean" required="no"/>
   <parameter name="includeWeek" type="boolean" direction="in" required="no"/>
+  <parameter name="icon" type="org.apache.tapestry.IAsset" direction="in" required="no"
+  	  default-value="assets.defaultIcon"/>
         
   <property-specification name="name" type="java.lang.String"/>
   <property-specification name="form" type="org.apache.tapestry.IForm"/>
   
   <private-asset name="script" resource-path="DatePicker.js"/>
+  
+  <private-asset name="defaultIcon" resource-path="DatePickerIcon.png"/>
                 
 </component-specification>
