@@ -1,34 +1,38 @@
-/*
- * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
- *
- * Howard Lewis Ship
- * http://sf.net/projects/tapestry
- * mailto:hship@users.sf.net
- *
- * This library is free software.
- *
- * You may redistribute it and/or modify it under the terms of the GNU
- * Lesser General Public License as published by the Free Software Foundation.
- *
- * Version 2.1 of the license should be included with this distribution in
- * the file LICENSE, as well as License.html. If the license is not
- * included with this distribution, you may find a copy at the FSF web
- * site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
- * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied waranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- */
+//
+// Tapestry Web Application Framework
+// Copyright (c) 2000-2002 by Howard Lewis Ship
+//
+// Howard Lewis Ship
+// http://sf.net/projects/tapestry
+// mailto:hship@users.sf.net
+//
+// This library is free software.
+//
+// You may redistribute it and/or modify it under the terms of the GNU
+// Lesser General Public License as published by the Free Software Foundation.
+//
+// Version 2.1 of the license should be included with this distribution in
+// the file LICENSE, as well as License.html. If the license is not
+// included with this distribution, you may find a copy at the FSF web
+// site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
+// Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied waranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
 
 package net.sf.tapestry.html;
 
-import com.primix.tapestry.*;
-
-import net.sf.tapestry.*;
+import net.sf.tapestry.AbstractComponent;
+import net.sf.tapestry.BindingException;
+import net.sf.tapestry.IAsset;
+import net.sf.tapestry.IBinding;
+import net.sf.tapestry.IMarkupWriter;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.RequiredParameterException;
 
 /**
  *  Used to insert an image.  To create a rollover image, use the
@@ -69,124 +73,123 @@ import net.sf.tapestry.*;
  * <p>Informal parameters are allowed.  A body is not allowed.
  *
  *
- *  @author Howard Ship
+ *  @author Howard Lewis Ship
  *  @version $Id$
- */
+ * 
+ **/
 
 public class Image extends AbstractComponent
 {
-	private IBinding imageBinding;
-	private IBinding borderBinding;
-	private boolean staticBorder;
-	private int borderValue;
+    private IBinding imageBinding;
+    private IBinding borderBinding;
+    private boolean staticBorder;
+    private int borderValue;
 
-	/**
-	*  Converts an {@link IAsset} binding into a usable URL.  Returns null
-	*  if the binding does not exist or the binding's value is null.
-	*
-	*/
+    /**
+     *  Converts an {@link IAsset} binding into a usable URL.  Returns null
+     *  if the binding does not exist or the binding's value is null.
+     *
+     **/
 
-	protected String getAssetURL(
-		String name,
-		IBinding binding,
-		IRequestCycle cycle)
-		throws RequestCycleException
-	{
-		IAsset asset;
+    protected String getAssetURL(
+        String name,
+        IBinding binding,
+        IRequestCycle cycle)
+        throws RequestCycleException
+    {
+        IAsset asset;
 
-		if (binding == null)
-			return null;
+        if (binding == null)
+            return null;
 
-		try
-		{
-			asset = (IAsset) binding.getObject(name, IAsset.class);
-		}
-		catch (BindingException ex)
-		
-			{
-			throw new RequestCycleException(this, ex);
-		}
+        try
+        {
+            asset = (IAsset) binding.getObject(name, IAsset.class);
+        }
+        catch (BindingException ex)
+        {
+            throw new RequestCycleException(this, ex);
+        }
 
-		if (asset == null)
-			return null;
+        if (asset == null)
+            return null;
 
-		return asset.buildURL(cycle);
-	}
+        return asset.buildURL(cycle);
+    }
 
-	public IBinding getBorderBinding()
-	{
-		return borderBinding;
-	}
+    public IBinding getBorderBinding()
+    {
+        return borderBinding;
+    }
 
-	public IBinding getImageBinding()
-	{
-		return imageBinding;
-	}
+    public IBinding getImageBinding()
+    {
+        return imageBinding;
+    }
 
-	/**
-	*  Renders the &lt;img&gt; element.
-	*
-	* <table border=1>
-	* <tr> <th>attribute</th>  <th>value</th> </tr>
-	* <tr> <td>src</td> <td>from <code>image</code> property</td> </tr>
-	* <tr> <td>border</td> <td>from <code>border</td> property, or 0 if not
-	*		specified </td> </tr>
-	* </table>
-	*
-	*/
+    /**
+     *  Renders the &lt;img&gt; element.
+     *
+     * <table border=1>
+     * <tr> <th>attribute</th>  <th>value</th> </tr>
+     * <tr> <td>src</td> <td>from <code>image</code> property</td> </tr>
+     * <tr> <td>border</td> <td>from <code>border</td> property, or 0 if not
+     *		specified </td> </tr>
+     * </table>
+     *
+     **/
 
-	public void render(IMarkupWriter writer, IRequestCycle cycle)
-		throws RequestCycleException
-	{
-		String imageURL = null;
-		int border = 0;
-		IAsset imageAsset;
+    public void render(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
+    {
+        String imageURL = null;
+        int border = 0;
+        IAsset imageAsset;
 
-		// Doesn't contain a body so no need to do anything on rewind (assumes no
-		// sideffects to accessor methods via bindings).
+        // Doesn't contain a body so no need to do anything on rewind (assumes no
+        // sideffects to accessor methods via bindings).
 
-		if (cycle.isRewinding())
-			return;
+        if (cycle.isRewinding())
+            return;
 
-		try
-		{
-			imageAsset = (IAsset) imageBinding.getObject("image", IAsset.class);
-		}
-		catch (BindingException ex)
-		
-			{
-			throw new RequestCycleException(this, ex);
-		}
+        try
+        {
+            imageAsset = (IAsset) imageBinding.getObject("image", IAsset.class);
+        }
+        catch (BindingException ex)
+        {
+            throw new RequestCycleException(this, ex);
+        }
 
-		if (imageAsset == null)
-			throw new RequiredParameterException(this, "image", imageBinding);
+        if (imageAsset == null)
+            throw new RequiredParameterException(this, "image", imageBinding);
 
-		imageURL = imageAsset.buildURL(cycle);
+        imageURL = imageAsset.buildURL(cycle);
 
-		if (staticBorder)
-			border = borderValue;
-		else if (borderBinding != null)
-			border = borderBinding.getInt();
+        if (staticBorder)
+            border = borderValue;
+        else if (borderBinding != null)
+            border = borderBinding.getInt();
 
-		writer.beginEmpty("img");
+        writer.beginEmpty("img");
 
-		writer.attribute("src", imageURL);
+        writer.attribute("src", imageURL);
 
-		writer.attribute("border", border);
+        writer.attribute("border", border);
 
-		generateAttributes(writer, cycle);
+        generateAttributes(writer, cycle);
 
-		writer.closeTag();
+        writer.closeTag();
 
-	}
+    }
 
-	public void setBorderBinding(IBinding value)
-	{
-		borderBinding = value;
-	}
+    public void setBorderBinding(IBinding value)
+    {
+        borderBinding = value;
+    }
 
-	public void setImageBinding(IBinding value)
-	{
-		imageBinding = value;
-	}
+    public void setImageBinding(IBinding value)
+    {
+        imageBinding = value;
+    }
 }

@@ -1,39 +1,41 @@
-/*
- * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
- *
- * Howard Lewis Ship
- * http://sf.net/projects/tapestry
- * mailto:hship@users.sf.net
- *
- * This library is free software.
- *
- * You may redistribute it and/or modify it under the terms of the GNU
- * Lesser General Public License as published by the Free Software Foundation.
- *
- * Version 2.1 of the license should be included with this distribution in
- * the file LICENSE, as well as License.html. If the license is not
- * included with this distribution, you may find a copy at the FSF web
- * site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
- * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied waranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- */
+//
+// Tapestry Web Application Framework
+// Copyright (c) 2000-2002 by Howard Lewis Ship
+//
+// Howard Lewis Ship
+// http://sf.net/projects/tapestry
+// mailto:hship@users.sf.net
+//
+// This library is free software.
+//
+// You may redistribute it and/or modify it under the terms of the GNU
+// Lesser General Public License as published by the Free Software Foundation.
+//
+// Version 2.1 of the license should be included with this distribution in
+// the file LICENSE, as well as License.html. If the license is not
+// included with this distribution, you may find a copy at the FSF web
+// site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
+// Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied waranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
 
 package net.sf.tapestry.form;
 
-import com.primix.tapestry.*;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
-// Appease Javadoc
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.html.*;
-
-import net.sf.tapestry.*;
+import net.sf.tapestry.IBinding;
+import net.sf.tapestry.IForm;
+import net.sf.tapestry.IMarkupWriter;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.RenderOnlyPropertyException;
+import net.sf.tapestry.RequestContext;
+import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.Tapestry;
 
 /**
  *  Implements a component that manages an HTML &lt;select&gt; form element.
@@ -75,211 +77,212 @@ import net.sf.tapestry.*;
  *
  * <p>Informal parameters are allowed.
  *
- *  @author Howard Ship
+ *  @author Howard Lewis Ship
  *  @version $Id$
- */
+ * 
+ **/
 
 public class Select extends AbstractFormComponent
 {
-	private IBinding multipleBinding;
-	private IBinding disabledBinding;
+    private IBinding multipleBinding;
+    private IBinding disabledBinding;
 
-	private boolean disabled;
-	private boolean rewinding;
-	private boolean rendering;
+    private boolean disabled;
+    private boolean rewinding;
+    private boolean rendering;
 
-	private Set selections;
-	private int nextOptionId;
+    private Set selections;
+    private int nextOptionId;
 
-	private String name;
+    private String name;
 
-	public String getName()
-	{
-		return name;
-	}
+    public String getName()
+    {
+        return name;
+    }
 
-	/**
-	*  Used by the <code>Select</code> to record itself as a
-	*  {@link IRequestCycle} attribute, so that the
-	*  {@link Option} components it wraps can have access to it.
-	*
-	*/
+    /**
+    *  Used by the <code>Select</code> to record itself as a
+    *  {@link IRequestCycle} attribute, so that the
+    *  {@link Option} components it wraps can have access to it.
+    *
+    **/
 
-	private final static String ATTRIBUTE_NAME =
-		"com.primix.tapestry.active.Select";
+    private final static String ATTRIBUTE_NAME =
+        "net.sf.tapestry.active.Select";
 
-	public static Select get(IRequestCycle cycle)
-	{
-		return (Select) cycle.getAttribute(ATTRIBUTE_NAME);
-	}
+    public static Select get(IRequestCycle cycle)
+    {
+        return (Select) cycle.getAttribute(ATTRIBUTE_NAME);
+    }
 
-	public IBinding getDisabledBinding()
-	{
-		return disabledBinding;
-	}
+    public IBinding getDisabledBinding()
+    {
+        return disabledBinding;
+    }
 
-	public IBinding getMultipleBinding()
-	{
-		return multipleBinding;
-	}
+    public IBinding getMultipleBinding()
+    {
+        return multipleBinding;
+    }
 
-	public boolean isDisabled()
-	{
-		if (!rendering)
-			throw new RenderOnlyPropertyException(this, "disabled");
+    public boolean isDisabled()
+    {
+        if (!rendering)
+            throw new RenderOnlyPropertyException(this, "disabled");
 
-		return disabled;
-	}
+        return disabled;
+    }
 
-	public boolean isRewinding()
-	{
-		if (!rendering)
-			throw new RenderOnlyPropertyException(this, "rewinding");
+    public boolean isRewinding()
+    {
+        if (!rendering)
+            throw new RenderOnlyPropertyException(this, "rewinding");
 
-		return rewinding;
-	}
+        return rewinding;
+    }
 
-	public String getNextOptionId()
-	{
-		if (!rendering)
-			throw new RenderOnlyPropertyException(this, "nextOptionId");
+    public String getNextOptionId()
+    {
+        if (!rendering)
+            throw new RenderOnlyPropertyException(this, "nextOptionId");
 
-		// Return it as a hex value.
+        // Return it as a hex value.
 
-		return Integer.toString(nextOptionId++);
-	}
+        return Integer.toString(nextOptionId++);
+    }
 
-	public boolean isSelected(String value)
-	{
-		if (selections == null)
-			return false;
+    public boolean isSelected(String value)
+    {
+        if (selections == null)
+            return false;
 
-		return selections.contains(value);
-	}
+        return selections.contains(value);
+    }
 
-	/**
-	*  Renders the &lt;option&gt; element, or responds when the form containing the element
-	*  is submitted (by checking {@link Form#isRewinding()}.
-	**/
+    /**
+     *  Renders the &lt;option&gt; element, or responds when the form containing the element
+     *  is submitted (by checking {@link IForm#isRewinding()}.
+     **/
 
-	public void render(IMarkupWriter writer, IRequestCycle cycle)
-		throws RequestCycleException
-	{
-		boolean multiple;
+    public void render(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
+    {
+        boolean multiple;
 
-		IForm form = getForm(cycle);
+        IForm form = getForm(cycle);
 
-		if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-			throw new RequestCycleException(
-				Tapestry.getString("Select.may-not-nest"),
-				this);
+        if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
+            throw new RequestCycleException(
+                Tapestry.getString("Select.may-not-nest"),
+                this);
 
-		// It isn't enough to know whether the cycle in general is rewinding, need to know
-		// specifically if the form which contains this component is rewinding.
+        // It isn't enough to know whether the cycle in general is rewinding, need to know
+        // specifically if the form which contains this component is rewinding.
 
-		rewinding = form.isRewinding();
+        rewinding = form.isRewinding();
 
-		// Used whether rewinding or not.
+        // Used whether rewinding or not.
 
-		name = form.getElementId(this);
+        name = form.getElementId(this);
 
-		if (disabledBinding == null)
-			disabled = false;
-		else
-			disabled = disabledBinding.getBoolean();
+        if (disabledBinding == null)
+            disabled = false;
+        else
+            disabled = disabledBinding.getBoolean();
 
-		cycle.setAttribute(ATTRIBUTE_NAME, this);
+        cycle.setAttribute(ATTRIBUTE_NAME, this);
 
-		if (rewinding)
-		{
-			selections = buildSelections(cycle, name);
-		}
-		else
-		{
-			if (multipleBinding == null)
-				multiple = false;
-			else
-				multiple = multipleBinding.getBoolean();
+        if (rewinding)
+        {
+            selections = buildSelections(cycle, name);
+        }
+        else
+        {
+            if (multipleBinding == null)
+                multiple = false;
+            else
+                multiple = multipleBinding.getBoolean();
 
-			writer.begin("select");
+            writer.begin("select");
 
-			writer.attribute("name", name);
+            writer.attribute("name", name);
 
-			if (multiple)
-				writer.attribute("multiple");
+            if (multiple)
+                writer.attribute("multiple");
 
-			if (disabled)
-				writer.attribute("disabled");
+            if (disabled)
+                writer.attribute("disabled");
 
-			generateAttributes(writer, cycle);
-		}
+            generateAttributes(writer, cycle);
+        }
 
-		try
-		{
-			rendering = true;
-			nextOptionId = 0;
+        try
+        {
+            rendering = true;
+            nextOptionId = 0;
 
-			renderWrapped(writer, cycle);
-		}
-		finally
-		{
+            renderWrapped(writer, cycle);
+        }
+        finally
+        {
 
-			rendering = false;
-			selections = null;
-		}
+            rendering = false;
+            selections = null;
+        }
 
-		if (!rewinding)
-		{
-			writer.end();
-		}
+        if (!rewinding)
+        {
+            writer.end();
+        }
 
-		cycle.removeAttribute(ATTRIBUTE_NAME);
+        cycle.removeAttribute(ATTRIBUTE_NAME);
 
-	}
+    }
 
-	public void setDisabledBinding(IBinding value)
-	{
-		disabledBinding = value;
-	}
+    public void setDisabledBinding(IBinding value)
+    {
+        disabledBinding = value;
+    }
 
-	public void setMultipleBinding(IBinding value)
-	{
-		multipleBinding = value;
-	}
+    public void setMultipleBinding(IBinding value)
+    {
+        multipleBinding = value;
+    }
 
-	/**
-	*  Cut-and-paste with {@link RadioGroup}!
-	*
-	*/
+    /**
+     *  Cut-and-paste with {@link RadioGroup}!
+     *
+     **/
 
-	private Set buildSelections(IRequestCycle cycle, String parameterName)
-	{
-		RequestContext context;
-		String[] parameters;
-		int size = 7;
-		int length;
-		int i;
-		Set result;
+    private Set buildSelections(IRequestCycle cycle, String parameterName)
+    {
+        RequestContext context;
+        String[] parameters;
+        int size = 7;
+        int length;
+        int i;
+        Set result;
 
-		context = cycle.getRequestContext();
+        context = cycle.getRequestContext();
 
-		parameters = context.getParameters(parameterName);
+        parameters = context.getParameters(parameterName);
 
-		if (parameters == null)
-			return null;
+        if (parameters == null)
+            return null;
 
-		length = parameters.length;
-		if (parameters.length == 0)
-			return null;
+        length = parameters.length;
+        if (parameters.length == 0)
+            return null;
 
-		if (parameters.length > 30)
-			size = 101;
+        if (parameters.length > 30)
+            size = 101;
 
-		result = new HashSet(size);
+        result = new HashSet(size);
 
-		for (i = 0; i < length; i++)
-			result.add(parameters[i]);
+        for (i = 0; i < length; i++)
+            result.add(parameters[i]);
 
-		return result;
-	}
+        return result;
+    }
 }

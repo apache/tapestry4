@@ -1,40 +1,33 @@
-/*
- * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
- *
- * Howard Lewis Ship
- * http://sf.net/projects/tapestry
- * mailto:hship@users.sf.net
- *
- * This library is free software.
- *
- * You may redistribute it and/or modify it under the terms of the GNU
- * Lesser General Public License as published by the Free Software Foundation.
- *
- * Version 2.1 of the license should be included with this distribution in
- * the file LICENSE, as well as License.html. If the license is not
- * included with this distribution, you may find a copy at the FSF web
- * site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
- * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied waranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- */
+//
+// Tapestry Web Application Framework
+// Copyright (c) 2000-2002 by Howard Lewis Ship
+//
+// Howard Lewis Ship
+// http://sf.net/projects/tapestry
+// mailto:hship@users.sf.net
+//
+// This library is free software.
+//
+// You may redistribute it and/or modify it under the terms of the GNU
+// Lesser General Public License as published by the Free Software Foundation.
+//
+// Version 2.1 of the license should be included with this distribution in
+// the file LICENSE, as well as License.html. If the license is not
+// included with this distribution, you may find a copy at the FSF web
+// site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
+// Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied waranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
 
 package net.sf.tapestry.form;
 
+import net.sf.tapestry.IBinding;
+import net.sf.tapestry.Tapestry;
 import org.apache.log4j.Category;
-
-import com.primix.tapestry.*;
-
-// Appease Javadoc
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.html.*;
-
-import net.sf.tapestry.*;
 
 /**
  *  Implements a component that manages an HTML &lt;input type=text&gt; or
@@ -112,51 +105,57 @@ import net.sf.tapestry.*;
  * <p>Informal parameters are allowed, but the component may not contain a body.
  *
  *
- *  @author Howard Ship
+ *  @author Howard Lewis Ship
  *  @version $Id$
- */
+ * 
+ **/
 
 public class TextField extends AbstractTextField
 {
-	private static final Category CAT = Category.getInstance(TextField.class);
-	
-	private IBinding valueBinding;
+    private static final Category CAT = Category.getInstance(TextField.class);
 
-	public IBinding getTextBinding()
-	{
-		return getValueBinding();
-	}
+    private IBinding valueBinding;
 
-	private boolean warning = true;
-	
-	public void setTextBinding(IBinding value)
-	{
-		if (warning)
-		{
-			CAT.warn(Tapestry.getString("deprecated-component-param", getExtendedId(), "text", "value"));
-			warning = false;
-		}
-		
-		setValueBinding(value);
-	}
-	
-	public IBinding getValueBinding()
-	{
-		return valueBinding;
-	}
+    public IBinding getTextBinding()
+    {
+        return getValueBinding();
+    }
 
-	public void setValueBinding(IBinding value)
-	{
-		valueBinding = value;
-	}
+    private boolean warning = true;
 
-	public String readValue()
-	{
-		return valueBinding.getString();
-	}
+    public void setTextBinding(IBinding value)
+    {
+        if (warning)
+        {
+            CAT.warn(
+                Tapestry.getString(
+                    "deprecated-component-param",
+                    getExtendedId(),
+                    "text",
+                    "value"));
+            warning = false;
+        }
 
-	public void updateValue(String value)
-	{
-		valueBinding.setString(value);
-	}
+        setValueBinding(value);
+    }
+
+    public IBinding getValueBinding()
+    {
+        return valueBinding;
+    }
+
+    public void setValueBinding(IBinding value)
+    {
+        valueBinding = value;
+    }
+
+    public String readValue()
+    {
+        return valueBinding.getString();
+    }
+
+    public void updateValue(String value)
+    {
+        valueBinding.setString(value);
+    }
 }

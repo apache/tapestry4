@@ -48,7 +48,7 @@ import org.apache.log4j.Priority;
 import net.sf.tapestry.parse.SpecificationParser;
 import net.sf.tapestry.spec.ApplicationSpecification;
 import net.sf.tapestry.util.StringSplitter;
-import net.sf.tapestry.util.ejb.ExceptionAnalyzer;
+import net.sf.tapestry.util.exception.ExceptionAnalyzer;
 import net.sf.tapestry.util.pool.Pool;
 import net.sf.tapestry.util.xml.DocumentParseException;
 

@@ -1,40 +1,38 @@
-/*
- * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
- *
- * Howard Lewis Ship
- * http://sf.net/projects/tapestry
- * mailto:hship@users.sf.net
- *
- * This library is free software.
- *
- * You may redistribute it and/or modify it under the terms of the GNU
- * Lesser General Public License as published by the Free Software Foundation.
- *
- * Version 2.1 of the license should be included with this distribution in
- * the file LICENSE, as well as License.html. If the license is not
- * included with this distribution, you may find a copy at the FSF web
- * site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
- * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied waranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- */
+//
+// Tapestry Web Application Framework
+// Copyright (c) 2000-2002 by Howard Lewis Ship
+//
+// Howard Lewis Ship
+// http://sf.net/projects/tapestry
+// mailto:hship@users.sf.net
+//
+// This library is free software.
+//
+// You may redistribute it and/or modify it under the terms of the GNU
+// Lesser General Public License as published by the Free Software Foundation.
+//
+// Version 2.1 of the license should be included with this distribution in
+// the file LICENSE, as well as License.html. If the license is not
+// included with this distribution, you may find a copy at the FSF web
+// site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
+// Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied waranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
 
 package net.sf.tapestry.form;
 
+import net.sf.tapestry.IBinding;
+import net.sf.tapestry.IForm;
+import net.sf.tapestry.IMarkupWriter;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.RequiredParameterException;
+import net.sf.tapestry.Tapestry;
 import org.apache.log4j.Category;
-
-import com.primix.tapestry.*;
-
-// Appease Javadoc
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.html.*;
-
-import net.sf.tapestry.*;
 
 /**
  *  Implements a component that manages an HTML &lt;textarea&gt; form element.
@@ -98,155 +96,159 @@ import net.sf.tapestry.*;
  *	</table>
  *
  * <p>Informal parameters are allowed.  The component may not contain a body.
- 
  *
- *  @author Howard Ship
+ *  @author Howard Lewis Ship
  *  @version $Id$
- */
+ * 
+ **/
 
 public class Text extends AbstractFormComponent
 {
-	private static final Category CAT = Category.getInstance(Text.class);
-	
-	private IBinding valueBinding;
-	private IBinding rowsBinding;
-	private IBinding columnsBinding;
-	private IBinding disabledBinding;
-	private String name;
+    private static final Category CAT = Category.getInstance(Text.class);
 
-	public String getName()
-	{
-		return name;
-	}
+    private IBinding valueBinding;
+    private IBinding rowsBinding;
+    private IBinding columnsBinding;
+    private IBinding disabledBinding;
+    private String name;
 
-	public IBinding getColumnsBinding()
-	{
-		return columnsBinding;
-	}
+    public String getName()
+    {
+        return name;
+    }
 
-	public IBinding getDisabledBinding()
-	{
-		return disabledBinding;
-	}
+    public IBinding getColumnsBinding()
+    {
+        return columnsBinding;
+    }
 
-	public IBinding getRowsBinding()
-	{
-		return rowsBinding;
-	}
+    public IBinding getDisabledBinding()
+    {
+        return disabledBinding;
+    }
 
-	public IBinding getTextBinding()
-	{
-		return getValueBinding();
-	}
+    public IBinding getRowsBinding()
+    {
+        return rowsBinding;
+    }
 
-	public IBinding getValueBinding()
-	{
-		return valueBinding;
-	}
-	
-	public void setValueBinding(IBinding value)
-	{
-		valueBinding = value;
-	}
+    public IBinding getTextBinding()
+    {
+        return getValueBinding();
+    }
 
-	/**
-	*  Renders the form element, or responds when the form containing the element
-	*  is submitted (by checking {@link Form#isRewinding()}.
-	*
-	*  <table border=1>
-	*  <tr>  <th>attribute</th>  <th>value</th> </tr>
-	*  <tr>  <td>name</td>  <td>from {@link IRequestCycle#getNextActionId()}</td> </tr>
-	*  <tr>  <td>disabled</td>  <td>ommited, unless the <code>disabled</code> property is
-	* 	true.  </td> </tr>
-	*  <tr> <td>rows</td> <td>from <code>rows</code> property</td> </tr>
-	*  <tr> <td>cols</td> <td>from <code>columns</code> property</td> </tr>
-	*  </table>
-	**/
+    public IBinding getValueBinding()
+    {
+        return valueBinding;
+    }
 
-	public void render(IMarkupWriter writer, IRequestCycle cycle)
-		throws RequestCycleException
-	{
-		boolean disabled = false;
+    public void setValueBinding(IBinding value)
+    {
+        valueBinding = value;
+    }
 
-		IForm form = getForm(cycle);
+    /**
+     *  Renders the form element, or responds when the form containing the element
+     *  is submitted (by checking {@link Form#isRewinding()}.
+     *
+     *  <table border=1>
+     *  <tr>  <th>attribute</th>  <th>value</th> </tr>
+     *  <tr>  <td>name</td>  <td>from {@link IRequestCycle#getNextActionId()}</td> </tr>
+     *  <tr>  <td>disabled</td>  <td>ommited, unless the <code>disabled</code> property is
+     * 	true.  </td> </tr>
+     *  <tr> <td>rows</td> <td>from <code>rows</code> property</td> </tr>
+     *  <tr> <td>cols</td> <td>from <code>columns</code> property</td> </tr>
+     *  </table>
+     **/
 
-		if (valueBinding == null)
-			throw new RequiredParameterException(this, "value", null);
+    public void render(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
+    {
+        boolean disabled = false;
 
-		// It isn't enough to know whether the cycle in general is rewinding, need to know
-		// specifically if the form which contains this component is rewinding.
+        IForm form = getForm(cycle);
 
-		boolean rewinding = form.isRewinding();
+        if (valueBinding == null)
+            throw new RequiredParameterException(this, "value", null);
 
-		// Used whether rewinding or not.
+        // It isn't enough to know whether the cycle in general is rewinding, need to know
+        // specifically if the form which contains this component is rewinding.
 
-		name = form.getElementId(this);
+        boolean rewinding = form.isRewinding();
 
-		if (disabledBinding != null)
-			disabled = disabledBinding.getBoolean();
+        // Used whether rewinding or not.
 
-		if (rewinding)
-		{
-			if (!disabled)
-			{
-				String value = cycle.getRequestContext().getParameter(name);
+        name = form.getElementId(this);
 
-				valueBinding.setString(value);
-			}
+        if (disabledBinding != null)
+            disabled = disabledBinding.getBoolean();
 
-			return;
-		}
+        if (rewinding)
+        {
+            if (!disabled)
+            {
+                String value = cycle.getRequestContext().getParameter(name);
 
-		writer.begin("textarea");
+                valueBinding.setString(value);
+            }
 
-		writer.attribute("name", name);
+            return;
+        }
 
-		if (disabled)
-			writer.attribute("disabled");
+        writer.begin("textarea");
 
-		if (rowsBinding != null)
-			writer.attribute("rows", rowsBinding.getInt());
+        writer.attribute("name", name);
 
-		if (columnsBinding != null)
-			writer.attribute("cols", columnsBinding.getInt());
+        if (disabled)
+            writer.attribute("disabled");
 
-		generateAttributes(writer, cycle);
+        if (rowsBinding != null)
+            writer.attribute("rows", rowsBinding.getInt());
 
-		String value = valueBinding.getString();
-		if (value != null)
-			writer.print(value);
+        if (columnsBinding != null)
+            writer.attribute("cols", columnsBinding.getInt());
 
-		writer.end();
+        generateAttributes(writer, cycle);
 
-	}
+        String value = valueBinding.getString();
+        if (value != null)
+            writer.print(value);
 
-	public void setColumnsBinding(IBinding value)
-	{
-		columnsBinding = value;
-	}
+        writer.end();
 
-	public void setDisabledBinding(IBinding value)
-	{
-		disabledBinding = value;
-	}
+    }
 
-	public void setRowsBinding(IBinding value)
-	{
-		rowsBinding = value;
-	}
+    public void setColumnsBinding(IBinding value)
+    {
+        columnsBinding = value;
+    }
 
-	private boolean warning = true;
-	
-	public void setTextBinding(IBinding value)
-	{
-		if (warning)
-		{
-			CAT.warn(Tapestry.getString("deprecated-component-param", getExtendedId(), "text", "value"));
-			warning = false;
-		}
-		
-		setValueBinding(value);
-	}
-	
-	
+    public void setDisabledBinding(IBinding value)
+    {
+        disabledBinding = value;
+    }
+
+    public void setRowsBinding(IBinding value)
+    {
+        rowsBinding = value;
+    }
+
+    private boolean warning = true;
+
+    public void setTextBinding(IBinding value)
+    {
+        if (warning)
+        {
+            CAT.warn(
+                Tapestry.getString(
+                    "deprecated-component-param",
+                    getExtendedId(),
+                    "text",
+                    "value"));
+            warning = false;
+        }
+
+        setValueBinding(value);
+    }
+
 }

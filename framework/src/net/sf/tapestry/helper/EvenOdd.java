@@ -23,37 +23,50 @@
 // Lesser General Public License for more details.
 //
 
-package net.sf.tapestry.inspector;
-
-import net.sf.tapestry.IMarkupWriter;
-import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.RequestCycleException;
-import net.sf.tapestry.valid.ValidationDelegate;
+package net.sf.tapestry.helper;
 
 /**
- * Customized version of {@link ValidationDelegate} that changes some
- * output behavior. 
- * 
+ *  Used to emit a stream of alteranting string values: "even", "odd", etc.  This
+ *  is often used in the Inspector pages to make the class of a &lt;tr&gt; alternate
+ *  for presentation reasons.
  *
- *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 1.0.8
+ *  @author Howard Lewis Ship
  *
  **/
 
-public class InspectorValidationDelegate extends ValidationDelegate
+public class EvenOdd
 {
-    public void writeSuffix(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
+    private boolean even = true;
+
+    /**
+     *  Returns "even" or "odd".  Whatever it returns on one invocation, it will
+     *  return the opposite on the next.  By default, the first value
+     *  returned is "even".
+     *
+     **/
+
+    public String getNext()
     {
-        if (isInError())
-        {
-            writer.printRaw("&nbsp;");
-            writer.begin("span");
-            writer.attribute("class", "error");
-            writer.print("**");
-            writer.end();
-        }
+        String result = even ? "even" : "odd";
+
+        even = !even;
+
+        return result;
+    }
+    
+    public boolean isEven()
+    {
+        return even;
     }
 
+	/**
+	 *  Overrides the even flag.
+	 * 
+	 **/
+	
+    public void setEven(boolean value)
+    {
+        even = value;
+    }
 }

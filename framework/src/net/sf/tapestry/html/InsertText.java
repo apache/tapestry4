@@ -1,38 +1,41 @@
-/*
- * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
- *
- * Howard Lewis Ship
- * http://sf.net/projects/tapestry
- * mailto:hship@users.sf.net
- *
- * This library is free software.
- *
- * You may redistribute it and/or modify it under the terms of the GNU
- * Lesser General Public License as published by the Free Software Foundation.
- *
- * Version 2.1 of the license should be included with this distribution in
- * the file LICENSE, as well as License.html. If the license is not
- * included with this distribution, you may find a copy at the FSF web
- * site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
- * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied waranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- */
+//
+// Tapestry Web Application Framework
+// Copyright (c) 2000-2002 by Howard Lewis Ship
+//
+// Howard Lewis Ship
+// http://sf.net/projects/tapestry
+// mailto:hship@users.sf.net
+//
+// This library is free software.
+//
+// You may redistribute it and/or modify it under the terms of the GNU
+// Lesser General Public License as published by the Free Software Foundation.
+//
+// Version 2.1 of the license should be included with this distribution in
+// the file LICENSE, as well as License.html. If the license is not
+// included with this distribution, you may find a copy at the FSF web
+// site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
+// Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied waranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
 
 package net.sf.tapestry.html;
 
-import com.primix.tapestry.*;
-import java.io.*;
+import java.io.IOException;
+import java.io.LineNumberReader;
+import java.io.Reader;
+import java.io.StringReader;
 
-// Appease Javadoc
-import com.primix.tapestry.form.*;
-
-import net.sf.tapestry.*;
+import net.sf.tapestry.AbstractComponent;
+import net.sf.tapestry.IBinding;
+import net.sf.tapestry.IMarkupWriter;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.Tapestry;
 
 /**
  *  Inserts formatted text (possibly collected using a {@link Text} component.
@@ -67,111 +70,110 @@ import net.sf.tapestry.*;
  *
  * <p>Informal parameters are not allowed.  The component must not have a body.
  *
- * @author Howard Ship
+ * @author Howard Lewis Ship
  * @version $Id$
- */
+ * 
+ **/
 
 public class InsertText extends AbstractComponent
 {
-	private IBinding textBinding;
-	private IBinding modeBinding;
-	private InsertTextMode modeValue;
+    private IBinding textBinding;
+    private IBinding modeBinding;
+    private InsertTextMode modeValue;
 
-	public IBinding getTextBinding()
-	{
-		return textBinding;
-	}
+    public IBinding getTextBinding()
+    {
+        return textBinding;
+    }
 
-	public void setTextBinding(IBinding value)
-	{
-		textBinding = value;
-	}
+    public void setTextBinding(IBinding value)
+    {
+        textBinding = value;
+    }
 
-	public IBinding getModeBinding()
-	{
-		return modeBinding;
-	}
+    public IBinding getModeBinding()
+    {
+        return modeBinding;
+    }
 
-	public void setModeBinding(IBinding value)
-	{
-		modeBinding = value;
+    public void setModeBinding(IBinding value)
+    {
+        modeBinding = value;
 
-		if (value.isStatic())
-			modeValue = (InsertTextMode) value.getObject("mode", InsertTextMode.class);
-	}
+        if (value.isStatic())
+            modeValue = (InsertTextMode) value.getObject("mode", InsertTextMode.class);
+    }
 
-	public void render(IMarkupWriter writer, IRequestCycle cycle)
-		throws RequestCycleException
-	
-	{
-		InsertTextMode mode = modeValue;
-		String text;
-		StringReader reader = null;
-		LineNumberReader lineReader = null;
-		int lineNumber = 0;
-		String line;
+    public void render(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
+    {
+        InsertTextMode mode = modeValue;
+        String text;
+        StringReader reader = null;
+        LineNumberReader lineReader = null;
+        int lineNumber = 0;
+        String line;
 
-		if (textBinding == null)
-			return;
+        if (textBinding == null)
+            return;
 
-		text = textBinding.getString();
-		if (text == null)
-			return;
+        text = textBinding.getString();
+        if (text == null)
+            return;
 
-		if (mode == null && modeBinding != null)
-			mode = (InsertTextMode) modeBinding.getObject("mode", InsertTextMode.class);
+        if (mode == null && modeBinding != null)
+            mode = (InsertTextMode) modeBinding.getObject("mode", InsertTextMode.class);
 
-		if (mode == null)
-			mode = InsertTextMode.BREAK;
+        if (mode == null)
+            mode = InsertTextMode.BREAK;
 
-		try
-		
-			{
-			reader = new StringReader(text);
+        try
+        {
+            reader = new StringReader(text);
 
-			lineReader = new LineNumberReader(reader);
+            lineReader = new LineNumberReader(reader);
 
-			while (true)
-			{
-				line = lineReader.readLine();
+            while (true)
+            {
+                line = lineReader.readLine();
 
-				// Exit loop at end of file.
+                // Exit loop at end of file.
 
-				if (line == null)
-					break;
+                if (line == null)
+                    break;
 
-				mode.writeLine(lineNumber, line, writer);
+                mode.writeLine(lineNumber, line, writer);
 
-				lineNumber++;
-			}
+                lineNumber++;
+            }
 
-		}
-		catch (IOException ex)
-		{
-			throw new RequestCycleException(
-				Tapestry.getString("InsertText.conversion-error"),
-				this,
-				ex);
-		}
-		finally
-		{
-			close(lineReader);
-			close(reader);
-		}
+        }
+        catch (IOException ex)
+        {
+            throw new RequestCycleException(
+                Tapestry.getString("InsertText.conversion-error"),
+                this,
+                ex);
+        }
+        finally
+        {
+            close(lineReader);
+            close(reader);
+        }
 
-	}
+    }
 
-	private void close(Reader reader)
-	{
-		if (reader == null)
-			return;
+    private void close(Reader reader)
+    {
+        if (reader == null)
+            return;
 
-		try
-		{
-			reader.close();
-		}
-		catch (IOException e)
-		{
-		}
-	}
+        try
+        {
+            reader.close();
+        }
+        catch (IOException e)
+        {
+        }
+    }
 }

@@ -24,7 +24,7 @@
  *
  */
 
-package net.sf.tapestry.util.ejb;
+package net.sf.tapestry.util.exception;
 
 import java.lang.reflect.*;
 import java.beans.*;
@@ -39,7 +39,7 @@ import java.io.*;
  *  from it.
  *
  *  @author Howard Ship
- *  @version $Id: ExceptionAnalyzer.java,v 1.7 2001/11/10 21:58:53 hship Exp $
+ *  @version $Id$
  */
 
 public class ExceptionAnalyzer

@@ -32,6 +32,7 @@ import com.primix.tapestry.event.*;
 import net.sf.tapestry.*;
 import net.sf.tapestry.event.*;
 import net.sf.tapestry.util.ejb.*;
+import net.sf.tapestry.util.exception.*;
 import net.sf.tapestry.util.prop.*;
 
 import com.primix.tapestry.util.prop.*;

@@ -72,7 +72,7 @@ import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.listener.ListenerMap;
 import net.sf.tapestry.pageload.PageSource;
 import net.sf.tapestry.spec.ApplicationSpecification;
-import net.sf.tapestry.util.ejb.ExceptionAnalyzer;
+import net.sf.tapestry.util.exception.ExceptionAnalyzer;
 import net.sf.tapestry.util.prop.PropertyHelper;
 
 /**

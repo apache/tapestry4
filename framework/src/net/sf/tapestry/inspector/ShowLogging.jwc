@@ -8,7 +8,7 @@
 	
   <bean name="delegate" class="net.sf.tapestry.inspector.InspectorValidationDelegate"/>
   
-  <bean name="categoryClass" class="net.sf.tapestry.inspector.EvenOdd">
+  <bean name="categoryClass" class="net.sf.tapestry.helper.EvenOdd">
     <set-property name="even">
       <static-value type="boolean">false</static-value>
     </set-property>
