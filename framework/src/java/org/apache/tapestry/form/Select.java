@@ -22,7 +22,6 @@ import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.request.RequestContext;
 
 /**
  *  Implements a component that manages an HTML &lt;select&gt; form element.

@@ -37,7 +37,6 @@ import org.apache.tapestry.StaleLinkException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.record.PageRecorderImpl;
 import org.apache.tapestry.record.PropertyPersistenceStrategySource;
-import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.AbsoluteURLBuilder;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.util.QueryParameterMap;
