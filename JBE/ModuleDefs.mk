@@ -31,9 +31,9 @@ include $(SYS_MAKEFILE_DIR)/CommonDefs.mk
 
 
 # Get the final source directory which is either specified by the
-# SOURCE_DIR variable, or defaults to the current directory.
+# SOURCE_DIR variable, or defaults to the "src" subdirectory.
 
-FINAL_SOURCE_DIR := $(firstword $(SOURCE_DIR) .)
+FINAL_SOURCE_DIR := $(firstword $(SOURCE_DIR) src)
 
 # Stamp file used to control copying of top-level resources (such
 # as EJB deployment descriptors).
