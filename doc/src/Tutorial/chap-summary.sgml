@@ -1,0 +1,57 @@
+<chapter id="summary">
+	<title>Further Study</>
+
+<para>
+The preceding chapters cover many of the basic aspects of Tapestry.  You should be comfortable 
+with basic Tapestry concepts:
+</>
+
+<itemizedlist>
+	<listitem>
+		<para>Seperation of presentation, business and control logic
+		</>
+	</>
+
+	<listitem>
+		<para>Use of JavaBeans properties as the source of dynamic data
+		</>
+	</>
+
+	<listitem>
+		<para>How bindings access JavaBeans properties to provide data to components
+		</>
+	</>
+
+	<listitem>
+		<para>How components wrap each other, allowing for the creation of very complicated 
+		components through aggregation
+		</>
+	</>
+
+	<listitem>
+		<para>
+		Different types of page properties (transient, dynamic, persistent)
+		</>
+	</>
+</>
+
+<para>
+Tapestry is capable of quite a bit more.  Also available within the Tapestry Examples package 
+(along with the tutorial code and this document) is the Primix Virtual Library application (Vlib).
+</>
+
+<para>
+Vlib is a full-blown J2EE application, that makes use of Tapestry as its front end, and a set of 
+session and entity Enterprise JavaBeans as its back end.
+</>
+
+<para>
+Vlib also demonstrates some of the other aspects of developing a Tapestry application.  It shows 
+how to create pages that are bookmarkable (meaning that their URL includes enough information 
+to reconstruct them in a subsequent session).  It shows how to handle logging in to an application, 
+and how to protect pages from being accessed until the user is logged in.  It has many specialized 
+reusable components for creating links to pages about books and people.
+</>
+
+</chapter>
+
