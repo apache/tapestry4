@@ -99,7 +99,7 @@ Starting in release 2.1, Tapestry includes this behavior, with some constraints 
 </para>
 
 <para>
-Part of the <link linkend="components.spec.parameter">specification for a parameter</link>
+Part of the &spec.parameter; specification for a parameter
 is the <emphasis>direction</emphasis>, which can be one of the following values:
 </para>
 
@@ -268,7 +268,7 @@ Tapestry components have two types of parameters: formal and informal.
 </para>
       <para>
 Formal parameters are parameters defined in the 
-<link linkend="components.spec.parameter">component specification</link>.  
+<link linkend="spec.parameter">component specification</link>.  
 Each formal parameter has a specific
 (case sensitive) name and may be required or optional.
 </para>
@@ -305,7 +305,7 @@ the <varname>href</varname> attribute, even if you supply a <varname>Href</varna
 </para>
       <para>
 Not all Tapestry components even allow informal parameters; this is explicitly 
-stated in the <link linkend="components.specification">component specification</link>.
+stated in the <link linkend="spec.component-specification">component specification</link>.
 </para>
       <note>
         <title>Informal Parameters that are Assets</title>
@@ -589,7 +589,7 @@ For example, the &TextField; component creates an
 <sgmltag class="starttag">input type=text</sgmltag>
 form element and it makes no sense for it to contain anything else.  
 Whether a component can have a body (and wrap other elements) is defined in the 
-<link linkend="components.specification.root">component's specification</link>.
+<link linkend="spec.component-specification">component's specification</link>.
 </para>
       <para>
 Tapestry includes a special component, &RenderBody;, 
@@ -643,7 +643,7 @@ integrated with the Java developer's code.
         <para>
 In many cases, a component doesn't allow a body, but one may be present in the HTML template.
 As usual, this is declared in
-the <link linkend="components.specification.root">component's specification</link>.
+the <link linkend="spec.component-specification">component's specification</link>.
 Tapestry considers that body to be a sample value, that exists to allow the HTML producer
 to verify the layout of the page.  Tapestry edits out the body.
 </para>
@@ -834,8 +834,8 @@ specific file (<literal>Border_fr_BE.properties</literal>) and continues downwar
 	
 <para>
 Components can gain access to their container's localized strings
-via the <link linkend="components.spec.bindings">&lt;string-binding&gt;</link>
-element in the <link linkend="components.specification">component specification</link>.
+via the &spec.string-binding;
+element in the component specification.
 </para>
 
 </section>
@@ -959,12 +959,11 @@ not into an additional component, but into a simple JavaBean.
 </para>
       <para>
 These additional beans, called helper beans, are defined in the component specification, in the
-<link linkend="components.spec.bean"><sgmltag class="starttag">bean</sgmltag></link> element.
+&spec.bean; element.
 Each bean has a unique name, a class to instantiate,
 and a lifecycle (which controls how long the component keeps a reference to the bean).  The specification 
 allows properties of the bean to be set as well, using
-the 
-<link linkend="components.spec.set-property"><sgmltag class="starttag">set-property</sgmltag></link> element.  
+the &spec.set-property; and &spec.set-string-property; elements.  
 Helper beans are accessed through the <varname>beans</varname> property of the component.
 </para>
       <para>

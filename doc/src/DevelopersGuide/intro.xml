@@ -134,7 +134,7 @@ this is automatically editted out when the HTML template is used by the framewor
       <para>
 The <sgmltag class="starttag">span</sgmltag> tag simply indicated where the Tapestry component
 will go ... it doesn't identify any of its behavior.  That is provided elsewhere, in
-a <link linkend="components.specification">component specification</link>.
+a <link linkend="spec.component-specification">component specification</link>.
 </para>
       <para>A portion of the page's specification file defines what
 the <varname>insertUserName</varname> component is and what it does:

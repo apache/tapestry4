@@ -77,35 +77,33 @@
     </copyright>
   </bookinfo>
   
-  <!--
-  
-  chap-intro;
-  
-  chap-beans;
-  
-  chap-components;
-  
-  chap-pages;
-  
-  chap-engine;
-  
-  chap-cycle;
-   
-  chap-apps;
-  
-  chap-coding;
-  
-  chap-coding-components;
-  
-  chap-script;
 
-  chap-inspector; 
+  
+  &chap-intro;
+  
+  &chap-beans;
+  
+  &chap-components;
+  
+  &chap-pages;
+  
+  &chap-engine;
+  
+  &chap-cycle;
+   
+  &chap-apps;
+  
+  &chap-coding;
+  
+  &chap-coding-components;
+  
+  &chap-script;
+
+  &chap-inspector; 
     
-  appendix-jars;
+  &appendix-jars;
   
-  appendix-faq;
-  
-  -->
+  &appendix-faq;
   
   &appendix-spec;
 

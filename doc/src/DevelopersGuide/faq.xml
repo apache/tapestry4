@@ -177,7 +177,7 @@ directory.  The end result is that
 	</para>
           <para>
 	You can set the value for such informal parameters
-	in the <link linkend="components.specification">component specification</link>, or
+	is bindings in the &spec.component; element, or
 	in the <link linkend="components.html-template">HTML template</link>.
 	</para>
         </answer>
@@ -454,7 +454,7 @@ the HTML template they wrap (for components with bodies).
 A useful shortcut is to use
 the <literal>copy-of</literal>
 attribute of the
-<link linkend="components.spec.component">component</link> element.
+&spec.component; element.
 </para>
 </answer>
 
