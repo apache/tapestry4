@@ -40,6 +40,7 @@ window.
     <component id="rollover" type="Rollover">
     	<binding name="image" expression="assets.logo"/>
     	<binding name="focus" expression="assets.inspector"/>
+        <static-binding name="alt">Inspector</static-binding>
     </component>
 
     <private-asset name="logo" resource-path="tapestry-logo.gif"/>
