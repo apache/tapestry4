@@ -467,6 +467,7 @@ public abstract class TableView
         Object objOldValue = cycle.getAttribute(ITableModelSource.TABLE_MODEL_SOURCE_ATTRIBUTE);
         cycle.setAttribute(ITableModelSource.TABLE_MODEL_SOURCE_ATTRIBUTE, this);
 
+        initialize();
         validateValues();
         super.renderComponent(writer, cycle);
 
