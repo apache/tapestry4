@@ -152,6 +152,14 @@ public interface ILibrarySpecification extends IPropertyHolder
     public Object getExtension(String name);
 
     /**
+     *  Returns true if the named extension exists (or can be instantiated),
+     *  returns false if the named extension has no specification.
+     * 
+     **/
+    
+    public boolean checkExtension(String name);
+
+    /**
      *  Invoked after the entire specification has been constructed
      *  to instantiate any extensions marked immediate.
      * 
