@@ -1,3 +1,12 @@
+* Sep 4 2001 hship
+
+framework:
+- More tweaking to ShowInspector scripts (Netscape 4 and 6 work, but have trouble with scrollbars)
+- Reinstate ILifecycle.java with temporary "bridging" code to the new page event model (in AbstractComponent)
+
+contrib:
+- Get sorting working in NN4 and NN6
+
 * Sep 3 2001 hship
 
 framework:
