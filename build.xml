@@ -292,6 +292,8 @@
 				<include name="ext/mckoidb.jar"/>
 				<include name="ext/org.mortbay.jetty.jar"/>
 				<include name="ext/javax.servlet.jar"/>
+				<include name="ext/jcommon-*.jar"/>
+				<include name="ext/jfreechart-*.jar"/>
 			</fileset>
 			<fileset dir="config/jboss/lib">
 				<include name="*.jar"/>
