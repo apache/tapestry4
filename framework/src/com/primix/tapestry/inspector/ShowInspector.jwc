@@ -3,6 +3,12 @@
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="com.primix.tapestry.inspector.ShowInspector" allow-body="no" allow-informal-parameters="no">
 
+<description>
+Includes the Inspector button on the page (which dynamically positions itself in the
+lower right corner).  Clicking the button raises the Tapestry Inspector in a pop-up
+window.
+</description>
+
 <component id="movieName1" type="Any">
   <static-binding name="element">PARAM</static-binding>
   <binding name="VALUE" property-path="assets.movie"/>
