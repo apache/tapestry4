@@ -16,6 +16,7 @@
   
   <parameter name="hidden" type="boolean" direction="in"/>
   
+  <reserved-parameter name="name"/>
   <reserved-parameter name="type"/>
   <reserved-parameter name="value"/>
   
