@@ -130,13 +130,15 @@ public class ExternalService extends AbstractService
                 ex);
         }
 
+        Object[] parameters = getParameters(cycle);
+
+        cycle.setServiceParameters(parameters);
+        
         page.validate(cycle);
         cycle.setPage(page);
 
-        Object[] parameters = getParameters(cycle);
-
         page.activateExternalPage(parameters, cycle);
-        
+
         // Render the response.
         engine.renderResponse(cycle, output);
 
