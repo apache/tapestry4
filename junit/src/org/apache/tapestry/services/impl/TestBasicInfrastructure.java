@@ -53,7 +53,6 @@ public class TestBasicInfrastructure extends HiveMindTestCase
     public void testServletInfoImpl()
     {
         ServletInfoImpl si = new ServletInfoImpl();
-        si.setStorage(new MockThreadLocalStorage());
 
         HttpServletRequest r = (HttpServletRequest) newMock(HttpServletRequest.class);
         HttpServletResponse p = (HttpServletResponse) newMock(HttpServletResponse.class);
