@@ -250,6 +250,11 @@ Remove unncessary constructor from test case classes.
 Changed mock unit tests to redirect System.out and System.err to log files rather than the console.	
 </action>
 
+<action type="update" dev="HLS" due-to="Glen Stampoultzis">
+Improve the documentation for the Palette component, providing a real example of CSS styles
+used with the component.	
+</action>
+
 
 			</release>
 		</changes>
