@@ -943,13 +943,15 @@ public abstract class AbstractEngine
 
                 if (output != null)
                     output.forceFlush();
-
-                cleanupAfterRequest(cycle);
             }
             catch (Exception ex)
             {
                 reportException(Tapestry.getMessage("AbstractEngine.exception-during-cleanup"), ex);
             }
+			finally
+			{
+                cleanupAfterRequest(cycle);
+			}
 
             if (_disableCaching)
             {
