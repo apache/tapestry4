@@ -10,7 +10,6 @@ INSTALL_DIR := ../../lib
 
 PROJ_CLASSPATH = \
 	$(INSTALL_DIR)/com.primix.tapestry.jar \
-	$(JBOSS_DIR)/lib/ext/jms.jar \
 	$(JBOSS_DIR)/lib/ext/mail.jar \
 	$(INSTALL_DIR)/log4j-core.jar
 

@@ -25,7 +25,7 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
 
-# This Makefile works with jBoss 2.0.
+# This Makefile works with jBoss 2.4.0.
 #
 # It requires that the environment variable JBOSS_DIR be set.  It should
 # be set to the root directory into which JBOSS was installed (this
@@ -48,9 +48,9 @@ include $(SYS_MAKEFILE_DIR)/Jar.mk
 # for jBoss
 
 MOD_CLASSPATH := \
-	$(JBOSS_DIR)/lib/ext/ejb2.0.jar \
-	$(JBOSS_DIR)/lib/ext/jndi.jar \
-	$(JBOSS_DIR)/lib/jdbc2_0-stdext.jar
+	$(JBOSS_DIR)/client/jboss-j2ee.jar \
+	$(JBOSS_DIR)/client/jndi.jar \
+	$(JBOSS_DIR)/lib/jboss-jdbc_ext.jar
 
 JBOSS_DEPLOY_DIR := $(JBOSS_DIR)/deploy
 
