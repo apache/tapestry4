@@ -20,6 +20,26 @@
   </developers>
 
   <votes>
+    
+    <vote title="Tapestry 3.0.2" date="Feb 14 2005" dev="HLS">
+      
+      <motion>
+        I think we should just be done with 3.0.2.  All the bugs that are
+going to get fixed, have been.  The next version of OGNL should just
+drop in, and since its not shipped with the framework anyway, its not
+a big deal.
+        
+      </motion>
+      
+      <response>
+        HLS, PF, GL, RLS, DS, EH: +1
+      </response>
+      
+      <response>
+        HK, TSV, MB: +0
+      </response>
+      
+    </vote> 
   	
   	<vote title="Tapestry 3.0 FINAL" date="Apr 14 2004" dev="HLS">
   	
@@ -247,7 +267,7 @@ NextGen) be released as version number 3.0.
   </todo>
 
   <changes>
-  <release version="3.0.2" date="Dec ?? 2004">
+  <release version="3.0.2" date="Feb 14 2005">
     <action type="fix" dev="EH" fixes-bug="TAPESTRY-214, TAPESTRY-216, TAPESTRY-227">
       Fix build settings for JDOM and Jetty.
     </action>
