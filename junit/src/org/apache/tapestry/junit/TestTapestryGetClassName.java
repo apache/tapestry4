@@ -53,40 +53,59 @@
  *
  */
 
-package org.apache.tapestry.junit.mock.c21;
+package org.apache.tapestry.junit;
 
-import java.io.IOException;
+import org.apache.tapestry.Tapestry;
 
-import javax.servlet.ServletException;
-
-import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
-import org.apache.tapestry.engine.IEngineService;
-import org.apache.tapestry.engine.IEngineServiceView;
-import org.apache.tapestry.engine.ILink;
-import org.apache.tapestry.request.ResponseOutputStream;
-
-public class NameMismatchService implements IEngineService
+/**
+ *  Tests for {@link org.apache.tapestry.Tapestry#getClassName(Class)}.
+ *
+ *  @author Howard Lewis Ship
+ *  @version $Id$
+ *  @since 2.4
+ *
+ **/
+public class TestTapestryGetClassName extends TapestryTestCase
 {
-
-    public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters)
+    public TestTapestryGetClassName(String name)
     {
-        return null;
+        super(name);
     }
 
-    public boolean service(
-        IEngineServiceView engine,
-        IRequestCycle cycle,
-        ResponseOutputStream output)
-        throws RequestCycleException, ServletException, IOException
+    private void attempt(String expected, Class subject)
     {
-        return false;
+        String actual = Tapestry.getClassName(subject);
+
+        assertEquals(expected, actual);
     }
 
-    public String getName()
+    public void testObject()
     {
-        return "IncorrectName";
+        attempt("java.lang.Object", Object.class);
     }
 
+    public void testObjectArray()
+    {
+        attempt("java.lang.Object[]", Object[].class);
+    }
+
+    public void testStringArray()
+    {
+        attempt("java.lang.String[]", String[].class);
+    }
+
+    public void testMultiArray()
+    {
+        attempt("java.lang.String[][]", String[][].class);
+    }
+
+    public void testScalar()
+    {
+        attempt("boolean", boolean.class);
+    }
+
+    public void testScalarArray()
+    {
+        attempt("int[]", int[].class);
+    }
 }
