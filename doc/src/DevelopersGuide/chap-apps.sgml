@@ -131,32 +131,46 @@ The following example demonstrates this idea.  Visit is a
 hypothetical visit object that uses EJBs.
 </>
 
-&start-listing;public IActionListener getListener()
+&start-listing;
+public IActionListener getListener()
 {
-	return new IActionListener()
-	{
-		public void actionTriggered(IComponent component,
-						IRequestCycle cycle)
-		{
-
-			Visit visit;
-			<replaceable>ISomeHomeInterface</> home;
+  return new IActionListener()
+  {
+    public void actionTriggered(IComponent component,
+                                IRequestCycle cycle)
+    {
+      Visit visit; <co id="apps.common-logic.ex.visit">
+      <replaceable>ISomeHomeInterface</> home;
 	
-			visit = (Visit)getVisit();
+      visit = (Visit)getVisit();
 	
-			home = visit.<replaceable>getSomeHomeInterface</>();
+      home = visit.<replaceable>getSomeHomeInterface</>();
 
-			try
-			{
-				// etc.
-			}
-			catch (RemoteException e)
-			{
-				throw new ApplicationRuntimeException(e);
-			}
-		}
-	};
-}&end-listing;
+      try
+      {
+      	// etc.
+      }
+      catch (RemoteException ex)
+      {
+        throw new ApplicationRuntimeException(ex);
+      }
+    }
+  };
+}
+&end-listing;
+
+<para>
+<calloutlist>
+  <callout arearefs="apps.common-logic.ex.visit">
+  <para>
+  Each application can freely define the type of the visit object,
+  and its is common to call the class "Visit".  Another option is
+  to create a subclass for the engine and store home interfaces
+  there.
+  </>
+  </callout>
+</calloutlist>
+</para>
 
 	</section>
 

@@ -18,8 +18,7 @@ how they are 'wired up', and (less often) any assets used by the component.
 <para>
 At runtime, the specification is used to identify and instantiate a class 
 for the component.  When the page containing the component is rendered, the 
-component will access its HTML template (whose location is defined 
-in the specification) to find the static HTML and embedded 
+component will access its HTML template to find the static HTML and embedded 
 components it will render.
 </>
 

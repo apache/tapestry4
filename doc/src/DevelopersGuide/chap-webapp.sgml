@@ -43,7 +43,7 @@ various elements.
 
 <para>
 Interactivity in Tapestry is component based.  If a component is interactive, such as 
-an image button with a hyperlink (<literal>&lt;a</>), clicking on the link 
+an image button with a hyperlink (<sgmltag class=starttag>a</>), clicking on the link 
 invokes a method on the component.  All interactivity on a 
 page is implemented by components on the page.
 </>

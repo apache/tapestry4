@@ -599,6 +599,65 @@ A name for the the component, used when formulating error messages.
 
 	</section>
 
+	<section id="builtin.NumericField">
+		<title>NumericField</>
+
+<para>
+A type of validating text field that is used to edit any kind of numeric property.
+</>
+
+<variablelist>
+	<title>Parameters</>
+
+	<varlistentry>
+		<term>value</>
+		<listitem>
+			<para>The numeric property to edit.</>
+		</>
+	</>
+
+	<varlistentry>
+	<term>displayName</term>
+	<listitem>
+	<para>
+A name for the the component, used when formulating error messages.
+</>
+</>
+</>
+
+	<varlistentry>
+		<term>delegate</>
+		<listitem>
+			<para>An <classname>IValidationDelegate</> that is used to 
+			handle validation exceptions.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>required</>
+		<listitem>
+			<para>If true, a value must be provided by the user.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>minimum</>
+		<listitem>
+			<para>Optional minimum acceptible value.</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>maximum</>
+		<listitem>
+			<para>Optional maximum acceptible value.</>
+		</>
+	</>
+</>
+
+	</section>
+
+
 	<section id="builtin.Option">
 		<title>Option</>
 
