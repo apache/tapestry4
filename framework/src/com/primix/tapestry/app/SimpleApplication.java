@@ -79,7 +79,7 @@ public class SimpleApplication extends AbstractApplication
 	*
 	*/
 
-	protected void cleanupAfterRequest()
+	protected void cleanupAfterRequest(IRequestCycle cycle)
 	{
 		Iterator i;
 		Map.Entry entry;

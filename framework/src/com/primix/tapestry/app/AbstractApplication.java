@@ -107,7 +107,7 @@ public abstract class AbstractApplication
 
 	/**
 	*  Servlet context attribute name for the default {@link ITemplateSource}
-	*  instance.
+	*  instance.  The application's name is appended.
 	*
 	*/
 
@@ -116,7 +116,7 @@ public abstract class AbstractApplication
 
 	/**
 	*  Servlet context attribute name for the default {@link ISpecificationSource}
-	*  instance.
+	*  instance.  The application's name is appended.
 	*
 	*/
 
@@ -233,8 +233,9 @@ public abstract class AbstractApplication
 
 			home.validate(cycle);
 
-			// If that worked, then render it.
+			// If it validates, then redner it.
 
+			cycle.setPage(home);
 			render(cycle, output);
 
 			if (monitor != null)
@@ -496,7 +497,7 @@ public abstract class AbstractApplication
 	*
 	*/
 
-	protected abstract void cleanupAfterRequest();
+	protected abstract void cleanupAfterRequest(IRequestCycle cycle);
 
 	/**
 	*  Invoked by {@link #getService(String)} to construct a named service.  This method
@@ -564,10 +565,7 @@ public abstract class AbstractApplication
 
 	public void extendDescription(StringBuffer buffer)
 	{
-		if (specification == null)
-			buffer.append("<specification not loaded>");
-		else
-			buffer.append(specification.getName());
+		buffer.append(specification.getName());
 
 		if (sessionId != null)
 		{
@@ -899,7 +897,7 @@ public abstract class AbstractApplication
 			if (output != null)
 				output.forceClose();
 				
-			cleanupAfterRequest();
+			cleanupAfterRequest(cycle);
 
 		}
 
@@ -1125,6 +1123,7 @@ public abstract class AbstractApplication
 		RequestContext context;
 		ServletContext servletContext;
 		IMonitor monitor;
+		String name;
 
 		monitor = cycle.getMonitor();
 
@@ -1135,8 +1134,10 @@ public abstract class AbstractApplication
 
 		servletContext = context.getServlet().getServletContext();
 
-		servletContext.removeAttribute(TEMPLATE_SOURCE_NAME);
-		servletContext.removeAttribute(SPECIFICATION_SOURCE_NAME);
+		name = specification.getName();
+
+		servletContext.removeAttribute(TEMPLATE_SOURCE_NAME + "." + name);
+		servletContext.removeAttribute(SPECIFICATION_SOURCE_NAME + "." + name);
 		servletContext.removeAttribute(PAGE_SOURCE_NAME + "." + specification.getName());
 
 		restart(cycle);
@@ -1172,7 +1173,7 @@ public abstract class AbstractApplication
 	*  <p>The context path is only defined under Servlet API 2.2.  It can
 	*  be accessed via the method {@link HttpServletRequest#getContextPath()}.
 	*  Since Tapestry is designed to work with Servlet API 2.1, we don't use this.
-	*  Instead, we require that the servlet initial parameter
+	*  Instead, we require that the <i>context</i> initial parameter
 	* <code>com.primix.tapestry.context-path</code> be defined with the
 	* correct value, typically "/<i>webapp</i>".
 	*
@@ -1201,6 +1202,7 @@ public abstract class AbstractApplication
 		ServletContext servletContext = null;
 		String name;
 		String servletPath;
+		String applicationName;
 
 		servlet = context.getServlet();
 		
@@ -1210,7 +1212,8 @@ public abstract class AbstractApplication
 		{
 			servletPath = context.getRequest().getServletPath();
 
-			contextPath = servlet.getInitParameter("com.primix.tapestry.context-path");
+			contextPath = servlet.getInitParameter(
+				"com.primix.tapestry.context-path");
 			
 			if (contextPath == null)
 				servletPrefix = servletPath;
@@ -1218,41 +1221,39 @@ public abstract class AbstractApplication
 				servletPrefix = contextPath + servletPath;
 		}	
 
-		// Need to redo a bunch of this because of class loader issues related
-		// to IResourceResolver.  Each Tapestry app will need its own template source
-		// and page source.  Possibly, there should be chaining, such that templates
-		// and specifications provided by the framework can come from dedicated
-		// sources .. this allows greater sharing.  Somewhat academic though, since
-		// typically only a single Tapestry application will be running within
-		// a single servlet container or ServletContext.
+		applicationName = specification.getName();
 
 		if (templateSource == null)
 		{
+			name = TEMPLATE_SOURCE_NAME + "." + applicationName;
+
 			templateSource = 
-				(ITemplateSource)servletContext.getAttribute(TEMPLATE_SOURCE_NAME);
+				(ITemplateSource)servletContext.getAttribute(name);
 
 			if (templateSource == null)
 				templateSource = new DefaultTemplateSource(getResourceResolver());
 
-			servletContext.setAttribute(TEMPLATE_SOURCE_NAME, templateSource);
+			servletContext.setAttribute(name, templateSource);
 		}
 
 		if (specificationSource == null)
 		{
+			name = SPECIFICATION_SOURCE_NAME + "." + applicationName;
+
 			specificationSource = 
-				(ISpecificationSource)servletContext.getAttribute(SPECIFICATION_SOURCE_NAME);
+				(ISpecificationSource)servletContext.getAttribute(name);
 
 			if (specificationSource == null)
 				specificationSource = 
 				new DefaultSpecificationSource(getResourceResolver(), 
                 	specification);
 
-			servletContext.setAttribute(SPECIFICATION_SOURCE_NAME, specificationSource);
+			servletContext.setAttribute(name, specificationSource);
 		}
 
 		if (pageSource == null)
 		{
-			name = PAGE_SOURCE_NAME + "." + specification.getName();
+			name = PAGE_SOURCE_NAME + "." + applicationName;
 
 			pageSource = (PageSource)servletContext.getAttribute(name);
 
