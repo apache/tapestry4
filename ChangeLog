@@ -1,3 +1,14 @@
+* Aug 21 2001 hship
+
+contrib:
+- Remove outdated comments (concerning "mirror" parameter) from the Palette component.
+
+framework:
+- Added JanitorTask class and ICleanable interface, a framework for cleaning up
+  objects periodically.
+- Made Pool implement ICleanable and implemented a simple, generational strategy
+  for culling unneeded pooled objects.
+
 * Aug 17 2001 hship
 
 Change Makefile to enable the Tapestry inspector for the Extranet site.
@@ -76,7 +87,7 @@ JBE:
 - Fix DocBook to work with replacement HTML templates
 
 doc:
-- Use Tapestry.xsl template, which restores grey background for programlisting, etc. 
+- Use Tapestry.xsl template, which restores grey background for programlisting, etc.
 - Update JBE documentation to describe how to use HTML Stylesheet with DocBook
 
 contrib:
@@ -126,11 +137,11 @@ Release 1.0.2
 
 Add new component: ListEdit.
 Fix up some of the documentation.
-Revise the Inspector to use ListEdit (on the logging tag), 
+Revise the Inspector to use ListEdit (on the logging tag),
 also use the new HTML template syntax.
 Change the Inspector and some of the tutorials to use listener methods (instead of listener objects).
 Change the template parser to "eat up" whitespace after closing tags and comments.
-Refactor AbstractValidatingTextField and TextField (forming AbtractTextField) 
+Refactor AbstractValidatingTextField and TextField (forming AbtractTextField)
 to avoid the "captive" text field.
 
 * Jul 5 2001 hship
@@ -141,9 +152,9 @@ to avoid the "captive" text field.
 * Jul 3 2001 hship
 
 framework:
-- Comments at the beginning of the HTML template, or immediately following a dynamic tag, 
+- Comments at the beginning of the HTML template, or immediately following a dynamic tag,
   were being ignored.
-- Modify BaseComponent to not overwrite existing bindings with bindings from 
+- Modify BaseComponent to not overwrite existing bindings with bindings from
   HTML template attributes.
 - Have TemplateToken record the actual tag from the HTML template (in open and close tags).
 - Display the actual tag plus any HTML attributes in the Inspector's template view.
@@ -196,8 +207,8 @@ Distribute the WAP hello-world example in the full distribution.
 framework:
 - Change the way the Body component preloads images to work properly with
   text-only browsers.
-- fix conflict between ApplicationRuntimeException and 
-- RollbackException concerning the rootCause property (duplicated 
+- fix conflict between ApplicationRuntimeException and
+- RollbackException concerning the rootCause property (duplicated
   in RollbackException, which confused ExceptionAnalyzer).
 - Add package.html files to all directories.
 - Other Javadoc related changes.
@@ -206,7 +217,7 @@ contrib:
 - Improve the Palette component to use images for the buttons
 
 [ #435331 ] add index binding to Foreach
-[ #436219 ] Back out #431137 
+[ #436219 ] Back out #431137
 
 * Jun 21 2001 hship
 
@@ -339,7 +350,7 @@ Convert all existing components and pages to the 1.1 DTD.
 Add an XSL style sheet for converting from the 1.0 to the 1.1 DTD.
 Add a new script, /com/primix/tapestry/form/SelectSubmit.script, to handle making a select
 automatically submit the form it is contained within.
-Removed the deprecated immediateSubmit property (and related constructors) from 
+Removed the deprecated immediateSubmit property (and related constructors) from
 the SelectPropertySelectionRenderer class.
 Minor Javadoc corrections and fixes.
 Convert some of the examples to use the 1.1 DTD.
