@@ -1,0 +1,10 @@
+* Sep 8 2000 hship
+
+Started ChangeLog for Examples, some time after release 0.2.0.
+Vlib:
+  Add a ShowInspector component to the Border.
+Tutorial:
+  Add a ShowInspector component to the Border.
+  Change the Survey tutorial to properly set up the inputSex component
+  (the API for PropertySelection has changed).
+

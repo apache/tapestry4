@@ -8,11 +8,13 @@ MODULE_NAME = SessionTracker
 
 LOCAL_CLASSPATH = ../../lib/log.jar
 
-EJBC_OPT = -keepgenerated
+# EJBC_OPT = -keepgenerated
 
 INSTALL_DIR = ../../lib
 
-include $(SYS_MAKEFILE_DIR)/WebLogic.mk
+META_INF_RESOURCES = orion-ejb-jar.xml
+
+include $(SYS_MAKEFILE_DIR)/Jar.mk
 
 
 
