@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry.parse;
+
+import com.primix.tapestry.*;
+
 /**
  *  Renders static HTML text from a template.  To neaten up the response HTML, leading
  *  and trailing whitespace is reduced to a single character.
@@ -34,10 +38,6 @@
  * @version $Id$
  */
 
-
-package com.primix.tapestry.parse;
-
-import com.primix.tapestry.*;
 
 public class RenderTemplateHTML implements IRender
 {

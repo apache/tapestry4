@@ -26,6 +26,19 @@
  *
  */
 
+package com.primix.tapestry.engine;
+
+import com.primix.tapestry.components.*;
+import com.primix.tapestry.record.*;
+import java.util.*;
+import com.primix.tapestry.*;
+import com.primix.tapestry.pageload.*;
+import java.io.*;
+import javax.servlet.*;
+
+// Appease Javadoc
+import javax.servlet.http.*;
+
 /**
  *  Concrete implementation of {@link IEngine} used for relatively
  *  small applications.  All page state information is maintained in memory.  Since
@@ -36,16 +49,6 @@
  *  @version $Id$
  */
 
-
-package com.primix.tapestry.engine;
-
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.record.*;
-import java.util.*;
-import com.primix.tapestry.*;
-import com.primix.tapestry.pageload.*;
-import java.io.*;
-import javax.servlet.*;
 
 public class SimpleEngine 
 extends AbstractEngine

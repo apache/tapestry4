@@ -27,6 +27,12 @@
  */
 
 
+package com.primix.tapestry.inspector;
+
+import com.primix.tapestry.*;
+import java.util.*;
+import com.primix.tapestry.parse.*;
+
 /**
  *  Component of the {@link Inspector} page used to display
  *  the ids and types of all embedded components.
@@ -37,12 +43,6 @@
  *
  */
  
-package com.primix.tapestry.inspector;
-
-import com.primix.tapestry.*;
-import java.util.*;
-import com.primix.tapestry.parse.*;
-
 public class ShowTemplate
 extends BaseComponent
 implements IDirect

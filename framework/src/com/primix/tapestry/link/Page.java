@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry.link;
+
+import com.primix.tapestry.*;
+
 /**
  *  A component for creating a navigation link to another page, 
  *  using the page service.
@@ -91,10 +95,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry.link;
-
-import com.primix.tapestry.*;
 
 public class Page extends AbstractServiceLink
 {

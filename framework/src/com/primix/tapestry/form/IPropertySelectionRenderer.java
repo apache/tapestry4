@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry.form;
+
+import com.primix.tapestry.*;
+
 /**
  *  Defines an object that works with a {@link PropertySelection} component
  *  to render the individual elements obtained from the {@link IPropertySelectionModel model}.
@@ -35,10 +39,6 @@
  *
  */
  
-package com.primix.tapestry.form;
-
-import com.primix.tapestry.*;
-
 public interface IPropertySelectionRenderer
 {
 	/**

@@ -26,6 +26,18 @@
  *
  */
 
+package com.primix.tapestry.pageload;
+
+import javax.servlet.*;
+import com.primix.tapestry.util.MultiKey;
+import com.primix.tapestry.util.pool.*;
+import com.primix.tapestry.*;
+import com.primix.tapestry.event.*;
+import com.primix.tapestry.spec.*;
+import java.util.*;
+import com.primix.tapestry.binding.*;
+import com.primix.tapestry.asset.*;
+
 /**
  *  A source for pages for a particular application.  Each application
  *  should have its own <code>PageSource</code>, storing it into the
@@ -38,10 +50,10 @@
  *
  *  <p>During development, it is useful to occasionally disable pooling of pages.
  *  This will slow down requests as new page object hierarchies will have to be
- *  create for each request.  However, it will identify the common Tapestry
+ *  created for each request.  However, it will identify a common Tapestry
  *  developer failure:  expecting transient page properties to be available
  *  on subsequent request cycles (this is usually related to
- *  an incomplete implementation of {@link IPage#detach()}.
+ *  an incomplete implementation of {@link IPage#detach()}).
  *
  *  <p>Setting the JVM system property
  * <code>com.primix.tapestry.disable-page-pool</code>
@@ -54,6 +66,7 @@
  *  <li>{@link FieldBinding}
  *  <li>{@link StaticBinding}
  *  <li>{@link ExternalAsset}
+ *  <li>{@link ContextAsset}
  *  </ul>
  *
  *  <p>This caching allows common objects to be created once, and
@@ -68,18 +81,6 @@
  *  @version $Id$
  */
 
-
-package com.primix.tapestry.pageload;
-
-import javax.servlet.*;
-import com.primix.tapestry.util.MultiKey;
-import com.primix.tapestry.util.pool.*;
-import com.primix.tapestry.*;
-import com.primix.tapestry.event.*;
-import com.primix.tapestry.spec.*;
-import java.util.*;
-import com.primix.tapestry.binding.*;
-import com.primix.tapestry.asset.*;
 
 public class PageSource 
     implements IPageSource

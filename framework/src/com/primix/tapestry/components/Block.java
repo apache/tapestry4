@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry.components;
+
+import com.primix.tapestry.*;
+
 /**
  *  Prevents its contents from being rendered until triggered by
  *  an {@link InsertBlock} component.
@@ -46,10 +50,6 @@
  *  @since 0.2.9
  */
  
-package com.primix.tapestry.components;
-
-import com.primix.tapestry.*;
-
 public class Block
 extends AbstractComponent
 {

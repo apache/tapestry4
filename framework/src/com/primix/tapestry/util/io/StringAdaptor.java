@@ -26,6 +26,11 @@
  *
  */
 
+package com.primix.tapestry.util.io;
+
+import java.util.*;
+import java.io.*;
+
 /**
  *  Squeezes a String (which is pretty simple, most of the time).
  *
@@ -33,11 +38,6 @@
  *  @version $Id$
  *
  */
-
-package com.primix.tapestry.util.io;
-
-import java.util.*;
-import java.io.*;
 
 class StringAdaptor
 implements ISqueezeAdaptor

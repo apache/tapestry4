@@ -26,6 +26,11 @@
  *
  */
 
+package com.primix.tapestry.html;
+
+import com.primix.tapestry.*;
+import java.util.*;
+
 /**
  *  Component for creating a standard 'shell' for a page, which comprises
  *  the &lt;html&gt; and &lt;head&gt; portions of the page.
@@ -87,11 +92,6 @@
  *  @version $Id$
  *  @author Howard Ship
  */
-
-package com.primix.tapestry.html;
-
-import com.primix.tapestry.*;
-import java.util.*;
 
 public class Shell extends AbstractComponent
 {

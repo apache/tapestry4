@@ -26,6 +26,14 @@
  *
  */
 
+package com.primix.tapestry.asset;
+
+import java.net.*;
+import javax.servlet.*;
+import java.io.*;
+import com.primix.tapestry.*;
+import java.util.*;
+
 /**
  *  A service for building URLs to and accessing {@link IAsset}s.
  *  Most of the work is deferred to the {@link IAsset} instance.
@@ -44,14 +52,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry.asset;
-
-import java.net.*;
-import javax.servlet.*;
-import java.io.*;
-import com.primix.tapestry.*;
-import java.util.*;
 
 public class AssetService implements IEngineService
 {

@@ -26,6 +26,8 @@
  *
  */
 
+package com.primix.tapestry;
+
 /**
  * Defines a listener to an {@link IDirect} component, which is a how the
  * application produces behavior when
@@ -34,8 +36,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry;
 
 public interface IDirectListener
 {

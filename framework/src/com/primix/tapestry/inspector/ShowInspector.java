@@ -27,6 +27,13 @@
  */
 
 
+package com.primix.tapestry.inspector;
+
+import com.primix.tapestry.*;
+
+// Appease Javadoc
+import com.primix.tapestry.html.*;
+
 /**
  *  Component that can be placed into application pages that will launch
  *  the inspector in a new window.
@@ -42,10 +49,6 @@
  *
  */
  
-
-package com.primix.tapestry.inspector;
-
-import com.primix.tapestry.*;
 
 public class ShowInspector extends BaseComponent
 {

@@ -26,6 +26,11 @@
  *
  */
 
+package com.primix.tapestry.util.io;
+
+import java.util.*;
+import java.io.*;
+
 /**
  *  Squeezes a {@link Boolean}.
  *
@@ -34,11 +39,6 @@
  *
  */
 
-
-package com.primix.tapestry.util.io;
-
-import java.util.*;
-import java.io.*;
 
 class BooleanAdaptor
 implements ISqueezeAdaptor

@@ -26,6 +26,12 @@
  *
  */
 
+package com.primix.tapestry.spec;
+
+import com.primix.tapestry.util.*;
+import com.primix.tapestry.*;
+import java.util.*;
+
 /**
  * Defines a contained component.  This includes the information needed to
  * get the contained component's specification, as well as any bindings
@@ -34,12 +40,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry.spec;
-
-import com.primix.tapestry.util.*;
-import com.primix.tapestry.*;
-import java.util.*;
 
 public class ContainedComponent
 {

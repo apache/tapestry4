@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry.components;
+
+import com.primix.tapestry.*;
+
 /**
  *  A conditional element on a page.  Will render its wrapped elements
  *  zero or one times.
@@ -59,7 +63,7 @@
  *  <td>no</td>
  *  <td>false</td>
  *  <td>If true, then the condition is inverted.  This is useful for simulating
- *  and else clause.</td>
+ *  an else clause.</td>
  *  </tr>
  * </table>
  *
@@ -69,10 +73,6 @@
  *  @version $Id$
  */
 
-
-package com.primix.tapestry.components;
-
-import com.primix.tapestry.*;
 
 public class Conditional extends AbstractComponent
 {

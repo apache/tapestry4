@@ -26,6 +26,16 @@
  *
  */
 
+package com.primix.tapestry.engine;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.parse.*;
+import com.primix.tapestry.util.*;
+import java.io.*;
+import java.util.*;
+import java.net.URL;
+import org.apache.log4j.*;
+
 /**
  *  Default implementation of {@link ITemplateSource}.  Templates, once parsed,
  *  stay in memory until explicitly cleared.
@@ -37,16 +47,6 @@
  * @version $Id$
  */
 
-
-package com.primix.tapestry.engine;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.parse.*;
-import com.primix.tapestry.util.*;
-import java.io.*;
-import java.util.*;
-import java.net.URL;
-import org.apache.log4j.*;
 
 public class DefaultTemplateSource 
 implements ITemplateSource

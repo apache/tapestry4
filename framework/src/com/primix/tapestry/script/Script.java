@@ -26,6 +26,16 @@
  *
  */
 
+package com.primix.tapestry.script;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.html.*;
+import com.primix.tapestry.util.xml.*;
+import java.util.*;
+import java.io.*;
+import java.net.*;
+import org.apache.log4j.*;
+
 /**
  *  Works with the {@link Body} component to add a script (and perhaps some initialization) 
  *  to the HTML response.
@@ -80,16 +90,6 @@
  *  @version $Id$
  *
  */
-
-package com.primix.tapestry.script;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.html.*;
-import com.primix.tapestry.util.xml.*;
-import java.util.*;
-import java.io.*;
-import java.net.*;
-import org.apache.log4j.*;
 
 public class Script
 extends AbstractComponent

@@ -26,6 +26,16 @@
  *
  */
 
+package com.primix.tapestry.record;
+
+import com.primix.tapestry.*;
+import java.util.*;
+import com.primix.tapestry.util.*;
+import java.io.*;
+
+// Appease Javadoc
+import com.primix.tapestry.engine.*;
+
 /**
  *  Simple implementation of {@link IPageRecorder}
  *  that stores page changes in-memory using
@@ -39,17 +49,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry.record;
-
-import com.primix.tapestry.*;
-import java.util.*;
-import com.primix.tapestry.util.*;
-import java.io.*;
-
-// Appease Javadoc
-import com.primix.tapestry.engine.*;
-
 
 public class SimplePageRecorder 
 extends PageRecorder

@@ -26,6 +26,11 @@
  *
  */
 
+package com.primix.tapestry.util.exception;
+
+import java.util.*;
+import java.io.Serializable;
+
 /**
  *  A description of an <code>Exception</code>.  This is useful when presenting an
  *  exception (in output or on a web page).
@@ -37,11 +42,6 @@
  *  @version $Id$
  */
 
-
-package com.primix.tapestry.util.exception;
-
-import java.util.*;
-import java.io.Serializable;
 
 public class ExceptionDescription
 implements Serializable

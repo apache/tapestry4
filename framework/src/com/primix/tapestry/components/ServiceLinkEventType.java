@@ -26,6 +26,10 @@
  *
  */
  
+package com.primix.tapestry.components;
+
+import com.primix.tapestry.util.*;
+
 /**
  *  Different types of JavaScript events that an {@link IServiceLink}
  *  can provide handlers for.
@@ -35,10 +39,6 @@
  *  @since 0.2.9
  *
  */
-
-package com.primix.tapestry.components;
-
-import com.primix.tapestry.util.*;
 
 public class ServiceLinkEventType
 extends Enum

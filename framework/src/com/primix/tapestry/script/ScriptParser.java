@@ -26,6 +26,19 @@
  *
  */
 
+package com.primix.tapestry.script;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.html.*;
+import com.primix.tapestry.spec.*;
+import com.primix.tapestry.util.*;
+import com.primix.tapestry.util.xml.*;
+import org.w3c.dom.*;
+import java.io.*;
+import java.util.*;
+import org.xml.sax.*;
+import org.apache.log4j.*;
+
 /**
  *  Parses a Tapestry Script, an XML file defined by the public identifier
  *  <code>-//Primix Solutions//Tapestry Script 1.0//EN</code>.
@@ -43,19 +56,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry.script;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.html.*;
-import com.primix.tapestry.spec.*;
-import com.primix.tapestry.util.*;
-import com.primix.tapestry.util.xml.*;
-import org.w3c.dom.*;
-import java.io.*;
-import java.util.*;
-import org.xml.sax.*;
-import org.apache.log4j.*;
 
 public class ScriptParser
 extends AbstractDocumentParser

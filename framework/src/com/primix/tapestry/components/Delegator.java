@@ -26,10 +26,14 @@
  *
  */
 
+package com.primix.tapestry.components;
+
+import com.primix.tapestry.*;
+
 /**
  *  A component which delegates it's behavior to another object.
  *
-  * <table border=1>
+ * <table border=1>
  * <tr> 
  *    <th>Parameter</th>
  *    <th>Type</th>
@@ -55,10 +59,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry.components;
-
-import com.primix.tapestry.*;
 
 public class Delegator extends AbstractComponent
 {

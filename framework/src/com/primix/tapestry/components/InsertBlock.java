@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry.components;
+
+import com.primix.tapestry.*;
+
 /**
  *  Renders the text and components wrapped by a {@link Block} component.
  *
@@ -55,10 +59,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry.components;
-
-import com.primix.tapestry.*;
 
 public class InsertBlock extends AbstractComponent
 {

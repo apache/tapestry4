@@ -26,6 +26,15 @@
  *
  */
 
+package com.primix.tapestry;
+
+import java.io.Serializable;
+import com.primix.tapestry.util.prop.*;
+import com.primix.tapestry.event.*;
+import com.primix.tapestry.spec.*;
+import java.util.*;
+
+
 /**
  *  Abstract base class implementing the {@link IComponent} interface.
  *
@@ -36,14 +45,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry;
-
-import java.io.Serializable;
-import com.primix.tapestry.util.prop.*;
-import com.primix.tapestry.event.*;
-import com.primix.tapestry.spec.*;
-import java.util.*;
 
 public abstract class AbstractComponent implements IComponent
 {

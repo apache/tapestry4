@@ -27,6 +27,12 @@
  *
  */
 
+package com.primix.tapestry.components;
+
+import com.primix.tapestry.util.*;
+import java.util.*;
+import com.primix.tapestry.*;
+
 /**
  *  Repeatedly renders its wrapped contents while iterating through
  *  a list of values.
@@ -109,12 +115,6 @@
  */
 
 
-package com.primix.tapestry.components;
-
-import com.primix.tapestry.util.*;
-import java.util.*;
-import com.primix.tapestry.*;
-
 public class Foreach extends AbstractComponent
 {
 	private IBinding sourceBinding;
@@ -187,7 +187,7 @@ public class Foreach extends AbstractComponent
 			return Arrays.asList(array).iterator();
 		}                        
 
-		// Not a value value, return null to signal so.
+		// Not a known source class, return null to signal so.
 
 		return null;
 	}
@@ -201,16 +201,6 @@ public class Foreach extends AbstractComponent
 	*  Gets the source binding and iterates through
 	*  its values.  For each, it updates the value binding and render's its wrapped elements.
 	*
-	*  <table border=1>
-	*  <tr> <th colspan=4>Binding access</th> </tr>
-	*  <tr> <th colspan=2> Render cycle </th> <th colspan=2> Rewind cycle </th> </tr>
-	*  <tr> <th> Binding </th> <th> R/W </th> <th> Binding </th> <th> R/W </th> </tr>
-	*  <tr> <td> source </td> <td>R</td> <td> source </td> <td>R</td> </tr>
-	*	<tr> <td> first </td> <td>W</td> <td> first </td> <td>W</td> </tr>
-	*  <tr> <td> last </td> <td>W</td>  <td> last </td> <td>W</td>  </tr>
-	*  <tr> <td> value </td> </td>W</td> <td> value </td> <td>W</td> </tr>
-	*  </table>
-
 	*/
 
 	public void render(IResponseWriter writer, IRequestCycle cycle) 

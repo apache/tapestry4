@@ -27,6 +27,14 @@
  */
 
 
+package com.primix.tapestry.inspector;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.form.*;
+import com.primix.tapestry.valid.*;
+import java.util.*;
+import org.apache.log4j.*;
+
 /**
  *  Component of the {@link Inspector} page used control log4j logging
  *  behavior.
@@ -36,14 +44,6 @@
  *  @since 0.2.9
  */
  
-package com.primix.tapestry.inspector;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.form.*;
-import com.primix.tapestry.valid.*;
-import java.util.*;
-import org.apache.log4j.*;
-
 public class ShowLogging extends BaseComponent
 implements ILifecycle
 {

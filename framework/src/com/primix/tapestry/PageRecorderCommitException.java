@@ -26,6 +26,8 @@
  *
  */
 
+package com.primix.tapestry;
+
 /**
  *  Exception thrown when an {@link IPageRecorder} is unable to
  *  {@link IPageRecorder#commit()} its changes to external storage.
@@ -33,8 +35,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry;
 
 public class PageRecorderCommitException extends Exception
 {

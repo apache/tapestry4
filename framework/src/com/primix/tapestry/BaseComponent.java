@@ -26,13 +26,6 @@
  *
  */
 
-/**
- * Base implementation for most components that use an HTML template.
- *
- * @author Howard Ship
- * @version $Id$
- */
-
 package com.primix.tapestry;
 
 import com.primix.tapestry.spec.ComponentSpecification;
@@ -40,6 +33,13 @@ import com.primix.tapestry.event.*;
 import com.primix.tapestry.parse.*;
 import java.util.*;
 import org.apache.log4j.*;
+
+/**
+ * Base implementation for most components that use an HTML template.
+ *
+ * @author Howard Ship
+ * @version $Id$
+ */
 
 public class BaseComponent
 extends AbstractComponent

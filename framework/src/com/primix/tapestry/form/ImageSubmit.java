@@ -26,6 +26,15 @@
  *
  */
 
+package com.primix.tapestry.form;
+                                                  
+import com.primix.tapestry.*;
+import java.awt.Point;
+
+// Appease Javadoc
+import com.primix.tapestry.components.*;
+import com.primix.tapestry.html.*;
+
 /**
  *  Used to create an image button inside a {@link Form}.  Although it
  *  is occasionally useful to know the {@link Point} on the image that was clicked
@@ -116,11 +125,6 @@
  *  @version $Id$
  */
 
-
-package com.primix.tapestry.form;
-                                                  
-import com.primix.tapestry.*;
-import java.awt.Point;
 
 public class ImageSubmit extends AbstractFormComponent
 {

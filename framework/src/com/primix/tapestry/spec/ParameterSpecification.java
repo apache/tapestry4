@@ -26,6 +26,8 @@
  *
  */
 
+package com.primix.tapestry.spec;
+
 /**
  *  Defines a formal parameter to a component.  A <code>ParameterSpecification</code>
  *  is contained by a {@link ComponentSpecification}.
@@ -39,8 +41,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry.spec;
 
 public class ParameterSpecification
 {

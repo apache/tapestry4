@@ -26,6 +26,10 @@
  *
  */
  
+package com.primix.tapestry.callback;
+
+import com.primix.tapestry.*;
+
 /**
  *  Simple callback for returning to a page.
  *
@@ -34,10 +38,6 @@
  *  @since 0.2.9
  *
  */
-
-package com.primix.tapestry.callback;
-
-import com.primix.tapestry.*;
 
 public class PageCallback
 implements ICallback

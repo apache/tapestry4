@@ -26,6 +26,13 @@
  *
  */
 
+package com.primix.tapestry.form;
+
+import com.primix.tapestry.*;
+
+// Appease Javadoc
+import com.primix.tapestry.components.*;
+
 /**
  *  Implements a component that manages an HTML &lt;option&gt; form element.
  *  Such a component must be wrapped (possibly indirectly)
@@ -70,13 +77,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry.form;
-
-import com.primix.tapestry.*;
-
-// Appease Javadoc
-import com.primix.tapestry.components.*;
 
 public class Option extends AbstractComponent
 {

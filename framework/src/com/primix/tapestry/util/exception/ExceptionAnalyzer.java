@@ -26,16 +26,6 @@
  *
  */
 
-/**
- *  Analyzes an exception, creating one or more 
- *  {@link ExceptionDescription}s
- *  from it.
- *
- *  @author Howard Ship
- *  @version $Id$
- */
-
-
 package com.primix.tapestry.util.exception;
 
 import java.lang.reflect.*;
@@ -45,6 +35,16 @@ import com.primix.tapestry.util.prop.*;
 import java.util.*;
 import java.io.*;
 import gnu.regexp.*;
+
+/**
+ *  Analyzes an exception, creating one or more 
+ *  {@link ExceptionDescription}s
+ *  from it.
+ *
+ *  @author Howard Ship
+ *  @version $Id$
+ */
+
 
 public class ExceptionAnalyzer
 {

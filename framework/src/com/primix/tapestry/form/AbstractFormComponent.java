@@ -26,6 +26,14 @@
  *
  */
 
+package com.primix.tapestry.form;
+
+import com.primix.tapestry.*;
+
+// Appease Javadoc
+import com.primix.tapestry.components.*;
+import com.primix.tapestry.html.*;
+
 /**
  *  A base class for building components that correspond to HTML form elements.
  *  All such components must be wrapped (directly or indirectly) by
@@ -35,10 +43,6 @@
  *  @author Howard Ship
  *
  */
-
-package com.primix.tapestry.form;
-
-import com.primix.tapestry.*;
 
 public abstract class AbstractFormComponent
     extends AbstractComponent

@@ -26,6 +26,8 @@
  *
  */
 
+package com.primix.tapestry.util.prop;
+
 /**
  *  Exception thrown by {@link PropertyHelper} when an propery is specified
  *  which does not exist.
@@ -33,8 +35,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry.util.prop;
 
 public class MissingPropertyException extends RuntimeException
 {

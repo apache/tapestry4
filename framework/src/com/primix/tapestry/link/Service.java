@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry.link;
+
+import com.primix.tapestry.*;
+
 /**
  *  A component for creating a link for an arbitrary {@link IEngineService
  *  application service}.  A Service component can emulate an {@link Action},
@@ -107,10 +111,6 @@
  * @version $Id$
  */
 
-
-package com.primix.tapestry.link;
-
-import com.primix.tapestry.*;
 
 public class Service extends AbstractServiceLink
 {

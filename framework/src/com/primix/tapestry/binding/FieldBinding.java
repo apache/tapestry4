@@ -27,6 +27,13 @@
  */
 
 
+package com.primix.tapestry.binding;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.pageload.PageSource;
+import java.util.*;
+import java.lang.reflect.*;
+
 /**
  *
  *  A type of static {@link IBinding} that gets it value from a public field
@@ -46,13 +53,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry.binding;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.pageload.PageSource;
-import java.util.*;
-import java.lang.reflect.*;
 
 public class FieldBinding extends AbstractBinding
 {

@@ -26,6 +26,8 @@
  *
  */
 
+package com.primix.tapestry;
+
 /**
  *  Exception thrown by an {@link IEngineService} when it discovers that
  *  the <code>HttpSession</code> has timed out (and been replaced by a new, empty
@@ -37,8 +39,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry;
 
 public class StaleSessionException extends RequestCycleException
 {

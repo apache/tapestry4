@@ -26,6 +26,16 @@
  *
  */
 
+package com.primix.tapestry;
+
+import javax.servlet.*;
+import java.io.*;
+
+// Appease Javadoc
+import com.primix.tapestry.link.*;
+import com.primix.tapestry.form.*;
+import com.primix.tapestry.engine.*;
+
 /**
  *  A service, provided by the {@link IEngine}, for its pages and/or components.  
  *  Services are
@@ -58,15 +68,6 @@
  *  @version $Id$
  */
 
-
-package com.primix.tapestry;
-
-import javax.servlet.*;
-import java.io.*;
-
-// Appease Javadoc
-import com.primix.tapestry.link.*;
-import com.primix.tapestry.form.*;
 
 public interface IEngineService
 {

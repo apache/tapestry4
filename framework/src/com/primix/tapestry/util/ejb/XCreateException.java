@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry.util.ejb;
+
+import javax.ejb.*;
+
 /**
  *  Extended version of {@link CreateException} that includes a root cause.
  *
@@ -33,10 +37,6 @@
  *  @author Howard Ship
  *
  */
-
-package com.primix.tapestry.util.ejb;
-
-import javax.ejb.*;
 
 public class XCreateException extends CreateException
 {

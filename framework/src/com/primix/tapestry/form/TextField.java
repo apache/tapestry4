@@ -26,6 +26,14 @@
  *
  */
 
+package com.primix.tapestry.form;
+
+import com.primix.tapestry.*;
+
+// Appease Javadoc
+import com.primix.tapestry.components.*;
+import com.primix.tapestry.html.*;
+
 /**
  *  Implements a component that manages an HTML &lt;input type=text&gt; or
  *  &lt;input type=password&gt; form element.
@@ -106,10 +114,6 @@
  *  @version $Id$
  */
 
-
-package com.primix.tapestry.form;
-
-import com.primix.tapestry.*;
 
 public class TextField extends AbstractFormComponent
 {

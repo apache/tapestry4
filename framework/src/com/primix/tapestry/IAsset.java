@@ -26,6 +26,11 @@
  *
  */
 
+package com.primix.tapestry;
+
+import java.io.*;
+import java.util.*;
+
 /**
  *  Representation of a asset (GIF, JPEG, etc.) that may be owned by a
  *  {@link IComponent}.
@@ -40,11 +45,6 @@
  *  @version $Id$
  */
 
-
-package com.primix.tapestry;
-
-import java.io.*;
-import java.util.*;
 
 public interface IAsset
 {

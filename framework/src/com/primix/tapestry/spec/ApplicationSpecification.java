@@ -26,13 +26,6 @@
  *
  */
 
-/**
- *  Defines the configuration for a Tapestry application.
- *
- * @author Howard Ship
- * @version $Id$
- */
-
 package com.primix.tapestry.spec;
 
 import com.primix.tapestry.*;
@@ -46,6 +39,13 @@ import com.primix.tapestry.util.exception.*;
 import com.primix.tapestry.util.*;
 import com.primix.tapestry.inspector.*;
 import com.primix.tapestry.script.*;
+
+/**
+ *  Defines the configuration for a Tapestry application.
+ *
+ * @author Howard Ship
+ * @version $Id$
+ */
 
 public class ApplicationSpecification 
 extends BasePropertyHolder

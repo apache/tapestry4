@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry.valid;
+
+import com.primix.tapestry.util.*;
+
 /**
  *  Defines an enumeration of different types of validation constraints
  *  that may be violated.
@@ -33,10 +37,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry.valid;
-
-import com.primix.tapestry.util.*;
 
 public class ValidationConstraint
 extends Enum

@@ -26,6 +26,14 @@
  *
  */
 
+package com.primix.tapestry;
+
+import java.io.*;
+import javax.servlet.ServletOutputStream;
+import java.util.*;
+import java.text.Format;
+import java.text.NumberFormat;
+
 /**
  * Abstract base class implementing the {@link IResponseWriter} interface.
  * This class is used to create a Generic Tag Markup Language (GTML) output.   
@@ -58,14 +66,6 @@
  * @author Howard Ship, David Solis
  * @since 0.2.9
  */
-
-package com.primix.tapestry;
-
-import java.io.*;
-import javax.servlet.ServletOutputStream;
-import java.util.*;
-import java.text.Format;
-import java.text.NumberFormat;
 
 public abstract class AbstractResponseWriter
 implements IResponseWriter

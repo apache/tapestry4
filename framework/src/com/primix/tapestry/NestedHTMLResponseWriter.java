@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry;
+
+import java.io.*;
+
 /**
  *  Subclass of {@link HTMLResponseWriter} that is nested.  A nested writer
  *  buffers its output, then inserts it into its parent writer when it is
@@ -35,10 +39,6 @@
  *  @version $Id$
  */
 
-
-package com.primix.tapestry;
-
-import java.io.*;
 
 public class NestedHTMLResponseWriter
 extends HTMLResponseWriter

@@ -26,6 +26,11 @@
  *
  */
 
+package com.primix.tapestry.parse;
+
+import com.primix.tapestry.*;
+
+
 /**
  *  Enapsulates a parsed component template, allowing access to the
  *  tokens parsed.
@@ -36,11 +41,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry.parse;
-
-import com.primix.tapestry.*;
-
 
 public class ComponentTemplate
 {

@@ -27,6 +27,12 @@
  */
 
 
+package com.primix.tapestry.inspector;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.components.*;
+import java.util.*;
+
 /**
  *  Component of the {@link Inspector} page used to select the view.
  *
@@ -36,12 +42,6 @@
  *
  */
  
-package com.primix.tapestry.inspector;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.components.*;
-import java.util.*;
-
 public class ViewTabs extends BaseComponent
 {
 	private static View[] views =

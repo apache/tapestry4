@@ -26,18 +26,18 @@
  *
  */
 
+package com.primix.tapestry.util.jdbc;
+
+import java.util.*;
+import java.sql.*;
+
 /**
- *  A wrapper around {@link Statement} or {@link PreparedStatement}.
+ *  A wrapper around {@link Statement}.
  *
  *  @version $Id$
  *  @author Howard Ship
  *
  */
-
-package com.primix.tapestry.util.jdbc;
-
-import java.util.*;
-import java.sql.*;
 
 public class SimpleStatement implements IStatement
 {

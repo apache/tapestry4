@@ -26,6 +26,11 @@
  *
  */
  
+package com.primix.tapestry.callback;
+
+import com.primix.tapestry.*;
+import java.io.*;
+
 /**
  *  Defines a callback, an object which is used to invoke or reinvoke a method
  *  on an object or component in a later request cycle.  This is used to
@@ -40,11 +45,6 @@
  *  @since 0.2.9
  *
  */
-
-package com.primix.tapestry.callback;
-
-import com.primix.tapestry.*;
-import java.io.*;
 
 public interface ICallback
 extends Serializable

@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry.link;
+
+import com.primix.tapestry.*;
+
 /**
  *  A component for creating a link that is handled using the action service.
  *
@@ -88,10 +92,6 @@
  * @version $Id$
  */
 
-
-package com.primix.tapestry.link;
-
-import com.primix.tapestry.*;
 
 public class Action extends AbstractServiceLink
 {

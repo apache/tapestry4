@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry.engine;
+
+import com.primix.tapestry.*;
+
 /**
  *  A {@link IResponseWriter} that does absolutely <em>nothing</em>; this
  *  is used during the rewind phase of the request cycle when output
@@ -36,10 +40,6 @@
  *  @since 0.2.9
  *
  */ 
-
-package com.primix.tapestry.engine;
-
-import com.primix.tapestry.*;
 
 public class NullResponseWriter
 implements IResponseWriter

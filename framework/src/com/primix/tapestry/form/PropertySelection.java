@@ -26,6 +26,13 @@
  *
  */
 
+package com.primix.tapestry.form;
+
+import com.primix.tapestry.*;
+
+// Appease Javadoc
+import com.primix.tapestry.util.*;
+
 /**
  *  A component which uses either
  *   &lt;select&gt; and &lt;option&gt; elements 
@@ -102,13 +109,6 @@
  *  @author Howard Ship
  *
  */
-
-package com.primix.tapestry.form;
-
-import com.primix.tapestry.*;
-
-// Appease Javadoc
-import com.primix.tapestry.util.*;
 
 public class PropertySelection extends AbstractFormComponent
 {

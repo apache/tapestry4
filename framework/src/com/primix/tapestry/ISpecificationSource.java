@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry;
+
+import com.primix.tapestry.spec.*;
+
 /**
  *  Defines access to component specifications.
  *
@@ -35,10 +39,6 @@
  * @version $Id$
  */
 
-
-package com.primix.tapestry;
-
-import com.primix.tapestry.spec.*;
 
 public interface ISpecificationSource
 {

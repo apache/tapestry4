@@ -26,6 +26,11 @@
  *
  */
 
+package com.primix.tapestry.wml;
+
+import com.primix.tapestry.*;
+import java.io.*;
+
 /**
  * This class is used to create WML output.
  *
@@ -46,11 +51,6 @@
  * @author David Solis
  * @since 0.2.9
  */
-
-package com.primix.tapestry.wml;
-
-import com.primix.tapestry.*;
-import java.io.*;
 
 public class WMLResponseWriter
     extends AbstractResponseWriter

@@ -26,7 +26,11 @@
  *
  */
 
+package com.primix.tapestry.event;
 
+import java.io.Serializable;
+import java.util.EventObject;
+import com.primix.tapestry.IComponent;
 
 /**
  * Event which describes a change to a particular {@link IComponent}.
@@ -34,12 +38,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry.event;
-
-import java.io.Serializable;
-import java.util.EventObject;
-import com.primix.tapestry.IComponent;
 
 public class ObservedChangeEvent extends EventObject
 {

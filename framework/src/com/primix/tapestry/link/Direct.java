@@ -26,6 +26,11 @@
  *
  */
 
+package com.primix.tapestry.link;
+
+import com.primix.tapestry.*;
+import java.util.*;
+
 /**
  *  A component for creating a link using the direct service; used for actions that
  *  are not dependant on dynamic page state.
@@ -105,11 +110,6 @@
  * @version $Id$
  */
 
-
-package com.primix.tapestry.link;
-
-import com.primix.tapestry.*;
-import java.util.*;
 
 public class Direct
 extends AbstractServiceLink

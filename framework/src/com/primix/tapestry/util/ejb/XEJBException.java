@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry.util.ejb;
+
+import javax.ejb.*;
+
 /**
  *  Extended version of {@link EJBException} that includes a root cause.
  *  {@link EJBException} doesn't have quite the right constructor for this ...
@@ -36,10 +40,6 @@
  *  @author Howard Ship
  *
  */
-
-package com.primix.tapestry.util.ejb;
-
-import javax.ejb.*;
 
 public class XEJBException extends EJBException
 {

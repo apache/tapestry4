@@ -26,6 +26,11 @@
  *
  */
 
+package com.primix.tapestry.util.prop;
+
+import com.primix.tapestry.util.prop.*;
+import java.util.*;
+
 /**
  *  A subclass of {@link PropertyHelper} that allows values of
  *  a <code>java.util.Map</code> to be accessed as if they were JavaBean properties of
@@ -42,11 +47,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry.util.prop;
-
-import com.primix.tapestry.util.prop.*;
-import java.util.*;
 
 public class MapHelper extends PropertyHelper
 {

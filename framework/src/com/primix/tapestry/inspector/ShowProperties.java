@@ -27,6 +27,11 @@
  */
 
 
+package com.primix.tapestry.inspector;
+
+import com.primix.tapestry.*;
+import java.util.*;
+
 /**
  *  Component of the {@link Inspector} page used to display
  *  the persisent properties of the page, and the serialized view
@@ -37,11 +42,6 @@
  *  @author Howard Ship
  *
  */
-
-package com.primix.tapestry.inspector;
-
-import com.primix.tapestry.*;
-import java.util.*;
 
 public class ShowProperties extends BaseComponent
 implements ILifecycle

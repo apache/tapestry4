@@ -26,6 +26,11 @@
  *
  */
  
+package com.primix.tapestry.form;
+
+import com.primix.tapestry.util.*;
+import java.util.*;
+
  /**
   *  Implementation of {@link IPropertySelectionModel} that wraps around
   *  a set of {@link Enum}s.  In addition to this, a {@link Locale} and
@@ -45,11 +50,6 @@
   *  @author Howard Ship
   */
   
-package com.primix.tapestry.form;
-
-import com.primix.tapestry.util.*;
-import java.util.*;
-
 public class EnumPropertySelectionModel
 implements IPropertySelectionModel
 {

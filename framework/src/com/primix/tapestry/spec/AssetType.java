@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry.spec;
+
+import com.primix.tapestry.util.*;
+
 /**
  *  Defines the types of assets.
  *
@@ -34,10 +38,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry.spec;
-
-import com.primix.tapestry.util.*;
 
 public final class AssetType extends Enum
 {

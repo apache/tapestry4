@@ -26,6 +26,11 @@
  *
  */
 
+package com.primix.tapestry.html;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.util.*;
+
 /**
  *  Defines a number of ways to format multi-line text for proper
  *  renderring.
@@ -35,11 +40,6 @@
  *
  */
  
-package com.primix.tapestry.html;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.util.*;
-
 public abstract class InsertTextMode
 extends Enum
 {

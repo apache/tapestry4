@@ -26,6 +26,11 @@
  *
  */
 
+package com.primix.tapestry;
+
+import java.util.Locale;
+import com.primix.tapestry.parse.ComponentTemplate;
+
 /**
  * A source of localized HTML templates for components.  
  * The cache is the means of access for components to load thier templates,
@@ -37,11 +42,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry;
-
-import java.util.Locale;
-import com.primix.tapestry.parse.ComponentTemplate;
 
 public interface ITemplateSource
 {

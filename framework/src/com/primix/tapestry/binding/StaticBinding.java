@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry.binding;
+
+import com.primix.tapestry.*;
+
 /**
  * Stores a static (invariant) String as the value.
  *
@@ -35,10 +39,6 @@
  * @version $Id$
  */
 
-
-package com.primix.tapestry.binding;
-
-import com.primix.tapestry.*;
 
 public class StaticBinding extends AbstractBinding
 {

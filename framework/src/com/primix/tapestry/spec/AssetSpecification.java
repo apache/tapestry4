@@ -26,17 +26,17 @@
  *
  */
 
+package com.primix.tapestry.spec;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.asset.*;
+
 /**
  *  Defines an internal, external or private asset.
  *
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry.spec;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.asset.*;
 
 public class AssetSpecification
 {

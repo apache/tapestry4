@@ -26,6 +26,14 @@
  *
  */
 
+package com.primix.tapestry.html;
+
+import com.primix.tapestry.*;
+import java.io.*;
+
+// Appease Javadoc
+import com.primix.tapestry.form.*;
+ 
 /**
  *  Inserts formatted text (possibly collected using a {@link Text} component.
  *  To maintain the line breaks provided originally, this component will
@@ -63,14 +71,6 @@
  * @version $Id$
  */
 
-package com.primix.tapestry.html;
-
-import com.primix.tapestry.*;
-import java.io.*;
-
-// Appease Javadoc
-import com.primix.tapestry.form.*;
- 
 public class InsertText extends AbstractComponent
 {
     private IBinding textBinding;

@@ -26,6 +26,11 @@
  *
  */
 
+package com.primix.tapestry.script;
+
+import java.util.*;
+import java.io.*;
+
 /**
  *  A token for static portions of the template.
  *
@@ -33,11 +38,6 @@
  *  @version $Id$
  *
  */
-
-package com.primix.tapestry.script;
-
-import java.util.*;
-import java.io.*;
 
 class StaticToken
 implements IScriptToken

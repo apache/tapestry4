@@ -26,6 +26,11 @@
  *
  */
 
+package com.primix.tapestry.binding;
+
+import com.primix.tapestry.*;
+import java.util.*;
+
 /**
  *  Base class for {@link IBinding} implementations.
  *
@@ -33,11 +38,6 @@
  * @version $Id$
  */
 
-
-package com.primix.tapestry.binding;
-
-import com.primix.tapestry.*;
-import java.util.*;
 
 public abstract class AbstractBinding implements IBinding
 {

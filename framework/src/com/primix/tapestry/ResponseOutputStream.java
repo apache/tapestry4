@@ -26,6 +26,12 @@
  *
  */
 
+package com.primix.tapestry;
+
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
 /**
  *  A special output stream works with a {@link HttpServletResponse}, buffering
  *  data so as to defer opening the response's output stream.
@@ -44,19 +50,15 @@
  * and its crew.  This would save on the number of conversions between characters and
  * bytes.
  *
- * <p>In fact, this is now even less useful, because the {@link Body} component (which will
- * be used on virtually all Tapestry pages), buffers its wrapped contents.
+ * <p>In fact, this is now even less useful, because the 
+ * {@link com.primix.tapestry.html.Body} component (which will
+ * be used on virtually all Tapestry pages), buffers its wrapped contents
+ * (that is, evertyhing inside the &lt;body&gt; tag in the generated HTML).
  *
  *  @author Howard Ship
  *  @version $Id$
  */
 
-
-package com.primix.tapestry;
-
-import java.io.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
 
 public class ResponseOutputStream extends OutputStream
 {

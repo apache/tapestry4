@@ -26,6 +26,8 @@
  *
  */
 
+package com.primix.tapestry;
+
 /**
  *  Basic support for application monitoring and metrics.  
  *  This interface defines events; the implementation
@@ -34,8 +36,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry;
 
 public interface IMonitor
 {

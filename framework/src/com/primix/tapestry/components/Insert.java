@@ -26,11 +26,16 @@
  *
  */
 
+package com.primix.tapestry.components;
+
+import com.primix.tapestry.*;
+import java.text.Format;
+
 /**
  *  Used to insert some text (from a parameter) into the HTML.
  *
  *
-  * <table border=1>
+ * <table border=1>
  * <tr> <th>Parameter</th> <th>Type</th>
  * <th>Read / Write</th> <th>Required</th> <th>Default</th> <th>Description</th>
  * </tr>
@@ -67,11 +72,6 @@
  * @version $Id$
  */
 
-
-package com.primix.tapestry.components;
-
-import com.primix.tapestry.*;
-import java.text.Format;
 
 public class Insert extends AbstractComponent
 {

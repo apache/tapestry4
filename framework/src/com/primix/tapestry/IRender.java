@@ -26,6 +26,8 @@
  *
  */
 
+package com.primix.tapestry;
+
 /**
  * An element that may be asked to render itself to an
  * {@link IResponseWriter} using a {@link IRequestCycle}.
@@ -37,8 +39,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry;
 
 public interface IRender
 {

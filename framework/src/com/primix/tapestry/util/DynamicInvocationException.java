@@ -26,24 +26,24 @@
  *
  */
  
- /**
+package com.primix.tapestry.util;
+
+/**
  *  An exception raised when a dynamic invocation fails with some
  *  form of exception.  This exception is a 
- *  <code>RuntimeException</code> (which
+ *  {@link RuntimeException} (which
  *  prevents anyone from having to declare it) ... it should only get
  *  raised as a result of programmer error.
  *
  *  This exception is raised 'on behalf' of a more fundamental
- *  exception being raised, which is packaged inside the
+ *  exception, which is packaged inside the
  *  <code>DynamicInvocationException</code>.  This root cause exception
- *  may not be a runtime exception.
+ *  may or may not be a runtime exception.
  *
  *  @author Howard Ship
  *  @version $Id$
  *
  */
-
-package com.primix.tapestry.util;
 
 public class DynamicInvocationException extends RuntimeException
 {

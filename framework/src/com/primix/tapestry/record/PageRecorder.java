@@ -26,21 +26,6 @@
  *
  */
 
-/**
- *  Tracks changes to components on a page, allowing changes to be persisted across
- *  request cycles, and restoring the state of a page and component when needed.
- *
- *  <p>This is an abstract implementation; specific implementations can choose where
- * and how to persist the data.
- *
- *  <p>Implements {@link Externalizable} but does not have any state of its own.
- *  Subclasses must implement <code>readExternal()</code> and
- *  <code>writeExternal()</code>.
- *
- * @author Howard Ship
- * @version $Id$
- */
-
 package com.primix.tapestry.record;
 
 import com.primix.tapestry.util.prop.PropertyHelper;
@@ -55,6 +40,21 @@ import javax.ejb.*;
 
 import javax.ejb.EJBObject;
 import javax.ejb.Handle;
+
+/**
+ *  Tracks changes to components on a page, allowing changes to be persisted across
+ *  request cycles, and restoring the state of a page and component when needed.
+ *
+ *  <p>This is an abstract implementation; specific implementations can choose where
+ * and how to persist the data.
+ *
+ *  <p>Implements {@link Externalizable} but does not have any state of its own.
+ *  Subclasses must implement <code>readExternal()</code> and
+ *  <code>writeExternal()</code>.
+ *
+ * @author Howard Ship
+ * @version $Id$
+ */
 
 public abstract class PageRecorder
 implements IPageRecorder, Serializable

@@ -26,17 +26,17 @@
  *
  */
 
+package com.primix.tapestry.util;
+
+import java.lang.reflect.*;
+import java.io.*;
+
 /**
  * Used to represent an {@link Enum}.
  *
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry.util;
-
-import java.lang.reflect.*;
-import java.io.*;
 
 class EnumToken
 {

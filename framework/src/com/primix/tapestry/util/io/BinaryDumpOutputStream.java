@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry.util.io;
+
+import java.io.*;
+
 /**
  *  A kind of super-formatter.  It is sent a stream of binary data and
  *  formats it in a human-readable dump format which is forwarded to
@@ -37,10 +41,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry.util.io;
-
-import java.io.*;
 
 public class BinaryDumpOutputStream extends OutputStream
 {

@@ -26,6 +26,8 @@
  *
  */
 
+package com.primix.tapestry;
+
 /**
  *  Exception thrown by an {@link IEngineService} when it discovers that
  *  the an action link was for an out-of-date version of the page.
@@ -36,8 +38,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry;
 
 public class StaleLinkException extends RequestCycleException
 {

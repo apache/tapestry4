@@ -26,6 +26,11 @@
  *
  */
 
+package com.primix.tapestry.util.pool;
+
+import java.util.*; 
+import org.apache.log4j.*;
+
 /**
  *  A Pool is used to pool instances of a useful class.  It uses
  *  keys, much like a {@link Map}, to identify a list of pooled objects.
@@ -41,11 +46,6 @@
  *  @version $Id$
  *
  */
-
-package com.primix.tapestry.util.pool;
-
-import java.util.*; 
-import org.apache.log4j.*;
 
 public class Pool
 {

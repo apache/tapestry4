@@ -26,6 +26,11 @@
  *
  */
 
+package com.primix.tapestry.wml;
+
+import com.primix.tapestry.*;
+import java.io.*;
+
 /**
  * Concrete class for WML decks. Most decks
  * should be able to simply subclass this, adding new properties and
@@ -37,11 +42,6 @@
  * @since 0.2.9
  */
 
-
-package com.primix.tapestry.wml;
-
-import com.primix.tapestry.*;
-import java.io.*;
 
 public class Deck extends AbstractPage
 {

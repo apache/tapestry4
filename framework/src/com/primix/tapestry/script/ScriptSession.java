@@ -26,6 +26,11 @@
  *
  */
 
+package com.primix.tapestry.script;
+
+import java.util.*;
+import java.io.*;
+
 /**
  *  The result of executing a script, the session is used during the parsing
  *  process as well.  Following {@link ParsedScript#execute(Map)}, the session
@@ -37,11 +42,6 @@
  *  @since 0.2.9
  */
  
-package com.primix.tapestry.script;
-
-import java.util.*;
-import java.io.*;
-
 public class ScriptSession
 {
 	private String scriptPath;

@@ -26,6 +26,8 @@
  *
  */
 
+package com.primix.tapestry;
+
 /**
  *  A runtime exception thrown when an {@link IComponent} is asked for a contained
  *  component that does not exist.
@@ -34,8 +36,6 @@
  * @version $Id$
  */
 
-
-package com.primix.tapestry;
 
 public class NoSuchComponentException extends RuntimeException
 {

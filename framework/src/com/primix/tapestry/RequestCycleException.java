@@ -26,6 +26,8 @@
  *
  */
 
+package com.primix.tapestry;
+
 /**
  *  Exception thrown when an {@link IComponent} is unable to render.  Often, there
  *  is an underlying exception.
@@ -33,8 +35,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry;
 
 public class RequestCycleException extends Exception
 {

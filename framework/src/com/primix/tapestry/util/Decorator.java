@@ -26,6 +26,11 @@
  *
  */
 
+package com.primix.tapestry.util;
+
+import java.util.*;
+import org.apache.log4j.*;
+
 /**
  *  An implementation of the Decorator pattern.  The decorator
  *  pattern allows new functionality to be assigned to an existing class.
@@ -67,11 +72,6 @@
  *  @version $Id$
  *  @author Howard Ship
  */
-
-package com.primix.tapestry.util;
-
-import java.util.*;
-import org.apache.log4j.*;
 
 public class Decorator
 {

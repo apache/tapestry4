@@ -26,6 +26,14 @@
  *
  */
 
+package com.primix.tapestry.valid;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.components.*;
+import com.primix.tapestry.form.*;
+import java.util.*;
+import java.text.*;
+
 /**
  * 
  *  A {@link Form} component that can be used to
@@ -117,14 +125,6 @@
  *  @version $Id$
  *
  */
-
-package com.primix.tapestry.valid;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.form.*;
-import java.util.*;
-import java.text.*;
 
 public class ValidatingTextField
 extends AbstractValidatingTextField

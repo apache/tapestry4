@@ -26,6 +26,17 @@
  *
  */
 
+package com.primix.tapestry.engine;
+
+import java.net.*;
+import java.io.*;
+import com.primix.tapestry.*;
+import com.primix.tapestry.parse.*;
+import com.primix.tapestry.spec.*;
+import com.primix.tapestry.util.xml.*;
+import java.util.*;
+import org.apache.log4j.*;
+
 /**
  *  Default implementation of {@link ISpecificationSource} that
  *  expects to use the normal class loader to locate component
@@ -40,17 +51,6 @@
  * @version $Id$
  */
 
-
-package com.primix.tapestry.engine;
-
-import java.net.*;
-import java.io.*;
-import com.primix.tapestry.*;
-import com.primix.tapestry.parse.*;
-import com.primix.tapestry.spec.*;
-import com.primix.tapestry.util.xml.*;
-import java.util.*;
-import org.apache.log4j.*;
 
 public class DefaultSpecificationSource 
     implements ISpecificationSource
