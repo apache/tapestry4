@@ -54,7 +54,7 @@ import java.io.*;
 
 
 public abstract class PageRecorder
-    implements IPageRecorder, Externalizable
+    implements IPageRecorder, Serializable
 {
 	protected transient boolean active = false;
 	protected transient boolean dirty = false;

@@ -1,6 +1,7 @@
-package com.primix.foundation;
+package com.primix.foundation.io;
 
 import java.util.*;
+import java.io.*;
 
 /*
  * Tapestry Web Application Framework
@@ -31,43 +32,58 @@ import java.util.*;
  */
 
 /**
- *  An interface that defines an object that can store named propertys.  The names
- *  and the properties are Strings.
+ *  Squeezes a {@link Boolean}.
  *
- *  @version $Id$
  *  @author Howard Ship
+ *  @version $Id$
  *
  */
- 
-public interface IPropertyHolder
+
+class BooleanAdaptor
+implements ISqueezeAdaptor
 {
-	/**
-	 *  Returns a Collection of Strings, the names of all
-	 *  properties held by the receiver.  May return an empty collection.
-	 *
-	 */
-	 
-	public Collection getPropertyNames();
-	
-	/**
-	 *  Sets a named property.  The new value replaces the existing value, if any.
-	 *  Setting a property to null is the same as removing the property.
-	 *
-	 */
-	 
-	public void setProperty(String name, String value);
-	
-	/**
-	 *  Removes the named property, if present.
-	 *
-	 */
-	 
-	public void removeProperty(String name);
-	
-	/**
-	 *  Retrieves the named property, or null if the property is not defined.
-	 *
-	 */
-	 
-	public String getProperty(String name);
+    private static final String PREFIX = "TF";
+
+    /**
+     *  Registers using the prefixes 'T' and 'F' (for TRUE and FALSE).
+     *
+     */
+
+    public void register(DataSqueezer squeezer)
+    {
+        squeezer.register(PREFIX, Boolean.class, this);
+    }
+
+ 
+    /**
+     *  Squeezes the {@link Boolean} data to either 'T' or 'F'.
+     *
+     */
+
+    public String squeeze(DataSqueezer squeezer, Object data)
+    {
+        Boolean bool = (Boolean)data;
+
+        if (bool.booleanValue())
+            return "T";
+        else
+            return "F";
+    }
+
+    /**
+     *  Unsqueezes the string to either {@link Boolean#TRUE} or {@link Boolean#FALSE},
+     *  depending on the prefix character.
+     *
+     */
+
+    public Object unsqueeze(DataSqueezer squeezer, String string)
+    {
+        char ch = string.charAt(0);
+
+        if (ch == 'T')
+            return Boolean.TRUE;
+
+        return Boolean.FALSE;
+    }
+
 }

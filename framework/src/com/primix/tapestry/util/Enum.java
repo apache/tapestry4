@@ -50,11 +50,14 @@ import java.util.*;
  * of the same class).  When the Enum is de-serialized, it uses the enumerationId
  * to locate the existing singleton instance.
  *
+ * <p>It would be nice if this class was {@link Externalizable}, not {@link Serializable},
+ * but that requires public no-arguments constructors, which would spoil things.
+ *
  * @author Howard Ship
  * @version $Id$
  */
  
-public abstract class Enum implements Serializable
+public class Enum implements Serializable
 {
     private String enumerationId;
 
@@ -184,5 +187,6 @@ public abstract class Enum implements Serializable
             
         return result;
 	}
-    
+
+
 }

@@ -228,6 +228,7 @@ public class PropertyHelper
 			throw new DynamicInvocationException("Could not invoke PropertyHelper constructor.", e);
 		}
 
+
 		// We don't want to go through this again, so record permanently the correct
 		// helper for this class.
 

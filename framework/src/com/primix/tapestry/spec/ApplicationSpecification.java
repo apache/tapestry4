@@ -6,7 +6,7 @@ import com.primix.tapestry.components.*;
 import com.primix.tapestry.components.validating.*;
 import com.primix.foundation.exception.*;
 import com.primix.foundation.*;
-import com.primix.tapestry.inspector.ShowInspector;
+import com.primix.tapestry.inspector.*;
 
 /*
  * Tapestry Web Application Framework
@@ -51,33 +51,20 @@ extends BasePropertyHolder
 
 	private final static int MAP_SIZE = 11;
 
-	private Map pageMap = new HashMap(MAP_SIZE);
+    // Map of PageSpecification, keyed on String (name of page), specific
+    // to this application.  Will not be null in a running application.
 
-    {
-	    // Provide defaults for three of the four standard pages.
-	    // An application must provide a home page and may override
-	    // any of these.
+	private Map pageMap;
+    
+    // Map of String (full path to component specification), 
+    // keyed on String (component alias), may often be null.
 
-	    pageMap.put("StaleLink",
-		    new PageSpecification("/com/primix/tapestry/pages/StaleLink.jwc"));
-	    pageMap.put("StaleSession",
-		    new PageSpecification("/com/primix/tapestry/pages/StaleSession.jwc"));
-	    pageMap.put("Exception",
-		    new PageSpecification("/com/primix/tapestry/pages/Exception.jwc"));
-
-        // Provide the Inspector, which is quietly available and never
-        // overriden.
-
-	    pageMap.put("Inspector",
-		    new PageSpecification("/com/primix/tapestry/inspector/Inspector.jwc"));		
-    }
-
-    private Map componentMap = null;
+    private Map componentMap;
 
     // The Default component map is shared by all specifications
 
 	private static Map defaultComponentMap = new HashMap(MAP_SIZE);
-	
+
 	static 
 	{
 		defaultComponentMap.put("Insert", 
@@ -150,6 +137,27 @@ extends BasePropertyHolder
               "/com/primix/tapestry/components/validating/IntegerField.jwc");
 	}
 
+    // Default page map shared by all applications.
+
+	private static Map defaultPageMap = new HashMap(MAP_SIZE);
+	{
+	    // Provide defaults for three of the four standard pages.
+	    // An application must provide a home page and may override
+	    // any of these.
+
+	    defaultPageMap.put("StaleLink",
+		    new PageSpecification("/com/primix/tapestry/pages/StaleLink.jwc"));
+	    defaultPageMap.put("StaleSession",
+		    new PageSpecification("/com/primix/tapestry/pages/StaleSession.jwc"));
+	    defaultPageMap.put("Exception",
+		    new PageSpecification("/com/primix/tapestry/pages/Exception.jwc"));
+
+	    // Provide the Inspector, which is quietly available and never
+	    // overriden.
+
+	    defaultPageMap.put("Inspector",
+		    new PageSpecification("/com/primix/tapestry/inspector/Inspector.jwc"));		
+	}
 
 	/**
 	*  Gets the resource path for a component given a potential alias.  If
@@ -315,7 +323,7 @@ extends BasePropertyHolder
 	}
 
 	/**
-	*  Returns an unmodifiable {@link Collection}
+	*  Returns a {@link Collection}
     *  of the String names of the pages defined
 	*  by the application.
 	*
@@ -323,7 +331,23 @@ extends BasePropertyHolder
 
 	public Collection getPageNames()
 	{
-		return Collections.unmodifiableSet(pageMap.keySet());
+        Collection result;
+
+        result = new HashSet();
+        
+        // Add any pages specific to this application (a running application
+        // will always have at least one page, Home, but we check for null
+        // anyway).
+
+        if (pageMap != null)
+            result.addAll(pageMap.keySet());
+
+        // Now add any additional pages (such as Inspector) that are provided
+        // by the system.
+
+        result.addAll(defaultPageMap.keySet());
+
+		return result;
 	}
 
 	/**
@@ -343,16 +367,27 @@ extends BasePropertyHolder
 	 *  <tr>
 	 *	 <td>/com/primix/tapestry/pages/StaleSession.jwc</td>
 	 *	 <td>StaleSession</td></tr>
+     *
+     *  <tr>
+     *  <td>/com/primix/tapestry/inspector/Inspector.jwc</td>
+     *  <td>{@link Inspector}</td>
+     *  </tr>
+     * </table>
 	 *
 	 *
 	 */
 	 
 	public PageSpecification getPageSpecification(String name)
 	{
-		if (pageMap == null)
-			return null;
+        PageSpecification result = null;
 
-		return (PageSpecification)pageMap.get(name);
+		if (pageMap != null)
+			result = (PageSpecification)pageMap.get(name);
+
+        if (result == null)
+            result = (PageSpecification)defaultPageMap.get(name);
+
+		return result;
 	}
 
 	public void setComponentAlias(String alias, String resourceName)

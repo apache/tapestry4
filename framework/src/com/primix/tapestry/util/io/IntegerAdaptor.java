@@ -1,6 +1,7 @@
-package com.primix.foundation;
+package com.primix.foundation.io;
 
 import java.util.*;
+import java.io.*;
 
 /*
  * Tapestry Web Application Framework
@@ -31,43 +32,46 @@ import java.util.*;
  */
 
 /**
- *  An interface that defines an object that can store named propertys.  The names
- *  and the properties are Strings.
+ *  Squeezes a {@link Integer}.  This adaptor claims all the digits as prefix
+ *  characters, so its the very simplest conversion of all!
  *
- *  @version $Id$
  *  @author Howard Ship
+ *  @version $Id$
  *
  */
- 
-public interface IPropertyHolder
+
+class IntegerAdaptor
+implements ISqueezeAdaptor
 {
-	/**
-	 *  Returns a Collection of Strings, the names of all
-	 *  properties held by the receiver.  May return an empty collection.
-	 *
-	 */
-	 
-	public Collection getPropertyNames();
-	
-	/**
-	 *  Sets a named property.  The new value replaces the existing value, if any.
-	 *  Setting a property to null is the same as removing the property.
-	 *
-	 */
-	 
-	public void setProperty(String name, String value);
-	
-	/**
-	 *  Removes the named property, if present.
-	 *
-	 */
-	 
-	public void removeProperty(String name);
-	
-	/**
-	 *  Retrieves the named property, or null if the property is not defined.
-	 *
-	 */
-	 
-	public String getProperty(String name);
+    /**
+     *  Registers this adaptor using all nine digits and the minus sign.
+     *
+     */
+
+    public void register(DataSqueezer squeezer)
+    {
+        squeezer.register("-0123456789", Integer.class, this);
+    }
+
+    /**
+     *  Simply invokes <code>toString()</code> on the data,
+     *  which is actually type {@link Integer}.
+     *
+     */
+
+    public String squeeze(DataSqueezer squeezer, Object data)
+    {
+        return data.toString();
+    }
+
+    /**
+     *  Constructs an {@link Integer} from the string.
+     *
+     */
+
+    public Object unsqueeze(DataSqueezer squeezer, String string)
+    {
+        return new Integer(string);
+    }
+
 }

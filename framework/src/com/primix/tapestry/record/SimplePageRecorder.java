@@ -49,7 +49,9 @@ import com.primix.tapestry.app.SimpleApplication;
  */
 
 
-public class SimplePageRecorder extends PageRecorder
+public class SimplePageRecorder 
+extends PageRecorder
+implements Externalizable
 {
 	private final static int MAP_SIZE = 7;
 
@@ -172,7 +174,7 @@ public class SimplePageRecorder extends PageRecorder
         for (i = 0; i < count; i++)
         {
             componentPath = (String)in.readObject();
-            propertyName = (String)in.readObject();
+            propertyName = in.readUTF();
             value = in.readObject();
 
             changes.put(new ChangeKey(componentPath, propertyName), value);
@@ -214,8 +216,9 @@ public class SimplePageRecorder extends PageRecorder
             entry = (Map.Entry)i.next();
             key = (ChangeKey)entry.getKey();
 
+            // Can't use writeUTF() because componentPath may be null.
             out.writeObject(key.componentPath);
-            out.writeObject(key.propertyName);
+            out.writeUTF(key.propertyName);
             out.writeObject(entry.getValue());
         }
     }

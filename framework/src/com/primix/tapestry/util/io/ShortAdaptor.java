@@ -1,6 +1,7 @@
-package com.primix.foundation;
+package com.primix.foundation.io;
 
 import java.util.*;
+import java.io.*;
 
 /*
  * Tapestry Web Application Framework
@@ -31,43 +32,48 @@ import java.util.*;
  */
 
 /**
- *  An interface that defines an object that can store named propertys.  The names
- *  and the properties are Strings.
+ *  Squeezes a {@link Short}.
  *
- *  @version $Id$
  *  @author Howard Ship
+ *  @version $Id$
  *
  */
- 
-public interface IPropertyHolder
+
+class ShortAdaptor
+implements ISqueezeAdaptor
 {
-	/**
-	 *  Returns a Collection of Strings, the names of all
-	 *  properties held by the receiver.  May return an empty collection.
-	 *
-	 */
-	 
-	public Collection getPropertyNames();
-	
-	/**
-	 *  Sets a named property.  The new value replaces the existing value, if any.
-	 *  Setting a property to null is the same as removing the property.
-	 *
-	 */
-	 
-	public void setProperty(String name, String value);
-	
-	/**
-	 *  Removes the named property, if present.
-	 *
-	 */
-	 
-	public void removeProperty(String name);
-	
-	/**
-	 *  Retrieves the named property, or null if the property is not defined.
-	 *
-	 */
-	 
-	public String getProperty(String name);
+    private static final String PREFIX = "s";
+
+    /**
+     *  Registers using the prefix 's'.
+     *
+     */
+
+    public void register(DataSqueezer squeezer)
+    {
+        squeezer.register(PREFIX, Short.class, this);
+    }
+
+    /**
+     *  Invoked <code>toString()</code> on data (which is type {@link Short}),
+     *  and prefixs the result.
+     *
+     */
+
+    public String squeeze(DataSqueezer squeezer, Object data)
+    {
+        return PREFIX + data.toString();
+    }
+
+    /**
+     *  Constructs a {@link Short} from the string, after stripping
+     *  the prefix.
+     *
+     */
+
+    public Object unsqueeze(DataSqueezer squeezer, String string)
+    {
+        return new Short(string.substring(1));
+    }
+
 }
