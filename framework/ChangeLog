@@ -1,5 +1,9 @@
 * Nov 29 2000 hship
 
+Update the Inspector to show the size and bytes of the serialized application object.
+
+* Nov 29 2000 hship
+
 Add reportException() method to ExceptionAnalyzer, and change AbstractApplication
 to invoke it (intead of doing the work itself).
 

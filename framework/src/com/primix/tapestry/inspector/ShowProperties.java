@@ -3,6 +3,8 @@ package com.primix.tapestry.inspector;
 import com.primix.tapestry.*;
 import com.primix.tapestry.spec.*;
 import com.primix.tapestry.components.*;
+import com.primix.foundation.io.*;
+import java.io.*;
 import java.util.*;
 
 /*
@@ -36,7 +38,8 @@ import java.util.*;
 
 /**
  *  Component of the {@link Inspector} page used to display
- *  the ids and types of all embedded components.
+ *  the persisent properties of the page, and the serialized view
+ *  of the application object.
  *
  *
  *  @version $Id$
@@ -50,12 +53,14 @@ implements ILifecycle
 	private List properties;
 	private IPageChange change;
 	private IPage inspectedPage;
+    private byte[] serializedApplication;
 
 	public void cleanupAfterRender(IRequestCycle cycle)
 	{
 		properties = null;
 		change = null;
 		inspectedPage = null;
+        serializedApplication = null;
 	}
 
 	private void buildProperties()
@@ -77,6 +82,8 @@ implements ILifecycle
 
 	/**
 	 *  Returns a {@link List} of {@link IPageChange} objects.
+     *
+     * <p>Sort order is not defined.
 	 *
 	 */
 	 
@@ -124,4 +131,129 @@ implements ILifecycle
 		
 		return value.getClass().getName();
 	}	
+
+    private byte[] getSerializedApplication()
+    {
+        if (serializedApplication == null)
+            buildSerializedApplication();
+
+        return serializedApplication;
+
+    }
+
+    private void buildSerializedApplication()
+    {
+        ByteArrayOutputStream bos = null;
+        ObjectOutputStream oos = null;
+
+        try
+        {
+            bos = new ByteArrayOutputStream();
+            oos = new ObjectOutputStream(bos);
+
+            // Write the application object to the stream.
+
+            oos.writeObject(page.getApplication());
+
+            oos.close();
+
+            // Extract the application as an array of bytes.
+
+            serializedApplication = bos.toByteArray();
+        }
+        catch (IOException ex)
+        {
+            throw new ApplicationRuntimeException("Could not serialized the application object.", ex);
+        }
+        finally
+        {
+            if (oos != null)
+            {
+                try
+                {
+                    oos.close();
+                }
+                catch (IOException ex)
+                {
+                    // Ignore.
+                }
+            }
+
+            if (bos != null)
+            {
+                try
+                {
+                    bos.close();
+                }
+                catch (IOException ex)
+                {
+                    // Ignore.
+                }
+            }
+        }
+    }
+
+    public int getApplicationByteCount()
+    {
+        return getSerializedApplication().length;
+    }
+
+    public IRender getApplicationDumpDelegate()
+    {
+        return new IRender()
+        {
+            public void render(IResponseWriter writer, IRequestCycle cycle)
+            throws RequestCycleException
+            {
+                dumpSerializedApplication(writer);
+            }
+        };
+    }
+
+    private void dumpSerializedApplication(IResponseWriter responseWriter)
+    {
+        CharArrayWriter writer = null;
+        BinaryDumpOutputStream bos = null;
+        
+        try
+        {
+            // Because IReponseWriter doesn't implement the
+            // java.io.Writer interface, we have to buffer this
+            // stuff then pack it in all at once.  Kind of a waste!
+
+            writer = new CharArrayWriter();
+
+            bos = new BinaryDumpOutputStream(writer);
+
+            bos.write(getSerializedApplication());
+            bos.close();
+
+            responseWriter.print(writer.toString());            
+        }
+        catch (IOException ex)
+        {
+            // Ignore.
+        }
+        finally
+        {
+            if (bos != null)
+            {
+                try 
+                {
+                    bos.close();
+                }
+                catch (IOException ex)
+                {
+                    // Ignore.
+                }
+            }
+
+            if (writer != null)
+            {
+                writer.reset();
+                writer.close();
+            }
+        }
+    }
+
 }
