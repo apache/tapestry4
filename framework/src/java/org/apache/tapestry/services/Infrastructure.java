@@ -15,8 +15,10 @@
 package org.apache.tapestry.services;
 
 import org.apache.tapestry.engine.IComponentClassEnhancer;
+import org.apache.tapestry.engine.IPageSource;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.engine.ISpecificationSource;
+import org.apache.tapestry.spec.IApplicationSpecification;
 
 /**
  * Tapestry infrastructure ... key services required by the
@@ -27,6 +29,13 @@ import org.apache.tapestry.engine.ISpecificationSource;
  */
 public interface Infrastructure
 {
+	/**
+	 * Returns the {@link org.apache.tapestry.spec.IApplicationSpecification}
+	 * for the current application.
+	 */
+	
+	public IApplicationSpecification getApplicationSpecification();
+	
     /**
      * Returns an {@link IPropertySource} configured to search
      * the application specification, etc.  See 
@@ -71,4 +80,11 @@ public interface Infrastructure
      */
     
     public IComponentClassEnhancer getComponentClassEnhancer();
+    
+    /**
+     * Returns the source for pages. The source is a cache of pages,
+     * but also can create new instances when needed.
+     */
+    
+    public IPageSource getPageSource();
 }

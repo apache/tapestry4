@@ -473,7 +473,7 @@ public class BaseComponentTemplateLoader
 
         IBinding binding =
             new ExpressionBinding(
-                _pageSource.getResourceResolver(),
+                _pageSource.getClassResolver(),
                 _loadComponent,
                 expression,
                 location);

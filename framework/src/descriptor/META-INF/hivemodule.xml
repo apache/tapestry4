@@ -25,6 +25,7 @@
   <sub-module descriptor="tapestry.request.xml"/>
   <sub-module descriptor="tapestry.parse.xml"/>
   <sub-module descriptor="tapestry.enhance.xml"/>
+  <sub-module descriptor="tapestry.page.xml"/>
   
   <service-point id="ClasspathResourceFactory" interface="org.apache.tapestry.services.ClasspathResourceFactory">
   
@@ -44,6 +45,7 @@
     
     <invoke-factory>
       <construct class="org.apache.tapestry.services.impl.InfrastructureImpl">
+        <set-object  property="applicationSpecification" value="service-property:tapestry.globals.ApplicationGlobals:specification"/>
         <set-service property="applicationPropertySource" service-id="tapestry.props.ApplicationPropertySource"/>
         <set-service property="componentMessagesSource" service-id="ComponentMessagesSource"/>
         <set-service property="resetEventCoordinator" service-id="ResetEventCoordinator"/>
@@ -51,6 +53,7 @@
         <set-service property="specificationSource" service-id="tapestry.parse.SpecificationSource"/>
         <set-service property="objectPool" service-id="GlobalObjectPool"/>
         <set-service property="componentClassEnhancer" service-id="tapestry.enhance.ComponentClassEnhancer"/>
+        <set-service property="pageSource" service-id="tapestry.page.PageSource"/>
       </construct>
     </invoke-factory>
     
@@ -76,7 +79,7 @@
     
     <invoke-factory>
       <construct class="org.apache.tapestry.services.impl.ExtensionLookupFactory">
-        <set-service property="specification" service-id="tapestry.globals.ApplicationSpecification"/>
+        <set-object property="specification" value="infrastructure:applicationSpecification"/>
         <set-service property="defaultBuilder" service-id="hivemind.lib.DefaultImplementationBuilder"/>
       </construct>
     </invoke-factory>

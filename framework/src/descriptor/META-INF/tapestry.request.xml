@@ -76,7 +76,7 @@
     
     <invoke-factory>
       <construct class="org.apache.tapestry.services.impl.EngineFactoryImpl">
-        <set-service property="applicationSpecification" service-id="tapestry.globals.ApplicationSpecification"/>
+        <set-object property="applicationSpecification" value="infrastructure:applicationSpecification"/>
         <set-object property="defaultEngineClassName" value="global-property:org.apache.tapestry.engine-class"/>
       </construct>
     </invoke-factory>

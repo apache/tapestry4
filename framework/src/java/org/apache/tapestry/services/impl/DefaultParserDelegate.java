@@ -35,10 +35,13 @@ public class DefaultParserDelegate implements ITemplateParserDelegate
     private ComponentSpecificationResolver _resolver;
     private IRequestCycle _cycle;
 
-    public DefaultParserDelegate(IComponent component, IRequestCycle cycle)
+    public DefaultParserDelegate(
+        IComponent component,
+        IRequestCycle cycle,
+        ComponentSpecificationResolver resolver)
     {
         _component = component;
-        _resolver = new ComponentSpecificationResolver(cycle);
+        _resolver = resolver;
         _cycle = cycle;
     }
 

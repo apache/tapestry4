@@ -51,7 +51,7 @@ public class PropertyInitializer implements PageDetachListener
         _propertyName = propertyName;
         _expression = expression;
         _location = location;
-        
+
         prepareInvariant();
     }
 
@@ -81,11 +81,7 @@ public class PropertyInitializer implements PageDetachListener
         catch (Exception ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.format(
-                    "PageLoader.unable-to-initialize-property",
-                    _propertyName,
-                    _component,
-                    ex.getMessage()),
+                PageloadMessages.unableToInitializeProperty(_propertyName, _component, ex),
                 _location,
                 ex);
         }
@@ -106,11 +102,7 @@ public class PropertyInitializer implements PageDetachListener
         catch (Exception ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.format(
-                    "PageLoader.unable-to-initialize-property",
-                    _propertyName,
-                    _component,
-                    ex.getMessage()),
+                PageloadMessages.unableToInitializeProperty(_propertyName, _component, ex),
                 _location,
                 ex);
         }

@@ -79,9 +79,7 @@ public class BaseComponent extends AbstractComponent
      *  Reads the receiver's template and figures out which elements wrap which
      *  other elements.
      *
-     *  <P>This is coded as a single, big, ugly method for efficiency.
-     * 
-     **/
+     */
 
     private void readTemplate(IRequestCycle cycle, IPageLoader loader)
     {

@@ -56,7 +56,6 @@ import org.apache.tapestry.StaleLinkException;
 import org.apache.tapestry.StaleSessionException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.listener.ListenerMap;
-import org.apache.tapestry.pageload.PageSource;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.ComponentMessagesSource;
@@ -123,7 +122,7 @@ import org.apache.tapestry.util.io.DataSqueezer;
  *
  *  @author Howard Lewis Ship
  *
- **/
+ */
 
 public abstract class AbstractEngine
     implements IEngine, IEngineServiceView, Externalizable, HttpSessionBindingListener
@@ -133,7 +132,7 @@ public abstract class AbstractEngine
     /**
      *  @since 2.0.4
      *
-     **/
+     */
 
     private static final long serialVersionUID = 6884834397673817117L;
 
@@ -151,14 +150,14 @@ public abstract class AbstractEngine
     private transient boolean _stateful;
     private transient ListenerMap _listeners;
 
-    /** @since 2.2 **/
+    /** @since 2.2 */
 
     private transient DataSqueezer _dataSqueezer;
 
     /**
      *  An object used to contain application-specific server side state.
      *
-     **/
+     */
 
     private Object _visit;
 
@@ -169,7 +168,7 @@ public abstract class AbstractEngine
      *
      *  @since 2.3
      *
-     **/
+     */
 
     private transient Object _global;
 
@@ -179,7 +178,7 @@ public abstract class AbstractEngine
      *
      *  @since 2.3
      *
-     **/
+     */
 
     public static final String GLOBAL_NAME = "org.apache.tapestry.global";
 
@@ -188,7 +187,7 @@ public abstract class AbstractEngine
      *  determine the encoding to use when generating the output
      *
      *  @since 3.0
-     **/
+     */
 
     public static final String OUTPUT_ENCODING_PROPERTY_NAME =
         "org.apache.tapestry.output-encoding";
@@ -205,7 +204,7 @@ public abstract class AbstractEngine
     /**
      *  The curent locale for the engine, which may be changed at any time.
      *
-     **/
+     */
 
     private Locale _locale;
 
@@ -213,22 +212,9 @@ public abstract class AbstractEngine
      *  Set by {@link #setLocale(Locale)} when the locale is changed;
      *  this allows the locale cookie to be updated.
      *
-     **/
+     */
 
     private boolean _localeChanged;
-
-    /**
-     *  The specification for the application, which
-     *  lives in the {@link ServletContext}.  If the
-     *  session (and application) moves to a different context (i.e.,
-     *  a different JVM), then
-     *  we want to reconnect to the specification in the new context.
-     *  A check is made on every request
-     *  cycle as needed.
-     *
-     **/
-
-    protected transient IApplicationSpecification _specification;
 
     /**
      *  The source for parsed scripts, again, stored in the
@@ -236,7 +222,7 @@ public abstract class AbstractEngine
      *
      *  @since 1.0.2
      *
-     **/
+     */
 
     private transient IScriptSource _scriptSource;
 
@@ -246,7 +232,7 @@ public abstract class AbstractEngine
      *
      *  @since 1.0.2
      *
-     **/
+     */
 
     protected static final String SCRIPT_SOURCE_NAME = "org.apache.tapestry.ScriptSource";
 
@@ -254,17 +240,9 @@ public abstract class AbstractEngine
      *  The name of the application specification property used to specify the
      *  class of the visit object.
      *
-     **/
+     */
 
     public static final String VISIT_CLASS_PROPERTY_NAME = "org.apache.tapestry.visit-class";
-
-    /**
-     *  Servlet context attribute name for the {@link IPageSource}
-     *  instance.  The application's name is appended.
-     *
-     **/
-
-    protected static final String PAGE_SOURCE_NAME = "org.apache.tapestry.PageSource";
 
     /**
      *  Servlet context attribute name for a shared instance
@@ -274,18 +252,9 @@ public abstract class AbstractEngine
      *
      *  @since 2.2
      *
-     **/
+     */
 
     protected static final String DATA_SQUEEZER_NAME = "org.apache.tapestry.DataSqueezer";
-
-    /**
-     *  The source for pages, which acts as a pool, but is capable of
-     *  creating pages as needed.  Stored in the
-     *  {@link ServletContext}, like {@link #_templateSource}.
-     *
-     **/
-
-    private transient IPageSource _pageSource;
 
     /**
      *  If true (set from JVM system parameter
@@ -294,7 +263,7 @@ public abstract class AbstractEngine
      *  the cache of pages, specifications and template
      *  to be cleared on demand.
      *
-     **/
+     */
 
     private static final boolean _resetServiceEnabled =
         Boolean.getBoolean("org.apache.tapestry.enable-reset-service");
@@ -305,7 +274,7 @@ public abstract class AbstractEngine
      * then the cache of pages, specifications and template
      * will be cleared after each request.
      *
-     **/
+     */
 
     private static final boolean _disableCaching =
         Boolean.getBoolean("org.apache.tapestry.disable-caching");
@@ -317,12 +286,11 @@ public abstract class AbstractEngine
      *
      *  @since 1.0.9
      *
-     **/
+     */
 
     private transient Map _serviceMap;
 
     protected static final String SERVICE_MAP_NAME = "org.apache.tapestry.ServiceMap";
-
 
     /**
      *  Set to true when there is a (potential)
@@ -332,7 +300,7 @@ public abstract class AbstractEngine
      *
      *  @since 3.0
      *
-     **/
+     */
 
     private transient boolean _dirty;
 
@@ -350,7 +318,7 @@ public abstract class AbstractEngine
      *  <p>If the render throws an exception, then copious output is sent to
      *  <code>System.err</code> and a {@link ServletException} is thrown.
      *
-     **/
+     */
 
     protected void activateExceptionPage(
         IRequestCycle cycle,
@@ -394,7 +362,7 @@ public abstract class AbstractEngine
     /**
      *  Writes a detailed report of the exception to <code>System.err</code>.
      *
-     **/
+     */
 
     public void reportException(String reportTitle, Throwable ex)
     {
@@ -421,7 +389,7 @@ public abstract class AbstractEngine
      *  Invoked at the end of the request cycle to release any resources specific
      *  to the request cycle.
      *
-     **/
+     */
 
     protected abstract void cleanupAfterRequest(IRequestCycle cycle);
 
@@ -433,7 +401,7 @@ public abstract class AbstractEngine
      *
      *  @see #toString()
      *
-     **/
+     */
 
     protected void extendDescription(ToStringBuilder builder)
     {
@@ -445,7 +413,7 @@ public abstract class AbstractEngine
      *  by the {@link ApplicationServlet} but may be updated
      *  by the application.
      *
-     **/
+     */
 
     public Locale getLocale()
     {
@@ -473,9 +441,11 @@ public abstract class AbstractEngine
     {
         if (_monitorFactory == null)
         {
-            if (_specification.checkExtension(Tapestry.MONITOR_FACTORY_EXTENSION_NAME))
+            IApplicationSpecification spec = getSpecification();
+
+            if (spec.checkExtension(Tapestry.MONITOR_FACTORY_EXTENSION_NAME))
                 _monitorFactory =
-                    (IMonitorFactory) _specification.getExtension(
+                    (IMonitorFactory) spec.getExtension(
                         Tapestry.MONITOR_FACTORY_EXTENSION_NAME,
                         IMonitorFactory.class);
             else
@@ -487,13 +457,13 @@ public abstract class AbstractEngine
 
     public IPageSource getPageSource()
     {
-        return _pageSource;
+        return _infrastructure.getPageSource();
     }
 
     /**
      *  Returns a service with the given name.  Services are created by the
      *  first call to {@link #setupForRequest(RequestContext)}.
-     **/
+     */
 
     public IEngineService getService(String name)
     {
@@ -517,7 +487,7 @@ public abstract class AbstractEngine
      *
      *  @see org.apache.tapestry.asset.ContextAsset
      *
-     **/
+     */
 
     public String getContextPath()
     {
@@ -533,11 +503,11 @@ public abstract class AbstractEngine
      *  with the application specification by locating it in the {@link ServletContext}
      *  or parsing it fresh.
      *
-     **/
+     */
 
     public IApplicationSpecification getSpecification()
     {
-        return _specification;
+        return _infrastructure.getApplicationSpecification();
     }
 
     public ISpecificationSource getSpecificationSource()
@@ -555,7 +525,7 @@ public abstract class AbstractEngine
      *
      *  <p>This always set the stateful flag.  By default, a deserialized
      *  session is stateful (else, it would not have been serialized).
-     **/
+     */
 
     public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException
     {
@@ -575,7 +545,7 @@ public abstract class AbstractEngine
      *  <li>visit
      *  </ul>
      *
-     **/
+     */
 
     public void writeExternal(ObjectOutput out) throws IOException
     {
@@ -587,7 +557,7 @@ public abstract class AbstractEngine
      *  Invoked, typically, when an exception occurs while servicing the request.
      *  This method resets the output, sets the new page and renders it.
      *
-     **/
+     */
 
     protected void redirect(
         String pageName,
@@ -668,7 +638,7 @@ public abstract class AbstractEngine
      * <p>Subclasses should perform their own restart (if necessary, which is
      * rarely) before invoking this implementation.
      *
-     **/
+     */
 
     public void restart(IRequestCycle cycle) throws IOException
     {
@@ -704,7 +674,7 @@ public abstract class AbstractEngine
     /**
      *  Delegate method for the servlet.  Services the request.
      *
-     **/
+     */
 
     public boolean service(RequestContext context) throws ServletException, IOException
     {
@@ -719,9 +689,6 @@ public abstract class AbstractEngine
 
         if (LOG.isDebugEnabled())
             LOG.debug("Begin service " + context.getRequestURI());
-
-        if (_specification == null)
-            _specification = context.getApplicationSpecification();
 
         if (_infrastructure == null)
             _infrastructure = (Infrastructure) context.getAttribute(Constants.INFRASTRUCTURE_KEY);
@@ -949,7 +916,7 @@ public abstract class AbstractEngine
      *
      *  @since 3.0
      *
-     **/
+     */
 
     protected IRequestCycle createRequestCycle(
         RequestContext context,
@@ -982,7 +949,7 @@ public abstract class AbstractEngine
      *
      *  @since 0.2.10
      *
-     **/
+     */
 
     protected void handleStaleLinkException(
         StaleLinkException ex,
@@ -1011,7 +978,7 @@ public abstract class AbstractEngine
      *  Home page.
      *
      *  @since 0.2.10
-     **/
+     */
 
     protected void handleStaleSessionException(
         StaleSessionException ex,
@@ -1029,25 +996,23 @@ public abstract class AbstractEngine
      *
      *  @since 1.0.1
      *
-     **/
+     */
 
     public void clearCachedData()
     {
-    	_infrastructure.getResetEventCoordinator().fireResetEvent();
-    	
-        _pageSource.reset();
+        _infrastructure.getResetEventCoordinator().fireResetEvent();
+
         _scriptSource.reset();
     }
 
     /**
      *  Changes the locale for the engine.
      *
-     **/
+     */
 
     public void setLocale(Locale value)
     {
-        if (value == null)
-            throw new IllegalArgumentException("May not change engine locale to null.");
+    	Tapestry.notNull(value, "locale");
 
         // Because locale changes are expensive (it involves writing a cookie and all that),
         // we're careful not to really change unless there's a true change in value.
@@ -1098,7 +1063,7 @@ public abstract class AbstractEngine
      *  <p>Subclasses should invoke this implementation first, then perform their
      *  own setup.
      *
-     **/
+     */
 
     protected void setupForRequest(RequestContext context)
     {
@@ -1149,20 +1114,6 @@ public abstract class AbstractEngine
         }
 
         String servletName = context.getServlet().getServletName();
-
-        if (_pageSource == null)
-        {
-            String name = PAGE_SOURCE_NAME + ":" + servletName;
-
-            _pageSource = (IPageSource) servletContext.getAttribute(name);
-
-            if (_pageSource == null)
-            {
-                _pageSource = createPageSource(context);
-
-                servletContext.setAttribute(name, _pageSource);
-            }
-        }
 
         if (_scriptSource == null)
         {
@@ -1253,7 +1204,7 @@ public abstract class AbstractEngine
      *  @return an instance of {@link DefaultComponentMessagesSource}
      *  @since 2.0.4
      *
-     **/
+     */
 
     public ComponentMessagesSource createComponentStringsSource(RequestContext context)
     {
@@ -1270,27 +1221,11 @@ public abstract class AbstractEngine
      *  @return an instance of {@link DefaultScriptSource}
      *  @since 1.0.9
      *
-     **/
+     */
 
     protected IScriptSource createScriptSource(RequestContext context)
     {
         return new DefaultScriptSource(getClassResolver());
-    }
-
-    /**
-     *  Invoked from {@link #setupForRequest(RequestContext)} to provide
-     *  an instance of {@link IPageSource} that will be stored into
-     *  the {@link ServletContext}.  Subclasses may override this method
-     *  to provide a different implementation.
-     *
-     *  @return an instance of {@link PageSource}
-     *  @since 1.0.9
-     *
-     **/
-
-    protected IPageSource createPageSource(RequestContext context)
-    {
-        return new PageSource(this);
     }
 
     /**
@@ -1302,7 +1237,7 @@ public abstract class AbstractEngine
      *  @return an instance of {@link DefaultTemplateSource}
      *  @since 1.0.9
      *
-     **/
+     */
 
     protected TemplateSource createTemplateSource(RequestContext context)
     {
@@ -1312,7 +1247,7 @@ public abstract class AbstractEngine
     /**
      *  Returns an object which can find resources and classes.
      *
-     **/
+     */
 
     public ClassResolver getClassResolver()
     {
@@ -1326,17 +1261,11 @@ public abstract class AbstractEngine
      *
      *  @see #extendDescription(ToStringBuilder)
      *
-     **/
+     */
 
     public String toString()
     {
         ToStringBuilder builder = new ToStringBuilder(this);
-
-        builder.append(
-            "name",
-            _specification == null
-                ? Tapestry.getMessage("AbstractEngine.unknown-specification")
-                : _specification.getName());
 
         builder.append("dirty", _dirty);
         builder.append("locale", _locale);
@@ -1351,7 +1280,7 @@ public abstract class AbstractEngine
     /**
      *  Returns true if the reset service is curently enabled.
      *
-     **/
+     */
 
     public boolean isResetServiceEnabled()
     {
@@ -1363,7 +1292,7 @@ public abstract class AbstractEngine
      *  (pages for which recorders exist).  May return the empty list,
      *  but should not return null.
      *
-     **/
+     */
 
     abstract public Collection getActivePageNames();
 
@@ -1376,7 +1305,7 @@ public abstract class AbstractEngine
      *  the engine can't tell what the caller will
      *  <i>do</i> with the visit).
      *
-     **/
+     */
 
     public Object getVisit()
     {
@@ -1400,7 +1329,7 @@ public abstract class AbstractEngine
      *  is not null.
      *
      *
-     **/
+     */
 
     public Object getVisit(IRequestCycle cycle)
     {
@@ -1426,7 +1355,7 @@ public abstract class AbstractEngine
      *  Updates the visit object and
      *  sets the {@link #isDirty() dirty flag}.
      *
-     **/
+     */
 
     public void setVisit(Object value)
     {
@@ -1448,7 +1377,7 @@ public abstract class AbstractEngine
      *
      *  <p>Subclasses may want to overide this method if some other means
      *  of instantiating a visit object is required.
-     **/
+     */
 
     protected Object createVisit(IRequestCycle cycle)
     {
@@ -1489,7 +1418,7 @@ public abstract class AbstractEngine
      *
      *  @since 2.3
      *
-     **/
+     */
 
     public Object getGlobal()
     {
@@ -1514,7 +1443,7 @@ public abstract class AbstractEngine
      *
      *  @since 1.0.2
      *
-     **/
+     */
 
     protected void setStateful()
     {
@@ -1525,7 +1454,7 @@ public abstract class AbstractEngine
      *  Allows subclasses to include listener methods easily.
      *
      * @since 1.0.2
-     **/
+     */
 
     public ListenerMap getListeners()
     {
@@ -1623,7 +1552,7 @@ public abstract class AbstractEngine
      *
      *  @since 2.2
      *
-     **/
+     */
 
     protected void handleRedirectException(IRequestCycle cycle, RedirectException ex)
     {
@@ -1643,7 +1572,7 @@ public abstract class AbstractEngine
      *  <p>Note: the Map returned is not synchronized, on the theory that returned
      *  map is not further modified and therefore threadsafe.
      *
-     **/
+     */
 
     private Map createServiceMap()
     {
@@ -1739,7 +1668,7 @@ public abstract class AbstractEngine
      *
      *  @since 2.2
      *
-     **/
+     */
 
     private void addServices(INamespace namespace, Map map)
     {
@@ -1767,7 +1696,7 @@ public abstract class AbstractEngine
     /**
      *  @since 2.0.4
      *
-     **/
+     */
 
     public ComponentMessagesSource getComponentMessagesSource()
     {
@@ -1777,7 +1706,7 @@ public abstract class AbstractEngine
     /**
      *  @since 2.2
      *
-     **/
+     */
 
     public DataSqueezer getDataSqueezer()
     {
@@ -1792,7 +1721,7 @@ public abstract class AbstractEngine
      *
      *  @since 2.2
      *
-     **/
+     */
 
     public DataSqueezer createDataSqueezer()
     {
@@ -1820,7 +1749,7 @@ public abstract class AbstractEngine
      *
      *  @since 2.2
      *
-     **/
+     */
 
     protected String extractServiceName(RequestContext context)
     {
@@ -1843,28 +1772,28 @@ public abstract class AbstractEngine
         return serviceData.substring(0, slashx);
     }
 
-    /** @since 2.3 **/
+    /** @since 2.3 */
 
     public IPropertySource getPropertySource()
     {
         return _infrastructure.getApplicationPropertySource();
     }
 
-    /** @since 3.0 **/
+    /** @since 3.0 */
 
     protected String getExceptionPageName()
     {
         return EXCEPTION_PAGE;
     }
 
-    /** @since 3.0 **/
+    /** @since 3.0 */
 
     protected String getStaleLinkPageName()
     {
         return STALE_LINK_PAGE;
     }
 
-    /** @since 3.0 **/
+    /** @since 3.0 */
 
     protected String getStaleSessionPageName()
     {
@@ -1880,7 +1809,7 @@ public abstract class AbstractEngine
      *
      *  @since 2.3
      *
-     **/
+     */
 
     protected Object createGlobal(RequestContext context)
     {
@@ -1903,14 +1832,14 @@ public abstract class AbstractEngine
         }
     }
 
-    /** @since 3.0 **/
+    /** @since 3.0 */
 
     public ObjectPool getPool()
     {
         return _infrastructure.getObjectPool();
     }
 
-    /** @since 3.0 **/
+    /** @since 3.0 */
 
     public IComponentClassEnhancer getComponentClassEnhancer()
     {
@@ -1925,7 +1854,7 @@ public abstract class AbstractEngine
      *
      *  @since 3.0
      *
-     **/
+     */
 
     public boolean isDirty()
     {
@@ -1940,7 +1869,7 @@ public abstract class AbstractEngine
      *
      *  @since 3.0
      *
-     **/
+     */
 
     protected void markDirty()
     {
@@ -1958,7 +1887,7 @@ public abstract class AbstractEngine
      *
      *  @since 3.0
      *
-     **/
+     */
 
     public void valueBound(HttpSessionBindingEvent arg0)
     {
@@ -1972,7 +1901,7 @@ public abstract class AbstractEngine
      *
      *  @since 3.0
      *
-     **/
+     */
 
     public void valueUnbound(HttpSessionBindingEvent arg0)
     {
@@ -1986,7 +1915,7 @@ public abstract class AbstractEngine
      *  @return the default output encoding
      *  @since 3.0
      *
-     **/
+     */
     protected String getDefaultOutputEncoding()
     {
         return DEFAULT_OUTPUT_ENCODING;
@@ -2003,7 +1932,7 @@ public abstract class AbstractEngine
      *  @since 3.0
      *  @see org.apache.tapestry.IEngine#getOutputEncoding()
      *
-     **/
+     */
     public String getOutputEncoding()
     {
         IPropertySource source = getPropertySource();

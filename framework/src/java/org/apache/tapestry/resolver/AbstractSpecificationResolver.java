@@ -14,13 +14,12 @@
 
 package org.apache.tapestry.resolver;
 
+import javax.servlet.ServletContext;
+
 import org.apache.hivemind.Resource;
-import org.apache.tapestry.IEngine;
 import org.apache.tapestry.INamespace;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.ISpecificationSource;
-import org.apache.tapestry.spec.IApplicationSpecification;
+import org.apache.tapestry.resource.ContextResource;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
@@ -35,44 +34,30 @@ import org.apache.tapestry.spec.IComponentSpecification;
 
 public class AbstractSpecificationResolver
 {
-    private ISpecificationSource _specificationSource;
-
+    /** Set by resolve() */
     private INamespace _namespace;
 
+    /** Set by resolve() */
     private IComponentSpecification _specification;
 
+    /** Set by container */
+    private ISpecificationSource _specificationSource;
+    private ISpecificationResolverDelegate _delegate;
+    private String _servletName;
+    private ServletContext _context;
+
+    /** Initializes in initializeService() */
     private Resource _applicationRootLocation;
-
     private Resource _webInfLocation;
-
     private Resource _webInfAppLocation;
 
-    private ISpecificationResolverDelegate _delegate;
-
-    public AbstractSpecificationResolver(IRequestCycle cycle)
+    public void initializeService()
     {
-        IEngine engine = cycle.getEngine();
+        _applicationRootLocation = new ContextResource(_context, "/");
 
-        _specificationSource = engine.getSpecificationSource();
+        _webInfLocation = _applicationRootLocation.getRelativeResource("WEB-INF/");
 
-        _applicationRootLocation = Tapestry.getApplicationRootLocation(cycle);
-
-        String servletName =
-            cycle.getRequestContext().getServlet().getServletConfig().getServletName();
-
-        _webInfLocation = _applicationRootLocation.getRelativeResource("/WEB-INF/");
-
-        _webInfAppLocation = _webInfLocation.getRelativeResource(servletName + "/");
-
-        IApplicationSpecification specification = engine.getSpecification();
-
-        if (specification.checkExtension(Tapestry.SPECIFICATION_RESOLVER_DELEGATE_EXTENSION_NAME))
-            _delegate =
-                (ISpecificationResolverDelegate) engine.getSpecification().getExtension(
-                    Tapestry.SPECIFICATION_RESOLVER_DELEGATE_EXTENSION_NAME,
-                    ISpecificationResolverDelegate.class);
-        else
-            _delegate = NullSpecificationResolverDelegate.getSharedInstance();
+        _webInfAppLocation = _webInfLocation.getRelativeResource(_servletName + "/");
     }
 
     /**
@@ -172,7 +157,7 @@ public class AbstractSpecificationResolver
     }
 
     /**
-     *  Clears the namespace, specification and simpleName properties.
+     *  Clears the namespace and specification properties.
      * 
      **/
 
@@ -182,17 +167,28 @@ public class AbstractSpecificationResolver
         _specification = null;
     }
 
-    /** Does nothing. */
-    public void discardFromPool()
+    /** @since 3.1 */
+    public void setDelegate(ISpecificationResolverDelegate delegate)
     {
-
+        _delegate = delegate;
     }
 
-    /** Invokes {@link #reset()} */
-
-    public void resetForPool()
+    /** @since 3.1 */
+    public void setContext(ServletContext context)
     {
-        reset();
+        _context = context;
+    }
+
+    /** @since 3.1 */
+    public void setServletName(String name)
+    {
+        _servletName = name;
+    }
+
+    /** @since 3.1 */
+    public void setSpecificationSource(ISpecificationSource source)
+    {
+        _specificationSource = source;
     }
 
 }

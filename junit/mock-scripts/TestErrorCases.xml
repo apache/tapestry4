@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!-- $Id$ -->
 <!--
    Copyright 2004 The Apache Software Foundation
   
@@ -34,11 +32,11 @@ Exception
 		</assert-output>
 		
 		<assert-output name="Exception">
-		java.lang.IllegalArgumentException	
+		java.lang.NullPointerException	
 		</assert-output>
 		
 		<assert-output name="Detail">
-		May not change engine locale to null.	
+		Parameter locale must not be null.
 		</assert-output>
 		
 	</request>

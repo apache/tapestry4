@@ -12,23 +12,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.services;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+package org.apache.tapestry.pageload;
 
 /**
- * Access point for thread-local information about the current
- * request.
+ * Part of the scheme to defer connection of bindings until after all components (including
+ * implicit components loaded from templates, and component contained within those, etc.)
+ * are loaded.
  *
  * @author Howard Lewis Ship
  * @since 3.1
  */
-public interface RequestGlobals
+interface IQueuedInheritedBinding
 {
-    public void store(HttpServletRequest request, HttpServletResponse response);
-
-    public HttpServletRequest getRequest();
-
-    public HttpServletResponse getResponse();
+    void connect();
 }

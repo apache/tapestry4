@@ -43,19 +43,19 @@ import org.apache.tapestry.parse.ITemplateParserDelegate;
 import org.apache.tapestry.parse.TemplateParseException;
 import org.apache.tapestry.parse.ITemplateParser;
 import org.apache.tapestry.parse.TemplateToken;
+import org.apache.tapestry.resolver.ComponentSpecificationResolver;
 import org.apache.tapestry.resource.ContextResource;
 import org.apache.tapestry.services.TemplateSource;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.util.MultiKey;
 
 /**
- * Default implementation of {@link org.apache.tapestry.services.TemplateSource}.  
+ * Implementation of {@link org.apache.tapestry.services.TemplateSource}.  
  * Templates, once parsed,
  * stay in memory until explicitly cleared.
  *
  *
  * @author Howard Lewis Ship
- * 
  */
 
 public class TemplateSourceImpl implements TemplateSource, ResetEventListener
@@ -102,6 +102,10 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener
     /** @since 3.1 */
 
     private HttpServletRequest _request;
+
+    /** @since 3.1 */
+
+    private ComponentSpecificationResolver _componentSpecificationResolver;
 
     public void initializeService()
     {
@@ -363,7 +367,8 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener
         Resource resource,
         IComponent component)
     {
-        ITemplateParserDelegate delegate = new DefaultParserDelegate(component, cycle);
+        ITemplateParserDelegate delegate =
+            new DefaultParserDelegate(component, cycle, _componentSpecificationResolver);
 
         TemplateToken[] tokens;
 
@@ -506,34 +511,53 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener
         return source.getPropertyValue(TEMPLATE_ENCODING_PROPERTY_NAME);
     }
 
+    /** @since 3.1 */
+
     public void setParser(ITemplateParser parser)
     {
         _parser = parser;
     }
+
+    /** @since 3.1 */
 
     public void setApplicationPropertySource(IPropertySource source)
     {
         _applicationPropertySource = source;
     }
 
+    /** @since 3.1 */
+
     public void setLog(Log log)
     {
         _log = log;
     }
+
+    /** @since 3.1 */
 
     public void setDelegate(ITemplateSourceDelegate delegate)
     {
         _delegate = delegate;
     }
 
+    /** @since 3.1 */
+
     public void setContext(ServletContext context)
     {
         _context = context;
     }
 
+    /** @since 3.1 */
+
     public void setRequest(HttpServletRequest request)
     {
         _request = request;
+    }
+
+    /** @since 3.1 */
+
+    public void setComponentSpecificationResolver(ComponentSpecificationResolver resolver)
+    {
+        _componentSpecificationResolver = resolver;
     }
 
 }
