@@ -1475,7 +1475,7 @@ cleanup.
 <para>
 It is acceptible for a page (or component) to be abstract, and have abstract accessor methods
 matching the names that Tapestry will generate for the subclass.  This can be
-useful when setting properties of the page (or component) from a listener method.
+useful when setting properties of the page (or component) from a &listener-method;.
 </para>
 
 <para>
@@ -1518,7 +1518,8 @@ itself.
 	<entry>
 	The type of the property.  If abstract accessors exist, they must exactly match
 	this type.  The type may be either a fully qualified class name, or the name
-	of one of the basic scalar types.
+	of one of the basic scalar types (int, boolean, etc.). It may be suffixed with
+	<literal>[]</literal> to indicate an array of the indicated type.
 	</entry>
 </row>
 <row>

@@ -10,6 +10,7 @@
   
 <!ENTITY chap-intro SYSTEM "intro.xml">
 <!ENTITY chap-template SYSTEM "template.xml">
+<!ENTITY chap-components SYSTEM "components.xml">
 <!ENTITY chap-state SYSTEM "state.xml">
 <!ENTITY chap-configuration SYSTEM "configuration.xml">
   
@@ -67,10 +68,19 @@
 	
 <!ENTITY script-spec.full-content '<replaceable>text</replaceable> | &script-spec.foreach; | &script-spec.if; | &script-spec.if-not; | &script-spec.unique;'>
 
+<!ENTITY configuration-property '<link linkend="configuration.search-path">configuration property</link>'>
 
 <!ENTITY WEB-INF '<filename>WEB-INF</filename>'>
 
 <!ENTITY jwcid '<literal>jwcid</literal>'>
+
+<!ENTITY listener-method 'listener method'>
+
+<!ENTITY span '<sgmltag class="starttag">span</sgmltag>'>
+<!ENTITY html '<sgmltag class="starttag">html</sgmltag>'>
+<!ENTITY head '<sgmltag class="starttag">head</sgmltag>'>
+<!ENTITY body '<sgmltag class="starttag">body</sgmltag>'>
+
 
 ]>
 <!-- Conventions:
@@ -90,7 +100,7 @@
       <surname>Lewis Ship</surname>
     </author>
     <copyright>
-      <year>2003</year>
+      <year>2003-2004</year>
       <holder>The Apache Software Foundation</holder>
     </copyright>
   </bookinfo>
@@ -98,6 +108,8 @@
   &chap-intro;
   
   &chap-template;
+  
+  &chap-components;
   
   &chap-state;
          

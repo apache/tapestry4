@@ -1,17 +1,17 @@
 <!-- $Id$ -->
 
 <chapter id="state">
-	<title>Managing Server-Side State</title>
+	<title>Managing server-side state</title>
 	
 <para>
-Server-side state is any information that exists on the server, and persists between request cycles.
+Server-side state is any information that exists on the server, and persists between requests.
 This can be anything from a single flag all the way up to a large database result set.  In a typical
 application, server-side state is the identity of the user (once the user logs in) and, perhaps,
 a few important domain objects (or, at the very least, primary keys for those objects).
 </para>
 
 <para>
-In a typical servlet application, managing server-side state is 
+In an ordinary servlet application, managing server-side state is 
 entirely the application's responsibility.  The Servlet API provides just the &HttpSession;, which
 acts like a &Map;, relating keys to arbitrary objects.  It is the application's responsibility
 to obtain values from the session, and to update values into the session when they change.
@@ -19,15 +19,15 @@ to obtain values from the session, and to update values into the session when th
 
 <para>
 Tapestry takes a different tack; it defines server-side state in terms of the Engine,
-the Visit and persistent page properties.
+the Visit object, and persistent page properties.
 </para>
 
 <section id="state.general">
-	<title>Understanding Servlet State</title>
+	<title>Understanding servlet state</title>
 	
 
 <para>
-Managing server-side state is oneof the most complicated and error-prone aspects of web
+Managing server-side state is one of the most complicated and error-prone aspects of web
 application design, and one of the areas where Tapestry provides the most benefit.  Generally
 speaking, Tapestry applications which are functional within a single server will be functional within
 a cluster with no additional effort.  This doesn't mean planning for clustering, and testing of
@@ -125,7 +125,7 @@ actual server-side state is necessary.
 </section>  <!-- state.engine -->
 
 <section id="state.visit">
-	<title>Visit Object</title>
+	<title>Visit object</title>
 	
 <para>
 The Visit object is an application-defined object that may be obtained from the engine (via the
@@ -136,14 +136,21 @@ any class whatsoever, even &Map;.
 
 <para>
 The name, "Visit", was selected to emphasize that whatever data is stored in the Visit
-concerns just a single visit to the web application.  Tapestry is stricly concerned with
-providing the presentation layer of the application; it doesn't include any kind of database access,
-or any other kind of long-term data storage.  However, it is very easy to interface
-a Tapestry application to any kind of backend system.
+concerns just a single visit to the web application.
+<footnote>
+	<para>
+	Another good name would have been "session", but that name is heavily overloaded throughout Java
+	and J2EE.
+	</para>	
+</footnote>
 </para>
 
+
 <para>
-The following example demonstrates how a listener method
+Tapestry doesn't mandate anything about the Visit object's class. The type of the
+<literal>visit</literal>	property is &Object;. In Java code, accessing the Visit object
+involves a cast
+The following example demonstrates how a &listener-method;
 may access the visit object.
 </para>
 
@@ -152,7 +159,7 @@ may access the visit object.
 <programlisting>
 public void formSubmit(&IRequestCycle; cycle)
 {
-    Visit visit = (Visit)getPage().getVisit();
+    MyVisit visit = (MyVisit)getPage().getVisit();
     
     visit.<emphasis>doSomething()</emphasis>;   
 }
@@ -164,7 +171,7 @@ In most cases, listener methods, such as <function>formSubmit()</function>, are 
 within the page.  In that case, the first line can be abbreviated to:
 <informalexample>
 <programlisting>
-    Visit visit = (Visit)getVisit();
+    MyVisit visit = (MyVisit)getVisit();
 </programlisting>
 </informalexample>
 </para>
@@ -178,7 +185,7 @@ The Visit object is instantiated lazily, the first time it is needed.  Method
 In most cases, the Visit object is an ordinary JavaBean, and therefore, has a no-arguments
 constructor.  In this case, the complete class name of the
 Visit is specified as 
-<link linkend="configuration.search-path">configuration property</link>
+&configuration-property;
 <literal>org.apache.tapestry.visit-class</literal>.
 </para>
 
@@ -191,8 +198,8 @@ as a <sgmltag class="starttag">init-parameter</sgmltag> in the web deployment de
 	<title>Defining the Visit class</title>
 <programlisting>
 <![CDATA[
-<application name="Tapestry Component Workbench">
-  <property name="org.apache.tapestry.visit-class" value="org.apache.tapestry.workbench.Visit"/>
+<application name="My Application">
+  <property name="org.apache.tapestry.visit-class" value="mypackage.MyVisit"/>
 
   ...
 ]]>
@@ -213,7 +220,7 @@ via the page, the visit <emphasis>will</emphasis> be created if it does not alre
 </para>
 
 <para>
-Accessing the visit via the &IEngine; is different, the visit will <emphasis>not</emphasis>
+Accessing the <varname>visit</varname> property of the &IEngine; is different, the visit will <emphasis>not</emphasis>
 be created if it does not already exist.
 </para>
 
@@ -228,25 +235,28 @@ while <link linkend="state.stateless">stateless</link>.
 </section> <!-- state.visit -->
 
 <section id="state.global">
-	<title>Global Object</title>
+	<title>Global object</title>
 	
 <para>
-The application Global object is very similar to the application Visit object with some key differences.
+The  Global object is very similar to the  Visit object with some key differences.
 The Global object is shared by all instances of the application engine; ultimately, it is stored
-as a &ServletContext; attribute.  The Global object is therefore not persistent in any way.  In a failover, 
+as a &ServletContext; attribute.  The Global object is therefore not persistent in any way.
+The Global object is specific to an individual server within a cluster; each server will have its own instance
+of the Global object.
+  In a failover, 
 the engine will connect to a new instance of the Global object within the new server.
 </para>
 
 <para>
-The Global object may be accessing using the <literal>global</literal> property of either the
-page or the engine (unlike the <literal>visit</literal> property, they are completely equivalent).
+The Global object may be accessed using the <varname>global</varname> property of either the
+page or the engine (unlike the <varname>visit</varname> property, they are completely equivalent).
 </para>
 
 <para>
 Care should be taken that the Global object is threadsafe; since many engines (from many sessions,
 in many threads) will access it simultanenously.  The default Global object is a synchronized
 &HashMap;.  This can be overriden with
-<link linkend="configuration.search-path">configuration property</link>
+&configuration-property;
 <literal>org.apache.tapestry.global-class</literal>.
 </para>
 
@@ -259,7 +269,7 @@ are efficiently shared by all engine instances.
 </section>  <!-- state.global -->
 
 <section id="state.page-properties">
-	<title>Persistent Page Properties</title>
+	<title>Persistent page properties</title>
 	
 <para>
 Servlets, and by extension, JavaServer Pages, are inherently stateless.  That is, they will be used
@@ -278,6 +288,11 @@ and subsequent requests).
 
 <para>
 Tapestry bypasses most of these issues by <emphasis>not</emphasis> sharing objects between threads and clients.
+Tapestry uses an object pool to store constructed page instances. As a page is needed, it is removed from the page pool.
+If there are no available pages in the pool, a fresh page instance is constructed.
+</para>
+
+<para>
 For the duration of a request, a page and all components within the page are reserved to the single request.
 There is no chance of conflicts because only the single thread processing the request will have access
 to the page.  At the end of the request cycle, the page is reset back to a pristine state and 
@@ -297,6 +312,11 @@ properties of the page that changed during the processing of the request must be
 </para>
 
 <para>
+The page is then returned to the page pool, where it will wait to be used in a future request. That request may be for 
+the same end user, or for another user entirely.	
+</para>
+
+<para>
 Tapestry separates the persistent state of a page from any instance of the page. 
 This is very important, because
 from one request cycle to another, a different instance of the page may be used ... even when clustering is
@@ -311,17 +331,20 @@ properties needs to persist between request cycles.
 On a later request, the same or different page instance may be used.  With a little
 assistance from the developer, 
 the Tapestry framework can create the illusion that the same page instance is being used in
-a later request.
+a later request, even though the request may use a different page instance (from the page pool) ... or
+(in a clustering environment) may be handled by a completely different server.
 </para>
 
 <para>
-Each persistent page property is stored individually as an &HttpSession; attribute.  
+Each persistent page property is stored individually as an &HttpSession; attribute.  A call
+to the static method <function>Tapestry.fireObservedChange()</function> must be added
+to the setter method for the property (as we'll see shortly, Tapestry can
+write this method for you, which is the best approach). When the property is changed, its value is stored
+as a session attribute.
 Like the Servlet API, persistent properties work best with immutable objects
-such as &String; and Integer;.  For mutable objects (including &List; and &Map;), Tapestry makes a
-<emphasis>copy</emphasis>
-of the property.  In the worst case, Tapestry may have to serialize and deserialize the object to make a copy.
-Using several properties with simple, immutable types is therefore much less expensive than using
-a single, custom, complex, mutable object.
+such as &String; and Integer;.  For mutable objects (including &List; and &Map;), you must
+be careful <emphasis>not</emphasis> to change the internal state of a persistent property value after invoking the
+setter method.
 </para>
 
 
@@ -338,7 +361,20 @@ be filled in by Tapestry in the generated subclass.  This allows you to read and
 your class, inside listener methods.
 </para>
 
+<tip>
+	<title>Define only what you need</title>	
+	<para>
+	You only need to define abstract accessor methods if you are going to invoke those accesor methods
+	in your code, such as in a &listener-method;. Tapestry will create an enhanced subclass that contains
+	the new field, a getter method and a setter method, plus any necessary initialization methods.
+	If you are only going to access the property using OGNL expressions, then there's no need to define either
+	accessor 
+	method.
+	</para>
+</tip>
+
 <note>
+	  <title>Transient or persistent?</title>
 <para>
 Properties defined this way may be either transient or persistent.  It is useful to define
 even transient
@@ -349,8 +385,12 @@ is returned to the pool for later reuse).
 </note>
 	
 <example>
-<title>Persistent Page Property: Java Class</title>
+<title>Persistent page property: Java class</title>
 <programlisting>
+package mypackage;
+
+import org.apache.tapestry.html.BasePage;
+	
 public abstract class MyPage extends &BasePage;
 {
     abstract public int getItemsPerPage();
@@ -361,7 +401,7 @@ public abstract class MyPage extends &BasePage;
 </example>	
 
 <example>
-<title>Persistent Page Property: Page Specification</title>
+<title>Persistent page property: page specification</title>
 <programlisting>
 <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
@@ -369,9 +409,12 @@ public abstract class MyPage extends &BasePage;
   "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
 	
-<page-specification class="MyPage">
+<page-specification class="mypackage.MyPage">
 
-  <property-specification name="itemsPerPage" persistent="yes" type="int" initial-value="10"/>
+  <property-specification
+    name="itemsPerPage"
+    persistent="yes"
+    type="int"initial-value="10"/>
 
 </page-specification>
 ]]>
@@ -382,7 +425,7 @@ public abstract class MyPage extends &BasePage;
 Again, making the class abstract, and defining abstract accessors is <emphasis>optional</emphasis>.
 It is only useful when a method within the class will need to read or update the property.  It
 is also valid to just implement one of the two accessors.  The enhanced subclass will
-always include both a read and a write accessor.
+always include both a getter and a setter.
 </para>
 
 <para>
@@ -400,24 +443,23 @@ to reset the property back to its "pristine" state.
 
 <para>
 This means that you may perform initialization for the property inside
-<function>finishLoad()</function> (instead of providing a <literal>initial-value</literal>).  However,
+<function>finishLoad()</function> (instead of providing an <literal>initial-value</literal>).  However,
 don't attempt to update the property from <function>initialize()</function> ... the order of operations
 when the page detaches is not defined and is subject to change.
 </para>
+
 
 
 	
 </section> <!-- state.page-properties -->
 
 <section id="state.manual-page-properties ">
-	<title>Implementing Persistent Page Properties Manually</title>
+	<title>Implementing persistent page properties manually</title>
 	
 <warning>
 <para>
 There is very little reason to implement persistent page properties manually.  Using
-the &spec.property-specification; element is much easier, and nearly as efficient.  It is
-highly unlikely that the extra developer effort used to implement persistent page properties
-manually will pay off in any improvement in application throughput.
+the &spec.property-specification; element is much easier.
 </para>
 </warning>	
 	
@@ -439,6 +481,10 @@ back to its pristine value (<literal>null</literal>) at the end of the request.
 <example>
 	<title>Use of <function>initialize()</function> method</title>
 <programlisting>
+package mypackage;
+
+import org.apache.tapestry.html.BasePage;
+	
 public class MyPage extends &BasePage;
 {
     private String _message;
@@ -482,13 +528,18 @@ using using the recorded value and whichever page instance is taken out of the p
 
 <para>
 This notification takes the form of an invocation of the static  method
-<function>fireObservedChange()</function> in the <classname>Tapestry</classname> class.  
+<function>fireObservedChange()</function> in the &Tapestry; class.  
 This method is overloaded for all the scalar types, and for &Object;.
 </para>
 
 <example>
-<title>Manual Persistent Page Property</title>
+<title>Manual persistent page property</title>
 <programlisting>
+package mypackage;
+
+import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.html.BasePage;
+
 public class MyPage extends &BasePage;
 {
     private int _itemsPerPage;
@@ -515,7 +566,7 @@ public class MyPage extends &BasePage;
 
 <para>
 This sets up a property, <varname>itemsPerPage</varname>, with a default value of 10.  If
-the value is changed (perhaps by a form or a listener method),
+the value is changed (perhaps by a form or a &listener-method;),
 the changed value will "stick" with the user who changed it, for the duration of their
 session.
 </para>
@@ -523,12 +574,20 @@ session.
 </section> <!-- state.manual-page-properties -->
 
 <section id="state.manual-component-properties">
-	<title>Manual Persistent Component Properties</title>
+	<title>Manual persistent component properties</title>
 	
+<warning>
 <para>
-Implementing transient and persistent properties inside components involves more work. 
-The <function>fireObservedChange()</function>
-method is available to components as well as pages, but the initialization of
+There is very little reason to implement persistent component properties manually.  Using
+the &spec.property-specification; element is much easier.
+</para>
+</warning>	
+
+<para>
+Tapestry uses the same mechanism for persistent component properties as it does for
+persisting page properties (remember that pages are, in fact, specialized components).	
+Implementing transient and persistent properties inside components involves more work than with
+pages as the initialization of
 the component is more complicated.
 </para>
 
@@ -542,7 +601,7 @@ from the engine (prior to be stored back into the page pool).  This event is gen
 The Java interface &PageDetachListener; is the event listener interface for this purpose.  
 By simply implementing this interface, Tapestry will register the component as a listener and ensure that
 it receives event notifications at the right time (this works for the other
-page event interface, &PageRenderListener; as well; simply
+page event interfaces, such as &PageRenderListener; as well; simply
 implement the interface and leave the rest to the framework).
 </para>
 
@@ -553,6 +612,13 @@ Tapestry provides a method, <function>finishLoad()</function>, for just this pur
 <example>
 	<title>Manual Persistent Component Properties</title>
 <programlisting>
+package mypackage;
+
+import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.BaseComponent;
+import org.apache.tapestry.event.PageDetachListener;
+import org.apache.tapestry.event.PageEvent;
+	
 public class MyComponent extends &BaseComponent; implements &PageDetachListener;
 {
     private String _myProperty;
@@ -580,9 +646,9 @@ public class MyComponent extends &BaseComponent; implements &PageDetachListener;
     }
     
     /**
-     *  The method specified by &PageDetachListener;.
+     * The method specified by &PageDetachListener;.
      *
-     **/
+     */
     
     public void pageDetached(PageEvent event)
     {
@@ -600,7 +666,7 @@ Again, there is no particular need to do all this; using the
 </section> <!-- state.manual-component-properties -->
 
 <section id="state.stateless">
-	<title>Stateless Applications</title>
+	<title>Stateless applications</title>
 	
 <para>
 In a Tapestry application, the framework acts as a buffer between the application code and
@@ -610,22 +676,23 @@ In fact, the framework controls <emphasis>when</emphasis> the session is first c
 
 <para>
 This is important and powerful, because an application that runs, even just initially, without
-a session consumes less resources that a stateful application.  This is even more important
+a session consumes far less resources that a stateful application.  This is even more important
 in a clustered environment with multiple servers; any data stored into the &HttpSession; will
-have to be replicated to other servers in the cluster, which can be expensive in terms of resources.  Using
+have to be replicated to other servers in the cluster, which can be expensive in terms of resources (CPU time,
+network bandwidth, and so forth).  Using
 less resources means better throughput and more concurrent clients, always a good thing
 in a web application.
 </para>
 
 <para>
 Tapestry defers creation of the &HttpSession; until one of two things happens:  When
-the visit is created, or when the first persistent page property is recorded.  At this point,
+the Visit object is created, or when the first persistent page property is recorded.  At this point,
 Tapestry will create the &HttpSession; and store the engine into it.
 </para>
 
 <para>
 Earlier, we said that the &IEngine; instance is stored in the &HttpSession;, but this is not always the case.
-Tapestry maintains a pool of &IEngine; instances that are used for stateless requests.  An instance
+Tapestry maintains an object pool of &IEngine; instances that are used for stateless requests.  An instance
 is checked out of the pool and used to process a single request, then checked back into the pool for
 reuse in a later request, by the same or different client.
 </para>
