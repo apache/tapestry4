@@ -17,29 +17,33 @@
    limitations under the License.
 -->
 <mock-test>
-    <context name="c21" root="context21"/>
+    <context name="c32" root="context32"/>
 
   	<servlet name="app" class="org.apache.tapestry.ApplicationServlet"/>
 
-	<!-- Ensure that you can't change the engine's locale to null. -->
-	
 	<request>
-		<parameter name="service" value="external/SetLocaleNull"/>
 		
-		<assert-output name="Page Title">
-<![CDATA[
-Exception
-]]>
+		<assert-output name="Static Over Static">
+Static over Static: Pablo Picasso
+		</assert-output>
 
-		</assert-output>
-		
-		<assert-output name="Exception">
-		java.lang.IllegalArgumentException	
-		</assert-output>
-		
-		<assert-output name="Detail">
-		May not change engine locale to null.	
-		</assert-output>
-		
 	</request>
+	
+<!-- Page Two has a component with the same id in the template and in the specification. That 
+	   is an error to be checked for. -->
+	   
+	<request>
+	    	<parameter name="service" value="page/Two"/>
+	    	
+	    	<assert-output name="Page Title">
+<![CDATA[<title>Exception</title>]]>	    		
+	    	</assert-output>
+	    	
+	    	<assert-regexp name="Error Message">
+<![CDATA[
+Component insertPageName \(at context:/Two\.html.*\) conflicts with a prior declaration in the specification \(at context:/WEB-INF/Two\.page.*\)\.
+]]>	    		
+	    	</assert-regexp>
+	</request>
+	
 </mock-test>
