@@ -103,18 +103,10 @@ import java.text.*;
  *      <td>Object used to assist in error reporting.</td>
  *  </tr>
  *
- *  <tr>
- * 		<td>disabled</td>
- *		<td>boolean</td>
- *		<td>R</td>
- *		<td>no</td>
- *		<td>false</td>
- *		<td>Applied to the underlying {@link TextField}.</td>
- *	</tr>
- *
  *  </table>
  *
- *  <p>Informal parameters are not allowed.  A body is not allowed.
+ *  <p>Informal parameters are allowed, but are applied to
+ *  the underlying {@link TextField}.  A body is not allowed.
  *
  *  @author Howard Ship
  *  @version $Id$

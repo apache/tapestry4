@@ -67,7 +67,10 @@ implements IPropertySelectionRenderer
 	}
 
 	/**
-	 *  Writes the &lt;select&gt; element.
+	 *  Writes the &lt;select&gt; element.  If the
+	 *  {@link PropertySelection} is {@link PropertySelection#isDisabled() disabled}
+	 *  then a <code>disabled</code> attribute is written into the tag
+	 *  (though Navigator may ignore this).
 	 *
 	 */
 
@@ -78,6 +81,9 @@ implements IPropertySelectionRenderer
 		writer.begin("select");
 		writer.attribute("name", component.getName());
 
+		if (component.isDisabled())
+			writer.attribute("disabled");
+			
 		if (immediateSubmit)
 			writer.attribute("onChange", "javascript:this.form.submit();");
 	}

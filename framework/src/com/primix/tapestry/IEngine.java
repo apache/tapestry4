@@ -119,13 +119,21 @@ public interface IEngine
     public void setLocale(Locale value);
 
     /**
-    *  Returns a recorder for a page.  Creates it as necessary, or reuses an existing
-    *  recorder.
+    *  Returns a recorder for a page.  Returns null if the page record has
+	*  not been created yet.
     *
+	*  @see #createPageRecorder(String)
     */
 
     public IPageRecorder getPageRecorder(String pageName);
 
+	/**
+	 *  Creates a new page recorder for the named page.
+	 *
+	 */
+	 
+	public IPageRecorder createPageRecorder(String pageName);
+	
     /**
     *  Returns the object used to load a page from its specification.
     *

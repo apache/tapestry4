@@ -288,7 +288,12 @@ public class PageLoader
 		addAssets(container, containerSpec); 
 
 		if (container instanceof ILifecycle)
-			page.addLifecycleComponent((ILifecycle)container);
+		{
+			ILifecycle lifecycle = (ILifecycle)container;
+			
+			page.addLifecycleComponent(lifecycle);
+			lifecycle.finishLoad(this, containerSpec);
+		}
 
 		depth--;
 

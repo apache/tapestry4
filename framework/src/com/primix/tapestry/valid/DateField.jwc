@@ -4,7 +4,7 @@
 <specification>
 	<class>com.primix.tapestry.components.html.valid.DateField</class>
 	<parameters>
-		<allow-informal-parameters>no</allow-informal-parameters>
+		<allow-informal-parameters>yes</allow-informal-parameters>
 		<parameter>
 			<name>date</name>
 			<java-type>java.util.Date</java-type>
@@ -14,9 +14,6 @@
 			<name>delegate</name>
 			<java-type>com.primix.tapestry.components.html.valid.IValidationDelegate</java-type>
 			<required>yes</required>
-		</parameter>
-		<parameter>
-			<name>disabled</name>
 		</parameter>
 		<parameter>
 			<name>displayName</name>
@@ -52,10 +49,6 @@
 					<name>maximumLength</name>
 					<value>10</value>
 				</static-binding>
-				<inherited-binding>
-					<name>disabled</name>
-					<parameter-name>disabled</parameter-name>
-				</inherited-binding>
 			</bindings>
 		</component>
 	</components>
