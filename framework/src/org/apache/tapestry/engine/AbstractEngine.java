@@ -1200,7 +1200,7 @@ public abstract class AbstractEngine
      *
      *  <p>The context path is retrieved from {@link HttpServletRequest#getContextPath()}.
      *
-     *  <p>The global object is retrieved from {@link RequestContext#getGlobal()} method.
+     *  <p>The global object is retrieved from {@link IEngine#getGlobal()} method.
      *
      *  <p>The final path is available via the {@link #getServletPath()} method.
      *
@@ -1213,7 +1213,7 @@ public abstract class AbstractEngine
      *  <li>{@link IPageSource}
      *  <li>{@link IEngineService} {@link Map}
      *  <ll>{@link IScriptSource}
-     *  <li>{@link IComponentStringsSource}
+     *  <li>{@link IComponentMessagesSource}
      *  <li>{@link IPropertySource}
      *  </ul>
      *

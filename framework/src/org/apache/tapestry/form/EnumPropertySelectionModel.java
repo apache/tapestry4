@@ -67,7 +67,7 @@ import org.apache.commons.lang.enum.Enum;
  *
  *  <p>The resource bundle from which labels are extracted is usually
  *  a resource within the Tapestry application.  Since 
- *  {@link ResourceBundle#getBundle(String, Locale)} uses its caller's class loader,
+ *  {@link ResourceBundle#getBundle(String, java.util.Locale)} uses its caller's class loader,
  *  and that classloader will be the Tapestry framework's classloader, the application's
  *  resources won't be visible.  This requires that the application resolve
  *  the resource to a {@link ResourceBundle} before creating this model.
