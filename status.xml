@@ -270,7 +270,10 @@ NextGen) be released as version number 3.0.
        The online Tapestry component reference for 3.0.1 for @Foreach component has an error in the example section. 
     </action>
     <action type="fix" dev="HLS" due-to="Michael Frericks" fixes-bug="TAPESTRY-218">
-      Persistent properties cant be set to null.
+      Persistent properties can't be set to null.
+    </action>
+    <action type="fix" dev="HLS" due-to="Sadanori Ito" fixes-bug="TAPESTRY-200">
+      ListEdit component reference should list source and value as required.
     </action>
       
   </release>

@@ -56,7 +56,7 @@ import org.apache.tapestry.Tapestry;
  *  bound to a listener method to synchronize a property of the component from
  *  the map.
  * 
- *  <code>
+ *  <pre><code>
  *  public void synchronize({@link org.apache.tapestry.IRequestCycle} cycle)
  *  {
  *     ListEditMap map = ...;
@@ -67,7 +67,7 @@ import org.apache.tapestry.Tapestry;
  * 
  *     set<i>Property</i>(object);
  *  }
- *  </code>
+ *  </code></pre>
  * 
  *  <p>
  *  You may also connect a {@link org.apache.tapestry.form.Checkbox}'s
