@@ -54,8 +54,6 @@ implements ErrorHandler, EntityResolver
 	private DOMParser parser;
 	private String resourcePath;
 
-	private StringBuffer buffer;
-	
 	static private final Map booleanMap;
 	
 	// Identify all the different acceptible values.
@@ -278,7 +276,7 @@ implements ErrorHandler, EntityResolver
 		{
 			if (isElement(node, "class"))
 			{
-				result.setComponentClassName(getValue(node).trim());
+				result.setComponentClassName(getValue(node));
 				continue;
 			}
 			
@@ -375,11 +373,8 @@ implements ErrorHandler, EntityResolver
 				continue;
 			}
 			
-			if (isElement(child, "buffer-size"))
-			{
-				convertBufferSize(page, child);
-				continue;
-			}
+            // At one time, we would handle the buffer-size element here,
+            // but that has been deprecated.
 			
 			if (isElement(child, "specification-path"))
 			{
@@ -387,11 +382,9 @@ implements ErrorHandler, EntityResolver
 				continue;
 			}
 			
-			if (isElement(child, "properties"))
-			{
-				convertProperties(page, child);
-				continue;
-			}
+            // At one time, a properties element was allowed here, but
+            // that too has been deprecated.
+
 		}
 		
 		specification.setPageSpecification(name, page);
@@ -422,104 +415,6 @@ implements ErrorHandler, EntityResolver
 		specification.setComponentAlias(alias, path);
 		
 	}
-	
-	/**
-	*  Sets the buffer size for the page.  This is expressed as a
-	*  string.  The string specifies the size of the buffer, either
-	*  in bytes or in kilobytes by appending a 'k'.
-	*
-	*  The exact value accepted is defined by the regular expression:
-	*  [0-9]+ *(k|K)
-	*
-	*  @throws SpecificationParseException if the string is not formatted acceptibly
-	*/
-
-	private void convertBufferSize(PageSpecification page, Node node)
-	throws SpecificationParseException
-	{
-		int bytes = 0;
-		char[] digits;
-		char digit;
-		int i;
-		boolean requireDigit = true;
-		boolean acceptModifier = false;
-		boolean acceptDigit = true;
-		boolean invalid = false;
-		String value;
-
-		value = getValue(node);
-		
-		// Leading, trailing whitespace is already trimmed away.
-
-		digits = value.toCharArray();
-
-		for (i = 0; i < digits.length; i++)
-		{
-			digit = digits[i];
-
-			if (digit >= '0' && digit <= '9')
-			{
-				if (!acceptDigit)
-				{
-					invalid = true;
-					break;
-				}
-
-				bytes = (10 * bytes) + (digit - '0');
-
-				acceptModifier = true;
-				requireDigit = false;
-				continue;
-			}
-
-			acceptDigit = false;
-
-			if (requireDigit)
-			{
-				invalid = true;
-				break;
-			}
-
-			// One or more spaces allowed between the base quantity and the modifier
-
-			if (digit == ' ')
-			{
-				acceptDigit = false;
-				continue;
-			}
-
-			if (!acceptModifier)
-			{
-				invalid = true;
-				break;
-			}
-
-
-			if (digit == 'k' || digit == 'K')
-			{
-				bytes *= 1024;
-
-				// Continue loop, but this should be the last letter.
-
-				continue;
-			}
-
-			// Unrecognized character
-
-			invalid = true;
-			break;
-		}
-
-
-		if (invalid)
-			throw new SpecificationParseException(
-				"Invalid buffer size specification: '" +
-				value + "'.", 
-				resourcePath, parser.getLocator(), null);
-
-		page.setBufferSize(bytes);
-	}
-
 	
 	private void convertParameters(ComponentSpecification specification, Node node)
 	throws SpecificationParseException
@@ -604,7 +499,7 @@ implements ErrorHandler, EntityResolver
 		{
 			if (isElement(child, "id"))
 			{
-				id = getValue(child);
+				id = getId(child);
 				continue;
 			}
 			
@@ -811,11 +706,9 @@ implements ErrorHandler, EntityResolver
 		String result;
 		Node child;
 		Text text;
+        StringBuffer buffer;
 		
-		if (buffer == null)
-			buffer = new StringBuffer();
-		else
-			buffer.setLength(0);	
+		buffer = new StringBuffer();
 		
 		for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
 		{
@@ -825,11 +718,48 @@ implements ErrorHandler, EntityResolver
 		}
 		
 		result = buffer.toString().trim();
-		buffer.setLength(0);
 		
 		return result;
 	}
 	
+    /**
+     *  Returns the value of an {@link Element} node (via {@link #getValue(Node)}),
+     *  but then validates that the result is a good identifier (starts with a
+     *  letter, contains letters, numbers, dashes, underscore).
+     *
+     */
+
+    private String getId(Node node)
+    throws SpecificationParseException
+    {
+        String result = getValue(node);
+        char[] array = result.toCharArray();
+        char ch;
+        boolean fail = false;
+
+        for (int i = 0; i < array.length; i++)
+        {
+            ch = array[i];
+
+            if (i == 0)
+                fail = ! Character.isLetter(ch);
+            else
+            {
+                fail = ! (Character.isLetter(ch) ||
+                          Character.isDigit(ch) ||
+                          ch == '-' ||
+                          ch == '_');
+            }
+
+            if (fail)
+                throw new SpecificationParseException
+                (result + " is not a valid identifier (in element " +
+                    getNodePath(node.getParentNode()) + ").",
+                    resourcePath, null, null);
+        }
+
+        return result;
+    }
 		
 	private boolean getBooleanValue(Node node)
 	throws SpecificationParseException
@@ -857,18 +787,21 @@ implements ErrorHandler, EntityResolver
 		int i;
 		boolean first = true;
 		String result;
+        StringBuffer buffer;
+        int length = 0;
+        String nodeName;
 		
 		path = new String[20];
 		while (node != null)
 		{
-			path[count++] = node.getNodeName();
+            nodeName = node.getNodeName();
+			path[count++] = nodeName;
 			node = node.getParentNode();
+
+            length += nodeName.length() + 1;
 		}
 		
-		if (buffer == null)
-			buffer = new StringBuffer();
-		else
-			buffer.setLength(0);
+        buffer = new StringBuffer(length);
 			
 		for (i = count - 1; i >= 0; i--)
 		{
@@ -881,8 +814,6 @@ implements ErrorHandler, EntityResolver
 		}
 		
 		result = buffer.toString();
-		
-		buffer.setLength(0);
 		
 		return result;
 	}		

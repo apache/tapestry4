@@ -1,7 +1,6 @@
 package com.primix.tapestry.spec;
 
 import com.primix.tapestry.*;
-import com.primix.foundation.*;
 
 /*
  * Tapestry Web Application Framework
@@ -45,7 +44,7 @@ import com.primix.foundation.*;
  */
 
 
-public class PageSpecification extends BasePropertyHolder
+public class PageSpecification
 {
 	private int bufferSize = -1;
 	private String specificationPath;
@@ -59,6 +58,11 @@ public class PageSpecification extends BasePropertyHolder
 		this.specificationPath = specificationPath;
 	}
 	
+    /**
+     *  @deprecated
+     *
+     */
+
 	public PageSpecification(String specificationPath, int bufferSize)
 	{
 		this.specificationPath = specificationPath;
@@ -69,6 +73,7 @@ public class PageSpecification extends BasePropertyHolder
 	*  Returns the buffer size for the page (in bytes).  A value less than zero means no specific
 	*  value was set for the page.
 	*
+    *  @deprecated
 	*/
 
 	public int getBufferSize()
@@ -83,6 +88,8 @@ public class PageSpecification extends BasePropertyHolder
 
 	/**
 	*  Sets the size of the buffer used when rendering the page, in bytes.
+    *
+    *  @deprecated
 	*/
 
 	public void setBufferSize(int value)
