@@ -44,4 +44,10 @@ public interface Infrastructure
      */
 
     public ComponentMessagesSource getComponentMessagesSource();
+    
+    /**
+     * Returns component or page template contents.
+     */
+    
+    public TemplateSource getTemplateSource();
 }

@@ -18,6 +18,7 @@ import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.services.ComponentMessagesSource;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.ResetEventCoordinator;
+import org.apache.tapestry.services.TemplateSource;
 
 /**
  * Allows access to selected HiveMind services.
@@ -30,6 +31,7 @@ public class InfrastructureImpl implements Infrastructure
     private IPropertySource _applicationPropertySource;
     private ResetEventCoordinator _resetEventCoordinator;
     private ComponentMessagesSource _componentMessagesSource;
+    private TemplateSource _templateSource;
 
     public void setApplicationPropertySource(IPropertySource source)
     {
@@ -59,6 +61,16 @@ public class InfrastructureImpl implements Infrastructure
     public void setResetEventCoordinator(ResetEventCoordinator coordinator)
     {
         _resetEventCoordinator = coordinator;
+    }
+
+    public TemplateSource getTemplateSource()
+    {
+        return _templateSource;
+    }
+
+    public void setTemplateSource(TemplateSource source)
+    {
+        _templateSource = source;
     }
 
 }

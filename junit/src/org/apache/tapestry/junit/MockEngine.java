@@ -30,9 +30,9 @@ import org.apache.tapestry.engine.IPageSource;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.engine.ISpecificationSource;
-import org.apache.tapestry.engine.ITemplateSource;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.ComponentMessagesSource;
+import org.apache.tapestry.services.TemplateSource;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.util.io.DataSqueezer;
 import org.apache.tapestry.util.pool.Pool;
@@ -113,7 +113,7 @@ public class MockEngine implements IEngine
         return null;
     }
 
-    public ITemplateSource getTemplateSource()
+    public TemplateSource getTemplateSource()
     {
         return null;
     }

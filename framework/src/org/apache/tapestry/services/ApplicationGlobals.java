@@ -31,15 +31,15 @@ public interface ApplicationGlobals
     /**
      * Invoked by the servlet at init(), after parsing the application specification.
      */
-    void store(HttpServlet servlet, IApplicationSpecification applicationSpecification);
+    public void store(HttpServlet servlet, IApplicationSpecification applicationSpecification);
 
-    HttpServlet getServlet();
+    public HttpServlet getServlet();
 
-    IApplicationSpecification getSpecification();
+    public IApplicationSpecification getSpecification();
 
-    ServletContext getContext();
+    public ServletContext getContext();
     
-    String getServletName();
+    public String getServletName();
     
-    ServletConfig getServletConfig();
+    public ServletConfig getServletConfig();
 }

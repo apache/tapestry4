@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.engine;
+package org.apache.tapestry.services;
 
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
@@ -27,10 +27,9 @@ import org.apache.tapestry.parse.ComponentTemplate;
  * It may maintain templates in memory.
  *
  * @author Howard Ship
- * 
- **/
+ */
 
-public interface ITemplateSource
+public interface TemplateSource
 {
     /**
      *  Name of an {@link org.apache.tapestry.IAsset} of a component that provides the template
@@ -41,7 +40,7 @@ public interface ITemplateSource
      * 
      *  @since 2.2
      * 
-     **/
+     */
     
     public static final String TEMPLATE_ASSET_NAME = "$template";
 
@@ -53,7 +52,7 @@ public interface ITemplateSource
      * 
      *  @since 3.0
      * 
-     **/
+     */
     
     public static final String TEMPLATE_TAG_PARAMETER_NAME = "templateTag";
     
@@ -66,15 +65,8 @@ public interface ITemplateSource
      *
      *  @throws org.apache.tapestry.ApplicationRuntimeException if the resource cannot be located or loaded.
      * 
-     **/
+     */
 
     public ComponentTemplate getTemplate(IRequestCycle cycle, IComponent component);
 
-    /**
-     *  Invoked to have the source clear any internal cache.  This is most often
-     *  used when debugging an application.
-     *
-     **/
-
-    public void reset();
 }

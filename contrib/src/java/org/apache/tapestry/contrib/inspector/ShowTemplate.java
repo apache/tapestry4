@@ -26,7 +26,6 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
-import org.apache.tapestry.engine.ITemplateSource;
 import org.apache.tapestry.parse.CloseToken;
 import org.apache.tapestry.parse.ComponentTemplate;
 import org.apache.tapestry.parse.LocalizationToken;
@@ -35,6 +34,7 @@ import org.apache.tapestry.parse.TemplateAttribute;
 import org.apache.tapestry.parse.TemplateToken;
 import org.apache.tapestry.parse.TextToken;
 import org.apache.tapestry.parse.TokenType;
+import org.apache.tapestry.services.TemplateSource;
 
 /**
  *  Component of the {@link Inspector} page used to display
@@ -83,7 +83,7 @@ public class ShowTemplate extends BaseComponent implements IDirect
     {
         IComponent inspectedComponent = getInspectedComponent();
         ComponentTemplate template = null;
-        ITemplateSource source = getPage().getEngine().getTemplateSource();
+        TemplateSource source = getPage().getEngine().getTemplateSource();
 
         try
         {

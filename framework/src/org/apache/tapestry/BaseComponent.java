@@ -18,8 +18,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.engine.IPageSource;
-import org.apache.tapestry.engine.ITemplateSource;
 import org.apache.tapestry.parse.ComponentTemplate;
+import org.apache.tapestry.services.TemplateSource;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
@@ -90,7 +90,7 @@ public class BaseComponent extends AbstractComponent
         if (LOG.isDebugEnabled())
             LOG.debug(this +" reading template");
 
-        ITemplateSource source = loader.getTemplateSource();
+        TemplateSource source = loader.getTemplateSource();
         ComponentTemplate componentTemplate = source.getTemplate(cycle, this);
 
         // Most of the work is done inside the loader class. 

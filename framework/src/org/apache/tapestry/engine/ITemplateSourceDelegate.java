@@ -21,33 +21,31 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.parse.ComponentTemplate;
 
 /**
- *  Acts as a delegate to the {@link ITemplateSource}, providing access to
- *  page and component templates after the normal search mechanisms have failed.
+ *  Acts as a delegate to the {@link org.apache.tapestry.services.TemplateSource}, 
+ *  providing access to page and component templates after the normal search mechanisms have failed.
  * 
  *  <p>
  *  The delegate must be threadsafe.
  *
  *  @author Howard Lewis Ship
  *  @since 3.0
- *  @see org.apache.tapestry.engine.DefaultTemplateSource
+ *  @see org.apache.tapestry.services.impl.TemplateSourceImpl
  * 
  **/
 
 public interface ITemplateSourceDelegate
 {
-	/**
-	 *  Invoked by the {@link ITemplateSource} when a template can't be found
-	 *  by normal means (i.e., in the normal locations).  This method
-	 *  should find the template.  The result may be null.  The delegate
-	 *  is responsible for caching the result.
-	 * 
-	 *  @param cycle for access to Tapestry and Servlet API objects
-	 *  @param component component (or page) for which a template is needed
-	 *  @param locale the desired locale for the template
-	 * 
-	 **/
-	
-	public ComponentTemplate findTemplate(IRequestCycle cycle,
-	IComponent component,
-	Locale locale);
+    /**
+     *  Invoked by the {@link ITemplateSource} when a template can't be found
+     *  by normal means (i.e., in the normal locations).  This method
+     *  should find the template.  The result may be null.  The delegate
+     *  is responsible for caching the result.
+     * 
+     *  @param cycle for access to Tapestry and Servlet API objects
+     *  @param component component (or page) for which a template is needed
+     *  @param locale the desired locale for the template
+     * 
+     **/
+
+    public ComponentTemplate findTemplate(IRequestCycle cycle, IComponent component, Locale locale);
 }

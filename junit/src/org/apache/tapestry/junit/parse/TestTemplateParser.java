@@ -23,18 +23,19 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.apache.hivemind.util.ClasspathResource;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.DefaultClassResolver;
+import org.apache.hivemind.util.ClasspathResource;
 import org.apache.tapestry.parse.AttributeType;
 import org.apache.tapestry.parse.ITemplateParserDelegate;
 import org.apache.tapestry.parse.LocalizationToken;
 import org.apache.tapestry.parse.OpenToken;
 import org.apache.tapestry.parse.TemplateAttribute;
 import org.apache.tapestry.parse.TemplateParseException;
-import org.apache.tapestry.parse.TemplateParser;
+import org.apache.tapestry.parse.TemplateParserImpl;
 import org.apache.tapestry.parse.TemplateToken;
+import org.apache.tapestry.parse.TemplateTokenFactory;
 import org.apache.tapestry.parse.TextToken;
 import org.apache.tapestry.parse.TokenType;
 
@@ -67,18 +68,17 @@ public class TestTemplateParser extends TestCase
 
     }
 
-    public TestTemplateParser(String name)
-    {
-        super(name);
-    }
-
     protected TemplateToken[] run(
         char[] templateData,
         ITemplateParserDelegate delegate,
         Resource location)
         throws TemplateParseException
     {
-        return new TemplateParser().parse(templateData, delegate, location);
+        TemplateParserImpl parser = new TemplateParserImpl();
+
+        parser.setFactory(new TemplateTokenFactory());
+
+        return parser.parse(templateData, delegate, location);
     }
 
     protected TemplateToken[] run(
@@ -124,8 +124,7 @@ public class TestTemplateParser extends TestCase
         String thisClassName = getClass().getName();
         String thisPath = "/" + thisClassName.replace('.', '/') + "/" + file;
 
-        Resource location =
-            new ClasspathResource(new DefaultClassResolver(), thisPath);
+        Resource location = new ClasspathResource(new DefaultClassResolver(), thisPath);
 
         InputStream stream = getClass().getResourceAsStream(file);
 

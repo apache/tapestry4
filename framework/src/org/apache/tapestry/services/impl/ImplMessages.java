@@ -14,8 +14,11 @@
 
 package org.apache.tapestry.services.impl;
 
+import java.util.Locale;
+
 import javax.servlet.http.HttpServlet;
 
+import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.MessageFormatter;
 
 /**
@@ -42,5 +45,25 @@ final class ImplMessages
     public static String errorInstantiatingEngine(Class engineClass, Throwable cause)
     {
         return _formatter.format("error-instantiating-engine", engineClass.getName(), cause);
+    }
+
+    public static String noTemplateForComponent(String componentId, Locale locale)
+    {
+        return _formatter.format("no-template-for-component", componentId, locale);
+    }
+
+    public static String noTemplateForPage(String pageName, Locale locale)
+    {
+        return _formatter.format("no-template-for-page", pageName, locale);
+    }
+
+    public static String unableToReadTemplate(Object template)
+    {
+        return _formatter.format("unable-to-read-template", template);
+    }
+    
+    public static String unableToParseTemplate(Resource resource)
+    {
+    	return _formatter.format("unable-to-parse-template", resource);
     }
 }
