@@ -5,7 +5,45 @@
 	<title>Tapestry: What's New</title>
 <link rel="STYLESHEET" type="text/css" href="scripts/style_virtlib_pcIE55.css">
 </head>
+<script language="JavaScript">
+<!--
 
+function openWin(url, windowName, width, height)
+{
+	var screenX = Math.floor((screen.width)/2)-Math.floor(width/2);
+	var screenY = Math.floor((screen.height)/2)-Math.floor(height/2)-20;
+
+
+	var features = 
+		"toolbar=no," +
+		"scrollbars=no," +
+		"status=no," +
+		"top=" + screenY  + "," +
+		"left=" + screenX + "," +
+		"screenX=" + screenX + "," +
+		"screenY=" + screenY + "," +
+		"width=" + width + "," +
+		"height=" + height;
+
+	var newWindow = window.open(url, windowName, features);
+	
+	newWindow.focus();
+	return newWindow;
+}
+
+function showStatusImage()
+{
+	openWin("images/success/status-table.gif", "Screenshot1", 745, 450);
+}
+
+
+function showEditForm()
+{
+	openWin("images/success/edit-form.gif", "Screenshot2", 750, 470);
+}
+
+// -->
+</script>
 <body bgcolor="#839cd1" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
@@ -15,6 +53,69 @@
 		<td valign="top" align="left"><img height="44" src="images/ico_t.gif" width="44" align="absMiddle" border="0">&nbsp;<img height="22" alt="" src="images/hd_tapestry.gif" width="100" align="absMiddle" vspace="17" border="0"> 
 	
 <h3>Quotes</h3>
+
+<p>
+<div class="right-side-quote">
+&rdquo;Tapestry met all of our requirements and helped us proceed onto a
+ successful release.&rdquo;
+</div>
+We used Tapestry to implement the monitoring and administration console
+for
+a wireless network management product.  Initially, we implemented a
+demonstration using standard JSP but we realized that JSPs presented
+ difficulties for implementation.  Some of our requirements were a very
+aggressive development schedule, integration with EJB 2.0 beans, ability
+to
+write modular reusable components, very reliable, easy code maintenance,
+ internationalization, and of course easier debugging than the generated
+JSP
+code.  Tapestry met all of our requirements and helped us proceed onto a
+ successful release.
+
+<p>
+After reading the tutorial and reviewing the examples, we started with
+writing simple components.  We started with a StatusImage
+component.  The
+GIF for the status image should be localized and selected based on
+standard
+ network status states.  Another example of a simple component was a
+validating IP address 
+text field.  The IP address field uses the Tapestry
+validation framework.  After that, we moved onto more complex components
+like the StatusTable shown in the figure.  
+This table has a varying number of rows depending on the configuration of the product using the Tapestry
+Foreach component (very cool).  This StatusTable makes use of another
+ essential Tapestry component, the Conditional.  Looking at the Actions
+columns, the set of actions is conditional based on the row.  All this
+logic
+ happens in the Java class and is not embedded into our HTML making
+maintenance much easier.
+
+<p>
+<div class="right-side-quote">
+&rdquo;Tapestry's flexibility along with its
+clean object-oriented architecture
+made our web interface shine.&rdquo;
+</div>
+Finally, we integrated servlets and JSPs into our Tapestry web
+application.
+ We needed servlet integration for charting and JSPs for reporting.  With
+all
+ this flexibility, we could use each technology where they worked best.
+
+Overall, all of Tapestry's flexibility along with its clean
+object-oriented
+ architecture made our web interface shine.
+
+<p>
+ Dorothy Gantenbein
+ <br> Profluent, Inc.
+
+ <p>
+ <img src="images/dots_leftnav.gif" width="14" height="12">
+ <a class="clsLeftNav" href="javascript:showStatusImage();">Screen Shot 1</a>
+ <img src="images/dots_leftnav.gif" width="14" height="12">
+ <a class="clsLeftNav" href="javascript:showEditForm();">Screen Shot 2</a>
 
 			<!-- END Content -->
 		</td>
