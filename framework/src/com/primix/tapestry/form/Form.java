@@ -523,11 +523,17 @@ public class Form
 		
 		Object value = events.get(type);
 		
+		// The value can either be a String, or a List of String.  Since
+		// it is rare for there to be more than one event handling function,
+		// we start with just a String.
+		
 		if (value == null)
 		{
 			events.put(type, functionName);
 			return;
 		}
+		
+		// The second function added converts it to a List.
 		
 		if (value instanceof String)
 		{
@@ -536,7 +542,11 @@ public class Form
 			list.add(functionName);
 			
 			events.put(type, list);
+			return;
 		}
+		
+		// The third and subsequent function justs
+		// adds to the List.
 		
 		List list = (List)value;
 		list.add(functionName);

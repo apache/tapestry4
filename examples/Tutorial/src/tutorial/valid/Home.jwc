@@ -81,6 +81,7 @@
     <binding name="model" property-path="colorModel"/>
     <binding name="selected" property-path="visit.selectedColors"/>
     <binding name="sort" property-path="sort"/>
+    <static-binding name="tableClass">palette</static-binding>
   </component>
   
 </specification>

@@ -245,6 +245,13 @@ public class BaseComponent
 			CAT.debug(this + " finished reading template");
 	}
 	
+	/** 
+	 * Adds static bindings for any attrributes specified in the HTML
+	 * template.  Does not overwrite bindings (from the component specification)
+	 * with identical (case sensitive) names.
+	 *
+	 */
+	
 	private void addStaticBindings(IComponent component, Map attributes, IPageSource pageSource)
 	{
 		if (attributes == null || attributes.isEmpty())
@@ -256,6 +263,13 @@ public class BaseComponent
 			Map.Entry e = (Map.Entry)i.next();
 			
 			String informalParameterName = (String)e.getKey();
+	
+			// If a formal or informal parameter already exists with that
+			// exact name, then skip it.
+			
+			if (component.getBinding(informalParameterName) != null)
+				continue;
+			
 			String value = (String)e.getValue();
 			
 			IBinding binding = pageSource.getStaticBinding(value);

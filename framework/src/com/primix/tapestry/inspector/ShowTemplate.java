@@ -141,7 +141,9 @@ implements IDirect
 				writer.begin("span");
 				writer.attribute("class", "jwc-tag");
 				
-				writer.print("</jwc>");
+				writer.print("</");
+				writer.print(token.getTag());
+				writer.print(">");
 				
 				writer.end(); // <span>
 				
@@ -171,7 +173,13 @@ implements IDirect
 			writer.begin("span");
 			writer.attribute("class", "jwc-tag");
 			
-			writer.print("<jwc id=\"");
+			writer.print("<");
+			writer.print(token.getTag());
+			
+			if (token.getTag().equalsIgnoreCase("jwc"))
+				writer.print(" id=\"");
+			else
+				writer.print(" jwcid=\"");
 
 			writer.begin("span");
 			writer.attribute("class", "jwc-id");
@@ -184,6 +192,23 @@ implements IDirect
 			writer.end();  // <span>
 			writer.print('"');
 
+			Map attributes = token.getAttributes();
+			
+			if (attributes != null)
+			{
+				Iterator ii = attributes.entrySet().iterator();
+
+				while (ii.hasNext())
+				{
+					Map.Entry e = (Map.Entry)ii.next();
+					writer.print(' ');
+					writer.print(e.getKey().toString());
+					writer.print("=\"");
+					writer.print(e.getValue().toString());
+					writer.print('"');
+				}				
+			}
+			
 			// Collapse an open & close down to a single tag.
 
 			if (i + 1 < count &&

@@ -1,3 +1,18 @@
+* Jul 3 2001 hship
+
+framework:
+- Comments at the beginning of the HTML template, or immediately following a dynamic tag, 
+  were being ignored.
+- Modify BaseComponent to not overwrite existing bindings with bindings from 
+  HTML template attributes.
+- Have TemplateToken record the actual tag from the HTML template (in open and close tags).
+- Display the actual tag plus any HTML attributes in the Inspector's template view.
+
+contrib:
+- More tweaks to the Palette component for NN4
+
+[ #437907 ] can't have more than one palette.
+
 * Jul 2 2001 hship
 
 Update the documentation concerning the new HTML parser.

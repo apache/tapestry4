@@ -184,7 +184,7 @@ public class TemplateParserTest
 		TemplateToken[] tokens = run("AllStatic.html");
 		
 		assertTokenCount(tokens, 1);
-		assertTextToken(tokens[0], 0, 117);
+		assertTextToken(tokens[0], 0, 184);
 	}
 	
 	public void testSingleEmptyTag()
@@ -387,10 +387,10 @@ public class TemplateParserTest
 		TemplateToken[] tokens = run("BasicContent.html");
 		
 		assertTokenCount(tokens, 4);
-		assertTextToken(tokens[0], 103, 164);
+		assertTextToken(tokens[0], 112, 173);
 		assertOpenToken(tokens[1], "nested");
 		assertCloseToken(tokens[2]);
-		assertTextToken(tokens[3], 183, 189);
+		assertTextToken(tokens[3], 192, 198);
 	}
 	
 	public void testIgnoredContentFailure()

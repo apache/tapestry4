@@ -106,7 +106,7 @@ public class TemplateParser
 	private static class Tag
 	{
 		// The element, i.e., <jwc> or virtually any other element (via jwcid attribute)
-		String tagId;
+		String tagName;
 		// If true, the tag is a placeholder for a dynamic element
 		boolean component;
 		// If true, the body of the tag is being ignored, and the
@@ -122,15 +122,15 @@ public class TemplateParser
 		// If true, then the parse ends when the closing tag is found.
 		boolean content;
 		
-		Tag(String tagId, int line)
+		Tag(String tagName, int line)
 		{
-			this.tagId = tagId;
+			this.tagName = tagName;
 			this.line = line;
 		}
 		
-		boolean match(String matchTagId)
+		boolean match(String matchTagName)
 		{
-			return tagId.equalsIgnoreCase(matchTagId);
+			return tagName.equalsIgnoreCase(matchTagName);
 		}
 	}
 	
@@ -315,6 +315,9 @@ public class TemplateParser
 		int length = templateData.length;
 		int startLine = line;
 		
+		if (blockStart < 0 && !ignoring)
+			blockStart = cursor;
+		
 		while (true)
 		{
 			if (cursor >= length)
@@ -363,7 +366,7 @@ public class TemplateParser
 	{
 		int cursorStart = cursor;
 		int length = templateData.length;
-		String tagId = null;
+		String tagName = null;
 		boolean endOfTag = false;
 		boolean emptyTag = false;
 		int startLine = line;
@@ -378,7 +381,7 @@ public class TemplateParser
 			
 			if (ch == '/' || ch == '>' || Character.isWhitespace(ch))
 			{
-				tagId = new String(templateData, cursorStart + 1, cursor - cursorStart - 1);
+				tagName = new String(templateData, cursorStart + 1, cursor - cursorStart - 1);
 				
 				break;
 			}
@@ -386,7 +389,7 @@ public class TemplateParser
 			advance();
 		}
 		
-		boolean isJwcTag = (tagId != null && tagId.equalsIgnoreCase("jwc"));
+		boolean isJwcTag = (tagName != null && tagName.equalsIgnoreCase("jwc"));
 		String jwcId = null;
 		String jwcIdAttributeName = 
 			isJwcTag ? "id" : "jwcid";
@@ -405,9 +408,9 @@ public class TemplateParser
 			if (cursor >= length)
 			{
 				String message = 
-					tagId == null 
+					tagName == null 
 					? "Tag"
-					: "Tag <" + tagId + ">";
+					: "Tag <" + tagName + ">";
 				
 				throw new TemplateParseException(
 					message + " on line " + startLine + " is never closed.", 
@@ -460,7 +463,7 @@ public class TemplateParser
 						
 						if (isJwcTag && !attributeName.equalsIgnoreCase(jwcIdAttributeName))
 							throw new TemplateParseException(
-								"Tag <" + tagId + "> on line " + startLine + " may only contain attribute '" +
+								"Tag <" + tagName + "> on line " + startLine + " may only contain attribute '" +
 									jwcIdAttributeName + "'.", startLine, resourcePath);
 						
 						state = ADVANCE_PAST_EQUALS;
@@ -511,7 +514,7 @@ public class TemplateParser
 					
 					if (ch == '/' || ch == '>')
 						throw new TemplateParseException(
-							"Tag <" + tagId + "> is missing a value for attribute " + 
+							"Tag <" + tagName + "> is missing a value for attribute " + 
 								attributeName + " on line " + line + ".",
 							line, resourcePath);
 					
@@ -591,7 +594,7 @@ public class TemplateParser
 		
 		if (isJwcTag && jwcId == null)
 			throw new TemplateParseException(
-				"Tag <" + tagId + "> on line " + startLine + " does not specify an id.",
+				"Tag <" + tagName + "> on line " + startLine + " does not specify an id.",
 				startLine, resourcePath);
 		
 		if (jwcId != null)
@@ -600,21 +603,21 @@ public class TemplateParser
 			{
 				if (ignoring)
 					throw new TemplateParseException(
-						"Tag <" + tagId + "> on line " + startLine + 
+						"Tag <" + tagName + "> on line " + startLine + 
 							" is the template content, and may not be in an ignored block.",
 						startLine, resourcePath);
 				
 				if (emptyTag)
 					throw new TemplateParseException(
-						"Tag <" + tagId + "> on line " + startLine + 
+						"Tag <" + tagName + "> on line " + startLine + 
 							" is the template content, and may not be empty.",
 						startLine, resourcePath);
 				
 				tokens.clear();
 				blockStart = -1;
 				
-				Tag tag = new Tag(tagId, startLine);
-
+				Tag tag = new Tag(tagName, startLine);
+				
 				tag.mustBalance = true;
 				tag.content = true;
 				
@@ -630,13 +633,13 @@ public class TemplateParser
 			
 			if (!(isRemoveId || delegate.getKnownComponent(jwcId)))
 				throw new TemplateParseException(
-					"Tag <" + tagId + "> on line " + startLine +
+					"Tag <" + tagName + "> on line " + startLine +
 						" references unknown component id '" + jwcId + "'.",
 					startLine, resourcePath);
 			
 			if (ignoring && !isRemoveId)
 				throw new TemplateParseException(
-					"Tag <" + tagId + "> on line " + startLine + 
+					"Tag <" + tagName + "> on line " + startLine + 
 						" is a dynamic component, and may not appear inside an ignored block.", startLine, resourcePath);
 			
 			
@@ -649,13 +652,13 @@ public class TemplateParser
 			
 			if (ignoring && ignoreBody)
 				throw new TemplateParseException(
-					"Tag <" + tagId + "> on line " + startLine +
+					"Tag <" + tagName + "> on line " + startLine +
 						" should be ignored, but is already inside an ignored block (ignored blocks may not be nested).",
 					startLine, resourcePath);
 			
 			if (!emptyTag)
 			{
-				Tag tag = new Tag(tagId, startLine);
+				Tag tag = new Tag(tagName, startLine);
 				
 				tag.component = !isRemoveId;
 				tag.removeTag = isRemoveId;
@@ -677,12 +680,12 @@ public class TemplateParser
 			if (!isRemoveId)
 			{
 				if (attributes.isEmpty())
-					tokens.add(new TemplateToken(jwcId));
+					tokens.add(new TemplateToken(jwcId, tagName));
 				else
-					tokens.add(new TemplateToken(jwcId, new HashMap(attributes)));
+					tokens.add(new TemplateToken(jwcId, tagName, new HashMap(attributes)));
 				
 				if (emptyTag)
-					tokens.add(new TemplateToken(TokenType.CLOSE));
+					tokens.add(new TemplateToken(TokenType.CLOSE, tagName));
 			}
 			
 			advance();
@@ -695,7 +698,7 @@ public class TemplateParser
 		
 		if (!emptyTag)
 		{
-			Tag tag = new Tag(tagId, startLine);
+			Tag tag = new Tag(tagName, startLine);
 			stack.add(tag);
 		}
 		
@@ -731,7 +734,7 @@ public class TemplateParser
 		
 		cursor += CLOSE_TAG.length;
 		
-		int tagIdStart = cursor;
+		int tagStart = cursor;
 		
 		while (true)
 		{
@@ -747,7 +750,7 @@ public class TemplateParser
 			advance();
 		}
 		
-		String tagId = new String(templateData, tagIdStart, cursor - tagIdStart);
+		String tagName = new String(templateData, tagStart, cursor - tagStart);
 		
 		int stackPos = stack.size() - 1;
 		Tag tag = null;
@@ -756,13 +759,13 @@ public class TemplateParser
 		{
 			tag = (Tag)stack.get(stackPos);
 			
-			if (tag.match(tagId))
+			if (tag.match(tagName))
 				break;
 			
 			if (tag.mustBalance)
 				throw new TemplateParseException(
-					"Closing tag </" + tagId + "> on line " + startLine +
-						" is improperly nested with tag <" + tag.tagId + "> on line " + tag.line + ".",
+					"Closing tag </" + tagName + "> on line " + startLine +
+						" is improperly nested with tag <" + tag.tagName + "> on line " + tag.line + ".",
 					startLine, resourcePath);
 			
 			stackPos--;
@@ -770,7 +773,7 @@ public class TemplateParser
 		
 		if (stackPos < 0)
 			throw new TemplateParseException(
-				"Closing tag </" + tagId + "> on line " + startLine +
+				"Closing tag </" + tagName + "> on line " + startLine +
 					" does not have a matching opening tag.", startLine, resourcePath);
 		
 		// Special case for the content tag
@@ -791,7 +794,7 @@ public class TemplateParser
 		{
 			addTextToken(cursorStart - 1);
 			
-			tokens.add(new TemplateToken(TokenType.CLOSE));
+			tokens.add(new TemplateToken(TokenType.CLOSE, tagName));
 		}
 		else
 		{
