@@ -1,6 +1,6 @@
 package net.sf.tapestry.form;
 
-import java.sql.Date;
+import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -8,7 +8,7 @@ import net.sf.tapestry.BaseComponent;
 import net.sf.tapestry.IBinding;
 
 /**
- * Provides a Form <tt>java.sql.Date</tt> field component for selecting dates.
+ * Provides a Form <tt>java.util.Date</tt> field component for selecting dates.
  *
  *  [<a href="../../../../../ComponentReference/DatePicker.html">Component Reference</a>]
  *
@@ -21,8 +21,6 @@ import net.sf.tapestry.IBinding;
 
 public class DatePicker extends BaseComponent
 {
-    private static final SimpleDateFormat SQL_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-
     private IBinding _valueBinding;
     private SimpleDateFormat _dateFormat = new SimpleDateFormat("dd MMM yyyy");
 
@@ -66,14 +64,7 @@ public class DatePicker extends BaseComponent
         {
             try
             {
-                java.util.Date date = _dateFormat.parse(text);
-
-                // DateFormat is not threadsafe
-
-                synchronized (SQL_DATE_FORMAT)
-                {
-                    setValue(Date.valueOf(SQL_DATE_FORMAT.format(date)));
-                }
+                setValue(_dateFormat.parse(text));
             }
             catch (ParseException pe)
             {
