@@ -143,20 +143,12 @@
 				<field-name>ownerPK</field-name>
 			</cmp-field>
 			<cmp-field>
-				<description>Number of times book has been lent/borrowed.</description>
-				<field-name>lendCount</field-name>
-			</cmp-field>
-			<cmp-field>
 				<description>Title of book.</description>
 				<field-name>title</field-name>
 			</cmp-field>
 			<cmp-field>
 				<description>Name of book author</description>
 				<field-name>author</field-name>
-			</cmp-field>
-			<cmp-field>
-				<description>Rating, 1 - 5 (5 is best), or 0 for no rating.</description>
-				<field-name>rating</field-name>
 			</cmp-field>
 			<primkey-field>bookId</primkey-field>
 			<ejb-ref>

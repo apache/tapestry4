@@ -46,8 +46,7 @@ import java.rmi.*;
 
 public class Matches extends BasePage
 {
-	private transient IBookQuery bookQuery;
-	private Handle bookQueryHandle;
+	private IBookQuery bookQuery;
 	private Book currentMatch;
 	private int matchCount;
 	
@@ -56,7 +55,6 @@ public class Matches extends BasePage
 		super.detachFromApplication();
 		
 		bookQuery = null;
-		bookQueryHandle = null;
 		currentMatch = null;
 		matchCount = 0;
 	}
@@ -79,27 +77,9 @@ public class Matches extends BasePage
 		fireObservedChange("matchCount", value);
 	}
 	
-	public Handle getBookQueryHandle()
-	{
-		return bookQueryHandle;
-	}
-	
 	/**
-	 *  Sets the persistent bookQueryHandle property, the {@link Handle}
-	 *  to the {@link IBookQuery} session bean.
-	 *
-	 */
-	 
-	public void setBookQueryHandle(Handle value)
-	{
-		bookQueryHandle = value;
-		fireObservedChange("bookQueryHandle", value);
-	}
-	
-	/**
-	 *  Gets the {@link IBookQuery} session bean for the query, which may
-	 *  involve restoring it from its handle, or
-	 *  even creating a new instance.
+	 *  Gets the {@link IBookQuery} session bean for the query, creating
+     *  it fresh if necessary.
 	 *
 	 */
 	 
@@ -112,33 +92,31 @@ public class Matches extends BasePage
 		{
 			try
 			{
-				if (bookQueryHandle != null)
-				{
-					bookQuery = (IBookQuery)PortableRemoteObject.narrow(
-												bookQueryHandle.getEJBObject(),
-												IBookQuery.class); 
-					return bookQuery;
-				}
-			
 				// No existing handle, so time to create a new bean.
 				
 				app = (VirtualLibraryApplication)application;
 				
 				home = app.getBookQueryHome();
 				
-				setBookQuery(home.create());
+                bookQuery = home.create();
+
+				fireObservedChange("bookQuery", bookQuery);
 			}
-			catch (Throwable t)
-			{
-				throw new ApplicationRuntimeException(t);
-			}
+		    catch (CreateException ex)
+		    {
+			    throw new ApplicationRuntimeException(ex);
+		    }
+		    catch (RemoteException ex)
+		    {
+			    throw new ApplicationRuntimeException(ex);
+		    }
 		}
 
 		return bookQuery;
 	}
 	
 	/**
-	 *  Sets the book query, and updates the bookQueryHandle property.
+	 *  Sets the persistent bookQuery property.
 	 *
 	 */
 	 
@@ -146,17 +124,7 @@ public class Matches extends BasePage
 	{
 		bookQuery = value;
 		
-		try
-		{
-			if (value == null)
-				setBookQueryHandle(null);
-			else	
-				setBookQueryHandle(value.getHandle());
-		}
-		catch (RemoteException e)
-		{
-			throw new ApplicationRuntimeException(e);
-		}
+        fireObservedChange("bookQuery", value);
 	}
 	
 	/**
@@ -177,9 +145,9 @@ public class Matches extends BasePage
 			count = query.masterQuery(title, author, publisherPK);
 			setMatchCount(count);
 		}
-		catch (Throwable t)
+		catch (RemoteException ex)
 		{
-			throw new ApplicationRuntimeException(t);
+			throw new ApplicationRuntimeException(ex);
 		}
 		
 	}
@@ -204,9 +172,9 @@ public class Matches extends BasePage
 			
 			return query.get(0, count);
 		}
-		catch (Throwable t)
+		catch (RemoteException ex)
 		{
-			throw new ApplicationRuntimeException(t);
+			throw new ApplicationRuntimeException(ex);
 		}
 	}
 
@@ -265,27 +233,24 @@ public class Matches extends BasePage
 	}
  
  	/**
-	 *  Removes the book query bean, if the handle to the bean
-	 *  is non-null.
+	 *  Removes the book query bean, if not null.
 	 *
 	 */
 	 
  	public void cleanupPage()
  	{
-		if (bookQueryHandle == null)
-			return;
-		
 		try
 		{
-			getBookQuery().remove();
+			if (bookQuery != null)
+			    bookQuery.remove();
 		}
-		catch (RemoveException e)
+		catch (RemoveException ex)
 		{
-			throw new ApplicationRuntimeException(e);
+			throw new ApplicationRuntimeException(ex);
 		}
-		catch (RemoteException e)
+		catch (RemoteException ex)
 		{
-			throw new ApplicationRuntimeException(e);
+			throw new ApplicationRuntimeException(ex);
 		}
 		
 		super.cleanupPage();

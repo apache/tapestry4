@@ -65,15 +65,6 @@ public interface IBook extends IEntityBean
 	public String getISBN()
 	throws RemoteException;
 
-	public void setLendCount(int value)
-	throws RemoteException;
-
-	public int getLendCount()
-	throws RemoteException;	
-
-	public void incrementLendCount()
-	throws RemoteException;
-
 	public void setOwnerPK(Integer value)
 	throws RemoteException;
 

@@ -1,3 +1,10 @@
+* Dec 22 2000 hship
+
+Simplify some Vlib pages, now that Tapestry supports conversion between EJBObject and Handle automatically.
+Remove the lendCount attribute from the IBook EJB.
+Convert Vlib to use InstantDB intead of Hypersonic SQL.
+Change VlibBeans to automatically configure jBoss using the new JBE_SPLICE code.
+
 * Dec 20 2000 hship
 
 Update the Vlib application to use the new FieldLabel component.

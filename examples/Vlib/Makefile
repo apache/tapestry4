@@ -10,8 +10,7 @@ PACKAGES = \
 	com.primix.vlib.jsp
 
 LOCAL_CLASSPATH = \
-	$(JBOSS_DIR)/lib/ext/ejb.jar \
-	$(JBOSS_DIR)/lib/ext/jndi.jar \
+	$(JBOSS_DIR)/client/ejb.jar \
 	$(INSTALL_DIR)/javax.servlet.jar \
 	$(INSTALL_DIR)/Tapestry.jar \
 	$(INSTALL_DIR)/VlibBeans.jar
@@ -22,7 +21,7 @@ JAVADOC_DIR = ../../javadoc
 
 JAVADOC_OPT = \
 	-version -author -windowtitle "Primix Virtual Library - Presentation Layer" \
-	-link http://java.sun.com/products/jdk/1.2/docs/api \
+	-link http://java.sun.com/j2se/1.3/docs/api \
 	-link http://java.sun.com/j2ee/j2sdkee/techdocs/api
 
 CONTEXT_RESOURCES = index.html jsp

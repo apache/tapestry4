@@ -61,8 +61,7 @@ public class Book implements Serializable
 	
 	public static final int DESCRIPTION_COLUMN = 2;
 	public static final int ISBN_COLUMN = 3;
-	public static final int LEND_COUNT_COLUMN = 4;
-	public static final int OWNER_PK_COLUMN = 5;
+	public static final int OWNER_PK_COLUMN = 4;
 	
 	/**
 	 *  Column index for a presentable version of the holder's name.
@@ -71,21 +70,20 @@ public class Book implements Serializable
 	 *
 	 */
 	 
-	public static final int OWNER_NAME_COLUMN = 6;
+	public static final int OWNER_NAME_COLUMN = 5;
 	
-	public static final int HOLDER_PK_COLUMN = 7;
-	public static final int HOLDER_NAME_COLUMN = 8;
-	public static final int PUBLISHER_PK_COLUMN = 9;
-	public static final int PUBLISHER_NAME_COLUMN = 10;
-	public static final int AUTHOR_COLUMN = 11;
-	public static final int RATING_COLUMN = 12;
+	public static final int HOLDER_PK_COLUMN = 6;
+	public static final int HOLDER_NAME_COLUMN = 7;
+	public static final int PUBLISHER_PK_COLUMN = 8;
+	public static final int PUBLISHER_NAME_COLUMN = 9;
+	public static final int AUTHOR_COLUMN = 10;
     
 	/**
 	 *  Number of columns in the result.
 	 *
 	 */
 	 
-	public static final int N_COLUMNS = 13;
+	public static final int N_COLUMNS = 11;
 	
 	private Object[] columns;
 	
@@ -130,12 +128,7 @@ public class Book implements Serializable
 	{
 		return (String)get(ISBN_COLUMN);
 	}
-	
-	public int getLendCount()
-	{
-		return ((Integer)get(LEND_COUNT_COLUMN)).intValue();
-	}
-	
+
 	public Integer getOwnerPrimaryKey()
 	{
 		return (Integer)get(OWNER_PK_COLUMN);
@@ -169,11 +162,6 @@ public class Book implements Serializable
 	public String getAuthor()
 	{
 		return (String)get(AUTHOR_COLUMN);
-	}
-	
-	public Integer getRating()
-	{
-		return (Integer)get(RATING_COLUMN);
 	}
 	
 	public String toString()
