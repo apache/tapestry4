@@ -15,7 +15,7 @@
   <bean name="optional" class="org.apache.tapestry.valid.StringValidator" lifecycle="page"/>
 
   
-  <component id="e" type="ListEdit">
+  <component id="listEdit" type="ListEdit">
   	<binding name="source" expression="listEditMap.keys"/>
   	<binding name="value" expression="listEditMap.key"/>
   	<binding name="listener" expression="listeners.synchronizeUser"/>
