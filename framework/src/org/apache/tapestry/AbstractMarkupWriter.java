@@ -161,6 +161,16 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
 
     private String _contentType;
 
+	/**
+	 *  Indicates whether {@link #close()} should close the 
+	 *  underlying {@link PrintWriter}.
+	 * 
+	 *  @since 2.4
+	 * 
+	 **/
+	
+	private boolean _propagateClose = true;
+
     public String getContentType()
     {
         return _contentType;
@@ -196,6 +206,29 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
 
         _writer = new PrintWriter(bwriter);
     }
+
+	/**
+	 *  Creates new markup writer around the underlying {@link PrintWriter}.
+	 * 
+	 *  <p>This is primarily used by {@link org.apache.tapestry.engine.TagSupportService},
+	 *  which is inlcuding content, and therefore this method will not
+	 *  close the writer when the markup writer is closed.
+	 * 
+	 *  @since 2.4
+	 * 
+	 **/
+	
+	protected AbstractMarkupWriter(
+	boolean safe[], String[] entities, String contentType, PrintWriter writer)
+	{
+		this(safe, entities, contentType);
+		
+		// When the markup writer is closed, the underlying writer
+		// is NOT closed.
+		
+		_propagateClose = false;
+		_writer = writer;
+	}
 
     /**
      *  Special constructor used for nested response writers.
@@ -387,7 +420,8 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
             _writer.print('>');
         }
 
-        _writer.close();
+		if (_propagateClose)
+	        _writer.close();
 
         _writer = null;
         _activeElementStack = null;
