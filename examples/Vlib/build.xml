@@ -12,13 +12,9 @@
 	</path>
 	<path id="compile.classpath">
 		<fileset dir="${root.lib.dir}">
-			<include name="${framework.jar}"/>
-			<include name="${contrib.jar}"/>
-			<include name="${vlibbeans.jar}"/>
-			<include name="${ext.dir}/*.jar"/>
-		</fileset>
-		<fileset dir="${ext.dist.dir}">
 			<include name="*.jar"/>
+			<include name="examples/${vlibbeans.jar}"/>
+			<include name="${ext.dir}/*.jar"/>
 		</fileset>
 		<pathelement location="${j2ee.jar.path}"/>
 		<pathelement location="${servlet.jar.path}"/>
@@ -41,7 +37,7 @@
 	<target name="install" depends="compile"
 		description="Compile all classes and build the installed WAR including all package resources."
 		>
-		<war warfile="${root.lib.dir}/${vlib.war}" webxml="context/WEB-INF/web.xml">
+		<war warfile="${examples.dir}/${vlib.war}" webxml="context/WEB-INF/web.xml">
 			<fileset dir="context">
 				<exclude name="**/Thumbs.db"/>
 				<exclude name="**/*.jbf"/>

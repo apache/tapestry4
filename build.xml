@@ -59,8 +59,7 @@
 		<delete quiet="true">
 			<fileset dir="${root.lib.dir}">
 				<include name="*.jar"/>
-				<include name="*.war"/>
-				<include name="*.ear"/>
+				<include name="examples/**"/>
 			</fileset>
 		</delete>
 		<delete dir="web/doc" quiet="true"/>
@@ -164,8 +163,8 @@
 		</copy>
 		<copy todir="${dist.dir}/lib">
 			<fileset dir="${root.lib.dir}">
-				<include name="${workbench.war}"/>
-				<include name="${vlib.ear}"/>
+				<include name="**/*.war"/>
+				<include name="**/*.ear"/>
 				<include name="**/*.jar"/>
 				<include name="**/LICENSE*"/>
 				<exclude name="${vlibbeans.jar}"/>
@@ -405,7 +404,7 @@
 	<target name="deploy-jboss-demos" depends="check-for-jboss-dir"
 		description="Deploys the demos and Tapestry frameworks into JBoss.">
 		<copy todir="${tapestry.deploy.dir}">
-			<fileset dir="${root.lib.dir}">
+			<fileset dir="${examples.dir}">
 				<include name="${vlib.ear}"/>
 				<include name="${workbench.war}"/>
 			</fileset>		
@@ -449,7 +448,7 @@
 		depends="check-for-tomcat-dir"
 		description="Deploys the Workbench application into Tomcat.">
 					
-		<copy file="${root.lib.dir}/${workbench.war}" todir="${tomcat.dir}/webapps"/>
+		<copy file="${examples.dir}/${workbench.war}" todir="${tomcat.dir}/webapps"/>
 
 	</target>
 	
