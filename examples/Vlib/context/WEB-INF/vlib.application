@@ -7,16 +7,6 @@
 <application
 	name="Virtual Library" 
 	engine-class="org.apache.tapestry.vlib.VirtualLibraryEngine">
-  	
-  <!-- These page names violate the normal naming rules, so must
-       be defined. -->
-       	
-  <page name="admin.TransferBooks" 
-  	specification-path="admin/TransferBooks.page"/>
-  <page name="admin.EditPublishers"
-    specification-path="admin/EditPublishers.page"/>
-  <page name="admin.EditUsers"
-    specification-path="admin/EditUsers.page"/> 
    
   <library id="contrib" specification-path="/org/apache/tapestry/contrib/Contrib.library"/>
   	

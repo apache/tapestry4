@@ -63,7 +63,6 @@ import javax.ejb.CreateException;
 import javax.ejb.FinderException;
 
 import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.IComponentStrings;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.event.PageEvent;
@@ -143,7 +142,6 @@ public abstract class EditBook extends Protected implements PageRenderListener
 
     public void formSubmit(IRequestCycle cycle)
     {
-        IComponentStrings strings = getStrings();
         Map attributes = getAttributes();
 
         Integer publisherPK = (Integer) attributes.get("publisherPK");
@@ -151,13 +149,13 @@ public abstract class EditBook extends Protected implements PageRenderListener
 
         if (publisherPK == null && Tapestry.isNull(publisherName))
         {
-            setErrorField("inputPublisherName", strings.getString("need-publisher-name"));
+            setErrorField("inputPublisherName", getString("need-publisher-name"));
             return;
         }
 
         if (publisherPK != null && !Tapestry.isNull(publisherName))
         {
-            setErrorField("inputPublisherName", strings.getString("leave-publisher-name-empty"));
+            setErrorField("inputPublisherName", getString("leave-publisher-name-empty"));
             return;
         }
 
@@ -205,7 +203,7 @@ public abstract class EditBook extends Protected implements PageRenderListener
         }
 
         MyLibrary page = (MyLibrary) cycle.getPage("MyLibrary");
-        page.setMessage(strings.format("updated-book", attributes.get("title")));
+        page.setMessage(formatString("updated-book", attributes.get("title")));
 
         cycle.setPage(page);
     }

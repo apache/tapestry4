@@ -6,6 +6,8 @@
 	
 <page-specification class="org.apache.tapestry.vlib.pages.BookMatches">
 
+  <property name="page-type" value="Search"/>
+  
   <property-specification name="bookQuery" type="org.apache.tapestry.vlib.ejb.IBookQuery" persistent="yes"/>
   <property-specification name="currentMatch" type="org.apache.tapestry.vlib.ejb.Book"/>
   

@@ -158,7 +158,7 @@ public abstract class ConfirmBookDelete extends BasePage
 
         MyLibrary myLibrary = (MyLibrary) cycle.getPage("MyLibrary");
 
-        myLibrary.setMessage(getStrings().format("book-deleted", book.getTitle()));
+        myLibrary.setMessage(formatString("book-deleted", book.getTitle()));
 
         cycle.setPage(myLibrary);
     }

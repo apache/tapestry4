@@ -2,104 +2,131 @@
 
 <span jwcid="$content$">
 <html jwcid="@Shell" title="ognl:windowTitle" stylesheet="ognl:assets.stylesheet">
-<body jwcid="@Body" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#8e9cd1">
-<!-- ****BODY WRAPPER**** -->
-<table height="100%" width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td width="150" valign="top"><!-- Left Nav -->
-      <table width="145" border="0" cellspacing="0" cellpadding="0">
-        <tr>
-          <td height="35" colspan="3">&nbsp;
-          </td>
-        </tr>
-        <tr>
-          <td width="19" height="22"><img jwcid="@Image" image="ognl:searchIcon" src="images/spacer.gif" width="14" height="12" border="0"/>
-          </td>
-          <td width="89"><a jwcid="@PageLink" page="Home" href="#" class="clsLeftNav">Search</a>
-          </td>
-          <td width="1" valign="top" rowspan="5" bgcolor="#4B5887"><img src="images/spacer.gif" width="1" height="1" border="0">
-          </td>
-        </tr>
-        <tr>
-          <td height="22" valign="top"><img jwcid="@Image" image="ognl:myLibraryIcon" src="images/dots_leftnav.gif" width="14" height="12" border="0"/>
-          </td>
-          <td><a jwcid="@PageLink" page="MyLibrary" href="#" class="clsLeftNav">My Library</a>
-					
-					<span jwcid="@Conditional" condition="ognl:loggedIn">
-<br>
-<img src="images/dots_subleft.gif" width="7" height="10" border="0" align="absmiddle"><a jwcid="@PageLink" page="BorrowedBooks" href="#" class="clsLeftNav">Borrowed Books</a>
-<br>
-<img src="images/dots_subleft.gif" width="7" height="10" border="0" align="absmiddle"><a jwcid="@DirectLink" listener="ognl:listeners.addNewBook" href="#" class="clsLeftNav">Add New Book</a>
-<br>
-<img src="images/dots_subleft.gif" width="7" height="10" border="0" align="absmiddle"><a jwcid="@DirectLink" listener="ognl:listeners.editProfile" href="#" class="clsLeftNav">Edit Profile</a>
-<br>
+<body jwcid="@Body" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+	
+
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="691" HEIGHT="110">
+
+<TR>
+<TD ROWSPAN="1" COLSPAN="3" WIDTH="691" HEIGHT="58">
+	<IMG  SRC="images/title/title_1x1.png" WIDTH="691" HEIGHT="58" BORDER="0"></TD>
+</TR>
+
+<TR>
+<TD ROWSPAN="1" COLSPAN="1" WIDTH="91" HEIGHT="40">
+	<IMG SRC="images/title/title_2x1.png" WIDTH="91" HEIGHT="40" BORDER="0"></TD>
+<TD ROWSPAN="1" COLSPAN="1" WIDTH="345" HEIGHT="40">
+	<IMG jwcid="@Image" image="ognl:titleImage" SRC="title/title_2x2.png" WIDTH="345" HEIGHT="40" BORDER="0"/></TD>
+<TD ROWSPAN="1" COLSPAN="1" WIDTH="255" HEIGHT="40">
+	<IMG SRC="images/title/title_2x3.png" WIDTH="255" HEIGHT="40" BORDER="0"></TD>
+</TR>
+
+<TR>
+<TD ROWSPAN="1" COLSPAN="3" WIDTH="691" HEIGHT="12">
+	<IMG SRC="images/title/title_3x1.png" WIDTH="691" HEIGHT="12" BORDER="0"></TD>
+</TR>
+
+</TABLE>
+
+<table border="0">
+	<tr valign="top">
+
+<td>
+<TABLE BORDER="0" CELLPADDING="0" CELLSPACING="0" WIDTH="178">
+
+<TR>
+<TD ROWSPAN="1" COLSPAN="1" WIDTH="178" HEIGHT="29">
+	<a href="#" jwcid="search"><IMG jwcid="searchRollover" SRC="images/nav/nav_1x1.png" WIDTH="178" HEIGHT="29" BORDER="0" alt="[Search]"/></a></TD>
+</TR>
+
+<TR>
+<TD ROWSPAN="1" COLSPAN="1" WIDTH="178" HEIGHT="22">
+	<a href="#" jwcid="myLibrary"><IMG jwcid="myLibraryRollover" SRC="images/nav/nav_2x1.png" WIDTH="178" HEIGHT="22" BORDER="0" alt="[My Library]"/></a></TD>
+</TR>
+
+<span jwcid="@Conditional" condition="ognl:loggedIn">
+
+<TR>
+<TD ROWSPAN="1" COLSPAN="1" WIDTH="178" HEIGHT="18">
+	<a href="#" jwcid="borrowedBooks"><IMG jwcid="borrowedBooksRollover" SRC="images/nav/nav_3x1.png" WIDTH="178" HEIGHT="18" BORDER="0" alt="[Borrowed Books]"/></a></TD>
+</TR>
+
+<TR>
+<TD ROWSPAN="1" COLSPAN="1" WIDTH="178" HEIGHT="20">
+	<a href="#" jwcid="newBook"><IMG jwcid="newBookRollover" SRC="images/nav/nav_4x1.png" WIDTH="178" HEIGHT="20" BORDER="0" alt="[Add New Book]"/></a></TD>
+</TR>
+
+<TR>
+<TD ROWSPAN="1" COLSPAN="1" WIDTH="178" HEIGHT="22">
+	<a href="#" jwcid="editProfile"><IMG jwcid="editProfileRollover" SRC="images/nav/nav_5x1_editprofile.png" WIDTH="178" HEIGHT="22" BORDER="0" alt="[Edit Profile]"/></a></TD>
+</TR>
+
+<TR>
+<TD ROWSPAN="1" COLSPAN="1" WIDTH="178" HEIGHT="22">
+	<a href="#" jwcid="giveAway"><IMG jwcid="giveAwayRollover" SRC="images/nav/nav_5x1.png" WIDTH="178" HEIGHT="22" BORDER="0" alt="[Give Away Books]"/></a></TD>
+</TR>
+
 </span>
-          </td>
-        </tr>
-<span jwcid="@Conditional" condition="ognl:admin">
-        <tr>
-          <td height="22" valign="top"><img jwcid="@Image" image="ognl:adminIcon" src="images/spacer.gif" width="14" height="12" border="0"/>
-          </td>
-          <td><span class="clsLeftNavTxt">Admin</span>
-<br>
-<img src="images/dots_subleft.gif" width="7" height="10" border="0" align="absmiddle"><a jwcid="@PageLink" page="admin.TransferBooks" href="#" class="clsLeftNav">Transfer Books</a>
-<br>
-<img src="images/dots_subleft.gif" width="7" height="10" border="0" align="absmiddle"><a jwcid="@PageLink" page="admin.EditPublishers" href="#" class="clsLeftNav">Edit Publishers</a>
-<br>
-<img src="images/dots_subleft.gif" width="7" height="10" border="0" align="absmiddle"><a jwcid="@PageLink" page="admin.EditUsers" href="#" class="clsLeftNav">Edit Users</a>
-<br>
-          </td>
-        </tr>
+
+<span  jwcid="@Conditional" condition="ognl:admin">
+
+<TR>
+<TD ROWSPAN="1" COLSPAN="1" WIDTH="178" HEIGHT="19">
+	<IMG SRC="images/nav/nav_6x1.png" WIDTH="178" HEIGHT="19" BORDER="0" alt="[Admin]"></TD>
+</TR>
+
+<TR>
+<TD ROWSPAN="1" COLSPAN="1" WIDTH="178" HEIGHT="20">
+	<a href="#" jwcid="editUsers"><IMG jwcid="editUsersRollover" SRC="images/nav/nav_7x1.png" WIDTH="178" HEIGHT="20" BORDER="0" alt="[Edit Users]"/></a></TD>
+</TR>
+
+<TR>
+<TD ROWSPAN="1" COLSPAN="1" WIDTH="178" HEIGHT="20">
+	<a href="#" jwcid="editPublishers"><IMG jwcid="editPublishersRollover" SRC="images/nav/nav_8x1.png" WIDTH="178" HEIGHT="20" BORDER="0" alt="[Edit Publishers]"/></a></TD>
+</TR>
+
+<TR>
+<TD ROWSPAN="1" COLSPAN="1" WIDTH="178" HEIGHT="21">
+	<a href="#" jwcid="transferBooks"><IMG jwcid="transferBooksRollover" SRC="images/nav/nav_9x1.png" WIDTH="178" HEIGHT="21" BORDER="0" alt="[Transfer Books]"/></a></TD>
+</TR>
+
 </span>
-        <tr>
-          <td height="22"><img jwcid="@Image" image="ognl:loginIcon" src="images/spacer.gif" width="14" height="12" border="0"/>
-          </td>
-          <td><span jwcid="@Conditional" condition="ognl:loggedIn">
-						<a jwcid="login@DirectLink" listener="ognl:listeners.logout" stateful="ognl:false" href="#" class="clsLeftNav">Logout</a>
-					</span>
-					
-					<span jwcid="@Conditional" condition="ognl:!loggedIn">
-						<a jwcid="logout@DirectLink" listener="ognl:listeners.login" stateful="ognl:false" href="#" class="clsLeftNav">Login</a>
-					</span>
-          </td>
-        </tr>
-        <tr>
-          <td height="200"><img src="images/spacer.gif" width="14" height="1" border="0">
-          </td>
-          <td>&nbsp;
-          </td>
-        </tr>
-      </table>
-<!-- END Left Nav -->
-    </td>
-    <td valign="top" align="left">
-      <table border="0" cellpadding="0" cellspacing="0">
-        <tr valign="top" align="left">
-          <td><img src="images/ico_t.gif" width="44" height="44" border="0" vspace="5">
-          </td>
-          <td width="250"><img src="images/hd_virtuallibrary.gif" width="163" height="22" border="0" vspace="17"><span jwcid="ifImageTitle">
-<br clear="left">
-<span jwcid="@Conditional" condition="ognl:libraryPage"><img src="images/hd_mylibrary.gif" width="84" height="18" border="0"><span jwcid="@Conditional" condition="ognl:showSlash"><img src="images/hd_slash.gif" width="19" height="18" border="0"></span></span><img jwcid="@Image" image="ognl:subheader" src="images/hd_addnewbooks.gif" border="0"/></span>
-						 
-		
-						<span jwcid="ifSimpleTitle"><h3><span jwcid="@Insert" value="ognl:title">Simple Title</span></h3></span>
-          </td>
-        </tr>
-      </table>
-<br>
+	
+<span jwcid="@Conditional" condition="ognl:loggedIn">
+	
+<TR>
+<TD ROWSPAN="1" COLSPAN="1" WIDTH="178" HEIGHT="29">
+	<a href="#" jwcid="logout"><IMG jwcid="logoutRollover" SRC="images/nav/nav_10x1.png" WIDTH="178" HEIGHT="29" BORDER="0" alt="[Logout]"/></a></TD>
+</TR>
+
+</span>
+
+<span jwcid="@Conditional" condition="ognl:!loggedIn">
+<TR>
+<TD ROWSPAN="1" COLSPAN="1" WIDTH="178" HEIGHT="29">
+	<a href="#" jwcid="login"><IMG jwcid="loginRollover" SRC="images/nav/nav_10x1.png" WIDTH="178" HEIGHT="29" BORDER="0" alt="[Login]"/></a></TD>
+</TR>
+
+</span>
+
+</TABLE>
+
+</td>
+
+<td>
+
 <span jwcid="@RenderBody">
-			
-			<h1>Page Content</h1>
-			
+	
+	Body content goes here.
+	
 </span>
-    </td>
-  </tr>
-<!-- ****END BODY WRAPPER**** -->
+	
+</td>
+</tr>
 </table>
+	
 <span jwcid="@contrib:InspectorButton" disabled="ognl:! page.engine.debugEnabled"/>
 
-
-<!-- ****END FOOTER**** -->
 </body>
 </html>
 </span>

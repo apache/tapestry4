@@ -1,36 +1,45 @@
 <!-- $Id$ -->
 <html jwcid="$content$">
-<body jwcid="@Border" title="Virtual Library">
-<span jwcid="@ShowError"/><span jwcid="@ShowMessage"/>
+<body jwcid="@Border">
+
+<p>
+Use this form to locate books stored in the Virtual Library.
+When you find a book you want,
+<a href="#" jwcid="@PageLink" page="Login">login</a> and borrow it &#151; just don't forget to
+give it back eventually!
+	</p>	
+	
+<span jwcid="@ShowError"/>
+<span jwcid="@ShowMessage"/>
+
 <form jwcid="@Form" listener="ognl:listeners.search">
-  <table width="600" border="0" cellspacing="0" cellpadding="0">
-    <tr class="clsBold">
-      <td width="80" height="30">Title
-      </td>
-      <td width="420">&nbsp;<input type="text" jwcid="inputTitle@TextField" value="ognl:searchTitle" displaywidth="30" maximumlength="100" class="inputTextForm"/>
-      </td>
-    </tr>
-    <tr class="clsBold">
-      <td height="30">Author
-      </td>
-      <td>&nbsp;<input type="text" jwcid="inputAuthor@TextField" value="ognl:searchAuthor" displaywidth="30" maximumlength="100" class="inputTextForm"/>
+  <table class="form">
+    <tr>
+      <th>Title</th>
+      <td><input type="text" jwcid="inputTitle@TextField" value="ognl:searchTitle" displaywidth="30" maximumlength="100" class="inputTextForm"/>
       </td>
     </tr>
-    <tr class="clsBold">
-      <td height="30">Publisher
+    <tr>
+      <th>Author</th>
+      <td><input type="text" jwcid="inputAuthor@TextField" value="ognl:searchAuthor" displaywidth="30" maximumlength="100" class="inputTextForm"/>
       </td>
-      <td>&nbsp;<select jwcid="inputPublisher@PropertySelection" value="ognl:searchPublisherPK" model="ognl:engine.publisherModel">
-  <option value="#">Choose a Publisher</option>
-  <option value="p1">Publisher 1</option>
-  <option value="p2">Publisher 2</option>
-  <option value="p3">Publisher 3</option>
-  <option value="p4">Publisher 4</option>
-  <option value="#">_______________________</option>
-</select>
-&nbsp;&nbsp;<input type="image" src="images/ico_go.gif" border="0" align="absmiddle">
+    </tr>
+    <tr>
+      <th>Publisher</th>
+      <td><select jwcid="inputPublisher@PropertySelection" value="ognl:searchPublisherPK" model="ognl:engine.publisherModel"/>
+		</td>
+	</tr>
+	<tr>
+		<td></td>
+		<td>
+	<input type="image" src="images/search.png" width="46" height="20" border="0"/>
       </td>
     </tr>
   </table>
 </form>
+
 </body>
+
+
+
 </html>

@@ -1,0 +1,99 @@
+/* $Id$*/
+
+BODY, TABLE, TD, P  {
+	font-family : Trebuchet MS, verdana, arial, helvetica, sans-serif;
+}
+
+DIV.error  {
+	font-weight : bold;
+	color : Red;
+	border-color : Red;
+	border-style : solid;
+	padding : 4px;
+	width : 500px;
+	text-align : left;
+	border-width : 2px;
+}
+
+DIV.message  {
+	font-weight : bold;
+	color : Blue;
+	border-width : 1;
+	border-color : Blue;
+	border-style : solid;
+	padding : 4px;
+	width : 500px;
+}
+
+SPAN.message  {
+	font-weight : bold;
+	color : Blue;
+}
+
+SPAN.error  {
+	font-weight : bold;
+	color : Red;
+}
+
+SPAN.directions {
+  font-wieght: bold;
+  color: Blue;
+}
+
+TABLE.form TH
+{
+  text-align: right;
+  font-weight: bold;
+  padding-right: 8px;
+}
+
+TABLE.form TD, TABLE.form TH {
+  border-width: 1px;
+  border-color: #c0c0c0;
+  border-style: none; // Change to solid to debug form layout
+}
+
+SPAN.required-field
+{
+  font-weight: bold;
+  color: Blue;
+}
+
+TABLE.data TD {
+  border-width: 1px;
+  border-color: #c0c0c0;
+  border-style: solid;
+}
+
+TABLE.data TD.icon, TABLE.data TD.checkbox
+{
+  text-align: center;
+}
+
+TABLE.data TD.control
+{
+  border-style: none;
+}
+
+TABLE.data TR TH
+{
+  font-weight: bold;
+  text-align: center;
+  background-color: Blue;
+  color: White;
+}
+
+
+TABLE.tapestry-palette TH
+{
+  color: white;
+  background-color: Blue;
+  text-align: center;
+  width: 200px;
+  font-size: smaller;
+}
+
+TABLE.tapestry-palette SELECT
+{
+  width: 200px;
+}

@@ -159,12 +159,11 @@ public abstract class EditProfile extends Protected implements PageRenderListene
         if (delegate.getHasErrors())
             return;
 
-        IComponentStrings strings = getStrings();
         Map attributes = getAttributes();
 
         if (Tapestry.isNull(password1) != Tapestry.isNull(password2))
         {
-            setErrorField("inputPassword1", strings.getString("enter-password-twice"));
+            setErrorField("inputPassword1", getString("enter-password-twice"));
 
             return;
         }
@@ -173,7 +172,7 @@ public abstract class EditProfile extends Protected implements PageRenderListene
         {
             if (!password1.equals(password2))
             {
-                setErrorField("inputPassword1", strings.getString("password-must-match"));
+                setErrorField("inputPassword1", getString("password-must-match"));
                 return;
             }
 

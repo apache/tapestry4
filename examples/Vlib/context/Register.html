@@ -1,46 +1,54 @@
 <!-- $Id$ -->
 <html jwcid="$content$">
-<body jwcid="@Border" title="Register">
+<body jwcid="@Border">
+
+<form jwcid="@Form" listener="ognl:listeners.attemptRegister" delegate="ognl:beans.delegate">
+	
+<p>
+	Please enter your registration information here; this will allow you to access the Virtual Library.
+	Your e-mail address is used as your login id.  Fields marked with
+	<span class="required-field">*</span> are required.
+</p>
+
 <span jwcid="@ShowError"/>
 <span jwcid="@ShowValidationError" delegate="ognl:beans.delegate"/>
-<form jwcid="@Form" listener="ognl:listeners.attemptRegister" delegate="ognl:beans.delegate">
-  <table width="600" border="0" cellspacing="0" cellpadding="0">
+
+  <table class="form">
     <tr>
-      <td height="30" colspan="2">Required Fields*
+      <th>First Name</th>
+      <td></td>
+      <td><input jwcid="inputFirstName@TextField" value="ognl:firstName" type="text" size="30" maxlength="30" class="inputTextForm"/>
       </td>
     </tr>
-    <tr class="clsBold">
-      <td width="110" height="30">First Name
-      </td>
-      <td width="390">&nbsp;<input jwcid="inputFirstName@TextField" value="ognl:firstName" type="text" size="30" maxlength="30" class="inputTextForm"/>
-      </td>
-    </tr>
-    <tr class="clsBold">
-      <td height="30"><span jwcid="@FieldLabel" field="ognl:components.inputLastName">Last Name</span>*
-      </td>
-      <td>&nbsp;<input jwcid="inputLastName" type="text" size="30" maxlength="30" class="inputTextForm"/>
+    <tr>
+      <th><span jwcid="@FieldLabel" field="ognl:components.inputLastName">Last Name</span>
+      </th>
+      <td><span class="required-field">*</span></td>
+      <td><input jwcid="inputLastName" type="text" size="30" maxlength="30" class="inputTextForm"/>
       </td>
     </tr>
-    <tr class="clsBold">
-      <td height="30"><span jwcid="@FieldLabel" field="ognl:components.inputEmail">E-mail</span>*
-      </td>
-      <td>&nbsp;<input jwcid="inputEmail" type="text" size="30" maxlength="60" class="inputTextForm"/>
-      </td>
-    </tr>
-    <tr class="clsBold">
-      <td height="30"><span jwcid="@FieldLabel" field="ognl:components.inputPassword1">Password</span>*
-      </td>
-      <td>&nbsp;<input jwcid="inputPassword1" type="password" class="inputTextForm" size="20" maxlength="20"/>
+    <tr>
+      <th><span jwcid="@FieldLabel" field="ognl:components.inputEmail">E-mail</span>      </th>
+      <td><span class="required-field">*</span></td>
+      <td><input jwcid="inputEmail" type="text" size="30" maxlength="60" class="inputTextForm"/>
       </td>
     </tr>
-    <tr class="clsBold">
-      <td height="30"><span jwcid="@FieldLabel" field="ognl:components.inputPassword2">Password (again)</span>*
-      </td>
-      <td>&nbsp;<input jwcid="inputPassword2" type="password" class="inputTextForm" size="20" maxlength="20"/>&nbsp;<input type="image" src="images/bt_register.gif" width="59" height="28" border="0" name="Register" value="Register" align="absmiddle">
+    <tr>
+      <th><span jwcid="@FieldLabel" field="ognl:components.inputPassword1">Password</span>      </th>
+      <td><span class="required-field">*</span></td>
+      <td><input jwcid="inputPassword1" type="password" class="inputTextForm" size="20" maxlength="20"/>
       </td>
     </tr>
-    <tr class="clsBold">
-      <td height="30" colspan="2">&nbsp;
+    <tr>
+      <th><span jwcid="@FieldLabel" field="ognl:components.inputPassword2">Password (again)</span>      </th>
+      <td><span class="required-field">*</span></td>
+      <td><input jwcid="inputPassword2" type="password" class="inputTextForm" size="20" maxlength="20"/>
+      </td>
+    </tr>
+   	<tr>
+   		<td colspan="2"></td>
+   	<td>
+      		<input type="image" src="images/register.png" width="56" height="20" border="0"/>
       </td>
     </tr>
   </table>

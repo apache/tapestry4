@@ -1,28 +1,25 @@
 <!-- $Id$ -->
 <html jwcid="$content$">
-<body jwcid="@Border" title="Borrowed Books">
-<span jwcid="@ShowError"/><span jwcid="@ShowMessage"/>
+<body jwcid="@Border">
+<span jwcid="@ShowError"/>
+<span jwcid="@ShowMessage"/>
 <span jwcid="@Conditional" condition="ognl:components.browser.resultCount == 0">No borrowed books.</span>
 <span jwcid="@Conditional" condition="ognl:components.browser.resultCount != 0">
 <span jwcid="browser@Browser" query="ognl:borrowedQuery">
-<table border="0" cellspacing="2" cellpadding="1">
+		
+<br/>
+You have 
+<span jwcid="@Insert" value="ognl:components.browser.resultCount">10</span> borrowed books
+
+<table class="data">
   <tr>
-    <td height="20" colspan="6"><span class="clsBold"><span jwcid="@Insert" value="ognl:components.browser.resultCount">10</span> Borrowed Books</span>
-    </td>
+    <th>Title</th>
+    <th>Author</th>
+    <th>Publisher</th>
+    <th>Owner</th>
+    <th>Return</th>
   </tr>
-  <tr height="20" class="clsBold">
-    <td>&nbsp;&nbsp;Title
-    </td>
-    <td>&nbsp;&nbsp;Author
-    </td>
-    <td>&nbsp;&nbsp;Publisher
-    </td>
-    <td>&nbsp;&nbsp;Owner
-    </td>
-    <td>&nbsp;&nbsp;Return
-    </td>
-  </tr>
-  <tr jwcid="e" bgcolor="#ffffff">
+  <tr jwcid="e">
     <td><a jwcid="@BookLink" book="ognl:currentBook" href="#" class="clsDataBlue">DocBook:The Definitive Guide</a>
     </td>
     <td><span jwcid="@Insert" value="ognl:currentBook.author">Walsh &#38; Muellner</span>
@@ -31,55 +28,7 @@
     </td>
     <td><a jwcid="@PersonLink" name="ognl:currentBook.ownerName" primaryKey="ognl:currentBook.ownerPrimaryKey" class="clsDataBlue" href="#">Jim Moran</a>
     </td>
-    <td width="43" bgcolor="#4b5887" align="center"><a jwcid="@DirectLink" parameters="ognl:currentBook.primaryKey" listener="ognl:listeners.returnBook" href="#"><img src="images/icon_return.gif" alt="[Return]" width="21" height="16" border="0" vspace="2"></a>
-    </td>
-  </tr>
-  <tr bgcolor="#ffffff" jwcid="$remove$">
-    <td>&nbsp;
-    </td>
-    <td>&nbsp;
-    </td>
-    <td>&nbsp;
-    </td>
-    <td>&nbsp;
-    </td>
-    <td width="43" bgcolor="#4b5887" align="center"><a href="#"><img src="images/icon_return.gif" width="21" height="16" border="0" vspace="2"></a>
-    </td>
-  </tr>
-  <tr bgcolor="#ffffff" jwcid="$remove$">
-    <td>&nbsp;
-    </td>
-    <td>&nbsp;
-    </td>
-    <td>&nbsp;
-    </td>
-    <td>&nbsp;
-    </td>
-    <td width="43" bgcolor="#4b5887" align="center"><a href="#"><img src="images/icon_return.gif" width="21" height="16" border="0" vspace="2"></a>
-    </td>
-  </tr>
-  <tr bgcolor="#ffffff" jwcid="$remove$">
-    <td>&nbsp;
-    </td>
-    <td>&nbsp;
-    </td>
-    <td>&nbsp;
-    </td>
-    <td>&nbsp;
-    </td>
-    <td width="43" bgcolor="#4b5887" align="center"><a href="#"><img src="images/icon_return.gif" width="21" height="16" border="0" vspace="2"></a>
-    </td>
-  </tr>
-  <tr bgcolor="#ffffff" jwcid="$remove$">
-    <td>&nbsp;
-    </td>
-    <td>&nbsp;
-    </td>
-    <td>&nbsp;
-    </td>
-    <td>&nbsp;
-    </td>
-    <td width="43" bgcolor="#4b5887" align="center"><a href="#"><img src="images/icon_return.gif" width="21" height="16" border="0" vspace="2"></a>
+    <td class="icon"><a jwcid="@DirectLink" parameters="ognl:currentBook.primaryKey" listener="ognl:listeners.returnBook" href="#"><img jwcid="returnRollover" src="images/return.png" alt="[Return]" width="25" height="26" border="0"/></a>
     </td>
   </tr>
 </table>

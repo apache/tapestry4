@@ -1,6 +1,6 @@
 <!-- $Id$ -->
 <html jwcid="$content$">
-<body jwcid="@Border" title="Edit Users" simpleTitle="ognl:true">
+<body jwcid="@Border">
 <p>This page is used to edit the roster of users on the system.</p>
 <ul>
 	<li>Admin: If checked, the user is an administrator.</li>
@@ -15,35 +15,39 @@ Any books owned by the user will be transferred to the current user.</li>
 <span jwcid="@ShowError"/>
 
 <form jwcid="@Form" listener="ognl:listeners.updateUsers">
-  <table width="100%" border="0" cellspacing="2" cellpadding="1">
-    <tr height="20" class="clsBold" bgcolor="#8e9cd1">
+	
+  <table width="100%" class="data">
+    <tr>
       <th>User / E-Mail
       </th>
       <th>Admin
       </th>
-      <th>Locked Out
+      <th>Locked&nbsp;Out
       </th>
-      <th>Reset Password
+      <th>Reset&nbsp;Password
       </th>
       <th>Delete
       </th>
     </tr>
-    <tr bgcolor="#ffffff" jwcid="e">
+    <tr jwcid="e">
       <td><span jwcid="@Insert" value="ognl:user.naturalName">Joe User</span>
 <br>
 <span jwcid="@Insert" value="ognl:user.email">foo@bar.com</span>
       </td>
-      <td><input type="checkbox" jwcid="inputAdmin@Checkbox" selected="ognl:user.admin"/>
+      <td class="checkbox"><input type="checkbox" jwcid="inputAdmin@Checkbox" selected="ognl:user.admin"/>
       </td>
-      <td><input type="checkbox" jwcid="inputLockedOut@Checkbox" selected="ognl:user.lockedOut"/>
+      <td class="checkbox"><input type="checkbox" jwcid="inputLockedOut@Checkbox" selected="ognl:user.lockedOut"/>
       </td>
-      <td><input type="checkbox" jwcid="inputResetPassword@Checkbox" selected="ognl:listEditMap.resetPassword"/>
+      <td class="checkbox"><input type="checkbox" jwcid="inputResetPassword@Checkbox" selected="ognl:listEditMap.resetPassword"/>
       </td>
-      <td><input type="checkbox" jwcid="inputDelete@Checkbox" selected="ognl:listEditMap.deleted"/>
+      <td class="checkbox"><input type="checkbox" jwcid="inputDelete@Checkbox" selected="ognl:listEditMap.deleted"/>
       </td>
     </tr>
+    <tr>
+    <td class="control"><input type="image" src="images/update.png" width="52" height="20"/>
+    </td>	
+    </tr>
   </table>
-  <p><input type="submit" value="Update"></p>
 </form>
 </body>
 </html>

@@ -6,8 +6,6 @@
 	
 <page-specification class="org.apache.tapestry.vlib.pages.Login">
 
-  <property name="page-type">login</property>
-
   <property-specification name="email" type="java.lang.String"/>
   <property-specification name="password" type="java.lang.String"/>
   <property-specification name="error" type="java.lang.String"/>

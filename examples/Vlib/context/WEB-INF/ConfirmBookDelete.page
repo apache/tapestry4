@@ -6,15 +6,29 @@
   
 <page-specification class="org.apache.tapestry.vlib.pages.ConfirmBookDelete">
  
-  <property name="page-type">library</property>
+  <property name="page-type">MyLibrary</property>
   
   <property-specification name="bookPrimaryKey" type="java.lang.Integer"/>
   <property-specification name="bookTitle" type="java.lang.String"/>
   
-  <component id="yes" type="DirectLink">
+  <component id="confirm" type="DirectLink">
     <binding name="listener" expression="listeners.deleteBook"/>
     <binding name="parameters" expression="bookPrimaryKey"/>
   </component>
   
+  <component id="confirmRollover" type="Rollover">
+    <binding name="image" expression="assets.confirm"/>
+    <binding name="focus" expression="assets.confirm_h"/>	
+  </component>
+  
+  <component id="cancelRollover" type="Rollover">
+    <binding name="image" expression="assets.cancel"/>
+    <binding name="focus" expression="assets.cancel_h"/>	
+  </component>
+  
+  <context-asset name="confirm" path="images/delete-confirm.png"/>
+  <context-asset name="confirm_h" path="images/delete-confirm_h.png"/>
+  <context-asset name="cancel" path="images/delete-cancel.png"/>
+  <context-asset name="cancel_h" path="images/delete-cancel_h.png"/>
   
 </page-specification>

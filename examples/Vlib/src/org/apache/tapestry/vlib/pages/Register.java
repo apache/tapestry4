@@ -60,7 +60,6 @@ import java.rmi.RemoteException;
 import javax.ejb.CreateException;
 
 import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.IComponentStrings;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.html.BasePage;
@@ -135,15 +134,12 @@ public abstract class Register extends BasePage implements IErrorProperty
 
         if (delegate.getHasErrors())
             return;
-
-        IComponentStrings strings = getStrings();
-
         // Note: we know password1 and password2 are not null
         // because they are required fields.
 
         if (!password1.equals(password2))
         {
-            setErrorField("inputPassword1", strings.getString("password-must-match"));
+            setErrorField("inputPassword1", getString("password-must-match"));
             return;
         }
 

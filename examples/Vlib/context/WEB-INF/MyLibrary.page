@@ -6,8 +6,6 @@
 
 <page-specification class="org.apache.tapestry.vlib.pages.MyLibrary">
 
-  <property name="page-type">library</property>
- 
   <property-specification name="message" type="java.lang.String"/>
   <property-specification name="error" type="java.lang.String"/>
   <property-specification name="currentBook" type="org.apache.tapestry.vlib.ejb.Book"/>
@@ -31,9 +29,24 @@
     <binding name="parameters" expression="currentBook.primaryKey"/>
   </component>
 
+  <component id="editRollover" type="Rollover">
+    <binding name="image" expression="assets.edit"/>
+    <binding name="focus" expression="assets.edit_h"/>	
+  </component>
+
   <component id="delete" type="DirectLink">
     <binding name="listener" expression="listeners.deleteBook"/>
     <binding name="parameters" expression="currentBook.primaryKey"/>
   </component>
+  
+  <component id="deleteRollover" type="Rollover">
+    <binding name="image" expression="assets.delete"/>
+    <binding name="focus" expression="assets.delete_h"/>	
+  </component>
+  
+  <context-asset name="edit" path="images/edit.png"/>
+  <context-asset name="edit_h" path="images/edit_h.png"/>
+  <context-asset name="delete" path="images/delete.png"/>
+  <context-asset name="delete_h" path="images/delete_h.png"/>
  
 </page-specification>
