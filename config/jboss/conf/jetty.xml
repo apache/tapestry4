@@ -51,7 +51,7 @@ This is the configuration for the Tapestry Extranet site, tapestry.primix.com.
 
  <Call name="addContext">
     <Arg>/private/*</Arg>
-    <Set name="ResourceBase">@user.dir@/private</Set>
+    <Set name="ResourceBase">../private</Set>
     <Set name="ServingResources">TRUE</Set>
 </Call>
   
