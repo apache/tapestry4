@@ -123,7 +123,6 @@ description="Builds the Tapestry documentation.">
  
  <copy todir="${dist.dir}" includeEmptyDirs="false">
    <fileset dir=".">
-     <include name="ChangeLog"/>
      <include name="*.xml"/>
      <include name="*.html"/>
      <include name="config/*"/>
