@@ -3,6 +3,12 @@ package com.primix.foundation.jdbc;
 import java.util.*;
 import java.sql.*;
 
+// Imports for Javadoc only.
+
+import java.lang.Integer;
+import java.lang.Boolean;
+import java.lang.Double;
+
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix

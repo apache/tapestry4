@@ -1,4 +1,10 @@
-* Apr 23 2001
+* Apr 24 2001 hship
+
+Convert from JBoss 2.0 to JBoss 2.2.1.
+Slip in a change in RequestContext:  Display the context path.
+
+
+* Apr 23 2001 hship
 
 Use the smaller log4j-core.jar instead of the full log4j.jar.
 Use version 1.0.4 of log4j.
@@ -6,13 +12,13 @@ Strip out the JSP version of the Primix Virtual Library.
 Correct Javadoc path for Log4j (it must have moved on their site).
 No longer distribute Jasper (from the Jetty distro) since we don't use JSPs anymore.
 
-* Apr 18 2001
+* Apr 18 2001 hship
 
 Remove last few references to Xerces.
 Fix glitches in distribution makefile.
 Add instructions to makefile on how to roll out a release.
 
-* Apr 18 2001
+* Apr 18 2001 hship
 
 [417065] Use JAXP instead of Xerces
 Rename the main Jar file from "Tapestry.jar" to "com.primix.tapestry.jar".

@@ -1013,6 +1013,7 @@ implements IRender
 		pair(writer, "scheme", request.getScheme());
 		pair(writer, "serverName", request.getServerName());
 		pair(writer, "serverPort", request.getServerPort());
+		pair(writer, "contextPath", request.getContextPath());
 		pair(writer, "servletPath", request.getServletPath());
 
 		// Now deal with any headers

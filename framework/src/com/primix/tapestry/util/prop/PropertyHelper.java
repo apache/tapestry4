@@ -125,7 +125,7 @@ public class PropertyHelper
 
 	/**
 	*  Uses JavaBeans introspection to find all the properties of the
-	*  bean class.  This method sets the {@link #accessor} variable (it will
+	*  bean class.  This method sets the {@link #accessors} variable (it will
 	*  have been null), and adds all the well-defined JavaBeans properties.
 	*
 	*  <p>Subclasses may invoke this method before adding thier own accessors.

@@ -3,46 +3,32 @@
 <head>
 <title>Tapestry: Java Web Components</title>
 <body>
+<a href="http://sourceforge.net/project/?group_id=4754"><img src="http://sourceforge.net/sflogo.php?group_id=4754&amp;type=1" align="right" valign="top" width="88" height="31" border="0" alt="SourceForge Logo"></a>
 
-<A href="http://sourceforge.net/project/?group_id=4754"> 
-<IMG src="http://sourceforge.net/sflogo.php?group_id=4754&amp;type=1"
- align=right 
-valign="top" width="88" height="31" border="0" alt="SourceForge Logo">
-</A>
-
-<h1>Tapestry Release 
-
-0.2.10
+<h1>Tapestry Release 0.2.10
 
 </h1>
-
 <p>Tapestry is a component based framework for creating sophisticated web applications.
 It's used with existing application servers, acting as a kind of "super servlet".  This distribution
 contains the Tapestry framework, related frameworks and libraries, documentation.
 The <a href="http://tapestry.primix.com">Tapestry Home Page</a> 
 contains much more information about what Tapestry
 is, how to use it and why you can't live without it!
-
 <p>Tapestry is distributed in three different sizes:
-
 <ul>
-<li><b>small</b> -- just Tapestry.jar, gnu-regexp.jar,
-the <A href="doc/DevelopersGuide/DevelopersGuide.html">Tapestry Developer's Guide</A> and the 
-<A href="doc/api/overview-summary.html">javadoc for Tapestry</A>
-<li><b>medium</b> -- small, plus 
+	<li><b>small</b> -- just Tapestry.jar, gnu-regexp.jar,
+the <a href="doc/DevelopersGuide/DevelopersGuide.html">Tapestry Developer's Guide</a> and the 
+<a href="doc/api/overview-summary.html">javadoc for Tapestry</a>
+	<li><b>medium</b> -- small, plus 
 	Tapestry source code, 
 	the JBE (Java Build Environment) 
 	and JBE documentation
-<li><b>full</b> -- medium, plus 
+	<li><b>full</b> -- medium, plus 
   third party JARs used by Tapestry, more Tapestry documentation, Tapestry 
-  tutorials and the Primix Virtual Library examples</li>          
-      
-     
+  tutorials and the Primix Virtual Library examples</li>
 </ul>
-
 <p>The JARs were compiled on Windows 2000 using Sun's JDK 1.3 compiler, however it is easy
 to rebuild the JARs on different platforms and different compilers (JDK 1.2 and above).
-
 <p>This product includes software developed by the Apache Software Foundation (
 <a href="http://www.apache.org/">http://www.apache.org/</a>).
 
@@ -52,135 +38,133 @@ to rebuild the JARs on different platforms and different compilers (JDK 1.2 and 
 at  runtime. If you
 downloaded the full distribution, these libraries are already included.  
 With the small and medium distribution, you will need to download the other files seperately.
-
-<p><table border=0>
-
-<tr bgcolor=black>
-	<th> <font color=white>JAR file</font></th>
-	<th> <font color=white>Description</font>&lt;</th>
-	<th> <font color=white>Version</font></th>
-	<th> <font color=white>License</font></th>
-	<th> <font color=white>Location</font>&lt;</th>
-</tr>
-
-
-<tr valign=top>
-	<td>com.mortbay.jetty.jar
-	</td>
-	<td>Jetty HTTP Servlet Server
-	</td>
-	<td>3.1.RC4</td>
-	<td><A href="LICENSE.Jetty.html">Jetty License</A>
-	<td>
-		<a href="http://sourceforge.net/projects/jetty">
+<p>
+<table border="0">
+	<tr bgcolor="black">
+		<th><font color="white">JAR file</font>
+		</th>
+		<th><font color="white">Description</font>&lt;
+		</th>
+		<th><font color="white">Version</font>
+		</th>
+		<th><font color="white">License</font>
+		</th>
+		<th><font color="white">Location</font>&lt;
+		</th>
+	</tr>
+	<tr valign="top">
+		<td>com.mortbay.jetty.jar
+		</td>
+		<td>Jetty HTTP Servlet Server
+		</td>
+		<td>3.1.RC4
+		</td>
+		<td><a href="LICENSE.Jetty.html">Jetty License</a>
+			<td><a href="http://sourceforge.net/projects/jetty">
 			http://sourceforge.net/projects/jetty
 		</a>
-	</td>
-</tr>
-
-
-<tr valign=top bgcolor=silver>
-	<td>ejb.jar</td>
-	<td>EJB 1.1</td>
-	<td>from jBoss 2.0 FINAL</td>
-	<td>Unknown license, probably GPL</A>
-	<td>Copied from the
+			</td>
+	</tr>
+	<tr valign="top" bgcolor="silver">
+		<td>ejb.jar
+		</td>
+		<td>EJB 1.1
+		</td>
+		<td>from jBoss 2.0 FINAL
+		</td>
+		<td>Unknown license, probably GPL</a>
+			<td>Copied from the
 	<a href="http://www.jboss.org">jBoss</a> distribution, which claims to
-	be open source (but neglects to provide a license).  
-	<p>This library is required to compile Tapestry and 
-      to compile and run the demos and tutorials.</p>          
-	    
-	</td>
-</tr>
-
-
-<tr valign=top>
-	<td>gnu-regexp.jar</td>
-	<td>GNU regular expression compiler
-	<p>Used by Tapestry to parse HTML templates</p>      </td>
-	<td>1.0.8</td>
-	<td><a href="http://www.gnu.org/copyleft/gpl.html">GNU Public License</a></td>
-	<td><A href="ftp://tapestry.sourceforge.net/pub/tapestry/gnu-regexp-0.1.8.zip">
-		ftp://tapestry.sourceforge.net/pub/tapestry/gnu-regexp-0.1.8.zip</A>
-	</td>
-</tr>
-
-<tr valign=top bgcolor=silver>
-	<td>javax.servlet.jar</td>
-	<td>Servlet API 2.2 reference implementation</td>
-	<td>&nbsp;2.2</td>
-	<td><A href="LICENSE.javax.servlet.txt">Apache Software License, Version 1.1</A>
-	<td>Distributed with Jetty</td>
-</tr>
-
-<tr valign=top>
-    <td>javax.xml.jaxp.jar</td>
-    <td>Java API for XML Processing</td>
-    <td>1.1</td>
-    <td><A href="License.javax.xml.html">Sun Binary Code License</A></td>
-    <td>Distributed with Jetty</td>
-</tr>
-
-<tr valign=top  bgcolor=silver>
-	<td>log4j-core.jar</td>
-	<td>Logging Toolkit</td>
-	<td>1.0.4</td>
-	<td><A href="LICENSE.log4j.txt">Apache Software License, Version 1.1</A></A>
-	<td>Logging toolkit used by Tapestry framework classes.
-	More information at the <a href="http://jakarta.apache.org/log4j">log4j home page</a>.</td>
-</tr>
-
-<tr valign=top>
-    <td>org.apache.crimson.jar</td>
-    <td>Sun XML Parser</td>
-    <td>1.1</td>
-    <td><A href="License.javax.xml.html">Sun Binary Code License</A></td>
-    <td>Distributed with Jetty</td>
-</tr>
-
-<tr valign=top bgcolor=silver>
-	<td>org.apache.jasper.jar</td>
-	<td>Jasper JSP Engine</td>
-	<td>3.2.1</td>
-	<td><A href="LICENSE.javax.servlet.txt">Apache Software License, Version 1.1</A>
-	<td>Distributed with Jetty</td>
-</tr>
-
-
-<tr bgcolor=black>
-<td colspan=5><IMG src="images/shim.gif"></td>
-</tr>
-
-
-</table>
-
-<h2>Documentation</h2>
-
+	be open source (but neglects to provide a license).
+<p>This library is required to compile Tapestry and 
+      to compile and run the demos and tutorials.</p>
+			</td>
+	</tr>
+	<tr valign="top">
+		<td>gnu-regexp.jar
+		</td>
+		<td>GNU regular expression compiler
+<p>Used by Tapestry to parse HTML templates</p>
+		</td>
+		<td>1.0.8
+		</td>
+		<td><a href="http://www.gnu.org/copyleft/gpl.html">GNU Public License</a>
+		</td>
+		<td><a href="ftp://tapestry.sourceforge.net/pub/tapestry/gnu-regexp-0.1.8.zip">
+		ftp://tapestry.sourceforge.net/pub/tapestry/gnu-regexp-0.1.8.zip</a>
+		</td>
+	</tr>
+	<tr valign="top" bgcolor="silver">
+		<td>javax.servlet.jar
+		</td>
+		<td>Servlet API 2.2 reference implementation
+		</td>
+		<td>2.2
+		</td>
+		<td><a href="LICENSE.javax.servlet.txt">Apache Software License, Version 1.1</a>
+			<td>Distributed with Jetty
+			</td>
+	</tr>
+	<tr valign="top">
+		<td>javax.xml.jaxp.jar
+		</td>
+		<td>Java API for XML Processing
+		</td>
+		<td>1.1
+		</td>
+		<td><a href="License.javax.xml.html">Sun Binary Code License</a>
+		</td>
+		<td>Distributed with Jetty
+		</td>
+	</tr>
+	<tr valign="top" bgcolor="silver">
+		<td>log4j-core.jar
+		</td>
+		<td>Logging Toolkit
+		</td>
+		<td>1.0.4
+		</td>
+		<td><a href="LICENSE.log4j.txt">Apache Software License, Version 1.1</a></a>
+			<td>Logging toolkit used by Tapestry framework classes.
+	More information at the <a href="http://jakarta.apache.org/log4j">log4j home page</a>.
+			</td>
+	</tr>
+	<tr valign="top">
+		<td>org.apache.crimson.jar
+		</td>
+		<td>Sun XML Parser
+		</td>
+		<td>1.1
+		</td>
+		<td><a href="License.javax.xml.html">Sun Binary Code License</a>
+		</td>
+		<td>Distributed with Jetty
+		</td>
+	</tr>
+	<tr bgcolor="black">
+		<td colspan="5" height=1><img src="images/shim.gif"></td>
+	</tr>
+</table><h2>Documentation</h2>
 <p>Tapestry has quite a bit of documentation available (most of these links will be
 broken if you did not download the <b>full</b> distribution).
-
 <ul>
-	<li><A href="doc/Tutorial/Tutorial.html">Tapestry Tutorial</A> (HTML) 
+	<li><a href="doc/Tutorial/Tutorial.html">Tapestry Tutorial</a> (HTML) 
 		-- A good introduction to what Tapestry is and how to use it.
-	<li><A href="doc/Virtual-Library.pdf">Primix Virtual Library Guide</A> (PDF)
+	<li><a href="doc/Virtual-Library.pdf">Primix Virtual Library Guide</a> (PDF)
 		-- Describes how to setup and run the Virtual Library demonstration, a complete
 		J2EE application implemented using Tapestry.
-	<li><A href="doc/api/overview-summary.html">Tapestry API</A> (Javadoc)
-	<li><A href="Examples/Readme.html">Tapestry  Examples</A> (HTML) -- guide to Tapestry
+	<li><a href="doc/api/overview-summary.html">Tapestry API</a> (Javadoc)
+	<li><a href="Examples/Readme.html">Tapestry  Examples</a> (HTML) -- guide to Tapestry
 		example and tutorial code
-	<li><A href="doc/Tapestry-Whitepaper.pdf">Tapestry Whitepaper</A> (PDF) --
+	<li><a href="doc/Tapestry-Whitepaper.pdf">Tapestry Whitepaper</a> (PDF) --
 		An executive summary of Tapestry
-	<li><A href="doc/DevelopersGuide/DevelopersGuide.html">Tapestry Developer's Guide</A> (HTML) -- main reference for
+	<li><a href="doc/DevelopersGuide/DevelopersGuide.html">Tapestry Developer's Guide</a> (HTML) -- main reference for
 		designing and developing Tapestry applications
-	<li><A href="doc/JBE/JBE.html">Java Build Environment</A> (HTML) -- guide to 
+	<li><a href="doc/JBE/JBE.html">Java Build Environment</a> (HTML) -- guide to 
   setting up and using the JBE (a set of Makefiles used to build and run 
-  Tapestry and Tapestry applications).</li>      
-		                
+  Tapestry and Tapestry applications).</li>
 </ul>
-
 <p>Tapestry is an open source project, hosted on the <a href="http://sourceforge.net/project/?group_id=4754">SourceForge</a> and licensed
-under the <A href="License.html">GNU Lesser General Public License</A>.</p>
-
+under the <a href="License.html">GNU Lesser General Public License</a>.</p>
 </body>
 </html>
-

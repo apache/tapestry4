@@ -56,6 +56,12 @@ JBOSS_DEPLOY_DIR := $(JBOSS_DIR)/deploy
 
 DEPLOY_JAR := $(JBOSS_DEPLOY_DIR)/$(JAR_FILE)
 
+# Always make sure that the version of Crimson (the default XML parser, from Sun)
+# shipped with jBoss is in the classpath.
+
+JBOSS_CLASSPATH := \
+	$(JBOSS_DIR)/lib/crimson.jar
+
 deploy: setup-catalogs
 	@$(RECURSE) POST_SETUP=t inner-deploy
 	
@@ -71,16 +77,19 @@ $(DEPLOY_JAR): $(JAR_FILE)
 # Convienience for running the EJX deployment tool
 
 run-ejx:
-	$(CD) $(JBOSS_DIR)/bin ; $(JAVA) -jar ejx.jar 
+	$(CD) $(JBOSS_DIR)/bin ; \
+	$(call EXEC_JAVA,$(JBOSS_CLASSPATH), -jar ejx.jar)
 
 # 
 # Convienience for running jBoss.  Specify JBOSS_OPT in the Makefile
 # to set JVM configuration, such as memory allocation.
 #
-
+	
 run: deploy
 	$(call NOTE, Running jBoss ... )
-	$(CD) $(JBOSS_DIR)/bin ; $(JAVA) $(JBOSS_OPT) -jar run.jar
+	$(CD) $(JBOSS_DIR)/bin ; \
+	$(call EXEC_JAVA,$(JBOSS_CLASSPATH) $(JBOSS_DIR)/bin/run.jar, \
+		$(JBOSS_JAVA_OPT) org.jboss.Main $(OTHER_JBOSS_OPT))
 
 
 .PHONY: deploy inner-deploy run-ejx run

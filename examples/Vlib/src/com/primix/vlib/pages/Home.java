@@ -119,7 +119,7 @@ public class Home extends BasePage
 	}
 
 	/**
-	 *  Invokes {@link #Matches#performQuery(String,String,Integer)}.
+	 *  Invokes {@link Matches#performQuery(String,String,Object)}.
 	 *
 	 */
 	

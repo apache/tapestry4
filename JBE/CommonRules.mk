@@ -56,7 +56,7 @@ $(JBE_UTIL_STAMP): $(SYS_MAKEFILE_DIR)/com/primix/jbe/*.java
 # Note, for this to work, SYS_MAKEFILE_DIR must use only forward slashes. Either
 # GNU Make or JAVA is eating the backslashes under NT.
 
-JBE_UTIL := $(JAVA) -classpath $(SYS_MAKEFILE_DIR) com.primix.jbe.Util 
+JBE_UTIL := $(JAVA) -classic -classpath $(SYS_MAKEFILE_DIR) com.primix.jbe.Util 
 
 # Command for accessing the JBE utility.
 # Usage:

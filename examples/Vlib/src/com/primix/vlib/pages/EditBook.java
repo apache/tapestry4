@@ -104,7 +104,7 @@ extends Protected
 	}
 	
 	/**
-	 *  Invoked (from {@link MyPage}) to begin editting a book.
+	 *  Invoked (from {@link MyBooks}) to begin editting a book.
 	 *  Gets the attributes from the {@link IBook} and updates
 	 *  the request cycle to render this page,
 	 *
