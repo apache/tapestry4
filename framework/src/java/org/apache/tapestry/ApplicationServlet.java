@@ -77,12 +77,6 @@ import com.sun.jndi.ldap.pool.Pool;
 public class ApplicationServlet extends HttpServlet
 {
     /**
-     * The application specification, which is read once and kept in memory thereafter.
-     */
-
-    private IApplicationSpecification _specification;
-
-    /**
      * Invokes {@link #doService(HttpServletRequest, HttpServletResponse)}.
      * 
      * @since 1.0.6
@@ -174,22 +168,9 @@ public class ApplicationServlet extends HttpServlet
     }
 
     /**
-     * Returns the application specification, which is read by the {@link #init(ServletConfig)}
-     * method.
-     * 
-     * @deprecated Use {@link RequestContext#getApplicationSpecification()}instead.
-     */
-
-    public IApplicationSpecification getApplicationSpecification()
-    {
-        return _specification;
-    }
-
-    /**
      * Reads the application specification when the servlet is first initialized. All
      * {@link IEngine engine instances}will have access to the specification via the servlet.
      * 
-     * @see #getApplicationSpecification()
      * @see #constructApplicationSpecification()
      * @see #createResourceResolver()
      */
@@ -249,19 +230,6 @@ public class ApplicationServlet extends HttpServlet
     }
 
     /**
-     * Returns a class resolver that can access classes and resources related to the current web
-     * application context. Relies on {@link java.lang.Thread#getContextClassLoader()}, which is
-     * set by most modern servlet containers.
-     * 
-     * @since 2.3
-     */
-
-    public ClassResolver getClassResolver()
-    {
-        return _resolver;
-    }
-
-    /**
      * Invoked from {@link #init(ServletConfig)}to construct the Registry to be used by the
      * application.
      * <p>
@@ -318,16 +286,6 @@ public class ApplicationServlet extends HttpServlet
         ai.initialize(this);
 
         _registry.cleanupThread();
-
-        // This is temporary, since most of the code still gets the
-        // specification from the servlet --- in fact, has to downcase
-        // RequestContext.getServlet() to do so.
-
-        ApplicationGlobals ag = (ApplicationGlobals) _registry.getService(
-                "tapestry.globals.ApplicationGlobals",
-                ApplicationGlobals.class);
-
-        _specification = ag.getSpecification();
 
         _requestServicer = (RequestServicer) _registry.getService(
                 "tapestry.request.RequestServicerPipeline",

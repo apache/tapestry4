@@ -48,7 +48,20 @@
     </invoke-factory>
   </service-point>
   
+  <service-point id="ContainerContextInitializer" interface="ApplicationInitializer">
+    
+    Creates and stores the ContainerContext into ApplicationGlobals.
+    
+    <invoke-factory>
+      <construct class="impl.ContainerContextInitializer">
+        <set-service property="globals" service-id="tapestry.globals.ApplicationGlobals"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
   <contribution configuration-id="ApplicationInitializers">
+    <command id="ContainerContextInitializer" object="service:ContainerContextInitializer" before="*"/>
     <command id="ApplicationSpecificationInitializer" object="service:ApplicationSpecificationInitializer"/>
   </contribution>
   

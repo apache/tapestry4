@@ -23,8 +23,15 @@ import org.apache.hivemind.Location;
 import org.apache.hivemind.Registry;
 import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.impl.RegistryBuilder;
+import org.apache.hivemind.test.AggregateArgumentsMatcher;
+import org.apache.hivemind.test.ArgumentMatcher;
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.hivemind.test.TypeMatcher;
 import org.apache.hivemind.util.ClasspathResource;
+import org.apache.tapestry.container.ContainerRequest;
+import org.apache.tapestry.container.ContainerResponse;
+import org.apache.tapestry.container.ServletContainerRequest;
+import org.apache.tapestry.container.ServletContainerResponse;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.services.ClasspathResourceFactory;
 import org.apache.tapestry.services.Infrastructure;
@@ -66,12 +73,20 @@ public class TestBasicInfrastructure extends HiveMindTestCase
 
     public void testRequestGlobalsInitializer() throws Exception
     {
-        RequestGlobals si = (RequestGlobals) newMock(RequestGlobals.class);
+        MockControl control = newControl(RequestGlobals.class);
+        RequestGlobals rg = (RequestGlobals) control.getMock();
+
         HttpServletRequest r = (HttpServletRequest) newMock(HttpServletRequest.class);
         HttpServletResponse p = (HttpServletResponse) newMock(HttpServletResponse.class);
         RequestServicer n = (RequestServicer) newMock(RequestServicer.class);
 
-        si.store(r, p);
+        ContainerRequest cr = new ServletContainerRequest(r);
+        ContainerResponse cp = new ServletContainerResponse(p);
+
+        rg.store(r, p);
+        rg.store(cr, cp);
+        control.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
+        { new TypeMatcher(), new TypeMatcher() }));
 
         n.service(r, p);
 
@@ -79,7 +94,7 @@ public class TestBasicInfrastructure extends HiveMindTestCase
 
         RequestGlobalsInitializer rgi = new RequestGlobalsInitializer();
 
-        rgi.setRequestGlobals(si);
+        rgi.setRequestGlobals(rg);
 
         rgi.service(r, p, n);
 
@@ -117,31 +132,6 @@ public class TestBasicInfrastructure extends HiveMindTestCase
         ClasspathResource expected = new ClasspathResource(cr, path);
 
         assertEquals(expected, f.newResource(path));
-    }
-
-    public void testServletInfoInitializer() throws Exception
-    {
-        HttpServletRequest request = (HttpServletRequest) newMock(HttpServletRequest.class);
-        HttpServletResponse response = (HttpServletResponse) newMock(HttpServletResponse.class);
-        RequestGlobals servletInfo = (RequestGlobals) newMock(RequestGlobals.class);
-
-        RequestGlobalsInitializer sii = new RequestGlobalsInitializer();
-
-        RequestServicer rs = (RequestServicer) newMock(RequestServicer.class);
-
-        sii.setRequestGlobals(servletInfo);
-
-        // Training
-
-        servletInfo.store(request, response);
-
-        rs.service(request, response);
-
-        replayControls();
-
-        sii.service(request, response, rs);
-
-        verifyControls();
     }
 
     public void testGlobalPropertyObjectProviderSuccess()

@@ -18,10 +18,13 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 
+import org.apache.tapestry.container.ContainerContext;
 import org.apache.tapestry.spec.IApplicationSpecification;
 
 /**
  * A "global" holder for the servlet, servlet context and application specification.
+ * <p>
+ * Note: the servlet API portions of this will likely move to a seperate service.
  * 
  * @author Howard Lewis Ship
  * @since 3.1
@@ -29,17 +32,32 @@ import org.apache.tapestry.spec.IApplicationSpecification;
 public interface ApplicationGlobals
 {
     /**
-     * Invoked by the servlet at init(), after parsing the application specification.
+     * Invoked by the (indirectly) by the servlet at init(), after parsing the application
+     * specification.
      */
     public void store(HttpServlet servlet, IApplicationSpecification applicationSpecification);
+
+    /**
+     * Invoked by the (indirectly) by the servlet at init().
+     */
+
+    public void store(ContainerContext context);
+
+    /**
+     * Returns the previously stored context.
+     * 
+     * @see #store(ContainerContext)}.
+     */
+
+    public ContainerContext getContainerContext();
 
     public HttpServlet getServlet();
 
     public IApplicationSpecification getSpecification();
 
     public ServletContext getContext();
-    
+
     public String getServletName();
-    
+
     public ServletConfig getServletConfig();
 }

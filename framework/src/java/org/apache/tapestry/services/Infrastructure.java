@@ -19,6 +19,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Resource;
+import org.apache.tapestry.container.ContainerRequest;
+import org.apache.tapestry.container.ContainerResponse;
 import org.apache.tapestry.engine.IPageSource;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.engine.IScriptSource;
@@ -153,7 +155,9 @@ public interface Infrastructure
     public ApplicationStateManager getApplicationStateManager();
 
     /**
-     * Returns the request for the current request.
+     * Returns the request for the current request cycle.
+     * 
+     * <p>Note: to be removed.
      */
 
     public HttpServletRequest getRequest();
@@ -163,6 +167,24 @@ public interface Infrastructure
      */
 
     public HttpServletResponse getResponse();
+    
+    /**
+     * Returns the container request for the current request cycle.
+     * 
+     * <p>Note: to be renamed to getRequest().
+     * 
+     */
+    
+    public ContainerRequest getContainerRequest();
+    
+    /**
+     * Returns the container response for the current request cycle.
+     * 
+     * <p>Note: to be renamed to getResponse().
+     * 
+     */
+    
+    public ContainerResponse getContainerResponse();
 
     /**
      * Returns the context path, which identifies the application within the application server.
