@@ -225,7 +225,7 @@ Attributes:
 
 <!-- =======================================================
 Element: description
-Appears in: application bean parameter specification
+Appears in: many
 
 Several elements may contain descriptions; these descriptions are
 optional.  The eventual goal is to provide help in some form of IDE.
@@ -331,7 +331,7 @@ Attributes:
 >
 
 <!-- =======================================================
-Element: library
+Element: library-specification
 Root element
 
 Defines a library that may be used in the construction 
@@ -345,7 +345,7 @@ be thought of as a specialized kind of library.
 
 <!-- =======================================================
 Element: page
-Contained by: application
+Contained by: application, library-specification
 
 Defines a single page within the application.  Each application will contain
 at least one of these, to define the Home page.
@@ -372,8 +372,8 @@ a body, and never allow parameters (formal or otherwise).
 Attributes:
   class: The Java class to instantiate for the component.
 -->
-<!ELEMENT page-specification (description*, property*, bean*,
-	component*, (external-asset | context-asset | private-asset)*)>
+<!ELEMENT page-specification (description*, property*,
+    (bean | component | external-asset | context-asset | private-asset)*)>
 <!ATTLIST page-specification
   class CDATA #REQUIRED
 >
