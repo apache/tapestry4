@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launchConfiguration type="org.eclipse.jdt.junit.launchconfig">
+    <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
+    <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="Tapestry/junit"/>
     <stringAttribute key="org.eclipse.debug.ui.target_debug_perspective" value="perspective_none"/>
-    <stringAttribute key="org.eclipse.debug.ui.target_run_perspective" value="perspective_none"/>
+    <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="net.sf.tapestry.junit.mock.MockTestCase"/>
     <booleanAttribute key="org.eclipse.debug.ui.runFavorite" value="true"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="Tapestry"/>
-    <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="Tapestry/junit"/>
-    <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
-    <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="net.sf.tapestry.junit.mock.MockSuite"/>
+    <stringAttribute key="org.eclipse.debug.ui.target_run_perspective" value="perspective_none"/>
 </launchConfiguration>
