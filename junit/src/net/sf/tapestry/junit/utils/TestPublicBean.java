@@ -34,7 +34,9 @@ import ognl.OgnlException;
 
 /**
  *  Tests to support the new OGNL oriented approach to
- *  {@link net.sf.tapestry.util.prop.IPublicBean}.
+ *  {@link net.sf.tapestry.util.prop.IPublicBean}.  Note that this test
+ *  may fail if run by itself (it is reliant on static initializers
+ *  in {@link net.sf.tapestry.AbstractComponent}).
  *
  *  @author Howard Lewis Ship
  *  @version $Id$

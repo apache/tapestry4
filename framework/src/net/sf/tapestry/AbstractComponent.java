@@ -33,6 +33,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
+import ognl.OgnlRuntime;
+
 import net.sf.tapestry.bean.BeanProvider;
 import net.sf.tapestry.bean.BeanProviderPropertyAccessor;
 import net.sf.tapestry.event.ChangeObserver;
@@ -41,10 +43,11 @@ import net.sf.tapestry.listener.ListenerMap;
 import net.sf.tapestry.param.ParameterManager;
 import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.spec.ContainedComponent;
+import net.sf.tapestry.util.prop.IPublicBean;
 import net.sf.tapestry.util.prop.OgnlUtils;
 import net.sf.tapestry.util.prop.PropertyFinder;
 import net.sf.tapestry.util.prop.PropertyInfo;
-import ognl.OgnlRuntime;
+import net.sf.tapestry.util.prop.PublicBeanPropertyAccessor;
 
 /**
  *  Abstract base class implementing the {@link IComponent} interface.
@@ -61,6 +64,10 @@ public abstract class AbstractComponent implements IComponent
         // beans of a bean provider as named properties.
 
         OgnlRuntime.setPropertyAccessor(IBeanProvider.class, new BeanProviderPropertyAccessor());
+        
+        // Same with IPublicBean.
+        
+        OgnlRuntime.setPropertyAccessor(IPublicBean.class, new PublicBeanPropertyAccessor());        
     }
 
     /**

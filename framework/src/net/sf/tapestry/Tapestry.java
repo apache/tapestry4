@@ -42,11 +42,7 @@ import java.util.Set;
 
 import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.util.AdaptorRegistry;
-import net.sf.tapestry.util.Decorator;
 import net.sf.tapestry.util.StringSplitter;
-import net.sf.tapestry.util.prop.IPublicBean;
-import net.sf.tapestry.util.prop.PublicBeanPropertyAccessor;
-import ognl.OgnlRuntime;
 
 /**
  *  A placeholder for a number of (static) methods that don't belong elsewhere.
@@ -99,10 +95,6 @@ public final class Tapestry
         {
             _localeMap.put(locales[i].toString(), locales[i]);
         }
-    }
-
-    static {
-        OgnlRuntime.setPropertyAccessor(IPublicBean.class, new PublicBeanPropertyAccessor());
     }
 
     /**
