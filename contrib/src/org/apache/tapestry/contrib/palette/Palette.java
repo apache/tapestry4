@@ -83,6 +83,7 @@ import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.apache.tapestry.html.Body;
 import org.apache.tapestry.request.RequestContext;
+import org.apache.tapestry.valid.IValidationDelegate;
 
 /**
  *  A component used to make a number of selections from a list.  The general look
@@ -221,20 +222,6 @@ public abstract class Palette extends BaseComponent implements IFormComponent
     private static final String DEFAULT_TABLE_CLASS = "tapestry-palette";
 
     /**
-     *  {@link IForm} which is currently wrapping the Palette.
-     *
-     **/
-
-    private IForm _form;
-
-    /**
-     *  The element name assigned to this usage of the Palette by the Form.
-     *
-     **/
-
-    private String _name;
-
-    /**
      *  A set of symbols produced by the Palette script.  This is used to
      *  provide proper names for some of the HTML elements (&lt;select&gt; and
      *  &lt;button&gt; elements, etc.).
@@ -283,34 +270,35 @@ public abstract class Palette extends BaseComponent implements IFormComponent
         setTableClass(DEFAULT_TABLE_CLASS);
         setRows(DEFAULT_ROWS);
         setSort(SortMode.NONE);
+        setControlsWidth(60);
     }
 
-    /**
-     *  Returns the name used for the selected (right column) &lt;select&gt; element.
-     **/
 
-    public String getName()
-    {
-        return _name;
-    }
-
-    public IForm getForm()
-    {
-        return _form;
-    }
-
+    public abstract String getName();
+    public abstract void setName(String name);
+    
+    public abstract IForm getForm();
+    public abstract void setForm(IForm form);
+    
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        _form = Form.get(getPage().getRequestCycle());
+        IForm form  = Form.get(getPage().getRequestCycle());
 
-        if (_form == null)
+        if (form == null)
             throw new ApplicationRuntimeException(
                 "Palette component must be wrapped by a Form.",
                 this);
+                
+		setForm(form);
+		
+    	IValidationDelegate delegate = form.getDelegate();
+    	
+    	if (delegate != null)
+    		delegate.setFormComponent(this);
 
-        _name = _form.getElementId(this);
+        setName(form.getElementId(this));
 
-        if (_form.isRewinding())
+        if (form.isRewinding())
         {
             handleSubmission(cycle);
             return;
@@ -333,7 +321,7 @@ public abstract class Palette extends BaseComponent implements IFormComponent
         // is submitted.  This is also key to the operation
         // of the PropertySelection.
 
-        _form.addEventHandler(
+        form.addEventHandler(
             FormEventType.SUBMIT,
             (String) _symbols.get("formSubmitFunctionName"));
 
@@ -349,7 +337,6 @@ public abstract class Palette extends BaseComponent implements IFormComponent
     {
         _availableWriter = null;
         _selectedWriter = null;
-        _form = null;
         _symbols = null;
 
         super.cleanupAfterRender(cycle);
@@ -445,7 +432,7 @@ public abstract class Palette extends BaseComponent implements IFormComponent
         _selectedWriter.begin("select");
         _selectedWriter.attribute("multiple");
         _selectedWriter.attribute("size", getRows());
-        _selectedWriter.attribute("name", _name);
+        _selectedWriter.attribute("name", getName());
         _selectedWriter.println();
 
         _availableWriter.begin("select");
@@ -520,7 +507,7 @@ public abstract class Palette extends BaseComponent implements IFormComponent
     {
 
         RequestContext context = cycle.getRequestContext();
-        String[] values = context.getParameters(_name);
+        String[] values = context.getParameters(getName());
 
         int count = Tapestry.size(values);
 
@@ -628,4 +615,7 @@ public abstract class Palette extends BaseComponent implements IFormComponent
 
     public abstract void setSelected(List selected);
 
+	/** @since 2.4 **/
+	
+	public abstract void setControlsWidth(int controlsWidth);
 }

@@ -43,6 +43,8 @@
   	type="java.lang.String" 
   	required="no"
   	direction="in"/>
+  	
+  <parameter name="controlsWidth" type="int" direction="in"/>
   
   <parameter name="selectImage" type="org.apache.tapestry.IAsset" direction="in"/>
   <parameter name="selectDisabledImage" type="org.apache.tapestry.IAsset" direction="in"/>
@@ -53,6 +55,9 @@
   <parameter name="downImage" type="org.apache.tapestry.IAsset" direction="in"/>
   <parameter name="downDisabledImage" type="org.apache.tapestry.IAsset" direction="in"/>
     
+  <property-specification name="name" type="java.lang.String"/>
+  <property-specification name="form" type="org.apache.tapestry.IForm"/>
+  
   <private-asset name="Select" resource-path="select_right.gif"/>
   <private-asset name="SelectDisabled" resource-path="select_right_off.gif"/>
   <private-asset name="Deselect" resource-path="deselect_left.gif"/>
