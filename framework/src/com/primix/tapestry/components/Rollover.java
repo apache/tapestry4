@@ -327,10 +327,10 @@ public class Rollover extends AbstractComponent
         String imageName = "rollover_" + uniqueId;
         String onMouseOverName = "onMouseOver_" + uniqueId;
         String onMouseOutName = "onMouseOut_" + uniqueId;
-        String blurImageName = "blur_" + uniqueId;
-        String focusImageName = "focus_" + uniqueId;
-        String focusImageURL = body.addImageInitialization(focusImageName, focusURL);
-        String blurImageURL = body.addImageInitialization(blurImageName, blurURL);
+        String focusImageURL = 
+            body.addImageInitialization("focus_" + uniqueId, focusURL);
+        String blurImageURL = 
+            body.addImageInitialization("blur_" + uniqueId, blurURL);
         ScriptGenerator generator = getScriptGenerator();
 
         if (symbols == null)

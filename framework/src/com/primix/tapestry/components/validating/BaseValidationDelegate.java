@@ -76,4 +76,36 @@ implements IValidationDelegate
         writer.print("**");
         writer.end();
     }
+
+    /**
+     *  Writes the label in red if the field is in error.
+     *
+     */
+
+	public void writeLabelPrefix(IValidatingTextField field, 
+	    IResponseWriter writer, IRequestCycle cycle)
+	throws RequestCycleException
+	{
+		if (field.getError())
+        {
+            writer.begin("font");
+            writer.attribute("color", "red");
+        }
+	}
+
+    /**
+     *  Closes the &lt;font&gt; element,started by
+     *  {@link #writeLabelPrefix(IValidatingTextField,IResponseWriter,IRequestCycle)},
+     *  if the field is in error.
+     *
+     */
+
+	public void writeLabelSuffix(IValidatingTextField field,
+	    IResponseWriter writer, IRequestCycle cycle) throws RequestCycleException
+	{
+		if (field.getError())
+        {
+            writer.end();
+        }
+	}
 }

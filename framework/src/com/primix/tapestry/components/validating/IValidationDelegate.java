@@ -87,5 +87,25 @@ public interface IValidationDelegate
     public void writeErrorSuffix(IValidatingTextField field,
                 IResponseWriter writer, IRequestCycle cycle)
     throws RequestCycleException;
+
+    /**
+     *  Invoked by a {@link FieldLabel} just before writing the name
+     *  of the field.
+     *
+     */
+
+    public void writeLabelPrefix(IValidatingTextField field, IResponseWriter writer,
+                IRequestCycle cycle)
+    throws RequestCycleException;
+
+    /**
+     *  Invoked by a {@link FieldLabel} just after writing the name
+     *  of the field.
+     *
+     */
+
+    public void writeLabelSuffix(IValidatingTextField field, IResponseWriter writer,
+                IRequestCycle cycle)
+    throws RequestCycleException;
 }
 
