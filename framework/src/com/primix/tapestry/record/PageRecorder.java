@@ -184,7 +184,15 @@ public abstract class PageRecorder
 
 			helper = PropertyHelper.forClass(component.getClass());
 
-			helper.set(component, change.propertyName, change.newValue);
+			try
+			{
+				helper.set(component, change.propertyName, change.newValue);
+			}
+			catch (Throwable t)
+			{
+				throw new RollbackException(component, change.propertyName, 
+							change.newValue, t);
+			}
 		}
 	}
 
