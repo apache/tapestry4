@@ -16,7 +16,7 @@
   <component id="showError" type="ShowError"/>
   
   <component id="restart" type="ServiceLink">
-    <field-binding name="service" field-name="net.sf.tapestry.IEngineService.RESTART_SERVICE"/>
+    <binding name="service" expression="@net.sf.tapestry.IEngineService@RESTART_SERVICE"/>
   </component>
   
   

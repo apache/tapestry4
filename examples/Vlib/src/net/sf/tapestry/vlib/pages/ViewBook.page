@@ -51,10 +51,9 @@
     <static-binding name="class">clsDataBlue</static-binding>
   </component>
 
-	<component id="ifNotLendable" type="Conditional">
-		<binding name="condition" expression="book.lendable"/>
-		<field-binding name="invert" field-name="Boolean.TRUE"/>
-	</component>
+  <component id="ifNotLendable" type="Conditional">
+    <binding name="condition" expression="!book.lendable"/>
+  </component>
 		
   <component id="borrow" type="Borrow">
     <binding name="book" expression="book"/>

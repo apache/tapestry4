@@ -22,7 +22,7 @@
   </component>
 
   <component id="ifNoOwnedBooks" copy-of="ifShowOwnedBooks">
-    <field-binding name="invert" field-name="Boolean.TRUE"/>
+   <binding name="condition" expression="components.browser.resultCount == 0"/>
   </component>
   
   <component id="browser" type="Browser">
