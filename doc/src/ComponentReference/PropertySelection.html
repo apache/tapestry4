@@ -170,35 +170,26 @@
   <b>Examples</b>
   <p>
   The PropertySelection component provides Gender selection drop down list using a
-  <a href="../api/org/apache/tapestry/form/StringPropertySelectionModel.html"><tt>StringPropertySelectionModel<tt></a>
-  <p>
-
-<table class="examples" valign="middle" cellspacing="8">
- <tr>
-  <td>Gender:
-	 <select>
-	  <option selected>Unspecified</option>
-	  <option>Female</option>
-	  <option>Male</option>
-	 </select>
-	</td>
- </tr>
-</table>
-		
-<pre>
-&lt;form jwcid="detailsForm"&gt;
- Gender: &lt;span jwcid="<span class="jwcid">selectGender</span>"/&gt;
+  <a href="../api/org/apache/tapestry/form/StringPropertySelectionModel.html"><tt>StringPropertySelectionModel<tt></tt></tt></a>
+            <tt><tt> 
+            <p> 
+            <table class="examples" valign="middle" cellspacing="8">
+              <tr> 
+                <td>Gender: 
+                  <select>
+                    <option selected>Unspecified</option>
+                    <option>Female</option>
+                    <option>Male</option>
+                  </select>
+                </td>
+              </tr>
+            </table>
+            </tt></tt> 
+            <pre>
+&lt;form jwcid="@<A href="Form.html">Form</a>" listener="ognl:listeners.formSubmit"&gt;
+ Gender: &lt;span jwcid="<span class="jwcid">@<a href="PropertySelection.html">PropertySelection</a></span>" model="ognl:@com.mycorp.DetailsPage@GENDER_MODEL" value="ognl:gender"/&gt;
 &lt;/form&gt;
 
-
-&lt;component id="detailsForm" type="<A href="Form.html">Form</a>"&gt;
-    &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
-&lt;/component&gt;
-
-&lt;component id="<span class="jwcid">selectGender</span>" type="<A href="PropertySelection.html">PropertySelection</a>"&gt;
-    &lt;binding name="model" expression="@com.mycorp.DetailsPage@GENDER_MODEL"/&gt;
-    &lt;binding name="value" expression="gender"/&gt;
-&lt;/component&gt;
 
 
 package com.mycorp;
@@ -215,9 +206,8 @@ public class DetailsPage extends BasePage {
         gender = value;
     }
    
-    public void detach() {
+    protected void initialize() {
         gender = null;
-        super.detach();
     }   
 
     public void formSubmit(IRequestCycle cycle) {   
@@ -227,57 +217,45 @@ public class DetailsPage extends BasePage {
     }
 }
 </pre>
-	
-<hr>
-<a name="Example2"></a>
-<p>
-Provides list of clothing items for the user to select. When the user selects a 
-cloting item from the list the description the label and price is automatically 
-updated. The list of clothing items would typically be loaded from a database.
-<p>
-This example uses the component's <b>submitOnChange</b> property to 
-automatically submit the form when a HTML &lt;select&gt; onchange event occurs. 
-The page's clothing item property is then updated and the new cloting item information 
-is displayed by the description, label and price <a href="Insert.html">Insert</a> 
-components.
-<p>
-
-<table class="examples" valign="middle" cellspacing="8">
- <tr>
-  <td>Item:
-	 <select>
-	  <option selected>Dress</option>
-	  <option>Jacket</option>
-	  <option>Pants</option>
-	  <option>Shirt</option>
-	  <option>Skirt</option>
-	 </select>
-   <p>
-   Description: Cotton full length Summer dress
-   <p>
-   Label: CountryClub 
-   <p>
-   Price: $89.95</p>
-     
-	</td>
- </tr>
-</table>
-
-<pre>
-&lt;form jwcid="purchageForm"&gt;
+            <hr>
+            <a name="Example2"></a> 
+            <p> Provides list of clothing items for the user to select. When the 
+              user selects a cloting item from the list the description the label 
+              and price is automatically updated. The list of clothing items would 
+              typically be loaded from a database. 
+            <p> This example uses the component's <b>submitOnChange</b> property 
+              to automatically submit the form when a HTML &lt;select&gt; onchange 
+              event occurs. The page's clothing item property is then updated 
+              and the new cloting item information is displayed by the description, 
+              label and price <a href="Insert.html">Insert</a> components. 
+            <p> 
+            <table class="examples" valign="middle" cellspacing="8">
+              <tr> 
+                <td>Item: 
+                  <select>
+                    <option selected>Dress</option>
+                    <option>Jacket</option>
+                    <option>Pants</option>
+                    <option>Shirt</option>
+                    <option>Skirt</option>
+                  </select>
+                  <p> Description: Cotton full length Summer dress 
+                  <p> Label: CountryClub 
+                  <p> Price: $89.95</p>
+                </td>
+              </tr>
+            </table>
+            <pre>
+&lt;form jwcid="@<a href="Form.html">Form</a>" listener="ognl:listeners.formSubmit"&gt;
  Item: &lt;span jwcid="<span class="jwcid">selectItem</span>"/&gt;
  &lt;p&gt;
- Description: &lt;span jwcid="insertDescription"/&gt;
+ Description: &lt;span jwcid="@<a href="Insert.html">Insert</a>" value="ognl:clothingItem.description"/&gt;
  &lt;p&gt;
- Label: &lt;span jwcid="insertLabel"/&gt;
+ Label: &lt;span jwcid="@<a href="Insert.html">Insert</a>" value="ognl:clothingItem.label"/&gt;
  &lt;p&gt;
- Price: $&lt;span jwcid="insertPrice"/&gt;
+ Price: $&lt;span jwcid="@<a href="Insert.html">Insert</a>" value="ognl:clothingItem.price"/&gt;
 &lt;/form&gt;
 
-
-&lt;component id="purchaseForm" type="<A href="Form.html">Form</a>"&gt;
-    &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
-&lt;/component&gt;
 
 &lt;component id="<span class="jwcid">selectItem</span>" type="<A href="PropertySelection.html">PropertySelection</a>"&gt;
     &lt;binding name="model" expression="itemSelectionModel"/&gt;
@@ -285,17 +263,6 @@ components.
     &lt;binding name="<b>submitOnChange</b>" expression="true"/&gt;
 &lt;/component&gt;
 
-&lt;component id="insertDescription" type="<A href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" expression="clothingItem.description"/&gt;
-&lt;/component&gt;
-
-&lt;component id="insertLabel" type="<A href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" expression="clothingItem.label"/&gt;
-&lt;/component&gt;
-
-&lt;component id="insertPrice" type="<A href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" expression="clothingItem.price"/&gt;
-&lt;/component&gt;
 
 
 public class PurchagePage extends BasePage {
@@ -318,10 +285,9 @@ public class PurchagePage extends BasePage {
         fireObservedChange("itemSelectionModel", value);
     }
 
-    public void detach() {
+    protected void initialize() {
         clothingItem = null;
         itemSelectionModel = null;
-        super.detach();
     }
 
     public void formSubmit(IRequestCycle cycle) {
@@ -379,8 +345,8 @@ public class ItemSelectionModel implements <A href="../api/org/apache/tapestry/f
     }
 }
 </pre>
-
- </td></tr></table>
+          </td>
+        </tr></table>
 </td></tr>
 <tr>
  <td colspan="3"><hr></td>  

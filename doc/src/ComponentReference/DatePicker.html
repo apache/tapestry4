@@ -163,18 +163,18 @@
   <td colspan="2" align="right"><input type="submit" value="Submit"/></td>
  </tr>
 </table>
- </td>
+ </form></td>
 </tr>
 </table>
 
-<pre>  
-&lt;form jwcid="form"&gt;
+            <pre>  
+&lt;form jwcid="<a href="Form.html">Form</a>" listener="ognl:listeners.formSubmit"&gt;
 &lt;table valign="middle"&gt;
  &lt;tr&gt;
-  &lt;td&gt;Start Date:&lt;/td&gt; &lt;td&gt;&lt;span jwcid="<span class="jwcid">startDatePicker</span>"/&gt;&lt;/td&gt;
+  &lt;td&gt;Start Date:&lt;/td&gt; &lt;td&gt;&lt;span jwcid="<span class="jwcid">@<a href="DatePicker.html">DatePicker</a></span>" value="ognl:startDate"/&gt;&lt;/td&gt;
  &lt;/tr&gt;
  &lt;tr&gt;
-  &lt;td&gt;End Date:&lt;/td&gt; &lt;td&gt;&lt;span jwcid="<span class="jwcid">endDatePicker</span>"/&gt;&lt;/td&gt;
+  &lt;td&gt;End Date:&lt;/td&gt; &lt;td&gt;&lt;span jwcid="<span class="jwcid">@<a href="DatePicker.html">DatePicker</a></span>" value="ognl:endDate"/&gt;&lt;/td&gt;
  &lt;/tr&gt;
  &lt;tr&gt;
   &lt;td colspan="2"&gt;&amp;nbsp;&lt;/td&gt;
@@ -185,18 +185,6 @@
 &lt;/table&gt;
 &lt;/form&gt;
 
-
-&lt;component id="form" type="<a href="Form.html">Form</a>"/&gt;
-    &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
-&lt;/component&gt;
-
-&lt;component id="<span class="jwcid">startDatePicker</span>" type="<a href="DatePicker.html">DatePicker</a>"&gt;
-    &lt;binding name="value" expression="startDate"/&gt;
-&lt;/component&gt;
-
-&lt;component id="<span class="jwcid">endDatePicker</span>" type="<a href="DatePicker.html">DatePicker</a>"&gt;
-    &lt;binding name="value" expression="endDate"/&gt;
-&lt;/component&gt;
 	
 
 public class Dates extends BasePage {
@@ -215,19 +203,18 @@ public class Dates extends BasePage {
         endDate = value;
     }  
 
-    public void detach() {
+    protected void initialize() {
         startDate = null;
         endDate = null;       
-        super.detach();
     }
 
     public void formSubmit(IRequestCycle cycle) {
         // Process the submitted dates.
     }
 }
-</pre>  
-
- </td></tr></table>
+</pre>
+          </td>
+        </tr></table>
 </td></tr>
 <tr>
  <td colspan="3"><hr></td>  

@@ -207,7 +207,6 @@
     to the "disabled" HTML attribute.
    </td>
 	</tr>
-
 	</table>
   <p>Body: <strong>removed</strong><br>
   Informal parameters:<strong>allowed</strong><br>
@@ -387,10 +386,9 @@ public class LotBidPage extends BasePage {
         fireObservedChange("auctionDetails", value);
     }
 
-    public void detach() {
+    protected void initialize() {
         lotBid = new LotBid();
         actionDetails = null;
-        super.detach();        
     }
 
     public void okSubmit(IRequestCycle cycle) {
@@ -469,8 +467,8 @@ public class AuctionDetails implements Serializable {
     public float getMaxBid() { return maxBid; }    
 }
 </pre>
-
- </td></tr></table>
+          </td>
+        </tr></table>
 </td></tr>
 <tr>
  <td colspan="2"><hr></td>  

@@ -123,7 +123,7 @@
  <td colspan="2">File:&nbsp;<input type="file"></td>
 </tr>
 <tr>
- <td colspan="2"><input type="submit" value="Upload"></input></td>
+ <td colspan="2"><input type="submit" value="Upload"></td>
 </tr>
 <tr>
  <td colspan="2"><hr></td>
@@ -146,7 +146,7 @@
 </table>
 </form>
 
-<pre>
+            <pre>
 &lt;form jwcid="@<a href="Form.html">Form</a>" listener="ognl:listener.formSubmit"&gt;
  &lt;table bgcolor="#c0c0c0" cellpadding="4"&gt;
   &lt;tr&gt;
@@ -259,15 +259,14 @@ public class UploadPage extends BasePage {
         }
     }
 
-    public void detach() {
+    protected void initialize() {
         file = null;
         serverFile = null;
-        super.detach();
     }
 }
 </pre>
-
- </td></tr></table>
+          </td>
+        </tr></table>
 </td></tr>
 <tr>
  <td colspan="3"><hr></td>  

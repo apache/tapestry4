@@ -191,7 +191,7 @@
   </tr>
 </table>
 
-<pre>
+            <pre>
 &lt;table cellspacing="6"&gt;
   &lt;tr&gt;
    &lt;td&gt;ID&lt;/td&gt;
@@ -203,34 +203,15 @@
   &lt;tr&gt;
    &lt;td colspan="5"&gt;&lt;hr&gt;&lt;/td&gt;
   &lt;/tr&gt;
- &lt;span jwcid="<span class="jwcid">foreachCustomer</span>"&gt;
-  &lt;tr&gt;
-   &lt;td&gt;&lt;span jwcid="insertId"/&gt;&lt;/td&gt;
+  &lt;tr jwcid="<span class="jwcid">@<a href="Foreach.html">Foreach</a></span>" source="ognl:customerList" value="ognl:customer" element=&quot;tr&quot;&gt;
+   &lt;td&gt;&lt;span jwcid="@<a href="Insert.html">Insert</a>" value="ognl:customer.id"/&gt;&lt;/td&gt;
    &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-   &lt;td&gt;&lt;span jwcid="insertFullName"/&gt;&lt;/td&gt;
+   &lt;td&gt;&lt;span jwcid="@<a href="Insert.html">Insert</a>" value="ognl:customer.fullName"/&gt;&lt;/td&gt;
    &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-   &lt;td&gt;&lt;span jwcid="insertMemberLevel"/&gt;&lt;/td&gt;
+   &lt;td&gt;&lt;span jwcid="@<a href="Insert.html">Insert</a>" value="ognl:customer.memberLevel"/&gt;&lt;/td&gt;
   &lt;/tr&gt;
- &lt;/span&gt;
 &lt;/table&gt;
 
-
-&lt;component id="<span class="jwcid">foreachCustomer</span>" type="<A href="Foreach.html">Foreach</a>"&gt;
-    &lt;binding name="source" expression="customerList"/&gt;
-    &lt;binding name="value" expression="customer"/&gt;
-&lt;/component&gt;
-
-&lt;component id="insertId" type="<A href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" expression="customer.id"/&gt;
-&lt;/component&gt;
-
-&lt;component id="insertFullName" type="<A href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" expression="customer.fullName"/&gt;
-&lt;/component&gt;
-
-&lt;component id="insertMemberLevel" type="<A href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" expression="customer.memberLevel"/&gt;
-&lt;/component&gt;
 
 
 public class SalesPage extends BasePage {
@@ -245,10 +226,9 @@ public class SalesPage extends BasePage {
         customer = value;
     }
 
-    public void detach() {
+    protected void initialize() {
         customerList = null;
         customer = null;
-        super.detach();
     }
 }
 
@@ -270,8 +250,8 @@ public class Customer {
     public String getMemberLevel() { return memberLevel; }
 }
 </pre>
-
- </td></tr></table>
+          </td>
+        </tr></table>
 </td></tr>
 <tr>
  <td colspan="3"><hr></td>  

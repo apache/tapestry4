@@ -116,7 +116,7 @@
 </tr>
 </table>
 		
-<pre>			
+            <pre>			
 &lt;body jwcid="@<span class="jwcid"><A href="Body.html">Body</A></span>" bgcolor="ognl:statusColor"&gt;
   Your account &lt;span jwcid="@<a href="Insert.html">Insert</a>" value="ognl:accountStatus"/&gt;.
 &lt;/body&gt;
@@ -131,15 +131,14 @@ public class AccountPage extends BasePage {
 
     public String getStatusColor() { return statusColor; }
     
-    public void detach() {
+    protected void initialize() {
         accountStatus = null;
         statusColor = null;
-        super.detach();
     }
 }
 </pre>
-
- </td></tr></table>
+          </td>
+        </tr></table>
 </td></tr>
 <tr>
  <td colspan="3"><hr></td>  

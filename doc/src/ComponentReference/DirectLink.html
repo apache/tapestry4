@@ -241,7 +241,7 @@
   </tr>
 </table>
 
-<pre>
+            <pre>
 &lt;table cellspacing="6"&gt;
   &lt;tr&gt;
    &lt;td&gt;ID&lt;/td&gt;
@@ -254,53 +254,20 @@
   &lt;tr&gt;
    &lt;td colspan="6"&gt;&lt;hr&gt;&lt;/td&gt;
   &lt;/tr&gt;
- &lt;span jwcid="foreachCustomer"&gt;
-  &lt;tr&gt;
-   &lt;td&gt;&lt;span jwcid="insertId"/&gt;&lt;/td&gt;
+  &lt;tr jwcid="@<a href="Foreach.html">Foreach</a>" source="ognl:visit.customerList" value="ognl:customer" element=&quot;tr&quot;&gt;
+   &lt;td&gt;&lt;span jwcid="@<a href="Insert.html">Insert</a>" value="ognl:customer.id"/&gt;&lt;/td&gt;
    &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-   &lt;td&gt;&lt;a jwcid="<span class="jwcid">customerSelectLink</span>"&gt; &lt;span jwcid="insertFullName"/&gt; &lt;/a&gt;&lt;/td&gt;
+   &lt;td&gt;&lt;a jwcid="<span class="jwcid">@<a href="DirectLink.html">DirectLink</a></span>" listener="ognl:listeners.customerSelectAction" parameters="ognl:customer.id"&gt; &lt;span jwcid="@<a href="Insert.html">Insert</a>" value="ognl:customer.fullName"/&gt; &lt;/a&gt;&lt;/td&gt;
    &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-   &lt;td&gt;&lt;span jwcid="insertMemberLevel"/&gt;&lt;/td&gt;
+   &lt;td&gt;&lt;span jwcid="@<a href="Insert.html">Insert</a>" value="ognl:customer.memberLevel"/&gt;&lt;/td&gt;
    &lt;td&gt;
-    &lt;a jwcid="<span class="jwcid">customerDeleteLink</span>" onclick="return window.confirm('Are you sure you want remove this customer?');"&gt; 
-     &lt;img jwcid="deleteImage" alt="Delete"/&gt; 
+    &lt;a jwcid="<span class="jwcid">@<a href="DirectLink.html">DirectLink</a></span>" listener="ognl:listeners.customerDeleteAction" parameters="ognl:customer.id" onclick="return window.confirm('Are you sure you want remove this customer?');"&gt; 
+     &lt;img jwcid="@<a href="Image.html">Image</a>" image="ognl:assets.deleteImage" alt="Delete"/&gt; 
     &lt;/a&gt;
    &lt;/td&gt;
   &lt;/tr&gt;
- &lt;/span&gt;
 &lt;/table&gt;
 
-
-&lt;component id="foreachCustomer" type="<A href="Foreach.html">Foreach</a>"&gt;
-    &lt;binding name="source" expression="visit.customerList"/&gt;
-    &lt;binding name="value" expression="customer"/&gt;
-&lt;/component&gt;
-
-&lt;component id="<span class="jwcid">customerSelectLink</span>" type="<A href="DirectLink.html">DirectLink</a>"&gt;
-    &lt;binding name="listener" expression="listeners.customerSelectAction"/&gt;
-    &lt;binding name="parameters" expression="customer.id"/&gt;
-&lt;/component&gt;
-
-&lt;component id="<span class="jwcid">customerDeleteLink</span>" type="<A href="DirectLink.html">DirectLink</a>"&gt;
-    &lt;binding name="listener" expression="listeners.customerDeleteAction"/&gt;
-    &lt;binding name="parameters" expression="customer.id"/&gt;
-&lt;/component&gt;
-
-&lt;component id="insertId" type="<A href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" expression="customer.id"/&gt;
-&lt;/component&gt;
-
-&lt;component id="insertFullName" type="<A href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" expression="customer.fullName"/&gt;
-&lt;/component&gt;
-
-&lt;component id="insertMemberLevel" type="<A href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" expression="customer.memberLevel"/&gt;
-&lt;/component&gt;
-
-&lt;component id="imageDelete" type="<A href="Image.html">Image</a>"/&gt;
-    &lt;binding name="image" expression="assets.deleteImage"//&gt;
-&lt;/component/&gt;
 
 &lt;private-asset name="deleteImage" resource-path="/com/mycorp/delete.gif"/&gt;
 
@@ -331,9 +298,8 @@ public class SalesPage extends BasePage {
         visit.deleteCustomer(customer);
     }
 
-    public void detach() {
+    protected void initialize() {
         customer = null;
-        super.detach();
     }
 }
 

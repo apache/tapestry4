@@ -36,7 +36,7 @@
  <td>
   <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
 	 <tr>
-	  <td><A href="ActionLink.html"><font color="blue">Action Link</a></A></FONT></td>
+	  <td><A href="ActionLink.html"><font color="blue">Action Link</font></a></td>
 	 </tr>
   </table>
  </td>
@@ -205,7 +205,7 @@
   </tr>
 </table>
 
-<pre>
+            <pre>
 &lt;table cellspacing="6"&gt;
   &lt;tr&gt;
    &lt;td&gt;ID&lt;/td&gt;
@@ -249,10 +249,9 @@ public class SalesPage extends BasePage {
         // Perform some action with the selected customer.
     }
 
-    public void detach() {
+    protected void initialize() {
         customerList = null;
         customer = null;
-        super.detach();
     }
 }
 
@@ -274,8 +273,8 @@ public class Customer implements Serializable {
     public String getMemberLevel() { return memberLevel; }
 }
 </pre>
-      
- </td></tr></table>
+          </td>
+        </tr></table>
 </td></tr>
 <tr>
  <td colspan="3"><hr></td>  

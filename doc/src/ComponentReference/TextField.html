@@ -142,35 +142,20 @@
  </tr>
 </table>
 
-<pre>
-&lt;form jwcid="form"&gt;
+            <pre>
+&lt;form jwcid="@<a href="Form.html">Form</a>" listener="ognl:listeners.formSubmit"&gt;
  &lt;table valign="middle"&gt;
   &lt;tr&gt;
    &lt;td&gt;Id&lt;/td&gt;
-   &lt;td&gt;span jwcid="<span class="jwcid">idField</span>" size="8"/&gt;&lt;/td&gt;
+   &lt;td&gt;span jwcid="<span class="jwcid">@<a href="TextField.html">TextField</a></span>" value="ognl:visit.id" size="8"/&gt;&lt;/td&gt;
    &lt;td&gt;Password&lt;/td&gt;
-   &lt;td&gt;&lt;span jwcid="<span class="jwcid">passwordField</span>" size="8"/&gt;&lt;/td&gt;
+   &lt;td&gt;&lt;span jwcid="<span class="jwcid">@<a href="TextField.html">TextField</a></span>" value="ognl:visit.password" hidden=&quot;ognl:true&quot; size="8"/&gt;&lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td colspan="4" align="right"&gt;&lt;input type="submit" value="Submit"/&gt;&lt;/td&gt;
   &lt;/tr&gt;
  &lt;/table&gt; 
 &lt;/form&gt;	
-
-
-&lt;component id="form" type="<A href="Form.html">Form</a>"&gt;
-    &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
-&lt;/component&gt;
-    
-&lt;component id="<span class="jwcid">idField</span>" type="<A href="TextField.html">TextField</a>"&gt;
-    &lt;binding name="value" expression="visit.id"/&gt;
-&lt;/component&gt;
-
-&lt;component id="<span class="jwcid">passwordField</span>" type="<A href="TextField.html">TextField</a>"&gt;
-    &lt;binding name="value" expression=
-     "visit.password"/&gt;&lt;field-binding name=
-    "hidden" field-name="Boolean.TRUE"/&gt;
-&lt;/component&gt;
 
 
 public class PasswordPage extends BasePage {

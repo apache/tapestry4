@@ -183,26 +183,16 @@
  </tr>
 </table>
 
-<pre>
+            <pre>
 &lt;!-- Navigation Bar --&gt;
 &lt;table bgcolor="navy" cellpadding="8" cellspacing="6" width="100%"&gt;
  &lt;tr&gt;
-  &lt;span jwcid="foreachNavigationPage"&gt;
-   &lt;td&gt;&lt;font color="white"&gt;&lt;b&gt;&lt;span jwcid="<span class="jwcid">navigationPageLink</span>"/&gt;&lt;/b&gt;&lt;/font&gt;&lt;/td&gt;
+  &lt;span jwcid="@<a href="Foreach.html">Foreach</a>" source="ognl:engine@NAVIGATION_PAGES" value="ognl:navigationPage"&gt;
+   &lt;td&gt;&lt;font color="white"&gt;&lt;b&gt;&lt;span jwcid="<span class="jwcid">@<a href="PageLink.html">PageLink</a></span>" page="ognl:navigationPage" disabled="ognl:! visit.authenticated"/&gt;&lt;/b&gt;&lt;/font&gt;&lt;/td&gt;
   &lt;/span&gt;
  &lt;/tr&gt;
 &lt;/table&gt;
 
-
-&lt;component id="foreachNavigationPage" type="<a href="Foreach.html">Foreach</a>"&gt;
-    &lt;binding name="source" expression="engine@NAVIGATION_PAGES"/&gt;
-    &lt;binding name="value" expression="navigationPage"/&gt;
-&lt;/component&gt;
-
-&lt;component id="<span class="jwcid">navigationPageLink</span>" type="<a href="PageLink.html">PageLink</a>"&gt;
-    &lt;binding name="page" expression="navigationPage"/&gt;
-    &lt;binding name="disabled" expression="! visit.authenticated"/&gt;
-&lt;/component&gt;
 
 
 public class MailPage extends BasePage {

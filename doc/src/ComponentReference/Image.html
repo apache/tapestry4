@@ -124,12 +124,12 @@ Inserts the static context path based image. This example uses a
 </tr>
 </table>
 
-<pre>
+            <pre>
 &lt;table cellpadding="8" valign="middle"&gt;
 &lt;tr&gt;
  &lt;td&gt;
   &lt;a href="http://tapestry.sourceforge.net/"&gt;
-   &lt;img jwcid="<span class="jwcid">poweredbyImage</span>" alt="View Tapestry Home"/&gt;
+   &lt;img jwcid="<span class="jwcid">@<a href="Image.html">Image</a></span>" image="ognl:assets.imageAsset" alt="View Tapestry Home"/&gt;
   &lt;/a&gt;
  &lt;/td&gt;  
  &lt;td&gt;
@@ -138,10 +138,6 @@ Inserts the static context path based image. This example uses a
 &lt;/tr&gt;
 &lt;/table&gt;
 
-
-&lt;component id="<span class="jwcid">poweredbyImage</span>" type="<A href="Image.html">Image</a>"&gt;
-    &lt;binding name="image" expression="assets.imageAsset"/&gt;
-&lt;/component&gt;
 
 &lt;context-asset name="imageAsset" path="/images/poweredby.png"/&gt;
 </pre>
@@ -172,38 +168,20 @@ This example uses the <A href="../api/org/apache/tapestry/asset/ExternalAsset.ht
 </tr>
 </table>
 
-<pre>
+            <pre>
 &lt;table cellpadding="8"&gt;
 &lt;tr&gt;
  &lt;td&gt;
-  &lt;h4&gt;&lt;span jwcid="newsItemTitle"/&gt;&lt;/h4&gt;
-  &lt;span jwcid="newsItemBody"/&gt;
+  &lt;h4&gt;&lt;span jwcid="@<a href="Insert.html">Insert</a>" value="ognl:newsItem.title"/&gt;&lt;/h4&gt;
+  &lt;span jwcid="@<a href="Insert.html">Insert</a>" value="ognl:newsItem.body"/&gt;
   &lt;p&gt;
-  Date : &lt;span jwcid="newsItemDate"/&gt; 
+  Date : &lt;span jwcid="@<a href="Insert.html">Insert</a>" value="ognl:newsItem.date" format="ognl:@NewsItemPage@DATE_FORMAT"/&gt; 
  &lt;/td&gt;
  &lt;td&gt;
-  &lt;img jwcid="<span class="jwcid">newsItemImage</span>"/&gt;
+  &lt;img jwcid="<span class="jwcid">@<a href="Image.html">Image</a></span>" image="ognl:newsItem.imageAsset" alt="ognl:newsItem.summary"/&gt;
  &lt;/td&gt;
 &lt;/tr&gt;
 &lt;/table&gt;
-
-&lt;component id="<span class="jwcid">newsItemImage</span>" type="<A href="Image.html">Image</a>"&gt;
-    &lt;binding name="image" expression="newsItem.imageAsset"/&gt;
-    &lt;binding name="alt" expression="newsItem.summary"/&gt;
-&lt;/component&gt;
-
-&lt;component id="newsItemTitle" type="<A href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" expression="newsItem.title"/&gt;
-&lt;/component&gt;
-
-&lt;component id="newsItemBody" type="<A href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" expression="newsItem.body"/&gt;
-&lt;/component&gt;
-
-&lt;component id="newsItemDate" type="<A href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" expression="newsItem.date"/&gt;
-    &lt;field-binding name="format" field-name="NewsItemPage.DATE_FORMAT"/&gt;
-&lt;/component&gt;
 
 
 public class NewsItemPage extends BasePage {
@@ -214,9 +192,8 @@ public class NewsItemPage extends BasePage {
     
     public NewsItem getNewsItem () { return newsItem; }
     
-    public void detach() {
+    protected void initialize() {
         newsItem = null;
-        super.detach();    
     }
 }
 
@@ -247,8 +224,8 @@ public class NewsItem implements Serializable {
     public IAsset getImageAsset() { return new <A href="../api/org/apache/tapestry/asset/ExternalAsset.html"><tt>ExternalAsset</tt></a>(imageURL); }    
 }
 </pre>
-
- </td></tr></table>
+          </td>
+        </tr></table>
 </td></tr>
 <tr>
  <td colspan="3"><hr></td>  
