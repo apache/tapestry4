@@ -58,9 +58,9 @@ import net.sf.tapestry.spec.ComponentSpecification;
 
 public class MockPage implements IPage
 {
-	private IEngine engine;
-	private Locale locale;
-	private ComponentSpecification specification;
+    private IEngine engine;
+    private Locale locale;
+    private ComponentSpecification specification;
 
     public void detach()
     {
@@ -100,8 +100,7 @@ public class MockPage implements IPage
     {
     }
 
-    public void renderPage(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
+    public void renderPage(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
     }
 
@@ -122,8 +121,7 @@ public class MockPage implements IPage
         return null;
     }
 
-    public void beginResponse(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
+    public void beginResponse(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
     }
 
@@ -227,11 +225,11 @@ public class MockPage implements IPage
         return null;
     }
 
-	/**
-	 *  Returns this (it is, after all, MockPage, not MockComponent).
-	 * 
-	 **/
-	
+    /**
+     *  Returns this (it is, after all, MockPage, not MockComponent).
+     * 
+     **/
+
     public IPage getPage()
     {
         return this;
@@ -251,8 +249,7 @@ public class MockPage implements IPage
         specification = value;
     }
 
-    public void renderWrapped(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
+    public void renderWrapped(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
     }
 
@@ -265,27 +262,24 @@ public class MockPage implements IPage
         return null;
     }
 
-    public void finishLoad(
-        IPageLoader loader,
-        ComponentSpecification specification)
+    public void finishLoad(IRequestCycle cycle, IPageLoader loader, ComponentSpecification specification)
         throws PageLoaderException
     {
     }
 
-	/**
-	 *  Gets the string source from the engine, gets the strings
-	 *  from the string source, and invokes
-	 *  {@link net.sf.tapestry.IComponentStrings#getString(String)}.
-	 * 
-	 **/
-	
+    /**
+     *  Gets the string source from the engine, gets the strings
+     *  from the string source, and invokes
+     *  {@link net.sf.tapestry.IComponentStrings#getString(String)}.
+     * 
+     **/
+
     public String getString(String key)
     {
- 		return engine.getComponentStringsSource().getStrings(this).getString(key);
+        return engine.getComponentStringsSource().getStrings(this).getString(key);
     }
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
+    public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
     }
 

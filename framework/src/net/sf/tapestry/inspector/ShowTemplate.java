@@ -97,7 +97,7 @@ public class ShowTemplate extends BaseComponent implements IDirect
 
         try
         {
-            template = source.getTemplate(inspectedComponent);
+            template = source.getTemplate(cycle, inspectedComponent);
         }
         catch (Exception ex)
         {

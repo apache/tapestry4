@@ -32,6 +32,7 @@ import java.util.Map;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IResourceResolver;
+import net.sf.tapestry.ITemplateSource;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.bean.IBeanInitializer;
 import net.sf.tapestry.spec.ApplicationSpecification;
@@ -1135,7 +1136,11 @@ public class SpecificationParser extends AbstractDocumentParser
     {
         String name = getAttribute(node, "name");
 
-        validate(name, ASSET_NAME_PATTERN, "SpecificationParser.invalid-asset-name");
+        // As a special case, allow the exact value through (even though
+        // it is not, technically, a valid asset name).
+        
+        if (!name.equals(ITemplateSource.TEMPLATE_ASSET_NAME))
+            validate(name, ASSET_NAME_PATTERN, "SpecificationParser.invalid-asset-name");
 
         String value = getAttribute(node, attributeName);
         AssetSpecification asset = _factory.createAssetSpecification(type, value);

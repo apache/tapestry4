@@ -26,6 +26,7 @@
 package net.sf.tapestry;
 
 import java.io.InputStream;
+import java.util.Locale;
 
 /**
  *  Representation of a asset (GIF, JPEG, etc.) that may be owned by a
@@ -61,4 +62,14 @@ public interface IAsset
      **/
 
     public InputStream getResourceAsStream(IRequestCycle cycle);
+    
+    /**
+     *  Accesses the localized version of the resource (if possible) and
+     *  returns it as an input stream.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public InputStream getResourceAsStream(IRequestCycle cycle, Locale locale);
 }

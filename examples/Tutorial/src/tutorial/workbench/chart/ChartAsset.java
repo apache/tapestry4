@@ -26,6 +26,7 @@
 package tutorial.workbench.chart;
 
 import java.io.InputStream;
+import java.util.Locale;
 
 import net.sf.tapestry.Gesture;
 import net.sf.tapestry.IAsset;
@@ -45,25 +46,30 @@ import net.sf.tapestry.IRequestCycle;
 
 public class ChartAsset implements IAsset
 {
-    private IEngineService chartService;
-    private IComponent chartProvider;
+    private IEngineService _chartService;
+    private IComponent _chartProvider;
 
     public ChartAsset(IRequestCycle cycle, IComponent chartProvider)
     {
         IEngine engine = cycle.getEngine();
 
-        chartService = engine.getService(ChartService.SERVICE_NAME);
-        this.chartProvider = chartProvider;
+        _chartService = engine.getService(ChartService.SERVICE_NAME);
+        _chartProvider = chartProvider;
     }
 
     public String buildURL(IRequestCycle cycle)
     {
-        Gesture g = chartService.buildGesture(cycle, chartProvider, null);
+        Gesture g = _chartService.buildGesture(cycle, _chartProvider, null);
 
         return g.getURL();
     }
 
     public InputStream getResourceAsStream(IRequestCycle cycle) 
+    {
+        return null;
+    }
+
+    public InputStream getResourceAsStream(IRequestCycle cycle, Locale locale)
     {
         return null;
     }

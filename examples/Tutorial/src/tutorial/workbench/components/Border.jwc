@@ -69,6 +69,8 @@
   
   <component id="showInspector" type="ShowInspector"/>
 
+  <private-asset name="$template" resource-path="&here;/templates/Border.html"/>
+
   <private-asset name="activeLeft" resource-path="&here;/tab-active-left.gif"/>
   <private-asset name="activeMid" resource-path="&here;/tab-active-mid.gif"/>
   <private-asset name="activeRight" resource-path="&here;/tab-active-right.gif"/>

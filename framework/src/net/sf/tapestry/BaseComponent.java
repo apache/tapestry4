@@ -167,7 +167,7 @@ public class BaseComponent extends AbstractComponent
      * 
      **/
 
-    private void readTemplate(IPageLoader loader) throws PageLoaderException
+    private void readTemplate(IRequestCycle cycle, IPageLoader loader) throws PageLoaderException
     {
         Set seenIds = new HashSet();
         IPageSource pageSource = loader.getEngine().getPageSource();
@@ -176,7 +176,7 @@ public class BaseComponent extends AbstractComponent
             LOG.debug(this +" reading template");
 
         ITemplateSource source = loader.getTemplateSource();
-        ComponentTemplate componentTemplate = source.getTemplate(this);
+        ComponentTemplate componentTemplate = source.getTemplate(cycle, this);
 
         int count = componentTemplate.getTokenCount();
 
@@ -471,9 +471,9 @@ public class BaseComponent extends AbstractComponent
      *
      **/
 
-    public void finishLoad(IPageLoader loader, ComponentSpecification specification) throws PageLoaderException
+    public void finishLoad(IRequestCycle cycle, IPageLoader loader, ComponentSpecification specification) throws PageLoaderException
     {
-        readTemplate(loader);
+        readTemplate(cycle, loader);
 
         finishLoad();
     }

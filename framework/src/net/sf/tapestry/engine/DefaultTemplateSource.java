@@ -38,9 +38,11 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 import net.sf.tapestry.ApplicationRuntimeException;
+import net.sf.tapestry.IAsset;
 import net.sf.tapestry.IComponent;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRenderDescription;
+import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.ITemplateSource;
 import net.sf.tapestry.NoSuchComponentException;
@@ -145,7 +147,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
      *  <p>Returns null if the template can't be found.
      **/
 
-    public ComponentTemplate getTemplate(IComponent component)
+    public ComponentTemplate getTemplate(IRequestCycle cycle, IComponent component)
     {
         ComponentSpecification specification = component.getSpecification();
         String specificationResourcePath = specification.getSpecificationResourcePath();
@@ -157,7 +159,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
         if (result != null)
             return result;
 
-        result = findTemplate(specificationResourcePath, component, locale);
+        result = findTemplate(cycle, specificationResourcePath, component, locale);
 
         if (result == null)
         {
@@ -190,6 +192,48 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
 
     }
 
+    private synchronized ComponentTemplate findTemplate(
+        IRequestCycle cycle,
+        String specificationResourcePath,
+        IComponent component,
+        Locale locale)
+    {
+        IAsset templateAsset = component.getAsset(TEMPLATE_ASSET_NAME);
+
+        if (templateAsset != null)
+            return readTemplateFromAsset(cycle, component, templateAsset, locale);
+
+        return findStandardTemplate(specificationResourcePath, component, locale);
+    }
+
+    /**
+     *  Reads an asset to get the template.
+     * 
+     **/
+
+    private synchronized ComponentTemplate readTemplateFromAsset(IRequestCycle cycle, IComponent component, IAsset asset, Locale locale)
+    {
+        InputStream stream = asset.getResourceAsStream(cycle, locale);
+
+        char[] templateData = null;
+
+        try
+        {
+
+            templateData = readTemplateStream(stream);
+
+            stream.close();
+        }
+        catch (IOException ex)
+        {
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("DefaultTemplateSource.unable-to-read-template", asset),
+                ex);
+        }
+
+        return constructTokens(templateData, asset.toString(), component);
+    }
+
     /**
      *  Search for the template corresponding to the resource and the locale.
      *  This may be in the template map already, or may involve reading and
@@ -197,19 +241,14 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
      *
      **/
 
-    private synchronized ComponentTemplate findTemplate(
+    private synchronized ComponentTemplate findStandardTemplate(
         String specificationResourcePath,
         IComponent component,
         Locale locale)
     {
-        int dotx;
-        StringBuffer buffer;
-        int rawLength;
         String candidatePath = null;
         String language = null;
         String country = null;
-        int start = 2;
-        ComponentTemplate result = null;
 
         if (LOG.isDebugEnabled())
             LOG.debug(
@@ -218,10 +257,11 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
                     + " in locale "
                     + locale.getDisplayName());
 
-        dotx = specificationResourcePath.lastIndexOf('.');
-        buffer = new StringBuffer(dotx + 20);
+        int dotx = specificationResourcePath.lastIndexOf('.');
+        StringBuffer buffer = new StringBuffer(dotx + 20);
         buffer.append(specificationResourcePath.substring(0, dotx));
-        rawLength = buffer.length();
+        int rawLength = buffer.length();
+        int start = 2;
 
         if (locale != null)
         {
@@ -236,6 +276,8 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
             if (language.length() > 0)
                 start--;
         }
+
+        ComponentTemplate result = null;
 
         // On pass #0, we use language code and country code
         // On pass #1, we use language code
@@ -293,20 +335,21 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
 
     private ComponentTemplate parseTemplate(String resourceName, IComponent component)
     {
-        TemplateToken[] tokens;
-
         char[] templateData = readTemplate(resourceName);
         if (templateData == null)
             return null;
 
+        return constructTokens(templateData, resourceName, component);
+    }
+
+    private ComponentTemplate constructTokens(char[] templateData, String resourceName, IComponent component)
+    {
         if (_parser == null)
             _parser = new TemplateParser();
 
         ITemplateParserDelegate delegate = new ParserDelegate(component);
 
-        // Once we have the template data in memory, the parse will always be successful.
-        // In the future, the parser may be more complicated and will be able to
-        // detect errors in the template data.
+        TemplateToken[] tokens;
 
         try
         {
@@ -380,22 +423,16 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
 
     private char[] readTemplateStream(InputStream stream) throws IOException
     {
-        InputStreamReader reader;
-        StringBuffer buffer;
-        int charsRead;
-        char[] charBuffer;
-        int length;
+        char[] charBuffer = new char[BUFFER_SIZE];
+        StringBuffer buffer = new StringBuffer();
 
-        charBuffer = new char[BUFFER_SIZE];
-        buffer = new StringBuffer();
-
-        reader = new InputStreamReader(stream);
+        InputStreamReader reader = new InputStreamReader(stream);
 
         try
         {
             while (true)
             {
-                charsRead = reader.read(charBuffer, 0, BUFFER_SIZE);
+                int charsRead = reader.read(charBuffer, 0, BUFFER_SIZE);
 
                 if (charsRead <= 0)
                     break;
@@ -411,7 +448,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
         // OK, now reuse the charBuffer variable to
         // produce the final result.
 
-        length = buffer.length();
+        int length = buffer.length();
 
         charBuffer = new char[length];
 
@@ -423,7 +460,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
         return charBuffer;
     }
 
-    public String toString()
+    public synchronized String toString()
     {
         StringBuffer buffer = new StringBuffer("DefaultTemplateSource@");
         buffer.append(Integer.toHexString(hashCode()));
@@ -431,12 +468,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
         buffer.append('[');
 
         if (_cache != null)
-        {
-            synchronized (_cache)
-            {
-                buffer.append(_cache.keySet());
-            }
-        }
+            buffer.append(_cache.keySet());
 
         if (_tokenCount > 0)
         {
@@ -452,7 +484,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
 
     /** @since 1.0.6 **/
 
-    public void renderDescription(IMarkupWriter writer)
+    public synchronized void renderDescription(IMarkupWriter writer)
     {
         writer.print("DefaultTemplateSource[");
 
@@ -462,12 +494,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
             writer.print(" tokens");
         }
 
-        writer.print("]");
-
-        if (_cache == null)
-            return;
-
-        synchronized (_cache)
+        if (_cache != null)
         {
             boolean first = true;
             Iterator i = _cache.entrySet().iterator();
@@ -494,7 +521,13 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
             }
 
             if (!first)
+            {
                 writer.end(); // <ul>
+                writer.beginEmpty("br");
+            }
         }
+
+        writer.print("]");
+
     }
 }

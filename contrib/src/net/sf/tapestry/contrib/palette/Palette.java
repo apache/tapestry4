@@ -255,7 +255,7 @@ public class Palette extends BaseComponent implements IFormComponent
 
     private IScript script;
 
-    public void finishLoad(IPageLoader loader, ComponentSpecification spec) throws PageLoaderException
+    public void finishLoad()
     {
         selectedTitleBlock = (Block) getComponent("defaultSelectedTitleBlock");
         availableTitleBlock = (Block) getComponent("defaultAvailableTitleBlock");
@@ -268,8 +268,6 @@ public class Palette extends BaseComponent implements IFormComponent
         upDisabledImage = getAsset("Up-dis");
         downImage = getAsset("Down");
         downDisabledImage = getAsset("Down-dis");
-
-        super.finishLoad(loader, spec);
     }
 
     /**

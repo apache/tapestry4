@@ -433,36 +433,4 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
 
         return n;
     }
-
-    public INamespace getNamespaceForPageName(String name)
-    {
-        int colonx = name.indexOf(':');
-
-        if (colonx > 0)
-        {
-            String idPrefix = name.substring(0, colonx);
-            String simpleName = name.substring(colonx + 1);
-
-            INamespace result = getNamespace(idPrefix);
-
-            if (!result.containsPage(simpleName))
-                throw new ApplicationRuntimeException(
-                    Tapestry.getString("DefaultSpecificationSource.no-page-with-name", name));
-
-            return result;
-        }
-
-        INamespace result = getApplicationNamespace();
-
-        if (result.containsPage(name))
-            return result;
-
-        result = getFrameworkNamespace();
-
-        if (result.containsPage(name))
-            return result;
-
-        throw new ApplicationRuntimeException(Tapestry.getString("DefaultSpecificationSource.no-page-with-name", name));
-    }
-
 }

@@ -58,19 +58,19 @@ public class PrivateAsset implements IAsset
 {
     private static final Logger LOG = LogManager.getLogger(PrivateAsset.class);
 
-    private AssetExternalizer externalizer;
+    private AssetExternalizer _externalizer;
 
-    private String resourcePath;
+    private String _resourcePath;
 
     /**
      *  Map, keyed on Locale, value is the localized resourcePath (as a String)
      **/
 
-    private Map localizations;
+    private Map _localizations;
 
     public PrivateAsset(String resourcePath)
     {
-        this.resourcePath = resourcePath;
+        _resourcePath = resourcePath;
     }
 
     /**
@@ -83,12 +83,12 @@ public class PrivateAsset implements IAsset
 
     public String buildURL(IRequestCycle cycle)
     {
-        String localizedResourcePath = findLocalization(cycle);
+        String localizedResourcePath = findLocalization(cycle, cycle.getPage().getLocale());
 
-        if (externalizer == null)
-            externalizer = AssetExternalizer.get(cycle);
+        if (_externalizer == null)
+            _externalizer = AssetExternalizer.get(cycle);
 
-        String externalURL = externalizer.getURL(localizedResourcePath);
+        String externalURL = _externalizer.getURL(localizedResourcePath);
 
         if (externalURL != null)
             return externalURL;
@@ -107,18 +107,23 @@ public class PrivateAsset implements IAsset
 
     public InputStream getResourceAsStream(IRequestCycle cycle)
     {
+        return getResourceAsStream(cycle, cycle.getPage().getLocale());
+    }
+
+    public InputStream getResourceAsStream(IRequestCycle cycle, Locale locale)
+    {
         try
         {
             IResourceResolver resolver = cycle.getEngine().getResourceResolver();
 
-            URL url = resolver.getResource(findLocalization(cycle));
+            URL url = resolver.getResource(findLocalization(cycle, locale));
 
             return url.openStream();
         }
         catch (Exception ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("PrivateAsset.resource-missing", resourcePath),
+                Tapestry.getString("PrivateAsset.resource-missing", _resourcePath),
                 ex);
         }
     }
@@ -132,55 +137,40 @@ public class PrivateAsset implements IAsset
      *
      **/
 
-    private String findLocalization(IRequestCycle cycle)
+    private synchronized String findLocalization(IRequestCycle cycle, Locale locale)
     {
-        Locale locale = cycle.getPage().getLocale();
-        int dotx;
-        StringBuffer buffer;
-        int rawLength;
-        String candidatePath;
-        String language = null;
-        String country = null;
-        int start = 2;
-        String suffix;
-        String result;
+        if (_localizations == null)
+            _localizations = new HashMap();
 
-        synchronized (this)
-        {
-            if (localizations == null)
-                localizations = new HashMap();
-        }
-
-        synchronized (localizations)
-        {
-            result = (String) localizations.get(locale);
-            if (result != null)
-                return result;
-        }
+        String result = (String) _localizations.get(locale);
+        if (result != null)
+            return result;
 
         if (LOG.isDebugEnabled())
             LOG.debug(
                 "Searching for localization of private asset "
-                    + resourcePath
+                    + _resourcePath
                     + " in locale "
                     + locale.getDisplayName());
 
-        dotx = resourcePath.lastIndexOf('.');
-        suffix = resourcePath.substring(dotx);
+        int dotx = _resourcePath.lastIndexOf('.');
+        String suffix = _resourcePath.substring(dotx);
 
-        buffer = new StringBuffer(dotx + 30);
+        StringBuffer buffer = new StringBuffer(dotx + 30);
 
-        buffer.append(resourcePath.substring(0, dotx));
-        rawLength = buffer.length();
+        buffer.append(_resourcePath.substring(0, dotx));
+        int rawLength = buffer.length();
 
-        country = locale.getCountry();
+        int start = 2;
+
+        String country = locale.getCountry();
         if (country.length() > 0)
             start--;
 
         // This assumes that you never have the case where there's
         // a null language code and a non-null country code.
 
-        language = locale.getLanguage();
+        String language = locale.getLanguage();
         if (language.length() > 0)
             start--;
 
@@ -210,14 +200,11 @@ public class PrivateAsset implements IAsset
 
             buffer.append(suffix);
 
-            candidatePath = buffer.toString();
+            String candidatePath = buffer.toString();
 
             if (resolver.getResource(candidatePath) != null)
             {
-                synchronized (localizations)
-                {
-                    localizations.put(locale, candidatePath);
-                }
+                _localizations.put(locale, candidatePath);
 
                 if (LOG.isDebugEnabled())
                     LOG.debug("Found " + candidatePath);
@@ -228,11 +215,12 @@ public class PrivateAsset implements IAsset
         }
 
         throw new ApplicationRuntimeException(
-            Tapestry.getString("PrivateAsset.resource-unavailable", resourcePath, locale));
+            Tapestry.getString("PrivateAsset.resource-unavailable", _resourcePath, locale));
     }
 
     public String toString()
     {
-        return "PrivateAsset[" + resourcePath + "]";
+        return "PrivateAsset[" + _resourcePath + "]";
     }
+
 }

@@ -144,15 +144,4 @@ public interface ISpecificationSource
     
     public INamespace getFrameworkNamespace();
     
-    /**
-     *  Returns the {@link INamespace} responsible for the given page.
-     *  Checks to see if the name contains a colon and, if so, extracts
-     *  its namespace id.  If not, searches first the application, then the
-     *  framework, for the matching name.
-     * 
-     *  @since 2.2
-     * 
-     **/
-    
-    public INamespace getNamespaceForPageName(String name);
 }

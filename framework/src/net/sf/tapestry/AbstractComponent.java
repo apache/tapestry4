@@ -255,7 +255,7 @@ public abstract class AbstractComponent implements IComponent
      *
      **/
 
-    public void finishLoad(IPageLoader loader, ComponentSpecification specification) throws PageLoaderException
+    public void finishLoad(IRequestCycle cycle, IPageLoader loader, ComponentSpecification specification) throws PageLoaderException
     {
         finishLoad();
     }
