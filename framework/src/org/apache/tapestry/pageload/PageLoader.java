@@ -901,13 +901,27 @@ public class PageLoader implements IPageLoader
             return new ExternalAsset(path, location);
 
         if (type == AssetType.PRIVATE)
+        {
+            IResourceLocation baseLocation = specificationLocation;
+
+            // Fudge a special case for private assets with complete paths.  The specificationLocation
+            // can't be used because it is often a ContextResourceLocation,
+            // not a ClasspathResourceLocation.
+
+            if (path.startsWith("/"))
+            {
+                baseLocation = new ClasspathResourceLocation(_resolver, "/");
+                path = path.substring(1);
+            }
+
             return new PrivateAsset(
                 (ClasspathResourceLocation) findAsset(assetName,
                     component,
-                    specificationLocation,
+                    baseLocation,
                     path,
                     location),
                 location);
+        }
 
         return new ContextAsset(
             (ContextResourceLocation) findAsset(assetName,
