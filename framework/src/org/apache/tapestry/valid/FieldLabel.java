@@ -80,7 +80,7 @@ import org.apache.tapestry.form.IFormComponent;
 public abstract class FieldLabel extends AbstractComponent
 {
     /**
-    *  Gets the {@link IField} 
+    *  Gets the {@link IFormComponent}
     *  and {@link IValidationDelegate delegate},
     *  then renders the label obtained from the field.  Does nothing
     *  when rewinding.

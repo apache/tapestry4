@@ -90,7 +90,7 @@ public abstract class BaseValidator implements IValidator
     /**
      *  Input Symbol used to represent the field being validated.
      * 
-     *  @see #processValidatorScript(String, IRequestCycle, IField, Map)
+     *  @see #processValidatorScript(String, IRequestCycle, IFormComponent, Map)
      * 
      *  @since 2.2
      * 
@@ -101,7 +101,7 @@ public abstract class BaseValidator implements IValidator
     /**
      *  Input symbol used to represent the validator itself to the script.
      * 
-     *  @see #processValidatorScript(String, IRequestCycle, IField, Map)
+     *  @see #processValidatorScript(String, IRequestCycle, IFormComponent, Map)
      * 
      *  @since 2.2
      * 
@@ -113,7 +113,7 @@ public abstract class BaseValidator implements IValidator
      *  Input symbol used to represent the {@link IForm} containing the field
      *  to the script.
      * 
-     *  @see #processValidatorScript(String, IRequestCycle, IField, Map)
+     *  @see #processValidatorScript(String, IRequestCycle, IFormComponent, Map)
      *  
      *  @since 2.2
      **/
@@ -128,7 +128,7 @@ public abstract class BaseValidator implements IValidator
      *  After the script is executed, the function is added
      *  to the {@link IForm} as a {@link org.apache.tapestry.form.FormEventType#SUBMIT}.
      * 
-     *  @see #processValidatorScript(String, IRequestCycle, IField, Map)
+     *  @see #processValidatorScript(String, IRequestCycle, IFormComponent, Map)
      * 
      *  @since 2.2
      * 
@@ -206,7 +206,7 @@ public abstract class BaseValidator implements IValidator
      * Gets a string from the standard resource bundle.  The string in the bundle
      * is treated as a pattern for {@link MessageFormat#format(java.lang.String, java.lang.Object[])}.
      * 
-     * @param localized string the input pattern to be used with 
+     * @param pattern string the input pattern to be used with
      * {@link MessageFormat#format(java.lang.String, java.lang.Object[])}.
      * It may contain replaceable parameters, {0}, {1}, etc.
      * @param args the arguments used to fill replaceable parameters {0}, {1}, etc.
@@ -221,7 +221,7 @@ public abstract class BaseValidator implements IValidator
     }
 
     /**
-     *  Convienience method for invoking {@link #formatString(String, Locale, Object[])}.
+     *  Convienience method for invoking {@link #formatString(String, Object[])}.
      * 
      *  @since 3.0
      * 
@@ -233,7 +233,7 @@ public abstract class BaseValidator implements IValidator
     }
 
     /**
-     *  Convienience method for invoking {@link #formatString(String, Locale, Object[])}.
+     *  Convienience method for invoking {@link #formatString(String, Object[])}.
      * 
      *  @since 3.0
      * 
@@ -294,10 +294,10 @@ public abstract class BaseValidator implements IValidator
 
     /**
      *  Invoked (from sub-class
-     *  implementations of {@link #renderValidatorContribution(IField, IMarkupWriter, IRequestCycle)}
+     *  implementations of {@link #renderValidatorContribution(IFormComponent, IMarkupWriter, IRequestCycle)}
      *  to process a standard validation script.  This expects that:
      *  <ul>
-     *  <li>The {@link IField} is (ultimately) wrapped by a {@link Body}
+     *  <li>The {@link IFormComponent} is (ultimately) wrapped by a {@link Body}
      *  <li>The script generates a symbol named "function" (as per {@link #FUNCTION_SYMBOL})
      *  </ul>
      * 
@@ -355,7 +355,7 @@ public abstract class BaseValidator implements IValidator
      *  capable of generating client-side scripting to perform validation
      *  when the form is submitted.  By default, this flag is false and
      *  subclasses should check it 
-     *  (in {@link #renderValidatorContribution(IField, IMarkupWriter, IRequestCycle)})
+     *  (in {@link #renderValidatorContribution(IFormComponent, IMarkupWriter, IRequestCycle)})
      *  before generating client side script.
      * 
      *  @since 2.2

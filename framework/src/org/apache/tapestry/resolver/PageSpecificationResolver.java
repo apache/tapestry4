@@ -92,7 +92,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  *  <li>By invoking {@link org.apache.tapestry.resolver.ISpecificationResolverDelegate#findPageSpecification(IRequestCycle, INamespace, String)}
  *  </ul>
  *
- *  @see org.apache.tapestry.IPageSource
+ *  @see org.apache.tapestry.engine.IPageSource
  *  @author Howard Lewis Ship
  *  @version $Id$
  *  @since 3.0

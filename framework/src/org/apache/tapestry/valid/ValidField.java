@@ -147,7 +147,7 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
     }
 
     /**
-     *  Invokes {@link IValidationDelegate#writeAttributes(IMarkupWriter,IRequestCycle)}.
+     *  Invokes {@link IValidationDelegate#writeAttributes(IMarkupWriter,IRequestCycle, IFormComponent,IValidator)}.
      *
      **/
 

@@ -60,7 +60,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.form.IFormComponent;
 
 /**
- *  An object that works with an {@link IField} to format output
+ *  An object that works with an {@link IFormComponent} to format output
  *  (convert object values to strings values) and to process input
  *  (convert strings to object values and validate them).
  *

@@ -83,7 +83,7 @@ import org.xml.sax.SAXParseException;
 
 /**
  *  Used to parse an application or component specification into a
- *  {@link ApplicationSpecification} or {@link IComponentSpecification}.
+ *  {@link org.apache.tapestry.spec.ApplicationSpecification} or {@link IComponentSpecification}.
  *
  *
  *  <table border=1
