@@ -88,26 +88,31 @@ public class ResetService extends AbstractService
     public Gesture buildGesture(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
         if (Tapestry.size(parameters) != 0)
-            throw new IllegalArgumentException(Tapestry.getString("service-no-parameters", RESET_SERVICE));
+            throw new IllegalArgumentException(
+                Tapestry.getString("service-no-parameters", Tapestry.RESET_SERVICE));
 
         String[] context = new String[1];
         context[0] = component.getPage().getPageName();
 
-        return assembleGesture(cycle, RESET_SERVICE, context, null, true);
+        return assembleGesture(cycle, Tapestry.RESET_SERVICE, context, null, true);
     }
 
     public String getName()
     {
-        return RESET_SERVICE;
+        return Tapestry.RESET_SERVICE;
     }
 
-    public boolean service(IEngineServiceView engine, IRequestCycle cycle, ResponseOutputStream output)
+    public boolean service(
+        IEngineServiceView engine,
+        IRequestCycle cycle,
+        ResponseOutputStream output)
         throws RequestCycleException, ServletException, IOException
     {
         String[] context = getServiceContext(cycle.getRequestContext());
 
         if (Tapestry.size(context) != 1)
-            throw new ApplicationRuntimeException(Tapestry.getString("service-single-parameter", RESET_SERVICE));
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("service-single-parameter", Tapestry.RESET_SERVICE));
 
         String pageName = context[0];
 

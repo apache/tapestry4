@@ -49,7 +49,9 @@ The start of the JUnit test suite: JUnit Simple Application.
 ]]>
   	 </assert-output>
   
-  	  <assert name="Session not created" expression="request.session == null"/>
+  	  <assert name="Session not created">
+  	  request.session == null
+  	  </assert>
   	  
   	</request>
   	

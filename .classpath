@@ -27,5 +27,6 @@
     <classpathentry kind="lib" path="lib/ext/commons-lang-1.0.jar"/>
     <classpathentry kind="lib" path="lib/ext/ognl-2.3.0-opt.jar"/>
     <classpathentry kind="lib" path="lib/ext/bsf-2.3.0.jar"/>
+    <classpathentry kind="lib" path="lib/ext/bcel-5.0.jar"/>
     <classpathentry kind="output" path="bin"/>
 </classpath>

@@ -58,6 +58,7 @@ import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.INamespace;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.Tapestry;
 
 /**
  *  A component for creating a navigation link to another page, 
@@ -79,13 +80,13 @@ public class PageLink extends GestureLink
     private INamespace _targetNamespace;
 
     /**
-     *  Returns {@link IEngineService#PAGE_SERVICE}.
+     *  Returns {@link Tapestry#PAGE_SERVICE}.
      *
      **/
 
     protected String getServiceName()
     {
-        return IEngineService.PAGE_SERVICE;
+        return Tapestry.PAGE_SERVICE;
     }
 
     /**

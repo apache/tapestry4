@@ -101,9 +101,9 @@ import net.sf.tapestry.util.BasePropertyHolder;
 public class ComponentSpecification extends BasePropertyHolder
 {
     private String _componentClassName;
-    
+
     /** @since 1.0.9 **/
-    
+
     private String _description;
 
     /**
@@ -180,15 +180,24 @@ public class ComponentSpecification extends BasePropertyHolder
 
     private boolean _pageSpecification;
 
-
     /**
      *  The location from which the specification was obtained.
      * 
      *  @since 2.4
      * 
      **/
-    
+
     private IResourceLocation _specificationLocation;
+
+    /**
+     *  A Map of {@link PropertySpecification} keyed on the name
+     *  of the property.
+     *
+     *  @since 2.4
+     * 
+     **/
+
+    private Map _propertySpecifications;
 
     /**
      * @throws IllegalArgumentException if the name already exists.
@@ -283,10 +292,8 @@ public class ComponentSpecification extends BasePropertyHolder
 
     public AssetSpecification getAsset(String name)
     {
-        if (_assets == null)
-            return null;
 
-        return (AssetSpecification) _assets.get(name);
+        return (AssetSpecification) get(_assets, name);
     }
 
     /**
@@ -311,10 +318,7 @@ public class ComponentSpecification extends BasePropertyHolder
 
     public ContainedComponent getComponent(String id)
     {
-        if (_components == null)
-            return null;
-
-        return (ContainedComponent) _components.get(id);
+        return (ContainedComponent) get(_components, id);
     }
 
     public String getComponentClassName()
@@ -346,10 +350,7 @@ public class ComponentSpecification extends BasePropertyHolder
 
     public ParameterSpecification getParameter(String name)
     {
-        if (_parameters == null)
-            return null;
-
-        return (ParameterSpecification) _parameters.get(name);
+        return (ParameterSpecification) get(_parameters, name);
     }
 
     /**
@@ -366,7 +367,6 @@ public class ComponentSpecification extends BasePropertyHolder
         return sortedKeys(_parameters);
     }
 
-
     public void setAllowBody(boolean value)
     {
         _allowBody = value;
@@ -382,7 +382,6 @@ public class ComponentSpecification extends BasePropertyHolder
         _componentClassName = value;
     }
 
-
     /**
      *  @since 1.0.4
      *
@@ -394,8 +393,10 @@ public class ComponentSpecification extends BasePropertyHolder
         if (_beans == null)
             _beans = new HashMap();
 
-        else if (_beans.containsKey(name))
-            throw new IllegalArgumentException(Tapestry.getString("ComponentSpecification.duplicate-bean", this, name));
+        else
+            if (_beans.containsKey(name))
+                throw new IllegalArgumentException(
+                    Tapestry.getString("ComponentSpecification.duplicate-bean", this, name));
 
         _beans.put(name, specification);
     }
@@ -469,13 +470,13 @@ public class ComponentSpecification extends BasePropertyHolder
     public String toString()
     {
         ToStringBuilder builder = new ToStringBuilder(this);
-        
+
         builder.append("componentClassName", _componentClassName);
         builder.append("pageSpecification", _pageSpecification);
         builder.append("specificationLocation", _specificationLocation);
         builder.append("allowBody", _allowBody);
         builder.append("allowInformalParameter", _allowInformalParameters);
-        
+
         return builder.toString();
     }
 
@@ -564,19 +565,81 @@ public class ComponentSpecification extends BasePropertyHolder
 
         return result;
     }
-    
+
+    /** @since 2.2 **/
+
+    private Object get(Map map, Object key)
+    {
+        if (map == null)
+            return null;
+
+        return map.get(key);
+    }
+
     /** @since 2.4 **/
-    
+
     public IResourceLocation getSpecificationLocation()
     {
         return _specificationLocation;
     }
 
     /** @since 2.4 **/
-    
+
     public void setSpecificationLocation(IResourceLocation specificationLocation)
     {
         _specificationLocation = specificationLocation;
+    }
+
+    /**
+     *  Adds a new property specification.  The name of the property must
+     *  not already be defined (and must not change after being added).
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public void addPropertySpecification(PropertySpecification spec)
+    {
+        if (_propertySpecifications == null)
+            _propertySpecifications = new HashMap();
+
+        String name = spec.getName();
+
+        if (_propertySpecifications.containsKey(name))
+            throw new IllegalArgumentException(
+                Tapestry.getString(
+                    "ComponentSpecification.duplicate-property-specification",
+                    this,
+                    name));
+
+        _propertySpecifications.put(name, spec);
+    }
+
+    /**
+     *  Returns a sorted, immutable list of the names of all 
+     *  {@link net.sf.tapestry.spec.PropertySpecification}s.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public List getPropertySpecificationNames()
+    {
+        return sortedKeys(_propertySpecifications);
+    }
+
+    /**
+     *  Returns the named {@link net.sf.tapestry.spec.PropertySpecification},
+     *  or null  if no such specification exist.
+     * 
+     *  @since 2.4
+     *  @see #addPropertySpecification(PropertySpecification)
+     * 
+     **/
+
+    public PropertySpecification getPropertySpecification(String name)
+    {
+        return (PropertySpecification) get(_propertySpecifications, name);
     }
 
 }

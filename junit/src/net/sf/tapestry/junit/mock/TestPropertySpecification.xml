@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="c9" root="context9"/>
+
+  	<servlet name="app" class="net.sf.tapestry.ApplicationServlet"/>
+
+	<request>
+  	  	  	  	  	 	
+		<assert-output name="Page Title">
+<![CDATA[		
+<title>Home</title>
+]]>
+		</assert-output>
+  	  	  	
+		<assert-output name="Initial Value">
+Initial value: []
+		</assert-output>
+	
+		<assert-output name="Final Value">
+Final value: [boy]
+		</assert-output>
+			
+		<assert-output-matches name="List Items" subgroup="1">
+<![CDATA[
+<li>(.*?)</li>
+]]>
+			<match>Gromit</match>
+			<match>is</match>
+			<match>a</match>
+			<match>good</match>
+			<match>boy</match>
+		</assert-output-matches>
+ 
+		<assert-regexp name="Page Class">
+<![CDATA[
+Page class: \[net\.sf\.tapestry\.html\.BasePage\$(.*?)\]
+]]>	
+		</assert-regexp>
+ 
+ 
+	</request>
+	
+
+	<request>
+  	  	  	  	  	 	
+		<assert-output name="Page Title">
+<![CDATA[		
+<title>Home</title>
+]]>
+		</assert-output>
+  	  	  	
+		<assert-output name="Initial Value">
+Initial value: []
+		</assert-output>
+	
+		<assert-output name="Final Value">
+Final value: [boy]
+		</assert-output>
+			
+		<assert-output-matches name="List Items" subgroup="1">
+<![CDATA[
+<li>(.*?)</li>
+]]>
+			<match>Gromit</match>
+			<match>is</match>
+			<match>a</match>
+			<match>good</match>
+			<match>boy</match>
+		</assert-output-matches>
+	</request>
+	
+	<request> 
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="Two"/>	  	  	  	  	 	
+ 	  	  	
+		<assert-output name="Page Title">
+<![CDATA[		
+<title>Two</title>
+]]>
+		</assert-output>
+		 	  	  	
+		<assert-output name="Initial Value">
+Initial value: [15]
+		</assert-output>
+	
+		<assert-output name="Final Value">
+Final value: [8]
+		</assert-output>
+
+		<assert-output-matches name="List Items" subgroup="1">
+<![CDATA[
+<li>(.*?)</li>
+]]>
+			<match>2</match>
+			<match>4</match>
+			<match>6</match>
+			<match>8</match>
+		</assert-output-matches>			
+	</request>	
+	
+	<request> 
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="Two"/>	  	  	  	  	 	
+ 	  	  	
+		<assert-output name="Page Title">
+<![CDATA[		
+<title>Two</title>
+]]>
+		</assert-output>
+		 	  	  	
+		<assert-output name="Initial Value">
+Initial value: [15]
+		</assert-output>
+	
+		<assert-output name="Final Value">
+Final value: [8]
+		</assert-output>
+			
+	</request>	
+	
+	<request>
+  	  	<parameter name="service" value="page"/>
+  	  	<parameter name="context" value="Three"/>
+  	  		  	  	 	
+		<assert-output name="Page Title">
+<![CDATA[		
+<title>Three</title>
+]]>
+		</assert-output>
+  	  	  	
+		<assert-output name="Initial Value">
+Initial value: [Tapestry]
+		</assert-output>
+	
+		<assert-output name="Final Value">
+Final value: [Taxi]
+		</assert-output>
+			
+		<assert-output-matches name="List Items" subgroup="1">
+<![CDATA[
+<li>(.*?)</li>
+]]>
+			<match>Crazy</match>
+			<match>Taxi</match>
+		</assert-output-matches>
+ 
+		<assert-regexp name="Page Class">
+<![CDATA[
+Page class: \[net\.sf\.tapestry\.junit\.mock\.c9\.Three\$(.*?)\]
+]]>	
+		</assert-regexp>
+ 
+ 
+	</request>	
+	
+	<request>
+  	  	<parameter name="service" value="page"/>
+  	  	<parameter name="context" value="Three"/>
+  	  		  	  	 	
+		<assert-output name="Page Title">
+<![CDATA[		
+<title>Three</title>
+]]>
+		</assert-output>
+  	  	  	
+		<assert-output name="Initial Value">
+Initial value: [Tapestry]
+		</assert-output>
+	
+		<assert-output name="Final Value">
+Final value: [Taxi]
+		</assert-output>
+	</request>
+		
+	<!-- Page Four includes an non-abstract accessor for the property, so it will
+	     cause an exception. -->
+	     		
+	<request>
+  	  	<parameter name="service" value="page"/>
+  	  	<parameter name="context" value="Four"/>
+  	  		  	  	 	
+		<assert-output name="Page Title">
+<![CDATA[		
+<title>Exception</title>
+]]>			
+		</assert-output>
+		
+		<assert-output name="Exception Message">
+Unable to enhance class net.sf.tapestry.junit.mock.c9.Four because it implements a non-abstract read method for property 'word'.
+		</assert-output>		
+		
+	</request>		
+	
+	<request>
+  	  	<parameter name="service" value="page"/>
+  	  	<parameter name="context" value="Five"/>
+  	  		  	  	 	
+		<assert-output name="Page Title">
+<![CDATA[		
+<title>Exception</title>
+]]>			
+		</assert-output>
+		
+		<assert-output name="Exception Message">
+Unable to enhance class net.sf.tapestry.junit.mock.c9.Five because it implements a non-abstract write method for property 'word'.
+		</assert-output>		
+		
+	</request>		
+	
+	<!-- This test is about making sure the property type in the specification matches
+		 the actual property type (if the class declares abstract accessor methods). -->
+		 
+	<request> 
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="Six"/>	  	  	  	  	 	
+ 	  	  	
+		<assert-output name="Page Title">
+<![CDATA[		
+<title>Exception</title>
+]]>
+		</assert-output>
+		
+		<assert-output name="Exception Message">
+Unable to enhance class net.sf.tapestry.junit.mock.c9.Six because it contains property 'value' of type int, not the expected type long.
+		</assert-output>		
+
+	</request>			
+	
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="Seven"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Seven</title>
+]]>
+		</assert-output>
+		
+		<assert-output-matches name="Values" subgroup="1">
+<![CDATA[
+value: \[(.*?)\]
+]]>
+			<match>true</match>
+			<match>65</match>
+			<match>Z</match>
+			<match>97</match>
+			<match>100</match>
+			<match>32000000</match>
+			<match>-22.7</match>
+			<match>3.2</match>
+			<match>Magic</match>
+		</assert-output-matches>		
+		
+		<assert-output name="Link">
+<![CDATA[
+/c9/app?service=direct&amp;context=0/Seven/$DirectLink		
+]]>
+		</assert-output>
+	</request>	
+	
+	<!-- Trigger the link and check for the changes in the page, and in persistent storage. -->
+	
+	<request>
+		<parameter name="service" value="direct"/>
+		<parameter name="context" value="0/Seven/$DirectLink"/>
+		
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Seven</title>
+]]>
+		</assert-output>
+		
+		<assert-output-matches name="Values" subgroup="1">
+<![CDATA[
+value: \[(.*?)\]
+]]>
+			<match>false</match>
+			<match>81</match>
+			<match>f</match>
+			<match>21</match>
+			<match>3097</match>
+			<match>132000001</match>
+			<match>-202.2</match>
+			<match>9.87</match>
+			<match>Marker</match>
+		</assert-output-matches>		
+		
+		<assert-output name="Link">
+<![CDATA[
+/c9/app?service=direct&amp;context=1/Seven/$DirectLink		
+]]>
+		</assert-output>	
+		
+		<assert name="Persistent booleanValue">
+		request.session.getAttribute("app/Seven/booleanValue") == false
+		</assert>
+		
+		<assert name="Persistent byteValue">
+		request.session.getAttribute("app/Seven/byteValue") == 81
+		</assert>
+		
+		<assert name="Persistent charValue">
+		request.session.getAttribute("app/Seven/charValue") == 'f'
+		</assert>
+		
+		<assert name="Persistent shortValue">
+		request.session.getAttribute("app/Seven/shortValue") == 21
+		</assert>
+		
+		<assert name="Persistent intValue">
+		request.session.getAttribute("app/Seven/intValue") == 3097
+		</assert>
+		
+		<assert name="Persistent longValue">
+		request.session.getAttribute("app/Seven/longValue") == 132000001
+		</assert>
+		
+		<assert name="Persistent floatValue">
+		request.session.getAttribute("app/Seven/floatValue") == -202.2f
+		</assert>
+		
+		<assert name="Persistent doubleValue">
+		request.session.getAttribute("app/Seven/doubleValue") == 9.87
+		</assert>
+		
+		<assert name="Persistent stringValue">
+		request.session.getAttribute("app/Seven/stringValue") == "Marker"
+		</assert>
+		 	
+	</request>
+		
+ </mock-test>

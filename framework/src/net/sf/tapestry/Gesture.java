@@ -194,7 +194,7 @@ public class Gesture
     {
         StringBuffer buffer = new StringBuffer();
         RequestContext context = _cycle.getRequestContext();
- 
+
         if (scheme == null)
             scheme = context.getScheme();
 
@@ -228,14 +228,14 @@ public class Gesture
         if (includeParameters)
         {
             buffer.append('?');
-            buffer.append(IEngineService.SERVICE_QUERY_PARAMETER_NAME);
+            buffer.append(Tapestry.SERVICE_QUERY_PARAMETER_NAME);
             buffer.append('=');
             buffer.append(_serviceName);
 
             if (_serviceContext != null)
             {
                 buffer.append('&');
-                buffer.append(IEngineService.CONTEXT_QUERY_PARMETER_NAME);
+                buffer.append(Tapestry.CONTEXT_QUERY_PARMETER_NAME);
                 buffer.append('=');
                 buffer.append(_serviceContext);
             }
@@ -246,7 +246,7 @@ public class Gesture
             {
                 buffer.append('&');
 
-                buffer.append(IEngineService.PARAMETERS_QUERY_PARAMETER_NAME);
+                buffer.append(Tapestry.PARAMETERS_QUERY_PARAMETER_NAME);
                 buffer.append('=');
 
                 try
@@ -289,13 +289,13 @@ public class Gesture
     {
         List list = new ArrayList();
 
-        list.add(IEngineService.SERVICE_QUERY_PARAMETER_NAME);
+        list.add(Tapestry.SERVICE_QUERY_PARAMETER_NAME);
 
         if (_serviceContext != null)
-            list.add(IEngineService.CONTEXT_QUERY_PARMETER_NAME);
+            list.add(Tapestry.CONTEXT_QUERY_PARMETER_NAME);
 
         if (Tapestry.size(_serviceParameters) != 0)
-            list.add(IEngineService.PARAMETERS_QUERY_PARAMETER_NAME);
+            list.add(Tapestry.PARAMETERS_QUERY_PARAMETER_NAME);
 
         return (String[]) list.toArray(new String[list.size()]);
     }
@@ -311,22 +311,23 @@ public class Gesture
 
     public String[] getParameterValues(String name)
     {
-        if (name.equals(IEngineService.SERVICE_QUERY_PARAMETER_NAME))
+        if (name.equals(Tapestry.SERVICE_QUERY_PARAMETER_NAME))
         {
             return new String[] { _serviceName };
         }
-        
-        if (name.equals(IEngineService.CONTEXT_QUERY_PARMETER_NAME))
+
+        if (name.equals(Tapestry.CONTEXT_QUERY_PARMETER_NAME))
         {
             return new String[] { _serviceContext };
         }
 
-        if (name.equals(IEngineService.PARAMETERS_QUERY_PARAMETER_NAME))
+        if (name.equals(Tapestry.PARAMETERS_QUERY_PARAMETER_NAME))
         {
             return _serviceParameters;
         }
 
-        throw new IllegalArgumentException(Tapestry.getString("Gesture.unknown-parameter-name", name));
+        throw new IllegalArgumentException(
+            Tapestry.getString("Gesture.unknown-parameter-name", name));
 
     }
 

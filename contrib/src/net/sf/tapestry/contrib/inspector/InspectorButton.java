@@ -130,7 +130,7 @@ public class InspectorButton extends BaseComponent implements IDirect
 
         Map symbols = new HashMap();
 
-        IEngineService service = engine.getService(IEngineService.DIRECT_SERVICE);
+        IEngineService service = engine.getService(Tapestry.DIRECT_SERVICE);
         Gesture g = service.buildGesture(cycle, this, null);
 
         symbols.put("URL", g.getURL());

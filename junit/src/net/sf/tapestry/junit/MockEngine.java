@@ -59,6 +59,7 @@ import java.util.Locale;
 
 import javax.servlet.ServletException;
 
+import net.sf.tapestry.IComponentClassEnhancer;
 import net.sf.tapestry.IComponentStringsSource;
 import net.sf.tapestry.IEngine;
 import net.sf.tapestry.IEngineService;
@@ -224,6 +225,11 @@ public class MockEngine implements IEngine
     }
 
     public Object getGlobal()
+    {
+        return null;
+    }
+
+    public IComponentClassEnhancer getComponentClassEnhancer()
     {
         return null;
     }

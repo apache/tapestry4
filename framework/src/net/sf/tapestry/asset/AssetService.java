@@ -129,16 +129,17 @@ public class AssetService extends AbstractService
     public Gesture buildGesture(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
         if (Tapestry.size(parameters) != 1)
-            throw new ApplicationRuntimeException(Tapestry.getString("service-single-parameter", ASSET_SERVICE));
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("service-single-parameter", Tapestry.ASSET_SERVICE));
 
         // Service is stateless
 
-        return assembleGesture(cycle, ASSET_SERVICE, null, parameters, false);
+        return assembleGesture(cycle, Tapestry.ASSET_SERVICE, null, parameters, false);
     }
 
     public String getName()
     {
-        return ASSET_SERVICE;
+        return Tapestry.ASSET_SERVICE;
     }
 
     private static String getMimeType(String path)
@@ -167,17 +168,21 @@ public class AssetService extends AbstractService
      *
      **/
 
-    public boolean service(IEngineServiceView engine, IRequestCycle cycle, ResponseOutputStream output)
+    public boolean service(
+        IEngineServiceView engine,
+        IRequestCycle cycle,
+        ResponseOutputStream output)
         throws ServletException, IOException, RequestCycleException
     {
         Object[] parameters = getParameters(cycle);
 
-        String resourcePath =  (String)parameters[0];
-        
+        String resourcePath = (String) parameters[0];
+
         URL resourceURL = cycle.getEngine().getResourceResolver().getResource(resourcePath);
 
         if (resourceURL == null)
-            throw new ApplicationRuntimeException(Tapestry.getString("missing-resource", resourcePath));
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("missing-resource", resourcePath));
 
         URLConnection resourceConnection = resourceURL.openConnection();
 
@@ -191,7 +196,7 @@ public class AssetService extends AbstractService
     }
 
     /**  @since 2.2 **/
-    
+
     private void writeAssetContent(
         IEngineServiceView engine,
         IRequestCycle cycle,

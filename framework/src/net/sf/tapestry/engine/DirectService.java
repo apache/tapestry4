@@ -131,7 +131,7 @@ public class DirectService extends AbstractService
         context[i++] = componentPage.getPageName();
         context[i++] = component.getIdPath();
 
-        return assembleGesture(cycle, DIRECT_SERVICE, context, parameters, true);
+        return assembleGesture(cycle, Tapestry.DIRECT_SERVICE, context, parameters, true);
     }
 
     public boolean service(IEngineServiceView engine, IRequestCycle cycle, ResponseOutputStream output)
@@ -222,6 +222,6 @@ public class DirectService extends AbstractService
 
     public String getName()
     {
-        return DIRECT_SERVICE;
+        return Tapestry.DIRECT_SERVICE;
     }
 }

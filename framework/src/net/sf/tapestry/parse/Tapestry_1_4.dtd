@@ -27,12 +27,13 @@ This DTD is backwards compatible with the 1.3 DTD, with the following exceptions
 - added value attribute to <property>
 - renamed <component-alias> to <component-type>
 - added <listener-binding> element
+- added <property-specification> element
 -->
 
 <!-- =======================================================
 Entity: attribute-flag
 
-For entity attributesthat take a boolean value, defines 'yes' and 'no'.
+For entity attributes that take a boolean value, defines 'yes' and 'no'.
 The default varies, so isn't included here.
 -->
 <!ENTITY % attribute-flag "(yes|no)">
@@ -202,7 +203,7 @@ Attributes:
 -->
 <!ELEMENT component-specification 
 	(description*, parameter*, reserved-parameter*, property*,
-	(bean |	component | external-asset | context-asset | private-asset)*)>
+	(bean |	component | external-asset | context-asset | private-asset | property-specification)*)>
 <!ATTLIST component-specification
   class CDATA #IMPLIED
   allow-body %attribute-flag; "yes"
@@ -377,7 +378,7 @@ Attributes:
   class: The Java class to instantiate for the component.
 -->
 <!ELEMENT page-specification (description*, property*,
-    (bean | component | external-asset | context-asset | private-asset)*)>
+    (bean | component | external-asset | context-asset | private-asset | property-specification)*)>
 <!ATTLIST page-specification
   class CDATA #IMPLIED
 >
@@ -443,6 +444,32 @@ Attributes:
 <!ATTLIST property
   name CDATA #REQUIRED
   value CDATA #IMPLIED
+>
+
+<!-- =======================================================
+Element: property-specification
+Appears in: component-specification, component-specification
+
+Identifies a transient or persistent property.
+
+Attributes:
+  name: The name of the property.
+  type: The type of the value, either the name of a scalar type,
+    or the fully qualified name of a class.  If omitted,
+    java.lang.Object is used.
+  persistant: If "yes", the value will be made persistant.  Default
+    is "no".
+  initial-value:  If provided, this is an OGNL expression used
+    to initialize the property.
+    
+-->
+
+<!ELEMENT property-specification EMPTY>
+<!ATTLIST property-specification
+  name CDATA #REQUIRED
+  type CDATA #IMPLIED
+  persistent %attribute-flag; "no"
+  initial-value CDATA #IMPLIED
 >
 
 <!-- =======================================================

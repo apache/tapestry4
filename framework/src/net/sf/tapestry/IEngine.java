@@ -400,6 +400,7 @@ public interface IEngine
      **/
 
     public IPropertySource getPropertySource();
+    
     /**
      *  Returns a {@link net.sf.tapestry.util.pool.Pool} that is used
      *  to store all manner of objects that are needed throughout the system.
@@ -413,4 +414,14 @@ public interface IEngine
      **/
     
     public Pool getPool();
+    
+    /**
+     *  Returns an object that can create enhanced versions of component classes.
+     * 
+     *  @since 2.4
+     *  @see net.sf.tapestry.engine.AbstractEngine#createComponentClassEnhancer(RequestContext)
+     * 
+     **/
+    
+    public IComponentClassEnhancer getComponentClassEnhancer();
 }

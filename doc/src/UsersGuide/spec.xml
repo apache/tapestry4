@@ -601,7 +601,7 @@ and elements related to parameters.
 	<title><sgmltag class="starttag">component-specification</sgmltag> Elements</title>
 <literallayout>
   &spec.description; *, &spec.parameter; *, &spec.reserved-parameter; *, &spec.property; *,
-  (&spec.bean; | &spec.component; | &spec.external-asset; | &spec.context-asset; | &spec.private-asset;)*
+  (&spec.bean; | &spec.component; | &spec.external-asset; | &spec.context-asset; | &spec.private-asset; | &spec.property-specification;)*
 </literallayout>
 </figure>
 
@@ -1169,7 +1169,7 @@ with attributes and entities related to parameters removed.
 	<title><sgmltag class="starttag">page-specification</sgmltag> Elements</title>
 <literallayout>
   &spec.description; *, &spec.property; *,
-  (&spec.bean; | &spec.component; | &spec.external-asset; | &spec.context-asset; | &spec.private-asset;)*
+  (&spec.bean; | &spec.component; | &spec.external-asset; | &spec.context-asset; | &spec.private-asset; | &spec.property-specification;)*
 </literallayout>
 </figure>
 
@@ -1388,6 +1388,85 @@ character data for the <sgmltag class="starttag">property</sgmltag> element.
 </informaltable>
 </figure>
 </section> <!-- spec.property -->
+
+
+<section id="spec.property-specification">
+	<title><sgmltag class="starttag">property-specification</sgmltag> element</title>
+	
+<para>
+Appears in: &spec.component-specification;, &spec.page-specification;
+</para>
+
+<para>
+Defines a transient or persistent property to be added to the page or component.
+Tapestry will create a subclass of the page or component class (at runtime)
+and add the necessary fields and accessor methods, as well as end-of-request
+cleanup.
+</para>
+
+<para>
+It is acceptible for a page (or component) to be abstract, and have abstract accessor methods
+matching the names that Tapestry will generated for the subclass.  This can be
+useful when setting properties of the page (or component) from a listener method.
+</para>
+
+<figure>
+	<title><sgmltag class="starttag">property-specification</sgmltag> Attributes</title>
+<informaltable>
+<tgroup cols="5">
+<thead>
+<row>
+  <entry>Name</entry>
+  <entry>Type</entry>
+  <entry>Required ?</entry>
+  <entry>Default Value</entry>
+  <entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+	<entry>name</entry>
+	<entry>string</entry>
+	<entry>yes</entry>
+	<entry/>
+	<entry>The name of the property to create.</entry>
+</row>
+<row>
+	<entry>type</entry>
+	<entry>string</entry>
+	<entry>no</entry>
+	<entry>java.lang.Object</entry>
+	<entry>
+	The type of the property.  If abstract accessors exist, they must exactly match
+	this type.  The type may be either a fully qualified class name, or the name
+	of one of the basic scalar types.
+	</entry>
+</row>
+<row>
+	<entry>persistent</entry>
+	<entry><literal>yes|no</literal></entry>
+	<entry>no</entry>
+	<entry><literal>no</literal></entry>
+	<entry>
+	If true, the generated property will be persistent, firing change notifications
+	when it is updated.
+	</entry>
+</row>
+<row>
+	<entry>initial-value</entry>
+	<entry>string</entry>
+	<entry>no</entry>
+	<entry/>
+	<entry>
+	An optional OGNL expression used to initialize the property.  The expression is evaluated
+	only when the page is first constructed.
+	</entry>
+</row>
+</tbody>
+</tgroup>
+</informaltable>
+</figure>
+</section> <!-- spec.property-specification -->
 
 <section id="spec.reserved-parameter">
 	<title><sgmltag class="starttag">reserved-parameter</sgmltag> element</title>

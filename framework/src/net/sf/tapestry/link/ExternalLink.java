@@ -56,6 +56,7 @@ package net.sf.tapestry.link;
 
 import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.Tapestry;
 
 /**
  *  A component for creating a link to {@link IExternalPage} using the 
@@ -78,13 +79,13 @@ public class ExternalLink extends GestureLink
     private String _targetPage;
 
     /**
-     *  Returns {@link IEngineService#EXTERNAL_SERVICE}.
+     *  Returns {@link Tapestry#EXTERNAL_SERVICE}.
      *
      **/
 
     protected String getServiceName()
     {
-        return IEngineService.EXTERNAL_SERVICE;
+        return Tapestry.EXTERNAL_SERVICE;
     }
 
     protected Object[] getServiceParameters(IRequestCycle cycle)

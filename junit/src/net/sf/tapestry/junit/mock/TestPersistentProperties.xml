@@ -56,9 +56,10 @@ Message: Changed
 Active page names: [Home] 		
 		</assert-output>
 								
-		<assert name="Session Attribute"
-			expression='request.session.getAttribute("app/Home/message").equals("Changed")'
-			/>				
+		<assert name="Session Attribute">
+	    request.session.getAttribute("app/Home/message").equals("Changed")
+		</assert>
+					
 	</request>
 	
 	<!-- Return to the page, check for the change.  -->
@@ -149,9 +150,9 @@ Nested Message: Changed
 Active page names: [Home, Two] 		
 		</assert-output>				
 		
-		<assert name="Session Attribute"
-			expression='request.session.getAttribute("app/Two/$Nested/message").equals("Changed")'
-			/>				
+		<assert name="Session Attribute">
+		request.session.getAttribute("app/Two/$Nested/message").equals("Changed")
+		</assert>		
 					
 	</request>
 	
@@ -238,9 +239,9 @@ EJB is null
 EJB is FakeEJBObject[997]
 		</assert-output>			
 				
-		<assert 
-			name="Stored Value"
-			expression='request.session.getAttribute("app/Three/ejb").getClass().getName().equals("net.sf.tapestry.record.EJBWrapper")'/>
+		<assert name="Stored Value">
+		request.session.getAttribute("app/Three/ejb").getClass().getName().equals("net.sf.tapestry.record.EJBWrapper")
+		</assert>
 		
 	</request>
 	
@@ -287,9 +288,10 @@ EJB is FakeEJBObject[997]
 EJB is FakeEJBObject[997]
 		</assert-output>		
 		
-		<assert 
-			name="Attribute missing."
-			expression='request.session.getAttribute("app/Three/ejb") == null'/>
+		<assert name="Attribute missing">
+		request.session.getAttribute("app/Three/ejb") == null
+		</assert>
+		
 	</request>
 			
 	<!-- Check that the value is now gone. -->

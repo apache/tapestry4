@@ -65,6 +65,7 @@ import net.sf.tapestry.spec.IApplicationSpecification;
 import net.sf.tapestry.spec.ILibrarySpecification;
 import net.sf.tapestry.spec.ListenerBindingSpecification;
 import net.sf.tapestry.spec.ParameterSpecification;
+import net.sf.tapestry.spec.PropertySpecification;
 import net.sf.tapestry.util.xml.DocumentParseException;
 
 /**
@@ -505,4 +506,56 @@ public class SpecificationParserTest extends TapestryTestCase
 
         return buffer.toString();
     }
+
+	/** @since 2.4 **/
+	
+    public void testPropertySpecifications() throws Exception
+    {
+        ComponentSpecification spec = parsePage("PropertySpecifications.page");
+
+        checkList(
+            "propertySpecificationNames",
+            new String[] { "bool", "init", "persist" },
+            spec.getPropertySpecificationNames());
+
+        PropertySpecification ps = spec.getPropertySpecification("bool");
+        assertEquals("name", "bool", ps.getName());
+        assertEquals("persistent", false, ps.isPersistent());
+        assertEquals("type", "boolean", ps.getType());
+        assertNull("initialValue", ps.getInitialValue());
+
+        ps = spec.getPropertySpecification("init");
+        assertEquals("name", "init", ps.getName());
+        assertEquals("persistent", false, ps.isPersistent());
+        assertEquals("type", "java.lang.Object", ps.getType());
+        assertEquals("initialValue", "pageName", ps.getInitialValue());
+
+        ps = spec.getPropertySpecification("persist");
+        assertEquals("name", "persist", ps.getName());
+        assertEquals("persistent", true, ps.isPersistent());
+        assertEquals("type", "java.lang.Object", ps.getType());
+        assertNull("initialValue", ps.getInitialValue());
+
+        ps = spec.getPropertySpecification("unknown");
+
+        assertNull("Unknown PropertySpecification", ps);
+    }
+    
+    /** @since 2.4 **/
+    
+    public void testDuplicatePropertySpecification()
+    throws Exception
+    {
+    	try
+    	{
+    		parsePage("DuplicatePropertySpecification.page");
+    		
+    		unreachable();
+    	}
+    	catch (IllegalArgumentException ex)
+    	{
+    		checkException(ex, "already contains property specification for property 'bool'");   		
+    	}
+    }
+     
 }

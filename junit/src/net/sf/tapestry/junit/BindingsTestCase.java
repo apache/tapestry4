@@ -576,8 +576,7 @@ public class BindingsTestCase extends TapestryTestCase
         }
         catch (ApplicationRuntimeException ex)
         {
-            checkException(ex, "Malformed OGNL");
-            checkException(ex, "zip flob boff");
+            checkException(ex, "Unable to parse expression 'zip flob boff'");
         }
     }
 

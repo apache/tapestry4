@@ -18,13 +18,19 @@
         arrays of objects and scalars</li>
 <LI>Upgrade demos to deploy into JBoss 3.0.4</LI>   
 <li>Merge in changes from Tapestry 2.3</li>
-<li><code>&lt;binding&gt;</code> elements may now specify the expression as the parsed data</li> 
+<li><code>&lt;binding&gt;</code> elements may now specify the expression as the parsed data
+instead of the expression attribute</li> 
 <li>The template extension may now be overriden using the configuration property <code>net.sf.tapestry.template-extension</code>         
-
+<li>Added support for declarative transient and persistent properties via
+<code>&lt;property-specification;&gt;</code> element in page and component specifications.  Tapestry
+will create (on the fly) a subclass with
+the necessary accessor methods and fields, as well as any necessary notification and
+cleanup methods. </li>
 </ul>
 
 <pre>
 [ 594878 ] Deploy Tapestry into JBoss 3.0.4
+[ 672743 ] Pages Implementing Listeners cause NPE
 </pre>
 
 <h3>Release 2.4-alpha-1</h3>

@@ -128,11 +128,11 @@ public abstract class AbstractService implements IEngineService
 
     protected String[] getServiceContext(RequestContext context)
     {
-        String raw = context.getParameter(CONTEXT_QUERY_PARMETER_NAME);
-        
+        String raw = context.getParameter(Tapestry.CONTEXT_QUERY_PARMETER_NAME);
+
         if (raw == null)
             return null;
-            
+
         return new StringSplitter('/').splitToArray(raw);
     }
 
@@ -144,18 +144,16 @@ public abstract class AbstractService implements IEngineService
     protected Object[] getParameters(IRequestCycle cycle)
     {
         RequestContext context = cycle.getRequestContext();
-        
-        String[] squeezed = 
-            context.getParameters(PARAMETERS_QUERY_PARAMETER_NAME);
-            
+
+        String[] squeezed = context.getParameters(Tapestry.PARAMETERS_QUERY_PARAMETER_NAME);
+
         if (Tapestry.size(squeezed) == 0)
             return squeezed;
-            
+
         try
         {
-            DataSqueezer squeezer =
-                cycle.getEngine().getDataSqueezer();
-                
+            DataSqueezer squeezer = cycle.getEngine().getDataSqueezer();
+
             return squeezer.unsqueeze(squeezed);
         }
         catch (IOException ex)

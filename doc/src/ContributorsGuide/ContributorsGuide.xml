@@ -1016,9 +1016,9 @@ the check is made.
 
 <programlisting>
 <![CDATA[
-  <assert name="Session Attribute"
-    expression='request.session.getAttribute("app/Home/message").equals("Changed")'
-  />				
+  <assert name="Session Attribute">
+  request.session.getAttribute("app/Home/message").equals("Changed")
+  </assert>				
 ]]>
 </programlisting>
 

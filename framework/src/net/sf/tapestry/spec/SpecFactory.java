@@ -240,4 +240,16 @@ public class SpecFactory
     {
         return new ExtensionSpecification();
     }
+    
+    /**
+     *  Creates a concrete instance of {@link net.sf.tapestry.spec.PropertySpecification}.
+     * 
+     *  @since 2.4
+     * 
+     **/
+    
+    public PropertySpecification createPropertySpecification()
+    {
+    	return new PropertySpecification();
+    }
 }

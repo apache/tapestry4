@@ -148,18 +148,22 @@ public class ExternalService extends AbstractService
     public Gesture buildGesture(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
         if (parameters == null || parameters.length == 0)
-            throw new ApplicationRuntimeException(Tapestry.getString("service-requires-parameters", EXTERNAL_SERVICE));
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("service-requires-parameters", Tapestry.EXTERNAL_SERVICE));
 
-        String pageName = (String)parameters[0];
+        String pageName = (String) parameters[0];
         String[] context = new String[] { pageName };
-        
+
         Object[] pageParameters = new Object[parameters.length - 1];
         System.arraycopy(parameters, 1, pageParameters, 0, parameters.length - 1);
 
-        return assembleGesture(cycle, EXTERNAL_SERVICE, context, pageParameters, true);
+        return assembleGesture(cycle, Tapestry.EXTERNAL_SERVICE, context, pageParameters, true);
     }
 
-    public boolean service(IEngineServiceView engine, IRequestCycle cycle, ResponseOutputStream output)
+    public boolean service(
+        IEngineServiceView engine,
+        IRequestCycle cycle,
+        ResponseOutputStream output)
         throws RequestCycleException, ServletException, IOException
     {
         IExternalPage page = null;
@@ -168,10 +172,10 @@ public class ExternalService extends AbstractService
 
         if (context == null || context.length != 1)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("service-single-context-parameter", EXTERNAL_SERVICE));
+                Tapestry.getString("service-single-context-parameter", Tapestry.EXTERNAL_SERVICE));
 
         String pageName = context[0];
-        
+
         try
         {
             page = (IExternalPage) cycle.getPage(pageName);
@@ -186,7 +190,7 @@ public class ExternalService extends AbstractService
         Object[] parameters = getParameters(cycle);
 
         cycle.setServiceParameters(parameters);
-        
+
         page.validate(cycle);
         cycle.setPage(page);
 
@@ -200,6 +204,6 @@ public class ExternalService extends AbstractService
 
     public String getName()
     {
-        return EXTERNAL_SERVICE;
+        return Tapestry.EXTERNAL_SERVICE;
     }
 }
