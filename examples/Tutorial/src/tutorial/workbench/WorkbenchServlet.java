@@ -28,6 +28,8 @@ package tutorial.workbench;
 
 import com.primix.tapestry.*;
 
+import net.sf.tapestry.*;
+
 /**
  *
  *  @author Howard Lewis Ship

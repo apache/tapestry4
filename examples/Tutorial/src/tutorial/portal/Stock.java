@@ -29,6 +29,8 @@ package tutorial.portal;
 import java.io.*;
 import com.primix.tapestry.util.prop.*;
 
+import net.sf.tapestry.util.prop.*;
+
 /**
  *  Stores information about a single Stock.
  *

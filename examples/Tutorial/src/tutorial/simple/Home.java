@@ -29,6 +29,9 @@ package tutorial.simple;
 import java.util.*;
 import com.primix.tapestry.*;
 
+import net.sf.tapestry.*;
+import net.sf.tapestry.html.*;
+
 /**
  *  @version $Id$
  *  @author Howard Ship

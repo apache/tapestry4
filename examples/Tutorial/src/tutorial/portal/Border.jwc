@@ -3,7 +3,7 @@
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN"
 	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification
-  class="com.primix.tapestry.BaseComponent"
+  class="net.sf.tapestry.BaseComponent"
   allow-informal-parameters="no">
 
   <component id="shell" type="Shell">

@@ -28,8 +28,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import com.primix.tapestry.spec.AssetType;
-import com.primix.tapestry.util.Enum;
+
+import net.sf.tapestry.spec.*;
+import net.sf.tapestry.spec.AssetType;
+import net.sf.tapestry.util.*;
+import net.sf.tapestry.util.Enum;
 
 import junit.framework.TestCase;
 

@@ -35,11 +35,12 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import com.primix.tapestry.parse.ITemplateParserDelegate;
-import com.primix.tapestry.parse.TemplateParseException;
-import com.primix.tapestry.parse.TemplateParser;
-import com.primix.tapestry.parse.TemplateToken;
-import com.primix.tapestry.parse.TokenType;
+import net.sf.tapestry.parse.*;
+import net.sf.tapestry.parse.ITemplateParserDelegate;
+import net.sf.tapestry.parse.TemplateParseException;
+import net.sf.tapestry.parse.TemplateParser;
+import net.sf.tapestry.parse.TemplateToken;
+import net.sf.tapestry.parse.TokenType;
 
 /**
  *  Tests for the Tapestry HTML template parser.

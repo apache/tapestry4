@@ -26,9 +26,9 @@
 
 package net.sf.tapestry.junit.valid;
 
-import com.primix.tapestry.valid.DateValidator;
-import com.primix.tapestry.valid.ValidatorException;
-import com.primix.tapestry.valid.ValidationConstraint;
+import net.sf.tapestry.valid.DateValidator;
+import net.sf.tapestry.valid.ValidatorException;
+import net.sf.tapestry.valid.ValidationConstraint;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;

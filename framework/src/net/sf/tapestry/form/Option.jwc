@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="net.sf.tapestry.form.Option" allow-body="no">
+
+  <description>
+  A single option within a Select.
+  </description>
+  
+  <parameter name="selected" java-type="java.lang.Boolean" required="yes"/>  
+  <parameter name="label" java-type="java.lang.String"/>
+  
+  <reserved-parameter name="value"/>
+  
+</specification>

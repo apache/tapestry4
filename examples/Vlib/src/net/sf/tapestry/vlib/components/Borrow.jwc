@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="net.sf.tapestry,vlib.components.Borrow" allow-body="no" allow-informal-parameters="no">
+  <parameter name="book" java-type="net.sf.tapestry.vlib.ejb.Book" required="yes"/>
+  
+  
+  <component id="link" type="Direct">
+    <binding name="context" property-path="book.primaryKey"/>
+    <binding name="listener" property-path="listeners.borrow"/>
+    <binding name="disabled" property-path="linkDisabled"/>
+  </component>
+  
+  <component id="image" type="Rollover">
+  	<binding name="image" property-path="assets.enabled"/>
+  	<binding name="disabled" property-path="assets.disabled"/>
+  </component>
+  
+  <context-asset name="enabled" path="/images/icon_borrow.gif"/>
+  <context-asset name="disabled" path="/images/spacer.gif"/>
+</specification>

@@ -11,7 +11,7 @@
 
 <parameter name="model" required="yes" java-type="tutorial.portal.PortalModel"/>
 
-<parameter name="closeListener" required="yes" java-type="com.primix.tapestry.IActionListener">
+<parameter name="closeListener" required="yes" java-type="net.sf.tapestry.IActionListener">
 	<description>
 		A listener notified when the close box is clicked by the user.
 	</description>

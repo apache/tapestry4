@@ -28,6 +28,8 @@ package tutorial.simple;
 
 import com.primix.tapestry.*;
 
+import net.sf.tapestry.*;
+
 /**
  *  @version $Id$
  *  @author Howard Ship

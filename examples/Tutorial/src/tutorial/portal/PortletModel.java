@@ -29,6 +29,9 @@ package tutorial.portal;
 import com.primix.tapestry.*;
 import com.primix.tapestry.components.*;
 
+import net.sf.tapestry.*;
+import net.sf.tapestry.components.*;
+
 import java.io.*;
 
 /**

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="net.sf.tapestry.html.Shell" allow-informal-parameters="no">
+
+  <description>
+  Provides the outer tags in an HTML page: &lt;html&gt;, &lt;head&gt; and &lt;title&gt;.
+  </description>
+
+  <parameter name="title" java-type="java.lang.String" required="yes">
+    <description>
+    The title for the page.
+    </description>
+  </parameter>
+  
+  <parameter name="stylesheet" java-type="net.sf.tapestry.IAsset">
+    <description>
+    If specified, provides an external stylesheet for the page.
+    </description>
+  </parameter>
+  
+  <parameter name="refresh" java-type="java.lang.Integer">
+    <description>
+    If specified, the page will refresh itself after the specified delay (in seconds).
+    </description>
+  </parameter>
+  
+  <parameter name="delegate" java-type="net.sf.tapestry.IRender">
+    <description>
+    If specified, the delegate is allowed to render before the close of the &lt;head&gt;
+    tag (typically used to provide &lt;meta&gt; tags).
+    </description>
+  </parameter>
+  
+</specification>

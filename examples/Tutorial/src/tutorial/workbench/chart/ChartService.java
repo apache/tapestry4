@@ -31,14 +31,17 @@ import org.apache.log4j.Category;
 
 import com.jrefinery.chart.ChartUtilities;
 import com.jrefinery.chart.JFreeChart;
-import com.primix.tapestry.Gesture;
-import com.primix.tapestry.IComponent;
-import com.primix.tapestry.IEngineServiceView;
-import com.primix.tapestry.IPage;
-import com.primix.tapestry.IRequestCycle;
-import com.primix.tapestry.RequestCycleException;
-import com.primix.tapestry.ResponseOutputStream;
-import com.primix.tapestry.engine.AbstractService;
+
+import net.sf.tapestry.*;
+import net.sf.tapestry.Gesture;
+import net.sf.tapestry.IComponent;
+import net.sf.tapestry.IEngineServiceView;
+import net.sf.tapestry.IPage;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.ResponseOutputStream;
+import net.sf.tapestry.engine.*;
+import net.sf.tapestry.engine.AbstractService;
 
 /**
  *  Service that works with a {@link JFreeChart} to dynamically render

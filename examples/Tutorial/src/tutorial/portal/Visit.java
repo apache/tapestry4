@@ -28,6 +28,10 @@ package tutorial.portal;
 
 import com.primix.tapestry.*;
 import com.primix.tapestry.form.*;
+
+import net.sf.tapestry.*;
+import net.sf.tapestry.form.*;
+
 import java.util.*;
 import java.io.*;
 

@@ -27,7 +27,12 @@
 package tutorial.portal;
 
 import com.primix.tapestry.*;
-import com.primix.tapestry.util.xml.*;
+
+import net.sf.tapestry.html.*;
+import net.sf.tapestry.util.xml.*;
+
+import net.sf.tapestry.*;
+
 import java.util.*;
 import java.net.*;
 import org.apache.log4j.*;

@@ -26,10 +26,13 @@
 
 package net.sf.tapestry.contrib.form;
 
-import com.primix.tapestry.IRequestCycle;
-import com.primix.tapestry.IResponseWriter;
-import com.primix.tapestry.RequestCycleException;
-import com.primix.tapestry.form.IPropertySelectionModel;
+
+import net.sf.tapestry.*;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.IMarkupWriter;
+import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.form.*;
+import net.sf.tapestry.form.IPropertySelectionModel;
 
 /**
  *  Defines an object that works with a {@link MultiplePropertySelection} component
@@ -49,7 +52,7 @@ public interface IMultiplePropertySelectionRenderer
 
 	public void beginRender(
 		MultiplePropertySelection component,
-		IResponseWriter writer,
+		IMarkupWriter writer,
 		IRequestCycle cycle)
 		throws RequestCycleException;
 
@@ -60,7 +63,7 @@ public interface IMultiplePropertySelectionRenderer
 
 	public void renderOption(
 		MultiplePropertySelection component,
-		IResponseWriter writer,
+		IMarkupWriter writer,
 		IRequestCycle cycle,
 		IPropertySelectionModel model,
 		Object option,
@@ -75,7 +78,7 @@ public interface IMultiplePropertySelectionRenderer
 
 	public void endRender(
 		MultiplePropertySelection component,
-		IResponseWriter writer,
+		IMarkupWriter writer,
 		IRequestCycle cycle)
 		throws RequestCycleException;
 }

@@ -4,10 +4,10 @@
 	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 	
 <specification 
-  class="com.primix.tapestry.BaseComponent"
+  class="net.sf.tapestry.BaseComponent"
   allow-informal-parameters="no" allow-body="no">
   
-  <parameter name="delegate" java-type="com.primix.tapestry.valid.IValidationDelegate" 
+  <parameter name="delegate" java-type="net.sf.tapestry.valid.IValidationDelegate" 
   	required="yes"/>
   
   <component id="ifError" type="Conditional">

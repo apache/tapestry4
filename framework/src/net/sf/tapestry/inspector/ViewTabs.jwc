@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="net.sf.tapestry.inspector.ViewTabs">
+  <component id="e" type="Foreach">
+    <binding name="source" property-path="views"/>
+    <binding name="value" property-path="view"/>
+  </component>
+  <component id="select" type="Action">
+    <binding name="listener" property-path="listeners.selectTab"/>
+  </component>
+  <component id="tab" type="Rollover">
+    <binding name="image" property-path="viewImage"/>
+    <binding name="focus" property-path="focusImage"/>
+  </component>
+  <component id="banner" type="Image">
+    <binding name="image" property-path="bannerImage"/>
+  </component>
+  <component id="wrapped" type="InsertWrapped"/>
+  <private-asset name="SPECIFICATION" resource-path="/net/sf/tapestry/inspector/Specification_Np1.gif"/>
+  <private-asset name="SPECIFICATION-selected" resource-path="/net/sf/tapestry/inspector/Specification_Hp3.gif"/>
+  <private-asset name="SPECIFICATION-focus" resource-path="/net/sf/tapestry/inspector/Specification_NRp2.gif"/>
+  <private-asset name="SPECIFICATION-selected-focus" resource-path="/net/sf/tapestry/inspector/Specification_HRp4.gif"/>
+  <private-asset name="SPECIFICATION-banner" resource-path="/net/sf/tapestry/inspector/Specification_NBanner.gif"/>
+  <private-asset name="TEMPLATE" resource-path="/net/sf/tapestry/inspector/Template_Np1.gif"/>
+  <private-asset name="TEMPLATE-selected" resource-path="/net/sf/tapestry/inspector/Template_Hp3.gif"/>
+  <private-asset name="TEMPLATE-focus" resource-path="/net/sf/tapestry/inspector/Template_NRp2.gif"/>
+  <private-asset name="TEMPLATE-selected-focus" resource-path="/net/sf/tapestry/inspector/Template_HRp4.gif"/>
+  <private-asset name="TEMPLATE-banner" resource-path="/net/sf/tapestry/inspector/Template_NBanner.gif"/>
+  <private-asset name="PROPERTIES" resource-path="/net/sf/tapestry/inspector/Properties_Np1.gif"/>
+  <private-asset name="PROPERTIES-selected" resource-path="/net/sf/tapestry/inspector/Properties_Hp3.gif"/>
+  <private-asset name="PROPERTIES-focus" resource-path="/net/sf/tapestry/inspector/Properties_NRp2.gif"/>
+  <private-asset name="PROPERTIES-selected-focus" resource-path="/net/sf/tapestry/inspector/Properties_HRp4.gif"/>
+  <private-asset name="PROPERTIES-banner" resource-path="/net/sf/tapestry/inspector/Properties_NBanner.gif"/>
+  <private-asset name="ENGINE" resource-path="/net/sf/tapestry/inspector/Engine_Np1.gif"/>
+  <private-asset name="ENGINE-selected" resource-path="/net/sf/tapestry/inspector/Engine_Hp3.gif"/>
+  <private-asset name="ENGINE-focus" resource-path="/net/sf/tapestry/inspector/Engine_NRp2.gif"/>
+  <private-asset name="ENGINE-selected-focus" resource-path="/net/sf/tapestry/inspector/Engine_HRp4.gif"/>
+  <private-asset name="ENGINE-banner" resource-path="/net/sf/tapestry/inspector/Engine_NBanner.gif"/>
+  <private-asset name="LOGGING" resource-path="/net/sf/tapestry/inspector/Logging_Np1.gif"/>
+  <private-asset name="LOGGING-selected" resource-path="/net/sf/tapestry/inspector/Logging_Hp3.gif"/>
+  <private-asset name="LOGGING-focus" resource-path="/net/sf/tapestry/inspector/Logging_NRp2.gif"/>
+  <private-asset name="LOGGING-selected-focus" resource-path="/net/sf/tapestry/inspector/Logging_HRp4.gif"/>
+  <private-asset name="LOGGING-banner" resource-path="/net/sf/tapestry/inspector/Logging_NBanner.gif"/>
+</specification>

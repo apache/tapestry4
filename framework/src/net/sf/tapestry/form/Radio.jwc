@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="net.sf.tapestry.form.Radio" allow-body="no">
+
+  <description>
+  A single possible selection within a RadioGroup.
+  </description>
+  
+  <parameter name="value"/>
+  <parameter name="disabled"/>
+  
+  <reserved-parameter name="checked"/>
+  <reserved-parameter name="type"/>
+  <reserved-parameter name="name"/>
+  
+</specification>

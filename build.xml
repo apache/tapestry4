@@ -182,7 +182,7 @@
 	 
 	<mkdir dir="${dist.src.dir}"/>
 	 
-	<jar jarfile="${dist.src.dir}/com.primix.tapestry-src.jar"
+	<jar jarfile="${dist.src.dir}/net.sf.tapestry-src.jar"
 		basedir="framework"/>
 	<jar jarfile="${dist.src.dir}/net.sf.tapestry.contrib-src.jar"
 		basedir="contrib"/>
@@ -291,8 +291,7 @@ longfile="gnu"/>
 	
 	<delete quiet="true">
 		<fileset dir="${jboss.lib.ext.dir}">
-			<include name="net.sf.tapestry.contrib*.jar"/>
-			<include name="com.primix.tapestry*.jar"/>
+			<include name="*tapestry*.jar"/>
 			<exclude name="*-${framework.version}.jar"/>
 		</fileset>
 	</delete>

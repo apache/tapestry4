@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+
+<!DOCTYPE specification PUBLIC 
+  "-//Howard Ship//Tapestry Specification 1.1//EN" 
+  "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd" [
+  
+<!ENTITY EvenOdd "net.sf.tapestry.inspector.EvenOdd">
+
+]>
+  
+<specification class="net.sf.tapestry.inspector.ShowSpecification">
+
+  <bean name="formalClass" class="&EvenOdd;"/>
+  <bean name="informalClass" class="&EvenOdd;"/>
+  <bean name="assetClass" class="&EvenOdd;"/>
+  <bean name="propertyClass" class="&EvenOdd;"/>
+  <bean name="componentClass" class="&EvenOdd;"/>
+  <bean name="beanClass" class="&EvenOdd;"/>
+
+  <component id="insertSpecificationPath" type="Insert">
+    <binding name="value" property-path="inspectedSpecification.specificationResourcePath"/>
+  </component>
+  
+  <component id="showComponentDescription" type="/net/sf/tapestry/inspector/ShowDescription.jwc">
+    <binding name="description" property-path="inspectedSpecification.description"/>
+  </component>
+  
+  <component id="insertJavaClass" type="Insert">
+    <binding name="value" property-path="inspectedComponent.class.name"/>
+  </component>
+  
+  <component id="insertAllowInformal" type="Insert">
+    <binding name="value" property-path="inspectedSpecification.allowInformalParameters"/>
+  </component>
+  
+  <component id="insertAllowBody" type="Insert">
+    <binding name="value" property-path="inspectedSpecification.allowBody"/>
+  </component>
+  
+  <component id="ifFormalParameters" type="Conditional">
+    <binding name="condition" property-path="formalParameterNames"/>
+  </component>
+  
+  <component id="e-formal" type="Foreach">
+    <binding name="source" property-path="formalParameterNames"/>
+    <binding name="value" property-path="parameterName"/>
+    <static-binding name="element">tr</static-binding>
+    <binding name="class" property-path="beans.formalClass.next"/>
+  </component>
+  
+  <component id="insertFormalName" type="Insert">
+    <binding name="value" property-path="parameterName"/>
+  </component>
+
+  <component id="showParameterDescription" type="/net/sf/tapestry/inspector/ShowDescription.jwc">
+    <binding name="description" property-path="parameterSpecification.description"/>
+  </component>
+  
+  <component id="insertFormalRequired" type="Insert">
+    <binding name="value" property-path="parameterSpecification.required"/>
+  </component>
+  
+  <component id="insertFormalType" type="Insert">
+    <binding name="value" property-path="parameterSpecification.type"/>
+  </component>
+  
+  <component id="insertFormalBinding" type="Insert">
+    <binding name="value" property-path="binding"/>
+  </component>
+  
+  <component id="ifInformalParameters" type="Conditional">
+    <binding name="condition" property-path="informalParameterNames"/>
+  </component>
+  
+  <component id="e-informal" type="Foreach">
+    <binding name="source" property-path="informalParameterNames"/>
+    <binding name="value" property-path="parameterName"/>
+    <static-binding name="element">tr</static-binding>
+    <binding name="class" property-path="beans.informalClass.next"/>
+  </component>
+
+  <component id="insertInformalName" type="Insert">
+    <binding name="value" property-path="parameterName"/>
+  </component>
+  
+  <component id="insertInformalBinding" type="Insert">
+    <binding name="value" property-path="binding"/>
+  </component>
+  
+  <component id="ifAssets" type="Conditional">
+    <binding name="condition" property-path="assetNames"/>
+  </component>
+  
+  <component id="e-asset" type="Foreach">
+    <binding name="source" property-path="assetNames"/>
+    <binding name="value" property-path="assetName"/>
+    <static-binding name="element">tr</static-binding>
+    <binding name="class" property-path="beans.assetClass.next"/>
+  </component>
+  
+  <component id="insertAssetName" type="Insert">
+    <binding name="value" property-path="assetName"/>
+  </component>
+  
+  <component id="insertAssetValue" type="Insert">
+    <binding name="value" property-path="asset"/>
+  </component>
+
+  <component id="ifComponents" type="Conditional">
+    <binding name="condition" property-path="sortedComponents"/>
+  </component>
+
+  <component id="e-components" type="Foreach">
+    <binding name="source" property-path="sortedComponents"/>
+    <binding name="value" property-path="component"/>
+    <static-binding name="element">tr</static-binding>
+    <binding name="class" property-path="beans.componentClass.next"/>
+  </component>
+
+  <component id="selectComponent" type="Direct">
+    <binding name="listener" property-path="page.listeners.selectComponent"/>
+    <binding name="context" property-path="component.idPath"/>
+  </component>
+
+  <component id="insertComponentId" type="Insert">
+    <binding name="value" property-path="component.id"/>
+  </component>
+
+  <component id="insertComponentType" type="Insert">
+    <binding name="value" property-path="componentType"/>
+  </component>
+
+  <component id="ifProperties" type="Conditional">
+    <binding name="condition" property-path="sortedPropertyNames"/>
+  </component>
+
+  <component id="e-property" type="Foreach">
+    <binding name="source" property-path="sortedPropertyNames"/>
+    <binding name="value" property-path="propertyName"/>
+    <static-binding name="element">tr</static-binding>
+    <binding name="class" property-path="beans.propertyClass.next"/>
+  </component>
+  
+  <component id="insertPropertyName" type="Insert">
+    <binding name="value" property-path="propertyName"/>
+  </component>
+  
+  <component id="insertPropertyValue" type="Insert">
+    <binding name="value" property-path="propertyValue"/>
+  </component>
+  
+  <component id="ifBeans" type="Conditional">
+  	<binding name="condition" property-path="beanNames"/>
+  </component>
+  
+  <component id="e-bean" type="Foreach">
+  	<binding name="source" property-path="beanNames"/>
+  	<binding name="value" property-path="beanName"/>
+  	<static-binding name="element">tr</static-binding>
+  	<binding name="class" property-path="beans.beanClass.next"/>
+  </component>
+  
+  <component id="insertBeanName" type="Insert">
+  	<binding name="value" property-path="beanName"/>
+  </component>
+  
+  <component id="insertBeanClass" type="Insert">
+  	<binding name="value" property-path="beanSpecification.className"/>
+  </component>
+  
+  <component id="insertBeanLifecycle" type="Insert">
+  	<binding name="value" property-path="beanSpecification.lifecycle.enumerationId"/>
+  </component>
+  	
+</specification>

@@ -26,13 +26,16 @@
 
 package net.sf.tapestry.junit.valid;
 
-import com.primix.tapestry.IRender;
-import com.primix.tapestry.valid.IField;
-import com.primix.tapestry.valid.IFieldTracking;
-import com.primix.tapestry.valid.RenderString;
-import com.primix.tapestry.valid.ValidationConstraint;
-import com.primix.tapestry.valid.ValidationDelegate;
-import com.primix.tapestry.valid.ValidatorException;
+import net.sf.tapestry.valid.IField;
+import net.sf.tapestry.valid.IFieldTracking;
+import net.sf.tapestry.valid.RenderString;
+import net.sf.tapestry.valid.ValidationConstraint;
+import net.sf.tapestry.valid.ValidationDelegate;
+import net.sf.tapestry.valid.ValidatorException;
+
+import net.sf.tapestry.*;
+import net.sf.tapestry.IRender;
+
 import java.util.List;
 import junit.framework.TestCase;
 

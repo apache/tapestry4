@@ -29,20 +29,23 @@ package net.sf.tapestry.junit.valid;
 import java.util.Collection;
 import java.util.Map;
 
-import com.primix.tapestry.IAsset;
-import com.primix.tapestry.IBinding;
-import com.primix.tapestry.IComponent;
-import com.primix.tapestry.IForm;
-import com.primix.tapestry.IPage;
-import com.primix.tapestry.IPageLoader;
-import com.primix.tapestry.IRender;
-import com.primix.tapestry.IRequestCycle;
-import com.primix.tapestry.IResponseWriter;
-import com.primix.tapestry.PageLoaderException;
-import com.primix.tapestry.RequestCycleException;
-import com.primix.tapestry.spec.ComponentSpecification;
-import com.primix.tapestry.valid.IValidator;
-import com.primix.tapestry.valid.IField;
+import net.sf.tapestry.valid.IValidator;
+import net.sf.tapestry.valid.IField;
+
+import net.sf.tapestry.*;
+import net.sf.tapestry.IAsset;
+import net.sf.tapestry.IBinding;
+import net.sf.tapestry.IComponent;
+import net.sf.tapestry.IForm;
+import net.sf.tapestry.IPage;
+import net.sf.tapestry.IPageLoader;
+import net.sf.tapestry.IRender;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.IMarkupWriter;
+import net.sf.tapestry.PageLoaderException;
+import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.spec.*;
+import net.sf.tapestry.spec.ComponentSpecification;
 
 /**
  *  Used as a stand-in for a real component when testing the {@link IValidator}
@@ -173,7 +176,7 @@ public class TestingField implements IField
 	{
 	}
 
-	public void renderWrapped(IResponseWriter writer, IRequestCycle cycle)
+	public void renderWrapped(IMarkupWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
 	}
@@ -194,7 +197,7 @@ public class TestingField implements IField
 	{
 	}
 
-	public void render(IResponseWriter writer, IRequestCycle cycle)
+	public void render(IMarkupWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
 	}

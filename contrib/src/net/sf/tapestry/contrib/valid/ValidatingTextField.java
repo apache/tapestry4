@@ -30,9 +30,11 @@ import com.primix.tapestry.*;
 import com.primix.tapestry.components.*;
 import com.primix.tapestry.form.*;
 
-import com.primix.tapestry.valid.IValidator;
-import com.primix.tapestry.valid.StringValidator;
-import com.primix.tapestry.valid.ValidField;
+import net.sf.tapestry.valid.IValidator;
+import net.sf.tapestry.valid.StringValidator;
+import net.sf.tapestry.valid.ValidField;
+
+import net.sf.tapestry.*;
 
 import java.util.*;
 import java.text.*;

@@ -28,6 +28,9 @@ package tutorial.portal;
 
 import com.primix.tapestry.*;
 
+import net.sf.tapestry.*;
+import net.sf.tapestry.html.*;
+
 /**
  *  This is much simpler than the others, and mostly is here to demonstrate
  *  how to include {@link com.primix.tapestry.link.Direct} links in a Portlet

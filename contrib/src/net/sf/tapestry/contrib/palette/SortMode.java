@@ -28,6 +28,8 @@ package net.sf.tapestry.contrib.palette;
 
 import com.primix.tapestry.util.*;
 
+import net.sf.tapestry.util.*;
+
 /**
  *  Defines different sorting strategies for the {@link Palette} component.
  *

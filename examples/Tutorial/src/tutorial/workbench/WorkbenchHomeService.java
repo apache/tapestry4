@@ -27,11 +27,14 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 
-import com.primix.tapestry.IEngineServiceView;
-import com.primix.tapestry.IRequestCycle;
-import com.primix.tapestry.RequestCycleException;
-import com.primix.tapestry.ResponseOutputStream;
-import com.primix.tapestry.engine.HomeService;
+
+import net.sf.tapestry.*;
+import net.sf.tapestry.IEngineServiceView;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.ResponseOutputStream;
+import net.sf.tapestry.engine.*;
+import net.sf.tapestry.engine.HomeService;
 
 /**
  *  Special version of the home service used to reset the visit tab when re-entering

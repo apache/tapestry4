@@ -29,6 +29,9 @@ package tutorial.portal;
 import com.primix.tapestry.*;
 import com.primix.tapestry.components.*;
 
+import net.sf.tapestry.*;
+import net.sf.tapestry.components.*;
+
 /**
  *  A Portlet component knows how to render the frame around a portlet block,
  *  as well as manage the controls (close and minimize/maximize).
@@ -58,7 +61,7 @@ public class Portlet extends BaseComponent
 		return model;
 	}
 
-	public void render(IResponseWriter writer, IRequestCycle cycle)
+	public void render(IMarkupWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
 		try

@@ -24,10 +24,12 @@
  
 package tutorial.workbench;
 
-import com.primix.tapestry.BasePage;
-import com.primix.tapestry.IRequestCycle;
-import com.primix.tapestry.RedirectException;
-import com.primix.tapestry.RequestCycleException;
+import net.sf.tapestry.*;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.RedirectException;
+import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.html.*;
+import net.sf.tapestry.html.BasePage;
 
 /**
  *  Page to demonstrate redirect from a listener method.

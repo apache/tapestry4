@@ -25,14 +25,17 @@ package tutorial.workbench.chart;
 
 import java.io.InputStream;
 
-import com.primix.tapestry.Gesture;
-import com.primix.tapestry.IAsset;
-import com.primix.tapestry.IComponent;
-import com.primix.tapestry.IEngine;
-import com.primix.tapestry.IEngineService;
-import com.primix.tapestry.IRequestCycle;
-import com.primix.tapestry.ResourceUnavailableException;
-import com.primix.tapestry.engine.AbstractService;
+
+import net.sf.tapestry.*;
+import net.sf.tapestry.Gesture;
+import net.sf.tapestry.IAsset;
+import net.sf.tapestry.IComponent;
+import net.sf.tapestry.IEngine;
+import net.sf.tapestry.IEngineService;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.ResourceUnavailableException;
+import net.sf.tapestry.engine.*;
+import net.sf.tapestry.engine.AbstractService;
 
 /**
  *  An asset used with the {@link ChartService}.  

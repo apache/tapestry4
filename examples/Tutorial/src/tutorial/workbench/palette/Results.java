@@ -27,6 +27,10 @@
 package tutorial.workbench.palette;
 
 import com.primix.tapestry.*;
+
+import net.sf.tapestry.*;
+import net.sf.tapestry.html.*;
+
 import java.util.*;
 
 /**

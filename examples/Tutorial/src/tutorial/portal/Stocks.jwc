@@ -5,9 +5,9 @@
     
 <specification class="tutorial.portal.Stocks">
 
-  <bean name="delegate" class="com.primix.tapestry.valid.ValidationDelegate"/>
+  <bean name="delegate" class="net.sf.tapestry.valid.ValidationDelegate"/>
     
-<bean name="rowClass" class="com.primix.tapestry.inspector.EvenOdd"/>
+<bean name="rowClass" class="net.sf.tapestry.inspector.EvenOdd"/>
 
 <component id="content" type="Block"/>
 
@@ -45,7 +45,7 @@
 <component id="inputTickerId" type="ValidField">
   <binding name="value" property-path="tickerId"/>
   <static-binding name="displayName">Ticker ID</static-binding>
-  <field-binding name="validator" field-name="com.primix.tapestry.valid.StringValidator.REQUIRED"/>
+  <field-binding name="validator" field-name="net.sf.tapestry.valid.StringValidator.REQUIRED"/>
   <static-binding name="displayWidth">4</static-binding>
   <static-binding name="maximumLength">4</static-binding>
   <static-binding name="title">
