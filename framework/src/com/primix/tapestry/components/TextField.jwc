@@ -28,7 +28,7 @@
 		</parameter>
 		
 		<parameter>
-			<name>maximumWidth</name>
+			<name>maximumLength</name>
 			<java-type>java.lang.Integer</java-type>
 		</parameter>
 		
