@@ -1,5 +1,5 @@
 User-Agent: *
 Disallow: /vlib
-Disallow: /tutorial
+Disallow: /Tutorial
 
 
