@@ -111,7 +111,6 @@ public class Option extends AbstractComponent
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
         String value;
-        String label = null;
         Select select;
         boolean rewinding;
 
@@ -142,7 +141,7 @@ public class Option extends AbstractComponent
 
             generateAttributes(writer, cycle);
 
-            if (label != null)
+            if (label != null) 
                 writer.print(label);
 
             writer.println();
