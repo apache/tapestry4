@@ -109,8 +109,12 @@
       <!-- Jetty can get easily confused (under NT) unless this is turned off. -->
       <sysproperty key="org.mortbay.util.FileResource.checkAliases" value="false"/>
 
+
+      <!--
+      This is enabled only if we want to use the private asset service
       <sysproperty key="net.sf.tapestry.asset.dir" value="${private.dir}"/>
       <sysproperty key="net.sf.tapestry.asset.URL" value="/private"/>
+      -->
     </java>
   </target>
 
