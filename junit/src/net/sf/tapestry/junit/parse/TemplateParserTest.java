@@ -31,6 +31,7 @@ package net.sf.tapestry.junit.parse;
 import junit.framework.*;
 import com.primix.tapestry.parse.*;
 import java.io.*;
+import java.util.*;
 
 /**
  *  Tests for the Tapestry HTML template parser.
@@ -44,6 +45,20 @@ public class TemplateParserTest
 	extends TestCase
 {
 	private TemplateParser parser;
+	
+	private static class ParserDelegate
+		implements ITemplateParserDelegate
+	{
+		public boolean getKnownComponent(String componentId)
+		{
+			return true;
+		}
+		
+		public boolean getAllowBody(String componentId)
+		{
+			return true;
+		}
+	}
 	
 	public TemplateParserTest(String name)
 	{
@@ -65,13 +80,14 @@ public class TemplateParserTest
 		parser = null;
 	}	
 	
-	protected TemplateToken[] run(char[] templateData, String resourcePath)
+	protected TemplateToken[] run(char[] templateData, ITemplateParserDelegate delegate, String resourcePath)
 		throws TemplateParseException
 	{
-		return parser.parse(templateData, resourcePath);
+		return parser.parse(templateData, delegate, resourcePath);
 	}
 	
-	protected TemplateToken[] run(InputStream stream, String resourcePath)
+	protected TemplateToken[] run(InputStream stream, 
+			ITemplateParserDelegate delegate, String resourcePath)
 		throws TemplateParseException
 	{
 		StringBuffer buffer = new StringBuffer();
@@ -97,15 +113,25 @@ public class TemplateParserTest
 			throw new AssertionFailedError("Unable to read from stream.");
 		}
 		
-		return run(buffer.toString().toCharArray(), resourcePath);
+		return run(buffer.toString().toCharArray(), delegate, resourcePath);
 	}
 	
 	protected TemplateToken[] run(String file)
 		throws TemplateParseException
 	{
+		return run(file, new ParserDelegate());
+	}
+	
+	
+	protected TemplateToken[] run(String file, ITemplateParserDelegate delegate)
+		throws TemplateParseException
+	{
 		InputStream stream = getClass().getResourceAsStream(file);
 		
-		return run(stream, file);
+		if (stream == null)
+			throw new TemplateParseException("File " + file + " not found.");
+		
+		return run(stream, delegate, file);
 	}
 	
 	protected void assertTextToken(TemplateToken token, int startIndex, int endIndex)
@@ -132,11 +158,16 @@ public class TemplateParserTest
 		assertEquals("Parsed token count.", count, tokens.length);
 	}
 	
-	private void testFailure(String file, String message)
+	private void runFailure(String file, String message)
+	{
+		runFailure(file, new ParserDelegate(), message);
+	}
+	
+	private void runFailure(String file, ITemplateParserDelegate delegate, String message)
 	{
 		try
 		{
-			run(file);
+			run(file, delegate);
 			
 			throw new AssertionFailedError("Invalid document " + file + " parsed without exception.");
 		}
@@ -220,14 +251,14 @@ public class TemplateParserTest
 	{
 		TemplateToken[] tokens = run("CommentsRemoved.html");
 		
-		assertTokenCount(tokens, 9);
+		assertTokenCount(tokens, 7);
 		assertTextToken(tokens[0], 0, 90);
-		assertTextToken(tokens[1], 165, 220);
+		assertTextToken(tokens[1], 169, 220);
 		assertOpenToken(tokens[2], "e");
-		assertTextToken(tokens[3], 278, 280);
-		assertOpenToken(tokens[4], "insertName");
-		
-		// That's probably enough ...		
+		assertOpenToken(tokens[3], "insertName");
+		assertCloseToken(tokens[4]);
+		assertTextToken(tokens[5], 303, 303);
+		assertCloseToken(tokens[6]);
 	}
 	
 	public void testStartWithStaticTag()
@@ -242,35 +273,160 @@ public class TemplateParserTest
 	
 	public void testUnterminatedCommentFailure()
 	{
-		testFailure("UnterminatedComment.html", "Comment on line 3 did not end.");
+		runFailure("UnterminatedComment.html", "Comment on line 3 did not end.");
 	}
 	
 	public void testUnclosedOpenTagFailure()
 	{
-		testFailure("UnclosedOpenTag.html", "Tag <body> on line 4 is never closed.");
+		runFailure("UnclosedOpenTag.html", "Tag <body> on line 4 is never closed.");
 	}
 	
 	public void testMissignAttributeValueFailure()
 	{
-		testFailure("MissingAttributeValue.html",
+		runFailure("MissingAttributeValue.html",
 				"Tag <img> is missing a value for attribute src on line 9.");
 	}
 	
 	public void testMissingJwcIdFailure()
 	{
-		testFailure("MissingJwcId.html",
+		runFailure("MissingJwcId.html",
 				"Tag <jWc> on line 7 does not specify an id.");
 	}
 	
 	public void testIncompleteCloseFailure()
 	{
-		testFailure("IncompleteClose.html",
+		runFailure("IncompleteClose.html",
 				"Incomplete close tag on line 6.");
 	}
 	
 	public void testMismatchedCloseTagsFailure()
 	{
-		testFailure("MismatchedCloseTags.html",
+		runFailure("MismatchedCloseTags.html",
 				"Closing tag </th> on line 9 does not have a matching opening tag.");
+	}
+	
+	public void testInvalidDynamicNestingFailure()
+	{
+		runFailure("InvalidDynamicNesting.html", 
+				"Closing tag </body> on line 12 is improperly nested with tag <jwc> on line 8.");
+	}
+	
+	public void testUnknownComponentIdFailure()
+	{
+		ITemplateParserDelegate delegate = 
+			new ITemplateParserDelegate()
+		{
+			public boolean getKnownComponent(String componentId)
+			{
+				return !componentId.equals("row");
+			}
+			
+			public boolean getAllowBody(String componentId)
+			{
+				return true;
+			}
+		};
+		
+		runFailure("Complex.html", delegate, 
+				"Tag <tr> on line 11 references unknown component id 'row'.");
+	}
+	
+	public void testBasicRemove()
+		throws TemplateParseException
+	{
+		TemplateToken[] tokens = run("BasicRemove.html");
+		
+		assertTokenCount(tokens, 11);
+		assertTextToken(tokens[0], 0, 126);
+		assertTextToken(tokens[1], 197, 287);
+		assertTextToken(tokens[2], 345, 346);
+		assertOpenToken(tokens[3], "e");
+		assertTextToken(tokens[4], 359, 361);
+		assertOpenToken(tokens[5], "row");
+		assertTextToken(tokens[6], 378, 398);
+		assertCloseToken(tokens[7]);
+		assertTextToken(tokens[8], 404, 405);
+		assertCloseToken(tokens[9]);
+		assertTextToken(tokens[10], 412, 425);
+	}
+	
+	public void testBodyRemove()
+		throws TemplateParseException
+	{
+		ITemplateParserDelegate delegate = new ITemplateParserDelegate()
+		{
+			public boolean getKnownComponent(String id)
+			{
+				return true;
+			}
+			
+			public boolean getAllowBody(String id)
+			{
+				return id.equals("form");
+			}
+		};
+		
+		TemplateToken[] tokens = run("BodyRemove.html", delegate);
+		
+		assertTokenCount(tokens, 8);
+		assertOpenToken(tokens[1], "form");
+		assertOpenToken(tokens[3], "inputType");
+		assertCloseToken(tokens[4]);
+		assertTextToken(tokens[5], 253, 254);
+		assertCloseToken(tokens[6]);		
+	}
+	
+	public void testRemovedComponentFailure()
+	{
+		runFailure("RemovedComponent.html",
+				"Tag <jwc> on line 5 is a dynamic component, " +
+					"and may not appear inside an ignored block.");
+	}
+	
+	public void testNestedRemoveFailure()
+	{
+		runFailure("NestedRemove.html",
+				"Tag <jwc> on line 4 should be ignored, but is already inside " +
+					"an ignored block (ignored blocks may not be nested).");
+	}
+	
+	public void testInvalidJwcAttributeFailure()
+	{
+		runFailure("InvalidJwcAttribute.html",
+				"Tag <jwc> on line 5 may only contain attribute 'id'.");
+	}
+	
+	public void testBasicContent()
+		throws TemplateParseException
+	{
+		TemplateToken[] tokens = run("BasicContent.html");
+		
+		assertTokenCount(tokens, 4);
+		assertTextToken(tokens[0], 103, 164);
+		assertOpenToken(tokens[1], "nested");
+		assertCloseToken(tokens[2]);
+		assertTextToken(tokens[3], 183, 189);
+	}
+	
+	public void testIgnoredContentFailure()
+	{
+		runFailure("IgnoredContent.html",
+				"Tag <td> on line 7 is the template content, and may not be in an ignored block.");
+	}
+	
+	public void testTagAttributes()
+		throws TemplateParseException
+	{
+		TemplateToken[] tokens = run("TagAttributes.html");
+		
+		assertTokenCount(tokens, 5);
+		assertOpenToken(tokens[1], "tag");
+		
+		Map a = tokens[1].getAttributes();
+		
+		assertEquals("Attribute count", 3, a.size());
+		assertEquals("zip", a.get("class"));
+		assertEquals("right", a.get("align"));
+		assertEquals("#ff00ff", a.get("color"));
 	}
 }

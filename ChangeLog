@@ -1,3 +1,15 @@
+* Jun 29 2001 hship
+
+framework:
+- Change TemplateParser to:
+  - skip whitespace following end of comment
+  - ignore body of tags where the component doesn't allow a body
+  - handle the magic jwcids $remove$ and $content$
+  - extract HTML attributes from the template and use a static bindings
+- Expose more PageLoader methods (for accessing cached bindings, etc.) in IPageLoader
+
+[ #437276 ] Valid Example HTML Bugs
+
 * Jun 28 2001 hship
 
 Update documentation (mostly about the new HTML parser).

@@ -56,7 +56,7 @@ public class PageLoader
 	private IEngine engine;
 	private IResourceResolver resolver;
 	private ISpecificationSource specificationSource;
-	private PageSource pageSource;
+	private IPageSource pageSource;
 
 	/**
 	 * The locale of the application, which is also the locale
@@ -93,7 +93,7 @@ public class PageLoader
 	*
 	*/
 
-	public PageLoader(PageSource pageSource)
+	public PageLoader(IPageSource pageSource)
 	{
 		this.pageSource = pageSource;
 	}
