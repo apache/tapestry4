@@ -24,13 +24,13 @@ TABLE.content
   	border-color : Black;
 	border-style : solid;
 	border-width : thin;
-	border-top-width : 0;
-	border-bottom-width : 2;
-	border-right-width : 2;
-	border-left-width : 0;
+	border-top-width : 0px;
+	border-bottom-width : 2px;
+	border-right-width : 2px;
+	border-left-width : 0px;
 	font-size : smaller;
 	clear: all;
-	width: 700;
+	width: 700px;
 }
 
 
@@ -42,7 +42,7 @@ TABLE.tabs TD
 BODY
 {
   background-color: #808080;
-  margin: 2;
+  margin: 2px;
   font-family : Trebuchet MS, serif;
 }
 
@@ -52,10 +52,10 @@ TABLE.requestDebug
   	border-color : Black;
 	border-style : solid;
 	border-width : thin;
-	border-top-width : 0;
-	border-bottom-width : 2;
-	border-right-width : 2;
-	border-left-width : 0;
+	border-top-width : 0px;
+	border-bottom-width : 2px;
+	border-right-width : 2px;
+	border-left-width : 0px;
 	background-color: #839cd1;
 	padding: 0;
 
