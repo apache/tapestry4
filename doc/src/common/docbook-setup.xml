@@ -97,7 +97,19 @@ problems using Team support inside the Eclipse IDE.
         <include name="**/*.png"/>
       </fileset>
     </copy>
+   
+    <echo>
+    
+Generating Printable (Single Page) HTML from ${root.filename}.xml ...
 
+</echo>
+        
+    <style destdir="${html.output.dir}"
+    	style="${docbook.single.xsl}"
+    	processor="trax" 
+    	in="${root.filename}.xml"
+    	out="${html.output.dir}/${root.filename}-Single.html">
+    </style>  
     <echo>
     
 Generating Chunked (Multiple Page) HTML from ${root.filename}.xml ...
@@ -112,18 +124,6 @@ Generating Chunked (Multiple Page) HTML from ${root.filename}.xml ...
     	<param name="root.filename" expression="${root.filename}"/>
 		<param name="use.id.as.filename" expression="1"/>
     </style>
-    
-    <echo>
-    
-Generating Printable (Single Page) HTML from ${root.filename}.xml ...
-
-</echo>
-        
-    <style destdir="${html.output.dir}"
-    	style="${docbook.single.xsl}"
-    	processor="trax" 
-    	in="${root.filename}.xml"
-    	out="${html.output.dir}/${root.filename}-Single.html">
-    </style>    
+  
 </target>
 
