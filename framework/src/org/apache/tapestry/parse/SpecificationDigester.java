@@ -67,6 +67,7 @@ import org.apache.tapestry.util.RegexpMatcher;
 import org.xml.sax.Attributes;
 import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 
 /**
  *  Extension of {@link org.apache.commons.digester.Digester} with additional rules, hooks
@@ -83,6 +84,10 @@ public class SpecificationDigester extends Digester
     private List _documentRules;
     private IResourceLocation _resourceLocation;
     private RegexpMatcher _matcher;
+
+    private Location _lastLocation;
+    private int _lastLine;
+    private int _lastColumn;
 
     /**
      *  Notifications are sent with the very first element.
@@ -171,13 +176,26 @@ public class SpecificationDigester extends Digester
 
     public Location getLocationTag()
     {
-        if (locator == null)
-            return new Location(_resourceLocation);
+        int line = -1;
+        int column = -1;
 
-        return new Location(
-            _resourceLocation,
-            locator.getLineNumber(),
-            locator.getColumnNumber());
+        if (locator != null)
+        {
+            line = locator.getLineNumber();
+            column = locator.getColumnNumber();
+        }
+
+        if (_lastLine != line || _lastColumn != column)
+            _lastLocation = null;
+
+        if (_lastLocation == null)
+        {
+            _lastLine = line;
+            _lastColumn = column;
+            _lastLocation = new Location(_resourceLocation, line, column);
+        }
+
+        return _lastLocation;
     }
 
     public IResourceLocation getResourceLocation()
@@ -188,6 +206,10 @@ public class SpecificationDigester extends Digester
     public void setResourceLocation(IResourceLocation resourceLocation)
     {
         _resourceLocation = resourceLocation;
+
+        _lastLocation = null;
+        _lastLine = -1;
+        _lastColumn = -1;
     }
 
     public RegexpMatcher getMatcher()
@@ -284,5 +306,4 @@ public class SpecificationDigester extends Digester
         }
 
     }
-
 }
