@@ -10,7 +10,12 @@
 	<page name="Home" specification-path="/net/sf/tapestry/junit/mock/app/Home.page"/>
 	<page name="ServiceTest" specification-path="/net/sf/tapestry/junit/mock/app/ServiceTest.page"/>
 	<page name="Register" specification-path="/net/sf/tapestry/junit/mock/app/Register.page"/>
-	
+	<page name="RegisterConfirm" specification-path="/net/sf/tapestry/junit/mock/app/RegisterConfirm.page"/>
+
+
+	<page name="Protected" specification-path="/net/sf/tapestry/junit/mock/app/Protected.page"/>
+	<page name="Guard" specification-path="/net/sf/tapestry/junit/mock/app/Guard.page"/>
+		
 	<library id="lib" specification-path="/net/sf/tapestry/junit/mock/lib/MockLibrary.library"/>
 	
 </application>	
