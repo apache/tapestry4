@@ -1,3 +1,18 @@
+* Aug 1 2001 hship
+
+contrib:
+- Add the MultiplePropertySelection component, provided by Sanjay Munjal
+- Reverse the default layout of the Palette component, and fix some misleading comments
+- Use improved images (from Dennis Healy) for the Palette controls (select, etc.)
+
+framework:
+- Use JDK 1.2 classes URLDecoder and URLEncoder.
+
+doc:
+- Get the DevelopersGuide working using DocBook XML and Xalan.
+
+[ #446914 ] Reverse default for Palette
+
 * Jul 11 2001 hship
 
 Begin converting tools from DocBook SGML/DSSSL/OpenJade to DocBook XML/XSL/Xalan.

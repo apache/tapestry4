@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2001 by Howard Ship and Primix
  *
  * Primix
  * 311 Arsenal Street
@@ -38,12 +38,12 @@ import java.util.*;
 /**
  *  A component used to make a number of selections from a list.  The general look
  *  is a pair of &lt;select&gt; elements.  with a pair of buttons between them.
- *  The left element is a list of values that can be selected.  The buttons move
- *  values from the left column ("available") to the right column ("selected").
+ *  The right element is a list of values that can be selected.  The buttons move
+ *  values from the right column ("available") to the left column ("selected").
  *
  *  <p>This all takes a bit of JavaScript to accomplish (quite a bit), which means
- *  a {@link Body} component must wrap the Palette.  In addition, the Palette
- *  component is not compatible with Netscape Navigator 4.x.
+ *  a {@link Body} component must wrap the Palette. If JavaScript is not enabled
+ *  in the client browser, then the user will be unable to make (or change) any selections.
  *
  *  <p><table border=1>
  * <tr> 
@@ -124,8 +124,8 @@ import java.util.*;
  *		<td>R</td>
  *		<td>false</td>
  *		<td>If true, then the normal orientation of the
- *  Palette is changed, such that the list of available items
- *  is on the LEFT and the selected items are on the RIGHT.  This
+ *  Palette is reversed, such that the list of available items
+ *  is on the RIGHT and the selected items are on the LEFT.  This
  *  may involve selecting alternate images for the select and de-select
  *  buttons since they incorporate arrows. </td> </tr>
  *
@@ -146,9 +146,16 @@ import java.util.*;
  *  with the component.  This allows the look and feel to be customized relatively easily.
  *  Note that for the first four (selectImage through deselectImage), the images provided
  *  must coordinate with the mirror parameter; that is, if mirror is true, then the images
- *  should have an arrow pointing right for select and left for deselect.  When using the
+ *  should have an arrow pointing left for select and right for deselect.  When using the
  *  default images, the component automatically selects an internal image appropriate
  *  for mirroring.
+ *
+ *  <p>The most common reason to replace the images is to deal with backgrounds.  The default
+ *  images are anti-aliased against a white background.  If a colored or patterned background
+ *  is used, the default images will have an ugly white fringe.  Until all browsers have full
+ *  support for PNG (which has a true alpha channel), it is necessary to customize the images
+ *  to match the background.
+ *
  *		</td> </tr>
  *
  * </table>
@@ -232,7 +239,7 @@ public class Palette
 	private IResponseWriter selectedWriter;
 	
 	/**
-	 *  A cached copy if the script used with the component.
+	 *  A cached copy of the script used with the component.
 	 *
 	 */
 	
@@ -614,26 +621,25 @@ public class Palette
 	}
 	
 	/**
-	 *  Returns the selected header block if mirrored, or the available
+	 *  Returns the available header block if mirrored, or the selected
 	 *  header block normally.
 	 *
 	 */
 	
 	public Block getRightHeaderBlock()
 	{
-		return getHeaderBlock(mirrored);
+		return getHeaderBlock(!mirrored);
 	}
 	
 	/**
-	 *  Returns the available header block if mirrored, or the selected
+	 *  Returns the selected header block if mirrored, or the available
 	 *  header block normally.
 	 *
 	 */
 	
 	public Block getLeftHeaderBlock()
 	{
-		// Return the selected block normally, or the available block if mirrored.
-		return getHeaderBlock(!mirrored);
+		return getHeaderBlock(mirrored);
 	}
 	
 	/**
@@ -695,6 +701,13 @@ public class Palette
 		availableWriter.end();
 	}
 	
+	/**
+	 *  Renders the left select by closing the nested writer for the left side.
+	 *  This normally the list of available options, but will be the list
+	 *  of selected options (if mirrored).
+	 *
+	 */
+	
 	public IRender getLeftSelectDelegate()
 	{
 		return new IRender()
@@ -704,17 +717,22 @@ public class Palette
 			{
 				if (mirrored)
 				{
-					availableWriter.close();
-					availableWriter = null;
-				}
-				else
-				{
 					selectedWriter.close();
 					selectedWriter = null;
+				}
+				else
+				{	
+					availableWriter.close();
+					availableWriter = null;				
 				}
 			}
 		};
 	}
+	
+	/**
+	 *  Like {@link #getLeftSelectDelegate()}, but for the right column.
+	 *
+	 */
 	
 	public IRender getRightSelectDelegate()
 	{
@@ -725,13 +743,13 @@ public class Palette
 			{
 				if (mirrored)
 				{
-					selectedWriter.close();
-					selectedWriter = null;
+					availableWriter.close();
+					availableWriter = null;
 				}
 				else
 				{
-					availableWriter.close();
-					availableWriter = null;
+					selectedWriter.close();
+					selectedWriter = null;
 				}
 			}
 		};

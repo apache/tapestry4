@@ -3,6 +3,7 @@
 PROJECT_NAME = net.sf.tapestry.contrib
 
 PACKAGES = \
+	net.sf.tapestry.contrib.form \
 	net.sf.tapestry.contrib.palette
 	
 PROJ_CLASSPATH = \
@@ -21,7 +22,7 @@ INSTALL_DIR = ../lib
 JAVADOC_DIR = api
 
 JAVADOC_OPT = \
-	-version -author -splitindex -windowtitle "Tapestry Contrib API " \
+	-version -author -splitindex -windowtitle "Tapestry Contrib API" \
 	-link http://java.sun.com/j2se/1.3/docs/api \
 	-link http://java.sun.com/j2ee/j2sdkee/techdocs/api \
 	-link http://jakarta.apache.org/log4j/docs/api \

@@ -9,7 +9,7 @@
   <!ENTITY SimpleEngine "<classname>SimpleEngine</classname>">
   <!ENTITY ILifecycle "<classname>ILifecycle</classname>">
   <!ENTITY IRequestCycle "<classname>IRequestCycle</classname>">
-  <!ENTITY IDirectListener "<classname>IDirectListener<classname>">
+  <!ENTITY IDirectListener "<classname>IDirectListener</classname>">
   <!ENTITY IActionListener "<classname>IActionListener</classname>">
   <!ENTITY IValidationDelegate "<classname>IValidationDelegate</classname>">
   <!ENTITY IBinding "<classname>IBinding</classname>">
@@ -77,7 +77,7 @@
       <holder>Primix</holder>
     </copyright>
   </bookinfo>
-  <!-- $Id$ -->
+
   <chapter id="intro">
     <title>Introduction</title>
     <para>Tapestry is a comprehensive web application framework, written in Java.</para>
@@ -101,14 +101,15 @@ This allows developers to concentrate on the business and presentation aspects o
       <para>Most leading web application frameworks are based on some form of 
 scripting.  These frameworks (often bundled into a web or application server) include:
 
-	<simplelist>
-          <member>Sun JavaServer Pages</member>
-          <member>Microsoft Active Server Pages (ASP)</member>
-          <member>Allaire ColdFusion</member>
-          <member>PHP</member>
-          <member>WebMacro</member>
-          <member>FreeMarker</member>
-        </simplelist>
+	<itemizedlist mark="opencircle">
+		<listitem><para><ulink url="http://java.sun.com/products/jsp/">Sun JavaServer Pages</ulink></para></listitem>
+		<listitem><para>Microsoft Active Server Pages</para></listitem>
+		<listitem><para><ulink url="http://www.macromedia.com/software/coldfusion/">Allaire ColdFusion</ulink></para></listitem>
+		<listitem><para><ulink url="http://www.php.net/">PHP</ulink></para></listitem>
+		<listitem><para><ulink url="http://www.webmacro.org/">WebMacro</ulink></para></listitem>
+		<listitem><para><ulink url="http://freemarker.sourceforge.net/">FreeMarker</ulink></para></listitem>
+<listitem><para><ulink url="http://jakarta.apache.org/velocity/index.html">Velocity</ulink></para></listitem>       
+ </itemizedlist>
       </para>
       <para>All of these systems are based on reading an HTML template file
 and performing some kind of processing on it.  The processing is identified by directives ... 
@@ -120,8 +121,7 @@ the scripting language inserted into the HTML.</para>
 JavaServer Page that displays part of a shopping cart.
 </para>
       <informalexample>
-        <programlisting>
-          <emphasis>&lt;%
+        <programlisting><emphasis>&lt;%
 	String userName = (String)session.getAttribute("userName");
 %&gt;</emphasis>
 &lt;h1&gt;Contents of shopping cart for 
@@ -215,8 +215,7 @@ be enabled when the user has items in their shopping cart.</para>
       <para>In the JSP world, this would look something like:
 </para>
       <informalexample>
-        <programlisting>
-          <emphasis>&lt;%
+        <programlisting><emphasis>&lt;%
    boolean showLink;
    String imageURL;
    showLink = applicationObject.getHasCheckoutItems();
@@ -246,8 +245,7 @@ Presumably, this object was provided by a controlling servlet, or placed into th
 The corresponding Tapestry HTML template is much simpler:
 </para>
       <informalexample>
-        <programlisting>
-          <emphasis><![CDATA[
+        <programlisting><emphasis><![CDATA[
 <a jwcid="checkoutLink"><img jwcid="checkoutButton"/></a>]]></emphasis>
         </programlisting>
       </informalexample>
@@ -255,8 +253,7 @@ The corresponding Tapestry HTML template is much simpler:
 A bit more goes into the page's specification :
 </para>
       <informalexample id="intro.ex2">
-        <programlisting>
-&lt;component id="checkoutLink" type="Page"&gt; <co id="intro.ex2.co.checkoutLink"/>
+        <programlisting>&lt;component id="checkoutLink" type="Page"&gt; <co id="intro.ex2.co.checkoutLink"/>
   &lt;static-binding name="page"&gt;Checkout&lt;/static-binding&gt;
   &lt;binding name="disabled" property-path="visit.cartEmpty"/&gt; <co id="intro.ex2.co.link-disabled"/>
 &lt;/component&gt;
@@ -477,7 +474,7 @@ As Tapestry continues to develop, new features will be added.  On the drawing bo
       </para>
     </section>
   </chapter>
-  <!-- $Id$ -->
+
   <chapter id="webapp">
     <title>Web Applications</title>
     <para>
@@ -554,7 +551,7 @@ They are also responsible for interpreting the same URLs when they are later
 triggered from the client web browser.
 </para>
   </chapter>
-  <!-- $Id$ -->
+
   <chapter id="components">
     <title>Tapestry Components</title>
     <para>
@@ -684,7 +681,7 @@ are added as additional HTML attributes (there are a few special exceptions, suc
 Informal parameters do have some limitations.  Informal parameters that conflict with the names of
 any formal parameters, or with any the HTML attributes generated directly by the component, are silently
 ommitted.  The comparison is case-insensitve.  Thus, for a &Direct; component, you can not change
-the <varname>href</varname> attribute, even if you supply a <varname>Href</varname> (or other variation) attribute.
+the <varname>href</varname> attribute, even if you supply a <varname>Href</varname> (or other variation) informal parameter.
 </para>
       <para>
 Not all Tapestry components even allow informal parameters; this is explicitly 
@@ -728,7 +725,7 @@ embedded inside a component named <varname>border</varname>, embedded inside som
 </para>
       <para>
 Tapestry components are "black boxes".  They have a set of parameters that may 
-be bound, but their internals, how they are implemented, is not revealed.
+be bound, but their internals, how they are implemented, are not revealed.
 </para>
       <para>
 Primitive components may not embed other components, or even 
@@ -776,13 +773,13 @@ Identifying a Tapestry component is accomplished by adding a <varname>jwcid</var
 </programlisting>
       </informalexample>
       <para>
-Most often, the tag chosen is <sgmltag class="starttag">span</sgmltag>, though (in fact) Tapestry
-completely ignores the tag, except to make sure the open and close tags balance.
+Most often, the HTML element chosen is <sgmltag class="starttag">span</sgmltag>, though (in fact) Tapestry
+completely ignores the element, except to make sure the open and close tags balance.
 </para>
       <para>
 The parser used by Tapestry is relatively forgiving about case 
-and white space.  Also, the component id can be enclosed in 
-double quotes (as above) or single quotes.
+and white space.  Also, the component id (and any other attributes) can be enclosed in 
+double quotes (as above), single quotes, or be left unquoted.
 </para>
       <para>
 When using the <varname>jwcid</varname> attribute, you are free to specify additional
@@ -808,7 +805,8 @@ the &jwc-tag; element.  The &jwc-tag; element has two forms:
       <note>
         <para>
 	Through Tapestry release 1.0.1, only the &jwc-tag; tag was supported 
-	in HTML templates.  Support for the <varname>jwcid</varname> attribute was
+	in HTML templates.  Support for the <varname>jwcid</varname> attribute
+	in arbitrary elements was
 	added in release 1.0.2.
 	</para>
       </note>
@@ -819,9 +817,9 @@ notation.
 </para>
       <para>
 The ability to convert static HTML tags into dynamic tags is really to streamline the 
-<link linkend="components.html-production">integration process</link> 
-(whereby the efforts of HTML designers are 
-converted into Tapestry components and templates).
+<link linkend="components.html-production">integration process</link>,
+the process whereby the efforts of HTML designers are 
+converted into Tapestry components and templates.
 </para>
       <para>
 The start and end tags for Tapestry components must balance properly. This includes cases where the
@@ -839,7 +837,7 @@ Tapestry divides the contents of the HTML template into two categories:
           </listitem>
           <listitem>
             <para>
-		Tapestry components (tags with the <varname>jwcid</varname> attribute, and the &jwc-tag;).
+		Tapestry components (tags with the <varname>jwcid</varname> attribute, ass well as the &jwc-tag; element).
 		The related tags are removed, and the HTML is supplied by the actual
 		components.
 		</para>
@@ -916,7 +914,8 @@ The Home page component has the following HTML template:
 Nothing much doing here on the <b>home</b> page.  Visit one of our other fine 
 pages.
 
-]]><sgmltag class="endtag">jwc</sgmltag></programlisting>
+]]><sgmltag class="endtag">jwc</sgmltag>
+        </programlisting>
       </figure>
       <para>
 In other words, the <varname>border</varname>
@@ -1105,7 +1104,7 @@ cell isn't empty (when previewing the HTML layout).
 </para>
         <informalexample>
           <programlisting>
-   &lt;td&gt;&lt;span jwcid="insertName"&gt;John Doe&lt;/span&gt;&lt;/td&gt;
+&lt;td&gt;&lt;span jwcid="insertName"&gt;John Doe&lt;/span&gt;&lt;/td&gt;
 </programlisting>
         </informalexample>
         <para>
@@ -1121,7 +1120,7 @@ final HTML:
 </para>
         <informalexample>
           <programlisting>
-  &lt;td&gt;Frank N. Furter&lt;/td&gt;
+&lt;td&gt;Frank N. Furter&lt;/td&gt;
 </programlisting>
         </informalexample>
         <para>
@@ -1189,7 +1188,7 @@ is added, to represent the Border component ... much of the HTML is duplicated,
 once from the static HTML, then dynamically from the Border component.
 </para>
         <para>
-To eliminated this problem, Tapestry has a second special <varname>jwcid</varname> attribute: <literal>$content$</literal>.
+To eliminate this problem, Tapestry has a second special <varname>jwcid</varname> attribute: <literal>$content$</literal>.
 Using this special id causes Tapestry to limit its view of the HTML template to just the content inside the tag.  Anything outside
 the defined content is completely ignored.
 </para>
@@ -1512,7 +1511,7 @@ The <sgmltag class="starttag">component</sgmltag> element is used to describe an
 component with a corresponding &jwc-tag; tag in the containing component's HTML template.
 </para>
         <figure>
-          <title>Component specification:<sgmltag class="starttag">component</sgmltag> element</title>
+          <title>Component specification: <sgmltag class="starttag">component</sgmltag> element</title>
           <programlisting>
 &lt;component
   id="<replaceable>id</replaceable>" <co id="component.spec.component.id"/>
@@ -1709,7 +1708,7 @@ or inside some JAR in the classpath.  Like context assets, private assets may be
       </section>
     </section>
   </chapter>
-  <!-- $Id$ -->
+
   <chapter id="pages">
     <title>Tapestry Pages</title>
     <para>
@@ -1846,7 +1845,8 @@ For example, consider a page that has a persistent property for storing an email
 implement the normal accessor and mutator methods:
 </para>
       <informalexample>
-        <programlisting>private String emailAddress;
+        <programlisting>
+private String emailAddress;
 
 public String getEmailAddress()
 {
@@ -1914,7 +1914,8 @@ In our earlier email address example, the following additional code must be impl
 page:
 </para>
       <informalexample>
-        <programlisting>public void detach()
+        <programlisting>
+public void detach()
 {
   emailAddress = null;
 
@@ -2183,11 +2184,12 @@ Part of the page lists similar or related items.  The user clicks on the name of
 camera and is shown the pictures, prices and details of the Nikon camera.
 The user then hits the 
 browser back button, returning to the page showing the Minolta camera, and clicks 
-the "add to shopping cart" button.  Since the user has employed the browser's back button, the server has
-no knowledge that the user has done anything.
+the "add to shopping cart" button.  Web browsers have no way of informing the server that the user
+has employed the back button.
 </para>
       <para>
-The user is sent to the shopping cart page, but what has been added to the cart, the Minolta or the 
+Once the user clicks the link, the server replies with a response showing
+the contents of the shopping cart ... but what has been added to the cart, the Minolta or the 
 Nikon?  It depends on how the Tapestry application has been structured.
 </para>
       <para>
@@ -2199,10 +2201,12 @@ class that contains all that pricing and detail
 information.
 </para>
       <para>
-The question is, how is the add to shopping link implemented?  If its logic is to add whatever the 
+The question is, how is the add to shopping cart link implemented?  If its logic is to add whatever the 
 current value of the product property is (i.e., by using an &Action;
 component or part of a form) then it will 
-add the Nikon camera, since that's the current product.  This is the na approach, since it 
+add the Nikon camera, since that's the current product (the most recent one displayed 
+to the user, as far as the server is concerned &horbar; it has no way to know the user hit
+the back button and was staring at the Minolta when the link was clicked).  This is the natural approach, since it 
 doesn't take into account the possiblility that the user worked backwards to a prior page.
 </para>
       <para>
@@ -2350,7 +2354,7 @@ presentation of the exception page.
 </para>
     </section>
   </chapter>
-  <!-- $Id$ -->
+
   <chapter id="engine">
     <title>Application Engines and Services</title>
     <para>
@@ -2676,7 +2680,8 @@ generates.
 The resulting HTML:
 </para>
       <informalexample>
-        <programlisting>Click &lt;a href="/<replaceable>servlet path</replaceable>/page/Login"&gt;here&lt;/a&gt; to login.</programlisting>
+        <programlisting>
+Click &lt;a href="/<replaceable>servlet path</replaceable>/page/Login"&gt;here&lt;/a&gt; to login.</programlisting>
       </informalexample>
       <para>
 If the user later clicks that link, the application will invoke the page service to handle the URL; 
@@ -2907,7 +2912,7 @@ same as the page naming guidelines.
       </section>
     </section>
   </chapter>
-  <!-- $Id$ -->
+
   <chapter id="cycle">
     <title>Understanding the Request Cycle</title>
     <para>
@@ -3345,7 +3350,7 @@ provide the ability to visually mark fields that are required or in error.
 </para>
     </section>
   </chapter>
-  <!-- $Id$ -->
+
   <chapter id="builtin">
     <title>Builtin Components</title>
     <para>
@@ -3472,7 +3477,7 @@ specified condition is met.
         </varlistentry>
       </variablelist>
     </section>
-    <section id="component.DateField">
+    <section id="builtin.DateField">
       <title>DateField</title>
       <para>
 A kind of validating text field that allows a date to be entered.
@@ -4404,7 +4409,7 @@ A name for the the component, used when formulating error messages.
       </variablelist>
     </section>
   </chapter>
-  <!-- $Id$ -->
+
   <chapter id="apps">
     <title>Designing Tapestry Applications</title>
     <para>
@@ -4523,7 +4528,7 @@ public IActionListener getListener()
                                 IRequestCycle cycle)
     {
       Visit visit; <co id="apps.common-logic.ex.visit"/>
-          <replaceable>ISomeHomeInterface</replaceable> home;
+      <replaceable>ISomeHomeInterface</replaceable> home;
 	
       visit = (Visit)getVisit();
 	
@@ -4630,14 +4635,14 @@ common data types.
 </para>
       <para>
 In the Virtual Library, components that make use of the external service were 
-created.  The components, <classname>BookLink</classname> and <classname>PersonLink</classname> , took as 
-parameters the corresponding objects (<classname>Book</classname>  or <classname>Person</classname> ) 
+created.  The components, <classname>BookLink</classname> and <classname>PersonLink</classname>, took as 
+parameters the corresponding objects (<classname>Book</classname>  or <classname>Person</classname>) 
 and created links to the pages 
-that displayed the details of that <classname>Book</classname>  or <classname>Person</classname> .
+that displayed the details of that <classname>Book</classname>  or <classname>Person</classname>.
 </para>
     </section>
   </chapter>
-  <!-- $Id$ -->
+
   <chapter id="coding">
     <title>Coding Tapestry Applications</title>
     <para>
@@ -4763,7 +4768,7 @@ if the user is not already logged in.
 </para>
     </section>
   </chapter>
-  <!-- $Id$ -->
+
   <chapter id="coding-components">
     <title>Designing new components</title>
     <para>
@@ -5048,7 +5053,7 @@ component defines an asset named 'welcome'.
 </para>
     </section>
   </chapter>
-  <!-- $Id$ -->
+
   <chapter id="script">
     <title>Tapestry and JavaScript</title>
     <para>
@@ -5506,7 +5511,7 @@ its input parameters.  It must also be in the HTML template, before the closing
       </figure>
     </section>
   </chapter>
-  <!-- $Id$ -->
+
   <chapter id="inspector">
     <title>The Tapestry Inspector</title>
     <para>
@@ -5604,7 +5609,7 @@ for any category to be set, and allows new categories to be created.
 </para>
     </section>
   </chapter>
-  <!-- $Id$ -->
+
   <appendix id="faq">
     <title>Frequently Asked Questions</title>
     <para>
@@ -5725,7 +5730,7 @@ This section contains a few Q's and A's gleemed from the
             <para>
 			An example of this is the 
 			<link linkend="inspector.logging">Tapestry Inspector Logging View</link>.  A single
-			&PropertySelection; is wrapped by a &Foreach; which iterates throught
+			&PropertySelection; is wrapped by a &ListEdit; which iterates throught
 			a list of the possible categories.
 			</para>
             <para>
@@ -5797,7 +5802,7 @@ This section contains a few Q's and A's gleemed from the
 	<classname>Boolean.FALSE</classname> to remove this check.
 	</para>
           <para>
-	They check makes sense once there's server side state; it detects when
+	This check makes sense once there's server side state; it detects when
 	an &HttpSession; has expired from lack of use.  It's better than seeing
 	an anomolous <classname>NullPointerException</classname>, which is quite likely
 	when all state is lost.
