@@ -192,7 +192,7 @@ public class ContentType
         while (tokens.hasMoreTokens()) {
             String parameter = tokens.nextToken();
 
-            StringTokenizer parameterTokens = new StringTokenizer(mimeType, "=");
+            StringTokenizer parameterTokens = new StringTokenizer(parameter, "=");
             String key = parameterTokens.hasMoreTokens() ? parameterTokens.nextToken() : "";
             String value = parameterTokens.hasMoreTokens() ? parameterTokens.nextToken() : "";
             setParameter(key, value);
