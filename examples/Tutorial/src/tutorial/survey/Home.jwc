@@ -43,7 +43,7 @@
 			<bindings>
 				<static-binding>
 					<name>page</name>
-					<value>survey</value>
+					<value>Survey</value>
 				</static-binding>
 			</bindings>
 		</component>

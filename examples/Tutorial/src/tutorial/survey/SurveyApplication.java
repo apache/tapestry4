@@ -86,7 +86,7 @@ public class SurveyApplication extends SimpleApplication
 	}
 	
 	private static final String[] pageNames = 
-	{ "home", "survey", "results" 
+	{ "Home", "Survey", "Results" 
 	};
 	
 	public String[] getPageNames()

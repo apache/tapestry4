@@ -49,7 +49,7 @@
 			</bindings>
 		</component>
 		<component>
-			<id>linkToBookDetail</id>
+			<id>bookDetail</id>
 			<type>Direct</type>
 			<bindings>
 				<binding>
@@ -73,6 +73,16 @@
 			</bindings>
 		</component>
 		<component>
+			<id>insertAuthor</id>
+			<type>Insert</type>
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>currentMatch.author</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
 			<id>insertPublisherName</id>
 			<type>Insert</type>
 			<bindings>
@@ -83,7 +93,7 @@
 			</bindings>
 		</component>
 		<component>
-			<id>linkToOwner</id>
+			<id>showOwner</id>
 			<type>Direct</type>
 			<bindings>
 				<binding>
@@ -107,7 +117,7 @@
 			</bindings>
 		</component>
 		<component>
-			<id>linkToHolder</id>
+			<id>showHolder</id>
 			<type>Direct</type>
 			<bindings>
 				<binding>
@@ -131,7 +141,7 @@
 			</bindings>
 		</component>
 		<component>
-			<id>borrowLink</id>
+			<id>borrow</id>
 			<type>Direct</type>
 			<bindings>
 				<binding>

@@ -34,7 +34,7 @@ import javax.naming.*;
  */
 
 /**
- *  Remote interface to the {@link VlibOperations} stateless
+ *  Remote interface to the {@link Operations} stateless
  *  session bean.  A repository for simple operations such as
  *  adding a new book or borrowing an existing book.
  *  
@@ -43,7 +43,7 @@ import javax.naming.*;
  *
  */
 
-public interface IVlibOperations extends EJBObject
+public interface IOperations extends EJBObject
 {
 	/**
 	 *  Locates the book and the borrower, then sets the holder of the book
@@ -61,8 +61,8 @@ public interface IVlibOperations extends EJBObject
 	 *  <p>Returns the newly created book.
 	 */
 
-	public IBook addBook(Integer ownerPK, String title, String ISBN, String description,
-						 Integer publisherPK)
+	public IBook addBook(Integer ownerPK, String title, String author, String ISBN, 
+						 String description, Integer publisherPK)
 	throws CreateException, RemoteException;
 
 
@@ -76,7 +76,15 @@ public interface IVlibOperations extends EJBObject
 	 *
 	 */
 	 
-	public IBook addBook(Integer ownerPK, String title, String ISBN, String description,
-						 String publisherName)
+	public IBook addBook(Integer ownerPK, String title, String author, String ISBN,
+						 String description, String publisherName)
 	throws CreateException, RemoteException;	
+
+	/**
+	 *  Retrieves the light-weight version of all {@link IPublisher} beans, sorted by name.
+	 *
+	 */
+	 
+	public Publisher[] getPublishers()
+	throws RemoteException;	
 }

@@ -41,6 +41,12 @@ import java.rmi.*;
  
 public interface IBook extends IEntityBean
 {
+	public void setAuthor(String value)
+	throws RemoteException;
+
+	public String getAuthor()
+	throws RemoteException;	
+
 	public void setTitle(String value)
 	throws RemoteException;
 

@@ -44,7 +44,7 @@
 	  </component>
 
 	  <component>
-	    <id>textfield</id>
+	    <id>inputNewValue</id>
 	    <type>TextField</type>
 
 		<bindings>

@@ -6,17 +6,17 @@
 	<name>Survey Tutorial</name>
 	
 	<page>
-		<name>home</name>
+		<name>Home</name>
 		<specification-path>/tutorial/survey/Home.jwc</specification-path>
 	</page>
 
 	<page>
-		<name>survey</name>
+		<name>Survey</name>
 		<specification-path>/tutorial/survey/SurveyPage.jwc</specification-path>
 	</page>
 
 	<page>
-		<name>results</name>
+		<name>Results</name>
 		<specification-path>/tutorial/survey/Results.jwc</specification-path>
 	</page>
 

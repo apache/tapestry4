@@ -89,6 +89,16 @@
 			</bindings>
 		</component>
 		<component>
+			<id>insertAuthor</id>
+			<type>Insert</type>
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>currentBook.author</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
 			<id>insertPublisher</id>
 			<type>Insert</type>
 			<bindings>
@@ -168,6 +178,26 @@
 					<name>condition</name>
 					<property-path>components.e-books.last</property-path>
 				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>addNewBook</id>
+			<type>Direct</type>
+			<bindings>
+				<binding>
+					<name>listener</name>
+					<property-path>application.addNewBookListener</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>editProfile</id>
+			<type>Page</type>
+			<bindings>
+				<static-binding>
+					<name>page</name>
+					<value>EditProfile</value>
+				</static-binding>
 			</bindings>
 		</component>
 	</components>

@@ -10,6 +10,7 @@
 <jwc id="ifFirstMatch">
 <tr>
 	<th>Title</th>
+	<th>Author</th>
 	<th>Publisher</th>
 	<th>Owner</th>
 	<th>Holder</th>
@@ -17,11 +18,12 @@
 </jwc>
 
 <tr>
-	<td><jwc id="linkToBookDetail"><jwc id="insertBookTitle"/></jwc></td>
+	<td><jwc id="bookDetail"><jwc id="insertBookTitle"/></jwc></td>
+	<td><jwc id="insertAuthor"/></td>
 	<td><jwc id="insertPublisherName"/></td>
-	<td><jwc id="linkToOwner"><jwc id="insertOwnerName"/></jwc> </td>
-	<td><jwc id="linkToHolder"><jwc id="insertHolderName"/></jwc> </td>
-	<td><jwc id="borrowLink">[ Borrow ]</jwc></td>
+	<td><jwc id="showOwner"><jwc id="insertOwnerName"/></jwc> </td>
+	<td><jwc id="showHolder"><jwc id="insertHolderName"/></jwc> </td>
+	<td><jwc id="borrow">[ Borrow ]</jwc></td>
 </tr>
 
 <jwc id="ifLastMatch">

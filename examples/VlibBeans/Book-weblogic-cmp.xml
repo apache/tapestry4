@@ -38,6 +38,14 @@
 			<bean-field>bookId</bean-field>
 			<dbms-column>BOOK_ID</dbms-column>
 		</object-link>
+		<object-link>
+			<bean-field>author</bean-field>
+			<dbms-column>AUTHOR</dbms-column>
+		</object-link>
+		<object-link>
+			<bean-field>rating</bean-field>
+			<dbms-column>RATING</dbms-column>
+		</object-link>
 	</attribute-map>
 	<finder-list>
 		<finder>

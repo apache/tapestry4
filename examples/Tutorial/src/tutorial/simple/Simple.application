@@ -6,7 +6,7 @@
 	<name>Simple Tutorial</name>
 	
 	<page>
-		<name>home</name>
+		<name>Home</name>
 		<specification-path>/tutorial/simple/Home.jwc</specification-path>
 	</page>
 	

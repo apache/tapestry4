@@ -50,6 +50,7 @@ public class Home extends BasePage
 	private Object searchPublisherPK;
 	private String error;
 	private String message;
+	private String searchAuthor;
 	
 	public Home(IApplication application, ComponentSpecification componentSpecification)
 	{
@@ -64,6 +65,7 @@ public class Home extends BasePage
 		searchPublisherPK = null;
 		error = null;
 		message = null;
+		searchAuthor = null;
 	}
 	
 	public String getSearchTitle()
@@ -76,6 +78,17 @@ public class Home extends BasePage
 		searchTitle = value;
 		
 		fireObservedChange("searchTitle", value);
+	}
+	
+	public String getSearchAuthor()
+	{
+		return searchAuthor;
+	}
+	
+	public void setSearchAuthor(String value)
+	{
+		searchAuthor = value;
+		fireObservedChange("searchAuthor", value);
 	}
 
 	public Object getSearchPublisherPK()
@@ -119,9 +132,9 @@ public class Home extends BasePage
 			{
 				Matches matches;
 				
-				matches = (Matches)cycle.getPage("matches");
+				matches = (Matches)cycle.getPage("Matches");
 				
-				matches.performTitleQuery(searchTitle, searchPublisherPK);
+				matches.performQuery(searchTitle, searchAuthor, searchPublisherPK);
 				
 				cycle.setPage(matches);	
 			}

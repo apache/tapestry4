@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <!-- edited with XML Spy v3.0 NT (http://www.xmlspy.com) by Howard Ship (Primix Solutions) -->
+<!--$Id$-->
 <!DOCTYPE weblogic-ejb-jar PUBLIC '-//BEA Systems, Inc.//DTD WebLogic 5.1.0 EJB//EN' 'http://www.bea.com/servers/wls510/dtd/weblogic-ejb-jar.dtd'>
 <weblogic-ejb-jar>
 	<weblogic-enterprise-bean>
@@ -16,11 +17,15 @@
 		<jndi-name>com.primix.vlib.KeyAllocator</jndi-name>
 	</weblogic-enterprise-bean>
 	<weblogic-enterprise-bean>
-		<ejb-name>VlibOperations</ejb-name>
+		<ejb-name>Operations</ejb-name>
 		<clustering-descriptor>
 			<stateless-bean-methods-are-idempotent>true</stateless-bean-methods-are-idempotent>
 		</clustering-descriptor>
 		<reference-descriptor>
+			<resource-description>
+				<res-ref-name>jdbc/dataSource</res-ref-name>
+				<jndi-name>com.primix.vlib.DataSource</jndi-name>
+			</resource-description>
 			<ejb-reference-description>
 				<ejb-ref-name>ejb/Person</ejb-ref-name>
 				<jndi-name>com.primix.vlib.Person</jndi-name>
@@ -34,7 +39,7 @@
 				<jndi-name>com.primix.vlib.Publisher</jndi-name>
 			</ejb-reference-description>
 		</reference-descriptor>
-		<jndi-name>com.primix.vlib.VlibOperations</jndi-name>
+		<jndi-name>com.primix.vlib.Operations</jndi-name>
 	</weblogic-enterprise-bean>
 	<weblogic-enterprise-bean>
 		<ejb-name>BookQuery</ejb-name>

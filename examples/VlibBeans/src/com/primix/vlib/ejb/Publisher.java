@@ -1,9 +1,6 @@
 package com.primix.vlib.ejb;
 
-import javax.ejb.*;
-import java.rmi.*;
-import javax.rmi.*;
-import javax.naming.*;
+import java.io.*;
 
 /*
  * Tapestry Web Application Framework
@@ -34,16 +31,44 @@ import javax.naming.*;
  */
 
 /**
- *  Home interface to the {@link VlibOperations} stateless
- *  session bean.
- *  
+ *  A light-weight, read-only version of the {@link IPublisher} bean.
+ *
  *  @version $Id$
  *  @author Howard Ship
  *
  */
 
-public interface IVlibOperationsHome extends EJBHome
+public class Publisher implements Serializable
 {
-	public IVlibOperations create()
-	throws CreateException, RemoteException;
+	private Integer primaryKey;
+	private String name;
+	
+	public Publisher(Integer primaryKey, String name)
+	{
+		this.primaryKey = primaryKey;
+		this.name = name;
+	}
+	
+	public Integer getPrimaryKey()
+	{
+		return primaryKey;
+	}
+	
+	public String getName()
+	{
+		return name;
+	}
+	
+	public String toString()
+	{
+		StringBuffer buffer;
+		
+		buffer = new StringBuffer("Publisher[");
+		buffer.append(primaryKey);
+		buffer.append(' ');
+		buffer.append(name);
+		buffer.append(']');
+		
+		return buffer.toString();
+	}
 }

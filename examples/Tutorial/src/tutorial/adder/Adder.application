@@ -6,7 +6,7 @@
   <name>Adder Tutorial</name>
 
   <page>
-    <name>home</name>
+    <name>Home</name>
     <specification-path>/tutorial/adder/Home.jwc</specification-path>
   </page>
 

@@ -9,6 +9,7 @@ import com.primix.vlib.ejb.*;
 import java.rmi.*;
 import javax.rmi.*;
 import java.util.*;
+import com.primix.vlib.pages.*;
 
 /*
  * Tapestry Web Application Framework
@@ -60,8 +61,8 @@ public class VirtualLibraryApplication extends SimpleApplication
 	private transient IBookHome bookHome;
 	private transient IPersonHome personHome;
 	private transient IBookQueryHome bookQueryHome;
-	private transient IVlibOperationsHome operationsHome;
-	private transient IVlibOperations operations;
+	private transient IOperationsHome operationsHome;
+	private transient IOperations operations;
 	
 	private transient Context environment;	
 	
@@ -73,7 +74,7 @@ public class VirtualLibraryApplication extends SimpleApplication
 		externalReferences.put("ejb/Book", "com.primix.vlib.Book");
 		externalReferences.put("ejb/BookQuery", "com.primix.vlib.BookQuery");
 		externalReferences.put("ejb/Publisher", "com.primix.vlib.Publisher");
-		externalReferences.put("ejb/VlibOperations", "com.primix.vlib.VlibOperations");
+		externalReferences.put("ejb/Operations", "com.primix.vlib.Operations");
 	}
 	
 	/**
@@ -89,7 +90,7 @@ public class VirtualLibraryApplication extends SimpleApplication
 	
 	// Includes a null option for searching without care to Publisher
 	
-	private IPropertySelectionModel publisherSearchModel;
+	private IPropertySelectionModel publisherModel;
 	
 	public VirtualLibraryApplication(RequestContext context)
 	{
@@ -192,11 +193,11 @@ public class VirtualLibraryApplication extends SimpleApplication
 		return bookQueryHome;
 	}
 
-	public IVlibOperationsHome getOperationsHome()
+	public IOperationsHome getOperationsHome()
 	{
 		if (operationsHome == null)
-			operationsHome = (IVlibOperationsHome)findNamedObject("ejb/VlibOperations",
-				IVlibOperationsHome.class);
+			operationsHome = (IOperationsHome)findNamedObject("ejb/Operations",
+				IOperationsHome.class);
 		
 		return operationsHome;
 	}
@@ -209,9 +210,9 @@ public class VirtualLibraryApplication extends SimpleApplication
 	 *
 	 */
 	 				
-	public IVlibOperations getOperations()
+	public IOperations getOperations()
 	{
-		IVlibOperationsHome home;
+		IOperationsHome home;
 		
 		if (operations == null)
 		{
@@ -365,7 +366,7 @@ public class VirtualLibraryApplication extends SimpleApplication
 			public void directTriggered(IComponent component, String[] context,
 					IRequestCycle cycle)
 			{
-				cycle.setPage("mybooks");
+				cycle.setPage("MyBooks");
 			}
 		};
 	}
@@ -378,59 +379,100 @@ public class VirtualLibraryApplication extends SimpleApplication
 					IRequestCycle cycle)
 			{
 				setUser(null);
-				cycle.setPage("logout");
+				cycle.setPage("Logout");
 			}
 		};
 	}
 	
-	public IPropertySelectionModel getPublisherSearchModel()
+	/**
+	 *  Builds a model for entering in a publisher name, including an intial
+	 *  blank option.  Problem:  thie model is held for a long while, so it won't
+	 *  reflect publishers added by this user or others.  Solution:  coming; perhaps
+	 *  we'll age-out the model after a few minutes.
+	 *
+	 */
+	 
+	public IPropertySelectionModel getPublisherModel()
 	{
-		if (publisherSearchModel == null)
-			publisherSearchModel = buildPublisherModel(true);
+		if (publisherModel == null)
+			publisherModel = buildPublisherModel();
 		
-		return publisherSearchModel;	
+		return publisherModel;	
 	}
 	
-	private IPropertySelectionModel buildPublisherModel(boolean includeNull)
+	private IPropertySelectionModel buildPublisherModel()
 	{
-		VirtualLibraryApplication app;
-		IPublisherHome home;
+		IOperations bean;
+		Publisher[] publishers;
 		EntitySelectionModel model;
-		IPublisher publisher;
-		Iterator i;
+		int i;
 		
 		model = new EntitySelectionModel();
-		
-		home = getPublisherHome();
 		
 		// Add in a default null value, such that the user can
 		// not select a specific Publisher.
 		
-		if (includeNull)
-			model.add(null, "");
+		model.add(null, "");
+
+		bean = getOperations();
 		
 		try
 		{
-			i = home.findAll().iterator();
-			
-			while (i.hasNext())
-			{
-				publisher = (IPublisher)PortableRemoteObject.narrow(i.next(), 
-					IPublisher.class);
-				
-				model.add((Integer)(publisher.getPrimaryKey()),
-						  publisher.getName());
-			}
+			publishers = bean.getPublishers();
 		}
-		catch (Throwable t)
+		catch (RemoteException e)
 		{
-			throw new ApplicationRuntimeException("Unable to build publisher model: " +
-				t.getMessage() + ".", t);
+			throw new ApplicationRuntimeException(e.getMessage(), e);
 		}
 		
-		model.sort();
+		// Add in the actual publishers.  They are sorted by name.
+		
+		for (i = 0; i < publishers.length; i++)
+			model.add(publishers[i].getPrimaryKey(), publishers[i].getName());
 		
 		return model;		
 	}
 	
+	/**
+	 *  Used from pages that want to add a book.
+	 *  Gets the newBook page and sets it's returnPage property to point back to
+	 *  the current page.
+	 *
+	 */
+	 
+	public IDirectListener getAddNewBookListener()
+	{
+		return new IDirectListener()
+		{
+			public void directTriggered(IComponent component, String[] context,
+					IRequestCycle cycle)
+			{
+				NewBook newBookPage;
+				IPage currentPage;
+				
+				currentPage = cycle.getPage();
+				newBookPage = (NewBook)cycle.getPage("NewBook");
+				
+				newBookPage.setReturnPage(currentPage.getName());
+				
+				cycle.setPage(newBookPage);
+			}
+		};
+	}
+
+	/**
+	 *  Invoked by pages after they perform an operation that changes the backend
+	 *  database in such a way that cached data is no longer valid.  Currently,
+	 *  this should be invoked after changing the user's profile, or adding
+	 *  a new Publisher entity.
+	 *
+	 */
+	 
+	public void clearCache()
+	{
+		user = null;
+		fullUserName = null;
+		publisherModel = null;
+	}
+
 }
