@@ -161,11 +161,6 @@ public class EnhancementOperationImpl implements EnhancementOperation
     {
     }
 
-    public IComponentSpecification getSpecification()
-    {
-        return _specification;
-    }
-
     public void claimProperty(String propertyName)
     {
         Defense.notNull(propertyName, "propertyName");

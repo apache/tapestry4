@@ -71,15 +71,11 @@ public class TestInjectStateWorker extends HiveMindTestCase
     public void testNoWorkToDo()
     {
         IComponentSpecification spec = newSpecification(Collections.EMPTY_LIST);
-        MockControl opc = newControl(EnhancementOperation.class);
-        EnhancementOperation op = (EnhancementOperation) opc.getMock();
-
-        op.getSpecification();
-        opc.setReturnValue(spec);
+        EnhancementOperation op = (EnhancementOperation) newMock(EnhancementOperation.class);
 
         replayControls();
 
-        new InjectStateWorker().performEnhancement(op);
+        new InjectStateWorker().performEnhancement(op, spec);
 
         verifyControls();
     }
@@ -89,9 +85,6 @@ public class TestInjectStateWorker extends HiveMindTestCase
         IComponentSpecification spec = newSpecification(newInjects("fred", "barney", null));
         MockControl opc = newControl(EnhancementOperation.class);
         EnhancementOperation op = (EnhancementOperation) opc.getMock();
-
-        op.getSpecification();
-        opc.setReturnValue(spec);
 
         ApplicationStateManager asm = newASM();
 
@@ -140,7 +133,7 @@ public class TestInjectStateWorker extends HiveMindTestCase
         InjectStateWorker w = new InjectStateWorker();
         w.setApplicationStateManager(asm);
 
-        w.performEnhancement(op);
+        w.performEnhancement(op, spec);
 
         verifyControls();
     }
@@ -155,9 +148,6 @@ public class TestInjectStateWorker extends HiveMindTestCase
         EnhancementOperation op = (EnhancementOperation) opc.getMock();
 
         ErrorLog errorLog = (ErrorLog) newMock(ErrorLog.class);
-
-        op.getSpecification();
-        opc.setReturnValue(spec);
 
         ApplicationStateManager asm = newASM();
 
@@ -180,7 +170,7 @@ public class TestInjectStateWorker extends HiveMindTestCase
         w.setApplicationStateManager(asm);
         w.setErrorLog(errorLog);
 
-        w.performEnhancement(op);
+        w.performEnhancement(op, spec);
 
         verifyControls();
     }

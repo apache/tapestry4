@@ -24,7 +24,6 @@ import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.ClassFabUtils;
 import org.apache.hivemind.service.MethodSignature;
-import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -59,12 +58,8 @@ public class ParameterPropertyWorker implements EnhancementWorker
         _unwrappers.put(double.class, "((Double) binding.getObject({0})).doubleValue();");
     }
 
-    public void performEnhancement(EnhancementOperation op)
+    public void performEnhancement(EnhancementOperation op, IComponentSpecification spec)
     {
-        Defense.notNull(op, "op");
-
-        IComponentSpecification spec = op.getSpecification();
-
         Iterator i = spec.getParameterNames().iterator();
         while (i.hasNext())
         {

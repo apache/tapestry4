@@ -18,6 +18,7 @@ import java.util.Map;
 
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.LocationHolder;
+import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.util.IPropertyHolder;
 
 /**
@@ -44,7 +45,7 @@ public interface IExtensionSpecification extends IPropertyHolder, LocationHolder
      * Invoked to instantiate an instance of the extension and return it. It also configures
      * properties of the extension.
      */
-    public abstract Object instantiateExtension(ClassResolver resolver);
+    public abstract Object instantiateExtension();
 
     /**
      * Returns true if the extensions should be instantiated immediately after the containing

@@ -16,6 +16,8 @@ package org.apache.tapestry.enhance;
 
 import java.lang.reflect.Modifier;
 
+import org.apache.tapestry.spec.IComponentSpecification;
+
 /**
  * A worker that must be last; its job is to detect abstract classes that have no other
  * enhancements, and force an enhancement (so that a non-abstract subclass is generated). This is to
@@ -27,7 +29,7 @@ import java.lang.reflect.Modifier;
 public class ForceNonAbstractWorker implements EnhancementWorker
 {
 
-    public void performEnhancement(EnhancementOperation op)
+    public void performEnhancement(EnhancementOperation op, IComponentSpecification spec)
     {
         Class baseClass = op.getBaseClass();
 

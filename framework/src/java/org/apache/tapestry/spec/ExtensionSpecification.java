@@ -23,7 +23,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.services.ExpressionEvaluator;
 
 /**
@@ -46,12 +48,17 @@ public class ExtensionSpecification extends LocatablePropertyHolder implements
     private boolean _immediate;
 
     /** @since 3.1 */
-    private ExpressionEvaluator _evaluator;
+
+    private ClassResolver _resolver;
 
     /** @since 3.1 */
-    public ExtensionSpecification(ExpressionEvaluator evaluator)
+    private ValueConverter _converter;
+
+    /** @since 3.1 */
+    public ExtensionSpecification(ClassResolver resolver, ValueConverter valueConverter)
     {
-        _evaluator = evaluator;
+        _resolver = resolver;
+        _converter = valueConverter;
     }
 
     public String getClassName()
@@ -90,16 +97,17 @@ public class ExtensionSpecification extends LocatablePropertyHolder implements
      * properties of the extension.
      */
 
-    public Object instantiateExtension(ClassResolver resolver)
+    public Object instantiateExtension()
     {
         if (LOG.isDebugEnabled())
             LOG.debug("Instantiating extension class " + _className + ".");
+
         Class extensionClass = null;
         Object result = null;
 
         try
         {
-            extensionClass = resolver.findClass(_className);
+            extensionClass = _resolver.findClass(_className);
         }
         catch (Exception ex)
         {
@@ -117,8 +125,6 @@ public class ExtensionSpecification extends LocatablePropertyHolder implements
 
     private void initializeProperties(Object extension)
     {
-        if (_configuration.isEmpty())
-            return;
 
         Iterator i = _configuration.entrySet().iterator();
         while (i.hasNext())
@@ -130,7 +136,11 @@ public class ExtensionSpecification extends LocatablePropertyHolder implements
 
             try
             {
-                _evaluator.write(extension, propertyName, textValue);
+                Class propertyType = PropertyUtils.getPropertyType(extension, propertyName);
+
+                Object objectValue = _converter.coerceValue(textValue, propertyType);
+
+                PropertyUtils.write(extension, propertyName, objectValue);
             }
             catch (Exception ex)
             {

@@ -15,15 +15,12 @@
    limitations under the License.
 -->
 
-<!DOCTYPE library-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
-	
-<library-specification>
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
+     	
+<component-specification>
+	<component id="body" type="Body" property="myProperty"/>
+    <component id="fred" type="Insert"/>
+</component-specification>
 
-	<extension name="bedrock" class="org.apache.tapestry.junit.parse.Bedrock">
-		<configure property-name="fred" value="flintstone"/>
-	</extension>
-
-</library-specification>
-	

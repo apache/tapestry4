@@ -81,9 +81,6 @@ public class TestInjectWorker extends HiveMindTestCase
         MockControl pc = newControl(InjectedValueProvider.class);
         InjectedValueProvider p = (InjectedValueProvider) pc.getMock();
 
-        op.getSpecification();
-        opc.setReturnValue(spec);
-
         op.getPropertyType("fred");
         opc.setReturnValue(null);
 
@@ -105,7 +102,7 @@ public class TestInjectWorker extends HiveMindTestCase
         InjectWorker w = new InjectWorker();
         w.setProvider(p);
 
-        w.performEnhancement(op);
+        w.performEnhancement(op, spec);
 
         verifyControls();
     }
@@ -122,9 +119,6 @@ public class TestInjectWorker extends HiveMindTestCase
 
         MockControl pc = newControl(InjectedValueProvider.class);
         InjectedValueProvider p = (InjectedValueProvider) pc.getMock();
-
-        op.getSpecification();
-        opc.setReturnValue(spec);
 
         op.getPropertyType("wilma");
         opc.setReturnValue(IEngineService.class);
@@ -145,7 +139,7 @@ public class TestInjectWorker extends HiveMindTestCase
         InjectWorker w = new InjectWorker();
         w.setProvider(p);
 
-        w.performEnhancement(op);
+        w.performEnhancement(op, spec);
 
         verifyControls();
     }
@@ -169,9 +163,6 @@ public class TestInjectWorker extends HiveMindTestCase
 
         MockControl logc = newControl(ErrorLog.class);
         ErrorLog log = (ErrorLog) logc.getMock();
-
-        op.getSpecification();
-        opc.setReturnValue(spec);
 
         op.getPropertyType("fred");
         opc.setReturnValue(null);
@@ -197,7 +188,7 @@ public class TestInjectWorker extends HiveMindTestCase
         w.setProvider(p);
         w.setErrorLog(log);
 
-        w.performEnhancement(op);
+        w.performEnhancement(op, spec);
 
         verifyControls();
     }
@@ -216,9 +207,6 @@ public class TestInjectWorker extends HiveMindTestCase
 
         MockControl logc = newControl(ErrorLog.class);
         ErrorLog log = (ErrorLog) logc.getMock();
-
-        op.getSpecification();
-        opc.setReturnValue(spec);
 
         op.getPropertyType("fred");
         opc.setReturnValue(IEngineService.class);
@@ -242,7 +230,7 @@ public class TestInjectWorker extends HiveMindTestCase
         w.setProvider(p);
         w.setErrorLog(log);
 
-        w.performEnhancement(op);
+        w.performEnhancement(op, spec);
 
         verifyControls();
     }

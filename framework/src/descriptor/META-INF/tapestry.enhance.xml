@@ -58,8 +58,7 @@
   <configuration-point id="EnhancementWorkers" schema-id="hivemind.lib.ChainContribution">
     
     Provides the logic for component class enhancements.
-   
-    
+       
   </configuration-point>
   
   <contribution configuration-id="EnhancementWorkers">
@@ -70,7 +69,10 @@
     <command id="parameter" object="service:ParameterPropertyWorker" before="abstract-property"/>
     <command id="inject" object="service:InjectWorker" before="abstract-property"/>
     <command id="inject-state" object="service:InjectStateWorker" before="abstract-property"/>
-    
+    <command id="inject-component" object="service:InjectComponentWorker" before="abstract-property"/>
+    <command id="inject-bean" object="service:InjectBeanWorker" before="abstract-property"/>
+    <command id="inject-asset" object="service:InjectAssetWorker" before="abstract-property"/>
+        
     <!-- This should be second to last, or at least, after all other workers have 
          added and claimed any properties they are going to. -->
     
@@ -124,6 +126,37 @@
     </invoke-factory>
     
   </service-point>
+  
+  <service-point id="InjectComponentWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+    
+    Injects contained components as properties of the containing component.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.enhance.InjectComponentWorker"/>
+    </invoke-factory>
+    
+  </service-point>
+
+  <service-point id="InjectBeanWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+    
+    Injects managed beans as properties of the containing component.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.enhance.InjectBeanWorker"/>
+    </invoke-factory>
+    
+  </service-point>
+
+  <service-point id="InjectAssetWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+    
+    Injects assets as properties of the containing component.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.enhance.InjectAssetWorker"/>
+    </invoke-factory>
+    
+  </service-point>
+
   
   <service-point id="AbstractPropertyWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
     

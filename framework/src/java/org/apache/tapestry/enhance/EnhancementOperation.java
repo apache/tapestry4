@@ -28,11 +28,9 @@ import org.apache.tapestry.spec.IComponentSpecification;
  */
 public interface EnhancementOperation
 {
-    public IComponentSpecification getSpecification();
-
     /**
      * Claims a property. Most enhancements are concerned with adding properties. Some enhancement
-     * workerss exist to fill in defaults, and they need to know what properties have already been
+     * workers exist to fill in defaults, and they need to know what properties have already been
      * spoken for by eariler enhancement works.
      * 
      * @throws org.apache.hivemind.ApplicationRuntimeException

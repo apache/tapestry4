@@ -99,7 +99,7 @@ public class TestComponentMessages extends TapestryTestCase
 
         page.setSpecification(spec);
 
-        INamespace namespace = new Namespace(null, null, new LibrarySpecification(), null);
+        INamespace namespace = new Namespace(null, null, new LibrarySpecification(), null, null);
 
         page.setNamespace(namespace);
 

@@ -37,6 +37,7 @@ import org.apache.tapestry.INamespace;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.bean.BindingBeanInitializer;
 import org.apache.tapestry.binding.BindingSource;
+import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.spec.BeanLifecycle;
 import org.apache.tapestry.spec.BindingType;
@@ -291,6 +292,10 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
      * application specification.
      */
     private Object _rootObject;
+    
+    /** @since 3.1 */
+    
+    private ValueConverter _valueConverter;
 
     // Identify all the different acceptible values.
     // We continue to sneak by with a single map because
@@ -322,10 +327,6 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         _parserFactory.setNamespaceAware(false);
         _parserFactory.setValidating(true);
     }
-
-    /** @since 3.1 */
-
-    private ExpressionEvaluator _expressionEvaluator;
 
     /**
      * This constructor is a convienience used by some tests.
@@ -691,7 +692,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
             enterInject();
             return;
         }
-        
+
         if (_elementName.equals("inject-state"))
         {
             enterInjectState();
@@ -893,7 +894,6 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     {
         ILibrarySpecification spec = (ILibrarySpecification) peekObject();
 
-        spec.setResourceResolver(_resolver);
         spec.setSpecificationLocation(getResource());
 
         spec.instantiateImmediateExtensions();
@@ -966,11 +966,16 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     {
         String name = getValidatedAttribute("name", ASSET_NAME_PATTERN, "invalid-asset-name");
         String path = getAttribute(pathAttributeName);
+        String propertyName = getValidatedAttribute(
+                "property",
+                PROPERTY_NAME_PATTERN,
+                "invalid-property-name");
 
         IAssetSpecification ia = _factory.createAssetSpecification();
 
         ia.setPath(prefix == null ? path : prefix + path);
-
+        ia.setPropertyName(propertyName);
+        
         IComponentSpecification cs = (IComponentSpecification) peekObject();
 
         cs.addAsset(name, ia);
@@ -985,11 +990,16 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         BeanLifecycle lifecycle = (BeanLifecycle) getConvertedAttribute(
                 "lifecycle",
                 BeanLifecycle.REQUEST);
+        String propertyName = getValidatedAttribute(
+                "property",
+                PROPERTY_NAME_PATTERN,
+                "invalid-property-name");
 
         IBeanSpecification bs = _factory.createBeanSpecification();
 
         bs.setClassName(className);
         bs.setLifecycle(lifecycle);
+        bs.setPropertyName(propertyName);
 
         IComponentSpecification cs = (IComponentSpecification) peekObject();
 
@@ -1061,6 +1071,10 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
                 "invalid-component-type");
         String copyOf = getAttribute("copy-of");
         boolean inherit = getBooleanAttribute("inherit-informal-parameters", false);
+        String propertyName = getValidatedAttribute(
+                "property",
+                PROPERTY_NAME_PATTERN,
+                "invalid-property-name");
 
         // Check that either copy-of or type, but not both
 
@@ -1083,6 +1097,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         cc.setType(type);
         cc.setCopyOf(copyOf);
         cc.setInheritInformalParameters(inherit);
+        cc.setPropertyName(propertyName);
 
         IComponentSpecification cs = (IComponentSpecification) peekObject();
 
@@ -1158,7 +1173,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         boolean immediate = getBooleanAttribute("immediate", false);
         String className = getAttribute("class");
 
-        IExtensionSpecification es = _factory.createExtensionSpecification(_expressionEvaluator);
+        IExtensionSpecification es = _factory.createExtensionSpecification(_resolver, _valueConverter);
 
         es.setClassName(className);
         es.setImmediate(immediate);
@@ -1368,7 +1383,10 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     private void enterInject()
     {
-        String property = getValidatedAttribute("property", PROPERTY_NAME_PATTERN, "invalid-property-name");
+        String property = getValidatedAttribute(
+                "property",
+                PROPERTY_NAME_PATTERN,
+                "invalid-property-name");
         String objectReference = getAttribute("object");
 
         InjectSpecification spec = _factory.createInjectSpecification();
@@ -1381,10 +1399,13 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
         push(_elementName, spec, STATE_NO_CONTENT);
     }
-    
+
     private void enterInjectState()
     {
-        String property = getValidatedAttribute("property", PROPERTY_NAME_PATTERN, "invalid-property-name");
+        String property = getValidatedAttribute(
+                "property",
+                PROPERTY_NAME_PATTERN,
+                "invalid-property-name");
         String objectName = getAttribute("object");
 
         InjectStateSpecification spec = _factory.createInjectStateSpecification();
@@ -1396,7 +1417,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         cs.addInjectStateSpecification(spec);
 
         push(_elementName, spec, STATE_NO_CONTENT);
-    }    
+    }
 
     private void enterReservedParameter()
     {
@@ -1711,14 +1732,14 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     }
 
     /** @since 3.1 */
-    public void setExpressionEvaluator(ExpressionEvaluator expressionEvaluator)
-    {
-        _expressionEvaluator = expressionEvaluator;
-    }
-
-    /** @since 3.1 */
     public void setBindingSource(BindingSource bindingSource)
     {
         _bindingSource = bindingSource;
+    }
+    
+    /** @since 3.1 */
+    public void setValueConverter(ValueConverter valueConverter)
+    {
+        _valueConverter = valueConverter;
     }
 }

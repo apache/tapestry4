@@ -36,7 +36,7 @@ public class TestForceNonAbstractWorker extends HiveMindTestCase
 
         replayControls();
 
-        new ForceNonAbstractWorker().performEnhancement(op);
+        new ForceNonAbstractWorker().performEnhancement(op, null);
 
         verifyControls();
     }
@@ -54,7 +54,7 @@ public class TestForceNonAbstractWorker extends HiveMindTestCase
 
         replayControls();
 
-        new ForceNonAbstractWorker().performEnhancement(op);
+        new ForceNonAbstractWorker().performEnhancement(op, null);
 
         verifyControls();
     }
@@ -74,7 +74,7 @@ public class TestForceNonAbstractWorker extends HiveMindTestCase
 
         replayControls();
 
-        new ForceNonAbstractWorker().performEnhancement(op);
+        new ForceNonAbstractWorker().performEnhancement(op, null);
 
         verifyControls();
     }

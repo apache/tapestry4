@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,18 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.enhance;
-
-import org.apache.tapestry.spec.IComponentSpecification;
+package org.apache.tapestry.junit.parse;
 
 /**
- * A worker that is employed by the {@link org.apache.tapestry.services.ComponentConstructorFactory}
- * to perform some enhancement.
- * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public interface EnhancementWorker
+public class Bedrock
 {
-    public void performEnhancement(EnhancementOperation op, IComponentSpecification spec);
+    private String _fred;
+
+    public String getFred()
+    {
+        return _fred;
+    }
+
+    public void setFred(String fred)
+    {
+        _fred = fred;
+    }
 }

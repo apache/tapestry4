@@ -26,7 +26,7 @@ import org.apache.tapestry.util.IPropertyHolder;
  *
  * @author glongman@intelligentworks.com
  */
-public interface IBeanSpecification extends IPropertyHolder, LocationHolder, Locatable
+public interface IBeanSpecification extends IPropertyHolder, LocationHolder, Locatable, PropertyInjectable
 {
     public abstract String getClassName();
     public abstract BeanLifecycle getLifecycle();
@@ -51,4 +51,5 @@ public interface IBeanSpecification extends IPropertyHolder, LocationHolder, Loc
     public abstract void setClassName(String className);
     /** @since 3.0 **/
     public abstract void setLifecycle(BeanLifecycle lifecycle);
+    
 }

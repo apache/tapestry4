@@ -42,9 +42,8 @@ public class InjectStateWorker implements EnhancementWorker
 
     private ApplicationStateManager _applicationStateManager;
 
-    public void performEnhancement(EnhancementOperation op)
+    public void performEnhancement(EnhancementOperation op, IComponentSpecification spec)
     {
-        IComponentSpecification spec = op.getSpecification();
         List injects = spec.getInjectStateSpecifications();
 
         if (injects.isEmpty())

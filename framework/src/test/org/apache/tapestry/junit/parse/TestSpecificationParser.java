@@ -450,11 +450,11 @@ public class TestSpecificationParser extends TapestryTestCase
         ILibrarySpecification spec = parseLib("ConfigureValue.library");
 
         checkLine(spec, 22);
-        checkLine(spec.getExtensionSpecification("map"), 24);
+        checkLine(spec.getExtensionSpecification("bedrock"), 24);
 
-        Map map = (Map) spec.getExtension("map", Map.class);
+        Bedrock bedrock = (Bedrock) spec.getExtension("bedrock", Bedrock.class);
 
-        assertEquals("flintstone", map.get("fred"));
+        assertEquals("flintstone", bedrock.getFred());
     }
 
     /**
@@ -676,6 +676,21 @@ public class TestSpecificationParser extends TapestryTestCase
 
     /** @since 3.1 */
 
+    public void testComponentInjectProperty() throws Exception
+    {
+        IComponentSpecification cs = parseComponent("ComponentInjectProperty.jwc");
+
+        IContainedComponent cc = cs.getComponent("body");
+
+        assertEquals("myProperty", cc.getPropertyName());
+
+        cc = cs.getComponent("fred");
+
+        assertNull(cc.getPropertyName());
+    }
+
+    /** @since 3.1 */
+
     public void testBeanDescription() throws Exception
     {
         IComponentSpecification cs = parseComponent("BeanDescription.jwc");
@@ -693,6 +708,17 @@ public class TestSpecificationParser extends TapestryTestCase
         IBeanSpecification bs = cs.getBeanSpecification("mybean");
 
         assertEquals("myvalue", bs.getProperty("myproperty"));
+    }
+
+    /**
+     * @since 3.1
+     */
+
+    public void testBeanInject() throws Exception
+    {
+        IComponentSpecification cs = parseComponent("BeanInject.jwc");
+        IBeanSpecification bs = cs.getBeanSpecification("bean");
+        assertEquals("myProperty", bs.getPropertyName());
     }
 
     /** @since 3.1 */
@@ -1034,20 +1060,21 @@ public class TestSpecificationParser extends TapestryTestCase
         IAssetSpecification as = cs.getAsset("myasset");
 
         assertEquals("path/to/asset", as.getPath());
+        assertEquals("myProperty", as.getPropertyName());
     }
-    
+
     /** @since 3.1 */
-    
+
     public void testInjectState() throws Exception
     {
         IComponentSpecification cs = parsePage("InjectState.page");
-        
+
         List l = cs.getInjectStateSpecifications();
-        
-        assertEquals(1,l.size());
-        
-        InjectStateSpecification s = (InjectStateSpecification)l.get(0);
-        
+
+        assertEquals(1, l.size());
+
+        InjectStateSpecification s = (InjectStateSpecification) l.get(0);
+
         assertEquals("fred", s.getProperty());
         assertEquals("barney", s.getObjectName());
     }

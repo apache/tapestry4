@@ -175,10 +175,6 @@ public interface ILibrarySpecification extends IPropertyHolder, LocationHolder
 
     public void instantiateImmediateExtensions();
 
-    public ClassResolver getResourceResolver();
-
-    public void setResourceResolver(ClassResolver resolver);
-
     public String getPublicId();
 
     public void setPublicId(String value);

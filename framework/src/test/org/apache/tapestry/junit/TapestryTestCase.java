@@ -21,8 +21,10 @@ import junit.framework.AssertionFailedError;
 
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Location;
+import org.apache.hivemind.Registry;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.DefaultClassResolver;
+import org.apache.hivemind.impl.RegistryBuilder;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.hivemind.util.ClasspathResource;
 import org.apache.tapestry.IBinding;
@@ -31,11 +33,8 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.binding.BindingSource;
 import org.apache.tapestry.binding.LiteralBinding;
 import org.apache.tapestry.coerce.ValueConverter;
+import org.apache.tapestry.coerce.ValueConverterImpl;
 import org.apache.tapestry.parse.SpecificationParser;
-import org.apache.tapestry.services.ExpressionCache;
-import org.apache.tapestry.services.ExpressionEvaluator;
-import org.apache.tapestry.services.impl.ExpressionCacheImpl;
-import org.apache.tapestry.services.impl.ExpressionEvaluatorImpl;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
@@ -99,7 +98,7 @@ public class TapestryTestCase extends HiveMindTestCase
     {
         SpecificationParser parser = new SpecificationParser(_resolver);
 
-        parser.setExpressionEvaluator(createExpressionEvaluator());
+        parser.setValueConverter(createValueConverter());
 
         Resource location = getSpecificationResourceLocation(simpleName);
 
@@ -119,7 +118,7 @@ public class TapestryTestCase extends HiveMindTestCase
     {
         SpecificationParser parser = new SpecificationParser(_resolver);
 
-        parser.setExpressionEvaluator(createExpressionEvaluator());
+        parser.setValueConverter(createValueConverter());
 
         Resource location = getSpecificationResourceLocation(simpleName);
 
@@ -157,13 +156,11 @@ public class TapestryTestCase extends HiveMindTestCase
                 + string + "'.");
     }
 
-    protected static ExpressionEvaluator createExpressionEvaluator()
+    protected ValueConverter createValueConverter()
     {
-        ExpressionCache cache = new ExpressionCacheImpl();
-        ExpressionEvaluatorImpl result = new ExpressionEvaluatorImpl();
-        result.setExpressionCache(cache);
+        Registry r = RegistryBuilder.constructDefaultRegistry();
 
-        return result;
+        return (ValueConverter) r
+                .getService("tapestry.coerce.ValueConverter", ValueConverter.class);
     }
-
 }

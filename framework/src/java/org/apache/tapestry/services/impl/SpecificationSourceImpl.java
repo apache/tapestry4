@@ -193,7 +193,7 @@ public class SpecificationSourceImpl implements ISpecificationSource, ResetEvent
     public synchronized INamespace getApplicationNamespace()
     {
         if (_applicationNamespace == null)
-            _applicationNamespace = new Namespace(null, null, _specification, this);
+            _applicationNamespace = new Namespace(null, null, _specification, this, _classResolver);
 
         return _applicationNamespace;
     }
@@ -207,7 +207,7 @@ public class SpecificationSourceImpl implements ISpecificationSource, ResetEvent
 
             ILibrarySpecification ls = getLibrarySpecification(frameworkLocation);
 
-            _frameworkNamespace = new Namespace(INamespace.FRAMEWORK_NAMESPACE, null, ls, this);
+            _frameworkNamespace = new Namespace(INamespace.FRAMEWORK_NAMESPACE, null, ls, this, _classResolver);
         }
 
         return _frameworkNamespace;

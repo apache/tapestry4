@@ -19,6 +19,7 @@ import java.util.Iterator;
 import org.apache.hivemind.ErrorLog;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.event.PageDetachListener;
+import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
  * No, this class isn't abstract ... this worker locates abstract properties in the base component
@@ -31,7 +32,7 @@ public class AbstractPropertyWorker implements EnhancementWorker
 {
     private ErrorLog _errorLog;
 
-    public void performEnhancement(EnhancementOperation op)
+    public void performEnhancement(EnhancementOperation op, IComponentSpecification spec)
     {
         Iterator i = op.findUnclaimedAbstractProperties().iterator();
 
@@ -47,7 +48,7 @@ public class AbstractPropertyWorker implements EnhancementWorker
             {
                 _errorLog.error(
                         EnhanceMessages.errorAddingProperty(name, op.getBaseClass(), ex),
-                        op.getSpecification().getLocation(),
+                        spec.getLocation(),
                         ex);
             }
         }
