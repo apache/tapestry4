@@ -218,7 +218,6 @@ description="Builds the Tapestry documentation.">
 </target>
 
 
-
 <property name="private.dir" value="private"/>
 
 <!-- All of the run-xxx tasks use configuration that map private assets to
@@ -261,6 +260,13 @@ description="Builds the Tapestry documentation.">
     <!-- Jetty 3.1.5 can get easily confused (under NT) unless this is turned off. -->
     
 	<sysproperty key="org.mortbay.util.FileResource.checkAliases" value="false"/>
+	
+      <!-- JNDI Configuration for JBoss -->
+      
+      <sysproperty key="java.naming.factory.initial" value="org.jnp.interfaces.NamingContextFactory"/>
+      <sysproperty key="java.naming.factory.url.pkgs" value="org.jboss.naming:org.jnp.interfaces"/>
+      <sysproperty key="java.naming.provider.url" value="localhost:1099"/>
+
   </java>
 </target>
 
@@ -280,6 +286,13 @@ description="Builds the Tapestry documentation.">
     <!-- Jetty 3.1.5 can get easily confused (under NT) unless this is turned off. -->
     
 	<sysproperty key="org.mortbay.util.FileResource.checkAliases" value="false"/>
+	
+      <!-- JNDI Configuration for JBoss -->
+      
+      <sysproperty key="java.naming.factory.initial" value="org.jnp.interfaces.NamingContextFactory"/>
+      <sysproperty key="java.naming.factory.url.pkgs" value="org.jboss.naming:org.jnp.interfaces"/>
+      <sysproperty key="java.naming.provider.url" value="localhost:1099"/>
+
   </java>
 </target>
 
@@ -292,11 +305,64 @@ description="Builds the Tapestry documentation.">
     		<include name="mckoidb.jar"/>
     	</fileset>
     </copy>
-    <echo>
-You must manually edit ${jboss.dir}/conf/default/jboss.jcml.
-The file config/vlib.jcml should be inserted at the end
-of the file.
-    </echo>
+    
+    <!-- Delete, recreate and copy -->
+    
+    <delete dir="${jboss.dir}/conf/vlib" quiet="true"/>
+	<mkdir dir="${jboss.dir}/conf/vlib"/>
+	<copy todir="${jboss.dir}/conf/vlib">
+		<fileset dir="config/jboss/conf"/>
+	</copy>
+
+	<!-- Set a flag if the vlib already exists, then extract it if necessary. -->
+
+    <available file="${jboss.dir}/db/vlib.conf" property="vlib.db.exists"/>
+    <antcall target="unpack-vlib-database"/>
+	    	
+  </target>
+ 
+
+  <target name="unpack-vlib-database"
+  	description="Unpacks the Virtual Library database."
+  	unless="vlib.db.exists">
+	<unzip src="config/jboss/vlib-db.zip" dest="${jboss.dir}/db"/>  
+  </target>
+
+  <target name="deploy-vlib" description="Deploys the Virtual Library demo into JBoss.">
+  	<copy todir="${jboss.dir}/deploy">
+  		<fileset dir="lib">
+  			<include name="VlibBeans.jar"/>
+  		</fileset>
+  	</copy>
   </target>
   
+  <target name="run-jboss"
+  		  depends="deploy-vlib"
+  		  description="Launch the JBoss application server.">
+  	<java fork="true"
+  		dir="${jboss.dir}/bin"
+		classname="org.jboss.Main">
+		
+		<!-- Launch using the vlib configuration, not the default. -->
+		
+		<arg value="vlib"/>
+		
+		<classpath>
+			<pathelement location="${jboss.dir}/lib/crimson.jar"/>
+			<pathelement location="${jboss.dir}/bin/run.jar"/>
+		</classpath>	
+		
+		<!-- Enable debugging -->
+
+    	<jvmarg line="-showversion -Xdebug -Xnoagent"/>
+    	<jvmarg line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20500"/>
+    	
+    	<sysproperty key="javax.xml.parsers.SAXParserFactory"
+    	           value="org.apache.crimson.jaxp.SAXParserFactoryImpl"/>
+    	<sysproperty key="javax.xml.parsers.DocumentBuilderFactory"
+    			   value="org.apache.crimson.jaxp.DocumentBuilderFactoryImpl"/>
+	</java>
+	
+  </target>
+
 </project>
