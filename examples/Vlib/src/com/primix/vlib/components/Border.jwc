@@ -101,10 +101,6 @@
 					<name>listener</name>
 					<property-path>page.application.logoutListener</property-path>
 				</binding>
-				<binding>
-					<name>enabled</name>
-					<property-path>page.application.userLoggedIn</property-path>
-				</binding>
 			</bindings>
 		</component>
 		<component>

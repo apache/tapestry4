@@ -42,4 +42,10 @@ in the Java Servlet API 2.2 ... but Tapestry uses the 2.1 API.
 		<home>com.primix.vlib.ejb.IPublisherHome</home>
 		<remote>com.primix.vlib.ejb.IPublisher</remote>
 	</ejb-ref>
+	<ejb-ref>
+		<ejb-ref-name>ejb/BookQuery</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<home>com.primix.vlib.ejb.IBookQueryHome</home>
+		<remote>com.primix.vlib.ejb.IBookQuery</remote>
+	</ejb-ref>
 </web-app>

@@ -2,7 +2,6 @@ package com.primix.vlib.ejb;
 
 import javax.ejb.*;
 import java.rmi.*;
-import java.util.*;
 
 /*
  * Tapestry Web Application Framework
@@ -33,27 +32,15 @@ import java.util.*;
  */
 
 /**
- *  Home interface for the {@link BookBean} entity bean.
+ *  Home interface for the {@link BookQueryBean} session bean.
  *
- *  @author Howard Ship
  *  @version $Id$
+ *  @author Howard Ship
  *
  */
  
-public interface IBookHome extends EJBHome
+public interface IBookQueryHome extends EJBHome
 {
-	public IBook create(String title, String ISBN, IPublisher publisher, IPerson owner)
-		throws CreateException, RemoteException;
-	
-	public IBook findByPrimaryKey(Integer key)
-		throws FinderException, RemoteException;	
-	
-	public Collection findByOwner(IPerson owner)
-		throws FinderException, RemoteException;
-		
-	public Collection findByHolder(IPerson holder)
-		throws FinderException, RemoteException;
-		
-	public Collection findByPublisher(IPublisher publisher)
-		throws FinderException, RemoteException;	
-}	
+	public IBookQuery create()
+	throws CreateException, RemoteException; 
+}

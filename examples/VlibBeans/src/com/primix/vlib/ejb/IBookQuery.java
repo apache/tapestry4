@@ -2,7 +2,6 @@ package com.primix.vlib.ejb;
 
 import javax.ejb.*;
 import java.rmi.*;
-import java.util.*;
 
 /*
  * Tapestry Web Application Framework
@@ -33,27 +32,42 @@ import java.util.*;
  */
 
 /**
- *  Home interface for the {@link BookBean} entity bean.
+ *  Remote interface for the {@link BookQueryBean} session bean.
  *
- *  @author Howard Ship
  *  @version $Id$
+ *  @author Howard Ship
  *
  */
  
-public interface IBookHome extends EJBHome
+public interface IBookQuery extends EJBObject
 {
-	public IBook create(String title, String ISBN, IPublisher publisher, IPerson owner)
-		throws CreateException, RemoteException;
-	
-	public IBook findByPrimaryKey(Integer key)
-		throws FinderException, RemoteException;	
-	
-	public Collection findByOwner(IPerson owner)
-		throws FinderException, RemoteException;
-		
-	public Collection findByHolder(IPerson holder)
-		throws FinderException, RemoteException;
-		
-	public Collection findByPublisher(IPublisher publisher)
-		throws FinderException, RemoteException;	
-}	
+	/**
+	 *  Returns the total number of results rows in the query.
+	 *
+	 */
+	 
+	public int getResultCount()
+	throws RemoteException;
+
+	/**
+	 *  Returns a selected subset of the results.
+	 *
+	 */
+	 
+	public BookQueryResult[] get(int offset, int length)
+	throws RemoteException;	
+
+	/**
+	 *  Performs a query of books with the matching title and (optionally) publisher.
+	 *  The results will be sorted by book title.
+	 *
+	 *  @param title The title to be search for.  Any book with that contains this
+	 *  value in its title attribute will be returned.
+	 *  @param publisherPK The primary key of a publisher to limit results to, or null
+	 *  to select for any publisher.
+	 *
+	 */
+	 
+	public int titleQuery(String title, Object publisherPK)
+	throws RemoteException;
+}

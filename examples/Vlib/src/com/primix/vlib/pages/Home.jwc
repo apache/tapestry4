@@ -44,7 +44,7 @@
 				</binding>
 				<binding>
 					<name>model</name>
-					<property-path>publisherModel</property-path>
+					<property-path>application.publisherSearchModel</property-path>
 				</binding>
 			</bindings>
 		</component>
