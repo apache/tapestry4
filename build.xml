@@ -11,11 +11,14 @@ In the Readme.html
 In some of the documentation in the web directory.
 -->
 
-<property name="framework.version" value="1.0.7"/>
+<property name="framework.version" value="1.0.8"/>
 
 <property name="lib" value="lib"/>
 
 <property name="javadoc.dir" value="doc/api"/>
+
+<property name="private.dir" value="private"/>
+
 
 <!-- Read the configuration to location the JBoss distribution. -->
 
@@ -65,6 +68,7 @@ In some of the documentation in the web directory.
   <ant dir="examples/Vlib" target="clean"/>
   <ant dir="doc/src/Tutorial" target="clean"/>
   <ant dir="doc/src/DevelopersGuide" target="clean"/>
+  <remove dir="${private.dir}" quiet="true"/>
 </target>
 
 <target name="clean-all" depends="clean"
@@ -127,17 +131,22 @@ description="Builds the Tapestry documentation.">
    <fileset dir=".">
      <include name="*.xml"/>
      <include name="*.html"/>
-     <include name="config/*"/>
-     <include name="contrib/**/*"/>
-     <include name="doc/**/*"/>
-     <include name="examples/**/*"/>
-     <include name="framework/**/*"/>
-     <include name="images/**/*"/>
-	 <include name="junit/**/*"/>
+     <include name="config/**"/>
+     <include name="contrib/**"/>
+     <include name="doc/**"/>
+     <include name="examples/**"/>
+     <include name="framework/**"/>
+	 <include name="junit/**"/>
 	 <include name="lib/*"/>
      <include name="web/**"/>
      <!-- Exclude class files left around by IDEs. -->
      <exclude name="**/*.class"/>
+     
+     <!-- Exclude Paint Shop Pro files (used to generate images
+          in various places) -->
+          
+     <exclude name="**/*.psp"/>
+     <exclude name="**/*.jbf"/>
 
      <!-- Exclude the source for the documentation. Starting with 1.0.7,
           we only include the output for the documentation, not the
@@ -227,8 +236,6 @@ description="Builds the Tapestry documentation.">
 <target name="run-tutorial"
   description="Runs the Tapestry Tutorial.">
 	
-  <property name="private.dir" value="private"/>
-
   <delete dir="${private.dir}" quiet="true"/>
   <mkdir dir="${private.dir}"/>
   

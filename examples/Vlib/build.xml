@@ -36,7 +36,8 @@
   </target>
 
   <target name="clean">
-    <delete dir="${classes}"/>
+    <delete dir="${classes}" quiet="true"/>
+    <delete dir="private" quiet="true"/>
   </target>
 
   <target name="compile" depends="init" description="Compile all classes in the framework.">
