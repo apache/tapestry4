@@ -22,7 +22,7 @@ import org.apache.tapestry.IAsset;
 
 /**
  * Default asset factory used when the asset path contains a prefix that is not recognized. It is
- * assumed that the prefix is, in fact, the scheme of an external URL. Retur
+ * assumed that the prefix is, in fact, the scheme of an external URL.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
