@@ -596,6 +596,9 @@ public abstract class AbstractComponent implements IComponent
 
     public String getExtendedId()
     {
+        if (page == null)
+            return null;
+            
         return page.getName() + "/" + getIdPath();
     }
 
