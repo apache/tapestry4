@@ -162,7 +162,7 @@ public abstract class TableView
      */
     public void reset()
     {
-        m_objTableModel = null;
+		initialize();
         storeSessionState(null);
     }
 
