@@ -321,6 +321,11 @@ NextGen) be released as version number 3.0.
  		as persistent page properties.	
  	</action>
 
+  <action type="update" dev="HLS">
+    Make the Body component output initializations in a script block at the
+    end of the page (just before the close tag), rather than in a window.onload
+    event handler.
+  </action>
  	</release>
   	
 <!-- Use due-to to give acknowledgement for patches. -->
