@@ -104,13 +104,13 @@ public class SpecificationParser
 		booleanMap.put("n", Boolean.FALSE);
 	}
 	
-
+	
 	public SpecificationParser()
 	{
 		register(TAPESTRY_DTD_1_0_PUBLIC_ID, "Tapestry_1_0.dtd");
 		register(TAPESTRY_DTD_1_1_PUBLIC_ID, "Tapestry_1_1.dtd");
 	}
-
+	
 	/**
 	 *  Parses an input stream containing a component specification and assembles
 	 *  a {@link ComponentSpecification} from it.
@@ -170,20 +170,33 @@ public class SpecificationParser
 	private ComponentSpecification convertComponentSpecification(Document document)
 		throws DocumentParseException
 	{
-		if (document.getDoctype().getPublicId().equals(TAPESTRY_DTD_1_0_PUBLIC_ID))
+		String publicId = document.getDoctype().getPublicId();
+		
+		if (publicId.equals(TAPESTRY_DTD_1_0_PUBLIC_ID))
 			return convertComponentSpecification_1(document);
 		
-		return convertComponentSpecification_2(document);
+		if (publicId.equals(TAPESTRY_DTD_1_1_PUBLIC_ID))
+			return convertComponentSpecification_2(document);
+		
+		throw new DocumentParseException("Unexpected document type with public identifier " +
+					publicId + ".", getResourcePath());
 	}
 	
-
+	
 	private ApplicationSpecification convertApplicationSpecification(Document document)
 		throws DocumentParseException
 	{
-		if (document.getDoctype().getPublicId().equals(TAPESTRY_DTD_1_0_PUBLIC_ID))
+		String publicId = document.getDoctype().getPublicId();
+		
+		if (publicId.equals(TAPESTRY_DTD_1_0_PUBLIC_ID))
 			return convertApplicationSpecification_1(document);
 		
-		return convertApplicationSpecification_2(document);
+		if (publicId.equals(TAPESTRY_DTD_1_1_PUBLIC_ID))
+			return convertApplicationSpecification_2(document);
+		
+		throw new DocumentParseException("Unexpected application specification with public identifier " +
+					publicId + ".", getResourcePath());
+		
 	}
 	
 	//	 All the methods with the suffix "_1" parse the first version of the DTD
@@ -621,7 +634,7 @@ public class SpecificationParser
 			throw new DocumentParseException(
 				key + " can't be converted to boolean (in element " +
 					getNodePath(node.getParentNode()) + ").",
-				getResourcePath(), null);
+				getResourcePath());
 		
 		return value.booleanValue();
 	}
@@ -697,7 +710,7 @@ public class SpecificationParser
 		
 		holder.setProperty(name, value);
 	}
-
+	
 	private ComponentSpecification convertComponentSpecification_2(Document document)
 		throws DocumentParseException
 	{
@@ -705,7 +718,7 @@ public class SpecificationParser
 		Element root = document.getDocumentElement();
 		
 		specification.setAllowBody(
-				getBooleanAttribute(root, "allow-body"));
+			getBooleanAttribute(root, "allow-body"));
 		specification.setAllowInformalParameters(
 			getBooleanAttribute(root, "allow-informal-parameters"));
 		specification.setComponentClassName(getAttribute(root, "class"));
@@ -717,7 +730,7 @@ public class SpecificationParser
 				convertParameter_2(specification, node);
 				continue;
 			}
-	
+			
 			if (isElement(node, "component"))
 			{
 				convertComponent_2(specification, node);
@@ -741,8 +754,14 @@ public class SpecificationParser
 				convertAsset_2(specification, node, AssetType.PRIVATE, "resource-path");
 				continue;
 			}
+			
+			if (isElement(node, "property"))
+			{
+				convertProperty_2(specification, node);
+				continue;
+			}
 		}
-	
+		
 		return specification;
 	}
 	
@@ -767,10 +786,10 @@ public class SpecificationParser
 		
 		if (type != null && copyOf != null)
 			throw new DocumentParseException(
-					"Contained component " + id + 
+				"Contained component " + id + 
 					" contains both type and copy-of attributes.",
-				getResourcePath(), null);
-	
+				getResourcePath());
+		
 		if (copyOf != null)
 			c = copyExistingComponent(specification, copyOf);
 		else
@@ -779,7 +798,7 @@ public class SpecificationParser
 				throw new DocumentParseException(
 					"Contained component " + id + 
 						" does not specify attribute type or copy-of.",
-					getResourcePath(), null);
+					getResourcePath());
 			
 			c = new ContainedComponent();
 			c.setType(type);
@@ -841,7 +860,7 @@ public class SpecificationParser
 		if (c == null)
 			throw new DocumentParseException(
 				"Unable to copy component " + id + ", which does not exist.",
-				getResourcePath(), null);
+				getResourcePath());
 		
 		ContainedComponent result = new ContainedComponent();
 		

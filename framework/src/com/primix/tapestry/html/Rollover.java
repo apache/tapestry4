@@ -346,11 +346,11 @@ public class Rollover extends AbstractComponent
 		// bug #113893).
 
 		link.addEventHandler(ServiceLinkEventType.MOUSE_OVER,
-			session.getSymbol("onMouseOverName"));
+								(String)symbols.get("onMouseOverName"));
 		link.addEventHandler(ServiceLinkEventType.MOUSE_OUT,
-			session.getSymbol("onMouseOutName"));
+								(String)symbols.get("onMouseOutName"));
 
-		String imageName = session.getSymbol("imageName");
+		String imageName = (String)symbols.get("imageName");
 		
 		symbols.clear();
 

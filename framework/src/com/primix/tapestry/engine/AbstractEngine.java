@@ -69,6 +69,27 @@ import org.apache.log4j.*;
  *  which is the class name  to instantiate when a visit object is first needed.  See
  *  {@link #createVisit(IRequestCycle)} for more details.
  *
+ * <p>Some of the classes' behavior is controlled by JVM system parameters
+ * (typically only used during development):
+ *
+ * <table border=1>
+ * 	<tr> <th>Parameter</th> <th>Description</th> </tr>
+ *  <tr> <td>com.primix.tapestry.enable-reset-service</td>
+ *		<td>If true, enabled an additional service, reset, that
+ *		allow page, specification and template caches to be cleared on demand.
+ *  	See {@link #isResetServiceEnabled()}. </td>
+ * </tr>
+ * <tr>
+ *		<td>com.primix.tapestry.disable-caching</td>
+ *	<td>If true, then the page, specification and template caches
+ *  will be cleared after each request. This slows things down,
+ *  but ensures that the latest versions of such files are used.
+ *  Care should be taken that the source directories for the files
+ *  preceeds any versions of the files available in JARs or WARs. </td>
+ * </tr>
+ * </table>
+ *
+ *
  * @author Howard Ship
  * @version $Id$
  */
@@ -169,7 +190,6 @@ public abstract class AbstractEngine
 	
 	protected static final String PAGE_SOURCE_NAME = "com.primix.tapestry.PageSource";
 	
-	
 	/**
 	 *  The source for pages, which acts as a pool, but is capable of
 	 *  creating pages as needed.  Stored in the
@@ -179,9 +199,32 @@ public abstract class AbstractEngine
 	
 	protected transient PageSource pageSource;
 	
-	private transient boolean resetServiceEnabled;
+	/**
+	 *  If true (set from JVM system parameter
+	 *  <code>com.primix.tapestry.enable-reset-service</code>)
+	 *  then the reset service will be enabled, allowing
+	 *  the cache of pages, specifications and template
+	 *  to be cleared on demand.
+	 *
+	 */
+	
+	private static boolean resetServiceEnabled = 
+		Boolean.getBoolean("com.primix.tapestry.enable-reset-service");
+	
+	/**
+	 * If true (set from the JVM system parameter
+	 * <code>com.primix.tapestry.disable-caching</code>)
+	 * then the cache of pages, specifications and template
+	 * will be cleared after each request.
+	 *
+	 */
+	
+	private static boolean disableCaching = 
+		Boolean.getBoolean("com.primix.tapestry.disable-caching");
 	
 	private transient IResourceResolver resolver;
+	
+	
 	
 	private class ActionService implements IEngineService
 	{
@@ -213,6 +256,11 @@ public abstract class AbstractEngine
 				"/" + component.getIdPath();
 			
 		}
+		
+		public String getName()
+		{
+			return ACTION_SERVICE;
+		}
 	}
 	
 	private class PageService implements IEngineService
@@ -239,6 +287,11 @@ public abstract class AbstractEngine
 			return servletPrefix +
 				"/" + PAGE_SERVICE +
 				"/" + parameters[0];
+		}
+		
+		public String getName()
+		{
+			return PAGE_SERVICE;
 		}
 	}
 	
@@ -276,6 +329,11 @@ public abstract class AbstractEngine
 			return servletPrefix +
 				"/" + HOME_SERVICE;
 		}
+		
+		public String getName()
+		{
+			return HOME_SERVICE;
+		}
 	}
 	
 	private class RestartService implements IEngineService
@@ -305,6 +363,11 @@ public abstract class AbstractEngine
 			return servletPrefix +
 				"/" + RESTART_SERVICE;
 		}
+		
+		public String getName()
+		{
+			return RESTART_SERVICE;
+		}
 	}
 	
 	/**
@@ -333,6 +396,11 @@ public abstract class AbstractEngine
 			String pageName = component.getPage().getName();
 			
 			return getServletPrefix() + "/" + RESET_SERVICE + "/" + pageName;
+		}
+		
+		public String getName()
+		{
+			return RESET_SERVICE;
 		}
 	}
 	
@@ -384,6 +452,11 @@ public abstract class AbstractEngine
 			}
 			
 			return buffer.toString();
+		}
+		
+		public String getName()
+		{
+			return DIRECT_SERVICE;
 		}
 	}
 	
@@ -780,9 +853,7 @@ public abstract class AbstractEngine
 	
 	public boolean service(RequestContext context) throws ServletException, IOException
 	{
-		String serviceName;
-		IEngineService service;
-		IRequestCycle cycle;
+		RequestCycle cycle = null;
 		ResponseOutputStream output = null;
 		IMonitor monitor;
 		
@@ -825,13 +896,15 @@ public abstract class AbstractEngine
 			{
 				try
 				{
-					serviceName = context.getPathInfo(0);
+					String serviceName = context.getPathInfo(0);
 					
 					if (serviceName == null ||
 							serviceName.equals(""))
 						serviceName = IEngineService.HOME_SERVICE;
 					
-					service = getService(serviceName);
+					IEngineService service = getService(serviceName);
+					
+					cycle.setService(service);
 					
 					return service.service(cycle, output);		
 				}
@@ -878,6 +951,18 @@ public abstract class AbstractEngine
 					output.forceClose();
 				
 				cleanupAfterRequest(cycle);
+				
+				if (disableCaching)
+				{
+					try
+					{
+						clearCachedData();
+					}
+					catch (Exception ex)
+					{
+						CAT.warn("Exception thrown while clearing caches.", ex);
+					}
+				}
 				
 				if (CAT.isInfoEnabled())
 					CAT.info("End service");
@@ -1160,9 +1245,7 @@ public abstract class AbstractEngine
 		if (monitor != null)
 			monitor.serviceBegin("reset", pageName);
 		
-		pageSource.reset();
-		specificationSource.reset();
-		templateSource.reset();
+		clearCachedData();
 		
 		page = cycle.getPage(pageName);
 		
@@ -1176,6 +1259,18 @@ public abstract class AbstractEngine
 		
 		if (monitor != null)
 			monitor.serviceEnd("reset");
+	}
+	
+	/**
+	 *  Discards all cached pages, component specifications and templates.
+	 *
+	 */
+	
+	protected void clearCachedData()
+	{
+		pageSource.reset();
+		specificationSource.reset();
+		templateSource.reset();
 	}
 	
 	/**
@@ -1243,8 +1338,6 @@ public abstract class AbstractEngine
 			
 			servletPrefix = contextPath + servletPath;
 			
-			resetServiceEnabled = 
-				Boolean.getBoolean("com.primix.tapestry.enable-reset-service");
 		}	
 		
 		String applicationName = specification.getName();

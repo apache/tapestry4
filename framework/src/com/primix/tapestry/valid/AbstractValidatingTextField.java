@@ -60,9 +60,9 @@ import java.text.*;
 
 public abstract class AbstractValidatingTextField
 extends AbstractComponent
-implements ILifecycle, IValidatingTextField
+implements ILifecycle, IValidatingTextField, IFormComponent
 {
-	private TextField captive;
+	private IFormComponent captive;
 	private IValidationDelegate delegate;
 	private IBinding delegateBinding;
 
@@ -94,6 +94,11 @@ implements ILifecycle, IValidatingTextField
 		return captive.getName();
 	}
 
+	public Form getForm()
+	{
+		return captive.getForm();
+	}
+	
 	public IBinding getRequiredBinding()
 	{
 		return requiredBinding;

@@ -11,8 +11,7 @@
   </component>
   <component id="submitScript" type="Script">
     <static-binding name="script">/com/primix/tapestry/form/SelectSubmit.script</static-binding>
-    <binding name="formName" property-path="components.form.name"/>
-    <binding name="selectName" property-path="components.selectPage.name"/>
+    <binding name="component" property-path="components.selectPage"/>
   </component>
   <component id="page" type="Direct">
     <binding name="listener" property-path="page.selectComponentListener"/>

@@ -29,6 +29,7 @@
 package com.primix.tapestry;
 
 import com.primix.tapestry.spec.*;
+import com.primix.tapestry.util.*;
 import java.util.*;
 
 /**
@@ -42,12 +43,166 @@ import java.util.*;
 public final class Tapestry
 {
 	/**
+	 *  Prevent instantiation.
+	 *
+	 */
+	
+	private Tapestry()
+	{
+	}
+	
+	/**
 	 *  The version of the framework; this is updated for major releases.
 	 *  A trailing '+' indicates that the exact version is not known.
 	 *
 	 */
 	
-	public static final String VERSION = "1.0.0+";
+	public static final String VERSION = "1.0.1";
+	
+	/**
+	 *  A {@link Decorator} used to coerce arbitrary objects
+	 *  to boolean values.
+	 *
+	 *  @see #evaluateBoolean(Object)
+	 */
+	
+	private static final Decorator booleanDecorator = new Decorator();
+	
+	private static abstract class BoolAdaptor
+	{
+		/**
+		 *  Implemented by subclasses to coerce an object to a boolean.
+		 *
+		 */
+		
+		public abstract boolean coerce(Object value);
+	}
+	
+	private static class BooleanAdaptor extends BoolAdaptor
+	{
+		public boolean coerce(Object value)
+		{
+			Boolean b = (Boolean)value;
+			
+			return b.booleanValue();
+		}
+	}
+	
+	private static class NumberAdaptor extends BoolAdaptor
+	{
+		public boolean coerce(Object value)
+		{
+			Number n = (Number)value;
+			
+			return n.intValue() > 0;
+		}
+	}
+	
+	private static class CollectionAdaptor extends BoolAdaptor
+	{
+		public boolean coerce(Object value)
+		{
+			Collection c = (Collection)value;
+			
+			return c.size()	> 0;
+		}
+	}
+	
+	private static class StringAdaptor extends BoolAdaptor
+	{
+		public boolean coerce(Object value)
+		{
+			String s = (String)value;
+			
+			if (s.length() == 0)
+				return false;
+			
+			char[] data = s.toCharArray();
+			
+			try
+			{
+				for (int i = 0; ; i++)
+				{
+					char ch = data[i];
+					if (!Character.isWhitespace(ch))
+						return true;
+				}
+			}
+			catch (IndexOutOfBoundsException ex)
+			{
+				return false;
+			}
+		}
+	}
+	
+	static
+	{
+		booleanDecorator.register(Boolean.class, new BooleanAdaptor());
+		booleanDecorator.register(Number.class, new NumberAdaptor());
+		booleanDecorator.register(Collection.class, new CollectionAdaptor());
+		booleanDecorator.register(String.class, new StringAdaptor());
+		
+		// Register a default, catch-all adaptor.
+		
+		booleanDecorator.register(Object.class,
+				new BoolAdaptor()
+				{
+					public boolean coerce(Object value)
+					{
+						return true;
+					}
+				});
+	}
+	
+	/**
+	 *  {@link Decorator} used to extract an {@link Iterator} from
+	 *  an arbitrary object.
+	 *
+	 */
+	
+	private static Decorator iteratorDecorator = new Decorator();
+	
+	private abstract static class IteratorAdaptor
+	{
+		/**
+		 *  Coeerces the object into an {@link Iterator}.
+		 *
+		 */
+		
+		abstract public Iterator coerce(Object value);
+	}
+	
+	static
+	{
+		iteratorDecorator.register(Iterator.class, new IteratorAdaptor()
+				{
+					public Iterator coerce(Object value)
+					{
+						return (Iterator)value;
+					}
+				});
+		
+		iteratorDecorator.register(Collection.class, new IteratorAdaptor()
+				{
+					public Iterator coerce(Object value)
+					{
+						Collection c = (Collection)value;
+						
+						if (c.size() == 0)
+							return null;
+						
+						return c.iterator();
+					}
+				});
+		
+		iteratorDecorator.register(Object.class, new IteratorAdaptor()
+				{
+					public Iterator coerce(Object value)
+					{
+						return null;
+					}
+				});
+	}
 	
 	/**
 	 *  Returns true if the value is null or empty (is the empty string,
@@ -85,14 +240,14 @@ public final class Tapestry
 		
 		if (names == null)
 			return;
-			
+		
 		ComponentSpecification specification = source.getSpecification();
 		Iterator i = names.iterator();
 		
 		while (i.hasNext())
 		{
 			String name = (String)i.next();
-		
+			
 			// If not a formal parameter, then copy it over.
 			
 			if (specification.getParameter(name) == null)
@@ -103,6 +258,93 @@ public final class Tapestry
 			}
 		}
 	}
+	
+	/**
+	 *  Evaluates an object to determine its boolean value.
+	 *
+	 *  <table border=1>
+	 *	<tr> <th>Class</th> <th>Test</th> </tr>
+	 *  <tr>
+	 *		<td>{@link Boolean}</td>
+	 *		<td>Self explanatory.</td>
+	 *	</tr>
+	 *	<tr> <td>{@link Number}</td>
+	 *		<td>True if non-zero, false otherwise.</td>
+	 *		</tr>
+	 *	<tr>
+	 *		<td>{@link Collection}</td>
+	 *		<td>True if contains any elements, false otherwise.</td>
+	 *		</tr>
+	 *	<tr>
+	 *		<td>{@link String}</td>
+	 *		<td>True if contains any non-whitespace characters, false otherwise.</td>
+	 *		</tr>
+	 *	<tr>
+	 *		<td>Any array type</td>
+	 *		<td>True if contains any elements, false otherwise.</td>
+	 *	<tr>
+	 *</table>
+	 *
+	 * <p>Any other non-null object evaluates to true.
+	 *
+	 */
+	
+	public static boolean evaluateBoolean(Object value)
+	{
+		if (value == null)
+			return false;
+		
+		Class valueClass = value.getClass();
+		if (valueClass.isArray())
+		{
+			Object[] array = (Object[])value;
+			
+			return array.length > 0;
+		}
+		
+		BoolAdaptor adaptor = (BoolAdaptor)booleanDecorator.getAdaptor(valueClass);
+		
+		return adaptor.coerce(value);
+	}
+	
+	/**
+	 *  Converts an Object into an {@link Iterator}, following some basic rules.
+	 *
+	 *  <table border=1>
+	 * 	<tr><th>Input Class</th> <th>Result</th> </tr>
+	 * <tr><td>Object array</td> <td>Converted to a {@link List} and iterator returned.
+	 * null returned if the array is empty.</td>
+	 * </tr>
+	 * <tr><td>{@link Iterator}</td> <td>Returned as-is.</td>
+	 * <tr><td>{@link Collection}</td> <td>Iterator returned, or nul if the
+	 Collection is empty</td> </tr>
+	 * <tr><td>Any other</td> <td>null returned</td> </tr>
+	 * <tr><td>null</td> <td>null returned</td> </tr>
+	 * </table>
+	 *
+	 */
+	
+	public static Iterator coerceToIterator(Object value)
+	{
+		if (value == null)
+			return null;
+		
+		Class valueClass = value.getClass();
+		if (valueClass.isArray())
+		{
+			Object[] array = (Object[])value;
+			
+			if (array.length == 0)
+				return null;
+			
+			List l = Arrays.asList(array);
+			
+			return l.iterator();
+		}
 
+		IteratorAdaptor adaptor = (IteratorAdaptor)iteratorDecorator.getAdaptor(valueClass);
+		
+		return adaptor.coerce(value);		
+	}
 }
 

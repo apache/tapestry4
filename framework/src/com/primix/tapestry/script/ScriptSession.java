@@ -60,23 +60,9 @@ public class ScriptSession
 		return scriptPath;
 	}
 	
-	public String getSymbol(String key)
-	throws ScriptException
+	public Map getSymbols()
 	{
-		try
-		{
-			return (String)symbols.get(key);
-		}
-		catch (ClassCastException ex)
-		{
-			throw new ScriptException("Symbol " + key + " is not a String.", 
-					null, this, ex);
-		}		
-	}
-	
-	public void setSymbol(String key, String value)
-	{
-		symbols.put(key, value);
+		return symbols;
 	}
 	
 	public void setBody(String value)

@@ -47,15 +47,7 @@ import java.util.*;
  */
 
 public abstract class AbstractComponent implements IComponent
-{
-	static
-	{
-		// Force the MapHelper class to exist, which gets it registered
-		// with the PropertyHelper.
-		
-		MapHelper.class.getName();
-	}
-	
+{	
 	/**
 	 *  The specification used to originally build the component.
 	 *

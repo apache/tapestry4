@@ -53,7 +53,7 @@ import org.apache.log4j.*;
  * <p>Typical usage:
  *
  * <pre>
- * ProperyHelper helper = PropertyHelper.forClass(instance.getClass());
+ * ProperyHelper helper = PropertyHelper.forInstance(instance);
  * helper.set(instance, "propertyName", newValue);
  * </pre>
  *
@@ -61,9 +61,9 @@ import org.apache.log4j.*;
  * of type checking is performed.
  *
  * <p>A mechanism exists to register custom <code>PropertyHelper</code> subclasses
- * for specific classes.  This would allow, for example, the contents of a {@link Map}
- * to be accessed in the same way as the properties of
- * a JavaBean.
+ * for specific classes.  The two default registrations are
+ * {@link PublicBeanPropertyHelper} for the {@link IPublicBean} interface, and
+ * {@link MapHelper} for the {@link Map} interface.
  *
  * @version $Id$
  * @author Howard Ship
@@ -74,6 +74,12 @@ public class PropertyHelper
 	private static final Category CAT =
 		Category.getInstance(PropertyHelper.class);
 
+	static
+	{
+		register(IPublicBean.class, PublicBeanPropertyHelper.class);
+		register(Map.class, MapHelper.class);
+	}
+	
 	/**
 	 *  Cache of helpers, keyed on the Class of the bean.
 	 */
@@ -163,6 +169,17 @@ public class PropertyHelper
 
 	}
 
+	/**
+	 *  A convienience method; simply invokes
+	 *  {@link #forClass(Class)}.
+	 *
+	 */
+	
+	public static PropertyHelper forInstance(Object instance)
+	{
+		return forClass(instance.getClass());
+	}
+	
 	/**
 	*  Factory method which returns a <code>PropertyHelper</code> for the given
 	*  JavaBean class.
@@ -415,7 +432,7 @@ public class PropertyHelper
 
 	public Object getPath(Object object, String propertyPath)
 	{
-		return getPath(object, splitter.splitToArray(propertyPath));
+		return getPath(object, splitPropertyPath(propertyPath));
 	}
 
 	/**
@@ -555,7 +572,7 @@ public class PropertyHelper
 
 	public void setPath(Object object, String propertyPath, Object value)
 	{
-		setPath(object, splitter.splitToArray(propertyPath), value);
+		setPath(object, splitPropertyPath(propertyPath), value);
 	}
 
 	/**
@@ -655,6 +672,18 @@ public class PropertyHelper
 		}
 
 		return buffer.toString();
+	}
+	
+	/**
+	 *  Splits a property path into an array of individual properties.
+	 *
+	 *  @since 1.0.1
+	 *
+	 */
+	
+	public static String[] splitPropertyPath(String propertyPath)
+	{
+		return splitter.splitToArray(propertyPath);
 	}
 }
 

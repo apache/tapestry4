@@ -28,48 +28,55 @@
 
 package com.primix.tapestry.script;
 
+import com.primix.tapestry.*;
+import com.primix.tapestry.util.prop.*;
 import java.util.*;
 
 /**
- *  Allows for the creation of new symbols that can be used in the script
- *  or returned to the caller.
- *
- *  <p>The &lt;let&gt; tag wraps around static text and &lt;insert&gt;
- *  elements.  The results are trimmed.
+ *  A looping operator, modeled after the Foreach component.  It takes
+ *  as its source as property and iterates through the values, updating
+ *  a symbol on each pass.
  *
  *  @author Howard Ship
- *  @version $Id$
- *  @since 0.2.9
+ * @version $Id$
+ * @since 1.0.1
  */
- 
-class LetToken extends AbstractToken
+
+class ForeachToken extends AbstractToken
 {
 	private String key;
-	private int bufferLength = 20;
+	private String propertyPath;
+	private String[] properties;
 	
-	public LetToken(String key)
+	ForeachToken(String key, String propertyPath)
 	{
 		this.key = key;
+		this.propertyPath = propertyPath;
 	}
 	
 	public void write(StringBuffer buffer, ScriptSession session)
-	throws ScriptException
+		throws ScriptException
 	{
-		if (buffer != null)
-			throw new IllegalArgumentException();
-		
-		buffer = new StringBuffer(bufferLength);
-		
-		writeChildren(buffer, session);
-		
-		// Store the symbol back into the root set of symbols.
+		if (properties == null)
+			properties = PropertyHelper.splitPropertyPath(propertyPath);
 		
 		Map symbols = session.getSymbols();
-		symbols.put(key, buffer.toString().trim());
+		PropertyHelper helper = PropertyHelper.forInstance(symbols);
 		
-		// Store the buffer length from this run for the next run, since its
-		// going to be approximately the right size.
+		Object rawSource = helper.getPath(symbols, properties);
 		
-		bufferLength = Math.max(bufferLength, buffer.length());
+		Iterator i = Tapestry.coerceToIterator(rawSource);
+		
+		while (i.hasNext())
+		{
+			Object newValue = i.next();
+			
+			symbols.put(key, newValue);
+			
+			writeChildren(buffer, session);
+		}
+		
+		// We leave the last value as a symbol; don't know if that's
+		// good or bad.
 	}
 }

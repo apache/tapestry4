@@ -28,48 +28,49 @@
 
 package com.primix.tapestry.script;
 
+import com.primix.tapestry.util.prop.*;
+import com.primix.tapestry.*;
 import java.util.*;
 
 /**
- *  Allows for the creation of new symbols that can be used in the script
- *  or returned to the caller.
- *
- *  <p>The &lt;let&gt; tag wraps around static text and &lt;insert&gt;
- *  elements.  The results are trimmed.
+ *  A conditional portion of the generated script.
  *
  *  @author Howard Ship
  *  @version $Id$
- *  @since 0.2.9
+ *  @since 1.0.1
+ *
  */
- 
-class LetToken extends AbstractToken
+
+class IfToken extends AbstractToken
 {
-	private String key;
-	private int bufferLength = 20;
+	private boolean condition;
+	private String propertyPath;
+	private String[] properties;
 	
-	public LetToken(String key)
+	IfToken(boolean condition, String propertyPath)
 	{
-		this.key = key;
+		this.condition = condition;
+		this.propertyPath = propertyPath;
 	}
 	
-	public void write(StringBuffer buffer, ScriptSession session)
-	throws ScriptException
+	private boolean evaluate(ScriptSession session)
 	{
-		if (buffer != null)
-			throw new IllegalArgumentException();
-		
-		buffer = new StringBuffer(bufferLength);
-		
-		writeChildren(buffer, session);
-		
-		// Store the symbol back into the root set of symbols.
+		if (properties == null)
+			properties = PropertyHelper.splitPropertyPath(propertyPath);
 		
 		Map symbols = session.getSymbols();
-		symbols.put(key, buffer.toString().trim());
 		
-		// Store the buffer length from this run for the next run, since its
-		// going to be approximately the right size.
+		PropertyHelper helper = PropertyHelper.forInstance(symbols);
 		
-		bufferLength = Math.max(bufferLength, buffer.length());
+		Object value = helper.getPath(symbols, properties);
+		
+		return Tapestry.evaluateBoolean(value);
+	}
+	
+    public void write(StringBuffer buffer, ScriptSession session)
+	throws ScriptException
+	{
+		if (evaluate(session) == condition)
+			writeChildren(buffer, session);
 	}
 }

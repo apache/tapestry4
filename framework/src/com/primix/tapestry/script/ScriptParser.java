@@ -41,7 +41,13 @@ import org.apache.log4j.*;
 
 /**
  *  Parses a Tapestry Script, an XML file defined by the public identifier
- *  <code>-//Primix Solutions//Tapestry Script 1.0//EN</code>.
+ *  <code>-//Primix Solutions//Tapestry Script 1.0//EN</code> 
+ * or
+ * <code>-//Howard Ship//Tapestry Script 1.1//EN</code>.
+ *
+ * <p>The new DTD, version 1.1, is largely backwards compatible to the
+ * old script, but adds a number of new features (if, if-not, foreach
+ * and the use of property paths with insert).
  *
  *  <p>A Tapestry Script is used, in association with the 
  *  {@link Body} and/or {@link Script} components,
@@ -58,172 +64,236 @@ import org.apache.log4j.*;
  */
 
 public class ScriptParser
-extends AbstractDocumentParser
+	extends AbstractDocumentParser
 {
-
+	
 	private static final Category CAT = 
 		Category.getInstance(ScriptParser.class);
-
+	
 	private static final int MAP_SIZE = 11;
-
-	private Map symbolCache;
-
+	
+	/**
+	 *  A cache of {@link InsertToken}s, keyed on property path.
+	 *
+	 */
+	
+	private Map insertCache;
+	
+	public static final String SCRIPT_DTD_1_0_PUBLIC_ID =
+		"-//Primix Solutions//Tapestry Script 1.0//EN";
+	
+	public static final String SCRIPT_DTD_1_1_PUBLIC_ID = 
+		"-//Howard Ship//Tapestry Script 1.1//EN";
+	
+	public ScriptParser()
+	{		
+		register(SCRIPT_DTD_1_0_PUBLIC_ID, "Script_1_0.dtd");
+		register(SCRIPT_DTD_1_1_PUBLIC_ID, "Script_1_1.dtd");
+	}
+	
 	public ParsedScript parse(InputStream stream, String resourcePath)
-	throws DocumentParseException
+		throws DocumentParseException
 	{
 		InputSource source = new InputSource(stream);
-
+		
 		try
 		{
 			Document document = parse(source, resourcePath, "script"); 
-
+			
 			return build(document);
-
+			
 		}
 		finally
 		{
 			setResourcePath(null);
 		}
 	}
+	
+	
 
-
-	public ScriptParser()
-	{		
-		register("-//Primix Solutions//Tapestry Script 1.0//EN", 
-			"Script_1_0.dtd");
-	}
-
-
+	
+	
 	private ParsedScript build(Document document)
-	throws DocumentParseException
+		throws DocumentParseException
 	{
-		Element root;
-		Node child;
-		ParsedScript result = new ParsedScript(getResourcePath());
+		ParsedScript result = new ParsedScript(getResourcePath()); 
+		Element root = document.getDocumentElement();
 
-		root = document.getDocumentElement();
-
-		for (child = root.getFirstChild(); child != null; child = child.getNextSibling())
+		String publicId = document.getDoctype().getPublicId();
+		
+		if (! (publicId.equals(SCRIPT_DTD_1_0_PUBLIC_ID) ||
+				publicId.equals(SCRIPT_DTD_1_1_PUBLIC_ID)))
+			throw new DocumentParseException("Script uses unknown public identifier " +
+						publicId + ".", getResourcePath());
+			
+		for (Node child = root.getFirstChild(); child != null; child = child.getNextSibling())
 		{
 			if (isElement(child, "let"))
 			{
 				result.addToken(buildLet(child));
 				continue;
 			}
-
+			
 			if (isElement(child, "body"))
 			{
 				result.addToken(buildBody(child));
 				continue;
 			}
-
+			
 			if (isElement(child, "initialization"))
 			{
 				result.addToken(buildInitialization(child));
 				continue;
 			}
-
+			
 			// Else, ignorable whitespace, I guess.
 		}
-
+		
 		return result;
 	}
-
+	
 	private IScriptToken buildLet(Node node)
-	throws DocumentParseException
+		throws DocumentParseException
 	{
 		Element element = (Element)node;
 		String key = element.getAttribute("key");
-
+		
 		IScriptToken token = new LetToken(key);
 		build(token, node);
-
+		
 		return token;
 	}
-
+	
 	private IScriptToken buildBody(Node node)
-	throws DocumentParseException
+		throws DocumentParseException
 	{
 		IScriptToken token = new BodyToken();
-
+		
 		build(token, node);
-
+		
 		return token;
 	}
-
+	
 	private IScriptToken buildInitialization(Node node)
-	throws DocumentParseException
+		throws DocumentParseException
 	{
 		IScriptToken token = new InitToken();
-
+		
 		build(token, node);
-
+		
 		return token;
 	}
+	
 
-
+	/**
+	 *  Builds the inner content of some other token; this method understands
+	 *  all the content that can appear in the %full-content; entity of the DTD.
+	 *
+	 */
+	
 	private void build(IScriptToken token, Node node)
-	throws DocumentParseException
+		throws DocumentParseException
 	{
 		Node child;
 		CharacterData textNode;
 		String staticText;
-
+		
 		for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
 		{
 			// Completely ignore any comment nodes.
-
+			
 			if (child.getNodeType() == Node.COMMENT_NODE)
 				continue;
-
-			// Currently, we support a single special markup, the
-			// <insert key="..."/>.
-
+						
 			if (isElement(child, "insert"))
 			{
-				addSymbol(token, child);
+				token.addToken(buildInsert(child));
 				continue;
 			}
-
+			
+			if (isElement(child, "if"))
+			{
+				token.addToken(buildIf(true, child));
+				continue;
+			}
+			
+			if (isElement(child, "if-not"))
+			{
+				token.addToken(buildIf(false, child));
+				continue;
+			}
+			
+			if (isElement(child, "foreach"))
+			{
+				token.addToken(buildForeach(child));
+				continue;
+			}
+			
 			// Have to assume it is a Text or CDATASection, both
 			// of which inherit from interface CharacterData
-
+			
 			textNode = (CharacterData)child;
 			staticText = textNode.getData();
-
+			
 			token.addToken(new StaticToken(staticText));
 		}
-
+		
 	}
-
+	
 	/**
-	*  Creates a {@link SymbolToken} for the current node
-	*  (which is an insert element node) and adds it as a child of the token.
+	 *  Creates an {@link InsertToken} for the current node
+	 *  (which is an insert element node) and adds it as a child of the token.
 	 *  Uses a caching mechanism so
-	*  that it creates only one SymbolToken for each key referenced in the
-	*  script.
-	*
-	*/
-
-	private void addSymbol(IScriptToken token, Node node)
+	 *  that it creates only one SymbolToken for each key referenced in the
+	 *  script.
+	 *
+	 */
+	
+	private IScriptToken buildInsert(Node node)
 	{
-		IScriptToken symbolToken = null;
-		Element element = (Element)node;
-		String key = element.getAttribute("key");
-
-		if (symbolCache == null)
-			symbolCache = new HashMap(MAP_SIZE);	
+		IScriptToken result = null;
+		String propertyPath = getAttribute(node, "property-path");
+		
+		// Version 1.0 of the DTD called the attribute "key".
+		
+		if (propertyPath == null)
+			propertyPath = getAttribute(node, "key");
+		
+		if (insertCache == null)
+			insertCache = new HashMap(MAP_SIZE);	
 		else
-			symbolToken = (IScriptToken)symbolCache.get(key);
-
-		if (symbolToken == null)
+			result = (IScriptToken)insertCache.get(propertyPath);
+		
+		if (result == null)
 		{
-			symbolToken = new SymbolToken(key);
-			symbolCache.put(key, symbolToken);
+			result = new InsertToken(propertyPath);
+			insertCache.put(propertyPath, result);
 		}
-
-		token.addToken(symbolToken);
+		
+		return result;
 	}
-
+	
+	private IScriptToken buildIf(boolean condition, Node node)
+		throws DocumentParseException
+	{
+		String propertyPath = getAttribute(node, "property-path");
+		IScriptToken result = new IfToken(condition, propertyPath);
+		
+		build(result, node);
+		
+		return result;
+	}
+	
+	private IScriptToken buildForeach(Node node)
+		throws DocumentParseException
+	{
+		String key = getAttribute(node, "key");
+		String propertyPath = getAttribute(node, "property-path");
+		IScriptToken result = new ForeachToken(key, propertyPath);
+		
+		build(result, node);
+		
+		return result;
+	}
 }
 

@@ -55,6 +55,11 @@ extends Exception
         this(message, null,  rootCause);
     }
 
+	public DocumentParseException(String message, String resourcePath)
+	{
+		this(message, resourcePath, null);
+	}
+	
     public DocumentParseException(String message, SAXParseException rootCause)
     {
         this(message, null, rootCause);
@@ -74,8 +79,11 @@ extends Exception
     {
 		this(message, resourcePath, (Throwable)rootCause);
 		
-		lineNumber = rootCause.getLineNumber();
-		column = rootCause.getColumnNumber();
+		if (rootCause != null)
+		{
+			lineNumber = rootCause.getLineNumber();
+			column = rootCause.getColumnNumber();
+		}
     }
 	
     public DocumentParseException(String message)

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!--$Id$-->
 <!DOCTYPE application PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN"
-	"http://tapestry.sourceforge.net/dtd/Tapestry_1_1.dtd">
+	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <application name="Validating Text Fields" engine-class="com.primix.tapestry.engine.SimpleEngine">
   <property name="com.primix.tapestry.visit-class">tutorial.valid.Visit</property>
   <page name="Home" specification-path="/tutorial/valid/Home.jwc"/>
