@@ -565,7 +565,7 @@ public abstract class AbstractComponent implements IComponent
         if (_page == null)
             return null;
             
-        return _page.getQualifiedName() + "/" + getIdPath();
+        return _page.getName() + "/" + getIdPath();
     }
 
     public String getId()
