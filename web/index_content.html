@@ -5,6 +5,7 @@
 <base target="_top">
 <link rel="STYLESHEET" type="text/css" href="scripts/style_virtlib_pcIE55.css">
 </head>
+<script language="javascript" src="scripts/PracticalBrowserSniffer.js"></script>
 <script language="javascript">
 <!-- 
 
@@ -23,10 +24,17 @@
      if (++quotex > maxquotex)
 	   quotex = 0;
 	 
-	 document.all.quotecontainer.innerHTML = quote[quotex];
+	 var newQuote = quote[quotex];
+	 
+	 var element = document.getElementById("quotecontainer");
+	 
+	 element.innerHTML = newQuote;
  }
  
- window.setInterval("rotate_quote()", 10 * 1000);
+ // This can't be done in nn4
+ 
+ if (navigator.family != "nn4")
+	 window.setInterval("rotate_quote()", 10 * 1000);
  
 // -->
 </script>
@@ -40,9 +48,9 @@
                 <a href="mailto:hship@users.sf.net">Howard Lewis Ship</a>.
 				
 				<p><div class="right-side-quote">
-	&rdquo;<span id="quotecontainer">Tapestry reconceptualizes web application development
+	”<span id="quotecontainer">Tapestry reconceptualizes web application development
 	in terms of objects, methods and properties
-	instead of URLs and query parameters.</span>&rdquo;
+	instead of URLs and query parameters.</span>”
 	
 	<p><a target="_top" href="quotes_frame.html">More Quotes ...</a>
 </div>Tapestry is an alternative to 
