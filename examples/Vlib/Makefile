@@ -39,7 +39,7 @@ EXEC_CLASSPATH = \
 
 _EXEC_CLASSPATH := $(strip $(shell $(JBE_CANONICALIZE) -classpath $(EXEC_CLASSPATH)))
 
-run:
+run: default
 	$(JAVA) -classpath "$(_EXEC_CLASSPATH)" \
 	-Dcom.primix.tapestry.enable-reset-service=true \
 	-Dorg.xml.sax.parser=org.apache.xerces.parsers.SAXParser \
