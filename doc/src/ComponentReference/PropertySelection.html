@@ -1,3 +1,5 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- $Id$ --> 
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
@@ -154,11 +156,11 @@ The PropertySelection component provides gender selection drop down list.
 
 &lt;bean name="genderSelectModel" class="GenderPropertySelectionModel"/&gt;          
 
-&lt;component jwcid="detailsForm" type="<a href="Form.html">Form</a>"&gt;
+&lt;component id="detailsForm" type="<a href="Form.html">Form</a>"&gt;
     &lt;binding name="listener" property-path="listeners.formSubmit"/&gt;
 &lt;/component&gt;
 
-&lt;component jwcid="<span class="jwcid">selectGender</span>" type="<a href="PropertySelection.html">PropertySelection</a>"&gt;
+&lt;component id="<span class="jwcid">selectGender</span>" type="<a href="PropertySelection.html">PropertySelection</a>"&gt;
     &lt;binding name="model" property-path="beans.genderSelectModel"/&gt;
     &lt;binding name="value" property-path="clothingItem"/&gt;
 &lt;/component&gt;
@@ -256,11 +258,11 @@ latter you can simply set the 'submitOnChange' property to true.
 &lt;/form&gt;
 
 
-&lt;component jwcid="purchaseForm" type="<a href="Form.html">Form</a>"&gt;
+&lt;component id="purchaseForm" type="<a href="Form.html">Form</a>"&gt;
     &lt;binding name="listener" property-path="listeners.formSubmit"/&gt;
 &lt;/component&gt;
 
-&lt;component jwcid="<span class="jwcid">selectItem</span>" type="<a href="PropertySelection.html">PropertySelection</a>"&gt;
+&lt;component id="<span class="jwcid">selectItem</span>" type="<a href="PropertySelection.html">PropertySelection</a>"&gt;
     &lt;binding name="model" property-path="itemSelectionModel"/&gt;
     &lt;binding name="value" property-path="clothingItem"/&gt;
 &lt;/component&gt;
@@ -270,15 +272,15 @@ latter you can simply set the 'submitOnChange' property to true.
     &lt;binding name="component" property-path="components.itemSelect"/&gt;
 &lt;/component&gt;
 
-&lt;component jwcid="insertDescription" type="<a href="Insert.html">Insert</a>"&gt;
+&lt;component id="insertDescription" type="<a href="Insert.html">Insert</a>"&gt;
     &lt;binding name="value" property-path="clothingItem.description"/&gt;
 &lt;/component&gt;
 
-&lt;component jwcid="insertLabel" type="<a href="Insert.html">Insert</a>"&gt;
+&lt;component id="insertLabel" type="<a href="Insert.html">Insert</a>"&gt;
     &lt;binding name="value" property-path="clothingItem.label"/&gt;
 &lt;/component&gt;
 
-&lt;component jwcid="insertPrice" type="<a href="Insert.html">Insert</a>"&gt;
+&lt;component id="insertPrice" type="<a href="Insert.html">Insert</a>"&gt;
     &lt;binding name="value" property-path="clothingItem.price"/&gt;
 &lt;/component&gt;
 
