@@ -236,31 +236,22 @@
 	<!-- Pack the directory (relative to ${dist.dir}), into a TAR file.  We go to the extra work
 	      of building a .tar.gz because the distro is smaller than an equivalent .zip file.
 	   -->
-	<property name="dist.tar" value="${dist.dir}.tar"/>
-	<property name="dist.tar.gz" value="${dist.tar}.gz"/>
+	<property name="dist.tar.gz" value="${dist.dir}.tar.gz"/>
 	 
 	<tar basedir="${dist.root.dir}" 
-		tarfile="${dist.tar}" 
+		tarfile="${dist.tar.gz}" 
 		includes="${dist.base}/**"
-		longfile="gnu"/>
+		longfile="gnu"
+		compression="gzip"/>
 	 
-	<!-- Zip up the TAR file -->
-	 
-	<gzip src="${dist.tar}" zipfile="${dist.tar.gz}"/>
-	 
-	<!-- Remove the distribution directory and the TAR file, leaving only the
-	   final .tar.gz file. -->
-	   
-	<delete file="${dist.tar}"/>
-	
 	<!-- Create the web distribution (to be put up at SourceForge) -->
 	
-	<property name="web.tar" value="${dist.root.dir}/Tapestry-Web-${framework.version}.tar"/>
-	<property name="web.tar.gz" value="${web.tar}.gz"/>
+	<property name="web.tar.gz" value="${dist.root.dir}/Tapestry-Web-${framework.version}.tar.gz"/>
 	
-	<tar basedir="${web.dir}" tarfile="${web.tar}" longfile="gnu"/>
-	<gzip src="${web.tar}" zipfile="${web.tar.gz}"/>
-	<delete file="${web.tar}"/>
+	<tar basedir="${web.dir}" 
+		tarfile="${web.tar.gz}" 
+		longfile="gnu"
+		compression="gzip"/>
  
 </target>
 
