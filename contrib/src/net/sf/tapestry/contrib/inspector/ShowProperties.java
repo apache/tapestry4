@@ -33,18 +33,6 @@ public class ShowProperties extends BaseComponent implements PageRenderListener
     private IPage _inspectedPage;
 
     /**
-     *  Registers this component as a {@link PageRenderListener}.
-     *
-     *  @since 1.0.5
-     *
-     **/
-
-    protected void finishLoad()
-    {
-        getPage().addPageRenderListener(this);
-    }
-
-    /**
      *  Does nothing.
      *
      *  @since 1.0.5

@@ -33,18 +33,6 @@ public class ShowEngine extends BaseComponent implements PageDetachListener
 {
     private byte[] serializedEngine;
 
-    /**
-     *  Registers with the page as a {@link PageDetachListener}.
-     *
-     *  @since 1.0.5
-     *
-     **/
-
-    protected void finishLoad()
-    {
-        getPage().addPageDetachListener(this);
-    }
-
     public void pageDetached(PageEvent event)
     {
         serializedEngine = null;

@@ -68,17 +68,6 @@ public class ShowSpecification extends BaseComponent implements PageRenderListen
     }
 
     /**
-     *  Registers this component as a {@link PageRenderListener}.
-     *
-     * @since 1.0.5
-     **/
-
-    protected void finishLoad()
-    {
-        getPage().addPageRenderListener(this);
-    }
-
-    /**
      *  Clears all cached information about the component and such after
      *  each render (including the rewind phase render used to process
      *  the tab view).
@@ -113,9 +102,7 @@ public class ShowSpecification extends BaseComponent implements PageRenderListen
 
     public void pageBeginRender(PageEvent event)
     {
-        Inspector inspector;
-
-        inspector = (Inspector) getPage();
+        Inspector inspector = (Inspector) getPage();
 
         _inspectedComponent = inspector.getInspectedComponent();
         _inspectedSpecification = _inspectedComponent.getSpecification();
@@ -138,15 +125,8 @@ public class ShowSpecification extends BaseComponent implements PageRenderListen
 
     public List getFormalParameterNames()
     {
-        if (_formalParameterNames != null)
-            return _formalParameterNames;
-
-        Collection names = _inspectedSpecification.getParameterNames();
-        if (names != null && names.size() > 0)
-        {
-            _formalParameterNames = new ArrayList(names);
-            Collections.sort(_formalParameterNames);
-        }
+        if (_formalParameterNames == null)
+            _formalParameterNames = sort(_inspectedSpecification.getParameterNames());
 
         return _formalParameterNames;
     }
@@ -244,13 +224,8 @@ public class ShowSpecification extends BaseComponent implements PageRenderListen
 
     public List getAssetNames()
     {
-        if (_assetNames != null)
-            return _assetNames;
-
-        Map assets = _inspectedComponent.getAssets();
-
-        _assetNames = new ArrayList(assets.keySet());
-        Collections.sort(_assetNames);
+        if (_assetNames == null)
+            _assetNames = sort(_inspectedComponent.getAssets().keySet());
 
         return _assetNames;
     }
@@ -293,17 +268,18 @@ public class ShowSpecification extends BaseComponent implements PageRenderListen
 
     public String getComponentType()
     {
-        String id;
-        ComponentSpecification containerSpecification;
-        IComponent container;
-        ContainedComponent contained;
+        IComponent container = _component.getContainer();
 
-        container = _component.getContainer();
+        ComponentSpecification containerSpecification = container.getSpecification();
 
-        containerSpecification = container.getSpecification();
+        String id = _component.getId();
+        ContainedComponent contained = containerSpecification.getComponent(id);
 
-        id = _component.getId();
-        contained = containerSpecification.getComponent(id);
+        // Temporary:  An implicit component will not be in the containing
+        // component's specification as a ContainedComponent.
+
+        if (contained == null)
+            return null;
 
         return contained.getType();
     }
@@ -317,15 +293,8 @@ public class ShowSpecification extends BaseComponent implements PageRenderListen
 
     public List getSortedPropertyNames()
     {
-        if (_sortedPropertyNames != null)
-            return _sortedPropertyNames;
-
-        Collection names = _inspectedSpecification.getPropertyNames();
-        if (names != null && names.size() > 0)
-        {
-            _sortedPropertyNames = new ArrayList(names);
-            Collections.sort(_sortedPropertyNames);
-        }
+        if (_sortedPropertyNames == null)
+            _sortedPropertyNames = sort(_inspectedSpecification.getPropertyNames());
 
         return _sortedPropertyNames;
     }
@@ -347,16 +316,8 @@ public class ShowSpecification extends BaseComponent implements PageRenderListen
 
     public List getBeanNames()
     {
-        if (_beanNames != null)
-            return _beanNames;
-
-        Collection names = _inspectedSpecification.getBeanNames();
-
-        if (names != null && names.size() > 0)
-        {
-            _beanNames = new ArrayList(names);
-            Collections.sort(_beanNames);
-        }
+        if (_beanNames == null)
+            _beanNames = sort(_inspectedSpecification.getBeanNames());
 
         return _beanNames;
     }
@@ -375,5 +336,17 @@ public class ShowSpecification extends BaseComponent implements PageRenderListen
     public BeanSpecification getBeanSpecification()
     {
         return _beanSpecification;
+    }
+
+    private List sort(Collection c)
+    {
+        if (c == null || c.size() == 0)
+            return null;
+
+        List result = new ArrayList(c);
+
+        Collections.sort(result);
+
+        return result;
     }
 }

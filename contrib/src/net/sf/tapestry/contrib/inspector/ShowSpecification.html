@@ -6,34 +6,34 @@
 
 <table class="inspector-data" width="100%">
 	<tr class="even">
-		<th>Specification Resource Path</th>
-		<td><span jwcid="insertSpecificationPath"/>
-		<span jwcid="showComponentDescription"/>
+		<th>Specification Resource Location</th>
+		<td><span jwcid="@Insert" value="[[ inspectedSpecification.specificationLocation ]]"/>
+		<span jwcid="@ShowDescription" description="[[ inspectedSpecification.description ]]"/>
 		</td>
 	</tr>
 	
 	<tr class="odd">
 		<th>Java class</th>
-		<td><span jwcid="insertJavaClass"/></td>
+		<td><span jwcid="@Insert" value="[[ inspectedSpecification.componentClassName ]]"/></td>
 	</tr>
 
-<span jwcid="ifNotPage">
+<span jwcid="@Conditional" condition="[ [! inspectedSpecification.pageSpecification ]]">
 
 	<tr class="even">
 		<th>Allow informal parameters</th>
-		<td><span jwcid="insertAllowInformal"/></td>
+		<td><span jwcid="@Insert" value="[[ inspectedSpecification.allowInformalParameters ]]"/></td>
 	</tr>
 
 	<tr class="odd">
 		<th>Allow body</th>
-		<td><span jwcid="insertAllowBody"/></td>
+		<td><span jwcid="@Insert" value="[[ inspectedSpecification.allowBody ]]"/></td>
 	</tr>
 	
 </span>
 	
 </table>
 
-<span jwcid="ifFormalParameters">
+<span jwcid="@Conditional" condition="[[ formalParameterNames ]]">
 
 <table class="inspector-data" width="100%">
 	<tr class="heading">
@@ -44,18 +44,18 @@
 	</tr>
 
 	<tr jwcid="e_formal">
-		<td><span jwcid="insertFormalName"/>
-		<span jwcid="showParameterDescription"/>
+		<td><span jwcid="@Insert" value="[[ parameterName ]]"/>
+		<span jwcid="@ShowDescription" description="[[ parameterSpecification.description ]]"/>
 		</td>
-		<td><span jwcid="insertFormalRequired"/></td>
-		<td><span jwcid="insertFormalType"/></td>
-		<td><span jwcid="insertFormalBinding"/></td>
+		<td><span jwcid="@Insert" value="[[ parameterSpecification.required ]]"/></td>
+		<td><span jwcid="@Insert" value="[[ parameterSpecification.type ]]"/></td>
+		<td><span jwcid="@Insert" value="[[ binding ]]"/></td>
 	</tr>
 
 </table>
 </span>
 
-<span jwcid="ifInformalParameters">
+<span jwcid="@Conditional" condition="[[ informalParameterNames ]]">
 
 <table class="inspector-data" width="100%">
 	<tr class="heading">
@@ -66,14 +66,14 @@
 	</tr>
 
 	<tr jwcid="e_informal">
-		<td><span jwcid="insertInformalName"/></td>
-		<td><span jwcid="insertInformalBinding"/></td>
+		<td><span jwcid="@Insert" value="[[ parameterName ]]"/></td>
+		<td><span jwcid="@Insert" value="[[ binding ]]"/></td>
 	</tr>
 
 </table>
 </span>
 
-<span jwcid="ifAssets">
+<span jwcid="@Conditional" condition="[[ assetNames ]]">
 
 <table class="inspector-data"  width="100%">
 	<tr class="heading">
@@ -84,15 +84,15 @@
 	</tr>
 
 	<tr jwcid="e_asset">
-		<td><span jwcid="insertAssetName"/></td>
-		<td><span jwcid="insertAssetValue"/></td>
+		<td><span jwcid="@Insert" value="[[ assetName ]]"/></td>
+		<td><span jwcid="@Insert" value="[[ asset ]]"/></td>
 	</tr>
 
 
 </table>
 </span>
 
-<span jwcid="ifProperties">
+<span jwcid="@Conditional" condition="[[ sortedPropertyNames ]]">
 
 <table class="inspector-data" width="100%">
 	<tr class="heading">
@@ -103,14 +103,14 @@
 	</tr>
 
 	<tr jwcid="e_property">
-		<th><span jwcid="insertPropertyName"/></th>
-		<td><span jwcid="insertPropertyValue"/></td>
+		<th><span jwcid="@Insert" value="[[ propertyName ]]"/></th>
+		<td><span jwcid="@Insert" value="[[ propertyValue ]]"/></td>
 	</tr>
 
 </table>
 </span>
 
-<span jwcid="ifBeans">
+<span jwcid="@Conditional" condition="[[ beanNames ]]">
 
 <table class="inspector-data" width="100%">
 	<tr class="heading">
@@ -122,9 +122,9 @@
 	</tr>
 	
 	<tr jwcid="e_bean">
-		<td><span jwcid="insertBeanName"/></td>
-		<td><span jwcid="insertBeanClass"/></td>
-		<td><span jwcid="insertBeanLifecycle"/></td>
+		<td><span jwcid="@Insert" value="[[ beanName ]]"/></td>
+		<td><span jwcid="@Insert" value="[[ beanSpecification.className ]]"/></td>
+		<td><span jwcid="@Insert" value="[[ beanSpecification.lifecycle.name ]]"/></td>
 	</tr>
 	
 </table>
@@ -133,7 +133,7 @@
 </td>
 
 <td>
-<span jwcid="ifComponents">
+<span jwcid="@Conditional" condition="[[ sortedComponents ]]">
 
 <table border="0" class="inspector-data">
 
@@ -146,10 +146,10 @@
 
 	<tr jwcid="e_components">
 		<td>
-			<a jwcid="selectComponent"><span jwcid="insertComponentId"/></a>
+			<a jwcid="selectComponent"><span jwcid="@Insert" value="[[ component.id ]]"/></a>
 		</td>
 		<td>
-			<span jwcid="insertComponentType"/>
+			<span jwcid="@Insert" value="[[ componentType ]]"/>
 		</td>
 	</tr>
 
