@@ -40,8 +40,6 @@ import org.apache.tapestry.parse.TokenType;
  *  Component of the {@link Inspector} page used to display
  *  the ids and types of all embedded components.
  *
- *
- *  @version $Id$
  *  @author Howard Lewis Ship
  *
  **/

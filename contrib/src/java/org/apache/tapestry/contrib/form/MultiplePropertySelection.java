@@ -94,8 +94,6 @@ import org.apache.tapestry.form.IPropertySelectionModel;
  *
  * <p>Informal parameters are not allowed.
  *
- *
- *  @version $Id$
  *  @author Sanjay Munjal
  *
  **/

@@ -22,7 +22,6 @@ import org.apache.tapestry.valid.RenderString;
 
 /**
  * @author ceco
- * @version $Id$
  */
 public class SimpleNodeRenderFactory implements INodeRenderFactory {
 

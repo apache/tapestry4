@@ -25,7 +25,6 @@ import java.util.Collection;
  * @see javax.swing.JTree
  *
  * @author ceco
- * @version $Id$
  */
 
 public interface IMutableTreeNode extends ITreeNode

@@ -28,7 +28,6 @@ import org.apache.tapestry.IRequestCycle;
  * A column may be sortable, in which case it defines the way in which the
  * objects in the table must be sorted by providing a Comparator.
  * 
- * @version $Id$
  * @author mindbridge
  */
 public interface ITableColumn

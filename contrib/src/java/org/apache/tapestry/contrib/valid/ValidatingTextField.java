@@ -83,9 +83,8 @@ import org.apache.tapestry.valid.ValidField;
  *  <p>May not have a body.  May have informal parameters.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.8
- *  @see ValidField
+ *  @see org.apache.tapestry.valid.ValidField
  * 
  **/
 

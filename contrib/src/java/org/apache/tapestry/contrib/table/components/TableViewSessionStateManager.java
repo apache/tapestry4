@@ -26,7 +26,6 @@ import org.apache.tapestry.contrib.table.model.simple.SimpleTableState;
  *  saves only the model state otherwise. 
  * 
  *  @author mindbridge
- *  @version $Id$
  */
 public class TableViewSessionStateManager implements ITableSessionStateManager
 {

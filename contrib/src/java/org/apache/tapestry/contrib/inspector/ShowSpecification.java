@@ -36,8 +36,6 @@ import org.apache.tapestry.spec.IParameterSpecification;
  *  Component of the {@link Inspector} page used to display
  *  the specification, parameters and bindings and assets of the inspected component.
  *
- *
- *  @version $Id$
  *  @author Howard Lewis Ship
  *
  **/

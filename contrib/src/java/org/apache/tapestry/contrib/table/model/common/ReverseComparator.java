@@ -17,7 +17,6 @@ package org.apache.tapestry.contrib.table.model.common;
 import java.util.Comparator;
 
 /**
- * @version $Id$
  * @author mindbridge
  *
  */

@@ -22,7 +22,6 @@ import java.sql.SQLException;
  *
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.3
  *  @see org.apache.tapestry.contrib.jdbc.ParameterizedStatement
  * 

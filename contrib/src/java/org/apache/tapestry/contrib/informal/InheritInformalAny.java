@@ -33,11 +33,10 @@ import org.apache.tapestry.spec.IComponentSpecification;
  *  of its parent. This tag is available in the page or component specification file.
  * 
  *  @deprecated
- *  @version $Id$
- *  @author mindbridge
+  *  @author mindbridge
  *  @since 2.2
  * 
- **/
+ */
 
 public class InheritInformalAny extends AbstractComponent
 {

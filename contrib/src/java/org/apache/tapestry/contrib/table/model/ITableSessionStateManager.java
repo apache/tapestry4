@@ -23,7 +23,6 @@ import java.io.Serializable;
  * or it could be nothing at all. 
  * It is all determined by the implemention of this interface.
  * 
- * @version $Id$
  * @author mindbridge
  */
 public interface ITableSessionStateManager

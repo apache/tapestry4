@@ -25,9 +25,8 @@ import org.apache.tapestry.components.Conditional;
  *  [<a href="../../../../../../ComponentReference/contrib.Choose.html">Component Reference</a>]
  *
  *  @author David Solis
- *  @version $Id$
  * 
- **/
+ */
 public abstract class Choose extends Conditional {
 
 

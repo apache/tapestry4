@@ -18,7 +18,6 @@ import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumnModel;
 
 /**
  * 
- * @version $Id$
  * @author mindbridge
  */
 public class SqlTableColumnModel extends SimpleTableColumnModel

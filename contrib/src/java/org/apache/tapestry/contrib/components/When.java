@@ -27,7 +27,6 @@ import org.apache.tapestry.components.Conditional;
  *  [<a href="../../../../../../ComponentReference/contrib.When.html">Component Reference</a>]
  *
  *  @author David Solis
- *  @version $Id$
  * 
  **/
 public abstract class When extends Conditional

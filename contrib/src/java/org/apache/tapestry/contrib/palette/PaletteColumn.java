@@ -28,7 +28,6 @@ import org.apache.tapestry.IRequestCycle;
  * available options, the right column lists the selected columns.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  */
 public class PaletteColumn implements IRender
 {

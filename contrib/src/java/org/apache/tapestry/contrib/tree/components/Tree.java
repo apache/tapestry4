@@ -21,7 +21,6 @@ import org.apache.tapestry.util.ComponentAddress;
 
 /**
  * @author ceco
- * @version $Id$
  */
 public class Tree extends BaseComponent implements ITreeComponent{
 

@@ -19,7 +19,6 @@ import javax.ejb.FinderException;
 /**
  *  Extended version of {@link FinderException} that includes a root cause.
  *
- *  @version $Id$
  *  @author Howard Lewis Ship
  *
  **/

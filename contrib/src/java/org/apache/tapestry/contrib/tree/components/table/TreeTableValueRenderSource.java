@@ -24,7 +24,6 @@ import org.apache.tapestry.util.ComponentAddress;
 
 /**
  * @author ceco
- * @version $Id$
  */
 public class TreeTableValueRenderSource implements ITableRendererSource
 {

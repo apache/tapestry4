@@ -20,7 +20,6 @@ import org.apache.tapestry.contrib.tree.model.ITreeModelSource;
 
 /**
  * @author ceco
- * @version $Id$
  */
 public interface INodeRenderFactory 
 {

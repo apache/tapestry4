@@ -23,7 +23,6 @@ import org.apache.tapestry.contrib.table.model.ITableSessionStateManager;
  * A simple ITableSessionStateManager implementation 
  * that saves the entire table model into the session.
  * 
- * @version $Id$
  * @author mindbridge
  */
 public class FullTableSessionStateManager implements ITableSessionStateManager

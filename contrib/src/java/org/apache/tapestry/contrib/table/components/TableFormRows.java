@@ -44,7 +44,6 @@ import org.apache.tapestry.contrib.table.model.*;
  *  [<a href="../../../../../../../ComponentReference/contrib.TableFormRows.html">Component Reference</a>]
  * 
  * @author mindbridge
- * @version $Id$
  *
  */
 public abstract class TableFormRows extends TableRows

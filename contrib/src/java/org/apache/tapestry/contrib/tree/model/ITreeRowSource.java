@@ -19,7 +19,6 @@ package org.apache.tapestry.contrib.tree.model;
  * This interface is used for obtaining the row source by components 
  * wrapped by the row source
  * 
- * @version $Id$
  * @author tsvetelin
  */
 public interface ITreeRowSource

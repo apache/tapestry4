@@ -35,7 +35,6 @@ import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumn;
  * This component renders links that cause the form to be submitted. 
  * This ensures that the updated data in the other form fields is preserved. 
  * 
- * @version $Id$
  * @author mindbridge
  */
 public abstract class SimpleTableColumnFormComponent

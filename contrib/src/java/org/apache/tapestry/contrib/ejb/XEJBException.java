@@ -22,7 +22,6 @@ import javax.ejb.EJBException;
  *  it has an equivalent to the rootCause property, (causedByException), but
  *  doesn't have a constructor that allows us to set a custom message.
  *
- *  @version $Id$
  *  @author Howard Lewis Ship
  *
  **/

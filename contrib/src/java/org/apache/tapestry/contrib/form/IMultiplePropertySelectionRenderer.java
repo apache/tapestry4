@@ -22,7 +22,6 @@ import org.apache.tapestry.form.IPropertySelectionModel;
  *  Defines an object that works with a {@link MultiplePropertySelection} component
  *  to render the individual elements obtained from the {@link IPropertySelectionModel model}.
  *
- *  @version $Id$
  *  @author Sanjay Munjal
  *
  **/

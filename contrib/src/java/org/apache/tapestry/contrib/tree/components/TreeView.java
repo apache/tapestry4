@@ -32,7 +32,6 @@ import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.util.ComponentAddress;
 
 /**
- * @version $Id$
  */
 public class TreeView extends BaseComponent
     implements PageDetachListener, PageRenderListener, ITreeModelSource {

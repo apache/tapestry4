@@ -19,7 +19,6 @@ import java.util.Iterator;
 /**
  * The main interface defining the abstraction containing the table data and state
  * 
- * @version $Id$
  * @author mindbridge
  */
 public interface ITableModel

@@ -23,7 +23,6 @@ import org.apache.commons.logging.LogFactory;
 
 /**
  * 
- * @version $Id$
  * @author mindbridge
  */
 public class ResultSetIterator implements Iterator

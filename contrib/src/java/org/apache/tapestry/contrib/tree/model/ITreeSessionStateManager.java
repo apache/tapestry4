@@ -18,7 +18,6 @@ package org.apache.tapestry.contrib.tree.model;
 
 /**
  * @author ceco
- * @version $Id$
  */
 public interface ITreeSessionStateManager {
 	Object getSessionState(ITreeModel objModel);

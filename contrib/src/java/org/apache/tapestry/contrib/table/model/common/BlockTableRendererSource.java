@@ -26,7 +26,6 @@ import org.apache.tapestry.util.ComponentAddress;
 
 /**
  * 
- * @version $Id$
  * @author mindbridge
  * @since 2.3
  */

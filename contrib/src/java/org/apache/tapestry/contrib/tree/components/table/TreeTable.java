@@ -23,7 +23,6 @@ import org.apache.tapestry.util.ComponentAddress;
 
 /**
  * @author ceco
- * @version $Id$
  */
 public class TreeTable extends BaseComponent implements ITreeComponent{
 

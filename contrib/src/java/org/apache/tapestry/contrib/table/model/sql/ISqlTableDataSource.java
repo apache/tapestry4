@@ -21,7 +21,6 @@ import org.apache.tapestry.contrib.table.model.simple.SimpleTableState;
 
 /**
  * 
- * @version $Id$
  * @author mindbridge
  */
 public interface ISqlTableDataSource

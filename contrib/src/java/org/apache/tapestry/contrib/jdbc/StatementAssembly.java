@@ -47,7 +47,6 @@ import java.util.List;
  *  simply invokes the appropriate {@link #addParameter(int)}, adding the
  *  separator in between parameters.
  *
- *  @version $Id$
  *  @author Howard Lewis Ship
  *
  **/

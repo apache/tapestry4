@@ -39,7 +39,6 @@ import org.apache.tapestry.event.PageRenderListener;
  *  [<a href="../../../../../../../ComponentReference/contrib.TableFormPages.html">Component Reference</a>]
  * 
  * @author mindbridge
- * @version $Id$
  *
  */
 public abstract class TableFormPages extends TablePages 

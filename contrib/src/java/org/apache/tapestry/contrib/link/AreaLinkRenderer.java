@@ -22,9 +22,8 @@ import org.apache.tapestry.link.ILinkRenderer;
  *  the HTML area element.
  *
  *  @author David Solis
- *  @version $Id$
  *  @since 3.0
- **/
+ */
 public class AreaLinkRenderer extends DefaultLinkRenderer 
 {
 

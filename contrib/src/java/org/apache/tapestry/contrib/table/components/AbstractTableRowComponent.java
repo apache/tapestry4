@@ -24,8 +24,6 @@ import org.apache.tapestry.contrib.table.model.ITableRowSource;
  * a pointer to TableRows. 
  * 
  * @author mindbridge
- * @version $Id$
- *
  */
 public class AbstractTableRowComponent extends AbstractTableViewComponent
 {

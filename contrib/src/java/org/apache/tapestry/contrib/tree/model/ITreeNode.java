@@ -19,7 +19,6 @@ import java.util.Collection;
 
 /**
  * @author ceco
- * @version $Id$
  */
 
 public interface ITreeNode extends Serializable

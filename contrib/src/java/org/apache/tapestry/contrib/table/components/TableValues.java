@@ -40,7 +40,6 @@ import org.apache.tapestry.contrib.table.model.ITableColumnModel;
  *  [<a href="../../../../../../../ComponentReference/contrib.TableValues.html">Component Reference</a>]
  * 
  * @author mindbridge
- * @version $Id$
  *
  */
 public abstract class TableValues extends AbstractTableRowComponent

@@ -30,7 +30,6 @@ import org.apache.tapestry.record.IPageChange;
  *  Component of the {@link Inspector} page used to display
  *  the persisent properties of the page.
  *
- *  @version $Id$
  *  @author Howard Lewis Ship
  *
  **/

@@ -21,7 +21,6 @@ import java.util.Iterator;
  * This model need not be used. Implementations may choose to
  * access data via an abstraction.
  * 
- * @version $Id$
  * @author mindbridge
  */
 public interface ITableDataModel

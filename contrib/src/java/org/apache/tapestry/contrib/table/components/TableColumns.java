@@ -39,7 +39,6 @@ import org.apache.tapestry.contrib.table.model.ITableColumnModel;
  *  [<a href="../../../../../../../ComponentReference/contrib.TableColumns.html">Component Reference</a>]
  * 
  * @author mindbridge
- * @version $Id$
  *
  */
 public abstract class TableColumns extends AbstractTableViewComponent

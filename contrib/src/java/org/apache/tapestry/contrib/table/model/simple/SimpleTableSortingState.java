@@ -22,7 +22,6 @@ import org.apache.tapestry.contrib.table.model.ITableSortingState;
  * A minimal implementation of 
  * {@link org.apache.tapestry.contrib.table.model.ITableSortingState}
  * 
- * @version $Id$
  * @author mindbridge
  */
 public class SimpleTableSortingState

@@ -33,7 +33,6 @@ import org.apache.tapestry.util.prop.OgnlUtils;
  *  A placeholder for a static methods related to the Table component
  *
  *  @since 3.0
- *  @version $Id$
  *  @author Mindbridge
  **/
 public class TableUtils

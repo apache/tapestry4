@@ -36,7 +36,6 @@ import org.apache.tapestry.util.io.BinaryDumpOutputStream;
  *  Also, the {@link org.apache.tapestry.request.RequestContext} is dumped out.
  *
  *
- *  @version $Id$
  *  @author Howard Lewis Ship
  *
  **/

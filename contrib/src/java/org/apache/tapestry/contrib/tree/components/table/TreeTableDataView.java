@@ -37,7 +37,6 @@ import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEvent;
 
 /**
- * @version $Id$
  */
 public class TreeTableDataView extends BaseComponent implements ITreeRowSource, PageDetachListener{
     private int m_nTreeDeep = -1;

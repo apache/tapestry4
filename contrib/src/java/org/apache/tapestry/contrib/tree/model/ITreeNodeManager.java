@@ -19,7 +19,6 @@ import org.apache.tapestry.contrib.tree.components.ITreeComponent;
 
 /**
  * @author ceco
- * @version $Id$
  */
 public interface ITreeNodeManager {
 	IRender getRenderer(Object objUniqueKey, ITreeComponent objTreeComponent);

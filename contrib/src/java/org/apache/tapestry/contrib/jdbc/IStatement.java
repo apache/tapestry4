@@ -23,7 +23,6 @@ import java.sql.Statement;
  *  {@link java.sql.PreparedStatement} which hides the differences
  *  between the two.  
  *
- *  @version $Id$
  *  @author Howard Lewis Ship
  *  @see org.apache.tapestry.contrib.jdbc.StatementAssembly#createStatement(Connection)
  * 

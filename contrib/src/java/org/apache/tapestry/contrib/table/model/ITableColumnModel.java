@@ -19,7 +19,6 @@ import java.util.Iterator;
 /**
  * Defines a list model of ITableColumn objects
  * 
- * @version $Id$
  * @author mindbridge
  */
 public interface ITableColumnModel

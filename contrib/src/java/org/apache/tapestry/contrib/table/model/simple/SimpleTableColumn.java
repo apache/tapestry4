@@ -26,7 +26,6 @@ import org.apache.tapestry.contrib.table.model.common.AbstractTableColumn;
  * {@link org.apache.tapestry.contrib.table.model.ITableColumn} interface that
  * provides all the basic services for displaying a column.
  * 
- * @version $Id$
  * @author mindbridge
  */
 public class SimpleTableColumn extends AbstractTableColumn

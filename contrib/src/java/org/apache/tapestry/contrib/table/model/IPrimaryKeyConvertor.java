@@ -19,7 +19,6 @@ package org.apache.tapestry.contrib.table.model;
  * Typically used to determine how to store a given object as a hidden 
  * value when rendering a form.
  * 
- * @version $Id$
  * @author mb
  * @since 3.0
  */

@@ -19,7 +19,6 @@ import org.apache.tapestry.contrib.tree.model.ITreeSessionStateManager;
 
 /**
  * @author ceco
- * @version $Id$
  */
 public class NullSessionStateManager implements ITreeSessionStateManager {
 

@@ -22,7 +22,6 @@ import org.apache.tapestry.contrib.table.model.ITableSortingState;
 /**
  * A container holding all of the table model states.
  * 
- * @version $Id$
  * @author mindbridge
  */
 public class SimpleTableState implements Serializable

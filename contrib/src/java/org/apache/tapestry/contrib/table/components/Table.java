@@ -27,7 +27,6 @@ import org.apache.tapestry.contrib.table.model.ITableModelSource;
  *  [<a href="../../../../../../../ComponentReference/contrib.Table.html">Component Reference</a>]
  * 
  * @author mindbridge
- * @version $Id$
  *
  */
 public class Table extends BaseComponent implements ITableModelSource

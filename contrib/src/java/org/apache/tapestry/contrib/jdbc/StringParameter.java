@@ -23,7 +23,6 @@ import java.sql.Types;
  *
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *
  **/
 

@@ -22,7 +22,6 @@ import org.apache.tapestry.IRequestCycle;
  * An interface responsible for determining <b>where</b> the session state 
  * will be saved between requests.
  *  
- * @version $Id$
  * @author mindbridge
  */
 public interface ITableSessionStoreManager

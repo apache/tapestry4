@@ -32,8 +32,6 @@ import org.apache.tapestry.form.StringPropertySelectionModel;
  *  Component of the {@link Inspector} page used to select the page and "crumb trail"
  *  of the inspected component.
  *
- *
- *  @version $Id$
  *  @author Howard Lewis Ship
  *
  **/
