@@ -96,8 +96,6 @@ public class Inspector extends BasePage
 		inspectedIdPath = value;
 		
 		fireObservedChange("inspectedIdPath", value);
-		
-		setView(View.SPECIFICATION);
 	}
 	
 	public boolean isViewSpecification()
@@ -170,19 +168,12 @@ public class Inspector extends BasePage
 	
 	/**
 	 *  Returns the {@link IComponent} current inspected; this is determined
-	 *  from the inspectedPageName and inspectedIdPath properties.  If the
-	 *  inspectedIdPath is null, then the page is returned.
+	 *  from the inspectedPageName and inspectedIdPath properties.
 	 *
 	 */
 	 
 	public IComponent getInspectedComponent()
 	{
-		IPage inspectedPage;
-		
-		inspectedPage = getInspectedPage();
-		if (inspectedIdPath == null)
-			return inspectedPage;
-		
-		return inspectedPage.getNestedComponent(inspectedIdPath);	
+		return getInspectedPage().getNestedComponent(inspectedIdPath);	
 	}
 }

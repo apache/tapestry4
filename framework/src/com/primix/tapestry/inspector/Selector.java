@@ -46,6 +46,8 @@ import java.util.*;
  
 public class Selector extends BaseComponent
 {
+	private IPropertySelectionRenderer renderer;
+	
 	public Selector(IPage page, IComponent container, String id,
 		ComponentSpecification specification)
 	{
@@ -107,40 +109,33 @@ public class Selector extends BaseComponent
 	 
 	public List getCrumbTrail()
 	{
-		List list;
-		IPage inspectedPage;
+		List list = null;
 		IComponent component;
 		Inspector inspector;
-		String inspectedPageName;
-		String inspectedIdPath;
 		IComponent container;
 		
 		inspector = (Inspector)page;
 		
-		inspectedIdPath = inspector.getInspectedIdPath();
+		component = inspector.getInspectedComponent();
 		
-		if (inspectedIdPath == null)
-			return null;
-		
-		inspectedPageName = inspector.getInspectedPageName();
-		inspectedPage = inspector.getRequestCycle().getPage(inspectedPageName);
-
-		component = inspectedPage.getNestedComponent(inspectedIdPath);
-		
-		list = new ArrayList();
-
-		container = component.getContainer();
-				
-		do
+		while (true)
 		{
+			container = component.getContainer();
+			if (container == null)
+				break;
+
+			if (list == null)
+				list = new ArrayList();
+				
 			list.add(component);
 			
 			component = container;
 			
-			container = component.getContainer();
 		}
-		while (container != null);
 		
+		if (list == null)
+			return null;
+			
 		// Reverse the list, such that the inspected component is last, and the
 		// top-most container is first.
 		
@@ -149,13 +144,17 @@ public class Selector extends BaseComponent
 		return list;
 	}
 
-	public boolean getEnableUp()
+	/**
+	 *  Returns a shared instance of {@link SelectPropertySelectionRenderer} that
+	 *  is configured for immediate submit.
+	 *
+	 */
+	 
+	public IPropertySelectionRenderer getPageRenderer()
 	{
-		Inspector inspector;
+		if (renderer == null)
+			renderer = new SelectPropertySelectionRenderer(true);
 		
-		inspector = (Inspector)page;
-		
-		return inspector.getInspectedIdPath() != null;
+		return renderer;	
 	}
-	
 }

@@ -23,13 +23,23 @@
 					<property-path>page.inspectedPageName</property-path>
 				</binding>
 				<binding>
+					<name>renderer</name>
+					<property-path>pageRenderer</property-path>
+				</binding>
+				<binding>
 					<name>model</name>
 					<property-path>pageModel</property-path>
 				</binding>
-				<static-binding>
-					<name>onChange</name>
-					<value>javascript:this.form.submit()</value>
-				</static-binding>
+			</bindings>
+		</component>
+		<component>
+			<id>page</id>
+			<type>Direct</type>
+			<bindings>
+				<binding>
+					<name>listener</name>
+					<property-path>page.selectComponentListener</property-path>
+				</binding>
 			</bindings>
 		</component>
 		<component>
@@ -63,24 +73,6 @@
 				<binding>
 					<name>value</name>
 					<property-path>components.e.value.id</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>up</id>
-			<type>Direct</type>
-			<bindings>
-				<binding>
-					<name>enabled</name>
-					<property-path>enableUp</property-path>
-				</binding>
-				<binding>
-					<name>listener</name>
-					<property-path>page.selectComponentListener</property-path>
-				</binding>
-				<binding>
-					<name>context</name>
-					<property-path>page.inspectedComponent.container.idPath</property-path>
 				</binding>
 			</bindings>
 		</component>

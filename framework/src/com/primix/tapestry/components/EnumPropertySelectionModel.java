@@ -143,6 +143,12 @@ implements IPropertySelectionModel
 		String enumerationId;
 		
 		bundle = ResourceBundle.getBundle(resourceBaseName, locale);
+		
+		if (bundle == null)
+			throw new NullPointerException(
+				"Could not locate ResourceBundle " +
+				resourceBaseName + " for locale " + locale + ".");
+			
 		labels = new String[options.length];
 		
 		for (i = 0; i < options.length; i++)

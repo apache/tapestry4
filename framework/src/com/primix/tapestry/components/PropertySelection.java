@@ -67,15 +67,15 @@ import com.primix.foundation.*;
  * selection. </td> </tr>
  *
  * <tr>
- *		<td>radio</td>
- *		<td>boolean</td>
+ *		<td>renderer</td>
+ *		<td>{@link IPropertySelectionRenderer}</td>
  *		<td>R</td>
  *		<td>no</td>
- *		<td>false</td>
- *		<td>If true, then the component renders itself as a list of &lt;input type=radio&gt;
- *	controls, instead of a &lt;select&gt;.
- *
- *  <p>In radio mode, the inputs are preceded by a &lt;br&gt;.</td></tr>
+ *		<td>shared instance of {@link SelectPropertySelectionRenderer}</td>
+ *		<td>Defines the object used to render the PropertySelection.
+ * <p>{@link SelectPropertySelectionRenderer} renders the component as a &lt;select&gt;.
+ * <p>{@link RadioPropertySelectionRenderer} renders the component as a table of
+ * radio buttons.</td></tr>
  *
  *  <tr>
  *		<td>model</td>
@@ -121,15 +121,15 @@ import com.primix.foundation.*;
   
 public class PropertySelection extends AbstractFormComponent
 {
-	private static final String[] reservedNames = 
-	{ "name" };
-	
 	private IBinding valueBinding;
 	private IBinding modelBinding;
 	private IBinding disabledBinding;
-	private IBinding radioBinding;
-	private boolean staticRadioBinding;
-	private boolean staticRadioValue;
+	private IBinding rendererBinding;
+	private String name;
+	private boolean disabled;
+	
+	private static IPropertySelectionRenderer defaultSelectRenderer;
+	private static IPropertySelectionRenderer defaultRadioRenderer;
 	
 	public PropertySelection(IPage page, IComponent container, String id,
 		ComponentSpecification specification)
@@ -167,45 +167,93 @@ public class PropertySelection extends AbstractFormComponent
 		disabledBinding = value;
 	}
 	
-	public IBinding getRadioBinding()
+	public void setRendererBinding(IBinding value)
 	{
-		return radioBinding;
+		rendererBinding = value;
 	}
 	
-	public void setRadioBinding(IBinding value)
+	public IBinding getRendererBinding()
 	{
-		radioBinding = value;
-		staticRadioBinding = value.isStatic();
-		
-		if (staticRadioBinding)
-			staticRadioValue = value.getBoolean();
-	}	
+		return rendererBinding;
+	}
 	
+	/**
+	 *  Returns the name assigned to this PropertySelection by the {@link Form}
+	 *  that wraps it.
+	 *
+	 */
+	 
+	public String getName()
+	{
+		return name;
+	}
+
+	/**
+	 *  Returns true if this PropertySelection's disabled parameter yields true.
+	 *  The corresponding HTML control(s) should be disabled.
+	 */
+	 
+	public boolean isDisabled()
+	{
+		return disabled;
+	}
+	
+	/**
+	 *  Returns the default {@link SelectPropertySelectionRenderer} instance.
+	 *  This is a shared instance.
+	 *
+	 */
+	 
+	public IPropertySelectionRenderer getDefaultSelectRenderer()
+	{
+		if (defaultSelectRenderer == null)
+			defaultSelectRenderer = new SelectPropertySelectionRenderer();
+		
+		return defaultSelectRenderer;	
+	}
+	
+	/**
+	 *  Returns a shared instance of {@link RadioPropertySelectionRenderer}.
+	 *
+	 */
+	 
+	public IPropertySelectionRenderer getDefaultRadioRenderer()
+	{
+		if (defaultRadioRenderer == null)
+			defaultRadioRenderer = new RadioPropertySelectionRenderer();
+			
+		return defaultRadioRenderer;
+	}
+	
+	/**
+	 *  Renders the component, much of which is the responsiblity
+	 *  of the {@link IPropertySelectionRenderer renderer}.  The possible options,
+	 *  thier labels, and the values to be encoded in the form are provided
+	 *  by the {@link IPropertySelectionModel model}.
+	 *
+	 */
+	 
 	public void render(IResponseWriter writer, IRequestCycle cycle)
 	throws RequestCycleException
 	{
-		String name;
 		IActionListener listener;
 		Form form;
 		boolean rewinding;
-		boolean disabled;
 		IPropertySelectionModel model;
+		IPropertySelectionRenderer renderer = null;
 		Object newValue;
 		Object currentValue;
 		Object option;
-		String label;
 		String optionValue;
 		int i;
-		boolean needDefault = true;
-		int index;
+		boolean selected = false;
+		boolean foundSelected = false;
 		int count;
 		boolean radio = false;
 		
 		form = getForm(cycle);
 		
 		rewinding = form.isRewinding();
-		
-		name = form.getNextElementId("PropertySelection");
 		
 		if (disabledBinding == null)
 			disabled = false;
@@ -215,103 +263,70 @@ public class PropertySelection extends AbstractFormComponent
 		model = (IPropertySelectionModel)modelBinding.getValue();
 		if (model == null)
 			throw new RequiredParameterException(this, "model", modelBinding, cycle);
+
+		name = form.getNextElementId("PropertySelection");
 		
-		if (rewinding)
+		try
 		{
-			// If disabled, ignore anything that comes up from the client.
-			
-			if (disabled)
-				return;		
-			
-			optionValue = cycle.getRequestContext().getParameter(name);
-			
-			if (optionValue == null)
-				newValue = null;
-			else
-				newValue = model.translateValue(optionValue);
-			
-			valueBinding.setValue(newValue);
-			
-			listener = getListener(cycle);
-			if (listener != null)
-				listener.actionTriggered(this, cycle);
-			
-			return;	
-		}
-		
-		if (staticRadioBinding)
-			radio = staticRadioValue;
-		else
-			if (radioBinding != null)
-				radio = radioBinding.getBoolean();	
-			
-		// Renderring, not rewinding, so generate the <select> and <option> tags.
-		
-		if (!radio)
-		{
-			writer.begin("select");
-			writer.attribute("name", name);
-			
-			if (disabled)
-				writer.attribute("disabled");
-			
-			generateAttributes(cycle, writer, reservedNames);
-		}
-		
-		count = model.getOptionCount();
-		currentValue = valueBinding.getValue();
-			
-		for (i = 0; i < count; i++)
-		{
-			option = model.getOption(i);
-			label = model.getLabel(i);
-			optionValue = model.getValue(i);
-			
-			// This gets a bit tricky, since sometimes we're using <input type=radio>
-			// and sometimes <option> within a <select>
-			
-			if (radio)
+			if (rewinding)
 			{
-				if (i > 0)
-					writer.beginOrphan("br");
-				
-				writer.beginOrphan("input");
-				writer.attribute("type", "radio");
-				writer.attribute("name", name);
+				// If disabled, ignore anything that comes up from the client.
 				
 				if (disabled)
-					writer.attribute("disabled");
+					return;		
+				
+				optionValue = cycle.getRequestContext().getParameter(name);
+				
+				if (optionValue == null)
+					newValue = null;
+				else
+					newValue = model.translateValue(optionValue);
+				
+				valueBinding.setValue(newValue);
+				
+				listener = getListener(cycle);
+				if (listener != null)
+					listener.actionTriggered(this, cycle);
+				
+				return;	
 			}
-			else
-				writer.beginOrphan("option");
-	
-			writer.attribute("value", optionValue);
 			
-			// We use needDefault as an optimization ... once the default/selected
-			// value has been found, we can stop looking, which saves on
-			// calls to equals().
-			
-			if (needDefault)
-			{
-				if (isEqual(option, currentValue))
-				{
-					if (radio)
-						writer.attribute("checked");
-					else	
-						writer.attribute("selected");
+			if (rendererBinding != null)
+				renderer = (IPropertySelectionRenderer)rendererBinding.getValue();
+				
+			if (renderer == null)
+				renderer = getDefaultSelectRenderer();
+		
+			renderer.beginRender(this, writer, cycle);
 					
-					needDefault = false;
-				}
+			count = model.getOptionCount();
+			currentValue = valueBinding.getValue();
+				
+			for (i = 0; i < count; i++)
+			{
+				option = model.getOption(i);
+				
+				if (!foundSelected)
+				{
+					selected = isEqual(option, currentValue);
+					if (selected)
+						foundSelected = true;
+				}		
+				
+				renderer.renderOption(this, writer, cycle, model, option, i, selected);
+
+				selected = false;			
 			}
+					
+			// A PropertySelection doesn't allow a body, so no need to worry about
+			// wrapped components.
 			
-			writer.print(label);
+			renderer.endRender(this, writer, cycle);
 		}
-		
-		if (!radio)
-			writer.end("select");
-		
-		// A PropertySelection doesn't allow a body, so no need to worry about
-		// wrapped components.
+		finally
+		{
+			name = null;
+		}
 	}
 	
 	private boolean isEqual(Object left, Object right)

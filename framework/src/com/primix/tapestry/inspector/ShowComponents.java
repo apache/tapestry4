@@ -151,4 +151,31 @@ implements ILifecycle
 		
 		return contained.getType();
 	}
+	
+	/**
+	 *  Selects the component identified in the context <i>and<i> changes
+	 *  the view to SPECIFICATION.
+	 *
+	 */
+	 
+	public IDirectListener getSelectListener()
+	{
+		return new IDirectListener()
+		{
+			public void directTriggered(IComponent component, String[] context,
+					IRequestCycle cycle)
+			{
+				Inspector inspector;
+				
+				inspector = (Inspector)getPage();
+				
+				if (context == null)
+					inspector.setInspectedIdPath(null);
+				else
+					inspector.setInspectedIdPath(context[0]);
+					
+				inspector.setView(View.SPECIFICATION);	
+			}
+		};
+	}
 }
