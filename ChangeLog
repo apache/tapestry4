@@ -1,3 +1,8 @@
+* Dec 22 2000 hship
+
+Prepare for 0.2.7.  Also, change the Makefile to automatically create a .tar.gz
+of the distribution after building it.
+
 * Dec 19 2000 hship
 
 Update documentation to reflect use of Jetty 3.0.0 distribution.
