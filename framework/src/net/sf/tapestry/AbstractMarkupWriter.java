@@ -82,7 +82,7 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
      **/
 
     private boolean _openTag = false;
- 
+
     /**
      *  Indicates that the tag was opened with 
      *  {@link #beginEmpty(String)}, which affects
@@ -93,9 +93,9 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
      *  @since 2.2
      * 
      **/
-    
+
     private boolean _emptyTag = false;
-    
+
     /**
      * A Stack of Strings used to track the active tag elements. Elements are active
      * until the corresponding close tag is written.  The {@link #push(String)} method
@@ -150,11 +150,7 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
      *
      **/
 
-    protected AbstractMarkupWriter(
-        boolean safe[],
-        String[] entities,
-        String contentType,
-        OutputStream stream)
+    protected AbstractMarkupWriter(boolean safe[], String[] entities, String contentType, OutputStream stream)
     {
         this(safe, entities, contentType);
 
@@ -169,9 +165,9 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
 
     protected AbstractMarkupWriter(boolean safe[], String[] entities, String contentType)
     {
-        this._entities = entities;
-        this._safe = safe;
-        this._contentType = contentType;
+        _entities = entities;
+        _safe = safe;
+        _contentType = contentType;
 
         if (entities == null || safe == null || contentType == null)
             throw new IllegalArgumentException(
@@ -191,15 +187,14 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
      *
      * <p>TBD: Check that name is legal.
      *
-     * @throws IllegalStateException if there is no open tag.
+     *  @throws IllegalStateException if there is no open tag.
+     *  @deprecated To be removed in 2.3.  Use
+     *  {@link #attribute(String, String)} instead.
      **/
 
     public void attribute(String name)
     {
-        checkTagOpen();
-
-        _writer.print(' ');
-        _writer.print(name);
+        attribute(name, name);
     }
 
     /**
@@ -223,49 +218,58 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
     }
 
     /**
-     * Writes an attribute into the most recently opened tag. This must be called after
-     * {@link #begin(String)}
-     * and before any other kind of writing (which closes the tag).
+     *  Writes an attribute into the most recently opened tag. This must be called after
+     *  {@link #begin(String)}
+     *  and before any other kind of writing (which closes the tag).
      *
-     * <p>The value may be null, in which case this method behaves the same as
-     * {@link #attribute(String)}.
+     *  <p>The value may be null, in which case this method behaves the same as
+     *  {@link #attribute(String)}.
      *
      *  <p>Troublesome characters in the value are converted to thier GTML entities, much
-     * like a <code>print()</code> method, with the following exceptions:
+     *  like a <code>print()</code> method, with the following exceptions:
      *  <ul>
      *  <li>The double quote (&quot;) is converted to &amp;quot;
      *  <li>The ampersand (&amp;) is passed through unchanged
      *  </ul>
      *
-     * @throws IllegalStateException if there is no open tag.
+     *  @throws IllegalStateException if there is no open tag.
+     *  @param name The name of the attribute to write (no validation
+     *  is done on the name).
+     *  @param value The value to write.  If null, the attribute
+     *  name is written as the value.  Otherwise, the
+     *  value is written, 
      **/
 
     public void attribute(String name, String value)
     {
         checkTagOpen();
-        int length;
 
         _writer.print(' ');
 
         // Could use a check here that name contains only valid characters
 
         _writer.print(name);
-        if (value == null)
-            return;
-
-        length = value.length();
-
-        if (_buffer == null || _buffer.length < length)
-            _buffer = new char[length];
-
-        value.getChars(0, length, _buffer, 0);
-
-        // Have to assume that ANY attribute could be a URL and allow the ampersand
-        // as legit.
-
         _writer.print("=\"");
-        safePrint(_buffer, 0, length, true);
+
+        if (value == null)
+        {
+            _writer.print(name);
+        }
+        else
+        {
+
+            int length = value.length();
+
+            if (_buffer == null || _buffer.length < length)
+                _buffer = new char[length];
+
+            value.getChars(0, length, _buffer, 0);
+
+            safePrint(_buffer, 0, length, true);
+        }
+
         _writer.print('"');
+
     }
 
     /**
@@ -330,8 +334,6 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
 
     public void close()
     {
-        String name;
-
         if (_openTag)
             closeTag();
 
@@ -339,9 +341,8 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
 
         while (_depth > 0)
         {
-            name = pop();
             _writer.print("</");
-            _writer.print(name);
+            _writer.print(pop());
             _writer.print('>');
         }
 
@@ -366,7 +367,7 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
     {
         if (_emptyTag)
             _writer.print('/');
-            
+
         _writer.print('>');
 
         _openTag = false;
@@ -404,15 +405,11 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
 
     public void end()
     {
-        String name;
-
         if (_openTag)
             closeTag();
 
-        name = pop();
-
         _writer.print("</");
-        _writer.print(name);
+        _writer.print(pop());
         _writer.print('>');
     }
 
@@ -426,14 +423,12 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
 
     public void end(String name)
     {
-        String tagName;
-
         if (_openTag)
             closeTag();
 
         while (true)
         {
-            tagName = pop();
+            String tagName = pop();
 
             _writer.print("</");
             _writer.print(tagName);
@@ -462,9 +457,7 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
 
     protected final String pop()
     {
-        String result;
-
-        result = (String) _activeElementStack.pop();
+        String result = (String) _activeElementStack.pop();
         _depth--;
 
         return result;
@@ -510,8 +503,6 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
 
     public void print(char value)
     {
-        String entity = null;
-
         if (_openTag)
             closeTag();
 
@@ -520,6 +511,8 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
             _writer.print(value);
             return;
         }
+
+        String entity = null;
 
         if (value < _entities.length)
             entity = _entities[value];
@@ -538,7 +531,7 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
 
     /**
      * Prints an integer.
-    	 *
+     *
      * <p>Closes any open tag.
      *
      **/
@@ -565,13 +558,10 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
 
     public void print(String value)
     {
-        char[] data;
-        int length;
-
         if (value == null)
             return;
 
-        length = value.length();
+        int length = value.length();
 
         if (_buffer == null || _buffer.length < length)
             _buffer = new char[length];
@@ -659,23 +649,17 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
 
     private void safePrint(char[] data, int offset, int length, boolean isAttribute)
     {
-        int i;
-        int start;
-        char ch;
         int safelength = 0;
-        String entity;
-        boolean isSafe;
+        int start = offset;
 
-        start = offset;
-
-        for (i = 0; i < length; i++)
+        for (int i = 0; i < length; i++)
         {
-            ch = data[offset + i];
+            char ch = data[offset + i];
 
             // Ignore safe characters.  In an attribute, quotes
             // are not ok and are escaped.
 
-            isSafe = (ch < _safe.length && _safe[ch]);
+            boolean isSafe = (ch < _safe.length && _safe[ch]);
 
             if (isAttribute && ch == '"')
                 isSafe = false;
@@ -691,7 +675,7 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
             if (safelength > 0)
                 _writer.write(data, start, safelength);
 
-            entity = null;
+            String entity = null;
 
             // Look for a known entity.
 
