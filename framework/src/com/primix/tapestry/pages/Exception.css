@@ -100,3 +100,9 @@ TABLE.request-context-object TR  {
 	vertical-align : text-top;
 }
 
+UL 
+{
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-left: 20px;
+}

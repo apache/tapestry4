@@ -178,3 +178,9 @@ TABLE.exception-display TR.stack-trace  {
 	text-align : left;
 }
 
+UL 
+{
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-left: 20px;
+}
