@@ -1,3 +1,7 @@
+* Dec 20 2000 hship
+
+Update the Vlib application to use the new FieldLabel component.
+
 * Dec 19 2000 hship
 
 Fix a bug in VlibBeans where the Operations.getPerson() method built invalid SQL

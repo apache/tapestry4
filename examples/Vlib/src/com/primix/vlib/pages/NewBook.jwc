@@ -29,6 +29,20 @@
 			</bindings>
 		</component>
 		<component>
+			<id>labelTitle</id>
+			<type>FieldLabel</type>
+			<bindings>
+				<binding>
+					<name>field</name>
+					<property-path>components.inputTitle</property-path>
+				</binding>
+				<binding>
+					<name>delegate</name>
+					<property-path>validationDelegate</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
 			<id>inputTitle</id>
 			<type>ValidatingTextField</type>
 			<bindings>
@@ -56,6 +70,20 @@
 					<name>required</name>
 					<field-name>Boolean.TRUE</field-name>
 				</field-binding>
+			</bindings>
+		</component>
+		<component>
+			<id>labelAuthor</id>
+			<type>FieldLabel</type>
+			<bindings>
+				<binding>
+					<name>field</name>
+					<property-path>components.inputAuthor</property-path>
+				</binding>
+				<binding>
+					<name>delegate</name>
+					<property-path>validationDelegate</property-path>
+				</binding>
 			</bindings>
 		</component>
 		<component>
@@ -103,6 +131,20 @@
 				<binding>
 					<name>text</name>
 					<property-path>ISBN</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>labelPublisher</id>
+			<type>FieldLabel</type>
+			<bindings>
+				<binding>
+					<name>field</name>
+					<property-path>components.inputPublisherName</property-path>
+				</binding>
+				<binding>
+					<name>delegate</name>
+					<property-path>validationDelegate</property-path>
 				</binding>
 			</bindings>
 		</component>
