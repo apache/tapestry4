@@ -123,6 +123,8 @@ public abstract class Insert extends AbstractComponent
         {
             writer.begin("span");
             writer.attribute("class", styleClass);
+
+            renderInformalParameters(writer, cycle);
         }
 
         if (getRaw())
