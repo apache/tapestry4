@@ -430,7 +430,7 @@ public class RequestCycle
 		}
 		
 		rewinding = true;
-	
+		
 		if (attributes != null)
 			attributes.clear();
 		
@@ -480,9 +480,9 @@ public class RequestCycle
 			monitor.pageRewindEnd(pageName);
 		
 	}
-
 	
-		/**
+	
+	/**
 	 *  Rewinds the page by invoking 
 	 *  {@link IPage#renderPage(IResponseWriter, IRequestCycle)}.
 	 *
@@ -557,7 +557,7 @@ public class RequestCycle
 			monitor.pageRewindEnd(pageName);
 		
 	}
-
+	
 	public void setAttribute(String name, Object value)
 	{
 		if (CAT.isDebugEnabled())
@@ -593,21 +593,18 @@ public class RequestCycle
 	
 	public void commitPageChanges()
 		throws PageRecorderCommitException
-	{
-		Iterator i;
-		IPageRecorder recorder;
-		
+	{	
 		if (CAT.isDebugEnabled())
 			CAT.debug("Committing page changes");
 		
-		if (loadedRecorders == null)
+		if (loadedRecorders == null || loadedRecorders.isEmpty())
 			return;
 		
-		i = loadedRecorders.values().iterator();
+		Iterator i = loadedRecorders.values().iterator();
 		
 		while (i.hasNext())
 		{
-			recorder = (IPageRecorder)i.next();
+			IPageRecorder recorder = (IPageRecorder)i.next();
 			
 			recorder.commit();
 		}
