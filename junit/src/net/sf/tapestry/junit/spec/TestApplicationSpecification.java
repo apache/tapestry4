@@ -27,6 +27,7 @@ package net.sf.tapestry.junit.spec;
 
 import net.sf.tapestry.junit.TapestryTestCase;
 import net.sf.tapestry.spec.ApplicationSpecification;
+import net.sf.tapestry.spec.ExtensionSpecification;
 
 /**
  *  Tests related to {@link net.sf.tapestry.spec.ApplicationSpecification}.
@@ -58,5 +59,14 @@ public class TestApplicationSpecification extends TapestryTestCase
         assertEquals("longProperty", 383838L, extension.getLongProperty());
         assertEquals("doubleProperty", -3.14, extension.getDoubleProperty(), 0.0);
         assertEquals("stringProperty", "Tapestry: Java Web Components", extension.getStringProperty());
+    }
+    
+    public void testExtensionProperty() throws Exception
+    {
+        ApplicationSpecification a = parseApp("ExtensionProperty.application");
+        
+        ExtensionSpecification e = a.getExtensionSpecification("testBean");
+        
+        assertEquals("Property fred.", "flintstone", e.getProperty("fred"));
     }
 }
