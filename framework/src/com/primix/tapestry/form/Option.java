@@ -168,7 +168,7 @@ public class Option extends AbstractComponent
 		labelBinding = value;
 
 		if (value.isStatic())
-			labelValue = value.toString();
+			labelValue = value.getString();
 	}
 
 	public void setSelectedBinding(IBinding value)
