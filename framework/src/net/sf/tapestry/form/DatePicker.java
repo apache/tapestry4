@@ -42,7 +42,7 @@ import net.sf.tapestry.RequestCycleException;
  *
  *  [<a href="../../../../../ComponentReference/DatePicker.html">Component Reference</a>]
  *
- * @author Paul Geertz
+ * @author Paul Geerts
  * @author Malcolm Edgar
  * @version $Id$
  */

@@ -6,7 +6,7 @@
 //****************************************************************************
 
 //****************************************************************************
-// Extensively modified by Paul Geetz and Malcolm Edgar
+// Extensively modified by Paul Geerts and Malcolm Edgar
 // Date: August-Sept 2002
 //****************************************************************************
 
@@ -78,7 +78,7 @@ function showPopCalendar(dateField, dateHidden, popCal)
   }
 
   window.event.cancelBubble = true;
-  document.body.attachEvent("onclick", hidePopCalendar);
+  document.body.onclick = hidePopCalendar;
   gVicPopCal.focus();
 }
 

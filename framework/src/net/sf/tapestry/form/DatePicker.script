@@ -37,8 +37,8 @@ function ${hideFunctionName}()
 </body>
 
 <initialization>
-document.${formName}.${popupButton.name}.attachEvent("onclick", ${popupFunctionName});
-document.${formName}.${dateField.name}.attachEvent("onclick", ${hideFunctionName});
+document.${formName}.${popupButton.name}.onclick = ${popupFunctionName};
+document.${formName}.${dateField.name}.onclick = ${hideFunctionName};
 </initialization>
 
 </script>
