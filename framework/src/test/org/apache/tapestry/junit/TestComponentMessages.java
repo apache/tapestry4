@@ -31,6 +31,7 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.engine.Namespace;
 import org.apache.tapestry.enhance.EnhancementOperationImpl;
 import org.apache.tapestry.enhance.InjectMessagesWorker;
+import org.apache.tapestry.enhance.InjectSpecificationWorker;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.junit.mock.c21.NullPropertySource;
 import org.apache.tapestry.services.ComponentPropertySource;
@@ -123,12 +124,12 @@ public class TestComponentMessages extends TapestryTestCase
                 specification, BasePage.class, classFactory);
 
         new InjectMessagesWorker().performEnhancement(op, specification);
-
+        new InjectSpecificationWorker().performEnhancement(op, specification);
+            
         IPage result = (IPage) op.getConstructor().newInstance();
 
         result.setLocale(locale);
         result.setPage(result);
-        result.setSpecification(specification);
 
         return result;
     }
