@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
+	"http://tapestry.primix.com/dtd/Tapestry_1_0.dtd">
+	
+<specification>
+  <class>tutorial.border.Border</class>
+
+  <parameters>
+
+	  <allow-informal-parameters>no</allow-informal-parameters>
+
+	  <parameter>
+	    <name>title</name>
+	    <java-type>java.lang.String</java-type>
+	    <required>yes</required>
+	  </parameter>
+
+	  <parameter>
+	    <name>pages</name>
+	    <required>yes</required>
+	  </parameter>
+	</parameters>
+	
+	<components>
+
+	  <component>
+		<id>insertApplicationName</id>
+		<type>Insert</type>
+
+		<bindings>
+			<binding>
+				<name>value</name>
+				<property-path>page.application.specification.name</property-path>
+			</binding>
+		</bindings>
+	  </component>
+
+	  <component>
+	    <id>insertPageTitle</id>
+	    <type>Insert</type>
+
+		<bindings>
+		    <inherited-binding>
+		      <name>value</name>
+		      <parameter-name>title</parameter-name>
+		    </inherited-binding>
+		</bindings>
+	  </component>
+
+	  <component>
+	    <id>e</id>
+	    <type>Foreach</type>
+
+		<bindings>
+		    <inherited-binding>
+		      <name>source</name>
+		      <parameter-name>pages</parameter-name>
+		    </inherited-binding>
+
+		    <binding>
+		      <name>value</name>
+		      <property-path>pageName</property-path>
+		    </binding>
+		</bindings>
+	  </component>
+
+	  <component>
+	    <id>link</id>
+	    <type>Page</type>
+
+		<bindings>
+		    <binding>
+		      <name>page</name>
+		      <property-path>pageName</property-path>
+		    </binding>
+
+		    <binding>
+		      <name>enabled</name>
+		      <property-path>enablePageLink</property-path>
+		    </binding>
+		</bindings>
+	  </component>
+
+	  <component>
+	    <id>insertName</id>
+	    <type>Insert</type>
+
+		<bindings>
+		    <binding>
+		      <name>value</name>
+		      <property-path>pageName</property-path>
+		    </binding>
+		</bindings>
+	  </component>
+
+	  <component>
+	    <id>wrapped</id>
+	    <type>InsertWrapped</type>
+	  </component>
+	</components>
+</specification>
+

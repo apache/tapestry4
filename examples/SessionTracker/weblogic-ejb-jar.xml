@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+
+<!DOCTYPE weblogic-ejb-jar 
+PUBLIC '-//BEA Systems, Inc.//DTD WebLogic 5.1.0 EJB//EN' 
+'http://www.beasys.com/j2ee/dtds/weblogic-ejb-jar.dtd'>
+
+<weblogic-ejb-jar>
+
+<weblogic-enterprise-bean>
+  <ejb-name>SessionTracker</ejb-name>
+ 
+  <persistence-descriptor>
+  	<is-modified-method-name>isDirty</is-modified-method-name>
+	<finders-call-ejbload>true</finders-call-ejbload>
+	
+	<!-- This is acceptible for testing and for this particular bean
+		 (where only one, unimportant, attribute changes once the bean
+		 is created). -->
+		 
+	<db-is-shared>false</db-is-shared>
+  </persistence-descriptor>
+ 
+  <!-- Here we map the bean's environment reference ("jdbc/sessiondb") to the
+   	   JNDI name of the data source. -->
+       
+  <reference-descriptor>
+  	<resource-description>
+      <res-ref-name>jdbc/sessiondb</res-ref-name>
+      <jndi-name>com.primix.sesstrack.DataSource</jndi-name>
+    </resource-description>
+  </reference-descriptor>
+     
+  <jndi-name>com.primix.sesstrack.SessionTracker</jndi-name>
+   
+</weblogic-enterprise-bean>
+
+</weblogic-ejb-jar>
