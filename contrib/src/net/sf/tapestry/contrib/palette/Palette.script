@@ -3,25 +3,22 @@
 <!DOCTYPE script PUBLIC "-//Howard Ship//Tapestry Script 1.1//EN"
 	"http://tapestry.sf.net/dtd/Script_1_1.dtd">
 <script>
-  <!-- 
+<!-- 
 
 input symbols:
-
-formName - the name of the form containing this Palette
-name - the name of the selected element
-includeBaseFunctions - if true, then include the base functions; this is true for the first
-  Palette rendered on a page, false subsequently
-sortLabel - if true, sort options by label
-sortValue - if true, sort options by value
-sortUser - if create additional controls to allow user to sort manually
-selectImage - reference to the select image
-selectDisabledImage - referece to the disabled select image  
-deselectImage - reference to the deselect image
-deselectDisabledImage - reference to the disbled deselect image
-upImage - reference to the move up image
-upDisabledImage - reference to the disabled move up image
-downImage - reference to the move down image
-downDisabledImage - reference to the disabled move down image
+  formName - the name of the form containing this Palette
+  name - the name of the selected element
+  sortLabel - if true, sort options by label
+  sortValue - if true, sort options by value
+  sortUser - if create additional controls to allow user to sort manually
+  selectImage - reference to the select image
+  selectDisabledImage - referece to the disabled select image  
+  deselectImage - reference to the deselect image
+  deselectDisabledImage - reference to the disbled deselect image
+  upImage - reference to the move up image
+  upDisabledImage - reference to the disabled move up image
+  downImage - reference to the move down image
+  downDisabledImage - reference to the disabled move down image
 
 Note: "reference" means the result of Body.getPreloadedImageReference().  The
 up and down images are only needed if sortUser is true.
@@ -38,6 +35,9 @@ output symbols:
   upOnClickScript - the script to assign to the up link's onclick attribute
   downOnClickScript - the script to assign to the down link's onclick attribute
 -->
+
+<include-script resource-path="/com/primix/tapestry/html/PracticalBrowserSniffer.js"/>
+<include-script resource-path="/net/sf/tapestry/contrib/palette/PaletteFunctions.js"/>
 
 <!-- baseName - base name from which other names are generated -->
 
@@ -162,168 +162,8 @@ output symbols:
   javascript:<insert property-path="moveDownFunctionName"/>();
 </let>
 
+
 <body>
-<if property-path="includeBaseFunctions">
-
-var palette_is_NN4 = <![CDATA[(navigator.appName == "Netscape" &&
-  parseInt(navigator.appVersion) <= 4);]]>
-
-function palette_clear_selections(element)
-{
-  var options = element.options;
-  
-  for (var i = 0; i &lt; options.length; i++)
-    options[i].selected = false;
-}
-
-function palette_select_all(element)
-{
-  var options = element.options;
-
-  for (var i = 0; i &lt; options.length; i++)
-    options[i].selected = true;
-}
-
-function palette_sort(element, sorter)
-{
-  var options = element.options;
-  var list = new Array();
-  var index = 0;
-  
-  while (options.length &gt; 0)
-  {
-    if (palette_is_NN4)
-    {
-      var copy = new Option(options[0].text, options[0].value);
-      list[index++] = copy;
-    }
-    else
-      list[index++] = options[0];
-      
-    options[0] = null;
-  }
-  
-  list.sort(sorter);
-  
-  for (var i = 0; i &lt; list.length; i++)
-    options[options.length] = list[i]; 
-}
-
-function palette_label_sorter(a, b)
-{
-  var a_text = a.text;
-  var b_text = b.text;
-  
-  if (a_text == b_text)
-    return 0;
-    
-  if (a_text &lt; b.text)
-    return -1;
-    
-  return 1;
-}
-
-function palette_sort_by_label(element)
-{
-  palette_sort(element, palette_label_sorter);
-}
-
-function palette_value_sorter(a, b)
-{
-  var a_value = a.value;
-  var b_value = b.value;
-  
-  if (a_value == b_value)
-    return 0;
-    
-  if (a_value &lt; b_value)
-    return -1;
-    
-  return 1;
-}
-
-function palette_sort_by_value(element)
-{
-  palette_sort(element, palette_value_sorter);
-}
-  
-function palette_transfer_selections(source, target)
-{
-  var sourceOptions = source.options;
-  var targetOptions = target.options;
-  
-  var targetIndex = target.selectedIndex;
-  var offset = 0;
-  
-  palette_clear_selections(target);
-  
-  for (var i = 0; i &lt; sourceOptions.length; i++)
-  {
-    var option = sourceOptions[i];
-    
-    if (option.selected)
-    {
-       if (palette_is_NN4)
-       {
-           // Can't share options between selects in NN4
-           
-           var newOption = new Option(option.text, option.value, false, true);
-           sourceOptions[i] = null;
-      
-          // Always added to end in NN4
-                     
-          targetOptions[targetOptions.length] = newOption;
-       }
-       else
-       {  
-         sourceOptions.remove(i);
-         
-         if (targetIndex &lt; 0)
-           targetOptions.add(option);
-         else
-           targetOptions.add(option, targetIndex + offset++);
-      }
-    
-      i--;
-    }
-  }
-
-}
-
-function palette_swap_options(options, selectedIndex, targetIndex)
-{
-  var option = options[selectedIndex];
-
-  // It's very hard to reorder options in NN4
-  
-  if (palette_is_NN4)
-  {
-    var swap = options[targetIndex];
-    
-    var hold = swap.text;
-    swap.text = option.text;
-    option.text = hold;
-    
-    hold = swap.value;
-    swap.value = option.value;
-    option.value = hold;
-    
-    hold = swap.selected;
-    swap.selected = option.selected;
-    option.selected = hold;
-    
-    // defaultSelected isn't relevant to the Palette
-    
-    return;
-  }
-  
-  // Sensible browsers ...
-  
-  options.remove(selectedIndex);
-  options.add(option, targetIndex);
-}
-
-</if>
 
 <!-- A variable that is used to track which of the buttons are enabled
      or disabled. All of the buttons are disabled until the page finishes
@@ -405,7 +245,7 @@ function <insert property-path="updateFunctionName"/>()
 
 function <insert property-path="selectFunctionName"/>()
 {
-   if (<insert property-path="selectDisabled"/>)
+ if (<insert property-path="selectDisabled"/>)
     return;
     
   var source = <insert property-path="availablePath"/>;

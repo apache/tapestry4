@@ -5,12 +5,12 @@
 
 <component id="movieName1" type="Any">
   <static-binding name="element">PARAM</static-binding>
-  <binding name="value" property-path="movieURL"/>
+  <binding name="VALUE" property-path="movieURL"/>
 </component>
   
 <component id="movieName2" type="Any">
   <static-binding name="element">EMBED</static-binding>
-  <binding name="src" property-path="movieURL"/>
+  <binding name="SRC" property-path="movieURL"/>
 </component>
 
 <private-asset name="movie" resource-path="/com/primix/tapestry/inspector/inspector_gear.swf"/>

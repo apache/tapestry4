@@ -49,6 +49,15 @@ public class ScriptSession
 	private String body;
 	private String initialization;
 	
+	/**
+	 *  List of included scripts.
+	 *
+	 *  @since 1.0.5
+	 *
+	 */
+	
+	private List includes;
+		
 	public ScriptSession(String scriptPath, Map symbols)
 	{
 		this.scriptPath = scriptPath;
@@ -63,6 +72,28 @@ public class ScriptSession
 	public Map getSymbols()
 	{
 		return symbols;
+	}
+	
+	/**
+	 *  Returns a list of scripts included by the
+	 *  the executed script.  These are not URLs, they
+	 *  are resource paths (i.e., in the classpath).
+	 *
+	 *  @since 1.0.5
+	 *
+	 */
+	
+	public List getIncludedScripts()
+	{
+		return includes;
+	}
+	
+	public void addIncludedScript(String resourcePath)
+	{
+		if (includes == null)
+			includes = new ArrayList();
+		
+		includes.add(resourcePath);
 	}
 	
 	public void setBody(String value)

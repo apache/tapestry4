@@ -268,13 +268,7 @@ extends AbstractComponent
 			throw new RequestCycleException(this, ex);
 		}
 
-		String value = session.getBody();
-		if (value != null)
-			body.addOtherScript(value);
-		
-		value = session.getInitialization()	;
-		if (value != null)
-			body.addOtherInitialization(value);
+		body.process(session);
 
 		// This component is not allowed to have a body.
 	}

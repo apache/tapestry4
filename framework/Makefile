@@ -34,7 +34,7 @@ PACKAGES = \
 	com.primix.tapestry.listener
 
 RESOURCE_EXTENSIONS = \
-	jwc html gif dtd script properties css swf
+	jwc html gif dtd script properties css swf js
 
 PROJ_CLASSPATH = \
 	$(INSTALL_DIR)/javax.servlet.jar \

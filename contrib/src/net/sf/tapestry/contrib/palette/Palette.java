@@ -155,8 +155,6 @@ public class Palette
 {
     private static final int DEFAULT_ROWS = 10;
     private static final int MAP_SIZE = 7;
-    private static final String SKIP_KEY =
-        "net.sf.tapestry.contrib.palette.SkipBaseFunctions";
     private static final String DEFAULT_TABLE_CLASS = "tapestry-palette";
     
     private IBinding tableClassBinding;
@@ -445,6 +443,9 @@ public class Palette
     {
         ScriptSession session;
         
+		// Get the script, if not already gotten.  Scripts are re-entrant, so it is
+		// safe to share this between instances of Palette.
+		
         if (script == null)
         {
             IEngine engine = getPage().getEngine();
@@ -469,10 +470,7 @@ public class Palette
         setImage(symbols, body, cycle, "selectDisabledImage", "Select-dis");
         setImage(symbols, body, cycle, "deselectImage", "Deselect");
         setImage(symbols, body, cycle, "deselectDisabledImage", "Deselect-dis");
-        
-        if (cycle.getAttribute(SKIP_KEY) == null)
-            symbols.put("includeBaseFunctions", Boolean.TRUE);
-        
+                
         if (sort == SortMode.LABEL)
             symbols.put("sortLabel", Boolean.TRUE);
         
@@ -497,14 +495,8 @@ public class Palette
             throw new RequestCycleException(this, ex);
         }
         
-        body.addOtherScript(session.getBody());
-        body.addOtherInitialization(session.getInitialization());
-        
-        
-        // This marks that the base functions have been emitted, and should not be
-        // emitted again if there's another Palette on the page somewhere.
-        
-        cycle.setAttribute(SKIP_KEY, Boolean.TRUE);
+		body.process(session);
+
     }
     
     private IAsset getAsset(String symbolName, String assetName)
