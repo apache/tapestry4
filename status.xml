@@ -137,6 +137,7 @@
       <action type="update" dev="HLS"> Add &lt;inject-state&gt; element to specifications. </action>
       <action type="update" dev="HLS"> Add property attribute to &lt;component&gt;, &lt;bean&gt; and &lt;asset&gt; and add enhancement workers to inject these objects as properties. </action>
       <action type="update" dev="HLS"> Add hivemind: binding prefix. </action>
+      <action type="update" dev="HLS"> Make the Body component output initializations in a script block at the end of the page (just before the close tag), rather than in a window.onload event handler. </action>
       <action type="update" dev="HLS" fixes-bug="TAPESTRY-262"> Support more boolean values. </action>
       <action type="update" dev="HLS"> Inject Messages into components; this means that all Tapestry page and component classes are abstract. </action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-242"> Allow namespaces to define localized messages, providing defaults for pages and components within the namespace. </action>
@@ -149,7 +150,6 @@
       <action type="fix" dev="DS" fixes-bug="28396"> Add FormConditional to Component Reference </action>
       <action type="fix" dev="DS" fixes-bug="28422"> Add element parameter to contrib:Choose </action>
       <action type="fix" dev="HLS" fixes-bug="28454"> Remove a small optimization that compromised storage of mutable objects as persistent page properties. </action>
-      <action type="update" dev="HLS"> Make the Body component output initializations in a script block at the end of the page (just before the close tag), rather than in a window.onload event handler. </action>
     </release>
     <!-- Use due-to to give acknowledgement for patches. -->
     <release version="3.0-rc-3" date="Apr 7 2004">
