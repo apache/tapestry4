@@ -1,12 +1,10 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2000-2001 by Howard Lewis Ship
  *
- * Primix
- * 311 Arsenal Street
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
+ * Howard Lewis Ship
+ * http://sf.net/projects/tapestry
+ * mailto:hship@users.sf.net
  *
  * This library is free software.
  *
@@ -61,63 +59,63 @@ import com.primix.tapestry.event.*;
 
 public interface ILifecycle
 {
-    /**
-     *  Invoked after rendering has taken place, even if an exception is thrown.
-     *  <p>A component is <em>not</em> guarenteed to have been sent
-     *  {@link #prepareForRender(IRequestCycle)} yet,
-     *  as an exception may be thrown while lifecycle methods are being invoked.
-     *
-     */
- 
-    public void cleanupAfterRender(IRequestCycle cycle);
+	/**
+	 *  Invoked after rendering has taken place, even if an exception is thrown.
+	 *  <p>A component is <em>not</em> guarenteed to have been sent
+	 *  {@link #prepareForRender(IRequestCycle)} yet,
+	 *  as an exception may be thrown while lifecycle methods are being invoked.
+	 *
+	 */
 
-    /**
-     *  Invoked on all lifecycle components prior to starting the rendering process.
-     *  This gives components an opportunity to claim any resources needed for the duration of
-     *  the render process.  Lifecycle components on a page will have this method
-     *  invoked in an unspecified order.
-     *
-     */
- 
-    public void prepareForRender(IRequestCycle cycle);
+	public void cleanupAfterRender(IRequestCycle cycle);
 
-    /**
-     *  Invoked from {@link IPage#detach()}, this allows
-     *  a component to reset its state so that it is equivalent to a newly
-     *  constructed instance.
-     *
-     *  <p>Imagine the following scenario:
-     *  <ul>
-     *  <li>Page P is created in session 1
-     *  <li>Session 1 modifies the property x
-     *  <li>Session 1 releases page P to the {@link IPageSource} pool
-     *  <li>A new session, number 2, gets page P from the pool
-     *  </ul>
-     *
-     *  <p>What is the value of property x?  It's the value left there by session 1,
-     *  but session 2 expects property x to have its initial value.  Since session 2
-     *  has never changed property x, the {@link IPageRecorder} for page P in session 2
-     *  has no data with which to rollback the property.
-     *
-     *  <p>This method allows page P to set the value for property X back to its
-     *  initial value, hiding the change made by session 1.  If session 1 later
-     *  reuses this same instance of page P, the {@link IPageRecorder} will restore
-     *  the property back to the value previously stored.
-     *
-     *  <p>Components should be designed to minimize the need for this method, and
-     *  to make it easy to implement it.  Initial values should usually be constants,
-     *  preferably null or 0.
-     *
-     */
- 
-    public void reset();
-	
+	/**
+	 *  Invoked on all lifecycle components prior to starting the rendering process.
+	 *  This gives components an opportunity to claim any resources needed for the duration of
+	 *  the render process.  Lifecycle components on a page will have this method
+	 *  invoked in an unspecified order.
+	 *
+	 */
+
+	public void prepareForRender(IRequestCycle cycle);
+
+	/**
+	 *  Invoked from {@link IPage#detach()}, this allows
+	 *  a component to reset its state so that it is equivalent to a newly
+	 *  constructed instance.
+	 *
+	 *  <p>Imagine the following scenario:
+	 *  <ul>
+	 *  <li>Page P is created in session 1
+	 *  <li>Session 1 modifies the property x
+	 *  <li>Session 1 releases page P to the {@link IPageSource} pool
+	 *  <li>A new session, number 2, gets page P from the pool
+	 *  </ul>
+	 *
+	 *  <p>What is the value of property x?  It's the value left there by session 1,
+	 *  but session 2 expects property x to have its initial value.  Since session 2
+	 *  has never changed property x, the {@link IPageRecorder} for page P in session 2
+	 *  has no data with which to rollback the property.
+	 *
+	 *  <p>This method allows page P to set the value for property X back to its
+	 *  initial value, hiding the change made by session 1.  If session 1 later
+	 *  reuses this same instance of page P, the {@link IPageRecorder} will restore
+	 *  the property back to the value previously stored.
+	 *
+	 *  <p>Components should be designed to minimize the need for this method, and
+	 *  to make it easy to implement it.  Initial values should usually be constants,
+	 *  preferably null or 0.
+	 *
+	 */
+
+	public void reset();
+
 	/**
 	 *  Invoked from {@link IPage#cleanupPage()} to cleanup any long-held resources
 	 *  (typically, stateful session EJBs) that the component may have a reference
 	 *  to.
 	 *
 	 */
-	 
+
 	public void cleanupComponent();
 }
