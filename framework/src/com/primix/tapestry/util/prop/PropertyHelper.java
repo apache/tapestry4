@@ -51,11 +51,18 @@ import org.apache.log4j.*;
  * the code <code>getVisit().getUser().getAddress().getStreet()</code>
  * (and just as likely to throw a <code>NullPointerException</code>).
  *
+ * <p>Typical usage:
+ *
+ * <pre>
+ * ProperyHelper helper = PropertyHelper.forClass(instance.getClass());
+ * helper.set(instance, "propertyName", newValue);
+ * </pre>
+ *
  * <p>Only single-valued properties (not indexed properties) are supported, and a minimum
  * of type checking is performed.
  *
  * <p>A mechanism exists to register custom <code>PropertyHelper</code> subclasses
- * for specific classes.  This would allow, for example, the contents of a <code>Map</code>
+ * for specific classes.  This would allow, for example, the contents of a {@link Map}
  * to be accessed in the same way as the properties of
  * a JavaBean.
  *
