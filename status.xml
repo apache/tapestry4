@@ -216,9 +216,13 @@ NextGen) be released as version number 3.0.
  		Create proper OGNL context when checking for invariant OGNL expressions
  		(when initializing component properties).
  	</action>
- 	<action type="fix" dev="HLS" fixed-bug="27628"> 
+ 	<action type="fix" dev="HLS" fixes-bug="27628"> 
    DataSqueezer: Incorrect exception message  
   </action> 
+  <action type="fix" dev="HLS" fixes-bug="28010">
+     ExpressionBinding optimizes expressions incorrectly  	
+  </action>
+
  </release>
   
  <release version="3.0-rc-1" date="Mar 15 2004">
