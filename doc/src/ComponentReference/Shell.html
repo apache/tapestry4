@@ -9,9 +9,9 @@
 <body>
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
  <tr>
-  <td align="left"><a href="Service.html"><img src="common-images/prev.png" alt="Service"/></a></td>  
-  <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
-  <td align="right"><a href="ShowInspector.html"><img src="common-images/next.png" alt="ShowInspector"/></a></td>  
+  <td align="left"><A href="Service.html"><IMG alt=Service src="common-images/prev.png"></A></td>  
+  <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></A></td>  
+  <td align="right"><A href="ShowInspector.html"><IMG alt=ShowInspector src="common-images/next.png"></A></td>  
  <tr>
  <tr>
   <td colspan="3"><hr></td>  
@@ -28,8 +28,8 @@
 	 </tr>
 	 <tr>
 	  <td>
-		 <a href="../api/net/sf/tapestry/html/Shell.html">
-		 net.sf.tapestry.html.Shell</a>
+		 <A href="../api/net/sf/tapestry/html/Shell.html">
+		 net.sf.tapestry.html.Shell</A>
 		</td>
 	 </tr>
   </table>
@@ -43,7 +43,7 @@
  </td>
 </tr>
 
-<tr valign="middle">
+<tr valign="center">
  <td colspan="2">&nbsp;</td>
 </tr>
 
@@ -53,18 +53,18 @@
 	<br>
   Provides the outer 'shell' of a page, including the &lt;html&gt;, &lt;head&gt; 
   and &lt;title&gt; tags, but not the &lt;body&gt; tag which is typically 
-  provided by a <a href="Body.html">Body</a> component.
+  provided by a <A href="Body.html">Body</A> component.
   <p>
   Most Tapestry pages will include a Shell component followed by a Body 
-  component. The Shell is used to resolve the page's HTML stylesheet and Body 
-  is to generate JavaScript. Any HTML content outside of the Shell component 
-  will be ignored by Tapestry. 
+  component. The Shell is used to resolve the page's HTML stylesheet and the Body 
+  component manages dynamically generated JavaScript. 
   <p>
-  When designing the look and feel of a Tapestry page include the normal 
-  HTML elements before the Shell component, including a &lt;link rel="stylesheet"&gt;
-  element, so that the page will render normally in a Browser.  
-  <p>
-  This component may wrap around other components and static HTML. 
+  When designing the look and feel of a 
+            Tapestry page, include the normal HTML elements before the Shell 
+            component, including a &lt;link rel="stylesheet"&gt; element, so 
+            that the page will render normally in a web browser, but use a 
+            &lt;span jwcid="$content$"&gt; around the actual content.</p>
+      
  </td>
 </tr>
 
@@ -72,8 +72,8 @@
  <td colspan="2">
   <b>See Also</b>
 	<br>
-	<a href="Body.html">Body</a>, 
-  <a href="Script.html">Script</a> 
+	<A href="Body.html">Body</A>, 
+  <A href="Script.html">Script</A> 
  </td>
 </tr>
 
@@ -100,7 +100,7 @@
 	</tr>
   <tr>
     <td>stylesheet</td>
-    <td><a href="../api/net/sf/tapestry/IAsset.html"><tt>IAsset</tt></a></td>
+    <td><A href="../api/net/sf/tapestry/IAsset.html"><tt>IAsset</tt></A></td>
     <td>in</td>
    	<td>no</td>
 		<td>&nbsp;</td>
@@ -121,9 +121,11 @@
     which initially presented the page, since the page will often be initially 
     displayed because of a link or form submission). 
     <p> 
-    Note that to the <meta> tag, a refresh of zero means refresh immediately. 
-    For this component, a refresh of zero is the same as unspecified: no 
-    automatic refresh. 
+    Note that to the <meta> tag, a refresh of zero means refresh 
+                  immediately. For this component, a refresh of zero is the same 
+                  as unspecified: no automatic refresh.</p>         
+                 
+      
     </td>
 	</tr>
   <tr>
@@ -140,7 +142,7 @@
 	</tr>
   <tr>
     <td>delegate</td>
-    <td><a href="../api/net/sf/tapestry/IRender.html"><tt>IRender</tt></a></td>
+    <td><A href="../api/net/sf/tapestry/IRender.html"><tt>IRender</tt></A></td>
     <td>in</td>
    	<td>no</td>
 		<td>&nbsp;</td>
@@ -150,9 +152,14 @@
     various types.
     </td>
 	</tr>
-	</table>		
-  Informal parameters: NOT allowed<br>
-  Reserved parameters: none
+	</table>
+            <P>Body: <STRONG>rendered<BR></STRONG>Informal parameters: 
+            <STRONG>allowed</STRONG>		
+     <br>
+  Reserved parameters: <EM>none</EM>
+    
+             </P>
+    
  </td>
 </tr>
 
@@ -174,8 +181,8 @@
   <h2><i><font color="navy">Customer Login</font></i></h2>
   Welcome to MyCorp's Customer Portal secure login page.
   <p>
-  <font color="red"><i>Please call 1800 230 187 for TR-2 recall information.</i></font>
- <td>
+  <font color="red"><i>Please call 1800 230 187 for TR-2 recall information.</i></font></p>
+ <td></td>
 </tr>
 </table>
 		
@@ -186,28 +193,28 @@
  &lt;title&gt;MyCorp Customer Login&lt;/title&gt;
 &lt;/head&gt;
 
-&lt;-- Shell start: everything above here will be ignored --&gt;
+&lt;span jwcid="$content$"&gt;
 &lt;span jwcid="<span class="jwcid">shell</span>" title="MyCorp Customer Login"&gt;
 &lt;body jwcid="body"&gt;
 
 &lt;h1&gt;Customer Login&lt;/h1&gt;
 Welcome to MyCorp's Customer Portal secure login page.
-&ltp&gt
+&lt;p&gt;
 &lt;span jwcid="insertDailyMessage"/&gt;
 
 &lt;/body&gt;
 &lt;/span&gt;
-&lt;-- Shell end: everything below here will be ignored --&gt;
+&lt;/span&gt;
 &lt;/html&gt;
 
 
-&lt;component id="<span class="jwcid">shell</span>" type="<a href="Shell.html">Shell</a>"&gt;
+&lt;component id="<span class="jwcid">shell</span>" type="<A href="Shell.html">Shell</A>"&gt;
    &lt;binding name="stylesheet" expression="assets.stylesheet"/&gt;
 &lt;/component&gt;
 
-&lt;component id="body" type="<a href="Body.html">Body</a>"/&gt;
+&lt;component id="body" type="<A href="Body.html">Body</A>"/&gt;
 
-&lt;component id="insertDailyMessage" type="<a href="Insert.html">Insert</a>"&gt;
+&lt;component id="insertDailyMessage" type="<A href="Insert.html">Insert</A>"&gt;
    &lt;binding name="value" expression="dailyMessage"/&gt;
    &lt;binding name="class" expression="messageClass"/&gt;
 &lt;/component&gt;
@@ -239,9 +246,9 @@ public class CustomerLoginPage extends BasePage {
  <td colspan="3"><hr></td>  
 </tr>
 <tr>
- <td align="left"><a href="Service.html"><img src="common-images/prev.png" alt="Service"/></a></td>  
- <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
- <td align="right"><a href="ShowInspector.html"><img src="common-images/next.png" alt="ShowInspector"/></a></td>  
+ <td align="left"><A href="Service.html"><IMG alt=Service src="common-images/prev.png"></A></td>  
+ <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></A></td>  
+ <td align="right"><A href="ShowInspector.html"><IMG alt=ShowInspector src="common-images/next.png"></A></td>  
 </tr>
 </table>
 

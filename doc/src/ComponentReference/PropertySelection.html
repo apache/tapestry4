@@ -9,9 +9,9 @@
 <body>
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
  <tr>
-  <td align="left"><a href="Page.html"><img src="common-images/prev.png" alt="Page"/></a></td>  
-  <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Index"/></a></td>  
-  <td align="right"><a href="Radio.html"><img src="common-images/next.png" alt="Radio"/></a></td>  
+  <td align="left"><A href="Page.html"><IMG alt=Page src="common-images/prev.png"></a></td>  
+  <td align="middle"><A href="index.html"><IMG alt=Index src="common-images/home.png"></a></td>  
+  <td align="right"><A href="Radio.html"><IMG alt=Radio src="common-images/next.png"></a></td>  
  <tr>
  <tr>
   <td colspan="3"><hr></td>  
@@ -28,7 +28,7 @@
 	 </tr>
 	 <tr>
 	  <td>
-		 <a href="../api/net/sf/tapestry/form/PropertySelection.html">
+		 <A href="../api/net/sf/tapestry/form/PropertySelection.html">
 		 net.sf.tapestry.form.PropertySelection</a>
 		</td>
 	 </tr>
@@ -39,7 +39,7 @@
 	 <tr>
 	  <td>Color
 		 <select>
-		  <option>Red</option>
+		  <option selected>Red</option>
 		  <option>Blue</option>
 		  <option>Green</option>
 		 </select>
@@ -49,44 +49,53 @@
  </td>
 </tr>
 
-<tr valign="middle">
+<tr valign="center">
  <td colspan="2">&nbsp;</td>
 </tr>
 
 <tr>
  <td colspan="2">
+            <P>
   <b>Description</b>
 	<br>
-  Creates form elements that allow a property of an object to be selected. 
-	This may take the form of a &lt;select&gt; or a sequence of 
-	&lt;input type='radio'&gt; elements. Uses a 
-  <a href="../api/net/sf/tapestry/form/IPropertySelectionModel.html">model</a> 
-  to map between Java values that will be assigned, and textual labels that will 
-  appear in the HTML response.
+  Creates form elements that allow a property of 
+            an object to be set from a drop-down list.</P>
+            <
+               
+	            
+	 P>  Uses a 
+  <A href="../api/net/sf/tapestry/form/IPropertySelectionModel.html">model</a> 
+            to map between Java values that will be assigned, and textual labels 
+            that will appear in the HTML response. </P> 
+                
+      
 	<p>
   There are a range property selection models you can use, including 
-  <a href="../api/net/sf/tapestry/form/StringPropertySelectionModel.html">
+  <A href="../api/net/sf/tapestry/form/StringPropertySelectionModel.html">
   <tt>StringPropertySelectionModel</tt></a>
   and
-  <a href="../api/net/sf/tapestry/form/EnumPropertySelectionModel.html">
+  <A href="../api/net/sf/tapestry/form/EnumPropertySelectionModel.html">
   <tt>EnumPropertySelectionModel</tt></a>. You can also create your own model, 
   as illustrated in the Examples below.
 	<p>
 	Note THAT complex value Objects need to properly implement the 
-  <tt>Object.equals()</tt> method if the correct item intial item is to be 
-  displayed.  
-  <p>
-  This component may NOT wrap around other components or static HTML. 
+  <tt>Object.equals()</tt> 
+            method if the correct item intial item is to be displayed. 
+            <P>Informal parameters are applied to the &lt;select&gt; tag.&nbsp; 
+            To have greater control over the &lt;option&gt; tags, you must use a 
+            
+	<A href="Select.html">Select</a>&nbsp;and <A href="Option.html">Option</a>&nbsp;components.</P>
+             
  </td>
 </tr>
 
 <tr>
  <td colspan="2">
   <b>See Also</b><br>
-	<a href="Select.html">Select</a>, <a href="Option.html">Option</a>, 
-	<a href="Radio.html">Radio</a>, <a href="RadioGroup.html">RadioGroup</a>,
-	<a href="Form.html">Form</a>, 
-  <a href="Script.html">Script</a>
+	<A href="Select.html">Select</a>, <A href="Option.html">Option</a>, 
+	<A href="Radio.html">Radio</a>, <A href="RadioGroup.html">RadioGroup</a>,
+	<A href="Form.html">Form</a>, 
+  <A href="Script.html">Script</a>
  </td>
 </tr>
 
@@ -101,7 +110,7 @@
 	  <th>Direction</th>
     <th>Required</th> 
     <th>Default</th>
-    <th width="">Description</th>
+    <th >Description</th>
   </tr>
   <tr>
     <td>value</td>
@@ -118,7 +127,7 @@
   <tr>
  		<td>model</td>
 		<td>
-		 <a href="../api/net/sf/tapestry/form/IPropertySelectionModel.html"><tt>
+		 <A href="../api/net/sf/tapestry/form/IPropertySelectionModel.html"><tt>
 		 IPropertySelectionModel</tt></a>
 		</td>
 		<td>in</td>
@@ -150,9 +159,13 @@
 		handler of <code>this.form.submit()</code>. 
 		</td>
 	</tr>
-	</table>		
-  Informal parameters: allowed<br>
-  Reserved parameters: none
+	</table>
+            <P>Body: <STRONG>removed</STRONG><BR>Informal parameters: 
+            <STRONG>allowed</STRONG>		
+    <br>
+  Reserved 
+            parameters: <EM>none</EM> </P>
+    
  </td>
 </tr>
 
@@ -171,7 +184,7 @@
  <tr>
   <td>Gender:
 	 <select>
-	  <option>Unspecified</option>
+	  <option selected>Unspecified</option>
 	  <option>Female</option>
 	  <option>Male</option>
 	 </select>
@@ -187,11 +200,11 @@
 
 &lt;bean name="genderSelectModel" class="GenderPropertySelectionModel"/&gt;          
 
-&lt;component id="detailsForm" type="<a href="Form.html">Form</a>"&gt;
+&lt;component id="detailsForm" type="<A href="Form.html">Form</a>"&gt;
     &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
 &lt;/component&gt;
 
-&lt;component id="<span class="jwcid">selectGender</span>" type="<a href="PropertySelection.html">PropertySelection</a>"&gt;
+&lt;component id="<span class="jwcid">selectGender</span>" type="<A href="PropertySelection.html">PropertySelection</a>"&gt;
     &lt;binding name="model" expression="beans.genderSelectModel"/&gt;
     &lt;binding name="value" expression="clothingItem"/&gt;
 &lt;/component&gt;
@@ -217,7 +230,7 @@ public class DetailsPage extends BasePage {
     }
 }
 
-public class GenderPropertySelectionModel implements <a href="../api/net/sf/tapestry/form/IPropertySelectionModel.html">IPropertySelectionModel</a> {
+public class GenderPropertySelectionModel implements <A href="../api/net/sf/tapestry/form/IPropertySelectionModel.html">IPropertySelectionModel</a> {
     public int getOptionCount() { return 3; }
 
     public Object getOption(int index) {
@@ -255,7 +268,7 @@ Provides list of clothing items for the user to select. When the user selects a
 cloting item from the list the description, label and price is automatically 
 updated. The list of clothing items would typically be loaded from a database.
 <p>
-Note the <a href="Script.html">Script</a> SelectSubmit is used to automatically 
+Note the <A href="Script.html">Script</a> SelectSubmit is used to automatically 
 submit the form when user selects an item. Alternatively in version 2.2 and 
 latter you can simply set the component's 'submitOnChange' property to true.
 <p>
@@ -264,7 +277,7 @@ latter you can simply set the component's 'submitOnChange' property to true.
  <tr>
   <td>Item:
 	 <select>
-	  <option>Dress</option>
+	  <option selected>Dress</option>
 	  <option>Jacket</option>
 	  <option>Pants</option>
 	  <option>Shirt</option>
@@ -275,7 +288,8 @@ latter you can simply set the component's 'submitOnChange' property to true.
    <p>
    Label: CountryClub 
    <p>
-   Price: $89.95 
+   Price: $89.95</p>
+     
 	</td>
  </tr>
 </table>
@@ -292,29 +306,29 @@ latter you can simply set the component's 'submitOnChange' property to true.
 &lt;/form&gt;
 
 
-&lt;component id="purchaseForm" type="<a href="Form.html">Form</a>"&gt;
+&lt;component id="purchaseForm" type="<A href="Form.html">Form</a>"&gt;
     &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
 &lt;/component&gt;
 
-&lt;component id="<span class="jwcid">selectItem</span>" type="<a href="PropertySelection.html">PropertySelection</a>"&gt;
+&lt;component id="<span class="jwcid">selectItem</span>" type="<A href="PropertySelection.html">PropertySelection</a>"&gt;
     &lt;binding name="model" expression="itemSelectionModel"/&gt;
     &lt;binding name="value" expression="clothingItem"/&gt;
 &lt;/component&gt;
 
-&lt;component id="itemOnChange" type="<a href="Script.html">Script</a>"&gt;
+&lt;component id="itemOnChange" type="<A href="Script.html">Script</a>"&gt;
     &lt;static-binding name="script"&gt;/net/sf/tapestry/form/SelectSubmit.script&lt;/static-binding&gt;
     &lt;binding name="component" expression="components.itemSelect"/&gt;
 &lt;/component&gt;
 
-&lt;component id="insertDescription" type="<a href="Insert.html">Insert</a>"&gt;
+&lt;component id="insertDescription" type="<A href="Insert.html">Insert</a>"&gt;
     &lt;binding name="value" expression="clothingItem.description"/&gt;
 &lt;/component&gt;
 
-&lt;component id="insertLabel" type="<a href="Insert.html">Insert</a>"&gt;
+&lt;component id="insertLabel" type="<A href="Insert.html">Insert</a>"&gt;
     &lt;binding name="value" expression="clothingItem.label"/&gt;
 &lt;/component&gt;
 
-&lt;component id="insertPrice" type="<a href="Insert.html">Insert</a>"&gt;
+&lt;component id="insertPrice" type="<A href="Insert.html">Insert</a>"&gt;
     &lt;binding name="value" expression="clothingItem.price"/&gt;
 &lt;/component&gt;
 
@@ -376,7 +390,7 @@ public class Item implements Serializable {
     public int getPrice() { return price;  }   
 }
 
-public class ItemSelectionModel implements <a href="../api/net/sf/tapestry/form/IPropertySelectionModel.html">IPropertySelectionModel</a>, Serializable {
+public class ItemSelectionModel implements <A href="../api/net/sf/tapestry/form/IPropertySelectionModel.html">IPropertySelectionModel</a>, Serializable {
     private List itemList;
 
     public ItemPropertySelectionModel(List itemList) { 
@@ -407,9 +421,9 @@ public class ItemSelectionModel implements <a href="../api/net/sf/tapestry/form/
  <td colspan="3"><hr></td>  
 </tr>
 <tr>
- <td align="left"><a href="Page.html"><img src="common-images/prev.png" alt="Page"/></a></td>  
- <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Index"/></a></td>  
- <td align="right"><a href="Radio.html"><img src="common-images/next.png" alt="Radio"/></a></td>  
+ <td align="left"><A href="Page.html"><IMG alt=Page src="common-images/prev.png"></a></td>  
+ <td align="middle"><A href="index.html"><IMG alt=Index src="common-images/home.png"></a></td>  
+ <td align="right"><A href="Radio.html"><IMG alt=Radio src="common-images/next.png"></a></td>  
 </tr>
 </table>
 

@@ -35,6 +35,8 @@ import net.sf.tapestry.RequiredParameterException;
 
 /**
  *  Implements a component that manages an HTML &lt;input type=submit&gt; form element.
+ * 
+ *  [<a href="../../../../../ComponentReference/Submit.html">Component Reference</a>]
  *
  *  <p>This component is generally only used when the form has multiple
  *  submit buttons, and it is important for the application to know
@@ -42,73 +44,6 @@ import net.sf.tapestry.RequiredParameterException;
  *  {@link ImageSubmit} which accomplishes much the same thing, but uses
  *  a graphic image instead.
  *
- * <table border=1>
- * <tr> 
- *    <td>Parameter</td>
- *    <td>Type</td>
- *	  <td>Direction</td>
- *    <td>Required</td> 
- *    <td>Default</td>
- *    <td>Description</td>
- * </tr>
- *
- *  <tr>
- *		<td>label</td>
- *		<td>java.lang.String</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>&nbsp;</td>
- *		<td>The label put on the button (this becomes the HTML value attribute).
- *		</td>
- *	</tr>
- *
- *  <tr>
- *	  <td>disabled</id>
- *	  <td>boolean</td>
- *    <td>in</td>
- *    <td>no</td>
- *	  <td>false</td>
- *    <td>If set to true, the button will be disabled (will not respond to
- *  the mouse); the browser should provide a "greyed out" appearance.
- *  </td> </tr>
- *
- *  <tr>
- *      <td>selected</td>
- *      <td>java.lang.Object</td>
- *      <td>out</td>
- *      <td>no</td>
- *      <td>&nbsp;</td>
- *      <td>This parameter is bound to a property that is
- *    updated when the submit button is clicked by the user.  The property
- *  is updated to match the tag parameter.</td>
- *  </tr>
- *
- *  <tr>
- *      <td>tag</td>
- *      <td>java.lang.Object</td>
- *      <td>in</td>
- *      <td>no</td>
- *      <td>&nbsp;</td>
- *      <td>Tag used with the selected parameter to indicate which Submit button
- *  on a form was clicked.</td>
- *  </tr>
- *
- *  <tr>
- * 		<td>listener</td>
- * 		<td>{@link IActionListener}</td>
- * 		<td>in</td>
- * 		<td>no</td>
- * 		<td>&nbsp;</td>
- * 		<td>If specified, the listener is notified.  This notification occurs
- *  as the component is rewinded, i.e., prior to the {@link IForm form}'s listener.
- *  In addition, the selected property (if bound) will be updated <em>before</em>
- *  the listener is notified.
- * 		</td>
- *   </tr>
- * 
- *	</table>
- *
- *  <p>Allows informal parameters, but may not contain a body.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -117,27 +52,27 @@ import net.sf.tapestry.RequiredParameterException;
 
 public class Submit extends AbstractFormComponent
 {
-    private String label;
-    private IActionListener listener;
-    private boolean disabled;
-    private Object tag;
-    private IBinding selectedBinding;
+    private String _label;
+    private IActionListener _listener;
+    private boolean _disabled;
+    private Object _tag;
+    private IBinding _selectedBinding;
 
-    private String name;
+    private String _name;
 
     public String getName()
     {
-        return name;
+        return _name;
     }
 
     public void setSelectedBinding(IBinding value)
     {
-        selectedBinding = value;
+        _selectedBinding = value;
     }
 
     public IBinding getSelectedBinding()
     {
-        return selectedBinding;
+        return _selectedBinding;
     }
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
@@ -148,13 +83,13 @@ public class Submit extends AbstractFormComponent
 
         boolean rewinding = form.isRewinding();
 
-        name = form.getElementId(this);
+        _name = form.getElementId(this);
 
         if (rewinding)
         {
             // Don't bother doing anything if disabled.
 
-            if (disabled)
+            if (_disabled)
                 return;
 
             // How to know which Submit button was actually
@@ -162,7 +97,7 @@ public class Submit extends AbstractFormComponent
             // with its name and value (the value serves double duty as both
             // the label on the button, and the parameter value).
 
-            String value = cycle.getRequestContext().getParameter(name);
+            String value = cycle.getRequestContext().getParameter(_name);
 
             // If the value isn't there, then this button wasn't
             // selected.
@@ -170,24 +105,24 @@ public class Submit extends AbstractFormComponent
             if (value == null)
                 return;
 
-            if (selectedBinding != null)
-                selectedBinding.setObject(tag);
+            if (_selectedBinding != null)
+                _selectedBinding.setObject(_tag);
 
-            if (listener != null)
-                listener.actionTriggered(this, cycle);
+            if (_listener != null)
+                _listener.actionTriggered(this, cycle);
 
             return;
         }
 
         writer.beginEmpty("input");
         writer.attribute("type", "submit");
-        writer.attribute("name", name);
+        writer.attribute("name", _name);
 
-        if (disabled)
+        if (_disabled)
             writer.attribute("disabled");
 
-        if (label != null)
-            writer.attribute("value", label);
+        if (_label != null)
+            writer.attribute("value", _label);
 
         generateAttributes(writer, cycle);
 
@@ -196,42 +131,42 @@ public class Submit extends AbstractFormComponent
 
     public String getLabel()
     {
-        return label;
+        return _label;
     }
 
     public void setLabel(String label)
     {
-        this.label = label;
+        _label = label;
     }
 
     public boolean getDisabled()
     {
-        return disabled;
+        return _disabled;
     }
 
     public void setDisabled(boolean disabled)
     {
-        this.disabled = disabled;
+        _disabled = disabled;
     }
 
     public IActionListener getListener()
     {
-        return listener;
+        return _listener;
     }
 
     public void setListener(IActionListener listener)
     {
-        this.listener = listener;
+        _listener = listener;
     }
 
     public Object getTag()
     {
-        return tag;
+        return _tag;
     }
 
     public void setTag(Object tag)
     {
-        this.tag = tag;
+        _tag = tag;
     }
 
 }

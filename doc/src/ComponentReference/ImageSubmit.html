@@ -9,9 +9,9 @@
 <body>
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
  <tr>
-  <td align="left"><a href="Image.html"><img src="common-images/prev.png" alt="Image"/></a></td>  
-  <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
-  <td align="right"><a href="Insert.html"><img src="common-images/next.png" alt="Insert"/></a></td>  
+  <td align="left"><A href="Image.html"><IMG alt=Image src="common-images/prev.png"></A></td>  
+  <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></A></td>  
+  <td align="right"><A href="Insert.html"><IMG alt=Insert src="common-images/next.png"></A></td>  
  <tr>
  <tr>
   <td colspan="3"><hr></td>  
@@ -19,6 +19,7 @@
  <tr>
   <td colspan="3">
    <table border="0" cellpadding="4" cellspacing="4" width="100%">
+        <TBODY>
 
 <tr valign="top">
  <td>
@@ -28,8 +29,8 @@
 	 </tr>
 	 <tr>
 	  <td>
-		 <a href="../api/net/sf/tapestry/form/ImageSubmit.html">
-		 net.sf.tapestry.form.ImageSubmit</a>
+		 <A href="../api/net/sf/tapestry/form/ImageSubmit.html">
+		 net.sf.tapestry.form.ImageSubmit</A>
 		</td>
 	 </tr>
   </table>
@@ -37,7 +38,7 @@
  <td>
   <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
 	 <tr>
-	  <td><a href="ImageSubmit.html"><img src="images/intray.png" alt="Submit"/></a></td>
+	  <td><A href="ImageSubmit.html"><IMG alt=Submit src="images/intray.png"></A></td>
 	 </tr>
   </table>
  </td>
@@ -51,9 +52,9 @@
  <td colspan="2">
   <b>Description</b>
 	<br>
-  Provides an image button inside a <a href="Form.html">Form</a>. Clicking the 
+  Provides an image button inside a <A href="Form.html">Form</A>. Clicking the 
   button submits the form and may notify a configured 
-  <a href="../api/net/sf/tapestry/IActionListener.html">listener</a> 
+  <A href="../api/net/sf/tapestry/IActionListener.html">listener</A> 
   or select property.
   <p>
   The <a href="http://java.sun.com/products/jdk/1.2/docs/api/java/awt/Point.html">
@@ -65,20 +66,18 @@
   <ul>
   <li>Use the <b>selected</b> and <b>tag</b> parameters to identify
   the button.
-  <li>Use the <b>listener</b> to perform an operation directly
+  <li>Use the <b>listener</b> to perform an operation directly</li>     
   </ul>
   <p>
   If a listener is used, it will be invoked as the ImageSubmit
   component is rewound.  In addition, the
-  <a href="Form.html">Form</a>'s listener will
+  <A href="Form.html">Form</A>'s listener will
   always be invoked.
   
-  <p>
-  Use the first method if you need to
-  be sure that the entire form has rewound before any logic
-  specific to the ImageSubmit is triggered.
-  <p>   
-  This component may NOT wrap around other components or static HTML. 
+  <p>Use the first method if you need to be sure 
+            that the entire form has rewound before any logic specific to the 
+            ImageSubmit is triggered.</p>   
+             
  </td>
 </tr>
 
@@ -86,9 +85,9 @@
  <td colspan="2">
   <b>See Also</b>
 	<br>
-  <a href="Form.html">Form</a>,
-	<a href="Image.html">Image</a>, 
-	<a href="Submit.html">Submit</a> 
+  <A href="Form.html">Form</A>,
+	<A href="Image.html">Image</A>, 
+	<A href="Submit.html">Submit</A> 
  </td>
 </tr>
 
@@ -107,7 +106,7 @@
   </tr>
   <tr>
     <td>image</td>
-    <td><a href="../api/net/sf/tapestry/IAsset.html"><tt>IAsset</tt></a></td>
+    <td><A href="../api/net/sf/tapestry/IAsset.html"><tt>IAsset</tt></A></td>
     <td>in</td>
    	<td>yes</td>
 		<td>&nbsp;</td>
@@ -139,7 +138,7 @@
 	</tr>
   <tr>
     <td>disabledImage</td>
-    <td><a href="../api/net/sf/tapestry/IAsset.html"><tt>IAsset</tt></a></td>
+    <td><A href="../api/net/sf/tapestry/IAsset.html"><tt>IAsset</tt></A></td>
     <td>in</td>
    	<td>no</td>
 		<td>&nbsp;</td>
@@ -190,22 +189,26 @@
   <tr>
     <td>listener</td>
     <td>
-		 <a href="../api/net/sf/tapestry/IActionListener.html">
-     <tt>IActionListener</tt></a>    
+		 <A href="../api/net/sf/tapestry/IActionListener.html">
+     <tt>IActionListener</tt></A>    
     </td>
     <td>in</td>
    	<td>no</td>
 		<td>&nbsp;</td>
 		<td>
     If specified, the listener is notified. This notification occurs as the 
-    component is rewound, i.e., prior to the <a href="Form.html">form</a>'s 
+    component is rewound, i.e., prior to the <A href="Form.html">form</A>'s 
     listener. In addition, the selected property (if bound) will be updated 
     before the listener is notified.
     </td>
 	</tr>
 	</table>
-  Informal parameters: allowed<br>
-  Reserved parameters: "src", "type", "border"
+            <P>Body: <STRONG>removed</STRONG><BR>Informal parameters: 
+            <STRONG>allowed</STRONG>
+    <br>
+  Reserved 
+            parameters: "src", "type", "border" </P>
+      
  </td>
 </tr>
 
@@ -213,7 +216,8 @@
  <td colspan="2">
   <b>Examples</b>
 	<p>
-  This example is under construction.
+  This example is under construction.</p>
+      
  </td>
 </tr>
 </tr>
@@ -226,19 +230,19 @@
   <table width="100%">
    <tr>
     <td align="left">
-     <a href="Image.html"><img src="common-images/prev.png" alt="Previous"/></a>
+     <A href="Image.html"><IMG alt=Previous src="common-images/prev.png"></A>
     </td>  
-    <td align="center">
-     <a href="index.html"><img src="common-images/home.png" alt="Home"/></a>
+    <td align="middle">
+     <A href="index.html"><IMG alt=Home src="common-images/home.png"></A>
     </td>  
     <td align="right">
-     <a href="Insert.html"><img src="common-images/next.png" alt="Next"/></a>
+     <A href="Insert.html"><IMG alt=Next src="common-images/next.png"></A>
     </td>  
-   <tr>
+   <tr></tr>
   </table>
  </td>
 </tr>
-</table>
+</table></TD></TR></TBODY></TABLE>
 
 </body>
 </html>

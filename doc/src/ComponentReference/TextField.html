@@ -9,9 +9,9 @@
 <body>
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
  <tr>
-  <td align="left"><a href="Text.html"><img src="common-images/prev.png" alt="Text"/></a></td>  
-  <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
-  <td align="right"><a href="Upload.html"><img src="common-images/next.png" alt="Upload"/></a></td>  
+  <td align="left"><A href="Text.html"><IMG alt=Text src="common-images/prev.png"></a></td>  
+  <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
+  <td align="right"><A href="Upload.html"><IMG alt=Upload src="common-images/next.png"></a></td>  
  <tr>
  <tr>
   <td colspan="3"><hr></td>  
@@ -28,7 +28,7 @@
 	 </tr>
 	 <tr>
 	  <td>
-		 <a href="../api/net/sf/tapestry/form/TextField.html">
+		 <A href="../api/net/sf/tapestry/form/TextField.html">
 		 net.sf.tapestry.form.TextField</a>
 		</td>
 	 </tr>
@@ -38,14 +38,14 @@
   <table align="right" valign="middle" bgcolor="#c0c0c0" cellspacing="8">
 	 <tr>
 	  <td>
-		Text Field&nbsp;<input type="text" value="some text"/>
+		Text Field&nbsp;<input value="some text">
     </td>
 	 </tr>
   </table>
  </td>
 </tr>
 
-<tr valign="middle">
+<tr valign="center">
  <td colspan="2">&nbsp;</td>
 </tr>
 
@@ -55,9 +55,8 @@
 	<br>
   Used to implement a HTML text form element, either a &lt;input type="text"&gt; or 
   &lt;input type="password"&gt;. This component must be wrapped by a 
-  <a href="Form.html">Form</a>.
-  <p>
-  This component may NOT wrap around other components or static HTML. 
+  <A href="Form.html">Form</a>
+            . 
  </td>
 </tr>
 
@@ -65,13 +64,11 @@
  <td colspan="2">
   <b>See Also</b>
 	<br>
-	<a href="Form.html">Form</a>, 
-	<a href="Text.html">Text</a>
-	<a href="ValidField.html">ValidField</a>
+	<A href="Form.html">Form</a>, 
+	<A href="Text.html">Text</a>
+	<A href="ValidField.html">ValidField</a>
  </td>
-</tr>
-
-<!-- Parameters -->
+</tr><!-- Parameters -->
 <tr>
  <td colspan="2">
   <b>Parameters</b>
@@ -139,8 +136,10 @@
 			determine. Corresponds to the "maxlength" HTML attribute.
     </td> 
    </tr>
-	</table>
-  Informal parameters: allowed<br>
+	</table><BR>Body: 
+            <STRONG>removed</STRONG><BR>Informal parameters: 
+            <STRONG>allowed</STRONG>
+    <br>
   Reserved parameters: "type", "value"  
  </td>
 </tr>
@@ -156,12 +155,12 @@
 <table class="examples" cellspacing="8" valign="middle">
  <tr>
   <td>Id</td>
-  <td><input size="8" value="1245"/></td>
+  <td><input size="8" value="1245"></td>
 	<td>Password</td>
-  <td><input  size="8" type="password" value="password"/></td>
+  <td><input  size="8" type="password" value="password"></td>
  </tr>
  <tr>
-  <td colspan="4" align="right"><input type="submit" value="Submit"/></td>
+  <td colspan="4" align="right"><input type="submit" value="Submit"></td>
  </tr>
 </table>
 
@@ -181,17 +180,18 @@
 &lt;/form&gt;	
 
 
-&lt;component id="form" type="<a href="Form.html">Form</a>"&gt;
+&lt;component id="form" type="<A href="Form.html">Form</a>"&gt;
     &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
 &lt;/component&gt;
     
-&lt;component id="<span class="jwcid">idField</span>" type="<a href="TextField.html">TextField</a>"&gt;
+&lt;component id="<span class="jwcid">idField</span>" type="<A href="TextField.html">TextField</a>"&gt;
     &lt;binding name="value" expression="visit.id"/&gt;
 &lt;/component&gt;
 
-&lt;component id="<span class="jwcid">passwordField</span>" type="<a href="TextField.html">TextField</a>"&gt;
-    &lt;binding name="value" expression="visit.password"/&gt;
-    &lt;static-binding name="hidden"&gt;true&lt;/static-binding&gt;
+&lt;component id="<span class="jwcid">passwordField</span>" type="<A href="TextField.html">TextField</a>"&gt;
+    &lt;binding name="value" expression=
+     "visit.password"/&gt;&lt;field-binding name=
+    "hidden" field-name="Boolean.TRUE"/&gt;
 &lt;/component&gt;
 
 
@@ -225,9 +225,9 @@ public class Visit implements Serializable {
  <td colspan="3"><hr></td>  
 </tr>
 <tr>
- <td align="left"><a href="Text.html"><img src="common-images/prev.png" alt="Text"/></a></td>  
- <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
- <td align="right"><a href="Upload.html"><img src="common-images/next.png" alt="Upload"/></a></td>  
+ <td align="left"><A href="Text.html"><IMG alt=Text src="common-images/prev.png"></a></td>  
+ <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
+ <td align="right"><A href="Upload.html"><IMG alt=Upload src="common-images/next.png"></a></td>  
 </tr>
 </table>
 

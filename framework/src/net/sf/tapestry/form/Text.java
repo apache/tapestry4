@@ -36,65 +36,8 @@ import net.sf.tapestry.Tapestry;
 /**
  *  Implements a component that manages an HTML &lt;textarea&gt; form element.
  *
- * <table border=1>
- * <tr> 
- *    <td>Parameter</td>
- *    <td>Type</td>
- *	  <td>Direction</td>
- *    <td>Required</td> 
- *    <td>Default</td>
- *    <td>Description</td>
- * </tr>
+ *  [<a href="../../../../../ComponentReference/Text.html">Component Reference</a>]
  *
- *  <tr>
- *    <td>value</td>
- *    <td>java.lang.String</td>
- *    <td>in-out</td>
- *   	<td>no</td>
- *		<td>post</td>
- *		<td>The text inside the textarea.  The parameter is only updated
- *			when the the Text component is not disabled.</td>
- *	</tr>
- *
- *  <tr>
- * 		<td>disabled</td>
- *		<td>boolean</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>false</td>
- *		<td>Controls whether the textarea is active or not.  If disabled, then
- *			any value that comes up when the form is submitted is ignored.
- *			
- *			<p>Corresponds to the <code>disabled</code> HTML attribute.</td>
- *	</tr>
- *
- *	<tr>
- *		<td>columns</td>
- *		<td>integer</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>&nbsp;</td>
- *		<td>The width of the textarea, in characters.  If zero, or unspecified
- *		    the value is left to the client browser to determine.
- *
- *			<p>Corresponds to the <code>cols</code> HTML attribute.</td> </tr>
- *
- *	<tr>
- *		<td>rows</td>
- *		<td>integer</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>&nbsp;</td>
- *		<td>The number of rows in the textarea. If
- *			unspecified or zero, then the value is left to the client browser to
- *			determine.
- *
- *			<p>Corresponds to the <code>maxlength</code> HTML attribute.</td> </tr>
- *
- * <tr>
- *	</table>
- *
- * <p>Informal parameters are allowed.  The component may not contain a body.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -103,40 +46,32 @@ import net.sf.tapestry.Tapestry;
 
 public class Text extends AbstractFormComponent
 {
-	private int rows;
-	private int columns;
-	private boolean disabled;	
-    private IBinding valueBinding;
-    private String name;
+	private int _rows;
+	private int _columns;
+	private boolean _disabled;	
+    private IBinding _valueBinding;
+    private String _name;
 
     public String getName()
     {
-        return name;
+        return _name;
     }
 
 
     public IBinding getValueBinding()
     {
-        return valueBinding;
+        return _valueBinding;
     }
 
     public void setValueBinding(IBinding value)
     {
-        valueBinding = value;
+        _valueBinding = value;
     }
 
     /**
      *  Renders the form element, or responds when the form containing the element
      *  is submitted (by checking {@link Form#isRewinding()}.
      *
-     *  <table border=1>
-     *  <tr>  <th>attribute</th>  <th>value</th> </tr>
-     *  <tr>  <td>name</td>  <td>from {@link IRequestCycle#getNextActionId()}</td> </tr>
-     *  <tr>  <td>disabled</td>  <td>ommited, unless the <code>disabled</code> property is
-     * 	true.  </td> </tr>
-     *  <tr> <td>rows</td> <td>from <code>rows</code> property</td> </tr>
-     *  <tr> <td>cols</td> <td>from <code>columns</code> property</td> </tr>
-     *  </table>
      **/
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
@@ -151,16 +86,16 @@ public class Text extends AbstractFormComponent
 
         // Used whether rewinding or not.
 
-        name = form.getElementId(this);
+        _name = form.getElementId(this);
 
 
         if (rewinding)
         {
-            if (!disabled)
+            if (!_disabled)
             {
-                String value = cycle.getRequestContext().getParameter(name);
+                String value = cycle.getRequestContext().getParameter(_name);
 
-                valueBinding.setString(value);
+                _valueBinding.setString(value);
             }
 
             return;
@@ -168,20 +103,20 @@ public class Text extends AbstractFormComponent
 
         writer.begin("textarea");
 
-        writer.attribute("name", name);
+        writer.attribute("name", _name);
 
-        if (disabled)
+        if (_disabled)
             writer.attribute("disabled");
 
-        if (rows != 0)
-            writer.attribute("rows", rows);
+        if (_rows != 0)
+            writer.attribute("rows", _rows);
 
-        if (columns != 0)
-            writer.attribute("cols", columns);
+        if (_columns != 0)
+            writer.attribute("cols", _columns);
 
         generateAttributes(writer, cycle);
 
-        String value = valueBinding.getString();
+        String value = _valueBinding.getString();
         if (value != null)
             writer.print(value);
 
@@ -191,32 +126,32 @@ public class Text extends AbstractFormComponent
 
     public int getColumns()
     {
-        return columns;
+        return _columns;
     }
 
     public void setColumns(int columns)
     {
-        this.columns = columns;
+        _columns = columns;
     }
 
     public boolean getDisabled()
     {
-        return disabled;
+        return _disabled;
     }
 
     public void setDisabled(boolean disabled)
     {
-        this.disabled = disabled;
+        _disabled = disabled;
     }
 
     public int getRows()
     {
-        return rows;
+        return _rows;
     }
 
     public void setRows(int rows)
     {
-        this.rows = rows;
+        _rows = rows;
     }
 
 }

@@ -9,9 +9,9 @@
 <body>
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
  <tr>
-  <td align="left"><a href="ImageSubmit.html"><img src="common-images/prev.png" alt="ImageSubmit"/></a></td>  
-  <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
-  <td align="right"><a href="InsertBlock.html"><img src="common-images/next.png" alt="InsertBlock"/></a></td>  
+  <td align="left"><A href="ImageSubmit.html"><IMG alt=ImageSubmit src="common-images/prev.png"></a></td>  
+  <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
+  <td align="right"><A href="InsertBlock.html"><IMG alt=InsertBlock src="common-images/next.png"></a></td>  
  <tr>
  <tr>
   <td colspan="3"><hr></td>  
@@ -28,7 +28,7 @@
 	 </tr>
 	 <tr>
 	  <td>
-		 <a href="../api/net/sf/tapestry/components/Insert.html">
+		 <A href="../api/net/sf/tapestry/components/Insert.html">
 		 net.sf.tapestry.components.Insert</a>
 		</td>
 	 </tr>
@@ -51,13 +51,13 @@
  <td colspan="2">
   <b>Description</b>
 	<br>
-	Allows for the insertion of text (with a specified format) into the HTML. The text
-	itself can be 'transformed' or not (where 'transform' in this case means that
-	various characters like &lt; and &gt; are transformed into HTML safe representations
-	such as &amp;lt; and &amp;gt;). The value for the text is bound, just like any other
-	component.
-  <p>
-  This component may NOT wrap around other components or static HTML. 
+	Allows 
+            for the insertion of text (with a specified format) into the HTML. 
+            The text itself can be 'transformed' or not (where 'transform' in 
+            this case means that various characters like &lt; and &gt; are 
+            transformed into HTML safe representations such as &amp;lt; and 
+            &amp;gt;). The
+  value for the text is bound, just like any other component. 
  </td>
 </tr>
 
@@ -65,11 +65,11 @@
  <td colspan="2">
   <b>See Also</b>
 	<br>
-  <a href="Conditional.html">Conditional</a>,
-  <a href="Foreach.html">Foreach</a>,
-	<a href="Insertblock.html">InsertBlock</a>, 
-  <a href="InsertText.html">InsertText</a>,
-  <a href="InsertWrapped.html">InsertWrapped</a>
+  <A href="Conditional.html">Conditional</a>,
+  <A href="Foreach.html">Foreach</a>,
+	<A href="Insertblock.html">InsertBlock</a>, 
+  <A href="InsertText.html">InsertText</a>,
+  <A href="InsertWrapped.html">InsertWrapped</a>
  </td>
 </tr>
 
@@ -128,18 +128,24 @@
 		<td>no</td>
 		<td>false</td>
 		<td>If true, then the method 
-    <a href="../api/net/sf/tapestry/IMarkupWriter.html#printRaw(java.lang.String)">
+    <A href="../api/net/sf/tapestry/IMarkupWriter.html#printRaw(java.lang.String)">
     <tt>IMarkupWriter.printRaw(String)</tt></a> is used, rather than 
-    <a href="../api/net/sf/tapestry/IMarkupWriter.html#print(java.lang.String)">
+    <A href="../api/net/sf/tapestry/IMarkupWriter.html#print(java.lang.String)">
     <tt>IMarkupWriter.print(String)</tt></a>.
     
-    <p>This bypasses the normal safeguards and is used when the value
-    to insert contains HTML markup that should be emitted as is.		
+    <p>This bypasses the normal safeguards 
+                  and is used when the value to insert contains HTML markup that 
+                  should be emitted as is.</p>          
+              		
     </td>
 	</tr>
-	</table>		
-  Informal parameters: NOT allowed<br>
-  Reserved parameters: none
+	</table>
+            <P>Body: <STRONG>removed</STRONG><BR>Informal parameters: 
+            <STRONG>forbidden</STRONG>		
+     <br>
+  Reserved 
+            parameters: <EM>none</EM> </P>
+    
  </td>
 </tr>
 
@@ -162,7 +168,7 @@
 The order was due on the &lt;span jwcid="<span class="jwcid">insertDueDate</span>"/&gt;.
 
 
-&lt;component id="<span class="jwcid">insertDueDate</span>" type="<a href="Insert.html">Insert</a>"&gt;
+&lt;component id="<span class="jwcid">insertDueDate</span>" type="<A href="Insert.html">Insert</a>"&gt;
     &lt;binding name="value" property-path="dueDate"/&gt;
     &lt;field-binding name="format" field-name="EnquiryPage.DATE_FORMAT"/&gt;
     &lt;binding name="class" property-path="dueClass"/&gt;
@@ -197,19 +203,19 @@ public class EnquiryPage extends BasePage {
   <table width="100%">
    <tr>
     <td align="left">
-     <a href="InsertImage.html"><img src="common-images/prev.png" alt="Previous"/></a>
+     <A href="InsertImage.html"><IMG alt=Previous src="common-images/prev.png"></a>
     </td>  
-    <td align="center">
-     <a href="index.html"><img src="common-images/home.png" alt="Home"/></a>
+    <td align="middle">
+     <A href="index.html"><IMG alt=Home src="common-images/home.png"></a>
     </td>  
     <td align="right">
-     <a href="InsertBlock.html"><img src="common-images/next.png" alt="Next"/></a>
+     <A href="InsertBlock.html"><IMG alt=Next src="common-images/next.png"></a>
     </td>  
-   <tr>
+   <tr></tr>
   </table>
  </td>
 </tr>
-</table>
+</table></tr></table>
 
 </body>
 </html>

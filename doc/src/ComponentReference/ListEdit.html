@@ -9,9 +9,9 @@
 <body>
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
  <tr>
-  <td align="left"><a href="InsertWrapped.html"><img src="common-images/prev.png" alt="InsertWrapped"/></a></td>  
-  <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
-  <td align="right"><a href="Option.html"><img src="common-images/next.png" alt="Option"/></a></td>  
+  <td align="left"><A href="InsertWrapped.html"><IMG alt=InsertWrapped src="common-images/prev.png"></a></td>  
+  <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
+  <td align="right"><A href="Option.html"><IMG alt=Option src="common-images/next.png"></a></td>  
  <tr>
  <tr>
   <td colspan="3"><hr></td>  
@@ -28,7 +28,7 @@
 	 </tr>
 	 <tr>
 	  <td>
-		 <a href="../api/net/sf/tapestry/form/ListEdit.html">
+		 <A href="../api/net/sf/tapestry/form/ListEdit.html">
 		 net.sf.tapestry.form.ListEdit</a>
 		</td>
 	 </tr>
@@ -43,7 +43,7 @@
  </td>
 </tr>
 
-<tr valign="middle">
+<tr valign="center">
  <td colspan="2">&nbsp;</td>
 </tr>
 
@@ -52,21 +52,20 @@
   <b>Description</b>
 	<br>
   A component used to iterate through a list of items within a 
-  <a href="Form.html">Form</a>.  The ListEdit is similar to a 
-  <a href="Foreach.html">Foreach</a> but uses <a href="Hidden.html">Hidden</a> 
+  <A href="Form.html">Form</a>.  The ListEdit is similar to a 
+  <A href="Foreach.html">Foreach</a> but uses <A href="Hidden.html">Hidden</a> 
   input fields within the &lt;form&gt; to store the items in the list.
   <p>
-  An instance of <a href="../api/net/sf/tapestry/util/io/DataSqueezer.html">
+  An instance of <A href="../api/net/sf/tapestry/util/io/DataSqueezer.html">
   <tt>DataSqueezer</tt></a> is used to convert arbitrary objects into 
   <tt>String</tt>s and then back into objects. However, for best efficiency, 
   the list should be simple <tt>String</tt>s or numeric types, typically a 
   primary key or other identifier from which the rest of an object may be 
   retrieved or constructed. 
 	<a href="http://java.sun.com/products/jdk/1.2/docs/api/java/io/Serializable.html">
-	<tt>Serializable</tt></a> objects will work, but the resultant 
-  string can be very, very large.
-  <p>
-  This component should be used to wrap around other components and static HTML. 
+	<tt>Serializable</tt></a> 
+            objects will work, but the resultant string can be very, very large.</p>
+               
  </td>
 </tr>
 
@@ -74,9 +73,9 @@
  <td colspan="2">
   <b>See Also</b>
 	<br>
-	<a href="Foreach.html">Foreach</a>, 
-  <a href="Form.html">Form</a>,
-  <a href="Hidden.html">Hidden</a>
+	<A href="Foreach.html">Foreach</a>, 
+  <A href="Form.html">Form</a>,
+  <A href="Hidden.html">Hidden</a>
  </td>
 </tr>
 
@@ -110,8 +109,10 @@
     <p> 
     The source can contain objects of any type, though they should be 
     serializable. Ideally, the objects should be <tt>String</tt> or wrapper 
-    types such as <tt>Integer</tt>. In other words, the source should be a list 
-    of primary keys of the objects being editted.
+    types such as <tt>Integer</tt>. In other 
+                  words, the source should be a list of primary keys of the 
+                  objects being editted.</p>          
+           
     </td>
 	</tr>
   <tr>
@@ -140,14 +141,18 @@
 		<td>&nbsp;</td>
 		<td>
     If specified, then a tag for the specified element is placed around the 
-    content on each iteration. This emulates the <a href="Any.html">Any</a> 
+    content on each iteration. This emulates the <A href="Any.html">Any</a> 
     component. Most often the element specified is "tr" when the ListEdit is 
     part of a table. Any informal parameters are applied to the element. 
     </td>
 	</tr>
 	</table>
-  Informal parameters: allowed<br>
-  Reserved parameters: none
+            <P>Body: <STRONG>rendered</STRONG><BR>Informal parameters: 
+            <STRONG>allowed</STRONG>
+    <br>
+  Reserved 
+            parameters: <EM>none</EM> </P>
+    
  </td>
 </tr>
 
@@ -155,7 +160,8 @@
  <td colspan="2">
   <b>Examples</b>
 	<p>
-  This example is under construction.
+  This example is under construction.</p>
+      
   
  </td></tr></table>
 </td></tr>
@@ -163,9 +169,9 @@
  <td colspan="3"><hr></td>  
 </tr>
 <tr>
- <td align="left"><a href="InsertWrapped.html"><img src="common-images/prev.png" alt="InsertWrapped"/></a></td>  
- <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
- <td align="right"><a href="Option.html"><img src="common-images/next.png" alt="Option"/></a></td>  
+ <td align="left"><A href="InsertWrapped.html"><IMG alt=InsertWrapped src="common-images/prev.png"></a></td>  
+ <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
+ <td align="right"><A href="Option.html"><IMG alt=Option src="common-images/next.png"></a></td>  
 </tr>
 </table>
 

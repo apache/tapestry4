@@ -9,9 +9,9 @@
 <body>
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
  <tr>
-  <td align="left"><a href="Foreach.html"><img src="common-images/prev.png" alt="Foreach"/></a></td>  
-  <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
-  <td align="right"><a href="Frame.html"><img src="common-images/next.png" alt="Frame"/></a></td>  
+  <td align="left"><A href="Foreach.html"><IMG alt=Foreach src="common-images/prev.png"></a></td>  
+  <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
+  <td align="right"><A href="Frame.html"><IMG alt=Frame src="common-images/next.png"></a></td>  
  <tr>
  <tr>
   <td colspan="3"><hr></td>  
@@ -28,7 +28,7 @@
 	 </tr>
 	 <tr>
 	  <td>
-		 <a href="../api/net/sf/tapestry/form/Form.html">
+		 <A href="../api/net/sf/tapestry/form/Form.html">
 		 net.sf.tapestry.form.Form</a>
 		</td>
 	 </tr>
@@ -43,7 +43,7 @@
  </td>
 </tr>
 
-<tr valign="middle">
+<tr valign="center">
  <td colspan="2">&nbsp;</td>
 </tr>
 
@@ -54,15 +54,15 @@
   A component that manages a HTML &lt;form&gt;. The other form-related 
 	components must be wrapped inside the Form.
 	<p>
-  When a form is submitted, it continues through the rewind cycle until after 
-	all of its wrapped elements have renderred. As the form component render 
-	(in the rewind cycle), they will be updating properties of the containing 
-	page and notifying thier listeners. Again: each form component is responsible 
-	not only for rendering HTML (to present the form), but for handling it's 
-	share of the form submission. Only after all that is done will the Form 
-  notify its listener.	 	
-  <p>
-  This component may wrap around other components and static HTML. 
+  When a form is submitted, it continues 
+            through the rewind cycle until after all of its wrapped elements 
+            have renderred. As the form component render (in the rewind cycle), 
+            they will be updating properties of the containing page and 
+            notifying thier listeners. Again: each form component is responsible 
+            not only for rendering HTML (to present the form), but for handling 
+            it's share of the form submission. Only after all that is done will 
+            the Form notify its listener.</p>
+            
  </td>
 </tr>
 
@@ -70,20 +70,20 @@
  <td colspan="2">
   <b>See Also</b>
 	<br>
-	<a href="Checkbox.html">Checkbox</a>, 
-	<a href="FieldLabel.html">FieldLabel</a>, 
-	<a href="Hidden.html">Hidden</a>, 
-	<a href="ImageSubmit.html">ImageSubmit</a>, 
-	<a href="ListEdit.html">ListEdit</a>, 
-	<a href="Option.html">Option</a>, 
-	<a href="PropertySelection.html">PropertySelection</a>, 
-	<a href="Radio.html">Radio</a>, 
-	<a href="RadioGroup.html">RadioGroup</a>, 
-	<a href="Submit.html">Submit</a>, 
-	<a href="Text.html">Text</a>,  
-	<a href="TextField.html">TextField</a>, 
-	<a href="Upload.html">Upload</a>,
-  <a href="ValidField.html">ValidField</a>
+	<A href="Checkbox.html">Checkbox</a>, 
+	<A href="FieldLabel.html">FieldLabel</a>, 
+	<A href="Hidden.html">Hidden</a>, 
+	<A href="ImageSubmit.html">ImageSubmit</a>, 
+	<A href="ListEdit.html">ListEdit</a>, 
+	<A href="Option.html">Option</a>, 
+	<A href="PropertySelection.html">PropertySelection</a>, 
+	<A href="Radio.html">Radio</a>, 
+	<A href="RadioGroup.html">RadioGroup</a>, 
+	<A href="Submit.html">Submit</a>, 
+	<A href="Text.html">Text</a>,  
+	<A href="TextField.html">TextField</a>, 
+	<A href="Upload.html">Upload</a>,
+  <A href="ValidField.html">ValidField</a>
  </td>
 </tr>
 
@@ -103,7 +103,7 @@
   <tr>
  		<td>listener</td>
 		<td>
-		 <a href="../api/net/sf/tapestry/IActionListener.html"><tt>IActionListener</tt></a>
+		 <A href="../api/net/sf/tapestry/IActionListener.html"><tt>IActionListener</tt></a>
 		</td>
 		<td>in</td>
 		<td>yes</td>
@@ -114,14 +114,14 @@
 	</tr>
   <tr>
     <td>delegate</td>
-    <td><a href="../api/net/sf/tapestry/valid/IValidationDelegate.html"><tt>IValidationDelegate</tt></a>
+    <td><A href="../api/net/sf/tapestry/valid/IValidationDelegate.html"><tt>IValidationDelegate</tt></a>
 		</td>
     <td>in</td>
    	<td>no</td>
 		<td>&nbsp;</td>
 		<td>Object used to assist in error tracking and reporting. A single 
-		instance is shared by all <a href="ValidField.html">ValidField</a> and 
-		<a href="FieldLabel.html">FieldLabel</a> in a single form. 
+		instance is shared by all <A href="ValidField.html">ValidField</a> and 
+		<A href="FieldLabel.html">FieldLabel</a> in a single form. 
 		</td>
 	</tr>
   <tr>
@@ -132,7 +132,7 @@
 		<td>true</td>
 		<td>If true (the default), then the component requires an active 
 		(i.e., non-new) HttpSession when triggered. Failing that, it throws a 
-		<a href="../api/net/sf/tapestry/StaleLinkException.html"><tt>StaleLinkException</tt></a>. 
+		<A href="../api/net/sf/tapestry/StaleLinkException.html"><tt>StaleLinkException</tt></a>. 
 		If false, then no check is necessary. 
 		Generally, forms are stateful, but it is possible to put a stateless form 
 		onto the Home page of an application.
@@ -160,9 +160,13 @@
 		<td>The value to use for the method attribute of the &lt;form&gt; tag.
 		</td>
 	</tr>
-	</table>		
-  Informal parameters: allowed<br>
-  Reserved parameters: none
+	</table>
+            <P>Body: <STRONG>rendered</STRONG><BR>Informal parameters: 
+            <STRONG>allowed</STRONG>		
+    <br>
+  Reserved 
+            parameters: <EM>none</EM> </P>
+    
  </td>
 </tr>
 
@@ -175,26 +179,27 @@
 
 <table class="examples" cellpadding="4">
 <form>
+              <TBODY>
  <tr>
-  <td>Username:</td><td><input type="text" size="12"/></td>
+  <td>Username:</td><td><input size="12" 
+               ></td>
  </tr>
  <tr>
-  <td>Password:</td><td><input type="password" size="12"/></td>
+  <td>Password:</td><td><input type="password" size="12"></td>
  </tr>
  <tr align="right">
-  <td colspan="2"><input type="submit" value="Login"/></td>
+  <td colspan="2"><input type="submit" value="Login"></td>
  </tr>
-</form>
-</table>
+</form></table>
 
 <pre>
 &lt;form jwcid="<span class="jwcid">loginForm</span>"&gt;
- &lt;table cellpadding="4"&gt;
-  &lt;tr&gt;
-   &lt;td>Username:&lt;/td&gt;&lt;td&gt;&lt;input jwcid="usernameTextField" size="12"/&gt;&lt;/td&gt;
+ &lt;table cellpadding=
+  "4"&gt;
+   &lt;tr&gt;&lt;td&gt;Username:&lt;/td&gt;&lt;td&gt;&lt;input jwcid="usernameTextField" size=
+  "12"/&gt;&lt;/td&gt;
   &lt;/tr&gt;
-  &lt;tr&gt;
-   &lt;td>Password:&lt;/td&gt;&lt;td&gt;&lt;input jwcid="passwordTextField" size="12"/&gt;&lt;/td&gt;
+   &lt;tr&gt;&lt;td&gt;Password:&lt;/td&gt;&lt;td&gt;&lt;input jwcid="passwordTextField" size="12"/&gt;&lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr align="right"&gt;
    &lt;td colspan="2"&gt;&lt;input type="submit" value="Login"/&gt;&lt;/td&gt;
@@ -203,15 +208,15 @@
 &lt;/form&gt;
 
 
-&lt;component id="<span class="jwcid">loginForm</span>" type="<a href="Form.html">Form</a>"&gt;
+&lt;component id="<span class="jwcid">loginForm</span>" type="<A href="Form.html">Form</a>"&gt;
    &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
 &lt;/component&gt;
 
-&lt;component id="usernameTextField" type="<a href="TextField.html">TextField</a>"&gt;
+&lt;component id="usernameTextField" type="<A href="TextField.html">TextField</a>"&gt;
    &lt;binding name="value" expression="visit.username"/&gt;
 &lt;/component&gt;
 
-&lt;component id="passwordTextField" type="<a href="TextField.html">TextField</a>"&gt;
+&lt;component id="passwordTextField" type="<A href="TextField.html">TextField</a>"&gt;
    &lt;binding name="value" expression="visit.password"/&gt;
    &lt;static-binding name="hidden"&gt;true&lt;/static-binding&gt;
 &lt;/component&gt;
@@ -249,18 +254,16 @@ public class Visit() implements Serializable  {
     }		
 }
 </pre>
-
- </td></tr></table>
 </td></tr>
+</table></TD></TR>
 <tr>
  <td colspan="3"><hr></td>  
 </tr>
 <tr>
- <td align="left"><a href="Foreach.html"><img src="common-images/prev.png" alt="Foreach"/></a></td>  
- <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
- <td align="right"><a href="Frame.html"><img src="common-images/next.png" alt="Frame"/></a></td>  
-</tr>
-</table>
+ <td align="left"><A href="Foreach.html"><IMG alt=Foreach src="common-images/prev.png"></a></td>  
+ <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
+ <td align="right"><A href="Frame.html"><IMG alt=Frame src="common-images/next.png"></a></td>  
+</tr></TBODY></TABLE>
 
 </body>
 </html>

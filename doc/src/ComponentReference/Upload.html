@@ -9,9 +9,9 @@
 <body>
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
  <tr>
-  <td align="left"><a href="TextField.html"><img src="common-images/prev.png" alt="TextField"/></a></td>  
-  <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
-  <td align="right"><a href="ValidField.html"><img src="common-images/next.png" alt="ValidField"/></a></td>  
+  <td align="left"><A href="TextField.html"><IMG alt=TextField src="common-images/prev.png"></a></td>  
+  <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
+  <td align="right"><A href="ValidField.html"><IMG alt=ValidField src="common-images/next.png"></a></td>  
  <tr>
  <tr>
   <td colspan="3"><hr></td>  
@@ -28,7 +28,7 @@
 	 </tr>
 	 <tr>
 	  <td>
-		 <a href="../api/net/sf/tapestry/form/Upload.html">
+		 <A href="../api/net/sf/tapestry/form/Upload.html">
 		 net.sf.tapestry.form.Upload</a>
 		</td>
 	 </tr>
@@ -43,7 +43,7 @@
  </td>
 </tr>
 
-<tr valign="middle">
+<tr valign="center">
  <td colspan="2">&nbsp;</td>
 </tr>
 
@@ -54,9 +54,9 @@
   A form element used to handle file uploads.  The uploaded file is represented 
   by an instance of IUploadFile.
   <p>
-  The form's enctype must be set to "multipart/form-data". 
-  <p>
-  This component may NOT wrap around other components or static HTML. 
+  The form's enctype must be set to 
+            "multipart/form-data".</p>
+             
  </td>
 </tr>
 
@@ -64,7 +64,7 @@
  <td colspan="2">
   <b>See Also</b>
 	<br>
-	<a href="Form.html">Form</a> 
+	<A href="Form.html">Form</a> 
  </td>
 </tr>
 
@@ -84,7 +84,7 @@
   </tr>
   <tr>
     <td>file</td>
-    <td><a href="../api/net/sf/tapestry/IUploadFile.html"><tt>
+    <td><A href="../api/net/sf/tapestry/IUploadFile.html"><tt>
     IUploadFile</tt></a>
     </td>
     <td>out</td>
@@ -104,8 +104,10 @@
     Note Netscape Navigator 4 will ignore this attribute.  
 		</td>
 	</tr>
-	</table>		
-  Informal parameters: allowed<br>
+	</table><BR>Body: 
+            <STRONG>removed</STRONG><BR>Informal parameters: 
+            <STRONG>allowed</STRONG>		
+    <br>
   Reserved parameters: "name", "type"
  </td>
 </tr>
@@ -121,7 +123,7 @@
 <form>
 <table class="examples" cellpadding="4">
 <tr>
- <td colspan="2">File:&nbsp;<input type="file"/></td>
+ <td colspan="2">File:&nbsp;<input type="file"></td>
 </tr>
 <tr>
  <td colspan="2"><input type="submit" value="Upload"></input></td>
@@ -151,10 +153,10 @@
 &lt;form jwcid="form" <b>enctype="multipart/form-data"</b>&gt;
  &lt;table bgcolor="#c0c0c0" cellpadding="4"&gt;
   &lt;tr&gt;
-   &lt;td colspan="2"&gt;File:&amp;nbsp;&lt;input jwcid="<span class="jwcid">fileUpload</span>" type="file" &gt;&lt;/input>&lt;/td&gt;
+   &lt;td colspan="2"&gt;File:&amp;nbsp;&lt;input jwcid="<span class="jwcid">fileUpload</span>" type= "file"&gt;&lt;/input&gt;&lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td colspan="2"&gt;&lt;input type="submit" value="Upload"&gt;&lt;/input>&lt;/td&gt;
+   &lt;td colspan="2"&gt;&lt;input type= "submit"value="Upload"&gt;&lt;/input&gt;&lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td colspan="2"&gt;&lt;hr&gt;&lt;/td&gt;
@@ -178,31 +180,31 @@
 &lt;/form&gt;
 
 
-&lt;component id="form" type="<a href="Form.html">Form</a>"&gt;
+&lt;component id="form" type="<A href="Form.html">Form</a>"&gt;
    &lt;binding name="listener" expression="listener.formSubmit"/&gt;
 &lt;/component&gt;
 
-&lt;component id="<span class="jwcid">fileUpload</span>" type="<a href="Upload.html">Upload</a>"&gt;
+&lt;component id="<span class="jwcid">fileUpload</span>" type="<A href="Upload.html">Upload</a>"&gt;
    &lt;binding name="file" expression="file"/&gt;
 &lt;/component&gt;
 
-&lt;component id="insertFileName" type="<a href="Insert.html">Insert</a>"&gt;
+&lt;component id="insertFileName" type="<A href="Insert.html">Insert</a>"&gt;
     &lt;binding name="value" expression="filename"/&gt;
 &lt;/component&gt;
 
-&lt;component id="insertClientPath" type="<a href="Insert.html">Insert</a>"&gt;
+&lt;component id="insertClientPath" type="<A href="Insert.html">Insert</a>"&gt;
     &lt;binding name="value" expression="clientPath"/&gt;
 &lt;/component&gt;
 
-&lt;component id="insertServerPath" type="<a href="Insert.html">Insert</a>"&gt;
+&lt;component id="insertServerPath" type="<A href="Insert.html">Insert</a>"&gt;
     &lt;binding name="value" expression="serverPath"/&gt;
 &lt;/component&gt;
 
-&lt;component id="insertFileTruncated" type="<a href="Insert.html">Insert</a>"&gt;
+&lt;component id="insertFileTruncated" type="<A href="Insert.html">Insert</a>"&gt;
     &lt;binding name="value" expression="fileTruncated"/&gt;
 &lt;/component&gt;
 
-&lt;component id="insertFileSize" type="<a href="Insert.html">Insert</a>"&gt;
+&lt;component id="insertFileSize" type="<A href="Insert.html">Insert</a>"&gt;
     &lt;binding name="value" expression="fileSize"/&gt;
     &lt;field-binding name="format" field-name="UploadPage.SIZE_FORMAT"/&gt;
 &lt;/component&gt;
@@ -228,19 +230,21 @@ public class UploadPage extends BasePage {
     }
 
     public String getClientPath() { 
-        if (file != null) {
-            return file.getFilePath();
-        } else {
-            return "";   
-        }        
-    }
+        if
+    (file != null)
+    { returnfile.getFilePath(); }else
+{
 
-    public String getServerPath() { 
-        if (serverFile != null) {
-            return serverFile.getAbsolutePath();
-        } else {
-            return "";   
-        }
+
+return ""; } } public String
+    getServerPath() { if (serverFile ! =     
+      
+      
+
+        null) { return
+
+    serverFile.getAbsolutePath(); } else { return
+        "";  }
     }
 
     public long getFileSize() { 
@@ -248,7 +252,7 @@ public class UploadPage extends BasePage {
             return serverFile.length();
         } else {
             return 0;   
-        }
+        }        
     }
 
     public boolean isFileTruncated() { 
@@ -259,16 +263,40 @@ public class UploadPage extends BasePage {
         }        
     }
 
-    public void formSubmit(IRequestCycle cycle) {
-        InputStream fis = file.getStream();
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(new File(file.getFileName()));
+    public void formSubmit(IRequestCycle cycle) 
+        { InputStream fis=  
+             
+          
+                
+        
+    
+
+        
+        file.getStream(); FileOutputStream fos=  
+             
+          
+                
+        
+    
+
+       null; 
+        try { fos=  
+             
+          
+                
+                
+    
+
+        
+        new FileOutputStream(new  File(file.getFileName()));
+        byte[] buffer = 
+         new
+            byte[1024];  while (true) {
             
-            byte[] buffer = new byte[1024];            
-            while (true) {
-                int length = fis.read(buffer);
-                if (length < 0) {
+            int length =              
+              
+                 fis.read(buffer);  if
+                (length &lt;  0) {
                     break;
                 }
                 fos.write(buffer, 0, length);               
@@ -304,9 +332,9 @@ public class UploadPage extends BasePage {
  <td colspan="3"><hr></td>  
 </tr>
 <tr>
- <td align="left"><a href="TextField.html"><img src="common-images/prev.png" alt="TextField"/></a></td>  
- <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
- <td align="right"><a href="ValidField.html"><img src="common-images/next.png" alt="ValidField"/></a></td>  
+ <td align="left"><A href="TextField.html"><IMG alt=TextField src="common-images/prev.png"></a></td>  
+ <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
+ <td align="right"><A href="ValidField.html"><IMG alt=ValidField src="common-images/next.png"></a></td>  
 </tr>
 </table>
 

@@ -23,9 +23,9 @@ function rollover(image, index)
 <body>
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
  <tr>
-  <td align="left"><a href="RadioGroup.html"><img src="common-images/prev.png" alt="RadioGroup"/></a></td>  
-  <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
-  <td align="right"><a href="Script.html"><img src="common-images/next.png" alt="Script"/></a></td>  
+  <td align="left"><A href="RadioGroup.html"><IMG alt=RadioGroup src="common-images/prev.png"></a></td>  
+  <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
+  <td align="right"><A href="Script.html"><IMG alt=Script src="common-images/next.png"></a></td>  
  <tr>
  <tr>
   <td colspan="3"><hr></td>  
@@ -42,7 +42,7 @@ function rollover(image, index)
 	 </tr>
 	 <tr>
 	  <td>
-		 <a href="../api/net/sf/tapestry/html/Rollover.html">net.sf.tapestry.html.Rollover</a>
+		 <A href="../api/net/sf/tapestry/html/Rollover.html">net.sf.tapestry.html.Rollover</a>
 		</td>
 	 </tr>
   </table>
@@ -51,10 +51,10 @@ function rollover(image, index)
   <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
 	 <tr>
 	  <td>
-     <a href="Rollover.html"
-        onMouseOver="javascript:rollover(document.button, 1);"
-        onMouseOut="javascript:rollover(document.button, 0);">
-      <img name="button" src="images/tapestry-logo.gif"/>
+     <A onmouseover="javascript:rollover(document.button,
+        1);" onmouseout
+        ="javascript:rollover(document.button, 0);" href="Rollover.html" >
+      <IMG src="images/tapestry-logo.gif" name=button>
      </a>    
     </td>
 	 </tr>
@@ -62,7 +62,7 @@ function rollover(image, index)
  </td>
 </tr>
 
-<tr valign="middle">
+<tr valign="center">
  <td colspan="2">&nbsp;</td>
 </tr>
 
@@ -71,17 +71,16 @@ function rollover(image, index)
   <b>Description</b>
 	<br>
   The Rollover component provides a rollover image button for use with any kind
-  of <a href="../api/net/sf/tapestry/components/IServiceLink.html">link</a>
+  of <A href="../api/net/sf/tapestry/components/IServiceLink.html">link</a>
   component. A rollover button image changes when the mouse move over it or off 
   of it. A Rollover is disabled if the link that wraps it is disabled (in which 
   case it doesn't respond to the mouse). If this dynamic behavior isn't required
-  use the simpler <a href="Image.html">Image</a> component. 
+  use the simpler <A href="Image.html">Image</a> component. 
   <p>
   The component provides all the necessary JavaScript to swap the image when the 
   mouse enters and exits the button. However, the Rollover must be wrapped 
-  (ultimately) by a <a href="Body.html">Body</a> component. 
-  <p>
-  This component may NOT wrap around other components or static HTML. 
+  (ultimately) by a <A href="Body.html">Body</a> component.</p>
+             
  </td>
 </tr>
 
@@ -89,11 +88,11 @@ function rollover(image, index)
  <td colspan="2">
   <b>See Also</b>
 	<br>
-	<a href="Body.html">Body</a>,
-  <a href="GenericLink.html">GenericLink</a>, 
-  <a href="Image.html">Image</a>,
-  <a href="Page.html">Page</a>,
-  <a href="Script.html">Script</a>  
+	<A href="Body.html">Body</a>,
+  <A href="GenericLink.html">GenericLink</a>, 
+  <A href="Image.html">Image</a>,
+  <A href="Page.html">Page</a>,
+  <A href="Script.html">Script</a>  
  </td>
 </tr>
 
@@ -112,7 +111,7 @@ function rollover(image, index)
   </tr>
   <tr>
     <td>image</td>
-    <td><a href="../api/net/sf/tapestry/IAsset.html"><tt>IAsset</tt></a></td>
+    <td><A href="../api/net/sf/tapestry/IAsset.html"><tt>IAsset</tt></a></td>
     <td>in</td>
    	<td>yes</td>
 		<td>&nbsp;</td>
@@ -123,7 +122,7 @@ function rollover(image, index)
 	</tr>
   <tr>
     <td>focus</td>
-    <td><a href="../api/net/sf/tapestry/IAsset.html"><tt>IAsset</tt></a></td>
+    <td><A href="../api/net/sf/tapestry/IAsset.html"><tt>IAsset</tt></a></td>
     <td>in</td>
    	<td>no</td>
 		<td>&nbsp;</td>
@@ -136,7 +135,7 @@ function rollover(image, index)
 	</tr>
   <tr>
     <td>blur</td>
-    <td><a href="../api/net/sf/tapestry/IAsset.html"><tt>IAsset</tt></a></td>
+    <td><A href="../api/net/sf/tapestry/IAsset.html"><tt>IAsset</tt></a></td>
     <td>in</td>
    	<td>no</td>
 		<td>&nbsp;</td>
@@ -148,25 +147,32 @@ function rollover(image, index)
 	</tr>
   <tr>
     <td>disabled</td>
-    <td><a href="../api/net/sf/tapestry/IAsset.html"><tt>IAsset</tt></a></td>
+    <td><A href="../api/net/sf/tapestry/IAsset.html"><tt>IAsset</tt></a></td>
     <td>in</td>
    	<td>no</td>
 		<td>&nbsp;</td>
 		<td>
     Image used when the Rollover is disabled. A Rollover is disabled when the 
-    <a href="../api/net/sf/tapestry/components/IServiceLink.html">
+    <A href="../api/net/sf/tapestry/components/IServiceLink.html">
     <tt>IServiceLink</tt></a> containing it is disabled. Note the Rollover 
     component is wrapped by a 
-    <a href="../api/net/sf/tapestry/components/IServiceLink.html">link</a> 
-    component such as the <a href="Page.html">Page</a> component.
+    <A href="../api/net/sf/tapestry/components/IServiceLink.html">link</a> 
+    component such as the <A href="Page.html">Page</a> component.
     <p>
-    If no disabled asset is specified, then image asset is used instead. A 
-    disabled Rollover does not respond to the mouse.
+    If no disabled asset is specified, 
+                  then image asset is used instead. A disabled Rollover does not 
+                  respond to the mouse.</p>
+                 
+           
     </td>
 	</tr>
 	</table>
-  Informal parameters: allowed<br>
-  Reserved parameters: "name", "src", "border"
+            <P>Body: <STRONG>removed</STRONG><BR>Informal parameters: 
+            <STRONG>allowed</STRONG>
+    <br>
+  Reserved 
+            parameters: "name", "src", "border" </P>
+      
  </td>
 </tr>
 
@@ -174,7 +180,8 @@ function rollover(image, index)
  <td colspan="2">
   <b>Examples</b>
 	<p>
-  This example is under construction.
+  This example is under construction.</p>
+      
 
  </td></tr></table>
 </td></tr>
@@ -182,9 +189,9 @@ function rollover(image, index)
  <td colspan="3"><hr></td>  
 </tr>
 <tr>
- <td align="left"><a href="RadioGroup.html"><img src="common-images/prev.png" alt="RadioGroup"/></a></td>  
- <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
- <td align="right"><a href="Script.html"><img src="common-images/next.png" alt="Script"/></a></td>  
+ <td align="left"><A href="RadioGroup.html"><IMG alt=RadioGroup src="common-images/prev.png"></a></td>  
+ <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
+ <td align="right"><A href="Script.html"><IMG alt=Script src="common-images/next.png"></a></td>  
 </tr>
 </table>
 
