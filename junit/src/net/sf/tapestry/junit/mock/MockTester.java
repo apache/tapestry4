@@ -143,11 +143,20 @@ public class MockTester
     public void execute() throws IOException, ServletException, DocumentParseException
     {
         Element root = _document.getRootElement();
-        Element request = root.getChild("request");
 
-        // I think we're going to allow multiple <request> elements
-        // soon.
+        List l = root.getChildren("request");
+        int count = l.size();
 
+        for (int i = 0; i < count; i++)
+        {
+            Element request = (Element) l.get(i);
+
+            executeRequest(request);
+        }
+    }
+
+    private void executeRequest(Element request) throws IOException, ServletException, DocumentParseException
+    {
         setupRequest(request);
 
         _response = new MockResponse(_request);
@@ -449,7 +458,7 @@ public class MockTester
 
         try
         {
-           return _compiler.compile(pattern, Perl5Compiler.MULTILINE_MASK);
+            return _compiler.compile(pattern, Perl5Compiler.MULTILINE_MASK);
 
         }
         catch (MalformedPatternException ex)
@@ -472,60 +481,71 @@ public class MockTester
         throw new AssertionFailedError(name + ": Response does not contain regular expression '" + pattern + "'.");
 
     }
-    
-    private void executeOutputMatchesAssertions(Element request)
-    throws DocumentParseException
+
+    private void executeOutputMatchesAssertions(Element request) throws DocumentParseException
     {
         List l = request.getChildren("assert-output-matches");
         int count = l.size();
         String outputString = null;
-        
+
         for (int i = 0; i < count; i++)
         {
-            Element e = (Element)l.get(i);
-            
+            Element e = (Element) l.get(i);
+
             if (outputString == null)
                 outputString = _response.getOutputString();
-                
-            executeOutputMatchAssertion(e, outputString);                            
+
+            executeOutputMatchAssertion(e, outputString);
         }
-        
+
     }
-    
+
     private void executeOutputMatchAssertion(Element element, String outputString) throws DocumentParseException
     {
         String name = element.getAttributeValue("name");
+        String value = element.getAttributeValue("subgroup");
+        int subgroup = (value == null) ? 0 : Integer.parseInt(value);
+
         String pattern = element.getTextTrim();
-        
+
         PatternMatcherInput input = new PatternMatcherInput(outputString);
-        
+
         PatternMatcher matcher = getMatcher();
         Pattern compiled = compile(pattern);
-        
+
         List l = element.getChildren("match");
         int count = l.size();
         int i = 0;
-        
+
         while (matcher.contains(input, compiled))
         {
             MatchResult match = matcher.getMatch();
-            
+
             if (i >= count)
+            {
+                System.err.println(outputString);
                 throw new AssertionFailedError(name + ": Too many matches for '" + pattern + "'.");
-                
-            Element e = (Element)l.get(i);
+            }
+
+            Element e = (Element) l.get(i);
             String expected = e.getTextTrim();
-            String actual = match.toString();
-            
-                
+            String actual = match.group(subgroup);
+
             if (!actual.equals(expected))
-                 throw new AssertionFailedError(name + "[" + i + "]: Expected '" + expected + "' but got '" + actual + "'.");    
-            
+            {
+                System.err.println(outputString);
+                throw new AssertionFailedError(
+                    name + "[" + i + "]: Expected '" + expected + "' but got '" + actual + "'.");
+            }
+
             i++;
         }
-        
+
         if (i < count)
+        {
+            System.err.println(outputString);
             throw new AssertionFailedError(name + ": Too few matches for '" + pattern + "'.");
+        }
     }
-    
+
 }
