@@ -1,0 +1,24 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<body>
+
+Components and classes that provide specialized, validating text fields.  
+
+<ul>
+<li>Add new constraints:
+<ul>
+<li>Fields may be required or optional
+<li>For {@link ValidatingTextField}, a minimum length (after whitespace is stripped)
+<li>For {@link IntegerField}, a minimum and maximum value
+<li>For {@link DateField}, a minimum and maximum date
+</ul>
+<li>Fields that are in error can be marked with a icon or label.
+<li>When rendering, the first field that is either required and null, or in error is identified.
+This identified field is focused and selected (effectively, the cursor jumps right to
+the field).
+
+@author Howard Ship <a href="mailto:hship@primix.com">hship@primix.com</a>
+
+</body>
+</html>

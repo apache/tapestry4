@@ -3,6 +3,7 @@ package com.primix.tapestry.spec;
 import com.primix.tapestry.*;
 import java.util.*;
 import com.primix.tapestry.components.*;
+import com.primix.tapestry.components.validating.*;
 import com.primix.foundation.exception.*;
 import com.primix.foundation.*;
 import com.primix.tapestry.inspector.ShowInspector;
@@ -43,7 +44,8 @@ import com.primix.tapestry.inspector.ShowInspector;
  */
 
 
-public class ApplicationSpecification extends BasePropertyHolder
+public class ApplicationSpecification 
+extends BasePropertyHolder
 {
 	private String name;
 
@@ -51,84 +53,103 @@ public class ApplicationSpecification extends BasePropertyHolder
 
 	private Map pageMap = new HashMap(MAP_SIZE);
 
-	private Map componentMap = new HashMap(MAP_SIZE);
+    {
+	    // Provide defaults for three of the four standard pages.
+	    // An application must provide a home page and may override
+	    // any of these.
+
+	    pageMap.put("StaleLink",
+		    new PageSpecification("/com/primix/tapestry/pages/StaleLink.jwc"));
+	    pageMap.put("StaleSession",
+		    new PageSpecification("/com/primix/tapestry/pages/StaleSession.jwc"));
+	    pageMap.put("Exception",
+		    new PageSpecification("/com/primix/tapestry/pages/Exception.jwc"));
+
+        // Provide the Inspector, which is quietly available and never
+        // overriden.
+
+	    pageMap.put("Inspector",
+		    new PageSpecification("/com/primix/tapestry/inspector/Inspector.jwc"));		
+    }
+
+    private Map componentMap = null;
+
+    // The Default component map is shared by all specifications
+
+	private static Map defaultComponentMap = new HashMap(MAP_SIZE);
+	
+	static 
 	{
-		componentMap.put("Insert", 
+		defaultComponentMap.put("Insert", 
 			"/com/primix/tapestry/components/Insert.jwc");
-		componentMap.put("Action", 
+		defaultComponentMap.put("Action", 
 			"/com/primix/tapestry/components/Action.jwc");
-		componentMap.put("Checkbox",
+		defaultComponentMap.put("Checkbox",
 			"/com/primix/tapestry/components/Checkbox.jwc");
-		componentMap.put("InsertWrapped",
+		defaultComponentMap.put("InsertWrapped",
 			"/com/primix/tapestry/components/InsertWrapped.jwc");
-		componentMap.put("Conditional", 
+		defaultComponentMap.put("Conditional", 
 			"/com/primix/tapestry/components/Conditional.jwc");
-		componentMap.put("Foreach", 
+		defaultComponentMap.put("Foreach", 
 			"/com/primix/tapestry/components/Foreach.jwc");
-		componentMap.put("ExceptionDisplay",
+		defaultComponentMap.put("ExceptionDisplay",
 			"/com/primix/tapestry/components/ExceptionDisplay.jwc");
-		componentMap.put("Delegator",
+		defaultComponentMap.put("Delegator",
 			"/com/primix/tapestry/components/Delegator.jwc");
-		componentMap.put("Form",
+		defaultComponentMap.put("Form",
 			"/com/primix/tapestry/components/Form.jwc");
-		componentMap.put("TextField",
+		defaultComponentMap.put("TextField",
 			"/com/primix/tapestry/components/TextField.jwc");
-		componentMap.put("Text",
+		defaultComponentMap.put("Text",
 			"/com/primix/tapestry/components/Text.jwc");
-		componentMap.put("Select",
+		defaultComponentMap.put("Select",
 			"/com/primix/tapestry/components/Select.jwc");
-		componentMap.put("Option",
+		defaultComponentMap.put("Option",
 			"/com/primix/tapestry/components/Option.jwc");
-		componentMap.put("Image",
+		defaultComponentMap.put("Image",
 			"/com/primix/tapestry/components/Image.jwc");
-		componentMap.put("Any",
+		defaultComponentMap.put("Any",
 			"/com/primix/tapestry/components/Any.jwc");
-		componentMap.put("RadioGroup",
+		defaultComponentMap.put("RadioGroup",
 			"/com/primix/tapestry/components/RadioGroup.jwc");
-		componentMap.put("Radio",
+		defaultComponentMap.put("Radio",
 			"/com/primix/tapestry/components/Radio.jwc");
-		componentMap.put("DatabaseQuery",
+		defaultComponentMap.put("DatabaseQuery",
 			"/com/primix/tapestry/components/DatabaseQuery.jwc");
-		componentMap.put("Rollover",
+		defaultComponentMap.put("Rollover",
 			"/com/primix/tapestry/components/Rollover.jwc");
-		componentMap.put("Body",
+		defaultComponentMap.put("Body",
 			"/com/primix/tapestry/components/Body.jwc");
-		componentMap.put("Direct",
+		defaultComponentMap.put("Direct",
 			"/com/primix/tapestry/components/Direct.jwc");
-		componentMap.put("Page",
+		defaultComponentMap.put("Page",
 			"/com/primix/tapestry/components/Page.jwc");
-		componentMap.put("Service",
+		defaultComponentMap.put("Service",
 			"/com/primix/tapestry/components/Service.jwc");
-		componentMap.put("InsertURL",
+		defaultComponentMap.put("InsertURL",
 			"/com/primix/tapestry/components/InsertURL.jwc");
-		componentMap.put("ImageButton",
+		defaultComponentMap.put("ImageButton",
 			"/com/primix/tapestry/components/ImageButton.jwc");	
-		componentMap.put("PropertySelection",
+		defaultComponentMap.put("PropertySelection",
 			"/com/primix/tapestry/components/PropertySelection.jwc");
-		componentMap.put("Submit",
+		defaultComponentMap.put("Submit",
 			"/com/primix/tapestry/components/Submit.jwc");	
-		componentMap.put("Hidden",
+		defaultComponentMap.put("Hidden",
 			"/com/primix/tapestry/components/Hidden.jwc");	
-		componentMap.put("ShowInspector",
+		defaultComponentMap.put("ShowInspector",
 			"/com/primix/tapestry/inspector/ShowInspector.jwc");		
-        componentMap.put("Shell",
+        defaultComponentMap.put("Shell",
             "/com/primix/tapestry/components/Shell.jwc");
-        componentMap.put("InsertText",
+        defaultComponentMap.put("InsertText",
             "/com/primix/tapestry/components/InsertText.jwc");
-
-		// Provide defaults for three of the four standard pages.
-		// An application must provide a home page and may override
-		// any of these.
-
-		pageMap.put("StaleLink",
-			new PageSpecification("/com/primix/tapestry/pages/StaleLink.jwc"));
-		pageMap.put("StaleSession",
-			new PageSpecification("/com/primix/tapestry/pages/StaleSession.jwc"));
-		pageMap.put("Exception",
-			new PageSpecification("/com/primix/tapestry/pages/Exception.jwc"));
-		pageMap.put("Inspector",
-			new PageSpecification("/com/primix/tapestry/inspector/Inspector.jwc", 0));		
+        defaultComponentMap.put("ValidatingTextField",
+            "/com/primix/tapestry/components/validating/ValidatingTextField.jwc");
+        defaultComponentMap.put("DateField",
+            "/com/primix/tapestry/components/validating/DateField.jwc");
+        defaultComponentMap.put("IntegerField",
+              "/com/primix/tapestry/components/validating/IntegerField.jwc");
 	}
+
 
 	/**
 	*  Gets the resource path for a component given a potential alias.  If
@@ -162,6 +183,12 @@ public class ApplicationSpecification extends BasePropertyHolder
 	* </tr>
 	*		<td>/com/primix/tapestry/components/DatabaseQuery.jwc</td>
 	*		<td>{@link DatabaseQuery}</td> </tr>
+    *
+	*  <tr>
+	*       <td>/com/primix/tapestry/components/validating/DateField.jwc</td>
+	*       <td>{@link DateField}</td>
+	* </tr>
+    *
 	* <tr>
 	*		<td>/com/primix/tapestry/components/Delegator.jwc</td>
 	*		<td>{@link Delegator}</td> </tr>
@@ -206,6 +233,12 @@ public class ApplicationSpecification extends BasePropertyHolder
 	*  <tr>
 	* <td>/com/primix/tapestry/components/InsertWrapped.jwc</td> 
 	*		<td>{@link InsertWrapped}</td> </tr>
+	*
+    *  <tr>
+    *       <td>/com/primix/tapestry/components/validating/IntegerField.jwc</td>
+    *       <td>{@link IntegerField}</td>
+    * </tr>
+	*
 	* <tr>
 	*		<td>/com/primix/tapestry/components/Option.jwc</td>
 	*		<td>{@link Option}</td>
@@ -253,13 +286,27 @@ public class ApplicationSpecification extends BasePropertyHolder
 	* <tr>
 	*		<td>/com/primix/tapestry/components/TextField.jwc</td>
 	*		<td>{@link TextField}</td> </tr>
+    *
+    *  <tr>
+    *       <td>/com/primix/tapestry/components/validating/ValidatingTextField.jwc</td>
+    *       <td>{@link ValidatingTextField}</td>
+    * </tr>
+    *
 	*  </table>
 	*
 	*/
 
 	public String getComponentAlias(String alias)
 	{
-		return (String)componentMap.get(alias);
+        String result = null;
+
+        if (componentMap != null)
+            result = (String)componentMap.get(alias);
+
+        if (result == null)
+            result = (String)defaultComponentMap.get(alias);
+
+		return result;
 	}
 
 	public String getName()
@@ -268,7 +315,7 @@ public class ApplicationSpecification extends BasePropertyHolder
 	}
 
 	/**
-	*  Returns an unmodifiable <code>Collection</code>
+	*  Returns an unmodifiable {@link Collection}
     *  of the String names of the pages defined
 	*  by the application.
 	*
@@ -310,9 +357,12 @@ public class ApplicationSpecification extends BasePropertyHolder
 
 	public void setComponentAlias(String alias, String resourceName)
 	{
-		if (componentMap.containsKey(alias))
+		if (defaultComponentMap.containsKey(alias))
 			throw new IllegalArgumentException("May not redefine component alias " +
 				alias + ".");
+
+        if (componentMap == null)
+            componentMap = new HashMap(MAP_SIZE);
 
 		componentMap.put(alias, resourceName);
 	}

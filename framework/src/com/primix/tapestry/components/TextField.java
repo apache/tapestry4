@@ -51,7 +51,7 @@ import com.primix.tapestry.*;
  *   	<td>no</td>
  *		<td>&nbsp;</td>
  *		<td>The text inside the text field.  The binding is only updated
- *			when the the TextField component is not disabled.
+ *			when the the component is not disabled.
  *
  *			<p>Corresponds to the <code>value</code> HTML attribute.</td>
  *	</tr>
@@ -167,16 +167,6 @@ public class TextField extends AbstractFormComponent
 	*  Renders the form element, or responds when the form containing the element
 	*  is submitted (by checking {@link Form#isRewinding()}.
 	*
-	*  <table border=1>
-	*  <tr>  <th>attribute</th>  <th>value</th> </tr>
-	*  <tr>  <td>type</td> <td>text or hidden, as per <code>hidden</code> property</td> </tr>
-	*  <tr>  <td>name</td>  <td>from {@link IRequestCycle#getNextActionId()}</td> </tr>
-	*  <tr>  <td>disabled</td>  <td>ommited, unless the <code>disabled</code> property is
-	* 	true.  </td> </tr>
-	*  <tr> <td>size</td> <td>from <code>displayWidth</code> property</td> </tr>
-	*  <tr> <td>maxlength</td> <td>from <code>maximumLength</code> property</td> </tr>
-	*  <tr>  <td>value</td> <td>from <code>text</code> property</td> </tr>
-	*  </table>
 	**/
 
 	public void render(IResponseWriter writer, IRequestCycle cycle)

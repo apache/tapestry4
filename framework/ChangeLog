@@ -1,3 +1,9 @@
+* Dec 12 2000 hship
+
+Introduce IValidatingTextField and some implementations (ValidatingTextField,
+DateField and IntegerField).
+Remove many now unnecessary Makefiles from various packages.
+
 * Dec 11 2000 hship
 
 Split the application into the application object and the visit object.  
