@@ -264,4 +264,11 @@ public class BeanProvider implements IBeanProvider, PageDetachListener
 			}
 		}
 	}
+	
+	/** @since 1.0.8 **/
+	
+	public IResourceResolver getResourceResolver()
+	{
+		return resolver;
+	}
 }

@@ -71,5 +71,14 @@ public interface IBeanProvider
 	
 	public Collection getBeanNames();
 	
+	/**
+	 *  Returns a resource resolver.
+	 * 
+	 *  @since 1.0.8
+	 * 
+	 **/
+	
+	public IResourceResolver getResourceResolver();
+	
 }
 
