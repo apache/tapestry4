@@ -209,13 +209,19 @@ public interface IEngine
     *  to the application.  This is where most server-side state is stored (with
     *  the exception of persistent page properties).
     *
-    *  <p>The implementation should lazily create the visit object as needed
-    *  and return it.
+	*  <p>Returns the visit, if it exists, or null if it has not been created.
     *
     */
 
     public Object getVisit();
 
+	/**
+	 *  Returns the visit object, creating it if necessary.
+	 *
+	 */
+	 
+	public Object getVisit(IRequestCycle cycle);
+	
     /**
     *  Allows the visit object to be removed; typically done when "shutting down"
     *  a user's session (by setting the visit to null).
@@ -223,15 +229,6 @@ public interface IEngine
     */
 
     public void setVisit(Object value);
-
-    /**
-    *  Returns true if the engine has a visit object, false if the visit object
-    *  has not yet been created.  This is needed because {@link #getVisit()}
-    *  will create the visit object if it doesn't already exist.
-    *
-    */
-
-    public boolean getHasVisit();
 	
 	/**
 	 *  Returns true if the application allows the reset service.

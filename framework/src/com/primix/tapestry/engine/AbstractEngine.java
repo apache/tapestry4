@@ -1357,18 +1357,27 @@ public abstract class AbstractEngine
 
 	abstract public Collection getActivePageNames();
 
+	/**
+	 *  Gets the visit object, if it has been created already.
+	 *
+	 */
+	 
+	public Object getVisit()
+	{
+		return visit;
+	}
 
 	/**
-	*  Gets the visit object, invoking {@link #createVisit()} to create
+	*  Gets the visit object, invoking {@link #createVisit(IRequestCycle)} to create
 	*  it lazily if needed.
 	*
 	*
 	*/
 
-	public Object getVisit()
+	public Object getVisit(IRequestCycle cycle)
 	{
-		if (visit == null)
-			visit = createVisit();
+		if (visit == null && cycle != null)
+			visit = createVisit(cycle);
 
 		return visit;
 	}
@@ -1385,7 +1394,7 @@ public abstract class AbstractEngine
 
 	/**
 	*  Invoked to lazily create a new visit object when it is first
-	*  referenced (by {@link #getVisit()}.  This implementation works
+	*  referenced (by {@link #getVisit(IRequestCycle)}).  This implementation works
 	*  by looking up the name of the class
 	*  in the application specification.
 	*
@@ -1393,7 +1402,7 @@ public abstract class AbstractEngine
 	*  of instantiating a visit object is required.
 	*/
 
-	protected Object createVisit()
+	protected Object createVisit(IRequestCycle cycle)
 	{
 		String visitClassName;
 		Class visitClass;

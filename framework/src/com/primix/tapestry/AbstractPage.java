@@ -347,15 +347,15 @@ implements IPage
 	}
 
 	/**
-	*  Returns the visit object obtained from the 
-	*  {@link IEngine#getVisit() engine}.
+	*  Returns the visit object obtained from the engine via
+	*  {@link IEngine#getVisit(IRequestCycle)}.
 	*
 	*/
 
 	public Object getVisit()
 	{
 		if (visit == null)
-			visit = engine.getVisit();
+			visit = engine.getVisit(requestCycle);
 
 		return visit;
 	}
