@@ -29,13 +29,63 @@ recorders will be serialized with the application engine (which is stored within
       <para>
 Every Tapestry application has a single servlet, which acts 
 as a bridge between the servlet container and the 
-application engine.  The application servlet is a subclass of 
+application engine.  The application servlet is an instance of 
 &ApplicationServlet;.
 </para>
       <para>
-The subclass provides the framework with the path to the application specification by 
-implementing the method <function>getApplicationSpecificationPath()</function>.
+The first thing a servlet does, upon initialization, is read the application specification.
+To do this, it must know <emphasis>where</emphasis> the application specification is stored.
 </para>
+
+<para>
+Specifications are stored on the classpath, which means in a JAR file, or in the 
+<filename>WEB-INF/classes</filename> directory of the WAR.
+</para>
+
+<para>
+The servlet determines the location of the application specification from the
+web deployment descriptor.  A servlet initialization property, <varname>net.sf.tapestry.application-specification</varname>
+provides the locations of the specificiation as a path.
+</para>
+
+<example>
+ <title>Web Deployment Descriptor</title>
+<programlisting>
+<![CDATA[
+<?xml version="1.0"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
+ "http://java.sun.com/j2ee/dtds/web-app_2_2.dtd">
+<web-app>
+  <display-name>Tapestry Virtual Library Demo</display-name>
+  <servlet>
+    <servlet-name>vlib</servlet-name>
+    <servlet-class>net.sf.tapestry.ApplicationServlet</servlet-class>
+    <init-param>
+    	<param-name>net.sf.tapestry.application-specification</param-name>
+    	<param-value>/net/sf/tapestry/vlib/Vlib.application</param-value>
+    </init-param>
+  	<load-on-startup>0</load-on-startup>
+  </servlet>
+  
+  <!-- The single mapping used for the Virtual Library application -->
+
+  <servlet-mapping>
+    <servlet-name>vlib</servlet-name>
+    <url-pattern>/app</url-pattern>
+  </servlet-mapping>
+  
+  <session-config>
+  	<session-timeout>15</session-timeout>
+  </session-config>
+    
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+</web-app>
+]]>
+</programlisting>  
+</example>
+
       <para>
 The servlet's main job is to find or create the &IEngine; instance.  It then delegates all the behavior
 for processing the request to the application engine.  Encoded in the URL will be a particular
@@ -49,35 +99,8 @@ the request.
             <imagedata fileref="images/ApplicationServlet-sequence.gif" format="GIF"/>
           </imageobject>
         </mediaobject>
-      </figure>
-      <note id="engine.servlet.subclass-note">
-        <title>Is a subclass really necessary?</title>
-        <para>
-	You would think that the resource path of the
-	application specification could simply be
-	a servlet initialization parameter, in which case
-	no subclass of ApplicationServlet would be necessary.
-	</para>
-        <para>
-	This doesn't work due to  how
-	class loaders work inside an application server.  Generally, the Tapestry
-	framework will be loaded by the system class loader, and each
-	web application will be loaded by a child class loader.  The child class loader
-	has visibility to all the classes in the WAR file, as well as all the classes
-	on the classpath, whereas the system class loader will only have visibility
-	to the Tapestry framework classes.
-	</para>
-        <para>
-	The servlet instance acts as a "hook" exposing the child class loader; the framework
-	gets the class loader from the servlet instance and uses that
-	to instantiate Java classes for the Tapestry components.
-	</para>
-      </note>
-      <para>
-The servlet may also perform some static initialization for the application in its 
-<function>init()</function> method.  
-This includes tasks such as loading JDBC drivers.
-</para>
+</figure>
+
     </section>
     <section id="engine.req-pages">
       <title>Required Pages</title>
