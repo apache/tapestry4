@@ -138,7 +138,7 @@ public class Radio extends AbstractComponent
 				this, cycle);
 
 		if (selectedBinding == null)
-			throw new RequiredParameterException(this, "selected", cycle);
+			throw new RequiredParameterException(this, "selected", null, cycle);
 
 		// The group determines rewinding from the form.
 

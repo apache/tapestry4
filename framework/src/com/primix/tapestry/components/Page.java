@@ -129,7 +129,7 @@ public class Page extends AbstractServiceLink
 			pageName = pageBinding.getString();
 
 		if (pageName == null)
-			throw new RequiredParameterException(this, "page", cycle);
+			throw new RequiredParameterException(this, "page", pageBinding, cycle);
 
 		if (context == null)
 			context = new String[1];

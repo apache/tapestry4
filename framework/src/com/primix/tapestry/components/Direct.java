@@ -49,12 +49,17 @@ import java.util.*;
  *
  *  <tr>
  *  <td>context</td>
- *  <td>String[] <br> List (of String) <br> String</td>
+ *  <td>String[] <br> List (of String) <br> String <br>Object</td>
  *  <td>R</td>
  *  <td>no</td>
  *  <td>&nbsp;</td>
  *  <td>An array of Strings to be encoded into the URL.  These parameters will
- *  be decoded when the link is triggered.</td>
+ *  be decoded when the link is triggered.
+ *  <p>If the context is simply an Object, then <code>toString()</code> is invoked on
+ it.  It is assumed that the listener will be able to convert it back.
+ *  <p>In a web application built onto of Enterprise JavaBeans, the context is
+ *  often the primary key of some Entity bean; typically such keys are Strings or
+ *  Integers (which can be freely converted from String to Integer by the listener).</td>
  * </tr>
  *
  * <tr>
@@ -147,13 +152,16 @@ public class Direct extends AbstractServiceLink
 	
     		return (String[])list.toArray(context);
 		}
+		
+		// Allow simply Object ... use toString() to make it a string.
+		// The listener should be able to convert it back.  For example,
+		// if the real type is java.lang.Integer, it's easy to convert
+		// it to an int or java.lang.Integer.
 
-		// TBD: Convert Enumeration
-
-		throw new RequestCycleException(
-			"Parameter context is not convertable to type String[].", 
-			this, cycle);
-
+		context = new String[1];
+		context[0] = raw.toString();
+		
+		return context;
 	}
 
 	/**
@@ -191,7 +199,7 @@ public class Direct extends AbstractServiceLink
 			result = (IDirectListener)listenerBinding.getValue();
 
 			if (result == null)
-				throw new RequiredParameterException(this, "listener", cycle);
+				throw new RequiredParameterException(this, "listener", listenerBinding, cycle);
 		}
 		catch (ClassCastException e)
 		{

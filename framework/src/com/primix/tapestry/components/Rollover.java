@@ -238,7 +238,7 @@ public class Rollover extends AbstractComponent
 		}
 
 		if (imageURL == null)
-			throw new RequiredParameterException(this, "image", cycle);			
+			throw new RequiredParameterException(this, "image", null, cycle);			
 
 		compressed = writer.compress(true);
 

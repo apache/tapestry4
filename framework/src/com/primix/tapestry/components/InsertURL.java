@@ -97,7 +97,7 @@ public class InsertURL extends AbstractComponent
 		}
 
 		if (asset == null)
-			throw new RequiredParameterException(this, "asset", cycle);
+			throw new RequiredParameterException(this, "asset", assetBinding, cycle);
 
 		url = asset.buildURL(cycle);
 

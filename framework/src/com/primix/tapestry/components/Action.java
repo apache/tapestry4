@@ -105,7 +105,7 @@ public class Action extends AbstractServiceLink
 			result = (IActionListener)listenerBinding.getValue();
 
 			if (result == null)
-				throw new RequiredParameterException(this, "listener", cycle);
+				throw new RequiredParameterException(this, "listener", listenerBinding, cycle);
 		}
 		catch (ClassCastException e)
 		{

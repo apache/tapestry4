@@ -183,7 +183,7 @@ public class DatabaseQuery extends AbstractComponent
 			query = queryBinding.getString();
 
 		if (query == null)
-			throw new RequiredParameterException(this, "query", cycle);
+			throw new RequiredParameterException(this, "query", queryBinding, cycle);
 
 		if (connectionBinding != null)
 		{
@@ -202,7 +202,7 @@ public class DatabaseQuery extends AbstractComponent
 		if (jdbcConnection == null)
 		{
 			if (URLBinding == null)
-				throw new RequiredParameterException(this, "URL", cycle);
+				throw new RequiredParameterException(this, "URL", null, cycle);
 
 			jdbcURL = URLBinding.getString();
 
@@ -219,7 +219,7 @@ public class DatabaseQuery extends AbstractComponent
 		}
 
 		if (jdbcConnection == null)
-			throw new RequiredParameterException(this, "connection", cycle);
+			throw new RequiredParameterException(this, "connection", null, cycle);
 
 		try
 		{
