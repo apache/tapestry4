@@ -55,16 +55,20 @@ public class BookServlet extends VlibServlet
 		return BookDelegate.get(context);
 	}
 	
+    /**
+     *  Writes a link showing the given Book's name that links (via the /book servlet)
+     *  to detailed information about that book.
+     *
+     */
+
 	public static void writeLink(RequestContext context, HTMLWriter writer, Book book)
 	{
-		String URL;
 		boolean compressed;
-		
-		URL = context.getResponse().encodeURL("/book/" + book.getPrimaryKey());
 		
 		compressed = writer.compress(true);
 		writer.begin("a");
-		writer.attribute("href", URL);
+		writer.attribute("href",
+		    buildURL(context, "/book/" + book.getPrimaryKey()));
 		writer.print(book.getTitle());
 		writer.end();
 		

@@ -2,11 +2,6 @@
 <%@ include file="Border.jsp"%>
 <%
 
-	// Remove unecessary whitespace, which looks ugly when <a> tags
-	// are generated.
-	
-	writer.setCompressed(true);
-	
 	HomeDelegate delegate = HomeDelegate.get(context);
 
 	value = (String)request.getAttribute("error");
@@ -28,7 +23,7 @@
 
 <p>Search for books:
 
-<form method=post action="/home/search">
+<form method=post action="<%= HomeServlet.getSearchURL(context) %>">
 <table>
 
 <tr>
@@ -54,6 +49,9 @@
 </form>
 
 <%
+	// Note:  This block will be replaced by a call to the AddBookServlet,
+	// once that is ready.
+
 	if (isLoggedIn)
 	{
 		writer.begin("a");
