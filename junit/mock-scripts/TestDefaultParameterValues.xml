@@ -79,6 +79,18 @@
 ]]>
 		</assert-output>
 		
+		<assert-output name="b tag">
+<![CDATA[
+<b>b tag</b>
+]]>
+		</assert-output>
+		
+		<assert-output name="i tag">
+<![CDATA[
+<i>i tag</i>
+]]>
+		</assert-output>
+		
 	</request>
 	
 
