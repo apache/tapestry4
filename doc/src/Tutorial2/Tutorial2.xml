@@ -265,7 +265,26 @@
   	<title>Alternative Rendering (WAP)</title>
   </chapter>
 
+  <chapter id="integration">
+    <title>Using Tapestry in your environment</title>
+    <section id="integrate-jetty">
+      <title>Integration with Jetty</title>
+    </section>
+    
+    <section id="integrate-jboss3">
+      <title>Integration with JBoss 3.0.x</title>
+    </section>
+    
+    <section id="integrate-tomcat">
+      <title>Integration with Tomcat</title>
+    </section>
+    
+    <section id="integrate-eclipse">
+      <title>Integration with Eclipse (for development)</title>
+    </section>
+  </chapter>
+  
   <chapter id="resources">
-  	<title>Resources</title>
+    <title>Resources</title>
   </chapter>
 </book>
