@@ -213,7 +213,7 @@ public class LoginPage extends BasePage {
         Visit visit = (Visit) getVisit();
 			
         if (visit.isAuthenticated()) {
-            cycle.setPage("Home");		
+            cycle.activate("Home");		
         } 
     }
 }
