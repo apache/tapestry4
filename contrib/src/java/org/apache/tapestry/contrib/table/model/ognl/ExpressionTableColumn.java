@@ -24,8 +24,6 @@ public class ExpressionTableColumn extends SimpleTableColumn
 {
     /** @since 3.1 */
 
-    private ExpressionEvaluator _expressionEvaluator;
-
     public ExpressionTableColumn(String strColumnName, String strExpression,
             ExpressionEvaluator expressionEvaluator)
     {
@@ -51,6 +49,6 @@ public class ExpressionTableColumn extends SimpleTableColumn
     {
         super(strColumnName, strDisplayName, bSortable);
 
-        setEvaluator(new OgnlTableColumnEvaluator(strExpression, _expressionEvaluator));
+        setEvaluator(new OgnlTableColumnEvaluator(strExpression, expressionEvaluator));
     }
 }

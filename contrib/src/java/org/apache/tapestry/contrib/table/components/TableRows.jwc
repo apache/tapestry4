@@ -28,7 +28,7 @@
 	</description>
   
 	<parameter name="row" 
-		type="Object" 
+		type="java.lang.Object" 
 		required="no"
 		direction="custom">
         <description>The current row being rendered.</description>
