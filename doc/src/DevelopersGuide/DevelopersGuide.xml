@@ -461,7 +461,8 @@ including:
             <para>Easy deployment</para>
           </listitem>
           <listitem>
-            <para>The Inspector, which allows developers to debug a running Tapestry application</para>
+            <para>The <link linkend="inspector">Inspector</link>, 
+            which allows developers to debug a running Tapestry application</para>
           </listitem>
         </itemizedlist>
       </para>
@@ -3497,15 +3498,14 @@ to help initialize &Log4J;, allowing the default configuration to be overridden 
 parameters.
 </para>
       <para>
-The Tapestry Inspector includes a Logging tab that allows the logging configuration to be 
+The <link linkend="inspector">Tapestry Inspector</link> includes a Logging tab that allows the logging configuration to be 
 dynamically changed.  The logging priority for any category can be assigned, and new categories 
 can be created.
 </para>
       <para>
 What this means is that, using the Inspector, it is possible to control exactly what logging output is 
 produced, dynamically, while the application is still running.  The Tapestry Inspector is easily 
-added to any Tapestry application.  More information on the Inspector is provided in a later 
-section.
+added to any Tapestry application.  
 </para>
     </section>
     <section id="engine.private-assets">
@@ -3619,10 +3619,8 @@ The application specification begins with an XML header:
           <calloutlist>
             <callout arearefs="engine.appspec.name">
               <para>
-  	Each Tapestry application should have a unique, descriptive name.  This name is used, in a few places,
-  	to store information in the &HttpSession; and <classname>ServletContext</classname>; 
-  	if a single web application (WAR file) contains multiple
-  	Tapestry applications, it is imperative that each has a unique name.
+A descriptive name for the application, which may be displayed
+by the <link linkend="inspector">Inspector</link>.
   	</para>
             </callout>
             <callout arearefs="engine.appspec.engine-class">
@@ -4936,7 +4934,8 @@ application needs to know which was actually pressed.
     <section id="builtin.ShowInspector">
       <title>ShowInspector</title>
       <para>
-Adds a link to a page that is used to raise the Tapestry Inspector in a new window.  
+Adds a link to a page that is used to raise the 
+<link linkend="inspector">Tapestry Inspector</link> in a new window.  
 This is generally added to the navigational border of an application, and is only enabled
 when developing the application (disabled in deployment).
 </para>
@@ -5162,7 +5161,8 @@ be less than two kilobytes; because Java serialization is inefficient,
 this does not leave much room.
 </para>
       <para>
-The Tapestry Inspector can be used to monitor the size of the serialized engine in a running
+The <link linkend="inspector">Tapestry Inspector</link>
+can be used to monitor the size of the serialized engine in a running
 application.
 </para>
     </section>
@@ -6226,7 +6226,8 @@ parameters.
 </para>
       <para>
 A handful of scripts are included with the framework.  The following script
-is used by the Tapestry Inspector to force a &Form; to submit when a &PropertySelection;
+is used by the <link linkend="inspector">Tapestry Inspector</link>
+to force a &Form; to submit when a &PropertySelection;
 changes value.
 </para>
       <figure>
