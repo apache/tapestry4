@@ -114,8 +114,7 @@
    	<td>no</td>
 		<td>&nbsp;</td>
 		<td>
-    If specified, the namespace's prefix 
-                  is prefixed (with a colon) to the page name.
+    If specified, the namespace's prefix is prefixed (with a colon) to the page name.
     This is primarily used when pages (or components) in a namespace need to create 
     links to other pages inside the same namespace (this is only a concern 
     for developers of component libraries, not developers of applications). 
@@ -210,7 +209,7 @@
 
 
 &lt;component id="foreachNavigationPage" type="<a href="Foreach.html">Foreach</a>"&gt;
-    &lt;binding name="source" expression="engine@NAVIGATION_PAGES"/&gt;
+    &lt;binding name="source" expression="global.navigationPages"/&gt;
     &lt;binding name="value" expression="navigationPage"/&gt;
 &lt;/component&gt;
 
@@ -229,9 +228,8 @@ public class MailPage extends BasePage {
         navigationPage = value;
     }
     
-    public void detach() {
+    protected void initialize() {
         navigationPage = null;
-        super.detach();
     }
 }
 
@@ -245,9 +243,13 @@ public class Visit implements Serializable {
     }
 }
 
-public class MailEngine extends <a href="../api/net/sf/tapestry/engine/SimpleEngine">SimpleEngine</a> implements Serializable {
-    public static final String[] NAVIGATION_PAGES = 
+public class Global {
+    private static final String[] NAVIGATION_PAGES = 
         { "Home", "Inbox", "Sent", "Compose", "Contacts", "Options", "Help", "Logout" };
+        
+    public String[] getNavigationPages() {
+        return NAVIGATION_PAGES;
+    }
 }
 </pre>
 

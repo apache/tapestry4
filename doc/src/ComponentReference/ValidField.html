@@ -361,7 +361,7 @@ Also, the names of Java scalar types are acceptible.
     &lt;set-property name="minimum" expression="3"/&gt;
 &lt;/bean&gt;
 
-&lt;bean name="emailValidator" class="<A href="../api/net/sf/tapestry/valid/StringValidator.html">net.sf.tapestry.valid.StringValidator</a>"&gt;
+&lt;bean name="emailValidator" class="<A href="../api/net/sf/tapestry/valid/EmailValidator.html">net.sf.tapestry.valid.EmailValidator</a>"&gt;
     &lt;set-property name="required" expression="true"/&gt;
     &lt;set-property name="minimum" expression="12"/&gt;
 &lt;/bean&gt;
@@ -446,10 +446,9 @@ public class LotBidPage extends BasePage {
         fireObservedChange("auctionDetails", value);
     }
 
-    public void detach() {
+    protected void initialize() {
         lotBid = new LotBid();
         actionDetails = null;
-        super.detach();        
     }
 
     public void okSubmit(IRequestCycle cycle) {

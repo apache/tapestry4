@@ -51,13 +51,11 @@
  <td colspan="2">
   <b>Description</b>
 	<br>
-	Allows 
-            for the insertion of text (with a specified format) into the HTML. 
-            The text itself can be 'transformed' or not (where 'transform' in 
-            this case means that various characters like &lt; and &gt; are 
-            transformed into HTML safe representations such as &amp;lt; and 
-            &amp;gt;). The
-  value for the text is bound, just like any other component. 
+	Allows for the insertion of text (with a specified format) into the HTML. 
+  The text itself can be 'transformed' or not (where 'transform' in 
+  this case means that various characters like &lt; and &gt; are 
+  transformed into HTML safe representations such as &amp;lt; and 
+  amp;gt;). The value for the text is bound, just like any other component. 
  </td>
 </tr>
 
@@ -134,18 +132,16 @@
     <tt>IMarkupWriter.print(String)</tt></a>.
     
     <p>This bypasses the normal safeguards 
-                  and is used when the value to insert contains HTML markup that 
-                  should be emitted as is.</p>          
-              		
+       and is used when the value to insert contains HTML markup that 
+       should be emitted as is.</p>              		
     </td>
 	</tr>
 	</table>
-            <P>Body: <STRONG>removed</STRONG><BR>Informal parameters: 
-            <STRONG>forbidden</STRONG>		
-     <br>
-  Reserved 
-            parameters: <EM>none</EM> </P>
-    
+  <P>
+  Body: <STRONG>removed</STRONG><BR>
+  Informal parameters: <STRONG>forbidden</STRONG><br>
+  Reserved parameters: <EM>none</EM> 
+  </P>    
  </td>
 </tr>
 
@@ -169,9 +165,9 @@ The order was due on the &lt;span jwcid="<span class="jwcid">insertDueDate</span
 
 
 &lt;component id="<span class="jwcid">insertDueDate</span>" type="<A href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" property-path="dueDate"/&gt;
-    &lt;field-binding name="format" field-name="EnquiryPage.DATE_FORMAT"/&gt;
-    &lt;binding name="class" property-path="dueClass"/&gt;
+    &lt;binding name="value" expression="dueDate"/&gt;
+    &lt;binding name="format" expression="@EnquiryPage@DATE_FORMAT"/&gt;
+    &lt;binding name="class" expression="dueClass"/&gt;
 &lt;/component&gt;
 
 
@@ -185,10 +181,9 @@ public class EnquiryPage extends BasePage {
 
     public String getDueClass() { return dueClass; }
     
-    public void detach() {
+    protected void initialize() {
         dueDate = null;
         dueClass = null;
-        super.detach();
     }    
 }
 </pre>

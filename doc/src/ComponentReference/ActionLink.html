@@ -287,10 +287,9 @@ public class SalesPage extends BasePage {
         // Perform some action with the selected customer.
     }
 
-    public void detach() {
+    protected void initialize() {
         customerList = null;
         customer = null;
-        super.detach();
     }
 }
 

@@ -1,0 +1,264 @@
+<!--
+Tbis HTML document provides a base template for Component Reference pages.
+
+* All ??? text should be replaced.
+
+* Examples should illustrate near real world use of the component, see other
+  existing component page examples for formatting and style guidelines.
+  
+* Use Tapestry 2.2 Beta 1+ "expression" binding syntax instead of 
+  "property-path" syntax.
+  
+* Include links to Tapestry Javadoc API where appropriate.
+
+* Include Tapestry Developers Guide multi-page version where appropriate.
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- $Id$ --> 
+<html>
+<head>
+<title>contrib:MaskEdit</title>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+ <tr>
+  <!-- Previous component in alphabetical order. -->
+  <td align="left"><a href="index.html"><img alt="Component Index" src="common-images/prev.png"></a></td>  
+  <td align="middle"><a href="index.html"><img alt="Component Index" src="common-images/home.png" ></a></td>
+  <!-- Next component in alphabetical order. -->
+  <td align="right"><a href="index.html"><img alt="Component Index" src="common-images/next.png"></a></td>  
+ <tr>
+ <tr>
+  <td colspan="3"><hr></td>  
+ </tr>
+ <tr>
+  <td colspan="3">
+   <table border="0" cellpadding="4" cellspacing="4" width="100%">
+
+<tr valign="top">
+ <td>
+  <table>
+   <tr>
+    <td><font size="+2"><b>contrib:MaskEdit</b></font></td>
+   </tr>
+   <tr>
+    <td>
+     <A href="../api/net/sf/tapestry/contrib/form/MaskEdit.html">net.sf.tapestry.contrib.form.MaskEdit</a>
+    </td>
+   </tr>
+  </table>
+ </td>
+ <td>
+  <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
+   <tr>
+    <td>MaskEdit <input type="text" size="19" disabled value="____-____-____-____"/></td>
+   </tr>
+  </table>
+ </td>
+</tr>
+
+<tr valign="center">
+ <td colspan="2">&nbsp;</td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Description</b>
+  <br> 
+  Provides a mask edit HTML &lt;input type="text"&gt; form element. This 
+  component requires JavaScript to be enabled in the client browser.
+  <p>
+  Mask edit field validates the text the user enters against a 
+  mask that encodes the valid forms the text can take. The mask can 
+  also format text that is displayed to the user.
+  <p>
+  <table border="1" cellpadding="5" cellspacing="0">
+   <tr>
+    <th>Mask character</th><th>Meaning in mask</th>
+   </tr>
+   <tr>
+    <td>&nbsp;l</td><td>&nbsp;Mixed case letter character [a..z, A..Z]</td>
+   </tr>
+   <tr>
+    <td>&nbsp;L</td><td>&nbsp;Upper case letter character [A..Z]</td>
+   </tr>
+   <tr>
+    <td>&nbsp;a</td><td>&nbsp;Mixed case alpha numeric character [a..z, A..Z, 0..1]</td>
+   </tr>
+   <tr>
+    <td>&nbsp;A</td><td>&nbsp;Upper case alpha numeric character [A..Z, 0..9]</td>
+   </tr>
+   <tr>
+    <td>&nbsp;#</td><td>&nbsp;Numeric character [0..9]</td>
+   </tr>
+   <tr>
+    <td>&nbsp;_</td><td>&nbsp;Reserved character for display, do not use.</td>
+   </tr>
+   <tr>
+    <td>&nbsp;others</td><td>&nbsp;Non editable character for display.</td>
+   </tr>
+  </table>     
+  </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>See Also</b>
+  <br>
+  <A href="TextField.html">TextField</a>, 
+  <A href="ValidField.html">ValidField</a>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Parameters</b>
+  <br>
+  <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+   <tr> 
+    <th>Name</th>
+    <th>Type</th>
+    <th>Direction</th>
+    <th>Required</th> 
+    <th>Default</th>
+    <th>Description</th>
+   </tr>
+   <tr>
+    <td>value</td>
+    <td>String</td>
+    <td>in/out</td>
+    <td>yes</td>
+    <td>&nbsp;</td>
+    <td>The form text field value.</td>
+   </tr>
+   <tr>
+    <td>mask</td>
+    <td>String</td>
+    <td>in</td>
+    <td>yes</td>
+    <td>&nbsp;</td>
+    <td>The character filter mask. See mask characters table above for details.</td>
+   </tr>
+   <tr>
+    <td>diabled</td>
+    <td>boolean</td>
+    <td>in</td>
+    <td>no</td>
+    <td>false</td>
+    <td>
+    Controls whether the text field is active or not. Corresponds to 
+    the "disabled" HTML attribute. 
+    </td>
+   </tr>
+  </table>
+  <p>
+  Body: <strong>removed</strong><br>
+  Informal parameters: <strong>not allowed</strong><br>
+  <!-- component-specification "reserved-parameter" -->
+  Reserved parameters: none
+  </p>    
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Examples</b>
+  <p>
+  This example provides a credit card payment page.
+  </p>
+
+<table class="examples" cellpadding="4">
+<form>
+ <tr align="left">
+  <td colspan="2"><font color="blue"><i>Please enter your credit card details and click 'Pay'.</i></font><p/></td>
+ </tr>
+ <tr>
+  <td>Card Number:</td><td><input type="text" size="19" disabled value="____-____-____-____"/></td>
+ </tr>
+ <tr>
+  <td>Expiry Date:</td><td><input type="text" size="5" disabled value="__/__"/></td>
+ </tr>
+ <tr align="left">
+  <td>&nbsp;</td><td><input type="submit" value="  Pay  "></td>
+ </tr>
+</form>
+</table>
+
+<pre>
+&lt;form jwcid="paymentForm"&gt;
+ &lt;table cellpadding="4"&gt;
+  &lt;tr align="left"&gt;
+   &lt;td colspan="2"&gt;&lt;font color="blue"&gt;&lt;i&gt;Please enter your credit card details and click 'Pay'.&lt;/i&gt;&lt;/font&gt;&lt;p/&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr align="right"&gt;
+  &lt;/tr&gt;  
+  &lt;tr&gt;&lt;td&gt;Card Number:&lt;/td&gt;&lt;td&gt;&lt;input jwcid="<span class="jwcid">cardNumberMaskEdit</span>"/&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+   &lt;tr&gt;&lt;td&gt;Expiry Date:&lt;/td&gt;&lt;td&gt;&lt;input jwcid="<span class="jwcid">cardExpiryMaskEdit</span>"/&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr align="right"&gt;
+   &lt;td&gt;&amp;nbsp;&lt;/td&gt;&lt;td&gt;&lt;input type="submit" value="  Pay  "/&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+ &lt;/table&gt;
+&lt;/form&gt;
+
+
+&lt;component id="paymentForm" type="<A href="Form.html">Form</a>"&gt;
+   &lt;binding name='listener' expression='listeners.formSubmit'/&gt;
+&lt;/component&gt;
+
+&lt;component id="<span class="jwcid">cardNumberMaskEdit</span>" type="<A href="contrib.MaskEdit.html">contrib:MaskEdit</a>"&gt;
+   &lt;binding name='value' expression='cardNumber'/&gt;
+   &lt;binding name='mask' expression='"####-#####-####-####"'/&gt;
+&lt;/component&gt;
+
+&lt;component id="<span class="jwcid">cardExpiryMaskEdit</span>" type="<A href="contrib.MaskEdit.html">contrib:MaskEdit</a>"&gt;
+   &lt;binding name='value' expression='cardExpiry'/&gt;
+   &lt;binding name='mask' expression='"##/##"'/&gt;
+&lt;/component&gt;
+
+
+public class PaymentPage extends BasePage {
+    private String cardNumber;
+    private String cardExpiry;
+    
+    protected void initialize() {
+       cardNumber = null;
+       cardExpiry = null;
+    }
+    
+    public String getCardNumber() { return cardNumber; }
+    
+    public void setCardNumber(String value) {
+       cardNumber = value;
+    }
+
+    public String getCardExpiry() { return cardExpiry; }
+    
+    public void setCardExpiry(String value) {
+       cardExpiry = value;
+    }
+
+    public void formSubmit(IRequestCycle cycle) {
+        // Process form submission and make payment
+    }
+}
+</pre>
+ </td></tr></table>
+</td></tr>
+<tr>
+ <td colspan="3"><hr></td>  
+</tr>
+<tr>
+ <!-- Previous component in alphabetical order. -->
+ <td align="left"><a href="index.html"><img alt="Component Index" src="common-images/prev.png"></a></td>  
+ <td align="middle"><a href="index.html"><img alt="Component Index" src="common-images/home.png" ></a></td>
+ <!-- Next component in alphabetical order. -->
+ <td align="right"><a href="index.html"><img alt="Component Index" src="common-images/next.png"></a></td>  
+</tr>
+</table>
+
+</body>
+</html>

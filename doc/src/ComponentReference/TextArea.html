@@ -56,11 +56,10 @@
 	This component must be wrapped by a <A href="Form.html">Form</A> component.
   <p>
   Use the HTML "wrap" attribute as an informal 
-            parameter to control word wrapping. Wrap attribute values include: 
-            "off", "vitual", "physical", "soft" and "hard".</p>
-            <P>Prior to release 2.2, this component was named 
-            <STRONG>Text</STRONG>.</P>
-             
+  parameter to control word wrapping. Wrap attribute values include: 
+  "off", "vitual", "physical", "soft" and "hard".</p>
+  <P>Prior to release 2.2, this component was named 
+  <STRONG>Text</STRONG>.</P>             
  </td>
 </tr>
 
@@ -128,11 +127,12 @@
 			determine.  Corresponds to the "rows" HTML attribute.
     </td> 
    </tr>
-	</table><BR>Body: 
-            <STRONG>removed</STRONG><BR>Informal parameters: 
-            <STRONG>allowed</STRONG>
-    <br>
+	</table>
+  <p>
+  Body: <STRONG>removed</STRONG><BR>
+  Informal parameters: <STRONG>allowed</STRONG><br>
   Reserved parameters: "name"
+  </p>
  </td>
 </tr>
 
@@ -161,7 +161,7 @@
 &lt;form&gt;
  &lt;tr&gt;
   &lt;td&gt;Your Comments&lt;/td&gt;
-  &lt;td&gt;&lt;textarea jwcid="<span class="jwcid">commentsText</span>"/&gt;&lt;/td&gt;
+  &lt;td&gt;&lt;textarea jwcid="<span class="jwcid">commentsText</span>" cols="20" rows="5"/&gt;&lt;/td&gt;
  &lt;/tr&gt;
  &lt;tr align="right"&gt;
   &lt;td colspan="2"&gt;&lt;input type="submit" value="Submit"/&gt;&lt;/td&gt;
@@ -176,21 +176,12 @@
   
 &lt;component id="<span class="jwcid">commentsText</span>" type="<a href="#">TextArea</a>"&gt;
     &lt;binding name="value" expression="comments"/&gt;
-    &lt;binding name="columns" expression="columns"/&gt;
-    &lt;binding name="rows" expression="rows"/&gt;
 &lt;/component&gt;
 
 
 public class CustomerCommentsPage extends BasePage {
-    private final static String COMMENTS = "Please enter your comments here"; 
-    private String comments = COMMENTS;
-    private final int column = 20;
-    private final int rows = 5;
-
-    public void formSubmit(IRequestCycle requestCycle) {
-        // Proccess customer comments
-    }
-
+    private String comments;
+    
     public String getComments() { return comments; }
 
     public void setComments(String value) {
@@ -198,14 +189,13 @@ public class CustomerCommentsPage extends BasePage {
         fireObservedChange("comments", value);
     }
 
-    public int getColumns() { return columns; }
+    protected void initialize() {
+        comments = "Please enter your comments here";
+    }
 
-    public int getRows() { return rows; }
-
-    public void detach() {
-        comments = COMMENTS;
-        super.detach();
-    }        
+    public void formSubmit(IRequestCycle requestCycle) {
+        // Proccess customer comments
+    }
 }
 </pre>
 

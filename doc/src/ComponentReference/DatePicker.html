@@ -215,10 +215,9 @@ public class Dates extends BasePage {
         endDate = value;
     }  
 
-    public void detach() {
+    protected void initialize() {
         startDate = null;
         endDate = null;       
-        super.detach();
     }
 
     public void formSubmit(IRequestCycle cycle) {

@@ -152,10 +152,9 @@ public class OrderItemsXML extends BasePage {
         orderItem = value;        
     }
 
-    public void detach() {
+    protected void initialize() {
         orderItemList = null;
         orderItem = null;
-        super.detach();
     }
 }
 

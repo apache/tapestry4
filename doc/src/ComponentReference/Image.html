@@ -214,9 +214,8 @@ public class NewsItemPage extends BasePage {
     
     public NewsItem getNewsItem () { return newsItem; }
     
-    public void detach() {
+    protected void initialize() {
         newsItem = null;
-        super.detach();    
     }
 }
 

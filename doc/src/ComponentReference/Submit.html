@@ -271,10 +271,9 @@ public class LoginPage extends BasePage {
         throw new PageRedirectException("HelpDesk");
     }
     
-    public void detach() {
+    protected void initialize() {
         username = null;
         password = null;
-        super.detach();
     }
 }
 </pre>
@@ -391,11 +390,10 @@ public class PurchagePage extends BasePage {
         fireObservedChange("itemSelectionModel", value);
     }
 
-    public void detach() {
+    protected void initialize() {
         selectedComponent = null;
         clothingItem = null;
         itemSelectionModel = null;
-        super.detach();
     }
 
     public void formSubmit(IRequestCycle cycle) {
