@@ -71,7 +71,7 @@
         direction="auto" 
         default-value="container">
         <description>
-            The tag with which the component will be inserted in the generated content.
+            The component where Block and messages are pulled from when using source/columns.
         </description>
     </parameter>
     

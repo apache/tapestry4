@@ -57,7 +57,16 @@
         </description>
     </parameter>
     
-	<parameter name="pagesDisplayed" 
+    <parameter name="columnSettingsContainer"
+        type="org.apache.tapestry.IComponent"
+        required="no"
+        default-value="container">
+        <description>
+            The component where Block and messages are pulled from when using source/columns.
+        </description>
+    </parameter>
+
+	<parameter name="pagesDisplayed"
 		type="int" 
 		required="no">
         <description>
@@ -130,9 +139,8 @@
 		<inherited-binding name="source" parameter-name="source"/>
 		<inherited-binding name="columns" parameter-name="columns"/>
 		<inherited-binding name="tableSessionStateManager" parameter-name="tableSessionStateManager"/>
-		<inherited-binding name="tableSessionStoreManager" parameter-name="tableSessionStoreManager"/>
+		<inherited-binding name="columnSettingsContainer" parameter-name="columnSettingsContainer"/>
 		<static-binding name="element">span</static-binding>
-        <binding name="columnSettingsContainer" expression="container"/>
 	</component>
 
 	<component id="tablePages" type="TablePages">
