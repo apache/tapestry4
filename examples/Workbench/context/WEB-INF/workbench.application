@@ -6,6 +6,7 @@
 	
 <application name="Tapestry Component Workbench">
   <property name="org.apache.tapestry.visit-class" value="org.apache.tapestry.workbench.Visit"/>
+  <property name="org.apache.tapestry.template-encoding" value="ISO-8859-1"/>
   
   <extension name="org.apache.tapestry.request-decoder" class="org.apache.tapestry.workbench.RequestDecoder"/>
   
