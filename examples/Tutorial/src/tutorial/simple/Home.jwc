@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
+	"http://tapestry.primix.com/dtd/Tapestry_1_0.dtd">
+	
+<specification>
+	<class>tutorial.simple.Home</class>
+	
+	<components>
+		<component>
+			<id>insertDate</id>
+			<type>Insert</type>
+			
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>currentDate</property-path>
+				</binding>
+			</bindings>
+		</component>
+		
+		<component>
+			<id>refresh</id>
+			<type>Page</type>
+			
+			<bindings>
+				<static-binding>
+					<name>page</name>
+					<value>home</value>
+				</static-binding>
+			</bindings>
+		</component>
+	</components>
+	
+</specification>

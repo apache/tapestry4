@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
+	"http://tapestry.primix.com/dtd/Tapestry_1_0.dtd">
+
+<specification>
+  <class>com.primix.tapestry.BasePage</class>
+
+	<components>
+	  <component>
+	    <id>border</id>
+	    <type>Border</type>
+
+		<bindings>
+		    <static-binding>
+		      <name>title</name>
+		      <value>Home</value>
+		    </static-binding>
+
+		    <binding>
+		      <name>pages</name>
+		      <property-path>application.pageNames</property-path>
+		    </binding>
+		</bindings>
+	  </component>
+	</components>
+
+</specification>
