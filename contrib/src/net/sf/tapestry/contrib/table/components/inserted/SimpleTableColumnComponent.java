@@ -89,6 +89,11 @@ public class SimpleTableColumnComponent
 		m_objModelSource = objSource;
 	}
 
+    public ITableModel getTableModel() 
+    {
+        return m_objModelSource.getTableModel();
+    }
+
 	public boolean getColumnSorted()
 	{
 		return m_objColumn.getSortable();
@@ -98,6 +103,22 @@ public class SimpleTableColumnComponent
 	{
 		return m_objColumn.getDisplayName();
 	}
+    
+    public boolean getIsSortedDown()
+    {
+        ITableSortingState objSortingState = getTableModel().getSortingState();
+        String strSortColumn = objSortingState.getSortColumn();
+        if (!m_objColumn.getColumnName().equals(strSortColumn)) return false;
+        return objSortingState.getSortOrder() == ITableSortingState.SORT_ASCENDING;
+    }
+
+    public boolean getIsSortedUp()
+    {
+        ITableSortingState objSortingState = getTableModel().getSortingState();
+        String strSortColumn = objSortingState.getSortColumn();
+        if (!m_objColumn.getColumnName().equals(strSortColumn)) return false;
+        return objSortingState.getSortOrder() == ITableSortingState.SORT_DESCENDING;
+    }
 
 	public Object[] getColumnSelectedParameters()
 	{

@@ -32,7 +32,22 @@
 		<binding name="parameters" expression="columnSelectedParameters"/>
 	</component>
 	
-
+	<component id="imageSortDown" type="Image">
+		<binding name="image" expression="assets.sortDown"/>
+	</component>
 	
+	<component id="condSortDown" type="Conditional">
+		<binding name="condition" expression="isSortedDown"/>
+	</component>
 	
+	<component id="imageSortUp" type="Image">
+		<binding name="image" expression="assets.sortUp"/>
+	</component>
+	
+	<component id="condSortUp" type="Conditional">
+		<binding name="condition" expression="isSortedUp"/>
+	</component>
+	
+    <private-asset name="sortDown" resource-path="/net/sf/tapestry/contrib/table/components/inserted/arrow-down.gif"/>
+    <private-asset name="sortUp" resource-path="/net/sf/tapestry/contrib/table/components/inserted/arrow-up.gif"/>
 </component-specification>
