@@ -321,7 +321,7 @@ public class NumberValidator extends BaseValidator
 	 * be invoked by user code and is subject to change at any time.
 	 * 
 	 * @param type the type (a Number subclass) for which to return an adaptor
-	 * @returns the adaptor, or null if no such adaptor may be found
+	 * @return the adaptor, or null if no such adaptor may be found
 	 * @since 3.0
 	 */
     public static NumberAdaptor getAdaptor(Class type)

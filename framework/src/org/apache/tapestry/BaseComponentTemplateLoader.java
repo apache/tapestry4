@@ -46,7 +46,7 @@ import org.apache.tapestry.spec.IContainedComponent;
  *  which involves working through the nested structure of the template and hooking
  *  the various static template blocks and components together using
  *  {@link IComponent#addBody(IRender)} and 
- *  {@link org.apache.tapestry.BaseComponen	t#addOuter(IRender)}.
+ *  {@link org.apache.tapestry.BaseComponent#addOuter(IRender)}.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
