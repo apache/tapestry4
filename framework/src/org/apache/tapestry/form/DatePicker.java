@@ -81,8 +81,6 @@ import org.apache.tapestry.html.Body;
 
 public abstract class DatePicker extends AbstractFormComponent
 {
-    private String _name;
-
     public abstract String getFormat();
 
     public abstract Date getValue();
@@ -94,10 +92,8 @@ public abstract class DatePicker extends AbstractFormComponent
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         IForm form = getForm(cycle);
-
-		updateDelegate(form);
 		
-        _name = form.getElementId(this);
+        String name = form.getElementId(this);
 
         String format = getFormat();
 
@@ -120,7 +116,7 @@ public abstract class DatePicker extends AbstractFormComponent
 
             writer.beginEmpty("input");
             writer.attribute("type", "text");
-            writer.attribute("name", _name);
+            writer.attribute("name", name);
             writer.attribute("maxlength", format.length());
             writer.attribute("size", format.length());
 
@@ -132,7 +128,7 @@ public abstract class DatePicker extends AbstractFormComponent
 
             writer.beginEmpty("input");
             writer.attribute("type", "hidden");
-            writer.attribute("name", _name + "$millis");
+            writer.attribute("name", name + "$millis");
 
             if (value == null)
                 writer.attribute("value", "");
@@ -141,12 +137,12 @@ public abstract class DatePicker extends AbstractFormComponent
 
             writer.beginEmpty("input");
             writer.attribute("type", "hidden");
-            writer.attribute("name", _name + "$format");
+            writer.attribute("name", name + "$format");
             writer.attribute("value", format);
 
             writer.beginEmpty("input");
             writer.attribute("type", "button");
-            writer.attribute("name", _name + "$button");
+            writer.attribute("name", name + "$button");
 
             if (disabled)
                 writer.attribute("disabled", "disabled");
@@ -160,7 +156,7 @@ public abstract class DatePicker extends AbstractFormComponent
             if (disabled)
                 return;
 
-            String textValue = cycle.getRequestContext().getParameter(_name);
+            String textValue = cycle.getRequestContext().getParameter(name);
 
             if (Tapestry.isNull(textValue))
                 return;
@@ -178,9 +174,5 @@ public abstract class DatePicker extends AbstractFormComponent
 
     }
 
-    public String getName()
-    {
-        return _name;
-    }
 
 }

@@ -21,6 +21,9 @@
   <parameter name="index" type="int"/>
   
   <parameter name="element" type="java.lang.String" direction="in"/>
+
+  <property-specification name="name" type="java.lang.String"/>
+  <property-specification name="form" type="org.apache.tapestry.IForm"/>
   
 </component-specification>
 

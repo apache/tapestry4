@@ -76,7 +76,10 @@ import org.apache.tapestry.valid.IValidationDelegate;
 public abstract class AbstractFormComponent extends AbstractComponent implements IFormComponent
 {
     /**
-     *  Returns the {@link Form} wrapping this component.
+     *  Returns the {@link Form} wrapping this component.  Invokes
+     *  {@link #setForm(IForm)} (so that the component may know, later, what the
+     *  form is).  Also, if the form has a delegate, 
+     *  then {@link IValidationDelegate#setFormComponent(IFormComponent)} is invoked.
      *
      *  @throws RequestCycleException if the component is not wrapped by a {@link Form}.
      *
@@ -91,15 +94,21 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
                 Tapestry.getString("AbstractFormComponent.must-be-contained-by-form"),
                 this);
 
+        setForm(result);
+
+        IValidationDelegate delegate = result.getDelegate();
+
+        if (delegate != null)
+            delegate.setFormComponent(this);
+
         return result;
     }
 
-    public IForm getForm()
-    {
-        return Form.get(getPage().getRequestCycle());
-    }
+    public abstract IForm getForm();
+    public abstract void setForm(IForm form);
 
-    abstract public String getName();
+    public abstract String getName();
+    public abstract void setName(String name);
 
     /**
      *  Implemented in some subclasses to provide a display name (suitable
@@ -111,24 +120,5 @@ public abstract class AbstractFormComponent extends AbstractComponent implements
     public String getDisplayName()
     {
         return null;
-    }
-    
-    /**
-     *  Invoked by components (other than {@link org.apache.tapestry.valid.ValidField})
-     *  to inform the {@link org.apache.tapestry.valid.IValidationDelegate} for the 
-     *  {@link Form}, if any, that it is the current component.  This allows
-     *  non-ValidField components to still participate in the validation system,
-     *  to a lesser degree.
-     * 
-     *  @since 2.4
-     * 
-     **/
-    
-    protected void updateDelegate(IForm form)
-    {
-    	IValidationDelegate delegate = form.getDelegate();
-    	
-    	if (delegate != null)
-    		delegate.setFormComponent(this);
     }
 }

@@ -74,25 +74,16 @@ import org.apache.tapestry.request.IUploadFile;
 
 public abstract class Upload extends AbstractFormComponent
 {
-    private String _name;
-
-    public String getName()
-    {
-        return _name;
-    }
-
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         IForm form = getForm(cycle);
-
-		updateDelegate(form);
 		
-        _name = form.getElementId(this);
+        String name = form.getElementId(this);
 
         if (form.isRewinding())
         {
         	if (!isDisabled())
-	            setFile(cycle.getRequestContext().getUploadFile(_name));
+	            setFile(cycle.getRequestContext().getUploadFile(name));
 
             return;
         }
@@ -104,7 +95,7 @@ public abstract class Upload extends AbstractFormComponent
 
         writer.beginEmpty("input");
         writer.attribute("type", "file");
-        writer.attribute("name", _name);
+        writer.attribute("name", name);
 
         if (isDisabled())
             writer.attribute("disabled");

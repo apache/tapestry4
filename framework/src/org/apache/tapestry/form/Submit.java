@@ -78,26 +78,16 @@ import org.apache.tapestry.IRequestCycle;;
  * 
  **/
 
-public abstract class Submit extends AbstractFormComponent
-{
-
-    private String _name;
-
-    public String getName()
-    {
-        return _name;
-    }
+public abstract class Submit extends AbstractFormComponent{
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
 
         IForm form = getForm(cycle);
-
-		updateDelegate(form);
 		
         boolean rewinding = form.isRewinding();
 
-        _name = form.getElementId(this);
+        String name = form.getElementId(this);
 
         if (rewinding)
         {
@@ -111,7 +101,7 @@ public abstract class Submit extends AbstractFormComponent
             // with its name and value (the value serves double duty as both
             // the label on the button, and the parameter value).
 
-            String value = cycle.getRequestContext().getParameter(_name);
+            String value = cycle.getRequestContext().getParameter(name);
 
             // If the value isn't there, then this button wasn't
             // selected.
@@ -134,7 +124,7 @@ public abstract class Submit extends AbstractFormComponent
 
         writer.beginEmpty("input");
         writer.attribute("type", "submit");
-        writer.attribute("name", _name);
+        writer.attribute("name", name);
 
         if (isDisabled())
             writer.attribute("disabled");

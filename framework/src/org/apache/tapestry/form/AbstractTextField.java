@@ -73,13 +73,6 @@ import org.apache.tapestry.IRequestCycle;
 
 public abstract class AbstractTextField extends AbstractFormComponent
 {
-    private String _name;
-
-    public String getName()
-    {
-        return _name;
-    }
-
     /**
      *  Renders the form element, or responds when the form containing the element
      *  is submitted (by checking {@link Form#isRewinding()}.
@@ -91,8 +84,6 @@ public abstract class AbstractTextField extends AbstractFormComponent
         String value;
 
         IForm form = getForm(cycle);
-        
-        updateDelegate(form);
 
         // It isn't enough to know whether the cycle in general is rewinding, need to know
         // specifically if the form which contains this component is rewinding.
@@ -107,13 +98,13 @@ public abstract class AbstractTextField extends AbstractFormComponent
 
         // Used whether rewinding or not.
 
-        _name = form.getElementId(this);
-
+        String name = form.getElementId(this);
+		
         if (rewinding)
         {
             if (!isDisabled())
             {
-                value = cycle.getRequestContext().getParameter(_name);
+                value = cycle.getRequestContext().getParameter(name);
 
                 updateValue(value);
             }
@@ -128,7 +119,7 @@ public abstract class AbstractTextField extends AbstractFormComponent
         if (isDisabled())
             writer.attribute("disabled");
 
-        writer.attribute("name", _name);
+        writer.attribute("name", name);
 
 		int displayWidth = getDisplayWidth();
 		int maximumLength = getMaximumLength();

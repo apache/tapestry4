@@ -95,6 +95,16 @@ public interface IFormComponent extends IComponent
      **/
 
     public String getName();
+    
+    /**
+     *  Invoked by {@link IForm#getElementId(IComponent)} when a name is created
+     *  for a form component.
+     * 
+     *  @since 2.4
+     * 
+     **/
+    
+    public void setName(String name);
 
     /**
      *  May be implemented to return a user-presentable, localized name for the component,

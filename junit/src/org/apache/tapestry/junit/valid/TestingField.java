@@ -99,6 +99,11 @@ public class TestingField extends AbstractFormComponent implements IFormComponen
         
         setPage(page);
 	}
+	
+	public void setForm(IForm form)
+	{
+		_form = form;
+	}
 
 	public String getDisplayName()
 	{
@@ -129,4 +134,9 @@ public class TestingField extends AbstractFormComponent implements IFormComponen
 	{
 		return "TestingField[" + _displayName + "]";
 	}
+	
+    public void setName(String name)
+    {
+    }
+
 }

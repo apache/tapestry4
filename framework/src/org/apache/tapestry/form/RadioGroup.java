@@ -84,11 +84,6 @@ public abstract class RadioGroup extends AbstractFormComponent
     // Radio was selected by the user.
     private int _selectedOption;
 
-    // The HTML field name used for this group (i.e., by all Radio buttons
-    // within this group).
-
-    private String _name;
-
     private boolean _rewinding;
     private boolean _rendering;
     private int _nextOptionId;
@@ -108,12 +103,6 @@ public abstract class RadioGroup extends AbstractFormComponent
     }
 
     public abstract IBinding getSelectedBinding();
-
-
-    public String getName()
-    {
-        return _name;
-    }
 
     public int getNextOptionId()
     {
@@ -204,7 +193,7 @@ public abstract class RadioGroup extends AbstractFormComponent
 
         // Used whether rewinding or not.
 
-        _name = form.getElementId(this);
+        String name = form.getElementId(this);
 
         cycle.setAttribute(ATTRIBUTE_NAME, this);
 
@@ -213,7 +202,7 @@ public abstract class RadioGroup extends AbstractFormComponent
 
         if (_rewinding)
         {
-            String value = cycle.getRequestContext().getParameter(_name);
+            String value = cycle.getRequestContext().getParameter(name);
             if (value == null)
                 _selectedOption = -1;
             else

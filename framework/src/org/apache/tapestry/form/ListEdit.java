@@ -58,7 +58,6 @@ package org.apache.tapestry.form;
 import java.io.IOException;
 import java.util.Iterator;
 
-import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IBinding;
@@ -82,18 +81,14 @@ import org.apache.tapestry.util.io.DataSqueezer;
  * 
  **/
 
-public abstract class ListEdit extends AbstractComponent
+public abstract class ListEdit extends AbstractFormComponent
 {
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         Iterator i = null;
 
-        IForm form = Form.get(cycle);
-        if (form == null)
-            throw new ApplicationRuntimeException(
-                Tapestry.getString("must-be-wrapped-by-form", "ListEdit"),
-                this);
+        IForm form = getForm(cycle);
 
         boolean cycleRewinding = cycle.isRewinding();
 
