@@ -81,7 +81,7 @@ public interface IExternalPage extends IPage
      *  This method is invoked after {@link IPage#validate(IRequestCycle)}.
      *
      *  @param parameters the array of page parameters
-     *  @param the current request cycle
+     *  @param cycle current request cycle
      * 
      **/
 
