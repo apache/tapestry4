@@ -66,8 +66,7 @@
   </component>
   <component id="publisherScript" type="Script">
     <static-binding name="script">/com/primix/vlib/pages/Publisher.script</static-binding>
-    <binding name="selectName" property-path="components.inputPublisher.name"/>
-    <binding name="fieldName" property-path="components.inputPublisherName.name"/>
-    <binding name="formName" property-path="components.form.name"/>
+    <binding name="select" property-path="components.inputPublisher"/>
+    <binding name="field" property-path="components.inputPublisherName"/>
   </component>
 </specification>

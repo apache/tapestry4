@@ -1,42 +1,43 @@
 <?xml version="1.0"?>
 <!-- $Id$ -->
 <!DOCTYPE script PUBLIC 
-	"-//Primix Solutions//Tapestry Script 1.0//EN"
-	"http://tapestry.sourceforge.net/dtd/Script_1_0.dtd">
+	"-//Howard Ship//Tapestry Script 1.1//EN"
+	"http://tapestry.sf.net/dtd/Script_1_1.dtd">
 
 <script>
 <!-- 
 
 input symbols:
 
-formName - name of form containing the other components
-selectName  - name of the select within the form
-fieldName - name of the text field with in the form
+  select: The PropertySelection component
+  field: The matching TextField component
+  
+Both are assumed to be in the same form.
 
 -->
 
 <let key="formObject">
-	document.<insert key="formName"/>
+	document.<insert property-path="select.form.name"/>
 </let>
 
 <let key="selectObject">
-	<insert key="formObject"/>.<insert key="selectName"/>
+	<insert property-path="formObject"/>.<insert property-path="select.name"/>
 </let>
 
 <let key="fieldObject">
-	<insert key="formObject"/>.<insert key="fieldName"/>
+	<insert property-path="formObject"/>.<insert property-path="field.name"/>
 </let>
 
 <let key="functionName">
-	onChange_<insert key="formName"/>_<insert key="selectName"/>
+	onChange_<insert property-path="select.form.name"/>_<insert property-path="select.name"/>
 </let>
 
 <body>
 
-function <insert key="functionName"/>()
+function <insert property-path="functionName"/>()
 {
-  var select = <insert key="selectObject"/>;
-  var field = <insert key="fieldObject"/>;
+  var select = <insert property-path="selectObject"/>;
+  var field = <insert property-path="fieldObject"/>;
 	
 	// Index 0 is the null value option, meaning enable the text field
 	
@@ -61,12 +62,12 @@ function <insert key="functionName"/>()
 <!-- Navigator is not documented to respond to the onChange event, but this works,
 	 so my documentation must be wrong. -->
 	 
-<insert key="selectObject"/>.onchange = <insert key="functionName"/>;
+<insert property-path="selectObject"/>.onchange = <insert property-path="functionName"/>;
 
 <!-- Disable the text field unless the select is set for index 0 (the null value). -->
 
-if (<insert key="selectObject"/>.selectedIndex != 0)
-  <insert key="fieldObject"/>.disabled = true;
+if (<insert property-path="selectObject"/>.selectedIndex != 0)
+  <insert property-path="fieldObject"/>.disabled = true;
 
 </initialization>
 
