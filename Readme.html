@@ -16,13 +16,13 @@ TR.odd
 <body bgcolor="#839cd1" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" bgcolor="white">
 	<tr>
-		<td height="5"><img height="1" src="web/images/spacer.gif" width="1" border="0"></td>
+		<td height="5"><IMG height=1 src="web/images/spacer.gif" width=1 border=0></td>
 	</tr>
 	<tr>
-		<td align="left" valign="top" height="20"><span class="release">Release @VERSION@</release></td>
+		<td align="left" valign="top" height="20"><span class="release">Release @VERSION@</RELEASE></span></td>
 	</tr>
 	<tr bgcolor="#4b5887">
-		<td colspan="3" height="20"><img height="1" src="web/images/spacer.gif" width="1" border="0">
+		<td colspan="3" height="20"><IMG height=1 src="web/images/spacer.gif" width=1 border=0>
 		</td>
 	</tr>
 </table>
@@ -73,9 +73,9 @@ compiler.
 <p>Tapestry ships with the the Tapestry Tutorial and the Virtual Library demo applications, which are very 
 easy to configure and run. To run these Tapestry appliations please ensure:
 <ul>
-<li>JDK 1.3 or newer JVM is installed, and the <tt>JAVA_HOME</tt> environment variable is set.</b> 
+<li>JDK 1.3 or newer JVM is installed, and the <tt>JAVA_HOME</tt> environment variable is set.</B> 
 <li><b><a href="http://jakarta.apache.org/ant">Ant</a></b> 1.5 or newer is installed, and is added 
-to the system <tt>PATH</tt>.
+to the system <tt>PATH</tt>.</li>
 </ul>
 
 <p>
@@ -85,7 +85,7 @@ To run the Tapestry Tutorial and the Virtual Library applications with the
 <li><b>Download <b><a href="http://prdownloads.sourceforge.net/jboss/jboss-3.0.0.zip?download">JBoss 3.0.0</a></b>.  </b>
 	JBoss is an open-source application server, used to run the database and Enterprise JavaBeans in the Virtual Library.  
 <em>The Virtual Library can only be 
-        auto-configured using the JBoss 3.0.0 distribution.</EM>
+        auto-configured using the JBoss 3.0.0 distribution.</em>
 <li><b>Create the file <code><i>Tapestry</i>/config/build.properties</code>.</b>
 		This file informs 
         Tapestry where JBoss as been installed.
@@ -97,8 +97,9 @@ To run the Tapestry Tutorial and the Virtual Library applications with the
 <li><b>Execute the command: <code>ant -emacs configure run-jboss</code></b>
 <br>This will copy and configure the necessary files in the JBoss installation directory,
 then run the JBoss server, automatically deploying the Tapestry Tutorial and 
-the Virtual Library demonstration.  (The <code>-emacs</code> option changes the
-Ant output format to be less verbose).
+the Virtual Library demonstration.  (The <code>-emacs</code> option 
+        changes the Ant output format to be less verbose).</li>   
+      
 </ul>
 
 <blockquote>
@@ -114,7 +115,7 @@ To run the Tapestry Tutorial application with the
 <a href="http://sourceforge.net/projects/jetty">Jetty</a> server included in this distribution:
 <ul>
 <li><b>Execute the command: <code>ant run-tutorial</code></b>
-<br>This will run the Jetty server and the <a href="http://localhost:8080/tutorial">Tapestry Tutorial</a> application.
+<br>This will run the Jetty server and the <a href="http://localhost:8080/tutorial">Tapestry Tutorial</a> application.</li> 
 </ul>
 
 <p>
@@ -129,8 +130,9 @@ To deploy the Tapestry Tutorial application onto an existing
 		<b>Note:</b> Use only forward slashes in this file name.
 <li><b>Execute the command: <code>ant deploy-tomcat</code></b>
 <br>This will deploy run tutorial application onto the Tomcat server. If Tomcat is running 
-		you should be able to access <a href="http://localhost:8080/tutorial">Tapestry Tutorial</a> application, otherwise
-    start Tomcat to access the application.    
+		you should be able to access <a href="http://localhost:8080/tutorial">Tapestry Tutorial</a> application, otherwise start Tomcat to access the 
+        application.</li>  
+             
 </ul>
 
 
@@ -145,8 +147,8 @@ or is available <a href="http://tapestry.sf.net/doc_frame.html">online</a>.
 <p>
 	<table border="0" cellspacing="0" cellpadding="2">
 	<tr valign="top">
-		<td><img src="web/images/dots_leftnav.gif" width="14" height="12"></td>
-		<td><a class="clsLeftNav" href="web/doc/api/">Tapestry API Documentation</a>
+		<td><IMG height=12 src="web/images/dots_leftnav.gif" width=14></td>
+		<td><A class=clsLeftNav href="web/doc/api/">Tapestry API Documentation</A>
 		
 		<br><br>
 		
@@ -156,11 +158,11 @@ or is available <a href="http://tapestry.sf.net/doc_frame.html">online</a>.
 		</td>
 	</tr>
 
-	<tr><td height="10" colspan="4"><img src="images/spacer.gif" width="1"></td></tr>
+	<tr><td height="10" colspan="4"><IMG src="images/spacer.gif" width=1></td></tr>
 
 	<tr valign="top">
-		<td><img src="web/images/dots_leftnav.gif" width="14" height="12"></td>
-		<td><a class="clsLeftNav" href="web/doc/ComponentReference/">Tapestry Component Reference</a>
+		<td><IMG height=12 src="web/images/dots_leftnav.gif" width=14></td>
+		<td><A class=clsLeftNav href="web/doc/ComponentReference/">Tapestry Component Reference</A>
 		
 		<br><br>
 		
@@ -169,13 +171,13 @@ or is available <a href="http://tapestry.sf.net/doc_frame.html">online</a>.
 		</td>
 	</tr>
 	
-	<tr><td height="10" colspan="4"><img src="images/spacer.gif" width="1"></td></tr>
+	<tr><td height="10" colspan="4"><IMG src="images/spacer.gif" width=1></td></tr>
 	
 	<tr valign="top">
-		<td><img src="web/images/dots_leftnav.gif" width="14" height="12"></td>
-		<td><a class="clsLeftNav" href="web/doc/Tutorial/Tutorial.html">Tutorial</a>
-		<img src="web/images/dots_leftnav.gif" width="14" height="12">
-		<a class="clsLeftNav" href="web/doc/Tutorial/Tutorial.pdf">[PDF]</a>
+		<td><IMG height=12 src="web/images/dots_leftnav.gif" width=14></td>
+		<td><A class=clsLeftNav href="web/doc/Tutorial/Tutorial.html">Tutorial</A>
+		<IMG height=12 src="web/images/dots_leftnav.gif" width=14>
+		<A class=clsLeftNav href="web/doc/Tutorial/Tutorial.pdf">[PDF]</A>
 		
 		<br><br>
 		The best way to begin learning about the Tapestry framework; this document
@@ -183,13 +185,13 @@ or is available <a href="http://tapestry.sf.net/doc_frame.html">online</a>.
 		</td>
 	</tr>
 
-	<tr><td height="10" colspan="4"><img src="images/spacer.gif" width="1"></td></tr>
+	<tr><td height="10" colspan="4"><IMG src="images/spacer.gif" width=1></td></tr>
 	
 	<tr valign="top">
-		<td><img src="web/images/dots_leftnav.gif" width="14" height="12"></td>
-		<td><a class="clsLeftNav" href="web/doc/DevelopersGuide/DevelopersGuide.html">Tapestry Developer's Guide</a>
-		<img src="web/images/dots_leftnav.gif" width="14" height="12">
-		<a class="clsLeftNav" href="web/doc/DevelopersGuide/DevelopersGuide.pdf">[PDF]</a>
+		<td><IMG height=12 src="web/images/dots_leftnav.gif" width=14></td>
+		<td><A class=clsLeftNav href="web/doc/DevelopersGuide/DevelopersGuide.html">Tapestry Developer's Guide</A>
+		<IMG height=12 src="web/images/dots_leftnav.gif" width=14>
+		<A class=clsLeftNav href="web/doc/DevelopersGuide/DevelopersGuide.pdf">[PDF]</A>
 		
 		<br><br>
 		Exhaustive reference for Tapestry, in extreme detail.
@@ -197,13 +199,13 @@ or is available <a href="http://tapestry.sf.net/doc_frame.html">online</a>.
 	</tr>
 
 
-	<tr><td height="10" colspan="4"><img src="images/spacer.gif" width="1"></td></tr>
+	<tr><td height="10" colspan="4"><IMG src="images/spacer.gif" width=1></td></tr>
 	
 	<tr valign="top">
-		<td><img src="web/images/dots_leftnav.gif" width="14" height="12"></td>
-		<td><a class="clsLeftNav" href="web/doc/ContributorsGuide/ContributorsGuide.html">Tapestry Contributor's Guide</a>
-		<img src="web/images/dots_leftnav.gif" width="14" height="12">
-		<a class="clsLeftNav" href="web/doc/ContributorsGuide/ContributorsGuide.pdf">[PDF]</a>
+		<td><IMG height=12 src="web/images/dots_leftnav.gif" width=14></td>
+		<td><A class=clsLeftNav href="web/doc/ContributorsGuide/ContributorsGuide.html">Tapestry Contributor's Guide</A>
+		<IMG height=12 src="web/images/dots_leftnav.gif" width=14>
+		<A class=clsLeftNav href="web/doc/ContributorsGuide/ContributorsGuide.pdf">[PDF]</A>
 		
 		<br><br>
 		A guide for advanced developers who want to contribute code back to the Tapestry framework.
@@ -211,11 +213,7 @@ or is available <a href="http://tapestry.sf.net/doc_frame.html">online</a>.
 		</td>
 	</tr>		
 	</table>
-
-
-		    
-
-</ul>
+      <UL></UL>
 
 
 <a name="jars"></a>
@@ -349,7 +347,7 @@ at  runtime. These files are are included in the distribution.
 	<tr valign="top" class="odd">
 		<td>ognl-2.3.0-opt.jar</td>
 		<td>2.3.0</td>
-		<td><a href="LICENSE.ognl.txt">BSD?</a></td>
+		<td><A href="LICENSE.ognl.txt">BSD?</A></td>
 		<td><a href="http://www.ognl.org">Object Graph
 			Navigation Library</a>.
 		</td>
@@ -377,8 +375,10 @@ at  runtime. These files are are included in the distribution.
 		.....................................................
 		<br><br>
 
-<p>Tapestry is an open source project, hosted on the <a href="http://sf.net/project/?group_id=4754">SourceForge</a> and licensed
-under the <A href="License.txt">Apache Software License 1.1</A>.</p></td></tr></table>
+<p>Tapestry is an open source project, hosted by
+ <a href="http://jakarta.apache.org">The   Jakarta Project</a> 
+       and distributed under the terms
+of the <A href="License.txt">Apache Software License 1.1</A>.</p></td></tr></table>
 
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -390,7 +390,7 @@ under the <A href="License.txt">Apache Software License 1.1</A>.</p></td></tr></
 			<table width="790" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td width="359">&nbsp;</td>
-					<td><a href="http://sf.net/projects/tapestry"><IMG src="http://sourceforge.net/sflogo.php?group_id=4754" width="88" height="31" border="0" alt="SourceForge Logo"></a>
+					<td><a href="http://jakarta.apache.org"><IMG alt="Jakarta Banner" src="web/images/jakarta-banner.png" border=0 ></a>
 					</td>
 				</tr>
 			</table>
@@ -400,8 +400,9 @@ under the <A href="License.txt">Apache Software License 1.1</A>.</p></td></tr></
 		<td height="65">
 			<table width="724" border="0" cellspacing="0" cellpadding="3" bgcolor="#000000">
 				<tr height="65">
-					<td width="654" align="right" valign="bottom" class="clsFooter">©2000-2002 Howard Lewis Ship.
-					All rights reserved.</td>
+					<td width="654" align="right" valign="bottom" class="clsFooter">&copy; 2003 Apache Software Foundation.
+					All rights reserved.
+					</td>
 					<td width="70">&nbsp;</td>
 				</tr>
 			</table>
