@@ -1,3 +1,7 @@
+* Jan 30 2001 hship
+
+Slight revision of VlibBeans Makefile (TAR variable was renamed to GNUTAR).
+
 * Jan 26 2001 hship
 
 Change the Publisher.script to make use of the new <let> tag.
