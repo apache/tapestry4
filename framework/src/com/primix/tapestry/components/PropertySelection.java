@@ -293,7 +293,7 @@ public class PropertySelection extends AbstractFormComponent
 			
 			if (needDefault)
 			{
-				if (option.equals(currentValue))
+				if (isEqual(option, currentValue))
 				{
 					if (radio)
 						writer.attribute("checked");
@@ -312,6 +312,23 @@ public class PropertySelection extends AbstractFormComponent
 		
 		// A PropertySelection doesn't allow a body, so no need to worry about
 		// wrapped components.
+	}
+	
+	private boolean isEqual(Object left, Object right)
+	{
+		// Both null, or same object, then are equal
+		
+		if (left == right)
+			return true;
+		
+		// If one is null, the other isn't, then not equal.
+		
+		if (left == null || right == null)
+			return false;
+		
+		// Both non-null; use standard comparison.
+			
+		return left.equals(right);	
 	}
 }
  
