@@ -87,12 +87,26 @@ public interface EnhancementOperation
      * subclass of the component class will usually be created.
      */
     public Class getBaseClass();
-    
+
     /**
-     * Returns a reference to a particular class.  This will, effectively, by the name
-     * of a private field.
-     * 
+     * Returns a reference to a particular class. This will, effectively, by the name of a private
+     * field.
      */
-    
+
     public String getClassReference(Class clazz);
+
+    /**
+     * Returns true if any enhancements (new methods, fields, etc.) have been defined.
+     */
+
+    public boolean hasEnhancements();
+
+    /**
+     * Forces an enhanced subclass to be created even if there are no other enhancements.
+     * 
+     * @see org.apache.tapestry.enhance.ForceNonAbstractWorker
+     */
+
+    public void forceEnhancement();
+
 }

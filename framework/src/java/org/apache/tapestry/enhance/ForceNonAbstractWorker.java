@@ -14,26 +14,29 @@
 
 package org.apache.tapestry.enhance;
 
+import java.lang.reflect.Modifier;
+
 /**
- * Convienience methods needed by various parts of the enhancement subsystem.
+ * A worker that must be last; its job is to detect abstract classes that have no other
+ * enhancements, and force an enhancement (so that a non-abstract subclass is generated). This is to
+ * answer to the common problem of declaring a page abstract and not defining any properties.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class EnhanceUtils
+public class ForceNonAbstractWorker implements EnhancementWorker
 {
-    public static String createMutatorMethodName(String propertyName)
-    {
-        return "set" + upcase(propertyName);
-    }
 
-    public static String createAccessorMethodName(String propertyName)
+    public void performEnhancement(EnhancementOperation op)
     {
-        return "get" + upcase(propertyName);
-    }
+        Class baseClass = op.getBaseClass();
 
-    private static String upcase(String name)
-    {
-        return name.substring(0, 1).toUpperCase() + name.substring(1);
+        if (!Modifier.isAbstract(baseClass.getModifiers()))
+            return;
+
+        if (op.hasEnhancements())
+            return;
+
+        op.forceEnhancement();
     }
 }
