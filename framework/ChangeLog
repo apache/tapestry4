@@ -1,3 +1,13 @@
+* Feb 7 2001 hship
+
+Add some logging to AssetExternalizer.
+Have RequestContext emit ServletContext init parameters inside write().
+Fix a bug that prevented asset externalization from working (got the URL
+from a servlet init param, not the servlet context).
+Explicitly set the width and height of the tabs on the Inspector page.
+Remove indentation support from IResponseWriter and implementations.
+Add the Block and InsertBlock components.
+
 * Feb 6 2001 hship
 
 Add missing method getMaximumLengthBinding to TextField.

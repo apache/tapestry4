@@ -92,7 +92,7 @@ implements IPage
 	protected String name;
 
 	/**
-	*  Only valid while the page is actually rendering.
+	*  Set when the page is attached to the engine.
 	*
 	*/
 
@@ -150,6 +150,7 @@ implements IPage
 		engine = null;
 		visit = null;
 		changeObserver = null;
+		requestCycle = null;
 
 		for (int i = 0; i < lifecycleComponentCount; i++)
 			lifecycleComponents[i].reset();
@@ -265,8 +266,6 @@ implements IPage
 	public void renderPage(IResponseWriter writer, IRequestCycle cycle)
 	throws RequestCycleException
 	{
-		requestCycle = cycle;
-
 		try
 		{			
             for (int i = 0; i < lifecycleComponentCount; i++)
@@ -285,8 +284,6 @@ implements IPage
 			}
 		finally
 		{
-			requestCycle = null;
-
 			// Open question:  how to handle any exceptions thrown here.
 
 			for (int i = 0; i < lifecycleComponentCount; i++)
@@ -319,11 +316,6 @@ implements IPage
 	}
 
 	/**
-	*  Returns a new {@link HTMLResponseWriter}.
-	*
-	*/
-
-	/**
 	*  Does nothing, subclasses may override as needed.
 	*
 	*
@@ -337,6 +329,11 @@ implements IPage
 	public IRequestCycle getRequestCycle()
 	{
 		return requestCycle;
+	}
+
+	public void setRequestCycle(IRequestCycle value)
+	{
+		requestCycle = value;
 	}
 
 	/**

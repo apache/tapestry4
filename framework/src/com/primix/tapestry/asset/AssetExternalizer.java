@@ -1,13 +1,14 @@
 package com.primix.tapestry.asset;
 
 import java.net.URL;
-import com.primix.foundation.StringSplitter;
+import com.primix.foundation.*;
 import com.primix.tapestry.*;
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.util.*;
-import com.primix.tapestry.spec.ApplicationSpecification;
+import com.primix.tapestry.spec.*;
+import org.apache.log4j.*;
 
 /*
  * Tapestry Web Application Framework
@@ -85,6 +86,8 @@ import com.primix.tapestry.spec.ApplicationSpecification;
  
 public class AssetExternalizer
 {
+	private static final Category CAT = Category.getInstance(AssetExternalizer.class.getName());
+	
 	private IResourceResolver resolver;
 	private File assetDir;
 	private String URL;
@@ -102,27 +105,25 @@ public class AssetExternalizer
 	
 	protected AssetExternalizer(IRequestCycle cycle)
 	{
-		HttpServlet servlet;
-		String directory;
-        ServletContext context;
-
 		resolver = cycle.getEngine().getResourceResolver();
 		
-		servlet = cycle.getRequestContext().getServlet();
+		HttpServlet servlet = cycle.getRequestContext().getServlet();
 
-        context = servlet.getServletContext();
+        ServletContext context = servlet.getServletContext();
 
-		directory = context.getInitParameter("com.primix.tapestry.asset.dir");
+		String directory = context.getInitParameter("com.primix.tapestry.asset.dir");
 
 		if (directory == null)
 			return;
 
-		URL = servlet.getInitParameter("com.primix.tapestry.asset.URL");
+		URL = context.getInitParameter("com.primix.tapestry.asset.URL");
 
 		if (URL == null)
 			return;
 
 		assetDir = new File(directory);
+		
+		CAT.debug("Initialized with directory " + assetDir + " mapped to " + URL);
 	}
 
 	protected void externalize(String resourcePath)
@@ -138,6 +139,9 @@ public class AssetExternalizer
 		URL inputURL;
 		byte[] buffer;
 
+		if (CAT.isDebugEnabled())
+			CAT.debug("Externalizing " + resourcePath);
+			
 		file = assetDir;
 
 		// Resources are always split by the unix seperator, even on Win32.
@@ -146,10 +150,10 @@ public class AssetExternalizer
 
 		path = splitter.splitToArray(resourcePath);
 
-		// Since the path is expected to start with a leading slash, the first
-		// element of path[] will be the empty string and we skip it.
+		// The path is expected to start with a leading slash, but the StringSplitter
+		// will ignore that leading slash.
 
-		for (i = 1; i < path.length - 1; i++)
+		for (i = 0; i < path.length - 1; i++)
 		{
 			// Doing it this way makes sure the path seperators are right.
 
@@ -162,7 +166,9 @@ public class AssetExternalizer
 
 		file = new File(file, path[path.length - 1]);
 
-		// If the file exists, then assume all is well.
+		// If the file exists, then assume all is well.  This is OK for development,
+		// but there may be multithreading (or even multiprocess) race conditions
+		// around the creation of the file.
 
 		if (file.exists())
 			return;
@@ -261,7 +267,13 @@ public class AssetExternalizer
 			return null;
 
 		if (resources == null)
-			resources = new HashMap(MAP_SIZE);
+		{
+			synchronized(this)
+			{
+				if (resources == null)
+					resources = new HashMap(MAP_SIZE);
+			}
+		}	
 
 		synchronized (resources)
 		{

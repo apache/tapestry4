@@ -201,6 +201,8 @@ public class RequestCycle
 					name + ".", e);
 			}
 
+			result.setRequestCycle(this);
+
 			// Get the recorder that will eventually observe and record
 			// changes to persistent properties of the page.  If the page
 			// has never emitted any page changes, then it will

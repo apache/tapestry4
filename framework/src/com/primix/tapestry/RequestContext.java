@@ -1159,6 +1159,21 @@ public class RequestContext
 		pair(writer, "serverInfo", context.getServerInfo());
 
 		first = true;
+		e = context.getInitParameterNames();
+		while (e.hasMoreElements())
+		{
+			if (first)
+			{
+				section(writer, "Initial Parameters");
+				header(writer, "Name", "Value");
+				first = false;
+			}
+			
+			name = (String)e.nextElement();
+			pair(writer, name, context.getInitParameter(name));
+		}
+
+		first = true;
 		e = context.getAttributeNames();
 		while (e.hasMoreElements())
 		{

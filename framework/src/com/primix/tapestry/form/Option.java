@@ -117,7 +117,6 @@ public class Option extends AbstractComponent
 	throws RequestCycleException
 	{
 		String value;
-		boolean compressed = false;
 		String label = null;
 		Select select;
 		boolean rewinding;
@@ -145,8 +144,6 @@ public class Option extends AbstractComponent
 		}
 		else
 		{
-			compressed = writer.compress(true);
-
 			writer.beginEmpty("option");
 
 			writer.attribute("value", value);
@@ -163,11 +160,8 @@ public class Option extends AbstractComponent
 
 			if (label != null)
 				writer.print(label);
-		}
-
-		if (!rewinding)
-		{
-			writer.setCompressed(compressed);
+			
+			writer.println();	
 		}
 
 	}

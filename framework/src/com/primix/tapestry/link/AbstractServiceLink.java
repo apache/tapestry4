@@ -355,7 +355,6 @@ public abstract class AbstractServiceLink
 	throws RequestCycleException
 	{
 		IResponseWriter wrappedWriter;
-		boolean compressed = false;
 		String href;
 		String[] context;
 		boolean enabled;
@@ -390,9 +389,7 @@ public abstract class AbstractServiceLink
 				// Along the way, they may interact with this component
 				// and cause the name variable to get set.
 
-				compressed = writer.compress(true);
 				wrappedWriter = writer.getNestedWriter();
-				wrappedWriter.setCompressed(true);
 			}
 			else
 				wrappedWriter = writer;
@@ -416,7 +413,6 @@ public abstract class AbstractServiceLink
 				// Close the <a> tag
 
 				writer.end();
-				writer.setCompressed(compressed);
 			}
 
 			cycle.removeAttribute(ATTRIBUTE_NAME);

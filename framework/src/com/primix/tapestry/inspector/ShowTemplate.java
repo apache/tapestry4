@@ -91,7 +91,6 @@ implements IDirect
 		char[] data;
 		TemplateToken token;
 		int i;
-		boolean compressed;
 		String[] context = null;
 		IEngineService service = null;
 		String URL;
@@ -112,7 +111,6 @@ implements IDirect
 			return;
 		}
 
-		compressed = writer.compress(true);
 		writer.begin("pre");
 
 		count = template.getTokenCount();
@@ -201,7 +199,6 @@ implements IDirect
 		}
 
 		writer.end(); // <pre>
-		writer.setCompressed(compressed);
 	}
 
     /**

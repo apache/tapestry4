@@ -203,7 +203,7 @@ public class Body extends AbstractComponent
 			onLoadName = writeScript();
 			
 			// Start the body tag.
-			
+			writer.println();
 			writer.begin("body");
 			generateAttributes(cycle, writer, reservedNames);
 

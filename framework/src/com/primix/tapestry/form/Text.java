@@ -158,7 +158,6 @@ public class Text extends AbstractFormComponent
 		String value;
 		boolean disabled = false;
 		Form form;
-		boolean compressed;
 
 		form = getForm(cycle);
 
@@ -189,8 +188,6 @@ public class Text extends AbstractFormComponent
 			return;
 		}
 
-		compressed = writer.compress(true);
-
 		writer.begin("textarea");
 
 		writer.attribute("name", name);
@@ -212,7 +209,6 @@ public class Text extends AbstractFormComponent
 
 		writer.end();
 
-		writer.setCompressed(compressed);
 	}
 
 	public void setColumnsBinding(IBinding value)
