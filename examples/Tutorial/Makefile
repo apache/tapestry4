@@ -1,3 +1,5 @@
+# $Id$
+
 PACKAGES = \
 	tutorial.hello \
 	tutorial.simple \
@@ -5,10 +7,6 @@ PACKAGES = \
 	tutorial.border \
 	tutorial.survey
 
-RESOURCE_PACKAGES = $(PACKAGES)
-
-CONTEXT_RESOURCES = index.html
-	
 LOCAL_CLASSPATH = \
 	../../lib/Tapestry.jar \
 	../../lib/PrimixFoundation.jar \
@@ -18,7 +16,7 @@ INSTALL_DIR = ../../lib
 
 MODULE_NAME = Tutorial
 
-include $(SYS_MAKEFILE_DIR)/War.mk
+include $(SYS_MAKEFILE_DIR)/Jar.mk
 
 
 
