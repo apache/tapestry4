@@ -47,14 +47,12 @@ import java.util.*;
 public class ValidationDelegate implements IValidationDelegate, IPoolable
 {
 	private IFormComponent currentComponent;
-	protected IFieldTracking currentTracking;
 	private List trackings;
 	private Map trackingMap;
 
 	public void resetForPool()
 	{
 		currentComponent = null;
-		currentTracking = null;
 
 		if (trackings != null)
 			trackings.clear();
@@ -111,26 +109,43 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 		}
 	}
 
+	/**
+	 *  Returns the {@link IFieldTracking} for the current component, if any.
+	 *  The {@link IFieldTracking} is created in {@link #record(IRender, ValidationConstraint, String)}
+	 *  when an error is recorded for the component.
+	 * 
+	 *  <p>Components may be rendered multiple times, with multiple names (provided
+	 *  by the {@link Form}, care must be taken that this method is invoked
+	 *  <em>after</em> the Form has provided a unique name for the component.
+	 * 
+	 *  @see #setFormComponent(IFormComponent)
+	 * 
+	 *  @returns the {@link IFieldTracking}, or null if the field has no tracking
+	 *  (is not in error).
+	 * 
+	 **/
+	
+	protected IFieldTracking getComponentTracking()
+	{
+	 	if ( trackingMap == null)
+	 		return null;  
+	 		
+	 	return (IFieldTracking)trackingMap.get(currentComponent.getName());
+	}
+
 	public void setFormComponent(IFormComponent component)
 	{
 		currentComponent = component;
-		currentTracking = null;
-
-		if (trackingMap != null && component != null)
-			currentTracking = (FieldTracking) trackingMap.get(component.getName());
 	}
 
 	public boolean isInError()
 	{
-		return currentTracking != null;
+		return getComponentTracking() != null;
 	}
 
 	public String getInvalidInput()
 	{
-		if (currentTracking == null)
-			return null;
-
-		return currentTracking.getInvalidInput();
+		return getComponentTracking().getInvalidInput();
 	}
 
 	/**
@@ -148,10 +163,12 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 
 	public void reset()
 	{
-		if (currentTracking != null)
+	    IFieldTracking tracking = getComponentTracking();
+	    
+		if (tracking != null)
 		{
-			trackings.remove(currentTracking);
-			trackingMap.remove(currentTracking.getFieldName());
+			trackings.remove(tracking);
+			trackingMap.remove(tracking.getFieldName());
 		}
 	}
 
@@ -202,6 +219,8 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 		ValidationConstraint constraint,
 		String invalidInput)
 	{
+		IFieldTracking tracking = null;
+		
 		if (trackings == null)
 			trackings = new ArrayList();
 
@@ -210,34 +229,34 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 
 		if (currentComponent == null)
 		{
-			IFieldTracking unassociated = new FieldTracking();
-			unassociated.setInvalidInput(invalidInput);
-			unassociated.setRenderer(errorRenderer);
-			unassociated.setConstraint(constraint);
-
+			tracking = new FieldTracking();
+	
 			// Add it to the *ahem* field trackings, but not to the
 			// map.
 
-			trackings.add(unassociated);
-			return;
+			trackings.add(tracking);
 		}
-
-		if (currentTracking == null)
+	else
+	{
+		tracking = getComponentTracking();
+		
+		if (tracking == null)
 		{
 			String fieldName = currentComponent.getName();
 
-			currentTracking = new FieldTracking(fieldName, currentComponent);
+			tracking = new FieldTracking(fieldName, currentComponent);
 
-			trackings.add(currentTracking);
-			trackingMap.put(fieldName, currentTracking);
+			trackings.add(tracking);
+			trackingMap.put(fieldName, tracking);
 		}
+	}
 
 		// Note that recording two errors for the same field is not advised; the
 		// second will override the first.
 
-		currentTracking.setInvalidInput(invalidInput);
-		currentTracking.setRenderer(errorRenderer);
-		currentTracking.setConstraint(constraint);
+		tracking.setInvalidInput(invalidInput);
+		tracking.setRenderer(errorRenderer);
+		tracking.setConstraint(constraint);
 	}
 
 	public void writePrefix(IResponseWriter writer, IRequestCycle cycle)
@@ -253,7 +272,7 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 	public void writeSuffix(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
-		if (currentTracking != null)
+		if (isInError())
 		{
 			writer.printRaw("&nbsp;");
 			writer.begin("font");

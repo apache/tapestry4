@@ -48,7 +48,7 @@ public class InspectorValidationDelegate extends ValidationDelegate
 	public void writeSuffix(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
-		if (currentTracking != null)
+		if (isInError())
 		{
 			writer.printRaw("&nbsp;");
 			writer.begin("span");
