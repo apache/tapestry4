@@ -145,7 +145,7 @@ public abstract class DirectLink extends AbstractLinkComponent implements IDirec
      *  Invoked by the direct service to trigger the application-specific
      *  action by notifying the {@link IActionListener listener}.
      *
-     *  @throws StaleSessionException if the component is stateful, and
+     *  @throws org.apache.tapestry.StaleSessionException if the component is stateful, and
      *  the session is new.
      * 
      **/

@@ -74,7 +74,7 @@ import org.apache.tapestry.spec.ILibrarySpecification;
 
 /**
  *  Implementation of {@link org.apache.tapestry.INamespace}
- *  that works with a {@link org.apache.tapestry.ISpecificationSource} to
+ *  that works with a {@link ISpecificationSource} to
  *  obtain page and component specifications as needed.
  *
  *  @author Howard Lewis Ship
@@ -94,7 +94,7 @@ public class Namespace implements INamespace
     private boolean _applicationNamespace;
 
     /**
-     *  Map of {@link ComponentSpecification} keyed on page name.
+     *  Map of {@link org.apache.tapestry.spec.ComponentSpecification} keyed on page name.
      *  The map is synchronized because different threads may
      *  try to update it simultaneously (due to dynamic page
      *  discovery in the application namespace).
@@ -104,7 +104,7 @@ public class Namespace implements INamespace
     private Map _pages = Collections.synchronizedMap(new HashMap());
 
     /**
-     *  Map of {@link ComponentSpecification} keyed on
+     *  Map of {@link org.apache.tapestry.spec.ComponentSpecification} keyed on
      *  component alias.
      * 
      **/

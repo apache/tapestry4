@@ -528,7 +528,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
 
     /**
      *  Return's the page's change observer.  In practical terms, this
-     *  will be an {@link IPageRecorder}.
+     *  will be an {@link org.apache.tapestry.engine.IPageRecorder}.
      *
      *  @see IPage#getChangeObserver()
      *  @deprecated To be removed in 3.1; use {@link IPage#getChangeObserver()}.

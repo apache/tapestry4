@@ -240,7 +240,7 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
 
     /**
      *  Utility method for subclasses; Gets the named service from the engine
-     *  and invokes {@link org.apache.tapestry.IEngineService#buildGesture(IRequestCycle, IComponent, Object[])}
+     *  and invokes {@link IEngineService#getLink(IRequestCycle, org.apache.tapestry.IComponent, Object[])}
      *  on it.
      * 
      *  @since 3.0

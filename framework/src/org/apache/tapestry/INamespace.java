@@ -196,7 +196,7 @@ public interface INamespace extends ILocatable
     /**
      *  Returns the path for the named component (within the namespace).
      * 
-     *  @param alias the component alias
+     *  @param type the component alias
      *  @return the specification path of the component
      *  @throws ApplicationRuntimeException if the specification
      *  doesn't exist or can't be loaded
@@ -250,7 +250,7 @@ public interface INamespace extends ILocatable
     public List getServiceNames();
 
     /**
-     *  Returns the {@link LibrarySpecification} from which
+     *  Returns the {@link org.apache.tapestry.spec.LibrarySpecification} from which
      *  this namespace was created.
      * 
      **/
