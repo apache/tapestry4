@@ -283,6 +283,20 @@ Fixed NPE in PatternValidator.toString().
 Fix TestMocks to not use JDK 1.4 API.	
 </action>
 
+<action type="fix" dev="MB">
+Fixing property initializers to be evaluated every time (unless they are invariant)
+</action>
+
+<action type="update" dev="MB">
+Added Servlet API 2.4 from Tomcat 5 and ejb.jar from Geronimo.
+Made the mock objects compatible with Servlet API 2.4.
+</action>
+
+<action type="update" dev="MB">
+Evaluate the string 'false' as Boolean.FALSE. 
+All other non-empty strings continue to be evaluated as Boolean.TRUE.
+</action>
+
 <action type="update" dev="MB">
 Automatically download external dependencies (such as Forrest and McKoi DB).	
 </action>
@@ -294,6 +308,10 @@ DatePicker positioning problem fixed.
 <action type="fix" dev="HK" fixes-bug="24336">
 Automatic rendering of the maxlength and size attributes have been removed.
 DatePicker now allows informal attributes that will be applied to the field.
+</action>
+
+<action type="fix" dev="MB" fixes-bug="25611">
+Fixed one more place where the encoding needs to be set
 </action>
 
 			</release>
