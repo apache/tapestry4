@@ -142,6 +142,10 @@ public class MyBooks extends BasePage
 		
 		try
 		{
+			// This means that we do a new query every time we visit the page.
+			// That may not be necessary, in which case, we should
+			// do something smart about caching and cache clearing.
+			
 			count = query.ownerQuery(app.getUserPK());
 			
 			return query.get(0, count);
@@ -182,6 +186,22 @@ public class MyBooks extends BasePage
 		return message;
 	}
 
+	public IDirectListener getEditProfileListener()
+	{
+		return new IDirectListener()
+		{
+			public void directTriggered(IComponent component, String[] context,
+					IRequestCycle cycle)
+			{
+				EditProfile page;
+				
+				page = (EditProfile)cycle.getPage("EditProfile");
+				
+				page.beginEdit(cycle);
+			}
+		};
+	}
+	
 	public IDirectListener getEditListener()
 	{
 		return new IDirectListener()
@@ -207,6 +227,13 @@ public class MyBooks extends BasePage
 			public void directTriggered(IComponent component, String[] context,
 					IRequestCycle cycle)
 			{
+				Integer bookPK;
+				ConfirmBookDelete page;
+				
+				bookPK = new Integer(context[0]);
+				
+				page = (ConfirmBookDelete)cycle.getPage("ConfirmBookDelete");
+				page.selectBook(bookPK, cycle);
 			}
 		};
 	}
