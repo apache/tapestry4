@@ -12,11 +12,11 @@
   <component id="dateField" type="TextField">
        	<binding name="value" expression="text"/>
         <binding name="format" expression="format"/>
-        <static-binding name="readonly">true</static-binding>
+        <binding name="maxlength" expression="format.length()"/>        
   </component>
 
   <component id="dateHidden" type="Hidden">
-       	<binding name="value" expression="longValue"/>
+       	<binding name="value" expression="javaScriptValue"/>
        	<field-binding name="datasqueeze" field-name="Boolean.FALSE"/>
   </component>
 

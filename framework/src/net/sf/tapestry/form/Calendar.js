@@ -41,8 +41,7 @@ function fPopCalendar(popCtrl, dateCtrl, valCtrl, popCal)
   gRetCtrl = valCtrl;
   gFormat = dateCtrl.format;
 
-  var d = new Date();
-  d.setTime(gRetCtrl.value);
+  var d = (gRetCtrl.value == "") ? new Date() : new Date(gRetCtrl.value);
   fSetYearMon(d.getYear(), d.getMonth() + 1);
 
   var point = fGetXY(popCtrl);
