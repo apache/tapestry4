@@ -26,7 +26,7 @@ import org.apache.hivemind.impl.BaseLocatable;
  * Top level object for test scripts.
  *
  * @author Howard Lewis Ship
- * @version $Id$
+ * @since 3.1
  */
 public class ScriptDescriptor extends BaseLocatable
 {

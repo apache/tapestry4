@@ -26,6 +26,7 @@ import org.apache.tapestry.test.mock.MockResponse;
  * substring within the response text.
  *
  * @author Howard Lewis Ship
+ * @since 3.1
  */
 public class AssertOutput extends BaseLocatable implements ResponseAssertion
 {

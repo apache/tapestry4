@@ -14,28 +14,10 @@
 
 package org.apache.tapestry.test;
 
-import java.util.List;
-import java.util.ArrayList;
-
-/**
- * Contains a list of string query parameters for a 
- * {@link org.apache.tapestry.test.RequestDescriptor}.
- *
- * @author Howard Lewis Ship
- * @since 3.1
- */
-public class ParameterList
+public abstract class InheritedSubject extends IntSubject
 {
-    /** List of String **/
-    private List _params = new ArrayList();
 
-    public void add(String value)
-    {
-        _params.add(value);
-    }
+    public abstract boolean getFlag();
+    public abstract void setFlag(boolean flag);
 
-    public String[] getValues()
-    {
-        return (String[]) _params.toArray(new String[_params.size()]);
-    }
 }

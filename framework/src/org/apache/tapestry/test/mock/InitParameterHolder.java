@@ -22,10 +22,9 @@ import java.util.Enumeration;
  *
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.1
  * 
-**/
+ */
 
 public interface InitParameterHolder
 {

@@ -27,7 +27,6 @@ import javax.servlet.ServletContext;
  * for Mock testing. 
  *
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.1
  */
 

@@ -27,7 +27,6 @@ import javax.servlet.ServletInputStream;
  * invocations to the inner stream.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.1
  */
 
