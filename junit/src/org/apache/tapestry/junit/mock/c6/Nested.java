@@ -16,6 +16,7 @@ package org.apache.tapestry.junit.mock.c6;
 
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEvent;
 
@@ -46,7 +47,7 @@ public class Nested extends BaseComponent implements PageDetachListener
     {
         _message = message;
         
-        fireObservedChange("message", message);
+        Tapestry.fireObservedChange(this, "message", message);
     }
 
     public void updateMessage(IRequestCycle cycle)

@@ -18,7 +18,6 @@ import org.apache.hivemind.service.ClassFab;
 import org.apache.tapestry.Tapestry;
 
 /**
- * 
  * Adds a transient or persistent property to a class.
  * 
  * @author Mindbridge
@@ -27,29 +26,26 @@ import org.apache.tapestry.Tapestry;
 public class CreatePropertyEnhancer implements IEnhancer
 {
     private String _propertyName;
+
     private Class _propertyType;
+
     private boolean _persistent;
+
     private String _readMethodName;
 
     public CreatePropertyEnhancer(String propertyName, Class propertyType)
     {
-        this(
-            propertyName,
-            propertyType,
-            CreateAccessorUtils.buildMethodName("get", propertyName),
-            false);
+        this(propertyName, propertyType, CreateAccessorUtils.buildMethodName("get", propertyName),
+                false);
     }
 
-    public CreatePropertyEnhancer(
-        String propertyName,
-        Class propertyType,
-        String readMethodName,
-        boolean persistent)
+    public CreatePropertyEnhancer(String propertyName, Class propertyType, String readMethodName,
+            boolean persistent)
     {
-    	Tapestry.notNull(propertyName, "propertyName");
-    	Tapestry.notNull(propertyType, "propertyType");
-    	Tapestry.notNull(readMethodName, "readMethodName");
-    	
+        Tapestry.notNull(propertyName, "propertyName");
+        Tapestry.notNull(propertyType, "propertyType");
+        Tapestry.notNull(readMethodName, "readMethodName");
+
         _propertyName = propertyName;
         _propertyType = propertyType;
         _readMethodName = readMethodName;
@@ -63,17 +59,17 @@ public class CreatePropertyEnhancer implements IEnhancer
         classFab.addField(fieldName, _propertyType);
 
         CreateAccessorUtils.createPropertyAccessor(
-            classFab,
-            _propertyType,
-            fieldName,
-            _propertyName,
-            _readMethodName);
+                classFab,
+                _propertyType,
+                fieldName,
+                _propertyName,
+                _readMethodName);
 
         CreateAccessorUtils.createPropertyMutator(
-            classFab,
-            _propertyType,
-            fieldName,
-            _propertyName,
-            _persistent);
+                classFab,
+                _propertyType,
+                fieldName,
+                _propertyName,
+                _persistent);
     }
 }

@@ -14,12 +14,13 @@
 
 package org.apache.tapestry.junit.mock.c11;
 
+import org.apache.tapestry.Tapestry;
+
 
 /**
  *  Makes the three properties persistent.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  **/
 
@@ -29,7 +30,7 @@ public class PersistentSelectPage extends SelectPage
     {
     	super.setAnimal(animal);
     	
-        fireObservedChange("animal", animal);
+        Tapestry.fireObservedChange(this, "animal", new Boolean(animal));
     }
 
 
@@ -37,7 +38,7 @@ public class PersistentSelectPage extends SelectPage
     {
     	super.setMineral(mineral);
     	
-    	fireObservedChange("mineral", mineral);
+    	Tapestry.fireObservedChange(this, "mineral", new Boolean(mineral));
     }
 
 
@@ -45,7 +46,7 @@ public class PersistentSelectPage extends SelectPage
     {
       	super.setVegetable(vegetable);
       	
-      	fireObservedChange("vegetable", vegetable);
+      	Tapestry.fireObservedChange(this, "vegetable", new Boolean(vegetable));
     }
 
 

@@ -20,6 +20,7 @@ import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.contrib.tree.model.ISessionStoreManager;
 import org.apache.tapestry.contrib.tree.model.ITreeModel;
 import org.apache.tapestry.contrib.tree.model.ITreeModelSource;
@@ -196,7 +197,7 @@ public class TreeView extends BaseComponent
         ISessionStoreManager objHolder = getSessionStoreManager();
 
         if (objHolder == null) {
-            fireObservedChange("treeSessionState", objSessionState);
+            Tapestry.fireObservedChange(this, "treeSessionState", objSessionState);
         } else {
             //String strPath = "treeSessionState";
             String strPath = getExtendedId();
