@@ -26,7 +26,12 @@ CONTEXT_RESOURCES = index.html images
 
 include $(SYS_MAKEFILE_DIR)/War.mk
 
+# Include FINAL_SOURCE_DIR first on the classpath, 
+# so that resources in the working directory
+# take precedence over resources packaged into the .WAR
+
 EXEC_CLASSPATH = \
+	$(FINAL_SOURCE_DIR) \
 	$(PROJ_CLASSPATH) \
 	$(INSTALL_DIR)/gnu-regexp.jar \
 	$(INSTALL_DIR)/com.mortbay.jetty.jar \

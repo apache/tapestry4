@@ -16,7 +16,7 @@ In these cases, the server is expected to pick up a conversation started by some
 
 <para>
 The Java Servlet API provides a base for managing the client - server interactions, 
-by providing the <classname>HttpSession</> object, which is used to store 
+by providing the &HttpSession; object, which is used to store 
 server-side state information for a particular client.
 </>
 
@@ -50,7 +50,7 @@ is triggered by one of those service URLs.
 
 <para>
 The page service is used for basic navigation between pages in the application.  
-The page service is tightly tied to the <classname>Page</> component.
+The page service is tightly tied to the &Page; component.
 </>
 
 <para>
@@ -76,7 +76,7 @@ The request cycle for the page service is relatively simple.
 
 <para>
 The direct service is used to trigger a particular action.  This service is tied to the 
-<classname>Direct</> component.
+&Direct; component.
 </>
 
 <para>
@@ -91,7 +91,7 @@ additional <emphasis>context</>, one or more strings that will be meaningful to 
 is triggered
 	<footnote>
 		<para>
-			Actually, the strings (which are optional) will be passed to the <classname>Direct</>
+			Actually, the strings (which are optional) will be passed to the &Direct;
 			component's listener.
 		</>
 	</>.
@@ -118,6 +118,7 @@ The request cycle for the direct service is more complicated that the page servi
 	<listitem><para>The component is notified that it has been triggered, 
 		with the context passed as an array of Strings</>
 	</>
+	
 	<listitem><para>The component locates its listener</>
 	</>
 
@@ -145,7 +146,7 @@ What's key is the component's listener, of type
 <classname>com.primix.tapestry.IDirectListener</>.  This is the hook that allows 
 pre-defined components from the Tapestry framework to access application specific behavior.   
 The page or container of the 
-<classname>Direct</> component provides the necessary listener objects using dynamic bindings.
+&Direct; component provides the necessary listener objects using dynamic bindings.
 </>
 
 <para>
@@ -153,17 +154,17 @@ The direct service is useful in many cases, but does have its limitations.
 The state of the page when the listener is invoked is its state just prior to rendering 
 (in the previous request cycle).  This can cause a problem when the action to be performed is reliant 
 on state that changes during the rendering of the page.  In those cases, the action service 
-(and <classname>Action</> or <classname>Form</> components) should be used.
+(and &Action; or &Form; components) should be used.
 </>
 
 
 <para>
-The <classname>Direct</> component has an optional parameter named <varname>context</>. 
+The &Direct; component has an optional parameter named <varname>context</>. 
 The value for this may be a single <classname>String</>, an array of <classname>String</>s,
 or a <classname>List</> of <classname>String</>s.  
 These strings are added to the URL after the id path.  
 When the action is triggered, the array is reconstructed (from the URL) and provided to 
-the <classname>Direct</> component and its listener.  
+the &Direct; component and its listener.  
 This is primarily used to encode dynamic page state directly 
 into the URL when doing so is not compatible with the action service (described in the next section).
 </>
@@ -183,12 +184,18 @@ to remove in terms of a primary key, or line number within the order.
 
 <para>
 The action service is also used to trigger a particular application-specific 
-action using an <classname>Action</> component, and its listener.  
-The action service is also used by the <classname>Form</> component to process HTML form submissions.
+action using an &Action; component, and its listener.  
+The action service is also used by the &Form; component to process HTML form submissions.
 </>
 
 <para>
-An action service URL is of the form:
+An action service URL is of the form
+<footnote>
+	<para>A second form of the URL exists for special circumstances where
+	the component is on a different page than the page that rendered the response.
+	This is possible via the &InsertBlock; component.
+	</para>
+</footnote>:
 </>
 
 &start-listing;/<replaceable>servlet prefix</>/action/<replaceable>page name</>/<replaceable>action id</>/<replaceable>component id path</>&end-listing;
@@ -196,7 +203,7 @@ An action service URL is of the form:
 <para>
 The request cycle for the action service is more complicated that the direct service.  
 This sequence assumes that the component is an 
-<classname>Action</>, the details of handling form submissions are described in a later section.
+&Action;, the details of handling form submissions are described in a later section.
 
 <itemizedlist>
 	<listitem><para>
@@ -221,14 +228,14 @@ This sequence assumes that the component is an
 	</>
 
 	<listitem>
-		<para>Eventually, the <classname>Action</> component identifies that the page has been 
+		<para>Eventually, the &Action; component identifies that the page has been 
 		rewound (the action id in the URL matches the current action id)
 		</>
 	</>
 
 	<listitem>
 		<para>
-			The <classname>Action</> component locates its listener
+			The &Action; component locates its listener
 		</>
 	</>
 
@@ -252,7 +259,7 @@ This sequence assumes that the component is an
 	</>
 
 	<listitem>
-		<para>The <classname>Action</> component terminates the rewind cycle
+		<para>The &Action; component terminates the rewind cycle
 		</>
 	</>
 
@@ -272,7 +279,7 @@ This sequence assumes that the component is an
 The process of restoring the page's dynamic state is called rewinding.  Rewinding is used to 
 go beyond restoring a page's persistent state and actually restore the page's dynamic state.  
 Whatever state the page was in when the action URL was rendered in the previous request cycle 
-is restored before the <classname>Action</> component's listener is invoked.
+is restored before the &Action; component's listener is invoked.
 </>
 
 <para>
@@ -301,10 +308,10 @@ to create links to a product details page.
 		<title>Action service and forms
 
 <para>
-Processing of requests for <classname>Form</> components is a little more complicated than 
-for ordinary <classname>Action</> components.  
-This is because a <classname>Form</> will wrap a number of form-related components, such as 
-<classname>TextField</>, <classname>Checkbox</>, <classname>PropertySelection</> and others.
+Processing of requests for &Form; components is a little more complicated than 
+for ordinary &Action; components.  
+This is because a &Form; will wrap a number of form-related components, such as 
+&TextField;, &Checkbox;, &PropertySelection; and others.
 </>
 
 <para>
@@ -315,37 +322,37 @@ interpreting it, and assigning a value through a parameter.
 </>
 
 <para>
-As with an <classname>Action</> component, a full rewind must be done, 
-to account for conditional portions of the page and any <classname>Foreach</> components.
+As with an &Action; component, a full rewind must be done, 
+to account for conditional portions of the page and any &Foreach; components.
 </>
 
 <para>
-The <classname>Form</> component doesn't terminate the rewind cycle until after all of 
+The &Form; component doesn't terminate the rewind cycle until <emphasis>after</> all of 
 its wrapped components have had a chance to render.  It then notifies its own listener.
 </>
 
 <para>
-The basic components, <classname>Text</> and <classname>TextField</>, 
+The basic components, &Text;  and &TextField;, 
 are quite simple.  They simply move text between the 
 application, the HTML and the submitted request. 
 </>
 
 <para>
-Individual <classname>Checkbox</> components are also simple: they 
+Individual &Checkbox; components are also simple: they 
 set a boolean property.  
-A <classname>RadioGroup</> and some <classname>Radio</> components 
+A &RadioGroup; and some &Radio; components 
 allow a property to be set to a value 
-(dependent on which <classname>Radio</> button is selected by the user).
+(dependent on which radio button is selected by the user).
 
-The <classname>PropertySelection</> component is designed to more 
+The &PropertySelection; component is designed to more 
 efficiently handle this and can produce HTML for either 
 a popup list or a collection of radio buttons.
 </>
 
 <para>
 Tapestry also includes more complicated components, 
-<classname>ValidatingTextField</> and some relatives.  
-These are similar to the simple <classname>TextField</> component, 
+&ValidatingTextField; and some relatives.  
+These are similar to the simple &TextField; component, 
 but provide greater validation and checking of input, and 
 provide the ability to visually mark fields that are required or in error.
 

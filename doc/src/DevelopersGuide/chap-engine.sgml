@@ -92,47 +92,53 @@ provides default implementations for four of the five, but a full-featured Tapes
 override any of the others to provide a consistent look-and-feel.
 </>
 
-
-<segmentedlist>
-	<title>Tapestry Pages</>
-	<segtitle>Page Name</>
-	<segtitle>Required</>
-	<segtitle>Description</>
-
-	<seglistitem>
-		<seg>Exception</>
-		<seg>Default provided, may be changed.</>
-		<seg>Page used to present uncaught 
-			 exceptions to the user.</>
+<table>
+	<title>Tapestry Pages</title>
+	<tgroup cols=3>
+	<thead>
+		<row>
+			<entry>Page Name</>
+			<entry>Required</>
+			<entry>Description</>
+		</>
 	</>
-
-	<seglistitem>
-		<seg>Home</>
-		<seg>Must be provided by developer.</>
-		<seg>The initial page displayed when the 
+	<tbody>
+		<row>
+			<entry>Exception</>
+			<entry>Default provided, may be changed.</>
+			<entry>
+				Page used to present uncaught 
+			 	exceptions to the user.</>
+		</>
+		<row>
+			<entry>Home</>
+			<entry>Must be provided by developer.</>
+			<entry>The initial page displayed when the 
 			 application is started.</>
-	</>
-
-	<seglistitem>
-		<seg>Inspector</>
-		<seg>Provided, never overriden.</>
-		<seg>Inspector that allows the Tapestry 
+		</>
+		<row>
+			<entry>Inspector</>
+			<entry>Provided, never overriden.</>
+			<entry>Inspector that allows the Tapestry 
 			 application to be interrogated on its 
 			 structure.</>
-	</>
+		</>
+		<row>
+			<entry>StaleLink</entry>
+			<entry>Provided</entry>
+			<entry>Page displayed when a StaleLinkException is thrown during
+			the processing of a request.</entry>
+		</row>
+		<row>
+			<entry>StaleSession</entry>
+			<entry>Provided</entry>
+			<entry>Page displayed when a StaleSessionException is thrown
+			during the processing of a request.</entry>
+		</row>
+	</tbody>
+	</tgroup>
+</table>
 
-	<seglistitem>
-		<seg>StaleSession</>
-		<seg>Default provided, may be changed.</>
-		<seg>Page used to announce that the session is invalid.</>
-	</>
-
-	<seglistitem>
-		<seg>StateLink</>
-		<seg>Default provided, may be changed.</>
-		<seg>Page used to announce that an stale link (see below) was triggered.</>
-	</>
-</>
 
 <para>
 Tapestry only mandates the logical name of these four pages; the actual page component used is 
@@ -173,7 +179,7 @@ before the page is rendered.
 </>
 
 <para>
-The class <classname>com.primix.foundation.exception.ExceptionAnalyzer</> and the 
+The class <classname>com.primix.tapestry.util.exception.ExceptionAnalyzer</> and the 
 <classname>ExceptionDisplay</> component are typically used to present this information.
 </>
 
@@ -192,14 +198,11 @@ button on your browser") and uses the home service to create a link back to the
 <para>
 The <classname>StaleSession</> page is displayed when a
 <classname>com.primix.tapestry.StaleSessionException</>
-is thrown.  This exception is thrown from the action and direct services if the 
-<classname>HttpSession</> is 
+is thrown.  This exception is thrown when the component
+is configured to be stateful (which is the default)
+and the <classname>HttpSession</> doesn't exist, or is 
 newly created - this indicates a fresh connection to the servlet container after the old session 
 timed out and was discarded.
-</>
-
-<para>
-Note that the home, restart and page services do not check for a newly created session.
 </>
 
 <para>
@@ -248,6 +251,48 @@ specification.
 
 	</section>
 
+	<section id="engine.stateless">
+		<title>Stateful vs. Stateless</>
+		
+<para>
+Through Tapestry release 1.0.0, an &HttpSession; 
+was created on the very first request cycle, and an engine was created and 
+stored into it.
+</>
+
+<para>
+This comes at some cost, however.  Creating the session is somewhat expensive if it is
+not truly needed, and causes some overhead in a clustering or failover scenario.
+In fact, until some real server-side state is created; that is, until a 
+persistent page property is recorded or the visit object created, it isn't really
+necessary to store any server-side state for a particular client.
+</>
+
+<para>
+Starting with Tapestry release 1.0.1, the framework will operate statelessly 
+as long as possible.  When triggered (by the creation of a visit, or by a
+persistent page property) an &HttpSession; will be created and the engine
+stored within it and the application will continue to operate pretty much
+as it does in Tapestry release 1.0.0.
+</>
+
+<para>
+While the application continues statelessly, the framework makes use of a 
+pool of engine instances.  This is more efficient, as it reduces the number of objects
+that must be created during the request cycle.   However, the major reason
+for running statelessly is to bypass the overhead statefulness imposes
+on the application server.
+</>
+
+<para>
+Of course, if rendering the <classname>Home</> page of your application creates triggers
+the creation of the &HttpSession; , then nothing is gained.  A well
+designed application will attempt to defer creation of the session so that, at least,
+the <classname>Home</> page can be displayed without creating a session.
+</>
+
+	</section>
+	
 	<section id="engine.services">
 		<title>Engine Services</>
 
@@ -273,9 +318,9 @@ inflexible, ad-hoc, buggy solution Tapestry is designed to eliminate.
 
 <para>
 Most services have a relationship to a particular component.  The basic services (action, direct, 
-page) each have a corresponding component (<classname>Action</>, <classname>Direct</>, 
-<classname>Page</>). The following example 
-shows how the <classname>Page</> component is used to create a link between application pages.
+page) each have a corresponding component (&Action;, &Direct;, &Page;).
+The following example 
+shows how the &Page; component is used to create a link between application pages.
 </>
 
 <para>
@@ -312,7 +357,7 @@ The resulting HTML:
 <para>
 If the user later clicks that link, the application will invoke the page service to handle the URL; 
 it 
-will extract the page name (Login) and render that page.
+will extract the page name (<literal>Login</>) and render that page.
 </>
 
 <para>
@@ -326,15 +371,16 @@ provides the URL and later responds if the URL is triggered.
 		<title>Logging</>
 
 <para>
-Tapestry makes use of the Apache group's log4j package to perform logging.  This is an easy, fast, 
-powerful framework for adding logging to any Java application.  Using log4j, any number of 
+Tapestry makes use of the Apache group's 
+&Log4J; package to perform logging.  This is an easy, fast, 
+powerful framework for adding logging to any Java application.  Using &Log4J;, any number of 
 <emphasis>categories</> can be created, and a logging priority for each category assigned.  
 Tapestry uses the complete class name as the category for each class.
 </>
 
 <para>
 The ApplicationServlet class includes a method, <function>setupLogging()</>, 
-to initialize log4j.  The provided 
+to initialize &Log4J;.  The provided 
 implementation is sufficient for testing (see the Javadoc for more information) but serious 
 applications may want to create a more involved logging configuration.
 </>
@@ -347,7 +393,7 @@ can be created.
 
 <para>
 What this means is that, using the Inspector, it is possible to control exactly what logging output is 
-produced, dynamically, while the application is still running.  The Tapestry inspector is easily 
+produced, dynamically, while the application is still running.  The Tapestry Inspector is easily 
 added to any Tapestry application.  More information on the Inspector is provided in a later 
 section.
 </>
@@ -358,7 +404,8 @@ section.
 		<title>Private Assets</>
 
 <para>
-The application engine is responsible for making private assets, assets that are in the Java classpath,
+The application engine is responsible for making private assets, assets that are stored 
+on the Java classpath,
 visible when necessary to client web browser.
 </>
 
@@ -488,7 +535,7 @@ The application specification begins with an XML header:
   </>
   <callout arearefs="engine.appspec.engine-class">
   	<para>
-  	Specifies the Java class to instantiate as the application engine.  This occurs on the first request cycle.
+  	Specifies the Java class to instantiate as the application engine. 
   	</>
   </>
   <callout arearefs="engine.appspec.description">

@@ -36,7 +36,7 @@ component may have persistent state, and use the page as means for recording tha
 <para>
 The engine is a session persistent object.  The implementation of this varies from application 
 server to application server, but the basic idea is that the
-<classname>HttpSession</> is serialized after each 
+&HttpSession; is serialized after each 
 request and stored in a file or database.  It may then be removed from memory.  When a 
 subsequent request for the same session arrives, it is restored from the persistent storage.
 </>
@@ -44,7 +44,7 @@ subsequent request for the same session arrives, it is restored from the persist
 <para>
 In a clustering server application, consequtive requests for the same session may be serviced by 
 different servers within the cluster.  Serializing and deserializing the
-<classname>HttpSession</> is the mechanism 
+&HttpSession; is the mechanism 
 by which the servers are kept synchronized.
 </>
 
@@ -88,15 +88,15 @@ In Tapestry, the lifespan of each property is very important.  There are three l
 	<listitem>
 		<para>
 			Transient.  The property is set before the page is rendered and will be reset (
-			to default value) when the page is next loaded.
+			to default value) at the end of the current request cycle.
 		</>
 	</>
 
 	<listitem>
 		<para>
-			Dynamic.  The property changes while the page is rendered, but 
+			Dynamic.  The property changes event while the page is rendered, but 
 			(like transient) the property is 
-			reset when the page is next loaded.
+			reset at the end of the current request cycle.
 		</>
 	</>
 </>
@@ -129,7 +129,7 @@ recorder combines this information with a page instance to rollback the state of
 <para>
 Pages are blind as to how their state is stored.  The basic implementation of Tapestry simply 
 stores the page state information in memory (and serializes it with the engine, in the 
-<classname>HttpSession</>), 
+&HttpSession;), 
 but future options may include storing the data in flat files, relational databases or even as cookies 
 in the client browser.
 </>
@@ -289,19 +289,19 @@ from business objects reachable from the page).
 </>
 
 <para>
-A small number of components, notably the <classname>Foreach</> component, work the other way; pushing 
+A small number of components, notably the &Foreach; component, work the other way; pushing 
 data back to the page (or some other component).
 </>
 
 <para>
-The <classname>Foreach</> component is used to loop over 
+The &Foreach; component is used to loop over 
 a set of items.  It has one parameter from which it 
 reads the list of items.  A second parameter is used to write each item back to a property of its 
 container.
 </>
 
 <para>
-For example, in our shopping cart example, we may use a <classname>Foreach</> to run 
+For example, in our shopping cart example, we may use a &Foreach; to run 
 through the list of line 
 items in the shopping cart.  Each line item identifies the product, cost and quantity.
 </>
@@ -329,7 +329,7 @@ showing subtotals).
 </>
 
 <para>
-Component <varname>e-item</> is our <classname>Foreach</>.   
+Component <varname>e-item</> is our &Foreach;.   
 It will render its body (all the text and components it wraps) several times, 
 depending on the number of line items in the cart.  On each pass it:
 </>
@@ -396,11 +396,11 @@ expected to remove a specific line item from the shopping cart, but how will it 
 This is at the heart of the action service.  One aspect of the 
 <classname>IRequestCycle</>'s functionality is to 
 dole out a sequence of action ids that are used for this purpose (they are also involved in forms 
-and form elements).  As the <classname>Action</> component renders itself, 
+and form elements).  As the &Action; component renders itself, 
 it allocates the next action id from 
 the request cycle.  Regardless of what path through the page's component hierarchy the rendering 
 takes, the numbers are doled out in sequence.  This includes conditional blocks and loops such as 
-the <classname>Foreach</>.
+the &Foreach;.
 </> 
 
 <para>
@@ -418,8 +418,8 @@ code.  Because the inputs are the same, the results will be identical.
 <para>
 This fact is exploited by the action service to respond to the URL.  In fact, the state of the page 
 and components <emphasis>is</> rolled back and the rendering processes fired again (with output discarded).  
-Code inside the <classname>Action</> component can compare the action id against the target action id encoded 
-within the URL.  When a match is found, the <classname>Action</> component can count on the state of the 
+The &Action; component can compare the action id against the target action id encoded 
+within the URL.  When a match is found, the &Action; component can count on the state of the 
 page and all components on the page to be in the exact same state they were in when the page 
 was previously rendered.
 </>
@@ -437,15 +437,15 @@ implemented in its containing page that removes the current <varname>lineItem</>
 
 <para>
 The application is responsible for providing a listener, an object that is notified when the 
-<classname>Action </>
-component is triggered.  Action listeners implement the 
+&Action; component is triggered.  Action listeners implement the 
 <classname>IActionListener</> interface, which has a 
 single method, <function>actionTriggered()</>.  
 </>
 
 <para>
 Typically, the accessor method that provides the listener returns an instance of an inner class.  
-Since our specification identified <varname>removeListener</> as the listener property for the <varname>remove</>
+Since our specification identified <varname>removeListener</> as the
+listener property for the <varname>remove</>
 component, the page must implement a <varname>removeListener</> property.
 </>
 
@@ -470,7 +470,7 @@ This method is only invoked after all the page state is rewound;
 especially relevant is the <varname>lineItem</>property.  
 The listener gets the shopping cart and removes the current line item from it.
 This whole rewinding process has ensured that <varname>lineItem</> is the correct value, even though the remove 
-component was rendered several times on the page (because it was wrapped by the Foreach 
+component was rendered several times on the page (because it was wrapped by the &Foreach;
 component).
 </>
 
@@ -478,7 +478,7 @@ component).
 An equivalent JavaServer Pages application would have needed to define a servlet for removing 
 items from the cart, and would have had to encode in the URL some identifier for the item to be 
 removed.  The servlet would have to pick apart the URL to find the cart item identifier, locate the 
-shopping cart object (probably stored in the <classname>HttpSession</>)
+shopping cart object (probably stored in the &HttpSession;)
 and the particular item and invoke 
 the <function>remove()</> method directly.  Finally, it would forward to the JSP that would produce the 
 updated page.
@@ -505,7 +505,7 @@ to the listener class, and its single, small method.
 
 <para>
 The fact that web browsers have a "back" button is infuriating to application developers.  What 
-right does the user have to dictate the order of navigation through the application?  Who'se 
+right does the user have to dictate the order of navigation through the application?  Whose 
 application is this anyway?
 </>
 
@@ -552,28 +552,27 @@ information.
 
 <para>
 The question is, how is the add to shopping link implemented?  If its logic is to add whatever the 
-current value of the product property is (i.e., by using an <classname>Action</>
+current value of the product property is (i.e., by using an &Action;
 component or part of a form) then it will 
 add the Nikon camera, since that's the current product.  This is the naïve approach, since it 
 doesn't take into account the possiblility that the user worked backwards to a prior page.
 </>
 
 <para>
-On the other hand, if a <classname>Direct</> component is used, it can encode into the 
+On the other hand, if a &Direct; component is used, it can encode into the 
 URL the primary key of 
 the Minolta product, and that will be the product added to the shopping cart, regardless of the 
 current value of the product property.
 </>
 
 <para>
-HTML Forms, controlled by the <classname>Form</> component, 
+HTML Forms, controlled by the &Form; component, 
 must make use of the action service, and so they are 
 susceptible to these issues related to the browser back button.  Still, there are techniques to make 
 even forms safe.  Borrowing an idea from more traditional JavaServer Pages development, a 
 hidden field can be included in the form to sychronize the form and the application ... for 
 example, including the primary key of the Minolta or Nikon product.  Tapestry includes a 
-<classname>Hidden</>
-component used for just this purpose.
+&Hidden; component used for just this purpose.
 
 	</section>
 
@@ -705,18 +704,17 @@ exception page.
 
 <para>
 In practice, virtually all Tapestry pages will use a 
-<classname>Body</> component wrapping the majority of the page (it takes
-the place of the normal <sgmltag class=starttag>body</> element), and a <classname>Body</> component 
+&Body; component wrapping the majority of the page (it takes
+the place of the normal <sgmltag class=starttag>body</> element), and a &Body; component 
 buffers the output of all components it wraps.  This buffering is necessary so that the 
-<classname>Body</>
-component can write out various JavaScript handlers before the main body of HTML is written 
-(this is often related to the use of the <classname>Rollover</> component).
+&Body; component can write out various JavaScript handlers before the main body of HTML is written 
+(this is often related to the use of the &Rollover; component).
 </>
 
 <para>
-In any case, whenever a <classname>Body</>
+In any case, whenever a &Body;
 component is used, an exception thrown during the rendering of the page will cause all the 
-HTML buffered by the <classname>Body</> component to be cleanly discarded, allowing for a clean 
+HTML buffered by the &Body; component to be cleanly discarded, allowing for a clean 
 presentation of the exception page.
 </>
 

@@ -205,14 +205,14 @@ The body listed above can be either static HTML or other Tapestry
 components or both.  Elements in the body of a component are 
 wrapped by the containing component.  The containing component controls the 
 rendering of the elements it wraps in its body.  For example, 
-the <classname>Conditional</> component may decide not to 
-render its body and the <classname>Foreach</> component may render 
+the &Conditional; component may decide not to 
+render its body and the &Foreach; component may render 
 its body multiple times.
 </>
 
 <para>
 Not all Tapestry components should have a body.  
-For example, the <classname>TextField</> component creates an
+For example, the &TextField; component creates an
 <sgmltag class=starttag>input type=text</>
 form element and it makes no sense for it to contain anything else.  
 Whether a component can have a body (and wrap other elements) is defined in the 
@@ -220,7 +220,7 @@ component's specification.
 </>
 
 <para>
-Tapestry includes a special component, <classname>InsertWrapped</>, 
+Tapestry includes a special component, &InsertWrapped;, 
 which is used to render the body of a component.  
 It makes it easy to create components that wrap other components.
 </>
@@ -377,7 +377,7 @@ This information turns into a data structure:
 
 <para>
 The left side shows how the components are embedded.  
-The <classname>Home</> page component contains the <varname>border</> component.  
+The <classname>Home</> page contains the <varname>border</> component.  
 The <varname>border</> component contains the other components.
 </>
 
@@ -403,14 +403,14 @@ It iterates through its outer list, which contains a single element: the
 <varname>border</> component.  The process then recursively renders the 
 <varname>border</> component.  Its outer list is rendered in order.  
 Each component decides where it will render its wrapped elements (if it has any).  
-The <varname>e</> component is a <classname>Foreach</>; 
+The <varname>e</> component is a &Foreach;; 
 it will render its wrapped elements any number of times.
 </para>
 
 
 <para>
 Eventually, the process reaches the <varname>wrapped</> component, 
-which is of type <classname>InsertWrapped</>.  
+which is of type &InsertWrapped;.  
 This is a special component; it jumps up one level to its container (the <varname>border</> component)
 and renders the <varname>border</>'s wrapped elements ... the text from the <classname>Home</>
 page template.
@@ -830,8 +830,8 @@ application specification may define additional aliases.
 
 <para>
 For example, the component 
-<filename>/com/primix/tapestry/components/Action.jwc</>
-has a standard alias of <classname>Action</>.
+<filename>/com/primix/tapestry/links/Action.jwc</>
+has a standard alias of &Action;.
 </>
 
 
@@ -914,9 +914,9 @@ to a property of an object, and may be read, write or read/write.
 An example of using an
 <sgmltag class=starttag>inherited-binding</> is the <classname>Border</> component, 
 which has a <varname>title</> parameter that gives the name of the page.  
-The <classname>Border</> component embeds an <classname>Insert</> component, 
+The <classname>Border</> component embeds an &Insert; component, 
 and uses an inherited binding to set the 
-<classname>Insert</> component's <varname>value</> parameter to the 
+&Insert; component's <varname>value</> parameter to the 
 containing <classname>Border</> component's <varname>title</> parameter.
 </>
 
@@ -927,8 +927,8 @@ containing <classname>Border</> component's <varname>title</> parameter.
 
 <para>
 Assets are a way of identifying resources whose URLs will appear in a web page.  
-Most often, the assets are image files used with an <classname>Image</> or 
-<classname>Rollover</> components.
+Most often, the assets are image files used with an &Image; or 
+&Rollover; components.
 </>
 
 
@@ -964,7 +964,7 @@ Assets names must be unique within the component.
 <para>
 For external assets, the URL must be complete:  it will be inserted into the HTML unchanged.  In many cases,
 the URL can omit the <literal>http://<replaceable>hostname</></> portion of the URL, if the asset is located
-on the same site as the web application.
+on the same host as the web application.
 </>
 
 <para>
