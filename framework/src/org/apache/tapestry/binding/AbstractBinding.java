@@ -55,6 +55,9 @@
 
 package org.apache.tapestry.binding;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.NullValueForBindingException;
@@ -71,6 +74,24 @@ import org.apache.tapestry.Tapestry;
 
 public abstract class AbstractBinding implements IBinding
 {
+    /**
+     *  A mapping from primitive types to wrapper types.
+     * 
+     **/
+
+    private static final Map PRIMITIVE_TYPES = new HashMap();
+
+    static {
+        PRIMITIVE_TYPES.put(boolean.class, Boolean.class);
+        PRIMITIVE_TYPES.put(byte.class, Byte.class);
+        PRIMITIVE_TYPES.put(char.class, Character.class);
+        PRIMITIVE_TYPES.put(short.class, Short.class);
+        PRIMITIVE_TYPES.put(int.class, Integer.class);
+        PRIMITIVE_TYPES.put(long.class, Long.class);
+        PRIMITIVE_TYPES.put(float.class, Float.class);
+        PRIMITIVE_TYPES.put(double.class, Double.class);
+    }
+
     /**
      *  Cooerces the raw value into a true or false, according to the
      *  rules set by {@link Tapestry#evaluateBoolean(Object)}.
@@ -196,17 +217,17 @@ public abstract class AbstractBinding implements IBinding
         throw new ReadOnlyBindingException(this);
     }
 
-	/**
-	 *  Default implementation: returns true.
-	 * 
-	 *  @since 2.0.3
-	 * 
-	 **/
-	
-	public boolean isInvariant()
-	{
-	    return true;
-	}
+    /**
+     *  Default implementation: returns true.
+     * 
+     *  @since 2.0.3
+     * 
+     **/
+
+    public boolean isInvariant()
+    {
+        return true;
+    }
 
     public Object getObject(String parameterName, Class type)
     {
@@ -215,13 +236,24 @@ public abstract class AbstractBinding implements IBinding
         if (result == null)
             return result;
 
-        if (type.isAssignableFrom(result.getClass()))
+        Class resultClass = result.getClass();
+
+        if (type.isAssignableFrom(resultClass))
             return result;
 
-        String key = type.isInterface() ? "AbstractBinding.wrong-interface" : "AbstractBinding.wrong-type";
+        if (type.isPrimitive() && isWrapper(type, resultClass))
+            return result;
+
+        String key =
+            type.isInterface() ? "AbstractBinding.wrong-interface" : "AbstractBinding.wrong-type";
 
         String message = Tapestry.getString(key, parameterName, result, type.getName());
 
         throw new BindingException(message, this);
+    }
+
+    public boolean isWrapper(Class primitiveType, Class subjectClass)
+    {
+        return PRIMITIVE_TYPES.get(primitiveType).equals(subjectClass);
     }
 }
