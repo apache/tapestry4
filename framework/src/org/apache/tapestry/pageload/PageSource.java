@@ -107,7 +107,7 @@ public class PageSource implements IPageSource
     private IResourceResolver _resolver;
 
     /**
-     *  The pool of {@link PooledPage}s.  The key is a {@link MultiKey},
+     *  The pool of {@link IPage}s.  The key is a {@link MultiKey},
      *  built from the page name and the page locale.  This is a reference
      *  to a shared pool.
      * 
