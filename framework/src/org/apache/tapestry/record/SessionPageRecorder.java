@@ -179,24 +179,6 @@ public class SessionPageRecorder extends PageRecorder
         if (_changes == null)
             _changes = new HashMap();
 
-        // Check the prior value.  If this is not an actual change,
-        // then don't bother recording it, or marking this page recorder
-        // dirty.
-
-        Object oldValue = _changes.get(key);
-        if (newValue == oldValue)
-            return;
-
-        try
-        {
-            if (oldValue != null && oldValue.equals(newValue))
-                return;
-        }
-        catch (Exception ex)
-        {
-            // Ignore.
-        }
-
         setDirty(true);
 
         _changes.put(key, newValue);
