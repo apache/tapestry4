@@ -21,7 +21,6 @@ import javax.servlet.ServletException;
 
 import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.engine.IComponentClassEnhancer;
-import org.apache.tapestry.engine.IComponentMessagesSource;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.IPageRecorder;
 import org.apache.tapestry.engine.IPageSource;
@@ -30,6 +29,7 @@ import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.engine.ITemplateSource;
 import org.apache.tapestry.request.RequestContext;
+import org.apache.tapestry.services.ComponentMessagesSource;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.util.io.DataSqueezer;
 import org.apache.tapestry.util.pool.Pool;
@@ -310,7 +310,7 @@ public interface IEngine
      * 
 	 **/
 	
-	public IComponentMessagesSource getComponentMessagesSource();
+	public ComponentMessagesSource getComponentMessagesSource();
 
     /**
      *  Returns a shared instance of {@link org.apache.tapestry.util.io.DataSqueezer}.

@@ -25,11 +25,13 @@ import org.apache.hivemind.Messages;
  *  a wrapper around an instance of {@link Properties}.  This ensures
  *  that the properties are, in fact, read-only (which ensures that
  *  they don't have to be synchronized).
+ * 
+ * <p>TODO: Merge this code with HiveMind's implemention.
  *
  *  @author Howard Lewis Ship
  *  @since 2.0.4
  *
- **/
+ */
 
 public class ComponentMessages implements Messages
 {
@@ -76,17 +78,43 @@ public class ComponentMessages implements Messages
     {
         String pattern = getMessage(key);
 
-		// This ugliness is mandated for JDK 1.3 compatibility, which has a bug 
-		// in MessageFormat ... the
-		// pattern is applied in the constructor, using the system default Locale,
-		// regardless of what locale is later specified!
-		// It appears that the problem does not exist in JDK 1.4.
-		
+        // This ugliness is mandated for JDK 1.3 compatibility, which has a bug 
+        // in MessageFormat ... the
+        // pattern is applied in the constructor, using the system default Locale,
+        // regardless of what locale is later specified!
+        // It appears that the problem does not exist in JDK 1.4.
+
         MessageFormat messageFormat = new MessageFormat("");
         messageFormat.setLocale(_locale);
         messageFormat.applyPattern(pattern);
 
+        convert(arguments);
+
         return messageFormat.format(arguments);
+    }
+
+    private void convert(Object[] arguments)
+    {
+        if (arguments == null)
+            return;
+
+        for (int i = 0; i < arguments.length; i++)
+        {
+            if (arguments[i] == null)
+                continue;
+
+            if (arguments[i] instanceof Throwable)
+            {
+                Throwable t = (Throwable) arguments[i];
+
+                String message = t.getMessage();
+
+                if (message == null)
+                    message = t.getClass().getName();
+
+                arguments[i] = message;
+            }
+        }
     }
 
 }

@@ -25,11 +25,23 @@ import org.apache.tapestry.engine.IPropertySource;
  */
 public interface Infrastructure
 {
-	/**
-	 * Returns an {@link IPropertySource} configured to search
-	 * the application specification, etc.  See 
-	 * <code>tapestry.ApplicationPropertySource</code>.
-	 */
-	public IPropertySource getApplicationPropertySource();
+    /**
+     * Returns an {@link IPropertySource} configured to search
+     * the application specification, etc.  See 
+     * <code>tapestry.ApplicationPropertySource</code>.
+     */
+    public IPropertySource getApplicationPropertySource();
 
+    /**
+     * Returns the coordinator to be notified of reset events
+     * (which will, in turn, notify other services).
+     */
+
+    public ResetEventCoordinator getResetEventCoordinator();
+
+    /**
+     * Returns the source of component message bundles.
+     */
+
+    public ComponentMessagesSource getComponentMessagesSource();
 }

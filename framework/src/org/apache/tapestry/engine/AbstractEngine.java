@@ -61,7 +61,9 @@ import org.apache.tapestry.listener.ListenerMap;
 import org.apache.tapestry.pageload.PageSource;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.request.ResponseOutputStream;
+import org.apache.tapestry.services.*;
 import org.apache.tapestry.services.Infrastructure;
+import org.apache.tapestry.services.impl.*;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.util.exception.ExceptionAnalyzer;
 import org.apache.tapestry.util.io.DataSqueezer;
@@ -267,18 +269,6 @@ public abstract class AbstractEngine
     protected static final String SCRIPT_SOURCE_NAME = "org.apache.tapestry.ScriptSource";
 
     /**
-     *  The name of the context attribute for the {@link IComponentMessagesSource}
-     *  instance.  The application's name is appended.
-     *
-     *  @since 2.0.4
-     *
-     **/
-
-    protected static final String STRINGS_SOURCE_NAME = "org.apache.tapestry.StringsSource";
-
-    private transient IComponentMessagesSource _stringsSource;
-
-    /**
      *  The name of the application specification property used to specify the
      *  class of the visit object.
      *
@@ -356,16 +346,6 @@ public abstract class AbstractEngine
         Boolean.getBoolean("org.apache.tapestry.disable-caching");
 
     private transient ClassResolver _resolver;
-
-    /**
-     *  A shared instance of {@link IPropertySource}
-     *
-     *  @since 3.0
-     *  @see #createPropertySource(RequestContext)
-     *
-     **/
-
-    private transient IPropertySource _propertySource;
 
     /**
      *  Map from service name to service instance.
@@ -1119,12 +1099,13 @@ public abstract class AbstractEngine
 
     public void clearCachedData()
     {
+    	_infrastructure.getResetEventCoordinator().fireResetEvent();
+    	
         _pool.clear();
         _pageSource.reset();
         _specificationSource.reset();
         _templateSource.reset();
         _scriptSource.reset();
-        _stringsSource.reset();
         _enhancer.reset();
     }
 
@@ -1239,9 +1220,6 @@ public abstract class AbstractEngine
 
         String servletName = context.getServlet().getServletName();
 
-        if (_propertySource == null)
-            _propertySource = _infrastructure.getApplicationPropertySource();
-
         if (_enhancer == null)
         {
             String name = ENHANCER_NAME + ":" + servletName;
@@ -1340,20 +1318,6 @@ public abstract class AbstractEngine
             }
         }
 
-        if (_stringsSource == null)
-        {
-            String name = STRINGS_SOURCE_NAME + ":" + servletName;
-
-            _stringsSource = (IComponentMessagesSource) servletContext.getAttribute(name);
-
-            if (_stringsSource == null)
-            {
-                _stringsSource = createComponentStringsSource(context);
-
-                servletContext.setAttribute(name, _stringsSource);
-            }
-        }
-
         if (_dataSqueezer == null)
         {
             String name = DATA_SQUEEZER_NAME + ":" + servletName;
@@ -1417,9 +1381,9 @@ public abstract class AbstractEngine
      *
      **/
 
-    public IComponentMessagesSource createComponentStringsSource(RequestContext context)
+    public ComponentMessagesSource createComponentStringsSource(RequestContext context)
     {
-        return new DefaultComponentMessagesSource();
+        return new ComponentMessagesSourceImpl();
     }
 
     /**
@@ -1633,7 +1597,7 @@ public abstract class AbstractEngine
         Class visitClass;
         Object result = null;
 
-        visitClassName = _propertySource.getPropertyValue(VISIT_CLASS_PROPERTY_NAME);
+        visitClassName = getPropertySource().getPropertyValue(VISIT_CLASS_PROPERTY_NAME);
 
         if (LOG.isDebugEnabled())
             LOG.debug("Creating visit object as instance of " + visitClassName);
@@ -1946,9 +1910,9 @@ public abstract class AbstractEngine
      *
      **/
 
-    public IComponentMessagesSource getComponentMessagesSource()
+    public ComponentMessagesSource getComponentMessagesSource()
     {
-        return _stringsSource;
+        return _infrastructure.getComponentMessagesSource();
     }
 
     /**
@@ -2024,7 +1988,7 @@ public abstract class AbstractEngine
 
     public IPropertySource getPropertySource()
     {
-        return _propertySource;
+        return _infrastructure.getApplicationPropertySource();
     }
 
     /** @since 3.0 **/
@@ -2061,7 +2025,7 @@ public abstract class AbstractEngine
 
     protected Object createGlobal(RequestContext context)
     {
-        String className = _propertySource.getPropertyValue("org.apache.tapestry.global-class");
+        String className = getPropertySource().getPropertyValue("org.apache.tapestry.global-class");
 
         if (Tapestry.isBlank(className))
             return Collections.synchronizedMap(new HashMap());
@@ -2127,7 +2091,7 @@ public abstract class AbstractEngine
     {
         boolean disableValidation =
             "true".equals(
-                _propertySource.getPropertyValue(
+                getPropertySource().getPropertyValue(
                     "org.apache.tapestry.enhance.disable-abstract-method-validation"));
 
         return new DefaultComponentClassEnhancer(_resolver, disableValidation);

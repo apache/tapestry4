@@ -51,6 +51,7 @@ public class MockPage extends BaseLocatable implements IPage
     private IEngine _engine;
     private Locale locale;
     private IComponentSpecification _specification;
+    private INamespace _namespace;
 
     public void detach()
     {
@@ -261,11 +262,12 @@ public class MockPage extends BaseLocatable implements IPage
 
     public INamespace getNamespace()
     {
-        return null;
+        return _namespace;
     }
 
     public void setNamespace(INamespace namespace)
     {
+		_namespace = namespace;
     }
 
     public void beginPageRender()

@@ -12,28 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.engine;
+package org.apache.tapestry.event;
 
-import org.apache.hivemind.Messages;
-import org.apache.tapestry.IComponent;
+import java.util.EventListener;
 
 /**
- *  Defines an object that can provide a component with its
- *  {@link org.apache.tapestry.IMessages}.
+ * Listener interface for objects interested in a Tapestry reset event.
+ * Reset events occur when cached data should be released (this may
+ * happend as often as every request in a development configuration).
  *
- *  @author Howard Lewis Ship
- *  @since 2.0.4
- *
- **/
-
-public interface IComponentMessagesSource
+ * @author Howard Lewis Ship
+ * @since 3.1
+ */
+public interface ResetEventListener extends EventListener
 {
-	public Messages getMessages(IComponent component);
-	
-	/**
-	 *  Clears all cached information for the source.
-	 * 
-	 **/
-	
-	public void reset();
+	public void resetDidOccur();
 }
