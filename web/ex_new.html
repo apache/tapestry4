@@ -44,19 +44,31 @@
 	
 <h3>Release 1.0.10</h3>
 
-Changed the build to include debugging symbols with the frameworks.
+Changed the build to include debugging symbols with the frameworks.  Fixed a deployment problem with
+the Tutorial.  Added descriptions to most components and parameters.  Modified the Inspector to
+display component and parameter descriptions.
 
+<p>Added a new page to the Workbench Tutorial: Chart.  The Chart page allows a user to dynamically
+create a pie chart.
+
+<p>Made it easier to create subclasses of 
+<a href="doc/api/com/primix/tapestry/AbstractResponseWriter.html">AbstractResponseWriter</a>.
+
+<pre>
 [ 532562 ] Submit.jwc contains error
 [ 532587 ] Submit throws NPE
 [ 532815 ] ValidationDelegate errors
+[ 532758 ] add descriptions to builtin components
+[ 499655 ] HTMLResponseWriter enhancements
+</pre>
 
 <h3>Release 1.0.9</h3>
 
 <p>The framework and contrib jar files are now named with the release number (i.e.,
 <code>com.primix.tapestry-1.0.9.jar</code>).  In addition, 
 the source code for these frameworks, and the examples, is now distributed as 
-jar files instead of directories of files in the <code>src</code> directory. 
-Tthis makes for easier source lookup when using 
+Jar files instead of directories of files in the <code>src</code> directory. 
+This makes for easier source lookup when using 
 <a href="http://www.eclipse.org">Eclipse</a>, and shrinks the size of the distribution
 as well.
 
