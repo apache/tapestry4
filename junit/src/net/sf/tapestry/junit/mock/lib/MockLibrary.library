@@ -8,6 +8,8 @@
 	
 	<page name="Dumper" specification-path="/net/sf/tapestry/junit/mock/lib/Dumper.page"/>
 	
+	<page name="Properties" specification-path="/net/sf/tapestry/junit/mock/lib/Properties.page"/>
+
 	<component-alias type="Border" specification-path="/net/sf/tapestry/junit/mock/lib/Border.jwc"/>
 	
 	<component-alias type="ShowError" specification-path="/net/sf/tapestry/junit/mock/lib/ShowError.jwc"/>
