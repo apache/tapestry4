@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+
+<component-specification class="org.apache.tapestry.contrib.tree.components.TreeView"
+    allow-body="yes" allow-informal-parameters="yes">
+
+    <parameter name="sessionStateManager"
+        type="org.apache.tapestry.contrib.tree.model.ITreeSessionStateManager"
+        direction="custom" required="no"/>
+
+    <parameter name="sessionStoreManager"
+        type="org.apache.tapestry.contrib.tree.model.ISessionStoreManager"
+        direction="custom" required="no"/>
+
+    <parameter name="treeModel"
+        type="org.apache.tapestry.contrib.tree.model.ITreeModel"
+        direction="custom" required="yes">
+    </parameter>
+
+    <parameter name="treeStateListener"
+        type="org.apache.tapestry.contrib.tree.model.ITreeStateListener"
+        direction="custom" required="no">
+    </parameter>
+
+    <component id="inheritInformalAny" type="InheritInformalAny">
+        <static-binding name="element">span</static-binding>
+    </component>
+
+    <component id="insertWrapped" type="RenderBody"/>
+
+</component-specification>

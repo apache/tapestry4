@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+
+<component-specification
+    class="org.apache.tapestry.contrib.tree.components.TreeNodeView"
+    allow-body="yes" allow-informal-parameters="yes">
+
+    <parameter name="closeNodeImage" type="org.apache.tapestry.IAsset"
+               required="no" direction="in"/>
+    <parameter name="openNodeImage" type="org.apache.tapestry.IAsset"
+               required="no" direction="in"/>
+
+    <parameter name="showNodeImages" type="boolean" required="no"
+               direction="custom"/>
+    <parameter name="makeNodeDirect" type="boolean" required="no"
+               direction="custom"/>
+
+    <parameter name="nodeRenderFactory"
+               type="org.apache.tapestry.contrib.tree.model.INodeRenderFactory"
+               required="no" direction="custom"/>
+
+    <!--parameter name="treeStateListener"
+        type="org.apache.tapestry.contrib.tree.model.ITreeStateListener"
+        direction="custom" required="no">
+    </parameter-->
+
+    <reserved-parameter name="opennodeimage"/>
+    <reserved-parameter name="treedataview"/>
+    <reserved-parameter name="closenodeimage"/>
+    <reserved-parameter name="nodeviewdirect"/>
+
+    <component id="direct" type="DirectLink">
+        <binding name="parameters" expression="nodeContext"/>
+        <binding name="listener" expression="listeners.nodeSelect"/>
+        <binding name="stateful" expression="false"/>
+        <binding name="name" expression="selectedID"/>
+        <binding name="anchor" expression="cleanSelectedID"/>
+    </component>
+
+    <component id="showImages" type="Conditional">
+        <binding name="condition" expression="showImages"/>
+    </component>
+
+    <component id="showImages2" copy-of="showImages"/>
+
+    <!--component id="showWithoutImages" type="Conditional">
+        <binding name="condition" expression="showWithoutImages"/>
+    </component-->
+
+    <component id="makeNodeDirect" type="Conditional">
+        <binding name="condition" expression="makeNodeDirect"/>
+    </component>
+
+    <component id="makeNodeNoDirect" type="Conditional">
+        <binding name="condition" expression="makeNodeNoDirect"/>
+    </component>
+
+    <component id="imageNode" type="Image">
+        <binding name="image" expression="nodeImage"/>
+    </component>
+    <component id="imageNode2" copy-of="imageNode"/>
+
+    <component id="insertValue" type="Delegator">
+		<binding name="delegate" expression="currentRenderer"/>
+    </component>
+    <component id="insertValue2" copy-of="insertValue"/>
+
+    <component id="offset" type="Any">
+        <static-binding name="element">span</static-binding>
+        <binding name="style" expression="offsetStyle"/>
+        <binding name="class" expression="nodeStyleClass"/>
+    </component>
+
+    <private-asset name="_closeNodeImage" resource-path="plus.gif"/>
+    <private-asset name="_openNodeImage" resource-path="minus.gif"/>
+</component-specification>

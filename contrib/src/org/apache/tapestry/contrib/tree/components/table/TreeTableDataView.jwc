@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+
+<component-specification class="org.apache.tapestry.contrib.tree.components.table.TreeTableDataView"
+    allow-body="yes" allow-informal-parameters="yes">
+
+    <parameter name="treeView"
+               type="org.apache.tapestry.contrib.tree.components.TreeView"
+               required="no" direction="custom"/>
+
+    <parameter name="nodeViewComponentAddress"
+               type="org.apache.tapestry.util.ComponentAddress"
+               required="no" direction="custom"/>
+
+	<parameter name="entriesPerTablePage" 
+		type="int" 
+		required="no"
+		direction="custom"/>
+
+    <parameter name="tableColunms"
+               type="java.util.ArrayList"
+               required="no" direction="custom"/>
+
+    <bean name="tableClass" class="org.apache.tapestry.bean.EvenOdd" lifecycle="request"/>
+
+	<component id="table" type="Table">
+		<binding name="tableModel" expression="tableModel"/>
+		<binding name="tableSessionStateManager" expression="tableSessionStateManager"/>
+		<binding name="row" expression="treeRowObject"/>
+        <binding name="rowsClass" expression='beans.tableClass.next'/>
+	</component>
+
+</component-specification>
