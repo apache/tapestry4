@@ -63,9 +63,11 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRedirectException;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.vlib.ActivateCallback;
+import org.apache.tapestry.vlib.ActivatePage;
 import org.apache.tapestry.vlib.IActivate;
 import org.apache.tapestry.vlib.IErrorProperty;
 import org.apache.tapestry.vlib.IMessageProperty;
+import org.apache.tapestry.vlib.Protected;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
 import org.apache.tapestry.vlib.components.Browser;
@@ -91,8 +93,8 @@ import org.apache.tapestry.vlib.ejb.SortOrdering;
  **/
 
 public abstract class MyLibrary
-    extends BasePage
-    implements IMessageProperty, IActivate, IErrorProperty
+    extends ActivatePage
+    implements IMessageProperty
 {
     public abstract void setOwnedQuery(IBookQuery value);
 
@@ -107,22 +109,6 @@ public abstract class MyLibrary
     public void finishLoad()
     {
         _browser = (Browser) getComponent("browser");
-    }
-
-    public void validate(IRequestCycle cycle)
-    {
-        Visit visit = (Visit) getVisit();
-
-        if (visit != null && visit.isUserLoggedIn())
-            return;
-
-        // User not logged in ... redirect through the Login page.
-
-        Login login = (Login) cycle.getPage("Login");
-
-        login.setCallback(new ActivateCallback(this));
-
-        throw new PageRedirectException(login);
     }
 
     public void activate(IRequestCycle cycle)

@@ -13,11 +13,11 @@
   <parameter name="sortColumn" type="org.apache.tapestry.vlib.ejb.SortColumn" required="yes" direction="auto"/>
   <parameter name="listener" type="org.apache.tapestry.IActionListener" required="yes" direction="auto"/>
   
-  <component id="link1" type="DirectLink">
+  <component id="link" type="DirectLink">
   	<binding name="listener" expression="listeners.handleClick"/>	
   </component>
   
-  <component id="link2" copy-of="link1"/>
+  <component id="iconLink" copy-of="link"/>
   
   <component id="rollover" type="Rollover">
   		<binding name="image">

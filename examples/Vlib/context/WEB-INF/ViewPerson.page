@@ -6,6 +6,8 @@
 	
 <page-specification class="org.apache.tapestry.vlib.pages.ViewPerson">
 
+  <property name="page-type" value="Search"/>
+
   <property-specification name="personId" type="java.lang.Integer" persistent="yes"/>
   <property-specification name="person" type="org.apache.tapestry.vlib.ejb.Person"/>
   

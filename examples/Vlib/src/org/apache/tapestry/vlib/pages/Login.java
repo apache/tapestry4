@@ -62,6 +62,8 @@ import javax.servlet.http.Cookie;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.callback.ICallback;
+import org.apache.tapestry.event.PageEvent;
+import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.valid.IValidationDelegate;
@@ -84,7 +86,7 @@ import org.apache.tapestry.vlib.ejb.Person;
  * 
  **/
 
-public abstract class Login extends BasePage implements IErrorProperty
+public abstract class Login extends BasePage implements IErrorProperty, PageRenderListener
 {
     /**
      *  The name of a cookie to store on the user's machine that will identify
@@ -101,7 +103,7 @@ public abstract class Login extends BasePage implements IErrorProperty
     public abstract String getEmail();
 
     public abstract String getPassword();
-    
+
     public abstract void setPassword(String password);
 
     protected IValidationDelegate getValidationDelegate()
@@ -132,16 +134,16 @@ public abstract class Login extends BasePage implements IErrorProperty
 
     public void attemptLogin(IRequestCycle cycle)
     {
-    	String password = getPassword();
-    	
-    	// Do a little extra work to clear out the password.
-    	
-    	setPassword(null);
-    	IValidationDelegate delegate = getValidationDelegate();
-    	
-    	delegate.setFormComponent((IFormComponent)getComponent("inputPassword"));
-    	delegate.recordFieldInputValue(null);
-    	
+        String password = getPassword();
+
+        // Do a little extra work to clear out the password.
+
+        setPassword(null);
+        IValidationDelegate delegate = getValidationDelegate();
+
+        delegate.setFormComponent((IFormComponent) getComponent("inputPassword"));
+        delegate.recordFieldInputValue(null);
+
         // An error, from a validation field, may already have occured.
 
         if (delegate.getHasErrors())
@@ -220,12 +222,14 @@ public abstract class Login extends BasePage implements IErrorProperty
         engine.forgetPage(getPageName());
     }
 
-    protected void prepareForRender(IRequestCycle cycle)
+    public void pageBeginRender(PageEvent event)
     {
-        super.prepareForRender(cycle);
-
         if (getEmail() == null)
             setEmail(getRequestCycle().getRequestContext().getCookieValue(COOKIE_NAME));
+    }
+
+    public void pageEndRender(PageEvent event)
+    {
     }
 
 }

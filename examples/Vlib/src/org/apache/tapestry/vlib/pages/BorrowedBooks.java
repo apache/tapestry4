@@ -61,9 +61,8 @@ import javax.ejb.FinderException;
 
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.vlib.IActivate;
+import org.apache.tapestry.vlib.ActivatePage;
 import org.apache.tapestry.vlib.IMessageProperty;
-import org.apache.tapestry.vlib.Protected;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
 import org.apache.tapestry.vlib.components.Browser;
@@ -82,8 +81,8 @@ import org.apache.tapestry.vlib.ejb.SortOrdering;
  **/
 
 public abstract class BorrowedBooks
-    extends Protected
-    implements IMessageProperty, IActivate
+    extends ActivatePage
+    implements IMessageProperty
 {
     private Browser _browser;
 

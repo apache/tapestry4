@@ -105,15 +105,4 @@ public abstract class ColumnSorter extends BaseComponent
 
         listener.actionTriggered(this, cycle);
     }
-
-    public IAsset getImage()
-    {
-        return getAsset(isDescending() ? "up" : "down");
-
-    }
-
-    public IAsset getFocus()
-    {
-        return getAsset(isDescending() ? "up_h" : "down_h");
-    }
 }

@@ -33,6 +33,7 @@
   
   <component id="borrowedBooks" type="DirectLink">
   	<binding name="listener" expression="listeners.viewBorrowedBooks"/>	
+    <binding name="stateful" expression="false"/>  	
   </component>
   
   <component id="borrowedBooksRollover" type="Rollover">
@@ -51,6 +52,7 @@
   
   <component id="editProfile" type="DirectLink">
   	<binding name="listener" expression="listeners.editProfile"/>	
+    <binding name="stateful" expression="false"/>
   </component>
   
   <component id="editProfileRollover" type="Rollover">

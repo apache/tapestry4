@@ -53,109 +53,38 @@
  *
  */
 
-package org.apache.tapestry.vlib.pages;
+package org.apache.tapestry.vlib;
 
-import java.rmi.RemoteException;
-
-	import org.apache.tapestry.IRequestCycle;
-	import org.apache.tapestry.html.BasePage;
-	import org.apache.tapestry.vlib.IMessageProperty;
-	import org.apache.tapestry.vlib.VirtualLibraryEngine;
-	import org.apache.tapestry.vlib.components.Browser;
-	import org.apache.tapestry.vlib.ejb.IBookQuery;
-	import org.apache.tapestry.vlib.ejb.MasterQueryParameters;
-	import org.apache.tapestry.vlib.ejb.SortColumn;
-	import org.apache.tapestry.vlib.ejb.SortOrdering;
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.PageRedirectException;
+import org.apache.tapestry.vlib.pages.Login;
 
 /**
- *  Runs queries and displays matches.
+ *  Subclass of {@link org.apache.tapestry.vlib.Protected} that
+ *  implements {@link org.apache.tapestry.vlib.IActivate}.  Overrides
+ *  {@link #validate(IRequestCycle)}.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
+ *  @since 2.4
+ *
  **/
 
-public abstract class BookMatches extends BasePage
+public abstract class ActivatePage extends Protected implements IActivate
 {
-    private Browser _browser;
-
-    public void finishLoad()
+    public void validate(IRequestCycle cycle)
     {
-        _browser = (Browser) getComponent("browser");
-    }
+        Visit visit = (Visit) getVisit();
 
-    public abstract IBookQuery getBookQuery();
-
-    public abstract void setBookQuery(IBookQuery bookQuery);
-
-    public abstract SortColumn getSortColumn();
-
-    public abstract boolean isDescending();
-
-    public abstract MasterQueryParameters getQueryParameters();
-
-    public abstract void setQueryParameters(MasterQueryParameters queryParameters);
-
-    /**
-     *  Invoked by the {@link Home} page to perform a query.
-     *
-     **/
-
-    public void performQuery(MasterQueryParameters parameters, IRequestCycle cycle)
-    {
-        setQueryParameters(parameters);
-
-        int count = executeQuery();
-
-        if (count == 0)
-        {
-            IMessageProperty page = (IMessageProperty) cycle.getPage();
-			page.setMessage(getString("no-matches"));
+        if (visit != null && visit.isUserLoggedIn())
             return;
-        }
 
-        _browser.initializeForResultCount(count);
-        cycle.setPage(this);
+        // User not logged in ... redirect through the Login page.
+
+        Login login = (Login) cycle.getPage("Login");
+
+        login.setCallback(new ActivateCallback(this));
+
+        throw new PageRedirectException(login);
     }
-
-    public void requery(IRequestCycle cycle)
-    {
-        int count = executeQuery();
-
-        if (count != _browser.getResultCount())
-            _browser.initializeForResultCount(count);
-    }
-
-    private int executeQuery()
-    {
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-
-        MasterQueryParameters parameters = getQueryParameters();
-
-        SortOrdering ordering = new SortOrdering(getSortColumn(), isDescending());
-
-        int i = 0;
-        while (true)
-        {
-            try
-            {
-                IBookQuery query = getBookQuery();
-
-                if (query == null)
-                {
-                    query = vengine.createNewQuery();
-                    setBookQuery(query);
-                }
-                
-                return query.masterQuery(parameters, ordering);
-            }
-            catch (RemoteException ex)
-            {
-                vengine.rmiFailure("Remote exception processing query.", ex, i++);
-                
-                setBookQuery(null);
-            }
-
-        }
-    }
-
 }
