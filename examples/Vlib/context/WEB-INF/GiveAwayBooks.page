@@ -4,6 +4,26 @@
   "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
 	
-<page-specification>
+<page-specification class="org.apache.tapestry.vlib.pages.GiveAwayBooks">
+
+    <property-specification name="error" type="java.lang.String"/>
+	<property-specification name="booksModel" type="org.apache.tapestry.form.IPropertySelectionModel"/>
+	<property-specification name="personModel" type="org.apache.tapestry.form.IPropertySelectionModel"/>
+	<property-specification name="selectedBooks" type="java.util.List"/>
+
+	<property-specification name="targetUserPK" type="java.lang.Integer"/>
+
+    <component id="selectBooks" type="contrib:Palette">
+      <binding name="sort" expression="@org.apache.tapestry.contrib.palette.SortMode@LABEL"/>\
+      <binding name="model" expression="booksModel"/>
+      <binding name="selected" expression="selectedBooks"/>
+      <binding name="selectedTitleBlock" expression="components.selectedTitleBlock"/>
+       <binding name="availableTitleBlock" expression="components.availableTitleBlock"/>
+    </component>
+    
+    <component id="selectTarget" type="PropertySelection">
+      <binding name="value" expression="targetUserPK"/>
+      <binding name="model" expression="personModel"/>
+    </component>
 
 </page-specification>

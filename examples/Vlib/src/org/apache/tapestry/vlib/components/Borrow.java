@@ -130,7 +130,8 @@ public abstract class Borrow extends BaseComponent
         Home home = (Home) cycle.getPage("Home");
         VirtualLibraryEngine vengine = visit.getEngine();
 
-        for (int i = 0; i < 2; i++)
+        int i = 0;
+        while (true)
         {
             try
             {
@@ -152,7 +153,7 @@ public abstract class Borrow extends BaseComponent
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure("Remote exception borrowing book.", ex, i > 0);
+                vengine.rmiFailure("Remote exception borrowing book.", ex, i++);
             }
         }
 

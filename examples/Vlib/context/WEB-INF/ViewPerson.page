@@ -18,12 +18,6 @@
     </binding>
     <static-binding name="element" value="a"/>
   </component>
- 
-  <component id="e" type="Foreach">
-    <binding name="source" expression="components.browser.pageResults"/>
-    <binding name="value" expression="currentMatch"/>
-    <static-binding name="element" value="tr"/>
-  </component>
 
   <component id="holderLink" type="PersonLink">
     <binding name="primaryKey" expression="currentMatch.holderPrimaryKey"/>

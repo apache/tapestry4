@@ -406,9 +406,6 @@
 			<jvmarg
 				line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20500"
 				/>
-			<sysproperty key="org.apache.tapestry.enable-reset-service" value="true"
-				/>
-			<sysproperty key="org.apache.tapestry.vlib.debug-enabled" value="true"/>
 			<!-- These allow private assets to be exported as static
 	  		 files.  This coordinates with portions of
 	  		 config/deploy/jbossweb.sar/META-INF/jboss-service.xml -->

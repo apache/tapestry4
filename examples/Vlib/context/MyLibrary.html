@@ -1,18 +1,22 @@
 <!-- $Id$ -->
 <html jwcid="$content$">
-<body jwcid="@Border">
+<body jwcid="@Border" browser="ognl:components.browser">
 <span jwcid="@ShowError"/>
 <span jwcid="@ShowMessage"/>
 <span jwcid="@Conditional" condition="ognl:components.browser.resultCount == 0">
-<p>You have not yet entered any of your books.</p>
+
+<span jwcid="@Information">
+You have not yet entered any of your books.  
+
+<p>Use the
+<a href="#" jwcid="@PageLink" page="NewBook">Add New Book</a> link to add books you own
+to the Virtual Library database, so that they may be borrowed by others.
+</p>
+</span>
 </span>
 	
 <span jwcid="@Conditional" condition="ognl:components.browser.resultCount">
-<span jwcid="browser@Browser" query="ognl:ownedQuery">
-	
-<br/>
-<span jwcid="@Insert" value="ognl:components.browser.resultCount">10</span> books
-	
+
 <table class="data">
 
   <tr>
@@ -22,7 +26,7 @@
     <th>Borrowed By</th>
     <th>Edit/Delete</th>
   </tr>
-  <tr jwcid="e">
+  <tr jwcid="browser@Browser" query="ognl:ownedQuery" value="ognl:currentBook">
     <td><span jwcid="@Insert" value="ognl:currentBook.title">DocBook:The Definitive Guide</span>
     </td>
     <td><span jwcid="@Insert" value="ognl:currentBook.author">Walsh &#38; Muellner</span>
@@ -35,6 +39,8 @@
     </td>
   </tr>
  </table>
-</span></span>
+
+</span>
+
 </body>
 </html>

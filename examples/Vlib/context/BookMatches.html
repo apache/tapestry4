@@ -1,10 +1,6 @@
 <!-- $Id$ -->
 <html jwcid="$content$">
-<body jwcid="@Border" title="Matching Books">
-<span jwcid="browser@Browser" query="ognl:bookQuery">
-	
-<br/>
-<span jwcid="@Insert" value="ognl:components.browser.resultCount">10</span> matching books
+<body jwcid="@Border" title="Matching Books" browser="ognl:components.browser">
 
 <table class="data">
   <tr>
@@ -15,7 +11,7 @@
     <th>Borrowed&nbsp;By</th>
     <th>Borrow</th>
   </tr>
-    <tr jwcid="e">
+    <tr jwcid="browser@Browser" query="ognl:bookQuery" value="ognl:currentMatch">
       <td><a href="#" jwcid="@BookLink" book="ognl:currentMatch">DocBook:The Definitive Guide</a>
       </td>
       <td><span jwcid="@Insert" value="ognl:currentMatch.author">Walsh &#38; Muellner</span>
@@ -30,6 +26,6 @@
       </td>
     </tr>
 </table>
-</span>
+
 </body>
 </html>

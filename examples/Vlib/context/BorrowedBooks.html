@@ -1,15 +1,18 @@
 <!-- $Id$ -->
 <html jwcid="$content$">
-<body jwcid="@Border">
+<body jwcid="@Border" browser="ognl:components.browser">
 <span jwcid="@ShowError"/>
 <span jwcid="@ShowMessage"/>
-<span jwcid="@Conditional" condition="ognl:components.browser.resultCount == 0">No borrowed books.</span>
+
+<span jwcid="@Conditional" condition="ognl:components.browser.resultCount == 0">
+	
+<span jwcid="@Information">
+	You have no borrowed books.
+</span>
+	
+</span>
+
 <span jwcid="@Conditional" condition="ognl:components.browser.resultCount != 0">
-<span jwcid="browser@Browser" query="ognl:borrowedQuery">
-		
-<br/>
-You have 
-<span jwcid="@Insert" value="ognl:components.browser.resultCount">10</span> borrowed books
 
 <table class="data">
   <tr>
@@ -19,7 +22,7 @@ You have
     <th>Owner</th>
     <th>Return</th>
   </tr>
-  <tr jwcid="e">
+  <tr jwcid="browser@Browser" query="ognl:borrowedQuery" value="ognl:currentBook">
     <td><a jwcid="@BookLink" book="ognl:currentBook" href="#" class="clsDataBlue">DocBook:The Definitive Guide</a>
     </td>
     <td><span jwcid="@Insert" value="ognl:currentBook.author">Walsh &#38; Muellner</span>
@@ -33,6 +36,6 @@ You have
   </tr>
 </table>
 </span>
-</span>
+
 </body>
 </html>

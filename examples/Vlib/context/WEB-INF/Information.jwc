@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: Question.jwc,v 1.1 2003/03/29 18:49:07 hlship Exp $ -->
+<!DOCTYPE component-specification PUBLIC
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+  
+<component-specification 
+	allow-body="yes" 
+	allow-informal-parameters="no">
+  
+</component-specification>

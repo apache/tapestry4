@@ -112,7 +112,8 @@ public abstract class MyLibrary extends Protected implements IMessageProperty
 
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
-        for (int i = 0; i < 2; i++)
+        int i = 0;
+        while (true)
         {
             try
             {
@@ -133,7 +134,7 @@ public abstract class MyLibrary extends Protected implements IMessageProperty
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure("Remote exception accessing owned books.", ex, i > 0);
+                vengine.rmiFailure("Remote exception accessing owned books.", ex, i++);
 
                 setOwnedQuery(null);
             }
@@ -176,7 +177,8 @@ public abstract class MyLibrary extends Protected implements IMessageProperty
     {
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
-        for (int i = 0; i < 2; i++)
+        int i = 0;
+        while (true)
         {
             try
             {
@@ -194,7 +196,7 @@ public abstract class MyLibrary extends Protected implements IMessageProperty
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure("Remote exception returning book.", ex, i > 0);
+                vengine.rmiFailure("Remote exception returning book.", ex, i++);
             }
         }
     }

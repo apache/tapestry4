@@ -123,7 +123,8 @@ public abstract class EditUsers extends AdminPage implements PageRenderListener
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
         Person[] users = null;
 
-        for (int i = 0; i < 2; i++)
+        int i = 0;
+        while (true)
         {
             try
             {
@@ -135,16 +136,14 @@ public abstract class EditUsers extends AdminPage implements PageRenderListener
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure("Unable to retrieve list of users.", ex, i > 0);
+                vengine.rmiFailure("Unable to retrieve list of users.", ex, i++);
             }
         }
 
         UserListEditMap map = new UserListEditMap();
 
-        for (int i = 0; i < users.length; i++)
-        {
+        for (i = 0; i < users.length; i++)
             map.add(users[i].getPrimaryKey(), users[i]);
-        }
 
         setListEditMap(map);
     }
@@ -173,19 +172,19 @@ public abstract class EditUsers extends AdminPage implements PageRenderListener
 
         Integer adminPK = visit.getUserPK();
 
-        for (int i = 0; i < 2; i++)
+        int i = 0;
+        while (true)
         {
             try
             {
                 IOperations operations = vengine.getOperations();
 
                 operations.updatePersons(updated, resetPasswordArray, deleted, adminPK);
-
                 break;
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure("Unable to update users.", ex, i > 0);
+                vengine.rmiFailure("Unable to update users.", ex, i++);
             }
             catch (RemoveException ex)
             {

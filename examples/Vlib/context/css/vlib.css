@@ -97,3 +97,11 @@ TABLE.tapestry-palette SELECT
 {
   width: 200px;
 }
+
+TD.browser-summary {
+  text-align: center;
+  background-color: blue;
+  color: white;
+  font-size: 14;
+  font-weight: bold;
+}

@@ -113,7 +113,8 @@ public abstract class EditProfile extends Protected implements PageRenderListene
         Integer primaryKey = visit.getUserPK();
         Map attributes = null;
 
-        for (int i = 0; i < 2; i++)
+        int i = 0;
+        while (true)
         {
             try
             {
@@ -129,7 +130,7 @@ public abstract class EditProfile extends Protected implements PageRenderListene
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure("Remote exception reading user.", ex, i > 0);
+                vengine.rmiFailure("Remote exception reading user.", ex, i++);
             }
         }
 
@@ -182,7 +183,8 @@ public abstract class EditProfile extends Protected implements PageRenderListene
         VirtualLibraryEngine vengine = visit.getEngine();
         Integer primaryKey = visit.getUserPK();
 
-        for (int i = 0; i < 2; i++)
+        int i = 0;
+        while (true)
         {
             try
             {
@@ -204,7 +206,7 @@ public abstract class EditProfile extends Protected implements PageRenderListene
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure("Remote exception updating user attributes.", ex, i > 0);
+                vengine.rmiFailure("Remote exception updating user attributes.", ex, i++);
             }
         }
 

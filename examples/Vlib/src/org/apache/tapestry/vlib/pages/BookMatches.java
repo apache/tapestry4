@@ -101,7 +101,8 @@ public abstract class BookMatches extends BasePage
             setBookQuery(query);
         }
 
-        for (int i = 0; i < 2; i++)
+        int i = 0;
+        while (true)
         {
 
             try
@@ -124,9 +125,9 @@ public abstract class BookMatches extends BasePage
             {
                 String message = "Remote exception processing query.";
 
-                vengine.rmiFailure(message, ex, false);
+                vengine.rmiFailure(message, ex, 0);
 
-                if (i > 0)
+                if (i++ > 0)
                 {
                     // This method is invoked from the Home page.  We return
                     // without changing the response page.

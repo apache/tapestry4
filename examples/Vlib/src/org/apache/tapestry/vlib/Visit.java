@@ -56,12 +56,8 @@
 package org.apache.tapestry.vlib;
 
 import java.io.Serializable;
-import java.rmi.RemoteException;
 import java.sql.Timestamp;
 
-import javax.ejb.FinderException;
-
-import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.vlib.ejb.Person;
 
 /**
@@ -131,23 +127,7 @@ public class Visit implements Serializable
         if (_userPK == null)
             return null;
 
-        for (int i = 0; i < 2; i++)
-        {
-            try
-            {
-                _user = _engine.getOperations().getPerson(_userPK);
-
-                break;
-            }
-            catch (FinderException e)
-            {
-                throw new ApplicationRuntimeException("Could not locate user.", e);
-            }
-            catch (RemoteException ex)
-            {
-                _engine.rmiFailure("Unable to access logged-in user.", ex, i > 0);
-            }
-        }
+        _user = _engine.readPerson(_userPK);
 
         return _user;
     }

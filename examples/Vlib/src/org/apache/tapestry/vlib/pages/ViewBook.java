@@ -88,7 +88,8 @@ public abstract class ViewBook extends BasePage implements IExternalPage
         Integer bookPK = (Integer) parameters[0];
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
-        for (int i = 0; i < 2; i++)
+        int i = 0;
+        while (true)
         {
             IOperations bean = vengine.getOperations();
 
@@ -105,17 +106,20 @@ public abstract class ViewBook extends BasePage implements IExternalPage
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure("Remote exception obtaining information for book " + bookPK + ".", ex, i > 0);
+                vengine.rmiFailure(
+                    "Remote exception obtaining information for book " + bookPK + ".",
+                    ex,
+                    i++);
             }
         }
 
     }
 
-
     public DateFormat getDateFormat()
     {
         if (_dateFormat == null)
-            _dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, getLocale());
+            _dateFormat =
+                DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, getLocale());
 
         return _dateFormat;
     }

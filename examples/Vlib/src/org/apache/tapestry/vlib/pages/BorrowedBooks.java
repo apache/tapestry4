@@ -117,7 +117,8 @@ public abstract class BorrowedBooks extends Protected implements IMessagePropert
 
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
-        for (int i = 0; i < 2; i++)
+        int i = 0;
+        while (true)
         {
             try
             {
@@ -138,7 +139,7 @@ public abstract class BorrowedBooks extends Protected implements IMessagePropert
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure("Remote exception finding borrowed books.", ex, i > 0);
+                vengine.rmiFailure("Remote exception finding borrowed books.", ex, i++);
 
                 setBorrowedQuery(null);
             }
