@@ -33,12 +33,12 @@ import net.sf.tapestry.IRender;
 import net.sf.tapestry.Tapestry;
 
 /**
- * A token parsed from a Tapestry HTML template.
+ *  A token parser for a Tapestry HTML template.
  *
- * <p>TBD:  Use a single token to represent an bodyless component.
+ *  <p>TBD:  Use a single token to represent an bodyless component.
  *
- * @author Howard Lewis Ship
- * @version $Id$
+ *  @author Howard Lewis Ship
+ *  @version $Id$
  * 
  **/
 
@@ -59,7 +59,7 @@ public class TemplateToken
     private Map attributes;
 
     /**
-     *  Constructs a TEXT token with the given template data.
+     *  Constructs a {@link TokenType#TEXT} token with the given template data.
      *
      **/
 
@@ -76,42 +76,45 @@ public class TemplateToken
             || startIndex > templateData.length
             || endIndex > templateData.length)
             throw new IllegalArgumentException(
-                Tapestry.getString(
-                    "TemplateToken.range-error",
-                    this,
-                    Integer.toString(templateData.length)));
+                Tapestry.getString("TemplateToken.range-error", this, Integer.toString(templateData.length)));
     }
 
     /**
-     *  Constructs token, typically used with CLOSE.
+     *  Constructs token, typically used with {@link TokenType#CLOSE}.
      *
      **/
 
     public TemplateToken(TokenType type, String tag)
     {
-        this.type = type;
-        this.tag = tag;
+        this(type, null, tag, null);
+
     }
 
     /**
-     *  Constructs an OPEN token with the given id.
+     *  Constructs an {@link TokenType#OPEN} with the given id.
      *
      **/
 
     public TemplateToken(String id, String tag)
     {
-        this(id, tag, null);
+        this(TokenType.OPEN, id, tag, null);
     }
 
     /**
-     *  Contructs and OPEN token with the given id and attributes.
+     *  Contructs an {@link TokenType#OPEN} token with the given id and attributes.
      *
-     * @since 1.0.2
+     *  @since 1.0.2
+     * 
      **/
 
     public TemplateToken(String id, String tag, Map attributes)
     {
-        type = TokenType.OPEN;
+        this(TokenType.OPEN, id, tag, attributes);
+    }
+
+    public TemplateToken(TokenType type, String id, String tag, Map attributes)
+    {
+        this.type = type;
         this.id = id;
         this.tag = tag;
         this.attributes = attributes;
@@ -123,8 +126,9 @@ public class TemplateToken
     }
 
     /**
-     *  Returns the id of the component.  This is only valid when the type
-     *  is OPEN.
+     *  For {@link TokenType#OPEN}, returns the component id.
+     *  For {@link TokenType#LOCALIZATION}, returns the localization key.
+     *  Returns null for other token types.
      *
      **/
 
@@ -134,9 +138,10 @@ public class TemplateToken
     }
 
     /**
-     *  Returns the tag (for an OPEN or CLOSE) token.
-     *
-     * @since 1.0.2
+     *  Returns the tag if applicable (not {@link TokenType#TEXT}), or null
+     * 
+     *  @since 1.0.2
+     * 
      **/
 
     public String getTag()
@@ -144,17 +149,14 @@ public class TemplateToken
         return tag;
     }
 
-    public IRender getRender()
+    public synchronized IRender getRender()
     {
-        if (type != TokenType.TEXT)
-            throw new ApplicationRuntimeException(
-                Tapestry.getString("TemplateToken.may-not-render", type));
-
-        synchronized (this)
+        if (render == null)
         {
-            if (render == null)
-                render =
-                    new RenderTemplateHTML(templateData, startIndex, endIndex - startIndex + 1);
+            if (type != TokenType.TEXT)
+                throw new ApplicationRuntimeException(Tapestry.getString("TemplateToken.may-not-render", type));
+
+            render = new RenderTemplateHTML(templateData, startIndex, endIndex - startIndex + 1);
         }
 
         return render;
@@ -162,7 +164,7 @@ public class TemplateToken
 
     /**
      *  Returns the starting index of the token.  Will return -1 for any non-TEXT
-     * token.
+     *  token.
      *
      **/
 
@@ -177,10 +179,12 @@ public class TemplateToken
     }
 
     /**
-     *  Returns the attributes associated with an OPEN tag, which may
+     *  Returns the attributes associated with an {@link TokenType#OPEN}
+     *  or {@link TokenType#LOCALIZATION} tag, which may
      *  be null.
      *
      *  @since 1.0.2
+     * 
      **/
 
     public Map getAttributes()

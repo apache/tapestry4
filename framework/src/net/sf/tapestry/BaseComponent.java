@@ -54,6 +54,71 @@ public class BaseComponent extends AbstractComponent
     private static final Category CAT = Category.getInstance(BaseComponent.class);
 
     /**
+     *  A class used with invisible localizations.  Constructed
+     *  from {@link TokenType#LOCALIZATION} {@link TemplateToken}s.
+     * 
+     *  @since 2.0.4
+     * 
+     **/
+    
+    private class LocalizedStringRender implements IRender
+    {
+        private String key;
+        private Map attributes;
+
+        private LocalizedStringRender(String key, Map attributes)
+        {
+            this.key = key;
+            this.attributes = attributes;
+        }
+
+        public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+        {
+            if (cycle.isRewinding())
+                return;
+
+            if (attributes != null)
+            {
+                writer.begin("span");
+
+                Iterator i = attributes.entrySet().iterator();
+
+                while (i.hasNext())
+                {
+                    Map.Entry entry = (Map.Entry) i.next();
+                    String attributeName = (String) entry.getKey();
+                    String attributeValue = (String) entry.getValue();
+
+                    writer.attribute(attributeName, attributeValue);
+                }
+            }
+
+            writer.print(getString(key));
+
+            if (attributes != null)
+                writer.end();
+        }
+        
+        public String toString()
+        {
+            StringBuffer buffer = new StringBuffer("LocalizedStringRender@");
+            buffer.append(Integer.toHexString(hashCode()));
+            buffer.append('[');
+            buffer.append(key);
+
+            if (attributes != null)
+            {
+                buffer.append(' ');
+                buffer.append(attributes);
+            }
+
+            buffer.append(']');
+
+            return buffer.toString();
+        }
+    }
+
+    /**
      *  Adds an element as an outer element for the receiver.  Outer
      *  elements are elements that should be directly rendered by the
      *  receiver's <code>render()</code> method.  That is, they are
@@ -230,7 +295,17 @@ public class BaseComponent extends AbstractComponent
 
                     throw new PageLoaderException(Tapestry.getString("BaseComponent.unbalanced-close-tags"), this);
                 }
+                
+                continue;
             }
+            
+            if (type == TokenType.LOCALIZATION)
+            {
+                IRender renderer = new LocalizedStringRender(token.getId(), token.getAttributes());
+                activeComponent.addWrapped(renderer);
+                
+                continue;
+            }                
         }
 
         // This is also pretty much unreachable, and the message is kind of out
@@ -370,7 +445,8 @@ public class BaseComponent extends AbstractComponent
      *   @since 2.0.3
      **/
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
     {
         if (CAT.isDebugEnabled())
             CAT.debug("Begin render " + getExtendedId());

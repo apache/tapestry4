@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN"
-	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd" [
+<!DOCTYPE specification PUBLIC "-//Howard Lewis Ship//Tapestry Specification 1.2//EN"
+	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd" [
 
 <!ENTITY here "/tutorial/workbench/components">
 	
@@ -11,7 +11,7 @@
   allow-informal-parameters="no">
 
   <component id="shell" type="Shell">
-    <static-binding name="title">Tapestry Workbench</static-binding>
+    <string-binding name="title" key="window.title"/>
     <binding name="stylesheet" property-path="assets.stylesheet"/>
   </component>
   
