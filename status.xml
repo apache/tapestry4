@@ -21,6 +21,17 @@
   </developers>
 
   <votes>
+    <vote title="release 3.0rc1" date="Mar 13 2004" dev="RLS">
+        <motion>
+        Looks like things are pretty much in place for the next release - 3.0
+release candidate 1.  Let's vote on it to make it official.  Release current
+code as rc1?
+        </motion>
+        <response>
+        RLS, GL, HK, EH, DS, MB, HLS: +1
+        </response>
+    </vote>
+    
   	<vote title="Can the Tutorial" date="Feb 19 2004" dev="HLS">
   		<motion>
   		I think its pretty obvious by now that no work is going to get done on the Tutorial for 3.0. I think
