@@ -49,13 +49,13 @@ public class ContextResourceLocation extends AbstractResourceLocation
 
     public IResourceLocation getLocalization(Locale locale)
     {
-        if (locale == null)
-            return this;
-
         LocalizedContextResourceFinder finder = new LocalizedContextResourceFinder(_context);
 
         String path = getPath();
         String localizedPath = finder.resolve(path, locale);
+
+        if (localizedPath == null)
+            return null;
 
         if (path.equals(localizedPath))
             return this;
@@ -89,6 +89,11 @@ public class ContextResourceLocation extends AbstractResourceLocation
     }
     
 
+    public String toString()
+    {
+        return "context:" + getPath();
+    }
+        
     public int hashCode()
     {
         HashCodeBuilder builder = new HashCodeBuilder(3265, 143);

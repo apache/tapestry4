@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="c2" root="context2"/>
+
+  	<servlet name="app" class="net.sf.tapestry.ApplicationServlet">
+  		<init-parameter
+  			name="net.sf.tapestry.application-specification"
+  			value="/net/sf/tapestry/junit/mock/c2/C2.application"/>
+  	</servlet>      
+    
+<!-- Check that the home service is the default service. -->
+    
+    <request>   			
+		<assert-output name="Title">
+<![CDATA[
+<title>Implicit Home Page</title>
+]]>
+		</assert-output>		
+
+		<assert-output name="Text from Home Page">
+No page specification.
+		</assert-output>
+		
+	</request>	
+	
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="WithApplication"/>
+		
+		<assert-output name="Title">
+<![CDATA[
+<title>WithApplication Page</title>
+]]>
+		</assert-output>		
+
+		<assert-output name="Text from Home Page">
+This page's specification is a sibling of the app specification.
+		</assert-output>
+				
+	</request>	
+			 	 	 
+</mock-test>
+    	

@@ -15,6 +15,9 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import javax.servlet.ServletContext;
+
+import net.sf.tapestry.resource.ContextResourceLocation;
 import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.util.AdaptorRegistry;
 import net.sf.tapestry.util.StringSplitter;
@@ -640,5 +643,26 @@ public final class Tapestry
          }
          
          return result;    
+    }
+    
+    /**
+     *  Returns the application root location, which is in the
+     *  {@link javax.servlet.ServletContext}, based on
+     *  the {@link javax.servlet.http.HttpServletRequest#getServletPath() servlet path}.
+     * 
+     *  @since 2.4
+     * 
+     **/
+    
+    public static IResourceLocation getApplicationRootLocation(IRequestCycle cycle)
+    {
+        RequestContext context = cycle.getRequestContext();
+        ServletContext servletContext = context.getServlet().getServletContext();
+        String servletPath = context.getRequest().getServletPath();
+        
+        // Could strip off the servlet name (i.e., "app" in "/app") but
+        // there's no need.
+                
+        return new ContextResourceLocation(servletContext, servletPath);                
     }
 }

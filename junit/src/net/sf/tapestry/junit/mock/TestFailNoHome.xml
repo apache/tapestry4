@@ -14,13 +14,13 @@
     <request>
     	
     	<assert-output name="Page Title">
-<![CDATA[
+<![CDATA[    	
 <title>Exception</title>
 ]]>
 		</assert-output>
 					
 		<assert-output name="Error">
-Page 'Home' not found in framework namespace.
+Page 'Home' not found in application namespace.
 		</assert-output>
 	</request>		
 

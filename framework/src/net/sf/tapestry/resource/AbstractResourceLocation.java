@@ -1,11 +1,5 @@
 package net.sf.tapestry.resource;
 
-import java.net.URL;
-import java.util.Locale;
-
-import org.apache.commons.lang.builder.ToStringBuilder;
-
-import net.sf.tapestry.IAsset;
 import net.sf.tapestry.IResourceLocation;
 
 public abstract class AbstractResourceLocation implements IResourceLocation
@@ -61,25 +55,6 @@ public abstract class AbstractResourceLocation implements IResourceLocation
         _name = _path.substring(lastSlashx + 1);
     }
 
-    public String toString()
-    {
-        ToStringBuilder builder = new ToStringBuilder(this);
-
-        builder.append("path", _path);
-
-        extendDescription(builder);
-
-        return builder.toString();
-    }
-
-    /**
-     *  Does nothing.  Subclasses may override.
-     * 
-     **/
-
-    protected void extendDescription(ToStringBuilder builder)
-    {
-    }
 
     /**
      *  Returns true if the other object is an instance of the

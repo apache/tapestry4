@@ -1,5 +1,6 @@
 package net.sf.tapestry.engine;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,10 +68,13 @@ public class Namespace implements INamespace
 
     /**
      *  Map of {@link ComponentSpecification} keyed on page name.
+     *  The map is synchronized because different threads may
+     *  try to update it simultaneously (due to dynamic page
+     *  discovery in the application namespace).
      * 
      **/
 
-    private Map _pages = new HashMap();
+    private Map _pages = Collections.synchronizedMap(new HashMap());
 
     /**
      *  Map of {@link ComponentSpecification} keyed on
@@ -218,7 +222,7 @@ public class Namespace implements INamespace
      * 
      **/
 
-    private String getNamespaceId()
+    public String getNamespaceId()
     {
         if (_frameworkNamespace)
             return Tapestry.getString("Namespace.framework-namespace");
@@ -228,6 +232,14 @@ public class Namespace implements INamespace
 
         return Tapestry.getString("Namespace.nested-namespace", getExtendedId());
     }
+
+
+    /**
+     *  Gets the specification from the specification source.
+     * 
+     *  @throws ApplicationRuntimeException if the named page is not defined.
+     * 
+     **/
 
     private ComponentSpecification locatePageSpecification(String name)
     {
@@ -241,13 +253,13 @@ public class Namespace implements INamespace
         return _specificationSource.getPageSpecification(location);
     }
 
-    private ComponentSpecification locateComponentSpecification(String alias)
+    private ComponentSpecification locateComponentSpecification(String type)
     {
-        String path = _specification.getComponentSpecificationPath(alias);
+        String path = _specification.getComponentSpecificationPath(type);
 
         if (path == null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("Namespace.no-such-alias", alias, getNamespaceId()));
+                Tapestry.getString("Namespace.no-such-alias", type, getNamespaceId()));
 
        IResourceLocation location = getSpecificationLocation().getRelativeLocation(path);
 
@@ -291,10 +303,25 @@ public class Namespace implements INamespace
         return prefix + SEPARATOR + pageName;
     }
 
-
+    /** @since 2.4 **/
+    
     public IResourceLocation getSpecificationLocation()
     {
         return _specification.getSpecificationLocation();
+    }
+
+    /** @since 2.4 **/
+    
+    public boolean isApplicationNamespace()
+    {
+        return _applicationNamespace;
+    }
+
+    /** @since 2.4 **/
+    
+    public void installPageSpecification(String pageName, ComponentSpecification specification)
+    {
+        _pages.put(pageName, specification);
     }
 
 }

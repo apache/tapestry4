@@ -25,6 +25,9 @@ import java.util.Locale;
  *  actually exists, use {@link #getResourceURL()}, which returns
  *  null if the resource doesn't exist.  {@link #getLocalization(Locale)}
  *  returns only real resource locations, where the resource exists.
+ * 
+ *  <p>
+ *  Folders must be represented with a trailing slash.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -56,6 +59,8 @@ public interface IResourceLocation
      *  on a base resource.
      * 
      *  @param locale to localize for, or null for no localization.
+     *  @return a localized version of this resource, of null if the resource
+     *  itself does not exist.
      * 
      **/
     

@@ -58,6 +58,18 @@ public interface INamespace
     public String getExtendedId();
     
     /**
+     *  Returns a version of the extended id appropriate for error
+     *  messages.  This is the based on
+     *  {@link #getExtendedId()}, unless this is the
+     *  application or framework namespace, in which case
+     *  special strings are returned.
+     *  
+     *  @since 2.4
+     * 
+     **/
+    
+    public String getNamespaceId();
+    /**
      *  Returns the parent namespace; the namespace which
      *  contains this namespace.
      * 
@@ -92,7 +104,7 @@ public interface INamespace
     public List getChildIds();
     
     /**
-     *  Returns the path for the page specification of the named
+     *  Returns the page specification of the named
      *  page (defined within the namespace).
      * 
      *  @param name the name of the page
@@ -196,4 +208,25 @@ public interface INamespace
    
    public IResourceLocation getSpecificationLocation();
     
+    
+   /**
+    *  Returns true if the namespace is the special
+    *  application namespace.
+    * 
+    *  @since 2.4
+    * 
+    **/
+   
+   public boolean isApplicationNamespace();    
+   
+   /**
+    *  Used to specify additional pages beyond those that came from
+    *  the namespace's specification.  This is used when pages
+    *  in the application namespace are dynamically discovered.
+    * 
+    *  @since 2.4
+    * 
+    **/
+   
+   public void installPageSpecification(String pageName, ComponentSpecification specification);
 }

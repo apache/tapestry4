@@ -739,7 +739,7 @@ public class RequestContext implements IRender
             renderValue.renderDescription(writer);
 
             writer.end("tr");
-
+            writer.println();
             return;
         }
 
@@ -764,6 +764,7 @@ public class RequestContext implements IRender
         writer.begin("td");
         writer.print(value);
         writer.end("tr");
+        writer.println();
     }
 
     private void pair(IMarkupWriter writer, String name, boolean value)

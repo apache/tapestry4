@@ -43,13 +43,13 @@ public class ClasspathResourceLocation extends AbstractResourceLocation
 
     public IResourceLocation getLocalization(Locale locale)
     {
-        if (locale == null)
-            return this;
-
         String path = getPath();
         LocalizedResourceFinder finder = new LocalizedResourceFinder(_resolver);
 
         String localizedPath = finder.resolve(path, locale);
+
+        if (localizedPath == null)
+            return null;
 
         if (path.equals(localizedPath))
             return this;
@@ -79,6 +79,11 @@ public class ClasspathResourceLocation extends AbstractResourceLocation
     }
 
 
+    public String toString()
+    {
+        return "classpath:" + getPath();
+    }
+        
     public int hashCode()
     {
         HashCodeBuilder builder = new HashCodeBuilder(4783, 23);

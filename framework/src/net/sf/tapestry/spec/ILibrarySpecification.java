@@ -41,10 +41,16 @@ public interface ILibrarySpecification extends IPropertyHolder
 
     public List getPageNames();
     
-    public void setComponentSpecificationPath(String alias, String path);
+    public void setComponentSpecificationPath(String type, String path);
 
-    public String getComponentSpecificationPath(String alias);
+    public String getComponentSpecificationPath(String type);
 
+    /**
+     *  Returns the simple types ('alias' is an archaic term) of
+     *  all components defined in this library.
+     * 
+     **/
+    
     public List getComponentAliases();
 
     public String getServiceClassName(String name);

@@ -320,6 +320,9 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
 
     private SpecificationParser getParser()
     {
+        // It would be good if this could get resused.  SpecificationParser
+        // is not threadsafe, so it would have to be pooled.
+        
         return new SpecificationParser();
     }
 

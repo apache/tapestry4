@@ -37,6 +37,17 @@ public class MockTestCase extends TapestryTestCase
      * 
      **/
     
+    public void testImplicitPages()
+    throws Exception
+    {
+        attempt("TestImplicitPages.xml");
+    }
+
+    /**
+     *  Test failure for application that doesn't provide a home page.
+     * 
+     **/
+    
     public void testFailNoHome()
     throws Exception
     {

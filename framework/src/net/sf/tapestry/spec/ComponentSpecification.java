@@ -416,18 +416,11 @@ public class ComponentSpecification extends BasePropertyHolder
     {
         ToStringBuilder builder = new ToStringBuilder(this);
         
+        builder.append("componentClassName", _componentClassName);
+        builder.append("pageSpecification", _pageSpecification);
+        builder.append("specificationLocation", _specificationLocation);
         builder.append("allowBody", _allowBody);
         builder.append("allowInformalParameter", _allowInformalParameters);
-        builder.append("assets", _assets);
-        builder.append("beans", _beans);
-        builder.append("componentClassName", _componentClassName);
-        builder.append("components", _components);
-        builder.append("description", _description);
-        builder.append("pageSpecification", _pageSpecification);
-        builder.append("parameters", _parameters);
-        builder.append("publicId", _publicId);
-        builder.append("reservedParameterNames", _reservedParameterNames);
-        builder.append("specificationLocation", _specificationLocation);
         
         return builder.toString();
     }

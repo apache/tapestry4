@@ -44,6 +44,11 @@ import net.sf.tapestry.spec.ParameterSpecification;
 
 /**
  *  Runs the process of building the component hierarchy for an entire page.
+ * 
+ *  <p>
+ *  This class is not threadsafe; however, {@link net.sf.tapestry.pageload.PageSource}
+ *  creates a new instance of it for each page to be loaded, which bypasses
+ *  multithreading issues.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -131,8 +136,7 @@ public class PageLoader implements IPageLoader
     {
         _pageSource = pageSource;
 
-        IEngine engine = cycle.getEngine();
-        RequestContext context = cycle.getRequestContext();
+         RequestContext context = cycle.getRequestContext();
 
         // Need the location of the servlet within the context as the basis
         // for building relative context asset paths.
@@ -491,13 +495,10 @@ public class PageLoader implements IPageLoader
     private IPage instantiatePage(String name, INamespace namespace, ComponentSpecification spec)
         throws PageLoaderException
     {
-        String className;
-        Class pageClass;
         IPage result = null;
 
-        className = spec.getComponentClassName();
-
-        pageClass = _resolver.findClass(className);
+        String className = spec.getComponentClassName();
+        Class pageClass = _resolver.findClass(className);
 
         try
         {
@@ -636,10 +637,13 @@ public class PageLoader implements IPageLoader
         else
             baseLocation = _servletLocation;
 
+        // One known problem is that relative private assets for pages
+        // whose spec is in the context (not the classpath) will be computed
+        // wrong!  In fact, they'll be ContextAssets.
+        
         IResourceLocation assetLocation = baseLocation.getRelativeLocation(path);
 
         return _pageSource.getAsset(assetLocation);
-
     }
 
     public IEngine getEngine()

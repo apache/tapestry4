@@ -185,9 +185,9 @@ public class MockTester
 
     private void setupContext(Element parent)
     {
-        Element context = parent.getChild("context");
+         _context = new MockContext();
 
-        _context = new MockContext();
+       Element context = parent.getChild("context");
 
         if (context == null)
             return;
@@ -196,6 +196,11 @@ public class MockTester
 
         if (name != null)
             _context.setServletContextName(name);
+
+        String root = context.getAttributeValue("root");
+        
+        if (root != null)
+            _context.setRootDirectory(root);
 
         setInitParameters(context, _context);
     }

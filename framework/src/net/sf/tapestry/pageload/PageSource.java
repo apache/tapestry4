@@ -71,60 +71,17 @@ public class PageSource implements IPageSource, IRenderDescription
 {
     private Map _fieldBindings = new HashMap();
     private Map _staticBindings = new HashMap();
-        
+
     /**
      *  Map of {@link IAsset}.  Some entries use a string as a key (for extenal assets).
      *  The rest use a {@link net.sf.tapestry.IResourceLocation} as a key
      *  (for private and context assets).
      * 
      **/
-    
+
     private Map _assets = new HashMap();
-    
+
     private IResourceResolver _resolver;
-
-    private static class PageSpecificationResolver
-    {
-        private String _simplePageName;
-        private INamespace _namespace;
-
-        private PageSpecificationResolver(ISpecificationSource source, String pageName)
-        {
-            int colonx = pageName.indexOf(':');
-
-            if (colonx > 0)
-            {
-                _simplePageName = pageName.substring(colonx + 1);
-                String namespaceId = pageName.substring(0, colonx);
-
-
-                if (namespaceId.equals(INamespace.FRAMEWORK_NAMESPACE))
-                    _namespace = source.getFrameworkNamespace();
-                else
-                    _namespace = source.getApplicationNamespace().getChildNamespace(namespaceId);
-            }
-            else
-            {
-                _simplePageName = pageName;
-
-                _namespace = source.getApplicationNamespace();
-
-                if (!_namespace.containsPage(_simplePageName))
-                    _namespace = source.getFrameworkNamespace();
-
-            }
-        }
-
-        public INamespace getNamespace()
-        {
-            return _namespace;
-        }
-
-        public ComponentSpecification getSpecification()
-        {
-            return _namespace.getPageSpecification(_simplePageName);
-        }
-    }
 
     /**
      *  The pool of {@link PooledPage}s.  The key is a {@link MultiKey},
@@ -133,6 +90,15 @@ public class PageSource implements IPageSource, IRenderDescription
      **/
 
     private Pool _pool;
+
+    /**
+     *  Used to resolve page names to a namespace, a simple name, and a page specification.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    private PageSpecificationResolver _pageSpecificationResolver;
 
     public PageSource(IResourceResolver resolver)
     {
@@ -196,19 +162,25 @@ public class PageSource implements IPageSource, IRenderDescription
             if (monitor != null)
                 monitor.pageCreateBegin(pageName);
 
-            PageSpecificationResolver specificationResolver =
-                new PageSpecificationResolver(engine.getSpecificationSource(), pageName);
+            if (_pageSpecificationResolver == null)
+                _pageSpecificationResolver = new PageSpecificationResolver(cycle);
 
+            _pageSpecificationResolver.resolve(pageName);
+
+            // Page loader's are not threadsafe, so we create a new
+            // one as needed.  However, they would make an excellent
+            // candidate for pooling.
+            
             PageLoader loader = new PageLoader(this, cycle);
 
             result =
                 loader.loadPage(
                     pageName,
-                    specificationResolver.getNamespace(),
+                    _pageSpecificationResolver.getNamespace(),
                     cycle,
-                    specificationResolver.getSpecification());
+                    _pageSpecificationResolver.getSpecification());
 
-             if (monitor != null)
+            if (monitor != null)
                 monitor.pageCreateEnd(pageName);
         }
         else
@@ -305,12 +277,12 @@ public class PageSource implements IPageSource, IRenderDescription
 
     public synchronized IAsset getAsset(IResourceLocation location)
     {
-       IAsset result = (IAsset) _assets.get(location);
+        IAsset result = (IAsset) _assets.get(location);
 
         if (result == null)
         {
             result = location.toAsset();
-            
+
             _assets.put(location, result);
         }
 
@@ -321,13 +293,13 @@ public class PageSource implements IPageSource, IRenderDescription
     public String toString()
     {
         ToStringBuilder builder = new ToStringBuilder(this);
-        
+
         builder.append("pool", _pool);
         builder.append("assets", _assets);
         builder.append("fieldBindings", _fieldBindings);
         builder.append("staticBindings", _staticBindings);
         builder.append("resolver", _resolver);
-        
+
         return builder.toString();
     }
 

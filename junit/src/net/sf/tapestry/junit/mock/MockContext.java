@@ -26,7 +26,14 @@ import javax.servlet.ServletException;
 public class MockContext extends AttributeHolder implements ServletContext, IInitParameterHolder
 {
     private MockSession _session;
-
+    
+    /**
+     *  Directory, relative to the current directory (i.e., System property user.dir)
+     *  that is the context root.
+     * 
+     **/
+    
+    private String _rootDirectory = "context";
     private String _servletContextName = "test";
     private Map _initParameters = new HashMap();
 
@@ -57,10 +64,17 @@ public class MockContext extends AttributeHolder implements ServletContext, IIni
 
     public URL getResource(String path) throws MalformedURLException
     {
+        if (path == null || ! path.startsWith("/"))
+        throw new MalformedURLException("Not a valid context path.");
+        
         StringBuffer buffer = new StringBuffer();
         
         buffer.append(System.getProperty("user.dir"));
-        buffer.append("/context");       
+        buffer.append("/");       
+        buffer.append(_rootDirectory);
+        
+        // Path has a leading slash
+        
         buffer.append(path);
                     
         File file = new File(buffer.toString());
@@ -181,6 +195,16 @@ public class MockContext extends AttributeHolder implements ServletContext, IIni
     public void setServletContextName(String servletContextName)
     {
         _servletContextName = servletContextName;
+    }
+
+    public String getRootDirectory()
+    {
+        return _rootDirectory;
+    }
+
+    public void setRootDirectory(String rootDirectory)
+    {
+        _rootDirectory = rootDirectory;
     }
 
 }

@@ -164,6 +164,24 @@ public class TestResourceLocation extends TapestryTestCase
         assertEquals(expected, actual);
     }
 
+    public void testClasspathLocalizeMissing()
+    {
+        IResourceLocation l1 = new ClasspathResourceLocation(_resolver, "/foo/bar/Baz.zap");
+
+        IResourceLocation l2 = l1.getLocalization(Locale.ENGLISH);
+
+        assertNull(l2);
+    }
+
+    public void testContextLocalizeMissing()
+    {
+        IResourceLocation l1 = new ContextResourceLocation(_context, "/foo/bar/Baz.zap");
+
+        IResourceLocation l2 = l1.getLocalization(Locale.ENGLISH);
+
+        assertNull(l2);
+    }
+
     public void testClasspathLocalizeDefault()
     {
         IResourceLocation l1 = new ClasspathResourceLocation(_resolver, "/net/sf/tapestry/junit/mock/app/home.png");
@@ -203,5 +221,14 @@ public class TestResourceLocation extends TapestryTestCase
         IResourceLocation l2 = l1.getRelativeLocation("/foo/bar/Baz");
 
         assertSame(l1, l2);
+    }
+
+    public void testTrailingSlash()
+    {
+        IResourceLocation l1 = new ClasspathResourceLocation(_resolver, "/");
+        IResourceLocation expected = new ClasspathResourceLocation(_resolver, "/foo");
+        IResourceLocation actual = l1.getRelativeLocation("foo");
+
+        assertEquals(expected, actual);
     }
 }
