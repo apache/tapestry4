@@ -30,61 +30,24 @@ import org.xml.sax.SAXParseException;
 
 public class DocumentParseException extends ApplicationRuntimeException
 {
-    private Resource _documentLocation;
-
     public DocumentParseException(String message, Throwable rootCause)
     {
-        this(message, null, null, rootCause);
-    }
-
-    public DocumentParseException(String message, Resource documentLocation)
-    {
-        this(message, documentLocation, null);
-    }
-
-    public DocumentParseException(String message, Resource documentLocation, Throwable rootCause)
-    {
-        this(message, documentLocation, null, rootCause);
+        super(message, null, rootCause);
     }
 
     public DocumentParseException(String message, Location location, Throwable rootCause)
     {
-        this(message, location == null ? null : location.getResource(), location, rootCause);
+        super(message, location, rootCause);
     }
 
-    private DocumentParseException(String message, Resource documentLocation, Location location,
-            Throwable rootCause)
+    public DocumentParseException(String message, Resource resource, SAXParseException rootCause)
     {
-        super(message, null, location, rootCause);
-
-        _documentLocation = documentLocation;
+        this(message, resource == null ? null : new LocationImpl(resource, rootCause
+                .getLineNumber(), rootCause.getColumnNumber()), rootCause);
     }
 
-    public DocumentParseException(String message, Resource documentLocation,
-            SAXParseException rootCause)
+    public DocumentParseException(String message, Resource resource, Throwable rootCause)
     {
-        this(message, documentLocation, rootCause == null || documentLocation == null ? null
-                : new LocationImpl(documentLocation, rootCause.getLineNumber(), rootCause
-                        .getColumnNumber()), rootCause);
-    }
-
-    public DocumentParseException(String message)
-    {
-        this(message, null, null, null);
-    }
-
-    public DocumentParseException(Throwable rootCause)
-    {
-        this(rootCause.getMessage(), rootCause);
-    }
-
-    public DocumentParseException(SAXParseException rootCause)
-    {
-        this(rootCause.getMessage(), rootCause);
-    }
-
-    public Resource getDocumentLocation()
-    {
-        return _documentLocation;
+        this(message, resource == null ? null : new LocationImpl(resource), rootCause);
     }
 }

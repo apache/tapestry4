@@ -450,7 +450,7 @@ public class MockTester
 
         throw new DocumentParseException("Expression '" + expression + "' evaluates to ("
                 + value.getClass().getName() + ") " + value
-                + ", which cannot be interpreted as a boolean.");
+                + ", which cannot be interpreted as a boolean.", null);
     }
 
     /**
@@ -475,7 +475,7 @@ public class MockTester
             String pattern = a.getTextTrim();
 
             if (HiveMind.isBlank(pattern))
-                throw new DocumentParseException("Pattern is null in " + a);
+                throw new DocumentParseException("Pattern is null in " + a, null);
 
             if (outputString == null)
                 outputString = _response.getOutputString();
@@ -507,7 +507,7 @@ public class MockTester
             String substring = a.getTextTrim();
 
             if (HiveMind.isBlank(substring))
-                throw new DocumentParseException("Substring is null in " + a);
+                throw new DocumentParseException("Substring is null in " + a, null);
 
             if (outputString == null)
                 outputString = _response.getOutputString();
@@ -539,7 +539,7 @@ public class MockTester
             String substring = a.getTextTrim();
 
             if (HiveMind.isBlank(substring))
-                throw new DocumentParseException("Substring is null in " + a);
+                throw new DocumentParseException("Substring is null in " + a, null);
 
             if (outputString == null)
                 outputString = _response.getOutputString();
@@ -653,7 +653,7 @@ public class MockTester
         String pattern = element.getTextTrim();
 
         if (HiveMind.isBlank(pattern))
-            throw new DocumentParseException("Pattern is null in " + element);
+            throw new DocumentParseException("Pattern is null in " + element, null);
 
         PatternMatcherInput input = new PatternMatcherInput(outputString);
 

@@ -34,7 +34,17 @@
   </parameter>
   
   <bean name="evenOdd" class="org.apache.tapestry.bean.EvenOdd"/>
+  
+  <!-- Store the current ExceptionProperty -->
     
+  <property name="property"/>
+  
+  <!-- Store the current stack trace line -->
+  
+  <property name="trace"/>
+  
+  <inject property="adapterFactory" object="service:tapestry.describe.RenderableAdapterFactory"/>
+  
   <component id="eException" type="Foreach">
     <binding name="source" value="ognl:exceptions"/>
     <binding name="value" value="ognl:exception"/>
@@ -53,14 +63,15 @@
   	<binding name="element" value="tr"/>
   	<binding name="class" value="ognl:beans.evenOdd.next"/>
     <binding name="source" value="ognl:exception.properties"/>
+    <binding name="value" value="ognl:property"/>
   </component>
   
   <component id="insertPropertyName" type="Insert">
-    <binding name="value" value="ognl:components.eProperty.value.name"/>
+    <binding name="value" value="ognl:property.name"/>
   </component>
   
-  <component id="insertPropertyValue" type="Insert">
-    <binding name="value" value="ognl:components.eProperty.value.value"/>
+  <component id="insertPropertyValue" type="Delegator">
+    <binding name="delegate" value="ognl:adapterFactory.getRenderableAdaptor(property.value)"/>
   </component>
   
   <component id="ifLast" type="Conditional">
@@ -74,10 +85,11 @@
   <component id="eStack" type="Foreach">
     <binding name="element" value="li"/>
     <binding name="source" value="ognl:exception.stackTrace"/>
+    <binding name="value" value="ognl:trace"/>
   </component>
   
   <component id="insertStackTrace" type="Insert">
-    <binding name="value" value="ognl:components.eStack.value"/>
+    <binding name="value" value="ognl:trace"/>
   </component>
   
 </component-specification>
