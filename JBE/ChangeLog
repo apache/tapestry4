@@ -1,3 +1,7 @@
+* Jun 20 2001 hship
+
+Change jBoss.mk to compile using the ejb2.0.jar.
+
 * Jun 15 2001 hship
 
 [433501] WebLogic.war and service packs
