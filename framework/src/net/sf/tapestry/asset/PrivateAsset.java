@@ -16,6 +16,7 @@ import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.util.LocalizedNameGenerator;
 
 /**
  *  An implementation of {@link IAsset} for localizable assets within
@@ -129,53 +130,15 @@ public class PrivateAsset implements IAsset
                     + locale.getDisplayName());
 
         int dotx = _resourcePath.lastIndexOf('.');
+        String basePath = _resourcePath.substring(0, dotx);
         String suffix = _resourcePath.substring(dotx);
 
-        StringBuffer buffer = new StringBuffer(dotx + 30);
-
-        buffer.append(_resourcePath.substring(0, dotx));
-        int rawLength = buffer.length();
-
-        int start = 2;
-
-        String country = locale.getCountry();
-        if (country.length() > 0)
-            start--;
-
-        // This assumes that you never have the case where there's
-        // a null language code and a non-null country code.
-
-        String language = locale.getLanguage();
-        if (language.length() > 0)
-            start--;
-
         IResourceResolver resolver = cycle.getEngine().getResourceResolver();
+        LocalizedNameGenerator generator = new LocalizedNameGenerator(basePath, locale, suffix);
 
-        // On pass #0, we use language code and country code
-        // On pass #1, we use language code
-        // On pass #2, we use neither.
-        // We skip pass #0 or #1 depending on whether the language code
-        // and/or country code is null.
-
-        for (int i = start; i < 3; i++)
+        while (generator.more())
         {
-            buffer.setLength(rawLength);
-
-            if (i < 2)
-            {
-                buffer.append('_');
-                buffer.append(language);
-            }
-
-            if (i == 0)
-            {
-                buffer.append('_');
-                buffer.append(country);
-            }
-
-            buffer.append(suffix);
-
-            String candidatePath = buffer.toString();
+            String candidatePath = generator.next();
 
             if (resolver.getResource(candidatePath) != null)
             {
