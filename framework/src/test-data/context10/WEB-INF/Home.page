@@ -30,4 +30,6 @@
 		<set-property name="serverName" expression="&quot;myserver&quot;"/>	
 	</bean>
 	
+	<bean name="buttonRenderer" class="org.apache.tapestry.link.ButtonLinkRenderer" lifecycle="page"/>
+	
 </page-specification>
