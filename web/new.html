@@ -32,6 +32,8 @@ property 'org.apache.tapestry.template-encoding'. The property is localizable, s
 using the property 'org.apache.tapestry.output-encoding'. It is UTF-8 by default.</li>
 <li>The <a href="doc/ComponentReference/Shell.html">Shell</a> component now defines an http-equiv tag with the content type of the response.</li>
 <li>Update code for compatibility with Jakarta FileUpload 1.0; add easy ability to write uploaded content to a file.</li>
+<li>Harish Krishnaswamy has submitted a patch allowing an index attribute on the &lt;foreach&gt; element
+	  in script specifications.</li>
 </ul>
 
 <pre>
@@ -39,13 +41,14 @@ using the property 'org.apache.tapestry.output-encoding'. It is UTF-8 by default
 [ 18382 ] isRewinding not set properly during events
 [ 20954 ] Missing component InsertRenderer in Contrib
 [ 21002 ] CodeGenerationException uses JDK 1.4 API 
-[ 21073 ] "isXXXXX" getter for boolean properties in components missin
+[ 21073 ] "isXXXXX" getter for boolean properties in components missing
 [ 21145 ] array properties and parameters do not work  
 [ 20545 ] Invalid encoding name "Cp1252"
 [ 20281 ] Exception page fails to display  
 [ 20598 ] Using @Conditional within a tag
 [ 20917 ] Typo in ComponentReference documentation
 [ 20595 ] wml:Input does not render its title parameter
+[ 21332 ] index attribute for the script foreach element  
 </pre>
 
 <h4>Non-backwards compatible changes:</h4>

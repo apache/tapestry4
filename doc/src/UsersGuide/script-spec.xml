@@ -91,6 +91,13 @@ rendered for each element in the collection.
   <entry/>
   <entry>The OGNL expression which provides the source of elements.</entry>
 </row>
+<row>
+	<entry>index</entry>	
+	<entry>string</entry>
+	<entry>no</entry>
+	<entry/>
+	<entry>If specified, then the named symbol is updated with each successive index.</entry>
+</row>
 </tbody>
 </tgroup>
 </informaltable>

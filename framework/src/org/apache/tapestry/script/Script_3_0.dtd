@@ -16,6 +16,7 @@ The root element is always script.
 This DTD is backwards compatible with the 1.2 DTD, with the following exceptions:
 - Addition of <unique> element
 - Addition of unique attribute to <let> element
+- Addition of index attribute to <foreach> element
 -->
 <!-- =======================================================
 
@@ -45,11 +46,13 @@ from the property path is null.
 
 Attributes:
   key: Defines the symbol into which each succesive value is stored.
+  index: Defines the symbol into which the index of the value of the current iteration is stored.
   expression: The source of values, as an OGNL expression rooted in the symbols Map.
 -->
 <!ELEMENT foreach %full-content;>
 <!ATTLIST foreach
   key CDATA #REQUIRED
+  index CDATA #IMPLIED
   expression CDATA #REQUIRED
 >
 
@@ -189,6 +192,6 @@ Defines a block that only is rendered once per page.
 This is appropriate to certain kinds of initialization code
 that should not be duplicated, even if the script is
 executed multiple times.
-    
+
 -->
 <!ELEMENT unique %full-content;>

@@ -150,9 +150,7 @@ public class TestScript extends TapestryTestCase
         script.execute(cycle, _processor, null);
         script.execute(cycle, _processor, null);
 
-        assertEquals(
-            "Block1\nBlock2\nNotUnique\n\n\n\nNotUnique",
-            _processor.getBody().trim());
+        assertEquals("Block1\nBlock2\nNotUnique\n\n\n\nNotUnique", _processor.getBody().trim());
     }
 
     /**
@@ -307,6 +305,14 @@ public class TestScript extends TapestryTestCase
         assertSymbol(symbols, "outputSingle", "SINGLE");
         assertSymbol(symbols, "outputArray", "ALPHA\n\nBETA\n\nGAMMA");
         assertSymbol(symbols, "outputCollection", "MOE\n\nLARRY\n\nCURLY");
+
+        // Tests for the "index" attribute
+        assertSymbol(symbols, "outputMissingIndex", "");
+        assertSymbol(symbols, "outputEmptyArrayIndex", "");
+        assertSymbol(symbols, "outputEmptyCollectionIndex", "");
+        assertSymbol(symbols, "outputSingleIndex", "SINGLE 0");
+        assertSymbol(symbols, "outputArrayIndex", "ALPHA 0\n\nBETA 1\n\nGAMMA 2");
+        assertSymbol(symbols, "outputCollectionIndex", "MOE 0\n\nLARRY 1\n\nCURLY 2");
     }
 
     public void testIncludeScript() throws Exception
