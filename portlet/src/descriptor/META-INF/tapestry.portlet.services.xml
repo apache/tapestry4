@@ -45,10 +45,12 @@
     
     Service used to render a named page.
     
-    <invoke-factory model="primitive">
+    <invoke-factory>
       <construct class="PortletRendererImpl">
         <set-object property="markupWriterSource" value="infrastructure:markupWriterSource"/>
         <set-object property="response" value="infrastructure:response"/>       
+        <set-object property="assetService" value="engine-service:asset"/>
+        <set-object property="applicationId" value="infrastructure:applicationId"/>
       </construct>
     </invoke-factory>
   </service-point>

@@ -14,13 +14,15 @@
 
 package org.apache.tapestry.web;
 
+import org.apache.tapestry.describe.Describable;
+
 /**
  * Primarily concerned with maintaining server-side state as attributes.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public interface WebSession extends AttributeHolder
+public interface WebSession extends AttributeHolder, Describable
 {
     /**
      * Returns a unique string identifier used to identify the session. This value is provided by

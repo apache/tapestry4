@@ -17,12 +17,18 @@ package org.apache.tapestry.portlet;
 import java.io.CharArrayWriter;
 import java.io.PrintWriter;
 
+import org.apache.hivemind.test.AggregateArgumentsMatcher;
+import org.apache.hivemind.test.ArgumentMatcher;
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.hivemind.test.RegexpMatcher;
+import org.apache.hivemind.test.TypeMatcher;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.markup.MarkupWriterSource;
 import org.apache.tapestry.util.ContentType;
+import org.apache.tapestry.util.PageRenderSupportImpl;
 import org.apache.tapestry.web.WebResponse;
 import org.easymock.MockControl;
 
@@ -44,6 +50,11 @@ public class TestPortletRenderer extends HiveMindTestCase
         return new PrintWriter(new CharArrayWriter());
     }
 
+    private IEngineService newAssetService()
+    {
+        return (IEngineService) newMock(IEngineService.class);
+    }
+
     private WebResponse newWebResponse(ContentType contentType, PrintWriter writer)
             throws Exception
     {
@@ -52,6 +63,9 @@ public class TestPortletRenderer extends HiveMindTestCase
 
         response.getPrintWriter(contentType);
         control.setReturnValue(writer);
+
+        response.getNamespace();
+        control.setReturnValue("NAMESPACE");
 
         return response;
     }
@@ -75,6 +89,9 @@ public class TestPortletRenderer extends HiveMindTestCase
 
         page.getResponseContentType();
         control.setReturnValue(contentType);
+        
+        page.getPageName();
+        control.setReturnValue("ZePage");
 
         return page;
     }
@@ -89,6 +106,14 @@ public class TestPortletRenderer extends HiveMindTestCase
         cycle.getPage();
         control.setReturnValue(page);
 
+        cycle.getAttribute("org.apache.tapestry.PageRenderSupport");
+        control.setReturnValue(null);
+
+        cycle.setAttribute("org.apache.tapestry.PageRenderSupport", new PageRenderSupportImpl(
+                newAssetService(), null));
+        control.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
+        { null, new TypeMatcher() }));
+
         return cycle;
     }
 
@@ -97,14 +122,35 @@ public class TestPortletRenderer extends HiveMindTestCase
         ContentType ct = new ContentType("text/html");
         PrintWriter pw = newPrintWriter();
         WebResponse response = newWebResponse(ct, pw);
-        IMarkupWriter writer = newWriter();
+        IMarkupWriter nested = newWriter();
+
+        MockControl control = newControl(IMarkupWriter.class);
+        IMarkupWriter writer = (IMarkupWriter) control.getMock();
+
+        writer.getNestedWriter();
+        control.setReturnValue(nested);
+
         MarkupWriterSource source = newSource(pw, ct, writer);
         IPage page = newPage(ct);
+        IEngineService assetService = newAssetService();
 
         IRequestCycle cycle = newCycle("ZePage", page);
 
-        cycle.renderPage(writer);
+        cycle.renderPage(nested);
 
+        writer.comment("BEGIN Tapestry Portlet appId NAMESPACE");
+        writer.comment("Page: ZePage");
+        
+        writer.comment("Generated:.*");
+        control.setMatcher(new AggregateArgumentsMatcher(new RegexpMatcher()));
+     
+        writer.comment("Framework version:.*");
+        
+        
+        nested.close();
+ 
+        writer.comment("END Tapestry Portlet appId NAMESPACE");
+        
         writer.close();
 
         replayControls();
@@ -112,10 +158,13 @@ public class TestPortletRenderer extends HiveMindTestCase
         PortletRendererImpl r = new PortletRendererImpl();
         r.setMarkupWriterSource(source);
         r.setResponse(response);
+        r.setAssetService(assetService);
+        r.setApplicationId("appId");
 
         r.renderPage(cycle, "ZePage");
 
         verifyControls();
     }
 
+    // TODO: Tests that prove the RenderPageSupport is working properly.
 }

@@ -203,6 +203,7 @@
       <set-service property="responseRenderer" service-id="tapestry.portlet.services.ResponseRenderer"/>
       <set-service property="linkFactory" service-id="PortletLinkFactory"/>
       <set-configuration property="factoryServices" configuration-id="tapestry.portlet.services.FactoryServices"/>
+      <set-service property="HTMLDescriber" service-id="PortletHTMLDescriber"/>      
     </construct>
   </invoke-factory>
  </service-point>
@@ -211,4 +212,21 @@
   <command id="SetupServletApplicationGlobals" object="service:SetupPortletApplicationGlobals"/>
  </contribution> 
   
+	<service-point id="PortletHTMLDescriber" interface="org.apache.tapestry.describe.HTMLDescriber">
+		
+		Describes an object in an HTML format.
+		
+		<invoke-factory>
+			<construct class="org.apache.tapestry.describe.HTMLDescriberImpl">
+				<set-service property="adapter" service-id="tapestry.describe.DescribeAdaptor"/>
+        <set property="headerClass" value="portlet-section-header"/>
+        <set property="subheaderClass" value="portlet-section-subheader"/>
+        <set property="tableClass" value="portlet-section-body"/>
+			</construct>
+		</invoke-factory>
+	</service-point>
+  
+	<contribution configuration-id="tapestry.describe.DescribeAdaptors">
+    <adapter class="javax.portlet.PortletSession" object="instance:PortletSessionDescribableAdapter"/>
+  </contribution>    
 </module>

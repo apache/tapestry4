@@ -16,6 +16,7 @@ package org.apache.tapestry.services;
 
 import java.util.List;
 
+import org.apache.tapestry.describe.HTMLDescriber;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.web.WebActivator;
 import org.apache.tapestry.web.WebContext;
@@ -89,4 +90,8 @@ public interface ApplicationGlobals
     public void storeLinkFactory(LinkFactory linkFactory);
 
     public LinkFactory getLinkFactory();
+    
+    public void storeHTMLDescriber(HTMLDescriber describer );
+    
+    public HTMLDescriber getHTMLDescriber();
 }

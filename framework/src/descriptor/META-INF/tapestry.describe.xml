@@ -61,7 +61,7 @@
 		
 		<invoke-factory>
 			<construct class="DefaultRenderableAdapter">
-				<set-service property="describer" service-id="HTMLDescriber"/>
+				<set-object property="describer" value="infrastructure:HTMLDescriber"/>
 			</construct>
 		</invoke-factory>
 	</service-point>

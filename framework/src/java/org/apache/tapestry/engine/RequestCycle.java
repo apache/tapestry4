@@ -101,7 +101,7 @@ public class RequestCycle implements IRequestCycle
 
     private boolean _rewinding = false;
 
-    private Map _attributes;
+    private Map _attributes = new HashMap();
 
     private int _actionId;
 
@@ -194,9 +194,6 @@ public class RequestCycle implements IRequestCycle
 
     public Object getAttribute(String name)
     {
-        if (_attributes == null)
-            return null;
-
         return _attributes.get(name);
     }
 
@@ -331,9 +328,6 @@ public class RequestCycle implements IRequestCycle
         if (LOG.isDebugEnabled())
             LOG.debug("Removing attribute " + name);
 
-        if (_attributes == null)
-            return;
-
         _attributes.remove(name);
     }
 
@@ -350,11 +344,6 @@ public class RequestCycle implements IRequestCycle
         _rewinding = false;
         _actionId = -1;
         _targetActionId = 0;
-
-        // Forget any attributes from a previous render cycle.
-
-        if (_attributes != null)
-            _attributes.clear();
 
         try
         {
@@ -378,6 +367,7 @@ public class RequestCycle implements IRequestCycle
         {
             _actionId = 0;
             _targetActionId = 0;
+            _attributes.clear();
         }
 
         _monitor.pageRenderEnd(pageName);
@@ -404,9 +394,6 @@ public class RequestCycle implements IRequestCycle
         _rewinding = true;
 
         _monitor.pageRewindBegin(pageName);
-
-        if (_attributes != null)
-            _attributes.clear();
 
         // Fake things a little for getNextActionId() / isRewound()
 
@@ -454,6 +441,8 @@ public class RequestCycle implements IRequestCycle
             _monitor.pageRewindEnd(pageName);
 
             _rewinding = false;
+
+            _attributes.clear();
         }
     }
 
@@ -474,9 +463,6 @@ public class RequestCycle implements IRequestCycle
         _rewinding = true;
 
         _monitor.pageRewindBegin(pageName);
-
-        if (_attributes != null)
-            _attributes.clear();
 
         _actionId = -1;
 
@@ -520,6 +506,8 @@ public class RequestCycle implements IRequestCycle
             _monitor.pageRewindEnd(pageName);
 
             _rewinding = false;
+
+            _attributes.clear();
         }
 
     }
@@ -528,9 +516,6 @@ public class RequestCycle implements IRequestCycle
     {
         if (LOG.isDebugEnabled())
             LOG.debug("Set attribute " + name + " to " + value);
-
-        if (_attributes == null)
-            _attributes = new HashMap();
 
         _attributes.put(name, value);
     }

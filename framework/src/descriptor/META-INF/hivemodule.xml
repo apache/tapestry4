@@ -87,6 +87,7 @@
         <set-service property="context" service-id="tapestry.globals.WebContext"/>
         <set-service property="threadLocale" service-id="hivemind.ThreadLocale"/>
         <set-service property="markupWriterSource" service-id="tapestry.markup.MarkupWriterSource"/>
+        <set-object property="HTMLDescriber" value="service-property:tapestry.globals.ApplicationGlobals:HTMLDescriber"/>
       </construct>
     </invoke-factory>
     

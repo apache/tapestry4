@@ -80,7 +80,7 @@ public interface IRequestCycle
     /**
      * Retrieves a previously stored attribute, returning null if not found. Attributes allow
      * components to locate each other; primarily they allow a wrapped component to locate a
-     * component which wraps it.
+     * component which wraps it. Attributes are cleared at the end of the render (or rewind).
      */
 
     public Object getAttribute(String name);
@@ -148,6 +148,7 @@ public interface IRequestCycle
      * id is reached.
      * 
      * @see IAction
+     * @see org.apache.tapestry.link.ActionLink
      */
 
     public void rewindPage(String targetActionId, IComponent targetComponent);
@@ -160,6 +161,8 @@ public interface IRequestCycle
      * This is used by components to locate each other. A component, such as
      * {@link org.apache.tapestry.html.Body}, will write itself under a well-known name into the
      * request cycle, and components it wraps can locate it by that name.
+     * <p>
+     * Attributes are cleared at the end of each render or rewind phase.
      */
 
     public void setAttribute(String name, Object value);
@@ -264,7 +267,7 @@ public interface IRequestCycle
     public String getParameter(String name);
 
     /**
-     * Returns all query parameter values for the given name. Returns null if no value were
+     * Returns all query parameter values for the given name. Returns null if no values were
      * provided.
      * 
      * @since 3.1
@@ -272,8 +275,9 @@ public interface IRequestCycle
     public String[] getParameters(String name);
 
     /**
-     * Converts a partial URL into an absoluate URL. Prefixes the provided URL with servlet context
-     * path (if any), then expands it to a full URL by prepending with the scheme, server and port.
+     * Converts a partial URL into an absolute URL. Prefixes the provided URL with servlet context
+     * path (if any), then expands it to a full URL by prepending with the scheme, server and port
+     * (determined from the current {@link org.apache.tapestry.web.WebRequest request}.
      * 
      * @since 3.1
      */
@@ -291,8 +295,8 @@ public interface IRequestCycle
     public void forgetPage(String name);
 
     /**
-     * Returns the central {@link org.apache.tapestry.services.Infrastructure}object used to manage
-     * the processing of the request.
+     * Returns the central {@link org.apache.tapestry.services.Infrastructure}&nbsp;object used to
+     * manage the processing of the request.
      * 
      * @since 3.1
      */

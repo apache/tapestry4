@@ -97,6 +97,7 @@
       <set-service property="responseRenderer" service-id="tapestry.request.ResponseRenderer"/>
       <set-service property="linkFactory" service-id="tapestry.url.LinkFactory"/>
       <set-configuration property="factoryServices" configuration-id="tapestry.services.FactoryServices"/>
+      <set-service property="HTMLDescriber" service-id="tapestry.describe.HTMLDescriber"/>
     </construct>
   </invoke-factory>
  </service-point>

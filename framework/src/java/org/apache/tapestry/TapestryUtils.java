@@ -62,7 +62,7 @@ public class TapestryUtils
      * Stores the support object using {@link #storeUniqueAttribute(IRequestCycle, String, Object)}.
      */
 
-    public static void storeRenderPageSupport(IRequestCycle cycle, PageRenderSupport support)
+    public static void storePageRenderSupport(IRequestCycle cycle, PageRenderSupport support)
     {
         storeUniqueAttribute(cycle, PAGE_RENDER_SUPPORT_ATTRIBUTE, support);
     }
