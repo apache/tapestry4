@@ -308,16 +308,13 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
         MockControl opc = newControl(EnhancementOperation.class);
         EnhancementOperation op = (EnhancementOperation) opc.getMock();
 
-        op.getClassReference(boolean.class);
-        opc.setReturnValue("_class$boolean");
-
         BodyBuilder builder = new BodyBuilder();
         builder.begin();
         builder.addln("if (_$fred$Cached) return _$fred;");
         builder.addln("org.apache.tapestry.IBinding binding = getBinding(\"barney\");");
         builder.addln("if (binding == null) return _$fred$Default;");
         builder.add("boolean result = ");
-        builder.addln("((Boolean) binding.getObject(_class$boolean)).booleanValue();");
+        builder.addln(EnhanceUtils.class.getName() + ".toBoolean(binding);");
         builder.addln("if (isRendering() || binding.isInvariant())");
         builder.begin();
         builder.addln("_$fred = result;");
