@@ -5,6 +5,11 @@
   "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="com.primix.tapestry.html.Body">
 
+  <description>
+  Takes the place of the normal HTML &lt;body&gt; element, providing various
+  forms of support to all components it wraps.
+  </description>
+
   <reserved-parameter name="onload"/>
   
 </specification>

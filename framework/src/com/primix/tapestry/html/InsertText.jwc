@@ -2,6 +2,23 @@
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="com.primix.tapestry.html.InsertText" allow-body="no" allow-informal-parameters="no">
-  <parameter name="text" java-type="java.lang.String"/>
-  <parameter name="mode" java-type="com.primix.tapestry.html.InsertTextMode"/>
+
+  <description>
+  Inserts line-oriented text into the response HTML, inserting additional
+  markup to delimit lines.
+  </description>
+  
+  <parameter name="text" java-type="java.lang.String">
+    <description>
+    The multi-line text to insert.
+    </description>
+  </parameter>
+
+  <parameter name="mode" java-type="com.primix.tapestry.html.InsertTextMode">
+    <description>
+    Determines which mode to use: breaks after each line, or wrap each line
+    as a paragraph.  The default is breaks.
+    </description>
+  </parameter>
+
 </specification>
