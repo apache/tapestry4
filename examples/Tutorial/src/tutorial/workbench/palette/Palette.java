@@ -27,12 +27,10 @@ public class Palette extends BasePage
 
     private IPropertySelectionModel _sortModel;
 
-    public void detach()
+    public void initialize()
     {
         _sort = SortMode.USER;
         _selectedColors = null;
-
-        super.detach();
     }
 
     public void formSubmit(IRequestCycle cycle)
@@ -53,7 +51,7 @@ public class Palette extends BasePage
         // a library now, we need to make sure
         // the namespace id is part of the name.
 
-        Results results = (Results) cycle.getPage(getNamespace().constructQualifiedName("palette.Results"));
+        PaletteResults results = (PaletteResults) cycle.getPage("PaletteResults");
 
         results.setSelectedColors(_selectedColors);
 

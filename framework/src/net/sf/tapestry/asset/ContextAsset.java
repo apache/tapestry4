@@ -17,6 +17,7 @@ import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IAsset;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.util.LocalizedNameGenerator;
 
 /**
  *  An asset whose path is relative to the {@link ServletContext} containing
@@ -99,10 +100,6 @@ public class ContextAsset implements IAsset
     /**
      *  Poke around until we find the localized version of the asset.
      *
-     *  <p>A lot of this is cut-and-paste from DefaultTemplateSource.  I haven't
-     *  come up with a good, general, efficient way to do this search without
-     *  a huge amount of mechanism.
-     *
      **/
 
     private synchronized Localization findLocalization(IRequestCycle cycle, Locale locale)
@@ -118,54 +115,17 @@ public class ContextAsset implements IAsset
             LOG.debug("Searching for localization of context resource " + _assetPath);
 
         int dotx = _assetPath.lastIndexOf('.');
+        String basePath = _assetPath.substring(0, dotx);
         String suffix = _assetPath.substring(dotx);
-
-        StringBuffer buffer = new StringBuffer(dotx + 30);
-
-        buffer.append(_assetPath.substring(0, dotx));
-        int rawLength = buffer.length();
-
-        int start = 2;
-
-        String country = locale.getCountry();
-        if (country.length() > 0)
-            start--;
-
-        // This assumes that you never have the case where there's
-        // a null language code and a non-null country code.
-
-        String language = locale.getLanguage();
-        if (language.length() > 0)
-            start--;
 
         ServletContext context = cycle.getRequestContext().getServlet().getServletContext();
         String contextPath = cycle.getEngine().getContextPath();
 
-        // On pass #0, we use language code and country code
-        // On pass #1, we use language code
-        // On pass #2, we use neither.
-        // We skip pass #0 or #1 depending on whether the language code
-        // and/or country code is null.
+        LocalizedNameGenerator generator = new LocalizedNameGenerator(basePath, locale, suffix);
 
-        for (int i = start; i < 3; i++)
+        while (generator.more())
         {
-            buffer.setLength(rawLength);
-
-            if (i < 2)
-            {
-                buffer.append('_');
-                buffer.append(language);
-            }
-
-            if (i == 0)
-            {
-                buffer.append('_');
-                buffer.append(country);
-            }
-
-            buffer.append(suffix);
-
-            String candidatePath = buffer.toString();
+            String candidatePath = generator.next();
 
             try
             {
@@ -177,7 +137,7 @@ public class ContextAsset implements IAsset
                     _localizations.put(locale, result);
 
                     if (LOG.isDebugEnabled())
-                        LOG.debug("Found " + _assetPath);
+                        LOG.debug("Found " + result);
 
                     return result;
                 }

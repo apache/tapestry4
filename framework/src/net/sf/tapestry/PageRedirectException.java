@@ -22,7 +22,7 @@ public class PageRedirectException extends RequestCycleException
 
     public PageRedirectException(IPage page)
     {
-        this(page.getName());
+        this(page.getPageName());
     }
 
     public PageRedirectException(String message, IComponent component, String targetPageName)

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC
+	 "-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	 "http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+<page-specification class="net.sf.tapestry.vlib.pages.EditBook">
+
+  <property name="page-type">library</property>
+  
+  <bean name="validator" class="net.sf.tapestry.valid.StringValidator" lifecycle="page">
+  	<set-property name="required" expression="true"/>
+  	<set-property name="clientScriptingEnabled" expression="true"/>
+  </bean>
+    
+  <component id="border" type="Border">
+    <static-binding name="title">Edit Book</static-binding>
+  </component>
+  
+  <component id="showError" type="ShowError"/>
+  
+  <component id="showValidationError" type="ShowValidationError">
+  	<binding name="delegate" expression="validationDelegate"/>
+  </component>
+  
+  <component id="form" type="Form">
+    <binding name="listener" expression="listeners.formSubmit"/>
+    <binding name="delegate" expression="validationDelegate"/>
+  </component>
+  
+  <component id="syncPrimaryKey" type="Hidden">
+    <binding name="value" expression="bookPrimaryKey"/>
+  </component>
+  
+  <component id="labelTitle" type="FieldLabel">
+    <binding name="field" expression="components.inputTitle"/>
+  </component>
+  
+  <component id="inputTitle" type="ValidField">
+    <binding name="value" expression="attributes.title"/>
+    <static-binding name="displayName">Title</static-binding>
+    <binding name="maximumLength" expression="100"/>
+    <binding name="displayWidth" expression="50"/>
+    <binding name="validator" expression="beans.validator"/>
+  </component>
+  
+  <component id="labelAuthor" type="FieldLabel">
+    <binding name="field" expression="components.inputAuthor"/>
+  </component>
+  
+  <component id="inputAuthor" type="ValidField">
+    <binding name="value" expression="attributes.author"/>
+    <static-binding name="displayName">Author</static-binding>
+    <binding name="maximumLength" expression="60"/>
+    <binding name="displayWidth" expression="30"/>
+    <binding name="validator" expression="beans.validator"/>
+  </component>
+  
+  <component id="inputISBN" type="TextField">
+    <binding name="maximumLength" expression="20"/>
+    <binding name="displayWidth" expression="20"/>
+    <binding name="value" expression="attributes.ISBN"/>
+  </component>
+  
+  <component id="labelPublisher" type="FieldLabel">
+    <binding name="field" expression="components.inputPublisherName"/>
+  </component>
+  
+  <component id="inputPublisher" type="PropertySelection">
+    <binding name="value" expression="attributes.publisherPK"/>
+    <binding name="model" expression="engine.publisherModel"/>
+  </component>
+  
+  <component id="inputPublisherName" type="ValidField">
+    <binding name="maximumLength" expression="40"/>
+    <binding name="displayWidth" expression="20"/>
+    <binding name="value" expression="publisherName"/>
+    <static-binding name="displayName">Publisher</static-binding>
+    <binding name="validator" expression="@net.sf.tapestry.valid.StringValidator@OPTIONAL"/>
+  </component>
+  
+  <component id="inputDescription" type="TextArea">
+    <binding name="value" expression="attributes.description"/>
+    <binding name="columns" expression="35"/>
+    <binding name="rows" expression="8"/>
+  </component>
+  
+  <component id="inputHolder" type="PropertySelection">
+    <binding name="value" expression="attributes.holderPK"/>
+    <binding name="model" expression="engine.personModel"/>
+  </component>
+  
+  <component id="inputHidden" type="Checkbox">
+  	<binding name="selected" expression="attributes.hidden"/>
+  </component>
+  
+  <component id="inputLendable" type="Checkbox">
+  	<binding name="selected" expression="attributes.lendable"/>
+  </component>
+  
+  <component id="publisherScript" type="Script">
+    <static-binding name="script">Publisher.script</static-binding>
+    <binding name="select" expression="components.inputPublisher"/>
+    <binding name="field" expression="components.inputPublisherName"/>
+  </component>
+
+</page-specification>

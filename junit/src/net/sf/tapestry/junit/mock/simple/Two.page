@@ -22,7 +22,6 @@
 	
 	<component id="link" type="DirectLink">
 		<binding name="listener" expression="listeners.go"/>
-		<binding name="stateful" expression="false"/>
 	</component>
 
 	

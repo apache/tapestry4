@@ -79,6 +79,8 @@ public interface IPage extends IComponent
 	/**
 	 *  Returns the simple name of the page within its namespace.
 	 *
+     *  @deprecated This method has no use and will be removed after releaes 2.4.
+     * 
 	 **/
 
 	public String getName();
@@ -88,11 +90,35 @@ public interface IPage extends IComponent
      *  namespace prefix, if any.
      * 
      *  @since 2.3
+     *  @deprecated This method will be removed after release 2.4, use
+     *  {@link #getPageName()} instead.
      * 
      **/
     
     public String getQualifiedName();
 
+    /**
+     *  Returns the fully qualified name of the page, including its
+     *  namespace prefix, if any.
+     * 
+     *  @since 2.4
+     * 
+     **/
+    
+    public String getPageName();
+
+
+    /**
+     *  Sets the name of the page.
+     * 
+     *  @param name fully qualified page name (including namespace prefix, if any)
+     * 
+     *  @since 2.4
+     * 
+     **/
+    
+    public void setPageName(String pageName);
+    
 	/**
 	 *  Returns a particular component from within the page.  The path is a dotted
 	 *  name sequence identifying the component.  It may be null
@@ -166,6 +192,14 @@ public interface IPage extends IComponent
     
 	public void setChangeObserver(ChangeObserver value);
 
+    /**
+     *  Sets the simple (unqualified) name for the page.
+     * 
+     *  @deprecated To be removed after 2.4, use {@link #setPageName(String)}
+     *  instead.
+     * 
+     **/
+    
 	public void setName(String value);
 
 	/**

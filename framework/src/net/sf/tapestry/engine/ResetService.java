@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 
+import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.Gesture;
 import net.sf.tapestry.IComponent;
 import net.sf.tapestry.IEngineServiceView;
@@ -36,7 +37,7 @@ public class ResetService extends AbstractService
             throw new IllegalArgumentException(Tapestry.getString("service-no-parameters", RESET_SERVICE));
 
         String[] context = new String[1];
-        context[0] = component.getPage().getName();
+        context[0] = component.getPage().getPageName();
 
         return assembleGesture(cycle, RESET_SERVICE, context, null, true);
     }
@@ -50,6 +51,10 @@ public class ResetService extends AbstractService
         throws RequestCycleException, ServletException, IOException
     {
         String[] context = getServiceContext(cycle.getRequestContext());
+
+        if (Tapestry.size(context) != 1)
+            throw new ApplicationRuntimeException(Tapestry.getString("service-single-parameter", RESET_SERVICE));
+
         String pageName = context[0];
 
         if (engine.isResetServiceEnabled())

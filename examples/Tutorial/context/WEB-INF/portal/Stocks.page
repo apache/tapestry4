@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.4//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_4.dtd">
+
+    
+<page-specification class="tutorial.portal.Stocks">
+
+	<bean name="delegate" class="net.sf.tapestry.valid.ValidationDelegate"/>
+	    
+	<bean name="rowClass" class="net.sf.tapestry.bean.EvenOdd"/>
+	
+	<component id="e" type="Foreach">
+	  <binding name="source" expression="stocks"/>
+	  <binding name="value" expression="stock"/>
+	  <static-binding name="element" value="tr"/>
+	  <binding name="class" expression="beans.rowClass.next"/>
+	</component>
+	
+	<component id="form" type="Form">
+	  <binding name="listener" expression="listeners.addStock"/>
+	  <binding name="direct" expression="false"/>
+	  <binding name="delegate" expression="beans.delegate"/>
+	</component>
+	
+	<component id="inputTickerId" type="ValidField">
+	  <binding name="value" expression="tickerId"/>
+	  <static-binding name="displayName" value="Ticker ID"/>
+	  <binding name="validator" expression="@net.sf.tapestry.valid.StringValidator@REQUIRED"/>
+	  <static-binding name="displayWidth" value="4"/>
+	  <static-binding name="maximumLength" value="4"/>
+	  <static-binding name="title">
+	    For this demo, valid stocks are:
+	    PMIX, MSFT, SUN
+	  </static-binding>
+	</component>
+
+</page-specification>

@@ -1,5 +1,7 @@
 package net.sf.tapestry.record;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 import net.sf.tapestry.IPageChange;
 
 /**
@@ -12,15 +14,15 @@ import net.sf.tapestry.IPageChange;
 
 public class PageChange implements IPageChange
 {
-    String componentPath;
-    String propertyName;
-    Object newValue;
+    private String _componentPath;
+    private String _propertyName;
+    private Object _newValue;
 
     public PageChange(String componentPath, String propertyName, Object newValue)
     {
-        this.componentPath = componentPath;
-        this.propertyName = propertyName;
-        this.newValue = newValue;
+        _componentPath = componentPath;
+        _propertyName = propertyName;
+        _newValue = newValue;
     }
 
     /**
@@ -31,7 +33,7 @@ public class PageChange implements IPageChange
 
     public String getComponentPath()
     {
-        return componentPath;
+        return _componentPath;
     }
 
     /**
@@ -41,7 +43,7 @@ public class PageChange implements IPageChange
 
     public Object getNewValue()
     {
-        return newValue;
+        return _newValue;
     }
 
     /**
@@ -51,30 +53,17 @@ public class PageChange implements IPageChange
 
     public String getPropertyName()
     {
-        return propertyName;
+        return _propertyName;
     }
 
     public String toString()
     {
-        StringBuffer buffer;
-
-        buffer = new StringBuffer(getClass().getName());
-
-        buffer.append('[');
-
-        if (componentPath != null)
-        {
-            buffer.append(componentPath);
-            buffer.append(' ');
-        }
-
-        buffer.append(propertyName);
-
-        buffer.append(' ');
-        buffer.append(newValue);
-
-        buffer.append(']');
-
-        return buffer.toString();
+        ToStringBuilder builder = new ToStringBuilder(this);
+        
+        builder.append("componentPath", _componentPath);
+        builder.append("propertyName", _propertyName);
+        builder.append("newValue", _newValue);
+        
+        return builder.toString();
     }
 }

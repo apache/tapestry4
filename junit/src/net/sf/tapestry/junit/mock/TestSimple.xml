@@ -15,7 +15,7 @@
   	
   	  	
   	  <assert-output name="Insert render">
-  	  	The start of the JUnit test suite: JUnit Simple Application\.
+The start of the JUnit test suite: JUnit Simple Application.
   	  </assert-output>
   	  
   	  <assert-output-matches name="Page structure" subgroup="1">
@@ -45,7 +45,7 @@
   
   	 <assert-output name="Link to page Two">
 <![CDATA[
-	<a href="/junit/simple\?service=page&amp;context=Two">to page Two</a>
+	<a href="/junit/simple?service=page&amp;context=Two">to page Two</a>
 ]]>
   	 </assert-output>
   
@@ -65,15 +65,15 @@
 ]]>
 	</assert-output>
 	
-	<assert-output name="Page Two: No message, yet">
+	<assert-regexp name="Page Two: No message, yet">
 <![CDATA[
 	<body>\s*<p>This page
 ]]>
-	</assert-output>
+	</assert-regexp>
 	
 	<assert-output name="Page Two: DirectLink">
 <![CDATA[
-	DirectLink: <a href="/junit/simple\?service=direct&amp;context=Two/link">click it</a>
+	DirectLink: <a href="/junit/simple?service=direct&amp;context=0/Two/link">click it</a>
 ]]>	
 	</assert-output>	
 
@@ -84,13 +84,13 @@
   
   <request>
   	<parameter name="service" value="direct"/>
-  	<parameter name="context" value="Two/link"/>	
+  	<parameter name="context" value="0/Two/link"/>	
   	
-	<assert-output name="Third request, message displayed">
+	<assert-regexp name="Third request, message displayed">
 <![CDATA[
 	<body>\s*Note: You clicked the link!\s*<p>This page
 ]]>
-	</assert-output>	
+	</assert-regexp>	
 
   </request>
 		

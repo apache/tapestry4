@@ -8,6 +8,7 @@ import net.sf.tapestry.IAsset;
 import net.sf.tapestry.IEngine;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.IResourceLocation;
 import net.sf.tapestry.IScript;
 import net.sf.tapestry.IScriptSource;
 import net.sf.tapestry.RequestCycleException;
@@ -138,7 +139,10 @@ public class Rollover extends AbstractComponent
             IEngine engine = getPage().getEngine();
             IScriptSource source = engine.getScriptSource();
 
-            _parsedScript = source.getScript("/net/sf/tapestry/html/Rollover.script");
+            IResourceLocation scriptLocation
+             = getSpecification().getSpecificationLocation().getRelativeLocation("Rollover.script");
+
+            _parsedScript = source.getScript(scriptLocation);
         }
 
         return _parsedScript;

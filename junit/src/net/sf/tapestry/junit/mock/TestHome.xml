@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="mock"/>
+
+  	<servlet name="app" class="net.sf.tapestry.ApplicationServlet">
+  		<init-parameter
+  			name="net.sf.tapestry.application-specification"
+  			value="/net/sf/tapestry/junit/mock/app/Mock.application"/>
+  	</servlet>      
+    
+    <!-- Check that the home service is the default service. -->
+    
+    <request>
+    			
+		<assert-output name="English Blurb">
+If it's not Scottish, it's crap!
+		</assert-output>
+	</request>		
+
+	<request>
+	  	<parameter name="service" value="page"/>
+	  	<parameter name="context" value="Assets"/>
+		
+		<assert-output name="Home Link">
+<![CDATA[		
+href="/mock/app?service=home"		
+]]>
+		</assert-output>
+	
+	</request>
+	
+<!-- Double check that home service works when named. -->
+	
+	<request>
+	  	<parameter name="service" value="home"/>
+		
+		<assert-output name="English Blurb">
+If it's not Scottish, it's crap!
+		</assert-output>
+				
+	</request>	
+			 	 	 
+</mock-test>
+    	

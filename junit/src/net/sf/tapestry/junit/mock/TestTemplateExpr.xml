@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="mock"/>
+
+  	<servlet name="app" class="net.sf.tapestry.ApplicationServlet">
+  		<init-parameter
+  			name="net.sf.tapestry.application-specification"
+  			value="/net/sf/tapestry/junit/mock/app/Mock.application"/>
+  	</servlet>
+       
+    <request>
+    	<parameter name="service" value="page"/>
+    	<parameter name="context" value="TemplateExpr"/>
+ 	
+	  	<assert-output name="Valid use of template expression">
+<![CDATA[
+Application Name: JUnit Mock Application	
+]]>
+		</assert-output> 	
+		
+	  	<assert-output name="Specifying informal parameters">
+<![CDATA[
+Second example: <span class="styleClass">JUnit Mock Application</span>
+]]>
+		</assert-output> 	
+	</request>
+			
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="TemplateExprConflict"/>
+		
+	  	<assert-output name="Page Title">
+<![CDATA[
+	<title>Exception</title>
+]]>
+		</assert-output>	
+	
+		<assert-output name="Error Message">
+An expression for parameter 'value' of component TemplateExprConflict/insertApplicationName in the template for TemplateExprConflict conflicts with an existing binding in the specification.
+		</assert-output>	
+		
+	</request>
+	
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="TemplateExprInformal"/>
+		
+	  	<assert-output name="Page Title">
+<![CDATA[
+	<title>Exception</title>
+]]>
+		</assert-output>	
+	
+		<assert-output name="Error Message">
+Component TemplateExprInformal/ifTest allows only formal parameters, binding value is not allowed.
+		</assert-output>	
+		
+	</request>	
+	
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="TemplateExprReserved"/>
+		
+	  	<assert-output name="Page Title">
+<![CDATA[
+	<title>Exception</title>
+]]>
+		</assert-output>	
+	
+		<assert-output name="Error Message">
+The template for TemplateExprReserved contains an expression for parameter 'href' of component TemplateExprReserved/link, but 'href' is a reserved parameter name.
+		</assert-output>	
+		
+	</request>	
+</mock-test>
+    	

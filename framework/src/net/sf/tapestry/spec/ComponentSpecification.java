@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
+import net.sf.tapestry.IResourceLocation;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.util.BasePropertyHolder;
 
@@ -44,14 +47,9 @@ import net.sf.tapestry.util.BasePropertyHolder;
 public class ComponentSpecification extends BasePropertyHolder
 {
     private String _componentClassName;
-
-    /**
-     *  @deprecated To be made private in 2.3.  Use {@link #setSpecificationResourcePath(String)}.
-     * 
-     **/
-
-    protected String specificationResourcePath;
+    
     /** @since 1.0.9 **/
+    
     private String _description;
 
     /**
@@ -122,11 +120,21 @@ public class ComponentSpecification extends BasePropertyHolder
     /**
      *  Indicates that the specification is for a page, not a component.
      * 
-     * @since 2.2
+     *  @since 2.2
      * 
      **/
 
     private boolean _pageSpecification;
+
+
+    /**
+     *  The location from which the specification was obtained.
+     * 
+     *  @since 2.4
+     * 
+     **/
+    
+    private IResourceLocation _specificationLocation;
 
     /**
      * @throws IllegalArgumentException if the name already exists.
@@ -304,16 +312,6 @@ public class ComponentSpecification extends BasePropertyHolder
         return sortedKeys(_parameters);
     }
 
-    /**
-     *  Returns the String used to identify the resource parsed to form this
-     *  <code>ComponentSpecification</code>.
-     *
-     **/
-
-    public String getSpecificationResourcePath()
-    {
-        return specificationResourcePath;
-    }
 
     public void setAllowBody(boolean value)
     {
@@ -330,10 +328,6 @@ public class ComponentSpecification extends BasePropertyHolder
         _componentClassName = value;
     }
 
-    public void setSpecificationResourcePath(String value)
-    {
-        specificationResourcePath = value;
-    }
 
     /**
      *  @since 1.0.4
@@ -420,19 +414,15 @@ public class ComponentSpecification extends BasePropertyHolder
 
     public String toString()
     {
-        StringBuffer buffer;
-        buffer = new StringBuffer(super.toString());
-
-        buffer.append('[');
-
-        if (specificationResourcePath != null)
-            buffer.append(specificationResourcePath);
-        else if (_componentClassName != null)
-            buffer.append(_componentClassName);
-
-        buffer.append(']');
-
-        return buffer.toString();
+        ToStringBuilder builder = new ToStringBuilder(this);
+        
+        builder.append("componentClassName", _componentClassName);
+        builder.append("pageSpecification", _pageSpecification);
+        builder.append("specificationLocation", _specificationLocation);
+        builder.append("allowBody", _allowBody);
+        builder.append("allowInformalParameter", _allowInformalParameters);
+        
+        return builder.toString();
     }
 
     /**
@@ -520,4 +510,19 @@ public class ComponentSpecification extends BasePropertyHolder
 
         return result;
     }
+    
+    /** @since 2.4 **/
+    
+    public IResourceLocation getSpecificationLocation()
+    {
+        return _specificationLocation;
+    }
+
+    /** @since 2.4 **/
+    
+    public void setSpecificationLocation(IResourceLocation specificationLocation)
+    {
+        _specificationLocation = specificationLocation;
+    }
+
 }

@@ -31,47 +31,51 @@ public class Slashdot extends BasePage
      *
      **/
 
-    private List stories;
-    private SlashdotStory story;
-    private long lastRefresh = 0;
+    private List _stories;
+    private SlashdotStory _story;
+    private long _lastRefresh = 0;
 
     private static final int REFRESH_INTERVAL = 30 * 1024;
 
     private static String RESOURCE_PATH = "http://slashdot.org/slashdot.xml";
 
-    public void detach()
+    /**
+     *  The page acts like a cache of parsed stories, so we leave the stories and lastRefresh
+     *  properties alone.  This is bending the rules, but valid.
+     * 
+     **/
+    
+    public void initialize()
     {
-        story = null;
-
-        super.detach();
+        _story = null;
     }
 
     public void setStory(SlashdotStory value)
     {
-        story = value;
+        _story = value;
     }
 
     public SlashdotStory getStory()
     {
-        return story;
+        return _story;
     }
 
     public List getStories()
     {
         long now = System.currentTimeMillis();
 
-        if (now - lastRefresh > REFRESH_INTERVAL)
+        if (now - _lastRefresh > REFRESH_INTERVAL)
         {
             if (LOG.isDebugEnabled())
                 LOG.debug("Forcing refresh");
 
-            stories = null;
+            _stories = null;
         }
 
-        if (stories == null)
+        if (_stories == null)
             readStories();
 
-        return stories;
+        return _stories;
     }
 
     private void readStories()
@@ -93,14 +97,14 @@ public class Slashdot extends BasePage
 
         try
         {
-            stories = parser.parseStories(url, RESOURCE_PATH);
+            _stories = parser.parseStories(url);
         }
         catch (DocumentParseException ex)
         {
             throw new ApplicationRuntimeException(ex);
         }
 
-        lastRefresh = System.currentTimeMillis();
+        _lastRefresh = System.currentTimeMillis();
     }
 
 }

@@ -40,11 +40,6 @@ public class Border extends BaseComponent implements PageRenderListener
 
     private static String[] tabOrder;
 
-    public void finishLoad()
-    {
-        getPage().addPageRenderListener(this);
-    }
-
     public void pageBeginRender(PageEvent event)
     {
         Visit visit = (Visit) getPage().getEngine().getVisit(event.getRequestCycle());

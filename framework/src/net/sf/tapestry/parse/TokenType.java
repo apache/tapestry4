@@ -16,6 +16,9 @@ public class TokenType extends Enum
 {
     /**
      *  Raw HTML text.
+     * 
+     *  @see TextToken
+     * 
      *
      **/
 
@@ -23,6 +26,8 @@ public class TokenType extends Enum
 
     /**
      *  The opening tag of an element.
+     * 
+     *  @see OpenToken
      *
      **/
 
@@ -30,6 +35,8 @@ public class TokenType extends Enum
 
     /**
      *  The closing tag of an element.
+     * 
+     *  @see CloseToken
      *
      **/
 

@@ -165,7 +165,7 @@ public class Border extends BaseComponent
 
     public boolean getShowSlash()
     {
-        return !getPage().getName().equals("MyLibrary");
+        return !getPage().getPageName().equals("MyLibrary");
     }
 
     public IAsset getAdminIcon()
@@ -215,7 +215,7 @@ public class Border extends BaseComponent
     {
         if (_subheader == null)
         {
-            String name = "header_" + getPage().getName();
+            String name = "header_" + getPage().getPageName();
 
             _subheader = getAsset(name);
 

@@ -62,13 +62,6 @@ import net.sf.tapestry.util.StringSplitter;
  *  (perhaps as the delegate of a {@link net.sf.tapestry.components.Delegator} component}
  *  it simply invokes {@link #write(IMarkupWriter)} to display all debugging output.
  *
- *  <p>This class is derived from the original class 
- *  <code>com.primix.servlet.RequestContext</code>,
- *  part of the <b>ServletUtils</b> framework available from
- *  <a href="http://www.gjt.org/servlets/JCVSlet/list/gjt/com/primix/servlet">The Giant 
- *  Java Tree</a>.
- *
- *
  *  @version $Id$
  *  @author Howard Lewis Ship
  * 
@@ -308,7 +301,7 @@ public class RequestContext implements IRender
         if (!spec.checkExtension(REQUEST_DECODER_EXTENSION_NAME))
             decoder = new DefaultRequestDecoder();
         else
-            decoder = (IRequestDecoder) spec.getExtension(REQUEST_DECODER_EXTENSION_NAME);
+            decoder = (IRequestDecoder) spec.getExtension(REQUEST_DECODER_EXTENSION_NAME, IRequestDecoder.class);
 
         _decodedRequest = decoder.decodeRequest(_request);
 
@@ -739,7 +732,7 @@ public class RequestContext implements IRender
             renderValue.renderDescription(writer);
 
             writer.end("tr");
-
+            writer.println();
             return;
         }
 
@@ -764,6 +757,7 @@ public class RequestContext implements IRender
         writer.begin("td");
         writer.print(value);
         writer.end("tr");
+        writer.println();
     }
 
     private void pair(IMarkupWriter writer, String name, boolean value)
@@ -1040,6 +1034,7 @@ public class RequestContext implements IRender
         header(writer, "Name", "Value");
 
         pair(writer, "servlet", _servlet);
+        pair(writer, "name", _servlet.getServletName());
         pair(writer, "servletInfo", _servlet.getServletInfo());
 
         ServletConfig config = _servlet.getServletConfig();
@@ -1057,7 +1052,6 @@ public class RequestContext implements IRender
             }
 
             String name = (String) names.get(i);
-            ;
             pair(writer, name, config.getInitParameter(name));
 
         }

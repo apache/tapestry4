@@ -1,12 +1,10 @@
 package net.sf.tapestry.engine;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
 import net.sf.tapestry.ApplicationRuntimeException;
+import net.sf.tapestry.IResourceLocation;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.IScript;
 import net.sf.tapestry.IScriptSource;
@@ -37,72 +35,38 @@ public class DefaultScriptSource implements IScriptSource
         _resolver = resolver;
     }
 
-    public void reset()
+    public synchronized void reset()
     {
         _cache.clear();
     }
 
-    public IScript getScript(String resourcePath)
+    public synchronized IScript getScript(IResourceLocation scriptLocation)
     {
-        IScript result;
-
-        synchronized (_cache)
-        {
-            result = (IScript) _cache.get(resourcePath);
-        }
+        IScript result = (IScript) _cache.get(scriptLocation);
 
         if (result != null)
             return result;
 
-        result = parse(resourcePath);
+        result = parse(scriptLocation);
 
-        // There's a small window if reset() is invoked on a very busy system where
-        // cache could be null here.
-
-        synchronized (_cache)
-        {
-            _cache.put(resourcePath, result);
-        }
+        _cache.put(scriptLocation, result);
 
         return result;
     }
 
-    private IScript parse(String resourcePath)
+    private IScript parse(IResourceLocation location)
     {
         ScriptParser parser = new ScriptParser(_resolver);
-        InputStream stream = null;
 
         try
         {
-            URL url = _resolver.getResource(resourcePath);
-
-            if (url == null)
-                throw new ApplicationRuntimeException(
-                    Tapestry.getString("DefaultScriptSource.unable-to-find-script", resourcePath));
-
-            stream = url.openStream();
-
-            IScript result = parser.parse(stream, resourcePath);
-
-            stream.close();
-
-            return result;
+            return parser.parse(location);
         }
         catch (DocumentParseException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("DefaultScriptSource.unable-to-parse-script", resourcePath),
+                Tapestry.getString("DefaultScriptSource.unable-to-parse-script", location),
                 ex);
-        }
-        catch (IOException ex)
-        {
-            throw new ApplicationRuntimeException(
-                Tapestry.getString("DefaultScriptSource.unable-to-read-script", resourcePath),
-                ex);
-        }
-        finally
-        {
-            Tapestry.close(stream);
         }
     }
 

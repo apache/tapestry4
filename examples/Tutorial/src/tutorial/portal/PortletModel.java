@@ -19,50 +19,50 @@ import net.sf.tapestry.components.Block;
 
 public class PortletModel implements Serializable
 {
-    private int id;
-    private boolean expanded = true;
-    private String title;
-    private String bodyPage;
-    private String bodyIdPath;
+    private int _id;
+    private boolean _expanded = true;
+    private String _title;
+    private String _bodyPage;
+    private String _bodyIdPath;
 
     public PortletModel(int id, String title, String bodyPage, String bodyIdPath)
     {
-        this.id = id;
-        this.title = title;
-        this.bodyPage = bodyPage;
-        this.bodyIdPath = bodyIdPath;
+        _id = id;
+        _title = title;
+        _bodyPage = bodyPage;
+        _bodyIdPath = bodyIdPath;
     }
 
     public Block getBodyBlock(IRequestCycle cycle)
     {
-        IPage page = cycle.getPage(bodyPage);
-        IComponent component = page.getNestedComponent(bodyIdPath);
+        IPage page = cycle.getPage(_bodyPage);
+        IComponent component = page.getNestedComponent(_bodyIdPath);
 
         return (Block) component;
     }
 
     public void toggleExpanded()
     {
-        expanded = !expanded;
+        _expanded = !_expanded;
     }
 
     public boolean isExpanded()
     {
-        return expanded;
+        return _expanded;
     }
 
-    public void setExpanded(boolean value)
+    public void setExpanded(boolean expanded)
     {
-        expanded = value;
+        _expanded = expanded;
     }
 
     public String getTitle()
     {
-        return title;
+        return _title;
     }
 
     public int getId()
     {
-        return id;
+        return _id;
     }
 }

@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
+    <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.mortbay.jetty.Server"/>
+    <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="Tapestry"/>
+    <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="Tapestry/examples/Tutorial"/>
+    <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
     <listAttribute key="org.eclipse.jdt.launching.CLASSPATH">
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry containerPath=&quot;JRE_LIB&quot; path=&quot;2&quot;
@@ -61,14 +65,14 @@
     internalArchive=&quot;/Tapestry/lib/ext/commons-logging-1.0.2.jar&quot;
     path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
+        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;runtimeClasspathEntry internalArchive=&quot;/Tapestry/lib/ext/bsf-2.3.0.jar&quot;
+    path=&quot;3&quot; type=&quot;2&quot;/&gt;
+"/>
     </listAttribute>
-    <stringAttribute key="org.eclipse.debug.ui.target_debug_perspective" value="perspective_default"/>
     <stringAttribute key="org.eclipse.debug.ui.target_run_perspective" value="perspective_default"/>
-    <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="Tapestry"/>
-    <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="Tapestry/examples/Tutorial"/>
-    <stringAttribute key="org.eclipse.debug.core.source_locator_id" value="org.eclipse.jdt.debug.ui.javaSourceLocator"/>
-    <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="jetty.xml"/>
-    <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.mortbay.jetty.Server"/>
+    <stringAttribute key="org.eclipse.debug.core.source_locator_id" value="org.eclipse.jdt.debug.ui.javaSourceLocator"/>
     <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dnet.sf.tapestry.disable-caching=true -Dnet.sf.tapestry.enable-reset-service=true -Dorg.mortbay.util.FileResource.checkAliases=false"/>
+    <stringAttribute key="org.eclipse.debug.ui.target_debug_perspective" value="perspective_default"/>
 </launchConfiguration>

@@ -30,6 +30,7 @@
 	<pathelement location="${lib.ext.dir}/ejb.jar"/>
 	<pathelement location="${lib.ext.dir}/${jakarta-oro.jar}"/>
 	<pathelement location="${lib.ext.dir}/${ognl.jar}"/>
+    <pathelement location="${lib.ext.dir}/${bsf.jar}"/>	
 	<pathelement location="config"/>
 </path>
 
@@ -381,7 +382,7 @@
 		<!-- Enable debugging when running the tutorial -->
 		
 		<jvmarg line="-showversion -Xdebug -Xnoagent"/>
-		<jvmarg line="-Xrunjdwp:transport=dt_socket,suspend=y,server=y,address=20150"/>
+		<jvmarg line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20150"/>
 					
 		<!-- Jetty can get easily confused (under NT) unless this is turned off. -->
 		
@@ -399,6 +400,9 @@
 	 Configures a JBoss 3.0.0 with a new configuration, tapestry.  Part of the configuration
 	 comes with the Tapestry distribution; part is copied from the JBoss default server
 	 configuration.
+	 
+	 This only works with JBoss 3.0.0; later releases change enough that this
+	 simple script is broken.
 	
      ====================================================================================  -->	
 
@@ -428,6 +432,9 @@
 			<exclude name="*tapestry*${framework.version}.jar"/>
 			<exclude name="${jakarta-oro.jar}"/>
 			<exclude name="${ognl.jar}"/>
+			<exclude name="${commons-lang.jar}"/>
+			<exclude name="${commons-logging.jar}"/>
+			<exclude name="${bsf.jar}"/>
 			
 			<!-- Match and include out-of-date versions -->
 			
@@ -436,6 +443,7 @@
 			<include name="ognl-*.jar"/>
 			<include name="commons-logging*.jar"/>
 			<include name="commons-lang*.jar"/>
+			<include name="bsf*.jar"/>
 		</fileset>
 	</delete>
 		
@@ -446,6 +454,7 @@
 			<include name="${ognl.jar}"/>
 			<include name="${commons-logging.jar}"/>
 			<include name="${commons-lang.jar}"/>
+			<include name="${bsf.jar}"/>
 		</fileset>
 		<fileset dir="${jboss.server.default.dir}/lib">
 		
@@ -601,11 +610,12 @@
   <copy file="lib/net.sf.tapestry.contrib-${framework.version}.jar" todir="${web.lib}"/>
   <copy todir="${web.lib}">
     <fileset dir="lib/ext">
-      <include name="commons-lang-*.jar"/>
-      <include name="commons-logging-*.jar"/>
-      <include name="jakarta-oro-*.jar"/>
-      <include name="log4j-*.jar"/>
-      <include name="ognl-*.jar"/>
+      <include name="${commons-lang.jar}"/>
+      <include name="${commons-logging.jar}"/>
+      <include name="${jakarta-oro.jar}"/>
+      <include name="${log4j.jar}"/>
+      <include name="${ognl.jar}"/>
+      <include name="${bsf.jar}"/>      
     </fileset>
   </copy>  
 </target>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.4//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_4.dtd">
+	
+<page-specification class="net.sf.tapestry.junit.mock.c7.Two">
+
+	<component id="link" type="DirectLink">
+		<listener-binding name="listener" language="jython">
+
+page.message = "Component was clicked."
+		
+		</listener-binding>
+	</component>
+
+	<component id="invalidScriptLink" type="DirectLink">
+		<listener-binding name="listener" language="jython">
+
+# Note the missing trailing quote!
+
+page.message = "invalidScriptLink component was clicked.
+		
+		</listener-binding>
+	</component>
+	
+	<component id="unknownLanguageLink" type="DirectLink">
+		<listener-binding name="listener" language="DoesNotExist">
+
+page.message = "unknownLanguageLink component was clicked."
+		
+		</listener-binding>
+	</component>	
+	
+</page-specification>
+

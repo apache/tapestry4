@@ -2,7 +2,6 @@ package net.sf.tapestry;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.Locale;
 
 import javax.servlet.ServletConfig;
@@ -17,10 +16,16 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import net.sf.tapestry.engine.BaseEngine;
 import net.sf.tapestry.parse.SpecificationParser;
+import net.sf.tapestry.resource.ClasspathResourceLocation;
+import net.sf.tapestry.resource.ContextResourceLocation;
 import net.sf.tapestry.spec.ApplicationSpecification;
 import net.sf.tapestry.spec.IApplicationSpecification;
-import net.sf.tapestry.util.StringSplitter;
+import net.sf.tapestry.util.DelegatingPropertySource;
+import net.sf.tapestry.util.ServletContextPropertySource;
+import net.sf.tapestry.util.ServletPropertySource;
+import net.sf.tapestry.util.SystemPropertiesPropertySource;
 import net.sf.tapestry.util.exception.ExceptionAnalyzer;
 import net.sf.tapestry.util.pool.Pool;
 import net.sf.tapestry.util.xml.DocumentParseException;
@@ -59,14 +64,9 @@ import net.sf.tapestry.util.xml.DocumentParseException;
  *  the creation of a session; this involves the servlet and the engine storing
  *  locale information in a {@link Cookie}.
  * 
- *  <p>This class is derived from the original class
- *  <code>com.primix.servlet.GatewayServlet</code>,
- *  part of the <b>ServletUtils</b> framework available from
- *  <a href="http://www.gjt.org/servlets/JCVSlet/list/gjt/com/primix/servlet">The Giant
- *  Java Tree</a>.
- * 
  *  @version $Id$
  *  @author Howard Lewis Ship
+ * 
  **/
 
 public class ApplicationServlet extends HttpServlet
@@ -108,6 +108,25 @@ public class ApplicationServlet extends HttpServlet
      **/
 
     private String _attributeName;
+
+    /**
+     *  The resolved class name used to instantiate the engine.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    private String _engineClassName;
+
+    /**
+     *  Used to search for configuration properties.
+     * 
+     *  
+     *  @since 2.4
+     * 
+     **/
+
+    private IPropertySource _propertySource;
 
     /**
      *  Invokes {@link #doService(HttpServletRequest, HttpServletResponse)}.
@@ -431,37 +450,109 @@ public class ApplicationServlet extends HttpServlet
 
     protected IApplicationSpecification constructApplicationSpecification() throws ServletException
     {
+        IResourceLocation specLocation = getApplicationSpecificationLocation();
+
+        if (specLocation == null)
+        {
+            if (LOG.isDebugEnabled())
+                LOG.debug(Tapestry.getString("ApplicationServlet.no-application-specification"));
+
+            return constructStandinSpecification();
+        }
+
+        if (LOG.isDebugEnabled())
+            LOG.debug("Loading application specification from " + specLocation);
+
+        return parseApplicationSpecification(specLocation);
+    }
+
+    /**
+     *  Gets the location of the application specification, if there is one.
+     *  
+     *  <ul>
+     *  <li>Invokes {@link #getApplicationSpecificationPath()} to get the
+     *  location of the application specification on the classpath.
+     *  <li>If that return null, search for the application specification:
+     *  <ul>
+     *  <li><i>name</i>.application in /WEB-INF/<i>name</i>/
+     *  <li><i>name</i>.application in /WEB-INF/
+     *  </ul>
+     *  </ul>
+     * 
+     *  <p>Returns the location of the application specification, or null
+     *  if not found.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    protected IResourceLocation getApplicationSpecificationLocation() throws ServletException
+    {
         String path = getApplicationSpecificationPath();
 
-        URL specificationURL = _resolver.getResource(path);
-        InputStream stream = null;
+        if (path != null)
+            return new ClasspathResourceLocation(_resolver, path);
 
-        try
+        ServletContext context = getServletContext();
+        String servletName = getServletName();
+        String expectedName = servletName + ".application";
+
+        IResourceLocation webInfLocation = new ContextResourceLocation(context, "/WEB-INF/");
+        IResourceLocation webInfAppLocation = webInfLocation.getRelativeLocation(servletName + "/");
+
+        IResourceLocation result = check(webInfAppLocation, expectedName);
+        if (result != null)
+            return result;
+
+        return check(webInfLocation, expectedName);
+    }
+
+    /**
+     *  Checks for the application specificaiton relative to the specified
+     *  location.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    private IResourceLocation check(IResourceLocation location, String name)
+    {
+        IResourceLocation result = location.getRelativeLocation(name);
+
+        if (LOG.isDebugEnabled())
+            LOG.debug("Checking for existence of " + result);
+
+        if (result.getResourceURL() != null)
         {
-            if (specificationURL != null)
-                stream = specificationURL.openStream();
-
-            if (stream == null)
-                throw new ServletException(Tapestry.getString("ApplicationServlet.could-not-load-spec", path));
-
-            if (LOG.isDebugEnabled())
-                LOG.debug("Loading application specification from " + path);
-
-            IApplicationSpecification result = parseApplicationSpecification(stream, path);
-
-            stream.close();
-            stream = null;
-
+            LOG.debug("Found.");
             return result;
         }
-        catch (IOException ex)
-        {
-            throw new ServletException(Tapestry.getString("ApplicationServlet.could-not-open-spec", path), ex);
-        }
-        finally
-        {
-            close(stream);
-        }
+
+        return null;
+    }
+
+    /**
+     *  Invoked from {@link #constructApplicationSpecification()} when
+     *  the application doesn't have an explicit specification.  A
+     *  simple specification is constructed and returned.  This is useful
+     *  for minimal applications and prototypes.
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    protected IApplicationSpecification constructStandinSpecification()
+    {
+        ApplicationSpecification result = new ApplicationSpecification();
+
+        IResourceLocation virtualLocation = new ContextResourceLocation(getServletContext(), "/WEB-INF/");
+
+        result.setSpecificationLocation(virtualLocation);
+
+        result.setName(getServletName());
+        result.setResourceResolver(_resolver);
+
+        return result;
     }
 
     /**
@@ -473,20 +564,20 @@ public class ApplicationServlet extends HttpServlet
      * 
      **/
 
-    protected IApplicationSpecification parseApplicationSpecification(InputStream stream, String path)
+    protected IApplicationSpecification parseApplicationSpecification(IResourceLocation location)
         throws ServletException
     {
         try
         {
             SpecificationParser parser = new SpecificationParser();
 
-            return parser.parseApplicationSpecification(stream, path, _resolver);
+            return parser.parseApplicationSpecification(location, _resolver);
         }
         catch (DocumentParseException ex)
         {
             show(ex);
 
-            throw new ServletException(Tapestry.getString("ApplicationServlet.could-not-parse-spec", path), ex);
+            throw new ServletException(Tapestry.getString("ApplicationServlet.could-not-parse-spec", location), ex);
         }
     }
 
@@ -510,20 +601,21 @@ public class ApplicationServlet extends HttpServlet
 
     /**
      *  Reads the servlet init parameter
-     *  <code>net.sf.tapestry.application-specification</code> and
-     *  throws {@link ServletException} if it is null.
+     *  <code>net.sf.tapestry.application-specification</code>, which
+     *  is the location, on the classpath, of the application specification.
      *
+     *  <p>
+     *  If the parameter is not set, this method returns null, and a search
+     *  for the application specification within the servlet context
+     *  will begin.
+     * 
+     *  @see #getApplicationSpecificationLocation()
+     * 
      **/
 
     protected String getApplicationSpecificationPath() throws ServletException
     {
-        String result = getInitParameter("net.sf.tapestry.application-specification");
-
-        if (result == null)
-            throw new ServletException(
-                Tapestry.getString("ApplicationServlet.app-spec-path-not-provided", APP_SPEC_PATH_PARAM));
-
-        return result;
+        return getInitParameter("net.sf.tapestry.application-specification");
     }
 
     /**
@@ -535,8 +627,7 @@ public class ApplicationServlet extends HttpServlet
      *  <p>The {@link IEngine} instance returned is stored into the
      *  {@link HttpSession}.
      *
-     *  <p>This implementation instantiates a new engine as specified
-     *  by {@link ApplicationSpecification#getEngineClassName()}.
+     *  @see #getEngineClassName()    
      *
      **/
 
@@ -544,10 +635,7 @@ public class ApplicationServlet extends HttpServlet
     {
         try
         {
-            String className = _specification.getEngineClassName();
-
-            if (className == null)
-                throw new ServletException(Tapestry.getString("ApplicationServlet.no-engine-class"));
+            String className = getEngineClassName();
 
             if (LOG.isDebugEnabled())
                 LOG.debug("Creating engine from class " + className);
@@ -565,6 +653,79 @@ public class ApplicationServlet extends HttpServlet
         {
             throw new ServletException(ex);
         }
+    }
+
+    /**
+     * 
+     *  Returns the name of the class to use when instantiating
+     *  an engine instance for this application.  
+     *  If the application specification
+     *  provides a value, this is returned.  Otherwise, a search for
+     *  the configuration property 
+     *  <code>net.sf.tapestry.engine-class</code>
+     *  occurs (see {@link #searchConfiguration(String)}).
+     * 
+     *  <p>If the search is still unsuccessful, then
+     *  {@link net.sf.tapestry.engine.BaseEngine} is used.
+     * 
+     **/
+
+    protected String getEngineClassName()
+    {
+        if (_engineClassName != null)
+            return _engineClassName;
+
+        _engineClassName = _specification.getEngineClassName();
+
+        if (_engineClassName == null)
+            _engineClassName = searchConfiguration("net.sf.tapestry.engine-class");
+
+        if (_engineClassName == null)
+            _engineClassName = BaseEngine.class.getName();
+
+        return _engineClassName;
+    }
+
+    /**
+     *  Searches for a configuration property in:
+     *  <ul>
+     *  <li>The servlet's initial parameters
+     *  <li>The servlet context's initial parameters
+     *  <li>JVM system properties
+     *  </ul>
+     * 
+     *  @see #createPropertySource()
+     *  @since 2.4
+     * 
+     **/
+
+    protected String searchConfiguration(String propertyName)
+    {
+        if (_propertySource == null)
+            _propertySource = createPropertySource();
+
+        return _propertySource.getPropertyValue(propertyName);
+    }
+
+    /**
+     *  Creates an instance of {@link IPropertySource} used for
+     *  searching of configuration values.  Subclasses may override
+     *  this method if they want to change the normal locations
+     *  that properties are searched for within.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    protected IPropertySource createPropertySource()
+    {
+        DelegatingPropertySource result = new DelegatingPropertySource();
+
+        result.addSource(new ServletPropertySource(getServletConfig()));
+        result.addSource(new ServletContextPropertySource(getServletContext()));
+        result.addSource(SystemPropertiesPropertySource.getInstance());
+
+        return result;
     }
 
     /**

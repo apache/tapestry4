@@ -77,16 +77,13 @@ public class AdaptorRegistry
      *  been registered for the given class.
      **/
 
-    public void register(Class registrationClass, Object adaptor)
+    public synchronized void register(Class registrationClass, Object adaptor)
     {
-        synchronized (registrations)
-        {
-            if (registrations.containsKey(registrationClass))
-                throw new IllegalArgumentException(
-                    Tapestry.getString("AdaptorRegistry.duplicate-registration", registrationClass.getName()));
+        if (registrations.containsKey(registrationClass))
+            throw new IllegalArgumentException(
+                Tapestry.getString("AdaptorRegistry.duplicate-registration", registrationClass.getName()));
 
-            registrations.put(registrationClass, adaptor);
-        }
+        registrations.put(registrationClass, adaptor);
 
         if (LOG.isInfoEnabled())
             LOG.info("Registered " + adaptor + " for " + registrationClass.getName());
@@ -95,10 +92,7 @@ public class AdaptorRegistry
         // Also, normally all registrations occur before any adaptors
         // are searched for, so this is not a big deal.
 
-        synchronized (cache)
-        {
-            cache.clear();
-        }
+        cache.clear();
     }
 
     /**
@@ -108,34 +102,28 @@ public class AdaptorRegistry
      *
      **/
 
-    public Object getAdaptor(Class subjectClass)
+    public synchronized Object getAdaptor(Class subjectClass)
     {
         Object result;
 
         if (LOG.isDebugEnabled())
             LOG.debug("Getting adaptor for class " + subjectClass.getName());
 
-        synchronized (cache)
+        result = cache.get(subjectClass);
+
+        if (result != null)
         {
-            result = cache.get(subjectClass);
+            if (LOG.isDebugEnabled())
+                LOG.debug("Found " + result + " in cache");
 
-            if (result != null)
-            {
-                if (LOG.isDebugEnabled())
-                    LOG.debug("Found " + result + " in cache");
-
-                return result;
-            }
+            return result;
         }
 
         result = searchForAdaptor(subjectClass);
 
         // Record the result in the cache
 
-        synchronized (cache)
-        {
-            cache.put(subjectClass, result);
-        }
+        cache.put(subjectClass, result);
 
         if (LOG.isDebugEnabled())
             LOG.debug("Found " + result);
@@ -164,87 +152,81 @@ public class AdaptorRegistry
      * <li>Multiple checks only occur if we don't find a registration
      * </ul>
      *
+     *  <p>
+     *  This method is only called from a synchronized block, so it is
+     *  implicitly synchronized.
+     * 
      **/
 
     private Object searchForAdaptor(Class subjectClass)
     {
         LinkedList queue = null;
-        Class[] interfaces;
-        Class searchClass;
-        Object result;
-        int length;
-
-        if (registrations == null)
-            throw new IllegalArgumentException("No adaptors have been registered.");
+        Object result = null;
 
         if (LOG.isDebugEnabled())
             LOG.debug("Searching for adaptor for class " + subjectClass.getName());
 
-        synchronized (registrations)
+        // Step one: work up through the class inheritance.
+
+        Class searchClass = subjectClass;
+
+        // Primitive types have null, not Object, as their parent
+        // class.
+
+        while (searchClass != Object.class && searchClass != null)
         {
-            // Step one: work up through the class inheritance.
+            result = registrations.get(searchClass);
+            if (result != null)
+                return result;
 
-            searchClass = subjectClass;
+            // Not an exact match.  If the search class
+            // implements any interfaces, add them to the queue.
 
-            // Primitive types have null, not Object, as their parent
-            // class.
+            Class[] interfaces = searchClass.getInterfaces();
+            int length = interfaces.length;
 
-            while (searchClass != Object.class && searchClass != null)
+            if (queue == null && length > 0)
+                queue = new LinkedList();
+
+            for (int i = 0; i < length; i++)
+                queue.addLast(interfaces[i]);
+
+            // Advance up to the next superclass
+
+            searchClass = searchClass.getSuperclass();
+
+        }
+
+        // Ok, the easy part failed, lets start searching
+        // interfaces.
+
+        if (queue != null)
+        {
+            while (!queue.isEmpty())
             {
+                searchClass = (Class) queue.removeFirst();
+
                 result = registrations.get(searchClass);
                 if (result != null)
                     return result;
 
-                // Not an exact match.  If the search class
-                // implements any interfaces, add them to the queue.
+                // Interfaces can extend other interfaces; add them
+                // to the queue.
 
-                interfaces = searchClass.getInterfaces();
-                length = interfaces.length;
-
-                if (queue == null && length > 0)
-                    queue = new LinkedList();
+                Class[] interfaces = searchClass.getInterfaces();
+                int length = interfaces.length;
 
                 for (int i = 0; i < length; i++)
                     queue.addLast(interfaces[i]);
-
-                // Advance up to the next superclass
-
-                searchClass = searchClass.getSuperclass();
-
             }
-
-            // Ok, the easy part failed, lets start searching
-            // interfaces.
-
-            if (queue != null)
-            {
-                while (!queue.isEmpty())
-                {
-                    searchClass = (Class) queue.removeFirst();
-
-                    result = registrations.get(searchClass);
-                    if (result != null)
-                        return result;
-
-                    // Interfaces can extend other interfaces; add them
-                    // to the queue.
-
-                    interfaces = searchClass.getInterfaces();
-                    length = interfaces.length;
-
-                    for (int i = 0; i < length; i++)
-                        queue.addLast(interfaces[i]);
-                }
-            }
-
-            // Not a match on interface; our last gasp is to check
-            // for a registration for java.lang.Object
-
-            result = registrations.get(Object.class);
-            if (result != null)
-                return result;
-
         }
+
+        // Not a match on interface; our last gasp is to check
+        // for a registration for java.lang.Object
+
+        result = registrations.get(Object.class);
+        if (result != null)
+            return result;
 
         // No match?  That's rare ... and an error.
 
@@ -252,44 +234,32 @@ public class AdaptorRegistry
             Tapestry.getString("AdaptorRegistry.adaptor-not-found", subjectClass.getName()));
     }
 
-    public String toString()
+    public synchronized String toString()
     {
-        StringBuffer buffer;
-        Iterator i;
-        Map.Entry entry;
-        boolean first = true;
-        Class registeredClass;
-
-        buffer = new StringBuffer();
+        StringBuffer buffer = new StringBuffer();
         buffer.append("AdaptorRegistry[");
 
-        if (registrations != null)
+        Iterator i = registrations.entrySet().iterator();
+        boolean showSep = false;
+
+        while (i.hasNext())
         {
-            synchronized (registrations)
-            {
-                i = registrations.entrySet().iterator();
+            if (showSep)
+                buffer.append(' ');
 
-                while (i.hasNext())
-                {
-                    if (!first)
-                        buffer.append(' ');
+            Map.Entry entry = (Map.Entry) i.next();
 
-                    entry = (Map.Entry) i.next();
+            Class registeredClass = (Class) entry.getKey();
 
-                    registeredClass = (Class) entry.getKey();
+            buffer.append(registeredClass.getName());
+            buffer.append("=");
+            buffer.append(entry.getValue());
 
-                    buffer.append(registeredClass.getName());
-                    buffer.append("=");
-                    buffer.append(entry.getValue());
-
-                    first = false;
-                }
-            }
+            showSep = true;
         }
 
         buffer.append("]");
 
         return buffer.toString();
-
     }
 }

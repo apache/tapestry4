@@ -28,7 +28,7 @@
 		
 		<assert-output name="Link URL">
 <![CDATA[
-href="/mock/app\?service=direct&amp;context=ProtectedLink/link&amp;sp=6&amp;sp=13&amp;sp=1999"
+href="/mock/app?service=direct&amp;context=0/ProtectedLink/link&amp;sp=6&amp;sp=13&amp;sp=1999"
 ]]>
 		</assert-output>
   		
@@ -36,7 +36,7 @@ href="/mock/app\?service=direct&amp;context=ProtectedLink/link&amp;sp=6&amp;sp=1
 	
 	<request>
 		<parameter name="service" value="direct"/>
-		<parameter name="context" value="ProtectedLink/link"/>
+		<parameter name="context" value="0/ProtectedLink/link"/>
 		<parameter name="sp">
 			<value>6</value>
 			<value>13</value>
@@ -51,13 +51,13 @@ href="/mock/app\?service=direct&amp;context=ProtectedLink/link&amp;sp=6&amp;sp=1
 		
 		<assert-output name="Link URL">
 <![CDATA[
-href="/mock/app\?service=direct&amp;context=Guard/link"
+href="/mock/app?service=direct&amp;context=1/Guard/link"
 ]]>
 		</assert-output>
 		
 		<assert-output name="Callback">
 <![CDATA[
-Callback: DirectCallback\[ProtectedLink/link 6, 13, 1999\]
+Callback: DirectCallback[ProtectedLink/link 6, 13, 1999]
 ]]>		
 		</assert-output>		
   	</request>
@@ -67,7 +67,7 @@ Callback: DirectCallback\[ProtectedLink/link 6, 13, 1999\]
   	     
   	<request>
   		<parameter name="service" value="direct"/>
-  		<parameter name="context" value="Guard/link"/>
+  		<parameter name="context" value="1/Guard/link"/>
   		
   		<assert-output name="Title">
 <![CDATA[
@@ -91,7 +91,7 @@ Callback: DirectCallback\[ProtectedLink/link 6, 13, 1999\]
 		  	
   	<request>
 		<parameter name="service" value="direct"/>
-		<parameter name="context" value="ProtectedLink/link"/>
+		<parameter name="context" value="1/ProtectedLink/link"/>
 		<parameter name="sp">
 			<value>6</value>
 			<value>13</value>

@@ -15,27 +15,25 @@ import net.sf.tapestry.html.BasePage;
 
 public class Guess extends BasePage
 {
-    private HangmanGame game;
-    private String error;
+    private HangmanGame _game;
+    private String _error;
 
-    public void detach()
+    public void initialize()
     {
-        game = null;
-        error = null;
-
-        super.detach();
+        _game = null;
+        _error = null;
     }
 
     public String getError()
     {
-        return error;
+        return _error;
     }
 
     public void makeGuess(IRequestCycle cycle)
     {
         Object[] parameters = cycle.getServiceParameters();
-        char letter = ((Character)parameters[0]).charValue();
-        
+        char letter = ((Character) parameters[0]).charValue();
+
         HangmanGame game = getGame();
 
         try
@@ -44,7 +42,7 @@ public class Guess extends BasePage
         }
         catch (GameException ex)
         {
-            error = ex.getMessage();
+            _error = ex.getMessage();
 
             if (game.getFailed())
                 cycle.setPage("Failed");
@@ -67,12 +65,9 @@ public class Guess extends BasePage
 
     public String getGuessed()
     {
-        StringBuffer buffer;
-        char[] guessed;
+        char[] guessed = getGame().getGuessed();
 
-        guessed = getGame().getGuessed();
-
-        buffer = new StringBuffer(2 * guessed.length);
+        StringBuffer buffer = new StringBuffer(2 * guessed.length);
         for (int i = 0; i < guessed.length; i++)
         {
             if (i > 0)
@@ -91,13 +86,13 @@ public class Guess extends BasePage
 
     private HangmanGame getGame()
     {
-        if (game == null)
+        if (_game == null)
         {
             Visit visit = (Visit) getVisit();
-            game = visit.getGame();
+            _game = visit.getGame();
         }
 
-        return game;
+        return _game;
     }
 
     private Character[] convertCharArray(char[] array)

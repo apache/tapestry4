@@ -402,4 +402,13 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
         return result;
     }
 
+    /** 
+     *  @since 2.4
+     * 
+     **/
+    
+    public void discardFromPool()
+    {
+    }
+
 }

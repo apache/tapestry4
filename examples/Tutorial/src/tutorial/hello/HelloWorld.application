@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id$ -->
-<!DOCTYPE application PUBLIC 
-	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
-	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
-
-<application name="Hello World Tutorial" engine-class="net.sf.tapestry.engine.SimpleEngine">
-  <page name="Home" specification-path="/tutorial/hello/Home.page"/>
-</application>

@@ -28,7 +28,7 @@ public class WorkbenchValidationDelegate extends ValidationDelegate
         {
             writer.print(" ");
             writer.beginEmpty("img");
-            writer.attribute("src", "images/workbench/Warning-small.gif");
+            writer.attribute("src", "images/Warning-small.gif");
             writer.attribute("height", 20);
             writer.attribute("width", 20);
         }

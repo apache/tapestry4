@@ -13,20 +13,15 @@ import net.sf.tapestry.BaseComponent;
 
 public class Border extends BaseComponent
 {
-    private String pageName;
+    private String _pageName;
 
     public void setPageName(String value)
     {
-        pageName = value;
+        _pageName = value;
     }
 
     public String getPageName()
     {
-        return pageName;
-    }
-
-    public boolean getDisablePageLink()
-    {
-        return pageName.equals(getPage().getName());
+        return _pageName;
     }
 }

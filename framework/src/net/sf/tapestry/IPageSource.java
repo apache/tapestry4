@@ -19,8 +19,11 @@ public interface IPageSource
      *  Gets a given page for the engine.  This may involve using a previously
      *  loaded page from a pool of available pages, or the page may be loaded as needed.
      * 
-     *  <p>Incompatible change in 2.2:  First parameter changed from
-     *  {@link IEngine} to {@link IRequestCycle}.
+     *  @param cycle the current request cycle
+     *  @param pageName the name of the page.  May be qualified with a library id prefix, which
+     *  may even be nested. Unqualified names are searched for extensively in the application
+     *  namespace, and then in the framework namespace.
+     *  @param monitor informed of any page loading activity
      *
      **/
 
@@ -48,7 +51,8 @@ public interface IPageSource
      *  and the field).  If no such binding exists, then one is created, otherwise
      *  the existing binding is returned. 
      *
-     * @since 1.0.2
+     *  @since 1.0.2
+     * 
      **/
 
     public IBinding getFieldBinding(String fieldName);
@@ -56,7 +60,8 @@ public interface IPageSource
     /**
      *  Like {@link #getFieldBinding(String)}, except for static bindings.
      *
-     * @since 1.0.2
+     *  @since 1.0.2
+     * 
      **/
 
     public IBinding getStaticBinding(String value);
@@ -77,14 +82,14 @@ public interface IPageSource
      *
      **/
 
-    public IAsset getContextAsset(String assetPath);
-
+    public IAsset getAsset(IResourceLocation location);
+    
     /**
-     *  Gets a cached asset.
-     *
-     *  @since 1.0.2
-     *
+     * 
+     *  @since 2.4
+     * 
      **/
-
-    public IAsset getPrivateAsset(String resourcePath);
+    
+    public IResourceResolver getResourceResolver();
+        
 }

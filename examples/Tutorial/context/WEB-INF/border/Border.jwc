@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.4//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_4.dtd">
+
+<component-specification class="tutorial.border.Border" allow-informal-parameters="no">
+
+  <parameter name="title" java-type="java.lang.String" required="yes"/>
+  
+  <parameter name="pages" required="yes"/>
+  
+  <component id="insertPageTitle" type="Insert">
+    <inherited-binding name="value" parameter-name="title"/>
+  </component>
+
+  <component id="e" type="Foreach">
+    <inherited-binding name="source" parameter-name="pages"/>
+    <binding name="value" expression="pageName"/>
+  </component>
+
+</component-specification>

@@ -86,8 +86,6 @@ public class MultipartDecoder
 
     private void decode(HttpServletRequest request)
     {
-        boolean debug = LOG.isDebugEnabled();
-
         String contentType = request.getContentType();
         int pos = contentType.indexOf(BOUNDARY);
 
@@ -121,7 +119,6 @@ public class MultipartDecoder
         }
         finally
         {
-            //		close(input);
         }
 
     }

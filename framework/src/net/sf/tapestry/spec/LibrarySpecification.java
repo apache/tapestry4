@@ -7,6 +7,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
+import net.sf.tapestry.IResourceLocation;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.util.BasePropertyHolder;
@@ -83,6 +86,13 @@ public class LibrarySpecification extends BasePropertyHolder implements ILibrary
 
     private String _publicId;
 
+    /**
+     *  The location of the specification.
+     * 
+     **/
+
+    private IResourceLocation _specificationLocation;
+
     public String getLibrarySpecificationPath(String id)
     {
         return (String) get(_libraries, id);
@@ -156,6 +166,16 @@ public class LibrarySpecification extends BasePropertyHolder implements ILibrary
         return sortedKeys(_components);
     }
 
+    /**
+     *  @since 2.4
+     * 
+     **/
+    
+   public List getComponentTypes()
+    {
+        return getComponentAliases();
+    }
+    
     public String getServiceClassName(String name)
     {
         return (String) get(_services, name);
@@ -284,15 +304,15 @@ public class LibrarySpecification extends BasePropertyHolder implements ILibrary
      *  for the named extension.
      * 
      **/
-    
+
     public boolean checkExtension(String name)
     {
         if (_extensions == null)
             return false;
-            
+
         return _extensions.containsKey(name);
     }
-    
+
     /**
      *  Returns an instantiated extension.  Extensions are created as needed and
      *  cached for later use.
@@ -304,6 +324,13 @@ public class LibrarySpecification extends BasePropertyHolder implements ILibrary
 
     public synchronized Object getExtension(String name)
     {
+        return getExtension(name, null);
+    }
+
+    /** @since 2.4 **/
+
+    public synchronized Object getExtension(String name, Class typeConstraint)
+    {
         if (_instantiatedExtensions == null)
             _instantiatedExtensions = new HashMap();
 
@@ -314,15 +341,45 @@ public class LibrarySpecification extends BasePropertyHolder implements ILibrary
             ExtensionSpecification spec = getExtensionSpecification(name);
 
             if (spec == null)
-                throw new IllegalArgumentException(
-                    Tapestry.getString("LibrarySpecification.no-such-extension", name));
+                throw new IllegalArgumentException(Tapestry.getString("LibrarySpecification.no-such-extension", name));
 
             result = spec.instantiateExtension(_resolver);
 
             _instantiatedExtensions.put(name, result);
         }
 
+        if (typeConstraint != null)
+            applyTypeConstraint(name, result, typeConstraint);
+
         return result;
+    }
+
+    /**
+     *  Checks that an extension conforms to the supplied type constraint.
+     * 
+     *  @throws IllegalArgumentException if the extension fails the check.
+     * 
+     *  @since 2.4
+     *  
+     **/
+
+    protected void applyTypeConstraint(String name, Object extension, Class typeConstraint)
+    {
+        Class extensionClass = extension.getClass();
+
+        // Can you assign an instance of the extension to a variable
+        // of type typeContraint legally?
+
+        if (typeConstraint.isAssignableFrom(extensionClass))
+            return;
+
+        String key =
+            typeConstraint.isInterface()
+                ? "LibrarySpecification.extension-does-not-implement-interface"
+                : "LibrarySpecification.extension-not-a-subclass";
+
+        throw new IllegalArgumentException(
+            Tapestry.getString(key, name, extensionClass.getName(), typeConstraint.getName()));
     }
 
     /**
@@ -369,7 +426,7 @@ public class LibrarySpecification extends BasePropertyHolder implements ILibrary
      *  @return Map of objects.
      * 
      **/
-    
+
     protected Map getExtensions()
     {
         return _extensions;
@@ -394,7 +451,7 @@ public class LibrarySpecification extends BasePropertyHolder implements ILibrary
      *  @return Map of {@link LibrarySpecification}.
      * 
      **/
-    
+
     protected Map getLibraries()
     {
         return _libraries;
@@ -509,6 +566,54 @@ public class LibrarySpecification extends BasePropertyHolder implements ILibrary
     public void setPublicId(String publicId)
     {
         _publicId = publicId;
+    }
+
+    /** @since 2.4 **/
+
+    public IResourceLocation getSpecificationLocation()
+    {
+        return _specificationLocation;
+    }
+
+    /** @since 2.4 **/
+
+    public void setSpecificationLocation(IResourceLocation specificationLocation)
+    {
+        _specificationLocation = specificationLocation;
+    }
+
+    /** @since 2.4 **/
+
+    public String toString()
+    {
+        ToStringBuilder builder = new ToStringBuilder(this);
+
+        builder.append("components", _components);
+        builder.append("description", _description);
+        builder.append("instantiatedExtensions", _instantiatedExtensions);
+        builder.append("libraries", _libraries);
+        builder.append("pages", _pages);
+        builder.append("publicId", _publicId);
+        builder.append("resolver", _resolver);
+        builder.append("services", _services);
+        builder.append("specificationLocation", _specificationLocation);
+
+        extendDescription(builder);
+
+        return builder.toString();
+    }
+
+    /**
+     *  Does nothing, subclasses may override to add additional
+     *  description.
+     * 
+     *  @see #toString()
+     *  @since 2.4
+     * 
+     **/
+
+    protected void extendDescription(ToStringBuilder builder)
+    {
     }
 
 }

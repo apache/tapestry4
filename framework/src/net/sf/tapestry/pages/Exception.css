@@ -47,6 +47,10 @@ SPAN.exception-header  {
 	color : Red;
 }
 
+SPAN.exception-message {
+	font-weight: bold;
+}
+
 TABLE.request-context-border  {
 	border-width : 1;
 	border-color : Black;

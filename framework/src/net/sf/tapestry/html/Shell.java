@@ -64,7 +64,7 @@ public class Shell extends AbstractComponent
 
             writer.comment("Application: " + page.getEngine().getSpecification().getName());
 
-            writer.comment("Page: " + page.getName());
+            writer.comment("Page: " + page.getPageName());
             writer.comment("Generated: " + new Date());
 
             writer.begin("html");
@@ -124,9 +124,8 @@ public class Shell extends AbstractComponent
         // Here comes the tricky part ... have to assemble a complete URL
         // for the current page.
 
-        RequestContext context = cycle.getRequestContext();
         IEngineService pageService = cycle.getEngine().getService(IEngineService.PAGE_SERVICE);
-        String pageName = getPage().getName();
+        String pageName = getPage().getPageName();
 
         Gesture g = pageService.buildGesture(cycle, null, new String[] { pageName });
 

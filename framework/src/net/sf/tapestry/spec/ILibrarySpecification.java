@@ -3,6 +3,7 @@ package net.sf.tapestry.spec;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.tapestry.IResourceLocation;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.util.IPropertyHolder;
 
@@ -19,7 +20,13 @@ import net.sf.tapestry.util.IPropertyHolder;
 public interface ILibrarySpecification extends IPropertyHolder
 {
 
-
+    /**
+     *  Returns the specification path (within the classpath) for
+     *  an embedded library, or null if
+     *  no such library has been defined.
+     * 
+     **/
+    
     public String getLibrarySpecificationPath(String id);
 
     /**
@@ -32,22 +39,59 @@ public interface ILibrarySpecification extends IPropertyHolder
 
     public void setLibrarySpecificationPath(String id, String path);
 
+    /**
+     *  Returns a sorted list of library ids (or the empty list, but not null).
+     * 
+     **/
+    
     public List getLibraryIds();
     
     public String getPageSpecificationPath(String name);
 
     public void setPageSpecificationPath(String name, String path);
 
+    /**
+     *  Returns a sorted list of page names explicitly defined by this library,
+     *  or an empty list (but not null).
+     * 
+     **/
+    
     public List getPageNames();
     
-    public void setComponentSpecificationPath(String alias, String path);
+    public void setComponentSpecificationPath(String type, String path);
 
-    public String getComponentSpecificationPath(String alias);
+    public String getComponentSpecificationPath(String type);
 
+    /**
+     *  Returns the simple types ('alias' is an archaic term) of
+     *  all components defined in this library.
+     * 
+     *  @deprecated To be removed after release 2.4, use
+     *  {@link #getComponentTypes()} instead.
+     * 
+     **/
+    
     public List getComponentAliases();
 
+    /**
+     *  Returns the simple types of all components defined in
+     *  this library.  Returns a list of strings in sorted order,
+     *  or an empty list (but not null).
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public List getComponentTypes();
+    
     public String getServiceClassName(String name);
 
+    /**
+     *  Returns a sorted list of service names (or an empty list, but
+     *  not null).
+     * 
+     **/
+    
     public List getServiceNames();
 
     public void setServiceClassName(String name, String className);
@@ -115,6 +159,20 @@ public interface ILibrarySpecification extends IPropertyHolder
     public Object getExtension(String name);
 
     /**
+     *  Returns an instantiated extension, performing a check to ensure
+     *  that the extension is a subtype of the given class (or extends the given
+     *  interface).
+     * 
+     *  @throws IllegalArgumentException if no extension specification exists for
+     *  the given name, or if the extension fails the type check.
+     * 
+     *  @since 2.4
+     * 
+     **/
+    
+    public Object getExtension(String name, Class typeConstraint);
+
+    /**
      *  Returns true if the named extension exists (or can be instantiated),
      *  returns false if the named extension has no specification.
      * 
@@ -138,4 +196,16 @@ public interface ILibrarySpecification extends IPropertyHolder
     
     public void setPublicId(String value);
 
+    /**
+     *  Returns the location from which the specification was read.
+     * 
+     *  @since 2.4
+     * 
+     **/
+    
+    public IResourceLocation getSpecificationLocation();
+    
+    /** @since 2.4 **/
+    
+    public void setSpecificationLocation(IResourceLocation specificationLocation);    
 }

@@ -7,6 +7,8 @@ import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import junit.framework.TestCase;
+
+import net.sf.tapestry.junit.TapestryTestCase;
 import net.sf.tapestry.valid.DateValidator;
 import net.sf.tapestry.valid.ValidationConstraint;
 import net.sf.tapestry.valid.ValidatorException;
@@ -21,7 +23,7 @@ import net.sf.tapestry.valid.ValidatorException;
  *
  **/
 
-public class TestDateValidator extends TestCase
+public class TestDateValidator extends TapestryTestCase
 {
     private Calendar calendar = new GregorianCalendar();
 
@@ -59,6 +61,9 @@ public class TestDateValidator extends TestCase
 
     public void testToStringFormat()
     {
+        if (IS_JDK13)
+            return;
+            
         DateFormat format = DateFormat.getDateInstance(DateFormat.SHORT, Locale.GERMAN);
 
         v.setFormat(format);
@@ -98,9 +103,14 @@ public class TestDateValidator extends TestCase
 
     public void testToObjectFormat() throws ValidatorException
     {
+        if (IS_JDK13)
+            return;
+            
         DateFormat format = DateFormat.getDateInstance(DateFormat.SHORT, Locale.GERMAN);
 
         v.setFormat(format);
+
+        // Again, adjust for missing German localization in JDK 1.3
 
         Object out = v.toObject(null, "08.12.01");
 
@@ -114,7 +124,7 @@ public class TestDateValidator extends TestCase
         try
         {
             v.toObject(new TestingField("toObjectMinimum"), "12/8/2001");
-            fail("Exception expected.");
+            unreachable();
         }
         catch (ValidatorException ex)
         {

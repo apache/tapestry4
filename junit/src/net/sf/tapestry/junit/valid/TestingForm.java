@@ -55,7 +55,7 @@ public class TestingForm implements IForm
         return null;
     }
 
-    public String getElementId(String baseId)
+    public String getElementId(IComponent component, String baseId)
     {
         return null;
     }

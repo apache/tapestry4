@@ -77,6 +77,19 @@ public class SpecFactory
     {
         return new BindingSpecification(type, value);
     }
+    
+    /**
+     *  Creates a new instance of {@link ListenerBindingSpecification} for the
+     *  given language (which is option) and script.
+     * 
+     *  @since 2.4
+     * 
+     **/
+    
+    public ListenerBindingSpecification createListenerBindingSpecification(String language, String script)
+    {
+        return new ListenerBindingSpecification(language, script);
+    }
 
     /**
      * Creates a concrete instance of {@link ComponentSpecification}.

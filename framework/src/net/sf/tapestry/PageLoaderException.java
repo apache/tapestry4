@@ -11,9 +11,16 @@ package net.sf.tapestry;
 
 public class PageLoaderException extends Exception
 {
-    private Throwable rootCause;
-    private String pageName;
-    private transient IComponent component;
+    private Throwable _rootCause;
+    private String _pageName;
+    private transient IComponent _component;
+
+    /** @since 2.4 **/
+    
+    public PageLoaderException(String message)
+    {
+        this(message, (IComponent)null, null);
+    }
 
     /**
      * @since 0.2.12
@@ -34,15 +41,15 @@ public class PageLoaderException extends Exception
     {
         super(message);
 
-        this.rootCause = rootCause;
-        this.component = component;
+        _rootCause = rootCause;
+        _component = component;
 
         if (component != null)
         {
             IPage page = component.getPage();
 
             if (page != null)
-                pageName = page.getName();
+                _pageName = page.getPageName();
         }
 
     }
@@ -66,21 +73,21 @@ public class PageLoaderException extends Exception
     {
         this(message, (IComponent) null, rootCause);
 
-        this.pageName = pageName;
+        _pageName = pageName;
     }
 
     public IComponent getComponent()
     {
-        return component;
+        return _component;
     }
 
     public String getPageName()
     {
-        return pageName;
+        return _pageName;
     }
 
     public Throwable getRootCause()
     {
-        return rootCause;
+        return _rootCause;
     }
 }

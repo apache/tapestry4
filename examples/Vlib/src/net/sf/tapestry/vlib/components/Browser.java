@@ -48,18 +48,6 @@ public class Browser extends BaseComponent implements PageDetachListener
     private static int pageSize = DEFAULT_PAGE_SIZE;
 
     /**
-     *  Register this component as a {@link PageDetachListener}.
-     *
-     *  @since 1.0.5
-     *
-     **/
-
-    protected void finishLoad()
-    {
-        getPage().addPageDetachListener(this);
-    }
-
-    /**
      * Clear out cached values at the end of the request cycle.
      *
      *  @since 1.0.5

@@ -33,4 +33,21 @@ public interface IPageLoader
 	 **/
 
 	public ITemplateSource getTemplateSource();
+    
+    /**
+     *  Invoked to create an implicit component (one which is defined in the
+     *  containing component's template, rather that in the containing component's
+     *  specification).
+     * 
+     *  @see net.sf.tapestry.BaseComponentTemplateLoader
+     *  @since 2.4
+     * 
+     **/
+
+    public IComponent createImplicitComponent(
+        IRequestCycle cycle,
+        IComponent container,
+        String componentId,
+        String componentType)
+        throws PageLoaderException;    
 }

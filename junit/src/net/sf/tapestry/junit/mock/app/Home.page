@@ -13,7 +13,6 @@
   <component id="link" type="DirectLink">
     <binding name="listener" expression="listeners.linkClicked"/>
   	<binding name="parameters" expression="{2, 3.5, &quot;Hello&quot; }"/>
-  	<binding name="stateful" expression="false"/>
   </component>
   
 </page-specification>	

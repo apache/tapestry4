@@ -15,6 +15,7 @@
     <pathelement location="${lib.ext.dir}/javax.xml.jaxp.jar"/>
     <pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
     <pathelement location="${lib.ext.dir}/${ognl.jar}"/>
+    <pathelement location="${lib.ext.dir}/${bsf.jar}"/>    
     <pathelement location="${framework.jar}"/>
     <pathelement location="${contrib.jar}"/>
     <pathelement location="${vlibbeans.jar}"/>
@@ -39,14 +40,18 @@
   </target>
     
   <target name="install" depends="compile" description="Compile all classes and build the installed WAR including all package resources.">
-    <war warfile="${vlib.war}" webxml="WEB-INF/web.xml">
-      <fileset dir=".">
-        <include name="*.html"/>
-        <include name="images/**"/>
-        <include name="scripts/**"/>
-     </fileset>
+    <war warfile="${vlib.war}" webxml="context/WEB-INF/web.xml">
+      <fileset dir="context">
+        <exclude name="WEB-INF/web.xml"/>
+      </fileset>
+     
+      <!-- <webinf dir="context/WEB-INF"/> -->
      
       <classes dir="${classes.dir}"/>
+      
+      <!-- Pick up a few non-class resources from source directory.
+      	   This includes a few specifications, scripts, and such.  -->
+      	   
       <classes dir="${src.dir}">
         <exclude name="**/*.java"/>
         <exclude name="**/package.html"/>

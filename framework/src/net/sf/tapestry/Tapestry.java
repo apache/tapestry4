@@ -15,6 +15,9 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+import javax.servlet.ServletContext;
+
+import net.sf.tapestry.resource.ContextResourceLocation;
 import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.util.AdaptorRegistry;
 import net.sf.tapestry.util.StringSplitter;
@@ -287,7 +290,7 @@ public final class Tapestry
      *		<td>True if contains any non-whitespace characters, false otherwise.</td>
      *		</tr>
      *	<tr>
-     *		<td>Any array type</td>
+     *		<td>Any Object array type</td>
      *		<td>True if contains any elements (non-zero length), false otherwise.</td>
      *	<tr>
      *</table>
@@ -559,7 +562,31 @@ public final class Tapestry
 
         return array.length;
     }
-    
+
+    /**
+     *  Returns true if the Map is null or empty.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public static boolean isEmpty(Map map)
+    {
+        return map == null || map.isEmpty();
+    }
+
+    /**
+     *  Returns true if the Collection is null or empty.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public static boolean isEmpty(Collection c)
+    {
+        return c == null || c.isEmpty();
+    }
+
     /**
      *  Converts a {@link Map} to an even-sized array of key/value
      *  pairs.  This may be useful when using a Map as service parameters
@@ -574,29 +601,29 @@ public final class Tapestry
      * 
      *  @since 2.2
      **/
-    
+
     public static Object[] convertMapToArray(Map map)
     {
-        if (map == null || map.isEmpty())
+        if (isEmpty(map))
             return null;
-            
+
         Set entries = map.entrySet();
-        
+
         Object[] result = new Object[2 * entries.size()];
         int x = 0;
-        
+
         Iterator i = entries.iterator();
         while (i.hasNext())
         {
-            Map.Entry entry = (Map.Entry)i.next();
-            
+            Map.Entry entry = (Map.Entry) i.next();
+
             result[x++] = entry.getKey();
             result[x++] = entry.getValue();
         }
-        
+
         return result;
     }
-    
+
     /**
      *  Converts an even-sized array of objects back 
      *  into a {@link Map}.
@@ -606,27 +633,47 @@ public final class Tapestry
      *  @since 2.2
      * 
      **/
-    
+
     public static Map convertArrayToMap(Object[] array)
     {
         if (array == null || array.length == 0)
             return null;
-            
-         if (array.length % 2 != 0)
-         throw new IllegalArgumentException(
-         getString("Tapestry.even-sized-array"));
-         
-         Map result = new HashMap();
-         
-         int x = 0;
-         while (x < array.length)
-         {
+
+        if (array.length % 2 != 0)
+            throw new IllegalArgumentException(getString("Tapestry.even-sized-array"));
+
+        Map result = new HashMap();
+
+        int x = 0;
+        while (x < array.length)
+        {
             Object key = array[x++];
             Object value = array[x++];
-            
+
             result.put(key, value);
-         }
-         
-         return result;    
+        }
+
+        return result;
+    }
+
+    /**
+     *  Returns the application root location, which is in the
+     *  {@link javax.servlet.ServletContext}, based on
+     *  the {@link javax.servlet.http.HttpServletRequest#getServletPath() servlet path}.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public static IResourceLocation getApplicationRootLocation(IRequestCycle cycle)
+    {
+        RequestContext context = cycle.getRequestContext();
+        ServletContext servletContext = context.getServlet().getServletContext();
+        String servletPath = context.getRequest().getServletPath();
+
+        // Could strip off the servlet name (i.e., "app" in "/app") but
+        // there's no need.
+
+        return new ContextResourceLocation(servletContext, servletPath);
     }
 }

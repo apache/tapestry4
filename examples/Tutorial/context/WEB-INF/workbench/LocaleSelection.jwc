@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.4//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_4.dtd">
+	
+<component-specification class="tutorial.workbench.table.LocaleSelection" 
+	allow-body="no" allow-informal-parameters="yes">
+
+	<component id="condTable" type="Conditional">
+		<binding name="condition" expression="dataModel.rowCount > 0"/>
+	</component>
+
+	<component id="table" type="contrib:Table">
+		<binding name="tableModel" expression="initialTableModel"/>
+		<static-binding name="rowsClass" value="tableRowsClass"/>
+	</component>
+
+	<component id="directDelete" type="DirectLink">
+		<binding name="listener" expression="listeners.deleteLocale"/>
+		<binding name="parameters" expression="currentLocale"/>
+	</component>
+  
+	<component id="verbosity" type="Any">
+		<static-binding name="element">td</static-binding>
+		<binding name="style" expression="&#34;background-color:blue; width:&#34;+(currentLocaleVerbosity/2)"/>
+	</component>
+	
+  
+</component-specification>

@@ -64,7 +64,7 @@ public class DirectCallback implements ICallback
 
     public DirectCallback(IDirect component, Object[] parameters)
     {
-        _pageName = component.getPage().getName();
+        _pageName = component.getPage().getPageName();
         _componentIdPath = component.getIdPath();
         _parameters = parameters;
     }

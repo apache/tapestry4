@@ -30,10 +30,24 @@ import net.sf.tapestry.Tapestry;
 
 public class DirectService extends AbstractService
 {
+    /**
+     *  Encoded into URL if engine was stateful.
+     * 
+     *  @since 2.4
+     **/
+
+    private static final String STATEFUL_ON = "1";
+
+    /**
+     *  Encoded into URL if engine was not stateful.
+     * 
+     *  @since 2.4
+     **/
+
+    private static final String STATEFUL_OFF = "0";
 
     public Gesture buildGesture(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
-        String[] context;
 
         // New since 1.0.1, we use the component to determine
         // the page, not the cycle.  Through the use of tricky
@@ -47,19 +61,21 @@ public class DirectService extends AbstractService
         IPage renderPage = cycle.getPage();
         IPage componentPage = component.getPage();
 
-        if (renderPage == componentPage)
-        {
-            context = new String[2];
-            context[0] = componentPage.getName();
-            context[1] = component.getIdPath();
-        }
-        else
-        {
-            context = new String[3];
-            context[0] = renderPage.getName();
-            context[1] = componentPage.getName();
-            context[2] = component.getIdPath();
-        }
+        boolean complex = renderPage != componentPage;
+
+        String[] context = complex ? new String[4] : new String[3];
+
+        int i = 0;
+
+        String stateful = cycle.getEngine().isStateful() ? STATEFUL_ON : STATEFUL_OFF;
+
+        context[i++] = stateful;
+
+        if (complex)
+            context[i++] = renderPage.getPageName();
+
+        context[i++] = componentPage.getPageName();
+        context[i++] = component.getIdPath();
 
         return assembleGesture(cycle, DIRECT_SERVICE, context, parameters, true);
     }
@@ -77,17 +93,19 @@ public class DirectService extends AbstractService
         if (serviceContext != null)
             count = serviceContext.length;
 
-        if (count != 2 && count != 3)
-            throw new ApplicationRuntimeException(
-                Tapestry.getString("AbstractEngine.direct-context-parameters"));
+        if (count != 3 && count != 4)
+            throw new ApplicationRuntimeException(Tapestry.getString("DirectService.context-parameters"));
+
+        boolean complex = count == 4;
 
         int i = 0;
+        String stateful = serviceContext[i++];
         String pageName = serviceContext[i++];
 
-        if (count == 2)
-            componentPageName = pageName;
-        else
+        if (complex)
             componentPageName = serviceContext[i++];
+        else
+            componentPageName = pageName;
 
         String componentPath = serviceContext[i++];
 
@@ -103,10 +121,10 @@ public class DirectService extends AbstractService
         page.validate(cycle);
         cycle.setPage(page);
 
-        if (count == 2)
-            componentPage = page;
-        else
+        if (complex)
             componentPage = cycle.getPage(componentPageName);
+        else
+            componentPage = page;
 
         IComponent component = componentPage.getNestedComponent(componentPath);
 
@@ -117,21 +135,23 @@ public class DirectService extends AbstractService
         catch (ClassCastException ex)
         {
             throw new RequestCycleException(
-                Tapestry.getString("AbstractEngine.direct-component-wrong-type", component.getExtendedId()),
+                Tapestry.getString("DirectService.component-wrong-type", component.getExtendedId()),
                 component,
                 ex);
         }
 
-        if (direct.isStateful())
+        // Check for a StateSession only the session was stateful when
+        // the Gesture was created.
+
+        if (stateful.equals(STATEFUL_ON) && direct.isStateful())
         {
             HttpSession session = cycle.getRequestContext().getSession();
 
             if (session == null || session.isNew())
                 throw new StaleSessionException(
-                Tapestry.getString("DirectService.stale-session-exception", direct.getExtendedId()),
-                direct.getPage());
+                    Tapestry.getString("DirectService.stale-session-exception", direct.getExtendedId()),
+                    direct.getPage());
         }
-
 
         Object[] parameters = getParameters(cycle);
 

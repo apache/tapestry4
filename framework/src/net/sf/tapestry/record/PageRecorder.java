@@ -1,21 +1,21 @@
 package net.sf.tapestry.record;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.rmi.RemoteException;
 import java.util.Collection;
 import java.util.Iterator;
 
-import javax.ejb.EJBObject;
-import javax.ejb.Handle;
+import javax.servlet.ServletContext;
+
 import net.sf.tapestry.ApplicationRuntimeException;
+import net.sf.tapestry.ApplicationServlet;
 import net.sf.tapestry.IComponent;
 import net.sf.tapestry.IPage;
 import net.sf.tapestry.IPageRecorder;
+import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.PageRecorderCommitException;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.event.ObservedChangeEvent;
+import net.sf.tapestry.spec.IApplicationSpecification;
 import net.sf.tapestry.util.prop.OgnlUtils;
 
 /**
@@ -23,22 +23,22 @@ import net.sf.tapestry.util.prop.OgnlUtils;
  *  request cycles, and restoring the state of a page and component when needed.
  *
  *  <p>This is an abstract implementation; specific implementations can choose where
- * and how to persist the data.
- *
- *  <p>Implements {@link Serializable} but does not have any state of its own.
- *  Subclasses must implement <code>readExternal()</code> and
- *  <code>writeExternal()</code>.
+ *  and how to persist the data.
  *
  * @author Howard Ship
  * @version $Id$
  * 
  **/
 
-public abstract class PageRecorder implements IPageRecorder, Serializable
+public abstract class PageRecorder implements IPageRecorder
 {
-    protected transient boolean dirty = false;
-    protected transient boolean locked = false;
-    protected transient boolean discard = false;
+    public static final String VALUE_PERSISTER_EXTENSION_NAME = "net.sf.tapestry.value-persister";
+
+    private IValuePersister _persister;
+
+    private boolean _dirty = false;
+    private boolean _locked = false;
+    private boolean _discard = false;
 
     /**
      *  Invoked to persist all changes that have been accumulated.  If the recorder
@@ -70,7 +70,7 @@ public abstract class PageRecorder implements IPageRecorder, Serializable
     public boolean isDirty()
     
     {
-        return dirty;
+        return _dirty;
     }
 
     /**
@@ -81,12 +81,12 @@ public abstract class PageRecorder implements IPageRecorder, Serializable
 
     public boolean isLocked()
     {
-        return locked;
+        return _locked;
     }
 
     public void setLocked(boolean value)
     {
-        locked = value;
+        _locked = value;
     }
 
     /**
@@ -109,38 +109,38 @@ public abstract class PageRecorder implements IPageRecorder, Serializable
 
     public void observeChange(ObservedChangeEvent event)
     {
-        IComponent component;
-        String propertyName;
-        Object newValue;
+        IComponent component = event.getComponent();
+        String propertyName = event.getPropertyName();
 
-        component = event.getComponent();
-        propertyName = event.getPropertyName();
-
-        if (locked)
+        if (_locked)
             throw new ApplicationRuntimeException(
                 Tapestry.getString(
                     "PageRecorder.change-after-lock",
-                    component.getPage().getName(),
+                    component.getPage().getPageName(),
                     propertyName,
                     component.getExtendedId()));
 
         if (propertyName == null)
-        {
-            dirty = true;
-            return;
-        }
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("PageRecorder.null-property-name", component.getExtendedId()));
 
-        newValue = event.getNewValue();
+        Object activeValue = event.getNewValue();
 
         try
         {
-            recordChange(component.getIdPath(), propertyName, newValue);
+            Object storableValue = _persister.convertToStorableValue(activeValue);
+
+            recordChange(component.getIdPath(), propertyName, storableValue);
         }
         catch (Throwable t)
         {
             t.printStackTrace();
             throw new ApplicationRuntimeException(
-                Tapestry.getString("PageRecorder.unable-to-persist", propertyName, component.getExtendedId(), newValue),
+                Tapestry.getString(
+                    "PageRecorder.unable-to-persist",
+                    propertyName,
+                    component.getExtendedId(),
+                    activeValue),
                 t);
         }
     }
@@ -175,90 +175,33 @@ public abstract class PageRecorder implements IPageRecorder, Serializable
     public void rollback(IPage page)
     {
         Collection changes = getChanges();
-        
+
         if (changes.isEmpty())
             return;
-            
-        IResourceResolver resolver = page.getEngine().getResourceResolver();            
+
+        IResourceResolver resolver = page.getEngine().getResourceResolver();
         Iterator i = changes.iterator();
 
         while (i.hasNext())
         {
             PageChange change = (PageChange) i.next();
 
-            IComponent component = page.getNestedComponent(change.componentPath);
+            String propertyName = change.getPropertyName();
+
+            IComponent component = page.getNestedComponent(change.getComponentPath());
+
+            Object storedValue = change.getNewValue();
 
             try
             {
+                Object activeValue = _persister.convertToActiveValue(storedValue);
 
-                OgnlUtils.set(change.propertyName, resolver, component, change.newValue);
+                OgnlUtils.set(propertyName, resolver, component, activeValue);
             }
             catch (Throwable t)
             {
-                throw new RollbackException(component, change.propertyName, change.newValue, t);
+                throw new RollbackException(component, propertyName, storedValue, t);
             }
-        }
-    }
-
-    /**
-     *  Invoked by subclasses to converts an object into
-     *  a {@link Serializable} value for for persistent storage.
-     *
-     *  <p>This implementation implements a special case
-     *  for converting an {@link EJBObject} into a {@link Handle}
-     *  for storage.
-     *
-     *  @since 0.2.9
-     **/
-
-    protected Serializable persistValue(Object value) throws IOException
-    {
-        if (!(value instanceof EJBObject))
-        {
-            try
-            {
-                return (Serializable) value;
-            }
-            catch (ClassCastException ex)
-            {
-                throw new PageRecorderSerializationException(ex);
-            }
-        }
-
-        try
-        {
-            EJBObject ejb = (EJBObject) value;
-
-            return ejb.getHandle();
-        }
-        catch (RemoteException ex)
-        {
-            throw new PageRecorderSerializationException(ex);
-        }
-    }
-
-    /**
-     *  Invoked by subclasses to restore a persisted value to its
-     *  runtime value.  This implementation converts {@link Handle}s, stored
-     *  persistently, back into {@link EJBObject}s.
-     *
-     *  @since 0.2.9
-     **/
-
-    protected Object restoreValue(Object value) throws IOException
-    {
-        if (!(value instanceof Handle))
-            return value;
-
-        try
-        {
-            Handle handle = (Handle) value;
-
-            return handle.getEJBObject();
-        }
-        catch (RemoteException ex)
-        {
-            throw new PageRecorderSerializationException(ex);
         }
     }
 
@@ -266,14 +209,62 @@ public abstract class PageRecorder implements IPageRecorder, Serializable
 
     public boolean isMarkedForDiscard()
     {
-        return discard;
+        return _discard;
     }
 
     /** @since 2.0.2 **/
 
     public void markForDiscard()
     {
-        discard = true;
+        _discard = true;
+    }
+
+    protected void setDirty(boolean dirty)
+    {
+        this._dirty = dirty;
+    }
+
+    protected boolean getDirty()
+    {
+        return _dirty;
+    }
+
+    /**
+     *  Finds the {@link net.sf.tapestry.record.IValuePersister} as an
+     *  attribute in the {@link javax.servlet.ServletContext}.  If not
+     *  found it is created.  If an application extension named
+     *  <code>net.sf.tapestry.value-persister</code>
+     *  exists, it is used as the shared persister, otherwise
+     *  an instance of {@link net.sf.tapestry.record.DefaultValuePersister}
+     *  is created.  Subclasses may override this method, but must
+     *  invoke this implementation.
+     * 
+     **/
+
+    public void initialize(String pageName, IRequestCycle cycle)
+    {
+        ApplicationServlet servlet = cycle.getRequestContext().getServlet();
+        String servletName = servlet.getServletName();
+
+        ServletContext context = servlet.getServletContext();
+
+        String name = VALUE_PERSISTER_EXTENSION_NAME + "." + servletName;
+
+        _persister = (IValuePersister) context.getAttribute(name);
+
+        if (_persister == null)
+        {
+            IApplicationSpecification spec = cycle.getEngine().getSpecification();
+
+            if (spec.checkExtension(VALUE_PERSISTER_EXTENSION_NAME))
+                _persister = (IValuePersister) spec.getExtension(VALUE_PERSISTER_EXTENSION_NAME, IValuePersister.class);
+            else
+                _persister = new DefaultValuePersister();
+
+            _persister.initialize(cycle);
+            
+            context.setAttribute(name, _persister);
+        }
     }
 
 }

@@ -10,15 +10,15 @@ import junit.framework.TestCase;
 import net.sf.tapestry.DefaultResourceResolver;
 import net.sf.tapestry.IComponentStringsSource;
 import net.sf.tapestry.IPage;
+import net.sf.tapestry.IResourceLocation;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.engine.DefaultStringsSource;
 import net.sf.tapestry.parse.SpecificationParser;
-import net.sf.tapestry.spec.ApplicationSpecification;
+import net.sf.tapestry.resource.ClasspathResourceLocation;
 import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.spec.IApplicationSpecification;
 import net.sf.tapestry.spec.ILibrarySpecification;
-import net.sf.tapestry.spec.LibrarySpecification;
 import net.sf.tapestry.util.IPropertyHolder;
 
 /**
@@ -32,8 +32,10 @@ import net.sf.tapestry.util.IPropertyHolder;
 
 public class TapestryTestCase extends TestCase
 {
+    protected static final boolean IS_JDK13 = System.getProperty("java.specification.version").equals("1.3");
+
     private IResourceResolver _resolver = new DefaultResourceResolver();
-    
+
     public TapestryTestCase(String name)
     {
         super(name);
@@ -41,7 +43,9 @@ public class TapestryTestCase extends TestCase
 
     protected IPage createPage(String specificationPath, Locale locale)
     {
-        IComponentStringsSource source = new DefaultStringsSource(_resolver);
+        IResourceLocation location = new ClasspathResourceLocation(_resolver, specificationPath);
+
+        IComponentStringsSource source = new DefaultStringsSource();
         MockEngine engine = new MockEngine();
         engine.setComponentStringsSource(source);
 
@@ -50,7 +54,7 @@ public class TapestryTestCase extends TestCase
         result.setLocale(locale);
 
         ComponentSpecification spec = new ComponentSpecification();
-        spec.setSpecificationResourcePath(specificationPath);
+        spec.setSpecificationLocation(location);
         result.setSpecification(spec);
 
         return result;
@@ -60,50 +64,63 @@ public class TapestryTestCase extends TestCase
     {
         SpecificationParser parser = new SpecificationParser();
 
-        InputStream input = getClass().getResourceAsStream(simpleName);
+        IResourceLocation location = getSpecificationResourceLocation(simpleName);
 
-        return parser.parseComponentSpecification(input, simpleName);
+        return parser.parseComponentSpecification(location);
     }
 
+    protected ComponentSpecification parsePage(String simpleName) throws Exception
+    {
+        SpecificationParser parser = new SpecificationParser();
+
+        IResourceLocation location = getSpecificationResourceLocation(simpleName);
+
+        return parser.parsePageSpecification(location);
+    }
 
     protected IApplicationSpecification parseApp(String simpleName) throws Exception
     {
         SpecificationParser parser = new SpecificationParser();
 
-        InputStream input = getClass().getResourceAsStream(simpleName);
+        IResourceLocation location = getSpecificationResourceLocation(simpleName);
 
-        return parser.parseApplicationSpecification(input, simpleName, _resolver);
+        return parser.parseApplicationSpecification(location, _resolver);
     }
-    
+
+    protected IResourceLocation getSpecificationResourceLocation(String simpleName)
+    {
+        String adjustedClassName = "/" + getClass().getName().replace('.', '/') + ".class";
+
+        IResourceLocation classResourceLocation = new ClasspathResourceLocation(_resolver, adjustedClassName);
+
+        IResourceLocation appSpecLocation = classResourceLocation.getRelativeLocation(simpleName);
+        return appSpecLocation;
+    }
+
     protected ILibrarySpecification parseLib(String simpleName) throws Exception
     {
         SpecificationParser parser = new SpecificationParser();
 
-        InputStream input = getClass().getResourceAsStream(simpleName);
+        IResourceLocation location = getSpecificationResourceLocation(simpleName);
 
-        return parser.parseLibrarySpecification(input, simpleName, _resolver);
+        return parser.parseLibrarySpecification(location, _resolver);
     }
-        
-
 
     protected void checkList(String propertyName, String[] expected, List actual)
     {
         int count = Tapestry.size(actual);
-        
+
         assertEquals(propertyName + " element count", expected.length, count);
-        
+
         for (int i = 0; i < count; i++)
         {
             assertEquals("propertyName[" + i + "]", expected[i], actual.get(i));
-        }                  
+        }
     }
-
 
     protected void checkProperty(IPropertyHolder h, String propertyName, String expectedValue)
     {
-        assertEquals("Property " + propertyName + ".",
-            expectedValue,
-            h.getProperty(propertyName));
+        assertEquals("Property " + propertyName + ".", expectedValue, h.getProperty(propertyName));
     }
 
     protected void checkException(Throwable ex, String string)
@@ -114,4 +131,8 @@ public class TapestryTestCase extends TestCase
         throw new AssertionFailedError("Exception " + ex + " does not contain sub-string '" + string + "'.");
     }
 
+    protected void unreachable()
+    {
+        throw new AssertionFailedError("This code should be unreachable.");
+    }
 }

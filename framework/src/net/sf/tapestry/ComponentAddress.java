@@ -52,7 +52,7 @@ public class ComponentAddress implements Serializable
 	{
 		IPage objPage = objComponent.getPage();
 
-		m_strPageName = objPage.getQualifiedName();
+		m_strPageName = objPage.getPageName();
 		m_strIdPath = objComponent.getIdPath();
 	}
 

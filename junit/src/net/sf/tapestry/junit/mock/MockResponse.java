@@ -3,7 +3,7 @@ package net.sf.tapestry.junit.mock;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Locale;
+import java.util.*;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
@@ -25,8 +25,7 @@ public class MockResponse implements HttpServletResponse
     private boolean _commited = false;
     private ByteArrayOutputStream _outputByteStream;
     private ServletOutputStream _outputStream;
-    
-
+    private List _cookies = new ArrayList();
 
     private class ServletOutputStreamImpl extends ServletOutputStream
     {
@@ -78,8 +77,9 @@ public class MockResponse implements HttpServletResponse
         _request = request;
     }
 
-    public void addCookie(Cookie arg0)
+    public void addCookie(Cookie cookie)
     {
+        _cookies.add(cookie);
     }
 
     public boolean containsHeader(String arg0)
@@ -166,10 +166,10 @@ public class MockResponse implements HttpServletResponse
     {
         if (_outputStream != null)
             throw new IllegalStateException("getOutputStream() invoked more than once.");
-            
-            _outputStream =  new ServletOutputStreamImpl();
-            
-            return _outputStream;
+
+        _outputStream = new ServletOutputStreamImpl();
+
+        return _outputStream;
     }
 
     public PrintWriter getWriter() throws IOException
@@ -225,19 +225,24 @@ public class MockResponse implements HttpServletResponse
      *  the test is complete, to close and otherwise finish up.
      * 
      **/
-    
+
     public void end() throws IOException
     {
         _outputStream.close();
     }
-    
+
     /**
      *  Converts the binary output stream back into a String.
      * 
      **/
-    
+
     public String getOutputString()
     {
         return _outputByteStream.toString();
+    }
+
+    public Cookie[] getCookies()
+    {
+        return (Cookie[]) _cookies.toArray(new Cookie[_cookies.size()]);
     }
 }

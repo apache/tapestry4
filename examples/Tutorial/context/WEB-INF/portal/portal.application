@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!--$Id$-->
+<!DOCTYPE application PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.4//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_4.dtd">
+
+<application name="Portal Tutorial">
+
+  <property name="net.sf.tapestry.visit-class" value="tutorial.portal.Visit"/>
+  
+  <library id="contrib" specification-path="/net/sf/tapestry/contrib/Contrib.library"/>
+ 
+</application>

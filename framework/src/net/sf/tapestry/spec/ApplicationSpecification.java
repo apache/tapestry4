@@ -10,6 +10,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
 import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.util.BasePropertyHolder;
@@ -49,9 +51,12 @@ public class ApplicationSpecification extends LibrarySpecification implements IA
         _name = name;
     }
 
-    public String toString()
+
+
+    protected void extendDescription(ToStringBuilder builder)
     {
-        return "ApplicationSpecification[" + _name + " " + _engineClassName + "]";
+       builder.append("name", _name);
+       builder.append("engineClassName", _engineClassName);
     }
 
 }

@@ -3,9 +3,7 @@ package tutorial.portal;
 import net.sf.tapestry.BaseComponent;
 import net.sf.tapestry.IActionListener;
 import net.sf.tapestry.IAsset;
-import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IComponent;
-import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.components.Block;
@@ -21,77 +19,46 @@ import net.sf.tapestry.components.Block;
 
 public class Portlet extends BaseComponent
 {
-    private IBinding modelBinding;
-    private PortletModel model;
-
-    public IBinding getModelBinding()
-    {
-        return modelBinding;
-    }
-
-    public void setModelBinding(IBinding value)
-    {
-        modelBinding = value;
-    }
-
-    public Object getModel()
-    {
-        return model;
-    }
-
-	// Simplify for new scheme
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
-    {
-        try
-        {
-            model = (PortletModel) modelBinding.getObject("model", PortletModel.class);
-
-            super.renderComponent(writer, cycle);
-        }
-        finally
-        {
-            model = null;
-        }
-    }
+    private PortletModel _model;
 
     public IAsset getChangeStateImage()
     {
-        return getAsset(model.isExpanded() ? "minimize" : "maximize");
+        return getAsset(_model.isExpanded() ? "minimize" : "maximize");
     }
 
     public IAsset getChangeStateFocus()
     {
-        return getAsset(model.isExpanded() ? "minimizeFocus" : "maximizeFocus");
+        return getAsset(_model.isExpanded() ? "minimizeFocus" : "maximizeFocus");
     }
 
     public String getChangeStateLabel()
     {
-        return model.isExpanded() ? "[Minimize]" : "[Maximize]";
+        return _model.isExpanded() ? "[Minimize]" : "[Maximize]";
     }
 
     public Block getBodyBlock()
     {
-        if (model.isExpanded())
-            return model.getBodyBlock(getPage().getRequestCycle());
+        if (_model.isExpanded())
+            return _model.getBodyBlock(getPage().getRequestCycle());
 
         // If minimized, return null to prevent any display.
 
         return null;
     }
 
-    private void changeState()
+    public void changeState(IRequestCycle cycle)
     {
-        model.toggleExpanded();
+        _model.toggleExpanded();        
     }
 
-    public IActionListener getChangeStateListener()
+    public PortletModel getModel()
     {
-        return new IActionListener()
-        {
-            public void actionTriggered(IComponent component, IRequestCycle cycle) throws RequestCycleException
-            {
-                changeState();
-            }
-        };
+        return _model;
     }
+
+    public void setModel(PortletModel model)
+    {
+        _model = model;
+    }
+
 }

@@ -18,8 +18,9 @@
     <pathelement location="${lib.ext.dir}/${jfreechart.jar}"/>
     <pathelement location="${lib.ext.dir}/${jakarta-oro.jar}"/>
     <pathelement location="${lib.ext.dir}/${ognl.jar}"/>
+    <pathelement location="${lib.ext.dir}/${bsf.jar}"/>
     <pathelement location="${framework.jar}"/>
-    <pathelement location="${contrib.jar}"/>    
+    <pathelement location="${contrib.jar}"/>   
   </path>
   
   <target name="init">
@@ -38,16 +39,12 @@
   
   
   <target name="install" depends="compile" description="Compile all classes and build the installed WAR.">
-     <war warfile="${tutorial.war}" webxml="WEB-INF/web.xml">
+     <war warfile="${tutorial.war}" webxml="context/WEB-INF/web.xml">
 
-      <fileset dir=".">
-        <include name="images/**"/>
-        <include name="css/**"/>
-        <include name="*.html"/>
-        <!-- These are left around by Paint Shop Pro -->
-        <exclude name="**/pspbrwse.jbf"/>
+      <fileset dir="context">
+        <exclude name="WEB-INF/web.xml"/>
       </fileset>
-
+      
 	  <lib dir="${lib.ext.dir}">
 	   	<include name="${jcommon.jar}"/>
 	   	<include name="${jfreechart.jar}"/>

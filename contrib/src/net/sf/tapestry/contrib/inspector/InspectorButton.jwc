@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification 
+      PUBLIC "-//Howard Lewis Ship//Tapestry Specification 1.3//EN"
+      "http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+
+<component-specification class="net.sf.tapestry.contrib.inspector.InspectorButton" 
+	allow-body="no" 
+	allow-informal-parameters="no">
+
+    <description>
+<![CDATA[
+Includes the Inspector button on the page (which dynamically positions itself in the
+lower right corner).  Clicking the button raises the Tapestry Inspector in a pop-up
+window.
+]]>
+    </description>
+
+  <parameter name="disabled" java-type="boolean" direction="in"/>
+
+    <component id="link" type="GenericLink">
+        <static-binding name="href">javascript:ti_raiseInspector();</static-binding>
+    </component>
+
+    <component id="rollover" type="Rollover">
+    	<binding name="image" expression="assets.logo"/>
+    	<binding name="focus" expression="assets.inspector"/>
+    </component>
+
+    <private-asset name="logo" resource-path="/net/sf/tapestry/contrib/inspector/tapestry-logo.gif"/>
+    <private-asset name="inspector" resource-path="/net/sf/tapestry/contrib/inspector/inspector-rollover.gif"/>
+</component-specification>

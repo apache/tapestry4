@@ -2,6 +2,9 @@ package net.sf.tapestry.record;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 /**
  *  Used to identify a property change.
  *
@@ -12,91 +15,66 @@ import java.io.Serializable;
 
 public class ChangeKey
 {
-    String componentPath;
-    String propertyName;
+    private int _hashCode = -1;
+    private String _componentPath;
+    private String _propertyName;
 
     public ChangeKey(String componentPath, String propertyName)
     {
-        this.componentPath = componentPath;
-        this.propertyName = propertyName;
+        _componentPath = componentPath;
+        _propertyName = propertyName;
     }
 
     public boolean equals(Object object)
     {
-        boolean propertyNameIdentical;
-        boolean componentPathIdentical;
-
         if (object == null)
             return false;
 
         if (this == object)
             return true;
 
-        try
-        {
-            ChangeKey other = (ChangeKey) object;
-
-            propertyNameIdentical = propertyName == other.propertyName;
-            componentPathIdentical = componentPath == other.componentPath;
-
-            if (propertyNameIdentical && componentPathIdentical)
-                return true;
-
-            // If not identical, then see if equal. If not equal, then
-            // we don't equal the other key.
-
-            if (!propertyNameIdentical)
-                if (!propertyName.equals(other.propertyName))
-                    return false;
-
-            // If this far, that propertyName is equal
-
-            if (componentPathIdentical)
-                return true;
-
-            // If one's null and the other isn't then they can't
-            // be equal.
-
-            if (componentPath == null || other.componentPath == null)
-                return false;
-
-            // So it comes down to this ... are the two (non-null)
-            // componentPath's equal?
-
-            return componentPath.equals(other.componentPath);
-        }
-        catch (ClassCastException e)
-        {
+        if (!(object instanceof ChangeKey))
             return false;
-        }
+
+        ChangeKey other = (ChangeKey) object;
+
+        EqualsBuilder builder =new EqualsBuilder();
+        
+        builder.append(_propertyName, other._propertyName);
+        builder.append(_componentPath, other._componentPath);
+        
+        return builder.isEquals();
     }
 
     public String getComponentPath()
     {
-        return componentPath;
+        return _componentPath;
     }
 
     public String getPropertyName()
     {
-        return propertyName;
+        return _propertyName;
     }
 
     /**
      *
-     *  Returns the propertyName's hash code, xor'ed with the
-     *  componentPath hash code (if componentPath is non-null).
+     *  Returns a hash code computed from the
+     *  property name and component path.
      *
      **/
 
     public int hashCode()
     {
-        int result;
+        if (_hashCode == -1)
+        {
+            HashCodeBuilder builder = new HashCodeBuilder(257, 23);  // Random
 
-        result = propertyName.hashCode();
+            builder.append(_propertyName);
+            builder.append(_componentPath);
 
-        if (componentPath != null)
-            result ^= componentPath.hashCode();
+            _hashCode = builder.toHashCode();
+        }
 
-        return result;
+        return _hashCode;
     }
 }

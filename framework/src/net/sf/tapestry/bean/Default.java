@@ -65,4 +65,11 @@ public class Default implements IPoolable
 
         return value;
     }
+    
+    /** @since 2.4 **/
+    
+    public void discardFromPool()
+    {
+    }
+
 }

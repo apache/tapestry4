@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.tapestry.IResourceLocation;
 import net.sf.tapestry.IScript;
 import net.sf.tapestry.ScriptException;
 import net.sf.tapestry.ScriptSession;
@@ -20,29 +21,28 @@ import net.sf.tapestry.ScriptSession;
 
 public class ParsedScript implements IScript
 {
-    private String scriptPath;
+    private IResourceLocation _scriptLocation;
+    private List _tokens = new ArrayList();
 
-    public ParsedScript(String scriptPath)
+    public ParsedScript(IResourceLocation scriptLocation)
     {
-        this.scriptPath = scriptPath;
+        _scriptLocation = scriptLocation;
     }
 
-    public String getScriptPath()
+    public IResourceLocation getScriptLocation()
     {
-        return scriptPath;
+        return _scriptLocation;
     }
-
-    private List tokens = new ArrayList();
 
     public void addToken(IScriptToken token)
     {
-        tokens.add(token);
+        _tokens.add(token);
     }
 
     public ScriptSession execute(Map symbols) throws ScriptException
     {
-        ScriptSession result = new ScriptSession(scriptPath, symbols);
-        Iterator i = tokens.iterator();
+        ScriptSession result = new ScriptSession(_scriptLocation, symbols);
+        Iterator i = _tokens.iterator();
 
         while (i.hasNext())
         {
