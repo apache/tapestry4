@@ -1,6 +1,8 @@
 # $Id$
 
-PACKAGES := com.primix.vlib.ejb
+PACKAGES := \
+	com.primix.vlib.ejb \
+	com.primix.vlib.ejb.impl
 
 PROJECT_NAME := VlibBeans
 

@@ -26,7 +26,7 @@
  *
  */
 
-package com.primix.vlib.ejb;
+package com.primix.vlib.ejb.impl;
 
 import javax.ejb.*;
 import java.rmi.*;
@@ -35,6 +35,7 @@ import javax.naming.*;
 import java.util.*;
 import com.primix.tapestry.util.prop.*;
 import com.primix.tapestry.util.ejb.*;
+import com.primix.vlib.ejb.*;
 
 /**
  *  Provides basic support for the entity context, empty or minimal
