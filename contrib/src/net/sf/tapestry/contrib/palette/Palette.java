@@ -651,7 +651,7 @@ public class Palette extends BaseComponent implements IFormComponent
 		selected.clear();
 
 		RequestContext context = cycle.getRequestContext();
-		String[] values = context.getParameterValues(name);
+		String[] values = context.getParameters(name);
 
 		if (values == null || values.length == 0)
 			return;
