@@ -22,7 +22,7 @@ problems using Team support inside the Eclipse IDE.
 <property name="docbook.dtd.base" value="docbkx412"/>
 
 <!-- Base name for the XSL distribution. -->
-
+<!-- this value is duplicated in ./Readme.html and /ext-dist/README.html -->
 <property name="docbook.xsl.base" value="docbook-xsl-1.62.4"/>
 
 <property name="docbook.dtd.dir" value="../common/${docbook.dtd.base}"/>
