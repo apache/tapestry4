@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="c31" root="context31"/>
+
+  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet"/>
+
+	<request>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Home</title>
+]]>	
+		</assert-output>
+
+		<assert-output name="Hidden">
+<![CDATA[
+<input type="hidden" name="hidden" value="1234567890"/>
+]]>	
+		</assert-output>
+		
+		<assert-output name="HiddenWithID">
+<![CDATA[
+<input type="hidden" name="hiddenWithID" id="0987654321" value="1234567890-with id"/>
+]]>	
+		</assert-output>
+
+		<assert-output name="HiddenWithEncoding">
+<![CDATA[
+<input type="hidden" name="hiddenWithEncoding" value="S1234567890-with encoding"/>
+]]>	
+		</assert-output>
+
+	</request>
+	
+	<request>
+		<parameter name="service" value="direct/0/Home/$Form"/>
+		<parameter name="sp" value="S0"/>
+		<parameter name="hidden" value="updated-1234567890"/>
+		<parameter name="hiddenWithID" value="updated-1234567890-with id"/>
+		<parameter name="hiddenWithEncoding" value="Supdated-1234567890-with encoding"/>
+		<parameter name="hiddenBoolean" value="T"/>
+		<parameter name="Form0" value="hidden,hiddenWithID,hiddenWithEncoding,hiddenBoolean"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Two</title>
+]]>
+		</assert-output>
+			
+		<assert-output name="Value">
+Value: [updated-1234567890]
+		</assert-output>
+		
+		<assert-output name="Hidden">
+HiddenID: [0987654321]
+		</assert-output>
+		
+		<assert-output name="Hidden">
+HiddenWithEncoding: [updated-1234567890-with encoding]
+		</assert-output>
+	</request>
+	
+	<!--request>
+		<parameter name="service" value="direct/0/Home/$Form"/>
+		<parameter name="sp" value="S0"/>
+		<parameter name="hidden" value="updated-1234567890"/>
+		<parameter name="hiddenWithID" value="updated-1234567890-with id"/>
+		<parameter name="hiddenWithEncoding" value="Supdated-1234567890-with encoding"/>
+		<parameter name="hiddenBoolean" value="123"/>
+		<parameter name="Form0" value="hidden,hiddenWithID,hiddenWithEncoding,hiddenBoolean"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Exception</title>
+]]>
+		</assert-output>
+	</request-->
+</mock-test>

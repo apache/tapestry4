@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.junit.mock.c30;
+package org.apache.tapestry.junit.mock.c31;
 
 import org.apache.tapestry.html.BasePage;
 
