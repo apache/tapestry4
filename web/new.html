@@ -17,6 +17,11 @@ Revamp how services construct and parse URLs.  Rework service parameters to
 be typed objects, instead of simply strings (this is a change which
 may break some existing code).
 
+<p>
+A new version of the DTD may now be used which distinguishes between
+page specifications and component specifications (page specifications
+do not specify several attributes and elements related to parameters).
+
 <pre>
 [ 581199 ] Slashes in service parameters
 [ 581160 ] Wrong case in WAR file name
@@ -25,6 +30,7 @@ may break some existing code).
 [ 582614 ] ValidField doesn't call getValidator()
 [ 583665 ] ValidatingTextField specification wrong
 [ 583693 ] Extend Block/InsertBlock
+[ 534055 ] Make page-spec and comp-spec distinct
 </pre>
 
 

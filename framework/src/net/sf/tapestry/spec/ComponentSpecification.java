@@ -66,28 +66,32 @@ import net.sf.tapestry.util.BasePropertyHolder;
 
 public class ComponentSpecification extends BasePropertyHolder
 {
-    private String componentClassName;
+    private String _componentClassName;
+    
+    /**
+     *  @deprecated To be made private in 2.3.  Use {@link #setSpecificationResourcePath(String)}.
+     * 
+     **/
+    
     protected String specificationResourcePath;
-    private String dtdVersion;
+    private String _dtdVersion;
 
     /** @since 1.0.9 **/
-    private String description;
+    private String _description;
 
     /**
      *  Keyed on component id, value is {@link ContainedComponent}.
      *
      **/
 
-    protected Map components;
-
-    private static final int MAP_SIZE = 7;
+    protected Map _components;
 
     /**
      *  Keyed on asset name, value is {@link AssetSpecification}.
      *
      **/
 
-    protected Map assets;
+    protected Map _assets;
 
     /**
      *  Defines all formal parameters.  Keyed on parameter name, value is
@@ -95,7 +99,7 @@ public class ComponentSpecification extends BasePropertyHolder
      *
      **/
 
-    protected Map parameters;
+    protected Map _parameters;
 
     /**
      *  Defines all helper beans.  Keyed on name, value is {@link BeanSpecification}.
@@ -103,7 +107,7 @@ public class ComponentSpecification extends BasePropertyHolder
      *  @since 1.0.4
      **/
 
-    protected Map beans;
+    protected Map _beans;
 
     /**
      *  The names of all reserved informal parameter names (as lower-case).  This
@@ -114,21 +118,40 @@ public class ComponentSpecification extends BasePropertyHolder
      *
      **/
 
-    protected Set reservedParameterNames;
+    protected Set _reservedParameterNames;
 
     /**
      *  Is the component allowed to have a body (that is, wrap other elements?).
      *
      **/
 
-    private boolean allowBody = true;
+    private boolean _allowBody = true;
 
     /**
      *  Is the component allow to have informal parameter specified.
      *
      **/
 
-    private boolean allowInformalParameters = true;
+    private boolean _allowInformalParameters = true;
+    
+    /**
+     *  The XML Public Id used when the page or component specification was read
+     *  (if applicable).
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    private String _publicId;
+    
+    /**
+     *  Indicates that the specification is for a page, not a component.
+     * 
+     * @since 2.2
+     * 
+     **/
+    
+    private boolean _pageSpecification;
 
     /**
      * @throws IllegalArgumentException if the name already exists.
@@ -137,13 +160,14 @@ public class ComponentSpecification extends BasePropertyHolder
 
     public void addAsset(String name, AssetSpecification asset)
     {
-        if (assets == null)
-            assets = new HashMap(MAP_SIZE);
-        else if (assets.containsKey(name))
+        if (_assets == null)
+            _assets = new HashMap();
+            
+        else if (_assets.containsKey(name))
             throw new IllegalArgumentException(
                 Tapestry.getString("ComponentSpecification.duplicate-asset", this, name));
 
-        assets.put(name, asset);
+        _assets.put(name, asset);
     }
 
     /**
@@ -153,13 +177,14 @@ public class ComponentSpecification extends BasePropertyHolder
 
     public void addComponent(String id, ContainedComponent component)
     {
-        if (components == null)
-            components = new HashMap(MAP_SIZE);
-        else if (components.containsKey(id))
+        if (_components == null)
+            _components = new HashMap();
+            
+        else if (_components.containsKey(id))
             throw new IllegalArgumentException(
                 Tapestry.getString("ComponentSpecification.duplicate-component", this, id));
 
-        components.put(id, component);
+        _components.put(id, component);
     }
 
     /**
@@ -170,13 +195,14 @@ public class ComponentSpecification extends BasePropertyHolder
 
     public void addParameter(String name, ParameterSpecification spec)
     {
-        if (parameters == null)
-            parameters = new HashMap(MAP_SIZE);
-        else if (parameters.containsKey(name))
+        if (_parameters == null)
+            _parameters = new HashMap();
+            
+        else if (_parameters.containsKey(name))
             throw new IllegalArgumentException(
                 Tapestry.getString("ComponentSpecification.duplicate-parameter", this, name));
 
-        parameters.put(name, spec);
+        _parameters.put(name, spec);
 
         addReservedParameterName(name);
     }
@@ -191,7 +217,7 @@ public class ComponentSpecification extends BasePropertyHolder
 
     public boolean getAllowBody()
     {
-        return allowBody;
+        return _allowBody;
     }
 
     /**
@@ -208,7 +234,7 @@ public class ComponentSpecification extends BasePropertyHolder
 
     public boolean getAllowInformalParameters()
     {
-        return allowInformalParameters;
+        return _allowInformalParameters;
     }
 
     /**
@@ -220,10 +246,10 @@ public class ComponentSpecification extends BasePropertyHolder
 
     public AssetSpecification getAsset(String name)
     {
-        if (assets == null)
+        if (_assets == null)
             return null;
 
-        return (AssetSpecification) assets.get(name);
+        return (AssetSpecification) _assets.get(name);
     }
 
     /**
@@ -234,10 +260,10 @@ public class ComponentSpecification extends BasePropertyHolder
 
     public Collection getAssetNames()
     {
-        if (assets == null)
+        if (_assets == null)
             return Collections.EMPTY_SET;
 
-        return Collections.unmodifiableCollection(assets.keySet());
+        return Collections.unmodifiableCollection(_assets.keySet());
     }
 
     /**
@@ -250,15 +276,15 @@ public class ComponentSpecification extends BasePropertyHolder
 
     public ContainedComponent getComponent(String id)
     {
-        if (components == null)
+        if (_components == null)
             return null;
 
-        return (ContainedComponent) components.get(id);
+        return (ContainedComponent) _components.get(id);
     }
 
     public String getComponentClassName()
     {
-        return componentClassName;
+        return _componentClassName;
     }
 
     /**
@@ -272,10 +298,10 @@ public class ComponentSpecification extends BasePropertyHolder
 
     public Collection getComponentIds()
     {
-        if (components == null)
+        if (_components == null)
             return Collections.EMPTY_SET;
 
-        return Collections.unmodifiableCollection(components.keySet());
+        return Collections.unmodifiableCollection(_components.keySet());
     }
 
     /**
@@ -288,10 +314,10 @@ public class ComponentSpecification extends BasePropertyHolder
 
     public ParameterSpecification getParameter(String name)
     {
-        if (parameters == null)
+        if (_parameters == null)
             return null;
 
-        return (ParameterSpecification) parameters.get(name);
+        return (ParameterSpecification) _parameters.get(name);
     }
 
     /**
@@ -304,10 +330,10 @@ public class ComponentSpecification extends BasePropertyHolder
 
     public Collection getParameterNames()
     {
-        if (parameters == null)
+        if (_parameters == null)
             return Collections.EMPTY_LIST;
 
-        return Collections.unmodifiableCollection(parameters.keySet());
+        return Collections.unmodifiableCollection(_parameters.keySet());
     }
 
     /**
@@ -323,17 +349,17 @@ public class ComponentSpecification extends BasePropertyHolder
 
     public void setAllowBody(boolean value)
     {
-        allowBody = value;
+        _allowBody = value;
     }
 
     public void setAllowInformalParameters(boolean value)
     {
-        allowInformalParameters = value;
+        _allowInformalParameters = value;
     }
 
     public void setComponentClassName(String value)
     {
-        componentClassName = value;
+        _componentClassName = value;
     }
 
     public void setSpecificationResourcePath(String value)
@@ -349,13 +375,14 @@ public class ComponentSpecification extends BasePropertyHolder
 
     public void addBeanSpecification(String name, BeanSpecification specification)
     {
-        if (beans == null)
-            beans = new HashMap(MAP_SIZE);
-        else if (beans.containsKey(name))
+        if (_beans == null)
+            _beans = new HashMap();
+            
+        else if (_beans.containsKey(name))
             throw new IllegalArgumentException(
                 Tapestry.getString("ComponentSpecification.duplicate-bean", this, name));
 
-        beans.put(name, specification);
+        _beans.put(name, specification);
     }
 
     /**
@@ -368,10 +395,10 @@ public class ComponentSpecification extends BasePropertyHolder
 
     public BeanSpecification getBeanSpecification(String name)
     {
-        if (beans == null)
+        if (_beans == null)
             return null;
 
-        return (BeanSpecification) beans.get(name);
+        return (BeanSpecification) _beans.get(name);
     }
 
     /**
@@ -381,10 +408,10 @@ public class ComponentSpecification extends BasePropertyHolder
 
     public Collection getBeanNames()
     {
-        if (beans == null)
+        if (_beans == null)
             return Collections.EMPTY_LIST;
 
-        return Collections.unmodifiableCollection(beans.keySet());
+        return Collections.unmodifiableCollection(_beans.keySet());
     }
 
     /**
@@ -399,10 +426,10 @@ public class ComponentSpecification extends BasePropertyHolder
 
     public void addReservedParameterName(String value)
     {
-        if (reservedParameterNames == null)
-            reservedParameterNames = new HashSet();
+        if (_reservedParameterNames == null)
+            _reservedParameterNames = new HashSet();
 
-        reservedParameterNames.add(value.toLowerCase());
+        _reservedParameterNames.add(value.toLowerCase());
     }
 
     /**
@@ -418,10 +445,10 @@ public class ComponentSpecification extends BasePropertyHolder
 
     public boolean isReservedParameterName(String value)
     {
-        if (reservedParameterNames == null)
+        if (_reservedParameterNames == null)
             return false;
 
-        return reservedParameterNames.contains(value.toLowerCase());
+        return _reservedParameterNames.contains(value.toLowerCase());
     }
 
     public String toString()
@@ -433,8 +460,8 @@ public class ComponentSpecification extends BasePropertyHolder
 
         if (specificationResourcePath != null)
             buffer.append(specificationResourcePath);
-        else if (componentClassName != null)
-            buffer.append(componentClassName);
+        else if (_componentClassName != null)
+            buffer.append(_componentClassName);
 
         buffer.append(']');
 
@@ -449,7 +476,7 @@ public class ComponentSpecification extends BasePropertyHolder
 
     public String getDescription()
     {
-        return description;
+        return _description;
     }
 
     /**
@@ -460,14 +487,20 @@ public class ComponentSpecification extends BasePropertyHolder
 
     public void setDescription(String description)
     {
-        this.description = description;
+        _description = description;
     }
 
-    /** @since 2.0.5 **/
+    /** 
+     * 
+     *  @deprecated To be removed in 2.3.  Use {@link #getPublicId()}.
+     * 
+     *  @since 2.0.5 
+     * 
+     **/
     
     public String getDTDVersion()
     {
-        return dtdVersion;
+        return _dtdVersion;
     }
 
     /**
@@ -476,12 +509,64 @@ public class ComponentSpecification extends BasePropertyHolder
      *  the Spindle plugin.
      * 
      *  @since 2.0.5
+     *  @deprecated To be removed in 2.3.  Use {@link #setPublicId(String)}.
      * 
      **/
     
     public void setDTDVersion(String dtdVersion)
     {
-        this.dtdVersion = dtdVersion;
+        _dtdVersion = dtdVersion;
+    }
+
+    /**
+     *  Returns the XML Public Id for the specification file, or null
+     *  if not applicable.
+     * 
+     *  <p>
+     *  This method exists as a convienience for the Spindle plugin.
+     *  A previous method used an arbitrary version string, the
+     *  public id is more useful and less ambiguous.
+     *  
+     *  @since 2.2
+     * 
+     **/
+    
+
+    public String getPublicId()
+    {
+        return _publicId;
+    }
+
+    /** @since 2.2 **/
+    
+    public void setPublicId(String publicId)
+    {
+        _publicId = publicId;
+    }
+
+    /** 
+     * 
+     *  Returns true if the specification is known to be a page
+     *  specification and not a component specification.  Earlier versions
+     *  of the framework did not distinguish between the two, but starting
+     *  in 2.2, there are seperate XML entities for pages and components.
+     *  Pages omit several attributes and entities related
+     *  to parameters, as parameters only make sense for components.
+     *  
+     *  @since 2.2 
+     * 
+     **/
+    
+    public boolean isPageSpecification()
+    {
+        return _pageSpecification;
+    }
+
+    /** @since 2.2 **/
+    
+    public void setPageSpecification(boolean pageSpecification)
+    {
+        _pageSpecification = pageSpecification;
     }
 
 }

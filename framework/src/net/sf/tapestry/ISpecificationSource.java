@@ -32,21 +32,58 @@ import net.sf.tapestry.spec.ComponentSpecification;
  *
  *  @see ComponentSpecification
  *
- * @author Howard Lewis Ship
- * @version $Id$
+ *  @author Howard Lewis Ship
+ *  @version $Id$
  * 
  **/
 
 public interface ISpecificationSource
 {
+    
+    /**
+     *  Retrieves a component specification, parsing it as necessary.
+     *  
+     *  @parameter type a component alias, or a full resource path of a
+     *  component specification file.
+     * 
+     *  @throws ResourceUnavailableException if the specification doesn't
+     *  exist, is unreadable or invalid.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public ComponentSpecification getComponentSpecification(String type)
+        throws ResourceUnavailableException;    
+ 
+    /**
+     *  Retrieves a component specification, parsing it as necessary.
+     *  
+     *  @parameter resource path a full resource path of a
+     *  component specification file.
+     * 
+     *  @throws ResourceUnavailableException if the specification doesn't
+     *  exist, is unreadable or invalid.
+     * 
+     *  @since 2.2
+     * 
+     **/
+        
+    public ComponentSpecification getPageSpecification(String resourcePath)
+        throws ResourceUnavailableException; 
+            
 	/**
 	 *  Gets a specification from the cache, possibly parsing it at the same time.
 	 *
 	 *  <p>The type is used to locate the resource that defines the specification.  In
 	 *  practical terms, this is the XML file which contains the specification.
 	 *
-	 * @throws ResourceUnavailableException if the specification cannot be located or loaded.
+	 *  @throws ResourceUnavailableException if the specification cannot be located or loaded.
 	 *
+     *  @deprecated To be removed in 2.3.  
+     *  Use {@link #getComponentSpecification(String)} or {@link #getPageSpecification(String)}
+     *  instead.
+     * 
 	 **/
 
 	public ComponentSpecification getSpecification(String type)

@@ -65,26 +65,31 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
 {
     private static final Category CAT = Category.getInstance(DefaultSpecificationSource.class);
 
-    private IResourceResolver resolver;
-    protected ApplicationSpecification specification;
+    private IResourceResolver _resolver;
+    private ApplicationSpecification _specification;
 
-    private SpecificationParser parser;
-
-    private static final int MAP_SIZE = 23;
+    private SpecificationParser _parser;
 
     /**
-     *  Contains previously parsed specification.
+     *  Contains previously parsed component specifications.
      *
      **/
 
-    protected Map cache;
+    private Map _componentCache = new HashMap();
 
-    public DefaultSpecificationSource(
-        IResourceResolver resolver,
-        ApplicationSpecification specification)
+    /**
+     *  Contains previously parsed page specifications.
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    private Map _pageCache = new HashMap();
+
+    public DefaultSpecificationSource(IResourceResolver resolver, ApplicationSpecification specification)
     {
-        this.resolver = resolver;
-        this.specification = specification;
+        _resolver = resolver;
+        _specification = specification;
     }
 
     /**
@@ -94,7 +99,8 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
 
     public void reset()
     {
-        cache = null;
+        _componentCache.clear();
+        _pageCache.clear();
     }
 
     /**
@@ -107,44 +113,15 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
      *  {@link ApplicationSpecification#getComponentAlias(String)} to
      *  get a resource on the classpath that is parsed.
      *
+     *  @deprecated To be removed in 2.3
      **/
 
-    public synchronized ComponentSpecification getSpecification(String type)
-        throws ResourceUnavailableException
+    public ComponentSpecification getSpecification(String type) throws ResourceUnavailableException
     {
-        ComponentSpecification result = null;
-        String resourceName;
-
-        if (cache != null)
-            result = (ComponentSpecification) cache.get(type);
-
-        if (result == null)
-        {
-            if (type.startsWith("/"))
-                resourceName = type;
-            else
-            {
-                resourceName = specification.getComponentAlias(type);
-
-                if (resourceName == null)
-                    throw new ResourceUnavailableException(
-                        Tapestry.getString("DefaultSpecificationSource.no-match-for-alias", type));
-            }
-
-            result = parseSpecification(resourceName);
-
-            if (cache == null)
-                cache = new HashMap(MAP_SIZE);
-
-            cache.put(type, result);
-            if (resourceName != type)
-                cache.put(resourceName, result);
-        }
-
-        return result;
+        return getComponentSpecification(type);
     }
 
-    protected ComponentSpecification parseSpecification(String resourcePath)
+    protected ComponentSpecification parseSpecification(String resourcePath, boolean asPage)
         throws ResourceUnavailableException
     {
         ComponentSpecification result = null;
@@ -154,7 +131,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
         if (CAT.isDebugEnabled())
             CAT.debug("Parsing component specification " + resourcePath);
 
-        URL = resolver.getResource(resourcePath);
+        URL = _resolver.getResource(resourcePath);
 
         if (URL == null)
         {
@@ -173,12 +150,15 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
                 ex);
         }
 
-        if (parser == null)
-            parser = new SpecificationParser();
+        if (_parser == null)
+            _parser = new SpecificationParser();
 
         try
         {
-            result = parser.parseComponentSpecification(inputStream, resourcePath);
+            if (asPage)
+                result = _parser.parsePageSpecification(inputStream, resourcePath);
+            else
+                result = _parser.parseComponentSpecification(inputStream, resourcePath);
         }
         catch (DocumentParseException ex)
         {
@@ -199,11 +179,11 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
 
         buffer.append('[');
 
-        if (cache != null)
+        if (_componentCache != null)
         {
-            synchronized (cache)
+            synchronized (_componentCache)
             {
-                buffer.append(cache.keySet());
+                buffer.append(_componentCache.keySet());
             }
         }
 
@@ -214,43 +194,93 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
 
     /** @since 1.0.6 **/
 
-    public void renderDescription(IMarkupWriter writer)
+    public synchronized void renderDescription(IMarkupWriter writer)
     {
+
         writer.print("DefaultSpecificationSource[");
 
-        if (cache == null)
+        writeCacheDescription(writer, "page", _pageCache);
+        ;
+        writer.beginEmpty("br");
+        writer.println();
+
+        writeCacheDescription(writer, "component", _componentCache);
+    }
+
+    private void writeCacheDescription(IMarkupWriter writer, String name, Map cache)
+    {
+        Set keySet = cache.keySet();
+
+        writer.print(Tapestry.size(keySet));
+        writer.print(" cached ");
+        writer.print(name);
+        writer.print(" specifications:");
+
+        boolean first = true;
+
+        Iterator i = keySet.iterator();
+        while (i.hasNext())
         {
-            writer.print("]");
-            return;
-        }
+            String key = (String) i.next();
 
-        synchronized (cache)
-        {
-            Set keySet = cache.keySet();
-
-            writer.print(keySet.size());
-            writer.print(" cached specifications]");
-            boolean first = true;
-
-            Iterator i = keySet.iterator();
-            while (i.hasNext())
+            if (first)
             {
-                String key = (String) i.next();
-
-                if (first)
-                {
-                    writer.begin("ul");
-                    first = false;
-                }
-
-                writer.begin("li");
-                writer.print(key);
-                writer.end();
+                writer.begin("ul");
+                first = false;
             }
 
-            if (!first)
-                writer.end(); // <ul>
+            writer.begin("li");
+            writer.print(key);
+            writer.end();
         }
+
+        if (!first)
+            writer.end(); // <ul>
+    }
+
+    public synchronized ComponentSpecification getComponentSpecification(String type)
+        throws ResourceUnavailableException
+    {
+        String resourceName;
+
+        ComponentSpecification result = (ComponentSpecification) _componentCache.get(type);
+
+        if (result == null)
+        {
+            if (type.startsWith("/"))
+                resourceName = type;
+            else
+            {
+                resourceName = _specification.getComponentAlias(type);
+
+                if (resourceName == null)
+                    throw new ResourceUnavailableException(
+                        Tapestry.getString("DefaultSpecificationSource.no-match-for-alias", type));
+            }
+
+            result = parseSpecification(resourceName, false);
+
+            _componentCache.put(type, result);
+            if (resourceName != type)
+                _componentCache.put(resourceName, result);
+        }
+
+        return result;
+    }
+
+    public synchronized ComponentSpecification getPageSpecification(String resourcePath)
+        throws ResourceUnavailableException
+    {
+        ComponentSpecification result = (ComponentSpecification)_pageCache.get(resourcePath);
+        
+        if (result == null)
+        {
+            result = parseSpecification(resourcePath, true);
+            
+            _pageCache.put(resourcePath, result);
+        }
+        
+        return result;
     }
 
 }

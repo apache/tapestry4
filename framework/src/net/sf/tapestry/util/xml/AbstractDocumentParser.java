@@ -57,22 +57,19 @@ import org.xml.sax.SAXParseException;
  * 
  **/
 
-public abstract class AbstractDocumentParser
-    implements ErrorHandler, EntityResolver
+public abstract class AbstractDocumentParser implements ErrorHandler, EntityResolver
 {
-    private static final Category CAT =
-        Category.getInstance(AbstractDocumentParser.class);
+    private static final Category CAT = Category.getInstance(AbstractDocumentParser.class);
 
-    private DocumentBuilder builder;
-    private String resourcePath;
-    private static final int MAP_SIZE = 7;
+    private DocumentBuilder _builder;
+    private String _resourcePath;
 
     /**
      *  Map used to resolve public identifiers to corresponding InputSource.
      *
      **/
 
-    private Map entities;
+    private Map _entities;
 
     /**
      *  Invoked by subclasses (usually inside thier constructor) to register
@@ -91,22 +88,22 @@ public abstract class AbstractDocumentParser
     protected void register(String publicId, String entityPath)
     {
         if (CAT.isDebugEnabled())
-            CAT.debug("Registerring " + publicId + " as " + entityPath);
+            CAT.debug("Registering " + publicId + " as " + entityPath);
 
-        if (entities == null)
-            entities = new HashMap(MAP_SIZE);
+        if (_entities == null)
+            _entities = new HashMap();
 
-        entities.put(publicId, entityPath);
+        _entities.put(publicId, entityPath);
     }
 
     public String getResourcePath()
     {
-        return resourcePath;
+        return _resourcePath;
     }
 
     public void setResourcePath(String value)
     {
-        resourcePath = null;
+        _resourcePath = null;
     }
 
     /** 
@@ -115,47 +112,39 @@ public abstract class AbstractDocumentParser
      *
      *  @param source source from which to read the document
      *  @param resourcePath a description of the source, used in errors
-     *  @param rootElementName the expected root element of the {@link Document}
+     *  @param rootElementName the expected root element of the {@link Document}, or
+     *  null if the rootElementName isn't known before parsing
      *
      *  @throws DocumentParseException wrapped around {@link SAXParseException} or
      *  {@link IOException}, or if the root element is wrong.
      *`
      **/
 
-    protected Document parse(
-        InputSource source,
-        String resourcePath,
-        String rootElementName)
+    protected Document parse(InputSource source, String resourcePath, String rootElementName)
         throws DocumentParseException
     {
-        Document document;
-        Element root;
         boolean error = true;
 
         if (CAT.isDebugEnabled())
             CAT.debug(
-                "Parsing " + source + " (" + resourcePath + ") for element " + rootElementName);
+                "Parsing "
+                    + source
+                    + " ("
+                    + resourcePath
+                    + ") for element "
+                    + (rootElementName != null ? rootElementName : "Unknown"));
 
         try
         {
-            if (builder == null)
-                builder = constructBuilder();
+            if (_builder == null)
+                _builder = constructBuilder();
 
-            document = builder.parse(source);
+            Document document = _builder.parse(source);
 
             error = false;
 
-            root = document.getDocumentElement();
-            if (!root.getTagName().equals(rootElementName))
-            {
-                throw new DocumentParseException(
-                    Tapestry.getString(
-                        "AbstractDocumentParser.incorrect-document-type",
-                        rootElementName,
-                        root.getTagName()),
-                    resourcePath,
-                    null);
-            }
+            if (rootElementName != null)
+                validateRootElement(document, rootElementName, resourcePath);
 
             return document;
         }
@@ -164,39 +153,28 @@ public abstract class AbstractDocumentParser
             // This constructor captures the line number and column number
 
             throw new DocumentParseException(
-                Tapestry.getString(
-                    "AbstractDocumentParser.unable-to-parse",
-                    resourcePath,
-                    ex.getMessage()),
+                Tapestry.getString("AbstractDocumentParser.unable-to-parse", resourcePath, ex.getMessage()),
                 resourcePath,
                 ex);
         }
         catch (SAXException ex)
         {
             throw new DocumentParseException(
-                Tapestry.getString(
-                    "AbstractDocumentParser.unable-to-parse",
-                    resourcePath,
-                    ex.getMessage()),
+                Tapestry.getString("AbstractDocumentParser.unable-to-parse", resourcePath, ex.getMessage()),
                 resourcePath,
                 ex);
         }
         catch (IOException ex)
         {
             throw new DocumentParseException(
-                Tapestry.getString(
-                    "AbstractDocumentParser.unable-to-read",
-                    resourcePath,
-                    ex.getMessage()),
+                Tapestry.getString("AbstractDocumentParser.unable-to-read", resourcePath, ex.getMessage()),
                 resourcePath,
                 ex);
         }
         catch (ParserConfigurationException ex)
         {
             throw new DocumentParseException(
-                Tapestry.getString(
-                    "AbstractDocumentParser.unable-to-construct-builder",
-                    ex.getMessage()),
+                Tapestry.getString("AbstractDocumentParser.unable-to-construct-builder", ex.getMessage()),
                 ex);
         }
         finally
@@ -204,11 +182,38 @@ public abstract class AbstractDocumentParser
             // If there was an error, discard the builder --- it may be in
             // an unknown and unusable state.
 
-            if (error && builder != null)
+            if (error && _builder != null)
             {
                 CAT.debug("Discarding builder due to parse error.");
-                builder = null;
+                _builder = null;
             }
+        }
+    }
+
+    /**
+     *  Validates that the root element of the specified document matches the expected
+     *  root element name.
+     * 
+     *  @throws DocumentParseException if the root element is not as expected.
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    protected void validateRootElement(Document document, String rootElementName, String resourcePath)
+        throws DocumentParseException
+    {
+
+        Element root = document.getDocumentElement();
+        if (!root.getTagName().equals(rootElementName))
+        {
+            throw new DocumentParseException(
+                Tapestry.getString(
+                    "AbstractDocumentParser.incorrect-document-type",
+                    rootElementName,
+                    root.getTagName()),
+                resourcePath,
+                null);
         }
     }
 
@@ -251,20 +256,15 @@ public abstract class AbstractDocumentParser
      *
      **/
 
-    public InputSource resolveEntity(String publicId, String systemId)
-        throws SAXException, IOException
+    public InputSource resolveEntity(String publicId, String systemId) throws SAXException, IOException
     {
         String entityPath = null;
 
         if (CAT.isDebugEnabled())
-            CAT.debug(
-                "Attempting to resolve entity; publicId = "
-                    + publicId
-                    + " systemId = "
-                    + systemId);
+            CAT.debug("Attempting to resolve entity; publicId = " + publicId + " systemId = " + systemId);
 
-        if (entities != null)
-            entityPath = (String) entities.get(publicId);
+        if (_entities != null)
+            entityPath = (String) _entities.get(publicId);
 
         if (entityPath == null)
         {
@@ -279,8 +279,7 @@ public abstract class AbstractDocumentParser
         InputSource result = new InputSource(stream);
 
         if (result != null && CAT.isDebugEnabled())
-            CAT.debug(
-                "Resolved " + publicId + " as " + result + " (for " + entityPath + ")");
+            CAT.debug("Resolved " + publicId + " as " + result + " (for " + entityPath + ")");
 
         return result;
     }
@@ -291,8 +290,7 @@ public abstract class AbstractDocumentParser
      *
      **/
 
-    protected boolean isElement(Node node, String elementName)
-        throws DocumentParseException
+    protected boolean isElement(Node node, String elementName) throws DocumentParseException
     {
         if (node.getNodeType() != Node.ELEMENT_NODE)
             return false;
@@ -324,9 +322,7 @@ public abstract class AbstractDocumentParser
 
         buffer = new StringBuffer();
 
-        for (child = node.getFirstChild();
-            child != null;
-            child = child.getNextSibling())
+        for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
         {
             text = (Text) child;
 
@@ -360,8 +356,7 @@ public abstract class AbstractDocumentParser
                 fail = !Character.isLetter(ch);
             else
             {
-                fail =
-                    !(Character.isLetter(ch) || Character.isDigit(ch) || ch == '-' || ch == '_');
+                fail = !(Character.isLetter(ch) || Character.isDigit(ch) || ch == '-' || ch == '_');
             }
 
             if (fail)
@@ -370,7 +365,7 @@ public abstract class AbstractDocumentParser
                         "AbstractDocumentParser.invalid-identifier",
                         result,
                         getNodePath(node.getParentNode())),
-                    resourcePath,
+                    _resourcePath,
                     null);
         }
 
@@ -453,8 +448,7 @@ public abstract class AbstractDocumentParser
      *
      **/
 
-    protected DocumentBuilder constructBuilder()
-        throws ParserConfigurationException
+    protected DocumentBuilder constructBuilder() throws ParserConfigurationException
     {
         DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
