@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"  "http://tapestry.primix.com/dtd/Tapestry_1_0.dtd">
+<specification>
+	<class>com.primix.tapestry.inspector.ViewTabs</class>
+	<components>
+		<component>
+			<id>selectSpecification</id>
+			<type>Direct</type>
+			<bindings>
+				<binding>
+					<name>listener</name>
+					<property-path>selectSpecificationListener</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>selectComponents</id>
+			<type>Direct</type>
+			<bindings>
+				<binding>
+					<name>listener</name>
+					<property-path>selectComponentsListener</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>selectTemplate</id>
+			<type>Direct</type>
+			<bindings>
+				<binding>
+					<name>listener</name>
+					<property-path>selectTemplateListener</property-path>
+				</binding>
+			</bindings>
+		</component>
+	</components>
+</specification>

@@ -58,6 +58,12 @@ public class PageSpecification extends BasePropertyHolder
 	{
 		this.specificationPath = specificationPath;
 	}
+	
+	public PageSpecification(String specificationPath, int bufferSize)
+	{
+		this.specificationPath = specificationPath;
+		this.bufferSize = bufferSize;
+	}
 
 	/**
 	*  Returns the buffer size for the page (in bytes).  A value less than zero means no specific

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"  "http://tapestry.primix.com/dtd/Tapestry_1_0.dtd">
+<specification>
+	<class>com.primix.tapestry.inspector.ShowTemplate</class>
+	<components>
+		<component>
+			<id>ifNoTemplate</id>
+			<type>Conditional</type>
+			<bindings>
+				<binding>
+					<name>condition</name>
+					<property-path>hasTemplate</property-path>
+				</binding>
+				<static-binding>
+					<name>invert</name>
+					<value>true</value>
+				</static-binding>
+			</bindings>
+		</component>
+		<component>
+			<id>ifTemplate</id>
+			<type>Conditional</type>
+			<bindings>
+				<binding>
+					<name>condition</name>
+					<property-path>hasTemplate</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>insertTemplate</id>
+			<type>Delegator</type>
+			<bindings>
+				<binding>
+					<name>delegate</name>
+					<property-path>templateDelegate</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>captive</id>
+			<type>Direct</type>
+			<bindings>
+				<binding>
+					<name>listener</name>
+					<property-path>page.selectComponentListener</property-path>
+				</binding>
+				<static-binding>
+					<name>enabled</name>
+					<value/>
+				</static-binding>
+			</bindings>
+		</component>
+	</components>
+</specification>

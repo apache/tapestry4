@@ -95,11 +95,6 @@ public class BasePage extends BaseComponent implements IPage
 
 		this.application = application;
 		this.locale = application.getLocale();
-
-		// This ensures that Component.readTemplate() works.
-
-		page = this;
-
 	}
 
 	public void addLifecycleComponent(ILifecycle component)
@@ -189,6 +184,11 @@ public class BasePage extends BaseComponent implements IPage
 		return name;
 	}
 
+	public IPage getPage()
+	{
+		return this;
+	}
+
 	public IComponent getNestedComponent(String path)
 	{
 		StringSplitter splitter;
@@ -240,13 +240,13 @@ public class BasePage extends BaseComponent implements IPage
 	{
 		int i;
 
+		requestCycle = cycle;
+
 		for (i = 0; i < lifecycleComponentCount; i++)
 			lifecycleComponents[i].prepareForRender(cycle);
 
 		try
-		{
-			requestCycle = cycle;
-			
+		{			
             beginResponse(writer, cycle);
             
 			render(writer, cycle);
