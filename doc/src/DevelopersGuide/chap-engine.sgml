@@ -1,6 +1,6 @@
 <!-- $Id$ -->
 
-<chapter>
+<chapter id="engine">
 	<title>Application Engines and Services</>
 
 <para>
@@ -29,7 +29,7 @@ recorders will be serialized with the application engine (which is stored within
 <classname>HttpSession</>).
 </>
 
-	<section>
+	<section id="engine-servlet">
 		<title>Application Servlet</>
 
 <para>
@@ -53,7 +53,7 @@ This includes tasks such as loading JDBC drivers.
 
 	</section>
 
-	<section>
+	<section id="engine-req-pages">
 		<title>Required Pages</>
 
 <para>
@@ -180,7 +180,7 @@ Tapestry application to determine its structure.
 
 	</section>
 
-	<section>
+	<section id="engine-state">
 		<title>Server-Side State</>
 
 <para>
@@ -218,7 +218,7 @@ specification.
 
 	</section>
 
-	<section>
+	<section id="engine-services">
 		<title>Engine Services</>
 
 <para>
@@ -299,7 +299,7 @@ provides the URL and later responds if the URL is triggered.
 
 	</section>
 
-	<section>
+	<section id="engine-logging">
 		<title>Logging</>
 
 <para>
@@ -331,8 +331,8 @@ section.
 
 	</section>
 
-	<section>
-		<title>Private Assets
+	<section id="engine-private-assets">
+		<title>Private Assets</>
 
 <para>
 The application engine is responsible for making private assets, assets that are in the Java classpath,
@@ -401,77 +401,168 @@ using a pair of servlet context parameter (which are specified in the WAR deploy
 
 	</section>
 
-<!--
-
-Application Specification
+	<section id="engine-spec">
+		<title>Application Specification</>
+<para>
 The application specification is used to identify the name of the application, the engine class for 
 the application, the details of each page in the application, and to set up aliases for commonly 
 used components within the application.
-The application specification is loaded when the application servlet initialized.
+</>
+
+<para>
+The application specification is loaded when the application servlet is initialized.
+</>
+
+		<section>
+			<title>Preamble</>
+
+<para>
 The application specification begins with an XML header:
+</>
+
+&start-listing;<![CDATA[
 <?xml version="1.0"?>
 <!DOCTYPE application PUBLIC 
       "-//Primix Solutions//Tapestry Specification 1.0//EN"
 	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
 
-<application>
+<application>]]>&end-listing;
  
+		</section>
+
+		<section>
+			<title>Application Name</>
+
+<para>
 The name of the application is specified.  This name should be unique for all Tapestry 
 applications running within a servlet container.  It may contain letters, numbers, periods, spaces, 
 underscores and dashes.
-<name>application name</name>
+</>
+
+&start-listing;<![CDATA[<name>]]><replaceable>application name</><![CDATA[</name>]]>&end-listing;
  
+		</section>
+
+		<section>
+			<title>Engine Class</>
+
+<para>
 The class name of the engine for the application is specified next:
-<engine-class>class name</engine-class>
+</>
+
+&start-listing;&lt;engine-class&gt;<replaceable>class name</>&lt;/engine-class&gt;&end-listing;
  
-Most applications will use the engine com.primix.tapestry.engine.SimpleEngine, or a 
-sublcass of SimpleEngine specific to the application.
+<para>
+Most applications will use the engine <classname>com.primix.tapestry.engine.SimpleEngine</>,
+or a sublcass of <classname>SimpleEngine</> specific to the application.
+</>
+
+		</section>
+
+		<section>
+			<title>Pages</>
+
+<para>
 Each page in the application is now defined, with a logical name:
+</>
+
+&start-listing;<![CDATA[
 <page>
-  <name>page name</name>
-  <specification-path>specification path</specification-path>
-</page>
- 
-The name of the page must be unique within the application.  It may contain letters, numbers, 
+  <name>]]><replaceable>page name</><![CDATA[</name>
+  <specification-path>]]><replaceable>specification path</><![CDATA[</specification-path>
+</page>]]>&end-listing;
+
+<para> 
+This block is repeated for each page in the application.
+The name of each page must be unique within the application.  It may contain letters, numbers, 
 underscores, periods or dashes.
+</>
+
+<para>
 The specification path is the path of the component specification for the page, a resource within 
-the Java class path. For example /com/skunkworx/skunkapp/Home.jwc.
-Typically, the name of the page will match the name of the component; the logical name Home 
-will map to /com/skunkworx/skunkapp/Home.jwc and be implemented by class 
-com.skunkworx.skunkapp.Home.  This is not a hard and fast rule, it may make sense to use 
+the Java class path. For example 
+<filename class=directory>/com/skunkworx/skunkapp/Home.jwc</>.
+</>
+
+<para>
+Typically, the name of the page will match the name of the component; the logical name 
+<classname>Home</> 
+will map to 
+<filename class=directory>/com/skunkworx/skunkapp/Home.jwc</> and be implemented by class 
+<classname>com.skunkworx.skunkapp.Home</>.  This is not a hard and fast rule, it may make sense to use 
 different names; for example, a multi-page wizard may show the relationship between the pages 
-using a name like WizardName.PageName.  In other cases, naming conflicts can be eliminated by 
+using a name like <replaceable>WizardName.PageName</>.  In other cases, naming conflicts can be eliminated by 
 varying the name of the page's logical name or component.
-Following this, aliases for components may be defined:
+</>
+
+		</section>
+
+		<section>
+			<title>Aliases</>
+
+
+<para>
+Folllowing the pages, aliases for components may be defined:
+</>
+
+&start-listing;<![CDATA[
 <component-alias>
-  <alias>alias</alias>
-  <specification-path>specification path</specification-path>
-</component-alias>
+  <alias>]]><replaceable>alias</><![CDATA[</alias>
+  <specification-path>]]><replaceable>specification path</><![CDATA[</specification-path>
+</component-alias>]]>&end-listing;
  
+<para>
 This is used to create a short, memorable name for a frequently used component.  Aliases have 
-the same format as page names.
+the same format as page names.  This block is repeated for each component alias.
+</>
+
+<para>
 Component aliases are mostly freeform (letters, numbers and some punctuation are acceptable).  
-A good guideline is to name the alias, the specification and the Java class the same.  This naming 
-pattern is used for all the internal Tapestry components.  For example, the component 
-/com/primix/tapestry/components/Action.jwc has an alias of Action and is implemented 
-by the class com.primix.tapestry.components.html.link.Action.
-The next section is optional, it allows additional application properties to be specified.
-<properties>
+A good guideline is to name the alias, the specification and the Java class the same, that is, the
+same as the page naming guidelines.
+</>
+
+		</section>
+
+		<section>
+			<title>Properties</>
+
+<para>
+If needed, any application properties may be defined in a &start-tag;properties&end-tag; element.
+</>
+
+&start-listing;<![CDATA[<properties>
 	<property>
-		<name>name</name>
-		<value>value</value>
+		<name>]]><replaceable>name</><![CDATA[</name>
+		<value>]]><replaceable>value</><![CDATA[</value>
 	</property>
-</properties>
+</properties>]]>&end-listing;
  
-Any number of <property> elements may be included within the <properties> element.  Each 
+<para>
+Any number of &start-tag;property&end-tag; elements may be included within the 
+&start-tag;properties&end-tag; element.  Each 
 one specifies a name/value pairing (both the name and the value are strings).  These properties 
 are used to express additional information about the application that isn't captured in the main 
 DTD.
-The most common use for this is to establish the class name of the visit class.  The SimpleEngine 
-uses the property com.primix.tapestry.visit-class for this purpose, the value is the 
-complete class name for the visit object.
-Finally, the specification is completed by closing the application element:
-</application>
+</>
 
--->
+<para>
+The most common use for this is to establish the class name of the visit class.  The SimpleEngine 
+uses the property <varname>com.primix.tapestry.visit-class</> for this purpose, the value is the 
+complete class name for the visit object.
+</>
+
+		</section>
+
+		<section>
+			<title>Postamble</>
+
+<para>
+Finally, the specification is completed by closing the application element:
+
+&start-listing;&lt;/application&gt;&end-listing;
+
+		</section>
+
+	</section>
 </chapter>

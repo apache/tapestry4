@@ -1,6 +1,6 @@
 <!-- $Id$ -->
 
-<chapter>
+<chapter id="intro">
 	<title>Introduction</>
 
 <para>Tapestry is a comprehensive web application framework, written in Java.</>
@@ -26,7 +26,7 @@ and responding to HTML queries (such as clicking on a link, or submitting a form
 for managing application flow and server-side client state.  
 This allows developers to concentrate on the business and presentation aspects of the application.</>
 
-	<section>
+	<section id="intro-scripting">
 		<title>Scripting vs. Components</>
 
 <para>Most leading web application frameworks are based on some form of 
@@ -241,7 +241,7 @@ components and has an elegant way of specifying that behavior dynamically.
 
 	</section>
 
-	<section>
+	<section id="intro-interaction">
 		<title>Interaction</>
 
 <para>
@@ -301,7 +301,7 @@ can easily have dozens of servlets.
 
 	</section>
 
-	<section>
+	<section id="intro-security">
 		<title>Security</>
 
 <para>
@@ -346,7 +346,7 @@ This makes it easier to add additional security measures that are specific to th
 
 	</section>
 
-	<section>
+	<section id="intro-features">
 		<title>Features</>
 
 <para>

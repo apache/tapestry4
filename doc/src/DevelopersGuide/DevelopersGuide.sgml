@@ -1,10 +1,11 @@
 <!doctype book public "-//OASIS//DTD DocBook V4.1//EN" [
 
-<!ENTITY c1 SYSTEM "c1.sgml">
-<!ENTITY c2 SYSTEM "c2.sgml">
-<!ENTITY c3 SYSTEM "c3.sgml">
-<!ENTITY c4 SYSTEM "c4.sgml">
-<!ENTITY c5 SYSTEM "c5.sgml">
+<!ENTITY chap-intro SYSTEM "chap-intro.sgml">
+<!ENTITY chap-webapp SYSTEM "chap-webapp.sgml">
+<!ENTITY chap-components SYSTEM "chap-components.sgml">
+<!ENTITY chap-pages SYSTEM "chap-pages.sgml">
+<!ENTITY chap-engine SYSTEM "chap-engine.sgml">
+<!ENTITY chap-request-cycle SYSTEM "chap-request-cycle.sgml">
 
 <!ENTITY jwc-tag "<literal>&lt;jwc&gt;</literal>">
 
@@ -47,10 +48,12 @@
 			<holder>Primix Solutions</holder>
 		</copyright>
 	</bookinfo>
-&c1;
-&c2;
-&c3;
-&c4;
-&c5;
+
+&chap-intro;
+&chap-webapp;
+&chap-components;
+&chap-pages;
+&chap-engine;
+&chap-request-cycle;
 
 </book>
