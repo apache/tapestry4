@@ -40,6 +40,7 @@ import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
 
 import org.apache.bsf.BSFManager;
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -56,6 +57,8 @@ import org.apache.tapestry.RedirectException;
 import org.apache.tapestry.StaleLinkException;
 import org.apache.tapestry.StaleSessionException;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.asset.ResourceChecksumSource;
+import org.apache.tapestry.asset.ResourceChecksumSourceImpl;
 import org.apache.tapestry.enhance.DefaultComponentClassEnhancer;
 import org.apache.tapestry.listener.ListenerMap;
 import org.apache.tapestry.pageload.PageSource;
@@ -318,6 +321,14 @@ public abstract class AbstractEngine
     protected static final String DATA_SQUEEZER_NAME = "org.apache.tapestry.DataSqueezer";
 
     /**
+     * Servlet context attribute name for a shared instance
+     * of {@link ResourceChecksumSource}.
+     * @since 3.0.3
+     */
+    protected static final String RESOURCE_CHECKSUM_SOURCE_NAME = 
+        "org.apache.tapestry.ResourceChecksumSource";
+    
+    /**
      *  The source for pages, which acts as a pool, but is capable of
      *  creating pages as needed.  Stored in the
      *  {@link ServletContext}, like {@link #_templateSource}.
@@ -434,6 +445,12 @@ public abstract class AbstractEngine
 
     private transient IMonitorFactory _monitorFactory;
 
+    /**
+     * Used to obtain resource checksums for the asset service.
+     * @since 3.0.3
+     */
+    private transient ResourceChecksumSource _resourceChecksumSource;
+    
     /**
      *  Sets the Exception page's exception property, then renders the Exception page.
      *
@@ -1124,6 +1141,7 @@ public abstract class AbstractEngine
         _scriptSource.reset();
         _stringsSource.reset();
         _enhancer.reset();
+        _resourceChecksumSource.reset();
     }
 
     /**
@@ -1390,6 +1408,20 @@ public abstract class AbstractEngine
                 servletContext.setAttribute(name, _global);
             }
         }
+        
+        if (_resourceChecksumSource == null)
+        {
+            String name = RESOURCE_CHECKSUM_SOURCE_NAME + ":" + servletName;
+
+            _resourceChecksumSource = (ResourceChecksumSource) servletContext.getAttribute(name);
+
+            if (_resourceChecksumSource == null)
+            {
+                _resourceChecksumSource = createResourceChecksumSource();
+
+                servletContext.setAttribute(name, _resourceChecksumSource);
+            }
+        }
 
         String encoding = request.getCharacterEncoding();
         if (encoding == null)
@@ -1495,6 +1527,19 @@ public abstract class AbstractEngine
         return new DefaultTemplateSource();
     }
 
+    /**
+     * Invoked from {@link #setupForRequest(RequestContext)} to provide
+     * an instance of {@link ResourceChecksumSource} that will be stored into
+     * the {@link ServletContext}.  Subclasses may override this method
+     * to provide a different implementation.
+     * @return an instance of {@link ResourceChecksumSourceImpl} that uses MD5 and Hex encoding.
+     * @since 3.0.3
+     */
+    protected ResourceChecksumSource createResourceChecksumSource()
+    {
+        return new ResourceChecksumSourceImpl("MD5", new Hex());
+    }
+    
     /**
      *  Returns an object which can find resources and classes.
      *
@@ -2036,6 +2081,13 @@ public abstract class AbstractEngine
         return _propertySource;
     }
 
+    /** @since 3.0.3 */
+    
+    public ResourceChecksumSource getResourceChecksumSource()
+    {
+        return _resourceChecksumSource;
+    }
+    
     /** @since 3.0 **/
 
     protected String getExceptionPageName()

@@ -18,11 +18,11 @@ import java.io.InputStream;
 import java.net.URL;
 
 import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.tapestry.IEngine;
 import org.apache.tapestry.ILocation;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.resource.ClasspathResourceLocation;
 
@@ -71,10 +71,14 @@ public class PrivateAsset extends AbstractAsset
         // Otherwise, the service is responsible for dynamically retrieving the
         // resource.
 
-        String[] parameters = new String[] { path };
+        IEngine engine = cycle.getEngine();
+        
+        URL resourceURL = engine.getResourceResolver().getResource(path);
+        String checksum = engine.getResourceChecksumSource().getChecksum(resourceURL);
+        
+        String[] parameters = new String[] { path, checksum };
 
-        IEngineService service = cycle.getEngine().getService(Tapestry.ASSET_SERVICE);
-
+        AssetService service = (AssetService) engine.getService(Tapestry.ASSET_SERVICE);
         ILink link = service.getLink(cycle, null, parameters);
 
         return link.getURL();

@@ -34,14 +34,17 @@
 		
 		<assert-output name="Image Tag">
 <![CDATA[
-<img src="/c16/app?service=asset&amp;sp=S%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fc16%2Flogo.png" border="0"/>
+<img src="/c16/app?service=asset&amp;sp=S%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fc16%2Flogo.png&amp;sp=Sf6324ac8f24f0a7f4850221b0f14c865" border="0"/>
 ]]>
 		</assert-output>
 	</request>
 	
 	<request>
 		<parameter name="service" value="asset"/>
-		<parameter name="sp" value="/org/apache/tapestry/junit/mock/c16/logo.png"/>
+		<parameter name="sp">
+      <value>/org/apache/tapestry/junit/mock/c16/logo.png</value>
+      <value>Sf6324ac8f24f0a7f4850221b0f14c865</value>
+		</parameter>
 		
 		<assert-output-stream name="Image Content"
 				content-type="image/png"
@@ -50,19 +53,46 @@
 	
 	<request>
 		<parameter name="service" value="asset"/>
-		<parameter name="sp" value="/org/apache/tapestry/junit/mock/c16/globe.jpg"/>
+		<parameter name="sp">
+      <value>/org/apache/tapestry/junit/mock/c16/globe.jpg</value>
+      <value>S52463f90c449b2546814d8929aa7d5cd</value>
+		</parameter>
 		
 		<assert-output-stream name="Image Content"
 				content-type="image/jpeg"
 				path="src/org/apache/tapestry/junit/mock/c16/globe.jpg"/>	
 	</request>	
+
+	<!-- Request a file using a bad checksum. -->
+	
+	<request>
+		<parameter name="service" value="asset"/>
+		<parameter name="sp">
+      <value>/org/apache/tapestry/junit/mock/c16/logo.png</value>
+      <value>Sabcdef</value>
+		</parameter>
+    
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Exception</title>
+]]>			
+		</assert-output>
+		
+		<assert-output name="Message">
+    Checksum abcdef does not match that of resource /org/apache/tapestry/junit/mock/c16/logo.png.
+		</assert-output>
+		
+	</request>
 	
 	<!-- Request a file which does not exist. -->
 	
 	<request>
 		<parameter name="service" value="asset"/>
-		<parameter name="sp" value="/org/apache/tapestry/junit/mock/c16/MISSING.gif"/>
-		
+    <parameter name="sp">
+      <value>/org/apache/tapestry/junit/mock/c16/MISSING.gif</value>
+      <value>Sabcdef</value>
+    </parameter>
+    
 		<assert-output name="Page Title">
 <![CDATA[
 <title>Exception</title>
@@ -87,7 +117,24 @@
 		</assert-output>
 			
 		<assert-output name="Message">
-		Service asset requires exactly one service parameter.	
+    Service asset requires exactly 2 service parameters.
+		</assert-output>
+	</request>
+
+	<!-- Request missing the checksum -->
+	
+	<request>
+		<parameter name="service" value="asset"/>
+    <parameter name="sp" value="/org/apache/tapestry/junit/mock/c16/MISSING.gif"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Exception</title>
+]]>			
+		</assert-output>
+			
+		<assert-output name="Message">
+    Service asset requires exactly 2 service parameters.
 		</assert-output>
 	</request>
 	

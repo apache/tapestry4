@@ -19,6 +19,7 @@ import java.util.Locale;
 
 import javax.servlet.ServletException;
 
+import org.apache.tapestry.asset.ResourceChecksumSource;
 import org.apache.tapestry.engine.IComponentClassEnhancer;
 import org.apache.tapestry.engine.IComponentMessagesSource;
 import org.apache.tapestry.engine.IEngineService;
@@ -376,4 +377,10 @@ public interface IEngine
      **/
     
     public String getOutputEncoding();
+    
+    /**
+     * Returns an object that can compute the checksum of a resource.
+     * @since 3.0.3
+     */
+    public ResourceChecksumSource getResourceChecksumSource();
 }
