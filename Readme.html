@@ -43,66 +43,132 @@ compiler.
 <br><br>.....................................................<br><br>
 <h2>Configuration</h2>
 
-<p>Tapestry ships with the the Tapestry Tutorial and the Virtual Library demo applications, which are very 
-easy to configure and run. To run these Tapestry appliations please ensure:
+<p>Tapestry ships with the the Tapestry Workbench and the Virtual Library example applications, which are  
+easy to configure and run. To run these Tapestry applications please ensure:
 			<ul>
 				<li>JDK 1.3 or newer JVM is installed, and the <tt>JAVA_HOME</tt> environment variable is set.</B>
 				<li><b><a href="http://jakarta.apache.org/ant">Ant</a></b> 1.5 or newer is installed, and is added 
 to the system <tt>PATH</tt>.</li>
 			</ul>
-<p>To run the Tapestry Tutorial and the Virtual Library applications with the 
+			
+<p>
+Basic setup:  The demos require several external dependencies that cannot be distributed with Tapestry
+because of licensing conflicts.  You will need one of the following:
+<ul>
+<li><a href="http://sf.net/projects/jetty">Jetty</a> servlet container, release 4.2 or above.
+<li><a href="http://jakarta.apache.org/tomcat/index.html">Tomcat</a> servlet container, release 4.1 or above.
+<li><a href="http://www.jboss.org">JBoss</a> application server, release 3.0.4. 
+        Running the Virtual Library application&nbsp;requires JBoss.</li>         
+
+</ul>
+
+<p>
+In each case you will create the file 
+<code>config/build.properties</code>
+and put an <em>absolute path</em> to the installation directory (of Jetty, JBoss or Tomcat).
+<b>Always use only forward slashes in the path name.</b>
+
+<p>
+A sample file, <code>config/build.properties.template</code> is provided.  You can simply edit
+and rename this file.
+
+<p>
+In addition, you will need to download two libraries needed by the Workbench application and 
+two libraries needed by the Virtual Library.  These
+files are placed into the
+<code>ext-dist</code>
+directory.  See the <A href="ext-dist/README.html">README.html</a> in that directory
+for more details.
+
+<h3>Configuring JBoss</h3>
+
+<p>To run the Tapestry Workbench and the Virtual Library applications with the 
 <a href="http://sourceforge.net/projects/jboss">JBoss</a> server:
 			<ul>
-				<li><b>Download <a href="http://prdownloads.sourceforge.net/jboss/jboss-3.0.4.zip?download">JBoss 3.0.4</a></b>.<br>JBoss is an open-source application server, used to run the database and Enterprise JavaBeans in the Virtual Library.
+				<li>Download and install <a href="http://prdownloads.sourceforge.net/jboss/jboss-3.0.4.zip?download">JBoss 3.0.4</a>.
+				<br>JBoss is an open-source application server, used to run the database and Enterprise JavaBeans in the Virtual Library.
 <p><span class="hyper-em">This auto-configuration requires JBoss 3.0.4 exactly, not a later release.  
 This only affects these turn-key
 demos, not deployment of your own Tapestry applications.</span></p>
-				<li><b>Create the file
-			<code>config/build.properties</code>.<br></b>
-		This file informs 
-        Tapestry where JBoss as been installed.
-		The <code>config</code> directory contains a template file.
-		Set
-			<code>jboss.dir</code> to the JBoss installation
-		directory, for example <i>C:/JBoss-3.0.4</i>.
-		<b>Note:</b> Use only forward slashes in this file name.
-				<li><b>Execute the command:
-			<code>ant -emacs configure run-jboss</code></b><br>This will copy and configure the necessary files in the JBoss installation directory,
-then run the JBoss server, automatically deploying the Tapestry Tutorial and 
-the Virtual Library demonstration.  (The
-			<code>-emacs</code>option 
+				<li>
+			Update <code>config/build.properties</code>
+			and set property
+			<b><code>jboss.dir</code></b>
+			to the absolute path name
+			of the JBoss installation directory.
+				<li>Download the external dependencies
+				<li>Execute the command:
+				<br>
+			<b><code>ant -emacs configure run-jboss</code></b>
+			
+			<br>This will copy and configure the necessary files in the JBoss installation directory, then
+run the JBoss server, automatically deploying the example applications. 
+ (The
+			<code>-emacs</code> option 
         changes the Ant output format to be less verbose).</li>
 			</ul>
-		<blockquote>Congratulations, you can now run the 
-<a href="http://localhost/tutorial">Tapestry Tutorial</a>
+			
+		<blockquote>You can now run the 
+<a href="http://localhost/workbench/app">Tapestry Workbench</a>
 or the
 <a href="http://localhost/vlib/app">Virtual Library</a> applications.</blockquote>
-<p>To run the Tapestry Tutorial application with the 
-<a href="http://sourceforge.net/projects/jetty">Jetty</a> server included in this distribution (this does not involve
-JBoss):
+
+
+<h3>Configuring Jetty</h3>
+
+<p>To run the Tapestry Workbench application with 
+Jetty servlet container:
 			<ul>
-				<li><b>Execute the command:
-			<code>ant run-tutorial</code></b><br>This will run the embedded 
-			Jetty server and the <a href="http://localhost:8080/tutorial">Tapestry Tutorial</a> application.</li>
+				<li>Obtain and install a copy of Jetty
+				<li>
+			Update <code>config/build.properties</code>
+			and set property
+			<b><code>jetty.dir</code></b>
+			to the absolute path name
+			of the Jetty installation directory.
+					<li>Download the external dependencies
+				<li>Execute the command:
+				<br>
+				<b>
+			<code>ant -emacs run-workbench</code></b><br>This will run the embedded 
+			Jetty server. 
+			<br></li>
 			</ul>
-<p>To deploy the Tapestry Tutorial application onto an existing 
-<a href="http://jakarta.apache.org/tomcat">Tomcat</a> server:
+			
+		<blockquote>You can now run the 
+<a href="http://localhost:8080/workbench/app">Tapestry Workbench</a> application.
+</blockquote>
+
+			<h3>Configuring Tomcat</h3>
+			
+<p>To deploy the Tapestry Workbench application onto an existing 
+Tomcat:
+
+<p>To run the Tapestry Workbench application with 
+Tomcat servlet container:
 			<ul>
-				<li><b>Create the file
-			<code>config/build.properties</code>.<br></b>This 
-		file informs Tapestry where Tomcat as been installed. The
-		<code>config</code> directory contains a template file.
-		Set
-			<code>tomcat.dir</code> to the Tomcat installation
-		directory, for example <i>C:/Program Files/Apache Group/Tomcat 4.1</i>.
-		<b>Note:</b> Use only forward slashes in this file name.
-				<li><b>Execute the command:
-			<code>ant deploy-tomcat</code></b><br>This will deploy the tutorial application 
-			into the Tomcat server. If Tomcat is running you 
-		should be able to access the <a href="http://localhost:8080/tutorial">Tapestry Tutorial</a> application, 
-		otherwise start Tomcat to access the 
-        application.</li>
+				<li>Obtain and install a copy of Tomcat
+				<li>
+			Update <code>config/build.properties</code>
+			and set property
+			<b><code>tomcat.dir</code></b>
+			to the absolute path name
+			of the Tomcat installation directory, for example <code>C:/Program Files/Apache Group/Tomcat 4.1</code>.
+					<li>Download the external dependencies
+				<li>Execute the command:
+				<br>
+				<b>
+			<code>ant -emacs deploy-tomcat</code></b>
+			
+			<br>This will deploy the Workbench application into Tomcat.  If Tomcat is running, you will
+			be able to access the application immediately. 
+			<br></li>
 			</ul>
+			
+		<blockquote>You can then run the 
+<a href="http://localhost:8080/workbench/app">Tapestry Workbench</a> application.
+</blockquote>
+
 			
 <h2>Documentation</h2>
 
@@ -113,7 +179,7 @@ JBoss):
 	<table border="0" cellspacing="0" cellpadding="2">
 	<tr valign="top">
 		<td><IMG height=12 src="web/images/dots_leftnav.gif" width=14></td>
-		<td><A href="web/doc/api/index.html">Tapestry API Documentation</a>
+		<td><A href="web/doc/api/index.html">Tapestry API Documentation</A>
 		
 		<br><br>
 		
@@ -127,7 +193,7 @@ JBoss):
 
 	<tr valign="top">
 		<td><IMG height=12 src="web/images/dots_leftnav.gif" width=14></td>
-		<td><A href="web/doc/ComponentReference/index.html">Tapestry Component Reference</a>
+		<td><A href="web/doc/ComponentReference/index.html">Tapestry Component Reference</A>
 		
 		<br><br>
 		
@@ -141,9 +207,9 @@ JBoss):
 	<tr valign="top">
 		<td><IMG height=12 src="web/images/dots_leftnav.gif" width=14></td>
 		<td>
-            <P><A href="web/doc/Tutorial/Tutorial.html">Tutorial</a>
+            <P><A href="web/doc/Tutorial/Tutorial.html">Tutorial</A>
 		<IMG height=12 src="web/images/dots_leftnav.gif" width=14>
-		<A href="web/doc/Tutorial/Tutorial.pdf">[PDF]</a>
+		<A href="web/doc/Tutorial/Tutorial.pdf">[PDF]</A>
 		
 		<br><br>
 		The best way to begin 
@@ -161,9 +227,9 @@ JBoss):
 	<tr valign="top">
 		<td><IMG height=12 src="web/images/dots_leftnav.gif" width=14></td>
 		<td>
-            <P><A href="web/doc/DevelopersGuide/DevelopersGuide.html">Tapestry Developer's Guide</a>
+            <P><A href="web/doc/DevelopersGuide/DevelopersGuide.html">Tapestry Developer's Guide</A>
 		<IMG height=12 src="web/images/dots_leftnav.gif" width=14>
-		<A href="web/doc/DevelopersGuide/DevelopersGuide.pdf">[PDF]</a>
+		<A href="web/doc/DevelopersGuide/DevelopersGuide.pdf">[PDF]</A>
 		
 		<br><br>
 		Exhaustive 
@@ -179,9 +245,9 @@ JBoss):
 	<tr valign="top">
 		<td><IMG height=12 src="web/images/dots_leftnav.gif" width=14></td>
 		<td>
-            <P><A href="web/doc/TapestryUsersGuide/TapestryUsersGuide.html">Tapestry User's Guide</a>
+            <P><A href="web/doc/TapestryUsersGuide/TapestryUsersGuide.html">Tapestry User's Guide</A>
 		<IMG height=12 src="web/images/dots_leftnav.gif" width=14>
-		<A href="web/doc/TapestryUsersGuide/TapestryUsersGuide.pdf">[PDF]</a>
+		<A href="web/doc/TapestryUsersGuide/TapestryUsersGuide.pdf">[PDF]</A>
 		
 		<br><br>
 		Complete reference to the Tapestry framework.</P>
@@ -195,9 +261,9 @@ JBoss):
 	
 	<tr valign="top">
 		<td><IMG height=12 src="web/images/dots_leftnav.gif" width=14></td>
-		<td><A href="web/doc/ContributorsGuide/ContributorsGuide.html">Tapestry Contributor's Guide</a>
+		<td><A href="web/doc/ContributorsGuide/ContributorsGuide.html">Tapestry Contributor's Guide</A>
 		<IMG height=12 src="web/images/dots_leftnav.gif" width=14>
-		<A href="web/doc/ContributorsGuide/ContributorsGuide.pdf">[PDF]</a>
+		<A href="web/doc/ContributorsGuide/ContributorsGuide.pdf">[PDF]</A>
 		
 		<br><br>
 		A guide for advanced developers who want to contribute code back to the Tapestry framework.
@@ -209,11 +275,11 @@ JBoss):
 	
 	<tr valign="top">
 		<td><IMG height=12 src="web/images/dots_leftnav.gif" width=14></td>
-		<td><A href="web/index.html">Tapestry Web Site</a>
+		<td><A href="web/index.html">Tapestry Web Site</A>
 		
 		<br><br>
-		A <a href="web/index.html">local copy</a> 
-		of the <a href="@HOME_PAGE_URL@">Tapestry Home Page</a> is available
+		A <A href="web/index.html">local copy</A> 
+		of the <A href="@HOME_PAGE_URL@">Tapestry Home Page</A> is available
 		well.
 	
 		</td>
@@ -233,7 +299,8 @@ of the <A href="License.txt">Apache Software License 1.1</A>.</p></td></tr></tab
 
 <p>
 <a href="http://jakarta.apache.org"><IMG alt="Jakarta Banner" src="web/images/jakarta-banner.png" border=0 ></a>
-<br>&copy; 2003 Apache Software Foundation.
+<br>© 
+2003 Apache Software Foundation.</p>    
 
 
 </body>

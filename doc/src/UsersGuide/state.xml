@@ -179,7 +179,7 @@ In most cases, the Visit object is an ordinary JavaBean, and therefore, has a no
 constructor.  In this case, the complete class name of the
 Visit is specified as 
 <link linkend="configuration.search-path">configuration property</link>
-<literal>net.sf.tapestry.visit-class</literal>.
+<literal>org.apache.tapestry.visit-class</literal>.
 </para>
 
 <para>
@@ -191,7 +191,7 @@ Typically, the Visit class is defined in the application specification.
 <programlisting>
 <![CDATA[
 <application name="Tapestry Component Workbench">
-  <property name="net.sf.tapestry.visit-class" value="tutorial.workbench.Visit"/>
+  <property name="org.apache.tapestry.visit-class" value="tutorial.workbench.Visit"/>
 
   ...
 ]]>
@@ -246,7 +246,7 @@ Care should be taken that the Global object is threadsafe; since many engines (f
 in many threads) will access it simulatenously.  The default Global object is a synchronized
 &HashMap;.  This can be overriden with
 <link linkend="configuration.search-path">configuration property</link>
-<literal>net.sf.tapestry.global-class</literal>.
+<literal>org.apache.tapestry.global-class</literal>.
 </para>
 
 <para>

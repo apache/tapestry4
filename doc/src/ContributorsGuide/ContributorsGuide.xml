@@ -67,26 +67,19 @@ as updates to the tutorials and manuals represents the
 <chapter id="cvs">
 	<title>CVS Access</title>
 
-<para>
 <warning>
 <title>We've Moved to Jakarta</title>
 <para>
 Some of the details are in transition, with the move from SourceForge
-to Jakarta.  The new server location is <literal>cvs.apache.org</literal>,
+to &Jakarta;.  The new server location is <literal>cvs.apache.org</literal>,
 the repository path is <literal>/home/cvs</literal> and
 the module is <literal>jakarta-tapestry</literal>.
 </para>
 </warning>
-Tapestry is housed at the &TapestryProjectPage;.  Read-only CVS access is available
-to anyone; to have read-write access you must be registered
-with SourceForge, and then contact the Tapestry administrator
-(<ulink url="mailto:hlship@apache.org">Howard Lewis Ship</ulink>) to be
-added to the list of Tapestry developers.
-</para>
 
 <para>
 Using Eclipse, obtaining the source code takes only a few steps.   Tapestry
-compiles using some libraries from &JBoss; 3.0.4, which must be downloaded first.
+compiles using some libraries from &JBoss; 3.0.4 and &Jetty; 4.x which must be downloaded first.
 </para>
 
 <para>
@@ -139,7 +132,7 @@ Eclipse will checkout the latest versions of all the Tapestry code and compile i
 
 <para>
 You can access the Tapestry repository using command line CVS or other tools, as well.  Details
-for using command line CVS are available at the &TapestryProjectPage;.
+for using command line CVS are available at the &Jakarta;.
 </para>
 
 
@@ -164,7 +157,7 @@ as &JBoss; 3.0.4.
 You must create the file <filename>config/build.properties</filename>
 (under the Tapestry root directory).  This file defines a property,
 <literal>jboss.dir</literal> that identifies the full pathname
-to the JBoss installation.  A sample file is provided.
+to the JBoss installation and the &Jetty; installation.  A sample file is provided.
 <tip>
 	<para>
 	Be sure to use forward slashes for the path name, even
@@ -174,6 +167,12 @@ to the JBoss installation.  A sample file is provided.
 	from the JBoss distribution.
 	</para>
 </tip>
+</para>
+
+<para>
+Tapestry has some additional, external dependencies on libraries that (due to
+licensing conflicts) are not supplied in the distribution or stored in CVS.
+More details available shortly ....	
 </para>
 
 <section id="building.subprojects">
@@ -219,31 +218,22 @@ performs builds over all sub-projects.
 
 
 	<varlistentry>
-		<term><filename>examples/Tutorial</filename></term>
+		<term><filename>examples/Workbench</filename></term>
 		<listitem>
 		<para>
-		Builds <filename>tutorial.war</filename>.
+		Builds <filename>workbench.war</filename>.
 		</para>
 		</listitem>
 	</varlistentry>
 
 
-	<varlistentry>
-		<term><filename>examples/wap</filename></term>
-		<listitem>
-		<para>
-		Builds <filename>wap.war</filename>, a tiny
-		demonstration of WAP support.
-		</para>
-		</listitem>
-	</varlistentry>
 	
 	
 	<varlistentry>
 		<term><filename>examples/VlibBeans</filename></term>
 		<listitem>
 		<para>
-		Builds <filename>VlibBeans.jar</filename>, the EJBs used
+		Builds <filename>vlibbeans.jar</filename>, the EJBs used
 		by the Virtual Library demonstration.
 		</para>
 		</listitem>
@@ -254,7 +244,7 @@ performs builds over all sub-projects.
 		<term><filename>examples/Vlib</filename></term>
 		<listitem>
 		<para>
-		Builds <filename>Vlib.war</filename>, the presentation
+		Builds <filename>vlib.war</filename>, the presentation
 		layer of the Virtual Library demonstration.
 		</para>
 		</listitem>
@@ -264,9 +254,9 @@ performs builds over all sub-projects.
 		<term><filename>examples/VlibEAR</filename></term>
 		<listitem>
 		<para>
-		Builds <filename>Vlib.ear</filename> from
-		<filename>VlibBeans.jar</filename> and
-		<filename>Vlib.war</filename>.
+		Builds <filename>vlib.ear</filename> from
+		<filename>vlibbeans.jar</filename> and
+		<filename>vlib.war</filename>.
 		</para>
 		</listitem>
 	</varlistentry>
@@ -285,6 +275,17 @@ performs builds over all sub-projects.
 		<listitem>
 		<para>
 		Builds the Tapestry Developer's Guide documentation.
+		This guide is out of date, as is being replaced.
+		</para>
+		</listitem>
+	</varlistentry>
+
+	<varlistentry>
+		<term><filename>doc/src/UsersGuide</filename></term>
+		<listitem>
+		<para>
+Builds the Tapestry Users' Guide (the replacement for the Developer's
+Guide).  This document is still incomplete.  See, you just can't win.
 		</para>
 		</listitem>
 	</varlistentry>
@@ -293,7 +294,7 @@ performs builds over all sub-projects.
 		<term><filename>doc/src/ContributorsGuide</filename></term>
 		<listitem>
 		<para>
-		Builds the this documentation.
+		Builds this very documentation.
 		</para>
 		</listitem>
 	</varlistentry>		
@@ -376,6 +377,15 @@ The following Ant build targets are available from the Tapestry root directory:
     	</listitem>
     </varlistentry>
 
+    <varlistentry>
+    	<term>clover</term>
+    	<listitem>
+    	<para>
+    	Runs all &JUnit; tests and builds a code coverage report
+    	(using the Clover tool).
+    	</para>
+    	</listitem>
+    </varlistentry>
  
        
 </variablelist>
@@ -398,8 +408,17 @@ Tapestry uses &Saxon; to generate HTML documentation, and
 
 <listitem>
 <para>
-Download and unpack the &Saxon; distribution, release 6.5.2 or better.
+Download and unpack the &Saxon; distribution, release 6.5.2 exactly (later versions do not work).
 </para>
+</listitem>
+
+<listitem>
+<para>
+	Obtain the latest copies of the two DocBook distributions and place the files
+	in the <filename>ext-dist</filename> directory.
+	Details are in the file
+	<filename>doc/src/common/Readme.html</filename>.
+	</para>	
 </listitem>
 
 <listitem>
@@ -483,8 +502,17 @@ To configure for clover:
 <itemizedlist>
 
 <listitem>
-<para>Extract the Clover distribution, <filename>support/clover.zip</filename>
-to a non-temporary directory.
+<para>
+Get a copy of the Clover distribution.  
+<ulink url="http://www.thecortex.net/clover/">Cortex eBusiness</ulink> has donated a copy of Clover to
+support Tapestry.  The distribution is
+available from
+&HowardLewisShipEmail;.
+</para>	
+</listitem>
+
+<listitem>
+<para>Extract the Clover distribution to a non-temporary directory.
 </para>
 </listitem>
 
@@ -737,8 +765,8 @@ prefixed with 'Default' (example: <literal>DefaultScriptSource</literal>).
 </para>
 
 <para>
-The base package for the framework JAR (&TapestryFrameworkJar;) is <literal>net.sf.tapestry</literal>.
-The base package for the contrib JAR (&TapestryContribJar;) is <literal>net.sf.tapestry.contrib</literal>.
+The base package for the framework JAR (&TapestryFrameworkJar;) is <literal>org.apache.tapestry</literal>.
+The base package for the contrib JAR (&TapestryContribJar;) is <literal>org.apache.tapestry.contrib</literal>.
 </para>
 
 </section>
@@ -891,7 +919,7 @@ set the <literal>JYTHON_DIR</literal> classpath variable.
 
 <para>
 JUnit test source code is placed into the <filename class="directory">junit/src</filename> source tree.
-The package name for JUnit tests is <literal>net.sf.tapestry.junit</literal>.
+The package name for JUnit tests is <literal>org.apache.tapestry.junit</literal>.
 </para>
 
 <para>
@@ -910,7 +938,7 @@ such as dynamic lookup of specifications and implicit components.
 </para>
 
 <para>
-Create a test script in the <filename>net.sf.tapestry.junit.mock</filename> package.  Add a method to
+Create a test script in the <filename>org.apache.tapestry.junit.mock</filename> package.  Add a method to
 the <classname>MockTestCase</classname> class.
 </para>
 
@@ -941,9 +969,9 @@ element.  Within it, the virtual context and servlet are defined.
 <mock-test>
   <context name="c6" root="context6"/>
 
-  <servlet name="app" class="net.sf.tapestry.ApplicationServlet">
-    <init-parameter name="net.sf.tapestry.engine-class"
-       value="net.sf.tapestry.junit.mock.c6.C6Engine"/>
+  <servlet name="app" class="org.apache.tapestry.ApplicationServlet">
+    <init-parameter name="org.apache.tapestry.engine-class"
+       value="org.apache.tapestry.junit.mock.c6.C6Engine"/>
   </servlet>
 ]]>
 </programlisting>
@@ -1285,13 +1313,16 @@ any files where the leading comment matches.
 </para>
 
 <para>
-To use the script, change to the <filename>support</filename> directory and execute the command
-<command>python update-copyrights.py copyright.txt <replaceable>directory</replaceable></command>.
+To use the script, execute the command
+<command>python support/update-copyrights.py LICENSE.txt <replaceable>directory ...</replaceable></command>.
 </para>
 
 <para>
-The script is very fast, simply using <literal>..</literal> as the directory works in only a few seconds.
+You may specify any number of directories, though the script is fast enough that just using "." (for current directory)
+is easiest.
 </para>
+
+
 
 <warning>
 <title>Cygwin Python</title>

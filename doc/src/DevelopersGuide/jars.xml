@@ -3,106 +3,33 @@
 <appendix id="jars">
 	<title>Tapestry JAR files</title>
 	
-<para>
-The Tapestry distribution includes a number of JAR files, some of which are needed to compile the framework (and
-examples), others are used at runtime (and must be added to the servlet container's classpath).
-</para>
-
 <variablelist>
-
-	
-	<varlistentry>
-		<term><filename>commons-lang-<replaceable>x.x</replaceable></filename></term>
-		<term><filename>commons-logging-<replaceable>x.x.x</replaceable></filename></term>
-		<listitem>
-			<para>
-			Support classes for Tapestry, from the Jakarta Commons subproject.  These
-			libraries are needed at runtime.
-			</para>
-		</listitem>
-	</varlistentry>
-	
-	<varlistentry>
-		<term><filename>jakarta-oro-<replaceable>x.x.x</replaceable>.jar</filename></term>
-		<listitem>
-		<para>
-		Regular expression library, used to validate specification ids.
-		Needed by Tapestry at runtime.
-		</para>
-		</listitem>
-	</varlistentry>
 		
 	<varlistentry>
-		<term><filename>javax.servlet.jar</filename></term>
-		<listitem>
-			<para>
-			Defines the Java Servlet API.  Again, these classes and interfaces are needed by Tapestry
-			at runtime, but are almost always provided by the servlet container.
-			</para>
-		</listitem>
-	</varlistentry>
-
-
-	<varlistentry>
-		<term><filename>javax.xml.jaxp.jar</filename></term>
+		<term><filename>lib/runtime/<replaceable>*</replaceable>.jar</filename></term>
 		<listitem>
 		<para>
-		The Java API for XML Processing.  Needed at runtime to allow Tapestry to locate an XML
-		processor, used to parse application and component specifications.  These may be
-		provided by the servlet container or application server, or even be
-		directly provided by the JDK.
-		</para>
-		</listitem>
-	</varlistentry>
-	
-	<varlistentry>
-		<term><filename>jcommon-<replaceable>x.x.x</replaceable>.jar</filename></term>
-		<term><filename>jfreechart-<replaceable>x.x.x</replaceable>.jar</filename></term>
-		<listitem>
-			<para>
-			The <ulink url="http://www.object-refinery.com/jfreechart/">JFreeChart</ulink> libraries,
-			which are used in the Tapestry Workbench tutorial to generate a dynamic pie chart.
-			</para>
-		</listitem>
-	</varlistentry>
-		
-	<varlistentry>
-		<term><filename>log4j-<replaceable>x.x.x</replaceable>.jar</filename></term>
-		<listitem>
-		<para>
-		The &Log4J; logging framework.  This is used by Tapestry at runtime
-		(via the <filename>commons-logging-<replaceable>x.x.x</replaceable></filename>
-		library).
+		Frameworks that are usually needed at runtime (but not at framework build time) and
+		are not always supplied by the servlet container.  This currently
+		is just the &Log4J; framework.
 		</para>
 		</listitem>
 	</varlistentry>
 	
 
 	<varlistentry>
-		<term><filename>mcoidb.jar</filename></term>
+		<term><filename>lib/ext/<replaceable>*</replaceable>.jar</filename></term>
 		<listitem>
 		<para>
-		The <ulink url="http://mckoi.com/database/">McKoi SQL Database</ulink>, a GPL Java database.
-		This is used by the Virtual Library demonstration.
-		</para>
-		</listitem>
-	</varlistentry>
-
-	<varlistentry>
-		<term><filename>ognl-<replaceable>x.x.x</replaceable>-opt.jar</filename></term>
-		<listitem>
-		<para>
-		The <ulink url="http://www.ognl.org">Object Graph Navigation Library</ulink>,
-		which provides dynamic evaluation of JavaBeans property expressions.  This
-		is used by Tapestry at runtime. 
+		Frameworks needed when compiling the framework and at runtime.  This is
+		several other &Jakarta; frameworks (including &BSF; and &BCEL;), plus
+		the &OGNL; framework.
 		</para>
 		</listitem>
 	</varlistentry>
 
 
-	<!-- alphabetize as "net.sf.tapestry...." -->
-	
-		<varlistentry>
+			<varlistentry>
 		<term>&TapestryFrameworkJar;</term>
 		<listitem>
 			<para>
@@ -119,61 +46,24 @@ examples), others are used at runtime (and must be added to the servlet containe
 		<listitem>
 		<para>
 		Contains additional components and tools that are not integral to the framework itself, such
-		as the Palette.  Needed at runtime if any such components are used in an application.
+		as the &Palette;.  Needed at runtime if any such components are used in an application.
 		The framework release number is integrated into the file name.
 		</para>
 		</listitem>
 	</varlistentry>
-	
-	<varlistentry>
-		<term><filename>org.apache.crimson.jar</filename></term>
-		<listitem>
-		<para>
-		An XML parser that can be used by Tapestry unless a different one is configured.
-		</para>
-		</listitem>
-	</varlistentry>
-	
-	
-	<varlistentry>
-		<term><filename>org.mortbay.jetty-jdk1.2.jar</filename></term>
-		<listitem>
-		<para>
-		The &Jetty; servlet container, used to execute the Tapestry examples, tutorials and demostrations.
-		</para>
-		</listitem>
-	</varlistentry>
-	
+
 	
 
 	
-		
-	<varlistentry>
-		<term><filename>Tutorial.war</filename></term>
-		<term><filename>Vlib.ear</filename></term>
-		<term><filename>Vlib.war</filename></term>
-		<term><filename>Wap.war</filename></term>
-		<listitem>
-		<para>
-		Example Tapestry applications.  <filename>Vlib.war</filename> is
-		incorporated into <filename>Vlib.ear</filename>.
-		</para>
-		</listitem>
-	</varlistentry>
-	
-	
-	<varlistentry>
-		<term><filename>VlibBeans.jar</filename></term>
-		<listitem>
-		<para>
-		An EJB JAR, containing entity and session EJBs for deployment with &JBoss;.
-		<filename>VlibBeans.jar</filename> is incorporated into
-		<filename>Vlib.ear</filename>.
-		</para>
-		</listitem>
-	</varlistentry>
-	
 </variablelist>
+
+<para>
+In addition, Tapestry applications may need the packages
+<class>javax.servlet</class> and
+<class>javax.xml.</class> at compile time and an XML parser at runtime.  These
+are usually provided by the servlet container or application server.
+</para>
+
 
 </appendix>
   
