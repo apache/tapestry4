@@ -3,6 +3,7 @@
 <!ENTITY chap-intro SYSTEM "chap-intro.sgml">
 <!ENTITY chap-setup SYSTEM "chap-setup.sgml">
 <!ENTITY chap-hello SYSTEM "chap-hello.sgml">
+<!ENTITY chap-dynamic SYSTEM "chap-dynamic.sgml">
 
 <!ENTITY jwc-tag "<literal>&lt;jwc&gt;</literal>">
 
@@ -49,5 +50,6 @@
 &chap-intro;
 &chap-setup;
 &chap-hello;
+&chap-dynamic;
 
 </book>

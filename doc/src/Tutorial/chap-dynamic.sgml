@@ -1,0 +1,222 @@
+<!-- $Id$ -->
+
+<chapter id="dynamic">
+	<title>Dynamic Content</>
+
+<para>
+In this chapter, we'll create a new web application that will show some dynamic content.  We'll also 
+begin to show some interactivity by adding a link to the page.
+Our dynamic content will simply be to show the current date and time. The interactivity will be a 
+link to refresh the page.  It all looks like this:
+</>
+
+<figure>
+	<title>Dynamic Application</>
+	<mediaobject>
+		<imageobject>
+			<imagedata fileref="images/dynamic.jpg" format="jpg">
+		</imageobject>
+	</>
+</figure>
+
+ 
+<para>
+Clicking the word "here" will update the page showing the new data and time.  Not incredibly 
+interactive, but it's a start.
+</>
+
+<para>
+The code for this section of the tutorial is in the package 
+<classname>tutorial.simple</>.
+</>
+
+<para>
+We need to create a new servlet, but its almost identical to our earlier 
+one.  The real action in this section will be the new 
+version of the home page.
+</>
+
+<figure>
+	<title>SimpleServlet.java</>
+	<programlisting><![CDATA[package tutorial.simple;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.app.*;
+
+public class SimpleServlet extends ApplicationServlet
+{
+  protected String getApplicationSpecificationPath()
+  {
+    return "/tutorial/simple/Simple.application";
+  }
+}]]></></>
+
+
+<para>
+The application specification is also straight forward:
+</>
+
+
+<figure>
+	<title>Simple.application</>
+	<programlisting><![CDATA[<?xml version="1.0"?>
+<!DOCTYPE application PUBLIC 
+"-//Primix Solutions//Tapestry Specification 1.0//EN"
+	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
+
+<application>
+  <name>Simple Tutorial</name>
+  <engine-class>com.primix.tapestry.engine.SimpleEngine</engine-class>
+	
+  <page>
+    <name>Home</name>
+    <specification-path>/tutorial/simple/Home.jwc
+    </specification-path>
+  </page>
+</application>]]></></>
+
+<!--
+ 
+Things only begin to get more interesting when we look at the HTML template for the home 
+page:
+Home.html
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<title>Simple</title>
+</head>
+<body>
+This application demonstrates some dynamic behavior using Tapestry 
+components.
+
+<p>The current date and time is: <b><jwc id="insertDate"/></b>
+
+<p>Click <jwc id="refresh">here</jwc> to refresh.
+
+</body>
+</html>
+ 
+This looks like ordinary HTML, except for the special <jwc> tags (shown in bold).  "jwc" is an 
+abbreviation for "Java Web Component"; these tags are placeholders for the dynamic content 
+provided by Tapestry components.
+We have two components.  The first inserts the current date and time.  The second component 
+creates a hyperlink that refreshes the page.
+One of the goals of Tapestry is that the HTML should have the minimum amount of special 
+markup.  This is demonstrated here ... the <jwc> tags blend into the standard HTML of the 
+template.  We also don't confuse the HTML by explaining exactly what an insertDate or refresh 
+is; that comes out of the specification (described shortly).  The ids used here are meaningful only 
+to the developer, the particular type and configuration of each component is defined in the 
+component specification.
+Very significant is the fact that a Tapestry component can wrap around other elements of the 
+template.  The refresh component wraps around the word "here".  What this means is that the 
+refresh component will get a chance to emit some HTML (an <a> hyperlink tag), then emit the 
+HTML it wraps (the word "here"), then get a chance to emit more HTML (the </a> closing tag).
+What's more important is that the component can not only wrap static HTML from the template 
+(as shown in this example), but may wrap around other Tapestry components  and those 
+components may themselves wrap text and components, to whatever depth is required.
+And, as we'll see in later chapters, a Tapestry component itself may have a template and more 
+components inside of it.  In a real application, the single page of HTML produced by the 
+framework may be the product of dozens of components, effectively "woven" from dozens of 
+HTML templates.
+Again, the HTML template doesn't define what the components are, it is simply a mix of static 
+HTML that will be passed directly back to the client web browser, with a few placeholders (the 
+<jwc> tags) for where dynamic content will be plugged in.
+The page's component specification defines what types of components are used and how data 
+moves between the application, page and any components.
+Home.jwc
+<?xml version="1.0"?>
+<!DOCTYPE specification PUBLIC 
+"-//Primix Solutions//Tapestry Specification 1.0//EN"
+	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
+	
+<specification>
+	<class>tutorial.simple.Home</class>
+	
+	<components>
+		<component>
+			<id>insertDate</id>
+			<type>Insert</type>
+			
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>currentDate</property-path>
+				</binding>
+			</bindings>
+		</component>
+		
+		<component>
+			<id>refresh</id>
+			<type>Page</type>
+			
+			<bindings>
+				<static-binding>
+					<name>page</name>
+					<value>Home</value>
+				</static-binding>
+			</bindings>
+		</component>
+	</components>
+	
+</specification>
+ 
+Here's what all that means:  The Home page is implemented with a custom class, 
+tutorial.simple.Home.  It contains two components, insertDate and refresh.
+The two components used within this page are provided by the Tapestry framework.
+The insertDate component is type Insert.  Insert components have a value parameter used to 
+specify what should be inserted into the HTML produced by the page.  The insertDate 
+component has its value parameter bound to a JavaBeans property of its container (the page), the 
+currentDate property.
+The refresh component is type Page, meaning it creates a link to some other page in the 
+application.  Page components have a parameter, also named page, which defines the name of the 
+page to navigate to.  The name is matched against a page named in the application specification.
+In this case, we only have one page in our application (named "Home"), so we can use a static 
+binding for the page parameter.
+That just leaves the implementation of the Home page component:
+Home.java
+package tutorial.simple;
+
+import java.util.*;
+import com.primix.tapestry.*;
+
+public class Home extends BasePage
+{
+  public Date getCurrentDate()
+  {
+    return new Date();
+  }
+}
+ 
+Home implements a  read-only JavaBeans property, currentDate.  This is the same currentDate 
+that the insertDate component needs.  When asked for the current date, the Home object returns 
+a new instance of the java.util.Date object.
+The insertDate component converts objects into strings by invoking toString() on the object.  
+Now all the bits and pieces are working together.
+Run the application, and use the View Source command to examine the HTML generated by 
+Tapestry:
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<title>Simple</title>
+</head>
+<body>
+
+This application demonstrates some dynamic behavior using Tapestry 
+components.
+
+<p>The current date and time is: <b>Thu Nov 09 17:23:31 EST 2000</b>
+
+<p>Click 
+<a href="/tutorial/simple/page/Home">here</a> to refresh.
+
+</body>
+</html>
+ 
+This should look very familiar.  Text which was generated dynamically, by Tapestry components, 
+is in bold font.  As you can see, Tapestry not only inserted simple text (the current date and time, 
+obtained from an java.util.Date object), but the refresh component inserted the <a> and 
+</a> tags, and created an appropriate URL for the href attribute.
+
+
+-->
+</chapter>
