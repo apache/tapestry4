@@ -31,7 +31,7 @@
     <!-- is useful with JSPs.                                               -->
     <!-- ================================================================== -->
 
-    <attribute name="UnpackWars">true</attribute>
+    <attribute name="UnpackWars">false</attribute>
 
     <!-- ================================================================== -->
     <!-- If true, Jetty first delegates loading a class to the webapp's     -->
@@ -108,25 +108,7 @@
              </Arg>
            </Call>
           -->
-          
-		  <Call name="addContext">
-		    <Arg>/doc/*</Arg>
-		    <Set name="ResourceBase">@user.dir@/doc</Set>
-		    <Set name="ServingResources">TRUE</Set>
-		  </Call>
-		    
-		   <Call name="addContext">
-		    <Arg>/</Arg>
-		    <Set name="ResourceBase">@user.dir@/web</Set>
-		    <Set name="ServingResources">TRUE</Set>
-		    <Call name="getResourceHandler">
-			<Call name="addIndexFile">
-				<Arg>extranet.html</Arg>
-			</Call>
-		    </Call>
-		    <Set name="RedirectNullPath">TRUE</Set>
-		  </Call>
-		
+	
 		 <Call name="addContext">
 		    <Arg>/private/*</Arg>
 		    <Set name="ResourceBase">../server/tapestry/tmp/private</Set>
