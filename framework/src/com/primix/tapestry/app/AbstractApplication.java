@@ -1306,7 +1306,7 @@ public abstract class AbstractApplication
 	 *  Invoked when the application object is removed from the {@link HttpSession}.
 	 *  This occurs when the session times out or is explicitly invalidated
 	 *  (for example, by the reset or restart services).  Invokes
-	 *  {@link #applicationCleanup()}.
+	 *  {@link #cleanupApplication()}.
 	 *
 	 */
 	 
@@ -1328,7 +1328,7 @@ public abstract class AbstractApplication
 	 *  because the sesssion timed out or was invalidated.
 	 *
 	 *  <p>Locates all active pages (pages which have been activated) and
-	 *  invokes {@link IPage#pageCleanup()} on them.  This gives 
+	 *  invokes {@link IPage#cleanupPage()} on them.  This gives 
 	 *  pages a chance to release any long held resources.  This primarily
 	 *  exists so that pages that hold references to stateful session EJBs
 	 *  can remove those EJBs in a timely manner.

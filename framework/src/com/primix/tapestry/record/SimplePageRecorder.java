@@ -4,6 +4,7 @@ import com.primix.tapestry.*;
 import java.util.*;
 import com.primix.foundation.*;
 import java.io.Serializable;
+import com.primix.tapestry.app.SimpleApplication;
 
 /*
  * Tapestry Web Application Framework
