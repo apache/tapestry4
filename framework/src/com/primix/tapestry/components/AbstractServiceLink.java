@@ -1,6 +1,5 @@
 package com.primix.tapestry.components;
 
-import com.primix.tapestry.spec.ComponentSpecification;
 import com.primix.tapestry.*;
 import java.util.*;
 
@@ -69,12 +68,6 @@ public abstract class AbstractServiceLink
 
 	private static final int MAP_SIZE = 3;
 	private Map attributes;
-
-	public AbstractServiceLink(IPage page, IComponent container, String name,
-		ComponentSpecification specification)
-	{
-		super(page, container, name, specification);
-	}
 
 	/**
 	*  Invoked by {@link #render(IResponseWriter, IRequestCycle)} if the

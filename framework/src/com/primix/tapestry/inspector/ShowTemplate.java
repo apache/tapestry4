@@ -1,7 +1,6 @@
 package com.primix.tapestry.inspector;
 
 import com.primix.tapestry.*;
-import com.primix.tapestry.spec.*;
 import com.primix.tapestry.components.*;
 import java.util.*;
 import com.primix.tapestry.parse.*;
@@ -47,11 +46,6 @@ import com.primix.tapestry.parse.*;
  
 public class ShowTemplate extends BaseComponent
 {
-	public ShowTemplate(IPage page, IComponent container, String id,
-		ComponentSpecification specification)
-	{
-		super(page, container, id, specification);
-	}
 
 	public boolean getHasTemplate()
 	{

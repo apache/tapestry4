@@ -1,7 +1,6 @@
 package com.primix.tapestry.inspector;
 
 import com.primix.tapestry.*;
-import com.primix.tapestry.spec.*;
 import com.primix.tapestry.components.*;
 import java.util.*;
 
@@ -52,12 +51,6 @@ public class ViewTabs extends BaseComponent
 		
 	private View view;
 
-	public ViewTabs(IPage page, IComponent container, String id,
-		ComponentSpecification specification)
-	{
-		super(page, container, id, specification);
-	}
-
 	public View[] getViews()
 	{
 		return views;
@@ -68,6 +61,10 @@ public class ViewTabs extends BaseComponent
 		view = value;
 	}
 	
+    // We don't worry about cleaning this up at the end of the request cycle
+    // because the value is an Enum, a singleton that would stay in memory
+    // anyway.
+
 	public View getView()
 	{
 		return view;

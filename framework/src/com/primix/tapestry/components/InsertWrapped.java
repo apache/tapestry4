@@ -1,6 +1,5 @@
 package com.primix.tapestry.components;
 
-import com.primix.tapestry.spec.ComponentSpecification;
 import com.primix.tapestry.*;
 
 /*
@@ -43,14 +42,8 @@ import com.primix.tapestry.*;
 
 public class InsertWrapped extends AbstractComponent
 {
-	public InsertWrapped(IPage page, IComponent container, String id,
-		ComponentSpecification specification)
-	{
-		super(page, container, id, specification);
-	}
-
 	/**
-	*  Finds <code>InsertWrapped</code>'s container, and invokes
+	*  Finds this <code>InsertWrapped</code>'s container, and invokes
 	*  {@link IComponent#renderWrapped(IResponseWriter, IRequestCycle)}
 	*  on it.
 	*

@@ -1,7 +1,6 @@
 package com.primix.tapestry.inspector;
 
 import com.primix.tapestry.*;
-import com.primix.tapestry.spec.*;
 import com.primix.tapestry.components.*;
 import java.util.*;
 
@@ -107,12 +106,6 @@ public class ShowInspector extends BaseComponent
 	private IBinding imageBinding;
 	private IBinding focusBinding;
 	private IBinding disabledBinding;
-
-	public ShowInspector(IPage page, IComponent container, String id,
-		ComponentSpecification specification)
-	{
-		super(page, container, id, specification);
-	}
 
 	public void setImageBinding(IBinding value)
 	{

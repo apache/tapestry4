@@ -1,6 +1,5 @@
 package com.primix.tapestry.components;
 
-import com.primix.tapestry.spec.ComponentSpecification;
 import com.primix.tapestry.*;
 import java.util.*;
 
@@ -101,12 +100,6 @@ public class Service extends AbstractServiceLink
 	private IBinding serviceBinding;
 	private String serviceValue;
 	private IBinding contextBinding;
-
-	public Service(IPage page, IComponent container, String name,
-		ComponentSpecification specification)
-	{
-		super(page, container, name, specification);
-	}
 
 	public IBinding getServiceBinding()
 	{

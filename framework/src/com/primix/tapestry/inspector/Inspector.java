@@ -1,7 +1,6 @@
 package com.primix.tapestry.inspector;
 
 import com.primix.foundation.*;
-import com.primix.tapestry.spec.*;
 import com.primix.tapestry.*;
 import com.primix.tapestry.components.*;
 
@@ -45,11 +44,6 @@ public class Inspector extends BasePage
 	private View view = View.SPECIFICATION;
 	private String inspectedPageName;
 	private String inspectedIdPath;
-
-	public Inspector(IApplication application, ComponentSpecification componentSpecification)
-	{
-		super(application, componentSpecification);
-	}
 
 	public void detachFromApplication()
 	{

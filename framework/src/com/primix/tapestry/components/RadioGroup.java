@@ -1,7 +1,6 @@
 package com.primix.tapestry.components;
 
 import com.primix.tapestry.*;
-import com.primix.tapestry.spec.*;
 import java.util.*;
 
 /*
@@ -100,12 +99,6 @@ public class RadioGroup extends AbstractFormComponent
     public static RadioGroup get(IRequestCycle cycle)
     {
         return (RadioGroup)cycle.getAttribute(ATTRIBUTE_NAME);
-    }
-
-    public RadioGroup(IPage page, IComponent container, String id,
-        ComponentSpecification specification)
-    {
-        super(page, container, id, specification);
     }
 
     public IBinding getDisabledBinding()

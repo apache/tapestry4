@@ -171,12 +171,15 @@ public class PageSource
 				throw new ApplicationRuntimeException(
 					"This application does not contain a page named " + pageName + "."); 
 
-				result = loader.loadPage(pageName, specification.getSpecificationPath());
+			result = loader.loadPage(pageName, specification.getSpecificationPath());
+
+            // Because of support for new style (no arguments) constructor, we must
+            // always join the application explicitly.
+
+            result.joinApplication(application);
 
 			if (monitor != null)
 				monitor.pageCreateEnd(pageName);
-
-			// Newly loaded pages are already 'joined' to the application.
 		}
 
 		return result;

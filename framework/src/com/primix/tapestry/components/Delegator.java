@@ -1,7 +1,6 @@
 package com.primix.tapestry.components;
 
 import com.primix.tapestry.*;
-import com.primix.tapestry.spec.*;
 
 /*
  * Tapestry Web Application Framework
@@ -65,11 +64,6 @@ import com.primix.tapestry.spec.*;
 public class Delegator extends AbstractComponent
 {
 	private IBinding delegateBinding;
-
-	public Delegator(IPage page, IComponent container, String name,ComponentSpecification specification)
-	{
-		super(page, container, name, specification);
-	}
 
 	public void setDelegateBinding(IBinding value)
 	{

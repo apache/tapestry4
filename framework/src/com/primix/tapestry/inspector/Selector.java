@@ -1,7 +1,6 @@
 package com.primix.tapestry.inspector;
 
 import com.primix.tapestry.*;
-import com.primix.tapestry.spec.*;
 import com.primix.tapestry.components.*;
 import java.util.*;
 
@@ -48,12 +47,6 @@ public class Selector extends BaseComponent
 {
 	private IPropertySelectionRenderer renderer;
 	
-	public Selector(IPage page, IComponent container, String id,
-		ComponentSpecification specification)
-	{
-		super(page, container, id, specification);
-	}
-
 	/**
 	 *  Gets the listener for the form.  When the form is submitted,
 	 *  the inspectedPageName of the {@link Inspector} page will be updated,

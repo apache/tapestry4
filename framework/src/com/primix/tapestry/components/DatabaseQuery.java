@@ -1,6 +1,5 @@
 package com.primix.tapestry.components;
 
-import com.primix.tapestry.spec.ComponentSpecification;
 import com.primix.tapestry.*;
 import java.sql.*;
 import java.util.*;
@@ -132,12 +131,6 @@ public class DatabaseQuery extends AbstractComponent
 	private IBinding rowBinding;
 	private Map row;
 	private boolean rendering;
-
-	public DatabaseQuery(IPage page, IComponent container, String id, 
-		ComponentSpecification specification)
-	{
-		super(page, container, id, specification);
-	}
 
 	public IBinding getConnectionBinding()
 	{

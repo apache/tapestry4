@@ -1,8 +1,6 @@
 package com.primix.tapestry.components;
 
 import com.primix.tapestry.*;
-import com.primix.tapestry.event.*;
-import com.primix.tapestry.spec.*;
 
 /*
  * Tapestry Web Application Framework
@@ -122,12 +120,6 @@ public class Rollover extends AbstractComponent
 	*/
 
 	private final static String[] reservedNames = { "name", "src", "border" };
-
-	public Rollover(IPage page, IComponent container, String id,
-		ComponentSpecification specification)
-	{
-		super(page, container, id, specification);
-	}
 
 	/**
 	*  Converts an {@link IAsset} binding into a usable URL.  Returns null

@@ -1,6 +1,5 @@
 package com.primix.tapestry.components;
 
-import com.primix.tapestry.spec.ComponentSpecification;
 import com.primix.tapestry.*;
 import java.util.*;
 
@@ -92,12 +91,6 @@ public class Direct extends AbstractServiceLink
 {
 	private IBinding listenerBinding;
 	private IBinding contextBinding;
-
-	public Direct(IPage page, IComponent container, String name,
-		ComponentSpecification specification)
-	{
-		super(page, container, name, specification);
-	}
 
 	public void setContextBinding(IBinding value)
 	{

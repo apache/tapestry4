@@ -1,8 +1,6 @@
 package com.primix.tapestry.components;
 
 import com.primix.tapestry.*;
-import com.primix.tapestry.spec.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -84,12 +82,6 @@ public class Option extends AbstractComponent
 	private String labelValue;
 
 	private static final String[] reservedNames = { "value" };
-
-	public Option(IPage page, IComponent container, String id,
-		ComponentSpecification specification)
-	{
-		super(page, container, id, specification);
-	}
 
 	public IBinding getLabelBinding()
 	{

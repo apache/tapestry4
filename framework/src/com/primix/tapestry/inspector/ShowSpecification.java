@@ -52,12 +52,6 @@ implements ILifecycle
 	private String parameterName;
 	private String assetName;
 	
-	public ShowSpecification(IPage page, IComponent container, String id,
-		ComponentSpecification specification)
-	{
-		super(page, container, id, specification);
-	}
-
 	public void cleanupAfterRender(IRequestCycle cycle)
 	{
 		inspectedComponent = null;

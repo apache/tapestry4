@@ -40,10 +40,13 @@ import com.primix.tapestry.components.*;
  * <p>Components are created dynamically from thier class names (part of the
  *  {@link ComponentSpecification}.  Classes which
  * implement <code>IComponent</code> (but not {@link IPage})
- * must implement a constructor with the
+ * must implement either a non-arguments constructor, or
+ * a constructor with the
  * following parameters:
  *
  * <p><code>(IPage, IComponent, String, ComponentSpecification)</code>
+ *
+ * <p>The latter case (the complicated constructor) has been deprecated.
  *
  * <p>The {@link ILifecycle} interface defines additional methods
  * for components that need to perform extra work as they are loaded and before
@@ -122,6 +125,15 @@ public interface IComponent extends IRender
     public IComponent getContainer();
 
     /**
+     *  Sets the container of the component.    This is write-once,
+     *  an attempt to change it later will throw an {@link ApplicationRuntimeException}.
+     *
+     */
+
+
+    public void setContainer(IComponent value);
+
+    /**
      *  Returns a string identifying the name of the page and the id path of the reciever within
      *  the page.  Pages simply return their name.
      *
@@ -141,6 +153,14 @@ public interface IComponent extends IRender
      */
  
     public String getId();
+
+    /**
+     *  Sets the id of the component.    This is write-once,
+     *  an attempt to change it later will throw an {@link ApplicationRuntimeException}.
+     *
+     */
+
+    public void setId(String value);
 
     /**
      *  Returns the qualified id of the component.  This represents a path from the 
@@ -165,12 +185,28 @@ public interface IComponent extends IRender
     public IPage getPage();
 
     /**
+     *  Sets the page which ultimiately contains the component.  This is write-once,
+     *  an attempt to change it later will throw an {@link ApplicationRuntimeException}.
+     *
+     */
+
+    public void setPage(IPage value);
+
+    /**
      *  Returns the specification which defines the component.
      *
      */
  
     public ComponentSpecification getSpecification();
 
+    /**
+     *  Sets the specification used by the component.  This is write-once, an attempt
+     *  to change it later will throw an {@link ApplicationRuntimeException}.
+     *
+     */
+
+    public void setSpecification(ComponentSpecification value);
+    
     /**
      *  Invoked to make the receiver render any elements it wraps.  This is typically
      *  invoked by the receiver itself.  This method is public so that the

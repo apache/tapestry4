@@ -4,7 +4,6 @@ import com.primix.foundation.*;
 import java.util.*;
 import com.primix.tapestry.*;
 import com.primix.tapestry.event.*;
-import com.primix.tapestry.spec.*;
 
 /*
  * Tapestry Web Application Framework
@@ -128,12 +127,6 @@ public class Foreach extends AbstractComponent
 	private boolean last;
 	private boolean rendering;
 	
-	public Foreach(IPage page, IComponent container, String id, 
-		ComponentSpecification specification)
-	{
-		super(page, container, id, specification);
-	}
-
 	public IBinding getFirstBinding()
 	{
 		return firstBinding;

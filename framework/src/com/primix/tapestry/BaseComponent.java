@@ -36,12 +36,6 @@ import java.util.*;
 /**
  * Base implementation for most components that use an HTML template.
  *
- * <p>A better name would be <code>Component</code>, but that causes conflicts
- * with <code>ComponentBeanInfo</code> which confuses the
- * {@link com.primix.foundation.prop.PropertyHelper}
- * class when it attempts to dynamically access properties of a component.
- *
- *
  * @author Howard Ship
  * @version $Id$
  */
@@ -51,6 +45,15 @@ public class BaseComponent extends AbstractComponent
 	protected static final int OUTER_INIT_SIZE = 5;
 	protected int outerCount = 0;
 	protected IRender[] outer;
+
+    public BaseComponent()
+    {
+    }
+
+    /**
+     *  @deprecated
+     *
+     */
 
 	public BaseComponent(IPage page, IComponent container, String id, 
 		ComponentSpecification spec)

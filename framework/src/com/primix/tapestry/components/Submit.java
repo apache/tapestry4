@@ -1,7 +1,6 @@
 package com.primix.tapestry.components;
 
 import com.primix.tapestry.*;
-import com.primix.tapestry.spec.*;
 
 /*
  * Tapestry Web Application Framework
@@ -114,12 +113,6 @@ public class Submit extends AbstractFormComponent
 	private static final String[] reservedNames = 
 	{ "type", "name" };
 
-	public Submit(IPage page, IComponent container, String id,
-		ComponentSpecification specification)
-	{
-		super(page, container, id, specification);
-	}
-	
 	public IBinding getLabelBinding()
 	{
 		return labelBinding;

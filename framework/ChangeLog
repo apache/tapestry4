@@ -1,3 +1,8 @@
+* Oct 11 2000 hship
+
+Change the interface for IPage and IComponent to allow a no-arguments constructor, and deprecate
+the more complicated constructors.
+
 * Oct 6 2000 hship
 
 Service component didn't declare its formal context parameter in its specification.

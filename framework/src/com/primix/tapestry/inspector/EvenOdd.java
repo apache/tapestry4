@@ -1,7 +1,6 @@
 package com.primix.tapestry.inspector;
 
 import com.primix.tapestry.*;
-import com.primix.tapestry.spec.*;
 import com.primix.tapestry.components.*;
 import java.util.*;
 
@@ -55,12 +54,6 @@ implements ILifecycle
 	private String[] reservedNames = 
 	{ "class" 
 	};
-
-	public EvenOdd(IPage page, IComponent container, String id,
-		ComponentSpecification specification)
-	{
-		super(page, container, id, specification);
-	}
 
 	private String getNextClass()
 	{

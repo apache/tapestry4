@@ -2,7 +2,6 @@ package com.primix.tapestry.components;
 
 import com.primix.tapestry.*;
 import com.primix.tapestry.event.*;
-import com.primix.tapestry.spec.*;
 
 /*
  * Tapestry Web Application Framework
@@ -83,13 +82,7 @@ public class Image extends AbstractComponent
 	private boolean staticBorder;
 	private int borderValue;
 
-		private final static String[] reservedNames = { "src" };
-
-	public Image(IPage page, IComponent container, String id, 
-		ComponentSpecification specification)
-	{
-		super(page, container, id, specification);
-	}
+	private final static String[] reservedNames = { "src" };
 
 	/**
 	*  Converts an {@link IAsset} binding into a usable URL.  Returns null

@@ -1,6 +1,5 @@
 package com.primix.tapestry.components;
 
-import com.primix.tapestry.spec.ComponentSpecification;
 import com.primix.tapestry.*;
 import java.util.*;
 
@@ -79,11 +78,6 @@ public class Action extends AbstractServiceLink
 	// Each instance gets its own context array.
 
 	private String[] context;
-
-	public Action(IPage page, IComponent container, String name,ComponentSpecification specification)
-	{
-		super(page, container, name, specification);
-	}
 
 	public IBinding getListenerBinding()
 	{
