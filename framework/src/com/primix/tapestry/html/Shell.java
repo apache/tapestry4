@@ -115,6 +115,9 @@ public class Shell extends AbstractComponent
 	
     private IBinding refreshBinding;
 	
+	private static final String generatorContent = 
+		"Tapestry Application Framework, version " + Tapestry.VERSION;
+	
     public void setTitleBinding(IBinding value)
     {
 		titleBinding = value;
@@ -199,7 +202,7 @@ public class Shell extends AbstractComponent
 			
 			writer.beginEmpty("meta");
 			writer.attribute("name", "generator");
-			writer.attribute("content", "Tapestry Web Application Framework");
+			writer.attribute("content", generatorContent);
 			writer.println();
 			
 			writer.begin("title");
@@ -224,7 +227,7 @@ public class Shell extends AbstractComponent
 				writer.attribute("href", stylesheet.buildURL(cycle));
 				writer.println();
 			}
-						
+			
 			writeRefresh(writer, cycle);
 			
 			writer.end();  // head
