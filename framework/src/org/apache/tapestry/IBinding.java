@@ -189,7 +189,7 @@ public interface IBinding extends ILocatable
     /**
      *  Updates the value of the binding, if possible.
      *
-     *  @exception ReadOnlyBindingException If the binding is read only.
+     *  @exception BindingException If the binding is read only.
      *
      **/
 

@@ -81,7 +81,7 @@ public interface ITemplateParserDelegate
      *  otherwise.  The parser uses this information to determine
      *  if it should ignore the body of a tag.
      *
-     *  @throws ApplicationRuntimeException if no such component exists
+     *  @throws org.apache.tapestry.ApplicationRuntimeException if no such component exists
      * 
      **/
 
@@ -94,7 +94,7 @@ public interface ITemplateParserDelegate
      *  @param libraryId the specified library id, possibly null
      *  @param type the component type
      * 
-     *  @throws ApplicationRuntimeException if the specification cannot be found
+     *  @throws org.apache.tapestry.ApplicationRuntimeException if the specification cannot be found
      * 
      *  @since 3.0
      * 
