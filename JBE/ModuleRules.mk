@@ -235,10 +235,10 @@ endif
 
 javadoc:
 ifeq "$(JAVADOC_DIR)" ""
-	$(error JBE Error: Must set JAVADOC_DIR in Makefile)
+	$(error Must define JAVADOC_DIR in Makefile)
 endif
 ifeq "$(PACKAGES)" ""
-	$(error JBE Error: Must define PACKAGES in Makefile)
+	$(error Must define PACKAGES in Makefile)
 endif
 	@$(ECHO) "\n*** Generating Javadoc ... ***\n"
 	@$(MKDIRS) $(FINAL_JAVADOC_DIR)

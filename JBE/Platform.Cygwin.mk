@@ -42,6 +42,7 @@ CP := $(TOOLS_DIR)/cp.exe
 CAT := $(TOOLS_DIR)/cat.exe
 FIND := $(TOOLS_DIR)/find.exe
 TAR := $(TOOLS_DIR)/tar.exe
+PWD := $(TOOLS_DIR)/pwd.exe
 
 # Provided internally by Cygnus
 

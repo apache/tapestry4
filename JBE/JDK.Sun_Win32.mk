@@ -25,7 +25,11 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
 
-# Defines the Sun JDK environment.
+# Defines the Sun JDK environment for Win32
+
+# JDK_DIR is specified indirectly.  We determine the vendor, release and
+# platform (see CommonDefs.mk), then look for a variable that defines
+# the local directory for the vendor and release, that becomes JDK_DIR.
 
 JDK_BIN_DIR := $(JDK_DIR)/bin
 

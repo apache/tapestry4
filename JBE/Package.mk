@@ -38,11 +38,15 @@ endif
 
 ifneq "$(RESOURCE_FILES)" ""
 
-catalog-resources: $(wildcard $(RESOURCE_FILES))
+# Edit package.html out ... it is not a resource, it is a file used by javadoc
+
+catalog-resources: $(filter-out package.html,$(wildcard $(RESOURCE_FILES)))
 	@$(ECHO) $(addprefix $(MOD_SOURCE_DIR_PREFIX)$(MOD_PACKAGE_DIR)$(SLASH), $?) \
 			>> $(MOD_RESOURCE_CATALOG)
 	
 endif
+
+
 
 # RMI_CLASSES is a list of class names (not file names), so it can't
 # be wildcarded.
