@@ -578,7 +578,7 @@
 		<antcall target="downloadzip">
 			<param name="sourcefile" value="${forrestdl.loc}"/>
 			<param name="dlfile" value="${forrestdl.ant.xml}"/>
-			<param name="destdir" value="${base.path}"/>
+			<param name="destdir" value="${ext.download.dir}"/>
 		</antcall>
 		<property name="installed.forrest.dir" value="${forrestdl.home}"/>
 	</target>
@@ -589,13 +589,13 @@
 
 	<target name="download-ext-framework" depends="proxyflags" 
 		description="Download binary packages for compiling the framework" >
-		<mkdir dir="${base.path}" />
+		<mkdir dir="${ext.download.dir}" />
     	
 		<antcall target="installgz">
 			<param name="sourcefile" value="${jdom.loc}"/>
 			<param name="dlfile" value="${jdom.jar}"/>
 			<param name="destfile" value="${jdom.ext.jar}"/>
-			<param name="destdir" value="${base.path}"/>
+			<param name="destdir" value="${ext.download.dir}"/>
 		</antcall>
 		
 		<antcall target="installzip">
@@ -614,38 +614,38 @@
 
 	<target name="download-ext-examples" depends="proxyflags" 
 		description="Download binary packages for compiling the examples" >
-		<mkdir dir="${base.path}" />
+		<mkdir dir="${ext.download.dir}" />
     
 		<antcall target="installzip">
 			<param name="sourcefile" value="${mckoi.loc}"/>
 			<param name="dlfile" value="${mckoi.jar}"/>
 			<param name="destfile" value="${mckoi.ext.jar}"/>
-			<param name="destdir" value="${base.path}"/>
+			<param name="destdir" value="${ext.download.dir}"/>
 		</antcall>
 	</target>
 
 	<target name="download-ext-junit" depends="proxyflags" 
 		description="Download binary packages for compiling the unit tests" >
-		<mkdir dir="${base.path}" />
+		<mkdir dir="${ext.download.dir}" />
     
 		<antcall target="installzip">
 			<param name="sourcefile" value="${junit.loc}"/>
 			<param name="dlfile" value="${junit.jar}"/>
 			<param name="destfile" value="${junit.ext.jar}"/>
-			<param name="destdir" value="${base.path}"/>
+			<param name="destdir" value="${ext.download.dir}"/>
 		</antcall>
 
 		<antcall target="installgz">
 			<param name="sourcefile" value="${jdom.loc}"/>
 			<param name="dlfile" value="${jdom.jar}"/>
 			<param name="destfile" value="${jdom.ext.jar}"/>
-			<param name="destdir" value="${base.path}"/>
+			<param name="destdir" value="${ext.download.dir}"/>
 		</antcall>
 	</target>
 
 	<target name="download-ext-doc" depends="proxyflags" 
 		description="Download binary packages for compiling the documentation" >
-		<mkdir dir="${base.path}" />
+		<mkdir dir="${ext.download.dir}" />
     
 		<antcall target="downloadfile">
 			<param name="sourcefile" value="${docbookxml.loc}"/>
@@ -687,13 +687,13 @@
 	</target>
   
 	<target name="downloadgz" unless="exist" depends="setproxy,testexist,download-alert">
-		<mkdir dir="${base.path}"/>
+		<mkdir dir="${ext.download.dir}"/>
 		<!-- Download and extract the package -->
-		<get src="${sourcefile}" dest="${base.path}/file.tar.gz" />
-		<gunzip src="${base.path}/file.tar.gz" dest="${base.path}/file.tar"/>
-		<untar src="${base.path}/file.tar" dest="${base.path}"/>
-		<delete file="${base.path}/file.tar"/>
-		<delete file="${base.path}/file.tar.gz"/>
+		<get src="${sourcefile}" dest="${ext.download.dir}/file.tar.gz" />
+		<gunzip src="${ext.download.dir}/file.tar.gz" dest="${ext.download.dir}/file.tar"/>
+		<untar src="${ext.download.dir}/file.tar" dest="${ext.download.dir}"/>
+		<delete file="${ext.download.dir}/file.tar"/>
+		<delete file="${ext.download.dir}/file.tar.gz"/>
 	</target>
 
 	<target name="installzip" unless="exist" depends="setproxy,testexistdest">
@@ -703,11 +703,11 @@
   
 	<target name="downloadzip" unless="exist" depends="setproxy,testexist,download-alert">
 		<!-- Download and extract the package -->
-		<mkdir dir="${base.path}"/>
-		<get src="${sourcefile}" dest="${base.path}/file.zip" />
+		<mkdir dir="${ext.download.dir}"/>
+		<get src="${sourcefile}" dest="${ext.download.dir}/file.zip" />
 		<mkdir dir="${destdir}" />
-		<unzip src="${base.path}/file.zip" dest="${destdir}"/>
-		<delete file="${base.path}/file.zip"/>
+		<unzip src="${ext.download.dir}/file.zip" dest="${destdir}"/>
+		<delete file="${ext.download.dir}/file.zip"/>
 	</target>
 
 	<target name="downloadfile" unless="exist" depends="setproxy,testexistdest">
