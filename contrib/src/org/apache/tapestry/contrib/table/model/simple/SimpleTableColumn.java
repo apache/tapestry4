@@ -144,7 +144,7 @@ public class SimpleTableColumn extends AbstractTableColumn
 		boolean bSortable)
 	{
 		super(strColumnName, bSortable, null);
-		setComparator(new DefaultComparator());
+		setComparator(new DefaultTableComparator());
 		setDisplayName(strDisplayName);
 		setColumnRendererSource(new SimpleTableColumnRendererSource());
 		setValueRendererSource(new SimpleTableValueRendererSource());
@@ -204,19 +204,30 @@ public class SimpleTableColumn extends AbstractTableColumn
 		return objRow.toString();
 	}
 
-	private class DefaultComparator implements Comparator, Serializable
+	public class DefaultTableComparator implements Comparator, Serializable
 	{
 		public int compare(Object objRow1, Object objRow2)
 		{
 			Object objValue1 = getColumnValue(objRow1);
 			Object objValue2 = getColumnValue(objRow2);
 
-			if (!(objValue1 instanceof Comparable)
-				|| !(objValue2 instanceof Comparable))
-			{
-				// error
+            if (objValue1 == objValue2)
+                return 0;
+
+            boolean bComparable1 = objValue1 instanceof Comparable;
+            boolean bComparable2 = objValue2 instanceof Comparable;
+                              
+            // non-comparable values are considered equal 
+			if (!bComparable1 && !bComparable2)
 				return 0;
-			}
+
+            // non-comparable values (null included) are considered smaller 
+            // than the comparable one
+            if (!bComparable1)
+                return -1;
+
+            if (!bComparable2)
+                return 1;
 
 			return ((Comparable) objValue1).compareTo(objValue2);
 		}
