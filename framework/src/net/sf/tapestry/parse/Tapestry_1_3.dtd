@@ -71,7 +71,7 @@ Attributes:
 
 <!-- =======================================================
 Element: bean
-Appears in: specification
+Appears in: component-specification, page-specification
 
 Defines a JavaBean that will be used in some way by the component.  Beans
 are accessible via the components' beans property (which contains a property
@@ -101,7 +101,7 @@ The bean may have its properties set.  Properties are set on both
 newly instantiated beans, and beans that are retrieved from a pool.
 
 -->
-<!ELEMENT bean (description*, property*, set-property*, set-string-property*)>
+<!ELEMENT bean (description*, property*, (set-property | set-string-property)*)>
 <!ATTLIST bean
   name CDATA #REQUIRED
   class CDATA #REQUIRED
@@ -197,8 +197,9 @@ Attributes:
   allow-informal-parameters:  If yes (the default), informal parameters (parameters that are not
     explictily defined) are allowed.
 -->
-<!ELEMENT component-specification (description*, parameter*, reserved-parameter*, property*, bean*,
-	component*, (external-asset | context-asset | private-asset)*)>
+<!ELEMENT component-specification 
+	(description*, parameter*, reserved-parameter*, property*,
+	(bean |	component | external-asset | context-asset | private-asset)*)>
 <!ATTLIST component-specification
   class CDATA #REQUIRED
   allow-body %attribute-flag; "yes"
