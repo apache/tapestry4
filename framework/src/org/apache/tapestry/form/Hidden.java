@@ -184,5 +184,12 @@ public abstract class Hidden extends AbstractFormComponent
      **/
 
     public abstract boolean getEncode();
+    
+    public abstract void setEncode(boolean encode);
 
+
+	public void finishLoad()
+	{
+		setEncode(true);
+	}
 }
