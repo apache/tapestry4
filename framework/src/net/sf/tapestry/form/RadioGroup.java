@@ -217,7 +217,7 @@ public class RadioGroup extends AbstractFormComponent
             if (!_rewinding)
                 _selection = _selectedBinding.getObject();
 
-            renderWrapped(writer, cycle);
+            renderBody(writer, cycle);
         }
         finally
         {

@@ -56,7 +56,7 @@ public class Conditional extends AbstractComponent
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
       if (_condition != _invert)
-            renderWrapped(writer, cycle);
+            renderBody(writer, cycle);
     }
     
     public boolean getCondition()

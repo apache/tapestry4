@@ -56,6 +56,6 @@ public class RenderBody extends AbstractComponent
     {
         IComponent container = getContainer();
 
-        container.renderWrapped(writer, cycle);
+        container.renderBody(writer, cycle);
     }
 }

@@ -215,7 +215,7 @@ public class ListEdit extends AbstractComponent
                 generateAttributes(writer, cycle);
             }
 
-            renderWrapped(writer, cycle);
+            renderBody(writer, cycle);
 
             if (_element != null)
                 writer.end();

@@ -228,4 +228,12 @@ public class TestingForm implements IForm
     {
     }
 
+    public void addBody(IRender element)
+    {
+    }
+
+    public void renderBody(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    {
+    }
+
 }

@@ -255,7 +255,7 @@ public class BaseComponent extends AbstractComponent
         if (activeComponent == null)
             addOuter(renderer);
         else
-            activeComponent.addWrapped(renderer);
+            activeComponent.addBody(renderer);
     }
 
     /** @since 2.1-beta-2 **/
@@ -303,7 +303,7 @@ public class BaseComponent extends AbstractComponent
             if (!activeComponent.getSpecification().getAllowBody())
                 throw new BodylessComponentException(activeComponent);
 
-            activeComponent.addWrapped(component);
+            activeComponent.addBody(component);
         }
 
         addStaticBindings(component, token.getAttributes(), pageSource);
@@ -331,7 +331,7 @@ public class BaseComponent extends AbstractComponent
             if (!activeComponent.getSpecification().getAllowBody())
                 throw new BodylessComponentException(activeComponent);
 
-            activeComponent.addWrapped(element);
+            activeComponent.addBody(element);
         }
     }
 

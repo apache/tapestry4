@@ -169,7 +169,7 @@ public class Select extends AbstractFormComponent
         _rendering = true;
         _nextOptionId = 0;
 
-        renderWrapped(writer, cycle);
+        renderBody(writer, cycle);
 
         if (!_rewinding)
         {

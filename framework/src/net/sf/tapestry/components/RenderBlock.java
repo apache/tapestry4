@@ -82,7 +82,7 @@ public class RenderBlock extends AbstractComponent
          	// make a copy of the inserter so we don't overwrite completely
          	IComponent previousInserter = _block.getInserter();
          	_block.setInserter(this);
-            _block.renderWrapped(writer, cycle);
+            _block.renderBody(writer, cycle);
             // reset the inserter as it was before we changed it
             _block.setInserter(previousInserter);
          }

@@ -132,7 +132,7 @@ public class Foreach extends AbstractComponent
                     generateAttributes(writer, cycle);
                 }
 
-                renderWrapped(writer, cycle);
+                renderBody(writer, cycle);
 
                 if (element != null)
                     writer.end();
