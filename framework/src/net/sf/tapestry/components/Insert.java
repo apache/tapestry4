@@ -36,166 +36,106 @@ import net.sf.tapestry.Tapestry;
 /**
  *  Used to insert some text (from a parameter) into the HTML.
  *
+ *  [<a href="../../../../../ComponentReference/Insert.html">Component Reference</a>]
  *
- * <table border=1>
- * <tr> <th>Parameter</th> <th>Type</th>
- * <th>Direction</th> <th>Required</th> <th>Default</th> <th>Description</th>
- * </tr>
- * <tr>
- *  <td>value</td> <td>Object</td> <td>in</td>
- *  <td>no</td> <td>&nbsp;</td>
- *  <td>The value to be inserted.  If the binding is null, then nothing is inserted.
- *  Any object may be inserted, the <code>toString()</code> method is used
- *  to convert it to a printable value.</td> </tr>
- *
- * <tr>
- *	<td>format</td>
- *	<td>{@link Format}</td>
- *  <td>in</td>
- *  <td>no</td>
- *  <td>&nbsp;</td>
- *  <td>An optional format object used to convert the value parameter for
- *  insertion into the HTML response. </td> </tr>
- *
- *  <tr>
- *      <td>raw</td>
- *      <td>boolean</td>
- *      <td>in</td>
- *      <td>no</td>
- *      <td>false</td>
- *      <td>If true, then the method {@link IMarkupWriter#printRaw(String)} is used,
- *  		rather than {@link IMarkupWriter#print(String)}.
- *      </td>
- *  </tr>
- *
- *  <tr>
- * 		<td>class</td>
- * 		<td>{@link String}</td>
- *  <td>in</td>
- * 		<td>no</td>
- * 		<td>&nbsp;</td>
- * 		<td>
- * 	If specified, then the output is wrapped in an HTML &lt;span&gt; tag, using the value
- *  specified as the CSS class.
- * 		</td>
- * 	</tr>
- * 
- * </table>
- *
- * <p>Informal parameters are not allowed.  The component must not have a body.
- *
- * @author Howard Lewis Ship
- * @version $Id$
+ *  @author Howard Lewis Ship
+ *  @version $Id$
  * 
  **/
 
 public class Insert extends AbstractComponent
 {
-    private Object value;
-    private Format format;
-    
+    private Object _value;
+    private Format _format;
+
     // The class parameter is connected to the styleClass property
-    private String styleClass;
-    private boolean raw;
+    private String _styleClass;
+    private boolean _raw;
 
     /**
      *  Prints its value parameter, possibly formatted by its format parameter.
-     *  Notes:
-     *  <ul>
-     *  <li>If the cycle is rewinding, then this method does nothing.
-     *  <li>If both the value is null, then this method does nothing
-     *  <li>If the format is non-null, then {@link Format#format(Object)} is invoked and
-     *  the resulting String is what's inserted.
-     *  <li>The method will use either {@link IMarkupWriter#print(String)} or
-     *  {@link IMarkupWriter#printRaw(String)}, depending on the value
-     *  of the raw parameter.
-     *  </ul>
      *
      **/
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
         if (cycle.isRewinding())
             return;
 
-        if (value == null)
+        if (_value == null)
             return;
 
         String insert = null;
 
-        if (format == null)
-        {           	
-            insert = value.toString();
+        if (_format == null)
+        {
+            insert = _value.toString();
         }
         else
         {
             try
             {
-                insert = format.format(value);
+                insert = _format.format(_value);
             }
             catch (Exception ex)
             {
-                throw new RequestCycleException(
-                    Tapestry.getString("Insert.unable-to-format", value),
-                    this,
-                    ex);
+                throw new RequestCycleException(Tapestry.getString("Insert.unable-to-format", _value), this, ex);
             }
         }
 
-        if (styleClass != null)
+        if (_styleClass != null)
         {
             writer.begin("span");
-            writer.attribute("class", styleClass);
+            writer.attribute("class", _styleClass);
         }
 
-        if (raw)
+        if (_raw)
             writer.printRaw(insert);
         else
             writer.print(insert);
 
-        if (styleClass != null)
+        if (_styleClass != null)
             writer.end(); // <span>
     }
 
     public Object getValue()
     {
-        return value;
+        return _value;
     }
 
     public void setValue(Object value)
     {
-        this.value = value;
+        _value = value;
     }
 
     public Format getFormat()
     {
-        return format;
+        return _format;
     }
 
     public void setFormat(Format format)
     {
-        this.format = format;
+        _format = format;
     }
 
     public String getStyleClass()
     {
-        return styleClass;
+        return _styleClass;
     }
 
     public void setStyleClass(String styleClass)
     {
-        this.styleClass = styleClass;
+        _styleClass = styleClass;
     }
 
     public boolean getRaw()
     {
-        return raw;
+        return _raw;
     }
 
     public void setRaw(boolean raw)
     {
-        this.raw = raw;
+        _raw = raw;
     }
 
 }

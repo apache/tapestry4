@@ -39,46 +39,7 @@ import net.sf.tapestry.util.io.DataSqueezer;
 /**
  *  Implements a hidden field within a {@link Form}.
  *
- * <table border=1>
- * <tr> 
- *    <td>Parameter</td>
- *    <td>Type</td>
- *	  <td>Direction </td>
- *    <td>Required</td> 
- *    <td>Default</td>
- *    <td>Description</td>
- * </tr>
- *
- *  <tr>
- *		<td>value</td>
- *		<td>java.lang.Object</td>
- *		<td>in-out</td>
- *		<td>yes</td>
- *		<td>&nbsp;</td>
- *		<td>The value to be stored in the the hidden field.  The parameter is read
- *  when the HTML response is generated, and then written when the form is submitted.
- *  A {@link net.sf.tapestry.util.io.DataSqueezer} is used
- *  to convert the value between an arbitrary type and a String.
- *	</tr>
- *
- * <tr>
- *		<td>listener</td>
- *		<td>{@link IActionListener}</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>&nbsp;</td>
- *		<td>A listener that is informed after the value parameter is updated.  This
- * allows the data set operated on by the rest of the {@link Form} components
- * to be synchronized to the  value stored in the hidden field.
- *
- *  <p>A typical use is to encode the primary key of an entity as a Hidden; when the
- *  form is submitted, the Hidden's listener re-reads the corresponding entity
- *  from the database.</td>
- *  </tr>
- * 
- *	</table>
- *
- * <p>Does not allow informal parameters, and may not contain a body.
+ *  [<a href="../../../../../ComponentReference/Hidden.html">Component Reference</a>]
  *
  *  @author Howard Lewis Ship
  *  @version $Id$

@@ -44,105 +44,7 @@ import net.sf.tapestry.RequiredParameterException;
  *  of the HTML element), it is more commonly used to provide a graphic
  *  image for the user to click, rather than the rather plain &lt;input type=submit&gt;.
  *
- * <table border=1>
- * <tr> 
- *    <td>Parameter</td>
- *    <td>Type</td>
- *	  <td>Direction</td>
- *    <td>Required</td> 
- *    <td>Default</td>
- *    <td>Description</td>
- * </tr>
- *
- *  <tr>
- *    <td>image</td>
- *    <td>{@link IAsset}</td>
- *    <td>in</td>
- *   	<td>yes</td>
- *		<td>&nbsp;</td>
- *		<td>The image to show.</td>
- *	</tr>
- *
- * <tr>
- *		<td>name</td>
- *		<td>{@link String}</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>&nbsp;</td>
- *		<td>The name to use for the form element.  Under Netscape Navigator 4, this
- * name becomes the tooltip.  The name may be modified (by adding a number to the end)
- * to ensure that it is unique within the form. </td> </tr>
- *
- *  <tr>
- *	  <td>disabled</id>
- *	  <td>boolean</td>
- *    <td>in</td>
- *    <td>no</td>
- *	  <td>&nbsp;</td>
- *    <td>If set to true, the button will be disabled (will not respond to
- *  the mouse).  If an alternate image is defined, it will be displayed (typically
- *  a greyed-out version of the normal image). </td> </tr>
- *
- *  <tr>
- * 	  <td>disabledImage</td>
- *	  <td>{@link IAsset}</td>
- *	  <td>in</td>
- *	  <td>no</td>
- *		<td>&nbsp;</td>
- *	  <td>An alternate image to display if the component is disabled.  If the
- *  component is disabled and this parameter is not specified,
- *  the normal image is used. </td> </tr>
- *
- * <tr>
- *		<td>point</td>
- *		<td>java.awt.Point</td>
- *		<td>out</td>
- *		<td>no</td>
- *		<td>&nbsp;</td>
- *		<td>The point at which the image was clicked; used for rare
- * components that actually need to know (typically, using the image button
- * list a simple image map).</td> </tr>
- *
- *  <tr>
- *      <td>selected</td>
- *      <td>java.lang.Object</td>
- *      <td>out</td>
- *      <td>no</td>
- *      <td>&nbsp;</td>
- *      <td>This parameter is bound to a property that is
- *    updated when the image button is clicked by the user (submitting
- *  the form).  The property
- *  is updated to match the tag parameter.</td>
- *  </tr>
- *
- *  <tr>
- *      <td>tag</td>
- *      <td>java.lang.Object</td>
- *      <td>in</td>
- *      <td>no</td>
- *      <td>&nbsp;</td>
- *      <td>Tag used with the selected parameter to indicate which image button
- *  on a form was clicked.
- *
- *  <p>This parameter is required if the selected paremeter is used.</td>
- *  </tr>
- *
- *  <tr>
- * 		<td>listener</td>
- * 		<td>{@link IActionListener}</td>
- * 		<td>in</td>
- * 		<td>no</td>
- * 		<td>&nbsp;</td>
- * 		<td>If specified, the listener is notified.  This notification occurs
- *  as the component is rewinded, i.e., prior to the {@link IForm form}'s listener.
- *  In addition, the selected property (if bound) will be updated <em>before</em>
- *  the listener is notified.
- * 		</td>
- *   </tr>
- * 
- * </table>
- *
- * <p>Informal parameters are allowed.  A body is not allowed.
+ *  [<a href="../../../../../ComponentReference/ImageSubmit.html">Component Reference</a>]
  *
  *
  *  @author Howard Lewis Ship
@@ -151,56 +53,54 @@ import net.sf.tapestry.RequiredParameterException;
 
 public class ImageSubmit extends AbstractFormComponent
 {
-    private IAsset image;
-    private IAsset disabledImage;
-    private Object tag;
-    private String name;
-    private String nameOverride;
-    private IActionListener listener;
-    private boolean disabled;
+    private IAsset _image;
+    private IAsset _disabledImage;
+    private Object _tag;
+    private String _name;
+    private String _nameOverride;
+    private IActionListener _listener;
+    private boolean _disabled;
 
-    private IBinding pointBinding;
-    private IBinding selectedBinding;
+    private IBinding _pointBinding;
+    private IBinding _selectedBinding;
 
     public void setPointBinding(IBinding value)
     {
-        pointBinding = value;
+        _pointBinding = value;
     }
 
     public IBinding getPointBinding()
     {
-        return pointBinding;
+        return _pointBinding;
     }
 
     public void setSelectedBinding(IBinding value)
     {
-        selectedBinding = value;
+        _selectedBinding = value;
     }
 
     public IBinding getSelectedBinding()
     {
-        return selectedBinding;
+        return _selectedBinding;
     }
 
-
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
         IForm form = getForm(cycle);
 
         boolean rewinding = form.isRewinding();
 
-        if (nameOverride == null)
-            name = form.getElementId(this);
-           else
-            name = form.getElementId(nameOverride);;
+        if (_nameOverride == null)
+            _name = form.getElementId(this);
+        else
+            _name = form.getElementId(_nameOverride);
+        ;
 
-       
         if (rewinding)
         {
             // If disabled, do nothing.
 
-            if (disabled)
+            if (_disabled)
                 return;
 
             RequestContext context = cycle.getRequestContext();
@@ -208,7 +108,7 @@ public class ImageSubmit extends AbstractFormComponent
             // Image clicks get submitted as two request parameters: 
             // foo.x and foo.y
 
-            String parameterName = name + ".x";
+            String parameterName = _name + ".x";
 
             String value = context.getParameter(parameterName);
 
@@ -221,41 +121,41 @@ public class ImageSubmit extends AbstractFormComponent
             // whether the user clicked on the image (and thus submitted
             // the form), not where in the image the user actually clicked.
 
-            if (pointBinding != null)
+            if (_pointBinding != null)
             {
                 int x = Integer.parseInt(value);
 
-                parameterName = name + ".y";
+                parameterName = _name + ".y";
                 value = context.getParameter(parameterName);
 
                 int y = Integer.parseInt(value);
 
-                pointBinding.setObject(new Point(x, y));
+                _pointBinding.setObject(new Point(x, y));
             }
 
             // Notify the application, by setting the select parameter
             // to the tag parameter.
 
-            if (selectedBinding != null)
-                selectedBinding.setObject(tag);
+            if (_selectedBinding != null)
+                _selectedBinding.setObject(_tag);
 
-            if (listener != null)
-                listener.actionTriggered(this, cycle);
+            if (_listener != null)
+                _listener.actionTriggered(this, cycle);
 
             return;
         }
 
         // Not rewinding, do the real render
 
-        IAsset finalImage = (disabled && disabledImage != null) ? disabledImage : image;
+        IAsset finalImage = (_disabled && _disabledImage != null) ? _disabledImage : _image;
 
-        String imageURL = image.buildURL(cycle);
+        String imageURL = _image.buildURL(cycle);
 
         writer.beginEmpty("input");
         writer.attribute("type", "image");
-        writer.attribute("name", name);
+        writer.attribute("name", _name);
 
-        if (disabled)
+        if (_disabled)
             writer.attribute("disabled");
 
         // NN4 places a border unless you tell it otherwise.
@@ -272,67 +172,67 @@ public class ImageSubmit extends AbstractFormComponent
 
     public boolean getDisabled()
     {
-        return disabled;
+        return _disabled;
     }
 
     public void setDisabled(boolean disabled)
     {
-        this.disabled = disabled;
+        _disabled = disabled;
     }
 
     public IAsset getDisabledImage()
     {
-        return disabledImage;
+        return _disabledImage;
     }
 
     public void setDisabledImage(IAsset disabledImage)
     {
-        this.disabledImage = disabledImage;
+        _disabledImage = disabledImage;
     }
 
     public IAsset getImage()
     {
-        return image;
+        return _image;
     }
 
     public void setImage(IAsset image)
     {
-        this.image = image;
+        _image = image;
     }
 
     public IActionListener getListener()
     {
-        return listener;
+        return _listener;
     }
 
     public void setListener(IActionListener listener)
     {
-        this.listener = listener;
+        _listener = listener;
     }
 
     public String getName()
     {
-        return name;
+        return _name;
     }
 
     public Object getTag()
     {
-        return tag;
+        return _tag;
     }
 
     public void setTag(Object tag)
     {
-        this.tag = tag;
+        _tag = tag;
     }
 
     public String getNameOverride()
     {
-        return nameOverride;
+        return _nameOverride;
     }
 
     public void setNameOverride(String nameOverride)
     {
-        this.nameOverride = nameOverride;
+        _nameOverride = nameOverride;
     }
 
 }
