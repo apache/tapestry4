@@ -5,34 +5,118 @@
 	<class>com.primix.tapestry.inspector.ViewTabs</class>
 	<components>
 		<component>
-			<id>selectSpecification</id>
-			<type>Direct</type>
+			<id>e</id>
+			<type>Foreach</type>
 			<bindings>
 				<binding>
-					<name>listener</name>
-					<property-path>selectSpecificationListener</property-path>
+					<name>source</name>
+					<property-path>views</property-path>
+				</binding>
+				<binding>
+					<name>value</name>
+					<property-path>view</property-path>
 				</binding>
 			</bindings>
 		</component>
 		<component>
-			<id>selectComponents</id>
-			<type>Direct</type>
+			<id>select</id>
+			<type>Action</type>
 			<bindings>
 				<binding>
 					<name>listener</name>
-					<property-path>selectComponentsListener</property-path>
+					<property-path>selectListener</property-path>
 				</binding>
 			</bindings>
 		</component>
 		<component>
-			<id>selectTemplate</id>
-			<type>Direct</type>
+			<id>tab</id>
+			<type>Rollover</type>
 			<bindings>
 				<binding>
-					<name>listener</name>
-					<property-path>selectTemplateListener</property-path>
+					<name>image</name>
+					<property-path>viewImage</property-path>
+				</binding>
+				<binding>
+					<name>focus</name>
+					<property-path>focusImage</property-path>
 				</binding>
 			</bindings>
+		</component>
+		<component>
+			<id>banner</id>
+			<type>Image</type>
+			<bindings>
+				<binding>
+					<name>image</name>
+					<property-path>bannerImage</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>wrapped</id>
+			<type>InsertWrapped</type>
 		</component>
 	</components>
+	<assets>
+		<private-asset>
+			<name>SPECIFICATION</name>
+			<resource-path>/com/primix/tapestry/inspector/Specification_Np1.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>SPECIFICATION-selected</name>
+			<resource-path>/com/primix/tapestry/inspector/Specification_Hp3.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>SPECIFICATION-focus</name>
+			<resource-path>/com/primix/tapestry/inspector/Specification_NRp2.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>SPECIFICATION-selected-focus</name>
+			<resource-path>/com/primix/tapestry/inspector/Specification_HRp4.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>SPECIFICATION-banner</name>
+			<resource-path>/com/primix/tapestry/inspector/Specification_NBanner.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>COMPONENTS</name>
+			<resource-path>/com/primix/tapestry/inspector/Components_Np1.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>COMPONENTS-selected</name>
+			<resource-path>/com/primix/tapestry/inspector/Components_Hp3.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>COMPONENTS-focus</name>
+			<resource-path>/com/primix/tapestry/inspector/Components_NRp2.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>COMPONENTS-selected-focus</name>
+			<resource-path>/com/primix/tapestry/inspector/Components_HRp4.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>COMPONENTS-banner</name>
+			<resource-path>/com/primix/tapestry/inspector/Components_NBanner.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>TEMPLATE</name>
+			<resource-path>/com/primix/tapestry/inspector/Template_Np1.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>TEMPLATE-selected</name>
+			<resource-path>/com/primix/tapestry/inspector/Template_Hp3.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>TEMPLATE-focus</name>
+			<resource-path>/com/primix/tapestry/inspector/Template_NRp2.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>TEMPLATE-selected-focus</name>
+			<resource-path>/com/primix/tapestry/inspector/Template_HRp4.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>TEMPLATE-banner</name>
+			<resource-path>/com/primix/tapestry/inspector/Template_NBanner.gif</resource-path>
+		</private-asset>
+	</assets>
 </specification>

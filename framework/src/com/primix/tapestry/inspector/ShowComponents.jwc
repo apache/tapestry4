@@ -53,7 +53,7 @@
 			<bindings>
 				<binding>
 					<name>listener</name>
-					<property-path>page.selectComponentListener</property-path>
+					<property-path>selectListener</property-path>
 				</binding>
 				<binding>
 					<name>context</name>

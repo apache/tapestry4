@@ -1,0 +1,8 @@
+* Sep 8 2000 hship
+
+Started ChangeLog for Tapestry, some time after release 0.1.3.
+Added provisional image graphics for the Inspector.
+Update the documentation to mention the Inspector.
+Revise PropertySelection, adding the IPropertySelectionRenderer interface
+and two implementation (SelectPropertySelectionRenderer and RadioPropertySelectionRenderer).
+Generate a better exception message when EnumPropertySelectionModel can't find a ResourceBundle.

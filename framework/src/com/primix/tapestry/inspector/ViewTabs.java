@@ -45,46 +45,92 @@ import java.util.*;
  
 public class ViewTabs extends BaseComponent
 {
+	private static View[] views =
+	{
+		View.SPECIFICATION, View.COMPONENTS, View.TEMPLATE
+	};
+		
+	private View view;
+
 	public ViewTabs(IPage page, IComponent container, String id,
 		ComponentSpecification specification)
 	{
 		super(page, container, id, specification);
 	}
 
-	private static class ViewChangeListener implements IDirectListener
+	public View[] getViews()
 	{
-		private View view;
-		private Inspector inspector;
+		return views;
+	}
+	
+	public void setView(View value)
+	{
+		view = value;
+	}
+	
+	public View getView()
+	{
+		return view;
+	}
+	
+	private IAsset getImageForView(boolean focus)
+	{
+		StringBuffer buffer;
+		Inspector inspector;
+		boolean selected;
+		String key;
 		
-		private ViewChangeListener(Inspector inspector, View view)
-		{
-			this.inspector = inspector;
-			this.view = view;
-		}
+		inspector = (Inspector)page;
 		
-		public void directTriggered(IComponent component, String[] context, IRequestCycle cycle)
+		selected = (view == inspector.getView());
+		
+		buffer = new StringBuffer(view.getEnumerationId());
+		
+		if (selected)
+			buffer.append("-selected");
+		
+		if (focus)
+			buffer.append("-focus");	
+		
+		key = buffer.toString();
+		
+		return (IAsset)getAssets().get(key);	
+	}
+	
+	public IAsset getViewImage()
+	{
+		return getImageForView(false);		
+	}
+	
+	public IAsset getFocusImage()
+	{
+		return getImageForView(true);
+	}
+	
+	public IAsset getBannerImage()
+	{
+		Inspector inspector;
+		View selectedView;
+		String key;
+		
+		inspector = (Inspector)page;
+		selectedView = inspector.getView();
+		key = selectedView.getEnumerationId() + "-banner";
+		
+		return (IAsset)getAssets().get(key);
+	}
+	
+	public IActionListener getSelectListener()
+	{
+		return new IActionListener()
 		{
-			inspector.setView(view);
-		}
-	}
-
-	public IDirectListener getListener(View view)
-	{
-		return new ViewChangeListener((Inspector)page, view);
-	}
-	
-	public IDirectListener getSelectSpecificationListener()
-	{
-		return getListener(View.SPECIFICATION);
-	}
-	
-	public IDirectListener getSelectComponentsListener()
-	{
-		return getListener(View.COMPONENTS);
-	}
-	
-	public IDirectListener getSelectTemplateListener()
-	{
-		return getListener(View.TEMPLATE);
+			public void actionTriggered(IComponent component, IRequestCycle cycle)
+			{
+				Inspector inspector;
+				
+				inspector = (Inspector)getPage();
+				inspector.setView(view);
+			}
+		};
 	}
 }

@@ -151,7 +151,7 @@ public class ShowTemplate extends BaseComponent
 				
 				writer.print("</jwc>");
 				
-				writer.end(); // span
+				writer.end(); // <span>
 				
 				continue;
 			}
@@ -188,6 +188,7 @@ public class ShowTemplate extends BaseComponent
 			writer.begin("a");
 			writer.attribute("href", URL);
 			writer.print(id);
+			
 			writer.end();  // <a>
 			writer.end();  // <span>
 			writer.print('"');
