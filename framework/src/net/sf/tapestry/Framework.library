@@ -80,7 +80,7 @@
     <service name="reset" class="net.sf.tapestry.engine.ResetService"/>
     <service name="restart" class="net.sf.tapestry.engine.RestartService"/>
     <service name="asset" class="net.sf.tapestry.asset.AssetService"/>
-	<service name="external" class="net.sf.tapestry.external.ExternalService"/>
+	<service name="external" class="net.sf.tapestry.engine.ExternalService"/>
 	
 	<library id="inspector" specification-path="/net/sf/tapestry/inspector/Inspector.library"/>
 
