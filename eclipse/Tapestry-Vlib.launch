@@ -37,7 +37,7 @@
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry
-    internalArchive=&quot;/Tapestry/lib/ext/org.mortbay.jetty.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;
+    internalArchive=&quot;/Tapestry/lib/ext/org.mortbay.jetty-jdk1.2.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry containerPath=&quot;JBOSS_DIR/lib/jboss-common.jar&quot;

@@ -65,7 +65,7 @@
       	
         <pathelement location="${classes.dir}"/>
 
-        <pathelement location="${lib.ext.dir}/org.mortbay.jetty.jar"/>
+        <pathelement location="${lib.ext.dir}/${jetty.jar}"/>
         <!-- Runtime client libraries -->
         <pathelement location="${jboss.lib.dir}/jboss-common.jar"/>   
         <pathelement location="${jboss.lib.dir}/jboss-system.jar"/>                
