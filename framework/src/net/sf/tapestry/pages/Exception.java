@@ -33,6 +33,7 @@ import com.primix.tapestry.*;
 import net.sf.tapestry.*;
 import net.sf.tapestry.html.*;
 import net.sf.tapestry.util.ejb.*;
+import net.sf.tapestry.util.exception.*;
 
 /**
  *  An exception reporting page.

@@ -1,38 +1,37 @@
-/*
- * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
- *
- * Howard Lewis Ship
- * http://sf.net/projects/tapestry
- * mailto:hship@users.sf.net
- *
- * This library is free software.
- *
- * You may redistribute it and/or modify it under the terms of the GNU
- * Lesser General Public License as published by the Free Software Foundation.
- *
- * Version 2.1 of the license should be included with this distribution in
- * the file LICENSE, as well as License.html. If the license is not
- * included with this distribution, you may find a copy at the FSF web
- * site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
- * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied waranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- */
+//
+// Tapestry Web Application Framework
+// Copyright (c) 2000-2002 by Howard Lewis Ship
+//
+// Howard Lewis Ship
+// http://sf.net/projects/tapestry
+// mailto:hship@users.sf.net
+//
+// This library is free software.
+//
+// You may redistribute it and/or modify it under the terms of the GNU
+// Lesser General Public License as published by the Free Software Foundation.
+//
+// Version 2.1 of the license should be included with this distribution in
+// the file LICENSE, as well as License.html. If the license is not
+// included with this distribution, you may find a copy at the FSF web
+// site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
+// Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied waranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
 
 package net.sf.tapestry.form;
 
-import com.primix.tapestry.*;
-
-// Appease Javadoc
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.html.*;
-
-import net.sf.tapestry.*;
+import net.sf.tapestry.IActionListener;
+import net.sf.tapestry.IBinding;
+import net.sf.tapestry.IForm;
+import net.sf.tapestry.IMarkupWriter;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.RequiredParameterException;
 
 /**
  *  Implements a component that manages an HTML &lt;input type=submit&gt; form element.
@@ -111,175 +110,175 @@ import net.sf.tapestry.*;
  *
  * <p>Allows informal parameters, but may not contain a body.
  *
- *  @author Howard Ship
+ *  @author Howard Lewis Ship
  *  @version $Id$
- */
+ * 
+ **/
 
 public class Submit extends AbstractFormComponent
 {
-	private IBinding labelBinding;
-	private String staticLabelValue;
+    private IBinding labelBinding;
+    private String staticLabelValue;
 
-	private IBinding disabledBinding;
-	private IBinding listenerBinding;
+    private IBinding disabledBinding;
+    private IBinding listenerBinding;
 
-	private IBinding selectedBinding;
-	private IBinding tagBinding;
-	private Object staticTagValue;
+    private IBinding selectedBinding;
+    private IBinding tagBinding;
+    private Object staticTagValue;
 
-	private String name;
+    private String name;
 
-	public String getName()
-	{
-		return name;
-	}
+    public String getName()
+    {
+        return name;
+    }
 
-	public IBinding getLabelBinding()
-	{
-		return labelBinding;
-	}
+    public IBinding getLabelBinding()
+    {
+        return labelBinding;
+    }
 
-	public void setLabelBinding(IBinding value)
-	{
-		labelBinding = value;
+    public void setLabelBinding(IBinding value)
+    {
+        labelBinding = value;
 
-		if (value.isStatic())
-			staticLabelValue = value.getString();
-	}
+        if (value.isStatic())
+            staticLabelValue = value.getString();
+    }
 
-	public IBinding getDisabledBinding()
-	{
-		return disabledBinding;
-	}
+    public IBinding getDisabledBinding()
+    {
+        return disabledBinding;
+    }
 
-	public void setDisabledBinding(IBinding value)
-	{
-		disabledBinding = value;
-	}
+    public void setDisabledBinding(IBinding value)
+    {
+        disabledBinding = value;
+    }
 
-	public void setSelectedBinding(IBinding value)
-	{
-		selectedBinding = value;
-	}
+    public void setSelectedBinding(IBinding value)
+    {
+        selectedBinding = value;
+    }
 
-	public IBinding getSelectedBinding()
-	{
-		return selectedBinding;
-	}
+    public IBinding getSelectedBinding()
+    {
+        return selectedBinding;
+    }
 
-	public void setTagBinding(IBinding value)
-	{
-		tagBinding = value;
+    public void setTagBinding(IBinding value)
+    {
+        tagBinding = value;
 
-		if (value.isStatic())
-			staticTagValue = value.getObject();
-	}
+        if (value.isStatic())
+            staticTagValue = value.getObject();
+    }
 
-	public IBinding getTagBinding()
-	{
-		return tagBinding;
-	}
+    public IBinding getTagBinding()
+    {
+        return tagBinding;
+    }
 
-	public void render(IMarkupWriter writer, IRequestCycle cycle)
-		throws RequestCycleException
-	{
-		String label = null;
-		boolean disabled = false;
-		String value;
-		Object tagValue = staticTagValue;
+    public void render(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
+    {
+        String label = null;
+        boolean disabled = false;
+        String value;
+        Object tagValue = staticTagValue;
 
-		IForm form = getForm(cycle);
+        IForm form = getForm(cycle);
 
-		boolean rewinding = form.isRewinding();
+        boolean rewinding = form.isRewinding();
 
-		name = form.getElementId(this);
+        name = form.getElementId(this);
 
-		if (disabledBinding != null)
-			disabled = disabledBinding.getBoolean();
+        if (disabledBinding != null)
+            disabled = disabledBinding.getBoolean();
 
-		if (rewinding)
-		{
-			// Don't bother doing anything if disabled.
+        if (rewinding)
+        {
+            // Don't bother doing anything if disabled.
 
-			if (disabled)
-				return;
+            if (disabled)
+                return;
 
-			// How to know which Submit button was actually
-			// clicked?  When submitted, it produces a request parameter
-			// with its name and value (the value serves double duty as both
-			// the label on the button, and the parameter value).
+            // How to know which Submit button was actually
+            // clicked?  When submitted, it produces a request parameter
+            // with its name and value (the value serves double duty as both
+            // the label on the button, and the parameter value).
 
-			value = cycle.getRequestContext().getParameter(name);
+            value = cycle.getRequestContext().getParameter(name);
 
-			// If the value isn't there, then this button wasn't
-			// selected.
+            // If the value isn't there, then this button wasn't
+            // selected.
 
-			if (value == null)
-				return;
+            if (value == null)
+                return;
 
-			if (selectedBinding != null)
-    			{
-    			// OK, now to notify the application code (via the parameters)
-    			// that *this* Submit was selected.  We do this by applying
-    			// a tag (presumably, specific to the Submit in question)
-    			// to the selected binding.
-    
-				if (tagBinding == null)
-					throw new RequestCycleException(
-						"The tag parameter is required if the selected parameter is bound.",
-						this);
+            if (selectedBinding != null)
+            {
+                // OK, now to notify the application code (via the parameters)
+                // that *this* Submit was selected.  We do this by applying
+                // a tag (presumably, specific to the Submit in question)
+                // to the selected binding.
 
-    			if (tagValue == null)
-    				tagValue = tagBinding.getObject();
-    
- 				if (tagValue == null)
-					throw new RequiredParameterException(this, "tag", tagBinding);
+                if (tagBinding == null)
+                    throw new RequestCycleException(
+                        "The tag parameter is required if the selected parameter is bound.",
+                        this);
 
-	   			if (tagValue != null)
-    				selectedBinding.setObject(tagValue);
-			}
+                if (tagValue == null)
+                    tagValue = tagBinding.getObject();
 
-			if (listenerBinding != null)
-			{
-				IActionListener listener =
-					(IActionListener) listenerBinding.getObject("listener", IActionListener.class);
+                if (tagValue == null)
+                    throw new RequiredParameterException(this, "tag", tagBinding);
 
-				if (listener != null)
-					listener.actionTriggered(this, cycle);
-			}
+                if (tagValue != null)
+                    selectedBinding.setObject(tagValue);
+            }
 
-			return;
-		}
+            if (listenerBinding != null)
+            {
+                IActionListener listener =
+                    (IActionListener) listenerBinding.getObject("listener", IActionListener.class);
 
-		if (staticLabelValue != null)
-			label = staticLabelValue;
-		else if (labelBinding != null)
-			label = labelBinding.getString();
+                if (listener != null)
+                    listener.actionTriggered(this, cycle);
+            }
 
-		writer.beginEmpty("input");
-		writer.attribute("type", "submit");
-		writer.attribute("name", name);
+            return;
+        }
 
-		if (disabled)
-			writer.attribute("disabled");
+        if (staticLabelValue != null)
+            label = staticLabelValue;
+        else if (labelBinding != null)
+            label = labelBinding.getString();
 
-		if (label != null)
-			writer.attribute("value", label);
+        writer.beginEmpty("input");
+        writer.attribute("type", "submit");
+        writer.attribute("name", name);
 
-		generateAttributes(writer, cycle);
+        if (disabled)
+            writer.attribute("disabled");
 
-		writer.closeTag();
-	}
+        if (label != null)
+            writer.attribute("value", label);
 
-	public IBinding getListenerBinding()
-	
-	{
-		return listenerBinding;
-	}
+        generateAttributes(writer, cycle);
 
-	public void setListenerBinding(IBinding listenerBinding)
-	{
-		this.listenerBinding = listenerBinding;
-	}
+        writer.closeTag();
+    }
+
+    public IBinding getListenerBinding()
+    {
+        return listenerBinding;
+    }
+
+    public void setListenerBinding(IBinding listenerBinding)
+    {
+        this.listenerBinding = listenerBinding;
+    }
 
 }

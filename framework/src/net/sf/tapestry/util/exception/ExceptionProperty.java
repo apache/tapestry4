@@ -23,59 +23,37 @@
  * Lesser General Public License for more details.
  *
  */
- 
-package net.sf.tapestry.inspector;
 
-import com.primix.tapestry.util.pool.*;
+package net.sf.tapestry.util.exception;
 
-import net.sf.tapestry.util.pool.*;
+import java.io.Serializable;
 
 /**
- *  Used to emit a stream of alteranting string values: "even", "odd", etc.  This
- *  is often used in the Inspector pages to make the class of a &lt;tr&gt; alternate
- *  for presentation reasons.
+ *  Captures a name/value property pair from an exception.  Part of
+ *  an {@link ExceptionDescription}.
  *
- *  @version $Id: EvenOdd.java,v 1.9 2001/11/10 21:58:52 hship Exp $
  *  @author Howard Ship
- *
+ *  @version $Id$
  */
 
-public class EvenOdd implements IPoolable
+public class ExceptionProperty implements Serializable
 {
-	private boolean even = true;
+	private String name;
+	private String value;
 
-	/**
-	 *  Returns "even" or "odd".  Whatever it returns on one invocation, it will
-	 *  return the opposite on the next.
-	 *
-	 */
-
-	public String getNext()
+	public ExceptionProperty(String name, String value)
 	{
-		String result = even ? "even" : "odd";
-
-		even = !even;
-
-		return result;
+		this.name = name;
+		this.value = value;
 	}
 
-	public boolean isEven()
+	public String getName()
 	{
-		return even;
+		return name;
 	}
 
-	public void setEven(boolean value)
+	public String getValue()
 	{
-		even = value;
-	}
-
-	/**
-	 *  Resets the internal flag such that the next value from {@link #getNext()} will be "even".
-	 *
-	 */
-
-	public void resetForPool()
-	{
-		even = true;
+		return value;
 	}
 }

@@ -25,7 +25,8 @@
 
 package net.sf.tapestry.html;
 
-import java.io.*;
+import java.io.CharArrayWriter;
+import java.io.PrintWriter;
 
 import net.sf.tapestry.IMarkupWriter;
 

@@ -24,7 +24,7 @@
  *
  */
 
-package net.sf.tapestry.util.ejb;
+package net.sf.tapestry.util.exception;
 
 import java.util.*;
 import java.io.Serializable;
@@ -37,7 +37,7 @@ import java.io.Serializable;
  *  Strings.
  *
  *  @author Howard Ship
- *  @version $Id: ExceptionDescription.java,v 1.5 2001/11/10 21:58:53 hship Exp $
+ *  @version $Id$
  */
 
 public class ExceptionDescription implements Serializable

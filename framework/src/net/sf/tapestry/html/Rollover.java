@@ -1,40 +1,50 @@
-/*
- * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
- *
- * Howard Lewis Ship
- * http://sf.net/projects/tapestry
- * mailto:hship@users.sf.net
- *
- * This library is free software.
- *
- * You may redistribute it and/or modify it under the terms of the GNU
- * Lesser General Public License as published by the Free Software Foundation.
- *
- * Version 2.1 of the license should be included with this distribution in
- * the file LICENSE, as well as License.html. If the license is not
- * included with this distribution, you may find a copy at the FSF web
- * site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
- * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied waranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- */
+//
+// Tapestry Web Application Framework
+// Copyright (c) 2000-2002 by Howard Lewis Ship
+//
+// Howard Lewis Ship
+// http://sf.net/projects/tapestry
+// mailto:hship@users.sf.net
+//
+// This library is free software.
+//
+// You may redistribute it and/or modify it under the terms of the GNU
+// Lesser General Public License as published by the Free Software Foundation.
+//
+// Version 2.1 of the license should be included with this distribution in
+// the file LICENSE, as well as License.html. If the license is not
+// included with this distribution, you may find a copy at the FSF web
+// site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
+// Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied waranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
 
 package net.sf.tapestry.html;
 
-import com.primix.tapestry.*;
-import com.primix.tapestry.components.*;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
-// Appease Javadoc
-import com.primix.tapestry.link.*;
-
-import net.sf.tapestry.*;
-import net.sf.tapestry.components.*;
+import net.sf.tapestry.AbstractComponent;
+import net.sf.tapestry.BindingException;
+import net.sf.tapestry.IAsset;
+import net.sf.tapestry.IBinding;
+import net.sf.tapestry.IEngine;
+import net.sf.tapestry.IMarkupWriter;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.IScript;
+import net.sf.tapestry.IScriptSource;
+import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.RequiredParameterException;
+import net.sf.tapestry.ResourceUnavailableException;
+import net.sf.tapestry.ScriptException;
+import net.sf.tapestry.ScriptSession;
+import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.components.IServiceLink;
+import net.sf.tapestry.components.ServiceLinkEventType;
 
 /**
  *  Combines an {@link Action} with an &lt;img&gt; and JavaScript code
@@ -107,252 +117,252 @@ import net.sf.tapestry.components.*;
  *  is not allowed.
  *
  *
- *  @author Howard Ship
+ *  @author Howard Lewis Ship
  *  @version $Id$
- */
+ * 
+ **/
 
 public class Rollover extends AbstractComponent
 {
-	// Shared by all instances of Rollover
+    // Shared by all instances of Rollover
 
-	private static IScript parsedScript;
+    private static IScript parsedScript;
 
-	// Symbols used when generating the script.
+    // Symbols used when generating the script.
 
-	private Map symbols;
+    private Map symbols;
 
-	private static final int MAP_SIZE = 7;
+    private static final int MAP_SIZE = 7;
 
-	private IBinding image;
-	private IBinding focus;
-	private IBinding blur;
-	private IBinding disabled;
+    private IBinding image;
+    private IBinding focus;
+    private IBinding blur;
+    private IBinding disabled;
 
-	/**
-	*  Converts an {@link IAsset} binding into a usable URL.  Returns null
-	*  if the binding does not exist or the binding's value is null.
-	*
-	*/
+    /**
+     *  Converts an {@link IAsset} binding into a usable URL.  Returns null
+     *  if the binding does not exist or the binding's value is null.
+     *
+     **/
 
-	protected String getAssetURL(
-		String name,
-		IBinding binding,
-		IRequestCycle cycle)
-		throws RequestCycleException
-	{
-		IAsset asset;
+    protected String getAssetURL(
+        String name,
+        IBinding binding,
+        IRequestCycle cycle)
+        throws RequestCycleException
+    {
+        IAsset asset;
 
-		if (binding == null)
-			return null;
+        if (binding == null)
+            return null;
 
-		try
-		{
-			asset = (IAsset) binding.getObject(name, IAsset.class);
-		}
-		catch (BindingException ex)
-		
-			{
-			throw new RequestCycleException(this, ex);
-		}
+        try
+        {
+            asset = (IAsset) binding.getObject(name, IAsset.class);
+        }
+        catch (BindingException ex)
+        {
+            throw new RequestCycleException(this, ex);
+        }
 
-		if (asset == null)
-			return null;
+        if (asset == null)
+            return null;
 
-		return asset.buildURL(cycle);
-	}
+        return asset.buildURL(cycle);
+    }
 
-	public IBinding getBlurBinding()
-	{
-		return blur;
-	}
+    public IBinding getBlurBinding()
+    {
+        return blur;
+    }
 
-	public IBinding getDisabledBinding()
-	{
-		return disabled;
-	}
+    public IBinding getDisabledBinding()
+    {
+        return disabled;
+    }
 
-	public IBinding getFocusBinding()
-	{
-		return focus;
-	}
+    public IBinding getFocusBinding()
+    {
+        return focus;
+    }
 
-	public IBinding getImageBinding()
-	{
-		return image;
-	}
+    public IBinding getImageBinding()
+    {
+        return image;
+    }
 
-	public void render(IMarkupWriter writer, IRequestCycle cycle)
-		throws RequestCycleException
-	{
-		String imageURL = null;
-		String focusURL = null;
-		String blurURL = null;
-		String uniqueId = null;
-		String onMouseOverName = null;
-		boolean dynamic = false;
-		String onMouseOutName = null;
-		int borderValue = 0;
-		Body body;
-		String focusImageName = null;
-		String blurImageName = null;
-		IServiceLink serviceLink;
-		String imageName = null;
-		String script;
+    public void render(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
+    {
+        String imageURL = null;
+        String focusURL = null;
+        String blurURL = null;
+        String uniqueId = null;
+        String onMouseOverName = null;
+        boolean dynamic = false;
+        String onMouseOutName = null;
+        int borderValue = 0;
+        Body body;
+        String focusImageName = null;
+        String blurImageName = null;
+        IServiceLink serviceLink;
+        String imageName = null;
+        String script;
 
-		body = Body.get(cycle);
-		if (body == null)
-			throw new RequestCycleException(
-				Tapestry.getString("Rollover.must-be-contained-by-body"),
-				this);
+        body = Body.get(cycle);
+        if (body == null)
+            throw new RequestCycleException(
+                Tapestry.getString("Rollover.must-be-contained-by-body"),
+                this);
 
-		serviceLink = (IServiceLink) cycle.getAttribute(IServiceLink.ATTRIBUTE_NAME);
-		if (serviceLink == null)
-			throw new RequestCycleException(
-				Tapestry.getString("Rollover.must-be-contained-by-link"),
-				this);
+        serviceLink = (IServiceLink) cycle.getAttribute(IServiceLink.ATTRIBUTE_NAME);
+        if (serviceLink == null)
+            throw new RequestCycleException(
+                Tapestry.getString("Rollover.must-be-contained-by-link"),
+                this);
 
-		// No body, so we skip it all if not rewinding (assumes no side effects on
-		// accessors).
+        // No body, so we skip it all if not rewinding (assumes no side effects on
+        // accessors).
 
-		if (cycle.isRewinding())
-			return;
+        if (cycle.isRewinding())
+            return;
 
-		boolean linkDisabled = serviceLink.isDisabled();
+        boolean linkDisabled = serviceLink.isDisabled();
 
-		if (linkDisabled)
-		{
-			imageURL = getAssetURL("disabled", disabled, cycle);
+        if (linkDisabled)
+        {
+            imageURL = getAssetURL("disabled", disabled, cycle);
 
-			if (imageURL == null)
-				imageURL = getAssetURL("image", image, cycle);
-		}
-		else
-		{
-			imageURL = getAssetURL("image", image, cycle);
-			focusURL = getAssetURL("focus", focus, cycle);
-			blurURL = getAssetURL("blur", blur, cycle);
+            if (imageURL == null)
+                imageURL = getAssetURL("image", image, cycle);
+        }
+        else
+        {
+            imageURL = getAssetURL("image", image, cycle);
+            focusURL = getAssetURL("focus", focus, cycle);
+            blurURL = getAssetURL("blur", blur, cycle);
 
-			dynamic = (focusURL != null) || (blurURL != null);
-		}
+            dynamic = (focusURL != null) || (blurURL != null);
+        }
 
-		if (imageURL == null)
-			throw new RequiredParameterException(this, "image", null);
+        if (imageURL == null)
+            throw new RequiredParameterException(this, "image", null);
 
-		writer.beginEmpty("img");
+        writer.beginEmpty("img");
 
-		writer.attribute("src", imageURL);
+        writer.attribute("src", imageURL);
 
-		writer.attribute("border", 0);
+        writer.attribute("border", 0);
 
-		if (dynamic)
-		{
-			if (focusURL == null)
-				focusURL = imageURL;
+        if (dynamic)
+        {
+            if (focusURL == null)
+                focusURL = imageURL;
 
-			if (blurURL == null)
-				blurURL = imageURL;
+            if (blurURL == null)
+                blurURL = imageURL;
 
-			try
-			{
-				imageName = writeScript(body, serviceLink, focusURL, blurURL);
-			}
-			catch (ResourceUnavailableException ex)
-			{
-				throw new RequestCycleException(this, ex);
-			}
-			catch (ScriptException ex)
-			{
-				throw new RequestCycleException(this, ex);
-			}
+            try
+            {
+                imageName = writeScript(body, serviceLink, focusURL, blurURL);
+            }
+            catch (ResourceUnavailableException ex)
+            {
+                throw new RequestCycleException(this, ex);
+            }
+            catch (ScriptException ex)
+            {
+                throw new RequestCycleException(this, ex);
+            }
 
-			writer.attribute("name", imageName);
-		}
+            writer.attribute("name", imageName);
+        }
 
-		generateAttributes(writer, cycle);
+        generateAttributes(writer, cycle);
 
-		writer.closeTag();
+        writer.closeTag();
 
-	}
+    }
 
-	private static final String SCRIPT_RESOURCE = "Rollover.script";
+    private static final String SCRIPT_RESOURCE = "Rollover.script";
 
-	private IScript getParsedScript() throws ResourceUnavailableException
-	{
-		if (parsedScript == null)
-		{
-			IEngine engine = getPage().getEngine();
-			IScriptSource source = engine.getScriptSource();
+    private IScript getParsedScript() throws ResourceUnavailableException
+    {
+        if (parsedScript == null)
+        {
+            IEngine engine = getPage().getEngine();
+            IScriptSource source = engine.getScriptSource();
 
-			parsedScript = source.getScript("/net/sf/tapestry/html/Rollover.script");
-		}
+            parsedScript = source.getScript("/net/sf/tapestry/html/Rollover.script");
+        }
 
-		return parsedScript;
-	}
+        return parsedScript;
+    }
 
-	private String writeScript(
-		Body body,
-		IServiceLink link,
-		String focusURL,
-		String blurURL)
-		throws ResourceUnavailableException, ScriptException
-	{
-		String uniqueId = body.getUniqueId();
-		String focusImageURL = body.getPreloadedImageReference(focusURL);
-		String blurImageURL = body.getPreloadedImageReference(blurURL);
+    private String writeScript(
+        Body body,
+        IServiceLink link,
+        String focusURL,
+        String blurURL)
+        throws ResourceUnavailableException, ScriptException
+    {
+        String uniqueId = body.getUniqueId();
+        String focusImageURL = body.getPreloadedImageReference(focusURL);
+        String blurImageURL = body.getPreloadedImageReference(blurURL);
 
-		if (symbols == null)
-			symbols = new HashMap(MAP_SIZE);
-		else
-			symbols.clear();
+        if (symbols == null)
+            symbols = new HashMap(MAP_SIZE);
+        else
+            symbols.clear();
 
-		symbols.put("uniqueId", uniqueId);
-		symbols.put("focusImageURL", focusImageURL);
-		symbols.put("blurImageURL", blurImageURL);
+        symbols.put("uniqueId", uniqueId);
+        symbols.put("focusImageURL", focusImageURL);
+        symbols.put("blurImageURL", blurImageURL);
 
-		ScriptSession session = getParsedScript().execute(symbols);
+        ScriptSession session = getParsedScript().execute(symbols);
 
-		body.process(session);
+        body.process(session);
 
-		// Add attributes to the link to control mouse over/out.
-		// Because the script is written before the <body> tag,
-		// there won't be any timing issues (such as cause
-		// bug #113893).
+        // Add attributes to the link to control mouse over/out.
+        // Because the script is written before the <body> tag,
+        // there won't be any timing issues (such as cause
+        // bug #113893).
 
-		link.addEventHandler(
-			ServiceLinkEventType.MOUSE_OVER,
-			(String) symbols.get("onMouseOverName"));
-		link.addEventHandler(
-			ServiceLinkEventType.MOUSE_OUT,
-			(String) symbols.get("onMouseOutName"));
+        link.addEventHandler(
+            ServiceLinkEventType.MOUSE_OVER,
+            (String) symbols.get("onMouseOverName"));
+        link.addEventHandler(
+            ServiceLinkEventType.MOUSE_OUT,
+            (String) symbols.get("onMouseOutName"));
 
-		String imageName = (String) symbols.get("imageName");
+        String imageName = (String) symbols.get("imageName");
 
-		symbols.clear();
+        symbols.clear();
 
-		// Return the value that must be assigned to the 'name' attribute
-		// of the <img> tag.
+        // Return the value that must be assigned to the 'name' attribute
+        // of the <img> tag.
 
-		return imageName;
+        return imageName;
 
-	}
+    }
 
-	public void setBlurBinding(IBinding newBlur)
-	{
-		blur = newBlur;
-	}
+    public void setBlurBinding(IBinding newBlur)
+    {
+        blur = newBlur;
+    }
 
-	public void setDisabledBinding(IBinding newDisabled)
-	{
-		disabled = newDisabled;
-	}
+    public void setDisabledBinding(IBinding newDisabled)
+    {
+        disabled = newDisabled;
+    }
 
-	public void setFocusBinding(IBinding newFocus)
-	{
-		focus = newFocus;
-	}
+    public void setFocusBinding(IBinding newFocus)
+    {
+        focus = newFocus;
+    }
 
-	public void setImageBinding(IBinding value)
-	{
-		image = value;
-	}
+    public void setImageBinding(IBinding value)
+    {
+        image = value;
+    }
 }
