@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <!-- $Id$ -->
 <!DOCTYPE script PUBLIC 
-	"-//Howard Ship//Tapestry Script 1.1//EN"
-	"http://tapestry.sf.net/dtd/Script_1_1.dtd">
+	"-//Howard Lewis Ship//Tapestry Script 1.2//EN"
+	"http://tapestry.sf.net/dtd/Script_1_2.dtd">
 
 <script>
 <!-- 
@@ -16,28 +16,31 @@ Both are assumed to be in the same form.
 
 -->
 
+<input-symbol key="select" class="net.sf.tapestry.form.PropertySelection" required="yes"/>
+<input-symbol key="field" class="net.sf.tapestry.form.TextField" required="yes"/>
+
 <let key="formObject">
-	document.<insert property-path="select.form.name"/>
+	document.${select.form.name}
 </let>
 
 <let key="selectObject">
-	<insert property-path="formObject"/>.<insert property-path="select.name"/>
+	${formObject}.${select.name}
 </let>
 
 <let key="fieldObject">
-	<insert property-path="formObject"/>.<insert property-path="field.name"/>
+	${formObject}.${field.name}
 </let>
 
 <let key="functionName">
-	onChange_<insert property-path="select.form.name"/>_<insert property-path="select.name"/>
+	onChange_${select.form.name}_${select.name}
 </let>
 
 <body>
 
-function <insert property-path="functionName"/>()
+function ${functionName}()
 {
-  var select = <insert property-path="selectObject"/>;
-  var field = <insert property-path="fieldObject"/>;
+  var select = ${selectObject};
+  var field = ${fieldObject};
 	
 	// Index 0 is the null value option, meaning enable the text field
 	
@@ -62,12 +65,12 @@ function <insert property-path="functionName"/>()
 <!-- Navigator is not documented to respond to the onChange event, but this works,
 	 so my documentation must be wrong. -->
 	 
-<insert property-path="selectObject"/>.onchange = <insert property-path="functionName"/>;
+${selectObject}.onchange = ${functionName};
 
 <!-- Disable the text field unless the select is set for index 0 (the null value). -->
 
-if (<insert property-path="selectObject"/>.selectedIndex != 0)
-  <insert property-path="fieldObject"/>.disabled = true;
+if (${selectObject}.selectedIndex != 0)
+  ${fieldObject}.disabled = true;
 
 </initialization>
 
