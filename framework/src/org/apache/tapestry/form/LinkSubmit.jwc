@@ -11,7 +11,7 @@
   </description>
 
   <parameter name="listener" 
-  	java-type="org.apache.tapestry.IActionListener" 
+  	type="org.apache.tapestry.IActionListener" 
   	direction="in">
   	<description>
 	    The listener is invoked during the rewind as the link component is encountered.  This is
@@ -22,9 +22,9 @@
   	</description>
   </parameter>
   	
-  <parameter name="disabled" java-type="boolean" direction="in"/>
+  <parameter name="disabled" type="boolean" direction="in"/>
   <parameter name="selected"/>
-  <parameter name="tag" java-type="java.lang.Object" direction="in"/>
+  <parameter name="tag" type="java.lang.Object" direction="in"/>
 
   <reserved-parameter name="name"/>
   <reserved-parameter name="href"/>
