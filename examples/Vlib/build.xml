@@ -16,8 +16,9 @@
 			<include name="examples/${vlibbeans.jar}"/>
 			<include name="${ext.dir}/*.jar"/>
 		</fileset>
-		<pathelement location="${j2ee.jar.path}"/>
-		<pathelement location="${servlet.jar.path}"/>
+		<fileset dir="${root.lib.dir}">
+			<include name="${servlet.dir}/*.jar"/>
+		</fileset>
 	</path>
 	<property name="private.dir" value="private"/>
 	<target name="init">
@@ -52,8 +53,7 @@
 			</classes>
 		</war>
 	</target>
-	<target name="run" description="Run the Vlib application." depends="install"
-		>
+	<target name="run" description="Run the Vlib application." depends="install">
 		<delete dir="${private.dir}" quiet="true"/>
 		<mkdir dir="${private.dir}"/>
 		<java classname="org.mortbay.jetty.Server" fork="true">

@@ -2,6 +2,10 @@
 # This file is used to configure the Tapestry build.
 # Copy it as "build.properties" and fill in the necessary data.
 
+# The absolute path to the directory where external distributions 
+# used in the building process will be downloaded and installed
+base.path=/usr/share/java
+
 # The absolute path to the directory containing the JBoss installation.
 # Required to execute the configure and run-jboss targets.
 jboss.dir=
@@ -18,16 +22,6 @@ jetty.dir=
 # The absolute path to the directory containing the Jython installation.
 # Required to execute the junit target.
 jython.dir=
-
-# The absolute path to the JAR containing the J2EE libraries
-# (javax.ejb).
-
-j2ee.jar.path=
-
-# The absolute path to the JAR containing the Java Servlet API
-# (javax.servlet).
-
-servlet.jar.path=
 
 # Home for xml-forrest, used to build documentation.
 # Available from :pserver:anoncvs@cvs.apache.org:/home/cvspublic as module xml-forrest
