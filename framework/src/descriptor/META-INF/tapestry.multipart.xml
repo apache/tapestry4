@@ -41,7 +41,9 @@
   </service-point>
   
   <contribution configuration-id="tapestry.request.ServletRequestServicerPipeline">
-    <filter name="MultipartDecoderFilter" object="service:MultipartDecoderFilter"/>
+    <filter name="MultipartDecoderFilter" 
+      object="service:MultipartDecoderFilter" 
+      after="tapestry.request.SetupRequestEncoding"/>
   </contribution>
   
 </module>

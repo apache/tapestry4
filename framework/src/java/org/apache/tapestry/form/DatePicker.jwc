@@ -33,5 +33,7 @@
   <asset name="script" path="DatePicker.js"/>
   
   <asset name="defaultIcon" path="DatePickerIcon.png"/>
+  
+  <inject property="scriptSource" object="infrastructure:scriptSource"/>
                 
 </component-specification>

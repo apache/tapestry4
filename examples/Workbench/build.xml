@@ -46,8 +46,7 @@
 		<ibiblio-dependency artifact="servletapi"         version="${servlet.version}"  group="servletapi"/>
 
  
-    <!-- This isn't actually uploaded to Maven yet! -->
-    <ibiblio-dependency artifact="jCharts"            version="0.6.0"               group="krysalis"          use="run"/>
+    <ibiblio-dependency artifact="jcharts"            version="0.6.0"               group="jcharts"           use="run"/>
 	</target>	
   
 </project>
