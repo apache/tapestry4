@@ -6,37 +6,6 @@
 	
 <page-specification class="net.sf.tapestry.vlib.pages.ApplicationUnavailable">
 
-  <component id="shell" type="Shell">
-    <static-binding name="title">Virtual Library: Application Unavailable</static-binding>
-    <binding name="stylesheet" expression="assets.stylesheet"/>
-  </component>
-
-  <component id="body" type="Body"/>
-   
-  <component id="showError" type="ShowError"/>
-  
-  <component id="restart" type="ServiceLink">
-    <binding name="service" expression="@net.sf.tapestry.IEngineService@RESTART_SERVICE"/>
-  </component>
-  
-  
-  <component id="ifDebug" type="Conditional">
-    <binding name="condition" expression="engine.debugEnabled"/>
-  </component>
-  
-  <component id="exceptionDisplay" type="ExceptionDisplay">
-    <binding name="exceptions" expression="exceptions"/>
-  </component>
-  
-
-  
-  <component id="showRequest" type="Delegator">
-    <binding name="delegate" expression="requestCycle.requestContext"/>
-  </component>
-
-  <component id="inspectorButton" type="InspectorButton"/>
-
   <context-asset name="stylesheet" path="/scripts/style_virtlib_pcIE55.css"/>
-
   
 </page-specification>

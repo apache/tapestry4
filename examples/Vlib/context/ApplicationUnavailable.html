@@ -9,9 +9,11 @@
 </head>
 
 <span jwcid="$content$">
-<span jwcid="shell">
+<span jwcid="@Shell" 
+	title="Virtual Library: Application Unavailable"
+	stylesheet="[[ assets.stylesheet ]]">
 
-<body jwcid="body" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#8e9cd1">
+<body jwcid="@Body" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#8e9cd1">
 
 <img src="images/ico_t.gif" width="44" height="44" border="0" vspace="5">
 <img src="images/hd_virtuallibrary.gif" width="163" height="22" border="0" vspace="17">
@@ -20,19 +22,20 @@
 
 
 
-<span jwcid="showError"/>
+<span jwcid="@ShowError"/>
 				
 <p>				
 The Virtual Library application is temporarily unavailable due to
-system errors.  You may attempt to <a jwcid="restart">restart the application</a>.				
+system errors.  You may attempt to 
+<a jwcid="@ServiceLink" service="restart">restart the application</a>.				
 				
-<span jwcid="ifDebug">
+<span jwcid="@Conditional" condition="[[ engine.debugEnabled ]]">
 
-<span jwcid="exceptionDisplay"/>
+<span jwcid="@ExceptionDisplay" exceptions="[[ exceptions ]]"/>
 
-<span jwcid="showRequest"/>
+<span jwcid="@Delegator" delegate="[[ requestCycle.requestContext ]]"/>
 
-<span jwcid="inspectorButton"/>
+<span jwcid="@InspectorButton"/>
 
 </span>
 
