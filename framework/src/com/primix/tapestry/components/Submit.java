@@ -109,9 +109,16 @@ public class Submit extends AbstractFormComponent
     private IBinding selectedBinding;
     private IBinding tagBinding;
     private Object staticTagValue;
+
+    private String name;
 	
 	private static final String[] reservedNames = 
 	{ "type", "name" };
+
+    public String getName()
+    {
+        return name;
+    }
 
 	public IBinding getLabelBinding()
 	{
@@ -164,7 +171,6 @@ public class Submit extends AbstractFormComponent
 	{
 		Form form;
 		boolean rewinding;
-		String name;
 		String label = null;
 		boolean disabled = false;
 		String value;

@@ -81,7 +81,13 @@ public class Hidden extends AbstractFormComponent
 {
 	private IBinding valueBinding;
     private IBinding listenerBinding;
-	
+	private String name;
+
+    public String getName()
+    {
+        return name;
+    }
+
 	public IBinding getValueBinding()
 	{
 		return valueBinding;
@@ -106,7 +112,6 @@ public class Hidden extends AbstractFormComponent
 		throws RequestCycleException
 	{
 		Form form;
-		String name;
 		boolean formRewound;
 		String value;
 		IActionListener listener;

@@ -105,9 +105,15 @@ public class Text extends AbstractFormComponent
 	private IBinding rowsBinding;
 	private IBinding columnsBinding;
 	private IBinding disabledBinding;
+    private String name;
 
 	private static final String[] reservedNames =
     { "name", "cols"};
+
+    public String getName()
+    {
+        return name;
+    }
 
 	public IBinding getColumnsBinding()
 	{
@@ -147,7 +153,6 @@ public class Text extends AbstractFormComponent
 	throws RequestCycleException
 	{
 		boolean rewinding;
-		String name;
 		String value;
 		boolean disabled = false;
 		Form form;

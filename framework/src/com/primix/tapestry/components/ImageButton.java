@@ -131,6 +131,12 @@ public class ImageButton extends AbstractFormComponent
     private IBinding selectedBinding;
     private IBinding tagBinding;
     private Object staticTagValue;
+    private String name;
+
+    public String getName()
+    {
+        return name;
+    }
 	
 	private static final String[] reservedNames = 
 		{ "type", "name", "border", "src" };
@@ -203,7 +209,6 @@ public class ImageButton extends AbstractFormComponent
 	{
 		Form form;
 		boolean rewinding;
-		String name;
 		String parameterName;
 		String value;
 		int x;

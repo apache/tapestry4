@@ -174,13 +174,19 @@ public class Form extends AbstractComponent
     *  components that write JavaScript and need to access the form or
     *  its contents.
     *
+    *  <p>This value is generated when the form renders, and is not cleared.
+    *  If the Form is inside a {@link Foreach}, this will be the most recently
+    *  generated name for the Form.
+    *
+    *  <p>This property is exposed so that sophisticated applications can write
+    *  JavaScript handlers for the form and components within the form.
+    *
+    *  @see AbstractFormComponent#getName()
+    *
     */
 
     public String getName()
     {
-        if (!rendering)
-            throw new RenderOnlyPropertyException(this, "name");
-
         return name;
     }
 
@@ -293,7 +299,6 @@ public class Form extends AbstractComponent
         }
         finally
         {
-            name = null;
             rendering = false;
         }
     }

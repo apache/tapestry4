@@ -91,6 +91,13 @@ public class Select extends AbstractFormComponent
 	private Set selections;
 	private int nextOptionId;
 
+    private String name;
+
+    public String getName()
+    {
+        return name;
+    }
+
 	/**
 	*  Used by the <code>Select</code> to record itself as a
 	*  {@link IRequestCycle} attribute, so that the
@@ -155,20 +162,10 @@ public class Select extends AbstractFormComponent
 	/**
 	*  Renders the &lt;option&gt; element, or responds when the form containing the element
 	*  is submitted (by checking {@link Form#isRewinding()}.
-	*
-	*  <table border=1>
-	*  <tr>  <th>attribute</th>  <th>value</th> </tr>
-	*  <tr>  <td>name</td>  <td>from {@link IRequestCycle#getNextActionId()}</td> </tr>
-	*  <tr> <td>multiple</td> <td>ommitted, unless the <code>multiple</code>
-	*			 property is true </tr> </tr>
-	*  <tr>  <td>disabled</td>  <td>ommited, unless the <code>disabled</code> property is
-	* 	true.  </td> </tr>
-	*  </table>
 	**/
 
 	public void render(IResponseWriter writer, IRequestCycle cycle) throws RequestCycleException
 	{
-		String name;
 		Form form;
 		boolean compressed;
 		boolean multiple;

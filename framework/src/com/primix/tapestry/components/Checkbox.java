@@ -86,6 +86,13 @@ public class Checkbox extends AbstractFormComponent
 	private boolean staticDisabled;
 	private boolean disabledValue;
 
+    private String name;
+
+    public String getName()
+    {
+        return name;
+    }
+
 	private static final String[] reservedNames = 
     { "type", "name", "checked"};
 
@@ -114,7 +121,6 @@ public class Checkbox extends AbstractFormComponent
 	throws RequestCycleException
 	{
 		boolean rewinding;
-		String name;
 		String value;
 		boolean disabled = false;
 		Form form;

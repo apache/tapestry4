@@ -248,63 +248,56 @@ public class PropertySelection extends AbstractFormComponent
 
 		name = form.getNextElementId("PropertySelection");
 		
-		try
+		if (rewinding)
 		{
-			if (rewinding)
-			{
-				// If disabled, ignore anything that comes up from the client.
-				
-				if (disabled)
-					return;		
-				
-				optionValue = cycle.getRequestContext().getParameter(name);
-				
-				if (optionValue == null)
-					newValue = null;
-				else
-					newValue = model.translateValue(optionValue);
-				
-				valueBinding.setValue(newValue);
-				
-				return;	
-			}
+			// If disabled, ignore anything that comes up from the client.
 			
-			if (rendererBinding != null)
-				renderer = (IPropertySelectionRenderer)rendererBinding.getValue();
-				
-			if (renderer == null)
-				renderer = getDefaultSelectRenderer();
+			if (disabled)
+				return;		
+			
+			optionValue = cycle.getRequestContext().getParameter(name);
+			
+			if (optionValue == null)
+				newValue = null;
+			else
+				newValue = model.translateValue(optionValue);
+			
+			valueBinding.setValue(newValue);
+			
+			return;	
+		}
 		
-			renderer.beginRender(this, writer, cycle);
-					
-			count = model.getOptionCount();
-			currentValue = valueBinding.getValue();
-				
-			for (i = 0; i < count; i++)
-			{
-				option = model.getOption(i);
-				
-				if (!foundSelected)
-				{
-					selected = isEqual(option, currentValue);
-					if (selected)
-						foundSelected = true;
-				}		
-				
-				renderer.renderOption(this, writer, cycle, model, option, i, selected);
-
-				selected = false;			
-			}
-					
-			// A PropertySelection doesn't allow a body, so no need to worry about
-			// wrapped components.
+		if (rendererBinding != null)
+			renderer = (IPropertySelectionRenderer)rendererBinding.getValue();
 			
-			renderer.endRender(this, writer, cycle);
-		}
-		finally
+		if (renderer == null)
+			renderer = getDefaultSelectRenderer();
+	
+		renderer.beginRender(this, writer, cycle);
+				
+		count = model.getOptionCount();
+		currentValue = valueBinding.getValue();
+			
+		for (i = 0; i < count; i++)
 		{
-			name = null;
+			option = model.getOption(i);
+			
+			if (!foundSelected)
+			{
+				selected = isEqual(option, currentValue);
+				if (selected)
+					foundSelected = true;
+			}		
+			
+			renderer.renderOption(this, writer, cycle, model, option, i, selected);
+
+			selected = false;			
 		}
+				
+		// A PropertySelection doesn't allow a body, so no need to worry about
+		// wrapped components.
+		
+		renderer.endRender(this, writer, cycle);
 	}
 	
 	private boolean isEqual(Object left, Object right)
