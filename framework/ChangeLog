@@ -1,5 +1,10 @@
 * Oct 6 2000 hship
 
+Fix the Hidden component to not throw NullPointerException if the listener parameter
+is not bound.
+
+* Oct 6 2000 hship
+
 Re-introduce support for automatic onLoad method for the Body component.
 Rename the TextField parameter "maximumWidth" to "maximumLength".
 Make the Form component emit a name attribute, to faciliate JavaScript access
