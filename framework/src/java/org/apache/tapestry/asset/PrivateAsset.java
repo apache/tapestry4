@@ -37,9 +37,6 @@ import org.apache.tapestry.engine.ILink;
 
 public class PrivateAsset extends AbstractAsset
 {
-
-    private AssetExternalizer _externalizer;
-
     public PrivateAsset(ClasspathResource resourceLocation, Location location)
     {
         super(resourceLocation, location);
@@ -47,24 +44,16 @@ public class PrivateAsset extends AbstractAsset
 
     /**
      * Gets the localized version of the resource. Build the URL for the resource. If possible, the
-     * application's {@link AssetExternalizer}is located, to copy the resource to a directory
+     * application's {@link AssetExternalizerImpl}is located, to copy the resource to a directory
      * visible to the web server.
      */
 
     public String buildURL(IRequestCycle cycle)
     {
-        if (_externalizer == null)
-            _externalizer = AssetExternalizer.get(cycle);
-
-        String path = getResourceLocation().getPath();
-
-        String externalURL = _externalizer.getURL(path);
-
-        if (externalURL != null)
-            return externalURL;
-
         IEngineService service = cycle.getEngine().getService(Tapestry.ASSET_SERVICE);
 
+       String path = getResourceLocation().getPath();
+ 
         ILink link = service.getLink(cycle, path);
 
         return link.getURL();
