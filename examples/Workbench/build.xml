@@ -46,8 +46,21 @@
 				<exclude name="**/*.java"/>
 				<exclude name="**/package.html"/>
 			</classes>
+			<classes dir="${root.config.dir}">
+			  <include name="log4j.properties"/>
+			</classes>
 			<lib dir="${lib.dir}">
 				<include name="*.jar"/>
+			</lib>
+			<lib dir="${root.lib.dir}">
+				<include name="${framework.jar}"/>
+				<include name="${contrib.jar}"/>
+			</lib>			
+			<lib dir="${root.lib.dir}/${ext.dir}">
+			  <include name="*.jar"/>
+			</lib>
+			<lib dir="${root.lib.dir}/${runtime.dir}">
+			  <include name="*.jar"/>
 			</lib>
 		</war>
 	</target>
