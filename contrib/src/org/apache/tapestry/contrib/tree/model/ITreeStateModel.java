@@ -26,7 +26,8 @@ public interface ITreeStateModel {
 	/*
 	 * Return the selected node unique key
 	 */
-	Object getSelectedNode();
+	Object getSelectedNode();	
+	public void setSelectedNode(Object objUniqueKey);
 
 	void expand(Object objUniqueKey);
 	void expandPath(Object objUniqueKey);

@@ -47,13 +47,13 @@ public class SimpleTreeStateModel implements ITreeStateModel, Serializable{
 	public Set getExpandSelection() {
 		return m_setExpanded;
 	}
-
+	
 	/**
 	 * @see org.apache.tapestry.contrib.tree.model.ITreeStateModel#expand(Object)
 	 */
 	public void expand(Object objUniqueKey) {
 		m_setExpanded.add(objUniqueKey);
-		setSelectedNode(objUniqueKey);
+		//setSelectedNode(objUniqueKey);
 	}
 
 	/**
@@ -61,7 +61,7 @@ public class SimpleTreeStateModel implements ITreeStateModel, Serializable{
 	 */
 	public void expandPath(Object objUniqueKey) {
 		m_setExpanded.add(objUniqueKey);
-		setSelectedNode(objUniqueKey);
+		//setSelectedNode(objUniqueKey);
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class SimpleTreeStateModel implements ITreeStateModel, Serializable{
 	 */
 	public void collapse(Object objUniqueKey) {
 		m_setExpanded.remove(objUniqueKey);
-		setSelectedNode(objUniqueKey);
+		//setSelectedNode(objUniqueKey);
 	}
 
 	/**
@@ -77,7 +77,7 @@ public class SimpleTreeStateModel implements ITreeStateModel, Serializable{
 	 */
 	public void collapsePath(Object objUniqueKey) {
 		m_setExpanded.remove(objUniqueKey);
-		setSelectedNode(objUniqueKey);
+		//setSelectedNode(objUniqueKey);
 	}
 
 	/**
@@ -92,10 +92,12 @@ public class SimpleTreeStateModel implements ITreeStateModel, Serializable{
 	public Object getSelectedNode() {
 		return m_objSelectedNodeUID;
 	}
-	private void setSelectedNode(Object objUniqueKey){
+	
+	public void setSelectedNode(Object objUniqueKey){
 		if(m_objSelectedNodeUID == null || !m_objSelectedNodeUID.equals(objUniqueKey))
 			m_objSelectedNodeUID = objUniqueKey;
 	}
+
 	/**
 	 * @see org.apache.tapestry.contrib.tree.model.ITreeStateModel#resetState()
 	 */

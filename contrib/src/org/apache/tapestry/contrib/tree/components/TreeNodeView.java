@@ -93,7 +93,7 @@ public class TreeNodeView extends BaseComponent implements PageDetachListener{
      *
      * @param cycle The Tapestry request cycle object.
      */
-    public void nodeSelect(IRequestCycle cycle) {
+    public void nodeExpandCollaps(IRequestCycle cycle) {
         Object context[] = cycle.getServiceParameters();
         Object objValueUID = null;
         if (context != null && context.length > 0) {
@@ -114,9 +114,41 @@ public class TreeNodeView extends BaseComponent implements PageDetachListener{
         }
     }
 
-	private void fireNodeCollapsed(Object objValueUID, ITreeModelSource objTreeModelSource){
+    /**
+     * Called when a node in the tree is selected by the user.
+     * the tree state model is retrieved, and it is told
+     * to select the node.
+     *
+     * @param cycle The Tapestry request cycle object.
+     */
+    public void nodeSelect(IRequestCycle cycle) {
+        Object context[] = cycle.getServiceParameters();
+        Object objValueUID = null;
+        if (context != null && context.length > 0) {
+            objValueUID = context[0];
+        }
+		ComponentAddress objModelSourceAddress = (ComponentAddress)context[2];
+		ITreeModelSource objTreeModelSource = (ITreeModelSource) objModelSourceAddress.findComponent(cycle);
+		//ITreeModelSource objTreeModelSource = getTreeModelSource();
+        ITreeStateModel objStateModel = objTreeModelSource.getTreeModel().getTreeStateModel();
+        Object objSelectedNodeInState = objStateModel.getSelectedNode();
+
+        if(objValueUID.equals(objSelectedNodeInState)){
+        	//do nothing, the selected node in UI is the same as the selected in
+        	//state model. The user should use refresh of back button.
+        	return;
+        }
+        
+        objStateModel.setSelectedNode(objValueUID);
+        fireNodeSelected(objValueUID, objTreeModelSource);        
+    }
+
+    private void fireNodeSelected(Object objValueUID, ITreeModelSource objTreeModelSource){
+		deliverEvent(TreeStateEvent.SELECTED_NODE_CHANGED, objValueUID, objTreeModelSource);
+	}
+
+    private void fireNodeCollapsed(Object objValueUID, ITreeModelSource objTreeModelSource){
 		deliverEvent(TreeStateEvent.NODE_COLLAPSED, objValueUID, objTreeModelSource);
-	
 	}
 
 	private void fireNodeExpanded(Object objValueUID, ITreeModelSource objTreeModelSource){

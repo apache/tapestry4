@@ -27,6 +27,8 @@
                required="yes" direction="custom"/>
 
     <parameter name="value" type="java.lang.Object" required="no" direction="custom"/>
+    <parameter name="showRootNode" type="boolean" required="no"
+               direction="custom"/>
 
     <component id="wrapped" type="RenderBody"/>
 </component-specification>

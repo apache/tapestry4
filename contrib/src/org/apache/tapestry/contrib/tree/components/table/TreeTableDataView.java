@@ -83,18 +83,24 @@ public class TreeTableDataView extends BaseComponent implements ITreeRowSource, 
 
     public ArrayList generateNodeList() {
         if(m_arrAllExpandedNodes == null){
-	        // render data
+			ArrayList arrAllExpandedNodes = new ArrayList();
+
+			// render data
 			ITreeModelSource objTreeModelSource = getTreeModelSource();
 	        ITreeModel objTreeModel = objTreeModelSource.getTreeModel();
 	        ITreeDataModel objTreeDataModel = objTreeModel.getTreeDataModel();
-	        Object objValue = objTreeDataModel.getRoot();
-	        Object objValueUID = objTreeDataModel.getUniqueKey(objValue, null);
-	
-	        // Object objSelectedNode = objTreeModel.getTreeStateModel().getSelectedNode();
-	        //if(objSelectedNode == null)
-	        //  objTreeModel.getTreeStateModel().expand(objValueUID);
-			ArrayList arrAllExpandedNodes = new ArrayList();
-			walkTree(arrAllExpandedNodes, objValue, objValueUID, 0, objTreeModel);
+
+	        Object objRoot = objTreeDataModel.getRoot();
+	        Object objRootUID = objTreeDataModel.getUniqueKey(objRoot, null);
+	        if(getShowRootNode()){
+	        }else{
+	            for (Iterator iter = objTreeModel.getTreeDataModel().getChildren(objRoot); iter.hasNext();) {
+	                Object objChild = iter.next();
+	                Object objChildUID = objTreeModel.getTreeDataModel().getUniqueKey(objChild, objRoot);
+					walkTree(arrAllExpandedNodes, objChild, objChildUID, 0, objTreeModel);
+	            }
+	        }			
+
 			m_arrAllExpandedNodes = arrAllExpandedNodes;
 		}
 		
@@ -227,4 +233,12 @@ public class TreeTableDataView extends BaseComponent implements ITreeRowSource, 
 		m_objTreeRowObject = object;
 	}
 
+	public boolean getShowRootNode(){
+		boolean bShowRootNode = true;
+		IBinding objShowRootNodeB = getBinding("showRootNode");
+		if(objShowRootNodeB != null){
+			bShowRootNode = objShowRootNodeB.getBoolean();
+		}
+		return bShowRootNode;
+	}
 }

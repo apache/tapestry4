@@ -47,23 +47,27 @@
     <reserved-parameter name="closenodeimage"/>
     <reserved-parameter name="nodeviewdirect"/>
 
-    <component id="direct" type="DirectLink">
+    <component id="expandCollapsDirect" type="DirectLink">
+        <binding name="parameters" expression="nodeContext"/>
+        <binding name="listener" expression="listeners.nodeExpandCollaps"/>
+        <binding name="stateful" expression="false"/>
+        <binding name="name" expression="selectedID"/>
+        <binding name="anchor" expression="cleanSelectedID"/>
+    </component>
+
+    <component id="nodeDirect" type="DirectLink">
         <binding name="parameters" expression="nodeContext"/>
         <binding name="listener" expression="listeners.nodeSelect"/>
         <binding name="stateful" expression="false"/>
         <binding name="name" expression="selectedID"/>
         <binding name="anchor" expression="cleanSelectedID"/>
     </component>
-
+    
     <component id="showImages" type="Conditional">
         <binding name="condition" expression="showImages"/>
     </component>
 
     <component id="showImages2" copy-of="showImages"/>
-
-    <!--component id="showWithoutImages" type="Conditional">
-        <binding name="condition" expression="showWithoutImages"/>
-    </component-->
 
     <component id="makeNodeDirect" type="Conditional">
         <binding name="condition" expression="makeNodeDirect"/>
