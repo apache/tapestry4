@@ -70,35 +70,36 @@ import java.net.*;
 public interface IApplication
 {
     /**
-     *  The name of the default page presented when a user first accesses the
+     *  The name ("Home") of the default page presented when a user first accesses the
      *  application.
      *
      */
 	 
-    public static final String HOME_PAGE = "home";
+    public static final String HOME_PAGE = "Home";
 
     /**
-     *  The name of the page used for reporting exceptions.  Such a page must have
+     *  The name ("Exception") of the page used for reporting exceptions.  
+	 *  <p>Such a page must have
      *  a writable JavaBeans property named 'exception' of type 
      * <code>java.lang.Throwable</code>.
      *
      */
 
-    public static final String EXCEPTION_PAGE = "exception";
+    public static final String EXCEPTION_PAGE = "Exception";
 
     /**
-     *  The name of the page used for reporting stale links.
+     *  The name ("StaleLink") of the page used for reporting stale links.
      *
      */
 
-    public static final String STALE_LINK_PAGE = "stale-link";
+    public static final String STALE_LINK_PAGE = "StaleLink";
 
     /**
-     *  The name of the page used for reporting state sessions.
+     *  The name ("StaleSession") of the page used for reporting state sessions.
      *
      */
 
-    public static final String STALE_SESSION_PAGE = "stale-session";
+    public static final String STALE_SESSION_PAGE = "StaleSession";
 	
     /**
      *  Forgets changes to the named page by discarding the page recorder for the page.
