@@ -63,6 +63,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.fileupload.DiskFileUpload;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUpload;
 import org.apache.commons.fileupload.FileUploadException;
@@ -188,11 +189,11 @@ public class DefaultMultipartDecoder implements IMultipartDecoder
             throw new ApplicationRuntimeException(
                 Tapestry.getMessage("DefaultMultipartDecoder.encoding-not-set"));
         }
-        
-        // FileUpload is not quite threadsafe, so we create a new instance
+
+        // DiskFileUpload is not quite threadsafe, so we create a new instance
         // for each request.
 
-        FileUpload upload = new FileUpload();
+        DiskFileUpload upload = new DiskFileUpload();
 
         List parts = null;
 
@@ -215,7 +216,8 @@ public class DefaultMultipartDecoder implements IMultipartDecoder
 
             if (uploadItem.isFormField())
             {
-                try {
+                try
+                {
                     String name = uploadItem.getFieldName();
                     ValuePart valuePart = (ValuePart) partMap.get(name);
                     if (valuePart != null)
@@ -228,7 +230,8 @@ public class DefaultMultipartDecoder implements IMultipartDecoder
                         partMap.put(name, valuePart);
                     }
                 }
-                catch (UnsupportedEncodingException ex) {
+                catch (UnsupportedEncodingException ex)
+                {
                     throw new ApplicationRuntimeException(
                         Tapestry.format("DefaultMultipartDecoder.unsupported-encoding", encoding),
                         ex);

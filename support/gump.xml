@@ -22,12 +22,8 @@
     <depend project="commons-beanutils"/>
     <depend project="commons-digester"/>
     
-    <!-- Temporarily removed fileupload because its API is changing.
-    	   We'll continue compiling against the beta for the meantime. -->
-    	   
-    <!-- depend project="commons-fileupload"/ -->
+    <depend project="commons-fileupload"/>
     
-    <depend project="tapestry-bundled-fileupload"/>
     
     <depend project="commons-logging"/>
     <depend project="commons-lang"/>
@@ -85,15 +81,6 @@
     <license name="lib/ext/LICENSE.javassist.txt"/>
   </project>  
   
-  <!-- See note above; for the moment, compile against bundled copy of FileUpload. -->
-  
-  <project name="tapestry-bundled-fileupload">
-    <package>org.apache.commons.fileupload</package>	
-    <url href="http://jakarta.apache.org/commons/fileupload/index.html"/>
-    <jar name="lib/ext/commons-fileupload-1.0-beta-1.jar"/>
-    <license name="lib/ext/LICENSE-commons-fileupload.txt"/>
-  </project>
-
   <project name="jcharts">
     <package>org.jCharts</package>
     <url href="http://jcharts.sourceforge.net/"/>

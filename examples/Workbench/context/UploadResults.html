@@ -10,6 +10,13 @@
 	<tr><th>Content Type:</th>
 		<td><span jwcid="@Insert" value="ognl:file.contentType">text/plain</span></td>
 	</tr>	
+	<tr>
+		<th>Size:</th>	
+		<td><span jwcid="@Insert" value="ognl:file.size">1000</span> (bytes)
+			
+		<span jwcid="@Conditional" condition="ognl:file.inMemory">(in memory)</span>	
+		</td>
+	</tr>
 </table>
 
 <p>

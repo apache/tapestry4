@@ -59,7 +59,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.commons.fileupload.DefaultFileItem;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -79,7 +78,7 @@ public class UploadPart extends Object implements IUploadFile, IPart
 {
     private static final Log LOG = LogFactory.getLog(UploadPart.class);
 
-    FileItem _fileItem;
+    private FileItem _fileItem;
 
     public UploadPart(FileItem fileItem)
     {
@@ -88,22 +87,6 @@ public class UploadPart extends Object implements IUploadFile, IPart
                 Tapestry.format("invalid-null-parameter", "fileItem"));
 
         _fileItem = fileItem;
-    }
-
-    public static UploadPart newInstance(
-        String path,
-        String name,
-        String contentType,
-        int requestSize,
-        int threshold)
-    {
-        FileItem fileItem =
-            DefaultFileItem.newInstance(path, name, contentType, requestSize, threshold);
-
-        if (fileItem == null)
-            return null;
-
-        return new UploadPart(fileItem);
     }
 
     public String getContentType()
@@ -142,10 +125,7 @@ public class UploadPart extends Object implements IUploadFile, IPart
         catch (IOException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.format(
-                    "UploadPart.unable-to-open-content-file",
-                    _fileItem.getName(),
-                    _fileItem.getStoreLocation()),
+                Tapestry.format("UploadPart.unable-to-open-content-file", _fileItem.getName()),
                 ex);
         }
     }
@@ -158,14 +138,43 @@ public class UploadPart extends Object implements IUploadFile, IPart
     public void cleanup()
     {
         _fileItem.delete();
+    }
 
-        // unfortunately FileItem.delete() does not signal success, so
-        // we rely on a little more internal knowledge than is ideal
-
-        File file = _fileItem.getStoreLocation();
-        if (file != null && file.exists())
+    /**
+     * Writes the uploaded content to a file.  This should be invoked at most once
+     * (perhaps we should add a check for this).  This will often
+     * be a simple file rename.
+     * 
+     * @since 3.0
+     */
+    public void write(File file)
+    {
+        try
+        {
+            _fileItem.write(file);
+        }
+        catch (Exception ex)
+        {
             throw new ApplicationRuntimeException(
-                Tapestry.format("UploadPart.temporary-file-not-deleted", file));
+                Tapestry.format("UploadPart.write-failure", file, ex.getMessage()),
+                ex);
+        }
+    }
+
+    /**
+     * @since 3.0
+     */
+    public long getSize()
+    {
+        return _fileItem.getSize();
+    }
+
+    /**
+     * @since 3.0
+     */
+    public boolean isInMemory()
+    {
+        return _fileItem.isInMemory();
     }
 
 }
