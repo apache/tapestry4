@@ -1,0 +1,5 @@
+* Sep 18 2000 hship
+
+Started ChangeLog (some time after release 0.1.1).
+[114704] Should allow source tree to live in different directory
+[114708] JBE should remove duplicates from the classpath 
