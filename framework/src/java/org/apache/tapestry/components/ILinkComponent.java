@@ -50,6 +50,14 @@ public interface ILinkComponent extends IComponent
     public String getAnchor();
 
     /**
+     * Returns the name of the target window or frame for this link,
+     * or null if current window or frame is to be used.
+     * 
+     * @since 3.1
+     */
+    public String getTarget();
+    
+    /**
      *  Adds a new event handler.  When the event occurs, the JavaScript function
      *  specified is executed.  Multiple functions can be specified, in which case
      *  all of them are executed.

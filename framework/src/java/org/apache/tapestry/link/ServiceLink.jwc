@@ -38,6 +38,8 @@
   	  	
   <parameter name="anchor"/>
   	
+  <parameter name="target"/>
+  	
   <parameter name="renderer"/>
 
   <reserved-parameter name="href"/>
