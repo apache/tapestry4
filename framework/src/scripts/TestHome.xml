@@ -33,7 +33,8 @@ If it's not Scottish, it's crap!
 	</request>		
 
 	<request>
-	  	<parameter name="service" value="page/Assets"/>
+	  	<parameter name="service" value="page"/>
+      <parameter name="page" value="Assets"/>
 		
 		<assert-output name="Home Link">
 <![CDATA[		

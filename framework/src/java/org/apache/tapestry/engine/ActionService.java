@@ -15,8 +15,11 @@
 package org.apache.tapestry.engine;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.hivemind.ApplicationRuntimeException;
@@ -30,6 +33,7 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
+import org.apache.tapestry.services.ServiceConstants;
 
 /**
  * A context-sensitive service related to {@link org.apache.tapestry.form.Form}and
@@ -48,21 +52,11 @@ public class ActionService implements IEngineService
     /** @since 3.1 */
     private LinkFactory _linkFactory;
 
-    /**
-     * Encoded into URL if engine was stateful.
-     * 
-     * @since 3.0
-     */
+    /** @since 3.1 */
+    private static final String ACTION = "action";
 
-    private static final String STATEFUL_ON = "1";
-
-    /**
-     * Encoded into URL if engine was not stateful.
-     * 
-     * @since 3.0
-     */
-
-    private static final String STATEFUL_OFF = "0";
+    /** @since 3.1 */
+    private HttpServletRequest _request;
 
     public ILink getLink(IRequestCycle cycle, Object parameter)
     {
@@ -71,76 +65,42 @@ public class ActionService implements IEngineService
         ActionServiceParameter asp = (ActionServiceParameter) parameter;
 
         IComponent component = asp.getComponent();
-
-        String stateful = cycle.getEngine().isStateful() ? STATEFUL_ON : STATEFUL_OFF;
+        IPage activePage = cycle.getPage();
         IPage componentPage = component.getPage();
-        IPage responsePage = cycle.getPage();
 
-        boolean complex = (componentPage != responsePage);
+        Map parameters = new HashMap();
 
-        String[] serviceContext = new String[complex ? 5 : 4];
+        parameters.put(ServiceConstants.SERVICE, Tapestry.ACTION_SERVICE);
+        parameters.put(ServiceConstants.COMPONENT, component.getIdPath());
+        parameters.put(ServiceConstants.PAGE, activePage.getPageName());
+        parameters.put(ServiceConstants.CONTAINER, activePage == componentPage ? null
+                : componentPage.getPageName());
+        parameters.put(ACTION, asp.getActionId());
+        parameters.put(ServiceConstants.SESSION, cycle.getEngine().isStateful() ? "T" : null);
 
-        int i = 0;
-
-        serviceContext[i++] = stateful;
-        serviceContext[i++] = responsePage.getPageName();
-        serviceContext[i++] = asp.getActionId();
-
-        // Because of Block/InsertBlock, the component may not be on
-        // the same page as the response page and we need to make
-        // allowances for this.
-
-        if (complex)
-            serviceContext[i++] = componentPage.getPageName();
-
-        serviceContext[i++] = component.getIdPath();
-
-        return _linkFactory.constructLink(
-                cycle,
-                Tapestry.ACTION_SERVICE,
-                serviceContext,
-                null,
-                true);
+        return _linkFactory.constructLink(cycle, parameters, true);
     }
 
     public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
             IOException
     {
-        IAction action = null;
-        String componentPageName;
-        int count = 0;
+        String componentId = cycle.getParameter(ServiceConstants.COMPONENT);
+        String componentPageName = cycle.getParameter(ServiceConstants.CONTAINER);
+        String activePageName = cycle.getParameter(ServiceConstants.PAGE);
+        String actionId = cycle.getParameter(ACTION);
+        boolean activeSession = cycle.getParameter(ServiceConstants.SESSION) != null;
 
-        String[] serviceContext = ServiceUtils.getServiceContext(cycle.getRequestContext());
-
-        if (serviceContext != null)
-            count = serviceContext.length;
-
-        if (count != 4 && count != 5)
-            throw new ApplicationRuntimeException(Tapestry
-                    .getMessage("ActionService.context-parameters"));
-
-        boolean complex = count == 5;
-
-        int i = 0;
-        String stateful = serviceContext[i++];
-        String pageName = serviceContext[i++];
-        String targetActionId = serviceContext[i++];
-
-        if (complex)
-            componentPageName = serviceContext[i++];
-        else
-            componentPageName = pageName;
-
-        String targetIdPath = serviceContext[i++];
-
-        IPage page = cycle.getPage(pageName);
+        IPage page = cycle.getPage(activePageName);
 
         // Setup the page for the rewind, then do the rewind.
 
         cycle.activate(page);
 
-        IPage componentPage = cycle.getPage(componentPageName);
-        IComponent component = componentPage.getNestedComponent(targetIdPath);
+        IPage componentPage = componentPageName == null ? page : cycle.getPage(componentPageName);
+
+        IComponent component = componentPage.getNestedComponent(componentId);
+
+        IAction action = null;
 
         try
         {
@@ -148,23 +108,25 @@ public class ActionService implements IEngineService
         }
         catch (ClassCastException ex)
         {
-            throw new ApplicationRuntimeException(Tapestry.format(
-                    "ActionService.component-wrong-type",
-                    component.getExtendedId()), component, null, ex);
+            throw new ApplicationRuntimeException(EngineMessages.wrongComponentType(
+                    component,
+                    IAction.class), component, null, ex);
         }
 
         // Only perform the stateful check if the application was stateful
         // when the URL was rendered.
 
-        if (stateful.equals(STATEFUL_ON) && action.getRequiresSession())
+        if (activeSession && action.getRequiresSession())
         {
-            HttpSession session = cycle.getRequestContext().getSession();
+            HttpSession session = _request.getSession();
 
             if (session == null || session.isNew())
-                throw new StaleSessionException();
+                throw new StaleSessionException(EngineMessages.requestStateSession(component),
+                        componentPage);
+
         }
 
-        cycle.rewindPage(targetActionId, action);
+        cycle.rewindPage(actionId, action);
 
         // During the rewind, a component may change the page. This will take
         // effect during the second render, which renders the HTML response.
@@ -189,5 +151,11 @@ public class ActionService implements IEngineService
     public void setLinkFactory(LinkFactory linkFactory)
     {
         _linkFactory = linkFactory;
+    }
+
+    /** @since 3.1 */
+    public void setRequest(HttpServletRequest request)
+    {
+        _request = request;
     }
 }

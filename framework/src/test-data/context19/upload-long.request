@@ -1,7 +1,15 @@
 -----------------------------xyzzyx
 Content-Disposition: form-data; name="service"
 
-direct/0/Home/$Form
+direct
+-----------------------------xyzzyx
+Content-Disposition: form-data; name="page"
+
+Home
+-----------------------------xyzzyx
+Content-Disposition: form-data; name="component"
+
+$Form
 -----------------------------xyzzyx
 Content-Disposition: form-data; name="sp"
 

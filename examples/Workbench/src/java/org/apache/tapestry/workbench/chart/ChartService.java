@@ -15,18 +15,21 @@
 package org.apache.tapestry.workbench.chart;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 
 import org.apache.hivemind.Defense;
 import org.apache.tapestry.IComponent;
+import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.RequestExceptionReporter;
-import org.apache.tapestry.util.ComponentAddress;
+import org.apache.tapestry.services.ServiceConstants;
 import org.jCharts.Chart;
 import org.jCharts.encoders.JPEGEncoder13;
 
@@ -55,20 +58,23 @@ public class ChartService implements IEngineService
 
         IComponent component = (IComponent) parameter;
 
-        Object[] serviceParameters = new Object[]
-        { new ComponentAddress(component) };
+        Map parameters = new HashMap();
 
-        return _linkFactory.constructLink(cycle, SERVICE_NAME, null, serviceParameters, true);
+        parameters.put(ServiceConstants.SERVICE, SERVICE_NAME);
+        parameters.put(ServiceConstants.PAGE, component.getPage().getPageName());
+        parameters.put(ServiceConstants.COMPONENT, component.getIdPath());
+
+        return _linkFactory.constructLink(cycle, parameters, true);
     }
 
     public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
             IOException
     {
-        Object[] serviceParameters = _linkFactory.extractServiceParameters(cycle);
+        String pageName = cycle.getParameter(ServiceConstants.PAGE);
+        String componentId = cycle.getParameter(ServiceConstants.COMPONENT);
 
-        ComponentAddress address = (ComponentAddress) serviceParameters[0];
-
-        IComponent component = address.findComponent(cycle);
+        IPage page = cycle.getPage(pageName);
+        IComponent component = page.getNestedComponent(componentId);
 
         try
         {

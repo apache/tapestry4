@@ -29,7 +29,8 @@ This is the Home page, with template Home.thtml.
 	</request>
 	
 	<request>
-		<parameter name="service" value="page/Two"/>
+		<parameter name="service" value="page"/>
+    <parameter name="page" value="Two"/>
 		
 		<assert-output name="Page Two Content">		
 This is the Two page, with template Two.phtml.

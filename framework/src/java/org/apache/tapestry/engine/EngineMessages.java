@@ -15,6 +15,8 @@
 package org.apache.tapestry.engine;
 
 import org.apache.hivemind.impl.MessageFormatter;
+import org.apache.tapestry.IComponent;
+import org.apache.tapestry.IPage;
 
 /**
  * @author Howard M. Lewis Ship
@@ -23,10 +25,26 @@ import org.apache.hivemind.impl.MessageFormatter;
 class EngineMessages
 {
     private static final MessageFormatter _formatter = new MessageFormatter(EngineMessages.class,
-            "EngineStrings.properties");
+            "EngineStrings");
 
     public static String serviceNoParameter(IEngineService service)
     {
         return _formatter.format("service-no-parameter", service.getName());
+    }
+
+    public static String wrongComponentType(IComponent component, Class expectedType)
+    {
+        return _formatter.format("wrong-component-type", component.getExtendedId(), expectedType
+                .getName());
+    }
+
+    public static String requestStateSession(IComponent component)
+    {
+        return _formatter.format("request-stale-session", component.getExtendedId());
+    }
+
+    public static String pageNotCompatible(IPage page, Class expectedType)
+    {
+        return _formatter.format("page-not-compatible", page.getPageName(), expectedType.getName());
     }
 }

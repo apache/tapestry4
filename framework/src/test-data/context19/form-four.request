@@ -1,7 +1,19 @@
 -----------------------------eldorado
 Content-Disposition: form-data; name="service"
 
-direct/1/Four/$Form
+direct
+-----------------------------eldorado
+Content-Disposition: form-data; name="page"
+
+Four
+-----------------------------eldorado
+Content-Disposition: form-data; name="component"
+
+$Form
+-----------------------------eldorado
+Content-Disposition: form-data; name="session"
+
+T
 -----------------------------eldorado
 Content-Disposition: form-data; name="sp"
 

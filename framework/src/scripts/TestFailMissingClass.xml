@@ -24,7 +24,8 @@
   	</servlet>      
     
     <request>
-    	<parameter name="service" value="page/MissingClass"/>
+    	<parameter name="service" value="page"/>
+      <parameter name="page" value="MissingClass"/>
     	
     	<assert-output name="Page Title">
 <![CDATA[

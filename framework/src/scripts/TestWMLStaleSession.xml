@@ -24,9 +24,9 @@
     </servlet>
 
     <request>
-        <parameter name="service" value="page/Stale"/>
-        <parameter name="context" value=""/>
-
+        <parameter name="service" value="page"/>
+        <parameter name="page" value="Stale"/>
+ 
         <assert-output name="Do component">
             <![CDATA[
             <do type="prev">
@@ -41,14 +41,14 @@
 
         <assert-output name="DirectLink URL">
             <![CDATA[
-            href="/mock/app?service=direct%2F0%2FStale%2FdirectLink"
+            href="/mock/app?component=directLink&amp;page=Stale&amp;service=direct"
             ]]>
         </assert-output>
 
 
         <assert-output name="ActionLink URL">
             <![CDATA[
-            href="/mock/app?service=action%2F0%2FStale%2F0%2FactionLink"
+            href="/mock/app?action=0&amp;component=actionLink&amp;page=Stale&amp;service=action"
             ]]>
         </assert-output>
 
@@ -56,6 +56,8 @@
             <![CDATA[
             <postfield name="(.*?)".*?/>
             ]]>
+            <match>component</match>
+            <match>page</match>
             <match>service</match>
             <match>sp</match>
             <match>Go1</match>
@@ -65,7 +67,9 @@
             <![CDATA[
             <postfield .*?value="(.*?)"/>
             ]]>
-            <match>direct/0/Stale/go</match>
+            <match>go</match>
+            <match>Stale</match>
+            <match>direct</match>
             <match>S1</match>
             <match></match>
         </assert-output-matches>
@@ -73,7 +77,10 @@
     </request>
 
     <request>
-        <parameter name="service" value="direct/1/Stale/directLink"/>
+        <parameter name="service" value="direct"/>
+        <parameter name="session" value="T"/>
+        <parameter name="page" value="Stale"/>
+        <parameter name="component" value="directLink"/>
 
 
         <assert-output name="StaleSession (DirectLink)">
@@ -84,7 +91,11 @@
     </request>
 
     <request>
-        <parameter name="service" value="action/1/Stale/0/actionLink"/>
+        <parameter name="service" value="action"/>
+        <parameter name="session" value="T"/>
+        <parameter name="page" value="Stale"/>
+        <parameter name="action" value="0"/>
+        <parameter name="component" value="actionLink"/>
 
         <assert-output name="StaleSession (ActionLink)">
             <![CDATA[
@@ -94,7 +105,10 @@
     </request>
 
     <request>
-        <parameter name="service" value="direct/1/Stale/go"/>
+        <parameter name="service" value="direct"/>
+        <parameter name="session" value="T"/>
+        <parameter name="page" value="Stale"/>
+        <parameter name="component" value="go"/>
 
         <parameter name="sp" value="S1"/>
         <parameter name="Go1" value=""/>

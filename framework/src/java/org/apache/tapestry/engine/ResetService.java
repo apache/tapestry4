@@ -15,6 +15,8 @@
 package org.apache.tapestry.engine;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 
@@ -26,6 +28,7 @@ import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResetEventCoordinator;
 import org.apache.tapestry.services.ResponseRenderer;
+import org.apache.tapestry.services.ServiceConstants;
 
 /**
  * ServiceLink used to discard all cached data (templates, specifications, et cetera). This is
@@ -59,10 +62,12 @@ public class ResetService implements IEngineService
         if (parameter != null)
             throw new IllegalArgumentException(EngineMessages.serviceNoParameter(this));
 
-        String[] context = new String[]
-        { cycle.getPage().getPageName() };
+        Map parameters = new HashMap();
 
-        return _linkFactory.constructLink(cycle, Tapestry.RESET_SERVICE, context, null, true);
+        parameters.put(ServiceConstants.SERVICE, Tapestry.RESET_SERVICE);
+        parameters.put(ServiceConstants.PAGE, cycle.getPage().getPageName());
+
+        return _linkFactory.constructLink(cycle, parameters, true);
     }
 
     public String getName()
@@ -73,21 +78,12 @@ public class ResetService implements IEngineService
     public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
             IOException
     {
-        String[] context = ServiceUtils.getServiceContext(cycle.getRequestContext());
-
-        if (Tapestry.size(context) != 1)
-            throw new ApplicationRuntimeException(Tapestry.format(
-                    "service-single-parameter",
-                    Tapestry.RESET_SERVICE));
-
-        String pageName = context[0];
+        String pageName = cycle.getParameter(ServiceConstants.PAGE);
 
         if (_enabled)
             _resetEventCoordinator.fireResetEvent();
 
-        IPage page = cycle.getPage(pageName);
-
-        cycle.activate(page);
+        cycle.activate(pageName);
 
         // Render the same page (that contained the reset link).
 

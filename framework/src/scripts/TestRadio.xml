@@ -47,7 +47,9 @@
 	<!-- Pretend to click the "Large" button. -->
 	
 	<request>
-		<parameter name="service" value="direct/0/Home/$Form"/>
+		<parameter name="service" value="direct"/>
+    <parameter name="page" value="Home"/>
+    <parameter name="component" value="$Form"/>
 		<parameter name="sp" value="S0"/>
 		<parameter name="$RadioGroup" value="2"/>
 		<parameter name="Form0" value="$RadioGroup"/>
@@ -78,7 +80,9 @@
 	<!-- Submit with no option selected. -->
 	
 	<request>
-		<parameter name="service" value="direct/0/Home/$Form"/>
+		<parameter name="service" value="direct"/>
+    <parameter name="page" value="Home"/>
+    <parameter name="component" value="$Form"/>
 		<parameter name="sp" value="S0"/>
 		<parameter name="Form0" value="$RadioGroup"/>
 		
@@ -108,7 +112,9 @@
 	<!-- Pretend to click the "Gargantuan" button (even though it is disabled). -->
 	
 	<request>
-		<parameter name="service" value="direct/0/Home/$Form"/>
+		<parameter name="service" value="direct"/>
+    <parameter name="page" value="Home"/>
+    <parameter name="component" value="$Form"/>
 		<parameter name="sp" value="S0"/>
 		<parameter name="$RadioGroup" value="3"/>
 		<parameter name="Form0" value="$RadioGroup"/>
@@ -139,8 +145,11 @@
 	<!-- Click the dummy form (using action service). -->
 	
 	<request>
-		<parameter name="service" value="action/0/Home/1/dummy"/>
-		<parameter name="sp" value="S0"/>
+		<parameter name="service" value="action"/>
+    <parameter name="page" value="Home"/>
+    <parameter name="action" value="1"/>
+    <parameter name="component" value="dummy"/>
+    <parameter name="sp" value="S0"/>
 		<parameter name="Form1" value=""/>
 		
 		<assert-output name="Page Title">
@@ -169,8 +178,10 @@
 	<!-- Click the link to disable the group. -->
 	
 	<request>
-		<parameter name="service" value="direct/0/Home/$DirectLink"/>
-		
+		<parameter name="service" value="direct"/>
+    <parameter name="page" value="Home"/>
+    <parameter name="component" value="$DirectLink"/>
+    
 		<assert-output name="Page Title">
 <![CDATA[
 <title>Home</title>
@@ -196,7 +207,9 @@
 	
 	<!-- Select the (now disabled) large value. -->
 	<request>
-		<parameter name="service" value="direct/0/Home/$Form"/>
+		<parameter name="service" value="direct"/>
+    <parameter name="page" value="Home"/>
+    <parameter name="component" value="$Form"/>
 		<parameter name="sp" value="S0"/>
 		<parameter name="$RadioGroup" value="2"/>
 		<parameter name="Form0" value="$RadioGroup"/>
@@ -225,7 +238,8 @@
 	</request>
 	
 	<request>
-		<parameter name="service" value="page/NestedGroups"/>
+		<parameter name="service" value="page"/>
+    <parameter name="page" value="NestedGroups"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -247,7 +261,8 @@
 	</request>
 	
 	<request>
-		<parameter name="service" value="page/NoGroup"/>
+		<parameter name="service" value="page"/>
+    <parameter name="page" value="NoGroup"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -269,7 +284,8 @@
 	</request>
 	
 	<request>
-		<parameter name="service" value="page/NoForm"/>
+		<parameter name="service" value="page"/>
+    <parameter name="page" value="NoForm"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -293,7 +309,8 @@
 <!-- Now some tests to check for handling of null as the current selection of a RadioGroup. -->
 
 	<request>
-			<parameter name="service" value="page/NullSelection"/>
+			<parameter name="service" value="page"/>
+      <parameter name="page" value="NullSelection"/>
 			
 			<assert-output name="Page Title">
 <![CDATA[<title>NullSelection</title>]]>	
@@ -324,7 +341,10 @@ Framework: []
 	<!-- Submit the form. -->
 	
 	<request>
-		<parameter name="service" value="direct/1/NullSelection/$Form"/>
+		<parameter name="service" value="direct"/>
+    <parameter name="session" value="T"/>
+    <parameter name="page" value="NullSelection"/>
+    <parameter name="component" value="$Form"/>
 		<parameter name="sp" value="S0"/>
 		<parameter name="Form0" value="group"/>
 		<parameter name="group" value="1"/>
@@ -352,7 +372,10 @@ Framework: [tapestry]
 	
 	<!-- Submit the form with *no* selection for group. -->
 	<request>
-	  <parameter name="service" value="direct/1/NullSelection/$Form"/>
+		<parameter name="service" value="direct"/>
+    <parameter name="session" value="T"/>
+    <parameter name="page" value="NullSelection"/>
+    <parameter name="component" value="$Form"/>
 		<parameter name="sp" value="S0"/>
 		<parameter name="Form0" value="group"/>	
 
@@ -379,7 +402,8 @@ Framework: []
 		</request>			
 		
 		<request>
-			<parameter name="service" value="page/LanguageSelection"/>
+			<parameter name="service" value="page"/>
+      <parameter name="page" value="LanguageSelection"/>
 			
 		<assert-output name="Selected Language">
 		Selected Language: []
@@ -399,7 +423,10 @@ Framework: []
 		</request>
 		
 		<request>
-			<parameter name="service" value="direct/1/LanguageSelection/form"/>
+			<parameter name="service" value="direct"/>
+      <parameter name="session" value="T"/>
+      <parameter name="page" value="LanguageSelection"/>
+      <parameter name="component" value="form"/>      
 			<parameter name="sp" value="S0"/>
 			<parameter name="Form0" value="group"/>
 			<parameter name="group" value="2"/>

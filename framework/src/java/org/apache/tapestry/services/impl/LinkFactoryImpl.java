@@ -15,6 +15,7 @@
 package org.apache.tapestry.services.impl;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.apache.commons.codec.net.URLCodec;
 import org.apache.hivemind.ApplicationRuntimeException;
@@ -24,9 +25,9 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.EngineServiceLink;
 import org.apache.tapestry.engine.ILink;
-import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.services.LinkFactory;
+import org.apache.tapestry.services.ServiceConstants;
 
 /**
  * @author Howard M. Lewis Ship
@@ -40,25 +41,34 @@ public class LinkFactoryImpl implements LinkFactory
 
     private URLCodec _codec = new URLCodec();
 
-    public ILink constructLink(IRequestCycle cycle, String serviceName, String[] context,
-            Object[] serviceParameters, boolean stateful)
+    public ILink constructLink(IRequestCycle cycle, Map parameters, boolean stateful)
     {
         Defense.notNull(cycle, "cycle");
-        Defense.notNull(serviceName, "serviceName");
+        Defense.notNull(parameters, "parameters");
 
-        String[] squeezed = squeeze(serviceParameters);
+        squeezeServiceParameters(parameters);
 
         IEngine engine = cycle.getEngine();
 
         return new EngineServiceLink(cycle, engine.getServletPath(), engine.getOutputEncoding(),
-                _codec, serviceName, context, squeezed, stateful);
+                _codec, parameters, stateful);
+    }
+
+    private void squeezeServiceParameters(Map parameters)
+    {
+        Object[] serviceParameters = (Object[]) parameters.get(ServiceConstants.PARAMETER);
+
+        if (serviceParameters == null)
+            return;
+
+        String[] squeezed = squeeze(serviceParameters);
+
+        parameters.put(ServiceConstants.PARAMETER, squeezed);
     }
 
     public Object[] extractServiceParameters(IRequestCycle cycle)
     {
-        RequestContext context = cycle.getRequestContext();
-
-        String[] squeezed = context.getParameters(Tapestry.PARAMETERS_QUERY_PARAMETER_NAME);
+        String[] squeezed = cycle.getParameters(ServiceConstants.PARAMETER);
 
         if (Tapestry.size(squeezed) == 0)
             return EMPTY;

@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.services;
 
+import java.util.Map;
+
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ILink;
 
@@ -27,30 +29,21 @@ import org.apache.tapestry.engine.ILink;
 public interface LinkFactory
 {
     /**
-     * Constructs an {@link org.apache.tapestry.engine.ILink}&nbsp; from the service name, context
-     * and parameters information provided.
-     * <p>
-     * Note: this API is subject to significant change shortly!
-     * </p>
+     * Constructs an {@link org.apache.tapestry.engine.ILink}.
      * 
      * @param cycle
      *            the current request cycle
-     * @param serviceName
-     *            the name of the service
-     * @param context
-     *            an array of context information used by the service when decoding the request. May
-     *            be null. Values should be URL safe (generally speaking, Java identifiers)
      * @param parameters
-     *            An array of object values encoded with the service, but ultimately meaningful to
-     *            the application <b>Note: the name serviceParameters is entrenched, but a better
-     *            name would be serviceParameters </b>
+     *            A map; keys are strings and values are strings or string arrays (exception: key
+     *            {@link ServiceConstants#PARAMETER}is an array of objects. Certain keys, defined
+     *            in {@link ServiceConstants}&nbsp; may have special meaning. The map will
+     *            typically be modified internally. May not be null.
      * @param stateful
      *            If true, then the final URL should be encoded (with the session id) if necessary.
      *            If false, the session encoding should not occur. The latter case is useful for
      *            services that will absolutely not need any access to user-specific state.
      */
-    public ILink constructLink(IRequestCycle cycle, String serviceName, String[] context,
-            Object[] serviceParameters, boolean stateful);
+    public ILink constructLink(IRequestCycle cycle, Map parameters, boolean stateful);
 
     /**
      * A secondary function of the service is to convert encoded (aka "squeezed") service parameters

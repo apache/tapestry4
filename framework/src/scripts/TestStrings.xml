@@ -26,7 +26,8 @@
   	
   	     
   	<request>
-  		<parameter name="service" value="page/Strings"/>
+  		<parameter name="service" value="page"/>
+      <parameter name="page" value="Strings"/>
   		
 	
 		<assert-output name="Normal">

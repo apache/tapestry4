@@ -143,7 +143,9 @@
 	<!-- Test a disabled Upload component. -->
 	
 	<request>
-		<parameter name="service" value="direct/0/Home/$DirectLink"/>
+		<parameter name="service" value="direct"/>
+    <parameter name="page" value="Home"/>
+    <parameter name="component" value="$DirectLink"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -177,7 +179,8 @@
 		 same element name. -->
 		 
 	<request>
-		<parameter name="service" value="page/Four"/>
+		<parameter name="service" value="page"/>
+    <parameter name="page" value="Four"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[

@@ -29,7 +29,8 @@
   	     user to the Protected page.  -->
   	     
   	<request>
-  		<parameter name="service" value="page/Stale"/>
+  		<parameter name="service" value="page"/>
+      <parameter name="page" value="Stale"/>
   		
   		<assert-output name="Title">
 <![CDATA[
@@ -39,14 +40,14 @@
 		
 		<assert-output name="DirectLink URL">
 <![CDATA[
-href="/mock/app?service=direct%2F0%2FStale%2FdirectLink"
+href="/mock/app?component=directLink&amp;page=Stale&amp;service=direct"
 ]]>		
 		</assert-output>
 		
 
 		<assert-output name="ActionLink URL">
 <![CDATA[
-href="/mock/app?service=action%2F0%2FStale%2F0%2FactionLink"
+href="/mock/app?action=0&amp;component=actionLink&amp;page=Stale&amp;service=action"
 ]]>		
 		</assert-output>		
 		
@@ -54,6 +55,8 @@ href="/mock/app?service=action%2F0%2FStale%2F0%2FactionLink"
 <![CDATA[
 <input type="hidden".*? name="(.*?)".*?/>		
 ]]>
+      <match>component</match>
+      <match>page</match>
 			<match>service</match>
 			<match>sp</match>
 			<match>Form1</match>
@@ -63,7 +66,9 @@ href="/mock/app?service=action%2F0%2FStale%2F0%2FactionLink"
 <![CDATA[
 <input type="hidden".*? value="(.*?)".*?/>		
 ]]>
-			<match>direct/0/Stale/form</match>
+      <match>form</match>
+      <match>Stale</match>
+			<match>direct</match>
 			<match>S1</match>
 			<match></match>
 		</assert-output-matches>
@@ -74,7 +79,10 @@ href="/mock/app?service=action%2F0%2FStale%2F0%2FactionLink"
 	<!-- Now trigger each in turn. -->
 	
 	<request>
-		<parameter name="service" value="direct/1/Stale/directLink"/>
+		<parameter name="service" value="direct"/>
+    <parameter name="session" value="T"/>
+    <parameter name="page" value="Stale"/>
+    <parameter name="component" value="directLink"/>
 		
 		<assert-output name="StaleSession (DirectLink)">
 <![CDATA[
@@ -86,7 +94,11 @@ href="/mock/app?service=action%2F0%2FStale%2F0%2FactionLink"
 	<!-- Simulate stateful action link. -->
 	
 	<request>
-		<parameter name="service" value="action/1/Stale/0/actionLink"/>
+		<parameter name="service" value="action"/>
+    <parameter name="session" value="1"/>
+    <parameter name="page" value="Stale"/>
+    <parameter name="action" value="0"/>
+    <parameter name="component" value="actionLink"/>
 		
 		<assert-output name="StaleSession (ActionLink)">
 <![CDATA[
@@ -96,7 +108,10 @@ href="/mock/app?service=action%2F0%2FStale%2F0%2FactionLink"
 	</request>
 	
 	<request>
-		<parameter name="service" value="direct/1/Stale/form"/>
+		<parameter name="service" value="direct"/>
+    <parameter name="session" value="1"/>
+    <parameter name="page" value="Stale"/>
+    <parameter name="component" value="form"/>
 		<parameter name="sp" value="S1"/>
 		<parameter name="Form1" value=""/>
 		

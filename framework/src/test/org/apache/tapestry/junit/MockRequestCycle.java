@@ -137,6 +137,16 @@ public class MockRequestCycle implements IRequestCycle
     {
     }
 
+    public String getParameter(String name)
+    {
+        return null;
+    }
+
+    public String[] getParameters(String name)
+    {
+        return null;
+    }
+
     public void commitPageChanges()
     {
     }

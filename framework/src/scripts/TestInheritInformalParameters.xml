@@ -61,7 +61,8 @@
 	
 	
 	<request>
-		<parameter name="service" value="page/Two"/>	
+		<parameter name="service" value="page"/>
+    <parameter name="page" value="Two"/>	
 		
 		<assert-output name="Title">
 <![CDATA[
@@ -76,7 +77,8 @@
 	
 	
 	<request>
-		<parameter name="service" value="page/Three"/>	
+		<parameter name="service" value="page"/>
+    <parameter name="page" value="Three"/>	
 		
 		<assert-output name="Title">
 <![CDATA[

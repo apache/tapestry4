@@ -32,44 +32,44 @@
 	
 		<assert-output name="Internal Redirect Link">
 <![CDATA[
-href="/mock/app?service=direct%2F0%2FHome%2Finternal"
+href="/mock/app?component=internal&amp;page=Home&amp;service=direct"
 ]]>	
 		</assert-output>	
 		
 		<assert-output name="External Redirect Link">
 <![CDATA[
-href="/mock/app?service=direct%2F0%2FHome%2Fexternal"
+href="/mock/app?component=external&amp;page=Home&amp;service=direct"
 ]]>	
 		</assert-output>	
 	
 		<assert-output name="Null Redirect Link">
 <![CDATA[
-href="/mock/app?service=direct%2F0%2FHome%2Fnull"
+href="/mock/app?component=null&amp;page=Home&amp;service=direct"
 ]]>	
 		</assert-output>	
 		
 		<assert-output name="Servlet Exception Redirect Link">
 <![CDATA[
-href="/mock/app?service=direct%2F0%2FHome%2FservletException"
+href="/mock/app?component=servletException&amp;page=Home&amp;service=direct"
 ]]>	
 		</assert-output>	
 		
 		
 		<assert-output name="Missing Redirect Link">
 <![CDATA[
-href="/mock/app?service=direct%2F0%2FHome%2Fmissing"
+href="/mock/app?component=missing&amp;page=Home&amp;service=direct"
 ]]>	
 		</assert-output>	
 
 		<assert-output name="Index Redirect Link">
 <![CDATA[
-href="/mock/app?service=direct%2F0%2FHome%2Findex"
+href="/mock/app?component=index&amp;page=Home&amp;service=direct"
 ]]>	
 		</assert-output>	
 		
 		<assert-output name="Fail External Redirect Link">
 <![CDATA[
-href="/mock/app?service=direct%2F0%2FHome%2FfailExternal"
+href="/mock/app?component=failExternal&amp;page=Home&amp;service=direct"
 ]]>	
 		</assert-output>	
 				
@@ -77,7 +77,9 @@ href="/mock/app?service=direct%2F0%2FHome%2FfailExternal"
 	
 		
 	<request>
-		<parameter name="service" value="direct/0/Home/internal"/>
+		<parameter name="service" value="direct"/>
+    <parameter name="page" value="Home"/>
+    <parameter name="component" value="internal"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -91,7 +93,9 @@ This page is static, forwarded to by the Tapestry application.
 	</request>
 	
 	<request>
-		<parameter name="service" value="direct/0/Home/external"/>
+		<parameter name="service" value="direct"/>
+    <parameter name="page" value="Home"/>
+    <parameter name="component" value="external"/>
 		
 		<assert name="Redirect Location">
 		
@@ -102,7 +106,9 @@ This page is static, forwarded to by the Tapestry application.
 	
 	
 	<request>
-		<parameter name="service" value="direct/0/Home/null"/>
+		<parameter name="service" value="direct"/>
+    <parameter name="page" value="Home"/>
+    <parameter name="component" value="null"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -117,7 +123,9 @@ This page is static, forwarded to by the Tapestry application.
 	
 	
 	<request>
-		<parameter name="service" value="direct/0/Home/servletException"/>
+		<parameter name="service" value="direct"/>
+    <parameter name="page" value="Home"/>
+    <parameter name="component" value="servletException"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -136,7 +144,9 @@ This page is static, forwarded to by the Tapestry application.
 	</request>
 		
 	<request>
-		<parameter name="service" value="direct/0/Home/missing"/>
+		<parameter name="service" value="direct"/>
+    <parameter name="page" value="Home"/>
+    <parameter name="component" value="missing"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -155,7 +165,9 @@ This page is static, forwarded to by the Tapestry application.
 	</request>
 
 	<request>
-		<parameter name="service" value="direct/0/Home/index"/>
+		<parameter name="service" value="direct"/>
+    <parameter name="page" value="Home"/>
+    <parameter name="component" value="index"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -171,7 +183,9 @@ This page is static, forwarded to by the Tapestry application.
 
 		
 	<request>
-		<parameter name="service" value="direct/0/Home/failExternal"/>
+		<parameter name="service" value="direct"/>
+    <parameter name="page" value="Home"/>
+    <parameter name="component" value="failExternal"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[

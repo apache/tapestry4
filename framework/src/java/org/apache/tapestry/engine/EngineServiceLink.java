@@ -57,75 +57,39 @@ public class EngineServiceLink implements ILink
     private Map _parameters = new HashMap(3);
 
     /**
-     * Creates a new EngineServiceLink. A EngineServiceLink always names a service to be activated
-     * by the link, has an optional list of service context strings, an optional list of service
-     * parameter strings and may be stateful or stateless.
-     * <p>
-     * ServiceLink parameter strings may contain any characters.
-     * <p>
-     * ServiceLink context strings must be URL safe, and may not contain slash ('/') characters.
-     * Typically, only letters, numbers and simple punctuation ('.', '-', '_', ':') is recommended
-     * (no checks are currently made, however). Context strings are generally built from page names
-     * and component ids, which are limited to safe characters.
+     * Creates a new EngineServiceLink.
      * 
      * @param cycle
      *            The {@link IRequestCycle}&nbsp; the EngineServiceLink is to be created for.
      * @param servletPath
+     *            The path used to invoke the Tapestry servlet.
      * @param codec
+     *            A codec for converting strings into URL-safe formats.
      * @param encoding
-     * @param serviceName
-     *            The name of the service to be invoked by the EngineServiceLink.
-     * @param serviceContext
-     *            an optional array of strings to be provided to the service to provide a context
-     *            for executing the service. May be null or empty. <b>Note: copied, not retained.
-     *            </b>
-     * @param serviceParameters
-     *            An array of parameters, may be null or empty. <b>Note: retained, not copied. </b>
+     *            The output encoding for the request.
+     * @param parameters
+     *            The query parameters to be encoded into the url. Keys are strings, values are
+     *            null, string or array of string. The map is retained, not copied.
      * @param stateful
      *            if true, the service which generated the EngineServiceLink is stateful and expects
      *            that the final URL will be passed through {@link IRequestCycle#encodeURL(String)}.
      */
 
     public EngineServiceLink(IRequestCycle cycle, String servletPath, String encoding,
-            URLCodec codec, String serviceName, String[] serviceContext,
-            String[] serviceParameters, boolean stateful)
+            URLCodec codec, Map parameters, boolean stateful)
     {
         Defense.notNull(cycle, "cycle");
         Defense.notNull(servletPath, "servletPath");
         Defense.notNull(encoding, "encoding");
         Defense.notNull(codec, "codec");
-        Defense.notNull(serviceName, "serviceName");
+        Defense.notNull(parameters, "parameters");
 
         _cycle = cycle;
         _servletPath = servletPath;
         _encoding = encoding;
         _codec = codec;
-
-        _parameters.put(Tapestry.SERVICE_QUERY_PARAMETER_NAME, new String[]
-        { constructServiceValue(serviceName, serviceContext) });
-
-        _parameters.put(Tapestry.PARAMETERS_QUERY_PARAMETER_NAME, serviceParameters);
-
+        _parameters = parameters;
         _stateful = stateful;
-    }
-
-    private String constructServiceValue(String serviceName, String[] serviceContext)
-    {
-        int count = Tapestry.size(serviceContext);
-
-        if (count == 0)
-            return serviceName;
-
-        StringBuffer buffer = new StringBuffer(serviceName);
-
-        for (int i = 0; i < count; i++)
-        {
-            buffer.append('/');
-
-            buffer.append(serviceContext[i]);
-        }
-
-        return buffer.toString();
     }
 
     public String getURL()
@@ -247,7 +211,16 @@ public class EngineServiceLink implements ILink
 
     public String[] getParameterValues(String name)
     {
-        return (String[]) _parameters.get(name);
-    }
+        Object value = _parameters.get(name);
 
+        // Null and array of string pass through as-is
+
+        if (value == null || value instanceof String[])
+            return (String[]) value;
+
+        // Solo strings are wrapped into an array of string
+
+        return new String[]
+        { (String) value };
+    }
 }

@@ -24,7 +24,8 @@
     </servlet>
 
     <request>
-        <parameter name="service" value="page/ContentType"/>
+        <parameter name="service" value="page"/>
+        <parameter name="page" value="ContentType"/>
 
         <assert-output-stream name="Image Content"
                 content-type="text/vnd.wap.wml;charset=UTF-8"

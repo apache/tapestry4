@@ -20,8 +20,10 @@
   	<servlet name="latin1" class="org.apache.tapestry.ApplicationServlet"/>
 
 	<request>
-		<parameter name="service" value="direct/0/Home/$DirectLink"/>
-	  	<parameter name="sp">
+		<parameter name="service" value="direct"/>
+    <parameter name="page" value="Home"/>
+    <parameter name="component" value="$DirectLink"/>
+    	<parameter name="sp">
 	  		<value>STwo</value>
 	  		<value>Ses</value>
 	  	</parameter>
@@ -45,8 +47,10 @@ Espa&#241;a
 	
 	
 	<request>
-		<parameter name="service" value="direct/0/Home/$DirectLink"/>
-	  	<parameter name="sp">
+		<parameter name="service" value="direct"/>
+    <parameter name="page" value="Home"/>
+    <parameter name="component" value="$DirectLink"/>
+    	<parameter name="sp">
 	  		<value>STwo</value>
 	  		<value>Sfr</value>
 	  	</parameter>
@@ -71,14 +75,16 @@ Fran&#231;ais
 
 		<assert-output name="External Link">
 <![CDATA[
-<a href="/c28/latin1?service=external%2FTwo&amp;sp=SFran%E7ais">
+<a href="/c28/latin1?page=Two&amp;service=external&amp;sp=SFran%E7ais">
 ]]>
 		</assert-output>
 	</request>
 	
 	<request>
-		<parameter name="service" value="direct/0/Home/$DirectLink"/>
-	  	<parameter name="sp">
+		<parameter name="service" value="direct"/>
+    <parameter name="page" value="Home"/>
+    <parameter name="component" value="$DirectLink"/>
+    	<parameter name="sp">
 	  		<value>STwo</value>
 	  		<value>Sbg</value>
 	  	</parameter>

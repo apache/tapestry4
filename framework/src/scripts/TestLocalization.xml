@@ -62,11 +62,12 @@ Zees ees nawt cheeze!
 			</request>
 
 	<request>
-	  	<parameter name="service" value="page/Assets"/>
+	  	<parameter name="service" value="page"/>
+      <parameter name="page" value="Assets"/>
 		
 		<assert-output name="English Home image">
 <![CDATA[		
-/mock/app?service=asset&amp;sp=S%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fapp%2Fhome.png		
+/mock/app?path=%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fapp%2Fhome.png&amp;service=asset	
 ]]>
 		</assert-output>
 		
@@ -76,17 +77,18 @@ Zees ees nawt cheeze!
 		
 		<assert-output name="DirectLink switch URL">
 <![CDATA[		
-href="/mock/app?service=direct%2F0%2FAssets%2Fswitch"
+href="/mock/app?component=switch&amp;page=Assets&amp;service=direct"
 ]]>
 		</assert-output>	
 	</request>
 	
 	<request locale="fr">
-	  	<parameter name="service" value="page/Assets"/>
+	  	<parameter name="service" value="page"/>
+      <parameter name="page" value="Assets"/>
 		
 		<assert-output name="French Home image">
 <![CDATA[		
-/mock/app?service=asset&amp;sp=S%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fapp%2Fhome_fr.png		
+/mock/app?path=%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fapp%2Fhome_fr.png&amp;service=asset	
 ]]>
 		</assert-output>
 		
@@ -96,7 +98,7 @@ href="/mock/app?service=direct%2F0%2FAssets%2Fswitch"
 		
 		<assert-output name="DirectLink switch URL still stateless">
 <![CDATA[		
-href="/mock/app?service=direct%2F0%2FAssets%2Fswitch"
+href="/mock/app?component=switch&amp;page=Assets&amp;service=direct"
 ]]>
 		</assert-output>							
 	</request>	
@@ -106,7 +108,9 @@ href="/mock/app?service=direct%2F0%2FAssets%2Fswitch"
 	 	 the locale. -->
 	 	 
 	<request>
-		<parameter name="service" value="direct/0/Assets/switch"/>
+		<parameter name="service" value="direct"/>
+    <parameter name="page" value="Assets"/>
+    <parameter name="component" value="switch"/>
 		
 		<!-- Switch sends us back to the Home page, but in French. -->
 		
@@ -118,7 +122,7 @@ Zees ees nawt cheeze!
 
 		<assert-output name="DirectLink switch URL still stateless">
 <![CDATA[		
-href="/mock/app?service=direct%2F0%2FHome%2Flink&amp;sp=2&amp;sp=d3.5&amp;sp=SHello"
+href="/mock/app?component=link&amp;page=Home&amp;service=direct&amp;sp=2&amp;sp=d3.5&amp;sp=SHello"
 ]]>
 		</assert-output>			
 	</request>
@@ -127,11 +131,12 @@ href="/mock/app?service=direct%2F0%2FHome%2Flink&amp;sp=2&amp;sp=d3.5&amp;sp=SHe
 		 provide the French version. -->
 		 		
 	<request>
-	  	<parameter name="service" value="page/Assets"/>
+	  	<parameter name="service" value="page"/>
+      <parameter name="page" value="Assets"/>
 		
 		<assert-output name="French Home image">
 <![CDATA[		
-/mock/app?service=asset&amp;sp=S%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fapp%2Fhome_fr.png		
+/mock/app?path=%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fapp%2Fhome_fr.png&amp;service=asset	
 ]]>
 		</assert-output>
 		

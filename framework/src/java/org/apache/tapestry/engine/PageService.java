@@ -15,18 +15,19 @@
 package org.apache.tapestry.engine;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 
-import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Defense;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
+import org.apache.tapestry.services.ServiceConstants;
 
 /**
  * Basic server for creating a link to another page in the application.
@@ -47,25 +48,19 @@ public class PageService implements IEngineService
     {
         Defense.isAssignable(parameter, String.class, "parameter");
 
-        String[] context = new String[]
-        { (String) parameter };
+        Map parameters = new HashMap();
 
-        return _linkFactory.constructLink(cycle, Tapestry.PAGE_SERVICE, context, null, true);
+        parameters.put(ServiceConstants.SERVICE, Tapestry.PAGE_SERVICE);
+        parameters.put(ServiceConstants.PAGE, parameter);
+
+        return _linkFactory.constructLink(cycle, parameters, true);
 
     }
 
     public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
             IOException
     {
-        RequestContext context = cycle.getRequestContext();
-        String[] serviceContext = ServiceUtils.getServiceContext(context);
-
-        if (Tapestry.size(serviceContext) != 1)
-            throw new ApplicationRuntimeException(Tapestry.format(
-                    "service-single-parameter",
-                    Tapestry.PAGE_SERVICE));
-
-        String pageName = serviceContext[0];
+        String pageName = cycle.getParameter(ServiceConstants.PAGE);
 
         // At one time, the page service required a session, but that is no longer necessary.
         // Users can now bookmark pages within a Tapestry application. Pages
@@ -74,9 +69,7 @@ public class PageService implements IEngineService
         // of a "login" and have a few pages that don't require the user to be logged in,
         // and other pages that do. The protected pages should redirect to a login page.
 
-        IPage page = cycle.getPage(pageName);
-
-        cycle.activate(page);
+        cycle.activate(pageName);
 
         _responseRenderer.renderResponse(cycle, output);
     }

@@ -15,6 +15,8 @@
 package org.apache.tapestry.engine;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 
@@ -24,6 +26,7 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
+import org.apache.tapestry.services.ServiceConstants;
 
 /**
  * An implementation of the home service that renders the Home page. This is the most likely
@@ -48,7 +51,11 @@ public class HomeService implements IEngineService
         if (parameter != null)
             throw new IllegalArgumentException(EngineMessages.serviceNoParameter(this));
 
-        return _linkFactory.constructLink(cycle, Tapestry.HOME_SERVICE, null, null, true);
+        Map parameters = new HashMap();
+
+        parameters.put(ServiceConstants.SERVICE, Tapestry.HOME_SERVICE);
+
+        return _linkFactory.constructLink(cycle, parameters, true);
     }
 
     public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,

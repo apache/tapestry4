@@ -14,13 +14,8 @@
 
 package org.apache.tapestry.engine;
 
-import java.io.IOException;
-
-import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.RequestContext;
-import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.util.StringSplitter;
 
 /**

@@ -25,7 +25,8 @@
     
 
 	<request>
-		<parameter name="service" value="page/ImplicitComponents"/>
+		<parameter name="service" value="page"/>
+    <parameter name="page" value="ImplicitComponents"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[

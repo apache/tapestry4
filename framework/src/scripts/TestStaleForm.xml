@@ -27,7 +27,8 @@
   	<!-- Just for sanity's sake, duplicate some of the checks from TestRegisterForm.xml -->
   	  	
   	<request>
-  		<parameter name="service" value="page/Register"/>
+  		<parameter name="service" value="page"/>
+      <parameter name="page" value="Register"/>
   		
   		<assert-output name="Title">
 <![CDATA[
@@ -39,6 +40,8 @@
 <![CDATA[
 <input type="hidden" name="(.*?)" value="(.*?)"/>
 ]]>
+      <match>component</match>
+      <match>page</match>
 			<match>service</match>
 			<match>sp</match>
 			<match>Form0</match>
@@ -48,7 +51,9 @@
 <![CDATA[
 <input type="hidden" name="(.*?)" value="(.*?)"/>
 ]]>
-			<match>direct/0/Register/form</match>
+      <match>form</match>
+      <match>Register</match>
+			<match>direct</match>
 			<match>S0</match>
 			<match>inputFirstName,inputLastName,inputSex,inputAgeRange</match>
 		</assert-output-matches>
@@ -59,7 +64,9 @@
   	     as if there was another field when the form rendered.. -->
   	
   	<request>
-  		<parameter name="service" value="direct/0/Register/form"/>
+  		<parameter name="service" value="direct"/>
+      <parameter name="page" value="Register"/>
+      <parameter name="component" value="form"/>
   		<parameter name="sp" value="S0"/>
   		<parameter name="inputFirstName" value="Suzy"/>
   		<parameter name="inputLastName" value="Munchkin"/>
@@ -84,7 +91,9 @@ Rewind of form Register/form expected allocated id #3 to be 'inputFavoriteColor'
   	<!-- This time, we pretend that inputAgeRange didn't render but was submitted. -->
   	
     <request>
-  		<parameter name="service" value="direct/0/Register/form"/>
+  		<parameter name="service" value="direct"/>
+      <parameter name="page" value="Register"/>
+      <parameter name="component" value="form"/>
   		<parameter name="sp" value="S0"/>
   		<parameter name="inputFirstName" value="Suzy"/>
   		<parameter name="inputLastName" value="Munchkin"/>
@@ -104,7 +113,9 @@ Rewind of form Register/form expected only 3 form elements, but an additional id
   	</request>	
   	
     <request>
-  		<parameter name="service" value="direct/0/Register/form"/>
+  		<parameter name="service" value="direct"/>
+      <parameter name="page" value="Register"/>
+      <parameter name="component" value="form"/>
   		<parameter name="sp" value="S0"/>
   		<parameter name="inputFirstName" value="Suzy"/>
   		<parameter name="inputLastName" value="Munchkin"/>
