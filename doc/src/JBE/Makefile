@@ -8,4 +8,6 @@ DOCUMENT_RESOURCES = images
 
 HTML_VARIABLE_DEFS := %shade-verbatim% %use-id-as-filename%
 
+FOP_XML_PARSER_CLASSPATH := ../../lib/xerces.jar
+
 include $(SYS_MAKEFILE_DIR)/DocBook.mk
