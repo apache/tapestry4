@@ -224,7 +224,7 @@ Because of the other improvements to parameters, it is virtually never necessary
   
 <p>
 In the Tapestry 3.0 DTD, the optional default-value attribute was used to provide an OGNL expression to use for a parameter, if the
-parameter is not otherwise bound.  In the Tapestry 3.1 DTD, the default-value attribute is a binding reference.  The following are
+parameter is not otherwise bound.  In the Tapestry 3.1 DTD, the default-value attribute is a &binding-reference;.  The following are
 equivalent:
 </p>
 
@@ -302,11 +302,25 @@ may instead be specified as the enclosed character data of the &lt;property-spec
 </p>
 
 <p>
-Using the 3.1 DTDs, this is still true, but the initial-value attribute (or the enclosed character data) is a binding reference. To get
+Using the 3.1 DTDs, this is still true, but the initial-value attribute (or the enclosed character data) is a &binding-reference;. To get
 the same behavior as the 3.0 DTD, it must be prefixed with "ognl:".
 </p>
   
 </section> <!-- upgrade.property -->
 
+<section id="upgrade.bean">
+  <title>Managed beans</title>
+  
+<p>
+The &spec.bean; element is used to define managed beans. In Tapestry 3.0, it could contain &lt;set-property&gt; and &lt;set-message-property&gt;
+elements to configure the properties of the bean.
+</p>
+  
+<p>
+In Tapestry 3.1, these two elements have been replaced by the &spec.set; element, which uses a &binding-reference; to provide the 
+value.
+</p>
+
+</section>  <!-- upgrade.bean -->
 </body>
 </document>
