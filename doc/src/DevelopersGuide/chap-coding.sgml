@@ -1,0 +1,103 @@
+<!-- $Id$ -->
+
+<chapter id="coding">
+	<title>Coding Tapestry Applications</>
+
+<para>
+After performing the design steps from the previous chapter, it 
+is time to start coding.  The designs will imply 
+certain requirements for the implementations.
+</>
+
+	<section id="coding.engine">
+		<title>Application Engine</>
+
+<para>
+Application engines will be serialized and de-serialized as part of 
+load balancing and fail over.  As much as possible, attributes of the application 
+object should be transient.  For example, the instance variable that 
+holds the <classname>ApplicationSpecification</> is transient; if 
+needed (after de-serialization), the application can locate the specification from 
+its servlet (the servlet reads the application specification once, when it is first initialized).
+</>
+
+<para>
+This is largely not an issue, since most applications use a provided class, 
+such as <classname>com.primix.tapestry.engine.SimpleEngine</>.  Subclassing 
+is only necessary when the application requires new engine services, 
+or needs a different method of instantiating the visit object.
+</>
+
+	</section>
+
+	<section id="coding.visit">
+		<title>Visit Object</>
+
+<para>
+The visit object will contain all the data about a client's 
+visit to the web application.  If possible, it should have a no-arguments 
+constructor (this allows <classname>SimpleEngine</> to instantiate it as needed).
+</>
+
+<para>
+Keeping the size of the serialized engine small is a 
+good goal for overall performance and scalability, and the visit object is serialized 
+with the engine.  During initial development, the visit 
+object should implement the <classname>java.io.Serializable</> interface.
+</>
+
+<para>
+Once the application, and the structure of the visit object, is 
+stable, the more efficient <classname>java.io.Externalizable</> interface should be implemented instead. 
+</>
+
+<para>
+In addition, deferring the creation of the visit object as late as 
+possible is also of benefit, since this is the best way to keep the serialized engine small.
+</>
+
+	</section>
+
+	<section id="coding.ejb">
+		<title>Enterprise JavaBeans Support</>
+
+<para>
+The visit object should provide access to the most commonly 
+used Enterprise JavaBeans used in the application.  It can provide a central location 
+for the common code (related to JNDI and to narrowing EJB references), rather 
+than have that scattered throughout the application.
+</>
+
+<para>
+It is important to remember that EJB references are not serializable.  
+However, it is possible to convert between an EJB reference and an EJB handle, 
+and handles are serializable.  The visit should make any 
+instance variables that store EJB references transient, and should perform 
+extra serialization work to serialize and restore the necessary EJB handles.
+</>
+
+<para>
+Also remember that persistent page properties that are EJB references are <emphasis>automatically</emphasis>
+converts to handles when stored, and back into references when restored.
+</>
+
+	</section>
+
+	<section id="coding.page-classes">
+		<title>Page classes</>
+
+<para>
+It is often useful to create one or two subclasses of 
+<classname>com.primix.tapestry.BasePage</> specific to your application.  
+Often your application will have a consistent navigational border on some 
+or all pages that can be supported by the base class.
+Many applications have one set of pages that are visible 
+to unidentified guests, and a second section that is visible once the user logs 
+in.  A base class for the second set of pages could override  the 
+<function>validate()</> method to redirect to a login page 
+if the user is not already logged in.
+</>
+
+	</section>
+</chapter>
+

@@ -65,7 +65,7 @@ The application engine can always instantiate a new page instance and restore it
 recorded state (the recorded state information is serialized with the engine).
 </>
 
-	<section id="page-state">
+	<section id="pages.state">
 		<title>Page State</>
 
 <para>
@@ -111,7 +111,7 @@ the value of each line item in sequence, as part of a loop.
 
 	</section>
 
-	<section id="page-persistent-state">
+	<section id="pages.persistent-state">
 		<title>Persistent Page State</>
 
 <para>
@@ -243,7 +243,7 @@ out such properties, just as a page does in
 
 	</section>
 
-	<section id="page-ejb-props">
+	<section id="pages.ejb-props">
 		<title>EJB Page Properties</>
 
 <para>
@@ -275,7 +275,7 @@ and always assume the latter.
 
 	</section>
 
-	<section id="page-dynamic-state">
+	<section id="pages.dynamic-state">
 		<title>Dynamic Page State</>
 
 <para>
@@ -542,7 +542,7 @@ to the listener class, and its single, small method.
 
 	</section>
 	
-	<section id="page-stale-links">
+	<section id="pages.stale-links">
 		<title>Stale Links and the Browser Back Button</>
 
 <para>
@@ -619,7 +619,7 @@ component used for just this purpose.
 
 	</section>
 
-	<section id="page-pooling">
+	<section id="pages.pooling">
 		<title>Page Loading and Pooling</>
 
 <para>
@@ -672,7 +672,7 @@ the number of clients.
 
 	</section>
 
-	<section id="page-localization">
+	<section id="pages.localization">
 		<title>Page Localization</>
 
 <para>
@@ -723,7 +723,7 @@ of a consideration when designing web applications with Tapestry.
 
 	</section>
 
-	<section id="page-buffering">
+	<section id="pages.buffering">
 		<title>Page Buffering</>
 
 <para>
