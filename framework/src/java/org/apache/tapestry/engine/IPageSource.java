@@ -19,48 +19,48 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- *  Abstracts the process of loading pages from thier specifications as
- *  well as pooling of pages once loaded.  
- *
- *  <p>If the required page is not available, a page source may use an
- *  instance of {@link IPageLoader} to actually load the
- *  page (and all of its nested components).
- *
- *  @author Howard Lewis Ship
+ * Abstracts the process of loading pages from thier specifications as well as pooling of pages once
+ * loaded.
+ * <p>
+ * If the required page is not available, a page source may use an instance of {@link IPageLoader}
+ * to actually load the page (and all of its nested components).
  * 
- **/
+ * @author Howard Lewis Ship
+ */
 
 public interface IPageSource
 {
     /**
-     *  Gets a given page for the engine.  This may involve using a previously
-     *  loaded page from a pool of available pages, or the page may be loaded as needed.
+     * Gets a given page for the engine. This may involve using a previously loaded page from a pool
+     * of available pages, or the page may be loaded as needed.
      * 
-     *  @param cycle the current request cycle
-     *  @param pageName the name of the page.  May be qualified with a library id prefix, which
-     *  may even be nested. Unqualified names are searched for extensively in the application
-     *  namespace, and then in the framework namespace.
-     *  @param monitor informed of any page loading activity
-     *
-     **/
+     * @param cycle
+     *            the current request cycle
+     * @param pageName
+     *            the name of the page. May be qualified with a library id prefix, which may even be
+     *            nested. Unqualified names are searched for extensively in the application
+     *            namespace, and then in the framework namespace.
+     * @param monitor
+     *            informed of any page loading activity
+     * @throws org.apache.tapestry.PageNotFoundException
+     *             if pageName can't be resolved to a page specification (from which a page instance
+     *             can be generated).
+     * @see org.apache.tapestry.resolver.PageSpecificationResolver#resolve(IRequestCycle, String)
+     */
 
     public IPage getPage(IRequestCycle cycle, String pageName, IMonitor monitor);
 
     /**
-     *  Invoked after the engine is done with the page
-     *  (typically, after the response to the client has been sent).
-     *  The page is returned to the pool for later reuse.
-     *
-     **/
+     * Invoked after the engine is done with the page (typically, after the response to the client
+     * has been sent). The page is returned to the pool for later reuse.
+     */
 
     public void releasePage(IPage page);
 
     /**
-     * 
-     *  @since 3.0
-     * 
-     **/
-    
+     * @since 3.0
+     */
+
     public ClassResolver getClassResolver();
-        
+
 }

@@ -16,12 +16,12 @@ package org.apache.tapestry;
 
 import java.util.List;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Locatable;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
-import org.apache.tapestry.util.IPropertyHolder;
 
 /**
  * Organizes different libraries of Tapestry pages, components and services into "frameworks", used
@@ -31,8 +31,8 @@ import org.apache.tapestry.util.IPropertyHolder;
  * library may contain a page or component that won't be "known" until the name is resolved (because
  * it involves searching for a particular named file).
  * <p>
- * A namespace implements {@link org.apache.tapestry.engine.IPropertySource}, exposing the properties
- * provided in the namespace's specification.
+ * A namespace implements {@link org.apache.tapestry.engine.IPropertySource}, exposing the
+ * properties provided in the namespace's specification.
  * 
  * @see org.apache.tapestry.resolver.PageSpecificationResolver
  * @see org.apache.tapestry.resolver.ComponentSpecificationResolver
@@ -155,36 +155,6 @@ public interface INamespace extends Locatable, IPropertySource
      */
 
     public boolean containsComponentType(String type);
-
-    /**
-     * Returns a sorted list of component types. May return an empty list, but won't return null.
-     * The return list is immutable. Represents just the known component types (additional types may
-     * be discoverred dynamically).
-     * <p>
-     * Is this method even needed?
-     * 
-     * @since 3.0
-     */
-
-    public List getComponentTypes();
-
-    /**
-     * Returns the class name of a service provided by the namespace.
-     * 
-     * @param name
-     *            the name of the service.
-     * @return the complete class name of the service, or null if the namespace does not contain the
-     *         named service.
-     */
-
-    public String getServiceClassName(String name);
-
-    /**
-     * Returns the names of all services provided by the namespace, as a sorted, immutable list. May
-     * return the empty list, but won't return null.
-     */
-
-    public List getServiceNames();
 
     /**
      * Returns the {@link org.apache.tapestry.spec.LibrarySpecification}from which this namespace

@@ -230,9 +230,24 @@ public class RequestCycle implements IRequestCycle
 
         if (result == null)
         {
+            result = loadPage(name);
+
+            if (_loadedPages == null)
+                _loadedPages = new HashMap();
+
+            _loadedPages.put(name, result);
+        }
+
+        return result;
+    }
+
+    private IPage loadPage(String name)
+    {
+        try
+        {
             _monitor.pageLoadBegin(name);
 
-            result = _pageSource.getPage(this, name, _monitor);
+            IPage result = _pageSource.getPage(this, name, _monitor);
 
             // Get the recorder that will eventually observe and record
             // changes to persistent properties of the page.
@@ -255,15 +270,13 @@ public class RequestCycle implements IRequestCycle
 
             result.attach(_engine, this);
 
+            return result;
+        }
+        finally
+        {
             _monitor.pageLoadEnd(name);
-
-            if (_loadedPages == null)
-                _loadedPages = new HashMap();
-
-            _loadedPages.put(name, result);
         }
 
-        return result;
     }
 
     /**

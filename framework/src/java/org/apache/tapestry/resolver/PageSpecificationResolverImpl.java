@@ -19,6 +19,7 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.PageNotFoundException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.services.ComponentPropertySource;
 import org.apache.tapestry.spec.ComponentSpecification;
@@ -136,9 +137,7 @@ public class PageSpecificationResolverImpl extends AbstractSpecificationResolver
         searchForPage(cycle);
 
         if (getSpecification() == null)
-            throw new ApplicationRuntimeException(ResolverMessages.noSuchPage(
-                    _simpleName,
-                    namespace));
+            throw new PageNotFoundException(ResolverMessages.noSuchPage(_simpleName, namespace));
     }
 
     public String getSimplePageName()

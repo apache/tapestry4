@@ -207,16 +207,6 @@ public class Namespace implements INamespace
         return result;
     }
 
-    public String getServiceClassName(String name)
-    {
-        return _specification.getServiceClassName(name);
-    }
-
-    public List getServiceNames()
-    {
-        return _specification.getServiceNames();
-    }
-
     public ILibrarySpecification getSpecification()
     {
         return _specification;
@@ -315,7 +305,7 @@ public class Namespace implements INamespace
         return new Namespace(id, this, ls, _specificationSource, _resolver);
     }
 
-    public boolean containsPage(String name)
+    public synchronized boolean containsPage(String name)
     {
         return _pages.containsKey(name) || (_specification.getPageSpecificationPath(name) != null);
     }
@@ -364,27 +354,12 @@ public class Namespace implements INamespace
 
     /** @since 3.0 * */
 
-    public boolean containsComponentType(String type)
+    public synchronized boolean containsComponentType(String type)
     {
         return _components.containsKey(type)
                 || (_specification.getComponentSpecificationPath(type) != null);
     }
 
-    /** @since 3.0 * */
-
-    public List getComponentTypes()
-    {
-        Set types = new HashSet();
-
-        types.addAll(_components.keySet());
-        types.addAll(_specification.getComponentTypes());
-
-        List result = new ArrayList(types);
-
-        Collections.sort(result);
-
-        return result;
-    }
 
     /** @since 3.0 * */
 

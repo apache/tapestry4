@@ -20,31 +20,31 @@ import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
  * Service interface for locating a page specification given its name.
- *
+ * 
  * @author Howard Lewis Ship
  * @since 3.1
  */
 public interface PageSpecificationResolver
 {
     /**
-     *  Resolve the name (which may have a library id prefix) to a namespace
-     *  (see {@link #getNamespace()}) and a specification (see {@link #getSpecification()}).
+     * Resolve the name (which may have a library id prefix) to a namespace (see
+     * {@link #getNamespace()}) and a specification (see {@link #getSpecification()}).
      * 
-     *  @throws ApplicationRuntimeException if the name cannot be resolved
-     * 
+     * @throws org.apache.tapestry.PageNotFoundException
+     *             if the name cannot be resolved to the name of a page
      */
     public void resolve(IRequestCycle cycle, String prefixedName);
-    
+
     /**
      * Returns just the name of the page, unqualified by any namespace.
      */
     public String getSimplePageName();
-    
+
     /**
      * Returns the namespace containing the page.
      */
     public INamespace getNamespace();
-    
+
     /**
      * Returns the specification for the page.
      */
