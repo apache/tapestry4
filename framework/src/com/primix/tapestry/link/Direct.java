@@ -159,7 +159,7 @@ implements IDirect
 		if (binding == null)
 			return null;
 
-		raw = binding.getValue();
+		raw = binding.getObject();
 
 		if (raw == null)
 			return null;
@@ -228,18 +228,18 @@ implements IDirect
 
 		try
 		{
-			result = (IDirectListener)listenerBinding.getValue();
+			result = (IDirectListener)listenerBinding.getObject("listener", 
+				IDirectListener.class);
 
-			if (result == null)
-				throw new RequiredParameterException(this, "listener", listenerBinding, cycle);
 		}
-		catch (ClassCastException e)
+		catch (BindingException ex)
 		{
-			throw new RequestCycleException(
-				"Parameter listener must be type IDirectListener.",
-				this, cycle, e);
+			throw new RequestCycleException(this, cycle, ex);
 		}
-
+		
+		if (result == null)
+			throw new RequiredParameterException(this, "listener", listenerBinding, cycle);
+			
 		return result;
 	}
 

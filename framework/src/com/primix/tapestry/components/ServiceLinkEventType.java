@@ -1,7 +1,6 @@
 package com.primix.tapestry.components;
 
-import com.primix.tapestry.*;
-import com.primix.tapestry.components.html.*;
+import com.primix.foundation.*;
 
 /*
  * Tapestry Web Application Framework
@@ -30,46 +29,43 @@ import com.primix.tapestry.components.html.*;
  * Lesser General Public License for more details.
  *
  */
-
+ 
 /**
- *  A component that renders an HTML &lt;a&gt; element.  It exposes some
- *  properties to the components it wraps.  This is basically to facilitate
- *  the {@link Rollover} component.
+ *  Different types of JavaScript events that an {@link IServiceLink}
+ *  can provide handlers for.
  *
  *  @author Howard Ship
  *  @version $Id$
+ *  @since 0.2.9
+ *
  */
-
-
-public interface IServiceLink extends IComponent
+  
+public class ServiceLinkEventType
+extends Enum
 {
-	/**
-	*  The name of an {@link IRequestCycle} attribute in which the
-	*  current service link is stored.  Service links do not nest.
-	*
-	*/
+	private String attributeName;
+	
+	public static final ServiceLinkEventType MOUSE_OVER
+		= new ServiceLinkEventType("MOUSE_OVER", "onMouseOver");
+		
+	public static final ServiceLinkEventType MOUSE_OUT
+		= new ServiceLinkEventType("MOUSE_OUT", "onMouseOut");
+		
+	private ServiceLinkEventType(String name, String attributeName)
+	{
+		super(name);
+		
+		this.attributeName = attributeName;
+	}
+	
+	public String getAttributeName()
+	{
+		return attributeName;
+	}
 
-	public static final String ATTRIBUTE_NAME = 
-		"com.primix.tapestry.active.IServiceLink";
-
-	/**
-	*  Returns whether this service link component is enabled or disabled.
-	*
-	*/
-
-	public boolean isEnabled();
-
-	/**
-	 *  Adds a new event handler.  When the event occurs, the JavaScript function
-	 *  specified is executed.  Multiple functions can be specified, in which case
-	 *  all of them are executed.
-	 *
-	 *  <p>This is used by
-	 *  {@link Rollover} to set mouse over and mouse out handlers on
-	 *  the {@link IServiceLink} that wraps it.
-	 *
-	 *  @since 0.2.9
-	 */
-
-	public void addEventHandler(ServiceLinkEventType eventType, String functionName);
+	private Object readResolve()
+	{
+		return getSingleton();
+	}
+	
 }

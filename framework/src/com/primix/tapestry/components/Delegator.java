@@ -88,19 +88,16 @@ public class Delegator extends AbstractComponent
 
         try
         {
-            delegate = (IRender)delegateBinding.getValue();
+            delegate = (IRender)delegateBinding.getObject("delegate", IRender.class);
 		}
-        catch (ClassCastException e)
+        catch (BindingException ex)
         {
-            throw new RequestCycleException("Delegate for component " +
-                                            getExtendedId() + 
-                            " does not implement the IRender interface.",
-			this, cycle, e);
+            throw new RequestCycleException(this, cycle, ex);
 		}
 	
 		if (delegate == null)
-		    throw new RequiredParameterException(this, "delegate", delegateBinding, cycle);
-
+			throw new RequiredParameterException(this, "delegate", delegateBinding, cycle);
+			
 		delegate.render(writer, cycle);
 	}
 }

@@ -219,7 +219,7 @@ implements ILifecycle
                 return;
             }
 
-            textBinding.setValue(value);
+            textBinding.setObject(value);
             return;
         }
 
@@ -245,7 +245,7 @@ implements ILifecycle
 
         // Valid!  Update through our binding.
 
-        textBinding.setValue(value);
+        textBinding.setObject(value);
 
     }
 

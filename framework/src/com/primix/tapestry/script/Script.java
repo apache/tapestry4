@@ -179,7 +179,7 @@ extends AbstractComponent
 
 		if (symbolsBinding != null)
 		{
-			result = (Map)symbolsBinding.getValue();
+			result = (Map)symbolsBinding.getObject("symbols", Map.class);
 
 			// Make a writable copy if there are any informal parameters
 			copy = true;
@@ -201,15 +201,7 @@ extends AbstractComponent
 
 			binding = getBinding(bindingName);
 
-			try
-			{
-				value = (String)binding.getValue();
-			}
-			catch (ClassCastException ex)
-			{
-				throw new BindingException("Parameter " + bindingName + " is not type String.",
-					binding, ex);
-			}
+			value = (String)binding.getObject(bindingName, String.class);
 
 			if (value == null)
 				continue;
@@ -250,15 +242,7 @@ extends AbstractComponent
 		if (generator != null && ! isCautious())
 			return generator;
 
-		try
-		{
-			script = (String)scriptBinding.getValue();
-		}
-		catch (ClassCastException ex)
-		{
-			throw new BindingException("Parameter script is not type String.",
-				scriptBinding, ex);
-		}
+		script = (String)scriptBinding.getObject("script", String.class);
 
 		if (script == null)
 			throw new BindingException("Parameter script is null.", scriptBinding);

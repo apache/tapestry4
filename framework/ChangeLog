@@ -1,3 +1,13 @@
+* Jan 26 2001 hship
+
+Revisit links and event handlers ... again!  ServiceLinks now support
+a well-defined set of events, but can handle any number of JavaScript
+functions.
+Add some more documentation to the DTDs.
+Rename IBinding.getValue() to getObject().
+Rename IBinding.setValue() to setObject().
+Add IBinding.getObject(String,Class).
+
 * Jan 25 2001 hship
 
 Get log4j javadoc from jakarta.apache.org.

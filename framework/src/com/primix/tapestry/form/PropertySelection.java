@@ -242,7 +242,9 @@ public class PropertySelection extends AbstractFormComponent
 		else
 			disabled = disabledBinding.getBoolean();
 
-			model = (IPropertySelectionModel)modelBinding.getValue();
+			model = (IPropertySelectionModel)modelBinding.getObject(
+				"model", IPropertySelectionModel.class);
+			
 		if (model == null)
 			throw new RequiredParameterException(this, "model", modelBinding, cycle);
 
@@ -262,21 +264,22 @@ public class PropertySelection extends AbstractFormComponent
 			else
 				newValue = model.translateValue(optionValue);
 
-			valueBinding.setValue(newValue);
+			valueBinding.setObject(newValue);
 
 			return;	
 		}
 
 		if (rendererBinding != null)
-			renderer = (IPropertySelectionRenderer)rendererBinding.getValue();
+			renderer = (IPropertySelectionRenderer)rendererBinding.getObject(
+				"renderer", IPropertySelectionRenderer.class);
 
 		if (renderer == null)
 			renderer = getDefaultSelectRenderer();
 
 		renderer.beginRender(this, writer, cycle);
 
-			count = model.getOptionCount();
-		currentValue = valueBinding.getValue();
+		count = model.getOptionCount();
+		currentValue = valueBinding.getObject();
 
 		for (i = 0; i < count; i++)
 		{

@@ -62,7 +62,7 @@ public abstract class AbstractServiceLink
 
 	// A number of characters to add to the URL to get the initial size
 	// of the StringBuffer used to assemble the complete URL.
-	
+
 	private static final int URL_PAD = 50;
 
 	private IBinding enabledBinding;
@@ -76,14 +76,17 @@ public abstract class AbstractServiceLink
 
 	private IBinding schemeBinding;
 	private String schemeValue;
-	
+
 	private IBinding portBinding;
 	private int portValue;
-	
+
 	private boolean rendering;
 
+	private Body body;
+
 	private static final int MAP_SIZE = 3;
-	private Map attributes;
+
+	private Map eventHandlers;
 
 	/**
 	*  Invoked by {@link #render(IResponseWriter, IRequestCycle)} if the
@@ -116,16 +119,16 @@ public abstract class AbstractServiceLink
 			throw new RequestCycleException("No engine service named " + 
 				serviceName + ".",
 				this, cycle);
-		
+
 		// Perform the major work of building the URL.
-		
+
 		url = service.buildURL(cycle, this, context);
 
 		url = cycle.encodeURL(url);
-		
+
 		// Now, dress up the URL with scheme, server port and anchor,
 		// as necessary.
-		
+
 		if (anchorValue != null)
 			anchor = anchorValue;
 		else
@@ -136,47 +139,47 @@ public abstract class AbstractServiceLink
 			scheme = schemeValue;
 		else
 			if (schemeBinding != null)
-				scheme = schemeBinding.getString();	
-		
+			scheme = schemeBinding.getString();	
+
 		if (portValue != 0)
 			port = portValue;
 		else
 			if (portBinding != null)
-				port = portBinding.getInt();
-				
+			port = portBinding.getInt();
+
 		// If nothing to add to the URL, then simply return it.
-		
+
 		if (anchor == null &&
 			scheme == null &&
 			port == 0)
-				return url;
-			
+			return url;
+
 		buffer = new StringBuffer(url.length() + URL_PAD);
-		
+
 		if (scheme != null || port != 0)
 		{
 			HttpServletRequest request = cycle.getRequestContext().getRequest();
-			
+
 			// If just the port is specified, but not the scheme, use the
 			// same scheme as the incoming request.
-			
+
 			if (scheme == null)
 				scheme = request.getScheme();
-				
+
 			buffer.append(scheme);
 			buffer.append("://");
 			buffer.append(request.getServerName());
-			
+
 			// If scheme specified but not port, use the same
 			// port as the incoming request.
-			
+
 			if (port == 0)
 				port = request.getServerPort();
 
 			// This is a little shakey .. the scheme may not be 'http', for example.
 			// Not sure how to get this information automatically, may be
 			// for the application to figure out.
-			
+
 			if (port != DEFAULT_HTTP_PORT)
 			{
 				buffer.append(':');
@@ -185,13 +188,13 @@ public abstract class AbstractServiceLink
 		}
 
 		buffer.append(url);
-		
+
 		if (anchor != null)
 		{
 			buffer.append('#');
 			buffer.append(anchor);
 		}
-		
+
 		return buffer.toString();
 	}
 
@@ -209,28 +212,28 @@ public abstract class AbstractServiceLink
 	{
 		return schemeBinding;
 	}
-	
+
 	public void setSchemeBinding(IBinding value)
 	{
 		schemeBinding = value;
-		
+
 		if (value.isStatic())
 			schemeValue = value.getString();
 	}
-	
+
 	public IBinding getPortBinding()
 	{
 		return portBinding;
 	}
-	
+
 	public void setPortBinding(IBinding value)
 	{
 		portBinding = value;
-		
+
 		if (value.isStatic())
 			portValue = value.getInt();
 	}	
-		
+
 	/**
 	*  Returns the service used to build URLs.
 	*
@@ -293,17 +296,44 @@ public abstract class AbstractServiceLink
 	}
 
 	/**
-	 *  Record an attribute (typically, from a wrapped component such
+	 *  Adds an event handler (typically, from a wrapped component such
 	 *  as a {@link Rollover}).
 	 *
 	 */
 
-	public void setAttribute(String attributeName, String attributeValue)
+	public void addEventHandler(ServiceLinkEventType eventType, String functionName)
 	{
-		if (attributes == null)
-			attributes = new HashMap(MAP_SIZE);
+		Object currentValue;
 
-		attributes.put(attributeName, attributeValue);
+		if (eventHandlers == null)
+			eventHandlers = new HashMap(MAP_SIZE);
+
+		currentValue = eventHandlers.get(eventType);
+
+		// The first value is added as a String
+
+		if (currentValue == null)
+		{
+			eventHandlers.put(eventType, functionName);
+			return;
+		}
+
+		// When adding the second value, convert to a List
+
+		if (currentValue instanceof String)
+		{
+			List list = new ArrayList();
+			list.add(currentValue);
+			list.add(functionName);
+
+			eventHandlers.put(eventType, list);
+			return;
+		}
+
+		// For the third and up, add the new function to the List
+
+		List list = (List)currentValue;
+		list.add(functionName);
 	}	
 
 	/**
@@ -339,6 +369,8 @@ public abstract class AbstractServiceLink
 		{
 			rendering = true;
 
+			body = Body.get(cycle);
+
 			cycle.setAttribute(ATTRIBUTE_NAME, this);
 
 			setup(cycle);
@@ -371,7 +403,7 @@ public abstract class AbstractServiceLink
 			{
 				// Write any attributes specified by wrapped components.
 
-				writeAttributes(writer);
+				writeEventHandlers(writer);
 
 				// Generate additional attributes from informal parameters.
 
@@ -392,26 +424,79 @@ public abstract class AbstractServiceLink
 		finally
 		{
 			rendering = false;
-			attributes = null;
+			eventHandlers = null;
+			// May be possible to keep body from cycle to cycle, but
+			// let's just be safe.
+			body = null;
 		}
 	}
 
-	private void writeAttributes(IResponseWriter writer)
+	private void writeEventHandlers(IResponseWriter writer)
+	throws RequestCycleException
 	{
-		Map.Entry entry;
-		Iterator i;
+		String name = null;
 
-		if (attributes == null)
+		if (eventHandlers == null)
 			return;
 
-		i = attributes.entrySet().iterator();
+		Iterator i = eventHandlers.entrySet().iterator();
 
 		while (i.hasNext())
 		{
-			entry = (Map.Entry)i.next();
+			Map.Entry entry = (Map.Entry)i.next();
+			ServiceLinkEventType type = (ServiceLinkEventType)entry.getKey();
 
-			writer.attribute((String)entry.getKey(), (String)entry.getValue());
+			name = writeEventHandler(writer, name, type.getAttributeName(), entry.getValue());
 		}
+
+	}
+
+	private String writeEventHandler(IResponseWriter writer, String name,
+		String attributeName, Object value)
+	throws RequestCycleException
+	{
+		String wrapperFunctionName;
+
+		if (value instanceof String)
+		{
+			wrapperFunctionName = (String)value;
+		}
+		else
+		{
+			if (body == null)
+				throw new RequestCycleException(
+					"A link component with multiple functions for a single event type must be wrapped by a Body.",
+					this, null);
+
+			if (name == null)
+				name = "Link" + body.getUniqueId();
+
+			wrapperFunctionName = attributeName + "_" + name;
+
+			StringBuffer buffer = new StringBuffer();
+
+			buffer.append("function ");
+			buffer.append(wrapperFunctionName);
+			buffer.append(" ()\n{\n");
+
+			Iterator i = ((List)value).iterator();
+			while (i.hasNext())
+			{
+				String functionName = (String)i.next();
+				buffer.append("  ");
+				buffer.append(functionName);
+				buffer.append("();\n");
+			}
+
+			buffer.append("}\n\n");
+
+			body.addOtherScript(buffer.toString());
+		}
+
+		writer.attribute(attributeName,
+			"javascript:" + wrapperFunctionName + "();");
+
+		return name;
 
 	}
 }

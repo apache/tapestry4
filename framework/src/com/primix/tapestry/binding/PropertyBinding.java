@@ -150,7 +150,7 @@ public class PropertyBinding extends AbstractBinding
     *
     */
 
-    public Object getValue()
+    public Object getObject()
     {
         if (helper == null)
             setupHelper();
@@ -194,22 +194,22 @@ public class PropertyBinding extends AbstractBinding
 
     public void setBoolean(boolean value)
     {
-        setValue(value ? Boolean.TRUE : Boolean.FALSE);
+        setObject(value ? Boolean.TRUE : Boolean.FALSE);
     }
 
     public void setInt(int value)
     {
-        setValue(new Integer(value));
+        setObject(new Integer(value));
     }
 
     public void setDouble(double value)
     {
-        setValue(new Double(value));
+        setObject(new Double(value));
     }
 
     public void setString(String value)
     {
-        setValue(value);
+        setObject(value);
     }
 
     /**
@@ -314,7 +314,7 @@ public class PropertyBinding extends AbstractBinding
     *  due to an security problem, or a missing mutator method).
     */
 
-    public void setValue(Object value)
+    public void setObject(Object value)
     {
         if (helper == null)
             setupHelper();

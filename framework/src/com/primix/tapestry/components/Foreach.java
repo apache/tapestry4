@@ -159,7 +159,7 @@ public class Foreach extends AbstractComponent
 		Object rawValue = null;
 
 		if (sourceBinding != null)
-			rawValue = sourceBinding.getValue();
+			rawValue = sourceBinding.getObject();
 
 		if (rawValue == null)
 			return Collections.EMPTY_LIST.iterator();
@@ -257,7 +257,7 @@ public class Foreach extends AbstractComponent
 					setLast(true);
 
 				if (valueBinding != null)
-					valueBinding.setValue(value);
+					valueBinding.setObject(value);
 	
 				renderWrapped(writer, cycle);
 

@@ -153,12 +153,11 @@ public class Rollover extends AbstractComponent
 
 		try
 		{
-			asset = (IAsset)binding.getValue();
+			asset = (IAsset)binding.getObject(name, IAsset.class);
 		}
-		catch (ClassCastException e)
+		catch (BindingException ex)
 		{
-			throw new RequestCycleException("Binding " + name + " is not of type IAsset.",
-				this, cycle, e);
+			throw new RequestCycleException(this, cycle, ex);
 		}
 
 		if (asset == null)
@@ -352,15 +351,9 @@ public class Rollover extends AbstractComponent
 		// there won't be any timing issues (such as cause
 		// bug #113893).
 
-		link.setAttribute("onMouseOver",
-			"javascript:" + onMouseOverName + "();");
-		link.setAttribute("onMouseOut",
-			"javascript:" + onMouseOutName + "();");
-
-		// I wonder how we could get the ScriptGenerator to do the two things
-		// above?  The advantage would be two less symbols.  Probably
-		// just fantasy -- needless refactoring.
-
+		link.addEventHandler(ServiceLinkEventType.MOUSE_OVER, onMouseOverName);
+		link.addEventHandler(ServiceLinkEventType.MOUSE_OUT, onMouseOutName);
+		
 		symbols.clear();
 
 		// Return the value that must be assigned to the 'name' attribute

@@ -138,10 +138,19 @@ public class Insert extends AbstractComponent
 			return;
 
 		if (valueBinding != null)
-			value = valueBinding.getValue();
+			value = valueBinding.getObject();
 
 		if (formatBinding != null)
-			format = (Format)formatBinding.getValue();
+		{
+			try
+			{
+				format = (Format)formatBinding.getObject("format", Format.class);
+			}
+			catch (BindingException ex)
+			{
+				throw new RequestCycleException(this, cycle, ex);
+			}
+		}
 		
 		if (value == null)
 			return;

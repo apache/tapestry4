@@ -146,7 +146,7 @@ public class ShowInspector extends BaseComponent
 	public IAsset getImage()
 	{
 		if (imageBinding != null)
-			return (IAsset)imageBinding.getValue();
+			return (IAsset)imageBinding.getObject("image", IAsset.class);
 		
 		return getAsset("image");
 	}
@@ -154,7 +154,7 @@ public class ShowInspector extends BaseComponent
 	public IAsset getDisabled()
 	{
 		if (disabledBinding != null)
-			return (IAsset)disabledBinding.getValue();
+			return (IAsset)disabledBinding.getObject("disabled", IAsset.class);
 		
 		return getAsset("disabled");	
 	}
@@ -162,7 +162,7 @@ public class ShowInspector extends BaseComponent
 	public IAsset getFocus()
 	{
 		if (focusBinding != null)
-			return (IAsset)focusBinding.getValue();
+			return (IAsset)focusBinding.getObject("focus", IAsset.class);
 		
 		return getAsset("focus");
 	}	

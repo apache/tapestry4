@@ -442,7 +442,7 @@ public abstract class AbstractComponent implements IComponent
 	*  Reserved names correspond to attributes that are or may be
 	*  produced by the component.  Filtering is case-insensitive.
 	*
-	*  <p>For each acceptible key, the value is extracted using {@link IBinding#getValue()}.
+	*  <p>For each acceptible key, the value is extracted using {@link IBinding#getObject()}.
 	*  If the value is null, no attribute is written.
 	*
 	*  <p>If the value is an instance of {@link IAsset}, then
@@ -489,7 +489,7 @@ public abstract class AbstractComponent implements IComponent
 
 			binding = (IBinding)entry.getValue();
 
-			value = binding.getValue();
+			value = binding.getObject();
 			if (value == null)
 				continue;
 			

@@ -49,7 +49,7 @@ import java.util.*;
 public interface IBinding
 {
     /**
-     *  Invokes {@link #getValue()}, then coerces the value to a boolean.  
+     *  Invokes {@link #getObject()}, then coerces the value to a boolean.  
      *  The following rules are used to perform the coercion:
      *  <ul>
      *  <li>null is always false
@@ -67,7 +67,7 @@ public interface IBinding
     public boolean getBoolean();
 
     /**
-     *  Gets the value of the Binding using {@link #getValue} and coerces it
+     *  Gets the value of the Binding using {@link #getObject} and coerces it
      *  to an <code>int</code>.  Strings will be parsed, and other
      *  <code>java.lang.Number</code> classes will have <code>intValue()</code>
      *  invoked.  
@@ -79,7 +79,7 @@ public interface IBinding
     public int getInt();
 
     /**
-     *  Gets the value of the Binding using {@link #getValue()} and coerces it
+     *  Gets the value of the Binding using {@link #getObject()} and coerces it
      *  to a <code>double</code>.  Strings will be parsed, and other
      *  <code>java.lang.Number</code> classes will have <code>doubleValue()</code>
      *  invoked.
@@ -91,7 +91,7 @@ public interface IBinding
     public double getDouble();
 
     /**
-     *  Invokes {@link #getValue()} and converts the result to <code>java.lang.String</code>.
+     *  Invokes {@link #getObject()} and converts the result to <code>java.lang.String</code>.
      */
  
     public String getString();
@@ -102,8 +102,23 @@ public interface IBinding
      *
      */
  
-    public Object getValue();
+    public Object getObject();
 
+	/**
+	 *  Returns the value for the binding after performing some basic checks.
+	 *
+	 *  @param parameterName the name of the parameter (used to build
+	 *  the message if an exception is thrown).
+	 *  @param type if not null, the value must be assignable to the specific
+	 *  class
+	 *  @throws BindingException if the value is not assignable to the
+	 *  specified type
+	 *a
+	 *  @since 0.2.9
+	 */
+	 
+	public Object getObject(String parameterName, Class type);
+	
     /**
      *  Returns true if the value is statically defined.  Static values
      *  are read-only.
@@ -113,28 +128,28 @@ public interface IBinding
     public boolean isStatic();
 
     /**
-     *  Constructs a <code>Boolean</code> and invokes {@link #setValue(Object)}.
+     *  Constructs a <code>Boolean</code> and invokes {@link #setObject(Object)}.
      *
      */
  
     public void setBoolean(boolean value);
 
     /**
-     *  Constructs an <code>Integer</code> and invokes {@link #setValue(Object)}.
+     *  Constructs an <code>Integer</code> and invokes {@link #setObject(Object)}.
      *
      */
 
     public void setInt(int value);
 
     /**
-     *  Constructs an <code>Double</code> and invokes {@link #setValue(Object)}.
+     *  Constructs an <code>Double</code> and invokes {@link #setObject(Object)}.
      *
      */
 
     public void setDouble(double value);
 
     /**
-     *  Invokes {@link #setValue(Object)}.
+     *  Invokes {@link #setObject(Object)}.
      *
      */
 
@@ -147,5 +162,5 @@ public interface IBinding
      *
      */
  
-    public void setValue(Object value);
+    public void setObject(Object value);
 }
