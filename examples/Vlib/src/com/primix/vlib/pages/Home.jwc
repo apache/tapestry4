@@ -77,7 +77,7 @@
 					<value>30</value>
 				</static-binding>
 				<static-binding>
-					<name>maximumWidth</name>
+					<name>maximumLength</name>
 					<value>100</value>
 				</static-binding>
 			</bindings>
@@ -91,7 +91,7 @@
 					<property-path>searchAuthor</property-path>
 				</binding>
 				<static-binding>
-					<name>maximumWidth</name>
+					<name>maximumLength</name>
 					<value>100</value>
 				</static-binding>
 				<static-binding>

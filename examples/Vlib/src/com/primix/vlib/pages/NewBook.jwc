@@ -53,7 +53,7 @@
 					<property-path>title</property-path>
 				</binding>
 				<static-binding>
-					<name>maximumWidth</name>
+					<name>maximumLength</name>
 					<value>100</value>
 				</static-binding>
 				<static-binding>
@@ -67,7 +67,7 @@
 			<type>TextField</type>
 			<bindings>
 				<static-binding>
-					<name>maximumWidth</name>
+					<name>maximumLength</name>
 					<value>30</value>
 				</static-binding>
 				<static-binding>
@@ -85,7 +85,7 @@
 			<type>TextField</type>
 			<bindings>
 				<static-binding>
-					<name>maximumWidth</name>
+					<name>maximumLength</name>
 					<value>20</value>
 				</static-binding>
 				<static-binding>
@@ -117,7 +117,7 @@
 			<type>TextField</type>
 			<bindings>
 				<static-binding>
-					<name>maximumWidth</name>
+					<name>maximumLength</name>
 					<value>40</value>
 				</static-binding>
 				<binding>
