@@ -119,7 +119,22 @@ problems using Team support inside the Eclipse IDE.
 </target>
 
 
-<target name="pdf" depends="docbook-setup,copy-images">
+<!-- Only attempt to generate PDF if the developer has set fop.dir
+     in their build.properties. -->
+
+<target name="pdf" depends="docbook-setup,copy-images" if="fop.dir">
+
+    <antcall target="generate-fo-from-xml"/>
+    
+    <uptodate property="pdf.uptodate"
+    	srcfile="${html.output.dir}/${root.filename}.fop"
+    	targetfile="${html.output.dir}/${root.filename}.pdf"/>
+    	
+    <antcall target="convert-fo-to-pdf"/>
+    
+</target>
+
+<target name="generate-fo-from-xml">
 	<echo>
 	
 Generating Flow Objects from ${root.filename}.xml ...
@@ -133,7 +148,10 @@ Generating Flow Objects from ${root.filename}.xml ...
     	out="${html.output.dir}/${root.filename}.fop">
     	<xmlcatalog refid="docbook.catalog"/>
     </style>
+</target>
+
     
+<target name="convert-fo-to-pdf" unless="pdf.uptodate">    
 <echo>
 
 Converting Flow Objects to PDF ...
@@ -150,7 +168,6 @@ Converting Flow Objects to PDF ...
 				<include name="lib/*.zip"/>
 			</fileset>
 		</classpath>
-		<arg line="-d"/>
 		<arg line="-fo ${root.filename}.fop"/>
 		<arg line="-pdf ${root.filename}.pdf"/>
 	</java>      
@@ -165,6 +182,13 @@ Converting Flow Objects to PDF ...
 <target name="html" depends="docbook-setup,copy-images">
     <copy todir="${html.output.dir}" file="../common/Tapestry.css"/>
    
+    <antcall target="generate-html-single"/>
+    <antcall target="generate-html-chunked"/>
+    
+</target>
+
+<target name="generate-html-single">
+   
     <echo>
     
 Generating Printable (Single Page) HTML from ${root.filename}.xml ...
@@ -178,6 +202,9 @@ Generating Printable (Single Page) HTML from ${root.filename}.xml ...
     	out="${html.output.dir}/${root.filename}-Single.html">
     	<xmlcatalog refid="docbook.catalog"/>
     </style>  
+</target>
+
+<target name="generate-html-chunked">
     <echo>
     
 Generating Chunked (Multiple Page) HTML from ${root.filename}.xml ...
