@@ -116,21 +116,16 @@ public class DataSqueezer
 	 *
 	 */
 
-	public synchronized void register(
-		String prefix,
-		Class dataClass,
-		ISqueezeAdaptor adaptor)
+	public synchronized void register(String prefix, Class dataClass, ISqueezeAdaptor adaptor)
 	{
 		int prefixLength = prefix.length();
 		int offset;
 
 		if (prefixLength < 1)
-			throw new IllegalArgumentException(
-			Tapestry.getString("DataSqueezer.short-prefix"));
+			throw new IllegalArgumentException(Tapestry.getString("DataSqueezer.short-prefix"));
 
 		if (dataClass == null)
-			throw new IllegalArgumentException(
-				Tapestry.getString("DataSqueezer.null-class"));
+			throw new IllegalArgumentException(Tapestry.getString("DataSqueezer.null-class"));
 
 		if (adaptor == null)
 			throw new IllegalArgumentException(Tapestry.getString("DataSqueezer.null-adaptor"));
@@ -146,9 +141,8 @@ public class DataSqueezer
 
 			if (adaptorByPrefix[offset] != null)
 				throw new IllegalArgumentException(
-				Tapestry.getString("DataSqueezer.adaptor-prefix-taken",
-					prefix.substring(i, i)));
-		
+					Tapestry.getString("DataSqueezer.adaptor-prefix-taken", prefix.substring(i, i)));
+
 			adaptorByPrefix[offset] = adaptor;
 
 		}
@@ -176,12 +170,15 @@ public class DataSqueezer
 
 	/**
 	 *  A convience; invokes {@link #squeeze(Object)} for each element in the
-	 *  data array.
+	 *  data array.  If data is null, returns null.
 	 *
 	 */
 
 	public String[] squeeze(Object[] data) throws IOException
 	{
+		if (data == null)
+			return null;
+
 		int length = data.length;
 		String[] result;
 
@@ -230,8 +227,18 @@ public class DataSqueezer
 		return adaptor.unsqueeze(this, string);
 	}
 
+	/**
+	 *  Convienience method for unsqueezing many strings (back into objects).
+	 *  
+	 *  <p>If strings is null, returns null.
+	 * 
+	 **/
+
 	public Object[] unsqueeze(String[] strings) throws IOException
 	{
+		if (strings == null)
+			return null;
+
 		int length = strings.length;
 		Object[] result;
 
