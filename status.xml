@@ -51,9 +51,12 @@
  
  <action type="update" dev="HLS">
  	Update the license to Apache Software License 2.0.	
- </action>	
- 
- 	
+ </action>
+
+ <action type="update" dev="EH">
+   Added 'raw' attribute to FieldLabel component.
+ </action>
+
  </release>
   	
   
