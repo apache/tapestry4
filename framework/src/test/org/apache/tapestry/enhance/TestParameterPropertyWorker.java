@@ -186,19 +186,6 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
         op.addMethod(Modifier.PUBLIC, new MethodSignature(void.class, "setFred", new Class[]
         { String.class }, null), builder.toString());
 
-        BodyBuilder actualCleanup = new BodyBuilder();
-
-        op.getBodyBuilderForMethod(IComponent.class, EnhanceUtils.CLEANUP_AFTER_RENDER_SIGNATURE);
-        opc.setReturnValue(actualCleanup);
-
-        replayControls();
-
-        ParameterPropertyWorker w = new ParameterPropertyWorker();
-
-        w.performEnhancement(op);
-
-        verifyControls();
-
         BodyBuilder expectedCleanup = new BodyBuilder();
 
         expectedCleanup.addln("org.apache.tapestry.IBinding fredBinding = getBinding(\"fred\");");
@@ -208,7 +195,18 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
         expectedCleanup.addln("_$fred = _$fred$Default;");
         expectedCleanup.end();
 
-        assertEquals(expectedCleanup.toString(), actualCleanup.toString());
+        op.extendMethodImplementation(
+                IComponent.class,
+                EnhanceUtils.CLEANUP_AFTER_RENDER_SIGNATURE,
+                expectedCleanup.toString());
+
+        replayControls();
+
+        ParameterPropertyWorker w = new ParameterPropertyWorker();
+
+        w.performEnhancement(op);
+
+        verifyControls();
     }
 
     /**
@@ -291,19 +289,6 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
         op.addMethod(Modifier.PUBLIC, new MethodSignature(void.class, "setFred", new Class[]
         { String.class }, null), builder.toString());
 
-        BodyBuilder actualCleanup = new BodyBuilder();
-
-        op.getBodyBuilderForMethod(IComponent.class, EnhanceUtils.CLEANUP_AFTER_RENDER_SIGNATURE);
-        opc.setReturnValue(actualCleanup);
-
-        replayControls();
-
-        ParameterPropertyWorker w = new ParameterPropertyWorker();
-
-        w.performEnhancement(op);
-
-        verifyControls();
-
         BodyBuilder expectedCleanup = new BodyBuilder();
 
         expectedCleanup.addln("org.apache.tapestry.IBinding fredBinding = getBinding(\"barney\");");
@@ -313,7 +298,19 @@ public class TestParameterPropertyWorker extends HiveMindTestCase
         expectedCleanup.addln("_$fred = _$fred$Default;");
         expectedCleanup.end();
 
-        assertEquals(expectedCleanup.toString(), actualCleanup.toString());
+        op.extendMethodImplementation(
+                IComponent.class,
+                EnhanceUtils.CLEANUP_AFTER_RENDER_SIGNATURE,
+                expectedCleanup.toString());
+
+        replayControls();
+
+        ParameterPropertyWorker w = new ParameterPropertyWorker();
+
+        w.performEnhancement(op);
+
+        verifyControls();
+
     }
 
     public void testPrimitiveType()

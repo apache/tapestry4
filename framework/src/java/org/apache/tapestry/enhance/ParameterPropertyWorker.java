@@ -145,9 +145,7 @@ public class ParameterPropertyWorker implements EnhancementWorker
             String propertyName, Class propertyType, String fieldName, String defaultFieldName,
             String cachedFieldName)
     {
-        BodyBuilder cleanupBody = op.getBodyBuilderForMethod(
-                IComponent.class,
-                EnhanceUtils.CLEANUP_AFTER_RENDER_SIGNATURE);
+        BodyBuilder cleanupBody = new BodyBuilder();
 
         // Cached is only set when the field is updated in the accessor or mutator.
         // After rendering, we want to clear the cached value and cached flag
@@ -163,6 +161,11 @@ public class ParameterPropertyWorker implements EnhancementWorker
         cleanupBody.addln("{0} = false;", cachedFieldName);
         cleanupBody.addln("{0} = {1};", fieldName, defaultFieldName);
         cleanupBody.end();
+
+        op.extendMethodImplementation(
+                IComponent.class,
+                EnhanceUtils.CLEANUP_AFTER_RENDER_SIGNATURE,
+                cleanupBody.toString());
     }
 
     private void addBindingReference(BodyBuilder builder, String localVariableName,

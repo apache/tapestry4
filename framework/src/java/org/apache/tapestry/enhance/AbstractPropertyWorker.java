@@ -17,7 +17,6 @@ package org.apache.tapestry.enhance;
 import java.util.Iterator;
 
 import org.apache.hivemind.ErrorLog;
-import org.apache.hivemind.service.BodyBuilder;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.event.PageDetachListener;
 
@@ -69,22 +68,20 @@ public class AbstractPropertyWorker implements EnhancementWorker
         EnhanceUtils.createSimpleAccessor(op, fieldName, name, propertyType);
         EnhanceUtils.createSimpleMutator(op, fieldName, name, propertyType);
 
-        BodyBuilder finishLoadBody = op.getBodyBuilderForMethod(
+        // Copy the real attribute into the default attribute inside finish load
+        // (allowing a default value to be set inside finishLoad()).
+
+        op.extendMethodImplementation(
                 IComponent.class,
-                EnhanceUtils.FINISH_LOAD_SIGNATURE);
+                EnhanceUtils.FINISH_LOAD_SIGNATURE,
+                defaultFieldName + " = " + fieldName + ";");
 
-        // Inside finish load, "snapshot" the value of the real field
+        // On page detach, restore the attribute to its default value.
 
-        finishLoadBody.addln("{0} = {1};", defaultFieldName, fieldName);
-
-        // When detaching the page, overwrite the field value with
-        // the snapshot.
-
-        BodyBuilder pageDetachedBody = op.getBodyBuilderForMethod(
+        op.extendMethodImplementation(
                 PageDetachListener.class,
-                EnhanceUtils.PAGE_DETACHED_SIGNATURE);
-
-        pageDetachedBody.addln("{0} = {1};", fieldName, defaultFieldName);
+                EnhanceUtils.PAGE_DETACHED_SIGNATURE,
+                fieldName + " = " + defaultFieldName + ";");
 
         // This is not all that necessary, but is proper.
 

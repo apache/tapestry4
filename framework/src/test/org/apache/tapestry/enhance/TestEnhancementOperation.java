@@ -23,7 +23,6 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.impl.DefaultClassResolver;
-import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.ClassFab;
 import org.apache.hivemind.service.ClassFactory;
 import org.apache.hivemind.service.MethodSignature;
@@ -511,22 +510,20 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
         MethodSignature sig = EnhanceUtils.PAGE_DETACHED_SIGNATURE;
 
-        BodyBuilder b = eo.getBodyBuilderForMethod(PageDetachListener.class, sig);
-
-        assertEquals("{\n", b.toString());
+        eo.extendMethodImplementation(PageDetachListener.class, sig, "some-code();");
 
         verifyControls();
 
         replayControls();
 
-        // Check that repeated calls return the same body builder and do not
+        // Check that repeated calls do not
         // keep adding methods.
 
-        assertSame(b, eo.getBodyBuilderForMethod(PageDetachListener.class, sig));
+        eo.extendMethodImplementation(PageDetachListener.class, sig, "more-code();");
 
         verifyControls();
 
-        fab.addMethod(Modifier.PUBLIC, sig, "{\n}\n");
+        fab.addMethod(Modifier.PUBLIC, sig, "{\n  some-code();\n  more-code();\n}\n");
         fabc.setReturnValue(null);
 
         fab.createClass();
@@ -538,8 +535,6 @@ public class TestEnhancementOperation extends HiveMindTestCase
         replayControls();
 
         eo.getConstructor();
-
-        assertEquals("{\n}\n", b.toString());
 
         verifyControls();
     }
@@ -562,16 +557,14 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
         MethodSignature sig = EnhanceUtils.FINISH_LOAD_SIGNATURE;
 
-        BodyBuilder b = eo.getBodyBuilderForMethod(IComponent.class, sig);
-
-        assertEquals("{\n  super.finishLoad($$);\n", b.toString());
+        eo.extendMethodImplementation(IComponent.class, sig, "some-code();");
 
         verifyControls();
 
         cf.newClass("$BaseComponent_97", BaseComponent.class);
         cfc.setReturnValue(fab);
 
-        fab.addMethod(Modifier.PUBLIC, sig, "{\n  super.finishLoad($$);\n}\n");
+        fab.addMethod(Modifier.PUBLIC, sig, "{\n  super.finishLoad($$);\n  some-code();\n}\n");
         fabc.setReturnValue(null);
 
         fab.createClass();
@@ -606,16 +599,17 @@ public class TestEnhancementOperation extends HiveMindTestCase
         // A protected method
         MethodSignature sig = EnhanceUtils.CLEANUP_AFTER_RENDER_SIGNATURE;
 
-        BodyBuilder b = eo.getBodyBuilderForMethod(IComponent.class, sig);
-
-        assertEquals("{\n  super.cleanupAfterRender($$);\n", b.toString());
+        eo.extendMethodImplementation(IComponent.class, sig, "some-code();");
 
         verifyControls();
 
         cf.newClass("$BaseComponent_97", BaseComponent.class);
         cfc.setReturnValue(fab);
 
-        fab.addMethod(Modifier.PUBLIC, sig, "{\n  super.cleanupAfterRender($$);\n}\n");
+        fab.addMethod(
+                Modifier.PUBLIC,
+                sig,
+                "{\n  super.cleanupAfterRender($$);\n  some-code();\n}\n");
         fabc.setReturnValue(null);
 
         fab.createClass();
@@ -655,16 +649,14 @@ public class TestEnhancementOperation extends HiveMindTestCase
 
         MethodSignature sig = EnhanceUtils.PAGE_DETACHED_SIGNATURE;
 
-        BodyBuilder b = eo.getBodyBuilderForMethod(PageDetachListener.class, sig);
-
-        assertEquals("{\n", b.toString());
+        eo.extendMethodImplementation(PageDetachListener.class, sig, "some-code();");
 
         verifyControls();
 
         cf.newClass("$ExitingAbstractMethodFixture_97", ExistingAbstractMethodFixture.class);
         cfc.setReturnValue(fab);
 
-        fab.addMethod(Modifier.PUBLIC, sig, "{\n}\n");
+        fab.addMethod(Modifier.PUBLIC, sig, "{\n  some-code();\n}\n");
         fabc.setReturnValue(null);
 
         fab.createClass();
@@ -676,8 +668,6 @@ public class TestEnhancementOperation extends HiveMindTestCase
         replayControls();
 
         eo.getConstructor();
-
-        assertEquals("{\n}\n", b.toString());
 
         verifyControls();
     }

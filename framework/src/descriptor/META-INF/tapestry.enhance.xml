@@ -69,6 +69,7 @@
     <command id="specified-property" object="service:SpecifiedPropertyWorker" before="abstract-property"/>
     <command id="parameter" object="service:ParameterPropertyWorker" before="abstract-property"/>
     <command id="inject" object="service:InjectWorker" before="abstract-property"/>
+    <command id="inject-state" object="service:InjectStateWorker" before="abstract-property"/>
     
     <!-- This should be second to last, or at least, after all other workers have 
          added and claimed any properties they are going to. -->
@@ -107,6 +108,18 @@
     <invoke-factory>
       <construct class="org.apache.tapestry.enhance.InjectWorker">
         <set-service property="provider" service-id="tapestry.InjectedValueProvider"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <service-point id="InjectStateWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+    
+    Injects properties that reference application state objects.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.enhance.InjectStateWorker">
+        <set-service property="applicationStateManager" service-id="tapestry.state.ApplicationStateManager"/>
       </construct>
     </invoke-factory>
     

@@ -12,26 +12,34 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.binding;
+package org.apache.tapestry.spec;
 
-import org.apache.tapestry.coerce.ValueConverter;
+import org.apache.hivemind.LocationHolder;
 
-/**
+/** 
+ * Specification element used to describe the injection of an application
+ * state object into a component class.
+ * 
  * @author Howard M. Lewis Ship
+ * @since 3.1
  */
-public abstract class AbstractBindingFactory implements BindingFactory
+public interface InjectStateSpecification extends LocationHolder
 {
-
-    private ValueConverter _valueConverter;
-
-    public ValueConverter getValueConverter()
-    {
-        return _valueConverter;
-    }
-
-    public void setValueConverter(ValueConverter valueConverter)
-    {
-        _valueConverter = valueConverter;
-    }
-
+    /**
+     * Returns the name of the property to create.
+     * 
+     */
+    
+    public String getProperty();
+    
+    public void setProperty(String property);
+    
+    /**
+     * Returns the name of the application state object to be injected.
+     * 
+     */
+    
+    public String getObjectName();
+    
+    public void setObjectName(String objectName);   
 }

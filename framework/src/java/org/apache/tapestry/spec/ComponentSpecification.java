@@ -150,6 +150,14 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
     private List _injectSpecifications;
 
     /**
+     * List of {@link InjectStateSpecification}.
+     * 
+     * @since 3.1
+     */
+
+    private List _injectStateSpecifications;
+
+    /**
      * @throws IllegalArgumentException
      *             if the name already exists.
      */
@@ -583,9 +591,27 @@ public class ComponentSpecification extends LocatablePropertyHolder implements
 
     public List getInjectSpecifications()
     {
-        if (_injectSpecifications == null)
+        return safeList(_injectSpecifications);
+    }
+
+    public void addInjectStateSpecification(InjectStateSpecification spec)
+    {
+        if (_injectStateSpecifications == null)
+            _injectStateSpecifications = new ArrayList();
+
+        _injectStateSpecifications.add(spec);
+    }
+
+    public List getInjectStateSpecifications()
+    {
+        return safeList(_injectStateSpecifications);
+    }
+
+    private List safeList(List input)
+    {
+        if (input == null)
             return Collections.EMPTY_LIST;
 
-        return Collections.unmodifiableList(_injectSpecifications);
+        return Collections.unmodifiableList(input);
     }
 }
