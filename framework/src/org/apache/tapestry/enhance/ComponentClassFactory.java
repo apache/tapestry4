@@ -110,7 +110,6 @@ public class ComponentClassFactory
     private static int _uid = 0;
 
     private IResourceResolver _resolver;
-    private EnhanceClassLoader _classLoader;
 
     private ClassFabricator _classFabricator;
     private Map _beanProperties = new HashMap();
@@ -622,8 +621,7 @@ public class ComponentClassFactory
 
         Type propertyType = getObjectType(IBinding.class.getName());
 
-        IEnhancer enhancer =
-            new CreatePropertyEnhancer(propertyName, propertyType, ps.getLocation());
+        IEnhancer enhancer = new CreatePropertyEnhancer(propertyName, propertyType);
 
         addEnhancer(enhancer);
     }
@@ -657,7 +655,7 @@ public class ComponentClassFactory
         Type fieldType = getObjectType(ps.getType());
 
         IEnhancer enhancer =
-            new CreatePropertyEnhancer(propertyName, fieldType, readMethodName, false, location);
+            new CreatePropertyEnhancer(propertyName, fieldType, readMethodName, false);
 
         addEnhancer(enhancer);
     }
@@ -686,8 +684,7 @@ public class ComponentClassFactory
                 parameterName,
                 fieldType,
                 ps.getType(),
-                readMethodName,
-                location);
+                readMethodName);
 
         addEnhancer(enhancer);
     }
@@ -713,12 +710,7 @@ public class ComponentClassFactory
         Type fieldType = getObjectType(ps.getType());
 
         IEnhancer enhancer =
-            new CreatePropertyEnhancer(
-                propertyName,
-                fieldType,
-                readMethodName,
-                ps.isPersistent(),
-                location);
+            new CreatePropertyEnhancer(propertyName, fieldType, readMethodName, ps.isPersistent());
 
         addEnhancer(enhancer);
     }

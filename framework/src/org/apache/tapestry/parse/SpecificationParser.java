@@ -516,7 +516,7 @@ public class SpecificationParser
         }
     }
 
-    private class ProcessExtensionConfigurationRule extends AbstractSpecificationRule
+    private static class ProcessExtensionConfigurationRule extends AbstractSpecificationRule
     {
         private String _value;
         private String _propertyName;

@@ -230,7 +230,7 @@ public class PageSource implements IPageSource
         PageLoader result = (PageLoader) _pool.retrieve(PAGE_LOADER_POOL_KEY);
 
         if (result == null)
-            result = new PageLoader(this, cycle);
+            result = new PageLoader(cycle);
 
         return result;
     }
@@ -256,10 +256,10 @@ public class PageSource implements IPageSource
 
     public void releasePage(IPage page)
     {
-    	Tapestry.clearMethodInvocations();
-    	
+        Tapestry.clearMethodInvocations();
+
         page.detach();
-        
+
         Tapestry.checkMethodInvocation(Tapestry.ABSTRACTPAGE_DETACH_METHOD_ID, "detach()", page);
 
         _pool.store(buildKey(page), page);
@@ -275,8 +275,6 @@ public class PageSource implements IPageSource
     {
         _pool.clear();
     }
-
-
 
     public String toString()
     {

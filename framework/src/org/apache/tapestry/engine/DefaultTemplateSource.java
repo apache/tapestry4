@@ -78,7 +78,6 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceLocation;
-import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.parse.ComponentTemplate;
 import org.apache.tapestry.parse.ITemplateParserDelegate;
@@ -127,7 +126,6 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
 
     private static final int BUFFER_SIZE = 2000;
 
-    private IResourceResolver _resolver;
     private TemplateParser _parser;
 
     /** @since 2.2 **/
@@ -177,11 +175,6 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
             return spec.getAllowBody();
         }
 
-    }
-
-    public DefaultTemplateSource(IResourceResolver resolver)
-    {
-        _resolver = resolver;
     }
 
     /**

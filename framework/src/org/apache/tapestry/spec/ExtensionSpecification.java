@@ -78,7 +78,9 @@ import org.apache.tapestry.util.prop.OgnlUtils;
  * 
  **/
 
-public class ExtensionSpecification extends LocatablePropertyHolder implements IExtensionSpecification
+public class ExtensionSpecification
+    extends LocatablePropertyHolder
+    implements IExtensionSpecification
 {
     private static final Log LOG = LogFactory.getLog(ExtensionSpecification.class);
 
@@ -100,7 +102,10 @@ public class ExtensionSpecification extends LocatablePropertyHolder implements I
     {
         if (_configuration.containsKey(propertyName))
             throw new IllegalArgumentException(
-                Tapestry.getString("ExtensionSpecification.duplicate-property", this, propertyName));
+                Tapestry.getString(
+                    "ExtensionSpecification.duplicate-property",
+                    this,
+                    propertyName));
 
         _configuration.put(propertyName, value);
     }
@@ -124,11 +129,22 @@ public class ExtensionSpecification extends LocatablePropertyHolder implements I
 
     public Object instantiateExtension(IResourceResolver resolver)
     {
-        LOG.debug("Instantiating extension class " + _className + ".");
-
-        Class extensionClass = resolver.findClass(_className);
-
+        if (LOG.isDebugEnabled())
+            LOG.debug("Instantiating extension class " + _className + ".");
+        Class extensionClass = null;
         Object result = null;
+
+        try
+        {
+            extensionClass = resolver.findClass(_className);
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("ExtensionSpecification.bad-class", _className),
+                getLocation(),
+                ex);
+        }
 
         result = instantiateInstance(extensionClass, result);
 
@@ -159,13 +175,9 @@ public class ExtensionSpecification extends LocatablePropertyHolder implements I
         {
             result = extensionClass.newInstance();
         }
-        catch (IllegalAccessException ex)
+        catch (Exception ex)
         {
-            throw new ApplicationRuntimeException(ex);
-        }
-        catch (InstantiationException ex)
-        {
-            throw new ApplicationRuntimeException(ex);
+            throw new ApplicationRuntimeException(ex.getMessage(), getLocation(), ex);
         }
 
         return result;

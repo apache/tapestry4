@@ -380,14 +380,12 @@ public class Pool implements ICleanable, IRenderDescription
 
     /**
      *  Returns the number of object pooled, the sum of the number
-     *  of objects in pooled under each key.  This number should be treated
-     *  as approximate, since there are a few minor windows where, under load,
-     *  it may not be properly synchronized.
+     *  of objects in pooled under each key. 
      *
      *  @since 1.0.2
      **/
 
-    public int getPooledCount()
+    public synchronized int getPooledCount()
     {
         return _pooledCount;
     }
@@ -462,7 +460,7 @@ public class Pool implements ICleanable, IRenderDescription
             LOG.debug("Culled " + (oldCount - _pooledCount) + " pooled objects and " + culledKeys + " keys.");
     }
 
-    public String toString()
+    public synchronized String toString()
     {
         ToStringBuilder builder = new ToStringBuilder(this);
 

@@ -72,8 +72,6 @@ import org.apache.tapestry.IRequestCycle;
 
 public abstract class Delegator extends AbstractComponent
 {
-	private IRender _delegate;
-
     /**
      *  Gets its delegate and invokes {@link IRender#render(IMarkupWriter, IRequestCycle)}
      *  on it.

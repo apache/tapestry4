@@ -75,25 +75,22 @@ public class CreatePropertyEnhancer implements IEnhancer
     private Type _propertyType;
     private boolean _persistent;
     private String _readMethodName;
-    private ILocation _location;
 
-    public CreatePropertyEnhancer(String propertyName, Type propertyType, ILocation location)
+    public CreatePropertyEnhancer(String propertyName, Type propertyType)
     {
-        this(propertyName, propertyType, null, false, location);
+        this(propertyName, propertyType, null, false);
     }
 
     public CreatePropertyEnhancer(
         String propertyName,
         Type propertyType,
         String readMethodName,
-        boolean persistent,
-        ILocation location)
+        boolean persistent)
     {
         _propertyName = propertyName;
         _propertyType = propertyType;
         _readMethodName = readMethodName;
         _persistent = persistent;
-        _location = location;
     }
 
     public void performEnhancement(ComponentClassFactory factory)
