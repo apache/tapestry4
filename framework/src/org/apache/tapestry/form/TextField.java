@@ -74,7 +74,7 @@ public abstract class TextField extends AbstractTextField
 
     public String readValue()
     {
-        return getValueBinding().getString();
+        return (String) getValueBinding().getObject("value", String.class);
     }
 
     public void updateValue(String value)
