@@ -26,18 +26,10 @@ EXEC_CLASSPATH = \
 	$(INSTALL_DIR)/com.mortbay.jetty.jar \
 
 run: setup-jbe-util
-	@$(RECURSE) run-inner INNER=t
-
-ifdef INNER
-
-_EXEC_CLASSPATH = $(strip $(shell $(JBE_CANONICALIZE) -classpath $(EXEC_CLASSPATH)))
-
-run-inner:
-	$(JAVA) -classpath "$(_EXEC_CLASSPATH)" \
-	-Dorg.xml.sax.parser=org.apache.xerces.parsers.SAXParser \
-	com.mortbay.Jetty.Server jetty.xml 
-
-endif
+	@$(ECHO) "\n*** Running Jetty for Tutorial ... ***\n"
+	$(call EXEC_JAVA,$(EXEC_CLASSPATH), \
+		-Dorg.xml.sax.parser=org.apache.xerces.parsers.SAXParser \
+		com.mortbay.Jetty.Server jetty.xml)
 
 
 

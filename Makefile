@@ -2,7 +2,7 @@
 # $Id$
 
 distribution: clean copy-external-jars install javadoc
-	@$(RECURSE) clean prepare-for-packaging create-archive
+	@$(RECURSE) clean prepare-for-packaging create-archives
 
 # The job of this Makefile is to re-invoke make in various subdirectories.
 
@@ -13,14 +13,15 @@ include $(SYS_MAKEFILE_DIR)/CommonRules.mk
 # should come first.
 
 MODULES = \
-	Tapestry \
-	Examples/Tutorial \
-	Examples/VlibBeans \
-	Examples/Vlib
+	../Tapestry \
+	../Examples/Tutorial \
+	../Examples/VlibBeans \
+	../Examples/Vlib
 
 JAVADOC_MODULES = \
-	Tapestry \
-	Examples/VlibBeans
+	../Tapestry \
+	../Examples/VlibBeans \
+	../Examples/Vlib
 
 # A list of Jar files redistributed with Tapestry.  xerces, gnu-regexp
 # and j2ee are needed to build Tapestry; the rest are needed
@@ -37,9 +38,9 @@ EXTERNAL_JARS = \
 # This reflects my personal build work area structure, where
 # I create a subdirectory and checkout all the files.
 
-EXTERNAL_LIB_DIR = ../../lib
+EXTERNAL_LIB_DIR = ../../../lib
 
-LOCAL_LIB_DIR = lib
+LOCAL_LIB_DIR = ../lib
 
 copy-external-jars:
 	@$(ECHO) "\n*** Copying external JARs ... ***\n"
@@ -52,12 +53,12 @@ copy-external-jars:
 REINVOKE := \
 	@$(RECURSE) reinvoke
 	
-
 prepare-for-packaging:
-	@$(ECHO) "\n*** Removing Word documents from distribution ... ***\n"
-	@$(FIND) . \( -name \*.doc -o -name \*.vsd \) -print -exec $(RMDIRS) {} \;
 	@$(ECHO) "\n*** Removing non-distributable JARs ... ***\n"
 	@$(RM) $(LOCAL_LIB_DIR)/j2ee.jar
+	@$(ECHO) "\n*** Copying licenses and Readme to root ...***\n"
+	$(TAR) cf - LICENSE* *.html ChangeLog images | \
+		($(CD) .. && $(TAR) xf)
 
 install: 
 	$(REINVOKE) TARGET=install JAVAC_OPT=-g
@@ -82,16 +83,52 @@ javadoc:
 # Get the last piece of the current directory, which will be
 # something like Tapestry-x.y.z
 
-RELEASE_DIR = $(notdir $(CURDIR))
+RELEASE_DIR := $(notdir $(shell $(CD) .. && $(PWD)))
 
-ARCHIVE_NAME = $(RELEASE_DIR).tar.gz
+# The small release contains the precompiled JAR and javadoc, but
+# virtually nothing else.
 
-# Create the archive in the directory above this one.
+SMALL_RELEASE = \
+	$(RELEASE_DIR)/ChangeLog \
+	$(RELEASE_DIR)/LICENSE.html \
+	$(RELEASE_DIR)/Readme.html \
+	$(RELEASE_DIR)/images \
+	$(RELEASE_DIR)/doc/api \
+	$(RELEASE_DIR)/lib/Tapestry.jar \
+	$(RELEASE_DIR)/lib/gnu-regexp.jar
 
-create-archive: prepare-for-packaging
-	@$(ECHO) "\n*** Creating distribution archive $(ARCHIVE_NAME) ... ***\n"
-	@$(RM) -f ..\$(ARCHIVE_NAME)
-	$(CD) .. ; $(TAR) czf $(ARCHIVE_NAME) $(RELEASE_DIR)
+# The medium release adds the JBE and the Tapestry source code.
+	
+MEDIUM_RELEASE = \
+	$(SMALL_RELEASE) \
+	$(RELEASE_DIR)/JBE \
+	$(RELEASE_DIR)/doc/JBE.pdf \
+	$(RELEASE_DIR)/Tapestry
 
-.PHONY: javadoc create-archive prepare-for-packaging reinvoke
+# The full release adds all the documentation (in PDF format),
+# plus all the Examples, and bundles xerces, Jetty and etc.
+
+FULL_RELEASE = \
+	$(RELEASE_DIR)/ChangeLog \
+	$(RELEASE_DIR)/LICENSE* \
+	$(RELEASE_DIR)/images \
+	$(RELEASE_DIR)/Readme.html \
+	$(RELEASE_DIR)/lib \
+	$(RELEASE_DIR)/doc/*.pdf \
+	$(RELEASE_DIR)/doc/api \
+	$(RELEASE_DIR)/Tapestry \
+	$(RELEASE_DIR)/JBE \
+	$(RELEASE_DIR)/Examples
+
+create-archives: prepare-for-packaging
+	@$(ECHO) "\n*** Creating full distribution archive ... ***\n"
+	@$(RM) -f ..\$(RELEASE_DIR)-*.gz $(FULL_RELEASE)
+	$(CD) ../.. ; $(TAR) czf $(RELEASE_DIR)-full.tar.gz $(RELEASE_DIR)
+	@$(ECHO) "\n*** Creating small distribution archive ... ***\n"
+	$(CD) ../.. ; $(TAR) czf $(RELEASE_DIR)-small.tar.gz $(SMALL_RELEASE)
+	@$(ECHO) "\n*** Creating medium distribution archive ... ***\n"
+	$(CD) ../.. ; $(TAR) czf $(RELEASE_DIR)-medium.tar.gz $(MEDIUM_RELEASE)
+
+
+.PHONY: javadoc create-archives prepare-for-packaging reinvoke
 .PHONY: clean install copy-external-jars distribution
