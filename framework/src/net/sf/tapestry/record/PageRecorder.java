@@ -261,6 +261,8 @@ public abstract class PageRecorder implements IPageRecorder
             else
                 _persister = new DefaultValuePersister();
 
+            _persister.initialize(cycle);
+            
             context.setAttribute(name, _persister);
         }
     }

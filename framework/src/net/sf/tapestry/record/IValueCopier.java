@@ -16,5 +16,6 @@ public interface IValueCopier
      * 
      **/
     
-    public Object makeCopyOfValue(Object value);
+    public Object makeCopyOfValue(Object value)
+    throws PageRecorderSerializationException;
 }

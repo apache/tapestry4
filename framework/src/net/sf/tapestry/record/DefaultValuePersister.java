@@ -1,5 +1,6 @@
 package net.sf.tapestry.record;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.util.Date;
 import java.util.List;
@@ -10,6 +11,7 @@ import javax.ejb.Handle;
 import org.apache.commons.lang.enum.Enum;
 
 import net.sf.tapestry.ApplicationRuntimeException;
+import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.util.AdaptorRegistry;
 import net.sf.tapestry.util.IImmutable;
@@ -27,13 +29,9 @@ public class DefaultValuePersister implements IValuePersister
 {
     private AdaptorRegistry _registry = new AdaptorRegistry();
 
-    public DefaultValuePersister()
-    {
-        registerValueCopiers();
-    }
 
     /**
-     *  Invoked from {@link #registerValueCopiers()} to register the copier
+     *  Invoked from {@link #initialize(IRequestCycle)} to register the copier
      *  for a particular class.
      * 
      **/
@@ -76,10 +74,13 @@ public class DefaultValuePersister implements IValuePersister
      * 
      *  <p>
      *  An instance of {@link ArrayCopier} for <code>Object[]</code>.
+     * 
+     *  <p>
+     *  An instance of {@link SerializableCopier} for {@link java.io.Serializable}.
      *  
      **/
 
-    protected void registerValueCopiers()
+    public void initialize(IRequestCycle cycle)
     {
         IValueCopier immutable = new ImmutableValueCopier();
 
@@ -98,9 +99,12 @@ public class DefaultValuePersister implements IValuePersister
         registerValueCopier(EJBWrapper.class, new EJBWrapperCopier());
         
         registerValueCopier(Object[].class, new ArrayCopier());
+        
+        registerValueCopier(Serializable.class, new SerializableCopier(cycle.getEngine().getResourceResolver()));        
     }
 
     protected Object copy(Object value)
+    throws PageRecorderSerializationException
     {
         IValueCopier copier = getCopier(value);
 

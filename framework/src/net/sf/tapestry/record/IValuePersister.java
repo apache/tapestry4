@@ -1,5 +1,7 @@
 package net.sf.tapestry.record;
 
+import net.sf.tapestry.IRequestCycle;
+
 /**
  *  Responsible for persisting values on behalf of a {@link net.sf.tapestry.IPageRecorder}.
  *  The values provided to the page recorder are not stored as is; there are several
@@ -18,6 +20,14 @@ package net.sf.tapestry.record;
 
 public interface IValuePersister
 {
+    /**
+     *  Invoked just after an instance is instantiated, to allow it
+     *  to complete its initialization.
+     * 
+     **/
+    
+    public void initialize(IRequestCycle cycle);
+    
     /**
      *  Converts an active value (used by the application) to
      *  a storable value (a value which can be persisted for later access).
