@@ -89,7 +89,7 @@ Tapestry templates contain a mix of the following elements:
 
 <para>
 Usually, about 90% of a template is ordinary HTML markup.  Hidden inside that markup are particular tags that
-are placeholders for Tapestry components; these tags are recognized by the presence of the &jwc; attribute.  "JWC"
+are placeholders for Tapestry components; these tags are recognized by the presence of the &jwcid; attribute.  "JWC"
 is short for "Java Web Component", and was chosen as the "magic" attribute so as not to conflict with any real HTML attribute.	
 </para>
 
@@ -106,7 +106,7 @@ the kind of ugly HTML you'll find "in the field" is accepted.
 	<title>Components in Templates</title>
 	
 <para>
-Components can be placed anywhere inside a template, simply  by adding the &jwc; attribute to 
+Components can be placed anywhere inside a template, simply  by adding the &jwcid; attribute to 
 any existing tag.  For example:
 
 <example>
@@ -146,7 +146,7 @@ value parameter is bound to the &OGNL; expression <literal>user.name</literal>.
 The point of all this is that the HTML template should preview properly in a WYSIWYG HTML editor. Unlike
 &Velocity; or JSPs, there are no strange directives to get in the way of a preview (or necessitate
 a special editting tool), Tapestry hides what's needed inside existing tags; at worst, it adds
-a few non-standard attributes (such as &jwc;) to tags. This rarely causes a problem with most HTML editors.
+a few non-standard attributes (such as &jwcid;) to tags. This rarely causes a problem with most HTML editors.
 </para>
 
 <para>
@@ -271,9 +271,9 @@ are presumed to be there only to support WYSIWYG preview.
 
 <para>
 Each component declares a list of reserved names using the &spec.reserved-parameter; element; these
-are  names which are not allowed as informal parameters, because the component generates the
+are  names which are not allowed as informal parameters, because the component generates 
 the named attribute itself, and doesn't want the value it writes to be overriden by an informal
-parameters.  For example, the &DirectLink; component reserves the name "href" ... putting an 
+parameter.  For example, the &DirectLink; component reserves the name "href" ... putting an 
 <literal>href</literal>	 attribute in the HTML template is simply ignored (again, presumed to
 be there to support WYSIWYG preview).  Case is ignored when comparing attribute names to reserved names.
 </para>
