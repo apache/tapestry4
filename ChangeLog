@@ -1,3 +1,7 @@
+* Jan 31 2001 hship
+
+Replace old JBE documentation (in PDF format) with new DocBook-derived HTML.
+
 * Jan 25 2001 hship
 
 Move log4j home page to jakarta.apache.org.
