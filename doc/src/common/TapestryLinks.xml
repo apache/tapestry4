@@ -44,6 +44,7 @@
 <!ENTITY IValidator '<ulink url="&ApiRoot;/valid/IValidator.html"><classname>IValidator</classname></ulink>'>
 <!ENTITY IValidationDelegate '<ulink url="&ApiRoot;/valid/IValidationDelegate.html"><classname>IValidationDelegate</classname></ulink>'>
 <!ENTITY IField '<ulink url="&ApiRoot;/valid/IField.html"><classname>IField</classname></ulink>'>
+<!ENTITY IUploadFile '<ulink url="&ApiRoot;/IUploadFile.html"><classname>IUploadFile</classname></ulink>'>
 <!ENTITY PageCleanupListener '<ulink url="&ApiRoot;/event/PageCleanupListener.html"><classname>PageCleanupListener</classname></ulink>'>
 <!ENTITY PageDetachListener '<ulink url="&ApiRoot;/event/PageDetachListener.html"><classname>PageDetachListener</classname></ulink>'>
 <!ENTITY PageRedirectException '<ulink url="&ApiRoot;/PageRedirectException.html"><classname>PageRedirectException</classname></ulink>'>

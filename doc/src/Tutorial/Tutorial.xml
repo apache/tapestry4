@@ -32,24 +32,20 @@
   <bookinfo>
     <author>
       <firstname>Howard</firstname>
-      <surname>Ship</surname>
-      <affiliation>
-        <orgname>Primix</orgname>
-      </affiliation>
+      <surname>Lewis Ship</surname>
     </author>
     <copyright>
       <year>2000</year>
       <year>2001</year>
-      <holder>Primix</holder>
+      <year>2002</year>
+      <holder>Howard M. Lewis Ship</holder>
     </copyright>
   </bookinfo>
   <chapter id="intro">
     <title>Introduction</title>
     <para>
-Tapestry is a new application framework developed at Primix.
-</para>
-    <para>
-Tapestry uses a component object model to represent the pages of a web application.  This is 
+Tapestry is a new application framework for developing web applications.  It uses
+a component object model to represent the pages of a web application.  This is 
 similar to spirit to using the Java Swing component object model to build GUIs.
 </para>
     <para>
@@ -1822,7 +1818,7 @@ with basic Tapestry concepts:
     </itemizedlist>
     <para>
 Tapestry is capable of quite a bit more.  Also available within the Tapestry Examples package 
-(along with the tutorial code and this document) is the Primix Virtual Library application (Vlib).
+(along with the tutorial code and this document) is the Virtual Library application (Vlib).
 </para>
     <para>
 Vlib is a full-blown J2EE application, that makes use of Tapestry as its front end, and a set of 
