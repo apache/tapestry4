@@ -86,7 +86,6 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
     private boolean _rewinding;
     private boolean _rendering;
     private String _name;
-    private boolean _statefulMode = true;
     private boolean _direct = true;
     private IValidationDelegate _delegate;
 
@@ -679,15 +678,4 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
     {
         _statefulBinding = statefulBinding;
     }
-
-    public boolean getStatefulMode()
-    {
-        return _statefulMode;
-    }
-
-    public void setStatefulMode(boolean statefulMode)
-    {
-        _statefulMode = statefulMode;
-    }
-
 }

@@ -27,8 +27,6 @@ package net.sf.tapestry.link;
 
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import net.sf.tapestry.BindingException;
 import net.sf.tapestry.IActionListener;
 import net.sf.tapestry.IBinding;
@@ -37,8 +35,6 @@ import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.RequiredParameterException;
-import net.sf.tapestry.StaleSessionException;
-import net.sf.tapestry.Tapestry;
 
 /**
  *  A component for creating a link using the direct service; used for actions that
@@ -146,14 +142,6 @@ public class DirectLink extends GestureLink implements IDirect
 
     public void trigger(IRequestCycle cycle) throws RequestCycleException
     {
-        if (isStateful())
-        {
-            HttpSession session = cycle.getRequestContext().getSession();
-
-            if (session == null || session.isNew())
-                throw new StaleSessionException();
-        }
-
         IActionListener listener = getListener(cycle);
 
         listener.actionTriggered(this, cycle);
