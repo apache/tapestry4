@@ -6,7 +6,7 @@
 
 <component-specification
 	class="org.apache.tapestry.form.DatePicker"
-	allow-informal-parameters="no" 
+	allow-informal-parameters="yes" 
 	allow-body="no">
 
   <parameter name="value" direction="form" type="java.util.Date" required="yes"/>
