@@ -54,12 +54,18 @@
  */
 package net.sf.tapestry.form;
 
-import java.util.Date;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
-import net.sf.tapestry.BaseComponent;
-import net.sf.tapestry.IBinding;
+import net.sf.tapestry.IAsset;
+import net.sf.tapestry.IForm;
+import net.sf.tapestry.IMarkupWriter;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.html.Body;
 
 /**
  * Provides a Form <tt>java.util.Date</tt> field component for selecting dates.
@@ -73,92 +79,107 @@ import net.sf.tapestry.IBinding;
  * 
  **/
 
-public class DatePicker extends BaseComponent
+public abstract class DatePicker extends AbstractFormComponent
 {
-    private IBinding _valueBinding;
-    private SimpleDateFormat _dateFormat = new SimpleDateFormat("dd MMM yyyy");
-    private boolean _disabled;
+    private String _name;
 
-    public String getFormat()
+    public abstract String getFormat();
+
+    public abstract Date getValue();
+
+    public abstract void setValue(Date value);
+
+    public abstract boolean isDisabled();
+
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
     {
-        return _dateFormat.toPattern();
-    }
+        IForm form = getForm(cycle);
 
-    public void setFormat(String format)
-    {
-        _dateFormat = new SimpleDateFormat(format);
-    }
+        _name = form.getElementId(this);
 
-    public String getTimeMillis()
-    {
-        Date date = getValue();
+        String format = getFormat();
 
-        if (date == null)
-            return "";
+        if (format == null)
+            format = "dd MMM yyyy";
 
-        return Long.toString(date.getTime());
-    }
+        DateFormat formatter = new SimpleDateFormat(format);
 
-    public void setTimeMillis(String value)
-    {
-    }
+        boolean disabled = isDisabled();
 
-    public String getText()
-    {
-        Date date = getValue();
-
-        if (date == null)
-            return "";
-
-        return _dateFormat.format(date);
-    }
-
-    public void setText(String text)
-    {
-        if (text.length() >= 6)
+        if (!cycle.isRewinding())
         {
+            Body body = Body.get(cycle);
+
+            IAsset script = getAsset("script");
+
+            body.includeScript(script.buildURL(cycle));
+
+            Date value = getValue();
+
+            writer.beginEmpty("input");
+            writer.attribute("type", "text");
+            writer.attribute("name", _name);
+            writer.attribute("maxlength", format.length());
+            writer.attribute("size", format.length());
+
+            if (value != null)
+                writer.attribute("value", formatter.format(value));
+
+            if (disabled)
+                writer.attribute("disabled", "disabled");
+
+            writer.beginEmpty("input");
+            writer.attribute("type", "hidden");
+            writer.attribute("name", _name + "$millis");
+
+            if (value == null)
+                writer.attribute("value", "");
+            else
+                writer.attribute("value", Long.toString(value.getTime()));
+
+            writer.beginEmpty("input");
+            writer.attribute("type", "hidden");
+            writer.attribute("name", _name + "$format");
+            writer.attribute("value", format);
+
+            writer.beginEmpty("input");
+            writer.attribute("type", "button");
+            writer.attribute("name", _name + "$button");
+
+            if (disabled)
+                writer.attribute("disabled", "disabled");
+
+            writer.attribute("value", "V");
+            writer.attribute("onClick", "javascript:goCalendar(this);");
+        }
+
+        if (form.isRewinding())
+        {
+            if (disabled)
+                return;
+
+            String textValue = cycle.getRequestContext().getParameter(_name);
+
+            if (Tapestry.isNull(textValue))
+                return;
+
             try
             {
-                setValue(_dateFormat.parse(text));
+                Date value = formatter.parse(textValue);
+
+                setValue(value);
             }
-            catch (ParseException pe)
+            catch (ParseException ex)
             {
-                setValue(null);
             }
         }
-        else
-        {
-            setValue(null);
-        }
+
     }
 
-    public Date getValue()
+    public String getName()
     {
-        return (Date) _valueBinding.getObject();
+        return _name;
     }
 
-    public void setValue(Date value)
-    {
-        _valueBinding.setObject(value);
-    }
-
-    public IBinding getValueBinding()
-    {
-        return _valueBinding;
-    }
-
-    public void setValueBinding(IBinding value)
-    {
-        _valueBinding = value;
-    }
-
-    public boolean isDisabled()
-    {
-        return _disabled;
-    }
-
-    public void setDisabled(boolean disabled)
-    {
-        _disabled = disabled;
-    }        
 }

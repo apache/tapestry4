@@ -4,35 +4,15 @@
   "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
 
-<component-specification class="net.sf.tapestry.form.DatePicker" allow-informal-parameters="no">
+<component-specification
+	class="net.sf.tapestry.form.DatePicker"
+	allow-informal-parameters="no" 
+	allow-body="no">
 
-  <parameter name="value" direction="custom" type="java.util.Date" required="yes"/>
+  <parameter name="value" direction="form" type="java.util.Date" required="yes"/>
   <parameter name="format" direction="in" type="java.lang.String" required="no"/>
   <parameter name="disabled" direction="in" type="boolean" required="no"/>
-  
-  <component id="dateTextField" type="TextField">
-       	<binding name="value" expression="text"/>
-        <binding name="maxlength" expression="format.length()"/>        
-        <binding name="size" expression="format.length()"/>        
-       	<binding name="disabled" expression="disabled"/>
-  </component>
 
-  <component id="dateHidden" type="Hidden">
-       	<binding name="value" expression="timeMillis"/>
-       	<binding name="encode" expression="false"/>
-  </component>
-
-  <component id="formatHidden" type="Hidden">
-       	<binding name="value" expression="format"/>
-       	<binding name="encode" expression="false"/>
-  </component>
-
-  <component id="popupButton" type="Button">
-       	<binding name="disabled" expression="disabled"/>
-  </component>
-
-  <component id="datePickerScript" type="Script">
-        <static-binding name="script">/net/sf/tapestry/form/DatePicker.script</static-binding>
-  </component>
+  <private-asset name="script" resource-path="DatePicker.js"/>
         
 </component-specification>
