@@ -33,11 +33,7 @@
   		<include name="*.jar"/>
   	</fileset>
     <pathelement location="${jython.dir}/jython.jar"/>
-     
-    <fileset dir="${jetty.dir}">
-    	<include name="**/javax.*.jar"/>
-    	<include name="ext/crimson.jar"/>
-    </fileset>
+    <pathelement  location="${servlet.jar.path}"/>
   </path>
 
   <target name="init">

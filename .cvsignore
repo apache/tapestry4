@@ -3,3 +3,4 @@ private
 dist
 .temp
 target
+maven.log

@@ -63,7 +63,7 @@ import java.util.Map;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IComponentStrings;
+import org.apache.tapestry.IStrings;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.INamespace;
@@ -344,7 +344,7 @@ public class MockPage extends BaseLocatable implements IPage
         return null;
     }
 
-    public IComponentStrings getStrings()
+    public IStrings getStrings()
     {
         return null;
     }

@@ -155,14 +155,6 @@ public class TableColumns extends AbstractTableViewComponent implements PageDeta
     }
 
     /**
-	 * @see org.apache.tapestry.AbstractComponent#finishLoad()
-	 */
-	protected void finishLoad()
-	{
-		super.finishLoad();
-	}
-
-    /**
 	 * @see org.apache.tapestry.event.PageDetachListener#pageDetached(PageEvent)
 	 */
 	public void pageDetached(PageEvent event)

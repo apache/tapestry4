@@ -15,12 +15,7 @@
             <include name="${framework.jar}"/>
             <include name="${ext.dir}/*.jar"/>
 		</fileset>
-		<path refid="jetty.classpath"/>
-		<pathelement location="${jboss.client.dir}/jboss-client.jar"/>
-		<pathelement location="${jboss.client.dir}/jboss-j2ee.jar"/>
-		<pathelement location="${jboss.lib.dir}/jboss-jmx.jar"/>
-		<pathelement location="${jboss.lib.dir}/jboss-system.jar"/>
-		<pathelement location="${jboss.lib.dir}/jboss-common.jar"/>
+		<pathelement location="${servlet.jar.path}"/>
 	</path>
 	<target name="init">
 		<mkdir dir="${classes.dir}"/>

@@ -15,11 +15,7 @@
 			<include name="${framework.jar}"/>
 			<include name="${ext.dir}/*.jar"/>
 		</fileset>
-		<fileset dir="${ext.dist.dir}">
-			<include name="mckoi*jar"/>
-		</fileset>
-	
-		<pathelement location="${jboss.client.dir}/jboss-j2ee.jar"/>
+		<pathelement location="${j2ee.jar.path}"/>
 	</path>
 	<target name="init">
 		<mkdir dir="${classes.dir}"/>

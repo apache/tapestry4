@@ -16,12 +16,7 @@
 			<include name="${framework.jar}"/>
 			<include name="${contrib.jar}"/>
 		</fileset>
-		<pathelement location="${jboss.client.dir}/jboss-client.jar"/>
-		<pathelement location="${jboss.client.dir}/jboss-j2ee.jar"/>
-		<pathelement location="${jboss.lib.dir}/jboss-jmx.jar"/>
-		<pathelement location="${jboss.lib.dir}/jboss-system.jar"/>
-		<pathelement location="${jboss.lib.dir}/jboss-common.jar"/>
-		<pathelement location="${jboss.server.all.lib.dir}/mail.jar"/>
+		<pathelement location="${j2ee.jar.path}"/>
 	</path>
 	<target name="init">
 		<mkdir dir="${classes.dir}"/>
