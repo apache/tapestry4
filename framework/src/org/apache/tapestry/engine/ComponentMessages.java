@@ -118,8 +118,15 @@ public class ComponentMessages implements IMessages
     {
         String pattern = getMessage(key);
 
-        MessageFormat messageFormat = new MessageFormat(pattern);
+		// This ugliness is mandated for JDK 1.3 compatibility, which has a bug 
+		// in MessageFormat ... the
+		// pattern is applied in the constructor, using the system default Locale,
+		// regardless of what locale is later specified!
+		// It appears that the problem does not exist in JDK 1.4.
+		
+        MessageFormat messageFormat = new MessageFormat("");
         messageFormat.setLocale(_locale);
+        messageFormat.applyPattern(pattern);
 
         return messageFormat.format(arguments);
     }

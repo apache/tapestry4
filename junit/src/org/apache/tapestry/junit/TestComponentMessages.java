@@ -179,7 +179,7 @@ public class TestComponentMessages extends TapestryTestCase
     public void testDateFormatLocalization()
     {
         IPage page = createPage(MOCK1, Locale.FRENCH);
-        
+
         Calendar c = new GregorianCalendar(1966, Calendar.DECEMBER, 24);
 
         Date d = c.getTime();
@@ -189,5 +189,6 @@ public class TestComponentMessages extends TapestryTestCase
         assertEquals(
             "A formatted date: 24/12/66",
             page.getMessages().format("using-date-format", d));
+
     }
 }
