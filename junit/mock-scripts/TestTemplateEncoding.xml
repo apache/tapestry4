@@ -84,7 +84,13 @@ Fran&#231;ais
 
 		<assert-output name="Language Name">
 <![CDATA[
-&#1057;&#1114;&#1099;&#1091;&#1088;&#8470;&#1105;&#1098;&#1096;
+&#1041;&#1098;&#1083;&#1075;&#1072;&#1088;&#1089;&#1082;&#1080;
+]]>
+		</assert-output>
+
+		<assert-output name="Language Word">
+<![CDATA[
+&#1045;&#1079;&#1080;&#1082;
 ]]>
 		</assert-output>
 	</request>
@@ -105,10 +111,121 @@ Fran&#231;ais
 
 		<assert-output name="Language Name">
 <![CDATA[
-&#1057;&#1114;&#1099;&#1091;&#1088;&#8470;&#1105;&#1098;&#1096;
+&#1041;&#1098;&#1083;&#1075;&#1072;&#1088;&#1089;&#1082;&#1080;
+]]>
+		</assert-output>
+
+		<assert-output name="Language Word">
+<![CDATA[
+&#1045;&#1079;&#1080;&#1082;
 ]]>
 		</assert-output>
 	</request>
 	
+	<request>
+		<parameter name="service" value="direct/0/Home/$DirectLink"/>
+	  	<parameter name="sp">
+	  		<value>STwo</value>
+	  		<value>Sde</value>
+	  	</parameter>
 
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Two</title>
+]]>
+		</assert-output>
+
+		<assert-output name="Language Name">
+<![CDATA[
+Default
+]]>
+		</assert-output>
+        
+		<assert-output name="Language Word">
+<![CDATA[
+sprache
+]]>
+		</assert-output>
+	</request>
+	
+	
+	<request>
+		<parameter name="service" value="direct/0/Home/$DirectLink"/>
+	  	<parameter name="sp">
+	  		<value>STwo</value>
+	  		<value>Sde_DE</value>
+	  	</parameter>
+
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Two</title>
+]]>
+		</assert-output>
+
+		<assert-output name="Language Name">
+<![CDATA[
+Default
+]]>
+		</assert-output>
+        
+		<assert-output name="Language Word">
+<![CDATA[
+sprache
+]]>
+		</assert-output>
+	</request>
+
+	
+	<request>
+		<parameter name="service" value="direct/0/Home/$DirectLink"/>
+	  	<parameter name="sp">
+	  		<value>STwo</value>
+	  		<value>Szh_TW</value>
+	  	</parameter>
+
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Two</title>
+]]>
+		</assert-output>
+
+		<assert-output name="Language Name">
+<![CDATA[
+Default
+]]>
+		</assert-output>
+        
+		<assert-output name="Language Word">
+<![CDATA[
+&#35486;&#35328;
+]]>
+		</assert-output>
+	</request>
+    
+	<request>
+		<parameter name="service" value="direct/0/Home/$DirectLink"/>
+	  	<parameter name="sp">
+	  		<value>STwo</value>
+	  		<value>Szh</value>
+	  	</parameter>
+
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Two</title>
+]]>
+		</assert-output>
+
+		<assert-output name="Language Name">
+<![CDATA[
+Default
+]]>
+		</assert-output>
+        
+		<assert-output name="Language Word">
+<![CDATA[
+&#35821;&#35328;
+]]>
+		</assert-output>
+	</request>
+    
 </mock-test>
