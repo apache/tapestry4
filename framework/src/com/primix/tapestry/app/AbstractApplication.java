@@ -82,7 +82,7 @@ import javax.servlet.http.*;
 
 
 public abstract class AbstractApplication
-    implements IApplication, Serializable
+    implements IApplication, Serializable, HttpSessionBindingListener
 {
 	protected transient String contextPath;
 	protected transient String servletPrefix;
@@ -281,6 +281,31 @@ public abstract class AbstractApplication
 		}
 	}
 
+	/**
+	*  Used during testing to reset the server state, to force reloads of templates and
+	*  specifications.
+	*
+	*/
+
+	private class ResetService implements IApplicationService
+	{
+		public void service(IRequestCycle cycle, ResponseOutputStream output)
+		throws RequestCycleException, IOException, ServletException
+		{
+			reset(cycle);
+		}
+
+		public String buildURL(IRequestCycle cycle, IComponent component, 
+			String[] parameters)
+		{
+			if (parameters != null &&
+				parameters.length > 0)
+				throw new IllegalArgumentException("Service reset requires no parameters.");
+
+			return getServletPrefix() + "/" + RESET_SERVICE;
+		}
+	}
+
 	private class DirectService implements IApplicationService
 	{
 		private StringBuffer buffer;
@@ -384,8 +409,16 @@ public abstract class AbstractApplication
 			render(cycle, output);	
 
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
+			// Worst case scenario.  The exception page itself is broken, leaving
+			// us with no option but to write the cause to the output.
+			
+			reportException("Unable to process client request", cause);
+			
+			// Also, write the exception thrown when redendering the exception
+			// page, so that can get fixed as well.
+			
 			reportException("Tapestry unable to present exception page.",  e);
 
 			// And throw the exception.
@@ -399,7 +432,7 @@ public abstract class AbstractApplication
 	*
 	*/
 
-	protected void reportException(String reportTitle, Exception e)
+	protected void reportException(String reportTitle, Throwable e)
 	{
 		ExceptionAnalyzer analyzer;
 		ExceptionDescription[] descriptions;
@@ -486,6 +519,8 @@ public abstract class AbstractApplication
 	*  <li>direct
 	*  <li>page
 	*  <li>restart
+	*  <li>reset  (if system property 
+	*  <code>com.primix.tapestry.enable-reset-service</code> is true)
 	*  </ul>
 	*
 	*/
@@ -510,6 +545,10 @@ public abstract class AbstractApplication
 		if (name.equals(IApplicationService.RESTART_SERVICE))
 			return new RestartService();
 
+		if (name.equals(IApplicationService.RESET_SERVICE) && 
+			Boolean.getBoolean("com.primix.tapestry.enable-reset-service"))
+			return new ResetService();
+	
 		return null;
 	}
 
@@ -1152,6 +1191,45 @@ public abstract class AbstractApplication
 	}
 
 	/**
+	*  Removes from the <code>ServletContext</code> the template
+	*  source, specification source, page source and application
+	*  specification, then invokes {@link #restart(IRequestCycle)} to
+	*  invalidate the session and redirects to the home page.
+	*
+	*  <p>Subclasses should perform their own restart before invoking
+	*  this implementation.
+	*
+	*/
+
+	private void reset(IRequestCycle cycle)
+	throws IOException
+	{
+		RequestContext context;
+		ServletContext servletContext;
+		IMonitor monitor;
+
+		monitor = cycle.getMonitor();
+
+		if (monitor != null)
+			monitor.serviceBegin("reset", null);
+
+		context = cycle.getRequestContext();
+
+		servletContext = context.getServlet().getServletContext();
+
+		servletContext.removeAttribute(TEMPLATE_SOURCE_NAME);
+		servletContext.removeAttribute(SPECIFICATION_SOURCE_NAME);
+		servletContext.removeAttribute(PAGE_SOURCE_NAME + "." + specification.getName());
+
+		servletContext.removeAttribute(getSpecificationAttributeName());
+
+		restart(cycle);
+
+		if (monitor != null)
+			monitor.serviceEnd("reset");
+	}
+
+	/**
 	*  Changes the locale for the application.
 	*
 	*  @throws IllegalArgumentException if value is null.
@@ -1306,4 +1384,80 @@ public abstract class AbstractApplication
 		return buffer.toString();
 	}
     
+	/**
+	 *  Invoked when the application object is stored into
+	 *  the {@link HttpSession}.  This implementation does nothing.
+	 *
+	 */
+	 
+	public void valueBound(HttpSessionBindingEvent event)
+	{
+	}
+	
+	/**
+	 *  Invoked when the application object is removed from the {@link HttpSession}.
+	 *  This occurs when the session times out or is explicitly invalidated
+	 *  (for example, by the reset or restart services).  Invokes
+	 *  {@link #applicationCleanup()}.
+	 *
+	 */
+	 
+	public void valueUnbound(HttpSessionBindingEvent event)
+	{
+		cleanupApplication();
+	}
+	
+	/**
+	 *  Invoked when the application is removed from the {@link HttpSession} i.e.,
+	 *  because the sesssion timed out or was invalidated.
+	 *
+	 *  <p>Locates all active pages (pages which have been activated) and
+	 *  invokes {@link IPage#pageCleanup()} on them.  This gives 
+	 *  pages a chance to release any long held resources.  This primarily
+	 *  exists so that pages that hold references to stateful session EJBs
+	 *  can remove those EJBs in a timely manner.
+	 *
+	 *  <p>Subclasses may override this method to clean up an application held
+	 *  resources, but should invoke this implementation first.
+	 */
+	 
+	protected void cleanupApplication()
+	{
+		Iterator i;
+		String name;
+		IPageSource source;
+		IPageRecorder recorder;
+		IPage page;
+		
+		source = getPageSource();
+		
+		i = getActivePageNames().iterator();
+		
+		while (i.hasNext())
+		{
+			name = (String)i.next();
+			
+			try
+			{
+				page = source.getPage(this, name, null);
+				recorder = getPageRecorder(name);
+				
+				recorder.rollback(page);
+			
+				page.cleanupPage();
+			}
+			catch (Throwable t)
+			{
+				reportException("Unable to cleanup page " + name + ".", t);
+			}
+		}
+	}
+	
+	/**
+	 *  Implemented by subclasses to return the names of the active pages
+	 *  (pages for which recorders exist).
+	 *
+	 */
+	 
+	abstract public Collection getActivePageNames();
 }

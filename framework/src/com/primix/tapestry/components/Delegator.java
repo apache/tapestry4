@@ -87,7 +87,7 @@ public class Delegator extends AbstractComponent
 	*
 	*/
 
-		public void render(IResponseWriter writer, IRequestCycle cycle) 
+	public void render(IResponseWriter writer, IRequestCycle cycle) 
 	throws RequestCycleException
 	{
 		IRender delegate = null;
@@ -95,17 +95,17 @@ public class Delegator extends AbstractComponent
         try
         {
             delegate = (IRender)delegateBinding.getValue();
-			}
+		}
         catch (ClassCastException e)
         {
             throw new RequestCycleException("Delegate for component " +
                                             getExtendedId() + 
                             " does not implement the IRender interface.",
 			this, cycle, e);
-			}
+		}
 	
-	if (delegate == null)
-	    throw new RequiredParameterException(this, "delegate", delegateBinding, cycle);
+		if (delegate == null)
+		    throw new RequiredParameterException(this, "delegate", delegateBinding, cycle);
 
 		delegate.render(writer, cycle);
 	}

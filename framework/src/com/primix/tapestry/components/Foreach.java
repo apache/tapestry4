@@ -109,8 +109,7 @@ import com.primix.tapestry.spec.*;
  *
  * </table>
  *
- * <p>The default abbreviation <b>foreach</b> may be used as the component type.
- * Informal parameters are not allowed.
+ * <p>Informal parameters are not allowed.
  *
  *  @author Howard Ship
  *  @version $Id$

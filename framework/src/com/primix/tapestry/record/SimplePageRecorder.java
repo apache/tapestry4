@@ -40,7 +40,8 @@ import java.io.Serializable;
  *
  * <p>The recorder must be made session persistant, either by being stored
  *  directly in the session, or being referenced from a session-persistant
- *  object.
+ *  object.  {@link SimpleApplication} simply stores a {@link Map} of
+ *  these page recorders.
  *
  * @author Howard Ship
  * @version $Id$
@@ -70,6 +71,19 @@ public class SimplePageRecorder extends PageRecorder
 	throws PageRecorderCommitException
 	{
 		dirty = false;
+	}
+
+	/**
+	 *  Returns true if the recorder has any changes recorded.
+	 *
+	 */
+	 
+	public boolean getHasChanges()
+	{
+		if (changes == null)
+			return false;
+		
+		return (changes.size() > 0);	
 	}
 
 	public Collection getChanges()

@@ -63,6 +63,13 @@ public interface IPageRecorder extends ChangeObserver
  
     public Collection getChanges();
 
+	/**
+	 *  Returns true if the recorder has any changes for the page.
+	 *
+	 */
+	 
+	public boolean getHasChanges();
+
     /**
      *  Indicates whether the recorder is active and recording
      *  changes.  An inactive recorder ignores changes until it is

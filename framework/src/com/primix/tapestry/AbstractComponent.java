@@ -655,6 +655,18 @@ public abstract class AbstractComponent implements IComponent
 	}
 
 	/**
+	*  Does nothing.  Subclasses may override.
+	*
+	*  @see ILifecycle
+	*
+	*/
+
+	public void cleanupComponent()
+	{
+		// Does nothing.
+	}
+
+	/**
 	*  Renders all elements wrapped by the receiver.
 	*
 	*/

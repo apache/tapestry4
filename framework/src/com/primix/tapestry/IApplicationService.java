@@ -118,7 +118,7 @@ public interface IApplicationService
     public final static String HOME_SERVICE = "home";
 	
     /**
-     *  Name of a service that invalidates the session and restarts
+     *  Name  ("restart") of a service that invalidates the session and restarts
      *  the application.  Typically used just
      *  to recover from an exception.
      *
@@ -127,11 +127,26 @@ public interface IApplicationService
     public static final String RESTART_SERVICE = "restart";
 
     /**
-     *  Name of a service used to access internal assets.
+     *  Name ("asset") of a service used to access internal assets.
      *
      */
 
     public static final String ASSET_SERVICE = "asset";
+
+	/**
+	 *  Name ("reset") of a service used to clear cached template
+	 *  and specification data and remove all pooled pages, then reset
+	 *  the current application.  This is only used when debugging as
+	 *  a quick way to clear the out cached data, to allow updated
+	 *  versions of specifications and templates to be loaded (without
+	 *  stopping and restarting the servlet container).
+	 *
+	 * <p>This service is only available if the Java system property
+	 *  <code>com.primix.tapestry.enable-reset-service</code>
+	 *  is set to <code>true</code>.
+	 */
+	 
+	public static final String RESET_SERVICE = "reset";
 
     /**
      *  Builds a URL for a service.  This is performed during the

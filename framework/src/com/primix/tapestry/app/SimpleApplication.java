@@ -44,7 +44,9 @@ import com.primix.foundation.*;
 
 /**
  *  Implementation of {@link IApplication} used for relatively
- *  small applications.  All page state information is maintained in memory.
+ *  small applications.  All page state information is maintained in memory.  Since
+ * the instance is stored within the {@link HttpSession}, all page state information
+ * will be carried along to other servers in the cluster.
  *
  * <p>TBD:  A custom serialization method could be very useful.  It seems to me that
  * in a real application, the page recorders
@@ -52,8 +54,6 @@ import com.primix.foundation.*;
  * session.  They are also mostly Strings, and will compress nicely.  We could implement
  * a <code>writeObject()</code> method that writes the recorders more effeciently.
  * Also, the recorders themselves could serialize themselves more efficiently.
- *
- * <p>TBD:  At the end of a request cycle, get rid of any empty page recorders.
  *
  *  @author Howard Ship
  *  @version $Id$
@@ -73,14 +73,28 @@ public abstract class SimpleApplication extends AbstractApplication
 	}
 
 	/**
-	*  Empty implementation.  Subclasses may override without invoking this
-	*  implementation.
+	*  Removes all page recorders that contain no changes.  Subclasses
+	*  should invoke this implementation in addition to providing
+	*  thier own.
 	*
 	*/
 
 	protected void cleanupAfterRequest()
 	{
-		// Does nothing.
+		Iterator i;
+		Map.Entry entry;
+		IPageRecorder recorder;
+		
+		i = recorders.entrySet().iterator();
+		
+		while (i.hasNext())
+		{
+			entry = (Map.Entry)i.next();
+			recorder = (IPageRecorder)entry.getValue();
+			
+			if (!recorder.getHasChanges())
+				i.remove();
+		}
 	}
 
 

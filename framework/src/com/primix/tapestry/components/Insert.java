@@ -3,6 +3,7 @@ package com.primix.tapestry.components;
 import com.primix.tapestry.event.ChangeObserver;
 import com.primix.tapestry.*;
 import com.primix.tapestry.spec.*;
+import java.text.Format;
 
 /*
  * Tapestry Web Application Framework
@@ -46,6 +47,15 @@ import com.primix.tapestry.spec.*;
  *  <td>The value to be inserted.  If the binding is null, then nothing is inserted.
  *  Any object may be inserted, the <code>toString()</code> method is used
  *  to convert it to a printable value.</td> </tr>
+ *
+ * <tr>
+ *	<td>format</td>
+ *	<td>{@link Format}</td>
+ *  <td>no</td>
+ *  <td>&nbsp;</td>
+ *  <td>An optional format object used to convert the value parameter for
+ *  insertion into the HTML response. </td> </tr>
+ *
  * </table>
  *
  * <p>Informal parameters are not allowed.  The component must not have a body.
@@ -59,6 +69,7 @@ import com.primix.tapestry.spec.*;
 public class Insert extends AbstractComponent
 {
 	private IBinding valueBinding;
+	private IBinding formatBinding;
 
 	public Insert(IPage page, IComponent container, String id, 
 		ComponentSpecification specification)
@@ -66,29 +77,58 @@ public class Insert extends AbstractComponent
 		super(page, container, id, specification);
 	}
 
+	public IBinding getFormatBinding()
+	{
+		return formatBinding;
+	}
+	
+	public void setFormatBinding(IBinding value)
+	{
+		formatBinding = value;
+	}
+	
 	public IBinding getValueBinding()
 	{
 		return valueBinding;
 	}
 
 	/**
-	*  Prints its <b>value</b> parameter to the writer.  Does nothing if rewinding, or if
-	*  the binding or binding value is null.
+	*  Prints its value parameter, possibly formatted by its format parameter.
+	*  Notes:
+	*  <ul>
+	*  <li>If the cycle is rewinding, then this method does nothing.
+	*  <li>If both the value and the format are null, then this method does nothing
+	*  <li>If the format is non-null, then {@link Format#format(Object)} is invoked,
+	*  even if the value is null
+	*  </ul>
 	*
 	*/
 
 	public void render(IResponseWriter writer, IRequestCycle cycle) throws RequestCycleException
 	{
-		Object value;
+		Object value = null;
+		Format format = null;
+		String insert;
 
-		if (cycle.isRewinding() || valueBinding == null)
+		if (cycle.isRewinding())
 			return;
 
-		value = valueBinding.getValue();
+		if (valueBinding != null)
+			value = valueBinding.getValue();
 
-		if (value != null)
-			writer.print(value.toString());
+		if (formatBinding != null)
+			format = (Format)formatBinding.getValue();
+		
+		if (value == null && format == null)
+			return;
+			
+		if (format == null)
+			insert = value.toString();
+		else
+			insert = format.format(value);
 
+		writer.print(insert);
+			
 	}
 
 	public void setValueBinding(IBinding value)
