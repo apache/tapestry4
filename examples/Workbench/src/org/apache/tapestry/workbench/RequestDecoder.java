@@ -79,12 +79,13 @@ public class RequestDecoder implements IRequestDecoder
 
     public RequestDecoder()
     {
-        LOG.info("<init>");
+        LOG.debug("<init>");
     }
 
     public DecodedRequest decodeRequest(HttpServletRequest request)
     {
-        LOG.info("Decoding: " + request);
+        if (LOG.isDebugEnabled())
+            LOG.debug("Decoding: " + request);
 
         DecodedRequest result = new DecodedRequest();
 

@@ -846,8 +846,8 @@ public abstract class AbstractEngine
         ResponseOutputStream output = null;
         IMonitor monitor = null;
 
-        if (LOG.isInfoEnabled())
-            LOG.info("Begin service " + context.getRequestURI());
+        if (LOG.isDebugEnabled())
+            LOG.debug("Begin service " + context.getRequestURI());
 
         if (_specification == null)
             _specification = servlet.getApplicationSpecification();
@@ -950,8 +950,8 @@ public abstract class AbstractEngine
 
             output.reset();
 
-            if (LOG.isInfoEnabled())
-                LOG.info("Uncaught exception", ex);
+            if (LOG.isDebugEnabled())
+                LOG.debug("Uncaught exception", ex);
 
             activateExceptionPage(cycle, output, ex);
         }
@@ -990,8 +990,8 @@ public abstract class AbstractEngine
                 }
             }
 
-            if (LOG.isInfoEnabled())
-                LOG.info("End service");
+            if (LOG.isDebugEnabled())
+                LOG.debug("End service");
 
         }
 

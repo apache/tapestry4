@@ -104,8 +104,8 @@ public class RedirectFilter implements Filter
         if (StringUtils.isEmpty(_redirectPath))
             _redirectPath = "/app";
 
-        if (LOG.isInfoEnabled())
-            LOG.info(Tapestry.format("RedirectServlet.redirect-path", _redirectPath));
+        if (LOG.isDebugEnabled())
+            LOG.debug(Tapestry.format("RedirectServlet.redirect-path", _redirectPath));
     }
 
     public void destroy()
@@ -138,8 +138,8 @@ public class RedirectFilter implements Filter
         {
             String path = hrequest.getContextPath() + _redirectPath;
 
-            if (LOG.isInfoEnabled())
-                LOG.info(Tapestry.format("RedirectServlet.redirecting", path));
+            if (LOG.isDebugEnabled())
+                LOG.debug(Tapestry.format("RedirectServlet.redirecting", path));
 
             hresponse.sendRedirect(path);
             return;
