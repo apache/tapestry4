@@ -26,6 +26,8 @@
  *
  */
 
+package com.primix.vlib;
+
 /**
  *  Marks pages that have an error property (of type String).
  *
@@ -34,8 +36,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.vlib;
 
 public interface IErrorProperty
 {

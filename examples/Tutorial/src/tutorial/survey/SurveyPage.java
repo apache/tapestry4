@@ -26,17 +26,17 @@
  *
  */
 
-/**
- *  @version $Id$
- *  @author Howard Ship
- *
- */ 
-
 package tutorial.survey;
 
 import com.primix.tapestry.*;
 import com.primix.tapestry.form.*;
 import java.util.*;
+
+/**
+ *  @version $Id$
+ *  @author Howard Ship
+ *
+ */ 
 
 public class SurveyPage extends BasePage
 {

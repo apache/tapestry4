@@ -26,6 +26,10 @@
  *
  */
 
+package tutorial.survey;
+
+import com.primix.tapestry.util.Enum;
+
 /**
  *
  *  An enumeration of different races.  At least one is just for laughs.
@@ -34,10 +38,6 @@
  *  @author Howard Ship
  *
  */ 
-
-package tutorial.survey;
-
-import com.primix.tapestry.util.Enum;
 
 public class Race extends Enum
 {

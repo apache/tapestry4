@@ -26,17 +26,17 @@
  *
  */
 
-/**
- *  @version $Id$
- *  @author Howard Ship
- *
- */ 
-
 package tutorial.border;
 
 import java.util.*;
 import com.primix.tapestry.*;
 import com.primix.tapestry.engine.*;
+
+/**
+ *  @version $Id$
+ *  @author Howard Ship
+ *
+ */ 
 
 public class BorderEngine extends SimpleEngine
 {

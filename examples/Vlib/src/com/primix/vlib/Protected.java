@@ -25,6 +25,14 @@
  *
  */
 
+package com.primix.vlib;
+
+import com.primix.tapestry.components.*;
+import com.primix.tapestry.valid.*;
+import com.primix.tapestry.callback.*;
+import com.primix.tapestry.*;
+import com.primix.vlib.pages.*;
+
 /**
  *  Base page used for pages that should be protected by the {@link Login} page.
  *  If the user is not logged in, they are redirected to the Login page first.
@@ -34,14 +42,6 @@
  * @version $Id$
  */
 
-
-package com.primix.vlib;
-
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.valid.*;
-import com.primix.tapestry.callback.*;
-import com.primix.tapestry.*;
-import com.primix.vlib.pages.*;
 
 public class Protected
 extends BasePage

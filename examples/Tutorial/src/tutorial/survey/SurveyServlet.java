@@ -26,15 +26,15 @@
  *
  */
 
+package tutorial.survey;
+
+import com.primix.tapestry.*;
+
 /**
  *  @version $Id$
  *  @author Howard Ship
  *
  */ 
-
-package tutorial.survey;
-
-import com.primix.tapestry.*;
 
 public class SurveyServlet extends ApplicationServlet
 {

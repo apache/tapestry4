@@ -26,6 +26,10 @@
  *
  */
 
+package tutorial.hangman;
+
+import java.io.*;
+
 /**
  *
  *  The logic for a game of Hangman.
@@ -34,10 +38,6 @@
  *  @author Howard Ship
  *
  */ 
-
-package tutorial.hangman;
-
-import java.io.*;
 
 public class HangmanGame
 implements Serializable

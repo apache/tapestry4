@@ -25,13 +25,6 @@
  *
  */
 
-/**
- *  Edits the properties of at book.
- *
- * @author Howard Ship
- * @version $Id$
- */
-
 package com.primix.vlib.pages;
 
 import com.primix.tapestry.components.*;
@@ -42,6 +35,13 @@ import javax.ejb.*;
 import java.util.*;
 import java.rmi.*;
 import javax.rmi.*;
+
+/**
+ *  Edits the properties of at book.
+ *
+ * @author Howard Ship
+ * @version $Id$
+ */
 
 public class EditBook 
 extends Protected

@@ -25,15 +25,6 @@
  *
  */
 
-/**
- * Invoked from the {@link Login} page, to allow a user to register
- * into the system on-the-fly.
- *
- * @author Howard Ship
- * @version $Id$
- */
-
-
 package com.primix.vlib.pages;
 
 import com.primix.tapestry.components.*;
@@ -45,6 +36,15 @@ import javax.ejb.*;
 import java.util.*;
 import java.rmi.*;
 import javax.rmi.*;
+
+/**
+ * Invoked from the {@link Login} page, to allow a user to register
+ * into the system on-the-fly.
+ *
+ * @author Howard Ship
+ * @version $Id$
+ */
+
 
 public class Register
 extends BasePage

@@ -26,16 +26,6 @@
  *
  */
 
-/**
- *  Implementation of the {@link IOperations} stateless session bean.
- *
- *  <p>Implenents a number of stateless operations for the front end.
- *
- *  @version $Id$
- *  @author Howard Ship
- *
- */
-
 package com.primix.vlib.ejb;
 
 import javax.ejb.*;
@@ -47,6 +37,16 @@ import javax.sql.*;
 import java.sql.*;
 import com.primix.tapestry.util.jdbc.*;
 import com.primix.tapestry.util.ejb.*;
+
+/**
+ *  Implementation of the {@link IOperations} stateless session bean.
+ *
+ *  <p>Implenents a number of stateless operations for the front end.
+ *
+ *  @version $Id$
+ *  @author Howard Ship
+ *
+ */
 
 public class OperationsBean implements SessionBean
 {

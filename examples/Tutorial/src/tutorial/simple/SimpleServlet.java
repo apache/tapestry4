@@ -26,15 +26,15 @@
  *
  */
 
+package tutorial.simple;
+
+import com.primix.tapestry.*;
+
 /**
  *  @version $Id$
  *  @author Howard Ship
  *
  */ 
-
-package tutorial.simple;
-
-import com.primix.tapestry.*;
 
 public class SimpleServlet 
 extends ApplicationServlet

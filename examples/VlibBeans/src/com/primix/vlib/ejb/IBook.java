@@ -26,6 +26,11 @@
  *
  */
 
+package com.primix.vlib.ejb;
+
+import javax.ejb.*;
+import java.rmi.*;
+
 /**
  *  Remote interface for the {@link BookBean} entity bean.
  *
@@ -34,11 +39,6 @@
  *
  */
  
-package com.primix.vlib.ejb;
-
-import javax.ejb.*;
-import java.rmi.*;
-
 public interface IBook extends IEntityBean
 {
 	public void setAuthor(String value)

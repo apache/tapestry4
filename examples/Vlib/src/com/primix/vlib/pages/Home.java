@@ -25,14 +25,6 @@
  *
  */
 
-/**
- *  The home page for the application, it's primary purpose is
- *  to provide a book search form.
- *
- * @author Howard Ship
- * @version $Id$
- */
-
 package com.primix.vlib.pages;
 
 import com.primix.tapestry.components.*;
@@ -42,6 +34,14 @@ import com.primix.vlib.*;
 import javax.ejb.*;
 import java.util.*;
 import javax.rmi.*;
+
+/**
+ *  The home page for the application, it's primary purpose is
+ *  to provide a book search form.
+ *
+ * @author Howard Ship
+ * @version $Id$
+ */
 
 public class Home extends BasePage
 {

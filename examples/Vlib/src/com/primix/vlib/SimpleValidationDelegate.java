@@ -25,6 +25,11 @@
  *
  */
 
+package com.primix.vlib;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.valid.*;
+
 /**
  *  Implementation of {@link IValidationDelegate} that
  *  works with pages that implements {@link IErrorProperty}.
@@ -32,11 +37,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.vlib;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.valid.*;
 
 public class SimpleValidationDelegate
 extends BaseValidationDelegate

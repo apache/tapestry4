@@ -26,17 +26,17 @@
  *
  */
 
-/**
- *  @version $Id$
- *  @author Howard Ship
- *
- */ 
-
 package tutorial.survey;
 
 import java.util.*;
 import com.primix.tapestry.*;
 import java.io.*;
+
+/**
+ *  @version $Id$
+ *  @author Howard Ship
+ *
+ */ 
 
 public class Survey implements Serializable, Cloneable
 {

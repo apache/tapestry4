@@ -26,6 +26,12 @@
  *
  */
 
+package tutorial.hangman;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.components.*;
+import java.util.*;
+
 /**
  *
  * 
@@ -34,12 +40,6 @@
  *  @author Howard Ship
  *
  */ 
-
-package tutorial.hangman;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.components.*;
-import java.util.*;
 
 public class Guess
 extends BasePage

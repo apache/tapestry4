@@ -26,6 +26,11 @@
  *
  */
 
+package com.primix.vlib.ejb;
+
+import javax.ejb.*;
+import java.rmi.*;
+
 /**
  *  Remote interface for the {@link BookQueryBean} session bean.
  *
@@ -34,11 +39,6 @@
  *
  */
  
-package com.primix.vlib.ejb;
-
-import javax.ejb.*;
-import java.rmi.*;
-
 public interface IBookQuery extends EJBObject
 {
 	/**

@@ -25,14 +25,6 @@
  *
  */
 
-/**
- *  Logs the user out, invalidating the {@link HttpSession} and showing
- *  a goodbye message.
- *
- * @author Howard Ship
- * @version $Id$
- */
-
 package com.primix.vlib.pages;
 
 import com.primix.tapestry.components.*;
@@ -43,6 +35,13 @@ import com.primix.vlib.*;
 
 import javax.servlet.http.HttpSession;
 
+/**
+ *  Logs the user out, invalidating the {@link HttpSession} and showing
+ *  a goodbye message.
+ *
+ * @author Howard Ship
+ * @version $Id$
+ */
 
 public class Logout
 extends BasePage

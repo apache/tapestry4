@@ -26,6 +26,11 @@
  *
  */
 
+package com.primix.vlib.ejb;
+
+import javax.ejb.*;
+import java.rmi.*;
+
 /**
  *  Implementation of the Book entity.
  *
@@ -39,11 +44,6 @@
  *
  */
  
-package com.primix.vlib.ejb;
-
-import javax.ejb.*;
-import java.rmi.*;
-
 public class BookBean extends AbstractEntityBean
 {
 	// All must be public for access by container

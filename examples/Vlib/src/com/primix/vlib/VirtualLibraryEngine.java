@@ -26,20 +26,6 @@
  *
  */
 
-/**
- *
- *  The engine for the Primix Virtual Library.  
- *  This exists to implement the external 
- *  service, which allows the {@link ViewBook} and {@link PersonPage}
- *  pages to be bookmarked, and to provide
- *  a way for shutting down the application when the user logs out.
- *
- *
- *  @version $Id$
- *  @author Howard Ship
- *
- */
-
 package com.primix.vlib;
 
 import com.primix.tapestry.*;
@@ -56,8 +42,22 @@ import javax.servlet.*;
 import java.io.*;
 import java.net.*;
 
-// To appease Javadoc
+// Appease Javadoc
 import javax.servlet.http.HttpSession;
+
+/**
+ *
+ *  The engine for the Primix Virtual Library.  
+ *  This exists to implement the external 
+ *  service, which allows the {@link ViewBook} and {@link PersonPage}
+ *  pages to be bookmarked, and to provide
+ *  a way for shutting down the application when the user logs out.
+ *
+ *
+ *  @version $Id$
+ *  @author Howard Ship
+ *
+ */
 
 public class VirtualLibraryEngine
 extends SimpleEngine

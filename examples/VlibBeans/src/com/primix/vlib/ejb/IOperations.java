@@ -26,6 +26,13 @@
  *
  */
 
+package com.primix.vlib.ejb;
+
+import javax.ejb.*;
+import java.rmi.*;
+import javax.rmi.*;
+import javax.naming.*;
+
 /**
  *  Remote interface to the {@link OperationsBean} stateless
  *  session bean.  A repository for simple operations such as
@@ -35,13 +42,6 @@
  *  @author Howard Ship
  *
  */
-
-package com.primix.vlib.ejb;
-
-import javax.ejb.*;
-import java.rmi.*;
-import javax.rmi.*;
-import javax.naming.*;
 
 public interface IOperations extends EJBObject
 {

@@ -26,15 +26,15 @@
  *
  */
 
+package tutorial.locale;
+
+import com.primix.tapestry.*;
+
 /**
  *  @version $Id$
  *  @author Howard Ship
  *
  */ 
-
-package tutorial.locale;
-
-import com.primix.tapestry.*;
 
 public class LocaleServlet
 extends ApplicationServlet

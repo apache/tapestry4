@@ -26,6 +26,12 @@
  *
  */
 
+package com.primix.vlib.ejb;
+
+import javax.ejb.*;
+import java.rmi.*;
+import java.util.*;
+
 /**
  *  Home interface for the {@link BookBean} entity bean.
  *
@@ -34,12 +40,6 @@
  *
  */
  
-package com.primix.vlib.ejb;
-
-import javax.ejb.*;
-import java.rmi.*;
-import java.util.*;
-
 public interface IBookHome extends EJBHome
 {
 	public IBook create(String title, String author, String ISBN,

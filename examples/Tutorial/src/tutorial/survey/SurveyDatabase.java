@@ -26,15 +26,15 @@
  *
  */
 
+package tutorial.survey;
+
+import java.util.*;
+
 /**
  *  @version $Id$
  *  @author Howard Ship
  *
  */ 
-
-package tutorial.survey;
-
-import java.util.*;
 
 /**
  *  Acts like an in-memory database of survey information.

@@ -26,15 +26,15 @@
  *
  */
 
+package tutorial.hello;
+
+import com.primix.tapestry.*;
+
 /**
  *  @version $Id$
  *  @author Howard Ship
  *
  */ 
-
-package tutorial.hello;
-
-import com.primix.tapestry.*;
 
 public class HelloWorldServlet extends ApplicationServlet
 {

@@ -26,6 +26,13 @@
  *
  */
 
+package com.primix.vlib.ejb;
+
+import javax.ejb.*;
+import java.rmi.*;
+import javax.rmi.*;
+import javax.naming.*;
+
 /**
  *  Remote interface to the {@link KeyAllocatorBean} stateless
  *  session bean.
@@ -34,13 +41,6 @@
  *  @author Howard Ship
  *
  */
-
-package com.primix.vlib.ejb;
-
-import javax.ejb.*;
-import java.rmi.*;
-import javax.rmi.*;
-import javax.naming.*;
 
 public interface IKeyAllocator extends EJBObject
 {

@@ -26,15 +26,15 @@
  *
  */
 
+package tutorial.adder;
+
+import com.primix.tapestry.*;
+
 /**
  *  @version $Id$
  *  @author Howard Ship
  *
  */ 
-
-package tutorial.adder;
-
-import com.primix.tapestry.*;
 
 public class AdderServlet extends ApplicationServlet
 {

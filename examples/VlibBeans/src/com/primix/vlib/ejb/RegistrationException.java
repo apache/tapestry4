@@ -26,6 +26,9 @@
  *
  */
 
+
+package com.primix.vlib.ejb;
+
 /**
  *  Exception thrown by {@link OperationsBean#registerNewUser(String,String,String,String)}
  *  if the registration is not allowed (usually, because of a duplicate email or
@@ -34,9 +37,7 @@
  *  @version $Id$
  *  @author Howard Ship
  */
-
-package com.primix.vlib.ejb;
-
+ 
 public class RegistrationException extends Exception
 {
 	private Throwable rootCause;

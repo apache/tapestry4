@@ -26,6 +26,12 @@
  *
  */
 
+package com.primix.vlib;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.form.*;
+import java.util.*;
+
 /**
  *  This class is used as a property selection model to select a primary key.
  *  We assume that the primary keys are integers, which makes it easy to
@@ -35,12 +41,6 @@
  *  @author Howard Ship
  *
  */
-
-package com.primix.vlib;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.form.*;
-import java.util.*;
 
 public class EntitySelectionModel
 implements IPropertySelectionModel

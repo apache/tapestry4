@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.vlib.ejb;
+
+import java.io.*;
+
 /**
  *  Represents a single result row from a {@link IBookQuery}.  In effect,
  *  this is a light-wieght, serializable, read-only version of an {@link IBook}
@@ -38,10 +42,6 @@
  *  @author Howard Ship
  *
  */
-
-package com.primix.vlib.ejb;
-
-import java.io.*;
 
 public class Book implements Serializable
 {

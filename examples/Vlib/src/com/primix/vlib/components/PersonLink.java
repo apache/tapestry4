@@ -25,10 +25,20 @@
  *
  */
 
+package com.primix.vlib.components;
+
+import com.primix.tapestry.components.*;
+import com.primix.tapestry.*;
+import com.primix.vlib.ejb.*;
+
+// Appease Javadoc
+import com.primix.vlib.pages.PersonPage;
+
+
 /**
  *  Creates a link to the {@link PersonPage} page using the external service.
  *
-  *
+ *
  * <table border=1>
  * <tr> <th>Parameter</th> <th>Type</th> <th>Read / Write </th> <th>Required</th> <th>Default</th> <th>Description</th>
  * </tr>
@@ -56,15 +66,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.vlib.components;
-
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.*;
-import com.primix.vlib.ejb.*;
-
-// To appease Javadoc
-import com.primix.vlib.pages.PersonPage;
 
 public class PersonLink extends BaseComponent
 {

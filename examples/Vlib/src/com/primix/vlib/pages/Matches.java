@@ -25,14 +25,6 @@
  *
  */
 
-/**
- *  Run's queries and displays matches.
- *
- * @author Howard Ship
- * @version $Id$
- */
-
-
 package com.primix.vlib.pages;
 
 import com.primix.tapestry.components.*;
@@ -43,6 +35,14 @@ import javax.ejb.*;
 import java.util.*;
 import javax.rmi.*;
 import java.rmi.*;
+
+/**
+ *  Run's queries and displays matches.
+ *
+ * @author Howard Ship
+ * @version $Id$
+ */
+
 
 public class Matches extends BasePage
 {

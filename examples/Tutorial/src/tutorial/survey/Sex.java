@@ -26,6 +26,10 @@
  *
  */
 
+package tutorial.survey;
+
+import com.primix.tapestry.util.*;
+
 /**
  *  Provides a list of possible sexes.  I'm in a Science Fiction mood, so I provided
  *  a few more options than typical.
@@ -36,10 +40,6 @@
  *
  */
  
-package tutorial.survey;
-
-import com.primix.tapestry.util.*;
-
 public class Sex extends Enum
 {
 	public static final Sex MALE = new Sex("MALE");
