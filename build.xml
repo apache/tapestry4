@@ -328,7 +328,7 @@
 	  	<copy todir="${jboss.dir}/deploy">
 	  		<fileset dir="${lib.dir}">
 	  			<include name="Vlib.ear"/>
-	  			<include name="Tutorial.war"/>
+	  			<include name="tutorial.war"/>
 	  		</fileset>
 	  	</copy>
 	</target>
