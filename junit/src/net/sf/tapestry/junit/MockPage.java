@@ -295,7 +295,7 @@ public class MockPage implements IPage
     {
     }
 
-    public String getQualifiedName()
+    public String getPageName()
     {
         return null;
     }
