@@ -177,7 +177,7 @@ public class Inspector extends BasePage
     public void inspect(String pageName, IRequestCycle cycle)
     {
         setInspectedPageName(pageName);
-        selectComponent(null);
+        selectComponent((String)null);
 
         cycle.setPage(this);
     }
@@ -192,16 +192,18 @@ public class Inspector extends BasePage
      *
      **/
 
-    public void selectComponent(String[] context, IRequestCycle cycle)
+    public void selectComponent(IRequestCycle cycle)
     {
+        String[] parameters = cycle.getServiceParameters();
+        
         String newIdPath;
 
         // The up button may generate a null context.
 
-        if (context == null)
+        if (parameters == null)
             newIdPath = null;
         else
-            newIdPath = context[0];
+            newIdPath = parameters[0];
 
         selectComponent(newIdPath);
     }

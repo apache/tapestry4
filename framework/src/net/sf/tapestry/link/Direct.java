@@ -30,9 +30,9 @@ import java.util.Vector;
 
 import javax.servlet.http.HttpSession;
 import net.sf.tapestry.BindingException;
+import net.sf.tapestry.IActionListener;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IDirect;
-import net.sf.tapestry.IDirectListener;
 import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
@@ -250,16 +250,16 @@ public class Direct extends GestureLink implements IDirect
 
     /**
      *  Invoked by the direct service to trigger the application-specific
-     *  action by notifying the {@link IDirectListener listener}.
+     *  action by notifying the {@link IActionListener listener}.
      *
      *  @throws StaleSessionException if the component is stateful, and
      *  the session is new.
      **/
 
-    public void trigger(IRequestCycle cycle, String[] context)
+    public void trigger(IRequestCycle cycle)
         throws RequestCycleException
     {
-        IDirectListener listener;
+        IActionListener listener;
 
         if (isStateful())
         {
@@ -271,7 +271,7 @@ public class Direct extends GestureLink implements IDirect
 
         listener = getListener(cycle);
 
-        listener.directTriggered(this, context, cycle);
+        listener.actionTriggered(this, cycle);
     }
 
     public IBinding getListenerBinding()
@@ -284,15 +284,15 @@ public class Direct extends GestureLink implements IDirect
         listenerBinding = value;
     }
 
-    private IDirectListener getListener(IRequestCycle cycle)
+    private IActionListener getListener(IRequestCycle cycle)
         throws RequestCycleException
     {
-        IDirectListener result;
+        IActionListener result;
 
         try
         {
             result =
-                (IDirectListener) listenerBinding.getObject("listener", IDirectListener.class);
+                (IActionListener) listenerBinding.getObject("listener", IActionListener.class);
 
         }
         catch (BindingException ex)

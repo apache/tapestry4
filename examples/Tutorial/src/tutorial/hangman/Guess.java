@@ -56,10 +56,11 @@ public class Guess extends BasePage
         return error;
     }
 
-    public void makeGuess(String context[], IRequestCycle cycle)
+    public void makeGuess(IRequestCycle cycle)
     {
+        String[] parameters = cycle.getServiceParameters();
         HangmanGame game = getGame();
-        String guess = context[0];
+        String guess = parameters[0];
         char letter = guess.charAt(0);
 
         try

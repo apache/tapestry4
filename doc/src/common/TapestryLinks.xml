@@ -33,7 +33,6 @@
 <!ENTITY IBinding '<ulink url="&ApiRoot;/IBinding.html"><classname>IBinding</classname></ulink>'>
 <!ENTITY IActionListener '<ulink url="&ApiRoot;/IActionListener.html"><classname>IActionListener</classname></ulink>'>
 <!ENTITY IDirect '<ulink url="&ApiRoot;/IDirect.html"><classname>IDirect</classname></ulink>'>
-<!ENTITY IDirectListener '<ulink url="&ApiRoot;/IDirectListener .html"><classname>IDirectListener</classname></ulink>'>
 <!ENTITY IEngine '<ulink url="&ApiRoot;/IEngine.html"><classname>IEngine</classname></ulink>'>
 <!ENTITY IEngineService '<ulink url="&ApiRoot;/IEngineService.html"><classname>IEngineService</classname></ulink>'>
 <!ENTITY ILifecycle '<classname>ILifecycle</classname>'>

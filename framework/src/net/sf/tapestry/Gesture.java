@@ -55,13 +55,13 @@ public class Gesture
      *  Creates a new Gesture, for the given request cycle and with a set
      *  or query parameters.
      *  
-     * @param cycle the {@link IRequestCycle} the Gesture is to be created for
-     * @param queryParameters a {@link Map} of parameters.  Keys and values
+     *  @param cycle the {@link IRequestCycle} the Gesture is to be created for
+     *  @param queryParameters a {@link Map} of parameters.  Keys and values
      *  are both String.  Map not be null; one query parameter must be
      *  specify the engine service.
-     * @param stateful if true, the service which generated the Gesture
-     * is stateful and expects that the final URL will be passed through
-     * {@link IRequestCycle#encodeURL(String)}.
+     *  @param stateful if true, the service which generated the Gesture
+     *  is stateful and expects that the final URL will be passed through
+     *  {@link IRequestCycle#encodeURL(String)}.
      **/
 
     public Gesture(IRequestCycle cycle, Map queryParameters, boolean stateful)

@@ -69,7 +69,7 @@ public class ShowInspector extends BaseComponent implements IDirect
      *  @since 1.0.5
      **/
 
-    public void trigger(IRequestCycle cycle, String[] context)
+    public void trigger(IRequestCycle cycle)
         throws RequestCycleException
     {
         Inspector inspector = (Inspector) cycle.getPage("Inspector");

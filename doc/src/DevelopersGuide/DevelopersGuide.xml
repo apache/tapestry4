@@ -5,6 +5,9 @@
   <!-- Useful snippets -->
   <!ENTITY jwc-tag "<sgmltag class='starttag'>jwc</sgmltag>">
   <!ENTITY % TapestryLinks SYSTEM "../common/TapestryLinks.xml">
+  <!ENTITY TapestryFrameworkJar "<filename>net.sf.tapestry-<replaceable>x.x.x</replaceable>.jar</filename>">
+  <!ENTITY TapestryContribJar "<filename>net.sf.tapestry.contrib-<replaceable>x.x.x</replaceable>.jar</filename>">
+  
   %TapestryLinks;
   <!ENTITY Action '<link linkend="builtin.Action"><classname>Action</classname></link>'>
   <!ENTITY Any '<link linkend="builtin.Any"><classname>Any</classname></link>'>
@@ -3575,21 +3578,9 @@ the <link linkend="cycle.action">action</link> and <link linkend="cycle.direct">
 services) inform the application when they have been triggered using listeners.
 </para>
       <para>
-A listener is an object that implements one of two listener interfaces.
+A listener is an object that implements the &IActionListener; interface.
 </para>
       <para>
-For &Direct;, the listener is specified by the &IDirectListener; interface:
-<informalexample>
-          <programlisting>
-public void directTriggered(IDirect component, String[] context,
-  IRequestCycle cycle)
-  throws RequestCycleException;
-</programlisting>
-        </informalexample>
-      </para>
-      <para>For &Action; and &Form;, the listener is specified by the
-&IActionListener; interface.
-
 <informalexample>
           <programlisting>
 public void actionTriggered(IComponent component, IRequestCycle cycle)
@@ -3623,7 +3614,7 @@ Starting with Tapestry 1.0.2, it is possible to create a
 <emphasis>listener method</emphasis> instead.
 </para>
       <para>
-A listener method takes one of two forms:
+A listener method takes the form:
 
 <informalexample>
           <programlisting>
@@ -3632,33 +3623,26 @@ throws RequestCycleException;
 </programlisting>
         </informalexample>
       </para>
-      <para>
-Or:
-<informalexample>
-          <programlisting>
-public void <replaceable>method-name</replaceable>(String[] context, IRequestCycle cycle)
-throws RequestCycleException;
-</programlisting>
-        </informalexample>
-      </para>
-      <para>
-The first option can act as either kind of listener.  The second option is always
-a &IDirectListener;.  In both cases, the method may omit the throws clause.
-</para>
+<note>
+	<para>The throws clause is optional and may be omitted.  However, no other
+	exception may be thrown.
+	</para>
+</note>      
+
       <para>
 In reality, listener <emphasis>objects</emphasis> have not gone away.  Instead, there's a mechanism
-whereby the appropriate listener object is created automatically when needed.
+whereby a listener object is created automatically when needed.
 Each component includes a property, <varname>listeners</varname>, that is a collection of
 listener objects for the component, synthesized from the available public methods.  The
 listeners objects are properties, with the names corresponding to the method names.
 </para>
-      <note>
+      <tip>
         <para>
 The class <classname>AbstractEngine</classname> (the baseclass for &SimpleEngine;)
 also implements a listeners property.  This allows you to easily add listener methods
 to your application engine.
 </para>
-      </note>
+      </tip>
       <para>
 The earlier example is much simpler:
 </para>
@@ -3708,15 +3692,15 @@ is renderred.
         <para>
 The sequence shown above is for the &Direct; component, which implements the &IDirect;
 interface.  In some rare cases, it is desirable to have a different component
-implement the &IDirect; interface instead.  It will still implement
-<function>directTriggered()</function> but will respond in its own way, likely without
+implement the &IDirect; interface instead.  It will still implement the
+<function>trigger()</function> method, but will respond in its own way, likely without
 a listener.
 </para>
       </note>
       <para>
 This is the primary way (besides forms) in which applications respond to the user.  
 What's key is the component's listener, of type 
-&IDirectListener;.  This is the hook that allows 
+&IActionListener;.  This is the hook that allows 
 pre-defined components from the Tapestry framework to access application specific behavior.   
 The page or container of the 
 &Direct; component provides the necessary listener objects using dynamic bindings.
@@ -3734,8 +3718,8 @@ The &Direct; component has an optional parameter named <varname>context</varname
 The value for this may be a single &String;, an array of &String;s,
 or a &List; of &String;s.  
 These strings are added to the URL after the id path.  
-When the action is triggered, the array is reconstructed (from the URL) and provided to 
-the &Direct; component and its listener.  
+When the action is triggered, the array is reconstructed (from the URL) and stored
+in the &IRequestCycle;, where it is available to the listener.
 This is primarily used to encode dynamic page state directly 
 into the URL when doing so is not compatible with the action service (described in the next section).
 </para>
@@ -6103,17 +6087,6 @@ examples), others are used at runtime (and must be added to the servlet containe
 
 <variablelist>
 
-
-	<varlistentry>
-		<term><filename>net.sf.tapestry-<replaceable>x.x.x</replaceable>.jar</filename></term>
-		<listitem>
-			<para>
-			The main Tapestry framework.  This is needed at compile time and runtime.  At runtime, it is most
-			often added to the servlet container's classpath.  The framework release number is
-			integrated into the file name.
-			</para>
-		</listitem>
-	</varlistentry>
 	
 	<varlistentry>
 		<term><filename>ejb.jar</filename></term>
@@ -6191,9 +6164,20 @@ examples), others are used at runtime (and must be added to the servlet containe
 		</listitem>
 	</varlistentry>
 
-
 	<varlistentry>
-		<term><filename>net.sf.tapestry.contrib-<replaceable>x.x.x</replaceable>.jar</filename></term>
+		<term>&TapestryFrameworkJar;</term>
+		<listitem>
+			<para>
+			The main Tapestry framework.  This is needed at compile time and runtime.  At runtime, it is most
+			often added to the servlet container's classpath.  The framework release number is
+			integrated into the file name.
+			</para>
+		</listitem>
+	</varlistentry>
+	
+	
+	<varlistentry>
+		<term>&TapestryContribJar;</term>
 		<listitem>
 		<para>
 		Contains additional components and tools that are not integral to the framework itself, such
@@ -6396,10 +6380,12 @@ This section contains a few Q's and A's gleemed from the Tapestry developer mail
    		<answer>
    		<para>
 WebLogic appears to have a bug when deploying WAR files that contain libraries.  If the library name,
-in this case <filename>net.sf.tapestry.<replaceable>x</replaceable>.<replaceable>x</replaceable>.<replaceable>x</replaceable>.jar</filename>
-contains any periods, WebLogic fails to expand the JAR file into its temporary directory, thus the classes
-really aren't in the classpath.   		
-   		</para>
+in this case &TapestryFrameworkJar;
+contains any periods, then WebLogic fails to expand the JAR file into its temporary deployment
+directory.  The end result is that
+ the Tapestry classes aren't on the classpath.
+ </para>
+ 
    		<para>
    		The solution is to rename the Tapestry JAR file to not have periods in the name.  Simply renaming it to <filename>tapestry.jar</filename>
    		or <filename>tapestry<replaceable>123</replaceable>.jar</filename>
@@ -6589,7 +6575,7 @@ a class loader issue.
           (<classname>ValidatingTextField</classname>,
 		<classname>NumericField</classname> and
 		<classname>DateField</classname>) are now part of the 
-		<filename>net.sf.tapestry.contrib-<replaceable>x.x.x</replaceable>.jar</filename> library.
+		&TapestryContribJar; library.
 		</para>
 		
           <para>
@@ -6679,6 +6665,98 @@ for the component.
       	
       	</answer>
       </qandaentry>
+      
+<qandaentry>
+	<question>
+		<para>None of my code compiles!  What happened to everything in 
+		the <filename class="directory">com.primix.tapestry</filename>
+		package?
+		</para>
+	</question>
+	<answer>
+		<para>
+		Between Tapestry release 2.0.0 and 2.1.0
+		a signficant number of changes occurred,
+		including renaming everything <filename class="directory">com.primix.tapestry.*</filename>
+		to <filename class="directory">net.sf.tapestry.*</filename>.
+		</para>
+		
+		<para>
+		This is to mark the fact that the principal author of Tapestry, and Primix, had gone
+		their seperate ways.
+		</para>
+		
+		<para>
+		In addition, a few things were moved or renamed:
+
+	<itemizedlist mark="opencircle">
+          <listitem>
+            <para>
+              <filename>com.primix.tapestry.BasePage</filename> moved to
+              <filename>net.sf.tapestry.html.BasePage</filename>
+            </para>
+            </listitem>
+           <listitem>
+           <para>
+           	<filename>com.primix.tapestry.IResponseWriter</filename>
+           	renamed to
+           	<filename>net.sf.tapestry.IMarkupWriter</filename>
+           	</para>
+           </listitem>
+           <listitem>
+           	<para>	
+           	<filename>com.primix.tapestry.IDirectListener</filename>
+			deleted
+			</para>
+			</listitem>
+           </itemizedlist> 		
+		</para>
+		</answer>
+	</qandaentry>
+	
+<qandaentry>
+<question>
+<para>
+I've fixed all my imports to use <filename>net.sf.tapestry</filename>, but
+my &Direct; listener methods no longer work.  How do I fix things?
+</para>
+</question>
+<answer>
+<para>
+With the removal of the <classname>IDirectListener</classname>
+interface, the corresponding listener method variation was removed.  The following
+method signature <emphasis>used to</emphasis>
+be recognized as a listener method:
+</para>
+
+<informalexample>
+<programlisting>
+public void <replaceable>my-method</replaceable>(String[] parameters, IRequestCycle cycle)
+throws RequestCycleException
+{
+  ...
+}
+</programlisting>
+</informalexample>
+
+<para>
+In the new, simpler, scheme, listener methods take exactly one parameter,
+the &IRequestCycle;.
+The service parameters are now available from the &IRequestCycle;:
+</para>
+
+<informalexample>
+<programlisting>
+public void <replaceable>my-method</replaceable>(IRequestCycle cycle)
+throws RequestCycleException
+{
+  String[] parameters = cycle.getServiceParameters();
+  ...
+}
+</programlisting>
+</informalexample>
+</answer>
+</qandaentry>
       
     </qandaset>
   </appendix>

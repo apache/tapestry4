@@ -237,11 +237,13 @@ public class ShowTemplate extends BaseComponent implements IDirect
      *
      **/
 
-    public void trigger(IRequestCycle cycle, String[] context)
+    public void trigger(IRequestCycle cycle)
     {
         Inspector inspector = (Inspector) page;
 
-        inspector.selectComponent(context[0]);
+        String[] parameters = cycle.getServiceParameters();
+        
+        inspector.selectComponent(parameters[0]);
 
         IComponent newComponent = inspector.getInspectedComponent();
 

@@ -282,11 +282,12 @@ public class ShowProperties extends BaseComponent implements PageRenderListener
         inspector.setExplorePath(null);
     }
 
-    public void selectExplorePath(String[] context, IRequestCycle cycle)
+    public void selectExplorePath(IRequestCycle cycle)
     {
+        String[] parameters = cycle.getServiceParameters();
         Inspector inspector = (Inspector) page;
 
-        String fullPath = context[0];
+        String fullPath = parameters[0];
         String[] splitPath = PropertyHelper.splitPropertyPath(fullPath);
 
         StringBuffer buffer = new StringBuffer();

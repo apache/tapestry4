@@ -173,9 +173,10 @@ public class BorrowedBooks extends Protected
      *
      **/
 
-    public void returnBook(String[] context, IRequestCycle cycle)
+    public void returnBook(IRequestCycle cycle)
     {
-        Integer bookPK = new Integer(context[0]);
+        String[] parameters = cycle.getServiceParameters();
+        Integer bookPK = new Integer(parameters[0]);
 
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) engine;
         IOperations operations = vengine.getOperations();

@@ -147,7 +147,8 @@ public class DirectService extends AbstractService
 
         String[] parameters = getParameters(requestContext);
 
-        direct.trigger(cycle, parameters);
+        cycle.setServiceParameters(parameters);
+        direct.trigger(cycle);
 
         // Render the response.  This will be the response page (the first element in the context)
         // unless the direct (or its delegate) changes it.

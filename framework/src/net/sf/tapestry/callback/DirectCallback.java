@@ -45,7 +45,7 @@ public class DirectCallback implements ICallback
 {
     private String pageName;
     private String componentIdPath;
-    private String[] context;
+    private String[] parameters;
 
     public String toString()
     {
@@ -55,14 +55,14 @@ public class DirectCallback implements ICallback
         buffer.append('/');
         buffer.append(componentIdPath);
 
-        if (context != null)
+        if (parameters != null)
         {
             char sep = ' ';
 
-            for (int i = 0; i < context.length; i++)
+            for (int i = 0; i < parameters.length; i++)
             {
                 buffer.append(sep);
-                buffer.append(context[i]);
+                buffer.append(parameters[i]);
 
                 sep = '/';
             }
@@ -80,11 +80,11 @@ public class DirectCallback implements ICallback
      *
      **/
 
-    public DirectCallback(IDirect component, String[] context)
+    public DirectCallback(IDirect component, String[] parameters)
     {
         pageName = component.getPage().getName();
         componentIdPath = component.getIdPath();
-        this.context = context;
+        this.parameters = parameters;
     }
 
     /**
@@ -112,6 +112,7 @@ public class DirectCallback implements ICallback
                 ex);
         }
 
-        direct.trigger(cycle, context);
+        cycle.setServiceParameters(parameters);
+        direct.trigger(cycle);
     }
 }
