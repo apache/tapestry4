@@ -8,7 +8,7 @@
 
 <p>Implementation of the {@link com.primix.tapestry.IBeanProvider} interface, which is central
 to the concept of helper beans.  Helper beans allow a components functionality to be extended using
-aggregation; it can define certain JavaBeans to which behavior can be delegated.  
+aggregation; it can define certain JavaBeans to which behavior can be delegated.
 These beans have various lifecycles.
 
 <p>In addition, the {@link BeanProviderHelper} allows access to the beans by name as if the beans
@@ -16,6 +16,9 @@ were properties of the provider -- even when the beans is instantiated as needed
 
 <p>Most helper beans will implement the {@link com.primix.tapestry.util.prop.IPoolable} interface; those
 that do are pooled so that they can be shared between pages, sessions, etc.
+
+<p>The {@link com.primix.tapestry.bean.IBeanInitializer} interface is the core of system that allows
+helper beans to be initialized before use.
 
 @author Howard Ship <a href="mailto:hship@primix.com">hship@primix.com</a>
 

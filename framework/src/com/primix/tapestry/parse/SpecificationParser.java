@@ -7,9 +7,9 @@
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com
- * 
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -31,6 +31,7 @@ package com.primix.tapestry.parse;
 import com.primix.tapestry.*;
 import com.primix.tapestry.spec.*;
 import com.primix.tapestry.util.*;
+import com.primix.tapestry.bean.*;
 import org.w3c.dom.*;
 import java.io.*;
 import java.util.*;
@@ -51,7 +52,7 @@ import com.primix.tapestry.util.xml.*;
  *	  <th>Version</th> <th>PUBLIC ID</th> <th>SYSTEM ID</th> <th>Description</th>
  *  </tr>
  *  <tr valign=top>
- *	  <td>1.0</td> 
+ *	  <td>1.0</td>
  *	  <td><code>-//Primix Solutions//Tapestry Specification 1.0//EN</code></td>
  *    <td><code>http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd</code></td>
  *    <td>Original, overly verbose version.</td>
@@ -83,6 +84,68 @@ public class SpecificationParser
 	
 	private static final Map booleanMap;
 	private static final Map lifecycleMap;
+	private static final Map converterMap;
+	
+	private interface IConverter
+	{
+		public Object convert(String value)
+			throws DocumentParseException;
+	}
+	
+	private static class BooleanConverter implements IConverter
+	{
+		public Object convert(String value)
+			throws DocumentParseException
+		{
+			Object result = booleanMap.get(value.toLowerCase());
+			
+			if (result == null)
+				throw new DocumentParseException("Could not convert '" + value + "' to boolean.");
+			
+			return result;
+		}
+	}
+	
+	private static class IntConverter implements IConverter
+	{
+		public Object convert(String value)
+			throws DocumentParseException
+		{
+			try
+			{
+				return new Integer(value);
+			}
+			catch (NumberFormatException ex)
+			{
+				throw new DocumentParseException("Could not convert '" + value + "' to integer.", ex);
+			}
+		}
+	}
+	
+	private static class DoubleConverter implements IConverter
+	{
+		public Object convert(String value)
+			throws DocumentParseException
+		{
+			try
+			{
+				return new Double(value);
+			}
+			catch (NumberFormatException ex)
+			{
+				throw new DocumentParseException("Could not convert '" + value + "' to double.", ex);
+			}
+		}
+	}
+	
+	private static class StringConverter implements IConverter
+	{
+		public Object convert(String value)
+		{
+			return value.trim();
+		}
+	}
+	
 	
 	// Identify all the different acceptible values.
 	
@@ -108,6 +171,12 @@ public class SpecificationParser
 		lifecycleMap.put("none", BeanLifecycle.NONE);
 		lifecycleMap.put("request", BeanLifecycle.REQUEST);
 		lifecycleMap.put("page", BeanLifecycle.PAGE);
+		
+		converterMap = new HashMap();
+		converterMap.put("boolean", new BooleanConverter());
+		converterMap.put("int", new IntConverter());
+		converterMap.put("double", new DoubleConverter());
+		converterMap.put("String", new StringConverter());
 	}
 	
 	
@@ -126,8 +195,8 @@ public class SpecificationParser
 	 *
 	 */
 	
-	public ComponentSpecification parseComponentSpecification(InputStream input, 
-			String resourcePath)
+	public ComponentSpecification parseComponentSpecification(InputStream input,
+															  String resourcePath)
 		throws DocumentParseException
 	{
 		Document document;
@@ -154,7 +223,7 @@ public class SpecificationParser
 	 */
 	
 	public ApplicationSpecification parseApplicationSpecification(InputStream input,
-			String resourcePath)
+																  String resourcePath)
 		throws DocumentParseException
 	{
 		Document document;
@@ -185,7 +254,7 @@ public class SpecificationParser
 			return convertComponentSpecification_2(document);
 		
 		throw new DocumentParseException("Unexpected document type with public identifier " +
-					publicId + ".", getResourcePath());
+											 publicId + ".", getResourcePath());
 	}
 	
 	
@@ -201,7 +270,7 @@ public class SpecificationParser
 			return convertApplicationSpecification_2(document);
 		
 		throw new DocumentParseException("Unexpected application specification with public identifier " +
-					publicId + ".", getResourcePath());
+											 publicId + ".", getResourcePath());
 		
 	}
 	
@@ -503,7 +572,7 @@ public class SpecificationParser
 	}
 	
 	private void convertBinding_1(ContainedComponent contained, Node node,
-			BindingType type, String innerElementName)
+								  BindingType type, String innerElementName)
 		throws DocumentParseException
 	{
 		Node child;
@@ -525,7 +594,7 @@ public class SpecificationParser
 			}
 		}
 		
-		contained.setBinding(name, new BindingSpecification(type, value));	
+		contained.setBinding(name, new BindingSpecification(type, value));
 	}
 	
 	private void convertAssets_1(ComponentSpecification specification, Node node)
@@ -539,7 +608,7 @@ public class SpecificationParser
 			// <context-asset>
 			
 			if (isElement(child, "internal-asset") ||
-					isElement(child, "context-asset"))
+				isElement(child, "context-asset"))
 			{
 				convertAsset_1(specification, child, AssetType.CONTEXT, "path");
 				continue;
@@ -560,7 +629,7 @@ public class SpecificationParser
 	}
 	
 	private void convertAsset_1(ComponentSpecification specification, Node node,
-			AssetType type, String innerElementName)
+								AssetType type, String innerElementName)
 		throws DocumentParseException
 	{
 		Node child;
@@ -688,7 +757,7 @@ public class SpecificationParser
 			}
 		}
 		
-		return specification;	
+		return specification;
 	}
 	
 	private void convertPage_2(ApplicationSpecification specification, Node node)
@@ -743,7 +812,7 @@ public class SpecificationParser
 				convertReservedParameter(specification, node);
 				continue;
 			}
-
+			
 			if (isElement(node, "bean"))
 			{
 				convertBean(specification, node);
@@ -801,6 +870,7 @@ public class SpecificationParser
 	 */
 	
 	private void convertBean(ComponentSpecification specification, Node node)
+		throws DocumentParseException
 	{
 		String name = getAttribute(node, "name");
 		String className = getAttribute(node, "class");
@@ -812,6 +882,72 @@ public class SpecificationParser
 		
 		specification.addBeanSpecification(name, bspec);
 		
+		for (Node child = node.getFirstChild(); child != null; child = child.getNextSibling())
+		{
+			if (isElement(child, "description"))
+				continue;
+			
+			if (isElement(child, "set-property"))
+			{
+				convertSetProperty(bspec, child);
+				continue;
+			}
+		}
+	}
+	
+	/** @since 1.0.5 **/
+	
+	private void convertSetProperty(BeanSpecification spec, Node node)
+		throws DocumentParseException
+	{
+		String name = getAttribute(node, "name");
+		
+		// <set-property> contains either <static-value> or <property-value>
+		
+		for (Node child = node.getFirstChild(); child != null; child = child.getNextSibling())
+		{
+			if (isElement(child, "static-value"))
+			{
+				convertStaticValue(spec, name, child);
+				continue;
+			}
+			
+			if (isElement(child, "property-value"))
+			{
+				convertPropertyValue(spec, name, child);
+				continue;
+			}
+		}
+	}
+	
+	/** @since 1.0.5 **/
+	
+	private void convertPropertyValue(BeanSpecification spec, String propertyName, Node node)
+	{
+		String propertyPath = getAttribute(node, "property-path");
+		IBeanInitializer iz = new PropertyBeanInitializer(propertyName, propertyPath);
+		
+		spec.addInitializer(iz);
+	}
+		
+	/** @since 1.0.5 **/
+	
+	private void convertStaticValue(BeanSpecification spec, String propertyName, Node node)
+		throws DocumentParseException
+	{
+		String type = getAttribute(node, "type");
+		String value = getValue(node);
+		
+		IConverter converter = (IConverter)converterMap.get(type);
+		
+		if (converter == null)
+			throw new DocumentParseException("Unknown <static-value> type: '" + type + "'.");
+		
+		Object staticValue = converter.convert(value);
+		
+		IBeanInitializer iz = new StaticBeanInitializer(propertyName, staticValue);
+		
+		spec.addInitializer(iz);
 	}
 	
 	private void convertComponent_2(ComponentSpecification specification, Node node)
@@ -824,7 +960,7 @@ public class SpecificationParser
 		
 		if (type != null && copyOf != null)
 			throw new DocumentParseException(
-				"Contained component " + id + 
+				"Contained component " + id +
 					" contains both type and copy-of attributes.",
 				getResourcePath());
 		
@@ -834,7 +970,7 @@ public class SpecificationParser
 		{
 			if (type == null)
 				throw new DocumentParseException(
-					"Contained component " + id + 
+					"Contained component " + id +
 						" does not specify attribute type or copy-of.",
 					getResourcePath());
 			
@@ -869,11 +1005,11 @@ public class SpecificationParser
 			}
 		}
 		
-		specification.addComponent(id, c);		
+		specification.addComponent(id, c);
 	}
 	
 	private void convertBinding_2(ContainedComponent component, Node node,
-			BindingType type, String attributeName)
+								  BindingType type, String attributeName)
 	{
 		String name = getAttribute(node, "name");
 		String value = getAttribute(node, attributeName);
@@ -916,7 +1052,7 @@ public class SpecificationParser
 	}
 	
 	private void convertAsset_2(ComponentSpecification specification, Node node,
-			AssetType type, String attributeName)
+								AssetType type, String attributeName)
 	{
 		String name = getAttribute(node, "name");
 		String value = getAttribute(node, attributeName);

@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2001 by Howard Ship and Primix
  *
  * Primix
  * 311 Arsenal Street
@@ -26,57 +26,30 @@
  *
  */
 
+package com.primix.tapestry.bean;
 
-package com.primix.tapestry.inspector;
-
-import com.primix.tapestry.util.pool.*;
-
+	
 /**
- *  Used to emit a stream of alteranting string values: "even", "odd", etc.  This
- *  is often used in the Inspector pages to make the class of a &lt;tr&gt; alternate
- *  for presentation reasons.
+ *  Base class for initializing a property of a JavaBean.
  *
- *  @version $Id$
  *  @author Howard Ship
- *
+ *  @version $Id$
+ *  @since 1.0.5
  */
- 
-public class EvenOdd implements IPoolable
+	
+abstract public class AbstractBeanInitializer
+	implements IBeanInitializer
 {
-	private boolean even = true;
+	protected String propertyName;
 	
-	/**
-	 *  Returns "even" or "odd".  Whatever it returns on one invocation, it will
-	 *  return the opposite on the next.
-	 *
-	 */
-	
-	public String getNext()
+	public AbstractBeanInitializer(String propertyName)
 	{
-		String result = even ? "even" : "odd";
-		
-		even = !even;
-		
-		return result;
+		this.propertyName = propertyName;
 	}
 	
-	public boolean isEven()
+	public String getPropertyName()
 	{
-		return even;
-	}
-	
-	public void setEven(boolean value)
-	{
-		even = value;
-	}
-	
-	/**
-	 *  Resets the internal flag such that the next value from {@link #getNext()} will be "even".
-	 *
-	 */
-	
-	public void resetForPool()
-	{
-		even = true;
+		return propertyName;
 	}
 }
+

@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2001 by Howard Ship and Primix
  *
  * Primix
  * 311 Arsenal Street
@@ -26,57 +26,42 @@
  *
  */
 
+package com.primix.tapestry.bean;
 
-package com.primix.tapestry.inspector;
-
-import com.primix.tapestry.util.pool.*;
-
+import com.primix.tapestry.*;
+import com.primix.tapestry.util.prop.*;
+	
 /**
- *  Used to emit a stream of alteranting string values: "even", "odd", etc.  This
- *  is often used in the Inspector pages to make the class of a &lt;tr&gt; alternate
- *  for presentation reasons.
+ *  Initializes a helper bean property from a property path (relative
+ *  to the bean's {@link IComponent}).
  *
- *  @version $Id$
  *  @author Howard Ship
- *
+ *  @version $Id$
+ *  @since 1.0.5
  */
- 
-public class EvenOdd implements IPoolable
+	
+public class PropertyBeanInitializer
+	extends AbstractBeanInitializer
 {
-	private boolean even = true;
+	private String[] propertyPath;
 	
-	/**
-	 *  Returns "even" or "odd".  Whatever it returns on one invocation, it will
-	 *  return the opposite on the next.
-	 *
-	 */
-	
-	public String getNext()
+	public PropertyBeanInitializer(String propertyName, String propertyPath)
 	{
-		String result = even ? "even" : "odd";
+		super(propertyName);
 		
-		even = !even;
+		this.propertyPath = PropertyHelper.splitPropertyPath(propertyPath);
+	}
+	
+	public void setBeanProperty(IBeanProvider provider, Object bean)
+	{
+		IComponent component = provider.getComponent();
+		PropertyHelper componentHelper = PropertyHelper.forInstance(component);
+		PropertyHelper beanHelper = PropertyHelper.forInstance(bean);
 		
-		return result;
+		Object value = componentHelper.getPath(component, propertyPath);
+		
+		beanHelper.set(bean, propertyName, value);
 	}
-	
-	public boolean isEven()
-	{
-		return even;
-	}
-	
-	public void setEven(boolean value)
-	{
-		even = value;
-	}
-	
-	/**
-	 *  Resets the internal flag such that the next value from {@link #getNext()} will be "even".
-	 *
-	 */
-	
-	public void resetForPool()
-	{
-		even = true;
-	}
+		
 }
+

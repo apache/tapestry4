@@ -7,9 +7,9 @@
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com
- * 
+ *
  * This library is free software.
- * 
+ *
  * You may redistribute it and/or modify it under the terms of the GNU
  * Lesser General Public License as published by the Free Software Foundation.
  *
@@ -28,6 +28,8 @@
 
 package com.primix.tapestry.spec;
 
+import com.primix.tapestry.bean.*;
+import java.util.*;
 
 /**
  *  A specification of a helper bean for a component.
@@ -42,6 +44,13 @@ public class BeanSpecification
 {
 	private String className;
 	private BeanLifecycle lifecycle;
+		
+	/**
+	 *  A List of {@link IBeanInitializer}.
+	 *
+	 */
+	
+	private List initializers;
 	
 	public BeanSpecification(String className, BeanLifecycle lifecycle)
 	{
@@ -58,10 +67,53 @@ public class BeanSpecification
 	{
 		return lifecycle;
 	}
+
+	/**
+	 *  @since 1.0.5
+	 *
+	 */
+	
+	public void addInitializer(IBeanInitializer initializer)
+	{
+		if (initializers == null)
+			initializers = new ArrayList();
+		
+		initializers.add(initializer);
+	}
+	
+	/**
+	 *  Returns the {@link List} of {@link IBeanInitializers}.  The caller
+	 *  should not modify this value!.  May return null if there
+	 *  are no initializers.
+	 *
+	 *  @since 1.0.5
+	 *
+	 */
+	
+	public List getInitializers()
+	{
+		return initializers;
+	}
 	
 	public String toString()
 	{
-		return "BeanSpecification[" + className + " lifecycle:" + lifecycle.getEnumerationId() + "]";
+		StringBuffer buffer = new StringBuffer("BeanSpecification[");
+		
+		buffer.append(className);
+		buffer.append(", lifecycle ");
+		buffer.append(lifecycle.getEnumerationId());
+		
+		if (initializers != null &&
+				initializers.size() > 0)
+		{
+			buffer.append(", ");
+			buffer.append(initializers.size());
+			buffer.append(" initializers");
+		}
+		
+		buffer.append(']');
+		
+		return buffer.toString();
 	}
 }
 
