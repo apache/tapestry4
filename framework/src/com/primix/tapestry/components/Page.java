@@ -87,12 +87,12 @@ public class Page extends AbstractServiceLink
 	}
 
 	/**
-	*  Returns {@link IApplicationService#PAGE_SERVICE}.
+	*  Returns {@link IEngineService#PAGE_SERVICE}.
 	*/
 
 	protected String getServiceName(IRequestCycle cycle)
 	{
-		return IApplicationService.PAGE_SERVICE;
+		return IEngineService.PAGE_SERVICE;
 	}
 
 	public void setPageBinding(IBinding value)

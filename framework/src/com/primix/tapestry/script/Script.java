@@ -281,7 +281,7 @@ extends AbstractComponent
 
     private ScriptGenerator buildGenerator(String scriptPath)
     {
-        IResourceResolver resolver = page.getApplication().getResourceResolver();
+        IResourceResolver resolver = page.getEngine().getResourceResolver();
         URL scriptURL;
         InputStream stream = null;
         

@@ -29,7 +29,7 @@ package com.primix.tapestry;
  */
 
 /**
- *  Exception thrown by an {@link IApplicationService} when it discovers that
+ *  Exception thrown by an {@link IEngineService} when it discovers that
  *  the <code>HttpSession</code> has timed out (and been replaced by a new, empty
  *  one).
  *

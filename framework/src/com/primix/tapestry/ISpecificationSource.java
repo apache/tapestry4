@@ -42,23 +42,23 @@ import com.primix.tapestry.spec.*;
 public interface ISpecificationSource
 {
     /**
-     *  Gets a specification from the cache, possibly parsing it at the same time.
-     *
-     *  <p>The type is used to locate the resource that defines the specification.  In
-     *  practical terms, this is the XML file which contains the specification.
-     *
-     * @throws ResourceUnavailableException if the specification cannot be located or loaded.
-     *
-     */
- 
+    *  Gets a specification from the cache, possibly parsing it at the same time.
+    *
+    *  <p>The type is used to locate the resource that defines the specification.  In
+    *  practical terms, this is the XML file which contains the specification.
+    *
+    * @throws ResourceUnavailableException if the specification cannot be located or loaded.
+    *
+    */
+
     public ComponentSpecification getSpecification(String type)
-        throws ResourceUnavailableException;
+    throws ResourceUnavailableException;
 
     /**
-     *  Invoked to have the source clear any internal cache.  This is most often
-     *  used when debugging an application.
-     *
-     */
+    *  Invoked to have the source clear any internal cache.  This is most often
+    *  used when debugging an application.
+    *
+    */
 
     public void reset();
 }

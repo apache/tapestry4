@@ -46,7 +46,6 @@ import com.primix.tapestry.*;
 
 public class PageSpecification
 {
-	private int bufferSize = -1;
 	private String specificationPath;
 
 	public PageSpecification()
@@ -58,43 +57,9 @@ public class PageSpecification
 		this.specificationPath = specificationPath;
 	}
 	
-    /**
-     *  @deprecated
-     *
-     */
-
-	public PageSpecification(String specificationPath, int bufferSize)
-	{
-		this.specificationPath = specificationPath;
-		this.bufferSize = bufferSize;
-	}
-
-	/**
-	*  Returns the buffer size for the page (in bytes).  A value less than zero means no specific
-	*  value was set for the page.
-	*
-    *  @deprecated
-	*/
-
-	public int getBufferSize()
-	{
-		return bufferSize;
-	}
-
 	public String getSpecificationPath()
 	{
 		return specificationPath;
-	}
-
-	/**
-	*  Sets the size of the buffer used when rendering the page, in bytes.
-    *
-    *  @deprecated
-	*/
-
-	public void setBufferSize(int value)
-	{
-		bufferSize = value;
 	}
 
 	public void setSpecificationPath(String value)

@@ -96,22 +96,19 @@ public class HTMLResponseWriter
 
 	static
 	{
-		int i;
-		int length;
-
 		entities['"'] = "&quot;";
 		entities['<'] = "&lt;";
 		entities['>'] = "&gt;";
 		entities['&'] = "&amp;";
 
-		length = SAFE_CHARACTERS.length();
-		for (i = 0; i < length; i++)
+		int length = SAFE_CHARACTERS.length();
+		for (int i = 0; i < length; i++)
 			safe[SAFE_CHARACTERS.charAt(i)] = true;
 	}
 
 
 	/**
-	* The underlying <code>PrintWriter</code> that output is sent to.  
+	* The underlying {@link PrintWriter} that output is sent to.  
 	*/
 
 	protected PrintWriter writer;
@@ -349,7 +346,7 @@ public class HTMLResponseWriter
 
 		writer.close();
 
-			writer = null;
+		writer = null;
 		activeElementStack = null;
 		buffer = null;
 	}
@@ -365,7 +362,7 @@ public class HTMLResponseWriter
 	{
 		writer.print('>');
 
-			openTag = false;
+		openTag = false;
 	}
 
 	/**

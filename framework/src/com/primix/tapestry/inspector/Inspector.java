@@ -45,9 +45,9 @@ public class Inspector extends BasePage
 	private String inspectedPageName;
 	private String inspectedIdPath;
 
-	public void detachFromApplication()
+	public void detach()
 	{
-		super.detachFromApplication();
+		super.detach();
 		
 		view = View.SPECIFICATION;
 		inspectedPageName = null;
@@ -179,6 +179,6 @@ public class Inspector extends BasePage
     public String getInspectorTitle()
     {
         return "Tapestry Inspector: " +
-                application.getSpecification().getName();
+                engine.getSpecification().getName();
     }
 }

@@ -67,7 +67,7 @@ public class PrivateAsset implements IAsset
 	{
 		String[] parameters;
 		String externalURL;
-		IApplicationService service;
+		IEngineService service;
 		String URL;
 
 		if (externalizer == null)
@@ -91,7 +91,7 @@ public class PrivateAsset implements IAsset
 
 		parameters = new String[] { resourcePath };
 
-		service = cycle.getApplication().getService(IApplicationService.ASSET_SERVICE);
+		service = cycle.getEngine().getService(IEngineService.ASSET_SERVICE);
 
 		URL = service.buildURL(cycle, null, parameters);
 

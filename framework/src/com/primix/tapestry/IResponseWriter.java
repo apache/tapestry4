@@ -32,7 +32,7 @@ package com.primix.tapestry;
  *  Defines an object that can write markup (XML, HTML, XHTML) style output.
  *  A <code>IResponseWriter</code> handles translation from unicode to
  *  the markup language (escaping characters such as '&lt;' and '&gt;' to
- *  thier entity equivalents, '&amp;lt;' and '&amp;gt;') as well as assisting
+ *  their entity equivalents, '&amp;lt;' and '&amp;gt;') as well as assisting
  *  with nested elements, closing tags, indentation, processing directives, etc.
  *
  *  @author Howard Ship

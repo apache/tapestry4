@@ -39,7 +39,7 @@ import java.util.*;
 /**
  *  Component of the {@link Inspector} page used to display
  *  the persisent properties of the page, and the serialized view
- *  of the application object.
+ *  of the {@link IEngine}.
  *
  *
  *  @version $Id$
@@ -53,28 +53,24 @@ implements ILifecycle
 	private List properties;
 	private IPageChange change;
 	private IPage inspectedPage;
-    private byte[] serializedApplication;
+    private byte[] serializedEngine;
 
 	public void cleanupAfterRender(IRequestCycle cycle)
 	{
 		properties = null;
 		change = null;
 		inspectedPage = null;
-        serializedApplication = null;
+        serializedEngine = null;
 	}
 
 	private void buildProperties()
 	{
-		Inspector inspector;
-		IPageRecorder recorder;
-		IApplication application;
-		
-		inspector = (Inspector)page;
+		Inspector inspector = (Inspector)page;
 		
 		inspectedPage = inspector.getInspectedPage();
 
-		application = inspectedPage.getApplication();
-		recorder = application.getPageRecorder(inspectedPage.getName());
+		IEngine engine = inspector.getEngine();
+		IPageRecorder recorder = engine.getPageRecorder(inspectedPage.getName());
 		
 		if (recorder.getHasChanges())
 			properties = new ArrayList(recorder.getChanges());
@@ -132,16 +128,16 @@ implements ILifecycle
 		return value.getClass().getName();
 	}	
 
-    private byte[] getSerializedApplication()
+    private byte[] getSerializedEngine()
     {
-        if (serializedApplication == null)
-            buildSerializedApplication();
+        if (serializedEngine == null)
+            buildSerializedEngine();
 
-        return serializedApplication;
+        return serializedEngine;
 
     }
 
-    private void buildSerializedApplication()
+    private void buildSerializedEngine()
     {
         ByteArrayOutputStream bos = null;
         ObjectOutputStream oos = null;
@@ -153,15 +149,15 @@ implements ILifecycle
 
             // Write the application object to the stream.
 
-            oos.writeObject(page.getApplication());
+            oos.writeObject(page.getEngine());
 
             // Extract the application as an array of bytes.
 
-            serializedApplication = bos.toByteArray();
+            serializedEngine = bos.toByteArray();
         }
         catch (IOException ex)
         {
-            throw new ApplicationRuntimeException("Could not serialize the application object.", ex);
+            throw new ApplicationRuntimeException("Could not serialize the application engine.", ex);
         }
         finally
         {
@@ -188,24 +184,24 @@ implements ILifecycle
         }
     }
 
-    public int getApplicationByteCount()
+    public int getEngineByteCount()
     {
-        return getSerializedApplication().length;
+        return getSerializedEngine().length;
     }
 
-    public IRender getApplicationDumpDelegate()
+    public IRender getEngineDumpDelegate()
     {
         return new IRender()
         {
             public void render(IResponseWriter writer, IRequestCycle cycle)
             throws RequestCycleException
             {
-                dumpSerializedApplication(writer);
+                dumpSerializedEngine(writer);
             }
         };
     }
 
-    private void dumpSerializedApplication(IResponseWriter responseWriter)
+    private void dumpSerializedEngine(IResponseWriter responseWriter)
     {
         CharArrayWriter writer = null;
         BinaryDumpOutputStream bos = null;
@@ -221,7 +217,7 @@ implements ILifecycle
             bos = new BinaryDumpOutputStream(writer);
             bos.setBytesPerLine(32);
 
-            bos.write(getSerializedApplication());
+            bos.write(getSerializedEngine());
             bos.close();
 
             responseWriter.print(writer.toString());            

@@ -85,7 +85,7 @@ public interface ILifecycle
     public void prepareForRender(IRequestCycle cycle);
 
     /**
-     *  Invoked from {@link IPage#detachFromApplication()}, this allows
+     *  Invoked from {@link IPage#detach()}, this allows
      *  a component to reset its state so that it is equivalent to a newly
      *  constructed instance.
      *

@@ -105,12 +105,12 @@ implements IDirect
 	}
 
 	/**
-	*  Returns {@link IApplicationService#DIRECT_SERVICE}.
+	*  Returns {@link IEngineService#DIRECT_SERVICE}.
 	*/
 
 	protected String getServiceName(IRequestCycle cycle)
 	{
-		return IApplicationService.DIRECT_SERVICE;
+		return IEngineService.DIRECT_SERVICE;
 	}
 
 	protected String[] getContext(IRequestCycle cycle)

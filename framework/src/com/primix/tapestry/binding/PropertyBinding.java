@@ -66,9 +66,9 @@ public class PropertyBinding extends AbstractBinding
 	*  simple name, or a nested property name.  A nested property
 	*  name consists of a series of simple names seperated by
 	*  periods.  In this way the path can 'navigate' to various other
-	*  objects. For example, the property 'page.application.foo' is
+	*  objects. For example, the property 'page.visit.foo' is
 	*  equivalent to the expression
-	*  <code>getPage().getApplication().getFoo()</code>.
+	*  <code>getPage().getVisit().getFoo()</code>.
 	*
 	*/
 
@@ -103,7 +103,7 @@ public class PropertyBinding extends AbstractBinding
 	*
 	* <ul>
 	* <li>page
-	* <li>page.application
+	* <li>page.engine
 	* <li>container
 	* <li>container.name
 	* </ul>

@@ -53,9 +53,9 @@ import java.util.*;
  *  @version $Id$
  */
 
-public class AssetService implements IApplicationService
+public class AssetService implements IEngineService
 {
-	private IApplication application;
+	private String prefix;
 	private IResourceResolver resolver;
 
 	/**
@@ -80,15 +80,17 @@ public class AssetService implements IApplicationService
 
 	private static final int BUFFER_SIZE = 1024;
 
-	public AssetService(IApplication application)
+	public AssetService(IEngine engine)
 	{
-		this.application = application;
+		prefix = engine.getServletPrefix() + "/" + ASSET_SERVICE;
+        resolver = engine.getResourceResolver();
 	}
 
 	/**
 	*  Builds a URL for a {@link PrivateAsset}.
 	*
-	*  <p>A single parameter is expected, the resource path of the asset.
+	*  <p>A single parameter is expected, the resource path of the asset
+    *  (which is expected to start with a leading slash).
 	*
 	*/
 
@@ -100,9 +102,7 @@ public class AssetService implements IApplicationService
 			throw new ApplicationRuntimeException(
 				"Service asset requires exactly one parameter.");
 
-		return application.getServletPrefix() + 
-			"/" + ASSET_SERVICE +
-			parameters[0];
+		return prefix +	parameters[0];
 	}
 
 	public String getName()
@@ -175,9 +175,6 @@ public class AssetService implements IApplicationService
 		if (monitor != null)
 			monitor.serviceBegin("asset", resourcePath);
 
-		if (resolver == null)
-			resolver = application.getResourceResolver();
-			
 		resourceURL = resolver.getResource(resourcePath);
 
 		if (resourceURL == null)
@@ -232,7 +229,7 @@ public class AssetService implements IApplicationService
 		if (monitor != null)
 			monitor.serviceEnd("asset");
 
-		// The IApplication is responsible for closing the ResponseOutputStream
+		// The IEngine is responsible for closing the ResponseOutputStream
 	}
 }
 

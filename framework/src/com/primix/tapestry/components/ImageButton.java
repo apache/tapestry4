@@ -265,7 +265,7 @@ public class ImageButton extends AbstractFormComponent
 				pointBinding.setValue(new Point(x, y));
 			}
 
-            // Notify the application, bug setting the select parameter
+            // Notify the application, by setting the select parameter
             // to the tag parameter.
 
             if (selectedBinding == null)

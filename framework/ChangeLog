@@ -1,3 +1,13 @@
+* Dec 29 2000 hship
+
+Savage Refactoring!
+IApplication -> IEngine, com.primix.tapestry.app -> com.primix.tapestry.engine
+Fix many out of date Javadoc comments.
+Improve exception handling/reporting in ApplicationServlet.
+Add the engineClassName property to the ApplicationSpecification, update the DTD and
+the SpecificationParser.
+Have the ApplicationServlet construct the engine from the class name.
+
 * Dec 28 2000 hship
 
 Woops!  Moved the logic for creating the visit object to AbstractApplication.

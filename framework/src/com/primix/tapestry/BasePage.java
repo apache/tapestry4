@@ -57,12 +57,12 @@ public class BasePage extends BaseComponent implements IPage
 
 	protected ChangeObserver changeObserver;
 
-	protected IApplication application;
+	protected IEngine engine;
 
     /**
      *  The visit object, if any, for the application.  Set inside
-     *  {@link #joinApplication(IApplication)} and cleared
-     *  by {@link #detachFromApplication()}.
+     *  {@link #attach(IEngine)} and cleared
+     *  by {@link #detach()}.
      *
      */
 
@@ -84,7 +84,7 @@ public class BasePage extends BaseComponent implements IPage
 	private IRequestCycle requestCycle;
 	
 	/**
-	*  The locale of the page, initially determined from the application.
+	*  The locale of the page, initially determined from the {@link IEngine engine}.
 	*
 	*/
 
@@ -116,14 +116,14 @@ public class BasePage extends BaseComponent implements IPage
 	}
 
 	/**
-	*  Clears the application and changeObserver properties, then
+	*  Clears the engine, visit and changeObserver properties, then
 	*  invokes {@link ILifecycle#reset()} on all lifecycle components.
 	*
 	*/
 
-	public void detachFromApplication()
+	public void detach()
 	{
-		application = null;
+		engine = null;
         visit = null;
 		changeObserver = null;
 
@@ -132,9 +132,9 @@ public class BasePage extends BaseComponent implements IPage
 
 	}
 
-	public IApplication getApplication()
+	public IEngine getEngine()
 	{
-		return application;
+		return engine;
 	}
 
 	public ChangeObserver getChangeObserver()
@@ -215,17 +215,18 @@ public class BasePage extends BaseComponent implements IPage
 	}
 
 	/**
-	*  Sets the application for the page.  Does
+	*  Called by the {@link IEngine engine} to attach the page
+	*  to itself.  Does
 	*  <em>not</em> change the locale, but since a page is selected
 	*  from the {@link IPageSource} pool partially based on its
-	*  locale matching the application locale, they should match
+	*  locale matching the engine's locale, they should match
 	*  anyway.
     *
 	*/
 
-	public void joinApplication(IApplication value)
+	public void attach(IEngine value)
 	{
-		application = value;
+		engine = value;
 	}
 
 	/**
@@ -332,14 +333,14 @@ public class BasePage extends BaseComponent implements IPage
 
     /**
      *  Returns the visit object obtained from the 
-     *  {@link IApplication#getVisit() application}.
+     *  {@link IEngine#getVisit() engine}.
      *
      */
 
     public Object getVisit()
     {
         if (visit == null)
-            visit = application.getVisit();
+            visit = engine.getVisit();
 
         return visit;
     }

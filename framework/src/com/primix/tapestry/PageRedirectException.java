@@ -29,7 +29,7 @@ package com.primix.tapestry;
  */
 
 /**
- *  Exception thrown by a {@link IComponent component} or {@link IApplicationService}
+ *  Exception thrown by a {@link IComponent component} or {@link IEngineService}
  *  that wishes to force the application to a particular page.  This is often used
  *  to protect a sensitive page until the user is authenticated.
  *

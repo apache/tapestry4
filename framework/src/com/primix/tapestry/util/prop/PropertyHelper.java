@@ -46,8 +46,8 @@ import java.util.*;
  *
  * <p>PropertyHelper allows properties to be specified in terms of a path.  A path is a
  * series of property names seperate by periods.  So a property path of
- * 'application.user.address.street' is effectively the same as
- * the code <code>getApplication().getUser().getAddress().getStreet()</code>
+ * 'visit.user.address.street' is effectively the same as
+ * the code <code>getVisit().getUser().getAddress().getStreet()</code>
  * (and just as likely to throw a <code>NullPointerException</code>).
  *
  * <p>Only single-valued properties (not indexed properties) are supported, and a minimum

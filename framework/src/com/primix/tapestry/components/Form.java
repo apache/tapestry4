@@ -195,7 +195,7 @@ public class Form extends AbstractComponent
         String method = "post";
         boolean rewound;
         String URL;
-        IApplicationService service;
+        IEngineService service;
         String actionId;
         IActionListener listener;
         boolean renderForm;
@@ -228,8 +228,8 @@ public class Form extends AbstractComponent
 
                 // Forms are processed using the 'action' service.
 
-                service = cycle.getApplication().
-                getService(IApplicationService.ACTION_SERVICE);
+                service = cycle.getEngine().
+                getService(IEngineService.ACTION_SERVICE);
 
                 URL = service.buildURL(cycle, this, 
                     new String[]

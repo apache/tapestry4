@@ -44,16 +44,16 @@ package com.primix.tapestry;
 public interface IPageSource
 {
     /**
-     *  Gets a given page for the application.  This may involve using an previously
+     *  Gets a given page for the engine.  This may involve using an previously
      *  loaded page from a pool of available pages, or the page may be loaded as needed.
      *
      */
  
-    public IPage getPage(IApplication application, String pageName, IMonitor monitor)
+    public IPage getPage(IEngine engine, String pageName, IMonitor monitor)
         throws PageLoaderException;
 
     /**
-     *  Invoked after the application is done with the page
+     *  Invoked after the engine is done with the page
      *  (typically, after the response to the client has been sent).
      *  The page is returned to the pool for later reuse.
      *

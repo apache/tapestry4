@@ -33,7 +33,7 @@ import java.util.*;
 
 /**
  *  Abstract super-class for components that generate some form of
- *  &lt;a&gt; hyperlink using an {@link IApplicationService}.
+ *  &lt;a&gt; hyperlink using an {@link IEngineService}.
  *  Supplies support for the following parameters:
  *
  *  <ul>
@@ -85,16 +85,16 @@ public abstract class AbstractServiceLink
 	protected String buildURL(IRequestCycle cycle, String[] context)
 	throws RequestCycleException
 	{
-		IApplicationService service;
+		IEngineService service;
 		String serviceName;
 		String url;
 		String anchor = null;
 
 		serviceName = getServiceName(cycle);
-		service = cycle.getApplication().getService(serviceName);
+		service = cycle.getEngine().getService(serviceName);
 
 		if (service == null)
-			throw new RequestCycleException("No application service named " + 
+			throw new RequestCycleException("No engine service named " + 
 				serviceName + ".",
 				this, cycle);
 

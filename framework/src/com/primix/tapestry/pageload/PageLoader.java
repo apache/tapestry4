@@ -46,7 +46,7 @@ import com.primix.tapestry.binding.*;
 public class PageLoader
     implements IPageLoader
 {
-	private IApplication application;
+	private IEngine engine;
     private IResourceResolver resolver;
 	private ISpecificationSource specificationSource;
     private PageSource pageSource;
@@ -78,14 +78,14 @@ public class PageLoader
 	*
 	*/
 
-	public PageLoader(PageSource pageSource, IApplication application)
+	public PageLoader(PageSource pageSource, IEngine engine)
 	{
         this.pageSource = pageSource;
-        this.application = application;
+        this.engine = engine;
 
-		specificationSource = application.getSpecificationSource();
+		specificationSource = engine.getSpecificationSource();
 
-        resolver = application.getResourceResolver();
+        resolver = engine.getResourceResolver();
 	}
 
 	/**
@@ -329,7 +329,7 @@ public class PageLoader
     * We instantiate the page object, then set its specification, 
     * name and locale.
     *
-	* @see IApplication
+	* @see IEngine
 	* @see ChangeObserver
 	*/
 
@@ -350,7 +350,7 @@ public class PageLoader
 
             result.setSpecification(spec);
             result.setName(name);
-            result.setLocale(application.getLocale());
+            result.setLocale(engine.getLocale());
         }
         catch (ClassCastException e)
         {
@@ -397,21 +397,21 @@ public class PageLoader
 
 	/**
 	*  Updates this <code>PageLoader</code> to build pages for the specified
-	*  application.  This updates the specificationSource for
-	*  this page loader from the application.
+	*  {@link IEngine engine}.  This updates the specificationSource for
+	*  this page loader from the engine.
 	*
-	*  @param application The application to load pages for, or null
+	*  @param engine The {@link IEngine} to load pages for, or null
 	*  to release references to the application and specificationSource.
 	*/
 
-	public void setApplication(IApplication application)
+	public void setEngine(IEngine engine)
 	{
-		this.application = application;
+		this.engine = engine;
 
-		if (application == null)
+		if (engine == null)
 			specificationSource = null;
 		else
-			specificationSource = application.getSpecificationSource();
+			specificationSource = engine.getSpecificationSource();
 	}
 }
 

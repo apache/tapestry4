@@ -333,6 +333,12 @@ implements ErrorHandler, EntityResolver
 				continue;
 			}
 			
+            if (isElement(node, "engine-class"))
+            {
+                specification.setEngineClassName(getValue(node));
+                continue;
+            }
+
 			if (isElement(node, "page"))
 			{
 				convertPage(specification, node);
@@ -372,17 +378,11 @@ implements ErrorHandler, EntityResolver
 				continue;
 			}
 			
-            // At one time, we would handle the buffer-size element here,
-            // but that has been deprecated.
-			
 			if (isElement(child, "specification-path"))
 			{
 				page.setSpecificationPath(getValue(child));
 				continue;
 			}
-			
-            // At one time, a properties element was allowed here, but
-            // that too has been deprecated.
 
 		}
 		
@@ -514,11 +514,6 @@ implements ErrorHandler, EntityResolver
 				continue;
 			}
 			
-			if (isElement(child, "properties"))
-			{
-				convertProperties(contained, child);
-				continue;
-			}
 		}
 		
 		specification.addComponent(id, contained);

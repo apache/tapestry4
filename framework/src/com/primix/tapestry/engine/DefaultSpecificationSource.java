@@ -1,4 +1,4 @@
-package com.primix.tapestry.app;
+package com.primix.tapestry.engine;
 
 import java.net.*;
 import java.io.*;
@@ -40,7 +40,10 @@ import java.util.*;
  *  expects to use the normal class loader to locate component
  *  specifications from within the classpath.
  *
- * <p>Caches specifications in memory forever.
+ * <p>Caches specifications in memory forever, or until {@link #reset()} is invoked.
+ *
+ * <p>An instance of this class acts like a singleton and is shared by multiple sessions,
+ * so it must be threadsafe.
  *
  * @author Howard Ship
  * @version $Id$
@@ -55,7 +58,7 @@ public class DefaultSpecificationSource
 
 	private SpecificationParser parser;
 
-	private static final int MAP_SIZE = 7;
+	private static final int MAP_SIZE = 23;
 	
 	/**
 	*  Contains previously parsed specification.

@@ -45,7 +45,7 @@ import com.primix.tapestry.asset.*;
  *  the application name).
  *
  *  <p>The <code>PageSource</code> acts as a pool for {@link IPage} instances.
- *  Pages are retrieved from the pool using {@link #getPage(IApplication, String, IMonitor)}
+ *  Pages are retrieved from the pool using {@link #getPage(IEngine, String, IMonitor)}
  *  and are later returned to the pool using {@link #releasePage(IPage)}.
  *
  *  <p>During development, it is useful to occasionally disable pooling of pages.
@@ -53,7 +53,7 @@ import com.primix.tapestry.asset.*;
  *  create for each request.  However, it will identify the common Tapestry
  *  developer failure:  expecting transient page properties to be available
  *  on subsequent request cycles (this is usually related to
- *  an incomplete implementation of {@link IPage#detachFromApplication()}.
+ *  an incomplete implementation of {@link IPage#detach()}.
  *
  *  <p>Setting the JVM system property
  * <code>com.primix.tapestry.disable-page-pool</code>
@@ -133,12 +133,12 @@ public class PageSource
 	*
 	*/
 
-	protected MultiKey buildKey(IApplication application, String pageName)
+	protected MultiKey buildKey(IEngine engine, String pageName)
 	{
 		Object[] keys;
 
 		keys = new Object[] { pageName,
-                              application.getLocale() };
+                              engine.getLocale() };
 
 		// Don't make a copy, this array is just for the MultiKey.
 
@@ -170,7 +170,7 @@ public class PageSource
 
 	*/
 
-	public IPage getPage(IApplication application, String pageName, IMonitor monitor)
+	public IPage getPage(IEngine engine, String pageName, IMonitor monitor)
 	throws PageLoaderException
 	{
 		Object key;
@@ -179,7 +179,7 @@ public class PageSource
 		String resource;
 		PageSpecification specification;
 
-		key = buildKey(application, pageName);
+		key = buildKey(engine, pageName);
 
 		if (pool != null)
             result = (IPage)pool.get(key);
@@ -192,9 +192,9 @@ public class PageSource
 			// Ok, need to load the page.  Note that we should also pool the page loader, instead
 			// we inneficiently create - use - discard it.
 
-			loader = new PageLoader(this, application);
+			loader = new PageLoader(this, engine);
 
-			specification = application.getSpecification().getPageSpecification(pageName);
+			specification = engine.getSpecification().getPageSpecification(pageName);
 
 			if (specification == null)
 				throw new ApplicationRuntimeException(
@@ -209,9 +209,9 @@ public class PageSource
 				monitor.pageCreateEnd(pageName);
 		}
 
-        // Whether its new or reused, it must join the active application.
+        // Whether its new or reused, it must join the engine.
 
-		result.joinApplication(application);
+		result.attach(engine);
 
 		return result;
 	}
@@ -223,7 +223,7 @@ public class PageSource
 
 	public void releasePage(IPage page)
 	{
-		page.detachFromApplication();
+		page.detach();
         
         if (pool != null)
         {

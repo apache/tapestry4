@@ -40,7 +40,8 @@ import java.util.*;
  * @version $Id$
  */
 
-public class BaseComponent extends AbstractComponent
+public class BaseComponent
+extends AbstractComponent
 {
 	protected static final int OUTER_INIT_SIZE = 5;
 	protected int outerCount = 0;
@@ -108,7 +109,7 @@ public class BaseComponent extends AbstractComponent
 	
 		try
 		{
-	    	templateSource = getPage().getApplication().getTemplateSource();
+	    	templateSource = getPage().getEngine().getTemplateSource();
 
 			componentTemplate = templateSource.getTemplate(this);
 		}
@@ -218,7 +219,7 @@ public class BaseComponent extends AbstractComponent
 				catch (IndexOutOfBoundsException e)
 				{
 					// Actually, the current template parser is easy enough to confuse
-					// that this could happend because the <jwc> tag is poorly formatted.
+					// that this could happen because the <jwc> tag is poorly formatted.
 
 					throw new RequestCycleException(
 						"More </jwc> tags than <jwc> tags in template.", this, cycle);

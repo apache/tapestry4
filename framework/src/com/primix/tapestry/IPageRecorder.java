@@ -57,7 +57,7 @@ public interface IPageRecorder extends ChangeObserver
     throws PageRecorderCommitException;
 
     /**
-     *  Returns an <code>Collection</code> of {@link IPageChange} objects that represent
+     *  Returns a {@link Collection} of {@link IPageChange} objects that represent
      *  the persistant state of the page.
      *
      */
@@ -70,17 +70,6 @@ public interface IPageRecorder extends ChangeObserver
 	 */
 	 
 	public boolean getHasChanges();
-
-    /**
-     *  Indicates whether the recorder is active and recording
-     *  changes.  An inactive recorder ignores changes until it is
-     *  activated.
-     *
-     *  <p>The default is false.
-     *
-     */
- 
-    public boolean isActive();
 
     /**
      *  Returns true if the recorder has observed any changes that have not
@@ -108,14 +97,6 @@ public interface IPageRecorder extends ChangeObserver
  
     public void rollback(IPage page);
  
-    /**
-     *  Activates or deactivates a recorder.  A deactivated recorder ignores
-     *  changes to page properties.
-     *
-     */
- 
-    public void setActive(boolean value);
-
     /**
      *  Invoked to lock or unlock the recorder.  Recoders are locked
      *  after they are commited, and stay locked until
