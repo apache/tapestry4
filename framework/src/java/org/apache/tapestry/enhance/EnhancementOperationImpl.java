@@ -56,8 +56,6 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
     private Class _baseClass;
 
-    private ClassFactory _classFactory;
-
     private ClassFab _classFab;
 
     private Set _claimedProperties = new HashSet();
@@ -109,9 +107,12 @@ public class EnhancementOperationImpl implements EnhancementOperation
         _resolver = classResolver;
         _specification = specification;
         _baseClass = baseClass;
-        _classFactory = classFactory;
 
         introspectBaseClass();
+
+        String name = newClassName();
+
+        _classFab = classFactory.newClass(name, _baseClass);
     }
 
     public String toString()
@@ -173,12 +174,12 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
     public void addField(String name, Class type)
     {
-        classFab().addField(name, type);
+        _classFab.addField(name, type);
     }
 
     public void addField(String name, Class type, Object value)
     {
-        classFab().addField(name, type);
+        _classFab.addField(name, type);
 
         int x = addConstructorParameter(type, value);
 
@@ -251,7 +252,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
     public void addMethod(int modifier, MethodSignature sig, String methodBody)
     {
-        classFab().addMethod(modifier, sig, methodBody);
+        _classFab.addMethod(modifier, sig, methodBody);
     }
 
     public Class getBaseClass()
@@ -318,16 +319,6 @@ public class EnhancementOperationImpl implements EnhancementOperation
         return _constructorBuilder;
     }
 
-    public boolean hasEnhancements()
-    {
-        return _classFab != null;
-    }
-
-    public void forceEnhancement()
-    {
-        classFab();
-    }
-
     /**
      * Returns an object that can be used to construct instances of the enhanced component subclass.
      * This should only be called once.
@@ -347,9 +338,6 @@ public class EnhancementOperationImpl implements EnhancementOperation
     private void finalizeEnhancedClass()
     {
         finalizeIncompleteMethods();
-
-        if (_classFab == null)
-            return;
 
         if (_constructorBuilder != null)
         {
@@ -376,46 +364,17 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
             builder.end();
 
-            classFab().addMethod(Modifier.PUBLIC, sig, builder.toString());
+            _classFab.addMethod(Modifier.PUBLIC, sig, builder.toString());
         }
     }
 
     private Constructor findConstructor()
     {
-        if (_classFab == null)
-            return findEmptyConstructorInBaseClass();
-
         Class componentClass = _classFab.createClass();
 
         // The fabricated base class always has exactly one constructor
 
         return componentClass.getConstructors()[0];
-    }
-
-    public Constructor findEmptyConstructorInBaseClass()
-    {
-        try
-        {
-            return _baseClass.getConstructor(new Class[0]);
-        }
-        catch (NoSuchMethodException ex)
-        {
-            throw new ApplicationRuntimeException(EnhanceMessages.missingConstructor(_baseClass),
-                    ex);
-        }
-
-    }
-
-    private ClassFab classFab()
-    {
-        if (_classFab == null)
-        {
-            String name = newClassName();
-
-            _classFab = _classFactory.newClass(name, _baseClass);
-        }
-
-        return _classFab;
     }
 
     static int _uid = 0;
@@ -428,7 +387,8 @@ public class EnhancementOperationImpl implements EnhancementOperation
         return "$" + baseName.substring(dotx + 1) + "_" + _uid++;
     }
 
-    public void extendMethodImplementation  (Class interfaceClass, MethodSignature methodSignature, String code)
+    public void extendMethodImplementation(Class interfaceClass, MethodSignature methodSignature,
+            String code)
     {
         addInterfaceIfNeeded(interfaceClass);
 
@@ -452,7 +412,7 @@ public class EnhancementOperationImpl implements EnhancementOperation
         if (_addedInterfaces.contains(interfaceClass))
             return;
 
-        classFab().addInterface(interfaceClass);
+        _classFab.addInterface(interfaceClass);
         _addedInterfaces.add(interfaceClass);
     }
 
