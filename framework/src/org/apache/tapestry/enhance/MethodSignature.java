@@ -36,7 +36,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  *  in Sets or as Map keys.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

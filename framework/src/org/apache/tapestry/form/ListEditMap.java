@@ -80,7 +80,6 @@ import org.apache.tapestry.Tapestry;
  *  to {@link #updateSet(Set, boolean)}.
  * 
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

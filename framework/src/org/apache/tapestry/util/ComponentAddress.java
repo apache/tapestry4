@@ -35,7 +35,6 @@ import org.apache.tapestry.IRequestCycle;
  * <p>This situation often occurs when the component used via IRender contains
  * Direct or Action links.
  * 
- * @version $Id$
  * @author mindbridge
  * @since 2.2
  * 

@@ -25,7 +25,6 @@ import org.apache.tapestry.Tapestry;
  *  of the components in the tree.
  * 
  *  @author mindbridge
- *  @version $Id$
  *  @since 3.0
  */
 public class ComponentTreeWalker

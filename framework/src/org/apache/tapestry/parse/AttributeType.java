@@ -26,7 +26,6 @@ import org.apache.commons.lang.enum.Enum;
  *  to actually do something with the TemplateAttribute, based on type.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

@@ -22,7 +22,6 @@ package org.apache.tapestry.form;
  *  This assumes that the possible values for the Strings will remain constant between
  *  request cycles.
  *
- *  @version $Id$
  *  @author Howard Lewis Ship
  * 
  **/

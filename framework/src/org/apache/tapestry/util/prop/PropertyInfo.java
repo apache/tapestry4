@@ -20,7 +20,6 @@ package org.apache.tapestry.util.prop;
  * 
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.2
  *
  **/

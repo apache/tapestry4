@@ -32,7 +32,6 @@ import org.apache.tapestry.request.ResponseOutputStream;
  *  @see org.apache.tapestry.IEngine#getService(String)
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

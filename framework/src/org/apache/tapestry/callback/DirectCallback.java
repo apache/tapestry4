@@ -24,7 +24,6 @@ import org.apache.tapestry.Tapestry;
 /**
  *  Simple callback for re-invoking a {@link IDirect} component trigger..
  *
- *  @version $Id$
  *  @author Howard Lewis Ship
  *  @since 0.2.9
  *

@@ -25,7 +25,6 @@ import org.apache.tapestry.IRequestCycle;
  *  error messages.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *
  **/
 

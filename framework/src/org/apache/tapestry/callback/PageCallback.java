@@ -69,7 +69,6 @@ import org.apache.tapestry.IRequestCycle;
  *  }    
  *  </pre>
  *
- *  @version $Id$
  *  @author Howard Lewis Ship
  *  @since 0.2.9
  *

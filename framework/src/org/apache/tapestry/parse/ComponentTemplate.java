@@ -22,7 +22,6 @@ package org.apache.tapestry.parse;
  *  the template was parsed (useful during debugging).
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

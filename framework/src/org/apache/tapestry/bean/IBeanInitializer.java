@@ -21,7 +21,6 @@ import org.apache.tapestry.IBeanProvider;
  *  Interface for a set of classes used to initialize helper beans.
  *
  *  @author Howard Ship
- *  @version $Id$
  *  @since 1.0.5
  * 
  **/

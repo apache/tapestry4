@@ -28,7 +28,6 @@ import org.apache.tapestry.engine.ILink;
  * @see org.apache.tapestry.engine.ExternalService
  *
  * @author Malcolm Edgar
- * @version $Id$
  *
  **/
 

@@ -27,7 +27,6 @@ import org.apache.tapestry.IRequestCycle;
  *  <p>Callbacks must be {@link Serializable}, to ensure that they can be stored
  *  between request cycles.
  *
- *  @version $Id$
  *  @author Howard Lewis Ship
  *  @since 0.2.9
  *

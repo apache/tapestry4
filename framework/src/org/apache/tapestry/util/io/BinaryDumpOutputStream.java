@@ -28,7 +28,6 @@ import java.io.Writer;
  * be introduced.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

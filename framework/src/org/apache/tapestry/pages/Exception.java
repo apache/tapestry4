@@ -22,7 +22,6 @@ import org.apache.tapestry.util.exception.ExceptionDescription;
  *  Default exception reporting page.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

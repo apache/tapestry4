@@ -22,7 +22,6 @@ import org.apache.hivemind.ApplicationRuntimeException;
  *  rewound.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  **/
 
 public class RenderRewoundException extends ApplicationRuntimeException

@@ -20,7 +20,6 @@ import javax.servlet.jsp.JspException;
  *  Base class for tags which simply insert a URL into the output.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

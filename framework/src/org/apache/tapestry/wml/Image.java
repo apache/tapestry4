@@ -23,7 +23,6 @@ import org.apache.tapestry.IRequestCycle;
  *  The Image component indicates that an image is to be included in the text flow. Image layout is done within the
  *  context of normal text layout.
  *
- *  @version $Id$
  *  @author David Solis
  *  @since 3.0
  *

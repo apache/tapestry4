@@ -37,7 +37,6 @@ import org.apache.tapestry.util.StringSplitter;
  *
  *
  *  @author Howard Ship
- *  @version $Id$
  * 
  **/
 

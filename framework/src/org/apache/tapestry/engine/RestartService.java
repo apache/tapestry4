@@ -29,7 +29,6 @@ import org.apache.tapestry.request.ResponseOutputStream;
  *  and redirects to the Tapestry application servlet URL (invoking the {@link HomeService}).
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.9
  *
  **/

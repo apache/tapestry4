@@ -25,7 +25,6 @@ import org.apache.tapestry.util.pool.IPoolable;
  *  or the binding returns null, the default value is returned.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.5
  * 
  **/

@@ -22,7 +22,6 @@ import org.apache.tapestry.IMarkupWriter;
  *  is discarded anyway.
  *
  *  @author Howard Lewis Ship, David Solis
- *  @version $Id$
  *  @since 0.2.9
  *
  **/

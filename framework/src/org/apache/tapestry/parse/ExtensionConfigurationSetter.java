@@ -21,7 +21,6 @@ import org.apache.tapestry.spec.IExtensionSpecification;
  * Used to hold data about a &lt;configure&gt; element while it is being parsed.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  */
 class ExtensionConfigurationSetter extends BaseLocatable
 {

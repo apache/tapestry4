@@ -27,7 +27,6 @@ import org.apache.tapestry.form.AbstractFormComponent;
  *  All such components must be wrapped (directly or indirectly) by
  *  a {@link Go} component.
  *
- *  @version $Id$
  *  @author David Solis
  *  @since 3.0
  *

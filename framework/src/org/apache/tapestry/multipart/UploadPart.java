@@ -29,7 +29,6 @@ import org.apache.tapestry.request.IUploadFile;
  *  Portion of a multi-part request representing an uploaded file.
  *
  *  @author Joe Panico
- *  @version $Id$
  *  @since 2.0.1
  *
  **/

@@ -30,7 +30,6 @@ import org.apache.tapestry.util.prop.OgnlUtils;
  *  Subclasses add in the ability to clear parameters.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.0.3
  * 
  **/

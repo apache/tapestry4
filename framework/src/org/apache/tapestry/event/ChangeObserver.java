@@ -21,7 +21,6 @@ package org.apache.tapestry.event;
  * in the old value.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  * 
  **/
 

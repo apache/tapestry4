@@ -35,7 +35,6 @@ import org.apache.tapestry.util.PropertyHolderPropertySource;
  *  property_en) and will look at the property itself only at the end.  
  *  
  *  @author mb
- *  @version $Id$
  *  @since 3.1
  */
 public class DefaultComponentPropertySource implements IPropertySource

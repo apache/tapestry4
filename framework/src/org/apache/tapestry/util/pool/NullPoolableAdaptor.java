@@ -19,7 +19,6 @@ package org.apache.tapestry.util.pool;
  *  have no special behavior related to being pooled.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

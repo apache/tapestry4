@@ -25,7 +25,6 @@ import org.apache.tapestry.IMarkupWriter;
  *  methods.  An unlikely exception would be a deck that was not based
  *  on a template.
  *
- *  @version $Id$
  *  @author David Solis
  *  @since 0.2.9
  * 

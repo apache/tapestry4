@@ -30,7 +30,6 @@ import org.apache.hivemind.Location;
  *
  *  @see TokenType#OPEN
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

@@ -26,7 +26,6 @@ import org.apache.hivemind.Location;
  *  elements.  The results are trimmed.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 0.2.9
  * 
  **/

@@ -40,7 +40,6 @@ import org.apache.tapestry.engine.IScriptSource;
  *
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

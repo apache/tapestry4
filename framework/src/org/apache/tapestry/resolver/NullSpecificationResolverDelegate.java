@@ -22,7 +22,6 @@ import org.apache.tapestry.spec.IComponentSpecification;
  *  Stand-in class used when the application fails to specify an actual delegate.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

@@ -27,7 +27,6 @@ import org.apache.tapestry.spec.IComponentSpecification;
  *  Implementations of this interface must be threadsafe.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  * 
  **/

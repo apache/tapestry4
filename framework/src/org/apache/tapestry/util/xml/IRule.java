@@ -26,7 +26,6 @@ import org.xml.sax.Attributes;
  * rule stack (if elements can be recusively nested).
  *
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  **/
 

@@ -19,7 +19,6 @@ package org.apache.tapestry;
  *  action service.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.1
  */
 

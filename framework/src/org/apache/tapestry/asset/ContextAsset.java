@@ -30,7 +30,6 @@ import org.apache.tapestry.resource.ContextResource;
  *  the application.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  **/
 
 public class ContextAsset extends AbstractAsset implements IAsset

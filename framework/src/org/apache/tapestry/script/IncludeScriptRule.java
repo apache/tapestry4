@@ -23,7 +23,6 @@ import org.xml.sax.Attributes;
  * from a &lt;include-script&gt; element, which contains no content.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 class IncludeScriptRule extends BaseRule

@@ -25,7 +25,6 @@ import org.apache.tapestry.util.IPropertyHolder;
  *  A specification of a helper bean for a component.
  *
  * @author glongman@intelligentworks.com
- * @version $Id$
  */
 public interface IBeanSpecification extends IPropertyHolder, LocationHolder, Locatable
 {

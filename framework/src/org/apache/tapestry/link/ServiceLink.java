@@ -26,7 +26,6 @@ import org.apache.tapestry.engine.ILink;
  *  [<a href="../../../../../ComponentReference/ServiceLink.html">Component Reference</a>]
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *
  **/
 

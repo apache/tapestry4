@@ -22,7 +22,6 @@ import org.apache.commons.lang.enum.Enum;
  *  @see IAssetSpecification
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

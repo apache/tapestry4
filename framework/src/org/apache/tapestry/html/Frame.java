@@ -28,7 +28,6 @@ import org.apache.tapestry.engine.ILink;
  *  [<a href="../../../../../ComponentReference/Frame.html">Component Reference</a>]
  * 
  *  @author Howard Lewis Ship
- *  @version $Id$
  *
  **/
 

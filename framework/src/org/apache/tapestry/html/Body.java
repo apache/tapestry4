@@ -39,7 +39,6 @@ import org.apache.tapestry.util.IdAllocator;
  *  [<a href="../../../../../ComponentReference/Body.html">Component Reference</a>]
  * 
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

@@ -35,7 +35,6 @@ import org.apache.tapestry.util.pool.Pool;
  *  <a href="http://jakarta.apache.org/bsf">Bean Scripting Framework</a>.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

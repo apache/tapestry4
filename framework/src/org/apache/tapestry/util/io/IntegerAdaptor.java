@@ -19,7 +19,6 @@ package org.apache.tapestry.util.io;
  *  characters, so its the very simplest conversion of all!
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *
  **/
 

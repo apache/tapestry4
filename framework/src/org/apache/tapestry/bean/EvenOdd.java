@@ -19,7 +19,6 @@ package org.apache.tapestry.bean;
  *  is often used in the Inspector pages to make the class of a &lt;tr&gt; alternate
  *  for presentation reasons.
  *
- *  @version $Id$
  *  @author Howard Lewis Ship
  *
  **/

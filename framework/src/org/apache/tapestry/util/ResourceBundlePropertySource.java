@@ -23,7 +23,6 @@ import org.apache.tapestry.engine.IPropertySource;
  *  A property source that is based on a {@link java.util.ResourceBundle}.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

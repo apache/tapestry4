@@ -21,7 +21,6 @@ import org.apache.tapestry.util.IPropertyHolder;
  * {@link org.apache.tapestry.util.IPropertyHolder}, during parsing.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  */
 
 class PropertyValueSetter

@@ -22,7 +22,6 @@ import org.apache.hivemind.LocationHolder;
  *  to create a subclass with the necessary instance variables and methods.  
  *  
  * @author glongman@intelligentworks.com
- * @version $Id$
  */
 public interface IPropertySpecification extends LocationHolder
 {

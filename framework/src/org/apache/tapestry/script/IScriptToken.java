@@ -22,7 +22,6 @@ import org.apache.hivemind.Locatable;
  *  {@link org.apache.tapestry.IScript}.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

@@ -23,7 +23,6 @@ import org.apache.tapestry.link.ILinkRenderer;
  *
  *  The value attribute is reserved.
  *
- *  @version $Id$
  *  @author David Solis
  *  @since 3.0
  *

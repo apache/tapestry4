@@ -27,7 +27,6 @@ import org.apache.tapestry.engine.ILink;
  *  additional handling.
  *
  *  @author Howard Lewis Ship, David Solis
- *  @version $Id$
  *  @since 3.0
  **/
 

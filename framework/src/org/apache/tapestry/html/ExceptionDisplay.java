@@ -27,7 +27,6 @@ import org.apache.tapestry.util.exception.ExceptionDescription;
  *  [<a href="../../../../../ComponentReference/ExceptionDisplay.html">Component Reference</a>]
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

@@ -82,7 +82,6 @@ import org.apache.tapestry.util.StringSplitter;
  * version number is incremented from 0 to 1.
  * 
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

@@ -72,7 +72,6 @@ import org.apache.tapestry.spec.IPropertySpecification;
  *  multithreading issues.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

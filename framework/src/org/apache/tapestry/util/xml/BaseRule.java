@@ -22,7 +22,6 @@ import org.xml.sax.Attributes;
  * does nothing.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  **/
 public class BaseRule implements IRule

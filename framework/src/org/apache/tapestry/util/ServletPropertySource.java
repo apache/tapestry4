@@ -25,7 +25,6 @@ import org.apache.tapestry.engine.IPropertySource;
  *  <code>web.xml</code> deployment descriptor.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.3
  *
  **/ 

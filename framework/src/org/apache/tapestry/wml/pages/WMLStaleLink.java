@@ -22,7 +22,6 @@ import org.apache.tapestry.wml.Deck;
  *  that is displayed as part of the page.
  *
  *  @author David Solis
- *  @version $Id$
  *  @since 3.0
  *
  **/

@@ -27,7 +27,6 @@ import org.apache.tapestry.IScriptProcessor;
  *  blocks created by the script tokens.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 0.2.9
  * 
  **/

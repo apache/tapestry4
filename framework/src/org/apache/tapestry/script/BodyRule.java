@@ -22,7 +22,6 @@ import org.xml.sax.Attributes;
  * a &lt;body&gt; element, which contains full content.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 class BodyRule extends AbstractTokenRule

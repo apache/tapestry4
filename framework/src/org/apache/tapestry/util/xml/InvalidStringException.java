@@ -23,7 +23,6 @@ import org.apache.hivemind.Resource;
  *  during document parsing
  *
  *  @author Geoffrey Longman
- *  @version $Id$
  *  @since 2.2
  *
  **/

@@ -42,7 +42,6 @@ import org.apache.tapestry.spec.IComponentSpecification;
  *  Basic implementation of the {@link IBeanProvider} interface.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.4
  **/
 

@@ -21,7 +21,6 @@ import java.io.Reader;
  * A Reader that provides some additional functionality, such as peek().
  * 
  * @author mb
- * @version $Id$
  * @since 3.1
  */
 public class ExtendedReader extends Reader

@@ -38,7 +38,6 @@ import org.apache.tapestry.html.Body;
  *  Abstract base class for {@link IValidator}.  Supports a required and locale property.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.8
  *
  **/

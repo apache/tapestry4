@@ -21,7 +21,6 @@ import org.apache.hivemind.Location;
  *  dynamic components.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

@@ -82,7 +82,6 @@ import org.apache.tapestry.util.prop.OgnlUtils;
  *  have the component itself involved in these determinations.
  *  
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.2
  * 
  **/

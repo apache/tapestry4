@@ -21,7 +21,6 @@ import org.apache.hivemind.Location;
  *  Exception thrown indicating a problem parsing an HTML template.
  *
  *  @author Howard Ship
- *  @version $Id$
  * 
  **/
 

@@ -41,7 +41,6 @@ import org.apache.tapestry.Tapestry;
  *  {@link EnumPropertySelectionModel} class simplifies this.
  *
  *
- *  @version $Id$
  *  @author Howard Lewis Ship
  *
  **/

@@ -22,7 +22,6 @@ import org.apache.hivemind.Location;
  *  are automatically assigned to component properties by the framework).
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.0.3
  *
  **/

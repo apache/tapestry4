@@ -25,7 +25,6 @@ import org.apache.tapestry.IRequestCycle;
  *  [<a href="../../../../../ComponentReference/Delegator.html">Component Reference</a>]
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

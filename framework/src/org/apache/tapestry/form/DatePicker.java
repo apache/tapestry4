@@ -42,7 +42,6 @@ import org.apache.tapestry.html.Body;
  *
  * @author Paul Geerts
  * @author Malcolm Edgar
- * @version $Id$
  * @since 2.2
  * 
  */

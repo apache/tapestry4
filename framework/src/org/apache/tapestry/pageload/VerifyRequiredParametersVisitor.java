@@ -27,7 +27,6 @@ import org.apache.tapestry.spec.IParameterSpecification;
  *  and if they are not, throw an exception.
  * 
  *  @author mindbridge
- *  @version $Id$
  *  @since 3.0
  */
 public class VerifyRequiredParametersVisitor implements IComponentVisitor

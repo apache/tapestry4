@@ -23,7 +23,6 @@ import org.apache.commons.lang.enum.EnumUtils;
  *  Adaptor for {@link Enum} classes.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

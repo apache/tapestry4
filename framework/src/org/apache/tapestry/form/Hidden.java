@@ -30,7 +30,6 @@ import org.apache.tapestry.util.io.DataSqueezer;
  *  [<a href="../../../../../ComponentReference/Hidden.html">Component Reference</a>]
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

@@ -52,7 +52,6 @@ import org.apache.tapestry.Tapestry;
  *  @see org.apache.tapestry.engine.IPageLoader
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *
  **/
 

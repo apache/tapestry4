@@ -20,7 +20,6 @@ import java.util.EventListener;
  *  An interface for objects that want to take part in the validation of the page.
  *
  *  @author Mindbridge
- *  @version $Id$
  *  @since 3.0
  **/
 

@@ -36,7 +36,6 @@ import org.apache.tapestry.util.text.ICharacterTranslatorSource;
  *  and use it as an alternative to the simple-minded <b>&lt;%= ... %&gt;</b>
  *  construct, espcially because it can handle null more cleanly.
  *
- *  @version $Id$
  *  @author David Solis
  *  @since 0.2.9
  * 

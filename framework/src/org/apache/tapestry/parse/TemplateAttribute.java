@@ -22,7 +22,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  *  value is based on the type.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

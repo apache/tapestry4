@@ -18,7 +18,6 @@ package org.apache.tapestry.multipart;
  *  Common interface for data parts from multipart form submissions.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.0.1
  * 
  **/

@@ -28,7 +28,6 @@ import org.apache.tapestry.util.text.MarkupCharacterTranslator;
  * Some code borrowed from WMLWriter (by David Solis)
  * 
  * @author mb
- * @version $Id$
  * @since 3.1
  */
 public class WMLCharacterTranslatorSource implements ICharacterTranslatorSource

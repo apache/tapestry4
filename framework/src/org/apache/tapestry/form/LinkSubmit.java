@@ -29,7 +29,6 @@ import org.apache.tapestry.html.Body;
  *  [<a href="../../../../../ComponentReference/LinkSubmit.html">Component Reference</a>]
  *
  *  @author Richard Lewis-Shell
- *  @version $Id: Submit.java,v 1.6 2003/04/21 13:15:41 glongman Exp $
  * 
  **/
 

@@ -22,7 +22,6 @@ import org.apache.hivemind.Location;
  *  from an expression attribute, rather than a body of full content.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.2
  *
  **/

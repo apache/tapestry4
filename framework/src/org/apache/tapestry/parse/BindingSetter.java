@@ -23,7 +23,6 @@ import org.apache.tapestry.spec.IContainedComponent;
  * a &lt;binding&gt; or &lt;static-binding&gt; is being parsed.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  */
 class BindingSetter extends BaseLocatable
 {

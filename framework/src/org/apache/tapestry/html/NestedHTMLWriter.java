@@ -25,7 +25,6 @@ import org.apache.tapestry.IMarkupWriter;
  *  closed.
  *
  *  @author Howard Ship
- *  @version $Id$
  */
 
 public class NestedHTMLWriter extends HTMLWriter

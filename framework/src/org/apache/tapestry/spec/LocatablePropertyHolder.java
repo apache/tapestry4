@@ -25,7 +25,6 @@ import org.apache.tapestry.util.BasePropertyHolder;
  *  used by all the specification classes.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

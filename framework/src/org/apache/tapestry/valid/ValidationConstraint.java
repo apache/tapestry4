@@ -21,7 +21,6 @@ import org.apache.commons.lang.enum.Enum;
  *  that may be violated.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

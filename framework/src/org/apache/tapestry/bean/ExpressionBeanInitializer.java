@@ -24,7 +24,6 @@ import org.apache.tapestry.util.prop.OgnlUtils;
  *  to the bean's {@link IComponent}).
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.2
  *
  **/

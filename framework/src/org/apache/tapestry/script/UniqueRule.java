@@ -22,7 +22,6 @@ import org.xml.sax.Attributes;
  * from an &lt;unique&gt; element, which contains full content.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 

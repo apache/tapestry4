@@ -27,7 +27,6 @@ import org.apache.tapestry.request.ResponseOutputStream;
  *  exposed to {@link IEngineService engine services}.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.9
  *
  */

@@ -20,7 +20,6 @@ import org.apache.tapestry.IRequestCycle;
  *  The postfield element specifies a field name and value for transmission to an origin server during a URL request.
  *  @see Go
  *
- *  @version $Id$
  *  @author David Solis
  *  @since 3.0
  *

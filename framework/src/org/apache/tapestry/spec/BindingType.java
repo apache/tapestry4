@@ -23,7 +23,6 @@ import org.apache.commons.lang.enum.Enum;
  *
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

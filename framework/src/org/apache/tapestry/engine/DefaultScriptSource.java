@@ -30,7 +30,6 @@ import org.apache.tapestry.util.xml.DocumentParseException;
  *  memory once parsed.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.2
  * 
  **/

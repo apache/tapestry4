@@ -100,7 +100,6 @@ import org.apache.tapestry.util.IdAllocator;
  *  value has any markup that should not be escaped.
  *
  *  @author Howard Lewis Ship, Geoff Longman
- *  @version $Id$
  * 
  **/
 

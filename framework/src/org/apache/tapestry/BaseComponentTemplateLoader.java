@@ -51,7 +51,6 @@ import org.apache.tapestry.spec.IContainedComponent;
  *  {@link org.apache.tapestry.BaseComponent#addOuter(IRender)}.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  */
 

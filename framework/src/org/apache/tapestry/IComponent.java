@@ -30,7 +30,6 @@ import org.apache.tapestry.spec.IComponentSpecification;
  *
  *
  *  @author Howard Leiws Ship
- *  @version $Id$
  * 
  **/
 

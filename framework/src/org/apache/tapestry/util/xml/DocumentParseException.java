@@ -27,7 +27,6 @@ import org.xml.sax.SAXParseException;
  *  @see org.apache.tapestry.parse.SpecificationParser
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 0.2.10
  *
  **/

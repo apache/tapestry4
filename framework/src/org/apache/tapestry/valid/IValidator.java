@@ -24,7 +24,6 @@ import org.apache.tapestry.form.IFormComponent;
  *  (convert strings to object values and validate them).
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.8
  *
  **/

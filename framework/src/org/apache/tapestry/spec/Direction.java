@@ -24,7 +24,6 @@ import org.apache.tapestry.Tapestry;
  *  form style processing).
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.0.3
  *
  */

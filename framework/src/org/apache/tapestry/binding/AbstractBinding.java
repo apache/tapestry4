@@ -26,7 +26,6 @@ import org.apache.tapestry.Tapestry;
  *  Base class for {@link IBinding} implementations.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  * 
  **/
 

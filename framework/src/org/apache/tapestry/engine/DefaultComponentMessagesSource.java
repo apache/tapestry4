@@ -38,7 +38,6 @@ import org.apache.tapestry.util.text.LocalizedProperties;
  *  localized properties for a component.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.0.4
  *
  **/

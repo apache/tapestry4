@@ -113,7 +113,6 @@ import org.apache.tapestry.util.pool.Pool;
  *
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *
  **/
 

@@ -44,7 +44,6 @@ import java.util.Locale;
  *  Folders must be represented with a trailing slash.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

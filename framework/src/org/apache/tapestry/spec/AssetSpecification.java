@@ -18,7 +18,6 @@ package org.apache.tapestry.spec;
  *  Defines an internal, external or private asset.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *
  **/
 

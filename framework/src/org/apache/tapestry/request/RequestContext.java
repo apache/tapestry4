@@ -84,7 +84,6 @@ import org.apache.tapestry.util.IRenderDescription;
  *  Java Tree</a>.
  *
  *
- *  @version $Id$
  *  @author Howard Lewis Ship
  * 
  **/

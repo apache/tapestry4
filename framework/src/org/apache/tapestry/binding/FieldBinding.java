@@ -38,7 +38,6 @@ import org.apache.tapestry.Tapestry;
  *  reflection) will only be invoked once.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  * @deprecated To be removed in 2.5 with no replacement.  Can be accomplished using OGNL expressions.
  * 
  **/

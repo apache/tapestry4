@@ -33,7 +33,6 @@ import org.apache.tapestry.util.StringSplitter;
 /**
  *  Abstract base class implementing the {@link IPage} interface.
  *
- *  @version $Id$
  *  @author Howard Lewis Ship, David Solis
  *  @since 0.2.9
  * 

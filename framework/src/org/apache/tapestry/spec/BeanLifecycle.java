@@ -21,7 +21,6 @@ import org.apache.commons.lang.enum.Enum;
  *  An {@link Enum} of the different possible lifecycles for a JavaBean.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.4
  * 
  **/

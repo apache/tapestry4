@@ -25,7 +25,6 @@ import org.apache.hivemind.Location;
  *  subclasses provide interpretations on the token.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

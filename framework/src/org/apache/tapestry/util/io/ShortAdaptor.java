@@ -18,7 +18,6 @@ package org.apache.tapestry.util.io;
  *  Squeezes a {@link Short}.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *
  **/
 

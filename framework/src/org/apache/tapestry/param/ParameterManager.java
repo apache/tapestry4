@@ -40,7 +40,6 @@ import org.apache.tapestry.util.prop.PropertyInfo;
  *  {@link IComponent}.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.0.3
  *
  **/

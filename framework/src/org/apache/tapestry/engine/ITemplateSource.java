@@ -27,7 +27,6 @@ import org.apache.tapestry.parse.ComponentTemplate;
  * It may maintain templates in memory.
  *
  * @author Howard Ship
- * @version $Id$
  * 
  **/
 

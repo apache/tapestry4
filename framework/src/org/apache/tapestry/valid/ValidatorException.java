@@ -20,7 +20,6 @@ import org.apache.tapestry.IRender;
  *  Thrown by a {@link IValidator} when submitted input is not valid.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.8
  *
  **/

@@ -21,7 +21,6 @@ import org.apache.tapestry.IScript;
  *  Provides access to an {@link IScript}.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.2
  **/
 

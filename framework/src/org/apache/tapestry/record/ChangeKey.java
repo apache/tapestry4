@@ -21,7 +21,6 @@ import org.apache.commons.lang.builder.HashCodeBuilder;
  *  Used to identify a property change.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

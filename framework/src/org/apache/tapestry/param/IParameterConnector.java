@@ -23,7 +23,6 @@ import org.apache.tapestry.IRequestCycle;
  *  then cleared after the component is rendered.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.0.3
  * 
  **/

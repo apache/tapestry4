@@ -35,7 +35,6 @@ import org.apache.oro.text.regex.Perl5Matcher;
  *  caching compiled patterns.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

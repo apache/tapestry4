@@ -22,7 +22,6 @@ import org.apache.hivemind.Location;
  * <p>It may be useful to cache static bindings the way {@link FieldBinding}s are cached.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  * 
  **/
 

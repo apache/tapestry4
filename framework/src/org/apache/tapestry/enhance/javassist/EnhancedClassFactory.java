@@ -31,7 +31,6 @@ import org.apache.tapestry.enhance.IEnhancedClassFactory;
  *  Common functionality objects for Javassist enhancement are stored here.
  * 
  *  @author Mindbridge
- *  @version $Id$
  *  @since 3.0
  */
 public class EnhancedClassFactory implements IEnhancedClassFactory

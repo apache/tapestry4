@@ -21,7 +21,6 @@ import org.apache.tapestry.IRequestCycle;
  *  Implementation of {@link IPropertySelectionRenderer} that
  *  produces a &lt;select&gt; element (containing &lt;option&gt; elements).
  *
- *  @version $Id$
  *  @author Howard Lewis Ship
  *
  **/

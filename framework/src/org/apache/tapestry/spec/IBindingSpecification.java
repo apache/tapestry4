@@ -23,7 +23,6 @@ import org.apache.hivemind.LocationHolder;
  *  matches a bindable property of the contined component) is implicitly known.
  *
  * @author glongman@intelligentworks.com
- * @version $Id$
  */
 public interface IBindingSpecification extends LocationHolder, Locatable
 {

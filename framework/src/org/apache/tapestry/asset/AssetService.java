@@ -49,7 +49,6 @@ import org.apache.tapestry.request.ResponseOutputStream;
  *  of the application!
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  **/
 
 public class AssetService extends AbstractService

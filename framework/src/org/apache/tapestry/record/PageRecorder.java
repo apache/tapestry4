@@ -33,7 +33,6 @@ import org.apache.tapestry.util.prop.OgnlUtils;
  *  and how to persist the data.
  *
  * @author Howard Ship
- * @version $Id$
  * 
  **/
 

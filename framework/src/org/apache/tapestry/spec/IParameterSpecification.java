@@ -23,7 +23,6 @@ import org.apache.hivemind.LocationHolder;
  *  <p>TBD: Identify arrays in some way.
  * 
  * @author glongman@intelligentworks.com
- * @version $Id$
  */
 public interface IParameterSpecification extends LocationHolder
 {

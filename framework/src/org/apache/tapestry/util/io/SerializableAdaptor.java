@@ -39,7 +39,6 @@ import org.apache.tapestry.Tapestry;
  *  <p>TBD:  Work out some class loader issues involved in deserializing.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

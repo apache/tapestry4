@@ -22,7 +22,6 @@ import org.apache.tapestry.wml.Deck;
  *  Default exception reporting page for WML applications.
  *
  *  @author David Solis
- *  @version $Id$
  *  @since 3.0
  * 
  **/

@@ -38,7 +38,6 @@ import org.apache.tapestry.html.Body;
  *  text fields in a form, the validator may be shared my multiple elements as desired.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *
  **/
 

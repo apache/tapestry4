@@ -22,7 +22,6 @@ import org.apache.hivemind.Resource;
  *  A token for included scripts.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.5
  * 
  **/

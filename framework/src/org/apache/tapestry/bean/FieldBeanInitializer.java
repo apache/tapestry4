@@ -25,7 +25,6 @@ import org.apache.tapestry.Tapestry;
  *  Initializes a bean with the value of a public static field.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.8
  *
  **/

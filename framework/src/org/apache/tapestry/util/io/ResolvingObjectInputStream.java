@@ -28,7 +28,6 @@ import org.apache.hivemind.ClassResolver;
  *  {@link org.apache.tapestry.IResourceResolver}).
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

@@ -22,7 +22,6 @@ import java.util.List;
  *  a parameter.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.0.1
  *
  **/

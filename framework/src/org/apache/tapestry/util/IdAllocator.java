@@ -23,7 +23,6 @@ import java.util.Map;
  *  extended with a suffix to make it unique.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

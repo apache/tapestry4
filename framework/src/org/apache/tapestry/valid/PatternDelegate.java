@@ -18,7 +18,6 @@ package org.apache.tapestry.valid;
  * Implementations of this interface will provide pattern utility services.
  * 
  * @author  Harish Krishnaswamy
- * @version $Id$
  * @since   3.0
  */
 public interface PatternDelegate

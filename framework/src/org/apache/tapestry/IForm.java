@@ -26,7 +26,6 @@ import org.apache.tapestry.valid.IValidationDelegate;
  *  for forms was moved here.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.2
  **/
 

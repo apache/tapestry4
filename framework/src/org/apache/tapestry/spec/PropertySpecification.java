@@ -22,7 +22,6 @@ import org.apache.hivemind.impl.BaseLocatable;
  *  to create a subclass with the necessary instance variables and methods.  
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  * 
  **/

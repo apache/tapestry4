@@ -51,7 +51,6 @@ import org.apache.tapestry.IRequestCycle;
  * <br>}
  * </code>
  * 
- * @version $Id$
  * @author mindbridge
  * @since 2.2
  */

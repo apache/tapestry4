@@ -38,7 +38,6 @@ package org.apache.tapestry.form;
  *  be an index into an array.  For business objects, it is often the primary key
  *  of the object, expressed as a String.
  *
- *  @version $Id$
  *  @author Howard Lewis Ship
  *
  **/

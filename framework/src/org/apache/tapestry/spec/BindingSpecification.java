@@ -22,7 +22,6 @@ import org.apache.hivemind.impl.BaseLocatable;
  *  matches a bindable property of the contined component) is implicitly known.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

@@ -40,7 +40,6 @@ import org.apache.tapestry.Tapestry;
  *  (that is, evertyhing inside the &lt;body&gt; tag in the generated HTML).
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

@@ -25,7 +25,6 @@ import org.apache.tapestry.engine.IPropertySource;
  *  it possible to create a search path for property values.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.3
  *
  **/

@@ -21,7 +21,6 @@ import org.apache.tapestry.IRequestCycle;
  *  Implementation of {@link IPropertySelectionRenderer} that
  *  produces a table of radio (&lt;input type=radio&gt;) elements.
  *
- *  @version $Id$
  *  @author Howard Lewis Ship
  *
  **/

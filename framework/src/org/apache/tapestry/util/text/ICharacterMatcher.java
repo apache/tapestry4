@@ -18,7 +18,6 @@ package org.apache.tapestry.util.text;
  * An interface for determining whether a character matches a particular rule.
  * 
  * @author mb
- * @version $Id$
  * @since 3.1
  */
 public interface ICharacterMatcher 

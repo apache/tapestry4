@@ -18,7 +18,6 @@ package org.apache.tapestry.util.text;
  * An object that translates selected ASCII characters into equivalent strings.
  * 
  * @author mb
- * @version $Id$
  * @since 3.1
  */
 public class AsciiCharacterTranslator implements ICharacterTranslator

@@ -30,7 +30,6 @@ import org.apache.tapestry.Tapestry;
  *  the {@link #getStyleClass() styleClass property}.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

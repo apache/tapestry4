@@ -25,7 +25,6 @@ import java.util.StringTokenizer;
  *  This is similar to a number of other implementations of the same concept in JAF, etc.
  *  We have created this simple implementation to avoid including the whole libraries. 
  * 
- *  @version $Id$
  *  @author mindbridge
  *  @since 3.0
  **/

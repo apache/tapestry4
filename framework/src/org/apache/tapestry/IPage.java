@@ -33,7 +33,6 @@ import org.apache.tapestry.event.PageValidateListener;
  *  @see org.apache.tapestry.engine.IPageLoader
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

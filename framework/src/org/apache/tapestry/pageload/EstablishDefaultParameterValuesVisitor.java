@@ -30,7 +30,6 @@ import org.apache.tapestry.spec.IParameterSpecification;
  *  automatically add an ExpressionBinding with the default value.
  *   
  *  @author mindbridge
- *  @version $Id$
  *  @since 3.0
  */
 public class EstablishDefaultParameterValuesVisitor implements IComponentVisitor

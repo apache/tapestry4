@@ -22,7 +22,6 @@ package org.apache.tapestry;
  *  with nested elements, closing tags, etc.
  *
  *  @author Howard Ship, David Solis
- *  @version $Id$
  **/
 
 public interface IMarkupWriter

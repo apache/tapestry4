@@ -42,7 +42,6 @@ import org.apache.tapestry.request.RequestContext;
  *  the {@link IEngine engine} and the {@link RequestContext}.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

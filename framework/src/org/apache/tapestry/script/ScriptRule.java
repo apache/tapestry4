@@ -22,7 +22,6 @@ import org.xml.sax.Attributes;
  * Rule for &lt;script&gt; element.  Creates a {@link org.apache.tapestry.script.ParsedScript}.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 public class ScriptRule extends BaseRule

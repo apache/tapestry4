@@ -30,7 +30,6 @@ import org.apache.tapestry.IBeanProvider;
  *  <p>This is registered by {@link org.apache.tapestry.AbstractComponent}.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.2
  *
  **/

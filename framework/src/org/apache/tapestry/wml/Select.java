@@ -28,7 +28,6 @@ import org.apache.tapestry.Tapestry;
  *
  *  Unless multiple selections are required it is generally easier to use the {@link PropertySelection} component.
  *
- *  @version $Id$
  *  @author David Solis
  *  @since 3.0
  *

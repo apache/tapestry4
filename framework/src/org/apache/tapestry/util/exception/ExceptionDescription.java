@@ -24,7 +24,6 @@ import java.io.Serializable;
  *  Strings.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

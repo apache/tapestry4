@@ -18,7 +18,6 @@ package org.apache.tapestry.engine;
  *  A source for configuration properties.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.3
  *
  **/

@@ -35,7 +35,6 @@ import org.apache.tapestry.request.RequestContext;
  *
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

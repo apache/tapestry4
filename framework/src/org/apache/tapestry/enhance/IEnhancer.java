@@ -21,7 +21,6 @@ package org.apache.tapestry.enhance;
  *  typically in the form of adding new fields and methods.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

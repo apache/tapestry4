@@ -23,7 +23,6 @@ package org.apache.tapestry;
  *  rendering static markup text.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *
  **/
 

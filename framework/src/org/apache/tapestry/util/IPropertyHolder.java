@@ -20,7 +20,6 @@ import java.util.List;
  *  An interface that defines an object that can store named propertys.  The names
  *  and the properties are Strings.
  *
- *  @version $Id$
  *  @author Howard Lewis Ship
  *
  **/

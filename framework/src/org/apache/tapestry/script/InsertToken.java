@@ -21,7 +21,6 @@ import org.apache.hivemind.Location;
  *  routed in the symbols..
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *
  **/
 

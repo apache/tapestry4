@@ -75,7 +75,6 @@ import org.apache.tapestry.Tapestry;
  *  <p>This class is thread safe.
  *
  *
- *  @version $Id$
  *  @author Howard Lewis Ship
  * 
  **/

@@ -69,7 +69,6 @@ import org.apache.tapestry.util.JanitorThread;
  *  pooled object is stored or discarded.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *
  **/
 

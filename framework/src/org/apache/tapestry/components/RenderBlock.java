@@ -46,7 +46,6 @@ import org.apache.tapestry.IRequestCycle;
  *  in a Block.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  * 
  **/
 

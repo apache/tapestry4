@@ -23,7 +23,6 @@ import org.xml.sax.Attributes;
  * &lt;insert&gt; is a throwback to the 1.0 and 1.1 DTDs.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 class InsertRule extends AbstractTokenRule

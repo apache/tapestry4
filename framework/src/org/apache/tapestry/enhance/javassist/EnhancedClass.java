@@ -27,7 +27,6 @@ import org.apache.tapestry.enhance.IEnhancer;
  *  Represents a class to be enhanced using Javassist. 
  * 
  *  @author Mindbridge
- *  @version $Id$
  *  @since 3.0
  */
 public class EnhancedClass extends BaseEnhancedClass

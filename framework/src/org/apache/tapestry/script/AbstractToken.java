@@ -27,7 +27,6 @@ import org.apache.tapestry.util.prop.OgnlUtils;
  *  Base class for creating tokens which may contain other tokens.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 0.2.9
  * 
  **/

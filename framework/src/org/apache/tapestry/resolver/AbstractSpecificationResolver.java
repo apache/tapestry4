@@ -30,7 +30,6 @@ import org.apache.tapestry.util.pool.IPoolable;
  *  {@link org.apache.tapestry.INamespace}.  In some cases, a search is necessary.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

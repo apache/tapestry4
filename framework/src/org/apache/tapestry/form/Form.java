@@ -61,7 +61,6 @@ import org.apache.tapestry.valid.IValidationDelegate;
  *  in earlier releases, only the action service was available.
  *
  *  @author Howard Lewis Ship, David Solis
- *  @version $Id$
  **/
 
 public abstract class Form extends AbstractComponent implements IForm, IDirect

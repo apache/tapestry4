@@ -25,7 +25,6 @@ import ognl.OgnlException;
  *  of the ListenerMap.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.2
  *
  **/

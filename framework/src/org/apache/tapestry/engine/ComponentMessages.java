@@ -27,7 +27,6 @@ import org.apache.hivemind.Messages;
  *  they don't have to be synchronized).
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.0.4
  *
  **/

@@ -23,7 +23,6 @@ import org.apache.hivemind.ApplicationRuntimeException;
  *  to some arbitrary new location.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.6
  *
  **/

@@ -20,7 +20,6 @@ import java.io.IOException;
  *  Squeezes a Character.
  * 
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.2
  * 
  **/

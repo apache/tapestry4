@@ -25,7 +25,6 @@ import org.apache.tapestry.engine.BaseEngine;
  *  Exception, StaleLink and StaleSession pages.
  *
  *  @author David Solis
- *  @version $Id$
  *  @since 3.0
  * 
  **/

@@ -19,7 +19,6 @@ package org.apache.tapestry.util.pool;
  *  the buffer as it is returned to the pool.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

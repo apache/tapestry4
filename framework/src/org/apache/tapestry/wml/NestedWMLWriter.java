@@ -24,7 +24,6 @@ import org.apache.tapestry.IMarkupWriter;
  *  buffers its output, then inserts it into its parent writer when it is
  *  closed.
  *
- *  @version $Id$
  *  @author David Solis
  *  @since 0.2.9
  * 

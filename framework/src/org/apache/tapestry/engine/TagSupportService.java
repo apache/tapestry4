@@ -39,7 +39,6 @@ import org.apache.tapestry.request.ResponseOutputStream;
  *  {@link org.apache.tapestry.jsp.PageTag}.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *  @see org.apache.tapestry.jsp.URLRetriever
  * 

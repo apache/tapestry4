@@ -28,7 +28,6 @@ package org.apache.tapestry.util.pool;
  *  be buried with relatively low generation counts.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *
  **/
 

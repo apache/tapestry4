@@ -25,7 +25,6 @@ import org.apache.tapestry.IMarkupWriter;
  *  methods.  An unlikely exception would be a page that was not based
  *  on a template.
  *
- *  @version $Id$
  *  @author Howard Lewis Ship
  **/
 

@@ -21,7 +21,6 @@ import org.apache.hivemind.Location;
  *  A token for static portions of the template.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *
  **/
 

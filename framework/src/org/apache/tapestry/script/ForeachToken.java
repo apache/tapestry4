@@ -29,7 +29,6 @@ import org.apache.tapestry.Tapestry;
  *  track of the current index of the iterating collection.</p>
  *
  *  @author Howard Lewis Ship, Harish Krishnaswamy
- *  @version $Id$
  *  @since 1.0.1
  * 
  **/

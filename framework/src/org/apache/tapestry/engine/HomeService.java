@@ -33,7 +33,6 @@ import org.apache.tapestry.request.ResponseOutputStream;
  * 
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.9
  *
  **/

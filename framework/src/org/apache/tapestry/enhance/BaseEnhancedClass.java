@@ -20,7 +20,6 @@ import java.util.List;
 /**
  *
  *  @author Mindbridge
- *  @version $Id$
  *  @since 3.0
  *
  */

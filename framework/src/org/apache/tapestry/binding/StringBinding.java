@@ -24,7 +24,6 @@ import org.apache.tapestry.IComponent;
  *  @see IComponent#getString(String)
  * 
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.0.4
  *
  **/

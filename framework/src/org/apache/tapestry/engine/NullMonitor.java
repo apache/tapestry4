@@ -21,7 +21,6 @@ package org.apache.tapestry.engine;
  * 
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

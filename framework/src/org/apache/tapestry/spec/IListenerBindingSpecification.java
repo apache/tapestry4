@@ -24,7 +24,6 @@ package org.apache.tapestry.spec;
  *  the script is written in. * 
  * 
  * @author glongman@intelligentworks.com
- * @version $Id$
  * @since 3.0
  */
 public interface IListenerBindingSpecification extends IBindingSpecification

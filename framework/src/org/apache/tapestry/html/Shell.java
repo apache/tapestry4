@@ -36,7 +36,6 @@ import org.apache.tapestry.engine.ILink;
  *  <p>Specifically does <em>not</em> provide a &lt;body&gt; tag, that is
  *  usually accomplished using a {@link Body} component.
  *
- *  @version $Id$
  *  @author Howard Lewis Ship
  * 
  **/

@@ -32,7 +32,6 @@ import org.apache.tapestry.util.prop.OgnlUtils;
  *  lifecycle as the application).
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.2
  * 
  **/
