@@ -1,0 +1,13 @@
+
+function $onMouseOverName$ ()
+{
+  if (document.images)
+    document.$imageName$.src = $focusImageURL$;
+}
+
+function $onMouseOutName$ ()
+{
+  if (document.images)
+    document.$imageName$.src = $blurImageURL$;
+}
+
