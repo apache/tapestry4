@@ -43,8 +43,7 @@
   	type="java.lang.String" 
   	required="no"
   	direction="in"/>
-  	
-  <parameter name="controlsWidth" type="int" direction="in"/>
+  
   
   <parameter name="selectImage" type="org.apache.tapestry.IAsset" direction="in"/>
   <parameter name="selectDisabledImage" type="org.apache.tapestry.IAsset" direction="in"/>
