@@ -177,7 +177,7 @@ package tutorial.hello;
 
 import net.sf.tapestry.ApplicationServlet;
 
-public class HelloWorldServlet extends ApplicationServlet
+public class HelloWorldServlet extends &ApplicationServlet;
 {
   protected String getApplicationSpecificationPath()
   {
@@ -201,18 +201,20 @@ application, the specification lives with the application's class files, in the
 </para>
       <figure>
         <title>HelloWorld.application</title>
-        <programlisting><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE application PUBLIC 
+        <programlisting>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE application PUBLIC 
   "-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
-  "http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
-<application
+  "http://tapestry.sf.net/dtd/Tapestry_1_3.dtd"&gt;
+&lt;application
   name="Hello World Tutorial"
-  engine-class="net.sf.tapestry.engine.SimpleEngine">
+  engine-class="net.sf.tapestry.engine.&SimpleEngine;"&gt;
   
-  <page name="Home" 
-    specification-path="/tutorial/hello/Home.page"/>
+  &lt;page name="Home" 
+    specification-path="/tutorial/hello/Home.page"/&gt;
 
-</application>]]></programlisting>
+&lt;/application&gt;
+</programlisting>
       </figure>
       <para> 
 Our application is very simple; we give the application a name, use the standard engine, and define 
@@ -234,14 +236,14 @@ example, our component is very simple.
 </para>
       <figure>
         <title>Home.page</title>
-        <programlisting><![CDATA[
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE page-specification PUBLIC
+        <programlisting>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE page-specification PUBLIC
   "-//Howard Lewis Ship//Tapestry Specification 1.3//EN"
-  "http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+  "http://tapestry.sf.net/dtd/Tapestry_1_3.dtd"&gt;
 
-<page-specification class="net.sf.tapestry.html.BasePage"/>
-]]></programlisting>
+&lt;page-specification class="net.sf.tapestry.html.&BasePage;"/&gt;
+</programlisting>
       </figure>
       <para>
 This simply says that <classname>Home</classname> is a kind of page.  We use the supplied Tapestry class 
@@ -329,34 +331,35 @@ version of the home page.
 </para>
     <figure>
       <title>SimpleServlet.java</title>
-      <programlisting><![CDATA[
+      <programlisting>
 package tutorial.simple;
 
 import net.sf.tapestry.ApplicationServlet;
 
-public class SimpleServlet extends ApplicationServlet
+public class SimpleServlet extends &ApplicationServlet;
 {
   protected String getApplicationSpecificationPath()
   {
     return "/tutorial/simple/Simple.application";
   }
-}]]></programlisting>
+}
+</programlisting>
     </figure>
     <para>
 The application specification is also straight forward:
 </para>
     <figure>
       <title>Simple.application</title>
-      <programlisting><![CDATA[
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE application PUBLIC 
+      <programlisting>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE application PUBLIC 
   "-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
-  "http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+  "http://tapestry.sf.net/dtd/Tapestry_1_3.dtd"&gt;
 
-<application name="Simple Tutorial" engine-class="net.sf.tapestry.engine.SimpleEngine">
-  <page name="Home" specification-path="/tutorial/simple/Home.page"/>
-</application>
-]]></programlisting>
+&lt;application name="Simple Tutorial" engine-class="net.sf.tapestry.engine.&SimpleEngine;"&gt;
+  &lt;page name="Home" specification-path="/tutorial/simple/Home.page"/&gt;
+&lt;/application&gt;
+</programlisting>
     </figure>
     <para>
 Things only begin to get more interesting when we look at the HTML template for the home 
@@ -438,23 +441,24 @@ moves between the application, page and any components.
 </para>
     <figure>
       <title>Home.page</title>
-      <programlisting><![CDATA[
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE page-specification PUBLIC 
+      <programlisting>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE page-specification PUBLIC 
   "-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
-  "http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+  "http://tapestry.sf.net/dtd/Tapestry_1_3.dtd"&gt;
 
-<page-specification class="tutorial.simple.Home">
+&lt;page-specification class="tutorial.simple.Home"&gt;
 
-  <component id="insertDate" type="Insert">
-    <binding name="value" property-path="currentDate"/>
-  </component>
+  &lt;component id="insertDate" type="&Insert;"&gt;
+    &lt;binding name="value" expression="currentDate"/&gt;
+  &lt;/component&gt;
 
-  <component id="refresh" type="Page">
-    <static-binding name="page">Home</static-binding>
-  </component>
+  &lt;component id="refresh" type="&PageLink;"&gt;
+    &lt;static-binding name="page"&gt;Home&lt;/static-binding&gt;
+  &lt;/component&gt;
 
-</page-specification>]]></programlisting>
+&lt;/page-specification&gt;
+</programlisting>
     </figure>
     <para>
 Here's what all that means:  The <varname>Home</varname> page is implemented with a custom class, 
@@ -473,9 +477,9 @@ component has its <varname>value</varname> parameter bound to a JavaBeans proper
 (the page), the <varname>currentDate</varname> property.
 </para>
     <para>
-The <varname>refresh</varname> component is type &Page;, meaning it creates a 
+The <varname>refresh</varname> component is type &PageLink;, meaning it creates a 
 link to some other page in the 
-application. &Page; components have a parameter, named <varname>page</varname>, 
+application. &PageLink; components have a parameter, named <varname>page</varname>, 
 which defines the name of the 
 page to navigate to.  The name is matched against a page named in the application specification.
 </para>
@@ -489,19 +493,20 @@ That just leaves the implementation of the Home page component:
 </para>
     <figure>
       <title>Home.java</title>
-      <programlisting><![CDATA[
+      <programlisting>
 package tutorial.simple;
 
 import java.util.Date;
 import net.sf.tapestry.html.BasePage;
 
-public class Home extends BasePage
+public class Home extends &BasePage;
 {
   public Date getCurrentDate()
   {
     return new Date();
   }
-}]]></programlisting>
+}
+</programlisting>
     </figure>
     <para>
       <classname>Home</classname> implements a  read-only JavaBeans property, <varname>currentDate</varname>.  
@@ -633,7 +638,7 @@ the visit object.
   "-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
   "http://tapestry.sf.net/dtd/Tapestry_1_3.dtd"&gt;
 
-&lt;application name="Tapestry Hangman" engine-class="net.sf.tapestry.engine.SimpleEngine"&gt; 
+&lt;application name="Tapestry Hangman" engine-class="net.sf.tapestry.engine.&SimpleEngine;"&gt; 
 
   &lt;property name="net.sf.tapestry.visit-class"&gt;tutorial.hangman.Visit&lt;/property&gt; <co id="hangman.app.visit"/>
 
@@ -673,8 +678,8 @@ The Home page's job is to collect the difficulty and initiate a game:
 </para>
       <figure>
         <title>Home.java</title>
-        <programlisting><![CDATA[
-public class Home extends BasePage
+        <programlisting>
+public class Home extends &BasePage;
 {
 	public static final int EASY = 10;
 	public static final int MEDIUM = 5;
@@ -724,7 +729,7 @@ public class Home extends BasePage
 	}
 
 }
-]]></programlisting>
+</programlisting>
       </figure>
       <para>
 We're seeing all the familiar ideas:  The 
@@ -807,19 +812,19 @@ This comes together in the Home page specification:
       <figure>
         <title>Home.page (excerpt)</title>
         <programlisting>
-  &lt;component id="group" type="RadioGroup"&gt;
-    &lt;binding name="selected" property-path="misses"/&gt;
+  &lt;component id="group" type="&RadioGroup;"&gt;
+    &lt;binding name="selected" expression="misses"/&gt;
   &lt;/component&gt;
   
-  &lt;component id="inputEasy" type="Radio"&gt;
+  &lt;component id="inputEasy" type="&Radio;"&gt;
     &lt;field-binding name="value" field-name="tutorial.hangman.Home.EASY"/&gt; <co id="hangman.home.spec.field-binding"/>
   &lt;/component&gt;
   
-  &lt;component id="inputMedium" type="Radio"&gt;
+  &lt;component id="inputMedium" type="&Radio;"&gt;
     &lt;field-binding name="value" field-name="tutorial.hangman.Home.MEDIUM"/&gt;
   &lt;/component&gt;
   
-  &lt;component id="inputHard" type="Radio"&gt;
+  &lt;component id="inputHard" type="&Radio;"&gt;
     &lt;field-binding name="value" field-name="tutorial.hangman.Home.HARD"/&gt;
   &lt;/component&gt;
 
@@ -921,17 +926,17 @@ Let's look at the specification for those three components (<varname>e</varname>
       <figure>
         <title>Guess.jwc (excerpt)</title>
         <programlisting>
-&lt;component id="e" type="Foreach"&gt;
-  &lt;binding name="source" property-path="unused"/&gt;
+&lt;component id="e" type="&Foreach;"&gt;
+  &lt;binding name="source" expression="unused"/&gt;
 &lt;/component&gt;
 
-&lt;component id="guess" type="Direct"&gt;
-  &lt;binding name="listener" property-path="listeners.makeGuess"/&gt;
-  &lt;binding name="parameters" property-path="components.e.value"/&gt;
+&lt;component id="guess" type="&DirectLink;"&gt;
+  &lt;binding name="listener" expression="listeners.makeGuess"/&gt;
+  &lt;binding name="parameters" expression="components.e.value"/&gt;
 &lt;/component&gt;
 
-&lt;component id="insertLetter" type="Insert"&gt;
-  &lt;binding name="value" property-path="components.e.value"/&gt;
+&lt;component id="insertLetter" type="&Insert;"&gt;
+  &lt;binding name="value" expression="components.e.value"/&gt;
 &lt;/component&gt;
 </programlisting>
       </figure>
@@ -947,7 +952,7 @@ On successive iterations, a &Foreach; component's
 <varname>value</varname> property is the value for the iteration.
 </para>
       <para>
-Component <varname>guess</varname> is type &Direct;, which creates a 
+Component <varname>guess</varname> is type &DirectLink;, which creates a 
 hyperlink on the page and notifies its listener 
 when the user clicks the link.  Just knowing that the component was clicked isn't very helpful 
 though;  the application needs to know which letter was actually clicked.
@@ -960,9 +965,11 @@ array or objects, that will be encoded into the
 URL for the hyperlink.  When the component's listener is notified, it
 can obtain the array of objects from the &IRequestCycle;
 <footnote>
+<para>
 Tapestry takes care of converting objects into strings when constructing the URL, then
 converts those strings back into objects when the link is clicked.  Your listener method
 will be able to get <emphasis>copies</emphasis> of the original parameters.
+</para>
 </footnote>.
 </para>
       <para>
@@ -979,9 +986,8 @@ All of this comes together in the Java code for the Guess page.
 </para>
       <figure>
         <title>Guess.java (excerpt)</title>
-        <programlisting><![CDATA[
-
-public void makeGuess(IRequestCycle cycle)
+        <programlisting>
+public void makeGuess(&IRequestCycle; cycle)
 {
     Object[] parameters = cycle.getServiceParameters();
 	char letter = ((Character)parameters[0]).charValue();
@@ -1006,8 +1012,7 @@ public void makeGuess(IRequestCycle cycle)
 	if (game.getDone())
 		cycle.setPage("Success");
 }
-
-]]></programlisting>
+</programlisting>
       </figure>
       <para> 
 
@@ -1088,14 +1093,15 @@ Each of the three pages has a similar HTML template:
 </para>
     <figure>
       <title>Home.html</title>
-      <programlisting><![CDATA[
-<span jwcid="border">
+      <programlisting>
+&lt;span jwcid="border"&gt;
 
-Nothing much doing here on the <b>home</b> page.  Visit one of our other 
+Nothing much doing here on the &lt;b&gt;home&lt;/b&gt; page.  Visit one of our other 
 fine 
 pages.
 
-</span>]]></programlisting>
+&lt;/span&gt;
+</programlisting>
     </figure>
     <para> 
 Remember that Tapestry components can wrap around other HTML elements or components.  
@@ -1148,12 +1154,12 @@ Lastly,  each page contains the specific content from its own HTML template.
       &lt;/font&gt;
     &lt;/td&gt;
     &lt;td rowspan=2 valign=top bgcolor=silver&gt;
-      &lt;span jwcid="wrapped"/&gt; <co id="reuse.border.wrapped"/>
+      &lt;span jwcid="renderBody"/&gt; <co id="reuse.border.renderBody"/>
     &lt;/td&gt;
     &lt;td rowspan=2 width=4&gt;&lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-	&lt;td&gt;&lt;span jwcid="showInspector"/&gt;&lt;/td&gt; <co id="reuse.border.showInspector"/>
+	&lt;td&gt;&lt;span jwcid="inspector"/&gt;&lt;/td&gt; <co id="reuse.border.showInspector"/>
   &lt;/tr&gt;
   &lt;tr&gt;
     &lt;td colspan=3 height=4&gt;&nbsp;&lt;/td&gt;
@@ -1190,9 +1196,9 @@ The <varname>link</varname> and <varname>insertName</varname>
 components provide the inter-page navigation links.  
 </para>
         </callout>
-        <callout arearefs="reuse.border.wrapped">
+        <callout arearefs="reuse.border.renderBody">
           <para>
-The <varname>wrapped</varname> component provides the actual content for the page.  The
+The <varname>renderBody</varname> component provides the actual content for the page.  The
 <classname>Border</classname> component is used on all three pages, but its a different
 instance on each page, wrapping around different content specific to the page.
 </para>
@@ -1227,33 +1233,33 @@ application engine provides the list.
   
   &lt;parameter name="pages" required="yes"/&gt; <co id="reuse.border.spec.pages"/>
   
-  &lt;component id="shell" type="Shell"&gt;
-    &lt;binding name="title" property-path="page.engine.specification.name"/&gt; <co id="reuse.border.spec.shell-title"/>
+  &lt;component id="shell" type="&Shell;"&gt;
+    &lt;binding name="title" expression="page.engine.specification.name"/&gt; <co id="reuse.border.spec.shell-title"/>
   &lt;/component&gt;
   
-  &lt;component id="insertPageTitle" type="Insert"&gt;
+  &lt;component id="insertPageTitle" type="&Insert;"&gt;
     &lt;inherited-binding name="value" parameter-name="title"/&gt; <co id="reuse.border.spec.insertPageTitle"/>
   &lt;/component&gt;
   
-  &lt;component id="body" type="Body"/&gt;
+  &lt;component id="body" type="&Body;"/&gt;
   
-  &lt;component id="e" type="Foreach"&gt; <co id="reuse.border.spec.e"/>
+  &lt;component id="e" type="&Foreach;"&gt; <co id="reuse.border.spec.e"/>
     &lt;inherited-binding name="source" parameter-name="pages"/&gt;
-    &lt;binding name="value" property-path="pageName"/&gt;
+    &lt;binding name="value" expression="pageName"/&gt;
   &lt;/component&gt;
   
-  &lt;component id="link" type="Page"&gt; <co id="reuse.border.spec.link"/>
-    &lt;binding name="page" property-path="pageName"/&gt;
-    &lt;binding name="disabled" property-path="disablePageLink"/&gt;
+  &lt;component id="link" type="&PageLink;"&gt; <co id="reuse.border.spec.link"/>
+    &lt;binding name="page" expression="pageName"/&gt;
+    &lt;binding name="disabled" expression="disablePageLink"/&gt;
   &lt;/component&gt;
   
-  &lt;component id="insertName" type="Insert"&gt;
-    &lt;binding name="value" property-path="pageName"/&gt;
+  &lt;component id="insertName" type="&Insert;"&gt;
+    &lt;binding name="value" expression="pageName"/&gt;
   &lt;/component&gt;
   
-  &lt;component id="wrapped" type="InsertWrapped"/&gt;
+  &lt;component id="renderBody" type="&RenderBody;"/&gt;
   
-  &lt;component id="showInspector" type="ShowInspector"/&gt; <co id="resuse.border.spec.showInspector"/>
+  &lt;component id="inspector" type="&InspectorButton;"/&gt; <co id="resuse.border.spec.InspectorButton"/>
 &lt;/component-specification&gt;
 </programlisting>
     </figure>
@@ -1313,10 +1319,9 @@ when the <varname>pageName</varname> instance variable (set by the <varname>e</v
 matches the current page's name.
 </para>
         </callout>
-        <callout arearefs="resuse.border.spec.showInspector">
+        <callout arearefs="resuse.border.spec.InspectorButton">
           <para>
-The <varname>showInspector</varname> component creates a rollover button (the "i" lights up when the mouse is 
-moved over it):
+This component will raise the Tapestry Inspector in a new window when clicked.
 </para>
         </callout>
       </calloutlist>
@@ -1361,14 +1366,14 @@ static, the literal value "Home" (this isn't the best approach if localization i
       <programlisting>
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!DOCTYPE page-specification PUBLIC
-  "-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
-  "http://tapestry.sf.net/dtd/Tapestry_1_2.dtd"&gt;
+  "-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+  "http://tapestry.sf.net/dtd/Tapestry_1_3.dtd"&gt;
 
 &lt;page-specification class="net.sf.tapestry.html.BasePage"&gt;
 
   &lt;component id="border" type="Border"&gt;
     &lt;static-binding name="title"&gt;Home&lt;/static-binding&gt;
-    &lt;binding name="pages" property-path="engine.pageNames"/&gt;
+    &lt;binding name="pages" expression="engine.pageNames"/&gt;
   &lt;/component&gt;
 
 &lt;/page-specification&gt;
@@ -1405,7 +1410,7 @@ an alias in the application specification:
 Had we failed to do this, we would have had to specify the complete resource path, 
 <filename>/tutorial/border/Border.jwc</filename>, on each page's specification, instead of the short alias 
 'Border'.  There is no magic about the existing Tapestry component types 
-(&Insert;, &Foreach;, &Page;, etc. ... they each have an 
+(&Insert;, &Foreach;, &PageLink;, etc. ... they each have an 
 alias pre-registered into every application specification.  These short 
 aliases are simply a convienience.
 </para>
@@ -1478,8 +1483,8 @@ the Binding column.
 Beneath formal parameters are informal parameters (the <classname>Border</classname>
 component has none, so there is nothing to see).  Informal parameters are
 usually mapped directly to HTML attributes.  They are most often used with
-components that generate a single HTML tag, such as the &Action;,
-&Direct; or &TextField; components.
+components that generate a single HTML tag, such as the &ActionLink;,
+&DirectLink; or &TextField; components.
 </para>
       <para>
 If the component contains assets, they are shown next.

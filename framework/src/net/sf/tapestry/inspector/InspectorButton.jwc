@@ -4,7 +4,9 @@
       PUBLIC "-//Howard Lewis Ship//Tapestry Specification 1.3//EN"
       "http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 
-<component-specification class="net.sf.tapestry.inspector.ShowInspector" allow-body="no" allow-informal-parameters="no">
+<component-specification class="net.sf.tapestry.inspector.InspectorButton" 
+	allow-body="no" 
+	allow-informal-parameters="no">
 
     <description>
 <![CDATA[

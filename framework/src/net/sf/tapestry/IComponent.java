@@ -221,7 +221,7 @@ public interface IComponent extends IRender
     /**
      *  Invoked to make the receiver render any elements it wraps.  This is typically
      *  invoked by the receiver itself.  This method is public so that the
-     *  {@link net.sf.tapestry.components.InsertWrapped} component may operate.
+     *  {@link net.sf.tapestry.components.RenderBody} component may operate.
      *
      **/
 

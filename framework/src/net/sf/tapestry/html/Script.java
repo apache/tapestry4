@@ -49,7 +49,7 @@ import org.apache.log4j.Logger;
  *  Works with the {@link Body} component to add a script (and perhaps some initialization) 
  *  to the HTML response.
  *
- *  [<a href="../../../../../ComponentReference/RadioGroup.html">Component Reference</a>]
+ *  [<a href="../../../../../ComponentReference/Script.html">Component Reference</a>]
  *
  *  @author Howard Lewis Ship
  *  @version $Id$

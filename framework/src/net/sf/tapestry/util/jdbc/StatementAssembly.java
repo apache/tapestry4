@@ -109,7 +109,7 @@ public class StatementAssembly
      *  Adds text to the current line, unless that would make the line too long, in
      *  which case a new line is started (and indented) before adding the text.
      *
-     *  <p>Text is added as-is, with no concept of quoting.  To add arbitrary strings
+     *  <p>TextArea is added as-is, with no concept of quoting.  To add arbitrary strings
      *  (such as in a where clause), use addParameter().
      *
      *

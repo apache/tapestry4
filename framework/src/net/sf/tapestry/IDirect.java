@@ -25,7 +25,7 @@
 
 package net.sf.tapestry;
 
-import net.sf.tapestry.link.Direct;
+import net.sf.tapestry.link.DirectLink;
 
 /**
  *  Interface that defines classes that may be messaged by the direct
@@ -39,7 +39,7 @@ public interface IDirect extends IComponent
 {
 	/**
 	 *  Invoked by the direct service to have the component peform
-	 *  the appropriate action.  The {@link Direct} component will
+	 *  the appropriate action.  The {@link DirectLink} component will
 	 *  notify its listener.
 	 *
 	 **/

@@ -3,18 +3,28 @@
 <!DOCTYPE component-specification PUBLIC 
 	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
 	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
-<component-specification class="net.sf.tapestry.link.Action">
+	
+<component-specification class="net.sf.tapestry.link.ServiceLink">
 
   <description>
-  Creates a contextual link within the response page.  The page will be rewound to its
-  original state before the listener is invoked.
+  Creates a link using an arbitrary engine service.
   </description>
   
-  <parameter name="listener" 
-  	java-type="net.sf.tapestry.IActionListener" 
-  	required="yes"
-  	direction="in"/>
-  	
+  <parameter name="service" java-type="java.lang.String" required="yes" direction="in"/>
+
+  <parameter name="parameters" java-type="java.lang.Object" direction="in">
+    <description>
+    A object or string, or array of objects and strings, encoded into the URL
+    as service parameters.
+    </description>
+  </parameter>
+  
+  <parameter name="context" java-type="java.lang.Object" direction="in">
+    <description>
+ 	Deprecated name for parameters.
+    </description>
+  </parameter>
+  
   <parameter name="disabled"
   	java-type="boolean"
   	direction="in"/>
@@ -30,9 +40,7 @@
   <parameter name="anchor" 
   	java-type="java.lang.String"
   	direction="in"/>
-  	
-  <parameter name="stateful" java-type="boolean" direction="custom" property-name="stateful"/>	
-  
+
   <reserved-parameter name="href"/>
   
 </component-specification>

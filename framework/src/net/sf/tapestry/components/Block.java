@@ -33,11 +33,11 @@ import net.sf.tapestry.RequestCycleException;
 
 /** 
  *  Prevents its contents from being rendered until triggered by
- *  an {@link InsertBlock} component.
+ *  an {@link RenderBlock} component.
  *
  *  [<a href="../../../../../ComponentReference/Block.html">Component Reference</a>]
  *
- *  <p>Block and {@link InsertBlock} are used to build a certain class
+ *  <p>Block and {@link RenderBlock} are used to build a certain class
  *  of complicated component that can't be assembled using the normal
  *  wrapping containment.  Such a super component would have two or more
  *  sections that need to be supplied by the containing page (or component).
@@ -46,7 +46,7 @@ import net.sf.tapestry.RequestCycleException;
  *  component.
  * 
  *  <p>The inserter property gives the components inside the block access to
- *  the component (typically an {@link InsertBlock}) that inserted the block,
+ *  the component (typically an {@link RenderBlock}) that inserted the block,
  *  including access to its informal bindings which allows components contained
  *  by the Block to be passed parameters.  Note - it is the responsibility of the
  *  inserting component to set itself as the Block's inserter.
@@ -63,7 +63,7 @@ public class Block extends AbstractComponent
 
     /**
      *  Does nothing; the idea of a Block is to defer the rendering of
-     *  the body of the block until an {@link InsertBlock} forces it
+     *  the body of the block until an {@link RenderBlock} forces it
      *  out.
      *
      **/

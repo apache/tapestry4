@@ -47,16 +47,16 @@ import org.apache.log4j.Logger;
  *  A component for creating a link using the direct service; used for actions that
  *  are not dependant on dynamic page state.
  *
- *  [<a href="../../../../../ComponentReference/Direct.html">Component Reference</a>]
+ *  [<a href="../../../../../ComponentReference/DirectLink.html">Component Reference</a>]
  *
  * @author Howard Lewis Ship
  * @version $Id$
  *
  **/
 
-public class Direct extends GestureLink implements IDirect
+public class DirectLink extends GestureLink implements IDirect
 {
-    private static final Logger LOG = LogManager.getLogger(Direct.class);
+    private static final Logger LOG = LogManager.getLogger(DirectLink.class);
 
     private IBinding _listenerBinding;
     private Object _parameters;
@@ -105,7 +105,7 @@ public class Direct extends GestureLink implements IDirect
 
     /**
      *  Converts a binding to a context (an array of Strings).
-     *  This is used by the {@link Direct} and {@link Service}
+     *  This is used by the {@link DirectLink} and {@link ServiceLink}
      *  components.
      *
      **/

@@ -123,7 +123,7 @@ public class Inspector extends BasePage
     }
 
     /**
-     *  Method invoked by the {@link ShowInspector} component, 
+     *  Method invoked by the {@link InspectorButton} component, 
      *  to begin inspecting a page.
      *
      **/

@@ -14,7 +14,7 @@
     <binding name="exceptions" expression="exceptions"/>
   </component>
   
-  <component id="restart" type="Service">
+  <component id="restart" type="ServiceLink">
     <field-binding name="service" field-name="net.sf.tapestry.IEngineService.RESTART_SERVICE"/>
   </component>
   

@@ -43,7 +43,7 @@
     <binding name="condition" expression="page.engine.hasVisit"/>
   </component>
   
-  <component id="restart" type="Service">
+  <component id="restart" type="ServiceLink">
     <field-binding name="service" field-name="net.sf.tapestry.IEngineService.RESTART_SERVICE"/>
   </component>
   
@@ -52,7 +52,7 @@
     <binding name="focus" expression="assets.restartFocus"/>
   </component>
   
-  <component id="reset" type="Service">
+  <component id="reset" type="ServiceLink">
     <field-binding name="service" field-name="net.sf.tapestry.IEngineService.RESET_SERVICE"/>
     <binding name="disabled" expression="resetServiceDisabled"/>
   </component>

@@ -41,7 +41,7 @@ public interface IActionListener
 {
 
     /**
-     *  Method invoked by the component (an {@link net.sf.tapestry.link.Action} or 
+     *  Method invoked by the component (an {@link net.sf.tapestry.link.ActionLink} or 
      *  {@link net.sf.tapestry.form.Form}, when its URL is triggered.
      *
      *  @param action The component which was "triggered".

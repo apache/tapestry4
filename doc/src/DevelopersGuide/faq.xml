@@ -44,7 +44,7 @@ This section contains a few Q's and A's gleemed from the Tapestry developer mail
 		I put together a mini-portal application as one of the tutorials.  This sounded
 		out some limitations in the framework: the <classname>Porlet</classname> component
 		dynamically combines components from multiple pages (using the &Block; and
-		&InsertBlock; components).
+		&RenderBlock; components).
 		</para>
         </answer>
       </qandaentry>
@@ -123,7 +123,7 @@ directory.  The end result is that
 		Tapestry forms can wrap around &Foreach; components ... that means the same
 		&TextField; component may be responsible for updating a property of
 		a whole slew of objects.  On top of that, the use
-		of &Conditional;, &Block; and &InsertBlock; components
+		of &Conditional;, &Block; and &RenderBlock; components
 		mean that the exact set of components involved may be determined dynamically.
 		</para>
           <note>
@@ -195,7 +195,7 @@ directory.  The end result is that
 	some specific server-side state, at which point the &HttpSession; is created.
 	</para>
           <para>
-	By default, &Form;s (as well as &Action;s) are stateful; they require that
+	By default, &Form;s (as well as &ActionLink;s) are stateful; they require that
 	an active &HttpSession; exists.  If there isn't an active session, they
 	throw a <classname>StaleSessionException</classname>.  However, you can bind
 	the <varname>stateful</varname> parameter of these components to
@@ -384,7 +384,7 @@ a class loader issue.
 <question>
 <para>
 I've fixed all my imports to use <filename>net.sf.tapestry</filename>, but
-my &Direct; listener methods no longer work.  How do I fix things?
+my &DirectLink; listener methods no longer work.  How do I fix things?
 </para>
 </question>
 <answer>
@@ -397,7 +397,7 @@ be recognized as a listener method:
 
 <informalexample>
 <programlisting>
-public void <replaceable>my-method</replaceable>(String[] parameters, IRequestCycle cycle)
+public void <replaceable>my-method</replaceable>(String[] parameters, &IRequestCycle; cycle)
 throws RequestCycleException
 {
   ...

@@ -913,7 +913,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      *  <li>{@link ITemplateSource} 
      *  <li>{@link ISpecificationSource}
      *  <li>{@link IPageSource}
-     *  <li>Service {@link Map}
+     *  <li>ServiceLink {@link Map}
      *  </ul>
      *
      *  <p>Subclasses should invoke this implementation first, then perform their

@@ -11,7 +11,7 @@
     <binding name="value" expression="view"/>
   </component>
   
-  <component id="select" type="Action">
+  <component id="select" type="ActionLink">
     <binding name="listener" expression="listeners.selectTab"/>
   </component>
   
@@ -24,7 +24,7 @@
     <binding name="image" expression="bannerImage"/>
   </component>
   
-  <component id="wrapped" type="InsertWrapped"/>
+  <component id="renderBody" type="RenderBody"/>
   
   <private-asset name="SPECIFICATION" resource-path="/net/sf/tapestry/inspector/Specification_Np1.gif"/>
   <private-asset name="SPECIFICATION_selected" resource-path="/net/sf/tapestry/inspector/Specification_Hp3.gif"/>

@@ -82,8 +82,8 @@ public class ShowTemplate extends BaseComponent implements IDirect
      *  Writes the HTML template for the component.  When &lt;jwc&gt; tags are
      *  written, the id is made a link (that selects the named component).  We
      *  use some magic to accomplish this, creating links as if we were a
-     *  {@link Direct} component, and attributing those links
-     *  to the captive {@link Direct} component embedded here.
+     *  {@link DirectLink} component, and attributing those links
+     *  to the captive {@link DirectLink} component embedded here.
      *
      **/
 

@@ -36,42 +36,7 @@ import net.sf.tapestry.RequestCycleException;
  *  Form element used to upload files.  For the momement, it is necessary to
  *  explicitly set the form's enctype to "multipart/form-data".
  * 
- * <table border=1>
- * <tr> 
- *    <td>Parameter</td>
- *    <td>Type</td>
- *	  <td>Direction</td>
- *    <td>Required</td> 
- *    <td>Default</td>
- *    <td>Description</td>
- * </tr>
- * 
- * 	<tr>
- * 	<td>file</td>
- *  <td>{@link IUploadFile}</td>
- *  <td>out</td>
- *  <td>yes</td>
- *  <td>&nbsp;</td>
- *  <td>Updated, when the form is submitted, with the name and content
- *   uploaded.
- * 	</td>
- *  </tr>
- * 
- *  <tr>
- * 		<td>disabled</td>
- * 		<td>boolean</td>
- * 		<td>in</td>
- * 		<td>no</td>
- * 		<td>false</td>
- * 		<td>If true, then (on render) the disabled attribute is written into the tag
- * 	(note that Navigator 4 will ignore this) and on submit, the upload will not
- *  update its file parameter.
- * 	</td>
- * 	</tr>
- * 
- * </table>
- * 
- *  <p>Informal attributes are allowed.  A body is not allowed.
+ *  [<a href="../../../../../ComponentReference/Upload.html">Component Reference</a>]
  * 
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -81,25 +46,23 @@ import net.sf.tapestry.RequestCycleException;
 
 public class Upload extends AbstractFormComponent
 {
-    private IBinding fileBinding;
-	private boolean disabled;
-    private String name;
-
-
+    private IBinding _fileBinding;
+	private boolean _disabled;
+    private String _name;
 
     public String getName()
     {
-        return name;
+        return _name;
     }
 
     public void setFileBinding(IBinding value)
     {
-        fileBinding = value;
+        _fileBinding = value;
     }
 
     public IBinding getFileBinding()
     {
-        return fileBinding;
+        return _fileBinding;
     }
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
@@ -109,15 +72,15 @@ public class Upload extends AbstractFormComponent
  
         boolean rewinding = form.isRewinding();
 
-        name = form.getElementId(this);
+        _name = form.getElementId(this);
 
         if (rewinding)
         {
-            if (!disabled)
+            if (!_disabled)
             {
-                IUploadFile file = cycle.getRequestContext().getUploadFile(name);
+                IUploadFile file = cycle.getRequestContext().getUploadFile(_name);
 
-                fileBinding.setObject(file);
+                _fileBinding.setObject(file);
             }
 
             return;
@@ -125,9 +88,9 @@ public class Upload extends AbstractFormComponent
 
         writer.beginEmpty("input");
         writer.attribute("type", "file");
-        writer.attribute("name", name);
+        writer.attribute("name", _name);
 
-        if (disabled)
+        if (_disabled)
             writer.attribute("disabled");
 
         // Size, width, etc. can be specified as informal parameters
@@ -138,12 +101,12 @@ public class Upload extends AbstractFormComponent
 
     public boolean getDisabled()
     {
-        return disabled;
+        return _disabled;
     }
 
     public void setDisabled(boolean disabled)
     {
-        this.disabled = disabled;
+        _disabled = disabled;
     }
 
 }

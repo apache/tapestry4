@@ -10,7 +10,7 @@
     <binding name="stylesheet" expression="assets.stylesheet"/>
   </component>
   
-  <component id="home" type="Service">
+  <component id="home" type="ServiceLink">
     <field-binding name="service" field-name="net.sf.tapestry.IEngineService.HOME_SERVICE"/>
   </component>
   

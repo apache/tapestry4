@@ -61,7 +61,7 @@ information, separated by slashes.
           <listitem>
             <para>
               <varname>parameters</varname>: additional parameters that can be made available to
-the component.  This is used by a &Direct; component.  As with the context, multiple
+the component.  This is used by a &DirectLink; component.  As with the context, multiple
 values are seperated with slashes.</para>
           </listitem>
         </itemizedlist>
@@ -71,7 +71,7 @@ values are seperated with slashes.</para>
       <title>Page service</title>
       <para>
 The page service is used for basic navigation between pages in the application.  
-The page service is tightly tied to the &Page; component.
+The page service is tightly tied to the &PageLink; component.
 </para>
       <para>
 A page service stores the name of the page as the single value in the service context.
@@ -99,7 +99,7 @@ the actual render.
     <section id="cycle.listeners">
       <title>Action and Direct listeners</title>
       <para>
-The &Action;, &Direct; and &Form; components (which make use of
+The &ActionLink;, &DirectLink; and &Form; components (which make use of
 the <link linkend="cycle.action">action</link> and <link linkend="cycle.direct">direct</link>
 services) inform the application when they have been triggered using listeners.
 </para>
@@ -189,8 +189,8 @@ However, the property path for the listener binding must be changed, from <varna
       <title>Direct service</title>
       <para>
 The direct service is used to trigger a particular action.  This service is tied to the 
-&Direct; component.  The service context identifies the page and component within the page.  Any parameters
-specified by the &Direct; component's <varname>context</varname> parameter are encoded as well.
+&DirectLink; component.  The service context identifies the page and component within the page.  Any parameters
+specified by the &DirectLink; component's <varname>context</varname> parameter are encoded as well.
 </para>
       <para>
 The request cycle for the direct service is more complicated that the page service.
@@ -214,9 +214,9 @@ After the listener has its chance to respond to the request, a response page
 is renderred.
 </para>
       <note>
-        <title>&IDirect; vs. &Direct;</title>
+        <title>&IDirect; vs. &DirectLink;</title>
         <para>
-The sequence shown above is for the &Direct; component, which implements the &IDirect;
+The sequence shown above is for the &DirectLink; component, which implements the &IDirect;
 interface.  In some rare cases, it is desirable to have a different component
 implement the &IDirect; interface instead.  It will still implement the
 <function>trigger()</function> method, but will respond in its own way, likely without
@@ -229,7 +229,7 @@ What's key is the component's listener, of type
 &IActionListener;.  This is the hook that allows 
 pre-defined components from the Tapestry framework to access application specific behavior.   
 The page or container of the 
-&Direct; component provides the necessary listener objects using dynamic bindings.
+&DirectLink; component provides the necessary listener objects using dynamic bindings.
 </para>
       <para>
 The direct service is useful in many cases, but does have its limitations.  
@@ -237,11 +237,11 @@ The state of the page when the listener is invoked is its state just prior to re
 (in the previous request cycle).  This can cause a problem when the action to be performed is reliant 
 on state that changes during the rendering of the page.  In those cases, the 
 <link linkend="cycle.action">action service</link>
-(and &Action; or &Form; components) should be used.
+(and &ActionLink; or &Form; components) should be used.
 </para>
 
       <para>
-The &Direct; component has an optional parameter named <varname>parameters</varname>. 
+The &DirectLink; component has an optional parameter named <varname>parameters</varname>. 
 The value for this may be a single object, an array of objects,
 or a &List;.  Each object is converted into a string encoding, that is
 included in the URL.
@@ -268,7 +268,7 @@ to remove in terms of a primary key, or line number within the order.
       <title>Action service</title>
       <para>
 The action service is also used to trigger a particular application-specific 
-action using an &Action; component, and its listener.  
+action using an &ActionLink; component, and its listener.  
 The action service may also be used by the &Form; component to process HTML form submissions.
 </para>
       <para>
@@ -278,7 +278,7 @@ an action id.
       <para>
 The request cycle for the action service is more complicated that the direct service.  
 This sequence assumes that the component is an 
-&Action;, the details of handling form submissions are described in a later section.
+&ActionLink;, the details of handling form submissions are described in a later section.
 </para>
       <figure>
         <title>Action Service Sequence</title>
@@ -290,13 +290,13 @@ This sequence assumes that the component is an
       </figure>
       <para>
 The point of the action service is to restore the <emphasis>dynamic state</emphasis>
-of the page to how it was when the &Action; component rendered the link.  Only then is
+of the page to how it was when the &ActionLink; component rendered the link.  Only then is
 the listener notified.</para>
       <para>
 The process of restoring the page's dynamic state is called rewinding.  Rewinding is used to 
 go beyond restoring a page's persistent state and actually restore the page's dynamic state.  
 Whatever state the page was in when the action URL was rendered in the previous request cycle 
-is restored before the &Action; component's listener is invoked.
+is restored before the &ActionLink; component's listener is invoked.
 </para>
       <para>
 Use of the action service is convenient, but not always appropriate.   
@@ -307,7 +307,7 @@ processing time to respond to actions (as well as render the HTML).
 If the data on the page is not easily accessible then the action service should be avoided.  
 For example, if the page is generated from a long running database query.  
 Alternate measures, such as storing the results of the query as persistent page state should be used. 
-Another alternative is to use the direct service (and &Direct; component) instead, as 
+Another alternative is to use the direct service (and &DirectLink; component) instead, as 
 it allows the necessary context to be encoded into the URL, using service
 parameters.  This can be very useful when the dynamic state of the page is dependant on 
 expensive or unpredictably changing data (such as a database query).  
@@ -322,7 +322,7 @@ to create links to a product details page.
       <title>Services and forms</title>
       <para>
 Processing of requests for &Form; components is a little more complicated than 
-for ordinary &Action; components.  
+for ordinary &ActionLink; components.  
 This is because a &Form; will wrap a number of form-related components, such as 
 &TextField;, &Checkbox;, &PropertySelection; and others.
 </para>
@@ -333,7 +333,7 @@ request by extracting a request parameter from the &HttpServletRequest;,
 interpreting it, and assigning a value through a parameter.  
 </para>
       <para>
-As with an &Action; component, a full rewind must be done, 
+As with an &ActionLink; component, a full rewind must be done, 
 to account for conditional portions of the page and any &Foreach; components.
 </para>
       <note>
@@ -352,7 +352,7 @@ The &Form; component doesn't terminate the rewind cycle until <emphasis>after</e
 its wrapped components have had a chance to render.  It then notifies its own listener.
 </para>
       <para>
-The basic components, &Text;  and &TextField;, 
+The basic components, &TextArea;  and &TextField;, 
 are quite simple.  They simply move text between the 
 application, the HTML and the submitted request. 
 </para>

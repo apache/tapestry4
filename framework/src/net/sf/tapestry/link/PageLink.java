@@ -36,14 +36,14 @@ import net.sf.tapestry.RequiredParameterException;
  *  A component for creating a navigation link to another page, 
  *  using the page service.
  *
- *  [<a href="../../../../../ComponentReference/Page.html">Component Reference</a>]
+ *  [<a href="../../../../../ComponentReference/PageLink.html">Component Reference</a>]
  *
  * @author Howard Ship
  * @version $Id$
  *
  **/
 
-public class Page extends GestureLink
+public class PageLink extends GestureLink
 {
     private String _targetPage;
 

@@ -2,16 +2,16 @@
 <!-- $Id$ --> 
 <html>
 <head>
-<title>Action</title>
+<title>PageLink</title>
 <link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
 </head>
 
 <body>
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
  <tr>
- <td align="left"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
- <td align="middle">&nbsp;</td>  
- <td align="right"><A href="Any.html"><IMG alt=Any src="common-images/next.png"></a></td>  
+  <td align="left"><A href="Option.html"><IMG alt=Option src="common-images/prev.png"></A></td>  
+  <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></A></td>  
+  <td align="right"><A href="PropertySelection.html"><IMG alt=PropertySelection src="common-images/next.png"></A></td>  
  <tr>
  <tr>
   <td colspan="3"><hr></td>  
@@ -24,11 +24,12 @@
  <td>
   <table>
 	 <tr>
-	  <td><font size="+2"><b>Action</b></font></td>
+	  <td><font size="+2"><b>PageLink</b></font></td>
 	 </tr>
 	 <tr>
 	  <td>
-		 <A href="../api/net/sf/tapestry/link/Action.html">net.sf.tapestry.link.Action</a>
+		 <A href="../api/net/sf/tapestry/link/PageLink.html">
+		 net.sf.tapestry.link.PageLink</A>
 		</td>
 	 </tr>
   </table>
@@ -36,7 +37,7 @@
  <td>
   <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
 	 <tr>
-	  <td><A href="Action.html"><font color="blue">Action Link</a></A></FONT></td>
+	  <td><A href="Page.html"><font color="blue">Page Link</font></A></td>
 	 </tr>
   </table>
  </td>
@@ -48,14 +49,15 @@
 
 <tr>
  <td colspan="2">
+            <P>
   <b>Description</b>
 	<br>
-  Creates an &lt;a&gt; hyperlink in the HTML response. If the link is 
-  triggered, then the Action retrieves its listener, and invokes 
-  <tt>actionTriggered()</tt> on it.
-  <p>
-  See the Developers Guide 
-  <A href="../DevelopersGuide/cycle.listeners.html">Action and Direct listeners</a> for a more complete description.</p>
+  Creates a HTML &lt;a&gt; hyperlink to another page within the application. 
+  The Page component uses the <A href="../api/net/sf/engine/PageService.html">
+  <tt>PageService</tt></A> to 
+            construct the anchor's "href" URL. </P>
+            <P>Prior to release 2.2, this component was named 
+            <STRONG>Page</STRONG>.</P>
             
  </td>
 </tr>
@@ -64,10 +66,11 @@
  <td colspan="2">
   <b>See Also</b>
 	<br>
-	<A href="Direct.html">Direct</a>, 
-  <A href="GenericLink.html">GenericLink</a>,
-  <A href="Page.html">Page</a>,
-  <A href="Service.html">Service</a>
+	<A href="ActionLink.html">ActionLink</a>, 
+	<A href="DirectLink.html">DirectLink</A>, 
+  <A href="GenericLink.html">GenericLink</A>,
+  <A href="Rollover.html">Rollover</A>,
+  <A href="ServiceLink.html">ServiceLink</a>
  </td>
 </tr>
 
@@ -85,16 +88,12 @@
     <th>Description</th>
   </tr>
   <tr>
-    <td>listener</td>
-    <td>
-     <A href="../api/net/sf/tapestry/IActionListener.html"><tt>IActionListener</tt></a>
-    </td>
+    <td>page</td>
+    <td>String</td>
     <td>in</td>
    	<td>yes</td>
 		<td>&nbsp;</td>
-		<td>Specifies an object that is notified when the link is clicked,
-		which is typically a listener method of its container
-		(for example, <tt>listeners.<i>method</i></tt>).</td>
+		<td>The name of a application page to link to.</td>
 	</tr>
   <tr>
     <td>disabled</td>
@@ -102,23 +101,25 @@
     <td>in</td>
    	<td>no</td>
 		<td>false</td>
-		<td>Controls whether the link is produced. If disabled, the portion of the 
+		<td>
+    Controls whether the link is produced. If disabled, the portion of the 
     template the link surrounds is still rendered, but not the link itself.
     </td>
 	</tr>
   <tr>
-    <td>stateful</td>
-    <td>boolean</td>
+    <td>namespace</td>
+    <td><A href="../api/net/sf/tapestry/INamespace.html">
+    <tt>INamespace</tt></A>
+    </td>
     <td>in</td>
    	<td>no</td>
-		<td>true</td>
+		<td>&nbsp;</td>
 		<td>
-    If true (the default), then the component requires an active (i.e., non-new) 
-    <tt>HttpSession</tt> when triggered. Failing that, it throws a 
-    <A href="../api/net/sf/tapestry/StaleLinkException"><tt>StaleLinkException</tt></a>. 
-    If false, then no check is necessary. The 
-    latter works well with links that encode all necessary state inside the URL 
-    itself.
+    If specified, the namespace's prefix 
+                  is prefixed (with a colon) to the page name.
+    This is primarily used when pages (or components) in a namespace need to create 
+    links to other pages inside the same namespace (this is only a concern 
+    for developers of component libraries, not developers of applications). 
     </td>
 	</tr>
   <tr>
@@ -131,7 +132,7 @@
     If specified, then a longer URL (including scheme, server and possibly port) 
     is generated using the specified scheme. Server is determined fromt he 
     incoming request, and port is deterimined from the port paramter or the 
-    incoming request.     
+    incoming request. 
     </td>
 	</tr>
   <tr>
@@ -144,7 +145,7 @@
     If specified, then a longer URL (including scheme, server and port) is 
     generated using the specified port. The server is determined from the 
     incoming request, the scheme from the scheme paramter or the incoming 
-    request. 
+    request.     
     </td>
 	</tr>
   <tr>
@@ -155,16 +156,14 @@
 		<td>&nbsp;</td>
 		<td>
     The name of an anchor or element to link to. The final URL will have '#' 
-    and the anchor appended to it.
+    and the anchor appended to it. 
     </td>
 	</tr>
-	</table>
-            <P>Body: <STRONG>rendered<BR></STRONG>Informal parameters: 
+	</table><BR>Body: 
+            <STRONG>rendered</STRONG><BR>Informal parameters: 
             <STRONG>allowed</STRONG>
     <br>
-  Reserved parameters: 
-            "href" </P>
-    
+  Reserved parameters: "href"
  </td>
 </tr>
 
@@ -181,9 +180,9 @@
  <td colspan="3"><hr></td>  
 </tr>
 <tr>
- <td align="left"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
- <td align="middle">&nbsp;</td>  
- <td align="right"><A href="Any.html"><IMG alt=Any src="common-images/next.png"></a></td>  
+ <td align="left"><A href="Option.html"><IMG alt=Option src="common-images/prev.png"></A></td>  
+ <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></A></td>  
+ <td align="right"><A href="PropertySelection.html"><IMG alt=PropertySelection src="common-images/next.png"></A></td>  
 </tr>
 </table>
 

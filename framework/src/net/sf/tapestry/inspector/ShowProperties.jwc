@@ -25,7 +25,7 @@
     <binding name="class" expression="beans.persistPropertyClass.next"/>
   </component>
   
-  <component id="selectComponent" type="Direct">
+  <component id="selectComponent" type="DirectLink">
     <binding name="listener" expression="page.listeners.selectComponent"/>
     <binding name="parameters" expression="change.componentPath"/>
     <binding name="disabled" expression="disableComponentLink"/>

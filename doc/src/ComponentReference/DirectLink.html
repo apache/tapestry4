@@ -2,16 +2,16 @@
 <!-- $Id$ --> 
 <html>
 <head>
-<title>Direct</title>
+<title>DirectLink</title>
 <link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
 </head>
 
 <body>
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
  <tr>
-  <td align="left"><A href="Delegator.html"><IMG alt=Delegator src="common-images/prev.png"></a></td>  
-  <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
-  <td align="right"><A href="ExceptionDisplay.html"><IMG alt=ExceptionDisplay src="common-images/next.png"></a></td>  
+  <td align="left"><A href="Delegator.html"><IMG alt=Delegator src="common-images/prev.png"></A></td>  
+  <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></A></td>  
+  <td align="right"><A href="ExceptionDisplay.html"><IMG alt=ExceptionDisplay src="common-images/next.png"></A></td>  
  <tr>
  <tr>
   <td colspan="3"><hr></td>  
@@ -24,12 +24,12 @@
  <td>
   <table>
 	 <tr>
-	  <td><font size="+2"><b>Direct</b></font></td>
+	  <td><font size="+2"><b>DirectLink</b></font></td>
 	 </tr>
 	 <tr>
 	  <td>
-		 <A href="../api/net/sf/tapestry/link/Direct.html">
-		 net.sf.tapestry.link.Direct</a>
+		 <A href="../api/net/sf/tapestry/link/DirectLink.html">
+		 net.sf.tapestry.link.DirectLink</A>
 		</td>
 	 </tr>
   </table>
@@ -37,7 +37,7 @@
  <td>
   <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
 	 <tr>
-	  <td><A href="Direct.html"><font color="blue">Direct Link</font></a></td>
+	  <td><A href="DirectLink.html"><font color="blue">DirectLink Link</font></A></td>
 	 </tr>
   </table>
  </td>
@@ -54,10 +54,12 @@
   Creates a &lt;a&gt; hyperlink that notifies the component when the link is 
   triggered. The link includes some context-specific data that is made available
   to the component's listener. This is used in cases where the 
-  <A href="Action.html">Action</a> component can't be used (or is too inefficient).
+  <a href="ActionLink.html">ActionLink</a> component can't be used (or is too inefficient).
   <p>
   See the Developers Guide <A href="../DevelopersGuide/cycle.listeners.html">
-  Action and Direct listeners</a> for a more complete description.</p>
+  ActionLink and DirectLink listeners</A> for a more complete description.</p>
+            <P>Prior to release 2.2, this component was named 
+            <STRONG>Direct</STRONG>.</P>
             
  </td>
 </tr>
@@ -66,10 +68,10 @@
  <td colspan="2">
   <b>See Also</b>
 	<br>
-	<A href="Action.html">Action</a>, 
-  <A href="GenericLink.html">GenericLink</a>,
-  <A href="Page.html">Page</a>,
-  <A href="Service.html">Service</a>
+	<a href="ActionLink.html">ActionLink</a>, 
+  <A href="GenericLink.html">GenericLink</A>,
+  <a href="PageLink.html">PageLink</a>,
+  <a href="ServiceLink.html">ServiceLink</a>
  </td>
 </tr>
 
@@ -89,7 +91,7 @@
   <tr>
     <td>listener</td>
     <td>
-     <A href="../api/net/sf/tapestry/IActionListener.html"><tt>IActionListener</tt></a>
+     <A href="../api/net/sf/tapestry/IActionListener.html"><tt>IActionListener</tt></A>
     </td>
     <td>in</td>
    	<td>yes</td>
@@ -118,12 +120,12 @@
     <p>
     A listener method can retrieve the parameters using 
     <A href="/api/net/sf/tapestry/IRequestCycle.html#getServiceParameters()">
-    <tt>IRequestCycle.getServiceParameters()</tt></a>. 
+    <tt>IRequestCycle.getServiceParameters()</tt></A>. 
     <p>
     Prior to release 2.2, the parameters were always type String. They may now 
     be of any type; type will be maintained when the parameters are later 
     retrieved by a listener. See 
-    <A href="../api/net/sf/tapestry/util/io/DataSqueezer.html"><tt>DataSqueezer</tt></a> for more details.</p> 
+    <A href="../api/net/sf/tapestry/util/io/DataSqueezer.html"><tt>DataSqueezer</tt></A> for more details.</p> 
        
     </td>
 	</tr>
@@ -146,7 +148,7 @@
 		<td>
     If true (the default), then the component requires an active (i.e., non-new) 
     <tt>HttpSession</tt> when triggered. Failing that, it throws a 
-    <A href="../api/net/sf/tapestry/StaleLinkException"><tt>StaleLinkException</tt></a>. 
+    <A href="../api/net/sf/tapestry/StaleLinkException"><tt>StaleLinkException</tt></A>. 
     If false, then no check is necessary. The 
     latter works well with links that encode all necessary state inside the URL 
     itself.
@@ -212,9 +214,9 @@
  <td colspan="3"><hr></td>
 </tr>
 <tr>
- <td align="left"><A href="Delegator.html"><IMG alt=Delegator src="common-images/prev.png"></a></td>  
- <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
- <td align="right"><A href="ExceptionDisplay.html"><IMG alt=ExceptionDisplay src="common-images/next.png"></a></td>  
+ <td align="left"><A href="Delegator.html"><IMG alt=Delegator src="common-images/prev.png"></A></td>  
+ <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></A></td>  
+ <td align="right"><A href="ExceptionDisplay.html"><IMG alt=ExceptionDisplay src="common-images/next.png"></A></td>  
 </tr>
 </table>
 

@@ -17,7 +17,7 @@
 
   <component id="viewTabs" type="inspector:ViewTabs"/>
 
-  <component id="insertBlockForView" type="InsertBlock">
+  <component id="renderBlockForView" type="RenderBlock">
     <binding name="block" expression="blockForView"/>
   </component>
 

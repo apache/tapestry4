@@ -44,7 +44,7 @@ import net.sf.tapestry.components.IServiceLink;
 import net.sf.tapestry.components.ServiceLinkEventType;
 
 /**
- *  Combines a link component (such as {@link net.sf.tapestry.link.Direct}) 
+ *  Combines a link component (such as {@link net.sf.tapestry.link.DirectLink}) 
  *  with an &lt;img&gt; and JavaScript code
  *  to create a rollover effect that works with both Netscape Navigator and 
  *  Internet Explorer.

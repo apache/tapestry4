@@ -300,9 +300,9 @@ inflexible, ad-hoc, buggy solution Tapestry is designed to eliminate.
 </para>
       <para>
 Most services have a relationship to a particular component.  The basic services (action, direct, 
-page) each have a corresponding component (&Action;, &Direct;, &Page;).
+page) each have a corresponding component (&ActionLink;, &DirectLink;, &PageLink;).
 The following example 
-shows how the &Page; component is used to create a link between application pages.
+shows how the &PageLink; component is used to create a link between application pages.
 </para>
       <para>
 First, an extract from the page's HTML template:
@@ -317,7 +317,7 @@ This is combined with the a <sgmltag class="starttag">component</sgmltag> declar
 </para>
       <informalexample>
         <programlisting>
-&lt;component id="<emphasis>login</emphasis>" type="Page"&gt;
+&lt;component id="<emphasis>login</emphasis>" type="&PageLink;"&gt;
   &lt;static-binding name="page"&gt;Login&lt;/static-binding&gt;
 &lt;/component&gt;
 </programlisting>
@@ -346,7 +346,7 @@ The other services are more or less complicated, but share the same basic trait:
 provides the URL and later responds if the URL is triggered.
 </para>
       <para>
-Links (&Action;, &Direct;, etc.) and &Form;s use services in slightly different ways.  Links encode
+Links (&ActionLink;, &DirectLink;, etc.) and &Form;s use services in slightly different ways.  Links encode
 all the information directly into the URL whereas &Form;s encode most of the information as
 hidden form fields.
 </para>
@@ -375,17 +375,17 @@ The query parameters are individually extracted and encoded as hidden fields in 
 Tapestry makes use of the Apache group's 
 &Log4J; package to perform logging.  This is an easy, fast, 
 powerful framework for adding logging to any Java application.  Using &Log4J;, any number of 
-<emphasis>categories</emphasis> can be created, and a logging priority for each category assigned.  
-Tapestry uses the complete class name as the category for each class.
+<emphasis>loggers</emphasis> can be created, and a logging level for each logger assigned.  
+Tapestry uses the complete class name as the logger for each class.
 </para>
       <para>
-The <classname>ApplicationServlet</classname> class includes a method, <function>setupLogging()</function>, 
+The &ApplicationServlet; class includes a method, <function>setupLogging()</function>, 
 to help initialize &Log4J;, allowing the default configuration to be overridden using command line
 parameters.
 </para>
       <para>
 The <link linkend="inspector">Tapestry Inspector</link> includes a Logging tab that allows the logging configuration to be 
-dynamically changed.  The logging priority for any category can be assigned, and new categories 
+dynamically changed.  The logging level for any logger can be assigned, and new loggers 
 can be created.
 </para>
       <para>
@@ -486,8 +486,8 @@ The application specification begins with an XML header:
           <programlisting><![CDATA[
 <?xml version="1.0"?>
 <!DOCTYPE application PUBLIC 
-  "-//Howard Lewis Ship//Tapestry Specification 1.2//EN"
-  "http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+  "-//Howard Lewis Ship//Tapestry Specification 1.3//EN"
+  "http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 ]]>
 
 &lt;application

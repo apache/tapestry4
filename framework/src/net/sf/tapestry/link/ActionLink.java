@@ -36,7 +36,7 @@ import net.sf.tapestry.RequestCycleException;
 /**
  *  A component for creating a link that is handled using the action service.
  * 
- *  [<a href="../../../../../ComponentReference/Action.html">Component Reference</a>]
+ *  [<a href="../../../../../ComponentReference/ActionLink.html">Component Reference</a>]
  *
  *
  *  @author Howard Lewis Ship
@@ -44,7 +44,7 @@ import net.sf.tapestry.RequestCycleException;
  *
  **/
 
-public class Action extends GestureLink implements IAction
+public class ActionLink extends GestureLink implements IAction
 {
     private IActionListener _listener;
     private IBinding _statefulBinding;

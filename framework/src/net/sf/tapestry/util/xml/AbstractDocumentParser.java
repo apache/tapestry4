@@ -309,7 +309,7 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
     }
 
     /**
-     *  Returns the value of an {@link Element} node.  That is, all the {@link Text}
+     *  Returns the value of an {@link Element} node.  That is, all the {@link TextArea}
      *  nodes appended together.  Invokes trim() to remove leading and trailing spaces.
      *
      **/

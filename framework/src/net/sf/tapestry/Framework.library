@@ -15,45 +15,57 @@
 
 <library-specification>
 
-	<component-alias type="Insert" specification-path="/net/sf/tapestry/components/Insert.jwc"/>
-    <component-alias type="Action" specification-path="/net/sf/tapestry/link/Action.jwc"/>
+    <component-alias type="ActionLink" specification-path="/net/sf/tapestry/link/ActionLink.jwc"/>
+    <component-alias type="Any" specification-path="/net/sf/tapestry/components/Any.jwc"/>
+    <component-alias type="Block" specification-path="/net/sf/tapestry/components/Block.jwc"/>
+    <component-alias type="Body" specification-path="/net/sf/tapestry/html/Body.jwc"/>
     <component-alias type="Checkbox" specification-path="/net/sf/tapestry/form/Checkbox.jwc"/>
-    <component-alias type="InsertWrapped" specification-path="/net/sf/tapestry/components/InsertWrapped.jwc"/>
     <component-alias type="Conditional" specification-path="/net/sf/tapestry/components/Conditional.jwc"/>
+    <component-alias type="Delegator" specification-path="/net/sf/tapestry/components/Delegator.jwc"/>
+    <component-alias type="DirectLink" specification-path="/net/sf/tapestry/link/DirectLink.jwc"/>
+    <component-alias type="FieldLabel" specification-path="/net/sf/tapestry/valid/FieldLabel.jwc"/>
     <component-alias type="Foreach" specification-path="/net/sf/tapestry/components/Foreach.jwc"/>
     <component-alias type="Frame" specification-path="/net/sf/tapestry/html/Frame.jwc"/>
     <component-alias type="ExceptionDisplay" specification-path="/net/sf/tapestry/html/ExceptionDisplay.jwc"/>
-    <component-alias type="Delegator" specification-path="/net/sf/tapestry/components/Delegator.jwc"/>
     <component-alias type="Form" specification-path="/net/sf/tapestry/form/Form.jwc"/>
-    <component-alias type="TextField" specification-path="/net/sf/tapestry/form/TextField.jwc"/>
-    <component-alias type="Text" specification-path="/net/sf/tapestry/form/Text.jwc"/>
-    <component-alias type="Select" specification-path="/net/sf/tapestry/form/Select.jwc"/>
-    <component-alias type="Option" specification-path="/net/sf/tapestry/form/Option.jwc"/>
-    <component-alias type="Image" specification-path="/net/sf/tapestry/html/Image.jwc"/>
-    <component-alias type="Any" specification-path="/net/sf/tapestry/components/Any.jwc"/>
-    <component-alias type="RadioGroup" specification-path="/net/sf/tapestry/form/RadioGroup.jwc"/>
-    <component-alias type="Radio" specification-path="/net/sf/tapestry/form/Radio.jwc"/>
-    <component-alias type="Rollover" specification-path="/net/sf/tapestry/html/Rollover.jwc"/>
-    <component-alias type="Body" specification-path="/net/sf/tapestry/html/Body.jwc"/>
-    <component-alias type="Direct" specification-path="/net/sf/tapestry/link/Direct.jwc"/>
-    <component-alias type="Page" specification-path="/net/sf/tapestry/link/Page.jwc"/>
-    <component-alias type="Service" specification-path="/net/sf/tapestry/link/Service.jwc"/>
-    <component-alias type="ImageSubmit" specification-path="/net/sf/tapestry/form/ImageSubmit.jwc"/>
-    <component-alias type="PropertySelection" specification-path="/net/sf/tapestry/form/PropertySelection.jwc"/>
-    <component-alias type="Submit" specification-path="/net/sf/tapestry/form/Submit.jwc"/>
-    <component-alias type="Hidden" specification-path="/net/sf/tapestry/form/Hidden.jwc"/>
-    <component-alias type="ShowInspector" specification-path="/net/sf/tapestry/inspector/ShowInspector.jwc"/>
-    <component-alias type="Shell" specification-path="/net/sf/tapestry/html/Shell.jwc"/>
-    <component-alias type="InsertText" specification-path="/net/sf/tapestry/html/InsertText.jwc"/>
-    <component-alias type="ValidField" specification-path="/net/sf/tapestry/valid/ValidField.jwc"/>
-    <component-alias type="FieldLabel" specification-path="/net/sf/tapestry/valid/FieldLabel.jwc"/>
-    <component-alias type="Script" specification-path="/net/sf/tapestry/html/Script.jwc"/>
-    <component-alias type="Block" specification-path="/net/sf/tapestry/components/Block.jwc"/>
-    <component-alias type="InsertBlock" specification-path="/net/sf/tapestry/components/InsertBlock.jwc"/>
-    <component-alias type="ListEdit" specification-path="/net/sf/tapestry/form/ListEdit.jwc"/>
-    <component-alias type="Upload" specification-path="/net/sf/tapestry/form/Upload.jwc"/>
     <component-alias type="GenericLink" specification-path="/net/sf/tapestry/link/GenericLink.jwc"/>
+    <component-alias type="Hidden" specification-path="/net/sf/tapestry/form/Hidden.jwc"/>
+    <component-alias type="Image" specification-path="/net/sf/tapestry/html/Image.jwc"/>
+    <component-alias type="ImageSubmit" specification-path="/net/sf/tapestry/form/ImageSubmit.jwc"/>
+	<component-alias type="Insert" specification-path="/net/sf/tapestry/components/Insert.jwc"/>
+    <component-alias type="InsertText" specification-path="/net/sf/tapestry/html/InsertText.jwc"/>
+    <component-alias type="InspectorButton" specification-path="/net/sf/tapestry/inspector/InspectorButton.jwc"/>
+    <component-alias type="ListEdit" specification-path="/net/sf/tapestry/form/ListEdit.jwc"/>
+    <component-alias type="Option" specification-path="/net/sf/tapestry/form/Option.jwc"/>
+    <component-alias type="PageLink" specification-path="/net/sf/tapestry/link/PageLink.jwc"/>
+    <component-alias type="PropertySelection" specification-path="/net/sf/tapestry/form/PropertySelection.jwc"/>
+    <component-alias type="Radio" specification-path="/net/sf/tapestry/form/Radio.jwc"/>
+    <component-alias type="RadioGroup" specification-path="/net/sf/tapestry/form/RadioGroup.jwc"/>
+    <component-alias type="RenderBlock" specification-path="/net/sf/tapestry/components/RenderBlock.jwc"/>
+    <component-alias type="RenderBody" specification-path="/net/sf/tapestry/components/RenderBody.jwc"/>
+    <component-alias type="Rollover" specification-path="/net/sf/tapestry/html/Rollover.jwc"/>
+    <component-alias type="Select" specification-path="/net/sf/tapestry/form/Select.jwc"/>
+    <component-alias type="ServiceLink" specification-path="/net/sf/tapestry/link/ServiceLink.jwc"/>
+    <component-alias type="Script" specification-path="/net/sf/tapestry/html/Script.jwc"/>
+    <component-alias type="Shell" specification-path="/net/sf/tapestry/html/Shell.jwc"/>
+    <component-alias type="Submit" specification-path="/net/sf/tapestry/form/Submit.jwc"/>
+    <component-alias type="TextArea" specification-path="/net/sf/tapestry/form/TextArea.jwc"/>
+    <component-alias type="TextField" specification-path="/net/sf/tapestry/form/TextField.jwc"/>
+    <component-alias type="Upload" specification-path="/net/sf/tapestry/form/Upload.jwc"/>
+    <component-alias type="ValidField" specification-path="/net/sf/tapestry/valid/ValidField.jwc"/>
+        
+    <!-- Release 2.2 has a bit of renaming going on.  These are old aliases for compatibility
+         with older applications.  These aliases will be removed in 2.3. -->
     
+    <component-alias type="Action" specification-path="/net/sf/tapestry/link/ActionLink.jwc"/>
+    <component-alias type="Direct" specification-path="/net/sf/tapestry/link/DirectLink.jwc"/>
+    <component-alias type="InsertBlock" specification-path="/net/sf/tapestry/components/RenderBlock.jwc"/>
+    <component-alias type="InsertWrapped" specification-path="/net/sf/tapestry/components/RenderBody.jwc"/>
+    <component-alias type="Page" specification-path="/net/sf/tapestry/link/PageLink.jwc"/>
+    <component-alias type="Service" specification-path="/net/sf/tapestry/link/ServiceLink.jwc"/>
+    <component-alias type="ShowInspector" specification-path="/net/sf/tapestry/inspector/InspectorButton.jwc"/>
+    <component-alias type="Text" specification-path="/net/sf/tapestry/form/TextArea.jwc"/>
+  
     <page name="StaleLink" specification-path="/net/sf/tapestry/pages/StaleLink.page"/>
     <page name="StaleSession" specification-path="/net/sf/tapestry/pages/StaleSession.page"/>
     <page name="Inspector" specification-path="/net/sf/tapestry/inspector/Inspector.page"/>

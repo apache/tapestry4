@@ -3,7 +3,7 @@
 <!DOCTYPE component-specification PUBLIC 
 	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
 	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
-<component-specification class="net.sf.tapestry.link.Direct">
+<component-specification class="net.sf.tapestry.link.DirectLink">
 
   <description>
   Creates a non-contextual link.  Non-persistent state can be stored within the link
