@@ -114,7 +114,7 @@ public abstract class GiveAwayBooks extends Protected implements PageRenderListe
 
         if (count == 0)
         {
-            setError(formatString("select-at-least-one-book", target.getNaturalName()));
+            setError(format("select-at-least-one-book", target.getNaturalName()));
             return;
         }
 

@@ -91,7 +91,9 @@ class InputSymbolToken extends AbstractToken
 
         if (_required && value == null)
             throw new ApplicationRuntimeException(
-                Tapestry.format("InputSymbolToken.required", _key));
+                Tapestry.format("InputSymbolToken.required", _key),
+                getLocation(),
+                null);
 
         if (value != null && _class != null && !_class.isAssignableFrom(value.getClass()))
             throw new ApplicationRuntimeException(

@@ -13,7 +13,5 @@
 	<component-type type="Border" specification-path="Border.jwc"/>
 	
 	<component-type type="ShowError" specification-path="ShowError.jwc"/>
-	
-	<library id="contrib" specification-path="/org/apache/tapestry/contrib/Contrib.library"/>
-	
+		
 </library-specification>	

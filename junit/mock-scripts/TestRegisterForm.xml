@@ -27,7 +27,13 @@
 <![CDATA[
 document.Form0.inputFirstName.focus();
 document.Form0.inputFirstName.select();
-document.Form0.onsubmit = onsubmit_Form0;
+document.Form0.onsubmit = function ()
+{
+
+  return validate_inputFirstName() &&
+    validate_inputLastName();
+}
+
 ]]>
 		</assert-output>
 		

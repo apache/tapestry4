@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <project>
   <pomVersion>3</pomVersion>
-  <name>jakarta-tapestry</name>
-  <id>jakarta-tapestry</id>
+  <name>Tapestry Web Application Framework</name>
+  <id>tapestry</id>
   <groupId>jakarta-tapestry</groupId>
-  <currentVersion>3.0-beta-1</currentVersion>
+  <currentVersion>3.0-beta-1a</currentVersion>
   <organization>
     <name>Apache Software Foundation</name>
     <url>http://jakarta.apache.org/</url>
@@ -65,41 +65,41 @@
       <name>Howard M. Lewis Ship</name>
       <id>hlship</id>
       <email>hlship@apache.org</email>
-      <role>Peerless Leader</role>
+      <roles>Peerless Leader</roles>
     </developer>
  
      <developer>
       <name>Geoff Longman</name>
       <id>glongman</id>
       <email>glongman@intelligentworks.com</email>
-      <role>Spindle Developer</role>
+      <roles>Spindle Developer</roles>
     </developer>
        
     <developer>
       <name>David Solis</name>
       <id>dsolis</id>
       <email>dsolis@legosoft.com.mx</email>
-      <role>Developer</role>
+      <roles>Developer</roles>
     </developer>
     
     <developer>
     	<name>Mind Bridge</name>
     	<id>mindbridge</id>
     	<email>mindbridgeweb@yahoo.com</email>
-    	<role>Developer</role>
+    	<roles>Developer</roles>
     </developer>
     
     <developer>
     	<name>Neil Clayton</name>	
     	<id>nclayton</id>
-			<role>Documentation</role>
+			<roles>Documentation</roles>
     </developer>
     
     <developer>
     	<name>Richard Lewis-Shell</name>	
     	<id>rlewisshell</id>
     	<email>rlewisshell@mac.com</email>
-    	<role>Developer</role>
+    	<roles>Developer</roles>
     </developer>
     
   </developers>

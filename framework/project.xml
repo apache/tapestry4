@@ -2,6 +2,6 @@
 
 <project>
   <extend>${basedir}/../project.xml</extend>
-  <id>tapestry</id>
+  <artifactId>tapestry</artifactId>
   <name>Tapestry Framework</name>
 </project>

@@ -55,7 +55,8 @@
 
 package org.apache.tapestry;
 
-
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
  *  Implementation of the {@link org.apache.tapestry.ILocation} interface.
@@ -82,7 +83,7 @@ public class Location implements ILocation
 
         _lineNumber = lineNumber;
     }
-    
+
     public Location(IResourceLocation location, int lineNumber, int columnNumber)
     {
         this(location);
@@ -106,13 +107,37 @@ public class Location implements ILocation
         return _columnNumber;
     }
 
+    public int hashCode()
+    {
+        HashCodeBuilder builder = new HashCodeBuilder(237, 53);
+
+        builder.append(_resourceLocation);
+        builder.append(_lineNumber);
+        builder.append(_columnNumber);
+
+        return builder.toHashCode();
+    }
+
+    public boolean equals(Object other)
+    {
+        if (!(other instanceof ILocation))
+            return false;
+
+        ILocation l = (ILocation) other;
+
+        EqualsBuilder builder = new EqualsBuilder();
+        builder.append(_lineNumber, l.getLineNumber());
+        builder.append(_columnNumber, l.getColumnNumber());
+        builder.append(_resourceLocation, l.getResourceLocation());
+
+        return builder.isEquals();
+    }
+
     public String toString()
     {
         if (_lineNumber <= 0 && _columnNumber <= 0)
             return _resourceLocation.toString();
-
         StringBuffer buffer = new StringBuffer(_resourceLocation.toString());
-
         if (_lineNumber > 0)
         {
             buffer.append(", line ");

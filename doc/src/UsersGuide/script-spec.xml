@@ -472,46 +472,15 @@ is defined using an OGNL expression.
 
 <section id="script-spec.unique">
 	<title><sgmltag class="starttag">unique</sgmltag> element</title>
-	
-
 
 <para>
 Appears in: <emphasis>many</emphasis>
 </para>
 
 <para>
-Creates a block that is only evaluated once, no matter how many times
+Creates a block whose contents are contributed only once, no matter how many times
 the block is evaluated during the rendering of a single page.
 </para>
-
-<figure>
-	<title><sgmltag class="starttag">unique</sgmltag> Attributes</title>
-<informaltable>
-<tgroup cols="5">
-<thead>
-<row>
-  <entry>Name</entry>
-  <entry>Type</entry>
-  <entry>Required ?</entry>
-  <entry>Default Value</entry>
-  <entry>Description</entry>
-</row>
-</thead>
-<tbody>
-<row>
-  <entry>tag</entry>
-  <entry>string</entry>
-  <entry>yes</entry>
-  <entry/>
-  <entry>A unique tag used to detect the first time the block defined
-  by the <sgmltag class="starttag">unique</sgmltag> element has
-  been evaluated.</entry>
-</row>
-</tbody>
-</tgroup>
-</informaltable>
-</figure>	
-	
 
 
 <figure>
