@@ -344,7 +344,7 @@ public class RequestCycle
 			// But wrap other exceptions in a RequestCycleException ... this
 			// will ensure that some of the context is available.
 
-			throw new RequestCycleException(e.getMessage(), null, this, e);
+			throw new RequestCycleException(e.getMessage(), page, this, e);
 		}
 		finally
 		{
