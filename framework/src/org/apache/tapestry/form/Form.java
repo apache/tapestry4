@@ -416,8 +416,8 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
             // of ids will change as well.
 
             writeHiddenField(writer, _name, buildAllocatedIdList());
-			writeHiddenValues(writer);
-    		
+            writeHiddenValues(writer);
+
             nested.close();
 
             writer.end(getTag());
@@ -495,7 +495,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
             return;
         }
 
-        // The third and subsequent function justs
+        // The third and subsequent function just
         // adds to the List.
 
         List list = (List) value;
@@ -504,7 +504,6 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
     protected void emitEventHandlers(IMarkupWriter writer, IRequestCycle cycle)
     {
-        StringBuffer buffer = null;
 
         if (_events == null || _events.isEmpty())
             return;
@@ -516,36 +515,36 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
                 Tapestry.getMessage("Form.needs-body-for-event-handlers"),
                 this);
 
+        StringBuffer buffer = new StringBuffer();
+
         Iterator i = _events.entrySet().iterator();
         while (i.hasNext())
         {
+
             Map.Entry entry = (Map.Entry) i.next();
             FormEventType type = (FormEventType) entry.getKey();
             Object value = entry.getValue();
 
-            String formPath = "document." + _name;
-            String propertyName = type.getPropertyName();
-            String finalFunctionName;
-
-            boolean combineWithAnd = type.getCombineUsingAnd();
+            buffer.append("document.");
+            buffer.append(_name);
+            buffer.append(".");
+            buffer.append(type.getPropertyName());
+            buffer.append(" = ");
 
             // The typical case; one event one event handler.  Easy enough.
 
             if (value instanceof String)
             {
-                finalFunctionName = (String) value;
+                buffer.append(value.toString());
+                buffer.append(";");
             }
             else
             {
+                // Build a composite function in-place
 
-                String compositeName = propertyName + "_" + _name;
+                buffer.append("function ()\n{\n");
 
-                if (buffer == null)
-                    buffer = new StringBuffer(200);
-
-                buffer.append("\nfunction ");
-                buffer.append(compositeName);
-                buffer.append("()\n{");
+                boolean combineWithAnd = type.getCombineUsingAnd();
 
                 List l = (List) value;
                 int count = l.size();
@@ -577,19 +576,13 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
                     buffer.append("()");
                 }
 
-                buffer.append(";\n}\n\n");
-
-                finalFunctionName = compositeName;
+                buffer.append(";\n}");
             }
 
-            body.addInitializationScript(
-                formPath + "." + propertyName + " = " + finalFunctionName + ";");
-
+            buffer.append("\n\n");
         }
 
-        if (buffer != null)
-            body.addBodyScript(buffer.toString());
-
+        body.addInitializationScript(buffer.toString());
     }
 
     /**
@@ -822,22 +815,22 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
         _hiddenValues.add(new HiddenValue(name, value));
     }
 
-	/** 
-	 * Writes hidden values accumulated during the render
-	 * (by components invoking {@link #addHiddenValue(String, String)}.
-	 * 
-	 * @since 3.0
-	 */
-	
-	protected void writeHiddenValues(IMarkupWriter writer)
-	{
-		int count = Tapestry.size(_hiddenValues);
-		
-		for (int i = 0; i < count; i++)
-		{
-			HiddenValue hv = (HiddenValue)_hiddenValues.get(i);
-			
-			writeHiddenField(writer, hv._name, hv._value);
-		}
-	}
+    /** 
+     * Writes hidden values accumulated during the render
+     * (by components invoking {@link #addHiddenValue(String, String)}.
+     * 
+     * @since 3.0
+     */
+
+    protected void writeHiddenValues(IMarkupWriter writer)
+    {
+        int count = Tapestry.size(_hiddenValues);
+
+        for (int i = 0; i < count; i++)
+        {
+            HiddenValue hv = (HiddenValue) _hiddenValues.get(i);
+
+            writeHiddenField(writer, hv._name, hv._value);
+        }
+    }
 }
