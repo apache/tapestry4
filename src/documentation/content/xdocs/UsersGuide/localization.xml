@@ -35,6 +35,15 @@
       <p> Each component <em>may</em> have a message catalog, consisting of a set of localized message properties files. </p>
       <p> These files are stored with the page or component specification file. They are named the same as the specification file, but with a different extension (".properties" instead of ".jwc" or ".page"). </p>
       <p> In addition, this is a <em>set</em> of files; a locale string may be inserted just before the extension. For example, <code>WEB-INF/Home_fr.properties</code> to contain the French language localization of the keys. </p>
+      <p> As with Java's ResourceBundle, resolution of a key to a message starts with the most 
+        <em>specific</em> properties file. Any key not found there will be searched for in less specific files.  For example,
+        the search path could be <code>Home_fr_BE.properties</code>, <code>Home_fr.properties</code>, <code>Home.properties</code>.</p>
+        <p>If a properties file does not exist, that's perfectly ok, the search will continue.</p>
+      <p>
+        When a key can not be found even in the most general properties file, a search occurs in the
+        <link href="#localization.namespace">namespace</link>. In this way, very common strings can be
+        stored and localized once, and used throughout a library or application.
+      </p>
       <p> We'll describe how to use the message catalog shortly, but first some notes on how the message catalogs are read. </p>
       <section id="localization.component-catalog.encoding">
         <title>Properties file encoding</title>
@@ -83,27 +92,176 @@
           
       </section>
     </section>
+    <section id="localization.missing-keys">
+      <title>Missing keys</title>
+      
+      <p>
+        While developing, you may occasionally reference a key that does not exist. Rather than fail  with an exception,
+        Tapestry will fabricate a missing key value.  This is the key, converted to upper-case, and surrounded with brackets.  For example,
+        <code>[A-MISSING-KEY</code>.  This allows missing key values to stand out an demand to be fixed, without
+        completely subverting your application.
+      </p>
+      
+    </section> <!-- localization.missing-keys -->
+    <section id="localization.namespace">
+      <title>Namespace message catalogs</title>
+      
+      <p>
+      It is very likely that you'll have a number of strings that are used, and re-used, throughout
+      your application. Rather than duplicate the same message keys and localized values in all your page
+      and component message catalogs, you can put these into your <em>namespace</em> catalog.
+      </p>
+      
+      <p>
+        Each page and component is part of a <code>namespace</code>, identified by
+        a library specification or component specification.
+      </p>
+      
+      <p>
+        The specification may also have a message catalog; for instance, for <code>WEB-INF/myapp.application</code>,
+        the files would be named <code>WEB-INF/myapp.properties</code>, etc. Again, the 
+        name of the file  is based on the servlet name ("myapp").
+      </p>
+      
+      <p>
+        Very simple applications may not have an application specification, but may still have
+        properties, just as if the application specification existed.
+      </p>
+      
+    </section> <!-- localization.namespace -->
     <!-- localization.component-catalog -->
     <section id="localization.template-text">
       <title>Template text localization</title>
-      <p>As described in <link href="template.html#template.directives.l10n">the discussion of Tapestry templates</link>, static text in an HTML template can be enclosed in a specialized &span; tag. </p>
+      <p>As described in <link href="template.html#template.directives.l10n">the discussion of Tapestry templates</link>, 
+        static text in an HTML template can be enclosed in a specialized &span; tag. </p>
       
     </section>
     
     <section id="localization.localized-templates">
       <title>Localized templates</title>
+      
+      <p>
+        In some cases, the entire layout of a page (or component) must change due to locale. For example,
+        because of differences between western languages (which read left to right) and many eastern
+        languages (which read right to left).
+      </p>
+      
+      <p>
+        In this case, it is possible to have multiple HTML templates. If a localized template (i.e.,
+        <code>Home_jp.html</code> for a Japanese locale) exists, it will be used as appropriate.
+      </p>
+      
+      <p>
+        Page and component <em>specifications</em> are never localized, just <em>templates</em>.
+      </p>
+      
+      <p>
+        It is a good idea to make use of declared components, rather than implicit components, when
+        using localized templates ... it reduces duplication in the templates.
+      </p>
+    </section>
+    
+    <section id="localization.template-encoding">
+      <title>Template encoding</title>
+      
+      <p>
+        Like <link href="#localization.component-catalog.encoding">message catalogs</link>,
+        each template may be written in a different character set.  
+      </p>
+      
+        <p>
+          For each localization of the base key (<code>org.apache.tapestry.template-encoding</code>, a search of the following locations takes place.
+        </p>
+        <ul>
+          <li>The page or component specification.</li>
+          <li>The namespace specification for the namespace containing the page or component.</li>
+          <li>The <link href="configuration.html#configuration.search-path">application property search path</link></li>
+        </ul>
     </section>
     
     <section id="localization.message-binding">
       <title>Using the message: binding prefix</title>
+      
+      <p>
+        When specifying a parameter binding, the <code>message:</code> prefix
+        is used to reference a localized message key.  For example:
+      </p>
+      
+<source>
+&lt;html jwcid="@&Shell;" title="message:page-title"&gt;
+ . . .
+&lt;/html&gt;
+</source>      
+      
     </section>
     
     <section id="localization.messages-property">
       <title>Formatting messages</title>
+      
+<p>
+Messages may contain <em>arguments</em>, strings of the form <code>{0}</code> (or
+some other number). The argument are handled exactly the same as with Java's MessageFormat
+class (in fact, under the covers, MessageFormat does the work).
+</p>      
+
+<p>
+Components include a <code>messages</code> property for accessing localized messages.
+This property is of type Messages, and includes two methods:
+</p>
+
+<ul>
+  <li><code>getMessage()</code> takes a string parameter and returns a localized message</li>
+  <li><code>format()</code> takes a string parameter (the key) and then takes a number of
+    additional parameters as arguments.  The arguments are just objects.  If you have more
+    than three arguments, then specify them as an object array.</li>
+</ul>
+
+<p>
+It is common to format messages using OGNL expessions, i.e.:
+</p>
+
+<source>
+&lt;span jwcid="@&Insert;" value="ognl:messages.format('billing-info', amountDue)"/&gt;
+</source>
+
+<p>
+The above example would get the amountDue property and pass it in as argument 0 to the message
+format retrieved from the message catalog as key 'billing-info'.
+</p>
+      
     </section>
     
     <section id="localization.engine-locale">
       <title>Engine locale vs. page locale</title>
+      
+<p>
+When pages are created, or obtained from the page pool, the engine's locale is
+taken into account.  Pages are obtained when they are used by a service,
+or when accessed via &IRequestCycle;.getPage().
+</p>      
+      
+<p>
+A page is loaded for a particular locale, and the page's locale never changes.
+This is because of the degree to which localization creeps into the properties
+of the page and the components within the page.
+</p>      
+
+<p>
+Additionally, once a page  is loaded during a request cycle, it is kept
+for the duration of the cycle ... even if the engine locale changes.
+</p>
+
+<p>
+If you have a listener method on a page that changes the engine's locale, it is necessary to activate a <em>different</em>
+page to render the response.  This new page will be loaded in the new locale.
+</p>
+
+<note>
+This may be addressed somewhat in Tapestry 3.1.  Two options are possible: a service for
+changing the locale before rendering a page, and a way to force Tapestry to re-load a page, in a new
+locale.
+</note>
+      
     </section>
   </body>
 </document>
