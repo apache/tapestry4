@@ -23,14 +23,12 @@
  * Lesser General Public License for more details.
  *
  */
- 
+
 package com.primix.tapestry;
 
-import java.io.*;
-import javax.servlet.ServletOutputStream;
-import java.util.*;
-import java.text.Format;
-import java.text.NumberFormat;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.util.Stack;
 
 /**
  * Abstract base class implementing the {@link IResponseWriter} interface.
@@ -300,7 +298,7 @@ public abstract class AbstractResponseWriter implements IResponseWriter
 	{
 		if (!openTag)
 			throw new IllegalStateException(
-				"A tag must be open before attributes " + "may be set in an IResponseWriter.");
+				Tapestry.getString("AbstractResponseWriter.tag-not-open"));
 	}
 
 	/**
@@ -631,7 +629,11 @@ public abstract class AbstractResponseWriter implements IResponseWriter
 	* are safe: either valid GTML characters or GTML entities (named or numeric).
 	*/
 
-	private void safePrint(char[] data, int offset, int length, boolean isAttribute)
+	private void safePrint(
+		char[] data,
+		int offset,
+		int length,
+		boolean isAttribute)
 	{
 		int i;
 		int start;
@@ -652,7 +654,7 @@ public abstract class AbstractResponseWriter implements IResponseWriter
 			isSafe = (ch < safe.length && safe[ch]);
 
 			if (isAttribute && ch == '"')
-					isSafe = false;
+				isSafe = false;
 
 			if (isSafe)
 			{
@@ -668,12 +670,12 @@ public abstract class AbstractResponseWriter implements IResponseWriter
 			entity = null;
 
 			// Look for a known entity.
-			
+
 			if (ch < entities.length)
 				entity = entities[ch];
 
 			// Failing that, emit a numeric entity.
-			
+
 			if (entity == null)
 				entity = "&#" + (int) ch + ";";
 

@@ -61,13 +61,9 @@ public class StaleLinkException extends RequestCycleException
 		String targetIdPath)
 	{
 		super(
-			"Action id "
-				+ targetActionId
-				+ " matched component "
-				+ component.getIdPath()
-				+ " not "
-				+ targetIdPath
-				+ ".",
+			Tapestry.getString(
+				"StaleLinkException.action-mismatch",
+				new String[] { targetActionId, component.getIdPath(), targetIdPath }),
 			component);
 
 		page = component.getPage();
@@ -87,11 +83,10 @@ public class StaleLinkException extends RequestCycleException
 		String targetIdPath)
 	{
 		this(
-			"Action id "
-				+ targetActionId
-				+ " does not match component "
-				+ targetIdPath
-				+ ".",
+			Tapestry.getString(
+				"StaleLinkException.component-mismatch",
+				targetActionId,
+				targetIdPath),
 			page);
 
 		this.targetActionId = targetActionId;

@@ -97,11 +97,9 @@ public class PrivateAsset implements IAsset
 		{
 			externalURL = externalizer.getURL(localizedResourcePath);
 		}
-		catch (ResourceUnavailableException e)
+		catch (ResourceUnavailableException ex)
 		{
-			throw new ApplicationRuntimeException(
-				"Could not build URL for private asset " + localizedResourcePath + ".",
-				e);
+			throw new ApplicationRuntimeException(ex);
 		}
 
 		if (externalURL != null)
@@ -137,7 +135,7 @@ public class PrivateAsset implements IAsset
 		catch (Exception ex)
 		{
 			throw new ResourceUnavailableException(
-				"Could not access private asset " + resourcePath + ".",
+				Tapestry.getString("PrivateAsset.resource-missing", resourcePath),
 				ex);
 		}
 	}
@@ -251,8 +249,7 @@ public class PrivateAsset implements IAsset
 		}
 
 		throw new ResourceUnavailableException(
-			"Could not find private asset " + resourcePath + " for locale " + locale + ".");
-
+			Tapestry.getString("PrivateAsset.resource-unavailable", locale));
 	}
 
 	public String toString()

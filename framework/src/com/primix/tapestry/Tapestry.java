@@ -28,6 +28,7 @@ package com.primix.tapestry;
 
 import com.primix.tapestry.spec.*;
 import com.primix.tapestry.util.*;
+import java.text.MessageFormat;
 import java.util.*;
 import java.io.*;
 
@@ -56,6 +57,16 @@ public final class Tapestry
 	 */
 
 	public static final String VERSION = "1.0.8";
+
+
+	/**
+	 *  Contains strings loaded from TapestryStrings.properties.
+	 * 
+	 *  @since 1.0.8
+	 * 
+	 **/
+	
+	private static ResourceBundle strings;
 
 	/**
 	 *  A {@link Map} that links Locale names (as in {@link Locale#toString()} to
@@ -440,4 +451,63 @@ public final class Tapestry
 			}
 		}
 	}
+		
+	/**
+	 *  Gets a string from the TapestryStrings resource bundle.  
+	 *  The string in the bundle
+	 *  is treated as a pattern for {@link MessageFormat#format(java.lang.String, java.lang.Object[])}.
+	 * 
+	 *  @since 1.0.8
+	 * 
+	 **/
+	
+	public static String getString(String key, Object[] args)
+	{
+		if (strings == null)
+			strings = ResourceBundle.getBundle("com.primix.tapestry.TapestryStrings");
+		
+		String pattern = strings.getString(key);
+		
+		if (args == null)
+			return pattern;
+		
+		return MessageFormat.format(pattern, args);
+	}
+	
+
+	/**
+	 *  Convienience method for invoking {@link #getString(String, Object[])}.
+	 * 
+	 *  @since 1.0.8
+	 **/
+	
+	public static String getString(String key)
+	{
+		return getString(key, null);
+	}
+	
+	
+	/**
+	 *  Convienience method for invoking {@link #getString(String, Object[])}.
+	 * 
+	 *  @since 1.0.8
+	 **/
+	
+	public static String getString(String key, Object arg)
+	{
+		return getString(key, new Object[] { arg });
+	}
+	
+	/**
+	 *  Convienience method for invoking {@link #getString(String, Object[])}.
+	 * 
+	 *  @since 1.0.8
+	 * 
+	 **/
+
+	public static String getString(String key, Object arg1, Object arg2)
+	{
+		return getString(key, new Object[] { arg1, arg2 });
+	}
+
 }

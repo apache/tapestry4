@@ -44,11 +44,10 @@ public class RenderOnlyPropertyException extends ApplicationRuntimeException
 	public RenderOnlyPropertyException(IComponent component, String propertyName)
 	{
 		super(
-			"Property "
-				+ propertyName
-				+ " of "
-				+ component
-				+ " may only be accessed while the component is rendering.");
+			Tapestry.getString(
+				"RenderOnlyPropertyException.message",
+				propertyName,
+				component));
 
 		this.component = component;
 		this.propertyName = propertyName;

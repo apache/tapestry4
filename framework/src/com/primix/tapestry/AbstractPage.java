@@ -181,7 +181,8 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 	public void setLocale(Locale value)
 	{
 		if (locale != null)
-			throw new ApplicationRuntimeException("Attempt to change existing locale for a page.");
+			throw new ApplicationRuntimeException(
+Tapestry.getString("AbstractPage.attempt-to-change-locale"));
 
 		locale = value;
 	}
@@ -281,7 +282,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 	public void setName(String value)
 	{
 		if (name != null)
-			throw new ApplicationRuntimeException("Attempt to change existing name for a page.");
+			throw new ApplicationRuntimeException(Tapestry.getString("AbstractPage.attempt-to-change-name"));
 
 		name = value;
 	}

@@ -176,7 +176,8 @@ public class AssetExternalizer
 
 		inputURL = resolver.getResource(resourcePath);
 		if (inputURL == null)
-			throw new IOException("Could not locate resource " + resourcePath + ".");
+			throw new IOException(
+				Tapestry.getString("missing-resource", resourcePath));
 
 		in = inputURL.openStream();
 
@@ -284,11 +285,14 @@ public class AssetExternalizer
 			{
 				externalize(resourcePath);
 			}
-			catch (IOException e)
+			catch (IOException ex)
 			{
 				throw new ResourceUnavailableException(
-					"Could not externalize asset " + resourcePath + " to " + assetDir + ".",
-					e);
+					Tapestry.getString(
+						"AssetExternalizer.externalize-failure",
+						resourcePath,
+						assetDir),
+					ex);
 			}
 
 			result = URL + resourcePath;

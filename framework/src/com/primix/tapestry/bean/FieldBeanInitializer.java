@@ -29,6 +29,7 @@ package com.primix.tapestry.bean;
 import com.primix.tapestry.ApplicationRuntimeException;
 import com.primix.tapestry.IBeanProvider;
 import com.primix.tapestry.IResourceResolver;
+import com.primix.tapestry.Tapestry;
 import com.primix.tapestry.util.prop.PropertyHelper;
 import java.lang.reflect.Field;
 
@@ -74,7 +75,8 @@ public class FieldBeanInitializer extends AbstractBeanInitializer
 		int dotx = fieldName.lastIndexOf('.');
 
 		if (dotx < 0)
-			throw new ApplicationRuntimeException("Invalid field name: " + fieldName + ".");
+			throw new ApplicationRuntimeException(
+			Tapestry.getString("invalid-field-name", fieldName));
 
 		String className = fieldName.substring(0, dotx);
 		String simpleFieldName = fieldName.substring(dotx + 1);
@@ -93,7 +95,7 @@ public class FieldBeanInitializer extends AbstractBeanInitializer
 		catch (Throwable t)
 		{
 			throw new ApplicationRuntimeException(
-				"Unable to resolve class " + className + ".",
+				Tapestry.getString("unable-to-resolve-class", className),
 				t);
 		}
 
@@ -106,7 +108,7 @@ public class FieldBeanInitializer extends AbstractBeanInitializer
 		catch (NoSuchFieldException ex)
 		{
 			throw new ApplicationRuntimeException(
-				"Field " + fieldName + " does not exist.",
+				Tapestry.getString("field-not-defined", fieldName),
 				ex);
 		}
 
@@ -120,13 +122,13 @@ public class FieldBeanInitializer extends AbstractBeanInitializer
 		catch (IllegalAccessException ex)
 		{
 			throw new ApplicationRuntimeException(
-				"Cannot access field " + fieldName + ".",
+			Tapestry.getString("illegal-field-access", fieldName),
 				ex);
 		}
 		catch (NullPointerException ex)
 		{
 			throw new ApplicationRuntimeException(
-				"Field " + fieldName + " is an instance variable, not a class variable.",
+				Tapestry.getString("field-is-instance", fieldName),
 				ex);
 		}
 

@@ -531,7 +531,8 @@ public abstract class AbstractComponent implements IComponent
 	public void setContainer(IComponent value)
 	{
 		if (container != null)
-			throw new ApplicationRuntimeException("Attempt to change existing container.");
+			throw new ApplicationRuntimeException(
+				Tapestry.getString("AbstractComponent.attempt-to-change-container"));
 
 		container = value;
 	}
@@ -557,7 +558,8 @@ public abstract class AbstractComponent implements IComponent
 	public void setId(String value)
 	{
 		if (id != null)
-			throw new ApplicationRuntimeException("Attempt to change existing component id.");
+			throw new ApplicationRuntimeException(
+				Tapestry.getString("AbstractComponent.attempt-to-change-component-id"));
 
 		id = value;
 	}
@@ -567,7 +569,8 @@ public abstract class AbstractComponent implements IComponent
 		String containerIdPath;
 
 		if (container == null)
-			throw new NullPointerException(this +" container is null.");
+			throw new NullPointerException(
+				Tapestry.getString("AbstractComponent.null-container", this));
 
 		containerIdPath = container.getIdPath();
 
@@ -587,7 +590,8 @@ public abstract class AbstractComponent implements IComponent
 	public void setPage(IPage value)
 	{
 		if (page != null)
-			throw new ApplicationRuntimeException("Attempt to change existing containing page.");
+			throw new ApplicationRuntimeException(
+				Tapestry.getString("AbstractComponent.attempt-to-change-page"));
 
 		page = value;
 	}
@@ -600,7 +604,8 @@ public abstract class AbstractComponent implements IComponent
 	public void setSpecification(ComponentSpecification value)
 	{
 		if (specification != null)
-			throw new ApplicationRuntimeException("Attempt to change existing component specification.");
+			throw new ApplicationRuntimeException(
+				Tapestry.getString("AbstractComponent.attempt-to-change-spec"));
 
 		specification = value;
 	}

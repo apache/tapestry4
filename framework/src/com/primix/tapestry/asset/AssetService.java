@@ -46,6 +46,7 @@ import com.primix.tapestry.IResourceResolver;
 import com.primix.tapestry.RequestContext;
 import com.primix.tapestry.RequestCycleException;
 import com.primix.tapestry.ResponseOutputStream;
+import com.primix.tapestry.Tapestry;
 import com.primix.tapestry.engine.AbstractService;
 
 /**
@@ -113,7 +114,8 @@ public class AssetService extends AbstractService
 		String[] parameters)
 	{
 		if (parameters == null || parameters.length != 1)
-			throw new ApplicationRuntimeException("Service asset requires exactly one parameter.");
+			throw new ApplicationRuntimeException(
+			Tapestry.getString("service-single-parameter", ASSET_SERVICE));
 
 		return assembleGesture(servletPath, ASSET_SERVICE, parameters, null);
 	}
@@ -168,7 +170,7 @@ public class AssetService extends AbstractService
 
 		if (resourceURL == null)
 			throw new ApplicationRuntimeException(
-				"Could not find resource " + resourcePath + ".");
+				Tapestry.getString("missing-resource", resourcePath));
 
 		URLConnection resourceConnection = resourceURL.openConnection();
 

@@ -183,22 +183,15 @@ public abstract class AbstractBinding implements IBinding
 		if (type.isAssignableFrom(result.getClass()))
 			return result;
 
-		StringBuffer buffer = new StringBuffer();
+		String key =
+			type.isInterface() ? "AbstractBinding.wrong-interface"
+			: "AbstractBinding.wrong-type";
+			
+		String message = 
+			Tapestry.getString(key, new Object[] {
+				parameterName, result, type.getName() });
+		
 
-		buffer.append("Parameter ");
-		buffer.append(parameterName);
-		buffer.append(" (");
-		buffer.append(result);
-		buffer.append(") ");
-
-		if (type.isInterface())
-			buffer.append(" does not implement interface ");
-		else
-			buffer.append(" is not type ");
-
-		buffer.append(type.getName());
-		buffer.append('.');
-
-		throw new BindingException(buffer.toString(), this);
+		throw new BindingException(message, this);
 	}
 }

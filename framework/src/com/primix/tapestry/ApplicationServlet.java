@@ -26,17 +26,32 @@
 
 package com.primix.tapestry;
 
-import javax.servlet.http.*;
-import java.io.*;
-import javax.servlet.*;
-import java.util.*;
-import com.primix.tapestry.spec.*;
-import com.primix.tapestry.parse.*;
-import com.primix.tapestry.util.*;
-import com.primix.tapestry.util.exception.*;
-import com.primix.tapestry.util.xml.*;
-import com.primix.tapestry.util.pool.*;
-import org.apache.log4j.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Locale;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.apache.log4j.Appender;
+import org.apache.log4j.Category;
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.Layout;
+import org.apache.log4j.PatternLayout;
+import org.apache.log4j.Priority;
+
+import com.primix.tapestry.parse.SpecificationParser;
+import com.primix.tapestry.spec.ApplicationSpecification;
+import com.primix.tapestry.util.StringSplitter;
+import com.primix.tapestry.util.exception.ExceptionAnalyzer;
+import com.primix.tapestry.util.pool.Pool;
+import com.primix.tapestry.util.xml.DocumentParseException;
 
 /**
  * Links a servlet container with a Tapestry application.  The servlet has some
@@ -182,7 +197,8 @@ abstract public class ApplicationServlet extends HttpServlet
 			engine = getEngine(context);
 
 			if (engine == null)
-				throw new ServletException("Could not locate an engine to service this request.");
+				throw new ServletException(
+					Tapestry.getString("ApplicationServlet.could-not-locate-engine"));
 
 			boolean dirty = engine.service(context);
 
@@ -401,7 +417,7 @@ abstract public class ApplicationServlet extends HttpServlet
 
 		if (stream == null)
 			throw new ServletException(
-				"Could not locate application specification " + path + ".");
+				Tapestry.getString("ApplicationServlet.could-not-load-spec", path));
 
 		parser = new SpecificationParser();
 
@@ -417,7 +433,7 @@ abstract public class ApplicationServlet extends HttpServlet
 			show(ex);
 
 			throw new ServletException(
-				"Unable to read application specification " + path + ".",
+				Tapestry.getString("ApplicationServlet.could-not-parse-spec", path),
 				ex);
 		}
 
@@ -521,7 +537,8 @@ abstract public class ApplicationServlet extends HttpServlet
 			String className = specification.getEngineClassName();
 
 			if (className == null)
-				throw new ServletException("Application specification does not specify an engine class name.");
+				throw new ServletException(
+					Tapestry.getString("ApplicationServlet.no-engine-class"));
 
 			if (CAT.isDebugEnabled())
 				CAT.debug("Creating engine from class " + className);
