@@ -56,26 +56,35 @@
 				
 				<span jwcid="$content$">
 				
-				<span jwcid="border">
+				<span jwcid="@Border" title="Virtual Library">
 				
-				<span jwcid="showError"/>
+				<span jwcid="@ShowError"/>
 				
-				<span jwcid="showMessage"/>
+				<span jwcid="@ShowMessage"/>
 				
 				
-				<form jwcid="searchForm">	
+				<form jwcid="@Form" stateful="[[ false ]]" listener="[[ listeners.search ]]">	
 					<table width="600" border="0" cellspacing="0" cellpadding="0">
 						<tr class="clsBold">
 							<td width="80" height="30">Title</td>
-							<td width="420">&nbsp;<input jwcid="inputTitle" type="text" class="inputTextForm"/></td>
+							<td width="420">&nbsp;<input type="text" 
+							 jwcid="inputTitle@TextField" 
+							 value="[[ searchTitle ]]"
+							 displayWidth="30" maximumLength="100"
+							 class="inputTextForm"/></td>
 						</tr>
 						<tr class="clsBold">
 							<td height="30">Author</td>
-							<td>&nbsp;<input jwcid="inputAuthor" type="text" class="inputTextForm"/></td>
+							<td>&nbsp;<input type="text" jwcid="inputAuthor@TextField"
+								value="[[ searchAuthor ]]"
+								displayWidth="30" maximumLength="100"
+							  class="inputTextForm"/></td>
 						</tr>
 						<tr class="clsBold">
 							<td height="30">Publisher</td>
-							<td>&nbsp;<select jwcid="inputPublisher" name="publisher">
+							<td>&nbsp;<select jwcid="inputPublisher@PropertySelection"
+							 value="[[ searchPublisherPK ]]"
+							 model="[[ engine.publisherModel ]]">
 									<option value="#">Choose a Publisher</option>
 									<option value="p1">Publisher 1</option>
 									<option value="p2">Publisher 2</option>

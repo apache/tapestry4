@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<!-- $Id$ -->
+
+<html>
+<head>
+	<title>Virtual Library: Border Template</title>
+<link rel="STYLESHEET" type="text/css" href="scripts/style_virtlib_pcIE55.css">
+</head>
+
+<!-- Odd to have a span around a body, but that's just the way it is -->
+
+<span jwcid="$content$">
+
+<span jwcid="@Shell" title="[[ windowTitle ]]" stylesheet="[[ assets.stylesheet ]]">
+
+<body jwcid="@Body" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#8e9cd1">
+
+<!-- ****BODY WRAPPER**** -->
+<table height="100%" width="100%" border="0" cellspacing="0" cellpadding="0">
+	<tr>
+		<td width="150" valign="top">
+			<!-- Left Nav -->
+			<table width="145" border="0" cellspacing="0" cellpadding="0">
+				<tr>
+					<td height="35" colspan="3">&nbsp;</td>
+				</tr>
+				<tr>
+					<td width="19" height="22"><img jwcid="@Image" image="[[ searchIcon ]]" src="images/spacer.gif" width="14" height="12" border="0"/></td>
+					<td width="89"><a jwcid="@PageLink" page="Home" href="#" class="clsLeftNav">Search</a></td>
+					<td width="1" valign="top" rowspan="5" bgcolor="#4B5887"><img src="images/spacer.gif" width="1" height="1" border="0"></td>
+				</tr>
+				<tr>
+					<td height="22" valign="top"><img jwcid="@Image" image="[[ myLibraryIcon ]]" src="images/dots_leftnav.gif" width="14" height="12" border="0"/></td>
+					<td><a jwcid="@PageLink" page="MyLibrary" href="#" class="clsLeftNav">My Library</a>
+					
+					<span jwcid="@Conditional" condition="[[ loggedIn ]]"><br>
+					<img src="images/dots_subleft.gif" width="7" height="10" border="0" align="absmiddle"><a jwcid="@PageLink" page="BorrowedBooks" href="#" class="clsLeftNav">Borrowed Books</a><br>
+					<img src="images/dots_subleft.gif" width="7" height="10" border="0" align="absmiddle"><a jwcid="@DirectLink" listener="[[ listeners.addNewBook ]]" href="#" class="clsLeftNav">Add New Book</a><br>
+					<img src="images/dots_subleft.gif" width="7" height="10" border="0" align="absmiddle"><a jwcid="@DirectLink" listener="[[ listeners.editProfile ]]" href="#" class="clsLeftNav">Edit Profile</a><br>
+					</span>
+					</td>
+				</tr>
+		<span jwcid="@Conditional" condition="[[ admin ]]">
+				<tr>
+					<td height="22" valign="top"><img jwcid="@Image" image="[[ adminIcon ]]" src="images/spacer.gif" width="14" height="12" border="0"/></td>
+					<td><span class="clsLeftNavTxt">Admin</span>
+					
+					<br>
+					<img src="images/dots_subleft.gif" width="7" height="10" border="0" align="absmiddle"><a jwcid="@PageLink" page="admin.TransferBooks" href="#" class="clsLeftNav">Transfer Books</a><br>
+					<img src="images/dots_subleft.gif" width="7" height="10" border="0" align="absmiddle"><a jwcid="@PageLink" page="admin.EditPublishers" href="#" class="clsLeftNav">Edit Publishers</a><br>
+					<img src="images/dots_subleft.gif" width="7" height="10" border="0" align="absmiddle"><a jwcid="@PageLink" page="admin.EditUsers" href="#" class="clsLeftNav">Edit Users</a><br>
+					</td>
+				</tr>		
+		</span>
+		
+				<tr>
+					<td height="22"><img jwcid="@Image" image="[[ loginIcon ]]" src="images/spacer.gif" width="14" height="12" border="0"/></td>
+					<td>
+					
+					<span jwcid="@Conditional" condition="[[ loggedIn ]]">
+						<a jwcid="@DirectLink" 
+							listener="[[ listeners.logout]]"
+						   	stateful="[[ false ]]"
+						   	href="#" class="clsLeftNav">Logout</a>
+					</span>
+					
+					<span jwcid="@Conditional" condition="[[ !loggedIn ]]">
+						<a jwcid="@DirectLink" 
+						stateful="[[ false ]]"
+						listener="[[ listeners.login ]]" 
+						href="#" class="clsLeftNav">Login</a>
+					</span>
+					
+					</td>
+				</tr>
+				<tr>
+					<td height="200"><img src="images/spacer.gif" width="14" height="1" border="0"></td>
+					<td>&nbsp;</td>
+				</tr>
+			</table>
+			<!-- END Left Nav -->
+		</td>
+		<td valign="top" align="left">
+			<table border="0" cellpadding="0" cellspacing="0">
+				<tr valign="top" align="left">
+					<td>
+						<img src="images/ico_t.gif" width="44" height="44" border="0" vspace="5">
+					</td>
+					<td width="250">
+						<img src="images/hd_virtuallibrary.gif" width="163" height="22" border="0" vspace="17">
+						<span jwcid="ifImageTitle">
+						
+						<br clear="left">
+						
+						<span jwcid="@Conditional" condition="[[ libraryPage ]]">
+						<img src="images/hd_mylibrary.gif" width="84" height="18"
+						 border="0"><span jwcid="@Conditional" condition="[[ showSlash ]]"><img src="images/hd_slash.gif" 
+						 width="19" height="18" border="0"></span></span><img jwcid="@Image" image="[[ subheader ]]" src="images/hd_addnewbooks.gif" border="0"/>
+						 
+						 </span>
+						 
+		
+						<span jwcid="ifSimpleTitle">
+						<h3><span jwcid="insertSimpleTitle">Simple Title</span></h3>
+						</span>
+					</td>
+				</tr>
+			</table>
+
+			
+			<br>
+				
+			<span jwcid="@RenderBody">
+			
+			<h1>Page Content</h1>
+			
+			</span>
+		
+			</td>
+		</tr>
+
+<!-- ****END BODY WRAPPER**** -->
+
+<!-- ****FOOTER**** -->
+
+	<tr bgcolor="#000000">
+		<td colspan="2" class="clsFooter" align="center" valign="bottom">&#169;2000-2002
+		<a class="clsFooterLink" href="mailto:hship@users.sf.net">Howard Lewis Ship</a>.
+		All rights reserved.
+
+        <span jwcid="@contrib:InspectorButton" disabled="[[ ! page.engine.debugEnabled ]]"/>
+
+		</td>
+	</tr>
+	
+	<tr>
+		<td colspan="2">
+			<img src="images/spacer.gif" height="2" width="1">
+		</td>
+	</tr>
+</table>
+
+
+<!-- ****END FOOTER**** -->
+</body>
+
+</span>
+
+</span>
+
+</html>

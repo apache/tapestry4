@@ -55,16 +55,16 @@
 				<br><br>
 				
 <span jwcid="$content$">
-<span jwcid="border">
+<span jwcid="@Border" title="Borrowed Books">
 
-<span jwcid="showError"/>
-<span jwcid="showMessage"/>
+<span jwcid="@ShowError"/>
+<span jwcid="@ShowMessage"/>
 
-<span jwcid="ifNoBooks">
+<span jwcid="@Conditional" condition="[[ components.browser.resultCount == 0 ]]">
 No borrowed books.
 </span>
 
-<span jwcid="ifBooks">
+<span jwcid="@Conditional" condition="[[ components.browser.resultCount != 0 ]]">
 
 <span jwcid="browser">
 				
@@ -73,7 +73,9 @@ No borrowed books.
 		<tr>
 			<td height="20" colspan="6">
 			<span class="clsBold">
-				<span jwcid="insertResultCount">10</span> Borrowed Books</span></td>
+				<span jwcid="@Insert" value="[[ components.browser.resultCount ]]">10</span>
+				Borrowed Books</span>
+			</td>
 		</tr>
 		<tr height="20" class="clsBold">
 			<td>&nbsp;&nbsp;Title</td>
@@ -88,12 +90,19 @@ No borrowed books.
 			<td colspan="6" rowspan="5" valign="top" bgcolor="#4b5887">
 				<table width="100%" border="0" cellspacing="2" cellpadding="2"> -->
 					<tr jwcid="e" bgcolor="#ffffff">
-						<td><a jwcid="bookLink" href="#" class="clsDataBlue" jwcid="bookLink">DocBook:The Definitive Guide</a></td>
-						<td><span jwcid="insertAuthor">Walsh &#38; Muellner</span></td>
-						<td><span jwcid="insertPublisher">O'Reilly</span></td>
-						<td><a jwcid="ownerLink" href="#">Jim Moran</a></td>
+						<td><a jwcid="@BookLink" book="[[ currentBook ]]" href="#" class="clsDataBlue">DocBook:The Definitive Guide</a></td>
+						<td><span jwcid="@Insert" value="[[ currentBook.author ]]">Walsh &#38; Muellner</span></td>
+						<td><span jwcid="@Insert" value="[[ currentBook.publisherName ]]">O'Reilly</span></td>
+						<td><a jwcid="@PersonLink"
+						name="[[ currentBook.ownerName ]]"
+						primaryKey="[[ currentBook.ownerPrimaryKey ]]"
+						class="clsDataBlue"
+						href="#">Jim Moran</a></td>
 						<td width="43" bgcolor="#4b5887" align="center">
-						<a jwcid="return" href="#"><img src="images/icon_return.gif" alt="[Return]" width="21" height="16" border="0" vspace="2"></a></td>
+						<a jwcid="@DirectLink" 
+						parameters="[[ currentBook.primaryKey ]]"
+						listener="[[ listeners.returnBook ]]"
+						href="#"><img src="images/icon_return.gif" alt="[Return]" width="21" height="16" border="0" vspace="2"></a></td>
 					</tr>
 					<tr bgcolor="#ffffff" jwcid="$remove$">
 						<td>&nbsp;</td>

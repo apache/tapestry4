@@ -98,7 +98,7 @@
   </component>
   
   <component id="publisherScript" type="Script">
-    <static-binding name="script">/net/sf/tapestry/vlib/pages/Publisher.script</static-binding>
+    <static-binding name="script">Publisher.script</static-binding>
     <binding name="select" expression="components.inputPublisher"/>
     <binding name="field" expression="components.inputPublisherName"/>
   </component>

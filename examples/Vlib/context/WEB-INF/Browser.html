@@ -1,0 +1,32 @@
+<!-- $Id$ -->
+
+<span jwcid="$content$">
+
+<span jwcid="@RenderBody"/>
+
+<span jwcid="@Conditional" condition="[[ resultCount > 0 ]]">
+
+<br>Showing <span jwcid="@Insert" value="[[ range ]]">X - Y</span>
+
+<span jwcid="@Conditional" condition="[[ currentPage &gt; 1 ]]">
+// <a jwcid="prev@DirectLink"
+	listener="[[ listeners.jump ]]"
+	stateful="[[ false ]]"
+	parameters="[[ @@max(currentPage - 1, 1) ]]">prev</a>
+</span>
+
+<span jwcid="@Conditional" condition="[[ currentPage &lt; pageCount ]]">
+// <a jwcid="next@DirectLink"
+	listener="[[ listeners.jump ]]"
+	stateful="[[ false ]]"
+	parameters="[[ @@min(currentPage + 1, pageCount) ]]">next</a>
+</span>
+
+<br>
+<br>
+
+</span>
+
+</span>
+
+		
