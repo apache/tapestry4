@@ -53,63 +53,63 @@ import org.apache.log4j.*;
 
 
 public class DefaultSpecificationSource 
-    implements ISpecificationSource
+    implements ISpecificationSource, IRenderDescription
 {
 	private static final Category CAT = 
 		Category.getInstance(DefaultSpecificationSource.class);
 	
 	private IResourceResolver resolver;
 	protected ApplicationSpecification specification;
-
+	
 	private SpecificationParser parser;
-
+	
 	private static final int MAP_SIZE = 23;
 	
 	/**
-	*  Contains previously parsed specification.
-	*
-	*/
-
+	 *  Contains previously parsed specification.
+	 *
+	 */
+	
 	protected Map cache;
-
+	
 	public DefaultSpecificationSource(IResourceResolver resolver,
-		ApplicationSpecification specification)
+			ApplicationSpecification specification)
 	{
 		this.resolver = resolver;
 		this.specification = specification;
 	}
-
+	
 	/**
-	*  Clears the specification cache.  This is used during debugging.
-	*
-	*/
-
+	 *  Clears the specification cache.  This is used during debugging.
+	 *
+	 */
+	
 	public void reset()
 	{
 		cache = null;
 	}
-
+	
 	/**
-	*  Gets a specification.  The type is either a component specification
-	*  path, or an alias to a component (registerred in the application
-	*  specification).  The former always starts with a slash, the latter
-	*  never does.
-	*
-	*  <p>If an alias (i.e, starts with a slash), then the value is passed through
-	*  {@link ApplicationSpecification#getComponentAlias(String)} to
-	*  get a resource on the classpath that is parsed.
-	*
-	*/
-
+	 *  Gets a specification.  The type is either a component specification
+	 *  path, or an alias to a component (registerred in the application
+	 *  specification).  The former always starts with a slash, the latter
+	 *  never does.
+	 *
+	 *  <p>If an alias (i.e, starts with a slash), then the value is passed through
+	 *  {@link ApplicationSpecification#getComponentAlias(String)} to
+	 *  get a resource on the classpath that is parsed.
+	 *
+	 */
+	
 	public synchronized ComponentSpecification getSpecification(String type)
-	throws ResourceUnavailableException
+		throws ResourceUnavailableException
 	{
 		ComponentSpecification result = null;
 		String resourceName;
-
+		
 		if (cache != null)
 			result = (ComponentSpecification)cache.get(type);
-
+		
 		if (result == null)
 		{
 			if (type.startsWith("/"))
@@ -122,38 +122,38 @@ public class DefaultSpecificationSource
 					throw new ResourceUnavailableException(
 						"Could not find a component matching alias " + type + ".");
 			}	
-
+			
 			result = parseSpecification(resourceName);
-
+			
 			if (cache == null)
 				cache = new HashMap(MAP_SIZE);
-
+			
 			cache.put(type, result);
 			if (resourceName != type)
 				cache.put(resourceName, result);
 		}
-
+		
 		return result;
 	}
-
+	
 	protected ComponentSpecification parseSpecification(String resourcePath)
-	throws ResourceUnavailableException
+		throws ResourceUnavailableException
 	{
 		ComponentSpecification result = null;
 		URL URL;
 		InputStream inputStream;
-
+		
 		if (CAT.isDebugEnabled())
 			CAT.debug("Parsing component specification " + resourcePath);
-
+		
 		URL = resolver.getResource(resourcePath);
-
+		
 		if (URL == null)
 		{
 			throw new ResourceUnavailableException("Could not locate resource " +
-				resourcePath + " in the classpath.");
+						resourcePath + " in the classpath.");
 		}
-
+		
 		try
 		{
 			inputStream = URL.openStream();
@@ -161,12 +161,12 @@ public class DefaultSpecificationSource
 		catch (IOException e)
 		{
 			throw new ResourceUnavailableException("Could not open specification " +
-				resourcePath + ".", e);
+						resourcePath + ".", e);
 		}
-
+		
 		if (parser == null)
 			parser = new SpecificationParser();
-
+		
 		try
 		{
 			result = parser.parseComponentSpecification(inputStream, resourcePath);
@@ -174,11 +174,11 @@ public class DefaultSpecificationSource
 		catch (DocumentParseException e)
 		{
 			throw new ResourceUnavailableException("Could not parse specification " +
-				resourcePath + ".", e);
+						resourcePath + ".", e);
 		}
-
+		
 		result.setSpecificationResourcePath(resourcePath);
-
+		
 		return result;
 	}
 	
@@ -201,5 +201,47 @@ public class DefaultSpecificationSource
 		
 		return buffer.toString();
 	}
+	
+	/** @since 1.0.6 **/
+	
+	public void renderDescription(IResponseWriter writer)
+	{
+		writer.print("DefaultSpecificationSource[");
+		
+		if (cache == null)
+		{
+			writer.print("]");
+			return;
+		}
+		
+		synchronized(cache)
+		{
+			Set keySet = cache.keySet();
+			
+			writer.print(keySet.size());
+			writer.print(" cached specifications]");
+			boolean first = true;
+			
+			Iterator i = keySet.iterator();
+			while (i.hasNext())
+			{
+				String key = (String)i.next();
+				
+				if (first)
+				{
+					writer.begin("ul");
+					first = false;
+				}
+				
+				writer.begin("li");
+				writer.print(key);
+				writer.end();
+			}
+			
+			if (!first)
+				writer.end(); // <ul>
+		}
+	}
+	
 }
 

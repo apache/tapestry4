@@ -30,6 +30,7 @@ package com.primix.tapestry.util.pool;
 
 import java.util.*;
 import org.apache.log4j.*;
+import com.primix.tapestry.*;
 import com.primix.tapestry.util.*;
 
 /**
@@ -52,7 +53,7 @@ import com.primix.tapestry.util.*;
  *
  */
 
-public class Pool implements ICleanable
+public class Pool implements ICleanable, IRenderDescription
 {
 	private static final Category CAT =
 		Category.getInstance(Pool.class);
@@ -310,7 +311,7 @@ public class Pool implements ICleanable
 			return map.size();
 		}
 	}
-
+	
 	/**
 	 *  Peforms culling of unneeded pooled objects.
 	 *
@@ -411,5 +412,48 @@ public class Pool implements ICleanable
 		buffer.append(']');
 		
 		return buffer.toString();
+	}
+	
+	/** @since 1.0.6 **/
+	
+	public void renderDescription(IResponseWriter writer)
+	{
+		writer.print("Pool[Generation = ");
+		writer.print(generation);
+		writer.print(" Pooled = ");
+		writer.print(pooledCount);
+		writer.print("]");
+		
+		if (map == null)
+			return;
+		
+		boolean first = true;
+		
+		synchronized(map)
+		{
+			Iterator i = map.entrySet().iterator();
+			
+			while (i.hasNext())
+			{
+				Map.Entry entry = (Map.Entry)i.next();
+				PoolList list = (PoolList)entry.getValue();
+				
+				if (first)
+				{
+					writer.begin("ul");
+					first = false;
+				}
+				
+				writer.begin("li");
+				writer.print(entry.getKey().toString());
+				writer.print(" = ");
+				writer.print(list.getPooledCount());
+				writer.println();
+				writer.end();
+			}
+		}
+		
+		if (!first)
+			writer.end(); // <ul>		
 	}
 }
