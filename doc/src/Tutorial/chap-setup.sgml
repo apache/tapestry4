@@ -1,0 +1,87 @@
+<!-- $Id$ -->
+
+<chapter id="setup">
+	<title>Setting up the Tutorial</>
+	
+<para>
+This document expects that you will have extracted the full Tapestry distribution to your 
+<filename class=directory>C:</> drive
+	<footnote>
+		<para>
+		If you are using Solaris or another non-Windows operating system, you're expected
+		to be savvy enough to translate to a sensibly constructed file system.
+		</>
+	</>
+</>
+
+<para>
+This will have created a directory <filename class=directory>C:Tapestry-<replaceable>x.x.x</></>
+and, beneath it, several more directories.
+	<footnote>
+		<para>
+		The three numbers are the release number.  At the time of this writing, the release
+		was 0.2.8, but this is constantly changing.  Simply adjust the actual pathname to
+		reflect the release of Tapestry you downloaded.
+		</> 
+	</>
+</>
+
+<para>
+The Tapestry Tutorial will be in <filename class=directory>
+C:\Tapestry-<replaceable>x.x.x</>\Examples\Tutorial</>.
+</>
+
+	<section id="setup.jbe">
+		<title>Java Build Environment</>
+
+<para>
+In order to execute the tutorial, you must set up the Java Build Environment (JBE), which is 
+also distributed with Tapestry, along with complete documentation on setting
+up the JBE.
+</>
+
+<para>
+The JBE is a set of GNU makefiles for building, packaging and
+executing Java applications.  The JBE is required, since it is used to compile the 
+tutorial as well as execute it.
+</>
+
+	</section>
+
+	<section id="setup.build">
+		<title>Building the Tutorial</>
+
+<para>
+Building the Tutorial is quite easy (once the JBE is set up).
+</>
+
+<para>
+Change to the Tutorial directory,
+<filename class=directory>C:\Tapestry-<replaceable>x.x.x</>\Examples\Tutorial</>.
+</>
+
+<para>
+Execute the command <command>make war</>, which will build the
+<filename>Tutorial.war</> file start to finish (compiling classes, copying resources and building
+the final archive).
+When its done, you can start up the Jetty server just as easily 
+with the <command>make run</> command.
+</>
+
+<para>
+One Jetty is running, you can access the Tutorials using the URL 
+<filename>http://localhost:8080/tutorial</>.
+</>
+
+<figure>
+	<title>Tutorial Index Page</>
+	<mediaobject>
+		<imageobject>
+			<imagedata fileref="images/tutorial-index.jpg" format="jpg">
+		</imageobject>
+	</>
+</figure>
+
+	</section>
+
+</chapter>
