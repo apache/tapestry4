@@ -19,6 +19,7 @@ servlet; it is rarely necessary to create a subclass.
 &lt;!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
  "http://java.sun.com/j2ee/dtds/web-app_2_2.dtd"&gt;
 &lt;web-app&gt;
+  &lt;distributable/&gt; <co id="configuration.web.distributable"/>
   &lt;display-name&gt;Tapestry Virtual Library Demo&lt;/display-name&gt;
   &lt;servlet&gt;
     &lt;servlet-name&gt;vlib&lt;/servlet-name&gt; <co id="configuration.web.servlet-name"/>
@@ -49,6 +50,13 @@ servlet; it is rarely necessary to create a subclass.
 </example>
 
 <calloutlist>
+<callout arearefs="configuration.web.distributable">
+<para>
+This indicates to the application server that the Tapestry application may be clustered.  Most
+application servers ignore this element, but future servers may only distribute
+applications within a cluster if this element is present.	
+</para>	
+</callout>
 <callout arearefs="configuration.web.servlet-name">
 	<para>
 	The servlet name may be used when locating the application specification (though
@@ -429,14 +437,43 @@ currently used in Tapestry.
 </varlistentry>
 
 <varlistentry>
-	<term>org.apache.tapestry.value-persister (&IValuePersister;)</term>
-
+	<term>org.apache.tapestry.specification-resolver-delegate (&ISpecificationResolverDelegate;)</term>
+	
 	<listitem>
 	<para>
-	An object responsible for copying persistent page properties for storage.  If not
-	provided, an instance of &DefaultValuePersister; is used.
-	</para>
+	An object which is used to find page and component specifications that are not located
+	using the default search rules.  The use of this is open-ended, but is generally
+	useful in very advanced scenarios where specifications are stored externally
+	(perhaps in a database), or constructed on the fly.
+	</para>	
 	</listitem>	
+</varlistentry>
+
+<varlistentry>
+	<term>org.apache.tapestry.template-source-delegate (&ITemplateSourceDelegate;)</term>
+	
+	<listitem>
+	<para>
+	An object which is used to find page or component templates that are not located
+	using the default search rules. The use of this is open-ended, but is generally
+	useful in very advanced scenarios where templates are stored externally
+	(perhaps in a database), or constructed on the fly.
+	</para>	
+	</listitem>
+</varlistentry>
+
+<varlistentry> 
+<term>org.apache.tapestry.multipart-decoder (&IMultipartDecoder;)</term>
+
+<listitem>
+<para>
+Allows an alternate object to be responsible for decoding multipart requests (context
+type multipart/form-data, used for file uploads).  Generally, this is used to
+configure an instance of &DefaultMultipartDecoder; with non-default values for
+the maximum upload size, threshold size (number of bytes before a temporary file is created
+to store the) and repository directory (where temporary files are stored).	
+</para>
+</listitem>	
 </varlistentry>
 
 </variablelist>
