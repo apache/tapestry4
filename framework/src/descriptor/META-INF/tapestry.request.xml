@@ -153,6 +153,7 @@
         <set-service property="monitorFactory" service-id="tapestry.monitor.MonitorFactory"/>
         <set-object property="serviceMap" value="infrastructure:serviceMap"/> 
         <set-service property="strategySource" service-id="tapestry.persist.PropertyPersistenceStrategySource"/>       
+        <set-object property="pageSource" value="infrastructure:pageSource"/>
       </construct>
     </invoke-factory>
     

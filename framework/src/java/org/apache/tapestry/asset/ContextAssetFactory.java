@@ -35,6 +35,8 @@ public class ContextAssetFactory implements AssetFactory
 {
     private ServletContext _servletContext;
 
+    private String _contextPath;
+
     private ContextResource _servletRoot;
 
     public void initializeService()
@@ -51,11 +53,16 @@ public class ContextAssetFactory implements AssetFactory
             throw new ApplicationRuntimeException(AssetMessages.missingAsset(path, _servletRoot),
                     location, null);
 
-        return new ContextAsset((ContextResource) localized, location);
+        return new ContextAsset(_contextPath, (ContextResource) localized, location);
     }
 
     public void setServletContext(ServletContext servletContext)
     {
         _servletContext = servletContext;
+    }
+
+    public void setContextPath(String contextPath)
+    {
+        _contextPath = contextPath;
     }
 }

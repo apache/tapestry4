@@ -21,6 +21,7 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.IMonitor;
 import org.apache.tapestry.engine.IMonitorFactory;
+import org.apache.tapestry.engine.IPageSource;
 import org.apache.tapestry.engine.RequestCycle;
 import org.apache.tapestry.engine.ServiceEncoder;
 import org.apache.tapestry.engine.ServiceEncodingImpl;
@@ -45,6 +46,8 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
 
     private PropertyPersistenceStrategySource _strategySource;
 
+    private IPageSource _pageSource;
+
     private ErrorHandler _errorHandler;
 
     public IRequestCycle newRequestCycle(IEngine engine, RequestContext context)
@@ -57,7 +60,7 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
 
         IEngineService service = findService(parameters);
 
-        return new RequestCycle(engine, context, parameters, service, _strategySource,
+        return new RequestCycle(engine, context, parameters, service, _pageSource, _strategySource,
                 _errorHandler, monitor);
     }
 
@@ -134,5 +137,10 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
     public void setErrorHandler(ErrorHandler errorHandler)
     {
         _errorHandler = errorHandler;
+    }
+
+    public void setPageSource(IPageSource pageSource)
+    {
+        _pageSource = pageSource;
     }
 }

@@ -19,6 +19,7 @@ import org.apache.tapestry.engine.IPageSource;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.engine.ISpecificationSource;
+import org.apache.tapestry.engine.state.ApplicationStateManager;
 import org.apache.tapestry.services.ComponentMessagesSource;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.services.Infrastructure;
@@ -71,6 +72,8 @@ public class InfrastructureImpl implements Infrastructure
     private LinkFactory _linkFactory;
 
     private RequestCycleFactory _requestCycleFactory;
+
+    private ApplicationStateManager _applicationStateManager;
 
     public IScriptSource getScriptSource()
     {
@@ -231,5 +234,15 @@ public class InfrastructureImpl implements Infrastructure
     public void setRequestCycleFactory(RequestCycleFactory requestCycleFactory)
     {
         _requestCycleFactory = requestCycleFactory;
+    }
+
+    public ApplicationStateManager getApplicationStateManager()
+    {
+        return _applicationStateManager;
+    }
+
+    public void setApplicationStateManager(ApplicationStateManager applicationStateManager)
+    {
+        _applicationStateManager = applicationStateManager;
     }
 }

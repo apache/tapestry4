@@ -69,6 +69,10 @@ public class RequestCycle implements IRequestCycle
 
     private PropertyPersistenceStrategySource _strategySource;
 
+    /** @since 3.1 */
+
+    private IPageSource _pageSource;
+
     /**
      * Contains parameters extracted from the request context, plus any decoded by any
      * {@link ServiceEncoder}s.
@@ -116,6 +120,7 @@ public class RequestCycle implements IRequestCycle
 
     public RequestCycle(IEngine engine, RequestContext requestContext,
             QueryParameterMap parameters, IEngineService service,
+            IPageSource pageSource,
             PropertyPersistenceStrategySource strategySource, ErrorHandler errorHandler,
             IMonitor monitor)
     {
@@ -123,6 +128,7 @@ public class RequestCycle implements IRequestCycle
         _requestContext = requestContext;
         _parameters = parameters;
         _service = service;
+        _pageSource = pageSource;
         _strategySource = strategySource;
         _log = new ErrorLogImpl(errorHandler, LOG);
         _monitor = monitor;
@@ -147,14 +153,13 @@ public class RequestCycle implements IRequestCycle
         if (_loadedPages == null)
             return;
 
-        IPageSource source = _engine.getPageSource();
         Iterator i = _loadedPages.values().iterator();
 
         while (i.hasNext())
         {
             IPage page = (IPage) i.next();
 
-            source.releasePage(page);
+            _pageSource.releasePage(page);
         }
 
         _loadedPages = null;
@@ -221,9 +226,7 @@ public class RequestCycle implements IRequestCycle
         {
             _monitor.pageLoadBegin(name);
 
-            IPageSource pageSource = _engine.getPageSource();
-
-            result = pageSource.getPage(this, name, _monitor);
+            result = _pageSource.getPage(this, name, _monitor);
 
             result.setRequestCycle(this);
 

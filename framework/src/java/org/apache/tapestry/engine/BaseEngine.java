@@ -14,9 +14,6 @@
 
 package org.apache.tapestry.engine;
 
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectOutput;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -32,8 +29,6 @@ import org.apache.tapestry.IRequestCycle;
 
 public class BaseEngine extends AbstractEngine
 {
-    private static final long serialVersionUID = -7051050643746333380L;
-
     /**
      * Removes all page recorders that contain no changes, or are marked for discard. Subclasses
      * should invoke this implementation in addition to providing thier own.
@@ -69,28 +64,6 @@ public class BaseEngine extends AbstractEngine
         //        	markDirty();
     }
 
-    public void forgetPage(String name)
-    {
-        throw new UnsupportedOperationException("forgetPage()");
-
-        //        if (_recorders == null)
-        //            return;
-        //
-        //        IPageRecorder recorder = (IPageRecorder) _recorders.get(name);
-        //        if (recorder == null)
-        //            return;
-        //
-        //        if (recorder.isDirty())
-        //            throw new ApplicationRuntimeException(
-        //                Tapestry.format("BaseEngine.recorder-has-uncommited-changes", name));
-        //
-        //        recorder.discard();
-        //        _recorders.remove(name);
-        //        _activePageNames.remove(name);
-        //        
-        //        markDirty();
-    }
-
     /**
      * Returns an unmodifiable {@link Collection}of the page names for which {@link IPageRecorder}
      * instances exist.
@@ -112,22 +85,4 @@ public class BaseEngine extends AbstractEngine
         throw new UnsupportedOperationException("createPageRecorder()");
     }
 
-    /**
-     * Reconstructs the list of active page names written by {@link #writeExternal(ObjectOutput)}.
-     */
-
-    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException
-    {
-        super.readExternal(in);
-    }
-
-    /**
-     * Writes the engine's persistent state; this is simply the list of active page names. For
-     * efficiency, this is written as a count followed by each name as a UTF String.
-     */
-
-    public void writeExternal(ObjectOutput out) throws IOException
-    {
-        super.writeExternal(out);
-    }
 }

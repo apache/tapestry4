@@ -51,18 +51,6 @@ public abstract class ServiceTestCase extends HiveMindTestCase
         return result;
     }
 
-    protected IEngine newEngine(boolean stateful)
-    {
-        MockControl control = newControl(IEngine.class);
-        IEngine result = (IEngine) control.getMock();
-
-        result.isStateful();
-
-        control.setReturnValue(stateful);
-
-        return result;
-    }
-
     protected HttpServletRequest newRequest(HttpSession session)
     {
         MockControl control = newControl(HttpServletRequest.class);

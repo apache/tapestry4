@@ -44,6 +44,10 @@
       <li>Since all requests are routed through a single  servlet
         (typically mapped to <code>/app</code>), J2EE declarative security, which is path-based,
         is defeated.</li>
+      <li>
+        Ugly URLs tend to be longer than friendly URLs, which can make a difference when creating
+        a WML application.
+      </li>
      <li>A single directory may contain all the artifacts (HTML templates,  specifications, properties files) for
       all the pages in an entire application.  There isn't a sanctioned approach to organizing
       things into subdirectories.</li>

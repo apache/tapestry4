@@ -20,44 +20,45 @@ import java.net.URL;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.util.ContextResource;
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 
 /**
- *  An asset whose path is relative to the {@link javax.servlet.ServletContext} containing
- *  the application.
- *
- *  @author Howard Lewis Ship
- **/
+ * An asset whose path is relative to the {@link javax.servlet.ServletContext}containing the
+ * application.
+ * 
+ * @author Howard Lewis Ship
+ */
 
 public class ContextAsset extends AbstractAsset implements IAsset
 {
+    private String _contextPath;
+
     private String _resolvedURL;
 
-    public ContextAsset(ContextResource resourceLocation, Location location)
+    public ContextAsset(String contextPath, ContextResource resourceLocation, Location location)
     {
         super(resourceLocation, location);
+
+        Defense.notNull(contextPath, "contextPath");
+
+        _contextPath = contextPath;
     }
 
     /**
-     *  Generates a URL for the client to retrieve the asset.  The context path
-     *  is prepended to the asset path, which means that assets deployed inside
-     *  web applications will still work (if things are configured properly).
-     *
-     **/
+     * Generates a URL for the client to retrieve the asset. The context path is prepended to the
+     * asset path, which means that assets deployed inside web applications will still work (if
+     * things are configured properly).
+     */
 
     public String buildURL(IRequestCycle cycle)
     {
         if (_resolvedURL == null)
-        {
-            IEngine engine = cycle.getEngine();
-            String contextPath = engine.getContextPath();
+            _resolvedURL = _contextPath + getResourceLocation().getPath();
 
-            _resolvedURL = contextPath + getResourceLocation().getPath();
-        }
-        
         return _resolvedURL;
     }
 
@@ -71,9 +72,9 @@ public class ContextAsset extends AbstractAsset implements IAsset
         }
         catch (Exception ex)
         {
-            throw new ApplicationRuntimeException(
-                Tapestry.format("ContextAsset.resource-missing", getResourceLocation()),
-                ex);
+            throw new ApplicationRuntimeException(Tapestry.format(
+                    "ContextAsset.resource-missing",
+                    getResourceLocation()), ex);
         }
     }
 }
