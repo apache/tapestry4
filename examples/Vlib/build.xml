@@ -67,12 +67,9 @@
       	<!-- Favor files in src over copies in classes -->
       	<pathelement location="${src.dir}"/>
       	
-      	<!-- Temporary hack: pick up compiled files from Eclipse's compilation directory
-      	     instead of our own: necessary for debugging.  -->
-      	     
-        <pathelement location=".${root.dir}/bin"/>
+        <pathelement location="${classes.dir}"/>
 
-        <pathelement location="${lib.dir}/org.mortbay.jetty.jar"/>
+        <pathelement location="${lib.ext.dir}/org.mortbay.jetty.jar"/>
         <!-- Runtime client libraries -->
         <pathelement location="${jboss.client.dir}/jboss-client.jar"/>
         <pathelement location="${jboss.client.dir}/jbosssx-client.jar"/>
