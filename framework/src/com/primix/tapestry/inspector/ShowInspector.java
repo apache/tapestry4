@@ -39,8 +39,17 @@ import java.util.*;
  *  the inspector in a new window.  It's look and feel can be modified
  *  to blend into an application if desired.
  *
+ *  <p>Typically, the inspector will be enabled only when debugging; the application
+ *  can control this by binding the enabled parameter.  Most applications will include
+ *  the ShowInspector component as a portion of the persistent navigational border,
+ *  using images that blend into the page (especially when the inspector is disabled).
  *
-  * <table border=1>
+ *  <p>Because the ShowInspector component is implemented using a {@link Rollover},
+ *  the containing page must use a {@link Body} component instead of
+ *  a &lt;body&gt; tag.
+ *
+ *
+ * <p><table border=1>
  * <tr> 
  *    <td>Parameter</td>
  *    <td>Type</td>
@@ -54,6 +63,7 @@ import java.util.*;
  *    <td>enabled</td>
  *	  <td>boolean</td>
  *	  <td>R</td>
+ *	  <td>no</td>
  *	  <td>true</td>
  *	  <td>May be set to false to disable the inspector button.</td>
  *  </tr>

@@ -1,5 +1,9 @@
 * Sep 12 2000 hship
 
+More Javadoc for ShowInspector component.
+
+* Sep 12 2000 hship
+
 Beef up the ShowInspector component, adding default images and rollover images, and
 add parameters to allow those to be overriden.
 Remove the Java Source tab from the Inspector ... turns out that shipping Java code in the
