@@ -12,4 +12,6 @@
 	
 	<component-alias type="ShowError" specification-path="/net/sf/tapestry/junit/mock/lib/ShowError.jwc"/>
 	
+	<library id="contrib" specification-path="/net/sf/tapestry/contrib/Contrib.library"/>
+	
 </library-specification>	

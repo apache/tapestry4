@@ -10,6 +10,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import net.sf.tapestry.binding.ExpressionBinding;
 import net.sf.tapestry.parse.CloseToken;
 import net.sf.tapestry.parse.ComponentTemplate;
 import net.sf.tapestry.parse.LocalizationToken;
@@ -230,7 +231,8 @@ public class BaseComponentTemplateLoader
             _activeComponent.addBody(component);
         }
 
-        addStaticBindings(component, token.getAttributes());
+        addExpressionBindings(component, token.getExpressionValuesMap());
+        addStaticBindings(component, token.getStaticValuesMap());
 
         _stack[_stackx++] = _activeComponent;
 
@@ -264,22 +266,97 @@ public class BaseComponentTemplateLoader
     }
 
     /**
-     *  Adds static bindings for any attrributes specified in the HTML
-     *  template, skipping any that are reserved (explicitly, or
-     *  because they match a formal parameter name).
+     *  Adds expression bindings for any expressions in the provided map.
      *
+     *  <p>It is an error to specify expression 
+     *  bindings in both the specification
+     *  and the template.
+     * 
      **/
 
-    private void addStaticBindings(IComponent component, Map attributes)
+    private void addExpressionBindings(IComponent component, Map expressionsMap) throws PageLoaderException
     {
-        if (attributes == null || attributes.isEmpty())
+        if (Tapestry.isEmpty(expressionsMap))
             return;
 
         ComponentSpecification spec = component.getSpecification();
 
         boolean rejectInformal = !spec.getAllowInformalParameters();
 
-        Iterator i = attributes.entrySet().iterator();
+        Iterator i = expressionsMap.entrySet().iterator();
+
+        while (i.hasNext())
+        {
+            Map.Entry e = (Map.Entry) i.next();
+
+            String name = (String) e.getKey();
+
+            // If matches a formal parameter name, allow it to be set
+            // unless there's already a binding.
+
+            boolean isFormal = (spec.getParameter(name) != null);
+
+            if (isFormal)
+            {
+                if (component.getBinding(name) != null)
+                    throw new PageLoaderException(
+                        Tapestry.getString(
+                            "BaseComponent.dupe-template-expression",
+                            name,
+                            component.getExtendedId(),
+                            _loadComponent.getExtendedId()),
+                        component);
+            }
+            else
+            {
+                if (rejectInformal)
+                    throw new PageLoaderException(
+                        Tapestry.getString(
+                            "BaseComponent.template-expression-for-informal-parameter",
+                            name,
+                            component.getExtendedId(),
+                            _loadComponent.getExtendedId()),
+                        component);
+
+                // If the name is reserved (matches a formal parameter
+                // or reserved name, caselessly), then skip it.
+
+                if (spec.isReservedParameterName(name))
+                    throw new PageLoaderException(
+                        Tapestry.getString(
+                            "BaseComponent.template-expression-for-reserved-parameter",
+                            name,
+                            component.getExtendedId(),
+                            _loadComponent.getExtendedId()),
+                        component);
+            }
+
+            String expression = (String) e.getValue();
+
+            IBinding binding = new ExpressionBinding(_pageSource.getResourceResolver(), _loadComponent, expression);
+
+            component.setBinding(name, binding);
+        }
+
+    }
+
+    /**
+     *  Adds static bindings for any attrributes specified in the HTML
+     *  template, skipping any that are reserved (explicitly, or
+     *  because they match a formal parameter name).
+     *
+     **/
+
+    private void addStaticBindings(IComponent component, Map valuesMap)
+    {
+        if (Tapestry.isEmpty(valuesMap))
+            return;
+
+        ComponentSpecification spec = component.getSpecification();
+
+        boolean rejectInformal = !spec.getAllowInformalParameters();
+
+        Iterator i = valuesMap.entrySet().iterator();
 
         while (i.hasNext())
         {

@@ -87,4 +87,13 @@ public interface IPageSource
      **/
 
     public IAsset getPrivateAsset(String resourcePath);
+    
+    /**
+     * 
+     *  @since NEXT_RELEASE
+     * 
+     **/
+    
+    public IResourceResolver getResourceResolver();
+        
 }

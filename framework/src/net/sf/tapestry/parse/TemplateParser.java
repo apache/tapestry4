@@ -738,10 +738,7 @@ public class TemplateParser
 
             if (!isRemoveId)
             {
-                if (_attributes.isEmpty())
-                    _tokens.add(new OpenToken(tagName, jwcId, null));
-                else
-                    _tokens.add(new OpenToken(tagName, jwcId, filter(_attributes, JWCID_ATTRIBUTE_NAME)));
+                addOpenToken(tagName, jwcId);
 
                 if (emptyTag)
                     _tokens.add(new CloseToken(tagName));
@@ -768,6 +765,42 @@ public class TemplateParser
 
         advance();
     }
+
+    private void addOpenToken(String tagName, String jwcId)
+    {
+        OpenToken token = new OpenToken(tagName, jwcId);
+        _tokens.add(token);
+        
+        if (_attributes.isEmpty())
+            return;
+            
+        Iterator i = _attributes.entrySet().iterator();
+        while (i.hasNext())
+        {
+            Map.Entry entry = (Map.Entry)i.next();
+            
+            String key = (String)entry.getKey();
+            
+            if (key.equalsIgnoreCase(JWCID_ATTRIBUTE_NAME))
+                continue;
+            
+            String value = (String)entry.getValue();
+            
+            // OGNL expressions look like "[[ expression ]]"
+            
+            if (value.startsWith("[[") && value.endsWith("]]"))
+            {
+                value = extractExpression(value);
+                
+                
+                token.addExpressionValue(key, value);
+                continue;
+            }
+                        
+            token.addStaticValue(key, value);
+        }        
+    }
+
 
     /**
      *  Invoked to handle a closing tag, i.e., &lt;/foo&gt;.  When a tag closes, it will match against
@@ -1045,6 +1078,63 @@ nextkey:
         }
 
         return null;
+    }
+    
+    /**
+     *  Conversions needed by {@link #extractExpression(String)}
+     * 
+     **/
+    
+    private static final String[] CONVERSIONS = {
+            "&lt;", "<",
+            "&gt;", ">",
+            "&quot;", "\"",
+            "&amp;", "&"
+    };
+    
+    /**
+     *  Provided a raw input string that has been recognized to be an expression
+     *  (starts with "[[" and ends with "]]"), this removes the outer brackets
+     *  and excess white space and converts &amp;amp;, &amp;quot; &amp;lt; and &amp;gt;
+     *  to their normal character values (otherwise its impossible to specify
+     *  those values in expressions in the template).
+     * 
+     **/
+    
+    private String extractExpression(String input)
+    {
+        int inputLength = input.length() - 2;
+        
+        StringBuffer buffer = new StringBuffer(inputLength - 2);
+
+        int cursor = 2;
+        
+
+        while (cursor < inputLength)
+        {
+outer: 
+            for (int i = 0; i < CONVERSIONS.length; i += 2)
+            {
+                String entity = CONVERSIONS[i];
+                int entityLength = entity.length();
+                String value = CONVERSIONS[i + 1];
+                
+                if (cursor + entityLength > inputLength)
+                    continue;
+                
+                if (input.substring(cursor, cursor + entityLength).equals(entity))
+                {
+                    buffer.append(value);
+                    cursor += entityLength;
+                    break outer;
+                }
+            }
+            
+            buffer.append(input.charAt(cursor));
+            cursor++;           
+        }
+
+        return buffer.toString().trim();
     }
     
     /**

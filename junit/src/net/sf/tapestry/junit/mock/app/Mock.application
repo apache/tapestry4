@@ -4,7 +4,7 @@
 	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
 	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 	
-<application name="JUnit Simple Application"
+<application name="JUnit Mock Application"
 	engine-class="net.sf.tapestry.engine.SimpleEngine">
 	
 	<page name="Home" specification-path="/net/sf/tapestry/junit/mock/app/Home.page"/>
@@ -24,6 +24,10 @@
 
 	<page name="ValidFieldNoBody" specification-path="/net/sf/tapestry/junit/mock/app/ValidFieldNoBody.page"/>
 
+	<page name="TemplateExpr" specification-path="/net/sf/tapestry/junit/mock/app/expr/TemplateExpr.page"/>
+	<page name="TemplateExprConflict" specification-path="/net/sf/tapestry/junit/mock/app/expr/TemplateExprConflict.page"/>
+	<page name="TemplateExprInformal" specification-path="/net/sf/tapestry/junit/mock/app/expr/TemplateExprInformal.page"/>
+	<page name="TemplateExprReserved" specification-path="/net/sf/tapestry/junit/mock/app/expr/TemplateExprReserved.page"/>
 		
 	<library id="lib" specification-path="/net/sf/tapestry/junit/mock/lib/MockLibrary.library"/>
 	

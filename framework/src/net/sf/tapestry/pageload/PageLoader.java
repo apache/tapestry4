@@ -1,6 +1,7 @@
 package net.sf.tapestry.pageload;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -90,7 +91,7 @@ public class PageLoader implements IPageLoader
         {
             // For compatibility with the 1.1 and 1.2 specifications, which allow
             // the component type to be a complete specification path.
-            
+
             if (alias.startsWith("/"))
             {
                 _namespace = _specificationSource.getApplicationNamespace();
@@ -205,8 +206,23 @@ public class PageLoader implements IPageLoader
             if (binding != null)
                 component.setBinding(name, binding);
         }
+    }
 
-        i = spec.getParameterNames().iterator();
+    /**
+     *  Invoked from {@link #loadPage(String, INamespace, IRequestCycle, ComponentSpecification)}
+     *  after the entire tree of components in the page has been constructed.  Recursively
+     *  checks each component in the tree to ensure that
+     *  all of its required parameters are bound.
+     * 
+     *  @since NEXT_RELEASE
+     * 
+     **/
+    
+    private void verifyRequiredParameters(IComponent component) throws PageLoaderException
+    {
+        ComponentSpecification spec = component.getSpecification();
+
+        Iterator i = spec.getParameterNames().iterator();
 
         while (i.hasNext())
         {
@@ -218,6 +234,20 @@ public class PageLoader implements IPageLoader
                     Tapestry.getString("PageLoader.required-parameter-not-bound", name, component.getExtendedId()),
                     component,
                     null);
+        }
+
+        Collection components = component.getComponents().values();
+
+        if (Tapestry.size(components) == 0)
+            return;
+
+        i = components.iterator();
+
+        while (i.hasNext())
+        {
+            IComponent embedded = (IComponent) i.next();
+
+            verifyRequiredParameters(embedded);
         }
     }
 
@@ -270,7 +300,7 @@ public class PageLoader implements IPageLoader
      * <li>Add the contained components to the container.
      * <li>Setting up bindings between container and containees.
      * <li>Construct the containees recursively.
-     * <li>Telling the component its 'ready' (so that it can load its HTML template)
+     * <li>Invoking {@link IComponent#finishLoad(IRequestCycle, IPageLoader, ComponentSpecification)}
      * </ul>
      *
      *  @param cycle the request cycle for which the page is being (initially) constructed
@@ -295,6 +325,7 @@ public class PageLoader implements IPageLoader
 
         List ids = new ArrayList(containerSpec.getComponentIds());
         int count = ids.size();
+        Map propertyBindings = new HashMap();
 
         for (int i = 0; i < count; i++)
         {
@@ -316,17 +347,28 @@ public class PageLoader implements IPageLoader
             IComponent component =
                 instantiateComponent(page, container, id, componentSpecification, componentNamespace);
 
-            // Add it, by name, to the container.
+             // Add it, by name, to the container.
 
             container.addComponent(component);
 
-            // Recursively construct the component
+           // Set up any bindings in the ContainedComponent specification
 
+            bind(container, component, contained, propertyBindings);
+
+            // Now construct the component recusively; it gets its chance
+            // to create its subcomponents and set their bindings.
+            
             constructComponent(cycle, page, component, componentSpecification, componentNamespace);
         }
 
         addAssets(container, containerSpec);
 
+        // Finish the load of the component; most components (which
+        // subclass BaseComponent) load their templates here.
+        // That may cause yet more components to be created, and more
+        // bindings to be set, so we defer some checking until
+        // later.
+        
         container.finishLoad(cycle, this, containerSpec);
 
         _depth--;
@@ -472,7 +514,7 @@ public class PageLoader implements IPageLoader
 
             constructComponent(cycle, page, page, specification, namespace);
 
-            setBindings(page);
+            verifyRequiredParameters(page);
         }
         finally
         {
@@ -486,40 +528,6 @@ public class PageLoader implements IPageLoader
             LOG.info("Loaded page " + page + " with " + _count + " components (maximum depth " + _maxDepth + ")");
 
         return page;
-    }
-
-    /** 
-     *  Sets all bindings, top-down.  Checking (as it goes) that all required parameters
-     *  have been set.
-     *
-     *  @since 1.0.6 
-     * 
-     **/
-
-    private void setBindings(IComponent container) throws PageLoaderException
-    {
-        Map components = container.getComponents();
-
-        if (components.isEmpty())
-            return;
-
-        ComponentSpecification containerSpec = container.getSpecification();
-
-        Map propertyBindings = new HashMap();
-
-        Iterator i = components.entrySet().iterator();
-        while (i.hasNext())
-        {
-            Map.Entry e = (Map.Entry) i.next();
-            String id = (String) e.getKey();
-            IComponent component = (IComponent) e.getValue();
-            ComponentSpecification spec = component.getSpecification();
-            ContainedComponent contained = containerSpec.getComponent(id);
-
-            bind(container, component, contained, propertyBindings);
-
-            setBindings(component);
-        }
     }
 
     private void addAssets(IComponent component, ComponentSpecification specification)

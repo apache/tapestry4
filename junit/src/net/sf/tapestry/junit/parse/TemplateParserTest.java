@@ -371,7 +371,7 @@ public class TemplateParserTest extends TestCase
 
         OpenToken t = (OpenToken) tokens[1];
 
-        Map a = t.getAttributes();
+        Map a = t.getStaticValuesMap();
 
         assertEquals("Attribute count", 3, a.size());
         assertEquals("zip", a.get("class"));

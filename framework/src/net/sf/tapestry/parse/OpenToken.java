@@ -1,5 +1,6 @@
 package net.sf.tapestry.parse;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -18,31 +19,69 @@ public class OpenToken extends TemplateToken
 {
     private String _tag;
     private String _id;
-    private Map _attributes;
+    private Map _values;
+    private Map _expressions;
 
     /**
-     *  Creates a new token with the given tag and id.  Retains (does not copy)
-     *  the attributes (which may be null).
+     *  Creates a new token with the given tag and id.  
      * 
      **/
 
-    public OpenToken(String tag, String id, Map attributes)
+    public OpenToken(String tag, String id)
     {
         super(TokenType.OPEN);
 
         _tag = tag;
         _id = id;
-        _attributes = attributes;
+
     }
 
     /**
-     *  Returns the attributes (if any) for this tag.  Do not modify the return value.
+     *  Adds a static value with the given name.
      * 
      **/
 
-    public Map getAttributes()
+    public void addStaticValue(String name, String value)
     {
-        return _attributes;
+        if (_values == null)
+            _values = new HashMap();
+
+        _values.put(name, value);
+    }
+
+    /**
+     *  Adds an expression with the given name.
+     * 
+     **/
+
+    public void addExpressionValue(String name, String value)
+    {
+        if (_expressions == null)
+            _expressions = new HashMap();
+
+        _expressions.put(name, value);
+    }
+
+    /**
+     *  Returns a Map of static values, keyed on attribute name.  Do not modify the returned Map.
+     *  May return null.
+     **/
+
+    public Map getStaticValuesMap()
+    {
+        return _values;
+    }
+
+    /**
+     *  Returns a Map of OGNL expressions, keyed on attribute name.
+     *  Done not modify the returned Map.
+     *  May return null.
+     * 
+     **/
+
+    public Map getExpressionValuesMap()
+    {
+        return _expressions;
     }
 
     public String getId()
@@ -56,10 +95,11 @@ public class OpenToken extends TemplateToken
     }
 
     protected void extendDescription(ToStringBuilder builder)
-    {       
+    {
         builder.append("id", _id);
         builder.append("tag", _tag);
-        builder.append("attributes", _attributes);
+        builder.append("values", _values);
+        builder.append("expressions", _expressions);
     }
 
 }

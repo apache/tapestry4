@@ -561,6 +561,18 @@ public final class Tapestry
     }
     
     /**
+     *  Returns true if the Map is null or empty.
+     * 
+     *  @since NEXT_RELEASE
+     * 
+     **/
+    
+    public static boolean isEmpty(Map map)
+    {
+        return map == null || map.isEmpty();
+    }
+    
+    /**
      *  Converts a {@link Map} to an even-sized array of key/value
      *  pairs.  This may be useful when using a Map as service parameters
      *  (with {@link net.sf.tapestry.link.DirectLink}.  Assuming the keys
@@ -577,7 +589,7 @@ public final class Tapestry
     
     public static Object[] convertMapToArray(Map map)
     {
-        if (map == null || map.isEmpty())
+        if (isEmpty(map))
             return null;
             
         Set entries = map.entrySet();

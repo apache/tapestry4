@@ -146,4 +146,16 @@ public class MockTestCase extends TapestryTestCase
     {
         attempt("/net/sf/tapestry/junit/mock/TestValidFieldNoBody.xml");
     }
+    
+    /**
+     *  A series of tests for components where parameters are bound
+     *  to expressions in the template, using the new "[[ expression ]]" syntax.
+     * 
+     **/
+    
+    public void testTemplateExpressions()
+    throws Exception
+    {
+        attempt("/net/sf/tapestry/junit/mock/TestTemplateExpr.xml");
+    }
 }
