@@ -67,6 +67,13 @@ implements ITemplateSource
 
     private Map templates;
 
+	/**
+	 *  Number of tokens (each template contains multiple tokens).
+	 *
+	 */
+	
+	private int tokenCount;
+	
 	private static final int BUFFER_SIZE = 2000;
 
 	private IResourceResolver resolver;
@@ -86,6 +93,8 @@ implements ITemplateSource
 	{
         cache = null;
 		templates = null;
+		
+		tokenCount = 0;
 	}
 
 	/**
@@ -297,7 +306,9 @@ implements ITemplateSource
 
 		if (CAT.isDebugEnabled())
 			CAT.debug("Parsed " + tokens.length + " tokens from template");
-			
+	
+		tokenCount += tokens.length;
+		
 		return new ComponentTemplate(templateData, tokens);
 	}
 
@@ -396,6 +407,37 @@ implements ITemplateSource
 		buffer.getChars(0, length, charBuffer, 0);
 
 		return charBuffer; 
+	}
+
+	public String toString()
+	{
+		StringBuffer buffer = new StringBuffer("DefaultTemplateSource@");
+		buffer.append(Integer.toHexString(hashCode()));
+		
+		buffer.append('[');
+		
+		if (cache == null)
+			buffer.append("no");
+		else
+		{
+			synchronized(cache)
+			{
+				buffer.append(cache.size());
+			}
+		}
+		
+		buffer.append(" cached templates");
+		
+		if (tokenCount > 0)
+		{
+			buffer.append(", ");
+			buffer.append(tokenCount);
+			buffer.append(" tokens");
+		}
+		
+		buffer.append(']');
+		
+		return buffer.toString();
 	}
 }
 

@@ -181,5 +181,27 @@ public class DefaultSpecificationSource
 
 		return result;
 	}
+	
+	public String toString()
+	{
+		StringBuffer buffer = new StringBuffer("DefaultSpecificationSource@");
+		buffer.append(Integer.toHexString(hashCode()));
+		
+		buffer.append('[');
+		
+		if (cache == null)
+			buffer.append("no");
+		else
+		{
+			synchronized(cache)
+			{
+				buffer.append(cache.size());
+			}
+		}
+		
+		buffer.append(" cached specifications]");
+		
+		return buffer.toString();
+	}
 }
 

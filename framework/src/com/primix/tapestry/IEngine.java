@@ -264,4 +264,16 @@ public interface IEngine
 	 */
 	
 	public IScriptSource getScriptSource();
+	
+	/**
+	 *  Returns true if the engine has state and, therefore, should be stored
+	 *  in the HttpSession.  This starts as false, but becomes true when
+	 *  the engine requires state (such as when a visit object is created,
+	 *  or when a peristent page property is set).
+	 *
+	 *  @since 1.0.2
+	 *
+	 */
+	
+	public boolean isStateful();
 }

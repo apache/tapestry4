@@ -1,14 +1,21 @@
+* Jun 21 2001 hship
+
+Improve toString() methods of key classes.
+
+[ #434615 ] NumericField minimum binding typo
+[ #434582 ] session tracking / multiple servlets
+
 * Jun 20 2001 hship
 
-[434855] SimplePageRecorder failure w/ EJBs
+[ #434855 ] SimplePageRecorder failure w/ EJBs
 
 * Jun 19 2001 hship
 
 Include the web directory in the full distribution.
 Convert ExceptionAnalyzer to not use the GNU Regexp framework.
 
-[434570] direct service for forms
-[434578] double logging
+[ #434570 ] direct service for forms
+[ #434578 ] double logging
 
 * Jun 18 2001 hship
 
@@ -47,7 +54,7 @@ Move the Script component to the html package.
 * Jun 13 2001 hship
 
 Fix typo in framework Makefile (caused some package resources not to be copied).
-[432796] Creating visit doesn't create session
+[ #432796 ] Creating visit doesn't create session
 
 * Jun 12 2001 hship
 
@@ -55,8 +62,8 @@ Adjust for changes in JBE (concerning cataloging).
 
 * Jun 7 hship
 
-[431135] Shell refresh problem
-[431137] Defeat client-side page caching
+[ #431135 ] Shell refresh problem
+[ #431137 ] Defeat client-side page caching
 
 * Jun 1 hship
 
@@ -65,8 +72,8 @@ Fix an IllegalStateException thrown in the ApplicationServlet
 exception thrown when the restart action is triggered on a stateless
 application.
 
-[429157] restart session fails
-[429447] Restart throws exception
+[ #429157 ] restart session fails
+[ #429447 ] Restart throws exception
 
 * May 30 hship
 
@@ -85,8 +92,8 @@ Move the stale session check from the direct service to the Direct component.
 Fix the action and direct services to handle cases where an InsertBlock has been
 used to includes components from a page other than the render page.
 
-[233087] direct service should not require a session (untested)
-[427432] Block from other page causes errors (untested)
+[ #233087 ] direct service should not require a session (untested)
+[ #427432 ] Block from other page causes errors (untested)
 
 * May 24 2001 hship
 
@@ -106,12 +113,12 @@ Upgrade to Log4J 1.1.1.
 Revise the Script component and friends, allowing for conditionals, looping and
 accessing of properties via property paths.
 
-[417086] Tapestry inspector omits data
-[411692] PropertyHelper for public instance vars
-[406039] Determine service during request
-[425107] Caching of component definition configurable as startup parameter
-[426959] Decorator doesn't cache properly
-[405517] Common interface for form elements
+[ #417086 ] Tapestry inspector omits data
+[ #411692 ] PropertyHelper for public instance vars
+[ #406039 ] Determine service during request
+[ #425107 ] Caching of component definition configurable as startup parameter
+[ #426959 ] Decorator doesn't cache properly
+[ #405517 ] Common interface for form elements
 
 * May 21 2001 hship
 
@@ -126,8 +133,8 @@ Removed the deprecated immediateSubmit property (and related constructors) from
 the SelectPropertySelectionRenderer class.
 Minor Javadoc corrections and fixes.
 Convert some of the examples to use the 1.1 DTD.
-[405469] Streamline Tapestry DTD
-[407175] Reusable component specifications
+[ #405469 ] Streamline Tapestry DTD
+[ #407175 ] Reusable component specifications
 
 * May 17 2001 hship
 
@@ -144,8 +151,8 @@ Finish changes necessary for WebLogic session persistence.
 Release 0.2.12
 
 * May 14 2001 hship
-[424001] Engine Replication within HttpSession
-[424005] Block does not render
+[ #424001 ] Engine Replication within HttpSession
+[ #424005 ] Block does not render
 
 * May 2 2001 hship
 
@@ -173,7 +180,7 @@ Add instructions to makefile on how to roll out a release.
 
 * Apr 18 2001 hship
 
-[417065] Use JAXP instead of Xerces
+[ #417065 ] Use JAXP instead of Xerces
 Rename the main Jar file from "Tapestry.jar" to "com.primix.tapestry.jar".
 
 * Apr 9 2001 hship

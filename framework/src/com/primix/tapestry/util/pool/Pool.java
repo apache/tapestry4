@@ -51,74 +51,84 @@ public class Pool
 {
 	private static final Category CAT = 
 		Category.getInstance(Pool.class);
-
+	
 	private static final int MAP_SIZE = 23;
-
+	
 	/**
-	*  Creates a new Pool using the default map size.  Creation of the map is deferred.
-	*
-	*/
-
+	 *  The number of objects pooled.
+	 *
+	 */
+	
+	private int pooledCount;
+	
+	/**
+	 *  Creates a new Pool using the default map size.  Creation of the map is deferred.
+	 *
+	 */
+	
 	public Pool()
 	{
 	}
-
+	
 	/**
-	*  Creates a new Pool using the specified map size.  The map is created immediately.
-	*
-	*/
-
+	 *  Creates a new Pool using the specified map size.  The map is created immediately.
+	 *
+	 */
+	
 	public Pool(int mapSize)
 	{
 		map = new HashMap(mapSize);
 	}
-
+	
 	/**
-	*  A map of PoolLists, keyed on an arbitrary object.
-	*
-	*/
-
+	 *  A map of PoolLists, keyed on an arbitrary object.
+	 *
+	 */
+	
 	private Map map;
-
+	
 	/**
-	*  Returns a previously pooled object with the given key, or null if no
-	*  such object exists.  Getting an object from a Pool removes it from the Pool,
-	*  but it can later be re-added with {@link #store(Object,Object)}.
-	*
-	*/
-
+	 *  Returns a previously pooled object with the given key, or null if no
+	 *  such object exists.  Getting an object from a Pool removes it from the Pool,
+	 *  but it can later be re-added with {@link #store(Object,Object)}.
+	 *
+	 */
+	
 	public Object retrieve(Object key)
 	{
 		PoolList list;
 		Object result = null;
-
+		
 		if (map != null)
 		{
 			synchronized (map)
 			{
 				list = (PoolList)map.get(key);
+				
+				if (list != null)
+					result = list.retrieve(); 
 			}
-
-			if (list != null)
-				result = list.retrieve();
 		}
-
+		
 		if (CAT.isDebugEnabled())
 			CAT.debug("Retrieved " + result + " from " + key);
-
+		
+		if (result != null)
+			pooledCount--;
+		
 		return result;	
 	}
-
+	
 	/**
-	*  Stores an object in the pool for later retrieval.
-	*
-	*/
-
+	 *  Stores an object in the pool for later retrieval.
+	 *
+	 */
+	
 	public void store(Object key, Object object)
 	{
 		PoolList list;
 		int count;
-
+		
 		if (map == null)
 		{
 			synchronized(this)
@@ -127,29 +137,37 @@ public class Pool
 					map = new HashMap(MAP_SIZE);
 			}
 		}
-
+		
 		synchronized(map)
 		{
 			list = (PoolList)map.get(key);
-
+			
 			if (list == null)
 			{
 				list = new PoolList();
 				map.put(key, list);
 			}
-
+			
 			count = list.store(object);
+		
+			// This could probably got outside the synchonized block
+			// without hurting anything.  Someday when we need that
+			// last cycle ...
+			
+			pooledCount++;
 		}
+		
+
 		
 		if (CAT.isDebugEnabled())
 			CAT.debug("Stored " + object + " into " + key + " (" + count + " pooled)");
 	}
-
+	
 	/**
-	*  Removes all previously pooled objects from this Pool.
-	*
-	*/
-
+	 *  Removes all previously pooled objects from this Pool.
+	 *
+	 */
+	
 	public void clear()
 	{
 		if (map != null)
@@ -160,19 +178,52 @@ public class Pool
 			}
 		}
 		
+		pooledCount = 0;
+		
 		if (CAT.isDebugEnabled())
 			CAT.debug("Cleared");
 	}
-
+	
+	/**
+	 *  Returns the number of object pooled, the sum of the number
+	 *  of objects in pooled under each key.  This number should be treated
+	 *  as approximate, since there are a few minor windows where, under load,
+	 *  it may not be properly synchronized.
+	 *
+	 *  @since 1.0.2
+	 */
+	
+	public int getPooledCount()
+	{
+		return pooledCount;
+	}
+	
+	/**
+	 *  Returns the number of keys within the pool.
+	 *
+	 *  @since 1.0.2
+	 */
+	
+	public int getKeyCount()
+	{
+		if (map == null)
+			return 0;
+		
+		synchronized(map)
+		{
+			return map.size();
+		}
+	}
+	
 	public String toString()
 	{
 		if (map == null)
 			return super.toString();
-
+		
 		StringBuffer buffer = new StringBuffer();
-
+		
 		buffer.append("Pool[");
-
+		
 		synchronized(map)
 		{
 			Iterator i = map.entrySet().iterator();
@@ -186,9 +237,9 @@ public class Pool
 				buffer.append(entry.getValue());
 			}
 		}
-
+		
 		buffer.append(']');
-
+		
 		return buffer.toString();
 	}
 }

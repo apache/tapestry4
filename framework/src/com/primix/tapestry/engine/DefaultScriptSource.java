@@ -116,7 +116,7 @@ public class DefaultScriptSource
 		try
 		{
 			URL url = resolver.getResource(resourcePath);
-
+			
 			stream = url.openStream();
 			
 			IScript result = parser.parse(stream, resourcePath);
@@ -141,5 +141,27 @@ public class DefaultScriptSource
 		}
 	}
 	
+	public String toString()
+	{
+		StringBuffer buffer = new StringBuffer("DefaultScriptSource@");
+		buffer.append(Integer.toHexString(hashCode()));
+		
+		buffer.append('[');
+		
+		if (cache != null)
+		{
+			synchronized(cache)
+			{
+				buffer.append(cache.size());
+			}
+			
+			buffer.append(" cached scripts, ");
+		}
+		
+		buffer.append(parserPool.getPooledCount());
+		buffer.append(" pooled parsers]");
+		
+		return buffer.toString();
+	}
+		
 }
-
