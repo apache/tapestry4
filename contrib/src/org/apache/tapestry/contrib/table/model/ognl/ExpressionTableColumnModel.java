@@ -125,7 +125,7 @@ public class ExpressionTableColumnModel extends SimpleTableColumnModel
                 if (objTempValue instanceof Boolean)
                     bSorted = ((Boolean) objTempValue).booleanValue();
                 else
-                    bSorted = Boolean.getBoolean(objTempValue.toString());
+                    bSorted = Boolean.valueOf(objTempValue.toString()).booleanValue();
             }
 
             arrColumns[i] =
