@@ -92,6 +92,7 @@ SMALL_RELEASE = \
 	$(RELEASE_DIR)/LICENSE.html \
 	$(RELEASE_DIR)/Readme.html \
 	$(RELEASE_DIR)/images \
+	$(RELEASE_DIR)/doc/Tapestry.pdf \
 	$(RELEASE_DIR)/doc/api \
 	$(RELEASE_DIR)/lib/Tapestry.jar \
 	$(RELEASE_DIR)/lib/gnu-regexp.jar
