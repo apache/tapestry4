@@ -158,8 +158,8 @@ import org.apache.tapestry.valid.ValidField;
 
 public abstract class DateField extends ValidField
 {
-	public abstract IBinding getValueBinding();
-	public abstract void setValueBinding(IBinding valueBinding);
+	public abstract Date getDate();
+	public abstract void setDate(Date date);
 	
     private IBinding minimumBinding;
     private IBinding maximumBinding;
@@ -167,19 +167,6 @@ public abstract class DateField extends ValidField
     private IBinding formatBinding;
     private IBinding displayFormatBinding;
 
-    /** Returns the valueBinding. **/
-
-    public IBinding getDateBinding()
-    {
-        return getValueBinding();
-    }
-
-    /** Updates the valueBinding. **/
-
-    public void setDateBinding(IBinding value)
-    {
-        setValueBinding(value);
-    }
 
     /**
      *  Overrides {@link ValidField#getValidator()} to construct a validator
@@ -273,6 +260,22 @@ public abstract class DateField extends ValidField
     public void setMaximumBinding(IBinding value)
     {
         this.maximumBinding = value;
+    }
+
+    /**
+     * @see org.apache.tapestry.valid.ValidField#getValue()
+     */
+    public Object getValue()
+    {
+        return getDate();
+    }
+
+    /**
+     * @see org.apache.tapestry.valid.ValidField#setValue(java.lang.Object)
+     */
+    public void setValue(Object value)
+    {
+        setDate((Date) value);
     }
 
 }
