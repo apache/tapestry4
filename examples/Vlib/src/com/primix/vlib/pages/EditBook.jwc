@@ -1,253 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XML Spy v3.0 NT (http://www.xmlspy.com) by Howard Ship (Primix Solutions) -->
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"  "http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-<specification>
-	<class>com.primix.vlib.pages.EditBook</class>
-	<components>
-		<component>
-			<id>border</id>
-			<type>Border</type>
-			<bindings>
-				<static-binding>
-					<name>title</name>
-					<value>Edit Book</value>
-				</static-binding>
-			</bindings>
-		</component>
-		<component>
-			<id>showError</id>
-			<type>ShowError</type>
-		</component>
-		<component>
-			<id>form</id>
-			<type>Form</type>
-			<bindings>
-				<binding>
-					<name>listener</name>
-					<property-path>formListener</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>syncPrimaryKey</id>
-			<type>Hidden</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>bookPrimaryKey</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>labelTitle</id>
-			<type>FieldLabel</type>
-			<bindings>
-				<binding>
-					<name>field</name>
-					<property-path>components.inputTitle</property-path>
-				</binding>
-				<binding>
-					<name>delegate</name>
-					<property-path>validationDelegate</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>inputTitle</id>
-			<type>ValidatingTextField</type>
-			<bindings>
-				<binding>
-					<name>text</name>
-					<property-path>attributes.title</property-path>
-				</binding>
-				<static-binding>
-					<name>maximumLength</name>
-					<value>100</value>
-				</static-binding>
-				<static-binding>
-					<name>displayWidth</name>
-					<value>50</value>
-				</static-binding>
-				<static-binding>
-					<name>displayName</name>
-					<value>Title</value>
-				</static-binding>
-				<binding>
-					<name>delegate</name>
-					<property-path>validationDelegate</property-path>
-				</binding>
-				<field-binding>
-					<name>required</name>
-					<field-name>Boolean.TRUE</field-name>
-				</field-binding>
-			</bindings>
-		</component>
-		<component>
-			<id>labelAuthor</id>
-			<type>FieldLabel</type>
-			<bindings>
-				<binding>
-					<name>field</name>
-					<property-path>components.inputAuthor</property-path>
-				</binding>
-				<binding>
-					<name>delegate</name>
-					<property-path>validationDelegate</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>inputAuthor</id>
-			<type>ValidatingTextField</type>
-			<bindings>
-				<binding>
-					<name>text</name>
-					<property-path>attributes.author</property-path>
-				</binding>
-				<static-binding>
-					<name>maximumLength</name>
-					<value>30</value>
-				</static-binding>
-				<static-binding>
-					<name>displayWidth</name>
-					<value>30</value>
-				</static-binding>
-				<static-binding>
-					<name>displayName</name>
-					<value>Author</value>
-				</static-binding>
-				<field-binding>
-					<name>required</name>
-					<field-name>Boolean.TRUE</field-name>
-				</field-binding>
-				<binding>
-					<name>delegate</name>
-					<property-path>validationDelegate</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>inputISBN</id>
-			<type>TextField</type>
-			<bindings>
-				<static-binding>
-					<name>maximumLength</name>
-					<value>20</value>
-				</static-binding>
-				<static-binding>
-					<name>displayWidth</name>
-					<value>20</value>
-				</static-binding>
-				<binding>
-					<name>text</name>
-					<property-path>attributes.ISBN</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>labelPublisher</id>
-			<type>FieldLabel</type>
-			<bindings>
-				<binding>
-					<name>field</name>
-					<property-path>components.inputPublisherName</property-path>
-				</binding>
-				<binding>
-					<name>delegate</name>
-					<property-path>validationDelegate</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>inputPublisher</id>
-			<type>PropertySelection</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>attributes.publisherPK</property-path>
-				</binding>
-				<binding>
-					<name>model</name>
-					<property-path>visit.publisherModel</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>inputPublisherName</id>
-			<type>ValidatingTextField</type>
-			<bindings>
-				<static-binding>
-					<name>maximumLength</name>
-					<value>40</value>
-				</static-binding>
-				<binding>
-					<name>text</name>
-					<property-path>publisherName</property-path>
-				</binding>
-				<static-binding>
-					<name>displayName</name>
-					<value>Publisher</value>
-				</static-binding>
-				<binding>
-					<name>delegate</name>
-					<property-path>validationDelegate</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>inputDescription</id>
-			<type>Text</type>
-			<bindings>
-				<binding>
-					<name>text</name>
-					<property-path>attributes.description</property-path>
-				</binding>
-				<static-binding>
-					<name>columns</name>
-					<value>60</value>
-				</static-binding>
-				<static-binding>
-					<name>rows</name>
-					<value>10</value>
-				</static-binding>
-			</bindings>
-		</component>
-		<component>
-			<id>inputHolder</id>
-			<type>PropertySelection</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>attributes.holderPK</property-path>
-				</binding>
-				<binding>
-					<name>model</name>
-					<property-path>visit.personModel</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>publisherScript</id>
-			<type>Script</type>
-			<bindings>
-				<static-binding>
-					<name>script</name>
-					<value>/com/primix/vlib/pages/Publisher.script</value>
-				</static-binding>
-				<binding>
-					<name>selectName</name>
-					<property-path>components.inputPublisher.name</property-path>
-				</binding>
-				<binding>
-					<name>fieldName</name>
-					<property-path>components.inputPublisherName.name</property-path>
-				</binding>
-				<binding>
-					<name>formName</name>
-					<property-path>components.form.name</property-path>
-				</binding>
-			</bindings>
-		</component>
-	</components>
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="com.primix.vlib.pages.EditBook">
+  <component id="border" type="Border">
+    <static-binding name="title">Edit Book</static-binding>
+  </component>
+  <component id="showError" type="ShowError"/>
+  <component id="form" type="Form">
+    <binding name="listener" property-path="formListener"/>
+  </component>
+  <component id="syncPrimaryKey" type="Hidden">
+    <binding name="value" property-path="bookPrimaryKey"/>
+  </component>
+  <component id="labelTitle" type="FieldLabel">
+    <binding name="field" property-path="components.inputTitle"/>
+    <binding name="delegate" property-path="validationDelegate"/>
+  </component>
+  <component id="inputTitle" type="ValidatingTextField">
+    <binding name="text" property-path="attributes.title"/>
+    <static-binding name="maximumLength">100</static-binding>
+    <static-binding name="displayWidth">50</static-binding>
+    <static-binding name="displayName">Title</static-binding>
+    <binding name="delegate" property-path="validationDelegate"/>
+    <field-binding name="required" field-name="Boolean.TRUE"/>
+  </component>
+  <component id="labelAuthor" type="FieldLabel">
+    <binding name="field" property-path="components.inputAuthor"/>
+    <binding name="delegate" property-path="validationDelegate"/>
+  </component>
+  <component id="inputAuthor" type="ValidatingTextField">
+    <binding name="text" property-path="attributes.author"/>
+    <static-binding name="maximumLength">30</static-binding>
+    <static-binding name="displayWidth">30</static-binding>
+    <static-binding name="displayName">Author</static-binding>
+    <field-binding name="required" field-name="Boolean.TRUE"/>
+    <binding name="delegate" property-path="validationDelegate"/>
+  </component>
+  <component id="inputISBN" type="TextField">
+    <static-binding name="maximumLength">20</static-binding>
+    <static-binding name="displayWidth">20</static-binding>
+    <binding name="text" property-path="attributes.ISBN"/>
+  </component>
+  <component id="labelPublisher" type="FieldLabel">
+    <binding name="field" property-path="components.inputPublisherName"/>
+    <binding name="delegate" property-path="validationDelegate"/>
+  </component>
+  <component id="inputPublisher" type="PropertySelection">
+    <binding name="value" property-path="attributes.publisherPK"/>
+    <binding name="model" property-path="visit.publisherModel"/>
+  </component>
+  <component id="inputPublisherName" type="ValidatingTextField">
+    <static-binding name="maximumLength">40</static-binding>
+    <binding name="text" property-path="publisherName"/>
+    <static-binding name="displayName">Publisher</static-binding>
+    <binding name="delegate" property-path="validationDelegate"/>
+  </component>
+  <component id="inputDescription" type="Text">
+    <binding name="text" property-path="attributes.description"/>
+    <static-binding name="columns">60</static-binding>
+    <static-binding name="rows">10</static-binding>
+  </component>
+  <component id="inputHolder" type="PropertySelection">
+    <binding name="value" property-path="attributes.holderPK"/>
+    <binding name="model" property-path="visit.personModel"/>
+  </component>
+  <component id="publisherScript" type="Script">
+    <static-binding name="script">/com/primix/vlib/pages/Publisher.script</static-binding>
+    <binding name="selectName" property-path="components.inputPublisher.name"/>
+    <binding name="fieldName" property-path="components.inputPublisherName.name"/>
+    <binding name="formName" property-path="components.form.name"/>
+  </component>
 </specification>

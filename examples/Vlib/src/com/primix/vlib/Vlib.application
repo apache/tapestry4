@@ -2,6 +2,7 @@
 <!--$Id$-->
 <!DOCTYPE application PUBLIC "-//Howard Ship/Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <application name="Primix Virtual Library" engine-class="com.primix.vlib.VirtualLibraryEngine">
+  <property name="com.primix.tapestry.visit-class">com.primix.vlib.Visit</property>
   <page name="Home" specification-path="/com/primix/vlib/pages/Home.jwc"/>
   <page name="Login" specification-path="/com/primix/vlib/pages/Login.jwc"/>
   <page name="Logout" specification-path="/com/primix/vlib/pages/Logout.jwc"/>
@@ -20,5 +21,4 @@
   <component-alias type="ShowError" specification-path="/com/primix/vlib/components/ShowError.jwc"/>
   <component-alias type="ShowMessage" specification-path="/com/primix/vlib/components/ShowMessage.jwc"/>
   <component-alias type="Borrow" specification-path="/com/primix/vlib/components/Borrow.jwc"/>
-  <property name="com.primix.tapestry.visit-class">com.primix.vlib.Visit</property>
 </application>

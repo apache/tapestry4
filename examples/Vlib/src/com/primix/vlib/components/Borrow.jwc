@@ -1,41 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"  "http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-<specification>
-	<class>com.primix.vlib.components.Borrow</class>
-	<allow-body>no</allow-body>
-	<parameters>
-		<allow-informal-parameters>no</allow-informal-parameters>
-		<parameter>
-			<name>book</name>
-			<java-type>com.primix.vlib.ejb.Book</java-type>
-			<required>yes</required>
-		</parameter>
-	</parameters>
-	<components>
-		<component>
-			<id>ifEnabled</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>linkEnabled</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>link</id>
-			<type>Direct</type>
-			<bindings>
-				<binding>
-					<name>context</name>
-					<property-path>book.primaryKey</property-path>
-				</binding>
-				<binding>
-					<name>listener</name>
-					<property-path>borrowListener</property-path>
-				</binding>
-			</bindings>
-		</component>
-	</components>
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="com.primix.vlib.components.Borrow" allow-body="no" allow-informal-parameters="no">
+  <parameter name="book" java-type="com.primix.vlib.ejb.Book" required="yes"/>
+  <component id="ifEnabled" type="Conditional">
+    <binding name="condition" property-path="linkEnabled"/>
+  </component>
+  <component id="link" type="Direct">
+    <binding name="context" property-path="book.primaryKey"/>
+    <binding name="listener" property-path="borrowListener"/>
+  </component>
 </specification>

@@ -1,140 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"  "http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-<specification>
-	<class>com.primix.vlib.pages.Matches</class>
-	<components>
-		<component>
-			<id>border</id>
-			<type>Border</type>
-			<bindings>
-				<static-binding>
-					<name>title</name>
-					<value>Matching Books</value>
-				</static-binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertMatchCount</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>matchCount</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>ifShowHeader</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>matchCount</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>e-match</id>
-			<type>Foreach</type>
-			<bindings>
-				<binding>
-					<name>source</name>
-					<property-path>matches</property-path>
-				</binding>
-				<binding>
-					<name>value</name>
-					<property-path>currentMatch</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>bookLink</id>
-			<type>BookLink</type>
-			<bindings>
-				<binding>
-					<name>book</name>
-					<property-path>currentMatch</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertAuthor</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>currentMatch.author</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertPublisherName</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>currentMatch.publisherName</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>ownerLink</id>
-			<type>PersonLink</type>
-			<bindings>
-				<binding>
-					<name>primaryKey</name>
-					<property-path>currentMatch.ownerPrimaryKey</property-path>
-				</binding>
-				<binding>
-					<name>name</name>
-					<property-path>currentMatch.ownerName</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>ifShowHolder</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>currentMatch.borrowed</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>holderLink</id>
-			<type>PersonLink</type>
-			<bindings>
-				<binding>
-					<name>primaryKey</name>
-					<property-path>currentMatch.holderPrimaryKey</property-path>
-				</binding>
-				<binding>
-					<name>name</name>
-					<property-path>currentMatch.holderName</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>borrow</id>
-			<type>Borrow</type>
-			<bindings>
-				<binding>
-					<name>book</name>
-					<property-path>currentMatch</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>ifShowTrailer</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>matchCount</property-path>
-				</binding>
-			</bindings>
-		</component>
-	</components>
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="com.primix.vlib.pages.Matches">
+  <component id="border" type="Border">
+    <static-binding name="title">Matching Books</static-binding>
+  </component>
+  <component id="insertMatchCount" type="Insert">
+    <binding name="value" property-path="matchCount"/>
+  </component>
+  <component id="ifShowHeader" type="Conditional">
+    <binding name="condition" property-path="matchCount"/>
+  </component>
+  <component id="e-match" type="Foreach">
+    <binding name="source" property-path="matches"/>
+    <binding name="value" property-path="currentMatch"/>
+  </component>
+  <component id="bookLink" type="BookLink">
+    <binding name="book" property-path="currentMatch"/>
+  </component>
+  <component id="insertAuthor" type="Insert">
+    <binding name="value" property-path="currentMatch.author"/>
+  </component>
+  <component id="insertPublisherName" type="Insert">
+    <binding name="value" property-path="currentMatch.publisherName"/>
+  </component>
+  <component id="ownerLink" type="PersonLink">
+    <binding name="primaryKey" property-path="currentMatch.ownerPrimaryKey"/>
+    <binding name="name" property-path="currentMatch.ownerName"/>
+  </component>
+  <component id="ifShowHolder" type="Conditional">
+    <binding name="condition" property-path="currentMatch.borrowed"/>
+  </component>
+  <component id="holderLink" type="PersonLink">
+    <binding name="primaryKey" property-path="currentMatch.holderPrimaryKey"/>
+    <binding name="name" property-path="currentMatch.holderName"/>
+  </component>
+  <component id="borrow" type="Borrow">
+    <binding name="book" property-path="currentMatch"/>
+  </component>
+  <component id="ifShowTrailer" type="Conditional">
+    <binding name="condition" property-path="matchCount"/>
+  </component>
 </specification>

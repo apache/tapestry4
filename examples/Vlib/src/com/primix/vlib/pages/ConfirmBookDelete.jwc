@@ -1,53 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XML Spy v3.0 NT (http://www.xmlspy.com) by Howard Ship (Primix Solutions) -->
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"  "http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-<specification>
-	<class>com.primix.vlib.pages.ConfirmBookDelete</class>
-	<components>
-		<component>
-			<id>border</id>
-			<type>Border</type>
-			<bindings>
-				<static-binding>
-					<name>title</name>
-					<value>Delete Book</value>
-				</static-binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertBookTitle</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>bookTitle</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>yes</id>
-			<type>Direct</type>
-			<bindings>
-				<binding>
-					<name>listener</name>
-					<property-path>deleteBookListener</property-path>
-				</binding>
-				<binding>
-					<name>context</name>
-					<property-path>bookPrimaryKey</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>no</id>
-			<type>Page</type>
-			<bindings>
-				<static-binding>
-					<name>page</name>
-					<value>MyBooks</value>
-				</static-binding>
-			</bindings>
-		</component>
-	</components>
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="com.primix.vlib.pages.ConfirmBookDelete">
+  <component id="border" type="Border">
+    <static-binding name="title">Delete Book</static-binding>
+  </component>
+  <component id="insertBookTitle" type="Insert">
+    <binding name="value" property-path="bookTitle"/>
+  </component>
+  <component id="yes" type="Direct">
+    <binding name="listener" property-path="deleteBookListener"/>
+    <binding name="context" property-path="bookPrimaryKey"/>
+  </component>
+  <component id="no" type="Page">
+    <static-binding name="page">MyBooks</static-binding>
+  </component>
 </specification>
