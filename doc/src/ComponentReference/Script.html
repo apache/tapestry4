@@ -2,6 +2,7 @@
 <!-- $Id$ --> 
 <html>
 <head>
+<title>Script</title>
 <link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
 </head>
 
@@ -52,8 +53,6 @@
   See the Developers Guide 
   <a href="..\DevelopersGuide\script.html">Tapestry and JavaScript</a> for a 
   complete description of Tapestry's Javascript integration.  
-  <p>
-  
   <p>
   This component may NOT wrap around other components or static HTML. 
  </td>
@@ -142,6 +141,8 @@
 </table>
 
 <pre>
+&lt;span jwcid="<span class="jwcid">formFocusScript</span>"/&gt; 
+
 &lt;form jwcid="loginForm"&gt;
  &lt;table cellpadding="4"&gt;
   &lt;tr&gt;
@@ -155,21 +156,7 @@
   &lt;/tr&gt;
  &lt;/table&gt;
 &lt;/form&gt;
-&lt;span jwcid="<span class="jwcid">formFocusScript</span>"/&gt; 
 
-
-&lt;component id="loginForm" type="<a href="Form.html">Form</a>"&gt;
-   &lt;binding name="listener" property-path="listeners.formSubmit"/&gt;
-&lt;/component&gt;
-
-&lt;component id="usernameTextField" type="<a href="TextField.html">TextField</a>"&gt;
-   &lt;binding name="value" property-path="visit.username"/&gt;
-&lt;/component&gt;
-
-&lt;component id="passwordTextField" type="<a href="TextField.html">TextField</a>"&gt;
-   &lt;binding name="value" property-path="visit.password"/&gt;
-   &lt;static-binding name="hidden"&gt;true&lt;/static-binding&gt;
-&lt;/component&gt;
 
 &lt;component id="<span class="jwcid">formFocusScript</span>" type="<a href="Script.html">Script</a>"&gt;
     &lt;static-binding name="script"&gt;/com/mycorp/scripts/FormFocus.script&lt;/static-binding&gt;
@@ -203,6 +190,98 @@ function setFocus() {
   &lt;/initialization&gt;
 &lt;/script&gt;
 </pre>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2"><hr></td>  
+</tr>
+<tr>
+ <td colspan="2">
+	<p>
+   This alternative <tt>InputFocus.script</tt> specifies the actual input field 
+   to give the focus to. The target input field is identified by an informal  
+   parameter named <b>component</b>. The script then uses 
+   <tt>${property-path}</tt> element name insertions to complete the Javascript.
+  <p>
+   Note when using this script, the target input field component must be declared 
+   before the script component in the HTML template, and within the 
+   <a href="Form.html">Form</a> block, so that the target field component can be 
+   resolved by the <a href="Script.html">Script</a> component.  
+  <p>
+
+<pre>
+&lt;form jwcid="loginForm"&gt;
+ &lt;table cellpadding="4"&gt;
+  &lt;tr&gt;
+   &lt;td>Username:&lt;/td&gt;&lt;td&gt;&lt;input jwcid="usernameTextField" size="12"/&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td>Password:&lt;/td&gt;&lt;td&gt;&lt;input jwcid="passwordTextField" size="12"/&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr align="right"&gt;
+   &lt;td colspan="2"&gt;&lt;input type="submit" value="Login"/&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+ &lt;/table&gt;
+ &lt;span jwcid="<span class="jwcid">inputFocusScript</span>"/&gt;
+&lt;/form&gt;
+
+
+&lt;component id="loginForm" type="<a href="Form.html">Form</a>"&gt;
+    &lt;binding name="listener" property-path="listener.formSubmit"/&gt;
+&lt;/component&gt;
+
+&lt;component id="usernameTextField" type="<a href="TextField.html">TextField</a>"&gt;
+    &lt;binding name="value" property-path="visit.username"/&gt;
+&lt;/component&gt;
+
+&lt;component id="passwordTextField" type="<a href="TextField.html">TextField</a>"&gt;
+    &lt;binding name="value" property-path="visit.password"/&gt;
+   &lt;static-binding name="hidden"&gt;true&lt;/static-binding&gt;
+&lt;/component&gt;
+
+&lt;component id="<span class="jwcid">inputFocusScript</span>" type="<a href="Script.html">Script</a>"&gt;
+    &lt;binding name="<b>component</b>" property-path="components.usernameTextField"/&gt;
+    &lt;static-binding name="script"&gt;/com/mycorp/scripts/InputFocus.script&lt;/static-binding&gt;
+&lt;/component&gt;
+
+
+&lt;!-- Sets the focus to the specified input field if not hidden and not disabled. --&gt; 
+&lt;!-- /com/mycorp/scripts/InputFocus.script --&gt; 
+&lt;?xml version="1.0"?&gt;
+&lt;!DOCTYPE script PUBLIC 
+	"-//Howard Ship//Tapestry Script 1.1//EN"
+	"http://tapestry.sf.net/dtd/Script_1_1.dtd"&gt;
+
+&lt;!--
+Selects the specified form input field on body load if the input type is not 
+"hidden" and the input field is not disabled.
+
+Input symbols:
+  component: the component input field to give focus
+--&gt;
+&lt;script&gt;
+
+&lt;body&gt;
+function setFocus() {
+    var inputField = document.${<b>component</b>.form.name}.${<b>component</b>.name};
+
+    if (inputField.type != "hidden") {
+        if (inputField.disabled != true) {
+            inputField.focus();
+        }
+    } else {
+         window.alert('InputFocus.script cannot set focus on a hidden field');
+    }
+}
+&lt;/body&gt;
+
+&lt;initialization&gt;
+    setFocus();
+&lt;/initialization&gt;
+
+&lt;/script&gt;
+</pre>  
  </td>
 </tr>
 
