@@ -1,6 +1,7 @@
 package com.primix.jbe;
 
 import java.io.*;
+import java.util.*;
 
 /*
  * Tapestry Web Application Framework
@@ -88,6 +89,8 @@ public class Util
 		
 		private boolean firstEmit = true;
 		
+		private Set prior = new HashSet();
+		
 		void run(String[] args)
 		{
 			boolean showUsage = false;
@@ -145,6 +148,13 @@ public class Util
 				error(e.getMessage() + " for " + path + ".");
 			}
 			
+			// Filter out duplicates.
+			
+			if (prior.contains(canonicalPath))
+				return;
+			
+			prior.add(canonicalPath);
+				
 			if (!firstEmit)
 				System.out.print(seperator);
 			

@@ -29,6 +29,12 @@ MOD_BUILD_DIR = $(SYS_BUILD_DIR_NAME)
 
 include $(SYS_MAKEFILE_DIR)/CommonDefs.mk
 
+
+# Get the final source directory which is either specified by the
+# SOURCE_DIR variable, or defaults to the current directory.
+
+FINAL_SOURCE_DIR := $(firstword $(SOURCE_DIR) .)
+
 # Stamp file used to control copying of top-level resources (such
 # as EJB deployment descriptors).
 
@@ -54,49 +60,11 @@ RMI_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/rmi-stamp
 
 MOD_DIRTY_JAR_STAMP_FILE = $(SYS_BUILD_DIR_NAME)/dirty-jar-stamp
 
-# Build the compile-time classpath
-
-FINAL_CLASSPATH = $(shell $(JBE_CANONICALIZE) -classpath \
-	. $(MOD_CLASS_DIR) $(MOD_CLASSPATH) $(SITE_CLASSPATH) $(LOCAL_CLASSPATH))
-	
-FINAL_CLASSPATH_OPTION = -classpath "$(FINAL_CLASSPATH)"
-	
-FINAL_JAVAC_OPT = $(strip -d $(MOD_CLASS_DIR) $(FINAL_CLASSPATH_OPTION) $(MOD_JAVAC_OPT) \
-	$(SITE_JAVAC_OPT) $(LOCAL_JAVAC_OPT) $(JAVAC_OPT))
-	
-FINAL_RMIC_OPT = $(strip $(FINAL_JAVAC_OPT) \
-	$(MOD_RMIC_OPT) $(SITE_RMIC_OPT) $(LOCAL_RMIC_OPT) $(RMIC_OPT))
-
 # Create a macro for recursing into a specific packages.  --unix seems
 # to tame things under Windows.  We don't want or need any builtin
 # rules.
 
 RECURSE := $(MAKE) --unix --no-builtin-rules
-
-# A few rules used with recursion.  Recursion works by re-invoking
-# make in the Module directory, by specifying a value for PACKAGE on
-# the command line (in addition to a target).
-
-# Convert each '.' to a path seperator
-
-PACKAGE_DIR := $(subst $(PERIOD),$(SLASH),$(PACKAGE))
-
-# Create a relative project directory by counting the number of
-# This is tricky, because $(foreach) like to add spaces, which we have
-# to convert to slashes.
-
-_PACKAGE_TERMS := $(subst $(PERIOD),$(SPACE),$(PACKAGE))
-_RELATIVE_MOD_DIR := $(strip $(foreach foo,$(_PACKAGE_TERMS),$(DOTDOT)))
-
-RELATIVE_MOD_DIR := $(subst $(SPACE),$(SLASH),$(_RELATIVE_MOD_DIR))
-
-# Builds a command to re-invoke make for a particular package.
-
-MAKE_IN_PACKAGE = \
-	$(MAKE) -C $(PACKAGE_DIR) \
-	MOD_BUILD_DIR="$(RELATIVE_MOD_DIR)$(SLASH)$(SYS_BUILD_DIR_NAME)" \
-	MOD_PACKAGE_DIR="$(PACKAGE_DIR)"
-
 
 # Note, for this to work, SYS_MAKEFILE_DIR must use only forward slashes. Either
 # GNU Make or JAVA is eating the backslashes under NT.

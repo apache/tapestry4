@@ -31,37 +31,6 @@ clean-root:
 	@$(ECHO) Cleaning ...
 	@$(RMDIRS) $(SYS_BUILD_DIR_NAME) $(JAR_FILE)
 
-clean-packages: clean-root
-ifeq "$(PACKAGES)" ""
-	@$(ECHO) JBE Error: Must define PACKAGES in Makefile
-else
-	@for package in $(PACKAGES) ; do \
-	  $(RECURSE) PACKAGE="$$package" clean-package ; \
-	done
-endif
-
-clean-package:
-	@$(ECHO) "\n*** Cleaning package $(PACKAGE) ... ***\n"
-	@$(MAKE_IN_PACKAGE) clean
-
-setup-catalogs: initialize $(MOD_JAVA_CATALOG) $(MOD_RMI_CLASS_CATALOG) $(MOD_RESOURCE_CATALOG)
-
-$(MOD_JAVA_CATALOG) $(MOD_RMI_CLASS_CATALOG) $(MOD_RESOURCE_CATALOG):
-ifeq "$(PACKAGES)" ""
-	@$(ECHO) JBE Error: Must define PACKAGES in Makefile
-else
-	@$(ECHO) -n > $(MOD_JAVA_CATALOG)
-	@$(ECHO) -n > $(MOD_RMI_CLASS_CATALOG)
-	@$(ECHO) -n > $(MOD_RESOURCE_CATALOG)
-	@for package in $(PACKAGES) ; do \
-	  $(RECURSE) PACKAGE="$$package" catalog-package ; \
-	done
-endif
-	
-catalog-package:
-	@$(ECHO) "\n*** Cataloging package $(PACKAGE) ... ***\n"
-	@$(MAKE_IN_PACKAGE) catalog
-	
 compile: setup-catalogs
 	@$(RECURSE) POST_SETUP=t inner-compile
 	
@@ -70,9 +39,12 @@ copy-resources: setup-catalogs
 	
 # Rule to force a rebuild of just the catalogs
 
-catalog:
+catalog: initialize
 	@$(RM) --force $(MOD_JAVA_CATALOG) $(MOD_RMI_CLASS_CATALOG) $(MOD_RESOURCE_CATALOG)
-	@$(RECURSE) setup-catalogs
+	$(RECURSE)  SETUP_CATALOGS=t inner-setup-catalogs
+	
+setup-catalogs: initialize
+	@$(RECURSE) SETUP_CATALOGS=t inner-setup-catalogs
 	
 # The force rule forces a recompile of all Java classes
 
@@ -86,17 +58,51 @@ ifdef POST_SETUP
 
 DUMMY_FILE := $(SYS_BUILD_DIR_NAME)/dummy
 
+# Build the compile-time classpath
+
+_ABSOLUTE_DIRS := $(shell $(JBE_CANONICALIZE) $(MOD_BUILD_DIR) $(MOD_CLASS_DIR))
+
+ABSOLUTE_MOD_BUILD_DIR := $(word 1,$(_ABSOLUTE_DIRS))
+ABSOLUTE_CLASS_DIR := $(word 2,$(_ABSOLUTE_DIRS))
+
+FINAL_CLASSPATH = $(shell $(JBE_CANONICALIZE) -classpath \
+	. $(MOD_CLASS_DIR) $(MOD_CLASSPATH) $(SITE_CLASSPATH) $(LOCAL_CLASSPATH))
+	
+FINAL_CLASSPATH_OPTION = -classpath "$(FINAL_CLASSPATH)"
+	
+FINAL_JAVAC_OPT = $(strip \
+	-d $(ABSOLUTE_CLASS_DIR) \
+	$(FINAL_CLASSPATH_OPTION) \
+	$(MOD_JAVAC_OPT) \
+	$(SITE_JAVAC_OPT) \
+	$(LOCAL_JAVAC_OPT) \
+	$(JAVAC_OPT))
+	
+FINAL_RMIC_OPT = $(strip \
+	$(FINAL_JAVAC_OPT) \
+	$(MOD_RMIC_OPT) \
+	$(SITE_RMIC_OPT) \
+	$(LOCAL_RMIC_OPT) \
+	$(RMIC_OPT))
+	
 inner-compile: $(MOD_JAVA_STAMP_FILE) $(RMI_STAMP_FILE)
 	@$(TOUCH) $(DUMMY_FILE)
 	
 inner-copy-resources: $(MOD_META_STAMP_FILE) $(RESOURCE_STAMP_FILE)
 	@$(TOUCH) $(DUMMY_FILE)
 
-_JAVA_FILES := $(shell $(CAT) $(MOD_JAVA_CATALOG))
+# The Java Catalog stores the names of the Java files, relative to
+# the SOURCE_DIR.  We need to get the pathname back by prefixing with
+# the SOURCE_DIR.
+
+_JAVA_FILES := $(addprefix $(FINAL_SOURCE_DIR)$(SLASH), \
+	$(shell $(CAT) $(MOD_JAVA_CATALOG)))
 
 $(MOD_JAVA_STAMP_FILE): $(_JAVA_FILES)
 	@$(ECHO) "\n*** Compiling ... ***\n"
-	$(JAVAC) $(FINAL_JAVAC_OPT) $?
+	$(CD) $(FINAL_SOURCE_DIR) ; \
+	  $(JAVAC) $(FINAL_JAVAC_OPT) $(patsubst $(FINAL_SOURCE_DIR)$(SLASH)%, \
+	  	%, $?)
 	@$(TOUCH) $@ $(MOD_DIRTY_JAR_STAMP_FILE)
 
 # Read the catalog file
@@ -125,18 +131,105 @@ ifneq "$(_RMI_CLASS_NAMES)" ""
 endif
 	@$(TOUCH) $@
 
-_RESOURCE_FILES := $(shell $(CAT) $(MOD_RESOURCE_CATALOG))
+# Like the Java files above, the resource files also are relative
+# to the SOURCE_DIR.  We have to be very careful when copying
+# because we need the relative pathnames if the files are
+# to end up in the right place.
+
+_RESOURCE_FILES := $(addprefix $(FINAL_SOURCE_DIR)$(SLASH), \
+	$(shell $(CAT) $(MOD_RESOURCE_CATALOG)))
 
 $(RESOURCE_STAMP_FILE): $(_RESOURCE_FILES)
 ifneq "$(_RESOURCE_FILES)" ""
 	@$(ECHO) "\n*** Copying package resources ...***\n"
 	@$(ECHO) Copying: $(notdir $?)
-	@$(CP) --force --parents $? $(MOD_CLASS_DIR)
+	@$(CD) $(FINAL_SOURCE_DIR) ; \
+	  $(CP) --force --parents $? $(ABSOLUTE_CLASS_DIR)
 	@$(TOUCH) $(MOD_DIRTY_JAR_STAMP_FILE)
 endif
 	@$(TOUCH) $@
+
+# End of the POST_SETUP block
 	
 endif
+
+ifdef SETUP_CATALOGS
+
+inner-setup-catalogs: $(MOD_JAVA_CATALOG) $(MOD_RMI_CLASS_CATALOG) $(MOD_RESOURCE_CATALOG)
+
+ABSOLUTE_MOD_BUILD_DIR := $(shell $(JBE_CANONICALIZE) $(MOD_BUILD_DIR))
+
+# Rules for rebuilding the catalog by visiting each
+# Package.
+
+$(MOD_JAVA_CATALOG) $(MOD_RMI_CLASS_CATALOG) $(MOD_RESOURCE_CATALOG):
+ifeq "$(PACKAGES)" ""
+	@$(ECHO) JBE Error: Must define PACKAGES in Makefile
+else
+	@$(ECHO) -n > $(MOD_JAVA_CATALOG)
+	@$(ECHO) -n > $(MOD_RMI_CLASS_CATALOG)
+	@$(ECHO) -n > $(MOD_RESOURCE_CATALOG)
+	@for package in $(PACKAGES) ; do \
+	  $(RECURSE) PACKAGE_RECURSE=t PACKAGE="$$package" \
+	  ABSOLUTE_MOD_BUILD_DIR="$(ABSOLUTE_MOD_BUILD_DIR)" catalog-package ; \
+	done
+endif
+
+# End of SETUP_CATALOGS block
+
+endif
+
+
+ifdef PACKAGE_RECURSE
+
+# A few rules used with recursion.  Recursion works by re-invoking
+# make in the Module directory, by specifying a value for PACKAGE on
+# the command line (in addition to a target).
+
+# Convert each '.' to a path seperator
+
+PACKAGE_DIR := $(subst $(PERIOD),$(SLASH),$(PACKAGE))
+
+# Create a relative project directory by counting the number of
+# periods. This is tricky, because $(foreach) like to add spaces, which we have
+# to convert to slashes.
+
+_PACKAGE_TERMS := $(subst $(PERIOD),$(SPACE),$(PACKAGE))
+_RELATIVE_MOD_DIR := $(strip $(foreach foo,$(_PACKAGE_TERMS),$(DOTDOT)))
+
+catalog-package:
+	@$(ECHO) "\n*** Cataloging package $(PACKAGE) ... ***\n"
+	@$(MAKE) -C $(FINAL_SOURCE_DIR)$(SLASH)$(PACKAGE_DIR) \
+		MOD_BUILD_DIR="$(ABSOLUTE_MOD_BUILD_DIR)" \
+		MOD_PACKAGE_DIR="$(PACKAGE_DIR)"
+	
+# End of PACKAGE_RECURSE block
+
+endif
+
+	
+
+
+
+JAVADOC_CLASSPATH = \
+	$(shell $(JBE_CANONICALIZE) -classpath \
+		$(MOD_CLASSPATH) $(LOCAL_CLASSPATH) $(MOD_CLASS_DIR))
+
+javadoc:
+ifeq "$(JAVADOC_DIR)" ""
+	@$(ECHO) JBE Error:  must set JAVADOC_DIR in Makefile
+else
+ifeq "$(PACKAGES)" ""
+	@$(ECHO) JBE Error: Must define PACKAGES in Makefile
+else
+	@$(ECHO) "\n*** Generating Javadoc ... ***\n"
+	@$(MKDIRS) $(FINAL_JAVADOC_DIR)
+	$(JAVADOC) -d $(FINAL_JAVADOC_DIR) \
+	-sourcepath $(FINAL_SOURCE_DIR)	-classpath "$(JAVADOC_CLASSPATH)" $(JAVADOC_OPT) \
+	$(PACKAGES)
+endif
+endif
+
 	
 FINAL_META_RESOURCES := $(strip $(MOD_META_RESOURCES) $(META_RESOURCES))
 
@@ -149,23 +242,8 @@ ifneq "$(FINAL_META_RESOURCES)" ""
 endif
 	@$(TOUCH) $@ 
 
-JAVADOC_CLASSPATH = \
-	$(shell $(JBE_CANONICALIZE) -classpath $(LOCAL_CLASSPATH) $(MOD_CLASS_DIR))
-
-javadoc:
-ifeq "$(JAVADOC_DIR)" ""
-	@$(ECHO) JBE Error:  must set JAVADOC_DIR in Makefile
-else
-ifeq "$(PACKAGES)" ""
-	@$(ECHO) JBE Error: Must define PACKAGES in Makefile
-else
-	@$(ECHO) "\n*** Generating Javadoc ... ***\n"
-	@$(MKDIRS) $(FINAL_JAVADOC_DIR)
-	$(JAVADOC) -d $(FINAL_JAVADOC_DIR) \
-	-sourcepath "."	-classpath "$(JAVADOC_CLASSPATH)" $(JAVADOC_OPT) \
-	$(PACKAGES)
-endif
-endif
+initialize: setup-jbe-util
+	@$(MKDIRS) $(MOD_BUILD_DIR)
 
 # Rule to make sure the JBE Util class is around.  Usually executed just once, the first
 # time the JBE is used.
@@ -186,3 +264,4 @@ $(SYS_MAKEFILE_DIR)/com/primix/jbe/Util.class: $(SYS_MAKEFILE_DIR)/com/primix/jb
 .PHONY: setup-catalogs catalog-package
 .PHONY: compile copy-resources javadoc
 .PHONY: setup-jbe-util
+.PHONY: inner-setup-catalogs
