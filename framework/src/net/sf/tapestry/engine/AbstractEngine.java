@@ -344,7 +344,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         {
             IPage exceptionPage = findOverridablePage(cycle, EXCEPTION_PAGE);
 
-            OgnlUtils.set("exception", exceptionPage, cause);
+            OgnlUtils.set("exception", _resolver, exceptionPage, cause);
 
             cycle.setPage(exceptionPage);
 
