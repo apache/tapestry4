@@ -102,27 +102,40 @@
 			You're close to being able to write some code!
 		</para>
 		<para>
-			Not mentioned in the previous section, but important is that
+			Not mentioned in the previous section, but important, is that
 			Tapestry applications have at least one mandatory page - called <emphasis>Home</emphasis>.
-			This is the page that Tapestry will route new requests to.  This example
-			will construct a 'Hello World' application, where the text is
-			retreived from the pages Java object.
+			This is the page that Tapestry will route new requests to.
 		</para>
 		<para>
-			The code for this example is in <filename class="directory">c:\Tapestry-x.x\examples\Tutorial2\simple</filename>.
+			The following example
+			will construct a 'Hello World' application, where the text is
+			retreived from the pages Java object. This example will build the
+			application specification, basic HTML tempalte (for the Home page),
+			and finally a simple Java object to return the 'hello world' string.
+		</para>
+		<para>
+			The example code supplied contains a full implementation of this tutorial.
+			Feel free to recreate the tutorial as you go along, using the supplied development
+			environment. For each major part of this tutorial, you will find example source code within
+			<filename class="directory">c:\Tapestry-x.x\examples\Tutorial\src</filename>.
+		</para>
+		<para>
+			The code for this example is in
+			<filename class="directory">c:\Tapestry-x.x\examples\Tutorial\src\tutorial\hello</filename>.
 		</para>
 		<section id="Setup the Application">
 			<para>
 				Every Tapestry Application must have at least a single <emphasis>Application Servlet</emphasis>,
-				where the applications pages and other engine services are defined. For this example, create 
-				a package in your source tree with the name <classname>tapestry.tutorial.hello</classname>.
-				In this package, create a file called <filename>HelloWorld.application</filename> (this
-				is the application specification file).
+				where the applications pages and other engine services are defined. For this example, create
+				a package in your source tree with the name <classname>tutorial.hello</classname>.
+				Within this package, create a file called <filename>HelloWorld.application</filename>. This
+				is the application specification file.
 			</para>
 			<para>
-				This specification is a file that is located on the Java class path.  In a deployed Tapestry
-				application, the specification lives with the application's class files, in the
-				<filename class="directory">WEB-INF/classes</filename> directory of a War file.
+				The application specification is a file that is located on the Java class path.
+				In a deployed Tapestry application, the specification lives with the application's
+				class files, in the	<filename class="directory">WEB-INF/classes</filename> directory
+				of a War file.
 			</para>
       <figure>
         <title>HelloWorld.application</title>
@@ -142,7 +155,7 @@
 </programlisting>
       </figure>
 		</section>
-		
+
 	</section>
 
 	<section id="diff-parts">
