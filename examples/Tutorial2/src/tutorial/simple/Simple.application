@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: Simple.application,v 1.8 2002/07/27 15:11:59 hship Exp $ -->
+<!DOCTYPE application PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+	
+<application name="Simple Tutorial" engine-class="net.sf.tapestry.engine.SimpleEngine">
+  <page name="Home" specification-path="/tutorial/simple/Home.page"/>
+</application>
