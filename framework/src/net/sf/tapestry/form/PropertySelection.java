@@ -34,10 +34,16 @@ import net.sf.tapestry.RequiredParameterException;
 import net.sf.tapestry.Tapestry;
 
 /**
- *  A component which uses either
- *   &lt;select&gt; and &lt;option&gt; elements 
- *  or &lt;input type=radio&gt; to
- *  set a property of some object.  Typically, the values for the object
+ *  A component used to render a drop-down list of options that
+ *  the user may select.
+ * 
+ *  <p>Earlier versions of PropertySelection (through release 2.2)
+ *  were more flexible, they included a <b>renderer</b> property
+ *  that controlled how the selection was rendered.  Ultimately,
+ *  this proved of little value and this portion of
+ *  functionality was deprecated in 2.3 and will be removed in 2.3.
+ * 
+ *  <p>Typically, the values available to be selected
  *  are defined using an {@link net.sf.tapestry.util.Enum}.  
  *  A PropertySelection is dependent on
  *  an {@link IPropertySelectionModel} to provide the list of possible values.
@@ -78,7 +84,11 @@ import net.sf.tapestry.Tapestry;
  *		<td>Defines the object used to render the PropertySelection.
  * <p>{@link SelectPropertySelectionRenderer} renders the component as a &lt;select&gt;.
  * <p>{@link RadioPropertySelectionRenderer} renders the component as a table of
- * radio buttons.</td></tr>
+ * radio buttons.
+ * 
+ * <p>This parameter is deprecated in 2.2 and will be removed in 2.3.
+ * 
+ * </td></tr>
  *
  *  <tr>
  *		<td>model</td>
@@ -101,9 +111,22 @@ import net.sf.tapestry.Tapestry;
  *			<p>Corresponds to the <code>disabled</code> HTML attribute.</td>
  *	</tr>
  *
- *	</table>
+ *  <tr>
+ *      <td>submitOnChange</td>
+ *      <td>boolean</td>
+ *      <td>in</td>
+ *      <td>no</td>
+ *      <td>false</td>
+ *      <td>If true, then additional JavaScript is added to submit the
+ * containing form when select is changed.  Equivalent to
+ *  specifying a JavaScript event handler of <code>this.form.submit()</code>.
+ * </td>
+ *  </tr>
+ * 
+ * </table>
  *
- * <p>Informal parameters are not allowed,  A body is not allowed.
+ * <p>Informal parameters are allowed, and are applied to
+ * the &lt;select&gt; tag.  A body is not allowed.
  *
  *
  *  @version $Id$
@@ -113,37 +136,40 @@ import net.sf.tapestry.Tapestry;
 
 public class PropertySelection extends AbstractFormComponent
 {
-    private IPropertySelectionRenderer renderer;
-    private IPropertySelectionModel model;
-    private boolean disabled;
+    private IPropertySelectionRenderer _renderer;
+    private IPropertySelectionModel _model;
+    private boolean _disabled;
 
-    private IBinding valueBinding;
-    private String name;
+    private IBinding _valueBinding;
+    private String _name;
+    private boolean _submitOnChange;
 
     /**
      *  A shared instance of {@link SelectPropertySelectionRenderer}.
      *
+     *  @deprecated will be removed in 2.3
+     * 
      **/
 
-    public static final IPropertySelectionRenderer DEFAULT_SELECT_RENDERER =
-        new SelectPropertySelectionRenderer();
+    public static final IPropertySelectionRenderer DEFAULT_SELECT_RENDERER = new SelectPropertySelectionRenderer();
 
     /**
      *  A shared instance of {@link RadioPropertySelectionRenderer}.
      *
+     *  @deprecated will be removed in 2.3
+     * 
      **/
 
-    public static final IPropertySelectionRenderer DEFAULT_RADIO_RENDERER =
-        new RadioPropertySelectionRenderer();
+    public static final IPropertySelectionRenderer DEFAULT_RADIO_RENDERER = new RadioPropertySelectionRenderer();
 
     public IBinding getValueBinding()
     {
-        return valueBinding;
+        return _valueBinding;
     }
 
     public void setValueBinding(IBinding value)
     {
-        valueBinding = value;
+        _valueBinding = value;
     }
 
     /**
@@ -154,7 +180,7 @@ public class PropertySelection extends AbstractFormComponent
 
     public String getName()
     {
-        return name;
+        return _name;
     }
 
     /**
@@ -164,7 +190,7 @@ public class PropertySelection extends AbstractFormComponent
 
     public boolean isDisabled()
     {
-        return disabled;
+        return _disabled;
     }
 
     /**
@@ -175,49 +201,63 @@ public class PropertySelection extends AbstractFormComponent
      *
      **/
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
         IForm form = getForm(cycle);
         if (form == null)
-            throw new RequestCycleException(
-                Tapestry.getString("must-be-wrapped-by-form", "PropertySelection"),
-                this);
+            throw new RequestCycleException(Tapestry.getString("must-be-wrapped-by-form", "PropertySelection"), this);
 
         boolean rewinding = form.isRewinding();
 
-        name = form.getElementId(this);
+        _name = form.getElementId(this);
 
         if (rewinding)
         {
             // If disabled, ignore anything that comes up from the client.
 
-            if (disabled)
+            if (_disabled)
                 return;
 
-            String optionValue = cycle.getRequestContext().getParameter(name);
+            String optionValue = cycle.getRequestContext().getParameter(_name);
 
-            Object newValue =
-                (optionValue == null) ? null : model.translateValue(optionValue);
+            Object newValue = (optionValue == null) ? null : _model.translateValue(optionValue);
 
-            valueBinding.setObject(newValue);
+            _valueBinding.setObject(newValue);
 
             return;
         }
 
-        IPropertySelectionRenderer finalRenderer =
-            (renderer == null) ? DEFAULT_SELECT_RENDERER : renderer;
+        // Support for 2.2 style renderer.  This goes in 2.3.
 
-        finalRenderer.beginRender(this, writer, cycle);
+        if (_renderer != null)
+        {
+            renderWithRenderer(writer, cycle, _renderer);
+            return;
+        }
 
-        int count = model.getOptionCount();
-        Object currentValue = valueBinding.getObject();
+        writer.begin("select");
+        writer.attribute("name", _name);
+
+        if (_disabled)
+            writer.attribute("disabled");
+
+if (_submitOnChange)
+    writer.attribute("onchange", "javascript:this.form.submit();");
+
+        // Apply informal attributes.
+
+        generateAttributes(writer, cycle);
+
+        writer.println();
+
+        int count = _model.getOptionCount();
+        Object currentValue = _valueBinding.getObject();
         boolean foundSelected = false;
         boolean selected = false;
 
         for (int i = 0; i < count; i++)
         {
-            Object option = model.getOption(i);
+            Object option = _model.getOption(i);
 
             if (!foundSelected)
             {
@@ -226,7 +266,51 @@ public class PropertySelection extends AbstractFormComponent
                     foundSelected = true;
             }
 
-            finalRenderer.renderOption(this, writer, cycle, model, option, i, selected);
+            writer.beginEmpty("option");
+            writer.attribute("value", _model.getValue(i));
+
+            if (selected)
+                writer.attribute("selected");
+
+            writer.print(_model.getLabel(i));
+
+            writer.println();
+
+            selected = false;
+        }
+
+        writer.end(); // <select>
+
+    }
+
+    /**
+     *  Renders the property selection using a {@link IPropertySelectionRenderer}.
+     *  Support for this will be removed in 2.3.
+     * 
+     **/
+
+    private void renderWithRenderer(IMarkupWriter writer, IRequestCycle cycle, IPropertySelectionRenderer renderer)
+        throws RequestCycleException
+    {
+        renderer.beginRender(this, writer, cycle);
+
+        int count = _model.getOptionCount();
+        Object currentValue = _valueBinding.getObject();
+        boolean foundSelected = false;
+        boolean selected = false;
+
+        for (int i = 0; i < count; i++)
+        {
+            Object option = _model.getOption(i);
+
+            if (!foundSelected)
+            {
+                selected = isEqual(option, currentValue);
+                if (selected)
+                    foundSelected = true;
+            }
+
+            renderer.renderOption(this, writer, cycle, _model, option, i, selected);
 
             selected = false;
         }
@@ -234,7 +318,7 @@ public class PropertySelection extends AbstractFormComponent
         // A PropertySelection doesn't allow a body, so no need to worry about
         // wrapped components.
 
-        finalRenderer.endRender(this, writer, cycle);
+        renderer.endRender(this, writer, cycle);
     }
 
     private boolean isEqual(Object left, Object right)
@@ -256,27 +340,41 @@ public class PropertySelection extends AbstractFormComponent
 
     public void setDisabled(boolean disabled)
     {
-        this.disabled = disabled;
+        _disabled = disabled;
     }
 
     public IPropertySelectionModel getModel()
     {
-        return model;
+        return _model;
     }
 
     public void setModel(IPropertySelectionModel model)
     {
-        this.model = model;
+        _model = model;
     }
 
     public IPropertySelectionRenderer getRenderer()
     {
-        return renderer;
+        return _renderer;
     }
 
     public void setRenderer(IPropertySelectionRenderer renderer)
     {
-        this.renderer = renderer;
+        _renderer = renderer;
+    }
+
+    /** @since 2.2 **/
+    
+    public boolean getSubmitOnChange()
+    {
+        return _submitOnChange;
+    }
+
+    /** @since 2.2 **/
+    
+    public void setSubmitOnChange(boolean submitOnChange)
+    {
+        _submitOnChange = submitOnChange;
     }
 
 }
