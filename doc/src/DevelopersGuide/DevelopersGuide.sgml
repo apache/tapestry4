@@ -36,6 +36,7 @@
 <!ENTITY Conditional '<link linkend="builtin.Conditional"><classname>Conditional</classname></link>'>
 <!ENTITY Rollover  '<link linkend="builtin.Rollover"><classname>Rollover</classname></link>'>
 <!ENTITY Insert '<link linkend="builtin.Insert"><classname>Insert</classname></link>'>
+<!ENTITY InsertText '<link linkend="builtin.InsertText"><classname>InsertText</classname></link>'>
 <!ENTITY Image '<link linkend="builtin.InsertWrapped"><classname>Image</classname></link>'>
 <!ENTITY InsertWrapped 
 	'<link linkend="builtin.InsertWrapped"><classname>InsertWrapped</classname></link>'>
@@ -46,6 +47,9 @@
 <!ENTITY RadioGroup '<link linkend="builtin.RadioGroup"><classname>RadioGroup</classname></link>'>
 <!ENTITY ValidatingTextField 
 	'<link linkend="builtin.ValidatingTextField"><classname>ValidatingTextField</classname></link>'>
+<!ENTITY Option '<link linkend="builtin.Option"><classname>Option</classname></link>'>
+<!ENTITY Select '<link linkend="builtin.Select"><classname>Select</classname></link>'>
+<!ENTITY Block '<link linkend="builtin.Block"><classname>Block</classname></link>'>
 
 <!ENTITY Log4J
 	'<ulink url="http://jakarta.apache.org/log4j">Log4J</ulink>'>
