@@ -442,7 +442,7 @@ public class BaseComponent extends AbstractComponent
 
         buffer.append('.');
 
-        throw new PageLoaderException(buffer.toString(), this);
+        LOG.error(buffer.toString());
     }
 
     /**
