@@ -17,10 +17,7 @@ package org.apache.tapestry.record;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.Iterator;
-
-import javax.servlet.http.HttpSession;
 
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IRequestCycle;

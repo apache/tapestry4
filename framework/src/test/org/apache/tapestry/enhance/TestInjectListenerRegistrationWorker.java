@@ -15,7 +15,6 @@
 package org.apache.tapestry.enhance;
 
 import org.apache.hivemind.test.HiveMindTestCase;
-import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.easymock.MockControl;

@@ -16,8 +16,6 @@ package org.apache.tapestry.services.impl;
 
 import java.util.Locale;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.hivemind.service.ThreadLocale;
 import org.apache.tapestry.TapestryConstants;
 import org.apache.tapestry.services.CookieSource;

@@ -16,7 +16,6 @@ package org.apache.tapestry.util.xml;
 
 import org.apache.hivemind.Locatable;
 import org.apache.hivemind.Location;
-import org.apache.hivemind.Resource;
 
 /**
  * Exception thrown if there is any kind of error validating a string during document parsing

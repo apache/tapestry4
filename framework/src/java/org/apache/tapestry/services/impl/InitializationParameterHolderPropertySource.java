@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.services.impl;
 
-import javax.servlet.ServletContext;
-
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.web.InitializationParameterHolder;
 

@@ -16,8 +16,6 @@ package org.apache.tapestry.services;
 
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.web.WebRequest;
-import org.apache.tapestry.web.WebResponse;
 
 /**
  * A factory for creating instances of {@link org.apache.tapestry.IRequestCycle}for the current

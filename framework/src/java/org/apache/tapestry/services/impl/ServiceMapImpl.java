@@ -21,7 +21,6 @@ import java.util.Map;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorLog;
-import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.services.ServiceMap;
 

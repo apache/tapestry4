@@ -16,9 +16,6 @@ package org.apache.tapestry.services.impl;
 
 import java.util.Locale;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.services.EngineFactory;
 import org.apache.tapestry.services.EngineManager;

@@ -38,7 +38,6 @@ import org.apache.tapestry.services.RequestCycleFactory;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.QueryParameterMap;
 import org.apache.tapestry.web.WebRequest;
-import org.apache.tapestry.web.WebResponse;
 
 /**
  * Service that creates instances of {@link org.apache.tapestry.IRequestCycle}on behalf of an

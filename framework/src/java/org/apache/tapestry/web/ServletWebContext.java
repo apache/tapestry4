@@ -23,7 +23,6 @@ import javax.servlet.ServletContext;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.util.Defense;
-import org.apache.tapestry.describe.Describable;
 import org.apache.tapestry.describe.DescriptionReceiver;
 
 /**

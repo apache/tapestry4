@@ -14,12 +14,10 @@
 
 package org.apache.tapestry.html;
 
-import org.apache.hivemind.Messages;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.describe.HTMLDescriber;
-import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
  * Component that makes use of {@link org.apache.tapestry.describe.HTMLDescriber}to produce HTML
