@@ -10,7 +10,7 @@
 <!-- 
 
  var quotex = 0;
- var maxquotex = 7;
+ var maxquotex = 9;
  var quote = new Array();
  quote[0] = "Tapestry reconceptualizes web application development in terms of objects, methods and properties instead of URLs and query parameters.";
  quote[1] = "Tapestry's flexibility along with its clean object-oriented architecture made our web interface shine.";
@@ -20,6 +20,8 @@
  quote[5] = "The amount of code I am having to write is greatly reduced and I am achieving a much greater level of reuse.";
  quote[6] = "We've got a significant increase in productivity, we've got increased quality, we've got happy web designers, and we've put an end to the repetitive operations -- it would be hard to think of a better scenario.";
  quote[7] = "... one can build incredibly complex Web applications quickly and easily, and yet be assured that those applications are of a very high quality.";
+ quote[8] = "The perfect separation of roles was what drew me to Tapestry ... the rest of the things (and are a lot of them) were the iceing on the cake.";
+ quote[9] = "Tapestry frags the snot out of frameworks like JSF, Struts, and the like";
  
  function rotate_quote()
  {
@@ -40,7 +42,7 @@
  function body_onload()
  {	
     if (navigator.family != "nn4")
- 	  rotate_quote();
+ 	  window.setTimeout("rotate_quote()", 2000);
  }
  
 // -->
