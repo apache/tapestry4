@@ -25,6 +25,12 @@
 <li>Switched over to using JBoss 3.0.6 for demos.</li>
 <li>Renamed method <code>generateAttributes()</code> to <code>renderInformalParameters()</code> in
 <a href="doc/api/org/apache/tapestry/AbstractComponent.html">AbstractComponent</a>.</li>
+<li>Added support for the informal parameters of a component to be passed down to a contained component
+using the inherit-informal-parameters attribute. </li>
+<li>Added IRequestCycle.activate(page) as a replacement for IRequestCycle.setPage(page). 
+Besides setting the page to be rendered, it also invokes page.validate() and handles the page redirections.</li>
+<li>Added page.addValidateListener() and page.removeValidateListener()</li>
+<li>Squeezed strings are now always prefixed with 'S'</li>
 </ul>
 
 <pre>
