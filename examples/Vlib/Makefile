@@ -1,6 +1,6 @@
 # $Id$
 
-MODULE_NAME = Vlib
+PROJECT_NAME = Vlib
 
 PACKAGES = \
 	com.primix.servlet \

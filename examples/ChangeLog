@@ -1,3 +1,9 @@
+* Feb 8 2001 hship
+
+Remove code related to response writer compression (which has been removed from
+IResponseWriter).
+Configure Vlib to use the asset externalizer.
+
 * Feb 6 2001 hship
 
 Slight changes to Makefiles (due to variable name changes in JBE).

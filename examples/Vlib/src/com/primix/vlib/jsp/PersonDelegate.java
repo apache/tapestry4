@@ -136,15 +136,11 @@ public class PersonDelegate extends BookQueryDelegate
 	public void writeEmail(HTMLWriter writer)
 	{
 		String email = person.getEmail();
-		boolean compressed;
 		
-		compressed = writer.compress(true);
 		writer.begin("a");
 		writer.attribute("href", "mailto:" + email);
 		writer.print(email);
 		writer.end();
-		
-		writer.setCompressed(compressed);
 	}
 	
 	public Person getPerson()
