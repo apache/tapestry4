@@ -215,23 +215,17 @@ public class BasePage extends BaseComponent implements IPage
 	}
 
 	/**
-	*  Sets the application and trace logger for the page.  Does
+	*  Sets the application for the page.  Does
 	*  <em>not</em> change the locale, but since a page is selected
 	*  from the {@link IPageSource} pool partially based on its
 	*  locale matching the application locale, they should match
 	*  anyway.
     *
-    *  <p>Invokes {@link IApplication#getVisit()} to get the visit for
-    *  the application.
-	*
-	*  <p>Invokes {@link ILifecycle#reset()} on any lifecycle components.
-	*
 	*/
 
 	public void joinApplication(IApplication value)
 	{
 		application = value;
-        visit = application.getVisit();
 	}
 
 	/**
@@ -339,6 +333,9 @@ public class BasePage extends BaseComponent implements IPage
 
     public Object getVisit()
     {
+        if (visit == null)
+            visit = application.getVisit();
+
         return visit;
     }
 }
