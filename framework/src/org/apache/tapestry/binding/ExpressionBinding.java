@@ -235,8 +235,10 @@ public class ExpressionBinding extends AbstractBinding
 
                 if (appSpec != null && appSpec.checkExtension(Tapestry.OGNL_TYPE_CONVERTER))
                 {
-                    TypeConverter typeConverter = (TypeConverter) appSpec.getExtension(
-                        Tapestry.OGNL_TYPE_CONVERTER, TypeConverter.class);
+                    TypeConverter typeConverter =
+                        (TypeConverter) appSpec.getExtension(
+                            Tapestry.OGNL_TYPE_CONVERTER,
+                            TypeConverter.class);
 
                     Ognl.setTypeConverter(_context, typeConverter);
                 }
@@ -304,6 +306,16 @@ public class ExpressionBinding extends AbstractBinding
 
         if (checkForConstant())
             return;
+
+        try
+        {
+            if (!Ognl.isSimpleNavigationChain(_parsedExpression, getOgnlContext()))
+                return;
+        }
+        catch (OgnlException ex)
+        {
+            throw new BindingException(ex.getMessage(), this, ex);
+        }
 
         // Split the expression into individual property names.
         // We then optimize what we can from the expression.  This will
