@@ -99,6 +99,11 @@ public class PageSpecificationResolver extends AbstractSpecificationResolver
 
     }
 
+    public  String getSimplePageName()
+    {
+        return _simpleName;
+    }
+
     private void searchForPage()
     {
         INamespace namespace = getNamespace();

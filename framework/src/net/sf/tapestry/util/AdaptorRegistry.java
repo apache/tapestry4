@@ -175,7 +175,7 @@ public class AdaptorRegistry
         int length;
 
         if (registrations == null)
-            throw new IllegalArgumentException("No adaptors have been registered.");
+            throw new IllegalArgumentException(Tapestry.getString("AdaptorRegistry.nothing-registered"));
 
         if (LOG.isDebugEnabled())
             LOG.debug("Searching for adaptor for class " + subjectClass.getName());
@@ -254,29 +254,24 @@ public class AdaptorRegistry
 
     public String toString()
     {
-        StringBuffer buffer;
-        Iterator i;
-        Map.Entry entry;
-        boolean first = true;
-        Class registeredClass;
-
-        buffer = new StringBuffer();
+        StringBuffer buffer = new StringBuffer();
         buffer.append("AdaptorRegistry[");
 
         if (registrations != null)
         {
             synchronized (registrations)
             {
-                i = registrations.entrySet().iterator();
+                Iterator i = registrations.entrySet().iterator();
+                boolean first = true;
 
                 while (i.hasNext())
                 {
                     if (!first)
                         buffer.append(' ');
 
-                    entry = (Map.Entry) i.next();
+                    Map.Entry entry = (Map.Entry) i.next();
 
-                    registeredClass = (Class) entry.getKey();
+                    Class registeredClass = (Class) entry.getKey();
 
                     buffer.append(registeredClass.getName());
                     buffer.append("=");

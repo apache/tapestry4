@@ -41,6 +41,12 @@ public class MockTestCase extends TapestryTestCase
     // in a static suite() method.
 
 
+    public void testPersistentProperties()
+    throws Exception
+    {
+        attempt("TestPersistentProperties.xml");
+    }
+
     /**
      *  Test several Stale Link scenarios for the Form component.
      * 

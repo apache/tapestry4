@@ -346,4 +346,16 @@ public class MockRequest extends AttributeHolder implements HttpServletRequest
         for (int i = 0; i < cookies.length; i++)
             addCookie(cookies[i]);
     }
+    
+    /**
+     *  Delegates this to the {@link net.sf.tapestry.junit.mock.MockSession}, if
+     *  it exists.
+     * 
+     **/
+    
+    public void simulateFailover()
+    {
+        if (_session != null)
+            _session.simulateFailover();
+    }
 }

@@ -31,7 +31,7 @@ public class PageCallback implements ICallback
 
     public PageCallback(IPage page)
     {
-        this(page.getName());
+        this(page.getPageName());
     }
 
     public String toString()

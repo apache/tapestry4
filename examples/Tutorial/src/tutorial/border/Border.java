@@ -27,6 +27,6 @@ public class Border extends BaseComponent
 
     public boolean getDisablePageLink()
     {
-        return pageName.equals(getPage().getName());
+        return pageName.equals(getPage().getPageName());
     }
 }

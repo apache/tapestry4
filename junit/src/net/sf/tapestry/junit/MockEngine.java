@@ -50,7 +50,7 @@ public class MockEngine implements IEngine
     {
     }
 
-    public IPageRecorder getPageRecorder(String pageName)
+    public IPageRecorder getPageRecorder(String pageName, IRequestCycle cycle)
     {
         return null;
     }

@@ -503,12 +503,15 @@ public class PageLoader implements IPageLoader
     /**
      *  Instantitates a page from its specification.
      *
+     *  @param name the unqualified, simple, name for the page
+     *  @param namespace the namespace containing the page's specification
+     *  @param spec the page's specification
+     * 
+     *  We instantiate the page object, then set its specification,
+     *  names and locale.
      *
-     * We instantiate the page object, then set its specification,
-     * name and locale.
-     *
-     * @see IEngine
-     * @see ChangeObserver
+     *  @see IEngine
+     *  @see ChangeObserver
      **/
 
     private IPage instantiatePage(String name, INamespace namespace, ComponentSpecification spec)
@@ -526,6 +529,7 @@ public class PageLoader implements IPageLoader
             result.setNamespace(namespace);
             result.setSpecification(spec);
             result.setName(name);
+            result.setPageName(namespace.constructQualifiedName(name));
             result.setLocale(_locale);
         }
         catch (ClassCastException ex)
@@ -546,7 +550,7 @@ public class PageLoader implements IPageLoader
      *  any given instance of PageLoader is loading only a single page at a time.
      *  The page is immediately attached to the {@link IEngine engine}.
      *
-     *  @param name the name of the page to load
+     *  @param name the simple (unqualified) name of the page to load
      *  @param namespace from which the page is to be loaded (used
      *  when resolving components embedded by the page)
      *  @param cycle the request cycle the page is 

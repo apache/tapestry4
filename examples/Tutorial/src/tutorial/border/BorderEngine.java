@@ -1,6 +1,6 @@
 package tutorial.border;
 
-import net.sf.tapestry.engine.SimpleEngine;
+import net.sf.tapestry.engine.BaseEngine;
 
 /**
  * 
@@ -12,7 +12,7 @@ import net.sf.tapestry.engine.SimpleEngine;
  *
  **/
 
-public class BorderEngine extends SimpleEngine
+public class BorderEngine extends BaseEngine
 {
     private static final String[] pageNames = { "Home", "Credo", "Legal" };
 

@@ -74,7 +74,7 @@ public class ShowProperties extends BaseComponent implements PageRenderListener
         _inspectedPage = inspector.getInspectedPage();
 
         IEngine engine = getPage().getEngine();
-        IPageRecorder recorder = engine.getPageRecorder(_inspectedPage.getName());
+        IPageRecorder recorder = engine.getPageRecorder(_inspectedPage.getPageName(), inspector.getRequestCycle());
 
         // No page recorder?  No properties.
 

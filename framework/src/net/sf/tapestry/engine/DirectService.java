@@ -72,9 +72,9 @@ public class DirectService extends AbstractService
         context[i++] = stateful;
 
         if (complex)
-            context[i++] = renderPage.getName();
+            context[i++] = renderPage.getPageName();
 
-        context[i++] = componentPage.getName();
+        context[i++] = componentPage.getPageName();
         context[i++] = component.getIdPath();
 
         return assembleGesture(cycle, DIRECT_SERVICE, context, parameters, true);

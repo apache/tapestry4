@@ -49,7 +49,7 @@ public class PageLoaderException extends Exception
             IPage page = component.getPage();
 
             if (page != null)
-                _pageName = page.getName();
+                _pageName = page.getPageName();
         }
 
     }

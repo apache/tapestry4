@@ -138,7 +138,7 @@ public class PageSource implements IPageSource
     {
         Object[] keys;
 
-        keys = new Object[] { page.getName(), page.getLocale()};
+        keys = new Object[] { page.getPageName(), page.getLocale()};
 
         // Don't make a copy, this array is just for the MultiKey.
 
@@ -176,7 +176,7 @@ public class PageSource implements IPageSource
             {
                 result =
                     loader.loadPage(
-                        pageName,
+                        _pageSpecificationResolver.getSimplePageName(),
                         _pageSpecificationResolver.getNamespace(),
                         cycle,
                         _pageSpecificationResolver.getSpecification());

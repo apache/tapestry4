@@ -71,7 +71,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
      * 
      **/
     
-    private String _qualifiedName;
+    private String _pageName;
     
     /**
      *  Set when the page is attached to the engine.
@@ -310,7 +310,24 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
         _name = value;
     }
+    
+    /** @since 2.4 **/
 
+    public void setPageName(String pageName)
+    {
+        if (_pageName != null)
+            throw new ApplicationRuntimeException(Tapestry.getString("AbstractPage.attempt-to-change-name"));
+
+        _pageName = pageName;
+    }
+    
+    /** @since 2.4 **/
+    
+    public String getPageName()
+    {
+        return _pageName;
+    }
+    
     /**
      *  By default, pages are not protected and this method does nothing.
      *
@@ -527,7 +544,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     
     /**
-     *  @since 2.1-beta-2
+     *  @since 2.1
      * 
      **/
     
@@ -554,9 +571,6 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     
     public String getQualifiedName()
     {
-        if (_qualifiedName == null)
-            _qualifiedName = getNamespace().constructQualifiedName(_name);
-        
-        return _qualifiedName;
+        return _pageName;
     }
 }

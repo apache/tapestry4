@@ -85,7 +85,7 @@ import net.sf.tapestry.util.prop.OgnlUtils;
  * <p>Where possible, instance variables should be transient.  They
  * can be restored inside {@link #setupForRequest(RequestContext)}.
  *
- *  <p>In practice, a subclass (usually {@link SimpleEngine})
+ *  <p>In practice, a subclass (usually {@link BaseEngine})
  *  is used without subclassing.  Instead, a 
  *  visit object is specified.  To facilitate this, the application specification
  *  may include a property, <code>net.sf.tapestry.visit-class</code>
@@ -1335,7 +1335,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
             try
             {
                 IPage page = source.getPage(fakeCycle, name, null);
-                IPageRecorder recorder = getPageRecorder(name);
+                IPageRecorder recorder = getPageRecorder(name, fakeCycle);
 
                 recorder.rollback(page);
 

@@ -254,9 +254,10 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 
     /**
      *  Returns the page recorder for the named page.  This may come
-     *  form the cycle's cache of page recorders or, if not yet encountered
-     *  in this request cycle, the {@link IEngine#getPageRecorder(String)} is
+     *  from the cycle's cache of page recorders or, if not yet encountered
+     *  in this request cycle, the {@link IEngine#getPageRecorder(String, IRequestCycle)} is
      *  invoked to get the recorder, if it exists.
+     * 
      **/
 
     protected IPageRecorder getPageRecorder(String name)
@@ -269,7 +270,7 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
         if (result != null)
             return result;
 
-        result = _engine.getPageRecorder(name);
+        result = _engine.getPageRecorder(name, this);
 
         if (result == null)
             return null;
@@ -360,7 +361,7 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 
     public void renderPage(IMarkupWriter writer) throws RequestCycleException
     {
-        String pageName = _page.getName();
+        String pageName = _page.getPageName();
         _monitor.pageRenderBegin(pageName);
 
         _rewinding = false;
@@ -423,7 +424,7 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
     public void rewindForm(IForm form, String targetActionId) throws RequestCycleException
     {
         IPage page = form.getPage();
-        String pageName = page.getName();
+        String pageName = page.getPageName();
 
         _monitor.pageRewindBegin(pageName);
 
@@ -498,7 +499,7 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 
     public void rewindPage(String targetActionId, IComponent targetComponent) throws RequestCycleException
     {
-        String pageName = _page.getName();
+        String pageName = _page.getPageName();
 
         _monitor.pageRewindBegin(pageName);
 
@@ -618,7 +619,7 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
     public void observeChange(ObservedChangeEvent event)
     {
         IPage page = event.getComponent().getPage();
-        String pageName = page.getName();
+        String pageName = page.getPageName();
 
         if (LOG.isDebugEnabled())
             LOG.debug("Observed change in page " + pageName + "; creating page recorder.");
@@ -648,11 +649,10 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
         if (LOG.isDebugEnabled())
             LOG.debug("Discarding page " + name);
 
-        IPageRecorder recorder = _engine.getPageRecorder(name);
+        IPageRecorder recorder = _engine.getPageRecorder(name, this);
 
         if (recorder == null)
         {
-
             _page = getPage(name);
 
             recorder = createPageRecorder(name);

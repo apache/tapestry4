@@ -53,7 +53,7 @@ public class InspectorButton extends BaseComponent implements IDirect
         
         Inspector inspector = (Inspector) cycle.getPage(name);
 
-        inspector.inspect(getPage().getName(), cycle);
+        inspector.inspect(getPage().getPageName(), cycle);
     }
 
     /**

@@ -37,7 +37,7 @@ public class ResetService extends AbstractService
             throw new IllegalArgumentException(Tapestry.getString("service-no-parameters", RESET_SERVICE));
 
         String[] context = new String[1];
-        context[0] = component.getPage().getName();
+        context[0] = component.getPage().getPageName();
 
         return assembleGesture(cycle, RESET_SERVICE, context, null, true);
     }

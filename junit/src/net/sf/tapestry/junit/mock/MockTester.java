@@ -243,6 +243,11 @@ public class MockTester
             setRequestParameter(parameter);
         }
 
+        String failover = request.getAttributeValue("failover");
+        
+        if (failover != null && failover.equals("true"))
+            _request.simulateFailover();
+
         // TBD: Headers, etc., etc.
     }
 

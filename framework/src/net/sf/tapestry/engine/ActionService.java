@@ -62,7 +62,7 @@ public class ActionService extends AbstractService
         int i = 0;
 
         serviceContext[i++] = stateful;
-        serviceContext[i++] = responsePage.getName();
+        serviceContext[i++] = responsePage.getPageName();
         serviceContext[i++] = (String) parameters[0];
 
         // Because of Block/InsertBlock, the component may not be on
@@ -70,7 +70,7 @@ public class ActionService extends AbstractService
         // allowances for this.
 
         if (complex)
-            serviceContext[i++] = componentPage.getName();
+            serviceContext[i++] = componentPage.getPageName();
 
         serviceContext[i++] = component.getIdPath();
 

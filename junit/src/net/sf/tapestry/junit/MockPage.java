@@ -300,4 +300,13 @@ public class MockPage implements IPage
         return null;
     }
 
+    public String getPageName()
+    {
+        return null;
+    }
+
+    public void setPageName(String pageName)
+    {
+    }
+
 }

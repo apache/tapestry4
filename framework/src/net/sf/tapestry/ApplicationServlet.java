@@ -16,7 +16,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import net.sf.tapestry.engine.SimpleEngine;
+import net.sf.tapestry.engine.BaseEngine;
 import net.sf.tapestry.parse.SpecificationParser;
 import net.sf.tapestry.resource.ClasspathResourceLocation;
 import net.sf.tapestry.resource.ContextResourceLocation;
@@ -666,7 +666,7 @@ public class ApplicationServlet extends HttpServlet
      *  occurs (see {@link #searchConfiguration(String)}).
      * 
      *  <p>If the search is still unsuccessful, then
-     *  {@link net.sf.tapestry.engine.SimpleEngine} is used.
+     *  {@link net.sf.tapestry.engine.BaseEngine} is used.
      * 
      **/
 
@@ -681,7 +681,7 @@ public class ApplicationServlet extends HttpServlet
             _engineClassName = searchConfiguration("net.sf.tapestry.engine-class");
 
         if (_engineClassName == null)
-            _engineClassName = SimpleEngine.class.getName();
+            _engineClassName = BaseEngine.class.getName();
 
         return _engineClassName;
     }

@@ -273,10 +273,12 @@ from the engine (prior to be stored back into the page pool).  This event is gen
 </para>
 
 <para>
-The Java interface &PageDetachListener; is the event listener interface for this purpose.  Implementing
-the interface is only part of the job, registering with the page is also necessary, and there
-are timing issues.  The registration can't take place in the constructor, because
-a freshly instantiated component doesn't yet have its <varname>page</varname> property set.
+The Java interface &PageDetachListener; is the event listener interface for this purpose.  
+By simply implementing this interface
+, Tapestry will register the component as a listener and ensure that
+it receives even notifications at the right time (this works for the two other
+page event interfaces, &PageRenderListener; and &PageCleanupListener; as well; simply
+implement the interface and leave the rest to the framework).
 </para>
 
 <para>
@@ -310,9 +312,12 @@ public class MyComponent extends &BaseComponent; implements &PageDetachListener;
     protected void finishLoad()
     {
         initialize();
-        
-        getPage().addPageDetachListener(this);
     }
+    
+    /**
+     *  The method specified by &PageDetachListener;
+     *
+     **/
     
     public void pageDetached(PageEvent event)
     {
@@ -322,16 +327,6 @@ public class MyComponent extends &BaseComponent; implements &PageDetachListener;
 </programlisting>
 </example>
 	
-<note>
-<title>Coming in 2.4</title>
-<para>
-Along with support for <link linkend="state.page-properties.declarative">declarative properties</link>,
-2.4 <emphasis>may</emphasis> simplify registerring.  Components that implement the key page
-listener interfaces (&PageDetachListener;, &PageRenderListener; or &PageCleanupListener;) will
-be automatically registerred with the page.
-</para>
-</note>
-
 </section> <!-- state.component-properties -->
 
 <section id="state.stateless">

@@ -94,13 +94,14 @@ public interface IEngine
     public void setLocale(Locale value);
 
     /**
-     *  Returns a recorder for a page.  Returns null if the page record has
+     *  Returns a recorder for a page.  Returns null if the page recorder has
      *  not been created yet.
      *
      *  @see #createPageRecorder(String, IRequestCycle)
+     * 
      **/
 
-    public IPageRecorder getPageRecorder(String pageName);
+    public IPageRecorder getPageRecorder(String pageName, IRequestCycle cycle);
 
     /**
      *  Creates a new page recorder for the named page.

@@ -40,7 +40,7 @@ public class ChartService extends AbstractService
     public Gesture buildGesture(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
         String[] context;
-        String pageName = component.getPage().getName();
+        String pageName = component.getPage().getPageName();
         String idPath = component.getIdPath();
 
         if (idPath != null)
