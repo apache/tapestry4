@@ -161,6 +161,7 @@ public class TemplateParser
      **/
 
     public static final String LOCALIZATION_KEY_PREFIX = "string:";
+    
     /**
      *  A "magic" component id that causes the tag with the id and its entire
      *  body to be ignored during parsing.

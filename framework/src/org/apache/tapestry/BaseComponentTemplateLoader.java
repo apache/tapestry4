@@ -60,8 +60,14 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.binding.ExpressionBinding;
-import org.apache.tapestry.engine.*;
+import org.apache.tapestry.binding.StringBinding;
+import org.apache.tapestry.engine.IPageLoader;
+import org.apache.tapestry.engine.IPageSource;
 import org.apache.tapestry.parse.AttributeType;
 import org.apache.tapestry.parse.CloseToken;
 import org.apache.tapestry.parse.ComponentTemplate;
@@ -72,10 +78,6 @@ import org.apache.tapestry.parse.TemplateToken;
 import org.apache.tapestry.parse.TextToken;
 import org.apache.tapestry.parse.TokenType;
 import org.apache.tapestry.spec.ComponentSpecification;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  *  Utility class instantiated by {@link org.apache.tapestry.BaseComponent} to
@@ -395,10 +397,14 @@ public class BaseComponentTemplateLoader
                 continue;
             }
 
-            if (type != AttributeType.LITERAL)
-                throw new PageLoaderException("Unexpected " + type);
+            if (type == AttributeType.LOCALIZATION_KEY)
+            {
+                addStringBinding(component, spec, name, attribute.getValue());
+                continue;
+            }
 
-            addStaticBinding(component, spec, name, attribute.getValue());
+            if (type == AttributeType.LITERAL)
+                addStaticBinding(component, spec, name, attribute.getValue());
         }
     }
 
@@ -463,6 +469,70 @@ public class BaseComponentTemplateLoader
 
         IBinding binding =
             new ExpressionBinding(_pageSource.getResourceResolver(), _loadComponent, expression);
+
+        component.setBinding(name, binding);
+    }
+
+    /**
+      *  Adds an expression binding, checking for errors related
+      *  to reserved and informal parameters.
+      *
+      *  <p>It is an error to specify expression 
+      *  bindings in both the specification
+      *  and the template.
+      * 
+      *  @since 2.4
+      **/
+
+    private void addStringBinding(
+        IComponent component,
+        ComponentSpecification spec,
+        String name,
+        String localizationKey)
+        throws PageLoaderException
+    {
+
+        // If matches a formal parameter name, allow it to be set
+        // unless there's already a binding.
+
+        boolean isFormal = (spec.getParameter(name) != null);
+
+        if (isFormal)
+        {
+            if (component.getBinding(name) != null)
+                throw new PageLoaderException(
+                    Tapestry.getString(
+                        "BaseComponent.dupe-string",
+                        name,
+                        component.getExtendedId(),
+                        _loadComponent.getExtendedId()),
+                    component);
+        }
+        else
+        {
+            if (!spec.getAllowInformalParameters())
+                throw new PageLoaderException(
+                    Tapestry.getString(
+                        "BaseComponent.template-expression-for-informal-parameter",
+                        name,
+                        component.getExtendedId(),
+                        _loadComponent.getExtendedId()),
+                    component);
+
+            // If the name is reserved (matches a formal parameter
+            // or reserved name, caselessly), then skip it.
+
+            if (spec.isReservedParameterName(name))
+                throw new PageLoaderException(
+                    Tapestry.getString(
+                        "BaseComponent.template-expression-for-reserved-parameter",
+                        name,
+                        component.getExtendedId(),
+                        _loadComponent.getExtendedId()),
+                    component);
+        }
+
+        IBinding binding = new StringBinding(_loadComponent, localizationKey);
 
         component.setBinding(name, binding);
     }

@@ -29,8 +29,8 @@
 	 </tr>
 	 <tr>
 	  <td>
-		 <A href="../api/net/sf/tapestry/form/Submit.html">
-		 net.sf.tapestry.form.Submit</A>
+		 <A href="../api/org/apache/tapestry/form/Submit.html">
+		 org.apache.tapestry.form.Submit</A>
 		</td>
 	 </tr>
   </table>
@@ -158,7 +158,7 @@
    <tr>
  		<td>listener</td>
  		<td>
-     <A href="../api/net/sf/tapestry/IActionListener.html"><tt>IActionListener</tt></A>
+     <A href="../api/org/apache/tapestry/IActionListener.html"><tt>IActionListener</tt></A>
     </td>
  		<td>in</td>
  		<td>no</td>
@@ -184,10 +184,10 @@
   <b>Examples</b>
 	<p>
 	In this login form the <b>loginSubmit</b> and <b>helpSubmit</b> components use
-  <A href="../api/net/sf/tapestry/IActionListener.html">listener</A>s
+  <A href="../api/org/apache/tapestry/IActionListener.html">listener</A>s
   to invoke their actions. Also note how the helpSubmitAction() method
   redirects to another page using a   
-  <A href="../api/net/sf/tapestry/PageRedirectException.html"><tt>PageRedirectException</tt></A>
+  <A href="../api/org/apache/tapestry/PageRedirectException.html"><tt>PageRedirectException</tt></A>
   .
 	<p>
 
@@ -289,7 +289,7 @@ public class LoginPage extends BasePage {
  <td colspan="2">
  In the following example the Submit component uses the <b>selected</b> and 
  <b>tag</b> parameters to identify the event source in the Form's 
- <A href="../api/net/sf/tapestry/IActionListener.html">listener</A> method.
+ <A href="../api/org/apache/tapestry/IActionListener.html">listener</A> method.
  For more information about this example please see 
  <A href="PropertySelection.html">PropertySelection</a>. 
  <p>
@@ -439,7 +439,7 @@ public class Item implements Serializable {
     public int getPrice() { return price;  }   
 }
 
-public class ItemSelectionModel implements <A href="../api/net/sf/tapestry/form/IPropertySelectionModel.html">IPropertySelectionModel</a>, Serializable {
+public class ItemSelectionModel implements <A href="../api/org/apache/tapestry/form/IPropertySelectionModel.html">IPropertySelectionModel</a>, Serializable {
     private List itemList;
 
     public ItemPropertySelectionModel(List itemList) { 

@@ -11,10 +11,7 @@
     <classpathentry kind="lib" path="lib/ext/jakarta-oro-2.0.6.jar"/>
     <classpathentry kind="lib" path="lib/ext/commons-logging-1.0.2.jar"/>
     <classpathentry kind="var" path="JBOSS_DIR/client/jboss-j2ee.jar"/>
-    <classpathentry kind="var" path="JBOSS_DIR/lib/jboss-jmx.jar"/>
     <classpathentry kind="var" path="JBOSS_DIR/server/all/lib/mail.jar"/>
-    <classpathentry kind="var" path="JBOSS_DIR/lib/jboss-system.jar"/>
-    <classpathentry kind="var" path="JBOSS_DIR/lib/jboss-common.jar"/>
     <classpathentry kind="lib" path="lib/ext/commons-lang-1.0.jar"/>
     <classpathentry kind="lib" path="lib/ext/ognl-2.3.0-opt.jar"/>
     <classpathentry kind="lib" path="lib/ext/bsf-2.3.0.jar"/>
@@ -22,10 +19,9 @@
     <classpathentry kind="var" path="JETTY_DIR/lib/javax.servlet.jar"/>
     <classpathentry kind="var" path="JETTY_DIR/ext/javax.xml.jaxp.jar"/>
     <classpathentry kind="var" path="JETTY_DIR/ext/crimson.jar"/>
-    <classpathentry kind="var" path="TAPESTRY_EXT_DIR/jcommon-0.6.4.jar"/>
-    <classpathentry kind="var" path="TAPESTRY_EXT_DIR/jfreechart-0.9.2.jar"/>
-    <classpathentry kind="var" path="TAPESTRY_EXT_DIR/mckoidb-0.94h.jar"/>
-    <classpathentry kind="var" path="TAPESTRY_EXT_DIR/jdom-b8.jar"/>
-    <classpathentry kind="var" path="TAPESTRY_EXT_DIR/junit.jar"/>
+    <classpathentry kind="lib" path="ext-dist/jcommon-0.6.4.jar"/>
+    <classpathentry kind="lib" path="ext-dist/jdom-b8.jar"/>
+    <classpathentry kind="lib" path="ext-dist/jfreechart-0.9.2.jar"/>
+    <classpathentry kind="lib" path="ext-dist/junit.jar"/>
     <classpathentry kind="output" path="bin"/>
 </classpath>

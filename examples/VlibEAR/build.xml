@@ -10,7 +10,7 @@
   
   <target name="install">
   
-  	<jar jarfile="${vlib.ear}">
+  	<jar jarfile="${lib.dir}/${vlib.ear}">
   	  <fileset dir=".">
   	    <include name="META-INF/*"/>
   	  </fileset>

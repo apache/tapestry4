@@ -8,7 +8,7 @@
 
   <bean name="delegate" class="org.apache.tapestry.workbench.WorkbenchValidationDelegate"/>
 
-  <bean name="intValidator" class="net.sf.tapestry.valid.NumberValidator">
+  <bean name="intValidator" class="org.apache.tapestry.valid.NumberValidator">
   	<set-property name="required" expression="true"/>
   	<set-property name="minimum" expression="0"/>
   </bean>
@@ -31,7 +31,7 @@
   <component id="inputName" type="ValidField">
   	<static-binding name="displayName" value="Name"/>
   	<binding name="value" expression="plotValue.name"/>
-  	<binding name="validator" expression="@net.sf.tapestry.valid.StringValidator@REQUIRED"/>
+  	<binding name="validator" expression="@org.apache.tapestry.valid.StringValidator@REQUIRED"/>
   </component>
 
   <component id="inputValue" type="ValidField">	

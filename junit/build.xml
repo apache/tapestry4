@@ -17,28 +17,27 @@
   <property name="clover.report.dir" value="../web/doc/clover"/>
   
   <property name="local.lib.dir" value="lib"/>
-  
-  <property name="jdom.jar" value="jdom-b8.jar"/>
    
-  <path id="compile-tests.class.path">
-    <pathelement location="${framework.jar}"/>
-    <path refid="base.class.path"/>
+  <path id="compile-tests.classpath">
+    <pathelement location="${lib.dir}/${framework.jar}"/>
+    <path refid="base.classpath"/>
   </path>
   
-  <path id="base.class.path">
-	<pathelement location="${contrib.jar}"/>
-    <pathelement location="${lib.ext.dir}/javax.servlet.jar"/>
-    <pathelement location="${lib.ext.dir}/${commons-logging.jar}"/>
-	<pathelement location="${lib.ext.dir}/${commons-lang.jar}"/>    
-    <pathelement location="${lib.ext.dir}/javax.xml.jaxp.jar"/>
-    <pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
-    <pathelement location="${lib.ext.dir}/junit.jar"/>
-    <pathelement location="${lib.ext.dir}/${jakarta-oro.jar}"/> 
-    <pathelement location="${lib.ext.dir}/${ognl.jar}"/>
-    <pathelement location="${lib.ext.dir}/${bsf.jar}"/>	
-    <pathelement location="${lib.ext.dir}/${bcel.jar}"/>  
+  <path id="base.classpath">
+  	<fileset dir="${lib.dir}">
+  		<include name="${contrib.jar}"/>	
+  		<include name="${ext.dir}/*.jar"/>
+  		<include name="${runtime.dir}/*.jar"/>
+  	</fileset>
+  	<fileset dir="${ext.dist.dir}">
+  		<include name="*.jar"/>
+  	</fileset>
     <pathelement location="${jython.dir}/jython.jar"/>
-    <pathelement location="${local.lib.dir}/${jdom.jar}"/> 
+     
+    <fileset dir="${jetty.dir}">
+    	<include name="**/javax.*.jar"/>
+    	<include name="ext/crimson.jar"/>
+    </fileset>
   </path>
 
   <target name="init">
@@ -54,25 +53,24 @@
 
   <target name="compile" depends="init" description="Compile all test classes.">
     <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="on" target="1.1">
-      <classpath refid="compile-tests.class.path"/>
+      <classpath refid="compile-tests.classpath"/>
     </javac>
   </target>
 
-  <path id="junit.class.path">
+  <path id="junit.classpath">
     <path location="${classes.dir}"/>
   	 <!-- Add the src directory back in, since package resources needed by
   	      the tests are there.  Also, ensure that the local copy 
   	      of junit/running/excluded.properties overrides the default
   	      copy in junit.jar -->
   	 <path location="${src.dir}"/>
-  	 <path refid="compile-tests.class.path"/>
-  	 <path location="${lib.ext.dir}/${log4j.jar}"/>
+  	 <path refid="compile-tests.classpath"/>
   </path>
   	  
   <target name="run" depends="compile" description="Run the test suite.">
   	<java fork="true" classname="junit.textui.TestRunner"
 		failonerror="true">
-  		<classpath refid="junit.class.path"/>
+  		<classpath refid="junit.classpath"/>
 		<arg value="org.apache.tapestry.junit.TapestrySuite"/>
 		<sysproperty key="org.apache.tapestry.enable-reset-service" value="true"/>
   	</java>
@@ -80,7 +78,7 @@
   
   <target name="gui" depends="compile" description="Run the JUnit GUI.">
   	<java fork="true" classname="junit.swingui.TestRunner">
-  		<classpath refid="junit.class.path"/>
+  		<classpath refid="junit.classpath"/>
 		<arg value="org.apache.tapestry.junit.TapestrySuite"/>
 		<sysproperty key="org.apache.tapestry.enable-reset-service" value="true"/>
   	</java>
@@ -88,10 +86,10 @@
   </target>
   
 
-  <path id="clover.class.path">
+  <path id="clover.classpath">
     <pathelement location="${clover-classes.dir}"/>
     <pathelement location="${clover.dir}/lib/clover.jar"/>
-    <path refid="junit.class.path"/>
+    <path refid="junit.classpath"/>
   </path>
     
   <target name="clover" depends="compile" description="Run tests and construct Clover report.">
@@ -102,7 +100,7 @@
   		value="org.apache.tools.ant.taskdefs.CloverCompilerAdapter"/>
   		
     <javac srcdir="${framework.src.dir}" destdir="${clover-classes.dir}" debug="on" target="1.1">
-      <classpath refid="base.class.path"/>
+      <classpath refid="base.classpath"/>
     </javac>
     
     
@@ -110,7 +108,7 @@
     
   	<java fork="true" classname="junit.textui.TestRunner"
 		failonerror="true">
-  		<classpath refid="clover.class.path"/>
+  		<classpath refid="clover.classpath"/>
 		<arg value="org.apache.tapestry.junit.TapestrySuite"/>
 		<sysproperty key="org.apache.tapestry.enable-reset-service" value="true"/>
   	</java>
@@ -120,7 +118,7 @@
     
   	<java fork="true" classname="junit.textui.TestRunner"
 		failonerror="true">
-  		<classpath refid="clover.class.path"/>
+  		<classpath refid="clover.classpath"/>
 		<arg value="org.apache.tapestry.junit.TapestrySuite"/>
 		<sysproperty key="log4j.configuration" value="log4j-slow.properties"/> 
 		<sysproperty key="org.apache.tapestry.enable-reset-service" value="true"/>

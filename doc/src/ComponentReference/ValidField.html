@@ -27,8 +27,8 @@
 	 </tr>
 	 <tr>
 	  <td>
-		 <A href="../api/net/sf/tapestry/valid/ValidField.html">
-		 net.sf.tapestry.valid.ValidField</a>
+		 <A href="../api/org/apache/tapestry/valid/ValidField.html">
+		 org.apache.tapestry.valid.ValidField</a>
 		</td>
 	 </tr>
   </table>
@@ -56,11 +56,11 @@
   and must be wrapped by a <a href="Form.html">Form</a> component.   
   <p>
   Each ValidField is configured with a 
-  <A href="../api/net/sf/tapestry/valid/IValidator.html">validator</a> which 
+  <A href="../api/org/apache/tapestry/valid/IValidator.html">validator</a> which 
   checks the correctness of the user's input and performs the input text to 
   java Object translations. The <a href="Form.html">Form</a> tracks the state of 
   all its ValidFields using a validation  
-  <a href="../api/net/sf/tapestry/valid/ValidationDelegate.html">delegate</a>.
+  <a href="../api/org/apache/tapestry/valid/ValidationDelegate.html">delegate</a>.
   Using the validation delegate you can determine whether all the form's fields
   are valid and inform the user of any validation errors. 
   <p>
@@ -68,31 +68,31 @@
   including: 
   <ul>
    <li>
-    <A href="../api/net/sf/tapestry/valid/DateValidator.html">DateValidator</a>
+    <A href="../api/org/apache/tapestry/valid/DateValidator.html">DateValidator</a>
     - validates date strings and allows a minimum and maximum date range to be set 
    </li>
    <li>
-    <A href="../api/net/sf/tapestry/valid/EmailValidator.html">EmailValidator</a>
+    <A href="../api/org/apache/tapestry/valid/EmailValidator.html">EmailValidator</a>
     - validates email strings and allows a minimum and maximum length to be set 
    </li>
    <li>
-    <A href="../api/net/sf/tapestry/valid/NumberValidator.html">NumberValidator</a> 
+    <A href="../api/org/apache/tapestry/valid/NumberValidator.html">NumberValidator</a> 
     - validates number strings and allows a minimum and maximum values to be set
    </li>
    <li>
-    <A href="../api/net/sf/tapestry/valid/StringValidator.html">StringValidator</a> 
+    <A href="../api/org/apache/tapestry/valid/StringValidator.html">StringValidator</a> 
     - validates string values and allows a minimum length to be set 
    </li>
   </ul>
   The ValidField's 
-  <A href="../api/net/sf/tapestry/valid/BaseValidator.html">BaseValidator</a> 
+  <A href="../api/org/apache/tapestry/valid/BaseValidator.html">BaseValidator</a> 
   classes automatically provide powerful client-side JavaScript field validation 
   when their parent <a href="Form.html">Form</a> is posted.
   Validator client scripting is disabled by default. To enable the client 
   scripting explicitly set the "clientScriptingEnabled" property to true in 
   each validator. For example:
 <pre>
-&lt;bean name="emailValidator" class="net.sf.tapestry.valid.EmailValidator"&gt;
+&lt;bean name="emailValidator" class="org.apache.tapestry.valid.EmailValidator"&gt;
     &lt;set-property name="<b>clientScriptingEnabled</b>" expression="true"/&gt;
     &lt;set-property name="minimumLength" expression="8"/&gt;
     &lt;set-property name="required" expression="true"/&gt;
@@ -143,14 +143,14 @@
 	 <td>
    The value to be displayed (on render), and updated (when the form is
    submitted, if the submitted value is valid). The
-   <a href="../api/net/sf/tapestry/valid/IValidator.html"><tt>IValidator</tt></a>
+   <a href="../api/org/apache/tapestry/valid/IValidator.html"><tt>IValidator</tt></a>
    converts between object values and Strings.
    </td>
 	</tr>
   <tr>
    <td>validator</td>
    <td>
-    <A href="../api/net/sf/tapestry/valid/IValidator.html"><tt>IValidator</tt></a>
+    <A href="../api/org/apache/tapestry/valid/IValidator.html"><tt>IValidator</tt></a>
    </td>
    <td>in</td>
    <td>yes</td>
@@ -246,7 +246,7 @@
   <p>
   The ValidField is used in this example to provide an auction bidding page. A
   custom
-  <a href="../api/net/sf/tapestry/valid/ValidationDelegate.html"><tt>ValidationDelegate</tt></a>
+  <a href="../api/org/apache/tapestry/valid/ValidationDelegate.html"><tt>ValidationDelegate</tt></a>
   is used to render the invalid fiels as yellow. A custom ShowError component 
   is also used to display the first error message if any fields have errors. 
 	<p>
@@ -331,31 +331,31 @@
 
 &lt;bean name="delegate" class="com.mycorp.FormValidationDelegate"/&gt;
 
-&lt;bean name="lotNoValidator" class="<A href="../api/net/sf/tapestry/valid/NumberValidator.html">net.sf.tapestry.valid.NumberValidator</a>"&gt;
+&lt;bean name="lotNoValidator" class="<A href="../api/org/apache/tapestry/valid/NumberValidator.html">org.apache.tapestry.valid.NumberValidator</a>"&gt;
     &lt;set-property name="required" expression="true"/&gt;
     &lt;set-property name="minimum" expression="1"/&gt;
     &lt;set-property name="maximum" expression="auctionDetails.numberLots"/&gt;
     &lt;set-property name="valueType"&gt;"int"&lt;/set-property&gt;
 &lt;/bean&gt;
 
-&lt;bean name="bidAmountValidator" class="<A href="../api/net/sf/tapestry/valid/NumberValidator.html">net.sf.tapestry.valid.NumberValidator</a>"&gt;
+&lt;bean name="bidAmountValidator" class="<A href="../api/org/apache/tapestry/valid/NumberValidator.html">org.apache.tapestry.valid.NumberValidator</a>"&gt;
     &lt;set-property name="required" expression="true"/&gt;
     &lt;set-property name="minimum" expression="auctionDetails.minBid"/&gt;
     &lt;set-property name="maximum" expression="auctionDetails.maxBid"/&gt;
     &lt;set-property name="valueType"&gt;"float"&lt;/set-property&gt;    
 &lt;/bean&gt;
 
-&lt;bean name="fullNameValidator" class="<A href="../api/net/sf/tapestry/valid/StringValidator.html">net.sf.tapestry.valid.StringValidator</a>"&gt;
+&lt;bean name="fullNameValidator" class="<A href="../api/org/apache/tapestry/valid/StringValidator.html">org.apache.tapestry.valid.StringValidator</a>"&gt;
     &lt;set-property name="required" expression="true"/&gt;
     &lt;set-property name="minimum" expression="3"/&gt;
 &lt;/bean&gt;
 
-&lt;bean name="emailValidator" class="<A href="../api/net/sf/tapestry/valid/StringValidator.html">net.sf.tapestry.valid.StringValidator</a>"&gt;
+&lt;bean name="emailValidator" class="<A href="../api/org/apache/tapestry/valid/StringValidator.html">org.apache.tapestry.valid.StringValidator</a>"&gt;
     &lt;set-property name="required" expression="true"/&gt;
     &lt;set-property name="minimum" expression="12"/&gt;
 &lt;/bean&gt;
 
-&lt;bean name="telephoneValidator" class="<A href="../api/net/sf/tapestry/valid/StringValidator.html">net.sf.tapestry.valid.StringValidator</a>"&gt;
+&lt;bean name="telephoneValidator" class="<A href="../api/org/apache/tapestry/valid/StringValidator.html">org.apache.tapestry.valid.StringValidator</a>"&gt;
     &lt;set-property name="required" expression="true"/&gt;
     &lt;set-property name="minimum" expression="11"/&gt;
 &lt;/bean&gt;

@@ -17,7 +17,7 @@
 			<include name="${ext.dir}/*.jar"/>
 		</fileset>
 		<path refid="jetty.classpath"/>
-		<fileset dir="${tapestry.ext.dir}">
+		<fileset dir="${ext.dist.dir}">
 			<include name="*.jar"/>
 		</fileset>
 		<pathelement location="${jboss.client.dir}/jboss-client.jar"/>
@@ -75,8 +75,8 @@
 				line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20150"
 				/>
 			<sysproperty key="java.compiler" value="NONE"/>
-			<sysproperty key="net.sf.tapestry.disable-caching" value="true"/>
-			<sysproperty key="net.sf.tapestry.enable-reset-service" value="true"
+			<sysproperty key="org.apache.tapestry.disable-caching" value="true"/>
+			<sysproperty key="org.apache.tapestry.enable-reset-service" value="true"
 				/>
 			<sysproperty key="org.mortbay.util.FileResource.checkAliases"
 				value="false"/>

@@ -4,7 +4,7 @@
   "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
   
-<page-specification class="net.sf.tapestry.vlib.pages.admin.EditUsers">
+<page-specification class="org.apache.tapestry.vlib.pages.admin.EditUsers">
 
   <property name="page-type">admin</property>
   

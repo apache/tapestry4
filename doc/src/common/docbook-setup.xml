@@ -10,10 +10,11 @@ Very important to keep this synchronized with .cvsignore to prevent
 problems using Team support inside the Eclipse IDE.
 
 -->
+<property name="root.dir" value="../../.."/>
 
-<property file="../../../config/build.properties"/>
+<property file="${root.dir}/config/build.properties"/>
 
-<property name="html.install.dir" value="../../../web/doc/${root.filename}"/>
+<property name="html.install.dir" value="${root.dir}/web/doc/${root.filename}"/>
 
 <!-- The base name for the DTD distribution (the directory and tar file
      will match). -->
@@ -67,12 +68,12 @@ problems using Team support inside the Eclipse IDE.
 
 <target name="docbook-unpack-dtd" unless="docbook.dtd.available">
 	<echo>Unpacking DocBook DTD distribution ...</echo>
-	<unzip src="../common/dist/${docbook.dtd.base}.zip" dest="../common"/>
+	<unzip src="${root.dir}/ext-dist/${docbook.dtd.base}.zip" dest="../common"/>
 </target>
   	
 <target name="docbook-unpack-xsl" unless="docbook.xsl.available">
 	<echo>Unpacking DocBook XSL distribution ...</echo>
-	<unzip src="../common/dist/${docbook.xsl.base}.zip" dest="../common"/>
+	<unzip src="${root.dir}/ext-dist/${docbook.xsl.base}.zip" dest="../common"/>
 	
 </target>
 

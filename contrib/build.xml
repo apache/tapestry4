@@ -15,14 +15,11 @@
 			<include name="${framework.jar}"/>
 			<include name="${ext.dir}/*.jar"/>
 		</fileset>
-		<fileset dir="${tapestry.ext.dir}">
+		<fileset dir="${ext.dist.dir}">
 			<include name="mckoi*jar"/>
 		</fileset>
-		<pathelement location="${jboss.client.dir}/jboss-client.jar"/>
+	
 		<pathelement location="${jboss.client.dir}/jboss-j2ee.jar"/>
-		<pathelement location="${jboss.lib.dir}/jboss-jmx.jar"/>
-		<pathelement location="${jboss.lib.dir}/jboss-system.jar"/>
-		<pathelement location="${jboss.lib.dir}/jboss-common.jar"/>
 	</path>
 	<target name="init">
 		<mkdir dir="${classes.dir}"/>

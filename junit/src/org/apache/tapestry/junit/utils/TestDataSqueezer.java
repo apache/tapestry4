@@ -405,7 +405,7 @@ public class TestDataSqueezer extends TestCase
     {
 
         File cd = new File(System.getProperty("user.dir"));
-        File dir = new File(cd.getParentFile(), "examples/Tutorial/classes");
+        File dir = new File(cd.getParentFile(), "examples/Workbench/classes");
 
         if (!dir.exists())
         {
@@ -417,7 +417,7 @@ public class TestDataSqueezer extends TestCase
 
         URLClassLoader classLoader = new URLClassLoader(new URL[] { tutorialClassesURL });
 
-        Class visitClass = classLoader.loadClass("tutorial.workbench.Visit");
+        Class visitClass = classLoader.loadClass("org.apache.tapestry.workbench.Visit");
 
         Object visit = visitClass.newInstance();
 

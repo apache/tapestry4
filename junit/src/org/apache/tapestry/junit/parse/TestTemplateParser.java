@@ -646,4 +646,29 @@ public class TestTemplateParser extends TestCase
 
     }
 
+    /**
+     *  Test ability to read string attributes.
+     * 
+     **/
+
+    public void testStringAttributes() throws TemplateParseException
+    {
+        TemplateToken[] tokens = run("StringAttributes.html");
+
+        assertTokenCount(tokens, 4);
+
+        assertOpenToken(tokens[1], "$Image", "Image", "img");
+
+        assertTemplateAttributes(
+            tokens[1],
+            AttributeType.OGNL_EXPRESSION,
+            buildMap(new String[] { "image", "assets.logo" }));
+
+        assertTemplateAttributes(
+            tokens[1],
+            AttributeType.LOCALIZATION_KEY,
+            buildMap(new String[] { "alt", "logo-title" }));
+
+    }
+
 }

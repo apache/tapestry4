@@ -28,8 +28,8 @@
 	 </tr>
 	 <tr>
 	  <td>
-		 <A href="../api/net/sf/tapestry/link/DirectLink.html">
-		 net.sf.tapestry.link.DirectLink</A>
+		 <A href="../api/org/apache/tapestry/link/DirectLink.html">
+		 org.apache.tapestry.link.DirectLink</A>
 		</td>
 	 </tr>
   </table>
@@ -92,7 +92,7 @@
   <tr>
     <td>listener</td>
     <td>
-     <A href="../api/net/sf/tapestry/IActionListener.html"><tt>IActionListener</tt></A>
+     <A href="../api/org/apache/tapestry/IActionListener.html"><tt>IActionListener</tt></A>
     </td>
     <td>in</td>
    	<td>yes</td>
@@ -120,13 +120,13 @@
     or Integers.
     <p>
     A listener method can retrieve the parameters using 
-    <A href="/api/net/sf/tapestry/IRequestCycle.html#getServiceParameters()">
+    <A href="/api/org/apache/tapestry/IRequestCycle.html#getServiceParameters()">
     <tt>IRequestCycle.getServiceParameters()</tt></A>. 
     <p>
     Prior to release 2.2, the parameters were always type String. They may now 
     be of any type; type will be maintained when the parameters are later 
     retrieved by a listener. See 
-    <A href="../api/net/sf/tapestry/util/io/DataSqueezer.html"><tt>DataSqueezer</tt></A> for more details.</p> 
+    <A href="../api/org/apache/tapestry/util/io/DataSqueezer.html"><tt>DataSqueezer</tt></A> for more details.</p> 
        
     </td>
 	</tr>
@@ -149,7 +149,7 @@
 		<td>
     If true (the default), then the component requires an active (i.e., non-new) 
     <tt>HttpSession</tt> when triggered. Failing that, it throws a 
-    <A href="../api/net/sf/tapestry/StaleLinkException"><tt>StaleLinkException</tt></A>. 
+    <A href="../api/org/apache/tapestry/StaleLinkException"><tt>StaleLinkException</tt></A>. 
     If false, then no check is necessary. The 
     latter works well with links that encode all necessary state inside the URL 
     itself.
@@ -169,7 +169,7 @@
 	</tr>
 	<tr>
 		<td>renderer</td>
-		<td><a href="../api/net/sf/tapestry/link/ILinkRenderer.html">ILinkRenderer</a></td>
+		<td><a href="../api/org/apache/tapestry/link/ILinkRenderer.html">ILinkRenderer</a></td>
 		<td>in</td>
 		<td>no</td>
 		<td>&nbsp;</td>

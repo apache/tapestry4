@@ -28,8 +28,8 @@
 	 </tr>
 	 <tr>
 	  <td>
-		 <A href="../api/net/sf/tapestry/html/Image.html">
-		 net.sf.tapestry.html.Image</a>
+		 <A href="../api/org/apache/tapestry/html/Image.html">
+		 org.apache.tapestry.html.Image</a>
 		</td>
 	 </tr>
   </table>
@@ -80,7 +80,7 @@
    </tr>
    <tr>
     <td>image</td>
-    <td><A href="../api/net/sf/tapestry/IAsset.html"><tt>IAsset</tt></a></td>
+    <td><A href="../api/org/apache/tapestry/IAsset.html"><tt>IAsset</tt></a></td>
     <td>in</td>
    	<td>yes</td>
 		<td>&nbsp;</td>
@@ -150,7 +150,7 @@ Inserts the static context path based image. This example uses a
   
 	<p>
 Inserts the dynamic image obtained from the page's <tt>NewsItem</tt> property. 
-This example uses the <A href="../api/net/sf/tapestry/asset/ExternalAsset.html">
+This example uses the <A href="../api/org/apache/tapestry/asset/ExternalAsset.html">
 <tt>ExternalAsset</tt></a> to reference the image's URL. 
 	<p>
 
@@ -244,7 +244,7 @@ public class NewsItem implements Serializable {
 
     public String getDate() { return date; }
 
-    public IAsset getImageAsset() { return new <A href="../api/net/sf/tapestry/asset/ExternalAsset.html"><tt>ExternalAsset</tt></a>(imageURL); }    
+    public IAsset getImageAsset() { return new <A href="../api/org/apache/tapestry/asset/ExternalAsset.html"><tt>ExternalAsset</tt></a>(imageURL); }    
 }
 </pre>
 

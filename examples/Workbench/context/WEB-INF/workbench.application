@@ -5,13 +5,13 @@
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
 	
 <application name="Tapestry Component Workbench">
-  <property name="net.sf.tapestry.visit-class" value="org.apache.tapestry.workbench.Visit"/>
+  <property name="org.apache.tapestry.visit-class" value="org.apache.tapestry.workbench.Visit"/>
   
-  <extension name="net.sf.tapestry.request-decoder" class="org.apache.tapestry.workbench.RequestDecoder"/>
+  <extension name="org.apache.tapestry.request-decoder" class="org.apache.tapestry.workbench.RequestDecoder"/>
   
   <service name="home" class="org.apache.tapestry.workbench.WorkbenchHomeService"/>
   <service name="chart" class="org.apache.tapestry.workbench.chart.ChartService"/>
          
-  <library id="contrib" specification-path="/net/sf/tapestry/contrib/Contrib.library"/>
+  <library id="contrib" specification-path="/org/apache/tapestry/contrib/Contrib.library"/>
   
 </application>

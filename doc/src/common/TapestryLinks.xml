@@ -21,7 +21,7 @@
 
 <!-- Common Tapestry classes -->
 
-<!ENTITY ApiRoot "../api/net/sf/tapestry">
+<!ENTITY ApiRoot "../api/org/apache/tapestry">
 
 <!ENTITY AbstractComponent '<ulink url="&ApiRoot;/AbstractComponent.html"><classname>AbstractComponent</classname></ulink>'>
 <!ENTITY AbstractEngine '<ulink url="&ApiRoot;/engine/AbstractEngine.html"><classname>AbstractEngine</classname></ulink>'>
