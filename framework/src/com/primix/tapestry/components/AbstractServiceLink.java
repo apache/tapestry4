@@ -65,6 +65,8 @@ public abstract class AbstractServiceLink
 
 	private static final int MAP_SIZE = 11;
 	private Map attributes;
+	
+	private boolean renderring;
 
 	public AbstractServiceLink(IPage page, IComponent container, String name,
 		ComponentSpecification specification)
@@ -144,8 +146,18 @@ public abstract class AbstractServiceLink
 
 	protected abstract String getServiceName(IRequestCycle cycle);
 
+	/**
+	 *  Returns true if the link is enabled, false otherwise.
+	 *
+	 *  @throws RenderOnlyPropertyException if the component is not currently renderring.
+	 *
+	 */
+	 
 	public boolean isEnabled()
 	{
+		if (!renderring)
+			throw new RenderOnlyPropertyException(this, "enabled");
+			
 		return enabled;
 	}
 
@@ -216,59 +228,68 @@ public abstract class AbstractServiceLink
 	{
 		IResponseWriter wrappedWriter;
 		boolean compressed = false;
-		boolean enabled;
 		String href;
 		String[] context;
+		boolean enabled;
 
 		if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
 			throw new RequestCycleException(
 				"IServiceLink components may not be nested.",
 				this, cycle);
 
-		cycle.setAttribute(ATTRIBUTE_NAME, this);
-
-		setup(cycle);
-
-		enabled = isEnabled();
-
-		if (enabled)
-		{		
-			context = getContext(cycle);
-
-			writer.begin("a");
-
-			href = buildURL(cycle, context);
-			writer.attribute("href", href);
-
-			compressed = writer.compress(true);
-			wrappedWriter = writer.getNestedWriter();
-			wrappedWriter.setCompressed(true);
-		}
-		else
-			wrappedWriter = writer;
-
-		renderWrapped(wrappedWriter, cycle);
-
-		if (enabled)
+		try
 		{
-			// Write any attributes specified by wrapped components (i.e., Rollover).
+			renderring = true;
+			
+			cycle.setAttribute(ATTRIBUTE_NAME, this);
 
-			writeAttributes(writer);
+			setup(cycle);
 
-			// Generate additional attributes from informal parameters.
+			enabled = isEnabled();
 
-			generateAttributes(cycle, writer, reservedNames);
+			if (enabled)
+			{		
+				context = getContext(cycle);
 
-			// Dump in HTML provided by wrapped components
+				writer.begin("a");
 
-			wrappedWriter.close();
+				href = buildURL(cycle, context);
+				writer.attribute("href", href);
 
-			// Close the <a> tag
+				compressed = writer.compress(true);
+				wrappedWriter = writer.getNestedWriter();
+				wrappedWriter.setCompressed(true);
+			}
+			else
+				wrappedWriter = writer;
 
-			writer.end();
-			writer.setCompressed(compressed);
+			renderWrapped(wrappedWriter, cycle);
+
+			if (enabled)
+			{
+				// Write any attributes specified by wrapped components (i.e., Rollover).
+
+				writeAttributes(writer);
+
+				// Generate additional attributes from informal parameters.
+
+				generateAttributes(cycle, writer, reservedNames);
+
+				// Dump in HTML provided by wrapped components
+
+				wrappedWriter.close();
+
+				// Close the <a> tag
+
+				writer.end();
+				writer.setCompressed(compressed);
+			}
+
+			cycle.removeAttribute(ATTRIBUTE_NAME);
 		}
-
-		cycle.removeAttribute(ATTRIBUTE_NAME);
+		finally
+		{
+			renderring = false;
+		}
 	}
 }

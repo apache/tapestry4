@@ -97,6 +97,7 @@ public abstract class AbstractComponent implements IComponent
 	private Map bindings;
 
 	private Map components;
+	private Map safeComponents;
 
 	private static final int WRAPPED_INIT_SIZE = 5;
 
@@ -594,14 +595,6 @@ public abstract class AbstractComponent implements IComponent
 		return result;
 	}
 
-	public Collection getComponents()
-	{
-		if (components == null)
-        	return Collections.EMPTY_LIST;
-            
-		return Collections.unmodifiableCollection(components.values());
-	}
-
 	public IComponent getContainer()
 	{
 		return container;
@@ -761,5 +754,22 @@ public abstract class AbstractComponent implements IComponent
 		buffer.append(']');
 
 		return buffer.toString();
+	}
+	
+	/**
+	 *  Returns an unmodifiable {@link Map} of components, keyed on component id.
+	 *  May return null if this component contains no other components.
+	 *
+	 */
+	 
+	public Map getComponents()
+	{
+		if (components == null)
+			return null;	
+		
+		if (safeComponents != null)
+			safeComponents = Collections.unmodifiableMap(components);
+			
+		return safeComponents;	
 	}
 }

@@ -158,7 +158,7 @@ public class ApplicationSpecification extends BasePropertyHolder
 	* </tr>
 	* <tr>
 	*     <td>/com/primix/tapestry/components/ExceptionDisplay.jwc</td>
-	*	 	<td>{@link ExceptionDisplay}</td> </tr>
+	*	 	<td>{@link BaseComponent}</td> </tr>
 	* <tr>
 	*		<td>/com/primix/tapestry/components/Foreach.jwc</td>
 	*		<td>{@link Foreach}</td> </tr>
