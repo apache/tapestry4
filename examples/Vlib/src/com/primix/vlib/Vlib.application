@@ -15,6 +15,14 @@
   <page name="Person" specification-path="/com/primix/vlib/pages/PersonPage.jwc"/>
   <page name="ViewBook" specification-path="/com/primix/vlib/pages/ViewBook.jwc"/>
   <page name="Register" specification-path="/com/primix/vlib/pages/Register.jwc"/>
+  
+  <page name="admin.TransferBooks" 
+  	specification-path="/com/primix/vlib/pages/admin/TransferBooks.jwc"/>
+  <page name="admin.EditPublishers"
+    specification-path="/com/primix/vlib/pages/admin/EditPublishers.jwc"/>
+   <page name="admin.EditUsers"
+    specification-path="/com/primix/vlib/pages/admin/EditUsers.jwc"/> 
+ 
   <component-alias type="Border" specification-path="/com/primix/vlib/components/Border.jwc"/>
   <component-alias type="BookLink" specification-path="/com/primix/vlib/components/BookLink.jwc"/>
   <component-alias type="PersonLink" specification-path="/com/primix/vlib/components/PersonLink.jwc"/>
@@ -22,4 +30,8 @@
   <component-alias type="ShowMessage" specification-path="/com/primix/vlib/components/ShowMessage.jwc"/>
   <component-alias type="Borrow" specification-path="/com/primix/vlib/components/Borrow.jwc"/>
   <component-alias type="Browser" specification-path="/com/primix/vlib/components/Browser.jwc"/>
+  
+  <component-alias type="Palette"
+  	specification-path="/net/sf/tapestry/contrib/palette/Palette.jwc"/>
+  	
 </application>

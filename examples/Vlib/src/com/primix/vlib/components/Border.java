@@ -48,7 +48,6 @@ public class Border extends BaseComponent
 	
     private IBinding titleBinding;
     private IBinding subtitleBinding;
-	private IBinding subheaderBinding;
 	
 	private static final int SEARCH_PAGE_TYPE = 1;
 	private static final int LIBRARY_PAGE_TYPE = 2;
@@ -57,7 +56,11 @@ public class Border extends BaseComponent
 	
 	private static final int LOGIN_PAGE_TYPE = 3;
 	
+	private static final int ADMIN_PAGE_TYPE = 4;
+	
 	private int pageType = 0;
+	
+	private IAsset subheader;
 	
     public void setTitleBinding(IBinding value)
     {
@@ -79,15 +82,6 @@ public class Border extends BaseComponent
 		return subtitleBinding;
     }
 	
-	public void setSubheaderBinding(IBinding value)
-	{
-		subheaderBinding = value;
-	}
-	
-	public IBinding getSubheaderBinding()
-	{
-		return subheaderBinding;
-	}
 	
 	/**
 	 *  Determines the 'type' of page, which is used to highlight (with an icon) one of the options
@@ -117,6 +111,8 @@ public class Border extends BaseComponent
 				pageType = LIBRARY_PAGE_TYPE;
 			else if ("login".equals(typeName))
 				pageType = LOGIN_PAGE_TYPE;
+			else if ("admin".equals(typeName))
+				pageType = ADMIN_PAGE_TYPE;
 		}
 		
 		return pageType;
@@ -137,6 +133,21 @@ public class Border extends BaseComponent
 			return false;
 		
 		return visit.isUserLoggedIn();
+	}
+	
+	/**
+	 *  Returns true if the user is logged in and is an adminstrator.
+	 *  This makes additional left-side options appear.
+	 *
+	 */
+	
+	public boolean isAdmin()
+	{
+		Visit visit = (Visit)page.getEngine().getVisit();
+		
+		return (visit != null &&
+				visit.isUserLoggedIn() &&
+				visit.getUser().isAdmin());
 	}
 	
 	/**
@@ -179,7 +190,12 @@ public class Border extends BaseComponent
 	{
 		Login login = (Login)cycle.getPage("Login");
 		
-		login.setCallback(new PageCallback(page));
+		// Special case:  if you login from the Logout page, we don't
+		// want to go back to the Logout page again (that just logs
+		// you back out!).
+		
+		if (!page.getName().equals("Logout"))
+			login.setCallback(new PageCallback(page));
 
 		cycle.setPage(login);
 	}
@@ -202,6 +218,11 @@ public class Border extends BaseComponent
 	public boolean isLibraryPage()
 	{
 		return getPageType() == LIBRARY_PAGE_TYPE;
+	}
+	
+	public IAsset getAdminIcon()
+	{
+		return getIcon(ADMIN_PAGE_TYPE);
 	}
 	
 	private IAsset getIcon(int type)
@@ -257,5 +278,19 @@ public class Border extends BaseComponent
 		};
     }
 	
+	public IAsset getSubheader()
+	{
+		if (subheader == null)
+		{
+			String name = "header." + getPage().getName();
+			
+			subheader = getAsset(name);
+			
+			if (subheader == null)
+				subheader = getAsset("spacer");
+		}
+		
+		return subheader;
+	}
 	
 }	
