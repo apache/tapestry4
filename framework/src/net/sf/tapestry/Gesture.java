@@ -67,9 +67,9 @@ public class Gesture
      *  an optional list of service parameter strings and may be stateful
      *  or stateless.
      * 
-     *  <p>Service parameter strings may contain any characters.
+     *  <p>ServiceLink parameter strings may contain any characters.
      * 
-     *  <p>Service context strings must be URL safe, and may not contain
+     *  <p>ServiceLink context strings must be URL safe, and may not contain
      *  slash ('/') characters.  Typically, only letters, numbers and simple
      *  punctuation ('.', '-', '_') is recommended (no checks are currently made,
      *  however).  Context strings are generally built from page names

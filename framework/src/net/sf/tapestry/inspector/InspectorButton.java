@@ -50,9 +50,9 @@ import net.sf.tapestry.html.Body;
  *  Component that can be placed into application pages that will launch
  *  the inspector in a new window.
  * 
- *  [<a href="../../../../../ComponentReference/ShowInspector.html">Component Reference</a>]
+ *  [<a href="../../../../../ComponentReference/InspectorButton.html">Component Reference</a>]
  *
- *  <p>Because the ShowInspector component is implemented using a {@link net.sf.tapestry.html.Rollover},
+ *  <p>Because the InspectorButton component is implemented using a {@link net.sf.tapestry.html.Rollover},
  *  the containing page must use a {@link Body} component instead of
  *  a &lt;body&gt; tag.
  *
@@ -61,7 +61,7 @@ import net.sf.tapestry.html.Body;
  *
  **/
 
-public class ShowInspector extends BaseComponent implements IDirect
+public class InspectorButton extends BaseComponent implements IDirect
 {
     /**
      *  Gets the listener for the link component.
@@ -90,7 +90,7 @@ public class ShowInspector extends BaseComponent implements IDirect
         IEngine engine = getPage().getEngine();
         IScriptSource source = engine.getScriptSource();
 
-        IScript script = source.getScript("/net/sf/tapestry/inspector/ShowInspector.script");
+        IScript script = source.getScript("/net/sf/tapestry/inspector/InspectorButton.script");
 
         Map symbols = new HashMap();
 
@@ -114,7 +114,7 @@ public class ShowInspector extends BaseComponent implements IDirect
         Body body = Body.get(cycle);
 
         if (body == null)
-            throw new RequestCycleException(Tapestry.getString("ShowInspector.must-be-contained-by-body"), this);
+            throw new RequestCycleException(Tapestry.getString("InspectorButton.must-be-contained-by-body"), this);
 
         body.process(scriptSession);
 

@@ -111,7 +111,7 @@ hypothetical visit object that uses EJBs.
 </para>
       <informalexample>
         <programlisting>
-public void exampleListener(IRequestCycle cycle)
+public void exampleListener(&IRequestCycle; cycle)
 {
   Visit visit; <co id="apps.common-logic.ex.visit"/>
   <replaceable>ISomeHomeInterface</replaceable> home;

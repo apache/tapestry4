@@ -141,8 +141,8 @@ the <varname>insertUserName</varname> component is and what it does:
 </para>
       <informalexample id="intro.ex">
         <programlisting>
-&lt;component id="insertUserName" type="Insert"&gt; <co id="intro.ex.co.id-and-type"/>
-  &lt;binding name="value" property-path="visit.userName"/&gt;  <co id="intro.ex.co.value-binding"/>
+&lt;component id="insertUserName" type="&Insert;"&gt; <co id="intro.ex.co.id-and-type"/>
+  &lt;binding name="value" expression="visit.userName"/&gt;  <co id="intro.ex.co.value-binding"/>
 &lt;/component&gt;
 </programlisting>
         <calloutlist>
@@ -210,24 +210,24 @@ The corresponding Tapestry HTML template is much simpler:
 A bit more goes into the page's specification :
 </para>
       <informalexample id="intro.ex2">
-        <programlisting>&lt;component id="checkoutLink" type="Page"&gt; <co id="intro.ex2.co.checkoutLink"/>
+        <programlisting>&lt;component id="checkoutLink" type="&PageLink;"&gt; <co id="intro.ex2.co.checkoutLink"/>
   &lt;static-binding name="page"&gt;Checkout&lt;/static-binding&gt;
-  &lt;binding name="disabled" property-path="visit.cartEmpty"/&gt; <co id="intro.ex2.co.link-disabled"/>
+  &lt;binding name="disabled" expression="visit.cartEmpty"/&gt; <co id="intro.ex2.co.link-disabled"/>
 &lt;/component&gt;
 
-&lt;component id="checkoutButton" type="Rollover"&gt; <co id="intro.ex2.co.Rollover"/>
-  &lt;binding name="image" property-path="assets.checkout"/&gt;
-  &lt;binding name="disabled" property-path="assets.checkout-disabled"/&gt; 
+&lt;component id="checkoutButton" type="&Rollover;"&gt; <co id="intro.ex2.co.Rollover"/>
+  &lt;binding name="image" expression="assets.checkout"/&gt;
+  &lt;binding name="disabled" expression="assets.checkoutDisabled"/&gt; 
 &lt;/component&gt;
 
 &lt;external-asset name="checkout" URL="/images/Checkout.gif"/&gt; <co id="intro.ex2.co.checkout-asset"/>
-&lt;external-asset name="checkout-disabled" URL="/images/Checkout-disabled.gif"/&gt;
+&lt;external-asset name="checkoutDisabled" URL="/images/Checkout-disabled.gif"/&gt;
 
 </programlisting>
         <calloutlist>
           <callout arearefs="intro.ex2.co.checkoutLink">
             <para>
-    Component <varname>checkoutLink</varname> is a &Page;, a component that creates
+    Component <varname>checkoutLink</varname> is a &PageLink;, a component that creates
     a link to another page in the application.  Tapestry takes care of generating the
     appropriate URL.
     </para>
@@ -241,7 +241,7 @@ A bit more goes into the page's specification :
           <callout arearefs="intro.ex2.co.Rollover">
             <para>
     A &Rollover; component inserts an image; it must be inside some kind of
-    link component (such as the &Page;) and is sensitive to whether the link
+    link component (such as the &PageLink;) and is sensitive to whether the link
     is enabled or disabled; inserting a different image when disabled.  Not shown here
     is the ability of the &Rollover; component to 
     generate dynamic mouse-over effects as well.

@@ -89,12 +89,12 @@ component has a required parameter named <varname>color</varname>.  The class's
 </para>
       <informalexample>
         <programlisting>
-protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+protected void renderComponent(&IMarkupWriter; writer, &IRequestCycle; cycle)
   throws RequestCycleException
 {
-  IBinding colorBinding = getBinding("color");
+  &IBinding; colorBinding = getBinding("color");
   Color color = (Color)colorBinding.getObject("color", Color.class);
-  String encodedColor = RequestContext.encodeColor(color);
+  String encodedColor = &RequestContext;.encodeColor(color);
 
   writer.begin("font");
   writer.attribute("color", encodedColor);
@@ -129,24 +129,24 @@ If the methods are found, they are invoked from
       <para> This changes the example to:</para>
       <informalexample>
         <programlisting>
-<emphasis>private IBinding colorBinding;
+<emphasis>private &IBinding; colorBinding;
 
-public void setColorBinding(IBinding value)
+public void setColorBinding(&IBinding; value)
 {
   colorBinding = value;
 }
 
-public IBinding getColorBinding()
+public &IBinding; getColorBinding()
 {
   return colorBinding;
 }
 </emphasis>
 
-protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+protected void renderComponent(&IMarkupWriter; writer, &IRequestCycle; cycle)
   throws RequestCycleException
 {
   Color color = (Color)<emphasis>colorBinding</emphasis>.getObject("color", Color.class);
-  String encodedColor = RequestContext.encodeColor(color);
+  String encodedColor = &RequestContext;.encodeColor(color);
 
   writer.begin("font");
   writer.attribute("color", encodedColor);

@@ -170,9 +170,9 @@ binding), then the property is set just once, and never cleared.
 
 <para>
 There are times when the parameter name can't be used as the property name.  For example,
-the &Page; component has a <literal>page</literal> parameter, the name of the page to link to.  
+the &PageLink; component has a <literal>page</literal> parameter, the name of the page to link to.  
 However, all components already have a <literal>page</literal>
-property, the &IPage; that ultimately contains them.  The specification for the &Page; component
+property, the &IPage; that ultimately contains them.  The specification for the &PageLink; component
 connects the <literal>page</literal> parameter to a property named <literal>targetPage</literal> instead.
 </para>
 
@@ -202,9 +202,9 @@ The following examples show how to declare and use a parameter:
 
 <example>
 	<title>Connected Parameter - Java Code</title>
-<programlisting><![CDATA[
+<programlisting>
 
-public class ColorComponent extends AbstractComponent
+public class ColorComponent extends &AbstractComponent;
 {
   private Color color = Color.RED;
   
@@ -218,11 +218,11 @@ public class ColorComponent extends AbstractComponent
     this.color = color;
   }
   
-  protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+  protected void renderComponent(&IMarkupWriter; writer, &IRequestCycle; cycle)
   throws RequestCycleException
   {
     writer.begin("font");
-    writer.attribute("color", RequestContext.encodeColor(color);
+    writer.attribute("color", ^RequestContext;.encodeColor(color);
     
     renderWrapped(writer, cycle);
     
@@ -230,9 +230,6 @@ public class ColorComponent extends AbstractComponent
   }
   
 }
-
-
-]]>
 </programlisting>
 </example>
 
@@ -279,7 +276,7 @@ Each formal parameter has a specific
 In many cases, there is a one-to-one mapping between a Tapestry component and a specific
 HTML tag.  For example, &Body; and <sgmltag class="starttag">body</sgmltag>,
 &Form; and <sgmltag class="starttag">form</sgmltag>, etc.  In other cases, a Tapestry component
-produces a known single HTML tag.  For example, &Action;, &Direct;, &Page; and &Service;
+produces a known single HTML tag.  For example, &ActionLink;, &DirectLink;, &PageLink; and &ServiceLink;
 all produce an <sgmltag class="starttag">a</sgmltag> tag.
 </para>
       <para>
@@ -303,7 +300,7 @@ are added as additional HTML attributes (there are a few special exceptions, suc
       <para>
 Informal parameters do have some limitations.  Informal parameters that conflict with the names of
 any formal parameters, or with any of the HTML attributes generated directly by the component, are silently
-ommitted.  The comparison is case-insensitve.  Thus, for a &Direct; component, you can not change
+ommitted.  The comparison is case-insensitve.  Thus, for a &DirectLink; component, you can not change
 the <varname>href</varname> attribute, even if you supply a <varname>Href</varname> (or other variation) informal parameter.
 </para>
       <para>
@@ -595,7 +592,7 @@ Whether a component can have a body (and wrap other elements) is defined in the
 <link linkend="components.specification.root">component's specification</link>.
 </para>
       <para>
-Tapestry includes a special component, &InsertWrapped;, 
+Tapestry includes a special component, &RenderBody;, 
 which is used to render wrapped content from a component's container.  
 It makes it easy to create components that wrap other components.
 </para>
@@ -1395,7 +1392,7 @@ when the bean is instantiated.
         <figure>
           <title>Component specification: <sgmltag class="starttag">property-value</sgmltag> element</title>
           <programlisting>
-&lt;property-value property-path="<replaceable>property path</replaceable>"/&gt;
+&lt;property-value expression="<replaceable>property path</replaceable>"/&gt;
 </programlisting>
         </figure>
       </section>
@@ -1486,8 +1483,8 @@ application specification may define additional aliases.
 </para>
         <para>
 For example, the component 
-<filename>/net/sf/tapestry/links/Action.jwc</filename>
-has a standard alias of &Action;.
+<filename>/net/sf/tapestry/links/ActionLink.jwc</filename>
+has a standard alias of &ActionLink;.
 </para>
       </section>
       <section id="components.spec.bindings">
@@ -1501,7 +1498,7 @@ to a property of an object, and may be read, write or read/write.
           <programlisting>
 &lt;binding
   name="<replaceable>name</replaceable>" <co id="components.spec.binding.name"/>
-  property-path="<replaceable>property-path</replaceable>"/&gt; <co id="components.spec.binding.path"/>
+  expression="<replaceable>expression</replaceable>"/&gt; <co id="components.spec.binding.path"/>
   
 &lt;field-binding
   name="<replaceable>name</replaceable>"

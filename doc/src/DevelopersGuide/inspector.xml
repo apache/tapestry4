@@ -8,7 +8,7 @@ Tapestry includes a powerful tool: the Inspector, which reveals the construction
 of a running Tapestry application. 
 </para>
     <para>
-The &ShowInspector; component is used to include a link that 
+The &InspectorButton; component is used to include a link that 
 launches the Inspector.  This is typically included in the navigational border of an 
 application, so that it is available to the developer from any page.  The 
 Inspector itself is a page that is provided by the framework and available to 

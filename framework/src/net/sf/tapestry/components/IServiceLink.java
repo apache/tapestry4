@@ -41,7 +41,7 @@ public interface IServiceLink extends IComponent
 {
     /**
      *  The name of an {@link net.sf.tapestry.IRequestCycle} attribute in which the
-     *  current service link is stored.  Service links do not nest.
+     *  current service link is stored.  ServiceLink links do not nest.
      *
      **/
 

@@ -45,7 +45,7 @@ package net.sf.tapestry;
  *  </ul>
  *
  *  <p>A request cycle is broken up into two phases.   The <em>rewind</em> phase
- *  is optional, as it tied to {@link net.sf.tapestry.link.Action} or
+ *  is optional, as it tied to {@link net.sf.tapestry.link.ActionLink} or
  *  {@link net.sf.tapestry.form.Form} components.  In the rewind phase,
  *  a previous page render is redone (discarding output) until a specific component
  *  of the page is reached.  This rewinding ensures that the page
@@ -102,7 +102,7 @@ public interface IRequestCycle
     public IMonitor getMonitor();
 
     /**
-     *  Returns the next action id.  Action ids are used to identify different actions on a
+     *  Returns the next action id.  ActionLink ids are used to identify different actions on a
      *  page (URLs that are related to dynamic page state).  
      *
      **/

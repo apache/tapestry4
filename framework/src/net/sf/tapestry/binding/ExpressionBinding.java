@@ -511,46 +511,15 @@ public class ExpressionBinding extends AbstractBinding
     }
 
     /**
-     *  Returns a best-estimate of the property type.  OGNL is missing
-     *  this important feature ... what is the type of an expression?
      * 
-     *  <p>This is not perfect, but it reads the property (just once)
-     *  to see what its real type is.
+     *  @return null
+     *  @deprecated To be removed in 2.3 with no replacement.
      * 
      **/
 
     public Class getType()
     {
-        initialize();
-
-        if (_type == null)
-            resolveProperty();
-
-        if (_type != null)
-            return _type;
-
-        // Desperate measures!  Assume
-        // that it is a property path and not a
-        // OGNL expression.
-
-        String[] split = new StringSplitter('.').splitToArray(_expression);
-
-        Class beanClass = _root.getClass();
-
-        for (int i = 0; i < split.length; i++)
-        {
-            PropertyInfo info = PropertyFinder.getPropertyInfo(beanClass, split[i]);
-
-            if (info == null)
-                throw new BindingException(Tapestry.getString("PropertyBinding.unable-to-resolve-type"), this);
-
-            beanClass = info.getType();
-        }
-
-        _type = beanClass;
-
-        return _type;
-
+        return null;
     }
-
+ 
 }

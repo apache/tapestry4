@@ -63,7 +63,7 @@ users penetrate deeper into the application ... how many times have you visited 
 and gone no further?
 </para>
       <para>
-Stateless operations will affect &Action;, &Direct; and &Form; components on your pages.  By default, they
+Stateless operations will affect &ActionLink;, &DirectLink; and &Form; components on your pages.  By default, they
 will reject requests while the application is running stateless; the user will be redirected
 to the <classname>StaleSession</classname> page.  This is appropriate, since normally, the lack of a session
 means that the previous session timed out and was discarded.

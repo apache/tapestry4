@@ -37,6 +37,12 @@
     </description>
   </parameter>
   
+  <parameter name="type" java-type="java.lang.String" required="no" direction="in" property-name="typeName">
+  	<description>
+  	Identifies type to convert to when converting strings in request.
+  	</description>
+  </parameter>
+  
   <reserved-parameter name="type"/>
   <reserved-parameter name="value"/>
   <reserved-parameter name="name"/>

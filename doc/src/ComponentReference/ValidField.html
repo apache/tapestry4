@@ -74,7 +74,7 @@
   <b>See Also</b>
 	<br>
 	<A href="Form.html">Form</a>, 
-  <A href="Text.html">Text</a>,
+  <a href="TextArea.html">TextArea</a>,
   <A href="TextField.html">TextField</a>
  </td>
 </tr>
@@ -115,6 +115,35 @@
     form element.
    </td>
   </tr>
+  
+  
+    <tr>
+   <td>type</td>
+   <td>String</td>
+   <td>in</td>
+ 	 <td>no</td>
+	 <td>Object</td>
+	 <td>
+The name of a class, to convert input into.
+Required by some validators to identify the type of conversion from
+String (typically, validators that convert a numeric amount). 
+If the class is in package <tt>java.lang</tt>, then the package name can be ommitted.
+Also, the names of Java scalar types are acceptible.
+   </td>
+	</tr>
+	<tr>
+	 <td>hidden</td>
+	 <td>boolean</td>
+	 <td>in</td>
+	 <td>no</td>
+	 <td>false</td>
+	 <td>
+    If true, then the text field is written as a &lt;input type="password"&gt; 
+    form element.
+   </td>
+  </tr>
+  
+  
   <tr>
    <td>disabled</td>
    <td>boolean</td>

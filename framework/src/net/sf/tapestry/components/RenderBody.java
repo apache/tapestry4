@@ -34,20 +34,19 @@ import net.sf.tapestry.RequestCycleException;
 /**
  *  Renders the text and components wrapped by a component.
  *
- *  [<a href="../../../../../ComponentReference/InsertWrapped.html">Component Reference</a>]
+ *  [<a href="../../../../../ComponentReference/RenderBody.html">Component Reference</a>]
  *
- *  <p>Possibly, a better name for this component would have been
- *  <b>InsertBody</b>.
+ *  <p>Prior to release 2.2, this component was named <b>RenderBody</b>.
  * 
  *  @author Howard Lewis Ship
  *  @version $Id$
  * 
  **/
 
-public class InsertWrapped extends AbstractComponent
+public class RenderBody extends AbstractComponent
 {
     /**
-     *  Finds this <code>InsertWrapped</code>'s container, and invokes
+     *  Finds this <code>RenderBody</code>'s container, and invokes
      *  {@link IComponent#renderWrapped(IMarkupWriter, IRequestCycle)}
      *  on it.
      *

@@ -41,7 +41,7 @@ import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.Tapestry;
 
 /**
- *  Inserts formatted text (possibly collected using a {@link net.sf.tapestry.form.Text} 
+ *  Inserts formatted text (possibly collected using a {@link net.sf.tapestry.form.TextArea} 
  *  component.
  * 
  *  [<a href="../../../../../ComponentReference/InsertText.html">Component Reference</a>]

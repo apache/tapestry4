@@ -2,7 +2,7 @@
 <!-- $Id$ --> 
 <html>
 <head>
-<title>InsertWrapped</title>
+<title>InspectorButton</title>
 <link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
 </head>
 
@@ -24,12 +24,12 @@
  <td>
   <table>
 	 <tr>
-	  <td><font size="+2"><b>InsertWrapped</b></font></td>
+	  <td><font size="+2"><b>InspectorButton</b></font></td>
 	 </tr>
 	 <tr>
 	  <td>
-		 <A href="../api/net/sf/tapestry/components/InsertWrapped.html">
-		 net.sf.tapestry.components.InsertWrapped</A>
+		 <A href="../api/net/sf/tapestry/inspector/InspectorButton.html">
+		 net.sf.tapestry.inspector.InspectorButton</A>
 		</td>
 	 </tr>
   </table>
@@ -37,7 +37,7 @@
  <td>
   <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
 	 <tr>
-	  <td>Non Visual Component</td>
+	  <td><IMG alt="Show Inspector" src="images/inspector-rollover.gif" ></td>
 	 </tr>
   </table>
  </td>
@@ -51,20 +51,23 @@
  <td colspan="2">
   <b>Description</b>
 	<br>
-  Renders the body (static HTML and components)&nbsp;wrapped by the container of the 
-  InsertWrapped component. Components which have HTML templates and can wrap 
-  other elements should include exactly one InsertWrapped component in their 
-  template. 
+  Adds a link to a page that is used to raise the 
+  <A href="../DevelopersGuide\inspector.html">Tapestry Inspector</A> in a new 
+  window. 
   <p>
-  This component is very useful for creating a common navigational component 
-  used by multiple pages of an application. Typically you create a common 
-  navigational component which contains navigational links 
-  (<A href="Page.html">Page</A>) to other 
-            pages and an InsertWrapped component which will insert the actual 
-            content of the page. The application pages then use the navigational 
-            component as their first element, and then their usual content. When 
-            the pages renders, it renders the surrounding navigational component 
-            and then the page's content.</p>
+  The Tapestry Inspector enables you at runtime to examine composition of a
+  Tapestry application, inspect persistent page properties, clear
+  <tt>HttpSession</tt>s and Tapestry caches, and 
+            modify Log4J logging 
+  configuration. 
+  <p>
+  Typically, a InspectorButton is wrapped by a 
+            <A href="Conditional.html">Conditional</a> component, configured so that it only is displayed when some form of development mode flag is enabled.
+  <p>
+  Pages incorporating a InspectorButton component must also include a 
+  <A href="Body.html">Body</A> component.</p>
+            <P>Prior to release 2.2, this component was named 
+            <STRONG>ShowInspector</STRONG>.</P>
              
  </td>
 </tr>
@@ -73,10 +76,8 @@
  <td colspan="2">
   <b>See Also</b>
 	<br>
-	<A href="Block.html">Block</A>,
-	<A href="Insert.html">Insert</A>, 
-	<A href="InsertBlock.html">InsertBlock</A>, 
-	<A href="InsertText.html">InsertText</A> 
+	<A href="Body.html">Body</A>, 
+	<A href="ExceptionDisplay.html">ExceptionDisplay</A> 
  </td>
 </tr>
 
@@ -85,14 +86,10 @@
   <b>Parameters</b>
 	<br>
   None
-	<p>
-Body: <STRONG>removed</STRONG>
- <BR>
-   Informal parameters: 
-            <STRONG>forbidden</STRONG>
-     <br>
-  Reserved parameters: <EM>none 
-            </EM></p>
+  <p>
+  Body: <STRONG>removed</STRONG><BR>Informal 
+            parameters: <STRONG>forbidden</STRONG><BR>Reserved parameters: 
+            <EM>none</EM></p>
     
  </td>
 </tr>
@@ -101,10 +98,8 @@ Body: <STRONG>removed</STRONG>
  <td colspan="2">
   <b>Examples</b>
 	<p>
-  This example is under construction. See the 
-            Tutorial Border for an example usage of this component.</p>
-             
-     
+  This example is under construction.</p>
+      
 
  </td></tr></table>
 </td></tr>

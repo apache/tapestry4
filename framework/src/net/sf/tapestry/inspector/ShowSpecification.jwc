@@ -123,7 +123,7 @@
     <binding name="class" expression="beans.componentClass.next"/>
   </component>
 
-  <component id="selectComponent" type="Direct">
+  <component id="selectComponent" type="DirectLink">
     <binding name="listener" expression="page.listeners.selectComponent"/>
     <binding name="parameters" expression="component.idPath"/>
   </component>

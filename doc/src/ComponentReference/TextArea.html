@@ -2,16 +2,16 @@
 <!-- $Id$ --> 
 <html>
 <head>
-<title>Text</title>
+<title>TextArea</title>
 <link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
 </head>
 <body>
 
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
  <tr>
-  <td align="left"><A href="Submit.html"><IMG alt=Submit src="common-images/prev.png"></a></td>  
-  <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
-  <td align="right"><A href="TextField.html"><IMG alt=TextField src="common-images/next.png"></a></td>  
+  <td align="left"><A href="Submit.html"><IMG alt=Submit src="common-images/prev.png"></A></td>  
+  <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></A></td>  
+  <td align="right"><A href="TextField.html"><IMG alt=TextField src="common-images/next.png"></A></td>  
  <tr>
  <tr>
   <td colspan="3"><hr></td>  
@@ -24,12 +24,12 @@
  <td>
   <table>
 	 <tr>
-	  <td><font size="+2"><b>Text</b></font></td>
+	  <td><font size="+2"><b>TextArea</b></font></td>
 	 </tr>
 	 <tr>
 	  <td>
-		 <A href="../api/net/sf/tapestry/form/Text.html">
-		 net.sf.tapestry.form.Text</a>
+		 <A href="../api/net/sf/tapestry/form/TextArea.html">
+		 net.sf.tapestry.form.TextArea</A>
 		</td>
 	 </tr>
   </table>
@@ -53,11 +53,13 @@
   <b>Description</b>
 	<br>
   Provides a HTML &lt;textarea&gt; form element. 
-	This component must be wrapped by a <A href="Form.html">Form</a> component.
+	This component must be wrapped by a <A href="Form.html">Form</A> component.
   <p>
   Use the HTML "wrap" attribute as an informal 
             parameter to control word wrapping. Wrap attribute values include: 
             "off", "vitual", "physical", "soft" and "hard".</p>
+            <P>Prior to release 2.2, this component was named 
+            <STRONG>Text</STRONG>.</P>
              
  </td>
 </tr>
@@ -66,8 +68,8 @@
  <td colspan="2">
   <b>See Also</b>
 	<br>
-	<A href="Form.html">Form</a>, 
-	<A href="TextField.html">TextField</a>
+	<A href="Form.html">Form</A>, 
+	<A href="TextField.html">TextField</A>
  </td>
 </tr>
 
@@ -168,11 +170,11 @@
 &lt;/table&gt;
 
 
-&lt;component id="form" type="<A href="Form.html">Form</a>"&gt;
+&lt;component id="form" type="<A href="Form.html">Form</A>"&gt;
     &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
 &lt;/component&gt;
   
-&lt;component id="<span class="jwcid">commentsText</span>" type="<a href="">Text</a>"&gt;
+&lt;component id="<span class="jwcid">commentsText</span>" type="<a href="#">TextArea</a>"&gt;
     &lt;binding name="value" expression="comments"/&gt;
     &lt;binding name="columns" expression="columns"/&gt;
     &lt;binding name="rows" expression="rows"/&gt;
@@ -213,9 +215,9 @@ public class CustomerCommentsPage extends BasePage {
  <td colspan="3"><hr></td>  
 </tr>
 <tr>
- <td align="left"><A href="Submit.html"><IMG alt=Submit src="common-images/prev.png"></a></td>  
- <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
- <td align="right"><A href="TextField.html"><IMG alt=TextField src="common-images/next.png"></a></td>  
+ <td align="left"><A href="Submit.html"><IMG alt=Submit src="common-images/prev.png"></A></td>  
+ <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></A></td>  
+ <td align="right"><A href="TextField.html"><IMG alt=TextField src="common-images/next.png"></A></td>  
 </tr>
 </table>
 

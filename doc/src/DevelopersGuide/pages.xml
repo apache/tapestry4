@@ -331,25 +331,25 @@ Part of the page's specification would configure these embedded components.
       <example>
         <title>Shopping Cart Specification (excerpt)</title>
         <programlisting>
-&lt;component id="eachItem" type="Foreach"&gt;
-  &lt;binding name="source" property-path="items"/&gt;
-  &lt;binding name="value" property-path="lineItem"/&gt;
+&lt;component id="eachItem" type="&Foreach;"&gt;
+  &lt;binding name="source" expression="items"/&gt;
+  &lt;binding name="value" expression="lineItem"/&gt;
 &lt;/component&gt;
 
-&lt;component id="insertProductName type="Insert"&gt;
-  &lt;binding name="value" property-path="lineItem.productName"/&gt;
+&lt;component id="insertProductName type="&Insert;"&gt;
+  &lt;binding name="value" expression="lineItem.productName"/&gt;
 &lt;/component&gt;
 
-&lt;component id="insertQuantity" type="Insert"&gt;
-  &lt;binding name="value" property-path="lineItem.quantity"/&gt;
+&lt;component id="insertQuantity" type="&Insert;"&gt;
+  &lt;binding name="value" expression="lineItem.quantity"/&gt;
 &lt;/component&gt;
 
-&lt;component id="insertPrice" type="Insert"&gt;
-  &lt;binding name="value" property-path="lineItem.price"/&gt;
+&lt;component id="insertPrice" type="&Insert;"&gt;
+  &lt;binding name="value" expression="lineItem.price"/&gt;
 &lt;/component&gt;
 
-&lt;component id="remove" type="Action"&gt;
-  &lt;binding name="listener" property-path="listeners.removeItem"/&gt;
+&lt;component id="remove" type="&ActionLink;"&gt;
+  &lt;binding name="listener" expression="listeners.removeItem"/&gt;
 &lt;/component&gt;
 </programlisting>
       </example>
@@ -361,7 +361,7 @@ expected to remove a specific line item from the shopping cart, but how will it 
 This is at the heart of the <link linkend="cycle.action">action service</link>.  One aspect of the 
 &IRequestCycle;'s functionality is to 
 dole out a sequence of action ids that are used for this purpose (they are also involved in forms 
-and form elements).  As the &Action; component renders itself, 
+and form elements).  As the &ActionLink; component renders itself, 
 it allocates the next action id from 
 the request cycle.  Regardless of what path through the page's component hierarchy the rendering 
 takes, the numbers are doled out in sequence.  This includes conditional blocks and loops such as 
@@ -380,8 +380,8 @@ code.  Because the inputs are the same, the results will be identical.
       <para>
 This fact is exploited by the action service to respond to the URL.  In fact, the state of the page 
 and components <emphasis>is</emphasis> rolled back and the rendering processes fired again (with output discarded).  
-The &Action; component can compare the action id against the target action id encoded 
-within the URL.  When a match is found, the &Action; component can count on the state of the 
+The &ActionLink; component can compare the action id against the target action id encoded 
+within the URL.  When a match is found, the &ActionLink; component can count on the state of the 
 page and all components on the page to be in the exact same state they were in when the page 
 was previously rendered.
 </para>
@@ -494,7 +494,7 @@ information.
 </para>
       <para>
 The question is, how is the add to shopping cart link implemented?  If its logic is to add whatever the 
-current value of the product property is (i.e., by using an &Action;
+current value of the product property is (i.e., by using an &ActionLink;
 component or part of a form) then it will 
 add the Nikon camera, since that's the current product (the most recent one displayed 
 to the user, as far as the server is concerned &horbar; it has no way to know the user hit
@@ -502,7 +502,7 @@ the back button and was staring at the Minolta when the link was clicked).  This
 doesn't take into account the possiblility that the user worked backwards to a prior page.
 </para>
       <para>
-On the other hand, if a &Direct; component is used, it can encode into the 
+On the other hand, if a &DirectLink; component is used, it can encode into the 
 URL the primary key of 
 the Minolta product, and that will be the product added to the shopping cart, regardless of the 
 current value of the product property.
@@ -674,7 +674,7 @@ need to know about this lifecycle.
 </para>
       <para>
 &IPage; can produce a number of events related to its lifecycle.  &PageRenderListener; is a listener interface for determining when the page starts and finishes rendering (this includes rewind renders related to the
-&Action; component).
+&ActionLink; component).
 </para>
       <figure>
         <title>Page Render Sequence</title>
@@ -697,7 +697,7 @@ changes to persistant page properties after this method is invoked; doing so wil
         </mediaobject>
       </figure>
       <para>
-Page rewinds, which are related to the &Form; and &Action; components, also perform a render operation
+Page rewinds, which are related to the &Form; and &ActionLink; components, also perform a render operation
 in order to restore dynamic state on the page.  The &PageRenderListener; events are still fired.  The
 event listeners can invoke <function>isRewinding()</function> on &IRequestCycle; to determine
 whether this is a normal render, or for rewind purposes.

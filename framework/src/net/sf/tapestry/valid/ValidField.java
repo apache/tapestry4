@@ -25,6 +25,11 @@
 
 package net.sf.tapestry.valid;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.HashMap;
+import java.util.Map;
+
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IForm;
 import net.sf.tapestry.IMarkupWriter;
@@ -43,107 +48,14 @@ import net.sf.tapestry.html.Body;
  *
  *  A {@link Form} component that creates a text field that
  *  allows for validation of user input and conversion between string and object
- *  values.  A ValidatingTextField uses an {@link IValidationDelegate} to 
+ *  values. 
+ * 
+ *  [<a href="../../../../../ComponentReference/ValidField.html">Component Reference</a>]
+ * 
+ *  <p> A ValidatingTextField uses an {@link IValidationDelegate} to 
  *  track errors and an {@link IValidator} to convert between strings and objects
  *  (as well as perform validations).  The validation delegate is shared by all validating
  *  text fields in a form, the validator may be shared my multiple elements as desired.
- * 
- * <p>This class was heavily redesigned in release 1.0.8. 
- *
- * <table border=1>
- * <tr>
- *    <td>Parameter</td>
- *    <td>Type</td>
- *	  <td>Direction</td>
- *    <td>Required</td>
- *    <td>Default</td>
- *    <td>Description</td>
- * </tr>
- *
- *  <tr>
- *    <td>value</td>
- *    <td>java.lang.Object</td>
- *    <td>in-out</td>
- *   	<td>yes</td>
- *		<td>&nbsp;</td>
- *		<td>The value to be displayed (on render), and updated (when the form is
- *  submitted, if the submitted value is valid).  The {@link net.sf.tapestry.valid.IValidator}
- *  converts between
- *  object values and Strings.
- *  </td>
- *	</tr>
- *
- *	<tr>
- *		<td>hidden</td>
- *		<td>boolean</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>false</td>
- *		<td>If true, then the text field is written as a
- *			&lt;input type=password&gt; form element.  </td>  </tr>
- *
- *  <tr>
- * 		<td>disabled</td>
- *		<td>boolean</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>false</td>
- *		<td>Controls whether the text field is active or not.  If disabled, then
- *			any value that comes up when the form is submitted is ignored.
- *			
- *			<p>Corresponds to the <code>disabled</code> HTML attribute.</td>
- *	</tr>
- *
- *	<tr>
- *		<td>displayWidth</td>
- *		<td>integer</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>&nbsp;</td>
- *		<td>Controls the display width of the text control in the client browser.  If
- *			unspecified or zero, then the width is left to the client browser to
- *			determine.
- *
- *		<p>Corresponds to the <code>size</code> HTML attribute.</td> </tr>
- *
- *	<tr>
- *		<td>maximumLength</td>
- *		<td>integer</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>&nbsp;</td>
- *		<td>Controls the maximum characters that the text control will accept.  If
- *			unspecified or zero, then the value is left to the client browser to
- *			determine.
- *
- *		<p>Corresponds to the <code>maxlength</code> HTML attribute.</td> </tr>
- *
- *  <tr>
- *      <td>displayName</td>
- *      <td>String</td>
- *      <td>in</td>
- *      <td>yes</td>
- *      <td>&nbsp;</td>
- *      <td>A textual name for the field that is used when formulating error messages.
- * 	Also used by the {@link FieldLabel} component to properly label the field.
- *      </td>
- *  </tr>
-
- *
- *  <tr>
- *      <td>validator</td>
- *      <td>{@link IValidator}</td>
- *      <td>in</td>
- *      <td>yes</td>
- *      <td>&nbsp;</td>
- *      <td>Object used to convert object values to Strings (for renderring)
- *  and to validate and convert Strings into object values (when the form
- *  is submitted).</td>
- *  </tr>
- *
- *	</table>
- *
- *  <p>May not have a body.  May have informal parameters,
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -152,34 +64,74 @@ import net.sf.tapestry.html.Body;
 
 public class ValidField extends AbstractTextField implements IField, IFormComponent
 {
-    private IBinding valueBinding;
+    private static final Map TYPES = new HashMap();
+    
+    static
+    {
+        TYPES.put("boolean", boolean.class);
+        TYPES.put("Boolean", Boolean.class);
+        TYPES.put("java.lang.Boolean", Boolean.class);
+        TYPES.put("char", char.class);
+        TYPES.put("Character", Character.class);
+        TYPES.put("java.lang.Character", Character.class);
+        TYPES.put("short", short.class);
+        TYPES.put("Short", Short.class);
+        TYPES.put("java.lang.Short", Short.class);
+        TYPES.put("int", int.class);
+        TYPES.put("Integer", Integer.class);
+        TYPES.put("java.lang.Integer", Integer.class);
+        TYPES.put("long", long.class);
+        TYPES.put("Long", Long.class);
+        TYPES.put("java.lang.Long", Long.class);
+        TYPES.put("float", float.class);
+        TYPES.put("Float", Float.class);
+        TYPES.put("java.lang.Float", Float.class);
+        TYPES.put("byte", byte.class);
+        TYPES.put("Byte", Byte.class);
+        TYPES.put("java.lang.Byte", Byte.class);
+        TYPES.put("double", double.class);
+        TYPES.put("Double", Double.class);
+        TYPES.put("java.lang.Double", Double.class);
+        TYPES.put("java.math.BigInteger", BigInteger.class);
+        TYPES.put("java.math.BigDecimal", BigDecimal.class);
+    }
+        
+    private IBinding _valueBinding;
 
-    private IBinding displayNameBinding;
-    private String displayNameValue;
+    // Can't be an "in" parameter, because FieldLabel may request it when the
+    // ValidField is not renderring.
+    
+    private IBinding _displayNameBinding;
+    private String _displayNameValue;
 
-    private IValidator validator;
+    private IValidator _validator;
+
+    /** @since 2.2 **/
+    
+    private String _typeName;
+    private Class _valueType;
 
     public IBinding getValueBinding()
     {
-        return valueBinding;
+        return _valueBinding;
     }
 
     public void setValueBinding(IBinding value)
     {
-        valueBinding = value;
+        _valueBinding = value;
     }
 
     public IBinding getDisplayNameBinding()
     {
-        return displayNameBinding;
+        return _displayNameBinding;
     }
 
     public void setDisplayNameBinding(IBinding value)
     {
-        displayNameBinding = value;
+        _displayNameBinding = value;
 
         if (value.isInvariant())
-            displayNameValue = value.getString();
+            _displayNameValue = value.getString();
     }
 
     /**
@@ -193,12 +145,12 @@ public class ValidField extends AbstractTextField implements IField, IFormCompon
     {
         // Return the static value, if known.
 
-        if (displayNameValue != null)
-            return displayNameValue;
+        if (_displayNameValue != null)
+            return _displayNameValue;
 
         // Otherwise, a dynamic value (how strange).
 
-        return displayNameBinding.getString();
+        return _displayNameBinding.getString();
     }
 
     /**
@@ -308,7 +260,7 @@ public class ValidField extends AbstractTextField implements IField, IFormCompon
         if (delegate.isInError())
             return delegate.getInvalidInput();
 
-        Object value = valueBinding.getObject();
+        Object value = _valueBinding.getObject();
         String result = getValidator().toString(this, value);
 
         if (Tapestry.isNull(result) && getValidator().isRequired())
@@ -332,23 +284,64 @@ public class ValidField extends AbstractTextField implements IField, IFormCompon
             return;
         }
 
-        valueBinding.setObject(objectValue);
+        _valueBinding.setObject(objectValue);
         delegate.reset();
-    }
-
-    public Class getValueType()
-    {
-        return valueBinding.getType();
     }
 
     public IValidator getValidator()
     {
-        return validator;
+        return _validator;
     }
 
     public void setValidator(IValidator validator)
     {
-        this.validator = validator;
+        _validator = validator;
+    }
+
+    /** @since 2.2. **/
+    
+    public String getTypeName()
+    {
+        return _typeName;
+    }
+    
+    /** @since 2.2 **/
+    
+    public void setTypeName(String typeName)
+    {
+        _typeName = typeName;
+    }
+
+    public Class getValueType()
+    {
+        if (_valueType == null)
+            _valueType = resolveType();
+        
+        return _valueType;
+    }
+
+    private Class resolveType()
+    {
+        if (_typeName == null)
+        throw new NullPointerException(
+        Tapestry.getString("ValidField.no-type", this));
+        
+        synchronized (TYPES)
+        {
+            Class result = (Class)TYPES.get(_typeName);
+            
+            if (result != null)
+                return result;
+        }
+        
+        return getPage().getEngine().getResourceResolver().findClass(_typeName);
+    }
+
+    protected void cleanupAfterRender(IRequestCycle cycle)
+    {
+        _valueType = null;
+        
+        super.cleanupAfterRender(cycle);
     }
 
 }

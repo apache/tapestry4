@@ -58,7 +58,7 @@ import net.sf.tapestry.valid.IValidationDelegate;
  *  Component which contains form element components.  Forms use the
  *  action or direct services to handle the form submission.  A Form will wrap
  *  other components and static HTML, including
- *  form components such as {@link Text}, {@link TextField}, {@link Checkbox}, etc.
+ *  form components such as {@link TextArea}, {@link TextField}, {@link Checkbox}, etc.
  * 
  *  [<a href="../../../../../ComponentReference/Form.html">Component Reference</a>]
  * 

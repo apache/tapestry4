@@ -170,7 +170,9 @@ public interface IBinding
      *  or the actual type of a field, for field bindings).
      *
      *  @since 1.0.5
-     *
+     *  @deprecated To be removed in 2.3 with no replacement. This feature
+     *  is not supported by OGNL.
+     * 
      **/
 
     public Class getType();

@@ -33,6 +33,6 @@
     <binding name="value" expression="components.e.value.id"/>
   </component>
 
-  <component id="wrapped" type="InsertWrapped"/>
+  <component id="renderBody" type="RenderBody"/>
 
 </component-specification>

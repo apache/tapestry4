@@ -32,9 +32,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.tapestry.form.Form;
-import net.sf.tapestry.link.Action;
-import net.sf.tapestry.link.Direct;
-import net.sf.tapestry.link.Page;
+import net.sf.tapestry.link.ActionLink;
+import net.sf.tapestry.link.DirectLink;
+import net.sf.tapestry.link.PageLink;
 
 /**
  *  A service, provided by the {@link IEngine}, for its pages and/or components.  
@@ -54,7 +54,7 @@ public interface IEngineService
 {
 	/**
 	 *  The name ("action") of a service that allows behavior to be associated with
-	 *  an {@link IAction} component, such as {@link Action} or {@link Form}.
+	 *  an {@link IAction} component, such as {@link ActionLink} or {@link Form}.
 	 *  
 	 *  <p>This service is used with actions that are tied to the
 	 *  dynamic state of the page, and which require a rewind of the page.
@@ -65,14 +65,14 @@ public interface IEngineService
 
 	/**
 	 *  The name ("direct") of a service that allows stateless behavior for an {@link
-	 *  Direct} component.
+	 *  DirectLink} component.
 	 *
 	 *  <p>This service rolls back the state of the page but doesn't
 	 *  rewind the the dynamic state of the page the was the action
 	 *  service does, which is more efficient but less powerful.
 	 *
 	 *  <p>An array of String parameters may be included with the
-	 *  service URL; these will be made available to the {@link Direct}
+	 *  service URL; these will be made available to the {@link DirectLink}
 	 *  component's listener.
 	 *
 	 **/
@@ -81,7 +81,7 @@ public interface IEngineService
 
 	/**
 	 *  The name ("page") of a service that allows a new page to be selected.
-	 *  Associated with a {@link Page} component.
+	 *  Associated with a {@link PageLink} component.
 	 *
 	 *  <p>The service requires a single parameter:  the name of the target page.
 	 **/

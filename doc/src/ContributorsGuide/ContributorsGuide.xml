@@ -4,8 +4,6 @@
   "http://www.oasis-open.org/docbook/xml/4.1/docbookx.dtd" [
   <!ENTITY % TapestryLinks SYSTEM "../common/TapestryLinks.xml">
   %TapestryLinks;
-
-  <!ENTITY Foreach '<ulink url="&ApiRoot;/components/Foreach.html"><classname>Foreach</classname></ulink>'>
   
 ]>
 <!-- Conventions:

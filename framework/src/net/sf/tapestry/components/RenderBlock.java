@@ -35,9 +35,9 @@ import net.sf.tapestry.RequestCycleException;
 /**
  *  Renders the text and components wrapped by a {@link Block} component.
  *
- *  [<a href="../../../../../ComponentReference/InsertBlock.html">Component Reference</a>]
+ *  [<a href="../../../../../ComponentReference/RenderBlock.html">Component Reference</a>]
  *
- *  <p>It is possible for an InsertBlock to obtain a Block
+ *  <p>It is possible for an RenderBlock to obtain a Block
  *  from a page <em>other than</em> the render page.  This works, even when
  *  the Block contains links, forms and form components.  The action and
  *  direct services will create URLs that properly address this situation.
@@ -46,15 +46,15 @@ import net.sf.tapestry.RequestCycleException;
  *  ahead of time about these foriegn Blocks,
  *  {@link net.sf.tapestry.event.PageRenderListener} methods
  *  (for components and objects of the foriegn page)
- *  via InsertBlock will <em>not</em> be executed.  This specifically
+ *  via RenderBlock will <em>not</em> be executed.  This specifically
  *  affects the methods of the {@link net.sf.tapestry.event.PageRenderListener} 
  *  interface.
  * 
- *  <p>Before rendering its {@link Block}, InsertBlock will set itself as the 
+ *  <p>Before rendering its {@link Block}, RenderBlock will set itself as the 
  *  Block's inserter, and will reset the inserter after the {@link Block} is 
  *  rendered.  This gives the components contained in the {@link Block} access
- *  to its inserted environment via the InsertBlock.  In particular this allows
- *  the contained components to access the informal parameters of the InsertBlock
+ *  to its inserted environment via the RenderBlock.  In particular this allows
+ *  the contained components to access the informal parameters of the RenderBlock
  *  which effectively allows parameters to be passed to the components contained
  *  in a Block.
  *
@@ -63,7 +63,7 @@ import net.sf.tapestry.RequestCycleException;
  * 
  **/
 
-public class InsertBlock extends AbstractComponent
+public class RenderBlock extends AbstractComponent
 {
     private Block _block;
 

@@ -36,7 +36,7 @@ import net.sf.tapestry.Tapestry;
 /**
  *  Implements a component that manages an HTML &lt;textarea&gt; form element.
  *
- *  [<a href="../../../../../ComponentReference/Text.html">Component Reference</a>]
+ *  [<a href="../../../../../ComponentReference/TextArea.html">Component Reference</a>]
  *
  *
  *  @author Howard Lewis Ship
@@ -44,7 +44,7 @@ import net.sf.tapestry.Tapestry;
  * 
  **/
 
-public class Text extends AbstractFormComponent
+public class TextArea extends AbstractFormComponent
 {
 	private int _rows;
 	private int _columns;
