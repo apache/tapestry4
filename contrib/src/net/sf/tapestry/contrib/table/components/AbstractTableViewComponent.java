@@ -17,7 +17,7 @@ public class AbstractTableViewComponent extends BaseComponent
 
 		ITableModelSource objSource =
 			(ITableModelSource) objCycle.getAttribute(
-				ITableModelSource.TABLE_MODEL_SOURCE_PROPERTY);
+				ITableModelSource.TABLE_MODEL_SOURCE_ATTRIBUTE);
 
 		if (objSource == null)
 			throw new RequestCycleException(

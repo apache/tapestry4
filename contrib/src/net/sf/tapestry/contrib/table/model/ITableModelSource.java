@@ -38,7 +38,7 @@ import net.sf.tapestry.IComponent;
  */
 public interface ITableModelSource extends IComponent
 {
-    final static String TABLE_MODEL_SOURCE_PROPERTY = "net.sf.tapestry.contrib.table.model.ITableModelSource";
+    final static String TABLE_MODEL_SOURCE_ATTRIBUTE = "net.sf.tapestry.contrib.table.model.ITableModelSource";
 
 	/**
 	 * Returns the table model currently used

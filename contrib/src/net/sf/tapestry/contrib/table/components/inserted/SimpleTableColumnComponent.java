@@ -29,6 +29,7 @@ import net.sf.tapestry.BaseComponent;
 import net.sf.tapestry.ComponentAddress;
 import net.sf.tapestry.IAsset;
 import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.contrib.table.components.TableColumns;
 import net.sf.tapestry.contrib.table.model.ITableModel;
 import net.sf.tapestry.contrib.table.model.ITableModelSource;
 import net.sf.tapestry.contrib.table.model.ITableSortingState;
@@ -89,10 +90,10 @@ public class SimpleTableColumnComponent
 		m_objModelSource = objSource;
 	}
 
-    public ITableModel getTableModel() 
-    {
-        return m_objModelSource.getTableModel();
-    }
+	public ITableModel getTableModel()
+	{
+		return m_objModelSource.getTableModel();
+	}
 
 	public boolean getColumnSorted()
 	{
@@ -103,22 +104,40 @@ public class SimpleTableColumnComponent
 	{
 		return m_objColumn.getDisplayName();
 	}
-    
-    public boolean getIsSorted()
-    {
-        ITableSortingState objSortingState = getTableModel().getSortingState();
-        String strSortColumn = objSortingState.getSortColumn();
-        return m_objColumn.getColumnName().equals(strSortColumn);
-    }
 
-    public IAsset getSortImage()
-    {
-        ITableSortingState objSortingState = getTableModel().getSortingState();
-        if (objSortingState.getSortOrder() == ITableSortingState.SORT_ASCENDING)
-            return getAsset("sortUp");
-        else
-            return getAsset("sortDown");
-    }
+	public boolean getIsSorted()
+	{
+		ITableSortingState objSortingState = getTableModel().getSortingState();
+		String strSortColumn = objSortingState.getSortColumn();
+		return m_objColumn.getColumnName().equals(strSortColumn);
+	}
+
+	public IAsset getSortImage()
+	{
+		IAsset objImageAsset;
+
+		IRequestCycle objCycle = getPage().getRequestCycle();
+		ITableSortingState objSortingState = getTableModel().getSortingState();
+		if (objSortingState.getSortOrder()
+			== ITableSortingState.SORT_ASCENDING)
+		{
+			objImageAsset =
+				(IAsset) objCycle.getAttribute(
+					TableColumns.TABLE_COLUMN_ARROW_UP_ATTRIBUTE);
+			if (objImageAsset == null)
+				objImageAsset = getAsset("sortUp");
+		}
+		else
+		{
+			objImageAsset =
+				(IAsset) objCycle.getAttribute(
+					TableColumns.TABLE_COLUMN_ARROW_DOWN_ATTRIBUTE);
+			if (objImageAsset == null)
+				objImageAsset = getAsset("sortDown");
+		}
+
+		return objImageAsset;
+	}
 
 	public Object[] getColumnSelectedParameters()
 	{
@@ -145,8 +164,8 @@ public class SimpleTableColumnComponent
 				strColumnName,
 				ITableSortingState.SORT_ASCENDING);
 
-        // ensure that the change is saved
-        objSource.fireObservedStateChange();
+		// ensure that the change is saved
+		objSource.fireObservedStateChange();
 	}
 
 }

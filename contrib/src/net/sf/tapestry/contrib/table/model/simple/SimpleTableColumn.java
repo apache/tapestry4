@@ -105,7 +105,7 @@ public abstract class SimpleTableColumn implements ITableColumn, Serializable
 
 	/**
 	 * Returns the display name of the column that will be used 
-     * in the table header.<br>
+     * in the table header.
      * Override for internationalization.
 	 * @return String the display name of the column
 	 */

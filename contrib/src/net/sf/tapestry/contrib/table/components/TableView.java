@@ -88,6 +88,85 @@ import net.sf.tapestry.event.PageRenderListener;
  * </ul>
  * <p>
  * 
+ * <table border=1 align="center">
+ * <tr>
+ *    <th>Parameter</th>
+ *    <th>Type</th>
+ *    <th>Direction </th>
+ *    <th>Required</th>
+ *    <th>Default</th>
+ *    <th>Description</th>
+ * </tr>
+ *
+ * <tr>
+ *  <td>tableModel</td>
+ *  <td>{@link net.sf.tapestry.contrib.table.model.ITableModel}</td>
+ *  <td>in</td>
+ *  <td>yes</td>
+ *  <td>&nbsp;</td>
+ *  <td align="left">The TableModel to be used to render the table. 
+ *      This binding is typically used only once at the beginning and then the 
+ *      component stores the model in the session state. 
+ *      <p>If you want the Table to read the model every time you can use
+ *      a session state manager such as 
+ *      {@link net.sf.tapestry.contrib.table.model.common.NullTableSessionStateManager}
+ *      that will force it to get the TableModel from this binding every time.
+ *      If you do this, however, you will be responsible for saving the state of 
+ *      the table yourself.
+ *      <p> You can also call the reset() method to force the Table to abandon
+ *      its old model and reload a new one.
+ *  </td> 
+ * </tr>
+ *
+ * <tr>
+ *  <td>tableSessionStateManager</td>
+ *  <td>{@link net.sf.tapestry.contrib.table.model.ITableSessionStateManager}</td>
+ *  <td>in</td>
+ *  <td>no</td>
+ *  <td>{@link net.sf.tapestry.contrib.table.model.common.FullTableSessionStateManager}</td>
+ *  <td align="left">This is the session state manager that will control what part of the 
+ *      table model will be saved in the session state. 
+ *      It is then used to recreate the table model from
+ *      using what was saved in the session. By default, the 
+ *      {@link net.sf.tapestry.contrib.table.model.common.FullTableSessionStateManager}
+ *      is used, which just saves the entire model into the session.
+ *      This behaviour may not be appropriate when the data is a lot or it is not
+ *      {@link java.io.Serializable}.
+ *      <p> You can use one of the stock implementations of  
+ *      {@link net.sf.tapestry.contrib.table.model.ITableSessionStateManager}
+ *      to determine the session state behaviour, or you can just define your own.
+ *  </td> 
+ * </tr>
+ *
+ * <tr>
+ *  <td>tableSessionStoreManager</td>
+ *  <td>{@link net.sf.tapestry.contrib.table.model.ITableSessionStoreManager}</td>
+ *  <td>in</td>
+ *  <td>no</td>
+ *  <td>null</td>
+ *  <td align="left">Determines how the session state (returned by the session state manager)
+ *      will be saved in the session. If this parameter is null, then the state
+ *      will be saved as a persistent property. If it is not null, then the methods
+ *      of the interface will be used to save and load the state.
+ *  </td> 
+ * </tr>
+ *
+ * <tr>
+ *  <td>element</td>
+ *  <td>String</td>
+ *  <td>in</td>
+ *  <td>no</td>
+ *  <td>"table"</td>
+ *  <td align="left">The tag that will be used to wrap the inner components.
+ *      If no binding is given, the tag that will be generated is 'table'. If you 
+ *      would like to place the bounds of the table elsewhere, you can make the
+ *      element 'span' or another neutral tag and manually define the table.
+ *  </td> 
+ * </tr>
+ *
+ * </table> 
+ * 
+ * 
  * @author mindbridge
  * @version $Id$
  */
@@ -351,12 +430,12 @@ public class TableView
 	protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
-        Object objOldValue = cycle.getAttribute(ITableModelSource.TABLE_MODEL_SOURCE_PROPERTY);
-        cycle.setAttribute(ITableModelSource.TABLE_MODEL_SOURCE_PROPERTY, this);
+        Object objOldValue = cycle.getAttribute(ITableModelSource.TABLE_MODEL_SOURCE_ATTRIBUTE);
+        cycle.setAttribute(ITableModelSource.TABLE_MODEL_SOURCE_ATTRIBUTE, this);
 
 		super.renderComponent(writer, cycle);
 
-        cycle.setAttribute(ITableModelSource.TABLE_MODEL_SOURCE_PROPERTY, objOldValue);
+        cycle.setAttribute(ITableModelSource.TABLE_MODEL_SOURCE_ATTRIBUTE, objOldValue);
 	}
 
 
