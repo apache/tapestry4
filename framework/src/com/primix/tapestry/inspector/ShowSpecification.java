@@ -42,9 +42,9 @@ import java.util.*;
  *  @author Howard Ship
  *
  */
- 
+
 public class ShowSpecification extends BaseComponent
-implements ILifecycle
+	implements ILifecycle
 {
 	private IComponent inspectedComponent;
 	private ComponentSpecification inspectedSpecification;
@@ -55,8 +55,9 @@ implements ILifecycle
 	private List assetNames;
 	private List formalParameterNames;
 	private List informalParameterNames;
-
-
+	private List sortedPropertyNames;
+	private String propertyName;
+	
 	private static class ComponentComparitor implements Comparator
 	{
 		public int compare(Object left, Object right)
@@ -65,20 +66,20 @@ implements ILifecycle
 			String leftId;
 			IComponent rightComponent;
 			String rightId;
-
+			
 			if (left == right)
 				return 0;
-
+			
 			leftComponent = (IComponent)left;
 			rightComponent = (IComponent)right;
-
+			
 			leftId = leftComponent.getId();
 			rightId = rightComponent.getId();
-
+			
 			return leftId.compareTo(rightId);			
 		}
 	}
-
+	
 	public void cleanupAfterRender(IRequestCycle cycle)
 	{
 		inspectedComponent = null;
@@ -90,43 +91,45 @@ implements ILifecycle
 		assetNames = null;
 		formalParameterNames = null;
 		informalParameterNames = null;
+		sortedPropertyNames = null;
+		propertyName = null;
 	}
-
+	
 	/**
 	 *  Gets the inspected component and specification from the {@link Inspector} page.
 	 *
 	 */
-
+	
 	public void prepareForRender(IRequestCycle cycle)
 	{
 		Inspector inspector;
-
+		
 		inspector = (Inspector)page;
-
+		
 		inspectedComponent = inspector.getInspectedComponent();
 		inspectedSpecification = inspectedComponent.getSpecification();
 	}
-
+	
 	public IComponent getInspectedComponent()
 	{
 		return inspectedComponent;
 	}
-
+	
 	public ComponentSpecification getInspectedSpecification()
 	{
 		return inspectedSpecification;
 	}
-
+	
 	/**
 	 *  Returns a sorted list of formal parameter names.
 	 *
 	 */
-
+	
 	public List getFormalParameterNames()
 	{
 		if (formalParameterNames != null)
 			return formalParameterNames;
-			
+		
 		Collection names = inspectedSpecification.getParameterNames();
 		if (names != null && names.size() > 0)
 		{
@@ -136,24 +139,24 @@ implements ILifecycle
 		
 		return formalParameterNames;
 	}
-
+	
 	/** 
 	 *  Returns a sorted list of informal parameter names.  This is
 	 *  the list of all bindings, with the list of parameter names removed,
 	 *  sorted.
 	 *
 	 */
-
+	
 	public List getInformalParameterNames()
 	{
 		if (informalParameterNames != null)
 			return informalParameterNames;
-			
+		
 		Collection names = inspectedComponent.getBindingNames();
 		if (names != null && names.size() > 0)
 		{
 			informalParameterNames = new ArrayList(names);
-
+			
 			// Remove the names of any formal parameters.  This leaves
 			// just the names of informal parameters (informal parameters
 			// are any parameters/bindings that don't match a formal parameter
@@ -162,143 +165,179 @@ implements ILifecycle
 			names = inspectedSpecification.getParameterNames();
 			if (names != null)
 				informalParameterNames.removeAll(names);
-
+			
 			Collections.sort(informalParameterNames);
 		}
 		
 		return informalParameterNames;		
 	}
-
+	
 	public String getParameterName()
 	{
 		return parameterName;
 	}
-
+	
 	public void setParameterName(String value)
 	{
 		parameterName = value;
 	}
-
+	
 	/**
 	 *  Returns the {@link ParameterSpecification} corresponding to
 	 *  the value of the parameterName property.
 	 *
 	 */
-
+	
 	public ParameterSpecification getParameterSpecification()
 	{
 		return inspectedSpecification.getParameter(parameterName);
 	}
-
+	
 	/**
 	 *  Returns the {@link IBinding} corresponding to the value of
 	 *  the parameterName property.
 	 *
 	 */
-
+	
 	public IBinding getBinding()
 	{
 		return inspectedComponent.getBinding(parameterName);
 	}
-
+	
 	public void setAssetName(String value)
 	{
 		assetName = value;
 	}
-
+	
 	public String getAssetName()
 	{
 		return assetName;
 	}
-
+	
 	/**
 	 *  Returns the {@link IAsset} corresponding to the value
 	 *  of the assetName property.
 	 *
 	 */
-
+	
 	public IAsset getAsset()
 	{
 		return (IAsset)inspectedComponent.getAssets().get(assetName);
 	}
-
+	
 	/**
 	 *  Returns a sorted list of asset names, or null if the
 	 *  component contains no assets.
 	 *
 	 */
-
+	
 	public List getAssetNames()
 	{
 		if (assetNames != null)
 			return assetNames;
-			
+		
 		Map assets = inspectedComponent.getAssets();
-
+		
 		if (assets != null && assets.size() > 0)
 		{
 			assetNames = new ArrayList(assets.keySet());
 			Collections.sort(assetNames);
 		}
-
+		
 		return assetNames;
 	}
-
-
+	
+	
 	public List getSortedComponents()
 	{
 		if (sortedComponents != null)
 			return sortedComponents;
-			
+		
 		Inspector inspector = (Inspector)page;
 		IComponent inspectedComponent = inspector.getInspectedComponent();
-
+		
 		// Get a Map of the components and simply return null if there
 		// are none.
-
+		
 		Map components = inspectedComponent.getComponents();
 		
 		if (components != null && components.size() > 0)
 		{
 			sortedComponents = new ArrayList(components.values());
-
+			
 			Collections.sort(sortedComponents, new ComponentComparitor());	
 		}
 		
 		return sortedComponents;
 	}
-
+	
 	public void setComponent(IComponent value)
 	{
 		component = value;
 	}
-
+	
 	public IComponent getComponent()
 	{
 		return component;
 	}
-
+	
 	/**
 	 *  Returns the type of the component, as specified in the container's
 	 *  specification (i.e., the component alias if known).
 	 *
 	 */
-
+	
 	public String getComponentType()
 	{
 		String id;
 		ComponentSpecification containerSpecification;
 		IComponent container;
 		ContainedComponent contained;
-
+		
 		container = component.getContainer();
-
+		
 		containerSpecification = container.getSpecification();
-
+		
 		id = component.getId();
 		contained = containerSpecification.getComponent(id);
-
+		
 		return contained.getType();
 	}
-
+	
+	/**
+	 *  Returns a list of the properties for the component
+	 *  (from its specification), or null if the component
+	 *  has no properties.
+	 *
+	 */
+	
+	public List getSortedPropertyNames()
+	{
+		if (sortedPropertyNames != null)
+			return sortedPropertyNames;
+		
+		Collection names = inspectedSpecification.getPropertyNames();
+		if (names != null && names.size() > 0)
+		{
+			sortedPropertyNames = new ArrayList(names);
+			Collections.sort(sortedPropertyNames);
+		}
+		
+		return sortedPropertyNames;
+	}
+	
+	public void setPropertyName(String value)
+	{
+		propertyName = value;
+	}
+	
+	public String getPropertyName()
+	{
+		return propertyName;
+	}
+	
+	public String getPropertyValue()
+	{
+		return inspectedSpecification.getProperty(propertyName);
+	}
 }

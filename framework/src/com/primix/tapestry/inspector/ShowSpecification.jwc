@@ -41,7 +41,7 @@
     <binding name="source" property-path="informalParameterNames"/>
     <binding name="value" property-path="parameterName"/>
   </component>
-  <component id="evenOddInformal" type="/com/primix/tapestry/inspector/EvenOdd.jwc"/>
+  <component id="evenOddInformal" copy-of="evenOddFormal"/>
   <component id="insertInformalName" type="Insert">
     <binding name="value" property-path="parameterName"/>
   </component>
@@ -55,7 +55,7 @@
     <binding name="source" property-path="assetNames"/>
     <binding name="value" property-path="assetName"/>
   </component>
-  <component id="evenOddAsset" type="/com/primix/tapestry/inspector/EvenOdd.jwc"/>
+  <component id="evenOddAsset" copy-of="evenOddFormal"/>
   <component id="insertAssetName" type="Insert">
     <binding name="value" property-path="assetName"/>
   </component>
@@ -69,7 +69,7 @@
     <binding name="source" property-path="sortedComponents"/>
     <binding name="value" property-path="component"/>
   </component>
-  <component id="evenOddComponent" type="/com/primix/tapestry/inspector/EvenOdd.jwc"/>
+  <component id="evenOddComponent" copy-of="evenOddFormal"/>
   <component id="selectComponent" type="Direct">
     <binding name="listener" property-path="page.selectComponentListener"/>
     <binding name="context" property-path="component.idPath"/>
@@ -80,4 +80,19 @@
   <component id="insertComponentType" type="Insert">
     <binding name="value" property-path="componentType"/>
   </component>
+  <component id="ifProperties" type="Conditional">
+    <binding name="condition" property-path="sortedPropertyNames"/>
+  </component>
+  <component id="e-property" type="Foreach">
+    <binding name="source" property-path="sortedPropertyNames"/>
+    <binding name="value" property-path="propertyName"/>
+  </component>
+  <component id="evenOddProperty" copy-of="evenOddFormal"/>
+  <component id="insertPropertyName" type="Insert">
+    <binding name="value" property-path="propertyName"/>
+  </component>
+  <component id="insertPropertyValue" type="Insert">
+    <binding name="value" property-path="propertyValue"/>
+  </component>
+  
 </specification>

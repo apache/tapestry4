@@ -6,6 +6,8 @@
   <!ENTITY required '<field-binding name="required" field-name="Boolean.TRUE"/>'>
 ]>
 <specification class="tutorial.valid.Home">
+  <property name="foo">bar</property>
+  <property name="baz">boop</property>
   <component id="border" type="Border"/>
   <component id="showError" type="ShowError"/>
   <component id="form" type="Form">

@@ -48,17 +48,6 @@ import com.primix.tapestry.asset.*;
  *  Pages are retrieved from the pool using {@link #getPage(IEngine, String, IMonitor)}
  *  and are later returned to the pool using {@link #releasePage(IPage)}.
  *
- *  <p>During development, it is useful to occasionally disable pooling of pages.
- *  This will slow down requests as new page object hierarchies will have to be
- *  created for each request.  However, it will identify a common Tapestry
- *  developer failure:  expecting transient page properties to be available
- *  on subsequent request cycles (this is usually related to
- *  an incomplete implementation of {@link IPage#detach()}).
- *
- *  <p>Setting the JVM system property
- * <code>com.primix.tapestry.disable-page-pool</code>
- *  will turn pooling off (pages will always be discarded at the end of
- *  the request cycle, never recycled in subsequent cycles).
  *
  *  <p>In addition, this class acts as a cache of serveral common
  *  objects:
@@ -101,15 +90,12 @@ public class PageSource
 	*/
 
 	private Pool pool;
-	private boolean poolDisabled;
 
 	private static final String PAGE_LOADER_KEY = "PageLoader";
 
 	public PageSource(IResourceResolver resolver)
 	{
 		this.resolver = resolver;
-
-		poolDisabled = Boolean.getBoolean("com.primix.tapestry.disable-page-pool");
 
 		pool = new Pool();
 	}
@@ -118,17 +104,6 @@ public class PageSource
 	{
 		return resolver;
 	}
-
-	/**
-	*  Returns true if the page pool has been disabled.
-	*
-	*/
-
-	public boolean isPoolDisabled()
-	{
-		return poolDisabled;
-	}
-
 
 
 	/**
@@ -177,10 +152,7 @@ public class PageSource
 	throws PageLoaderException
 	{
 		Object key = buildKey(engine, pageName);
-		IPage result = null;
-
-		if (!poolDisabled)
-			result = (IPage)pool.retrieve(key);
+		IPage result = (IPage)pool.retrieve(key);
 
 		if (result == null)
 		{
@@ -238,8 +210,7 @@ public class PageSource
 	{
 		page.detach();
 
-		if (!poolDisabled)
-			pool.store(buildKey(page), page);
+		pool.store(buildKey(page), page);
 	}
 
 	/**

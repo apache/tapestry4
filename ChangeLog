@@ -1,3 +1,28 @@
+* May 24 2001 hship
+
+Change the Inspector to show any properties associated with a component's
+specification.  Also, change the Engine tab to show the Tapestry framework
+version.  Have the specification parser reject specifications with
+unknown public ids.
+Add support for directly accessing public instance variables of classes
+(that implement the IPublicBean marker interface).
+Add a getName() method to IEngineService, and a getService() method to
+IRequestCycle.
+Remove the ChangeLog in framework; this ChangeLog will contain changes
+to the framework going forward.
+Add code to AbstractApplication to clear all cached pages, specifications and templates
+at the end of the request cycle (if enabled by a JVM system property).
+Upgrade to Log4J 1.1.1.
+Revise the Script component and friends, allowing for conditionals, looping and
+accessing of properties via property paths.
+
+[417086] Tapestry inspector omits data
+[411692] PropertyHelper for public instance vars
+[406039] Determine service during request
+[425107] Caching of component definition configurable as startup parameter
+[426959] Decorator doesn't cache properly
+[405517] Common interface for form elements
+
 * May 21 2001 hship
 
 Revise the Tapestry Inspector to use Blocks instead of Conditionals to handle tabbing

@@ -50,11 +50,6 @@ import java.util.*;
 
 public class MapHelper extends PropertyHelper
 {
-	static
-	{
-		PropertyHelper.register(Map.class, MapHelper.class);
-	}
-
 	private static class MapAccessor
 	implements IPropertyAccessor
 	{

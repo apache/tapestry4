@@ -2,6 +2,9 @@
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="com.primix.tapestry.inspector.ShowEngine" allow-body="no" allow-informal-parameters="no">
+  <component id="insertFrameworkVersion" type="Insert">
+  	<field-binding name="value" field-name="com.primix.tapestry.Tapestry.VERSION"/>
+  </component>
   <component id="insertApplicationName" type="Insert">
     <binding name="value" property-path="page.engine.specification.name"/>
   </component>

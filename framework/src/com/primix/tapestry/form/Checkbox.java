@@ -38,7 +38,7 @@ import com.primix.tapestry.html.*;
  *  Implements a component that manages an HTML &lt;input type=checkbox&gt;
  *  form element.
  *
-   * <table border=1>
+ * <table border=1>
  * <tr> 
  *    <td>Parameter</td>
  *    <td>Type</td>
@@ -88,106 +88,106 @@ public class Checkbox extends AbstractFormComponent
 	private IBinding disabledBinding;
 	private boolean staticDisabled;
 	private boolean disabledValue;
-
+	
 	private String name;
-
+	
 	public String getName()
 	{
 		return name;
 	}
-
+	
 	private static final String[] reservedNames = 
     { "type", "name", "checked"};
-
+	
 	public IBinding getDisabledBinding()
 	{
 		return disabledBinding;
 	}
-
+	
 	public IBinding getSelectedBinding()
 	{
 		return selectedBinding;
 	}
-
-
+	
+	
 	/**
-	*  Renders the form elements, or responds when the form containing the element
-	*  is submitted (by checking {@link Form#isRewinding()}.
-	*
-	*  <p>In traditional HTML, many checkboxes would have the same name but different values.
-	*  Under Tapestry, it makes more sense to have different names and a fixed value.
-	*  For a checkbox, we only care about whether the name appears as a request parameter.
-	*
-	**/
-
+	 *  Renders the form elements, or responds when the form containing the element
+	 *  is submitted (by checking {@link Form#isRewinding()}.
+	 *
+	 *  <p>In traditional HTML, many checkboxes would have the same name but different values.
+	 *  Under Tapestry, it makes more sense to have different names and a fixed value.
+	 *  For a checkbox, we only care about whether the name appears as a request parameter.
+	 *
+	 **/
+	
 	public void render(IResponseWriter writer, IRequestCycle cycle) 
-	throws RequestCycleException
+		throws RequestCycleException
 	{
 		boolean rewinding;
 		String value;
 		boolean disabled = false;
 		Form form;
 		boolean checked;
-
+		
 		form = getForm(cycle);
-
+		
 		// It isn't enough to know whether the cycle in general is rewinding, need to know
 		// specifically if the form which contains this component is rewinding.
-
+		
 		rewinding = form.isRewinding();
-
+		
 		// Used whether rewinding or not.
-
+		
 		name = form.getNextElementId("Checkbox");
-
+		
 		if (staticDisabled)
 			disabled = disabledValue;
 		else if (disabledBinding != null)
 			disabled = disabledBinding.getBoolean();
-
+		
 		if (rewinding)
 		{
 			if (!disabled)
 			{
 				value = cycle.getRequestContext().getParameter(name);
-
+				
 				checked = (value != null);
-
+				
 				selectedBinding.setBoolean(checked);
 			}
-
+			
 		}
 		else
 		{
 			checked = selectedBinding.getBoolean();
-
+			
 			writer.beginEmpty("input");
 			writer.attribute("type", "checkbox");
-
+			
 			writer.attribute("name", name);
-
+			
 			if (disabled)
 				writer.attribute("disabled");
-
+			
 			if (checked)
 				writer.attribute("checked");
-
+			
 			generateAttributes(cycle, writer, reservedNames);
-
+			
 			writer.closeTag();
 		}
-
+		
 	}
-
+	
 	public void setDisabledBinding(IBinding value)
 	{
 		disabledBinding = value;
-
+		
 		staticDisabled = value.isStatic();
 		if (staticDisabled)
 			disabledValue = value.getBoolean();
 	}
-
+	
 	public void setSelectedBinding(IBinding value)
 	{
 		selectedBinding = value;

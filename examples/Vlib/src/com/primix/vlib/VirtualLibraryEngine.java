@@ -97,7 +97,7 @@ public class VirtualLibraryEngine
 				String[] context)
 		{
 			if (context == null || context.length != 2)
-				throw new ApplicationRuntimeException("external service required two parameters.");
+				throw new ApplicationRuntimeException("external service requires two parameters.");
 			
 			// Not sure what's in that primary key parameter (may have spaces, slashes,
 			// or other illegal characters.
@@ -117,6 +117,11 @@ public class VirtualLibraryEngine
 			serviceExternal(cycle, output);
 			
 			return true;
+		}
+		
+		public String getName()
+		{
+			return EXTERNAL_SERVICE;
 		}
 		
 	}

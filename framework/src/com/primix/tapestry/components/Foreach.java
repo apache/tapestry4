@@ -1,4 +1,3 @@
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -50,8 +49,8 @@ import com.primix.tapestry.*;
  *
  * <tr>
  *  <td>source</td>
- *  <td>java.util.Iterator
- *		<br>java.util.Collection
+ *  <td>{@link Iterator}
+ *		<br>{@link Collection}
  *      <br>java.lang.Object[]
  *  </td>
  *  <td>R</th>
@@ -59,7 +58,8 @@ import com.primix.tapestry.*;
  *  <td>&nbsp;</td>
  *  <td>The source of objects to be iterated, which may be a Collection,
  *  an Iterator or an array of Objects.  If unbound, or the binding
- *  is null, then no iteration takes place.</td>
+ *  is null, or bound to an unusable value (one not in the list), 
+ *  then no iteration takes place.</td>
  * </tr>
  *
  * <tr>
@@ -131,126 +131,98 @@ public class Foreach extends AbstractComponent
 	{
 		return firstBinding;
 	}
-
+	
 	public IBinding getLastBinding()
 	{
 		return lastBinding;
 	}
-
+	
 	public IBinding getSourceBinding()
 	{
 		return sourceBinding;
 	}
-
+	
 	/**
-	*  Gets the source binding and returns an {@link Iterator}
-	*  representing
-	*  the values identified by the source.  Returns an empty {@link Iterator}
-	*  if the binding, or the binding value, is null.
-	*
-	*  <p>Returns null if the binding value is not an {@link Iterator},
-	*  {@link Collection} or {@link Object}[].
-	*
-	*/
-
+	 *  Gets the source binding and returns an {@link Iterator}
+	 *  representing
+	 *  the values identified by the source.  Returns an empty {@link Iterator}
+	 *  if the binding, or the binding value, is null.
+	 *
+	 *  <p>Invokes {@link Tapestry#coerceToIterator(Object)} to perform
+	 *  the actual conversion.
+	 *
+	 */
+	
 	protected Iterator getSourceData()
-	throws RequestCycleException
+		throws RequestCycleException
 	{
-		Object rawValue = null;
-
-		if (sourceBinding != null)
-			rawValue = sourceBinding.getObject();
-
-		if (rawValue == null)
-			return Collections.EMPTY_LIST.iterator();
-
-
-		if (rawValue instanceof Iterator)
-			return (Iterator)rawValue;
-
-		if (rawValue instanceof Collection)
-		{
-			Collection collection;
-
-			collection = (Collection)rawValue;
-
-			return collection.iterator();
-		}
-
-
-		if (rawValue instanceof Object[])
-		{
-			Object[] array;
-
-			array = (Object[])rawValue;
-
-			return Arrays.asList(array).iterator();
-		}                        
-
-		// Not a known source class, return null to signal so.
-
-		return null;
+		
+		if (sourceBinding == null)
+			return null;
+		
+		Object rawValue = sourceBinding.getObject();
+		
+		return Tapestry.coerceToIterator(rawValue);
 	}
 	
     public IBinding getValueBinding()
 	{
 		return valueBinding;
 	}
-
+	
 	/**
-	*  Gets the source binding and iterates through
-	*  its values.  For each, it updates the value binding and render's its wrapped elements.
-	*
-	*/
-
+	 *  Gets the source binding and iterates through
+	 *  its values.  For each, it updates the value binding and render's its wrapped elements.
+	 *
+	 */
+	
 	public void render(IResponseWriter writer, IRequestCycle cycle) 
-	throws RequestCycleException
+		throws RequestCycleException
 	{
-		Iterator dataSource;
-		int i = 0;
-		boolean hasNext;
-
-		dataSource = getSourceData();
+		
+		Iterator dataSource = getSourceData();
+		
+		// The dataSource was either not convertable, or was empty.
+		
 		if (dataSource == null)
-			throw new RequestCycleException(
-				"Parameter source is not convertable to type java.util.Iterator.",
-				this);
-
+			return;		
+		
 		try
 		{
 			rendering = true;
 			value = null;
-
-			hasNext = dataSource.hasNext();
-
+			int i = 0;
+			
+			boolean hasNext = dataSource.hasNext();
+			
 			while (hasNext)
 			{
 				value = dataSource.next();
 				hasNext = dataSource.hasNext();
-
+				
 				// On the first pass, set the 'first' to true and
 				// (usually) the 'last' binding to false
 				// On the second pass, set the 'first' binding to false
 				// On the last pass, set the 'last' binding to true
-
+				
 				if (i == 0)
 				{
 					setFirst(true);
-
+					
 					if (hasNext)
 						setLast(false);
 				}
 				else if (i == 1)
 					setFirst(false);
-
+				
 				if (!hasNext)
 					setLast(true);
-
+				
 				if (valueBinding != null)
 					valueBinding.setObject(value);
-	
+				
 				renderWrapped(writer, cycle);
-
+				
 				i++;
 			}
 		}
@@ -260,22 +232,22 @@ public class Foreach extends AbstractComponent
 			rendering = false;
 		}
 	}
-
+	
 	public void setFirstBinding(IBinding value)
 	{
 		firstBinding = value;
 	}
-
+	
 	public void setLastBinding(IBinding value)
 	{
 		lastBinding = value;
 	}
-
+	
 	public void setSourceBinding(IBinding value)
 	{
 		sourceBinding = value;
 	}
-
+	
 	public void setValueBinding(IBinding value)
 	{
 		valueBinding = value;
@@ -297,12 +269,12 @@ public class Foreach extends AbstractComponent
 	 *  @throws RenderOnlyPropertyException is the Foreach is not currently rendering.
 	 *
 	 */
-	 
+	
 	public boolean isFirst()
 	{
 		if (!rendering)
 			throw new RenderOnlyPropertyException(this, "first");
-			
+		
 		return first; 
 	}
 	
@@ -323,7 +295,7 @@ public class Foreach extends AbstractComponent
 	 *  @throws RenderOnlyPropertyException is the Foreach is not currently rendering.
 	 *
 	 */
-	 
+	
 	public boolean isLast()
 	{
 		if (!rendering)
@@ -343,7 +315,7 @@ public class Foreach extends AbstractComponent
 	{
 		if (!rendering)
 			throw new RenderOnlyPropertyException(this, "value");
-			
+		
 		return value;
 	}
 	

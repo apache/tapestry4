@@ -174,10 +174,6 @@ extends AbstractComponent
 	{
 		Map result = null;
 		boolean copy = false;
-		Iterator i;
-		String bindingName;
-		IBinding binding;
-		String value;
 
 		if (symbolsBinding != null)
 		{
@@ -191,19 +187,19 @@ extends AbstractComponent
 		// formal and informal parmeters).  Skip the formal ones and
 		// access the informal ones.
 
-		i = getBindingNames().iterator();
+		Iterator i = getBindingNames().iterator();
 		while (i.hasNext())
 		{
-			bindingName = (String)i.next();
+			String bindingName = (String)i.next();
 
 			// Skip formal parameters
 
 			if (specification.getParameter(bindingName) != null)
 				continue;
 
-			binding = getBinding(bindingName);
+			IBinding binding = getBinding(bindingName);
 
-			value = (String)binding.getObject(bindingName, String.class);
+			Object value = binding.getObject();
 
 			if (value == null)
 				continue;

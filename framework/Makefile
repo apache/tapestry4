@@ -44,7 +44,7 @@ INSTALL_DIR = ../lib
 JAVADOC_DIR = ../doc/api
 
 JAVADOC_OPT = \
-	-version -author -splitindex -windowtitle "Tapestry API" \
+	-version -author -splitindex -windowtitle "Tapestry API 1.0.1" \
 	-link http://java.sun.com/j2se/1.3/docs/api \
 	-link http://java.sun.com/j2ee/j2sdkee/techdocs/api \
 	-link http://jakarta.apache.org/log4j/docs/api \

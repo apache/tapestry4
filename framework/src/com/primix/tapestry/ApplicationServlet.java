@@ -339,7 +339,7 @@ abstract public class ApplicationServlet
 										  "%c{1} [%p] %m%n");
 		
 		Layout layout = new PatternLayout(pattern);
-		Appender rootAppender = new FileAppender(layout, System.out);
+		Appender rootAppender = new ConsoleAppender(layout);
 		root.addAppender(rootAppender);
 	}
 	

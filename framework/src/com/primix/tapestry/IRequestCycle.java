@@ -225,4 +225,14 @@ public interface IRequestCycle
 
     public void commitPageChanges()
     throws PageRecorderCommitException;
+	
+	/**
+	 *  Returns the service which initiated this request cycle.  This may return
+	 *  null (very early during the request cycle) if the service has not
+	 *  yet been determined.
+	 *
+	 *  @since 1.0.1
+	 */
+	
+	public IEngineService getService();
 }

@@ -7,6 +7,10 @@ Associated with the public identifier:
 
 	-//Howard Ship//Tapestry Specification 1.1//EN
 	
+The canonical location for the DTD is:
+
+	http://tapestry.sf.net/dtd/Tapestry_1_1.dtd
+
 For application specifications, the root element is application.
 
 For component specifications the root element is specification.

@@ -185,4 +185,12 @@ public interface IEngineService
 	
     public boolean service(IRequestCycle cycle, ResponseOutputStream output)
 		throws RequestCycleException, ServletException, IOException;
+	
+	/**
+	 *  Returns the name of the service.
+	 *
+	 *  @since 1.0.1
+	 */
+	
+	public String getName();
 }

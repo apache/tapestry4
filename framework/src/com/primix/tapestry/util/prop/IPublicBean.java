@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix
+ * Copyright (c) 2001 by Howard Ship and Primix
  *
  * Primix
  * 311 Arsenal Street
@@ -26,53 +26,19 @@
  *
  */
 
-package com.primix.tapestry.script;
-
-import java.util.*;
-import java.io.*;
+package com.primix.tapestry.util.prop;
 
 /**
- *  A token that writes the value of a named symbol.
+ * A marker interfaces for objects that allow access to their public
+ * instance variables as if they were JavaBeans properties.  This saves
+ * developers the effort of implementing accessor methods for
+ * objects that exist purely to store data.
  *
- *  @author Howard Ship
- *  @version $Id$
- *
+ * @version $Id$
+ * @author Howard Ship
+ * @since 1.0.1
  */
 
-class SymbolToken
-implements IScriptToken
+public interface IPublicBean
 {
-    private String name;
-
-    SymbolToken(String name)
-    {
-        this.name = name;
-    }
-    
-    /**
-     *  Gets the named symbol from the symbols {@link Map}, verifies that
-     *  it is a String, and writes it to the {@link Writer}.
-     *
-     */
-
-	public void write(StringBuffer buffer, ScriptSession session)
-	throws ScriptException
-	{
-	    String value;
-
-		value = session.getSymbol(name);
-		
-        if (value == null)
-            throw new ScriptException(
-                "No symbol '" + name + "' provided for this script.",
-						this, session);
-
-		buffer.append(value);
-	}
-	
-	public void addToken(IScriptToken token)
-	{
-		// Should never be invoked.
-	}
-	
 }
