@@ -39,11 +39,8 @@ public class EnhancedClass extends BaseEnhancedClass
     private EnhancedClassFactory _classFactory;
 
     private ClassFabricator _classFabricator = null;
-    
-    public EnhancedClass(
-        String className,
-        Class parentClass,
-        EnhancedClassFactory classFactory)
+
+    public EnhancedClass(String className, Class parentClass, EnhancedClassFactory classFactory)
     {
         _className = className;
         _parentClass = parentClass;
@@ -57,7 +54,7 @@ public class EnhancedClass extends BaseEnhancedClass
     {
         return _className;
     }
-    
+
     public CtClass getObjectType(String type)
     {
         return _classFactory.getObjectType(type);
@@ -65,7 +62,8 @@ public class EnhancedClass extends BaseEnhancedClass
 
     public ClassFabricator getClassFabricator()
     {
-        if (_classFabricator == null) {
+        if (_classFabricator == null)
+        {
             CtClass jaParentClass = getObjectType(_parentClass.getName());
             ClassPool classPool = _classFactory.getClassPool();
             _classFabricator = new ClassFabricator(_className, jaParentClass, classPool);
@@ -90,7 +88,12 @@ public class EnhancedClass extends BaseEnhancedClass
         String readMethodName,
         boolean persistent)
     {
-        IEnhancer enhancer = new CreatePropertyEnhancer(propertyName, getObjectType(propertyType), readMethodName, persistent);
+        IEnhancer enhancer =
+            new CreatePropertyEnhancer(
+                propertyName,
+                getObjectType(propertyType),
+                readMethodName,
+                persistent);
         addEnhancer(enhancer);
     }
 
@@ -103,7 +106,13 @@ public class EnhancedClass extends BaseEnhancedClass
         String typeClassName,
         String readMethodName)
     {
-        IEnhancer enhancer = new CreateAutoParameterEnhancer(this, propertyName, parameterName, getObjectType(typeClassName), readMethodName);
+        IEnhancer enhancer =
+            new CreateAutoParameterEnhancer(
+                this,
+                propertyName,
+                parameterName,
+                getObjectType(typeClassName),
+                readMethodName);
         addEnhancer(enhancer);
     }
 
@@ -116,12 +125,15 @@ public class EnhancedClass extends BaseEnhancedClass
 
         ClassFabricator cf = getClassFabricator();
         cf.commit();
-        
+
         String enhancedClassName = getClassName();
         byte[] enhancedClassBytes = cf.getByteCode();
-        
+
         EnhancedClassLoader loader = _classFactory.getEnhancedClassLoader();
-        return loader.defineClass(enhancedClassName, enhancedClassBytes);
+        return loader.defineClass(
+            enhancedClassName,
+            enhancedClassBytes,
+            _parentClass.getProtectionDomain());
     }
 
 }
