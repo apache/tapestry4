@@ -47,11 +47,31 @@ import net.sf.tapestry.spec.ComponentSpecification;
 
 public class BaseComponent extends AbstractComponent
 {
+    /**
+     *  @deprecated to be remoaved after 2.1
+     * 
+     **/
+
     protected static final int OUTER_INIT_SIZE = 5;
+
+    /**
+     * 
+     *  @deprecated to be removed after 2.1, use {@link IComponent#renderWrapped(IMarkupWriter, IRequestCycle)}.
+     * 
+     **/
+
     protected int outerCount = 0;
+
+    /**
+     * 
+     *  @deprecated to be removed after 2.1, use {@link IComponent#renderWrapped(IMarkupWriter, IRequestCycle)}.
+     * 
+     **/
+
     protected IRender[] outer;
 
-    private static final Category CAT = Category.getInstance(BaseComponent.class);
+    private static final Category CAT =
+        Category.getInstance(BaseComponent.class);
 
     /**
      *  A class used with invisible localizations.  Constructed
@@ -60,7 +80,7 @@ public class BaseComponent extends AbstractComponent
      *  @since 2.0.4
      * 
      **/
-    
+
     private class LocalizedStringRender implements IRender
     {
         private String key;
@@ -72,7 +92,8 @@ public class BaseComponent extends AbstractComponent
             this.attributes = attributes;
         }
 
-        public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+        public void render(IMarkupWriter writer, IRequestCycle cycle)
+            throws RequestCycleException
         {
             if (cycle.isRewinding())
                 return;
@@ -98,7 +119,7 @@ public class BaseComponent extends AbstractComponent
             if (attributes != null)
                 writer.end();
         }
-        
+
         public String toString()
         {
             StringBuffer buffer = new StringBuffer("LocalizedStringRender@");
@@ -124,6 +145,8 @@ public class BaseComponent extends AbstractComponent
      *  receiver's <code>render()</code> method.  That is, they are
      *  top-level elements on the HTML template.
      *
+     *  @deprecated to be marked private after 2.1
+     * 
      **/
 
     protected void addOuter(IRender element)
@@ -155,15 +178,16 @@ public class BaseComponent extends AbstractComponent
 
     /**
      *
-     * Reads the receiver's template and figures out which elements wrap which
-     * other elements.
+     *  Reads the receiver's template and figures out which elements wrap which
+     *  other elements.
      *
-     * <P>This is coded as a single, big, ugly method for efficiency.
+     *  <P>This is coded as a single, big, ugly method for efficiency.
+     * 
+     *  @deprecated to be marked private after 2.1
      **/
 
     protected void readTemplate(IPageLoader loader) throws PageLoaderException
     {
-        IComponent component;
         ComponentTemplate componentTemplate;
         Set seenIds = new HashSet();
         IPageSource pageSource = loader.getEngine().getPageSource();
@@ -191,7 +215,6 @@ public class BaseComponent extends AbstractComponent
         IComponent[] componentStack = new IComponent[count];
         IComponent activeComponent = null;
         int stackx = 0;
-        boolean check = true;
 
         for (int i = 0; i < count; i++)
         {
@@ -200,78 +223,19 @@ public class BaseComponent extends AbstractComponent
 
             if (type == TokenType.TEXT)
             {
-                // Get a render for the token.  This allows the token and the render
-                // to be shared across sessions.
-
-                IRender element = token.getRender();
-
-                if (activeComponent == null)
-                    addOuter(element);
-                else
-                {
-                    if (check)
-                    {
-                        check = false;
-
-                        if (!activeComponent.getSpecification().getAllowBody())
-                            throw new BodylessComponentException(activeComponent);
-                    }
-
-                    activeComponent.addWrapped(element);
-                }
+                addText(activeComponent, token);
 
                 continue;
             }
 
-            // On an OPEN, we get the name
-
             if (type == TokenType.OPEN)
             {
-                String id = token.getId();
-
-                try
-                {
-                    component = getComponent(id);
-
-                    check = true;
-                }
-                catch (NoSuchComponentException ex)
-                {
-                    throw new PageLoaderException(
-                        Tapestry.getString("BaseComponent.undefined-embedded-component", getExtendedId(), id),
-                        this,
-                        ex);
-                }
-
-                // Make sure the template contains each component only once.
-
-                if (seenIds.contains(id))
-                    throw new PageLoaderException(
-                        Tapestry.getString("BaseComponent.multiple-component-references", getExtendedId(), id),
-                        this);
-
-                seenIds.add(id);
-
-                if (activeComponent == null)
-                    addOuter(component);
-                else
-                {
-                    if (check)
-                    {
-                        check = false;
-
-                        // If you use a <jwc> tag in the template, you can get here.
-                        // If you use a normal tag and a jwcid attribute, the
-                        // body is automatically editted out.
-
-                        if (!activeComponent.getSpecification().getAllowBody())
-                            throw new BodylessComponentException(activeComponent);
-                    }
-
-                    activeComponent.addWrapped(component);
-                }
-
-                addStaticBindings(component, token.getAttributes(), pageSource);
+                IComponent component =
+                    addStartComponent(
+                        activeComponent,
+                        token,
+                        pageSource,
+                        seenIds);
 
                 componentStack[stackx++] = activeComponent;
 
@@ -285,34 +249,36 @@ public class BaseComponent extends AbstractComponent
                 try
                 {
                     activeComponent = componentStack[--stackx];
-
-                    check = true;
                 }
                 catch (IndexOutOfBoundsException ex)
                 {
                     // This is now almost impossible to reach, because the
                     // TemplateParser does a great job of checking for most of these cases.
 
-                    throw new PageLoaderException(Tapestry.getString("BaseComponent.unbalanced-close-tags"), this);
+                    throw new PageLoaderException(
+                        Tapestry.getString(
+                            "BaseComponent.unbalanced-close-tags"),
+                        this);
                 }
-                
+
                 continue;
             }
-            
+
             if (type == TokenType.LOCALIZATION)
             {
-                IRender renderer = new LocalizedStringRender(token.getId(), token.getAttributes());
-                activeComponent.addWrapped(renderer);
-                
+                addStringLocalization(activeComponent, token);
+
                 continue;
-            }                
+            }
         }
 
         // This is also pretty much unreachable, and the message is kind of out
         // of date, too.
 
         if (stackx != 0)
-            throw new PageLoaderException(Tapestry.getString("BaseComponent.unbalance-open-tags"), this);
+            throw new PageLoaderException(
+                Tapestry.getString("BaseComponent.unbalance-open-tags"),
+                this);
 
         checkAllComponentsReferenced(seenIds);
 
@@ -320,14 +286,116 @@ public class BaseComponent extends AbstractComponent
             CAT.debug(this +" finished reading template");
     }
 
+   /** @since 2.1-beta-2 **/
+
+    private void addStringLocalization(
+        IComponent activeComponent,
+        TemplateToken token)
+    {
+        IRender renderer =
+            new LocalizedStringRender(token.getId(), token.getAttributes());
+
+        if (activeComponent == null)
+            addOuter(renderer);
+        else
+            activeComponent.addWrapped(renderer);
+    }
+
+    /** @since 2.1-beta-2 **/
+    
+    private IComponent addStartComponent(
+        IComponent activeComponent,
+        TemplateToken token,
+        IPageSource pageSource,
+        Set seenIds)
+        throws PageLoaderException, BodylessComponentException
+    {
+        String id = token.getId();
+        IComponent component = null;
+
+        try
+        {
+            component = getComponent(id);
+
+        }
+        catch (NoSuchComponentException ex)
+        {
+            throw new PageLoaderException(
+                Tapestry.getString(
+                    "BaseComponent.undefined-embedded-component",
+                    getExtendedId(),
+                    id),
+                this,
+                ex);
+        }
+
+        // Make sure the template contains each component only once.
+
+        if (seenIds.contains(id))
+            throw new PageLoaderException(
+                Tapestry.getString(
+                    "BaseComponent.multiple-component-references",
+                    getExtendedId(),
+                    id),
+                this);
+
+        seenIds.add(id);
+
+        if (activeComponent == null)
+            addOuter(component);
+        else
+        {
+            // If you use a <jwc> tag in the template, you can get here.
+            // If you use a normal tag and a jwcid attribute, the
+            // body is automatically editted out.
+
+            if (!activeComponent.getSpecification().getAllowBody())
+                throw new BodylessComponentException(activeComponent);
+
+            activeComponent.addWrapped(component);
+        }
+
+        addStaticBindings(component, token.getAttributes(), pageSource);
+
+        return component;
+    }
+
+   /** @since 2.1-beta-2 **/
+
+    private void addText(IComponent activeComponent, TemplateToken token)
+        throws BodylessComponentException
+    {
+        // Get a render for the token.  This allows the token and the render
+        // to be shared across sessions.
+
+        IRender element = token.getRender();
+
+        if (activeComponent == null)
+            addOuter(element);
+        else
+        {
+
+            // The new template parser edits text out automatically;
+            // this code probably can't be reached.
+
+            if (!activeComponent.getSpecification().getAllowBody())
+                throw new BodylessComponentException(activeComponent);
+
+            activeComponent.addWrapped(element);
+        }
+    }
+
     /**
-     * Adds static bindings for any attrributes specified in the HTML
-     * template, skipping any that are reserved (explicitly, or
-     * because they match a formal parameter name).
+     *  Adds static bindings for any attrributes specified in the HTML
+     *  template, skipping any that are reserved (explicitly, or
+     *  because they match a formal parameter name).
      *
      **/
 
-    private void addStaticBindings(IComponent component, Map attributes, IPageSource pageSource)
+    private void addStaticBindings(
+        IComponent component,
+        Map attributes,
+        IPageSource pageSource)
     {
         if (attributes == null || attributes.isEmpty())
             return;
@@ -376,7 +444,8 @@ public class BaseComponent extends AbstractComponent
         }
     }
 
-    private void checkAllComponentsReferenced(Set seenIds) throws PageLoaderException
+    private void checkAllComponentsReferenced(Set seenIds)
+        throws PageLoaderException
     {
         Set ids = null;
 
@@ -411,7 +480,8 @@ public class BaseComponent extends AbstractComponent
                 ? "BaseComponent.missing-component-spec-single"
                 : "BaseComponent.missing-component-spec-multi";
 
-        StringBuffer buffer = new StringBuffer(Tapestry.getString(key, getExtendedId()));
+        StringBuffer buffer =
+            new StringBuffer(Tapestry.getString(key, getExtendedId()));
 
         Iterator i = ids.iterator();
         int j = 1;
@@ -466,7 +536,9 @@ public class BaseComponent extends AbstractComponent
      *
      **/
 
-    public void finishLoad(IPageLoader loader, ComponentSpecification specification)
+    public void finishLoad(
+        IPageLoader loader,
+        ComponentSpecification specification)
         throws PageLoaderException
     {
         readTemplate(loader);
