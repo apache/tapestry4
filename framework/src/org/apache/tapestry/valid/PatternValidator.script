@@ -5,13 +5,12 @@
 	"http://jakarta.apache.org/tapestry/dtd/Script_3_0.dtd">
 <!-- 
 
-  Creates a script for validating that a field is required and/or has a minimum
-  field length.
+  Creates a script for validating that a field matches a required pattern.
   
   Input symbols:
      field, form, validator:  As normal for a validation script.
 	 requiredMessage: Message to display if the field is required yet blank.
-	 minimumLengthMessage: Message to display if the field length is too short.
+	 patternNotMatchedMessage: Message to display if the field does not fulfill the required pattern.
      
 -->
 	
