@@ -44,15 +44,11 @@
     <ibiblio-dependency artifact="easymockclassextension" version="1.1"             group="easymock" use="test"/>
     <ibiblio-dependency artifact="cglib-full"         version="2.0.2"               group="cglib"    use="test"/>
     <ibiblio-dependency artifact="log4j"              version="${log4j.version}"    group="log4j"    use="test"/>
+	  <ibiblio-dependency artifact="oro"                version="2.0.6"               group="oro"/>
+    <ibiblio-dependency artifact="javassist"          version="${javassist.version}" group="javassist"/>
+    <ibiblio-dependency artifact="servletapi"         version="${servlet.version}"  group="servletapi"/>
       
-    <!--
-    <ibiblio-dependency artifact="bsf"                version="2.3.0"               group="bsf"/>
-		<ibiblio-dependency artifact="commons-fileupload" version="1.0"                 group="commons-fileupload"/>    
-    <ibiblio-dependency artifact="hivemind-lib"       version="1.0-rc-1"            group="hivemind"/>
-    <ibiblio-dependency artifact="oro"                version="2.0.6"               group="oro"/>
-		<ibiblio-dependency artifact="javassist"          version="2.6"                 group="jboss"/>
-		<ibiblio-dependency artifact="servletapi"         version="2.3"                 group="servletapi"/>
-    -->
+
 	</target>	
   
   <target name="run-reports">

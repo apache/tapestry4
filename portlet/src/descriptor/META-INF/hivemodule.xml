@@ -19,4 +19,90 @@
   
   Add on for Tapestry that adds native Portlet support.
   
+  <configuration-point id="PortletApplicationInitializers" schema-id="hivemind.lib.ChainContribution">
+    
+    Defines the steps for initializing a Tapestry portlet application.
+    
+  </configuration-point>
+  
+  <service-point id="PortletApplicationInitializer" interface="PortletApplicationInitializer">
+    Master startup for the Portlet application; 
+    invokes an ordered series of other ApplicationInitializer instances contributed to
+    the PortletApplicationInitializers configuration point.
+    
+    <invoke-factory service-id="hivemind.lib.ChainFactory">
+      <construct configuration-id="PortletApplicationInitializers"/>
+    </invoke-factory>
+  </service-point>
+  
+  <service-point id="PortletWebContextInitializer" interface="PortletApplicationInitializer">
+    
+    Creates and stores the WebContext (wrapper around the PortletContext)
+    into ApplicationGlobals.
+    
+    <invoke-factory>
+      <construct class="PortletWebContextInitializer">
+        <set-service property="applicationGlobals" service-id="tapestry.globals.ApplicationGlobals"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>  
+  
+  <service-point id="PortletApplicationSpecificationInitializer" interface="PortletApplicationInitializer">
+    
+    Locates and parses the application specification and informs the ApplicationGlobals service about it.
+    
+    <invoke-factory model="primitive">
+      <construct class="PortletApplicationSpecificationInitializer">
+        <set-service property="globals" service-id="tapestry.globals.ApplicationGlobals"/>
+        <set-service property="parser" service-id="tapestry.parse.SpecificationParser"/>
+        <set-service property="context" service-id="tapestry.globals.WebContext"/>
+      </construct>
+    </invoke-factory>
+  </service-point>  
+  
+  <contribution configuration-id="PortletApplicationInitializers">
+    <command id="PortletWebContextInitializer" object="service:PortletWebContextInitializer" before="*"/>
+    <command id="PortletApplicationSpecificationInitializer" object="service:PortletApplicationSpecificationInitializer"/>
+  </contribution>
+    
+  <configuration-point id="ActionRequestServicerPipeline" schema-id="hivemind.lib.Pipeline">
+    
+    A pipeline for processing an incoming Portlet action request.
+    
+  </configuration-point>   
+      
+  <service-point id="ActionRequestServicer" interface="ActionRequestServicer">  
+    
+    Service for handling Portlet action requests, built around
+    the ActionRequestServicerPipeline configuration.
+    
+    <invoke-factory service-id="hivemind.lib.PipelineFactory" model="primitive">
+      <create-pipeline filter-interface="ActionRequestServicerFilter"
+        configuration-id="ActionRequestServicerPipeline"/>
+    </invoke-factory>  
+  </service-point>
+  
+  <service-point id="ActionPortletToWebRequestServicerPipelineBridge" interface="ActionRequestServicer">
+    
+    Bridge from the ActionRequestServicerPipeline to
+    the tapestry.request.WebRequestServicer pipeline.
+    
+    <invoke-factory model="primitive">
+      <construct class="ActionPortletToWebRequestServicerPipelineBridge">
+        <set-service property="portletRequestGlobals" service-id="PortletRequestGlobals"/>
+        <set-service property="webRequestServicer" service-id="tapestry.request.WebRequestServicer"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <service-point id="PortletRequestGlobals" interface="PortletRequestGlobals">
+    
+    Stores the current request and response objects.
+    
+    <create-instance class="PortletRequestGlobals" model="threaded"/>
+    
+  </service-point>
+  
 </module>

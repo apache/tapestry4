@@ -156,13 +156,14 @@
   
   <service-point id="ServiceMap" interface="org.apache.tapestry.services.ServiceMap">
     
-    Used to locate a service by name, using the FactoryServices and
-    ApplicationServices configuration points.
+    Used to locate an engine service by name.
     
     <invoke-factory>
       <construct class="org.apache.tapestry.services.impl.ServiceMapImpl">
-        <set-configuration property="factoryServices" configuration-id="FactoryServices"/>
-        <set-configuration property="applicationServices" configuration-id="ApplicationServices"/>
+        <set-object property="factoryServices" 
+          value="service-property:tapestry.globals.ApplicationGlobals:factoryServices"/>
+        <set-object property="applicationServices" 
+          value="service-property:tapestry.globals.ApplicationGlobals:applicationServices"/>
       </construct>
     </invoke-factory>
     
@@ -182,6 +183,25 @@
   
  <contribution configuration-id="hivemind.ObjectProviders">
     <provider prefix="engine-service" service-id="EngineServiceObjectProvider"/>
+ </contribution>
+ 
+ <service-point id="SetupServletEngineServices" interface="org.apache.tapestry.services.ApplicationInitializer">
+  
+  Contributed into the tapestry.init.ApplicationInitializers configuration point
+  to install the servlet-specific application and framework services into the
+  tapestry.globals.ApplicationGlobals services.
+  
+  <invoke-factory model="primitive">
+    <construct class="SetupServletEngineServices">
+      <set-service property="globals" service-id="tapestry.globals.ApplicationGlobals"/>
+      <set-configuration property="factoryServices" configuration-id="FactoryServices"/>
+      <set-configuration property="applicationServices" configuration-id="ApplicationServices"/>
+    </construct>
+  </invoke-factory>
+ </service-point>
+ 
+ <contribution configuration-id="tapestry.init.ApplicationInitializers">
+  <command id="SetupServletEngineServices" object="service:SetupServletEngineServices"/>
  </contribution>
 
 </module>

@@ -29,10 +29,10 @@ import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
 
 /**
- * Bridges from the {@link org.apache.tapestry.services.ServletRequestServicer}&nbsp;pipeline to
- * the {@link org.apache.tapestry.services.WebRequestServicer}&nbsp;pipeline. Also, stores the web
- * request and web response into {@link org.apache.tapestry.services.RequestGlobals}. Intercepts
- * runtime exceptions and throws them wrapped as {@link javax.servlet.ServletException}.
+ * Bridges from the <code>tapestry.request.ServletRequestServicerPipeline</code> to the
+ * <code>tapestry.reqwuest.WebRequestServicerPipeline</code>. Also, stores the web request and
+ * web response into {@link org.apache.tapestry.services.RequestGlobals}. Intercepts runtime
+ * exceptions and throws them wrapped as {@link javax.servlet.ServletException}.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
