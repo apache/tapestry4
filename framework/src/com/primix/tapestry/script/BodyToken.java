@@ -26,6 +26,8 @@
  *
  */
 
+package com.primix.tapestry.script;
+
 /**
  *  Generates a String from its child tokens, then applies it
  *  to {@link ScriptSession#setBody(String)}.
@@ -35,8 +37,6 @@
  *  @since 0.2.9
  */
  
-package com.primix.tapestry.script;
-
 class BodyToken extends AbstractToken
 {
 	private int bufferLength = 100;

@@ -26,6 +26,12 @@
  *
  */
 
+package com.primix.tapestry.asset;
+
+import java.net.*;
+import java.io.*;
+import com.primix.tapestry.*;
+
 /**
  *  A reference to an external URL.  {@link ExternalAsset}s are not
  *  localizable.
@@ -33,12 +39,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry.asset;
-
-import java.net.*;
-import java.io.*;
-import com.primix.tapestry.*;
 
 public class ExternalAsset implements IAsset
 {

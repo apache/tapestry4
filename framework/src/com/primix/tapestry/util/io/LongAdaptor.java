@@ -26,6 +26,11 @@
  *
  */
 
+package com.primix.tapestry.util.io;
+
+import java.util.*;
+import java.io.*;
+
 /**
  *  Squeezes a {@link Long}. 
  *
@@ -33,11 +38,6 @@
  *  @version $Id$
  *
  */
-
-package com.primix.tapestry.util.io;
-
-import java.util.*;
-import java.io.*;
 
 class LongAdaptor
 implements ISqueezeAdaptor

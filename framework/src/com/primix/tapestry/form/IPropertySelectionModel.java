@@ -26,6 +26,12 @@
  *
  */
  
+package com.primix.tapestry.form;
+
+// Appease Javadoc
+
+import com.primix.tapestry.util.*;
+
 /**
  *  Used by a {@link PropertySelection} to provide labels for options.
  *
@@ -53,8 +59,6 @@
  *  @author Howard Ship
  *
  */
-
-package com.primix.tapestry.form;
 
 public interface IPropertySelectionModel
 {

@@ -26,6 +26,8 @@
  *
  */
 
+package com.primix.tapestry;
+
 /**
  *  Exception thrown when a template has a body-less {@link IComponent} wraps
  *  any content.  The exception is thrown by the container object.
@@ -33,8 +35,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry;
 
 public class BodylessComponentException extends RequestCycleException
 {

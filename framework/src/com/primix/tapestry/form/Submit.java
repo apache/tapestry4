@@ -26,6 +26,14 @@
  *
  */
 
+package com.primix.tapestry.form;
+
+import com.primix.tapestry.*;
+
+// Appease Javadoc
+import com.primix.tapestry.components.*;
+import com.primix.tapestry.html.*;
+
 /**
  *  Implements a component that manages an HTML &lt;submit&gt; form element.
  *
@@ -94,10 +102,6 @@
  *  @version $Id$
  */
 
-
-package com.primix.tapestry.form;
-
-import com.primix.tapestry.*;
 
 public class Submit extends AbstractFormComponent
 {

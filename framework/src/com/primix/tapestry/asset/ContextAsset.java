@@ -26,16 +26,6 @@
  *
  */
 
-/**
- *  Internal asset; one that is visible to the servlet container directly.
- *  In retrospect, a better name for this would be <code>ContextAsset</code>
- *  since the path is relative to the {@link ServletContext} containing
- *  the application.
- *
- *  @author Howard Ship
- *  @version $Id$
- */
-
 package com.primix.tapestry.asset;
 
 import java.net.*;
@@ -45,6 +35,16 @@ import com.primix.tapestry.spec.*;
 import com.primix.tapestry.*;
 import java.util.*;
 import org.apache.log4j.*;
+
+/**
+ *  Internal asset; one that is visible to the servlet container directly.
+ *  In retrospect, a better name for this would be <code>ContextAsset</code>
+ *  since the path is relative to the {@link ServletContext} containing
+ *  the application.
+ *
+ *  @author Howard Ship
+ *  @version $Id$
+ */
 
 public class ContextAsset implements IAsset
 {

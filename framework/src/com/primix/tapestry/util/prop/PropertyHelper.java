@@ -26,6 +26,14 @@
  *
  */
  
+package com.primix.tapestry.util.prop;
+
+import com.primix.tapestry.util.*;
+import java.beans.*;
+import java.lang.reflect.*;
+import java.util.*;
+import org.apache.log4j.*;
+
 /**
  * Streamlines access to all the properties of a given
  * JavaBean.  Static methods acts as a factory for PropertyHelper instances, which
@@ -61,14 +69,6 @@
  * @author Howard Ship
  */
  
-package com.primix.tapestry.util.prop;
-
-import com.primix.tapestry.util.*;
-import java.beans.*;
-import java.lang.reflect.*;
-import java.util.*;
-import org.apache.log4j.*;
-
 public class PropertyHelper
 {
 	private static final Category CAT =

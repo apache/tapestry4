@@ -45,7 +45,7 @@
 			<bindings>
 				<binding>
 					<name>delegate</name>
-					<property-path>showDebugDelegate</property-path>
+					<property-path>page.requestCycle.requestContext</property-path>
 				</binding>
 			</bindings>
 		</component>

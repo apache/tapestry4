@@ -26,6 +26,8 @@
  *
  */
 
+package com.primix.tapestry.event;
+
 /**
  * May observe changes in an object's properties.  This is a "weak" variation
  * on JavaBean's style bound properties.  It is used when there will be at most
@@ -35,8 +37,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry.event;
 
 public interface ChangeObserver
 {

@@ -26,6 +26,15 @@
  *
  */
 
+package com.primix.tapestry.form;
+
+import com.primix.tapestry.*;
+import java.util.*;
+
+// Appease Javadoc
+import com.primix.tapestry.components.*;
+import com.primix.tapestry.html.*;
+
 /**
  *  Implements a component that manages an HTML &lt;select&gt; form element.
  *  The most common situation, using a &lt;select&gt; to set a specific
@@ -69,11 +78,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry.form;
-
-import com.primix.tapestry.*;
-import java.util.*;
 
 public class Select extends AbstractFormComponent
 {

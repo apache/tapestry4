@@ -26,6 +26,16 @@
  *
  */
 
+package com.primix.tapestry.valid;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.components.*;
+import com.primix.tapestry.html.*;
+import com.primix.tapestry.form.*;
+import com.primix.tapestry.spec.*;
+import java.util.*;
+import java.text.*;
+
 /**
  * 
  *  Base class for several classes that validate their input from the user.
@@ -47,15 +57,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry.valid;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.html.*;
-import com.primix.tapestry.form.*;
-import com.primix.tapestry.spec.*;
-import java.util.*;
-import java.text.*;
 
 public abstract class AbstractValidatingTextField
 extends AbstractComponent

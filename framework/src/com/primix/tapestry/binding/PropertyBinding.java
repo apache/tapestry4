@@ -26,6 +26,13 @@
  *
  */
 
+package com.primix.tapestry.binding;
+
+import com.primix.tapestry.util.*;
+import com.primix.tapestry.util.prop.*;
+import java.util.*;
+import com.primix.tapestry.*;
+
 /**
  *  Implements a dynamic binding, based on getting and fetching
  *  values using JavaBeans property access.
@@ -33,13 +40,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry.binding;
-
-import com.primix.tapestry.util.*;
-import com.primix.tapestry.util.prop.*;
-import java.util.*;
-import com.primix.tapestry.*;
 
 public class PropertyBinding extends AbstractBinding
 {

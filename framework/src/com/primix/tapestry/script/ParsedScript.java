@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry.script;
+
+import java.util.*;
+
 /**
  *  A top level container for a number of {@link IScriptToken script tokens}.
  *
@@ -34,10 +38,6 @@
  *  @since 0.2.9
  */
  
-package com.primix.tapestry.script;
-
-import java.util.*;
-
 public class ParsedScript
 {
 	private String scriptPath;

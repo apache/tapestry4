@@ -26,6 +26,12 @@
  *
  */
 
+
+package com.primix.tapestry.wml;
+
+import com.primix.tapestry.*;
+import java.io.*;
+
 /**
  *  Subclass of {@link WMLResponseWriter} that is nested.  A nested writer
  *  buffers its output, then inserts it into its parent writer when it is
@@ -35,12 +41,6 @@
  *  @author David Solis
  *  @since 0.2.9
  */
-
-
-package com.primix.tapestry.wml;
-
-import com.primix.tapestry.*;
-import java.io.*;
 
 public class NestedWMLResponseWriter extends WMLResponseWriter
 {

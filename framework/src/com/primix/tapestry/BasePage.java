@@ -26,6 +26,15 @@
  *
  */
 
+package com.primix.tapestry;
+
+import com.primix.tapestry.event.ChangeObserver;
+import com.primix.tapestry.spec.*;
+import java.util.*;
+import java.io.OutputStream;
+import javax.servlet.http.*;
+import com.primix.tapestry.util.*;
+
 /**
  * Concrete class for HTML pages. Most pages
  * should be able to simply subclass this, adding new properties and
@@ -35,15 +44,6 @@
  * @version $Id$
  * @author Howard Ship
  */
-
-package com.primix.tapestry;
-
-import com.primix.tapestry.event.ChangeObserver;
-import com.primix.tapestry.spec.*;
-import java.util.*;
-import java.io.OutputStream;
-import javax.servlet.http.*;
-import com.primix.tapestry.util.*;
 
 public class BasePage extends AbstractPage
 {

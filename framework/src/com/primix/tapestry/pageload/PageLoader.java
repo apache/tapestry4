@@ -26,14 +26,6 @@
  *
  */
 
-/**
- *  Runs the process of building the component hierarchy for an entire page.
- *
- * @author Howard Ship
- * @version $Id$
- */
-
-
 package com.primix.tapestry.pageload;
 
 import java.lang.reflect.*;
@@ -43,6 +35,14 @@ import java.util.*;
 import com.primix.tapestry.*;
 import com.primix.tapestry.binding.*;
 import org.apache.log4j.*;
+
+
+/**
+ *  Runs the process of building the component hierarchy for an entire page.
+ *
+ * @author Howard Ship
+ * @version $Id$
+ */
 
 
 public class PageLoader

@@ -26,6 +26,14 @@
  *
  */
  
+package com.primix.tapestry.util.prop;
+
+import java.beans.*;
+import java.lang.reflect.*;
+import java.util.*;
+import com.primix.tapestry.util.DynamicInvocationException;
+import org.apache.log4j.*;
+
 /**
  * Streamlines dynamic access to one of a single class's properties.  
  * This enapsulates the getter and/or
@@ -37,14 +45,6 @@
  * @see PropertyHelper
  */
  
-package com.primix.tapestry.util.prop;
-
-import java.beans.*;
-import java.lang.reflect.*;
-import java.util.*;
-import com.primix.tapestry.util.DynamicInvocationException;
-import org.apache.log4j.*;
-
 class PropertyAccessor implements IPropertyAccessor
 {
 	private static final Category CAT = 

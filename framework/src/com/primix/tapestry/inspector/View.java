@@ -26,6 +26,11 @@
  *
  */
 
+package com.primix.tapestry.inspector;
+
+import com.primix.tapestry.util.*;
+import com.primix.tapestry.*;
+
 /**
  *  Identifies different views for the inspector.
  *
@@ -33,11 +38,6 @@
  *  @author Howard Ship
  *
  */
-
-package com.primix.tapestry.inspector;
-
-import com.primix.tapestry.util.*;
-import com.primix.tapestry.*;
 
 public class View extends Enum
 {

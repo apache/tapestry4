@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry.util;
+
+import java.util.*;
+
 /**
  *  An interface that defines an object that can store named propertys.  The names
  *  and the properties are Strings.
@@ -35,10 +39,6 @@
  *
  */
  
-package com.primix.tapestry.util;
-
-import java.util.*;
-
 public interface IPropertyHolder
 {
 	/**

@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry.util.exception;
+
+import java.io.Serializable;
+
 /**
  *  Captures a name/value property pair from an exception.  Part of
  *  an {@link ExceptionDescription}.
@@ -34,10 +38,6 @@
  *  @version $Id$
  */
 
-
-package com.primix.tapestry.util.exception;
-
-import java.io.Serializable;
 
 public class ExceptionProperty implements Serializable
 {

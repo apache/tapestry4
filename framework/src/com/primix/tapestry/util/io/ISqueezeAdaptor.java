@@ -26,18 +26,18 @@
  *
  */
 
+package com.primix.tapestry.util.io;
+
+import java.io.*;
+
 /**
  *  Interface which defines a class used to convert data for a specific
- *  type into a String format (squeeze it),
- *  or convert from a String back into a the type (unsqueeze).
+ *  Java type into a String format (squeeze it),
+ *  or convert from a String back into a Java type (unsqueeze).
  *
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry.util.io;
-
-import java.io.*;
 
 public interface ISqueezeAdaptor
 {

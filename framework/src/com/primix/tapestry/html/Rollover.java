@@ -26,6 +26,19 @@
  *
  */
 
+
+package com.primix.tapestry.html;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.components.*;
+import com.primix.tapestry.script.*;
+import com.primix.tapestry.util.xml.*;
+import java.io.*;
+import java.util.*;
+
+// Appease Javadoc
+import com.primix.tapestry.link.*;
+
 /**
  *  Combines an {@link Action} with an &lt;img&gt; and JavaScript code
  *  to create a rollover effect that work with both Netscape Navigator and 
@@ -98,15 +111,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry.html;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.script.*;
-import com.primix.tapestry.util.xml.*;
-import java.io.*;
-import java.util.*;
 
 public class Rollover extends AbstractComponent
 {

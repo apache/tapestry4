@@ -26,6 +26,18 @@
  *
  */
 
+package com.primix.tapestry.asset;
+
+import java.net.URL;
+import com.primix.tapestry.util.*;
+import com.primix.tapestry.*;
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.util.*;
+import com.primix.tapestry.spec.*;
+import org.apache.log4j.*;
+
 /**
  *  Responsible for copying assets from the classpath to an external directory that
  *  is visible to the web server. The externalizer is stored inside
@@ -71,18 +83,6 @@
  * <code>/assets/0</code>.  When a new version of the application is deployed, the trailing
  * version number is incremented from 0 to 1.
  */
-
-package com.primix.tapestry.asset;
-
-import java.net.URL;
-import com.primix.tapestry.util.*;
-import com.primix.tapestry.*;
-import java.io.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import java.util.*;
-import com.primix.tapestry.spec.*;
-import org.apache.log4j.*;
 
 public class AssetExternalizer
 {

@@ -26,6 +26,8 @@
  *
  */
 
+package com.primix.tapestry.spec;
+
 /**
  *  Stores a binding specification, which identifies the static value
  *  or nested property name for the binding.  The name of the binding (which
@@ -34,8 +36,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry.spec;
 
 public class BindingSpecification
 {

@@ -26,16 +26,16 @@
  *
  */
 
+package com.primix.tapestry.valid;
+
+import com.primix.tapestry.*;
+
 /**
  *  Base implementation of the {@link IValidationDelegate} interface.
  *
  *  @version $Id$
  *  @author Howard Ship
  */
-
-package com.primix.tapestry.valid;
-
-import com.primix.tapestry.*;
 
 public class BaseValidationDelegate
 implements IValidationDelegate

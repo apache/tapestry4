@@ -26,6 +26,13 @@
  *
  */
 
+package com.primix.tapestry;
+
+import com.primix.tapestry.spec.ComponentSpecification;
+
+// Appease Javadoc
+import com.primix.tapestry.components.*;
+
 /**
  *  Additional {@link IComponent} methods for components with special lifecycles.  
  *  Few components require these methods.
@@ -42,10 +49,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry;
-
-import com.primix.tapestry.spec.ComponentSpecification;
 
 public interface ILifecycle
 {

@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry;
+
+import com.primix.tapestry.spec.ComponentSpecification;
+
 /**
  * Interface exposed to components as they are loaded by the page loader.  This
  * seems to be room for future expansion!
@@ -35,10 +39,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry;
-
-import com.primix.tapestry.spec.ComponentSpecification;
 
 public interface IPageLoader
 {

@@ -25,6 +25,8 @@
  * Lesser General Public License for more details.
  *
  */
+ 
+package com.primix.tapestry;
 
 /**
  *  General wrapper for any exception (normal or runtime) that may occur during
@@ -33,8 +35,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry;
 
 public class ApplicationRuntimeException extends RuntimeException
 {

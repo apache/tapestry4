@@ -26,6 +26,8 @@
  *
  */
 
+package com.primix.tapestry;
+
 /**
  *  Indicates that an {@link IBinding} could not retrieve a
  *  non-null value.  This is used when coercing certain tghe value to
@@ -36,8 +38,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry;
 
 public class NullValueForBindingException extends BindingException
 {

@@ -26,6 +26,13 @@
  *
  */
 
+package com.primix.tapestry;
+
+// Appease Javadoc
+import com.primix.tapestry.link.*;
+import com.primix.tapestry.components.*;
+import com.primix.tapestry.form.*;
+
 /**
  * Controller object that manages a single request cycle.  A request cycle
  * is one 'hit' on the web server.  In the case of a Tapestry application,
@@ -63,11 +70,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry;
-
-// Appease Javadoc
-import com.primix.tapestry.link.*;
 
 public interface IRequestCycle
 {

@@ -26,6 +26,8 @@
  *
  */
 
+package com.primix.tapestry;
+
 /**
  *  Exception thown when an {@link IBinding} required by a component does not
  *  exist, or when the value for the binding is null (and the component
@@ -34,8 +36,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry;
 
 public class RequiredParameterException extends RequestCycleException
 {

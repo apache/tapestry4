@@ -26,19 +26,19 @@
  *
  */
 
+package com.primix.tapestry.util.pool;
+
+import java.util.*; 
+
 /**
  *  A wrapper around a list of objects for a given key in a {@link Pool}.
- *  The current implementation of this provides is FIFO.  This class is closely
+ *  The current implementation of this is FIFO.  This class is closely
  *  tied to {@link Pool}, which controls synchronization for it.
  *
  *  @author Howard Ship
  *  @version $Id$
  *
  */
-
-package com.primix.tapestry.util.pool;
-
-import java.util.*; 
 
 class PoolList
 {

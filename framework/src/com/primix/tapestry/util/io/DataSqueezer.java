@@ -26,6 +26,12 @@
  *
  */
 
+package com.primix.tapestry.util.io;
+
+import java.util.*;
+import java.io.*;
+import com.primix.tapestry.util.*;
+
 /**
  *  A class used to convert arbitrary objects to Strings and back.
  *  This has particular uses involving HTTP URLs and Cookies.
@@ -35,12 +41,6 @@
  *
  */
 
-
-package com.primix.tapestry.util.io;
-
-import java.util.*;
-import java.io.*;
-import com.primix.tapestry.util.*;
 
 public class DataSqueezer
 {

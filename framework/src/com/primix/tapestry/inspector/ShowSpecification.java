@@ -27,6 +27,12 @@
  */
 
 
+package com.primix.tapestry.inspector;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.spec.*;
+import java.util.*;
+
 /**
  *  Component of the {@link Inspector} page used to display
  *  the specification, parameters and bindings and assets of the inspected component.
@@ -37,12 +43,6 @@
  *
  */
  
-package com.primix.tapestry.inspector;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.spec.*;
-import java.util.*;
-
 public class ShowSpecification extends BaseComponent
 implements ILifecycle
 {

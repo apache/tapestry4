@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry.inspector;
+
+import com.primix.tapestry.form.*;
+import org.apache.log4j.*;
 
 /**
  *  Provides a {@link IPropertySelectionModel} for setting the priority of
@@ -35,11 +39,6 @@
  *  @author Howard Ship
  *
  */
-
-package com.primix.tapestry.inspector;
-
-import com.primix.tapestry.form.*;
-import org.apache.log4j.*;
 
 public class PriorityModel
 implements IPropertySelectionModel

@@ -26,6 +26,10 @@
  *
  */
  
+package com.primix.tapestry.record;
+
+import java.io.*;
+
 /**
  *  A subclass of {@link IOException} used when page recorders are unable to
  *  serialize or deserialize their state.  This is necessary to store the
@@ -36,10 +40,6 @@
  *  @since 0.2.9
  */
  
-package com.primix.tapestry.record;
-
-import java.io.*;
-
 public class PageRecorderSerializationException
 extends IOException
 {

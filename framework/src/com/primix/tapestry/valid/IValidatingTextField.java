@@ -26,6 +26,11 @@
  *
  */
 
+package com.primix.tapestry.valid;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.form.*;
+
 /**
  *  Interface for a number of components that act as a normal
  *  {@link TextField} component, but perform extra validation.
@@ -34,11 +39,6 @@
  *  @version $Id$
  *
  */
-
-package com.primix.tapestry.valid;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.form.*;
 
 public interface IValidatingTextField extends IComponent
 {

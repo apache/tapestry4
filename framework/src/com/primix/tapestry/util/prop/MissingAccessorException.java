@@ -26,6 +26,8 @@
  *
  */
 
+package com.primix.tapestry.util.prop;
+
 /**
  *  Describes a case where the necessary accessor or mutator 
  *  method could not be located when dynamically getting or setting a property.
@@ -33,8 +35,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry.util.prop;
 
 public class MissingAccessorException extends RuntimeException
 {

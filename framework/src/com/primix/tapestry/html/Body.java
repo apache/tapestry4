@@ -26,6 +26,13 @@
  *
  */
 
+package com.primix.tapestry.html;
+
+import java.io.*;
+import com.primix.tapestry.*;
+import com.primix.tapestry.script.*;
+import java.util.*;
+
 /**
  *  The body of a Tapestry page.  This is used since it allows components on the
  *  page access to an initialization script (that is written the start, just before
@@ -36,13 +43,6 @@
  *  @version $Id$
  */
 
-
-package com.primix.tapestry.html;
-
-import java.io.*;
-import com.primix.tapestry.*;
-import com.primix.tapestry.script.*;
-import java.util.*;
 
 public class Body extends AbstractComponent
 {

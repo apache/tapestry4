@@ -26,6 +26,10 @@
  *
  */
  
+package com.primix.tapestry.callback;
+
+import com.primix.tapestry.*;
+
 /**
  *  Simple callback for re-invoking a {@link IDirect} component trigger..
  *
@@ -34,10 +38,6 @@
  *  @since 0.2.9
  *
  */
-
-package com.primix.tapestry.callback;
-
-import com.primix.tapestry.*;
 
 public class DirectCallback
 implements ICallback

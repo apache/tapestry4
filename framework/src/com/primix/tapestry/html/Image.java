@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry.html;
+
+import com.primix.tapestry.*;
+
 /**
  *  Used to insert an image.  To create a rollover image, use the
  *  {@link Rollover} class, which integrates a link with the image assets
@@ -69,10 +73,6 @@
  *  @version $Id$
  */
 
-
-package com.primix.tapestry.html;
-
-import com.primix.tapestry.*;
 
 public class Image extends AbstractComponent
 {

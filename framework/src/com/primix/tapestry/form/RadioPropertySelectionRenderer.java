@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry.form;
+
+import com.primix.tapestry.*;
+
 /**
  *  Implementation of {@link IPropertySelectionRenderer} that
  *  produces a table of radio (&lt;input type=radio&gt;) elements.
@@ -35,10 +39,6 @@
  *
  */
  
-package com.primix.tapestry.form;
-
-import com.primix.tapestry.*;
-
 public class RadioPropertySelectionRenderer
 implements IPropertySelectionRenderer
 {

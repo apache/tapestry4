@@ -26,18 +26,19 @@
  *
  */
 
+package com.primix.tapestry.util;
+
+import java.io.*;
+import java.util.*;
+
 /**
  *  A complex key that may be used as an alternative to nested
- *  <code>Map</code>s.
+ *  {@link Map}s.
  *
  *  @author Howard Ship
  *  @version $Id$
  */
 
-
-package com.primix.tapestry.util;
-
-import java.io.*;
 
 public class MultiKey
 implements Externalizable

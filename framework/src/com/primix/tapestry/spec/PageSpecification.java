@@ -26,6 +26,8 @@
  *
  */
 
+package com.primix.tapestry.spec;
+
 /**
  *  Specification for a page, which defines the component and buffer size.
  *
@@ -39,8 +41,6 @@
  *  @version $Id$
  */
 
-
-package com.primix.tapestry.spec;
 
 public class PageSpecification
 {

@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry.valid;
+
+import com.primix.tapestry.*;
+
 /**
  *  Interface used to communicate errors from an {@link IValidatingTextField} 
  *  component to some application-specific code. In addition,
@@ -43,10 +47,6 @@
  *  @version $Id$
  *
  */
-
-package com.primix.tapestry.valid;
-
-import com.primix.tapestry.*;
 
 public interface IValidationDelegate
 {

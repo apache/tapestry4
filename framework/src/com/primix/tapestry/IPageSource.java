@@ -26,6 +26,8 @@
  *
  */
 
+package com.primix.tapestry;
+
 /**
  *  Abstracts the process of loading pages from thier specifications as
  *  well as pooling of pages once loaded.  
@@ -37,8 +39,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry;
 
 public interface IPageSource
 {

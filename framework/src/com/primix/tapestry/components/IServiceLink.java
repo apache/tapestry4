@@ -26,6 +26,13 @@
  *
  */
 
+package com.primix.tapestry.components;
+
+import com.primix.tapestry.*;
+
+// Appease Javadoc
+import com.primix.tapestry.html.*;
+
 /**
  *  A component that renders an HTML &lt;a&gt; element.  It exposes some
  *  properties to the components it wraps.  This is basically to facilitate
@@ -35,10 +42,6 @@
  *  @version $Id$
  */
 
-
-package com.primix.tapestry.components;
-
-import com.primix.tapestry.*;
 
 public interface IServiceLink extends IComponent
 {

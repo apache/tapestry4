@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry;
+
+import java.util.*;
+
 
 /**
  *  A binding is the mechanism used to provide values for parameters of
@@ -42,10 +46,6 @@
  * @version $Id$
  */
  
-
-package com.primix.tapestry;
-
-import java.util.*;
 
 public interface IBinding
 {

@@ -26,6 +26,11 @@
  *
  */
 
+package com.primix.tapestry.engine;
+
+import java.net.URL;
+import com.primix.tapestry.*;
+
 /**
  *  Used to resolve classes and resources, this class is used to
  *  bridge some troubling class loader problems.  Typically,
@@ -44,11 +49,6 @@
  *
  */
  
-
-package com.primix.tapestry.engine;
-
-import java.net.URL;
-import com.primix.tapestry.*;
 
 class ResourceResolver implements IResourceResolver
 {

@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry.script;
+
+import java.util.*;
+
 /**
  *  Base class for creating tokens which may contain other tokens.
  *
@@ -34,10 +38,6 @@
  *  @since 0.2.9
  */
  
-package com.primix.tapestry.script;
-
-import java.util.*;
-
 abstract class AbstractToken
 implements IScriptToken
 {

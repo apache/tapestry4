@@ -26,17 +26,6 @@
  *
  */
  
-/**
- *  Used to parse an application or component specification into a
- *  {@link ApplicationSpecification} or {@link ComponentSpecification}.
- *  This is all somewhat temporary; parsing will be revised to use
- *  Adelard (Java XML Binding) once it is available.
- *
- *  @version $Id$
- *  @author Howard Ship
- */
- 
-
 package com.primix.tapestry.parse;
 
 import com.primix.tapestry.*;
@@ -48,6 +37,17 @@ import java.util.*;
 import org.xml.sax.*;
 import com.primix.tapestry.util.xml.*;
  
+/**
+ *  Used to parse an application or component specification into a
+ *  {@link ApplicationSpecification} or {@link ComponentSpecification}.
+ *  This is all somewhat temporary; parsing will be revised to use
+ *  Adelard (Java XML Binding) once it is available.
+ *
+ *  @version $Id$
+ *  @author Howard Ship
+ */
+ 
+
 public class SpecificationParser
 extends AbstractDocumentParser
 {

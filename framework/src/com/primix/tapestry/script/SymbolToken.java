@@ -26,6 +26,11 @@
  *
  */
 
+package com.primix.tapestry.script;
+
+import java.util.*;
+import java.io.*;
+
 /**
  *  A token that writes the value of a named symbol.
  *
@@ -33,11 +38,6 @@
  *  @version $Id$
  *
  */
-
-package com.primix.tapestry.script;
-
-import java.util.*;
-import java.io.*;
 
 class SymbolToken
 implements IScriptToken

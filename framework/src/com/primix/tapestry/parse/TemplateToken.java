@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry.parse;
+
+import com.primix.tapestry.IRender;
+
 /**
  * A token parsed from a Tapestry HTML template.
  *
@@ -34,10 +38,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry.parse;
-
-import com.primix.tapestry.IRender;
 
 public class TemplateToken
 {

@@ -26,6 +26,11 @@
  *
  */
 
+
+package com.primix.tapestry.form;
+
+import com.primix.tapestry.*;
+
 /**
  *  Implements a component that manages an HTML &lt;input type=radio&gt; form element.
  *  Such a component must be wrapped (possibly indirectly)
@@ -75,11 +80,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-
-package com.primix.tapestry.form;
-
-import com.primix.tapestry.*;
 
 public class Radio extends AbstractComponent
 {

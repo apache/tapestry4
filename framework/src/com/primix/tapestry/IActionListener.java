@@ -26,6 +26,12 @@
  *
  */
 
+package com.primix.tapestry;
+
+// To appease Javadoc
+import com.primix.tapestry.link.*;
+import com.primix.tapestry.form.*;
+
 /**
  * Defines a listener to an {@link Action}, {@link Form} or some kind
  * of {@link AbstractFormComponent form component}, which is way to
@@ -35,12 +41,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry;
-
-// To appease Javadoc
-import com.primix.tapestry.link.*;
-import com.primix.tapestry.form.*;
 
 public interface IActionListener
 {

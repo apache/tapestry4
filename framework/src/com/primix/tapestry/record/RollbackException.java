@@ -26,16 +26,16 @@
  *
  */
 
+package com.primix.tapestry.record;
+
+import com.primix.tapestry.*;
+
 /**
  * Identifies a failure to rollback a page to a prior state.
  *
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry.record;
-
-import com.primix.tapestry.*;
 
 public class RollbackException extends ApplicationRuntimeException
 {

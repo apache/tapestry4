@@ -26,16 +26,16 @@
  *
  */
 
+package com.primix.tapestry.record;
+
+import java.io.Serializable;
+
 /**
  * Used to identify a property change.
  *
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry.record;
-
-import java.io.Serializable;
 
 public class ChangeKey
 {

@@ -26,14 +26,6 @@
  *
  */
 
-/**
- *  Class for creating and executing JDBC statements.
- *
- *  @version $Id$
- *  @author Howard Ship
- *
- */
- 
 package com.primix.tapestry.util.jdbc;
 
 import java.util.*;
@@ -45,6 +37,14 @@ import java.lang.Integer;
 import java.lang.Boolean;
 import java.lang.Double;
 
+/**
+ *  Class for creating and executing JDBC statements.
+ *
+ *  @version $Id$
+ *  @author Howard Ship
+ *
+ */
+ 
 
 public class StatementAssembly
 {

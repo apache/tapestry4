@@ -26,6 +26,12 @@
  *
  */
 
+package com.primix.tapestry.spec;
+
+import com.primix.tapestry.IBinding;
+import com.primix.tapestry.util.*;
+import com.primix.tapestry.binding.*;
+
 /**
  *  Defines the different types of bindings possible for a component.
  *  These are used in the {@link BindingSpecification} and ultimately
@@ -35,12 +41,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry.spec;
-
-import com.primix.tapestry.IBinding;
-import com.primix.tapestry.util.*;
-import com.primix.tapestry.binding.*;
 
 public final class BindingType extends Enum
 {

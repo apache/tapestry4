@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry.util;
+
+import java.util.*;
+
 /**
  *  Base class implementation for the {@link IPropertyHolder} interface.
  *
@@ -35,10 +39,6 @@
  *
  */
  
-package com.primix.tapestry.util;
-
-import java.util.*;
-
 public class BasePropertyHolder
 implements IPropertyHolder
 {

@@ -26,6 +26,8 @@
  *
  */
 
+package com.primix.tapestry;
+
 /**
  *  Encapsulates exceptions that occur when loading a page and its components.
  *
@@ -33,8 +35,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry;
 
 public class PageLoaderException extends Exception
 {

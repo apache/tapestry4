@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry.valid;
+
+import com.primix.tapestry.*;
+
 /**
  *  Used to label an {@link IValidatingTextField}.  Because such fields
  *  know their displayName (user-presentable name), there's no reason
@@ -74,10 +78,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry.valid;
-
-import com.primix.tapestry.*;
 
 public class FieldLabel
 extends AbstractComponent

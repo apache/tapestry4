@@ -26,6 +26,8 @@
  *
  */
 
+package com.primix.tapestry.script;
+
 /**
  *  Allows for the creation of new symbols that can be used in the script
  *  or returned to the caller.
@@ -38,8 +40,6 @@
  *  @since 0.2.9
  */
  
-package com.primix.tapestry.script;
-
 class LetToken extends AbstractToken
 {
 	private String key;

@@ -1,3 +1,8 @@
+* May 2 2001 hship
+
+Cleanup the Javadoc fiasco from yesterday.  Didn't realize that package and import
+statements between the class Javadoc and the class tag caused such a problem!
+
 * May 1 2001 hship
 
 Fix code following package reorganization.

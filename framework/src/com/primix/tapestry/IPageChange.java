@@ -26,6 +26,8 @@
  *
  */
 
+package com.primix.tapestry;
+
 /**
  *  Represents a change to a component on a page, this represents
  *  a datum of information stored by a {@link IPageRecorder}.
@@ -33,8 +35,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry;
 
 public interface IPageChange
 {

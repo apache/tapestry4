@@ -26,16 +26,6 @@
  *
  */
  
-/**
- *  A wrapper around {@link DocumentBuilder} (itself a wrapper around
- *  some XML parser), this class provides error handling and entity
- *  resolving.
- *
- *  @version $Id$
- *  @author Howard Ship
- *  @since 0.2.10
- */
- 
 package com.primix.tapestry.util.xml;
 
 import com.primix.tapestry.util.*;
@@ -45,6 +35,16 @@ import java.util.*;
 import org.xml.sax.*;
 import javax.xml.parsers.*; 
 import org.apache.log4j.*;
+ 
+/**
+ *  A wrapper around {@link DocumentBuilder} (itself a wrapper around
+ *  some XML parser), this class provides error handling and entity
+ *  resolving.
+ *
+ *  @version $Id$
+ *  @author Howard Ship
+ *  @since 0.2.10
+ */
  
 public abstract class AbstractDocumentParser
 implements ErrorHandler, EntityResolver

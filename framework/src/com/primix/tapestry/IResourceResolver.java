@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry;
+
+import java.net.URL;
+
 /**
  * An object which is used to resolve classes and class-path resources.
  * This is needed because, in an application server, different class loaders
@@ -40,10 +44,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry;
-
-import java.net.URL;
 
 public interface IResourceResolver
 {

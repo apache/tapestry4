@@ -26,6 +26,14 @@
  *
  */
 
+package com.primix.tapestry.form;
+
+import com.primix.tapestry.*;
+
+// Appease Javadoc
+import com.primix.tapestry.components.*;
+import com.primix.tapestry.html.*;
+
 /**
  *  Implements a hidden field within a {@link Form}.
  *
@@ -72,10 +80,6 @@
  *  @version $Id$
  */
 
-
-package com.primix.tapestry.form;
-
-import com.primix.tapestry.*;
 
 public class Hidden extends AbstractFormComponent
 {

@@ -26,6 +26,18 @@
  *
  */
 
+package com.primix.tapestry;
+
+import java.io.*;
+import javax.servlet.*;
+import java.util.*;
+import com.primix.tapestry.spec.*;
+import java.net.*;
+
+// Appease Javadoc
+import com.primix.tapestry.components.*;
+import javax.servlet.http.*;
+
 /**
  * Defines the core, session-persistant object used to run a Tapestry
  * application for a single client (each client will have its own instance of the engine).
@@ -39,18 +51,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry;
-
-import java.io.*;
-import javax.servlet.*;
-import java.util.*;
-import com.primix.tapestry.spec.*;
-import java.net.*;
-
-// Appease Javadoc
-import com.primix.tapestry.components.*;
-import javax.servlet.http.*;
 
 public interface IEngine
 {

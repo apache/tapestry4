@@ -25,7 +25,9 @@
  * Lesser General Public License for more details.
  *
  */
- 
+
+package com.primix.tapestry.form;
+
  /**
   *  Implementation of {@link IPropertySelectionModel} that allows one String from
   *  an array of Strings to be selected as the property.
@@ -38,8 +40,6 @@
   *  @author Howard Ship
   */
   
-package com.primix.tapestry.form;
-
 public class StringPropertySelectionModel
 implements IPropertySelectionModel
 {

@@ -26,6 +26,14 @@
  *
  */
 
+package com.primix.tapestry.form;
+
+import com.primix.tapestry.*;
+
+// Appease Javadoc
+import com.primix.tapestry.components.*;
+import com.primix.tapestry.html.*;
+
 /**
  *  A special type of form component that is used to contain {@link Radio}
  *  components.  The Radio and {@link Radio} group components work together to
@@ -69,11 +77,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-
-package com.primix.tapestry.form;
-
-import com.primix.tapestry.*;
 
 public class RadioGroup extends AbstractFormComponent
 {

@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry.components;
+
+import com.primix.tapestry.*;
+
 /**
  *  A component that can substitute for any HTML element.  
  *
@@ -56,10 +60,6 @@
  *  @version $Id$
  */
 
-
-package com.primix.tapestry.components;
-
-import com.primix.tapestry.*;
 
 public class Any extends AbstractComponent
 {

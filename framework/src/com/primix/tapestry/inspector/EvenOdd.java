@@ -27,6 +27,11 @@
  */
 
 
+package com.primix.tapestry.inspector;
+
+import com.primix.tapestry.*;
+import java.util.*;
+
 /**
  *  Used to create &lt;tr;&gt; tags with alternating values
  *  of "even" and "odd" for the HTML class attribute.  The sequence always
@@ -40,11 +45,6 @@
  *
  */
  
-package com.primix.tapestry.inspector;
-
-import com.primix.tapestry.*;
-import java.util.*;
-
 public class EvenOdd extends AbstractComponent
 implements ILifecycle
 {

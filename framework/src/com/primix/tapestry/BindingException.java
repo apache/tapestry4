@@ -26,6 +26,8 @@
  *
  */
 
+package com.primix.tapestry;
+
 /**
  *  A general exception describing an {@link IBinding}
  *  and an {@link IComponent}.
@@ -34,8 +36,6 @@
  * @version $Id$
  */
  
-package com.primix.tapestry;
-
 public class BindingException extends RuntimeException
 {
 	private transient IBinding binding;

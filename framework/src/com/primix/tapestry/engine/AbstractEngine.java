@@ -26,6 +26,24 @@
  *
  */
 
+package com.primix.tapestry.engine;
+
+import com.primix.tapestry.components.*;
+import com.primix.tapestry.util.prop.PropertyHelper;
+import com.primix.tapestry.util.exception.*;
+import com.primix.tapestry.record.PageRecorder;
+import java.io.*;
+import javax.servlet.*;
+import com.primix.tapestry.*;
+import com.primix.tapestry.spec.*;
+import com.primix.tapestry.parse.*;
+import java.util.*;
+import com.primix.tapestry.pageload.*;
+import com.primix.tapestry.asset.*;
+import java.net.*;
+import javax.servlet.http.*;
+import org.apache.log4j.*;
+
 /**
  *  Basis for building real Tapestry applications.  Immediate subclasses
  *  provide different strategies for managing page state and other resources
@@ -55,24 +73,6 @@
  * @version $Id$
  */
 
-
-package com.primix.tapestry.engine;
-
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.util.prop.PropertyHelper;
-import com.primix.tapestry.util.exception.*;
-import com.primix.tapestry.record.PageRecorder;
-import java.io.*;
-import javax.servlet.*;
-import com.primix.tapestry.*;
-import com.primix.tapestry.spec.*;
-import com.primix.tapestry.parse.*;
-import java.util.*;
-import com.primix.tapestry.pageload.*;
-import com.primix.tapestry.asset.*;
-import java.net.*;
-import javax.servlet.http.*;
-import org.apache.log4j.*;
 
 public abstract class AbstractEngine
     implements IEngine, Externalizable, HttpSessionBindingListener

@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry.util.xml;
+
+import org.xml.sax.*;
+
 /**
  *  Exception thrown if there is any kind of error parsing the
  *  an XML document. 
@@ -37,10 +41,6 @@
  *  @since 0.2.10
  *
  */
-
-package com.primix.tapestry.util.xml;
-
-import org.xml.sax.*;
 
 public class DocumentParseException
 extends Exception

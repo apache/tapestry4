@@ -25,6 +25,11 @@
  *
  */
 
+package com.primix.tapestry.inspector;
+
+import com.primix.tapestry.util.*;
+import com.primix.tapestry.*;
+
 /**
  *  The Tapestry Inspector page.
  *
@@ -32,11 +37,6 @@
  *  @version $Id$
  */
 
-
-package com.primix.tapestry.inspector;
-
-import com.primix.tapestry.util.*;
-import com.primix.tapestry.*;
 
 public class Inspector extends BasePage
 {

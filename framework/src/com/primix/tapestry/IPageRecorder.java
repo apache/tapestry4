@@ -26,6 +26,11 @@
  *
  */
 
+package com.primix.tapestry;
+
+import java.util.*;
+import com.primix.tapestry.event.*;
+
 /**
  *  Defines an object that can observe changes to properties of
  *  a page and its components, store the state of the page between request cycles,
@@ -37,11 +42,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry;
-
-import java.util.*;
-import com.primix.tapestry.event.*;
 
 public interface IPageRecorder extends ChangeObserver
 {

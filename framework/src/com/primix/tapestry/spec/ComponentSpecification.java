@@ -26,6 +26,12 @@
  *
  */
 
+package com.primix.tapestry.spec;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.util.*;
+import java.util.*;
+
 /**
  *  A specification for a component, as read from an XML specification file.
  *
@@ -50,12 +56,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry.spec;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.util.*;
-import java.util.*;
 
 public class ComponentSpecification extends BasePropertyHolder
 {

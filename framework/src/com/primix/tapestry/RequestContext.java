@@ -26,6 +26,15 @@
  *
  */
 
+package com.primix.tapestry;
+
+import java.awt.Color;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.io.*;
+import java.util.*;
+import com.primix.tapestry.util.*;
+
 /**
  * This class encapsulates all the relevant data for one request cycle of an
  * {@link ApplicationServlet}, that is:
@@ -61,15 +70,6 @@
  * @author Howard Ship
  */
  
-package com.primix.tapestry;
-
-import java.awt.Color;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import java.io.*;
-import java.util.*;
-import com.primix.tapestry.util.*;
-
 public class RequestContext
 implements IRender
 {

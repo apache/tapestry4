@@ -26,6 +26,8 @@
  *
  */
 
+package com.primix.tapestry;
+
 /**
  *  Defines an object that can write markup (XML, HTML, XHTML) style output.
  *  A <code>IResponseWriter</code> handles translation from unicode to
@@ -37,8 +39,6 @@
  *  @version $Id$
  */
 
-
-package com.primix.tapestry;
 
 public interface IResponseWriter
 {

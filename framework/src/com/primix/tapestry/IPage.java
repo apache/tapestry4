@@ -26,6 +26,14 @@
  *
  */
 
+package com.primix.tapestry;
+
+import java.util.Locale;
+import com.primix.tapestry.event.*;
+import com.primix.tapestry.spec.ComponentSpecification;
+import java.io.OutputStream;
+import javax.servlet.http.HttpSession;
+
 /**
  * A root level component responsible for generating an entire HTML page.
  *
@@ -43,14 +51,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry;
-
-import java.util.Locale;
-import com.primix.tapestry.event.*;
-import com.primix.tapestry.spec.ComponentSpecification;
-import java.io.OutputStream;
-import javax.servlet.http.HttpSession;
 
 public interface IPage extends IComponent
 {

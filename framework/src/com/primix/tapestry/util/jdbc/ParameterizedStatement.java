@@ -26,17 +26,17 @@
  *
  */
 
+package com.primix.tapestry.util.jdbc;
+
+import java.util.*;
+import java.sql.*;
+
 /**
  *  A wrapper around {@link PreparedStatement}.
  *
  *  @version $Id$
  *  @author Howard Ship
  */
-
-package com.primix.tapestry.util.jdbc;
-
-import java.util.*;
-import java.sql.*;
 
 public class ParameterizedStatement implements IStatement
 {

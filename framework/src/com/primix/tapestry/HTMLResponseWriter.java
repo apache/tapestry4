@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry;
+
+import java.io.*;
+
 /**
  * This class is used to create HTML output.
  *
@@ -45,10 +49,6 @@
  * @version $Id$
  * @author Howard Ship
  */
-
-package com.primix.tapestry;
-
-import java.io.*;
 
 public class HTMLResponseWriter
 extends AbstractResponseWriter

@@ -26,6 +26,13 @@
  *
  */
 
+package com.primix.tapestry;
+
+import java.util.*;
+
+// Appease Javadoc
+import com.primix.tapestry.link.*;
+
 /**
  *  Interface that defines classes that may be messaged by the direct
  *  service.
@@ -33,13 +40,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry;
-
-import java.util.*;
-
-// Appease Javadoc
-import com.primix.tapestry.link.*;
 
 public interface IDirect
 extends IComponent

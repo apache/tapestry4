@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry.form;
+
+import com.primix.tapestry.*;
+
 /**
  *  Implementation of {@link IPropertySelectionRenderer} that
  *  produces a &lt;select&gt; element (containing &lt;option&gt; elements).
@@ -34,10 +38,6 @@
  *  @author Howard Ship
  *
  */
-
-package com.primix.tapestry.form;
-
-import com.primix.tapestry.*;
 
 public class SelectPropertySelectionRenderer
 implements IPropertySelectionRenderer

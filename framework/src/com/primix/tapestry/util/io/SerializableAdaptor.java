@@ -26,11 +26,16 @@
  *
  */
 
+package com.primix.tapestry.util.io;
+
+import java.io.*;
+import java.util.zip.*;
+
 /**
  *  The most complicated of the adaptors, this one takes an arbitrary serializable
  *  object, serializes it to binary, and encodes it in a Base64 encoding.
  *
- *  <p>Encoding and decoding of Base64 strings used code adapted from work in the public
+ *  <p>Encoding and decoding of Base64 strings uses code adapted from work in the public
  *  domain originally written by Jonathan Knudsen and published in
  *  O'reilly's "Java Cryptography". Note that we use a <em>modified</em> form of Base64 encoding,
  * with URL-safe character to encode the 62 and 63 values and the pad character.
@@ -40,11 +45,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry.util.io;
-
-import java.io.*;
-import java.util.zip.*;
 
 class SerializableAdaptor
 implements ISqueezeAdaptor

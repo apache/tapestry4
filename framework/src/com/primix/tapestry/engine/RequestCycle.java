@@ -26,15 +26,6 @@
  *
  */
 
-/**
- *  Provides the logic for processing a single request cycle.  Provides access to
- *  the {@link IEngine engine} and the {@link RequestContext}.
- *
- * @author Howard Ship
- * @version $Id$
- */
- 
-
 package com.primix.tapestry.engine;
 
 import com.primix.tapestry.util.*;
@@ -46,6 +37,15 @@ import com.primix.tapestry.*;
 import javax.servlet.http.*;
 import com.primix.tapestry.link.*;
 import org.apache.log4j.*;
+
+/**
+ *  Provides the logic for processing a single request cycle.  Provides access to
+ *  the {@link IEngine engine} and the {@link RequestContext}.
+ *
+ * @author Howard Ship
+ * @version $Id$
+ */
+ 
 
 public class RequestCycle 
     implements IRequestCycle, ChangeObserver

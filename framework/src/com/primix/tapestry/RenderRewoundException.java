@@ -26,6 +26,8 @@
  *
  */
 
+package com.primix.tapestry;
+
 /**
  *  A special subclass of {@link RequestCycleException} that can be thrown
  *  when a component has determined that the state of the page has been
@@ -34,8 +36,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry;
 
 public class RenderRewoundException extends RequestCycleException
 {

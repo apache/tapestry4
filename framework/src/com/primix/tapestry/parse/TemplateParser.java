@@ -26,6 +26,11 @@
  *
  */
 
+package com.primix.tapestry.parse;
+
+import gnu.regexp.*;
+import java.util.*;
+
 /**
  *  Parses an HTML template file that has been read in as a String.
  *  This produces a stream of {@link TemplateToken}s representing
@@ -59,11 +64,6 @@
  * @version $Id$
  *
  */
-
-package com.primix.tapestry.parse;
-
-import gnu.regexp.*;
-import java.util.*;
 
 public class TemplateParser
 {

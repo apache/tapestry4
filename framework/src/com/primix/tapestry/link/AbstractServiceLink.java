@@ -26,6 +26,14 @@
  *
  */
 
+package com.primix.tapestry.link;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.components.*;
+import com.primix.tapestry.html.*;
+import java.util.*;
+import javax.servlet.http.*;
+
 /**
  *  Abstract super-class for components that generate some form of
  *  &lt;a&gt; hyperlink using an {@link IEngineService}.
@@ -43,14 +51,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry.link;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.html.*;
-import java.util.*;
-import javax.servlet.http.*;
 
 public abstract class AbstractServiceLink
     extends AbstractComponent

@@ -26,6 +26,14 @@
  *
  */
 
+package com.primix.tapestry.asset;
+
+import java.net.URL;
+import com.primix.tapestry.*;
+import java.io.*;
+import java.util.*;
+import org.apache.log4j.*;
+
 /**
  *  An implementation of {@link IAsset} for localizable assets within
  *  the JVM's classpath.
@@ -36,14 +44,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry.asset;
-
-import java.net.URL;
-import com.primix.tapestry.*;
-import java.io.*;
-import java.util.*;
-import org.apache.log4j.*;
 
 public class PrivateAsset implements IAsset
 {

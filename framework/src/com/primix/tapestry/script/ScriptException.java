@@ -26,6 +26,8 @@
  *
  */
 
+package com.primix.tapestry.script;
+
 /**
  *  Exception thrown during the execution of a {@link ParsedScript}.
  *
@@ -34,8 +36,6 @@
  *  @since 0.2.9
  */
  
-package com.primix.tapestry.script;
-
 public class ScriptException extends Exception
 {
 	private Throwable rootCause;

@@ -26,6 +26,8 @@
  *
  */
 
+package com.primix.tapestry;
+
 /**
  *  Exception thrown when a property of an {@link IComponent} is accessed that
  *  is only valid while the component is actually rendering (such properties
@@ -35,8 +37,6 @@
  *  @author Howard Ship
  *
  */
-
-package com.primix.tapestry;
 
 public class RenderOnlyPropertyException extends ApplicationRuntimeException
 {

@@ -27,6 +27,15 @@
  */
 
 
+package com.primix.tapestry;
+
+
+import com.primix.tapestry.spec.ComponentSpecification;
+import java.util.*;
+
+// Appease Javadoc
+import com.primix.tapestry.components.*;
+
 /**
  * Defines an object which may be used on a Tapestry web page.
  *
@@ -42,15 +51,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry;
-
-
-import com.primix.tapestry.spec.ComponentSpecification;
-import java.util.*;
-
-// Appease Javadoc
-import com.primix.tapestry.components.*;
 
 public interface IComponent extends IRender
 {

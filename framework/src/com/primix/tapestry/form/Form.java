@@ -26,6 +26,13 @@
  *
  */
 
+package com.primix.tapestry.form;
+
+import com.primix.tapestry.*;
+
+// Appease Javadoc
+import com.primix.tapestry.components.*;
+
 /**
  * Component which contains form element components.  Forms use the
  * action service to handle the form submission.  A Form will wrap
@@ -79,10 +86,6 @@
  *  @version $Id$
  */
 
-
-package com.primix.tapestry.form;
-
-import com.primix.tapestry.*;
 
 public class Form extends AbstractComponent
 {

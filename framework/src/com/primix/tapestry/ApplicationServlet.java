@@ -26,6 +26,16 @@
  *
  */
 
+package com.primix.tapestry;
+
+import javax.servlet.http.*;
+import java.io.*;
+import javax.servlet.*;
+import com.primix.tapestry.spec.*;
+import com.primix.tapestry.parse.*;
+import com.primix.tapestry.util.exception.*;
+import com.primix.tapestry.util.xml.*;
+import org.apache.log4j.*;
 
 /**
  * Links a servlet container with a Tapestry application.  The servlet has some
@@ -44,16 +54,6 @@
  * @author Howard Ship
  */
 
-package com.primix.tapestry;
-
-import javax.servlet.http.*;
-import java.io.*;
-import javax.servlet.*;
-import com.primix.tapestry.spec.*;
-import com.primix.tapestry.parse.*;
-import com.primix.tapestry.util.exception.*;
-import com.primix.tapestry.util.xml.*;
-import org.apache.log4j.*;
 
 abstract public class ApplicationServlet
 extends HttpServlet

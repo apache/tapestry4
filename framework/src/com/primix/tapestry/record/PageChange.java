@@ -26,16 +26,16 @@
  *
  */
 
+package com.primix.tapestry.record;
+
+import com.primix.tapestry.*;
+
 /**
  *  Represents a change to a component on a page.
  *
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry.record;
-
-import com.primix.tapestry.*;
 
 public class PageChange implements IPageChange
 {

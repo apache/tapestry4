@@ -27,6 +27,13 @@
  */
 
 
+package com.primix.tapestry.inspector;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.util.io.*;
+import java.io.*;
+import java.util.*;
+
 /**
  *  Component of the {@link Inspector} page used to display
  *  the properties of the {@link IEngine} as well as a serialized view of it.
@@ -37,13 +44,6 @@
  *  @author Howard Ship
  *
  */
-
-package com.primix.tapestry.inspector;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.util.io.*;
-import java.io.*;
-import java.util.*;
 
 public class ShowEngine extends BaseComponent
 implements ILifecycle

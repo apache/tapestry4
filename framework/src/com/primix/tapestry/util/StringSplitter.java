@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.tapestry.util;
+
+import java.util.*;
+
 /**
  *  Used to split a string into substrings based on a single character
  *  delimiter.  A fast, simple version of
@@ -34,10 +38,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry.util;
-
-import java.util.*;
 
 public class StringSplitter
 {

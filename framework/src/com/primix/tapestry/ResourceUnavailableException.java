@@ -26,6 +26,8 @@
  *
  */
 
+package com.primix.tapestry;
+
 /**
  *  Exception thrown when a resource is not available, because it is not
  *  found, or could not be used.  The latter case occurs with files which
@@ -35,8 +37,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry;
 
 public class ResourceUnavailableException extends Exception
 {

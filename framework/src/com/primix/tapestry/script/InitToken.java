@@ -26,6 +26,8 @@
  *
  */
 
+package com.primix.tapestry.script;
+
 /**
  *  Generates a String from its child tokens, then applies it
  *  to {@link ScriptSession#setInitialization(String)}.
@@ -34,8 +36,6 @@
  *  @version $Id$
  *  @since 0.2.9
  */
-
-package com.primix.tapestry.script;
 
 class InitToken extends AbstractToken
 {

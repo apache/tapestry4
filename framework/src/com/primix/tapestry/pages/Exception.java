@@ -25,18 +25,18 @@
  *
  */
 
+package com.primix.tapestry.pages;
+
+import com.primix.tapestry.util.exception.*;
+import com.primix.tapestry.util.*;
+import com.primix.tapestry.*;
+
 /**
  *  An exception reporting page.
  *
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry.pages;
-
-import com.primix.tapestry.util.exception.*;
-import com.primix.tapestry.util.*;
-import com.primix.tapestry.*;
 
 public class Exception extends BasePage
 {
@@ -45,25 +45,6 @@ public class Exception extends BasePage
 	public ExceptionDescription[] getExceptions()
 	{
 		return exceptions;
-	}
-
-	/**
-	*  Returns a delegate that invokes {@link
-	*  RequestContext#write(IResponseWriter)}.
-	*
-	*/
-
-	public IRender getShowDebugDelegate()
-	{
-		return new IRender()
-		{
-			public void render(IResponseWriter writer, IRequestCycle cycle) 
-			throws RequestCycleException
-			{
-				if (!cycle.isRewinding())
-					cycle.getRequestContext().write(writer);
-			}
-		};
 	}
 
 	public void setException(Throwable value)

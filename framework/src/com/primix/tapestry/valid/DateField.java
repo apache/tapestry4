@@ -26,6 +26,13 @@
  *
  */
 
+package com.primix.tapestry.valid;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.form.*;
+import java.util.*;
+import java.text.*;
+
 /**
  * 
  *  Implements a special text field used for enterring dates.
@@ -121,13 +128,6 @@
  *  @version $Id$
  *
  */
-
-package com.primix.tapestry.valid;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.form.*;
-import java.util.*;
-import java.text.*;
 
 public class DateField
 extends AbstractValidatingTextField

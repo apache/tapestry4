@@ -26,6 +26,8 @@
  *
  */
 
+package com.primix.tapestry.util.prop;
+
 /**
  *  Defines the methods by which a {@link PropertyHelper} can access
  *  the properties of the class it provides property access to.
@@ -33,8 +35,6 @@
  *  @author Howard Ship
  *  @version $Id$
  */
-
-package com.primix.tapestry.util.prop;
 
 public interface IPropertyAccessor
 {

@@ -26,14 +26,6 @@
  *
  */
 
-/**
- * Abstract base class implementing the {@link IPage} interface.
- *
- * @version $Id$
- * @author Howard Ship, David Solis
- * @since 0.2.9
- */
-
 package com.primix.tapestry;
 
 import com.primix.tapestry.event.ChangeObserver;
@@ -43,6 +35,15 @@ import java.io.OutputStream;
 import javax.servlet.http.*;
 import com.primix.tapestry.util.*;
 import org.apache.log4j.*;
+
+
+/**
+ * Abstract base class implementing the {@link IPage} interface.
+ *
+ * @version $Id$
+ * @author Howard Ship, David Solis
+ * @since 0.2.9
+ */
 
 public abstract class AbstractPage
 extends BaseComponent 

@@ -26,6 +26,11 @@
  *
  */
 
+package com.primix.tapestry.util;
+
+import java.io.*;
+import java.util.*;
+
 /**
  * Defines properties of enumerated types.  Enumerated types
  * are special classes that take the place of C enums.  The class
@@ -51,11 +56,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.tapestry.util;
-
-import java.io.*;
-import java.util.*;
 
 public class Enum implements Serializable
 {

@@ -26,6 +26,11 @@
  *
  */
 
+package com.primix.tapestry.util.io;
+
+import java.util.*;
+import java.io.*;
+
 /**
  *  Squeezes a {@link Integer}.  This adaptor claims all the digits as prefix
  *  characters, so its the very simplest conversion of all!
@@ -34,11 +39,6 @@
  *  @version $Id$
  *
  */
-
-package com.primix.tapestry.util.io;
-
-import java.util.*;
-import java.io.*;
 
 class IntegerAdaptor
 implements ISqueezeAdaptor

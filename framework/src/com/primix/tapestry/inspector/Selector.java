@@ -27,6 +27,13 @@
  */
 
 
+package com.primix.tapestry.inspector;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.form.*;
+import java.util.*;
+
+
 /**
  *  Component of the {@link Inspector} page used to select the page and "crumb trail"
  *  of the inspected component.
@@ -36,13 +43,6 @@
  *  @author Howard Ship
  *
  */
-
-package com.primix.tapestry.inspector;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.form.*;
-import java.util.*;
-
 
 public class Selector extends BaseComponent
 {
