@@ -260,7 +260,7 @@ public class PageSource implements IPageSource
     	
         page.detach();
         
-        Tapestry.checkMethodInvocation(Tapestry.IPAGE_DETACH_METHOD_ID, "detach()", page);
+        Tapestry.checkMethodInvocation(Tapestry.ABSTRACTPAGE_DETACH_METHOD_ID, "detach()", page);
 
         _pool.store(buildKey(page), page);
     }
