@@ -121,5 +121,24 @@
 	
 	</assert-output-matches>
 	
+  </request>
+  
+  <request>
+  	<parameter name="service" value="page"/>
+  	<parameter name="context" value="lib:Properties"/>
+  	
+  	<assert-output-matches name="Page properties" subgroup="1">
+<![CDATA[
+<td>(.*?)</td>
+]]>
+		<match>Name</match>
+		<match>lib:Properties</match>
+		
+		<match>Page Name</match>
+		<match>Properties</match>
+		
+	</assert-output-matches>
+	
   </request>	
+  	
 </mock-test>
