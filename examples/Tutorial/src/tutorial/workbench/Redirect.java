@@ -40,9 +40,15 @@ import net.sf.tapestry.html.BasePage;
 
 public class Redirect extends BasePage
 {
-    public void redirect(IRequestCycle cycle)
+    public void redirectInternal(IRequestCycle cycle)
     throws RequestCycleException
     {
         throw new RedirectException("redirect-target.html");
+    }
+    
+    public void redirectExternal(IRequestCycle cycle)
+    throws RequestCycleException
+    {
+        throw new RedirectException("http://sf.net/projects/tapestry");
     }
 }

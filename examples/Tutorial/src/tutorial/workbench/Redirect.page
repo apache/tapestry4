@@ -7,8 +7,12 @@
 
   <component id="border" type="Border"/>
   
-  <component id="link" type="Direct">
-  	<binding name="listener" property-path="listeners.redirect"/>
+  <component id="internal" type="Direct">
+  	<binding name="listener" property-path="listeners.redirectInternal"/>
+  </component>
+  
+  <component id="external" type="Direct">
+  	<binding name="listener" property-path="listeners.redirectExternal"/>
   </component>
   
 </specification>
