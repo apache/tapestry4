@@ -32,7 +32,7 @@ import com.primix.tapestry.spec.*;
  */
 
 /**
- *  Implements a component that manages an HTML &lt;<input type=radio>&gt; form element.
+ *  Implements a component that manages an HTML &lt;input type=radio&gt; form element.
  *  Such a component must be wrapped (possibly indirectly)
  *  inside a {@link RadioGroup} component.
  *
@@ -54,7 +54,7 @@ import com.primix.tapestry.spec.*;
  *		<td>yes</td>
  *		<td>&nbsp;</td>
  *		<td>Used to indicate whether the given option is selected.  Only updated
- *    is the {@link Radio} is not disabled.
+ *    if the {@link Radio} is not disabled.
  *		</td>
  *	</tr>
  *

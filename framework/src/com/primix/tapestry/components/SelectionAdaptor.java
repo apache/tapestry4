@@ -1,6 +1,7 @@
 package com.primix.tapestry.components;
 
 import com.primix.tapestry.*;
+import java.util.*;
 
 /*
  * Tapestry Web Application Framework
@@ -63,37 +64,34 @@ import com.primix.tapestry.*;
 
 public abstract class SelectionAdaptor
 {
-	private String[] options;
-
-	private String previousSelection;
-	private String currentSelection;
-	private String newSelection;
+	private Object previousSelection;
+	private Object currentSelection;
+	private Object newSelection;
 
 	private boolean first;
 	private boolean last;
 
-	/**
-	*  Creates a new <code>SelectionAdaptor</code> with the given list
-	*  of options.
-	*
-	*  @param options An array of String defining the possible selections.
-	*/
-
-	protected SelectionAdaptor(String[] options)
-	{
-		this.options = options;
-	}
-
-	public String getCurrentSelection()
+	public Object getCurrentSelection()
 	{
 		return currentSelection;
 	}
 
-	public String[] getOptions()
-	{
-		return options;
-	}
+	/**
+	 *  Implemented by subclasses to provide a list of unique values.
+	 *
+	 */
+	 
+	abstract public List getOptions();
 
+	/**
+	 *  Implemented by subclasses to provide a string label for whatever
+	 *  the current selection is.  The subclass is responsible for ensuring
+	 *  that the return value is properly localized.
+	 *
+	 */
+	 
+	abstract public String getCurrentSelectionLabel();
+	
 	/**
 	*  Invoked from {@link #setFirst(boolean)} to find the initially selected
 	*  option.  Subclasses should implement this method and return the
@@ -101,7 +99,7 @@ public abstract class SelectionAdaptor
 	*
 	*/
 
-	protected abstract String getSelection();
+	protected abstract Object getSelection();
 
 	public boolean isFirst()
 	{
@@ -121,7 +119,7 @@ public abstract class SelectionAdaptor
 		return previousSelection.equals(currentSelection);
 	}
 
-	public void setCurrentSelection(String value)
+	public void setCurrentSelection(Object value)
 	{
 		currentSelection = value;
 	}
@@ -157,7 +155,7 @@ public abstract class SelectionAdaptor
 	*  on the {@link Foreach} having set the first and/or last properties before
 	*  this method gets invoked.
 	*
-	*  <p>On the last iteration, we invoke {@link #updateSelection(String)} to carry the
+	*  <p>On the last iteration, we invoke {@link #updateSelection(Object)} to carry the
 	*  new selection forward.
 	*
 	*/
@@ -181,5 +179,5 @@ public abstract class SelectionAdaptor
 	*
 	*/
 
-	protected abstract void updateSelection(String newSelection);
+	protected abstract void updateSelection(Object newSelection);
 }

@@ -112,7 +112,7 @@ implements ErrorHandler, EntityResolver
 	 *  Parses an input stream containing an application specification and assembles
 	 *  a {@link ApplicationSpecification} from it.
 	 *
-	 *  @throws ResourceUnavailableException if the input stream cannot be fully
+	 *  @throws SpecificationParseException if the input stream cannot be fully
 	 *  parsed or contains invalid data.
 	 *
 	 */

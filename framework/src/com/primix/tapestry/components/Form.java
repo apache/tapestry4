@@ -79,7 +79,7 @@ public class Form extends AbstractFormComponent
 	private IBinding methodBinding;
 	private String methodValue;
 
-		protected boolean rewinding;
+	protected boolean rewinding;
 
 	private static final String[] reservedNames = { "action" };
 
@@ -88,7 +88,7 @@ public class Form extends AbstractFormComponent
 	*
 	*/
 
-		private static final String ATTRIBUTE_NAME = "com.primix.tapestry.components.Form";
+	private static final String ATTRIBUTE_NAME = "com.primix.tapestry.components.Form";
 
 	public Form(IPage page, IComponent container, String id, 
 		ComponentSpecification specification)

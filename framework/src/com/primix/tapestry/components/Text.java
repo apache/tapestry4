@@ -33,7 +33,6 @@ import com.primix.tapestry.spec.*;
 
 /**
  *  Implements a component that manages an HTML &lt;textarea&gt; form element.
- *  <p><b>This will probably be merged with {@link TextField} shortly.</b>
  *
  * <table border=1>
  * <tr> 
@@ -51,7 +50,7 @@ import com.primix.tapestry.spec.*;
  *    <td>R / W</td>
  *   	<td>no</td>
  *		<td>post</td>
- *		<td>The text inside the textarea.  The binding is only updated
+ *		<td>The text inside the textarea.  The parameter is only updated
  *			when the the Text component is not disabled.</td>
  *	</tr>
  *
@@ -96,8 +95,7 @@ import com.primix.tapestry.spec.*;
  * 	  <td>R</td>
  * 	  <td>no</td>
  *	  <td>&nbsp;</td>
- *	  <td>The listener is notified after the text binding has been updated.  The
- *		  listener is notified <em>even if the Text is disabled</em>.</td>
+ *	  <td>The listener is notified after the text binding has been updated.</td>
  *	</tr>
  *
  * <tr>
@@ -196,12 +194,15 @@ public class Text extends AbstractFormComponent
 				value = cycle.getRequestContext().getParameter(name);
 
 				textBinding.setString(value);
+				
+				// Now, notify the listener.
+				
+				listener = getListener(cycle);
+
+				if (listener != null)
+					listener.actionTriggered(this, cycle);	
 			}
 
-			listener = getListener(cycle);
-
-			if (listener != null)
-				listener.actionTriggered(this, cycle);	
 		}
 		else
 		{
@@ -222,7 +223,7 @@ public class Text extends AbstractFormComponent
 
 			generateAttributes(cycle, writer, reservedNames);
 
-				value = textBinding.getString();
+			value = textBinding.getString();
 			if (value != null)
 				writer.print(value);
 
