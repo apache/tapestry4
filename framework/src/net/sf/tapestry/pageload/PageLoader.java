@@ -68,12 +68,10 @@ public class PageLoader implements IPageLoader
 {
     private static final Category CAT = Category.getInstance(PageLoader.class);
 
-    private static final int MAP_SIZE = 11;
-
-    private IEngine engine;
-    private IResourceResolver resolver;
-    private ISpecificationSource specificationSource;
-    private IPageSource pageSource;
+    private IEngine _engine;
+    private IResourceResolver _resolver;
+    private ISpecificationSource _specificationSource;
+    private IPageSource _pageSource;
 
     /**
      * The locale of the application, which is also the locale
@@ -81,14 +79,14 @@ public class PageLoader implements IPageLoader
      *
      **/
 
-    private Locale locale;
+    private Locale _locale;
 
     /**
      *  Number of components instantiated, excluding the page itself.
      *
      **/
 
-    private int count;
+    private int _count;
 
     /**
      *  The recursion depth.  A page with no components is zero.  A component on
@@ -96,14 +94,14 @@ public class PageLoader implements IPageLoader
      *
      **/
 
-    private int depth;
+    private int _depth;
 
     /**
      *  The maximum depth reached while building the page.
      *
      **/
 
-    private int maxDepth;
+    private int _maxDepth;
 
     /**
      *  Constructor.
@@ -112,7 +110,7 @@ public class PageLoader implements IPageLoader
 
     public PageLoader(IPageSource pageSource)
     {
-        this.pageSource = pageSource;
+        _pageSource = pageSource;
     }
 
     /**
@@ -237,10 +235,10 @@ public class PageLoader implements IPageLoader
         // same instance to be used with many components.
 
         if (type == BindingType.STATIC)
-            return pageSource.getStaticBinding(bindingValue);
+            return _pageSource.getStaticBinding(bindingValue);
 
         if (type == BindingType.FIELD)
-            return pageSource.getFieldBinding(bindingValue);
+            return _pageSource.getFieldBinding(bindingValue);
 
         // Otherwise, its an inherited binding.  Dig it out of the container.
         // This may return null if the container doesn't have the named binding.
@@ -273,9 +271,9 @@ public class PageLoader implements IPageLoader
     {
         ComponentSpecification spec;
 
-        depth++;
-        if (depth > maxDepth)
-            maxDepth = depth;
+        _depth++;
+        if (_depth > _maxDepth)
+            _maxDepth = _depth;
 
         List ids = new ArrayList(containerSpec.getComponentIds());
         int count = ids.size();
@@ -294,7 +292,7 @@ public class PageLoader implements IPageLoader
 
             try
             {
-                spec = specificationSource.getSpecification(contained.getType());
+                spec = _specificationSource.getComponentSpecification(contained.getType());
             }
             catch (ResourceUnavailableException ex)
             {
@@ -326,6 +324,7 @@ public class PageLoader implements IPageLoader
      *  the component object, then set its specification, page, container and id.
      *
      *  @see AbstractComponent
+     * 
      **/
 
     private IComponent instantiateComponent(
@@ -340,7 +339,7 @@ public class PageLoader implements IPageLoader
         IComponent result = null;
 
         className = spec.getComponentClassName();
-        componentClass = resolver.findClass(className);
+        componentClass = _resolver.findClass(className);
 
         try
         {
@@ -372,7 +371,7 @@ public class PageLoader implements IPageLoader
                 Tapestry.getString("PageLoader.page-not-allowed", result.getExtendedId()),
                 result);
 
-        count++;
+        _count++;
 
         return result;
     }
@@ -397,7 +396,7 @@ public class PageLoader implements IPageLoader
 
         className = spec.getComponentClassName();
 
-        pageClass = resolver.findClass(className);
+        pageClass = _resolver.findClass(className);
 
         try
         {
@@ -405,7 +404,7 @@ public class PageLoader implements IPageLoader
 
             result.setSpecification(spec);
             result.setName(name);
-            result.setLocale(locale);
+            result.setLocale(_locale);
         }
         catch (ClassCastException ex)
         {
@@ -435,29 +434,29 @@ public class PageLoader implements IPageLoader
      *  @param engine the engine the page is loaded for (this is used
      *  to define the locale of the new page, and provide access
      *  to the corect specification source, etc.).
-     *  @param type the page type (the path to its component specification)
+     *  @param resourcePath the resource path for the page specification
      *
      **/
 
-    public IPage loadPage(String name, IEngine engine, String type)
+    public IPage loadPage(String name, IEngine engine, String resourcePath)
         throws PageLoaderException
     {
         IPage page = null;
         ComponentSpecification specification;
 
-        this.engine = engine;
+        _engine = engine;
 
-        locale = engine.getLocale();
-        specificationSource = engine.getSpecificationSource();
-        resolver = engine.getResourceResolver();
+        _locale = engine.getLocale();
+        _specificationSource = engine.getSpecificationSource();
+        _resolver = engine.getResourceResolver();
 
-        count = 0;
-        depth = 0;
-        maxDepth = 0;
+        _count = 0;
+        _depth = 0;
+        _maxDepth = 0;
 
         try
         {
-            specification = specificationSource.getSpecification(type);
+            specification = _specificationSource.getPageSpecification(resourcePath);
 
             page = instantiatePage(name, specification);
             
@@ -473,10 +472,10 @@ public class PageLoader implements IPageLoader
         }
         finally
         {
-            locale = null;
-            engine = null;
-            specificationSource = null;
-            resolver = null;
+            _locale = null;
+            _engine = null;
+            _specificationSource = null;
+            _resolver = null;
         }
 
         if (CAT.isInfoEnabled())
@@ -484,9 +483,9 @@ public class PageLoader implements IPageLoader
                 "Loaded page "
                     + page
                     + " with "
-                    + count
+                    + _count
                     + " components (maximum depth "
-                    + maxDepth
+                    + _maxDepth
                     + ")");
 
         return page;
@@ -496,7 +495,9 @@ public class PageLoader implements IPageLoader
      *  Sets all bindings, top-down.  Checking (as it goes) that all required parameters
      *  have been set.
      *
-     * @since 1.0.6 **/
+     *  @since 1.0.6 
+     * 
+     **/
 
     private void setBindings(IComponent container) throws PageLoaderException
     {
@@ -507,7 +508,7 @@ public class PageLoader implements IPageLoader
 
         ComponentSpecification containerSpec = container.getSpecification();
 
-        Map propertyBindings = new HashMap(MAP_SIZE);
+        Map propertyBindings = new HashMap();
 
         Iterator i = components.entrySet().iterator();
         while (i.hasNext())
@@ -551,24 +552,24 @@ public class PageLoader implements IPageLoader
         String path = spec.getPath();
 
         if (type == AssetType.EXTERNAL)
-            return pageSource.getExternalAsset(path);
+            return _pageSource.getExternalAsset(path);
 
         if (type == AssetType.PRIVATE)
-            return pageSource.getPrivateAsset(path);
+            return _pageSource.getPrivateAsset(path);
 
         // Could use a sanity check for  type == null,
         // but instead we assume its a context asset.
 
-        return pageSource.getContextAsset(path);
+        return _pageSource.getContextAsset(path);
     }
 
     public IEngine getEngine()
     {
-        return engine;
+        return _engine;
     }
 
     public ITemplateSource getTemplateSource()
     {
-        return engine.getTemplateSource();
+        return _engine.getTemplateSource();
     }
 }

@@ -30,6 +30,11 @@
     <binding name="value" property-path="inspectedComponent.class.name"/>
   </component>
   
+  <component id="ifNotPage" type="Conditional">
+  	<binding name="condition" property-path="inspectedSpecification.pageSpecification"/>
+  	<field-binding name="invert" field-name="Boolean.TRUE"/>
+  </component>  
+  
   <component id="insertAllowInformal" type="Insert">
     <binding name="value" property-path="inspectedSpecification.allowInformalParameters"/>
   </component>
