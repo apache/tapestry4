@@ -1,0 +1,53 @@
+<jwc id="border">
+<!-- $Id$ -->
+
+<jwc id="showError"/>
+
+<jwc id="showMessage"/>
+
+<jwc id="ifNoOwnedBooks">
+
+<p>You have not yet entered any books into the database.
+
+</jwc>
+
+<jwc id="ifShowOwnedBooks">
+<jwc id="browser">
+
+<table>
+  <tr>
+    <th>Title</th>
+	<th>Author</th>
+	<th>Publisher</th>
+	<th>Borrowed By</th>
+	<th></th>
+	<th></th>
+  </tr>
+
+<jwc id="e">
+
+  <tr>
+     <td><jwc id="insertTitle"/></td>
+	 <td><jwc id="insertAuthor"/></td>
+	 <td><jwc id="insertPublisher"/></td>
+	 <td>
+<jwc id="ifShowHolder">
+	<jwc id="holderLink"/>
+</jwc>
+	 </td>
+	 <td><jwc id="edit">[Edit]</jwc></td>
+	 <td><jwc id="delete">[Delete]</jwc></td>
+  </tr>
+
+</jwc>
+
+</table>
+</jwc>
+</jwc>
+
+<p>
+<jwc id="borrowed">[Borrowed Books]</jwc> |
+<jwc id="addNewBook">[Add new Book]</jwc> |
+<jwc id="editProfile">[Edit User Profile]</jwc>
+
+</jwc>

@@ -106,7 +106,7 @@ public class NewBook extends Protected
 	
 		if (cancel)
 		{
-			cycle.setPage("MyBooks");
+			cycle.setPage("MyLibrary");
 			return;
 		}
 		
@@ -164,11 +164,11 @@ public class NewBook extends Protected
 		
 		// Success.  First, update the message property of the return page.
 		
-		MyBooks myBooks = (MyBooks)cycle.getPage("MyBooks");
+		MyLibrary myLibrary = (MyLibrary)cycle.getPage("MyLibrary");
 		
-		myBooks.setMessage("Added: " + attributes.get("title"));
+		myLibrary.setMessage("Added: " + attributes.get("title"));
 		
-		cycle.setPage(myBooks);
+		cycle.setPage(myLibrary);
 	}
 	
 }

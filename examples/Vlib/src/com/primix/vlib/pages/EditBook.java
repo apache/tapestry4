@@ -114,7 +114,7 @@ public class EditBook
 	}
 	
 	/**
-	 *  Invoked (from {@link MyBooks}) to begin editting a book.
+	 *  Invoked (from {@link MyLibrary}) to begin editting a book.
 	 *  Gets the attributes from the {@link IBook} and updates
 	 *  the request cycle to render this page,
 	 *
@@ -185,7 +185,7 @@ public class EditBook
 	{
 		if (cancel)
 		{
-			cycle.setPage("MyBooks");
+			cycle.setPage("MyLibrary");
 			return;
 		}
 		
@@ -232,7 +232,7 @@ public class EditBook
 		}
 		
 		
-		MyBooks page = (MyBooks)cycle.getPage("MyBooks");
+		MyLibrary page = (MyLibrary)cycle.getPage("MyLibrary");
 		page.setMessage("Updated book.");
 		
 		cycle.setPage(page);

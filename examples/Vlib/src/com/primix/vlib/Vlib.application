@@ -6,7 +6,8 @@
   <page name="Login" specification-path="/com/primix/vlib/pages/Login.jwc"/>
   <page name="Logout" specification-path="/com/primix/vlib/pages/Logout.jwc"/>
   <page name="Matches" specification-path="/com/primix/vlib/pages/Matches.jwc"/>
-  <page name="MyBooks" specification-path="/com/primix/vlib/pages/MyBooks.jwc"/>
+  <page name="MyLibrary" specification-path="/com/primix/vlib/pages/MyLibrary.jwc"/>
+  <page name="BorrowedBooks" specification-path="/com/primix/vlib/pages/BorrowedBooks.jwc"/>
   <page name="NewBook" specification-path="/com/primix/vlib/pages/NewBook.jwc"/>
   <page name="EditBook" specification-path="/com/primix/vlib/pages/EditBook.jwc"/>
   <page name="EditProfile" specification-path="/com/primix/vlib/pages/EditProfile.jwc"/>

@@ -16,8 +16,8 @@
   <component id="home" type="Service">
     <static-binding name="service">home</static-binding>
   </component>
-  <component id="myBooks" type="Page">
-    <static-binding name="page">MyBooks</static-binding>
+  <component id="myLibrary" type="Page">
+    <static-binding name="page">MyLibrary</static-binding>
     <binding name="disabled" property-path="loggedOut"/>
   </component>
   <component id="ifLoggedIn" type="Conditional">

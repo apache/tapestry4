@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC 
+	"-//Howard Ship//Tapestry Specification 1.1//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+
+<specification class="com.primix.vlib.pages.MyLibrary">
+
+  <component id="border" type="Border">
+    <static-binding name="title">My Library</static-binding>
+    <static-binding name="subtitle">My Library</static-binding>
+  </component>
+
+  <component id="showError" type="ShowError"/>
+
+  <component id="showMessage" type="ShowMessage"/>
+
+  <component id="ifShowOwnedBooks" type="Conditional">
+    <binding name="condition" property-path="components.browser.resultCount"/>
+  </component>
+
+  <component id="ifNoOwnedBooks" copy-of="ifShowOwnedBooks">
+    <field-binding name="invert" field-name="Boolean.TRUE"/>
+  </component>
+  
+  <component id="browser" type="Browser">
+  	<binding name="query" property-path="ownedQuery"/>
+  </component>
+  
+  <component id="e" type="Foreach">
+    <binding name="source" property-path="components.browser.pageResults"/>
+    <binding name="value" property-path="currentBook"/>
+  </component>
+
+  <component id="insertTitle" type="Insert">
+    <binding name="value" property-path="currentBook.title"/>
+  </component>
+
+  <component id="insertAuthor" type="Insert">
+    <binding name="value" property-path="currentBook.author"/>
+  </component>
+
+  <component id="insertPublisher" type="Insert">
+    <binding name="value" property-path="currentBook.publisherName"/>
+  </component>
+
+  <component id="ifShowHolder" type="Conditional">
+    <binding name="condition" property-path="currentBook.borrowed"/>
+  </component>
+
+  <component id="holderLink" type="PersonLink">
+    <binding name="primaryKey" property-path="currentBook.holderPrimaryKey"/>
+    <binding name="name" property-path="currentBook.holderName"/>
+  </component>
+
+  <component id="edit" type="Direct">
+    <binding name="listener" property-path="editListener"/>
+    <binding name="context" property-path="currentBook.primaryKey"/>
+  </component>
+
+  <component id="delete" type="Direct">
+    <binding name="listener" property-path="deleteListener"/>
+    <binding name="context" property-path="currentBook.primaryKey"/>
+  </component>
+    
+  <component id="borrowed" type="Page">
+  	<static-binding name="page">BorrowedBooks</static-binding>
+  </component>
+  
+  <component id="addNewBook" type="Direct">
+    <binding name="listener" property-path="addNewBookListener"/>
+  </component>
+  
+  <component id="editProfile" type="Direct">
+    <binding name="listener" property-path="editProfileListener"/>
+  </component>
+  
+</specification>

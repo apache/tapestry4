@@ -54,22 +54,19 @@ import javax.rmi.*;
  */
 
 
-public class MyBooks
+public class BorrowedBooks
 	extends Protected
 {
 	private String message;
-	private IBookQuery ownedQuery;
     private IBookQuery borrowedQuery;
 	
 	private Book currentBook;
 	
-	private Browser ownedBooksBrowser;
-	private Browser borrowedBooksBrowser;
+	private Browser browser;
 	
 	public void detach()
 	{
 		message = null;
-		ownedQuery = null;
 		borrowedQuery = null;
 		currentBook = null;
 		
@@ -82,8 +79,7 @@ public class MyBooks
 	{
 		super.finishLoad(loader, specification);
 		
-		ownedBooksBrowser = (Browser)getComponent("ownedBooksBrowser");
-		borrowedBooksBrowser = (Browser)getComponent("borrowedBooksBrowser");
+		browser = (Browser)getComponent("browser");
 	}
 	
     /**
@@ -91,7 +87,7 @@ public class MyBooks
 	 *  properties must be set before the render (when this method is invoked)
 	 *  and can't change during the render.  We force
 	 *  the creation of the queries and re-execute both of them whenever
-	 *  the MyBooks page is rendered.
+	 *  the BorrowedBooks page is rendered.
 	 *
 	 */
 	
@@ -105,45 +101,18 @@ public class MyBooks
 		
 		try
 		{
-			IBookQuery query = getOwnedQuery();
-			int count = query.ownerQuery(userPK);
-			
-			if (count != ownedBooksBrowser.getResultCount())
-				ownedBooksBrowser.initializeForResultCount(count);
-			
-			query = getBorrowedQuery();
-			count = query.borrowerQuery(userPK);
-			
-			if (count != borrowedBooksBrowser.getResultCount())
-				borrowedBooksBrowser.initializeForResultCount(count);
+			IBookQuery query =getBorrowedQuery();
+			int count = query.borrowerQuery(userPK);
+
+			if (count != browser.getResultCount())
+				browser.initializeForResultCount(count);
 		}
 		catch (RemoteException ex)
 		{
 			throw new ApplicationRuntimeException(ex);
 		}
     }
-	
-    public void setOwnedQuery(IBookQuery value)
-    {
-		ownedQuery = value;
 		
-		fireObservedChange("ownedQuery", ownedQuery);
-    }
-	
-    /**
-	 *  Gets the query object responsible for the finding books owned by the user.
-	 *
-	 */
-	
-	public IBookQuery getOwnedQuery()
-	{
-		
-		if (ownedQuery == null)
-			setOwnedQuery(getNewQuery());
-		
-		return ownedQuery;
-	}
-	
     private IBookQuery getNewQuery()
     {
 		// Create a new query.
@@ -209,7 +178,7 @@ public class MyBooks
 	
 	/**
 	 *  Listener that invokes the {@link EditProfile} page to allow a user
-	 *  to edit thier name, etc.
+	 *  to edit their name, etc.
 	 *
 	 */
 	
@@ -229,53 +198,6 @@ public class MyBooks
 		};
 	}
 	
-	/**
-	 *  Listener invoked to allow a user to edit a book.
-	 *
-	 *  <p>Note:  Could remove this if we change {@link EditBook} to
-	 *  implement a {@link IExternalPage}, but that would require
-	 */
-	
-	public IDirectListener getEditListener()
-	{
-		return new IDirectListener()
-		{
-			public void directTriggered(IDirect direct, String[] context,
-					IRequestCycle cycle)
-			{
-				EditBook page;
-				Integer bookPK;
-				
-				bookPK = new Integer(context[0]);
-				page = (EditBook)cycle.getPage("EditBook");
-				
-				page.beginEdit(bookPK, cycle);
-			}
-		};
-	}
-	
-	/**
-	 *  Listener invoked to allow a user to delete a book.
-	 *
-	 */
-	
-	public IDirectListener getDeleteListener()
-	{
-		return new IDirectListener()
-		{
-			public void directTriggered(IDirect direct, String[] context,
-					IRequestCycle cycle)
-			{
-				Integer bookPK;
-				ConfirmBookDelete page;
-				
-				bookPK = new Integer(context[0]);
-				
-				page = (ConfirmBookDelete)cycle.getPage("ConfirmBookDelete");
-				page.selectBook(bookPK, cycle);
-			}
-		};
-	}
 	
     /**
 	 *  Listener used to return a book.
@@ -321,28 +243,6 @@ public class MyBooks
     }
     
 	
-    /**
-	 *  Listener used to return a book.
-	 *
-	 */
-	
-    public IDirectListener getAddNewBookListener()
-    {
-		return new IDirectListener()
-		{
-			public void directTriggered(IDirect direct, String[] context,
-					IRequestCycle cycle)
-			{
-				NewBook page = (NewBook)cycle.getPage("NewBook");
-				
-				// Setup defaults for the new book.
-				
-				page.getAttributes().put("lendable", Boolean.TRUE);
-				
-				cycle.setPage(page);
-			}
-		};
-    }
 	
 	/**
 	 *  Removes the book query beans.
@@ -352,9 +252,6 @@ public class MyBooks
 	{
 		try
 		{
-			if (ownedQuery != null)
-			    ownedQuery.remove();
-			
 			if (borrowedQuery != null)
 				borrowedQuery.remove();
 			

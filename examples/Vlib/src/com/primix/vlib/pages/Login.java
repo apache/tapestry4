@@ -216,7 +216,7 @@ implements IErrorProperty
 	/**
 	 *  Sets up the {@link IPerson} as the logged in user, creates
 	 *  a cookie for thier email address (for subsequent logins),
-	 *  and redirects to the appropriate page ({@link MyBooks}, or
+	 *  and redirects to the appropriate page ({@link MyLibrary}, or
 	 *  a specified page).
 	 *
 	 */
@@ -242,11 +242,11 @@ implements IErrorProperty
         Visit visit = (Visit)getVisit();
 		visit.setUser(person);
 
-		// After logging in, go to the MyBooks page, unless otherwise
+		// After logging in, go to the MyLibrary page, unless otherwise
 		// specified.
 
 		if (callback == null)
-			cycle.setPage("MyBooks");
+			cycle.setPage("MyLibrary");
 		else	
 			callback.peformCallback(cycle);
 

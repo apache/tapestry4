@@ -1,3 +1,11 @@
+* Jun 18 2001 hship
+
+Vlib:
+- Split "MyBooks" page into "MyLibrary" and "BorrowedBooks".
+
+Tutorial:
+- Set fixed pixel width for Palette buttons.
+
 * Jun 14 2001 hship
 
 VlibBeans:
