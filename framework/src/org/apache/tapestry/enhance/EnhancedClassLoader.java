@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.enhance;
 
+import java.security.ProtectionDomain;
+
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.Tapestry;
 
@@ -42,11 +44,11 @@ public class EnhancedClassLoader extends ClassLoader
      * 
      **/
 
-    public Class defineClass(String enhancedClassName, byte[] byteCode)
+    public Class defineClass(String enhancedClassName, byte[] byteCode, ProtectionDomain domain)
     {
         try
         {
-            return defineClass(enhancedClassName, byteCode, 0, byteCode.length);
+            return defineClass(enhancedClassName, byteCode, 0, byteCode.length, domain);
         }
         catch (Throwable ex)
         {

@@ -220,10 +220,18 @@ NextGen) be released as version number 3.0.
   <changes>
   	
 <!-- Use due-to to give acknowledgement for patches. -->
- <release version="3.0" date="unreleased">
+ <release version="3.0-rc-3" date="unreleased">
  	<action type="update" dev="HLS">
  	Add docs on how to report problems.	
- 	</action>	
+ 	</action>
+ 	<action type="fix" dev="HLS" fixes-bug="28202">
+ 	Pass the java.security.ProtectionDomain to the parent class loader when
+ 	creating an enhanced class, to allow Tapestry operation inside secure
+ 	environments such as Tomcat.	
+ 	</action>
+  <action type="fix" dev="DS" fixes-bug="28177" due-to="sito@htf.highway.ne.jp">
+     NPE in org.apache.tapestry.form.LinkSubmit.
+  </action>
  </release> 
   
  <release version="3.0-rc-2" date="Apr 1 2004">
@@ -239,9 +247,6 @@ NextGen) be released as version number 3.0.
   </action> 
   <action type="fix" dev="HLS" fixes-bug="28010">
      ExpressionBinding optimizes expressions incorrectly  	
-  </action>
-  <action type="fix" dev="DS" fixes-bug="28177" due-to="sito@htf.highway.ne.jp">
-     NPE in org.apache.tapestry.form.LinkSubmit.
   </action>
 
  </release>
