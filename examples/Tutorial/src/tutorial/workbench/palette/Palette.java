@@ -111,7 +111,7 @@ public class Palette extends BasePage
 		if (sortModel == null)
 		{
 			ResourceBundle bundle = 
-				ResourceBundle.getBundle("tutorial.valid.SortModeStrings",
+				ResourceBundle.getBundle("tutorial.workbench.palette.SortModeStrings",
 					getLocale());
 			
 			Enum[] options = new Enum[]

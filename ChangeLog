@@ -1,3 +1,10 @@
+* Oct 20 2001 hship
+
+tutorial:
+- Add images for "Update" and "Continue" on the Palette page.
+- Fix the Palette page (was using the wrong property bundle path).
+- Add more descriptive text to the Palette page.
+
 * Oct 18 2001 hship
 
 Bump framework version up to 1.0.7.
