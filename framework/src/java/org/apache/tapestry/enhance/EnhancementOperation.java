@@ -87,4 +87,12 @@ public interface EnhancementOperation
      * subclass of the component class will usually be created.
      */
     public Class getBaseClass();
+    
+    /**
+     * Returns a reference to a particular class.  This will, effectively, by the name
+     * of a private field.
+     * 
+     */
+    
+    public String getClassReference(Class clazz);
 }

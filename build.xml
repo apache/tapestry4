@@ -25,12 +25,10 @@
     
 	<import file="${hivebuild.dir}/project.xml"/>
 	<import file="${hivebuild.dir}/license-report.xml"/>    
-	<import file="${hivebuild.dir}/hivedoc-report.xml"/>  
 	<import file="${hivebuild.dir}/dist.xml"/>
     
   <target name="run-reports">
     <license-report/>
-    <hivedoc-report/>
   </target>
 
   <path id="jetty.classpath">
