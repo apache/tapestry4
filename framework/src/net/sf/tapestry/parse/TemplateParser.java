@@ -357,7 +357,7 @@ public class TemplateParser
 
         if (_blockStart <= end)
         {
-            TemplateToken token = new TemplateToken(_templateData, _blockStart, end);
+            TemplateToken token = new TextToken(_templateData, _blockStart, end);
 
             _tokens.add(token);
         }
@@ -636,7 +636,7 @@ public class TemplateParser
 
             Map attributes = filter(_attributes, new String[] { LOCALIZATION_KEY_ATTRIBUTE_NAME, RAW_ATTRIBUTE_NAME });
 
-            TemplateToken token = new TemplateToken(localizationKey, raw, tagName, attributes);
+            TemplateToken token = new LocalizationToken(tagName, localizationKey, raw, attributes);
 
             _tokens.add(token);
 
@@ -739,12 +739,12 @@ public class TemplateParser
             if (!isRemoveId)
             {
                 if (_attributes.isEmpty())
-                    _tokens.add(new TemplateToken(jwcId, tagName));
+                    _tokens.add(new OpenToken(tagName, jwcId, null));
                 else
-                    _tokens.add(new TemplateToken(jwcId, tagName, filter(_attributes, JWCID_ATTRIBUTE_NAME)));
+                    _tokens.add(new OpenToken(tagName, jwcId, filter(_attributes, JWCID_ATTRIBUTE_NAME)));
 
                 if (emptyTag)
-                    _tokens.add(new TemplateToken(TokenType.CLOSE, tagName));
+                    _tokens.add(new CloseToken(tagName));
             }
 
             advance();
@@ -860,7 +860,7 @@ public class TemplateParser
         {
             addTextToken(cursorStart - 1);
 
-            _tokens.add(new TemplateToken(TokenType.CLOSE, tagName));
+            _tokens.add(new CloseToken(tagName));
         }
         else
         {

@@ -13,8 +13,12 @@ import net.sf.tapestry.IRender;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.ITemplateSource;
 import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.parse.CloseToken;
 import net.sf.tapestry.parse.ComponentTemplate;
+import net.sf.tapestry.parse.LocalizationToken;
+import net.sf.tapestry.parse.OpenToken;
 import net.sf.tapestry.parse.TemplateToken;
+import net.sf.tapestry.parse.TextToken;
 import net.sf.tapestry.parse.TokenType;
 
 /**
@@ -64,10 +68,8 @@ public class ShowTemplate extends BaseComponent implements IDirect
 
     private void writeTemplate(IMarkupWriter writer, IRequestCycle cycle)
     {
+        IComponent inspectedComponent = getInspectedComponent();
         ComponentTemplate template = null;
-        String[] context = null;
-        IEngineService service = null;
-        IComponent inspectedComponent = ((Inspector) getPage()).getInspectedComponent();
         ITemplateSource source = getPage().getEngine().getTemplateSource();
 
         try
@@ -82,157 +84,195 @@ public class ShowTemplate extends BaseComponent implements IDirect
         writer.begin("pre");
 
         int count = template.getTokenCount();
-         char[] data = template.getTemplateData();
+        char[] data = template.getTemplateData();
 
         for (int i = 0; i < count; i++)
         {
             TemplateToken token = template.getToken(i);
+            TokenType type = token.getType();
 
-            if (token.getType() == TokenType.TEXT)
+            if (type == TokenType.TEXT)
             {
-                int start;
-                int end;
-
-                start = token.getStartIndex();
-                end = token.getEndIndex();
-
-                // Print the section of the template ... print() will
-                // escape and invalid characters as HTML entities.  Also,
-                // we show the full stretch of text, not the trimmed version.
-
-                writer.print(data, start, end - start + 1);
-
+                write(writer, (TextToken) token);
                 continue;
             }
 
-            if (token.getType() == TokenType.CLOSE)
+            if (type == TokenType.CLOSE)
             {
-                writer.begin("span");
-                writer.attribute("class", "jwc-tag");
-
-                writer.print("</");
-                writer.print(token.getTag());
-                writer.print(">");
-
-                writer.end(); // <span>
+                write(writer, (CloseToken) token);
 
                 continue;
             }
 
             if (token.getType() == TokenType.LOCALIZATION)
             {
-                writer.begin("span");
-                writer.attribute("class", "jwc-tag");
 
-                writer.print("<span key=\"");
-                writer.print(token.getId());
-                writer.print('"');
+                write(writer, (LocalizationToken) token);
+                continue;
+            }
 
-                Map attributes = token.getAttributes();
-                if (attributes != null && !attributes.isEmpty())
-                {
-                    Iterator it = attributes.entrySet().iterator();
-                    while (it.hasNext())
-                    {
-                        Map.Entry entry = (Map.Entry) it.next();
-                        String attributeName = (String) entry.getKey();
-                        String attributeValue = (String) entry.getValue();
+            if (token.getType() == TokenType.OPEN)
+            {
+                boolean nextIsClose = (i + 1 < count) && (template.getToken(i + 1).getType() == TokenType.CLOSE);
 
-                        writer.print(' ');
-                        writer.print(attributeName);
-                        writer.print("=\"");
-                        writer.print(attributeValue);
-                        writer.print('"');
+                write(writer, nextIsClose, (OpenToken) token);
 
-                    }
-                }
-
-                writer.print('>');
-                writer.begin("span");
-                writer.attribute("class", "localized-string");
-                
-                writer.print(inspectedComponent.getString(token.getId()));
-                writer.end(); // <span>
-                
-                writer.print("</span>");
-
-                writer.end(); // <span>
+                if (nextIsClose)
+                    i++;
 
                 continue;
             }
 
-            // Only other type is OPEN
-
-            if (service == null)
-            {
-                service = cycle.getEngine().getService(IEngineService.DIRECT_SERVICE);
-                context = new String[1];
-            }
-
-            // Each id references a component embedded in the inspected component.
-            // Get that component.
-
-            String id = token.getId();
-            IComponent embedded = inspectedComponent.getComponent(id);
-            context[0] = embedded.getIdPath();
-
-            // Build a URL to select that component, as if by the captive
-            // component itself (it's a Direct).
-
-            Gesture g = service.buildGesture(cycle, this, context);
-
-            writer.begin("span");
-            writer.attribute("class", "jwc-tag");
-
-            writer.print("<");
-            writer.print(token.getTag());
-
-            if (token.getTag().equalsIgnoreCase("jwc"))
-                writer.print(" id=\"");
-            else
-                writer.print(" jwcid=\"");
-
-            writer.begin("span");
-            writer.attribute("class", "jwc-id");
-
-            writer.begin("a");
-            writer.attribute("href", g.getURL());
-            writer.print(id);
-
-            writer.end(); // <a>
-            writer.end(); // <span>
-            writer.print('"');
-
-            Map attributes = token.getAttributes();
-
-            if (attributes != null)
-            {
-                Iterator ii = attributes.entrySet().iterator();
-
-                while (ii.hasNext())
-                {
-                    Map.Entry e = (Map.Entry) ii.next();
-                    writer.print(' ');
-                    writer.print(e.getKey().toString());
-                    writer.print("=\"");
-                    writer.print(e.getValue().toString());
-                    writer.print('"');
-                }
-            }
-
-            // Collapse an open & close down to a single tag.
-
-            if (i + 1 < count && template.getToken(i + 1).getType() == TokenType.CLOSE)
-            {
-                writer.print('/');
-                i++;
-            }
-
-            writer.print('>');
-            writer.end(); // <span>
+            // That's all the types known at this time.
         }
 
-        writer.end(); // <pre>
+        writer.end(); // <pre>        
+    }
+    
+    /** @since NEXT_RELEASE **/
+    
+    private IComponent getInspectedComponent()
+    {
+        Inspector page = (Inspector)getPage();
+        
+        return page.getInspectedComponent();
+    }
+
+    /** @since NEXT_RELEASE **/
+
+    private void write(IMarkupWriter writer, TextToken token)
+    {
+        int start = token.getStartIndex();
+        int end = token.getEndIndex();
+
+        // Print the section of the template ... print() will
+        // escape and invalid characters as HTML entities.  Also,
+        // we show the full stretch of text, not the trimmed version.
+
+        writer.print(token.getTemplateData(), start, end - start + 1);
+    }
+
+    /** @since NEXT_RELEASE **/
+
+    private void write(IMarkupWriter writer, CloseToken token)
+    {
+        writer.begin("span");
+        writer.attribute("class", "jwc-tag");
+
+        writer.print("</");
+        writer.print(token.getTag());
+        writer.print(">");
+
+        writer.end(); // <span>
+    }
+
+    /** @since NEXT_RELEASE **/
+
+    private void write(IMarkupWriter writer, LocalizationToken token)
+    {
+        IComponent component = getInspectedComponent();
+        
+        writer.begin("span");
+        writer.attribute("class", "jwc-tag");
+
+        writer.print("<span key=\"");
+        writer.print(token.getKey());
+        writer.print('"');
+
+        Map attributes = token.getAttributes();
+        if (attributes != null && !attributes.isEmpty())
+        {
+            Iterator it = attributes.entrySet().iterator();
+            while (it.hasNext())
+            {
+                Map.Entry entry = (Map.Entry) it.next();
+                String attributeName = (String) entry.getKey();
+                String attributeValue = (String) entry.getValue();
+
+                writer.print(' ');
+                writer.print(attributeName);
+                writer.print("=\"");
+                writer.print(attributeValue);
+                writer.print('"');
+
+            }
+        }
+
+        writer.print('>');
+        writer.begin("span");
+        writer.attribute("class", "localized-string");
+
+        writer.print(component.getString(token.getKey()));
+        writer.end(); // <span>
+
+        writer.print("</span>");
+
+        writer.end(); // <span>
+    }
+
+    /** @since NEXT_RELEASE **/
+
+    private void write(IMarkupWriter writer, boolean nextIsClose, OpenToken token)
+    {
+        IComponent component = getInspectedComponent();
+        IEngineService service = getPage().getEngine().getService(IEngineService.DIRECT_SERVICE);
+        String[] context = new String[1];
+
+        // Each id references a component embedded in the inspected component.
+        // Get that component.
+
+        String id = token.getId();
+        IComponent embedded = component.getComponent(id);
+        context[0] = embedded.getIdPath();
+
+        // Build a URL to select that component, as if by the captive
+        // component itself (it's a Direct).
+
+        Gesture g = service.buildGesture(getPage().getRequestCycle(), this, context);
+
+        writer.begin("span");
+        writer.attribute("class", "jwc-tag");
+
+        writer.print("<");
+        writer.print(token.getTag());
+
+        writer.print(" jwcid=\"");
+
+        writer.begin("span");
+        writer.attribute("class", "jwc-id");
+
+        writer.begin("a");
+        writer.attribute("href", g.getURL());
+        writer.print(id);
+
+        writer.end(); // <a>
+        writer.end(); // <span>
+        writer.print('"');
+
+        Map attributes = token.getAttributes();
+
+        if (attributes != null)
+        {
+            Iterator ii = attributes.entrySet().iterator();
+
+            while (ii.hasNext())
+            {
+                Map.Entry e = (Map.Entry) ii.next();
+                writer.print(' ');
+                writer.print(e.getKey().toString());
+                writer.print("=\"");
+                writer.print(e.getValue().toString());
+                writer.print('"');
+            }
+        }
+
+        // Collapse an open & close down to a single tag.
+
+        if (nextIsClose)
+            writer.print('/');
+
+        writer.print('>');
+        writer.end(); // <span>
     }
 
     /**
@@ -246,7 +286,7 @@ public class ShowTemplate extends BaseComponent implements IDirect
 
         Object[] parameters = cycle.getServiceParameters();
 
-        inspector.selectComponent((String)parameters[0]);
+        inspector.selectComponent((String) parameters[0]);
 
         IComponent newComponent = inspector.getInspectedComponent();
 
@@ -263,7 +303,7 @@ public class ShowTemplate extends BaseComponent implements IDirect
      *  @since 2.3
      * 
      **/
-    
+
     public boolean isStateful()
     {
         return true;
