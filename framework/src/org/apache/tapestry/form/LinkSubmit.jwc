@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: Submit.jwc,v 1.2 2003/03/17 18:10:48 hlship Exp $ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+
+<component-specification class="org.apache.tapestry.form.LinkSubmit" allow-body="yes">
+
+  <description>
+  Creates a hyperlink that submits its enclosing form using JavaScript.
+  </description>
+
+  <parameter name="listener" 
+  	java-type="org.apache.tapestry.IActionListener" 
+  	direction="in">
+  	<description>
+	    The listener is invoked during the rewind as the link component is encountered.  This is
+	    both attractive and dangerous when combined with a form.  When the listener is
+	    invoked, the form has not completely rewound, so not all form values have necessarily
+	    been processed, so the listener might be performing its logic based on inconsistent
+	    data.
+  	</description>
+  </parameter>
+  	
+  <parameter name="disabled" java-type="boolean" direction="in"/>
+  <parameter name="selected"/>
+  <parameter name="tag" java-type="java.lang.Object" direction="in"/>
+
+  <reserved-parameter name="name"/>
+  <reserved-parameter name="href"/>
+
+  <property-specification name="name" type="java.lang.String"/>
+  <property-specification name="form" type="org.apache.tapestry.IForm"/>  
+  
+</component-specification>
