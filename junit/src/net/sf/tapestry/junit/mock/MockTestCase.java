@@ -95,6 +95,17 @@ public class MockTestCase extends TapestryTestCase
     // in a static suite() method?
 
 	/**
+	 *  Tests the Select and Option components (and a bit of Form as well).
+	 * 
+	 **/
+	
+	public void testSelectOption()
+	throws Exception
+	{
+		attempt("TestSelectOption.xml");
+	}
+
+	/**
 	 *  Tests related to link renderers.
 	 * 
 	 **/

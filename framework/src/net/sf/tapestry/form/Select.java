@@ -111,6 +111,11 @@ public class Select extends AbstractFormComponent
         return (Select) cycle.getAttribute(ATTRIBUTE_NAME);
     }
 
+	public void setDisabled(boolean disabled)
+	{
+		_disabled = disabled;
+	}
+
     public boolean isDisabled()
     {
         return _disabled;
@@ -231,8 +236,6 @@ public class Select extends AbstractFormComponent
             return null;
 
         int length = parameters.length;
-        if (parameters.length == 0)
-            return null;
 
         int size = (parameters.length > 30) ? 101 : 7;
 

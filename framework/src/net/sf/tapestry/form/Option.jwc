@@ -4,7 +4,7 @@
   "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
 	
-<component-specification class="net.sf.tapestry.form.Option" allow-body="no">
+<component-specification class="net.sf.tapestry.form.Option" allow-body="yes">
 
   <description>
   A single option within a Select.

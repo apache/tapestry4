@@ -1,0 +1,16 @@
+<html jwcid="@Shell" title="Two">
+<body jwcid="@Body">
+
+<form jwcid="@Form" listener="[[ listeners.formSubmit ]]">
+
+	<select jwcid="@Select" multiple="[[ true ]]">
+		<option jwcid="@Option" selected="[[ animal ]]" label="Animal"/>
+		<option jwcid="@Option" selected="[[ vegetable ]]" label="Vegetable"/>
+		<option jwcid="@Option" selected="[[ mineral ]]">Mineral (or unknown)</option>
+	</select>
+	
+	<input type="submit" value="Go"/>	
+</form>
+
+</body>
+</html>
