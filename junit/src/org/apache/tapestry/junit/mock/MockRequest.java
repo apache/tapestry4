@@ -463,4 +463,24 @@ public class MockRequest extends AttributeHolder implements HttpServletRequest
         _contentPath = contentPath;
     }
 
+    public int getRemotePort()
+    {
+        return 0;
+    }
+
+    public String getLocalName()
+    {
+        return null;
+    }
+
+    public String getLocalAddr()
+    {
+        return null;
+    }
+
+    public int getLocalPort()
+    {
+        return 0;
+    }
+
 }

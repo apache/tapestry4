@@ -333,4 +333,8 @@ public class MockResponse implements HttpServletResponse
         return _contentType;
     }
 
+    public void setCharacterEncoding(String enc)
+    {
+    }
+
 }

@@ -328,6 +328,26 @@ public class TestEngineServiceLink extends TapestryTestCase
         {
         }
 
+        public int getRemotePort()
+        {
+            return 0;
+        }
+
+        public String getLocalName()
+        {
+            return null;
+        }
+
+        public String getLocalAddr()
+        {
+            return null;
+        }
+
+        public int getLocalPort()
+        {
+            return 0;
+        }
+
     }
 
     private MockRequestCycle create(String servletPath) throws Exception
