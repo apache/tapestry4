@@ -304,7 +304,13 @@
 		<link	
 			href="http://www.object-refinery.com/jfreechart/javadoc/"
 			offline="true"
-			packageListLoc="package-lists/jfreechart"/>						
+			packageListLoc="package-lists/jfreechart"/>
+			
+		<link
+			href="http://jakarta.apache.org/oro/api/"
+			offline="true"
+			packageListLoc="package-lists/jakarta-oro"/>
+						
 		  
 		<group title="Tapestry Framework" packages="net.sf.tapestry:net.sf.tapestry.*"/>
 		<group title="Tapestry Contributions Framework" packages="net.sf.tapestry.contrib.*"/>
