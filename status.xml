@@ -15,7 +15,7 @@
 
   <todo>
     <actions priority="Release 3.0">
-<action context="code" dev="open">Handle change of locale correctly, by reloading new   instance of page in proper locale</action>
+	<action context="code" dev="open">Handle change of locale correctly, by reloading new instance of page in proper locale</action>
 	<action context="code" dev="HS">Improved User's Guide to replace existing Developer's Guide</action>
 	<action context="code" dev="open">Replace the current tutorial with Neil Clayton's Tutorial2</action>
 	<action context="code" dev="open">Reoganize directory structure to more standard format (compatible with Maven)</action>
@@ -95,6 +95,10 @@ Moved info priority logging to debug priority
 
 <action type="update" dev="RLS">
 Custom parameter binding properties only enhanced if abstract
+</action>
+
+<action type="update" dev="MB">
+Updated the Table components to have an easier interface, similar to that of Foreach.
 </action>
 
 <action type="fix" dev="MB" fixes-bug="21833">
@@ -223,6 +227,10 @@ properties cannot be of complex array types
 
 <action type="fix" dev="EH" fixes-bug="25766">
 fixed broken links in doc\src\common\TapestryLinks.xml
+</action>
+
+<action type="fix" dev="MB" fixes-bug="26395">
+Inherited parameters do not pick up default values
 </action>
 
 <action type="update" dev="HLS">
