@@ -13,8 +13,8 @@
     <xref linkend="getting-started"/> and <xref linkend="Introductory-examples"/> provide both a basic
     understanding of Tapestry, along with some introductory examples.
 
-    <xref linkend="pages"/>, 
-    <xref linkend="forms"/>, 
+    <xref linkend="pages"/>,
+    <xref linkend="forms"/>,
     <xref linkend="built-ins"/>,
     <xref linkend="assets"/> and
     <xref linkend="localization"/> 
@@ -123,11 +123,10 @@
     </para>
 
     <para>
-      Within the Tutorial directory, you will find the files necessary
-      to build the environment, within 
-				<ulink url="doc/Tutorial2/tutorial-environment.zip">
+      Within the <filename>examples</filename> directory, you will find a sample
+			build environment (<ulink url="examples/DevelopmentEnvironment.zip">
 				<filename>tutorial-environment.zip</filename>.
-				</ulink>
+				</ulink>), which you can use as you progress through this document.
       This includes a build file capable of:
       <orderedlist>
 	<listitem>Compiling the code</listitem>
@@ -139,7 +138,7 @@
     <para>
       To setup your environment, perform the following steps:
       <orderedlist>
-	<listitem>The first step is to create a directory for your example code.
+	<listitem>The first step is to decide a directory for your example code.
 	  This tutorial uses <filename class="directory">C:\TapestryExample</filename>.
 	  <footnote>As before, it is assumed that if you are using a non-Windows environment,
 	    that you have the knowledge necessary to translate the paths</footnote>
