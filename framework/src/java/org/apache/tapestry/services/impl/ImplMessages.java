@@ -41,48 +41,48 @@ final class ImplMessages
     private static final MessageFormatter _formatter = new MessageFormatter(ImplMessages.class,
             "ImplStrings");
 
-    public static String initializerContribution()
+    static String initializerContribution()
     {
         return _formatter.getMessage("initializer-contribution");
     }
 
-    public static String noApplicationSpecification(HttpServlet servlet)
+    static String noApplicationSpecification(HttpServlet servlet)
     {
         return _formatter.format("no-application-specification", servlet.getServletName());
     }
 
-    public static String errorInstantiatingEngine(Class engineClass, Throwable cause)
+    static String errorInstantiatingEngine(Class engineClass, Throwable cause)
     {
         return _formatter.format("error-instantiating-engine", engineClass.getName(), cause);
     }
 
-    public static String noTemplateForComponent(String componentId, Locale locale)
+    static String noTemplateForComponent(String componentId, Locale locale)
     {
         return _formatter.format("no-template-for-component", componentId, locale);
     }
 
-    public static String noTemplateForPage(String pageName, Locale locale)
+    static String noTemplateForPage(String pageName, Locale locale)
     {
         return _formatter.format("no-template-for-page", pageName, locale);
     }
 
-    public static String unableToReadTemplate(Object template)
+    static String unableToReadTemplate(Object template)
     {
         return _formatter.format("unable-to-read-template", template);
     }
 
-    public static String unableToParseTemplate(Resource resource)
+    static String unableToParseTemplate(Resource resource)
     {
         return _formatter.format("unable-to-parse-template", resource);
     }
 
-    public static String unableToParseSpecification(Resource resource)
+    static String unableToParseSpecification(Resource resource)
     {
         return _formatter.format("unable-to-parse-specification", resource);
     }
 
-    public static String unableToReadInfrastructureProperty(String propertyName,
-            Infrastructure service, Throwable cause)
+    static String unableToReadInfrastructureProperty(String propertyName, Infrastructure service,
+            Throwable cause)
     {
         return _formatter.format(
                 "unable-to-read-infrastructure-property",
@@ -91,37 +91,37 @@ final class ImplMessages
                 cause);
     }
 
-    public static String multipleComponentReferences(IComponent component, String id)
+    static String multipleComponentReferences(IComponent component, String id)
     {
         return _formatter.format("multiple-component-references", component.getExtendedId(), id);
     }
 
-    public static String dupeComponentId(String id, IContainedComponent containedComponent)
+    static String dupeComponentId(String id, IContainedComponent containedComponent)
     {
         return _formatter.format("dupe-component-id", id, HiveMind
                 .getLocationString(containedComponent));
     }
 
-    public static String unbalancedCloseTags()
+    static String unbalancedCloseTags()
     {
         return _formatter.getMessage("unbalanced-close-tags");
     }
 
-    public static String templateBindingForInformalParameter(IComponent loadComponent,
+    static String templateBindingForInformalParameter(IComponent loadComponent,
             String parameterName, IComponent component)
     {
         return _formatter.format("template-binding-for-informal-parameter", loadComponent
                 .getExtendedId(), parameterName, component.getExtendedId());
     }
 
-    public static String templateBindingForReservedParameter(IComponent loadComponent,
+    static String templateBindingForReservedParameter(IComponent loadComponent,
             String parameterName, IComponent component)
     {
         return _formatter.format("template-binding-for-reserved-parameter", loadComponent
                 .getExtendedId(), parameterName, component.getExtendedId());
     }
 
-    public static String missingComponentSpec(IComponent component, Collection ids)
+    static String missingComponentSpec(IComponent component, Collection ids)
     {
         StringBuffer buffer = new StringBuffer();
         List idList = new ArrayList(ids);
@@ -139,13 +139,12 @@ final class ImplMessages
                 count), buffer.toString());
     }
 
-    public static String bodylessComponent()
+    static String bodylessComponent()
     {
         return _formatter.getMessage("bodyless-component");
     }
 
-    public static String dupeTemplateBinding(String name, IComponent component,
-            IComponent loadComponent)
+    static String dupeTemplateBinding(String name, IComponent component, IComponent loadComponent)
     {
         return _formatter.format(
                 "dupe-template-binding",
@@ -154,72 +153,87 @@ final class ImplMessages
                 loadComponent.getExtendedId());
     }
 
-    public static String unableToLoadProperties(URL url, Throwable cause)
+    static String unableToLoadProperties(URL url, Throwable cause)
     {
         return _formatter.format("unable-to-load-properties", url, cause);
     }
 
-    public static String noSuchService(String name)
+    static String noSuchService(String name)
     {
         return _formatter.format("no-such-service", name);
     }
 
-    public static String dupeService(String name, IEngineService existing)
+    static String dupeService(String name, EngineServiceContribution existing)
     {
         return _formatter.format("dupe-service", name, HiveMind.getLocationString(existing));
     }
 
-    public static String unableToParseExpression(String expression, Throwable cause)
+    static String unableToParseExpression(String expression, Throwable cause)
     {
         return _formatter.format("unable-to-parse-expression", expression, cause);
     }
 
-    public static String parsedExpression()
+    static String parsedExpression()
     {
         return _formatter.getMessage("parsed-expression");
     }
 
-    public static String unableToReadExpression(String expression, Object target, Throwable cause)
+    static String unableToReadExpression(String expression, Object target, Throwable cause)
     {
         return _formatter.format("unable-to-read-expression", expression, target, cause);
     }
 
-    public static String unableToWriteExpression(String expression, Object target, Object value,
+    static String unableToWriteExpression(String expression, Object target, Object value,
             Throwable cause)
     {
         return _formatter.format("unable-to-write-expression", new Object[]
         { expression, target, value, cause });
     }
 
-    public static String isConstantExpressionError(String expression, Exception ex)
+    static String isConstantExpressionError(String expression, Exception ex)
     {
         return _formatter.format("is-constant-expression-error", expression, ex);
     }
 
-    public static String templateParameterName(String name)
+    static String templateParameterName(String name)
     {
         return _formatter.format("template-parameter-name", name);
     }
 
-    public static String componentPropertySourceDescription(IComponentSpecification spec)
+    static String componentPropertySourceDescription(IComponentSpecification spec)
     {
         return _formatter.format("component-property-source-description", spec
                 .getSpecificationLocation());
     }
 
-    public static String namespacePropertySourceDescription(INamespace namespace)
+    static String namespacePropertySourceDescription(INamespace namespace)
     {
         return _formatter
                 .format("namespace-property-source-description", namespace.getExtendedId());
     }
 
-    public static String invalidEncoding(String encoding, Throwable cause)
+    static String invalidEncoding(String encoding, Throwable cause)
     {
         return _formatter.format("invalid-encoding", encoding, cause);
     }
 
-    public static String errorResetting(Throwable cause)
+    static String errorResetting(Throwable cause)
     {
         return _formatter.format("error-resetting", cause);
+    }
+
+    static String engineServiceInnerProxyToString(String serviceName)
+    {
+        return _formatter.format("engine-service-inner-proxy-to-string", serviceName);
+    }
+
+    static String engineServiceOuterProxyToString(String serviceName)
+    {
+        return _formatter.format("engine-service-outer-proxy-to-string", serviceName);
+    }
+
+    static String serviceNameMismatch(IEngineService service, String expectedName, String actualName)
+    {
+        return _formatter.format("service-name-mismatch", service, expectedName, actualName);
     }
 }

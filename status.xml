@@ -33,7 +33,7 @@
     <person name="Neil Clayton" id="NC"/>
   </developers>
   <todo>
-    <actions priority="Release 3.1">
+    <actions priority="Release ???">
       <action context="code" dev="open">Handle change of locale correctly, by reloading new instance of page in proper locale</action>
       <action context="code" dev="HLS">Improved User's Guide to replace existing Developer's Guide</action>
       <action context="code" dev="DS">Fix all the Component Reference pages to use the 3.0 syntax</action>
@@ -60,6 +60,7 @@
       <action type="add" dev="HLS"> Allow the name of the initial page to be overriden using the org.apache.tapestry.home-page application property. </action>
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-281"> Include a message digest, as a credential, inside asset URLs. </action>
       <action type="add" dev="HLS"> Add asset-encoding that encodes and decodes a friendly URL for the asset service. </action>
+      <action type="update" dev="HLS"> Add an extra level of indirection, so that engine services can be wired together using the engine-service: object provider. </action>
     </release>
     <release version="3.1-alpha-1" date="Feb 21 2005">
       <action type="update" dev="HLS"> Remove dependencies on Jakarta digester, collections and beanutils. Add dependency on Jakarta HiveMind. </action>

@@ -27,15 +27,18 @@
   </configuration-point>
     
   <contribution configuration-id="FactoryServices">
-    <service object="service:Home"/>
-    <service object="service:tapestry.services.Action"/>
-    <service object="service:tapestry.services.Direct"/>
-    <service object="service:tapestry.services.Page"/>
-    <service object="service:tapestry.services.Reset"/>
-    <service object="service:tapestry.services.Restart"/>
-    <service object="service:tapestry.services.Asset"/>
-	  <service object="service:tapestry.services.External"/>
-    <service object="service:Render"/>
+    <service name="home" object="service:Home"/>
+    <service name="action" object="service:tapestry.services.Action"/>
+    <service name="direct" object="service:tapestry.services.Direct"/>
+    <service name="page" object="service:tapestry.services.Page"/>
+    <service name="reset" object="service:tapestry.services.Reset"/>
+    <service name="restart" object="service:tapestry.services.Restart"/>
+    <service name="asset" object="service:tapestry.services.Asset"/>
+	  <service name="external" object="service:tapestry.services.External"/>
+    
+    <!-- Special one used for handling Portal RenderRequests -->
+    
+    <service name="render" object="service:Render"/>
   </contribution>    
   
   <service-point id="PortletRenderer" interface="PortletRenderer">

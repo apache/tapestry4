@@ -31,18 +31,31 @@ import org.apache.tapestry.services.ServiceMap;
  * @author Howard Lewis Ship
  * @since 3.1
  */
-public class ServiceMapImpl implements ServiceMap
+public class ServiceMapImpl implements ServiceMap, EngineServiceSource
 {
+    /**
+     * List of {@link EngineServiceContribution}.
+     */
     private List _applicationServices;
 
+    /**
+     * List of {@link EngineServiceContribution}.
+     */
     private List _factoryServices;
 
     private ErrorLog _errorLog;
 
     /**
-     * Map of {@link IEngineService}keyed on String name.
+     * Map of {@link EngineServiceContribution}&nbsp;keyed on String name.
      */
     private Map _services;
+
+    /**
+     * Map of {@link org.apache.tapestry.services.impl.EngineServiceOuterProxy}, keyed on String
+     * name.
+     */
+
+    private Map _proxies = new HashMap();
 
     public void initializeService()
     {
@@ -64,34 +77,74 @@ public class ServiceMapImpl implements ServiceMap
         Iterator i = services.iterator();
         while (i.hasNext())
         {
-            IEngineService s = (IEngineService) i.next();
-            String name = s.getName();
+            EngineServiceContribution contribution = (EngineServiceContribution) i.next();
+            String name = contribution.getName();
 
-            IEngineService existing = (IEngineService) result.get(name);
+            EngineServiceContribution existing = (EngineServiceContribution) result.get(name);
 
             if (existing != null)
             {
                 _errorLog.error(
                         ImplMessages.dupeService(name, existing),
-                        HiveMind.getLocation(s),
+                        existing.getLocation(),
                         null);
                 continue;
             }
 
-            result.put(name, s);
+            result.put(name, contribution);
         }
 
         return result;
     }
 
-    public IEngineService getService(String name)
+    public synchronized IEngineService getService(String name)
     {
-        IEngineService result = (IEngineService) _services.get(name);
+        IEngineService result = (IEngineService) _proxies.get(name);
 
         if (result == null)
-            throw new ApplicationRuntimeException(ImplMessages.noSuchService(name));
+        {
+            result = buildProxy(name);
+            _proxies.put(name, result);
+        }
 
         return result;
+    }
+
+    /**
+     * This returns the actual service, not the outer proxy.
+     */
+
+    public IEngineService resolveEngineService(String name)
+    {
+        EngineServiceContribution contribution = (EngineServiceContribution) _services.get(name);
+
+        if (contribution == null)
+            throw new ApplicationRuntimeException(ImplMessages.noSuchService(name));
+
+        IEngineService service = contribution.getService();
+        String serviceName = service.getName();
+
+        if (!serviceName.equals(name))
+            throw new ApplicationRuntimeException(ImplMessages.serviceNameMismatch(
+                    service,
+                    name,
+                    serviceName), contribution.getLocation(), null);
+
+        return service;
+    }
+
+    private IEngineService buildProxy(String name)
+    {
+        if (!_services.containsKey(name))
+            throw new ApplicationRuntimeException(ImplMessages.noSuchService(name));
+
+        EngineServiceOuterProxy outer = new EngineServiceOuterProxy(name);
+
+        EngineServiceInnerProxy inner = new EngineServiceInnerProxy(name, outer, this);
+
+        outer.installDelegate(inner);
+
+        return outer;
     }
 
     public void setApplicationServices(List applicationServices)
