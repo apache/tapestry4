@@ -53,85 +53,85 @@
  *
  */
 
-package org.apache.tapestry.wml;
+package org.apache.tapestry.junit.enhance;
 
-import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.engine.ILink;
-import org.apache.tapestry.form.Form;
-import org.apache.tapestry.valid.IValidationDelegate;
+import java.lang.reflect.Method;
+
+import org.apache.tapestry.*;
+import org.apache.tapestry.enhance.MethodSignature;
+import org.apache.tapestry.junit.TapestryTestCase;
 
 /**
- *  The go element declares a go task, indicating navigation to a URI. If the URI
- *  names a WML card or deck, it is displayed. 
+ *  Tests for the {@link org.apache.tapestry.enhance.MethodSignature}
+ *  class used by the {@link org.apache.tapestry.enhance.DefaultComponentClassEnhancer}.
  *
+ *  @author Howard Lewis Ship
  *  @version $Id$
- *  @author David Solis
  *  @since 2.4
  *
  **/
-
-public abstract class Go extends Form
+public class TestMethodSignature extends TapestryTestCase
 {
 
-    /** @since 2.4 **/
-
-    protected void writeAttributes(IMarkupWriter writer, ILink link)
+    public TestMethodSignature(String name)
     {
-        String method = getMethod();
-
-        writer.begin(getTag());
-        writer.attribute("method", (method == null) ? "post" : method);
-        writer.attribute("href", link.getURL(null, false));
+        super(name);
     }
 
-    /** @since 2.4 **/
-
-    protected void writeHiddenField(IMarkupWriter writer, String name, String value)
+    private MethodSignature build(Class subject, String methodName)
     {
-        writer.beginEmpty(getInputTag());
-        writer.attribute("name", name);
-        writer.attribute("value", value);
-        writer.println();
-    }
+        Method[] m = subject.getDeclaredMethods();
 
-    /**
-     *  This component doesn't support event handlers.
-     *
-     **/
-    protected void emitEventHandlers(IMarkupWriter writer, IRequestCycle cycle)
-    {
-    }
+        for (int i = 0; i < m.length; i++)
+        {
+            if (m[i].getName().equals(methodName))
+                return new MethodSignature(m[i]);
+        }
 
-    /**
-     *  This component doesn't support delegate.
-     *
-     **/
-    public IValidationDelegate getDelegate()
-    {
+        unreachable();
+
         return null;
     }
 
-    public void setDelegate(IValidationDelegate delegate)
+    public void testEquals()
     {
-        throw new ApplicationRuntimeException(
-            Tapestry.getString("unsupported-property", this, "delegate"));
+    	// No parameters
+        MethodSignature m1 = build(Object.class, "hashCode");
+        MethodSignature m2 = build(Integer.class, "hashCode");
+        
+        // With parameters
+		MethodSignature m3 = build(AbstractComponent.class, "renderComponent");
+		MethodSignature m4 = build(BaseComponent.class, "renderComponent");
+		
+        assertEquals(true, m1.equals(m2));
+        assertEquals(true, m3.equals(m4));
     }
 
-    protected String getTag()
+    public void testUnequal()
     {
-        return "go";
+        MethodSignature m1 = build(Object.class, "hashCode");
+        MethodSignature m2 = build(Integer.class, "toString");
+
+        assertEquals(false, m1.equals(m2));
+
+        assertEquals(false, m1.equals(null));
+
+        assertEquals(false, m1.equals("hashCode"));
     }
 
-    protected String getInputTag()
+    public void testHashCode()
     {
-        return "postfield";
+        MethodSignature m1 = build(Object.class, "toString");
+        MethodSignature m2 = build(StringBuffer.class, "toString");
+        MethodSignature m3 = build(AbstractComponent.class, "renderComponent");
+        MethodSignature m4 = build(BaseComponent.class, "renderComponent");
+
+        assertEquals(true, m1.hashCode() == m2.hashCode());
+        assertEquals(true, m3.hashCode() == m4.hashCode());
+        
+        // Different signatures should have different hashcode
+        
+        assertEquals(true, m1.hashCode() != m3.hashCode());
     }
 
-    protected String getDisplayName()
-    {
-        return "Go";
-    }
 }

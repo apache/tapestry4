@@ -55,16 +55,22 @@
 
 package org.apache.tapestry.enhance;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.*;
 import java.util.Map;
+import java.util.Set;
 
-import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.IResourceResolver;
-import org.apache.tapestry.engine.IComponentClassEnhancer;
-import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.bcel.classfile.JavaClass;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.tapestry.IResourceResolver;
+import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.engine.IComponentClassEnhancer;
+import org.apache.tapestry.spec.ComponentSpecification;
 
 /**
  *  Default implementation of {@link org.apache.tapestry.IComponentClassEnhancer}.
@@ -141,7 +147,7 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
 
         try
         {
-           result = _resolver.findClass(className);
+            result = _resolver.findClass(className);
         }
         catch (Exception ex)
         {
@@ -155,25 +161,120 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
             JavaClass javaClass = factory.createEnhancedSubclass();
 
             result = _classLoader.defineClass(javaClass);
+
+            validateEnhancedClass(result, className, specification);
         }
 
         return result;
     }
 
-	/**
-	 *  Constructs a new factory for enhancing the specified class. Advanced users
-	 *  may want to provide thier own enhancements to classes and this method
-	 *  is the hook that allows them to provide a subclass of
-	 *  {@link org.apache.tapestry.enhance.ComponentClassFactory} adding those
-	 *  enhancements.
-	 * 
-	 **/
-	
+    /**
+     *  Constructs a new factory for enhancing the specified class. Advanced users
+     *  may want to provide thier own enhancements to classes and this method
+     *  is the hook that allows them to provide a subclass of
+     *  {@link org.apache.tapestry.enhance.ComponentClassFactory} adding those
+     *  enhancements.
+     * 
+     **/
+
     protected ComponentClassFactory createComponentClassFactory(
         ComponentSpecification specification,
         Class componentClass)
     {
         return new ComponentClassFactory(_resolver, specification, componentClass);
+    }
+
+    /**
+     *  Invoked to validate that an enhanced class is acceptible.  Primarily, this is to ensure
+     *  that the class contains no unimplemented abstract methods or fields.  Normally,
+     *  this kind of checking is done at compile time, but for generated
+     *  classes, there is no compile time check (!) and you can get runtime
+     *  errors when accessing unimplemented abstract methods.
+     * 
+     *
+     **/
+
+    protected void validateEnhancedClass(
+        Class subject,
+        String className,
+        ComponentSpecification specification)
+    {
+        boolean debug = LOG.isDebugEnabled();
+
+        if (debug)
+            LOG.debug("Validating " + subject);
+
+        Set implementedMethods = new HashSet();
+        Class current = subject;
+ 
+         while (true)
+        {
+            Method m = checkForAbstractMethods(current, implementedMethods);
+
+            if (m != null)
+                throw new ApplicationRuntimeException(
+                    Tapestry.getString(
+                        "DefaultComponentClassEnhancer.no-impl-for-abstract-method",
+                        new Object[] { m, current, className, subject.getName()}),
+                    specification.getLocation(),
+                    null);
+
+			// An earlier version of this code walked the interfaces directly,
+			// but it appears that implementing an interface actually
+			// puts abstract method declarations into the class
+			// (at least, in terms of what getDeclaredMethods() returns).
+
+            // March up to the super class.
+
+            current = current.getSuperclass();
+            
+            // Once advanced up to a concrete class, we trust that
+            // the compiler did its checking.
+            
+            if (!Modifier.isAbstract(current.getModifiers()))
+            	break;
+        }
+
+    }
+
+    /**
+     *  Searches the class for abstract methods, returning the first found.
+     *  Records non-abstract methods in the implementedMethods set.
+     * 
+     **/
+
+    private Method checkForAbstractMethods(Class current, Set implementedMethods)
+    {
+        boolean debug = LOG.isDebugEnabled();
+
+        if (debug)
+            LOG.debug("Searching for abstract methods in " + current);
+
+        Method[] methods = current.getDeclaredMethods();
+
+        for (int i = 0; i < methods.length; i++)
+        {
+            Method m = methods[i];
+
+            if (debug)
+                LOG.debug("Checking " + m);
+
+            boolean isAbstract = Modifier.isAbstract(m.getModifiers());
+
+			MethodSignature s = new MethodSignature(m);
+
+            if (isAbstract)
+            {
+                if (implementedMethods.contains(s))
+                    continue;
+
+                return m;
+            }
+
+            implementedMethods.add(s);
+        }
+
+        return null;
     }
 
 }

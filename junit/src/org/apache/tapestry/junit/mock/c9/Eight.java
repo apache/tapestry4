@@ -53,85 +53,26 @@
  *
  */
 
-package org.apache.tapestry.wml;
+package org.apache.tapestry.junit.mock.c9;
 
-import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.engine.ILink;
-import org.apache.tapestry.form.Form;
-import org.apache.tapestry.valid.IValidationDelegate;
+import org.apache.tapestry.html.BasePage;
+
 
 /**
- *  The go element declares a go task, indicating navigation to a URI. If the URI
- *  names a WML card or deck, it is displayed. 
+ *  Test for an unimplemented abstract method.
  *
+ *  @author Howard Lewis Ship
  *  @version $Id$
- *  @author David Solis
  *  @since 2.4
  *
  **/
 
-public abstract class Go extends Form
+public abstract class Eight extends BasePage
 {
-
-    /** @since 2.4 **/
-
-    protected void writeAttributes(IMarkupWriter writer, ILink link)
-    {
-        String method = getMethod();
-
-        writer.begin(getTag());
-        writer.attribute("method", (method == null) ? "post" : method);
-        writer.attribute("href", link.getURL(null, false));
-    }
-
-    /** @since 2.4 **/
-
-    protected void writeHiddenField(IMarkupWriter writer, String name, String value)
-    {
-        writer.beginEmpty(getInputTag());
-        writer.attribute("name", name);
-        writer.attribute("value", value);
-        writer.println();
-    }
-
-    /**
-     *  This component doesn't support event handlers.
-     *
-     **/
-    protected void emitEventHandlers(IMarkupWriter writer, IRequestCycle cycle)
-    {
-    }
-
-    /**
-     *  This component doesn't support delegate.
-     *
-     **/
-    public IValidationDelegate getDelegate()
-    {
-        return null;
-    }
-
-    public void setDelegate(IValidationDelegate delegate)
-    {
-        throw new ApplicationRuntimeException(
-            Tapestry.getString("unsupported-property", this, "delegate"));
-    }
-
-    protected String getTag()
-    {
-        return "go";
-    }
-
-    protected String getInputTag()
-    {
-        return "postfield";
-    }
-
-    protected String getDisplayName()
-    {
-        return "Go";
-    }
+	public abstract long getEnhancedProperty();
+	
+	// A common error: wrong signature for
+	// an accessor.
+	
+	public abstract long setEnhancedProperty(long enhancedProperty);
 }

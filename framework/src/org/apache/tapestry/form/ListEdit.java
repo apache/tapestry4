@@ -217,4 +217,11 @@ public abstract class ListEdit extends AbstractFormComponent
 
     public abstract IBinding getIndexBinding();
 
+    /** @since 2.4 **/
+    
+    public boolean isDisabled()
+    {
+        return false;
+    }
+
 }

@@ -3,7 +3,11 @@
 <!-- $Id$ -->
 
 <mock-test>
-    <context name="c9" root="context9"/>
+	
+	<!-- Accidentally named this once context upper-case, and it's a pain to fix
+		 it because of how NT handles case and filenames. -->
+		 
+    <context name="c9" root="Context9"/>
 
   	<servlet name="app" class="org.apache.tapestry.ApplicationServlet"/>
 
@@ -324,4 +328,48 @@ value: \[(.*?)\]
 		 	
 	</request>
 		
+	<!-- Test an abstract page that includes an abstract method that
+		 isn't implemented. -->
+		 
+	<request>
+		<parameter name="service" value="page/Eight"/>
+			
+		<assert-output name="Title">
+<![CDATA[
+<title>Exception</title
+]]>	
+		</assert-output>
+		
+		<assert-output name="Message">
+		Method 'public abstract long org.apache.tapestry.junit.mock.c9.Eight.getEnhancedProperty()' (declared in class org.apache.tapestry.junit.mock.c9.Eight) has no implementation in class org.apache.tapestry.junit.mock.c9.Eight (or enhanced subclass org.apache.tapestry.junit.mock.c9.Eight$
+		</assert-output>
+	</request>
+
+	<request>
+		<parameter name="service" value="page/Nine"/>
+			
+		<assert-output name="Title">
+<![CDATA[
+<title>Exception</title
+]]>	
+		</assert-output>
+		
+		<assert-output name="Message">
+		Method 'public abstract void org.apache.tapestry.junit.mock.c9.Nine.pageDetached(org.apache.tapestry.event.PageEvent)' (declared in class org.apache.tapestry.junit.mock.c9.Nine) has no implementation in class org.apache.tapestry.junit.mock.c9.Nine (or enhanced subclass org.apache.tapestry.junit.mock.c9.Nine$	
+		</assert-output>
+	</request>
+	
+	<request>
+		<parameter name="service" value="page/Ten"/>
+		
+		<assert-output name="Title">
+<![CDATA[
+<title>Ten</title>
+]]>	
+		</assert-output>
+		
+		<assert-output name="Long Value">
+		Long value: [123456]	
+		</assert-output>	
+	</request>
  </mock-test>
