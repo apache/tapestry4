@@ -108,17 +108,17 @@
     <binding name="name" property-path="symbols.downImageName"/>
   </component>
 
-  <private-asset name="Select" resource-path="/net/sf/tapestry/contrib/palette/Select.gif"/>
-  <private-asset name="Select-dis" resource-path="/net/sf/tapestry/contrib/palette/Select-dis.gif"/>
-  <private-asset name="Deselect" resource-path="/net/sf/tapestry/contrib/palette/Deselect.gif"/>
-  <private-asset name="Deselect-dis" resource-path="/net/sf/tapestry/contrib/palette/Deselect-dis.gif"/>
-  <private-asset name="SelectM" resource-path="/net/sf/tapestry/contrib/palette/SelectM.gif"/>
-  <private-asset name="SelectM-dis" resource-path="/net/sf/tapestry/contrib/palette/SelectM-dis.gif"/>
-  <private-asset name="DeselectM" resource-path="/net/sf/tapestry/contrib/palette/DeselectM.gif"/>
-  <private-asset name="DeselectM-dis" resource-path="/net/sf/tapestry/contrib/palette/DeselectM-dis.gif"/>
-  <private-asset name="Up" resource-path="/net/sf/tapestry/contrib/palette/Up.gif"/>
-  <private-asset name="Up-dis" resource-path="/net/sf/tapestry/contrib/palette/Up-dis.gif"/>
-  <private-asset name="Down" resource-path="/net/sf/tapestry/contrib/palette/Down.gif"/>
-  <private-asset name="Down-dis" resource-path="/net/sf/tapestry/contrib/palette/Down-dis.gif"/>
+  <private-asset name="Select" resource-path="/net/sf/tapestry/contrib/palette/select_right.gif"/>
+  <private-asset name="Select-dis" resource-path="/net/sf/tapestry/contrib/palette/select_right_off.gif"/>
+  <private-asset name="Deselect" resource-path="/net/sf/tapestry/contrib/palette/deselect_left.gif"/>
+  <private-asset name="Deselect-dis" resource-path="/net/sf/tapestry/contrib/palette/deselect_left_off.gif"/>
+  <private-asset name="SelectM" resource-path="/net/sf/tapestry/contrib/palette/select_left.gif"/>
+  <private-asset name="SelectM-dis" resource-path="/net/sf/tapestry/contrib/palette/select_left_off.gif"/>
+  <private-asset name="DeselectM" resource-path="/net/sf/tapestry/contrib/palette/deselect_right.gif"/>
+  <private-asset name="DeselectM-dis" resource-path="/net/sf/tapestry/contrib/palette/deselect_right_off.gif"/>
+  <private-asset name="Up" resource-path="/net/sf/tapestry/contrib/palette/move_up.gif"/>
+  <private-asset name="Up-dis" resource-path="/net/sf/tapestry/contrib/palette/move_up_off.gif"/>
+  <private-asset name="Down" resource-path="/net/sf/tapestry/contrib/palette/move_down.gif"/>
+  <private-asset name="Down-dis" resource-path="/net/sf/tapestry/contrib/palette/move_down_off.gif"/>
   
 </specification>

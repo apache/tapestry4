@@ -63,7 +63,7 @@ import org.apache.log4j.*;
  * <p>Where possible, instance variables should be transient.  They
  * can be restored inside {@link #setupForRequest(RequestContext)}.
  *
- *  In practice, a subclass (usually {@link SimpleEngine})
+ *  <p>In practice, a subclass (usually {@link SimpleEngine})
  *  is used without subclassing.  Instead, a 
  *  visit object is specified.  To facilitate this, the application specification
  *  may include a property, <code>com.primix.tapestry.visit-class</code>
@@ -82,7 +82,7 @@ import org.apache.log4j.*;
  * </tr>
  * <tr>
  *		<td>com.primix.tapestry.disable-caching</td>
- *	<td>If true, then the page, specification and template caches
+ *	<td>If true, then the page, specification, template and script caches
  *  will be cleared after each request. This slows things down,
  *  but ensures that the latest versions of such files are used.
  *  Care should be taken that the source directories for the files
@@ -285,8 +285,8 @@ public abstract class AbstractEngine
 				buffer.setLength(0);
 			
 			// Because we know that all of the terms are 'URL safe' (they contain
-			// only alphanumeric characters and the '.') we don't have to
-			// use HTMLUtils.buildURL().
+			// only alphanumeric characters and the '.') we can avoid
+			// using URLEncoder.
 			
 			buffer.append(servletPrefix);
 			buffer.append('/');
@@ -298,7 +298,7 @@ public abstract class AbstractEngine
 			buffer.append('/');
 			
 			// Because of Block/InsertBlock, the component may not be on
-			// the same page and the response page and we need to make
+			// the same page as the response page and we need to make
 			// allowances for this.
 			
 			if (cycle.getPage() != component.getPage())
@@ -617,7 +617,7 @@ public abstract class AbstractEngine
 	 *  <li>direct
 	 *  <li>page
 	 *  <li>restart
-	 *  <li>reset  (if system property 
+	 *  <li>reset  (if JVM system property 
 	 *  <code>com.primix.tapestry.enable-reset-service</code> is true)
 	 *  </ul>
 	 *
@@ -685,7 +685,7 @@ public abstract class AbstractEngine
 	}
 	
 	/**
-	 *  Overiden in subclasses that support monitoring.  Should create and return
+	 *  Overriden in subclasses that support monitoring.  Should create and return
 	 *  an instance of {@link IMonitor} that is appropriate for the request cycle described
 	 *  by the {@link RequestContext}.  May return null.
 	 *
