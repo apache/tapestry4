@@ -41,8 +41,8 @@ public class ScriptedTestSession
     private MockContext _context;
     private MockRequest _request;
     private MockResponse _response;
-	private RegexpMatcher _matcher = new RegexpMatcher();
-	
+    private RegexpMatcher _matcher = new RegexpMatcher();
+
     public ScriptedTestSession(ScriptDescriptor descriptor)
     {
         _scriptDescriptor = descriptor;
@@ -64,11 +64,10 @@ public class ScriptedTestSession
 
     private void setupForExecute()
     {
-        _context = new MockContext();
+        _context = new MockContext(_scriptDescriptor.getRootDirectory());
         _context.setServletContextName(_scriptDescriptor.getContextName());
-        _context.setRootDirectory(_scriptDescriptor.getRootDirectory());
-
     }
+
     private void executeRequest(RequestDescriptor rd)
     {
         HttpServlet s = getServlet(rd.getServletName());
@@ -182,10 +181,9 @@ public class ScriptedTestSession
                 ex);
         }
     }
-    
-   
-   /** Inteaded only for use by the test suite. */
-    
+
+    /** Inteaded only for use by the test suite. */
+
     void setResponse(MockResponse response)
     {
         _response = response;

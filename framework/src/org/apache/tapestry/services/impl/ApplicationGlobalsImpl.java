@@ -54,4 +54,8 @@ public class ApplicationGlobalsImpl implements ApplicationGlobals
         return _context;
     }
 
+	public String getServletName()
+	{
+		return _servlet.getServletName();
+	}
 }

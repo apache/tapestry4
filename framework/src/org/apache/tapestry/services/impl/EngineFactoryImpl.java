@@ -17,9 +17,10 @@ package org.apache.tapestry.services.impl;
 import java.util.Locale;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.IEngine;
-import org.apache.tapestry.engine.BaseEngine;
 import org.apache.tapestry.services.EngineFactory;
+import org.apache.tapestry.spec.IApplicationSpecification;
 
 /**
  * Standard implementation of {@link org.apache.tapestry.services.EngineFactory} service.
@@ -31,18 +32,20 @@ import org.apache.tapestry.services.EngineFactory;
  */
 public class EngineFactoryImpl implements EngineFactory
 {
+    private IApplicationSpecification _applicationSpecification;
+    private String _defaultEngineClassName;
+    private EngineConstructor _constructor;
+    private ClassResolver _classResolver;
+
     interface EngineConstructor
     {
         IEngine construct();
     }
 
-    static class BaseEngineConstructor implements EngineConstructor
-    {
-        public IEngine construct()
-        {
-            return new BaseEngine();
-        }
-    }
+
+	// TODO: Create a BaseEngineConstructor that is hardcoded to
+	// instantiate a BaseEngine instance, without using reflection
+	// (for efficiency). 
 
     static class ReflectiveEngineConstructor implements EngineConstructor
     {
@@ -68,9 +71,42 @@ public class EngineFactoryImpl implements EngineFactory
         }
     }
 
+    public void initializeService()
+    {
+        String engineClassName = _applicationSpecification.getEngineClassName();
+
+		// TODO: Check in web.xml first.
+
+        if (engineClassName == null)
+            engineClassName = _defaultEngineClassName;
+
+        Class engineClass = _classResolver.findClass(engineClassName);
+
+        _constructor = new ReflectiveEngineConstructor(engineClass);
+    }
+
     public IEngine constructNewEngineInstance(Locale locale)
     {
-        return null;
+        IEngine result = _constructor.construct();
+
+        result.setLocale(locale);
+
+        return result;
+    }
+
+    public void setApplicationSpecification(IApplicationSpecification specification)
+    {
+        _applicationSpecification = specification;
+    }
+
+    public void setClassResolver(ClassResolver resolver)
+    {
+        _classResolver = resolver;
+    }
+
+    public void setDefaultEngineClassName(String string)
+    {
+        _defaultEngineClassName = string;
     }
 
 }

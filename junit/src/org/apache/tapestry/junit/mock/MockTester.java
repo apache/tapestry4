@@ -66,13 +66,12 @@ import org.jdom.input.SAXBuilder;
  *
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.2
- * 
- **/
+ */
 
 public class MockTester
 {
+	private String _testRootDirectory;
     private String _path;
     private Document _document;
     private MockContext _context;
@@ -100,9 +99,10 @@ public class MockTester
      * 
      **/
 
-    public MockTester(String path)
+    public MockTester(String testRootDirectory, String path)
         throws JDOMException, ServletException, DocumentParseException, IOException
     {
+    	_testRootDirectory = testRootDirectory;
         _path = path;
 
         parse();
@@ -157,7 +157,7 @@ public class MockTester
 
         String contentPath = request.getAttributeValue("content-path");
         if (contentPath != null)
-            _request.setContentPath(contentPath);
+            _request.setContentPath(_testRootDirectory + contentPath);
 
         _request.addCookies(oldRequestCookies);
 
@@ -208,7 +208,7 @@ public class MockTester
 
     private void setupContext(Element parent)
     {
-        _context = new MockContext();
+        _context = new MockContext(_testRootDirectory);
 
         Element context = parent.getChild("context");
 
@@ -223,7 +223,7 @@ public class MockTester
         String root = context.getAttributeValue("root");
 
         if (root != null)
-            _context.setRootDirectory(root);
+            _context.setRootDirectory(_testRootDirectory + root);
 
         setInitParameters(context, _context);
     }
@@ -835,7 +835,7 @@ public class MockTester
                     + "'.");
 
         byte[] actualContent = _response.getResponseBytes();
-        byte[] expectedContent = getFileContent(path);
+        byte[] expectedContent = getFileContent(_testRootDirectory + path);
 
         if (actualContent.length != expectedContent.length)
             throw new AssertionFailedError(

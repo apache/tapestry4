@@ -49,15 +49,18 @@ public class MockContext extends AttributeHolder implements ServletContext, Init
         _suffixToContentType.put("png", "image/png");
     }
 
-    /**
-     *  Directory, relative to the current directory (i.e., System property user.dir)
-     *  that is the context root.
-     * 
-     **/
-
-    private String _rootDirectory = "context";
+    private String _rootDirectory;
     private String _servletContextName = "test";
     private Map _initParameters = new HashMap();
+
+    public MockContext()
+    {
+    }
+
+    public MockContext(String testDirectory)
+    {
+        _rootDirectory = testDirectory + "/context";
+    }
 
     public ServletContext getContext(String name)
     {
@@ -79,7 +82,7 @@ public class MockContext extends AttributeHolder implements ServletContext, Init
         int lastx = path.lastIndexOf('.');
         String suffix = path.substring(lastx + 1);
 
-        return(String) _suffixToContentType.get(suffix);
+        return (String) _suffixToContentType.get(suffix);
     }
 
     public Set getResourcePaths(String arg0)
@@ -92,17 +95,9 @@ public class MockContext extends AttributeHolder implements ServletContext, Init
         if (path == null || !path.startsWith("/"))
             throw new MalformedURLException("Not a valid context path.");
 
-        StringBuffer buffer = new StringBuffer();
+        String fullPath = _rootDirectory + path;
 
-        buffer.append(System.getProperty("user.dir"));
-        buffer.append("/");
-        buffer.append(_rootDirectory);
-
-        // Path has a leading slash
-
-        buffer.append(path);
-
-        File file = new File(buffer.toString());
+        File file = new File(fullPath);
 
         if (file.exists())
             return file.toURL();

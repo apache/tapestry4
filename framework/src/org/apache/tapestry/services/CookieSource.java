@@ -14,29 +14,17 @@
 
 package org.apache.tapestry.services;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServlet;
-
-import org.apache.tapestry.spec.IApplicationSpecification;
-
 /**
- * A "global" holder for the servlet, servlet context and application specification.
- * 
+ * Used by other services to obtain cookie values for the current request.
+ *
  * @author Howard Lewis Ship
  * @since 3.1
  */
-public interface ApplicationGlobals
+public interface CookieSource
 {
-    /**
-     * Invoked by the servlet at init(), after parsing the application specification.
-     */
-    void store(HttpServlet servlet, IApplicationSpecification applicationSpecification);
-
-    HttpServlet getServlet();
-
-    IApplicationSpecification getSpecification();
-
-    ServletContext getContext();
-    
-    String getServletName();
+	/**
+	 * Returns the value of the first cookie whose name matches. Returns null
+	 * if no such cookie exists.
+	 */
+	public String getCookieValue(String name);
 }
