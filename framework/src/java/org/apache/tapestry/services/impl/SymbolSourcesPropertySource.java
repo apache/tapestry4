@@ -37,7 +37,7 @@ public class SymbolSourcesPropertySource implements IPropertySource
      */
     public String getPropertyValue(String propertyName)
     {
-        return _module.getSymbolValue(propertyName);
+        return _module.valueForSymbol(propertyName);
     }
 
 }
