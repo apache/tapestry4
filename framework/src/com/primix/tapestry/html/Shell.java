@@ -269,7 +269,7 @@ public class Shell extends AbstractComponent
 		Gesture g = pageService.buildGesture(cycle, null, new String[] { pageName });
 
 		HttpServletResponse response = context.getResponse();
-		String URL = response.encodeURL(context.getAbsoluteURL(g.getFullURL(cycle)));
+		String URL = response.encodeURL(g.getAbsoluteURL(cycle));
 
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(refresh);

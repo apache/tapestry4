@@ -62,7 +62,7 @@ public class ExternalService extends AbstractService
 		if (parameters == null || parameters.length != 2)
 			throw new ApplicationRuntimeException("external service requires two parameters.");
 
-		return assembleGesture(cycle, SERVICE_NAME, null, parameters);
+		return assembleGesture(cycle, SERVICE_NAME, null, parameters, true);
 
 	}
 

@@ -112,7 +112,9 @@ public class AssetService extends AbstractService
 			throw new ApplicationRuntimeException(
 			Tapestry.getString("service-single-parameter", ASSET_SERVICE));
 
-		return assembleGesture(cycle, ASSET_SERVICE, parameters, null);
+        // Service is stateless
+        
+		return assembleGesture(cycle, ASSET_SERVICE, parameters, null, false);
 	}
 
 	public String getName()

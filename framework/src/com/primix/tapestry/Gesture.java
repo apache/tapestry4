@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -46,8 +47,11 @@ import javax.servlet.http.HttpServletResponse;
 
 public class Gesture
 {
+    private static final int DEFAULT_HTTP_PORT = 80;
+
 	private String servletPath;
 	private Map queryParameters;
+	private boolean stateful;
 
 	/**
 	 *  Creates a new Gesture, for the given servlet and with a set
@@ -58,13 +62,17 @@ public class Gesture
 	 * @param queryParameters a {@link Map} of parameters.  Keys and values
 	 *  are both String.  Map not be null; one query parameter must be
 	 *  specify the engine service.
+	 * @param stateful if true, the service which generated the Gesture
+	 * is stateful and expects that the final URL will be passed through
+	 * {@link IRequestCycle#encodeURL(String)}.
 	 */
 
-	public Gesture(String servletPath, Map queryParameters)
+	public Gesture(String servletPath, Map queryParameters, boolean stateful)
 	{
 		this.servletPath = servletPath;
 
 		this.queryParameters = new HashMap(queryParameters);
+		this.stateful = stateful;
 	}
 
 	/**
@@ -84,17 +92,89 @@ public class Gesture
 	}
 
 	/**
-	 *  Returns the full URL, with all query parameters encoded into the URL.
-	 *  This must still be filtered through {@link HttpServletResponse#encodeURL(String)}.
+	 *  Something of a misnomer; returns the URI, relative to the server's root.
+	 *  If the Gesture is stateful, then the URI is filtered
+	 *  through {@link IRequestCycle#encodeURL(String)}.
+	 *
 	 */
 
-	public String getFullURL()
+	public String getURL(IRequestCycle cycle)
 	{
-		StringBuffer buffer = new StringBuffer(servletPath);
+		StringBuffer buffer = new StringBuffer();
 
-		boolean first = true;
+		constructURL(buffer);
+
+		String result = buffer.toString();
+
+		if (stateful)
+			return cycle.encodeURL(result);
+
+		return result;
+	}
+
+	/**
+	 *  Constructs an absolute URL, including scheme, server and port.
+     *  This is often useful when the URL will be included in a client-side script.
+	 *
+	 **/
+
+	public String getAbsoluteURL(IRequestCycle cycle)
+	{
+		return getAbsoluteURL(null, null, 0, cycle);
+	}
+
+	/**
+	 *  Generates a complete URL.
+	 *  @param scheme if non-null, used as the scheme (instead of the scheme defined by the cycle)
+	 *  @param server if non-null, used as the server (instead of the server defined by the cycle)
+	 *  @param port if non-zero, used as the port (instead of the port defined by the cycle)
+	 * 
+	 **/
+
+	public String getAbsoluteURL(String scheme, String server, int port, IRequestCycle cycle)
+	{
+		StringBuffer buffer = new StringBuffer();
+		HttpServletRequest request = cycle.getRequestContext().getRequest();
+
+		if (scheme == null)
+			scheme = request.getScheme();
+
+		buffer.append(scheme);
+		buffer.append("://");
+
+		if (server == null)
+			server = request.getServerName();
+
+		buffer.append(server);
+
+		if (port == 0)
+			port = request.getServerPort();
+
+		if (!(scheme.equals("http") && port == DEFAULT_HTTP_PORT))
+		{
+			buffer.append(':');
+			buffer.append(port);
+		}
+        
+        // Add the servlet path and the rest of the URL & query parameters.
+        // The servlet path start with a leading slash.
+
+		constructURL(buffer);
+
+		String result = buffer.toString();
+
+		if (stateful)
+			result = cycle.encodeURL(result);
+
+		return result;
+	}
+
+	private void constructURL(StringBuffer buffer)
+	{
+		buffer.append(servletPath);
 
 		Iterator i = getQueryParameters();
+        boolean first = true;
 
 		while (i.hasNext())
 		{
@@ -112,18 +192,6 @@ public class Gesture
 			buffer.append(entry.getValue().toString());
 		}
 
-		return buffer.toString();
-	}
-
-	/**
-	 *  As with {@link #getFullURL()}, but runs the result through
-	 *  {@link IRequestCycle#encodeURL(String)}.
-	 *
-	 */
-
-	public String getFullURL(IRequestCycle cycle)
-	{
-		return cycle.encodeURL(getFullURL());
 	}
 
 	public String toString()
@@ -134,6 +202,10 @@ public class Gesture
 		buffer.append(' ');
 
 		buffer.append(queryParameters);
+
+		if (stateful)
+			buffer.append(" stateful");
+
 		buffer.append(']');
 
 		return buffer.toString();

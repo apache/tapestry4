@@ -50,17 +50,8 @@ import javax.servlet.http.*;
  * @version $Id$
  */
 
-public abstract class AbstractServiceLink
-	extends AbstractComponent
-	implements IServiceLink
+public abstract class AbstractServiceLink extends AbstractComponent implements IServiceLink
 {
-	private static final int DEFAULT_HTTP_PORT = 80;
-
-	// A number of characters to add to the URL to get the initial size
-	// of the StringBuffer used to assemble the complete URL.
-
-	private static final int URL_PAD = 50;
-
 	private IBinding disabledBinding;
 	private boolean staticDisabled;
 	private boolean disabledValue;
@@ -96,13 +87,12 @@ public abstract class AbstractServiceLink
 		return null;
 	}
 
-	protected String buildURL(IRequestCycle cycle, String[] context)
-		throws RequestCycleException
+	protected String buildURL(IRequestCycle cycle, String[] context) throws RequestCycleException
 	{
 		String anchor = null;
-		StringBuffer buffer = null;
 		String scheme = null;
 		int port = 0;
+		String URL = null;
 
 		String serviceName = getServiceName(cycle);
 		IEngineService service = cycle.getEngine().getService(serviceName);
@@ -112,19 +102,10 @@ public abstract class AbstractServiceLink
 				Tapestry.getString("AbstractServiceLink.missing-service", serviceName),
 				this);
 
-		// Perform the major work of building the URL.
-
 		Gesture g = service.buildGesture(cycle, this, context);
-
-		String url = g.getFullURL(cycle);
 
 		// Now, dress up the URL with scheme, server port and anchor,
 		// as necessary.
-
-		if (anchorValue != null)
-			anchor = anchorValue;
-		else if (anchorBinding != null)
-			anchor = anchorBinding.getString();
 
 		if (schemeValue != null)
 			scheme = schemeValue;
@@ -136,53 +117,20 @@ public abstract class AbstractServiceLink
 		else if (portBinding != null)
 			port = portBinding.getInt();
 
-		// If nothing to add to the URL, then simply return it.
+		if (scheme == null && port == 0)
+			URL = g.getURL(cycle);
+		else
+			URL = g.getAbsoluteURL(scheme, null, port, cycle);
 
-		if (anchor == null && scheme == null && port == 0)
-			return url;
+        if (anchorValue != null)
+            anchor = anchorValue;
+        else if (anchorBinding != null)
+            anchor = anchorBinding.getString();
 
-		buffer = new StringBuffer(url.length() + URL_PAD);
+		if (anchor == null)
+			return URL;
 
-		if (scheme != null || port != 0)
-		{
-			HttpServletRequest request = cycle.getRequestContext().getRequest();
-
-			// If just the port is specified, but not the scheme, use the
-			// same scheme as the incoming request.
-
-			if (scheme == null)
-				scheme = request.getScheme();
-
-			buffer.append(scheme);
-			buffer.append("://");
-			buffer.append(request.getServerName());
-
-			// If scheme specified but not port, use the same
-			// port as the incoming request.
-
-			if (port == 0)
-				port = request.getServerPort();
-
-			// This is a little shakey .. the scheme may not be 'http', for example.
-			// Not sure how to get this information automatically, may be
-			// for the application to figure out.
-
-			if (port != DEFAULT_HTTP_PORT)
-			{
-				buffer.append(':');
-				buffer.append(port);
-			}
-		}
-
-		buffer.append(url);
-
-		if (anchor != null)
-		{
-			buffer.append('#');
-			buffer.append(anchor);
-		}
-
-		return buffer.toString();
+		return URL + "#" + anchor;
 	}
 
 	public IBinding getAnchorBinding()
@@ -287,9 +235,7 @@ public abstract class AbstractServiceLink
 	 *
 	 */
 
-	public void addEventHandler(
-		ServiceLinkEventType eventType,
-		String functionName)
+	public void addEventHandler(ServiceLinkEventType eventType, String functionName)
 	{
 		Object currentValue;
 
@@ -339,15 +285,12 @@ public abstract class AbstractServiceLink
 	 *
 	 */
 
-	public void render(IResponseWriter writer, IRequestCycle cycle)
-		throws RequestCycleException
+	public void render(IResponseWriter writer, IRequestCycle cycle) throws RequestCycleException
 	{
 		IResponseWriter wrappedWriter;
 
 		if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-			throw new RequestCycleException(
-				Tapestry.getString("AbstractServiceLink.no-nesting"),
-				this);
+			throw new RequestCycleException(Tapestry.getString("AbstractServiceLink.no-nesting"), this);
 
 		try
 		{
@@ -405,14 +348,11 @@ public abstract class AbstractServiceLink
 		{
 			rendering = false;
 			eventHandlers = null;
-			// May be possible to keep body from cycle to cycle, but
-			// let's just be safe.
 			body = null;
 		}
 	}
 
-	private void writeEventHandlers(IResponseWriter writer)
-		throws RequestCycleException
+	private void writeEventHandlers(IResponseWriter writer) throws RequestCycleException
 	{
 		String name = null;
 
@@ -426,8 +366,7 @@ public abstract class AbstractServiceLink
 			Map.Entry entry = (Map.Entry) i.next();
 			ServiceLinkEventType type = (ServiceLinkEventType) entry.getKey();
 
-			name =
-				writeEventHandler(writer, name, type.getAttributeName(), entry.getValue());
+			name = writeEventHandler(writer, name, type.getAttributeName(), entry.getValue());
 		}
 
 	}
