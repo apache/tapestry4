@@ -116,6 +116,7 @@ public abstract class TableView
     public abstract Object getColumns();
     public abstract IBinding getColumnsBinding();
     public abstract IBinding getPageSizeBinding();
+    public abstract int getInitialPage();
     public abstract String getInitialSortColumn();
     public abstract boolean getInitialSortOrder();
     public abstract ITableSessionStateManager getTableSessionStateManager();
@@ -212,6 +213,7 @@ public abstract class TableView
         {
             objState = new SimpleTableState();
             objState.getSortingState().setSortColumn(getInitialSortColumn(), getInitialSortOrder());
+            objState.getPagingState().setCurrentPage(getInitialPage());
         }
 
         // update the page size if set in the parameter

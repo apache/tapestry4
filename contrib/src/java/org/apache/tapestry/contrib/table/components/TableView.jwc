@@ -67,6 +67,17 @@
         </description>
     </parameter>
   
+	<parameter name="initialPage" 
+		type="int" 
+		required="no"
+        direction="auto"
+        default-value="0">
+        <description>
+            The initial page to be displayed.
+            This is the first page by default.
+        </description>
+    </parameter>
+  
 	<parameter name="initialSortColumn" 
 		type="java.lang.String" 
 		required="no"
