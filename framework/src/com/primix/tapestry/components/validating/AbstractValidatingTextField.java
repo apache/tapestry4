@@ -243,7 +243,7 @@ implements ILifecycle, IValidatingTextField
      *  Invoked from {@link #setText(String)} to validate that the new value
      *  (submitted in the form by the user) conforms to the rules for
      *  this component.  If not, it should invoke
-     * {@link #notifyListener(ValidationConstraint, String, String)}.
+     * {@link #notifyDelegate(ValidationConstraint, String)}.
      *
      *  <p>If the value is acceptible, then the component should update
      *  through its parameter (this is very component specific).
@@ -257,7 +257,7 @@ implements ILifecycle, IValidatingTextField
      *  data value.
      *
      *  <p>Sets the error flag to true, then invokes
-     *  {@link IValidationDelegate#invalidField(IComponent, ValidationConstraint, String, String)}
+     *  {@link IValidationDelegate#invalidField(IValidatingTextField, ValidationConstraint, String)}
      *  to tell the listener that there was an error.
      *
      */

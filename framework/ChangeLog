@@ -1,5 +1,9 @@
 * Dec 12 2000 hship
 
+Fix some Javadoc errors in the new classes.
+
+* Dec 12 2000 hship
+
 Introduce IValidatingTextField and some implementations (ValidatingTextField,
 DateField and IntegerField).
 Remove many now unnecessary Makefiles from various packages.
