@@ -73,8 +73,7 @@ public class ValidationConstraint extends Enum
      *
      **/
 
-    public static final ValidationConstraint REQUIRED =
-        new ValidationConstraint("REQUIRED");
+    public static final ValidationConstraint REQUIRED = new ValidationConstraint("REQUIRED");
 
     /**
      *  Indicates that a non-null value was provided, but that (after removing
@@ -90,8 +89,7 @@ public class ValidationConstraint extends Enum
      *
      **/
 
-    public static final ValidationConstraint DATE_FORMAT =
-        new ValidationConstraint("DATE_FORMAT");
+    public static final ValidationConstraint DATE_FORMAT = new ValidationConstraint("DATE_FORMAT");
 
     /**
      *  Indicates a general error in the format of a string that is
@@ -116,16 +114,23 @@ public class ValidationConstraint extends Enum
      *
      **/
 
-    public static final ValidationConstraint TOO_SMALL =
-        new ValidationConstraint("TOO_SMALL");
+    public static final ValidationConstraint TOO_SMALL = new ValidationConstraint("TOO_SMALL");
 
     /**
      *  Indicates that the value was too large (for a Date, too late).
      *
      **/
 
-    public static final ValidationConstraint TOO_LARGE =
-        new ValidationConstraint("TOO_LARGE");
+    public static final ValidationConstraint TOO_LARGE = new ValidationConstraint("TOO_LARGE");
+
+    /**
+     *  Indicates a consistency error, usually between too different fields.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public static final ValidationConstraint CONSISTENCY = new ValidationConstraint("CONSISTENCY");
 
     /**
      *  Protected constructor, which allows new constraints to be created

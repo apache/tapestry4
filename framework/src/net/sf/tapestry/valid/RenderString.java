@@ -58,6 +58,7 @@ import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRender;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  *  A wrapper around {@link String} that allows the String to
@@ -71,72 +72,62 @@ import net.sf.tapestry.RequestCycleException;
 
 public class RenderString implements IRender
 {
-	private String string;
-	private boolean raw = false;
-	
-	public RenderString(String string)
-	{
-		this.string = string;
-	}
-	
-	/**
-	 *  @param string the string to render
-	 *  @param raw if true, the String is rendered as-is, with no filtering.
-	 *  If false (the default), the String is filtered.
-	 *
-	 **/
-	
-	public RenderString(String string, boolean raw)
-	{
-		this.string = string;
-		this.raw = raw;
-	}
+    private String _string;
+    private boolean _raw = false;
 
-	/**
-	 *  Renders the String to the writer.  Does nothing if the string is null.
-	 *  If raw is true, uses {@link IMarkupWriter#printRaw(String)}, otherwise
-	 *  {@link IMarkupWriter#print(String)}.
-	 * 
-	 *
-	 **/
-	
-	public void render(IMarkupWriter writer, IRequestCycle cycle)
-		throws RequestCycleException
-	{
-		if (string == null)
-			return;
-			
-		if (raw)
-			writer.printRaw(string);
-		else
-			writer.print(string);
-	}
-	
-	public String getString()
-	{
-		return string;
-	}
-	
-	public boolean isRaw()
-	{
-		return raw;
-	}
-	
-	public String toString()
-	{
-		StringBuffer buffer = new StringBuffer("RenderString@");
-		
-		buffer.append(Integer.toHexString(hashCode()));
-		buffer.append('[');
-		buffer.append(string);
-		
-		if (raw)
-		buffer.append(" (raw)");
-		
-		buffer.append(']');
-		
-		return buffer.toString();
-	}
-		
+    public RenderString(String string)
+    {
+        _string = string;
+    }
 
+    /**
+     *  @param string the string to render
+     *  @param raw if true, the String is rendered as-is, with no filtering.
+     *  If false (the default), the String is filtered.
+     *
+     **/
+
+    public RenderString(String string, boolean raw)
+    {
+        _string = string;
+        _raw = raw;
+    }
+
+    /**
+     *  Renders the String to the writer.  Does nothing if the string is null.
+     *  If raw is true, uses {@link IMarkupWriter#printRaw(String)}, otherwise
+     *  {@link IMarkupWriter#print(String)}.
+     * 
+     *
+     **/
+
+    public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    {
+        if (_string == null)
+            return;
+
+        if (_raw)
+            writer.printRaw(_string);
+        else
+            writer.print(_string);
+    }
+
+    public String getString()
+    {
+        return _string;
+    }
+
+    public boolean isRaw()
+    {
+        return _raw;
+    }
+
+    public String toString()
+    {
+        ToStringBuilder builder = new ToStringBuilder(this);
+        builder.append("string", _string);
+        builder.append("raw", _raw);
+
+        return builder.toString();
+    }
 }

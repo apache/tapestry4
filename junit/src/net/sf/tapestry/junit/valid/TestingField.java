@@ -125,4 +125,8 @@ public class TestingField extends AbstractFormComponent implements IFormComponen
         return false;
     }
 
+	public String toString()
+	{
+		return "TestingField[" + _displayName + "]";
+	}
 }

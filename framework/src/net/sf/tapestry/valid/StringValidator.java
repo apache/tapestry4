@@ -79,7 +79,8 @@ public class StringValidator extends BaseValidator
 {
     private static final class StaticStringValidator extends StringValidator
     {
-        private static final String UNSUPPORTED_MESSAGE = "Changes to property values are not allowed.";
+        private static final String UNSUPPORTED_MESSAGE =
+            "Changes to property values are not allowed.";
 
         private StaticStringValidator(boolean required)
         {
@@ -99,14 +100,14 @@ public class StringValidator extends BaseValidator
         {
             throw new UnsupportedOperationException(UNSUPPORTED_MESSAGE);
         }
-        
+
         /** @throws UnsupportedOperationException **/
-                
+
         public void setClientScriptingEnabled(boolean clientScriptingEnabled)
         {
             throw new UnsupportedOperationException(UNSUPPORTED_MESSAGE);
         }
-   }
+    }
 
     /**
      *  Returns a shared instance of a StringValidator with the required flag set.
@@ -127,7 +128,7 @@ public class StringValidator extends BaseValidator
     private int _minimumLength;
 
     /** @since 2.2 **/
-    
+
     private String _scriptPath = "/net/sf/tapestry/valid/StringValidator.script";
 
     public StringValidator()
@@ -161,7 +162,7 @@ public class StringValidator extends BaseValidator
                     Integer.toString(_minimumLength),
                     field.getDisplayName());
 
-            throw new ValidatorException(errorMessage, ValidationConstraint.MINIMUM_WIDTH, input);
+            throw new ValidatorException(errorMessage, ValidationConstraint.MINIMUM_WIDTH);
         }
 
         return input;
@@ -183,7 +184,10 @@ public class StringValidator extends BaseValidator
      * 
      **/
 
-    public void renderValidatorContribution(IFormComponent field, IMarkupWriter writer, IRequestCycle cycle)
+    public void renderValidatorContribution(
+        IFormComponent field,
+        IMarkupWriter writer,
+        IRequestCycle cycle)
         throws RequestCycleException
     {
         if (!isClientScriptingEnabled())
@@ -203,16 +207,20 @@ public class StringValidator extends BaseValidator
         if (_minimumLength > 0)
             symbols.put(
                 "minimumLengthMessage",
-                getString("field-too-short", locale, Integer.toString(_minimumLength), displayName));
+                getString(
+                    "field-too-short",
+                    locale,
+                    Integer.toString(_minimumLength),
+                    displayName));
 
         processValidatorScript(_scriptPath, cycle, field, symbols);
     }
-    
+
     /**
      *  @since 2.2
      * 
      **/
-    
+
     public String getScriptPath()
     {
         return _scriptPath;
@@ -227,10 +235,10 @@ public class StringValidator extends BaseValidator
      *  @since 2.2
      * 
      **/
-    
+
     public void setScriptPath(String scriptPath)
     {
         _scriptPath = scriptPath;
-    }    
+    }
 
 }

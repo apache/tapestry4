@@ -77,135 +77,227 @@ import net.sf.tapestry.valid.ValidatorException;
 
 public class TestValidationDelegate extends TestCase
 {
-	private ValidationDelegate d = new ValidationDelegate();
+    private ValidationDelegate d = new ValidationDelegate();
 
-	public TestValidationDelegate(String name)
-	{
-		super(name);
-	}
+    public TestValidationDelegate(String name)
+    {
+        super(name);
+    }
 
-	public void testHasErrorsEmpty()
-	{
-		assertEquals(false, d.getHasErrors());
-	}
+    public void testHasErrorsEmpty()
+    {
+        assertEquals(false, d.getHasErrors());
+    }
 
-	public void testFirstErrorEmpty()
-	{
-		assertNull(d.getFirstError());
-	}
+    public void testFirstErrorEmpty()
+    {
+        assertNull(d.getFirstError());
+    }
 
-	public void testInvalidInput()
-	{
-		IFormComponent f = new TestingField("testAdd");
-		String errorMessage = "Need a bigger one.";
+    public void testInvalidInput()
+    {
+        IFormComponent f = new TestingField("testAdd");
+        String errorMessage = "Need a bigger one.";
 
-		d.setFormComponent(f);
-		d.record(
-			new ValidatorException(
-				errorMessage,
-				ValidationConstraint.TOO_LARGE,
-				"Bad Stuff"));
+        d.setFormComponent(f);
+        d.recordFieldInputValue("Bad Stuff");
+        d.record(new ValidatorException(errorMessage, ValidationConstraint.TOO_LARGE));
 
-		List fieldTracking = d.getFieldTracking();
+        List fieldTracking = d.getFieldTracking();
 
-		assertEquals(1, fieldTracking.size());
+        assertEquals(1, fieldTracking.size());
 
-		IFieldTracking t = (IFieldTracking) fieldTracking.get(0);
+        IFieldTracking t = (IFieldTracking) fieldTracking.get(0);
 
-		assertEquals(f, t.getFormComponent());
-		checkRender(errorMessage, t);
-		assertEquals("testAdd", t.getFieldName());
-		assertEquals("Bad Stuff", t.getInvalidInput());
-		assertEquals(ValidationConstraint.TOO_LARGE, t.getConstraint());
+        assertEquals(f, t.getComponent());
+        checkRender(errorMessage, t);
+        assertEquals("testAdd", t.getFieldName());
+        assertEquals("Bad Stuff", t.getInput());
+        assertEquals(ValidationConstraint.TOO_LARGE, t.getConstraint());
 
-		assertTrue(d.getHasErrors());
-		assertEquals(errorMessage, ((RenderString)(d.getFirstError())).getString());
-	}
+        assertTrue(d.getHasErrors());
+        assertEquals(errorMessage, ((RenderString) (d.getFirstError())).getString());
+    }
 
-	private void checkRender(String errorMessage, IFieldTracking tracking)
-	{
-		IRender render = tracking.getRenderer();
+    public void testValidatorErrorRenderer()
+    {
+        IFormComponent f = new TestingField("testValidatorErrorRenderer");
 
-		assertEquals(errorMessage, ((RenderString) render).getString());
-	}
+        IRender errorRenderer = new RenderString("Just don't like it.");
 
-	public void testMultipleInvalidInput()
-	{
-		IFormComponent f1 = new TestingField("input1");
-		String e1 = "And now for something completely different.";
-		IFormComponent f2 = new TestingField("input2");
-		String e2 = "A man with three buttocks.";
+        d.setFormComponent(f);
+        d.recordFieldInputValue("Bad Stuff");
+        d.record(
+            new ValidatorException(
+                "Just don't like it.",
+                errorRenderer,
+                ValidationConstraint.CONSISTENCY));
 
-		d.setFormComponent(f1);
-		d.record(new ValidatorException(e1, null, "Monty"));
+        List fieldTracking = d.getFieldTracking();
 
-		d.setFormComponent(f2);
-		d.record(new ValidatorException(e2, null, "Python"));
+        assertEquals(1, fieldTracking.size());
 
-		List fieldTracking = d.getFieldTracking();
-		assertEquals(2, fieldTracking.size());
+        IFieldTracking t = (IFieldTracking) fieldTracking.get(0);
 
-		IFieldTracking t = (IFieldTracking) fieldTracking.get(0);
+        assertEquals(f, t.getComponent());
+        assertEquals(errorRenderer, t.getErrorRenderer());
+        assertEquals("testValidatorErrorRenderer", t.getFieldName());
+        assertEquals("Bad Stuff", t.getInput());
+        assertEquals(ValidationConstraint.CONSISTENCY, t.getConstraint());
 
-		assertEquals(f1, t.getFormComponent());
-		checkRender(e1, t);
+        assertTrue(d.getHasErrors());
+        assertEquals(errorRenderer, d.getFirstError());
+    }
 
-		t = (IFieldTracking) fieldTracking.get(1);
-		assertEquals("Python", t.getInvalidInput());
-		checkRender(e2, t);
-		assertEquals(f2, t.getFormComponent());
-	}
+    public void testNoError()
+    {
+        IFormComponent f = new TestingField("testNoError");
 
-	public void testReset()
-	{
-		IFormComponent f1 = new TestingField("input1");
-		String e1 = "And now for something completely different.";
-		IFormComponent f2 = new TestingField("input2");
-		String e2 = "A man with three buttocks.";
+        d.setFormComponent(f);
+        d.recordFieldInputValue("Futurama");
 
-		d.setFormComponent(f1);
-		d.record(new ValidatorException(e1, null, "Monty"));
+        List fieldTracking = d.getFieldTracking();
+        assertEquals(1, fieldTracking.size());
 
-		d.setFormComponent(f2);
-		d.record(new ValidatorException(e2, null, "Python"));
+        IFieldTracking t = (IFieldTracking) fieldTracking.get(0);
 
-		// Now, wipe out info on f1
+        assertEquals(f, t.getComponent());
+        assertEquals(null, t.getErrorRenderer());
+        assertEquals(false, t.isInError());
+        assertEquals("Futurama", t.getInput());
+        assertEquals(null, t.getConstraint());
 
-		d.setFormComponent(f1);
-		d.reset();
+        assertEquals(false, d.getHasErrors());
+        assertNull(d.getFirstError());
+    }
 
-		List fieldTracking = d.getFieldTracking();
-		assertEquals(1, fieldTracking.size());
+    public void testUnassociatedErrors()
+    {
+        IFormComponent f = new TestingField("testUnassociatedErrors");
 
-		IFieldTracking t = (IFieldTracking) fieldTracking.get(0);
-		assertEquals("Python", t.getInvalidInput());
-		checkRender(e2, t);
-		assertEquals(f2, t.getFormComponent());
-	}
+        d.setFormComponent(f);
+        d.recordFieldInputValue("Bender");
 
-	public void testResetAll()
-	{
-		IFormComponent f1 = new TestingField("input1");
-		String e1 = "And now for something completely different.";
-		IFormComponent f2 = new TestingField("input2");
-		String e2 = "A man with three buttocks.";
+        d.setFormComponent(null);
+        d.record("Overload!", ValidationConstraint.CONSISTENCY);
 
-		d.setFormComponent(f1);
-		d.record(new ValidatorException(e1, null, "Monty"));
+        assertEquals(true, d.getHasErrors());
 
-		d.setFormComponent(f2);
-		d.record(new ValidatorException(e2, null, "Python"));
+        List fieldTracking = d.getFieldTracking();
+        assertEquals(2, fieldTracking.size());
 
-		d.setFormComponent(f1);
-		d.reset();
+        IFieldTracking t0 = (IFieldTracking) fieldTracking.get(0);
+        assertEquals(false, t0.isInError());
+        assertEquals(f, t0.getComponent());
 
-		d.setFormComponent(f2);
-		d.reset();
+        IFieldTracking t1 = (IFieldTracking) fieldTracking.get(1);
+        assertEquals(null, t1.getComponent());
+        assertEquals(true, t1.isInError());
+        checkRender("Overload!", t1);
 
-		List fieldTracking = d.getFieldTracking();
-		assertEquals(0, fieldTracking.size());
+        checkRender("Overload!", d.getFirstError());
+        
+        List trackings = d.getUnassociatedTrackings();
+        assertEquals(1, trackings.size());
+        assertEquals(t1, trackings.get(0));
+        
+        trackings = d.getAssociatedTrackings();
+        assertEquals(1, trackings.size());
+        assertEquals(t0, trackings.get(0));
+    }
 
-		assertEquals(false, d.getHasErrors());
-		assertNull(d.getFirstError());
-	}
+    private void checkRender(String errorMessage, IFieldTracking tracking)
+    {
+        IRender render = tracking.getErrorRenderer();
+
+        checkRender(errorMessage, render);
+    }
+
+    private void checkRender(String errorMessage, IRender render)
+    {
+        assertEquals(errorMessage, ((RenderString) render).getString());
+    }
+
+    public void testMultipleInvalidInput()
+    {
+        IFormComponent f1 = new TestingField("input1");
+        String e1 = "And now for something completely different.";
+        IFormComponent f2 = new TestingField("input2");
+        String e2 = "A man with three buttocks.";
+
+        d.setFormComponent(f1);
+        d.recordFieldInputValue("Monty");
+        d.record(new ValidatorException(e1, null));
+
+        d.setFormComponent(f2);
+        d.recordFieldInputValue("Python");
+        d.record(new ValidatorException(e2, null));
+
+        List fieldTracking = d.getFieldTracking();
+        assertEquals(2, fieldTracking.size());
+
+        IFieldTracking t = (IFieldTracking) fieldTracking.get(0);
+
+        assertEquals(f1, t.getComponent());
+        checkRender(e1, t);
+
+        t = (IFieldTracking) fieldTracking.get(1);
+        assertEquals("Python", t.getInput());
+        checkRender(e2, t);
+        assertEquals(f2, t.getComponent());
+    }
+
+    public void testReset()
+    {
+        IFormComponent f1 = new TestingField("input1");
+        String e1 = "And now for something completely different.";
+        IFormComponent f2 = new TestingField("input2");
+        String e2 = "A man with three buttocks.";
+
+        d.setFormComponent(f1);
+        d.recordFieldInputValue("Monty");
+        d.record(new ValidatorException(e1, null));
+
+        d.setFormComponent(f2);
+        d.recordFieldInputValue("Python");
+        d.record(new ValidatorException(e2, null));
+
+        // Now, wipe out info on f1
+
+        d.setFormComponent(f1);
+        d.reset();
+
+        List fieldTracking = d.getFieldTracking();
+        assertEquals(1, fieldTracking.size());
+
+        IFieldTracking t = (IFieldTracking) fieldTracking.get(0);
+        assertEquals("Python", t.getInput());
+        checkRender(e2, t);
+        assertEquals(f2, t.getComponent());
+    }
+
+    public void testResetAll()
+    {
+        IFormComponent f1 = new TestingField("input1");
+        String e1 = "And now for something completely different.";
+        IFormComponent f2 = new TestingField("input2");
+        String e2 = "A man with three buttocks.";
+
+        d.setFormComponent(f1);
+        d.record(new ValidatorException(e1, null));
+
+        d.setFormComponent(f2);
+        d.record(new ValidatorException(e2, null));
+
+        d.setFormComponent(f1);
+        d.reset();
+
+        d.setFormComponent(f2);
+        d.reset();
+
+        assertEquals(null, d.getFieldTracking());
+
+        assertEquals(false, d.getHasErrors());
+        assertNull(d.getFirstError());
+    }
 }

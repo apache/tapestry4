@@ -136,7 +136,7 @@ public class Stocks extends BasePage
         IFormComponent component = (IFormComponent) getComponent(id);
 
         delegate.setFormComponent(component);
-        delegate.record(new RenderString(message), null, null);
+        delegate.record(message, null);
     }
 
     public void addStock(IRequestCycle cycle)

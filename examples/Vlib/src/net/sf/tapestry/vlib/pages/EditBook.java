@@ -167,7 +167,10 @@ public class EditBook extends Protected
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure("Remote exception setting up page for book #" + bookPK + ".", ex, i > 0);
+                vengine.rmiFailure(
+                    "Remote exception setting up page for book #" + bookPK + ".",
+                    ex,
+                    i > 0);
             }
         }
 
@@ -187,8 +190,7 @@ public class EditBook extends Protected
         {
             setErrorField(
                 "inputPublisherName",
-                "Must provide a publisher name if the publisher option is empty.",
-                null);
+                "Must provide a publisher name if the publisher option is empty.");
             return;
         }
 
@@ -196,8 +198,7 @@ public class EditBook extends Protected
         {
             setErrorField(
                 "inputPublisherName",
-                "Must leave the publisher name blank if selecting a publisher from the list.",
-                publisherName);
+                "Must leave the publisher name blank if selecting a publisher from the list.");
             return;
         }
 

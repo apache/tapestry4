@@ -114,7 +114,7 @@ public class EmailValidator extends BaseValidator
                     Integer.toString(_minimumLength),
                     field.getDisplayName());
 
-            throw new ValidatorException(errorMessage, ValidationConstraint.MINIMUM_WIDTH, input);
+            throw new ValidatorException(errorMessage, ValidationConstraint.MINIMUM_WIDTH);
         }
 
         if (input.length() > 0 && !isValidEmail(input))
@@ -125,7 +125,7 @@ public class EmailValidator extends BaseValidator
                     field.getPage().getLocale(),
                     field.getDisplayName());
 
-            throw new ValidatorException(errorMessage, ValidationConstraint.EMAIL_FORMAT, input);
+            throw new ValidatorException(errorMessage, ValidationConstraint.EMAIL_FORMAT);
         }
 
         return input;

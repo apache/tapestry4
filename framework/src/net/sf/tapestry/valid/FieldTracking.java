@@ -68,60 +68,79 @@ import net.sf.tapestry.form.IFormComponent;
 
 public class FieldTracking implements IFieldTracking
 {
-    private IFormComponent component;
-    private String invalidInput;
-    private IRender renderer;
-    private String fieldName;
-    private ValidationConstraint constraint;
+    private IFormComponent _component;
+    private String _input;
+    private IRender _renderer;
+    private String _fieldName;
+    private ValidationConstraint _constraint;
 
+	/**
+	 *  Constructor used for unassociated errors; errors that are not about any particular
+	 *  field within the form.
+	 * 
+	 **/
+	
     FieldTracking()
     {
     }
 
+	/**
+	 *  Standard constructor for a field (with the given name), rendered
+	 *  by the specified component.
+	 * 
+	 **/
+	
     FieldTracking(String fieldName, IFormComponent component)
     {
-        this.fieldName = fieldName;
-        this.component = component;
+        _fieldName = fieldName;
+        _component = component;
     }
 
-    public IFormComponent getFormComponent()
+    public IFormComponent getComponent()
     {
-        return component;
+        return _component;
     }
 
-    public IRender getRenderer()
+    public IRender getErrorRenderer()
     {
-        return renderer;
+        return _renderer;
     }
 
-    public void setRenderer(IRender value)
+    public void setErrorRenderer(IRender value)
     {
-        renderer = value;
+        _renderer = value;
     }
 
-    public String getInvalidInput()
+    public String getInput()
     {
-        return invalidInput;
+        return _input;
     }
 
-    public void setInvalidInput(String value)
+    public void setInput(String value)
     {
-        invalidInput = value;
+        _input = value;
     }
 
     public String getFieldName()
     {
-        return fieldName;
+        return _fieldName;
     }
 
     public ValidationConstraint getConstraint()
     {
-        return constraint;
+        return _constraint;
     }
 
     public void setConstraint(ValidationConstraint constraint)
     {
-        this.constraint = constraint;
+        _constraint = constraint;
+    }
+
+    /** @since 2.4 **/
+
+    public boolean isInError()
+    {
+        return _renderer != null;
     }
 
 }

@@ -232,8 +232,7 @@ public abstract class BaseValidator implements IValidator
         if (_required && isNull)
             throw new ValidatorException(
                 getString("field-is-required", field.getPage().getLocale(), field.getDisplayName()),
-                ValidationConstraint.REQUIRED,
-                null);
+                ValidationConstraint.REQUIRED);
 
         return isNull;
     }

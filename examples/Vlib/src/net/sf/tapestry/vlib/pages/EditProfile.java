@@ -177,7 +177,7 @@ public class EditProfile extends Protected
 
         if (Tapestry.isNull(password1) != Tapestry.isNull(password2))
         {
-            setErrorField("inputPassword1", "Enter the password, then re-enter it to confirm.", null);
+            setErrorField("inputPassword1", "Enter the password, then re-enter it to confirm.");
 
             return;
         }
@@ -186,7 +186,7 @@ public class EditProfile extends Protected
         {
             if (!password1.equals(password2))
             {
-                setErrorField("inputPassword1", "Enter the same password in both fields.", null);
+                setErrorField("inputPassword1", "Enter the same password in both fields.");
                 return;
             }
 

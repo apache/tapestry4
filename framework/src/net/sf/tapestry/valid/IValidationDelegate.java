@@ -89,7 +89,7 @@ import net.sf.tapestry.form.IFormComponent;
  *  For most simple forms, these terms are pretty much synonymous.
  *  Your form will render normally, and each form component will render
  *  only once.  Some of your form components will by {@link ValidField}
- *  components (which implement {@link IField}) and handle most of
+ *  components and handle most of
  *  their validation internally (with the help of {@link IValidator} objects).
  *  In addition, your form listener may do additional validation and notify
  *  the validation delegate of additional errors, some of which
@@ -108,10 +108,11 @@ import net.sf.tapestry.form.IFormComponent;
  *  <p><b>The Exception</b><br>
  *  The problem is that a component doesn't know its field name until its
  *  <code>render()</code> method is invoked (at which point, it allocates a unique field
- *  name from the {@link net.sf.tapestry.form.Form}.  This is not a problem for the field or its
+ *  name from the {@link net.sf.tapestry.IForm#getElementId(IComponent)}. 
+ *  This is not a problem for the field or its
  *  {@link IValidator}, but screws things up for the {@link FieldLabel}.
  * 
- *  <p>Typically, the label is renderred <em>before</em> the corresponding form component.
+ *  <p>Typically, the label is rendered <em>before</em> the corresponding form component.
  *  Form components leave their last assigned field name in their
  *  {@link IFormComponent#getName() name property}.  So if the form component is in any kind of
  *  loop, the {@link FieldLabel} will key its name, 
@@ -129,10 +130,12 @@ public interface IValidationDelegate
 {
     /**
      *  Invoked before other methods to configure the delegate for the given 
-     *  form component.
+     *  form component.  Sets the current field based on
+     *  the {@link IFormComponent#getName() name} of the form component
+     *  (which is almost always a {@link ValidField}).
      * 
      *  <p>The caller should invoke this with a parameter of null to record
-     *  global errors (errors not associated with any particular field).
+     *  unassociated global errors (errors not associated with any particular field).
      * 
      *  @since 1.0.8
      *
@@ -151,13 +154,14 @@ public interface IValidationDelegate
     public boolean isInError();
 
     /**
-     *  Returns the invalid string submitted by the client.
+     *  Returns the string submitted by the client as the value for
+     *  the current field.
      * 
-     * @since 1.0.8
+     *  @since 1.0.8
      * 
      **/
 
-    public String getInvalidInput();
+    public String getFieldInputValue();
 
     /**
      *  Returns a {@link List} of {@link IFieldTracking}, in default order
@@ -191,41 +195,53 @@ public interface IValidationDelegate
     public void clear();
 
     /**
+     *  Records the user's input for the current form component.  Input should
+     *  be recorded even if there isn't an explicit error, since later form-wide
+     *  validations may discover an error in the field.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public void recordFieldInputValue(String input);
+
+    /**
      *  The error notification method, invoked during the rewind phase
      *  (that is, while HTTP parameters are being extracted from the request
      *  and assigned to various object properties).  
      *
      *  <p>Typically, the delegate simply invokes
-     *  {@link #record(String, ValidationConstraint, String)}, but special
+     *  {@link #record(String, ValidationConstraint)} or
+     *  {@link #record(IRender, ValidationConstraint)}, but special
      *  delegates may override this behavior to provide (in some cases)
      *  different error messages or more complicated error renderers.
+     * 
      **/
 
     public void record(ValidatorException ex);
 
     /**
-     *  Records an error in the current component, or an unassociated error.
+     *  Records an error in the current field, or an unassociated error
+     *  if there is no current field.
      *  
      *  @param message message to display (@see RenderString}
-     *  @param constraint the constraint that was violated
-     *  @param invalidInput the input provided by the user
+     *  @param constraint the constraint that was violated, or null if not known
      * 
      *  @since 1.0.9
      **/
 
-    public void record(String message, ValidationConstraint constraint, String invalidInput);
+    public void record(String message, ValidationConstraint constraint);
 
     /**
-     *  Records an error in the current component, or an unassociated error..
+     *  Records an error in the current component, or an unassociated error.
      *  The maximum flexibility recorder.
      *  
      *  @param errorRenderer object that will render the error message (@see RenderString}
-     *  @param constraint the constraint that was violated
-     *  @param invalidInput the input provided by the user
+     *  @param constraint the constraint that was violated, or null if not known
      * 
      **/
 
-    public void record(IRender errorRenderer, ValidationConstraint constraint, String invalidInput);
+    public void record(IRender errorRenderer, ValidationConstraint constraint);
 
     /**
      *  Invoked before the field is rendered.  If the field is in error,
@@ -250,7 +266,11 @@ public interface IValidationDelegate
      *  @since 1.0.5
      **/
 
-    public void writeAttributes(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component, IValidator validator)
+    public void writeAttributes(
+        IMarkupWriter writer,
+        IRequestCycle cycle,
+        IFormComponent component,
+        IValidator validator)
         throws RequestCycleException;
 
     /**
@@ -259,7 +279,11 @@ public interface IValidationDelegate
      *
      **/
 
-    public void writeSuffix(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component, IValidator validator)
+    public void writeSuffix(
+        IMarkupWriter writer,
+        IRequestCycle cycle,
+        IFormComponent component,
+        IValidator validator)
         throws RequestCycleException;
 
     /**

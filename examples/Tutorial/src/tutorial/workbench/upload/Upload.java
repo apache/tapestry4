@@ -105,8 +105,7 @@ public class Upload extends BasePage
 			delegate.setFormComponent((IFormComponent) getComponent("inputFile"));
 			delegate.record(
 				"You must specify a file to upload.",
-				ValidationConstraint.REQUIRED,
-				null);
+				ValidationConstraint.REQUIRED);
 			return;
 		}
 

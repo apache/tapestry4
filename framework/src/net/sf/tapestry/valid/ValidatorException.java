@@ -54,6 +54,8 @@
  */
 package net.sf.tapestry.valid;
 
+import net.sf.tapestry.IRender;
+
 /**
  *  Thrown by a {@link IValidator} when submitted input is not valid.
  *
@@ -65,43 +67,49 @@ package net.sf.tapestry.valid;
 
 public class ValidatorException extends Exception
 {
-    private ValidationConstraint constraint;
-    private String invalidInput;
+    private IRender _errorRenderer;
+    private ValidationConstraint _constraint;
 
     public ValidatorException(String errorMessage)
     {
-        super(errorMessage);
+        this(errorMessage, null, null);
+    }
+
+    public ValidatorException(String errorMessage, ValidationConstraint constraint)
+    {
+        this(errorMessage, null, constraint);
     }
 
     /**
      *  Creates a new instance.
      *  @param errorMessage the default error message to be used (this may be
-     *  overriden by the {@link IValidationDelegate}
+     *  overriden by the {@link IValidationDelegate})
+     *  @param renderer to use to render the error message (may be null) 
      *  @param constraint a validation constraint that has been compromised, or
      *  null if no constraint is applicable
-     *  @param invalidInput the input received by the component that was invalid; this
-     *  is stored during the request cycle and will be used as the default value
-     *  for the input field during the page render
+     * 
      **/
 
     public ValidatorException(
         String errorMessage,
-        ValidationConstraint constraint,
-        String invalidInput)
+        IRender errorRenderer,
+        ValidationConstraint constraint)
     {
         super(errorMessage);
 
-        this.constraint = constraint;
-        this.invalidInput = invalidInput;
+        _errorRenderer = errorRenderer;
+        _constraint = constraint;
     }
 
     public ValidationConstraint getConstraint()
     {
-        return constraint;
+        return _constraint;
     }
 
-    public String getInvalidInput()
+    /** @since 2.4 **/
+
+    public IRender getErrorRenderer()
     {
-        return invalidInput;
+        return _errorRenderer;
     }
 }

@@ -116,8 +116,7 @@ public class NewBook extends Protected
         {
             setErrorField(
                 "inputPublisherName",
-                "Must enter a publisher name or select an existing publisher from the list.",
-                null);
+                "Must enter a publisher name or select an existing publisher from the list.");
             return;
         }
 
@@ -125,8 +124,7 @@ public class NewBook extends Protected
         {
             setErrorField(
                 "inputPublisherName",
-                "Must either select an existing publisher or enter a new publisher name.",
-                publisherName);
+                "Must either select an existing publisher or enter a new publisher name.");
             return;
         }
 

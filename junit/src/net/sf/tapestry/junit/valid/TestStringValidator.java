@@ -55,6 +55,7 @@
 package net.sf.tapestry.junit.valid;
 
 import junit.framework.TestCase;
+import net.sf.tapestry.junit.TapestryTestCase;
 import net.sf.tapestry.valid.StringValidator;
 import net.sf.tapestry.valid.ValidationConstraint;
 import net.sf.tapestry.valid.ValidatorException;
@@ -68,96 +69,152 @@ import net.sf.tapestry.valid.ValidatorException;
  *
  **/
 
-public class TestStringValidator extends TestCase
+public class TestStringValidator extends TapestryTestCase
 {
-	private StringValidator v = new StringValidator();
+    private StringValidator v = new StringValidator();
 
-	public TestStringValidator(String name)
-	{
-		super(name);
-	}
+    public TestStringValidator(String name)
+    {
+        super(name);
+    }
 
-	public void testToString()
-	{
-		String in = "Foo";
-		String out = v.toString(new TestingField("myField"), in);
+    public void testToString()
+    {
+        String in = "Foo";
+        String out = v.toString(new TestingField("myField"), in);
 
-		assertEquals("Result.", in, out);
-	}
+        assertEquals("Result.", in, out);
+    }
 
-	public void testToStringNull()
-	{
-		String out = v.toString(new TestingField("nullField"), null);
+    public void testToStringNull()
+    {
+        String out = v.toString(new TestingField("nullField"), null);
 
-		assertNull("Null expected.", out);
-	}
+        assertNull("Null expected.", out);
+    }
 
-	public void testToObjectRequiredFail()
-	{
-		v.setRequired(true);
+    public void testToObjectRequiredFail()
+    {
+        v.setRequired(true);
 
-		try
-		{
-			v.toObject(new TestingField("requiredField"), "");
+        try
+        {
+            v.toObject(new TestingField("requiredField"), "");
 
-			fail("Exception expected.");
-		}
-		catch (ValidatorException ex)
-		{
-			assertEquals(ValidationConstraint.REQUIRED, ex.getConstraint());
-		}
-	}
+            fail("Exception expected.");
+        }
+        catch (ValidatorException ex)
+        {
+            assertEquals(ValidationConstraint.REQUIRED, ex.getConstraint());
+        }
+    }
 
-	public void testToObjectRequiredPass() throws ValidatorException
-	{
-		v.setRequired(true);
+    public void testToObjectRequiredPass() throws ValidatorException
+    {
+        v.setRequired(true);
 
-		Object result = v.toObject(new TestingField("requiredField"), "stuff");
+        Object result = v.toObject(new TestingField("requiredField"), "stuff");
 
-		assertEquals("Result.", "stuff", result);
-	}
+        assertEquals("Result.", "stuff", result);
+    }
 
-	public void testToObjectMinimumFail()
-	{
-		v.setMinimumLength(10);
-		
-		try
-		{
-			v.toObject(new TestingField("minimum"), "short");
-			
-			fail("Exception expected.");
-		}
-		catch (ValidatorException ex)
-		{
-			assertEquals(ValidationConstraint.MINIMUM_WIDTH, ex.getConstraint());
-		}
-	}
-	
-	public void testToObjectMinimumPass()
-	throws ValidatorException
-	{
-		v.setMinimumLength(10);
-		
-		String in = "ambidexterous";
-		
-		Object out = v.toObject(new TestingField("minimum"), in);
-		
-		assertEquals("Result", in, out);
-	}
-	
-	/**
-	 *  An empty string is not subject to the minimum length constraint.
-	 * 
-	 **/
-	
-	public void testToObjectMinimumNull()	throws ValidatorException
-	{
-		v.setMinimumLength(10);
-		
-		String in = "";
-		
-		Object out = v.toObject(new TestingField("minimum"), in);
-		
-		assertNull("Result", out);
-	}	
+    public void testToObjectMinimumFail()
+    {
+        v.setMinimumLength(10);
+
+        try
+        {
+            v.toObject(new TestingField("minimum"), "short");
+
+            fail("Exception expected.");
+        }
+        catch (ValidatorException ex)
+        {
+            assertEquals(ValidationConstraint.MINIMUM_WIDTH, ex.getConstraint());
+        }
+    }
+
+    public void testToObjectMinimumPass() throws ValidatorException
+    {
+        v.setMinimumLength(10);
+
+        String in = "ambidexterous";
+
+        Object out = v.toObject(new TestingField("minimum"), in);
+
+        assertEquals("Result", in, out);
+    }
+
+    /**
+     *  An empty string is not subject to the minimum length constraint.
+     * 
+     **/
+
+    public void testToObjectMinimumNull() throws ValidatorException
+    {
+        v.setMinimumLength(10);
+
+        String in = "";
+
+        Object out = v.toObject(new TestingField("minimum"), in);
+
+        assertNull("Result", out);
+    }
+
+    public void testOptional()
+    {
+        assertEquals(0, StringValidator.OPTIONAL.getMinimumLength());
+        assertEquals(false, StringValidator.OPTIONAL.isClientScriptingEnabled());
+        assertEquals(false, StringValidator.OPTIONAL.isRequired());
+    }
+
+    public void testRequired()
+    {
+        assertEquals(0, StringValidator.REQUIRED.getMinimumLength());
+        assertEquals(false, StringValidator.REQUIRED.isClientScriptingEnabled());
+        assertEquals(true, StringValidator.REQUIRED.isRequired());
+    }
+
+    public void testSetStaticMinimumLength()
+    {
+        try
+        {
+            StringValidator.OPTIONAL.setMinimumLength(1);
+
+            unreachable();
+        }
+        catch (UnsupportedOperationException ex)
+        {
+            checkException(ex, "Changes to property values are not allowed.");
+        }
+    }
+
+    public void testSetStaticClientScripting()
+    {
+        try
+        {
+            StringValidator.OPTIONAL.setClientScriptingEnabled(true);
+
+            unreachable();
+        }
+        catch (UnsupportedOperationException ex)
+        {
+            checkException(ex, "Changes to property values are not allowed.");
+        }
+    }
+
+    public void testSetRequired()
+    {
+        try
+        {
+            StringValidator.OPTIONAL.setRequired(true);
+
+            unreachable();
+        }
+        catch (UnsupportedOperationException ex)
+        {
+            checkException(ex, "Changes to property values are not allowed.");
+        }
+    }
+
 }

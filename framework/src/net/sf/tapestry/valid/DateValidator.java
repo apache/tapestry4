@@ -193,7 +193,7 @@ public class DateValidator extends BaseValidator
                     field.getDisplayName(),
                     getEffectiveDisplayFormat());
 
-            throw new ValidatorException(errorMessage, ValidationConstraint.DATE_FORMAT, value);
+            throw new ValidatorException(errorMessage, ValidationConstraint.DATE_FORMAT);
         }
 
         // OK, check that the date is in range.
@@ -207,7 +207,7 @@ public class DateValidator extends BaseValidator
                     field.getDisplayName(),
                     format.format(_minimum));
 
-            throw new ValidatorException(errorMessage, ValidationConstraint.TOO_SMALL, value);
+            throw new ValidatorException(errorMessage, ValidationConstraint.TOO_SMALL);
         }
 
         if (_maximum != null && _maximum.compareTo(result) < 0)
@@ -219,7 +219,7 @@ public class DateValidator extends BaseValidator
                     field.getDisplayName(),
                     format.format(_maximum));
 
-            throw new ValidatorException(errorMessage, ValidationConstraint.TOO_LARGE, value);
+            throw new ValidatorException(errorMessage, ValidationConstraint.TOO_LARGE);
         }
 
         return result;
