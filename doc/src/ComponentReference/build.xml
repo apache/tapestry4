@@ -4,7 +4,7 @@
 
 <project name="Component Reference" default="install">
 
-<property name="html.install.dir" value="../../ComponentReference"/>
+<property name="html.install.dir" value="../../../web/doc/ComponentReference"/>
 <property name="images.src.dir" value="images"/>
 <property name="images.dest.dir" value="${html.install.dir}/images"/>
 <property name="common-images.src.dir" value="../common/images"/>
