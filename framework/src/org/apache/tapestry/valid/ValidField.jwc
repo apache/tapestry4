@@ -31,7 +31,7 @@
   
   <parameter name="hidden" type="boolean" direction="in"/>
     
-  <parameter name="validator" type="org.apache.tapestry.valid.IValidator" required="yes" direction="in">
+  <parameter name="validator" type="org.apache.tapestry.valid.IValidator" required="yes" direction="auto">
     <description>
     Converts value to a string and parses strings back into object values.
     </description>
