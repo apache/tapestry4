@@ -12,7 +12,7 @@
 	</path>
 	<path id="compile.classpath">
 		<fileset dir="${root.lib.dir}">
-            <include name="${framework.jar}"/>
+            <include name="*.jar"/>
             <include name="${ext.dir}/*.jar"/>
 		</fileset>
 		<pathelement location="${servlet.jar.path}"/>
@@ -32,7 +32,7 @@
 	</target>
 	<target name="install" depends="compile"
 		description="Compile all classes and build the installed WAR.">
-		<war warfile="${root.lib.dir}/${wap.war}"
+		<war warfile="${examples.dir}/${wap.war}"
 			webxml="context/WEB-INF/web.xml">
 			<fileset dir="context">
 				<exclude name="WEB-INF/web.xml"/>

@@ -13,8 +13,7 @@
 	<path id="compile.classpath">
 		<fileset dir="${root.lib.dir}">
 			<include name="${ext.dir}/*.jar"/>
-			<include name="${framework.jar}"/>
-			<include name="${contrib.jar}"/>
+			<include name="*.jar"/>
 		</fileset>
 		<pathelement location="${j2ee.jar.path}"/>
 	</path>
@@ -37,7 +36,7 @@
 	<target name="install" depends="compile"
 		description="Compile all classes and build the installed JAR including all package resources."
 		>
-		<jar jarfile="${root.lib.dir}/${vlibbeans.jar}">
+		<jar jarfile="${examples.dir}/${vlibbeans.jar}">
 			<fileset dir="${classes.dir}"/>
 			<metainf dir=".">
 				<include name="*.xml"/>

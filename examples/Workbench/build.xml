@@ -12,8 +12,7 @@
 	</path>
 	<path id="compile.classpath">
 		<fileset dir="${root.lib.dir}">
-			<include name="${framework.jar}"/>
-			<include name="${contrib.jar}"/>
+			<include name="*.jar"/>
 			<include name="${ext.dir}/*.jar"/>
 		</fileset>
 		<fileset dir="${lib.dir}">
@@ -36,7 +35,7 @@
 	</target>
 	<target name="install" depends="compile"
 		description="Compile all classes and build the installed WAR.">
-		<war warfile="${root.lib.dir}/${workbench.war}"
+		<war warfile="${examples.dir}/${workbench.war}"
 			webxml="context/WEB-INF/web.xml">
 			<fileset dir="context">
 				<exclude name="WEB-INF/web.xml"/>
@@ -53,8 +52,7 @@
 				<include name="*.jar"/>
 			</lib>
 			<lib dir="${root.lib.dir}">
-				<include name="${framework.jar}"/>
-				<include name="${contrib.jar}"/>
+				<include name="*.jar"/>
 			</lib>			
 			<lib dir="${root.lib.dir}/${ext.dir}">
 			  <include name="*.jar"/>
