@@ -33,7 +33,7 @@
       <parameter name="page" value="Two"/>
       <parameter name="component" value="$Form"/>
     	<parameter name="sp" value="S0"/>
-    	<parameter name="Form0" value="field"/>
+    	<parameter name="formids" value="field"/>
     	<parameter name="field" value="1"/> <!-- verify the form submission is working -->
 
         <!-- we are really asserting that we did not get an exception page -->

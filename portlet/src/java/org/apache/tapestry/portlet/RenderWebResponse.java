@@ -53,4 +53,9 @@ public class RenderWebResponse extends PortletWebResponse
 
         return _renderResponse.getWriter();
     }
+
+    public String getNamespace()
+    {
+        return _renderResponse.getNamespace();
+    }
 }

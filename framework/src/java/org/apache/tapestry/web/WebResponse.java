@@ -62,4 +62,12 @@ public interface WebResponse
     public void reset();
 
     public void setContentLength(int contentLength);
+
+    /**
+     * Returns a value to be prefixed or suffixed with any client-side JavaScript elements
+     * (variables and function names) to ensure that they are unique with the context of the entire
+     * page. For servlets, this is the empty string.
+     */
+
+    public String getNamespace();
 }

@@ -84,15 +84,15 @@
             <match>page</match>
             <match>service</match>
             <match>sp</match>
-            <match>Go0</match>
+            <match>formids</match>
             <match>u</match>
             
             <match>action</match>
             <match>component</match>
             <match>page</match>
             <match>service</match>
-            <match>Go1</match>
-            <match>Go1</match>
+            <match>formids</match>
+            <match>formids</match>
             <match>v</match>
         </assert-output-matches>
 
@@ -124,7 +124,7 @@
         <parameter name="action" value="1"/>
         <parameter name="component" value="h"/>
 
-        <parameter name="Go1">
+        <parameter name="formids">
           <value>v</value>
           <value>action</value>
         </parameter>
@@ -152,7 +152,7 @@
         <parameter name="component" value="g"/>
 
         <parameter name="sp" value="S0"/>
-        <parameter name="Go0" value="v"/>
+        <parameter name="formids" value="v"/>
         <parameter name="u" value="VVV"/>
 
         <assert-output name="Card">

@@ -79,7 +79,7 @@ Again, there is no particular need to do all this; using the
 <a href="spec.property-specification.html" title="property-specification element"><tt class="sgmltag-starttag">&lt;property-specification&gt;</tt></a> element is far, far simpler.	
 </p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="state.manual-page-properties.html"><img src="common-images/prev.png" alt="Prev"></a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="state.html"><img src="common-images/up.png" alt="Up"></a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="state.stateless.html"><img src="common-images/next.png" alt="Next"></a></td></tr><tr><td width="40%" align="left" valign="top">Implementing Persistent Page Properties Manually&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="TapestryUsersGuide.html"><img src="common-images/home.png" alt="Home"></a></td><td width="40%" align="right" valign="top">&nbsp;Stateless Applications</td></tr></table></div></body></html>
 -----------------------------xyzzyx
-Content-Disposition: form-data; name="Form0"
+Content-Disposition: form-data; name="formids"
 
 $Upload
 -----------------------------xyzzyx--

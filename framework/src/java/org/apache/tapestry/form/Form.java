@@ -28,7 +28,6 @@ import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IDirect;
-import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
@@ -41,11 +40,11 @@ import org.apache.tapestry.engine.ActionServiceParameter;
 import org.apache.tapestry.engine.DirectServiceParameter;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
-import org.apache.tapestry.html.Body;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.util.IdAllocator;
 import org.apache.tapestry.util.StringSplitter;
 import org.apache.tapestry.valid.IValidationDelegate;
+import org.apache.tapestry.web.WebResponse;
 
 /**
  * Component which contains form element components. Forms use the action or direct services to
@@ -131,12 +130,21 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     private List _hiddenValues;
 
     /**
+     * Reserved id that stores the list of allocated ids and the (optional) list of reserved ids.
+     * 
+     * @since 3.1
+     */
+
+    public static final String FORM_IDS = "formids";
+
+    /**
      * @since 3.1
      */
     private Set _standardReservedIds = new HashSet();
 
     {
         _standardReservedIds.addAll(Arrays.asList(ServiceConstants.RESERVED_IDS));
+        _standardReservedIds.add(FORM_IDS);
     }
 
     /**
@@ -334,7 +342,10 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         String actionId = cycle.getNextActionId();
-        _name = getDisplayName() + actionId;
+
+        // Integrate the namespace into the form name;
+
+        _name = getDisplayName() + actionId + getResponse().getNamespace();
 
         boolean renderForm = !cycle.isRewinding();
         boolean rewound = cycle.isRewound(this);
@@ -375,10 +386,10 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
             // and rewind (current request cycle), then the list
             // of ids will change as well.
 
-            writeHiddenField(writer, _name, buildAllocatedIdList());
+            writeHiddenField(writer, FORM_IDS, buildAllocatedIdList());
 
             if (HiveMind.isNonBlank(extraIds))
-                writeHiddenField(writer, _name, extraIds);
+                writeHiddenField(writer, FORM_IDS, extraIds);
 
             writeHiddenValues(writer);
 
@@ -718,7 +729,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
     protected void reconstructAllocatedIds(IRequestCycle cycle)
     {
-        String[] values = cycle.getParameters(_name);
+        String[] values = cycle.getParameters(FORM_IDS);
 
         StringSplitter splitter = new StringSplitter(',');
 
@@ -746,6 +757,8 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
                 _elementIdAllocator.allocateId(ids[i]);
         }
     }
+
+    public abstract WebResponse getResponse();
 
     public abstract IValidationDelegate getDelegate();
 

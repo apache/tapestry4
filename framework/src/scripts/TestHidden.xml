@@ -57,7 +57,7 @@
 		<parameter name="hiddenWithID" value="updated-1234567890-with id"/>
 		<parameter name="hiddenWithEncoding" value="Supdated-1234567890-with encoding"/>
 		<parameter name="hiddenBoolean" value="T"/>
-		<parameter name="Form0" value="hidden,hiddenWithID,hiddenWithEncoding,hiddenBoolean"/>
+		<parameter name="formids" value="hidden,hiddenWithID,hiddenWithEncoding,hiddenBoolean"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -85,7 +85,7 @@ HiddenWithEncoding: [updated-1234567890-with encoding]
 		<parameter name="hiddenWithID" value="updated-1234567890-with id"/>
 		<parameter name="hiddenWithEncoding" value="Supdated-1234567890-with encoding"/>
 		<parameter name="hiddenBoolean" value="123"/>
-		<parameter name="Form0" value="hidden,hiddenWithID,hiddenWithEncoding,hiddenBoolean"/>
+		<parameter name="formids" value="hidden,hiddenWithID,hiddenWithEncoding,hiddenBoolean"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[

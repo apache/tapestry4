@@ -58,7 +58,7 @@ href="/mock/app?action=0&amp;component=actionLink&amp;page=Stale&amp;service=act
       <match>page</match>
 			<match>service</match>
 			<match>sp</match>
-			<match>Form1</match>
+			<match>formids</match>
 		</assert-output-matches>
 
 		<assert-output-matches name="Form Parameter Values" subgroup="1">
@@ -112,7 +112,7 @@ href="/mock/app?action=0&amp;component=actionLink&amp;page=Stale&amp;service=act
     <parameter name="page" value="Stale"/>
     <parameter name="component" value="form"/>
 		<parameter name="sp" value="S1"/>
-		<parameter name="Form1" value=""/>
+		<parameter name="formids" value=""/>
 		
 		<assert-output name="StaleSession (Form)">
 <![CDATA[

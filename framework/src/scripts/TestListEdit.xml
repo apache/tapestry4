@@ -38,7 +38,7 @@
       <match>name="page" value="ListEdit"</match>
 			<match>name="service" value="direct"</match>
 			<match>name="sp" value="S0"</match>
-			<match>name="Form0" value="e,inputColor,inputColor$0,inputColor$1"</match>			
+			<match>name="formids" value="e,inputColor,inputColor$0,inputColor$1"</match>			
 			<match>name="e" value="SClothing"</match>
 			<match>name="e" value="SEye Color"</match>
 			<match>name="e" value="SFood"</match>
@@ -69,7 +69,7 @@
 		<parameter name="inputColor" value="3"/>
 		<parameter name="inputColor$0" value="0"/>
 		<parameter name="inputColor$1" value="2"/>
-		<parameter name="Form0" value="e,inputColor,inputColor$0,inputColor$1"/>
+		<parameter name="formids" value="e,inputColor,inputColor$0,inputColor$1"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -102,7 +102,7 @@
 		<parameter name="inputColor" value="3"/>
 		<parameter name="inputColor$0" value="0"/>
 		<parameter name="inputColor$1" value="2"/>
-		<parameter name="Form0" value="e,inputColor,inputColor$0,inputColor$1"/>
+		<parameter name="formids" value="e,inputColor,inputColor$0,inputColor$1"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -148,7 +148,7 @@
       <match>name="page" value="ListEditArray"</match>
 			<match>name="service" value="direct"</match>
 			<match>name="sp" value="S0"</match>
-			<match>name="Form0" value="e"</match>			
+			<match>name="formids" value="e"</match>			
 			<match>name="e" value="SFred"</match>
 			<match>name="e" value="SDino"</match>
 			<match>name="e" value="SWilma"</match>
@@ -175,7 +175,7 @@
       <match>name="page" value="ListEditNull"</match>
 			<match>name="service" value="direct"</match>
 			<match>name="sp" value="S0"</match>
-			<match>name="Form0" value="e"</match>
+			<match>name="formids" value="e"</match>
 		</assert-output-matches>			
 	</request>	
 </mock-test>
