@@ -22,7 +22,7 @@
 
 	<filelist id="project.modules" 
 		dir="."
-		files="framework/build.xml contrib/build.xml examples/Workbench/build.xml"/>
+		files="framework/build.xml portlet/build.xml contrib/build.xml examples/Workbench/build.xml"/>
     
 	<import file="${hivebuild.dir}/project.xml"/>
 	<import file="${hivebuild.dir}/license-report.xml"/>    

@@ -2,6 +2,8 @@
 <classpath>
 	<classpathentry kind="src" path="framework/src/java"/>
 	<classpathentry kind="src" path="framework/src/test"/>
+	<classpathentry kind="src" path="portlet/src/java"/>
+	<classpathentry kind="src" path="portlet/src/test"/>
 	<classpathentry kind="src" path="contrib/src/java"/>
 	<classpathentry kind="src" path="contrib/src/test"/>
 	<classpathentry kind="src" path="examples/Workbench/src/java"/>
@@ -29,5 +31,7 @@
 	<classpathentry kind="lib" path="ext-package/lib/jboss-j2ee-3.2.1.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/hivemind-1.1-alpha-3-snapshot.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/hivemind-lib-1.1-alpha-3-snapshot.jar"/>
+	<classpathentry kind="lib" path="portlet/src/descriptor"/>
+	<classpathentry kind="lib" path="ext-package/lib/portlet-api-1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

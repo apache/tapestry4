@@ -47,6 +47,10 @@ public class HomeService implements IEngineService
 
     private LinkFactory _linkFactory;
 
+    /** @since 3.1 */
+
+    private String _pageName;
+
     public ILink getLink(IRequestCycle cycle, Object parameter)
     {
         if (parameter != null)
@@ -62,7 +66,7 @@ public class HomeService implements IEngineService
     public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
             IOException
     {
-        cycle.activate(TapestryConstants.HOME_PAGE);
+        cycle.activate(_pageName);
 
         _responseRenderer.renderResponse(cycle, output);
     }
@@ -82,5 +86,11 @@ public class HomeService implements IEngineService
     public void setLinkFactory(LinkFactory linkFactory)
     {
         _linkFactory = linkFactory;
+    }
+    
+    /** @since 3.1 */
+    public void setPageName(String pageName)
+    {
+        _pageName = pageName;
     }
 }
