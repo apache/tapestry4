@@ -1,3 +1,7 @@
+* Jan 31 2001 hship
+
+Check in support for DocBook modules (currently, only works under Cygwin).
+
 * Jan 30 2001 hship
 
 Add Solaris support.  Add sample LocalConfig.mk and SiteConfig.mk.
