@@ -1,5 +1,10 @@
 * Dec 20 2000 hship
 
+Update the documentation.
+Make sure the visit object is created only when needed.
+
+* Dec 20 2000 hship
+
 Add the FieldLabel component, used for providing a label for validating text fields.
  
 * Dec 19 2000 hship
