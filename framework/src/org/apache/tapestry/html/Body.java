@@ -418,6 +418,11 @@ public abstract class Body extends AbstractComponent implements IScriptProcessor
 
     public abstract void setElement(String element);
 
+	/**
+	 * Sets the element parameter property to its default, "body".
+	 * 
+	 * @since 3.0
+	 */
     protected void finishLoad()
     {
         setElement("body");

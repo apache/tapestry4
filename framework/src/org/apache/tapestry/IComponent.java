@@ -342,7 +342,7 @@ public interface IComponent extends IRender, ILocationHolder
      * 
      **/
 
-    public IComponentStrings getStrings();
+    public IStrings getStrings();
 
     /**
      *  Returns the {@link INamespace} in which the component was defined

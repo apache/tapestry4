@@ -6,16 +6,11 @@
 	<property file="${root.dir}/config/common.properties"/>
 	<property file="${root.dir}/config/build.properties"/>
 	
-	<path id="jetty.classpath">
-		<fileset dir="${jetty.dir}">
-			<include name="**/javax.*.jar"/>
-		</fileset>
-	</path>
 	<path id="project.class.path">
 		<fileset dir="${root.lib.dir}">
 			<include name="${ext.dir}/*.jar"/>
 		</fileset>
-		<path refid="jetty.classpath"/>
+		<pathelement path="${servlet.jar.path}"/>
 	</path>
 	<target name="init">
 		<mkdir dir="${classes.dir}"/>

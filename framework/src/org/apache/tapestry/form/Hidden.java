@@ -184,8 +184,12 @@ public abstract class Hidden extends AbstractFormComponent
     
     public abstract void setEncode(boolean encode);
 
-
-	public void finishLoad()
+	/**
+	 * Sets the encode parameter property to its default, true.
+	 * 
+	 * @since 3.0
+	 */
+	protected void finishLoad()
 	{
 		setEncode(true);
 	}

@@ -56,11 +56,11 @@
 package org.apache.tapestry.engine;
 
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IComponentStrings;
+import org.apache.tapestry.IStrings;
 
 /**
  *  Defines an object that can provide a component with its
- *  {@link IComponentStrings}.
+ *  {@link org.apache.tapestry.IStrings}.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -70,7 +70,7 @@ import org.apache.tapestry.IComponentStrings;
 
 public interface IComponentStringsSource
 {
-	public IComponentStrings getStrings(IComponent component);
+	public IStrings getStrings(IComponent component);
 	
 	/**
 	 *  Clears all cached information for the source.

@@ -224,6 +224,11 @@ public abstract class Shell extends AbstractComponent
 
     public abstract Object getStylesheets();
 
+    /**
+     * Sets the DTD parameter property to its default value.
+     * 
+     * @since 3.0
+     */
     protected void finishLoad()
     {
         setDTD("-//W3C//DTD HTML 4.0 Transitional//EN");
