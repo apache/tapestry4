@@ -303,4 +303,12 @@ public class PageSpecificationResolver extends AbstractSpecificationResolver
 
         return extension;
     }
+    
+    protected void reset()
+    {
+    	_simpleName = null;
+    	
+        super.reset();
+    }
+
 }

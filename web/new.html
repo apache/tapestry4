@@ -48,7 +48,8 @@ render a block only once per page render (using <code>&lt;unique&gt;</code>)
 <li>Added <a href="doc/api/org/apache/tapestry/RedirectFilter.html">RedirectFilter</a>, a 2.3 Servlet API filter used to redirect
 a "naked" URL for a servlet context to the Tapestry application servlet.</li>
 <li>Adjusted the deployment for the Virtual Library application to be http://localhost/ (not http://localhost/vlib/app).</li>
-<li>Fixed a number of problems identified by <a href="http://www.cs.umd.edu/~pugh/java/bugs">FindBugs</a> tool.</li>
+<li>Fixed a number of problems identified by <a href="http://www.cs.umd.edu/~pugh/java/bugs">FindBugs</a> 
+and <a href="http://pmd.sf.net">PMD</a> tools.</li>
 </ul>
 
 <pre>
@@ -65,6 +66,7 @@ a "naked" URL for a servlet context to the Tapestry application servlet.</li>
 [ 19490 ] Body Component renders invalid markup
 [ 19700 ] TapestryStrings.properties typo   
 [ 19782 ] DateValidator displayFormat default should use format pattern
+[ 19463 ] Race condition inside PageSource  
 </pre>
 
 <h3>Release 2.4-alpha-5</h3>
