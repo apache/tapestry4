@@ -97,7 +97,7 @@ public class JavaClassMapping
         recordType("char[]", char[].class);
 
         recordType("byte", byte.class);
-        recordType("byte[]", byte.class);
+        recordType("byte[]", byte[].class);
 
         recordType("java.lang.Object", Object.class);
         recordType("java.lang.Object[]", Object[].class);
