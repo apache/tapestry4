@@ -35,7 +35,7 @@ import org.apache.tapestry.html.Body;
  *  Component that can be placed into application pages that will launch
  *  the inspector in a new window.
  * 
- *  [<a href="../../../../../ComponentReference/InspectorButton.html">Component Reference</a>]
+ *  [<a href="../../../../../../ComponentReference/InspectorButton.html">Component Reference</a>]
  *
  *  <p>Because the InspectorButton component is implemented using a {@link org.apache.tapestry.html.Rollover},
  *  the containing page must use a {@link Body} component instead of

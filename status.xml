@@ -199,6 +199,10 @@ NextGen) be released as version number 3.0.
   
  <release version="3.0-rc-1" date="unreleased">
  
+<action type="fix" dev="DS" fixes-bug="27551" due-to="Michael M. Brzycki">
+ 	InspectorButton docs have incorrect links.
+</action>
+
  <action type="update" dev="DS">
  	Update Component Reference to use 3.0 syntax	
  </action>
