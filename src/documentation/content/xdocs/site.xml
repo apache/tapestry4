@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Copyright 2004 The Apache Software Foundation
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!--
+
+Forrest site.xml
+
+This file contains an outline of the site's information content.  It is used to:
+- Generate the website menus (though these can be overridden - see docs)
+- Provide semantic, location-independent aliases for internal 'site:' URIs, eg
+<link href="site:changes"> links to changes.html (or ../changes.html if in
+  subdir).
+- Provide aliases for external URLs in the external-refs section.  Eg, <link
+  href="ext:cocoon"> links to http://xml.apache.org/cocoon/ 
+
+See http://xml.apache.org/forrest/linking.html for more info
+-->
+
+<!DOCTYPE site
+[
+<!ENTITY project-report-menu.ent SYSTEM "project-report-menu.ent">
+<!ENTITY tapestry-report-menu.ent SYSTEM "tapestry-report-menu.ent">
+]
+>
+
+<site xmlns="http://apache.org/forrest/linkmap/1.0" tab="project">
+  
+    <index href="index.html"/>
+    
+    <project label="Tapestry">
+    <home label="Home" href="index.html"/>
+    <quotes label="Quotes" href="quotes.html"/>
+    <faq label="FAQ" href="faq.html"/>
+    <todo label="TODO" href="todo.html"/>
+    <changes label="Change Log" href="changes.html"/>
+    <wiki label="Wiki" href="http://wiki.apache.org/jakarta-tapestry/"/>
+    <dev label="Developers" href="dev.html"/>
+    </project>
+    
+    <tapestry label="Framework" tab="tapestry" href="tapestry/">
+      
+      <index href="index.html"/>
+      
+      <reports label="Reports">
+        &tapestry-report-menu.ent;
+      </reports>
+      
+    </tapestry>
+    
+    
+    <project label="Project">
+        <item label="Mailing Lists"     href="http://jakarta.apache.org/site/mail2.html#tapestry"/>
+        <item label="Bug Database"     href="http://jakarta.apache.org/site/bugs.html"/>
+        <item label="CVS Repositories"      href="http://jakarta.apache.org/site/cvsindex.html"/>
+        
+        <reports label="Reports">
+          &project-report-menu.ent;
+        </reports>        
+    </project>
+    
+    <info label="Useful Information">
+    	<item label="Reporting Problems" href="problems.html"/>
+        <item label="Get Involved"          href="http://jakarta.apache.org/site/getinvolved.html"/>
+        <item label="Reference Library"     href="http://jakarta.apache.org/site/library.html"/>
+        <item label="Apache FAQ"                href="http://apache.org/foundation/faq.html"/>
+        <item label="Tapestry and HiveMind Blog"
+        	href="http://howardlewisship.com/blog/"/>
+    </info>
+    
+    <downloads label="Downloads">
+      <item label="Binary" href="http://jakarta.apache.org/site/binindex.cgi#Milestone Builds"/>
+      <item label="Source" href="http://jakarta.apache.org/site/sourceindex.cgi#Milestone Source Drops"/>
+    </downloads>
+    
+    <related label="Related Projects">
+    	<item label="Spindle" href="http://spindle.sourceforge.net/"/>
+      <item label="HiveMind" href="http://jakarta.apache.org/hivemind/"/>
+    	<item label="Tacos" href="http://sf.net/projects/tacos/"/>
+    </related>  
+	
+</site>

@@ -2,9 +2,9 @@
 <classpath>
     <classpathentry kind="var" path="JRE_LIB" sourcepath="JRE_SRC"/>
     <classpathentry kind="lib" path="config"/>
-    <classpathentry kind="src" path="framework/src"/>
     <classpathentry kind="src" path="junit/src"/>
     <classpathentry kind="src" path="contrib/src/java"/>
+    <classpathentry kind="src" path="framework/src/java"/>
     <classpathentry kind="var" path="JYTHON_DIR/jython.jar"/>
     <classpathentry kind="lib" path="framework/conf"/>
     <classpathentry kind="lib" path="ext-package/lib/bsf-2.3.0.jar"/>
