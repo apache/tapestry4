@@ -65,7 +65,6 @@ import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IBinding;
-import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IDirect;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IForm;
@@ -213,7 +212,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
      *  @since 1.0.2
      **/
 
-    public String getElementId(IComponent component)
+    public String getElementId(IFormComponent component)
     {
         return getElementId(component, component.getId());
     }
@@ -231,7 +230,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
      *
      **/
 
-    public String getElementId(IComponent component, String baseId)
+    public String getElementId(IFormComponent component, String baseId)
     {
         String result = _elementIdAllocator.allocateId(baseId);
 
@@ -268,6 +267,8 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
         }
 
         _allocatedIdIndex++;
+	
+		component.setName(result);
 
         return result;
     }

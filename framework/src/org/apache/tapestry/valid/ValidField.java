@@ -120,8 +120,8 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        IValidationDelegate delegate = getForm().getDelegate();
-        IValidator validator = getValidator();
+        IForm form = getForm(cycle);
+        IValidationDelegate delegate = form.getDelegate();
 
         if (delegate == null)
             throw new ApplicationRuntimeException(
@@ -131,9 +131,9 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
                     getForm().getExtendedId()),
                 this);
 
-        boolean rendering = !cycle.isRewinding();
+        IValidator validator = getValidator();
 
-        delegate.setFormComponent(this);
+        boolean rendering = !cycle.isRewinding();
 
         if (rendering)
             delegate.writePrefix(writer, cycle, this, validator);

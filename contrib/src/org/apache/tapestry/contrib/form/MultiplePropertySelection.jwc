@@ -18,4 +18,7 @@
   	type="org.apache.tapestry.contrib.form.IMultiplePropertySelectionRenderer"
   	direction="in"/>
   	
+  <property-specification name="name" type="java.lang.String"/>
+  <property-specification name="form" type="org.apache.tapestry.IForm"/>
+  
 </component-specification>

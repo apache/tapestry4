@@ -56,6 +56,7 @@
 package org.apache.tapestry;
 
 import org.apache.tapestry.form.FormEventType;
+import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.valid.IValidationDelegate;
 
 /**
@@ -114,7 +115,7 @@ public interface IForm extends IAction
      * 
      **/
 
-    public String getElementId(IComponent component);
+    public String getElementId(IFormComponent component);
 
     /**
      *  Constructs a unique identifier from the base id.  If possible, the
@@ -125,6 +126,9 @@ public interface IForm extends IAction
      *  ({@link org.apache.tapestry.form.ImageSubmit}) have more specific control over
      *  their names.
      * 
+     *  <p>Invokes {@link IFormComponent#setName(String)} with the result, as well
+     *  as returning it.
+     * 
      *  @throws StaleLinkException if, when the form itself is rewinding, the
      *  element id allocated does not match the expected id (as allocated when the form rendered).
      *  This indicates that the state of the application has changed between the time the
@@ -134,7 +138,7 @@ public interface IForm extends IAction
      *
      **/
 
-    public String getElementId(IComponent component, String baseId);
+    public String getElementId(IFormComponent component, String baseId);
 
     /**
      * Returns the name of the form.

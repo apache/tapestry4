@@ -40,5 +40,8 @@
   </parameter>
   	
   <reserved-parameter name="name"/>
-  
+
+  <property-specification name="name" type="java.lang.String"/>
+  <property-specification name="form" type="org.apache.tapestry.IForm"/>
+    
 </component-specification>

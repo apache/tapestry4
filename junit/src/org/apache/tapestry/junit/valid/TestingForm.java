@@ -70,6 +70,7 @@ import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.form.FormEventType;
+import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.spec.BaseLocatable;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.valid.IValidationDelegate;
@@ -105,12 +106,12 @@ public class TestingForm extends BaseLocatable implements IForm
     {
     }
 
-    public String getElementId(IComponent component)
+    public String getElementId(IFormComponent component)
     {
         return null;
     }
 
-    public String getElementId(IComponent component, String baseId)
+    public String getElementId(IFormComponent component, String baseId)
     {
         return null;
     }

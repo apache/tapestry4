@@ -83,8 +83,6 @@ import org.apache.tapestry.request.RequestContext;
 public abstract class ImageSubmit extends AbstractFormComponent
 {
 
-    private String _name;
-
     public abstract IBinding getPointBinding();
 
     public abstract IBinding getSelectedBinding();
@@ -93,16 +91,12 @@ public abstract class ImageSubmit extends AbstractFormComponent
     {
         IForm form = getForm(cycle);
 
-        updateDelegate(form);
-
         boolean rewinding = form.isRewinding();
 
         String nameOverride = getNameOverride();
 
-        if (nameOverride == null)
-            _name = form.getElementId(this);
-        else
-            _name = form.getElementId(this, nameOverride);
+        String name =
+            nameOverride == null ? form.getElementId(this) : form.getElementId(this, nameOverride);
 
         if (rewinding)
         {
@@ -116,7 +110,7 @@ public abstract class ImageSubmit extends AbstractFormComponent
             // Image clicks get submitted as two request parameters: 
             // foo.x and foo.y
 
-            String parameterName = _name + ".x";
+            String parameterName = name + ".x";
 
             String value = context.getParameter(parameterName);
 
@@ -135,7 +129,7 @@ public abstract class ImageSubmit extends AbstractFormComponent
             {
                 int x = Integer.parseInt(value);
 
-                parameterName = _name + ".y";
+                parameterName = name + ".y";
                 value = context.getParameter(parameterName);
 
                 int y = Integer.parseInt(value);
@@ -170,7 +164,7 @@ public abstract class ImageSubmit extends AbstractFormComponent
 
         writer.beginEmpty("input");
         writer.attribute("type", "image");
-        writer.attribute("name", _name);
+        writer.attribute("name", name);
 
         if (disabled)
             writer.attribute("disabled");
@@ -194,11 +188,6 @@ public abstract class ImageSubmit extends AbstractFormComponent
     public abstract IAsset getImage();
 
     public abstract IActionListener getListener();
-
-    public String getName()
-    {
-        return _name;
-    }
 
     public abstract Object getTag();
 

@@ -77,19 +77,13 @@ import org.apache.tapestry.util.io.DataSqueezer;
 
 public abstract class Hidden extends AbstractFormComponent
 {
-    private String _name;
-
-    public String getName()
-    {
-        return _name;
-    }
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         IForm form = getForm(cycle);
         boolean formRewound = form.isRewinding();
 
-        _name = form.getElementId(this);
+        String name = form.getElementId(this);
 
         // If the form containing the Hidden isn't rewound, then render.
 
@@ -121,13 +115,13 @@ public abstract class Hidden extends AbstractFormComponent
 
             writer.beginEmpty("input");
             writer.attribute("type", "hidden");
-            writer.attribute("name", _name);
+            writer.attribute("name", name);
             writer.attribute("value", externalValue);
 
             return;
         }
 
-        String externalValue = cycle.getRequestContext().getParameter(_name);
+        String externalValue = cycle.getRequestContext().getParameter(name);
         Object value = null;
 
         if (getEncode())

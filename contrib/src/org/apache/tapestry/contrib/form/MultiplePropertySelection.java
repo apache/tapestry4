@@ -141,13 +141,8 @@ import org.apache.tapestry.form.IPropertySelectionModel;
  *
  **/
 
-public class MultiplePropertySelection extends AbstractFormComponent
+public abstract class MultiplePropertySelection extends AbstractFormComponent
 {
-    private IPropertySelectionModel model;
-    private boolean disabled;
-    private IMultiplePropertySelectionRenderer renderer = DEFAULT_CHECKBOX_RENDERER;
-    private IBinding selectedListBinding;
-    private String name;
 
     /**
      *  A shared instance of {@link CheckBoxMultiplePropertySelectionRenderer}.
@@ -157,26 +152,11 @@ public class MultiplePropertySelection extends AbstractFormComponent
     public static final IMultiplePropertySelectionRenderer DEFAULT_CHECKBOX_RENDERER =
         new CheckBoxMultiplePropertySelectionRenderer();
 
-    public IBinding getSelectedListBinding()
-    {
-        return selectedListBinding;
-    }
+    public abstract IBinding getSelectedListBinding();
 
-    public void setSelectedListBinding(IBinding value)
+    public void finishLoad()
     {
-        selectedListBinding = value;
-    }
-
-    /**
-     *  Returns the name assigned to this PropertySelection by the 
-     *  {@link IForm}
-     *  that wraps it.
-     *
-     **/
-
-    public String getName()
-    {
-        return name;
+        setRenderer(DEFAULT_CHECKBOX_RENDERER);
     }
 
     /**
@@ -185,15 +165,7 @@ public class MultiplePropertySelection extends AbstractFormComponent
      *
      **/
 
-    public boolean isDisabled()
-    {
-        return disabled;
-    }
-
-    public void setDisabled(boolean disabled)
-    {
-        this.disabled = disabled;
-    }
+    public abstract boolean isDisabled();
 
     /**
      *  Renders the component, much of which is the responsiblity
@@ -207,23 +179,26 @@ public class MultiplePropertySelection extends AbstractFormComponent
     {
         IForm form = getForm(cycle);
 
-        updateDelegate(form);
-
         boolean rewinding = form.isRewinding();
 
-        name = form.getElementId(this);
+        String name = form.getElementId(this);
 
-        List selectedList = (List) selectedListBinding.getObject("selectedList", List.class);
+        List selectedList = (List) getSelectedListBinding().getObject("selectedList", List.class);
 
         if (selectedList == null)
             throw Tapestry.createRequiredParameterException(this, "selectedList");
+
+        IPropertySelectionModel model = getModel();
+
+        if (model == null)
+            throw Tapestry.createRequiredParameterException(this, "model");
 
         // Handle the form processing first.
         if (rewinding)
         {
             // If disabled, ignore anything that comes up from the client.
 
-            if (disabled)
+            if (isDisabled())
                 return;
 
             // get all the values
@@ -236,6 +211,7 @@ public class MultiplePropertySelection extends AbstractFormComponent
             // Nothing was selected
             if (optionValues != null)
             {
+
                 // Go through the array and translate and put back in the list
                 for (int i = 0; i < optionValues.length; i++)
                 {
@@ -249,6 +225,8 @@ public class MultiplePropertySelection extends AbstractFormComponent
 
             return;
         }
+
+        IMultiplePropertySelectionRenderer renderer = getRenderer();
 
         // Start rendering
         renderer.beginRender(this, writer, cycle);
@@ -270,24 +248,10 @@ public class MultiplePropertySelection extends AbstractFormComponent
         renderer.endRender(this, writer, cycle);
     }
 
-    public IPropertySelectionModel getModel()
-    {
-        return model;
-    }
+    public abstract IPropertySelectionModel getModel();
 
-    public void setModel(IPropertySelectionModel model)
-    {
-        this.model = model;
-    }
+    public abstract IMultiplePropertySelectionRenderer getRenderer();
 
-    public IMultiplePropertySelectionRenderer getRenderer()
-    {
-        return renderer;
-    }
-
-    public void setRenderer(IMultiplePropertySelectionRenderer renderer)
-    {
-        this.renderer = renderer;
-    }
+    public abstract void setRenderer(IMultiplePropertySelectionRenderer renderer);
 
 }

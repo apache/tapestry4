@@ -13,6 +13,9 @@
   <parameter name="format" direction="in" type="java.lang.String" required="no"/>
   <parameter name="disabled" direction="in" type="boolean" required="no"/>
 
+  <property-specification name="name" type="java.lang.String"/>
+  <property-specification name="form" type="org.apache.tapestry.IForm"/>
+  
   <private-asset name="script" resource-path="DatePicker.js"/>
         
 </component-specification>

@@ -72,13 +72,6 @@ import org.apache.tapestry.IRequestCycle;
 
 public abstract class Checkbox extends AbstractFormComponent
 {
-    private String _name;
-
-    public String getName()
-    {
-        return _name;
-    }
-
     /**
      *  Renders the form elements, or responds when the form containing the element
      *  is submitted (by checking {@link Form#isRewinding()}.
@@ -92,16 +85,14 @@ public abstract class Checkbox extends AbstractFormComponent
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         IForm form = getForm(cycle);
-
-		updateDelegate(form);
 		
         // Used whether rewinding or not.
 
-        _name = form.getElementId(this);
+        String name = form.getElementId(this);
 
         if (form.isRewinding())
         {
-            String value = cycle.getRequestContext().getParameter(_name);
+            String value = cycle.getRequestContext().getParameter(name);
 
             setSelected((value != null));
 
@@ -111,7 +102,7 @@ public abstract class Checkbox extends AbstractFormComponent
         writer.beginEmpty("input");
         writer.attribute("type", "checkbox");
 
-        writer.attribute("name", _name);
+        writer.attribute("name", name);
 
         if (isDisabled())
             writer.attribute("disabled");

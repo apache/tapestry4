@@ -88,13 +88,6 @@ public abstract class Select extends AbstractFormComponent
     private Set _selections;
     private int _nextOptionId;
 
-    private String _name;
-
-    public String getName()
-    {
-        return _name;
-    }
-
     /**
      *  Used by the <code>Select</code> to record itself as a
      *  {@link IRequestCycle} attribute, so that the
@@ -147,8 +140,6 @@ public abstract class Select extends AbstractFormComponent
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         IForm form = getForm(cycle);
-        
-		updateDelegate(form);
 		
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
             throw new ApplicationRuntimeException(Tapestry.getString("Select.may-not-nest"), this);
@@ -160,19 +151,19 @@ public abstract class Select extends AbstractFormComponent
 
         // Used whether rewinding or not.
 
-        _name = form.getElementId(this);
+        String name = form.getElementId(this);
 
         cycle.setAttribute(ATTRIBUTE_NAME, this);
 
         if (_rewinding)
         {
-            _selections = buildSelections(cycle, _name);
+            _selections = buildSelections(cycle, name);
         }
         else
         {
             writer.begin("select");
 
-            writer.attribute("name", _name);
+            writer.attribute("name", name);
 
             if (isMultiple())
                 writer.attribute("multiple");

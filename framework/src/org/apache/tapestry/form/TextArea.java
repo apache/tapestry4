@@ -72,12 +72,6 @@ import org.apache.tapestry.IRequestCycle;
 
 public abstract class TextArea extends AbstractFormComponent
 {
-    private String _name;
-
-    public String getName()
-    {
-        return _name;
-    }
 
     /**
      *  Renders the form element, or responds when the form containing the element
@@ -88,8 +82,6 @@ public abstract class TextArea extends AbstractFormComponent
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         IForm form = getForm(cycle);
-
-		updateDelegate(form);
 		
         // It isn't enough to know whether the cycle in general is rewinding, need to know
         // specifically if the form which contains this component is rewinding.
@@ -98,12 +90,12 @@ public abstract class TextArea extends AbstractFormComponent
 
         // Used whether rewinding or not.
 
-        _name = form.getElementId(this);
+        String name = form.getElementId(this);
 
         if (rewinding)
         {
         	if (!isDisabled())
-	            setValue(cycle.getRequestContext().getParameter(_name));
+	            setValue(cycle.getRequestContext().getParameter(name));
 
             return;
         }
@@ -113,7 +105,7 @@ public abstract class TextArea extends AbstractFormComponent
 
         writer.begin("textarea");
 
-        writer.attribute("name", _name);
+        writer.attribute("name", name);
 
         if (isDisabled())
             writer.attribute("disabled");

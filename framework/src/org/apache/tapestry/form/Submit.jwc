@@ -20,5 +20,8 @@
   
   <reserved-parameter name="name"/>
   <reserved-parameter name="type"/>
+
+  <property-specification name="name" type="java.lang.String"/>
+  <property-specification name="form" type="org.apache.tapestry.IForm"/>  
   
 </component-specification>

@@ -64,5 +64,8 @@
   <reserved-parameter name="type"/>
   <reserved-parameter name="src"/>
   <reserved-parameter name="border"/>
-  
+
+  <property-specification name="name" type="java.lang.String"/>
+  <property-specification name="form" type="org.apache.tapestry.IForm"/>
+ 
 </component-specification>

@@ -89,8 +89,6 @@ import org.apache.tapestry.Tapestry;
 
 public abstract class PropertySelection extends AbstractFormComponent
 {
-    private String _name;
-
     /**
      *  A shared instance of {@link SelectPropertySelectionRenderer}.
      *
@@ -110,17 +108,6 @@ public abstract class PropertySelection extends AbstractFormComponent
         new RadioPropertySelectionRenderer();
 
     /**
-     *  Returns the name assigned to this PropertySelection by the {@link Form}
-     *  that wraps it.
-     *
-     **/
-
-    public String getName()
-    {
-        return _name;
-    }
-
-    /**
      *  Renders the component, much of which is the responsiblity
      *  of the {@link IPropertySelectionRenderer renderer}.  The possible options,
      *  thier labels, and the values to be encoded in the form are provided
@@ -132,11 +119,9 @@ public abstract class PropertySelection extends AbstractFormComponent
     {
         IForm form = getForm(cycle);
 
-        updateDelegate(form);
-
         boolean rewinding = form.isRewinding();
 
-        _name = form.getElementId(this);
+        String name = form.getElementId(this);
 
         if (rewinding)
         {
@@ -145,7 +130,7 @@ public abstract class PropertySelection extends AbstractFormComponent
             if (isDisabled())
                 return;
 
-            String optionValue = cycle.getRequestContext().getParameter(_name);
+            String optionValue = cycle.getRequestContext().getParameter(name);
 
             Object value = (optionValue == null) ? null : getModel().translateValue(optionValue);
 
@@ -163,7 +148,7 @@ public abstract class PropertySelection extends AbstractFormComponent
         }
 
         writer.begin("select");
-        writer.attribute("name", _name);
+        writer.attribute("name", name);
 
         if (isDisabled())
             writer.attribute("disabled");

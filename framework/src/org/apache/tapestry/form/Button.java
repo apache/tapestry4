@@ -55,7 +55,6 @@
 
 package org.apache.tapestry.form;
 
-import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
@@ -72,77 +71,44 @@ import org.apache.tapestry.IRequestCycle;
  *  @author Malcolm Edgar
  *  @version $Id$
  **/
-public class Button extends AbstractFormComponent
+
+public abstract class Button extends AbstractFormComponent
 {
-	private String _label;
-	private boolean _disabled;
-	private IBinding _selectedBinding;
-	private String _name;
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+    {
+        IForm form = getForm(cycle);
 
-	public String getName()
-	{
-		return _name;
-	}
+        boolean rewinding = form.isRewinding();
 
-	public void setSelectedBinding(IBinding value)
-	{
-		_selectedBinding = value;
-	}
+        String name = form.getElementId(this);
 
-	public IBinding getSelectedBinding()
-	{
-		return _selectedBinding;
-	}
+        if (rewinding)
+        {
+            return;
+        }
 
-	protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-	{
-		IForm form = getForm(cycle);
+        writer.beginEmpty("input");
+        writer.attribute("type", "button");
+        writer.attribute("name", name);
 
-		updateDelegate(form);
+        if (isDisabled())
+        {
+            writer.attribute("disabled");
+        }
 
-		boolean rewinding = form.isRewinding();
+        String label = getLabel();
 
-		_name = form.getElementId(this);
+        if (label != null)
+        {
+            writer.attribute("value", label);
+        }
 
-		if (rewinding)
-		{
-			return;
-		}
+        generateAttributes(writer, cycle);
 
-		writer.beginEmpty("input");
-		writer.attribute("type", "button");
-		writer.attribute("name", _name);
+        writer.closeTag();
+    }
 
-		if (_disabled)
-		{
-			writer.attribute("disabled");
-		}
-		if (_label != null)
-		{
-			writer.attribute("value", _label);
-		}
-		generateAttributes(writer, cycle);
+    public abstract String getLabel();
 
-		writer.closeTag();
-	}
-
-	public String getLabel()
-	{
-		return _label;
-	}
-
-	public void setLabel(String label)
-	{
-		_label = label;
-	}
-
-	public boolean isDisabled()
-	{
-		return _disabled;
-	}
-
-	public void setDisabled(boolean disabled)
-	{
-		_disabled = disabled;
-	}
+    public abstract boolean isDisabled();
 }
