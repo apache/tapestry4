@@ -288,43 +288,25 @@ public abstract class LoginPage extends BasePage {
  </tr>
 </table>
 
-<pre>
-&lt;form jwcid="purchageForm"&gt;
+      <pre>
+&lt;form jwcid="@<A href="Form.html">Form</a>" listener="ognl: listeners.formSubmit"&gt;
  Item: &lt;span jwcid="selectItem"/&gt;
  &lt;p&gt;
- Description: &lt;span jwcid="insertDescription"/&gt;
+ Description: &lt;span jwcid="@<A href="Insert.html">Insert</a>" value="ognl: clothingItem.description"&gt;100% Egyptian Cotton&lt;/span&gt;
  &lt;p&gt;
- Label: &lt;span jwcid="insertLabel"/&gt;
+ Label: &lt;span jwcid="@<A href="Insert.html">Insert</a>" value="ognl: clothingItem.label"&gt;Jersey Bed Sheet&lt;/span&gt;
  &lt;p&gt;
- Price: $&lt;span jwcid="insertPrice"/&gt;
+ Price: $&lt;span jwcid="@<A href="Insert.html">Insert</a>" value="ognl: clothingItem.price"&gt;$150.00&lt;/span&gt;
  &lt;p&gt;
- &lt;input jwcid="<span class="jwcid">addToCartSubmit</span>" type="Submit"value="Add to Cart"/&gt;
+ &lt;input jwcid="<span class="jwcid">addToCartSubmit</span>" type="Submit" value="Add to Cart"/&gt;
 &lt;/form&gt;
 
 
 &lt;property-specification name=&quot;itemSelectionModel&quot; type=&quot;ItemSelectionModel&quot; persistent=&quot;yes&quot;/&gt;<br>&lt;property-specification name=&quot;clothingItem&quot; type=&quot;Item&quot; persistent=&quot;yes&quot;/&gt;<br>&lt;property-specification name=&quot;selectedComponent&quot; type=&quot;java.lang.String&quot;/&gt;<br>
-&lt;component id="purchaseForm" type="<A href="Form.html">Form</a>"&gt;
-    &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
-&lt;/component&gt;
-
 &lt;component id="selectItem" type="<A href="PropertySelection.html">PropertySelection</a>"&gt;
     &lt;binding name="model" expression="itemSelectionModel"/&gt;
     &lt;binding name="value" expression="clothingItem"/&gt;
     &lt;binding name="submitOnChange" expression="true"/&gt;
-    &lt;binding name="selected" expression="selectedComponent"/&gt;
-    &lt;binding name="tag" expression='"SELECT_ITEM"'/&gt;
-&lt;/component&gt;
-
-&lt;component id="insertDescription" type="<A href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" expression="clothingItem.description"/&gt;
-&lt;/component&gt;
-
-&lt;component id="insertLabel" type="<A href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" expression="clothingItem.label"/&gt;
-&lt;/component&gt;
-
-&lt;component id="insertPrice" type="<A href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" expression="clothingItem.price"/&gt;
 &lt;/component&gt;
 
 &lt;component id="<span class="jwcid">submitAddToCart</span>" type="<A href="Submit.html">Submit</a>"&gt;
@@ -347,15 +329,15 @@ public abstract class PurchagePage extends BasePage {
     public abstract ItemSelectionModel setItemSelectionModel(ItemSelectionModel value);
 
     public void formSubmit(IRequestCycle cycle) {
-        if (getSelectedComponent().equals("SELECT_ITEM")) {
-            // Submit from selectItem component. 
-            // Item display will automatically update, but we will log user's 
-            // interest in the selected clothing item
-            ..
-        } else if (getSelectedComponent().equals("SUBMIT_ADD_TO_CHART")) {
+        if (getSelectedComponent().equals("SUBMIT_ADD_TO_CHART")) {
             // Submit from submitAddToCart component.
             // Add selected item to shopping cart
             Item item = getClothingItem();         
+            ..
+        } else {
+            // Submit from selectItem component. 
+            // Item display will automatically update, but we will log user's 
+            // interest in the selected clothing item
             ..
         }
     }   
