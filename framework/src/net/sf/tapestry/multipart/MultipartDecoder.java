@@ -258,9 +258,9 @@ public class MultipartDecoder
             LOG.debug("Read file part '" + name + "'.");
 
         if (file != null)
-            p = new UploadPart(fileName, file);
+            p = new UploadPart(fileName, contentType, file);
         else
-            p = new UploadPart(fileName, uploadStream.getContent());
+            p = new UploadPart(fileName, contentType, uploadStream.getContent());
 
         partMap.put(name, p);
 
