@@ -108,16 +108,20 @@ newly instantiated beans, and beans that are retrieved from a pool.
 Element: binding
 Appears in: component
 
-Binds a parameter of the component to a property of its container.
+Binds a parameter of the component to a OGNL expression, relative
+to its container.  The expression may be provided as an attribute, or 
+as the body of the element.  The latter case is useful when the 
+expression is long, or uses problematic characters (such as a 
+mix of single and double quotes).
 
 Attributes:
   name: The name of the component parameter to bind.
   expression: The OGNL expression.
 -->
-<!ELEMENT binding EMPTY>
+<!ELEMENT binding (#PCDATA)>
 <!ATTLIST binding
   name CDATA #REQUIRED
-  expression CDATA #REQUIRED
+  expression CDATA #IMPLIED
 >
 
 <!-- =======================================================
