@@ -1,3 +1,10 @@
+* Jan 2 2001 hship
+
+Split the index for Tapestry.
+Add setLocale() to IEngine.
+Implement HTML template localization.
+Make a couple of protected variables private in BasePage.
+
 * Dec 29 2000 hship
 
 Savage Refactoring!
