@@ -504,7 +504,7 @@ public class TestSpecificationParser extends TapestryTestCase
         IComponentSpecification spec = parsePage("PropertySpecifications.page");
 
         checkList("propertySpecificationNames", new String[]
-        { "bool", "init", "persist" }, spec.getPropertySpecificationNames());
+        { "bool", "init", "longInitialValue", "persist" }, spec.getPropertySpecificationNames());
 
         IPropertySpecification ps = spec.getPropertySpecification("bool");
         assertEquals("name", "bool", ps.getName());
@@ -517,7 +517,11 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals("name", "init", ps.getName());
         assertEquals("persistent", false, ps.isPersistent());
         assertNull("type", ps.getType());
-        assertEquals("initialValue", "pageName", ps.getInitialValue());
+
+        // Starting with release 3.1, the initial value is a binding reference
+        // with an appropriate prefix. In 3.0 it was always an OGNL expression.
+
+        assertEquals("initialValue", "ognl:pageName", ps.getInitialValue());
         checkLine(ps, 26);
 
         ps = spec.getPropertySpecification("persist");
@@ -526,6 +530,9 @@ public class TestSpecificationParser extends TapestryTestCase
         assertNull("type", ps.getType());
         assertNull("initialValue", ps.getInitialValue());
         checkLine(ps, 25);
+
+        ps = spec.getPropertySpecification("longInitialValue");
+        assertEquals("ognl:long.initial.value", ps.getInitialValue());
 
         ps = spec.getPropertySpecification("unknown");
 
@@ -860,7 +867,7 @@ public class TestSpecificationParser extends TapestryTestCase
         IComponentSpecification spec = parsePage("Property.page");
 
         checkList("propertySpecificationNames", new String[]
-        { "bool", "init", "persist" }, spec.getPropertySpecificationNames());
+        { "bool", "init", "longInit", "persist" }, spec.getPropertySpecificationNames());
 
         IPropertySpecification ps = spec.getPropertySpecification("bool");
         assertEquals("name", "bool", ps.getName());
@@ -868,6 +875,10 @@ public class TestSpecificationParser extends TapestryTestCase
 
         // In a 3.1 DTD, type is always null.
         assertNull("type", ps.getType());
+
+        // Note that no prefix is added. Initial value will be a string literal,
+        // or have a prefix and be something else.
+
         assertNull("initialValue", ps.getInitialValue());
         checkLine(ps, 24);
 
@@ -875,7 +886,7 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals("name", "init", ps.getName());
         assertEquals("persistent", false, ps.isPersistent());
 
-        assertEquals("initialValue", "pageName", ps.getInitialValue());
+        assertEquals("initialValue", "ognl:pageName", ps.getInitialValue());
         checkLine(ps, 26);
 
         ps = spec.getPropertySpecification("persist");
@@ -883,6 +894,9 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals("persistent", true, ps.isPersistent());
         assertNull("initialValue", ps.getInitialValue());
         checkLine(ps, 25);
+
+        ps = spec.getPropertySpecification("longInit");
+        assertEquals("message:long-init-key", ps.getInitialValue());
 
         ps = spec.getPropertySpecification("unknown");
 

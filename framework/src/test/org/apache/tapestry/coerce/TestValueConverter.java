@@ -187,7 +187,7 @@ public class TestValueConverter extends HiveMindTestCase
         }
 
     }
-    
+
     public void testStringToNonNumericPrimitive()
     {
         MockControl tcc = newControl(TypeConverter.class);
@@ -215,5 +215,14 @@ public class TestValueConverter extends HiveMindTestCase
         assertSame(output, v.coerceValue(input, Boolean.class));
 
         verifyControls();
+    }
+
+    public void testNumberToNumber()
+    {
+        ValueConverterImpl v = new ValueConverterImpl();
+
+        Object result = v.coerceValue(new Integer(123), long.class);
+
+        assertEquals(new Long(123), result);
     }
 }

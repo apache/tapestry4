@@ -294,13 +294,13 @@ Application Development) support in the form of <link href="template.html#templa
  &HiveMind; microkernel.  This new backbone will provide the support necessary to meet the needs of Tapestry's
  much larger community ... including support for <em>prettier</em> URLs, integration of Tapestry and the Java Portlet API,
  and modularization of applications (allowing the use of folders, and thus, J2EE declarative security). In addition,
- a more sophisticated approach to implementing connected parameter properties will be introduced, and more flexibility for
- storing session-specific state as HTTP cookies or query parameters will be provided.
+ a more sophisticated approach to implementing connected parameter properties has already been introduced, and more flexibility for
+ storing session-specific state as HTTP cookies or query parameters will likely be provided.
 </p>
 
-<note>
+<warning>
 The exact feature set for Tapestry 3.1, and its schedule, are most assuredly up in the air!
-</note>
+</warning>
 
 <p>
   A further future direction, in the Tapestry 4.0 timeframe (the far future), is to rethink the component object model

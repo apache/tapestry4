@@ -126,6 +126,8 @@ it is expected that there will be some runtime warnings).
   <li>The &spec.inject; element has been added.</li>
   <li>The &spec.parameter; element has been simplified; the type and direction attributes have been dropped. The
     default-value attribute is now a <em>binding reference</em>, as with the &spec.binding; element's value attribute.</li>
+  <li>The &spec.property; element's initial-value attribute (or enclosed character data) is now a binding reference. In release 3.0
+    it was always an OGNL expression, but now it must be prefixed.</li>
 </ul>
 
 <p>
@@ -1376,8 +1378,7 @@ itself.
 	<td>no</td>
 	<td/>
 	<td>
-	An optional OGNL expression used to initialize the property.  The expression is evaluated
-	only when the page is first constructed.
+	An optional binding reference used to initialize the property.
 	</td>
 </tr>
 

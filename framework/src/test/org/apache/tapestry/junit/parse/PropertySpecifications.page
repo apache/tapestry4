@@ -24,6 +24,9 @@
 <property-specification name="bool" type="boolean"/>
 <property-specification name="persist" persistent="yes"/>
 <property-specification name="init" initial-value="pageName"/>
+<property-specification name="longInitialValue">
+    long.initial.value
+</property-specification>
 
 </page-specification>
 

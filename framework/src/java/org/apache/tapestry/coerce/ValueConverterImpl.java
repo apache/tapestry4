@@ -23,6 +23,7 @@ import java.util.Map;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Defense;
+import org.apache.hivemind.util.ConstructorUtils;
 
 /**
  * Implementation of {@link org.apache.tapestry.coerce.ValueConverter}. Selects an appropriate type
@@ -78,15 +79,20 @@ public class ValueConverterImpl implements ValueConverter
 
         Class effectiveType = convertType(desiredType);
 
-        Object result = convertUsingPropertyEditor(value, effectiveType);
-
-        if (result != null)
-            return result;
-
         // Already the correct type? Go no further!
 
         if (value != null && effectiveType.isAssignableFrom(value.getClass()))
             return value;
+        
+        Object result = convertNumberToNumber(value, effectiveType);
+
+        if (result != null)
+            return result;
+
+        result = convertUsingPropertyEditor(value, effectiveType);
+
+        if (result != null)
+            return result;
 
         TypeConverter converter = (TypeConverter) _converterMap.get(effectiveType);
 
@@ -154,6 +160,18 @@ public class ValueConverterImpl implements ValueConverter
                     ex), ex);
         }
 
+    }
+
+    private Number convertNumberToNumber(Object value, Class targetType)
+    {
+        if (value == null || !Number.class.isAssignableFrom(value.getClass())
+                || !Number.class.isAssignableFrom(targetType))
+            return null;
+
+        String valueAsString = value.toString();
+
+        return (Number) ConstructorUtils.invokeConstructor(targetType, new Object[]
+        { valueAsString });
     }
 
     private Class convertType(Class possiblePrimitiveType)

@@ -902,6 +902,12 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
         String initialValue = getExtendedValue(ps.getInitialValue(), "initial-value", false);
 
+        // In the 3.0 DTD, the initial value was always an OGNL expression.
+        // In the 3.1 DTD, it is a binding reference, qualified with a prefix.
+
+        if (initialValue != null && !_DTD_3_1)
+            initialValue = "ognl:" + initialValue;
+
         ps.setInitialValue(initialValue);
     }
 
@@ -1234,7 +1240,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
             defaultValue = "ognl:" + defaultValue;
 
         ps.setDefaultValue(defaultValue);
-        
+
         // type will only be specified in a 3.0 DTD.
 
         String type = getAttribute("type");
