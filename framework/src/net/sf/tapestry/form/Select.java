@@ -118,6 +118,16 @@ public class Select extends AbstractFormComponent
         return disabled;
     }
 
+		public boolean isMultiple() 
+		{
+			return multiple;
+		}
+
+		public void setMultiple(boolean newValue) 
+		{
+			multiple = newValue;
+		}
+
     public boolean isRewinding()
     {
         if (!rendering)
