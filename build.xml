@@ -356,7 +356,7 @@
 		  
 		<classpath>
 			<path refid="full.classpath"/>
-			<pathelement location="${lib.ext.dir}/mckoidb.jar"/>
+			<pathelement location="${lib.ext.dir}/${mckoidb.jar}"/>
 			<pathelement location="${lib.ext.dir}/junit.jar"/>
 		    <pathelement location="${jboss.lib.dir}/jboss-jmx.jar"/>    
 		    <pathelement location="${jboss.lib.dir}/jboss-system.jar"/>
@@ -438,22 +438,24 @@
 			<exclude name="${commons-logging.jar}"/>
 			<exclude name="${bsf.jar}"/>
 			<exclude name="${bcel.jar}"/>
+			<exclude name="${mckoidb.jar}"/>
 			
 			<!-- Match and include out-of-date versions -->
 			
-			<include name="*tapestry*.jar"/>
-			<include name="jakarta-oro-*.jar"/>
-			<include name="ognl-*.jar"/>
-			<include name="commons-logging*.jar"/>
-			<include name="commons-lang*.jar"/>
-			<include name="bsf*.jar"/>
-			<include name="bcel*.jar"/>
+			<include name="*tapestry*jar"/>
+			<include name="jakarta-oro-*jar"/>
+			<include name="ognl*jar"/>
+			<include name="commons-logging*jar"/>
+			<include name="commons-lang*jar"/>
+			<include name="bsf*jar"/>
+			<include name="bcel*jar"/>
+			<include name="mckoidb*jar"/>
 		</fileset>
 	</delete>
 		
 	<copy todir="${tapestry.lib.dir}" flatten="true">
 		<fileset dir="${lib.ext.dir}">
-			<include name="mckoidb.jar"/>
+			<include name="${mckoidb.jar}"/>
 			<include name="${jakarta-oro.jar}"/>
 			<include name="${ognl.jar}"/>
 			<include name="${commons-logging.jar}"/>
@@ -467,6 +469,7 @@
 				 but this is good for now.  -->
 				 
 			<include name="*.jar"/>
+			<exclude name="bcel.jar"/>
 		</fileset>
 	</copy>
 

@@ -13,7 +13,6 @@
     <classpathentry kind="lib" path="lib/ext/javax.servlet.jar"/>
     <classpathentry kind="lib" path="lib/ext/javax.xml.jaxp.jar"/>
     <classpathentry kind="lib" path="lib/ext/junit.jar"/>
-    <classpathentry kind="lib" path="lib/ext/mckoidb.jar"/>
     <classpathentry kind="lib" path="lib/ext/commons-logging-1.0.2.jar"/>
     <classpathentry kind="lib" path="lib/ext/org.apache.crimson.jar"/>
     <classpathentry kind="var" path="JBOSS_DIR/client/jboss-j2ee.jar"/>
@@ -28,5 +27,7 @@
     <classpathentry kind="lib" path="lib/ext/ognl-2.3.0-opt.jar"/>
     <classpathentry kind="lib" path="lib/ext/bsf-2.3.0.jar"/>
     <classpathentry kind="lib" path="lib/ext/bcel-5.0.jar"/>
+    <classpathentry kind="lib" path="lib/ext/mckoidb-0.94h.jar"
+        rootpath="src" sourcepath="C:/Work/mckoi0.94h/src.zip"/>
     <classpathentry kind="output" path="bin"/>
 </classpath>

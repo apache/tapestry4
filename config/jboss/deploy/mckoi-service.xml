@@ -10,12 +10,14 @@
 
 <!-- This is basically a cut-and-paste of the Solid example service, modified
       for McKoi DB.  The McKoi MBeans reside in 
-      net.sf.tapestry.contrib-x-x-x.jar. -->
+      tapestry-contrib-x-x-x.jar. -->
 
 <server>
 
+	<!-- The current working directory is the JBoss/bin directory, so this
+		 relative path works. -->
+		 
 	<mbean code="net.sf.tapestry.contrib.mckoi.McKoiDB" name="jboss:service=McKoiDB">
-  		<attribute name="RootPath">../server/tapestry/db</attribute>
   		<attribute name="ConfigPath">../server/tapestry/db/tapestry.conf</attribute>
 	</mbean>
 	  		

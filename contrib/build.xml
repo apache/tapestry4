@@ -14,7 +14,7 @@
     <pathelement location="${lib.ext.dir}/javax.xml.jaxp.jar"/>
     <pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
     <pathelement location="${framework.jar}"/>
-    <pathelement location="${lib.ext.dir}/mckoidb.jar"/>
+    <pathelement location="${lib.ext.dir}/${mckoidb.jar}"/>
     <pathelement location="${lib.ext.dir}/${ognl.jar}"/>
     <pathelement location="${jboss.client.dir}/jboss-client.jar"/>
     <pathelement location="${jboss.client.dir}/jboss-j2ee.jar"/>

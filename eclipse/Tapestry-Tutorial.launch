@@ -8,6 +8,9 @@
     sourceAttachmentPath=&quot;JRE_SRC&quot; sourceRootPath=&quot;JRE_SRCROOT&quot; type=&quot;3&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;Scratch&quot; type=&quot;1&quot;/&gt;
+"/>
+        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry internalArchive=&quot;/jakarta-tapestry/config&quot;
     path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
@@ -36,10 +39,6 @@
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry
     internalArchive=&quot;/jakarta-tapestry/lib/ext/junit.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;
-"/>
-        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;runtimeClasspathEntry
-    internalArchive=&quot;/jakarta-tapestry/lib/ext/mckoidb.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry
@@ -101,16 +100,22 @@
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry
+    internalArchive=&quot;/jakarta-tapestry/lib/ext/bcel-5.0.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;
+"/>
+        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;runtimeClasspathEntry
+    internalArchive=&quot;/jakarta-tapestry/lib/ext/mckoidb-0.94h.jar&quot;
+    path=&quot;3&quot; sourceAttachmentPath=&quot;C:/Work/mckoi0.94h/src.zip&quot;
+    sourceRootPath=&quot;src&quot; type=&quot;2&quot;/&gt;
+"/>
+        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;runtimeClasspathEntry
     internalArchive=&quot;/jakarta-tapestry/lib/ext/log4j-1.2.6.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry
     internalArchive=&quot;/jakarta-tapestry/lib/ext/org.mortbay.jetty-jdk1.2.jar&quot;
     path=&quot;3&quot; type=&quot;2&quot;/&gt;
-"/>
-        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;runtimeClasspathEntry
-    internalArchive=&quot;/jakarta-tapestry/lib/ext/bcel-5.0.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
     </listAttribute>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="jakarta-tapestry"/>
