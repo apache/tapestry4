@@ -1,0 +1,194 @@
+<?xml version="1.0"?>
+<project>
+  <pomVersion>3</pomVersion>
+  <name>jakarta-tapestry</name>
+  <id>jakarta-tapestry</id>
+  <currentVersion>1.0-beta-1</currentVersion>
+  <organization>
+    <name>Apache Software Foundation</name>
+    <url>http://jakarta.apache.org/</url>
+  </organization>
+  <inceptionYear>2000</inceptionYear>
+  <package>org.apache.tapestry</package>
+
+  <shortDescription>Component-oriented web application framework.</shortDescription>
+
+  <!-- Gump integration -->
+  <gumpRepositoryId>jakarta</gumpRepositoryId>
+
+  <description>
+   Tapestry is a component-oriented web application framework
+   organized around insanely high levels of reuse.
+  </description>
+
+  <url>http://jakarta.apache.org/tapestry</url>
+  <issueTrackingUrl>
+    http://issues.apache.org/bugzilla/
+  </issueTrackingUrl>
+  <siteAddress>jakarta.apache.org</siteAddress>
+  <siteDirectory>
+    /www/jakarta.apache.org/tapestry/
+  </siteDirectory>
+  <distributionDirectory>
+    /www/jakarta.apache.org/builds/jakarta-tapestry/
+  </distributionDirectory>
+
+  <repository>
+    <connection>
+      scm:cvs:pserver:anoncvs@cvs.apache.org:/home/cvspublic:jakarta-tapestry
+    </connection>
+    <url>
+      http://cvs.apache.org/viewcvs/jakarta-tapestry
+    </url>
+  </repository>
+
+  <versions>
+    <version>
+      <id>3-0-b-1</id>
+      <name>3.0-beta-1</name>
+      <tag>HEAD</tag>
+    </version>
+  </versions>
+
+  <mailingLists>
+    <mailingList>
+      <name>Tapestry User List</name>
+      <subscribe>
+        tapestry-user-subscribe@jakarta.apache.org
+
+      </subscribe>
+      <unsubscribe>
+       tapestry-user-unsubscribe@jakarta.apache.org
+
+      </unsubscribe>
+      <archive>
+        http://news.gmane.org/thread.php?group=gmane.comp.java.tapestry.user
+      </archive>
+    </mailingList>
+  </mailingLists>
+
+  <developers>
+
+    <developer>
+      <name>Howard M. Lewis Ship</name>
+      <id>hlship</id>
+      <email>hlship@apache.org</email>
+      <organization></organization>
+    </developer>
+
+  </developers>
+
+  <dependencies>
+
+    <dependency>
+      <id>commons-beanutils</id>
+      <version>1.6.1</version>
+      <url>http://jakarta.apache.org/commons/</url>
+    </dependency>
+
+    <dependency>
+      <id>commons-lang</id>
+      <version>1.0</version>
+      <url>http://jakarta.apache.org/commons/</url>
+    </dependency>
+  
+      <dependency>
+      <id>commons-logging</id>
+      <version>1.0</version>
+      <url>http://jakarta.apache.org/commons/</url>
+    </dependency>
+      
+    <dependency>
+      <id>commons-digester</id>
+      <version>1.4.1</version>
+      <url>http://jakarta.apache.org/commons/</url>
+    </dependency>
+    
+    <dependency>
+      <id>commons-fileupload</id>
+      <version>1.0-beta-1</version>
+      <url>http://jakarta.apache.org/commons/</url>
+    </dependency>
+        
+   <dependency>
+      <id>commons-collections</id>
+      <version>2.1</version>
+      <url>http://jakarta.apache.org/commons/</url>
+    </dependency>
+         
+    <dependency>
+      <id>oro</id>
+      <version>2.0.6</version>
+      <url>http://jakarta.apache.org/oro/</url>
+    </dependency>
+    
+    <dependency>
+      <id>bcel</id>
+      <version>5.0</version>
+      <url>http://jakarta.apache.org/bcel/</url>
+    </dependency>
+
+    <dependency>
+      <id>bsf</id>
+      <version>2.3.0</version>
+      <url>http://jakarta.apache.org/bsf/</url>
+    </dependency>
+    
+    <dependency>
+    	<id>servletapi</id>	
+    	<version>2.3</version>
+    </dependency>
+    
+    <dependency>
+    	<id>jdom</id>	
+    	<version>b8</version>
+    	<url>http://www.jdom.org/</url>
+    </dependency>
+    
+    <dependency>
+      <id>ognl</id>
+      <version>2.5.1</version>
+      <url>http://www.ognl.org/</url>
+    </dependency>
+    
+    <dependency>
+    	<id>log4j</id>	
+    	<version>1.2.6</version>
+    	<url>http://jakarta.apache.org/log4j/</url>
+    </dependency>
+    
+  </dependencies>
+
+  <build>
+
+    <nagEmailAddress>
+      tapestry-dev@jakarta.apache.org
+    </nagEmailAddress>
+
+    <sourceDirectory>framework/src</sourceDirectory>
+
+    <unitTestSourceDirectory>junit/src</unitTestSourceDirectory>
+    
+    <!-- Unit test cases -->
+    <unitTest>
+      <includes>
+        <include>**/TapestrySuite.java</include>
+      </includes>
+    </unitTest>
+              
+    <!-- J A R  R E S O U R C E S -->
+    <!-- Resources that are packaged up inside the JAR file -->
+    <resources>
+      <includes>
+        <include>*.xsd</include>
+        <include>config/log4j.properties</include>
+      </includes>
+    </resources>
+
+    <!-- Integration unit test cases -->
+    <integrationUnitTest/>
+
+    <jars>
+    </jars>
+  </build>
+</project>
