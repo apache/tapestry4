@@ -61,8 +61,8 @@ $(MOD_DIRTY_JAR_STAMP_FILE): $(WAR_CONTEXT_STAMP_FILE) $(WAR_LIB_STAMP_FILE) $(W
 # the entire web application directory.
 
 $(JAR_FILE): $(MOD_DIRTY_JAR_STAMP_FILE)
-ifeq "$(MODULE_NAME)" ""
-	$(error Must set MODULE_NAME in Makefile)
+ifeq "$(PROJECT_NAME)" ""
+	$(error Must set PROJECT_NAME in Makefile)
 else
 	$(call NOTE, Building $(JAR_FILE) ... )
 	$(JAR) cf $(JAR_FILE) -C $(WAR_APP_DIR) .
@@ -75,8 +75,8 @@ $(INSTALL_DIR)/$(JAR_FILE): $(JAR_FILE)
 ifeq "$(INSTALL_DIR)" ""
 	$(error Must define INSTALL_DIR in Makefile)
 endif
-ifeq "$(MODULE_NAME)" ""
-	$(error Must define MODULE_NAME in Makefile)
+ifeq "$(PROJECT_NAME)" ""
+	$(error Must define PROJECT_NAME in Makefile)
 endif
 	$(call NOTE, Installing $(JAR_FILE) to $(INSTALL_DIR))
 	@$(CP) $(CP_FORCE_OPT) $(JAR_FILE) $(INSTALL_DIR)

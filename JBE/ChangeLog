@@ -1,3 +1,10 @@
+* Feb 6 2001 hship
+
+Rename a couple of variables (LOCAL_CLASSPATH to PROJ_CLASSPATH and MODULE_NAME
+to PROJECT_NAME).
+Start of DocBook module rule to validate the input with the onsgmls parser (which
+alas, has bugs).
+
 * Feb 2 2001 hship
 
 Initial work on alternate targets for DocBook.  Added rtf.

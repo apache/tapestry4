@@ -55,6 +55,8 @@ CD := cd
 # Used with DocBook
 
 OPENJADE := $(DOCBOOK_OPENJADE_DIR)/bin/openjade.exe
+ONSGMLS :=  $(DOCBOOK_OPENJADE_DIR)/bin/onsgmls.exe
+
 OPENJADE_DISTRO = $(DOCBOOK_DIR)/openjade-1.3-1.tar.gz
 
 

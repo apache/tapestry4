@@ -40,10 +40,10 @@ FINAL_SOURCE_DIR := $(firstword $(SOURCE_DIR) .)
 
 MOD_META_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/meta-resources-stamp
 
-# The MODULE_NAME is specified in the Makefile and becomes the name of
+# The PROJECT_NAME is specified in the Makefile and becomes the name of
 # the ultimate file.
 
-JAR_FILE := $(MODULE_NAME).$(JAR_EXT)
+JAR_FILE := $(PROJECT_NAME).$(JAR_EXT)
 
 MOD_JAVA_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/java-stamp
 

@@ -53,7 +53,7 @@ MOD_META_RESOURCES = ejb-jar.xml weblogic-ejb-jar.xml
 
 include $(SYS_MAKEFILE_DIR)/Jar.mk
 
-DEPLOY_JAR_FILE := $(MODULE_NAME)-deploy.$(JAR_EXT)
+DEPLOY_JAR_FILE := $(PROJECT_NAME)-deploy.$(JAR_EXT)
 
 local-clean:
 	@$(RM) $(DEPLOY_JAR_FILE)
@@ -81,7 +81,7 @@ WEBLOGIC_CLASSPATH := \
 
 MOD_CLASSPATH := $(WEBLOGIC_CLASSPATH)
 
-EJBC_CLASSPATH = $(WEBLOGIC_CLASSPATH) $(LOCAL_CLASSPATH)
+EJBC_CLASSPATH = $(WEBLOGIC_CLASSPATH) $(PROJ_CLASSPATH)
 
 FINAL_EJBC_OPT := $(strip $(LOCAL_EJBC_OPT) $(EJBC_OPT))
 
@@ -91,7 +91,7 @@ FINAL_EJBC_OPT := $(strip $(LOCAL_EJBC_OPT) $(EJBC_OPT))
 # EJBC leaves lots of garbage around, so we'll switch to the
 # build directory
 
-$(DEPLOY_JAR_FILE): $(JAR_FILE) $(filter %.jar %.zip,$(LOCAL_CLASSPATH))
+$(DEPLOY_JAR_FILE): $(JAR_FILE) $(filter %.jar %.zip,$(PROJ_CLASSPATH))
 	$(call NOTE, Creating $(DEPLOY_JAR_FILE) ...)
 	$(CD) $(MOD_BUILD_DIR) ; \
 	$(call EXEC_JAVA,$(EJBC_CLASSPATH), \
