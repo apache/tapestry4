@@ -15,25 +15,19 @@
 package org.apache.tapestry.enhance;
 
 /**
- * Convienience methods needed by various parts of the enhancement subsystem.
+ * Starting with 3.1, copmonents do not always have a zero-args constructor; the enhanced subclass
+ * may take some parameters used to initialize instance variables. This interface represents a
+ * wrapper around a constructor and an array of parameters that can be used to stamp out new
+ * instances of a component.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class EnhanceUtils
+public interface ComponentConstructor
 {
-    public static String createMutatorMethodName(String propertyName)
-    {
-        return "set" + upcase(propertyName);
-    }
+    /**
+     * Requests that a new instance of the component.
+     */
 
-    public static String createAccessorMethodName(String propertyName)
-    {
-        return "get" + upcase(propertyName);
-    }
-
-    private static String upcase(String name)
-    {
-        return name.substring(0, 1).toUpperCase() + name.substring(1);
-    }
+    public Object newInstance();
 }

@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.enhance;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 
 import org.apache.hivemind.impl.MessageFormatter;
@@ -84,5 +85,20 @@ class EnhanceMessages extends DefaultComponentClassEnhancer
                 propertyName,
                 componentClass.getName(),
                 cause);
+    }
+
+    public static String claimedProperty(String propertyName)
+    {
+        return _formatter.format("claimed-property", propertyName);
+    }
+
+    public static String instantiationFailure(Constructor c, Throwable cause)
+    {
+        return _formatter.format("instantiation-failure", c.getDeclaringClass().getName(), cause);
+    }
+
+    public static String missingConstructor(Class baseClass)
+    {
+        return _formatter.format("missing-constructor", baseClass.getName());
     }
 }
