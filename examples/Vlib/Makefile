@@ -34,8 +34,10 @@ EXEC_CLASSPATH = \
 	$(INSTALL_DIR)/xerces.jar \
 	$(INSTALL_DIR)/gnu-regexp.jar \
 	$(INSTALL_DIR)/com.mortbay.jetty.jar \
+	$(INSTALL_DIR)/org.apache.jasper.jar \
 	$(JBOSS_DIR)/conf/default \
-	$(JBOSS_DIR)/client/jboss-client.jar
+	$(JBOSS_DIR)/client/jboss-client.jar \
+	$(JDK_DIR)/lib/tools.jar
 
 _EXEC_CLASSPATH := $(strip $(shell $(JBE_CANONICALIZE) -classpath $(EXEC_CLASSPATH)))
 
