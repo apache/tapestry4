@@ -154,6 +154,15 @@ public interface IValidationDelegate
 	public void reset();
 
 	/**
+	 *  Clears all tracking information.
+	 * 
+	 *  @since 1.0.10
+	 * 
+	 **/
+	
+	public void clear();
+
+	/**
 	 *  The error notification method, invoked during the rewind phase
 	 *  (that is, while HTTP parameters are being extracted from the request
 	 *  and assigned to various object properties).  

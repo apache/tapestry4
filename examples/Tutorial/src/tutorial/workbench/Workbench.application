@@ -6,6 +6,8 @@
 	engine-class="com.primix.tapestry.engine.SimpleEngine">
   <property name="com.primix.tapestry.visit-class">tutorial.workbench.Visit</property>
   
+  <service name="chart" class="tutorial.workbench.chart.ChartService"/>
+  
   <page name="Home" specification-path="/tutorial/workbench/Home.jwc"/>
   
   <page name="Palette" specification-path="/tutorial/workbench/palette/Palette.jwc"/>
@@ -20,6 +22,8 @@
   
   <page name="Upload" specification-path="/tutorial/workbench/upload/Upload.jwc"/>
   <page name="upload.Results" specification-path="/tutorial/workbench/upload/Results.jwc"/>
+
+  <page name="Chart" specification-path="/tutorial/workbench/chart/Chart.jwc"/>
 
   <component-alias type="Border" specification-path="/tutorial/workbench/components/Border.jwc"/>
   <component-alias type="Palette" specification-path="/net/sf/tapestry/contrib/palette/Palette.jwc"/>

@@ -73,4 +73,15 @@ public interface IEngineServiceView extends IEngine
 	 **/
 	
 	public void clearCachedData();
+	
+	/**
+	 *  Writes a detailed report of the exception to <code>System.err</code>.
+	 *  This is invoked by services that can't write an HTML description
+	 *  of the error because they don't provide text/html content (such as
+	 *  an asset that creates an image).
+	 *
+	 *  @since 1.0.10
+	 */
+
+	public void reportException(String reportTitle, Throwable ex);
 }
