@@ -14,15 +14,19 @@
   <component id="insertTitle" type="Insert">
     <binding name="value" expression="book.title"/>
   </component>
+  
   <component id="insertAuthor" type="Insert">
     <binding name="value" expression="book.author"/>
   </component>
+  
   <component id="insertPublisherName" type="Insert">
     <binding name="value" expression="book.publisherName"/>
   </component>
+  
   <component id="insertISBN" type="Insert">
     <binding name="value" expression="book.ISBN"/>
   </component>
+  
   <component id="ownerLink" type="PersonLink">
     <binding name="primaryKey" expression="book.ownerPrimaryKey"/>
     <binding name="name" expression="book.ownerName"/>

@@ -17,24 +17,26 @@
   <component id="insertName" type="Insert">
     <binding name="value" expression="person.naturalName"/>
   </component>
+  
   <component id="emailLink" type="Any">
     <static-binding name="element">a</static-binding>
     <binding name="href" expression="emailURL"/>
   </component>
+  
   <component id="insertEmail" type="Insert">
     <binding name="value" expression="person.email"/>
   </component>
+  
   <component id="insertCount" type="Insert">
     <binding name="value" expression="components.browser.resultCount"/>
   </component>
   
   <component id="ifOwnsNoBooks" type="Conditional">
-    <binding name="condition" expression="components.browser.resultCount"/>
-    <field-binding name="invert" field-name="Boolean.TRUE"/>
+    <binding name="condition" expression="components.browser.resultCount &lt;= 0"/>
   </component>
   
   <component id="ifOwnsBooks" type="Conditional">
-    <binding name="condition" expression="components.browser.resultCount"/>
+    <binding name="condition" expression="components.browser.resultCount &gt; 0"/>
   </component>
 
   <component id="browser" type="Browser">

@@ -73,7 +73,7 @@
     <field-binding name="validator" field-name="net.sf.tapestry.valid.StringValidator.OPTIONAL"/>
   </component>
   
-  <component id="inputDescription" type="Text">
+  <component id="inputDescription" type="TextArea">
     <binding name="value" expression="attributes.description"/>
     <static-binding name="columns">35</static-binding>
     <static-binding name="rows">8</static-binding>

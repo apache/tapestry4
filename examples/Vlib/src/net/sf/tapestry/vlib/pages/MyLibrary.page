@@ -58,12 +58,12 @@
     <static-binding name="class">clsDataBlue</static-binding>
   </component>
 
-  <component id="edit" type="Direct">
+  <component id="edit" type="DirectLink">
     <binding name="listener" expression="listeners.editBook"/>
     <binding name="parameters" expression="currentBook.primaryKey"/>
   </component>
 
-  <component id="delete" type="Direct">
+  <component id="delete" type="DirectLink">
     <binding name="listener" expression="listeners.deleteBook"/>
     <binding name="parameters" expression="currentBook.primaryKey"/>
   </component>
