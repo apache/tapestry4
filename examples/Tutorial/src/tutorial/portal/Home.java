@@ -36,7 +36,7 @@ import com.primix.tapestry.*;
  *
  */
 
-public class Home extends ErrorPage
+public class Home extends BasePage
 {
 	private PortletModel model;
 	private int newPortletId;

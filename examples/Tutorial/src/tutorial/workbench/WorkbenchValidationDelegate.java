@@ -29,6 +29,7 @@ package tutorial.workbench;
 import com.primix.tapestry.*;
 import com.primix.tapestry.valid.*;
 import com.primix.tapestry.valid.ValidationDelegate;
+import com.primix.tapestry.form.IFormComponent;
 import com.primix.tapestry.util.pool.*;
 
 /**
@@ -62,17 +63,16 @@ public class WorkbenchValidationDelegate
 			writer.attribute("src", "images/workbench/Warning-small.gif");
 			writer.attribute("height", 20);
 			writer.attribute("width", 20);
-			writer.attribute("title", currentTracking.getErrorMessage());
 		}
 	}
 
 	public void writeLabelPrefix(
-		IField field,
+		IFormComponent component,
 		IResponseWriter writer,
 		IRequestCycle cycle)
 		throws RequestCycleException
 	{
-		if (isInError(field))
+		if (isInError(component))
 		{
 			writer.begin("span");
 			writer.attribute("class", "label-error");
@@ -80,12 +80,12 @@ public class WorkbenchValidationDelegate
 	}
 
 	public void writeLabelSuffix(
-		IField field,
+		IFormComponent component,
 		IResponseWriter writer,
 		IRequestCycle cycle)
 		throws RequestCycleException
 	{
-		if (isInError(field))
+		if (isInError(component))
 			writer.end(); // <span>
 	}
 }

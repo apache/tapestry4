@@ -33,7 +33,7 @@
 </component>
 
 <component id="showError" type="ShowError">
-  <binding name="message" property-path="error"/>
+  <binding name="delegate" property-path="beans.delegate"/>
 </component>
 
 <component id="form" type="Form">

@@ -145,7 +145,7 @@ public class Register extends BasePage implements IErrorProperty
 
 		field = (IField) getComponent(componentId);
 
-		delegate.setField(field);
+		delegate.setFormComponent(field);
 		delegate.record(new ValidatorException(message));
 	}
 

@@ -47,7 +47,6 @@ public class EditBook extends Protected
 	private Integer bookPK;
 	private Map attributes;
 	private String publisherName;
-	private boolean cancel;
 
 	private static final int MAP_SIZE = 11;
 
@@ -56,7 +55,6 @@ public class EditBook extends Protected
 		attributes = null;
 		bookPK = null;
 		publisherName = null;
-		cancel = false;
 
 		super.detach();
 	}
@@ -77,16 +75,6 @@ public class EditBook extends Protected
 	public void setPublisherName(String value)
 	{
 		publisherName = value;
-	}
-
-	public boolean getCancel()
-	{
-		return cancel;
-	}
-
-	public void setCancel(boolean value)
-	{
-		cancel = value;
 	}
 
 	/**
@@ -162,19 +150,14 @@ public class EditBook extends Protected
 
 	public void formSubmit(IRequestCycle cycle)
 	{
-		if (cancel)
-		{
-			cycle.setPage("MyLibrary");
-			return;
-		}
-
 		Integer publisherPK = (Integer) attributes.get("publisherPK");
 
 		if (publisherPK == null && Tapestry.isNull(publisherName))
 		{
 			setErrorField(
 				"inputPublisherName",
-				"Must provide a publisher name if the publisher option is empty.");
+				"Must provide a publisher name if the publisher option is empty.",
+				null);
 			return;
 		}
 
@@ -182,7 +165,8 @@ public class EditBook extends Protected
 		{
 			setErrorField(
 				"inputPublisherName",
-				"Must leave the publisher name blank if selecting a publisher from the list.");
+				"Must leave the publisher name blank if selecting a publisher from the list.",
+				publisherName);
 			return;
 		}
 

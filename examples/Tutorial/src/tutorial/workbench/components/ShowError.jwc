@@ -5,15 +5,17 @@
 	
 <specification 
   class="com.primix.tapestry.BaseComponent"
-  allow-informal-parameters="no">
+  allow-informal-parameters="no" allow-body="no">
   
-  <parameter name="message" java-type="java.lang.String" required="no"/>
+  <parameter name="delegate" java-type="com.primix.tapestry.valid.IValidationDelegate" 
+  	required="yes"/>
   
-  <component id="ifMessage" type="Conditional">
-    <inherited-binding name="condition" parameter-name="message"/>
+  <component id="ifError" type="Conditional">
+    <binding name="condition" property-path="bindings.delegate.object.hasErrors"/>
   </component>
   
-  <component id="insertMessage"  type="Insert">
-    <inherited-binding name="value" parameter-name="message"/>
+  <component id="insertError"  type="Delegator">
+     <binding name="delegate" property-path="bindings.delegate.object.firstError"/>
   </component>
+  
 </specification>
