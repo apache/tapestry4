@@ -48,6 +48,11 @@
 	  </component>
 
 	  <component>
+	  	<id>body</id>
+		<type>Body</type>
+	  </component>
+	  
+	  <component>
 	    <id>e</id>
 	    <type>Foreach</type>
 
