@@ -360,6 +360,54 @@ Here is an example of the use of a description string to define columns:
  </tr>
 
  <tr>
+  <td>pageSize</td>
+  <td>
+      <code>int</code>
+  </td>
+  <td>in</td>
+  <td>no</td>
+  <td>10</td>
+  <td align="left">
+      The number of records displayed per page. 
+      <p>
+      This parameter is only used with the <code>source</code> and <code>columns</code> parameters.
+  </td> 
+ </tr>
+
+ <tr>
+  <td>initialSortColumn</td>
+  <td>
+      <code><A HREF="http://java.sun.com/j2se/1.4.2/docs/api/java/lang/String.html">String</A></code>
+  </td>
+  <td>in</td>
+  <td>no</td>
+  <td>null</td>
+  <td align="left">
+      The id of the column to initially sort the table by. 
+      A value of <code>null</code> indicates no sorting.
+      <p>
+      This parameter is only used with the <code>source</code> and <code>columns</code> parameters.
+  </td> 
+ </tr>
+
+ <tr>
+  <td>initialSortOrder</td>
+  <td>
+      <code>boolean</code>
+  </td>
+  <td>in</td>
+  <td>no</td>
+  <td>false</td>
+  <td align="left">
+      The order of the initial sorting.
+      Set this parameter to <code>false</code> to sort in an ascending order
+      and to <code>true</code> to sort in a descending one.
+      <p>
+      This parameter is only used with the <code>source</code> and <code>columns</code> parameters.
+  </td> 
+ </tr>
+
+ <tr>
   <td>element</td>
   <td>String</td>
   <td>in</td>
