@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+	
+<component-specification class="net.sf.tapestry.contrib.table.components.TableView" 
+	allow-body="yes" allow-informal-parameters="yes">
+	
+	<description>
+	</description>
+  
+	<parameter name="tableModel" 
+		java-type="net.sf.tapestry.contrib.table.model.ITableModel" 
+		required="yes"
+		direction="custom"/>
+  
+	<parameter name="tableSessionStateManager" 
+		java-type="net.sf.tapestry.contrib.table.model.ITableSessionStateManager" 
+		required="no"
+		direction="custom"/>
+  
+	<parameter name="tableSessionStoreManager" 
+		java-type="net.sf.tapestry.contrib.table.model.ITableSessionStoreManager" 
+		required="no"
+		direction="custom"/>
+
+	<parameter name="element" 
+		java-type="java.lang.String" 
+		required="no"
+		direction="in"/>
+  
+	<component id="table" type="InheritInformalAny">
+		<binding name="element" expression="element"/>
+	</component>
+
+	<component id="insertWrapped" type="RenderBody"/>
+  
+</component-specification>
