@@ -249,6 +249,17 @@ with newer versions of the packages).
 			<member>findutils</>
 			<member>gzip</>
 			<member>make</>
+			<member>sed
+				<footnote>
+					<para>
+						Requiring the <command>sed</> package 
+						is a recent addition to the JBE
+						(added in release 0.2.10).  If you installed the JBE
+						in a prior release, it is necessary to
+						update your Cygwin installation to include it.
+					</>
+				</>
+			</>
 			<member>shellutils</>
 			<member>tar</>
 			<member>textutils</>
@@ -260,8 +271,8 @@ with newer versions of the packages).
 		</>
 
 		<simplelist>
-			<member>groff</>
 			<member>grep</>
+			<member>groff</>
 			<member>less</>
 			<member>man</>
 		</simplelist>
@@ -1163,6 +1174,10 @@ As new situations arise, it is extended to meet the need.</>
 
 	<listitem>
 		<para>JAR signing.</>
+	</>
+
+	<listitem>
+		<para>JAR Manifests.</>
 	</>
 
 	<listitem>
