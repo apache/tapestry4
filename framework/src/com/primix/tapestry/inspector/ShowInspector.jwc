@@ -4,6 +4,24 @@
 <specification>
 	<class>com.primix.tapestry.inspector.ShowInspector</class>
 	<allow-body>no</allow-body>
+	<parameters>
+		<allow-informal-parameters>no</allow-informal-parameters>
+		<parameter>
+			<name>enabled</name>
+		</parameter>
+		<parameter>
+			<name>image</name>
+			<java-type>com.primix.tapestry.IAsset</java-type>
+		</parameter>
+		<parameter>
+			<name>focus</name>
+			<java-type>com.primix.tapestry.IAsset</java-type>
+		</parameter>
+		<parameter>
+			<name>disabled</name>
+			<java-type>com.primix.tapestry.IAsset</java-type>
+		</parameter>
+	</parameters>
 	<components>
 		<component>
 			<id>link</id>
@@ -17,7 +35,47 @@
 					<name>listener</name>
 					<property-path>listener</property-path>
 				</binding>
+				<inherited-binding>
+					<name>enabled</name>
+					<parameter-name>enabled</parameter-name>
+				</inherited-binding>
+			</bindings>
+		</component>
+		<component>
+			<id>button</id>
+			<type>Rollover</type>
+			<bindings>
+				<binding>
+					<name>image</name>
+					<property-path>image</property-path>
+				</binding>
+				<binding>
+					<name>focus</name>
+					<property-path>focus</property-path>
+				</binding>
+				<binding>
+					<name>disabled</name>
+					<property-path>disabled</property-path>
+				</binding>
+				<static-binding>
+					<name>alt</name>
+					<value>Show Inspector</value>
+				</static-binding>
 			</bindings>
 		</component>
 	</components>
+	<assets>
+		<private-asset>
+			<name>image</name>
+			<resource-path>/com/primix/tapestry/inspector/ShowInspector.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>focus</name>
+			<resource-path>/com/primix/tapestry/inspector/ShowInspector-focus.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>disabled</name>
+			<resource-path>/com/primix/tapestry/inspector/ShowInspector-disabled.gif</resource-path>
+		</private-asset>
+	</assets>
 </specification>
