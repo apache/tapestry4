@@ -3,7 +3,6 @@ package tutorial.workbench.table;
 import java.text.DateFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
-import java.util.Currency;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
@@ -168,9 +167,7 @@ public class LocaleSelection
 
 			DecimalFormatSymbols objSymbols =
 				new DecimalFormatSymbols(objLocale);
-			Currency objCurrency = objSymbols.getCurrency();
-
-			return objCurrency.getSymbol();
+            return objSymbols.getCurrencySymbol();
 		}
 	}
 
