@@ -880,6 +880,14 @@ over 90% code coverage.
 </para>
 
 <para>
+In order to compile and run the JUnit test suite you need to download 
+<literal>junit.jar</literal> and <literal>jdom-b8.jar</literal>, 
+and place them in the <literal>ext-dist</literal> directory. 
+The official sites to download the libraries are listed in the README file
+in that directory.
+</para>
+
+<para>
 Some of the JUnit tests now require &Jython;.  You must
 download and install Jython 2.1,
 then configure <literal>jython.dir</literal> in <filename>config/build.properties</filename>
