@@ -44,10 +44,6 @@ public abstract class BaseValidator implements IValidator
 {
     private boolean _required;
 
-    /** @deprecated to be removed after 2.1 **/
-
-    private Locale _locale = Locale.getDefault();
-
     /**
      *  Standard constructor.  Leaves locale as system default and required as false.
      * 
@@ -60,20 +56,6 @@ public abstract class BaseValidator implements IValidator
     protected BaseValidator(boolean required)
     {
         this._required = required;
-    }
-
-    /** @deprecated to be removed after 2.1 **/
-
-    public Locale getLocale()
-    {
-        return _locale;
-    }
-
-    /** @deprecated to be removed after 2.1 **/
-
-    public void setLocale(Locale locale)
-    {
-        this._locale = locale;
     }
 
     public boolean isRequired()
@@ -103,30 +85,6 @@ public abstract class BaseValidator implements IValidator
         return MessageFormat.format(pattern, args);
     }
 
-    /**
-     *  Gets a string from the standard resource bundle.  The string in the bundle
-     *  is treated as a pattern for {@link MessageFormat#format(java.lang.String, java.lang.Object[])}.
-     * 
-     *  @deprecated use {@link #getString(String, Locale, Object[])}
-     * 
-     **/
-
-    protected String getString(String key, Object[] args)
-    {
-        return getString(key, _locale, args);
-    }
-
-    /**
-     *  Convienience method for invoking {@link #getString(String, Object[])}.
-     * 
-     *  @deprecated use {@link #getString(String, Locale, Object)}
-     *  
-     **/
-
-    protected String getString(String key, Object arg)
-    {
-        return getString(key, _locale, new Object[] { arg });
-    }
 
     /**
      *  Convienience method for invoking {@link #getString(String, Locale, Object[])}.
@@ -138,18 +96,6 @@ public abstract class BaseValidator implements IValidator
     protected String getString(String key, Locale locale, Object arg)
     {
         return getString(key, locale, new Object[] { arg });
-    }
-
-    /**
-     *  Convienience method for invoking {@link #getString(String, Object[])}.
-     * 
-     *  @deprecated use {@link #getString(String, Locale, Object, Object)}
-     * 
-     **/
-
-    protected String getString(String key, Object arg1, Object arg2)
-    {
-        return getString(key, _locale, arg1, arg2);
     }
 
     /**

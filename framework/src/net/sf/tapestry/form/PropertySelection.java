@@ -147,7 +147,7 @@ public class PropertySelection extends AbstractFormComponent
     /**
      *  A shared instance of {@link SelectPropertySelectionRenderer}.
      *
-     *  @deprecated will be removed in 2.3
+     *  @deprecated To be removed in 2.3
      * 
      **/
 
@@ -156,7 +156,7 @@ public class PropertySelection extends AbstractFormComponent
     /**
      *  A shared instance of {@link RadioPropertySelectionRenderer}.
      *
-     *  @deprecated will be removed in 2.3
+     *  @deprecated To be removed in 2.3
      * 
      **/
 

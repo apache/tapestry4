@@ -71,7 +71,7 @@ public abstract class GestureLink extends AbstractServiceLink
 
 
     /**
-     *  @deprecated to be removed in 2.3, use {@link #getServiceParameters(IRequestCycle)}
+     *  @deprecated To be removed in 2.3, use {@link #getServiceParameters(IRequestCycle)}
      *  @return null subclasses may override (but should override
      *  {@link #getServiceParameters(IRequestCycle)} instead)
      * 

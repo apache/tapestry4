@@ -63,14 +63,11 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     private ChangeObserver _changeObserver;
 
     /**
-     *  The {@link IEngine} the page is currently attached to.  This may
-     *  be read, but not changed, but subclasses.
-     * 
-     *  @deprecated this will be removed after 2.1, classes should use {@link #getEngine()}
+     *  The {@link IEngine} the page is currently attached to.
      *
      **/
 
-    protected IEngine engine;
+    private IEngine _engine;
 
     /**
      *  The visit object, if any, for the application.  Set inside
@@ -85,11 +82,9 @@ public abstract class AbstractPage extends BaseComponent implements IPage
      *  The name of this page.  This may be read, but not changed, by
      *  subclasses.
      *
-     *  @deprecated this will be removed after 2.1, classes should use {@link #getName()}
-     * 
      **/
 
-    protected String name;
+    private String _name;
 
     /**
      *  Set when the page is attached to the engine.
@@ -140,7 +135,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     {
         firePageDetached();
 
-        engine = null;
+        _engine = null;
         _visit = null;
         _changeObserver = null;
         _requestCycle = null;
@@ -148,7 +143,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     public IEngine getEngine()
     {
-        return engine;
+        return _engine;
     }
 
     public ChangeObserver getChangeObserver()
@@ -163,7 +158,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     public String getExtendedId()
     {
-        return name;
+        return _name;
     }
 
     /**
@@ -197,7 +192,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     public String getName()
     {
-        return name;
+        return _name;
     }
 
     public IPage getPage()
@@ -240,10 +235,10 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     public void attach(IEngine value)
     {
-        if (engine != null)
-            CAT.error(this +" attach(" + value + "), but engine = " + engine);
+        if (_engine != null)
+            CAT.error(this +" attach(" + value + "), but engine = " + _engine);
 
-        engine = value;
+        _engine = value;
     }
 
     /**
@@ -288,10 +283,10 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     public void setName(String value)
     {
-        if (name != null)
+        if (_name != null)
             throw new ApplicationRuntimeException(Tapestry.getString("AbstractPage.attempt-to-change-name"));
 
-        name = value;
+        _name = value;
     }
 
     /**
@@ -346,7 +341,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     public Object getVisit()
     {
         if (_visit == null)
-            _visit = engine.getVisit(_requestCycle);
+            _visit = _engine.getVisit(_requestCycle);
 
         return _visit;
     }
