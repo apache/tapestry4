@@ -547,8 +547,8 @@ Calendar.prototype.show = function(element) {
 	if(!this._showing) {
 		var p = getPoint(element);
 		this._calDiv.style.display = "block";
-        this._calDiv.style.top = p.y + element.offsetHeight + 1;
-        this._calDiv.style.left = p.x;
+		this._calDiv.style.top = (p.y + element.offsetHeight + 1) + "px";
+		this._calDiv.style.left = p.x + "px";
 		this._showing = true;
 		
 		/* -------- */
