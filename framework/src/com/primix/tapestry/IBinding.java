@@ -55,6 +55,7 @@ public interface IBinding
      *  <li>A <code>Number</code> value is true if non-zero
      *  <li>A <code>String</code> value is true if non-empty and contains
      *  non-whitespace characters.
+     *  <li>Any array type is true if it has a non-zero length
      *  <li>Any other non-null value is true
      *  </ul>
      */

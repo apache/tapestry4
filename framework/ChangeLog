@@ -1,3 +1,8 @@
+* Dec 27 2000 hship
+
+Change IBinding.getBoolean() to sniff for array types and return true if the length
+is non-zero.
+
 * Dec 26 2000 hship
 
 Create a re-usable threadsafe Pool component and use it, instead of ad-hoc code,

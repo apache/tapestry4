@@ -52,7 +52,9 @@ import com.primix.tapestry.*;
  *  <td>no</td>
  *  <td>false</td>
  *  <td>The condition to be met.  If this value is true, then the wrapped elements
- *  will be rendered.</td>
+ *  will be rendered.
+ *  <p>The determination of true vs. false is made by the method
+ *  {@link IBinding#getBoolean()}. </td>
  * </tr>
  *
  * <tr>
@@ -91,7 +93,7 @@ public class Conditional extends AbstractComponent
 	}
 
 	/**
-	*  Render's its wrapped components only if the condition is true (techincally,
+	*  Render's its wrapped components only if the condition is true (technically,
 	*  if condition matches invert).
 	*
 	*/
