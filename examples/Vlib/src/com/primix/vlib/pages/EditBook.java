@@ -122,21 +122,28 @@ public class EditBook
 	
 	public void beginEdit(Integer bookPK, IRequestCycle cycle)
 	{
-		IBook book;
-		
 		this.bookPK = bookPK;
 		
-		book = getBook();
+		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
 		
-		try
+		for (int i = 0; i < 2; i++)
 		{
-			// Get the attributes as a source for our input fields.
+			IBook book = getBook();
 			
-			attributes = book.getEntityAttributes();
-		}
-		catch (RemoteException e)
-		{
-			throw new ApplicationRuntimeException(e);
+			try
+			{
+				// Get the attributes as a source for our input fields.
+				
+				attributes = book.getEntityAttributes();
+				
+				break;
+			}
+			catch (RemoteException ex)
+			{
+				vengine.rmiFailure(
+					"Remote exception setting up page for book #" + bookPK + ".",
+					ex, i > 0);
+			}
 		}
 		
 		cycle.setPage(this);	
@@ -146,21 +153,29 @@ public class EditBook
 	{
 		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
 		
-		IBookHome bookHome = vengine.getBookHome();
+		for (int i = 0; i < 2; i++)
+		{	
+			IBookHome bookHome = vengine.getBookHome();
+			
+			try
+			{
+				return bookHome.findByPrimaryKey(bookPK);
+			}
+			catch (FinderException ex)
+			{
+				throw new ApplicationRuntimeException(ex);
+			}
+			catch (RemoteException ex)
+			{
+				vengine.rmiFailure(
+					"Remote exception reading book " +  bookPK + ".",
+					ex, i > 0);
+			}
+		}
+	
+		// Never, ever reached
 		
-		try
-		{
-			return bookHome.findByPrimaryKey(bookPK);
-		}
-		catch (FinderException e)
-		{
-			throw new ApplicationRuntimeException(e);
-		}
-		catch (RemoteException e)
-		{
-			throw new ApplicationRuntimeException(e);
-		}
-		
+		return null;
 	}
 	
 	/**
@@ -213,24 +228,42 @@ public class EditBook
 		// OK, do the update.
 		
 		Visit visit = (Visit)getVisit();
+		VirtualLibraryEngine vengine = visit.getEngine();
 		
-		IOperations bean = visit.getEngine().getOperations();
-		
-		try
+		for (int i = 0; i < 2; i++)
 		{
-			if (publisherPK != null)
-				bean.updateBook(bookPK, attributes);
-			else
+			
+			IOperations bean = vengine.getOperations();
+			
+			try
 			{
-				bean.updateBook(bookPK, attributes, publisherName);
-				visit.clearCache();
-			}		
+				if (publisherPK != null)
+					bean.updateBook(bookPK, attributes);
+				else
+				{
+					bean.updateBook(bookPK, attributes, publisherName);
+					visit.clearCache();
+				}		
+				
+				break;
+			}
+			catch (FinderException ex)
+			{
+				throw new ApplicationRuntimeException(ex);
+			}
+			catch (CreateException ex)
+			{
+				throw new ApplicationRuntimeException(ex);
+			}
+			catch (RemoteException ex)
+			{
+				vengine.rmiFailure(
+					"Remote exception updating book #" + bookPK + ".",
+					ex, i > 0);
+				
+				continue;
+			}
 		}
-		catch (Throwable t)
-		{
-			throw new ApplicationRuntimeException(t);
-		}
-		
 		
 		MyLibrary page = (MyLibrary)cycle.getPage("MyLibrary");
 		page.setMessage("Updated book.");

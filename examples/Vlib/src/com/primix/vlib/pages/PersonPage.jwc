@@ -2,10 +2,16 @@
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="com.primix.vlib.pages.PersonPage">
+
+  <property name="page-type">search</property>
+  
+  
   <component id="border" type="Border">
     <static-binding name="title">Book Inventory</static-binding>
     <binding name="subtitle" property-path="fullName"/>
+    <binding name="subheader" property-path="assets.subheader"/>
   </component>
+  
   <component id="insertName" type="Insert">
     <binding name="value" property-path="fullName"/>
   </component>
@@ -52,4 +58,6 @@
     <binding name="book" property-path="currentMatch"/>
   </component>
 
+  <context-asset name="subheader" path="/images/hd_editbook.gif"/>
+  
 </specification>

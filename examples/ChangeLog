@@ -1,3 +1,12 @@
+* Jun 21 2001 hship
+
+Vlib:
+- More changes to survive RemoteException failures.
+- Start applying the Primix-branded look and feel.
+
+VlibBeans:
+- Switch from ObjectMessage to MailMessage for the MailQueueBean.
+
 * Jun 20 2001 hship
 
 Simplify the Browser, to match the upcoming UI.

@@ -24,10 +24,12 @@ JAVADOC_OPT := \
 	-link http://java.sun.com/j2se/1.3/docs/api \
 	-link http://java.sun.com/j2ee/j2sdkee/techdocs/api
 
-CONTEXT_RESOURCES := index.html
+CONTEXT_RESOURCES := \
+	index.html \
+	images \
+	scripts
 
 include $(SYS_MAKEFILE_DIR)/War.mk
-
 
 LOCAL_PROPS_DIR := $(SYS_BUILD_DIR_NAME)/props
 

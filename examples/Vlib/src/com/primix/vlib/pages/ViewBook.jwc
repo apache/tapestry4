@@ -2,10 +2,13 @@
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="com.primix.vlib.pages.ViewBook">
+
   <component id="border" type="Border">
     <static-binding name="title">View Book</static-binding>
     <binding name="subtitle" property-path="book.title"/>
+    <binding name="subheader" property-path="assets.subheader"/>
   </component>
+  
   <component id="insertTitle" type="Insert">
     <binding name="value" property-path="book.title"/>
   </component>
@@ -46,4 +49,7 @@
   <component id="borrow" type="Borrow">
     <binding name="book" property-path="book"/>
   </component>
+
+  <context-asset name="subheader" path="/images/hd_editbook.gif"/>
+  
 </specification>

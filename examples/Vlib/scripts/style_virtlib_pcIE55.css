@@ -1,0 +1,84 @@
+/* style_virtlib_pcIE55.css */
+body, td	{
+	font-family:verdana, arial, helvetica, sans-serif;
+	font-size:10px;
+}
+
+a	{
+	color:#ffffff;
+}
+
+
+.clsBold	{
+	font-weight:bold;
+}
+.clsDataBlue	{
+	color:#4b5887;
+}
+.clsDataBlack	{
+	color:#000000;
+}
+/* Top Nav */
+.clsTopNav {
+	font-weight:bold;
+	color:#4b5887;
+	text-decoration:none;
+}
+.clsTopNav:hover	{
+	text-decoration:underline;
+}
+.clsTopNavOn	{
+	font-weight:bold;
+	color:#e88700;
+}
+/* Left Nav */
+.clsLeftNav	{
+	font-weight:bold;
+	text-decoration:none;
+}
+.clsLeftNav:hover	{
+	text-decoration:underline;
+}
+/* Forms */
+form	{
+	display:block;
+	margin-top:1px;
+	margin-bottom:1px;
+}
+.inputTextForm	{
+	font-family:courier, monospace;
+}
+.inputSelectForm	{
+	font-family:courier, monospace;
+}
+.inputTextareaForm	{
+	font-family:courier, monospace;
+}
+/* Footer */
+.clsFooterPos	{
+	position:absolute;
+	bottom: 0px;
+}
+.clsFooter	{
+	color:#666666;
+	text-decoration:none;
+}
+.clsFooterLink	{
+	color:#8e9cd1;
+}
+.clsFooterLink:hover	{
+	color:#8e9cd1;
+	text-decoration:none;
+}
+td.clsDataTable	{
+	border-width:1px;
+	border-color:#4b5887;
+	border-style:solid;
+	background:#ffffff;
+}
+
+td.clsDataTable a:link {
+  color:#000000
+}
+
+/* Primix-JMoran2001 */

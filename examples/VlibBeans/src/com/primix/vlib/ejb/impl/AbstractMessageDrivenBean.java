@@ -44,12 +44,11 @@ public abstract class AbstractMessageDrivenBean
 	implements MessageDrivenBean, MessageListener
 {
 	private MessageDrivenContext context;
+
 	
 	public void setMessageDrivenContext(MessageDrivenContext value)
 		throws EJBException
 	{
-		System.out.println(this + " set context to " + value);
-		
 		context = value;
 	}
 	
@@ -65,13 +64,14 @@ public abstract class AbstractMessageDrivenBean
 	}
 	
 	/**
-	 *  Does nothing.
+	 *   Clears the {@link MessageDrivenContext} attribute.
 	 *
 	 */
 	
 	public void ejbRemove()
 		throws EJBException
 	{
+		context = null;
 	}
 }
 

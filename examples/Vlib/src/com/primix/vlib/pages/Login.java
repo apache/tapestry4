@@ -48,23 +48,23 @@ import javax.servlet.http.*;
  */
 
 public class Login 
-extends BasePage
-implements IErrorProperty
+	extends BasePage
+	implements IErrorProperty
 {
 	private String email;
 	private String password;
 	private String error;
 	private ICallback callback;
     private IValidationDelegate validationDelegate;
-
+	
 	/**
 	 *  The name of a cookie to store on the user's machine that will identify
 	 *  them next time they log in.
 	 *
 	 */
-
+	
 	private static final String COOKIE_NAME = "com.primix.vlib.Login.email";
-
+	
 	private final static int ONE_WEEK = 7 * 24 * 60 * 60;
 	
 	public void detach()
@@ -73,18 +73,18 @@ implements IErrorProperty
 		password = null;
 		error = null;
 		callback = null;
-
+		
 		super.detach();
 	}
-
+	
     public IValidationDelegate getValidationDelegate()
     {
-        if (validationDelegate == null)
-            validationDelegate = new SimpleValidationDelegate(this);
-
-        return validationDelegate;
+		if (validationDelegate == null)
+			validationDelegate = new SimpleValidationDelegate(this);
+		
+		return validationDelegate;
     }
-
+	
 	public void setEmail(String value)
 	{
 		email = value;
@@ -95,7 +95,7 @@ implements IErrorProperty
 	 *  the cookie (thus forming the default).
 	 *
 	 */
-	 
+	
 	public String getEmail()
 	{
 		// If not set, see if a value was previously recorded in a Cookie
@@ -128,13 +128,13 @@ implements IErrorProperty
 	
     protected void setErrorField(String componentId, String message)
     {
-        IValidatingTextField field;
-
-        field = (IValidatingTextField)getComponent(componentId);
-        field.setError(true);
-
-        if (error == null)
-            error = message;
+		IValidatingTextField field;
+		
+		field = (IValidatingTextField)getComponent(componentId);
+		field.setError(true);
+		
+		if (error == null)
+			error = message;
     }
 	
 	public void setCallback(ICallback value)
@@ -160,53 +160,57 @@ implements IErrorProperty
 	 *  message is displayed.
 	 *
 	 */
-	 
+	
 	private void attemptLogin(IRequestCycle cycle)
+		throws RequestCycleException
 	{		
-        // An error, from a validation field, may already have occured.
-
-        if (getError() != null)
-            return;
-
-		try
+		// An error, from a validation field, may already have occured.
+		
+		if (getError() != null)
+			return;
+		
+		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
+		
+		for (int i = 0; i < 2; i++)
 		{
-			VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
-			IPersonHome personHome = vengine.getPersonHome();
-			IPerson person = personHome.findByEmail(email);
-			
-			if (!person.getPassword().equals(password))
+			try
 			{
-				setErrorField("inputPassword", "Invalid password.");
+				IPersonHome personHome = vengine.getPersonHome();
+				IPerson person = personHome.findByEmail(email);
+				
+				if (!person.getPassword().equals(password))
+				{
+					setErrorField("inputPassword", "Invalid password.");
+					return;
+				}
+				
+				loginUser(person, cycle);
+				
+			}
+			catch (FinderException e)
+			{
+				setErrorField("inputEmail", "E-mail address not known.");
 				return;
 			}
-			
-			loginUser(person, cycle);
-			
-		}
-		catch (FinderException e)
-		{
-			setErrorField("inputEmail", "E-mail address not known.");
-			return;
-		}
-		catch (Throwable t)
-		{
-			setError("Could not validate user and password: " + t);
-			return;			
+			catch (RemoteException ex)
+			{
+				vengine.rmiFailure("Remote exception validating user.", ex, i > 0);		
+			}
 		}
 	}
 	
-
+	
 	/**
 	 *  Invoked when the login form is submitted.
 	 *
 	 */
-	 
+	
 	public IActionListener getLoginFormListener()
 	{
 		return new IActionListener()
 		{
 			public void actionTriggered(IComponent component, IRequestCycle cycle)
-			throws RequestCycleException
+				throws RequestCycleException
 			{
 				attemptLogin(cycle);
 			}
@@ -220,36 +224,29 @@ implements IErrorProperty
 	 *  a specified page).
 	 *
 	 */
-	 
+	
 	public void loginUser(IPerson person, IRequestCycle cycle)
-	throws RequestCycleException
+		throws RequestCycleException, RemoteException
 	{
 		String email;
 		Cookie cookie;
-				
-		try
-		{
-			email = person.getEmail();
-		}
-		catch (RemoteException e)
-		{
-			throw new ApplicationRuntimeException(e);
-		}
-
+		
+		email = person.getEmail();
+		
 		// Get the visit object; this will likely force the
 		// creation of the visit object and an HttpSession.
 		
-        Visit visit = (Visit)getVisit();
+		Visit visit = (Visit)getVisit();
 		visit.setUser(person);
-
+		
 		// After logging in, go to the MyLibrary page, unless otherwise
 		// specified.
-
+		
 		if (callback == null)
 			cycle.setPage("MyLibrary");
 		else	
 			callback.peformCallback(cycle);
-
+		
 		// I've found that failing to set a maximum age and a path means that
 		// the browser (IE 5.0 anyway) quietly drops the cookie.
 		
@@ -260,7 +257,7 @@ implements IErrorProperty
 		// Record the user's email address in a cookie
 		
 		cycle.getRequestContext().addCookie(cookie);
-
+		
 		engine.forgetPage(getName());
 	}	
 }

@@ -45,41 +45,82 @@ import com.primix.vlib.pages.*;
 public class Border extends BaseComponent
 {	
     private static final String WINDOW_TITLE = "Primix Virtual Library";
-
+	
     private IBinding titleBinding;
     private IBinding subtitleBinding;
-	private IBinding stickyBinding;
+	private IBinding subheaderBinding;
+	
+	private static final int SEARCH_PAGE_TYPE = 1;
+	private static final int LIBRARY_PAGE_TYPE = 2;
+	
+	// Also used for logout and registration pages.
+	
+	private static final int LOGIN_PAGE_TYPE = 3;
+	
+	private int pageType = 0;
 	
     public void setTitleBinding(IBinding value)
     {
-        titleBinding = value;
+		titleBinding = value;
     }
-
+	
     public IBinding getTitleBinding()
     {
-        return titleBinding;
+		return titleBinding;
     }
-
+	
     public void setSubtitleBinding(IBinding value)
     {
-        subtitleBinding = value;
+		subtitleBinding = value;
     }
-
+	
     public IBinding getSubtitleBinding()
     {
-        return subtitleBinding;
+		return subtitleBinding;
     }
-
-	public IBinding getStickyBinding()
+	
+	public void setSubheaderBinding(IBinding value)
 	{
-		return stickyBinding;
+		subheaderBinding = value;
 	}
 	
-	public void setStickyBinding(IBinding value)
+	public IBinding getSubheaderBinding()
 	{
-		stickyBinding = value;
+		return subheaderBinding;
 	}
 	
+	/**
+	 *  Determines the 'type' of page, which is used to highlight (with an icon) one of the options
+	 *  on the left-side navigation bar.
+	 *
+	 *  This is determined from the page's specification; a property named "page-type" is read.  It
+	 *  should be one of the following values:
+	 *  <ul>
+	 *  <li>search
+	 *  <li>library
+	 *  <li>login
+	 * </ul>
+	 * 
+	 *  <p>If not specified, "search" is assumed.
+	 *
+	 */
+	
+	protected int getPageType()
+	{
+		if (pageType == 0)
+		{
+			String typeName = getPage().getSpecification().getProperty("page-type");
+			
+			pageType = SEARCH_PAGE_TYPE;
+			
+			if ("library".equals(typeName))
+				pageType = LIBRARY_PAGE_TYPE;
+			else if ("login".equals(typeName))
+				pageType = LOGIN_PAGE_TYPE;
+		}
+		
+		return pageType;
+	}
 	
 	public boolean isLoggedOut()
 	{
@@ -102,23 +143,23 @@ public class Border extends BaseComponent
 	 *  Show the Logout button on all pages except the Logout page itself.
 	 *
 	 */
-	 
+	
 	public boolean getShowLogout()
 	{
 		return !getPage().getName().equals("Logout");
 	}
-
+	
     public String getWindowTitle()
     {
-        String subtitle = null;
-
-        if (subtitleBinding != null)
-            subtitle = subtitleBinding.getString();
-
-        if (subtitle == null)
-            return WINDOW_TITLE;
-        else
-            return WINDOW_TITLE + ": " + subtitle;
+		String subtitle = null;
+		
+		if (subtitleBinding != null)
+			subtitle = subtitleBinding.getString();
+		
+		if (subtitle == null)
+			return WINDOW_TITLE;
+		else
+			return WINDOW_TITLE + ": " + subtitle;
     }
 	
 	public IDirectListener getLoginListener()
@@ -126,7 +167,7 @@ public class Border extends BaseComponent
 		return new IDirectListener()
 		{
 			public void directTriggered(IDirect component, String[] context, IRequestCycle cycle)
-			throws RequestCycleException
+				throws RequestCycleException
 			{
 				login(cycle);
 			}
@@ -138,16 +179,83 @@ public class Border extends BaseComponent
 	{
 		Login login = (Login)cycle.getPage("Login");
 		
-		if (stickyBinding != null)
-			if (stickyBinding.getBoolean())
-			{
-				// Setup the login page to return to this page (whatever it is)
-				// after the login.
-				
-				login.setCallback(new PageCallback(page));
-			}
-		
+		login.setCallback(new PageCallback(page));
+
 		cycle.setPage(login);
 	}
-
+	
+	public IAsset getSearchIcon()
+	{
+		return getIcon(SEARCH_PAGE_TYPE);
+	}
+	
+	public IAsset getMyLibraryIcon()
+	{
+		return getIcon(LIBRARY_PAGE_TYPE);
+	}
+	
+	public IAsset getLoginIcon()
+	{
+		return getIcon(LOGIN_PAGE_TYPE);
+	}
+	
+	public boolean isLibraryPage()
+	{
+		return getPageType() == LIBRARY_PAGE_TYPE;
+	}
+	
+	private IAsset getIcon(int type)
+	{
+		String name = 
+			(type == getPageType()) ? "dot" : "spacer";
+		
+		return getAsset(name);
+	}
+	
+	/**
+	 *  Listener that invokes the {@link EditProfile} page to allow a user
+	 *  to edit thier name, etc.
+	 *
+	 */
+	
+	public IDirectListener getEditProfileListener()
+	{
+		return new IDirectListener()
+		{
+			public void directTriggered(IDirect direct, String[] context,
+					IRequestCycle cycle)
+			{
+				EditProfile page;
+				
+				page = (EditProfile)cycle.getPage("EditProfile");
+				
+				page.beginEdit(cycle);
+			}
+		};
+	}
+	
+	/**
+	 *  Listener used to return a book.
+	 *
+	 */
+	
+    public IDirectListener getAddNewBookListener()
+    {
+		return new IDirectListener()
+		{
+			public void directTriggered(IDirect direct, String[] context,
+					IRequestCycle cycle)
+			{
+				NewBook page = (NewBook)cycle.getPage("NewBook");
+				
+				// Setup defaults for the new book.
+				
+				page.getAttributes().put("lendable", Boolean.TRUE);
+				
+				cycle.setPage(page);
+			}
+		};
+    }
+	
+	
 }	

@@ -99,7 +99,6 @@ public class BorrowedBooks
 		Visit visit = (Visit)getVisit();
 		Integer userPK = visit.getUserPK();
 		
-		
 		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
 		
 		for (int i = 0; i < 2; i++)
