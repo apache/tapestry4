@@ -1,7 +1,7 @@
 package com.primix.vlib;
 
 import com.primix.tapestry.*;
-import com.primix.tapestry.components.*;
+import com.primix.tapestry.components.html.form.*;
 import javax.naming.*;
 import javax.ejb.*;
 import com.primix.vlib.ejb.*;
@@ -15,10 +15,10 @@ import java.net.*;
 
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ * Copyright (c) 2000, 2001 by Howard Ship and Primix
  *
- * Primix Solutions
- * One Arsenal Marketplace
+ * Primix
+ * 311 Arsenal Street
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com

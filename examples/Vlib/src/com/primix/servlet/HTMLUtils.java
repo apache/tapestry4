@@ -2,10 +2,10 @@ package com.primix.servlet;
 
 /*
  * ServletUtils - Support library for improved Servlets and JavaServer Pages.
- * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ * Copyright (c) 2000, 2001 by Howard Ship and Primix
  *
- * Primix Solutions
- * One Arsenal Marketplace
+ * Primix
+ * 311 Arsenal Street
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com

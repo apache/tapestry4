@@ -36,6 +36,7 @@ package tutorial.survey;
 
 import com.primix.tapestry.*;
 import com.primix.tapestry.components.*;
+import com.primix.tapestry.components.html.form.*;
 import java.util.*;
 
 public class SurveyPage extends BasePage

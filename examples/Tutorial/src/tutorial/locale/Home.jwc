@@ -35,7 +35,7 @@
 		</component>
 		<component>
 			<id>changeButton</id>
-			<type>ImageButton</type>
+			<type>ImageSubmit</type>
 			<bindings>
 				<binding>
 					<name>image</name>

@@ -1,5 +1,9 @@
 * Jan 9 2001 hship
 
+Minor changes related to the "package reorg madness" in the framework.
+
+* Jan 9 2001 hship
+
 Change copyrights for 2001.
 Create a ShowMessage component.
 Add log4j.jar to the classpath.
