@@ -103,7 +103,9 @@
     
   &appendix-jars;
   
-  &appendix-faq;
+  <!-- FOP is gagging on something in the FAQ. -->
+  
+  <!-- appendix-faq; -->
   
   &appendix-spec;
 
