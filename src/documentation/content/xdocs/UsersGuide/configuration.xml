@@ -491,6 +491,16 @@ currently used in Tapestry:
   </td>
 
 </tr>
+
+<tr>
+  <td>org.apache.tapestry.page-class-packages</td>
+  <td>
+    A comma-seperated list of package names, used when
+    <link href="page-class.html">searching for the page class</link>.  These must
+    appear as &spec.meta; tags in the application or library specification
+    containing the page.
+  </td>
+</tr>
   
   <tr>
     <td>org.apache.tapestry.servlet-path</td>

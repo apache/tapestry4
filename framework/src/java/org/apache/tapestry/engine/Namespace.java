@@ -396,4 +396,15 @@ public class Namespace implements INamespace
         return _specification.getLocation();
     }
 
+    /**
+     * Returns property values defined in the namespace's library specification.
+     * 
+     * @return the property, or null if not provided in the specification.
+     * @since 3.1
+     */
+
+    public String getPropertyValue(String propertyName)
+    {
+        return _specification.getProperty(propertyName);
+    }
 }
