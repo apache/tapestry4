@@ -1,3 +1,10 @@
+* May 28 2001 hship
+
+Portal tutorial:
+- Make the Slashdot page refresh its data every 30 seconds or so.
+- Put together a more realistic Stocks portlet.
+- Tweak the UI / CSS stuff a little.
+
 * May 26 2001 hship
 
 Initial work on Slashdot portlet.
