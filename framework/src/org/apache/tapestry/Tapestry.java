@@ -23,13 +23,13 @@
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation", "Tapestry" 
+ * 4. The names "Apache" and "Apache Software Foundation", "Tapestry"
  *    must not be used to endorse or promote products derived from this
  *    software without prior written permission. For written
  *    permission, please contact apache@apache.org.
  *
- * 5. Products derived from this software may not be called "Apache" 
- *    or "Tapestry", nor may "Apache" or "Tapestry" appear in their 
+ * 5. Products derived from this software may not be called "Apache"
+ *    or "Tapestry", nor may "Apache" or "Tapestry" appear in their
  *    name, without prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -88,7 +88,7 @@ import org.apache.tapestry.util.StringSplitter;
  *  @since 1.0.1
  *  @version $Id$
  *  @author Howard Lewis Ship
- * 
+ *
  **/
 
 public final class Tapestry
@@ -97,9 +97,9 @@ public final class Tapestry
      *  Name of a request attribute used with the
      *  {@link #TAGSUPPORT_SERVICE} service.  The attribute
      *  defines the underlying service to for which a URL will be generated.
-     * 
+     *
      *  @since 3.0
-     * 
+     *
      **/
 
     public final static String TAG_SUPPORT_SERVICE_ATTRIBUTE =
@@ -112,7 +112,7 @@ public final class Tapestry
      * Tapestry application (which, for the odd-man-out TAGSUPPORT_SERVICE
      * may not match HttpServletRequest.getServletPath() because of
      * the use of an include.
-     * 
+     *
      * @since 3.0
      */
 
@@ -125,9 +125,9 @@ public final class Tapestry
      *  defines an array of objects to be converted into
      *  service parameters (i.e., for use with the
      *  {@link #EXTERNAL_SERVICE}).
-     * 
+     *
      *  @since 3.0
-     * 
+     *
      **/
 
     public final static String TAG_SUPPORT_PARAMETERS_ATTRIBUTE =
@@ -137,9 +137,9 @@ public final class Tapestry
      *  Service used to support rendering of JSP tags.  tagsupport is provided
      *  with a service and service parameters via request attributes
      *  and creates a URI from the result, which is output to the response.
-     * 
+     *
      *  @since 3.0
-     * 
+     *
      **/
 
     public static final String TAGSUPPORT_SERVICE = "tagsupport";
@@ -148,7 +148,7 @@ public final class Tapestry
      *  The name ("action") of a service that allows behavior to be associated with
      *  an {@link IAction} component, such as {@link org.apache.tapestry.link.ActionLink} or
      *  {@link org.apache.tapestry.form.Form}.
-     *  
+     *
      *  <p>This service is used with actions that are tied to the
      *  dynamic state of the page, and which require a rewind of the page.
      *
@@ -180,7 +180,7 @@ public final class Tapestry
      *  External pages may be booked marked using their URL for future reference.
      *
      *  <p>An array of Object parameters may be included with the
-     *  service URL; these will be passed to the 
+     *  service URL; these will be passed to the
      *  {@link IExternalPage#activateExternalPage(Object[], IRequestCycle)} method.
      *
      **/
@@ -232,7 +232,7 @@ public final class Tapestry
      *  <p>This service is only available if the Java system property
      *  <code>org.apache.tapestry.enable-reset-service</code>
      *  is set to <code>true</code>.
-     * 
+     *
      **/
 
     public static final String RESET_SERVICE = "reset";
@@ -242,7 +242,7 @@ public final class Tapestry
      *  request.
      *
      *  @since 1.0.3
-     * 
+     *
      **/
 
     public static final String SERVICE_QUERY_PARAMETER_NAME = "service";
@@ -252,11 +252,11 @@ public final class Tapestry
      *  service (this is used with the direct service).  Each of these
      *  values is encoded with {@link java.net.URLEncoder#encode(String)} before
      *  being added to the URL.  Multiple values are handle by repeatedly
-     *  establishing key/value pairs (this is a change from behavior in 
+     *  establishing key/value pairs (this is a change from behavior in
      *  2.1 and earlier).
      *
      *  @since 1.0.3
-     * 
+     *
      **/
 
     public static final String PARAMETERS_QUERY_PARAMETER_NAME = "sp";
@@ -267,9 +267,9 @@ public final class Tapestry
      *  component's) immediate container (library or application specification).
      *  Unlike most properties, value isn't inherited all the way up the chain.
      *  The default template extension is "html".
-     * 
+     *
      *  @since 3.0
-     * 
+     *
      **/
 
     public static final String TEMPLATE_EXTENSION_PROPERTY =
@@ -277,9 +277,9 @@ public final class Tapestry
 
     /**
      *  The default extension for templates, "html".
-     * 
+     *
      *  @since 3.0
-     * 
+     *
      **/
 
     public static final String DEFAULT_TEMPLATE_EXTENSION = "html";
@@ -297,9 +297,9 @@ public final class Tapestry
     /**
      *  Suffix appended to a parameter name to form the name of a property that stores the
      *  binding for the parameter.
-     * 
+     *
      *  @since 3.0
-     * 
+     *
      **/
 
     public static final String PARAMETER_PROPERTY_NAME_SUFFIX = "Binding";
@@ -307,11 +307,11 @@ public final class Tapestry
     /**
      *  Name of application extension used to resolve page and component
      *  specifications that can't be located by the normal means.  The
-     *  extension must implement 
+     *  extension must implement
      *  {@link org.apache.tapestry.resolver.ISpecificationResolverDelegate}.
-     * 
+     *
      *  @since 3.0
-     * 
+     *
      **/
 
     public static final String SPECIFICATION_RESOLVER_DELEGATE_EXTENSION_NAME =
@@ -322,9 +322,9 @@ public final class Tapestry
      *  templates that can't be located by the normal means.
      *  The extension must implement
      *  {@link org.apache.tapestry.engine.ITemplateSourceDelegate}.
-     * 
+     *
      *  @since 3.0
-     * 
+     *
      **/
 
     public static final String TEMPLATE_SOURCE_DELEGATE_EXTENSION_NAME =
@@ -333,9 +333,9 @@ public final class Tapestry
     /**
      *   Key used to obtain an extension from the application specification.  The extension,
      *   if it exists, implements {@link org.apache.tapestry.request.IRequestDecoder}.
-     * 
+     *
      *   @since 2.2
-     * 
+     *
      **/
 
     public static final String REQUEST_DECODER_EXTENSION_NAME =
@@ -347,9 +347,9 @@ public final class Tapestry
      *  {@link org.apache.tapestry.multipart.IMultipartDecoder}
      *  (and is generally a configured instance of
      *  {@link org.apache.tapestry.multipart.DefaultMultipartDecoder}).
-     * 
+     *
      *  @since 3.0
-     * 
+     *
      **/
 
     public static final String MULTIPART_DECODER_EXTENSION_NAME =
@@ -376,9 +376,9 @@ public final class Tapestry
      *  Regular expression defining a simple property name.  Used by several different
      *  parsers. Simple property names match Java variable names; a leading letter
      *  (or underscore), followed by letters, numbers and underscores.
-     * 
+     *
      *  @since 3.0
-     * 
+     *
      **/
 
     public static final String SIMPLE_PROPERTY_NAME_PATTERN = "^_?[a-zA-Z]\\w*$";
@@ -387,12 +387,19 @@ public final class Tapestry
      * Name of an application extension used as a factory for
      * {@link org.apache.tapestry.engine.IMonitor} instances.  The extension
      * must implement {@link org.apache.tapestry.engine.IMonitorFactory}.
-     * 
+     *
      * @since 3.0
      */
 
     public static final String MONITOR_FACTORY_EXTENSION_NAME =
         "org.apache.tapestry.monitor-factory";
+
+    /**
+     * Class name of an {@link ognl.TypeConverter} implementing class
+     * to use as a type converter for {@link org.apache.tapestry.binding.ExpressionBinding}
+     */
+    public static final String OGNL_TYPE_CONVERTER =
+        "org.apache.tapestry.ognl-type-converter";
 
     /**
      *  Prevent instantiation.
@@ -412,9 +419,9 @@ public final class Tapestry
 
     /**
      *  Contains strings loaded from TapestryStrings.properties.
-     * 
+     *
      *  @since 1.0.8
-     * 
+     *
      **/
 
     private static ResourceBundle _strings;
@@ -850,7 +857,7 @@ public final class Tapestry
      * <tr><td>{@link Iterator}</td> <td>Returned as-is.</td>
      * <tr><td>{@link Collection}</td> <td>Iterator returned, or null
      *  if the Collection is empty</td> </tr>
-    
+
      * <tr><td>Any other</td> <td>{@link Iterator} for singleton collection returned</td> </tr>
      * <tr><td>null</td> <td>null returned</td> </tr>
      * </table>
@@ -923,7 +930,7 @@ public final class Tapestry
 
     }
 
-    /** 
+    /**
      *  Closes the stream (if not null), ignoring any {@link IOException} thrown.
      *
      *  @since 1.0.2
@@ -946,12 +953,12 @@ public final class Tapestry
     }
 
     /**
-     *  Gets a string from the TapestryStrings resource bundle.  
+     *  Gets a string from the TapestryStrings resource bundle.
      *  The string in the bundle
      *  is treated as a pattern for {@link MessageFormat#format(java.lang.String, java.lang.Object[])}.
-     * 
+     *
      *  @since 1.0.8
-     * 
+     *
      **/
 
     public static String format(String key, Object[] args)
@@ -969,7 +976,7 @@ public final class Tapestry
 
     /**
      *  Convienience method for invoking {@link #format(String, Object[])}.
-     * 
+     *
      *  @since 3.0
      **/
 
@@ -980,7 +987,7 @@ public final class Tapestry
 
     /**
      *  Convienience method for invoking {@link #format(String, Object[])}.
-     * 
+     *
      *  @since 3.0
      **/
 
@@ -991,9 +998,9 @@ public final class Tapestry
 
     /**
      *  Convienience method for invoking {@link #format(String, Object[])}.
-     * 
+     *
      *  @since 3.0
-     * 
+     *
      **/
 
     public static String format(String key, Object arg1, Object arg2)
@@ -1003,9 +1010,9 @@ public final class Tapestry
 
     /**
      *  Convienience method for invoking {@link #format(String, Object[])}.
-     * 
+     *
      *  @since 3.0
-     * 
+     *
      **/
 
     public static String format(String key, Object arg1, Object arg2, Object arg3)
@@ -1017,7 +1024,7 @@ public final class Tapestry
 
     /**
      *  Invoked when the class is initialized to read the current version file.
-     * 
+     *
      **/
 
     private static final String readVersion()
@@ -1046,9 +1053,9 @@ public final class Tapestry
 
     /**
      *  Returns the size of a collection, or zero if the collection is null.
-     * 
+     *
      *  @since 2.2
-     * 
+     *
      **/
 
     public static int size(Collection c)
@@ -1061,9 +1068,9 @@ public final class Tapestry
 
     /**
      *  Returns the length of the array, or 0 if the array is null.
-     * 
+     *
      *  @since 2.2
-     * 
+     *
      **/
 
     public static int size(Object[] array)
@@ -1076,9 +1083,9 @@ public final class Tapestry
 
     /**
      *  Returns true if the Map is null or empty.
-     * 
+     *
      *  @since 3.0
-     * 
+     *
      **/
 
     public static boolean isEmpty(Map map)
@@ -1088,9 +1095,9 @@ public final class Tapestry
 
     /**
      *  Returns true if the Collection is null or empty.
-     * 
+     *
      *  @since 3.0
-     * 
+     *
      **/
 
     public static boolean isEmpty(Collection c)
@@ -1106,10 +1113,10 @@ public final class Tapestry
      *  the representation as an array will encode more efficiently
      *  (via {@link org.apache.tapestry.util.io.DataSqueezer} than
      *  serializing the Map and its contents.
-     * 
+     *
      *  @return the array of keys and values, or null if the input
      *  Map is null or empty
-     * 
+     *
      *  @since 2.2
      **/
 
@@ -1136,13 +1143,13 @@ public final class Tapestry
     }
 
     /**
-     *  Converts an even-sized array of objects back 
+     *  Converts an even-sized array of objects back
      *  into a {@link Map}.
-     * 
+     *
      *  @see #convertMapToArray(Map)
      *  @return a Map, or null if the array is null or empty
      *  @since 2.2
-     * 
+     *
      **/
 
     public static Map convertArrayToMap(Object[] array)
@@ -1171,9 +1178,9 @@ public final class Tapestry
      *  Returns the application root location, which is in the
      *  {@link javax.servlet.ServletContext}, based on
      *  the {@link javax.servlet.http.HttpServletRequest#getServletPath() servlet path}.
-     * 
+     *
      *  @since 3.0
-     * 
+     *
      **/
 
     public static IResourceLocation getApplicationRootLocation(IRequestCycle cycle)
@@ -1191,7 +1198,7 @@ public final class Tapestry
     /**
      * Given a Class, creates a presentable name for the class, even if the
      * class is a scalar type or Array type.
-     * 
+     *
      * @since 3.0
      */
 
@@ -1208,7 +1215,7 @@ public final class Tapestry
      *  Skips over nulls.  The objects may be instances of
      *  {Location or {@link org.apache.tapestry.ILocatable}.  May return null
      *  if no Location found found.
-     * 
+     *
      **/
 
     public static ILocation findLocation(Object[] locations)
@@ -1238,9 +1245,9 @@ public final class Tapestry
 
     /**
      *  Creates an exception indicating the binding value is null.
-     * 
-     *  @since 3.0 
-     * 
+     *
+     *  @since 3.0
+     *
      **/
 
     public static BindingException createNullBindingException(IBinding binding)
@@ -1292,7 +1299,7 @@ public final class Tapestry
     /**
      * Clears the list of method invocations.
      * @see #checkMethodInvocation(Object, String, Object)
-     * 
+     *
      * @since 3.0
      */
 
@@ -1303,11 +1310,11 @@ public final class Tapestry
 
     /**
      * Adds a method invocation to the list of invocations. This is done
-     * in a super-class implementations.  
-     * 
+     * in a super-class implementations.
+     *
      * @see #checkMethodInvocation(Object, String, Object)
      * @since 3.0
-     * 
+     *
      */
 
     public static void addMethodInvocation(Object methodId)
@@ -1327,16 +1334,16 @@ public final class Tapestry
      * Checks to see if a particular method has been invoked.  The method is identified by a
      * methodId (usually a String).  The methodName and object are used to create an
      * error message.
-     * 
+     *
      * <p>
-     * The caller should invoke {@link #clearMethodInvocations()}, then invoke a method on 
+     * The caller should invoke {@link #clearMethodInvocations()}, then invoke a method on
      * the object.  The super-class implementation should invoke {@link #addMethodInvocation(Object)}
      * to indicate that it was, in fact, invoked.  The caller then invokes
      * this method to vlaidate that the super-class implementation was invoked.
-     * 
+     *
      * <p>
      * The list of method invocations is stored in a {@link ThreadLocal} variable.
-     * 
+     *
      * @since 3.0
      */
 
@@ -1357,11 +1364,11 @@ public final class Tapestry
     /**
      * Method used by pages and components to send notifications about
      * property changes.
-     * 
+     *
      * @param component the component containing the property
      * @param propertyName the name of the property which changed
      * @param newValue the new value for the property
-     * 
+     *
      * @since 3.0
      */
     public static void fireObservedChange(
@@ -1382,11 +1389,11 @@ public final class Tapestry
     /**
      * Method used by pages and components to send notifications about
      * property changes.
-     * 
+     *
      * @param component the component containing the property
      * @param propertyName the name of the property which changed
      * @param newValue the new value for the property
-     * 
+     *
      * @since 3.0
      */
     public static void fireObservedChange(
@@ -1411,11 +1418,11 @@ public final class Tapestry
     /**
      * Method used by pages and components to send notifications about
      * property changes.
-     * 
+     *
      * @param component the component containing the property
      * @param propertyName the name of the property which changed
      * @param newValue the new value for the property
-     * 
+     *
      * @since 3.0
      */
     public static void fireObservedChange(
@@ -1437,11 +1444,11 @@ public final class Tapestry
     /**
      * Method used by pages and components to send notifications about
      * property changes.
-     * 
+     *
      * @param component the component containing the property
      * @param propertyName the name of the property which changed
      * @param newValue the new value for the property
-     * 
+     *
      * @since 3.0
      */
     public static void fireObservedChange(
@@ -1463,11 +1470,11 @@ public final class Tapestry
     /**
     * Method used by pages and components to send notifications about
     * property changes.
-    * 
+    *
     * @param component the component containing the property
     * @param propertyName the name of the property which changed
     * @param newValue the new value for the property
-    * 
+    *
     * @since 3.0
     */
     public static void fireObservedChange(IComponent component, String propertyName, int newValue)
@@ -1486,11 +1493,11 @@ public final class Tapestry
     /**
     * Method used by pages and components to send notifications about
     * property changes.
-    * 
+    *
     * @param component the component containing the property
     * @param propertyName the name of the property which changed
     * @param newValue the new value for the property
-    * 
+    *
     * @since 3.0
     */
     public static void fireObservedChange(IComponent component, String propertyName, long newValue)
@@ -1509,11 +1516,11 @@ public final class Tapestry
     /**
      * Method used by pages and components to send notifications about
      * property changes.
-     * 
+     *
      * @param component the component containing the property
      * @param propertyName the name of the property which changed
      * @param newValue the new value for the property
-     * 
+     *
      * @since 3.0
      */
     public static void fireObservedChange(IComponent component, String propertyName, char newValue)
@@ -1532,11 +1539,11 @@ public final class Tapestry
     /**
      * Method used by pages and components to send notifications about
      * property changes.
-     * 
+     *
      * @param component the component containing the property
      * @param propertyName the name of the property which changed
      * @param newValue the new value for the property
-     * 
+     *
      * @since 3.0
      */
     public static void fireObservedChange(IComponent component, String propertyName, byte newValue)
@@ -1555,11 +1562,11 @@ public final class Tapestry
     /**
      * Method used by pages and components to send notifications about
      * property changes.
-     * 
+     *
      * @param component the component containing the property
      * @param propertyName the name of the property which changed
      * @param newValue the new value for the property
-     * 
+     *
      * @since 3.0
      */
     public static void fireObservedChange(
