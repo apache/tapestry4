@@ -209,7 +209,7 @@ public class TextField extends AbstractFormComponent
 
 		// Used whether rewinding or not.
 
-		name = "TextField" + cycle.getNextActionId();
+		name = form.getNextElementId("TextField");
 
 		if (disabledBinding != null)
 			disabled = disabledBinding.getBoolean();	

@@ -205,7 +205,7 @@ public class PropertySelection extends AbstractFormComponent
 		
 		rewinding = form.isRewinding();
 		
-		name = "PropertySelection" + cycle.getNextActionId();
+		name = form.getNextElementId("PropertySelection");
 		
 		if (disabledBinding == null)
 			disabled = false;

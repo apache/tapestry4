@@ -176,17 +176,6 @@ public class HTMLResponseWriter
 	}
 
 	/**
-	* Creates a new <code>HTMLResponseWriter</code> around an existing
-	* {@link Writer}. A {@link PrintWriter} is created
-	* to handle most of the work of printing.
-	*
-	*/
-
-	public HTMLResponseWriter(Writer writer)
-	{
-		this.writer = new PrintWriter(writer);
-	}
-	/**
 	* Simply prints the attribute name. This is used for
 	* idempotent attributes, such as 'disabled' in an
 	* &lt;input&gt;.

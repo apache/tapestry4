@@ -186,7 +186,7 @@ public class ImageButton extends AbstractFormComponent
 		
 		rewinding = form.isRewinding();
 		
-		name = "ImageButton" + cycle.getNextActionId();
+		name = form.getNextElementId("ImageButton");
 		
 		if (disabledBinding != null)
 			disabled = disabledBinding.getBoolean();
