@@ -4,6 +4,14 @@
  "http://java.sun.com/j2ee/dtds/web-app_2_2.dtd">
 <web-app>
   <display-name>Tapestry Tutorial</display-name>
+  
+  <!-- A typical Tapestry WAR will have exactly one servlet.  The Tutorial is actually
+       several seperate Tapestry application bundled together.  The framework allows for
+       this (you'll notice that each object stored in the ServletContext has a unique
+       name to avoid collisions between sibling Tapestry applications.
+       
+       -->
+       
   <servlet>
     <servlet-name>hello</servlet-name>
     <servlet-class>tutorial.hello.HelloWorldServlet</servlet-class>
@@ -15,10 +23,6 @@
   <servlet>
     <servlet-name>border</servlet-name>
     <servlet-class>tutorial.border.BorderServlet</servlet-class>
-  </servlet>
-  <servlet>
-    <servlet-name>survey</servlet-name>
-    <servlet-class>tutorial.survey.SurveyServlet</servlet-class>
   </servlet>
   <servlet>
     <servlet-name>hangman</servlet-name>
@@ -39,10 +43,6 @@
   <servlet-mapping>
     <servlet-name>simple</servlet-name>
     <url-pattern>/simple/*</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>survey</servlet-name>
-    <url-pattern>/survey/*</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>border</servlet-name>
