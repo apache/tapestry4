@@ -16,14 +16,14 @@ module (id=tapestry version="3.1.0")
 {
   "The master module for the Tapestry web application framework."
   
-  service-point (id=MasterApplicationInitializer interface=org.apache.tapestry.services.ApplicationInitializer)
+  service-point (id=MasterInitializer interface=org.apache.tapestry.services.ApplicationInitializer)
   {
     "Master startup for the application; invokes an ordered series of other ApplicationInitializer instances contributed to "
     "the ApplicationInitializers configuration point."
     
     invoke-factory (service-id=hivemind.BuilderFactory)
     {
-      construct (class=org.apache.tapestry.services.impl.MasterApplicationInitializer)
+      construct (class=org.apache.tapestry.services.impl.MasterInitializer)
       {
         set-configuration (property=initializers configuration-id=ApplicationInitializers)
       }
@@ -38,9 +38,9 @@ module (id=tapestry version="3.1.0")
     {
       element (name=initializer)
       {
-        attribute (name=name required=true translator=qualified-id)
+       attribute (name=service-id required=true translator=service)
         {
-          "The name of the initializer, used to set an explicit execution order."
+          "The service, which must implement the ApplicationInitializer interface."
         }
       
         attribute (name=before translator=id-list)
@@ -53,14 +53,17 @@ module (id=tapestry version="3.1.0")
           "A comma-seperated list of the names of initializers that should execute before this initializer."
         }
       
-        attribute (name=service-id required=true translator=service)
+      	// Have to use the more cumbersome rules(), rather than conversion(), because we
+      	// map service-id to two different properties.
+      	
+        rules
         {
-          "The service, which must implement the ApplicationInitializer interface."
-        }
-      
-        conversion (class=org.apache.tapestry.services.impl.InitializerContribution)
-        {
-          map (attribute=service-id property=initializer)
+          create-object (class=org.apache.tapestry.services.impl.InitializerContribution)
+          read-attribute (attribute=service-id property=initializer)
+          read-attribute (attribute=service-id property=name translator=qualified-id)
+          read-attribute (attribute=before property=before)
+          read-attribute (attribute=after property=after)
+          invoke-parent (method=addElement)
         }
         
       }  // element initializer
@@ -104,5 +107,10 @@ module (id=tapestry version="3.1.0")
   service-point (id=ApplicationGlobals interface=org.apache.tapestry.services.ApplicationGlobals)
   {
     create-instance (class=org.apache.tapestry.services.impl.ApplicationGlobalsImpl)
+  }
+  
+  contribution (configuration-id=ApplicationInitializers)
+  {
+    initializer (service-id=ApplicationSpecificationInitializer)
   }
 }
