@@ -1,6 +1,6 @@
 # $Id$
 
-MODULE_NAME = Tapestry
+PROJECT_NAME = Tapestry
 
 PACKAGES = \
 	com.primix.foundation \
@@ -30,7 +30,7 @@ PACKAGES = \
 	com.primix.tapestry.wml \
 	com.primix.tapestry.callback
 
-LOCAL_CLASSPATH = \
+PROJ_CLASSPATH = \
 	$(INSTALL_DIR)/gnu-regexp.jar \
 	$(INSTALL_DIR)/xerces.jar \
 	$(INSTALL_DIR)/javax.servlet.jar \

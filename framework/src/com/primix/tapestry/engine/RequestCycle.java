@@ -1,8 +1,9 @@
 package com.primix.tapestry.engine;
 
 import com.primix.foundation.*;
-import com.primix.tapestry.spec.ApplicationSpecification;
+import com.primix.tapestry.spec.*;
 import com.primix.tapestry.record.*;
+import com.primix.tapestry.event.*;
 import java.util.*;
 import com.primix.tapestry.*;
 import javax.servlet.http.*;
@@ -39,14 +40,14 @@ import org.apache.log4j.*;
 
 /**
  *  Provides the logic for processing a single request cycle.  Provides access to
- *  the application and the {@link RequestContext}.
+ *  the {@link IEngine engine} and the {@link RequestContext}.
  *
  * @author Howard Ship
  * @version $Id$
  */
  
 public class RequestCycle 
-    implements IRequestCycle
+    implements IRequestCycle, ChangeObserver
 {
 	private static final Category CAT = Category.getInstance(RequestCycle.class.getName());
 
@@ -167,7 +168,7 @@ public class RequestCycle
 	}
 
 	/**
-	*  Gets the page from the application's {@link IPageSource}.
+	*  Gets the page from the engines's {@link IPageSource}.
 	*
 	*/
 
@@ -201,25 +202,38 @@ public class RequestCycle
 			}
 
 			// Get the recorder that will eventually observe and record
-			// changes to persistent properties of the page.
+			// changes to persistent properties of the page.  If the page
+			// has never emitted any page changes, then it will
+			// not have a recorder.
 
 			recorder = getPageRecorder(name);
 
-			// Have it rollback the page to the prior state.  Note that
-			// the page has a null observer at this time.
+			if (recorder != null)
+			{
+				// Have it rollback the page to the prior state.  Note that
+				// the page has a null observer at this time.
 
-			recorder.rollback(result);
+				recorder.rollback(result);
 
-			// Now, have the page use the recorder for any future
-			// property changes.
+				// Now, have the page use the recorder for any future
+				// property changes.
 
-			result.setChangeObserver(recorder);
+				result.setChangeObserver(recorder);
 
-			// And, if this recorder observed changes in a prior request cycle
-			// (and was locked after committing in that cycle), it's time
-			// to unlock.
+				// And, if this recorder observed changes in a prior request cycle
+				// (and was locked after committing in that cycle), it's time
+				// to unlock.
 
-			recorder.setLocked(false);
+				recorder.setLocked(false);
+			}
+			else
+			{
+				// No page recorder for the page.  We'll observe its
+				// changes and create the page recorder dynamically
+				// if it emits any.
+				
+				result.setChangeObserver(this);
+			}
 
 			if (loadedPages == null)
 				loadedPages = new HashMap(MAP_SIZE);
@@ -237,8 +251,7 @@ public class RequestCycle
 	 *  Returns the page recorder for the named page.  This may come
 	 *  form the cycle's cache of page recorders or, if not yet encountered
 	 *  in this request cycle, the {@link IEngine#getPageRecorder(String)} is
-	 *  invoked to get (or create) the page recorder.
-	 *
+	 *  invoked to get the recorder, if it exists.
 	 */
 
 	protected IPageRecorder getPageRecorder(String name)
@@ -253,6 +266,9 @@ public class RequestCycle
 
 		result = engine.getPageRecorder(name);
 
+		if (result == null)
+			return null;
+			
 		if (loadedRecorders == null)
 			loadedRecorders = new HashMap(MAP_SIZE);
 
@@ -493,6 +509,40 @@ throw e;
 
 			recorder.commit();
 		}
+	}
+
+	/**
+	 *  For pages without a {@link IPageRecorder page recorder}, 
+	 *  we're the {@link ChangeObserver change observer}.
+	 *  If such a page actually emits a change, then
+	 *  we'll obtain a new page recorder from the
+	 *  {@link IEngine engine}, set the recorder
+	 *  as the page's change observer, and forward the event
+	 *  to the newly created recorder.  In addition, the
+	 *  new page recorder is remembered so that it will
+	 *  be committed by {@link #commitPageChanges()}.
+	 *
+	 */
+	 
+	public void observeChange(ObservedChangeEvent event)
+	{
+		IPage page = event.getComponent().getPage();
+		String pageName = page.getName();
+		
+		if (CAT.isDebugEnabled())
+			CAT.debug("Observed change in page " + pageName +
+					  ", creating page recorder.");
+		
+		IPageRecorder recorder = engine.createPageRecorder(pageName);
+		
+		page.setChangeObserver(recorder);
+
+		if (loadedRecorders == null)
+			loadedRecorders = new HashMap(MAP_SIZE);
+			
+		loadedRecorders.put(pageName, recorder);
+				
+		recorder.observeChange(event);			
 	}
 }
 

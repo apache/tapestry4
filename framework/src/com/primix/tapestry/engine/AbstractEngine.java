@@ -192,16 +192,12 @@ public abstract class AbstractEngine
 
 		public String buildURL(IRequestCycle cycle, IComponent component, String[] parameters)
 		{
-			String pageName;
-			IPageRecorder recorder;
-
 			if (parameters == null ||
 				parameters.length != 1)
 				throw new IllegalArgumentException(
 					"Service action requires one parameter.");
 
-			pageName = cycle.getPage().getName();
-			recorder = getPageRecorder(pageName);
+			String pageName = cycle.getPage().getName();
 
 			// Because we know that all of the terms are 'URL safe' (they contain
 			// only alphanumeric characters and the '.') we don't have to
@@ -246,19 +242,16 @@ public abstract class AbstractEngine
 		public void service(IRequestCycle cycle, ResponseOutputStream output)
 		throws RequestCycleException, ServletException, IOException
 		{
-			IMonitor monitor;
-			IPage home;
-
-			monitor = cycle.getMonitor();
+			IMonitor monitor = cycle.getMonitor();
 
 			if (monitor != null)
 				monitor.serviceBegin(HOME_SERVICE, null);
 
-			home = cycle.getPage(HOME_PAGE);
+			IPage home = cycle.getPage(HOME_PAGE);
 
 			home.validate(cycle);
 
-			// If it validates, then redner it.
+			// If it validates, then render it.
 
 			cycle.setPage(home);
 			render(cycle, output);
@@ -283,9 +276,7 @@ public abstract class AbstractEngine
 		public void service(IRequestCycle cycle, ResponseOutputStream output)
 		throws RequestCycleException, IOException, ServletException
 		{
-			IMonitor monitor;
-
-			monitor = cycle.getMonitor();
+			IMonitor monitor = cycle.getMonitor();
 
 			if (monitor != null)
 				monitor.serviceBegin(RESTART_SERVICE, null);
@@ -324,13 +315,11 @@ public abstract class AbstractEngine
 		public String buildURL(IRequestCycle cycle, IComponent component, 
 			String[] parameters)
 		{
-			String pageName;
-
 			if (parameters != null &&
 				parameters.length > 0)
 				throw new IllegalArgumentException("Service reset requires no parameters.");
 
-			pageName = component.getPage().getName();
+			String pageName = component.getPage().getName();
 
 			return getServletPrefix() + "/" + RESET_SERVICE + "/" + pageName;
 		}
@@ -349,17 +338,19 @@ public abstract class AbstractEngine
 		public String buildURL(IRequestCycle cycle, IComponent component, 
 			String[] parameters)
 		{
-			String pageName;
-			IPageRecorder recorder;
-			int i;
+			// The Java 2 performance and idiom guide isn't too keen
+			// on reusing StringBuffers.  The problem is that if you create
+			// a very long string with a buffer, then create short strings,
+			// the short strings use as much memory as the long one.  In
+			// my experience, though, URL length tends to be pretty standard
+			// (+/- 10 or 20 characters).
 
 			if (buffer == null)
 				buffer = new StringBuffer();
 			else
 				buffer.setLength(0);
 
-			pageName = cycle.getPage().getName();
-			recorder = getPageRecorder(pageName);
+			String pageName = cycle.getPage().getName();
 
 
 			buffer.append(servletPrefix);
@@ -372,7 +363,7 @@ public abstract class AbstractEngine
 
 			if (parameters != null)
 			{
-				for (i = 0; i < parameters.length; i++)
+				for (int i = 0; i < parameters.length; i++)
 				{
 					buffer.append('/');
 					buffer.append(URLEncoder.encode(parameters[i]));
@@ -438,7 +429,7 @@ public abstract class AbstractEngine
 	protected void reportException(String reportTitle, Throwable ex)
 	{
 		CAT.warn(reportTitle, ex);
-	
+
 		System.err.println(
 			"\n\n**********************************************************\n\n");
 
@@ -776,7 +767,7 @@ public abstract class AbstractEngine
 		try
 		{
 		
-		NDC.push(context.getSession().getId());
+			NDC.push(context.getSession().getId());
 
 			if (CAT.isInfoEnabled())
 				CAT.info("Begin service " + context.getRequest().getRequestURI());
@@ -847,7 +838,7 @@ public abstract class AbstractEngine
 				// for a number of reasons, in which case a ServletException is thrown.
 
 				output.reset();
-				
+
 				if (CAT.isInfoEnabled())
 					CAT.info("Uncaught exception", ex);
 
@@ -893,32 +884,28 @@ public abstract class AbstractEngine
 	protected void serviceAction(IRequestCycle cycle, ResponseOutputStream output)
 	throws RequestCycleException, ServletException, IOException
 	{
-		String pageName;
-		String targetActionId;
-		String targetIdPath;
-		IResponseWriter writer;
-		RequestContext context;
-		IMonitor monitor;
-		IPage page;
-
 		// If the context is new on an action URL, then the session
 		// truly expired and we want to redirect to the
 		// timeout page to advise the user.
 
-		context = cycle.getRequestContext();
+		RequestContext context = cycle.getRequestContext();
 
-		pageName = context.getPathInfo(1);
-		targetActionId = context.getPathInfo(2);
-		targetIdPath = context.getPathInfo(3);
+		if (context.getPathInfoCount() != 4)
+			throw new ApplicationRuntimeException(
+				"Service action requires exactly three parameters.");
 
-		monitor = cycle.getMonitor();
+		String pageName = context.getPathInfo(1);
+		String targetActionId = context.getPathInfo(2);
+		String targetIdPath = context.getPathInfo(3);
+
+		IMonitor monitor = cycle.getMonitor();
 		if (monitor != null)
 			monitor.serviceBegin(IEngineService.ACTION_SERVICE, pageName + "/" + targetActionId);
 
 		if (context.getSession().isNew())
 			throw new StaleSessionException();
 
-		page = cycle.getPage(pageName);
+		IPage page = cycle.getPage(pageName);
 
 		// Allow the page to validate that the user is allowed to visit.  This is simple
 		// protected from malicious users who hack the URLs directly, or make inappropriate
@@ -959,28 +946,25 @@ public abstract class AbstractEngine
 	private void serviceDirect(IRequestCycle cycle, ResponseOutputStream output)
 	throws RequestCycleException, ServletException, IOException
 	{
-		String pageName;
-		String componentPath;
-		IResponseWriter writer;
-		RequestContext context;
-		IComponent component;
 		IDirect direct;
 		String[] parameters = null;
-		IPage page;
-		IMonitor monitor;
-		int pathInfoCount;
-		int i;
 
-		monitor = cycle.getMonitor();
+		IMonitor monitor = cycle.getMonitor();
 
 		// If the context is new on an action URL, then the session
 		// truly expired and we want to redirect to the
 		// timeout page to advise the user.
 
-		context = cycle.getRequestContext();
+		RequestContext context = cycle.getRequestContext();
 
-		pageName = context.getPathInfo(1);
-		componentPath = context.getPathInfo(2);
+		int pathInfoCount = context.getPathInfoCount();
+
+		if (pathInfoCount < 3)
+			throw new ApplicationRuntimeException(
+				"Service direct requires at least two parameters.");
+
+		String pageName = context.getPathInfo(1);
+		String componentPath = context.getPathInfo(2);
 
 		if (monitor != null)
 			monitor.serviceBegin(IEngineService.DIRECT_SERVICE, 
@@ -989,7 +973,7 @@ public abstract class AbstractEngine
 		if (context.getSession().isNew())
 			throw new StaleSessionException();
 
-		page = cycle.getPage(pageName);
+		IPage page = cycle.getPage(pageName);
 
 		// Allow the page to validate that the user is allowed to visit.  This is simple
 		// protection from malicious users who hack the URLs directly, or make inappropriate
@@ -998,7 +982,7 @@ public abstract class AbstractEngine
 		page.validate(cycle);
 		cycle.setPage(page);
 
-		component = page.getNestedComponent(componentPath);
+		IComponent component = page.getNestedComponent(componentPath);
 
 		try
 		{
@@ -1012,15 +996,13 @@ public abstract class AbstractEngine
 				component, ex);
 		}
 
-		pathInfoCount = context.getPathInfoCount();
-
 		// Get any parameters encoded in the URL.
 
 		if (pathInfoCount > 3)
 		{
 			parameters = new String[pathInfoCount - 3];
 
-			for (i = 3; i < pathInfoCount; i++)
+			for (int i = 3; i < pathInfoCount; i++)
 				parameters[i - 3] = context.getPathInfo(i);
 		}
 
@@ -1039,19 +1021,18 @@ public abstract class AbstractEngine
 	*
 	*/
 
-	public void servicePage(IRequestCycle cycle, ResponseOutputStream output)
+	private void servicePage(IRequestCycle cycle, ResponseOutputStream output)
 	throws RequestCycleException, ServletException, IOException
 	{
-		String pageName;
-		RequestContext context;
-		IMonitor monitor;
-		IPage page;
+		RequestContext context = cycle.getRequestContext();
 
-		context = cycle.getRequestContext();
+		if (context.getPathInfoCount() != 2)
+			throw new ApplicationRuntimeException(
+				"Service page requires exactly one parameter.");
 
-		pageName = context.getPathInfo(1);
+		String pageName = context.getPathInfo(1);
 
-		monitor = cycle.getMonitor();
+		IMonitor monitor = cycle.getMonitor();
 		if (monitor != null)
 			monitor.serviceBegin(IEngineService.PAGE_SERVICE, pageName);
 
@@ -1062,7 +1043,7 @@ public abstract class AbstractEngine
 		// of a "login" and have a fe pages that don't require the user to be logged in,
 		// and other pages that do.  The protected pages should redirect to a login page.
 
-		page = cycle.getPage(pageName);
+		IPage page = cycle.getPage(pageName);
 
 		// Allow the page to validate that the user is allowed to visit.  This is simple
 		// protection from malicious users who hack the URLs directly, or make inappropriate
@@ -1096,6 +1077,10 @@ public abstract class AbstractEngine
 		monitor = cycle.getMonitor();
 
 		context = cycle.getRequestContext();
+
+		if (context.getPathInfoCount() != 2)
+			throw new ApplicationRuntimeException(
+				"Service reset requires exactly one parameter.");
 
 		pageName = context.getPathInfo(1);
 
@@ -1366,7 +1351,7 @@ public abstract class AbstractEngine
 	 *  Gets the visit object, if it has been created already.
 	 *
 	 */
-	 
+
 	public Object getVisit()
 	{
 		return visit;
@@ -1412,7 +1397,7 @@ public abstract class AbstractEngine
 		String visitClassName;
 		Class visitClass;
 
-			visitClassName = specification.getProperty(VISIT_CLASS_PROPERTY_NAME);
+		visitClassName = specification.getProperty(VISIT_CLASS_PROPERTY_NAME);
 		if (visitClassName == null)
 			throw new ApplicationRuntimeException(
 				"Could not create visit object because property " +
@@ -1437,3 +1422,5 @@ public abstract class AbstractEngine
 
 	}
 }
+
+

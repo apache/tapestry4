@@ -5,26 +5,16 @@
 	<class>com.primix.tapestry.components.html.valid.IntegerField</class>
 	<allow-body>yes</allow-body>
 	<parameters>
-		<allow-informal-parameters>no</allow-informal-parameters>
+		<allow-informal-parameters>yes</allow-informal-parameters>
 		<parameter>
 			<name>delegate</name>
 			<java-type>com.primix.tapestry.components.html.valid.IValidationDelegate</java-type>
 			<required>yes</required>
 		</parameter>
 		<parameter>
-			<name>disabled</name>
-		</parameter>
-		<parameter>
 			<name>displayName</name>
 			<java-type>java.lang.String</java-type>
 			<required>yes</required>
-		</parameter>
-		<parameter>
-			<name>displayWidth</name>
-			<java-type>java.lang.Integer</java-type>
-		</parameter>
-		<parameter>
-			<name>hidden</name>
 		</parameter>
 		<parameter>
 			<name>maximum</name>
@@ -52,22 +42,6 @@
 			<id>captive</id>
 			<type>TextField</type>
 			<bindings>
-				<inherited-binding>
-					<name>disabled</name>
-					<parameter-name>disabled</parameter-name>
-				</inherited-binding>
-				<inherited-binding>
-					<name>displayWidth</name>
-					<parameter-name>displayWidth</parameter-name>
-				</inherited-binding>
-				<inherited-binding>
-					<name>maximumLength</name>
-					<parameter-name>maximumLength</parameter-name>
-				</inherited-binding>
-				<inherited-binding>
-					<name>hidden</name>
-					<parameter-name>hidden</parameter-name>
-				</inherited-binding>
 				<binding>
 					<name>text</name>
 					<property-path>text</property-path>

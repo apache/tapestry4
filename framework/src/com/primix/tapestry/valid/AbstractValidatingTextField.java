@@ -4,6 +4,7 @@ import com.primix.tapestry.*;
 import com.primix.tapestry.components.*;
 import com.primix.tapestry.components.html.*;
 import com.primix.tapestry.components.html.form.*;
+import com.primix.tapestry.spec.*;
 import java.util.*;
 import java.text.*;
 
@@ -365,9 +366,6 @@ implements ILifecycle, IValidatingTextField
 		IValidationDelegate delegate = null;
 		String displayName = null;
 
-		if (captive == null)
-			captive = (TextField)getComponent("captive");
-
 		rendering = !cycle.isRewinding();
 
 		if (rendering && error)
@@ -446,6 +444,36 @@ implements ILifecycle, IValidatingTextField
 		// Put a marker in, indicating that the selected field is known.
 
 		cycle.setAttribute(SELECTED_ATTRIBUTE_NAME, Boolean.TRUE);
+	}
+
+	/**
+	 *  Applies all informal parameters of the component to the captive
+	 *  {@link TextField}.
+	 *
+	 */
+	 
+	public void finishLoad(IPageLoader loader, ComponentSpecification specification)
+	{
+	    captive = (TextField)getComponent("captive");
+
+		Collection names = getBindingNames();
+		
+		if (names == null)
+			return;
+			
+		Iterator i = names.iterator();
+		
+		while (i.hasNext())
+		{
+			String name = (String)i.next();
+			
+			if (specification.getParameter(name) == null)
+			{
+				IBinding binding = getBinding(name);
+				
+				captive.setBinding(name, binding);
+			}
+		}
 	}
 }
 

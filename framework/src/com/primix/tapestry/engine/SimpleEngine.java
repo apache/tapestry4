@@ -61,80 +61,80 @@ extends AbstractEngine
 
 	private Map recorders;
 
-    /**
-     *  Restores the object state as written by
-     *  {@link #writeExternal(ObjectOutput)}.
-     *
-     */
+	/**
+	*  Restores the object state as written by
+	*  {@link #writeExternal(ObjectOutput)}.
+	*
+	*/
 
-    public void readExternal(ObjectInput in)
-    throws IOException, ClassNotFoundException
-    {
-        int i, count;
-        String pageName;
-        SimplePageRecorder recorder;
+	public void readExternal(ObjectInput in)
+	throws IOException, ClassNotFoundException
+	{
+		int i, count;
+		String pageName;
+		SimplePageRecorder recorder;
 
-        super.readExternal(in);
+		super.readExternal(in);
 
-        count = in.readInt();
+		count = in.readInt();
 
-        if (count == 0)
-            return;
+		if (count == 0)
+			return;
 
-        recorders = new HashMap(MAP_SIZE);
+		recorders = new HashMap(MAP_SIZE);
 
-        for (i = 0; i < count; i++)
-        {
-            pageName = in.readUTF();
+		for (i = 0; i < count; i++)
+		{
+			pageName = in.readUTF();
 
-            // Putting a cast here is not super-efficient, but keeps
-            // us sane!
+			// Putting a cast here is not super-efficient, but keeps
+			// us sane!
 
-            recorder = (SimplePageRecorder)in.readObject();
+			recorder = (SimplePageRecorder)in.readObject();
 
-            recorders.put(pageName, recorder);
-        }
-    }
+			recorders.put(pageName, recorder);
+		}
+	}
 
-    /**
-     *  Invokes the superclass implementation, then
-     *  writes the number of recorders as an int (may be zero).
-     *
-     *  <p>For each recorder, writes
-     *  <ul>
-     *  <li>page name ({@link String})
-     *  <li>page recorder ({@link SimplePageRecorder})
-     *  </ul>
-     *
-     */
+	/**
+	*  Invokes the superclass implementation, then
+	*  writes the number of recorders as an int (may be zero).
+	*
+	*  <p>For each recorder, writes
+	*  <ul>
+	*  <li>page name ({@link String})
+	*  <li>page recorder ({@link SimplePageRecorder})
+	*  </ul>
+	*
+	*/
 
-    public void writeExternal(ObjectOutput out)
-    throws IOException
-    {
-        Iterator i;
-        Map.Entry entry;
+	public void writeExternal(ObjectOutput out)
+	throws IOException
+	{
+		Iterator i;
+		Map.Entry entry;
 
-        super.writeExternal(out);
+		super.writeExternal(out);
 
-        if (recorders == null)
-        {
-            out.writeInt(0);
-            return;
-        }
+		if (recorders == null)
+		{
+			out.writeInt(0);
+			return;
+		}
 
-        out.writeInt(recorders.size());
+		out.writeInt(recorders.size());
 
-        i = recorders.entrySet().iterator();
+		i = recorders.entrySet().iterator();
 
-        while (i.hasNext())
-        {
-            entry = (Map.Entry)i.next();
+		while (i.hasNext())
+		{
+			entry = (Map.Entry)i.next();
 
-            out.writeUTF((String)entry.getKey());
-            out.writeObject(entry.getValue());
-        }
+			out.writeUTF((String)entry.getKey());
+			out.writeObject(entry.getValue());
+		}
 
-    }
+	}
 
 	/**
 	*  Removes all page recorders that contain no changes.  Subclasses
@@ -148,17 +148,17 @@ extends AbstractEngine
 		Iterator i;
 		Map.Entry entry;
 		IPageRecorder recorder;
-		
-        if (recorders == null)
-            return;
+
+		if (recorders == null)
+			return;
 
 		i = recorders.entrySet().iterator();
-		
+
 		while (i.hasNext())
 		{
 			entry = (Map.Entry)i.next();
 			recorder = (IPageRecorder)entry.getValue();
-			
+
 			if (!recorder.getHasChanges())
 				i.remove();
 		}
@@ -200,29 +200,36 @@ extends AbstractEngine
 
 	public IPageRecorder getPageRecorder(String pageName)
 	{
-		PageRecorder result = null;
+		if (recorders == null)
+			return null;
 
-		if (recorders != null)
-			result = (PageRecorder)recorders.get(pageName);
+		return (PageRecorder)recorders.get(pageName);
+	}
 
-		if (result == null)
+	public IPageRecorder createPageRecorder(String pageName)
+	{
+		IPageRecorder result;
+
+		if (recorders == null)
+			recorders = new HashMap(MAP_SIZE);
+		else
 		{
+			if (recorders.containsKey(pageName))
+			throw new ApplicationRuntimeException(
+				"Could not create a second page recorder for page " + 
+				pageName + ".");
+		}	
 
-			// Here's the key thing that identifies SimpleApplication as simple.
-			// It uses a SimplePageRecorder (that simply stores the page property changes
-			// in the HttpSession).
+		// Here's the key thing that identifies SimpleApplication as simple.
+		// It uses a SimplePageRecorder (that simply stores the page property changes
+		// in the HttpSession).
 
-			result = new SimplePageRecorder();
+		result = new SimplePageRecorder();
 
-			if (recorders == null)
-				recorders = new HashMap(MAP_SIZE);
-
-			recorders.put(pageName, result);
-		}
+		recorders.put(pageName, result);
 
 		return result;
 	}
 
-
-
 }
+

@@ -1,3 +1,10 @@
+* Feb 6 2001 hship
+
+Don't create new page recorder instances until actually needed.
+Actually invoke the ILifeCycle finishLoad() method.
+Allow informal parameters for the validating text field components (but apply them
+to the underlying TextField).
+
 * Jan 26 2001 hship
 
 Remove IRequestCycle from the parameter list for RequestCycleException and all sub-exceptions.

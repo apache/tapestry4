@@ -116,43 +116,10 @@ import java.text.*;
  *      <td>Object used to assist in error reporting.</td>
  *  </tr>
  *
- *  <tr>
- * 		<td>disabled</td>
- *		<td>boolean</td>
- *		<td>R</td>
- *		<td>no</td>
- *		<td>false</td>
- *		<td>Applied to the underlying {@link TextField}.</td>
- *	</tr>
- *
- *  <tr>
- * 		<td>hidden</td>
- *		<td>boolean</td>
- *		<td>R</td>
- *		<td>no</td>
- *		<td>false</td>
- *		<td>Applied to the underlying {@link TextField}.</td>
- *	</tr>
- *
- *	<tr>
- *		<td>displayWidth</td>
- *		<td>integer</td>
- *		<td>R</td>
- *		<td>no</td>
- *		<td>&nbsp;</td>
- *		<td>Applied to the underlying {@link TextField}.</tr>
- *
- *	<tr>
- *		<td>maximumLength</td>
- *		<td>integer</td>
- *		<td>R</td>
- *		<td>no</td>
- *		<td>&nbsp;</td>
- *		<td>Applied to the underlying {@link TextField}.</td> </tr>
- *
  *	</table>
  *
- *  <p>May not have informal parameters or a body.
+ *  <p>May not have a body.  May have informal parameters,
+ *  which are applied to the underlying {@link TextField}.
  *
  *  @author Howard Ship
  *  @version $Id$

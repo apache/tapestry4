@@ -61,11 +61,16 @@ implements ILifecycle
 	{
 		Inspector inspector = (Inspector)page;
 
-			inspectedPage = inspector.getInspectedPage();
+		inspectedPage = inspector.getInspectedPage();
 
-		IEngine engine = inspector.getEngine();
+		IEngine engine = page.getEngine();
 		IPageRecorder recorder = engine.getPageRecorder(inspectedPage.getName());
 
+		// No page recorder?  No properties.
+		
+		if (recorder == null)
+			return;
+			
 		if (recorder.getHasChanges())
 			properties = new ArrayList(recorder.getChanges());
 	}
