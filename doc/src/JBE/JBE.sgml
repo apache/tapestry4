@@ -16,7 +16,7 @@
 		<copyright>
 			<year>2000</year>
 			<year>2001</year>
-			<holder>Primix Solutions</holder>
+			<holder>Primix</holder>
 		</copyright>
 	</bookinfo>
 
@@ -38,7 +38,7 @@ They may be physically located across the hallway, or across the planet.
 As they work, they may make conflicting changes to code.</>
 
 <para>What's needed is a system that can adjust for local differences in developer's
-environments and allow for "clean builds" of modules directly from source. 
+environments and allow for "clean builds" of projects directly from source. 
 That's what the Java Build Environment (JBE) is for.</>
 
 <para>JBE is designed to start with basic Java source and utlimately produce a Java Archive (JAR) 
@@ -376,7 +376,7 @@ file in the main JBE directory.</para>
 
 <para>This file may also be used to store addtional, site-wide options 
 (typically, variables that start with the prefix 
-<varname>SITE_</>).  Such options will apply to all modules built on the local workstation.</>
+<varname>SITE_</>).  Such options will apply to all projects built on the local workstation.</>
 
 <para>In a multiple-developer environment, all developers on the
 same platform will use identical copies of the <filename>SiteConfig.mk</> file.
@@ -447,8 +447,6 @@ The project makefile also identifies the type of JBE <emphasis>module</> the pro
 determines whether a Jar, a War or something else is produced by the project.
 </>
 
-<para>The standard directory hierarchy for a package has the module directory 
-as the root of the Java package tree for the package:</>
  
 <figure>
 	<title>Example Project Layout</>
@@ -461,23 +459,20 @@ as the root of the Java package tree for the package:</>
 </>
 
 <para>
-This lays out a module with two package directories.  The first, 
+This lays out a project with two package directories.  The first, 
 com.example.snood contains the class <filename>SnoodClient.java</>,
 the interface <filename>ISnood.java</> and a resource file: <filename>SnoodClient.properties</>.  
 The second package, com.example.snood.server contains the class <filename>SnoodImpl.java</>.</>
 
-<para>A module makefile must provide a name for the module 
+<para>A project makefile must provide a name for the project 
 (which is used to name the JAR or WAR file) and a list of packages.  
 It may provide additional options used when compiling, generating Javadoc or installing the JAR.</>
 
-<para>The module directory doesn't have to be the source code root, 
+<para>
+By default, Java source code is stored in a subdirectory of the project directory named
+<filename class=directory>src</>.  This can be changed, by 
 by setting the <varname>SOURCE_DIR</> variable, the source code root directory can be moved to 
-another location.  Many developers prefer to put the Java source code in a directory named "src". 
-In other situations, the Java source code may be in a sibling directory to the module directory.</>
-
-<para>In our example, the module directory is also the root source code directory, 
-so the <filename>Makefile</> is very simple:
-</>
+another location.</>
 
 <example>
 	<title>Makefile</>
@@ -490,7 +485,8 @@ PACKAGES = \
 include $(SYS_MAKEFILE_DIR)/Jar.mk</>
 	</example>
 
-<para>The last line module for this project as Jar; a module that builds a JAR file from the project.</>
+<para>The last line identifies the module for this project as Jar; 
+a module that builds a JAR file from the project.</>
 
 <para>The other two Makefiles identify the Java source files in the package, 
 any resource files that should be copied into the JAR, and any classes that must be compiled with the 
