@@ -108,7 +108,7 @@ public class TestPatternValidator extends TapestryTestCase
     {
         try
         {
-            Object result = pv.toObject(pf, input);
+            pv.toObject(pf, input);
             unreachable();
         }
         catch (ValidatorException e)
@@ -133,7 +133,7 @@ public class TestPatternValidator extends TapestryTestCase
 
         try
         {
-            Object result = pv.toObject(pf, "06514");
+           pv.toObject(pf, "06514");
             unreachable();
         }
         catch (ApplicationRuntimeException e)
@@ -154,7 +154,8 @@ public class TestPatternValidator extends TapestryTestCase
 
         try
         {
-            Object result = pv.toObject(pf, "xyz");
+            pv.toObject(pf, "xyz");
+            unreachable();
         }
         catch (ValidatorException e)
         {
