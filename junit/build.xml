@@ -8,12 +8,24 @@
   <property file="${root.dir}/config/build.properties"/>
   <property file="${root.dir}/config/common.properties"/>
   
+  
+  <property name="framework.src.dir" value="${root.dir}/framework/src"/>
+  <property name="clover-classes.dir" value=".clover-classes"/>
+  <property name="clover-db.dir" value=".clover-db"/>
+  <property name="clover.initstring" location="${clover-db.dir}/clover_db"/>
+    
+  <property name="clover.report.dir" value="../web/doc/clover"/>
+  
   <property name="local.lib.dir" value="lib"/>
   
   <property name="jdom.jar" value="jdom-b8.jar"/>
    
-  <path id="project.class.path">
+  <path id="compile-tests.class.path">
     <pathelement location="${framework.jar}"/>
+    <path refid="base.class.path"/>
+  </path>
+  
+  <path id="base.class.path">
     <pathelement location="${lib.ext.dir}/ejb.jar"/>
     <pathelement location="${lib.ext.dir}/javax.servlet.jar"/>
     <pathelement location="${lib.ext.dir}/${log4j.jar}"/>
@@ -30,12 +42,14 @@
   </target>
 
   <target name="clean">
-    <delete dir="${classes.dir}"/>
+    <delete dir="${classes.dir}" quiet="true"/>
+    <delete dir="${clover-classes.dir}" quiet="true"/>
+    <delete dir="${clover-db.dir}" quiet="true"/>
   </target>
 
   <target name="compile" depends="init" description="Compile all test classes.">
     <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="on" target="1.1">
-      <classpath refid="project.class.path"/>
+      <classpath refid="compile-tests.class.path"/>
     </javac>
   </target>
 
@@ -46,7 +60,7 @@
   	      of junit/running/excluded.properties overrides the default
   	      copy in junit.jar -->
   	 <path location="${src.dir}"/>
-  	 <path refid="project.class.path"/>
+  	 <path refid="compile-tests.class.path"/>
   </path>
   	  
   <target name="run" depends="compile" description="Run the test suite.">
@@ -63,6 +77,61 @@
 		<arg value="net.sf.tapestry.junit.TapestrySuite"/>
   	</java>
   	
+  </target>
+  
+
+  <path id="clover.class.path">
+    <pathelement location="${clover-classes.dir}"/>
+    <pathelement location="${clover.dir}/lib/clover.jar"/>
+    <path refid="junit.class.path"/>
+  </path>
+    
+  <target name="clover" depends="compile" description="Run tests and construct Clover report.">
+  	<mkdir dir="${clover-classes.dir}"/>
+  	<mkdir dir="${clover-db.dir}"/>
+  	
+  	<property name="build.compiler"
+  		value="org.apache.tools.ant.taskdefs.CloverCompilerAdapter"/>
+  		
+    <javac srcdir="${framework.src.dir}" destdir="${clover-classes.dir}" debug="on" target="1.1">
+      <classpath refid="base.class.path"/>
+    </javac>
+    
+    
+    <echo>Clover Run #1:  No logging enabled ...</echo>
+    
+  	<java fork="true" classname="junit.textui.TestRunner"
+		failonerror="true">
+  		<classpath refid="clover.class.path"/>
+		<arg value="net.sf.tapestry.junit.TapestrySuite"/>
+  	</java>
+  	
+  
+    <echo>Clover Run #2: All logging enabled ...</echo>
+    
+  	<java fork="true" classname="junit.textui.TestRunner"
+		failonerror="true">
+  		<classpath refid="clover.class.path"/>
+		<arg value="net.sf.tapestry.junit.TapestrySuite"/>
+		<sysproperty key="log4j.configuration" value="log4j-slow.properties"/> 
+  	</java>  	
+  	
+  	<mkdir dir="${clover.report.dir}"/>
+  
+ 	  	
+  	<java
+  		classname="com.cortexeb.tools.clover.reporters.html.HtmlReporter"
+  		fork="true">
+  		<classpath>
+		  	<pathelement location="${clover.dir}/lib/clover.jar"/>
+		  	<pathelement location="${clover.dir}/lib/velocity.jar"/>
+		</classpath>
+		<arg line="--outputdir ${clover.report.dir}"/>
+		<arg line="--showSrc"/>
+		<arg line="--initstring ${clover.initstring}"/>
+		<arg line="--title 'Tapestry Release ${framework.version}'"/>
+  	</java>
+  			    
   </target>
   
 </project>
