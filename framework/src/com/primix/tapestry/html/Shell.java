@@ -175,13 +175,13 @@ public class Shell extends AbstractComponent
 
             if (stylesheet != null)
             {
-                writer.beginOrphan("link");
+                writer.beginEmpty("link");
                 writer.attribute("rel", "stylesheet");
                 writer.attribute("type", "text/css");
                 writer.attribute("href", stylesheet.buildURL(cycle));
             }
 
-            writer.beginOrphan("meta");
+            writer.beginEmpty("meta");
             writer.attribute("name", "generator");
             writer.attribute("content", "Tapestry Web Application Framework");
 
@@ -245,7 +245,7 @@ public class Shell extends AbstractComponent
 
         // Write out the <meta> tag
 
-        writer.beginOrphan("meta");
+        writer.beginEmpty("meta");
         writer.attribute("http-equiv", "Refresh");
         writer.attribute("content", buffer.toString());
 

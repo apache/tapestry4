@@ -88,7 +88,7 @@ public interface IResponseWriter
      *
      */
 
-    public void beginOrphan(String name);
+    public void beginEmpty(String name);
 
     /**
      * Invokes checkError() on the <code>PrintWriter</code> used to
@@ -111,7 +111,7 @@ public interface IResponseWriter
      * Closes the most recently opened element by writing the '&gt;' that ends
      * it. Once this is invoked, the <code>attribute()</code> methods
      * may not be used until a new element is opened with {@link #begin(String)} or
-     * or {@link #beginOrphan(String)}.
+     * or {@link #beginEmpty(String)}.
      */
 
     public void closeTag();

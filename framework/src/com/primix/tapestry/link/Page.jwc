@@ -14,6 +14,13 @@
 			<name>enabled</name>
 		</parameter>
 		<parameter>
+			<name>scheme</name>
+			<java-type>java.lang.String</java-type>
+		</parameter>
+		<parameter>
+			<name>port</name>
+		</parameter>
+		<parameter>
 			<name>anchor</name>
 			<java-type>java.lang.String</java-type>
 		</parameter>

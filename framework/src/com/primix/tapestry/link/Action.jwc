@@ -7,11 +7,18 @@
 	<parameters>
 		<parameter>
 			<name>listener</name>
-			<java-type>com.primix.tapestry.components.IActionListener</java-type>
+			<java-type>com.primix.tapestry.IActionListener</java-type>
 			<required>yes</required>
 		</parameter>
 		<parameter>
 			<name>enabled</name>
+		</parameter>
+		<parameter>
+			<name>scheme</name>
+			<java-type>java.lang.String</java-type>
+		</parameter>
+		<parameter>
+			<name>port</name>
 		</parameter>
 		<parameter>
 			<name>anchor</name>

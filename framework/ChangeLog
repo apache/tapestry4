@@ -1,5 +1,10 @@
 * Jan 16 2001 hship
 
+Rename IResponseWriter.beginOrphan() to beginEmpty().
+Add support for setting scheme and/or port in AbstractServiceLink.
+
+* Jan 16 2001 hship
+
 Add ICallback and some implementations.
 Change the interface for IDirectListener slightly.
 

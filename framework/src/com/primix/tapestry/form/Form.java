@@ -254,7 +254,7 @@ public class Form extends AbstractComponent
                 // of action ids within the form (when the form HTML is rendered)
                 // matches the expected number (when the form submission is processed).
 
-                writer.beginOrphan("input");
+                writer.beginEmpty("input");
                 writer.attribute("type", "hidden");
                 writer.attribute("name", name);
                 writer.attribute("value", nextElementId++);

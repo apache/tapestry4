@@ -101,7 +101,7 @@ implements IPropertySelectionRenderer
 		IPropertySelectionModel model, Object option, int index, boolean selected)
 	throws RequestCycleException
 	{
-		writer.beginOrphan("option");
+		writer.beginEmpty("option");
 		writer.attribute("value", model.getValue(index));
 
 		if (selected)

@@ -52,6 +52,29 @@ import java.util.*;
  *  the link surrounds is still rendered, but not the link itself.
  *  </td></tr>
  *
+ * <tr>
+ *		<td>scheme</td>
+ *		<td>java.lang.String</td>
+ *		<td>R</td>
+ *		<td>no</td>
+ *		<td>&nbsp;</td>
+ *		<td>If specified, then a longer URL (including scheme, server and possibly port)
+ * is generated using the specified scheme. Server is determined fromt he incoming request,
+ * and port is deterimined from the port paramter or the incoming request.
+ *  </td>
+ * </tr>
+ *
+ * <tr>
+ *		<td>port</td>
+ *		<td>int</td>
+ *		<td>R</td>
+ *		<td>no</td>
+ *		<td>&nbsp;</td>
+ *		<td>If specified, then a longer URL (including scheme, server and port)
+ *  is generated using the specified port.  The server is determined from the incoming
+ *  request, the scheme from the scheme paramter or the incoming request.
+ * </td>
+ * </tr>
  *
  * <tr>
  *		<td>anchor</td>

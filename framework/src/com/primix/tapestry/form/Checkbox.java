@@ -160,7 +160,7 @@ public class Checkbox extends AbstractFormComponent
 		{
 			checked = selectedBinding.getBoolean();
 
-			writer.beginOrphan("input");
+			writer.beginEmpty("input");
 			writer.attribute("type", "checkbox");
 
 			writer.attribute("name", name);

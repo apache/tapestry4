@@ -178,7 +178,7 @@ public class Radio extends AbstractComponent
 			return;
 		}
 
-		writer.beginOrphan("input");
+		writer.beginEmpty("input");
 
 		writer.attribute("type", "radio");
 

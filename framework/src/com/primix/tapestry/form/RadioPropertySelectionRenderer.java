@@ -81,7 +81,7 @@ implements IPropertySelectionRenderer
 		writer.begin("tr");
 		writer.begin("td");
 
-		writer.beginOrphan("input");
+		writer.beginEmpty("input");
 		writer.attribute("type", "radio");
 		writer.attribute("name", component.getName());
 		writer.attribute("value", model.getValue(index));
