@@ -45,10 +45,6 @@ MOD_META_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/meta-resources-stamp
 
 JAR_FILE := $(MODULE_NAME).$(JAR_EXT)
 
-# Javadoc is produced into a directory named after the module.
-
-FINAL_JAVADOC_DIR = $(JAVADOC_DIR)/$(MODULE_NAME)
-
 MOD_JAVA_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/java-stamp
 
 RESOURCE_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/resource-stamp
