@@ -26,8 +26,7 @@ Value: [100]
 	</request>
 	
 	<request>
-		<parameter name="service" value="page"/>
-		<parameter name="context" value="Two"/>
+		<parameter name="service" value="page/Two"/>
 		
 			
 		<assert-output name="Page Title">
@@ -47,8 +46,7 @@ Value: [100]
 	<!-- This test also works out some aspects of connected parameters. -->
 	
 	<request>
-		<parameter name="service" value="page"/>
-		<parameter name="context" value="Three"/>
+		<parameter name="service" value="page/Three"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[

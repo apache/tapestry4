@@ -12,8 +12,7 @@
   	</servlet>
        
     <request>
-    	<parameter name="service" value="page"/>
-    	<parameter name="context" value="ImplicitComponents"/>
+    	<parameter name="service" value="page/ImplicitComponents"/>
  	
  	
  		<assert-output name="Implicit Body component">

@@ -14,8 +14,7 @@
   	
   	     
   	<request>
-  		<parameter name="service" value="page"/>
-  		<parameter name="context" value="Strings"/>
+  		<parameter name="service" value="page/Strings"/>
   		
 	
 		<assert-output name="Normal">

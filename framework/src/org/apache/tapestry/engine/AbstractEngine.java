@@ -1915,7 +1915,8 @@ public abstract class AbstractEngine
      *  specific services with unusual URL encoding rules.
      * 
      *  <p>This implementation simply extracts the value for
-     *  query parameter {@link Tapestry#SERVICE_QUERY_PARAMETER_NAME}.
+     *  query parameter {@link Tapestry#SERVICE_QUERY_PARAMETER_NAME}
+     *  and extracts the service name from that.
      * 
      *  <p>
      *  For supporting the JSP tags, this method first
@@ -1931,7 +1932,20 @@ public abstract class AbstractEngine
         if (context.getRequest().getAttribute(Tapestry.TAG_SUPPORT_SERVICE_ATTRIBUTE) != null)
             return Tapestry.TAGSUPPORT_SERVICE;
 
-        return context.getParameter(Tapestry.SERVICE_QUERY_PARAMETER_NAME);
+        String serviceData =  context.getParameter(Tapestry.SERVICE_QUERY_PARAMETER_NAME);
+        
+      	if (serviceData == null)
+      		return Tapestry.HOME_SERVICE;
+      	
+      	// The service name is anything before the first slash,
+      	// if there is one.
+      		
+      	int slashx = serviceData.indexOf('/');
+      	
+      	if (slashx < 0)
+      		return serviceData;
+      		
+      	return serviceData.substring(0, slashx);
     }
 
     /** 

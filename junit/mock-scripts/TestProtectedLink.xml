@@ -17,8 +17,7 @@
   	<!--  Get a view of the page -->
   	
 	<request>
-  		<parameter name="service" value="page"/>
-  		<parameter name="context" value="ProtectedLink"/>
+  		<parameter name="service" value="page/ProtectedLink"/>
   		
   		<assert-output name="Title">
 <![CDATA[
@@ -28,15 +27,14 @@
 		
 		<assert-output name="Link URL">
 <![CDATA[
-href="/mock/app?service=direct&amp;context=0/ProtectedLink/link&amp;sp=6&amp;sp=13&amp;sp=1999"
+href="/mock/app?service=direct/0/ProtectedLink/link&amp;sp=6&amp;sp=13&amp;sp=1999"
 ]]>
 		</assert-output>
   		
 	</request>
 	
 	<request>
-		<parameter name="service" value="direct"/>
-		<parameter name="context" value="0/ProtectedLink/link"/>
+		<parameter name="service" value="direct/0/ProtectedLink/link"/>
 		<parameter name="sp">
 			<value>6</value>
 			<value>13</value>
@@ -51,7 +49,7 @@ href="/mock/app?service=direct&amp;context=0/ProtectedLink/link&amp;sp=6&amp;sp=
 		
 		<assert-output name="Link URL">
 <![CDATA[
-href="/mock/app?service=direct&amp;context=1/Guard/link"
+href="/mock/app?service=direct/1/Guard/link"
 ]]>
 		</assert-output>
 		
@@ -66,8 +64,7 @@ Callback: DirectCallback[ProtectedLink/link 6, 13, 1999]
   	     user to the Protected page.  -->
   	     
   	<request>
-  		<parameter name="service" value="direct"/>
-  		<parameter name="context" value="1/Guard/link"/>
+  		<parameter name="service" value="direct/1/Guard/link"/>
   		
   		<assert-output name="Title">
 <![CDATA[
@@ -90,8 +87,7 @@ Callback: DirectCallback[ProtectedLink/link 6, 13, 1999]
 	 	 page has been visited. -->		  	
 		  	
   	<request>
-		<parameter name="service" value="direct"/>
-		<parameter name="context" value="1/ProtectedLink/link"/>
+		<parameter name="service" value="direct/1/ProtectedLink/link"/>
 		<parameter name="sp">
 			<value>6</value>
 			<value>13</value>

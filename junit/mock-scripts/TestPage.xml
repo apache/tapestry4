@@ -17,8 +17,7 @@
     <!-- Handle unknown page -->
     
     <request>
-    	<parameter name="service" value="page"/>
-    	<parameter name="context" value="Qbert"/>
+    	<parameter name="service" value="page/Qbert"/>
     	
 	  	<assert-output name="Page Title">
 <![CDATA[

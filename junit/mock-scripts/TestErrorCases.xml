@@ -10,8 +10,7 @@
 	<!-- Ensure that you can't change the engine's locale to null. -->
 	
 	<request>
-		<parameter name="service" value="external"/>
-		<parameter name="context" value="SetLocaleNull"/>
+		<parameter name="service" value="external/SetLocaleNull"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[

@@ -16,8 +16,7 @@
     
  
 	<request>
-	  	<parameter name="service" value="page"/>
-	  	<parameter name="context" value="RelativeAssets"/>
+	  	<parameter name="service" value="page/RelativeAssets"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[

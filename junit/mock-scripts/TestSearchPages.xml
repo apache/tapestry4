@@ -27,8 +27,7 @@ No page specification.
 	</request>	
 	
 	<request>
-		<parameter name="service" value="page"/>
-		<parameter name="context" value="WithApplication"/>
+		<parameter name="service" value="page/WithApplication"/>
 		
 		<assert-output name="Title">
 <![CDATA[
@@ -43,8 +42,7 @@ This page's specification is a sibling of the app specification.
 	</request>	
 			
 	<request>
-		<parameter name="service" value="page"/>
-		<parameter name="context" value="InPages"/>
+		<parameter name="service" value="page/InPages"/>
 		
 		<assert-output name="Title">
 <![CDATA[
@@ -59,8 +57,7 @@ The specification, and properties files, are located in WEB-INF/pages.
 	</request>
 	
 	<request>
-		<parameter name="service" value="page"/>
-		<parameter name="context" value="InWebInf"/>
+		<parameter name="service" value="page/InWebInf"/>
 		
 		<assert-output name="Title">
 <![CDATA[
@@ -75,8 +72,7 @@ The specification, and properties files, are located in directly in WEB-INF.
 	</request>	
 	
 	<request>
-		<parameter name="service" value="page"/>
-		<parameter name="context" value="InAppRoot"/>
+		<parameter name="service" value="page/InAppRoot"/>
 		
 		<assert-output name="Title">
 <![CDATA[
@@ -92,8 +88,7 @@ The specification, and properties files, are located in the application root.
 	
 		
 	<request>
-		<parameter name="service" value="page"/>
-		<parameter name="context" value="StaleLink"/>
+		<parameter name="service" value="page/StaleLink"/>
 		
 		<assert-output name="Title">
 <![CDATA[
@@ -108,8 +103,7 @@ This is an application-provided version of the StaleLink page.
 	</request>	
 	
 	<request>
-		<parameter name="service" value="page"/>
-		<parameter name="context" value="framework:StaleLink"/>
+		<parameter name="service" value="page/framework:StaleLink"/>
 		
 		<assert-output name="Title">
 <![CDATA[

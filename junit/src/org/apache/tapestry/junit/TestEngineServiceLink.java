@@ -412,21 +412,15 @@ public class TestEngineServiceLink extends TapestryTestCase
         checkList(
             "parameterNames",
             new String[] {
-                Tapestry.SERVICE_QUERY_PARAMETER_NAME,
-                Tapestry.CONTEXT_QUERY_PARMETER_NAME },
+                Tapestry.SERVICE_QUERY_PARAMETER_NAME },
             l.getParameterNames());
 
         checkList(
             "service parameters values",
-            new String[] { "myservice" },
+            new String[] { "myservice/Alpha/Bravo/Tango" },
             l.getParameterValues(Tapestry.SERVICE_QUERY_PARAMETER_NAME));
 
-        checkList(
-            "context parameter values",
-            new String[] { "Alpha/Bravo/Tango" },
-            l.getParameterValues(Tapestry.CONTEXT_QUERY_PARMETER_NAME));
-
-        assertEquals("/alpha/bravo?service=myservice&context=Alpha/Bravo/Tango", l.getURL());
+        assertEquals("/alpha/bravo?service=myservice/Alpha/Bravo/Tango", l.getURL());
 
     }
 

@@ -12,8 +12,7 @@
   	</servlet>      
     
     <request>
-    	<parameter name="service" value="page"/>
-    	<parameter name="context" value="NotComponent"/>
+    	<parameter name="service" value="page/NotComponent"/>
     	
     	<assert-output name="Page Title">
 <![CDATA[

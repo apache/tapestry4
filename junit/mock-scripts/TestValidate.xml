@@ -15,8 +15,7 @@
   	</servlet> 
   	  	
 	<request>
-  		<parameter name="service" value="page"/>
-  		<parameter name="context" value="Protected"/>
+  		<parameter name="service" value="page/Protected"/>
   		
   		
   		<assert-output name="Title">
@@ -27,7 +26,7 @@
 		
 		<assert-output name="Link URL">
 <![CDATA[
-href="/mock/app?service=direct&amp;context=1/Guard/link"
+href="/mock/app?service=direct/1/Guard/link"
 ]]>
 		</assert-output>
 		
@@ -42,8 +41,7 @@ Callback: PageCallback[Protected]
   	     user to the Protected page.  -->
   	     
   	<request>
-  		<parameter name="service" value="direct"/>
-  		<parameter name="context" value="1/Guard/link"/>
+  		<parameter name="service" value="direct/1/Guard/link"/>
   		
   		<assert-output name="Title">
 <![CDATA[
@@ -58,8 +56,7 @@ Callback: PageCallback[Protected]
 		 page has had its say. -->
 
 	<request>
-  		<parameter name="service" value="page"/>
-  		<parameter name="context" value="Protected"/>
+  		<parameter name="service" value="page/Protected"/>
   		
   		<assert-output name="Title">
 <![CDATA[

@@ -35,8 +35,7 @@
 	<!-- Pretend to click the "Large" button. -->
 	
 	<request>
-		<parameter name="service" value="direct"/>
-		<parameter name="context" value="0/Home/$Form"/>
+		<parameter name="service" value="direct/0/Home/$Form"/>
 		<parameter name="sp" value="S0"/>
 		<parameter name="$RadioGroup" value="2"/>
 		<parameter name="Form0" value="$RadioGroup"/>
@@ -67,8 +66,7 @@
 	<!-- Submit with no option selected. -->
 	
 	<request>
-		<parameter name="service" value="direct"/>
-		<parameter name="context" value="0/Home/$Form"/>
+		<parameter name="service" value="direct/0/Home/$Form"/>
 		<parameter name="sp" value="S0"/>
 		<parameter name="Form0" value="$RadioGroup"/>
 		
@@ -98,8 +96,7 @@
 	<!-- Pretend to click the "Gargantuan" button (even though it is disabled). -->
 	
 	<request>
-		<parameter name="service" value="direct"/>
-		<parameter name="context" value="0/Home/$Form"/>
+		<parameter name="service" value="direct/0/Home/$Form"/>
 		<parameter name="sp" value="S0"/>
 		<parameter name="$RadioGroup" value="3"/>
 		<parameter name="Form0" value="$RadioGroup"/>
@@ -130,8 +127,7 @@
 	<!-- Click the dummy form (using action service). -->
 	
 	<request>
-		<parameter name="service" value="action"/>
-		<parameter name="context" value="0/Home/1/dummy"/>
+		<parameter name="service" value="action/0/Home/1/dummy"/>
 		<parameter name="sp" value="S0"/>
 		<parameter name="Form1" value=""/>
 		
@@ -161,8 +157,7 @@
 	<!-- Click the link to disable the group. -->
 	
 	<request>
-		<parameter name="service" value="direct"/>
-		<parameter name="context" value="0/Home/$DirectLink"/>
+		<parameter name="service" value="direct/0/Home/$DirectLink"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -189,8 +184,7 @@
 	
 	<!-- Select the (now disabled) large value. -->
 	<request>
-		<parameter name="service" value="direct"/>
-		<parameter name="context" value="0/Home/$Form"/>
+		<parameter name="service" value="direct/0/Home/$Form"/>
 		<parameter name="sp" value="S0"/>
 		<parameter name="$RadioGroup" value="2"/>
 		<parameter name="Form0" value="$RadioGroup"/>
@@ -219,8 +213,7 @@
 	</request>
 	
 	<request>
-		<parameter name="service" value="page"/>
-		<parameter name="context" value="NestedGroups"/>
+		<parameter name="service" value="page/NestedGroups"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -242,8 +235,7 @@
 	</request>
 	
 	<request>
-		<parameter name="service" value="page"/>
-		<parameter name="context" value="NoGroup"/>
+		<parameter name="service" value="page/NoGroup"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -265,8 +257,7 @@
 	</request>
 	
 	<request>
-		<parameter name="service" value="page"/>
-		<parameter name="context" value="NoForm"/>
+		<parameter name="service" value="page/NoForm"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[

@@ -230,17 +230,6 @@ public final class Tapestry
 
     public static final String SERVICE_QUERY_PARAMETER_NAME = "service";
 
-    /**
-     *  The query parameter for additional context needed by the
-     *  service.  This is used to store things like the page name or component id.
-     *  When there are multiple pieces of data, they are seperated by
-     *  slashes.  Not all services use a context.
-     *
-     *  @since 1.0.3
-    	 *
-     **/
-
-    public static final String CONTEXT_QUERY_PARMETER_NAME = "context";
 
     /**
      *  The query parameter for application specific parameters to the

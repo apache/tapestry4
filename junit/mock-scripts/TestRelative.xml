@@ -10,12 +10,9 @@
   			name="org.apache.tapestry.application-specification"
   			value="/org/apache/tapestry/junit/mock/c2/C2.application"/>
   	</servlet>      
-    
-<!-- Check that the home service is the default service. -->
-    
+        
     <request>   
-    	<parameter name="service" value="page"/>
-    	<parameter name="context" value="Relative"/>
+    	<parameter name="service" value="page/Relative"/>
     				
 		<assert-output name="Title">
 <![CDATA[

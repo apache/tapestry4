@@ -85,8 +85,7 @@ public class EngineServiceLink implements ILink
     private static final int DEFAULT_HTTP_PORT = 80;
 
     private IRequestCycle _cycle;
-    private String _serviceName;
-    private String _context;
+    private String _service;
     private String[] _parameters;
     private boolean _stateful;
 
@@ -124,25 +123,23 @@ public class EngineServiceLink implements ILink
         boolean stateful)
     {
         _cycle = cycle;
-        _serviceName = serviceName;
-        _context = constructContext(serviceContext);
+        _service = constructServiceValue(serviceName, serviceContext);
         _parameters = serviceParameters;
         _stateful = stateful;
     }
 
-    private String constructContext(String[] serviceContext)
+    private String constructServiceValue(String serviceName, String[] serviceContext)
     {
         int count = Tapestry.size(serviceContext);
 
         if (count == 0)
-            return null;
+            return serviceName;
 
-        StringBuffer buffer = new StringBuffer();
+        StringBuffer buffer = new StringBuffer(serviceName);
 
         for (int i = 0; i < count; i++)
         {
-            if (i > 0)
-                buffer.append('/');
+            buffer.append('/');
 
             buffer.append(serviceContext[i]);
         }
@@ -210,15 +207,7 @@ public class EngineServiceLink implements ILink
             buffer.append('?');
             buffer.append(Tapestry.SERVICE_QUERY_PARAMETER_NAME);
             buffer.append('=');
-            buffer.append(_serviceName);
-
-            if (_context != null)
-            {
-                buffer.append('&');
-                buffer.append(Tapestry.CONTEXT_QUERY_PARMETER_NAME);
-                buffer.append('=');
-                buffer.append(_context);
-            }
+            buffer.append(_service);
 
             int count = Tapestry.size(_parameters);
 
@@ -266,9 +255,6 @@ public class EngineServiceLink implements ILink
 
         list.add(Tapestry.SERVICE_QUERY_PARAMETER_NAME);
 
-        if (_context != null)
-            list.add(Tapestry.CONTEXT_QUERY_PARMETER_NAME);
-
         if (Tapestry.size(_parameters) != 0)
             list.add(Tapestry.PARAMETERS_QUERY_PARAMETER_NAME);
 
@@ -279,12 +265,7 @@ public class EngineServiceLink implements ILink
     {
         if (name.equals(Tapestry.SERVICE_QUERY_PARAMETER_NAME))
         {
-            return new String[] { _serviceName };
-        }
-
-        if (name.equals(Tapestry.CONTEXT_QUERY_PARMETER_NAME))
-        {
-            return new String[] { _context };
+            return new String[] { _service };
         }
 
         if (name.equals(Tapestry.PARAMETERS_QUERY_PARAMETER_NAME))
@@ -294,15 +275,13 @@ public class EngineServiceLink implements ILink
 
         throw new IllegalArgumentException(
             Tapestry.getString("EngineServiceLink.unknown-parameter-name", name));
-
     }
 
     public String toString()
     {
         ToStringBuilder builder = new ToStringBuilder(this);
 
-        builder.append("serviceName", _serviceName);
-        builder.append("context", _context);
+        builder.append("service", _service);
         builder.append("parameters", _parameters);
         builder.append("stateful", _stateful);
 

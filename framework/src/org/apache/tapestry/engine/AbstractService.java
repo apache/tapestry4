@@ -128,12 +128,16 @@ public abstract class AbstractService implements IEngineService
 
     protected String[] getServiceContext(RequestContext context)
     {
-        String raw = context.getParameter(Tapestry.CONTEXT_QUERY_PARMETER_NAME);
+        String service = context.getParameter(Tapestry.SERVICE_QUERY_PARAMETER_NAME);
 
-        if (raw == null)
-            return null;
+		int slashx = service.indexOf('/');
+		
+		if (slashx < 0)
+			return null;
+			
+		String serviceContext = service.substring(slashx + 1);
 
-        return new StringSplitter('/').splitToArray(raw);
+        return new StringSplitter('/').splitToArray(serviceContext);
     }
 
     /**
