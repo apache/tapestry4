@@ -326,7 +326,12 @@ description="Builds the Tapestry documentation.">
 
       	<sysproperty key="com.primix.tapestry.enable-reset-service" value="true"/>
       	<sysproperty key="com.primix.vlib.debug-enabled" value="true"/>
-
+      	
+      	<!-- The following is probably only necessary under Windows.  Jetty gets
+      	     tripped up by the fact that pathnames are case-insensitive.  -->
+      	     
+ 	    <sysproperty key="org.mortbay.util.FileResource.checkAliases" value="false"/>
+ 	    
 	</java>
 	
   </target>
