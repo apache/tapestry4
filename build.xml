@@ -129,7 +129,7 @@
 			<fileset dir=".">
 				<include name="build.xml"/>
 				<include name="*.html"/>
-				<include name="LICENSE.*"/>
+				<include name="*.txt"/>
 				<include name="KEYS"/>
 				<!-- Skip HTML files in web, since those need
 				 a seperate path, to provide filtering. -->
