@@ -60,5 +60,5 @@
     <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
     <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="jetty.xml"/>
     <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="org.mortbay.jetty.Server"/>
-    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dnet.sf.tapestry.disable-caching=true -Dnet.sf.tapestry.enable-reset-service=true -Dorg.mortbay.util.FileResource.checkAliases=false -DDEBUG"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dnet.sf.tapestry.disable-caching=true -Dnet.sf.tapestry.enable-reset-service=true -Dorg.mortbay.util.FileResource.checkAliases=false"/>
 </launchConfiguration>
