@@ -1,37 +1,33 @@
-/*
- * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
- *
- * Howard Lewis Ship
- * http://sf.net/projects/tapestry
- * mailto:hship@users.sf.net
- *
- * This library is free software.
- *
- * You may redistribute it and/or modify it under the terms of the GNU
- * Lesser General Public License as published by the Free Software Foundation.
- *
- * Version 2.1 of the license should be included with this distribution in
- * the file LICENSE, as well as License.html. If the license is not
- * included with this distribution, you may find a copy at the FSF web
- * site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
- * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied waranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- */
+//
+// Tapestry Web Application Framework
+// Copyright (c) 2000-2002 by Howard Lewis Ship
+//
+// Howard Lewis Ship
+// http://sf.net/projects/tapestry
+// mailto:hship@users.sf.net
+//
+// This library is free software.
+//
+// You may redistribute it and/or modify it under the terms of the GNU
+// Lesser General Public License as published by the Free Software Foundation.
+//
+// Version 2.1 of the license should be included with this distribution in
+// the file LICENSE, as well as License.html. If the license is not
+// included with this distribution, you may find a copy at the FSF web
+// site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
+// Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied waranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
 
 package net.sf.tapestry.contrib.form;
 
-
-import net.sf.tapestry.*;
-import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.IMarkupWriter;
+import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
-import net.sf.tapestry.form.*;
 import net.sf.tapestry.form.IPropertySelectionModel;
 
 /**
@@ -41,44 +37,44 @@ import net.sf.tapestry.form.IPropertySelectionModel;
  *  @version $Id$
  *  @author Sanjay Munjal
  *
- */
+ **/
 
 public interface IMultiplePropertySelectionRenderer
 {
-	/**
-	 *  Begins the rendering of the {@link MultiplePropertySelection}.
-	 *
-	 */
+    /**
+     *  Begins the rendering of the {@link MultiplePropertySelection}.
+     *
+     **/
 
-	public void beginRender(
-		MultiplePropertySelection component,
-		IMarkupWriter writer,
-		IRequestCycle cycle)
-		throws RequestCycleException;
+    public void beginRender(
+        MultiplePropertySelection component,
+        IMarkupWriter writer,
+        IRequestCycle cycle)
+        throws RequestCycleException;
 
-	/**
-	 *  Invoked for each element obtained from the {@link IPropertySelectionModel model}.
-	 *
-	 */
+    /**
+     *  Invoked for each element obtained from the {@link IPropertySelectionModel model}.
+     *
+     **/
 
-	public void renderOption(
-		MultiplePropertySelection component,
-		IMarkupWriter writer,
-		IRequestCycle cycle,
-		IPropertySelectionModel model,
-		Object option,
-		int index,
-		boolean selected)
-		throws RequestCycleException;
+    public void renderOption(
+        MultiplePropertySelection component,
+        IMarkupWriter writer,
+        IRequestCycle cycle,
+        IPropertySelectionModel model,
+        Object option,
+        int index,
+        boolean selected)
+        throws RequestCycleException;
 
-	/**
-	 *  Ends the rendering of the {@link MultiplePropertySelection}.
-	 *
-	 */
+    /**
+     *  Ends the rendering of the {@link MultiplePropertySelection}.
+     *
+     **/
 
-	public void endRender(
-		MultiplePropertySelection component,
-		IMarkupWriter writer,
-		IRequestCycle cycle)
-		throws RequestCycleException;
+    public void endRender(
+        MultiplePropertySelection component,
+        IMarkupWriter writer,
+        IRequestCycle cycle)
+        throws RequestCycleException;
 }
