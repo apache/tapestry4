@@ -139,7 +139,7 @@ public class LocaleSelection
 		ExpressionTableColumn objVerbosityColumn =
 			new ExpressionTableColumn(
 				"Verbosity",
-				"@tutorial.workbench.table.VerbosityRating@calculateVerbosity(#this)",
+				"@org.apache.tapestry.workbench.table.VerbosityRating@calculateVerbosity(#this)",
 				true);
 		Block objVerbosityBlock = (Block) getComponent("blockVerbosity");
 		ITableRendererSource objVerbosityRenderer =

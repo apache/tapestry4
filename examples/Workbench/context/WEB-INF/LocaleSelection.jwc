@@ -15,7 +15,7 @@
 	</component>
 	<component id="directDelete" type="DirectLink">
 		<binding name="listener" expression="listeners.deleteLocale"/>
-		<binding name="parameters" expression="currentLocale"/>
+		<binding name="parameters" expression="deleteLocaleContext"/>
 	</component>
 	<component id="verbosity" type="Any">
 		<static-binding name="element" value="td"/>
