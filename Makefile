@@ -57,8 +57,8 @@ prepare-for-packaging:
 	@$(ECHO) "\n*** Removing non-distributable JARs ... ***\n"
 	@$(RM) $(LOCAL_LIB_DIR)/j2ee.jar
 	@$(ECHO) "\n*** Copying licenses and Readme to root ...***\n"
-	$(TAR) cf - LICENSE* *.html ChangeLog images | \
-		($(CD) .. && $(TAR) xf)
+	$(TAR) --create LICENSE* *.html ChangeLog images | \
+		($(CD) .. && $(TAR) --extract)
 
 install: 
 	$(REINVOKE) TARGET=install JAVAC_OPT=-g
@@ -74,7 +74,6 @@ reinvoke:
 
 javadoc:
 	@$(ECHO) "\n*** Rebuilding Javadoc ... ***\n"
-	@$(RMDIRS) javadoc
 	@for module in $(JAVADOC_MODULES) ; do \
 		$(ECHO) "\n*** Making javadoc in $$module ... ***\n" ; \
        $(RECURSE) -C $$module javadoc || exit 2 ; \
@@ -122,8 +121,8 @@ FULL_RELEASE = \
 
 create-archives: prepare-for-packaging
 	@$(ECHO) "\n*** Creating full distribution archive ... ***\n"
-	@$(RM) -f ..\$(RELEASE_DIR)-*.gz $(FULL_RELEASE)
-	$(CD) ../.. ; $(TAR) czf $(RELEASE_DIR)-full.tar.gz $(RELEASE_DIR)
+	@$(RM) -f ..\$(RELEASE_DIR)-*.gz 
+	$(CD) ../.. ; $(TAR) czf $(RELEASE_DIR)-full.tar.gz $(FULL_RELEASE)
 	@$(ECHO) "\n*** Creating small distribution archive ... ***\n"
 	$(CD) ../.. ; $(TAR) czf $(RELEASE_DIR)-small.tar.gz $(SMALL_RELEASE)
 	@$(ECHO) "\n*** Creating medium distribution archive ... ***\n"
