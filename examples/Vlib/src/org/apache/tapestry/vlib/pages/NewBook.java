@@ -61,7 +61,6 @@ import java.util.Map;
 
 import javax.ejb.CreateException;
 
-import org.apache.tapestry.IComponentStrings;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.event.PageEvent;

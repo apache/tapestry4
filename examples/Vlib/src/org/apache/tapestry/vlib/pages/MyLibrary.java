@@ -59,7 +59,6 @@ import java.rmi.RemoteException;
 
 import javax.ejb.FinderException;
 
-import org.apache.tapestry.IComponentStrings;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.vlib.IMessageProperty;

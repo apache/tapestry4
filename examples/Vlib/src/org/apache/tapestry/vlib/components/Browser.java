@@ -56,15 +56,10 @@
 package org.apache.tapestry.vlib.components;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponent;
-import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.event.PageDetachListener;
-import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.vlib.ejb.Book;
 import org.apache.tapestry.vlib.ejb.IBookQuery;
 

@@ -57,8 +57,6 @@ package org.apache.tapestry.request;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.tapestry.request.*;
-
 /**
  *  Given a {@link javax.servlet.http.HttpServletRequest}, identifies
  *  the correct request properties (server, scheme, URI and port).
