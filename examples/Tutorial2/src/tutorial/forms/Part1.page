@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: Home.page,v 1.6 2002/05/13 14:00:37 scornflake Exp $ -->
+<!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+
+<page-specification class="tutorial.forms.Part1">
+	<bean name="delegate" class="net.sf.tapestry.valid.ValidationDelegate"/>
+
+	<component id="form" type="Form">
+		<binding name="delegate" expression="beans.delegate"/>	
+	</component>
+	
+	<component id="name" type="TextField">
+		<binding name="value" expression="visit.userName"/>
+	</component>
+	
+	<component id="dateOfBirth" type="TextField">
+		<binding name="value" expression="visit.dateOfBirth"/>
+	</component>
+
+	<component id="favColour" type="TextField">
+		<binding name="value" expression="visit.favoriteColour"/>
+	</component>
+	
+	<component id="submit" type="Submit">
+		<binding name="listener" expression="listeners.enterDetails"/>
+	</component>
+</page-specification>
