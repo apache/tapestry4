@@ -242,11 +242,8 @@ public interface IEngine
     /**
      *  Method invoked from the {@link org.apache.tapestry.ApplicationServlet} 
      *  to perform processing of the
-     *  request.  The return value for this method indicates whether the state of the engine
-     *  could possibly change during processing; in most cases this is true.  In a few
-     *  possible cases, this is false.  The ApplicationServlet sometimes performs extra
-     *  work to ensure that the engine is properly replicated in a clustering environment; if
-     *  this method returns false, it can skip that extra work.
+     *  request.  In release 2.4, this has become more of a dirty flag, indicating
+     *  if any state stored by the engine instance itself has changed.
      *
      *  @return true if the state of the engine was, or could have been, changed during
      *  processing.

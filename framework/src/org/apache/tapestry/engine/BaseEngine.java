@@ -65,6 +65,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.*;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
@@ -104,6 +105,7 @@ public class BaseEngine extends AbstractEngine
         if (Tapestry.isEmpty(_recorders))
             return;
 
+		boolean markDirty = false;
         Iterator i = _recorders.entrySet().iterator();
 
         while (i.hasNext())
@@ -119,8 +121,13 @@ public class BaseEngine extends AbstractEngine
                 i.remove();
 
                 _activePageNames.remove(pageName);
+      	
+      			markDirty = true;
             }
         }
+        
+        if (markDirty)
+        	markDirty();
     }
 
     public void forgetPage(String name)
@@ -139,6 +146,8 @@ public class BaseEngine extends AbstractEngine
         recorder.discard();
         _recorders.remove(name);
         _activePageNames.remove(name);
+        
+        markDirty();
     }
 
     /**
@@ -190,6 +199,7 @@ public class BaseEngine extends AbstractEngine
 
         cycle.getRequestContext().createSession();
         setStateful();
+       
 
         IPageRecorder result = new SessionPageRecorder();
         result.initialize(pageName, cycle);
@@ -200,6 +210,8 @@ public class BaseEngine extends AbstractEngine
             _activePageNames = new HashSet();
 
         _activePageNames.add(pageName);
+        
+        markDirty();
 
         return result;
     }
@@ -257,6 +269,11 @@ public class BaseEngine extends AbstractEngine
 
             out.writeUTF(name);
         }
+    }
+
+    public void extendDescription(ToStringBuilder builder)
+    {
+		builder.append("activePageNames", _activePageNames);
     }
 
 }
