@@ -99,15 +99,7 @@ public abstract class Shell extends AbstractComponent
         {
             startTime = System.currentTimeMillis();
 
-            String DTD = getDTD();
-
-            if (!StringUtils.isEmpty(DTD))
-            {
-                writer.printRaw("<!DOCTYPE HTML PUBLIC \"");
-                writer.printRaw(DTD);
-                writer.printRaw("\">");
-                writer.println();
-            }
+            writeDocType(writer, cycle);
 
             IPage page = getPage();
 
@@ -184,6 +176,24 @@ public abstract class Shell extends AbstractComponent
 
     }
 
+    private void writeDocType(IMarkupWriter writer, IRequestCycle cycle)
+    {
+        // This code is deprecated and is here only for backward compatibility
+        String DTD = getDTD();
+        if (!StringUtils.isEmpty(DTD)) {
+            writer.printRaw("<!DOCTYPE HTML PUBLIC \"" + DTD + "\">");
+            writer.println();
+            return;
+        }
+
+        // This is the real code
+        String doctype = getDoctype();
+        if (!StringUtils.isEmpty(doctype)) {
+            writer.printRaw("<!DOCTYPE " + doctype + ">");
+            writer.println();
+        }
+    }
+
     private void writeStylesheetLink(IMarkupWriter writer, IRequestCycle cycle, IAsset stylesheet)
     {
         writer.beginEmpty("link");
@@ -228,22 +238,12 @@ public abstract class Shell extends AbstractComponent
 
     public abstract String getTitle();
 
-    public abstract String getDTD();
+    public abstract String getDoctype();
 
-    public abstract void setDTD(String DTD);
+    public abstract String getDTD();
 
     public abstract Object getStylesheets();
 
     public abstract boolean getRenderContentType();
-
-    /**
-     * Sets the DTD parameter property to its default value.
-     * 
-     * @since 3.0
-     */
-    protected void finishLoad()
-    {
-        setDTD("-//W3C//DTD HTML 4.0 Transitional//EN");
-    }
-
+    
 }
