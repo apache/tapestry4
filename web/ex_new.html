@@ -6,7 +6,7 @@
 <link rel="STYLESHEET" type="text/css" href="scripts/style_virtlib_pcIE55.css">
 </head>
 
-<body background="images/bg02.gif" bgcolor="#ffffff" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<body background="images/bg02.gif" bgcolor="#839cd1" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 	<tr>
 		<td height="5"><img height="1" src="images/spacer.gif" width="1" border="0"></td>
@@ -44,13 +44,20 @@
 	
 <h3>Release 1.0.9</h3>
 
-<p>The way engine services are defined and used has been completely redone.  Services are now defined
-in the application specification and a shared instance of the service object is instantiated
+<p>The way engine services are defined and used has been completely overhauled.  
+Services are now defined
+in the application specification and a single
+instance of the service object is instantiated
 and shared by all engine instances (for the application).
 
 <p>Made it easier to override the creation of the specification source, template source, etc. in subclasses
 of 
 <a href="doc/api/com/primix/tapestry/engine/AbstractApplication.html">AbstractApplication</a>.
+
+
+<p>The <a href="doc/api/com/primix/tapestry/form/Submit.html">Submit</a> and 
+<a href="doc/api/com/primix/tapestry/form/ImageSubmit.html">ImageSubmit</a> components may now have 
+their own listener, which is notified before the containing form's listener.
 
 <pre>
 [ #510175 ] add service registration to .application
