@@ -46,21 +46,6 @@ public class BaseComponent extends AbstractComponent
 	protected int outerCount = 0;
 	protected IRender[] outer;
 
-    public BaseComponent()
-    {
-    }
-
-    /**
-     *  @deprecated
-     *
-     */
-
-	public BaseComponent(IPage page, IComponent container, String id, 
-		ComponentSpecification spec)
-	{
-		super(page, container, id, spec);
-	}
-
 	/**
 	*  Adds an element as an outer element for the receiver.  Outer
 	*  elements are elements that should be directly rendered by the

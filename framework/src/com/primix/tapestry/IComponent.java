@@ -40,13 +40,7 @@ import com.primix.tapestry.components.*;
  * <p>Components are created dynamically from thier class names (part of the
  *  {@link ComponentSpecification}.  Classes which
  * implement <code>IComponent</code> (but not {@link IPage})
- * must implement either a non-arguments constructor, or
- * a constructor with the
- * following parameters:
- *
- * <p><code>(IPage, IComponent, String, ComponentSpecification)</code>
- *
- * <p>The latter case (the complicated constructor) has been deprecated.
+ * must implement a no-arguments constructor (like any good JavaBean).
  *
  * <p>The {@link ILifecycle} interface defines additional methods
  * for components that need to perform extra work as they are loaded and before

@@ -172,25 +172,6 @@ public abstract class AbstractComponent implements IComponent
     * @deprecated
 	*/
 
-	public AbstractComponent(IPage page, IComponent container, String id,
-		ComponentSpecification specification)
-	{
-		this.page = page;
-		this.container = container;
-		this.id = id;
-		this.specification = specification;
-
-		setupAssets();
-	}
-
-    /**
-     *  Standard constructor.
-     *
-     */
-
-    public AbstractComponent()
-    {
-    }
 
 	public void addComponent(String name, IComponent component)
 	{

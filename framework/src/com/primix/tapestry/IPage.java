@@ -42,13 +42,8 @@ import javax.servlet.http.HttpSession;
  *
  * <p>Pages are created dynamically from thier class names (part of the
  * {@link ComponentSpecification}).  Classes which
- * implement <code>IPage</code> must implement either
- * a no-arguments constructor, or a constructor with the
- * following parameters:
- *
- * <p><code>({@link IApplication}, {@link ComponentSpecification})</code>
- *
- * <p>The latter case (the complicated constructor) has been deprecated.
+ * implement <code>IPage</code> must implement 
+ * a no-arguments constructor (like any good JavaBean).
  *
  * @see IPageSource
  * @see IPageLoader
@@ -224,4 +219,12 @@ public interface IPage extends IComponent
 	 */
 	 
 	public void cleanupPage();
+
+    /**
+     *  Returns the visit object for the application; the visit object
+     *  contains application-specific information.
+     *
+     */
+
+    public Object getVisit();
 }

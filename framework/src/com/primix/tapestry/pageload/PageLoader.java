@@ -276,23 +276,8 @@ public class PageLoader
 	}
 
 	/**
-	*  Instantitates a component from its specification.  
-	*  <p>Instantiating a page is a bit different that instantitating a component
-	*  because the constructor is different.
-    *
-    *  <p>The new style, using a no-arguments constructor is a bit easier.  The old
-    *  style, using the deprecated constructor, is still supported.
-    *  It requires a constructor that takes the following
-	*  parameters:
-	* <ul>
-	* <li>IPage
-	* <li>IComponent
-	* <li>String
-	* <li>ComponentSpecification
-	* </li>
-	*
-    * <p>Using the new style, we instantiate the component object, then
-    * sets its specification, page, container and id.
+	*  Instantitates a component from its specification. We instantiate 
+	* the component object, then set its specification, page, container and id.
     *
 	*  @see AbstractComponent
 	*/
@@ -304,9 +289,6 @@ public class PageLoader
     	String className;
 		Class componentClass;
 		IComponent result = null;
-		Constructor constructor;
-		Class[] signature;
-		Object[] parameters;
 
 		className = spec.getComponentClassName();
 		componentClass = resolver.findClass(className);
@@ -320,65 +302,20 @@ public class PageLoader
             result.setContainer(container);
             result.setId(id);
 
-            count++;
-
-            return result;
-        }
-        catch (InstantiationException e)
-        {
-            // Ignore and use the older constructor.
         }
         catch (ClassCastException e)
         {
         	throw new PageLoaderException(
         		"Class " + className + 
-        		" does not implement the com.primix.tapestry.IComponent interface.", 
+        		" does not implement the IComponent interface.", 
         		this, container, e);
         }
         catch (Exception e)
         {
             throw new PageLoaderException(
-                "Unable to instantiate instance of " + className + ".",
+                "Unable to instantiate an instance of class " + className + ".",
                 this, container, e);
         }
-
-        // Again, this is deprecated in Tapestry 0.1.6 and will be removed
-        // shortly.
-
-		signature = new Class[] { IPage.class, IComponent.class, String.class,
-                                  ComponentSpecification.class };
-
-		try
-		{
-			constructor = componentClass.getConstructor(signature);
-		}
-		catch (NoSuchMethodException e)
-		{
-			throw new PageLoaderException(
-				"Class " + className + " does not implement a constructor with " +
-				"the (IPage, IComponent, String, ComponentSpecification) " +
-				"signature.",
-				this, container, e);
-		}
-
-		parameters = new Object[] { page, container, id, spec };
-
-		try
-		{
-			result = (IComponent)constructor.newInstance(parameters);
-		}
-		catch (ClassCastException e)
-		{
-			throw new PageLoaderException(
-				"Class " + className + 
-				" does not implement the com.primix.tapestry.IComponent interface.", 
-				this, container, e);
-		}
-		catch (Exception e)
-		{
-			throw new PageLoaderException("Could not instantitate component.", 
-				this, container, e);
-		}
 
 		count++;
 
@@ -387,24 +324,10 @@ public class PageLoader
 
 	/**
 	*  Instantitates a page from its specification.  
-    
-	*  <p>Instantiating a page is a bit different that instantitating a component
-	*  because the constructor is different.
-	*
-	* <p>A page must implement the {@link IPage} interface and
-	* requires either a no-arguments constructor (new style)
-	* or a constructor that takes the following
-	*  parameters (deprecated style):
-	* <ul>
-	* <li>IApplication
-	* <li>ComponentSpecification
-	* </li>
-	*
-    * <p>Under the new style, we instantiate the page object, then set its specification, 
-    * name and locale.
     *
-    * <p>Under the old style, we instantiate the page object (letting its constructor set
-    *  the application, locale and specification), then we set the page's name.
+    *  
+    * We instantiate the page object, then set its specification, 
+    * name and locale.
     *
 	* @see IApplication
 	* @see ChangeObserver
@@ -416,9 +339,6 @@ public class PageLoader
     	String className;
 		Class pageClass;
 		IPage result = null;
-		Constructor constructor;
-		Class[] signature;
-		Object[] parameters;
 
 		className = spec.getComponentClassName();
         
@@ -431,67 +351,22 @@ public class PageLoader
             result.setSpecification(spec);
             result.setName(name);
             result.setLocale(application.getLocale());
-
-            return result;
-        }
-        catch (InstantiationException e)
-        {
-            // Ignore and use the older constructor.
         }
         catch (ClassCastException e)
         {
         	throw new PageLoaderException(
         		"Class " + className + 
-        		" does not implement the com.primix.tapestry.IPage interface.", 
+        		" does not implement the IPage interface.", 
         		this, name, e);
         }
         catch (Exception e)
         {
             throw new PageLoaderException(
-                "Unable to instantiate instance of " + className + ".",
+                "Unable to instantiate an instance of class " + className + ".",
                 this, name, e);
         }
 
-        // For compatibility with older classes.  In Tapestry 0.1.6, we removed
-        // the need for this constructor (with the code above).  This will be maintained
-        // for a very limited amount of time.
-
-		signature = new Class[] { IApplication.class, ComponentSpecification.class };
-
-		try
-		{
-			constructor = pageClass.getConstructor(signature);
-		}
-		catch (NoSuchMethodException e)
-		{
-			throw new PageLoaderException(
-
-				"Class " + className + " does not implement a constructor with " +
-				"the (IApplication, ComponentSpecification) signature.",
-				this, name, e);
-		}
-
-		parameters = new Object[] { application, spec };
-
-		try
-		{
-			result = (IPage)constructor.newInstance(parameters);
-		}
-		catch (ClassCastException e)
-		{
-			throw new PageLoaderException(
-				"Class " + className + 
-				" does not implement the com.primix.tapestry.IPage interface.", 
-				this, name, e);
-		}
-		catch (Exception e)
-		{
-			throw new PageLoaderException(e.getMessage(), this, name, e);
-		}
-
-		result.setName(name);
-
-		return result;
+        return result;
 	}
 
 	public IPage loadPage(String name, String type)
