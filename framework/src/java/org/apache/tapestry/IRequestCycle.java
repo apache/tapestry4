@@ -17,6 +17,7 @@ package org.apache.tapestry;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.IMonitor;
+import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.Infrastructure;
 
 /**
@@ -293,4 +294,13 @@ public interface IRequestCycle
      */
 
     public Infrastructure getInfrastructure();
+
+    /**
+     * Returns the {@link RequestContext}. This is provided to ease the upgrade from Tapestry 3.0.
+     * 
+     * @since 3.1
+     * @deprecated To be removed in 3.2.
+     */
+
+    public RequestContext getRequestContext();
 }

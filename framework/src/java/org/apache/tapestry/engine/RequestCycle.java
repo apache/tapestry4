@@ -22,7 +22,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.ErrorHandler;
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.impl.ErrorLogImpl;
 import org.apache.hivemind.util.Defense;
@@ -37,11 +36,10 @@ import org.apache.tapestry.StaleLinkException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.record.PageRecorderImpl;
 import org.apache.tapestry.record.PropertyPersistenceStrategySource;
+import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.AbsoluteURLBuilder;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.util.QueryParameterMap;
-import org.apache.tapestry.web.WebRequest;
-import org.apache.tapestry.web.WebResponse;
 
 /**
  * Provides the logic for processing a single request cycle. Provides access to the
@@ -60,11 +58,7 @@ public class RequestCycle implements IRequestCycle
 
     private IEngineService _service;
 
-    private WebRequest _request;
-
     private IMonitor _monitor;
-
-    private WebResponse _response;
 
     /** @since 3.1 */
 
@@ -123,26 +117,31 @@ public class RequestCycle implements IRequestCycle
 
     private ErrorLog _log;
 
+    private RequestContext _requestContext;
+
     /**
      * Standard constructor used to render a response page.
      */
 
-    public RequestCycle(IEngine engine, WebRequest request, WebResponse response,
-            QueryParameterMap parameters, IEngineService service, Infrastructure infrastructure,
-            PropertyPersistenceStrategySource strategySource,
-            AbsoluteURLBuilder absoluteURLBuilder, ErrorHandler errorHandler, IMonitor monitor)
+    public RequestCycle(IEngine engine, QueryParameterMap parameters, IEngineService service,
+            IMonitor monitor, RequestCycleEnvironment environment)
     {
+        // Variant from instance to instance
+
         _engine = engine;
-        _request = request;
-        _response = response;
         _parameters = parameters;
         _service = service;
-        _infrastructure = infrastructure;
-        _pageSource = _infrastructure.getPageSource();
-        _strategySource = strategySource;
-        _absoluteURLBuilder = absoluteURLBuilder;
-        _log = new ErrorLogImpl(errorHandler, LOG);
         _monitor = monitor;
+
+        // Invariant from instance to instance
+
+        _infrastructure = environment.getInfrastructure();
+        _pageSource = _infrastructure.getPageSource();
+        _strategySource = environment.getStrategySource();
+        _absoluteURLBuilder = environment.getAbsoluteURLBuilder();
+        _requestContext = environment.getRequestContext();
+        _log = new ErrorLogImpl(environment.getErrorHandler(), LOG);
+
     }
 
     /**
@@ -185,7 +184,7 @@ public class RequestCycle implements IRequestCycle
 
     public String encodeURL(String URL)
     {
-        return _response.encodeURL(URL);
+        return _infrastructure.getResponse().encodeURL(URL);
     }
 
     public IEngine getEngine()
@@ -621,7 +620,7 @@ public class RequestCycle implements IRequestCycle
         b.append("rewinding", _rewinding);
 
         if (_service != null)
-            b.append("service", _service.getName());
+            b.append("service", _service);
 
         b.append("serviceParameters", _serviceParameters);
 
@@ -639,7 +638,7 @@ public class RequestCycle implements IRequestCycle
 
     public String getAbsoluteURL(String partialURL)
     {
-        String contextPath = _request.getContextPath();
+        String contextPath = _infrastructure.getRequest().getContextPath();
 
         return _absoluteURLBuilder.constructURL(contextPath + partialURL);
     }
@@ -658,5 +657,10 @@ public class RequestCycle implements IRequestCycle
     public Infrastructure getInfrastructure()
     {
         return _infrastructure;
+    }
+
+    public RequestContext getRequestContext()
+    {
+        return _requestContext;
     }
 }

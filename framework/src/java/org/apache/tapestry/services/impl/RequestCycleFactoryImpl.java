@@ -16,6 +16,9 @@ package org.apache.tapestry.services.impl;
 
 import java.util.Iterator;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.hivemind.ErrorHandler;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
@@ -24,9 +27,11 @@ import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.IMonitor;
 import org.apache.tapestry.engine.IMonitorFactory;
 import org.apache.tapestry.engine.RequestCycle;
+import org.apache.tapestry.engine.RequestCycleEnvironment;
 import org.apache.tapestry.engine.ServiceEncoder;
 import org.apache.tapestry.engine.ServiceEncodingImpl;
 import org.apache.tapestry.record.PropertyPersistenceStrategySource;
+import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.AbsoluteURLBuilder;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.RequestCycleFactory;
@@ -36,6 +41,9 @@ import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
 
 /**
+ * Service that creates instances of {@link org.apache.tapestry.IRequestCycle}on behalf of an
+ * engine.
+ * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
@@ -53,8 +61,24 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
 
     private AbsoluteURLBuilder _absoluteURLBuilder;
 
-    public IRequestCycle newRequestCycle(IEngine engine, WebRequest request, WebResponse response)
+    private RequestCycleEnvironment _environment;
+
+    private HttpServletRequest _servletRequest;
+
+    private HttpServletResponse _servletResponse;
+
+    public void initializeService()
     {
+        RequestContext context = new RequestContext(_servletRequest, _servletResponse);
+
+        _environment = new RequestCycleEnvironment(_errorHandler, _infrastructure, context,
+                _strategySource, _absoluteURLBuilder);
+    }
+
+    public IRequestCycle newRequestCycle(IEngine engine)
+    {
+        WebRequest request = _infrastructure.getRequest();
+
         IMonitor monitor = _monitorFactory.createMonitor(request);
 
         QueryParameterMap parameters = extractParameters(request);
@@ -63,8 +87,7 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
 
         IEngineService service = findService(parameters);
 
-        return new RequestCycle(engine, request, response, parameters, service, _infrastructure,
-                _strategySource, _absoluteURLBuilder, _errorHandler, monitor);
+        return new RequestCycle(engine, parameters, service, monitor, _environment);
     }
 
     private IEngineService findService(QueryParameterMap parameters)
@@ -145,5 +168,15 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
     public void setAbsoluteURLBuilder(AbsoluteURLBuilder absoluteURLBuilder)
     {
         _absoluteURLBuilder = absoluteURLBuilder;
+    }
+
+    public void setServletRequest(HttpServletRequest servletRequest)
+    {
+        _servletRequest = servletRequest;
+    }
+
+    public void setServletResponse(HttpServletResponse servletResponse)
+    {
+        _servletResponse = servletResponse;
     }
 }
