@@ -13,6 +13,8 @@ problems using Team support inside the Eclipse IDE.
 
 <property file="../../../config/build.properties"/>
 
+<property name="html.install.dir" value="../../${root.filename}"/>
+
 <!-- The base name for the DTD distribution (the directory and tar file
      will match). -->
      
@@ -20,7 +22,7 @@ problems using Team support inside the Eclipse IDE.
 
 <!-- Base name for the XSL distribution. -->
 
-<property name="docbook.xsl.base" value="docbook-xsl-1.52.2"/>
+<property name="docbook.xsl.base" value="docbook-xsl-1.53.0"/>
 
 <property name="docbook.dtd.dir" value="../common/${docbook.dtd.base}"/>
 <property name="docbook.xsl.dir" value="../common/${docbook.xsl.base}"/>
@@ -30,6 +32,9 @@ problems using Team support inside the Eclipse IDE.
 	
 <property name="docbook.single.xsl"
 	value="../common/Tapestry-${docbook.xsl.base}-Single.xsl"/>
+
+<property name="docbook.fop.xsl"
+	value="../common/Tapestry-${docbook.xsl.base}-Fop.xsl"/>
 
 <xmlcatalog id="docbook.catalog">
 	<dtd publicId="-//OASIS//DTD DocBook XML V4.1//EN" location="${docbook.dtd.dir}/docbookx.dtd"/>
@@ -56,6 +61,14 @@ problems using Team support inside the Eclipse IDE.
 		<filterset>
 			<filter token="docbook.xsl.base" value="${docbook.xsl.base}"/>
 			<filter token="format" value="docbook"/>
+		</filterset>
+	</copy>
+	
+	<copy
+		file="../common/Tapestry.fop-xsl.template"
+		tofile="${docbook.fop.xsl}">
+		<filterset>
+			<filter token="docbook.xsl.base" value="${docbook.xsl.base}"/>
 		</filterset>
 	</copy>
 	
@@ -89,12 +102,7 @@ problems using Team support inside the Eclipse IDE.
   <delete dir="${html.output.dir}"/>
 </target>
   
-<!-- saxon.jar must be set in the Ant lib directory -->
-
-
-<!-- Invoked using antcall, setting the property root.filename -->
-
-<target name="build-html" depends="docbook-setup">
+<target name="copy-images" depends="setup">
     <copy todir="${images.dest.dir}" >
       <fileset dir="${images.src.dir}"/>
     </copy>
@@ -108,6 +116,53 @@ problems using Team support inside the Eclipse IDE.
     		<include name="*.png"/>
     	</fileset>
     </copy>
+</target>
+
+
+<target name="pdf" depends="docbook-setup,copy-images">
+	<echo>
+	
+Generating Flow Objects from ${root.filename}.xml ...
+
+</echo>
+        
+    <style destdir="${html.output.dir}"
+    	style="${docbook.fop.xsl}"
+    	processor="trax" 
+    	in="${root.filename}.xml"
+    	out="${html.output.dir}/${root.filename}.fop">
+    	<xmlcatalog refid="docbook.catalog"/>
+    </style>
+    
+<echo>
+
+Converting Flow Objects to PDF ...
+
+</echo>
+
+	<java classname="org.apache.fop.apps.Fop"
+		fork="true"
+		dir="${html.output.dir}">
+		<classpath>
+			<fileset dir="${fop.dir}">
+				<include name="build/fop.jar"/>
+				<include name="lib/*.jar"/>
+				<include name="lib/*.zip"/>
+			</fileset>
+		</classpath>
+		<arg line="-d"/>
+		<arg line="-fo ${root.filename}.fop"/>
+		<arg line="-pdf ${root.filename}.pdf"/>
+	</java>      
+
+</target>
+
+<!-- saxon.jar must be set in the Ant lib directory -->
+
+
+<!-- Invoked using antcall, setting the property root.filename -->
+
+<target name="html" depends="docbook-setup,copy-images">
     <copy todir="${html.output.dir}" file="../common/Tapestry.css"/>
    
     <echo>
@@ -139,5 +194,16 @@ Generating Chunked (Multiple Page) HTML from ${root.filename}.xml ...
     	<xmlcatalog refid="docbook.catalog"/>		
     </style>
   
+</target>
+
+
+<target name="install" depends="html,pdf" 
+	description="Build and install documentation.">
+	<mkdir dir="${html.install.dir}"/>
+  	<copy todir="${html.install.dir}">
+  	  <fileset dir="${html.output.dir}">
+  	  	<exclude name="*.fop"/>
+  	  </fileset>
+  	</copy>
 </target>
 

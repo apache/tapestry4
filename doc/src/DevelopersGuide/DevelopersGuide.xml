@@ -3,26 +3,54 @@
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1//EN"
   "http://www.oasis-open.org/docbook/xml/4.1/docbookx.dtd" [
   <!-- Useful snippets -->
-  <!ENTITY jwc-tag "<sgmltag class='starttag'>jwc</sgmltag>">
-  <!ENTITY % TapestryLinks SYSTEM "../common/TapestryLinks.xml">
+<!ENTITY jwc-tag "<sgmltag class='starttag'>jwc</sgmltag>">
+<!ENTITY % TapestryLinks SYSTEM "../common/TapestryLinks.xml">
   
   %TapestryLinks;
   
-  <!-- Each chapter is in its own file -->
+<!-- Each chapter is in its own file -->
   
-  <!ENTITY chap-intro SYSTEM "intro.xml">
-  <!ENTITY chap-beans SYSTEM "beans.xml">
-  <!ENTITY chap-components SYSTEM "components.xml">
-  <!ENTITY chap-pages SYSTEM "pages.xml">
-  <!ENTITY chap-engine SYSTEM "engine.xml">
-  <!ENTITY chap-cycle SYSTEM "cycle.xml">
-  <!ENTITY chap-apps SYSTEM "apps.xml">
-  <!ENTITY chap-coding SYSTEM "coding.xml">
-  <!ENTITY chap-coding-components SYSTEM "coding-components.xml">
-  <!ENTITY chap-script SYSTEM "script.xml">
-  <!ENTITY chap-inspector SYSTEM "inspector.xml">
-  <!ENTITY appendix-jars SYSTEM "jars.xml">
-  <!ENTITY appendix-faq SYSTEM "faq.xml">  
+<!ENTITY chap-intro SYSTEM "intro.xml">
+<!ENTITY chap-beans SYSTEM "beans.xml">
+<!ENTITY chap-components SYSTEM "components.xml">
+<!ENTITY chap-pages SYSTEM "pages.xml">
+<!ENTITY chap-engine SYSTEM "engine.xml">
+<!ENTITY chap-cycle SYSTEM "cycle.xml">
+<!ENTITY chap-apps SYSTEM "apps.xml">
+<!ENTITY chap-coding SYSTEM "coding.xml">
+<!ENTITY chap-coding-components SYSTEM "coding-components.xml">
+<!ENTITY chap-script SYSTEM "script.xml">
+<!ENTITY chap-inspector SYSTEM "inspector.xml">
+<!ENTITY appendix-jars SYSTEM "jars.xml">
+<!ENTITY appendix-faq SYSTEM "faq.xml">
+<!ENTITY appendix-spec SYSTEM "spec.xml"> 
+
+<!ENTITY spec.application '<link linkend="spec.application"><sgmltag class="starttag">application</sgmltag></link>'>
+<!ENTITY spec.bean '<link linkend="spec.bean"><sgmltag class="starttag">bean</sgmltag></link>'>
+<!ENTITY spec.binding '<link linkend="spec.binding"><sgmltag class="starttag">binding</sgmltag></link>'>
+<!ENTITY spec.configure '<link linkend="spec.configure"><sgmltag class="starttag">configure</sgmltag></link>'>
+<!ENTITY spec.component '<link linkend="spec.component"><sgmltag class="starttag">component</sgmltag></link>'>
+<!ENTITY spec.component-alias '<link linkend="spec.component-alias"><sgmltag class="starttag">component-alias</sgmltag></link>'>
+<!ENTITY spec.component-specification '<link linkend="spec.component-specification"><sgmltag class="starttag">component-specification</sgmltag></link>'>
+<!ENTITY spec.context-asset '<link linkend="spec.context-asset"><sgmltag class="starttag">context-asset</sgmltag></link>'>
+<!ENTITY spec.description '<link linkend="spec.description"><sgmltag class="starttag">description</sgmltag></link>'>
+<!ENTITY spec.extension '<link linkend="spec.extension"><sgmltag class="starttag">extension</sgmltag></link>'>
+<!ENTITY spec.external-asset '<link linkend="spec.external-asset"><sgmltag class="starttag">external-asset</sgmltag></link>'>
+<!ENTITY spec.field-binding '<link linkend="spec.field-binding"><sgmltag class="starttag">field-binding</sgmltag></link>'>
+<!ENTITY spec.inherited-binding '<link linkend="spec.inherited-binding"><sgmltag class="starttag">inherited-binding</sgmltag></link>'>
+<!ENTITY spec.library '<link linkend="spec.library"><sgmltag class="starttag">library</sgmltag></link>'>
+<!ENTITY spec.library-specification '<link linkend="spec.library-specification"><sgmltag class="starttag">library-specification</sgmltag></link>'>
+<!ENTITY spec.page '<link linkend="spec.page"><sgmltag class="starttag">page</sgmltag></link>'>
+<!ENTITY spec.page-specification '<link linkend="spec.page-specification"><sgmltag class="starttag">page-specification</sgmltag></link>'>
+<!ENTITY spec.parameter '<link linkend="spec.parameter"><sgmltag class="starttag">parameter</sgmltag></link>'>
+<!ENTITY spec.private-asset '<link linkend="spec.private-asset"><sgmltag class="starttag">private-asset</sgmltag></link>'>
+<!ENTITY spec.property '<link linkend="spec.property"><sgmltag class="starttag">property</sgmltag></link>'>
+<!ENTITY spec.reserved-parameter '<link linkend="spec.reserved-parameter"><sgmltag class="starttag">reserved-parameter</sgmltag></link>'>
+<!ENTITY spec.service '<link linkend="spec.service"><sgmltag class="starttag">service</sgmltag></link>'>
+<!ENTITY spec.set-property '<link linkend="spec.set-property"><sgmltag class="starttag">set-property</sgmltag></link>'>
+<!ENTITY spec.set-string-property '<link linkend="spec.set-string-property"><sgmltag class="starttag">set-string-property</sgmltag></link>'>
+<!ENTITY spec.static-binding '<link linkend="spec.static-binding"><sgmltag class="starttag">static-binding</sgmltag></link>'>
+<!ENTITY spec.string-binding '<link linkend="spec.string-binding"><sgmltag class="starttag">string-binding</sgmltag></link>'>
 
 ]>
 <!-- Conventions:
@@ -49,30 +77,37 @@
     </copyright>
   </bookinfo>
   
-  &chap-intro;
+  <!--
   
-  &chap-beans;
+  chap-intro;
   
-  &chap-components;
+  chap-beans;
   
-  &chap-pages;
+  chap-components;
   
-  &chap-engine;
+  chap-pages;
   
-  &chap-cycle;
+  chap-engine;
+  
+  chap-cycle;
    
-  &chap-apps;
+  chap-apps;
   
-  &chap-coding;
+  chap-coding;
   
-  &chap-coding-components;
+  chap-coding-components;
   
-  &chap-script;
+  chap-script;
 
-  &chap-inspector;
+  chap-inspector; 
+    
+  appendix-jars;
   
-  &appendix-jars;
+  appendix-faq;
   
-  &appendix-faq;
+  -->
+  
+  &appendix-spec;
+
 
 </book>

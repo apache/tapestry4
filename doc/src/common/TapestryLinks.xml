@@ -35,6 +35,7 @@
 <!ENTITY Gesture '<ulink url="&ApiRoot;/Gesture.html"><classname>Gesture</classname></ulink>'>
 <!ENTITY IBinding '<ulink url="&ApiRoot;/IBinding.html"><classname>IBinding</classname></ulink>'>
 <!ENTITY IActionListener '<ulink url="&ApiRoot;/IActionListener.html"><classname>IActionListener</classname></ulink>'>
+<!ENTITY IComponent '<ulink url="&ApiRoot;/IComponent.html"><classname>IComponent</classname></ulink>'>
 <!ENTITY IDirect '<ulink url="&ApiRoot;/IDirect.html"><classname>IDirect</classname></ulink>'>
 <!ENTITY IEngine '<ulink url="&ApiRoot;/IEngine.html"><classname>IEngine</classname></ulink>'>
 <!ENTITY IEngineService '<ulink url="&ApiRoot;/IEngineService.html"><classname>IEngineService</classname></ulink>'>
@@ -113,7 +114,7 @@
 <!ENTITY Saxon '<ulink url="http://sf.net/projects/saxon">Saxon</ulink>'>
 <!ENTITY TapestryHomePage '<ulink url="http://tapestry.sf.net">Tapestry Home Page</ulink>'>
 <!ENTITY TapestryProjectPage '<ulink url="http://sf.net/projects/tapestry">Tapestry Project Page</ulink>'>
-
+<!ENTITY OGNL '<ulink url="http://www.ognl.org">OGNL</ulink>'>
 
 <!-- Other useful stuff -->
 
