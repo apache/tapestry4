@@ -73,9 +73,9 @@ public interface WebRequest extends AttributeHolder
     public String getContextPath();
 
     /**
-     * Returns the current {@link WebSession}associated with this request, possibly creating
-     * it if it does not already exist. If create is false and the request has no valid session,
-     * this method returns null. To make sure the session is properly maintained, you must call this
+     * Returns the current {@link WebSession}associated with this request, possibly creating it if
+     * it does not already exist. If create is false and the request has no valid session, this
+     * method returns null. To make sure the session is properly maintained, you must call this
      * method <em>before</em> the response is committed.
      * 
      * @param create
@@ -83,4 +83,26 @@ public interface WebRequest extends AttributeHolder
      * @returns The session, or null if it does not exist (and create is false)
      */
     public WebSession getSession(boolean create);
+
+    /**
+     * Returns the name of the scheme used to make this request. For example, http, https, or ftp.
+     * Different schemes have different rules for constructing URLs, as noted in RFC 1738.
+     */
+    public String getScheme();
+
+    /**
+     * Returns the host name of the server that received the request. Note that behind a firewall,
+     * this may be obscured (i.e., it may be the name of the firewall server, which is not
+     * necessarily visible to clients outside the firewall.
+     * 
+     * @see org.apache.tapestry.request.IRequestDecoder
+     */
+
+    public String getServerName();
+
+    /**
+     * Returns the port number on which this request was received.
+     */
+
+    public int getServerPort();
 }

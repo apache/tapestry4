@@ -14,9 +14,8 @@
 
 package org.apache.tapestry.services.impl;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.tapestry.services.AbsoluteURLBuilder;
+import org.apache.tapestry.web.WebRequest;
 
 /**
  * @author Howard M. Lewis Ship
@@ -24,7 +23,7 @@ import org.apache.tapestry.services.AbsoluteURLBuilder;
  */
 public class AbsoluteURLBuilderImpl implements AbsoluteURLBuilder
 {
-    private HttpServletRequest _request;
+    private WebRequest _request;
 
     public String constructURL(String URI, String scheme, String server, int port)
     {
@@ -81,7 +80,7 @@ public class AbsoluteURLBuilderImpl implements AbsoluteURLBuilder
         return constructURL(URI, scheme, server, port);
     }
 
-    public void setRequest(HttpServletRequest request)
+    public void setRequest(WebRequest request)
     {
         _request = request;
     }

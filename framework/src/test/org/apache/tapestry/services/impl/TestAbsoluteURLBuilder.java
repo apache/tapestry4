@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.services.AbsoluteURLBuilder;
+import org.apache.tapestry.web.WebRequest;
 import org.easymock.MockControl;
 
 /**
@@ -39,8 +40,8 @@ public class TestAbsoluteURLBuilder extends TapestryTestCase
 
     private void attemptDefault(String expected, String URI, String scheme, String server, int port)
     {
-        MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
+        MockControl control = newControl(WebRequest.class);
+        WebRequest request = (WebRequest) control.getMock();
 
         request.getScheme();
         control.setReturnValue(scheme);

@@ -19,8 +19,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.util.Defense;
@@ -34,6 +32,8 @@ import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
+import org.apache.tapestry.web.WebRequest;
+import org.apache.tapestry.web.WebSession;
 
 /**
  * A context-sensitive service related to {@link org.apache.tapestry.form.Form}and
@@ -56,7 +56,7 @@ public class ActionService implements IEngineService
     private static final String ACTION = "action";
 
     /** @since 3.1 */
-    private HttpServletRequest _request;
+    private WebRequest _request;
 
     public ILink getLink(IRequestCycle cycle, Object parameter)
     {
@@ -120,7 +120,7 @@ public class ActionService implements IEngineService
 
         if (activeSession && action.getRequiresSession())
         {
-            HttpSession session = _request.getSession();
+            WebSession session = _request.getSession(false);
 
             if (session == null || session.isNew())
                 throw new StaleSessionException(EngineMessages.requestStateSession(component),
@@ -156,7 +156,7 @@ public class ActionService implements IEngineService
     }
 
     /** @since 3.1 */
-    public void setRequest(HttpServletRequest request)
+    public void setRequest(WebRequest request)
     {
         _request = request;
     }

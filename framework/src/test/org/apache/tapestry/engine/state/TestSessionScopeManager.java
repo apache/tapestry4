@@ -14,10 +14,9 @@
 
 package org.apache.tapestry.engine.state;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.web.WebRequest;
+import org.apache.tapestry.web.WebSession;
 import org.easymock.MockControl;
 
 /**
@@ -28,10 +27,10 @@ import org.easymock.MockControl;
  */
 public class TestSessionScopeManager extends HiveMindTestCase
 {
-    private HttpServletRequest newRequest(boolean create, HttpSession session)
+    private WebRequest newRequest(boolean create, WebSession session)
     {
-        MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
+        MockControl control = newControl(WebRequest.class);
+        WebRequest request = (WebRequest) control.getMock();
 
         request.getSession(create);
         control.setReturnValue(session);
@@ -39,21 +38,21 @@ public class TestSessionScopeManager extends HiveMindTestCase
         return request;
     }
 
-    private HttpServletRequest newRequest(HttpSession session)
+    private WebRequest newRequest(WebSession session)
     {
-        MockControl control = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) control.getMock();
+        MockControl control = newControl(WebRequest.class);
+        WebRequest request = (WebRequest) control.getMock();
 
-        request.getSession();
+        request.getSession(true);
         control.setReturnValue(session);
 
         return request;
     }
 
-    private HttpSession newSession(String key, Object value)
+    private WebSession newSession(String key, Object value)
     {
-        MockControl control = newControl(HttpSession.class);
-        HttpSession session = (HttpSession) control.getMock();
+        MockControl control = newControl(WebSession.class);
+        WebSession session = (WebSession) control.getMock();
 
         session.getAttribute(key);
         control.setReturnValue(value);
@@ -74,7 +73,7 @@ public class TestSessionScopeManager extends HiveMindTestCase
 
     public void testExistsNoSession()
     {
-        HttpServletRequest request = newRequest(false, null);
+        WebRequest request = newRequest(false, null);
 
         replayControls();
 
@@ -88,8 +87,8 @@ public class TestSessionScopeManager extends HiveMindTestCase
 
     public void testExistsMissing()
     {
-        HttpSession session = newSession("state:myapp:fred", null);
-        HttpServletRequest request = newRequest(false, session);
+        WebSession session = newSession("state:myapp:fred", null);
+        WebRequest request = newRequest(false, session);
 
         replayControls();
 
@@ -104,8 +103,8 @@ public class TestSessionScopeManager extends HiveMindTestCase
 
     public void testExists()
     {
-        HttpSession session = newSession("state:testapp:fred", "XXX");
-        HttpServletRequest request = newRequest(false, session);
+        WebSession session = newSession("state:testapp:fred", "XXX");
+        WebRequest request = newRequest(false, session);
 
         replayControls();
 
@@ -121,8 +120,8 @@ public class TestSessionScopeManager extends HiveMindTestCase
     public void testGetExists()
     {
         Object stateObject = new Object();
-        HttpSession session = newSession("state:testapp:fred", stateObject);
-        HttpServletRequest request = newRequest(session);
+        WebSession session = newSession("state:testapp:fred", stateObject);
+        WebRequest request = newRequest(session);
 
         replayControls();
 
@@ -140,15 +139,15 @@ public class TestSessionScopeManager extends HiveMindTestCase
         Object stateObject = new Object();
         StateObjectFactory factory = newFactory(stateObject);
 
-        MockControl control = newControl(HttpSession.class);
-        HttpSession session = (HttpSession) control.getMock();
+        MockControl control = newControl(WebSession.class);
+        WebSession session = (WebSession) control.getMock();
 
         session.getAttribute("state:myapp:fred");
         control.setReturnValue(null);
 
         session.setAttribute("state:myapp:fred", stateObject);
 
-        HttpServletRequest request = newRequest(session);
+        WebRequest request = newRequest(session);
 
         replayControls();
 
@@ -165,12 +164,12 @@ public class TestSessionScopeManager extends HiveMindTestCase
     {
         Object stateObject = new Object();
 
-        MockControl control = newControl(HttpSession.class);
-        HttpSession session = (HttpSession) control.getMock();
+        MockControl control = newControl(WebSession.class);
+        WebSession session = (WebSession) control.getMock();
 
         session.setAttribute("state:myapp:fred", stateObject);
 
-        HttpServletRequest request = newRequest(session);
+        WebRequest request = newRequest(session);
 
         replayControls();
 
@@ -179,26 +178,6 @@ public class TestSessionScopeManager extends HiveMindTestCase
         m.setApplicationId("myapp");
 
         m.store("fred", stateObject);
-
-        verifyControls();
-    }
-
-    public void testStoreNull()
-    {
-        MockControl control = newControl(HttpSession.class);
-        HttpSession session = (HttpSession) control.getMock();
-
-        session.removeAttribute("state:myapp:fred");
-
-        HttpServletRequest request = newRequest(session);
-
-        replayControls();
-
-        SessionScopeManager m = new SessionScopeManager();
-        m.setRequest(request);
-        m.setApplicationId("myapp");
-
-        m.store("fred", null);
 
         verifyControls();
     }

@@ -214,4 +214,55 @@ public class TestServletWebRequest extends BaseWebTestCase
 
         verifyControls();
     }
+
+    public void testGetScheme()
+    {
+        MockControl control = newControl(HttpServletRequest.class);
+        HttpServletRequest request = (HttpServletRequest) control.getMock();
+
+        request.getScheme();
+        control.setReturnValue("http");
+
+        replayControls();
+
+        WebRequest wr = new ServletWebRequest(request);
+
+        assertEquals("http", wr.getScheme());
+
+        verifyControls();
+    }
+
+    public void testGetServerName()
+    {
+        MockControl control = newControl(HttpServletRequest.class);
+        HttpServletRequest request = (HttpServletRequest) control.getMock();
+
+        request.getServerName();
+        control.setReturnValue("www.myhost.com");
+
+        replayControls();
+
+        WebRequest wr = new ServletWebRequest(request);
+
+        assertEquals("www.myhost.com", wr.getServerName());
+
+        verifyControls();
+    }
+
+    public void testGetServerPort()
+    {
+        MockControl control = newControl(HttpServletRequest.class);
+        HttpServletRequest request = (HttpServletRequest) control.getMock();
+
+        request.getServerPort();
+        control.setReturnValue(80);
+
+        replayControls();
+
+        WebRequest wr = new ServletWebRequest(request);
+
+        assertEquals(80, wr.getServerPort());
+
+        verifyControls();
+    }
 }

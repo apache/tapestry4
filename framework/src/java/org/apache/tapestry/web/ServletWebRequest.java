@@ -31,7 +31,7 @@ import org.apache.hivemind.util.Defense;
 public class ServletWebRequest implements WebRequest
 {
     private final HttpServletRequest _servletRequest;
-    
+
     private WebSession _containerSession;
 
     public ServletWebRequest(HttpServletRequest request)
@@ -90,5 +90,20 @@ public class ServletWebRequest implements WebRequest
             _servletRequest.removeAttribute(name);
         else
             _servletRequest.setAttribute(name, attribute);
+    }
+
+    public String getScheme()
+    {
+        return _servletRequest.getScheme();
+    }
+
+    public String getServerName()
+    {
+        return _servletRequest.getServerName();
+    }
+
+    public int getServerPort()
+    {
+        return _servletRequest.getServerPort();
     }
 }

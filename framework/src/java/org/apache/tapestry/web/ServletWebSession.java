@@ -60,4 +60,9 @@ public class ServletWebSession implements WebSession
     {
         return _httpSession.getId();
     }
+
+    public boolean isNew()
+    {
+        return _httpSession.isNew();
+    }
 }
