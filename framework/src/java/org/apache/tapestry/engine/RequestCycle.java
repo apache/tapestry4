@@ -40,6 +40,7 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.record.PageRecorderImpl;
 import org.apache.tapestry.record.PropertyPersistenceStrategySource;
 import org.apache.tapestry.request.RequestContext;
+import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.util.QueryParameterMap;
 
 /**
@@ -72,6 +73,10 @@ public class RequestCycle implements IRequestCycle
     /** @since 3.1 */
 
     private IPageSource _pageSource;
+
+    /** @since 3.1 */
+
+    private Infrastructure _infrastructure;
 
     /**
      * Contains parameters extracted from the request context, plus any decoded by any
@@ -119,8 +124,7 @@ public class RequestCycle implements IRequestCycle
      */
 
     public RequestCycle(IEngine engine, RequestContext requestContext,
-            QueryParameterMap parameters, IEngineService service,
-            IPageSource pageSource,
+            QueryParameterMap parameters, IEngineService service, Infrastructure infrastructure,
             PropertyPersistenceStrategySource strategySource, ErrorHandler errorHandler,
             IMonitor monitor)
     {
@@ -128,7 +132,8 @@ public class RequestCycle implements IRequestCycle
         _requestContext = requestContext;
         _parameters = parameters;
         _service = service;
-        _pageSource = pageSource;
+        _infrastructure = infrastructure;
+        _pageSource = _infrastructure.getPageSource();
         _strategySource = strategySource;
         _log = new ErrorLogImpl(errorHandler, LOG);
         _monitor = monitor;
@@ -662,4 +667,10 @@ public class RequestCycle implements IRequestCycle
         _strategySource.discardAllStoredChanged(pageName, this);
     }
 
+    /** @since 3.1 */
+
+    public Infrastructure getInfrastructure()
+    {
+        return _infrastructure;
+    }
 }

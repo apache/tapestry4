@@ -18,6 +18,7 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.IMonitor;
 import org.apache.tapestry.request.RequestContext;
+import org.apache.tapestry.services.Infrastructure;
 
 /**
  * Controller object that manages a single request cycle. A request cycle is one 'hit' on the web
@@ -72,6 +73,7 @@ public interface IRequestCycle
 
     /**
      * Returns the engine which is processing this request cycle.
+     * @deprecated To be removed in 3.2
      */
 
     public IEngine getEngine();
@@ -306,4 +308,13 @@ public interface IRequestCycle
      */
 
     public void forgetPage(String name);
+    
+    /**
+     * Returns the central {@link org.apache.tapestry.services.Infrastructure} object
+     * used to manage the processing of the request.
+     * 
+     * @since 3.1
+     */
+    
+    public Infrastructure getInfrastructure();
 }

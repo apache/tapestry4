@@ -36,8 +36,11 @@ import org.apache.tapestry.spec.IApplicationSpecification;
  * application. The engine is a delegate to the {@link ApplicationServlet}via the
  * {@link #service(RequestContext)}method.
  * <p>
- * Engine instances are persisted in the {@link javax.servlet.http.HttpSession}and are
- * serializable.
+ * Starting in release 3.1, the engine is kept around only for compatibility (with release
+ * 3.0). It's functions have been moved over into a collection of HiveMind
+ * services (or are in the process of doing so). 
+ * 
+ * @deprecated To be removed in 3.2.
  * 
  * @author Howard Lewis Ship
  */

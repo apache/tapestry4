@@ -26,9 +26,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IActionListener;
-import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
 
 /**
  * Maps a class to a set of listeners based on the public methods of the class.
@@ -65,46 +63,6 @@ public class ListenerMap
      */
 
     private static Map _classMap = new HashMap();
-
-    /**
-     * Implements both listener interfaces.
-     */
-
-    private class SyntheticListener implements IActionListener
-    {
-        private Method _method;
-
-        SyntheticListener(Method method)
-        {
-            _method = method;
-        }
-
-        private void invoke(IRequestCycle cycle)
-        {
-            Object[] args = new Object[]
-            { cycle };
-
-            invokeTargetMethod(_target, _method, args);
-        }
-
-        public void actionTriggered(IComponent component, IRequestCycle cycle)
-        {
-            invoke(cycle);
-        }
-
-        public String toString()
-        {
-            StringBuffer buffer = new StringBuffer("SyntheticListener[");
-
-            buffer.append(_target);
-            buffer.append(' ');
-            buffer.append(_method);
-            buffer.append(']');
-
-            return buffer.toString();
-        }
-
-    }
 
     public ListenerMap(Object target)
     {
@@ -148,12 +106,11 @@ public class ListenerMap
         Method method = (Method) _methodMap.get(name);
 
         if (method == null)
-            throw new ApplicationRuntimeException(Tapestry.format(
-                    "ListenerMap.object-missing-method",
+            throw new ApplicationRuntimeException(ListenerMessages.objectMissingMethod(
                     _target,
                     name));
 
-        return new SyntheticListener(method);
+        return new SyntheticListener(_target, method);
     }
 
     /**
@@ -233,7 +190,7 @@ public class ListenerMap
      * Invoked by the inner listener/adaptor classes to invoke the method.
      */
 
-    private static void invokeTargetMethod(Object target, Method method, Object[] args)
+    static void invokeTargetMethod(Object target, Method method, Object[] args)
     {
         if (LOG.isDebugEnabled())
             LOG.debug("Invoking listener method " + method + " on " + target);
@@ -268,11 +225,10 @@ public class ListenerMap
             // Catch InvocationTargetException or, preferrably,
             // the inner exception here (if its a runtime exception).
 
-            throw new ApplicationRuntimeException(Tapestry.format(
-                    "ListenerMap.unable-to-invoke-method",
-                    method.getName(),
+            throw new ApplicationRuntimeException(ListenerMessages.unableToInvokeMethod(
+                    method,
                     target,
-                    ex.getMessage()), ex);
+                    ex), ex);
         }
     }
 
