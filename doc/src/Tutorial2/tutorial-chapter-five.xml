@@ -290,6 +290,89 @@ public class Part1 extends BasePage {
 	that are present in the validation delegate. The option presented here has been chosen for
 	its simplicity.</para>
 
+	<para>The new HTML template is as shown</para>
+	<figure>
+	<title>HTML Template, with StringValidator</title>
+	<programlisting>
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"&gt;
+&lt;html&gt;
+&lt;head&gt;
+	&lt;title&gt;Forms Tutorial&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;h1&gt;Form Tutorial&lt;/h1&gt;
+Enter some fields on this page, and press the submit button. 
+
+&lt;span jwcid="body"&gt;
+	&lt;form jwcid="form"&gt;
+		&lt;table&gt;
+			&lt;tr&gt;
+				&lt;td&gt;Your name:&lt;/td&gt;
+				&lt;td&gt;&lt;input jwcid="name"&gt;Neil&lt;/input&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+	
+			&lt;tr&gt;
+				&lt;td&gt;Date of birth:&lt;/td&gt;
+				&lt;td&gt;&lt;input jwcid="dateOfBirth"/&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+	
+			&lt;tr&gt;
+				&lt;td&gt;Favourite colour:&lt;/td&gt;
+				&lt;td&gt;&lt;input jwcid="favColour"/&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+	
+			&lt;tr&gt;
+				&lt;td colspan=2&gt;&lt;font color="red"&gt;&lt;span jwcid="errors"/&gt;&lt;/font&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+
+			&lt;tr&gt;
+				&lt;td colspan=2&gt;&lt;input type="submit" jwcid="submit"/&gt;&lt;/td&gt;
+			&lt;/tr&gt;
+		&lt;/table&gt;
+	&lt;/form&gt;
+&lt;/span&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+	</programlisting>
+	</figure>
+	
+	<para>And lastly, the associated Java object:</para>
+	<figure>
+	<title>Java Object, with Validator</title>
+	<programlisting>
+package tutorial.forms;
+
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.html.BasePage;
+import net.sf.tapestry.valid.ValidationDelegate;
+
+/**
+ * Example code for the forms part of Tutorial
+ * @author Neil Clayton
+ */
+public class Part2 extends BasePage {
+	public void enterDetails(IRequestCycle cycle) throws RequestCycleException {
+		// Submission has been performed. Validate the fields
+		ValidationDelegate delegate = (ValidationDelegate)getBeans().getBean("delegate");
+		if(delegate.getHasErrors()) {
+			// there are errors
+			return;
+		}
+		
+		cycle.setPage("Success");
+	}
+	
+}
+	</programlisting>
+	</figure>
+
+	<para>In order to return the user to the previous page, we simply return from the
+	submit method, without having set any alternative page for the rendering cycle. As a result,
+	the same input page will show the user their error</para>
+	
 	<para>Compile and run the example. If you are using the precompiled examples, choose
 	the second link on the forms tutorial page. If you ommit a value for any field, you 
 	will see an error just above the submit button:</para>
