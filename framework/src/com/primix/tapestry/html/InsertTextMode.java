@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -26,31 +26,31 @@
 
 package com.primix.tapestry.html;
 
-import com.primix.tapestry.*;
-import com.primix.tapestry.util.*;
+import com.primix.tapestry.IResponseWriter;
+import com.primix.tapestry.util.Enum;
 
 /**
  *  Defines a number of ways to format multi-line text for proper
  *  renderring.
  *
  *  @version $Id$
- *  @author Howard Ship
+ *  @author Howard Lewis Ship
  *
- */
+ **/
 
 public abstract class InsertTextMode extends Enum
 {
 	/**
 	 *  Mode where each line (after the first) is preceded by a &lt;br&gt; tag.
 	 *
-	 */
+	 **/
 
 	public static final InsertTextMode BREAK = new BreakMode();
 
 	/**
 	 *  Mode where each line is wrapped with a &lt;p&gt; element.
 	 *
-	 */
+	 **/
 
 	public static final InsertTextMode PARAGRAPH = new ParagraphMode();
 
@@ -65,7 +65,7 @@ public abstract class InsertTextMode extends Enum
 	*  @param lineNumber the line number of the line, starting with 0 for the first line.
 	*  @param line the String for the current line.
 	*  @param writer the {@link IResponseWriter} to send output to.
-	*/
+	**/
 
 	public abstract void writeLine(
 		int lineNumber,
@@ -86,11 +86,6 @@ public abstract class InsertTextMode extends Enum
 
 			writer.print(line);
 		}
-
-		private Object readResolve()
-		{
-			return getSingleton();
-		}
 	}
 
 	private static class ParagraphMode extends InsertTextMode
@@ -107,11 +102,6 @@ public abstract class InsertTextMode extends Enum
 			writer.print(line);
 
 			writer.end();
-		}
-
-		private Object readResolve()
-		{
-			return getSingleton();
 		}
 	}
 

@@ -43,7 +43,7 @@ import com.primix.tapestry.form.IPropertySelectionModel;
 public interface IMultiplePropertySelectionRenderer
 {
 	/**
-	 *  Begins the rendering of the {@link PropertySelection}.
+	 *  Begins the rendering of the {@link MultiplePropertySelection}.
 	 *
 	 */
 
@@ -69,7 +69,7 @@ public interface IMultiplePropertySelectionRenderer
 		throws RequestCycleException;
 
 	/**
-	 *  Ends the rendering of the {@link PropertySelection}.
+	 *  Ends the rendering of the {@link MultiplePropertySelection}.
 	 *
 	 */
 

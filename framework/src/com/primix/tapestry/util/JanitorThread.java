@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -26,9 +26,12 @@
 
 package com.primix.tapestry.util;
 
-import java.util.*;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import com.primix.tapestry.Tapestry;
-import java.lang.ref.*;
 
 /**
  *  A basic kind of janitor, an object that periodically invokes
@@ -41,14 +44,14 @@ import java.lang.ref.*;
  *  @version $Id$
  *  @since 1.0.5
  *
- */
+ **/
 
 public class JanitorThread extends Thread
 {
 	/**
 	 * Default number of seconds between janitor runs, about 30 seconds.
 	 *
-	 */
+	 **/
 
 	public static final long DEFAULT_INTERVAL_MILLIS = 30 * 1024;
 
@@ -60,14 +63,14 @@ public class JanitorThread extends Thread
 	/**
 	 *  A {@link List} of {@link WeakReference}s to {@link IJanitor} instances.
 	 *
-	 */
+	 **/
 
 	private List references = new ArrayList();
 
 	/**
 	 *  Creates a new daemon Janitor.
 	 *
-	 */
+	 **/
 
 	public JanitorThread()
 	{
@@ -78,7 +81,7 @@ public class JanitorThread extends Thread
 	 *  Creates new Janitor with the given name.  The thread
 	 *  will have minimum priority and be a daemon.
 	 *
-	 */
+	 **/
 
 	public JanitorThread(String name)
 	{
@@ -96,23 +99,16 @@ public class JanitorThread extends Thread
 	 *  change the sleep interval on the shared janitor
 	 *  (though nothing prevents this, either).
 	 *
-	 */
+	 **/
 
-	public static JanitorThread getSharedJanitorThread()
+	public synchronized static JanitorThread getSharedJanitorThread()
 	{
 		if (shared == null)
 		{
-			synchronized (JanitorThread.class)
-			
-			{
-				if (shared == null)
-				{
-					shared = new JanitorThread("Shared-JanitorThread");
-					shared.lockInterval = true;
+			shared = new JanitorThread("Shared-JanitorThread");
+			shared.lockInterval = true;
 
-					shared.start();
-				}
-			}
+			shared.start();
 		}
 
 		return shared;
@@ -130,17 +126,15 @@ public class JanitorThread extends Thread
 	 *
 	 *  @throws IllegalStateException always, if the receiver is the shared JanitorThread
 	 *  @throws IllegalArgumentException if value is less than 1
-	 */
+	 **/
 
 	public void setInterval(long value)
 	{
 		if (lockInterval)
-			throw new IllegalStateException(
-				Tapestry.getString("JanitorThread.interval-locked"));
+			throw new IllegalStateException(Tapestry.getString("JanitorThread.interval-locked"));
 
 		if (value < 1)
-			throw new IllegalArgumentException(
-				Tapestry.getString("JanitorThread.illegal-interval"));
+			throw new IllegalArgumentException(Tapestry.getString("JanitorThread.illegal-interval"));
 
 		interval = value;
 
@@ -152,7 +146,7 @@ public class JanitorThread extends Thread
 	 *  objects are not added multiple times; they will be
 	 *  cleaned too often.
 	 *
-	 */
+	 **/
 
 	public void add(ICleanable cleanable)
 	{
@@ -170,7 +164,7 @@ public class JanitorThread extends Thread
 	 *  on each of them.  {@link WeakReference}s that have been invalidated
 	 *  are weeded out.
 	 *
-	 */
+	 **/
 
 	protected void sweep()
 	{
@@ -196,7 +190,7 @@ public class JanitorThread extends Thread
 	 *  Waits for the next run, by sleeping for the desired period.
 	 *
 	 *
-	 */
+	 **/
 
 	protected void waitForNextPass()
 	{
@@ -214,7 +208,7 @@ public class JanitorThread extends Thread
 	 *  Alternates between {@link #waitForNextPass()} and
 	 *  {@link #sweep()}.
 	 *
-	 */
+	 **/
 
 	public void run()
 	{
@@ -235,13 +229,14 @@ public class JanitorThread extends Thread
 		buffer.append(interval);
 
 		buffer.append(" count=");
+
 		synchronized (references)
 		{
 			buffer.append(references.size());
 		}
 
-		buffer.append(']');
+			buffer.append(']');
 
-		return buffer.toString();
+			return buffer.toString();
 	}
 }

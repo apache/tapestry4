@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -26,16 +26,15 @@
 
 package com.primix.tapestry.spec;
 
-import java.io.*;
 import com.primix.tapestry.util.Enum;
 
 /**
  *  An {@link Enum} of the different possible lifecycles for a JavaBean.
  *
- *  @author Howard Ship
+ *  @author Howard Lewis Ship
  *  @version $Id$
  *  @since 1.0.4
- */
+ **/
 
 public class BeanLifecycle extends Enum
 {
@@ -51,7 +50,7 @@ public class BeanLifecycle extends Enum
 	 * duration of the request cycle and is discarded at the end of the
 	 * request cycle.
 	 *
-	 */
+	 **/
 
 	public static final BeanLifecycle REQUEST = new BeanLifecycle("REQUEST");
 
@@ -59,7 +58,7 @@ public class BeanLifecycle extends Enum
 	 * The bean is created once and reused for the lifespan of the page
 	 * containing the component.
 	 *
-	 */
+	 **/
 
 	public static final BeanLifecycle PAGE = new BeanLifecycle("PAGE");
 
@@ -68,8 +67,4 @@ public class BeanLifecycle extends Enum
 		super(name);
 	}
 
-	private Object readResolve()
-	{
-		return getSingleton();
-	}
 }

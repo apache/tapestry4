@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -27,19 +27,34 @@
 package com.primix.tapestry;
 
 import java.awt.Color;
-
-import javax.servlet.*;
-import javax.servlet.http.*;
-
-import java.io.*;
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
 import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.Collections;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.StringTokenizer;
 
-import com.primix.tapestry.util.*;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.*;
+import org.apache.log4j.Category;
 import org.mortbay.servlet.MultiPartRequest;
+
+import com.primix.tapestry.util.StringSplitter;
 
 /**
  * This class encapsulates all the relevant data for one request cycle of an
@@ -74,7 +89,7 @@ import org.mortbay.servlet.MultiPartRequest;
  *
  * @version $Id$
  * @author Howard Ship
- */
+ **/
 
 public class RequestContext implements IRender
 {
@@ -122,7 +137,7 @@ public class RequestContext implements IRender
 	/**
 	 * A mapping of the cookies available in the request.
 	 *
-	 */
+	 **/
 
 	private Map cookieMap;
 
@@ -131,7 +146,7 @@ public class RequestContext implements IRender
 	/**
 	 * Used to contain the parsed, decoded pathInfo.
 	 *
-	 */
+	 **/
 
 	private String[] pathInfo;
 
@@ -140,7 +155,7 @@ public class RequestContext implements IRender
 	/**
 	 * Identifies which characters are safe in a URL, and do not need any encoding.
 	 *
-	 */
+	 **/
 
 	private static BitSet safe;
 
@@ -166,7 +181,7 @@ public class RequestContext implements IRender
 
 	/**
 	 * Used to quickly convert a 8 bit character value to a hex string.
-	 */
+	 **/
 
 	private static final char HEX[] =
 		{
@@ -190,7 +205,7 @@ public class RequestContext implements IRender
 	/**
 	 * Creates a <code>RequestContext</code> from its components.
 	 *
-	 */
+	 **/
 
 	public RequestContext(
 		ApplicationServlet servlet,
@@ -212,7 +227,7 @@ public class RequestContext implements IRender
 	 * Adds a simple {@link Cookie}. To set a Cookie with attributes,
 	 * use {@link #addCookie(Cookie)}.
 	 *
-	 */
+	 **/
 
 	public void addCookie(String name, String value)
 	{
@@ -226,7 +241,7 @@ public class RequestContext implements IRender
 	 * <p>Cookies should only be added <em>before</em> invoking
 	 * {@link HttpServletResponse#getWriter()}..
 	 *
-	 */
+	 **/
 
 	public void addCookie(Cookie cookie)
 	{
@@ -267,6 +282,9 @@ public class RequestContext implements IRender
 		{
 			try
 			{
+                // Note: deprecation warning for compatibility with
+                // Servlet API 2.2
+                
 				pathInfo[i] = URLDecoder.decode(pathInfo[i]);
 			}
 			catch (Exception e)
@@ -286,7 +304,7 @@ public class RequestContext implements IRender
 	 * format: a pound sign ('#'), followed by six hex digits for
 	 * specifying the red, green and blue components of the color.
 	 *
-	 */
+	 **/
 
 	public static String encodeColor(Color color)
 	{
@@ -318,7 +336,7 @@ public class RequestContext implements IRender
 
 	/**
 	 * Forwards the request to a new resource, typically a JSP.
-	 */
+	 **/
 
 	public void forward(String path) throws ServletException, IOException
 	{
@@ -334,7 +352,7 @@ public class RequestContext implements IRender
 	 * as the source for scheme, server name and port.
 	 *
 	 * @see #getAbsoluteURL(String, String, String, int)
-	 */
+	 **/
 
 	public String getAbsoluteURL(String URI)
 	{
@@ -369,7 +387,7 @@ public class RequestContext implements IRender
 	 * as given.
 	 * </ul>
 	 *
-	 */
+	 **/
 
 	public String getAbsoluteURL(
 		String URI,
@@ -414,13 +432,13 @@ public class RequestContext implements IRender
 	}
 
 	/**
-	 * Gets a named <code>Cookie</code>.
+	 * Gets a named {@link Cookie}>.
 	 *
-	 * @param name The name of the <code>Cookie</code>.
-	 * @return The <code>Cookie</code>, or null if no Cookie with that
+	 * @param name The name of the Cookie.
+	 * @return The Cookie, or null if no Cookie with that
 	 * name exists.
 	 *
-	 */
+	 **/
 
 	public Cookie getCookie(String name)
 	{
@@ -433,7 +451,7 @@ public class RequestContext implements IRender
 	/**
 	 * Reads the named {@link Cookie} and returns its value (if it exists), or
 	 * null if it does not exist.
-	 */
+	 **/
 
 	public String getCookieValue(String name)
 	{
@@ -457,7 +475,7 @@ public class RequestContext implements IRender
 	 *  obtaining the {@link HttpServletRequest} itself).  For form/multipart-data
 	 *  encoded requests, this method will still work.
 	 *
-	 */
+	 **/
 
 	public String getParameter(String name)
 	{
@@ -478,7 +496,7 @@ public class RequestContext implements IRender
 	 * 
 	 *  @see #getParameter(String)
 	 *
-	 */
+	 **/
 
 	public String[] getParameters(String name)
 	{
@@ -517,7 +535,7 @@ public class RequestContext implements IRender
 	 * Returns the pathInfo string at the given index. If the index
 	 * is out of range, this returns null.
 	 *
-	 */
+	 **/
 
 	public String getPathInfo(int index)
 	{
@@ -537,7 +555,7 @@ public class RequestContext implements IRender
 
 	/**
 	 * Returns the number of items in the pathInfo.
-	 */
+	 **/
 
 	public int getPathInfoCount()
 	{
@@ -587,7 +605,7 @@ public class RequestContext implements IRender
 	 * {@link HttpServletRequest#getSession(boolean)}.  However,
 	 * this method will <em>not</em> create a session.
 	 *
-	 */
+	 **/
 
 	public HttpSession getSession()
 	{
@@ -601,7 +619,7 @@ public class RequestContext implements IRender
 	 *  Like {@link #getSession()}, but forces the creation of
 	 *  the {@link HttpSession}, if necessary.
 	 *
-	 */
+	 **/
 
 	public HttpSession createSession()
 	{
@@ -717,7 +735,7 @@ public class RequestContext implements IRender
 	 * <p>The 2.2 Servlet API will do this automatically, and a little more,
 	 * according to the early documentation.
 	 *
-	 */
+	 **/
 
 	public void redirect(String path) throws IOException
 	{
@@ -750,7 +768,7 @@ public class RequestContext implements IRender
 	 * in a HTML page returned to the user. This is useful
 	 * when debugging.
 	 *
-	 */
+	 **/
 
 	public void write(IResponseWriter writer)
 	{
@@ -1108,7 +1126,7 @@ public class RequestContext implements IRender
 	/**
 	 *  Invokes {@link #write(IResponseWriter)}, which is used for debugging.
 	 *
-	 */
+	 **/
 
 	public void render(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException

@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -26,7 +26,6 @@
 
 package com.primix.tapestry.parse;
 
-import java.io.*;
 import com.primix.tapestry.util.Enum;
 
 /**
@@ -34,9 +33,9 @@ import com.primix.tapestry.util.Enum;
  *
  * @see TemplateToken
  *
- * @author Howard Ship
+ * @author Howard Lewis Ship
  * @version $Id$
- */
+ **/
 
 public class TokenType extends Enum
 {
@@ -50,14 +49,14 @@ public class TokenType extends Enum
 	/**
 	 *  The opening tag of a JWC element: &lt;jwc id="name"&gt;
 	 *
-	 */
+	 **/
 
 	public static final TokenType OPEN = new TokenType("OPEN");
 
 	/**
 	 *  The closing tag of a JWC element: &lt;/jwc&gt;
 	 *
-	 */
+	 **/
 
 	public static final TokenType CLOSE = new TokenType("CLOSE");
 
@@ -66,8 +65,4 @@ public class TokenType extends Enum
 		super(name);
 	}
 
-	private Object readResolve()
-	{
-		return getSingleton();
-	}
 }

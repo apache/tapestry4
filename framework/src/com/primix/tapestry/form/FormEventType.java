@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -26,16 +26,16 @@
 
 package com.primix.tapestry.form;
 
-import com.primix.tapestry.*;
-import com.primix.tapestry.util.*;
+import com.primix.tapestry.util.Enum;
 
 /**
- *  Class FormEventType
+ *  Lists different types of JavaScript events that can be associated
+ *  with a {@link Form} via {@link Form#addEventHandler(FormEventType, String)}.
  *
- *  @author Howard Ship
+ *  @author Howard Lewis Ship
  *  @version $Id$
  *  @since 1.0.2
- */
+ **/
 
 public class FormEventType extends Enum
 {
@@ -47,7 +47,7 @@ public class FormEventType extends Enum
 	 * <code>false</code>.  If there are multiple event handlers for the form
 	 * they will be combined using the binary and operator (<code>&amp;&amp;</code>).
 	 *
-	 */
+	 **/
 
 	public static final FormEventType SUBMIT =
 		new FormEventType("SUBMIT", "onsubmit");
@@ -56,7 +56,7 @@ public class FormEventType extends Enum
 	 *  Form event triggered when the form is reset; this allows an event handler
 	 *  to deal with any special cases related to resetting.
 	 *
-	 */
+	 **/
 
 	public static final FormEventType RESET = new FormEventType("RESET", "onreset");
 
@@ -72,7 +72,7 @@ public class FormEventType extends Enum
 	/** 
 	 *  Returns the DOM property corresponding to event type.
 	 *
-	 */
+	 **/
 
 	public String getPropertyName()
 	{
@@ -82,19 +82,13 @@ public class FormEventType extends Enum
 	/**
 	 *  Returns true if multiple functions should be combined
 	 *  with the <code>&amp;&amp;</code> operator.  Otherwise,
-	 *  the event handler functions are simply invoked in
-	 *  sequentially.
+	 *  the event handler functions are simply invoked
+	 *  sequentially (as a series of JavaScript statements).
 	 *
-	 */
+	 **/
 
 	public boolean getCombineWithAnd()
 	{
 		return this == FormEventType.SUBMIT;
 	}
-
-	private Object readResolve()
-	{
-		return getSingleton();
-	}
-
 }

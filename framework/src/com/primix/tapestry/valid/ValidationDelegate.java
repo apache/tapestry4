@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -26,13 +26,18 @@
 
 package com.primix.tapestry.valid;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.primix.tapestry.IRender;
 import com.primix.tapestry.IRequestCycle;
 import com.primix.tapestry.IResponseWriter;
 import com.primix.tapestry.RequestCycleException;
 import com.primix.tapestry.form.IFormComponent;
-import com.primix.tapestry.util.pool.*;
-import java.util.*;
+import com.primix.tapestry.util.pool.IPoolable;
 
 /**
  *  A base implementation of {@link IValidationDelegate} that can be used
@@ -42,7 +47,7 @@ import java.util.*;
  *  @author Howard Ship
  *  @version $Id$
  *  @since 1.0.5
- */
+ **/
 
 public class ValidationDelegate implements IValidationDelegate, IPoolable
 {
@@ -84,10 +89,7 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 	 *  confused if components are inside any kind of loop.
 	 **/
 
-	public void writeLabelPrefix(
-		IFormComponent component,
-		IResponseWriter writer,
-		IRequestCycle cycle)
+	public void writeLabelPrefix(IFormComponent component, IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
 		if (inError(component))
@@ -102,12 +104,9 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 	 *  {@link #writeLabelPrefix(IFormComponent,IResponseWriter,IRequestCycle)},
 	 *  if the form component is in error.
 	 *
-	 */
+	 **/
 
-	public void writeLabelSuffix(
-		IFormComponent component,
-		IResponseWriter writer,
-		IRequestCycle cycle)
+	public void writeLabelSuffix(IFormComponent component, IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
 		if (inError(component))
@@ -131,13 +130,13 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 	 *  (is not in error).
 	 * 
 	 **/
-	
+
 	protected IFieldTracking getComponentTracking()
 	{
-	 	if ( trackingMap == null)
-	 		return null;  
-	 		
-	 	return (IFieldTracking)trackingMap.get(currentComponent.getName());
+		if (trackingMap == null)
+			return null;
+
+		return (IFieldTracking) trackingMap.get(currentComponent.getName());
 	}
 
 	public void setFormComponent(IFormComponent component)
@@ -170,8 +169,8 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 
 	public void reset()
 	{
-	    IFieldTracking tracking = getComponentTracking();
-	    
+		IFieldTracking tracking = getComponentTracking();
+
 		if (tracking != null)
 		{
 			trackings.remove(tracking);
@@ -183,7 +182,7 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 	 *  Invokes {@link #record(String, ValidationConstraint, String)}.
 	 * 
 	 **/
-	
+
 	public void record(ValidatorException ex)
 	{
 		record(ex.getMessage(), ex.getConstraint(), ex.getInvalidInput());
@@ -195,11 +194,8 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 	 *  {@link RenderString}.
 	 * 
 	 **/
-	
-	public void record(
-		String message,
-		ValidationConstraint constraint,
-		String invalidInput)
+
+	public void record(String message, ValidationConstraint constraint, String invalidInput)
 	{
 		record(new RenderString(message), constraint, invalidInput);
 	}
@@ -221,13 +217,10 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 	 *  @since 1.0.9
 	 **/
 
-	public void record(
-		IRender errorRenderer,
-		ValidationConstraint constraint,
-		String invalidInput)
+	public void record(IRender errorRenderer, ValidationConstraint constraint, String invalidInput)
 	{
 		IFieldTracking tracking = null;
-		
+
 		if (trackings == null)
 			trackings = new ArrayList();
 
@@ -237,26 +230,26 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 		if (currentComponent == null)
 		{
 			tracking = new FieldTracking();
-	
+
 			// Add it to the *ahem* field trackings, but not to the
 			// map.
 
 			trackings.add(tracking);
 		}
-	else
-	{
-		tracking = getComponentTracking();
-		
-		if (tracking == null)
+		else
 		{
-			String fieldName = currentComponent.getName();
+			tracking = getComponentTracking();
 
-			tracking = new FieldTracking(fieldName, currentComponent);
+			if (tracking == null)
+			{
+				String fieldName = currentComponent.getName();
 
-			trackings.add(tracking);
-			trackingMap.put(fieldName, tracking);
+				tracking = new FieldTracking(fieldName, currentComponent);
+
+				trackings.add(tracking);
+				trackingMap.put(fieldName, tracking);
+			}
 		}
-	}
 
 		// Note that recording two errors for the same field is not advised; the
 		// second will override the first.
@@ -266,8 +259,7 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 		tracking.setConstraint(constraint);
 	}
 
-	public void writePrefix(IResponseWriter writer, IRequestCycle cycle)
-		throws RequestCycleException
+	public void writePrefix(IResponseWriter writer, IRequestCycle cycle) throws RequestCycleException
 	{
 	}
 
@@ -276,8 +268,7 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 	{
 	}
 
-	public void writeSuffix(IResponseWriter writer, IRequestCycle cycle)
-		throws RequestCycleException
+	public void writeSuffix(IResponseWriter writer, IRequestCycle cycle) throws RequestCycleException
 	{
 		if (isInError())
 		{
@@ -331,7 +322,7 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 	}
 
 	/**
-	 *  Returns a {@link List} of {@link IFieldTrackings}.  This is the master list
+	 *  Returns a {@link List} of {@link IFieldTracking}s.  This is the master list
 	 *  of trackings, except that it omits and trackings that are not associated
 	 *  with a particular field.  May return an empty list, or null.
 	 * 

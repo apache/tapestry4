@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -26,12 +26,25 @@
 
 package com.primix.tapestry.util.prop;
 
+import java.beans.BeanInfo;
+import java.beans.Introspector;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.log4j.Category;
+
 import com.primix.tapestry.Tapestry;
-import com.primix.tapestry.util.*;
-import java.beans.*;
-import java.lang.reflect.*;
-import java.util.*;
-import org.apache.log4j.*;
+import com.primix.tapestry.util.DynamicInvocationException;
+import com.primix.tapestry.util.StringSplitter;
 
 /**
  * Streamlines access to all the properties of a given
@@ -66,64 +79,59 @@ import org.apache.log4j.*;
  *
  * @version $Id$
  * @author Howard Ship
- */
+ **/
 
 public class PropertyHelper
 {
 	private static final Category CAT = Category.getInstance(PropertyHelper.class);
 
-	static
-	{
+    /**
+     *  Registry of helper classes.  Key is the Class of the bean.  Value
+     *  is the Class of the Helper.
+     *
+     **/
+
+    private static Map registry = new HashMap();
+
+	static {
 		register(IPublicBean.class, PublicBeanPropertyHelper.class);
 		register(Map.class, MapHelper.class);
 	}
 
 	/**
 	 *  Cache of helpers, keyed on the Class of the bean.
-	 */
+	 **/
 
-	private static Map helpers;
-
-	/**
-	 *  Registry of helper classes.  Key is the Class of the bean.  Value
-	 *  is the Class of the Helper.
-	 *
-	 */
-
-	private static Map registry;
+	private static Map helpers = new HashMap();
 
 	/**
 	 *  Map of PropertyAccessors for the helper's
 	 *  bean class. The keys are the names of the properties.
-	 */
+	 **/
 
 	protected Map accessors;
 
 	/**
 	 *  The Java Beans class for which this helper is configured.
-	 */
+	 **/
 
 	protected Class beanClass;
 
 	/**
 	 *  The separator character used to divide up different
 	 *  properties in a nested property name.
-	 */
+	 **/
 
 	public final static char PATH_SEPERATOR = '.';
 
 	/**
 	 * A {@link StringSplitter} used for parsing apart property paths.
 	 *
-	 */
+	 **/
 
-	private static final StringSplitter splitter =
-		new StringSplitter(PATH_SEPERATOR);
-
-	private static final int MAP_SIZE = 7;
+	private static final StringSplitter splitter = new StringSplitter(PATH_SEPERATOR);
 
 	protected PropertyHelper(Class beanClass)
-	
 	{
 		this.beanClass = beanClass;
 	}
@@ -137,7 +145,7 @@ public class PropertyHelper
 	 *
 	 *  <p>This method is invoked from within a synchronized block.  Subclasses
 	 *  do not have to worry about synchronization.
-	 */
+	 **/
 
 	protected void buildPropertyAccessors()
 	{
@@ -158,7 +166,7 @@ public class PropertyHelper
 		PropertyDescriptor[] props = info.getPropertyDescriptors();
 		int count = props.length;
 
-		accessors = new HashMap(MAP_SIZE);
+		accessors = new HashMap();
 
 		for (int i = 0; i < count; i++)
 			accessors.put(props[i].getName(), new PropertyAccessor(props[i]));
@@ -169,7 +177,7 @@ public class PropertyHelper
 	 *  A convienience method; simply invokes
 	 *  {@link #forClass(Class)}.
 	 *
-	 */
+	 **/
 
 	public static PropertyHelper forInstance(Object instance)
 	{
@@ -187,7 +195,7 @@ public class PropertyHelper
 	 *  the most typical case.
 	 *
 	 *  @see #register(Class, Class)
-	 */
+	 **/
 
 	public synchronized static PropertyHelper forClass(Class beanClass)
 	{
@@ -200,7 +208,7 @@ public class PropertyHelper
 			CAT.debug("Getting property helper for class " + beanClass.getName());
 
 		if (helpers == null)
-			helpers = new HashMap(MAP_SIZE);
+			helpers = new HashMap();
 
 		PropertyHelper helper = (PropertyHelper) helpers.get(beanClass);
 		if (helper != null)
@@ -248,17 +256,12 @@ public class PropertyHelper
 		try
 		{
 			if (CAT.isDebugEnabled())
-				CAT.debug(
-					"Creating new PropertyHelper: "
-						+ helperClass.getName()
-						+ " for "
-						+ beanClass.getName());
+				CAT.debug("Creating new PropertyHelper: " + helperClass.getName() + " for " + beanClass.getName());
 
 			constructor = helperClass.getConstructor(new Class[] { Class.class });
 		}
 		catch (NoSuchMethodException ex)
-		
-			{
+		{
 			throw new DynamicInvocationException(
 				Tapestry.getString("PropertyHelper.missing-constructor", helperClass.getName()),
 				ex);
@@ -302,7 +305,7 @@ public class PropertyHelper
 	 *  and each of its super-classes, following by interfaces further
 	 *  up the interface inheritance chain.
 	 *
-	 */
+	 **/
 
 	private static Class[] getInheritance(Class beanClass)
 	{
@@ -327,8 +330,7 @@ public class PropertyHelper
 			interfaces = beanClass.getInterfaces();
 
 			for (int i = 0; i < interfaces.length; i++)
-			
-				{
+			{
 				if (queue == null)
 					queue = new LinkedList();
 
@@ -395,7 +397,7 @@ public class PropertyHelper
 	 *  <p>propertyName must be a simple property name, not a path,
 	 *  use {@link #getPath(Object,String)} to use a property path.
 	 *
-	 */
+	 **/
 
 	public Object get(Object object, String propertyName)
 	{
@@ -419,7 +421,7 @@ public class PropertyHelper
 	 *  @param object The object to retrieve a property from.
 	 *  @param propertyPath a list of properties to get, seperated
 	 *  by periods
-	 */
+	 **/
 
 	public Object getPath(Object object, String propertyPath)
 	{
@@ -429,7 +431,7 @@ public class PropertyHelper
 	/**
 	 * Gets the object, using a pre-split property path.
 	 *
-	 */
+	 **/
 
 	public Object getPath(Object object, String[] propertyPath)
 	{
@@ -449,11 +451,7 @@ public class PropertyHelper
 			IPropertyAccessor accessor = helper.getAccessor(current, propertyName);
 
 			if (accessor == null)
-				throw new MissingPropertyException(
-					object,
-					buildPath(propertyPath),
-					current,
-					propertyName);
+				throw new MissingPropertyException(object, buildPath(propertyPath), current, propertyName);
 
 			try
 			{
@@ -461,11 +459,7 @@ public class PropertyHelper
 			}
 			catch (MissingAccessorException e)
 			{
-				throw new MissingAccessorException(
-					object,
-					buildPath(propertyPath),
-					current,
-					propertyName);
+				throw new MissingAccessorException(object, buildPath(propertyPath), current, propertyName);
 			}
 
 			if (++i < propertyPath.length)
@@ -483,22 +477,21 @@ public class PropertyHelper
 	 *  @param propertyName the <em>simple</em> property name of the property to
 	 *  get.
 	 *
-	 */
+	 **/
 
 	public IPropertyAccessor getAccessor(Object instance, String propertyName)
 	{
-		if (accessors == null)
+		synchronized (this)
 		{
-			synchronized (this)
-			{
+
+			if (accessors == null)
 				buildPropertyAccessors();
-			}
 		}
 
-		synchronized (accessors)
-		{
-			return (IPropertyAccessor) accessors.get(propertyName);
-		}
+			synchronized (accessors)
+			{
+				return (IPropertyAccessor) accessors.get(propertyName);
+			}
 
 	}
 
@@ -506,11 +499,9 @@ public class PropertyHelper
 	 *  Finds an accessor using a split property path.
 	 *
 	 *  @since 1.0.5
-	 */
+	 **/
 
-	public IPropertyAccessor getAccessorPath(
-		Object instance,
-		String[] propertyPath)
+	public IPropertyAccessor getAccessorPath(Object instance, String[] propertyPath)
 	{
 		Object current = instance;
 		PropertyHelper helper = this;
@@ -523,11 +514,7 @@ public class PropertyHelper
 			IPropertyAccessor accessor = helper.getAccessor(current, propertyName);
 
 			if (accessor == null)
-				throw new MissingPropertyException(
-					instance,
-					buildPath(propertyPath),
-					current,
-					propertyName);
+				throw new MissingPropertyException(instance, buildPath(propertyPath), current, propertyName);
 
 			// When the last element in property path is reached, we don't advance again, we
 			// just return the accessor we'd use to advance.
@@ -541,11 +528,7 @@ public class PropertyHelper
 			}
 			catch (MissingAccessorException e)
 			{
-				throw new MissingAccessorException(
-					instance,
-					buildPath(propertyPath),
-					current,
-					propertyName);
+				throw new MissingAccessorException(instance, buildPath(propertyPath), current, propertyName);
 			}
 
 			helper = forClass(current.getClass());
@@ -571,12 +554,10 @@ public class PropertyHelper
 	 *  beans that match the interface (i.e., implement the interface directly
 	 *  or indirectly) will use the registered helper class.
 	 *
-	 */
+	 **/
 
 	public static synchronized void register(Class beanClass, Class helperClass)
 	{
-		if (registry == null)
-			registry = new HashMap(MAP_SIZE);
 
 		registry.put(beanClass, helperClass);
 
@@ -594,7 +575,7 @@ public class PropertyHelper
 	 *  @param object the object to change
 	 *  @param propertyName the name of the property to change
 	 *  @param value the value to assign to the property
-	 */
+	 **/
 
 	public void set(Object object, String propertyName, Object value)
 	{
@@ -611,7 +592,7 @@ public class PropertyHelper
 	 *  path.  Splits the propertyPath and invokes
 	 *  {@link #setPath(Object,String[],Object)}.
 	 *
-	 */
+	 **/
 
 	public void setPath(Object object, String propertyPath, Object value)
 	{
@@ -628,7 +609,7 @@ public class PropertyHelper
 	 *  just like {@link #set(Object,String,Object)}.
 	 *
 	 *
-	 */
+	 **/
 
 	public void setPath(Object object, String[] propertyPath, Object value)
 	{
@@ -643,11 +624,7 @@ public class PropertyHelper
 
 			accessor = helper.getAccessor(current, propertyName);
 			if (accessor == null)
-				throw new MissingPropertyException(
-					object,
-					buildPath(propertyPath),
-					current,
-					propertyName);
+				throw new MissingPropertyException(object, buildPath(propertyPath), current, propertyName);
 
 			// This property is somewhere in the middle
 			// of the nested property name.  Work through
@@ -673,11 +650,7 @@ public class PropertyHelper
 		}
 		catch (MissingAccessorException e)
 		{
-			throw new MissingAccessorException(
-				object,
-				buildPath(propertyPath),
-				current,
-				propertyName);
+			throw new MissingAccessorException(object, buildPath(propertyPath), current, propertyName);
 		}
 
 	}
@@ -697,7 +670,7 @@ public class PropertyHelper
 	 *  Used with some error messages to reconstruct a property path
 	 *  from its split state.
 	 *
-	 */
+	 **/
 
 	private String buildPath(String[] path)
 	{
@@ -723,7 +696,7 @@ public class PropertyHelper
 	 *
 	 *  @since 1.0.1
 	 *
-	 */
+	 **/
 
 	public static String[] splitPropertyPath(String propertyPath)
 	{
@@ -746,7 +719,7 @@ public class PropertyHelper
 	 *
 	 *  @since 1.0.6
 	 *
-	 */
+	 **/
 
 	public Collection getAccessors(Object instance)
 	{
@@ -765,17 +738,17 @@ public class PropertyHelper
 			result = new ArrayList(accessors.values());
 		}
 
-		Collection names = getSyntheticPropertyNames(instance);
+			Collection names = getSyntheticPropertyNames(instance);
 
-		if (names != null)
-		{
-			Iterator i = names.iterator();
-			while (i.hasNext())
+			if (names != null)
 			{
-				String name = (String) i.next();
-				result.add(getAccessor(instance, name));
+				Iterator i = names.iterator();
+				while (i.hasNext())
+				{
+					String name = (String) i.next();
+					result.add(getAccessor(instance, name));
+				}
 			}
-		}
 
 		return result;
 	}
@@ -792,7 +765,7 @@ public class PropertyHelper
 	 *  implementation returns null.
 	 *
 	 *  @since 1.0.6
-	 */
+	 **/
 
 	protected Collection getSyntheticPropertyNames(Object instance)
 	{

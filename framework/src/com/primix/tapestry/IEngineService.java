@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -208,16 +208,4 @@ public interface IEngineService
 	 */
 
 	public String getName();
-	
-	/**
-	 *  Invoked just after the instance is created to inform it of where it's helper bean
-	 *  pool is.
-	 * 
-	 *  @since 1.0.9
-     * 
-     *  @deprecated
-	 **/
-	
-	public void setHelperBeanPool(Pool value);
-
 }

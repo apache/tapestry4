@@ -70,13 +70,7 @@ public class PropertyHelperTest extends TestCase
 		}
 	}
 
-	public static Test suite()
-	{
-		return new TestSuite(PropertyHelperTest.class);
-	}
-
-	public PropertyHelperTest(String name)
-	
+	public PropertyHelperTest(String name)	
 	{
 		super(name);
 	}

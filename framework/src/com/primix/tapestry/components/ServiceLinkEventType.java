@@ -124,10 +124,4 @@ public class ServiceLinkEventType extends Enum
 	{
 		return attributeName;
 	}
-
-	private Object readResolve()
-	{
-		return getSingleton();
-	}
-
 }

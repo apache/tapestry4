@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -54,10 +54,6 @@ public class DefaultScriptSource implements IScriptSource
 {
 	private IResourceResolver resolver;
 
-	private static final String PARSER_KEY = "parser";
-
-    /** @deprecated **/
-	private Pool parserPool = new Pool();
 	private Map cache;
 
 	private static final int MAP_SIZE = 17;
@@ -69,7 +65,6 @@ public class DefaultScriptSource implements IScriptSource
 
 	public void reset()
 	{
-		parserPool.clear();
 		cache = null;
 	}
 
@@ -78,14 +73,11 @@ public class DefaultScriptSource implements IScriptSource
 	{
 		IScript result;
 
-		if (cache == null)
-		{
 			synchronized (this)
 			{
 				if (cache == null)
 					cache = new HashMap(MAP_SIZE);
 			}
-		}
 
 		synchronized (cache)
 		{
@@ -110,11 +102,8 @@ public class DefaultScriptSource implements IScriptSource
 
 	private IScript parse(String resourcePath) throws ResourceUnavailableException
 	{
-		ScriptParser parser = (ScriptParser) parserPool.retrieve(PARSER_KEY);
+		ScriptParser parser = new ScriptParser();
 		InputStream stream = null;
-
-		if (parser == null)
-			parser = new ScriptParser();
 
 		try
 		{
@@ -143,8 +132,6 @@ public class DefaultScriptSource implements IScriptSource
 		finally
 		{
 			Tapestry.close(stream);
-
-			parserPool.store(PARSER_KEY, parser);
 		}
 	}
 
@@ -165,8 +152,7 @@ public class DefaultScriptSource implements IScriptSource
 			buffer.append(", ");
 		}
 
-		buffer.append(parserPool.getPooledCount());
-		buffer.append(" pooled parsers]");
+		buffer.append("]");
 
 		return buffer.toString();
 	}

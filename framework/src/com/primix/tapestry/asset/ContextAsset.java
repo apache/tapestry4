@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -26,13 +26,23 @@
 
 package com.primix.tapestry.asset;
 
-import java.net.*;
-import javax.servlet.*;
-import java.io.*;
-import com.primix.tapestry.spec.*;
-import com.primix.tapestry.*;
-import java.util.*;
-import org.apache.log4j.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+
+import javax.servlet.ServletContext;
+
+import org.apache.log4j.Category;
+
+import com.primix.tapestry.ApplicationRuntimeException;
+import com.primix.tapestry.IAsset;
+import com.primix.tapestry.IRequestCycle;
+import com.primix.tapestry.ResourceUnavailableException;
+import com.primix.tapestry.Tapestry;
 
 /**
  *  An asset whose path is relative to the {@link ServletContext} containing
@@ -40,12 +50,11 @@ import org.apache.log4j.*;
  *
  *  @author Howard Ship
  *  @version $Id$
- */
+ **/
 
 public class ContextAsset implements IAsset
 {
-	private static final Category CAT =
-		Category.getInstance(ContextAsset.class.getName());
+	private static final Category CAT = Category.getInstance(ContextAsset.class.getName());
 
 	private static class Localization
 	{
@@ -63,7 +72,7 @@ public class ContextAsset implements IAsset
 
 	/**
 	 *  Map, keyed on Locale, value is an instance of Localization
-	 */
+	 **/
 
 	private Map localizations;
 	private String assetPath;
@@ -78,7 +87,7 @@ public class ContextAsset implements IAsset
 	 *  is prepended to the asset path, which means that assets deployed inside
 	 *  web applications will still work (if things are configured properly).
 	 *
-	 */
+	 **/
 
 	public String buildURL(IRequestCycle cycle)
 	{
@@ -96,8 +105,7 @@ public class ContextAsset implements IAsset
 		return localization.URL;
 	}
 
-	public InputStream getResourceAsStream(IRequestCycle cycle)
-		throws ResourceUnavailableException
+	public InputStream getResourceAsStream(IRequestCycle cycle) throws ResourceUnavailableException
 	{
 		ServletContext context;
 		URL url;
@@ -126,10 +134,9 @@ public class ContextAsset implements IAsset
 	 * come up with a good, general, efficient way to do this search without
 	 * a huge amount of mechanism.
 	 *
-	 */
+	 **/
 
-	private Localization findLocalization(IRequestCycle cycle)
-		throws ResourceUnavailableException
+	private Localization findLocalization(IRequestCycle cycle) throws ResourceUnavailableException
 	{
 		Locale locale = cycle.getPage().getLocale();
 		int dotx;
@@ -142,24 +149,21 @@ public class ContextAsset implements IAsset
 		String suffix;
 		Localization result;
 
-		if (localizations == null)
+		synchronized (this)
 		{
-			synchronized (this)
+			if (localizations == null)
+				localizations = new HashMap(MAP_SIZE);
+		}
+
+			synchronized (localizations)
 			{
-				if (localizations == null)
-					localizations = new HashMap(MAP_SIZE);
+				result = (Localization) localizations.get(locale);
+				if (result != null)
+					return result;
 			}
-		}
 
-		synchronized (localizations)
-		{
-			result = (Localization) localizations.get(locale);
-			if (result != null)
-				return result;
-		}
-
-		if (CAT.isDebugEnabled())
-			CAT.debug("Searching for localization of context resource " + assetPath);
+				if (CAT.isDebugEnabled())
+					CAT.debug("Searching for localization of context resource " + assetPath);
 
 		dotx = assetPath.lastIndexOf('.');
 		suffix = assetPath.substring(dotx);
@@ -180,8 +184,7 @@ public class ContextAsset implements IAsset
 		if (language.length() > 0)
 			start--;
 
-		ServletContext context =
-			cycle.getRequestContext().getServlet().getServletContext();
+		ServletContext context = cycle.getRequestContext().getServlet().getServletContext();
 
 		// On pass #0, we use language code and country code
 		// On pass #1, we use language code
@@ -215,10 +218,7 @@ public class ContextAsset implements IAsset
 				if (candidateURL != null && exists(candidateURL))
 				{
 
-					result =
-						new Localization(
-							candidatePath,
-							cycle.getEngine().getContextPath() + candidatePath);
+					result = new Localization(candidatePath, cycle.getEngine().getContextPath() + candidatePath);
 
 					synchronized (localizations)
 					{
@@ -239,8 +239,7 @@ public class ContextAsset implements IAsset
 		}
 
 		throw new ResourceUnavailableException(
-			Tapestry.getString("ContextAsset.resource-unavailable",
-				assetPath, locale));
+			Tapestry.getString("ContextAsset.resource-unavailable", assetPath, locale));
 	}
 
 	/** @since 1.0.6 **/

@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -62,21 +62,17 @@ import com.primix.tapestry.util.MultiKey;
  *
  * @author Howard Ship
  * @version $Id$
- */
+ **/
 
-public class DefaultTemplateSource
-	implements ITemplateSource, IRenderDescription
+public class DefaultTemplateSource implements ITemplateSource, IRenderDescription
 {
-	private static final Category CAT =
-		Category.getInstance(DefaultTemplateSource.class);
-
-	private static final int MAP_SIZE = 11;
+	private static final Category CAT = Category.getInstance(DefaultTemplateSource.class);
 
 	// Cache of previously retrieved templates.  Key is a multi-key of 
 	// specification resource path and locale (local may be null), value
 	// is the ComponentTemplate.
 
-	private Map cache;
+	private Map cache = new HashMap();
 
 	// Previously read templates; key is the HTML resource path, value
 	// is the ComponentTemplate.
@@ -86,7 +82,7 @@ public class DefaultTemplateSource
 	/**
 	 *  Number of tokens (each template contains multiple tokens).
 	 *
-	 */
+	 **/
 
 	private int tokenCount;
 
@@ -148,15 +144,13 @@ public class DefaultTemplateSource
 	*  <p>Returns null if the template can't be found.
 	*/
 
-	public ComponentTemplate getTemplate(IComponent component)
-		throws ResourceUnavailableException
+	public ComponentTemplate getTemplate(IComponent component) throws ResourceUnavailableException
 	{
 		ComponentSpecification specification = component.getSpecification();
 		String specificationResourcePath = specification.getSpecificationResourcePath();
 		Locale locale = component.getPage().getLocale();
 
-		Object key =
-			new MultiKey(new Object[] { specificationResourcePath, locale }, false);
+		Object key = new MultiKey(new Object[] { specificationResourcePath, locale }, false);
 
 		ComponentTemplate result = searchCache(key);
 		if (result != null)
@@ -193,19 +187,16 @@ public class DefaultTemplateSource
 
 	private void saveToCache(Object key, ComponentTemplate template)
 	{
-		if (cache == null)
+		synchronized (this)
 		{
-			synchronized (this)
-			{
-				if (cache == null)
-					cache = new HashMap(MAP_SIZE);
-			}
+			if (cache == null)
+				cache = new HashMap();
 		}
 
-		synchronized (cache)
-		{
-			cache.put(key, template);
-		}
+			synchronized (cache)
+			{
+				cache.put(key, template);
+			}
 	}
 
 	/**
@@ -213,7 +204,7 @@ public class DefaultTemplateSource
 	 *  This may be in the template map already, or may involve reading and
 	 *  parsing the template.
 	 *
-	 */
+	 **/
 
 	private ComponentTemplate findTemplate(
 		String specificationResourcePath,
@@ -237,35 +228,30 @@ public class DefaultTemplateSource
 					+ " in locale "
 					+ locale.getDisplayName());
 
-		// Just easier to lock the template cache once, for the duration.
-
-		if (templates == null)
+		synchronized (this)
 		{
-			synchronized (this)
+			if (templates == null)
+				templates = new HashMap();
+		}
+
+			dotx = specificationResourcePath.lastIndexOf('.');
+			buffer = new StringBuffer(dotx + 20);
+			buffer.append(specificationResourcePath.substring(0, dotx));
+			rawLength = buffer.length();
+
+			if (locale != null)
 			{
-				if (templates == null)
-					templates = new HashMap(MAP_SIZE);
+				country = locale.getCountry();
+				if (country.length() > 0)
+					start--;
+
+				// This assumes that you never have the case where there's
+				// a null language code and a non-null country code.
+
+				language = locale.getLanguage();
+				if (language.length() > 0)
+					start--;
 			}
-		}
-
-		dotx = specificationResourcePath.lastIndexOf('.');
-		buffer = new StringBuffer(dotx + 20);
-		buffer.append(specificationResourcePath.substring(0, dotx));
-		rawLength = buffer.length();
-
-		if (locale != null)
-		{
-			country = locale.getCountry();
-			if (country.length() > 0)
-				start--;
-
-			// This assumes that you never have the case where there's
-			// a null language code and a non-null country code.
-
-			language = locale.getLanguage();
-			if (language.length() > 0)
-				start--;
-		}
 
 		// On pass #0, we use language code and country code
 		// On pass #1, we use language code
@@ -313,7 +299,7 @@ public class DefaultTemplateSource
 			}
 		}
 
-		return result;
+			return result;
 	}
 
 	/**
@@ -322,11 +308,9 @@ public class DefaultTemplateSource
 	 *  from a synchronized block, so there shouldn't be threading
 	 *  issues here.
 	 *
-	 */
+	 **/
 
-	private ComponentTemplate parseTemplate(
-		String resourceName,
-		IComponent component)
+	private ComponentTemplate parseTemplate(String resourceName, IComponent component)
 		throws ResourceUnavailableException
 	{
 		TemplateToken[] tokens;
@@ -351,9 +335,7 @@ public class DefaultTemplateSource
 		catch (TemplateParseException ex)
 		{
 			throw new ResourceUnavailableException(
-				Tapestry.getString(
-					"DefaultTemplateSource.unable-to-parse-template",
-					resourceName),
+				Tapestry.getString("DefaultTemplateSource.unable-to-parse-template", resourceName),
 				ex);
 		}
 
@@ -369,10 +351,9 @@ public class DefaultTemplateSource
 	 *  Reads the template, given the complete path to the
 	 *  resource.  Returns null if the resource doesn't exist.
 	 *
-	 */
+	 **/
 
-	private char[] readTemplate(String resourceName)
-		throws ResourceUnavailableException
+	private char[] readTemplate(String resourceName) throws ResourceUnavailableException
 	{
 		URL url;
 		InputStream stream = null;
@@ -394,9 +375,7 @@ public class DefaultTemplateSource
 		catch (IOException ex)
 		{
 			throw new ResourceUnavailableException(
-				Tapestry.getString(
-					"DefaultTemplateSource.unable-to-read-template",
-					resourceName),
+				Tapestry.getString("DefaultTemplateSource.unable-to-read-template", resourceName),
 				ex);
 		}
 		finally
@@ -417,7 +396,7 @@ public class DefaultTemplateSource
 	/**
 	 *  Reads a Stream into memory as an array of characters.
 	 *
-	 */
+	 **/
 
 	private char[] readTemplateStream(InputStream stream) throws IOException
 	{

@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -26,11 +26,25 @@
 
 package com.primix.tapestry.listener;
 
-import com.primix.tapestry.*;
-import com.primix.tapestry.util.prop.*;
-import java.util.*;
-import java.lang.reflect.*;
-import org.apache.log4j.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.log4j.Category;
+
+import com.primix.tapestry.ApplicationRuntimeException;
+import com.primix.tapestry.IActionListener;
+import com.primix.tapestry.IComponent;
+import com.primix.tapestry.IDirect;
+import com.primix.tapestry.IDirectListener;
+import com.primix.tapestry.IRequestCycle;
+import com.primix.tapestry.RequestCycleException;
+import com.primix.tapestry.Tapestry;
+import com.primix.tapestry.util.prop.PropertyHelper;
 
 /**
  *  Maps a class to a set of listeners based on the public methods of the class.
@@ -40,14 +54,13 @@ import org.apache.log4j.*;
  *  @author Howard Ship
  *  @version $Id$
  *  @since 1.0.2
- */
+ **/
 
 public class ListenerMap
 {
 	private static final Category CAT = Category.getInstance(ListenerMap.class);
 
-	static
-	{
+	static {
 		PropertyHelper.register(ListenerMap.class, ListenerMapHelper.class);
 	}
 
@@ -60,29 +73,29 @@ public class ListenerMap
 	 *  String[] and a {@link IRequestCycle} as parameters,
 	 *  return void, and throw nothing or just {@link RequestCycleException}.
 	 *
-	 */
+	 **/
 
 	private Map methodMap;
 
 	/**
 	 * A {@link Map} of cached listener instances, keyed on method name
 	 *
-	 */
+	 **/
 
-	private Map listenerCache;
+	private Map listenerCache = new HashMap();
 
 	/**
 	 * A {@link Map}, keyed on Class, of {@link Map} ... the method map
 	 * for any particular instance of the given class.
 	 *
-	 */
+	 **/
 
-	private static Map classMap;
+	private static Map classMap = new HashMap();
 
 	/**
 	 *  Implements both listener interfaces.
 	 *
-	 */
+	 **/
 
 	private class SyntheticListener implements IDirectListener, IActionListener
 	{
@@ -100,16 +113,12 @@ public class ListenerMap
 			invokeTargetMethod(target, method, args);
 		}
 
-		public void actionTriggered(IComponent component, IRequestCycle cycle)
-			throws RequestCycleException
+		public void actionTriggered(IComponent component, IRequestCycle cycle) throws RequestCycleException
 		{
 			invoke(cycle);
 		}
 
-		public void directTriggered(
-			IDirect component,
-			String[] context,
-			IRequestCycle cycle)
+		public void directTriggered(IDirect component, String[] context, IRequestCycle cycle)
 			throws RequestCycleException
 		{
 			invoke(cycle);
@@ -133,7 +142,7 @@ public class ListenerMap
 	 *  Class used when the method includes a context (String[]) parameter.  This
 	 *  must be a {@link IDirectListener}.
 	 *
-	 */
+	 **/
 
 	private class SyntheticContextListener implements IDirectListener
 	{
@@ -144,10 +153,7 @@ public class ListenerMap
 			this.method = method;
 		}
 
-		public void directTriggered(
-			IDirect component,
-			String[] context,
-			IRequestCycle cycle)
+		public void directTriggered(IDirect component, String[] context, IRequestCycle cycle)
 			throws RequestCycleException
 		{
 			Object[] args = new Object[] { context, cycle };
@@ -179,35 +185,26 @@ public class ListenerMap
 	 *  also cached for later use.
 	 *
 	 * @throws ApplicationRuntimeException if the listener can not be created.
-	 */
+	 **/
 
 	public Object getListener(String name)
 	{
 		Object listener = null;
-
-		if (listenerCache == null)
-		{
-			synchronized (this)
-			{
-				if (listenerCache == null)
-					listenerCache = new HashMap();
-			}
-		}
 
 		synchronized (listenerCache)
 		{
 			listener = listenerCache.get(name);
 		}
 
-		if (listener == null)
-		{
-			listener = createListener(name);
-
-			synchronized (listenerCache)
+			if (listener == null)
 			{
-				listenerCache.put(name, listener);
+				listener = createListener(name);
+
+				synchronized (listenerCache)
+				{
+					listenerCache.put(name, listener);
+				}
 			}
-		}
 
 		return listener;
 	}
@@ -216,7 +213,7 @@ public class ListenerMap
 	 *  Returns an object that implements {@link IDirectListener} and/or {@link IActionListener}.
 	 *  This involves looking up the method by name and determining which
 	 *  inner class to create.
-	 */
+	 **/
 
 	private Object createListener(String name)
 	{
@@ -230,14 +227,16 @@ public class ListenerMap
 			method = (Method) methodMap.get(name);
 		}
 
-		if (method == null)
-			throw new ApplicationRuntimeException(
-				Tapestry.getString("ListenerMap.object-missing-method", target, name));
+			if (method == null)
+				throw new ApplicationRuntimeException(
+					Tapestry.getString("ListenerMap.object-missing-method", target, name));
 
+        // Just has one paramter, IRequestCycle
+        
 		if (method.getParameterTypes().length == 1)
 			return new SyntheticListener(method);
 
-		// OK, must have two parameters (String[] and IRequestCycle)).
+		// OK, must have two parameters (IRequestCycle and String[])).
 
 		return new SyntheticContextListener(method);
 	}
@@ -246,21 +245,12 @@ public class ListenerMap
 	 *  Gets the method map for the current instance.  If necessary, it is constructed and cached (for other instances
 	 *  of the same class).
 	 *
-	 */
+	 **/
 
 	private Map getMethodMap()
 	{
 		if (methodMap != null)
 			return methodMap;
-
-		if (classMap == null)
-		{
-			synchronized (this)
-			{
-				if (classMap == null)
-					classMap = new HashMap();
-			}
-		}
 
 		Class beanClass = target.getClass();
 
@@ -269,15 +259,15 @@ public class ListenerMap
 			methodMap = (Map) classMap.get(beanClass);
 		}
 
-		if (methodMap == null)
-		{
-			methodMap = buildMethodMap(beanClass);
-
-			synchronized (classMap)
+			if (methodMap == null)
 			{
-				classMap.put(beanClass, methodMap);
+				methodMap = buildMethodMap(beanClass);
+
+				synchronized (classMap)
+				{
+					classMap.put(beanClass, methodMap);
+				}
 			}
-		}
 
 		return methodMap;
 	}
@@ -329,8 +319,7 @@ public class ListenerMap
 			if (exceptions.length > 1)
 				continue;
 
-			if (exceptions.length == 1
-				&& !exceptions[0].equals(RequestCycleException.class))
+			if (exceptions.length == 1 && !exceptions[0].equals(RequestCycleException.class))
 				continue;
 
 			// Ha!  Passed all tests.
@@ -347,14 +336,10 @@ public class ListenerMap
 	 *  Invoked by the inner listener/adaptor classes to
 	 *  invoke the method.
 	 *
-	 */
+	 **/
 
-	private static void invokeTargetMethod(
-		Object target,
-		Method method,
-		Object[] args)
+	private static void invokeTargetMethod(Object target, Method method, Object[] args)
 		throws RequestCycleException
-	
 	{
 		if (CAT.isDebugEnabled())
 			CAT.debug("Invoking listener method " + method + " on " + target);
@@ -373,10 +358,10 @@ public class ListenerMap
 					throw (RequestCycleException) inner;
 
 				// Edit out the InvocationTargetException, if possible.
-				
+
 				if (inner instanceof RuntimeException)
-					throw (RuntimeException)inner;
-				
+					throw (RuntimeException) inner;
+
 				throw ex;
 			}
 		}
@@ -388,7 +373,7 @@ public class ListenerMap
 		{
 			// Catch InvocationTargetException or, preferrably,
 			// the inner exception here (if its a runtime exception).
-			
+
 			throw new ApplicationRuntimeException(
 				Tapestry.getString(
 					"ListenerMap.unable-to-invoke-method",
@@ -405,7 +390,7 @@ public class ListenerMap
 	 *
 	 *  @since 1.0.6
 	 *
-	 */
+	 **/
 
 	public Collection getListenerNames()
 	{

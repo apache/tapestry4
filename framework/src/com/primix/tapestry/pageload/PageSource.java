@@ -77,18 +77,14 @@ public class PageSource implements IPageSource, IRenderDescription
 	private Map contextAssets;
 	private Map privateAssets;
 	private IResourceResolver resolver;
-	private static final int MAP_SIZE = 23;
 
 	/**
 	 *  The pool of {@link PooledPage}s.  The key is a {@link MultiKey},
 	 *  built from the page name and the page locale.
-	 *  It is also used to pool {@link PageLoader}s.
 	 *
 	 **/
 
 	private Pool pool;
-
-	private static final String PAGE_LOADER_KEY = "PageLoader";
 
 	public PageSource(IResourceResolver resolver)
 	{
@@ -137,13 +133,12 @@ public class PageSource implements IPageSource, IRenderDescription
 
 	/**
 	 *  Gets the page from a pool, or otherwise loads the page.  This operation
-	 *  is threadsafe ... it synchronizes on the pool of pages.
+	 *  is threadsafe.
 	 *
 	 
 	 **/
 
-	public IPage getPage(IEngine engine, String pageName, IMonitor monitor)
-		throws PageLoaderException
+	public IPage getPage(IEngine engine, String pageName, IMonitor monitor) throws PageLoaderException
 	{
 		Object key = buildKey(engine, pageName);
 		IPage result = (IPage) pool.retrieve(key);
@@ -153,19 +148,14 @@ public class PageSource implements IPageSource, IRenderDescription
 			if (monitor != null)
 				monitor.pageCreateBegin(pageName);
 
-			PageSpecification specification =
-				engine.getSpecification().getPageSpecification(pageName);
+			PageSpecification specification = engine.getSpecification().getPageSpecification(pageName);
 
 			if (specification == null)
-				throw new ApplicationRuntimeException(
-					Tapestry.getString("PageLoader.no-such-page", pageName));
+				throw new ApplicationRuntimeException(Tapestry.getString("PageLoader.no-such-page", pageName));
 
-			PageLoader loader = retrievePageLoader();
+			PageLoader loader = new PageLoader(this);
 
-			result =
-				loader.loadPage(pageName, engine, specification.getSpecificationPath());
-
-			storePageLoader(loader);
+			result = loader.loadPage(pageName, engine, specification.getSpecificationPath());
 
 			// Alas, the page loader is discarded, we should be pooling those as
 			// well.
@@ -181,23 +171,10 @@ public class PageSource implements IPageSource, IRenderDescription
 		return result;
 	}
 
-	private PageLoader retrievePageLoader()
-	{
-		PageLoader result = (PageLoader) pool.retrieve(PAGE_LOADER_KEY);
-
-		if (result == null)
-			result = new PageLoader(this);
-
-		return result;
-	}
-
-	private void storePageLoader(PageLoader loader)
-	{
-		pool.store(PAGE_LOADER_KEY, loader);
-	}
 
 	/**
-	 *  Returns the page to the appropriate pool.
+	 *  Returns the page to the appropriate pool.  Invokes
+     *  {@link IPage#detach()}.
 	 *
 	 **/
 
@@ -214,18 +191,16 @@ public class PageSource implements IPageSource, IRenderDescription
 	 *
 	 **/
 
-	public void reset()
+	public synchronized void reset()
 	{
-		synchronized (this)
-		{
-			pool.clear();
+		pool.clear();
 
-			fieldBindings = null;
-			staticBindings = null;
-			externalAssets = null;
-			contextAssets = null;
-			privateAssets = null;
-		}
+		fieldBindings = null;
+		staticBindings = null;
+		externalAssets = null;
+		contextAssets = null;
+		privateAssets = null;
+
 	}
 
 	/**
@@ -235,29 +210,18 @@ public class PageSource implements IPageSource, IRenderDescription
 	 *
 	 **/
 
-	public IBinding getFieldBinding(String fieldName)
+	public synchronized IBinding getFieldBinding(String fieldName)
 	{
-		IBinding result = null;
-
 		if (fieldBindings == null)
+			fieldBindings = new HashMap();
+
+		IBinding result = (IBinding) fieldBindings.get(fieldName);
+
+		if (result == null)
 		{
-			synchronized (this)
-			{
-				if (fieldBindings == null)
-					fieldBindings = new HashMap(MAP_SIZE);
-			}
-		}
+			result = new FieldBinding(resolver, fieldName);
 
-		synchronized (fieldBindings)
-		{
-			result = (IBinding) fieldBindings.get(fieldName);
-
-			if (result == null)
-			{
-				result = new FieldBinding(resolver, fieldName);
-
-				fieldBindings.put(fieldName, result);
-			}
+			fieldBindings.put(fieldName, result);
 		}
 
 		return result;
@@ -268,111 +232,71 @@ public class PageSource implements IPageSource, IRenderDescription
 	 *
 	 **/
 
-	public IBinding getStaticBinding(String value)
+	public synchronized IBinding getStaticBinding(String value)
 	{
-		IBinding result = null;
 
 		if (staticBindings == null)
+			staticBindings = new HashMap();
+
+		IBinding result = (IBinding) staticBindings.get(value);
+
+		if (result == null)
 		{
-			synchronized (this)
-			{
-				if (staticBindings == null)
-					staticBindings = new HashMap(MAP_SIZE);
-			}
-		}
+			result = new StaticBinding(value);
 
-		synchronized (staticBindings)
-		{
-			result = (IBinding) staticBindings.get(value);
-
-			if (result == null)
-			{
-				result = new StaticBinding(value);
-
-				staticBindings.put(value, result);
-			}
+			staticBindings.put(value, result);
 		}
 
 		return result;
 	}
 
-	public IAsset getExternalAsset(String URL)
+	public synchronized IAsset getExternalAsset(String URL)
 	{
-		IAsset result = null;
 
 		if (externalAssets == null)
-		{
-			synchronized (this)
-			{
-				if (externalAssets == null)
-					externalAssets = new HashMap(MAP_SIZE);
-			}
-		}
+			externalAssets = new HashMap();
 
-		synchronized (externalAssets)
-		{
-			result = (IAsset) externalAssets.get(URL);
+		IAsset result = (IAsset) externalAssets.get(URL);
 
-			if (result == null)
-			{
-				result = new ExternalAsset(URL);
-				externalAssets.put(URL, result);
-			}
+		if (result == null)
+		{
+			result = new ExternalAsset(URL);
+			externalAssets.put(URL, result);
 		}
 
 		return result;
 	}
 
-	public IAsset getContextAsset(String assetPath)
+	public synchronized IAsset getContextAsset(String assetPath)
 	{
-		IAsset result = null;
 
 		if (contextAssets == null)
-		{
-			synchronized (this)
-			{
-				if (contextAssets == null)
-					contextAssets = new HashMap(MAP_SIZE);
-			}
-		}
+			contextAssets = new HashMap();
 
-		synchronized (contextAssets)
-		{
-			result = (IAsset) contextAssets.get(assetPath);
+		IAsset result = (IAsset) contextAssets.get(assetPath);
 
-			if (result == null)
-			{
-				result = new ContextAsset(assetPath);
-				contextAssets.put(assetPath, result);
-			}
+		if (result == null)
+		{
+			result = new ContextAsset(assetPath);
+			contextAssets.put(assetPath, result);
 		}
 
 		return result;
 
 	}
 
-	public IAsset getPrivateAsset(String resourcePath)
+	public synchronized IAsset getPrivateAsset(String resourcePath)
 	{
-		IAsset result = null;
 
 		if (privateAssets == null)
-		{
-			synchronized (this)
-			{
-				if (privateAssets == null)
-					privateAssets = new HashMap(MAP_SIZE);
-			}
-		}
+			privateAssets = new HashMap();
 
-		synchronized (privateAssets)
-		{
-			result = (IAsset) privateAssets.get(resourcePath);
+		IAsset result = (IAsset) privateAssets.get(resourcePath);
 
-			if (result == null)
-			{
-				result = new PrivateAsset(resourcePath);
-				privateAssets.put(resourcePath, result);
-			}
+		if (result == null)
+		{
+			result = new PrivateAsset(resourcePath);
+			privateAssets.put(resourcePath, result);
 		}
 
 		return result;
@@ -415,8 +339,8 @@ public class PageSource implements IPageSource, IRenderDescription
 			count = map.size();
 		}
 
-		if (count == 0)
-			return;
+			if (count == 0)
+				return;
 
 		char ch = buffer.charAt(buffer.length() - 1);
 		if (ch != ' ' && ch != '[')

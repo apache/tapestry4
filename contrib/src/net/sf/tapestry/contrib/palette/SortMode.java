@@ -72,8 +72,4 @@ public class SortMode extends Enum
 		super(enumerationId);
 	}
 
-	private Object readResolve()
-	{
-		return getSingleton();
-	}
 }

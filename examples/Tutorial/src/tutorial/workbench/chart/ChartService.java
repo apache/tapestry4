@@ -68,19 +68,15 @@ public class ChartService extends AbstractService
 		
 		if (idPath != null)
 		{
-			context = provideString(2);
+			context = new String[2];
 			context[1] = idPath;
 		}
 		else
-			context = provideString(1);
-			
+			context = new String[1];
+            
 		context[0] = pageName;
 		
-		Gesture result = assembleGesture(cycle, SERVICE_NAME, context, null);
-		
-		discard(context);
-		
-		return result;
+		return assembleGesture(cycle, SERVICE_NAME, context, null);
 	}
 
 	public boolean service(
@@ -105,7 +101,14 @@ public class ChartService extends AbstractService
 			
 			output.setContentType("image/jpeg");
 			
-			ChartUtilities.writeChartAsJPEG(output, chart, 400, 350);
+            // I've seen a few bits of wierdness (including a JVM crash) inside this code.
+            // Hopefully, its a multi-threading problem that can be resolved
+            // by synchronizing.
+            
+            synchronized (this)
+            {
+			    ChartUtilities.writeChartAsJPEG(output, chart, 400, 350);
+            }
 		}
 		catch (ClassCastException ex)
 		{

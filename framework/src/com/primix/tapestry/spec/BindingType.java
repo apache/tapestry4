@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -26,9 +26,7 @@
 
 package com.primix.tapestry.spec;
 
-import com.primix.tapestry.IBinding;
-import com.primix.tapestry.util.*;
-import com.primix.tapestry.binding.*;
+import com.primix.tapestry.util.Enum;
 
 /**
  *  Defines the different types of bindings possible for a component.
@@ -36,23 +34,23 @@ import com.primix.tapestry.binding.*;
  *  used to create an instance of {@link IBinding}.
  *
  *
- * @author Howard Ship
+ * @author Howard Lewis Ship
  * @version $Id$
- */
+ **/
 
 public final class BindingType extends Enum
 {
 	/**
 	 *  Indicates a {@link StaticBinding}.
 	 *
-	 */
+	 **/
 
 	public static final BindingType STATIC = new BindingType("STATIC");
 
 	/**
 	 *  Indicates a standard {@link PropertyBinding}.
 	 *
-	 */
+	 **/
 
 	public static final BindingType DYNAMIC = new BindingType("DYNAMIC");
 
@@ -60,14 +58,14 @@ public final class BindingType extends Enum
 	 *  Indicates that an existing binding (from the container) will be
 	 *  re-used.
 	 *
-	 */
+	 **/
 
 	public static final BindingType INHERITED = new BindingType("INHERITED");
 
 	/**
 	 *  Indicates a {@link FieldBinding}.
 	 *
-	 */
+	 **/
 
 	public static final BindingType FIELD = new BindingType("FIELD");
 
@@ -76,8 +74,4 @@ public final class BindingType extends Enum
 		super(name);
 	}
 
-	private Object readResolve()
-	{
-		return getSingleton();
-	}
 }

@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -26,15 +26,24 @@
 
 package com.primix.tapestry.asset;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.URL;
-import com.primix.tapestry.util.*;
-import com.primix.tapestry.*;
-import java.io.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import java.util.*;
-import com.primix.tapestry.spec.*;
-import org.apache.log4j.*;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.ServletContext;
+
+import org.apache.log4j.Category;
+
+import com.primix.tapestry.IRequestCycle;
+import com.primix.tapestry.IResourceResolver;
+import com.primix.tapestry.ResourceUnavailableException;
+import com.primix.tapestry.Tapestry;
+import com.primix.tapestry.util.StringSplitter;
 
 /**
  *  Responsible for copying assets from the classpath to an external directory that
@@ -80,25 +89,25 @@ import org.apache.log4j.*;
  * a version number in it, for example, <code>D:/inetpub/assets/0</code> mapped to the URL
  * <code>/assets/0</code>.  When a new version of the application is deployed, the trailing
  * version number is incremented from 0 to 1.
- */
+ * 
+ *  @author Howard Lewis Ship
+ *  @version $Id$
+ **/
 
 public class AssetExternalizer
 {
-	private static final Category CAT =
-		Category.getInstance(AssetExternalizer.class);
+	private static final Category CAT = Category.getInstance(AssetExternalizer.class);
 
 	private IResourceResolver resolver;
 	private File assetDir;
 	private String URL;
 
-	private static final int MAP_SIZE = 7;
-
 	/**
 	*  A map from resource path (as a String) to final URL (as a String).
 	*
-	*/
+	**/
 
-	private Map resources;
+	private Map resources = new HashMap();
 
 	private static final int BUFFER_SIZE = 2048;
 
@@ -171,8 +180,7 @@ public class AssetExternalizer
 
 		inputURL = resolver.getResource(resourcePath);
 		if (inputURL == null)
-			throw new IOException(
-				Tapestry.getString("missing-resource", resourcePath));
+			throw new IOException(Tapestry.getString("missing-resource", resourcePath));
 
 		in = inputURL.openStream();
 
@@ -205,7 +213,7 @@ public class AssetExternalizer
 	*
 	*  @see ApplicationSpecification#getName()
 	*
-	*/
+	**/
 
 	public static AssetExternalizer get(IRequestCycle cycle)
 	{
@@ -251,7 +259,7 @@ public class AssetExternalizer
 	* classpath.  This is expected to include a leading slash.  For
 	* example: <code>/com/skunkworx/Banner.gif</code>.
 	*
-	*/
+	**/
 
 	public String getURL(String resourcePath) throws ResourceUnavailableException
 	{
@@ -259,15 +267,6 @@ public class AssetExternalizer
 
 		if (assetDir == null)
 			return null;
-
-		if (resources == null)
-		{
-			synchronized (this)
-			{
-				if (resources == null)
-					resources = new HashMap(MAP_SIZE);
-			}
-		}
 
 		synchronized (resources)
 		{
@@ -283,10 +282,7 @@ public class AssetExternalizer
 			catch (IOException ex)
 			{
 				throw new ResourceUnavailableException(
-					Tapestry.getString(
-						"AssetExternalizer.externalize-failure",
-						resourcePath,
-						assetDir),
+					Tapestry.getString("AssetExternalizer.externalize-failure", resourcePath, assetDir),
 					ex);
 			}
 

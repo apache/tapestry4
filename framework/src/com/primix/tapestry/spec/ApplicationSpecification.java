@@ -27,6 +27,7 @@
 package com.primix.tapestry.spec;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeSet;
@@ -65,7 +66,7 @@ public class ApplicationSpecification extends BasePropertyHolder
 
 	// Map of String (name of service) to String (Java class name), often null
 
-	private Map serviceMap;
+	protected Map serviceMap;
 
 	// The Default component map is shared by all specifications
 
@@ -75,21 +76,11 @@ public class ApplicationSpecification extends BasePropertyHolder
 		defaultComponentMap.put("Insert", "/com/primix/tapestry/components/Insert.jwc");
 		defaultComponentMap.put("Action", "/com/primix/tapestry/link/Action.jwc");
 		defaultComponentMap.put("Checkbox", "/com/primix/tapestry/form/Checkbox.jwc");
-		defaultComponentMap.put(
-			"InsertWrapped",
-			"/com/primix/tapestry/components/InsertWrapped.jwc");
-		defaultComponentMap.put(
-			"Conditional",
-			"/com/primix/tapestry/components/Conditional.jwc");
-		defaultComponentMap.put(
-			"Foreach",
-			"/com/primix/tapestry/components/Foreach.jwc");
-		defaultComponentMap.put(
-			"ExceptionDisplay",
-			"/com/primix/tapestry/html/ExceptionDisplay.jwc");
-		defaultComponentMap.put(
-			"Delegator",
-			"/com/primix/tapestry/components/Delegator.jwc");
+		defaultComponentMap.put("InsertWrapped", "/com/primix/tapestry/components/InsertWrapped.jwc");
+		defaultComponentMap.put("Conditional", "/com/primix/tapestry/components/Conditional.jwc");
+		defaultComponentMap.put("Foreach", "/com/primix/tapestry/components/Foreach.jwc");
+		defaultComponentMap.put("ExceptionDisplay", "/com/primix/tapestry/html/ExceptionDisplay.jwc");
+		defaultComponentMap.put("Delegator", "/com/primix/tapestry/components/Delegator.jwc");
 		defaultComponentMap.put("Form", "/com/primix/tapestry/form/Form.jwc");
 		defaultComponentMap.put("TextField", "/com/primix/tapestry/form/TextField.jwc");
 		defaultComponentMap.put("Text", "/com/primix/tapestry/form/Text.jwc");
@@ -97,41 +88,25 @@ public class ApplicationSpecification extends BasePropertyHolder
 		defaultComponentMap.put("Option", "/com/primix/tapestry/form/Option.jwc");
 		defaultComponentMap.put("Image", "/com/primix/tapestry/html/Image.jwc");
 		defaultComponentMap.put("Any", "/com/primix/tapestry/components/Any.jwc");
-		defaultComponentMap.put(
-			"RadioGroup",
-			"/com/primix/tapestry/form/RadioGroup.jwc");
+		defaultComponentMap.put("RadioGroup", "/com/primix/tapestry/form/RadioGroup.jwc");
 		defaultComponentMap.put("Radio", "/com/primix/tapestry/form/Radio.jwc");
 		defaultComponentMap.put("Rollover", "/com/primix/tapestry/html/Rollover.jwc");
 		defaultComponentMap.put("Body", "/com/primix/tapestry/html/Body.jwc");
 		defaultComponentMap.put("Direct", "/com/primix/tapestry/link/Direct.jwc");
 		defaultComponentMap.put("Page", "/com/primix/tapestry/link/Page.jwc");
 		defaultComponentMap.put("Service", "/com/primix/tapestry/link/Service.jwc");
-		defaultComponentMap.put(
-			"ImageSubmit",
-			"/com/primix/tapestry/form/ImageSubmit.jwc");
-		defaultComponentMap.put(
-			"PropertySelection",
-			"/com/primix/tapestry/form/PropertySelection.jwc");
+		defaultComponentMap.put("ImageSubmit", "/com/primix/tapestry/form/ImageSubmit.jwc");
+		defaultComponentMap.put("PropertySelection", "/com/primix/tapestry/form/PropertySelection.jwc");
 		defaultComponentMap.put("Submit", "/com/primix/tapestry/form/Submit.jwc");
 		defaultComponentMap.put("Hidden", "/com/primix/tapestry/form/Hidden.jwc");
-		defaultComponentMap.put(
-			"ShowInspector",
-			"/com/primix/tapestry/inspector/ShowInspector.jwc");
+		defaultComponentMap.put("ShowInspector", "/com/primix/tapestry/inspector/ShowInspector.jwc");
 		defaultComponentMap.put("Shell", "/com/primix/tapestry/html/Shell.jwc");
-		defaultComponentMap.put(
-			"InsertText",
-			"/com/primix/tapestry/html/InsertText.jwc");
-		defaultComponentMap.put(
-			"ValidField",
-			"/com/primix/tapestry/valid/ValidField.jwc");
-		defaultComponentMap.put(
-			"FieldLabel",
-			"/com/primix/tapestry/valid/FieldLabel.jwc");
+		defaultComponentMap.put("InsertText", "/com/primix/tapestry/html/InsertText.jwc");
+		defaultComponentMap.put("ValidField", "/com/primix/tapestry/valid/ValidField.jwc");
+		defaultComponentMap.put("FieldLabel", "/com/primix/tapestry/valid/FieldLabel.jwc");
 		defaultComponentMap.put("Script", "/com/primix/tapestry/html/Script.jwc");
 		defaultComponentMap.put("Block", "/com/primix/tapestry/components/Block.jwc");
-		defaultComponentMap.put(
-			"InsertBlock",
-			"/com/primix/tapestry/components/InsertBlock.jwc");
+		defaultComponentMap.put("InsertBlock", "/com/primix/tapestry/components/InsertBlock.jwc");
 		defaultComponentMap.put("ListEdit", "/com/primix/tapestry/form/ListEdit.jwc");
 		defaultComponentMap.put("Upload", "/com/primix/tapestry/form/Upload.jwc");
 
@@ -146,15 +121,11 @@ public class ApplicationSpecification extends BasePropertyHolder
 		// An application must provide a home page and may override
 		// any of these.
 
-		defaultPageMap.put(
-			"StaleLink",
-			new PageSpecification("/com/primix/tapestry/pages/StaleLink.jwc"));
+		defaultPageMap.put("StaleLink", new PageSpecification("/com/primix/tapestry/pages/StaleLink.jwc"));
 		defaultPageMap.put(
 			"StaleSession",
 			new PageSpecification("/com/primix/tapestry/pages/StaleSession.jwc"));
-		defaultPageMap.put(
-			"Exception",
-			new PageSpecification("/com/primix/tapestry/pages/Exception.jwc"));
+		defaultPageMap.put("Exception", new PageSpecification("/com/primix/tapestry/pages/Exception.jwc"));
 
 		// Provide the Inspector, which is quietly available and never
 		// overriden.
@@ -167,27 +138,13 @@ public class ApplicationSpecification extends BasePropertyHolder
 	private static Map defaultServiceMap = new HashMap(MAP_SIZE);
 
 	static {
-		defaultServiceMap.put(
-			IEngineService.HOME_SERVICE,
-			"com.primix.tapestry.engine.HomeService");
-		defaultServiceMap.put(
-			IEngineService.ACTION_SERVICE,
-			"com.primix.tapestry.engine.ActionService");
-		defaultServiceMap.put(
-			IEngineService.DIRECT_SERVICE,
-			"com.primix.tapestry.engine.DirectService");
-		defaultServiceMap.put(
-			IEngineService.PAGE_SERVICE,
-			"com.primix.tapestry.engine.PageService");
-		defaultServiceMap.put(
-			IEngineService.RESET_SERVICE,
-			"com.primix.tapestry.engine.ResetService");
-		defaultServiceMap.put(
-			IEngineService.RESTART_SERVICE,
-			"com.primix.tapestry.engine.RestartService");
-		defaultServiceMap.put(
-			IEngineService.ASSET_SERVICE,
-			"com.primix.tapestry.asset.AssetService");
+		defaultServiceMap.put(IEngineService.HOME_SERVICE, "com.primix.tapestry.engine.HomeService");
+		defaultServiceMap.put(IEngineService.ACTION_SERVICE, "com.primix.tapestry.engine.ActionService");
+		defaultServiceMap.put(IEngineService.DIRECT_SERVICE, "com.primix.tapestry.engine.DirectService");
+		defaultServiceMap.put(IEngineService.PAGE_SERVICE, "com.primix.tapestry.engine.PageService");
+		defaultServiceMap.put(IEngineService.RESET_SERVICE, "com.primix.tapestry.engine.ResetService");
+		defaultServiceMap.put(IEngineService.RESTART_SERVICE, "com.primix.tapestry.engine.RestartService");
+		defaultServiceMap.put(IEngineService.ASSET_SERVICE, "com.primix.tapestry.asset.AssetService");
 
 	}
 
@@ -591,6 +548,42 @@ public class ApplicationSpecification extends BasePropertyHolder
 	public void setDescription(String description)
 	{
 		this.description = description;
+	}
+
+	/**
+	 * 
+	 *  Provide an unmodifiable copy of the default component
+	 *  map to subclasses
+	 * 
+	 **/
+
+	protected Map getDefaultComponentMap()
+	{
+		return Collections.unmodifiableMap(defaultComponentMap);
+	}
+
+	/**
+	 * 
+	 *  Provide an unmodifiable copy of the default page
+	 *  map to subclasses
+	 * 
+	 **/
+
+	protected Map getDefaultPageMap()
+	{
+		return Collections.unmodifiableMap(defaultPageMap);
+	}
+
+	/**
+	 * 
+	 *  Provide an unmodifiable copy of the default service
+	 *  map to subclasses
+	 *
+	 **/
+
+	protected Map getDefaultServiceMap()
+	{
+		return Collections.unmodifiableMap(defaultServiceMap);
 	}
 
 }

@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -26,16 +26,12 @@
 
 package com.primix.tapestry;
 
-import java.io.*;
-import javax.servlet.*;
-import java.util.*;
-import com.primix.tapestry.spec.*;
-import com.primix.tapestry.util.pool.*;
-import java.net.*;
+import java.io.IOException;
+import java.util.Locale;
 
-// Appease Javadoc
-import com.primix.tapestry.components.*;
-import javax.servlet.http.*;
+import javax.servlet.ServletException;
+
+import com.primix.tapestry.spec.ApplicationSpecification;
 
 /**
  * Defines the core, session-persistant object used to run a Tapestry
@@ -49,7 +45,7 @@ import javax.servlet.http.*;
  *
  * @author Howard Ship
  * @version $Id$
- */
+ **/
 
 public interface IEngine
 {
@@ -57,7 +53,7 @@ public interface IEngine
 	 *  The name ("Home") of the default page presented when a user first accesses the
 	 *  application.
 	 *
-	 */
+	 **/
 
 	public static final String HOME_PAGE = "Home";
 
@@ -68,21 +64,21 @@ public interface IEngine
 	 *  a writable JavaBeans property named 'exception' of type 
 	 * <code>java.lang.Throwable</code>.
 	 *
-	 */
+	 **/
 
 	public static final String EXCEPTION_PAGE = "Exception";
 
 	/**
 	 *  The name ("StaleLink") of the page used for reporting stale links.
 	 *
-	 */
+	 **/
 
 	public static final String STALE_LINK_PAGE = "StaleLink";
 
 	/**
 	 *  The name ("StaleSession") of the page used for reporting state sessions.
 	 *
-	 */
+	 **/
 
 	public static final String STALE_SESSION_PAGE = "StaleSession";
 
@@ -98,14 +94,14 @@ public interface IEngine
 	 *  <p>Throws an {@link ApplicationRuntimeException} if there are uncommitted changes
 	 *  for the recorder (in the current request cycle).
 	 *
-	 */
+	 **/
 
 	public void forgetPage(String name);
 
 	/**
 	 *  Returns the locale for the engine.  This locale is used when selecting
 	 *  templates and assets.
-	 */
+	 **/
 
 	public Locale getLocale();
 
@@ -115,7 +111,7 @@ public interface IEngine
 	 *  Generally, you should render a new page after changing the locale, to
 	 *  show that the locale has changed.
 	 *
-	 */
+	 **/
 
 	public void setLocale(Locale value);
 
@@ -124,21 +120,21 @@ public interface IEngine
 	 *  not been created yet.
 	 *
 	 *  @see #createPageRecorder(String, IRequestCycle)
-	 */
+	 **/
 
 	public IPageRecorder getPageRecorder(String pageName);
 
 	/**
 	 *  Creates a new page recorder for the named page.
 	 *
-	 */
+	 **/
 
 	public IPageRecorder createPageRecorder(String pageName, IRequestCycle cycle);
 
 	/**
 	 *  Returns the object used to load a page from its specification.
 	 *
-	 */
+	 **/
 
 	public IPageSource getPageSource();
 
@@ -152,7 +148,7 @@ public interface IEngine
 	 *  same name are not guarenteed to return the same object,
 	 *  especially in different request cycles.
 	 *
-	 */
+	 **/
 
 	public IEngineService getService(String name);
 
@@ -161,7 +157,7 @@ public interface IEngine
 	 *  This is required by instances of {@link IEngineService} that need 
 	 *  to construct URLs for the application.  This value will include
 	 *  the context path.
-	 */
+	 **/
 
 	public String getServletPath();
 
@@ -170,7 +166,7 @@ public interface IEngine
 	 *  any assets or servlets.  This may be the empty string, but won't be null.
 	 *
 	 *  <p>This value is obtained from {@link HttpServletRequest#getContextPath()}.
-	 */
+	 **/
 
 	public String getContextPath();
 
@@ -178,7 +174,7 @@ public interface IEngine
 	 *  Returns the application specification that defines the application
 	 *  and its pages.
 	 *
-	 */
+	 **/
 
 	public ApplicationSpecification getSpecification();
 
@@ -186,14 +182,14 @@ public interface IEngine
 	 *  Returns the source of all component specifications for the application.  
 	 *  The source is shared between sessions.
 	 *
-	 */
+	 **/
 
 	public ISpecificationSource getSpecificationSource();
 
 	/**
 	 *  Returns the source for HTML templates.
 	 *
-	 */
+	 **/
 
 	public ITemplateSource getTemplateSource();
 
@@ -208,15 +204,14 @@ public interface IEngine
 	 *  @returns true if the state of the engine was, or could have been, changed during
 	 *  processing.
 	 *
-	 */
+	 **/
 
-	public boolean service(RequestContext context)
-		throws ServletException, IOException;
+	public boolean service(RequestContext context) throws ServletException, IOException;
 
 	/**
 	 *  Returns an object that can resolve resources and classes.
 	 *
-	 */
+	 **/
 
 	public IResourceResolver getResourceResolver();
 
@@ -227,14 +222,14 @@ public interface IEngine
 	 *
 	 *  <p>Returns the visit, if it exists, or null if it has not been created.
 	 *
-	 */
+	 **/
 
 	public Object getVisit();
 
 	/**
 	 *  Returns the visit object, creating it if necessary.
 	 *
-	 */
+	 **/
 
 	public Object getVisit(IRequestCycle cycle);
 
@@ -242,7 +237,7 @@ public interface IEngine
 	 *  Allows the visit object to be removed; typically done when "shutting down"
 	 *  a user's session (by setting the visit to null).
 	 *
-	 */
+	 **/
 
 	public void setVisit(Object value);
 
@@ -250,7 +245,7 @@ public interface IEngine
 	 *  Returns true if the application allows the reset service.
 	 *
 	 *  @since 0.2.9
-	 */
+	 **/
 
 	public boolean isResetServiceEnabled();
 
@@ -260,7 +255,7 @@ public interface IEngine
 	 *
 	 *  @since 1.0.2
 	 *
-	 */
+	 **/
 
 	public IScriptSource getScriptSource();
 
@@ -272,19 +267,8 @@ public interface IEngine
 	 *
 	 *  @since 1.0.2
 	 *
-	 */
+	 **/
 
 	public boolean isStateful();
-
-	/**
-	 *  Returns a {@link Pool} from which helper objects may be obtained,
-	 *  and to which they should be returned.
-	 *  The pool is keyed on class name.
-	 *
-	 *  @since 1.0.4
-     *  @deprecated Just let the Garbage Collector do its job
-	 */
-
-	public Pool getHelperBeanPool();
 
 }

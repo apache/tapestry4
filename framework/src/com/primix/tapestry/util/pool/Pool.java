@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -26,10 +26,16 @@
 
 package com.primix.tapestry.util.pool;
 
-import java.util.*;
-import org.apache.log4j.*;
-import com.primix.tapestry.*;
-import com.primix.tapestry.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import org.apache.log4j.Category;
+
+import com.primix.tapestry.IRenderDescription;
+import com.primix.tapestry.IResponseWriter;
+import com.primix.tapestry.util.ICleanable;
+import com.primix.tapestry.util.JanitorThread;
 
 /**
  *  A Pool is used to pool instances of a useful class.  It uses
@@ -54,8 +60,6 @@ import com.primix.tapestry.util.*;
 public class Pool implements ICleanable, IRenderDescription
 {
 	private static final Category CAT = Category.getInstance(Pool.class);
-
-	private static final int MAP_SIZE = 23;
 
 	/**
 	 *  The generation, used to cull unused pooled items.
@@ -95,7 +99,6 @@ public class Pool implements ICleanable, IRenderDescription
 	 */
 
 	public Pool()
-	
 	{
 		this(true);
 	}
@@ -179,25 +182,21 @@ public class Pool implements ICleanable, IRenderDescription
 	 *
 	 */
 
-	public Object retrieve(Object key)
+	public synchronized Object retrieve(Object key)
 	{
 		PoolList list;
 		Object result = null;
 
-		if (map != null)
-		{
-			synchronized (map)
-			{
-				list = (PoolList) map.get(key);
+        if (map == null)
+            map = new HashMap();
 
-				if (list != null)
-					result = list.retrieve();
+		list = (PoolList) map.get(key);
 
-				if (result != null)
-					pooledCount--;
+		if (list != null)
+			result = list.retrieve();
 
-			}
-		}
+		if (result != null)
+			pooledCount--;
 
 		if (CAT.isDebugEnabled())
 			CAT.debug("Retrieved " + result + " from " + key);
@@ -212,47 +211,30 @@ public class Pool implements ICleanable, IRenderDescription
 	 *
 	 */
 
-	public void store(Object key, Object object)
+	public synchronized void store(Object key, Object object)
 	{
 		PoolList list;
 		int count;
-		IPoolable poolable = null;
 
-		try
+		if (object instanceof IPoolable)
 		{
-			poolable = (IPoolable) object;
+			((IPoolable) object).resetForPool();
 		}
-		catch (ClassCastException ex)
-		{
-			// Ignore.  The Object wasn't poolable.
-		}
-
-		if (poolable != null)
-			poolable.resetForPool();
 
 		if (map == null)
+			map = new HashMap();
+
+		list = (PoolList) map.get(key);
+
+		if (list == null)
 		{
-			synchronized (this)
-			{
-				if (map == null)
-					map = new HashMap(MAP_SIZE);
-			}
+			list = new PoolList();
+			map.put(key, list);
 		}
 
-		synchronized (map)
-		{
-			list = (PoolList) map.get(key);
+		count = list.store(generation, object);
 
-			if (list == null)
-			{
-				list = new PoolList();
-				map.put(key, list);
-			}
-
-			count = list.store(generation, object);
-
-			pooledCount++;
-		}
+		pooledCount++;
 
 		if (CAT.isDebugEnabled())
 			CAT.debug("Stored " + object + " into " + key + " (" + count + " pooled)");
@@ -263,15 +245,10 @@ public class Pool implements ICleanable, IRenderDescription
 	 *
 	 */
 
-	public void clear()
+	public synchronized void clear()
 	{
 		if (map != null)
-		{
-			synchronized (map)
-			{
-				map.clear();
-			}
-		}
+			map.clear();
 
 		pooledCount = 0;
 
@@ -299,15 +276,12 @@ public class Pool implements ICleanable, IRenderDescription
 	 *  @since 1.0.2
 	 */
 
-	public int getKeyCount()
+	public synchronized int getKeyCount()
 	{
 		if (map == null)
 			return 0;
 
-		synchronized (map)
-		{
-			return map.size();
-		}
+		return map.size();
 	}
 
 	/**
@@ -317,7 +291,7 @@ public class Pool implements ICleanable, IRenderDescription
 	 *
 	 */
 
-	public void executeCleanup()
+	public synchronized void executeCleanup()
 	{
 		if (map == null)
 			return;
@@ -335,43 +309,35 @@ public class Pool implements ICleanable, IRenderDescription
 		int oldCount = pooledCount;
 		int culledKeys = 0;
 
-		// During the cleanup, we keep the entire map synchronized
+		// During the cleanup, we keep the entire instance synchronized
 		// (meaning other threads will block when trying to store
 		// or retrieved pooled objects).  Fortunately, this
 		// should be pretty darn quick!
 
-		synchronized (map)
+		int newCount = 0;
+
+		Iterator i = map.entrySet().iterator();
+		while (i.hasNext())
 		{
-			int newCount = 0;
+			Map.Entry e = (Map.Entry) i.next();
 
-			Iterator i = map.entrySet().iterator();
-			while (i.hasNext())
+			PoolList list = (PoolList) e.getValue();
+
+			int count = list.cleanup(oldestGeneration);
+
+			if (count == 0)
 			{
-				Map.Entry e = (Map.Entry) i.next();
-
-				PoolList list = (PoolList) e.getValue();
-
-				int count = list.cleanup(oldestGeneration);
-
-				if (count == 0)
-				{
-					i.remove();
-					culledKeys++;
-				}
-				else
-					newCount += count;
+				i.remove();
+				culledKeys++;
 			}
-
-			pooledCount = newCount;
+			else
+				newCount += count;
 		}
 
+		pooledCount = newCount;
+
 		if (CAT.isDebugEnabled())
-			CAT.debug(
-				"Culled "
-					+ (oldCount - pooledCount)
-					+ " pooled objects and "
-					+ culledKeys
-					+ " keys.");
+			CAT.debug("Culled " + (oldCount - pooledCount) + " pooled objects and " + culledKeys + " keys.");
 	}
 
 	public String toString()
@@ -394,7 +360,7 @@ public class Pool implements ICleanable, IRenderDescription
 			buffer.append(" pooled");
 		}
 
-		synchronized (map)
+		synchronized (this)
 		{
 			Iterator i = map.entrySet().iterator();
 			while (i.hasNext())
@@ -409,9 +375,9 @@ public class Pool implements ICleanable, IRenderDescription
 			}
 		}
 
-		buffer.append(']');
+			buffer.append(']');
 
-		return buffer.toString();
+			return buffer.toString();
 	}
 
 	/** @since 1.0.6 **/
@@ -429,7 +395,7 @@ public class Pool implements ICleanable, IRenderDescription
 
 		boolean first = true;
 
-		synchronized (map)
+		synchronized (this)
 		{
 			Iterator i = map.entrySet().iterator();
 
@@ -453,7 +419,7 @@ public class Pool implements ICleanable, IRenderDescription
 			}
 		}
 
-		if (!first)
-			writer.end(); // <ul>		
+			if (!first)
+				writer.end(); // <ul>		
 	}
 }
