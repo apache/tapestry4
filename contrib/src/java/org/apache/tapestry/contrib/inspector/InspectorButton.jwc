@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Copyright 2004 The Apache Software Foundation
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+
+<component-specification class="org.apache.tapestry.contrib.inspector.InspectorButton" 
+	allow-body="no" 
+	allow-informal-parameters="no">
+
+    <description>
+<![CDATA[
+Includes the Inspector button on the page (which dynamically positions itself in the
+lower right corner).  Clicking the button raises the Tapestry Inspector in a pop-up
+window.
+]]>
+    </description>
+
+  <parameter name="disabled" type="boolean" direction="in"/>
+
+    <component id="link" type="GenericLink">
+        <static-binding name="href">javascript:ti_raiseInspector();</static-binding>
+    </component>
+
+    <component id="rollover" type="Rollover">
+    	<binding name="image" expression="assets.logo"/>
+    	<binding name="focus" expression="assets.inspector"/>
+    </component>
+
+    <private-asset name="logo" resource-path="tapestry-logo.gif"/>
+    <private-asset name="inspector" resource-path="inspector-rollover.gif"/>
+</component-specification>

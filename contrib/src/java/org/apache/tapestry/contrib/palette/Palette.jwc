@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Copyright 2004 The Apache Software Foundation
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!--  $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+	
+<component-specification class="org.apache.tapestry.contrib.palette.Palette" 
+	allow-body="no" allow-informal-parameters="no">
+	
+  <description>
+  A complex component used to manage multiple selection of items from a list.
+  </description>
+  
+  <parameter name="selectedTitleBlock" 
+  	type="org.apache.tapestry.components.Block" 
+  	required="no"
+  	direction="in"/>
+  
+  <parameter name="availableTitleBlock" 
+   	type="org.apache.tapestry.components.Block" 
+   	required="no"
+   	direction="in"/>
+   	
+  <parameter name="model" 
+  	type="org.apache.tapestry.form.IPropertySelectionModel" 
+  	required="yes"
+  	direction="in"/>
+  
+  <parameter name="selected" type="java.util.List" 
+  	required="yes" direction="form"/>
+  
+  <parameter name="sort" 
+  	type="org.apache.tapestry.contrib.palette.SortMode" 
+  	required="no"
+  	direction="in"/>
+  
+  <parameter name="rows" 
+   	type="int" 
+   	required="no"
+   	direction="in"/>
+  
+  <parameter name="tableClass" 
+  	type="java.lang.String" 
+  	required="no"
+  	direction="in"/>
+  
+  
+  <parameter name="selectImage" type="org.apache.tapestry.IAsset" direction="in"/>
+  <parameter name="selectDisabledImage" type="org.apache.tapestry.IAsset" direction="in"/>
+  <parameter name="deselectImage" type="org.apache.tapestry.IAsset" direction="in"/>
+  <parameter name="deselectDisabledImage" type="org.apache.tapestry.IAsset" direction="in"/>
+  <parameter name="upImage" type="org.apache.tapestry.IAsset" direction="in"/>
+  <parameter name="upDisabledImage" type="org.apache.tapestry.IAsset" direction="in"/>
+  <parameter name="downImage" type="org.apache.tapestry.IAsset" direction="in"/>
+  <parameter name="downDisabledImage" type="org.apache.tapestry.IAsset" direction="in"/>
+    
+  <property-specification name="name" type="java.lang.String"/>
+  <property-specification name="form" type="org.apache.tapestry.IForm"/>
+  
+  <property-specification name="selectedColumn" type="org.apache.tapestry.contrib.palette.PaletteColumn"/>
+  <property-specification name="availableColumn" type="org.apache.tapestry.contrib.palette.PaletteColumn"/>
+  
+  
+  <private-asset name="Select" resource-path="select_right.gif"/>
+  <private-asset name="SelectDisabled" resource-path="select_right_off.gif"/>
+  <private-asset name="Deselect" resource-path="deselect_left.gif"/>
+  <private-asset name="DeselectDisabled" resource-path="deselect_left_off.gif"/>
+  <private-asset name="Up" resource-path="move_up.gif"/>
+  <private-asset name="UpDisabled" resource-path="move_up_off.gif"/>
+  <private-asset name="Down" resource-path="move_down.gif"/>
+  <private-asset name="DownDisabled" resource-path="move_down_off.gif"/>
+  
+</component-specification>

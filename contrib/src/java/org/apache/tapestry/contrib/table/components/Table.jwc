@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Copyright 2004 The Apache Software Foundation
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!--  $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+	
+<component-specification class="org.apache.tapestry.contrib.table.components.Table" 
+	allow-body="yes" allow-informal-parameters="yes">
+
+    <description>
+        The main Table component that is implemented using the lower-level 
+        Table components such as TableView and TableRows.
+        The component does not render its body, which makes it a good place
+        to declare Blocks defining the column appearances.
+    </description>
+    
+    <parameter name="tableModel" 
+        type="org.apache.tapestry.contrib.table.model.ITableModel" 
+        required="no">
+        <description>
+            The model describing the data to be presented by the Table component.
+            This parameter is optional, but either the 'tableModel' or both
+            'source' and 'columns' parameters must be provided.
+        </description>
+    </parameter>
+    
+    <parameter name="source" type="java.lang.Object" required="no">
+        <description>
+            The data to be displayed by the component. This parameter is available as
+            an alternative to tableModel and must be used in combination with the
+            'columns' parameter. 
+            The parameter must be an array of values, a collection, an iterator, 
+            or an object implementing the IBasicTableModel interface.
+        </description>
+    </parameter>
+    
+    <parameter name="columns" type="java.lang.Object" required="no">
+        <description>
+            The table columns to be displayed. 
+            The parameter must be an array, a list, or an Iterator of ITableColumn objects,
+            an ITableColumnModel, or a String describing the columns (see documentation).
+        </description>
+    </parameter>
+    
+	<parameter name="pageSize" 
+		type="int" 
+		required="no">
+        <description>
+            The number of records displayed per page when source/columns are used.
+            The page size is 10 by default.
+        </description>
+    </parameter>
+  
+	<parameter name="initialSortColumn" 
+		type="java.lang.String" 
+		required="no">
+        <description>
+            The id of the column to initially sort the table by.
+            The column is set to null by default, i.e. there is no sorting.
+        </description>
+    </parameter>
+  
+	<parameter name="initialSortOrder" 
+		type="boolean" 
+		required="no">
+        <description>
+            The order of the initial sorting.
+            Set this parameter to 'false' to sort in an ascending order
+            and to 'true' to sort in a descending one.
+        </description>
+    </parameter>
+  
+    <parameter name="tableSessionStateManager" 
+        type="org.apache.tapestry.contrib.table.model.ITableSessionStateManager" 
+        required="no">
+        <description>
+            The manager that controls what part of the table model will be stored in 
+            the session.
+        </description>
+    </parameter>
+    
+    <parameter name="tableSessionStoreManager" 
+        type="org.apache.tapestry.contrib.table.model.ITableSessionStoreManager" 
+        required="no">
+        <description>
+            The manager that controls where the session data will be stored.
+        </description>
+    </parameter>
+    
+    <parameter name="columnSettingsContainer"
+        type="org.apache.tapestry.IComponent"
+        required="no"
+        default-value="container">
+        <description>
+            The component where Block and messages are pulled from when using source/columns.
+        </description>
+    </parameter>
+
+	<parameter name="pagesDisplayed" 
+		type="int" 
+		required="no">
+        <description>
+            The maximum number of pages that will be displayed in the list of table pages.
+            By default, only seven of the pages around the current one are shown.
+        </description>
+    </parameter>
+  
+	<parameter name="column" 
+		type="org.apache.tapestry.contrib.table.model.ITableColumn" 
+		required="no">
+        <description>
+            The column that is being rendered. This value is updated when both 
+            the column headers and column values are rendered.
+        </description>
+    </parameter>
+
+	<parameter name="row" 
+		type="Object" 
+		required="no"
+		direction="custom">
+        <description>
+            The row that is being rendered. This value is null when 
+            the column headers are rendered.
+        </description>
+    </parameter>
+
+	<parameter name="arrowUpAsset" 
+		type="org.apache.tapestry.IAsset" 
+		required="no"
+		direction="in">
+        <description>
+            The image to use to describe a column sorted in an ascending order.
+        </description>
+    </parameter>
+
+	<parameter name="arrowDownAsset" 
+		type="org.apache.tapestry.IAsset" 
+		required="no"
+		direction="in">
+        <description>
+            The image to use to describe a column sorted in a descending order.
+        </description>
+    </parameter>
+
+	<parameter name="pagesClass" 
+		type="java.lang.String" 
+		required="no"
+		direction="custom">
+        <description>The CSS class of the table pages</description>
+    </parameter>
+  
+	<parameter name="columnsClass" 
+		type="java.lang.String" 
+		required="no"
+		direction="custom">
+        <description>The CSS class of the table columns</description>
+    </parameter>
+  
+	<parameter name="rowsClass" 
+		type="java.lang.String" 
+		required="no"
+		direction="custom">
+        <description>The CSS class of the table rows</description>
+    </parameter>
+  
+	<parameter name="valuesClass" 
+		type="java.lang.String" 
+		required="no"
+		direction="custom">
+        <description>The CSS class of the table values</description>
+    </parameter>
+  
+
+	<component id="tableElement" type="Any" inherit-informal-parameters="yes">
+		<static-binding name="element">table</static-binding>
+	</component>
+
+	<component id="condPages" type="Conditional">
+		<binding name="condition" expression="tableModel.pageCount > 1"/>
+	</component>
+
+
+	<component id="tableView" type="TableView">
+		<inherited-binding name="tableModel" parameter-name="tableModel"/>
+		<inherited-binding name="source" parameter-name="source"/>
+		<inherited-binding name="columns" parameter-name="columns"/>
+		<inherited-binding name="pageSize" parameter-name="pageSize"/>
+		<inherited-binding name="initialSortColumn" parameter-name="initialSortColumn"/>
+		<inherited-binding name="initialSortOrder" parameter-name="initialSortOrder"/>
+		<inherited-binding name="tableSessionStateManager" parameter-name="tableSessionStateManager"/>
+		<inherited-binding name="tableSessionStoreManager" parameter-name="tableSessionStoreManager"/>
+		<inherited-binding name="columnSettingsContainer" parameter-name="columnSettingsContainer"/>
+		<static-binding name="element">span</static-binding>
+	</component>
+
+	<component id="tablePages" type="TablePages">
+		<inherited-binding name="pagesDisplayed" parameter-name="pagesDisplayed"/>
+		<inherited-binding name="class" parameter-name="pagesClass"/>
+	</component>
+
+	<component id="tableColumns" type="TableColumns">
+		<inherited-binding name="column" parameter-name="column"/>
+		<inherited-binding name="class" parameter-name="columnsClass"/>
+        <inherited-binding name="arrowUpAsset" parameter-name="arrowUpAsset"/>
+        <inherited-binding name="arrowDownAsset" parameter-name="arrowDownAsset"/>
+	</component>
+
+	<component id="tableRows" type="TableRows">
+		<inherited-binding name="row" parameter-name="row"/>
+		<inherited-binding name="class" parameter-name="rowsClass"/>
+	</component>
+
+	<component id="tableValues" type="TableValues">
+		<inherited-binding name="column" parameter-name="column"/>
+		<inherited-binding name="class" parameter-name="valuesClass"/>
+	</component>
+  
+</component-specification>

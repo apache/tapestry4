@@ -1,0 +1,349 @@
+<?xml version="1.0"?>
+<!-- $Id: Palette.script,v 1.4 2004/03/09 20:17:20 hlship Exp $ -->
+<!DOCTYPE script PUBLIC
+	"-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
+	"http://jakarta.apache.org/tapestry/dtd/Script_3_0.dtd">
+<script>
+<!-- 
+
+input symbols:
+  palette - the Palette instance
+  selectImage - reference to the select image
+  selectDisabledImage - referece to the disabled select image  
+  deselectImage - reference to the deselect image
+  deselectDisabledImage - reference to the disbled deselect image
+  upImage - reference to the move up image
+  upDisabledImage - reference to the disabled move up image
+  downImage - reference to the move down image
+  downDisabledImage - reference to the disabled move down image
+
+Note: "reference" means the result of Body.getPreloadedImageReference().  The
+up and down images are only needed if user sorting is enabled.
+
+output symbols:
+  formSubmitFunctionName - name of a function to be executed when the form submits
+  availableName - the name of the available element
+  selectImageName - the name to use for the select image (inside the select link)
+  selectOnClickScript - the script to assign to the select link's onclick attribute
+  deselectOnClickScript - the script to assign to the deselect link's onclick attribute
+  deselectImageName - the name to use for the deselect image (inside the deselect link)
+  upImageName - the name of the up image (inside the up link)
+  downImageName the name of the move down image (inside the down link)
+  upOnClickScript - the script to assign to the up link's onclick attribute
+  downOnClickScript - the script to assign to the down link's onclick attribute
+-->
+
+<include-script resource-path="/org/apache/tapestry/html/PracticalBrowserSniffer.js"/>
+<include-script resource-path="/org/apache/tapestry/contrib/palette/PaletteFunctions.js"/>
+
+<input-symbol key="palette" class="org.apache.tapestry.contrib.palette.Palette" required="yes"/>
+<input-symbol key="selectImage" class="java.lang.String" required="yes"/>
+<input-symbol key="selectDisabledImage" class="java.lang.String" required="yes"/>
+<input-symbol key="deselectImage" class="java.lang.String" required="yes"/>
+<input-symbol key="deselectDisabledImage" class="java.lang.String" required="yes"/>
+<input-symbol key="upImage" class="java.lang.String"/>
+<input-symbol key="upDisabledImage" class="java.lang.String"/>
+<input-symbol key="downImage" class="java.lang.String"/>
+<input-symbol key="downDisabledImage" class="java.lang.String"/>
+
+<set key="formName" expression="palette.form.name"/>
+<set key="name" expression="palette.name"/>
+<set key="sortLabel" expression="palette.sort == @org.apache.tapestry.contrib.palette.SortMode@LABEL"/>
+<set key="sortValue" expression="palette.sort == @org.apache.tapestry.contrib.palette.SortMode@VALUE"/>
+<set key="sortUser" expression="palette.sort == @org.apache.tapestry.contrib.palette.SortMode@USER"/>
+
+
+<!-- baseName - base name from which other names are generated -->
+
+<let key="baseName" unique="yes">
+  ${name}
+</let>
+
+<let key="buttons">
+  ${baseName}$buttons
+</let>
+
+<let key="selectDisabled">
+  ${buttons}.selectDisabled
+</let>
+
+<let key="deselectDisabled">
+  ${buttons}.deselectDisabled
+</let>
+
+<let key="upDisabled">
+  ${buttons}.upDisabled
+</let>
+
+<let key="downDisabled">
+  ${buttons}.downDisabled
+</let>
+
+<let key="availableName">
+  ${name}$avail
+</let>
+
+<let key="updateFunctionName">
+  update_${baseName}
+</let>
+
+<let key="selectFunctionName">
+  select_${baseName}
+</let>
+
+<let key="selectOnClickScript">
+  javascript:${selectFunctionName}();
+</let>
+
+<let key="deselectFunctionName">
+  deselect_${baseName}
+</let>
+
+<let key="deselectOnClickScript">
+  javascript:${deselectFunctionName}();
+</let>
+
+<let key="formSubmitFunctionName">
+  onsubmit_${baseName}
+</let>
+
+<let key="selectImageName">
+  ${baseName}$selectImage
+</let>
+
+<let key="selectImagePath">
+  document.${selectImageName}
+</let>
+
+<let key="deselectImageName">
+  ${baseName}$deselectImage
+</let>
+
+<let key="deselectImagePath">
+  document.${deselectImageName}
+</let>
+
+<let key="formPath">
+  document.${formName}
+</let>
+
+<let key="selectedPath">
+  ${formPath}.${name}
+</let>
+
+<let key="selectedChangeFunctionName">
+  onChange_${baseName}_selected
+</let>
+
+<let key="availablePath">
+  ${formPath}.${availableName}
+</let>
+
+<let key="availableChangeFunctionName">
+  onChange_${baseName}_available
+</let>
+
+
+<let key="upImageName">
+  ${baseName}$upimage
+</let>
+
+<let key="upImagePath">
+  document.${upImageName}
+</let>
+
+<let key="downImageName">
+  ${baseName}$downimage
+</let>
+
+<let key="downImagePath">
+  document.${downImageName}
+</let>
+
+<let key="moveUpFunctionName">
+  moveup_${baseName}
+</let>
+
+<let key="upOnClickScript">
+  javascript:${moveUpFunctionName}();
+</let>
+
+<let key="moveDownFunctionName">
+  movedown_${baseName}
+</let>
+
+<let key="downOnClickScript">
+  javascript:${moveDownFunctionName}();
+</let>
+
+
+<body>
+
+<!-- A variable that is used to track which of the buttons are enabled
+     or disabled. All of the buttons are disabled until the page finishes
+     loading, at which point the update function will determine which
+     can be used. -->
+     
+var ${buttons} = new Object();
+${selectDisabled} = true;
+${deselectDisabled} = true;
+<if expression="sortUser">
+${upDisabled} = true;
+${downDisabled} = true;
+</if>
+
+function ${updateFunctionName}()
+{
+  var disabled = ${availablePath}.selectedIndex &lt; 0;
+  
+  ${selectDisabled} = disabled;
+ 
+  if (document.images)
+    ${selectImagePath}.src =
+      disabled ? ${selectDisabledImage}
+               : ${selectImage};
+
+  var selected = ${selectedPath};
+  var index = selected.selectedIndex;
+
+  disabled = index &lt; 0;
+  ${deselectDisabled} = disabled;
+ 
+  if (document.images)
+    ${deselectImagePath}.src =
+      disabled ? ${deselectDisabledImage}
+               : ${deselectImage};   
+<if expression="sortUser">
+  var upImage = ${upImagePath};
+  var downImage = ${downImagePath};
+  
+  ${upDisabled} = true;
+  ${downDisabled} = true;
+  
+  if (document.images)
+  {
+    upImage.src = ${upDisabledImage};
+    downImage.src = ${downDisabledImage};
+  }
+  
+  <!-- If there's no selection in the "selected" column, then leave
+       both buttons disabled. -->
+       
+  if (disabled)
+    return;
+ 
+  <!-- Search for a second selected item -->
+  
+  for (var i = index + 1; i &lt; selected.options.length; i++)
+  {
+    <!-- Found a second selected option, so leave buttons disabled. -->
+    if (selected.options[i].selected)
+    return;
+  }
+  
+  ${upDisabled} = (index == 0);
+  ${downDisabled} = (index == selected.options.length - 1);  
+  
+  if (document.images)
+  {
+    if (!${upDisabled})
+      upImage.src = ${upImage};
+
+    if (!${downDisabled})
+      downImage.src = ${downImage};
+  }
+</if>  
+}
+
+function ${selectFunctionName}()
+{
+ if (${selectDisabled})
+    return;
+    
+  var source = ${availablePath};
+  var target = ${selectedPath};
+     
+  palette_transfer_selections(source, target);
+<if expression="sortLabel">
+  palette_sort_by_label(target);
+</if>
+<if expression="sortValue">
+  palette_sort_by_value(target);
+</if>
+  ${updateFunctionName}();
+}
+
+function ${deselectFunctionName}()
+{
+  if (${deselectDisabled})
+    return;
+  
+  var source = ${selectedPath};
+  var target = ${availablePath};
+  
+  palette_transfer_selections(source, target);
+<if expression="sortLabel">
+  palette_sort_by_label(target);
+</if>
+<if expression="sortValue">
+  palette_sort_by_value(target);
+</if>
+  ${updateFunctionName}();  
+}
+
+function ${formSubmitFunctionName}()
+{
+  palette_clear_selections(${availablePath});
+  palette_select_all(${selectedPath});
+  
+  return true;
+}
+<if expression="sortUser">
+function ${moveUpFunctionName}()
+{
+  if (${upDisabled})
+    return;
+    
+  var element = ${selectedPath};
+  var options = element.options;
+    
+  palette_swap_options(options, element.selectedIndex, element.selectedIndex - 1);
+  
+  ${updateFunctionName}();
+}
+
+function ${moveDownFunctionName}()
+{
+  if (${downDisabled})
+    return;
+    
+  var element = ${selectedPath};
+  var options = element.options;
+  
+  palette_swap_options(options, element.selectedIndex, element.selectedIndex + 1);
+  
+  ${updateFunctionName}();
+}
+</if>
+function ${selectedChangeFunctionName}()
+{
+  palette_clear_selections(${availablePath});
+  ${updateFunctionName}();
+}
+
+function ${availableChangeFunctionName}()
+{
+  palette_clear_selections(${selectedPath});
+  ${updateFunctionName}();
+}
+</body>
+
+<initialization>
+
+${selectedPath}.onchange = ${selectedChangeFunctionName};
+${selectedPath}.ondblclick = ${deselectFunctionName};
+${availablePath}.onchange = ${availableChangeFunctionName};
+${availablePath}.ondblclick = ${selectFunctionName};
+
+</initialization>
+</script>

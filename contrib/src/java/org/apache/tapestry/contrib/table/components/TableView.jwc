@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Copyright 2004 The Apache Software Foundation
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!--  $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+    "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+    "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+
+<component-specification class="org.apache.tapestry.contrib.table.components.TableView" 
+    allow-body="yes" allow-informal-parameters="yes">
+    
+    <description>
+        The main lower-level Table component.
+        This component should wrap all other lower-level Table components such as 
+        TablePages and TableRows, as it provides the data they use.
+    </description>
+    
+    <parameter name="tableModel" 
+        type="org.apache.tapestry.contrib.table.model.ITableModel" 
+        property-name="tableModelValue"
+        required="no" 
+        direction="auto"
+        default-value="null">
+        <description>
+            The model describing the data to be presented by the table components.
+            This parameter is optional, but either the 'tableModel' or both
+            'source' and 'columns' parameters must be provided.
+        </description>
+    </parameter>
+    
+    <parameter name="source" type="java.lang.Object" required="no" direction="auto" default-value="null">
+        <description>
+            The data to be displayed by the component. This parameter is available as
+            an alternative to tableModel and must be used in combination with the
+            'columns' parameter. 
+            The parameter must be an array of values, a collection, an iterator, 
+            or an object implementing the IBasicTableModel interface.
+        </description>
+    </parameter>
+    
+    <parameter name="columns" type="java.lang.Object" required="no" direction="auto" default-value="null">
+        <description>
+            The table columns to be displayed. 
+            The parameter must be an array, a list, or an Iterator of ITableColumn objects,
+            an ITableColumnModel, or a String describing the columns (see documentation).
+        </description>
+    </parameter>
+    
+	<parameter name="pageSize" 
+		type="int" 
+		required="no">
+        <description>
+            The number of records displayed per page when source/columns are used.
+            The page size is 10 by default.
+        </description>
+    </parameter>
+  
+	<parameter name="initialSortColumn" 
+		type="java.lang.String" 
+		required="no"
+        direction="auto"
+        default-value="null">
+        <description>
+            The id of the column to initially sort the table by.
+            The column is set to null by default, i.e. there is no sorting.
+        </description>
+    </parameter>
+  
+	<parameter name="initialSortOrder" 
+		type="boolean" 
+		required="no"
+        direction="auto"
+        default-value="false">
+        <description>
+            The order of the initial sorting.
+            Set this parameter to 'false' to sort in an ascending order
+            and to 'true' to sort in a descending one.
+        </description>
+    </parameter>
+  
+    <parameter name="tableSessionStateManager" 
+        type="org.apache.tapestry.contrib.table.model.ITableSessionStateManager" 
+        required="no"
+        direction="auto"
+        default-value="defaultTableSessionStateManager">
+        <description>
+            The manager defining what part of the table model will be stored in 
+            the session.
+        </description>
+    </parameter>
+    
+    <parameter name="tableSessionStoreManager" 
+        type="org.apache.tapestry.contrib.table.model.ITableSessionStoreManager" 
+        required="no"
+        direction="auto"
+        default-value="null">
+        <description>
+            The manager defining where the session data will be stored.
+        </description>
+    </parameter>
+    
+    <parameter name="columnSettingsContainer" 
+        type="org.apache.tapestry.IComponent" 
+        required="no" 
+        direction="auto" 
+        default-value="container">
+        <description>
+            The component where Block and messages are pulled from when using source/columns.
+        </description>
+    </parameter>
+    
+    <parameter name="element" type="java.lang.String" required="no" default-value="'table'">
+        <description>
+            The tag with which the component will be inserted in the generated content.
+        </description>
+    </parameter>
+    
+    <property-specification name="sessionState" type="java.io.Serializable" persistent="yes"/>
+    
+    <component id="table" type="Any" inherit-informal-parameters="yes">
+        <inherited-binding name="element" parameter-name="element"/>
+    </component>
+    
+    <component id="insertWrapped" type="RenderBody"/>
+    
+</component-specification>

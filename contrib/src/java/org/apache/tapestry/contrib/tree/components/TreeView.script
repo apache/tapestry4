@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script PUBLIC "-//Howard Ship//Tapestry Script 1.1//EN"
+  "http://tapestry.sf.net/dtd/Script_1_1.dtd">
+
+<script>
+ <body>
+	function select(){
+		var objNode = document.getElementById("<insert property-path="selectedNodeID"/>");
+		window.scrollTo(0, objNode.y);
+	}
+		
+ </body>
+	<initialization>
+		select();
+	</initialization>
+</script>

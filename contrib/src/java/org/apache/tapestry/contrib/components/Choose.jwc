@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Copyright 2004 The Apache Software Foundation
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  
+<component-specification class="org.apache.tapestry.contrib.components.Choose">
+
+  <description>
+  Provides the context for mutually exclusive conditional evaluation.
+  </description>
+
+  <parameter name="condition" type="boolean" direction="in" default-value="true">
+    <description>
+    The condition to evaluate.
+    </description>
+  </parameter>
+
+  <parameter name="element" type="java.lang.String" direction="in">
+  	<description>
+  	The element to emulate.
+  	</description>
+  </parameter>
+
+  <reserved-parameter name="invert"/>
+  
+  <property-specification name="conditionMet" type="boolean" initial-value="false"/>
+  
+</component-specification>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Copyright 2004 The Apache Software Foundation
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!--  $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+	
+<component-specification class="org.apache.tapestry.contrib.table.components.inserted.SimpleTableColumnFormComponent" 
+	allow-informal-parameters="yes">
+	
+	<description>
+	</description>
+	
+	<property-specification name="tableModelSource" 
+		type="org.apache.tapestry.contrib.table.model.ITableModelSource"
+		initial-value="null"/>
+	
+	<property-specification name="tableColumn" 
+		type="org.apache.tapestry.contrib.table.model.ITableColumn"
+		initial-value="null"/>
+	
+	<property-specification name="selectedColumnName" type="java.lang.String"/>
+	
+	<component id="condSorted" type="FormConditional">
+		<binding name="condition" expression="columnSorted"/>
+	</component>
+	
+	<component id="condNotSorted" type="FormConditional">
+		<binding name="condition" expression="!columnSorted"/>
+	</component>
+	
+	<component id="insertSortedColumn" type="Insert">
+		<binding name="value" expression="displayName"/>
+	</component>
+	
+	<component id="insertNotSortedColumn" type="Insert">
+		<binding name="value" expression="displayName"/>
+	</component>
+	
+	<component id="linkColumn" type="LinkSubmit">
+		<binding name="listener" expression="listeners.columnSelected"/>
+		<binding name="tag" expression="tableColumn.columnName"/>
+		<binding name="selected" expression="selectedColumnName"/>
+	</component>
+	
+	<component id="imageSort" type="Image">
+		<binding name="image" expression="sortImage"/>
+	</component>
+	
+	<component id="condSort" type="FormConditional">
+		<binding name="condition" expression="isSorted"/>
+	</component>
+	
+    <private-asset name="sortDown" resource-path="arrow-down.gif"/>
+    <private-asset name="sortUp" resource-path="arrow-up.gif"/>
+    
+</component-specification>
