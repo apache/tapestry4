@@ -1,3 +1,8 @@
+* Jan 3 2001 hship
+
+Prepare for release 0.2.8.  Also, ship doc/Tapestry.pdf in the small and
+medium distributions.
+
 * Dec 28 2000 hship
 
 Ship ejb.jar (from the jBoss distribution); remove references to j2ee.jar.
