@@ -85,10 +85,6 @@ import org.apache.tapestry.html.Body;
 
 public abstract class ValidField extends AbstractTextField implements IFormComponent
 {
-    /** @since 2.2 **/
-
-    private Class _valueType;
-
     public abstract Object getValue();
     public abstract void setValue(Object value);
 
@@ -119,6 +115,9 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
                 this);
 
         IValidator validator = getValidator();
+
+        if (validator == null)
+            throw Tapestry.createRequiredParameterException(this, "validator");
 
         boolean rendering = !cycle.isRewinding();
 
@@ -234,12 +233,4 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
     }
 
     public abstract IValidator getValidator();
-
-    protected void cleanupAfterRender(IRequestCycle cycle)
-    {
-        _valueType = null;
-
-        super.cleanupAfterRender(cycle);
-    }
-
 }

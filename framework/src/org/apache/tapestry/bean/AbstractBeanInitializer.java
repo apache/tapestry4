@@ -55,7 +55,9 @@
 
 package org.apache.tapestry.bean;
 
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IResourceResolver;
+import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.spec.BaseLocatable;
 import org.apache.tapestry.util.prop.OgnlUtils;
 
@@ -86,6 +88,21 @@ abstract public class AbstractBeanInitializer extends BaseLocatable implements I
 
     protected void setBeanProperty(IResourceResolver resolver, Object bean, Object value)
     {
-        OgnlUtils.set(_propertyName, resolver, bean, value);
+        try
+        {
+            OgnlUtils.set(_propertyName, resolver, bean, value);
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            String message =
+                Tapestry.getString(
+                    "AbstractBeanInitializer.unable-to-set-property",
+                    _propertyName,
+                    bean,
+                    value);
+
+            throw new ApplicationRuntimeException(message, getLocation(), ex);
+        }
+
     }
 }
