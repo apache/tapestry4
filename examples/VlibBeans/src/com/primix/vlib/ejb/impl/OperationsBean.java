@@ -207,9 +207,9 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
 	{
 		IBookHome home = getBookHome();
 
+		attributes.put("dateAdded", new Timestamp(System.currentTimeMillis()));
+		
 		IBook book = home.create(attributes);
-
-		book.setDateAdded(new Timestamp(System.currentTimeMillis()));
 
 		return (Integer) book.getPrimaryKey();
 	}
@@ -1094,9 +1094,7 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
 
 	private Boolean getBoolean(ResultSet set, int index) throws SQLException
 	{
-		int scalar = set.getInt(index);
-
-		return scalar == 0 ? Boolean.FALSE : Boolean.TRUE;
+		return set.getBoolean(index) ? Boolean.TRUE : Boolean.FALSE;
 	}
 
 	private void validateUniquePerson(
