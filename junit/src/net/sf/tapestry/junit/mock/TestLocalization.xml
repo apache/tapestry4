@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+
+
+
+<mock-test>
+    <context name="mock"/>
+
+  	<servlet name="app" class="net.sf.tapestry.ApplicationServlet">
+  		<init-parameter
+  			name="net.sf.tapestry.application-specification"
+  			value="/net/sf/tapestry/junit/mock/app/Mock.application"/>
+  	</servlet>      
+    
+    <request>
+    	
+	  	<assert-output name="English Language Check">
+-- in English
+		</assert-output>
+		
+		<assert-output name="English Blurb">
+If it's not Scottish, it's crap!
+		</assert-output>
+	</request>		
+
+    <request locale="fr">
+    	
+	  	<assert-output name="French Language Check">
+-- in French
+		</assert-output>
+		
+		<assert-output name="French Blurb">
+Zees ees nawt cheeze!
+		</assert-output>\
+		
+	</request>
+
+	<request>
+	  	<parameter name="service" value="page"/>
+	  	<parameter name="context" value="Assets"/>
+		
+		<assert-output name="English Home image" regexp="false">
+<![CDATA[		
+/mock/app?service=asset&amp;sp=%2Fnet%2Fsf%2Ftapestry%2Fjunit%2Fmock%2Fapp%2Fhome.png		
+]]>
+		</assert-output>
+		
+		<assert-output name="English Back image" regexp="false">
+/mock/images/back.png
+		</assert-output>		
+	</request>
+	
+	<request locale="fr">
+	  	<parameter name="service" value="page"/>
+	  	<parameter name="context" value="Assets"/>
+		
+		<assert-output name="French Home image" regexp="false">
+<![CDATA[		
+/mock/app?service=asset&amp;sp=%2Fnet%2Fsf%2Ftapestry%2Fjunit%2Fmock%2Fapp%2Fhome_fr.png		
+]]>
+		</assert-output>
+		
+		<assert-output name="French Back image" regexp="false">
+/mock/images/back_fr.png
+		</assert-output>		
+	</request>	
+</mock-test>
+    	

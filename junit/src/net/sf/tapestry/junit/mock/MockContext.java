@@ -1,5 +1,7 @@
 package net.sf.tapestry.junit.mock;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -55,12 +57,39 @@ public class MockContext extends AttributeHolder implements ServletContext, IIni
 
     public URL getResource(String path) throws MalformedURLException
     {
-        return null;
+        StringBuffer buffer = new StringBuffer();
+        
+        buffer.append(System.getProperty("user.dir"));
+        buffer.append("/context");       
+        buffer.append(path);
+                    
+        File file = new File(buffer.toString());
+        
+        if (file.exists())
+            return file.toURL();
+            
+        return null;                                     
     }
 
     public InputStream getResourceAsStream(String path)
     {
-        return null;
+        try
+        {
+            URL url = getResource(path);
+            
+            if (url == null)
+                return null;
+                
+            return url.openStream();
+        }
+        catch (MalformedURLException ex)
+        {
+            return null;
+        }
+        catch (IOException ex)
+        {
+            return null;
+        }
     }
 
     public RequestDispatcher getRequestDispatcher(String path)

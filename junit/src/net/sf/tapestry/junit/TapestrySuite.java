@@ -11,6 +11,7 @@ import net.sf.tapestry.junit.spec.TestComponentSpecification;
 import net.sf.tapestry.junit.utils.TestDataSqueezer;
 import net.sf.tapestry.junit.utils.TestEnum;
 import net.sf.tapestry.junit.utils.TestIdAllocator;
+import net.sf.tapestry.junit.utils.TestLocalizedNameGenerator;
 import net.sf.tapestry.junit.utils.TestPropertyFinder;
 import net.sf.tapestry.junit.utils.TestPublicBean;
 import net.sf.tapestry.junit.valid.ValidSuite;
@@ -29,6 +30,7 @@ public class TapestrySuite extends TestSuite
 	{
 		TestSuite suite = new TestSuite();
 
+        suite.addTestSuite(TestLocalizedNameGenerator.class);
         suite.addTestSuite(TestPublicBean.class);
         suite.addTestSuite(TestPropertyFinder.class);
         suite.addTestSuite(TestListenerMap.class);

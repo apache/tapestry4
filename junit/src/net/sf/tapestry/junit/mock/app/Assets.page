@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+	
+<page-specification class="net.sf.tapestry.html.BasePage">
+
+  <component id="border" type="lib:Border">
+  	<static-binding name="title">Assets</static-binding>
+  </component>
+
+  <component id="home" type="PageLink">
+  	<static-binding name="page">Home</static-binding>
+  </component>
+  
+  <component id="back" type="PageLink">
+  	<static-binding name="page">Register</static-binding>
+  </component>
+  
+  <context-asset name="back" path="/images/back.png"/>
+  <private-asset name="home" resource-path="/net/sf/tapestry/junit/mock/app/home.png"/>
+
+</page-specification>	

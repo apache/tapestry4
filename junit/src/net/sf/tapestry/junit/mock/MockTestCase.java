@@ -77,6 +77,12 @@ public class MockTestCase extends TapestryTestCase
         attempt("/net/sf/tapestry/junit/mock/TestPage.xml");
     }
     
+    public void testLocalization()
+    throws Exception
+    {
+        attempt("/net/sf/tapestry/junit/mock/TestLocalization.xml");
+    }
+    
     /**
      *   Begin testing forms using the Register page.
      * 

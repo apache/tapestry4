@@ -30,6 +30,7 @@ import java.util.*;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import junit.framework.AssertionFailedError;
 
@@ -77,7 +78,6 @@ public class MockTester
     private PatternMatcher _matcher;
     private PatternCompiler _compiler;
 
-    
     /**
      *  Constructs a new MockTester for the given resource path
      *  (which is the XML file to read).
@@ -127,6 +127,15 @@ public class MockTester
 
     private void executeRequest(Element request) throws IOException, ServletException, DocumentParseException
     {
+        Cookie[] oldRequestCookies = (_request == null ? null : _request.getCookies());
+
+        _request = new MockRequest(_context, "/" + _servlet.getServletName());
+
+        _request.addCookies(oldRequestCookies);
+
+        if (_response != null)
+            _request.addCookies(_response.getCookies());
+
         setupRequest(request);
 
         _response = new MockResponse(_request);
@@ -137,6 +146,7 @@ public class MockTester
 
         executeAssertions(request);
 
+        Cookie[] cookies = _request.getCookies();
     }
 
     private void parse() throws JDOMException, DocumentParseException
@@ -199,11 +209,15 @@ public class MockTester
 
     private void setupRequest(Element request)
     {
-        _request = new MockRequest(_context, "/" + _servlet.getServletName());
-
         String method = request.getAttributeValue("method");
         if (method != null)
             _request.setMethod(method);
+
+        // It's really just the language from the locale.
+
+        String locale = request.getAttributeValue("locale");
+        if (locale != null)
+            _request.setLocale(new Locale(locale, "", ""));
 
         List parameters = request.getChildren("parameter");
         int count = parameters.size();
@@ -406,6 +420,8 @@ public class MockTester
 
         for (int i = 0; i < count; i++)
         {
+            boolean useRegexp = true;
+
             Element a = (Element) assertions.get(i);
 
             String name = a.getAttributeValue("name");
@@ -414,7 +430,12 @@ public class MockTester
             if (outputString == null)
                 outputString = _response.getOutputString();
 
-            match(name, outputString, pattern);
+            String regexp = a.getAttributeValue("regexp");
+
+            if (regexp != null)
+                useRegexp = regexp.equalsIgnoreCase("true");
+
+            match(name, outputString, pattern, useRegexp);
         }
 
     }
@@ -452,18 +473,28 @@ public class MockTester
         return result;
     }
 
-    private void match(String name, String text, String pattern) throws DocumentParseException
+    private void match(String name, String text, String pattern, boolean useRegexp) throws DocumentParseException
     {
 
-        Pattern compiled = compile(pattern);
+        if (useRegexp)
+        {
+            Pattern compiled = compile(pattern);
 
-        if (getMatcher().contains(text, compiled))
+            if (getMatcher().contains(text, compiled))
+                return;
+
+            System.err.println(text);
+
+            throw new AssertionFailedError(name + ": Response does not contain regular expression '" + pattern + "'.");
+
+        }
+
+        if (text.indexOf(pattern) >= 0)
             return;
 
         System.err.println(text);
 
-        throw new AssertionFailedError(name + ": Response does not contain regular expression '" + pattern + "'.");
-
+        throw new AssertionFailedError(name + ": Response does not contain string '" + pattern + "'.");
     }
 
     private void executeOutputMatchesAssertions(Element request) throws DocumentParseException
