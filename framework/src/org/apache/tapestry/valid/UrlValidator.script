@@ -24,7 +24,7 @@
 
 	<input-symbol key="field" class="org.apache.tapestry.valid.ValidField" required="yes" />
 	<input-symbol key="form" class="org.apache.tapestry.IForm" required="yes" />
-	<input-symbol key="validator" class="net.sf.cendil.tapestry.valid.UrlValidator" required="yes" />
+	<input-symbol key="validator" class="org.apache.tapestry.valid.UrlValidator" required="yes" />
 	<input-symbol key="requiredMessage" class="java.lang.String" />
 	<input-symbol key="minimumLengthMessage" class="java.lang.String" />
 	<input-symbol key="urlFormatMessage" class="java.lang.String" />
