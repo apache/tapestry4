@@ -95,6 +95,7 @@ problems using Team support inside the Eclipse IDE.
     <copy todir="${html.output.dir}/standard-images">
       <fileset dir="${docbook.xsl.dir}/images">
         <include name="**/*.png"/>
+        <exclude name="**/draft.png"/>
       </fileset>
     </copy>
    

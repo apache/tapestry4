@@ -17,7 +17,7 @@
 
 <!-- Common Tapestry classes -->
 
-<!ENTITY ApiRoot "../api/com/primix/tapestry">
+<!ENTITY ApiRoot "../api/net/sf/tapestry">
 
 <!ENTITY AbstractComponent '<ulink url="&ApiRoot;/AbstractComponent.html"><classname>AbstractComponent</classname></ulink>'>
 <!ENTITY ApplicationServlet '<ulink url="&ApiRoot;/ApplicationServlet.html"><classname>ApplicationServlet</classname></ulink>'>
