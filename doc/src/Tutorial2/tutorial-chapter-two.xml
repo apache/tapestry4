@@ -1,5 +1,10 @@
 <chapter id="getting-started">
 	<title>Getting Started</title>
+	<para>
+		This section provides your first introduction on how to write a Tapestry
+		application. This is followed with an example, and finally a more in depth
+		discussion on the various parts that make up an application.
+	</para>
 	<section id="tapestry-requirements">
 		<title>Requirements</title>
 		<para>
@@ -333,19 +338,96 @@ public class Home extends BasePage
 
 	<section id="diff-parts">
 		<title>Different Parts of a Tapestry Application</title>
+		This last section outlines in a little more detail the separate parts of
+		a Tapestry application. <footnote><para>The Developer Reference is the definitive
+		manual for this information</para></footnote>
+		<section id="part-servlet">
+			<title>The Servlet</title>
+			<para>
+				The part most obvious if you have previous Java Web experience is the Servlet.
+				In Tapestry, only a single servlet is required per application in most cases. The
+				servlet becomes the glue between the web server itself, and the rest of tapestry.
+				It is otherwise known as a <emphasis>Controller</emphasis> servlet,
+				since it takes care of farming out whatever request is given to it to the right
+				part of the Tapestry application.
+			</para>
+		</section>
 		<section id="part-app-comp">
-			<title>Application Component</title>
+			<title>Application Engine</title>
+			<para>
+				As each new client connects to the application, an instance of the
+				application engine is created for them.  The application engine is used to
+				track that client's activity within the application.
+			</para>
+			<para>
+				The application engine is an instance, or subclass of, the Tapestry class
+				&SimpleEngine;.
+				In these first example, we have no additional behavior to add to the provided base class, so
+				we simply use &SimpleEngine; directly.
+			</para>
 		</section>
 		<section id="part-pages">
 			<title>Pages</title>
-		</section>
-		<section id="part-template">
-			<title>Component Template</title>
+			<para>
+				Pages make up the visible content of the application. Each page consists
+				of a page template (The HTML) and page logic (the Java). Tapestry links these
+				together using a '.page' specification.
+			</para>
+			<para>
+				One of the goals of Tapestry is that the HTML should have the minimum amount
+				of special markup. As you saw in the example presented above, the page
+				was completely standard HTML, without any additional markup.  This idea is
+				carried across to other parts as well - when editing a Java object, you hardly
+				ever see any HTML (which keeps the java <emphasis>clean</emphasis>),
+				and when editing a page specification - you are editing straight XML, with no
+				Java or HTML in sight.
+			</para>
+			<para>
+				Tapestry inserts content in the HTML at points that you define using the
+				<varname>jwcid</varname> attributes on elements.
+			</para>
+		   <para>Tapestry doesn't really care what HTML tag you use, as long as you balance
+			 	the tag correctly.  In fact, it ignores the tag entirely:  the <varname>hellotext</varname>
+				component above could just has easily been identified with a &lt;text&gt; tag,
+				or any other tag for that matter.  Tapestry is only interested in the <emphasis>structure</emphasis>
+				of the HTML template.  The fact that you can use meaningful tags is a convienience;
+				it allows a Tapestry HTML template to be previewed in a <acronym>WYSIWYG</acronym>
+				HTML editor, such as HomeSite.   Additionally, Tapestry edits out the content of tags
+				for components that don't wrap around other content.
+				This allows a preview values to be kept in the template.
+				</para>
+</section>
+		<section id="part-components">
+			<title>Components</title>
+			<para>
+				Tapesty components provide the core building blocks for the application. They can
+				be thought of as 'black boxes' that both render HTML and respond to user actions.
+			</para>
+			<para>
+				Pages are typically built using multiple components. Components may either
+				exist on their own (non-wrapping, &Insert;) or may enclose some other number of
+				components (wrapping, e.g: &Form;).  Within a page, the HTML refers to various
+				components by name. Component names are defined in the page specification.
+			</para>
+			<para>
+				The component definition includes both name, type and some bound properties.
+				The properties define where the component gets its data from, and what other
+				objects it interacts with.
+				For example, in the 'Hello World' application above, a component
+				with name <varname>hellotext</varname> was defined to be an &Insert;,
+				and was bound to the <varname>someText</varname> property of the
+				page object. In this example, there is no real interaction, as the &Insert;
+				component does not provide a way for the user to interact with it.
+			</para>
 		</section>
 		<section id="part-logic">
 			<title>Application Logic</title>
+			<para>
+				The last part of the page is the logic - which is simply a standard Java class
+				having the same name as the page (e.g: the Home page has a class called
+				<classname>Home.java</classname>.
+			</para>
 		</section>
-		Some text here
 	</section>
 </chapter>
 
