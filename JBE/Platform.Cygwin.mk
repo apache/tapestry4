@@ -60,8 +60,8 @@ CD := cd
 
 # Used with DocBook
 
-OPENJADE := $(OPENJADE_DIR)/bin/openjade.exe
-ONSGMLS :=  $(OPENJADE_DIR)/bin/onsgmls.exe
+OPENJADE := $(OPENJADE_DIR)/openjade.exe
+ONSGMLS :=  $(OPENJADE_DIR)/onsgmls.exe
 
 
 

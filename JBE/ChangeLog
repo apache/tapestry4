@@ -2,7 +2,7 @@
 
 No longer distribute OpenJade with the JBE.
 Add support for SED and CHMOD to the Platform.*.mk files.
-More tweaking on the DocBook module.
+More tweaking on the DocBook module, including strip out RTF generation.
 
 * Feb 9 2001 hship
 

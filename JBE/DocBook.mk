@@ -41,8 +41,6 @@ DOCUMENT_RESOURCE_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/document-resources
 HTML_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/html
 VALID_PARSE_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/valid-parse
 
-RTF_OUTPUT_FILE := $(addsuffix .rtf,$(basename $(MAIN_DOCUMENT)))
-
 DISTRO_STAMP_FILE := $(DOCBOOK_DIR)/.distro-stamp
 
 DOCBOOK_DISTROS := \
@@ -71,7 +69,7 @@ $(DISTRO_STAMP_FILE): $(DOCBOOK_DISTROS)
 SGML_CATALOG_FILES := \
 	$(DOCBOOK_DIR)/dtd/docbook.cat \
 	$(DOCBOOK_DSSSL_DIR)/catalog \
-	$(OPENJADE_DIR)/dsssl/catalog
+	$(OPENJADE_DSSSL_DIR)/catalog
 
 CATALOG_OPT := $(foreach cat,$(SGML_CATALOG_FILES),-c $(cat))
 
@@ -132,36 +130,9 @@ $(HTML_STAMP_FILE): $(DOCUMENT_RESOURCE_STAMP_FILE)  \
 		$(HTML_OPENJADE_OPT))
 	@$(TOUCH) $@
 
-FINAL_RTF_VARIABLE_DEFS := $(RTF_VARIABLE_DEFS) $(VARIABLE_DEFS)
-
-FINAL_RTF_STYLESHEET := \
-	$(firstword  $(RTF_STYLESHEET) $(STYLESHEET) $(DOCBOOK_DSSSL_DIR)/print/docbook.dsl)
-	
-rtf: initialize $(RTF_OUTPUT_FILE)
-
-# Note: this still makes references to the image files.
-
-$(RTF_OUTPUT_FILE): $(MAIN_DOCUMENT) $(FINAL_RTF_STYLESHEET) $(OTHER_DOC_FILES) $(VALID_PARSE_STAMP_FILE)
-	$(call NOTE, Generating RTF from $(MAIN_DOCUMENT) ...)
-	$(call RUN_OPENJADE, rtf,  \
-		$(FINAL_RTF_VARIABLE_DEFS), \
-		-d $(FINAL_RTF_STYLESHEET) \
-		$(RTF_OPENJADE_OPT) -o $(RTF_OUTPUT_FILE))
-
-FINAL_RTF_INSTALL_DIR := $(firstword $(RTF_INSTALL_DIR) $(INSTALL_DIR))
-
-
-install-rtf: rtf
-ifeq "$(FINAL_RTF_INSTALL_DIR)" ""
-	$(error You must set a value for RTF_INSTALL_DIR or INSTALL_DIR)
-endif
-	$(call NOTE, Installing HTML documentation to $(FINAL_RTF_INSTALL_DIR) ...)
-	@$(MKDIRS) $(FINAL_RTF_INSTALL_DIR)
-	@$(call COPY_TREE, . ,$(RTF_OUTPUT_FILE) $(FINAL_DOCUMENT_RESOURCES), $(FINAL_RTF_INSTALL_DIR))	
-
 clean:
 	$(call  NOTE, "Cleaning ...")
-	@$(RM) $(HTML_DIR) $(SYS_BUILD_DIR_NAME) $(RTF_OUTPUT_FILE)
+	@$(RM) $(HTML_DIR) $(SYS_BUILD_DIR_NAME)
 	
 FINAL_HTML_INSTALL_DIR := \
 	$(firstword $(HTML_INSTALL_DIR) $(INSTALL_DIR))
@@ -200,5 +171,5 @@ documentation: $(FINAL_FORMATS)
 
 install: $(addprefix install-,$(FINAL_FORMATS))
 
-.PHONY: default html initialize install-html documentation rtf
-.PHONY: install install-rtf
+.PHONY: default html initialize install-html documentation
+.PHONY: install
