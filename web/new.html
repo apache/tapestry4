@@ -17,7 +17,7 @@ Updated Tapestry to automatically configure the demo for
 <a href="http://www.jboss.org">JBoss</a> 3.0.0.  
 Cleaned up the look of the default exception page.
 Reorganized the home page, to use the new 
-<a href="http://tapestry.sf.net/wiki">Tapestry Wiki</a>,
+<a target="_top" href="wiki_frame.html">Tapestry Wiki</a>,
 and to move more static content onto SourceForge.
 
 <pre>
@@ -114,145 +114,9 @@ Marked a number of methods (related to object pooling) as deprecated.
 
 <p>Minor formatting changes to the web site and Virtual Library.
 	
-<h3>Release 1.0.10</h3>
 
-Changed the build to include debugging symbols with the frameworks.  Fixed a deployment problem with
-the Tutorial.  Added descriptions to most components and parameters.  Modified the Inspector to
-display component and parameter descriptions.
+<h3><a href="more_new.html">More ...</a></h3>
 
-<p>Added a new page to the Workbench Tutorial: Chart.  The Chart page allows a user to dynamically
-create a pie chart.
-
-<p>Made it easier to create subclasses of 
-<a href="doc/api/net/sf/tapestry/AbstractResponseWriter.html">AbstractResponseWriter</a>.
-
-<pre>
-[ 532562 ] Submit.jwc contains error
-[ 532587 ] Submit throws NPE
-[ 532815 ] ValidationDelegate errors
-[ 532758 ] add descriptions to builtin components
-[ 499655 ] HTMLResponseWriter enhancements
-</pre>
-
-<h3>Release 1.0.9</h3>
-
-<p>The framework and contrib jar files are now named with the release number (i.e.,
-<code>com.primix.tapestry-1.0.9.jar</code>).  In addition, 
-the source code for these frameworks, and the examples, is now distributed as 
-Jar files instead of directories of files in the <code>src</code> directory. 
-This makes for easier source lookup when using 
-<a target="_top" href="http://www.eclipse.org">Eclipse</a>, and shrinks the size of the distribution
-as well.
-
-<p>The way engine services are defined and used has been completely overhauled.  
-Services are now defined
-in the application specification and a single
-instance of the service object is instantiated
-and shared by all engine instances (for the application).
-
-<p>Made it easier to override the creation of the specification source, template source, etc. in subclasses
-of 
-<a href="doc/api/net/sf/tapestry/engine/AbstractApplication.html">AbstractApplication</a>.
-
-
-<p>The <a href="doc/api/net/sf/tapestry/form/Submit.html">Submit</a> and 
-<a href="doc/api/net/sf/tapestry/form/ImageSubmit.html">ImageSubmit</a> components may now have 
-their own listener, which is notified before the containing form's listener.
-
-<p>More reworking of validation; the validation delegate can now
-track errors in any kind of form component and can track errors that
-aren't associated with any particular component.
-
-<pre>
-[ #510175 ] add service registration to .application
-[ #511256 ] Enhance Validation Framework
-</pre>
-
-<h3>Release 1.0.8</h3>
-
-<p>A complete overhaul of the validating text field support.  The previous implementation
-used subclasses of AbstractValidatingTextField (which no longer exists) to add new types
-of validation; the new implementation has a single component, 
-<a href="doc/api/net/sf/tapestry/valid/ValidField.html">ValidField</a>, and many implementations
-of <a href="doc/api/net/sf/tapestry/valid/IValidator.html">IValidator</a>.
-
-<p>At long last, the <a href="doc/api/net/sf/tapestry/form/Upload.html">Upload</a> component.
-
-<p>Reimplemented the Virtual Library application using
-<a target="_top" href="http://mckoi.com/database/">McKoi Database</a>, to be compatible with JBoss 2.4.3 (which no
-longer includes InstantDB).
-
-<pre>
-[ #506661 ] private asset configuration
-[ #494456 ] StringValidator minLength message wrong
-[ #488476 ] Generated URLs should contain entities.
-[ #488432 ] Make duplicate page names illegal
-[ #487394 ] NumericField doesn't work with long
-[ #501750 ] StringValidator
-[ #499057 ] BaseValidator summary typo
-[ #487619 ] javadoc link errors
-</pre>
-
-
-<h3>Release 1.0.7</h3>
-				
-<p>Removed Primix copyrights, as I no longer work there or do any work on their time.
-
-<p>Consolidated and cleaned up many of the tutorials into the new Workbench.
-
-<p>Improvements to Inspector's Properties Explorer.  It is now more tolerant of exceptions thrown while
-accessing properties.
-
-<p>Streamlined the distribution by removing the source for documentation.
-
-
-<PRE>
-[ #480433 ] StatementAssembly - access to JBDC 2.0
-[ #469747 ] more flexible application parser
-[ #484184 ] JavaDoc error
-</pre>
-				
-				<h3>Release 1.0.6</h3>
-				
-				<p>Tapestry now uses <a target="_top" href="http://jakarta.apache.org/ant">Ant</a>
-				as its build tool.  The GNU Makefile Java Build Environment has
-				been removed.
-				
-				<p>The Tapestry Inspector now has a powerful Properties Explorer which allows
-				for dynamic navigation and display of an object's properties (similar
-				to what a debugger provides).
-				
-				<p>Localization of context assets was broken in Tomcat; it now works
-				in both Tomcat and Jetty.
-				
-				<h3>Release 1.0.5</h3>
-				
-				<p>Added a mechanism to clear out pooled objects when they haven't been used
-				for some time.  The interface <a href="doc/api/net/sf/tapestry/util/ICleanable.html">ICleanable</a>
-				has the details.
-				
-				<p>Made a number of other efficiency improvements.  Particularily, the page loader now weeds
-				out informal parameters that can't be used (because they conflict with formal parameter names,
-				or because the component owns the attributes), preventing them from being added as component
-				bindings.  The old method was to weed out the unwanted parameters on every
-				render, which was more expensive.
-				
-				<p>Improved the <a href="doc/api/net/sf/tapestry/valid/NumericField.html">NumericField</a>
-				component to deal with null values in an intelligent manner.
-				
-				<p>It is now possible to set properties of
-				<a href="doc/DevelopersGuide/components.helper-beans.html">helper beans</a>.
-				
-				<p>The full distribution now bundles 
-				<a target="_top" href="http://jetty.mortbay.com">Jetty 3.1RC9</a>
-				and the Virtual Library is now compatible with
-				<a target="_top" href="http://www.jboss.org">JBoss 2.4.0</a>.
-				
-                <h3>Release 1.0.4</h3>
-                
-                <p>Release 1.0.4 debuted the finished Tapestry Home and Virtual Library.
-                
-                <br>
 			<!-- END Content -->
 		</td>
 	</tr>
