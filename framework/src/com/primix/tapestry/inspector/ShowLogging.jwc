@@ -59,7 +59,7 @@
     <binding name="value" property-path="beans.delegate.firstError"/>
   </component>
   
-  <component id="inputNewCategory" type="ValidatingTextField">
+  <component id="inputNewCategory" type="ValidField">
     <static-binding name="displayName">New Category</static-binding>
     <binding name="delegate" property-path="beans.delegate"/>
     <binding name="validator" property-path="beans.requiredString"/>
