@@ -102,7 +102,7 @@ public class BorrowedBooks extends Protected
         Visit visit = (Visit) getVisit();
         Integer userPK = visit.getUserPK();
 
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) engine;
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
         for (int i = 0; i < 2; i++)
         {
@@ -178,7 +178,7 @@ public class BorrowedBooks extends Protected
         String[] parameters = cycle.getServiceParameters();
         Integer bookPK = new Integer(parameters[0]);
 
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) engine;
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
         IOperations operations = vengine.getOperations();
 
         try

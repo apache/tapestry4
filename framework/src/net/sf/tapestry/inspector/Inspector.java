@@ -232,7 +232,7 @@ public class Inspector extends BasePage
 
     public String getInspectorTitle()
     {
-        return "Tapestry Inspector: " + engine.getSpecification().getName();
+        return "Tapestry Inspector: " + getEngine().getSpecification().getName();
     }
 
     /**

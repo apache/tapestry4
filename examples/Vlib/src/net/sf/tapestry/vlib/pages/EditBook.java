@@ -115,7 +115,7 @@ public class EditBook extends Protected
     {
         this.bookPK = bookPK;
 
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) engine;
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
         for (int i = 0; i < 2; i++)
         {

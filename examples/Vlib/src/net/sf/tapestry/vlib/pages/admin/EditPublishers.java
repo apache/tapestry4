@@ -114,7 +114,7 @@ public class EditPublishers extends AdminPage
 
     private void readPublishers()
     {
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) engine;
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
         for (int i = 0; i < 2; i++)
         {

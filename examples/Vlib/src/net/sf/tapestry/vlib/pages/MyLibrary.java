@@ -103,7 +103,7 @@ public class MyLibrary extends Protected
         Visit visit = (Visit) getVisit();
         Integer userPK = visit.getUserPK();
 
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) engine;
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
         for (int i = 0; i < 2; i++)
         {
@@ -209,7 +209,7 @@ public class MyLibrary extends Protected
 
     private void returnBook(Integer bookPK)
     {
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) engine;
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
         for (int i = 0; i < 2; i++)
         {

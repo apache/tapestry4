@@ -105,7 +105,7 @@ public class PersonPage extends BasePage implements IExternalPage
     {
         if (query == null)
         {
-            VirtualLibraryEngine vengine = (VirtualLibraryEngine) engine;
+            VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
             setQuery(vengine.createNewQuery());
         }
 
@@ -132,7 +132,7 @@ public class PersonPage extends BasePage implements IExternalPage
 
     public void setup(Integer personPK, IRequestCycle cycle)
     {
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) engine;
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
         for (int i = 0; i < 2; i++)
         {

@@ -293,4 +293,16 @@ public class MockPage implements IPage
         this.engine = engine;
     }
 
+    public void removePageCleanupListener(PageCleanupListener listener)
+    {
+    }
+
+    public void removePageDetachListener(PageDetachListener listener)
+    {
+    }
+
+    public void removePageRenderListener(PageRenderListener listener)
+    {
+    }
+
 }

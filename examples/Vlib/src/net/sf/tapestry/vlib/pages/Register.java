@@ -173,7 +173,7 @@ public class Register extends BasePage implements IErrorProperty
             return;
         }
 
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) engine;
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
         Login login = (Login) cycle.getPage("Login");
 
         for (int i = 0; i < 2; i++)

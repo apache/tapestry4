@@ -29,6 +29,7 @@ import java.rmi.RemoteException;
 
 import javax.servlet.http.Cookie;
 
+import net.sf.tapestry.IEngine;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.callback.ICallback;
@@ -173,7 +174,7 @@ public class Login extends BasePage implements IErrorProperty
         if (getValidationDelegate().getHasErrors() || error != null)
             return;
 
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) engine;
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
         for (int i = 0; i < 2; i++)
         {
@@ -232,6 +233,7 @@ public class Login extends BasePage implements IErrorProperty
         // I've found that failing to set a maximum age and a path means that
         // the browser (IE 5.0 anyway) quietly drops the cookie.
 
+        IEngine engine = getEngine();
         Cookie cookie = new Cookie(COOKIE_NAME, email);
         cookie.setPath(engine.getServletPath());
         cookie.setMaxAge(ONE_WEEK);

@@ -81,7 +81,7 @@ public class ConfirmBookDelete extends BasePage
     {
         this.bookPK = bookPK;
 
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) engine;
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
         for (int i = 0; i < 2; i++)
         {
@@ -117,7 +117,7 @@ public class ConfirmBookDelete extends BasePage
         String[] parameters = cycle.getServiceParameters();
         Integer bookPK = new Integer(parameters[0]);
 
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) engine;
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
         Book book = null;
 
         for (int i = 0; i < 2; i++)

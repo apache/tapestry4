@@ -117,7 +117,7 @@ public class EditUsers extends AdminPage
 
     private void readUsers()
     {
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) engine;
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
         for (int i = 0; i < 2; i++)
         {

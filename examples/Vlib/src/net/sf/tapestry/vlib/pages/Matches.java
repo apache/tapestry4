@@ -129,7 +129,7 @@ public class Matches extends BasePage
 
     public void performQuery(String title, String author, Object publisherPK, IRequestCycle cycle)
     {
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) engine;
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
         for (int i = 0; i < 2; i++)
         {

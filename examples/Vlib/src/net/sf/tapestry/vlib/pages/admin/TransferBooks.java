@@ -157,7 +157,7 @@ public class TransferBooks extends AdminPage
     {
         if (bookQuery == null)
         {
-            VirtualLibraryEngine vengine = (VirtualLibraryEngine) engine;
+            VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
             setBookQuery(vengine.createNewQuery());
         }
@@ -201,7 +201,7 @@ public class TransferBooks extends AdminPage
 
         Integer[] keys = (Integer[]) selectedKeys.toArray(new Integer[count]);
 
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) engine;
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
         for (int i = 0; i < 2; i++)
         {
@@ -244,7 +244,7 @@ public class TransferBooks extends AdminPage
 
     private IPropertySelectionModel buildUserBookModel()
     {
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) engine;
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
         Book[] books = null;
 
         for (int i = 0; i < 2; i++)
@@ -284,7 +284,7 @@ public class TransferBooks extends AdminPage
 
     private Person readPerson(Integer primaryKey)
     {
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) engine;
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
         Person result = null;
 
         for (int i = 0; i < 2; i++)

@@ -247,6 +247,13 @@ public interface IPage extends IComponent
 
 	public void addPageRenderListener(PageRenderListener listener);
 
+    /**
+     *  @since 2.1-beta-2
+     * 
+     **/
+    
+    public void removePageRenderListener(PageRenderListener listener);
+
 	/**
 	 *  @since 1.0.5
 	 *
@@ -254,10 +261,25 @@ public interface IPage extends IComponent
 
 	public void addPageDetachListener(PageDetachListener listener);
 
+    /**
+     *  @seince 2.1-beta-2
+     * 
+     **/
+    
+    public void removePageDetachListener(PageDetachListener listener);
+    
 	/**
 	 *  @since 1.0.5
 	 *
 	 **/
 
 	public void addPageCleanupListener(PageCleanupListener listener);
+    
+    /**
+     *  @seince 2.1-beta-2
+     * 
+     **/
+    
+    public void removePageCleanupListener(PageCleanupListener listener);
+    
 }
