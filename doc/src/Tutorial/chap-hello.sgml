@@ -16,7 +16,7 @@ launch it.
 
 <para>
 The code for this section of the tutorial is in the Java package <classname>tutorial.hello</>, i.e., 
-<filename class=directory>C:\Tapestry-<replaceable>x.x.x</>\Examples\Tutorial\tutorial\hello</>.
+<filename class=directory>C:\Tapestry-<replaceable>x.x.x</>\examples\Tutorial\src\tutorial\hello</>.
 </>
 
 	<section id="hello.engine">
@@ -57,8 +57,9 @@ path to the application specification file; the servlet reads this file when it 
 </>
 
 <figure>
-	<title>HelloWorldServlet.java</>
-	<programlisting>package tutorial.hello;
+	<title>HelloWorldServlet.java
+	<programlisting>
+package tutorial.hello;
 
 import com.primix.tapestry.*;
 
@@ -69,7 +70,8 @@ public class HelloWorldServlet extends ApplicationServlet
     return "/tutorial/hello/HelloWorld.application";
   }
 
-}</programlisting></figure>
+}
+</programlisting></figure>
 
 	</section>
 
@@ -87,24 +89,28 @@ application, the specification lives with the application's class files, in the
 <filename class=directory>WEB-INF/classes</> directory of a War file.
 </>
 
-
 <figure>
 	<title>HelloWorld.application</>
-	<programlisting><![CDATA[<?xml version="1.0"?>
-<!DOCTYPE application PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
-	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-<application>
-	<name>Hello World Tutorial</name>
-	<engine-class>com.primix.tapestry.engine.SimpleEngine</engine-class>
-	<page>
-		<name>Home</name>
-		<specification-path>/tutorial/hello/Home.jwc</specification-path>
-	</page>
-</application>]]></programlisting></figure>
+	<programlisting>
+<?xml version="1.0" encoding="UTF-8"?>
+<![CDATA[<!DOCTYPE application PUBLIC 
+  "-//Howard Ship//Tapestry Specification 1.1//EN" 
+  "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<application
+  name="Hello World Tutorial"
+  engine-class="com.primix.tapestry.engine.SimpleEngine">
+  
+  <page name="Home" 
+    specification-path="/tutorial/hello/Home.jwc"/>
+
+</application>]]>
+
+</programlisting>
+</figure>
 
 <para> 
 Our application is very simple; we give the application a name, use the standard engine, and define 
-a single page, named "Home".  In Tapestry, components are specified with the path to their 
+a single page, named "Home".  In Tapestry, pages and components are specified with the path to their 
 specification file (a file that end with '.jwc').
 </>
 
@@ -126,17 +132,19 @@ example, our component is very simple.
 
 <figure>
 	<title>Home.jwc</>
-	<programlisting><![CDATA[<?xml version="1.0"?>
-<!DOCTYPE specification PUBLIC 
-"-//Primix Solutions//Tapestry Specification 1.0//EN"
-	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-	
-<specification>
-	<class>com.primix.tapestry.BasePage</class>
-</specification>]]></programlisting></figure>
+	<programlisting>
+<![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE specification PUBLIC
+  "-//Howard Ship//Tapestry Specification 1.1//EN"
+  "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+
+<specification class="com.primix.tapestry.BasePage"/>
+]]>
+</programlisting>
+</figure>
  
 <para>
-This simply says that <varname>Home</> is a kind of page.  We use the supplied Tapestry class 
+This simply says that <classname>Home</> is a kind of page.  We use the supplied Tapestry class 
 <classname>com.primix.tapestry.BasePage</> since we aren't adding any behavior to the page.
 </>
 
@@ -154,7 +162,8 @@ except that it ends in "html".
 
 <figure>
 	<title>Home.html</>
-	<programlisting><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+	<programlisting>
+<![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
 <html>
 <head>
@@ -166,7 +175,9 @@ except that it ends in "html".
 Welcome to your first <b>Tapestry Application</b>.
 
 </body>
-</html>]]></PROGRAMLISTING></figure>
+</html>]]>
+</PROGRAMLISTING></figure>
+
 	</section>
 
 	<section id="hello.run">

@@ -201,13 +201,6 @@ When bookmarked, that context is lost.
 </>
 
 <para>
-The built-in action and direct services reject any URL if there isn't 
-an existing <classname>HttpSession</>.  They redirect to a StaleSession page, that 
-warns the use of what has occurred and allows them to start the application fresh 
-(a standard page for this is provided by Tapestry, but can be overridden 
-by an application that wants to provide different content or look-and-feel).
-
-<para>
 By defining a new engine service, the necessary context can be encoded directly 
 into the URL, in a way similar to how the direct action works.  This is
 partially a step backwards towards typical servlet or JSP development, but 
@@ -226,7 +219,8 @@ to provide the new service.
 <para>
 The external service includes the name of a page and the primary key 
 of an object that page displays (this was simplified by the 
-design of the Vlib entity beans, which always use  an<classname>Integer</> as the primary key).
+design of the Vlib entity beans, which always use  an <classname>Integer</> 
+as the primary key).
 </>
 
 <para>

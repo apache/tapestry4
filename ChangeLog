@@ -1,3 +1,13 @@
+* Jun 1 hship
+
+Fix an IllegalStateException thrown in the ApplicationServlet
+(when deciding whether to store the engine into the session).  Fix another
+exception thrown when the restart action is triggered on a stateless
+application.
+
+[429157] restart session fails
+[429447] Restart throws exception
+
 * May 30 hship
 
 Many minor changes to support stateless Tapestry applications (the HttpSession is

@@ -177,7 +177,7 @@ abstract public class ApplicationServlet
 			
 			HttpSession session = context.getSession();
 			
-
+			
 			// When there's an active session, we *may* store it into
 			// the HttpSession and we *will not* store the engine
 			// back into the engine pool.
@@ -190,25 +190,28 @@ abstract public class ApplicationServlet
 				// into the session.  Otherwise, we only save the engine
 				// into the session when the session is first created (is new).
 				
-				if ((dirty && storeEngine) || session.isNew())
+				try
 				{
-					if (CAT.isDebugEnabled())
-						CAT.debug("Storing " + engine + " into session as " + attributeName);
 					
-					try
+					if ((dirty && storeEngine) || session.isNew())
 					{
+						if (CAT.isDebugEnabled())
+							CAT.debug("Storing " + engine + 
+										" into session as " + attributeName);
+						
 						session.setAttribute(attributeName, engine);
 					}
-					catch (IllegalStateException ex)
-					{
-						// Ignore because the session been's invalidated.
-						// Allow the engine (which has state particular to the client)
-						// to be reclaimed by the garbage collector.
-						
-						if (CAT.isDebugEnabled())
-							CAT.debug("Session invalidated.");
-					}
-				}					
+				}
+				catch (IllegalStateException ex)
+				{
+					// Ignore because the session been's invalidated.
+					// Allow the engine (which has state particular to the client)
+					// to be reclaimed by the garbage collector.
+					
+					if (CAT.isDebugEnabled())
+						CAT.debug("Session invalidated.");
+				}
+				
 				return;
 			}
 			
@@ -335,8 +338,8 @@ abstract public class ApplicationServlet
 		return context.getRequest().getLocale();
 	}
 	
-
-		
+	
+	
 	/**
 	 *  Reads the application specification when the servlet is
 	 *  first initialized.  All {@link IEngine engine instances}
@@ -432,7 +435,7 @@ abstract public class ApplicationServlet
 		Layout layout = new PatternLayout(pattern);
 		Appender rootAppender = new ConsoleAppender(layout);
 		root.addAppender(rootAppender);
-
+		
 		Priority[] priorities = Priority.getAllPossiblePriorities();
 		StringSplitter splitter = new StringSplitter(';');
 		
@@ -453,7 +456,7 @@ abstract public class ApplicationServlet
 				}
 			}
 		}
-	
+		
 	}
 	
 	/**

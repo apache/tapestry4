@@ -15,12 +15,12 @@ This document expects that you will have extracted the full Tapestry distributio
 </>
 
 <para>
-This will have created a directory <filename class=directory>C:Tapestry-<replaceable>x.x.x</></>
+This will have created a directory <filename class=directory>C:\Tapestry-<replaceable>x.x.x</></>
 and, beneath it, several more directories.
 	<footnote>
 		<para>
 		The three numbers are the release number.  At the time of this writing, the release
-		was 0.2.8, but this is constantly changing.  Simply adjust the actual pathname to
+		was 1.0.1, but this is constantly changing.  Simply adjust the actual pathname to
 		reflect the release of Tapestry you downloaded.
 		</> 
 	</>
@@ -28,7 +28,7 @@ and, beneath it, several more directories.
 
 <para>
 The Tapestry Tutorial will be in <filename class=directory>
-C:\Tapestry-<replaceable>x.x.x</>\Examples\Tutorial</>.
+C:\Tapestry-<replaceable>x.x.x</>\examples\Tutorial</>.
 </>
 
 	<section id="setup.jbe">
@@ -36,8 +36,9 @@ C:\Tapestry-<replaceable>x.x.x</>\Examples\Tutorial</>.
 
 <para>
 In order to execute the tutorial, you must set up the Java Build Environment (JBE), which is 
-also distributed with Tapestry, along with complete documentation on setting
-up the JBE.
+also distributed with Tapestry, along with 
+<ulink url="../JBE/JBE.html">complete documentation on setting
+up the JBE</ulink>.
 </>
 
 <para>
@@ -57,7 +58,7 @@ Building the Tutorial is quite easy (once the JBE is set up).
 
 <para>
 Change to the Tutorial directory,
-<filename class=directory>C:\Tapestry-<replaceable>x.x.x</>\Examples\Tutorial</>.
+<filename class=directory>C:\Tapestry-<replaceable>x.x.x</>\examples\Tutorial</>.
 </>
 
 <para>
@@ -69,8 +70,8 @@ with the <command>make run</> command.
 </>
 
 <para>
-One Jetty is running, you can access the Tutorials using the URL 
-<filename>http://localhost:8080/tutorial</>.
+Once Jetty is running, you can access the Tutorials using the URL 
+<ulink url="http://localhost:8080/tutorial"><filename>http://localhost:8080/tutorial</></ulink>.
 </>
 
 <figure>
