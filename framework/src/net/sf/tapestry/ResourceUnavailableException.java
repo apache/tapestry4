@@ -31,6 +31,8 @@ package net.sf.tapestry;
  *  must be parsed or processed once located, such as component specification
  *  files.
  *
+ *  @deprecated To be removed in 2.3.  No longer used; uses converted
+ *  to {@link net.sf.tapestry.ApplicationRuntimeException}.
  *  @author Howard Lewis Ship
  *  @version $Id$
  **/

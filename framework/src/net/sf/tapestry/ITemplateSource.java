@@ -48,11 +48,11 @@ public interface ITemplateSource
     /**
      *  Locates the template for the component.
      *
-     *  @throws ResourceException if the resource cannot be located or loaded.
+     *  @throws ApplicationRuntimeException if the resource cannot be located or loaded.
      * 
      **/
 
-    public ComponentTemplate getTemplate(IComponent component) throws ResourceUnavailableException;
+    public ComponentTemplate getTemplate(IComponent component);
 
     /**
      *  Invoked to have the source clear any internal cache.  This is most often

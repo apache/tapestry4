@@ -28,9 +28,9 @@ package net.sf.tapestry.asset;
 import java.io.InputStream;
 import java.net.URL;
 
+import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IAsset;
 import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.ResourceUnavailableException;
 import net.sf.tapestry.Tapestry;
 
 /**
@@ -61,7 +61,7 @@ public class ExternalAsset implements IAsset
         return URL;
     }
 
-    public InputStream getResourceAsStream(IRequestCycle cycle) throws ResourceUnavailableException
+    public InputStream getResourceAsStream(IRequestCycle cycle) 
     {
         URL url;
 
@@ -75,7 +75,7 @@ public class ExternalAsset implements IAsset
         {
             // MalrformedURLException or IOException
 
-            throw new ResourceUnavailableException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString("ExternalAsset.resource-missing", URL),
                 ex);
         }

@@ -31,10 +31,10 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.IScript;
 import net.sf.tapestry.IScriptSource;
-import net.sf.tapestry.ResourceUnavailableException;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.script.ScriptParser;
 import net.sf.tapestry.util.xml.DocumentParseException;
@@ -67,7 +67,7 @@ public class DefaultScriptSource implements IScriptSource
         cache.clear();
     }
 
-    public IScript getScript(String resourcePath) throws ResourceUnavailableException
+    public IScript getScript(String resourcePath) 
     {
         IScript result;
 
@@ -92,7 +92,7 @@ public class DefaultScriptSource implements IScriptSource
         return result;
     }
 
-    private IScript parse(String resourcePath) throws ResourceUnavailableException
+    private IScript parse(String resourcePath)
     {
         ScriptParser parser = new ScriptParser();
         InputStream stream = null;
@@ -111,13 +111,13 @@ public class DefaultScriptSource implements IScriptSource
         }
         catch (DocumentParseException ex)
         {
-            throw new ResourceUnavailableException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString("DefaultScriptParser.unable-to-parse-script", resourcePath),
                 ex);
         }
         catch (IOException ex)
         {
-            throw new ResourceUnavailableException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString("DefaultScriptParser.unable-to-read-script", resourcePath),
                 ex);
         }

@@ -40,7 +40,6 @@ import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.IScript;
 import net.sf.tapestry.IScriptSource;
 import net.sf.tapestry.RequestCycleException;
-import net.sf.tapestry.ResourceUnavailableException;
 import net.sf.tapestry.ScriptException;
 import net.sf.tapestry.ScriptSession;
 import net.sf.tapestry.Tapestry;
@@ -69,8 +68,7 @@ public class ShowInspector extends BaseComponent implements IDirect
      *  @since 1.0.5
      **/
 
-    public void trigger(IRequestCycle cycle)
-        throws RequestCycleException
+    public void trigger(IRequestCycle cycle) throws RequestCycleException
     {
         Inspector inspector = (Inspector) cycle.getPage("Inspector");
 
@@ -83,33 +81,21 @@ public class ShowInspector extends BaseComponent implements IDirect
      *  @since 1.0.5
      **/
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
-
         if (cycle.isRewinding())
             return;
 
-        IScript script = null;
-
-        IEngine engine = page.getEngine();
+        IEngine engine = getPage().getEngine();
         IScriptSource source = engine.getScriptSource();
 
-        try
-        {
-            script = source.getScript("/net/sf/tapestry/inspector/ShowInspector.script");
-        }
-        catch (ResourceUnavailableException ex)
-        {
-            throw new RequestCycleException(this, ex);
-        }
+        IScript script = source.getScript("/net/sf/tapestry/inspector/ShowInspector.script");
 
         Map symbols = new HashMap();
 
-        IEngineService service =
-            page.getEngine().getService(IEngineService.DIRECT_SERVICE);
+        IEngineService service = engine.getService(IEngineService.DIRECT_SERVICE);
         Gesture g = service.buildGesture(cycle, this, null);
- 
+
         symbols.put("URL", g.getURL());
 
         HttpSession session = cycle.getRequestContext().getSession();
@@ -131,9 +117,7 @@ public class ShowInspector extends BaseComponent implements IDirect
         Body body = Body.get(cycle);
 
         if (body == null)
-            throw new RequestCycleException(
-                Tapestry.getString("ShowInspector.must-be-contained-by-body"),
-                this);
+            throw new RequestCycleException(Tapestry.getString("ShowInspector.must-be-contained-by-body"), this);
 
         body.process(scriptSession);
 

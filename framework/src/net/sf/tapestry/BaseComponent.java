@@ -169,25 +169,15 @@ public class BaseComponent extends AbstractComponent
 
     private void readTemplate(IPageLoader loader) throws PageLoaderException
     {
-        ComponentTemplate componentTemplate;
         Set seenIds = new HashSet();
         IPageSource pageSource = loader.getEngine().getPageSource();
 
         if (CAT.isDebugEnabled())
             CAT.debug(this +" reading template");
 
-        try
-        {
             ITemplateSource source = loader.getTemplateSource();
-            componentTemplate = source.getTemplate(this);
-        }
-        catch (ResourceUnavailableException ex)
-        {
-            throw new PageLoaderException(
-                Tapestry.getString("BaseComponent.unable-to-obtain-template"),
-                this,
-                ex);
-        }
+            ComponentTemplate componentTemplate = source.getTemplate(this);
+
 
         int count = componentTemplate.getTokenCount();
 

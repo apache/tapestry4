@@ -34,6 +34,7 @@ import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IComponent;
 import net.sf.tapestry.IEngine;
 import net.sf.tapestry.IMarkupWriter;
+import net.sf.tapestry.INamespace;
 import net.sf.tapestry.IPage;
 import net.sf.tapestry.IPageLoader;
 import net.sf.tapestry.IRender;
@@ -302,6 +303,15 @@ public class MockPage implements IPage
     }
 
     public void removePageRenderListener(PageRenderListener listener)
+    {
+    }
+
+    public INamespace getNamespace()
+    {
+        return null;
+    }
+
+    public void setNamespace(INamespace namespace)
     {
     }
 

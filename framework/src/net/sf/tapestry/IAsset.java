@@ -60,5 +60,5 @@ public interface IAsset
      *
      **/
 
-    public InputStream getResourceAsStream(IRequestCycle cycle) throws ResourceUnavailableException;
+    public InputStream getResourceAsStream(IRequestCycle cycle);
 }

@@ -54,6 +54,7 @@ import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IEngineServiceView;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IMonitor;
+import net.sf.tapestry.INamespace;
 import net.sf.tapestry.IPage;
 import net.sf.tapestry.IPageRecorder;
 import net.sf.tapestry.IPageSource;
@@ -1245,27 +1246,23 @@ public abstract class AbstractEngine
 
     protected void cleanupEngine()
     {
-        Iterator i;
-        String name;
-        IPageSource source;
-        IPageRecorder recorder;
-        IPage page;
-
         if (CAT.isInfoEnabled())
             CAT.info(this +" cleanupEngine()");
 
-        source = getPageSource();
+        ISpecificationSource specSource = getSpecificationSource();
+        IPageSource source = getPageSource();
 
-        i = getActivePageNames().iterator();
+        Iterator i = getActivePageNames().iterator();
 
         while (i.hasNext())
         {
-            name = (String) i.next();
+            String name = (String) i.next();
 
             try
             {
-                page = source.getPage(this, name, null);
-                recorder = getPageRecorder(name);
+                INamespace namespace = specSource.getNamespaceForPageName(name);
+                IPage page = source.getPage(this, namespace, name, null);
+                IPageRecorder recorder = getPageRecorder(name);
 
                 recorder.rollback(page);
 

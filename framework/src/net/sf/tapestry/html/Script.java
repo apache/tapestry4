@@ -38,7 +38,6 @@ import net.sf.tapestry.IScript;
 import net.sf.tapestry.IScriptSource;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.RequiredParameterException;
-import net.sf.tapestry.ResourceUnavailableException;
 import net.sf.tapestry.ScriptException;
 import net.sf.tapestry.ScriptSession;
 import net.sf.tapestry.Tapestry;
@@ -161,7 +160,7 @@ public class Script extends AbstractComponent
      **/
 
     private IScript getParsedScript(IRequestCycle cycle)
-        throws ResourceUnavailableException, RequiredParameterException
+        throws RequiredParameterException
     {
         if (script!= null &&
         	scriptPath.equals(lastScriptPath))
@@ -198,10 +197,6 @@ public class Script extends AbstractComponent
             session = getParsedScript(cycle).execute(getSymbols());
         }
         catch (ScriptException ex)
-        {
-            throw new RequestCycleException(this, ex);
-        }
-        catch (ResourceUnavailableException ex)
         {
             throw new RequestCycleException(this, ex);
         }

@@ -36,6 +36,7 @@ import net.sf.tapestry.IAsset;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IComponent;
 import net.sf.tapestry.IEngine;
+import net.sf.tapestry.INamespace;
 import net.sf.tapestry.IPage;
 import net.sf.tapestry.IPageLoader;
 import net.sf.tapestry.IPageSource;
@@ -43,7 +44,6 @@ import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.ISpecificationSource;
 import net.sf.tapestry.ITemplateSource;
 import net.sf.tapestry.PageLoaderException;
-import net.sf.tapestry.ResourceUnavailableException;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.binding.PropertyBinding;
 import net.sf.tapestry.binding.StringBinding;
@@ -130,11 +130,7 @@ public class PageLoader implements IPageLoader
      *
      **/
 
-    private void bind(
-        IComponent container,
-        IComponent component,
-        ContainedComponent contained,
-        Map propertyBindings)
+    private void bind(IComponent container, IComponent component, ContainedComponent contained, Map propertyBindings)
         throws PageLoaderException
     {
         ComponentSpecification spec = component.getSpecification();
@@ -153,10 +149,7 @@ public class PageLoader implements IPageLoader
 
             if (formalOnly && !isFormal)
                 throw new PageLoaderException(
-                    Tapestry.getString(
-                        "PageLoader.formal-parameters-only",
-                        component.getExtendedId(),
-                        name),
+                    Tapestry.getString("PageLoader.formal-parameters-only", component.getExtendedId(), name),
                     component,
                     null);
 
@@ -191,20 +184,13 @@ public class PageLoader implements IPageLoader
 
             if (parameterSpec.isRequired() && component.getBinding(name) == null)
                 throw new PageLoaderException(
-                    Tapestry.getString(
-                        "PageLoader.required-parameter-not-bound",
-                        name,
-                        component.getExtendedId()),
+                    Tapestry.getString("PageLoader.required-parameter-not-bound", name, component.getExtendedId()),
                     component,
                     null);
         }
     }
 
-    private IBinding convert(
-        BindingType type,
-        String bindingValue,
-        IComponent container,
-        Map propertyBindings)
+    private IBinding convert(BindingType type, String bindingValue, IComponent container, Map propertyBindings)
     {
         // The most common type.  propertyBindings is a cache of
         // property bindings for the container, we re-use
@@ -223,13 +209,12 @@ public class PageLoader implements IPageLoader
             return result;
         }
 
+        // String bindings are new in 2.0.4.  For the momement,
+        // we don't even try to cache and share them ... they
+        // are most often unique within a page.
 
-		// String bindings are new in 2.0.4.  For the momement,
-		// we don't even try to cache and share them ... they
-		// are most often unique within a page.
-		
-		if (type == BindingType.STRING)
-			return new StringBinding(container, bindingValue);
+        if (type == BindingType.STRING)
+            return new StringBinding(container, bindingValue);
 
         // static and field bindings are pooled.  This allows the
         // same instance to be used with many components.
@@ -257,20 +242,20 @@ public class PageLoader implements IPageLoader
      * <li>Telling the component its 'ready' (so that it can load its HTML template)
      * </ul>
      *
-     * @param page The page on which the container exists.
-     * @param container The component to be set up.
-     * @param containerSpec The specification for the container.
+     *  @param page The page on which the container exists.
+     *  @param container The component to be set up.
+     *  @param containerSpec The specification for the container.
+     *  @param the namespace of the container
      *
      **/
 
     private void constructComponent(
         IPage page,
         IComponent container,
-        ComponentSpecification containerSpec)
+        ComponentSpecification containerSpec,
+        INamespace namespace)
         throws PageLoaderException
     {
-        ComponentSpecification spec;
-
         _depth++;
         if (_depth > _maxDepth)
             _maxDepth = _depth;
@@ -280,6 +265,8 @@ public class PageLoader implements IPageLoader
 
         for (int i = 0; i < count; i++)
         {
+            ComponentSpecification spec = null;
+
             String id = (String) ids.get(i);
 
             // Get the sub-component specification from the
@@ -287,23 +274,21 @@ public class PageLoader implements IPageLoader
 
             ContainedComponent contained = containerSpec.getComponent(id);
 
+            String type = contained.getType();
+
+            INamespace componentNamespace = computeNamespace(type, namespace);
+
             // Get the component specification for the contained
             // component.
 
-            try
-            {
-                spec = _specificationSource.getComponentSpecification(contained.getType());
-            }
-            catch (ResourceUnavailableException ex)
-            {
-                throw new PageLoaderException(
-                    Tapestry.getString("PageLoader.unable-to-load-specification"),
-                    ex);
-            }
+            if (type.startsWith("/"))
+                spec = _specificationSource.getComponentSpecification(type);
+            else
+                spec = componentNamespace.getComponentSpecification(type);
 
             // Instantiate the contained component.
 
-            IComponent component = instantiateComponent(page, container, id, spec);
+            IComponent component = instantiateComponent(page, container, id, spec, componentNamespace);
 
             // Add it, by name, to the container.
 
@@ -311,12 +296,48 @@ public class PageLoader implements IPageLoader
 
             // Recursively construct the component
 
-            constructComponent(page, component, spec);
+            constructComponent(page, component, spec, componentNamespace);
         }
 
         addAssets(container, containerSpec);
 
         container.finishLoad(this, containerSpec);
+
+        _depth--;
+    }
+
+    /**
+     *  Determines the namespace of a component, based on the namespace of
+     *  its container.  Components whose type is a resource path use
+     *  the application namespace.  Components without a prefix use
+     *  the defaultNamespace (if it contains the necessary alias), or
+     *  the framework namespace otherwise.  Components with a prefix
+     *  use the specified namespace.
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    private INamespace computeNamespace(String type, INamespace defaultNamespace) throws PageLoaderException
+    {
+        if (type.startsWith("/"))
+            return _specificationSource.getApplicationNamespace();
+
+        int colonx = type.indexOf(':');
+        if (colonx > 0)
+        {
+            String namespaceId = type.substring(0, colonx);
+
+            return defaultNamespace.getChildNamespace(namespaceId);
+        }
+
+        // An unadorned name, so it's either in its container's
+        // namespace, or in the framework namespace.
+
+        if (defaultNamespace.containsAlias(type))
+            return defaultNamespace;
+
+        return _specificationSource.getFrameworkNamespace();
     }
 
     /**
@@ -331,20 +352,20 @@ public class PageLoader implements IPageLoader
         IPage page,
         IComponent container,
         String id,
-        ComponentSpecification spec)
+        ComponentSpecification spec,
+        INamespace namespace)
         throws PageLoaderException
     {
-        String className;
-        Class componentClass;
         IComponent result = null;
 
-        className = spec.getComponentClassName();
-        componentClass = _resolver.findClass(className);
+        String className = spec.getComponentClassName();
+        Class componentClass = _resolver.findClass(className);
 
         try
         {
             result = (IComponent) componentClass.newInstance();
 
+            result.setNamespace(namespace);
             result.setSpecification(spec);
             result.setPage(page);
             result.setContainer(container);
@@ -387,7 +408,7 @@ public class PageLoader implements IPageLoader
      * @see ChangeObserver
      **/
 
-    private IPage instantiatePage(String name, ComponentSpecification spec)
+    private IPage instantiatePage(String name, INamespace namespace, ComponentSpecification spec)
         throws PageLoaderException
     {
         String className;
@@ -402,23 +423,18 @@ public class PageLoader implements IPageLoader
         {
             result = (IPage) pageClass.newInstance();
 
+            result.setNamespace(namespace);
             result.setSpecification(spec);
             result.setName(name);
             result.setLocale(_locale);
         }
         catch (ClassCastException ex)
         {
-            throw new PageLoaderException(
-                Tapestry.getString("PageLoader.class-not-page", className),
-                name,
-                ex);
+            throw new PageLoaderException(Tapestry.getString("PageLoader.class-not-page", className), name, ex);
         }
         catch (Exception ex)
         {
-            throw new PageLoaderException(
-                Tapestry.getString("PageLoader.unable-to-instantiate", className),
-                name,
-                ex);
+            throw new PageLoaderException(Tapestry.getString("PageLoader.unable-to-instantiate", className), name, ex);
         }
 
         return result;
@@ -431,6 +447,8 @@ public class PageLoader implements IPageLoader
      *  The page is immediately attached to the {@link IEngine engine}.
      *
      *  @param name the name of the page to load
+     *  @param namespace from which the page is to be loaded (used
+     *  when resolving components embedded by the page)
      *  @param engine the engine the page is loaded for (this is used
      *  to define the locale of the new page, and provide access
      *  to the corect specification source, etc.).
@@ -438,7 +456,7 @@ public class PageLoader implements IPageLoader
      *
      **/
 
-    public IPage loadPage(String name, IEngine engine, String resourcePath)
+    public IPage loadPage(String name, INamespace namespace, IEngine engine, String resourcePath)
         throws PageLoaderException
     {
         IPage page = null;
@@ -458,17 +476,13 @@ public class PageLoader implements IPageLoader
         {
             specification = _specificationSource.getPageSpecification(resourcePath);
 
-            page = instantiatePage(name, specification);
-            
+            page = instantiatePage(name, namespace, specification);
+
             page.attach(engine);
 
-            constructComponent(page, page, specification);
+            constructComponent(page, page, specification, namespace);
 
             setBindings(page);
-        }
-        catch (ResourceUnavailableException ex)
-        {
-            throw new PageLoaderException(ex.getMessage(), name, ex);
         }
         finally
         {
@@ -479,14 +493,7 @@ public class PageLoader implements IPageLoader
         }
 
         if (CAT.isInfoEnabled())
-            CAT.info(
-                "Loaded page "
-                    + page
-                    + " with "
-                    + _count
-                    + " components (maximum depth "
-                    + _maxDepth
-                    + ")");
+            CAT.info("Loaded page " + page + " with " + _count + " components (maximum depth " + _maxDepth + ")");
 
         return page;
     }
@@ -525,9 +532,7 @@ public class PageLoader implements IPageLoader
         }
     }
 
-    private void addAssets(
-        IComponent component,
-        ComponentSpecification specification)
+    private void addAssets(IComponent component, ComponentSpecification specification)
     {
         Iterator i = specification.getAssetNames().iterator();
 
