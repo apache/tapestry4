@@ -81,10 +81,19 @@ with simple additions). Tapestry components are combined together
 
 <figure src="images/tapestry-in-action.png" alt="Tapestry in Action Cover"/> 
 <p>
-	Tapestry in Action
+<link href="http://www.manning.com/lewisship/index.html">Tapestry in Action</link>
 is now available from
-<link href="http://www.manning.com/lewisship/index.html">Manning Publications</link>. It is the
+Manning Publications. It is the
 definitive introduction to Tapestry written by Howard Lewis Ship, the creator of Tapestry.
+</p>
+
+<figure src="images/tapestry-german-cover.gif" alt="Tapestry Webanwendungen mit dem Apache Framework"/>
+
+<p>
+<link href="http://entwickler.com/sus/sus_buch/psecom,id,60,nodeid,8,_language,uk.html">Tapestry Webanwendungen mit dem Apache Framework</link> is a fast-paced guide to using
+Tapestry, focusing on combining Tapestry with other open-source frameworks, as well as developing Tapestry applications using
+<a href="http://spindle.sourceforge.net/">Spindle</a>. The book is written in German, and authored by
+Stefan Edlich and Patrick Kunert.
 </p>
 
 <p>Tapestry has also  been described in the print journal 

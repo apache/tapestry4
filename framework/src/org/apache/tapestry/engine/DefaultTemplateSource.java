@@ -104,47 +104,6 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
 
     private ITemplateSourceDelegate _delegate;
 
-    private static class ParserDelegate implements ITemplateParserDelegate
-    {
-        private IComponent _component;
-        private ComponentSpecificationResolver _resolver;
-        private IRequestCycle _cycle;
-
-        ParserDelegate(IComponent component, IRequestCycle cycle)
-        {
-            _component = component;
-            _resolver = new ComponentSpecificationResolver(cycle);
-            _cycle = cycle;
-        }
-
-        public boolean getKnownComponent(String componentId)
-        {
-            return _component.getSpecification().getComponent(componentId) != null;
-        }
-
-        public boolean getAllowBody(String componentId, ILocation location)
-        {
-            IComponent embedded = _component.getComponent(componentId);
-
-            if (embedded == null)
-                throw Tapestry.createNoSuchComponentException(_component, componentId, location);
-
-            return embedded.getSpecification().getAllowBody();
-        }
-
-        public boolean getAllowBody(String libraryId, String type, ILocation location)
-        {
-            INamespace namespace = _component.getNamespace();
-
-            _resolver.resolve(_cycle, namespace, libraryId, type, location);
-
-            IComponentSpecification spec = _resolver.getSpecification();
-
-            return spec.getAllowBody();
-        }
-
-    }
-
     /**
      *  Clears the template cache.  This is used during debugging.
      *
@@ -433,7 +392,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
         if (_parser == null)
             _parser = new TemplateParser();
 
-        ITemplateParserDelegate delegate = new ParserDelegate(component, cycle);
+        ITemplateParserDelegate delegate = new TemplateParserDelegateImpl(component, cycle);
 
         TemplateToken[] tokens;
 

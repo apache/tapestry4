@@ -25,7 +25,6 @@ package org.apache.tapestry;
  * @see org.apache.tapestry.engine.IComponentMessagesSource
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 2.0.4
  *
  */
@@ -56,6 +55,11 @@ public interface IMessages
     /**
      * Formats a string, using
      * {@link java.text.MessageFormat#format(java.lang.String, java.lang.Object[])}.
+     * 
+     * <p>
+     * In addition, special processing occurs for any of the arguments that
+     * inherit from {@link Throwable}: such arguments are replaced with the Throwable's message
+     * (if non blank), or the Throwable's class name (if the message is blank).
      *
      * @param key the key used to obtain a localized pattern using
      * {@link #getMessage(String)}

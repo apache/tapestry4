@@ -19,6 +19,7 @@ import java.util.Locale;
 import java.util.Properties;
 
 import org.apache.tapestry.IMessages;
+import org.apache.tapestry.Tapestry;
 
 /**
  *  Implementation of {@link org.apache.tapestry.IMessages}.  This is basically
@@ -27,7 +28,6 @@ import org.apache.tapestry.IMessages;
  *  they don't have to be synchronized).
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.0.4
  *
  **/
@@ -77,15 +77,31 @@ public class ComponentMessages implements IMessages
     {
         String pattern = getMessage(key);
 
-		// This ugliness is mandated for JDK 1.3 compatibility, which has a bug 
-		// in MessageFormat ... the
-		// pattern is applied in the constructor, using the system default Locale,
-		// regardless of what locale is later specified!
-		// It appears that the problem does not exist in JDK 1.4.
-		
+        // This ugliness is mandated for JDK 1.3 compatibility, which has a bug 
+        // in MessageFormat ... the
+        // pattern is applied in the constructor, using the system default Locale,
+        // regardless of what locale is later specified!
+        // It appears that the problem does not exist in JDK 1.4.
+
         MessageFormat messageFormat = new MessageFormat("");
         messageFormat.setLocale(_locale);
         messageFormat.applyPattern(pattern);
+
+        int count = Tapestry.size(arguments);
+
+        for (int i = 0; i < count; i++)
+        {
+            if (arguments[i] instanceof Throwable)
+            {
+                Throwable t = (Throwable) arguments[i];
+                String message = t.getMessage();
+
+                if (Tapestry.isNonBlank(message))
+                    arguments[i] = message;
+                else
+                    arguments[i] = t.getClass().getName();
+            }
+        }
 
         return messageFormat.format(arguments);
     }

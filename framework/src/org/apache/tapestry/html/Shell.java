@@ -67,6 +67,7 @@ public abstract class Shell extends AbstractComponent
             writer.comment("Generated: " + new Date());
 
             writer.begin("html");
+            renderInformalParameters(writer, cycle);
             writer.println();
             writer.begin("head");
             writer.println();

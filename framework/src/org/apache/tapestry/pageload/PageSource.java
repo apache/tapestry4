@@ -42,7 +42,6 @@ import org.apache.tapestry.util.pool.Pool;
  *  for reporting pool statistics would be useful.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 
@@ -171,6 +170,7 @@ public class PageSource implements IPageSource
             // the pool needs to be explicitly attached.
 
             result.attach(engine);
+            result.setRequestCycle(cycle);
         }
 
         return result;

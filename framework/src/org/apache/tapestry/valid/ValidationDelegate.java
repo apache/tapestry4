@@ -34,14 +34,16 @@ import org.apache.tapestry.form.IFormComponent;
  *  details.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.5
- * 
- **/
+ */
 
 public class ValidationDelegate implements IValidationDelegate
 {
     private IFormComponent _currentComponent;
+
+    /**
+     * List of {@link FieldTracking}.
+     */
     private List _trackings;
 
     /**
@@ -49,7 +51,11 @@ public class ValidationDelegate implements IValidationDelegate
      *  the trackings for one form, keyed on component name.  Care must
      *  be taken, because the inner Map is not always present.
      * 
-     **/
+     * <p>
+     * Each ultimate {@link FieldTracking} object is also in the _trackings
+     * list.
+     * 
+     */
 
     private Map _trackingMap;
 
@@ -58,6 +64,19 @@ public class ValidationDelegate implements IValidationDelegate
         _currentComponent = null;
         _trackings = null;
         _trackingMap = null;
+    }
+
+    public void clearErrors()
+    {
+        if (_trackings == null)
+            return;
+
+        Iterator i = (Iterator) _trackings.iterator();
+        while (i.hasNext())
+        {
+            FieldTracking ft = (FieldTracking) i.next();
+			ft.setErrorRenderer(null);
+        }
     }
 
     /**
@@ -262,7 +281,7 @@ public class ValidationDelegate implements IValidationDelegate
         if (_trackingMap == null)
             _trackingMap = new HashMap();
 
-        if (_currentComponent == null)
+        if (_currentComponent == null || _currentComponent.getName() == null)
         {
             result = new FieldTracking();
 
@@ -397,7 +416,7 @@ public class ValidationDelegate implements IValidationDelegate
         // so assume it cannot have errors.
         if (form == null)
             return false;
-        
+
         String formName = form.getName();
         Map formMap = (Map) _trackingMap.get(formName);
 

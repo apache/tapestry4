@@ -14,12 +14,11 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<!-- $Id$ -->
 <!DOCTYPE component-specification PUBLIC 
   "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
 	
-<component-specification class="org.apache.tapestry.html.Shell" allow-informal-parameters="no">
+<component-specification class="org.apache.tapestry.html.Shell" allow-informal-parameters="yes">
 
   <description>
   Provides the outer tags in an HTML page: &lt;html&gt;, &lt;head&gt; and &lt;title&gt;.

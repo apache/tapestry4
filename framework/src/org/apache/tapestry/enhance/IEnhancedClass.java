@@ -20,13 +20,15 @@ package org.apache.tapestry.enhance;
  *  and is specific to the selected system of enhancement.
  * 
  *  @author Mindbridge
- *  @version $Id$
  *  @since 3.0
  */
 public interface IEnhancedClass
 {
     String getClassName();
     
+    /**
+     * Adds an enhancer for creating the specified property.
+     */
     void createProperty(String propertyName, String propertyType);
 
     void createProperty(
@@ -44,4 +46,9 @@ public interface IEnhancedClass
     boolean hasModifications();
 
     Class createEnhancedSubclass();
+    
+    /**
+     * Adds an arbitrary enhancer.
+     */
+    void addEnhancer(IEnhancer enhancer);
 }

@@ -41,7 +41,6 @@ import org.apache.tapestry.spec.IPropertySpecification;
  *  Internally, this class makes use of {@link IEnhancedClassFactory}.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/
@@ -64,7 +63,7 @@ public class ComponentClassFactory
      *  Mapping between a primitive type and its Java VM representation
      *  Used for the encoding of array types
      **/
-    private static Map _primitiveTypes = new HashMap();  
+    private static Map _primitiveTypes = new HashMap();
 
     static {
         _primitiveTypes.put("boolean", "Z");
@@ -76,7 +75,6 @@ public class ComponentClassFactory
         _primitiveTypes.put("char", "C");
         _primitiveTypes.put("byte", "B");
     }
-
 
     private IResourceResolver _resolver;
 
@@ -149,16 +147,16 @@ public class ComponentClassFactory
         return _enhancedClass != null && _enhancedClass.hasModifications();
     }
 
-	/**
-	 * @return true if pd is not null and both read/write methods are implemented
-	 */
-	public boolean isImplemented(PropertyDescriptor pd)
-	{
-		if (pd == null)
-			return false;
-		
-		return isImplemented(pd.getReadMethod()) && isImplemented(pd.getWriteMethod());
-	}
+    /**
+     * @return true if pd is not null and both read/write methods are implemented
+     */
+    public boolean isImplemented(PropertyDescriptor pd)
+    {
+        if (pd == null)
+            return false;
+
+        return isImplemented(pd.getReadMethod()) && isImplemented(pd.getWriteMethod());
+    }
 
     /**
      * @return true if m is not null and is abstract.
@@ -171,16 +169,16 @@ public class ComponentClassFactory
         return Modifier.isAbstract(m.getModifiers());
     }
 
-	/**
-	 * @return true if m is not null and not abstract  
-	 */
-	public boolean isImplemented(Method m)
-	{
-		if (m == null)
-		    return false;
-		
-		return !Modifier.isAbstract(m.getModifiers()); 
-	}
+    /**
+     * @return true if m is not null and not abstract  
+     */
+    public boolean isImplemented(Method m)
+    {
+        if (m == null)
+            return false;
+
+        return !Modifier.isAbstract(m.getModifiers());
+    }
 
     /**
      *  Given a class name, returns the corresponding class.  In addition,
@@ -210,7 +208,7 @@ public class ComponentClassFactory
                     location,
                     ex);
             }
-            
+
             _classMapping.recordType(type, result);
         }
 
@@ -223,7 +221,7 @@ public class ComponentClassFactory
      *  int[][] is translated to [[I and java.lang.Object[] to 
      *  [Ljava.lang.Object;   
      *  This method and its static Map should go into a utility class
-     */   
+     */
     protected String translateClassName(String type)
     {
         // if it is not an array, just return the type itself
@@ -231,13 +229,14 @@ public class ComponentClassFactory
             return type;
 
         // if it is an array, convert it to JavaVM-style format
-        StringBuffer javaType = new StringBuffer(); 
-        while (type.endsWith("[]")) {
+        StringBuffer javaType = new StringBuffer();
+        while (type.endsWith("[]"))
+        {
             javaType.append("[");
             type = type.substring(0, type.length() - 2);
         }
-        
-        String primitiveIdentifier = (String) _primitiveTypes.get(type); 
+
+        String primitiveIdentifier = (String) _primitiveTypes.get(type);
         if (primitiveIdentifier != null)
             javaType.append(primitiveIdentifier);
         else
@@ -334,8 +333,7 @@ public class ComponentClassFactory
                     + " for "
                     + _specification.getSpecificationLocation());
 
-        Class result;
-        result = enhancedClass.createEnhancedSubclass();
+        Class result = enhancedClass.createEnhancedSubclass();
 
         if (LOG.isDebugEnabled())
             LOG.debug("Finished creating enhanced class " + subclassName);
@@ -354,6 +352,14 @@ public class ComponentClassFactory
     {
         scanForParameterEnhancements();
         scanForSpecifiedPropertyEnhancements();
+        scanForAbstractClass();
+    }
+
+    protected void scanForAbstractClass()
+    {
+        if (Modifier.isAbstract(_componentClass.getModifiers()))
+            getEnhancedClass().addEnhancer(new NoOpEnhancer());
+
     }
 
     /**
@@ -401,16 +407,16 @@ public class ComponentClassFactory
         String propertyName = parameterName + Tapestry.PARAMETER_PROPERTY_NAME_SUFFIX;
         PropertyDescriptor pd = getPropertyDescriptor(propertyName);
 
-		// only enhance custom parameter binding properties if they are declared abstract
-		if (ps.getDirection() == Direction.CUSTOM)
-		{
-		    if (pd == null)
-			    return;
-			
-			if (!(isAbstract(pd.getReadMethod()) || isAbstract(pd.getWriteMethod())))
-			    return;
-		}
-			
+        // only enhance custom parameter binding properties if they are declared abstract
+        if (ps.getDirection() == Direction.CUSTOM)
+        {
+            if (pd == null)
+                return;
+
+            if (!(isAbstract(pd.getReadMethod()) || isAbstract(pd.getWriteMethod())))
+                return;
+        }
+
         if (isImplemented(pd))
             return;
 
