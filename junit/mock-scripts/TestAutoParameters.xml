@@ -101,7 +101,7 @@
 		</assert-output>
 		
 		<assert-output name="Message">
-		Parameter 'flag' must be required as it uses direction 'auto'.	
+		Parameter 'flag' must be required or have a default value as it uses direction 'auto'.	
 		</assert-output>
 	</request>
 	

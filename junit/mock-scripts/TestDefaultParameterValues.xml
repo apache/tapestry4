@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="c27" root="context27"/>
+
+  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet"/>
+
+	<request>
+		<assert-output name="Page Title">
+<![CDATA[		
+<title>Home</title>
+]]>
+		</assert-output>
+  	  	  	
+
+		<assert-output name="bound int value">
+<![CDATA[
+<td>Bound intValue    = 10</td>
+]]>
+		</assert-output>
+
+		<assert-output name="bound double value">
+<![CDATA[
+<td>Bound doubleValue = 2.72</td>
+]]>
+		</assert-output>
+
+		<assert-output name="bound object value">
+<![CDATA[
+<td>Bound objectValue = zh_TW</td>
+]]>
+		</assert-output>
+
+
+		<assert-output name="default int value">
+<![CDATA[
+<td>Default intValue    = 5</td>
+]]>
+		</assert-output>
+
+		<assert-output name="default double value">
+<![CDATA[
+<td>Default doubleValue = 3.14</td>
+]]>
+		</assert-output>
+
+		<assert-output name="default object value">
+<![CDATA[
+<td>Default objectValue = en_US</td>
+]]>
+		</assert-output>
+
+		<assert-output name="default object value">
+<![CDATA[
+<span>span tag</span>
+]]>
+		</assert-output>
+
+		<assert-output name="default object value">
+<![CDATA[
+<div>div tag</div>
+]]>
+		</assert-output>
+		
+	</request>
+	
+		
+ </mock-test>

@@ -22,7 +22,7 @@
 				
 			
 		<assert-output name="Error">
-Class java.lang.Object does not implement the IComponent interface.
+does not implement the IComponent interface.
 		</assert-output>
 								
 	</request>		

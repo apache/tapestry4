@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+
+<component-specification class="org.apache.tapestry.junit.mock.c27.Good">
+	
+	<parameter name="prefix" type="java.lang.String" direction="auto" default-value='defaultPrefix'/>
+
+	<parameter name="intValue" type="int" direction="auto" default-value="5"/>
+	<parameter name="doubleValue" type="double" direction="in" default-value="3.14"/>
+	<parameter name="objectValue" type="java.util.Locale" direction="in" default-value="defaultLocale"/>
+
+</component-specification>
