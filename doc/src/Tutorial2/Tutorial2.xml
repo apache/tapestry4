@@ -8,6 +8,7 @@
   <!ENTITY chapter-three SYSTEM "./tutorial-chapter-three.xml">
   <!ENTITY chapter-three-ex1 SYSTEM "./tutorial-pagelinking.xml">
   <!ENTITY chapter-five SYSTEM "./tutorial-chapter-five.xml">
+  <!ENTITY chapter-six SYSTEM "./tutorial-chapter-six.xml">
   %TapestryLinks;
 ]>
 <!-- Conventions:
@@ -63,24 +64,7 @@
   </chapter>
 
   &chapter-five;
-
-  <chapter id="built-ins">
-  	<title>Using the Built-In Components</title>
-  	
-  	<section id="builtin-foreach">
-  		<title>Foreach</title>
-  	</section>
-  	<section id="builtin-events">
-  		<title>Handling Events</title>
-  	</section>
-  	<section id="builtin-javabeans">
-  		<title>Making use of JavaBeans from a Page</title>
-  	</section>
-  	<section id="builtin-more">
-  		<title>...</title>
-  		Need more here!
-  	</section>
-  </chapter>
+  &chapter-six;
 
   <chapter id="assets">
   	<title>Assets</title>

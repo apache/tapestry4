@@ -502,54 +502,165 @@ public class Part2 extends BasePage {
 
 		<para>This example is named <varname>Part4</varname>. It is identical to <varname>Part3</varname>
 		except that there are additional component definitions, and the definition for <varname>dateOfBirth</varname> and
-		<varname>favColour</varname> have been modified. The examples provided are only extracts from the
-		full page specification, so that you can clearly see what is being done. The specification for dateOfBirth is changed to read:
+		<varname>favColour</varname> have been modified. The specification below is highlighted to show those parts that differ:
 		</para>
 		
+		<figure>
+			<title>Full page specification for exampe - Part4</title>
+			<programlisting>
+&lt;page-specification class="tutorial.forms.Part4"&gt;
+	&lt;bean name="delegate" class="net.sf.tapestry.valid.ValidationDelegate"/&gt;
 
-<insert specification here>
+	&lt;bean name="stringValidator" class="net.sf.tapestry.valid.StringValidator" lifecycle="page"&gt;
+  		&lt;set-property name="required" expression="true"/&gt;
+  		&lt;set-property name="clientScriptingEnabled" expression="true"/&gt;
+ 	&lt;/bean&gt;
 
-Now, to restrict the inputs for favourite colour, we will use the PropertySelection component. This component takes as one of it's inputs a <emphasis>model</emphasis>. The model describes the data available (it's very MVC like). Tapestry provides a number of pre-built models, one of which is the StringPropertySelection.
+	&lt;component id="form" type="Form"&gt;
+		&lt;binding name="delegate" expression="beans.delegate"/&gt;	
+	&lt;/component&gt;
+	
+	<emphasis role="bold">&lt;component id="shell" type="Shell"&gt;
+		&lt;static-binding name="title"&gt;Smarter Components&lt;/static-binding&gt;	
+	&lt;/component&gt;
+	&lt;component id="body" type="Body"/&gt;</emphasis>
+	
+	&lt;component id="name" type="ValidField"&gt;
+		&lt;binding name="value" expression="visit.userName"/&gt;
+        &lt;binding name="validator" expression='beans.stringValidator'/&gt;
+        &lt;static-binding name="displayName"&gt;User name&lt;/static-binding&gt;
+	&lt;/component&gt;
+	
+	<emphasis role="bold">&lt;component id="dateOfBirth" type="DatePicker"&gt;
+		&lt;binding name="value" expression="visit.dateOfBirth"/&gt;
+	&lt;/component&gt;</emphasis>
+	
+	&lt;component id="favColour" type="ValidField"&gt;
+		&lt;binding name="value" expression="visit.favoriteColour"/&gt;
+        &lt;binding name="validator" expression='beans.stringValidator'/&gt;
+        &lt;static-binding name="displayName"&gt;Favorite colour&lt;/static-binding&gt;
+	&lt;/component&gt;
+	
+	&lt;component id="errors" type="Delegator"&gt;
+		&lt;binding name="delegate" expression="beans.delegate.firstError"/&gt;
+	&lt;/component&gt;
+	
+	&lt;component id="submit" type="Submit"&gt;
+		&lt;binding name="listener" expression="listeners.enterDetails"/&gt;
+	&lt;/component&gt;
+&lt;/page-specification&gt;
+ 			</programlisting>
+		</figure>
 
-The StringPropertySelection exposes an array of strings - which is very good if you have a discrete set of values from whih a user must choose.
+		<para>
+		Because we have introduced a &Shell; component (required for the date picker to work), we need to modify the
+		HTML. The HTML for part four is provided here:
+		</para>
+		<figure>
+			<title>Full HTML for exampe - Part4</title>
+			<programlisting>
+&lt;span jwcid="shell"&gt;
+	&lt;span jwcid="body"&gt;
+		&lt;h1&gt;Form Tutorial&lt;/h1&gt;
+		Enter some fields on this page, and press the submit button. 
+		
+		&lt;form jwcid="form"&gt;
+			&lt;table&gt;
+				&lt;tr&gt;
+					&lt;td&gt;Your name:&lt;/td&gt;
+					&lt;td&gt;&lt;input jwcid="name"&gt;Neil&lt;/input&gt;&lt;/td&gt;
+				&lt;/tr&gt;
+		
+				&lt;tr&gt;
+					&lt;td&gt;Date of birth:&lt;/td&gt;
+					&lt;td&gt;&lt;input jwcid="dateOfBirth"/&gt;&lt;/td&gt;
+				&lt;/tr&gt;
+		
+				&lt;tr&gt;
+					&lt;td&gt;Favourite colour:&lt;/td&gt;
+					&lt;td&gt;&lt;input jwcid="favColour"/&gt;&lt;/td&gt;
+				&lt;/tr&gt;
+		
+				&lt;tr&gt;
+					&lt;td colspan=2&gt;&lt;font color="red"&gt;&lt;span jwcid="errors"/&gt;&lt;/font&gt;&lt;/td&gt;
+				&lt;/tr&gt;
+	
+				&lt;tr&gt;
+					&lt;td colspan=2&gt;&lt;input type="submit" jwcid="submit"/&gt;&lt;/td&gt;
+				&lt;/tr&gt;
+			&lt;/table&gt;
+		&lt;/form&gt;
+	&lt;/span&gt;
+&lt;/span&gt;
+ 			</programlisting>
+		</figure>
 
-Modify the component property for favouriteColour to read:
+		<para>The Java code itself requires no modification, because the &DatePicker; component uses the
+		same data type as our previous &ValidField; did.  So, we have made it easier for the user to enter date values, by providing a date picker 
+		component. We can also restrict the possible values for favorite colour, using another built in Tapestry
+		component.
+		</para>
 
-<component id="favouriteColour" type="PropertySelection">
-<binding name="model" expression="colourModel"/>
-<binding name="value" expression="favoutieColour"/>
-</component>
+		<para>
+		To restrict the inputs for favourite colour, we will use the &PropertySelection; component. This component 
+		takes as one of it's inputs a <emphasis>model</emphasis>. The model describes the data available 
+		(it's very MVC like). Tapestry provides a number of pre-built models, one of which is the StringPropertySelection.
+		</para>
+		
+		<para>The StringPropertySelection exposes an array of strings - which is very good if you have a 
+		discrete set of values from whih a user must choose. Modify the component property for favouriteColour to read:
+		</para>
 
-What happens here is that Tapestry takes care of rending a selection HTML element for you, and sticks whatever value the user chooses into the favouriteColour property.
+		<figure>
+			<title>PropertySelection for Favorite Colour - Part4</title>
+			<programlisting>
+&lt;component id="favColour" type="PropertySelection"&gt;
+	&lt;binding name="value" expression="visit.favoriteColour"/&gt;
+	&lt;binding name="model" expression="@getColourModel()"/&gt;
+&lt;/component&gt;
+ 			</programlisting>
+		</figure>
 
-We use the Java code below to create the model:
+		<para>What happens here is that Tapestry takes care of rending a selection HTML element for you, 
+		and sticks whatever value the user chooses into the favouriteColour property. Finally we need to 
+		add the following method to Page4.java, to construct and return the model for the component:</para>
+		<figure>
+			<title>PropertySelection Code for Favorite Colour - Part4</title>
+			<programlisting>
+/**
+ * Returns a set of colours that the user may choose from.
+ */
+public static IPropertySelectionModel getColourModel() {
+	return new StringPropertySelectionModel(
+		new String[] { "Black", "Fiji Blue", "Green", "Red", "Yellow" });
+}
+ 			</programlisting>
+		</figure>
 
-public IPropertySelectionModel colourModel() {
-return new StringPropertySelection(new String[] { "red","blue","pink","green", "white", "fiji blue", "black", "gray"}));
-} 
+		<para>Upon compiling and running this new code, your form should look like this:</para>
 
-Upon compiling and running this new code, your form should look like this:
+		<figure>
+			<title>Form, with DatePicker and PropertySelection components</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="images/forms-part4-result.gif" format="GIF"/>
+				</imageobject>
+			</mediaobject>
+		</figure>
 
-<insert shot here>
-
-Conclusion:
-We've looked at basic form handling, including different form fields, binding values of a form to properties on an object, and Tapestry supplied error handling. We have also introduced a couple of the smarter components - and seen how easy it is to switch a component type without having to modify the page template.
-
-  	</section>
-  	
-  	<section id="custom-rendering">
-  		<title>Custom Error Rendering</title>
-  	</section>
-
-  	<section id="multi-button">
-  		<title>Multiple Submit Buttons</title>
-  	</section>
-
-  	<section id="action-and-direct">
-  		<title>Action amd Direct Services</title>
-  	</section>
-  	
-  	<section id="stale-link-handling">
-  		<title>Handling Stale Links</title>
+		<section id="forms-part4-summary">
+			<title>Summary</title>
+			<para>We've looked at basic form handling, including different form fields, 
+			binding values of a form to properties on an object, and Tapestry supplied error handling. We 
+			have also introduced a couple of the smarter components - and seen how easy it is to switch 
+			a component type without having to modify the page template.
+			</para>
+			<para>
+			The usage of the components shown here is somewhat basic, due to the fact that this is a tutorial.
+			Keep in mind that something like the IPropertySelection (along with the PropertySelection component) interface 
+			allows you to make available any kind of object in both drop down lists and multi line lists, and handle selections
+			of those components.
+			</para>
+		</section>
   	</section>
   </chapter>
