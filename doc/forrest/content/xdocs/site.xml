@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+
+$Id$
+
+Forrest site.xml
+
+This file contains an outline of the site's information content.  It is used to:
+- Generate the website menus (though these can be overridden - see docs)
+- Provide semantic, location-independent aliases for internal 'site:' URIs, eg
+<link href="site:changes"> links to changes.html (or ../changes.html if in
+  subdir).
+- Provide aliases for external URLs in the external-refs section.  Eg, <link
+  href="ext:cocoon"> links to http://xml.apache.org/cocoon/ 
+
+See http://xml.apache.org/forrest/linking.html for more info
+-->
+
+<site label="Tapestry" href="" xmlns="http://apache.org/forrest/linkmap/1.0" tab="">
+    <tapestry label="Tapestry">
+    <home label="HOME" href="index.html"/>
+    <api label="API" href="doc/api/index.html"/>
+    <new label="What's New" href="new.html"/>
+    <quotes label="Quotes" href="quotes.html"/>
+    <doc label="Documentation" href="doc.html"/>
+    <comp-ref label="Component Reference" href="doc/ComponentReference/index.html"/>
+    <faq label="FAQ" href="faq.html"/>
+    <todo label="TODO" href="todo.html"/>
+    <changes label="Change Log" href="changes.html"/>
+    <wiki label="Wiki" href="http://tapestry.sourceforge.net/wiki/"/>
+    <dev label="Developers" href="dev.html"/>
+    <clover label="Clover Report" href="doc/clover/index.html"/>
+    </tapestry>
+    
+    <project label="Project">
+        <item label="Mailing List"     href="http://jakarta.apache.org/site/mail2.html#tapestry"/>
+        <item label="Bug Database"     href="http://jakarta.apache.org/site/bugs.html"/>
+        <item label="CVS Repositories"      href="http://jakarta.apache.org/site/cvsindex.html"/>
+    </project>
+    
+    <info label="Useful Information">
+        <item label="Get Involved"          href="http://jakarta.apache.org/site/getinvolved.html"/>
+        <item label="Reference Library"     href="http://jakarta.apache.org/site/library.html"/>
+        <item label="Apache FAQ"                href="http://apache.org/foundation/faq.html"/>
+        <item label="Tapestry and HiveMind Blog"
+        	href="http://javatapestry.blogspot.com"/>
+    </info>
+    
+    <whole label="Whole Site">
+        <item label="WholeSite (HTML)"       href="site.html"/>
+        <item label="WholeSite (PDF)"       href="site.pdf"/>
+    </whole>
+    
+
+</site>

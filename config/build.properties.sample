@@ -29,3 +29,10 @@ j2ee.jar.path=
 
 servlet.jar.path=
 
+# Home for xml-forrest, used to build documentation.
+# Available from :pserver:anoncvs@cvs.apache.org:/home/cvspublic as module xml-forrest
+# Build forrest, then set to the shbat directory, i.e.
+# C:/workspace/xml-forrest/build/dist/shbat
+
+forrest.home=
+

@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "./dtd/document-v12.dtd">
+<document>
+
+ <header>
+  <title>Jakarta Tapestry - Developers</title>
+ </header>
+
+<body>
+
+<section>
+	<title>Jakarta Tapestry - Developers</title>
+
+<p>
+		Tapestry is a community project, and now follows the
+		<link href="http://www.apache.org/foundation/">Apache Software Foundation</link> meritocracy rules to guide
+		its future development.
+Tapestry Developers plan features, discuss and vote  on the
+ <link href="http://jakarta.apache.org/site/mail2.html#tapestry">Tapestry Developers' Mailing List</link>.
+</p>
+ 
+<p>
+	 The following are the current Tapestry committers.
+</p>
+
+<section>
+		<title>Mind Bridge</title>
+
+            Mind Bridge has been a long term contributor to Tapestry.
+</section>
+
+<section>
+	<title>Neil Clayton</title>
+
+            Neil has contributed 
+            to the Component Reference, and undertaken the daunting task of 
+            creating a new (and actually useful) Tapestry Tutorial, which is 
+            nearing completion.
+	</section>
+	
+<section>
+		<title>Eric Hatcher</title>
+		
+		Erik began by contributing Javadoc fixes (flagged by IDEA) and will hopefully contribute
+component and perhaps even core enhancements and bug fixes.
+
+</section>
+
+<section>
+		<title>Harish Krishnaswamy</title>
+		
+		 	Harish is a Tapestry enthusiast and is also becoming a HiveMind enthusiast. Hopefully 
+ 	he will help integrate the two.
+ 	
+</section>
+
+	
+<section>
+	<title>Richard Lewis-Shell</title>
+		Richard is one of the real early adopters of Tapestry.
+	
+</section>
+ 
+<section>
+	<title>Howard Lewis Ship</title>	
+	   Howard started the Tapestry project in early 2000.
+</section>
+
+<section>
+	<title>Geoff Longman</title>	
+
+
+
+       Geoff has advanced Tapestry light years with his excellent
+	   Eclipse plug-in, <link href="http://spindle.sf.net/">Spindle</link>.
+
+</section>
+	
+<section>
+	<title>David Solis</title>
+
+David is another long-term user,
+and has  added a suite of WML components to the framework. 		
+</section>
+
+</section>
+</body>
+</document>

@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "./dtd/document-v12.dtd">
+<document>
+
+ <header>
+  <title>Jakarta Tapestry - Documentation</title>
+ </header>
+
+<body>
+
+
+
+
+<section>
+		<title>
+				Tapestry API Documentation
+		</title>
+		
+
+
+Full documentation for the Tapestry framework, the <code>contrib</code>
+framework (which contains additional components and classes), 
+and all the example code.
+
+
+<p>
+<link href="site:api">[HTML]</link>	
+</p>
+</section>
+
+<section>
+		<title>
+				Tapestry Component Reference
+		</title>
+
+A handy refrence to the built-in Tapestry components, with example
+specifications, HTML templates and code.
+
+<p>
+<link href="site:comp-ref">[HTML]</link>	
+</p>
+</section>
+	
+<section>
+	<title>Tutorial</title>
+
+The best way to begin learning about the Tapestry framework; this document eases the 
+reader into basic Tapestry concepts.
+
+<p>
+		<link href="doc/Tutorial/Tutorial.html">[HTML]</link>
+		<link href="doc/Tutorial/Tutorial.pdf">[PDF]</link>	
+</p>
+				
+<warning label="Out of date">
+This Tutorial is out of date, and work to replace it is 
+currently taking place.
+</warning>
+
+</section>
+
+<section>
+		<title>
+		Developer's Guide
+		</title>
+		
+Exhaustive reference for Tapestry, in extreme detail.
+          
+<p>
+			<link href="doc/DevelopersGuide/DevelopersGuide.html">[HTML]</link>
+			<link href="doc/DevelopersGuide/DevelopersGuide.pdf">[PDF]</link>
+	</p>          
+          
+<warning label="Out of date">This document is out of date, and is being replaced with a new 
+User's Guide.
+</warning>
+
+</section>
+	
+<section>
+	<title>
+		User's Guide
+	</title>
+		
+Complete reference to the Tapestry framework.
+           
+<p>
+		<link href="doc/TapestryUsersGuide/TapestryUsersGuide.html">[HTML]</link>
+		<link href="doc/TapestryUsersGuide/TapestryUsersGuide.pdf">[PDF]</link>	
+</p>           
+           
+<warning label="Incomplete">This document is currently being constructed and is incomplete. It is a replacement
+	for the Developer's Guide.
+</warning>
+</section>
+
+<section>
+	<title>
+	Contributor's Guide
+	</title>
+		
+Guide for users and prospective developers who wish to contribute code and patches to the
+Tapestry project.
+
+<p>
+		<link href="doc/ContributorsGuide/ContributorsGuide.html">[HTML]</link>
+		<link href="doc/ContributorsGuide/ContributorsGuide.pdf">[PDF]</link>
+</p>
+
+</section>
+
+</body>
+</document>

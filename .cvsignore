@@ -6,3 +6,4 @@ target
 maven.log
 velocity.log
 *.out
+build

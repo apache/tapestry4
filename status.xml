@@ -1,0 +1,239 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<status>
+
+  <developers>
+    <person name="Tetsuya Kitahata"      email="tetsuya@apache.org"      id="TK" />
+    <person name="Howard M. Lewis Ship"  email="hlship@comcast.net"      id="HLS" />
+    <person name="David Solis"      email="dsolis@legosoft.com.mx"      id="DS" />
+    <person name="Harish Krishnaswamy"  id="HK"/>
+    <person name="Erik Hatchert" id="EH"/>
+    <person name="Richard Lewis-Shell" id="RLS"/>
+    <person name="Mind Bridge" id="MB"/>
+
+    <!-- Add more people here -->
+  </developers>
+
+  <todo>
+    <actions priority="Release 3.0">
+	<action context="code" dev="open">Decide on final release number for "NextGen"</action>
+	<action context="code" dev="open">Bugzilla or Scarab?</action>
+	<action context="code" dev="open">Get Tapestry building under Gump</action>
+	<action context="code" dev="open">Properly sign the distribution and have it mirrored with the other Jakarta downloads</action>
+	<action context="code" dev="open">Deal with character sets and localization properly</action>
+	<action context="code" dev="open">Handle change of locale correctly, by reloading new   instance of page in proper locale</action>
+	<action context="code" dev="open">Improved User's Guide to replace existing Developer's Guide</action>
+	<action context="code" dev="open">Replace the current tutorial with Neil Clayton's Tutorial2</action>
+	<action context="code" dev="open">Reoganize directory structure to more standard format (compatible with Maven)</action>
+	<action context="code" dev="open">Use Forrest, or somesuch, for documentation (possibly, convert User's Guide and friends to alternate format)</action>
+	<action context="code" dev="open">Get Tapestry compiling under Maven, have nightly builds</action>
+	<action context="code" dev="open">Fill out the test suite and code coverage, reach 85% or better</action>
+	<action context="code" dev="open">Fix all the Component Reference pages to use the 3.0 syntax</action>
+  	<action context="script" dev="open">Improve the "include script" element to support relative scripts, scripts in context, script in classpath</action>
+  	<action context="script" dev="open">Some kind of "include only once" block</action>
+  	<action context="script" dev="open">Name uniquer</action>
+  	<action context="script" dev="open">New DTD w/Jakarta public/system ids</action>
+  	<action context="script" dev="open">NextGen or NextGen++?</action>
+	<action context="misc" dev="open">Change build environment to NOT compile against LGPL frameworks (J2EE from JBoss)</action>
+	<action context="misc" dev="open">Unit testing stategy for the JSP tags and tagsupport service</action>
+	<action context="misc" dev="open">Allow auto parameters to not be required</action>
+    </actions>
+
+    <actions priority="Release 3.1">
+	<action context="code" dev="open">Intersertials</action>
+	<action context="code" dev="open">Extend listener methods to take parameters (matching service parameters to actual method parameters)</action>
+    </actions>
+    <!-- Add todo items. @context is an arbitrary string. Eg:
+    <actions priority="high">
+      <action context="code" dev="SN">
+      </action>
+    </actions>
+    <actions priority="medium">
+      <action context="docs" dev="open">
+      </action>
+    </actions>
+    -->
+  </todo>
+
+  <changes>
+  	
+<!-- Use due-to to give acknowledgement for patches. -->
+  	
+  
+ <release version="3.0-beta-4" date="unreleased">
+
+
+<action type="update" due-to="Michael M. Brzycki">
+Updated javadoc build target to link to JDK 1.3
+</action>
+
+<action type="add" dev="HK">
+Added new validator, Pattern Validator
+</action>
+
+<action type="fix" dev="HK">
+Fixed the null pointer exception from FieldLabel when not enclosed by Form
+or when IValidationDelegate is not provided
+</action>
+	
+<action type="fix" dev="HK">
+The key attribute of the script foreach is changed to not be a required
+attribute
+</action>
+    
+<action type="fix" dev="EH">
+Added support for OGNL TypeConverter in expression bindings
+</action>
+
+<action type="update" dev="DS">
+Updated Component Reference for WML components
+</action>
+
+<action type="update" dev="RLS">
+Made DateValidator's getEffectiveFormat()/getEffectiveDisplayFormat() public
+</action>
+
+<action type="update" dev="RLS">
+Updated to use DocBook 1.62.4 XSL stylesheets for documentation generation
+</action>
+
+<action type="update" dev="RLS">
+Moved info priority logging to debug priority
+</action>
+
+<action type="update" dev="RLS">
+Custom parameter binding properties only enhanced if abstract
+</action>
+
+<action type="fix" dev="MB" fixes-bug="21833">
+build.properties.sample does not include jython.dir
+</action>
+
+<action type="fix" dev="MB" fixes-bug="22840">
+Table component doesn't sort fine when there are null values
+</action>
+
+<action type="fix" dev="MB" fixes-bug="22640">
+Wrong Package in link
+</action>
+
+<action type="fix" dev="MB" fixes-bug="22641">
+ JavaDoc: should IField be IFieldTracking??
+</action>
+
+<action type="fix" dev="MB" fixes-bug="23668">
+contrib:PopupLink ignores informal parameters
+</action>
+
+<action type="fix" dev="MB" fixes-bug="22635">
+Wrong Package in link	
+</action>
+
+<action type="fix" dev="MB" fixes-bug="22634">
+Typo: "In a IListenerBindingSpecification"	
+</action>
+
+<action type="fix" dev="MB" fixes-bug="22694">
+Add url parameter to Shell component
+</action>
+
+<action type="update" dev="MB" fixes-bug="23870">
+current OGNL 2.6.3 needs to be used
+</action>
+
+<action type="fix" dev="MB" fixes-bug="23511">
+Problem with URL encodings at EngineServiceLink.java
+</action>
+
+<action type="fix" dev="MB" fixes-bug="23227">
+The source parameter of Foreach should be required
+</action>
+
+<action type="fix" dev="MB" fixes-bug="20252">
+tests failing under JDK 1.3
+</action>
+
+<action type="fix" dev="MB" fixes-bug="23500">
+Name attribute gets duplicated in TextField	
+</action>
+
+<action type="fix" dev="MB" fixes-bug="22835">
+DateField component throws an ApplicationRuntimeException
+</action>
+
+<action type="fix" dev="MB" fixes-bug="22836">
+NumericField component throws an ApplicationRuntimeException
+</action>
+
+<action type="fix" dev="MB" fixes-bug="22837">
+Using NumericField cause a ClassCastException
+</action>
+
+<action type="fix" dev="MB" fixes-bug="24467">
+Compatibility of the AbstractEngine to servlet-api 2.2
+</action>
+
+<action type="fix" dev="MB" fixes-bug="24298" due-to="Colin Sampaleanu">
+patch to allow workbench to work with JDK 1.4.2 and current Jetty	
+</action>
+
+<action type="fix" dev="MB" fixes-bug="24425">
+race condition in class enhancement
+</action>
+
+<action type="fix" dev="MB" fixes-bug="23916">
+The Dates tab in the Workbench contains an empty popup link
+</action>
+
+<action type="fix" dev="MB" fixes-bug="24008">
+ApplicationRuntime Exception loses root cause...
+</action>
+
+<action type="fix" dev="MB" fixes-bug="22958">
+NumberValidator forces to input a value
+</action>
+
+<action type="fix" dev="MB" fixes-bug="21871">
+junit.jar needed to build junit subproject
+</action>
+
+<action type="fix" dev="MB" fixes-bug="20253">
+JUnit XML tests broken under JDK with no XML parser (eg. 1.3)
+</action>
+
+
+<action type="fix" dev="MB" fixes-bug="24393">
+No JVM requirements mentioned in docs
+</action>
+
+<action type="fix" dev="MB" fixes-bug="24874" due-to="Zhenbang Wei">
+[PATCH]ValidationStrings_zh_TW.properties
+</action>
+
+
+
+<action type="fix" dev="EH" fixes-bug="25117">
+PageService.getLink throws ClassCastException if parameters arg is Object[]
+</action>
+
+<action type="fix" dev="RLS" fixes-bug="25462">
+NumericField does not pass on its type parameter
+</action>
+
+
+<action type="fix" dev="RLS" fixes-bug="25585">
+ValidationDelegate throws NPE for some new FieldLabel/ValidField
+</action>
+
+<action type="fix" dev="MB" fixes-bug="25642">
+properties cannot be of complex array types
+</action>
+
+<action type="fix" dev="EH" fixes-bug="25766">
+fixed broken links in doc\src\common\TapestryLinks.xml
+</action>
+
+
+        </release>
+      </changes>
+    </status>
