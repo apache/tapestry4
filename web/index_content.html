@@ -5,6 +5,31 @@
 <base target="_top">
 <link rel="STYLESHEET" type="text/css" href="scripts/style_virtlib_pcIE55.css">
 </head>
+<script language="javascript">
+<!-- 
+
+ var quotex = 0;
+ var maxquotex = 5;
+ var quote = new Array();
+ quote[0] = "Tapestry reconceptualizes web application development in terms of objects, methods and properties instead of URLs and query parameters.";
+ quote[1] = "Tapestry's flexibility along with its clean object-oriented architecture made our web interface shine.";
+ quote[2] = "It's the most exciting model in Java web development I've seen in a long time.";
+ quote[3] = "Tapestry is the best solution to the presentation tier ...";
+ quote[4] = "We are able to publish any kind of our metadata-driven business objects with just a handful of generic, highly dynamic pages, using customizable components.";
+ quote[5] = "The amount of code I am having to write is greatly reduced and I am achieving a much greater level of reuse.";
+ 
+ function rotate_quote()
+ {
+     if (++quotex > maxquotex)
+	   quotex = 0;
+	 
+	 document.all.quotecontainer.innerHTML = quote[quotex];
+ }
+ 
+ window.setInterval("rotate_quote()", 10 * 1000);
+ 
+// -->
+</script>
 <body bgcolor="#839cd1" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
 	<tr>
@@ -15,9 +40,11 @@
                 <a href="mailto:hship@users.sf.net">Howard Lewis Ship</a>.
 				
 				<p><div class="right-side-quote">
-	&rdquo;Tapestry reconceptualizes web application development
+	&rdquo;<span id="quotecontainer">Tapestry reconceptualizes web application development
 	in terms of objects, methods and properties
-	instead of URLs and query parameters.&rdquo;
+	instead of URLs and query parameters.</span>&rdquo;
+	
+	<p><a target="_top" href="quotes_frame.html">More Quotes ...</a>
 </div>Tapestry is an alternative to 
 	scripting environments such as
       JavaServer Pages,
