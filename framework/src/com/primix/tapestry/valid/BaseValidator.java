@@ -46,6 +46,20 @@ public abstract class BaseValidator implements IValidator
 	private Locale locale;
 	private ResourceBundle strings;
 	
+	/**
+	 *  Standard constructor.  Leaves locale as null and required as false.
+	 * 
+	 **/
+	
+	public BaseValidator()
+	{
+	}
+	
+	protected BaseValidator(boolean required)
+	{
+		this.required = required;
+	}
+	
 	public Locale getLocale()
 	{
 		return locale;
