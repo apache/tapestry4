@@ -21,14 +21,11 @@ import org.apache.tapestry.util.ContentType;
  * Base class for HTML pages. Most pages should be able to simply subclass this, adding new
  * properties and methods. An unlikely exception would be a page that was not based on a template.
  * <p>
- * Starting in release 3.1, this class is abstract, as will be any subclasses. This is because the
- * {@link org.apache.tapestry.IComponent#getMessages()}method is abstract, and is filled in at
- * runtime.
  * 
  * @author Howard Lewis Ship
  */
 
-public abstract class BasePage extends AbstractPage
+public class BasePage extends AbstractPage
 {
     /**
      * @return "text/html"

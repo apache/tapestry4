@@ -14,8 +14,10 @@
 
 package org.apache.tapestry.test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
@@ -31,14 +33,23 @@ import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.enhance.AbstractPropertyWorker;
 import org.apache.tapestry.enhance.EnhancementOperationImpl;
+import org.apache.tapestry.enhance.EnhancementWorker;
 import org.apache.tapestry.services.ComponentConstructor;
 import org.apache.tapestry.spec.ComponentSpecification;
 
 /**
  * A utility class that is used to instantiate abstract Tapestry pages and components. It creates,
- * at runtime, a subclass where all abstract properties are filled in (complete with instance
- * variable, accessor and mutator methods). This isn't the same as how the class is enhanced at
- * runtime, but is sufficient to unit test the class, especially listener methods.
+ * at runtime, a subclass where all abstract properties are filled in (each property complete with
+ * an instance variable, an accessor method and a mutator method). This isn't quite the same as how
+ * the class is enhanced at runtime (though it does use a subset of the same
+ * {@link org.apache.tapestry.enhance.EnhancementWorker code}), but is sufficient to unit test the
+ * class, especially listener methods.
+ * <p>
+ * One part of the enhancement is that the
+ * {@link org.apache.tapestry.IComponent#getSpecification() specification}&nbsp;and
+ * {@link org.apache.tapestry.IComponent#getMessages() messages}&nbsp;properties of the page or
+ * component class are converted into read/write properties that can be set via reflection
+ * (including {@link #newInstance(Class, Map)}.
  * 
  * @author Howard Lewis Ship
  * @since 3.1
@@ -56,19 +67,37 @@ public class Creator
 
     private ClassResolver _classResolver = new DefaultClassResolver();
 
+    private List _workers = new ArrayList();
+
+    {
+        // Overrride AbstractComponent's implementations of
+        // these two properties (making them read/write).
+
+        _workers.add(new CreatePropertyWorker("messages"));
+        _workers.add(new CreatePropertyWorker("specification"));
+
+        // Implement any abstract properties.
+        // Note that we don't bother setting the errorLog property
+        // so failures may turn into NPEs.
+
+        _workers.add(new AbstractPropertyWorker());
+    }
+
     private ComponentConstructor createComponentConstructor(Class inputClass)
     {
         if (inputClass.isInterface() || inputClass.isPrimitive() || inputClass.isArray())
             throw new IllegalArgumentException(ScriptMessages.wrongTypeForEnhancement(inputClass));
 
-        AbstractPropertyWorker w = new AbstractPropertyWorker();
-
-        w.setErrorLog(new ErrorLogImpl(new DefaultErrorHandler(), LOG));
-
         EnhancementOperationImpl op = new EnhancementOperationImpl(_classResolver,
                 new ComponentSpecification(), inputClass, _classFactory);
 
-        w.performEnhancement(op, null);
+        Iterator i = _workers.iterator();
+        while (i.hasNext())
+        {
+            EnhancementWorker worker = (EnhancementWorker) i.next();
+
+            worker.performEnhancement(op, null);
+        }
 
         return op.getConstructor();
     }
@@ -115,15 +144,18 @@ public class Creator
     {
         Object result = newInstance(abstractClass);
 
-        Iterator i = properties.entrySet().iterator();
-
-        while (i.hasNext())
+        if (properties != null)
         {
-            Map.Entry e = (Map.Entry) i.next();
+            Iterator i = properties.entrySet().iterator();
 
-            String propertyName = (String) e.getKey();
+            while (i.hasNext())
+            {
+                Map.Entry e = (Map.Entry) i.next();
 
-            PropertyUtils.write(result, propertyName, e.getValue());
+                String propertyName = (String) e.getKey();
+
+                PropertyUtils.write(result, propertyName, e.getValue());
+            }
         }
 
         return result;

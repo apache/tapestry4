@@ -25,7 +25,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * @author Howard Lewis Ship
  */
 
-public abstract class BaseComponent extends AbstractComponent implements ITemplateComponent
+public class BaseComponent extends AbstractComponent implements ITemplateComponent
 {
     private static final Log LOG = LogFactory.getLog(BaseComponent.class);
 

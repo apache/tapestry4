@@ -41,7 +41,7 @@ public class BaseComponentTestCase extends HiveMindTestCase
 
     protected Object newInstance(Class componentClass)
     {
-        return getCreator().newInstance(componentClass);
+        return newInstance(componentClass, null);
     }
 
     protected Object newInstance(Class componentClass, Object[] properties)
