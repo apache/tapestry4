@@ -6,6 +6,7 @@ import java.util.*;
 import javax.sql.*;
 import java.sql.*;
 import javax.naming.*;
+import com.primix.foundation.ejb.*;
 
 /*
  * Tapestry Web Application Framework
@@ -103,7 +104,7 @@ public class KeyAllocatorBean implements SessionBean
 		}
 		catch (NamingException e)
 		{
-			throw new EJBException("Could not lookup environment: " + e);
+			throw new XEJBException("Could not lookup environment.", e);
 		}
 		
 		try
@@ -112,7 +113,7 @@ public class KeyAllocatorBean implements SessionBean
 		}
 		catch (NamingException e)
 		{
-			throw new EJBException("Could not lookup blockSize property: " + e);
+			throw new XEJBException("Could not lookup blockSize property.", e);
 		}
 
 		blockSize = blockSizeProperty.intValue();
@@ -123,7 +124,7 @@ public class KeyAllocatorBean implements SessionBean
 		}
 		catch (NamingException e)
 		{
-			throw new EJBException("Could not lookup data source: " + e);
+			throw new XEJBException("Could not lookup data source.", e);
 		}
 		
 		if (keys == null)
@@ -266,7 +267,7 @@ public class KeyAllocatorBean implements SessionBean
 		}
 		catch (SQLException e)
 		{
-			throw new EJBException("Unable to allocate keys from the database: " + e);
+			throw new XEJBException("Unable to allocate keys from the database.", e);
 		}
 		finally
 		{
@@ -317,7 +318,7 @@ public class KeyAllocatorBean implements SessionBean
 		}
 		catch (SQLException e)
 		{
-			throw new EJBException("Unable to get database connection from pool: " + e);
+			throw new XEJBException("Unable to get database connection from pool.", e);
 		}
 	}
 }  

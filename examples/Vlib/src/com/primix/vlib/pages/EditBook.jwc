@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v3.0 NT (http://www.xmlspy.com) by Howard Ship (Primix Solutions) -->
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"  "http://tapestry.primix.com/dtd/Tapestry_1_0.dtd">
 <specification>
-	<class>com.primix.vlib.pages.NewBook</class>
+	<class>com.primix.vlib.pages.EditBook</class>
 	<components>
 		<component>
 			<id>border</id>
@@ -10,7 +11,7 @@
 			<bindings>
 				<static-binding>
 					<name>title</name>
-					<value>Add New Book</value>
+					<value>Edit Book</value>
 				</static-binding>
 			</bindings>
 		</component>
@@ -45,12 +46,22 @@
 			</bindings>
 		</component>
 		<component>
+			<id>syncPrimaryKey</id>
+			<type>Hidden</type>
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>bookPrimaryKey</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
 			<id>inputTitle</id>
 			<type>TextField</type>
 			<bindings>
 				<binding>
 					<name>text</name>
-					<property-path>title</property-path>
+					<property-path>attributes.title</property-path>
 				</binding>
 				<static-binding>
 					<name>maximumWidth</name>
@@ -76,7 +87,7 @@
 				</static-binding>
 				<binding>
 					<name>text</name>
-					<property-path>author</property-path>
+					<property-path>attributes.author</property-path>
 				</binding>
 			</bindings>
 		</component>
@@ -94,7 +105,7 @@
 				</static-binding>
 				<binding>
 					<name>text</name>
-					<property-path>ISBN</property-path>
+					<property-path>attributes.ISBN</property-path>
 				</binding>
 			</bindings>
 		</component>
@@ -104,7 +115,7 @@
 			<bindings>
 				<binding>
 					<name>value</name>
-					<property-path>publisherPrimaryKey</property-path>
+					<property-path>attributes.publisherPK</property-path>
 				</binding>
 				<binding>
 					<name>model</name>
@@ -132,7 +143,7 @@
 			<bindings>
 				<binding>
 					<name>text</name>
-					<property-path>bookDescription</property-path>
+					<property-path>attributes.description</property-path>
 				</binding>
 				<static-binding>
 					<name>columns</name>
@@ -142,6 +153,20 @@
 					<name>rows</name>
 					<value>10</value>
 				</static-binding>
+			</bindings>
+		</component>
+		<component>
+			<id>inputHolder</id>
+			<type>PropertySelection</type>
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>attributes.holderPK</property-path>
+				</binding>
+				<binding>
+					<name>model</name>
+					<property-path>application.personModel</property-path>
+				</binding>
 			</bindings>
 		</component>
 	</components>

@@ -54,7 +54,7 @@ public interface IBookQuery extends EJBObject
 	 *
 	 */
 	 
-	public BookQueryResult[] get(int offset, int length)
+	public Book[] get(int offset, int length)
 	throws RemoteException;	
 
 	/**

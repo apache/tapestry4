@@ -49,7 +49,7 @@ public class Matches extends BasePage
 {
 	private transient IBookQuery bookQuery;
 	private Handle bookQueryHandle;
-	private BookQueryResult currentMatch;
+	private Book currentMatch;
 	private int matchCount;
 	
 	public Matches(IApplication application, ComponentSpecification componentSpecification)
@@ -161,7 +161,7 @@ public class Matches extends BasePage
 		
 	}
 	
-	public BookQueryResult[] getMatches()
+	public Book[] getMatches()
 	{
 		int count;
 		IBookQuery query;
@@ -180,12 +180,12 @@ public class Matches extends BasePage
 		}
 	}
 	
-	public BookQueryResult getCurrentMatch()
+	public Book getCurrentMatch()
 	{
 		return currentMatch;
 	}
 	
-	public void setCurrentMatch(BookQueryResult value)
+	public void setCurrentMatch(Book value)
 	{
 		currentMatch = value;
 	}

@@ -43,7 +43,7 @@ import java.io.*;
  *
  */
 
-public class BookQueryResult implements Serializable
+public class Book implements Serializable
 {
 	/**
 	 *  Column index for the Book's primary key.
@@ -79,6 +79,7 @@ public class BookQueryResult implements Serializable
 	public static final int PUBLISHER_NAME_COLUMN = 10;
 	public static final int AUTHOR_COLUMN = 11;
 	public static final int RATING_COLUMN = 12;
+    
 	/**
 	 *  Number of columns in the result.
 	 *
@@ -93,13 +94,13 @@ public class BookQueryResult implements Serializable
 	 *
 	 */
 	 
-	public BookQueryResult(Object[] columns)
+	public Book(Object[] columns)
 	{
 		if (columns == null)
 			throw new IllegalArgumentException("Must provide a non-null columns.");
 		
 		if (columns.length != N_COLUMNS)
-			throw new IllegalArgumentException("Wrong number of columns for a BookQueryResult.");
+			throw new IllegalArgumentException("Wrong number of columns for a Book.");
 			
 		this.columns = new Object[N_COLUMNS];
 		System.arraycopy(columns, 0, this.columns, 0, N_COLUMNS);	
@@ -173,5 +174,18 @@ public class BookQueryResult implements Serializable
 	public Integer getRating()
 	{
 		return (Integer)get(RATING_COLUMN);
+	}
+	
+	public String toString()
+	{
+		StringBuffer buffer;
+		
+		buffer = new StringBuffer("Book[");
+		buffer.append(get(PRIMARY_KEY_COLUMN));
+		buffer.append(' ');
+		buffer.append(get(TITLE_COLUMN));
+		buffer.append(']');
+		
+		return buffer.toString();
 	}
 }

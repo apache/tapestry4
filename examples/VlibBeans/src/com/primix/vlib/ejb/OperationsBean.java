@@ -8,6 +8,7 @@ import javax.rmi.*;
 import javax.sql.*;
 import java.sql.*;
 import com.primix.foundation.jdbc.*;
+import com.primix.foundation.ejb.*;
 
 /*
  * Tapestry Web Application Framework
@@ -55,6 +56,7 @@ public class OperationsBean implements SessionBean
 	private transient IPersonHome personHome;
 	private transient IPublisherHome publisherHome;
 		
+	private final static int MAP_SIZE = 7;
 	/**
 	 *  Data source, retrieved from the ENC property 
 	 *  "jdbc/dataSource".
@@ -74,7 +76,7 @@ public class OperationsBean implements SessionBean
 		}
 		catch (NamingException e)
 		{
-			throw new EJBException("Could not lookup environment: " + e);
+			throw new XEJBException("Could not lookup environment.", e);
 		}
 	
 		try
@@ -83,7 +85,7 @@ public class OperationsBean implements SessionBean
 		}
 		catch (NamingException e)
 		{
-			throw new EJBException("Could not lookup data source: " + e);
+			throw new XEJBException("Could not lookup data source.", e);
 		}
 	}
 	
@@ -170,7 +172,7 @@ public class OperationsBean implements SessionBean
 		}
 		catch (FinderException e)
 		{
-			throw new CreateException("Could not create book; owner not found: " + e);
+			throw new XCreateException("Could not create book; owner not found.", e);
 		}
 		
 		try
@@ -179,7 +181,7 @@ public class OperationsBean implements SessionBean
 		}
 		catch (FinderException e)
 		{
-			throw new CreateException("Could not create book; publisher not found: " + e);
+			throw new XCreateException("Could not create book; publisher not found.", e);
 		}
 
 		book = bookHome.create(title, author, ISBN, publisherPK, ownerPK);
@@ -190,7 +192,7 @@ public class OperationsBean implements SessionBean
 
 
 	/**
-	 *  Adds a book, which will be owned and help by the specified owner.
+	 *  Adds a book, which will be owned and held by the specified owner.
 	 *
 	 * <p>The publisherName may either be the name of a known publisher, or
 	 * a new name.  A new {@link IPublisher} will be created as necessary.
@@ -222,7 +224,7 @@ public class OperationsBean implements SessionBean
 		}
 		catch (FinderException e)
 		{
-			throw new CreateException("Could not create book; owner not found: " + e);
+			throw new XCreateException("Could not create book; owner not found.", e);
 		}
 		
 		// Find or create the publisher.
@@ -247,6 +249,118 @@ public class OperationsBean implements SessionBean
 		return book;
 	}
 	
+	/**
+	 *  Updates a book.
+	 *
+	 *  <p>Returns the updated book.
+	 *
+	 *  @param bookPK The primary key of the book to update.
+	 *  @param title The new title, or null to leave the old title unchanged.
+	 *  @param author The new author, of null to leave the old author unchanged.
+	 *  @param ISBN The new ISBN, or null to leave the old ISBN unchanged.
+	 *  @param description The new description, or null to leave the old description
+	 *  unchanged.
+	 *  @param holderPK The primary key of the new holder ({@link IPerson}), or null
+	 *  to leave it unchanged.
+	 *  @param publisherPK The primary key of the {@link IPublisher}, or null
+	 *  to leave it unchanged.
+	 *  @throws FinderException if the book, holder or publisher can't be located.
+	 */
+
+	public IBook updateBook(Integer bookPK, String title, String author, String ISBN, 
+						 	String description, Integer holderPK, Integer publisherPK)
+	throws FinderException, RemoteException
+	{
+		IBookHome bookHome;
+		IPersonHome personHome;
+		IPublisherHome publisherHome;
+		IBook book;
+		Map attributes;
+		
+		// First, verify that the person and publisher do exist.
+		
+		personHome = getPersonHome();
+		publisherHome = getPublisherHome();
+		bookHome = getBookHome();
+
+		
+		personHome.findByPrimaryKey(holderPK);
+		publisherHome.findByPrimaryKey(publisherPK);
+		book = bookHome.findByPrimaryKey(bookPK);
+			
+		attributes = new HashMap(MAP_SIZE);
+		
+		if (title != null)
+			attributes.put("title", title);
+		
+		if (author != null)
+			attributes.put("author", author);
+			
+		if (ISBN != null)
+			attributes.put("ISBN", ISBN);
+			
+		if (description != null)
+			attributes.put("description", description);
+			
+		if (holderPK != null)
+			attributes.put("holderPK", holderPK);
+			
+		if (publisherPK != null)
+			attributes.put("publisherPK", publisherPK);
+			
+		book.updateEntityAttributes(attributes);
+		
+		return book;
+	}
+
+
+	/**
+	 *  Updates a book, adding a new Publisher at the same time.
+	 *
+	 *  <p>Returns the updated book.
+	 *
+	 *  @param bookPK The primary key of the book to update.
+	 *  @param title The new title, or null to leave the old title unchanged.
+	 *  @param author The new author, of null to leave the old author unchanged.
+	 *  @param ISBN The new ISBN, or null to leave the old ISBN unchanged.
+	 *  @param description The new description, or null to leave the old description
+	 *  unchanged.
+	 *  @param holderPK The primary key of the new holder ({@link IPerson}), or null
+	 *  to leave it unchanged.
+	 *  @param publisherName The name of the new publisher.
+	 *  @throws FinderException if the book, holder or publisher can not be located.
+	 *  @throws CreateException if the {@link IPublisher} can not be created.
+	 */
+
+	public IBook updateBook(Integer bookPK, String title, String author, String ISBN, 
+						 	String description, Integer holderPK, String publisherName)
+	throws CreateException, FinderException, RemoteException
+	{
+		IPublisherHome publisherHome;
+		IPublisher publisher = null;
+		Integer publisherPK;
+		
+		publisherHome = getPublisherHome();
+		
+		try
+		{
+			publisher = publisherHome.findByName(publisherName);
+		}
+		catch (FinderException e)
+		{
+			// Ignore, means we need to create the Publisher
+		}
+		
+		if (publisher == null)
+			publisher = publisherHome.create(publisherName);
+			
+		publisherPK = (Integer)publisher.getPrimaryKey();
+		
+		// Don't duplicate all that other code!
+		
+		return updateBook(bookPK, title, author, ISBN, description, holderPK, publisherPK);		
+	}
+	
 	
 	private IBookHome getBookHome()
 	{
@@ -262,7 +376,7 @@ public class OperationsBean implements SessionBean
 			}
 			catch (NamingException e)
 			{
-				throw new EJBException("Could not lookup Book home interface: " + e);
+				throw new XEJBException("Could not lookup Book home interface.", e);
 			}
 		
 		}
@@ -284,7 +398,7 @@ public class OperationsBean implements SessionBean
 			}
 			catch (NamingException e)
 			{
-				throw new EJBException("Could not lookup Person home interface: " + e);
+				throw new XEJBException("Could not lookup Person home interface.", e);
 			}
 		
 		}
@@ -306,7 +420,7 @@ public class OperationsBean implements SessionBean
 			}
 			catch (NamingException e)
 			{
-				throw new EJBException("Could not lookup Publisher home interface: " + e);
+				throw new XEJBException("Could not lookup Publisher home interface.", e);
 			}
 		
 		}
@@ -351,7 +465,7 @@ public class OperationsBean implements SessionBean
 		}
 		catch (SQLException e)
 		{
-			throw new EJBException("Could not fetch all Publishers: " + e.getMessage());
+			throw new XEJBException("Could not fetch all Publishers.", e);
 		}
 		finally
 		{
@@ -364,6 +478,71 @@ public class OperationsBean implements SessionBean
 		
 		return (Publisher[])list.toArray(result);
 	}
+
+	/**
+	 * Fetchs all {@link IPerson} beans in the database and converts them
+	 * to {@link Person} objects.
+	 *
+	 * Returns the {@link Person}s sorted by last name, then first.
+	 */
+	 
+	public Person[] getPersons()
+	{
+		Connection connection = null;
+		IStatement statement = null;
+		ResultSet set = null;
+		StatementAssembly assembly;
+		Integer primaryKey;
+		String name;
+		List list;
+		Person[] result;
+		Object[] columns;
+		int column;
+		
+		try
+		{
+			connection = getConnection();
+			
+		
+			assembly = new StatementAssembly();
+			
+			assembly.newLine("SELECT PERSON_ID, FIRST_NAME, LAST_NAME, EMAIL");
+			assembly.newLine("FROM PERSON");
+			assembly.newLine("ORDER BY LAST_NAME, FIRST_NAME");
+		
+			statement = assembly.createStatement(connection);	
+			
+			set = statement.executeQuery();	
+			list = new ArrayList();
+			columns = new Object[Person.N_COLUMNS];
+			
+			while (set.next())
+			{
+				column = 1;
+				
+				columns[Person.PRIMARY_KEY_COLUMN] = set.getObject(column++);
+				columns[Person.FIRST_NAME_COLUMN] = set.getString(column++);
+				columns[Person.LAST_NAME_COLUMN] = set.getString(column++);
+				columns[Person.EMAIL_COLUMN] = set.getString(column++);
+				
+				list.add(new Person(columns));
+			}
+		}
+		catch (SQLException e)
+		{
+			throw new XEJBException("Could not fetch all Persons.", e);
+		}
+		finally
+		{
+			close(connection, statement, set);
+		}
+		
+		// Convert from List to Person[]
+		
+		result = new Person[list.size()];
+		
+		return (Person[])list.toArray(result);
+	}
 	
 	
 	private Connection getConnection()
@@ -374,7 +553,7 @@ public class OperationsBean implements SessionBean
 		}
 		catch (SQLException e)
 		{
-			throw new EJBException("Unable to get database connection from pool: " + e);
+			throw new XEJBException("Unable to get database connection from pool.", e);
 		}
 	}
 	

@@ -181,6 +181,17 @@ public class BookBean extends AbstractEntityBean
 		return publisherPK;
 	}
 
+	public int getRating()
+	{
+		return rating;
+	}
+	
+	public void setRating(int value)
+	{
+		rating = value;
+		dirty = true;
+	}
+
 	/**
 	 *  Nulls-out the owner and holder properties; the Owner and Holder
 	 *  will be determined in the accessor.
@@ -202,7 +213,7 @@ public class BookBean extends AbstractEntityBean
 	
 	public Integer ejbCreate(String title, String author, String ISBN, Integer publisherPK, 
 		Integer personPK)
-	throws CreateException, RemoteException
+	throws RemoteException
 	{
 		this.title = title;
 		this.ISBN = ISBN;

@@ -6,6 +6,7 @@ import javax.rmi.*;
 import javax.naming.*;
 import java.util.*;
 import com.primix.foundation.prop.*;
+import com.primix.foundation.ejb.*;
 
 /*
  * Tapestry Web Application Framework
@@ -186,7 +187,7 @@ public abstract class AbstractEntityBean implements EntityBean
 		}
 		catch (Exception e)
 		{
-			throw new EJBException("Could not resolve primary key for " + name + ": " + e);
+			throw new XEJBException("Could not resolve primary key for " + name + ".", e);
 		}
 	}
 	
@@ -219,7 +220,7 @@ public abstract class AbstractEntityBean implements EntityBean
 			}
 			catch (NamingException e)
 			{
-				throw new EJBException("Unable to locate IKeyAllocatorHome: " + e);
+				throw new XEJBException("Unable to locate IKeyAllocatorHome.", e);
 			}
 		}
 		
@@ -234,7 +235,7 @@ public abstract class AbstractEntityBean implements EntityBean
 		{
 			throw new RemoteException(
 				"Unable to create a KeyAllocator from " + 
-				keyAllocatorHome + ": " + e);
+				keyAllocatorHome + ".", e);
 		}
 		
 		// Finally, invoke the method that gets a key.

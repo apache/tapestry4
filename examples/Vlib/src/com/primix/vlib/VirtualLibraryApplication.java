@@ -91,6 +91,7 @@ public class VirtualLibraryApplication extends SimpleApplication
 	// Includes a null option for searching without care to Publisher
 	
 	private IPropertySelectionModel publisherModel;
+	private IPropertySelectionModel personModel;
 	
 	public VirtualLibraryApplication(RequestContext context)
 	{
@@ -300,7 +301,7 @@ public class VirtualLibraryApplication extends SimpleApplication
 	public void setUser(IPerson value)
 	{
 		user = value;
-		
+		userPK = null;		
 		fullUserName = null;
 		
 		if (user == null)
@@ -352,38 +353,7 @@ public class VirtualLibraryApplication extends SimpleApplication
 		return userPK.equals(primaryKey);
 	}
 	
-	/**
-	 *  We're using an IDirectListener as an interrum thing before we switch to
-	 *  a bookmarkable service.  All we're doing here is emulating the Page
-	 *  component!
-	 *
-	 */
-	 
-	public IDirectListener getMyBooksListener()
-	{
-		return new IDirectListener()
-		{
-			public void directTriggered(IComponent component, String[] context,
-					IRequestCycle cycle)
-			{
-				cycle.setPage("MyBooks");
-			}
-		};
-	}
-	
-	public IDirectListener getLogoutListener()
-	{
-		return new IDirectListener()
-		{
-			public void directTriggered(IComponent component, String[] context,
-					IRequestCycle cycle)
-			{
-				setUser(null);
-				cycle.setPage("Logout");
-			}
-		};
-	}
-	
+		
 	/**
 	 *  Builds a model for entering in a publisher name, including an intial
 	 *  blank option.  Problem:  thie model is held for a long while, so it won't
@@ -473,6 +443,44 @@ public class VirtualLibraryApplication extends SimpleApplication
 		user = null;
 		fullUserName = null;
 		publisherModel = null;
+		personModel = null;
 	}
-
+	
+	public IPropertySelectionModel getPersonModel()
+	{
+		if (personModel == null)
+			personModel = buildPersonModel();
+		
+		return personModel;	
+	}
+	
+	private IPropertySelectionModel buildPersonModel()
+	{
+		EntitySelectionModel model;
+		IOperations bean;
+		Person[] persons;
+		int i;
+		
+		bean = getOperations();
+		
+		try
+		{
+			persons = bean.getPersons();
+		}
+		catch (RemoteException e)
+		{
+			throw new ApplicationRuntimeException(e);
+		}
+		
+		model = new EntitySelectionModel();
+		
+		// On this one, we don't include a null option.
+		
+		for (i = 0; i < persons.length; i++)
+			model.add(persons[i].getPrimaryKey(),
+					  persons[i].getNaturalName());
+				
+		return model;	  
+		
+	}
 }

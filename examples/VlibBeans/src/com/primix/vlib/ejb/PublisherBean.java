@@ -3,6 +3,7 @@ package com.primix.vlib.ejb;
 import javax.ejb.*;
 import java.rmi.*;
 import java.util.*;
+import com.primix.foundation.ejb.*;
 
 /*
  * Tapestry Web Application Framework
