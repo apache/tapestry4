@@ -11,9 +11,10 @@ provides the general outline.
 <li>Add new constraints:
 <ul>
 <li>Fields may be required or optional
-<li>For {@link com.primix.tapestry.valid.ValidatingTextField}, 
+<li>For {@link com.primix.tapestry.valid.ValidatingTextField},
 a minimum length (after whitespace is stripped)
-<li>For {@link com.primix.tapestry.valid.IntegerField}, 
+<li>For {@link com.primix.tapestry.valid.IntegerField} and
+{@link com.primix.tapestry.valid.NumericField},
 a minimum and maximum value
 <li>For {@link com.primix.tapestry.valid.DateField}, a minimum and maximum date
 </ul>
@@ -27,6 +28,9 @@ the field).
 a second interface, {@link com.primix.tapestry.valid.IValidationDelegate}
 provides the bridge between these components and the
 application they are being used in.
+
+<p>Fields can also have a {@link com.primix.tapestry.valid.FieldLabel} that reflects the state (normal or error)
+of the field.
 
 @author Howard Ship <a href="mailto:hship@primix.com">hship@primix.com</a>
 
