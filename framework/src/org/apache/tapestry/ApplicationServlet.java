@@ -492,7 +492,7 @@ public class ApplicationServlet extends HttpServlet
      *  the {@link ApplicationSpecification} for this servlet.
      *  Invokes {@link #getApplicationSpecificationPath()}, opens
      *  the resource as a stream, then invokes
-     *  {@link #parseApplicationSpecification(InputStream, String)}.
+     *  {@link #parseApplicationSpecification(IResourceLocation)}.
      * 
      *  <p>
      *  This method exists to be overriden in
