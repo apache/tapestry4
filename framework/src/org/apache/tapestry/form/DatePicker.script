@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE script PUBLIC
+	"-//Apache Software Foundation//Tapestry Script Specification 1.3//EN"
+	"http://jakarta.apache.org/tapestry/dtd/Script_1_3.dtd">
+  
+<script>
+
+<include-script resource-path="DatePicker.js"/>
+
+<input-symbol key="name"  class="java.lang.String" required="yes"/>
+<input-symbol key="formName" class="java.lang.String" required="yes"/>
+<input-symbol key="monthNames"  required="yes"/>
+<input-symbol key="shortMonthNames" required="yes"/>
+<input-symbol key="weekDayNames" required="yes"/>
+<input-symbol key="shortWeekDayNames"  required="yes"/>
+<input-symbol key="firstDayInWeek" required="yes"/>
+<input-symbol key="minimalDaysInFirstWeek" required="yes"/>
+<input-symbol key="format" required="yes"/>
+<input-symbol key="includeWeek" required="yes"/>
+<input-symbol key="value" required="no"/>
+
+<let key="calendarObject" unique="yes">
+	calendar_${name}	
+</let>
+
+<let key="buttonName">
+	${name}$toggle	
+</let>
+
+<body>
+var ${calendarObject};
+</body>
+
+<initialization>
+	
+<if expression="value == null">
+${name} = new Calendar();
+</if>
+<if expression="value != null">
+${name} = new Calendar(${value.time});
+</if>
+		
+${calendarObject} = new Calendar();
+${calendarObject}.setMonthNames(new Array(${monthNames}));
+${calendarObject}.setShortMonthNames(new Array(${shortMonthNames}));
+${calendarObject}.setWeekDayNames(new Array(${weekDayNames}));
+${calendarObject}.setShortWeekDayNames(new Array(${shortWeekDayNames}));
+${calendarObject}.setFormat("${format}");
+${calendarObject}.setFirstDayOfWeek(${firstDayInWeek});
+${calendarObject}.setMinimalDaysInFirstWeek(${minimalDaysInFirstWeek});
+${calendarObject}.setIncludeWeek(${includeWeek});
+
+${calendarObject}.create();
+
+document.${formName}.${buttonName}.onclick = function() {
+	${calendarObject}.toggle(document.${formName}.${name});
+}
+
+${calendarObject}.onchange = function() {
+	document.${formName}.${name}.value  = ${calendarObject}.formatDate();
+}
+
+</initialization>
+</script>
+
