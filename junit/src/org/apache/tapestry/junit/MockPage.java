@@ -280,7 +280,7 @@ public class MockPage extends BaseLocatable implements IPage
 
     public String getString(String key)
     {
-        return _engine.getComponentMessagesSource().getMessages(this).getMessage(key);
+        return getMessages().getMessage(key);
     }
 
     public void render(IMarkupWriter writer, IRequestCycle cycle)
@@ -346,7 +346,7 @@ public class MockPage extends BaseLocatable implements IPage
 
     public IMessages getMessages()
     {
-        return null;
+        return _engine.getComponentMessagesSource().getMessages(this);
     }
 
     public void addPageDetachListener(PageDetachListener listener)
