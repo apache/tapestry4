@@ -14,30 +14,21 @@
 
 package org.apache.tapestry.test;
 
-import java.beans.BeanInfo;
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
-
-import javassist.CtClass;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.impl.DefaultClassResolver;
-import org.apache.hivemind.service.ClassFab;
-import org.apache.hivemind.service.ClassFabUtils;
+import org.apache.hivemind.impl.DefaultErrorHandler;
+import org.apache.hivemind.impl.ErrorLogImpl;
 import org.apache.hivemind.service.ClassFactory;
-import org.apache.hivemind.service.MethodSignature;
-import org.apache.hivemind.service.impl.ClassFabImpl;
 import org.apache.hivemind.service.impl.ClassFactoryImpl;
-import org.apache.hivemind.service.impl.CtClassSource;
-import org.apache.hivemind.service.impl.HiveMindClassPool;
+import org.apache.hivemind.util.PropertyUtils;
+import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.enhance.AbstractPropertyWorker;
 import org.apache.tapestry.enhance.EnhancementOperationImpl;
 import org.apache.tapestry.services.ComponentConstructor;
@@ -70,10 +61,14 @@ public class Creator
         if (inputClass.isInterface() || inputClass.isPrimitive() || inputClass.isArray())
             throw new IllegalArgumentException(ScriptMessages.wrongTypeForEnhancement(inputClass));
 
+        AbstractPropertyWorker w = new AbstractPropertyWorker();
+
+        w.setErrorLog(new ErrorLogImpl(new DefaultErrorHandler(), LOG));
+
         EnhancementOperationImpl op = new EnhancementOperationImpl(_classResolver,
                 new ComponentSpecification(), inputClass, _classFactory);
 
-        new AbstractPropertyWorker().performEnhancement(op);
+        w.performEnhancement(op);
 
         return op.getConstructor();
     }
@@ -96,7 +91,7 @@ public class Creator
      * Given a particular abstract class; will create an instance of that class. A subclass is
      * created with all abstract properties filled in with ordinary implementations.
      */
-    public Object getInstance(Class abstractClass)
+    public Object newInstance(Class abstractClass)
     {
         ComponentConstructor constructor = getComponentConstructor(abstractClass);
 
@@ -110,6 +105,39 @@ public class Creator
                     abstractClass,
                     ex));
         }
+    }
 
+    /**
+     * Creates a new instance of a given class, and then initializes properties of the instance. The
+     * map contains string keys that are property names, and object values.
+     */
+    public Object newInstance(Class abstractClass, Map properties)
+    {
+        Object result = newInstance(abstractClass);
+
+        Iterator i = properties.entrySet().iterator();
+
+        while (i.hasNext())
+        {
+            Map.Entry e = (Map.Entry) i.next();
+
+            String propertyName = (String) e.getKey();
+
+            PropertyUtils.write(result, propertyName, e.getValue());
+        }
+
+        return result;
+    }
+
+    /**
+     * A convienience (useful in test code) for invoking {@link #newInstance(Class, Map)}. The Map
+     * is constructed from the properties array, which consists of alternating keys and values.
+     */
+
+    public Object newInstance(Class abstractClass, Object[] properties)
+    {
+        Map propertyMap = Tapestry.convertArrayToMap(properties);
+
+        return newInstance(abstractClass, propertyMap);
     }
 }
