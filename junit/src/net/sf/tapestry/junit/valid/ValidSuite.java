@@ -23,37 +23,25 @@
  * Lesser General Public License for more details.
  *
  */
-
-package net.sf.tapestry.junit;
+ 
+package net.sf.tapestry.junit.valid;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import junit.swingui.TestRunner;
-import net.sf.tapestry.junit.parse.TemplateParserTest;
-import net.sf.tapestry.junit.prop.PropertyHelperTest;
-import net.sf.tapestry.junit.valid.ValidSuite;
-
-public class TapestrySuite extends TestSuite
+public class ValidSuite
 {
 	public static Test suite()
 	{
-		TestSuite suite = new TestSuite();
+		TestSuite suite = new TestSuite("ValidatingTextField Suite");
 
-		suite.addTest(PropertyHelperTest.suite());
-		suite.addTest(TemplateParserTest.suite());
-		suite.addTest(ValidSuite.suite());
-
+		suite.addTest(new TestSuite(TestStringValidator.class));
+		suite.addTest(new TestSuite(TestDateValidator.class));
+		suite.addTest(new TestSuite(TestNumberValidator.class));
+		suite.addTest(new TestSuite(TestValidationDelegate.class));
+		
 		return suite;
 	}
-	
-	/**
-	 *  Convienience for running the suite from within Eclipse.
-	 * 
-	 **/
-	
-	public static void main(String[] args)
-	{
-		TestRunner.run(TapestrySuite.class);
-	}
+
 }
+
