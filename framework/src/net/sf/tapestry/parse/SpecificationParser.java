@@ -41,6 +41,7 @@ import net.sf.tapestry.spec.BindingSpecification;
 import net.sf.tapestry.spec.BindingType;
 import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.spec.ContainedComponent;
+import net.sf.tapestry.spec.Direction;
 import net.sf.tapestry.spec.PageSpecification;
 import net.sf.tapestry.spec.ParameterSpecification;
 import net.sf.tapestry.spec.SpecFactory;
@@ -65,17 +66,12 @@ import org.xml.sax.InputSource;
  *	<tr>
  *	  <th>Version</th> <th>PUBLIC ID</th> <th>SYSTEM ID</th> <th>Description</th>
  *  </tr>
- *  <tr valign=top>
- *	  <td>1.0</td>
- *	  <td><code>-//Primix Solutions//Tapestry Specification 1.0//EN</code></td>
- *    <td><code>http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd</code></td>
- *    <td>Original, overly verbose version.</td>
- *   </tr>
+
  *  <tr valign=top>
  *    <td>1.1</th>
  *    <td><code>-//Howard Ship//Tapestry Specification 1.1//EN</code>
  *    <td><code>http://tapestry.sf.net/dtd/Tapestry_1_1.dtd</code></td>
- *   <td>Streamlined version of 1.0 (makes use of XML attributes
+ *   <td>Streamlined version of (now defunct) 1.0 (makes use of XML attributes
  *  instead of nested elements), also:
  *  <ul>
  *  <li>Adds &lt;description&gt; element
@@ -84,6 +80,13 @@ import org.xml.sax.InputSource;
  *  </ul>
  *  </td>
  *  </tr>
+ * <tr valign="top">
+ * 	<td>1.2</td>
+ *  <td><code>-//Howard Lewis Ship//Tapestry Specification 1.2//EN</code></td>
+ * <td><code>http://tapestry.sf.net/dtd/Tapestry_1_2.dtd</code></td>
+ *  <td>Adds property-name attribute to &lt;parameter&gt;
+ * </td>
+ * </tr>
  *  </table>
  *
  *  @version $Id$
@@ -93,14 +96,16 @@ import org.xml.sax.InputSource;
 
 public class SpecificationParser extends AbstractDocumentParser
 {
-    public static final String TAPESTRY_DTD_1_0_PUBLIC_ID =
-        "-//Primix Solutions//Tapestry Specification 1.0//EN";
+
     public static final String TAPESTRY_DTD_1_1_PUBLIC_ID =
         "-//Howard Ship//Tapestry Specification 1.1//EN";
+    public static final String TAPESTRY_DTD_1_2_PUBLIC_ID =
+        "-//Howard Lewis Ship//Tapestry Specification 1.2//EN";
 
-    private static final Map booleanMap;
-    private static final Map lifecycleMap;
-    private static final Map converterMap;
+    private static final Map booleanMap = new HashMap();
+    private static final Map lifecycleMap = new HashMap() ;
+    private static final Map converterMap = new HashMap();
+    private static final Map directionMap = new HashMap();
 
     /** @since 1.0.9 **/
 
@@ -171,8 +176,7 @@ public class SpecificationParser extends AbstractDocumentParser
     // Identify all the different acceptible values.
 
     static {
-        booleanMap = new HashMap();
-
+ 
         booleanMap.put("true", Boolean.TRUE);
         booleanMap.put("t", Boolean.TRUE);
         booleanMap.put("1", Boolean.TRUE);
@@ -187,22 +191,25 @@ public class SpecificationParser extends AbstractDocumentParser
         booleanMap.put("no", Boolean.FALSE);
         booleanMap.put("n", Boolean.FALSE);
 
-        lifecycleMap = new HashMap();
-        lifecycleMap.put("none", BeanLifecycle.NONE);
+         lifecycleMap.put("none", BeanLifecycle.NONE);
         lifecycleMap.put("request", BeanLifecycle.REQUEST);
         lifecycleMap.put("page", BeanLifecycle.PAGE);
 
-        converterMap = new HashMap();
         converterMap.put("boolean", new BooleanConverter());
         converterMap.put("int", new IntConverter());
         converterMap.put("double", new DoubleConverter());
         converterMap.put("String", new StringConverter());
+        
+        directionMap.put("in", Direction.IN);
+        directionMap.put("out", Direction.OUT);
+        directionMap.put("in-out", Direction.IN_OUT);
+        directionMap.put("custom", Direction.CUSTOM);
     }
 
     public SpecificationParser()
     {
-        register(TAPESTRY_DTD_1_0_PUBLIC_ID, "Tapestry_1_0.dtd");
         register(TAPESTRY_DTD_1_1_PUBLIC_ID, "Tapestry_1_1.dtd");
+        register(TAPESTRY_DTD_1_2_PUBLIC_ID, "Tapestry_1_2.dtd");
         factory = new SpecFactory();
     }
 
@@ -262,501 +269,6 @@ public class SpecificationParser extends AbstractDocumentParser
         }
     }
 
-    private ComponentSpecification convertComponentSpecification(Document document)
-        throws DocumentParseException
-    {
-        String publicId = document.getDoctype().getPublicId();
-
-        if (publicId.equals(TAPESTRY_DTD_1_0_PUBLIC_ID))
-            return convertComponentSpecification_1(document);
-
-        if (publicId.equals(TAPESTRY_DTD_1_1_PUBLIC_ID))
-            return convertComponentSpecification_2(document);
-
-        throw new DocumentParseException(
-            Tapestry.getString(
-                "SpecificationParser.unexpected-component-public-id",
-                publicId),
-            getResourcePath());
-    }
-
-    private ApplicationSpecification convertApplicationSpecification(Document document)
-        throws DocumentParseException
-    {
-        String publicId = document.getDoctype().getPublicId();
-
-        if (publicId.equals(TAPESTRY_DTD_1_0_PUBLIC_ID))
-            return convertApplicationSpecification_1(document);
-
-        if (publicId.equals(TAPESTRY_DTD_1_1_PUBLIC_ID))
-            return convertApplicationSpecification_2(document);
-
-        throw new DocumentParseException(
-            Tapestry.getString(
-                "SpecificationParser.unexpected-application-public-id",
-                publicId),
-            getResourcePath());
-
-    }
-
-    //	 All the methods with the suffix "_1" parse the first version of the DTD
-    //	 (version 1.0), all the methods with suffix "_2" parse the
-    //	 second version (version 1.1).
-
-    private ComponentSpecification convertComponentSpecification_1(Document document)
-        throws DocumentParseException
-    {
-        Element root;
-        Node node;
-        ComponentSpecification result;
-
-        result = factory.createComponentSpecification();
-
-        root = document.getDocumentElement();
-
-        for (node = root.getFirstChild(); node != null; node = node.getNextSibling())
-        {
-            if (isElement(node, "class"))
-            {
-                result.setComponentClassName(getValue(node));
-                continue;
-            }
-
-            if (isElement(node, "allow-body"))
-            {
-                result.setAllowBody(getBooleanValue(node));
-                continue;
-            }
-
-            if (isElement(node, "parameters"))
-            {
-                convertParameters_1(result, node);
-                continue;
-            }
-
-            if (isElement(node, "components"))
-            {
-                convertComponents_1(result, node);
-                continue;
-            }
-
-            if (isElement(node, "assets"))
-            {
-                convertAssets_1(result, node);
-                continue;
-            }
-
-            if (isElement(node, "properties"))
-            {
-                convertProperties_1(result, node);
-                continue;
-            }
-
-        }
-
-        return result;
-    }
-
-    private ApplicationSpecification convertApplicationSpecification_1(Document document)
-        throws DocumentParseException
-    {
-        Element root;
-        Node node;
-        ApplicationSpecification specification;
-
-        specification = factory.createApplicationSpecification();
-
-        root = document.getDocumentElement();
-
-        for (node = root.getFirstChild(); node != null; node = node.getNextSibling())
-        {
-            if (isElement(node, "name"))
-            {
-                specification.setName(getValue(node));
-                continue;
-            }
-
-            if (isElement(node, "engine-class"))
-            {
-                specification.setEngineClassName(getValue(node));
-                continue;
-            }
-
-            if (isElement(node, "page"))
-            {
-                convertPage_1(specification, node);
-                continue;
-            }
-
-            if (isElement(node, "component-alias"))
-            {
-                convertComponentAlias_1(specification, node);
-                continue;
-            }
-
-            if (isElement(node, "properties"))
-            {
-                convertProperties_1(specification, node);
-                continue;
-            }
-        }
-
-        return specification;
-    }
-
-    private void convertPage_1(ApplicationSpecification specification, Node node)
-        throws DocumentParseException
-    {
-        Node child;
-        String name = null;
-        PageSpecification page;
-
-        page = factory.createPageSpecification();
-
-        for (child = node.getFirstChild();
-            child != null;
-            child = child.getNextSibling())
-        {
-            if (isElement(child, "name"))
-            {
-                name = getValue(child);
-                continue;
-            }
-
-            if (isElement(child, "specification-path"))
-            {
-                page.setSpecificationPath(getValue(child));
-                continue;
-            }
-
-        }
-
-        specification.setPageSpecification(name, page);
-    }
-
-    private void convertComponentAlias_1(
-        ApplicationSpecification specification,
-        Node node)
-        throws DocumentParseException
-    {
-        Node child;
-        String alias = null;
-        String path = null;
-
-        for (child = node.getFirstChild();
-            child != null;
-            child = child.getNextSibling())
-        {
-            if (isElement(child, "alias"))
-            {
-                alias = getValue(child);
-                continue;
-            }
-
-            if (isElement(child, "specification-path"))
-            {
-                path = getValue(child);
-                continue;
-            }
-        }
-
-        specification.setComponentAlias(alias, path);
-
-    }
-
-    private void convertParameters_1(
-        ComponentSpecification specification,
-        Node node)
-        throws DocumentParseException
-    {
-        Node child;
-
-        for (child = node.getFirstChild();
-            child != null;
-            child = child.getNextSibling())
-        {
-            if (isElement(child, "allow-informal-parameters"))
-            {
-                specification.setAllowInformalParameters(getBooleanValue(child));
-                continue;
-            }
-
-            if (isElement(child, "parameter"))
-            {
-                convertParameter_1(specification, child);
-                continue;
-            }
-        }
-    }
-
-    private void convertParameter_1(
-        ComponentSpecification specification,
-        Node node)
-        throws DocumentParseException
-    {
-        Node child;
-        String name = null;
-        ParameterSpecification parameter;
-
-        parameter = factory.createParameterSpecification();
-
-        for (child = node.getFirstChild();
-            child != null;
-            child = child.getNextSibling())
-        {
-            if (isElement(child, "name"))
-            {
-                name = getValue(child);
-                continue;
-            }
-
-            if (isElement(child, "java-type"))
-            {
-                parameter.setType(getValue(child));
-                continue;
-            }
-
-            if (isElement(child, "required"))
-            {
-                parameter.setRequired(getBooleanValue(child));
-                continue;
-            }
-        }
-
-        specification.addParameter(name, parameter);
-
-    }
-
-    private void convertComponents_1(
-        ComponentSpecification specification,
-        Node node)
-        throws DocumentParseException
-    {
-        Node child;
-
-        for (child = node.getFirstChild();
-            child != null;
-            child = child.getNextSibling())
-        {
-            if (isElement(child, "component"))
-            {
-                convertComponent_1(specification, child);
-                continue;
-            }
-        }
-    }
-
-    private void convertComponent_1(
-        ComponentSpecification specification,
-        Node node)
-        throws DocumentParseException
-    {
-        ContainedComponent contained;
-        Node child;
-        String id = null;
-
-        contained = factory.createContainedComponent();
-
-        for (child = node.getFirstChild();
-            child != null;
-            child = child.getNextSibling())
-        {
-            if (isElement(child, "id"))
-            {
-                id = getId(child);
-                continue;
-            }
-
-            if (isElement(child, "type"))
-            {
-                contained.setType(getValue(child));
-                continue;
-            }
-
-            if (isElement(child, "bindings"))
-            {
-                convertBindings_1(contained, child);
-                continue;
-            }
-
-        }
-
-        specification.addComponent(id, contained);
-    }
-
-    private void convertBindings_1(ContainedComponent contained, Node node)
-        throws DocumentParseException
-    {
-        Node child;
-
-        for (child = node.getFirstChild();
-            child != null;
-            child = child.getNextSibling())
-        {
-            if (isElement(child, "binding"))
-            {
-                convertBinding_1(contained, child, BindingType.DYNAMIC, "property-path");
-                continue;
-            }
-
-            if (isElement(child, "static-binding"))
-            {
-                convertBinding_1(contained, child, BindingType.STATIC, "value");
-                continue;
-            }
-
-            if (isElement(child, "inherited-binding"))
-            {
-                convertBinding_1(contained, child, BindingType.INHERITED, "parameter-name");
-                continue;
-            }
-
-            if (isElement(child, "field-binding"))
-            {
-                convertBinding_1(contained, child, BindingType.FIELD, "field-name");
-                continue;
-            }
-        }
-    }
-
-    private void convertBinding_1(
-        ContainedComponent contained,
-        Node node,
-        BindingType type,
-        String innerElementName)
-        throws DocumentParseException
-    {
-        Node child;
-        String name = null;
-        String value = null;
-
-        for (child = node.getFirstChild();
-            child != null;
-            child = child.getNextSibling())
-        {
-            if (isElement(child, "name"))
-            {
-                name = getValue(child);
-                continue;
-            }
-
-            if (isElement(child, innerElementName))
-            {
-                value = getValue(child);
-                continue;
-            }
-        }
-
-        contained.setBinding(name, factory.createBindingSpecification(type, value));
-    }
-
-    private void convertAssets_1(ComponentSpecification specification, Node node)
-        throws DocumentParseException
-    {
-        Node child;
-
-        for (child = node.getFirstChild();
-            child != null;
-            child = child.getNextSibling())
-        {
-            // <internal-asset> has been deprecated, replaced with
-            // <context-asset>
-
-            if (isElement(child, "internal-asset") || isElement(child, "context-asset"))
-            {
-                convertAsset_1(specification, child, AssetType.CONTEXT, "path");
-                continue;
-            }
-
-            if (isElement(child, "external-asset"))
-            {
-                convertAsset_1(specification, child, AssetType.EXTERNAL, "URL");
-                continue;
-            }
-
-            if (isElement(child, "private-asset"))
-            {
-                convertAsset_1(specification, child, AssetType.PRIVATE, "resource-path");
-                continue;
-            }
-        }
-    }
-
-    private void convertAsset_1(
-        ComponentSpecification specification,
-        Node node,
-        AssetType type,
-        String innerElementName)
-        throws DocumentParseException
-    {
-        Node child;
-        String name = null;
-        String path = null;
-
-        for (child = node.getFirstChild();
-            child != null;
-            child = child.getNextSibling())
-        {
-            if (isElement(child, "name"))
-            {
-                name = getValue(child);
-                continue;
-            }
-
-            if (isElement(child, innerElementName))
-            {
-                path = getValue(child);
-                continue;
-            }
-        }
-
-        specification.addAsset(name, factory.createAssetSpecification(type, path));
-    }
-
-    private void convertProperties_1(IPropertyHolder holder, Node node)
-        throws DocumentParseException
-    {
-        Node child;
-
-        for (child = node.getFirstChild();
-            child != null;
-            child = child.getNextSibling())
-        {
-            if (isElement(child, "property"))
-            {
-                convertProperty_1(holder, child);
-                continue;
-            }
-        }
-    }
-
-    private void convertProperty_1(IPropertyHolder holder, Node node)
-        throws DocumentParseException
-    {
-        Node child;
-        String name = null;
-        String value = null;
-
-        for (child = node.getFirstChild();
-            child != null;
-            child = child.getNextSibling())
-        {
-            if (isElement(child, "name"))
-            {
-                name = getValue(child);
-                continue;
-            }
-
-            if (isElement(child, "value"))
-            {
-                value = getValue(child);
-                continue;
-            }
-        }
-
-        holder.setProperty(name, value);
-    }
-
     private boolean getBooleanValue(Node node) throws DocumentParseException
     {
         String key;
@@ -784,7 +296,7 @@ public class SpecificationParser extends AbstractDocumentParser
         return attributeValue != null && attributeValue.equals("yes");
     }
 
-    private ApplicationSpecification convertApplicationSpecification_2(Document document)
+    private ApplicationSpecification convertApplicationSpecification(Document document)
         throws DocumentParseException
     {
         Element root;
@@ -802,19 +314,19 @@ public class SpecificationParser extends AbstractDocumentParser
         {
             if (isElement(node, "page"))
             {
-                convertPage_2(specification, node);
+                convertPage(specification, node);
                 continue;
             }
 
             if (isElement(node, "component-alias"))
             {
-                convertComponentAlias_2(specification, node);
+                convertComponentAlias(specification, node);
                 continue;
             }
 
             if (isElement(node, "property"))
             {
-                convertProperty_2(specification, node);
+                convertProperty(specification, node);
                 continue;
             }
 
@@ -833,7 +345,7 @@ public class SpecificationParser extends AbstractDocumentParser
         return specification;
     }
 
-    private void convertPage_2(ApplicationSpecification specification, Node node)
+    private void convertPage(ApplicationSpecification specification, Node node)
     {
         String name = getAttribute(node, "name");
         String specificationPath = getAttribute(node, "specification-path");
@@ -843,7 +355,7 @@ public class SpecificationParser extends AbstractDocumentParser
         specification.setPageSpecification(name, page);
     }
 
-    private void convertComponentAlias_2(
+    private void convertComponentAlias(
         ApplicationSpecification specification,
         Node node)
     {
@@ -853,7 +365,7 @@ public class SpecificationParser extends AbstractDocumentParser
         specification.setComponentAlias(type, path);
     }
 
-    private void convertProperty_2(IPropertyHolder holder, Node node)
+    private void convertProperty(IPropertyHolder holder, Node node)
     {
         String name = getAttribute(node, "name");
         String value = getValue(node);
@@ -861,7 +373,7 @@ public class SpecificationParser extends AbstractDocumentParser
         holder.setProperty(name, value);
     }
 
-    private ComponentSpecification convertComponentSpecification_2(Document document)
+    private ComponentSpecification convertComponentSpecification(Document document)
         throws DocumentParseException
     {
         ComponentSpecification specification = factory.createComponentSpecification();
@@ -878,7 +390,7 @@ public class SpecificationParser extends AbstractDocumentParser
         {
             if (isElement(node, "parameter"))
             {
-                convertParameter_2(specification, node);
+                convertParameter(specification, node);
                 continue;
             }
 
@@ -896,31 +408,31 @@ public class SpecificationParser extends AbstractDocumentParser
 
             if (isElement(node, "component"))
             {
-                convertComponent_2(specification, node);
+                convertComponent(specification, node);
                 continue;
             }
 
             if (isElement(node, "external-asset"))
             {
-                convertAsset_2(specification, node, AssetType.EXTERNAL, "URL");
+                convertAsset(specification, node, AssetType.EXTERNAL, "URL");
                 continue;
             }
 
             if (isElement(node, "context-asset"))
             {
-                convertAsset_2(specification, node, AssetType.CONTEXT, "path");
+                convertAsset(specification, node, AssetType.CONTEXT, "path");
                 continue;
             }
 
             if (isElement(node, "private-asset"))
             {
-                convertAsset_2(specification, node, AssetType.PRIVATE, "resource-path");
+                convertAsset(specification, node, AssetType.PRIVATE, "resource-path");
                 continue;
             }
 
             if (isElement(node, "property"))
             {
-                convertProperty_2(specification, node);
+                convertProperty(specification, node);
                 continue;
             }
 
@@ -934,9 +446,7 @@ public class SpecificationParser extends AbstractDocumentParser
         return specification;
     }
 
-    private void convertParameter_2(
-        ComponentSpecification specification,
-        Node node)
+    private void convertParameter(ComponentSpecification specification, Node node)
         throws DocumentParseException
     {
         ParameterSpecification param = factory.createParameterSpecification();
@@ -944,6 +454,21 @@ public class SpecificationParser extends AbstractDocumentParser
         String name = getAttribute(node, "name");
         param.setType(getAttribute(node, "java-type"));
         param.setRequired(getBooleanAttribute(node, "required"));
+
+        String propertyName = getAttribute(node, "property-name");
+
+        // If not specified (or a 1.0 DTD, in which case the property-name
+        // attribute doesn't exist), use the name of the parameter.
+
+        if (propertyName == null)
+            propertyName = name;
+
+        param.setPropertyName(propertyName);
+
+		String direction = getAttribute(node, "direction");
+		
+		if (direction != null)
+			param.setDirection((Direction)directionMap.get(direction));			
 
         specification.addParameter(name, param);
 
@@ -1076,9 +601,7 @@ public class SpecificationParser extends AbstractDocumentParser
         spec.addInitializer(iz);
     }
 
-    private void convertComponent_2(
-        ComponentSpecification specification,
-        Node node)
+    private void convertComponent(ComponentSpecification specification, Node node)
         throws DocumentParseException
     {
         String id = getAttribute(node, "id");
@@ -1110,25 +633,25 @@ public class SpecificationParser extends AbstractDocumentParser
         {
             if (isElement(child, "binding"))
             {
-                convertBinding_2(c, child, BindingType.DYNAMIC, "property-path");
+                convertBinding(c, child, BindingType.DYNAMIC, "property-path");
                 continue;
             }
 
             if (isElement(child, "field-binding"))
             {
-                convertBinding_2(c, child, BindingType.FIELD, "field-name");
+                convertBinding(c, child, BindingType.FIELD, "field-name");
                 continue;
             }
 
             if (isElement(child, "inherited-binding"))
             {
-                convertBinding_2(c, child, BindingType.INHERITED, "parameter-name");
+                convertBinding(c, child, BindingType.INHERITED, "parameter-name");
                 continue;
             }
 
             if (isElement(child, "static-binding"))
             {
-                convertStaticBinding_2(c, child);
+                convertStaticBinding(c, child);
                 continue;
             }
         }
@@ -1136,7 +659,7 @@ public class SpecificationParser extends AbstractDocumentParser
         specification.addComponent(id, c);
     }
 
-    private void convertBinding_2(
+    private void convertBinding(
         ContainedComponent component,
         Node node,
         BindingType type,
@@ -1149,7 +672,7 @@ public class SpecificationParser extends AbstractDocumentParser
         component.setBinding(name, binding);
     }
 
-    private void convertStaticBinding_2(ContainedComponent component, Node node)
+    private void convertStaticBinding(ContainedComponent component, Node node)
     {
         String name = getAttribute(node, "name");
         String value = getValue(node);
@@ -1186,7 +709,7 @@ public class SpecificationParser extends AbstractDocumentParser
         return result;
     }
 
-    private void convertAsset_2(
+    private void convertAsset(
         ComponentSpecification specification,
         Node node,
         AssetType type,
