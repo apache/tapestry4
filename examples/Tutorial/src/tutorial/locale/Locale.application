@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--$Id$-->
+<!DOCTYPE application PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
+	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
+<application>
+	<name>Locale Demonstration</name>
+	<engine-class>com.primix.tapestry.engine.SimpleEngine</engine-class>
+	<page>
+		<name>Home</name>
+		<specification-path>/tutorial/locale/Home.jwc</specification-path>
+	</page>
+	<page>
+		<name>Change</name>
+		<specification-path>/tutorial/locale/Change.jwc</specification-path>
+	</page>
+	<component-alias>
+		<alias>Border</alias>
+		<specification-path>/tutorial/locale/Border.jwc</specification-path>
+	</component-alias>
+</application>

@@ -6,7 +6,8 @@ PACKAGES = \
 	tutorial.adder \
 	tutorial.border \
 	tutorial.survey \
-	tutorial.hangman
+	tutorial.hangman \
+	tutorial.locale
 
 LOCAL_CLASSPATH = \
 	$(INSTALL_DIR)/Tapestry.jar \

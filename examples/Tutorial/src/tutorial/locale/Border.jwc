@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--$Id$-->
+<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
+	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
+<specification>
+	<class>com.primix.tapestry.BaseComponent</class>
+	<components>
+		<component>
+			<id>shell</id>
+			<type>Shell</type>
+			<bindings>
+				<!--Need to localize this as well!-->
+				<static-binding>
+					<name>title</name>
+					<value>Locale Demonstration</value>
+				</static-binding>
+			</bindings>
+		</component>
+		<component>
+			<id>body</id>
+			<type>Body</type>
+		</component>
+		<component>
+			<id>wrapped</id>
+			<type>InsertWrapped</type>
+		</component>
+		<component>
+			<id>showInspector</id>
+			<type>ShowInspector</type>
+		</component>
+	</components>
+</specification>

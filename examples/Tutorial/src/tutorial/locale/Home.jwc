@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--$Id$-->
+<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
+	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
+<specification>
+	<class>tutorial.locale.Home</class>
+	<components>
+		<component>
+			<id>border</id>
+			<type>Border</type>
+		</component>
+		<component>
+			<id>form</id>
+			<type>Form</type>
+			<bindings>
+				<binding>
+					<name>listener</name>
+					<property-path>formListener</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>inputLocale</id>
+			<type>PropertySelection</type>
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>selectedLocale</property-path>
+				</binding>
+				<binding>
+					<name>model</name>
+					<property-path>localeModel</property-path>
+				</binding>
+			</bindings>
+		</component>
+	</components>
+</specification>
