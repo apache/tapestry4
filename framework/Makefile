@@ -9,7 +9,7 @@ PACKAGES = \
 	com.primix.foundation.prop \
 	com.primix.foundation.jdbc \
 	com.primix.foundation.ejb \
-    com.primix.foundation.pool \
+	com.primix.foundation.pool \
 	com.primix.tapestry \
 	com.primix.tapestry.asset \
 	com.primix.tapestry.binding \
@@ -46,7 +46,7 @@ JAVADOC_OPT = \
 	-link http://java.sun.com/j2se/1.3/docs/api \
 	-link http://java.sun.com/j2ee/j2sdkee/techdocs/api \
 	-link http://xml.apache.org/apiDocs \
-	-link http://www.log4j.org/log4j/javadoc
+	-link http://jakarta.apache.org/log4j/javadoc
 
 include $(SYS_MAKEFILE_DIR)/Jar.mk
 
