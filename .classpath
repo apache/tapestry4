@@ -7,11 +7,6 @@
     <classpathentry kind="src" path="examples/Tutorial/src"/>
     <classpathentry kind="src" path="examples/VlibBeans/src"/>
     <classpathentry kind="src" path="examples/Vlib/src"/>
-    <classpathentry kind="var" path="JBOSS_DIR/lib/jboss-jdbc_ext.jar"/>
-    <classpathentry kind="var" path="JBOSS_DIR/lib/ext/jboss-j2ee.jar"/>
-    <classpathentry kind="var" path="JBOSS_DIR/lib/ext/mail.jar"/>
-    <classpathentry kind="var" path="JBOSS_DIR/lib/jmxri.jar"/>
-    <classpathentry kind="var" path="JBOSS_DIR/lib/ext/jboss.jar"/>
     <classpathentry kind="lib" path="lib/ext/ejb.jar"/>
     <classpathentry kind="lib" path="lib/ext/javax.servlet.jar"/>
     <classpathentry kind="lib" path="lib/ext/javax.xml.jaxp.jar"/>
@@ -23,5 +18,11 @@
     <classpathentry kind="lib" path="lib/ext/jcommon-0.5.6.jar"/>
     <classpathentry kind="lib" path="lib/ext/jfreechart-0.7.4.jar"/>
     <classpathentry kind="lib" path="config"/>
+    <classpathentry kind="var" path="JBOSS_DIR/client/jboss-client.jar"/>
+    <classpathentry kind="var" path="JBOSS_DIR/client/jboss-j2ee.jar"/>
+    <classpathentry kind="var" path="JBOSS_DIR/lib/jboss-jmx.jar"/>
+    <classpathentry kind="var" path="JBOSS_DIR/lib/jboss-system.jar"/>
+    <classpathentry kind="var" path="JBOSS_DIR/lib/jboss-common.jar"/>
+    <classpathentry kind="var" path="JBOSS_DIR/server/all/lib/mail.jar"/>
     <classpathentry kind="output" path="bin"/>
 </classpath>

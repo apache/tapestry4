@@ -201,7 +201,7 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
 
         IBook book = bookHome.findByPrimaryKey(bookPrimaryKey);
 
-        if (!book.isLendable())
+        if (!book.getLendable())
             throw new BorrowException("Book may not be borrowed.");
 
         // Verify that the borrower exists.

@@ -64,11 +64,11 @@ public interface IBook extends IEntityBean
 
     public void setPublisherPK(Integer value) throws RemoteException;
 
-    public boolean isHidden() throws RemoteException;
+    public boolean getHidden() throws RemoteException;
 
     public void setHidden(boolean value) throws RemoteException;
 
-    public boolean isLendable() throws RemoteException;
+    public boolean getLendable() throws RemoteException;
 
     public void setLendable(boolean value) throws RemoteException;
 

@@ -28,6 +28,8 @@ package net.sf.tapestry.vlib.ejb.impl;
 
 import java.rmi.RemoteException;
 
+import javax.ejb.CreateException;
+
 /**
  *  Implementation of the Publisher entity.
  *
@@ -41,36 +43,24 @@ import java.rmi.RemoteException;
  *
  **/
 
-public class PublisherBean extends AbstractEntityBean
+public abstract class PublisherBean extends AbstractEntityBean
 {
-	// Primary Key
-
-	public Integer publisherId;
-
-	public String name;
-
-	public String getName()
-	{
-		return name;
-	}
-
-	public void setName(String value)
-	{
-		name = value;
-		dirty = true;
-	}
+    public abstract void setPublisherId(Integer value);
+    
+    public abstract Integer getPublisherId();
+    
+	public abstract String getName();
+    
+	public abstract void setName(String value);
 
 	protected String[] getAttributePropertyNames()
 	{
 		return new String[] { "name" };
 	}
 
-	public Integer ejbCreate(String name) throws RemoteException
+	public Integer ejbCreate(String name) throws CreateException, RemoteException
 	{
-		publisherId = allocateKey();
-		this.name = name;
-
-		return null;
+		return allocateKey();
 	}
 
 	public void ejbPostCreate(String name)

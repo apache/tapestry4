@@ -61,17 +61,7 @@ public abstract class AbstractEntityBean implements EntityBean
 
     protected EntityContext context;
 
-    /**
-     *  Flag indicating that the object is 'dirty' and needs to
-     *  be written back to the database.  Each mutator method
-     *  should set this to true.
-     *
-     **/
-
-    protected transient boolean dirty;
-
     private transient String[] attributePropertyNames;
-    private static final int MAP_SIZE = 11;
     private transient PropertyHelper helper;
 
     private transient IKeyAllocatorHome keyAllocatorHome;
@@ -92,17 +82,6 @@ public abstract class AbstractEntityBean implements EntityBean
     public void unsetEntityContext()
     {
         context = null;
-    }
-
-    /**
-     *  Returns a flag that indicates that the entity must be
-     *  saved to the database.
-     *
-     **/
-
-    public boolean isDirty()
-    {
-        return dirty;
     }
 
     /**
@@ -169,25 +148,21 @@ public abstract class AbstractEntityBean implements EntityBean
     }
 
     /**
-     *  Clears the dirty flag.  Subclasses may invoke this implementation,
-     *  or simply do so themselves.
+     *  Does nothing.
      *
      **/
 
     public void ejbLoad() throws EJBException, RemoteException
     {
-        dirty = false;
     }
 
     /**
-     *  Clears the dirty flag.  Subclasses may invoke this implementation,
-     *  or simply do so themselves.
+     *  Does nothing.
      *
      **/
 
     public void ejbStore() throws EJBException, RemoteException
     {
-        dirty = false;
     }
 
     /**
@@ -195,7 +170,7 @@ public abstract class AbstractEntityBean implements EntityBean
      *
      **/
 
-    public Integer allocateKey() throws RemoteException
+    protected Integer allocateKey() throws RemoteException
     {
         Context initial;
         Context environment;
@@ -261,7 +236,7 @@ public abstract class AbstractEntityBean implements EntityBean
         String key;
         Object value;
 
-        result = new HashMap(MAP_SIZE);
+        result = new HashMap();
 
         if (attributePropertyNames == null)
             attributePropertyNames = getAttributePropertyNames();

@@ -14,12 +14,14 @@
     <pathelement location="${lib.ext.dir}/javax.xml.jaxp.jar"/>
     <pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
     <pathelement location="${framework.jar}"/>
-    <pathelement location="${jboss.lib.dir}/jboss-jdbc_ext.jar"/>
-    <pathelement location="${jboss.lib.ext.dir}/mail.jar"/>
-    <pathelement location="${jboss.lib.ext.dir}/activation.jar"/>
-    <pathelement location="${jboss.lib.ext.dir}/jboss-j2ee.jar"/>
     <pathelement location="${lib.ext.dir}/jndi.jar"/>
-    <pathelement location="${lib.ext.dir}/javax.rmi.jar"/>
+    <pathelement location="${lib.ext.dir}/javax.rmi.jar"/>  
+    <pathelement location="${jboss.client.dir}/jboss-client.jar"/>
+    <pathelement location="${jboss.client.dir}/jboss-j2ee.jar"/>
+    <pathelement location="${jboss.lib.dir}/jboss-jmx.jar"/>    
+    <pathelement location="${jboss.lib.dir}/jboss-system.jar"/>
+    <pathelement location="${jboss.lib.dir}/jboss-common.jar"/>   
+    <pathelement location="${jboss.server.all.lib.dir}/mail.jar"/> 
   </path>
     
   <target name="init">

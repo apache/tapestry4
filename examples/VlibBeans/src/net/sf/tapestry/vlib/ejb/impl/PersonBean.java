@@ -30,6 +30,8 @@ import java.rmi.RemoteException;
 import java.sql.Timestamp;
 import java.util.Map;
 
+import javax.ejb.CreateException;
+
 /**
  *  Implementation of the Person entity.
  *
@@ -43,23 +45,8 @@ import java.util.Map;
  *
  **/
 
-public class PersonBean extends AbstractEntityBean
+public abstract class PersonBean extends AbstractEntityBean
 {
-	// Primary key
-
-	public Integer personId;
-
-	// CMP fields
-
-	public String email;
-	public String firstName;
-	public String lastName;
-	public String password;
-	public boolean verified;
-	public boolean lockedOut;
-	public boolean admin;
-	public String authorizationCode;
-	public Timestamp lastAccess;
 
 	protected String[] getAttributePropertyNames()
 	{
@@ -75,125 +62,52 @@ public class PersonBean extends AbstractEntityBean
 			"lastAccess" };
 	}
 
-	public void setEmail(String value)
+    public abstract void setPersonId(Integer value);
+    
+    public abstract Integer getPersonId();
+
+	public abstract void setEmail(String value);
+
+	public abstract String getEmail();
+
+	public abstract void setFirstName(String value);
+
+	public abstract String getFirstName();
+
+	public abstract void setLastName(String value);
+
+	public abstract String getLastName();
+
+	public abstract void setPassword(String value);
+
+	public abstract String getPassword();
+
+	public abstract void setVerified(boolean value);
+
+	public abstract boolean getVerified();
+
+	public abstract void setLockedOut(boolean value);
+
+	public abstract boolean getLockedOut();
+
+	public abstract void setAdmin(boolean value);
+
+	public abstract boolean getAdmin();
+
+	public abstract String getAuthorizationCode();
+
+	public abstract void setAuthorizationCode(String value);
+
+	public abstract void setLastAccess(Timestamp value);
+
+	public abstract Timestamp getLastAccess();
+
+	public Integer ejbCreate(Map attributes) throws CreateException, RemoteException
 	{
-		email = value;
-		dirty = true;
-	}
-
-	public String getEmail()
-	{
-		return email;
-	}
-
-	public void setFirstName(String value)
-	{
-		firstName = value;
-		dirty = true;
-	}
-
-	public String getFirstName()
-	{
-		return firstName;
-	}
-
-	public void setLastName(String value)
-	{
-		lastName = value;
-		dirty = true;
-	}
-
-	public String getLastName()
-	{
-		return lastName;
-	}
-
-	public void setPassword(String value)
-	{
-		password = value;
-
-		dirty = true;
-	}
-
-	public String getPassword()
-	{
-		return password;
-	}
-
-	public void setVerified(boolean value)
-	{
-		verified = value;
-
-		dirty = true;
-	}
-
-	public boolean isVerified()
-	{
-		return verified;
-	}
-
-	public void setLockedOut(boolean value)
-	{
-		lockedOut = value;
-
-		dirty = true;
-	}
-
-	public boolean isLockedOut()
-	{
-		return lockedOut;
-	}
-
-	public void setAdmin(boolean value)
-	{
-		admin = value;
-
-		dirty = true;
-	}
-
-	public boolean isAdmin()
-	{
-		return admin;
-	}
-
-	public String getAuthorizationCode()
-	{
-		return authorizationCode;
-	}
-
-	public void setAuthorizationCode(String value)
-	{
-		authorizationCode = value;
-
-		dirty = true;
-	}
-
-	public void setLastAccess(Timestamp value)
-	{
-		lastAccess = value;
-		dirty = true;
-	}
-
-	public Timestamp getLastAccess()
-	{
-		return lastAccess;
-	}
-
-	public Integer ejbCreate(Map attributes) throws RemoteException
-	{
-		// Defaults
-
-		verified = true;
-		lockedOut = false;
-		admin = false;
-
-		updateEntityAttributes(attributes);
-
-		this.personId = allocateKey();
-
-		dirty = true;
-
-		return null;
+        setVerified(true);
+        updateEntityAttributes(attributes);
+        
+        return allocateKey();
 	}
 
 	public void ejbPostCreate(Map attributes)
@@ -203,6 +117,9 @@ public class PersonBean extends AbstractEntityBean
 
 	public String getNaturalName()
 	{
+        String firstName = getFirstName();
+        String lastName = getLastName();
+        
 		if (firstName == null)
 			return lastName;
 

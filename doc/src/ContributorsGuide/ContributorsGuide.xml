@@ -78,20 +78,8 @@ added to the list of Tapestry developers.
 
 <para>
 Using Eclipse, obtaining the source code takes only a few steps.   Tapestry
-compiles using some libraries from &JBoss; 2.4.3, which must be downloaded first.
+compiles using some libraries from &JBoss; 3.0.0, which must be downloaded first.
 </para>
-
-<note>
-	<title>JBoss Versions</title>
-	<para>
-	JBoss is a bit of a moving target ... they keep reorganizing their
-	directory structure and changing the names of files.  Requiring exactly
-	version 2.4.3 means that Tapestry can be preconfigured, rather than
-	forcing developers to hunt around in whatever version of JBoss
-	they happen to have handy.  If necessary, download 2.4.3 just to build
-	Tapestry.
-	</para>
-</note>
 
 <para>
 Eclipse must be configured with the location of JBoss, this is done from the preferences
@@ -161,7 +149,7 @@ development using the excellent open-source IDE, &Eclipse;.
 <para>
 To perform a full build from the command line, you must have
 JDK 1.2.2 or better installed, as well
-as &JBoss; 2.4.3.
+as &JBoss; 3.0.0.
 </para>
 
 <para>
@@ -837,7 +825,8 @@ the feature request.
 </para>
 
 <para>
-Be very careful when checking files in that the are checked in with the correct type.
+Be very careful when checking files in that they are checked in with the correct 
+keyword substitution type.
 Files should be either binary or text; text should be checked in with keyword
 expansion turned on (this is the <literal>-kkv</literal> option).
 </para>

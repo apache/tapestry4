@@ -29,6 +29,8 @@ import java.rmi.RemoteException;
 import java.sql.Timestamp;
 import java.util.Map;
 
+import javax.ejb.CreateException;
+
 /**
  *  Implementation of the Book entity.
  *
@@ -42,34 +44,8 @@ import java.util.Map;
  *
  **/
 
-public class BookBean extends AbstractEntityBean
+public abstract class BookBean extends AbstractEntityBean
 {
-    // All must be public for access by container
-
-    // Primary key
-    public Integer bookId;
-
-    // Contrary to the O'Reilly book, we can't use int here and java.lang.Integer
-    // elsewhere; it has to be an Object and it has to match exactly.
-
-    // Other CMP fields 
-
-    public String author;
-    public String title;
-    public String description;
-    public String ISBN;
-    public int rating;
-
-    // CMP fields that shadow relationships
-
-    public Integer ownerPK;
-    public Integer holderPK;
-    public Integer publisherPK;
-
-    public boolean hidden;
-    public boolean lendable;
-    public Timestamp dateAdded;
-
     protected String[] getAttributePropertyNames()
     {
         return new String[] {
@@ -85,155 +61,61 @@ public class BookBean extends AbstractEntityBean
             "dateAdded" };
     }
 
-    // Business methods
+    public abstract void setBookId(Integer value);
+    
+    public abstract Integer getBookId();
 
-    public String getAuthor()
-    {
-        return author;
-    }
+    public abstract String getAuthor();
 
-    public void setAuthor(String value)
-    {
-        author = value;
-        dirty = true;
-    }
+    public abstract void setAuthor(String value);
 
-    public String getDescription()
-    {
-        return description;
-    }
+    public abstract String getDescription();
 
-    public void setDescription(String value)
-    {
-        description = value;
-        dirty = true;
-    }
+    public abstract void setDescription(String value);
 
-    public String getISBN()
-    {
-        return ISBN;
-    }
+    public abstract String getISBN();
 
-    public void setISBN(String value)
-    {
-        ISBN = value;
-        dirty = true;
-    }
+    public abstract void setISBN(String value);
+    
+    public abstract String getTitle();
 
-    public String getTitle()
-    {
-        return title;
-    }
+    public abstract void setTitle(String value);
 
-    public void setTitle(String value)
-    {
-        title = value;
-        dirty = true;
-    }
+    public abstract Integer getHolderPK();
 
-    public Integer getHolderPK() throws RemoteException
-    {
-        return holderPK;
-    }
+    public abstract void setHolderPK(Integer value);
+    
+    public abstract Integer getOwnerPK() throws RemoteException;
 
-    public void setHolderPK(Integer value)
-    {
-        holderPK = value;
+    public abstract void setOwnerPK(Integer value);
 
-        dirty = true;
-    }
+    public abstract void setPublisherPK(Integer value);
 
-    public Integer getOwnerPK() throws RemoteException
-    {
-        return ownerPK;
-    }
+    public abstract Integer getPublisherPK();
 
-    public void setOwnerPK(Integer value)
-    {
-        ownerPK = value;
+    public abstract boolean getHidden();
 
-        dirty = true;
-    }
+    public abstract void setHidden(boolean value);
 
-    public void setPublisherPK(Integer value)
-    {
-        publisherPK = value;
+    public abstract boolean getLendable();
 
-        dirty = true;
-    }
+    public abstract void setLendable(boolean value);
 
-    public Integer getPublisherPK() throws RemoteException
-    {
-        return publisherPK;
-    }
+    public abstract void ejbLoad();
 
-    public boolean isHidden()
-    {
-        return hidden;
-    }
-
-    public void setHidden(boolean value)
-    {
-        hidden = value;
-
-        dirty = true;
-    }
-
-    public boolean isLendable()
-    {
-        return lendable;
-    }
-
-    public void setLendable(boolean value)
-    {
-        lendable = value;
-
-        dirty = true;
-    }
-
-    public void ejbLoad()
-    {
-        dirty = false;
-    }
-
-    public void ejbStore()
-    {
-        dirty = false;
-    }
-
-    public Timestamp getDateAdded()
-    {
-        return dateAdded;
-    }
-
-    public void setDateAdded(Timestamp value)
-    {
-        dateAdded = value;
-
-        dirty = true;
-    }
+    public abstract Timestamp getDateAdded();
+    
+    public abstract void setDateAdded(Timestamp value);
 
     // Create methods
 
-    public Integer ejbCreate(Map attributes) throws RemoteException
+    public Integer ejbCreate(Map attributes) throws CreateException, RemoteException
     {
-        hidden = false;
-        lendable = true;
-        description = null;
-
-        // Rating really isn't implemented yet.
-
-        rating = 0;
-
-        // Update all the attributes specified in the attributes map.
-
+        setLendable(true);
+ 
         updateEntityAttributes(attributes);
 
-        bookId = allocateKey();
-
-        dirty = true;
-
-        return null;
+        return allocateKey();
     }
 
     public void ejbPostCreate(Map attributes)
