@@ -91,7 +91,7 @@ import com.primix.tapestry.spec.*;
  *			<p>Corresponds to the <code>size</code> HTML attribute.</td> </tr>
  *
  *	<tr>
- *		<td>maximumWidth</td>
+ *		<td>maximumLength</td>
  *		<td>integer</td>
  *		<td>R</td>
  *		<td>no</td>
@@ -121,10 +121,10 @@ public class TextField extends AbstractFormComponent
 	private boolean staticDisplayWidth;
 	private int displayWidthValue;
 
-	private IBinding maximumWidthBinding;
+	private IBinding maximumLengthBinding;
 
-	private boolean staticMaximumWidth;
-	private int maximumWidthValue;
+	private boolean staticMaximumLength;
+	private int maximumLengthValue;
 
 	private IBinding hiddenBinding;
 
@@ -173,7 +173,7 @@ public class TextField extends AbstractFormComponent
 	*  <tr>  <td>disabled</td>  <td>ommited, unless the <code>disabled</code> property is
 	* 	true.  </td> </tr>
 	*  <tr> <td>size</td> <td>from <code>displayWidth</code> property</td> </tr>
-	*  <tr> <td>maxlength</td> <td>from <code>maximumWidth</code> property</td> </tr>
+	*  <tr> <td>maxlength</td> <td>from <code>maximumLength</code> property</td> </tr>
 	*  <tr>  <td>value</td> <td>from <code>text</code> property</td> </tr>
 	*  </table>
 	**/
@@ -187,7 +187,7 @@ public class TextField extends AbstractFormComponent
 		String value;
 		boolean disabled = false;
 		int displayWidth;
-		int maximumWidth;
+		int maximumLength;
 		boolean hidden = false;
 		Form form;
 
@@ -245,14 +245,14 @@ public class TextField extends AbstractFormComponent
 			writer.attribute("size", displayWidth);
 		}
 
-		if (maximumWidthBinding != null)
+		if (maximumLengthBinding != null)
 		{
-			if (staticMaximumWidth)
-				maximumWidth = maximumWidthValue;
+			if (staticMaximumLength)
+				maximumLength = maximumLengthValue;
 			else
-				maximumWidth = maximumWidthBinding.getInt();
+				maximumLength = maximumLengthBinding.getInt();
 
-			writer.attribute("maxlength", maximumWidth);
+			writer.attribute("maxlength", maximumLength);
 		}
 
 		value = textBinding.getString();
@@ -289,14 +289,14 @@ public class TextField extends AbstractFormComponent
 			hiddenValue = value.getBoolean();
 	}
 
-	public void setMaximumWidthBinding(IBinding value)
+	public void setMaximumLengthBinding(IBinding value)
 	{
-		maximumWidthBinding = value;
+		maximumLengthBinding = value;
 
-		staticMaximumWidth = value.isStatic();
+		staticMaximumLength = value.isStatic();
 
-		if (staticMaximumWidth)
-			maximumWidthValue = value.getInt();
+		if (staticMaximumLength)
+			maximumLengthValue = value.getInt();
 	}
 
 	public void setTextBinding(IBinding value)

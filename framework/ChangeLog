@@ -1,3 +1,10 @@
+* Oct 6 2000 hship
+
+Re-introduce support for automatic onLoad method for the Body component.
+Rename the TextField parameter "maximumWidth" to "maximumLength".
+Make the Form component emit a name attribute, to faciliate JavaScript access
+to the form and its elements.
+
 * Oct 5 2000 hship
 
 Minor documentation and JWC errors in the TextField component.
