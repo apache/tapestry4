@@ -4,6 +4,7 @@
   "http://www.oasis-open.org/docbook/xml/4.1/docbookx.dtd" [
   <!ENTITY % TapestryLinks SYSTEM "../common/TapestryLinks.xml">
   <!ENTITY chapter-one SYSTEM "./tutorial-chapter-one.xml">
+  <!ENTITY chapter-two SYSTEM "./tutorial-chapter-two.xml">
   %TapestryLinks;
 ]>
 <!-- Conventions:
@@ -27,40 +28,9 @@
       <holder>Howard M. Lewis Ship</holder>
     </copyright>
   </bookinfo>
-  
+
   &chapter-one;
-  
-  <chapter id="getting-started">
-  	<title>Getting Started</title>
-  	<section id="tapestry-requirements">
-  		<title>Requirements</title>
-  	</section>
-  	
-  	<section id="how-does-it-work">
-  		<title>How does it work?</title>
-  	</section>
-  	
-  	<section id="simplest-app">
-  		<title>The Simplest Application</title>
-  	</section>
-  	
-  	<section id="diff-parts">
-  		<title>Different Parts of a Tapestry Application</title>
-  		<section id="part-app-comp">
-  			<title>Application Component</title>
-  		</section>
-  		<section id="part-pages">
-  			<title>Pages</title>
-  		</section>
-  		<section id="part-template">
-  			<title>Component Template</title>
-  		</section>
-  		<section id="part-logic">
-  			<title>Application Logic</title>
-  		</section>
-			Some text here
-  	</section>
-  </chapter>
+	&chapter-two;
 
   <chapter id="Introductory-examples">
   	<title>Introductory Examples</title>

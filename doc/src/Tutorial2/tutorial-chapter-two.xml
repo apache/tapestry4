@@ -1,0 +1,165 @@
+<chapter id="getting-started">
+	<title>Getting Started</title>
+	<section id="tapestry-requirements">
+		<title>Requirements</title>
+		<para>
+			For this tutorial, you need only Tapestry and the included
+			contributed components. Of course, we expect that you have already
+			deployed the example development environment or tutorial into
+			a container.
+		</para>
+		<para>
+			The next section provide a brief summary of how Tapestry works, including
+			a little detail on how it processes your request, as well as an introduction
+			into the different parts that make up a Tapestry application.
+			Feel free to skip this section and proceed to
+			<xref linkend="Introductory-examples"/>
+			if you already understand what a Page is, and how &OGNL; fits into the picture.
+		</para>
+	</section>
+
+	<section id="how-does-it-work">
+		<title>How does it work?</title>
+		<para>
+			In a standard Java Web application (using the Servlet API), a request is
+			processed as follows:
+			<orderedlist>
+				<listitem>User agent (browser) sends request over HTTP to server (Servlet Engine)</listitem>
+				<listitem>Servlet Engine receives request, and routes it to your servlet</listitem>
+				<listitem>Your servlet(s) examine the HTTP content</listitem>
+				<listitem>Servlet(s) and JSP are combined to produce the desired result</listitem>
+				<listitem>The result is sent back to the user agent (browser)</listitem>
+			</orderedlist>
+		</para>
+		<para>
+			This is a somewhat simplified view, as it does not take into account the myriad
+			of things that as a developer you are responsible for. For anything but the simplest
+			(and hence, not very useful) web application, you will need to consider the
+			implementation of:
+			<orderedlist>
+				<listitem>Session management</listitem>
+				<listitem>Implementation of business logic and/or integration with existing 'back end' logic</listitem>
+				<listitem>Presentation and 'rendering' of the site or application</listitem>
+				<listitem>Maintenance over time</listitem>
+				<listitem>Performance</listitem>
+				<listitem>Scalability</listitem>
+				<listitem>...</listitem>
+			</orderedlist>
+		</para>
+		<para>
+			The list goes on. Tapestry provides almost all of the glue to make a Web Application
+			happen, so that you can concentrate on implementing the actual logic. Here's how it works:
+		</para>
+		<para>
+			A Tapestry Application consists of a number of Pages, where each page consists of some
+			HTML, some Java code, and what is known as a <emphasis>page specification</emphasis>.
+			The page specification is what allows you define the dynamic content that makes it's way
+			from various Java object into the HTML.
+		</para>
+
+		<para>
+			When responding to a request, Tapestry does the following:
+			<orderedlist>
+				<listitem>User agent (browser) sends request over HTTP to server (Servlet Engine)</listitem>
+				<listitem>Servlet Engine receives request, and routes it to
+					<emphasis>the Tapestry Application</emphasis> servlet</listitem>
+				<listitem>The users previous session is restored or created, as appropriate</listitem>
+				<listitem>The Application Servlet decodes the request, and calls the
+				relevant Java code (defined by you) to both get/set variables or take
+				an action (if the request was a form POST, for example)</listitem>
+				<listitem>Your application executes code (a method), and sets object
+				state.</listitem>
+				<listitem>Tapestry inserts the appropriate responses <emphasis>in
+				place of</emphasis> the existing HTML, using <emphasis>Components</emphasis></listitem>
+				<listitem>The result is sent back to the user agent (browser)</listitem>
+			</orderedlist>
+			Tapestry is doing much more 'glue' work for you
+			than with the standard Servlet/JSP model.  An important concept here
+			is that in terms of Java code, you only need to provide the
+			<emphasis>data</emphasis> and <emphasis>actions</emphasis> for the web page.
+			The actual rendering of this into HTML is put together by Tapestry, using
+			the HTML for the page as a basis, with the relevant parts of the page
+			being replaced with dynamic content.
+		</para>
+
+		<para>
+			Finally, Tapestry abstracts the rendering of content from the content
+			itself. For example, data for a web based shopping system may be extracted
+			by a Java component via JDBC, and presented to Tapestry as a Collection
+			of business objects.  Tapestry is then able to take that collection and
+			render it into HTML in a way that the page designer (the person who
+			create the Pages HTML) specified.
+		</para>
+		<para>
+			The next section shows the simplest Tapestry application - a single page.
+		</para>
+
+	</section>
+
+	<section id="simplest-app">
+		<title>The Simplest Application</title>
+		<para>
+			You're close to being able to write some code!
+		</para>
+		<para>
+			Not mentioned in the previous section, but important is that
+			Tapestry applications have at least one mandatory page - called <emphasis>Home</emphasis>.
+			This is the page that Tapestry will route new requests to.  This example
+			will construct a 'Hello World' application, where the text is
+			retreived from the pages Java object.
+		</para>
+		<para>
+			The code for this example is in <filename class="directory">c:\Tapestry-x.x\examples\Tutorial2\simple</filename>.
+		</para>
+		<section id="Setup the Application">
+			<para>
+				Every Tapestry Application must have at least a single <emphasis>Application Servlet</emphasis>,
+				where the applications pages and other engine services are defined. For this example, create 
+				a package in your source tree with the name <classname>tapestry.tutorial.hello</classname>.
+				In this package, create a file called <filename>HelloWorld.application</filename> (this
+				is the application specification file).
+			</para>
+			<para>
+				This specification is a file that is located on the Java class path.  In a deployed Tapestry
+				application, the specification lives with the application's class files, in the
+				<filename class="directory">WEB-INF/classes</filename> directory of a War file.
+			</para>
+      <figure>
+        <title>HelloWorld.application</title>
+        <programlisting>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE application PUBLIC
+  "-//Howard Lewis Ship//Tapestry Specification 1.3//EN"
+  "http://tapestry.sf.net/dtd/Tapestry_1_3.dtd"&gt;
+&lt;application
+  name="Hello World Tutorial"
+  engine-class="net.sf.tapestry.engine.&SimpleEngine;"&gt;
+
+  &lt;page name="Home"
+    specification-path="/tapestry/tutorial/hello/Home.page"/&gt;
+
+&lt;/application&gt;
+</programlisting>
+      </figure>
+		</section>
+		
+	</section>
+
+	<section id="diff-parts">
+		<title>Different Parts of a Tapestry Application</title>
+		<section id="part-app-comp">
+			<title>Application Component</title>
+		</section>
+		<section id="part-pages">
+			<title>Pages</title>
+		</section>
+		<section id="part-template">
+			<title>Component Template</title>
+		</section>
+		<section id="part-logic">
+			<title>Application Logic</title>
+		</section>
+		Some text here
+	</section>
+</chapter>
+
