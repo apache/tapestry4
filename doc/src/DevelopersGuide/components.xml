@@ -962,13 +962,12 @@ not into an additional component, but into a simple JavaBean.
 </para>
       <para>
 These additional beans, called helper beans, are defined in the component specification, in the
-<link linkend="components.spec.bean">
-          <sgmltag class="starttag">bean</sgmltag> element</link>.
+<link linkend="components.spec.bean"><sgmltag class="starttag">bean</sgmltag></link> element.
 Each bean has a unique name, a class to instantiate,
 and a lifecycle (which controls how long the component keeps a reference to the bean).  The specification 
 allows properties of the bean to be set as well, using
-the <link linkend="components.spec.set-property">
-          <sgmltag class="starttag">set-property</sgmltag> element</link>.  
+the 
+<link linkend="components.spec.set-property"><sgmltag class="starttag">set-property</sgmltag></link> element.  
 Helper beans are accessed through the <varname>beans</varname> property of the component.
 </para>
       <para>
@@ -1011,8 +1010,8 @@ rather than hand editting the files.
 </para>
 
 <para>
-This description is for the current revision of the component specification, 1.2.
-Tapestry still supports component specification 1.1 as well, though support
+This description is for the current revision of the component specification, 1.3.
+Tapestry still supports component specification 1.1 and 1.2 as well, though support
 for the original 1.0 DTD has been removed.  See &SpecificationParser; for more
 details.
 </para>
@@ -1026,15 +1025,15 @@ Component specification files, which use the filename extension <literal>.jwc</l
 <sgmltag class="starttag">specification</sgmltag> element.
 </para>
         <figure>
-          <title>Component specification: <sgmltag class="starttag">specification</sgmltag> element</title>
+          <title>Component specification: <sgmltag class="starttag">component-specification</sgmltag> element</title>
           <programlisting><![CDATA[
 <?xml version="1.0"?>
 <!DOCTYPE specification PUBLIC 
-  "-//Howard Lewis Ship//Tapestry Specification 1.2//EN"
-  "http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+  "-//Howard Lewis Ship//Tapestry Specification 1.3//EN"
+  "http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 ]]>
 
-&lt;specification 
+&lt;component-specification 
   allow-body="<replaceable>yes|no</replaceable>" <co id="components.spec.co.allow-body"/>
   allow-informal-parameters="<replaceable>yes|no</replaceable>" <co id="components.spec.co.informal"/>
   class="<replaceable>java-type</replaceable>"&gt; <co id="components.spec.co.java-type"/>
@@ -1085,7 +1084,7 @@ Java Archive (JAR) file or Web Application Archive (WAR) file.
 This is one of the ways that Tapestry eases deployment.
 </para>
         <para>
-The <sgmltag class="starttag">specification</sgmltag> element wraps around all other elements in
+The <sgmltag class="starttag">component-specification</sgmltag> element wraps around all other elements in
 the specification (which are used to define parameters, embedded components and assets).  The following
 sections describe these additional elements.
 </para>
@@ -1097,9 +1096,7 @@ sections describe these additional elements.
 One or more <sgmltag class="starttag">description</sgmltag> 
 elements may be included in the specification.  These are descriptions of 
 the component's features and behavior, suitable for inclusion in some form of IDE
-<footnote>
-            <para>If someone writes such an IDE, please let me know!</para>
-          </footnote>.  Multiple descriptions are used to support
+Multiple descriptions are used to support
 multiple languages.
 </para>
         <figure>
@@ -1145,8 +1142,8 @@ This element is used to describe formal parameters used by a component.
 &lt;parameter
   name="<replaceable>name</replaceable>" <co id="components.spec.parameter.name"/>
   property-name="<replaceable>property-name</replaceable>" <co id="components.spec.parameter.property-name"/>
-  direction="<replaceable>in</replaceable>|<replaceable>custom</replaceable>" <co id="components.spec.parameter.direction"/>
-  java-type="<replaceable>text</replaceable>" <co id="components.spec.parameter.java-type"/>
+  direction="<replaceable>in|custom</replaceable>" <co id="components.spec.parameter.direction"/>
+  java-type="<replaceable>type</replaceable>" <co id="components.spec.parameter.java-type"/>
   required="<replaceable>yes</replaceable>|<replaceable>no</replaceable>"&gt; <co id="components.spec.parameter.required"/>
   [ &lt;<link linkend="components.spec.description">description</link> ... &gt; ...] <co id="components.spec.parameter.description"/>
 &lt;/parameter&gt;
@@ -1256,7 +1253,10 @@ This element is used to describe formal parameters used by a component.
           <sgmltag class="starttag">property</sgmltag> element</title>
         <para>
 Allows arbitrary name / value pairs to be associated with the container
-(a component or application).
+(a component or application).  These properties, which should not be confused
+with JavaBeans properties, are used to store meta-information about other
+specification objects.  This is primarily of use to visual editors or RAD (Rapid Application Development)
+tools.
 </para>
         <figure>
           <title>Component specification: <sgmltag class="starttag">property</sgmltag> element</title>
@@ -1280,9 +1280,10 @@ for the component.
           <programlisting>
 &lt;bean name="<replaceable>name</replaceable>"
   class="<replaceable>class</replaceable>"
-  lifecycle="<replaceable>none</replaceable>|<replaceable>request</replaceable>|<replaceable>page</replaceable>"&gt;
-
+  lifecycle="<replaceable>none|request|page|render</replaceable>"&gt;
+  
   [ &lt;<link linkend="components.spec.description">description</link> ... &gt; ... ]
+  [ &lt;<link linkend="components.spec.property">property</link> ... &gt; ... ]
   [ &lt;<link linkend="components.spec.set-property">set-property</link> ... &gt; ... ]
 
 &lt;/bean&gt;
@@ -1292,7 +1293,7 @@ for the component.
 The name is the name of the bean, which must be unique for beans within the component.  The bean will be accessible
 using the property path <varname>beans.<replaceable>name</replaceable>
           </varname>.  Beans are instantiated
-as needed, the may be cached for later use.  The <replaceable>class</replaceable> is the complete Java class name
+as needed, they may be cached for later use.  The <replaceable>class</replaceable> is the complete Java class name
 to instanatiate.
 </para>
         <para>
@@ -1300,9 +1301,7 @@ The default lifecycle is <varname>request</varname>, if not specified.
 </para>
         <para>
 Any number of
-<link linkend="components.spec.set-property">
-            <sgmltag class="starttag">set-property</sgmltag>
-          </link>
+<link linkend="components.spec.set-property"><sgmltag class="starttag">set-property</sgmltag></link>
 elements may be specified, to intialize the properties of the bean.
 </para>
       </section>
@@ -1324,21 +1323,16 @@ and <sgmltag class="starttag">property-value</sgmltag> element.
           <title>Component specification: <sgmltag class="starttag">set-property</sgmltag> element</title>
           <programlisting>
 &lt;set-property name="<replaceable>name</replaceable>"&gt;
-  [ &lt;<link linkend="components.spec.field-value">field-value</link> ... &gt; | &lt;<link linkend="components.spec.static-value">static-value</link> ... &gt; | &lt;<link linkend="components.spec.property-value">property-value</link> ... &gt; ]
+  [ &lt;<link linkend="components.spec.field-value">field-value</link> ... &gt; 
+    | &lt;<link linkend="components.spec.static-value">static-value</link> ... &gt; 
+    | &lt;<link linkend="components.spec.property-value">property-value</link> ... &gt; 
+    | &lt;<link linkend="components.spec.string-value">string-value</link> ... &gt; ]
 &lt;/set-property&gt;
 </programlisting>
         </figure>
         <para>
 The name attribute identifies the property to be changed.  The value is provided
-by a
-<link linkend="components.spec.static-value">
-            <sgmltag class="starttag">static-value</sgmltag>
-          </link>
-or
-<link linkend="components.spec.property-value">
-            <sgmltag class="starttag">property-value</sgmltag>
-          </link>
-element.
+by wrapped element.
 </para>
       </section>
       <section id="components.spec.field-value">
@@ -1346,8 +1340,7 @@ element.
           <sgmltag class="starttag">field-value</sgmltag> element</title>
         <para>
  This element, which appears only within a
-<link linkend="components.spec.set-property">
-            <sgmltag class="starttag">set-property</sgmltag> element</link>
+<link linkend="components.spec.set-property"><sgmltag class="starttag">set-property</sgmltag></link> element
 provides a static value with which to set the property obtained from a public static
 variable of some class.
 </para>
@@ -1370,14 +1363,13 @@ package.
           <sgmltag class="starttag">static-value</sgmltag> element</title>
         <para>
 This element, which appears only within a
-<link linkend="components.spec.set-property">
-            <sgmltag class="starttag">set-property</sgmltag> element</link>
-provides a static value with which to set the property.
+<link linkend="components.spec.set-property"><sgmltag class="starttag">set-property</sgmltag></link>
+element provides a static value with which to set the property.
 </para>
         <figure>
           <title>Component specification: <sgmltag class="starttag">static-value</sgmltag> element</title>
           <programlisting>
-&lt;static-value type="<replaceable>boolean</replaceable>|<replaceable>int</replaceable>|<replaceable>double</replaceable>|<replaceable>String</replaceable>"&gt;
+&lt;static-value type="<replaceable>boolean|int|long|double|String</replaceable>"&gt;
   [ <replaceable>value</replaceable> ]
 &lt;/static-value&gt;
 </programlisting>
@@ -1394,9 +1386,8 @@ whitespace is removed.
           <sgmltag class="starttag">property-value</sgmltag> element</title>
         <para>
 This element appears inside a
-<link linkend="components.spec.set-property">
-            <sgmltag class="starttag">set-property</sgmltag>
-          </link> element
+<link linkend="components.spec.set-property"><sgmltag class="starttag">set-property</sgmltag></link>
+element
 to set a property of the bean from a dynamic property of the containing 
 component.  The component property, which may be a property path, is evaulated
 when the bean is instantiated.
@@ -1408,6 +1399,26 @@ when the bean is instantiated.
 </programlisting>
         </figure>
       </section>
+      <section id="components.spec.string-value">
+      	<title>
+      		<sgmltag class="starttag">string-value</sgmltag> element</title>
+      		
+      	<para>
+This element appears inside a
+<link linkend="components.spec.set-property"><sgmltag class="starttag">set-property</sgmltag></link>
+           element, and sets a property of a bean
+          from a localized string provided by the component.
+      </para>
+      
+        <figure>
+          <title>Component specification: <sgmltag class="starttag">string-value</sgmltag> element</title>
+          <programlisting>
+&lt;string-value key="<replaceable>key</replaceable>"/&gt;
+</programlisting>
+        </figure>      		
+      		
+      </section>
+      
       <section id="components.spec.component">
         <title>
           <sgmltag class="starttag">component</sgmltag> element</title>
@@ -1422,6 +1433,7 @@ component identified in the containing component's HTML template.
   id="<replaceable>id</replaceable>" <co id="component.spec.component.id"/>
   type="<replaceable>type</replaceable>" <co id="component.spec.component.type"/>
   copy-of="<replaceable>id</replaceable>"&gt; <co id="component.spec.component.copy-of"/>
+  [ &lt;<link linkend="components.spec.property">property</link> ... &gt; ] ...
   [ &lt;binding|field-binding|inherited-binding|static-binding|string-binding ...&gt; ... ]
 &lt;/component&gt;
 </programlisting>
@@ -1439,7 +1451,8 @@ component identified in the containing component's HTML template.
               <para>
   	The component type is either the the complete path to a component specification, or a well known alias.
   	All the components provided with the framework have well known aliases, at it is possible
-  	to create additional aliases in the Tapestry application specification.
+  	to create additional aliases in the Tapestry application specification.  A type may also have a
+  	prefix identifying the library in which it is defined.
   	</para>
             </callout>
             <callout arearefs="component.spec.component.copy-of">
@@ -1600,10 +1613,7 @@ start with a letter and contain only letters, numbers and underscores or dashes.
 Assets names must be unique within the component.
 </para>
         <para>
-For external assets, the URL must be complete:  it will be inserted into the HTML unchanged.  In many cases,
-the URL can omit the <literal>http://<replaceable>hostname</replaceable>
-          </literal> portion of the URL, if the asset is located
-on the same host as the web application.
+For external assets, the URL must be complete:  it will be inserted into the HTML unchanged.
 </para>
         <para>
 For context assets
