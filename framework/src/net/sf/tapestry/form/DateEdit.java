@@ -45,41 +45,42 @@ import net.sf.tapestry.RequestCycleException;
  * @author Malcolm Edgar
  * @version $Id$
  */
-public class DateEdit extends BaseComponent {
-    
-    private static final String CLASSNAME = DateEdit.class.getName();
+public class DateEdit extends BaseComponent
+{
 
-    private Date _value = new Date((new java.util.Date()).getTime());
+    private static final String FIRST_USE_ATTRIBUTE_KEY = "net.sf.tapestry.DateEdit-first";
+
+    private Date _value = new Date(System.currentTimeMillis());
     private IBinding _valueBinding;
     private SimpleDateFormat _dateFormat = new SimpleDateFormat("dd MMM yyyy");
     private boolean _firstTime;
 
-    public IBinding getValueBinding() 
+    public IBinding getValueBinding()
     {
         return _valueBinding;
     }
 
-    public void setValueBinding(IBinding value) 
+    public void setValueBinding(IBinding value)
     {
         _valueBinding = value;
     }
 
-    public Date readValue() 
+    public Date readValue()
     {
         return (Date) (_valueBinding.getObject());
     }
 
-    public void updateValue(Date value) 
+    public void updateValue(Date value)
     {
         _valueBinding.setObject(value);
     }
 
-    public String getText() 
+    public String getText()
     {
         return _dateFormat.format(_value);
     }
 
-    public void setText(String text) 
+    public void setText(String text)
     {
         // ignore
     }
@@ -88,9 +89,9 @@ public class DateEdit extends BaseComponent {
      *  @return a <tt>String</tt> long value for the date
      * 
      **/
-    public String getLongValue() 
+    public String getLongValue()
     {
-        return "" + _value.getTime();
+        return Long.toString(_value.getTime());
     }
 
     /**
@@ -99,50 +100,55 @@ public class DateEdit extends BaseComponent {
      *  @param v a <tt>String</tt> value
      * 
      **/
-    public void setLongValue(String v) {
+    public void setLongValue(String v)
+    {
         setValue(new Date(Long.parseLong(v)));
     }
 
-    public Date getValue() 
+    public Date getValue()
     {
         return _value;
     }
 
-    public void setValue(Date value) 
+    public void setValue(Date value)
     {
         _value = value;
         updateValue(_value);
     }
 
-    public void setFormat(String format) 
+    public void setFormat(String format)
     {
         _dateFormat = new SimpleDateFormat(format);
     }
 
-    public String getFormat() 
+    public String getFormat()
     {
         return _dateFormat.toPattern();
     }
 
     /**
      *  <tt>isFirstTime</tt> checks if this is the first time
-     *  the component is in the page
+     *  the component is rendered on the page (this affects the
+     *  client-side JavaScript emitted to support the component; subsequent
+     *  instances of the component share resources created by the
+     *  first instance).
      *
      *  @return a <tt>boolean</tt> value
      * 
      **/
-    public boolean isFirstTime() 
+    
+    public boolean isFirstTime()
     {
-        return _firstTime;        
+        return _firstTime;
     }
 
-    protected void prepareForRender(IRequestCycle cycle) throws RequestCycleException 
+    protected void prepareForRender(IRequestCycle cycle) throws RequestCycleException
     {
-        if (cycle.getAttribute(CLASSNAME) == null) 
-        {
-            cycle.setAttribute(CLASSNAME, Boolean.TRUE);
-            _firstTime = true;
-        }        
+        _firstTime = (cycle.getAttribute(FIRST_USE_ATTRIBUTE_KEY) == null);
+
+        if (_firstTime)
+            cycle.setAttribute(FIRST_USE_ATTRIBUTE_KEY, Boolean.TRUE);
+            
         super.prepareForRender(cycle);
     }
 }
