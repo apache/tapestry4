@@ -1,0 +1,133 @@
+<?xml version="1.0"?>
+
+<project name="Simple Dev Environment" default="compile">
+
+  <!-- This should point to where you have Tapestry installed -->
+  <property name="tapestry.install.dir" 
+	    value="/home/neil/devel/java/Tapestry-SSH"/>
+
+  <!-- This property is only required if you wish to deploy to -->
+  <!-- your favorite web container. Ignore otherwise -->
+  <property name="deployment.dir" value="./deploy"/>
+
+
+  <!-- NO NEED TO CHANGE ANYTHING FROM HERE DOWN -->
+
+  <property name="classes.dir" value="./classes"/>
+  <property name="src.dir" value="./src"/>
+  <property name="war.dir" value="./webapps"/>
+  <property name="war.tmp.dir" value="./webapp-build"/>
+
+  <property name="root.dir" value="${tapestry.install.dir}"/>
+  <property file="${root.dir}/config/Version.properties"/>
+  <property file="${root.dir}/config/build.properties"/>
+  <property file="${root.dir}/config/common.properties"/>
+  <property name="private.dir" value="private"/>
+
+  <path id="tutorial.classpath">
+    <pathelement location="${lib.ext.dir}/javax.servlet.jar"/>
+    <pathelement location="${lib.ext.dir}/${log4j.jar}"/>
+    <pathelement location="${lib.ext.dir}/javax.xml.jaxp.jar"/>
+    <pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
+    <pathelement location="${lib.ext.dir}/org.mortbay.jetty.jar"/>
+    <pathelement location="${lib.ext.dir}/ejb.jar"/>
+    <pathelement location="${lib.ext.dir}/${jakarta-oro.jar}"/>	
+    <pathelement location="${lib.ext.dir}/${ognl.jar}"/>
+    <pathelement location="config"/>
+  </path>
+
+  <path id="libs">
+    <fileset dir="${tapestry.install.dir}/lib">
+      <include name="net.sf.*.jar"/>
+    </fileset>
+    <fileset dir="${tapestry.install.dir}/lib/ext">
+      <include name="*.jar"/>
+    </fileset>
+  </path>
+
+  <target name="prepare">
+    <mkdir dir="${deployment.dir}"/>
+    <mkdir dir="${war.dir}"/>
+    <mkdir dir="${src.dir}"/>
+    <mkdir dir="${classes.dir}"/>
+  </target>
+
+  <target name="compile" depends="prepare">
+    <javac srcdir="${src.dir}"
+	   destdir="${classes.dir}">
+      <classpath refid="libs"/>
+    </javac>
+  </target>
+  
+  <target name="extract-webapp" depends="war">
+    <delete dir="${web.tmp.dir}"/>
+    <mkdir dir="${web.tmp.dir}"/>
+  </target>
+
+  <!-- Run your code within the standard Jetty Web Container -->
+  <target name="run" depends="compile, extract-webapp">
+    <delete dir="${private.dir}" quiet="true"/>
+    <mkdir dir="${private.dir}"/>
+	  
+    <echo>Running you example code on port 8081 ...</echo>
+    <java
+	  classname="org.mortbay.jetty.Server"
+	  classpathref="tutorial.classpath"
+	  fork="true" 
+	  maxmemory="128MB">
+	  	
+      <arg value="config/jetty-dev-env.xml"/>
+	 
+      <!-- Enable debugging when running the tutorial -->
+      <jvmarg line="-showversion -Xdebug -Xnoagent"/>
+      <jvmarg line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20150"/>
+      
+      <!-- Jetty can get easily confused (under NT) unless this is turned off. -->  
+      <sysproperty key="org.mortbay.util.FileResource.checkAliases" value="false"/>
+      
+      <sysproperty key="net.sf.tapestry.asset.dir" value="${private.dir}"/>
+      <sysproperty key="net.sf.tapestry.asset.URL" value="/private"/>		
+    </java>
+  </target>
+  
+  <target name="war" depends="prepare">
+    <war destfile="${war.dir}/learn-tapestry.war"
+	 webxml="./etc/web.xml"
+	 basedir="./web"
+	 >
+      <lib dir="${tapestry.install.dir}/lib">
+	  <include name="net.sf.*.jar"/>
+      </lib>
+    </war>
+  </target>
+   
+  <target name="deploy" depends="war">
+    <copy todir="${deployment.dir}">
+      <fileset dir="${war.dir}"/>
+    </copy>
+  </target>
+
+  <target name="clean">
+    <delete dir="${war.dir}"/>
+  </target>
+
+</project>
+
+
+<!-- Keep this comment at the end of the file
+Local variables:
+mode: xml
+sgml-omittag:nil
+sgml-shorttag:nil
+sgml-namecase-general:nil
+sgml-general-insert-case:lower
+sgml-minimize-attributes:nil
+sgml-always-quote-attributes:t
+sgml-indent-step:2
+sgml-indent-data:t
+sgml-parent-document:nil
+sgml-exposed-tags:nil
+sgml-local-catalogs:nil
+sgml-local-ecat-files:nil
+End:
+-->
