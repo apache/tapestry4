@@ -46,8 +46,7 @@ import org.apache.tapestry.spec.IContainedComponent;
 /**
  * Contains the logic from {@link org.apache.tapestry.services.impl.ComponentTemplateLoaderImpl},
  * which creates one of these instances to process the request. This is necessary because the
- * service must be re-entrant (because templates can contain components that have
- * templates).
+ * service must be re-entrant (because templates can contain components that have templates).
  * 
  * @author Howard Lewis Ship
  * @since 3.1
@@ -79,7 +78,8 @@ public class ComponentTemplateLoaderLogic
         _bindingSource = bindingSource;
     }
 
-    public void loadTemplate(IRequestCycle requestCycle, ITemplateComponent loadComponent, ComponentTemplate template)
+    public void loadTemplate(IRequestCycle requestCycle, ITemplateComponent loadComponent,
+            ComponentTemplate template)
     {
         _requestCycle = requestCycle;
         _loadComponent = loadComponent;
@@ -128,8 +128,8 @@ public class ComponentTemplateLoaderLogic
         // of date, too.
 
         if (_stackx != 0)
-            throw new ApplicationRuntimeException(Tapestry.getMessage("BaseComponent.unbalance-open-tags"),
-                    _loadComponent, null, null);
+            throw new ApplicationRuntimeException(Tapestry
+                    .getMessage("BaseComponent.unbalance-open-tags"), _loadComponent, null, null);
 
         checkAllComponentsReferenced();
     }
@@ -174,8 +174,9 @@ public class ComponentTemplateLoaderLogic
         // Make sure the template contains each component only once.
 
         if (_seenIds.contains(id))
-            throw new ApplicationRuntimeException(Tapestry.format("BaseComponent.multiple-component-references",
-                    _loadComponent.getExtendedId(), id), _loadComponent, token.getLocation(), null);
+            throw new ApplicationRuntimeException(ImplMessages.multipleComponentReferences(
+                    _loadComponent,
+                    id), _loadComponent, token.getLocation(), null);
 
         _seenIds.add(id);
 
@@ -207,13 +208,17 @@ public class ComponentTemplateLoaderLogic
         IContainedComponent cc = _loadComponent.getSpecification().getComponent(id);
 
         if (cc != null)
-            throw new ApplicationRuntimeException(Tapestry.format("BaseComponentTemplateLoader.dupe-component-id", id,
-                    location, cc.getLocation()), _loadComponent, location, null);
+            throw new ApplicationRuntimeException(ImplMessages.dupeComponentId(id, cc),
+                    _loadComponent, location, null);
     }
 
     private IComponent createImplicitComponent(String id, String componentType, Location location)
     {
-        IComponent result = _pageLoader.createImplicitComponent(_requestCycle, _loadComponent, id, componentType,
+        IComponent result = _pageLoader.createImplicitComponent(
+                _requestCycle,
+                _loadComponent,
+                id,
+                componentType,
                 location);
 
         return result;
@@ -230,7 +235,7 @@ public class ComponentTemplateLoaderLogic
         // the template parser does a great job.
 
         if (_stackx <= 0)
-            throw new ApplicationRuntimeException(Tapestry.getMessage("BaseComponent.unbalanced-close-tags"),
+            throw new ApplicationRuntimeException(ImplMessages.unbalancedCloseTags(),
                     _loadComponent, token.getLocation(), null);
 
         // Null and forget the top element on the stack.
@@ -271,7 +276,8 @@ public class ComponentTemplateLoaderLogic
                 String name = (String) entry.getKey();
                 String value = (String) entry.getValue();
 
-                IBinding binding = _bindingSource.createBinding(_loadComponent, value, token.getLocation());
+                IBinding binding = _bindingSource.createBinding(_loadComponent, value, token
+                        .getLocation());
 
                 addBinding(component, spec, name, binding);
             }
@@ -284,7 +290,8 @@ public class ComponentTemplateLoaderLogic
         if (spec.getParameter(TemplateSource.TEMPLATE_TAG_PARAMETER_NAME) != null
                 && component.getBinding(TemplateSource.TEMPLATE_TAG_PARAMETER_NAME) == null)
         {
-            IBinding binding = _bindingSource.createBinding(component, token.getTag(), token.getLocation());
+            IBinding binding = _bindingSource.createBinding(component, token.getTag(), token
+                    .getLocation());
 
             addBinding(component, spec, TemplateSource.TEMPLATE_TAG_PARAMETER_NAME, binding);
         }
@@ -296,7 +303,8 @@ public class ComponentTemplateLoaderLogic
      * It is an error to specify expression bindings in both the specification and the template.
      */
 
-    private void addBinding(IComponent component, IComponentSpecification spec, String name, IBinding binding)
+    private void addBinding(IComponent component, IComponentSpecification spec, String name,
+            IBinding binding)
     {
 
         // If matches a formal parameter name, allow it to be set
@@ -308,7 +316,8 @@ public class ComponentTemplateLoaderLogic
             component.setBinding(name, binding);
     }
 
-    private boolean validate(IComponent component, IComponentSpecification spec, String name, IBinding binding)
+    private boolean validate(IComponent component, IComponentSpecification spec, String name,
+            IBinding binding)
     {
         // TODO: This is ugly! Need a better/smarter way, even if we have to extend BindingSource
         // to tell us.
@@ -327,9 +336,10 @@ public class ComponentTemplateLoaderLogic
                 if (literal)
                     return false;
 
-                throw new ApplicationRuntimeException(Tapestry.format("BaseComponent.dupe-template-expression", name,
-                        component.getExtendedId(), _loadComponent.getExtendedId()), component, binding.getLocation(),
-                        null);
+                throw new ApplicationRuntimeException(ImplMessages.dupeTemplateBinding(
+                        name,
+                        component,
+                        _loadComponent), component, binding.getLocation(), null);
             }
 
             return true;
@@ -343,9 +353,10 @@ public class ComponentTemplateLoaderLogic
             if (literal)
                 return false;
 
-            throw new ApplicationRuntimeException(Tapestry.format(
-                    "BaseComponent.template-expression-for-informal-parameter", name, component.getExtendedId(),
-                    _loadComponent.getExtendedId()), component, binding.getLocation(), null);
+            throw new ApplicationRuntimeException(ImplMessages.templateBindingForInformalParameter(
+                    _loadComponent,
+                    name,
+                    component), component, binding.getLocation(), null);
         }
 
         // If the name is reserved (matches a formal parameter
@@ -359,9 +370,10 @@ public class ComponentTemplateLoaderLogic
             if (literal)
                 return false;
 
-            throw new ApplicationRuntimeException(Tapestry.format(
-                    "BaseComponent.template-expression-for-reserved-parameter", name, component.getExtendedId(),
-                    _loadComponent.getExtendedId()), component, binding.getLocation(), null);
+            throw new ApplicationRuntimeException(ImplMessages.templateBindingForReservedParameter(
+                    _loadComponent,
+                    name,
+                    component), component, binding.getLocation(), null);
         }
 
         return true;
@@ -388,42 +400,13 @@ public class ComponentTemplateLoaderLogic
         ids = new HashSet(ids);
         ids.removeAll(_seenIds);
 
-        int count = ids.size();
+        _log.error(ImplMessages.missingComponentSpec(_loadComponent, ids));
 
-        String key = (count == 1) ? "BaseComponent.missing-component-spec-single"
-                : "BaseComponent.missing-component-spec-multi";
-
-        StringBuffer buffer = new StringBuffer(Tapestry.format(key, _loadComponent.getExtendedId()));
-
-        Iterator i = ids.iterator();
-        int j = 1;
-
-        while (i.hasNext())
-        {
-            if (j == 1)
-                buffer.append(' ');
-            else if (j == count)
-            {
-                buffer.append(' ');
-                buffer.append(Tapestry.getMessage("BaseComponent.and"));
-                buffer.append(' ');
-            }
-            else
-                buffer.append(", ");
-
-            buffer.append(i.next());
-
-            j++;
-        }
-
-        buffer.append('.');
-
-        _log.error(buffer.toString());
     }
 
     private ApplicationRuntimeException createBodylessComponentException(IComponent component)
     {
-        return new ApplicationRuntimeException(Tapestry.getMessage("BaseComponentTemplateLoader.bodyless-component"),
-                component, null, null);
+        return new ApplicationRuntimeException(ImplMessages.bodylessComponent(), component, null,
+                null);
     }
 }

@@ -36,13 +36,11 @@ import org.apache.tapestry.util.MultiKey;
 import org.apache.tapestry.util.text.LocalizedProperties;
 
 /**
- *  Global object (stored in the servlet context) that accesses
- *  localized properties for a component.
- *
- *  @author Howard Lewis Ship
- *  @since 2.0.4
- *
- **/
+ * Service used to access localized properties for a component.
+ * 
+ * @author Howard Lewis Ship
+ * @since 2.0.4
+ */
 
 public class ComponentMessagesSourceImpl implements ComponentMessagesSource, ResetEventListener
 {
@@ -51,19 +49,16 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
     private static final String SUFFIX = ".properties";
 
     /**
-     *  The name of the component/application/etc property that will be used to
-     *  determine the encoding to use when loading the messages
-     * 
-     **/
+     * The name of the component/application/etc property that will be used to determine the
+     * encoding to use when loading the messages
+     */
 
-    public static final String MESSAGES_ENCODING_PROPERTY_NAME =
-        "org.apache.tapestry.messages-encoding";
+    public static final String MESSAGES_ENCODING_PROPERTY_NAME = "org.apache.tapestry.messages-encoding";
 
     /**
-     *  Map of {@link Properties}, keyed on a {@link MultiKey} of
-     *  component specification path and locale.
-     * 
-     **/
+     * Map of {@link Properties}, keyed on a {@link MultiKey}of component specification path and
+     * locale.
+     */
 
     private Map _cache = new HashMap();
 
@@ -75,18 +70,13 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
     }
 
     /**
-     *  Returns an instance of {@link Properties} containing
-     *  the properly localized messages for the component,
-     *  in the {@link Locale} identified by the component's
-     *  containing page.
-     * 
-     **/
+     * Returns an instance of {@link Properties}containing the properly localized messages for the
+     * component, in the {@link Locale}identified by the component's containing page.
+     */
 
     protected synchronized Properties getLocalizedProperties(IComponent component)
     {
-        if (component == null)
-            throw new IllegalArgumentException(
-                Tapestry.format("invalid-null-parameter", "component"));
+        Tapestry.notNull(component, "component");
 
         Resource specificationLocation = component.getSpecification().getSpecificationLocation();
         Locale locale = component.getPage().getLocale();
@@ -109,10 +99,8 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
         return result;
     }
 
-    private Properties assembleProperties(
-        IComponent component,
-        Resource baseResourceLocation,
-        Locale locale)
+    private Properties assembleProperties(IComponent component, Resource baseResourceLocation,
+            Locale locale)
     {
         String name = baseResourceLocation.getName();
 
@@ -193,15 +181,12 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
 
     private MultiKey buildKey(Resource location, Locale locale)
     {
-        return new MultiKey(new Object[] { location, locale.toString()}, false);
+        return new MultiKey(new Object[]
+        { location, locale.toString() }, false);
     }
 
-    private Properties readProperties(
-        IComponent component,
-        Resource baseLocation,
-        String baseName,
-        Locale locale,
-        Properties parent)
+    private Properties readProperties(IComponent component, Resource baseLocation, String baseName,
+            Locale locale, Properties parent)
     {
         StringBuffer buffer = new StringBuffer(baseName);
 
@@ -243,18 +228,17 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
         }
         catch (IOException ex)
         {
-            throw new ApplicationRuntimeException(
-                Tapestry.format("ComponentPropertiesStore.unable-to-read-input", propertiesURL),
-                ex);
+            throw new ApplicationRuntimeException(ImplMessages.unableToLoadProperties(
+                    propertiesURL,
+                    ex), ex);
         }
 
         return result;
     }
 
     /**
-     *  Clears the cache of read properties files.
-     * 
-     **/
+     * Clears the cache of read properties files.
+     */
 
     public synchronized void resetEventDidOccur()
     {
@@ -263,21 +247,19 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
 
     public Messages getMessages(IComponent component)
     {
-        return new ComponentMessages(
-            component.getPage().getLocale(),
-            getLocalizedProperties(component));
+        return new ComponentMessages(component.getPage().getLocale(),
+                getLocalizedProperties(component));
     }
 
     private String getMessagesEncoding(IComponent component, Locale locale)
     {
-        IPropertySource source =
-            new DefaultComponentPropertySource(component, _applicationPropertySource, locale);
+        IPropertySource source = new DefaultComponentPropertySource(component,
+                _applicationPropertySource, locale);
 
         String encoding = source.getPropertyValue(MESSAGES_ENCODING_PROPERTY_NAME);
 
         if (encoding == null)
-            encoding =
-                source.getPropertyValue(TemplateSourceImpl.TEMPLATE_ENCODING_PROPERTY_NAME);
+            encoding = source.getPropertyValue(TemplateSourceImpl.TEMPLATE_ENCODING_PROPERTY_NAME);
 
         return encoding;
     }
