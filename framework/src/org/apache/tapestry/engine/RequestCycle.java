@@ -725,7 +725,7 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 
         page.validate(this);
 
-        Tapestry.checkMethodInvocation(Tapestry.IPAGE_VALIDATE_METHOD_ID, "validate()", page);
+        Tapestry.checkMethodInvocation(Tapestry.ABSTRACTPAGE_VALIDATE_METHOD_ID, "validate()", page);
 
         setPage(page);
     }
