@@ -205,6 +205,7 @@
 			<filter token="OS_VERSION" value="${os.version}"/>
 			<filter token="JAVA_VENDOR" value="${java.vendor}"/>
 			<filter token="JAVA_VM_VERSION" value="${java.vm.version}"/>
+			<filter token="COPY_YEARS" value="${copyright.years}"/>
 		</filterset>
 	</copy>
 	
