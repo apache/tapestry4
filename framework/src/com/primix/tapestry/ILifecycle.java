@@ -61,7 +61,6 @@ import com.primix.tapestry.event.*;
 
 public interface ILifecycle
 {
-    
     /**
      *  Invoked after rendering has taken place, even if an exception is thrown.
      *  <p>A component is <em>not</em> guarenteed to have been sent
