@@ -224,8 +224,7 @@ be enabled when the user has items in their shopping cart.</para>
       <para>In the JSP world, this would look something like:
 </para>
       <informalexample>
-        <programlisting>
-          <emphasis>&lt;%
+        <programlisting><emphasis>&lt;%
    boolean showLink;
    String imageURL;
    showLink = applicationObject.getHasCheckoutItems();
@@ -244,7 +243,7 @@ be enabled when the user has items in their shopping cart.</para>
   if (showLink)
     out.println("&lt;/a&gt;");
 %&gt;</emphasis>
-        </programlisting>
+</programlisting>
       </informalexample>
       <para>This assumes that <varname>applicationObject</varname> exists to 
 determine whether the user has entered any checkout items.  
@@ -255,8 +254,7 @@ Presumably, this object was provided by a controlling servlet, or placed into th
 The corresponding Tapestry HTML template is much simpler:
 </para>
       <informalexample>
-        <programlisting>
-          <emphasis><![CDATA[
+        <programlisting><emphasis><![CDATA[
 <a jwcid="checkoutLink"><img jwcid="checkoutButton"/></a>]]></emphasis>
         </programlisting>
       </informalexample>
@@ -820,10 +818,10 @@ Each formal parameter has a specific
 (case sensitive) name and may be required or optional.
 </para>
       <para>
-In many cases, there is a 1:1 mapping between a Tapestry component and a specific
+In many cases, there is a one-to-one mapping between a Tapestry component and a specific
 HTML tag.  For example, &Body; and <sgmltag class="starttag">body</sgmltag>,
 &Form; and <sgmltag class="starttag">form</sgmltag>, etc.  In other cases, a Tapestry component
-produces a known single HTML tag.  That is, &Action;, &Direct;, &Page; and &Service;
+produces a known single HTML tag.  For example, &Action;, &Direct;, &Page; and &Service;
 all produce an <sgmltag class="starttag">a</sgmltag> tag.
 </para>
       <para>
@@ -991,8 +989,8 @@ converted into Tapestry components and templates.
       <para>
 The start and end tags for Tapestry components must balance properly. This includes cases where the
 end tag is normally ommitted, such as <sgmltag class="starttag">input</sgmltag> elements.  Either a closing
-tag must be supplied, or the XML-style syntax for an empty element must be used (that is, a slash before
-the end of the tag).
+tag must be supplied, or the XML-style syntax for an empty element must be used (that is, 
+a slash just before the end of the tag).
 </para>
       <para>
 Tapestry divides the contents of the HTML template into two categories:
@@ -1004,7 +1002,7 @@ Tapestry divides the contents of the HTML template into two categories:
           </listitem>
           <listitem>
             <para>
-		Tapestry components (tags with the <varname>jwcid</varname> attribute, ass well as the &jwc-tag; element).
+		Tapestry components (tags with the <varname>jwcid</varname> attribute, as well as the &jwc-tag; element).
 		The related tags are removed, and the HTML is supplied by the actual
 		components.
 		</para>
@@ -6002,6 +6000,191 @@ for any category to be set, and allows new categories to be created.
 </para>
     </section>
   </chapter>
+  
+<appendix id="jars">
+	<title>Tapestry JAR files</title>
+	
+<para>
+The Tapestry distribution includes a number of JAR files, some of which are needed to compile the framework (and
+examples), others are used at runtime (and must be added to the servlet container's classpath).
+</para>
+
+<variablelist>
+
+
+	<varlistentry>
+		<term><filename>com.primix.tapestry.jar</filename></term>
+		<listitem>
+			<para>
+			The main Tapestry framework.  This is needed at compile time and runtime.  At runtime, it is most
+			often added to the servlet container's classpath.
+			</para>
+		</listitem>
+	</varlistentry>
+	
+	<varlistentry>
+		<term><filename>ejb.jar</filename></term>
+		<listitem>
+			<para>
+			Contains the EJB 1.1 packages.  These classes are needed by Tapestry at runtime 
+			(Tapestry includes some special handling
+			of EJB client stubs recorded by a &PageRecorder;.  However, most often, the servlet container or application server
+			provides these interfaces and classes.
+			</para>
+		</listitem>
+	</varlistentry>
+	
+	<varlistentry>
+		<term><filename>javax.servlet.jar</filename></term>
+		<listitem>
+			<para>
+			Defines the Java Servlet API.  Again, these classes and interfaces are needed by Tapestry
+			at runtime, but are almost always provided by the servlet container.
+			</para>
+		</listitem>
+	</varlistentry>
+	
+	<varlistentry>
+		<term><filename>junit.jar</filename></term>
+		<listitem>
+			<para>
+			The <ulink url="http://www.junit.org/">JUnit</ulink> testing framework, used by the Tapestry unit tests
+			(in the <filename>junit</filename> directory).
+			</para>
+		</listitem>
+	</varlistentry>
+
+	<varlistentry>
+		<term><filename>log4j-core.jar</filename></term>
+		<listitem>
+		<para>
+		The &Log4J; logging framework.  This is used by Tapestry at runtime.
+		</para>
+		</listitem>
+	</varlistentry>
+
+	<varlistentry>
+		<term><filename>javax.xml.jaxp.jar</filename></term>
+		<listitem>
+		<para>
+		The Java API for XML Processing.  Needed at runtime to allow Tapestry to locate an XML
+		processor, used to parse application and component specifications.
+		</para>
+		</listitem>
+	</varlistentry>
+	
+
+	<varlistentry>
+		<term><filename>mcoidb.jar</filename></term>
+		<listitem>
+		<para>
+		The <ulink url="http://mckoi.com/database/">McKoi SQL Database</ulink>, a GPL Java database.
+		This is used by the Virtual Library demonstration.
+		</para>
+		</listitem>
+	</varlistentry>
+
+
+	<varlistentry>
+		<term><filename>net.sf.tapestry.contrib.jar</filename></term>
+		<listitem>
+		<para>
+		Contains additional components and tools that are not integral to the framework itself, such
+		as the Palette.  Needed at runtime if any such components are used in an application.
+		</para>
+		</listitem>
+	</varlistentry>
+	
+	<varlistentry>
+		<term><filename>org.apache.crimson.jar</filename></term>
+		<listitem>
+		<para>
+		An XML parser that can be used by Tapestry unless a different one is configured.
+		</para>
+		</listitem>
+	</varlistentry>
+	
+	
+	<varlistentry>
+		<term><filename>org.mortbay.jetty.jar</filename></term>
+		<listitem>
+		<para>
+		The &Jetty; servlet container, used to execute the Tapestry examples, tutorials and demostrations.
+		</para>
+		</listitem>
+	</varlistentry>
+	
+	<varlistentry>
+		<term><filename>Tutorial.war</filename></term>
+		<term><filename>Vlib.war</filename></term>
+		<term><filename>Wap.war</filename></term>
+		<listitem>
+		<para>
+		Example Tapestry applications.
+		</para>
+		</listitem>
+	</varlistentry>
+	
+	<varlistentry>
+		<term><filename>VlibBeans.jar</filename></term>
+		<listitem>
+		<para>
+		An EJB JAR, containing entity and session EJBs for deployment with &JBoss;.
+		</para>
+		</listitem>
+	</varlistentry>
+	
+</variablelist>
+
+</appendix>
+  
+<appendix id="building">
+	<title>Building Tapestry</title>
+	
+<para>
+The Tapestry framework and examples can be easily rebuilt using &Ant;.  The Tapestry distribution includes
+all necessary source code, build files and most of the 
+supporting frameworks.  The distribution has virtually the same structure as the Tapestry
+CVS repository (the main difference being that the Tapestry distribution does <emphasis>not</emphasis> include
+the source for the Tapestry manuals).
+</para>
+
+<para>
+The Tapestry distribution can be downloaded from
+the <ulink url="http://sourceforge.net/project/showfiles.php?group_id=4754">Tapestry downloads page</ulink>.
+Alternately, Tapestry source can be obtained via
+<ulink url="http://sourceforge.net/cvs/?group_id=4754">CVS access on SourceForge</ulink>.
+</para>
+
+<para>
+In either case, the &JBoss; distribution is also required for a complete build (some of the example code, as well as the 
+<filename>net.sf.tapestry.contrib.jar</filename> framework has dependencies on &JBoss;).
+</para>
+
+<para>
+In addition, it is necessary to inform the Tapestry build files where the JBoss distribution exists.
+The file <filename>config/build.properties</filename> exists for this purpose.  A sample file is included in the distribution;
+this can be renamed or copied, then editted, filling in the entry for <varname>jboss.dir</varname>.
+</para>
+
+<para>
+Tapestry is currently built and tested againt release 2.3.3 of JBoss.
+</para>
+
+<para>
+Finally, you must have &Ant; 1.4 or better, as well as a JDK 1.2 or better JDK.
+</para>
+
+<para>
+Rebuilding the framework is as easy as executing the command <command>ant clean install</command>.  The
+<varname>clean</varname> target deletes all derived files, including the precompiled libraries included in
+the distribution.  The <varname>install</varname> target recompiles all Java code and builds the library JAR files.
+</para>
+
+
+
+</appendix>
+  
   <appendix id="faq">
     <title>Frequently Asked Questions</title>
     <para>
