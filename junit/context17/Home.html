@@ -1,0 +1,18 @@
+<html jwcid="@Shell" title="Home">
+<body jwcid="@Body">
+
+<form jwcid="@Form" listener="[[ listeners.formSubmit ]]">
+Normal: <input jwcid="normal@TextField" value="[[ normal ]]" displayWidth="20" maximumLength="25"/>
+<br/>
+Disabled: <input jwcid="disabled@TextField" value="[[ disabled ]]" disabled="[[ true ]]"/>
+<br/>
+Hidden: <input jwcid="hidden@TextField" value="[[ hidden ]]" hidden="[[ true ]]"/>
+</form>
+
+
+<br/>
+
+<form jwcid="@Form" direct="[[ false ]]"/>
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="c15" root="context15"/>
+
+  	<servlet name="assets" class="net.sf.tapestry.ApplicationServlet">
+  		<init-parameter name="net.sf.tapestry.asset.dir" value=".private"/>
+  		<init-parameter name="net.sf.tapestry.asset.URL" value="/private"/>
+  	</servlet>
+
+	<request>
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Externalized Assets</title>
+]]>
+		</assert-output>
+		
+		<assert-output name="Image URL">
+<![CDATA[
+<img src="/private/net/sf/tapestry/contrib/inspector/tapestry-logo.gif" border="0" name="rollover_0"/>
+]]>		
+		</assert-output>
+	</request>
+	
+	<!-- Redo the request, to ensure that caching works. -->
+	
+	<request>
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Externalized Assets</title>
+]]>
+		</assert-output>
+		
+		<assert-output name="Image URL">
+<![CDATA[
+<img src="/private/net/sf/tapestry/contrib/inspector/tapestry-logo.gif" border="0" name="rollover_0"/>
+]]>		
+		</assert-output>
+	</request>	
+</mock-test>

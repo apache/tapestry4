@@ -81,6 +81,14 @@ public class MockContext extends AttributeHolder implements ServletContext, IIni
 {
     private MockSession _session;
 
+    private static final Map _suffixToContentType = new HashMap();
+
+    static {
+        _suffixToContentType.put("html", "text/html");
+        _suffixToContentType.put("gif", "image/gif");
+        _suffixToContentType.put("png", "image/png");
+    }
+
     /**
      *  Directory, relative to the current directory (i.e., System property user.dir)
      *  that is the context root.
@@ -108,7 +116,10 @@ public class MockContext extends AttributeHolder implements ServletContext, IIni
 
     public String getMimeType(String path)
     {
-        return null;
+        int lastx = path.lastIndexOf('.');
+        String suffix = path.substring(lastx + 1);
+
+        return(String) _suffixToContentType.get(suffix);
     }
 
     public Set getResourcePaths(String arg0)

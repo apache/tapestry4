@@ -3,7 +3,7 @@
 <!-- $Id$ -->
 
 <mock-test>
-    <context name="c12" root="context14"/>
+    <context name="c14" root="context14"/>
 
   	<servlet name="app" class="net.sf.tapestry.ApplicationServlet"/>
 

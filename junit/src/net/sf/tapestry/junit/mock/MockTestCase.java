@@ -54,6 +54,8 @@
  */
 package net.sf.tapestry.junit.mock;
 
+import java.io.File;
+
 import net.sf.tapestry.junit.TapestryTestCase;
 
 /**
@@ -93,6 +95,79 @@ public class MockTestCase extends TapestryTestCase
     // Should also look at JUnit documentation; perhaps there's a way to
     // implicitly define tests based on the found XML files?  Possibly
     // in a static suite() method?
+
+	/**
+	 *  Tests {@link net.sf.tapestry.form.TextArea} and
+	 *  {@link net.sf.tapestry.html.InsertText}.
+	 * 
+	 **/
+	
+	public void testTextArea()
+	throws Exception
+	{
+		attempt("TestTextArea.xml");
+	}
+
+	/**
+	 *  Tests for file uploads and the Upload component.
+	 * 
+	 **/
+	
+	public void testUpload()
+	throws Exception
+	{
+		attempt("TestUpload.xml");
+	}
+
+	/**
+	 *  Tests for the Radio and RadioGroup components.
+	 * 
+	 **/
+	
+	public void testRadio()
+	throws Exception
+	{
+		attempt("TestRadio.xml");
+	}
+
+	/**
+	 *  Tests for the TextField component.
+	 * 
+	 **/
+	
+	public void testTextField()
+	throws Exception
+	{
+		attempt("TestTextField.xml");
+	}
+
+	/**
+	 *  Test downloading content via the asset service.
+	 * 
+	 **/
+	
+	public void testAssetService()
+	throws Exception
+	{
+		attempt("TestAssetService.xml");
+	}
+
+	/**
+	 *  Test externalization of private assets.
+	 * 
+	 **/
+	
+	public void testAssets()
+	throws Exception
+	{
+		deleteDir(".private");	
+		
+		// Run the test twice; this catches some coverage related to
+		// files already being externalized.
+		
+		attempt("TestAssets.xml");
+		attempt("TestAssets.xml");		
+	}
 
 	/**
 	 *  Test the ListEdit component.
@@ -500,5 +575,35 @@ public class MockTestCase extends TapestryTestCase
     public void testRelativeAssets() throws Exception
     {
         attempt("TestRelativeAssets.xml");
+    }
+    
+    private void deleteDir(String path)
+    throws Exception
+    {
+    	File file = new File(path);
+    	
+    	if (!file.exists())
+    		return;
+    		
+ 		deleteRecursive(file);
+    }
+    
+    private void deleteRecursive(File file)
+    {
+    	if (file.isFile())
+    	{
+    		file.delete();
+    		return;
+    	}
+    	
+    	String[] names = file.list();
+    	
+    	for (int i = 0; i < names.length; i++)
+    	{
+    		File f = new File(file, names[i]);
+    		deleteRecursive(f);
+    	}
+    	
+    	file.delete();
     }
 }

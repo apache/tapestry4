@@ -1,0 +1,15 @@
+<html jwcid="@Shell" title="Home">
+<body jwcid="@Body">
+
+<form jwcid="@Form" listener="[[ listeners.formSubmit ]]">
+
+<input type="file" jwcid="@Upload" file="[[ uploadFile ]]" disabled="[[ uploadDisabled ]]"/>
+	
+</form>
+
+<br/>
+
+<a href="#" jwcid="@DirectLink" listener="[[ listeners.disableUpload ]]">click to disable Upload</a>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="c16" root="context16"/>
+
+  	<servlet name="app" class="net.sf.tapestry.ApplicationServlet">
+  		<init-parameter name="net.sf.tapestry.application-specification"
+  				value="/net/sf/tapestry/junit/mock/c16/app.application"/>
+  	</servlet>
+
+	<request>
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Private Assets</title>
+]]>
+		</assert-output>
+		
+		<assert-output name="Image Tag">
+<![CDATA[
+<img src="/c16/app?service=asset&amp;sp=%2Fnet%2Fsf%2Ftapestry%2Fjunit%2Fmock%2Fc16%2Flogo.png" border="0"/>
+]]>
+		</assert-output>
+	</request>
+	
+	<request>
+		<parameter name="service" value="asset"/>
+		<parameter name="sp" value="/net/sf/tapestry/junit/mock/c16/logo.png"/>
+		
+		<assert-output-stream name="Image Content"
+				content-type="image/png"
+				path="src/net/sf/tapestry/junit/mock/c16/logo.png"/>	
+	</request>
+	
+	<request>
+		<parameter name="service" value="asset"/>
+		<parameter name="sp" value="/net/sf/tapestry/junit/mock/c16/globe.jpg"/>
+		
+		<assert-output-stream name="Image Content"
+				content-type="image/jpeg"
+				path="src/net/sf/tapestry/junit/mock/c16/globe.jpg"/>	
+	</request>	
+	
+	<!-- Request a file which does not exist. -->
+	
+	<request>
+		<parameter name="service" value="asset"/>
+		<parameter name="sp" value="/net/sf/tapestry/junit/mock/c16/MISSING.gif"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Exception</title>
+]]>			
+		</assert-output>
+		
+		<assert-output name="Message">
+		Could not locate resource /net/sf/tapestry/junit/mock/c16/MISSING.gif.	
+		</assert-output>
+		
+	</request>
+	
+	<!-- Request missing the sp parameter -->
+	
+	<request>
+		<parameter name="service" value="asset"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Exception</title>
+]]>			
+		</assert-output>
+			
+		<assert-output name="Message">
+		Service asset requires exactly one service parameter.	
+		</assert-output>
+	</request>
+	
+</mock-test>
