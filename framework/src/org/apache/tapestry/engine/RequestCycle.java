@@ -1,7 +1,7 @@
 /* ====================================================================
  * The Apache Software License, Version 1.1
  *
- * Copyright (c) 2000-2003 The Apache Software Foundation.  All rights
+ * Copyright (c) 2000-2004 The Apache Software Foundation.  All rights
  * reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -61,6 +61,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.ApplicationRuntimeException;
@@ -733,5 +734,29 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
             page);
 
         setPage(page);
+    }
+
+    /**
+     * @since 3.0
+     */
+    public String toString()
+    {
+        ToStringBuilder b = new ToStringBuilder(this);
+
+        b.append("rewinding", _rewinding);
+
+        if (_service != null)
+            b.append("service", _service.getName());
+
+        b.append("serviceParameters", _serviceParameters);
+
+        if (_loadedPages != null)
+            b.append("loadedPages", _loadedPages.keySet());
+
+        b.append("attributes", _attributes);
+        b.append("targetActionId", _targetActionId);
+        b.append("targetComponent", _targetComponent);
+
+        return b.toString();
     }
 }
