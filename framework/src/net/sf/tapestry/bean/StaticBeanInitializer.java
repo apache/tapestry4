@@ -38,7 +38,7 @@ import net.sf.tapestry.IBeanProvider;
 
 public class StaticBeanInitializer extends AbstractBeanInitializer
 {
-    private Object _value;
+    protected Object _value;
 
     public StaticBeanInitializer(String propertyName, Object value)
     {

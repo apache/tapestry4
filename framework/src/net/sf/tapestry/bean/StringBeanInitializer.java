@@ -40,7 +40,7 @@ import net.sf.tapestry.IComponent;
 
 public class StringBeanInitializer extends AbstractBeanInitializer
 {
-    private String _key;
+    protected String _key;
 
     public StringBeanInitializer(String propertyName, String key)
     {

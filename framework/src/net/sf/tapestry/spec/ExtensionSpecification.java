@@ -55,7 +55,7 @@ public class ExtensionSpecification extends BasePropertyHolder
     private static final Logger LOG = LogManager.getLogger(ExtensionSpecification.class);
 
     private String _className;
-    private Map _configuration = new HashMap();
+    protected Map _configuration = new HashMap();
     private boolean _immediate;
 
     public String getClassName()
