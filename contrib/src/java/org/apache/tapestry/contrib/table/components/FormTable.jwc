@@ -31,6 +31,7 @@
     
     <parameter name="tableModel" 
         type="org.apache.tapestry.contrib.table.model.ITableModel" 
+        property-name="tableModelValue"
         required="no">
         <description>
             The model describing the data to be presented by the Table component.
@@ -42,7 +43,7 @@
     <parameter name="source" type="java.lang.Object" required="no">
         <description>
             The data to be displayed by the component. This parameter is available as
-            an alternative to tableModel and must be used in combination with the
+            an alternative to 'tableModel' and must be used in combination with the
             'columns' parameter. 
             The parameter must be an array of values, a collection, an iterator, 
             or an object implementing the IBasicTableModel interface.
@@ -151,7 +152,7 @@
     </parameter>
 
 	<parameter name="row" 
-		type="Object" 
+		type="java.lang.Object" 
 		required="no"
 		direction="custom">
         <description>
@@ -226,7 +227,7 @@
 		<inherited-binding name="tableSessionStateManager" parameter-name="tableSessionStateManager"/>
 		<inherited-binding name="tableSessionStoreManager" parameter-name="tableSessionStoreManager"/>
 		<inherited-binding name="columnSettingsContainer" parameter-name="columnSettingsContainer"/>
-		<static-binding name="element">span</static-binding>
+		<static-binding name="element">div</static-binding>
 	</component>
 
 	<component id="tablePages" type="TableFormPages">
