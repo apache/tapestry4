@@ -30,7 +30,7 @@ include $(SYS_MAKEFILE_DIR)/CommonRules.mk
 clean: clean-root module-clean
 
 clean-root:
-	@$(ECHO) "\n*** Cleaning ... ***\n"
+	$(call NOTE, Cleaning ...)
 	@$(RM) $(SYS_BUILD_DIR_NAME) $(JAR_FILE)
 
 compile: setup-catalogs
@@ -107,12 +107,12 @@ _JAVA_FILES := $(shell $(CAT) $(MOD_JAVA_CATALOG))
 
 $(MOD_JAVA_STAMP_FILE): $(_JAVA_FILES)
 ifneq "$(_JAVA_FILES)" ""
-	@$(ECHO) "\n*** Compiling ... ***\n"
+	$(call NOTE, Compiling ...)
 	$(CD) $(FINAL_SOURCE_DIR) ; \
 	$(JAVAC) $(FINAL_JAVAC_OPT) $(patsubst $(FINAL_SOURCE_DIR)$(SLASH)%, \
 	  	%, $?)
 else
-	@$(ECHO) "\n*** Nothing to compile ***\n"
+	$(call NOTE, Nothing to compile)
 endif
 	@$(TOUCH) $@
 
@@ -133,7 +133,7 @@ _RMI_CLASS_FILES := \
 
 $(RMI_STAMP_FILE): $(_RMI_CLASS_FILES)
 ifneq "$(_RMI_CLASS_NAMES)" ""
-	@$(ECHO) "\n*** Compiling RMI stubs and skeletons ... ***\n"
+	$(call NOTE, Compiling RMI stubs and skeletons ...)
 	$(RMIC) $(FINAL_RMIC_OPT) \
 		$(subst $(SLASH),$(DOT), \
 			$(subst .class,$(EMPTY), \
@@ -166,7 +166,7 @@ _RESOURCE_FILES := $(shell $(CAT) $(MOD_RESOURCE_CATALOG))
 
 $(RESOURCE_STAMP_FILE): $(_RESOURCE_FILES)
 ifneq "$(_RESOURCE_FILES)" ""
-	@$(ECHO) "\n*** Copying package resources ...***\n"
+	$(call NOTE, Copying package resources ...)
 	@$(ECHO) Copying: $(notdir $?)
 	@$(CD) $(FINAL_SOURCE_DIR) ; \
 	$(CP) $(CP_FORCE_OPT) $(CP_PARENTS_OPT) $(subst $(FINAL_SOURCE_DIR)$(SLASH),$(EMPTY),$?) \
@@ -219,7 +219,7 @@ _FINAL_PACKAGE_DIR := $(FINAL_SOURCE_DIR)$(SLASH)$(PACKAGE_DIR)
 
 
 catalog-package:
-	@$(ECHO) "\n*** Cataloging package $(PACKAGE) ... ***\n"
+	$(call NOTE, Cataloging package $(PACKAGE) ...)
 	@if [ ! -r $(_FINAL_PACKAGE_DIR)/Makefile ] ; \
 	then _mopt=--makefile=$(SYS_MAKEFILE_DIR)/DefaultPackage.mk ; \
 	fi ; \
@@ -240,7 +240,7 @@ endif
 ifeq "$(PACKAGES)" ""
 	$(error Must define PACKAGES in Makefile)
 endif
-	@$(ECHO) "\n*** Generating Javadoc ... ***\n"
+	$(call NOTE, Generating Javadoc ...)
 	@$(MKDIRS) $(JAVADOC_DIR)
 	$(JAVADOC) -d $(JAVADOC_DIR) -sourcepath $(FINAL_SOURCE_DIR) \
 	-classpath "$(call JBE_CANONICALIZE,-classpath $(MOD_CLASSPATH) $(LOCAL_CLASSPATH) $(MOD_CLASS_DIR))" \
@@ -251,7 +251,7 @@ FINAL_META_RESOURCES := $(strip $(MOD_META_RESOURCES) $(META_RESOURCES))
 
 $(MOD_META_STAMP_FILE): $(FINAL_META_RESOURCES)
 ifneq "$(FINAL_META_RESOURCES)" ""
-	@$(ECHO) "\n*** Copying META-INF resources ... ***\n"
+	$(call NOTE, Copying META-INF resources ...)
 	@$(ECHO) Copying: $(notdir $?)
 	@$(CP) $(CP_FORCE_OPT) $? $(MOD_META_INF_DIR)
 	@$(TOUCH) $(MOD_DIRTY_JAR_STAMP_FILE)
