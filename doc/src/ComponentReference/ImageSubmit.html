@@ -70,14 +70,12 @@
   </ul>
   <p>
   If a listener is used, it will be invoked as the ImageSubmit
-  component is rewound.  In addition, the
-  <A href="Form.html">Form</A>'s listener will
-  always be invoked.
-  
-  <p>Use the first method if you need to be sure 
-            that the entire form has rewound before any logic specific to the 
-            ImageSubmit is triggered.</p>   
-             
+  component is rewound.  In addition, the <A href="Form.html">Form</A>'s 
+  listener will invoked if it is defined.
+  <p>
+  Use the first method if you need to be sure that the entire form has rewound 
+  before any logic specific to the ImageSubmit is triggered.
+  </p>             
  </td>
 </tr>
 
@@ -203,12 +201,11 @@
     </td>
 	</tr>
 	</table>
-            <P>Body: <STRONG>removed</STRONG><BR>Informal parameters: 
-            <STRONG>allowed</STRONG>
-    <br>
-  Reserved 
-            parameters: "src", "type", "border" </P>
-      
+  <P>
+  Body: <STRONG>removed</STRONG><BR>
+  Informal parameters: <STRONG>allowed</STRONG><br>
+  Reserved parameters: "src", "type", "border" 
+  </P>      
  </td>
 </tr>
 
@@ -216,7 +213,60 @@
  <td colspan="2">
   <b>Examples</b>
 	<p>
-  This example is under construction.</p>
+  This example uses the ImageSubmit to provide two form processing priority 
+  image buttons.
+  </p>
+
+<table cellspacing="12"  bgcolor="#c0c0c0">
+<form>
+ <tr>
+  <td>
+   <img alt="Standard Submit" src="images/intray-green.png"/>
+   <img alt="Urgent Submit" src="images/intray-red.png"/>
+  </td>
+ </tr>
+</form>
+</table>
+  
+<pre>
+&lt;form jwcid="form"&gt;
+  &lt;img jwcid="<span class="jwcid">standardSubmit</span>" alt="Standard Submit"/&gt;
+  &lt;img jwcid="<span class="jwcid">urgentSubmit</span>" alt="Urgent Submit"/&gt;
+&lt;/form&gt;
+
+
+&lt;component id="form" type="<A href="Form.html">Form</a>"/&gt;
+
+&lt;component id="<span class="jwcid">standardSubmit</span>" type="<A href="ImageSubmit.html">ImageSubmit</a>"&gt;
+    &lt;binding name="image" expression="assets.standardImage"/&gt;
+    &lt;binding name="listener" expression="listeners.standardSubmit"/&gt;
+&lt;/component&gt;
+
+&lt;component id="<span class="jwcid">urgentSubmit</span>" type="<A href="ImageSubmit.html">ImageSubmit</a>"&gt;
+    &lt;binding name="image" expression="assets.urgentImage"/&gt;
+    &lt;binding name="listener" expression="listeners.urgentSubmit"/&gt;
+&lt;/component&gt;
+
+&lt;private-asset name="standardImage" resource-path="/com/mycorp/intray-green.png"/&gt;
+
+&lt;private-asset name="urgentImage" resource-path="/com/mycorp/intray-red.png"/&gt;
+
+
+package com.mycorp;
+
+public class FormPage extends BasePage {
+
+    public void standardSubmit(IRequesCycle cycle) {
+        // Process standard priority submit.    
+        ..    
+    }
+
+    public void urgentSubmit(IRequesCycle cycle) {
+        // Process urgent priority submit.    
+        ..    
+    }
+}
+</pre>
       
  </td>
 </tr>
