@@ -269,6 +269,9 @@ NextGen) be released as version number 3.0.
     <action type="fix" dev="HLS" due-to="Morten Holm" fixes-bug="TAPESTRY-248">
        The online Tapestry component reference for 3.0.1 for @Foreach component has an error in the example section. 
     </action>
+    <action type="fix" dev="HLS" due-to="Michael Frericks" fixes-bug="TAPESTRY-218">
+      Persistent properties cant be set to null.
+    </action>
       
   </release>
 
