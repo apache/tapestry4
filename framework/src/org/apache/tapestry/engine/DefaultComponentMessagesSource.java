@@ -28,8 +28,10 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Messages;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.IComponent;
+import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.MultiKey;
+import org.apache.tapestry.util.text.LocalizedProperties;
 
 /**
  *  Global object (stored in the servlet context) that accesses
@@ -47,6 +49,14 @@ public class DefaultComponentMessagesSource implements IComponentMessagesSource
 
     private Properties _emptyProperties = new Properties();
 
+    /**
+     *  The name of the component/application/etc property that will be used to
+     *  determine the encoding to use when loading the messages
+     * 
+     **/ 
+         
+    public static final String MESSAGES_ENCODING_PROPERTY_NAME = "org.apache.tapestry.messages-encoding";
+    
     /**
      *  Map of {@link Properties}, keyed on a {@link MultiKey} of
      *  component specification path and locale.
@@ -83,7 +93,7 @@ public class DefaultComponentMessagesSource implements IComponentMessagesSource
 
         // Not found, create it now.
 
-        result = assembleProperties(specificationLocation, locale);
+        result = assembleProperties(component, specificationLocation, locale);
 
         _cache.put(key, result);
 
@@ -92,7 +102,7 @@ public class DefaultComponentMessagesSource implements IComponentMessagesSource
 
     private static final String SUFFIX = ".properties";
 
-    private Properties assembleProperties(Resource baseResourceLocation, Locale locale)
+    private Properties assembleProperties(IComponent component, Resource baseResourceLocation, Locale locale)
     {
         boolean debug = LOG.isDebugEnabled();
         if (debug)
@@ -111,12 +121,12 @@ public class DefaultComponentMessagesSource implements IComponentMessagesSource
 
         if (parent == null)
         {
-            parent = readProperties(baseResourceLocation, baseName, null, null);
+            parent = readProperties(component, baseResourceLocation, baseName, null, null);
 
-            if (parent == null)
+            if (parent == null) {
                 parent = _emptyProperties;
-
-            _cache.put(baseResourceLocation, parent);
+                _cache.put(baseResourceLocation, parent);
+            }
         }
 
         Properties result = parent;
@@ -128,10 +138,10 @@ public class DefaultComponentMessagesSource implements IComponentMessagesSource
 
             result = (Properties) _cache.get(key);
 
-            if (result == null)
-                result = readProperties(baseResourceLocation, baseName, l, parent);
-
-            _cache.put(key, result);
+            if (result == null) {
+                result = readProperties(component, baseResourceLocation, baseName, l, parent);
+                _cache.put(key, result);
+            }
 
             parent = result;
         }
@@ -145,10 +155,10 @@ public class DefaultComponentMessagesSource implements IComponentMessagesSource
 
             result = (Properties) _cache.get(key);
 
-            if (result == null)
-                result = readProperties(baseResourceLocation, baseName, l, parent);
-
-            _cache.put(key, result);
+            if (result == null) {
+                result = readProperties(component, baseResourceLocation, baseName, l, parent);
+                _cache.put(key, result);
+            }
 
             parent = result;
         }
@@ -162,10 +172,10 @@ public class DefaultComponentMessagesSource implements IComponentMessagesSource
 
             result = (Properties) _cache.get(key);
 
-            if (result == null)
-                result = readProperties(baseResourceLocation, baseName, l, parent);
-
-            _cache.put(key, result);
+            if (result == null) {
+                result = readProperties(component, baseResourceLocation, baseName, l, parent);
+                _cache.put(key, result);
+            }
         }
 
         return result;
@@ -177,6 +187,7 @@ public class DefaultComponentMessagesSource implements IComponentMessagesSource
     }
 
     private Properties readProperties(
+    	IComponent component,
         Resource baseLocation,
         String baseName,
         Locale locale,
@@ -206,11 +217,17 @@ public class DefaultComponentMessagesSource implements IComponentMessagesSource
         else
             result = new Properties(parent);
 
+        LocalizedProperties localizedResult = new LocalizedProperties(result);
+        String encoding = getMessagesEncoding(component, locale);
+        
         try
         {
             InputStream input = propertiesURL.openStream();
 
-            result.load(input);
+            if (encoding == null)
+            	localizedResult.load(input);
+            else
+            	localizedResult.load(input, encoding);
 
             input.close();
         }
@@ -239,6 +256,23 @@ public class DefaultComponentMessagesSource implements IComponentMessagesSource
         return new ComponentMessages(
             component.getPage().getLocale(),
             getLocalizedProperties(component));
+    }
+
+    private String getMessagesEncoding(IComponent component, Locale locale)
+    {
+    	String encoding = null;
+
+    	IRequestCycle cycle = component.getPage().getRequestCycle();
+    	if (cycle != null) {
+	    	IPropertySource applicationSource = cycle.getEngine().getPropertySource();
+	        IPropertySource source = new DefaultComponentPropertySource(component, applicationSource, locale);
+
+	        encoding = source.getPropertyValue(MESSAGES_ENCODING_PROPERTY_NAME);
+	        if (encoding == null)
+	        	encoding = source.getPropertyValue(DefaultTemplateSource.TEMPLATE_ENCODING_PROPERTY_NAME);
+    	}
+        
+        return encoding;
     }
 
 }

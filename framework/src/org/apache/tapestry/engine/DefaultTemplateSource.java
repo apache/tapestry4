@@ -46,11 +46,8 @@ import org.apache.tapestry.parse.TemplateToken;
 import org.apache.tapestry.resolver.ComponentSpecificationResolver;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
-import org.apache.tapestry.util.DelegatingPropertySource;
 import org.apache.tapestry.util.IRenderDescription;
-import org.apache.tapestry.util.LocalizedPropertySource;
 import org.apache.tapestry.util.MultiKey;
-import org.apache.tapestry.util.PropertyHolderPropertySource;
 
 /**
  *  Default implementation of {@link ITemplateSource}.  Templates, once parsed,
@@ -72,7 +69,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
     // The name of the component/application/etc property that will be used to
     // determine the encoding to use when loading the template
          
-    private static final String TEMPLATE_ENCODING_PROPERTY_NAME = "org.apache.tapestry.template-encoding"; 
+    public static final String TEMPLATE_ENCODING_PROPERTY_NAME = "org.apache.tapestry.template-encoding"; 
 
     // Cache of previously retrieved templates.  Key is a multi-key of 
     // specification resource path and locale (local may be null), value
@@ -636,34 +633,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
     
     private String getTemplateEncoding(IRequestCycle cycle, IComponent component, Locale locale)
     {
-        IPropertySource source = getComponentPropertySource(cycle, component);
-
-        if (locale != null)
-            source = new LocalizedPropertySource(locale, source);
-
-        return getTemplateEncodingProperty(source);
-    }
-    
-    private IPropertySource getComponentPropertySource(IRequestCycle cycle, IComponent component)
-    {
-        DelegatingPropertySource source = new DelegatingPropertySource();
-
-        // Search for the encoding property in the following order:
-        // First search the component specification
-        source.addSource(new PropertyHolderPropertySource(component.getSpecification()));
-
-        // Then search its library specification
-        source.addSource(new PropertyHolderPropertySource(component.getNamespace().getSpecification()));
-
-        // Then search the rest of the standard path
-        source.addSource(cycle.getEngine().getPropertySource());
-        
-        return source;
-    }
-    
-    private String getTemplateEncodingProperty(IPropertySource source)
-    {
+        IPropertySource source = new DefaultComponentPropertySource(component, cycle.getEngine().getPropertySource(), locale);
         return source.getPropertyValue(TEMPLATE_ENCODING_PROPERTY_NAME);
     }
-    
 }
