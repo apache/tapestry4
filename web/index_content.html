@@ -10,7 +10,7 @@
 <!-- 
 
  var quotex = 0;
- var maxquotex = 5;
+ var maxquotex = 7;
  var quote = new Array();
  quote[0] = "Tapestry reconceptualizes web application development in terms of objects, methods and properties instead of URLs and query parameters.";
  quote[1] = "Tapestry's flexibility along with its clean object-oriented architecture made our web interface shine.";
@@ -18,6 +18,8 @@
  quote[3] = "Tapestry is the best solution to the presentation tier ...";
  quote[4] = "We are able to publish any kind of our metadata-driven business objects with just a handful of generic, highly dynamic pages, using customizable components.";
  quote[5] = "The amount of code I am having to write is greatly reduced and I am achieving a much greater level of reuse.";
+ quote[6] = "We've got a significant increase in productivity, we've got increased quality, we've got happy web designers, and we've put an end to the repetitive operations -- it would be hard to think of a better scenario.";
+ quote[7] = "... one can build incredibly complex Web applications quickly and easily, and yet be assured that those applications are of a very high quality.";
  
  function rotate_quote()
  {
@@ -29,16 +31,21 @@
 	 var element = document.getElementById("quotecontainer");
 	 
 	 element.innerHTML = newQuote;
+	 
+	 window.setTimeout("rotate_quote()", 1000 * .05 * newQuote.length);
  }
  
  // This can't be done in nn4
  
- if (navigator.family != "nn4")
-	 window.setInterval("rotate_quote()", 5 * 1000);
+ function body_onload()
+ {	
+    if (navigator.family != "nn4")
+ 	  rotate_quote();
+ }
  
 // -->
 </script>
-<body bgcolor="#839cd1" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
+<body bgcolor="#839cd1" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" onload="javascript:body_onload();">
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
 	<tr>
 		<td valign="top" align="left"><img height="44" src="images/ico_t.gif" alt="[Tapestry Logo]" width="44" align="absMiddle" border="0">&nbsp;<img height="22" alt="Tapestry" src="images/hd_tapestry.gif" width="100" align="absMiddle" vspace="17" border="0">
