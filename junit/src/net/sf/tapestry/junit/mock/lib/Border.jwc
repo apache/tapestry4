@@ -12,6 +12,7 @@
 	
   <component id="shell" type="Shell">
     <inherited-binding name="title" parameter-name="title"/>
+    <binding name="stylesheet" expression="assets.style"/>
   </component>
   
   <component id="body" type="Body"/>
@@ -20,4 +21,6 @@
   
   <component id="inspectorButton" type="InspectorButton"/>
 
+  <private-asset name="style" resource-path="/net/sf/tapestry/junit/mock/lib/style.css"/>
+  
 </component-specification>	

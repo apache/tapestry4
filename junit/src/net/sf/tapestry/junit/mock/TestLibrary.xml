@@ -28,6 +28,7 @@
 		<match>meta</match>
 		<match>title</match>
 		<match>/title</match>
+		<match>link</match>
 		<match>/head</match>
 		<match>script</match>
 		<match>/script</match>

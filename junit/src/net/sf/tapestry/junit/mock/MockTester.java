@@ -90,9 +90,17 @@ public class MockTester
     private ApplicationServlet _servlet;
     private MockRequest _request;
     private MockResponse _response;
+    private Map _ognlContext;
+
+    /**
+     *  Shared cache of compiled patterns.
+     * 
+     **/
+
+    private static Map _patternCache = new HashMap();
+
     private PatternMatcher _matcher;
     private PatternCompiler _compiler;
-    private Map _ognlContext;
 
     private static class ServletConfigImpl implements ServletConfig, IInitParameterHolder
     {
@@ -191,15 +199,19 @@ public class MockTester
         _response.end();
 
         executeAssertions(request);
-        
-   
+
     }
 
-    private void parse() throws JDOMException
+    private void parse() throws JDOMException, DocumentParseException
     {
         SAXBuilder builder = new SAXBuilder();
 
         InputStream stream = getClass().getResourceAsStream(_resourcePath);
+
+        if (stream == null)
+            throw new DocumentParseException(
+                "Mock test script file " + _resourcePath + " does not exist.",
+                _resourcePath);
 
         _document = builder.build(stream);
     }
@@ -480,12 +492,17 @@ public class MockTester
 
     private Pattern compile(String pattern) throws DocumentParseException
     {
+        Pattern result = (Pattern) _patternCache.get(pattern);
+
+        if (result != null)
+            return result;
+
         if (_compiler == null)
             _compiler = new Perl5Compiler();
 
         try
         {
-            return _compiler.compile(pattern, Perl5Compiler.MULTILINE_MASK);
+            result = _compiler.compile(pattern, Perl5Compiler.MULTILINE_MASK);
 
         }
         catch (MalformedPatternException ex)
@@ -493,6 +510,9 @@ public class MockTester
             throw new DocumentParseException("Malformed regular expression: " + pattern, _resourcePath, ex);
         }
 
+        _patternCache.put(pattern, result);
+
+        return result;
     }
 
     private void match(String name, String text, String pattern) throws DocumentParseException
@@ -571,7 +591,8 @@ public class MockTester
         if (i < count)
         {
             System.err.println(outputString);
-            throw new AssertionFailedError(name + ": Too few matches for '" + pattern + "' (expected " + count + " but got " + i + ").");
+            throw new AssertionFailedError(
+                name + ": Too few matches for '" + pattern + "' (expected " + count + " but got " + i + ").");
         }
     }
 

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+	
+<page-specification class="net.sf.tapestry.junit.mock.app.Register">
+
+  <bean name="delegate" class="net.sf.tapestry.valid.ValidationDelegate"/>
+
+  <bean name="requiredString" 
+  	class="net.sf.tapestry.valid.StringValidator" 
+  	lifecycle="page">
+    <set-property name="minimumLength" expression="3"/>
+    <set-property name="required" expression="true"/>
+    <set-property name="clientScriptingEnabled" expression="true"/>
+  </bean>
+  
+  <bean name="user" class="net.sf.tapestry.junit.mock.app.User"/>
+
+  <component id="border" type="lib:Border">
+  	<static-binding name="title">Register</static-binding>
+  </component>
+  
+  <component id="showError" type="lib:ShowError">
+  	<binding name="delegate" expression="beans.delegate"/>
+  </component>
+  
+  <component id="form" type="Form">
+  	<binding name="listener" expression="listeners.formSubmit"/>
+  	<binding name="delegate" expression="beans.delegate"/>
+  	<binding name="stateful" expression="false"/>
+  </component>
+  
+  <component id="labelFirstName" type="FieldLabel">
+  	<binding name="field" expression="components.inputFirstName"/>
+  </component>
+  
+  <component id="inputFirstName" type="ValidField">
+  	<binding name="value" expression="beans.user.firstName"/>
+  	<binding name="validator" expression="beans.requiredString"/>
+  	<static-binding name="displayName">First Name</static-binding>
+  </component>
+  
+  <component id="labelLastName" type="FieldLabel">
+  	<binding name="field" expression="components.inputLastName"/>
+  </component>
+  
+  <component id="inputLastName" type="ValidField">
+  	<binding name="value" expression="beans.user.lastName"/>
+  	<binding name="validator" expression="beans.requiredString"/>
+  	<static-binding name="displayName">Last Name</static-binding>
+  </component>  
+  
+  <component id="inputSex" type="RadioGroup">
+  	<binding name="selected" expression="beans.user.male"/>
+  </component>
+  
+  <component id="inputMale" type="Radio">
+  	<binding name="value" expression="true"/>
+  </component>
+  
+  <component id="inputFemale" type="Radio">
+  	<binding name="value" expression="false"/>
+  </component>
+  
+  <component id="inputAgeRange" type="PropertySelection">
+  	 <binding name="value" expression="beans.user.ageRange"/>
+  	 <binding name="model" expression="ageRangeModel"/>
+  </component>
+  
+</page-specification>

@@ -89,4 +89,27 @@ public class MockTestCase extends TapestryTestCase
     {
         attempt("/net/sf/tapestry/junit/mock/TestExternal.xml");
     }       
+    
+    /**
+     * 
+     *  Test some error cases involving the page service.
+     * 
+     **/
+    
+    public void testPage()
+    throws Exception
+    {
+        attempt("/net/sf/tapestry/junit/mock/TestPage.xml");
+    }
+    
+    /**
+     *   Begin testing forms using the Register page.
+     * 
+     **/
+    
+    public void testRegisterForm()
+    throws Exception
+    {
+        attempt("/net/sf/tapestry/junit/mock/TestRegisterForm.xml");
+    }
 }
