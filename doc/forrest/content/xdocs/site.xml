@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
+<!--
+   Copyright 2004 The Apache Software Foundation
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
 <!--
 
 $Id$
@@ -21,7 +35,6 @@ See http://xml.apache.org/forrest/linking.html for more info
     <tapestry label="Tapestry">
     <home label="Home" href="index.html"/>
     <api label="API" href="doc/api/index.html"/>
-    <new label="What's New" href="new.html"/>
     <quotes label="Quotes" href="quotes.html"/>
     <doc label="Documentation" href="doc.html"/>
     <comp-ref label="Component Reference" href="doc/ComponentReference/index.html"/>
@@ -31,6 +44,7 @@ See http://xml.apache.org/forrest/linking.html for more info
     <wiki label="Wiki" href="http://wiki.apache.org/jakarta-tapestry/"/>
     <dev label="Developers" href="dev.html"/>
     <clover label="Clover Report" href="doc/clover/index.html"/>
+    <new label="What's New" href="new.html"/>    
     </tapestry>
     
     <project label="Project">
@@ -40,6 +54,7 @@ See http://xml.apache.org/forrest/linking.html for more info
     </project>
     
     <info label="Useful Information">
+    	<item label="Reporting Problems" href="problems.html"/>
         <item label="Get Involved"          href="http://jakarta.apache.org/site/getinvolved.html"/>
         <item label="Reference Library"     href="http://jakarta.apache.org/site/library.html"/>
         <item label="Apache FAQ"                href="http://apache.org/foundation/faq.html"/>
