@@ -1,3 +1,14 @@
+* Feb 23 2001 hship
+
+Remove the "is rewinding" check from RenderTemplateHTML ... just rely on the use
+of a NullResponseWriter when rewinding.
+Deprecate the immediate submit option for the SelectPropertySelectionRenderer.
+Fix minor errors in inspector/ShowLogging.html template.
+Fix JavaDoc comments in InsertText component.
+[132729] AbstractComponent.getBindingNames() doesn't return all names
+[132726] Script component with no bindings throws NullPointerException
+[133265] ImageSubmit NullPointerException if disabled 
+
 * Feb 12 2001 hship
 
 Fix some bad JavaDoc comments.

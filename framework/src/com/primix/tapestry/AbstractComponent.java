@@ -102,19 +102,19 @@ public abstract class AbstractComponent implements IComponent
 	 
 	private Map bindings;
 	
-	/**
-	 *  An unmodifiable {@link Collection} of the names of all bindings (the
-	 *  keys of the bindings map).
-	 *
-	 */
-	 
-	private Collection bindingNames;
-
 	private Map components;
 	private Map safeComponents;
 
 	private static final int WRAPPED_INIT_SIZE = 5;
 
+	/**
+	 *  Used in place of JDK 1.3's Collections.EMPTY_MAP (which is not
+	 *  available in JDK 1.2).
+	 *
+	 */
+	 
+	private static final Map EMPTY_MAP = Collections.unmodifiableMap(new HashMap(1));
+	
 	/**
 	*  The number of {@link IRender} objects wrapped by
 	*  this component.
@@ -764,11 +764,8 @@ public abstract class AbstractComponent implements IComponent
 	 
 	public Map getComponents()
 	{
-		// Note: Collections.EMPTY_MAP not available until JDK 1.3 ... and
-		// we're trying for JDK 1.2 compatibility.
-
 		if (components == null)
-			return new HashMap(1);	
+			return EMPTY_MAP;	
 		
 		if (safeComponents == null)
 			safeComponents = Collections.unmodifiableMap(components);
@@ -778,11 +775,8 @@ public abstract class AbstractComponent implements IComponent
 	
 	public Map getAssets()
 	{
-    	// Note: Collections.EMPTY_MAP not available until JDK 1.3 ... and
-        // we're trying for JDK 1.2 compatibility.
-        
     	if (assets == null)
-            return new HashMap(1);
+            return EMPTY_MAP;
             		        
 		if (safeAssets == null)
 			safeAssets = Collections.unmodifiableMap(assets);
@@ -792,12 +786,13 @@ public abstract class AbstractComponent implements IComponent
 	
 	public Collection getBindingNames()
 	{
-		if (bindings == null)
+		// If no conainer, i.e. a page, then no bindings.
+		
+		if (container == null)
 			return null;
 		
-		if (bindingNames == null)
-			bindingNames = Collections.unmodifiableCollection(bindings.keySet());
+		ContainedComponent contained = container.getSpecification().getComponent(id);
 		
-		return bindingNames;	
+		return contained.getBindingNames();	
 	}	
 }
