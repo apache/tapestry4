@@ -1,8 +1,9 @@
 <?xml version="1.0"?>
 <!-- $Id$ -->
 
-<!DOCTYPE script PUBLIC "-//Howard Ship//Tapestry Script 1.1//EN"
-	"http://tapestry.sf.net/dtd/Script_1_1.dtd">
+<!DOCTYPE script PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Script 1.2//EN"
+	"http://tapestry.sf.net/dtd/Script_1_2.dtd">
 	
 <!-- 
 
@@ -18,30 +19,36 @@
 	
 <script>
 
+<input-symbol key="field" class="net.sf.tapestry.valid.ValidField" required="yes"/>
+<input-symbol key="form" class="net.sf.tapestry.IForm" required="yes"/>
+<input-symbol key="validator" class="net.sf.tapestry.valid.StringValidator" required="yes"/>
+<input-symbol key="requiredMessage" class="java.lang.String"/>
+<input-symbol key="minimumLengthMessage" class="java.lang.String"/>
+
 <let key="function">
 validate_${form.name}_${field.name}
 </let>
 
 <body>
-function ${function} ()
+function ${function}()
 {
   var field = document.${form.name}.${field.name}; 
-<if property-path="validator.required">
+<if expression="validator.required">
   if (field.value.length == 0)
   {
-  	 field.focus();
-  	 field.select();
+     field.focus();
+     field.select();
      window.alert("${requiredMessage}");
      return false;
   }
 </if>
-<if property-path="validator.minimumLength">
+<if expression="validator.minimumLength">
   if (field.value.length &lt; ${validator.minimumLength})
   {
-  	field.focus();
-  	field.select();
-	window.alert("${minimumLengthMessage}");
-    return false;
+     field.focus();
+     field.select();
+     window.alert("${minimumLengthMessage}");
+     return false;
   }
 </if>
 
