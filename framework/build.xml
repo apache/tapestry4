@@ -55,6 +55,7 @@
   
   <target name="run-reports">
     <javadoc-report/>
+    <clover-report/>
   </target>
   
 </project>

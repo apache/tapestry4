@@ -172,7 +172,8 @@
    <exclude pattern="**/"/>   
    
    <exclude pattern="hivedocs/**"/>
-   <exclude pattern="tapestry/apidocs/**"/>
+   <exclude pattern="**/apidocs/**"/>
+   <exclude pattern="**/clover/**"/>
    
 
    <!-- Exclude tokens used in URLs to ASF mirrors (interpreted by a CGI) -->
