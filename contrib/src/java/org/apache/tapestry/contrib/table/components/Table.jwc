@@ -65,6 +65,15 @@
         </description>
     </parameter>
   
+	<parameter name="initialPage" 
+		type="int" 
+		required="no">
+        <description>
+            The initial page to be displayed.
+            This is the first page by default.
+        </description>
+    </parameter>
+  
 	<parameter name="initialSortColumn" 
 		type="java.lang.String" 
 		required="no">
@@ -199,6 +208,7 @@
 		<inherited-binding name="source" parameter-name="source"/>
 		<inherited-binding name="columns" parameter-name="columns"/>
 		<inherited-binding name="pageSize" parameter-name="pageSize"/>
+		<inherited-binding name="initialPage" parameter-name="initialPage"/>
 		<inherited-binding name="initialSortColumn" parameter-name="initialSortColumn"/>
 		<inherited-binding name="initialSortOrder" parameter-name="initialSortOrder"/>
 		<inherited-binding name="tableSessionStateManager" parameter-name="tableSessionStateManager"/>
