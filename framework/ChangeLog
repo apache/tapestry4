@@ -1,3 +1,7 @@
+* May 3 2001 hship
+
+Add additional logging output to ApplicationServlet.
+
 * May 2 2001 hship
 
 Cleanup the Javadoc fiasco from yesterday.  Didn't realize that package and import

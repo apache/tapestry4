@@ -3,7 +3,7 @@
 <!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
 	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
 <specification>
-	<class>com.primix.tapestry.components.html.InsertText</class>
+	<class>com.primix.tapestry.html.InsertText</class>
 	<allow-body>no</allow-body>
 	<parameters>
 		<allow-informal-parameters>no</allow-informal-parameters>

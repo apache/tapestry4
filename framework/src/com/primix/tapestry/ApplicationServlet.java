@@ -58,6 +58,9 @@ import org.apache.log4j.*;
 abstract public class ApplicationServlet
 extends HttpServlet
 {
+	private static final Category CAT =
+		Category.getInstance(ApplicationServlet.class);
+		
 	private ApplicationSpecification specification;
 	private String attributeName;
 	private ClassLoader classLoader = getClass().getClassLoader();
@@ -169,13 +172,14 @@ extends HttpServlet
 
 		engine = (IEngine)context.getSessionAttribute(attributeName);
 
-		if (engine == null)
+		if (engine == null) 
 		{
 			engine = createEngine(context);
-
+			
 			context.setSessionAttribute(attributeName, engine);
 		}
 
+	
 		return engine;
 	}
 
@@ -214,6 +218,9 @@ extends HttpServlet
 
 		try
 		{
+			if (CAT.isDebugEnabled())
+				CAT.debug("Loading application specification from " + path);
+
 			specification = parser.parseApplicationSpecification(stream, path);
 		}
 		catch (DocumentParseException ex)
@@ -290,9 +297,17 @@ extends HttpServlet
 			if (className == null)
 				throw new ServletException("Application specification does not specify an engine class name.");
 
+			if (CAT.isDebugEnabled())
+				CAT.debug("Creating engine from class " + className);
+			
 			Class engineClass = Class.forName(className, true, classLoader);
 
-			return (IEngine)engineClass.newInstance();
+			IEngine result = (IEngine)engineClass.newInstance();
+			
+			if (CAT.isDebugEnabled())
+				CAT.debug("Created engine " + result);
+			
+			return result;	
 		}
 		catch (Exception ex)
 		{

@@ -517,7 +517,14 @@ public abstract class AbstractEngine
 
 	public void extendDescription(StringBuffer buffer)
 	{
-		buffer.append(specification.getName());
+		// In rare cases, toString() may be invoked before
+		// the engine has a change to obtain the specification
+		// from the servlet.
+		
+		if (specification == null)
+			buffer.append("<Unknown specification>");
+		else
+			buffer.append(specification.getName());
 	}
 
 	/**
