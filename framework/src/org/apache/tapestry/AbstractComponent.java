@@ -936,8 +936,6 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
      *  Obtains the {@link IComponentStrings} for this component
      *  (if necessary), and gets the string from it.
      * 
-     *  @deprecated Use {@link IComponentStrings#getString(String)} instead.
-     * 
      **/
 
     public String getString(String key)
@@ -954,7 +952,6 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
      *  @param arguments passed to the formatter
      * 
      *  @since 2.2
-     *  @deprecated Use {@link IComponentStrings#formatString(String, Object[])} instead.
      * 
      **/
 
@@ -967,7 +964,6 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
      *  Convienience method for {@link #formatString(String, Object[])}
      * 
      *  @since 2.2
-     *  @deprecated Use {@link IComponentStrings#format(String, Object)} instead.
      * 
      **/
 
@@ -980,7 +976,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
      *  Convienience method for {@link #formatString(String, Object[])}
      * 
      *  @since 2.2
-     *  @deprecated Use {@link IComponentStrings#format(String, Object, Object)} instead.
+     * 
      **/
 
     public String formatString(String key, Object argument1, Object argument2)
@@ -992,7 +988,6 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
      *  Convienience method for {@link #formatString(String, Object[])}
      * 
      *  @since 2.2
-     *  @deprecated Use {@link IComponentStrings#format(String, Object, Object, Object)} instead.
      * 
      **/
 

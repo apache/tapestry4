@@ -76,7 +76,7 @@ public class StringBeanInitializer extends AbstractBeanInitializer
     public void setBeanProperty(IBeanProvider provider, Object bean)
     {
         IComponent component = provider.getComponent();
-        String value = component.getStrings().getString(_key);
+        String value = component.getString(_key);
         
         setBeanProperty(provider.getResourceResolver(), bean, value);
     }

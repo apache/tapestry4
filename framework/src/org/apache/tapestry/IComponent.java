@@ -331,7 +331,6 @@ public interface IComponent extends IRender, ILocationHolder
      *  if no string is defined for the key
      *  @since 2.0.4
      * 
-     *  @deprecated Use {@link #getStrings()} instead.
      **/
 
     public String getString(String key);
