@@ -65,12 +65,13 @@ public class CreateAutoParameterEnhancer implements IEnhancer
      *  Legend:                             <br>
      *      {0} = readBindingMethodName     <br>
      *      {1} = binding value mutator     <br>
+     *      {2} = value cast
      */
     protected static final String PARAMETER_MUTATOR_TEMPLATE =
         ""
             + "'{'"
             + "  org.apache.tapestry.IBinding binding = {0}();"
-            + "  binding.{1}($1); "
+            + "  binding.{1}({2} $1); "
             + "'}'";
 
     /**
@@ -80,11 +81,21 @@ public class CreateAutoParameterEnhancer implements IEnhancer
      */
     private static final Map SPECIAL_BINDING_TYPES = new HashMap();
 
-    {
+    static {
         SPECIAL_BINDING_TYPES.put("boolean", "boolean");
         SPECIAL_BINDING_TYPES.put("int", "int");
         SPECIAL_BINDING_TYPES.put("double", "double");
         SPECIAL_BINDING_TYPES.put("java.lang.String", "string");
+    }
+
+    private static final Map VALUE_CAST_TYPES = new HashMap();
+
+    static {
+        VALUE_CAST_TYPES.put("byte", "($w)");
+        VALUE_CAST_TYPES.put("long", "($w)");
+        VALUE_CAST_TYPES.put("short", "($w)");
+        VALUE_CAST_TYPES.put("char", "($w)");
+        VALUE_CAST_TYPES.put("float", "($w)");
     }
 
     private EnhancedClass _enhancedClass;
@@ -128,6 +139,13 @@ public class CreateAutoParameterEnhancer implements IEnhancer
         return (String) SPECIAL_BINDING_TYPES.get(typeName);
     }
 
+    private String getValueCastType()
+    {
+        String typeName = _type.getName();
+
+        return (String) VALUE_CAST_TYPES.get(typeName);
+    }
+
     private void createReadMethod(ClassFabricator cf, String readBindingMethodName)
     {
         String castToType;
@@ -165,6 +183,7 @@ public class CreateAutoParameterEnhancer implements IEnhancer
     private void createWriteMethod(ClassFabricator cf, String readBindingMethodName)
     {
         String bindingValueAccessor;
+        String valueCast = "";
 
         String specialBindingType = getSpecialBindingType();
         if (specialBindingType != null)
@@ -174,12 +193,17 @@ public class CreateAutoParameterEnhancer implements IEnhancer
         else
         {
             bindingValueAccessor = "setObject";
+
+            String castForType = getValueCastType();
+
+            if (castForType != null)
+                valueCast = castForType;
         }
 
         String writeMethodBody =
             MessageFormat.format(
                 PARAMETER_MUTATOR_TEMPLATE,
-                new Object[] { readBindingMethodName, bindingValueAccessor });
+                new Object[] { readBindingMethodName, bindingValueAccessor, valueCast });
 
         try
         {

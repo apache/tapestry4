@@ -488,8 +488,7 @@ the &IBinding;'s <function>setObject()</function> function.
 
 <para>
 This can be a bit less efficient than direction <literal>in</literal>, as the &OGNL; expression may be
-evaluated multiple times. In Tapestry 3.0, there are other limitations: the parameter must either be an object type, 
-or one of a limited number of primitive Java types: boolean, int or double. The parameter must also be required. Future releases
+evaluated multiple times. In Tapestry 3.0, the parameter must also be required. Future releases
 of Tapestry will relax these limitations.
 </para>
 
