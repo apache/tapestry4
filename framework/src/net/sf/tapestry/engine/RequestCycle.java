@@ -482,6 +482,8 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 
         try
         {
+            page.beginPageRender();
+
             form.rewind(NullWriter.getSharedInstance(), this);
 
             // Shouldn't get this far, because the form should
@@ -513,6 +515,8 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
             _actionId = 0;
             _targetActionId = 0;
             _targetComponent = null;
+            
+            page.endPageRender();
         }
 
         if (_monitor != null)

@@ -315,4 +315,12 @@ public class MockPage implements IPage
     {
     }
 
+    public void beginPageRender()
+    {
+    }
+
+    public void endPageRender()
+    {
+    }
+
 }

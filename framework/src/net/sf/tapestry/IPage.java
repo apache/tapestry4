@@ -155,6 +155,30 @@ public interface IPage extends IComponent
 	public void renderPage(IMarkupWriter writer, IRequestCycle cycle)
 		throws RequestCycleException;
 
+    /**
+     *  Invoked before a partial render of the page occurs
+     *  (this happens when rewinding a {@link net.sf.tapestry.form.Form}
+     *  within the page).  The page is expected to fire appopriate
+     *  events.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public void beginPageRender();
+    
+    /**
+     *  Invoked after a partial render of the page occurs
+     *  (this happens when rewinding a {@link net.sf.tapestry.form.Form}
+     *  within the page).  The page is expected to fire
+     *  appropriate events.
+     * 
+     *  @since 2.2
+     * 
+     **/    
+    
+    public void endPageRender();
+    
 	public void setChangeObserver(ChangeObserver value);
 
 	public void setName(String value);

@@ -27,7 +27,7 @@ This DTD is backwards compatible with the 1.2 DTD, with the following exceptions
 - added extension element
 - added static value type 'long'
 - allow <property> within <bean>, <component>, <extension>, <private-asset>, <context-asset> and <external-asset>
-
+- add "render" bean lifecycle value
 -->
 
 <!-- =======================================================
@@ -83,6 +83,7 @@ Attributes:
   	"none" no lifecycle, the bean is created and returned, but not stored
   	"request" the bean is retained until the end of the request cycle
   	"page" the bean is retained for the lifespan of the page
+  	"render" the bean is retained until the end of the current page render
   	
 Nothing prevents a bean for storing state; however, such state will
 not be associated with any particular session (unlike persistant page
@@ -101,7 +102,7 @@ newly instantiated beans, and beans that are retrieved from a pool.
 <!ATTLIST bean
   name CDATA #REQUIRED
   class CDATA #REQUIRED
-  lifecycle (none|request|page) "request"
+  lifecycle (none|request|page|render) "request"
 >
 
 <!-- =======================================================
@@ -441,7 +442,11 @@ are used to capture information that doesn't fit into the DTD.  The value for th
 the PCDATA wrapped by the property tag (which is trimmed of leading and trailing whitespace).
 
 This should not be confused with several other tags which are used to set JavaBeans properties
-of various objects.
+of various objects.  The <property> tag exists to allow meta-data to be stored in the specification.
+
+Attributes:
+  name: The name of the property to set.
+  
 -->
 <!ELEMENT property (#PCDATA)>
 <!ATTLIST property
@@ -454,6 +459,10 @@ Appears in: set-parameter
 
 Used to initialize a bean with a property of its containing
 component.
+
+Attributes:
+  property-path: A JavaBeans property path which provides the
+    value to set.
 -->
 
 <!ELEMENT property-value EMPTY>
@@ -469,6 +478,9 @@ Identifies a name which may not be used as an informal parameter.
 Informal parameters are typically HTML attribute names; this
 list identifies HTML attributes that are written exclusively
 by the component and may not be affected by informal parameters.
+
+Attributes:
+  name: The parameter name to reserve.
 -->
 
 <!ELEMENT reserved-parameter EMPTY>
@@ -500,6 +512,9 @@ Element: set-property
 Appears in: bean
 
 Used to initialize a property of a helper bean.
+
+Attributes:
+  name: The name of the property to be set.
 -->
 
 <!ELEMENT set-property (static-value | property-value | field-value | string-value)>
@@ -533,6 +548,9 @@ A static value, that will be converted to some known type.
 The possible types are limited to a few simple scalar types,
 and String.  Additional types will likely be added in the future.
 
+Attributes:
+  type: The type conversion to apply to the value.
+
 -->
 
 <!ELEMENT static-value (#PCDATA)>
@@ -560,10 +578,13 @@ Attributes:
 >
 
 <!-- =======================================================
-Element: static-value
+Element: string-value
 Appears in: set-parameter
 
 A localized string.
+
+Attributes:
+  key:  The key used to extract a localized string from the component.
 
 -->
 
