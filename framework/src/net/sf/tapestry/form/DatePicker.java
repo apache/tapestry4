@@ -28,12 +28,9 @@ package net.sf.tapestry.form;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Iterator;
-import java.util.Map;
 
 import net.sf.tapestry.BaseComponent;
 import net.sf.tapestry.IBinding;
-import net.sf.tapestry.IPage;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 
@@ -45,13 +42,15 @@ import net.sf.tapestry.RequestCycleException;
  * @author Paul Geerts
  * @author Malcolm Edgar
  * @version $Id$
- */
+ * @since 2.2
+ * 
+ **/
+
 public class DatePicker extends BaseComponent
 {
     private static final SimpleDateFormat SQL_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     private static final String FIRST_USE_ATTRIBUTE_KEY = "net.sf.tapestry.DatePicker-first";
 
-    private Date _value;
     private IBinding _valueBinding;
     private SimpleDateFormat _dateFormat = new SimpleDateFormat("dd MMM yyyy");
     private boolean _firstTime;
@@ -68,46 +67,61 @@ public class DatePicker extends BaseComponent
 
     public String getTimeMillis()
     {
-        return (_value != null) ? "" + _value.getTime() : "";
+        Date date = getValue();
+
+        if (date == null)
+            return "";
+
+        return Long.toString(date.getTime());
     }
 
     public void setTimeMillis(String value)
-    {        
+    {
     }
 
     public String getText()
     {
-        return (_value != null) ? _dateFormat.format(_value) : "";
+        Date date = getValue();
+
+        if (date == null)
+            return "";
+
+        return _dateFormat.format(date);
     }
 
     public void setText(String text)
     {
-        if (text.length() >= 6) 
+        if (text.length() >= 6)
         {
-            try 
+            try
             {
-                java.util.Date date = _dateFormat.parse(text);    
-                setValue(Date.valueOf(SQL_DATE_FORMAT.format(date)));
+                java.util.Date date = _dateFormat.parse(text);
+
+                // DateFormat is not threadsafe
+
+                synchronized (SQL_DATE_FORMAT)
+                {
+                    setValue(Date.valueOf(SQL_DATE_FORMAT.format(date)));
+                }
             }
             catch (ParseException pe)
             {
-                setValue(null);    
+                setValue(null);
             }
         }
         else
         {
-            setValue(null);    
+            setValue(null);
         }
     }
 
     public Date getValue()
     {
-        return _value;
+        return (Date) _valueBinding.getObject();
     }
 
     public void setValue(Date value)
     {
-        _value = value;
         _valueBinding.setObject(value);
     }
 
@@ -130,7 +144,8 @@ public class DatePicker extends BaseComponent
      *
      *  @return a <tt>boolean</tt> value
      * 
-     **/    
+     **/
+
     public boolean isFirstTime()
     {
         return _firstTime;
@@ -142,7 +157,7 @@ public class DatePicker extends BaseComponent
 
         if (_firstTime)
             cycle.setAttribute(FIRST_USE_ATTRIBUTE_KEY, Boolean.TRUE);
-            
+
         super.prepareForRender(cycle);
     }
 }
