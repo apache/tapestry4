@@ -6,8 +6,8 @@
 
 <specification class="net.sf.tapestry.contrib.valid.NumericField">
 
-  <parameter name="disabled" direction="in" />
-  <parameter name="hidden" direction="in" />
+  <parameter name="disabled" java-type="boolean" direction="in"/>
+  <parameter name="hidden" java-type="boolean" direction="in"/>
   <parameter name="displayWidth" java-type="java.lang.Integer" direction="in" />
   <parameter name="maximumLength" java-type="java.lang.Integer" direction="in" />
 
