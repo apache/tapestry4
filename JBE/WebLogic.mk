@@ -56,7 +56,7 @@ local-install: $(INSTALL_DIR)/$(DEPLOY_JAR_FILE)
 
 $(INSTALL_DIR)/$(DEPLOY_JAR_FILE): $(DEPLOY_JAR_FILE)
 	@$(ECHO) "\n*** Installing $(DEPLOY_JAR_FILE) to $(INSTALL_DIR) ... ***\n"
-	@$(CP) --force $(DEPLOY_JAR_FILE) $(INSTALL_DIR)
+	@$(CP) -f $(DEPLOY_JAR_FILE) $(INSTALL_DIR)
 endif
 
 local-post-jar: $(DEPLOY_JAR_FILE)

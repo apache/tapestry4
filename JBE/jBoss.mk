@@ -61,7 +61,7 @@ deploy: $(DEPLOY_JAR)
 $(DEPLOY_JAR): $(JAR_FILE)
 	@$(ECHO) "\n*** Deploying $(JAR_FILE) ... ***\n"
 	@$(MKDIRS) $(JBOSS_DEPLOY_DIR)
-	@$(CP) --force $(JAR_FILE) $(JBOSS_DEPLOY_DIR)
+	@$(CP) -f $(JAR_FILE) $(JBOSS_DEPLOY_DIR)
 
 #
 # Convienience for running the EJX deployment tool

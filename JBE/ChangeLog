@@ -1,5 +1,10 @@
 * Nov 20 2000 hship
 
+More changes to the JBE to support Solaris.  Solaris doesn't always use GNU tools, so we
+need to use the short versions of many command line parameters.
+
+* Nov 20 2000 hship
+
 Release 0.2.6
 
 * Nov 16 2000 hship

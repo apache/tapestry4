@@ -95,7 +95,7 @@ jar-install: $(INSTALL_DIR)/$(JAR_FILE)
 
 $(INSTALL_DIR)/$(JAR_FILE): $(JAR_FILE)
 	@$(ECHO) "\n*** Installing $(JAR_FILE) to $(INSTALL_DIR) ***\n"
-	@$(CP) $(JAR_FILE) --force $(INSTALL_DIR)
+	@$(CP) $(JAR_FILE) -f $(INSTALL_DIR)
 endif
 
 # local-install allows additional installation work to follow the normal

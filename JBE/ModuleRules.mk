@@ -51,7 +51,7 @@ setup-catalogs: initialize
 # The force rule forces a recompile of all Java classes
 
 force: setup-catalogs
-	@$(RM) --force $(MOD_JAVA_STAMP_FILE)
+	@$(RM) $(MOD_JAVA_STAMP_FILE)
 	@$(RECURSE) POST_SETUP=t inner-compile
 
 # Used to allow the inner targets to do something, even if fully up-to date.
@@ -149,7 +149,7 @@ ifneq "$(_RESOURCE_FILES)" ""
 	@$(ECHO) "\n*** Copying package resources ...***\n"
 	@$(ECHO) Copying: $(notdir $?)
 	@$(CD) $(FINAL_SOURCE_DIR) ; \
-	$(CP) --force --parents $(subst $(FINAL_SOURCE_DIR)$(SLASH),$(EMPTY),$?) \
+	$(CP) -f -P $(subst $(FINAL_SOURCE_DIR)$(SLASH),$(EMPTY),$?) \
 		 $(ABSOLUTE_CLASS_DIR)
 	@$(TOUCH) $(MOD_DIRTY_JAR_STAMP_FILE)
 endif
@@ -240,7 +240,7 @@ $(MOD_META_STAMP_FILE): $(FINAL_META_RESOURCES)
 ifneq "$(FINAL_META_RESOURCES)" ""
 	@$(ECHO) "\n*** Copying META-INF resources ... ***\n"
 	@$(ECHO) Copying: $(notdir $?)
-	@$(CP) --force $? $(MOD_META_INF_DIR)
+	@$(CP) -f $? $(MOD_META_INF_DIR)
 	@$(TOUCH) $(MOD_DIRTY_JAR_STAMP_FILE)
 endif
 	@$(TOUCH) $@ 
