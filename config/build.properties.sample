@@ -5,4 +5,5 @@
 # The absolute path to the directory containing the JBoss installation.
 jboss.dir=
 
-
+# The absolute path to the directory containing the Tomcat installation.
+tomcat.dir=

@@ -586,4 +586,28 @@
 	
 </target>
 
+<target name="unpack-src" description="Unpacks the source JARS.">
+	<unjar src="src/net.sf.tapestry-src.jar" dest="framework"/>
+	<unjar src="src/net.sf.tapestry.contrib-src.jar" dest="contrib"/>
+	<unjar src="src/examples-src.jar" dest="examples"/>
+</target>
+
+<target name="deploy-tomcat" description="Deploys the tutorial application into Tomcat.">
+	<unjar src="lib/tutorial.war" dest="${tomcat.dir}/webapps/tutorial"/>
+
+  <property name="web.lib" value="${tomcat.dir}/webapps/tutorial/WEB-INF/lib"/>
+
+  <copy file="lib/net.sf.tapestry-${framework.version}.jar" todir="${web.lib}"/>
+  <copy file="lib/net.sf.tapestry.contrib-${framework.version}.jar" todir="${web.lib}"/>
+  <copy todir="${web.lib}">
+    <fileset dir="lib/ext">
+      <include name="commons-lang-*.jar"/>
+      <include name="commons-logging-*.jar"/>
+      <include name="jakarta-oro-*.jar"/>
+      <include name="log4j-*.jar"/>
+      <include name="ognl-*.jar"/>
+    </fileset>
+  </copy>  
+</target>
+
 </project>
