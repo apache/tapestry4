@@ -1063,7 +1063,22 @@ value.  Also, the count of matches (vs. the number of
 <sgmltag class="stattag">match</sgmltag> elements) is checked.
 </para>
 
+<programlisting>
+<![CDATA[
+  <assert-output-stream name="Asset Content"
+    content-type="image/gif"
+    path="foo/bar/baz.gif"/>
+]]>
+</programlisting>
 
+<para>
+The <sgmltag class="starttag">assert-output-stream</sgmltag>
+element is used to compare the entire response to a static file
+(this is normally associated with private assets).  A content type
+must be specified, as well as a relative path to a file to compare
+against.  The path is relative to the junit directory.  The
+response must match the specified content type and actual content.
+</para>
 
 <note>
 <title>Force a failure, then check for correctness</title>
