@@ -1,7 +1,3 @@
-package com.primix.tapestry.parse;
-
-import com.primix.tapestry.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -41,6 +37,10 @@ import com.primix.tapestry.*;
  * @version $Id$
  */
 
+package com.primix.tapestry.parse;
+
+import com.primix.tapestry.*;
+
 
 public class ComponentTemplate
 {
@@ -51,7 +51,7 @@ public class ComponentTemplate
 	*
 	*/
 
-		private char[] templateData;
+	private char[] templateData;
 
 	private TemplateToken[] tokens;
 

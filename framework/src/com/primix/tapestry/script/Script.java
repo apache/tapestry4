@@ -1,13 +1,3 @@
-package com.primix.tapestry.script;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.components.html.*;
-import com.primix.foundation.xml.*;
-import java.util.*;
-import java.io.*;
-import java.net.*;
-import org.apache.log4j.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -91,10 +81,21 @@ import org.apache.log4j.*;
  *
  */
 
+package com.primix.tapestry.script;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.html.*;
+import com.primix.tapestry.util.xml.*;
+import java.util.*;
+import java.io.*;
+import java.net.*;
+import org.apache.log4j.*;
+
 public class Script
 extends AbstractComponent
 {
-	private static final Category CAT = Category.getInstance(Script.class.getName());
+	private static final Category CAT = 
+		Category.getInstance(Script.class);
 
 	private IBinding scriptBinding;
 

@@ -1,7 +1,3 @@
-package com.primix.tapestry.spec;
-
-import com.primix.foundation.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -39,6 +35,9 @@ import com.primix.foundation.*;
  *  @version $Id$
  */
 
+package com.primix.tapestry.spec;
+
+import com.primix.tapestry.util.*;
 
 public final class AssetType extends Enum
 {

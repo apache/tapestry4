@@ -1,5 +1,3 @@
-package com.primix.tapestry;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -37,6 +35,8 @@ package com.primix.tapestry;
  *  @author Howard Ship
  *
  */
+
+package com.primix.tapestry;
 
 public class RenderOnlyPropertyException extends ApplicationRuntimeException
 {

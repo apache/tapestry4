@@ -1,7 +1,3 @@
-package com.primix.tapestry.script;
-
-import java.util.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -38,7 +34,10 @@ import java.util.*;
  *  @since 0.2.9
  */
  
- 
+package com.primix.tapestry.script;
+
+import java.util.*;
+
 abstract class AbstractToken
 implements IScriptToken
 {

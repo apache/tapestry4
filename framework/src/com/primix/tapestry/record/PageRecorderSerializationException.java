@@ -1,7 +1,3 @@
-package com.primix.tapestry.record;
-
-import java.io.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -40,6 +36,10 @@ import java.io.*;
  *  @since 0.2.9
  */
  
+package com.primix.tapestry.record;
+
+import java.io.*;
+
 public class PageRecorderSerializationException
 extends IOException
 {

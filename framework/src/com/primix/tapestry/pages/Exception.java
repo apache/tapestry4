@@ -1,9 +1,3 @@
-package com.primix.tapestry.pages;
-
-import com.primix.foundation.exception.*;
-import com.primix.foundation.*;
-import com.primix.tapestry.*;
-
 /* Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
  *
@@ -38,7 +32,11 @@ import com.primix.tapestry.*;
  *  @version $Id$
  */
 
+package com.primix.tapestry.pages;
 
+import com.primix.tapestry.util.exception.*;
+import com.primix.tapestry.util.*;
+import com.primix.tapestry.*;
 
 public class Exception extends BasePage
 {

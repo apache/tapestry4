@@ -1,15 +1,3 @@
-package com.primix.tapestry;
-
-import java.io.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import com.primix.tapestry.parse.ComponentTemplate;
-import com.primix.tapestry.parse.TemplateToken;
-import java.util.Locale;
-import com.primix.tapestry.spec.ApplicationSpecification;
-import com.primix.tapestry.components.*;
-import java.net.*;
-
 /*`
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -51,6 +39,18 @@ import java.net.*;
  * @author Howard Ship
  * @version $Id$
  */
+
+package com.primix.tapestry;
+
+import java.io.*;
+import javax.servlet.*;
+import java.util.*;
+import com.primix.tapestry.spec.*;
+import java.net.*;
+
+// Appease Javadoc
+import com.primix.tapestry.components.*;
+import javax.servlet.http.*;
 
 public interface IEngine
 {

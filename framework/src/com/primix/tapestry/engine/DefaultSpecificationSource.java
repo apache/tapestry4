@@ -1,14 +1,3 @@
-package com.primix.tapestry.engine;
-
-import java.net.*;
-import java.io.*;
-import com.primix.tapestry.*;
-import com.primix.tapestry.parse.*;
-import com.primix.tapestry.spec.*;
-import com.primix.foundation.xml.*;
-import java.util.*;
-import org.apache.log4j.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -52,11 +41,22 @@ import org.apache.log4j.*;
  */
 
 
+package com.primix.tapestry.engine;
+
+import java.net.*;
+import java.io.*;
+import com.primix.tapestry.*;
+import com.primix.tapestry.parse.*;
+import com.primix.tapestry.spec.*;
+import com.primix.tapestry.util.xml.*;
+import java.util.*;
+import org.apache.log4j.*;
+
 public class DefaultSpecificationSource 
     implements ISpecificationSource
 {
 	private static final Category CAT = 
-		Category.getInstance(DefaultSpecificationSource.class.getName());
+		Category.getInstance(DefaultSpecificationSource.class);
 	
 	private IResourceResolver resolver;
 	protected ApplicationSpecification specification;

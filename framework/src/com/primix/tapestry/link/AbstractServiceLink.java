@@ -1,11 +1,3 @@
-package com.primix.tapestry.components.html.link;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.components.html.*;
-import java.util.*;
-import javax.servlet.http.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -52,6 +44,13 @@ import javax.servlet.http.*;
  * @version $Id$
  */
 
+package com.primix.tapestry.link;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.components.*;
+import com.primix.tapestry.html.*;
+import java.util.*;
+import javax.servlet.http.*;
 
 public abstract class AbstractServiceLink
     extends AbstractComponent

@@ -1,13 +1,3 @@
-package com.primix.tapestry.components.html.valid;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.components.html.*;
-import com.primix.tapestry.components.html.form.*;
-import com.primix.tapestry.spec.*;
-import java.util.*;
-import java.text.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -57,6 +47,15 @@ import java.text.*;
  *  @author Howard Ship
  *  @version $Id$
  */
+
+package com.primix.tapestry.valid;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.html.*;
+import com.primix.tapestry.form.*;
+import com.primix.tapestry.spec.*;
+import java.util.*;
+import java.text.*;
 
 public abstract class AbstractValidatingTextField
 extends AbstractComponent
@@ -127,7 +126,7 @@ implements ILifecycle, IValidatingTextField
 
 	/**
 	*  Gets and formats a localized string from the 
-	*  <code>com.primix.tapestry.components.html.valid.ValidationStrings</code>
+	*  <code>com.primix.tapestry.valid.ValidationStrings</code>
 	*  property bundle.
 	*
 	*/
@@ -138,7 +137,7 @@ implements ILifecycle, IValidatingTextField
 
 		if (strings == null)
 			strings = ResourceBundle.getBundle(
-				"com.primix.tapestry.components.html.valid.ValidationStrings",
+				"com.primix.tapestry.valid.ValidationStrings",
 				page.getLocale());
 
 		try

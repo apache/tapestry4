@@ -1,8 +1,3 @@
-package com.primix.tapestry.inspector;
-
-import com.primix.tapestry.components.html.form.*;
-import org.apache.log4j.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2001 by Howard Ship and Primix
@@ -40,6 +35,11 @@ import org.apache.log4j.*;
  *  @author Howard Ship
  *
  */
+
+package com.primix.tapestry.inspector;
+
+import com.primix.tapestry.form.*;
+import org.apache.log4j.*;
 
 public class PriorityModel
 implements IPropertySelectionModel

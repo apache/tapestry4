@@ -1,9 +1,3 @@
-package com.primix.tapestry;
-
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.components.html.form.*;
-import com.primix.tapestry.components.html.link.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -70,6 +64,10 @@ import com.primix.tapestry.components.html.link.*;
  * @version $Id$
  */
 
+package com.primix.tapestry;
+
+// Appease Javadoc
+import com.primix.tapestry.link.*;
 
 public interface IRequestCycle
 {
@@ -158,7 +156,7 @@ public interface IRequestCycle
     throws StaleLinkException;
 
     /**
-    	 *  Removes a previously stored attribute, if one with the given name exists.
+    *  Removes a previously stored attribute, if one with the given name exists.
     *
     */
 

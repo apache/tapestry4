@@ -1,9 +1,3 @@
-package com.primix.tapestry.components;
-
-import com.primix.tapestry.event.ChangeObserver;
-import com.primix.tapestry.*;
-import java.text.Format;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -74,7 +68,11 @@ import java.text.Format;
  */
 
 
- 
+package com.primix.tapestry.components;
+
+import com.primix.tapestry.*;
+import java.text.Format;
+
 public class Insert extends AbstractComponent
 {
 	private IBinding valueBinding;

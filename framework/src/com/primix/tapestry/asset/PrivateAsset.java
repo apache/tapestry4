@@ -1,11 +1,3 @@
-package com.primix.tapestry.asset;
-
-import java.net.URL;
-import com.primix.tapestry.*;
-import java.io.*;
-import java.util.*;
-import org.apache.log4j.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -45,11 +37,18 @@ import org.apache.log4j.*;
  *  @version $Id$
  */
 
+package com.primix.tapestry.asset;
+
+import java.net.URL;
+import com.primix.tapestry.*;
+import java.io.*;
+import java.util.*;
+import org.apache.log4j.*;
 
 public class PrivateAsset implements IAsset
 {
 	private static final Category CAT = 
-		Category.getInstance(PrivateAsset.class.getName());
+		Category.getInstance(PrivateAsset.class);
 
 	private AssetExternalizer externalizer;
 

@@ -1,9 +1,3 @@
-package com.primix.tapestry.inspector;
-
-import com.primix.foundation.*;
-import com.primix.tapestry.*;
-import com.primix.tapestry.components.*;
-
 /* Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
  *
@@ -39,6 +33,11 @@ import com.primix.tapestry.components.*;
  */
 
 
+package com.primix.tapestry.inspector;
+
+import com.primix.tapestry.util.*;
+import com.primix.tapestry.*;
+
 public class Inspector extends BasePage
 {
 	private View view = View.SPECIFICATION;
@@ -47,11 +46,11 @@ public class Inspector extends BasePage
 
 	public void detach()
 	{
-		super.detach();
-		
 		view = View.SPECIFICATION;
 		inspectedPageName = null;
 		inspectedIdPath = null;
+
+		super.detach();	
 	}
 
 	public View getView()

@@ -1,8 +1,3 @@
-package com.primix.foundation.io;
-
-import java.util.*;
-import java.io.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -38,6 +33,12 @@ import java.io.*;
  *  @version $Id$
  *
  */
+
+
+package com.primix.tapestry.util.io;
+
+import java.util.*;
+import java.io.*;
 
 class BooleanAdaptor
 implements ISqueezeAdaptor

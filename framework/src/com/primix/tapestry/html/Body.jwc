@@ -3,5 +3,5 @@
 <!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
 	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
 <specification>
-	<class>com.primix.tapestry.components.html.Body</class>
+  <class>com.primix.tapestry.html.Body</class>
 </specification>

@@ -1,13 +1,3 @@
-package com.primix.tapestry.engine;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.parse.*;
-import com.primix.foundation.*;
-import java.io.*;
-import java.util.*;
-import java.net.URL;
-import org.apache.log4j.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -48,11 +38,21 @@ import org.apache.log4j.*;
  */
 
 
+package com.primix.tapestry.engine;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.parse.*;
+import com.primix.tapestry.util.*;
+import java.io.*;
+import java.util.*;
+import java.net.URL;
+import org.apache.log4j.*;
+
 public class DefaultTemplateSource 
 implements ITemplateSource
 {
 	private static final Category CAT =
-		Category.getInstance(DefaultTemplateSource.class.getName());
+		Category.getInstance(DefaultTemplateSource.class);
 		 
 	private static final int MAP_SIZE = 11;
 

@@ -1,8 +1,3 @@
-package com.primix.tapestry.script;
-
-import java.util.*;
-import java.io.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2001 by Howard Ship and Primix
@@ -39,6 +34,10 @@ import java.io.*;
  *  @since 0.2.9
  */
  
+package com.primix.tapestry.script;
+
+import java.util.*;
+
 public class ParsedScript
 {
 	private String scriptPath;

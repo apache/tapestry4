@@ -1,5 +1,3 @@
-package com.primix.tapestry;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -28,8 +26,6 @@ package com.primix.tapestry;
  *
  */
 
-import com.primix.tapestry.*;
-
 /**
  *  A general exception describing an {@link IBinding}
  *  and an {@link IComponent}.
@@ -38,6 +34,8 @@ import com.primix.tapestry.*;
  * @version $Id$
  */
  
+package com.primix.tapestry;
+
 public class BindingException extends RuntimeException
 {
 	private transient IBinding binding;

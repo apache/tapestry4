@@ -1,7 +1,3 @@
-package com.primix.tapestry.components.html.form;
-
-import com.primix.foundation.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -57,6 +53,8 @@ import com.primix.foundation.*;
  *  @author Howard Ship
  *
  */
+
+package com.primix.tapestry.form;
 
 public interface IPropertySelectionModel
 {

@@ -1,10 +1,3 @@
-package com.primix.tapestry;
-
-import java.io.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import com.primix.tapestry.components.html.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -58,6 +51,12 @@ import com.primix.tapestry.components.html.*;
  *  @version $Id$
  */
 
+
+package com.primix.tapestry;
+
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
 
 public class ResponseOutputStream extends OutputStream
 {

@@ -1,9 +1,3 @@
-package com.primix.tapestry.event;
-
-import java.io.Serializable;
-import java.util.EventObject;
-import com.primix.tapestry.IComponent;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -40,6 +34,12 @@ import com.primix.tapestry.IComponent;
  * @author Howard Ship
  * @version $Id$
  */
+
+package com.primix.tapestry.event;
+
+import java.io.Serializable;
+import java.util.EventObject;
+import com.primix.tapestry.IComponent;
 
 public class ObservedChangeEvent extends EventObject
 {

@@ -1,14 +1,3 @@
-package com.primix.foundation.jdbc;
-
-import java.util.*;
-import java.sql.*;
-
-// Imports for Javadoc only.
-
-import java.lang.Integer;
-import java.lang.Boolean;
-import java.lang.Double;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -44,6 +33,18 @@ import java.lang.Double;
  *  @author Howard Ship
  *
  */
+ 
+package com.primix.tapestry.util.jdbc;
+
+import java.util.*;
+import java.sql.*;
+
+// Appease Javadoc
+
+import java.lang.Integer;
+import java.lang.Boolean;
+import java.lang.Double;
+
 
 public class StatementAssembly
 {
@@ -120,26 +121,51 @@ public class StatementAssembly
 	}
 
 
+	/**
+	 *  @since 0.2.10
+	 *
+	 */
+	 
 	public void add(int value)
 	{
 		add(Integer.toString(value));
 	}
 		
+	/**
+	 *  @since 0.2.10
+	 *
+	 */
+	 
 	public void add(short value)
 	{
 		add(Short.toString(value));
 	}
 	
+	/**
+	 *  @since 0.2.10
+	 *
+	 */
+	 
 	public void add(float value)
 	{
 		add(Float.toString(value));
 	}
 	
+	/**
+	 *  @since 0.2.10
+	 *
+	 */
+	 
 	public void add(double value)
 	{
 		add(Double.toString(value));
 	}
 	
+	/**
+	 *  @since 0.2.10
+	 *
+	 */
+	 
 	public void add(long value)
 	{
 		add(Long.toString(value));
@@ -151,6 +177,7 @@ public class StatementAssembly
 	 *  this will not work well with {@link Boolean} ... invoke {@link #add(boolean)}
 	 *  instead.
 	 *
+	 *  @since 0.2.10
 	 */
 	 
 	public void add(Object value)
@@ -161,6 +188,7 @@ public class StatementAssembly
 	/**
 	 * Adds a boolean value as either '0' or '1'.
 	 *
+	 * @since 0.2.10
 	 */
 	 
 	public void add(boolean value)
@@ -220,6 +248,11 @@ public class StatementAssembly
 		}
 	}	
 
+	/**
+	 *  @since 0.2.10
+	 *
+	 */
+	 
 	public void addList(Object[] items, String seperator)
 	{
 		for (int i = 0; i < items.length; i++)
@@ -231,6 +264,11 @@ public class StatementAssembly
 		}
 	}
 
+	/**
+	 *  @since 0.2.10
+	 *
+	 */
+	 
 	public void addList(int[] items, String seperator)
 	{
 		for (int i = 0; i < items.length; i++)

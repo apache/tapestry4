@@ -1,7 +1,3 @@
-package com.primix.tapestry.parse;
-
-import com.primix.tapestry.IRender;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -38,6 +34,10 @@ import com.primix.tapestry.IRender;
  * @author Howard Ship
  * @version $Id$
  */
+
+package com.primix.tapestry.parse;
+
+import com.primix.tapestry.IRender;
 
 public class TemplateToken
 {

@@ -1,8 +1,3 @@
-package com.primix.tapestry.components.html;
-
-import com.primix.tapestry.*;
-import java.util.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -92,6 +87,11 @@ import java.util.*;
  *  @version $Id$
  *  @author Howard Ship
  */
+
+package com.primix.tapestry.html;
+
+import com.primix.tapestry.*;
+import java.util.*;
 
 public class Shell extends AbstractComponent
 {

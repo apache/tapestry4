@@ -1,7 +1,3 @@
-package com.primix.tapestry.callback;
-
-import com.primix.tapestry.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -38,6 +34,10 @@ import com.primix.tapestry.*;
  *  @since 0.2.9
  *
  */
+
+package com.primix.tapestry.callback;
+
+import com.primix.tapestry.*;
 
 public class PageCallback
 implements ICallback

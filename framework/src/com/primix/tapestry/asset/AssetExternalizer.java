@@ -1,15 +1,3 @@
-package com.primix.tapestry.asset;
-
-import java.net.URL;
-import com.primix.foundation.*;
-import com.primix.tapestry.*;
-import java.io.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
-import java.util.*;
-import com.primix.tapestry.spec.*;
-import org.apache.log4j.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -83,10 +71,23 @@ import org.apache.log4j.*;
  * <code>/assets/0</code>.  When a new version of the application is deployed, the trailing
  * version number is incremented from 0 to 1.
  */
- 
+
+package com.primix.tapestry.asset;
+
+import java.net.URL;
+import com.primix.tapestry.util.*;
+import com.primix.tapestry.*;
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import java.util.*;
+import com.primix.tapestry.spec.*;
+import org.apache.log4j.*;
+
 public class AssetExternalizer
 {
-	private static final Category CAT = Category.getInstance(AssetExternalizer.class.getName());
+	private static final Category CAT = 
+		Category.getInstance(AssetExternalizer.class);
 	
 	private IResourceResolver resolver;
 	private File assetDir;

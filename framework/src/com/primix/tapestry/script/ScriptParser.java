@@ -1,16 +1,3 @@
-package com.primix.tapestry.script;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.components.html.*;
-import com.primix.tapestry.spec.*;
-import com.primix.foundation.*;
-import com.primix.foundation.xml.*;
-import org.w3c.dom.*;
-import java.io.*;
-import java.util.*;
-import org.xml.sax.*;
-import org.apache.log4j.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -57,11 +44,25 @@ import org.apache.log4j.*;
  *  @version $Id$
  */
 
+package com.primix.tapestry.script;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.html.*;
+import com.primix.tapestry.spec.*;
+import com.primix.tapestry.util.*;
+import com.primix.tapestry.util.xml.*;
+import org.w3c.dom.*;
+import java.io.*;
+import java.util.*;
+import org.xml.sax.*;
+import org.apache.log4j.*;
+
 public class ScriptParser
 extends AbstractDocumentParser
 {
 
-	private static final Category CAT = Category.getInstance(ScriptParser.class.getName());
+	private static final Category CAT = 
+		Category.getInstance(ScriptParser.class);
 
 	private static final int MAP_SIZE = 11;
 

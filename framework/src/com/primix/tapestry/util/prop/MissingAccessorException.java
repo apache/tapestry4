@@ -1,5 +1,3 @@
-package com.primix.foundation.prop;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -36,7 +34,8 @@ package com.primix.foundation.prop;
  * @version $Id$
  */
 
- 
+package com.primix.tapestry.util.prop;
+
 public class MissingAccessorException extends RuntimeException
 {
 	private Object rootObject;

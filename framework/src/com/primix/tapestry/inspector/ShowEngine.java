@@ -1,10 +1,3 @@
-package com.primix.tapestry.inspector;
-
-import com.primix.tapestry.*;
-import com.primix.foundation.io.*;
-import java.io.*;
-import java.util.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2001 by Howard Ship and Primix
@@ -44,7 +37,14 @@ import java.util.*;
  *  @author Howard Ship
  *
  */
- 
+
+package com.primix.tapestry.inspector;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.util.io.*;
+import java.io.*;
+import java.util.*;
+
 public class ShowEngine extends BaseComponent
 implements ILifecycle
 {

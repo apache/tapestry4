@@ -1,8 +1,3 @@
-package com.primix.foundation.io;
-
-import java.io.*;
-import java.util.zip.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -46,7 +41,12 @@ import java.util.zip.*;
  *  @version $Id$
  */
 
-public class SerializableAdaptor
+package com.primix.tapestry.util.io;
+
+import java.io.*;
+import java.util.zip.*;
+
+class SerializableAdaptor
 implements ISqueezeAdaptor
 {
 

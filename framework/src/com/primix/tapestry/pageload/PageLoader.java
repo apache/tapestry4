@@ -1,13 +1,3 @@
-package com.primix.tapestry.pageload;
-
-import java.lang.reflect.*;
-import com.primix.tapestry.event.*;
-import com.primix.tapestry.spec.*;
-import java.util.*;
-import com.primix.tapestry.*;
-import com.primix.tapestry.binding.*;
-import org.apache.log4j.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -44,10 +34,22 @@ import org.apache.log4j.*;
  */
 
 
+package com.primix.tapestry.pageload;
+
+import java.lang.reflect.*;
+import com.primix.tapestry.event.*;
+import com.primix.tapestry.spec.*;
+import java.util.*;
+import com.primix.tapestry.*;
+import com.primix.tapestry.binding.*;
+import org.apache.log4j.*;
+
+
 public class PageLoader
     implements IPageLoader
 {
-	private static final Category CAT = Category.getInstance(PageLoader.class.getName());
+	private static final Category CAT =
+		Category.getInstance(PageLoader.class);
 
 	private static final int  MAP_SIZE = 11;
 

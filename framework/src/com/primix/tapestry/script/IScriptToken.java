@@ -1,5 +1,3 @@
-package com.primix.tapestry.script;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -36,6 +34,8 @@ package com.primix.tapestry.script;
  *  @author Howard Ship
  *  @version $Id$
  */
+
+package com.primix.tapestry.script;
 
 public interface IScriptToken
 {

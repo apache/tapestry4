@@ -1,7 +1,3 @@
-package com.primix.tapestry.components;
-
-import com.primix.tapestry.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -60,6 +56,9 @@ import com.primix.tapestry.*;
  * @version $Id$
  */
 
+package com.primix.tapestry.components;
+
+import com.primix.tapestry.*;
 
 public class InsertBlock extends AbstractComponent
 {
@@ -78,7 +77,7 @@ public class InsertBlock extends AbstractComponent
 	/**
 	 *  If the block parameter is bound and not null,
 	 *  then {@link IComponent#renderWrapped(IResponseWriter, IRequestCycle)}
-	 *  is invoked upon it.
+	 *  is invoked on it.
 	 *
 	 */
 	 

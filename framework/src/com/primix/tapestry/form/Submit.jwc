@@ -3,27 +3,27 @@
 <!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
 	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
 <specification>
-	<class>com.primix.tapestry.components.html.form.Submit</class>
-	<allow-body>no</allow-body>
-	<parameters>
-		<parameter>
-			<name>label</name>
-			<java-type>java.lang.String</java-type>
-		</parameter>
-		<!-- If set to true, the button is disabled -->
-		<parameter>
-			<name>disabled</name>
-		</parameter>
-		<!-- Bound to a property that is updated (with the tag) if the Submit button
+  <class>com.primix.tapestry.form.Submit</class>
+  <allow-body>no</allow-body>
+  <parameters>
+    <parameter>
+      <name>label</name>
+      <java-type>java.lang.String</java-type>
+    </parameter>
+    <!-- If set to true, the button is disabled -->
+    <parameter>
+      <name>disabled</name>
+    </parameter>
+    <!-- Bound to a property that is updated (with the tag) if the Submit button
              is clicked. -->
-		<parameter>
-			<name>selected</name>
-			<required>yes</required>
-		</parameter>
-		<!-- A tag that is used when the Submit button is clicked. -->
-		<parameter>
-			<name>tag</name>
-			<required>yes</required>
-		</parameter>
-	</parameters>
+    <parameter>
+      <name>selected</name>
+      <required>yes</required>
+    </parameter>
+    <!-- A tag that is used when the Submit button is clicked. -->
+    <parameter>
+      <name>tag</name>
+      <required>yes</required>
+    </parameter>
+  </parameters>
 </specification>

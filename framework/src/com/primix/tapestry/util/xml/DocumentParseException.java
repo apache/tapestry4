@@ -1,7 +1,3 @@
-package com.primix.foundation.xml;
-
-import org.xml.sax.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -41,6 +37,10 @@ import org.xml.sax.*;
  *  @since 0.2.10
  *
  */
+
+package com.primix.tapestry.util.xml;
+
+import org.xml.sax.*;
 
 public class DocumentParseException
 extends Exception

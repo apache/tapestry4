@@ -1,5 +1,3 @@
-package com.primix.tapestry.event;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -38,6 +36,7 @@ package com.primix.tapestry.event;
  * @version $Id$
  */
 
+package com.primix.tapestry.event;
 
 public interface ChangeObserver
 {

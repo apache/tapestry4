@@ -1,15 +1,3 @@
-package com.primix.tapestry.engine;
-
-import com.primix.foundation.*;
-import com.primix.tapestry.spec.*;
-import com.primix.tapestry.record.*;
-import com.primix.tapestry.event.*;
-import java.util.*;
-import com.primix.tapestry.*;
-import javax.servlet.http.*;
-import com.primix.tapestry.components.html.link.*;
-import org.apache.log4j.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -46,10 +34,24 @@ import org.apache.log4j.*;
  * @version $Id$
  */
  
+
+package com.primix.tapestry.engine;
+
+import com.primix.tapestry.util.*;
+import com.primix.tapestry.spec.*;
+import com.primix.tapestry.record.*;
+import com.primix.tapestry.event.*;
+import java.util.*;
+import com.primix.tapestry.*;
+import javax.servlet.http.*;
+import com.primix.tapestry.link.*;
+import org.apache.log4j.*;
+
 public class RequestCycle 
     implements IRequestCycle, ChangeObserver
 {
-	private static final Category CAT = Category.getInstance(RequestCycle.class.getName());
+	private static final Category CAT = 
+		Category.getInstance(RequestCycle.class);
 
 	private IPage page;
 	private IEngine engine;

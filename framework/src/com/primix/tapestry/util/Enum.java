@@ -1,8 +1,3 @@
-package com.primix.foundation;
-
-import java.io.*;
-import java.util.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -56,7 +51,12 @@ import java.util.*;
  * @author Howard Ship
  * @version $Id$
  */
- 
+
+package com.primix.tapestry.util;
+
+import java.io.*;
+import java.util.*;
+
 public class Enum implements Serializable
 {
 	private transient String enumerationId;
@@ -138,7 +138,7 @@ public class Enum implements Serializable
 
 		if (identity.containsKey(key))
 			throw new RuntimeException(
-				"com.primix.foundation.Enum.register(): " +
+				"com.primix.tapestry.util.Enum.register(): " +
 				key + " is already registered.  " +
 				"The enumerationId property must be unique within the class.");
 

@@ -3,25 +3,25 @@
 <!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
 	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
 <specification>
-	<class>com.primix.tapestry.components.html.Rollover</class>
-	<allow-body>false</allow-body>
-	<parameters>
-		<parameter>
-			<name>image</name>
-			<java-type>com.primix.tapestry.IAsset</java-type>
-			<required>yes</required>
-		</parameter>
-		<parameter>
-			<name>focus</name>
-			<java-type>com.primix.tapestry.IAsset</java-type>
-		</parameter>
-		<parameter>
-			<name>blur</name>
-			<java-type>com.primix.tapestry.IAsset</java-type>
-		</parameter>
-		<parameter>
-			<name>disabled</name>
-			<java-type>com.primix.tapestry.IAsset</java-type>
-		</parameter>
-	</parameters>
+  <class>com.primix.tapestry.html.Rollover</class>
+  <allow-body>false</allow-body>
+  <parameters>
+    <parameter>
+      <name>image</name>
+      <java-type>com.primix.tapestry.IAsset</java-type>
+      <required>yes</required>
+    </parameter>
+    <parameter>
+      <name>focus</name>
+      <java-type>com.primix.tapestry.IAsset</java-type>
+    </parameter>
+    <parameter>
+      <name>blur</name>
+      <java-type>com.primix.tapestry.IAsset</java-type>
+    </parameter>
+    <parameter>
+      <name>disabled</name>
+      <java-type>com.primix.tapestry.IAsset</java-type>
+    </parameter>
+  </parameters>
 </specification>

@@ -1,12 +1,3 @@
-package com.primix.tapestry;
-
-import com.primix.tapestry.event.ChangeObserver;
-import com.primix.tapestry.spec.*;
-import java.util.*;
-import java.io.OutputStream;
-import javax.servlet.http.*;
-import com.primix.foundation.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix Solutions
@@ -45,6 +36,14 @@ import com.primix.foundation.*;
  * @author Howard Ship
  */
 
+package com.primix.tapestry;
+
+import com.primix.tapestry.event.ChangeObserver;
+import com.primix.tapestry.spec.*;
+import java.util.*;
+import java.io.OutputStream;
+import javax.servlet.http.*;
+import com.primix.tapestry.util.*;
 
 public class BasePage extends AbstractPage
 {

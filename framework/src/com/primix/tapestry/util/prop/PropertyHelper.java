@@ -1,12 +1,3 @@
-package com.primix.foundation.prop;
-
-import com.primix.foundation.*;
-import com.primix.foundation.DynamicInvocationException;
-import java.beans.*;
-import java.lang.reflect.*;
-import java.util.*;
-import org.apache.log4j.*;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -70,10 +61,18 @@ import org.apache.log4j.*;
  * @author Howard Ship
  */
  
+package com.primix.tapestry.util.prop;
+
+import com.primix.tapestry.util.*;
+import java.beans.*;
+import java.lang.reflect.*;
+import java.util.*;
+import org.apache.log4j.*;
+
 public class PropertyHelper
 {
 	private static final Category CAT =
-		Category.getInstance(PropertyHelper.class.getName());
+		Category.getInstance(PropertyHelper.class);
 
 	/**
 	 *  Cache of helpers, keyed on the Class of the bean.

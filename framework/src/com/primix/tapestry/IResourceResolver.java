@@ -1,7 +1,3 @@
-package com.primix.tapestry;
-
-import java.net.URL;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -44,6 +40,10 @@ import java.net.URL;
  * @author Howard Ship
  * @version $Id$
  */
+
+package com.primix.tapestry;
+
+import java.net.URL;
 
 public interface IResourceResolver
 {

@@ -1,5 +1,3 @@
-package com.primix.tapestry.parse;
-
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -28,8 +26,10 @@ package com.primix.tapestry.parse;
  *
  */
 
+package com.primix.tapestry.parse;
+
 import java.io.*;
-import com.primix.foundation.Enum;
+import com.primix.tapestry.util.Enum;
 
 /**
  * An {@link Enum} of the different possible token types.
