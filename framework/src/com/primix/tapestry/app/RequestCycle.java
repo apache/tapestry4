@@ -339,6 +339,12 @@ public class RequestCycle
 			// RenderExceptions don't need to be wrapped.
 			throw e;
 		}
+		catch (ApplicationRuntimeException e)
+		{
+		    // Nothing much to add here.
+
+		    throw e;
+		}
 		catch (Throwable e)
 		{
 			// But wrap other exceptions in a RequestCycleException ... this
@@ -416,7 +422,7 @@ public class RequestCycle
 			// But wrap other exceptions in a RequestCycleException ... this
 			// will ensure that some of the context is available.
 
-			throw new RequestCycleException(e.getMessage(), null, this, e);
+			throw new RequestCycleException(e.getMessage(), page, this, e);
 		}
 		finally
 		{

@@ -87,7 +87,9 @@ import java.util.*;
  */
 
 
-public class Direct extends AbstractServiceLink
+public class Direct
+extends AbstractServiceLink
+implements IDirect
 {
 	private IBinding listenerBinding;
 	private IBinding contextBinding;
@@ -169,18 +171,19 @@ public class Direct extends AbstractServiceLink
 	}
 
 	/**
-	*  Invoked by the direct service to trigger the action.
+	*  Invoked by the direct service to trigger the application-specific
+	*  action by notifying the {@link IDirectListener listener}.
 	*
 	*/
 
-	public void trigger(IRequestCycle cycle, String[] parameters)
+	public void trigger(IRequestCycle cycle, String[] context)
 	throws RequestCycleException
 	{
 		IDirectListener listener;
 
 		listener = getListener(cycle);
 
-		listener.directTriggered(this, parameters, cycle);
+		listener.directTriggered(this, context, cycle);
 	}
 
 	public IBinding getListenerBinding()

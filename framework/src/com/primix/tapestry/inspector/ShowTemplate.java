@@ -44,7 +44,9 @@ import com.primix.tapestry.parse.*;
  *
  */
  
-public class ShowTemplate extends BaseComponent
+public class ShowTemplate
+extends BaseComponent
+implements IDirect
 {
 
 	public boolean getHasTemplate()
@@ -92,7 +94,6 @@ public class ShowTemplate extends BaseComponent
 		boolean compressed;
 		String[] context = null;
 		IApplicationService service = null;
-		IComponent captive = null;
 		String URL;
 		String id;
 		IComponent inspectedComponent;
@@ -156,7 +157,6 @@ public class ShowTemplate extends BaseComponent
 			{
 				service = cycle.getApplication().getService(IApplicationService.DIRECT_SERVICE);
 				context = new String[1];
-				captive = getComponent("captive");
 			}
 			
 			// Each id references a component embedded in the inspected component.
@@ -169,7 +169,7 @@ public class ShowTemplate extends BaseComponent
 			// Build a URL to select that component, as if by the captive
 			// component itself (it's a Direct).
 			
-			URL = service.buildURL(cycle, captive, context);
+			URL = service.buildURL(cycle, this, context);
 
 			writer.begin("span");
 			writer.attribute("class", "jwc-tag");
@@ -203,5 +203,17 @@ public class ShowTemplate extends BaseComponent
 		writer.end(); // <pre>
 		writer.setCompressed(compressed);
 	}
+
+    /**
+     *  Invoked when a component id is clicked.
+     *
+     */
+
+    public void trigger(IRequestCycle cycle, String[] context)
+    {
+        Inspector inspector = (Inspector)page;
+
+        inspector.setInspectedIdPath(context[0]);
+    }
 
 }

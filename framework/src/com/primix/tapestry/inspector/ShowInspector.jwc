@@ -27,10 +27,10 @@
 			<id>link</id>
 			<type>Direct</type>
 			<bindings>
-				<binding>
+				<static-binding>
 					<name>target</name>
-					<property-path>target</property-path>
-				</binding>
+					<value>Tapestry Inspector Window</value>
+				</static-binding>
 				<binding>
 					<name>listener</name>
 					<property-path>listener</property-path>

@@ -168,19 +168,6 @@ public class ShowInspector extends BaseComponent
 		
 
 	/**
-	 *  Returns the target attribute used in the link.  This includes
-	 *  the session ID, so it is likely to be unique, forcing a new
-	 *  window to be raised.
-	 *
-	 */
-	 
-	public String getTarget()
-	{
-		return "Tapestry Inspector " + 
-			page.getRequestCycle().getRequestContext().getSession().getId();
-	}
-
-	/**
 	 *  Gets the listener for the link component.
 	 *
 	 */

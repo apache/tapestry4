@@ -49,7 +49,8 @@ public class PageLoader
 	private IApplication application;
     private IResourceResolver resolver;
 	private ISpecificationSource specificationSource;
-
+    private PageSource pageSource;
+    
 	/**
 	*  Number of components instantiated, excluding the page itself.
 	*
@@ -77,11 +78,13 @@ public class PageLoader
 	*
 	*/
 
-	public PageLoader(IApplication application)
+	public PageLoader(PageSource pageSource, IApplication application)
 	{
+        this.pageSource = pageSource;
+        this.application = application;
+
 		specificationSource = application.getSpecificationSource();
 
-		this.application = application;
         resolver = application.getResourceResolver();
 	}
 
@@ -179,8 +182,10 @@ public class PageLoader
         if (type == BindingType.STATIC)
     	    return new StaticBinding(bindingValue);
 
+      
+
         if (type == BindingType.FIELD)
-            return new FieldBinding(resolver, bindingValue);
+            return pageSource.getFieldBinding(bindingValue);
 
         // Otherwise, its an inherited binding.  Dig it out of the container.
         // This may return null if the container doesn't have the named binding.

@@ -38,19 +38,5 @@
 				</binding>
 			</bindings>
 		</component>
-		<component>
-			<id>captive</id>
-			<type>Direct</type>
-			<bindings>
-				<binding>
-					<name>listener</name>
-					<property-path>page.selectComponentListener</property-path>
-				</binding>
-				<field-binding>
-					<name>enabled</name>
-					<field-name>Boolean.FALSE</field-name>
-				</field-binding>
-			</bindings>
-		</component>
 	</components>
 </specification>
