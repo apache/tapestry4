@@ -95,6 +95,12 @@
   		
     <javac srcdir="${framework.src.dir}" destdir="${clover-classes.dir}" debug="on" target="1.1">
       <classpath refid="base.class.path"/>
+      
+      <!-- Exclude these two libraries since they aren't used anywhere within Tapestry. -->
+      <!-- They will be removed, or moved, in a later release. -->
+      
+      <exclude name="net/sf/tapestry/util/jdbc/**"/>
+      <exclude name="net/sf/tapestry/util/ejb/**"/>
     </javac>
     
     
