@@ -365,7 +365,8 @@ public class RequestCycle
 		
 		// Forget any attributes from a previous render cycle.
 		
-		attributes = null;
+		if (attributes != null)
+			attributes.clear();
 		
 		try
 		{
@@ -402,6 +403,86 @@ public class RequestCycle
 	}
 	
 	/**
+	 *  Rewinds an individual form by invoking 
+	 *  {@link IForm#rewind(IResponseWriter, IRequestCycle)}.
+	 *
+	 * <p>The process is expected to end with a {@link RenderRewoundException}.
+	 * If the entire page is renderred without this exception being thrown, it means
+	 * that the target action id was not valid, and a 
+	 * {@link RequestCycleException}
+	 * is thrown.
+	 *
+	 * <p>This clears all attributes.
+	 *
+	 *  @since 1.0.2
+	 */
+	
+	public void rewindForm(IForm form, String targetActionId)
+		throws RequestCycleException
+	{
+		IPage page = form.getPage();
+		String pageName = null;
+		
+		if (monitor != null)
+		{
+			pageName = page.getName();
+			monitor.pageRewindBegin(pageName);
+		}
+		
+		rewinding = true;
+	
+		if (attributes != null)
+			attributes.clear();
+		
+		// Fake things a little for getNextActionId() / isRewound()
+		
+		this.targetActionId = Integer.parseInt(targetActionId, 16);
+		this.actionId = this.targetActionId - 1;
+		
+		this.targetComponent = form;
+		
+		try
+		{
+			form.rewind(NullResponseWriter.getSharedInstance(), this);
+			
+			// Shouldn't get this far, because the form should
+			// throw the RenderRewoundException.
+			
+			throw new StaleLinkException(
+				"Failure to rewind " + form + ".", 
+				form);
+		}
+		catch (RenderRewoundException ex)
+		{
+			// This is acceptible and expected.
+		}
+		catch (RequestCycleException ex)
+		{
+			// RequestCycleExceptions don't need to be wrapped.
+			throw ex;
+		}
+		catch (Throwable ex)
+		{
+			// But wrap other exceptions in a RequestCycleException ... this
+			// will ensure that some of the context is available.
+			
+			throw new RequestCycleException(ex.getMessage(), page,  ex);
+		}
+		finally
+		{
+			rewinding = false;
+			this.actionId = 0;
+			this.targetActionId = 0;
+			this.targetComponent = null;
+		}
+		
+		if (monitor != null)
+			monitor.pageRewindEnd(pageName);
+		
+	}
+
+	
+		/**
 	 *  Rewinds the page by invoking 
 	 *  {@link IPage#renderPage(IResponseWriter, IRequestCycle)}.
 	 *
@@ -427,7 +508,10 @@ public class RequestCycle
 		}
 		
 		rewinding = true;
-		attributes = null;
+		
+		if (attributes != null)
+			attributes.clear();
+		
 		actionId = -1;
 		
 		// Parse the action Id as hex since that's whats generated
@@ -473,7 +557,7 @@ public class RequestCycle
 			monitor.pageRewindEnd(pageName);
 		
 	}
-	
+
 	public void setAttribute(String name, Object value)
 	{
 		if (CAT.isDebugEnabled())

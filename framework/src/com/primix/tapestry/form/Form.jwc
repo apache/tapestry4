@@ -4,4 +4,6 @@
 <specification class="com.primix.tapestry.form.Form">
   <parameter name="method" java-type="java.lang.String"/>
   <parameter name="listener" java-type="com.primix.tapestry.IActionListener" required="yes"/>
+  <parameter name="stateful" java-type="boolean"/>
+  <parameter name="direct" java-type="boolean"/>
 </specification>

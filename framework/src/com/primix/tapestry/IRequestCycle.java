@@ -237,4 +237,14 @@ public interface IRequestCycle
 	 */
 	
 	public IEngineService getService();
+	
+	/**
+	 *  Used by {@link IForm forms} to perform a <em>partial</em> rewind
+	 *  and respond to the form submission.
+	 *
+	 *  @since 1.0.2
+	 */
+	
+	public void rewindForm(IForm form, String targetActionId)
+		throws RequestCycleException;
 }

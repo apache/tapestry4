@@ -117,7 +117,8 @@ FULL_RELEASE = \
 	$(RELEASE_DIR)/doc/src \
 	$(RELEASE_DIR)/framework \
 	$(RELEASE_DIR)/JBE \
-	$(RELEASE_DIR)/examples
+	$(RELEASE_DIR)/examples \
+	$(RELEASE_DIR)/web
 	
 create-archives:
 	$(call NOTE, Creating full distribution archive ...)
