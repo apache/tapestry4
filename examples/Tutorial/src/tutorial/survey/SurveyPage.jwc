@@ -123,11 +123,6 @@
 				<name>radio</name>
 				<value>true</value>
 			</static-binding>
-
-			<static-binding>
-				<name>disabled</name>
-				<value>true</value>
-			</static-binding>
 		</bindings>
 	</component>
 
@@ -146,10 +141,6 @@
 				<name>model</name>
 				<property-path>raceModel</property-path>
 			</binding>
-			<static-binding>
-				<name>disabled</name>
-				<value>true</value>
-			</static-binding>
 		</bindings>
 	</component>
 

@@ -3,7 +3,7 @@
 	"http://tapestry.primix.com/dtd/Tapestry_1_0.dtd">
 	
 <specification>
-	<class>tutorial.simple.Home</class>
+	<class>com.primix.tapestry.BasePage</class>
 	
 	<components>
 
