@@ -1,4 +1,7 @@
-package com.primix.tapestry;
+package com.primix.tapestry.callback;
+
+import com.primix.tapestry.*;
+import java.io.*;
 
 /*
  * Tapestry Web Application Framework
@@ -27,35 +30,31 @@ package com.primix.tapestry;
  * Lesser General Public License for more details.
  *
  */
-
+ 
 /**
- * Defines a listener to an {@link IDirect} component, which is a how the
- * application produces behavior when
- * the component is triggered.
+ *  Defines a callback, an object which is used to invoke or reinvoke a method
+ *  on an object or component in a later request cycle.  This is used to
+ *  allow certain operations (say, submitting an order) to defer to other processes
+ *  (say, logging in and/or registerring).
  *
- * @author Howard Ship
- * @version $Id$
+ *  <p>Callbacks must be {@link Serializable}, to ensure that they can be stored
+ *  between request cycles.
+ *
+ *  @version $Id$
+ *  @author Howard Ship
+ *  @since 0.2.9
+ *
  */
-
-
-public interface IDirectListener
+ 
+public interface ICallback
+extends Serializable
 {
-
 	/**
-	*  Method invoked by the {@link IDirect} component, when its URL
-	*  is triggered.
-	*  
-	*  <p>A direct service URL includes an array of application specific
-	*  strings, the context, which define contextual state for the action.
-	*  Note that null values provided to the component when rendering will
-	*  be converted to empty strings before invoking the listener.
-	*
-	*  @param component The component which was "triggered".
-	*  @param parameters An array of parameters for the action.
-	*  @param cycle The request cycle in which the component was triggered.
-	*/
-
-	public void directTriggered(IDirect component, String[] context,
-		IRequestCycle cycle)
+	 *  Performs the call back.  Typical implementation will locale a particular
+	 *  page or component and invoke a method upon it, or the {@link IRequestCycle cycle}.
+	 *
+	 */
+	 
+	public void peformCallback(IRequestCycle cycle)
 	throws RequestCycleException;
 }

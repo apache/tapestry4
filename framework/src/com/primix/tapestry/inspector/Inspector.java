@@ -143,7 +143,7 @@ public class Inspector extends BasePage
 	{
 		return new IDirectListener()
 		{
-			public void directTriggered(IComponent component, String[] context, IRequestCycle cycle)
+			public void directTriggered(IDirect direct, String[] context, IRequestCycle cycle)
 			{
 				String newIdPath;
 				

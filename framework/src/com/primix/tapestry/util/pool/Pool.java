@@ -82,7 +82,7 @@ public class Pool
 	/**
 	*  Returns a previously pooled object with the given key, or null if no
 	*  such object exists.  Getting an object from a Pool removes it from the Pool,
-	*  but it can later be re-added with {@link #add(Object,Object)}.
+	*  but it can later be re-added with {@link #store(Object,Object)}.
 	*
 	*/
 

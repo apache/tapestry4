@@ -27,7 +27,8 @@ PACKAGES = \
 	com.primix.tapestry.spec \
 	com.primix.tapestry.inspector \
 	com.primix.tapestry.script \
-	com.primix.tapestry.wml
+	com.primix.tapestry.wml \
+	com.primix.tapestry.callback
 
 LOCAL_CLASSPATH = \
 	$(INSTALL_DIR)/gnu-regexp.jar \
