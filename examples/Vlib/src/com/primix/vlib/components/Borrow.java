@@ -111,12 +111,12 @@ public class Borrow extends BaseComponent
 		}
 	}
 
-	public boolean isLinkEnabled()
+	public boolean isLinkDisabled()
 	{
 		Visit visit = (Visit) page.getVisit();
 
 		if (!visit.isUserLoggedIn())
-			return false;
+			return true;
 
 		// If the user is logged in, they can borrow it if they are
 		// not already holding it and aren't the owner.
@@ -126,11 +126,11 @@ public class Borrow extends BaseComponent
 		// If the book is not lendable, then disable the link.
 
 		if (!book.isLendable())
-			return false;
+			return true;
 
-		// Otherwise, can only borrow it if not already holding it.
+		// Otherwise, disabled the link if already holding it.
 
-		return !visit.isLoggedInUser(book.getHolderPrimaryKey());
+		return visit.isLoggedInUser(book.getHolderPrimaryKey());
 	}
 
 	public void borrow(String[] context, IRequestCycle cycle)
