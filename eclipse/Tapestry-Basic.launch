@@ -73,7 +73,7 @@
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry
-    internalArchive=&quot;/jakarta-tapestry/lib/ext/commons-digester-1.4.jar&quot;
+    internalArchive=&quot;/jakarta-tapestry/lib/ext/commons-digester-1.5.jar&quot;
     path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
@@ -98,7 +98,8 @@
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry
-    internalArchive=&quot;/jakarta-tapestry/lib/ext/javassist-2.5.1.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;
+    internalArchive=&quot;/jakarta-tapestry/lib/ext/javassist-2.5.1.jar&quot;
+    path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
     </listAttribute>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="jakarta-tapestry"/>
