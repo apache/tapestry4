@@ -88,7 +88,7 @@ public class TestInsert extends BaseComponentTestCase
         IRequestCycle cycle = newRequestCycle(false);
         IMarkupWriter writer = newWriter();
 
-        writer.print("42");
+        writer.print("42", false);
 
         replayControls();
 
@@ -109,7 +109,7 @@ public class TestInsert extends BaseComponentTestCase
         DateFormat format = DateFormat.getDateInstance();
         String expected = format.format(date);
 
-        writer.print(expected);
+        writer.print(expected, false);
 
         replayControls();
 
@@ -165,7 +165,7 @@ public class TestInsert extends BaseComponentTestCase
         IRequestCycle cycle = newRequestCycle(false);
         IMarkupWriter writer = newWriter();
 
-        writer.printRaw("42");
+        writer.print("42", true);
 
         replayControls();
 
@@ -188,7 +188,7 @@ public class TestInsert extends BaseComponentTestCase
         writer.begin("span");
         writer.attribute("class", "paisley");
         writer.attribute("informal", "informal-value");
-        writer.print("42");
+        writer.print("42", false);
         writer.end();
 
         replayControls();

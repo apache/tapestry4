@@ -91,11 +91,7 @@ public abstract class FieldLabel extends AbstractComponent
 
         delegate.writeLabelPrefix(field, writer, cycle);
 
-        if (getRaw()) {
-            writer.printRaw(displayName);
-        } else {
-            writer.print(displayName);
-        }
+        writer.print(displayName, getRaw());
 
         delegate.writeLabelSuffix(field, writer, cycle);
     }

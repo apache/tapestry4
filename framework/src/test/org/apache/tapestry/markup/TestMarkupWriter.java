@@ -249,6 +249,22 @@ public class TestMarkupWriter extends HiveMindTestCase
         assertOutput("{Hello}");
     }
 
+    public void testPrintWithRawFlag()
+    {
+        MarkupFilter filter = new EchoMarkupFilter();
+        PrintWriter writer = newPrintWriter();
+
+        IMarkupWriter mw = new MarkupWriterImpl("text/html", writer, filter);
+
+        mw.print("Filtered", false);
+
+        assertOutput("{Filtered}");
+
+        mw.print("Raw", true);
+
+        assertOutput("Raw");
+    }
+
     public void testPrintClosesCurrentTag()
     {
         MarkupFilter filter = new EchoMarkupFilter();
@@ -565,7 +581,7 @@ public class TestMarkupWriter extends HiveMindTestCase
 
         assertOutput("<p");
 
-        mw.printRaw("Fred");
+        mw.print("Fred", true);
 
         assertOutput(">Fred");
 

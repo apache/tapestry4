@@ -17,14 +17,12 @@ package org.apache.tapestry.engine;
 import org.apache.tapestry.IMarkupWriter;
 
 /**
- *  A {@link IMarkupWriter} that does absolutely <em>nothing</em>; this
- *  is used during the rewind phase of the request cycle when output
- *  is discarded anyway.
- *
- *  @author Howard Lewis Ship, David Solis
- *  @since 0.2.9
- *
- **/
+ * A {@link IMarkupWriter}that does absolutely <em>nothing</em>; this is used during the rewind
+ * phase of the request cycle when output is discarded anyway.
+ * 
+ * @author Howard Lewis Ship, David Solis
+ * @since 0.2.9
+ */
 
 public class NullWriter implements IMarkupWriter
 {
@@ -67,10 +65,9 @@ public class NullWriter implements IMarkupWriter
     }
 
     /**
-     *  Returns <code>this</code>: since a NullWriter doesn't actually
-     *  do anything, one is as good as another!.
-     *
-     **/
+     * Returns <code>this</code>: since a NullWriter doesn't actually do anything, one is as good
+     * as another!.
+     */
 
     public IMarkupWriter getNestedWriter()
     {
@@ -107,9 +104,8 @@ public class NullWriter implements IMarkupWriter
     }
 
     /**
-     *  Always returns false.
-     *
-     **/
+     * Always returns false.
+     */
 
     public boolean checkError()
     {
@@ -133,22 +129,24 @@ public class NullWriter implements IMarkupWriter
     }
 
     /**
-     *  @see org.apache.tapestry.IMarkupWriter#attribute(java.lang.String, boolean)
-     *
-     *  @since 3.0
-     **/
+     * @see org.apache.tapestry.IMarkupWriter#attribute(java.lang.String, boolean)
+     * @since 3.0
+     */
 
     public void attribute(String name, boolean value)
     {
     }
 
     /**
-     *  @see org.apache.tapestry.IMarkupWriter#attributeRaw(java.lang.String, java.lang.String)
-     *
-     *  @since 3.0
-     **/
+     * @see org.apache.tapestry.IMarkupWriter#attributeRaw(java.lang.String, java.lang.String)
+     * @since 3.0
+     */
 
     public void attributeRaw(String name, String value)
+    {
+    }
+
+    public void print(char[] data, int offset, int length, boolean raw)
     {
     }
 }
