@@ -432,6 +432,10 @@ public class ApplicationSpecification extends BasePropertyHolder
 		if (pageMap == null)
 			pageMap = new HashMap(MAP_SIZE);
 
+		if (pageMap.containsKey(name))
+			throw new IllegalArgumentException(
+			"Application already contains a page named '" + name + "'.");
+
 		pageMap.put(name, spec);
 	}
 
