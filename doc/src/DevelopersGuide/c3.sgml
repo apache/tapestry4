@@ -990,7 +990,7 @@ Once all assets have been specified, the
 &start-tag;assets&end-tag; element is closed:
 </>
 
-&start-listing;<![CDATA[</assets>]]>;&end-listing;
+&start-listing;<![CDATA[</assets>]]>&end-listing;
 
 
 		</section>

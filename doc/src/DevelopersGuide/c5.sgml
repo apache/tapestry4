@@ -1,0 +1,477 @@
+<!-- $Id$ -->
+
+<chapter>
+	<title>Application Engines and Services</>
+
+<para>
+The application engine is a central object whose responsibility is to run the request cycle for each 
+request.  To do this, it manages resources such as page loaders and page recorders and provides 
+services to the pages and components utilized during the request cycle.
+</>
+
+<para>
+Application engines are instantiated by the application's servlet (described in the next section).   
+They are stored into the <classname>HttpSession</> and are persistent between request cycles.
+</>
+
+<para>
+An important behavior of the engine is to provide named engine services, which are used to create and 
+respond to URLs.  The application engine creates and manages the request cycle and provides 
+robust default behavior for catching and reporting exceptions.
+</>
+
+<para>
+The application engine provides the page recorder objects used by the request cycle.  By doing so, 
+it sets the persistence strategy for the application as a whole.  For example, applications which use 
+or subclass <classname>com.primix.tapestry.engine.SimpleEngine</> will use the simple method of 
+storing persistent state:  in memory.  Such applications may still be distributed, since the page 
+recorders will be serialized with the application engine (which is stored within the 
+<classname>HttpSession</>).
+</>
+
+	<section>
+		<title>Application Servlet</>
+
+<para>
+Every Tapestry application has a single servlet, which acts 
+as a bridge between the servlet container and the 
+application engine.  The application servlet is a subclass of 
+<classname>com.primix.tapestry.ApplicationServlet</>.
+</>
+
+<para>
+The subclass provides the framework with the path to the application specification by 
+implementing the method <function>getApplicationSpecificationPath()</>.
+</>
+
+<para>
+The servlet may also perform some static initialization for the application in its 
+<function>init()</> method.  
+This includes tasks such as loading JDBC drivers.
+</>
+
+
+	</section>
+
+	<section>
+		<title>Required Pages</>
+
+<para>
+Each application is required to have a minimum of five pages with specific names.  Tapestry 
+provides default implementations for four of the five, but a full-featured Tapestry application may 
+override any of the others to provide a consistent look-and-feel.
+</>
+
+
+<segmentedlist>
+	<title>Tapestry Pages</>
+	<segtitle>Page Name</>
+	<segtitle>Required</>
+	<segtitle>Description</>
+
+	<seglistitem>
+		<seg>Exception</>
+		<seg>Default provided, may be changed.</>
+		<seg>Page used to present uncaught 
+			 exceptions to the user.</>
+	</>
+
+	<seglistitem>
+		<seg>Home</>
+		<seg>Must be provided by developer.</>
+		<seg>The initial page displayed when the 
+			 application is started.</>
+	</>
+
+	<seglistitem>
+		<seg>Inspector</>
+		<seg>Provided, never overriden.</>
+		<seg>Inspector that allows the Tapestry 
+			 application to be interrogated on its 
+			 structure.</>
+	</>
+
+	<seglistitem>
+		<seg>StaleSession</>
+		<seg>Default provided, may be changed.</>
+		<seg>Page used to announce that the session is invalid.</>
+	</>
+
+	<seglistitem>
+		<seg>StateLink</>
+		<seg>Default provided, may be changed.</>
+		<seg>Page used to announce that an stale link (see below) was triggered.</>
+	</>
+</>
+
+<para>
+Tapestry only mandates the logical name of these four pages; the actual page component used is 
+defined in the application specification.
+</>
+
+<para>
+The <classname>Home</> page is the first page viewed by a client connecting to the application.  
+Other than that, 
+there is nothing special about the page.
+</>
+
+<para>
+The initial connection to the application, where nothing is specified in the URL but the path to 
+the servlet, causes the home service to be invoked, which makes use of the home page.
+The restart service will also redirect the user to the home page.
+</>
+
+<para>
+No default is provided for the <classname>Home</> page; every Tapestry application must define its
+own <classname>Home</> page.
+</>
+
+<para>
+The Exception page is invoked whenever an uncaught exception is thrown when processing a service.
+</>
+
+<para>
+The Tapestry framework catches the exception and discards any HTML output (this is why 
+output is buffered in memory).
+</>
+
+<para>
+The <classname>Exception</> page must implement a writable JavaBeans property of type 
+<classname>java.lang.Throwable</> named <varname>exception</>. 
+The framework will invoke the accessor method 
+before the page is rendered.
+</>
+
+<para>
+The class <classname>com.primix.foundation.exception.ExceptionAnalyzer</> and the 
+<classname>ExceptionDisplay</> component are typically used to present this information.
+</>
+
+<para>
+The StaleLink page is displayed when a <classname>com.primix.tapestry.StaleLinkException</> 
+is  thrown, which may occur during the processing of the request.  The exception is thrown when 
+Tapestry determines that the state of the page (on the server) is out of synch with the client's view 
+of the page ... this most often happens when the user makes use of the browser's back button.</>
+
+<para>
+The default implementation informs the user of the problem ("you really shouldn't use the back 
+button on your browser") and uses the home service to create a link back to the 
+<classname>Home</> page.
+</>
+
+<para>
+The <classname>StaleSession</> page is displayed when a
+<classname>com.primix.tapestry.StaleSessionException</>
+is thrown.  This exception is thrown from the action and direct services if the 
+<classname>HttpSession</> is 
+newly created - this indicates a fresh connection to the servlet container after the old session 
+timed out and was discarded.
+</>
+
+<para>
+Note that the home, restart and page services do not check for a newly created session.
+</>
+
+<para>
+The <classname>Inspector</> page is provided by the framework; 
+it allows a developer to interrogate a running 
+Tapestry application to determine its structure.
+</>
+
+	</section>
+
+	<section>
+		<title>Server-Side State</>
+
+<para>
+There are two types of server side state that are supported by Tapestry: persistent page properties 
+and the visit object.  The first (page properties) have already been discussed.
+</>
+
+<para>
+The visit object is a central repository for application state and presentation logic.  The visit object 
+is accessible through the application engine (the engine implements a <varname>visit</> property).
+The application engine doesn't care about the class of the visit object, or what properties it 
+implements.
+</>
+
+<para>
+The visit object holds central information that is needed by many pages.  For example, an e-
+commerce application may store the shopping cart as a property of the visit object.
+</>
+
+<para>
+When using Enterprise JavaBeans, the visit object is a good place to store remote object 
+references (centralizing the logic to look up home interfaces, instantiate references, etc.).
+</>
+
+<para>
+Every page implements a <varname>visit</> property that allows access to the visit object.
+</>
+
+<para>
+When using the <classname>com.primix.tapestry.engine.SimpleEngine engine</>, 
+the visit object is 
+created the first time it is referenced.  The class of the visit object is stored in the application 
+specification.
+</>
+
+	</section>
+
+	<section>
+		<title>Engine Services</>
+
+<para>
+Engine services provide the structure for building a web application from individual pages and 
+components.
+</>
+
+<para>
+Each engine service has a unique name.  Well known names exist for the basic services (page, 
+action, direct, etc., described in a later section).
+</>
+
+<para>
+Engine services are responsible for creating URLs (which are inserted into the response HTML) 
+and for later responding to those same URLs.  This keeps the meaning of URLs localized.  In a 
+typical servlet or JSP application, code in one place creates the URL for some servlet to interpret.  
+The servlet is in a completely different section of code.   In situations where the servlet's behavior 
+is extended, it may be necessary to change the structure of the URL the servlet processes ... and 
+this requires finding every location such a URL is constructed and fixing it.  This is the kind of 
+inflexible, ad-hoc, buggy solution Tapestry is designed to eliminate.
+</>
+
+<para>
+Most services have a relationship to a particular component.  The basic services (action, direct, 
+page) each have a corresponding component (<classname>Action</>, <classname>Direct</>, 
+<classname>Page</>). The following example 
+shows how the <classname>Page</> component is used to create a link between application pages.
+</>
+
+<para>
+First, an extract from the page's HTML template:
+</>
+
+&start-listing;Click <emphasis>&lt;jwc id="login"&gt;</>here<emphasis>&lt;/jwc&gt;</> to login.&end-listing;
+ 
+<para>
+This is combined with the a &start-tag;component&end-tag; declaration in the the page's specification:
+</>
+
+&start-listing;<![CDATA[
+<component>
+  <id>]]><emphasis>login</><![CDATA[</id>
+  <type>Page</type>
+  
+  <bindings>
+    <static-binding>
+      <name>page</name>
+      <value>Login</value>
+    </static-binding>
+  </bindings>
+</component>]]>&end-listing;
+ 
+<para>
+The <varname>login</> component will locate the page service, and provide 'Login'
+(the name of the target 
+page) as a parameter.  The page service will build and return an appropriate URL (
+<filename>/<replaceable>servlet path</>/page/Login</>), 
+which the <varname>login</> component will incorporate into the &start-tag;a&end-tag; hyperlink it 
+generates.
+</>
+
+<para>
+The resulting HTML:
+</>
+
+&start-listing;Click &lt;a href="/<replaceable>servlet path</>/page/Login"&gt;here&lt;/a&gt; to login.&end-listing;
+
+<para>
+If the user later clicks that link, the application will invoke the page service to handle the URL; 
+it 
+will extract the page name (Login) and render that page.
+</>
+
+<para>
+The other services are more or less complicated, but share the same basic trait:  the service 
+provides the URL and later responds if the URL is triggered.
+</>
+
+	</section>
+
+	<section>
+		<title>Logging</>
+
+<para>
+Tapestry makes use of the Apache group's log4j package to perform logging.  This is an easy, fast, 
+powerful framework for adding logging to any Java application.  Using log4j, any number of 
+<emphasis>categories</> can be created, and a logging priority for each category assigned.  
+Tapestry uses the complete class name as the category for each class.
+</>
+
+<para>
+The ApplicationServlet class includes a method, <function>setupLogging()</>, 
+to initialize log4j.  The provided 
+implementation is sufficient for testing (see the Javadoc for more information) but serious 
+applications may want to create a more involved logging configuration.
+</>
+
+<para>
+The Tapestry Inspector includes a Logging tab that allows the logging configuration to be 
+dynamically changed.  The logging priority for any category can be assigned, and new categories 
+can be created.
+</>
+
+<para>
+What this means is that, using the Inspector, it is possible to control exactly what logging output is 
+produced, dynamically, while the application is still running.  The Tapestry inspector is easily 
+added to any Tapestry application.  More information on the Inspector is provided in a later 
+section.
+</>
+
+	</section>
+
+	<section>
+		<title>Private Assets
+
+<para>
+The application engine is responsible for making private assets, assets that are in the Java classpath,
+visible when necessary to client web browser.
+</>
+
+<para>
+This takes two forms:
+</>
+	
+<itemizedlist>
+	<listitem>
+		<para>Dynamic download of asset data via the application servlet.</>
+	</>
+
+	<listitem>
+		<para>Dynamic copying of asset data into the web server's virtual file system.
+		</>
+	</>
+</>
+
+<para>
+The first form is the default behavior; each private asset requires an additional round trip through the
+application server and application engine to retrieve the stream of bytes which make up the asset.  This is
+fine during development, but less than ideal at deployment, since it places an extra burden on the
+servlet container, stealing valuable cycles away from the main aspects of servicing end users.
+</>
+
+<para>
+The second form is better during deployment.  The bytestreams are copied out of the classpath to a specific directory,
+one that is mapped into the web server's virtual file system.  Once it is so copied, the
+access to the asset is completely static, as with any other image file or HTML page.
+</>
+
+<para>
+To enable dynamic copying, it is necessary to inform the framework about what file system directory
+to copy the assets to, and what virtual file system directory that maps to.  This is accomplished
+using a pair of servlet context parameter (which are specified in the WAR deployment descriptor):
+</>
+
+<variablelist>
+	<title>Servlet Context Parameters</>
+
+	<varlistentry>
+		<term>
+			<varname>com.primix.tapestry.asset.dir</>
+		</>
+		<listitem>
+			<para>
+				The complete pathname of a directory to which private 
+				assets may be copied by the asset externalizer.
+			</>
+		</>
+
+	<varlistentry>
+		<term>
+			<varname>com.primix.tapestry.asset.URL</>
+		</>
+		<listitem>
+			<para>
+				The URL corresponding to the external asset directory.
+			</>
+		</>
+	</>
+</>
+
+	</section>
+
+<!--
+
+Application Specification
+The application specification is used to identify the name of the application, the engine class for 
+the application, the details of each page in the application, and to set up aliases for commonly 
+used components within the application.
+The application specification is loaded when the application servlet initialized.
+The application specification begins with an XML header:
+<?xml version="1.0"?>
+<!DOCTYPE application PUBLIC 
+      "-//Primix Solutions//Tapestry Specification 1.0//EN"
+	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
+
+<application>
+ 
+The name of the application is specified.  This name should be unique for all Tapestry 
+applications running within a servlet container.  It may contain letters, numbers, periods, spaces, 
+underscores and dashes.
+<name>application name</name>
+ 
+The class name of the engine for the application is specified next:
+<engine-class>class name</engine-class>
+ 
+Most applications will use the engine com.primix.tapestry.engine.SimpleEngine, or a 
+sublcass of SimpleEngine specific to the application.
+Each page in the application is now defined, with a logical name:
+<page>
+  <name>page name</name>
+  <specification-path>specification path</specification-path>
+</page>
+ 
+The name of the page must be unique within the application.  It may contain letters, numbers, 
+underscores, periods or dashes.
+The specification path is the path of the component specification for the page, a resource within 
+the Java class path. For example /com/skunkworx/skunkapp/Home.jwc.
+Typically, the name of the page will match the name of the component; the logical name Home 
+will map to /com/skunkworx/skunkapp/Home.jwc and be implemented by class 
+com.skunkworx.skunkapp.Home.  This is not a hard and fast rule, it may make sense to use 
+different names; for example, a multi-page wizard may show the relationship between the pages 
+using a name like WizardName.PageName.  In other cases, naming conflicts can be eliminated by 
+varying the name of the page's logical name or component.
+Following this, aliases for components may be defined:
+<component-alias>
+  <alias>alias</alias>
+  <specification-path>specification path</specification-path>
+</component-alias>
+ 
+This is used to create a short, memorable name for a frequently used component.  Aliases have 
+the same format as page names.
+Component aliases are mostly freeform (letters, numbers and some punctuation are acceptable).  
+A good guideline is to name the alias, the specification and the Java class the same.  This naming 
+pattern is used for all the internal Tapestry components.  For example, the component 
+/com/primix/tapestry/components/Action.jwc has an alias of Action and is implemented 
+by the class com.primix.tapestry.components.html.link.Action.
+The next section is optional, it allows additional application properties to be specified.
+<properties>
+	<property>
+		<name>name</name>
+		<value>value</value>
+	</property>
+</properties>
+ 
+Any number of <property> elements may be included within the <properties> element.  Each 
+one specifies a name/value pairing (both the name and the value are strings).  These properties 
+are used to express additional information about the application that isn't captured in the main 
+DTD.
+The most common use for this is to establish the class name of the visit class.  The SimpleEngine 
+uses the property com.primix.tapestry.visit-class for this purpose, the value is the 
+complete class name for the visit object.
+Finally, the specification is completed by closing the application element:
+</application>
+
+-->
+</chapter>
