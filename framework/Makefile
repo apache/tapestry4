@@ -29,9 +29,7 @@ JAVADOC_DIR = ../javadoc
 JAVADOC_OPT = \
 	-version -author -windowtitle "Tapestry API" \
 	-link http://java.sun.com/products/jdk/1.2/docs/api \
-	-link http://java.sun.com/j2ee/j2sdkee/techdocs/api \
-	-link ../javadoc/PrimixFoundation
-
+	-link http://java.sun.com/j2ee/j2sdkee/techdocs/api
 
 include $(SYS_MAKEFILE_DIR)/Jar.mk
 
