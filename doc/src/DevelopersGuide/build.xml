@@ -6,24 +6,11 @@
 
 <project name="Tapestry Developer's Guide" default="install">
 
-<property name="html.install.dir" value="../../DevelopersGuide"/>
+<property name="root.filename" value="DevelopersGuide"/>
 
 &docbook-setup;
     
-  <target name="html" description="Build HTML version of documentation.">
-    <antcall target="build-html">
-      <param name="root.filename" value="DevelopersGuide"/>
-    </antcall>
-  </target>
 
-<!-- Invoking script must define property html.install.dir -->
-
-<target name="install" depends="html" 
-	description="Build and install HTML documentation.">
-  	<copy todir="${html.install.dir}">
-  	  <fileset dir="${html.output.dir}"/>
-  	</copy>
-</target>
 </project>
 
 

@@ -6,26 +6,10 @@
 
 <project name="Tutorial Documentation" default="install">
 
-<property name="html.install.dir" value="../../Tutorial"/>
+<property name="root.filename" value="Tutorial"/>
 
 &docbook-setup;
-    
-  <target name="html" description="Build HTML version of documentation.">
-
-    <antcall target="build-html">
-      <param name="root.filename" value="Tutorial"/>
-    </antcall>
-  </target>
-
-<!-- Invoking script must define property html.install.dir -->
-
-<target name="install" depends="html" 
-	description="Build and install HTML documentation.">
-  	<copy todir="${html.install.dir}">
-  	  <fileset dir="${html.output.dir}"/>
-  	</copy>
-</target>
-
+      
 </project>
 
 
