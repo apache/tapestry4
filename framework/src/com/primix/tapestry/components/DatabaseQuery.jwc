@@ -29,7 +29,7 @@
 		<parameter>
 			<name>row</name>
 			<java-type>java.util.Map</java-type>
-			<required>yes</required>
+			<required>no</required>
 		</parameter>
 	</parameters>
 	

@@ -4,7 +4,7 @@
 	"http://tapestry.primix.com/dtd/Tapestry_1_0.dtd">
 	
 <specification>
-	<class>com.primix.tapestry.components.ExceptionDisplay</class>
+	<class>com.primix.tapestry.BaseComponent</class>
 	
 	<allow-body>no</allow-body>
 		
@@ -31,19 +31,6 @@
 					<name>source</name>
 					<parameter-name>exceptions</parameter-name>
 				</inherited-binding>
-				
-				<binding>
-					<name>value</name>
-					<property-path>exceptionDescription</property-path>
-				</binding>	
-				
-				<!-- Track when the last description is processed, so that we
-					 can do the stack trace. -->
-					 
-				<binding>
-					<name>last</name>
-					<property-path>last</property-path>
-				</binding>
 			</bindings>
 		</component>
 			
@@ -54,7 +41,7 @@
 			<bindings>
 				<binding>
 					<name>value</name>
-					<property-path>exceptionDescription.exceptionClassName</property-path>
+					<property-path>components.e-exception.value.exceptionClassName</property-path>
 				</binding>
 			</bindings>
 		</component>
@@ -66,7 +53,7 @@
 			<bindings>
 				<binding>
 					<name>value</name>
-					<property-path>exceptionDescription.message</property-path>
+					<property-path>components.e-exception.value.message</property-path>
 				</binding>
 			</bindings>
 		</component>
@@ -78,12 +65,7 @@
 			<bindings>
 				<binding>
 					<name>source</name>
-					<property-path>exceptionDescription.properties</property-path>
-				</binding>
-				
-				<binding>
-					<name>value</name>
-					<property-path>exceptionProperty</property-path>
+					<property-path>components.e-exception.value.properties</property-path>
 				</binding>
 			</bindings>
 		</component>
@@ -95,7 +77,7 @@
 			<bindings>
 				<binding>
 					<name>value</name>
-					<property-path>exceptionProperty.name</property-path>
+					<property-path>components.e-property.name</property-path>
 				</binding>
 			</bindings>
 		</component>
@@ -107,7 +89,7 @@
 			<bindings>
 				<binding>
 					<name>value</name>
-					<property-path>exceptionProperty.value</property-path>
+					<property-path>components.e-property.value</property-path>
 				</binding>
 			</bindings>
 		</component>
@@ -119,7 +101,7 @@
 			<bindings>
 				<binding>
 					<name>condition</name>
-					<property-path>last</property-path>
+					<property-path>components.e-exception.last</property-path>
 				</binding>
 			</bindings>
 		</component>
@@ -131,7 +113,7 @@
 			<bindings>
 				<binding>
 					<name>condition</name>
-					<property-path>last</property-path>
+					<property-path>components.e-exception.last</property-path>
 				</binding>
 				
 				<static-binding>
@@ -150,12 +132,7 @@
 			<bindings>
 				<binding>
 					<name>source</name>
-					<property-path>exceptionDescription.stackTrace</property-path>
-				</binding>
-				
-				<binding>
-					<name>value</name>
-					<property-path>stackTrace</property-path>
+					<property-path>components.e-exception.value.stackTrace</property-path>
 				</binding>
 			</bindings>
 		</component>
@@ -167,7 +144,7 @@
 			<bindings>
 				<binding>
 					<name>value</name>
-					<property-path>stackTrace</property-path>
+					<property-path>components.e-stack.value</property-path>
 				</binding>
 			</bindings>
 		</component>	

@@ -64,12 +64,14 @@ import com.primix.tapestry.spec.*;
  * </tr>
  *
  * <tr>
- *  <td>currentValue</td>
+ *  <td>value</td>
  *  <td>java.lang.Object</td>
  *  <td>W</td>
- *  <td>yes</td>
+ *  <td>no</td>
  *  <td>&nbsp;</td>
- *  <td>Used to update the current value on each iteration.</td>
+ *  <td>Used to update the current value on each iteration.
+ *  <p>Alternate, wrapped components may access the value via
+ *  the {@link #getValue() value property}.</td>
  *  </tr>
  *
  *  <tr>
@@ -80,7 +82,11 @@ import com.primix.tapestry.spec.*;
  *  <td>&nbsp;</td>
  *  <td>Set to <code>Boolean.TRUE</code> when the first value is processed.
  *  Set to <code>Boolean.FALSE</code> when the second value is processed.
+ *
  *  <p>Allows special behavior when processing the very first value.
+ *
+ *  <p>Wrapped component may alternately access this value via the
+ *  {@link #isFirst() first property}.
  *  </td>
  *  </tr>
  *
@@ -92,7 +98,12 @@ import com.primix.tapestry.spec.*;
  * <td>&nbsp;</td>
  * <td>Set to <code>Boolean.FALSE</code> when the first value is processed.
  *  Set to <code>Boolean.TRUE</code> when the last value is processed.
- *  Allows special handling of the last value.
+ *
+ *  <p>Allows special handling of the last value.
+ *
+ * <p>Wrapped component may alternately access this value via the
+ *  {@link #isLast() last property}.
+ *
  *  </td>
  * </tr>
  *
@@ -112,7 +123,12 @@ public class Foreach extends AbstractComponent
 	private IBinding valueBinding;
 	private IBinding firstBinding;
 	private IBinding lastBinding;
-
+	
+	private Object value;
+	private boolean first;
+	private boolean last;
+	private boolean rendering;
+	
 	public Foreach(IPage page, IComponent container, String id, 
 		ComponentSpecification specification)
 	{
@@ -210,7 +226,6 @@ public class Foreach extends AbstractComponent
 	{
 		Iterator dataSource;
 		int i = 0;
-		Object value;
 		boolean hasNext;
 
 		dataSource = getSourceData();
@@ -219,41 +234,48 @@ public class Foreach extends AbstractComponent
 				"Parameter source is not convertable to type java.util.Iterator.",
 				this, cycle);
 
-		if (valueBinding == null)
-			throw new RequiredParameterException(this, "value", cycle);
-
-		hasNext = dataSource.hasNext();
-
-		while (hasNext)
+		try
 		{
-			value = dataSource.next();
+			rendering = true;
+			value = null;
+
 			hasNext = dataSource.hasNext();
 
-			// On the first pass, set the 'first' to true and
-			// (usually) the 'last' binding to false
-			// On the second pass, set the 'first' binding to false
-			// On the last pass, set the 'last' binding to true
-
-			if (i == 0)
+			while (hasNext)
 			{
-				if (firstBinding != null)
-					firstBinding.setValue(Boolean.TRUE);
+				value = dataSource.next();
+				hasNext = dataSource.hasNext();
 
-				if (hasNext && lastBinding != null)
-					lastBinding.setValue(Boolean.FALSE);
+				// On the first pass, set the 'first' to true and
+				// (usually) the 'last' binding to false
+				// On the second pass, set the 'first' binding to false
+				// On the last pass, set the 'last' binding to true
+
+				if (i == 0)
+				{
+					setFirst(true);
+
+					if (hasNext)
+						setLast(false);
+				}
+				else if (i == 1)
+					setFirst(false);
+
+				if (!hasNext)
+					setLast(true);
+
+				if (valueBinding != null)
+					valueBinding.setValue(value);
+	
+				renderWrapped(writer, cycle);
+
+				i++;
 			}
-			else if (i == 1 && firstBinding != null)
-				firstBinding.setValue(Boolean.FALSE);
-
-			if (!hasNext && lastBinding != null)
-				lastBinding.setValue(Boolean.TRUE);
-
-			valueBinding.setValue(value);
-
-			renderWrapped(writer, cycle);
-
-
-			i++;
+		}
+		finally
+		{
+			value = null;
+			rendering = false;
 		}
 	}
 
@@ -276,5 +298,72 @@ public class Foreach extends AbstractComponent
 	{
 		valueBinding = value;
 	}
+	
+	private void setFirst(boolean value)
+	{
+		first = value;
+		
+		if (firstBinding != null)
+			firstBinding.setBoolean(value);
+	}
+	
+	/**
+	 *  Returns true if the current {@link #getValue() value}
+	 *  is the first value extracted from the
+	 *  source.
+	 *
+	 *  @throws RenderOnlyPropertyException is the Foreach is not currently rendering.
+	 *
+	 */
+	 
+	public boolean isFirst()
+	{
+		if (!rendering)
+			throw new RenderOnlyPropertyException(this, "first");
+			
+		return first; 
+	}
+	
+	
+	private void setLast(boolean value)
+	{
+		last = value;
+		
+		if (lastBinding != null)
+			lastBinding.setBoolean(value);
+	}
+	
+	/**
+	 *  Returns true if the current {@link #getValue() value}
+	 *  is the last value extracted from the
+	 *  source.
+	 *
+	 *  @throws RenderOnlyPropertyException is the Foreach is not currently rendering.
+	 *
+	 */
+	 
+	public boolean isLast()
+	{
+		if (!rendering)
+			throw new RenderOnlyPropertyException(this, "last");
+		
+		return last;	
+	}
+	
+	/**
+	 *  Returns the most recent value extracted from the source parameter.
+	 *
+	 *  @throws RenderOnlyPropertyException is the Foreach is not currently rendering.
+	 *
+	 */
+	
+	public Object getValue()
+	{
+		if (!rendering)
+			throw new RenderOnlyPropertyException(this, "value");
+			
+		return value;
+	}
+	
 }
 
