@@ -11,6 +11,10 @@
   
   <component id="showError" type="ShowError"/>
   
+  <component id="showValidationError" type="ShowValidationError">
+  	<binding name="delegate" property-path="validationDelegate"/>
+  </component>
+  
   <component id="form" type="Form">
     <binding name="listener" property-path="listeners.formSubmit"/>
   </component>

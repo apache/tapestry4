@@ -26,12 +26,22 @@
 
 package com.primix.tapestry.inspector;
 
-import com.primix.tapestry.*;
-import com.primix.tapestry.form.*;
-import com.primix.tapestry.valid.*;
-import com.primix.tapestry.event.*;
-import java.util.*;
-import org.apache.log4j.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.List;
+
+import org.apache.log4j.Category;
+
+import com.primix.tapestry.BaseComponent;
+import com.primix.tapestry.IRequestCycle;
+import com.primix.tapestry.event.PageDetachListener;
+import com.primix.tapestry.event.PageEvent;
+import com.primix.tapestry.form.IPropertySelectionModel;
+import com.primix.tapestry.valid.IField;
+import com.primix.tapestry.valid.IValidationDelegate;
+import com.primix.tapestry.valid.ValidationDelegate;
+import com.primix.tapestry.valid.ValidatorException;
 
 /**
  *  Component of the {@link Inspector} page used control log4j logging
@@ -45,7 +55,6 @@ import org.apache.log4j.*;
 public class ShowLogging extends BaseComponent implements PageDetachListener
 {
 	private Category category;
-	private String error;
 	private String newCategory;
 	private IValidationDelegate validationDelegate;
 	private IPropertySelectionModel rootPriorityModel;
@@ -73,42 +82,7 @@ public class ShowLogging extends BaseComponent implements PageDetachListener
 	public void pageDetached(PageEvent event)
 	{
 		category = null;
-		error = null;
 		newCategory = null;
-	}
-
-	private class ValidationDelegate extends BaseValidationDelegate
-	{
-		public void invalidField(
-			IValidatingTextField field,
-			ValidationConstraint constraint,
-			String defaultErrorMessage)
-		{
-			if (error == null)
-				error = defaultErrorMessage;
-		}
-
-		public void writeErrorSuffix(
-			IValidatingTextField field,
-			IResponseWriter writer,
-			IRequestCycle cycle)
-		{
-			writer.begin("span");
-			writer.attribute("class", "error");
-			writer.print("**");
-			writer.end();
-		}
-
-	}
-
-	public String getError()
-	{
-		return error;
-	}
-
-	public void setError(String value)
-	{
-		error = value;
 	}
 
 	public String getNewCategory()
@@ -205,26 +179,31 @@ public class ShowLogging extends BaseComponent implements PageDetachListener
 	{
 		// If the validating text field has an error, then go no further.
 
-		if (error != null)
+		IValidationDelegate delegate =
+			(IValidationDelegate) getBeans().getBean("delegate");
+
+		if (delegate.getHasErrors())
 			return;
 
-		IValidatingTextField field =
-			(IValidatingTextField) getComponent("inputNewCategory");
-
-		if (Category.exists(newCategory) != null)
+		if (Category.exists(newCategory) == null)
 		{
-			error = "Category " + newCategory + " already exists.";
-			field.setError(true);
+			// Force the new category into existence
+
+			Category.getInstance(newCategory);
+			// Clear the field
+			newCategory = null;
+
 			return;
 		}
 
-		// Force the new category into existence
+		IField field = (IField) getComponent("inputNewCategory");
 
-		Category.getInstance(newCategory);
-
-		// Clear the field
-		newCategory = null;
-		field.refresh();
+		delegate.setField(field);
+		delegate.record(
+			new ValidatorException(
+				"Category " + newCategory + " already exists.",
+				null,
+				newCategory));
 
 	}
 }

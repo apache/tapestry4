@@ -7,6 +7,10 @@
 
 <component id="border" type="Border"/>
 
+<component id="insertDateValue" type="Insert">
+<binding name="value" property-path="visit.dateValue"/>
+</component>
+
 <component id="insertIntValue" type="Insert">
 	<binding name="value" property-path="visit.intValue"/>
 </component>

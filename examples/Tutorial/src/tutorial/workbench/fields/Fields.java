@@ -51,13 +51,13 @@ public class Fields extends BasePage
 
 	public void formSubmit(IRequestCycle cycle)
 	{
-		ValidationDelegate delegate =
-			(ValidationDelegate) getBeans().getBean("delegate");
+		WorkbenchValidationDelegate delegate =
+			(WorkbenchValidationDelegate) getBeans().getBean("delegate");
 
 		// If no error message, advance to the Results page,
 		// otherwise, stay here and show the error message.
 
-		if (delegate.getErrorMessage() == null)
+		if (!delegate.getHasErrors())
 			cycle.setPage("fields.Results");
 	}
 }

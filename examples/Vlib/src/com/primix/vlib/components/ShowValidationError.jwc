@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="com.primix.tapestry.BaseComponent" allow-informal-parameters="no">
+
+  <parameter name="delegate" type="com.primix.tapestry.valid.IValidationDelegate" required="true"/>
+  
+  <component id="ifError" type="Conditional">
+    <binding name="condition" property-path="bindings.delegate.value.hasErrors"/>
+  </component>
+  <component id="insertError" type="Insert">
+    <binding name="value" property-path="bindings.delegate.value.firstError"/>
+  </component>
+</specification>

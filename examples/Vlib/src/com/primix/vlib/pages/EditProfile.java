@@ -37,7 +37,7 @@ import java.rmi.*;
 import javax.rmi.*;
 
 // Appease Javadoc
-import com.primix.tapestry.valid.ValidatingTextField;
+import com.primix.tapestry.valid.ValidField;
 
 /**
  * Edit's a user's profile:  names, email and password.  
@@ -64,10 +64,12 @@ public class EditProfile extends Protected
 
 		super.detach();
 	}
+	
+	/** Passwords are read-only. **/
 
 	public String getPassword1()
 	{
-		return password1;
+		return null;
 	}
 
 	public void setPassword1(String value)
@@ -75,9 +77,11 @@ public class EditProfile extends Protected
 		password1 = value;
 	}
 
+	/** Passwords are read-only. **/
+
 	public String getPassword2()
 	{
-		return password2;
+		return null;
 	}
 
 	public void setPassword2(String value)
@@ -171,13 +175,10 @@ public class EditProfile extends Protected
 			return;
 		}
 
-		// Possibly one of the validating text fields found an error.
-
-		if (getError() != null)
-		{
-			resetPasswords();
+		IValidationDelegate delegate = getValidationDelegate();
+		
+		if (delegate.getHasErrors())
 			return;
-		}
 
 		if (Tapestry.isNull(password1) != Tapestry.isNull(password2))
 		{
@@ -185,7 +186,6 @@ public class EditProfile extends Protected
 				"inputPassword1",
 				"Enter the password, then re-enter it to confirm.");
 
-			resetPasswords();
 			return;
 		}
 
@@ -194,7 +194,6 @@ public class EditProfile extends Protected
 			if (!password1.equals(password2))
 			{
 				setErrorField("inputPassword1", "Enter the same password in both fields.");
-				resetPasswords();
 				return;
 			}
 
@@ -236,17 +235,4 @@ public class EditProfile extends Protected
 		cycle.setPage("MyLibrary");
 	}
 
-	private void resetPasswords()
-	{
-		IValidatingTextField field;
-
-		password1 = null;
-		password2 = null;
-
-		field = (IValidatingTextField) getComponent("inputPassword1");
-		field.refresh();
-
-		field = (IValidatingTextField) getComponent("inputPassword2");
-		field.refresh();
-	}
 }

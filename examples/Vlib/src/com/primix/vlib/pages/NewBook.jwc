@@ -15,6 +15,11 @@
     <binding name="listener" property-path="listeners.addBook"/>
   </component>
   
+  <component id="showValidationError" type="ShowValidationError">
+  	<binding name="delegate" property-path="validationDelegate"/>
+  </component>
+  
+  
   <component id="labelTitle" type="FieldLabel">
     <binding name="field" property-path="components.inputTitle"/>
     <binding name="delegate" property-path="validationDelegate"/>

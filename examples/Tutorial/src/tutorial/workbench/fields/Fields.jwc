@@ -5,29 +5,83 @@
 	
 <specification class="tutorial.workbench.fields.Fields">
 
-  <bean name="delegate" class="tutorial.workbench.ValidationDelegate"/>
+  <bean name="delegate" class="tutorial.workbench.WorkbenchValidationDelegate"/>
 
+  <bean name="dateValidator" class="com.primix.tapestry.valid.DateValidator">
+  	<set-property name="required">
+  		<field-value field-name="Boolean.TRUE"/>
+  	</set-property>
+  </bean>
+
+  <bean name="intValidator" class="com.primix.tapestry.valid.NumberValidator">
+  	<set-property name="required">
+  		<field-value field-name="Boolean.TRUE"/>
+  	</set-property>
+  	<set-property name="minimum">
+  		<field-value field-name="tutorial.workbench.fields.Fields.INT_MIN"/>
+  	</set-property>
+  	<set-property name="maximum">
+  		<field-value field-name="tutorial.workbench.fields.Fields.INT_MAX"/>
+  	</set-property>
+  </bean>
+ 
+  <bean name="doubleValidator" class="com.primix.tapestry.valid.NumberValidator">
+  	<set-property name="required">
+  		<field-value field-name="Boolean.TRUE"/>
+  	</set-property>
+  	<set-property name="minimum">
+  		<field-value field-name="tutorial.workbench.fields.Fields.DOUBLE_MIN"/>
+  	</set-property>
+  	<set-property name="maximum">
+  		<field-value field-name="tutorial.workbench.fields.Fields.DOUBLE_MAX"/>
+  	</set-property>
+  </bean>
+
+  <bean name="bigDecimalValidator" class="com.primix.tapestry.valid.NumberValidator">
+  	<set-property name="required">
+  		<field-value field-name="Boolean.TRUE"/>
+  	</set-property>
+  	<set-property name="minimum">
+  		<field-value field-name="tutorial.workbench.fields.Fields.DECIMAL_MIN"/>
+  	</set-property>
+  	<set-property name="maximum">
+  		<field-value field-name="tutorial.workbench.fields.Fields.DECIMAL_MAX"/>
+  	</set-property>
+  </bean>
+
+ 
   <component id="border" type="Border"/>
   
   <component id="showError" type="ShowError">
-     <binding name="message" property-path="beans.delegate.errorMessage"/>
+     <binding name="message" property-path="beans.delegate.firstError"/>
   </component>
   
   <component id="form" type="Form">
     <binding name="listener" property-path="listeners.formSubmit"/>
   </component>
+ 
+   <component id="dateLabel" type="FieldLabel">
+    <binding name="field" property-path="components.inputDate"/>
+    <binding name="delegate" property-path="beans.delegate"/>
+  </component>
   
+  <component id="inputDate" type="ValidatingTextField">
+    <binding name="delegate" property-path="beans.delegate"/>
+    <binding name="validator" property-path="beans.dateValidator"/>
+    <binding name="value" property-path="visit.dateValue"/>
+    <static-binding name="displayName">Date Field</static-binding>
+  </component>
+
+ 
   <component id="intLabel" type="FieldLabel">
     <binding name="field" property-path="components.inputInt"/>
     <binding name="delegate" property-path="beans.delegate"/>
   </component>
   
-  <component id="inputInt" type="NumericField">
+  <component id="inputInt" type="ValidatingTextField">
     <binding name="delegate" property-path="beans.delegate"/>
+    <binding name="validator" property-path="beans.intValidator"/>
     <binding name="value" property-path="visit.intValue"/>
-    <field-binding name="minimum" field-name="tutorial.workbench.fields.Fields.INT_MIN"/>
-    <field-binding name="maximum" field-name="tutorial.workbench.fields.Fields.INT_MAX"/>
-    <field-binding name="required" field-name="Boolean.TRUE"/>
     <static-binding name="displayName">Integer Field</static-binding>
   </component>
  
@@ -37,12 +91,10 @@
     <binding name="delegate" property-path="beans.delegate"/>
   </component>
   
-  <component id="inputDouble" type="NumericField">
+  <component id="inputDouble" type="ValidatingTextField">
     <binding name="delegate" property-path="beans.delegate"/>
+    <binding name="validator" property-path="beans.doubleValidator"/>
     <binding name="value" property-path="visit.doubleValue"/>
-    <field-binding name="minimum" field-name="tutorial.workbench.fields.Fields.DOUBLE_MIN"/>
-    <field-binding name="maximum" field-name="tutorial.workbench.fields.Fields.DOUBLE_MAX"/>
-    <field-binding name="required" field-name="Boolean.TRUE"/>
     <static-binding name="displayName">Double Field</static-binding>
   </component>
   
@@ -51,12 +103,10 @@
     <binding name="delegate" property-path="beans.delegate"/>
   </component>
   
-  <component id="inputBigDecimal" type="NumericField">
+  <component id="inputBigDecimal" type="ValidatingTextField">
     <binding name="delegate" property-path="beans.delegate"/>
     <binding name="value" property-path="visit.bigDecimalValue"/>
-    <field-binding name="minimum" field-name="tutorial.workbench.fields.Fields.DECIMAL_MIN"/>
-    <field-binding name="maximum" field-name="tutorial.workbench.fields.Fields.DECIMAL_MAX"/>
-    <field-binding name="required" field-name="Boolean.TRUE"/>
+    <binding name="validator" property-path="beans.bigDecimalValidator"/>
     <static-binding name="displayName">Big Decimal Field</static-binding>
   </component>
   

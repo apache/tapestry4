@@ -6,6 +6,14 @@
 	allow-body="no"
 	allow-informal-parameters="no">
 	
+  <bean name="delegate" class="com.primix.tapestry.inspector.InspectorValidationDelegate"/>
+  
+  <bean name="requiredString" class="com.primix.tapestry.valid.StringValidator">
+    <set-property name="required">
+    	<field-value field-name="Boolean.TRUE"/>
+    </set-property>
+  </bean>
+    	
   <bean name="categoryClass" class="com.primix.tapestry.inspector.EvenOdd">
     <set-property name="even">
       <static-value type="boolean">false</static-value>
@@ -44,18 +52,18 @@
   </component>
   
   <component id="ifError" type="Conditional">
-    <binding name="condition" property-path="error"/>
+    <binding name="condition" property-path="beans.delegate.hasErrors"/>
   </component>
   
   <component id="insertError" type="Insert">
-    <binding name="value" property-path="error"/>
+    <binding name="value" property-path="beans.delegate.firstError"/>
   </component>
   
   <component id="inputNewCategory" type="ValidatingTextField">
-    <field-binding name="required" field-name="Boolean.TRUE"/>
     <static-binding name="displayName">New Category</static-binding>
-    <binding name="delegate" property-path="validationDelegate"/>
-    <binding name="text" property-path="newCategory"/>
+    <binding name="delegate" property-path="beans.delegate"/>
+    <binding name="validator" property-path="beans.requiredString"/>
+    <binding name="value" property-path="newCategory"/>
   </component>
   
 </specification>

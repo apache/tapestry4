@@ -27,6 +27,7 @@
   <component-alias type="BookLink" specification-path="/com/primix/vlib/components/BookLink.jwc"/>
   <component-alias type="PersonLink" specification-path="/com/primix/vlib/components/PersonLink.jwc"/>
   <component-alias type="ShowError" specification-path="/com/primix/vlib/components/ShowError.jwc"/>
+  <component-alias type="ShowValidationError" specification-path="/com/primix/vlib/components/ShowValidationError.jwc"/>
   <component-alias type="ShowMessage" specification-path="/com/primix/vlib/components/ShowMessage.jwc"/>
   <component-alias type="Borrow" specification-path="/com/primix/vlib/components/Borrow.jwc"/>
   <component-alias type="Browser" specification-path="/com/primix/vlib/components/Browser.jwc"/>
