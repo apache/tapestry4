@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE script PUBLIC 
-  "-//Howard Ship//Tapestry Script 1.1//EN"
-  "http://tapestry.sf.net/dtd/Script_1_1.dtd">
+<!DOCTYPE script PUBLIC
+	"-//Howard Lewis Ship//Tapestry Script 1.2//EN"
+	"http://tapestry.sf.net/dtd/Script_1_2.dtd">
+
 <script>
 
 <include-script resource-path="/net/sf/tapestry/form/Calendar.js"/>

@@ -33,8 +33,8 @@ var VicPopCal = null;
 function fPopCalendar(popCtrl, dateCtrl, valCtrl, popCal) 
 {
   if (VicPopCal) {
-        fHideCalendar();
-        return;
+     fHideCalendar();
+     return;
   }      
   VicPopCal = popCal;
   gdCtrl = dateCtrl;
@@ -43,13 +43,13 @@ function fPopCalendar(popCtrl, dateCtrl, valCtrl, popCal)
 
   var d = new Date();
   d.setTime(gRetCtrl.value);
-  fSetYearMon(d.getYear(), d.getMonth()+1);
+  fSetYearMon(d.getYear(), d.getMonth() + 1);
 
   var point = fGetXY(popCtrl);
   with (VicPopCal.style) {
     left = point.x;
-  top  = point.y+popCtrl.offsetHeight+1;
-  visibility = 'visible';
+    top  = point.y + popCtrl.offsetHeight + 1;
+    visibility = 'visible';
   }
 
   window.event.cancelBubble = true;
@@ -59,18 +59,18 @@ function fPopCalendar(popCtrl, dateCtrl, valCtrl, popCal)
 
 function fHideCalendar() 
 {
- if (VicPopCal) {
+  if (VicPopCal) {
      VicPopCal.style.visibility = "hidden";
      VicPopCal = null;
      //document.body.detachEvent("onclick", fHideCalendar);
- } 
+  } 
 }
 
 function fSetDate(iYear, iMonth, iDay)
 {
   var d = new Date();
   d.setYear(iYear);
-  d.setMonth(iMonth-1);
+  d.setMonth(iMonth - 1);
   d.setDate(iDay);
 
   gdCtrl.value = formatDate(d);
@@ -87,8 +87,8 @@ function pad(number,X)
 {
 	X = (!X ? 2 : X);
 	number = ""+number;
-	while (number.length<X) {
-	    number="0"+number;
+	while (number.length < X) {
+	    number = "0" + number;
 	}
 	return number;
 }
@@ -110,12 +110,10 @@ function formatDate(date)
     var frm = new String(gFormat);
     var sect;
     for (sect in bits) {
-      frm=eval("frm.replace(/\\b"+sect+"\\b/,'"+bits[sect]+"');");
+      frm = eval("frm.replace(/\\b" + sect + "\\b/,'" + bits[sect] + "');");
     }
 
     return frm;
-
-
 }
 
 function fSetSelected(aCell)
