@@ -90,22 +90,10 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
 
     private Class _valueType;
 
-    public abstract IBinding getValueBinding();
-    public abstract void setValueBinding(IBinding valueBinding);
+    public abstract Object getValue();
+    public abstract void setValue(Object value);
 
-    public abstract IBinding getDisplayNameBinding();
-
-    /**
-     *  Returns the display name for the component.  Because of the interaction
-     *  between {@link FieldLabel} and this component, the displayName parameter
-     *  is direction custom, allowing it to be resolved even when not renderring.
-     * 
-     **/
-
-    public String getDisplayName()
-    {
-        return getDisplayNameBinding().getString();
-    }
+    public abstract String getDisplayName();
 
     /**
      *
@@ -217,7 +205,7 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
         if (delegate.isInError())
             return delegate.getFieldInputValue();
 
-        Object value = getValueBinding().getObject();
+        Object value = getValue();
         String result = getValidator().toString(this, value);
 
         if (Tapestry.isNull(result) && getValidator().isRequired())
@@ -243,7 +231,7 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
             return;
         }
 
-        getValueBinding().setObject(objectValue);
+        setValue(objectValue);
     }
 
     public abstract IValidator getValidator();

@@ -10,7 +10,7 @@
   A text input field that can validate input.
   </description>
 
-  <parameter name="value" type="java.lang.Object" required="yes"/>
+  <parameter name="value" type="java.lang.Object" required="yes" direction="auto"/>
   
   <parameter name="disabled" type="boolean" direction="in"/>
   
@@ -22,11 +22,7 @@
     </description>
   </parameter>
     
-  
-  <!-- Has to use custom parameter connection, because it is invoked when not
-       renderring. -->
-       
-  <parameter name="displayName" type="java.lang.String" required="yes" direction="custom">
+  <parameter name="displayName" type="java.lang.String" required="yes" direction="auto">
     <description>
     Name used by FieldLabel and when generating validation error messages.
     </description>
