@@ -56,6 +56,7 @@
 package org.apache.tapestry.html;
 
 import java.util.Date;
+import java.util.Iterator;
 
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IAsset;
@@ -138,12 +139,18 @@ public abstract class Shell extends AbstractComponent
             IAsset stylesheet = getStylesheet();
 
             if (stylesheet != null)
+                writeStylesheetLink(writer, cycle, stylesheet);
+
+            Iterator i = Tapestry.coerceToIterator(getStylesheets());
+
+            if (i != null)
             {
-                writer.beginEmpty("link");
-                writer.attribute("rel", "stylesheet");
-                writer.attribute("type", "text/css");
-                writer.attribute("href", stylesheet.buildURL(cycle));
-                writer.println();
+                while (i.hasNext())
+                {
+                    stylesheet = (IAsset) i.next();
+
+                    writeStylesheetLink(writer, cycle, stylesheet);
+                }
             }
 
             writeRefresh(writer, cycle);
@@ -165,6 +172,15 @@ public abstract class Shell extends AbstractComponent
             writer.comment("Render time: ~ " + (endTime - startTime) + " ms");
         }
 
+    }
+
+    private void writeStylesheetLink(IMarkupWriter writer, IRequestCycle cycle, IAsset stylesheet)
+    {
+        writer.beginEmpty("link");
+        writer.attribute("rel", "stylesheet");
+        writer.attribute("type", "text/css");
+        writer.attribute("href", stylesheet.buildURL(cycle));
+        writer.println();
     }
 
     private void writeRefresh(IMarkupWriter writer, IRequestCycle cycle)
@@ -205,6 +221,8 @@ public abstract class Shell extends AbstractComponent
     public abstract String getDTD();
 
     public abstract void setDTD(String DTD);
+
+    public abstract Object getStylesheets();
 
     protected void finishLoad()
     {

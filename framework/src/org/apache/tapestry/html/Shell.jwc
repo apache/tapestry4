@@ -26,6 +26,12 @@
     If specified, provides an external stylesheet for the page.
     </description>
   </parameter>
+  
+  <parameter name="stylesheets" type="java.lang.Object" direction="in">
+  	<description>
+  	Array or collection of stylesheet assets.
+  	</description>	
+  </parameter>
 
   <parameter name="DTD" 
   	type="java.lang.String"
@@ -49,7 +55,7 @@
   	type="org.apache.tapestry.IRender"
   	direction="in">
     <description>
-    If specified, the delegate is allowed to render before the close of the &lt;head&gt;
+    If specified, the delegate is rendered before the close of the &lt;head&gt;
     tag (typically used to provide &lt;meta&gt; tags).
     </description>
   </parameter>
