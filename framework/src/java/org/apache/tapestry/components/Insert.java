@@ -77,11 +77,8 @@ public abstract class Insert extends AbstractComponent
             renderInformalParameters(writer, cycle);
         }
 
-        if (getRaw())
-            writer.printRaw(insert);
-        else
-            writer.print(insert);
-
+        writer.print(insert, getRaw());
+        
         if (styleClass != null)
             writer.end(); // <span>
     }

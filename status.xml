@@ -61,6 +61,7 @@
       <action type="fix" dev="HLS" fixes-bug="TAPESTRY-281"> Include a message digest, as a credential, inside asset URLs. </action>
       <action type="add" dev="HLS"> Add asset-encoding that encodes and decodes a friendly URL for the asset service. </action>
       <action type="update" dev="HLS"> Add an extra level of indirection, so that engine services can be wired together using the engine-service: object provider. </action>
+      <action type="add" dev="HLS"> Add methods to IMarkupWriter that allow filtering to be specified using a parameter. </action>
     </release>
     <release version="3.1-alpha-1" date="Feb 21 2005">
       <action type="update" dev="HLS"> Remove dependencies on Jakarta digester, collections and beanutils. Add dependency on Jakarta HiveMind. </action>

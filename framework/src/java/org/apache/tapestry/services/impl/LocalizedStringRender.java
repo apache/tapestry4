@@ -76,11 +76,8 @@ public class LocalizedStringRender implements IRender
         if (_value == null)
             _value = _component.getMessages().getMessage(_key);
 
-        if (_raw)
-            writer.printRaw(_value);
-        else
-            writer.print(_value);
-
+        writer.print(_value, _raw);
+        
         if (_attributes != null)
             writer.end();
     }
