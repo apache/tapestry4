@@ -1,7 +1,7 @@
-package com.primix.tapestry;
+package com.primix.tapestry.wml;
 
-import java.io.OutputStream;
-
+import com.primix.tapestry.*;
+import java.io.*;
 
 /*
  * Tapestry Web Application Framework

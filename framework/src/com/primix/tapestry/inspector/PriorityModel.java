@@ -1,7 +1,7 @@
 package com.primix.tapestry.inspector;
 
 import com.primix.tapestry.components.html.form.*;
-import org.log4j.*;
+import org.apache.log4j.*;
 
 /*
  * Tapestry Web Application Framework

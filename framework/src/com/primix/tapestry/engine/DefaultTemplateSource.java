@@ -6,7 +6,7 @@ import com.primix.foundation.*;
 import java.io.*;
 import java.util.*;
 import java.net.URL;
-import org.log4j.*;
+import org.apache.log4j.*;
 
 /*
  * Tapestry Web Application Framework

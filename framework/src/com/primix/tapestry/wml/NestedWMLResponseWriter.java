@@ -1,5 +1,6 @@
-package com.primix.tapestry;
+package com.primix.tapestry.wml;
 
+import com.primix.tapestry.*;
 import java.io.*;
 
 /*

@@ -4,7 +4,7 @@ import java.net.URL;
 import com.primix.tapestry.*;
 import java.io.*;
 import java.util.*;
-import org.log4j.*;
+import org.apache.log4j.*;
 
 /*
  * Tapestry Web Application Framework
@@ -184,6 +184,9 @@ public class PrivateAsset implements IAsset
 				return result;
 		}
 
+		if (CAT.isDebugEnabled())
+			CAT.debug("Searching for localization of private asset " + resourcePath +
+				" in locale " + locale.getDisplayName());
 
 		dotx = resourcePath.lastIndexOf('.');
 		suffix = resourcePath.substring(dotx);
