@@ -67,7 +67,8 @@ import net.sf.tapestry.Tapestry;
  *		<td>&nbsp;</td>
  *		<td>A string which represents the option that may be selected.  This is optional;
  *		any text that follows the &lt;option&gt; tag is considered the label, but this
- *      saves the designed from including one more {@link Insert} component.
+ *      saves the designed from including one more 
+ *      {@link net.sf.tapestry.components.Insert} component.
  *		</td>
  *	</tr>
  *	</table>
@@ -76,6 +77,7 @@ import net.sf.tapestry.Tapestry;
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
+ * 
  **/
 
 public class Option extends AbstractComponent

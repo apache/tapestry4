@@ -182,7 +182,8 @@ public interface IEngineService
 
 	/**
 	 *  Perform the service, interpreting the URL (from the
-	 *  {@link HttpServletRequest}) responding appropriately, and
+	 *  {@link javax.servlet.http.HttpServletRequest}) 
+	 *  responding appropriately, and
 	 *  rendering a result page.
 	 *
 	 *  <p>The return value indicates whether processing of the request could, in any way,
@@ -192,6 +193,7 @@ public interface IEngineService
 	 *  @param engine a view of the {@link IEngine} with additional methods needed by services
 	 *  @param cycle the incoming request
 	 *  @param output stream to which output should ultimately be directed
+	 * 
 	 **/
 
  	public boolean service(

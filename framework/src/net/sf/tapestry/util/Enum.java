@@ -53,7 +53,7 @@ import net.sf.tapestry.Tapestry;
  *  of the same class).  When the Enum is de-serialized, it uses the enumerationId
  *  to locate the existing singleton instance.
  *
- *  <p>It would be nice if this class was {@link Externalizable}, not {@link Serializable},
+ *  <p>It would be nice if this class was {@link java.io.Externalizable}, not {@link Serializable},
  *  but that requires public no-arguments constructors, which would spoil things.
  *
  *  @author Howard Lewis Ship
@@ -155,9 +155,11 @@ public class Enum implements Serializable
     }
 
     /**
-     *  <p>This is a bit of serialization black magic ... the method
-     *  <code>readResolve()</code> MUST BE implemented by the actual class, it can't
-     *  be inherited.  Subclasses should simply invoke this method:
+     *  This is a bit of serialization black magic.  The object stream
+     *  produces a temporary Enum instance with the correct class and enumeration id;
+     *  we check the identity table to find the singleton instance for this
+     *  JVM and return it (allowing the temporary instance to
+     *  be reclaimed by the garbage collector).
      *
      *
      **/

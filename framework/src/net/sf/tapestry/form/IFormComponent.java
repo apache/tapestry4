@@ -41,7 +41,7 @@ public interface IFormComponent extends IComponent
     /**
      *  Returns the {@link Form} which contains the component.
      *
-     *  @returns the {@link Form}, or null if the component is not contained by a Form,
+     *  @return the {@link Form}, or null if the component is not contained by a Form,
      *  of if the containing Form is not currently renderring.
      **/
 

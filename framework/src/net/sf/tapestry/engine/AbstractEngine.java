@@ -89,7 +89,7 @@ import net.sf.tapestry.util.prop.PropertyHelper;
  *
  *  <p>An application is designed to be very lightweight.
  *  Particularily, it should <b>never</b> hold references to any
- *  {@link IPage} or {@link IComponent} objects.  The entire system is
+ *  {@link IPage} or {@link net.sf.tapestry.IComponent} objects.  The entire system is
  *  based upon being able to quickly rebuild the state of any page(s).
  *
  * <p>Where possible, instance variables should be transient.  They
@@ -486,7 +486,8 @@ public abstract class AbstractEngine
      * Returns the context path, the prefix to apply to any URLs so that they
      * are recognized as belonging to the Servlet 2.2 context.
      *
-     *  @see ContextAsset
+     *  @see net.sf.tapestry.asset.ContextAsset
+     * 
      **/
 
     public String getContextPath()
@@ -927,7 +928,6 @@ public abstract class AbstractEngine
      *  <li>{@link ITemplateSource} 
      *  <li>{@link ISpecificationSource}
      *  <li>{@link IPageSource}
-     *  <li>Helper object {@link Pool}
      *  <li>Service {@link Map}
      *  </ul>
      *
@@ -1079,8 +1079,9 @@ public abstract class AbstractEngine
      *  to provide a different implementation.
      * 
      *  
-     *  @returns an instance of {@link DefaultScriptSource}
+     *  @return an instance of {@link DefaultScriptSource}
      *  @since 1.0.9
+     * 
      **/
 
     protected IScriptSource createScriptSource()
@@ -1094,7 +1095,7 @@ public abstract class AbstractEngine
      *  the {@link ServletContext}.  Subclasses may override this method
      *  to provide a different implementation.
      * 
-     *  @returns an instance of {@link PageSource}
+     *  @return an instance of {@link PageSource}
      *  @since 1.0.9
      **/
 
@@ -1109,7 +1110,7 @@ public abstract class AbstractEngine
      *  the {@link ServletContext}.  Subclasses may override this method
      *  to provide a different implementation.
      * 
-     *  @returns an instance of {@link DefaultSpecificationSource}
+     *  @return an instance of {@link DefaultSpecificationSource}
      *  @since 1.0.9
      **/
 
@@ -1124,8 +1125,9 @@ public abstract class AbstractEngine
      *  the {@link ServletContext}.  Subclasses may override this method
      *  to provide a different implementation.
      * 
-     *  @returns an instance of {@link DefaultTemplateSource}
+     *  @return an instance of {@link DefaultTemplateSource}
      *  @since 1.0.9
+     * 
      **/
 
     protected ITemplateSource createTemplateSource()

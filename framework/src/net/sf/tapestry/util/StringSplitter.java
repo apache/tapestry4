@@ -28,7 +28,7 @@ package net.sf.tapestry.util;
 /**
  *  Used to split a string into substrings based on a single character
  *  delimiter.  A fast, simple version of
- *  {@link StringTokenizer}.
+ *  {@link java.util.StringTokenizer}.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$

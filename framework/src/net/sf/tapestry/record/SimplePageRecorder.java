@@ -45,7 +45,7 @@ import net.sf.tapestry.PageRecorderCommitException;
  *
  *  <p>The recorder must be made session persistant, either by being stored
  *  directly in the session, or being referenced from a session-persistant
- *  object.  {@link SimpleEngine} simply stores a {@link Map} of
+ *  object.  {@link net.sf.tapestry.engine.SimpleEngine} simply stores a {@link Map} of
  *  these page recorders.
  *
  *  @author Howard Ship

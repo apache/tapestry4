@@ -53,7 +53,7 @@ import org.apache.log4j.Category;
  *  
  *  <p>Supports single valued parameters, multi-valued parameters and individual
  *  file uploads.  That is, for file uploads, each upload must be a unique parameter
- *  (that is all the {@link Upload} component needs).
+ *  (that is all the {@link net.sf.tapestry.form.Upload} component needs).
 
  *
  *  @author Howard Lewis Ship

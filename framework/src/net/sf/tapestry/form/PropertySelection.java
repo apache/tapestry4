@@ -38,10 +38,12 @@ import net.sf.tapestry.Tapestry;
  *   &lt;select&gt; and &lt;option&gt; elements 
  *  or &lt;input type=radio&gt; to
  *  set a property of some object.  Typically, the values for the object
- *  are defined using an {@link Enum}.  A PropertySelection is dependent on
+ *  are defined using an {@link net.sf.tapestry.util.Enum}.  
+ *  A PropertySelection is dependent on
  *  an {@link IPropertySelectionModel} to provide the list of possible values.
  *
- *  <p>Often, this is used to select a particular {@link Enum} to assign to a property; the
+ *  <p>Often, this is used to select a particular 
+ *  {@link net.sf.tapestry.util.Enum} to assign to a property; the
  *  {@link EnumPropertySelectionModel} class simplifies this.
  *
  *  <p>

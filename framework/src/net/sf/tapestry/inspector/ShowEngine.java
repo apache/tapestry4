@@ -46,7 +46,7 @@ import net.sf.tapestry.util.io.BinaryDumpOutputStream;
 /**
  *  Component of the {@link Inspector} page used to display
  *  the properties of the {@link IEngine} as well as a serialized view of it.
- *  Also, the {@link RequestContext} is dumped out.
+ *  Also, the {@link net.sf.tapestry.RequestContext} is dumped out.
  *
  *
  *  @version $Id$

@@ -30,7 +30,7 @@ import net.sf.tapestry.util.Enum;
 /**
  *  Defines the different types of bindings possible for a component.
  *  These are used in the {@link BindingSpecification} and ultimately
- *  used to create an instance of {@link IBinding}.
+ *  used to create an instance of {@link net.sf.tapestry.IBinding}.
  *
  *
  *  @author Howard Lewis Ship

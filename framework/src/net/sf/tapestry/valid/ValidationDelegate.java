@@ -127,12 +127,12 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
      *  when an error is recorded for the component.
      * 
      *  <p>Components may be rendered multiple times, with multiple names (provided
-     *  by the {@link Form}, care must be taken that this method is invoked
+     *  by the {@link net.sf.tapestry.form.Form}, care must be taken that this method is invoked
      *  <em>after</em> the Form has provided a unique name for the component.
      * 
      *  @see #setFormComponent(IFormComponent)
      * 
-     *  @returns the {@link IFieldTracking}, or null if the field has no tracking
+     *  @return the {@link IFieldTracking}, or null if the field has no tracking
      *  (is not in error).
      * 
      **/

@@ -68,7 +68,8 @@ import net.sf.tapestry.form.IFormComponent;
  *  with any particular field.
  * 
  *  <p>
- *  But what happens if you use a {@link Foreach} or {@link ListEdit} inside your form?
+ *  But what happens if you use a {@link net.sf.tapestry.components.Foreach} or 
+ *  {@link net.sf.tapestry.form.ListEdit} inside your form?
  *  Some of your components will render multiple times.  In this case you will have
  *  multiple <em>fields</em>.  Each field will have a unique field name (you can see this
  *  in the generated HTML).  It is this field name that the delegate keys off of, which
@@ -78,7 +79,7 @@ import net.sf.tapestry.form.IFormComponent;
  *  <p><b>The Exception</b><br>
  *  The problem is that a component doesn't know its field name until its
  *  <code>render()</code> method is invoked (at which point, it allocates a unique field
- *  name from the {@link Form}.  This is not a problem for the field or its
+ *  name from the {@link net.sf.tapestry.form.Form}.  This is not a problem for the field or its
  *  {@link IValidator}, but screws things up for the {@link FieldLabel}.
  * 
  *  <p>Typically, the label is renderred <em>before</em> the corresponding form component.

@@ -39,7 +39,7 @@ import net.sf.tapestry.Tapestry;
 
 /**
  *  Restarts the Tapestry application.  This is normally reserved for dealing with
- *  catastrophic failures of the application.  Discards the {@link HttpSession}, if any,
+ *  catastrophic failures of the application.  Discards the {@link javax.servlet.http.HttpSession}, if any,
  *  and redirects to the Tapestry application servlet URL (invoking the {@link HomeService}).
  *
  *  @author Howard Lewis Ship

@@ -691,12 +691,12 @@ public class RequestContext implements IRender
     }
 
     /**
-     * Invokes {@liknk HttpResponse#sendRedirect(String)}</code>, but
-     * massages <code>path</code>, supplying missing elements to
-     * make it an absolute URL (i.e., specifying scheme, server, port, etc.).
+     *  Invokes {@link HttpServletResponse#sendRedirect(String)}</code>, 
+     *  but massages <code>path</code>, supplying missing elements to
+     *  make it an absolute URL (i.e., specifying scheme, server, port, etc.).
      *
-     * <p>The 2.2 Servlet API will do this automatically, and a little more,
-     * according to the early documentation.
+     *  <p>The 2.2 Servlet API will do this automatically, and a little more,
+     *  according to the early documentation.
      *
      **/
 

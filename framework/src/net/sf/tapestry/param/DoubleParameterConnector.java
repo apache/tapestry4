@@ -51,7 +51,7 @@ public class DoubleParameterConnector extends AbstractParameterConnector
     }
 
 	/**
-	 *  Invokes {@link IBinding#getDouble()) to obtain the value
+	 *  Invokes {@link IBinding#getDouble()} to obtain the value
 	 *  to assign to the property.
 	 * 
 	 **/

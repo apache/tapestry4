@@ -248,7 +248,7 @@ public interface IComponent extends IRender
      *  a component by interacting directly with components it embeds.  This creates
      *  ugly interelationships between components that should be seperated.
      *
-     *  @returns A Map of components keyed on component id, or null if the
+     *  @return A Map of components keyed on component id, or null if the
      *  component contains no other components.
      *
      **/

@@ -94,7 +94,7 @@ import net.sf.tapestry.StaleSessionException;
  *	<td>no</td>
  *	<td>true</td>
  *	<td>If true (the default), then the component requires an active (i.e., non-new)
- *  {@link HttpSession} when triggered.  Failing that, it throws a {@link StaleLinkException}.
+ *  {@link HttpSession} when triggered.  Failing that, it throws a {@link net.sf.tapestry.StaleLinkException}.
  *  If false, then no check is necessary.  The latter works well with links that
  *  encode all necessary state inside the URL itself.</td>
  * </tr>

@@ -49,7 +49,7 @@ import net.sf.tapestry.util.prop.PropertyHelper;
  *  <p>This is an abstract implementation; specific implementations can choose where
  * and how to persist the data.
  *
- *  <p>Implements {@link Externalizable} but does not have any state of its own.
+ *  <p>Implements {@link Serializable} but does not have any state of its own.
  *  Subclasses must implement <code>readExternal()</code> and
  *  <code>writeExternal()</code>.
  *
