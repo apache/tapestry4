@@ -175,6 +175,7 @@ run-extranet: setup-jbe-util
 	@$(MKDIRS) .build ../TapestryLogs
 	$(call EXEC_JAVA, $(VLIB_CLASSPATH), \
 	  -showversion \
+	  -Dcom.primix.vlib.debug-enabled=true \
 	  com.mortbay.Jetty.Server config/jetty-extranet.xml)
 	  
 .PHONY: javadoc create-archives reinvoke run-tutorial
