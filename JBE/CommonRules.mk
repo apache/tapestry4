@@ -48,7 +48,7 @@ setup-jbe-util: check-jdk $(JBE_UTIL_STAMP)
 
 $(JBE_UTIL_STAMP): $(SYS_MAKEFILE_DIR)/com/primix/jbe/*.java
 	@$(ECHO) "\n*** Compiling JBE Utility ... ***\n";
-	@$(RM) -f $(SYS_MAKEFILE_DIR)/com/primix/jbe/*.class
+	@$(RM) $(SYS_MAKEFILE_DIR)/com/primix/jbe/*.class
 	$(CD) $(SYS_MAKEFILE_DIR) ; \
 	$(JAVAC) com/primix/jbe/*.java
 	@$(TOUCH) $@
@@ -84,5 +84,13 @@ JBE_SPLICE = $(JBE_UTIL) splice -tag $(1) -target $(2) -source $(3) $(4)
 # the main class and and program options.
 
 EXEC_JAVA = $(JAVA) -classpath "$(call JBE_CANONICALIZE,-classpath $(1))" $(2)
+
+# Command for copying one or more files or directories to a destination
+# directory.
+#
+# Usage
+#  $(call COPY_TREE,source dirs,target dir)
+
+COPY_TREE = $(TAR) $(TAR_CREATE_OPT) $(1) | ( $(CD) $(2) && $(TAR) $(TAR_EXTRACT_OPT) )
 
 .PHONY: setup-jbe-util check-jdk

@@ -31,7 +31,7 @@ clean: clean-root module-clean
 
 clean-root:
 	@$(ECHO) "\n*** Cleaning ... ***\n"
-	@$(RMDIRS) $(SYS_BUILD_DIR_NAME) $(JAR_FILE)
+	@$(RM) $(SYS_BUILD_DIR_NAME) $(JAR_FILE)
 
 compile: setup-catalogs
 	@$(RECURSE) POST_SETUP=t inner-compile
@@ -45,7 +45,7 @@ install: setup-catalogs
 # Rule to force a rebuild of just the catalogs
 
 catalog: initialize
-	@$(RM) --force $(MOD_JAVA_CATALOG) $(MOD_RMI_CLASS_CATALOG) $(MOD_RESOURCE_CATALOG)
+	@$(RM) $(MOD_JAVA_CATALOG) $(MOD_RMI_CLASS_CATALOG) $(MOD_RESOURCE_CATALOG)
 	@$(RECURSE)  SETUP_CATALOGS=t inner-setup-catalogs
 	
 setup-catalogs: initialize
@@ -147,7 +147,7 @@ endif
 # Additional pre-jar behaviours can be added by creating more dependencies
 # for $(MOD_DIRTY_JAR_STAMP_FILE)
 
-# Note:  for some reason (is this a make bug), if there are multiple
+# Note:  for some reason (is this a make bug?), if there are multiple
 # rules setting dependencies, then the command gets executed even though
 # $? is empty.  This occurs with War.mk and WebLogic.mk that need to
 # add additional dependencies to dirty jar stamp (to copy additional resources
@@ -169,7 +169,7 @@ ifneq "$(_RESOURCE_FILES)" ""
 	@$(ECHO) "\n*** Copying package resources ...***\n"
 	@$(ECHO) Copying: $(notdir $?)
 	@$(CD) $(FINAL_SOURCE_DIR) ; \
-	$(CP) -f -P $(subst $(FINAL_SOURCE_DIR)$(SLASH),$(EMPTY),$?) \
+	$(CP) $(CP_FORCE_OPT) $(CP_PARENTS_OPT) $(subst $(FINAL_SOURCE_DIR)$(SLASH),$(EMPTY),$?) \
 		 $(ABSOLUTE_CLASS_DIR)
 endif
 	@$(TOUCH) $@
@@ -253,7 +253,7 @@ $(MOD_META_STAMP_FILE): $(FINAL_META_RESOURCES)
 ifneq "$(FINAL_META_RESOURCES)" ""
 	@$(ECHO) "\n*** Copying META-INF resources ... ***\n"
 	@$(ECHO) Copying: $(notdir $?)
-	@$(CP) -f $? $(MOD_META_INF_DIR)
+	@$(CP) $(CP_FORCE_OPT) $? $(MOD_META_INF_DIR)
 	@$(TOUCH) $(MOD_DIRTY_JAR_STAMP_FILE)
 endif
 	@$(TOUCH) $@ 

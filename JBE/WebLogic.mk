@@ -56,7 +56,7 @@ include $(SYS_MAKEFILE_DIR)/Jar.mk
 DEPLOY_JAR_FILE := $(MODULE_NAME)-deploy.$(JAR_EXT)
 
 local-clean:
-	@$(RMDIRS) $(DEPLOY_JAR_FILE)
+	@$(RM) $(DEPLOY_JAR_FILE)
 
 module-install: $(INSTALL_DIR)/$(DEPLOY_JAR_FILE)
 
@@ -65,7 +65,7 @@ ifeq "$(INSTALL_DIR)" ""
 	$(error Must define INSTALL_DIR in Makefile)
 endif
 	@$(ECHO) "\n*** Installing $(DEPLOY_JAR_FILE) to $(INSTALL_DIR) ... ***\n"
-	@$(CP) -f $(DEPLOY_JAR_FILE) $(INSTALL_DIR)
+	@$(CP) $(CP_FORCE_OPT) $(DEPLOY_JAR_FILE) $(INSTALL_DIR)
 
 # Add a dependency to inner-jar that causes the deployable jar file to
 # be created.

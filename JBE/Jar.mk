@@ -80,7 +80,7 @@ ifeq "$(MODULE_NAME)" ""
 	$(error Must define MODULE_NAME in Makefile)
 endif
 	@$(ECHO) "\n*** Installing $(JAR_FILE) to $(INSTALL_DIR) ***\n"
-	@$(CP) $(JAR_FILE) -f $(INSTALL_DIR)
+	@$(CP) $(CP_FORCE_OPT) $(JAR_FILE) $(INSTALL_DIR)
 
 # module-install allows additional installation work to follow the normal
 # install.

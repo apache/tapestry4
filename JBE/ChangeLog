@@ -1,3 +1,8 @@
+* Jan 10 2001 hship
+
+Slight touch up, adding tool option variables which will make porting to
+non-GNU environments (like Solaris) a bit easier.
+
 * Dec 28 2000 hship
 
 Include the config directory in the distribution, with a README.
