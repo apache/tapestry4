@@ -52,7 +52,7 @@ public class ServletWebResponse implements WebResponse
     {
         Defense.notNull(contentType, "contentType");
 
-        _servletResponse.setContentType(contentType.getMimeType());        
+        _servletResponse.setContentType(contentType.getMimeType());
 
         try
         {
@@ -107,5 +107,10 @@ public class ServletWebResponse implements WebResponse
     public void setContentLength(int length)
     {
         _servletResponse.setContentLength(length);
+    }
+
+    public String getNamespace()
+    {
+        return "";
     }
 }

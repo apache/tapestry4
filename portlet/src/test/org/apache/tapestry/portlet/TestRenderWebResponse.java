@@ -67,4 +67,21 @@ public class TestRenderWebResponse extends BasePortletWebTestCase
 
         verifyControls();
     }
+
+    public void testGetNamespace()
+    {
+        MockControl control = newControl(RenderResponse.class);
+        RenderResponse response = (RenderResponse) control.getMock();
+
+        response.getNamespace();
+        control.setReturnValue("_NAMESPACE_");
+
+        replayControls();
+
+        RenderWebResponse rwr = new RenderWebResponse(response);
+
+        assertEquals("_NAMESPACE_", rwr.getNamespace());
+
+        verifyControls();
+    }
 }

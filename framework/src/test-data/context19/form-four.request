@@ -27,7 +27,7 @@ Content-Disposition: form-data; name="$Select"
 
 1
 -----------------------------eldorado
-Content-Disposition: form-data; name="Form0"
+Content-Disposition: form-data; name="formids"
 
 $Select
 -----------------------------eldorado--

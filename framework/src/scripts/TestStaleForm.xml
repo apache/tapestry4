@@ -43,7 +43,7 @@
       <match>page</match>
 			<match>service</match>
 			<match>sp</match>
-			<match>Form0</match>
+			<match>formids</match>
 		</assert-output-matches>
 				
 		<assert-output-matches name="Hidden Fields - Values" subgroup="2">
@@ -72,7 +72,7 @@
   		<parameter name="inputFavoriteColor" value="2"/>
   		<parameter name="inputSex" value="1"/>
   		<parameter name="inputAgeRange" value="1"/>
-  		<parameter name="Form0" value="inputFirstName,inputLastName,inputFavoriteColor,inputSex,inputAgeRange"/>
+  		<parameter name="formids" value="inputFirstName,inputLastName,inputFavoriteColor,inputSex,inputAgeRange"/>
   		
     		
   		<assert-output name="Title">
@@ -97,7 +97,7 @@ Rewind of form Register/form expected allocated id #3 to be 'inputFavoriteColor'
   		<parameter name="inputFirstName" value="Suzy"/>
   		<parameter name="inputLastName" value="Munchkin"/>
   		<parameter name="inputSex" value="1"/>
-  		<parameter name="Form0" value="inputFirstName,inputLastName,inputSex"/>
+  		<parameter name="formids" value="inputFirstName,inputLastName,inputSex"/>
   		    		
   		<assert-output name="Title">
 <![CDATA[
@@ -121,7 +121,7 @@ Rewind of form Register/form expected only 3 form elements, but an additional id
   		<parameter name="inputSex" value="1"/>
   		<parameter name="inputAgeRange" value="1"/>
   		<parameter name="inputFavoriteColor" value="2"/>  		
-  		<parameter name="Form0" value="inputFirstName,inputLastName,inputSex,inputAgeRange,inputFavoriteColor"/>
+  		<parameter name="formids" value="inputFirstName,inputLastName,inputSex,inputAgeRange,inputFavoriteColor"/>
   		
     		
   		<assert-output name="Title">

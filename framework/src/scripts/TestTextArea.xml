@@ -51,7 +51,7 @@
 		<parameter name="sp" value="S0"/>
 		<parameter name="text" value="One &lt;&gt; zero."/>
 		<parameter name="mode" value="0"/>
-		<parameter name="Form0" value="text,mode"/>
+		<parameter name="formids" value="text,mode"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -76,7 +76,7 @@ Text:\[\s*One &lt;&gt; zero.\s*\]
 		<parameter name="sp" value="S0"/>
 		<parameter name="text" value="Alpha&#010;Beta&#010;Gamma"/>
 		<parameter name="mode" value="0"/>
-		<parameter name="Form0" value="text,mode"/>
+		<parameter name="formids" value="text,mode"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -99,7 +99,7 @@ Text:\[\s*One &lt;&gt; zero.\s*\]
 		<parameter name="sp" value="S0"/>
 		<parameter name="text" value="Moe&#010;Larry&#010;Curly"/>
 		<parameter name="mode" value="1"/>
-		<parameter name="Form0" value="text,mode"/>
+		<parameter name="formids" value="text,mode"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -123,7 +123,7 @@ Text:\[\s+<p>Moe</p><p>Larry</p><p>Curly</p>\s+\]
     <parameter name="page" value="Home"/>
     <parameter name="action" value="1"/>
     <parameter name="component" value="actionForm"/>
-		<parameter name="Form1" value=""/>
+		<parameter name="formids" value=""/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -145,7 +145,7 @@ Text:\[\s+<p>Moe</p><p>Larry</p><p>Curly</p>\s+\]
     <parameter name="component" value="main"/>
 		<parameter name="sp" value="S0"/>
 		<parameter name="mode" value="1"/>
-		<parameter name="Form0" value="text,mode"/>
+		<parameter name="formids" value="text,mode"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -190,7 +190,7 @@ Text:\[\s+\]
 		<parameter name="sp" value="S0"/>
 		<parameter name="text" value="Peter&#010;Paul&#010;Mary"/>
 		<parameter name="mode" value="1"/>
-		<parameter name="Form0" value="text,mode"/>
+		<parameter name="formids" value="text,mode"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[

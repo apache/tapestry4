@@ -111,8 +111,8 @@
             <match>component</match>
             <match>page</match>
             <match>service</match>
-            <match>Go0</match>
-            <match>Go0</match>            
+            <match>formids</match>
+            <match>formids</match>            
             <match>u</match>
             <match>l</match>
         </assert-output-matches>
@@ -138,7 +138,7 @@
         <parameter name="page" value="Home"/>
         <parameter name="action" value="0"/>
         <parameter name="component" value="go"/>
-        <parameter name="Go0">
+        <parameter name="formids">
           <value>u,l</value>
           <value>action</value>
         </parameter>

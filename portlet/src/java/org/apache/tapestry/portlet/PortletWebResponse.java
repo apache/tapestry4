@@ -70,6 +70,13 @@ public class PortletWebResponse implements WebResponse
         unsupported("setContentLength");
     }
 
+    public String getNamespace()
+    {
+        unsupported("getNamespace");
+        
+        return null;
+    }
+
     protected final void unsupported(String methodName)
     {
         throw new UnsupportedOperationException(PortletMessages.unsupportedMethod(methodName));

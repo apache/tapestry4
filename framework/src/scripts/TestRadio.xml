@@ -53,7 +53,7 @@
     <parameter name="component" value="$Form"/>
 		<parameter name="sp" value="S0"/>
 		<parameter name="$RadioGroup" value="2"/>
-		<parameter name="Form0" value="$RadioGroup"/>
+		<parameter name="formids" value="$RadioGroup"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -85,7 +85,7 @@
     <parameter name="page" value="Home"/>
     <parameter name="component" value="$Form"/>
 		<parameter name="sp" value="S0"/>
-		<parameter name="Form0" value="$RadioGroup"/>
+		<parameter name="formids" value="$RadioGroup"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -118,7 +118,7 @@
     <parameter name="component" value="$Form"/>
 		<parameter name="sp" value="S0"/>
 		<parameter name="$RadioGroup" value="3"/>
-		<parameter name="Form0" value="$RadioGroup"/>
+		<parameter name="formids" value="$RadioGroup"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -151,7 +151,7 @@
     <parameter name="action" value="1"/>
     <parameter name="component" value="dummy"/>
     <parameter name="sp" value="S0"/>
-		<parameter name="Form1" value=""/>
+		<parameter name="formids" value=""/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -213,7 +213,7 @@
     <parameter name="component" value="$Form"/>
 		<parameter name="sp" value="S0"/>
 		<parameter name="$RadioGroup" value="2"/>
-		<parameter name="Form0" value="$RadioGroup"/>
+		<parameter name="formids" value="$RadioGroup"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -347,7 +347,7 @@ Framework: []
     <parameter name="page" value="NullSelection"/>
     <parameter name="component" value="$Form"/>
 		<parameter name="sp" value="S0"/>
-		<parameter name="Form0" value="group"/>
+		<parameter name="formids" value="group"/>
 		<parameter name="group" value="1"/>
 		
 			<assert-output name="No Choice">
@@ -378,7 +378,7 @@ Framework: [tapestry]
     <parameter name="page" value="NullSelection"/>
     <parameter name="component" value="$Form"/>
 		<parameter name="sp" value="S0"/>
-		<parameter name="Form0" value="group"/>	
+		<parameter name="formids" value="group"/>	
 
 			<assert-output name="No Choice">
 <![CDATA[<input type="radio" name="group" checked="checked" value="0"/> No Choice]]>				
@@ -429,7 +429,7 @@ Framework: []
       <parameter name="page" value="LanguageSelection"/>
       <parameter name="component" value="form"/>      
 			<parameter name="sp" value="S0"/>
-			<parameter name="Form0" value="group"/>
+			<parameter name="formids" value="group"/>
 			<parameter name="group" value="2"/>
 			
 

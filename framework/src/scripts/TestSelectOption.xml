@@ -42,7 +42,7 @@
       <match>name="page" value="Home"</match>
 			<match>name="service" value="direct"</match>
 			<match>name="sp" value="S0"</match>
-			<match>name="Form0" value="$Select"</match>
+			<match>name="formids" value="$Select"</match>
 		</assert-output-matches>
 
 		<assert-regexp name="Select Tag">
@@ -69,7 +69,7 @@
     <parameter name="page" value="Home"/>
     <parameter name="component" value="$Form"/>
 		<parameter name="sp" value="S0"/>
-		<parameter name="Form0" value="$Select"/>
+		<parameter name="formids" value="$Select"/>
 		
 		<assert-output name="Page Title">
 <![CDATA[
@@ -90,7 +90,7 @@ Selections: none.
     <parameter name="page" value="Home"/>
     <parameter name="component" value="$Form"/>
 		<parameter name="sp" value="S0"/>
-		<parameter name="Form0" value="$Select"/>
+		<parameter name="formids" value="$Select"/>
 		<parameter name="$Select" value="1"/>
 		
 		<assert-output name="Page Title">
@@ -132,7 +132,7 @@ Selections: vegetable.
       <match>name="page" value="Two"</match>
 			<match>name="service" value="direct"</match>
 			<match>name="sp" value="S0"</match>
-			<match>name="Form0" value="$Select"</match>
+			<match>name="formids" value="$Select"</match>
 		</assert-output-matches>
 
 		<assert-output name="Select Tag">
@@ -161,7 +161,7 @@ Selections: vegetable.
     <parameter name="page" value="Two"/>
     <parameter name="component" value="$Form"/>
 		<parameter name="sp" value="S0"/>
-		<parameter name="Form0" value="$Select"/>
+		<parameter name="formids" value="$Select"/>
 		<parameter name="$Select">
 				<value>1</value>
 				<value>2</value>
@@ -232,7 +232,7 @@ Selections: vegetable, mineral.
 			<match>name="service" value="direct"</match>
       <match>name="session" value="T"</match>
 			<match>name="sp" value="S0"</match>
-			<match>name="Form0" value="$Select"</match>
+			<match>name="formids" value="$Select"</match>
 		</assert-output-matches>
 
 		<assert-output name="Select Tag">
@@ -261,7 +261,7 @@ Selections: vegetable, mineral.
     <parameter name="page" value="Three"/>
     <parameter name="component" value="$Form"/>
 		<parameter name="sp" value="S0"/>
-		<parameter name="Form0" value="$Select"/>
+		<parameter name="formids" value="$Select"/>
 		<parameter name="$Select" value="1"/>
 		
 		<assert-output name="Page Title">
@@ -304,7 +304,7 @@ Selections: none.
     <parameter name="session" value="1"/>
     <parameter name="page" value="Four"/>
     <parameter name="component" value="$Form$0"/>
-		<parameter name="Form1" value=""/>
+		<parameter name="formids" value=""/>
 		
 		<assert-output name="Page Title">
 <![CDATA[

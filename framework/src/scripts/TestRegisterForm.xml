@@ -55,7 +55,7 @@ document.Form0.onsubmit = function ()
       <match>page</match>
 			<match>service</match>
 			<match>sp</match>
-			<match>Form0</match>
+			<match>formids</match>
 		</assert-output-matches>
 				
 		<assert-output-matches name="Hidden Fields - Values" subgroup="2">
@@ -136,7 +136,7 @@ document.Form0.onsubmit = function ()
   		<parameter name="inputLastName" value=""/>
   		<parameter name="inputSex" value="1"/>
   		<parameter name="inputAgeRange" value="1"/>
-  		<parameter name="Form0" value="inputFirstName,inputLastName,inputSex,inputAgeRange"/>
+  		<parameter name="formids" value="inputFirstName,inputLastName,inputSex,inputAgeRange"/>
   		
     		
   		<assert-output name="Title">
@@ -201,7 +201,7 @@ document.Form0.inputLastName.select();
   		<parameter name="inputLastName" value="Lewis Ship"/>
   		<parameter name="inputSex" value="1"/>
   		<parameter name="inputAgeRange" value="2"/>
-  		<parameter name="Form0" value="inputFirstName,inputLastName,inputSex,inputAgeRange"/>	
+  		<parameter name="formids" value="inputFirstName,inputLastName,inputSex,inputAgeRange"/>	
   		
   		
   		<assert-output name="Title">

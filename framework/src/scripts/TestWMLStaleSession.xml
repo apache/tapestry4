@@ -61,7 +61,7 @@
             <match>page</match>
             <match>service</match>
             <match>sp</match>
-            <match>Go1</match>
+            <match>formids</match>
         </assert-output-matches>
 
         <assert-output-matches name="Go Parameter Values" subgroup="1">
@@ -112,7 +112,7 @@
         <parameter name="component" value="go"/>
 
         <parameter name="sp" value="S1"/>
-        <parameter name="Go1" value=""/>
+        <parameter name="formids" value=""/>
 
         <assert-output name="StaleSession (Go)">
             <![CDATA[

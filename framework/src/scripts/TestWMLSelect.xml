@@ -74,7 +74,7 @@
         <parameter name="page" value="Select"/>
         <parameter name="component" value="go"/>
 
-        <parameter name="Go0" value="sex,income,hobbies"/>
+        <parameter name="formids" value="sex,income,hobbies"/>
         <parameter name="sex" value="Male"/>
         <parameter name="income" value="Over $100K"/>
         <parameter name="hobbies" value="Skiing,Book,Traveling"/>
