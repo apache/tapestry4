@@ -107,6 +107,7 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
     public synchronized void reset()
     {
         _cachedClasses.clear();
+        _factory.reset();
     }
 
     public IResourceResolver getResourceResolver()

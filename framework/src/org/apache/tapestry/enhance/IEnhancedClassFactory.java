@@ -67,5 +67,6 @@ package org.apache.tapestry.enhance;
  */
 public interface IEnhancedClassFactory
 {
+    void reset();
     IEnhancedClass createEnhancedClass(String className, Class parentClass);
 }
