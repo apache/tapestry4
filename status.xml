@@ -262,6 +262,10 @@ NextGen) be released as version number 3.0.
       Fix NPE in ValidationDelegate when the form has errors recorded for fields that did not render.
     </action>
     
+    <action type="update" dev="HLS" fixes-bug="30261">
+      Provide a public implementation of ITemplateParserDelegate.
+    </action>
+    
   </release>	
    
  	<release version="3.0" date="Apr 18 2004">
