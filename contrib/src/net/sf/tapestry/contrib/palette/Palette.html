@@ -1,26 +1,28 @@
 <!-- $Id$ -->
 
-<jwc id="table">
+<table jwcid="table">
   <tr>
   	<th id="selectedTitle"><jwc id="insertSelectedTitleBlock"/></th>
   	<td class="controls" rowspan=2>
-  	    <jwc id="selectButton"><jwc id="selectImage"/></jwc>
+  	    <a href="#" jwcid="selectButton"><img jwcid="selectImage" alt="[Select]" width=41 height=21/></a>
     <br>
-    <jwc id="deselectButton"><jwc id="deselectImage"/></jwc>
-    <jwc id="ifSortUser">
+    <a href="#" jwcid="deselectButton"><img jwcid="deselectImage" alt="[Deselect]" width=44 height=21/></a>
+    
+    <span jwcid="ifSortUser">
     <br>
-    <jwc id="moveUpButton"><jwc id="upImage"/></jwc>
+    <a href="#" jwcid="moveUpButton"><img jwcid="upImage" alt="[Move Up]" width=26 height=31/></a>
     <br>
-    <jwc id="moveDownButton"><jwc id="downImage"/></jwc>
-    </jwc>
+    <a href="#" jwcid="moveDownButton"><img jwcid="downImage" alt="[Move Down]" width=36 height=31/></a>
+    </span>
+    
     </td>
   	<th id="availableTitle"><jwc id="insertAvailableTitleBlock"/></th>
   </tr>
   <tr>
-    <td id="selected"><jwc id="selected"/></td>
-    <td id="available"><jwc id="available"/></td>
+    <td id="selected"><select jwcid="selected"/></td>
+    <td id="available"><select jwcid="available"/></td>
   </tr>
-</jwc>
+</table>
 
 <jwc id="defaultSelectedTitleBlock">
 Selected

@@ -40,6 +40,7 @@
 <!ENTITY Foreach '<link linkend="builtin.Foreach"><classname>Foreach</classname></link>'>
 <!ENTITY Conditional '<link linkend="builtin.Conditional"><classname>Conditional</classname></link>'>
 <!ENTITY Rollover  '<link linkend="builtin.Rollover"><classname>Rollover</classname></link>'>
+<!ENTITY Service '<link linkend="builtin.Service"><classname>Service</classname></link>'>
 <!ENTITY Insert '<link linkend="builtin.Insert"><classname>Insert</classname></link>'>
 <!ENTITY InsertText '<link linkend="builtin.InsertText"><classname>InsertText</classname></link>'>
 <!ENTITY Image '<link linkend="builtin.InsertWrapped"><classname>Image</classname></link>'>

@@ -794,7 +794,27 @@ public abstract class AbstractComponent implements IComponent
 			return null;
 		
 		ContainedComponent contained = container.getSpecification().getComponent(id);
+	
+		// If no informal parameters, then it's safe to return
+		// just the names of the formal parameters.
 		
-		return contained.getBindingNames();
+		if (bindings == null || bindings.size() == 0)
+			return contained.getBindingNames();
+	
+		// The new HTML parser means that sometimes, the informal attributes
+		// come from the HTML template and aren't known in the contained component
+		// specification.  The only thing to do is to build up a set of
+		// informal bindings.  A degenerate case:  an informal binding that has
+		// setXXXBinding and getXXXBinding methods --- that makes the
+		// informal parameter invisible to this method (and thus, to the Inspector).
+		
+		HashSet result = new HashSet(contained.getBindingNames());
+		
+		// All the informal bindings go into the bindings Map.   Also
+		// formal parameters where there isn't a corresponding JavaBeans property.
+		
+		result.addAll(bindings.keySet());
+		
+		return result;
 	}
 }

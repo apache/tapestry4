@@ -29,20 +29,40 @@ up and down images are only needed if sortUser is true.
 output symbols:
   formSubmitFunctionName - name of a function to be executed when the form submits
   availableName - the name of the available element
-  selectButtonId - the id of the select button
-  deselectButtonId - the id of the deselect button
-  selectImageName - the name to use for the select image (inside the select button)
-  deselectImageName - the name to use for the deselect image (inside the deselect button)
-  upButtonId - the id of the move up button
-  upImageName - the name of the up image (inside the up button)
-  downButtonId - the id of the move down button
-  downImageName the id of the move down image (inside the down button)
+  selectImageName - the name to use for the select image (inside the select link)
+  selectOnClickScript - the script to assign to the select link's onclick attribute
+  deselectOnClickScript - the script to assign to the deselect link's onclick attribute
+  deselectImageName - the name to use for the deselect image (inside the deselect link)
+  upImageName - the name of the up image (inside the up link)
+  downImageName the name of the move down image (inside the down link)
+  upOnClickScript - the script to assign to the up link's onclick attribute
+  downOnClickScript - the script to assign to the down link's onclick attribute
 -->
 
 <!-- baseName - base name from which other names are generated -->
 
 <let key="baseName">
   <insert property-path="formName"/>_<insert property-path="name"/>
+</let>
+
+<let key="buttons">
+  buttons_<insert property-path="baseName"/>
+</let>
+
+<let key="selectDisabled">
+  <insert property-path="buttons"/>.selectDisabled
+</let>
+
+<let key="deselectDisabled">
+  <insert property-path="buttons"/>.deselectDisabled
+</let>
+
+<let key="upDisabled">
+  <insert property-path="buttons"/>.upDisabled
+</let>
+
+<let key="downDisabled">
+  <insert property-path="buttons"/>.downDisabled
 </let>
 
 <let key="availableName">
@@ -57,20 +77,20 @@ output symbols:
   select_<insert property-path="baseName"/>
 </let>
 
+<let key="selectOnClickScript">
+  javascript:<insert property-path="selectFunctionName"/>();
+</let>
+
 <let key="deselectFunctionName">
   deselect_<insert property-path="baseName"/>
 </let>
 
+<let key="deselectOnClickScript">
+  javascript:<insert property-path="deselectFunctionName"/>();
+</let>
+
 <let key="formSubmitFunctionName">
   onsubmit_<insert property-path="baseName"/>
-</let>
-
-<let key="selectButtonId">
-  select_<insert property-path="baseName"/>
-</let>
-
-<let key="selectButtonPath">
-  document.all.<insert property-path="selectButtonId"/>
 </let>
 
 <let key="selectImageName">
@@ -79,14 +99,6 @@ output symbols:
 
 <let key="selectImagePath">
   document.<insert property-path="selectImageName"/>
-</let>
-
-<let key="deselectButtonId">
-  deselect_<insert property-path="baseName"/>
-</let>
-
-<let key="deselectButtonPath">
-  document.all.<insert property-path="deselectButtonId"/>
 </let>
 
 <let key="deselectImageName">
@@ -109,28 +121,12 @@ output symbols:
     <insert property-path="formPath"/>.<insert property-path="availableName"/>
 </let>
 
-<let key="upButtonId">
-  moveup_<insert property-path="baseName"/>
-</let>
-
-<let key="upButtonPath">
-  document.all.<insert property-path="upButtonId"/>
-</let>
-
 <let key="upImageName">
   upimage_<insert property-path="baseName"/>
 </let>
 
 <let key="upImagePath">
   document.<insert property-path="upImageName"/>
-</let>
-
-<let key="downButtonId">
-  movedown_<insert property-path="baseName"/>
-</let>
-
-<let key="downButtonPath">
-  document.all.<insert property-path="downButtonId"/>
 </let>
 
 <let key="downImageName">
@@ -145,12 +141,25 @@ output symbols:
   moveup_<insert property-path="baseName"/>
 </let>
 
+<let key="upOnClickScript">
+  javascript:<insert property-path="moveUpFunctionName"/>();
+</let>
+
 <let key="moveDownFunctionName">
   movedown_<insert property-path="baseName"/>
 </let>
 
+<let key="downOnClickScript">
+  javascript:<insert property-path="moveDownFunctionName"/>();
+</let>
+
 <body>
 <if property-path="includeBaseFunctions">
+
+var palette_is_NN4 = 
+<![CDATA[  (navigator.appName == "Netscape" &&
+  parseInt(navigator.appVersion) <= 4);
+]]>
 
 function palette_clear_selections(element)
 {
@@ -176,14 +185,21 @@ function palette_sort(element, sorter)
   
   while (options.length &gt; 0)
   {
-    list[index++] = options[0];
-    options.remove(0);
+    if (palette_is_NN4)
+    {
+      var copy = new Option(options[0].text, options[0].value);
+      list[index++] = copy;
+    }
+    else
+      list[index++] = options[0];
+      
+    options[0] = null;
   }
   
   list.sort(sorter);
   
   for (var i = 0; i &lt; list.length; i++)
-    options.add(list[i]); 
+    options[options.length] = list[i]; 
 }
 
 function palette_label_sorter(a, b)
@@ -223,7 +239,7 @@ function palette_sort_by_value(element)
 {
   palette_sort(element, palette_value_sorter);
 }
-
+  
 function palette_transfer_selections(source, target)
 {
   var sourceOptions = source.options;
@@ -240,24 +256,85 @@ function palette_transfer_selections(source, target)
     
     if (option.selected)
     {
-      sourceOptions.remove(i);
-  
-      if (targetIndex &lt; 0)
-      	targetOptions.add(option);
-      else
-        targetOptions.add(option, targetIndex + offset++);
+   	  if (palette_is_NN4)
+   	  {
+   	  	  // Can't share options between selects in NN4
+   	  	  
+   	  	  var newOption = new Option(option.text, option.value);
+		  sourceOptions[i] = null;
+		  
+          // Always added to end in NN4
+             	  	  
+          targetOptions[targetOptions.length] = newOption;
+   	  }
+   	  else
+   	  {  
+         sourceOptions.remove(i);
+         
+        if (targetIndex &lt; 0)
+          targetOptions.add(option);
+        else
+          targetOptions.add(option, targetIndex + offset++);
+      }
+      
+
       i--;
     }
   }
 }
+
+function palette_swap_options(options, selectedIndex, targetIndex)
+{
+  var option = options[selectedIndex];
+
+  // It's very hard to reorder options in NN4
+  
+  if (palette_is_NN4)
+  {
+    var swap = options[targetIndex];
+    
+    var hold = swap.text;
+    swap.text = option.text;
+    option.text = hold;
+    
+    hold = swap.value;
+    swap.value = option.value;
+    option.value = hold;
+    
+    hold = swap.selected;
+    swap.selected = option.selected;
+    option.selected = hold;
+    
+    // defaultSelected isn't relevant to the Palette
+    
+    return;
+  }
+  
+  // Sensible browsers ...
+  
+  options.remove(selectedIndex);
+  options.add(option, targetIndex);
+}
+
+</if>
+
+<!-- A variable that is used to track which of the buttons are enabled
+     or disabled. -->
+     
+var <insert property-path="buttons"/> = new Object();
+<insert property-path="selectDisabled"/> = true;
+<insert property-path="deselectDisabled"/> = true;
+<if property-path="sortUser">
+<insert property-path="upDisabled"/> = true;
+<insert property-path="downDisabled"/> = true;
 </if>
 
 function <insert property-path="updateFunctionName"/>()
 {
   var disabled = <insert property-path="availablePath"/>.selectedIndex &lt; 0;
   
-  <insert property-path="selectButtonPath"/>.disabled = disabled;
-  
+  <insert property-path="selectDisabled"/> = disabled;
+ 
   if (document.images)
     <insert property-path="selectImagePath"/>.src =
       disabled ? <insert property-path="selectDisabledImage"/>
@@ -267,8 +344,8 @@ function <insert property-path="updateFunctionName"/>()
   var index = selected.selectedIndex;
 
   disabled = index &lt; 0;
-  <insert property-path="deselectButtonPath"/>.disabled = disabled;
-  
+  <insert property-path="deselectDisabled"/> = disabled;
+ 
   if (document.images)
     <insert property-path="deselectImagePath"/>.src =
   	  disabled ? <insert property-path="deselectDisabledImage"/>
@@ -276,13 +353,12 @@ function <insert property-path="updateFunctionName"/>()
   			 
 <if property-path="sortUser">
 
-  var upButton = <insert property-path="upButtonPath"/>;
   var upImage = <insert property-path="upImagePath"/>;
-  var downButton = <insert property-path="downButtonPath"/>;
   var downImage = <insert property-path="downImagePath"/>
   
-  upButton.disabled = true;
-  downButton.disabled = true;
+  <insert property-path="upDisabled"/> = true;
+  <insert property-path="downDisabled"/> = true;
+  
   if (document.images)
   {
     upImage.src = <insert property-path="upDisabledImage"/>;
@@ -304,15 +380,15 @@ function <insert property-path="updateFunctionName"/>()
 	  return;
   }
   
-  upButton.disabled = (index == 0);
-  downButton.disabled = (index == selected.options.length - 1);  
+  <insert property-path="upDisabled"/> = (index == 0);
+  <insert property-path="downDisabled"/> = (index == selected.options.length - 1);  
   
   if (document.images)
   {
-    if (!upButton.disabled)
+    if (!<insert property-path="upDisabled"/>)
       upImage.src = <insert property-path="upImage"/>;
 
-    if (!downButton.disabled)
+    if (!<insert property-path="downDisabled"/>)
       downImage.src = <insert property-path="downImage"/>;
   }
 </if>  
@@ -320,9 +396,12 @@ function <insert property-path="updateFunctionName"/>()
 
 function <insert property-path="selectFunctionName"/>()
 {
+   if (<insert property-path="selectDisabled"/>)
+  	return;
+  	
   var source = <insert property-path="availablePath"/>;
   var target = <insert property-path="selectedPath"/>;
-  
+   	
   palette_transfer_selections(source, target);
   
 <if property-path="sortLabel">
@@ -336,6 +415,9 @@ function <insert property-path="selectFunctionName"/>()
 
 function <insert property-path="deselectFunctionName"/>()
 {
+  if (<insert property-path="deselectDisabled"/>)
+    return;
+  
   var source = <insert property-path="selectedPath"/>;
   var target = <insert property-path="availablePath"/>;
   
@@ -362,26 +444,26 @@ function <insert property-path="formSubmitFunctionName"/>()
 <if property-path="sortUser">
 function <insert property-path="moveUpFunctionName"/>()
 {
+  if (<insert property-path="upDisabled"/>)
+    return;
+    
   var element = <insert property-path="selectedPath"/>;
-  var targetIndex = element.selectedIndex - 1;
   var options = element.options;
-  var option = options[element.selectedIndex];
-
-  options.remove(element.selectedIndex);
-  options.add(option, targetIndex);
+    
+  palette_swap_options(options, element.selectedIndex, element.selectedIndex - 1);
   
   <insert property-path="updateFunctionName"/>();
 }
 
 function <insert property-path="moveDownFunctionName"/>()
 {
+  if (<insert property-path="downDisabled"/>)
+    return;
+    
   var element = <insert property-path="selectedPath"/>;
-  var targetIndex = element.selectedIndex + 1;
-  var options = element.options; 
-  var option = options[element.selectedIndex];
-
-  options.remove(element.selectedIndex);
-  options.add(option, targetIndex);
+  var options = element.options;
+  
+  palette_swap_options(options, element.selectedIndex, element.selectedIndex + 1);
   
   <insert property-path="updateFunctionName"/>();
 }
@@ -395,12 +477,6 @@ function <insert property-path="moveDownFunctionName"/>()
 <insert property-path="selectedPath"/>.ondblclick = <insert property-path="deselectFunctionName"/>;
 <insert property-path="availablePath"/>.onchange = <insert property-path="updateFunctionName"/>;
 <insert property-path="availablePath"/>.ondblclick = <insert property-path="selectFunctionName"/>;
-<insert property-path="selectButtonPath"/>.onclick = <insert property-path="selectFunctionName"/>;
-<insert property-path="deselectButtonPath"/>.onclick = <insert property-path="deselectFunctionName"/>;
-<if property-path="sortUser">
-<insert property-path="upButtonPath"/>.onclick = <insert property-path="moveUpFunctionName"/>;
-<insert property-path="downButtonPath"/>.onclick = <insert property-path="moveDownFunctionName"/>;
-</if>
 
 <insert property-path="updateFunctionName"/>();
 

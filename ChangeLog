@@ -1,3 +1,13 @@
+* Jul 2 2001 hship
+
+Update the documentation concerning the new HTML parser.
+
+contrib:
+- Update the Palette component template to make use of new HTML parser features.
+- Hack together basic support for the Palette under Netscape Navigator 4.
+
+[ #437901 ] Keep comments from HTML
+
 * Jun 29 2001 hship
 
 framework:
