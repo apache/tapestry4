@@ -196,16 +196,15 @@ ifdef PACKAGE_RECURSE
 
 PACKAGE_DIR := $(subst $(PERIOD),$(SLASH),$(PACKAGE))
 
-# Create a relative project directory by counting the number of
-# periods. This is tricky, because $(foreach) like to add spaces, which we have
-# to convert to slashes.
+_FINAL_PACKAGE_DIR := $(FINAL_SOURCE_DIR)$(SLASH)$(PACKAGE_DIR)
 
-_PACKAGE_TERMS := $(subst $(PERIOD),$(SPACE),$(PACKAGE))
-_RELATIVE_MOD_DIR := $(strip $(foreach foo,$(_PACKAGE_TERMS),$(DOTDOT)))
 
 catalog-package:
 	@$(ECHO) "\n*** Cataloging package $(PACKAGE) ... ***\n"
-	@$(MAKE) -C $(FINAL_SOURCE_DIR)$(SLASH)$(PACKAGE_DIR) \
+	@if [ ! -r $(_FINAL_PACKAGE_DIR)/Makefile ] ; \
+	then _mopt=--makefile=$(SYS_MAKEFILE_DIR)/DefaultPackage.mk ; \
+	fi ; \
+	$(MAKE) --directory=$(_FINAL_PACKAGE_DIR) $$_mopt \
 		MOD_BUILD_DIR="$(ABSOLUTE_MOD_BUILD_DIR)" \
 		MOD_PACKAGE_DIR="$(PACKAGE_DIR)" \
 		MOD_SOURCE_DIR_PREFIX="$(FINAL_SOURCE_DIR)$(SLASH)"
