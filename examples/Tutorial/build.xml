@@ -75,14 +75,17 @@
       </classpath>
       
       <arg value="jetty.xml"/>
-      
+       
+      <!-- Enable debugging on port 20150 --> 
+       
       <jvmarg line="-showversion -Xdebug -Xnoagent"/>
       <jvmarg line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20150"/>
+      <sysproperty key="java.compiler" value="NONE"/>
       
       <sysproperty key="com.primix.tapestry.disable-caching" value="true"/>
       <sysproperty key="com.primix.tapestry.enable-reset-service" value="true"/>
-      
-      <sysproperty key="java.compiler" value="NONE"/>
+ 	  <sysproperty key="org.mortbay.util.FileResource.checkAliases" value="false"/>
+
     </java>
   </target>
 </project>
