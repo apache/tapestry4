@@ -26,6 +26,8 @@
  
  package com.primix.tapestry.valid;
 
+import java.util.Locale;
+
 /**
  *  Simple validation of strings, to enforce required, and minimum length
  *  (maximum length is enforced in the client browser, by setting a maximum input
@@ -40,7 +42,63 @@
 
 public class StringValidator extends BaseValidator
 {
+	private static class StaticStringValidator extends StringValidator
+	{
+		private static final String UNSUPPORTED_MESSAGE = "Changes to property values are not allowed.";
+		
+		private StaticStringValidator(boolean required)
+		{
+			super(required);
+		}
+		
+		/** @throws UnsupportedOperationException */
+		
+		public void setLocale(Locale value)
+		{
+			throw new UnsupportedOperationException(UNSUPPORTED_MESSAGE);
+		}
+		
+		/** @throws UnsupportedOperationException */
+		
+		public void setMinimumLength(int minimumLength)
+		{
+			throw new UnsupportedOperationException(UNSUPPORTED_MESSAGE);
+		}
+
+		/** @throws UnsupportedOperationException */
+		
+		public void setRequired(boolean required)
+		{
+			throw new UnsupportedOperationException(UNSUPPORTED_MESSAGE);
+		}
+	}
+	
+	/**
+	 *  Returns a shared instance of a StringValidator with the required flag set.
+	 *  The instance is not modifiable.
+	 * 
+	 **/
+	
+	public static final StringValidator REQUIRED = new StaticStringValidator(true);
+	
+	/**
+	 *  Returns a shared instance of a StringValidator with the required flag cleared.
+	 *  The instance is not modifiable.
+	 * 
+	 **/
+	
+	public static final StringValidator OPTIONAL = new StaticStringValidator(false);
+	
 	private int minimumLength;
+
+	public StringValidator()
+	{
+	}
+	
+	private StringValidator(boolean required)
+	{
+		super(required);
+	}
 
 	public String toString(IField field, Object value)
 	{
