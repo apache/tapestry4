@@ -190,17 +190,20 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
 
             Document document = _builder.parse(source);
 
-            // The document parsed and validated, so it must
-            // have a <!DOCTYPE>
-            
-            String publicId = document.getDoctype().getPublicId();
+            if (getRequireValidatingParser())
+            {
+                // The document parsed and validated, so it must
+                // have a <!DOCTYPE>
 
-            // Ensure its a known type.
+                String publicId = document.getDoctype().getPublicId();
 
-            if (!_entities.containsKey(publicId))
-                throw new DocumentParseException(
-                    Tapestry.getString("AbstractDocumentParser.unknown-public-id", resourceLocation, publicId),
-                    resourceLocation);
+                // Ensure its a known type.
+
+                if (!_entities.containsKey(publicId))
+                    throw new DocumentParseException(
+                        Tapestry.getString("AbstractDocumentParser.unknown-public-id", resourceLocation, publicId),
+                        resourceLocation);
+            }
 
             error = false;
 
