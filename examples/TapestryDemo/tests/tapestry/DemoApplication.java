@@ -136,17 +136,6 @@ public class DemoApplication extends SimpleApplication
 		};
 	}
 
-	protected String getSpecificationAttributeName()
-	{
-		return "tests.tapestry.spec.Demo";
-	}
-
-	protected String getSpecificationResourceName()
-	{
-		return "/tests/tapestry/Demo.application";
-	}
-
-
 	public void valueBound(HttpSessionBindingEvent event)
 	{
 		super.valueBound(event);

@@ -35,25 +35,19 @@ package tutorial.simple;
  */ 
 
 import com.primix.tapestry.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import com.primix.tapestry.app.*;
 
 public class SimpleServlet extends ApplicationServlet
 {
-	protected IApplication getApplication(RequestContext context)
+	protected String getApplicationSpecificationPath()
 	{
-		String name = "simple.application";
-		IApplication application;
+		return "/tutorial/simple/Simple.application";
+	}
 
-		application = (IApplication)context.getSessionAttribute(name);
-
-		if (application == null)
-		{
-			application = new SimpleTutorialApplication(context, null);
-			context.setSessionAttribute(name, application);
-		}
-
-		return application;
+	protected IApplication createApplication(RequestContext context)
+	{
+		return new SimpleApplication(context, null);
 	}
 }
+
 
