@@ -76,7 +76,7 @@ parameters are used to fill in the attributes of the element.
 <para>
 A block is used to prevent a section of an HTML template from being renderred.  That is,
 a <classname>Block</classname> is allowed a body, but never renders it.  Intead, an
-<classname>InsertBlock</classname> component is used to insert
+&InsertBlock; component is used to insert
 the body of the block.
 </>
 
@@ -92,7 +92,7 @@ to a component.
 <para>
 Replaces the <sgmltag class=starttag>body</> tag.  
 The <classname>Body</> component provides some support for other 
-components, such as the <classname>Rollover</> component.
+components, such as the &Rollover; component.
 </>
 
 	</section>
@@ -102,7 +102,7 @@ components, such as the <classname>Rollover</> component.
 
 <para>
 Used to implement a checkbox form element (<sgmltag class=starttag>input type=checkbox</>). 
-Must be wrapped by a <classname>Form</> component.
+Must be wrapped by a &Form;  component.
 </>
 
 <variablelist>
@@ -245,7 +245,7 @@ Creates a <sgmltag class=starttag>a</> hyperlink that notifies
 the component when the link is triggered.  
 The link includes some context-specific data that 
 is passed on to the component's listener.  This  
-is used in cases where the <classname>Action</> component can't be used 
+is used in cases where the &Action; component can't be used 
 (or is too inefficient).
 </>
 
@@ -292,7 +292,7 @@ A component, used on the standard exception page, which renders a detailed list 
 	<varlistentry>
 		<term>exceptions</>
 		<listitem>
-			<para>An array of <classname>com.primix.foundation.exception.ExceptionDescription</>
+			<para>An array of <classname>com.primix.tapestry.util.exception.ExceptionDescription</>
 			objects.
 			</>
 		</>
@@ -305,7 +305,7 @@ A component, used on the standard exception page, which renders a detailed list 
 		<title>FieldLabel</>
 
 <para>
-A component, used with a ValidatingTextField (or similar component) 
+A component, used with a &ValidatingTextField; (or similar component) 
 that provides the label for the field.  A delegate object may be 
 specified that will change the visual formatting of the label to reflect the 
 state of the field, for instance, to make the label red when the field itself is in error.
@@ -397,7 +397,7 @@ The other form-related components must be wrapped inside the <classname>Form</>.
 
 <para>
 Adds a hidden (<sgmltag class=starttag>input type=hidden</>) field to a 
-<classname>Form</>.  This is often used to synchronize 
+&Form;.  This is often used to synchronize 
 data when the form is submitted with values
 known when the page was rendered .
 </>
@@ -420,7 +420,8 @@ known when the page was rendered .
 		<title>Image</>
 
 <para>
-Used to insert a static image.
+Used to insert a static image.  &Rollover; is a similar component that can create
+dynamic mouse-over effects as well.
 </>
 
 <variablelist>
@@ -440,7 +441,7 @@ Used to insert a static image.
 		<title>ImageSubmit</>
 
 <para>
-An image button inside a <classname>Form</>.  Clicking the button submits the form.
+An image button inside a &Form;.  Clicking the button submits the form.
 </>
 
 <variablelist>
@@ -483,7 +484,8 @@ An image button inside a <classname>Form</>.  Clicking the button submits the fo
 
 <para>
 Inserts dynamic text into the HTML response.   Invalid characters (such as &lt; and &gt;) 
-are converted into HTML entities (&amp;lt; and &amp;gt;).
+are converted into HTML entities ('&amp;lt;' and '&amp;gt;').  Use an &InsertText; component
+to handle multi-line text.
 </>
 
 <variablelist>
@@ -514,7 +516,7 @@ are converted into HTML entities (&amp;lt; and &amp;gt;).
 		<title>InsertBlock</>
 
 <para>
-Inserts the body of a <classname>Block</>.
+Inserts the body of a &Block;.
 </>
 <variablelist>
 	<title>Parameters</>
@@ -522,13 +524,40 @@ Inserts the body of a <classname>Block</>.
 	<varlistentry>
 		<term>block</>
 		<listitem>
-			<para>The <classname>Block</> to insert.</>
+			<para>The &Block; to insert.</>
 		</>
 	</>
 </>
 
 	</section>
 
+	<section id="builtin.InsertText">
+		<title>InsertText</>
+		
+<para>
+Inserts multiline text, adding <sgmltag class=starttag>p</> tags around each line,
+or inserting <sgmltag class=starttag>br</> tags between each line.
+
+<variablelist>
+	<title>Parameters</>
+
+	<varlistentry>
+		<term>text</>
+		<listitem>
+			<para>The text to insert.</>
+		</>
+	</>
+	
+	<varlistentry>
+		<term>mode</>
+		<listitem>
+			<para>Identifies how to break apart lines for display.</>
+		</>
+	</>
+</>
+
+	</section>
+	
 	<section id="builtin.InsertWrapped">
 		<title>InsertWrapped</>
 
@@ -664,7 +693,7 @@ A name for the the component, used when formulating error messages.
 <para>
 Implements a component that manages an HTML
 <sgmltag class=starttag>option</> form element, and must 
-be wrapped by a <classname>Select</> component.
+be wrapped by a &Select; component.
 </>
 
 <variablelist>
@@ -714,7 +743,8 @@ Creates a hyperlink to another page within the application.
 
 <para>
 Creates form elements that allow a property of an object to be selected.  This may take the form
-of a <sgmltag class=starttag>select</> or a sequence of <sgmltag class=starttag>input type=radio</> elements.
+of a <sgmltag class=starttag>select</> or a sequence 
+of <sgmltag class=starttag>input type=radio</> elements.
 </>
 
 <para>
@@ -759,7 +789,7 @@ provided (one creates a pop up list, the other a table of radio buttons).
 <para>
 A component used to manage an HTML radio form element.
 Such a component must be wrapped (possibly indirectly) inside a 
-<classname>RadioGroup</> component.
+&RadioGroup; component.
 </>
 
 <variablelist>
@@ -797,11 +827,11 @@ Such a component must be wrapped (possibly indirectly) inside a
 		<title>RadioGroup</>
 
 <para>
-A container of <classname>Radio</> components, which itself must be 
-within a <classname>Form</> component.  
-The <classname>RadioGroup</> and <classname>Radio</> components 
+A container of &Radio; components, which itself must be 
+within a &Form; component.  
+The <classname>RadioGroup</> and &Radio; components 
 combined provide similar functionality to the 
-<classname>PropertySelection</> component (though with some greater flexibility).
+&PropertySelection; component (though with some greater flexibility).
 </>
 
 <variablelist>
@@ -811,8 +841,7 @@ combined provide similar functionality to the
 		<term>selected</>
 		<listitem>
 			<para>The property to be updated by the 
-			<classname>RadioGroup</> based on which 
-			<classname>Radio</> button is selected by the user.
+			&Radio; button is selected by the user.
 			</>
 		</>
 	</>
@@ -828,13 +857,14 @@ Works with any kind of link component, which must wrap it,
 to provide a rollover image button ... a button where the 
 image changes when the mouse move over it or off of it.  
 A <classname>Rollover</> is disabled if the link that wraps it is disabled
-(in which case it doesn't respond to the mouse).
+(in which case it doesn't respond to the mouse).  Use the simpler
+&Image; component is dynamic behavior isn't required.
 </>
 
 <para>
 The component provides all the necessary JavaScript to swap the image when the mouse
 enters and exits the button.  However, the <classname>Rollover</> must be wrapped
-(ultimately) by a <classname>Body</> component.
+(ultimately) by a &Body; component.
 </>
 
 <variablelist>
@@ -880,7 +910,8 @@ enters and exits the button.  However, the <classname>Rollover</> must be wrappe
 <para>
 A component that accesses a script file and adds JavaScript functions and statements 
 to the response page.  The specified script file is read and parsed and 
-substitutions are made before the final scripting code is inserted into the page.
+substitutions are made before the final scripting code is inserted into the page.  This
+allows the JavaScript to be tailored to the ids and names that are generated by Tapestry.
 </>
 
 <variablelist>
@@ -901,11 +932,11 @@ substitutions are made before the final scripting code is inserted into the page
 
 <para>
 A component which creates a <sgmltag class=starttag>select</> form element (it is
-also a wrapper around <classname>Option</> components), within a <classname>Form</>.
+also a wrapper around &Option;  components), within a &Form;.
 </>
 
 <para>
-It is generally easier to use a <classname>PropertySelection</>, unless multiple selections
+It is generally easier to use a &PropertySelection; unless multiple selections
 are desired.
 </>
 
@@ -1046,7 +1077,7 @@ when developing the application (disabled in deployment).
 
 <para>
 Implements a component that manages an HTML <sgmltag class=starttag>textarea</> form element, 
-within a <classname>Form</> component.
+within a &Form; component.
 </>
 
 <variablelist>
@@ -1098,7 +1129,7 @@ within a <classname>Form</> component.
 Implements a component that manages an HTML 
 <sgmltag class=starttag>input type=text</> or 
 <sgmltag class=starttag>input type=password</> form element, within a 
-<classname>Form</> component.
+&Form; component.
 </>
 
 <variablelist>
@@ -1152,7 +1183,7 @@ Implements a component that manages an HTML
 		<title>ValidatingTextField</>
 
 <para>
-An improved <classname>TextField</> that can perform simple validations.  
+An improved &TextField; that can perform simple validations.  
 The field may be required, and a minimum length may be specified.
 </>
 
