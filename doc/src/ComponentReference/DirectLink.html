@@ -206,8 +206,8 @@
  <td colspan="2">
   <b>Examples</b>
 	<p>
-  In this example the DirectLink component enables users to select a Customer 
-  from the Customer List table.
+  In this example the DirectLink component enables users to select or delete 
+  Customers from a Customer List table.
 	<p>
 
 <table class="examples" cellspacing="6">
@@ -217,9 +217,10 @@
    <th>Name</th>
    <th>&nbsp;</th>
    <th>Level</th>
+   <th>&nbsp;</th>
   </tr>
   <tr>
-   <td colspan="5"><hr></td>
+   <td colspan="6"><hr></td>
   </tr>
   <tr>
    <td>10276</td>
@@ -227,6 +228,7 @@
    <td><a href="DirectLink.html" style="{color:blue;}">Ms Sophie L. Jamies</a></td>
    <td>&nbsp;</td>
    <td>Platinum</td>
+   <td><a href="DirectLink.html" style="{color:blue;}"><img src="images/delete.gif" alt="Delete"></a></td>
   </tr>
   <tr>
    <td>10539</td>
@@ -234,6 +236,7 @@
    <td><a href="DirectLink.html" style="{color:blue;}">Mr Albert H. Davies</a></td>
    <td>&nbsp;</td>
    <td>Gold</td>
+   <td><a href="DirectLink.html" style="{color:blue;}"><img src="images/delete.gif" alt="Delete"></a></td>
   </tr>
   <tr>
    <td>10552</td>
@@ -241,6 +244,7 @@
    <td><a href="DirectLink.html" style="{color:blue;}">Mrs Jan S. Flawson</a></td>
    <td>&nbsp;</td>
    <td>Gold</td>
+   <td><a href="DirectLink.html" style="{color:blue;}"><img src="images/delete.gif" alt="Delete"></a></td>
   </tr>
   <tr>
    <td>10863</td>
@@ -248,6 +252,7 @@
    <td><a href="DirectLink.html" style="{color:blue;}">Mr Robert J. Hassel</a></td>
    <td>&nbsp;</td>
    <td>Silver</td>
+   <td><a href="DirectLink.html" style="{color:blue;}"><img src="images/delete.gif" alt="Delete"></a></td>
   </tr>
 </table>
 
@@ -259,17 +264,23 @@
    &lt;td&gt;Name&lt;/td&gt;
    &lt;td&gt;&amp;nbsp;&lt;/td&gt;
    &lt;td&gt;Level&lt;/td&gt;
+   &lt;td&gt;&amp;nbsp;&lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td colspan="5"&gt;&lt;hr&gt;&lt;/td&gt;
+   &lt;td colspan="6"&gt;&lt;hr&gt;&lt;/td&gt;
   &lt;/tr&gt;
  &lt;span jwcid="foreachCustomer"&gt;
   &lt;tr&gt;
    &lt;td&gt;&lt;span jwcid="insertId"/&gt;&lt;/td&gt;
    &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-   &lt;td&gt;&lt;span jwcid="<span class="jwcid">directLinkCustomer</span>"&gt; &lt;span jwcid="insertFullName"/&gt; &lt;/span&gt;&lt;/td&gt;
+   &lt;td&gt;&lt;a jwcid="<span class="jwcid">customerSelectLink</span>"&gt; &lt;span jwcid="insertFullName"/&gt; &lt;/a&gt;&lt;/td&gt;
    &lt;td&gt;&amp;nbsp;&lt;/td&gt;
    &lt;td&gt;&lt;span jwcid="insertMemberLevel"/&gt;&lt;/td&gt;
+   &lt;td&gt;
+    &lt;a jwcid="<span class="jwcid">customerDeleteLink</span>" onclick="return window.confirm('Are you sure you want remove this customer?');"&gt; 
+     &lt;img jwcid="deleteImage" alt="Delete"/&gt; 
+    &lt;/a&gt;
+   &lt;/td&gt;
   &lt;/tr&gt;
  &lt;/span&gt;
 &lt;/table&gt;
@@ -280,8 +291,13 @@
     &lt;binding name="value" expression="customer"/&gt;
 &lt;/component&gt;
 
-&lt;component id="<span class="jwcid">directLinkCustomer</span>" type="<A href="DirectLink.html">DirectLink</a>"&gt;
+&lt;component id="<span class="jwcid">customerSelectLink</span>" type="<A href="DirectLink.html">DirectLink</a>"&gt;
     &lt;binding name="listener" expression="listeners.customerSelectAction"/&gt;
+    &lt;binding name="parameters" expression="customer.id"/&gt;
+&lt;/component&gt;
+
+&lt;component id="<span class="jwcid">customerDeleteLink</span>" type="<A href="DirectLink.html">DirectLink</a>"&gt;
+    &lt;binding name="listener" expression="listeners.customerDeleteAction"/&gt;
     &lt;binding name="parameters" expression="customer.id"/&gt;
 &lt;/component&gt;
 
@@ -297,6 +313,14 @@
     &lt;binding name="value" expression="customer.memberLevel"/&gt;
 &lt;/component&gt;
 
+&lt;component id="imageDelete" type="<A href="Image.html">Image</a>"/&gt;
+    &lt;binding name="image" expression="assets.deleteImage"//&gt;
+&lt;/component/&gt;
+
+&lt;private-asset name="deleteImage" resource-path="/com/mycorp/delete.gif"/&gt;
+
+
+package com.mycorp; 
 
 public class SalesPage extends BasePage {
     private Customer customer;
@@ -310,8 +334,16 @@ public class SalesPage extends BasePage {
     public void customerSelectAction(IRequestCycle cycle) {
         Visit visit = (Visit) getVisit();        
         Object[] parameters = cycle.getServiceParameters();
-        Customer customer = visit.getCustomerForId((Integer) parameters[0]);
+        Customer customer = visit.findCustomerByPrimaryKey((Integer) parameters[0]);
         // Perform some action with the selected customer.
+        ..
+    }
+
+    public void customerDeleteAction(IRequestCycle cycle) {
+        Visit visit = (Visit) getVisit();        
+        Object[] parameters = cycle.getServiceParameters();
+        Customer customer = visit.findCustomerByPrimaryKey((Integer) parameters[0]);
+        visit.deleteCustomer(customer);
     }
 
     public void detach() {
@@ -329,12 +361,17 @@ public class Visit() implements Serializable {
         return customerList; 
     }
     
-    public Cutomer getCustomerForId(Integer id) {
+    public Customer findCustomerByPrimaryKey(Integer id) {
         Customer customer = null;         
-        // Perform a database query retrieving the customer for the given ID.
-        ..        
+        // Retrieve the customer from the database with given the customer ID.
+        ..
         return customer; 
-    }    	 
+    }
+    
+    public void deleteCustomer(Customer customer) {
+        // Delete customer from the database.
+        ..       
+    }        	 
 }
 
 public class Customer {

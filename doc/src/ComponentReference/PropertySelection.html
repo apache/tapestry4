@@ -55,20 +55,17 @@
 
 <tr>
  <td colspan="2">
-            <P>
+  <P>
   <b>Description</b>
 	<br>
   Creates form elements that allow a property of 
-            an object to be set from a drop-down list.</P>
-            <
-               
-	            
-	 P>  Uses a 
+  an object to be set from a drop-down list.</P>
+  <P>  
+  Uses a 
   <A href="../api/net/sf/tapestry/form/IPropertySelectionModel.html">model</a> 
-            to map between Java values that will be assigned, and textual labels 
-            that will appear in the HTML response. </P> 
-                
-      
+  to map between Java values that will be assigned, and textual labels 
+  that will appear in the HTML response. 
+  </P> 
 	<p>
   There are a range property selection models you can use, including 
   <A href="../api/net/sf/tapestry/form/StringPropertySelectionModel.html">
@@ -80,10 +77,10 @@
 	<p>
 	Note THAT complex value Objects need to properly implement the 
   <tt>Object.equals()</tt> 
-            method if the correct item intial item is to be displayed. 
-            <P>Informal parameters are applied to the &lt;select&gt; tag.&nbsp; 
-            To have greater control over the &lt;option&gt; tags, you must use a 
-            
+  method if the correct item intial item is to be displayed. 
+  <P>
+  Informal parameters are applied to the &lt;select&gt; tag.&nbsp; 
+  To have greater control over the &lt;option&gt; tags, you must use a             
 	<A href="Select.html">Select</a>&nbsp;and <A href="Option.html">Option</a>&nbsp;components.</P>
              
  </td>
@@ -172,11 +169,8 @@
  <td colspan="2">
   <b>Examples</b>
   <p>
-  The PropertySelection component provides Gender selection drop down list. In
-  this example the company stores Gender in a 1 CHAR database column, with
-  'U' for unspecified, 'F' for female and 'M' for male. The custom 
-  <tt>GenderPropertySelectionModel</tt> class is used to map these internal 
-  values to the display text: Unspecified, Female and Male.   
+  The PropertySelection component provides Gender selection drop down list using a
+  <a href="../api/net/sf/tapestry/form/StringPropertySelectionModel.html"><tt>StringPropertySelectionModel<tt></a>
   <p>
 
 <table class="examples" valign="middle" cellspacing="8">
@@ -197,26 +191,28 @@
 &lt;/form&gt;
 
 
-&lt;bean name="genderSelectModel" class="GenderPropertySelectionModel"/&gt;          
-
 &lt;component id="detailsForm" type="<A href="Form.html">Form</a>"&gt;
     &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
 &lt;/component&gt;
 
 &lt;component id="<span class="jwcid">selectGender</span>" type="<A href="PropertySelection.html">PropertySelection</a>"&gt;
-    &lt;binding name="model" expression="beans.genderSelectModel"/&gt;
-    &lt;binding name="value" expression="clothingItem"/&gt;
+    &lt;binding name="model" expression="@com.mycorp.DetailsPage@GENDER_MODEL"/&gt;
+    &lt;binding name="value" expression="gender"/&gt;
 &lt;/component&gt;
 
 
+package com.mycorp;
+
 public class DetailsPage extends BasePage {
+    public static final <A href="../api/net/sf/tapestry/form/IPropertySelectionModel.html">IPropertySelectionModel</a> GENDER_MODEL = 
+        new <A href="../api/net/sf/tapestry/form/StringPropertySelectionModel.html">StringPropertySelectionModel</a>(new String[] { "Unspecified", "Female", "Male" });
+
     private String gender;
    
     public String getGender() { return gender;  }
 
     public void setGender(String value) { 
         gender = value;
-        fireObservedChange("gender", value);
     }
    
     public void detach() {
@@ -226,36 +222,8 @@ public class DetailsPage extends BasePage {
 
     public void formSubmit(IRequestCycle cycle) {   
         // Process form submission
-    }
-}
-
-public class GenderPropertySelectionModel implements <A href="../api/net/sf/tapestry/form/IPropertySelectionModel.html">IPropertySelectionModel</a> {
-    public int getOptionCount() { return 3; }
-
-    public Object getOption(int index) {
-        if (index == 0) {
-            return "U"
-        } else if (index == 1) {
-            return "F"
-        } else {
-            return "M";	
-        }
-    }
-
-    public String getLabel(int index) {
-        if (index == 0) {
-            return "Unspecified";
-        } else if (index == 1) {
-            return "Female";
-        } else {
-            return "Male";	
-        }
-    }
-
-    public String getValue(int index) { return Integer.toString(index); }
-
-    public Object translateValue(String value) {
-        return getOption(Integer.parseInt(value));
+        String genderSelection = getGender();
+        ..
     }
 }
 </pre>

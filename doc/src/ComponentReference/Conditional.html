@@ -50,9 +50,7 @@
  <td colspan="2">
   <b>Description</b>
 	<br>
-	Makes 
-            part of an HTML template conditional. The body of the Conditional 
- 
+	Makes part of an HTML template conditional. The body of the Conditional 
   component is only rendered if a specified condition is met. 
  </td>
 </tr>
@@ -97,15 +95,18 @@
 		<td>false</td>
 		<td>If true, then the condition is inverted. This is useful for 
 		simulating an else clause.
+    <p>
+    With Tapestry 2.2 it is easier to specify "!" operator in the condition's  
+    ONGL expression. 
+    </p>
 		</td>
 	</tr>
 	</table>
-            <P>Body: <STRONG>rendered</STRONG><BR>Informal parameters: 
-            <STRONG>forbidden</STRONG>		
-     <br>
-  Reserved 
-            parameters: <EM>none </EM></P>
-    
+  <P>
+  Body: <STRONG>rendered</STRONG><BR>
+  Informal parameters: <STRONG>forbidden</STRONG><br>
+  Reserved parameters: <EM>none</EM>
+  </P>    
  </td>
 </tr>
 
@@ -144,13 +145,11 @@ John Smith is a Manager with <font color="red"><b>no</b></font> staff.
 &lt;/component&gt;
 
 &lt;component id="<span class="jwcid">ifNotManager</span>" type="<A href="Conditional.html">Conditional</a>"&gt;
-   &lt;binding name="condition" expression="manager"/&gt;
-   &lt;static-binding name="invert"&gt;true&lt;/static-binding&gt;
+   &lt;binding name="condition" expression="! manager"/&gt;
 &lt;/component&gt;
 
 &lt;component id="<span class="jwcid">ifHasStaff</span>" type="<A href="Conditional.html">Conditional</a>"&gt;
-   &lt;binding name="condition" expression="staffList.empty"/&gt;
-   &lt;static-binding name="invert"&gt;true&lt;/static-binding&gt;
+   &lt;binding name="condition" expression="! staffList.empty"/&gt;
 &lt;/component&gt;
 
 &lt;component id="<span class="jwcid">ifNotHasStaff</span>" type="<A href="Conditional.html">Conditional</a>"&gt;
@@ -165,9 +164,21 @@ public class EnquiryPage extends BasePage {
 
     public String getFullName() { return fullName; }
 
+    public void setFullName(String value) { 
+        fullName = value; 
+    }
+    
     public boolean isManager() { return isManager; }
     
+    public void setManager(boolean value) { 
+        isManager = value; 
+    }
+
     public List getStaffList() { return staffList;  }
+
+    public void setStaffList(List value) { 
+        staffList = value;  
+    }
 
     public void detach() {
         fullName = null;
