@@ -7,7 +7,7 @@
 <page-specification class="net.sf.tapestry.html.BasePage">
 	
 	<component id="shell" type="Shell">
-		<static-binding name="title">JUnit Simple Home Page</static-binding>
+		<string-binding name="title" key="title"/>
 	</component>
 	
 	<component id="body" type="Body"/>
