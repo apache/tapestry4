@@ -1,11 +1,11 @@
-<html jwcid="@Shell" stylesheet="asset:stylesheet" title="message:window.title">
+<html jwcid="@Shell" stylesheet="stylesheet" title="message:window.title">
 <body jwcid="@Body">
 
 <table class="tabs" cellspacing="0" border="0">
 <tr>
-<span jwcid="@Foreach" source="ognl:pageTabNames" value="ognl:pageName">
+<span jwcid="@Foreach" source="pageTabNames" value="pageName">
 <td><img jwcid="@Image" image="ognl:leftTabAsset" width="2" height="20" alt=""/></td>
-<td jwcid="tabCell" align="center"><a class="nav" jwcid="pageLink"><span jwcid="@Insert" value="ognl:pageTitle">Page Title</span></a></td>
+<td jwcid="tabCell" align="center"><a class="nav" jwcid="pageLink"><span jwcid="@Insert" value="pageTitle">Page Title</span></a></td>
 <td><img jwcid="@Image" image="ognl:rightTabAsset" width="13" height="20" alt=""/></td>
 </span>
 </tr>
@@ -41,7 +41,7 @@
   </tr>
   <tr class="data">
     <td colspan="2">
-      <span jwcid="@Conditional" condition="ognl:page.visit.requestDebug">
+      <span jwcid="@Conditional" condition="page.visit.requestDebug">
         <span jwcid="@RequestDisplay"/>
       </span>
     </td>

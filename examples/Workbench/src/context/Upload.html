@@ -9,7 +9,7 @@ be freely mixed with other components in a form.
 
 <span jwcid="@ShowError" delegate="bean:delegate"/>
 
-<form jwcid="@Form" listener="listener:formSubmit">
+<form jwcid="@Form" listener="formSubmit">
 
 <table class="form">
 	<tr>
@@ -21,7 +21,7 @@ be freely mixed with other components in a form.
 		<td>
 			<table class="form">
 				<tr>
-					<th><input jwcid="@Checkbox" selected="ognl:showAscii"/></th>
+					<th><input jwcid="@Checkbox" selected="showAscii"/></th>
 					<td>Display ASCII</td>
 				</tr>
 				<tr>
@@ -33,7 +33,7 @@ be freely mixed with other components in a form.
 	
 	<tr>
 		<td></td>
-		<td><input jwcid="@ImageSubmit" image="asset:continue"/></td>
+		<td><input jwcid="@ImageSubmit" image="continue"/></td>
 	</tr>
 	
 </table>

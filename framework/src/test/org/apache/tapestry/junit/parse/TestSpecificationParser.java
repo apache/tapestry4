@@ -15,7 +15,6 @@
 package org.apache.tapestry.junit.parse;
 
 import java.util.List;
-import java.util.Map;
 
 import org.apache.hivemind.Locatable;
 import org.apache.tapestry.bean.BindingBeanInitializer;
@@ -984,6 +983,7 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals(true, ps.isRequired());
         assertEquals("bar", ps.getType());
         assertNull(ps.getDefaultValue());
+        assertNull(ps.getDefaultBindingType());
 
         ps = spec.getParameter("withDefault");
         assertNull(ps.getType());
@@ -1015,6 +1015,7 @@ public class TestSpecificationParser extends TapestryTestCase
         IParameterSpecification ps = spec.getParameter("noDefault");
 
         assertNull(ps.getDefaultValue());
+        assertNull(ps.getDefaultBindingType());
 
         ps = spec.getParameter("literalDefault");
 
@@ -1023,6 +1024,10 @@ public class TestSpecificationParser extends TapestryTestCase
         ps = spec.getParameter("expressionDefault");
 
         assertEquals("ognl:an.expression", ps.getDefaultValue());
+
+        ps = spec.getParameter("defaultBindingType");
+        
+        assertEquals("ognl", ps.getDefaultBindingType());
     }
 
     /**

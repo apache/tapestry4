@@ -165,38 +165,39 @@ import org.apache.tapestry.valid.IValidationDelegate;
  *   
  *    
  *     
- *      TABLE.tapestry-palette TH
- *      {
- *        font-size: 9pt;
- *        font-weight: bold;
- *        color: white;
- *        background-color: #330066;
- *        text-align: center;
- *      }
- *     
- *      TD.available-cell SELECT
- *      {
- *        font-weight: normal;
- *        background-color: #FFFFFF;
- *        width: 200px;
- *      }
  *      
- *      TD.selected-cell SELECT
- *      {
- *        font-weight: normal;
- *        background-color: #FFFFFF;
- *        width: 200px;
- *      }
- *      
- *      TABLE.tapestry-palette TD.controls
- *      {
- *        text-align: center;
- *        vertical-align: middle;
- *        width: 60px;
- *      }
  *       
- *     
- *    
+ *        
+ *         
+ *          TABLE.tapestry-palette TH
+ *          {
+ *            font-size: 9pt;
+ *            font-weight: bold;
+ *            color: white;
+ *            background-color: #330066;
+ *            text-align: center;
+ *          }
+ *         
+ *          TD.available-cell SELECT
+ *          {
+ *            font-weight: normal;
+ *            background-color: #FFFFFF;
+ *            width: 200px;
+ *          }
+ *          
+ *          TD.selected-cell SELECT
+ *          {
+ *            font-weight: normal;
+ *            background-color: #FFFFFF;
+ *            width: 200px;
+ *          }
+ *          
+ *          TABLE.tapestry-palette TD.controls
+ *          {
+ *            text-align: center;
+ *            vertical-align: middle;
+ *            width: 60px;
+ *          }
  *   
  *  
  * </pre>
@@ -206,11 +207,7 @@ import org.apache.tapestry.valid.IValidationDelegate;
 
 public abstract class Palette extends BaseComponent implements IFormComponent
 {
-    private static final int DEFAULT_ROWS = 10;
-
     private static final int MAP_SIZE = 7;
-
-    private static final String DEFAULT_TABLE_CLASS = "tapestry-palette";
 
     /**
      * A set of symbols produced by the Palette script. This is used to provide proper names for
@@ -231,25 +228,6 @@ public abstract class Palette extends BaseComponent implements IFormComponent
     /** @since 3.0 * */
     public abstract void setSelectedColumn(PaletteColumn column);
 
-    protected void finishLoad()
-    {
-        setSelectedTitleBlock((Block) getComponent("defaultSelectedTitleBlock"));
-        setAvailableTitleBlock((Block) getComponent("defaultAvailableTitleBlock"));
-
-        setSelectImage(getAsset("Select"));
-        setSelectDisabledImage(getAsset("SelectDisabled"));
-        setDeselectImage(getAsset("Deselect"));
-        setDeselectDisabledImage(getAsset("DeselectDisabled"));
-        setUpImage(getAsset("Up"));
-        setUpDisabledImage(getAsset("UpDisabled"));
-        setDownImage(getAsset("Down"));
-        setDownDisabledImage(getAsset("DownDisabled"));
-
-        setTableClass(DEFAULT_TABLE_CLASS);
-        setRows(DEFAULT_ROWS);
-        setSort(SortMode.NONE);
-    }
-
     public abstract String getName();
 
     public abstract void setName(String name);
@@ -260,7 +238,7 @@ public abstract class Palette extends BaseComponent implements IFormComponent
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        IForm form = Form.get(getPage().getRequestCycle());
+        IForm form = Form.get(cycle);
 
         if (form == null)
             throw new ApplicationRuntimeException("Palette component must be wrapped by a Form.",
@@ -491,55 +469,29 @@ public abstract class Palette extends BaseComponent implements IFormComponent
 
     public abstract Block getAvailableTitleBlock();
 
-    public abstract void setAvailableTitleBlock(Block availableTitleBlock);
-
     public abstract IAsset getDeselectDisabledImage();
-
-    public abstract void setDeselectDisabledImage(IAsset deselectDisabledImage);
 
     public abstract IAsset getDeselectImage();
 
-    public abstract void setDeselectImage(IAsset deselectImage);
-
     public abstract IAsset getDownDisabledImage();
-
-    public abstract void setDownDisabledImage(IAsset downDisabledImage);
 
     public abstract IAsset getDownImage();
 
-    public abstract void setDownImage(IAsset downImage);
-
+    public abstract IAsset getSelectDisabledImage();
+    
     public abstract IPropertySelectionModel getModel();
 
     public abstract int getRows();
 
-    public abstract void setRows(int rows);
-
-    public abstract IAsset getSelectDisabledImage();
-
-    public abstract void setSelectDisabledImage(IAsset selectDisabledImage);
-
     public abstract Block getSelectedTitleBlock();
-
-    public abstract void setSelectedTitleBlock(Block selectedTitleBlock);
 
     public abstract IAsset getSelectImage();
 
-    public abstract void setSelectImage(IAsset selectImage);
-
     public abstract SortMode getSort();
-
-    public abstract void setSort(SortMode sort);
-
-    public abstract void setTableClass(String tableClass);
 
     public abstract IAsset getUpDisabledImage();
 
-    public abstract void setUpDisabledImage(IAsset upDisabledImage);
-
     public abstract IAsset getUpImage();
-
-    public abstract void setUpImage(IAsset upImage);
 
     /**
      * Returns false. Palette components are never disabled.

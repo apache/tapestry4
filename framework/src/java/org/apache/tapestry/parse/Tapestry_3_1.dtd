@@ -42,6 +42,7 @@ The following changes have occured:
 - Added property attribute to <component>, <bean> and <asset>
 - Removed the type attribute from the <configure> element
 - Add many alternatives to 'yes' and 'no' for boolean attributes.
+- Add default-binding attribute to <parameter>
 -->
 <!-- =======================================================
 Entity: attribute-flag
@@ -406,8 +407,9 @@ Attributes:
     then the parameter is optional.
   property-name: The name to use, instead of the parameter name, for the
     JavaBean property connected to this parameter.
-  default-value: Specifies the default value for the parameter as an OGNL expression, 
-  				if the parameter is not bound.
+  default-value: Specifies the default value for the parameter, if not bound.
+  default-binding: The default binding type for parameters (when a binding
+   is specified without a parameter). 
 -->
 <!ELEMENT parameter (description?)>
 <!ATTLIST parameter
@@ -415,6 +417,7 @@ Attributes:
 	required %attribute-flag; "no"
 	property-name CDATA #IMPLIED
 	default-value CDATA #IMPLIED
+  default-binding CDATA #IMPLIED
 >
 <!-- =======================================================
 Element: property

@@ -38,9 +38,9 @@ import org.apache.hivemind.parse.AbstractParser;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.bean.BindingBeanInitializer;
+import org.apache.tapestry.binding.BindingConstants;
 import org.apache.tapestry.binding.BindingSource;
 import org.apache.tapestry.coerce.ValueConverter;
-import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.spec.BeanLifecycle;
 import org.apache.tapestry.spec.BindingType;
 import org.apache.tapestry.spec.IApplicationSpecification;
@@ -872,7 +872,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         IBindingSpecification spec = _factory.createBindingSpecification();
 
         spec.setType(BindingType.PREFIXED);
-        spec.setValue("ognl:" + expression);
+        spec.setValue(BindingConstants.OGNL_PREFIX + ":" + expression);
 
         bs.apply(spec);
     }
@@ -939,7 +939,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         // In the 3.1 DTD, it is a binding reference, qualified with a prefix.
 
         if (initialValue != null && !_DTD_3_1)
-            initialValue = "ognl:" + initialValue;
+            initialValue = BindingConstants.OGNL_PREFIX + ":" + initialValue;
 
         ps.setInitialValue(initialValue);
     }
@@ -962,7 +962,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         IBindingSpecification spec = _factory.createBindingSpecification();
 
         spec.setType(BindingType.PREFIXED);
-        spec.setValue("literal:" + literalValue);
+        spec.setValue(BindingConstants.LITERAL_PREFIX + ":" + literalValue);
 
         bs.apply(spec);
     }
@@ -1253,7 +1253,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
         IBindingSpecification bs = _factory.createBindingSpecification();
         bs.setType(BindingType.PREFIXED);
-        bs.setValue("message:" + key);
+        bs.setValue(BindingConstants.MESSAGE_PREFIX + ":" + key);
         bs.setLocation(getLocation());
 
         IContainedComponent cc = (IContainedComponent) peekObject();
@@ -1303,9 +1303,11 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         String defaultValue = getAttribute("default-value");
 
         if (defaultValue != null && !_DTD_3_1)
-            defaultValue = "ognl:" + defaultValue;
+            defaultValue = BindingConstants.OGNL_PREFIX + ":" + defaultValue;
 
         ps.setDefaultValue(defaultValue);
+
+        ps.setDefaultBindingType(getAttribute("default-binding"));
 
         // type will only be specified in a 3.0 DTD.
 
@@ -1451,7 +1453,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         BindingBeanInitializer bi = _factory.createBindingBeanInitializer(_bindingSource);
 
         bi.setPropertyName(name);
-        bi.setBindingReference("message:" + key);
+        bi.setBindingReference(BindingConstants.MESSAGE_PREFIX + ":" + key);
         bi.setLocation(getLocation());
 
         IBeanSpecification bs = (IBeanSpecification) peekObject();
@@ -1486,7 +1488,8 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
         IBeanSpecification bs = (IBeanSpecification) peekObject();
 
-        push(_elementName, new BeanSetPropertySetter(bs, bi, "ognl:", expression), STATE_SET, false);
+        push(_elementName, new BeanSetPropertySetter(bs, bi, BindingConstants.OGNL_PREFIX + ":",
+                expression), STATE_SET, false);
     }
 
     private void enterStaticBinding_3_0()

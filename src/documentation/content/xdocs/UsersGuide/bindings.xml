@@ -1,0 +1,170 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "./dtd/document-v12.dtd"
+[
+	<!ENTITY projectroot '../'>
+	<!ENTITY % links.ent SYSTEM "../links.ent">
+  <!ENTITY % common.ent SYSTEM "common.ent">
+	%links.ent;
+  %common.ent;
+]>
+<document>
+  <header>
+    <title>Component Bindings</title>
+  </header>
+
+<body>
+  
+<p>
+Components are configured by <em>binding</em> their parameters.  Binding of parameters
+may occur inside a page or component template, or a page or component specification.
+</p>  
+  
+<p>
+When binding a component parameter, the value to be bound may be just a literal string, or
+it could be an &OGNL; expression, or subject to any of a number of other interpretations.  Tapestry
+uses a <em>prefix</em>   value, such as "ognl:", or "message:", to identify how the rest of the
+value is to be interprted.  The prefix identifies the <em>binding type</em>:
+</p>  
+    
+
+<table>
+  <tr>
+    <th>Binding Type</th>
+    <th>Description</th>
+    <th>Example</th>
+    <th>OGNL Equivalent</th>
+  </tr>
+  
+  <tr>
+    <td>asset</td>
+    <td>References an asset of the component.</td>
+    <td>asset:stylesheet </td>
+    <td>ognl:assets.stylesheet</td>
+  </tr>
+  
+  <tr>
+    <td>bean</td>
+    <td>References a named bean (defined by a &spec.bean; element).</td>
+    <td>bean:validationDelegate</td>
+    <td>ognl:beans.validationDelegate</td>
+  </tr>
+  
+  <tr>
+    <td>component</td>
+    <td>References a nested component with the provided component id.</td>
+    <td>component:form</td>
+    <td>ognl:components.form</td>
+  </tr>
+  
+  <tr>
+    <td>hivemind</td>
+    <td>References a HiveMind object, much like &spec.inject;.</td>
+    <td>hivemind:service:app.MyService</td>
+    <td/>
+  </tr>
+  
+  <tr>
+    <td>listener</td>
+    <td>The name of a listener method.</td>
+    <td>listener:formSubmit</td>
+    <td>ognl:listeners.formSubmit</td>
+  </tr>
+  
+  <tr>
+    <td>literal</td>
+    <td>Used to "escape" a binding prefix, marking the suffix as a literal value.</td>
+    <td>literal:ognl:not-an-expression</td>
+    <td></td>
+  </tr>
+  
+  <tr>
+    <td>message</td>
+    <td>References a localized message from the component's message catalog.</td>
+    <td>message:page-title</td>
+    <td>ognl:messages.getMessage("page-title")</td>
+  </tr>
+  
+  <tr>
+    <td>ognl</td>
+    <td>An OGNL expression to be evaluated.</td>
+    <td>ognl:engine.visit.admin</td>    
+    <td></td>
+  </tr>
+  
+  <tr>
+    <td>state</td>
+    <td>True of false dependening on whether the named &aso; exists.</td>
+    <td>state:visit</td>
+    <td></td>
+  </tr>
+</table>
+
+<note>
+  You can define your own prefixes by contributing into the tapestry.bindings.BindingFactories configuration point.
+</note>  
+  
+<section id="bindings.default-binding-type">
+  <title>Binding Type Defaults</title>
+  
+<p>
+Tapestry 3.1 introduces a new idea: <em>default binding types</em>.  Each component parameter may
+define a default binding type (using the default-binding attribute of the &spec.parameter; element).
+</p>  
+
+<p>
+If a binding reference does not have a prefix, the default binding type is used.
+</p>
+
+<p>
+Because of this, the following two snippets are identical:
+</p>
+
+<source><![CDATA[
+<ul element="ul" jwcid="@Foreach" source="ognl:items" value="ognl:item">
+  <li><span jwcid="@Insert" value="ognl:item.name"/>
+</ul>]]></source>
+
+<source><![CDATA[
+<ul element="ul" jwcid="@Foreach" source="items" value="item">
+  <li><span jwcid="@Insert" value="item.name"/>
+</ul>]]></source>
+  
+<p>
+This works because the &Insert; component defines the default-binding for the value parameter to be "ognl".  Likewise,
+the source and value parameters of the &Foreach; component are defined to be "ognl". However, the 
+element parameter of the &Foreach; component has a binding type of "literal".
+</p>
+
+<p>
+This is a decision made by the component author.  If a particular parameter is (nearly) always bound using
+a particular binding type, then a default-binding may be set. The default binding can <em>always</em>
+be overriden with an explicit binding type prefix.
+</p>
+
+<p>
+What about parameters that don't defined a default binding type, or informal parameters?  For those, it
+depends on whether the parameter is bound in an HTML template, or in a page or component specification.
+In an HTML template, the default binding type is "literal".    In a specification, the default binding
+type is "ognl".
+</p>
+
+</section> <!-- bindings.default-binding-type -->
+  
+</body>
+</document>

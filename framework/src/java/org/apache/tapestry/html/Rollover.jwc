@@ -26,28 +26,28 @@
   can reflect the enabled status of the link, and display rollover effects.
   </description>
 
-  <parameter name="image" required="yes">
+  <parameter name="image" required="yes" default-binding="asset">
     <description>
     The normal or default image to display, used as a default image for
     the other parameters.
     </description>
   </parameter>
   
-  <parameter name="focus">
+  <parameter name="focus" default-binding="asset">
     <description>
     If specified, provides an image displayed when the cursor is moved
     over the link.
     </description>
   </parameter>
   
-  <parameter name="blur">
+  <parameter name="blur" default-binding="asset">
     <description>
     If specified, provides an image displayed when the cursor is moved
     off of the link.
     </description>
   </parameter>
   
-  <parameter name="disabled">
+  <parameter name="disabled" default-binding="ognl">
     <description>
     If specified, provides an image displayed when the surrounding
     link is disabled.

@@ -98,7 +98,7 @@
       <p>
         While developing, you may occasionally reference a key that does not exist. Rather than fail  with an exception,
         Tapestry will fabricate a missing key value.  This is the key, converted to upper-case, and surrounded with brackets.  For example,
-        <code>[A-MISSING-KEY</code>.  This allows missing key values to stand out an demand to be fixed, without
+        <code>[A-MISSING-KEY]</code>.  This allows missing key values to stand out an demand to be fixed, without
         completely subverting your application.
       </p>
       
@@ -230,7 +230,7 @@ It is common to format messages using OGNL expessions, i.e.:
 </p>
 
 <source>
-&lt;span jwcid="@&Insert;" value="ognl:messages.format('billing-info', amountDue)"/&gt;
+&lt;span jwcid="@&Insert;" value="messages.format('billing-info', amountDue)"/&gt;
 </source>
 
 <p>

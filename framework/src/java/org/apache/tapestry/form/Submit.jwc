@@ -25,11 +25,11 @@
   Creates a labeled submit button within a form.
   </description>
 
-  <parameter name="label"/>
-  <parameter name="disabled"/>
-  <parameter name="selected"/>
-  <parameter name="tag"/>
-  <parameter name="listener"/>
+  <parameter name="label" default-binding="literal"/>
+  <parameter name="disabled" default-binding="ognl"/>
+  <parameter name="selected" default-binding="ognl"/>
+  <parameter name="tag" default-binding="ognl"/>
+  <parameter name="listener" default-binding="listener"/>
   
   <reserved-parameter name="name"/>
   <reserved-parameter name="type"/>

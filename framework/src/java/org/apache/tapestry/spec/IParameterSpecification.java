@@ -30,56 +30,71 @@ public interface IParameterSpecification extends LocationHolder
      * Returns the class name of the expected type of the parameter. The default value is
      * <code>java.lang.Object</code> which matches anything.
      */
-    public abstract String getType();
+    public String getType();
 
     /**
      * Returns true if the parameter is required by the component. The default is false, meaning the
      * parameter is optional.
      */
-    public abstract boolean isRequired();
+    public boolean isRequired();
 
-    public abstract void setRequired(boolean value);
+    public void setRequired(boolean value);
 
     /**
      * Sets the type of value expected for the parameter. This can be left blank to indicate any
      * type.
      */
-    public abstract void setType(String value);
+    public void setType(String value);
 
     /**
      * Returns the documentation for this parameter.
      * 
      * @since 1.0.9
      */
-    public abstract String getDescription();
+    public String getDescription();
 
     /**
      * Sets the documentation for this parameter.
      * 
      * @since 1.0.9
      */
-    public abstract void setDescription(String description);
+    public void setDescription(String description);
 
     /**
      * Sets the property name (of the component class) to connect the parameter to.
      */
-    public abstract void setPropertyName(String propertyName);
+    public void setPropertyName(String propertyName);
 
     /**
      * Returns the name of the JavaBeans property to connect the parameter to.
      */
-    public abstract String getPropertyName();
+    public String getPropertyName();
 
     /**
      * Returns the default value for the parameter (or null if the parameter has no default value).
      * Required parameters may not have a default value. The default value is a
      * <em>binding locator</em>(a prefixed value, as with a binding element).
      */
-    public abstract String getDefaultValue();
+    public String getDefaultValue();
 
     /**
      * Sets the default value of the JavaBeans property if no binding is provided
      */
-    public abstract void setDefaultValue(String defaultValue);
+    public void setDefaultValue(String defaultValue);
+
+    /**
+     * Sets the default binding type, used when a parameter is bound without specifying an explicit
+     * binding prefix. May be null, in which case the default binding type is determined by whether
+     * the parameter is bound in an HTML template or in a page or component specification.
+     * 
+     * @see org.apache.tapestry.binding.BindingConstants
+     * @see org.apache.tapestry.binding.BindingUtils#getDefaultBindingType(IComponentSpecification,
+     *      String, String)
+     * @since 3.1
+     */
+
+    public void setDefaultBindingType(String bindingType);
+
+    public String getDefaultBindingType();
 
 }

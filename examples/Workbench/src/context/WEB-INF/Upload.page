@@ -27,8 +27,8 @@
   <property name="bytesPerLine" persist="session"/>
   
   <component id="inputWidth" type="PropertySelection">
-  	<binding name="value" value="ognl:bytesPerLine"/>
-  	<binding name="model" value="ognl:bytesPerLineModel"/>
+  	<binding name="value" value="bytesPerLine"/>
+  	<binding name="model" value="bytesPerLineModel"/>
   </component>
    
   <asset name="continue" path="images/Continue.gif"/>

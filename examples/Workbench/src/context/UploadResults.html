@@ -2,25 +2,25 @@
 
 <table border=0>
 	<tr><th>Upload Path:</th>
-		<td><span jwcid="@Insert" value="ognl:file.filePath">File path</span></td>
+		<td><span jwcid="@Insert" value="file.filePath">File path</span></td>
 	</tr>
 	<tr><th>Upload File:</th>
-		<td><span jwcid="@Insert" value="ognl:file.fileName">File name</span></td>
+		<td><span jwcid="@Insert" value="file.fileName">File name</span></td>
 	</tr>
 	<tr><th>Content Type:</th>
-		<td><span jwcid="@Insert" value="ognl:file.contentType">text/plain</span></td>
+		<td><span jwcid="@Insert" value="file.contentType">text/plain</span></td>
 	</tr>	
 	<tr>
 		<th>Size:</th>	
-		<td><span jwcid="@Insert" value="ognl:file.size">1000</span> (bytes)
+		<td><span jwcid="@Insert" value="file.size">1000</span> (bytes)
 			
-		<span jwcid="@Conditional" condition="ognl:file.inMemory">(in memory)</span>	
+		<span jwcid="@Conditional" condition="file.inMemory">(in memory)</span>	
 		</td>
 	</tr>
 </table>
 
 <p>
-<pre><span jwcid="@Insert" value="ognl:fileDump"/></pre>
+<pre><span jwcid="@Insert" value="fileDump"/></pre>
 
 <p>
 <a jwcid="@PageLink" page="Upload"><img jwcid="backRollover" alt="[Back]"/></a>

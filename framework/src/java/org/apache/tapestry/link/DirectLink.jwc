@@ -26,18 +26,18 @@
   using the context.
   </description>
 
-  <parameter name="listener" required="yes"/>
+  <parameter name="listener" required="yes" default-binding="listener"/>
   	
-  <parameter name="parameters">
+  <parameter name="parameters" default-binding="ognl">
     <description>
     An object, or list of objects, encoded into the URL
     as service parameters.
     </description>
   </parameter>
      
-  <parameter name="stateful" default-value="true"/>
+  <parameter name="stateful" default-value="true" default-binding="ognl"/>
   
-  <parameter name="disabled"/>
+  <parameter name="disabled" default-binding="ognl"/>
   	  	
   <parameter name="anchor"/>
   	

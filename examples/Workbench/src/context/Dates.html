@@ -7,18 +7,18 @@ This page is used to demonstrate the DatePicker component.
 <table valign="middle">
  <tr>
  	<td></td>
- 	<td><input type="checkbox" jwcid="@Checkbox" selected="ognl:includeWeek"
+ 	<td><input type="checkbox" jwcid="@Checkbox" selected="includeWeek"
  		onclick="javascript:this.form.submit();"/>
  		Include weeks in DatePicker UI.
  		</td>
  	</tr>
  <tr>
   <td>Start Date:</td>
-  <td><input jwcid="@DatePicker" includeWeek="ognl:includeWeek" value="ognl:startDate"/></td> 
+  <td><input jwcid="@DatePicker" includeWeek="includeWeek" value="startDate"/></td> 
  </tr>
  <tr>
   <td>End Date:</td>
-  <td><input jwcid="@DatePicker" includeWeek="ognl:includeWeek" value="ognl:endDate"/></td>
+  <td><input jwcid="@DatePicker" includeWeek="includeWeek" value="endDate"/></td>
  </tr>
  <tr>
   <td></td>
@@ -33,12 +33,12 @@ This page is used to demonstrate the DatePicker component.
 <table valign="middle">
 	<tr>
 <th>Start date:</th>
-<td> <span jwcid="@Insert" value="ognl:startDate"/></td>
+<td> <span jwcid="@Insert" value="startDate"/></td>
 </tr>
 	<tr>
 <th>End date:</th> 
 	<td>
-		<span jwcid="@Insert" value="ognl:endDate"/>
+		<span jwcid="@Insert" value="endDate"/>
 		</td></tr>
 </table>
 </span>

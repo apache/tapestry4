@@ -141,6 +141,7 @@ it is expected that there will be some runtime warnings).
   <li>Added the property attribute to the &spec.component; and &spec.bean; elements.</li>
   <li>Removed the type attribute from the &spec.configure; element.</li>
   <li>Added many more options for <link href="#spec.boolean-types">boolean attributes</link>.</li>
+  <li>Added the default-binding attribute to the &spec.parameter; element.</li>
 </ul>
 
 <p>
@@ -1358,6 +1359,17 @@ Appears in: &spec.component-specification;
 </tr>
 
 <tr>
+  <td>default-binding</td>
+  <td>string</td>
+  <td>no</td>
+  <td>&nbsp;</td>
+  <td>
+    The default <link href="bindings.html">binding type</link>, used when a binding for this parameter
+    does not include a prefix.
+  </td>
+</tr>
+
+<tr>
 	<td>default-value</td>	
 	<td>string</td>
 	<td>no</td>
@@ -1451,7 +1463,8 @@ itself.
 	<td>no</td>
 	<td/>
 	<td>
-	An optional &binding-reference; used to initialize the property.
+	An optional &binding-reference; used to initialize the property.  The default
+  prefix for the refrence is "ognl:".
 	</td>
 </tr>
 
@@ -1550,6 +1563,7 @@ obtained via a &binding-reference;.
 	<td>no</td>
 	<td/>
 	<td>A &binding-reference; that provides the value to assign to the bean property.
+    The default prefix for this reference is "ognl:".
 	</td>
 </tr>
 

@@ -25,25 +25,25 @@
 
   <component id="tabCell" type="Any">
   	<binding name="element" value="td"/>
-  	<binding name="background" value="ognl:midTabAsset"/>
+  	<binding name="background" value="midTabAsset"/>
   </component>
 
 
   <component id="pageLink" type="DirectLink">
-    <binding name="listener" value="listener:selectPage"/>
-    <binding name="parameters" value="ognl:pageName"/>
-    <binding name="stateful" value="ognl:false"/>
+    <binding name="listener" value="selectPage"/>
+    <binding name="parameters" value="pageName"/>
+    <binding name="stateful" value="false"/>
   </component>
 
   <component id="inputRequestDebug" type="Checkbox">
-    <binding name="selected" value="ognl:page.visit.requestDebug"/>
+    <binding name="selected" value="page.visit.requestDebug"/>
     <binding name="onclick">
     	javascript:this.form.submit();
     </binding>
   </component>
 
   <component id="inputDisableInspector" type="Checkbox">
-    <binding name="selected" value="ognl:page.visit.disableInspector"/>
+    <binding name="selected" value="page.visit.disableInspector"/>
     <binding name="onclick">
     	javascript:this.form.submit();
     </binding>

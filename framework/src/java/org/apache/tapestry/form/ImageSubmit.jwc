@@ -25,37 +25,37 @@
   Creates a clickable image within a form.
   </description>
 
-  <parameter name="image" required="yes">
+  <parameter name="image" required="yes" default-binding="asset">
   	<description>
   	Image used for the button.
   	</description>
   </parameter>
   	
-  <parameter name="name" property-name="nameOverride"/>
+  <parameter name="name" property-name="nameOverride" default-binding="literal"/>
   	
-  <parameter name="disabledImage">
+  <parameter name="disabledImage" default-binding="asset">
   	<description>
   	Image used for the button, if disabled.
   	</description>
   </parameter>
   	
-  <parameter name="disabled"/>
+  <parameter name="disabled" default-binding="ognl"/>
   	
-  <parameter name="point"/>
+  <parameter name="point" default-binding="ognl"/>
   
-  <parameter name="selected">
+  <parameter name="selected" default-binding="ognl">
   	<description>
   	Property updated when the button is clicked.
   	</description>
   </parameter>
   
-  <parameter name="tag">
+  <parameter name="tag" default-binding="ognl">
   	<description>
   	Value used when updating the selected parameter.
   	</description>
   </parameter>
   
-  <parameter name="listener">
+  <parameter name="listener" default-binding="listener">
   	<description>
   	Notified when the button is clicked.
   	</description>

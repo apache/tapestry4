@@ -11,7 +11,7 @@ is part of a framework that allows for complex validation of user input
 as well as presentation of errors.
 
 <p>
-<form jwcid="@Form" listener="listener:clientValidationChanged">
+<form jwcid="@Form" listener="clientValidationChanged">
 <input jwcid="inputEnabled"/> Enable Client Side Validation
 </form>
 
@@ -22,43 +22,43 @@ doesn't support JavaScript).
 
 <span jwcid="showError"/>
 
-<form jwcid="@Form" listener="listener:formSubmit" delegate="bean:delegate">
+<form jwcid="@Form" listener="formSubmit" delegate="bean:delegate">
 
 <table class="form">
 	<tr>
-		<th><span jwcid="@FieldLabel" field="component:inputDate"/></th>
+		<th><span jwcid="@FieldLabel" field="inputDate"/></th>
 		<td><input jwcid="inputDate"/></td>
 	</tr>
   <tr>
-  	<th><span jwcid="@FieldLabel" field="component:inputInt"/></th>
+  	<th><span jwcid="@FieldLabel" field="inputInt"/></th>
   	<td><input jwcid="inputInt"/></td>
   </tr>
   <tr>
-  	<th><span jwcid="@FieldLabel" field="component:inputDouble"/></th>
+  	<th><span jwcid="@FieldLabel" field="inputDouble"/></th>
   	<td><input jwcid="inputDouble"/></td>
   </tr>
   <tr>
-  	<th><span jwcid="@FieldLabel" field="component:inputBigDecimal"/></th>
+  	<th><span jwcid="@FieldLabel" field="inputBigDecimal"/></th>
   	<td><input jwcid="inputBigDecimal"/></td>
   </tr>
   <tr>
- 	<th><span jwcid="@FieldLabel" field="component:inputLong"/></th>
+ 	<th><span jwcid="@FieldLabel" field="inputLong"/></th>
  	<td><input jwcid="inputLong"/></td>
   </tr>
 
   <tr>
-  	<th><span jwcid="@FieldLabel" field="component:inputString"/></th>
+  	<th><span jwcid="@FieldLabel" field="inputString"/></th>
   	<td><input jwcid="inputString"/></td>
   </tr>
 
   <tr>
-  	<th><span jwcid="@FieldLabel" field="component:inputEmail"/></th>
+  	<th><span jwcid="@FieldLabel" field="inputEmail"/></th>
   	<td><input jwcid="inputEmail"/></td>
   </tr>
 
   <tr>
   	<td></td>
-  	<td><input jwcid="@ImageSubmit" image="asset:continue"/> <a jwcid="@LinkSubmit">continue -&gt;</a></td>
+  	<td><input jwcid="@ImageSubmit" image="continue"/> <a jwcid="@LinkSubmit">continue -&gt;</a></td>
 </table>
 
 </form>

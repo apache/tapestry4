@@ -25,11 +25,11 @@
   A text input field.
   </description>
   
-  <parameter name="value" required="yes"/>
+  <parameter name="value" required="yes" default-binding="ognl"/>
   
-  <parameter name="disabled" />
+  <parameter name="disabled" default-binding="ognl"/>
   
-  <parameter name="hidden"/>
+  <parameter name="hidden" default-binding="ognl"/>
   
   <reserved-parameter name="name"/>
   <reserved-parameter name="type"/>

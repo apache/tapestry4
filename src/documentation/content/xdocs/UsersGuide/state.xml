@@ -375,7 +375,7 @@ time it is referenced, an instance of RegistrationData is created and stored int
 
 <p>
 If your data object can't be created using a simple constructor, then you can supply an &lt;invoke-factory&gt; element instead
-of &lt;create-instance&gt;.  &lt;invoke-factory&gt; allows you to reference and object or service that implements
+of &lt;create-instance&gt;.  &lt;invoke-factory&gt; allows you to reference an object or service that implements
 the &StateObjectFactory; interface.
 </p>
 

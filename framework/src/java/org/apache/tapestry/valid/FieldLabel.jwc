@@ -27,9 +27,9 @@
   Labels a ValidField.
   </description>
 
-  <parameter name="field" required="yes"/>
+  <parameter name="field" required="yes" default-binding="component"/>
 
-  <parameter name="displayName">
+  <parameter name="displayName" default-binding="literal">
     <description>
       Optional.  Defaults to the displayName of the associated field.
     </description>

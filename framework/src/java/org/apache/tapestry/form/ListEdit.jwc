@@ -29,13 +29,13 @@
 	
   <parameter name="source" required="yes"/>
   
-  <parameter name="listener"/>
+  <parameter name="listener" default-binding="listener"/>
   
   <parameter name="value" required="yes"/>
   
   <parameter name="index"/>
   
-  <parameter name="element"/>
+  <parameter name="element" default-binding="literal"/>
   
   <inject property="dataSqueezer" object="infrastructure:dataSqueezer"/>
   <inject property="valueConverter" object="service:tapestry.coerce.ValueConverter"/>

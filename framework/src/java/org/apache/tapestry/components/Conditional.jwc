@@ -24,13 +24,13 @@
   Conditionally emulates an element and its attributes (if element is specified) and/or includes a block of content if a condition is met.
   </description>
   
-  <parameter name="condition" required="yes">
+  <parameter name="condition" required="yes" default-binding="ognl">
     <description>
     The condition to evaluate.
     </description>
   </parameter>
   
-  <parameter name="invert">
+  <parameter name="invert" default-binding="ognl">
     <description>
     If true, inverts the condition, so that a false condition causes the 
     content to be included.  If false (the default), then the condition
@@ -38,7 +38,7 @@
     </description>
   </parameter>
 
-  <parameter name="element">
+  <parameter name="element" default-binding="literal">
   	<description>
   	The element to emulate.
   	</description>

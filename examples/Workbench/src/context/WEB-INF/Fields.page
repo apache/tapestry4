@@ -74,7 +74,7 @@
   </bean>
   
   <component id="inputEnabled" type="Checkbox">
-    <binding name="selected" value="ognl:clientValidationEnabled"/> 
+    <binding name="selected" value="clientValidationEnabled"/> 
     <binding name="onclick">
     	javascript:this.form.submit();
     </binding>    
@@ -85,43 +85,43 @@
   </component>
 
   <component id="inputDate" type="ValidField">
-    <binding name="validator" value="bean:dateValidator"/>
-    <binding name="value" value="ognl:visit.dateValue"/>
+    <binding name="validator" value="dateValidator"/>
+    <binding name="value" value="visit.dateValue"/>
     <binding name="displayName" value="Date Field"/>
   </component>
 
   <component id="inputInt" type="ValidField">
     <binding name="validator" value="bean:intValidator"/>
-    <binding name="value" value="ognl:visit.intValue"/>
+    <binding name="value" value="visit.intValue"/>
     <binding name="displayName" value="Integer Field"/>
   </component>
 
   <component id="inputDouble" type="ValidField">
     <binding name="validator" value="bean:doubleValidator"/>
-    <binding name="value" value="ognl:visit.doubleValue"/>
+    <binding name="value" value="visit.doubleValue"/>
     <binding name="displayName" value="Double Field"/>
   </component>
 
   <component id="inputBigDecimal" type="ValidField">
-   <binding name="value" value="ognl:visit.bigDecimalValue"/>
+   <binding name="value" value="visit.bigDecimalValue"/>
     <binding name="validator" value="bean:bigDecimalValidator"/>
     <binding name="displayName" value="Big Decimal Field"/>
   </component>
 
   <component id="inputLong" type="ValidField">
-    <binding name="value" value="ognl:visit.longValue"/>
+    <binding name="value" value="visit.longValue"/>
     <binding name="validator" value="bean:longValidator"/>
     <binding name="displayName" value="Long Field"/>
   </component>
 
   <component id="inputString" type="ValidField">
-    <binding name="value" value="ognl:visit.stringValue"/>
+    <binding name="value" value="visit.stringValue"/>
     <binding name="validator" value="bean:stringValidator"/>
     <binding name="displayName" value="String Field"/>
   </component>
 
   <component id="inputEmail" type="ValidField">
-    <binding name="value" value="ognl:visit.emailValue"/>
+    <binding name="value" value="visit.emailValue"/>
     <binding name="validator" value="bean:emailValidator"/>
     <binding name="displayName" value="Email Field"/>
   </component>
