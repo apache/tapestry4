@@ -16,9 +16,9 @@ package org.apache.tapestry.contrib.table.components;
 
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.contrib.table.model.ITableModelSource;
+import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.event.PageRenderListener;
 
 /**
  * A low level Table component that renders the pages in the table.
@@ -42,7 +42,7 @@ import org.apache.tapestry.event.PageRenderListener;
  *
  */
 public abstract class TableFormPages extends TablePages 
-    implements PageDetachListener, PageRenderListener
+    implements PageDetachListener, PageBeginRenderListener
 {
     private int m_nCurrentPage;
     private int m_nPageCount;

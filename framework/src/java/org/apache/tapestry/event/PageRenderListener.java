@@ -14,38 +14,17 @@
 
 package org.apache.tapestry.event;
 
-import java.util.EventListener;
-
 /**
- *  An object that listens to page events.  The {@link org.apache.tapestry.IPage page} generates
- *  events before and after rendering a response.  These events also occur before and
- *  after a form rewinds.
- *
- *  @author Howard Lewis Ship
- *  @since 1.0.5
+ * An object that listens to page events. The {@link org.apache.tapestry.IPage page}generates
+ * events before and after rendering a response. These events also occur before and after a form
+ * rewinds.
  * 
- **/
+ * @author Howard Lewis Ship
+ * @since 1.0.5
+ * @deprecated To be removed in 3.2. Use {@link org.apache.tapestry.event.PageBeginRenderListener}
+ *             and/or {@link org.apache.tapestry.event.PageEndRenderListener}.
+ */
 
-public interface PageRenderListener extends EventListener
+public interface PageRenderListener extends PageBeginRenderListener, PageEndRenderListener
 {
-    /**
-     *  Invoked before just before the page renders a response.  This provides
-     *  listeners with a last chance to initialize themselves for the render.
-     *  This initialization can include modifying peristent page properties.
-     *
-     *
-     **/
-
-    public void pageBeginRender(PageEvent event);
-
-    /**
-     *  Invoked after a successful render of the page.
-     *  Allows objects to release any resources they needed during the
-     *  the render.
-     * 
-     *  @see org.apache.tapestry.AbstractComponent#pageEndRender(PageEvent)
-     *
-     **/
-
-    public void pageEndRender(PageEvent event);
 }

@@ -79,8 +79,10 @@
          to the class. -->
     
     <command id="page-detach-listener" object="service:InjectPageDetachListenerWorker"/>
+    <command id="page-attach-listener" object="service:InjectPageAttachListenerWorker" after="page-detach-listener"/>
     <command id="page-validate-listener" object="service:InjectPageValidateListenerWorker" after="page-detach-listener"/>
-    <command id="page-render-listener" object="service:InjectPageRenderListenerWorker" after="page-detach-listener"/>
+    <command id="page-begin-render-listener" object="service:InjectPageBeginRenderListenerWorker" after="page-detach-listener"/>
+    <command id="page-end-render-listener" object="service:InjectPageEndRenderListenerWorker" after="page-detach-listener"/>
         
     <command id="abstract-property" object="service:AbstractPropertyWorker" after="*"/>
     
@@ -208,15 +210,45 @@
     
   </service-point>
   
-  <service-point id="InjectPageRenderListenerWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+
+  <service-point id="InjectPageAttachListenerWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
     
-    Registers components as PageRenderListeners, if they implement
+    Registers components as PageAttachListeners, if they implement
     the interface.
     
     <invoke-factory>
       <construct class="org.apache.tapestry.enhance.InjectListenerRegistrationWorker">
-        <set-object property="listenerInterface" value="class:org.apache.tapestry.event.PageRenderListener"/>
-        <set property="registerMethodName" value="addPageRenderListener"/>
+        <set-object property="listenerInterface" value="class:org.apache.tapestry.event.PageAttachListener"/>
+        <set property="registerMethodName" value="addPageAttachListener"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+
+  <service-point id="InjectPageEndRenderListenerWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+    
+    Registers components as PageEndRenderListeners, if they implement
+    the interface.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.enhance.InjectListenerRegistrationWorker">
+        <set-object property="listenerInterface" value="class:org.apache.tapestry.event.PageEndRenderListener"/>
+        <set property="registerMethodName" value="addPageEndRenderListener"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>  
+
+  
+  <service-point id="InjectPageBeginRenderListenerWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+    
+    Registers components as PageBeginRenderListeners, if they implement
+    the interface.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.enhance.InjectListenerRegistrationWorker">
+        <set-object property="listenerInterface" value="class:org.apache.tapestry.event.PageBeginRenderListener"/>
+        <set property="registerMethodName" value="addPageBeginRenderListener"/>
       </construct>
     </invoke-factory>
     

@@ -39,9 +39,9 @@ import org.apache.tapestry.contrib.table.model.simple.SimpleListTableDataModel;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumnModel;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableModel;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableState;
+import org.apache.tapestry.event.PageBeginRenderListener;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.event.PageRenderListener;
 
 /**
  * A low level Table component that wraps all other low level Table components. This component
@@ -94,7 +94,7 @@ import org.apache.tapestry.event.PageRenderListener;
  * @author mindbridge
  */
 public abstract class TableView extends BaseComponent implements PageDetachListener,
-        PageRenderListener, ITableModelSource
+        PageBeginRenderListener, ITableModelSource
 {
     /** @since 3.1 */
 
@@ -387,13 +387,6 @@ public abstract class TableView extends BaseComponent implements PageDetachListe
         // where a save can occur
         if (m_objTableModel != null)
             saveSessionState();
-    }
-
-    /**
-     * @see org.apache.tapestry.event.PageRenderListener#pageEndRender(PageEvent)
-     */
-    public void pageEndRender(PageEvent objEvent)
-    {
     }
 
     /**

@@ -87,10 +87,16 @@
 <!ENTITY IValidationDelegate 		'<link href="&apiroot;/valid/IValidationDelegate.html">IValidationDelegate</link>'>
 <!ENTITY IUploadFile 				'<link href="&apiroot;/IUploadFile.html">IUploadFile</link>'>
 <!ENTITY ListenerMap 				'<link href="&apiroot;/listener/ListenerMap.html">ListenerMap</link>'>
+
+<!ENTITY PageAttachListener 		'<link href="&apiroot;/event/PageAttachListener.html">PageAttachListener</link>'>
 <!ENTITY PageDetachListener 		'<link href="&apiroot;/event/PageDetachListener.html">PageDetachListener</link>'>
+<!ENTITY PageBeginRenderListener 	'<link href="&apiroot;/event/PageBeginRenderListener.html">PageEndRenderListener</link>'>
+<!ENTITY PageEndRenderListener 		'<link href="&apiroot;/event/PageEndRenderListener.html">PageBeginRenderListener</link>'>
+<!ENTITY PageAttachListener 		'<link href="&apiroot;/event/PageAttachListener.html">PageAttachListener</link>'>
+<!ENTITY PageValidateListener 		'<link href="&apiroot;/event/PageValidateListener.html">PageValidateListener</link>'>
+
 <!ENTITY PageRecorder 				'<link href="&apiroot;/record/PageRecorder.html">PageRecorder</link>'>
 <!ENTITY PageRedirectException 		'<link href="&apiroot;/PageRedirectException.html">PageRedirectException</link>'>
-<!ENTITY PageRenderListener 		'<link href="&apiroot;/event/PageRenderListener.html">PageRenderListener</link>'>
 <!ENTITY ParameterManager 			'<link href="&apiroot;/param/ParameterManager.html">ParameterManager</link>'>
 <!ENTITY Pool 						'<link href="&apiroot;/util/pool/Pool.html">Pool</link>'>
 <!ENTITY RedirectFilter 			'<link href="&apiroot;/RedirectFilter.html">RedirectFilter</link>'>

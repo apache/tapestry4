@@ -40,11 +40,6 @@ public abstract class SimpleTree extends BasePage
     {
     }
 
-    public void attach(IEngine value)
-    {
-        super.attach(value);
-    }
-
     public void detach()
     {
         super.detach();

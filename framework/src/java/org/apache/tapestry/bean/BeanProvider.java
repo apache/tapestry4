@@ -32,67 +32,59 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.event.PageDetachListener;
+import org.apache.tapestry.event.PageEndRenderListener;
 import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.spec.BeanLifecycle;
 import org.apache.tapestry.spec.IBeanSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
- *  Basic implementation of the {@link IBeanProvider} interface.
- *
- *  @author Howard Lewis Ship
- *  @since 1.0.4
- **/
+ * Basic implementation of the {@link IBeanProvider}interface.
+ * 
+ * @author Howard Lewis Ship
+ * @since 1.0.4
+ */
 
-public class BeanProvider implements IBeanProvider, PageDetachListener, PageRenderListener
+public class BeanProvider implements IBeanProvider, PageDetachListener, PageEndRenderListener
 {
     private static final Log LOG = LogFactory.getLog(BeanProvider.class);
 
     /**
-     *  Indicates whether this instance has been registered with its
-     *  page as a PageDetachListener.  Registration only occurs
-     *  the first time a bean with lifecycle REQUEST is instantiated.
-     *
-     **/
+     * Indicates whether this instance has been registered with its page as a PageDetachListener.
+     * Registration only occurs the first time a bean with lifecycle REQUEST is instantiated.
+     */
 
     private boolean _registeredForDetach = false;
 
     /**
-     *  Indicates whether this instance has been registered as a render
-     *  listener with the page.
-     * 
-     **/
+     * Indicates whether this instance has been registered as a render listener with the page.
+     */
 
     private boolean _registeredForRender = false;
 
     /**
-     *  The component for which beans are being created and tracked.
-     *
-     **/
+     * The component for which beans are being created and tracked.
+     */
 
     private IComponent _component;
 
     /**
-     *  Used for instantiating classes.
-     *
-     **/
+     * Used for instantiating classes.
+     */
 
     private ClassResolver _resolver;
 
     /**
-     *  Map of beans, keyed on name.
-     *
-     **/
+     * Map of beans, keyed on name.
+     */
 
     private Map _beans;
 
     /**
-     *  Set of bean names provided by this provider.
+     * Set of bean names provided by this provider.
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     private Set _beanNames;
 
@@ -107,7 +99,7 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageRend
 
     }
 
-    /** @since 1.0.6 **/
+    /** @since 1.0.6 * */
 
     public Collection getBeanNames()
     {
@@ -125,9 +117,8 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageRend
     }
 
     /**
-     *  @since 1.0.5
-     *
-     **/
+     * @since 1.0.5
+     */
 
     public IComponent getComponent()
     {
@@ -147,8 +138,7 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageRend
         IBeanSpecification spec = _component.getSpecification().getBeanSpecification(name);
 
         if (spec == null)
-            throw new ApplicationRuntimeException(
-                Tapestry.format(
+            throw new ApplicationRuntimeException(Tapestry.format(
                     "BeanProvider.bean-not-defined",
                     _component.getExtendedId(),
                     name));
@@ -177,7 +167,7 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageRend
 
         if (lifecycle == BeanLifecycle.RENDER && !_registeredForRender)
         {
-            _component.getPage().addPageRenderListener(this);
+            _component.getPage().addPageEndRenderListener(this);
             _registeredForRender = true;
         }
 
@@ -206,16 +196,11 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageRend
         catch (Exception ex)
         {
 
-            throw new ApplicationRuntimeException(
-                Tapestry.format(
+            throw new ApplicationRuntimeException(Tapestry.format(
                     "BeanProvider.instantiation-error",
-                    new Object[] {
-                        beanName,
-                        _component.getExtendedId(),
-                        className,
-                        ex.getMessage()}),
-                spec.getLocation(),
-                ex);
+                    new Object[]
+                    { beanName, _component.getExtendedId(), className, ex.getMessage() }), spec
+                    .getLocation(), ex);
         }
 
         // OK, have the bean, have to initialize it.
@@ -240,11 +225,9 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageRend
     }
 
     /**
-     *  Removes all beans with the REQUEST lifecycle.  Beans with
-     *  the PAGE lifecycle stick around, and beans with no lifecycle
-     *  were never stored in the first place.
-     *
-     **/
+     * Removes all beans with the REQUEST lifecycle. Beans with the PAGE lifecycle stick around, and
+     * beans with no lifecycle were never stored in the first place.
+     */
 
     public void pageDetached(PageEvent event)
     {
@@ -252,11 +235,10 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageRend
     }
 
     /**
-     *  Removes any beans with the specified lifecycle.
+     * Removes any beans with the specified lifecycle.
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     private void removeBeans(BeanLifecycle lifecycle)
     {
@@ -288,27 +270,21 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageRend
         }
     }
 
-    /** @since 1.0.8 **/
+    /** @since 1.0.8 * */
 
     public ClassResolver getClassResolver()
     {
         return _resolver;
     }
 
-    /** @since 2.2 **/
-
-    public void pageBeginRender(PageEvent event)
-    {
-    }
-
-    /** @since 2.2 **/
+    /** @since 2.2 * */
 
     public void pageEndRender(PageEvent event)
     {
         removeBeans(BeanLifecycle.RENDER);
     }
 
-    /** @since 2.2 **/
+    /** @since 2.2 * */
 
     public boolean canProvideBean(String name)
     {
