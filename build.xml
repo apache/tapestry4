@@ -67,6 +67,7 @@
 	<delete dir="doc/Tutorial"/>
 	<delete dir="doc/DevelopersGuide"/>
 	<delete dir="doc/ContributorsGuide"/>
+	<delete dir="doc/ComponentReference"/>	
 	<delete dir="doc/api"/>
 </target>
 
@@ -91,6 +92,7 @@
 	<ant dir="doc/src/Tutorial" target="install" inheritAll="false"/>
 	<ant dir="doc/src/DevelopersGuide" target="install" inheritAll="false"/>
 	<ant dir="doc/src/ContributorsGuide" target="install" inheritAll="false"/>
+	<ant dir="doc/src/ComponentReference" target="install" inheritAll="false"/>
 </target>
 
 <target name="junit"
