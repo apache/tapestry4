@@ -13,7 +13,7 @@ problems using Team support inside the Eclipse IDE.
 
 <property file="../../../config/build.properties"/>
 
-<property name="html.install.dir" value="../../${root.filename}"/>
+<property name="html.install.dir" value="../../../web/doc/${root.filename}"/>
 
 <!-- The base name for the DTD distribution (the directory and tar file
      will match). -->
@@ -30,9 +30,6 @@ problems using Team support inside the Eclipse IDE.
 <property name="docbook.chunked.xsl"
 	value="../common/Tapestry-${docbook.xsl.base}-Chunked.xsl"/>
 	
-<property name="docbook.single.xsl"
-	value="../common/Tapestry-${docbook.xsl.base}-Single.xsl"/>
-
 <property name="docbook.fop.xsl"
 	value="../common/Tapestry-${docbook.xsl.base}-Fop.xsl"/>
 
@@ -52,15 +49,6 @@ problems using Team support inside the Eclipse IDE.
 		<filterset>
 			<filter token="docbook.xsl.base" value="${docbook.xsl.base}"/>
 			<filter token="format" value="chunk"/>
-		</filterset>
-	</copy>
-	
-	<copy 
-		file="../common/Tapestry.xsl.template" 
-		tofile="${docbook.single.xsl}">
-		<filterset>
-			<filter token="docbook.xsl.base" value="${docbook.xsl.base}"/>
-			<filter token="format" value="docbook"/>
 		</filterset>
 	</copy>
 	
@@ -182,32 +170,14 @@ Converting Flow Objects to PDF ...
 <target name="html" depends="docbook-setup,copy-images">
     <copy todir="${html.output.dir}" file="../common/Tapestry.css"/>
    
-    <antcall target="generate-html-single"/>
     <antcall target="generate-html-chunked"/>
     
-</target>
-
-<target name="generate-html-single">
-   
-    <echo>
-    
-Generating Printable (Single Page) HTML from ${root.filename}.xml ...
-
-</echo>
-        
-    <style destdir="${html.output.dir}"
-    	style="${docbook.single.xsl}"
-    	processor="trax" 
-    	in="${root.filename}.xml"
-    	out="${html.output.dir}/${root.filename}-Single.html">
-    	<xmlcatalog refid="docbook.catalog"/>
-    </style>  
 </target>
 
 <target name="generate-html-chunked">
     <echo>
     
-Generating Chunked (Multiple Page) HTML from ${root.filename}.xml ...
+Generating HTML from ${root.filename}.xml ...
 
 </echo>
         
