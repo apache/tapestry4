@@ -101,7 +101,7 @@ public abstract class AbstractBinding implements IBinding
 		return true;
 	}
 
-	public int getInt() throws NullValueForBindingException
+	public int getInt()
 	{
 		Object raw;
 
@@ -109,22 +109,16 @@ public abstract class AbstractBinding implements IBinding
 		if (raw == null)
 			throw new NullValueForBindingException(this);
 
-		try
-		{
+        if (raw instanceof Number)
+        {
 			return ((Number)raw).intValue();
 		}
-		catch (ClassCastException e)
-		{
-		}
 
-		try
-		{
+        if (raw instanceof Boolean)
+        {
 			return ((Boolean)raw).booleanValue() 
 			? 1 
 				: 0;
-		}
-		catch (ClassCastException e)
-		{
 		}
 
 		// Save parsing for last.  This may also throw a number format exception.
@@ -132,10 +126,30 @@ public abstract class AbstractBinding implements IBinding
 		return Integer.parseInt((String)raw);
 	}
 
-	public Integer getInteger()
-	{
-		return (Integer)getValue();
-	}
+    public double getDouble()
+    {
+        Object raw;
+
+        raw = getValue();
+        if (raw == null)
+    	    throw new NullValueForBindingException(this);
+
+        if (raw instanceof Number)
+        {
+    	    return ((Number)raw).doubleValue();
+        }
+
+        if (raw instanceof Boolean)
+        {
+    	    return ((Boolean)raw).booleanValue() 
+    	    ? 1 
+    		    : 0;
+        }
+
+        // Save parsing for last.  This may also throw a number format exception.
+
+        return Double.parseDouble((String)raw);
+    }
 
 	/**
 	*  Gets the value for the binding.  If null, returns null,
@@ -160,7 +174,7 @@ public abstract class AbstractBinding implements IBinding
 	*
 	*/
 
-	public void setBoolean(boolean value) throws ReadOnlyBindingException
+	public void setBoolean(boolean value)
 	{
 		throw new ReadOnlyBindingException(this);
 	}
@@ -170,7 +184,7 @@ public abstract class AbstractBinding implements IBinding
 	*
 	*/
 
-	public void setInt(int value) throws ReadOnlyBindingException
+	public void setInt(int value)
 	{
 		throw new ReadOnlyBindingException(this);
 	}
@@ -180,7 +194,17 @@ public abstract class AbstractBinding implements IBinding
 	*
 	*/
 
-	public void setString(String value) throws ReadOnlyBindingException
+	public void setDouble(double value)
+	{
+		throw new ReadOnlyBindingException(this);
+	}
+
+	/**
+	*  @throws ReadOnlyBindingException always.
+	*
+	*/
+
+	public void setString(String value)
 	{
 		throw new ReadOnlyBindingException(this);
 	}
@@ -191,19 +215,19 @@ public abstract class AbstractBinding implements IBinding
 	*/
 
 
-	public void setValue(Object value) throws ReadOnlyBindingException
+	public void setValue(Object value)
 	{
 		throw new ReadOnlyBindingException(this);
 	}
 
 	/**
-	*  Default implementation: returns false.
+	*  Default implementation: returns true.
 	*
 	*/
 
 	public boolean isStatic()
 	{
-		return false;
+		return true;
 	}
 }
 

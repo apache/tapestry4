@@ -1,3 +1,12 @@
+* Oct 24 2000 hship
+
+Tiny change to exception handling when instantiating components and pages.
+Add getDouble() method to IBinding.
+
+* Oct 20 2000 hship
+
+Add a JVM property to disable page pooling.
+
 * Oct 18 2000 hship
 
 Add resetServiceEnabled property to AbstractApplication.  Add the IDirect interface.

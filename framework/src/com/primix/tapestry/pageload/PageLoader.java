@@ -324,6 +324,13 @@ public class PageLoader
         {
             // Ignore and use the older constructor.
         }
+        catch (ClassCastException e)
+        {
+        	throw new PageLoaderException(
+        		"Class " + className + 
+        		" does not implement the com.primix.tapestry.IComponent interface.", 
+        		this, container, e);
+        }
         catch (Exception e)
         {
             throw new PageLoaderException(
@@ -359,7 +366,7 @@ public class PageLoader
 		catch (ClassCastException e)
 		{
 			throw new PageLoaderException(
-				"Class " + componentClass.getName() + 
+				"Class " + className + 
 				" does not implement the com.primix.tapestry.IComponent interface.", 
 				this, container, e);
 		}
@@ -427,6 +434,13 @@ public class PageLoader
         {
             // Ignore and use the older constructor.
         }
+        catch (ClassCastException e)
+        {
+        	throw new PageLoaderException(
+        		"Class " + className + 
+        		" does not implement the com.primix.tapestry.IPage interface.", 
+        		this, name, e);
+        }
         catch (Exception e)
         {
             throw new PageLoaderException(
@@ -462,7 +476,7 @@ public class PageLoader
 		catch (ClassCastException e)
 		{
 			throw new PageLoaderException(
-				"Class " + pageClass.getName() + 
+				"Class " + className + 
 				" does not implement the com.primix.tapestry.IPage interface.", 
 				this, name, e);
 		}

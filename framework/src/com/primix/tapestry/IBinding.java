@@ -71,16 +71,22 @@ public interface IBinding
      *  @throws NullValueForBindingException if the binding's value is null.
      */
  
-    public int getInt() throws NullValueForBindingException;
+    public int getInt();
 
     /**
-     *  Invokes{@link #getValue()} and casts the result to <code>Integer</code>.
+     *  Gets the value of the Binding using {@link #getValue()} and coerces it
+     *  to a <code>double</code>.  Strings will be parsed, and other
+     *  <code>java.lang.Number</code> classes will have <code>doubleValue()</code>
+     *  invoked.
+     *
+     *  @throws ClassCastException if the binding's value is not of a usable class.
+     *  @throws NullValueForBindingException if the binding's value is null.
      */
- 
-    public Integer getInteger();
+
+    public double getDouble();
 
     /**
-     *  Invokes {@link #getValue()} and casts the result to <code>java.lang.String</code>.
+     *  Invokes {@link #getValue()} and converts the result to <code>java.lang.String</code>.
      */
  
     public String getString();
@@ -102,20 +108,32 @@ public interface IBinding
     public boolean isStatic();
 
     /**
-     *  Constructs a <code>Boolean</code> and invokes <code>setValue</code>.
-     *
-     *  @see #setValue(Object)
+     *  Constructs a <code>Boolean</code> and invokes {@link #setValue(Object)}.
      *
      */
  
-    public void setBoolean(boolean value)
-	throws ReadOnlyBindingException;
+    public void setBoolean(boolean value);
 
-    public void setInt(int value)
-	throws ReadOnlyBindingException;
+    /**
+     *  Constructs an <code>Integer</code> and invokes {@link #setValue(Object)}.
+     *
+     */
 
-    public void setString(String value)
-	throws ReadOnlyBindingException;
+    public void setInt(int value);
+
+    /**
+     *  Constructs an <code>Double</code> and invokes {@link #setValue(Object)}.
+     *
+     */
+
+    public void setDouble(double value);
+
+    /**
+     *  Invokes {@link #setValue(Object)}.
+     *
+     */
+
+    public void setString(String value);
 
     /**
      *  Updates the value of the binding, if possible.
@@ -124,6 +142,5 @@ public interface IBinding
      *
      */
  
-    public void setValue(Object value)
-	throws ReadOnlyBindingException;
+    public void setValue(Object value);
 }

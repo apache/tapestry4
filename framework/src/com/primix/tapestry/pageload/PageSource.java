@@ -46,7 +46,19 @@ import com.primix.tapestry.binding.*;
  *  Pages are retrieved from the pool using {@link #getPage(IApplication, String, IMonitor)}
  *  and are later returned to the pool using {@link #releasePage(IPage)}.
  *
- *  <p>Acts as a cache of {@link FieldBinding}s.  This allows a {@link FieldBinding} to
+ *  <p>During development, it is useful to occasionally disable pooling of pages.
+ *  This will slow down requests as new page object hierarchies will have to be
+ *  create for each request.  However, it will identify the common Tapestry
+ *  developer failure:  expecting transient page properties to be available
+ *  on subsequent request cycles (this is usually related to
+ *  an incomplete implementation of {@link IPage#detachFromApplication()}.
+ *
+ *  <p>Setting the JVM system property
+ * <code>com.primix.tapestry.disable-page-pool</code>
+ *  will turn pooling off (pages will always be discarded at the end of
+ *  the request cycle, never recycled in subsequent cycles).
+ *
+ *  <p>In addition, this class acts as a cache of {@link FieldBinding}s.  This allows a {@link FieldBinding} to
  * be created once, and used across all components and pages.
  *
  * <p>TBD: Pooled pages stay forever.  Need a strategy for cleaning up the pool,
@@ -63,17 +75,30 @@ public class PageSource
 {
 	private static final int MAP_SIZE = 11;
     private Map fieldBindings;
+    private boolean poolDisabled;
 
     private IResourceResolver resolver;
 
     public PageSource(IResourceResolver resolver)
     {
         this.resolver = resolver;
+
+        poolDisabled = Boolean.getBoolean("com.primix.tapestry.disable-page-pool");
     }
 
     public IResourceResolver getResourceResolver()
     {
         return resolver;
+    }
+
+    /**
+     *  Returns true if the page pool has been disabled.
+     *
+     */
+
+    public boolean isPoolDisabled()
+    {
+        return poolDisabled;
     }
 
 
@@ -221,6 +246,12 @@ public class PageSource
 		key = buildKey(page);
 
 		page.detachFromApplication();
+        
+        // When the pool is disabled, don't store the page in the pool.
+        // It will be garbage collected instead.
+
+        if (poolDisabled)
+            return;
 
 		if (pool == null)
 			pool = new HashMap(MAP_SIZE);
