@@ -138,15 +138,36 @@
     </td>
 	</tr>
   <tr>
+    <td>doctype</td>
+    <td>String</td>
+    <td>in</td>
+   	<td>no</td>
+		<td style="font-size: xx-small;">
+		HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"
+		</td>
+		<td>
+    Used to specify the full definition of the DOCTYPE element in the response page.
+    For example, setting this parameter to 
+    <pre>math SYSTEM "http://www.w3.org/Math/DTD/mathml1/mathml.dtd"</pre>
+    will make the component generate
+    <pre>&lt;!DOCTYPE math SYSTEM "http://www.w3.org/Math/DTD/mathml1/mathml.dtd"&gt;</pre>
+	<p>
+    The list of currently valid DOCTYPE settings can be found here:
+    http://www.w3.org/QA/2002/04/valid-dtd-list.html
+	<p>
+    If the parameter is null or empty, no DOCTYPE tag will be rendered
+    </td>
+	</tr>
+  <tr>
     <td>DTD</td>
     <td>String</td>
     <td>in</td>
    	<td>no</td>
-		<td>-//W3C//DTD HTML 4.0 Transitional//EN</td>
+		<td>null</td>
 		<td>
-    Used to specify the DOCTYPE of the generate HTML document. If the DTD is 
-    explicity set to null, then no DOCTYPE is generated, otherwise the default 
-    value is generated.
+    Used to specify the DOCTYPE DTD of the generated HTML document. 
+    <p>
+    This parameter is deprecated. Please use the doctype parameter instead.
     </td>
 	</tr>
   <tr>
