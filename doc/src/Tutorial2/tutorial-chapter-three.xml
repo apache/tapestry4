@@ -33,9 +33,10 @@
 					an &OGNL; expression, including methods, JavaBean properties and static fields 
 					(<function>Boolean.TRUE</function>).</para>
 					<para>
-					<emphasis>All OGNL expressions are evaluated in the context of a current object, and a chain 
+					<para><emphasis>All OGNL expressions are evaluated in the context of a current object, and a chain 
 					simply uses the result of the previous link in the chain as the current object for the next one. 
-					You can extend a chain as long as you like. (from &OGNL; web site)</emphasis>
+					You can extend a chain as long as you like. (from &OGNL; web site)</emphasis></para></para>
+					<para>
 					In Tapestry, the current object that you start with is the object for the page 
 					in question. For the 'hello world' application covered previously, this is the
 					OGNL expressions must begin their evaluation somewhere. In Tapestry, this is  
@@ -45,20 +46,23 @@
 						<listitem>Use <emphasis>sometext</emphasis> to access <function>public String getSomeText()</function> from the example</listitem>
 						<listitem>Use <emphasis>sometext.length()</emphasis> to access the <function>length()</function> method of the <function>String</function> object returned by the <function>getSomeText()</function> methodd.</listitem>
 						<listitem>Use <emphasis>true</emphasis> to refer to the constant which equals 'true' or <function>Boolean.TRUE</function></listitem>
-						<listitem>Use <emphasis>user.listAllCustomers()</emphasis> to get the <function>Collection</function> from the method <functon>currentPageObject.getUser().listAllCustomers()</functon> which is a member of the current page object</listitem>
+						<listitem>Use <emphasis>user.listAllCustomers()</emphasis> to get the <function>Collection</function> from the method <function>currentPageObject.getUser().listAllCustomers()</function> which is a member of the current page object</listitem>
 						<listitem>Use <emphasis>@com.someplace.MyClass@interestingMethod("hello world")</emphasis> to return the value from the static method <function>com.someplace.MyClass.interestingMethod(String arg)</function></listitem>
-						<listitem>Use <emphasis>@Boolean@TRUE</emphasis> to refer to <function>Boolean.TRUE</function>
+						<listitem>Use <emphasis>@Boolean@TRUE</emphasis> to refer to <function>Boolean.TRUE</function></listitem>
 					</orderedlist>
 					</para>
 					<para>
-					This section provides only a brief introdcution to the use of OGNL. For a full explanation, see the &OGNL; website.
+					This section provides only a brief introduction to the use of OGNL. For a full explanation, see the &OGNL; website.
 					</para>
 					</listitem>
 				</varlistentry>
 				
 				<varlistentry>
 					<term>Static Binding</term>
-					<listitem><para>A completely static piece of text, hardcoded into the component specification.</para></listitem>
+					<listitem><para>
+					A completely static piece of text, hardcoded into the component specification. As a result, static
+					bindings are not dynamic (being static!) and are read only.
+					</para></listitem>
 				</varlistentry>
 	
 				<varlistentry>
@@ -66,7 +70,10 @@
 					<listitem><para>
 					Refers to a static member variable on some class, e.g: <function>Boolean.TRUE</function>
 					or <function>com.mycompany.myclass.MyObject.SOMEVAR</function>. Static bindings must use full qualified
-					object names, except if the property being referenced is part of <function>java.lang</function>
+					object names, except if the property being referenced is within the <function>java.lang</function> package.
+					</para>
+					<para>
+					Note that field bindings can also be achieved using an OGNL expression and property binding. 
 					</para>
 					</listitem>
 				</varlistentry>
@@ -74,15 +81,24 @@
 				<varlistentry>
 					<term>String Binding</term>
 					<listitem><para>
-					Used for localization, the value of this binding should refer to some localized asset.
+					Used for localization, the value of this binding should refer to some localized string resource for this page ( 
+					part of a resource bundle).  The binding is read only.
 					</para></listitem>
 				</varlistentry>
 			</variablelist>
   		</para>
+			
+			<para>
+			The next section takes you through the building of slightly a slightly more complex application.
+			</para>
   	</section>
 
   	<section id="ex-pagelinking">
   		<title>Page Linking</title>
+			<para>
+				Show three page application, with home page, second page, and a redirect page - that perhaps goes somewhere
+				that the user has specified?
+			</para>
   	</section>
 
   	<section id="ex-simpleaction">
