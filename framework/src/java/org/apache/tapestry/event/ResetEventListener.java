@@ -1,4 +1,4 @@
-//  Copyright 2004 The Apache Software Foundation
+// Copyright 2004 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,14 +17,14 @@ package org.apache.tapestry.event;
 import java.util.EventListener;
 
 /**
- * Listener interface for objects interested in a Tapestry reset event.
- * Reset events occur when cached data should be released (this may
- * happend as often as every request in a development configuration).
- *
+ * Listener interface for objects interested in a Tapestry reset event. Reset
+ * events occur when cached data should be released (this may happend as often
+ * as every request in a development configuration).
+ * 
  * @author Howard Lewis Ship
  * @since 3.1
  */
 public interface ResetEventListener extends EventListener
 {
-	public void resetDidOccur();
+    public void resetEventDidOccur();
 }

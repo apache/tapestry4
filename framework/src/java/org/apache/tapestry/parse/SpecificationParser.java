@@ -1,4 +1,4 @@
-//  Copyright 2004 The Apache Software Foundation
+// Copyright 2004 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -301,11 +301,6 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     private static final int STATE_SET_PROPERTY = 5;
     private static final int STATE_STATIC_BINDING = 9;
 
-    /** @since 2.2 **/
-
-    public static final String TAPESTRY_DTD_1_3_PUBLIC_ID =
-        "-//Howard Lewis Ship//Tapestry Specification 1.3//EN";
-
     /** @since 3.0 **/
 
     public static final String TAPESTRY_DTD_3_0_PUBLIC_ID =
@@ -547,10 +542,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
             return;
         }
 
-        // set-string-property is the DTD 1.3 version, otherwise it's the same.
-
-        if (_elementName.equals("set-message-property")
-            || _elementName.equals("set-string-property"))
+        if (_elementName.equals("set-message-property"))
         {
             enterSetMessage();
             return;
@@ -586,9 +578,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
             return;
         }
 
-        // string-binding is from the 1.3 DTD
-
-        if (_elementName.equals("message-binding") || _elementName.equals("string-binding"))
+        if (_elementName.equals("message-binding"))
         {
             enterMessageBinding();
             return;
@@ -609,14 +599,6 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         if (_elementName.equals("property"))
         {
             enterProperty();
-            return;
-        }
-
-        // A throwback to the 1.3 DTD
-
-        if (_elementName.equals("field-binding"))
-        {
-            enterFieldBinding();
             return;
         }
 
@@ -701,9 +683,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
             return;
         }
 
-        // <component-alias> is from the 1.3 DTD
-
-        if (_elementName.equals("component-type") || _elementName.equals("component-alias"))
+        if (_elementName.equals("component-type"))
         {
             enterComponentType();
             return;
@@ -921,8 +901,8 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
         IBindingSpecification spec = _factory.createBindingSpecification();
 
-        spec.setType(BindingType.DYNAMIC);
-        spec.setValue(expression);
+        spec.setType(BindingType.PREFIXED);
+        spec.setValue("ognl:" + expression);
 
         bs.apply(spec);
     }
@@ -1002,12 +982,12 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     {
         BindingSetter bs = (BindingSetter) peekObject();
 
-        String expression = getExtendedValue(bs.getValue(), "value", true);
+        String literalValue = getExtendedValue(bs.getValue(), "value", true);
 
         IBindingSpecification spec = _factory.createBindingSpecification();
 
-        spec.setType(BindingType.STATIC);
-        spec.setValue(expression);
+        spec.setType(BindingType.PREFIXED);
+        spec.setValue("literal:" + literalValue);
 
         bs.apply(spec);
     }
@@ -1177,23 +1157,6 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         enterAsset("URL", AssetType.EXTERNAL);
     }
 
-    private void enterFieldBinding()
-    {
-        String name = getAttribute("name");
-        String fieldName = getAttribute("field-name");
-
-        IBindingSpecification bs = _factory.createBindingSpecification();
-        bs.setType(BindingType.FIELD);
-        bs.setValue(fieldName);
-        bs.setLocation(getLocation());
-
-        IContainedComponent cc = (IContainedComponent) peekObject();
-
-        cc.setBinding(name, bs);
-
-        push(_elementName, null, STATE_NO_CONTENT);
-    }
-
     private void enterInheritedBinding()
     {
         String name = getAttribute("name");
@@ -1245,8 +1208,8 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         String key = getAttribute("key");
 
         IBindingSpecification bs = _factory.createBindingSpecification();
-        bs.setType(BindingType.STRING);
-        bs.setValue(key);
+        bs.setType(BindingType.PREFIXED);
+        bs.setValue("message:" + key);
         bs.setLocation(getLocation());
 
         IContainedComponent cc = (IContainedComponent) peekObject();
@@ -1287,11 +1250,8 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         ps.setDefaultValue(getAttribute("default-value"));
         ps.setDirection((Direction) getConvertedAttribute("direction", Direction.CUSTOM));
 
-        // From the 1.3 DTD.
-        String type = getAttribute("java-type");
-
-        if (type == null)
-            type = getAttribute("type"); // Current, 3.0+ DTD 
+        String type = 
+           getAttribute("type"); // Current, 3.0+ DTD 
 
         if (type != null)
             ps.setType(type);
@@ -1642,9 +1602,6 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
      */
     public InputSource resolveEntity(String publicId, String systemId) throws SAXException
     {
-        if (TAPESTRY_DTD_1_3_PUBLIC_ID.equals(publicId))
-            return getDTDInputSource("Tapestry_1_3.dtd");
-
         if (TAPESTRY_DTD_3_0_PUBLIC_ID.equals(publicId))
             return getDTDInputSource("Tapestry_3_0.dtd");
 

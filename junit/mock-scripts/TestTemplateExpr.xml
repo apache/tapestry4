@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!-- $Id$ -->
 <!--
    Copyright 2004 The Apache Software Foundation
   
@@ -51,7 +49,7 @@ Second example: <span class="styleClass">JUnit Mock Application</span>
 		</assert-output>	
 	
 		<assert-output name="Error Message">
-An expression for parameter 'value' of component TemplateExprConflict/insertApplicationName in the template for TemplateExprConflict conflicts with an existing binding in the specification.
+A binding for parameter 'value' of component TemplateExprConflict/insertApplicationName in the template for TemplateExprConflict conflicts with an existing binding in the specification.
 		</assert-output>	
 		
 	</request>
@@ -66,7 +64,7 @@ An expression for parameter 'value' of component TemplateExprConflict/insertAppl
 		</assert-output>	
 	
 		<assert-output name="Error Message">
-The template for TemplateExprInformal contains an expression for parameter 'informal' of component TemplateExprInformal/block, but TemplateExprInformal/block does not allow informal parameters.
+The template for TemplateExprInformal contains a binding for parameter 'informal' of component TemplateExprInformal/block, but TemplateExprInformal/block does not allow informal parameters.
 		</assert-output>	
 		
 	</request>	
@@ -81,7 +79,7 @@ The template for TemplateExprInformal contains an expression for parameter 'info
 		</assert-output>	
 	
 		<assert-output name="Error Message">
-The template for TemplateExprReserved contains an expression for parameter 'href' of component TemplateExprReserved/link, but 'href' is a reserved parameter name.
+The template for TemplateExprReserved contains a binding for parameter 'href' of component TemplateExprReserved/link, but 'href' is a reserved parameter name.
 		</assert-output>	
 		
 	</request>	

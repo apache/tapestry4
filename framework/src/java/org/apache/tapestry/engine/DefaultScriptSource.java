@@ -1,4 +1,4 @@
-//  Copyright 2004 The Apache Software Foundation
+// Copyright 2004 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.script.ScriptParser;
 import org.apache.tapestry.util.xml.DocumentParseException;
 
@@ -33,13 +34,13 @@ import org.apache.tapestry.util.xml.DocumentParseException;
  * @since 1.0.2
  */
 
-public class DefaultScriptSource implements IScriptSource
+public class DefaultScriptSource implements IScriptSource, ResetEventListener
 {
     private ClassResolver _classResolver;
 
     private Map _cache = new HashMap();
 
-    public synchronized void reset()
+    public synchronized void resetEventDidOccur()
     {
         _cache.clear();
     }

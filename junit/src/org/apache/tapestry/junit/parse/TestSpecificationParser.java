@@ -1,4 +1,4 @@
-//  Copyright 2004 The Apache Software Foundation
+// Copyright 2004 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,12 +34,12 @@ import org.apache.tapestry.spec.ListenerBindingSpecification;
 import org.apache.tapestry.util.xml.DocumentParseException;
 
 /**
- *  Tests the specification parser (which reads page and component
- *  specifications).  Came into being somewhat late, so it just
- *  tests new features for the meantime.
- *
- *  @author Howard Lewis Ship
- *  @since 2.0.4
+ * Tests the specification parser (which reads page and component
+ * specifications). Came into being somewhat late, so it just tests new features
+ * for the meantime.
+ * 
+ * @author Howard Lewis Ship
+ * @since 2.0.4
  */
 
 public class TestSpecificationParser extends TapestryTestCase
@@ -51,25 +51,7 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     *  Tests that the parser can handle a specification
-     *  that includes a &lt;string-binding&gt; element.
-     * 
-     **/
-
-    public void testStringBinding() throws Exception
-    {
-        IComponentSpecification spec = parseComponent("TestStringBinding.jwc");
-
-        IBindingSpecification bs = spec.getComponent("hello").getBinding("value");
-
-        assertEquals("type", BindingType.STRING, bs.getType());
-        assertEquals("key", "label.hello", bs.getValue());
-
-        checkLine(bs, 25);
-    }
-
-    /**
-     * Test new (in 3.0) &lt;message-binding&gt; element. 
+     * Test new (in 3.0) &lt;message-binding&gt; element.
      */
 
     public void tesMessageBinding() throws Exception
@@ -78,18 +60,17 @@ public class TestSpecificationParser extends TapestryTestCase
 
         IBindingSpecification bs = spec.getComponent("hello").getBinding("value");
 
-        assertEquals("type", BindingType.STRING, bs.getType());
-        assertEquals("key", "label.hello", bs.getValue());
+        assertEquals("type", BindingType.PREFIXED, bs.getType());
+        assertEquals("key", "message:label.hello", bs.getValue());
 
         checkLine(bs, 25);
     }
 
     /**
-     *  Test valid parameter name.
+     * Test valid parameter name.
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public void testValidParameterName() throws Exception
     {
@@ -102,11 +83,10 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     *  Test invalid parameter name.
+     * Test invalid parameter name.
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public void testInvalidParameterName() throws Exception
     {
@@ -124,11 +104,10 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     *  Test invalid parameter name.
+     * Test invalid parameter name.
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public void testInvalidComponentId() throws Exception
     {
@@ -146,11 +125,10 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     *  Test invalid library id in a library specification.
+     * Test invalid library id in a library specification.
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public void testInvalidLibraryId() throws Exception
     {
@@ -168,11 +146,10 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     *  Parse a valid library.
+     * Parse a valid library.
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public void testValidLibrary() throws Exception
     {
@@ -180,26 +157,26 @@ public class TestSpecificationParser extends TapestryTestCase
 
         checkLine(spec, 24);
 
-        checkList("serviceNames", new String[] { "service1", "service2" }, spec.getServiceNames());
+        checkList("serviceNames", new String[]
+        { "service1", "service2" }, spec.getServiceNames());
 
-        checkList("pageNames", new String[] { "FirstPage", "SecondPage" }, spec.getPageNames());
+        checkList("pageNames", new String[]
+        { "FirstPage", "SecondPage" }, spec.getPageNames());
 
-        checkList(
-            "componentAliases",
-            new String[] { "FirstComponent", "SecondComponent" },
-            spec.getComponentTypes());
+        checkList("componentAliases", new String[]
+        { "FirstComponent", "SecondComponent" }, spec.getComponentTypes());
 
-        checkList("libraryIds", new String[] { "lib1", "lib2" }, spec.getLibraryIds());
+        checkList("libraryIds", new String[]
+        { "lib1", "lib2" }, spec.getLibraryIds());
 
         assertNotNull(spec.getSpecificationLocation());
     }
 
     /**
-     *  Test invalid parameter name.
+     * Test invalid parameter name.
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public void testInvalidAssetName() throws Exception
     {
@@ -217,11 +194,10 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     *  Test invalid page name.
+     * Test invalid page name.
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public void testInvalidPageName() throws Exception
     {
@@ -239,11 +215,10 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     *  Test invalid service name.
+     * Test invalid service name.
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public void testInvalidServiceName() throws Exception
     {
@@ -261,11 +236,10 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     *  Test invalid service name.
+     * Test invalid service name.
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public void testInvalidComponentAlias() throws Exception
     {
@@ -283,11 +257,10 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     *  Test invalid extension name.
+     * Test invalid extension name.
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public void testInvalidExtensionName() throws Exception
     {
@@ -304,12 +277,11 @@ public class TestSpecificationParser extends TapestryTestCase
         }
     }
 
-    /** 
-     *  Test case where the document does not have a DOCTYPE
+    /**
+     * Test case where the document does not have a DOCTYPE
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public void testMissingDoctype() throws Exception
     {
@@ -321,16 +293,15 @@ public class TestSpecificationParser extends TapestryTestCase
         }
         catch (DocumentParseException ex)
         {
-            // XML parsers tend to generate different exception messages, 
+            // XML parsers tend to generate different exception messages,
             // so make the condition as unspecific as possible
             checkException(ex, "DOCTYPE");
         }
     }
 
     /**
-     *  Test case where the public id of the document is not known.
-     * 
-     **/
+     * Test case where the public id of the document is not known.
+     */
 
     public void testInvalidPublicId() throws Exception
     {
@@ -347,12 +318,11 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     *  Test an an application specification can omit
-     *  the name and engine-class attributes.
+     * Test an an application specification can omit the name and engine-class
+     * attributes.
      * 
-     *  @since 3.0
-     * 
-     **/
+     * @since 3.0
+     */
 
     public void testNulledApplication() throws Exception
     {
@@ -366,11 +336,10 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     *  Test new DTD 1.4 syntax for declaring components.
+     * Test new DTD 1.4 syntax for declaring components.
      * 
-     *  @since 3.0
-     * 
-     **/
+     * @since 3.0
+     */
 
     public void testComponentType() throws Exception
     {
@@ -380,10 +349,9 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     *  Test omitting the class name from a component specification
-     *  (new, in DTD 1.4).
-     * 
-     **/
+     * Test omitting the class name from a component specification (new, in DTD
+     * 1.4).
+     */
 
     public void testNulledComponent() throws Exception
     {
@@ -397,10 +365,9 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     *  Test omitting the class name from a component specification
-     *  (new, in DTD 1.4).
-     * 
-     **/
+     * Test omitting the class name from a component specification (new, in DTD
+     * 1.4).
+     */
 
     public void testNulledPage() throws Exception
     {
@@ -414,12 +381,11 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     *  Test the value attribute for the property element
-     *  (which is new in DTD 1.4).
+     * Test the value attribute for the property element (which is new in DTD
+     * 1.4).
      * 
-     *  @since 3.0
-     * 
-     **/
+     * @since 3.0
+     */
 
     public void testPropertyValue() throws Exception
     {
@@ -432,12 +398,10 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     *  Tests the new (in DTD 1.4) value attribute on static-binding
-     *  element.
+     * Tests the new (in DTD 1.4) value attribute on static-binding element.
      * 
-     *  @since 3.0
-     * 
-     **/
+     * @since 3.0
+     */
 
     public void testStaticBindingValue() throws Exception
     {
@@ -452,16 +416,16 @@ public class TestSpecificationParser extends TapestryTestCase
         IBindingSpecification b = c.getBinding("fred");
         checkLine(b, 25);
 
-        assertEquals("flintstone", b.getValue());
+        assertEquals("literal:flintstone", b.getValue());
 
         b = c.getBinding("barney");
         checkLine(b, 26);
 
-        assertEquals("rubble", b.getValue());
+        assertEquals("literal:rubble", b.getValue());
 
         b = c.getBinding("rock");
         checkLine(b, 27);
-        assertEquals("hudson", b.getValue());
+        assertEquals("literal:hudson", b.getValue());
     }
 
     public void testAttributeAndBody() throws Exception
@@ -475,17 +439,16 @@ public class TestSpecificationParser extends TapestryTestCase
         catch (DocumentParseException ex)
         {
             checkException(
-                ex,
-                "It is not valid to specify a value for attribute 'value' of <static-binding> and provide a value in the body of the element.");
+                    ex,
+                    "It is not valid to specify a value for attribute 'value' of <static-binding> and provide a value in the body of the element.");
         }
     }
 
     /**
-     *  Tests the new (in DTD 1.4) value attribute on a configure element.
+     * Tests the new (in DTD 1.4) value attribute on a configure element.
      * 
-     *  @since 3.0
-     * 
-     **/
+     * @since 3.0
+     */
 
     public void testConfigureValue() throws Exception
     {
@@ -500,11 +463,10 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     *  Tests the new &lt;listener-binding&gt; element in the 1.4 DTD.
+     * Tests the new &lt;listener-binding&gt; element in the 1.4 DTD.
      * 
-     *  @since 3.0
-     * 
-     **/
+     * @since 3.0
+     */
 
     public void testListenerBinding() throws Exception
     {
@@ -519,13 +481,9 @@ public class TestSpecificationParser extends TapestryTestCase
 
         checkLine(lbs, 25);
 
-        String expectedScript =
-            buildExpectedScript(
-                new String[] {
-                    "if page.isFormInputValid():",
-                    "  cycle.page = \"Results\"",
-                    "else:",
-                    "  page.message = \"Please fix errors before continuing.\";" });
+        String expectedScript = buildExpectedScript(new String[]
+        { "if page.isFormInputValid():", "  cycle.page = \"Results\"", "else:",
+                "  page.message = \"Please fix errors before continuing.\";" });
 
         assertEquals("jython", lbs.getLanguage());
         assertEquals(expectedScript, lbs.getScript());
@@ -546,16 +504,14 @@ public class TestSpecificationParser extends TapestryTestCase
         return buffer.toString();
     }
 
-    /** @since 3.0 **/
+    /** @since 3.0 * */
 
     public void testPropertySpecifications() throws Exception
     {
         IComponentSpecification spec = parsePage("PropertySpecifications.page");
 
-        checkList(
-            "propertySpecificationNames",
-            new String[] { "bool", "init", "persist" },
-            spec.getPropertySpecificationNames());
+        checkList("propertySpecificationNames", new String[]
+        { "bool", "init", "persist" }, spec.getPropertySpecificationNames());
 
         IPropertySpecification ps = spec.getPropertySpecification("bool");
         assertEquals("name", "bool", ps.getName());
@@ -583,7 +539,7 @@ public class TestSpecificationParser extends TapestryTestCase
         assertNull("Unknown PropertySpecification", ps);
     }
 
-    /** @since 3.0 **/
+    /** @since 3.0 * */
 
     public void testDuplicatePropertySpecification() throws Exception
     {
@@ -599,7 +555,7 @@ public class TestSpecificationParser extends TapestryTestCase
         }
     }
 
-    /** @since 3.0 **/
+    /** @since 3.0 * */
 
     public void testMissingRequiredExtendedAttribute() throws Exception
     {
@@ -611,28 +567,12 @@ public class TestSpecificationParser extends TapestryTestCase
         }
         catch (DocumentParseException ex)
         {
-            checkException(
-                ex,
-                "Element <binding> does not specify a value for attribute 'expression', or contain a body value.");
+            checkException(ex,
+                    "Element <binding> does not specify a value for attribute 'expression', or contain a body value.");
         }
     }
 
-    /** @since 3.0 **/
-
-    public void testStringBeanInitializer() throws Exception
-    {
-        IComponentSpecification spec = parsePage("StringBeanInitializer.page");
-
-        IBeanSpecification bs = spec.getBeanSpecification("fred");
-        checkLine(bs, 24);
-        MessageBeanInitializer i = (MessageBeanInitializer) bs.getInitializers().get(0);
-
-        assertEquals("barney", i.getPropertyName());
-        assertEquals("rubble", i.getKey());
-        checkLine(i, 25);
-    }
-
-    /** @since 3.0 **/
+    /** @since 3.0 * */
 
     public void testMessageBeanInitializer() throws Exception
     {
@@ -658,7 +598,7 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals(textField.getInheritInformalParameters(), true);
     }
 
-    /** @since 3.1 **/
+    /** @since 3.1 */
 
     public void testConfigureExtension() throws Exception
     {
@@ -679,7 +619,7 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals("my-value", es.getProperty("my-property"));
     }
 
-    /** @since 3.1 **/
+    /** @since 3.1 */
 
     public void testConfigureBadBoolean() throws Exception
     {
@@ -694,7 +634,7 @@ public class TestSpecificationParser extends TapestryTestCase
         }
     }
 
-    /** @since 3.1 **/
+    /** @since 3.1 */
 
     public void testConfigureBadDouble() throws Exception
     {
@@ -709,7 +649,7 @@ public class TestSpecificationParser extends TapestryTestCase
         }
     }
 
-    /** @since 3.1 **/
+    /** @since 3.1 */
 
     public void testConfigureBadLong() throws Exception
     {
@@ -724,27 +664,7 @@ public class TestSpecificationParser extends TapestryTestCase
         }
     }
 
-    /**
-     * 
-     * Tests the DTD 1.3 &lt;field-binding&gt; element.
-     * 
-     * @since 3.1
-     */
-
-    public void testComponentFieldBinding() throws Exception
-    {
-        IComponentSpecification cs = parseComponent("ComponentFieldBinding.jwc");
-
-        IContainedComponent cc = cs.getComponent("insertVersion");
-
-        IBindingSpecification b = cc.getBinding("value");
-
-        assertEquals(BindingType.FIELD, b.getType());
-        assertEquals("org.apache.tapestry.Tapestry.VERSION", b.getValue());
-        assertNotNull(b.getLocation());
-    }
-
-    /** @since 3.1 **/
+    /** @since 3.1 */
 
     public void testComponentProperty() throws Exception
     {
@@ -755,7 +675,7 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals("my-value", cc.getProperty("my-property"));
     }
 
-    /** @since 3.1 **/
+    /** @since 3.1 */
 
     public void testBeanDescription() throws Exception
     {
@@ -766,7 +686,7 @@ public class TestSpecificationParser extends TapestryTestCase
         assertNotNull(bs.getLocation());
     }
 
-    /** @since 3.1 **/
+    /** @since 3.1 */
 
     public void testBeanProperty() throws Exception
     {
@@ -776,7 +696,7 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals("myvalue", bs.getProperty("myproperty"));
     }
 
-    /** @since 3.1 **/
+    /** @since 3.1 */
 
     public void testLibraryDescription() throws Exception
     {
@@ -785,7 +705,7 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals("Often, these are just placeholders.", ls.getDescription());
     }
 
-    /** @since 3.1 **/
+    /** @since 3.1 */
 
     public void testPageDescription() throws Exception
     {
@@ -809,15 +729,14 @@ public class TestSpecificationParser extends TapestryTestCase
         }
         catch (Exception ex)
         {
-            checkException(
-                ex,
-                "Incorrect document type; expected page-specification but received component-specification.");
+            checkException(ex,
+                    "Incorrect document type; expected page-specification but received component-specification.");
         }
     }
 
     /**
-     * Checks to make sure that a application or library may not
-     * defined a lbirary with id 'framework'.
+     * Checks to make sure that a application or library may not defined a
+     * lbirary with id 'framework'.
      * 
      * @since 3.1
      */
@@ -836,8 +755,8 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     * Tests that a &lt;component&gt; element may not have both type and
-     * copy-of attributes.
+     * Tests that a &lt;component&gt; element may not have both type and copy-of
+     * attributes.
      * 
      * @since 3.1
      */
@@ -851,15 +770,12 @@ public class TestSpecificationParser extends TapestryTestCase
         }
         catch (Exception ex)
         {
-            checkException(
-                ex,
-                "Contained component bad contains both type and copy-of attributes.");
+            checkException(ex, "Contained component bad contains both type and copy-of attributes.");
         }
     }
 
     /**
-     * Tests that &lt;component&gt; must have either type or copy-of
-     * attribute.
+     * Tests that &lt;component&gt; must have either type or copy-of attribute.
      * 
      * @since 3.1
      */
@@ -873,9 +789,7 @@ public class TestSpecificationParser extends TapestryTestCase
         }
         catch (Exception ex)
         {
-            checkException(
-                ex,
-                "Contained component bad does not specify attribute type or copy-of.");
+            checkException(ex, "Contained component bad does not specify attribute type or copy-of.");
         }
     }
 
@@ -899,13 +813,13 @@ public class TestSpecificationParser extends TapestryTestCase
 
         IBindingSpecification b = source.getBinding("value");
 
-        assertEquals(BindingType.DYNAMIC, b.getType());
-        assertEquals("date", b.getValue());
+        assertEquals(BindingType.PREFIXED, b.getType());
+        assertEquals("ognl:date", b.getValue());
 
         assertSame(b, copy.getBinding("value"));
 
         IBindingSpecification b2 = override.getBinding("value");
-        assertEquals("tomorrow", b2.getValue());
+        assertEquals("ognl:tomorrow", b2.getValue());
 
         b = copy.getBinding("foo");
 
@@ -917,8 +831,7 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     * And here's what happens when copy-of doesn't match
-     * a known component.
+     * And here's what happens when copy-of doesn't match a known component.
      * 
      * @since 3.1
      */

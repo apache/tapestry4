@@ -1,4 +1,4 @@
-//  Copyright 2004 The Apache Software Foundation
+// Copyright 2004 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -256,7 +256,7 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
      * 
      **/
 
-    public synchronized void resetDidOccur()
+    public synchronized void resetEventDidOccur()
     {
         _cache.clear();
     }

@@ -1,4 +1,4 @@
-//  Copyright 2004 The Apache Software Foundation
+// Copyright 2004 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import junit.framework.TestCase;
@@ -27,11 +26,9 @@ import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.util.ClasspathResource;
-import org.apache.tapestry.parse.AttributeType;
 import org.apache.tapestry.parse.ITemplateParserDelegate;
 import org.apache.tapestry.parse.LocalizationToken;
 import org.apache.tapestry.parse.OpenToken;
-import org.apache.tapestry.parse.TemplateAttribute;
 import org.apache.tapestry.parse.TemplateParseException;
 import org.apache.tapestry.parse.TemplateParser;
 import org.apache.tapestry.parse.TemplateToken;
@@ -40,12 +37,11 @@ import org.apache.tapestry.parse.TextToken;
 import org.apache.tapestry.parse.TokenType;
 
 /**
- *  Tests for the Tapestry HTML template parser.
- *
- *  @author Howard Lewis Ship
- *  @version $Id$
+ * Tests for the Tapestry HTML template parser.
  * 
- **/
+ * @author Howard Lewis Ship
+ * @version $Id$
+ */
 
 public class TestTemplateParser extends TestCase
 {
@@ -68,11 +64,8 @@ public class TestTemplateParser extends TestCase
 
     }
 
-    protected TemplateToken[] run(
-        char[] templateData,
-        ITemplateParserDelegate delegate,
-        Resource location)
-        throws TemplateParseException
+    protected TemplateToken[] run(char[] templateData, ITemplateParserDelegate delegate, Resource location)
+            throws TemplateParseException
     {
         TemplateParser parser = new TemplateParser();
 
@@ -81,11 +74,8 @@ public class TestTemplateParser extends TestCase
         return parser.parse(templateData, delegate, location);
     }
 
-    protected TemplateToken[] run(
-        InputStream stream,
-        ITemplateParserDelegate delegate,
-        Resource location)
-        throws TemplateParseException
+    protected TemplateToken[] run(InputStream stream, ITemplateParserDelegate delegate, Resource location)
+            throws TemplateParseException
     {
         StringBuffer buffer = new StringBuffer();
         char[] block = new char[1000];
@@ -118,8 +108,7 @@ public class TestTemplateParser extends TestCase
         return run(file, new ParserDelegate());
     }
 
-    protected TemplateToken[] run(String file, ITemplateParserDelegate delegate)
-        throws TemplateParseException
+    protected TemplateToken[] run(String file, ITemplateParserDelegate delegate) throws TemplateParseException
     {
         String thisClassName = getClass().getName();
         String thisPath = "/" + thisClassName.replace('.', '/') + "/" + file;
@@ -153,20 +142,16 @@ public class TestTemplateParser extends TestCase
         assertEquals("Text token end index.", endIndex, t.getEndIndex());
     }
 
-    /** @since 3.0 **/
+    /** @since 3.0 * */
 
     protected void checkLine(TemplateToken token, int line)
     {
         assertEquals("Token line", line, token.getLocation().getLineNumber());
     }
 
-    /** @since 2.0.4 **/
+    /** @since 2.0.4 * */
 
-    protected void assertLocalizationToken(
-        TemplateToken token,
-        String key,
-        Map attributes,
-        int line)
+    protected void assertLocalizationToken(TemplateToken token, String key, Map attributes, int line)
     {
         LocalizationToken t = (LocalizationToken) token;
 
@@ -183,12 +168,7 @@ public class TestTemplateParser extends TestCase
         assertOpenToken(token, id, null, tag, line);
     }
 
-    protected void assertOpenToken(
-        TemplateToken token,
-        String id,
-        String componentType,
-        String tag,
-        int line)
+    protected void assertOpenToken(TemplateToken token, String id, String componentType, String tag, int line)
     {
         OpenToken t = (OpenToken) token;
 
@@ -200,30 +180,11 @@ public class TestTemplateParser extends TestCase
         checkLine(token, line);
     }
 
-    protected void assertTemplateAttributes(TemplateToken token, AttributeType type, Map expected)
+    protected void assertTemplateAttributes(TemplateToken token, Map expected)
     {
         OpenToken t = (OpenToken) token;
 
-        Map attributes = t.getAttributesMap();
-
-        Map actual = null;
-
-        if (attributes != null)
-        {
-            actual = new HashMap();
-            Iterator i = attributes.entrySet().iterator();
-            while (i.hasNext())
-            {
-                Map.Entry entry = (Map.Entry) i.next();
-
-                TemplateAttribute attribute = (TemplateAttribute) entry.getValue();
-
-                if (attribute.getType() == type)
-                    actual.put(entry.getKey(), attribute.getValue());
-            }
-        }
-
-        assertEquals(type.getName() + " attributes", expected, actual);
+        assertEquals("Attributes", expected, t.getAttributesMap());
     }
 
     protected void assertCloseToken(TemplateToken token, int line)
@@ -342,9 +303,7 @@ public class TestTemplateParser extends TestCase
 
     public void testMissingAttributeValueFailure()
     {
-        runFailure(
-            "MissingAttributeValue.html",
-            "Tag <img> on line 9 is missing a value for attribute src.");
+        runFailure("MissingAttributeValue.html", "Tag <img> on line 9 is missing a value for attribute src.");
     }
 
     public void testIncompleteCloseFailure()
@@ -354,16 +313,13 @@ public class TestTemplateParser extends TestCase
 
     public void testMismatchedCloseTagsFailure()
     {
-        runFailure(
-            "MismatchedCloseTags.html",
-            "Closing tag </th> on line 9 does not have a matching open tag.");
+        runFailure("MismatchedCloseTags.html", "Closing tag </th> on line 9 does not have a matching open tag.");
     }
 
     public void testInvalidDynamicNestingFailure()
     {
-        runFailure(
-            "InvalidDynamicNesting.html",
-            "Closing tag </body> on line 12 is improperly nested with tag <span> on line 8.");
+        runFailure("InvalidDynamicNesting.html",
+                "Closing tag </body> on line 12 is improperly nested with tag <span> on line 8.");
     }
 
     public void testUnknownComponentIdFailure()
@@ -386,10 +342,7 @@ public class TestTemplateParser extends TestCase
             }
         };
 
-        runFailure(
-            "Complex.html",
-            delegate,
-            "Tag <tr> on line 11 references unknown component id 'row'.");
+        runFailure("Complex.html", delegate, "Tag <tr> on line 11 references unknown component id 'row'.");
     }
 
     public void testBasicRemove() throws TemplateParseException
@@ -440,16 +393,13 @@ public class TestTemplateParser extends TestCase
 
     public void testRemovedComponentFailure()
     {
-        runFailure(
-            "RemovedComponent.html",
-            "Tag <span> on line 5 is a dynamic component, and may not appear inside an ignored block.");
+        runFailure("RemovedComponent.html",
+                "Tag <span> on line 5 is a dynamic component, and may not appear inside an ignored block.");
     }
 
     public void testNestedRemoveFailure()
     {
-        runFailure(
-            "NestedRemove.html",
-            "Tag <span> on line 4 should be ignored, but is already inside "
+        runFailure("NestedRemove.html", "Tag <span> on line 4 should be ignored, but is already inside "
                 + "an ignored block (ignored blocks may not be nested).");
     }
 
@@ -466,9 +416,8 @@ public class TestTemplateParser extends TestCase
 
     public void testIgnoredContentFailure()
     {
-        runFailure(
-            "IgnoredContent.html",
-            "Tag <td> on line 7 is the template content, and may not be in an ignored block.");
+        runFailure("IgnoredContent.html",
+                "Tag <td> on line 7 is the template content, and may not be in an ignored block.");
     }
 
     public void testTagAttributes() throws TemplateParseException
@@ -478,17 +427,14 @@ public class TestTemplateParser extends TestCase
         assertTokenCount(tokens, 5);
         assertOpenToken(tokens[1], "tag", null, "span", 3);
 
-        assertTemplateAttributes(
-            tokens[1],
-            AttributeType.LITERAL,
-            buildMap(new String[] { "class", "zip", "align", "right", "color", "#ff00ff" }));
+        assertTemplateAttributes(tokens[1], buildMap(new String[]
+        { "class", "zip", "align", "right", "color", "#ff00ff" }));
 
     }
 
     /**
-     *   @since 2.0.4
-     * 
-     **/
+     * @since 2.0.4
+     */
 
     public void testBasicLocalization() throws TemplateParseException
     {
@@ -501,42 +447,35 @@ public class TestTemplateParser extends TestCase
     }
 
     /**
+     * Test that the parser fails if a localization block contains a component.
      * 
-     *  Test that the parser fails if a localization block contains
-     *  a component.
-     * 
-     *  @since 2.0.4
-     * 
-     **/
+     * @since 2.0.4
+     */
 
     public void testComponentInsideLocalization()
     {
-        runFailure(
-            "ComponentInsideLocalization.html",
-            "Tag <span> on line 9 is a dynamic component, and may not appear inside an ignored block.");
+        runFailure("ComponentInsideLocalization.html",
+                "Tag <span> on line 9 is a dynamic component, and may not appear inside an ignored block.");
     }
 
     /**
-     *  Test that the parser fails if an invisible localization is
-     *  nested within another invisible localization.
+     * Test that the parser fails if an invisible localization is nested within another invisible
+     * localization.
      * 
-     *  @since 2.0.4
-     * 
-     **/
+     * @since 2.0.4
+     */
 
     public void testNestedLocalizations()
     {
-        runFailure(
-            "NestedLocalizations.html",
-            "Tag <span> on line 4 is a dynamic component, and may not appear inside an ignored block.");
+        runFailure("NestedLocalizations.html",
+                "Tag <span> on line 4 is a dynamic component, and may not appear inside an ignored block.");
     }
 
     /**
-     *  Test that the abbreviated form (a tag with no body) works.
+     * Test that the abbreviated form (a tag with no body) works.
      * 
-     *  @since 2.0.4
-     * 
-     **/
+     * @since 2.0.4
+     */
 
     public void testEmptyLocalization() throws TemplateParseException
     {
@@ -549,28 +488,27 @@ public class TestTemplateParser extends TestCase
     }
 
     /**
-     *  Test attributes in the span.  Also, checks that the parser
-     *  caselessly identifies the "key" attribute and the tag name ("span").
+     * Test attributes in the span. Also, checks that the parser caselessly identifies the "key"
+     * attribute and the tag name ("span").
      * 
-     *  @since 2.0.4
-     * 
-     **/
+     * @since 2.0.4
+     */
 
     public void testLocalizationAttributes() throws TemplateParseException
     {
         TemplateToken[] tokens = run("LocalizationAttributes.html");
 
-        Map attributes = buildMap(new String[] { "alpha", "beta", "Fred", "Wilma" });
+        Map attributes = buildMap(new String[]
+        { "alpha", "beta", "Fred", "Wilma" });
 
         assertLocalizationToken(tokens[1], "localization.with.attributes", attributes, 3);
     }
 
     /**
-     *  Tests for implicit components (both named and anonymous).
+     * Tests for implicit components (both named and anonymous).
      * 
-     *  @since 3.0
-     * 
-     **/
+     * @since 3.0
+     */
 
     public void testImplicitComponents() throws TemplateParseException
     {
@@ -581,61 +519,46 @@ public class TestTemplateParser extends TestCase
         assertOpenToken(tokens[1], "$Body", "Body", "body", 4);
         assertOpenToken(tokens[3], "loop", "Foreach", "tr", 7);
 
-        assertTemplateAttributes(
-            tokens[3],
-            AttributeType.LITERAL,
-            buildMap(new String[] { "element", "tr" }));
-
-        assertTemplateAttributes(
-            tokens[3],
-            AttributeType.OGNL_EXPRESSION,
-            buildMap(new String[] { "source", "items" }));
+        assertTemplateAttributes(tokens[3], buildMap(new String[]
+        { "element", "tr", "source", "ognl:items" }));
 
         assertOpenToken(tokens[5], "$Insert", "Insert", "span", 10);
 
-        assertTemplateAttributes(
-            tokens[5],
-            AttributeType.OGNL_EXPRESSION,
-            buildMap(new String[] { "value", "components.loop.value.name" }));
+        assertTemplateAttributes(tokens[5], buildMap(new String[]
+        { "value", "ognl:components.loop.value.name" }));
 
         assertOpenToken(tokens[8], "$Insert$0", "Insert", "span", 11);
 
-        assertTemplateAttributes(
-            tokens[8],
-            AttributeType.OGNL_EXPRESSION,
-            buildMap(new String[] { "value", "components.loop.value.price" }));
+        assertTemplateAttributes(tokens[8], buildMap(new String[]
+        { "value", "ognl:components.loop.value.price" }));
 
         assertOpenToken(tokens[13], "$InspectorButton", "contrib:InspectorButton", "span", 15);
     }
 
     /**
-     *  Test for encoded characters in an expression.
+     * Test for encoded characters in an expression.
      * 
-     *  @since 3.0
-     * 
-     **/
+     * @since 3.0
+     */
 
     public void testEncodedExpressionCharacters() throws TemplateParseException
     {
         TemplateToken[] tokens = run("EncodedExpressionCharacters.html");
 
-        assertTokenCount(tokens, 4);
+        assertTokenCount(tokens, 3);
 
-        assertOpenToken(tokens[1], "$Insert", "Insert", "span", 2);
+        assertOpenToken(tokens[0], "$Insert", "Insert", "span", 1);
 
-        String expression = "{ \"<&>\", \"Fun!\" }";
+        String expression = "ognl: { \"<&>\", \"Fun!\" }";
 
-        assertTemplateAttributes(
-            tokens[1],
-            AttributeType.OGNL_EXPRESSION,
-            buildMap(new String[] { "value", expression }));
+        assertTemplateAttributes(tokens[0], buildMap(new String[]
+        { "value", expression }));
 
     }
 
     /**
-     *  Test ability to read string attributes.
-     * 
-     **/
+     * Test ability to read string attributes.
+     */
 
     public void testStringAttributes() throws TemplateParseException
     {
@@ -645,15 +568,8 @@ public class TestTemplateParser extends TestCase
 
         assertOpenToken(tokens[1], "$Image", "Image", "img", 3);
 
-        assertTemplateAttributes(
-            tokens[1],
-            AttributeType.OGNL_EXPRESSION,
-            buildMap(new String[] { "image", "assets.logo" }));
-
-        assertTemplateAttributes(
-            tokens[1],
-            AttributeType.LOCALIZATION_KEY,
-            buildMap(new String[] { "alt", "logo-title" }));
+        assertTemplateAttributes(tokens[1], buildMap(new String[]
+        { "image", "ognl:assets.logo", "alt", "message:logo-title" }));
 
     }
 
