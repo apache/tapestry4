@@ -272,4 +272,8 @@ public class TestingForm implements IForm
         return null;
     }
 
+    public void setEncodingType(String encodingType) throws RequestCycleException
+    {
+    }
+
 }

@@ -68,6 +68,12 @@ import org.apache.commons.lang.enum.Enum;
 
 /**
  *  Default implementation of {@link DefaultValuePersister}.
+ * 
+ *  <p>
+ *  In general, objects that are stored as persistent page properties should 
+ *  be immutable (such as String or Integer), implement the 
+ *  {@link net.sf.tapestry.util.IImmutable} interface, or
+ *  be {@link java.io.Serializable}.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -127,6 +133,13 @@ public class DefaultValuePersister implements IValuePersister
      * 
      *  <p>
      *  An instance of {@link SerializableCopier} for {@link java.io.Serializable}.
+     * 
+     *  <p>
+     *  Any object that doesn't fit into one of the above categories
+     *  is treated as immutable.  This encompasses the J2EE classes
+     *  that the application server is responsible for (such as EJBObject and
+     *  UserTransaction), but also any user-defined classes (which
+     *  may come back to bite you when you turn on clustering).
      *  
      **/
 
