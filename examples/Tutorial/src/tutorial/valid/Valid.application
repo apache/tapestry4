@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!--$Id$-->
+<!DOCTYPE application PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
+	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
+<application>
+  <name>Validating Text Fields</name>
+  <engine-class>com.primix.tapestry.engine.SimpleEngine</engine-class>
+  <page>
+    <name>Home</name>
+    <specification-path>/tutorial/valid/Home.jwc</specification-path>
+  </page>
+  <page>
+    <name>Show</name>
+    <specification-path>/tutorial/valid/Show.jwc</specification-path>
+  </page>
+  <component-alias>
+    <alias>Border</alias>
+    <specification-path>/tutorial/valid/Border.jwc</specification-path>
+  </component-alias>
+  <component-alias>
+    <alias>ShowError</alias>
+    <specification-path>/tutorial/valid/ShowError.jwc</specification-path>
+  </component-alias>
+  <properties>
+    <property>
+      <name>com.primix.tapestry.visit-class </name>
+      <value>tutorial.valid.Visit</value>
+    </property>
+  </properties>
+</application>
