@@ -104,14 +104,14 @@ public class Protected extends BasePage implements IErrorProperty
         return _error;
     }
 
-    protected void setErrorField(String componentId, String message, String value)
+    protected void setErrorField(String componentId, String message)
     {
         IFormComponent component = (IFormComponent) getComponent(componentId);
 
         IValidationDelegate delegate = getValidationDelegate();
 
         delegate.setFormComponent(component);
-        delegate.record(message, null, value);
+        delegate.record(message, null);
 
     }
 

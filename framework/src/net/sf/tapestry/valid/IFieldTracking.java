@@ -58,19 +58,16 @@ import net.sf.tapestry.IRender;
 import net.sf.tapestry.form.IFormComponent;
 
 /**
- *  Defines the interface for an object that tracks validation errors.  This 
+ *  Defines the interface for an object that tracks input fields.  This 
  *  interface is now poorly named, in that it tracks errors that may <em>not</em>
  *  be associated with a specific field.
  * 
- *  <p>The initial release (1.0.8) stored an error <em>message</em>.  Starting in
- *  release 1.0.9, this was changed to an error <em>renderrer</em>.  This increases
- *  the complexity slightly, but allows for much, much greater flexibility in how
- *  errors are ultimately presented to the user.  For example, you could devote part
- *  of a template to a {@link net.sf.tapestry.components.Block} 
- *  that contained a detail error message and links
- *  to other parts of the application (for example, perhaps a pop-up help message).
- * 
- *  <p>However, in most cases, the renderrer will simply be a wrapper 
+ *  <p>For each field, a flag is stored indicating if the field is, in fact, in error.
+ *  The input supplied by the client is stored so that if the form is re-rendered
+ *  (as is typically done when there are input errors), the value entered by the user
+ *  is displayed back to the user.  An error message renderer is stored; this is
+ *  an object that can render the error message (it is usually
+ *  a {@link net.sf.tapestry.valid.RenderString} wrapper around a simple string).
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -80,13 +77,22 @@ import net.sf.tapestry.form.IFormComponent;
 
 public interface IFieldTracking
 {
+	/**
+	 *  Returns true if the field is in error (that is,
+	 *  if it has an error message {@link #getRenderer() renderer}.
+	 * 
+	 **/
+	
+	public boolean isInError();
+	
+	
     /**
      *  Returns the field component.  This may return null if the error
      *  is not associated with any particular field.
      * 
      **/
 
-    public IFormComponent getFormComponent();
+    public IFormComponent getComponent();
 
     /**
      *  Returns an object that will render the error message.
@@ -95,18 +101,8 @@ public interface IFieldTracking
      * 
      **/
 
-    public IRender getRenderer();
+    public IRender getErrorRenderer();
 
-    /**
-     *  Sets the error renderrer, the object that will render the error message.
-     *  Typically, this is just a {@link RenderString}, but it could be a component
-     *  or virtually anything.
-     * 
-     *  @since 1.0.9
-     * 
-     **/
-
-    public void setRenderer(IRender value);
 
     /**
      *  Returns the invalid input recorded for the field.  This is stored
@@ -115,9 +111,7 @@ public interface IFieldTracking
      * 
      **/
 
-    public String getInvalidInput();
-
-    public void setInvalidInput(String value);
+    public String getInput();
 
     /**
      *  Returns the name of the field, that is, the name assigned by the form
@@ -135,6 +129,4 @@ public interface IFieldTracking
      **/
 
     public ValidationConstraint getConstraint();
-
-    public void setConstraint(ValidationConstraint value);
 }

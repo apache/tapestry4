@@ -83,7 +83,8 @@ public abstract class Hidden extends AbstractFormComponent
         return _name;
     }
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
     {
         IForm form = getForm(cycle);
         boolean formRewound = form.isRewinding();
@@ -148,7 +149,7 @@ public abstract class Hidden extends AbstractFormComponent
 
         getValueBinding().setObject(value);
 
-IActionListener listener = getListener();
+        IActionListener listener = getListener();
 
         if (listener != null)
             listener.actionTriggered(this, cycle);
@@ -163,9 +164,7 @@ IActionListener listener = getListener();
 
     public abstract IActionListener getListener();
 
-
     public abstract IBinding getValueBinding();
-
 
     /**
      * 

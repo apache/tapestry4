@@ -57,6 +57,7 @@ package net.sf.tapestry.valid;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -64,8 +65,8 @@ import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRender;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.form.IFormComponent;
-import net.sf.tapestry.util.pool.IPoolable;
 
 /**
  *  A base implementation of {@link IValidationDelegate} that can be used
@@ -78,18 +79,18 @@ import net.sf.tapestry.util.pool.IPoolable;
  * 
  **/
 
-public class ValidationDelegate implements IValidationDelegate, IPoolable
+public class ValidationDelegate implements IValidationDelegate
 {
     private IFormComponent _currentComponent;
     private List _trackings;
-    
+
     /**
      *  A Map of Maps, keyed on the name of the Form.  Each inner map contains
      *  the trackings for one form, keyed on component name.  Care must
      *  be taken, because the inner Map is not always present.
      * 
      **/
-    
+
     private Map _trackingMap;
 
     public void clear()
@@ -97,17 +98,6 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
         _currentComponent = null;
         _trackings = null;
         _trackingMap = null;
-    }
-
-    public void resetForPool()
-    {
-        _currentComponent = null;
-
-        if (_trackings != null)
-            _trackings.clear();
-
-        if (_trackingMap != null)
-            _trackingMap.clear();
     }
 
     /**
@@ -150,33 +140,34 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 
     /**
      *  Returns the {@link IFieldTracking} for the current component, if any.
-     *  The {@link IFieldTracking} is created in {@link #record(IRender, ValidationConstraint, String)}
-     *  when an error is recorded for the component.
+     *  The {@link IFieldTracking} is usually created in 
+     *  {@link #recordInput(String)} or, failing that,
+     *  in {@link #record(IRender, ValidationConstraint)}.
      * 
      *  <p>Components may be rendered multiple times, with multiple names (provided
      *  by the {@link net.sf.tapestry.form.Form}, care must be taken that this method is invoked
-     *  <em>after</em> the Form has provided a unique name for the component.
+     *  <em>after</em> the Form has provided a unique 
+     *  {@link IFormComponent#getName()} for the component.
      * 
      *  @see #setFormComponent(IFormComponent)
      * 
-     *  @return the {@link IFieldTracking}, or null if the field has no tracking
-     *  (is not in error).
+     *  @return the {@link FieldTracking}, or null if the field has no tracking.
      * 
      **/
 
-    protected IFieldTracking getComponentTracking()
+    protected FieldTracking getComponentTracking()
     {
         if (_trackingMap == null)
             return null;
-    
+
         String formName = _currentComponent.getForm().getName();
-        
-        Map formMap = (Map)_trackingMap.get(formName);
-        
+
+        Map formMap = (Map) _trackingMap.get(formName);
+
         if (formMap == null)
             return null;
-        
-        return (IFieldTracking) formMap.get(_currentComponent.getName());
+
+        return (FieldTracking) formMap.get(_currentComponent.getName());
     }
 
     public void setFormComponent(IFormComponent component)
@@ -186,12 +177,16 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 
     public boolean isInError()
     {
-        return getComponentTracking() != null;
+        IFieldTracking tracking = getComponentTracking();
+
+        return tracking != null && tracking.isInError();
     }
 
-    public String getInvalidInput()
+    public String getFieldInputValue()
     {
-        return getComponentTracking().getInvalidInput();
+        IFieldTracking tracking = getComponentTracking();
+
+        return tracking == null ? null : tracking.getInput();
     }
 
     /**
@@ -201,7 +196,7 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 
     public List getFieldTracking()
     {
-        if (_trackings == null)
+        if (Tapestry.size(_trackings) == 0)
             return null;
 
         return Collections.unmodifiableList(_trackings);
@@ -214,39 +209,44 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
         if (tracking != null)
         {
             _trackings.remove(tracking);
-            
-            String formName = tracking.getFormComponent().getForm().getName();
-            
-            Map formMap = (Map)_trackingMap.get(formName);
-            
+
+            String formName = tracking.getComponent().getForm().getName();
+
+            Map formMap = (Map) _trackingMap.get(formName);
+
             if (formMap != null)
                 formMap.remove(tracking.getFieldName());
         }
     }
 
     /**
-     *  Invokes {@link #record(String, ValidationConstraint, String)}.
+     *  Invokes {@link #record(String, ValidationConstraint)}, or
+     *  {@link #record(IRender, ValidationConstraint)} if the 
+     *  {@link ValidatorException#getErrorRenderer() error renderer property}
+     *  is not null.
      * 
      **/
 
     public void record(ValidatorException ex)
     {
-        record(ex.getMessage(), ex.getConstraint(), ex.getInvalidInput());
+        IRender errorRenderer = ex.getErrorRenderer();
+
+        if (errorRenderer == null)
+            record(ex.getMessage(), ex.getConstraint());
+        else
+            record(errorRenderer, ex.getConstraint());
     }
 
     /**
-     *  Invokes {@link #record(IRender, ValidationConstraint, String)}, after
+     *  Invokes {@link #record(IRender, ValidationConstraint)}, after
      *  wrapping the message parameter in a
      *  {@link RenderString}.
      * 
      **/
 
-    public void record(
-        String message,
-        ValidationConstraint constraint,
-        String invalidInput)
+    public void record(String message, ValidationConstraint constraint)
     {
-        record(new RenderString(message), constraint, invalidInput);
+        record(new RenderString(message), constraint);
     }
 
     /**
@@ -266,12 +266,37 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
      *  @since 1.0.9
      **/
 
-    public void record(
-        IRender errorRenderer,
-        ValidationConstraint constraint,
-        String invalidInput)
+    public void record(IRender errorRenderer, ValidationConstraint constraint)
     {
-        IFieldTracking tracking = null;
+        FieldTracking tracking = findCurrentTracking();
+
+        // Note that recording two errors for the same field is not advised; the
+        // second will override the first.
+
+        tracking.setErrorRenderer(errorRenderer);
+        tracking.setConstraint(constraint);
+    }
+
+    public void recordFieldInputValue(String input)
+    {
+        FieldTracking tracking = findCurrentTracking();
+
+        tracking.setInput(input);
+    }
+
+    /**
+     *  Finds or creates the field tracking for the
+     *  {@link #setFormComponent(IFormComponent) current component.
+     *  If no current component, an unassociated error is created
+     *  and returned.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    protected FieldTracking findCurrentTracking()
+    {
+        FieldTracking result = null;
 
         if (_trackings == null)
             _trackings = new ArrayList();
@@ -281,57 +306,82 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 
         if (_currentComponent == null)
         {
-            tracking = new FieldTracking();
+            result = new FieldTracking();
 
-            // Add it to the *ahem* field trackings, but not to the
+            // Add it to the field trackings, but not to the
             // map.
 
-            _trackings.add(tracking);
+            _trackings.add(result);
         }
         else
         {
-            tracking = getComponentTracking();
+            result = getComponentTracking();
 
-            if (tracking == null)
+            if (result == null)
             {
                 String formName = _currentComponent.getForm().getName();
-                
-                Map formMap = (Map)_trackingMap.get(formName);
-                
+
+                Map formMap = (Map) _trackingMap.get(formName);
+
                 if (formMap == null)
                 {
                     formMap = new HashMap();
                     _trackingMap.put(formName, formMap);
                 }
-                
+
                 String fieldName = _currentComponent.getName();
 
-                tracking = new FieldTracking(fieldName, _currentComponent);
+                result = new FieldTracking(fieldName, _currentComponent);
 
-                _trackings.add(tracking);
-                formMap.put(fieldName, tracking);
+                _trackings.add(result);
+                formMap.put(fieldName, result);
             }
         }
 
-        // Note that recording two errors for the same field is not advised; the
-        // second will override the first.
-
-        tracking.setInvalidInput(invalidInput);
-        tracking.setRenderer(errorRenderer);
-        tracking.setConstraint(constraint);
+        return result;
     }
 
-    public void writePrefix(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component, IValidator validator)
+    /**
+     *  Does nothing.  Override in a subclass to decoreate
+     *  fields.
+     * 
+     **/
+
+    public void writePrefix(
+        IMarkupWriter writer,
+        IRequestCycle cycle,
+        IFormComponent component,
+        IValidator validator)
         throws RequestCycleException
     {
     }
 
-    public void writeAttributes(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component, IValidator validator)
+    /**
+     *  Does nothing.  Override in a subclass to decorate fields.
+     * 
+     **/
+
+    public void writeAttributes(
+        IMarkupWriter writer,
+        IRequestCycle cycle,
+        IFormComponent component,
+        IValidator validator)
         throws RequestCycleException
     {
     }
 
-    public void writeSuffix(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component, IValidator validator)
+    /**
+     *  Default implementation; if the current field is in error,
+     *  then a suffix is written.  The suffix is:
+     *  <code>&amp;nbsp;&lt;font color="red"&gt;**&lt;/font&gt;</code>.
+     * 
+     **/
+
+    public void writeSuffix(
+        IMarkupWriter writer,
+        IRequestCycle cycle,
+        IFormComponent component,
+        IValidator validator)
         throws RequestCycleException
     {
         if (isInError())
@@ -346,7 +396,7 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 
     public boolean getHasErrors()
     {
-        return _trackings != null && _trackings.size() > 0;
+        return getFirstError() != null;
     }
 
     /**
@@ -358,15 +408,20 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 
     public IRender getFirstError()
     {
-        if (_trackings == null)
+        if (Tapestry.size(_trackings) == 0)
             return null;
 
-        if (_trackings.size() == 0)
-            return null;
+        Iterator i = _trackings.iterator();
 
-        IFieldTracking tracking = (IFieldTracking) _trackings.get(0);
+        while (i.hasNext())
+        {
+            IFieldTracking tracking = (IFieldTracking) i.next();
 
-        return tracking.getRenderer();
+            if (tracking.isInError())
+                return tracking.getErrorRenderer();
+        }
+
+        return null;
     }
 
     /**
@@ -383,12 +438,14 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
             return false;
 
         String formName = component.getForm().getName();
-        Map formMap = (Map)_trackingMap.get(formName);
-        
+        Map formMap = (Map) _trackingMap.get(formName);
+
         if (formMap == null)
             return false;
 
-        return formMap.containsKey(component.getName());
+        IFieldTracking tracking = (IFieldTracking) formMap.get(component.getName());
+
+        return tracking != null && tracking.isInError();
     }
 
     /**
@@ -403,7 +460,7 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 
     public List getAssociatedTrackings()
     {
-        int count = (_trackings == null) ? 0 : _trackings.size();
+        int count = Tapestry.size(_trackings);
 
         if (count == 0)
             return null;
@@ -436,7 +493,7 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 
     public List getUnassociatedTrackings()
     {
-        int count = (_trackings == null) ? 0 : _trackings.size();
+        int count = Tapestry.size(_trackings);
 
         if (count == 0)
             return null;
@@ -455,14 +512,4 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 
         return result;
     }
-
-    /** 
-     *  @since 2.4
-     * 
-     **/
-    
-    public void discardFromPool()
-    {
-    }
-
-}
+};

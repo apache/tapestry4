@@ -217,7 +217,7 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
         IValidationDelegate delegate = getForm().getDelegate();
 
         if (delegate.isInError())
-            return delegate.getInvalidInput();
+            return delegate.getFieldInputValue();
 
         Object value = getValueBinding().getObject();
         String result = getValidator().toString(this, value);
@@ -232,6 +232,8 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
     {
         Object objectValue = null;
         IValidationDelegate delegate = getForm().getDelegate();
+
+		delegate.recordFieldInputValue(value);
 
         try
         {

@@ -16,8 +16,11 @@
 <ul>
 <li>Allow &lt;set-property&gt; element of specification to specify the expression as an attribute or
 as wrapped character data.</li>
-<li>The interface for <a href="doc/api/net/sf/tapestry/valid/IValidationDelegate.html">ValidationDelegate</a>
-changed incompatibly, to pass the component and validator to the rendering methods.</li>
+<li>The interfaces for <a href="doc/api/net/sf/tapestry/valid/IValidationDelegate.html">IValidationDelegate</a>,
+ <a href="doc/api/net/sf/tapestry/valid/IValidator.html">IValidator</a> and
+  <a href="doc/api/net/sf/tapestry/valid/ValidatorException.html">ValidatorException</a>
+changed incompatibly.  This will only be an issue if you have created custom validation delegates or custom
+validators.</li>
 <li>Added methods to <a href="doc/api/net/sf/tapestry/valid/IComponentStrings.html">IComponentStrings</a> for formatting localized strings
 with arguments.</li>
 </ul>		

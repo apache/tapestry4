@@ -57,9 +57,8 @@ package net.sf.tapestry.junit.valid;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
-import junit.framework.TestCase;
-
 import net.sf.tapestry.form.IFormComponent;
+import net.sf.tapestry.junit.TapestryTestCase;
 import net.sf.tapestry.valid.NumberValidator;
 import net.sf.tapestry.valid.ValidatorException;
 
@@ -72,7 +71,7 @@ import net.sf.tapestry.valid.ValidatorException;
  *
  **/
 
-public class TestNumberValidator extends TestCase
+public class TestNumberValidator extends TapestryTestCase
 {
     private NumberValidator v = new NumberValidator();
 
@@ -122,6 +121,53 @@ public class TestNumberValidator extends TestCase
     public void testDouble() throws ValidatorException
     {
         testPassThru("testDouble", Double.class, new Double(348348.484854848));
+    }
+
+    public void testLong() throws ValidatorException
+    {
+        testPassThru("testLong", Long.class, new Long(37373218723l));
+    }
+
+    public void testInRange() throws ValidatorException
+    {
+        v.setMinimum(new Integer(100));
+        v.setMaximum(new Integer(200));
+
+        testPassThru("testInRange", Integer.class, new Integer(150));
+    }
+
+    public void testUnderMinimum()
+    {
+        v.setMinimum(new Integer(100));
+        v.setMaximum(new Integer(200));
+
+        try
+        {
+            testPassThru("testUnderMinimum", Integer.class, new Integer(50));
+
+            unreachable();
+        }
+        catch (ValidatorException ex)
+        {
+            checkException(ex, "testUnderMinimum must not be smaller than 100.");
+        }
+    }
+
+    public void testOverMaximum()
+    {
+        v.setMinimum(new Integer(100));
+        v.setMaximum(new Integer(200));
+
+        try
+        {
+            testPassThru("testUnderMinimum", Integer.class, new Integer(250));
+
+            unreachable();
+        }
+        catch (ValidatorException ex)
+        {
+            checkException(ex, "testUnderMinimum must not be larger than 200.");
+        }
     }
 
     public void testBigInteger() throws ValidatorException

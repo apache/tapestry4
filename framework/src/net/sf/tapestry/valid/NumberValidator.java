@@ -112,7 +112,7 @@ public class NumberValidator extends BaseValidator
     }
 
     private Class _valueTypeClass = int.class;
-    
+
     private boolean _zeroIsNull;
     private Number _minimum;
     private Number _maximum;
@@ -279,7 +279,7 @@ public class NumberValidator extends BaseValidator
                     field.getPage().getLocale(),
                     field.getDisplayName());
 
-            throw new ValidatorException(errorMessage, ValidationConstraint.NUMBER_FORMAT, value);
+            throw new ValidatorException(errorMessage, ValidationConstraint.NUMBER_FORMAT);
         }
 
         if (_minimum != null && adaptor.compare(result, _minimum) < 0)
@@ -291,7 +291,7 @@ public class NumberValidator extends BaseValidator
                     field.getDisplayName(),
                     _minimum);
 
-            throw new ValidatorException(errorMessage, ValidationConstraint.TOO_SMALL, value);
+            throw new ValidatorException(errorMessage, ValidationConstraint.TOO_SMALL);
         }
 
         if (_maximum != null && adaptor.compare(result, _maximum) > 0)
@@ -303,7 +303,7 @@ public class NumberValidator extends BaseValidator
                     field.getDisplayName(),
                     _maximum);
 
-            throw new ValidatorException(errorMessage, ValidationConstraint.TOO_LARGE, value);
+            throw new ValidatorException(errorMessage, ValidationConstraint.TOO_LARGE);
         }
 
         return result;
@@ -446,27 +446,27 @@ public class NumberValidator extends BaseValidator
             throw new ApplicationRuntimeException(
                 Tapestry.getString("NumberValidator.unknown-type", typeName));
 
-		_valueTypeClass = typeClass;
+        _valueTypeClass = typeClass;
     }
 
-	/** @since 2.4 **/
-	
-	public void setValueTypeClass(Class valueTypeClass)
-	{
-		_valueTypeClass = valueTypeClass;
-	}
-	
-	/** 
-	 *  
-	 *  Returns the value type to convert strings back into.  The default is int.
-	 * 
-	 *  @since 2.4 
-	 * 
-	 **/
-	
-	public Class getValueTypeClass()
-	{
-		return _valueTypeClass;
-	}
+    /** @since 2.4 **/
+
+    public void setValueTypeClass(Class valueTypeClass)
+    {
+        _valueTypeClass = valueTypeClass;
+    }
+
+    /** 
+     *  
+     *  Returns the value type to convert strings back into.  The default is int.
+     * 
+     *  @since 2.4 
+     * 
+     **/
+
+    public Class getValueTypeClass()
+    {
+        return _valueTypeClass;
+    }
 
 }
