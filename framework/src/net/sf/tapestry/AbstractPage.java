@@ -112,6 +112,20 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     private EventListenerList _listenerList;
 
     /**
+     *  Standard constructor; invokes {@link #initialize()}
+     *  to configure initial values for properties
+     *  of the page.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public AbstractPage()
+    {
+        initialize();
+    }
+
+    /**
      *  Implemented in subclasses to provide a particular kind of
      *  response writer (and therefore, a particular kind of
      *  content).
@@ -124,7 +138,8 @@ public abstract class AbstractPage extends BaseComponent implements IPage
      *  Prepares the page to be returned to the pool.
      *  <ul>
      *	<li>Invokes {@link PageDetachListener#pageDetached(PageEvent)} on all listeners
-     *	<li>Clears the engine, visit and changeObserver properties
+     *  <li>Invokes {@link #initialize()} to clear/reset any properties	
+     * <li>Clears the engine, visit and changeObserver properties
      *	</ul>
      *
      *  <p>Subclasses may override this method, but must invoke this
@@ -136,10 +151,30 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     {
         firePageDetached();
 
+        initialize();
+        
         _engine = null;
         _visit = null;
         _changeObserver = null;
         _requestCycle = null;
+    }
+    
+    /**
+     *  Method invoked from the constructor, and from
+     *  {@link #detach()} to (re-)initialize properties
+     *  of the page.  This is most useful when
+     *  properties have non-null initial values.
+     * 
+     *  <p>Subclasses may override this implementation
+     *  (which is empty).
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    protected void initialize()
+    {
+        // Does nothing.
     }
 
     public IEngine getEngine()
