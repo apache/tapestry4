@@ -113,7 +113,7 @@
     </assert-output>
 
     <assert-output name="Message">
- 		A link component with multiple functions for a single event type must be contained within a Body.		
+  No PageRenderSupport object has been stored into the request cycle. This object is typically provided by a Body component. You should add a Body component to your template.
     </assert-output>
 
   </request>

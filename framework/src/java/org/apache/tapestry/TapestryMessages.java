@@ -25,19 +25,29 @@ final class TapestryMessages
     private static final MessageFormatter _formatter = new MessageFormatter(TapestryMessages.class,
             "TapestryStrings2");
 
-    public static String servletInitFailure(Throwable cause)
+    static String servletInitFailure(Throwable cause)
     {
         return _formatter.format("servlet-init-failure", cause);
     }
 
-    public static String componentIsLocked(IComponent component)
+    static String componentIsLocked(IComponent component)
     {
         return _formatter.format("component-is-locked", component.getExtendedId());
     }
 
-    public static String servletInit(String name, long elapsedToRegistry, long elapsedOverall)
+    static String servletInit(String name, long elapsedToRegistry, long elapsedOverall)
     {
         return _formatter.format("servlet-init", name, new Long(elapsedToRegistry), new Long(
                 elapsedOverall));
+    }
+
+    static String nonUniqueAttribute(Object newInstance, String key, Object existingInstance)
+    {
+        return _formatter.format("non-unique-attribute", newInstance, key, existingInstance);
+    }
+
+    public static String noPageRenderSupport()
+    {
+        return _formatter.getMessage("no-page-render-support");
     }
 }

@@ -19,7 +19,9 @@ import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.form.AbstractTextField;
 import org.apache.tapestry.form.Form;
 import org.apache.tapestry.form.IFormComponent;
@@ -112,8 +114,8 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
 
     /**
      * Creates JavaScript to set the cursor on the first required or error field encountered while
-     * rendering. This only works if the text field is wrapped by a {@link Body}component (which is
-     * almost always true).
+     * rendering. This only works if the text field is wrapped by a {@link Body}&nbsp;component
+     * (which is almost always true).
      */
 
     protected void addSelect(IRequestCycle cycle)
@@ -123,11 +125,11 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
         if (cycle.getAttribute(SELECTED_ATTRIBUTE_NAME) != null)
             return;
 
-        Body body = Body.get(cycle);
+        PageRenderSupport pageRenderSupport = TapestryUtils.getOptionalPageRenderSupport(cycle);
 
         // If not wrapped by a Body, then do nothing.
 
-        if (body == null)
+        if (pageRenderSupport == null)
             return;
 
         IForm form = Form.get(cycle);
@@ -137,8 +139,8 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
 
         String fullName = "document." + formName + "." + textFieldName;
 
-        body.addInitializationScript(fullName + ".focus();");
-        body.addInitializationScript(fullName + ".select();");
+        pageRenderSupport.addInitializationScript(fullName + ".focus();");
+        pageRenderSupport.addInitializationScript(fullName + ".select();");
 
         // Put a marker in, indicating that the selected field is known.
 

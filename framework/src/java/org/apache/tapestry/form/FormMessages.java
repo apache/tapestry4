@@ -53,11 +53,6 @@ class FormMessages
         return _formatter.format("form-too-few-ids", form.getExtendedId(), new Integer(remainingCount), nextExpectedId);
     }
 
-    public static String formNeedsBodyForEventHandlers()
-    {
-        return _formatter.getMessage("form-needs-body-for-event-handlers");
-    }
-
     public static String encodingTypeContention(IComponent form, String establishedEncodingType,
             String newEncodingType)
     {

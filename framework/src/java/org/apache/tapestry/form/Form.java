@@ -32,9 +32,11 @@ import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.RenderRewoundException;
 import org.apache.tapestry.StaleLinkException;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.engine.ActionServiceParameter;
 import org.apache.tapestry.engine.DirectServiceParameter;
 import org.apache.tapestry.engine.IEngineService;
@@ -464,11 +466,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
         if (_events == null || _events.isEmpty())
             return;
 
-        Body body = Body.get(cycle);
-
-        if (body == null)
-            throw new ApplicationRuntimeException(FormMessages.formNeedsBodyForEventHandlers(),
-                    this, null, null);
+        PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, this);
 
         StringBuffer buffer = new StringBuffer();
 
@@ -537,7 +535,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
             buffer.append("\n\n");
         }
 
-        body.addInitializationScript(buffer.toString());
+        pageRenderSupport.addInitializationScript(buffer.toString());
     }
 
     /**

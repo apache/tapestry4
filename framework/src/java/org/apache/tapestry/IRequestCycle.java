@@ -105,7 +105,8 @@ public interface IRequestCycle
      * request cycle, that page is returned. Otherwise, the engine's page loader is used to load the
      * page.
      * 
-     * @throws PageNotFoundException if the page does not exist.
+     * @throws PageNotFoundException
+     *             if the page does not exist.
      * @see org.apache.tapestry.engine.IPageSource#getPage(IRequestCycle, String, IMonitor)
      */
 

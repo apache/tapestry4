@@ -20,8 +20,9 @@ import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.html.Body;
+import org.apache.tapestry.TapestryUtils;
 
 /**
  * Implements a component that submits its enclosing form via a JavaScript link. [ <a
@@ -69,17 +70,15 @@ public abstract class LinkSubmit extends AbstractFormComponent
         {
             if (!rewinding)
             {
-                Body body = Body.get(cycle);
 
-                if (body == null)
-                    throw new ApplicationRuntimeException(Tapestry.format(
-                            "must-be-contained-by-body",
-                            "LinkSubmit"), this, null, null);
+                PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(
+                        cycle,
+                        this);
 
                 // make sure the submit function is on the page (once)
                 if (cycle.getAttribute(ATTRIBUTE_FUNCTION_NAME) == null)
                 {
-                    body
+                    pageRenderSupport
                             .addBodyScript("function submitLink(form, elementId) { form._linkSubmit.value = elementId; if (form.onsubmit == null || form.onsubmit()) form.submit(); }");
                     cycle.setAttribute(ATTRIBUTE_FUNCTION_NAME, this);
                 }

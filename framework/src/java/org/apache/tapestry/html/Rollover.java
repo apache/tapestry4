@@ -25,33 +25,30 @@ import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IScript;
+import org.apache.tapestry.PageRenderSupport;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.components.ILinkComponent;
 import org.apache.tapestry.components.LinkEventType;
 import org.apache.tapestry.engine.IScriptSource;
 
 /**
- *  Combines a link component (such as {@link org.apache.tapestry.link.DirectLink}) 
- *  with an &lt;img&gt; and JavaScript code
- *  to create a rollover effect that works with both Netscape Navigator and 
- *  Internet Explorer.
- *
- *  [<a href="../../../../../ComponentReference/Rollover.html">Component Reference</a>]
- *
- *
- *  @author Howard Lewis Ship
+ * Combines a link component (such as {@link org.apache.tapestry.link.DirectLink}) with an
+ * &lt;img&gt; and JavaScript code to create a rollover effect that works with both Netscape
+ * Navigator and Internet Explorer. [ <a
+ * href="../../../../../ComponentReference/Rollover.html">Component Reference </a>]
  * 
- **/
+ * @author Howard Lewis Ship
+ */
 
 public abstract class Rollover extends AbstractComponent
 {
     private IScript _parsedScript;
 
     /**
-     *  Converts an {@link IAsset} binding into a usable URL.  Returns null
-     *  if the binding does not exist or the binding's value is null.
-     *
-     **/
+     * Converts an {@link IAsset}binding into a usable URL. Returns null if the binding does not
+     * exist or the binding's value is null.
+     */
 
     protected String getAssetURL(IAsset asset, IRequestCycle cycle)
     {
@@ -75,23 +72,14 @@ public abstract class Rollover extends AbstractComponent
         boolean dynamic = false;
         String imageName = null;
 
-        Body body = Body.get(cycle);
-        if (body == null)
-            throw new ApplicationRuntimeException(
-                Tapestry.getMessage("Rollover.must-be-contained-by-body"),
-                this,
-                null,
-                null);
+        PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, this);
 
-        ILinkComponent serviceLink =
-            (ILinkComponent) cycle.getAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME);
+        ILinkComponent serviceLink = (ILinkComponent) cycle
+                .getAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME);
 
         if (serviceLink == null)
-            throw new ApplicationRuntimeException(
-                Tapestry.getMessage("Rollover.must-be-contained-by-link"),
-                this,
-                null,
-                null);
+            throw new ApplicationRuntimeException(Tapestry
+                    .getMessage("Rollover.must-be-contained-by-link"), this, null, null);
 
         boolean linkDisabled = serviceLink.isDisabled();
 
@@ -128,7 +116,7 @@ public abstract class Rollover extends AbstractComponent
             if (blurURL == null)
                 blurURL = imageURL;
 
-            imageName = writeScript(cycle, body, serviceLink, focusURL, blurURL);
+            imageName = writeScript(cycle, pageRenderSupport, serviceLink, focusURL, blurURL);
 
             writer.attribute("name", imageName);
         }
@@ -146,9 +134,8 @@ public abstract class Rollover extends AbstractComponent
             IEngine engine = getPage().getEngine();
             IScriptSource source = engine.getScriptSource();
 
-            Resource scriptLocation =
-                getSpecification().getSpecificationLocation().getRelativeResource(
-                    "Rollover.script");
+            Resource scriptLocation = getSpecification().getSpecificationLocation()
+                    .getRelativeResource("Rollover.script");
 
             _parsedScript = source.getScript(scriptLocation);
         }
@@ -156,16 +143,12 @@ public abstract class Rollover extends AbstractComponent
         return _parsedScript;
     }
 
-    private String writeScript(
-        IRequestCycle cycle,
-        Body body,
-        ILinkComponent link,
-        String focusURL,
-        String blurURL)
+    private String writeScript(IRequestCycle cycle, PageRenderSupport pageRenderSupport,
+            ILinkComponent link, String focusURL, String blurURL)
     {
-        String imageName = body.getUniqueString(getId());
-        String focusImageURL = body.getPreloadedImageReference(focusURL);
-        String blurImageURL = body.getPreloadedImageReference(blurURL);
+        String imageName = pageRenderSupport.getUniqueString(getId());
+        String focusImageURL = pageRenderSupport.getPreloadedImageReference(focusURL);
+        String blurImageURL = pageRenderSupport.getPreloadedImageReference(blurURL);
 
         Map symbols = new HashMap();
 
@@ -173,7 +156,7 @@ public abstract class Rollover extends AbstractComponent
         symbols.put("focusImageURL", focusImageURL);
         symbols.put("blurImageURL", blurImageURL);
 
-        getParsedScript().execute(cycle, body, symbols);
+        getParsedScript().execute(cycle, pageRenderSupport, symbols);
 
         // Add attributes to the link to control mouse over/out.
         // Because the script is written before the <body> tag,

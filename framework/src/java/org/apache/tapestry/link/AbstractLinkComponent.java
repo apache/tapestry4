@@ -20,16 +20,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.PageRenderSupport;
+import org.apache.tapestry.TapestryUtils;
 import org.apache.tapestry.components.ILinkComponent;
 import org.apache.tapestry.components.LinkEventType;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
-import org.apache.tapestry.html.Body;
 
 /**
  * Base class for implementations of {@link ILinkComponent}. Includes a disabled attribute (that
@@ -110,11 +109,7 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
         if (_eventHandlers == null)
             return;
 
-        Body body = Body.get(cycle);
-
-        if (body == null)
-            throw new ApplicationRuntimeException(Tapestry
-                    .getMessage("AbstractLinkComponent.events-need-body"), this, null, null);
+        PageRenderSupport pageRenderSupport = TapestryUtils.getPageRenderSupport(cycle, this);
 
         Iterator i = _eventHandlers.entrySet().iterator();
 
@@ -123,13 +118,18 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
             Map.Entry entry = (Map.Entry) i.next();
             LinkEventType type = (LinkEventType) entry.getKey();
 
-            name = writeEventHandler(writer, body, name, type.getAttributeName(), entry.getValue());
+            name = writeEventHandler(
+                    writer,
+                    pageRenderSupport,
+                    name,
+                    type.getAttributeName(),
+                    entry.getValue());
         }
 
     }
 
-    protected String writeEventHandler(IMarkupWriter writer, Body body, String name,
-            String attributeName, Object value)
+    protected String writeEventHandler(IMarkupWriter writer, PageRenderSupport pageRenderSupport,
+            String name, String attributeName, Object value)
     {
         String wrapperFunctionName;
 
@@ -139,7 +139,7 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
         }
         else
         {
-            String finalName = name == null ? body.getUniqueString("Link") : name;
+            String finalName = name == null ? pageRenderSupport.getUniqueString("Link") : name;
 
             wrapperFunctionName = attributeName + "_" + finalName;
 
@@ -160,7 +160,7 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
 
             buffer.append("}\n\n");
 
-            body.addBodyScript(buffer.toString());
+            pageRenderSupport.addBodyScript(buffer.toString());
         }
 
         writer.attribute(attributeName, "javascript:" + wrapperFunctionName + "();");

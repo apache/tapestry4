@@ -21,12 +21,18 @@ import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.ClasspathResource;
 import org.apache.tapestry.IAsset;
+import org.apache.tapestry.engine.IEngineService;
 
 /**
+ * Creates instances of {@link org.apache.tapestry.asset.PrivateAsset}, which are the holders of
+ * classpath: resources.
+ * 
  * @author Howard M. Lewis Ship
+ * @since 3.1
  */
 public class ClasspathAssetFactory implements AssetFactory
 {
+    private IEngineService _assetService;
 
     public IAsset createAsset(Resource baseResource, String path, Locale locale, Location location)
     {
@@ -37,7 +43,11 @@ public class ClasspathAssetFactory implements AssetFactory
             throw new ApplicationRuntimeException(AssetMessages.missingAsset(path, baseResource),
                     location, null);
 
-        return new PrivateAsset((ClasspathResource) localized, location);
+        return new PrivateAsset((ClasspathResource) localized, _assetService, location);
     }
 
+    public void setAssetService(IEngineService assetService)
+    {
+        _assetService = assetService;
+    }
 }
