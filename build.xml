@@ -72,6 +72,7 @@
 </target>
 
 <target name="install"
+	depends="check-for-jboss-dir"
 	description="Builds all frameworks and examples.">
 	
 	<!-- Each project has its own definitions for many properties.
@@ -96,11 +97,13 @@
 </target>
 
 <target name="junit"
+	depends="check-for-jython-dir"
 	description="Run the JUnit test suite for Tapestry.">
 	<ant dir="junit" target="run" inheritAll="false"/>
 </target>
 
 <target name="clover"
+	depends="check-for-clover-dir,check-for-jython-dir"
 	description="Execute the JUnit tests and generate Code Coverage report.">
 	<ant dir="junit" target="clover" inheritAll="false"/>
 </target>
@@ -395,13 +398,13 @@
 
 <!-- ===================================================================================
 
-	 JBoss 3.0.0 auto configuration
+	 JBoss 3.0.4 auto configuration
 	
-	 Configures a JBoss 3.0.0 with a new configuration, tapestry.  Part of the configuration
+	 Configures a JBoss 3.0.4 with a new configuration, tapestry.  Part of the configuration
 	 comes with the Tapestry distribution; part is copied from the JBoss default server
 	 configuration.
 	 
-	 This only works with JBoss 3.0.0; later releases change enough that this
+	 This only works with JBoss 3.0.4; other releases differ enough that this
 	 simple script is broken.
 	
      ====================================================================================  -->	
@@ -416,9 +419,9 @@
 
 <property name="jboss.server.default.dir" value="${jboss.dir}/server/default"/>
 
-<target name="configure" 
-	description="Configure the JBoss 3.0.0 server and setup the Vlib database.">
-	<property name="temp.dir" value=".temp"/>	
+<target name="configure"
+	depends="check-for-jboss-dir"
+	description="Configure the JBoss 3.0.4 server and setup the Tapestry database.">
 	
 	<mkdir dir="${tapestry.lib.dir}"/>
 
@@ -482,38 +485,20 @@
 	
 	<copy todir="${tapestry.deploy.dir}">
 		<fileset dir="${jboss.server.default.dir}/deploy">
-			<include name="*.jar"/>
-			<include name="jmx-ejb-connector-server.sar"/>
-			<include name="jmx-html-adaptor.sar"/>
-			<include name="jmx-rmi-adaptor.sar"/>
-			<include name="jboss-local-jdbc.rar"/>
-			<include name="jboss-xa.rar"/>
-			<include name="jca-service.xml"/>
-			<include name="properties-service.xml"/>
+		
+			<!-- Skip one file that is replaced -->
+		
+			<exclude name="jbossweb.sar/META-INF/jboss-service.xml"/>
+			<include name="*"/>
+			<include name="**/*"/>			
 		</fileset>
 	</copy>
-
-	<!-- We explode the Jetty plugin and copy its individual JARs to lib, plus
-	     a custom service XML. -->
-	     
-	<mkdir dir="${temp.dir}"/>
-	<unjar src="${jboss.server.default.dir}/deploy/jetty-plugin.sar"
-		  dest="${temp.dir}"/>
-	<copy todir="${tapestry.lib.dir}">
-		<fileset dir="${temp.dir}">
-			<include name="*.jar"/>
-		</fileset>
-	</copy>   
-	
-	<delete dir="${temp.dir}" quiet="true"/> 
 		
 	<!-- Technically, this isn't necessary any longer (the filtering part),
 		 but it does no harm, and may be needed again in the future.  -->
 		 		
 	<copy todir="${tapestry.deploy.dir}" filtering="true">
-		<fileset dir="config/jboss/deploy">
-			<include name="*.xml"/>
-		</fileset>
+		<fileset dir="config/jboss/deploy"/>
 		<filterset>
 			<filter token="user.dir" value="${user.dir}"/>
 			<filter token="jboss.dir" value="${jboss.dir}"/>
@@ -524,18 +509,20 @@
 
 	<mkdir dir="${tapestry.db.dir}"/>
 		
-	<available file="${tapestry.db.dir}/vlib.conf" property="vlib.db.exists"/>
-	<antcall target="unpack-vlib-database"/>					    	
+	<available file="${tapestry.db.dir}/tapestry.conf" property="tapestry.db.exists"/>
+	<antcall target="unpack-tapestry-database"/>					    	
 </target>
  
 
-<target name="unpack-vlib-database"
-  	description="Unpacks the Virtual Library database."
-  	unless="vlib.db.exists">
-	<unzip src="config/jboss/vlib-db.zip" dest="${tapestry.db.dir}"/>  
+<target name="unpack-tapestry-database"
+  	description="Unpacks the Tapestry demos database."
+  	unless="tapestry.db.exists">
+	<unzip src="config/jboss/tapestry-db.zip" dest="${tapestry.db.dir}"/>  
 </target>
 
-<target name="deploy-vlib" description="Deploys the Virtual Library demo into JBoss.">
+<target name="deploy-jboss-demos"
+	depends="check-for-jboss-dir"
+	description="Deploys the demosy and Tapestry frameworks into JBoss.">
   	<copy todir="${tapestry.deploy.dir}">
   		<fileset dir="${lib.dir}">
   			<include name="Vlib.ear"/>
@@ -551,10 +538,9 @@
 </target>
   
 <target name="run-jboss"
-	depends="deploy-vlib"
+	depends="deploy-jboss-demos"
 	description="Launch the JBoss application server.">
-  		 
-  	
+  		
   	<delete dir="${tapestry.private.dir}" quiet="true"/>
   	<mkdir dir="${tapestry.private.dir}"/>
   	
@@ -568,6 +554,10 @@
 
 		<classpath>
 			<pathelement location="${jboss.dir}/bin/run.jar"/>
+			
+			<!-- Include this so that the JMX control panel (based on JSPs) can work. -->
+			
+			<pathelement location="${java.home}/../lib/tools.jar"/>
 		</classpath>	
 	
 		<!-- Enable debugging -->
@@ -575,13 +565,12 @@
 		<jvmarg line="-showversion -Xdebug -Xnoagent"/>
 		<jvmarg line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20500"/>
 
-
 	  	<sysproperty key="net.sf.tapestry.enable-reset-service" value="true"/>
 	  	<sysproperty key="net.sf.tapestry.vlib.debug-enabled" value="true"/>
 	  	
 	  	<!-- These allow private assets to be exported as static
 	  		 files.  This coordinates with portions of
-	  		 config/deploy/jetty-service.xml -->
+	  		 config/deploy/jbossweb.sar/META-INF/jboss-service.xml -->
 	  		 
 	 	<sysproperty key="net.sf.tapestry.asset.dir" value="${tapestry.private.dir}"/>
 	 	<sysproperty key="net.sf.tapestry.asset.URL" value="/private"/>
@@ -601,7 +590,9 @@
 	<unjar src="src/examples-src.jar" dest="examples"/>
 </target>
 
-<target name="deploy-tomcat" description="Deploys the tutorial application into Tomcat.">
+<target name="deploy-tomcat"
+	depends="check-for-tomcat-dir"
+	description="Deploys the tutorial application into Tomcat.">
 	<unjar src="lib/tutorial.war" dest="${tomcat.dir}/webapps/tutorial"/>
 
   <property name="web.lib" value="${tomcat.dir}/webapps/tutorial/WEB-INF/lib"/>
@@ -620,4 +611,31 @@
   </copy>  
 </target>
 
+<target name="check-for-jboss-dir">
+	<available property="exists.jboss.dir" type="dir" file="${jboss.dir}"/>
+ 
+	<fail unless="jboss.dir" message="Property jboss.dir not specified in config/build.properties."/>
+	<fail unless="exists.jboss.dir" message="Directory ${jboss.dir} (jboss.dir from config/build.properties) does not exist."/>
+</target>
+
+<target name="check-for-tomcat-dir">
+	<available property="exists.tomcat.dir" type="dir" file="${tomcat.dir}"/>
+ 
+	<fail unless="tomcat.dir" message="Property tomcat.dir not specified in config/build.properties."/>
+	<fail unless="exists.tomcat.dir" message="Directory ${tomcat.dir} (tomcat.dir from config/build.properties) does not exist."/>
+</target>
+
+<target name="check-for-clover-dir">
+	<available property="exists.clover.dir" type="dir" file="${clover.dir}"/>
+ 
+	<fail unless="clover.dir" message="Property clover.dir not specified in config/build.properties."/>
+	<fail unless="exists.clover.dir" message="Directory ${clover.dir} (clover.dir from config/build.properties) does not exist."/>
+</target>
+
+<target name="check-for-jython-dir">
+	<available property="exists.jython.dir" type="dir" file="${jython.dir}"/>
+ 
+	<fail unless="jython.dir" message="Property jython.dir not specified in config/build.properties."/>
+	<fail unless="exists.jython.dir" message="Directory ${jython.dir} (jython.dir from config/build.properties) does not exist."/>
+</target>
 </project>

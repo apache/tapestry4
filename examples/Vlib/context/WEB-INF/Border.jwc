@@ -10,12 +10,7 @@
 
   <parameter name="title" java-type="java.lang.String"/>
   <parameter name="subtitle" java-type="java.lang.String" direction="in"/>
-  <parameter name="simpleTitle" java-type="java.lang.Boolean"/>
-  
-  <component id="shell" type="Shell">
-    <binding name="title" expression="windowTitle"/>
-    <binding name="stylesheet" expression="assets.stylesheet"/>
-  </component> 
+  <parameter name="simpleTitle" java-type="java.lang.Boolean"/>  
             
   <component id="ifImageTitle" type="Conditional">
   	<inherited-binding name="condition" parameter-name="simpleTitle"/>

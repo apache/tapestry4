@@ -9,13 +9,19 @@
 <body bgcolor="#839cd1" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
 	<tr>
-		<td valign="top" align="left"><img height="44" src="images/ico_t.gif" alt="[Tapestry Logo]" width="44" align="absMiddle" border="0">&nbsp;<img height="22" alt="Tapestry" src="images/hd_tapestry.gif" width="100" align="absMiddle" vspace="17" border="0">
+		<td valign="top" align="left"><IMG height=44 alt="[Tapestry Logo]" src ="images/ico_t.gif" width=44 align=absMiddle border=0 >&nbsp;<IMG height=22 alt=Tapestry src="images/hd_tapestry.gif" width=100 align=absMiddle vspace=17 border=0>
 
 <h3>Release 2.4-alpha-2</h3>
 
 <ul>
-<li>Made improvements to how Tapestry handles arrays of objects and scalars
+<li>Made improvements to how Tapestry handles 
+        arrays of objects and scalars</li>
+        <LI>Upgrade demos to deploy into JBoss 3.0.4</LI>          
 </ul>
+
+<pre>
+[ 594878 ] Deploy Tapestry into JBoss 3.0.4
+</pre>
 
 <h3>Release 2.4-alpha-1</h3>
 
@@ -25,8 +31,9 @@ Added support for specifying expressions in the component template.  Expressions
 are specified as attributes with the format "<code>[[ <i>expression</i> ]]</code>".
 The brackets and leading and trailing whitespace are removed.
 Expressions specified this way are the equivalent of the
-<code>&lt;binding&gt;</code> element in a specification.
-</li>
+<code>&lt;binding&gt;</code> 
+        element in a specification. 
+        
 
 <li>
 Tapestry now supports <i>implicit components</i>.  Implicit components are
@@ -34,18 +41,17 @@ declared exclusively in the containing component's template (instead of in
 the containing component's specification) using a special
 <code>jwcid</code> syntax:
 <code>@<i>type</i></code> (for anonymous components) or
-<code><i>id</i>@<i>type</i></code> (for named components).  Implicit components
-are especially useful for components that take no parameters, but may also
-make use of template expressions.
-</li>
+<code><i>id</i>@<i>type</i></code> (for named components). Implicit 
+        components are especially useful for components that take no parameters, 
+        but may also make use of template expressions. 
+        
 
 <li>
 Added support for the
 <code>&lt;listener-binding&gt;</code> element in page and component
 specifications.  This allows a listener method to be provided, directly within the
-specification, as a script written in a <a href="http://jakarta.apache.org/bsf">BSF</a>-supported
-language.
-</li>
+specification, as a script written in a <a href="http://jakarta.apache.org/bsf">BSF</a>-supported language. 
+        
 
 <li>
 A number of non-backwards compatible changes were made to several
@@ -54,53 +60,56 @@ and templates may be located, but these should not affect the overwhelming
 majority of Tapestry users.  In addition, private assets and context assets
 may also be relative.  
 
-<br/>
-Private assets are relative to the component specification
-which declares
-them, context assets are relative to the application servlet (within the servlet
-context).
-</li>
+<br>
+Private assets are relative to the component 
+        specification which declares them, context assets are relative to the 
+        application servlet (within the servlet context). 
+        
 
 <li>
-Moved the Inspector out of the framework and into the contrib library.
-</li>
+Moved the Inspector out of the framework and 
+        into the contrib library. 
+        
 
 <li>
-Created smarter checks for stale sessions for ActionLink, DirectLink and Form.
-The action and direct services used by the components now encode whether the
-application was stateful into the URL.  The stateful check only occurs if the application
-was stateful when the URL was rendered.
-</li>
+Created smarter checks for stale sessions for 
+        ActionLink, DirectLink and Form. The action and direct services used by 
+        the components now encode whether the application was stateful into the 
+        URL. The stateful check only occurs if the application was stateful when 
+        the URL was rendered. 
+        
 
 <li>
 Changed Form to record the exact ids generated during the render (it used to just store the count).
 This allows a more useful exception message to be generated 
 for the
-<a href="doc/api/net/sf/tapestry/StaleLinkException.html">StaleLinkException</a>.
-</li>
+<A href="doc/api/net/sf/tapestry/StaleLinkException.html">StaleLinkException</a>. 
+
+        
 
 <li>
-Changed the default StaleLink page to have a message property, and to display
-the message from the StaleLinkException.
-</li>
+Changed the default StaleLink page to have a 
+        message property, and to display the message from the 
+        StaleLinkException. 
+        
 
 <li>
 Components (and even pages) can now implement page listener interfaces
-(<a href="doc/api/net/sf/tapestry/event/PageDetachListener.html">PageDetachListener</a>,
-<a href="doc/api/net/sf/tapestry/event/PageRenderListener.html">PageRenderListener</a> or
-<a href="doc/api/net/sf/tapestry/event/PageCleanupListener.html">PageCleanupListener</a>)
-and <code>finishLoad()</code> will <i>automatically</i>
-add them as a listener to the corresponding
-page events.
-</li>
+(<A href="doc/api/net/sf/tapestry/event/PageDetachListener.html">PageDetachListener</a>,
+<A href="doc/api/net/sf/tapestry/event/PageRenderListener.html">PageRenderListener</a> or
+<A href="doc/api/net/sf/tapestry/event/PageCleanupListener.html">PageCleanupListener</a>)
+and <code>finishLoad()</code> will <i>automatically</i> add them as a listener to the 
+        corresponding page events. 
+        
 
 <li>
-The entire mechanism used to store persistant page properties has been revised.
-</li>
+The entire mechanism used to store persistant 
+        page properties has been revised. 
+        
 
 <li>
 Implemented a number of improvements to
-<a href="doc/api/net/sf/tapestry/util/pool/Pool.html">Pool</a>
+<A href="doc/api/net/sf/tapestry/util/pool/Pool.html">Pool</a>
 to support greater flexibility in managing objects stored into and discarded
 from the pool.
 </li>
@@ -118,7 +127,7 @@ from the pool.
 releases were released under the LGPL, but are now retroactively
 licensed under the ASL as well.
 
-<p>Added a <a href="dev.html">Developers Page</a>.
+<p>Added a <A href="dev.html">Developers Page</a>.
 
 <p>
 Removed code dependency on Log4J, using
@@ -129,12 +138,12 @@ Use the <code>Enum</code> implementation from Jakarta's
 
 <p>
 Rework dynamic code loading so that a subclass of
-<a href="doc/api/net/sf/tapestry/ApplicationServlet.html">ApplicationServlet</a>
+<A href="doc/api/net/sf/tapestry/ApplicationServlet.html">ApplicationServlet</a>
 is no longer necessary.
 
 <p>Add methods to
-<a href="doc/api/net/sf/tapestry/INamespace.html">INamespace</a> and
-<a href="doc/api/net/sf/tapestry/IPage.html">IPage</a>
+<A href="doc/api/net/sf/tapestry/INamespace.html">INamespace</a> and
+<A href="doc/api/net/sf/tapestry/IPage.html">IPage</a>
 to make dealing with namespaces and qualified page names easier.
 
 <p>
@@ -211,16 +220,16 @@ online.
 
 <h3>Release 2.2-beta-2</h3>
 
-The <a href="doc/ComponentReference/ValidField.html">ValidField</a> now performs
+The <A href="doc/ComponentReference/ValidField.html">ValidField</a> now performs
 client-side validation of input.  If a field is in error when the form
 is submitted, then an alert is displayed and the field is selected.
 
 <p>Begin making more use of OGNL expressions in place of Java code.
 
-<p>Malcom Edgar has contributed a <a href="doc/ComponentReference/DatePicker.html">DatePicker</a>
+<p>Malcom Edgar has contributed a <A href="doc/ComponentReference/DatePicker.html">DatePicker</a>
 component.
 
-<p>Some more refactorings: IComponent methods  addWrapped()/renderWrapped() -> addBody()/renderBody().
+<p>Some more refactorings: IComponent methods  addWrapped()/renderWrapped() -&gt; addBody()/renderBody().
 
 <p>Tapestry documentation is now available in PDF format.
 
@@ -262,7 +271,7 @@ dash ('-') character, which was previously permitted.  This affects all
 specifications, including older versions.
 
 <p>Malcolm Edgar has lead the push to provide an excellent
-<a href="doc/ComponentReference">Tapestry Component Reference</a>.
+<A href="doc/ComponentReference">Tapestry Component Reference</a>.
 
 <p>
 You can now control the exact location of a component template by 
@@ -272,14 +281,14 @@ then it is used as the template.
 
 <p>A number of poorly named components have been renamed:
 <ul>
-<li>Action -> ActionLink
-<li>Direct -> DirectLink
-<li>InsertBlock -> RenderBlock
-<li>InsertWrapped -> RenderBody
-<li>Page -> PageLink
-<li>Service -> ServiceLink
-<li>ShowInspector -> InspectorButton
-<li>Text -> TextArea
+<li>Action -&gt; ActionLink
+<li>Direct -&gt; DirectLink
+<li>InsertBlock -&gt; RenderBlock
+<li>InsertWrapped -&gt; RenderBody
+<li>Page -&gt; PageLink
+<li>Service -&gt; ServiceLink
+<li>ShowInspector -&gt; InspectorButton
+<li>Text -&gt; TextArea< /li> 
 </ul>
 
 <p>Previous names will be maintained until at least release 2.3.
@@ -375,29 +384,24 @@ Update to Jetty 4.0.4.
 
 	
 
-<h3><a href="more_new.html">More ...</a></h3>
-
-			<!-- END Content -->
+<h3><A href="more_new.html">More ...</a></h3><!-- END Content -->
 		</td>
 	</tr>
-</table>
-<!-- ****END BODY WRAPPER**** -->
-
-<!-- ****FOOTER**** -->
+</table><!-- ****END BODY WRAPPER**** --><!-- ****FOOTER**** -->
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 	<tr bgcolor="#8e9cd1">
 		<td>&nbsp;</td>
 	</tr>
 	<tr bgcolor="#4b5887">
 		<td height="47">
-			<img src="images/spacer.gif">
+			<IMG src="images/spacer.gif">
 		</td>
 	</tr>
 	<tr bgcolor="#333333">
 		<td height="65">
 			<table width="724" border="0" cellspacing="0" cellpadding="3" bgcolor="#000000">
 				<tr height="65">
-					<td width="654" align="right" valign="bottom" class="clsFooter">&#169;2000-2002 Howard Lewis Ship.
+					<td width="654" align="right" valign="bottom" class="clsFooter">©2000-2002 Howard Lewis Ship.
 					All rights reserved.</td>
 					<td width="70">&nbsp;</td>
 				</tr>
@@ -414,7 +418,6 @@ Update to Jetty 4.0.4.
 			</table>
 		</td>
 	</tr>
-</table>
-<!-- ****END FOOTER**** -->
+</table><!-- ****END FOOTER**** -->
 </body>
 </html>

@@ -38,8 +38,9 @@ It's used with existing application servers, acting as a kind of "super servlet"
 The <a href="http://tapestry.sf.net">Tapestry Home Page</a> 
 contains much more information about what Tapestry
 is, how to use it and why you can't live without it!
-<p>Tapestry is distributed as a single distribution, including source code, compiled frameworks,
-examples and documentation.
+<p>Tapestry is&nbsp; available as two 
+      distributions, the core distribution includes precompiled JARs, source code and examples.&nbsp; The doc
+distribution contains documentation.
 <p>The JARs were created on 
 @OS_NAME@ @OS_VERSION@
 using the 
@@ -59,17 +60,17 @@ to the system <tt>PATH</tt>.</li>
 <p>To run the Tapestry Tutorial and the Virtual Library applications with the 
 <a href="http://sourceforge.net/projects/jboss">JBoss</a> server:
 			<ul>
-				<li><b>Download <a href="http://prdownloads.sourceforge.net/jboss/jboss-3.0.0.zip?download">JBoss 3.0.0</a></b>.<br>JBoss is an open-source application server, used to run the database and Enterprise JavaBeans in the Virtual Library.
-<p><span class="hyper-em">This auto-configuration requires JBoss 3.0.0 exactly, not a later release.  This only affects these turn-key
+				<li><b>Download <a href="http://prdownloads.sourceforge.net/jboss/jboss-3.0.4.zip?download">JBoss 3.0.4</a></b>.<br>JBoss is an open-source application server, used to run the database and Enterprise JavaBeans in the Virtual Library.
+<p><span class="hyper-em">This auto-configuration requires JBoss 3.0.4 exactly, not a later release.  This only affects these turn-key
 demos, not deployment of actual Tapestry applications.</span></p>
 				<li><b>Create the file
-			<code><i>Tapestry</i>/config/build.properties</code>.<br></b>
+			<code>config/build.properties</code>.<br></b>
 		This file informs 
         Tapestry where JBoss as been installed.
-		The directory contains a template file.
+		The <code>config</code> directory contains a template file.
 		Set
 			<code>jboss.dir</code>to the JBoss installation
-		directory, for example <i>C:/JBoss-3.0.0</i>.
+		directory, for example <i>C:/JBoss-3.0.4</i>.
 		<b>Note:</b> Use only forward slashes in this file name.
 				<li><b>Execute the command:
 			<code>ant -emacs configure run-jboss</code></b><br>This will copy and configure the necessary files in the JBoss installation directory,
@@ -86,22 +87,23 @@ or the
 <a href="http://sourceforge.net/projects/jetty">Jetty</a> server included in this distribution:
 			<ul>
 				<li><b>Execute the command:
-			<code>ant run-tutorial</code></b><br>This will run the Jetty server and the <a href="http://localhost:8080/tutorial">Tapestry Tutorial</a> application.</li>
+			<code>ant run-tutorial</code></b><br>This will run the embedded 
+			Jetty server and the <a href="http://localhost:8080/tutorial">Tapestry Tutorial</a> application.</li>
 			</ul>
 <p>To deploy the Tapestry Tutorial application onto an existing 
 <a href="http://jakarta.apache.org/tomcat">Tomcat</a> server:
 			<ul>
 				<li><b>Create the file
-			<code><i>Tapestry</i>/config/build.properties</code>.<br></b>
-		This file informs Tapestry where Tomcat as been installed.
-		The directory contains a template file.
+			<code>config/build.properties</code>.<br></b>This 
+		file informs Tapestry where Tomcat as been installed. The
+		<code>config</code> directory contains a template file.
 		Set
 			<code>tomcat.dir</code>to the Tomcat installation
 		directory, for example <i>C:/Program Files/Apache Group/Tomcat 4.1</i>.
 		<b>Note:</b> Use only forward slashes in this file name.
 				<li><b>Execute the command:
-			<code>ant deploy-tomcat</code></b><br>This will deploy run tutorial application onto the Tomcat server. If Tomcat is running 
-		you should be able to access <a href="http://localhost:8080/tutorial">Tapestry Tutorial</a> application, otherwise start Tomcat to access the 
+			<code>ant deploy-tomcat</code></b><br>This will deploy run tutorial application onto the Tomcat server. If Tomcat is running you 
+		should be able to access the&nbsp; <a href="http://localhost:8080/tutorial">Tapestry Tutorial</a> application, otherwise start Tomcat to access the 
         application.</li>
 			</ul><a name="doc"></a>
 <h2>Documentation</h2>
@@ -342,8 +344,10 @@ at  runtime. These files are are included in the distribution.
 					</td>
 				</tr>
 			</table><br><br>.....................................................<br><br>
-<p>Tapestry is an open source project, hosted on the <a href="http://sf.net/project/?group_id=4754">SourceForge</a> and licensed
-under the <A href="License.txt">Apache Software License 1.1</A>.</p>
+<p>Tapestry is an open source project, hosted at 
+      <a href="http://jakarta.apache.org">Jakarta</a>
+	   and licensed
+under the <A href="License.txt">Apache Software License 1.1</A>.</p><A href="http://jakarta.apache.org"></A>
 		</td>
 	</tr>
 </table>

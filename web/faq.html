@@ -29,7 +29,11 @@ application).
             applications developed with other popular frameworks. This is 
             because the Tapestry framework takes responsibility for many 
             important tasks, such as maintaining server-side state and 
-            dispatching incoming requests to appropriate objects and methods.</p>            
+            dispatching incoming requests to appropriate objects and methods.</p>
+            <P>The many new features of release 2.4 mean that Tapestry is not 
+            only the most powerful web application framework available, it is 
+            also the fastest and easiest to adopt, regardless of whether your 
+            background is Java, Perl, XML or PHP!</P>            
             
            
     
@@ -72,14 +76,6 @@ application).
             <STRONG>not </STRONG>a JSP tag library; Tapestry builds on the 
             servlet API, but doesn't use JSPs in any way.&nbsp; It uses it own 
             HTML template format and its own rendering engine.</P>
-            <P>In the current release, 2.2, Tapestry does not interoperate with 
-            JSP pages ... its a whole, seperate world.</P>
-            <P>This has proven to be a big sticking point in adoption of 
-            Tapestry.&nbsp; In the next release, 2.3, Tapestry will finally get 
-            JSP interoperation.&nbsp; You'll be able to represent a Tapestry 
-            component inside a JSP as a JSP tag, but still use everything good 
-            and bad about JSPs, including other taglibs and even Java 
-            scriplets.</P>
 		
 		
 		
@@ -158,26 +154,24 @@ Start your servlet container with the JVM system parameter
 	
 	<tr valign="top">
 		<td><IMG height=12 src="images/dots_leftnav.gif" width=14></td>
-		<td><b>I  keep getting <A href="doc/api/net/sf/tapestry/StaleSessionException.html">StaleSessionException</a>s
-		from links and forms.
-		</b>
+		<td>          
+		          
 		
-		<br><br>
-
-		Tapestry doesn't create a <code>HttpSession</code> until you have server-side state to store.  Most applications
-		don't start to store server-side state until after the Home page.
+		<p><STRONG>Does Tapestry work with other other application servers
+		 besides 
+		<A href="http://www.jboss.org">JBoss</a>?</STRONG>  </p>          
+		          
 		
 		<p>
-		By default, 
-		<A href="doc/ComponentReference/ActionLink.html">ActionLink</a>,
-		<A href="doc/ComponentReference/DirectLink.html">DirectLink</a> and
-		<A href="doc/ComponentReference/Form.html">Form</a> require 
-            that 
-		a session be already created (this is
-		primarily to handle the case where a user walks away from their computer and returns, and the
-		 servlet container has discarded the HttpSession in the meantime).
-		 Set the stateful parameter to false (i.e.,
-		 <code>&lt;binding name="stateful" expression="false"/&gt;</code>) to disable this check.</p>
+		Of course! JBoss is free and convienient for the 
+            turn-key demonstrations. You can download Tapestry and JBoss 
+            and have a real J2EE application running in about a minute! 
+            The scripts that conrfigure JBoss are sensitive to the particular 
+            release of JBoss, it must be release 3.0.4.
+			
+			<p>However, Tapestry 
+            applications are 100% container agnostic ... Tapestry doesn't care 
+            what servlet container it is used with and does even need an EJB container.</p>
 		    
  
 	           

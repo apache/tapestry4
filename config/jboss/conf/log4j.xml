@@ -24,6 +24,7 @@
   <appender name="FILE" class="org.jboss.logging.appender.DailyRollingFileAppender">
     <param name="File" value="${jboss.server.home.dir}/log/server.log"/>
     <param name="Append" value="false"/>
+    <param name="Threshold" value="INFO"/>
 
     <!-- Rollover at midnight each day -->
     <param name="DatePattern" value="'.'yyyy-MM-dd"/>
@@ -138,6 +139,10 @@
   	<priority value="ERROR"/>
   </category>
 
+  <category name="tutorial">
+  	<priority value="ERROR"/>
+  </category>
+  
   <!--
      | An example of enabling the custom TRACE level priority that is used
      | by the JBoss internals to diagnose low level details. This example
@@ -162,4 +167,28 @@
     <appender-ref ref="FILE"/>
   </root>
   
+  <!-- Clustering logging -->
+  <!-- Uncomment the following to redirect the org.javagroups and
+     org.jboss.ha categories to a cluster.log file.
+
+  <appender name="CLUSTER" class="org.jboss.logging.appender.RollingFileAppender">
+    <param name="File" value="${jboss.server.home.dir}/log/cluster.log"/>
+    <param name="Append" value="false"/>
+    <param name="MaxFileSize" value="500KB"/>
+    <param name="MaxBackupIndex" value="1"/>
+
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d %-5p [%c] %m%n"/>
+    </layout>	    
+  </appender>
+  <category name="org.javagroups">
+    <priority value="DEBUG" />
+    <appender-ref ref="CLUSTER"/>
+  </category>
+  <category name="org.jboss.ha">
+    <priority value="DEBUG" />
+    <appender-ref ref="CLUSTER"/>
+  </category>
+  -->
+
 </log4j:configuration>

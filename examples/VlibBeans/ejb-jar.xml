@@ -127,6 +127,24 @@
       	<field-name>lastAccess</field-name>
       </cmp-field>
       <primkey-field>personId</primkey-field>
+      
+      <query>
+      	<query-method>
+      		<method-name>findByEmail</method-name>
+      		<method-params>
+      			<method-param>java.lang.String</method-param>
+      		</method-params>
+      	</query-method>
+      		
+      	<ejb-ql>
+<![CDATA[
+			select object(p)
+			from Person p
+			where p.email = ?1
+]]>      	
+		</ejb-ql>
+	   </query>
+	   	
       <ejb-ref>
         <description/>
         <ejb-ref-name>ejb/KeyAllocator</ejb-ref-name>
@@ -217,6 +235,25 @@
         <field-name>publisherId</field-name>
       </cmp-field>
       <primkey-field>publisherId</primkey-field>
+      
+      
+      <query>
+      	<query-method>
+      		<method-name>findByName</method-name>
+      		<method-params>
+      			<method-param>java.lang.String</method-param>
+      		</method-params>
+      	</query-method>
+      		
+      	<ejb-ql>
+<![CDATA[
+			select object(p)
+			from Publisher p
+			where p.name = ?1
+]]>      	
+		</ejb-ql>
+	   </query>
+	         
       <ejb-ref>
         <description/>
         <ejb-ref-name>ejb/KeyAllocator</ejb-ref-name>
