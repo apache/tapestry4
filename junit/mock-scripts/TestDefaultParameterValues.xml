@@ -33,6 +33,12 @@
 ]]>
 		</assert-output>
 
+		<assert-output name="bound boolean value">
+<![CDATA[
+<td>Bound booleanValue = true</td>
+]]>
+		</assert-output>
+
 
 		<assert-output name="default int value">
 <![CDATA[
@@ -52,13 +58,22 @@
 ]]>
 		</assert-output>
 
-		<assert-output name="default object value">
+		<assert-output name="default boolean value">
+<![CDATA[
+<td>Default booleanValue = false</td>
+]]>
+		</assert-output>
+
+
+
+
+		<assert-output name="span tag">
 <![CDATA[
 <span>span tag</span>
 ]]>
 		</assert-output>
 
-		<assert-output name="default object value">
+		<assert-output name="div tag">
 <![CDATA[
 <div>div tag</div>
 ]]>
