@@ -2,12 +2,25 @@
 <!-- $Id$ --> 
 <html>
 <head>
+<title>Image</title>
 <link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
 </head>
 
 <body>
-<table border="0" cellpadding="4" cellspacing="4" width="100%">
-<tr>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+ <tr>
+  <td align="left"><a href="Hidden.html"><img src="common-images/prev.png" alt="Hidden"/></a></td>  
+  <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
+  <td align="right"><a href="ImageSubmit.html"><img src="common-images/next.png" alt="ImageSubmit"/></a></td>  
+ <tr>
+ <tr>
+  <td colspan="3"><hr></td>  
+ </tr>
+ <tr>
+  <td colspan="3">
+   <table border="0" cellpadding="4" cellspacing="4" width="100%">
+
+<tr valign="top">
  <td>
   <table>
 	 <tr>
@@ -30,8 +43,8 @@
  </td>
 </tr>
 
-<tr>
- <td colspan="2"><hr></td>
+<tr valign="middle">
+ <td colspan="2">&nbsp;</td>
 </tr>
 
 <tr>
@@ -59,32 +72,30 @@
   <b>Parameters</b> 
 	<br>
   <table border="1" cellpadding="4" cellspacing="4" class="parameters">
-  <tr> 
+   <tr> 
     <th>Name</th>
     <th>Type</th>
 	  <th>Direction</th>
     <th>Required</th> 
     <th>Default</th>
     <th>Description</th>
-  </tr>
-  <tr>
+   </tr>
+   <tr>
     <td>image</td>
     <td><a href="../api/net/sf/tapestry/IAsset.html"><tt>IAsset</tt></a></td>
     <td>in</td>
    	<td>yes</td>
 		<td>&nbsp;</td>
-		<td>The image to show.
-		</td>
-	</tr>
-  <tr>
+		<td>The image to show.</td>
+	 </tr>
+   <tr>
  		<td>border</td>
 		<td>int</td>
 		<td>in</td>
 		<td>no</td>
 		<td>0</td>
-		<td>Corresponds to the HTML border attribute. 
-		</td>
-	</tr>
+		<td>Corresponds to the HTML "border" attribute.</td>
+	 </tr>
 	</table>		
   Informal parameters: allowed<br>
   Reserved parameters: "src"
@@ -129,7 +140,7 @@ Inserts the static context path based image. This example uses a
 
 
 &lt;component id="<span class="jwcid">poweredbyImage</span>" type="<a href="Image.html">Image</a>"&gt;
-    &lt;binding name="image" property-path="assets.imageAsset"/&gt;
+    &lt;binding name="image" expression="assets.imageAsset"/&gt;
 &lt;/component&gt;
 
 &lt;context-asset name="imageAsset" path="/images/poweredby.png"/&gt;
@@ -176,27 +187,27 @@ This example uses the <a href="../api/net/sf/tapestry/asset/ExternalAsset.html">
 &lt;/table&gt;
 
 &lt;component id="<span class="jwcid">newsItemImage</span>" type="<a href="Image.html">Image</a>"&gt;
-    &lt;binding name="image" property-path="newsItem.imageAsset"/&gt;
-    &lt;binding name="alt" property-path="newsItem.summary"/&gt;
+    &lt;binding name="image" expression="newsItem.imageAsset"/&gt;
+    &lt;binding name="alt" expression="newsItem.summary"/&gt;
 &lt;/component&gt;
 
 &lt;component id="newsItemTitle" type="<a href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" property-path="newsItem.title"/&gt;
+    &lt;binding name="value" expression="newsItem.title"/&gt;
 &lt;/component&gt;
 
 &lt;component id="newsItemBody" type="<a href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" property-path="newsItem.body"/&gt;
+    &lt;binding name="value" expression="newsItem.body"/&gt;
 &lt;/component&gt;
 
 &lt;component id="newsItemDate" type="<a href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" property-path="newsItem.date"/&gt;
+    &lt;binding name="value" expression="newsItem.date"/&gt;
     &lt;field-binding name="format" field-name="NewsItemPage.DATE_FORMAT"/&gt;
 &lt;/component&gt;
 
 
 public class NewsItemPage extends BasePage {
     public static final SimpleDateFormat DATE_FORMAT =
-        new SimpleDateFormat("E, dd MMM yyyy");
+        new SimpleDateFormat("dd MMM yyyy");
         
     private NewsItem newsItem;
     
@@ -235,28 +246,16 @@ public class NewsItem implements Serializable {
     public IAsset getImageAsset() { return new <a href="../api/net/sf/tapestry/asset/ExternalAsset.html"><tt>ExternalAsset</tt></a>(imageURL); }    
 }
 </pre>
- </td>
-</tr>
 
+ </td></tr></table>
+</td></tr>
 <tr>
- <td colspan="2"><hr></td>  
+ <td colspan="3"><hr></td>  
 </tr>
 <tr>
- <td colspan="2">
-  <table width="100%">
-   <tr>
-    <td align="left">
-     <a href="Hidden.html"><img src="common-images/prev.png" alt="Previous"/></a>
-    </td>  
-    <td align="center">
-     <a href="index.html"><img src="common-images/home.png" alt="Home"/></a>
-    </td>  
-    <td align="right">
-     <a href="ImageSubmit.html"><img src="common-images/next.png" alt="Next"/></a>
-    </td>  
-   <tr>
-  </table>
- </td>
+ <td align="left"><a href="Hidden.html"><img src="common-images/prev.png" alt="Hidden"/></a></td>  
+ <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
+ <td align="right"><a href="ImageSubmit.html"><img src="common-images/next.png" alt="ImageSubmit"/></a></td>  
 </tr>
 </table>
 

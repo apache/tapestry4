@@ -2,13 +2,25 @@
 <!-- $Id$ --> 
 <html>
 <head>
-<title>Tapestry Component Reference - Upload</title>
+<title>Upload</title>
 <link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
 </head>
 
 <body>
-<table border="0" cellpadding="4" cellspacing="4" width="100%">
-<tr>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+ <tr>
+  <td align="left"><a href="TextField.html"><img src="common-images/prev.png" alt="TextField"/></a></td>  
+  <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
+  <td align="right"><a href="ValidField.html"><img src="common-images/next.png" alt="ValidField"/></a></td>  
+ <tr>
+ <tr>
+  <td colspan="3"><hr></td>  
+ </tr>
+ <tr>
+  <td colspan="3">
+   <table border="0" cellpadding="4" cellspacing="4" width="100%">
+
+<tr valign="top">
  <td>
   <table>
 	 <tr>
@@ -31,8 +43,8 @@
  </td>
 </tr>
 
-<tr>
- <td colspan="2"><hr></td>
+<tr valign="middle">
+ <td colspan="2">&nbsp;</td>
 </tr>
 
 <tr>
@@ -88,8 +100,8 @@
 		<td>no</td>
 		<td>false</td>
 		<td>If true, then (on render) the "disabled" attribute is written into the 
-    tag (note that Navigator 4 will ignore this) and on submit, the upload will 
-    not update its file parameter. 
+    tag and on submit, the upload will not update its file parameter.
+    Note Netscape Navigator 4 will ignore this attribute.  
 		</td>
 	</tr>
 	</table>		
@@ -137,61 +149,61 @@
 
 <pre>
 &lt;form jwcid="form" <b>enctype="multipart/form-data"</b>&gt;
-&lt;table bgcolor="#c0c0c0" cellpadding="4"&gt;
-&lt;tr&gt;
- &lt;td colspan="2"&gt;File:&amp;nbsp;&lt;input jwcid="<span class="jwcid">fileUpload</span>" type="file" &gt;&lt;/input>&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
- &lt;td colspan="2"&gt;&lt;input type="submit" value="Upload"&gt;&lt;/input>&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
- &lt;td colspan="2"&gt;&lt;hr&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
- &lt;td&gt;Filename:&lt;/td&gt;&lt;td&gt;&lt;span jwcid="insertFileName"/&gt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
- &lt;td&gt;Client path:&lt;/td&gt;&lt;td&gt;&lt;span jwcid="insertClientPath"/&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
- &lt;td&gt;Server Path:&lt;/td&gt;&lt;td&gt;&lt;span jwcid="insertServerPath"/&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
- &lt;td&gt;File Truncated:&lt;/td&gt;&lt;td&gt;&lt;span jwcid="insertFileTruncated"/&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
- &lt;td&gt;File Size:&lt;/td&gt;&lt;td&gt;&lt;span jwcid="insertFileSize"/&gt;&amp;nbsp;bytes&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/table&gt;
+ &lt;table bgcolor="#c0c0c0" cellpadding="4"&gt;
+  &lt;tr&gt;
+   &lt;td colspan="2"&gt;File:&amp;nbsp;&lt;input jwcid="<span class="jwcid">fileUpload</span>" type="file" &gt;&lt;/input>&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td colspan="2"&gt;&lt;input type="submit" value="Upload"&gt;&lt;/input>&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td colspan="2"&gt;&lt;hr&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td&gt;Filename:&lt;/td&gt;&lt;td&gt;&lt;span jwcid="insertFileName"/&gt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td&gt;Client path:&lt;/td&gt;&lt;td&gt;&lt;span jwcid="insertClientPath"/&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td&gt;Server Path:&lt;/td&gt;&lt;td&gt;&lt;span jwcid="insertServerPath"/&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td&gt;File Truncated:&lt;/td&gt;&lt;td&gt;&lt;span jwcid="insertFileTruncated"/&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+   &lt;td&gt;File Size:&lt;/td&gt;&lt;td&gt;&lt;span jwcid="insertFileSize"/&gt;&amp;nbsp;bytes&lt;/td&gt;
+  &lt;/tr&gt;
+ &lt;/table&gt;
 &lt;/form&gt;
 
 
 &lt;component id="form" type="<a href="Form.html">Form</a>"&gt;
-   &lt;binding name="listener" property-path="listener.formSubmit"/&gt;
+   &lt;binding name="listener" expression="listener.formSubmit"/&gt;
 &lt;/component&gt;
 
 &lt;component id="<span class="jwcid">fileUpload</span>" type="<a href="Upload.html">Upload</a>"&gt;
-   &lt;binding name="file" property-path="file"/&gt;
+   &lt;binding name="file" expression="file"/&gt;
 &lt;/component&gt;
 
 &lt;component id="insertFileName" type="<a href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" property-path="filename"/&gt;
+    &lt;binding name="value" expression="filename"/&gt;
 &lt;/component&gt;
 
 &lt;component id="insertClientPath" type="<a href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" property-path="clientPath"/&gt;
+    &lt;binding name="value" expression="clientPath"/&gt;
 &lt;/component&gt;
 
 &lt;component id="insertServerPath" type="<a href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" property-path="serverPath"/&gt;
+    &lt;binding name="value" expression="serverPath"/&gt;
 &lt;/component&gt;
 
 &lt;component id="insertFileTruncated" type="<a href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" property-path="fileTruncated"/&gt;
+    &lt;binding name="value" expression="fileTruncated"/&gt;
 &lt;/component&gt;
 
 &lt;component id="insertFileSize" type="<a href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" property-path="fileSize"/&gt;
+    &lt;binding name="value" expression="fileSize"/&gt;
     &lt;field-binding name="format" field-name="UploadPage.SIZE_FORMAT"/&gt;
 &lt;/component&gt;
 
@@ -286,28 +298,15 @@ public class UploadPage extends BasePage {
 }
 </pre>
 
- </td>
-</tr>
-
+ </td></tr></table>
+</td></tr>
 <tr>
- <td colspan="2"><hr></td>  
+ <td colspan="3"><hr></td>  
 </tr>
 <tr>
- <td colspan="2">
-  <table width="100%">
-   <tr>
-    <td align="left">
-     <a href="TextField.html"><img src="common-images/prev.png" alt="Previous"/></a>
-    </td>  
-    <td align="center">
-     <a href="index.html"><img src="common-images/home.png" alt="Home"/></a>
-    </td>  
-    <td align="right">
-     <a href="ValidField.html"><img src="common-images/next.png" alt="Next"/></a>
-    </td>  
-   <tr>
-  </table>
- </td>
+ <td align="left"><a href="TextField.html"><img src="common-images/prev.png" alt="TextField"/></a></td>  
+ <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
+ <td align="right"><a href="ValidField.html"><img src="common-images/next.png" alt="ValidField"/></a></td>  
 </tr>
 </table>
 

@@ -2,13 +2,25 @@
 <!-- $Id$ --> 
 <html>
 <head>
-<title>Tapestry Component Reference - Text</title>
+<title>Text</title>
 <link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
 </head>
 <body>
 
-<table border="0" cellpadding="4" cellspacing="4" width="100%">
-<tr>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+ <tr>
+  <td align="left"><a href="Submit.html"><img src="common-images/prev.png" alt="Submit"/></a></td>  
+  <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
+  <td align="right"><a href="TextField.html"><img src="common-images/next.png" alt="TextField"/></a></td>  
+ <tr>
+ <tr>
+  <td colspan="3"><hr></td>  
+ </tr>
+ <tr>
+  <td colspan="3">
+   <table border="0" cellpadding="4" cellspacing="4" width="100%">
+
+<tr valign="top">
  <td>
   <table>
 	 <tr>
@@ -32,16 +44,20 @@
  </td>
 </tr>
 
-<tr>
- <td colspan="2"><hr></td>
+<tr valign="middle">
+ <td colspan="2">&nbsp;</td>
 </tr>
 
 <tr>
  <td colspan="2">
   <b>Description</b>
 	<br>
-  Used to implement a textarea form element (&lt;textarea cols="40" rows="5" value=" ..... "&gt;). 
+  Provides a HTML &lt;textarea&gt; form element. 
 	This component must be wrapped by a <a href="Form.html">Form</a> component.
+  <p>
+  Use the HTML "wrap" attribute as an informal parameter to control word 
+  wrapping. Wrap attribute values include: "off", "vitual", "physical", "soft"
+  and "hard".
   <p>
   This component may NOT wrap around other components or static HTML. 
  </td>
@@ -97,7 +113,8 @@
 		<td>&nbsp;</td>
 		<td>The width of the textarea, in characters.  If zero, or unspecified
 		    the value is left to the client browser to determine.
-        Corresponds to the "cols" HTML attribute.</td> 
+        Corresponds to the "cols" HTML attribute.
+    </td> 
    </tr>
 	 <tr>
 		<td>rows</td>
@@ -107,8 +124,7 @@
 		<td>&nbsp;</td>
 		<td>The number of rows in the textarea. If
 			unspecified or zero, then the value is left to the client browser to
-			determine.
-        Corresponds to the "maxlength" HTML attribute.
+			determine.  Corresponds to the "rows" HTML attribute.
     </td> 
    </tr>
 	</table>
@@ -121,7 +137,8 @@
  <td colspan="2">
   <b>Examples</b>
 	<p>
-  The Text component is used to provide a customer comments feedback &lt;textarea&gt;.
+  The Text component is used in this example eto provide a customer comments 
+  feedback &lt;textarea&gt;.
 	<p>
 
   <table class="examples" valign="middle" cellspacing="8">
@@ -152,13 +169,13 @@
 
 
 &lt;component id="form" type="<a href="Form.html">Form</a>"&gt;
-    &lt;binding name="listener" property-path="listeners.formSubmit"/&gt;
+    &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
 &lt;/component&gt;
   
 &lt;component id="<span class="jwcid">commentsText</span>" type="<a href="">Text</a>"&gt;
-    &lt;binding name="value" property-path="comments"/&gt;
-    &lt;binding name="columns" property-path="columns"/&gt;
-    &lt;binding name="rows" property-path="rows"/&gt;
+    &lt;binding name="value" expression="comments"/&gt;
+    &lt;binding name="columns" expression="columns"/&gt;
+    &lt;binding name="rows" expression="rows"/&gt;
 &lt;/component&gt;
 
 
@@ -189,28 +206,16 @@ public class CustomerCommentsPage extends BasePage {
     }        
 }
 </pre>
- </td>
-</tr>
 
+ </td></tr></table>
+</td></tr>
 <tr>
- <td colspan="2"><hr></td>  
+ <td colspan="3"><hr></td>  
 </tr>
 <tr>
- <td colspan="2">
-  <table width="100%">
-   <tr>
-    <td align="left">
-     <a href="ShowInspector.html"><img src="common-images/prev.png" alt="Previous"/></a>
-    </td>  
-    <td align="center">
-     <a href="index.html"><img src="common-images/home.png" alt="Home"/></a>
-    </td>  
-    <td align="right">
-     <a href="TextField.html"><img src="common-images/next.png" alt="Next"/></a>
-    </td>  
-   <tr>
-  </table>
- </td>
+ <td align="left"><a href="Submit.html"><img src="common-images/prev.png" alt="Submit"/></a></td>  
+ <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
+ <td align="right"><a href="TextField.html"><img src="common-images/next.png" alt="TextField"/></a></td>  
 </tr>
 </table>
 

@@ -5,10 +5,22 @@
 <title>Checkbox</title>
 <link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
 </head>
-<body>
 
-<table border="0" cellpadding="4" cellspacing="4" width="100%">
-<tr>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+ <tr>
+  <td align="left"><a href="Body.html"><img src="common-images/prev.png" alt="Body"/></a></td>  
+  <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
+  <td align="right"><a href="Conditional.html"><img src="common-images/next.png" alt="Conditional"/></a></td>  
+ <tr>
+ <tr>
+  <td colspan="3"><hr></td>  
+ </tr>
+ <tr>
+  <td colspan="3">
+   <table border="0" cellpadding="4" cellspacing="4" width="100%">
+
+<tr valign="top">
  <td>
   <table>
 	 <tr>
@@ -32,15 +44,15 @@
  </td>
 </tr>
 
-<tr>
- <td colspan="2"><hr></td>
+<tr valign="middle">
+ <td colspan="2">&nbsp;</td>
 </tr>
 
 <tr>
  <td colspan="2">
   <b>Description</b>
 	<br>
-  Used to provide a checkbox form element, &lt;input type="checkbox"&gt;. 
+  Provides a HTML checkbox form element &lt;input type="checkbox"&gt;. 
 	The Checkbox component must be wrapped by a <a href="Form.html">Form</a>.
   <p>
   This component may NOT wrap around other components or static HTML. 
@@ -118,12 +130,12 @@
 
 
 &lt;component id="enquiryForm" type="<a href="Form.html">Form</a>"&gt;
-    &lt;binding name="listener" property-path="listeners.formSubmit"/&gt;
+    &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
 &lt;/component&gt;
 
 &lt;component id="<span class="jwcid">contactRepCheckbox</span>" type="<a href="Checkbox.html">Checkbox</a>"&gt;
-    &lt;binding name="selected" property-path="contactRep"/&gt;
-    &lt;binding name="disabled" property-path="staff"/&gt;
+    &lt;binding name="selected" expression="contactRep"/&gt;
+    &lt;binding name="disabled" expression="staff"/&gt;
 &lt;/component&gt;
 
 
@@ -135,7 +147,7 @@ public class EnquiryPage extends BasePage {
 
     public void setContactRep(boolean value) { 
         contactRep = value;
-        fireObserbedChange("contactRep", contactRep);  
+        fireObservedChange("contactRep", contactRep);  
     }
 
     public boolean isStaff() { return isStaff; }
@@ -153,28 +165,16 @@ public class EnquiryPage extends BasePage {
     }
 }
 </pre>
- </td>
-</tr>
 
+ </td></tr></table>
+</td></tr>
 <tr>
- <td colspan="2"><hr></td>  
+ <td colspan="3"><hr></td>  
 </tr>
 <tr>
- <td colspan="2">
-  <table width="100%">
-   <tr>
-    <td align="left">
-     <a href="Body.html"><img src="common-images/prev.png" alt="Previous"/></a>
-    </td>  
-    <td align="center">
-     <a href="index.html"><img src="common-images/home.png" alt="Home"/></a>
-    </td>  
-    <td align="right">
-     <a href="Conditional.html"><img src="common-images/next.png" alt="Next"/></a>
-    </td>  
-   <tr>
-  </table>
- </td>
+ <td align="left"><a href="Body.html"><img src="common-images/prev.png" alt="Body"/></a></td>  
+ <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
+ <td align="right"><a href="Conditional.html"><img src="common-images/next.png" alt="Conditional"/></a></td>  
 </tr>
 </table>
 

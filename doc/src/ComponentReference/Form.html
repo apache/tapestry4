@@ -2,13 +2,25 @@
 <!-- $Id$ --> 
 <html>
 <head>
-<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
 <title>Form</title>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
 </head>
 
 <body>
-<table border="0" cellpadding="4" cellspacing="4" width="100%">
-<tr>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+ <tr>
+  <td align="left"><a href="Foreach.html"><img src="common-images/prev.png" alt="Foreach"/></a></td>  
+  <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
+  <td align="right"><a href="Frame.html"><img src="common-images/next.png" alt="Frame"/></a></td>  
+ <tr>
+ <tr>
+  <td colspan="3"><hr></td>  
+ </tr>
+ <tr>
+  <td colspan="3">
+   <table border="0" cellpadding="4" cellspacing="4" width="100%">
+
+<tr valign="top">
  <td>
   <table>
 	 <tr>
@@ -31,8 +43,8 @@
  </td>
 </tr>
 
-<tr>
- <td colspan="2"><hr></td>
+<tr valign="middle">
+ <td colspan="2">&nbsp;</td>
 </tr>
 
 <tr>
@@ -201,12 +213,11 @@
 
 &lt;component id="passwordTextField" type="<a href="TextField.html">TextField</a>"&gt;
    &lt;binding name="value" expression="visit.password"/&gt;
-   &lt;field-binding name="hidden" field-name="Boolean.TRUE"/&gt;
+   &lt;static-binding name="hidden"&gt;true&lt;/static-binding&gt;
 &lt;/component&gt;
 
 
 public class LoginPage extends BasePage {
-
     public void formSubmit(IRequestCycle cycle) {
         Visit visit = (Visit) getVisit();
 			
@@ -238,28 +249,16 @@ public class Visit() implements Serializable  {
     }		
 }
 </pre>
- </td>
-</tr>
 
+ </td></tr></table>
+</td></tr>
 <tr>
- <td colspan="2"><hr></td>  
+ <td colspan="3"><hr></td>  
 </tr>
 <tr>
- <td colspan="2">
-  <table width="100%">
-   <tr>
-    <td align="left">
-     <a href="Foreach.html"><img src="common-images/prev.png" alt="Previous"/></a>
-    </td>  
-    <td align="center">
-     <a href="index.html"><img src="common-images/home.png" alt="Home"/></a>
-    </td>  
-    <td align="right">
-     <a href="Frame.html"><img src="common-images/next.png" alt="Next"/></a>
-    </td>  
-   <tr>
-  </table>
- </td>
+ <td align="left"><a href="Foreach.html"><img src="common-images/prev.png" alt="Foreach"/></a></td>  
+ <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
+ <td align="right"><a href="Frame.html"><img src="common-images/next.png" alt="Frame"/></a></td>  
 </tr>
 </table>
 

@@ -7,8 +7,20 @@
 </head>
 
 <body>
-<table border="0" cellpadding="4" cellspacing="4" width="100%">
-<tr>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+ <tr>
+  <td align="left"><a href="Checkbox.html"><img src="common-images/prev.png" alt="Checkbox"/></a></td>  
+  <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
+  <td align="right"><a href="Delegator.html"><img src="common-images/next.png" alt="Delegator"/></a></td>  
+ <tr>
+ <tr>
+  <td colspan="3"><hr></td>  
+ </tr>
+ <tr>
+  <td colspan="3">
+   <table border="0" cellpadding="4" cellspacing="4" width="100%">
+   
+<tr valign="top">
  <td>
   <table>
 	 <tr>
@@ -30,8 +42,8 @@
  </td>
 </tr>
 
-<tr>
- <td colspan="2"><hr></td>
+<tr valign="middle">
+ <td colspan="2">&nbsp;</td>
 </tr>
 
 <tr>
@@ -53,7 +65,6 @@
 	<a href="Insert.html">Insert</a>
  </td>
 </tr>
-
 
 <tr>
  <td colspan="2">
@@ -121,25 +132,25 @@ John Smith is a Manager with <font color="red"><b>no</b></font> staff.
 
 
 &lt;component id="insertName" type="<a href="Insert.html">Insert</a>"&gt;
-   &lt;binding name="value" property-path="fullName"/&gt;
+   &lt;binding name="value" expression="fullName"/&gt;
 &lt;/component&gt;
 
 &lt;component id="<span class="jwcid">ifManager</span>" type="<a href="Conditional.html">Conditional</a>"&gt;
-   &lt;binding name="condition" property-path="manager"/&gt;
+   &lt;binding name="condition" expression="manager"/&gt;
 &lt;/component&gt;
 
 &lt;component id="<span class="jwcid">ifNotManager</span>" type="<a href="Conditional.html">Conditional</a>"&gt;
-   &lt;binding name="condition" property-path="manager"/&gt;
+   &lt;binding name="condition" expression="manager"/&gt;
    &lt;static-binding name="invert"&gt;true&lt;/static-binding&gt;
 &lt;/component&gt;
 
 &lt;component id="<span class="jwcid">ifHasStaff</span>" type="<a href="Conditional.html">Conditional</a>"&gt;
-   &lt;binding name="condition" property-path="staffList.empty"/&gt;
+   &lt;binding name="condition" expression="staffList.empty"/&gt;
    &lt;static-binding name="invert"&gt;true&lt;/static-binding&gt;
 &lt;/component&gt;
 
 &lt;component id="<span class="jwcid">ifNotHasStaff</span>" type="<a href="Conditional.html">Conditional</a>"&gt;
-   &lt;binding name="condition" property-path="staffList.empty"/&gt;
+   &lt;binding name="condition" expression="staffList.empty"/&gt;
 &lt;/component&gt;
 
 
@@ -162,28 +173,16 @@ public class EnquiryPage extends BasePage {
     }
 }
 </pre>
- </td>
-</tr>
 
+ </td></tr></table>
+</td></tr>
 <tr>
- <td colspan="2"><hr></td>  
+ <td colspan="3"><hr></td>  
 </tr>
 <tr>
- <td colspan="2">
-  <table width="100%">
-   <tr>
-    <td align="left">
-     <a href="Checkbox.html"><img src="common-images/prev.png" alt="Previous"/></a>
-    </td>  
-    <td align="center">
-     <a href="index.html"><img src="common-images/home.png" alt="Home"/></a>
-    </td>  
-    <td align="right">
-     <a href="Delegator.html"><img src="common-images/next.png" alt="Next"/></a>
-    </td>  
-   <tr>
-  </table>
- </td>
+ <td align="left"><a href="Checkbox.html"><img src="common-images/prev.png" alt="Checkbox"/></a></td>  
+ <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
+ <td align="right"><a href="Delegator.html"><img src="common-images/next.png" alt="Delegator"/></a></td>  
 </tr>
 </table>
 

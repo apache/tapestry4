@@ -2,13 +2,24 @@
 <!-- $Id$ --> 
 <html>
 <head>
-<title>Tapestry Component Reference - ValidField</title>
+<title>ValidField</title>
 <link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
 </head>
 
 <body>
-<table border="0" cellpadding="4" cellspacing="4" width="100%">
-<tr>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+ <tr>
+  <td align="left"><a href="Upload.html"><img src="common-images/prev.png" alt="Upload"/></a></td>  
+  <td align="right"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
+ <tr>
+ <tr>
+  <td colspan="2"><hr></td>  
+ </tr>
+ <tr>
+  <td colspan="2">
+   <table border="0" cellpadding="4" cellspacing="4" width="100%">
+
+<tr valign="top">
  <td>
   <table>
 	 <tr>
@@ -25,14 +36,14 @@
  <td>
   <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
 	 <tr>
-	  <td>Age: <input type="text" name="personAge" value=""></td>
+	  <td><b>Age</b></td><td><input type="text" style="{background:yellow}"></td>
 	 </tr>
   </table>
  </td>
 </tr>
 
-<tr>
- <td colspan="2"><hr></td>
+<tr valign="middle">
+ <td colspan="2">&nbsp;</td>
 </tr>
 
 <tr>
@@ -42,8 +53,18 @@
 	A ValidField is used to get input from the user, and apply some simple
 	validation at the same time. Out of the box, the component can provide validation based on type and
 	length of field input. Of course, it is possible to supply your own IValidator implemenation
-	to make this component do whatever you want.<p>
+	to make this component do whatever you want.
+  <p>
 	The ValidField component creates HTML of form: &lt;input type="text" name="personAge" value="25"&gt;
+  <p>
+  <a href="Form.html">Form</a> component that creates a text field that allows 
+  for validation of user input and conversion between string and object
+  values. A ValidField uses an <a href="Form.html">Form</a>  
+  <a href="../api/net/sf/tapestry/valid/ValidationDelegate.html">validationDelegate</a> 
+  to track errors at the form level and an 
+  <a href="../api/net/sf/tapestry/valid/IValidator/html">validator</a> to 
+  to perform validations and convert between Strings and Objects.  
+  A validator may be shared my ValidFields in a form.
   <p>
   This component may NOT wrap around other components or static HTML. 
  </td>
@@ -54,7 +75,7 @@
   <b>See Also</b>
 	<br>
 	<a href="Form.html">Form</a>, 
-  <a href="Text.html">Text</a>
+  <a href="Text.html">Text</a>,
   <a href="TextField.html">TextField</a>
  </td>
 </tr>
@@ -62,243 +83,179 @@
 <tr>
  <td colspan="2">
   <b>Parameters</b>
-	<br>
-	
- <A HREF="Form.html"><CODE>Form</CODE></A> component that creates a text field that
-  allows for validation of user input and conversion between string and object
-  values.  A ValidatingTextField uses an <b>IValidationDelegate</b> to  track errors and an 
-  <b>IValidator</b> to convert between strings and objects
-  (as well as perform validations).  The validation delegate is shared by all validating
-  text fields in a form, the validator may be shared my multiple elements as desired.
-
- <table border=1 cellpadding="4" cellspacing="4" class="parameters">
- <tr>
-    <th>Parameter</th>
-    <th>Type</th>
-	  <th>Direction</th>
-    <th>Required</th>
-    <th>Default</th>
-    <th>Description</th>
- </tr>
-
+	<br>	
+  <table border=1 cellpadding="4" cellspacing="4" class="parameters">
   <tr>
-    <td>value</td>
-    <td>java.lang.Object</td>
-    <td>in-out</td>
-   	<td>yes</td>
-		<td>&nbsp;</td>
-		<td>The value to be displayed (on render), and updated (when the form is
-  submitted, if the submitted value is valid).  The <b>IValidator</b>
-  converts between
-  object values and Strings.
-  </td>
-	</tr>
-
-	<tr>
-		<td>hidden</td>
-		<td>boolean</td>
-		<td>in</td>
-		<td>no</td>
-		<td>false</td>
-		<td>If true, then the text field is written as a
-			&lt;input type=password&gt; form element.  </td>  </tr>
-
-  <tr>
- 		<td>disabled</td>
-		<td>boolean</td>
-		<td>in</td>
-		<td>no</td>
-		<td>false</td>
-		<td>Controls whether the text field is active or not.  If disabled, then
-			any value that comes up when the form is submitted is ignored.
-
-			<p>Corresponds to the <code>disabled</code> HTML attribute.</td>
-	</tr>
-
-	<tr>
-		<td>displayWidth</td>
-		<td>integer</td>
-		<td>in</td>
-		<td>no</td>
-		<td>&nbsp;</td>
-		<td>Controls the display width of the text control in the client browser.  If
-			unspecified or zero, then the width is left to the client browser to
-			determine.
-
-		<p>Corresponds to the <code>size</code> HTML attribute.</td> </tr>
-
-	<tr>
-		<td>maximumLength</td>
-		<td>integer</td>
-		<td>in</td>
-		<td>no</td>
-		<td>&nbsp;</td>
-		<td>Controls the maximum characters that the text control will accept.  If
-			unspecified or zero, then the value is left to the client browser to
-			determine.
-
-		<p>Corresponds to the <code>maxlength</code> HTML attribute.</td> </tr>
-
-  <tr>
-      <td>displayName</td>
-      <td>String</td>
-      <td>in</td>
-      <td>yes</td>
-      <td>&nbsp;</td>
-      <td>A textual name for the field that is used when formulating error messages.
- 	Also used by the <A HREF="FieldLabel.html">FieldLabel</A> component to properly label the field.
-      </td>
+   <th>Name</th>
+   <th>Type</th>
+	 <th>Direction</th>
+   <th>Required</th>
+   <th>Default</th>
+   <th>Description</th>
   </tr>
-
-
   <tr>
-      <td>validator</td>
-      <td><b>IValidator</b></td>
-      <td>in</td>
-      <td>yes</td>
-      <td>&nbsp;</td>
-      <td>Object used to convert object values to Strings (for renderring)
-  and to validate and convert Strings into object values (when the form
-  is submitted).</td>
+   <td>value</td>
+   <td>Object</td>
+   <td>in-out</td>
+ 	 <td>yes</td>
+	 <td>&nbsp;</td>
+	 <td>
+   The value to be displayed (on render), and updated (when the form is
+   submitted, if the submitted value is valid).  The <b>IValidator</b>
+   converts between object values and Strings.
+   </td>
+	</tr>
+	<tr>
+	 <td>hidden</td>
+	 <td>boolean</td>
+	 <td>in</td>
+	 <td>no</td>
+	 <td>false</td>
+	 <td>
+    If true, then the text field is written as a &lt;input type="password"&gt; 
+    form element.
+   </td>
   </tr>
-
+  <tr>
+   <td>disabled</td>
+   <td>boolean</td>
+   <td>in</td>
+   <td>no</td>
+   <td>false</td>
+   <td>
+    Controls whether the text field is active or not.  If disabled, then
+		any value that comes up when the form is submitted is ignored. Corresponds 
+    to the "disabled" HTML attribute.</td>
+	</tr>
+	<tr>
+	 <td>displayWidth</td>
+	 <td>integer</td>
+	 <td>in</td>
+	 <td>no</td>
+	 <td>&nbsp;</td>
+	 <td>
+   Controls the display width of the text control in the client browser.  If
+	 unspecified or zero, then the width is left to the client browser to
+	 determine. Corresponds to the "size" HTML attribute.
+   </td> 
+  </tr>
+	<tr>
+	 <td>maximumLength</td>
+	 <td>integer</td>
+   <td>in</td>
+   <td>no</td>
+	 <td>&nbsp;</td>
+	 <td>
+    Controls the maximum characters that the text control will accept.  If
+		unspecified or zero, then the value is left to the client browser to
+		determine. Corresponds to the "maxlength" HTML attribute.
+   </td> 
+  </tr>
+  <tr>
+   <td>displayName</td>
+   <td>String</td>
+   <td>in</td>
+   <td>yes</td>
+   <td>&nbsp;</td>
+   <td>
+    A textual name for the field that is used when formulating error messages.
+ 	  Also used by the <a href="FieldLabel.html">FieldLabel</a> component to 
+    properly label the field.
+   </td>
+  </tr>
+  <tr>
+   <td>validator</td>
+   <td>
+    <a href="../api/net/sf/tapestry/valid/IValidator/html"><tt>IValidator</tt></a>
+   </td>
+   <td>in</td>
+   <td>yes</td>
+   <td>&nbsp;</td>
+   <td>
+   Object used to convert object values to Strings (for renderring)
+   and to validate and convert Strings into object values (when the form
+   is submitted).
+   </td>
+  </tr>
 	</table>
-
   Informal parameters: allowed<br>
-  Reserved parameters: none
+  Reserved parameters: "name", "type", "value"
  </td>
 </tr>
-
-<tr>
- <td colspan="2"  bgcolor="#c0c0c0">
-  <b>Examples</b>
-	<p>
-
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-
-<form method="post" name="Form0" action="/componentref">
-<input type="hidden" name="service" value="direct">
-<input type="hidden" name="context" value="ValidField/form">
-<input type="hidden" name="sp" value="S0">
-	<table>
-		<tr>
-			<td>Enter date: </td>
-			<td><input type="text" name="example4" value="08/26/2002"></td>
-		</tr>
-	</table>	<input type="hidden" name="Form0" value="4">
-</form>
- </td>
-</tr>
-
-<tr>
- <td colspan="2"><hr></td>  
-</tr>
-
-<tr>
-<td colspan="2">
-The HTML for the above example:
-<pre>
-	&lt;form jwcid="<b>form</b>"&gt;
-	&lt;table&gt;
-		&lt;tr&gt;								
-			&lt;td&gt;&lt;label jwcid="<b>example4label</b>"/&gt; &lt;/td&gt;								
-			&lt;td&gt;&lt;input jwcid="<b>example4</b>"/&gt;&lt;/td&gt;
-		&lt;/tr&gt;
-	&lt;/table&gt;
-	&lt;/form&gt;
-</pre>
-</td></tr>
-<tr>
- <td colspan="2"><hr></td>  
-</tr>
-
-
-<tr>
-<td colspan="2">
-The related Tapestry page specification:
-<pre>
-
-&lt;specification class="examples.componentref.ValidField" allow-body="yes" allow-informal-parameters="yes" &gt;
-    &lt;bean name="validationDelegate" class="net.sf.tapestry.valid.ValidationDelegate" lifecycle="request"/&gt;
-    
-    &lt;bean name="<b>ex4Validator</b>" class="<b>net.sf.tapestry.valid.DateValidator</b>"&gt;
-    	&lt;set-property name="required"&gt;&lt;field-value field-name="Boolean.FALSE"/&gt;&lt;/set-property&gt;
-    &lt;/bean&gt;
-
-    &lt;component id="form" type="Form"&gt;
-    	&lt;binding name="delegate" property-path="beans.validationDelegate"/&gt;
-    	&lt;binding name="listener" property-path="listeners.validFormSubmit"/&gt;
-    	&lt;field-binding name="stateful" field-name="Boolean.TRUE"/&gt;
-    &lt;/component&gt;
-    
-    &lt;component id="<b>example4label</b>" type="FieldLabel"&gt;
-    	&lt;binding name="field" property-path="components.example4"/&gt;
-    &lt;/component&gt;
-
-    &lt;component id="example4" type="<b>ValidField</b>"&gt;
-    	&lt;binding name="value" property-path="visit.exampleFourValue"/&gt;
-    	&lt;binding name="<B>validator</b>" property-path="<b>beans.ex4Validator</b>"/&gt;
-    	&lt;static-binding name="displayName"&gt;Enter Date:&lt;/static-binding&gt;
-    &lt;/component&gt;
-&lt;/specification&gt;
-
-</pre>
-</td></tr>
-<tr>
- <td colspan="2"><hr></td>  
-</tr>
-
-<tr>
-<td colspan="2">
-The visit object (the page object is not shown, because it has nothing in it at all - just a submit method handler):
-<pre>
-
-package examples.componentref;
-
-import java.util.Date;
-
-import org.apache.log4j.Category;
-
-/**
- * Contains some state shared by the examples.
- * @author neil
- */
-public class Visit {
-	public Date getExampleFourValue() {
-		return exampleFourValue;
-	}
-
-	public void setExampleFourValue(Date exampleFourValue) {
-		this.exampleFourValue = exampleFourValue;
-	}
-
-	private Date exampleFourValue = new Date();
-}
-
-</pre>
-</td></tr>
-<tr>
- <td colspan="2"><hr></td>  
-</tr>
-
-
 
 <tr>
  <td colspan="2">
-  <table width="100%">
-   <tr>
-    <td align="left">
-     <a href="???.html"><img src="common-images/prev.png" alt="Previous"/></a>
-    </td>  
-    <td align="center">
-     <a href="index.html"><img src="common-images/home.png" alt="Home"/></a>
-    </td>  
-    <td align="right">
-     <a href="???.html"><img src="common-images/next.png" alt="Next"/></a>
-    </td>  
-   <tr>
-  </table>
- </td>
+  <b>Examples</b>
+  <p>
+  Provides a date validation field.
+	<p>
+
+<table class="examples" cellpadding="8">
+<tr valign="middle">
+ <td><b>Enquiry date</b></td> 
+ <td><input style="{background:yellow}" type="text" name="example4" value="11/37/2002"></td>
+</tr>
+</table>
+
+<pre>
+&lt;form jwcid="form"&gt;
+ &lt;table&gt;
+  &lt;tr&gt;								
+   &lt;td&gt;&lt;span jwcid="dateLabel"/&gt;&lt;/td&gt;
+   &lt;td&gt;&lt;input jwcid="<span class="jwcid">dateField</span>" displayName="Enquiry Date"/&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+ &lt;/table&gt;
+&lt;/form&gt;
+
+
+&lt;bean name="validationDelegate" class="<a href="../api/net/sf/tapestry/valid/ValidationDelegate.html">net.sf.tapestry.valid.ValidationDelegate</a>"/&gt;
+    
+&lt;bean name="dateValidator" class="<a href="../api/net/sf/tapestry/valid/DateValidator.html">net.sf.tapestry.valid.DateValidator</a>"&gt;
+    &lt;set-property name="required"&gt;
+        &lt;field-value field-name="Boolean.TRUE"/&gt;
+    &lt;/set-property&gt;
+&lt;/bean&gt;
+
+&lt;component id="form" type="<a href="Form.html">Form</a>"&gt;
+    &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
+    &lt;binding name="delegate" expression="beans.validationDelegate"/&gt;
+&lt;/component&gt;
+    
+&lt;component id="dateLabel" type="<a href="FieldLabel.html">FieldLabel</a>"&gt;
+    &lt;binding name="field" expression="components.dateField"/&gt;
+&lt;/component&gt;
+
+&lt;component id="<span class="jwcid">dateField</span>" type="<a href="ValidField.html">ValidField</a>"&gt;
+    &lt;binding name="value" expression="visit.enquiryDate"/&gt;
+    &lt;binding name="validator" expression="beans.dateValidator"/&gt;
+&lt;/component&gt;
+
+
+public class EnquiryPage extends BasePage {
+    public void formSubmit(IRequestCycle cycle) {
+        // Process enquiry date
+    }
+}
+
+public class Visit implements Serializable {
+    private Date enquiryDate = new Date();
+
+    public Date getEnquiryDate() { return enquiryDate; }
+
+    public void setEnquiryDate(Date value) {
+        enquiryDate = value;
+    }
+}
+</pre>
+
+ </td></tr></table>
+</td></tr>
+<tr>
+ <td colspan="2"><hr></td>  
+</tr>
+<tr>
+  <td align="left"><a href="Upload.html"><img src="common-images/prev.png" alt="Upload"/></a></td>  
+  <td align="right"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
 </tr>
 </table>
 

@@ -7,8 +7,20 @@
 </head>
 
 <body>
-<table border="0" cellpadding="4" cellspacing="4" width="100%">
-<tr>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+ <tr>
+  <td align="left"><a href="Block.html"><img src="common-images/prev.png" alt="Block"/></a></td>  
+  <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
+  <td align="right"><a href="Checkbox.html"><img src="common-images/next.png" alt="Checkbox"/></a></td>  
+ <tr>
+ <tr>
+  <td colspan="3"><hr></td>  
+ </tr>
+ <tr>
+  <td colspan="3">
+   <table border="0" cellpadding="4" cellspacing="4" width="100%">
+
+<tr valign="top">
  <td>
   <table>
 	 <tr>
@@ -30,19 +42,19 @@
  </td>
 </tr>
 
-<tr>
- <td colspan="2"><hr></td>
+<tr valign="middle">
+ <td colspan="2">&nbsp;</td>
 </tr>
 
 <tr>
  <td colspan="2">
   <b>Description</b>
 	<br>
-  Replaces the &lt;body&gt; tag. The Body component provides support dynamic 
-  scripting and image preloaded, used by other components, such as the 
-  <a href="Rollover.html">Rollover</a> component. 
+  Provides the HTML &lt;body&gt; tag. The Body component is used dynamically
+  JavaScript for other components such as the <a href="Script.html">Script</a> 
+  and <a href="Rollover.html">Rollover</a> component. 
   <p>
-  This component may wrap around other components and static HTML. 
+  This component should wrap around other components and static HTML. 
  </td>
 </tr>
 
@@ -92,6 +104,9 @@
   The Body component is used here to dynamically set the page's background 
   color using the informal parameter 'bgcolor'.	
 	<p>
+  Please also see the <a href="Shell.html">Shell</a> example which illustrates 
+  how to integrate style sheets into your applications.
+	<p>
 
 <table bgcolor="yellow" cellpadding="24">
 <tr>
@@ -106,11 +121,11 @@
 
 
 &lt;component id="<span class="jwcid">body</span>" type="<a href="Body.html">Body</a>"&gt;
-   &lt;binding name="bgcolor" property-path="statusColor"/&gt;
+   &lt;binding name="bgcolor" expression="statusColor"/&gt;
 &lt;/component&gt;
 
 &lt;component id="insertAccountStatus" type="<a href="Insert.html">Insert</a>"&gt;
-   &lt;binding name="value" property-path="accountStatus"/&gt;
+   &lt;binding name="value" expression="accountStatus"/&gt;
 &lt;/component&gt;
 
 
@@ -130,28 +145,15 @@ public class AccountPage extends BasePage {
 }
 </pre>
 
- </td>
-</tr>
-
+ </td></tr></table>
+</td></tr>
 <tr>
- <td colspan="2"><hr></td>  
+ <td colspan="3"><hr></td>  
 </tr>
 <tr>
- <td colspan="2">
-  <table width="100%">
-   <tr>
-    <td align="left">
-     <a href="Block.html"><img src="common-images/prev.png" alt="Previous"/></a>
-    </td>  
-    <td align="center">
-     <a href="index.html"><img src="common-images/home.png" alt="Home"/></a>
-    </td>  
-    <td align="right">
-     <a href="Checkbox.html"><img src="common-images/next.png" alt="Next"/></a>
-    </td>  
-   <tr>
-  </table>
- </td>
+ <td align="left"><a href="Block.html"><img src="common-images/prev.png" alt="Block"/></a></td>  
+ <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
+ <td align="right"><a href="Checkbox.html"><img src="common-images/next.png" alt="Checkbox"/></a></td>  
 </tr>
 </table>
 

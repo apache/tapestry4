@@ -5,10 +5,22 @@
 <title>PropertySelection</title>
 <link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
 </head>
-<body>
 
-<table border="0" cellpadding="4" cellspacing="4" width="100%">
-<tr>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+ <tr>
+  <td align="left"><a href="Page.html"><img src="common-images/prev.png" alt="Page"/></a></td>  
+  <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Index"/></a></td>  
+  <td align="right"><a href="Radio.html"><img src="common-images/next.png" alt="Radio"/></a></td>  
+ <tr>
+ <tr>
+  <td colspan="3"><hr></td>  
+ </tr>
+ <tr>
+  <td colspan="3">
+   <table border="0" cellpadding="4" cellspacing="4" width="100%">
+
+<tr valign="top">
  <td>
   <table>
 	 <tr>
@@ -37,8 +49,8 @@
  </td>
 </tr>
 
-<tr>
- <td colspan="2"><hr></td>
+<tr valign="middle">
+ <td colspan="2">&nbsp;</td>
 </tr>
 
 <tr>
@@ -47,12 +59,23 @@
 	<br>
   Creates form elements that allow a property of an object to be selected. 
 	This may take the form of a &lt;select&gt; or a sequence of 
-	&lt;input type='radio'&gt; elements. Uses a model to map between Java values 
-	that will be assigned, and textual labels that will appear in the HTML 
-	response.
+	&lt;input type='radio'&gt; elements. Uses a 
+  <a href="../api/net/sf/tapestry/form/IPropertySelectionModel.html">model</a> 
+  to map between Java values that will be assigned, and textual labels that will 
+  appear in the HTML response.
 	<p>
-	Note complex Object's need to properly implement the <tt>Object.equals()</tt> 
-	method if the correct item intial item is to be displayed.  
+  There are a range property selection models you can use, including the
+  <a href="../api/net/sf/tapestry/form/StringPropertySelectionModel.html">
+  <tt>StringPropertySelectionModel</tt></a>,
+  <a href="../api/net/sf/tapestry/vlib/EntitySelectionModel.html">
+  <tt>EntitySelectionModel</tt></a>, and
+  <a href="../api/net/sf/tapestry/form/EnumPropertySelectionModel.html">
+  <tt>EnumPropertySelectionModel</tt></a>. You can also create your own model, 
+  as illustrated in the Examples below.
+	<p>
+	Note complex value Object's need to properly implement the 
+  <tt>Object.equals()</tt> method if the correct item intial item is to be 
+  displayed.  
   <p>
   This component may NOT wrap around other components or static HTML. 
  </td>
@@ -61,11 +84,10 @@
 <tr>
  <td colspan="2">
   <b>See Also</b><br>
-	<a href="Form.html">Form</a>, 
-  <a href="Option.html">Option</a>, 
+	<a href="Select.html">Select</a>, <a href="Option.html">Option</a>, 
 	<a href="Radio.html">Radio</a>, <a href="RadioGroup.html">RadioGroup</a>,
-  <a href="Script.html">Script</a>,
-	<a href="Select.html">Select</a> 
+	<a href="Form.html">Form</a>, 
+  <a href="Script.html">Script</a>
  </td>
 </tr>
 
@@ -115,7 +137,7 @@
 		<td>false</td>
 		<td>Controls whether the &lt;select&gt; is active or not. A disabled 
 		PropertySelection does not update its value parameter. Corresponds to the 
-		'disabled' HTML attribute.
+		"disabled" HTML attribute.
 		</td>
 	</tr>
   <tr>
@@ -167,12 +189,12 @@
 &lt;bean name="genderSelectModel" class="GenderPropertySelectionModel"/&gt;          
 
 &lt;component id="detailsForm" type="<a href="Form.html">Form</a>"&gt;
-    &lt;binding name="listener" property-path="listeners.formSubmit"/&gt;
+    &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
 &lt;/component&gt;
 
 &lt;component id="<span class="jwcid">selectGender</span>" type="<a href="PropertySelection.html">PropertySelection</a>"&gt;
-    &lt;binding name="model" property-path="beans.genderSelectModel"/&gt;
-    &lt;binding name="value" property-path="clothingItem"/&gt;
+    &lt;binding name="model" expression="beans.genderSelectModel"/&gt;
+    &lt;binding name="value" expression="clothingItem"/&gt;
 &lt;/component&gt;
 
 
@@ -183,7 +205,7 @@ public class DetailsPage extends BasePage {
 
     public void setGender(String value) { 
         gender = value;
-        fireObservedChange("gender", gender);
+        fireObservedChange("gender", value);
     }
    
     public void detach() {
@@ -191,10 +213,12 @@ public class DetailsPage extends BasePage {
         super.detach();
     }   
 
-    public void formSubmit(IRequestCycle cycle) { }   
+    public void formSubmit(IRequestCycle cycle) {   
+        // Process form submission
+    }
 }
 
-public class GenderPropertySelectionModel implements IPropertySelectionModel {
+public class GenderPropertySelectionModel implements <a href="../api/net/sf/tapestry/form/IPropertySelectionModel.html">IPropertySelectionModel</a> {
     public int getOptionCount() { return 3; }
 
     public Object getOption(int index) {
@@ -270,29 +294,29 @@ latter you can simply set the component's 'submitOnChange' property to true.
 
 
 &lt;component id="purchaseForm" type="<a href="Form.html">Form</a>"&gt;
-    &lt;binding name="listener" property-path="listeners.formSubmit"/&gt;
+    &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
 &lt;/component&gt;
 
 &lt;component id="<span class="jwcid">selectItem</span>" type="<a href="PropertySelection.html">PropertySelection</a>"&gt;
-    &lt;binding name="model" property-path="itemSelectionModel"/&gt;
-    &lt;binding name="value" property-path="clothingItem"/&gt;
+    &lt;binding name="model" expression="itemSelectionModel"/&gt;
+    &lt;binding name="value" expression="clothingItem"/&gt;
 &lt;/component&gt;
 
 &lt;component id="itemOnChange" type="<a href="Script.html">Script</a>"&gt;
     &lt;static-binding name="script"&gt;/net/sf/tapestry/form/SelectSubmit.script&lt;/static-binding&gt;
-    &lt;binding name="component" property-path="components.itemSelect"/&gt;
+    &lt;binding name="component" expression="components.itemSelect"/&gt;
 &lt;/component&gt;
 
 &lt;component id="insertDescription" type="<a href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" property-path="clothingItem.description"/&gt;
+    &lt;binding name="value" expression="clothingItem.description"/&gt;
 &lt;/component&gt;
 
 &lt;component id="insertLabel" type="<a href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" property-path="clothingItem.label"/&gt;
+    &lt;binding name="value" expression="clothingItem.label"/&gt;
 &lt;/component&gt;
 
 &lt;component id="insertPrice" type="<a href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" property-path="clothingItem.price"/&gt;
+    &lt;binding name="value" expression="clothingItem.price"/&gt;
 &lt;/component&gt;
 
 
@@ -304,7 +328,7 @@ public class PurchagePage extends BasePage {
 
     public void setClothingItem(Item value) { 
         clothingItem = value;  
-        fireObservedChange("clothingItem", clothingItem);
+        fireObservedChange("clothingItem", value);
     }
 
     public ItemSelectionModel getItemSelectionModel() { 
@@ -313,16 +337,18 @@ public class PurchagePage extends BasePage {
 
     public ItemSelectionModel setItemSelectionModel(ItemSelectionModel value) { 
         itemSelectionModel = value;
-        fireObservedChange("itemSelectionModel", itemSelectionModel);
+        fireObservedChange("itemSelectionModel", value);
     }
-   
+
     public void detach() {
         clothingItem = null;
         itemSelectionModel = null;
         super.detach();
     }
 
-    public void formSubmit(IRequestCycle cycle) { }   
+    public void formSubmit(IRequestCycle cycle) {
+        // Process form submission 
+    }   
 }
 
 public class Item implements Serializable {
@@ -351,7 +377,7 @@ public class Item implements Serializable {
     public int getPrice() { return price;  }   
 }
 
-public class ItemSelectionModel implements IPropertySelectionModel, Serializable {
+public class ItemSelectionModel implements <a href="../api/net/sf/tapestry/form/IPropertySelectionModel.html">IPropertySelectionModel</a>, Serializable {
     private List itemList;
 
     public ItemPropertySelectionModel(List itemList) { 
@@ -375,28 +401,16 @@ public class ItemSelectionModel implements IPropertySelectionModel, Serializable
     }
 }
 </pre>
- </td>
-</tr>
 
+ </td></tr></table>
+</td></tr>
 <tr>
- <td colspan="2"><hr></td>  
+ <td colspan="3"><hr></td>  
 </tr>
 <tr>
- <td colspan="2">
-  <table width="100%">
-   <tr>
-    <td align="left">
-     <a href="Page.html"><img src="common-images/prev.png" alt="Previous"/></a>
-    </td>  
-    <td align="center">
-     <a href="index.html"><img src="common-images/home.png" alt="Home"/></a>
-    </td>  
-    <td align="right">
-     <a href="Radio.html"><img src="common-images/next.png" alt="Next"/></a>
-    </td>
-   <tr>
-  </table>
- </td>
+ <td align="left"><a href="Page.html"><img src="common-images/prev.png" alt="Page"/></a></td>  
+ <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Index"/></a></td>  
+ <td align="right"><a href="Radio.html"><img src="common-images/next.png" alt="Radio"/></a></td>  
 </tr>
 </table>
 

@@ -2,12 +2,25 @@
 <!-- $Id$ --> 
 <html>
 <head>
+<title>Insert</title>
 <link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
 </head>
 
 <body>
-<table border="0" cellpadding="4" cellspacing="4" width="100%">
-<tr>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+ <tr>
+  <td align="left"><a href="ImageSubmit.html"><img src="common-images/prev.png" alt="ImageSubmit"/></a></td>  
+  <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
+  <td align="right"><a href="InsertBlock.html"><img src="common-images/next.png" alt="InsertBlock"/></a></td>  
+ <tr>
+ <tr>
+  <td colspan="3"><hr></td>  
+ </tr>
+ <tr>
+  <td colspan="3">
+   <table border="0" cellpadding="4" cellspacing="4" width="100%">
+
+<tr valign="top">
  <td>
   <table>
 	 <tr>
@@ -30,8 +43,8 @@
  </td>
 </tr>
 
-<tr>
- <td colspan="2"><hr></td>
+<tr valign="middle">
+ <td colspan="2">&nbsp;</td>
 </tr>
 
 <tr>
@@ -147,9 +160,9 @@ The order was due on the &lt;span jwcid="<span class="jwcid">insertDueDate</span
 
 
 &lt;component id="<span class="jwcid">insertDueDate</span>" type="<a href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" property-path="dueDate"/&gt;
+    &lt;binding name="value" expression="dueDate"/&gt;
     &lt;field-binding name="format" field-name="EnquiryPage.DATE_FORMAT"/&gt;
-    &lt;binding name="class" property-path="dueClass"/&gt;
+    &lt;binding name="class" expression="dueClass"/&gt;
 &lt;/component&gt;
 
 
@@ -170,28 +183,16 @@ public class EnquiryPage extends BasePage {
     }    
 }
 </pre>
- </td>
-</tr>
 
+ </td></tr></table>
+</td></tr>
 <tr>
- <td colspan="2"><hr></td>  
+ <td colspan="3"><hr></td>  
 </tr>
 <tr>
- <td colspan="2">
-  <table width="100%">
-   <tr>
-    <td align="left">
-     <a href="InsertImage.html"><img src="common-images/prev.png" alt="Previous"/></a>
-    </td>  
-    <td align="center">
-     <a href="index.html"><img src="common-images/home.png" alt="Home"/></a>
-    </td>  
-    <td align="right">
-     <a href="InsertBlock.html"><img src="common-images/next.png" alt="Next"/></a>
-    </td>  
-   <tr>
-  </table>
- </td>
+ <td align="left"><a href="ImageSubmit.html"><img src="common-images/prev.png" alt="ImageSubmit"/></a></td>  
+ <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
+ <td align="right"><a href="InsertBlock.html"><img src="common-images/next.png" alt="InsertBlock"/></a></td>  
 </tr>
 </table>
 
