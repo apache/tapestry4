@@ -44,7 +44,7 @@
   
   <component id="inputAuthor" type="ValidField">
     <binding name="value" property-path="attributes.author"/>
-    <static-binding name="maximumLength">30</static-binding>
+    <static-binding name="maximumLength">60</static-binding>
     <static-binding name="displayWidth">30</static-binding>
     <static-binding name="displayName">Author</static-binding>
     <field-binding name="validator" field-name="com.primix.tapestry.valid.StringValidator.REQUIRED"/>
