@@ -517,4 +517,48 @@ public class TestServletWebRequest extends BaseWebTestCase
 
         verifyControls();
     }
+    
+    public void testGetActivationPathNoPathInfo()
+    {
+        MockControl control = newControl(HttpServletRequest.class);
+        HttpServletRequest request = (HttpServletRequest) control.getMock();
+
+        HttpServletResponse response = newResponse();
+        
+        request.getServletPath();
+        control.setReturnValue("/foo");
+        
+        request.getPathInfo();
+        control.setReturnValue(null);
+        
+        replayControls();
+        
+        WebRequest wr = new ServletWebRequest(request, response);
+        
+        assertEquals("/foo", wr.getActivationPath());
+        
+        verifyControls();
+    }
+    
+    public void testGetActvationPathFull()
+    {
+        MockControl control = newControl(HttpServletRequest.class);
+        HttpServletRequest request = (HttpServletRequest) control.getMock();
+
+        HttpServletResponse response = newResponse();
+        
+        request.getServletPath();
+        control.setReturnValue("/foo.direct");
+        
+        request.getPathInfo();
+        control.setReturnValue("/bar/baz");
+        
+        replayControls();
+        
+        WebRequest wr = new ServletWebRequest(request, response);
+        
+        assertEquals("/foo.direct/bar/baz", wr.getActivationPath());
+        
+        verifyControls();
+    }
 }

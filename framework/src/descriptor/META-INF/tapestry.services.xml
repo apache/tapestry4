@@ -72,10 +72,11 @@
     <invoke-factory model="primitive">
       <construct class="org.apache.tapestry.asset.AssetService">
         <set-object property="exceptionReporter" value="infrastructure:requestExceptionReporter"/>
-        <set-service property="assetExternalizer" service-id="AssetExternalizer"/>
+        <set-service property="assetExternalizer" service-id="tapestry.asset.AssetExternalizer"/>
         <set-object property="linkFactory" value="infrastructure:linkFactory"/>
-		<set-object property="servletContext" value="service:tapestry.globals.ServletContext"/>
-		<set-object property="servletResponse" value="service:tapestry.globals.HttpServletResponse"/>
+        <set-object property="servletContext" value="service:tapestry.globals.ServletContext"/>
+        <set-object property="servletResponse" value="service:tapestry.globals.HttpServletResponse"/>
+        <set-service property="digestSource" service-id="tapestry.asset.ResourceDigestSource"/>
       </construct>
     </invoke-factory>
   </service-point>  
@@ -166,20 +167,7 @@
     </invoke-factory>
     
   </service-point>
-  
-  <service-point id="AssetExternalizer" interface="org.apache.tapestry.asset.AssetExternalizer">
     
-    Used by the AssetService to copy private assets out onto the file system within
-    a web folder, so that static URLs to the assets may be generated.
-    
-    <invoke-factory>
-      <construct class="org.apache.tapestry.asset.AssetExternalizerImpl">
-        <set-object property="propertySource" value="infrastructure:applicationPropertySource"/>
-      </construct>
-    </invoke-factory>
-    
-  </service-point>
-  
   <service-point id="EngineServiceObjectProvider" interface="org.apache.hivemind.service.ObjectProvider">
     
     Implementation of the "engine-service:" object provider prefix.

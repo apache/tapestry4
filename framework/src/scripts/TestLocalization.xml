@@ -65,7 +65,7 @@ Zees ees nawt cheeze!
 		
 		<assert-output name="English Home image">
 <![CDATA[		
-/mock/app?path=%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fapp%2Fhome.png&amp;service=asset	
+/mock/app?md5=980b1f24a8d2381f7fa75b095989f7e7&amp;path=%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fapp%2Fhome.png&amp;service=asset
 ]]>
 		</assert-output>
 		
@@ -86,7 +86,7 @@ href="/mock/app?component=switch&amp;page=Assets&amp;service=direct"
 		
 		<assert-output name="French Home image">
 <![CDATA[		
-/mock/app?path=%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fapp%2Fhome_fr.png&amp;service=asset	
+/mock/app?md5=64c0a48177b614031fcd8039550334ed&amp;path=%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fapp%2Fhome_fr.png&amp;service=asset
 ]]>
 		</assert-output>
 		
@@ -134,7 +134,7 @@ href="/mock/app?component=link&amp;page=Home&amp;service=direct&amp;sp=2&amp;sp=
 		
 		<assert-output name="French Home image">
 <![CDATA[		
-/mock/app?path=%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fapp%2Fhome_fr.png&amp;service=asset	
+/mock/app?md5=64c0a48177b614031fcd8039550334ed&amp;path=%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fapp%2Fhome_fr.png&amp;service=asset
 ]]>
 		</assert-output>
 		

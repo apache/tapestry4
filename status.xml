@@ -54,10 +54,12 @@
   </todo>
   <changes>
     <release version="3.1-alpha-2" date="unreleased">
-      <action type="update" dev="HLS"> Upgrade to HiveMind 1.1-alpha-2. </action>
+      <action type="update" dev="HLS"> Upgrade to HiveMind 1.1-alpha-3-snapshot. </action>
       <action type="update" dev="HLS"> Coordinate Locale changes with the hivemind.ThreadLocale service. </action>
-      <action type="add" dev="HLS"> Add lookup mechanism for determine page class from page name. </action>
+      <action type="add" dev="HLS"> Add lookup mechanism to determine page class from page name. </action>
       <action type="add" dev="HLS"> Allow the name of the initial page to be overriden using the org.apache.tapestry.home-page application property. </action>
+      <action type="fix" dev="HLS" fixes-bug="TAPESTRY-281"> Include a message digest, as a credential, inside asset URLs. </action>
+      <action type="add" dev="HLS"> Add asset-encoding that encodes and decodes a friendly URL for the asset service. </action>
     </release>
     <release version="3.1-alpha-1" date="Feb 21 2005">
       <action type="update" dev="HLS"> Remove dependencies on Jakarta digester, collections and beanutils. Add dependency on Jakarta HiveMind. </action>

@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.asset;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -28,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.util.Defense;
+import org.apache.hivemind.util.IOUtils;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IEngineService;
@@ -55,6 +57,7 @@ import org.apache.tapestry.services.ServiceConstants;
 
 public class AssetService implements IEngineService
 {
+
     /** @since 3.1 */
     private ClassResolver _classResolver;
 
@@ -66,13 +69,16 @@ public class AssetService implements IEngineService
 
     /** @since 3.1 */
     private ServletContext _servletContext;
-    
+
     /** @since 3.1 */
     private HttpServletResponse _servletResponse;
 
+    /** @since 3.1 */
+    private ResourceDigestSource _digestSource;
+
     /**
      * Defaults MIME types, by extension, used when the servlet container doesn't provide MIME
-     * types. ServletExec Debugger, for example, fails to do provide these.
+     * types. ServletExec Debugger, for example, fails to provide these.
      */
 
     private final static Map _mimeTypes;
@@ -94,7 +100,22 @@ public class AssetService implements IEngineService
 
     private RequestExceptionReporter _exceptionReporter;
 
-    private static final String PATH = "path";
+    /**
+     * Query parameter that stores the path to the resource (with a leading slash).
+     * 
+     * @since 3.1
+     */
+
+    public static final String PATH = "path";
+
+    /**
+     * Query parameter that stores the digest for the file; this is used to authenticate that the
+     * client is allowed to access the file.
+     * 
+     * @since 3.1
+     */
+
+    public static final String DIGEST = "digest";
 
     /**
      * Builds a {@link ILink}for a {@link PrivateAsset}.
@@ -114,12 +135,15 @@ public class AssetService implements IEngineService
         if (externalURL != null)
             return new StaticLink(externalURL);
 
+        String md5 = _digestSource.getDigestForResource(path);
+
         Map parameters = new HashMap();
 
         parameters.put(ServiceConstants.SERVICE, Tapestry.ASSET_SERVICE);
         parameters.put(PATH, path);
+        parameters.put(DIGEST, md5);
 
-        // Service is stateless
+        // Service is stateless, which is the exception to the rule.
 
         return _linkFactory.constructLink(cycle, parameters, false);
     }
@@ -153,31 +177,45 @@ public class AssetService implements IEngineService
             IOException
     {
         String path = cycle.getParameter(PATH);
-
-        URL resourceURL = _classResolver.getResource(path);
-
-        if (resourceURL == null)
-            throw new ApplicationRuntimeException(Tapestry.format("missing-resource", path));
-
-        URLConnection resourceConnection = resourceURL.openConnection();
-
-        writeAssetContent(cycle, output, path, resourceConnection);
-    }
-
-    /** @since 2.2 * */
-
-    private void writeAssetContent(IRequestCycle cycle, ResponseOutputStream output,
-            String resourcePath, URLConnection resourceConnection)
-    {
-        // Getting the content type and length is very dependant
-        // on support from the application server (represented
-        // here by the servletContext).
-
-        String contentType = _servletContext.getMimeType(resourcePath);
-        int contentLength = resourceConnection.getContentLength();
+        String md5 = cycle.getParameter(DIGEST);
 
         try
         {
+            if (!_digestSource.getDigestForResource(path).equals(md5))
+                throw new ApplicationRuntimeException(AssetMessages.md5Mismatch(path));
+
+            URL resourceURL = _classResolver.getResource(path);
+
+            if (resourceURL == null)
+                throw new ApplicationRuntimeException(AssetMessages.noSuchResource(path));
+
+            URLConnection resourceConnection = resourceURL.openConnection();
+
+            writeAssetContent(cycle, output, path, resourceConnection);
+        }
+        catch (Throwable ex)
+        {
+            _exceptionReporter.reportRequestException(AssetMessages.exceptionReportTitle(path), ex);
+        }
+
+    }
+
+    /** @since 2.2 */
+
+    private void writeAssetContent(IRequestCycle cycle, ResponseOutputStream output,
+            String resourcePath, URLConnection resourceConnection) throws IOException
+    {
+        InputStream input = null;
+
+        try
+        {
+            // Getting the content type and length is very dependant
+            // on support from the application server (represented
+            // here by the servletContext).
+
+            String contentType = _servletContext.getMimeType(resourcePath);
+            int contentLength = resourceConnection.getContentLength();
+
             if (contentLength > 0)
                 _servletResponse.setContentLength(contentLength);
 
@@ -193,7 +231,7 @@ public class AssetService implements IEngineService
 
             output.forceFlush();
 
-            InputStream input = resourceConnection.getInputStream();
+            input = new BufferedInputStream(resourceConnection.getInputStream());
 
             byte[] buffer = new byte[BUFFER_SIZE];
 
@@ -208,12 +246,11 @@ public class AssetService implements IEngineService
             }
 
             input.close();
+            input = null;
         }
-        catch (Throwable ex)
+        finally
         {
-            String title = Tapestry.format("AssetService.exception-report-title", resourcePath);
-
-            _exceptionReporter.reportRequestException(title, ex);
+            IOUtils.close(input);
         }
     }
 
@@ -247,10 +284,16 @@ public class AssetService implements IEngineService
     {
         _servletContext = servletContext;
     }
-    
+
     /** @since 3.1 */
     public void setServletResponse(HttpServletResponse servletResponse)
     {
         _servletResponse = servletResponse;
+    }
+
+    /** @since 3.1 */
+    public void setDigestSource(ResourceDigestSource md5Source)
+    {
+        _digestSource = md5Source;
     }
 }

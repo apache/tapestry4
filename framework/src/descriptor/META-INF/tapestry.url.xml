@@ -135,6 +135,35 @@
         
       </element>      
       
+      <element name="asset-encoder">
+        
+        <attribute name="id" required="true" unique="true">
+          Unique id for this encoder, used when ordering encoder order.
+        </attribute>
+        <attribute name="before">
+          List of ids of encoders that must come before this encoder.
+        </attribute>
+        <attribute name="after">
+          List of ids of encoders that must follow this encoder.
+        </attribute>
+        <attribute name="path" required="true">
+          The path to map to the asset service, typically "/assets/".
+        </attribute>        
+        
+        <rules>
+          <create-object class="impl.ServiceEncoderContribution"/>
+          <read-attribute attribute="id" property="id"/>
+          <read-attribute attribute="before" property="before"/>
+          <read-attribute attribute="after" property="after"/>
+          <invoke-parent method="addElement"/>
+          
+          <create-object class="org.apache.tapestry.engine.encoders.AssetEncoder"/>
+          <read-attribute attribute="path" property="path"/>
+          <invoke-parent method="setEncoder"/>          
+        </rules>        
+        
+      </element>
+      
     </schema>
     
   </configuration-point>

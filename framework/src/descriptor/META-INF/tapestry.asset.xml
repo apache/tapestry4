@@ -113,5 +113,28 @@
       </construct>
     </invoke-factory>
   </service-point>
+
+
+  <service-point id="ResourceDigestSource" interface="ResourceDigestSource">
+    
+    Reads and caches Digest digests of fiel exposed by the AssetService.
+    
+    <invoke-factory>
+      <construct class="ResourceDigestSourceImpl"/>
+    </invoke-factory>
+  </service-point>  
+  
+  <service-point id="AssetExternalizer" interface="AssetExternalizer">
+    
+    Used by the AssetService to copy private assets out onto the file system within
+    a web folder, so that static URLs to the assets may be generated.
+    
+    <invoke-factory>
+      <construct class="AssetExternalizerImpl">
+        <set-object property="propertySource" value="infrastructure:applicationPropertySource"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
   
 </module>
