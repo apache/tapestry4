@@ -205,8 +205,6 @@ public class SpecificationParser extends AbstractDocumentParser
         conversionMap.put("String", new StringConverter());
         
         conversionMap.put("in", Direction.IN);
-        conversionMap.put("out", Direction.OUT);
-        conversionMap.put("in-out", Direction.IN_OUT);
         conversionMap.put("custom", Direction.CUSTOM);
     }
 

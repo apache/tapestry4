@@ -266,7 +266,7 @@ Attributes:
   java-type CDATA #IMPLIED
   required %attribute-flag; "no"
   property-name CDATA #IMPLIED
-  direction (in|out|in-out|custom) "custom"
+  direction (in|custom) "custom"
 >
 <!-- =======================================================
 Element: private-asset

@@ -56,6 +56,10 @@ public interface IPage extends IComponent
 	 *  the engine, just before is is
 	 *  returned to the pool.  The page is expected to
 	 *  null the engine, visit and changeObserver properties.
+	 * 
+	 *  <p>Classes should also reset any properties to
+	 *  default values (as if the instance
+	 *  was freshly instantiated).
 	 *
 	 *  @see IPageSource#releasePage(IPage)
 	 *
@@ -121,6 +125,10 @@ public interface IPage extends IComponent
 	 *  claimed for use with a particular engine; it will stay attached
 	 *  to the engine until the end of the current request cycle,
 	 *  then be returned to the pool.
+	 * 
+	 *  <p>This method is rarely overriden; to initialize
+	 *  page properties before a render, override
+	 *  {@link #beginResponse(IMarkupWriter, IRequestCycle)}.
 	 *
 	 **/
 
@@ -138,7 +146,8 @@ public interface IPage extends IComponent
 	 *  <li>Invokes {@link IRequestCycle#commitPageChanges()} (if not rewinding)
 	 *  <li>Invokes {@link #render(IMarkupWriter, IRequestCycle)}
 	 *  <li>Invokes {@link PageRenderListener#pageEndRender(PageEvent)} (this occurs
-	 *  even if a previous step throws an exception)
+	 *  even if a previous step throws an exception).
+	 * </ul>
 	 *
 	 **/
 
@@ -150,7 +159,8 @@ public interface IPage extends IComponent
 	public void setName(String value);
 
 	/**
-	 *  Method invoked by the page, action and immediate services to validate that the
+	 *  Method invoked by the page, action and direct services 
+	 *  to validate that the
 	 *  user is allowed to visit the page.
 	 *
 	 *  <p>Most web applications have a concept of 'logging in' and

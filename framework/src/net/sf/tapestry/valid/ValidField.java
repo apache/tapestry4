@@ -179,7 +179,7 @@ public class ValidField
     {
         displayNameBinding = value;
 
-        if (value.isStatic())
+        if (value.isInvariant())
             displayNameValue = value.getString();
     }
 

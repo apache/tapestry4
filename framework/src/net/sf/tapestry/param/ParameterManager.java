@@ -102,7 +102,7 @@ public class ParameterManager
         boolean debug = CAT.isDebugEnabled();
 
         if (debug)
-            CAT.debug("Connecting parameters and properties for " + component);
+            CAT.debug(component + ": connecting parameters and properties");
 
         List list = new ArrayList();
         ComponentSpecification spec = component.getSpecification();
@@ -212,10 +212,10 @@ public class ParameterManager
             // Static bindings are set here and then forgotten
             // about.  Dynamic bindings are kept for later.
 
-            if (binding.isStatic())
+            if (binding.isInvariant())
             {
                 if (debug)
-                    CAT.debug("Setting static value using " + connector + ".");
+                    CAT.debug("Setting invariant value using " + connector + ".");
 
                 try
                 {
