@@ -133,14 +133,6 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     private IBeanProvider _beans;
 
     /**
-     * Provides access to localized Strings for this component.
-     * 
-     * @since 2.0.4
-     */
-
-    private Messages _strings;
-
-    /**
      * Returns true if the component is currently rendering.
      * 
      * @see #prepareForRender(IRequestCycle)
@@ -688,16 +680,6 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
 
     protected void cleanupAfterRender(IRequestCycle cycle)
     {
-    }
-
-    /** @since 3.0 * */
-
-    public Messages getMessages()
-    {
-        if (_strings == null)
-            _strings = getPage().getEngine().getComponentMessagesSource().getMessages(this);
-
-        return _strings;
     }
 
     public INamespace getNamespace()

@@ -323,5 +323,21 @@ value.
 </p>
 
 </section>  <!-- upgrade.bean -->
+
+<section id="upgrade.abstract">
+  <title>Abstract classes</title>
+  
+<p>
+In Tapestry 3.0, it was rare, put possible, for your page and component classes to be concrete (not abstract).  In Tapestry 3.1,
+that is no longer possible ... base classes such as &BasePage; are themselves abstract because key properties, such as <code>messages</code>
+are now injected into the classes, rather than inherited from base classes.
+</p>  
+
+<p>
+On upgrading from 3.0 to 3.1 and recompiling, you may see errors about "having to provide an implementation for method ..."; simply add the
+abstract keyword to your classes.  They <em>will</em> work at runtime.
+</p>
+  
+</section> <!-- upgrade.abstract -->
 </body>
 </document>

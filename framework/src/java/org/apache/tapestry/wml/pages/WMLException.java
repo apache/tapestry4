@@ -19,32 +19,31 @@ import org.apache.tapestry.util.exception.ExceptionDescription;
 import org.apache.tapestry.wml.Deck;
 
 /**
- *  Default exception reporting page for WML applications.
- *
- *  @author David Solis
- *  @since 3.0
+ * Default exception reporting page for WML applications.
  * 
- **/
-public class WMLException extends Deck 
+ * @author David Solis
+ * @since 3.0
+ */
+public abstract class WMLException extends Deck
 {
-	private ExceptionDescription[] _exceptions;
+    private ExceptionDescription[] _exceptions;
 
-	public void initialize()
-	{
-		_exceptions = null;
-	}
+    public void initialize()
+    {
+        _exceptions = null;
+    }
 
-	public ExceptionDescription[] getExceptions()
-	{
-		return _exceptions;
-	}
+    public ExceptionDescription[] getExceptions()
+    {
+        return _exceptions;
+    }
 
-	public void setException(Throwable value)
-	{
-		ExceptionAnalyzer analyzer;
+    public void setException(Throwable value)
+    {
+        ExceptionAnalyzer analyzer;
 
-		analyzer = new ExceptionAnalyzer();
+        analyzer = new ExceptionAnalyzer();
 
-		_exceptions = analyzer.analyze(value);
-	}
+        _exceptions = analyzer.analyze(value);
+    }
 }

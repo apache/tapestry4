@@ -24,7 +24,7 @@ import org.apache.tapestry.IRequestCycle;
  * @author Howard Lewis Ship
  * @since 3.1
  */
-public class ComponentFixture extends AbstractComponent
+public abstract class ComponentFixture extends AbstractComponent
 {
     private String _stringProperty;
 

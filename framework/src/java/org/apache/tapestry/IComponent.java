@@ -109,7 +109,7 @@ public interface IComponent extends IRender, LocationHolder
      * container.
      * 
      * @exception ApplicationRuntimeException
-     *                     runtime exception thrown if the named component does not exist.
+     *                runtime exception thrown if the named component does not exist.
      */
 
     public IComponent getComponent(String id);
@@ -226,7 +226,7 @@ public interface IComponent extends IRender, LocationHolder
      * seperated.
      * 
      * @return A Map of components keyed on component id. May return an empty map, but won't return
-     *            null.
+     *         null.
      */
 
     public Map getComponents();
@@ -249,7 +249,8 @@ public interface IComponent extends IRender, LocationHolder
             IComponentSpecification specification);
 
     /**
-     * Returns component strings for the component.
+     * Returns component strings for the component. Starting in release 3.1, this method is
+     * unimplemented (and is automatically injected into each component implementation).
      * 
      * @since 3.0
      */
@@ -276,9 +277,9 @@ public interface IComponent extends IRender, LocationHolder
      * Sets a property of a component.
      * 
      * @param propertyName
-     *                 the property name
+     *            the property name
      * @param value
-     *                 the provided value
+     *            the provided value
      */
     public void setProperty(String propertyName, Object value);
 
@@ -286,7 +287,7 @@ public interface IComponent extends IRender, LocationHolder
      * Gets a property of a component.
      * 
      * @param propertyName
-     *                 the property name
+     *            the property name
      * @return Object the value of property
      */
     public Object getProperty(String propertyName);

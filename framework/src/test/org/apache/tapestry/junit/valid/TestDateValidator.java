@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-import org.apache.tapestry.junit.TapestryTestCase;
+import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.valid.DateValidator;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidatorException;
@@ -32,7 +32,7 @@ import org.apache.tapestry.valid.ValidatorException;
  * @since 1.0.8
  */
 
-public class TestDateValidator extends TapestryTestCase
+public class TestDateValidator extends BaseValidatorTestCase
 {
     private Calendar calendar = new GregorianCalendar();
 
@@ -79,23 +79,39 @@ public class TestDateValidator extends TapestryTestCase
 
     public void testToObjectNull() throws ValidatorException
     {
-        Object out = v.toObject(new MockField("toObjectNull"), null);
+        IFormComponent field = newField();
+
+        replayControls();
+
+        Object out = v.toObject(field, null);
 
         assertNull(out);
+
+        verifyControls();
     }
 
     public void testToObjectEmpty() throws ValidatorException
     {
-        Object out = v.toObject(new MockField("toObjectNull"), "");
+        IFormComponent field = newField();
+
+        replayControls();
+
+        Object out = v.toObject(field, "");
 
         assertNull(out);
+
+        verifyControls();
     }
 
     public void testToObjectInvalid()
     {
+        IFormComponent field = newField("badDatesIndy");
+
+        replayControls();
+
         try
         {
-            v.toObject(new MockField("badDatesIndy"), "frankenhooker");
+            v.toObject(field, "frankenhooker");
 
             unreachable();
         }
@@ -105,15 +121,22 @@ public class TestDateValidator extends TapestryTestCase
                     .getMessage());
             assertEquals(ValidationConstraint.DATE_FORMAT, ex.getConstraint());
         }
+
+        verifyControls();
     }
 
     public void testOverrideInvalidDateFormatMessage()
     {
+
+        IFormComponent field = newField("badDatesIndy");
+
+        replayControls();
+
         v.setInvalidDateFormatMessage("Enter a valid date for {0}.");
 
         try
         {
-            v.toObject(new MockField("badDatesIndy"), "frankenhooker");
+            v.toObject(field, "frankenhooker");
 
             unreachable();
         }
@@ -122,6 +145,8 @@ public class TestDateValidator extends TapestryTestCase
             assertEquals("Enter a valid date for badDatesIndy.", ex.getMessage());
 
         }
+
+        verifyControls();
     }
 
     public void testToObjectFormat() throws ValidatorException
@@ -142,27 +167,37 @@ public class TestDateValidator extends TapestryTestCase
 
     public void testToObjectMinimum()
     {
+        IFormComponent field = newField("toObjectMinimum", Locale.ENGLISH);
+
+        replayControls();
+
         v.setMinimum(buildDate(Calendar.DECEMBER, 24, 2001));
 
         try
         {
-            v.toObject(new MockField("toObjectMinimum"), "12/8/2001");
+            v.toObject(field, "12/8/2001");
             unreachable();
         }
         catch (ValidatorException ex)
         {
             assertEquals(ValidationConstraint.TOO_SMALL, ex.getConstraint());
         }
+
+        verifyControls();
     }
 
     public void testOverrideDateTooEarlyMessage()
     {
+        IFormComponent field = newField("inputDate", Locale.ENGLISH);
+
+        replayControls();
+
         v.setMinimum(buildDate(Calendar.DECEMBER, 24, 2001));
         v.setDateTooEarlyMessage("Provide a date for {0} after Dec 24 2001.");
 
         try
         {
-            v.toObject(new MockField("inputDate"), "12/8/2001");
+            v.toObject(field, "12/8/2001");
             unreachable();
         }
         catch (ValidatorException ex)
@@ -170,6 +205,8 @@ public class TestDateValidator extends TapestryTestCase
             assertEquals("Provide a date for inputDate after Dec 24 2001.", ex.getMessage());
             assertEquals(ValidationConstraint.TOO_SMALL, ex.getConstraint());
         }
+
+        verifyControls();
     }
 
     public void testToObjectMinimumNull() throws ValidatorException
@@ -183,11 +220,15 @@ public class TestDateValidator extends TapestryTestCase
 
     public void testToObjectMaximum()
     {
+        IFormComponent field = newField("toObjectMaximum");
+
+        replayControls();
+
         v.setMaximum(buildDate(Calendar.DECEMBER, 24, 2001));
 
         try
         {
-            v.toObject(new MockField("toObjectMaximum"), "12/8/2002");
+            v.toObject(field, "12/8/2002");
             unreachable();
         }
         catch (ValidatorException ex)
@@ -195,16 +236,22 @@ public class TestDateValidator extends TapestryTestCase
             assertEquals("toObjectMaximum must be on or before 12/24/2001.", ex.getMessage());
             assertEquals(ValidationConstraint.TOO_LARGE, ex.getConstraint());
         }
+
+        verifyControls();
     }
 
     public void testOverrideDateTooLateMessage()
     {
+        IFormComponent field = newField("toObjectMaximum");
+
+        replayControls();
+
         v.setMaximum(buildDate(Calendar.DECEMBER, 24, 2001));
         v.setDateTooLateMessage("Try again with a date before Dec 24 2001 in {0}.");
 
         try
         {
-            v.toObject(new MockField("toObjectMaximum"), "12/8/2002");
+            v.toObject(field, "12/8/2002");
             unreachable();
         }
         catch (ValidatorException ex)
@@ -212,6 +259,8 @@ public class TestDateValidator extends TapestryTestCase
             assertEquals("Try again with a date before Dec 24 2001 in toObjectMaximum.", ex
                     .getMessage());
         }
+
+        verifyControls();
     }
 
     public void testToObjectMaximumNull() throws ValidatorException
@@ -222,5 +271,4 @@ public class TestDateValidator extends TapestryTestCase
 
         assertNull(out);
     }
-
 }

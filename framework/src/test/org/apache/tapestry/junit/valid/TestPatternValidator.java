@@ -15,12 +15,13 @@
 package org.apache.tapestry.junit.valid;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Location;
 import org.apache.tapestry.form.IFormComponent;
-import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.valid.PatternDelegate;
 import org.apache.tapestry.valid.PatternValidator;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidatorException;
+import org.easymock.MockControl;
 
 /**
  * Test cases for PatternValidator.
@@ -28,26 +29,26 @@ import org.apache.tapestry.valid.ValidatorException;
  * @author Harish Krishnaswamy
  * @since 3.0
  */
-public class TestPatternValidator extends TapestryTestCase
+public class TestPatternValidator extends BaseValidatorTestCase
 {
     PatternValidator pv = new PatternValidator();
 
-    IFormComponent pf = new MockField("PatternField");
-
-    private void positiveTest(String input) throws ValidatorException
+    private void positiveTest(IFormComponent field, String input) throws ValidatorException
     {
-        Object result = pv.toObject(pf, input);
+        Object result = pv.toObject(field, input);
         assertEquals(input, result);
     }
 
     public void testFulfillingPatterns() throws ValidatorException
     {
+        IFormComponent field = newField();
+
         pv.setPatternString("foo|foot");
-        positiveTest("xfooty");
+        positiveTest(field, "xfooty");
 
         pv.setPatternString("^(\\d{5}(-\\d{4})?)$");
-        positiveTest("06514");
-        positiveTest("06514-3149");
+        positiveTest(field, "06514");
+        positiveTest(field, "06514-3149");
     }
 
     private void assertValidatorException(ValidatorException e)
@@ -59,15 +60,21 @@ public class TestPatternValidator extends TapestryTestCase
 
     private void negativeTest(String input)
     {
+        IFormComponent field = newField("PatternField");
+
+        replayControls();
+
         try
         {
-            pv.toObject(pf, input);
+            pv.toObject(field, input);
             unreachable();
         }
         catch (ValidatorException e)
         {
             assertValidatorException(e);
         }
+
+        verifyControls();
     }
 
     public void testUnfulfillingPatterns()
@@ -82,28 +89,47 @@ public class TestPatternValidator extends TapestryTestCase
 
     public void testMalformedPattern() throws ValidatorException
     {
+        Location l = fabricateLocation(11);
+
+        MockControl control = newControl(IFormComponent.class);
+        IFormComponent field = (IFormComponent) control.getMock();
+
+        field.getDisplayName();
+        control.setReturnValue("badPattern");
+
+        field.getLocation();
+        control.setReturnValue(l);
+
+        replayControls();
+
         pv.setPatternString("^(\\d{5}(-\\d{4})?$");
 
         try
         {
-            pv.toObject(pf, "06514");
+            pv.toObject(field, "06514");
             unreachable();
         }
         catch (ApplicationRuntimeException e)
         {
-            checkException(e, "Unable to match pattern " + pv.getPatternString() + " for field "
-                    + pf.getDisplayName());
+            checkException(e, "Unable to match pattern " + pv.getPatternString()
+                    + " for field badPattern.");
+            assertSame(l, e.getLocation());
         }
+
+        verifyControls();
     }
 
     public void testOverridePatternNotMatchedMessage()
     {
+        IFormComponent field = newField("PatternField");
+        replayControls();
+
         pv.setPatternNotMatchedMessage("Field: {0}, Pattern: {1}, you figure!");
         pv.setPatternString("^(\\d{5}(-\\d{4})?)$");
 
         try
         {
-            pv.toObject(pf, "xyz");
+            pv.toObject(field, "xyz");
             unreachable();
         }
         catch (ValidatorException e)
@@ -112,6 +138,8 @@ public class TestPatternValidator extends TapestryTestCase
             assertEquals("Field: PatternField, Pattern: ^(\\d{5}(-\\d{4})?)$, you figure!", e
                     .getMessage());
         }
+
+        verifyControls();
     }
 
     public void testOverridePatternMatcher()

@@ -18,6 +18,7 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IBinding;
+import org.apache.tapestry.test.Creator;
 import org.easymock.MockControl;
 
 /**
@@ -30,7 +31,8 @@ public class TestPropertyBindingInitializer extends HiveMindTestCase
 {
     public void testSuccess()
     {
-        ComponentFixture c = new ComponentFixture();
+        Creator creator = new Creator();
+        ComponentFixture c = (ComponentFixture) creator.newInstance(ComponentFixture.class);
 
         MockControl bc = newControl(IBinding.class);
         IBinding b = (IBinding) bc.getMock();
@@ -57,7 +59,8 @@ public class TestPropertyBindingInitializer extends HiveMindTestCase
     {
         Location l = fabricateLocation(99);
 
-        ComponentFixture c = new ComponentFixture();
+        Creator creator = new Creator();
+        ComponentFixture c = (ComponentFixture) creator.newInstance(ComponentFixture.class);
 
         MockControl bc = newControl(IBinding.class);
         IBinding b = (IBinding) bc.getMock();

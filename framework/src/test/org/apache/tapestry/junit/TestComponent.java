@@ -19,6 +19,7 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.NullWriter;
+import org.apache.tapestry.test.Creator;
 
 /**
  * Test a few random things in {@link org.apache.tapestry.AbstractComponent}and
@@ -41,7 +42,7 @@ public class TestComponent extends TapestryTestCase
 
     }
 
-    private static class FakeComponent extends BaseComponent
+    public abstract static class FakeComponent extends BaseComponent
     {
         void addOuterTest(IRender render)
         {
@@ -61,7 +62,9 @@ public class TestComponent extends TapestryTestCase
 
     public void testOuter() throws Exception
     {
-        FakeComponent c = new FakeComponent();
+        Creator creator = new Creator();
+
+        FakeComponent c = (FakeComponent) creator.newInstance(FakeComponent.class);
 
         TestRender[] list = new TestRender[50];
 

@@ -23,7 +23,7 @@ import org.apache.tapestry.wml.Deck;
  * @since 3.0
  */
 
-public class NoGo extends Deck
+public abstract class NoGo extends Deck
 {
     public String getValue()
     {

@@ -29,7 +29,7 @@ import org.apache.tapestry.valid.IValidationDelegate;
  * @since 2.2
  */
 
-public class Register extends BasePage
+public abstract class Register extends BasePage
 {
     private IPropertySelectionModel _ageRangeModel;
 

@@ -29,7 +29,7 @@ import org.apache.tapestry.html.BasePage;
  * @since 2.3
  */
 
-public class Protected extends BasePage implements PageValidateListener
+public abstract class Protected extends BasePage implements PageValidateListener
 {
 
     public void pageValidate(PageEvent event)

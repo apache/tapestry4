@@ -14,26 +14,27 @@
 
 package org.apache.tapestry.services.impl;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Messages;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.util.Defense;
+import org.apache.hivemind.util.LocalizedNameGenerator;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.engine.ComponentMessages;
 import org.apache.tapestry.engine.DefaultComponentPropertySource;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.services.ComponentMessagesSource;
-import org.apache.tapestry.util.MultiKey;
 import org.apache.tapestry.util.text.LocalizedProperties;
 
 /**
@@ -57,11 +58,11 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
     public static final String MESSAGES_ENCODING_PROPERTY_NAME = "org.apache.tapestry.messages-encoding";
 
     /**
-     * Map of {@link Properties}, keyed on a {@link MultiKey}of component specification path and
-     * locale.
+     * Map of Maps. The outer map is keyed on component specification location (a{@link Resource}.
+     * This inner map is keyed on locale and the value is a {@link Properties}.
      */
 
-    private Map _cache = new HashMap();
+    private Map _componentCache = new HashMap();
 
     private IPropertySource _applicationPropertySource;
 
@@ -82,159 +83,124 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
         Resource specificationLocation = component.getSpecification().getSpecificationLocation();
         Locale locale = component.getPage().getLocale();
 
-        // Check to see if already in the cache
+        Map propertiesMap = (Map) _componentCache.get(specificationLocation);
+        if (propertiesMap == null)
+        {
+            propertiesMap = new HashMap();
+            _componentCache.put(specificationLocation, propertiesMap);
+        }
 
-        MultiKey key = buildKey(specificationLocation, locale);
-
-        Properties result = (Properties) _cache.get(key);
+        Properties result = (Properties) propertiesMap.get(locale);
 
         if (result != null)
             return result;
 
         // Not found, create it now.
 
-        result = assembleProperties(component, specificationLocation, locale);
+        result = assembleProperties(component, specificationLocation, propertiesMap, locale);
 
-        _cache.put(key, result);
+        propertiesMap.put(locale, result);
 
         return result;
     }
 
     private Properties assembleProperties(IComponent component, Resource baseResourceLocation,
-            Locale locale)
+            Map propertiesMap, Locale locale)
     {
-        String name = baseResourceLocation.getName();
+        List locales = new ArrayList();
+        List resources = new ArrayList();
 
-        int dotx = name.indexOf('.');
-        String baseName = name.substring(0, dotx);
+        String fileName = baseResourceLocation.getName();
+        int dotx = fileName.lastIndexOf('.');
+        String baseName = fileName.substring(0, dotx);
 
-        String language = locale.getLanguage();
-        String country = locale.getCountry();
-        String variant = locale.getVariant();
+        LocalizedNameGenerator g = new LocalizedNameGenerator(baseName, locale, SUFFIX);
 
-        Properties parent = (Properties) _cache.get(baseResourceLocation);
-
-        if (parent == null)
+        while (g.more())
         {
-            parent = readProperties(component, baseResourceLocation, baseName, null, null);
+            String localizedName = g.next();
+            Locale l = g.getCurrentLocale();
 
-            if (parent == null)
-            {
-                parent = _emptyProperties;
-                _cache.put(baseResourceLocation, parent);
-            }
+            locales.add(l);
+            resources.add(baseResourceLocation.getRelativeResource(localizedName));
         }
 
-        Properties result = parent;
+        // Build them back up in reverse order.
 
-        if (!HiveMind.isBlank(language))
+        Properties parent = _emptyProperties;
+        int count = locales.size();
+        for (int i = count - 1; i >= 0; i--)
         {
-            Locale l = new Locale(language, "");
-            MultiKey key = buildKey(baseResourceLocation, l);
+            Locale l = (Locale) locales.get(i);
+            Properties properties = (Properties) propertiesMap.get(locale);
 
-            result = (Properties) _cache.get(key);
-
-            if (result == null)
+            if (properties == null)
             {
-                result = readProperties(component, baseResourceLocation, baseName, l, parent);
-                _cache.put(key, result);
+                Resource propertiesResource = (Resource) resources.get(i);
+
+                properties = readProperties(component, l, propertiesResource, parent);
+
+                propertiesMap.put(l, properties);
             }
 
-            parent = result;
-        }
-        else
-            language = "";
-
-        if (HiveMind.isNonBlank(country))
-        {
-            Locale l = new Locale(language, country);
-            MultiKey key = buildKey(baseResourceLocation, l);
-
-            result = (Properties) _cache.get(key);
-
-            if (result == null)
-            {
-                result = readProperties(component, baseResourceLocation, baseName, l, parent);
-                _cache.put(key, result);
-            }
-
-            parent = result;
-        }
-        else
-            country = "";
-
-        if (HiveMind.isNonBlank(variant))
-        {
-            Locale l = new Locale(language, country, variant);
-            MultiKey key = buildKey(baseResourceLocation, l);
-
-            result = (Properties) _cache.get(key);
-
-            if (result == null)
-            {
-                result = readProperties(component, baseResourceLocation, baseName, l, parent);
-                _cache.put(key, result);
-            }
+            parent = properties;
         }
 
-        return result;
+        return parent;
     }
 
-    private MultiKey buildKey(Resource location, Locale locale)
+    private Properties readProperties(IComponent component, Locale locale,
+            Resource propertiesResource, Properties parent)
     {
-        return new MultiKey(new Object[]
-        { location, locale.toString() }, false);
-    }
+        URL resourceURL = propertiesResource.getResourceURL();
 
-    private Properties readProperties(IComponent component, Resource baseLocation, String baseName,
-            Locale locale, Properties parent)
-    {
-        StringBuffer buffer = new StringBuffer(baseName);
-
-        if (locale != null)
-        {
-            buffer.append('_');
-            buffer.append(locale.toString());
-        }
-
-        buffer.append(SUFFIX);
-
-        Resource localized = baseLocation.getRelativeResource(buffer.toString());
-
-        URL propertiesURL = localized.getResourceURL();
-
-        if (propertiesURL == null)
+        if (resourceURL == null)
             return parent;
 
-        Properties result = null;
-
-        if (parent == null)
-            result = new Properties();
-        else
-            result = new Properties(parent);
-
-        LocalizedProperties localizedResult = new LocalizedProperties(result);
         String encoding = getMessagesEncoding(component, locale);
+
+        Properties result = new Properties(parent);
+
+        LocalizedProperties wrapper = new LocalizedProperties(result);
+
+        InputStream input = null;
 
         try
         {
-            InputStream input = propertiesURL.openStream();
+            input = new BufferedInputStream(resourceURL.openStream());
 
             if (encoding == null)
-                localizedResult.load(input);
+                wrapper.load(input);
             else
-                localizedResult.load(input, encoding);
+                wrapper.load(input, encoding);
 
             input.close();
         }
         catch (IOException ex)
         {
             throw new ApplicationRuntimeException(ImplMessages.unableToLoadProperties(
-                    propertiesURL,
+                    resourceURL,
                     ex), ex);
+        }
+        finally
+        {
+            close(input);
         }
 
         return result;
+    }
+
+    private void close(InputStream is)
+    {
+        if (is != null)
+            try
+            {
+                is.close();
+            }
+            catch (IOException ex)
+            {
+                // Ignore.
+            }
     }
 
     /**
@@ -243,7 +209,7 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
 
     public synchronized void resetEventDidOccur()
     {
-        _cache.clear();
+        _componentCache.clear();
     }
 
     public Messages getMessages(IComponent component)

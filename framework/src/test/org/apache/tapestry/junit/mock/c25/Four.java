@@ -20,7 +20,7 @@ import org.apache.tapestry.html.BasePage;
 /**
  * @author mindbridge
  */
-public class Four extends BasePage
+public abstract class Four extends BasePage
 {
 
     public void directListener(IRequestCycle cycle)

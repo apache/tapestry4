@@ -23,7 +23,7 @@ import org.apache.tapestry.html.BasePage;
  * @since 2.3
  */
 
-public class ValidFieldNoBody extends BasePage
+public abstract class ValidFieldNoBody extends BasePage
 {
     private int _intValue;
 

@@ -36,7 +36,7 @@ import org.apache.tapestry.form.StringPropertySelectionModel;
  *
  **/
 
-public class Selector extends BaseComponent
+public abstract class Selector extends BaseComponent
 {
     /**
      *  When the form is submitted,

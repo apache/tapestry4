@@ -19,21 +19,23 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
+import org.apache.hivemind.Messages;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.DefaultClassResolver;
+import org.apache.hivemind.service.ClassFactory;
+import org.apache.hivemind.service.impl.ClassFactoryImpl;
 import org.apache.hivemind.util.ClasspathResource;
-import org.apache.tapestry.IEngine;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.engine.Namespace;
+import org.apache.tapestry.enhance.EnhancementOperationImpl;
+import org.apache.tapestry.enhance.InjectMessagesWorker;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.junit.mock.c21.NullPropertySource;
-import org.apache.tapestry.services.ComponentMessagesSource;
 import org.apache.tapestry.services.impl.ComponentMessagesSourceImpl;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.LibrarySpecification;
-import org.easymock.MockControl;
 
 /**
  * Tests the class {@link org.apache.tapestry.engine.DefaultStringsSource}.
@@ -47,29 +49,15 @@ import org.easymock.MockControl;
 
 public class TestComponentMessages extends TapestryTestCase
 {
-    private void check(IPage page, String key, String expected)
+    private void check(Messages messages, String key, String expected)
     {
-        replayControls();
-
-        String actual = page.getMessages().getMessage(key);
+        String actual = messages.getMessage(key);
 
         assertEquals("Key " + key, expected, actual);
 
-        verifyControls();
     }
 
     private static final String MOCK1 = "/org/apache/tapestry/junit/MockPage1.page";
-
-    private IEngine newEngine(ComponentMessagesSource source)
-    {
-        MockControl control = newControl(IEngine.class);
-        IEngine engine = (IEngine) control.getMock();
-
-        engine.getComponentMessagesSource();
-        control.setReturnValue(source);
-
-        return engine;
-    }
 
     private IComponentSpecification newSpec(String path)
     {
@@ -81,76 +69,91 @@ public class TestComponentMessages extends TapestryTestCase
         return spec;
     }
 
-    private IPage createPage(String location, Locale locale)
+    /**
+     * Mocking up the page is too hard ... the relationship between the component messagess source
+     * and the page is too varied and complex. Instead, we use the tools to create the page itself,
+     * much as the full framework would do at runtime.
+     */
+
+    private IPage newPage(IComponentSpecification specification, Locale locale)
     {
-        BasePage page = new BasePage();
+        ClassFactory classFactory = new ClassFactoryImpl();
 
+        EnhancementOperationImpl op = new EnhancementOperationImpl(new DefaultClassResolver(),
+                specification, BasePage.class, classFactory);
+
+        new InjectMessagesWorker().performEnhancement(op, specification);
+
+        IPage result = (IPage) op.getConstructor().newInstance();
+
+        result.setLocale(locale);
+        result.setPage(result);
+        result.setSpecification(specification);
+
+        return result;
+    }
+
+    private Messages createMessages(String location, Locale locale)
+    {
         ComponentMessagesSourceImpl source = new ComponentMessagesSourceImpl();
-
         source.setApplicationPropertySource(new NullPropertySource());
-
-        IEngine engine = newEngine(source);
-
-        page.attach(engine);
-        page.setPage(page);
-        page.setLocale(locale);
 
         IComponentSpecification spec = newSpec(location);
 
-        page.setSpecification(spec);
+        IPage page = newPage(spec, locale);
 
         INamespace namespace = new Namespace(null, null, new LibrarySpecification(), null, null);
 
         page.setNamespace(namespace);
 
-        return page;
+        return source.getMessages(page);
     }
 
     public void testOnlyInBase()
     {
-        IPage page = createPage(MOCK1, new Locale("en", "US"));
+        Messages messages = createMessages(MOCK1, new Locale("en", "US"));
 
-        check(page, "only-in-base", "BASE1");
+        check(messages, "only-in-base", "BASE1");
     }
 
     public void testMissingKey()
     {
-        IPage page = createPage(MOCK1, new Locale("en", "GB"));
+        Messages messages = createMessages(MOCK1, new Locale("en", "GB"));
 
-        check(page, "non-existant-key", "[NON-EXISTANT-KEY]");
+        check(messages, "non-existant-key", "[NON-EXISTANT-KEY]");
     }
 
     public void testOverwrittenInLanguage()
     {
-        IPage page = createPage(MOCK1, new Locale("en", "US"));
+        Messages messages = createMessages(MOCK1, new Locale("en", "US"));
 
-        check(page, "overwritten-in-language", "LANGUAGE1_en");
+        check(messages, "overwritten-in-language", "LANGUAGE1_en");
 
-        page = createPage(MOCK1, new Locale("fr", ""));
+        messages = createMessages(MOCK1, new Locale("fr", ""));
 
-        check(page, "overwritten-in-language", "LANGUAGE1_fr");
+        check(messages, "overwritten-in-language", "LANGUAGE1_fr");
     }
 
     public void testOverwrittenInCountry()
     {
-        IPage page = createPage(MOCK1, new Locale("en", "US"));
+        Messages messages = createMessages(MOCK1, new Locale("en", "US"));
 
-        check(page, "overwritten-in-country", "COUNTRY1_en_US");
+        check(messages, "overwritten-in-country", "COUNTRY1_en_US");
 
-        page = createPage(MOCK1, new Locale("fr", "CD"));
+        messages = createMessages(MOCK1, new Locale("fr", "CD"));
 
-        check(page, "overwritten-in-country", "COUNTRY1_fr_CD");
+        check(messages, "overwritten-in-country", "COUNTRY1_fr_CD");
     }
 
     public void testOverwrittenInVariant()
     {
-        IPage page = createPage(MOCK1, new Locale("en", "US", "Tapestry"));
+        Messages messages = createMessages(MOCK1, new Locale("en", "US", "Tapestry"));
 
-        check(page, "overwritten-in-variant", "VARIANT1_en_US_Tapestry");
+        check(messages, "overwritten-in-variant", "VARIANT1_en_US_Tapestry");
 
-        page = createPage(MOCK1, new Locale("fr", "CD", "Foo"));
+        messages = createMessages(MOCK1, new Locale("fr", "CD", "Foo"));
 
-        check(page, "overwritten-in-variant", "VARIANT1_fr_CD_Foo");
+        check(messages, "overwritten-in-variant", "VARIANT1_fr_CD_Foo");
     }
 
     private static final String MOCK2 = "/org/apache/tapestry/junit/MockPage2.page";
@@ -162,9 +165,9 @@ public class TestComponentMessages extends TapestryTestCase
 
     public void testMissingBase()
     {
-        IPage page = createPage(MOCK2, new Locale("en", "US"));
+        Messages messages = createMessages(MOCK2, new Locale("en", "US"));
 
-        check(page, "language-key", "LANGUAGE1");
+        check(messages, "language-key", "LANGUAGE1");
     }
 
     /**
@@ -174,30 +177,25 @@ public class TestComponentMessages extends TapestryTestCase
 
     public void testMissingCountry()
     {
-        IPage page = createPage(MOCK2, new Locale("en", "", "Tapestry"));
+        Messages messages = createMessages(MOCK2, new Locale("en", "", "Tapestry"));
 
-        check(page, "overwritten-in-variant", "VARIANT1_en__Tapestry");
+        check(messages, "overwritten-in-variant", "VARIANT1_en__Tapestry");
     }
 
     public void testDateFormatting()
     {
-        IPage page = createPage(MOCK1, Locale.ENGLISH);
+        Messages messages = createMessages(MOCK1, Locale.ENGLISH);
 
         Calendar c = new GregorianCalendar(1966, Calendar.DECEMBER, 24);
 
         Date d = c.getTime();
 
-        replayControls();
-
-        assertEquals("A formatted date: 12/24/66", page.getMessages()
-                .format("using-date-format", d));
-
-        verifyControls();
+        assertEquals("A formatted date: 12/24/66", messages.format("using-date-format", d));
     }
 
     public void testDateFormatLocalization()
     {
-        IPage page = createPage(MOCK1, Locale.FRENCH);
+        Messages messages = createMessages(MOCK1, Locale.FRENCH);
 
         Calendar c = new GregorianCalendar(1966, Calendar.DECEMBER, 24);
 
@@ -205,11 +203,7 @@ public class TestComponentMessages extends TapestryTestCase
 
         // French formatting puts the day before the month.
 
-        replayControls();
+        assertEquals("A formatted date: 24/12/66", messages.format("using-date-format", d));
 
-        assertEquals("A formatted date: 24/12/66", page.getMessages()
-                .format("using-date-format", d));
-
-        verifyControls();
     }
 }

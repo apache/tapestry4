@@ -25,7 +25,7 @@ import org.apache.tapestry.html.BasePage;
  * @since 2.2
  */
 
-public class Dates extends BasePage
+public abstract class Dates extends BasePage
 {
     private Date _startDate;
 

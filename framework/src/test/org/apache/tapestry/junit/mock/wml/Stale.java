@@ -26,7 +26,7 @@ import org.apache.tapestry.wml.Deck;
  * @since 3.0
  */
 
-public class Stale extends Deck
+public abstract class Stale extends Deck
 {
     public void noop(IRequestCycle cycle)
     {

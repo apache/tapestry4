@@ -14,10 +14,14 @@
 
 package org.apache.tapestry.junit.valid;
 
-import org.apache.tapestry.junit.TapestryTestCase;
+import java.util.Locale;
+
+import org.apache.tapestry.IPage;
+import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.valid.UrlValidator;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidatorException;
+import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.valid.EmailValidator}.
@@ -27,21 +31,31 @@ import org.apache.tapestry.valid.ValidatorException;
  * @since 3.0
  */
 
-public class TestUrlValidator extends TapestryTestCase
+public class TestUrlValidator extends BaseValidatorTestCase
 {
     private UrlValidator v = new UrlValidator();
 
     public void testValidUrl() throws ValidatorException
     {
-        Object result = v.toObject(new MockField("url"), "http://www.google.com");
+        IFormComponent field = newField();
+
+        replayControls();
+
+        Object result = v.toObject(field, "http://www.google.com");
         assertEquals("http://www.google.com", result);
+
+        verifyControls();
     }
 
     public void testInvalidUrl()
     {
+        IFormComponent field = newField("url");
+
+        replayControls();
+
         try
         {
-            v.toObject(new MockField("url"), "fred");
+            v.toObject(field, "fred");
             unreachable();
         }
         catch (ValidatorException ex)
@@ -49,15 +63,21 @@ public class TestUrlValidator extends TapestryTestCase
             assertEquals(ValidationConstraint.URL_FORMAT, ex.getConstraint());
             assertEquals("Invalid URL.", ex.getMessage());
         }
+
+        verifyControls();
     }
 
     public void testOverrideInvalidUrlFormatMessage()
     {
+        IFormComponent field = newField("url");
+
+        replayControls();
+
         v.setInvalidUrlFormatMessage("Try a valid URL (for {0}), like \"http://www.google.com\"");
 
         try
         {
-            v.toObject(new MockField("url"), "fred");
+            v.toObject(field, "fred");
             unreachable();
         }
         catch (ValidatorException ex)
@@ -65,15 +85,21 @@ public class TestUrlValidator extends TapestryTestCase
             assertEquals("Try a valid URL (for url), like \"http://www.google.com\"", ex
                     .getMessage());
         }
+
+        verifyControls();
     }
 
     public void testTooShort()
     {
+        IFormComponent field = newField("short");
+
+        replayControls();
+
         v.setMinimumLength(20);
 
         try
         {
-            v.toObject(new MockField("short"), "http://www.test.com");
+            v.toObject(field, "http://www.test.com");
             unreachable();
         }
         catch (ValidatorException ex)
@@ -81,31 +107,48 @@ public class TestUrlValidator extends TapestryTestCase
             assertEquals(ValidationConstraint.MINIMUM_WIDTH, ex.getConstraint());
             assertEquals("You must enter at least 20 characters for short.", ex.getMessage());
         }
+
+        verifyControls();
     }
 
     public void testOverrideMinimumLengthMessage()
     {
+        IFormComponent field = newField("short");
+
+        replayControls();
+
         v.setMinimumLength(20);
         v.setMinimumLengthMessage("URLs must be at least 20 characters.");
 
         try
         {
-            v.toObject(new MockField("short"), "http://www.test.com");
+            v.toObject(field, "http://www.test.com");
             unreachable();
         }
         catch (ValidatorException ex)
         {
             assertEquals("URLs must be at least 20 characters.", ex.getMessage());
         }
+
+        verifyControls();
     }
 
     public void testDisallowedProtocol()
     {
+        IPage page = newPage(Locale.ENGLISH);
+        MockControl control = newControl(IFormComponent.class);
+        IFormComponent field = (IFormComponent) control.getMock();
+
+        field.getPage();
+        control.setReturnValue(page);
+
+        replayControls();
+
         v.setAllowedProtocols("http,https");
 
         try
         {
-            v.toObject(new MockField("short"), "ftp://ftp.test.com");
+            v.toObject(field, "ftp://ftp.test.com");
             unreachable();
         }
         catch (ValidatorException ex)
@@ -113,5 +156,7 @@ public class TestUrlValidator extends TapestryTestCase
             assertEquals(ValidationConstraint.DISALLOWED_PROTOCOL, ex.getConstraint());
             assertEquals("Disallowed protocol - protocol must be http or https.", ex.getMessage());
         }
+
+        verifyControls();
     }
 }

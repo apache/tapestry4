@@ -19,7 +19,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.junit.mock.lib.Dumper;
 
-public class ServiceTest extends BasePage implements IExternalPage
+public abstract class ServiceTest extends BasePage implements IExternalPage
 {
     public Object[] getServiceParameters()
     {

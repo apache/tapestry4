@@ -22,7 +22,7 @@ import org.apache.tapestry.html.BasePage;
  * 
  * @author Howard Lewis Ship
  */
-public class Home extends BasePage
+public abstract class Home extends BasePage
 {
     public void enable(IRequestCycle cycle)
     {

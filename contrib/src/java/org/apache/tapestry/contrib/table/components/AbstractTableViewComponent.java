@@ -26,7 +26,7 @@ import org.apache.tapestry.contrib.table.model.ITableModelSource;
  * 
  * @author mindbridge
  */
-public class AbstractTableViewComponent extends BaseComponent
+public abstract class AbstractTableViewComponent extends BaseComponent
 {
     public ITableModelSource getTableModelSource()
     {

@@ -44,7 +44,7 @@ import org.apache.tapestry.IRequestCycle;
  * 
  **/
 
-public class Block extends AbstractComponent
+public abstract class Block extends AbstractComponent
 {
 	private IComponent _inserter;
 

@@ -24,7 +24,7 @@ import org.apache.tapestry.junit.mock.lib.Dumper;
  * @author Howard Lewis Ship
  */
 
-public class Home extends BasePage
+public abstract class Home extends BasePage
 {
     public void linkClicked(IRequestCycle cycle)
     {

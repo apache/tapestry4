@@ -37,7 +37,7 @@ import org.apache.tapestry.util.ComponentAddress;
  * 
  * @author mindbridge
  */
-public class SimpleTableColumnComponent
+public abstract class SimpleTableColumnComponent
 	extends BaseComponent
 	implements ITableRendererListener, PageDetachListener
 {

@@ -22,7 +22,7 @@ import org.apache.tapestry.util.ComponentAddress;
 /**
  * @author ceco
  */
-public class Tree extends BaseComponent implements ITreeComponent{
+public abstract class Tree extends BaseComponent implements ITreeComponent{
 
 	public Tree() {
 		super();

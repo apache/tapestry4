@@ -14,10 +14,14 @@
 
 package org.apache.tapestry.junit.valid;
 
-import org.apache.tapestry.junit.TapestryTestCase;
+import java.util.Locale;
+
+import org.apache.tapestry.IPage;
+import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.valid.EmailValidator;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidatorException;
+import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.valid.EmailValidator}.
@@ -26,21 +30,32 @@ import org.apache.tapestry.valid.ValidatorException;
  * @since 3.0
  */
 
-public class TestEmailValidator extends TapestryTestCase
+public class TestEmailValidator extends BaseValidatorTestCase
 {
     private EmailValidator v = new EmailValidator();
 
     public void testValidEmail() throws ValidatorException
     {
-        Object result = v.toObject(new MockField("email"), "foo@bar.com");
+        IFormComponent field = newField();
+
+        replayControls();
+
+        Object result = v.toObject(field, "foo@bar.com");
+
         assertEquals("foo@bar.com", result);
+
+        verifyControls();
     }
 
     public void testInvalidEmail()
     {
+        IFormComponent field = newField("email");
+
+        replayControls();
+
         try
         {
-            v.toObject(new MockField("email"), "fred");
+            v.toObject(field, "fred");
             unreachable();
         }
         catch (ValidatorException ex)
@@ -49,16 +64,22 @@ public class TestEmailValidator extends TapestryTestCase
             assertEquals("Invalid email format for email.  Format is user@hostname.", ex
                     .getMessage());
         }
+
+        verifyControls();
     }
 
     public void testOverrideInvalidEmailFormatMessage()
     {
+        IFormComponent field = newField("email");
+
+        replayControls();
+
         v
                 .setInvalidEmailFormatMessage("Try a valid e-mail address (for {0}), like ''dick@wad.com.''");
 
         try
         {
-            v.toObject(new MockField("email"), "fred");
+            v.toObject(field, "fred");
             unreachable();
         }
         catch (ValidatorException ex)
@@ -66,15 +87,21 @@ public class TestEmailValidator extends TapestryTestCase
             assertEquals("Try a valid e-mail address (for email), like 'dick@wad.com.'", ex
                     .getMessage());
         }
+
+        verifyControls();
     }
 
     public void testTooShort()
     {
+        IFormComponent field = newField("short");
+
+        replayControls();
+
         v.setMinimumLength(20);
 
         try
         {
-            v.toObject(new MockField("short"), "foo@bar.com");
+            v.toObject(field, "foo@bar.com");
             unreachable();
         }
         catch (ValidatorException ex)
@@ -82,21 +109,29 @@ public class TestEmailValidator extends TapestryTestCase
             assertEquals(ValidationConstraint.MINIMUM_WIDTH, ex.getConstraint());
             assertEquals("You must enter at least 20 characters for short.", ex.getMessage());
         }
+
+        verifyControls();
     }
 
     public void testOverrideMinimumLengthMessage()
     {
+        IFormComponent field = newField("short");
+
+        replayControls();
+
         v.setMinimumLength(20);
         v.setMinimumLengthMessage("E-mail addresses must be at least 20 characters.");
 
         try
         {
-            v.toObject(new MockField("short"), "foo@bar.com");
+            v.toObject(field, "foo@bar.com");
             unreachable();
         }
         catch (ValidatorException ex)
         {
             assertEquals("E-mail addresses must be at least 20 characters.", ex.getMessage());
         }
+
+        verifyControls();
     }
 }

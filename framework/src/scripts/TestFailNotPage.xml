@@ -35,9 +35,9 @@
 		</assert-output>
 					
 				
-		<assert-output name="Error">
-Class java.lang.Object does not implement the IPage interface.
-		</assert-output>
+		<assert-regexp name="Error">
+Class .* does not implement the IPage interface\.
+		</assert-regexp>
 								
 	</request>		
 

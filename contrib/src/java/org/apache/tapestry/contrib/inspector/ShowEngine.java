@@ -40,7 +40,7 @@ import org.apache.tapestry.util.io.BinaryDumpOutputStream;
  *
  **/
 
-public class ShowEngine extends BaseComponent implements PageDetachListener
+public abstract class ShowEngine extends BaseComponent implements PageDetachListener
 {
     private byte[] serializedEngine;
 

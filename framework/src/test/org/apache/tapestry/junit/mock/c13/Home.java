@@ -25,7 +25,7 @@ import org.apache.tapestry.html.BasePage;
  * @since 3.0
  */
 
-public class Home extends BasePage
+public abstract class Home extends BasePage
 {
     public void internalRedirect(IRequestCycle cycle)
     {

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.engine;
+package org.apache.tapestry.services.impl;
 
 import java.text.MessageFormat;
 import java.util.Locale;
@@ -21,21 +21,20 @@ import java.util.Properties;
 import org.apache.hivemind.Messages;
 
 /**
- *  Implementation of {@link org.apache.tapestry.IMessages}.  This is basically
- *  a wrapper around an instance of {@link Properties}.  This ensures
- *  that the properties are, in fact, read-only (which ensures that
- *  they don't have to be synchronized).
+ * Implementation of {@link org.apache.hivemind.Messages}. This is basically a wrapper around an
+ * instance of {@link Properties}. This ensures that the properties are, in fact, read-only (which
+ * ensures that they don't have to be synchronized).
+ * <p>
+ * TODO: Merge this code with HiveMind's implemention.
  * 
- * <p>TODO: Merge this code with HiveMind's implemention.
- *
- *  @author Howard Lewis Ship
- *  @since 2.0.4
- *
+ * @author Howard Lewis Ship
+ * @since 2.0.4
  */
 
 public class ComponentMessages implements Messages
 {
     private Properties _properties;
+
     private Locale _locale;
 
     public ComponentMessages(Locale locale, Properties properties)
@@ -61,24 +60,27 @@ public class ComponentMessages implements Messages
 
     public String format(String key, Object argument1, Object argument2, Object argument3)
     {
-        return format(key, new Object[] { argument1, argument2, argument3 });
+        return format(key, new Object[]
+        { argument1, argument2, argument3 });
     }
 
     public String format(String key, Object argument1, Object argument2)
     {
-        return format(key, new Object[] { argument1, argument2 });
+        return format(key, new Object[]
+        { argument1, argument2 });
     }
 
     public String format(String key, Object argument)
     {
-        return format(key, new Object[] { argument });
+        return format(key, new Object[]
+        { argument });
     }
 
     public String format(String key, Object[] arguments)
     {
         String pattern = getMessage(key);
 
-        // This ugliness is mandated for JDK 1.3 compatibility, which has a bug 
+        // This ugliness is mandated for JDK 1.3 compatibility, which has a bug
         // in MessageFormat ... the
         // pattern is applied in the constructor, using the system default Locale,
         // regardless of what locale is later specified!

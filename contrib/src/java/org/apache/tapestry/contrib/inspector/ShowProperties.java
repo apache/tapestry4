@@ -31,7 +31,7 @@ import org.apache.tapestry.record.IPageChange;
  * @author Howard Lewis Ship
  */
 
-public class ShowProperties extends BaseComponent implements PageRenderListener
+public abstract class ShowProperties extends BaseComponent implements PageRenderListener
 {
     private List _properties;
 
