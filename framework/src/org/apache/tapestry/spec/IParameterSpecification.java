@@ -120,4 +120,15 @@ public interface IParameterSpecification extends ILocationHolder
      **/
     public abstract Direction getDirection();
     public abstract void setDirection(Direction direction);
+    /**
+     *  Returns the default value of the JavaBeans property if no binding is provided
+     *  or null if it has not been specified
+     **/
+    public abstract String getDefaultValue();
+    /**
+     *  Sets the default value of the JavaBeans property if no binding is provided
+     * 
+     **/
+    public abstract void setDefaultValue(String defaultValue);
+    
 }

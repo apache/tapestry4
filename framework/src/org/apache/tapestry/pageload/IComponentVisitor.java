@@ -53,50 +53,18 @@
  *
  */
 
-package org.apache.tapestry.components;
+package org.apache.tapestry.pageload;
 
-import org.apache.tapestry.AbstractComponent;
-import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.IComponent;
 
 /**
- *  A component that can substitute for any HTML element.  
- *
- *  [<a href="../../../../../ComponentReference/Any.html">Component Reference</a>]
- *
- *  @author Howard Lewis Ship
- *  @version $Id$
+ *  An interface defining an entity that is interested in examining a particular component 
  * 
- **/
-
-public abstract class Any extends AbstractComponent
+ *  @author mindbridge
+ *  @version $Id$
+ *  @since 3.0
+ */
+public interface IComponentVisitor
 {
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-    {
-        String element = getElement();
-
-        if (element == null)
-            throw new ApplicationRuntimeException(
-                Tapestry.getMessage("Any.element-not-defined"),
-                this);
-
-        if (!cycle.isRewinding())
-        {
-            writer.begin(element);
-
-            renderInformalParameters(writer, cycle);
-        }
-
-        renderBody(writer, cycle);
-
-        if (!cycle.isRewinding())
-        {
-            writer.end(element);
-        }
-
-    }
-
-    public abstract String getElement();
+    void visitComponent(IComponent component);
 }

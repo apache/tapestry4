@@ -1093,8 +1093,8 @@ public class SpecificationParser
 
         result.addSetLimitedProperties(
             pattern,
-            new String[] { "property-name", "type", "java-type" },
-            new String[] { "propertyName", "type", "type" });
+            new String[] { "property-name", "type", "java-type", "default-value" },
+            new String[] { "propertyName", "type", "type", "defaultValue" });
 
         result.addSetBooleanProperty(pattern, "required", "required");
 

@@ -53,50 +53,56 @@
  *
  */
 
-package org.apache.tapestry.components;
+package org.apache.tapestry.pageload;
 
-import org.apache.tapestry.AbstractComponent;
-import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
+import java.util.Iterator;
+
+import org.apache.tapestry.IBinding;
+import org.apache.tapestry.IComponent;
+import org.apache.tapestry.IResourceResolver;
+import org.apache.tapestry.binding.ExpressionBinding;
+import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.spec.IParameterSpecification;
 
 /**
- *  A component that can substitute for any HTML element.  
- *
- *  [<a href="../../../../../ComponentReference/Any.html">Component Reference</a>]
- *
- *  @author Howard Lewis Ship
+ *  For all parameters in the examined component that have default values, but are not bound,
+ *  automatically add an ExpressionBinding with the default value.
+ *   
+ *  @author mindbridge
  *  @version $Id$
- * 
- **/
-
-public abstract class Any extends AbstractComponent
+ *  @since 3.0
+ */
+public class EstablishDefaultParameterValuesVisitor implements IComponentVisitor
 {
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+    private IResourceResolver _resolver;
+    
+    public EstablishDefaultParameterValuesVisitor(IResourceResolver resolver)
     {
-        String element = getElement();
+        _resolver = resolver;
+    }
+    
+    /**
+     * @see org.apache.tapestry.pageload.IComponentVisitor#visitComponent(org.apache.tapestry.IComponent)
+     */
+    public void visitComponent(IComponent component)
+    {
+        IComponentSpecification spec = component.getSpecification();
 
-        if (element == null)
-            throw new ApplicationRuntimeException(
-                Tapestry.getMessage("Any.element-not-defined"),
-                this);
+        Iterator i = spec.getParameterNames().iterator();
 
-        if (!cycle.isRewinding())
+        while (i.hasNext())
         {
-            writer.begin(element);
+            String name = (String) i.next();
+            IParameterSpecification parameterSpec = spec.getParameter(name);
 
-            renderInformalParameters(writer, cycle);
+            String defaultValue = parameterSpec.getDefaultValue(); 
+            if (defaultValue != null && component.getBinding(name) == null) {
+                // there is no binding for this parameter. bind it to the default value
+                IBinding binding = new ExpressionBinding(_resolver, component, defaultValue, parameterSpec.getLocation());
+                component.setBinding(name, binding);
+            }
+                
         }
-
-        renderBody(writer, cycle);
-
-        if (!cycle.isRewinding())
-        {
-            writer.end(element);
-        }
-
     }
 
-    public abstract String getElement();
 }

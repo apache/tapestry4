@@ -53,50 +53,50 @@
  *
  */
 
-package org.apache.tapestry.components;
+package org.apache.tapestry.pageload;
 
-import org.apache.tapestry.AbstractComponent;
+import java.util.Iterator;
+
 import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.spec.IParameterSpecification;
 
 /**
- *  A component that can substitute for any HTML element.  
- *
- *  [<a href="../../../../../ComponentReference/Any.html">Component Reference</a>]
- *
- *  @author Howard Lewis Ship
- *  @version $Id$
+ *  Verify whether all required parameters in the examined component are bound,
+ *  and if they are not, throw an exception.
  * 
- **/
-
-public abstract class Any extends AbstractComponent
+ *  @author mindbridge
+ *  @version $Id$
+ *  @since 3.0
+ */
+public class VerifyRequiredParametersVisitor implements IComponentVisitor
 {
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+    /**
+     * @see org.apache.tapestry.pageload.IComponentVisitor#visitComponent(org.apache.tapestry.IComponent)
+     */
+    public void visitComponent(IComponent component)
     {
-        String element = getElement();
+        IComponentSpecification spec = component.getSpecification();
 
-        if (element == null)
-            throw new ApplicationRuntimeException(
-                Tapestry.getMessage("Any.element-not-defined"),
-                this);
+        Iterator i = spec.getParameterNames().iterator();
 
-        if (!cycle.isRewinding())
+        while (i.hasNext())
         {
-            writer.begin(element);
+            String name = (String) i.next();
+            IParameterSpecification parameterSpec = spec.getParameter(name);
 
-            renderInformalParameters(writer, cycle);
+            if (parameterSpec.isRequired() && component.getBinding(name) == null)
+                throw new ApplicationRuntimeException(
+                    Tapestry.format(
+                        "PageLoader.required-parameter-not-bound",
+                        name,
+                        component.getExtendedId()),
+                    component,
+                    component.getLocation(),
+                    null);
         }
-
-        renderBody(writer, cycle);
-
-        if (!cycle.isRewinding())
-        {
-            writer.end(element);
-        }
-
     }
 
-    public abstract String getElement();
 }

@@ -77,6 +77,9 @@ public class ParameterSpecification extends BaseLocatable implements IParameterS
     /** @since 2.0.3 **/
     private String propertyName;
     
+    /** @since 3.0 **/
+    private String defaultValue = null;
+
 	private Direction direction = Direction.CUSTOM;
 	
     /**
@@ -180,6 +183,23 @@ public class ParameterSpecification extends BaseLocatable implements IParameterS
         	throw new IllegalArgumentException("direction may not be null.");
         	
         this.direction = direction;
+    }
+
+
+    /**
+     * @see org.apache.tapestry.spec.IParameterSpecification#getDefaultValue()
+     */
+    public String getDefaultValue()
+    {
+        return defaultValue;
+    }
+
+    /**
+     * @see org.apache.tapestry.spec.IParameterSpecification#setDefaultValue(java.lang.String)
+     */
+    public void setDefaultValue(String defaultValue)
+    {
+        this.defaultValue = defaultValue;
     }
 
 }

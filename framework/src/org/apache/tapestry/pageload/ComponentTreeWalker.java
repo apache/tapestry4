@@ -53,50 +53,50 @@
  *
  */
 
-package org.apache.tapestry.components;
+package org.apache.tapestry.pageload;
 
-import org.apache.tapestry.AbstractComponent;
-import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRequestCycle;
+import java.util.Collection;
+import java.util.Iterator;
+
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.Tapestry;
 
 /**
- *  A component that can substitute for any HTML element.  
- *
- *  [<a href="../../../../../ComponentReference/Any.html">Component Reference</a>]
- *
- *  @author Howard Lewis Ship
- *  @version $Id$
+ *  Walks through the tree of components and invokes the visitors on each of 
+ *  of the components in the tree.
  * 
- **/
-
-public abstract class Any extends AbstractComponent
+ *  @author mindbridge
+ *  @version $Id$
+ *  @since 3.0
+ */
+public class ComponentTreeWalker
 {
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+    private IComponentVisitor[] _visitors;
+    
+    public ComponentTreeWalker(IComponentVisitor[] visitors)
     {
-        String element = getElement();
-
-        if (element == null)
-            throw new ApplicationRuntimeException(
-                Tapestry.getMessage("Any.element-not-defined"),
-                this);
-
-        if (!cycle.isRewinding())
-        {
-            writer.begin(element);
-
-            renderInformalParameters(writer, cycle);
-        }
-
-        renderBody(writer, cycle);
-
-        if (!cycle.isRewinding())
-        {
-            writer.end(element);
-        }
-
+        _visitors = visitors;
     }
 
-    public abstract String getElement();
+    public void walkComponentTree(IComponent component)
+    {
+        // Invoke visitors
+        for (int i = 0; i < _visitors.length; i++)
+        {
+            IComponentVisitor visitor = _visitors[i];
+            visitor.visitComponent(component);
+        }
+
+        // Recurse into the embedded components
+        Collection components = component.getComponents().values();
+
+        if (Tapestry.size(components) == 0)
+            return;
+
+        for (Iterator it = components.iterator(); it.hasNext();)
+        {
+            IComponent embedded = (IComponent) it.next();
+            walkComponentTree(embedded);
+        }
+    }
 }
