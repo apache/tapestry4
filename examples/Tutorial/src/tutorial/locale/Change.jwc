@@ -29,5 +29,21 @@
 				</static-binding>
 			</bindings>
 		</component>
+		<component>
+			<id>chooseAgainImage</id>
+			<type>Image</type>
+			<bindings>
+				<binding>
+					<name>image</name>
+					<property-path>assets.choose-again</property-path>
+				</binding>
+			</bindings>
+		</component>
 	</components>
+	<assets>
+		<context-asset>
+			<name>choose-again</name>
+			<path>/images/locale/ChooseAgain.gif</path>
+		</context-asset>
+	</assets>
 </specification>

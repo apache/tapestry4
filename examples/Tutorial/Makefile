@@ -17,7 +17,7 @@ INSTALL_DIR = ../../lib
 
 MODULE_NAME = Tutorial
 
-CONTEXT_RESOURCES = index.html
+CONTEXT_RESOURCES = index.html images
 
 include $(SYS_MAKEFILE_DIR)/War.mk
 
