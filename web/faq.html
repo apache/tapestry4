@@ -233,6 +233,29 @@ Start your servlet container with the JVM system parameter
 		<i>without</i> having to restart the application inside a debugger.
 		</p>
 
+		</td>
+	</tr>
+	
+	
+	<tr valign="top">
+		<td><IMG height=12 src="images/dots_leftnav.gif" width=14></td>
+		<td>          
+		          
+		
+		<p><b>Why are so many of the classes in the examples abstract?</b>  </p>          
+		          
+		<p>
+		Tapestry has the ability to create JavaBeans properties on your classes for you,
+		automatically, at runtime.  What Tapestry actually does is create and instantiate
+		a subclass with all the necessary fields and methods.	
+			
+		</p>
+		
+		<p>
+		This is used to with properties (both persistent and transient) and with
+		component parameters.  If your code needs to read or update the property, it must declare
+		an abstract accessor method.	
+		</p>
 		    
  
 	           
@@ -240,6 +263,34 @@ Start your servlet container with the JVM system parameter
 		</td>
 	</tr>
 	
+	
+	<tr valign="top">
+		<td><IMG height=12 src="images/dots_leftnav.gif" width=14></td>
+		<td>          
+		          
+		
+		<p><b>How do I add JavaScript to my page?</b>  </p>          
+		          
+		<p>
+		The 
+		<a href="doc/ComponentReference/Body.html">Body</a>
+		component is used to fasciliate dynamic JavaScript generation within a Tapestry page.
+		Remember, many components may be somewhere in the page and they may have different or event conflicting
+		JavaScript needs ... the Body component organizes it all.
+		</p>
+		
+		<p>
+		The correct approach is to create a
+		<a href="doc/TapestryUsersGuide/script-spec.html">script specification</a>	
+		for your JavaScript, and use a 
+		<a href="doc/ComponentReference/Script.html">Script</a> component to include it on the page.
+		</p>
+		    
+ 
+	           
+
+		</td>
+	</tr>
 	
 	</table>
 		</td>
