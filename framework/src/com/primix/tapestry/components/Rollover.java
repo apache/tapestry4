@@ -1,6 +1,9 @@
 package com.primix.tapestry.components;
 
 import com.primix.tapestry.*;
+import com.primix.tapestry.script.*;
+import java.io.*;
+import java.util.*;
 
 /*
  * Tapestry Web Application Framework
@@ -108,6 +111,16 @@ import com.primix.tapestry.*;
 
 public class Rollover extends AbstractComponent
 {
+	// Shared by all instances of Rollover
+
+	private static ScriptGenerator generator;
+
+    // Symbols used when generating the script.
+
+	private Map symbols;
+
+    private static final int MAP_SIZE = 7;    
+
 	private IBinding image;
 	private IBinding focus;
 	private IBinding blur;
@@ -177,7 +190,6 @@ public class Rollover extends AbstractComponent
 		String imageURL = null;
 		String focusURL = null;
 		String blurURL = null;
-		String disabledURL = null;
 		String uniqueId = null;
 		String onMouseOverName = null;
 		boolean dynamic = false;
@@ -185,7 +197,6 @@ public class Rollover extends AbstractComponent
 		int borderValue = 0;
 		boolean compressed;
 		Body body;
-		String onLoadName = null;
 		String focusImageName = null;
 		String blurImageName = null;
 		IServiceLink serviceLink;
@@ -234,63 +245,6 @@ public class Rollover extends AbstractComponent
 
 		compressed = writer.compress(true);
 
-		if (dynamic)
-		{
-			uniqueId = body.getUniqueId();
-
-			if (focusURL == null)
-				focusURL = imageURL;
-
-			if (blurURL == null)
-				blurURL = imageURL;
-
-			onMouseOverName = "onMouseOver_" + uniqueId;
-			onMouseOutName = "onMouseOut_" + uniqueId;
-			onLoadName = "onLoad_" + uniqueId;
-
-			focusImageName = "focus_" + uniqueId;
-			blurImageName = "blur_" + uniqueId;
-
-			body.addImageInitialization(focusImageName, focusURL);
-			body.addImageInitialization(blurImageName, blurURL);
-
-			if (dynamic)
-			{
-    			imageName = "rollover_" + uniqueId;
-
-				script = 
-					"\n\n" +
-					"function " + onMouseOverName + "()\n" +
-					"{\n" +
-					"  if (document.images)\n" +
-					"    document." + imageName + ".src = " +
-					body.getInitializedImage(focusImageName) + 
-					";\n" +
-					"}\n" +
-					"\n" +
-					"function " + onMouseOutName + "()\n" +
-					"{\n" +
-					"  if (document.images)\n" + 
-					"    document." + imageName + ".src = " +
-					body.getInitializedImage(blurImageName) + 
-					";\n" +
-					"}";
-					
-				// Add this to the scripting block at the top of the page.
-				
-				body.addOtherScript(script);
-				
-				// Add attributes to the link to control mouse over/out.
-				// Because the script is written before the <body> tag,
-				// there won't be any timing issues (such as cause
-				// bug #113893).
-				
-				serviceLink.setAttribute("onMouseOver",
-						"javascript:" + onMouseOverName + "();");
-				serviceLink.setAttribute("onMouseOut",
-						"javascript:" + onMouseOutName + "();");
-			}
-		}
 
 		writer.beginOrphan("img");
 
@@ -299,7 +253,25 @@ public class Rollover extends AbstractComponent
 		writer.attribute("border", 0);
 	
 		if (dynamic)
+        {
+            try
+            {
+                if (focusURL == null)
+                    focusURL = imageURL;
+
+                if (blurURL == null)
+                    blurURL = imageURL;
+
+                imageName = writeScript(body, serviceLink, focusURL, blurURL);
+            }
+            catch (IOException ex)
+            {
+                throw new RequestCycleException("Unable to write Rollover script.",
+                    this, cycle, ex);
+            }
+
 		    writer.attribute("name", imageName);
+        }
 
 		generateAttributes(cycle, writer, reservedNames);
 
@@ -307,6 +279,96 @@ public class Rollover extends AbstractComponent
 
 		writer.setCompressed(compressed);
 	}
+
+    private ScriptGenerator getScriptGenerator()
+    throws IOException
+    {
+        if (generator == null)
+        {
+            synchronized (Rollover.class)
+            {
+                if (generator == null)
+                {
+                    InputStream stream = null;
+
+                    try
+                    {
+                        stream = getClass().getResourceAsStream("Rollover.script");
+
+                        generator = new ScriptGenerator(stream);
+                    }
+                    finally
+                    {
+                        close(stream);
+                    }
+                }
+            }
+        }
+
+        return generator;
+    }
+
+    private void close(InputStream stream)
+    {
+        if (stream != null)
+        {
+            try
+            {
+                stream.close();
+            }
+            catch (IOException ex)
+            {
+                // ignore.
+            }
+        }
+    }
+
+    private String writeScript(Body body, IServiceLink link,
+        String focusURL, String blurURL)
+        throws IOException
+    {
+        String uniqueId = body.getUniqueId();
+        String imageName = "rollover_" + uniqueId;
+        String onMouseOverName = "onMouseOver_" + uniqueId;
+        String onMouseOutName = "onMouseOut_" + uniqueId;
+        String blurImageName = "blur_" + uniqueId;
+        String focusImageName = "focus_" + uniqueId;
+        ScriptGenerator generator = getScriptGenerator();
+
+        body.addImageInitialization(focusImageName, focusURL);
+        body.addImageInitialization(blurImageName, blurURL);
+
+        if (symbols == null)
+            symbols = new HashMap(MAP_SIZE);
+            
+        symbols.put("imageName",       imageName);
+        symbols.put("onMouseOverName", onMouseOverName);
+        symbols.put("onMouseOutName",  onMouseOutName);
+        symbols.put("focusImageURL",    body.getInitializedImage(focusImageName));
+        symbols.put("blurImageURL",   body.getInitializedImage(blurImageName));
+
+    	// Add this to the scripting block at the top of the page.
+    	
+    	body.addOtherScript(generator.generateScript(symbols));
+    	
+    	// Add attributes to the link to control mouse over/out.
+    	// Because the script is written before the <body> tag,
+    	// there won't be any timing issues (such as cause
+    	// bug #113893).
+    	
+    	link.setAttribute("onMouseOver",
+    			"javascript:" + onMouseOverName + "();");
+    	link.setAttribute("onMouseOut",
+    			"javascript:" + onMouseOutName + "();");
+
+        symbols.clear();
+
+        // Return the value that must be assigned to the 'name' attribute
+        // of the <img> tag.
+
+        return imageName;
+
+    }
 
 	public void setBlurBinding(IBinding newBlur)
 	{
