@@ -225,7 +225,7 @@ public class ParameterManager
                 {
                     throw new ConnectedParameterException(
                         Tapestry.getString(
-                            "ParameterManager.ParameterManager.static-initialization-failure",
+                            "ParameterManager.static-initialization-failure",
                             propertyName,
                             component.getExtendedId(),
                             binding.toString()),
