@@ -28,31 +28,34 @@ import org.apache.tapestry.StaleSessionException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.request.ResponseOutputStream;
+import org.apache.tapestry.services.ResponseRenderer;
 
 /**
- *  Implementation of the direct service, which encodes the page and component id in
- *  the service context, and passes application-defined parameters as well.
- *
- *  @author Howard Lewis Ship
- *  @since 1.0.9
- *
- **/
+ * Implementation of the direct service, which encodes the page and component id in the service
+ * context, and passes application-defined parameters as well.
+ * 
+ * @author Howard Lewis Ship
+ * @since 1.0.9
+ */
 
 public class DirectService extends AbstractService
 {
+    /** @since 3.1 */
+    private ResponseRenderer _responseRenderer;
+
     /**
-     *  Encoded into URL if engine was stateful.
+     * Encoded into URL if engine was stateful.
      * 
-     *  @since 3.0
-     **/
+     * @since 3.0
+     */
 
     private static final String STATEFUL_ON = "1";
 
     /**
-     *  Encoded into URL if engine was not stateful.
+     * Encoded into URL if engine was not stateful.
      * 
-     *  @since 3.0
-     **/
+     * @since 3.0
+     */
 
     private static final String STATEFUL_OFF = "0";
 
@@ -60,8 +63,8 @@ public class DirectService extends AbstractService
     {
 
         // New since 1.0.1, we use the component to determine
-        // the page, not the cycle.  Through the use of tricky
-        // things such as Block/InsertBlock, it is possible 
+        // the page, not the cycle. Through the use of tricky
+        // things such as Block/InsertBlock, it is possible
         // that a component from a page different than
         // the response page will render.
         // In 1.0.6, we start to record *both* the render page
@@ -90,11 +93,8 @@ public class DirectService extends AbstractService
         return constructLink(cycle, Tapestry.DIRECT_SERVICE, context, parameters, true);
     }
 
-    public void service(
-        IEngineServiceView engine,
-        IRequestCycle cycle,
-        ResponseOutputStream output)
-        throws ServletException, IOException
+    public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
+            IOException
     {
         IDirect direct;
         int count = 0;
@@ -107,8 +107,8 @@ public class DirectService extends AbstractService
             count = serviceContext.length;
 
         if (count != 3 && count != 4)
-            throw new ApplicationRuntimeException(
-                Tapestry.getMessage("DirectService.context-parameters"));
+            throw new ApplicationRuntimeException(Tapestry
+                    .getMessage("DirectService.context-parameters"));
 
         boolean complex = count == 4;
 
@@ -140,11 +140,9 @@ public class DirectService extends AbstractService
         }
         catch (ClassCastException ex)
         {
-            throw new ApplicationRuntimeException(
-                Tapestry.format("DirectService.component-wrong-type", component.getExtendedId()),
-                component,
-                null,
-                ex);
+            throw new ApplicationRuntimeException(Tapestry.format(
+                    "DirectService.component-wrong-type",
+                    component.getExtendedId()), component, null, ex);
         }
 
         // Check for a StateSession only the session was stateful when
@@ -155,11 +153,9 @@ public class DirectService extends AbstractService
             HttpSession session = cycle.getRequestContext().getSession();
 
             if (session == null || session.isNew())
-                throw new StaleSessionException(
-                    Tapestry.format(
+                throw new StaleSessionException(Tapestry.format(
                         "DirectService.stale-session-exception",
-                        direct.getExtendedId()),
-                    direct.getPage());
+                        direct.getExtendedId()), direct.getPage());
         }
 
         Object[] parameters = getParameters(cycle);
@@ -167,14 +163,20 @@ public class DirectService extends AbstractService
         cycle.setServiceParameters(parameters);
         direct.trigger(cycle);
 
-        // Render the response.  This will be the response page (the first element in the context)
+        // Render the response. This will be the response page (the first element in the context)
         // unless the direct (or its delegate) changes it.
 
-        engine.renderResponse(cycle, output);
+        _responseRenderer.renderResponse(cycle, output);
     }
 
     public String getName()
     {
         return Tapestry.DIRECT_SERVICE;
+    }
+
+    /** @since 3.1 */
+    public void setResponseRenderer(ResponseRenderer responseRenderer)
+    {
+        _responseRenderer = responseRenderer;
     }
 }

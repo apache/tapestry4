@@ -14,19 +14,15 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 -->
-<!--$Id$-->
 <!DOCTYPE application PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 	
 <application name="Tapestry Component Workbench">
-  <property name="org.apache.tapestry.visit-class" value="org.apache.tapestry.workbench.Visit"/>
-  <property name="org.apache.tapestry.template-encoding" value="ISO-8859-1"/>
+  <meta key="org.apache.tapestry.visit-class" value="org.apache.tapestry.workbench.Visit"/>
+  <meta key="org.apache.tapestry.template-encoding" value="ISO-8859-1"/>
   
   <extension name="org.apache.tapestry.request-decoder" class="org.apache.tapestry.workbench.RequestDecoder"/>
-  
-  <service name="home" class="org.apache.tapestry.workbench.WorkbenchHomeService"/>
-  <service name="chart" class="org.apache.tapestry.workbench.chart.ChartService"/>
          
   <library id="contrib" specification-path="/org/apache/tapestry/contrib/Contrib.library"/>
   

@@ -60,7 +60,7 @@ class LetToken extends AbstractToken
         String value = buffer.toString().trim();
 
         if (_unique)
-            value = session.getProcessor().getUniqueString(value);
+            value = session.getUniqueString(value);
 
         symbols.put(_key, value);
 

@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.contrib.palette.SortMode;
 import org.apache.tapestry.form.EnumPropertySelectionModel;
 import org.apache.tapestry.form.IPropertySelectionModel;
@@ -86,7 +87,7 @@ public class Palette extends BasePage
     {
         _sort = value;
 
-        fireObservedChange("sort", value);
+        Tapestry.fireObservedChange(this, "sort", value);
     }
 
     public SortMode getSort()

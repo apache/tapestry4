@@ -16,13 +16,13 @@ package org.apache.tapestry.services.impl;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tapestry.services.CookieSource;
 
 /**
- * Implementation of the {@link org.apache.tapestry.services.CookieSource}
- * service interface.
- *
+ * Implementation of the {@link org.apache.tapestry.services.CookieSource}service interface.
+ * 
  * @author Howard Lewis Ship
  * @since 3.1
  */
@@ -30,7 +30,9 @@ public class CookieSourceImpl implements CookieSource
 {
     private HttpServletRequest _request;
 
-    public String getCookieValue(String name)
+    private HttpServletResponse _response;
+
+    public String readCookieValue(String name)
     {
         Cookie[] cookies = _request.getCookies();
 
@@ -46,9 +48,21 @@ public class CookieSourceImpl implements CookieSource
         return null;
     }
 
+    public void writeCookieValue(String name, String value)
+    {
+        Cookie cookie = new Cookie(name, value);
+        cookie.setPath(_request.getContextPath());
+
+        _response.addCookie(cookie);
+    }
+
     public void setRequest(HttpServletRequest request)
     {
         _request = request;
     }
 
+    public void setResponse(HttpServletResponse response)
+    {
+        _response = response;
+    }
 }

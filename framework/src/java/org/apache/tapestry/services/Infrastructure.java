@@ -112,4 +112,16 @@ public interface Infrastructure
      */
 
     public ServiceMap getServiceMap();
+    
+    /**
+     * Service used to report exceptions to the console.
+     */
+    
+    public RequestExceptionReporter getRequestExceptionReporter();
+    
+    /**
+     * Renders the active page as the response.
+     */
+    
+    public ResponseRenderer getResponseRenderer();
 }

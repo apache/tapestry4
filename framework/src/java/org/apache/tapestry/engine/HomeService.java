@@ -20,46 +20,41 @@ import javax.servlet.ServletException;
 
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IEngine;
-import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.ResponseOutputStream;
+import org.apache.tapestry.services.ResponseRenderer;
 
 /**
- *  An implementation of the home service that renders the Home page.
- *  This is the most likely candidate for overriding ... for example,
- *  to select the page to render based on known information about the
- *  user (stored as a cookie).
+ * An implementation of the home service that renders the Home page. This is the most likely
+ * candidate for overriding ... for example, to select the page to render based on known information
+ * about the user (stored as a cookie).
  * 
- *
- *  @author Howard Lewis Ship
- *  @since 1.0.9
- *
- **/
+ * @author Howard Lewis Ship
+ * @since 1.0.9
+ */
 
 public class HomeService extends AbstractService
 {
+    /** @since 3.1 */
+    private ResponseRenderer _responseRenderer;
 
     public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
         if (Tapestry.size(parameters) != 0)
-            throw new IllegalArgumentException(
-                Tapestry.format("service-no-parameters", Tapestry.HOME_SERVICE));
+            throw new IllegalArgumentException(Tapestry.format(
+                    "service-no-parameters",
+                    Tapestry.HOME_SERVICE));
 
         return constructLink(cycle, Tapestry.HOME_SERVICE, null, null, true);
     }
 
-    public void service(
-        IEngineServiceView engine,
-        IRequestCycle cycle,
-        ResponseOutputStream output)
-        throws ServletException, IOException
+    public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
+            IOException
     {
-        IPage home = cycle.getPage(IEngine.HOME_PAGE);
+        cycle.activate(IEngine.HOME_PAGE);
 
-        cycle.activate(home);
-
-        engine.renderResponse(cycle, output);
+        _responseRenderer.renderResponse(cycle, output);
     }
 
     public String getName()
@@ -67,4 +62,9 @@ public class HomeService extends AbstractService
         return Tapestry.HOME_SERVICE;
     }
 
+    /** @since 3.1 */
+    public void setResponseRenderer(ResponseRenderer responseRenderer)
+    {
+        _responseRenderer = responseRenderer;
+    }
 }

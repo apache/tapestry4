@@ -34,38 +34,32 @@ import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.request.ResponseOutputStream;
 
 /**
- *  A very specialized service used by JSPs to access Tapestry URLs. 
- *  This is used by the Tapestry JSP tags, such as
- *  {@link org.apache.tapestry.jsp.PageTag}.
- *
- *  @author Howard Lewis Ship
- *  @since 3.0
- *  @see org.apache.tapestry.jsp.URLRetriever
+ * A very specialized service used by JSPs to access Tapestry URLs. This is used by the Tapestry JSP
+ * tags, such as {@link org.apache.tapestry.jsp.PageTag}.
  * 
- **/
+ * @author Howard Lewis Ship
+ * @since 3.0
+ * @see org.apache.tapestry.jsp.URLRetriever
+ */
 
 public class TagSupportService implements IEngineService
 {
     private static final Log LOG = LogFactory.getLog(TagSupportService.class);
 
     /**
-     *  Not to be invoked; this service is different than the others.
+     * Not to be invoked; this service is different than the others.
      * 
-     *  @throws ApplicationRuntimeException always
-     * 
-     **/
+     * @throws ApplicationRuntimeException
+     *             always
+     */
 
     public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
-        throw new ApplicationRuntimeException(
-            Tapestry.getMessage("TagSupportService.service-only"));
+        throw new ApplicationRuntimeException(Tapestry.getMessage("TagSupportService.service-only"));
     }
 
-    public void service(
-        IEngineServiceView engine,
-        IRequestCycle cycle,
-        ResponseOutputStream output)
-        throws ServletException, IOException
+    public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
+            IOException
     {
         RequestContext context = cycle.getRequestContext();
         HttpServletRequest request = context.getRequest();
@@ -81,8 +75,7 @@ public class TagSupportService implements IEngineService
         }
         catch (ClassCastException ex)
         {
-            throw new ServletException(
-                Tapestry.format(
+            throw new ServletException(Tapestry.format(
                     "TagSupportService.attribute-not-array",
                     Tapestry.TAG_SUPPORT_PARAMETERS_ATTRIBUTE,
                     Tapestry.getClassName(raw.getClass())));
@@ -96,8 +89,8 @@ public class TagSupportService implements IEngineService
 
         if (LOG.isDebugEnabled())
         {
-        	LOG.debug("Request servlet path = " + request.getServletPath());
-        	
+            LOG.debug("Request servlet path = " + request.getServletPath());
+
             Enumeration e = request.getParameterNames();
             while (e.hasMoreElements())
             {
@@ -137,8 +130,7 @@ public class TagSupportService implements IEngineService
         }
         catch (ClassCastException ex)
         {
-            throw new ServletException(
-                Tapestry.format(
+            throw new ServletException(Tapestry.format(
                     "TagSupportService.attribute-not-string",
                     name,
                     Tapestry.getClassName(result.getClass())));
@@ -147,9 +139,8 @@ public class TagSupportService implements IEngineService
     }
 
     /**
-     *  @return {@link org.apache.tapestry.Tapestry#TAGSUPPORT_SERVICE}.
-     * 
-     **/
+     * @return {@link org.apache.tapestry.Tapestry#TAGSUPPORT_SERVICE}.
+     */
 
     public String getName()
     {

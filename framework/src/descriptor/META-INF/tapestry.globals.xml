@@ -53,4 +53,14 @@
     </invoke-factory>
   </service-point>  
   
+  <service-point id="HttpServletResponse" interface="javax.servlet.http.HttpServletResponse">
+    
+    Exposes the current thread's HttpServletResponse as a service. The response is actually
+    stored in the RequestGlobals service.
+    
+    <invoke-factory service-id="hivemind.lib.ServicePropertyFactory">
+      <construct service-id="RequestGlobals" property="response"/>
+    </invoke-factory>
+  </service-point>    
+  
 </module>

@@ -318,7 +318,7 @@ public class RequestContext implements IRender
      * 
      **/
 
-    public String getAbsoluteURL(String URI)
+    public String x_getAbsoluteURL(String URI)
     {
         String scheme = getScheme();
         String server = getServerName();
@@ -647,28 +647,6 @@ public class RequestContext implements IRender
                 _cookieMap.put(cookies[i].getName(), cookies[i]);
     }
 
-    /**
-     *  Invokes {@link HttpServletResponse#sendRedirect(String)}</code>, 
-     *  but massages <code>path</code>, supplying missing elements to
-     *  make it an absolute URL (i.e., specifying scheme, server, port, etc.).
-     *
-     *  <p>The 2.2 Servlet API will do this automatically, and a little more,
-     *  according to the early documentation.
-     *
-     **/
-
-    public void redirect(String path) throws IOException
-    {
-        // Now a little magic to convert path into a complete URL. The Servlet
-        // 2.2 API does this automatically.
-
-        String absolutePath = getAbsoluteURL(path);
-
-        String encodedURL = _response.encodeRedirectURL(absolutePath);
-
-        _response.sendRedirect(encodedURL);
-    }
-
     private void section(IMarkupWriter writer, String sectionName)
     {
         writer.begin("tr");
@@ -808,16 +786,32 @@ public class RequestContext implements IRender
         pair(writer, "remoteAddr", _request.getRemoteAddr());
         pair(writer, "remoteHost", _request.getRemoteHost());
         pair(writer, "remoteUser", _request.getRemoteUser());
-        pair(writer, "requestedSessionId", _request.getRequestedSessionId());
-        pair(writer, "requestedSessionIdFromCookie", _request.isRequestedSessionIdFromCookie());
-        pair(writer, "requestedSessionIdFromURL", _request.isRequestedSessionIdFromURL());
-        pair(writer, "requestedSessionIdValid", _request.isRequestedSessionIdValid());
+        
+        String sessionId = _request.getRequestedSessionId();
+        
+        if (sessionId != null)
+        {
+            StringBuffer buffer = new StringBuffer(sessionId);
+            
+            if (_request.isRequestedSessionIdFromCookie())
+                buffer.append(" (from cookie)");
+            
+            if (_request.isRequestedSessionIdFromURL())
+                buffer.append(" (from URL)");
+            
+            if (_request.isRequestedSessionIdValid())
+                buffer.append(" (valid)");
+            
+            pair(writer, "requestedSessionId", buffer.toString());
+        }
+                
         pair(writer, "requestURI", _request.getRequestURI());
         pair(writer, "scheme", _request.getScheme());
         pair(writer, "serverName", _request.getServerName());
         pair(writer, "serverPort", _request.getServerPort());
         pair(writer, "contextPath", _request.getContextPath());
         pair(writer, "servletPath", _request.getServletPath());
+        pair(writer, "userPrincipal", _request.getUserPrincipal());
 
         // Now deal with any headers
 

@@ -14,13 +14,14 @@
 
 package org.apache.tapestry.services;
 
+import java.util.Locale;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Access point for thread-local information about the current
- * request.
- *
+ * Access point for thread-local information about the current request.
+ * 
  * @author Howard Lewis Ship
  * @since 3.1
  */

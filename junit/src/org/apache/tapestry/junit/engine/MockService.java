@@ -21,13 +21,12 @@ import javax.servlet.ServletException;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IEngineService;
-import org.apache.tapestry.engine.IEngineServiceView;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.request.ResponseOutputStream;
 
 /**
- * Mock implementation of {@link org.apache.tapestry.engine.IEngineService} used in some tests.
- *
+ * Mock implementation of {@link org.apache.tapestry.engine.IEngineService}used in some tests.
+ * 
  * @author Howard Lewis Ship
  * @version $Id$
  */
@@ -45,11 +44,8 @@ public class MockService implements IEngineService
         return null;
     }
 
-    public void service(
-        IEngineServiceView engine,
-        IRequestCycle cycle,
-        ResponseOutputStream output)
-        throws ServletException, IOException
+    public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
+            IOException
     {
 
     }

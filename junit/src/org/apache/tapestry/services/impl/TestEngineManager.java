@@ -22,7 +22,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.services.EngineFactory;
-import org.apache.tapestry.services.LocaleExtractor;
+import org.apache.tapestry.services.RequestLocaleManager;
 import org.apache.tapestry.services.ObjectPool;
 import org.easymock.MockControl;
 
@@ -73,8 +73,8 @@ public class TestEngineManager extends HiveMindTestCase
         MockControl requestControl = newControl(HttpServletRequest.class);
         HttpServletRequest request = (HttpServletRequest) requestControl.getMock();
 
-        MockControl extractorControl = newControl(LocaleExtractor.class);
-        LocaleExtractor extractor = (LocaleExtractor) extractorControl.getMock();
+        MockControl extractorControl = newControl(RequestLocaleManager.class);
+        RequestLocaleManager extractor = (RequestLocaleManager) extractorControl.getMock();
 
         MockControl poolControl = newControl(ObjectPool.class);
         ObjectPool pool = (ObjectPool) poolControl.getMock();
@@ -99,7 +99,7 @@ public class TestEngineManager extends HiveMindTestCase
         m.setServletName("george");
         m.setRequest(request);
         m.setEnginePool(pool);
-        m.setLocaleExtractor(extractor);
+        m.setLocaleManager(extractor);
 
         m.initializeService();
 
@@ -115,8 +115,8 @@ public class TestEngineManager extends HiveMindTestCase
         MockControl requestControl = newControl(HttpServletRequest.class);
         HttpServletRequest request = (HttpServletRequest) requestControl.getMock();
 
-        MockControl extractorControl = newControl(LocaleExtractor.class);
-        LocaleExtractor extractor = (LocaleExtractor) extractorControl.getMock();
+        MockControl extractorControl = newControl(RequestLocaleManager.class);
+        RequestLocaleManager extractor = (RequestLocaleManager) extractorControl.getMock();
 
         MockControl poolControl = newControl(ObjectPool.class);
         ObjectPool pool = (ObjectPool) poolControl.getMock();
@@ -147,7 +147,7 @@ public class TestEngineManager extends HiveMindTestCase
         m.setServletName("george");
         m.setRequest(request);
         m.setEnginePool(pool);
-        m.setLocaleExtractor(extractor);
+        m.setLocaleManager(extractor);
         m.setEngineFactory(factory);
 
         m.initializeService();

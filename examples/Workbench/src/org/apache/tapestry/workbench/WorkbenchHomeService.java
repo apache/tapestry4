@@ -20,31 +20,27 @@ import javax.servlet.ServletException;
 
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.HomeService;
-import org.apache.tapestry.engine.IEngineServiceView;
 import org.apache.tapestry.request.ResponseOutputStream;
 
 /**
- *  Special version of the home service used to reset the visit tab when re-entering
- *  the Tapestry application from a static HTML page.  
- *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *  @see Redirect
+ * Special version of the home service used to reset the visit tab when re-entering the Tapestry
+ * application from a static HTML page.
  * 
- **/
+ * @author Howard Lewis Ship
+ * @see Redirect
+ */
 
 public class WorkbenchHomeService extends HomeService
 {
-
-    public void service(IEngineServiceView engine, IRequestCycle cycle, ResponseOutputStream output)
-        throws ServletException, IOException
+    public void service(IRequestCycle cycle, ResponseOutputStream output)
+            throws ServletException, IOException
     {
-        Visit visit = (Visit) engine.getVisit();
+        Visit visit = (Visit) cycle.getEngine().getVisit();
 
         if (visit != null)
             visit.setActiveTabName("Home");
 
-        super.service(engine, cycle, output);
+        super.service(cycle, output);
     }
 
 }

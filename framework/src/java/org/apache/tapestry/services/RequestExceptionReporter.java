@@ -15,25 +15,13 @@
 package org.apache.tapestry.services;
 
 /**
- * Used by other services to obtain cookie values for the current request.
- *
- * @author Howard Lewis Ship
+ * Service responsible for producing console output when there is an error processing the request
+ * (and the normal Exception page can not be displayed).
+ * 
+ * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public interface CookieSource
+public interface RequestExceptionReporter
 {
-	/**
-	 * Returns the value of the first cookie whose name matches. Returns null
-	 * if no such cookie exists.
-	 */
-	public String readCookieValue(String name);
-    
-    /**
-     * Creates or updates a cookie value.  The value is stored permanently
-     * (no timeout, not session based).
-     * 
-     * TODO: add suport for timeouts and session cookies.
-     */
-    
-    public void writeCookieValue(String name, String value);
+    public void reportRequestException(String message, Throwable cause);
 }

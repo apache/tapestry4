@@ -50,13 +50,13 @@ class IncludeScriptToken extends AbstractToken
         }
         else
         {
-            Resource baseLocation = session.getScriptPath();
+            Resource baseLocation = session.getScriptTemplateResource();
             includeLocation = baseLocation.getRelativeResource(_resourcePath);
         }
 
         // TODO: Allow for scripts relative to context resources!
 
-        session.getProcessor().addExternalScript(includeLocation);
+        session.addExternalScript(includeLocation);
     }
 
 }

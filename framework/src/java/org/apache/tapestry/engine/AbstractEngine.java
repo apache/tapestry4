@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -33,7 +32,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
@@ -45,9 +43,8 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.ApplicationServlet;
 import org.apache.tapestry.Constants;
+import org.apache.tapestry.Defense;
 import org.apache.tapestry.IEngine;
-import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRedirectException;
@@ -63,10 +60,7 @@ import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.ObjectPool;
 import org.apache.tapestry.services.TemplateSource;
-import org.apache.tapestry.services.impl.ComponentMessagesSourceImpl;
 import org.apache.tapestry.spec.IApplicationSpecification;
-import org.apache.tapestry.util.exception.ExceptionAnalyzer;
-import org.apache.tapestry.util.io.DataSqueezerImpl;
 
 import com.sun.jndi.ldap.pool.Pool;
 
@@ -116,7 +110,7 @@ import com.sun.jndi.ldap.pool.Pool;
  * @author Howard Lewis Ship
  */
 
-public abstract class AbstractEngine implements IEngine, IEngineServiceView, Externalizable,
+public abstract class AbstractEngine implements IEngine, Externalizable,
         HttpSessionBindingListener
 {
     private static final Log LOG = LogFactory.getLog(AbstractEngine.class);
@@ -137,10 +131,6 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     private transient String _contextPath;
 
     private transient String _servletPath;
-
-    private transient String _clientAddress;
-
-    private transient String _sessionId;
 
     private transient boolean _stateful;
 
@@ -195,27 +185,11 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     private Locale _locale;
 
     /**
-     * Set by {@link #setLocale(Locale)}when the locale is changed; this allows the locale cookie
-     * to be updated.
-     */
-
-    private boolean _localeChanged;
-
-    /**
      * The name of the application specification property used to specify the class of the visit
      * object.
      */
 
     public static final String VISIT_CLASS_PROPERTY_NAME = "org.apache.tapestry.visit-class";
-
-    /**
-     * If true (set from JVM system parameter <code>org.apache.tapestry.enable-reset-service</code>)
-     * then the reset service will be enabled, allowing the cache of pages, specifications and
-     * template to be cleared on demand.
-     */
-
-    private static final boolean _resetServiceEnabled = Boolean
-            .getBoolean("org.apache.tapestry.enable-reset-service");
 
     /**
      * If true (set from the JVM system parameter <code>org.apache.tapestry.disable-caching</code>)
@@ -291,19 +265,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
     public void reportException(String reportTitle, Throwable ex)
     {
-        LOG.warn(reportTitle, ex);
-
-        System.err.println("\n\n**********************************************************\n\n");
-
-        System.err.println(reportTitle);
-
-        System.err.println("\n\n      Session id: " + _sessionId + "\n  Client address: "
-                + _clientAddress + "\n\nExceptions:\n");
-
-        new ExceptionAnalyzer().reportException(ex, System.err);
-
-        System.err.println("\n**********************************************************\n");
-
+        _infrastructure.getRequestExceptionReporter().reportRequestException(reportTitle, ex);
     }
 
     /**
@@ -474,101 +436,17 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         renderResponse(cycle, out);
     }
 
+    /**
+     * Delegates to
+     * {@link org.apache.tapestry.services.ResponseRenderer#renderResponse(IRequestCycle, ResponseOutputStream)}.
+     */
+    
     public void renderResponse(IRequestCycle cycle, ResponseOutputStream output)
             throws ServletException, IOException
     {
-        if (LOG.isDebugEnabled())
-            LOG.debug("Begin render response.");
-
-        // If the locale has changed during this request cycle then
-        // do the work to propogate the locale change into
-        // subsequent request cycles.
-
-        if (_localeChanged)
-        {
-            _localeChanged = false;
-
-            RequestContext context = cycle.getRequestContext();
-
-            ApplicationServlet.writeLocaleCookie(_locale, this, context);
-        }
-
-        // Commit all changes and ignore further changes.
-
-        IPage page = cycle.getPage();
-
-        IMarkupWriter writer = page.getResponseWriter(output);
-
-        output.setContentType(writer.getContentType());
-
-        boolean discard = true;
-
-        try
-        {
-            cycle.renderPage(writer);
-
-            discard = false;
-        }
-        finally
-        {
-            // Closing the writer closes its PrintWriter and a whole stack of
-            // java.io objects,
-            // which tend to stream a lot of output that eventually hits the
-            // ResponseOutputStream. If we are discarding output anyway (due to
-            // an exception
-            // getting thrown during the render), we can save ourselves some
-            // trouble
-            // by ignoring it.
-
-            if (discard)
-                output.setDiscard(true);
-
-            writer.close();
-
-            if (discard)
-                output.setDiscard(false);
-        }
-
+        _infrastructure.getResponseRenderer().renderResponse(cycle, output);
     }
 
-    /**
-     * Invalidates the session, then redirects the client web browser to the servlet's prefix,
-     * starting a new visit.
-     * <p>
-     * Subclasses should perform their own restart (if necessary, which is rarely) before invoking
-     * this implementation.
-     */
-
-    public void restart(IRequestCycle cycle) throws IOException
-    {
-        RequestContext context = cycle.getRequestContext();
-
-        HttpSession session = context.getSession();
-
-        if (session != null)
-        {
-            try
-            {
-                session.invalidate();
-            }
-            catch (IllegalStateException ex)
-            {
-                if (LOG.isDebugEnabled())
-                    LOG.debug("Exception thrown invalidating HttpSession.", ex);
-
-                // Otherwise, ignore it.
-            }
-        }
-
-        // Make isStateful() return false, so that the servlet doesn't
-        // try to store the engine back into the (now invalid) session.
-
-        _stateful = false;
-
-        String url = context.getAbsoluteURL(_servletPath);
-
-        context.redirect(url);
-    }
 
     /**
      * Delegate method for the servlet. Services the request.
@@ -580,17 +458,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         ResponseOutputStream output = null;
         IMonitor monitor = null;
 
-        if (LOG.isDebugEnabled())
-            LOG.debug("Begin service " + context.getRequestURI());
-
         if (_infrastructure == null)
             _infrastructure = (Infrastructure) context.getAttribute(Constants.INFRASTRUCTURE_KEY);
-
-        // The servlet invokes setLocale() before invoking service(). We want
-        // to ignore that setLocale() ... that is, not force a cookie to be
-        // written.
-
-        _localeChanged = false;
 
         try
         {
@@ -613,11 +482,9 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         {
             try
             {
-                String serviceName;
-
                 try
                 {
-                    serviceName = extractServiceName(context);
+                    String serviceName = extractServiceName(context);
 
                     if (Tapestry.isBlank(serviceName))
                         serviceName = Tapestry.HOME_SERVICE;
@@ -637,12 +504,12 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
                 cycle = createRequestCycle(context, service, monitor);
 
-                monitor.serviceBegin(serviceName, context.getRequestURI());
+                monitor.serviceBegin(service.getName(), context.getRequestURI());
 
                 // Invoke the service, which returns true if it may have changed
                 // the state of the engine (most do return true).
 
-                service.service(this, cycle, output);
+                service.service(cycle, output);
 
                 // Return true only if the engine is actually dirty. This cuts
                 // down
@@ -716,7 +583,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
             {
                 try
                 {
-                    clearCachedData();
+                    _infrastructure.getResetEventCoordinator().fireResetEvent();
                 }
                 catch (Exception ex)
                 {
@@ -724,9 +591,6 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
                             .getMessage("AbstractEngine.exception-during-cache-clear"), ex);
                 }
             }
-
-            if (LOG.isDebugEnabled())
-                LOG.debug("End service");
 
         }
 
@@ -862,24 +726,12 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     }
 
     /**
-     * Discards all cached pages, component specifications and templates. Subclasses who override
-     * this method should invoke this implementation as well.
-     * 
-     * @since 1.0.1
-     */
-
-    public void clearCachedData()
-    {
-        _infrastructure.getResetEventCoordinator().fireResetEvent();
-    }
-
-    /**
      * Changes the locale for the engine.
      */
 
     public void setLocale(Locale value)
     {
-        Tapestry.notNull(value, "locale");
+        Defense.notNull(value, "locale");
 
         // Because locale changes are expensive (it involves writing a cookie
         // and all that),
@@ -889,7 +741,6 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         if (!value.equals(_locale))
         {
             _locale = value;
-            _localeChanged = true;
             markDirty();
         }
     }
@@ -933,20 +784,6 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         HttpServlet servlet = context.getServlet();
         ServletContext servletContext = servlet.getServletContext();
         HttpServletRequest request = context.getRequest();
-        HttpSession session = context.getSession();
-
-        if (session != null)
-            _sessionId = context.getSession().getId();
-        else
-            _sessionId = null;
-
-        // Previously, this used getRemoteHost(), but that requires an
-        // expensive reverse DNS lookup. Possibly, the host name lookup
-        // should occur ... but only if there's an actual error message
-        // to display.
-
-        if (_clientAddress == null)
-            _clientAddress = request.getRemoteAddr();
 
         // servletPath is null, so this means either we're doing the
         // first request in this session, or we're handling a subsequent
@@ -1050,15 +887,6 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         extendDescription(builder);
 
         return builder.toString();
-    }
-
-    /**
-     * Returns true if the reset service is curently enabled.
-     */
-
-    public boolean isResetServiceEnabled()
-    {
-        return _resetServiceEnabled;
     }
 
     /**

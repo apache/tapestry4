@@ -32,12 +32,12 @@
     </invoke-factory> 
   </service-point>  
   
-  <service-point id="LocaleExtractor" interface="org.apache.tapestry.services.LocaleExtractor">
+  <service-point id="RequestLocaleManager" interface="org.apache.tapestry.services.RequestLocaleManager">
     
     Encapsulates the logic for extracting the locale for the current request.
     
-    <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.LocaleExtractorImpl">
+    <invoke-factory model="threaded">
+      <construct class="org.apache.tapestry.services.impl.RequestLocaleManagerImpl">
         <set-service property="request" service-id="tapestry.globals.HttpServletRequest"/>
         <set-service property="cookieSource" service-id="CookieSource"/>
       </construct>
@@ -51,6 +51,7 @@
     <invoke-factory>
       <construct class="org.apache.tapestry.services.impl.CookieSourceImpl">
         <set-service property="request" service-id="tapestry.globals.HttpServletRequest"/>
+        <set-service property="response" service-id="tapestry.globals.HttpServletResponse"/>
       </construct>
     </invoke-factory>    
   </service-point>  
@@ -65,7 +66,7 @@
         <set-service property="request" service-id="tapestry.globals.HttpServletRequest"/>
         <set-object property="servletName" value="service-property:tapestry.globals.ApplicationGlobals:servletName"/>
         <set-service property="engineFactory" service-id="EngineFactory"/>
-        <set-service property="localeExtractor" service-id="LocaleExtractor"/>
+        <set-service property="localeManager" service-id="RequestLocaleManager"/>
       </construct>
     </invoke-factory>
   </service-point>  
@@ -117,4 +118,27 @@
   <contribution configuration-id="RequestServicerPipeline">
     <terminator object="service:InvokeEngineTerminator"/>
   </contribution>  
+  
+  <service-point id="ResponseRenderer" interface="org.apache.tapestry.services.ResponseRenderer">
+    Renders the active page as the response.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.ResponseRendererImpl">
+        <set-service property="localeManager" service-id="RequestLocaleManager"/>
+      </construct>
+    </invoke-factory>
+  </service-point>
+  
+  <service-point id="AbsoluteURLBuilder" interface="org.apache.tapestry.services.AbsoluteURLBuilder">
+    
+    Uses HttpServletRequest information to build complete URLs, suitable for use when
+    sending client-side redirects.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.AbsoluteURLBuilderImpl">
+        <set-service property="request" service-id="HttpServletRequest"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
 </module>

@@ -17,41 +17,77 @@ package org.apache.tapestry.engine;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.apache.commons.logging.Log;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.ResponseOutputStream;
+import org.apache.tapestry.services.AbsoluteURLBuilder;
 
 /**
- *  Restarts the Tapestry application.  This is normally reserved for dealing with
- *  catastrophic failures of the application.  Discards the {@link javax.servlet.http.HttpSession}, if any,
- *  and redirects to the Tapestry application servlet URL (invoking the {@link HomeService}).
- *
- *  @author Howard Lewis Ship
- *  @since 1.0.9
- *
- **/
+ * Restarts the Tapestry application. This is normally reserved for dealing with catastrophic
+ * failures of the application. Discards the {@link javax.servlet.http.HttpSession}, if any, and
+ * redirects to the Tapestry application servlet URL (invoking the {@link HomeService}).
+ * 
+ * @author Howard Lewis Ship
+ * @since 1.0.9
+ */
 
 public class RestartService extends AbstractService
 {
+    /** @since 3.1 */
+    private Log _log;
+
+    /** @since 3.1 */
+    private HttpServletRequest _request;
+
+    /** @since 3.1 */
+    private HttpServletResponse _response;
+
+    /** @since 3.1 */
+    private AbsoluteURLBuilder _builder;
 
     public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
         if (Tapestry.size(parameters) != 0)
-            throw new IllegalArgumentException(
-                Tapestry.format("service-no-parameters", Tapestry.RESTART_SERVICE));
+            throw new IllegalArgumentException(Tapestry.format(
+                    "service-no-parameters",
+                    Tapestry.RESTART_SERVICE));
 
         return constructLink(cycle, Tapestry.RESTART_SERVICE, null, null, true);
     }
 
-    public void service(
-        IEngineServiceView engine,
-        IRequestCycle cycle,
-        ResponseOutputStream output)
-        throws ServletException, IOException
+    public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
+            IOException
     {
-        engine.restart(cycle);
+        HttpSession session = _request.getSession();
+
+        if (session != null)
+        {
+            try
+            {
+                session.invalidate();
+            }
+            catch (IllegalStateException ex)
+            {
+                _log.warn("Exception thrown invalidating HttpSession.", ex);
+
+                // Otherwise, ignore it.
+            }
+        }
+
+        // Make isStateful() return false, so that the servlet doesn't
+        // try to store the engine back into the (now invalid) session.
+        // TODO: How to get the EngineManager to *not* try and
+        // store the engine back in the (now invalid) session.
+
+        String url = _builder.constructURL(_request.getServletPath());
+
+        _response.sendRedirect(url);
     }
 
     public String getName()
@@ -59,4 +95,27 @@ public class RestartService extends AbstractService
         return Tapestry.RESTART_SERVICE;
     }
 
+    /** @since 3.1 */
+    public void setLog(Log log)
+    {
+        _log = log;
+    }
+
+    /** @since 3.1 */
+    public void setRequest(HttpServletRequest request)
+    {
+        _request = request;
+    }
+
+    /** @since 3.1 */
+    public void setBuilder(AbsoluteURLBuilder builder)
+    {
+        _builder = builder;
+    }
+
+    /** @since 3.1 */
+    public void setResponse(HttpServletResponse response)
+    {
+        _response = response;
+    }
 }

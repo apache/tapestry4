@@ -22,7 +22,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.services.EngineFactory;
 import org.apache.tapestry.services.EngineManager;
-import org.apache.tapestry.services.LocaleExtractor;
+import org.apache.tapestry.services.RequestLocaleManager;
 import org.apache.tapestry.services.ObjectPool;
 
 /**
@@ -38,7 +38,7 @@ public class EngineManagerImpl implements EngineManager
     private String _servletName;
     private String _engineKey;
     private EngineFactory _engineFactory;
-    private LocaleExtractor _localeExtractor;
+    private RequestLocaleManager _localeManager;
 
     static final String ENGINE_KEY_PREFIX = "org.apache.tapestry.engine:";
 
@@ -60,7 +60,7 @@ public class EngineManagerImpl implements EngineManager
                 return result;
         }
 
-        Locale locale = _localeExtractor.extractLocaleForCurrentRequest();
+        Locale locale = _localeManager.extractLocaleForCurrentRequest();
 
         result = (IEngine) _enginePool.get(locale);
 
@@ -106,9 +106,9 @@ public class EngineManagerImpl implements EngineManager
         _enginePool = pool;
     }
 
-    public void setLocaleExtractor(LocaleExtractor extractor)
+    public void setLocaleManager(RequestLocaleManager manager)
     {
-        _localeExtractor = extractor;
+        _localeManager = manager;
     }
 
     public void setRequest(HttpServletRequest request)

@@ -25,6 +25,7 @@ import java.util.Properties;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Messages;
 import org.apache.hivemind.Resource;
+import org.apache.tapestry.Defense;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.ComponentMessages;
@@ -76,7 +77,7 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
 
     protected synchronized Properties getLocalizedProperties(IComponent component)
     {
-        Tapestry.notNull(component, "component");
+        Defense.notNull(component, "component");
 
         Resource specificationLocation = component.getSpecification().getSpecificationLocation();
         Locale locale = component.getPage().getLocale();

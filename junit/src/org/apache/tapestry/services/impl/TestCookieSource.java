@@ -19,18 +19,37 @@ import java.util.List;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.easymock.AbstractMatcher;
+import org.easymock.ArgumentsMatcher;
 import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.services.impl.CookieSourceImpl}.
- *
+ * 
  * @author Howard Lewis Ship
  * @since 3.1
  */
 public class TestCookieSource extends HiveMindTestCase
 {
+    private static class ComparableCookie extends Cookie
+    {
+        public ComparableCookie(String name, String value)
+        {
+            super(name, value);
+        }
+
+        public boolean equals(Object obj)
+        {
+            Cookie c = (Cookie) obj;
+
+            return getName().equals(c.getName()) && getValue().equals(c.getValue())
+                    && getPath().equals(c.getPath());
+        }
+    }
+
     private HttpServletRequest setupRequest(String[] nameValues)
     {
         Cookie[] cookies = null;
@@ -72,7 +91,7 @@ public class TestCookieSource extends HiveMindTestCase
 
         replayControls();
 
-        String actual = cs.getCookieValue(name);
+        String actual = cs.readCookieValue(name);
 
         assertEquals(expected, actual);
 
@@ -86,11 +105,41 @@ public class TestCookieSource extends HiveMindTestCase
 
     public void testMatch()
     {
-        attempt("fred", "flintstone", new String[] { "barney", "rubble", "fred", "flintstone" });
+        attempt("fred", "flintstone", new String[]
+        { "barney", "rubble", "fred", "flintstone" });
     }
 
     public void testNoMatch()
     {
-        attempt("foo", null, new String[] { "bar", "baz" });
+        attempt("foo", null, new String[]
+        { "bar", "baz" });
+    }
+
+    public void testWriteCookie()
+    {
+        MockControl requestControl = newControl(HttpServletRequest.class);
+        HttpServletRequest request = (HttpServletRequest) requestControl.getMock();
+        
+        HttpServletResponse response = (HttpServletResponse) newMock(HttpServletResponse.class);
+
+        // Training
+
+        request.getContextPath();
+        requestControl.setReturnValue("/context");
+
+        Cookie cookie = new ComparableCookie("foo", "bar");
+        cookie.setPath("/context");
+
+        response.addCookie(cookie);
+
+        replayControls();
+
+        CookieSourceImpl cs = new CookieSourceImpl();
+        cs.setRequest(request);
+        cs.setResponse(response);
+
+        cs.writeCookieValue("foo", "bar");
+
+        verifyControls();
     }
 }

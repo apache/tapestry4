@@ -19,7 +19,7 @@ import org.apache.hivemind.Location;
 
 /**
  *  Generates a String from its child tokens, then applies it
- *  to {@link ScriptSession#setBody(String)}.
+ *  to {@link ScriptSessionImpl#setBody(String)}.
  *
  *  @author Howard Lewis Ship
  *  @since 0.2.9
@@ -44,7 +44,7 @@ class BodyToken extends AbstractToken
 
         writeChildren(buffer, session);
 
-		session.getProcessor().addBodyScript(buffer.toString());
+		session.addBodyScript(buffer.toString());
 
         // Store the buffer length from this run for the next run, since its
         // going to be approximately the right size.

@@ -62,7 +62,6 @@ public class PageSource implements IPageSource
      *  built from the page name and the page locale.  This is a reference
      *  to a shared pool.
      * 
-     *  @see IEngine#getPool()
      *
      */
 
