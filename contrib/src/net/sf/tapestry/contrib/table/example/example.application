@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--$Id$-->
+<!DOCTYPE application PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+
+<application name="Table" engine-class="net.sf.tapestry.engine.SimpleEngine">
+
+    <page name="Home" specification-path="/net/sf/tapestry/contrib/table/example/minimal/Home.page"/>
+
+	<library id="contrib" specification-path="/net/sf/tapestry/contrib/Contrib.library"/>
+	
+</application>
