@@ -1034,6 +1034,7 @@ public class RequestContext implements IRender
         header(writer, "Name", "Value");
 
         pair(writer, "servlet", _servlet);
+        pair(writer, "name", _servlet.getServletName());
         pair(writer, "servletInfo", _servlet.getServletInfo());
 
         ServletConfig config = _servlet.getServletConfig();
@@ -1051,7 +1052,6 @@ public class RequestContext implements IRender
             }
 
             String name = (String) names.get(i);
-            ;
             pair(writer, name, config.getInitParameter(name));
 
         }
