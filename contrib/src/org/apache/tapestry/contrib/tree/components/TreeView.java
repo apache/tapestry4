@@ -242,7 +242,8 @@ public class TreeView extends BaseComponent
         } else {
             //String strPath = "treeSessionState";
             String strPath = getExtendedId();
-            LOG.info("store(): setting state with: " + strPath);
+            if (LOG.isDebugEnabled())
+                LOG.debug("store(): setting state with: " + strPath);
             objHolder.setSessionState(this.getPage(), strPath,
                                       objSessionState);
         }

@@ -818,8 +818,8 @@ public class PageLoader implements IPageLoader
             _inheritedBindingQueue.clear();
         }
 
-        if (LOG.isInfoEnabled())
-            LOG.info(
+        if (LOG.isDebugEnabled())
+            LOG.debug(
                 "Loaded page "
                     + page
                     + " with "

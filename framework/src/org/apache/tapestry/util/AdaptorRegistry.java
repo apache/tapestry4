@@ -156,8 +156,8 @@ public class AdaptorRegistry
 
         registrations.put(registrationClass, adaptor);
 
-        if (LOG.isInfoEnabled())
-            LOG.info("Registered " + adaptor + " for " + Tapestry.getClassName(registrationClass));
+        if (LOG.isDebugEnabled())
+            LOG.debug("Registered " + adaptor + " for " + Tapestry.getClassName(registrationClass));
 
         // Can't tell what is and isn't valid in the cache.
         // Also, normally all registrations occur before any adaptors
