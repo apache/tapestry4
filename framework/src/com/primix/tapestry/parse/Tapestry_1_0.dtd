@@ -7,23 +7,32 @@
 	For application specifications, the main element is application; for component specification the
 	main element is specification.
 -->
+<!-- Alias name for a component alias -->
 <!ELEMENT alias (#PCDATA)>
+<!-- Contains a boolean indicating if a component allows a body (may wrap
+	 other elements and components. -->
 <!ELEMENT allow-body (#PCDATA)>
+<!-- Indicates whether a component may have informal parameters. -->
 <!ELEMENT allow-informal-parameters (#PCDATA)>
+<!-- Root element for application specifications. -->
 <!ELEMENT application (name, engine-class, page+, component-alias*, properties?)>
-<!ELEMENT assets (internal-asset | external-asset | private-asset)+>
+<!-- List of assets for a component.  The internal-asset element is deprecated,
+     replaced with context-asset. -->
+<!ELEMENT assets (internal-asset | context-asset| external-asset | private-asset)+>
 <!ELEMENT binding (name, property-path)>
 <!ELEMENT bindings (binding | static-binding | inherited-binding | field-binding)+>
 <!ELEMENT class (#PCDATA)>
 <!ELEMENT component (id, type, bindings?)>
 <!ELEMENT components (component)+>
 <!ELEMENT component-alias (alias, specification-path)>
+<!ELEMENT context-asset (name, path)>
 <!ELEMENT engine-class (#PCDATA)>
 <!ELEMENT external-asset (name, URL)>
 <!ELEMENT field-binding (name, field-name)>
 <!ELEMENT field-name (#PCDATA)>
 <!ELEMENT id (#PCDATA)>
 <!ELEMENT inherited-binding (name, parameter-name)>
+<!-- internal-asset has been deprecated, replace with context-asset -->
 <!ELEMENT internal-asset (name, path)>
 <!ELEMENT java-type (#PCDATA)>
 <!ELEMENT name (#PCDATA)>
