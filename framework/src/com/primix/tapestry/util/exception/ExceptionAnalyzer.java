@@ -306,5 +306,52 @@ public class ExceptionAnalyzer
 
 		return result;
 	}
+
+    /**
+     *  Produces a text based exception report to the provided stream.
+     *
+     */
+
+    public void reportException(Throwable exception, PrintStream stream)
+    {
+        int i;
+        int j;
+        ExceptionDescription[] descriptions;
+        ExceptionProperty[] properties;
+        String[] stackTrace;
+        String message;
+
+	    descriptions = analyze(exception);
+
+	    for (i = 0; i < descriptions.length; i++)
+	    {
+		    message = descriptions[i].getMessage();
+
+		    if (message == null)
+			    stream.println(descriptions[i].getExceptionClassName());
+		    else
+			    stream.println(descriptions[i].getExceptionClassName() + ": " +
+				    descriptions[i].getMessage());
+
+		    properties = descriptions[i].getProperties();
+
+		    for (j = 0; j < properties.length; j++)
+			    stream.println("   " + properties[j].getName() + ": " +
+				    properties[j].getValue());
+
+		    // Just show the stack trace on the deepest exception.
+
+		    if (i + 1 == descriptions.length)
+		    {
+			    stackTrace = descriptions[i].getStackTrace();
+
+			    for (j = 0; j < stackTrace.length; j++)
+				    stream.println(stackTrace[j]);
+		    }
+		    else
+			    stream.println();
+	    }
+	}
+
 }
 
