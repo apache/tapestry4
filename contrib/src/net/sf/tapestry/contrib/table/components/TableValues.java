@@ -39,6 +39,15 @@ import net.sf.tapestry.contrib.table.model.ITableColumnModel;
  *  <td align="left">The tag to use to wrap the column values in.</td> 
  * </tr>
  *
+ * <tr>
+ *  <td>column</td>
+ *  <td>{@link net.sf.tapestry.contrib.table.model.ITableColumn}</td>
+ *  <td>out</td>
+ *  <td>no</td>
+ *  <td>&nbsp;</td>
+ *  <td align="left">The object representing the current column.</td> 
+ * </tr>
+ *
  * </table> 
  * 
  * @author mindbridge
@@ -49,6 +58,7 @@ public class TableValues extends AbstractTableRowComponent
 {
     // Bindings (custom)
     private IBinding m_objElementBinding = null;
+    private IBinding m_objColumnBinding = null;
 
 	// Transient
 	private ITableColumn m_objTableColumn;
@@ -76,6 +86,10 @@ public class TableValues extends AbstractTableRowComponent
 	public void setTableColumn(ITableColumn tableColumn)
 	{
 		m_objTableColumn = tableColumn;
+        
+        IBinding objColumnBinding = getColumnBinding();
+        if (objColumnBinding != null)
+            objColumnBinding.setObject(tableColumn);
 	}
 
 	public IRender getTableValueRenderer() throws RequestCycleException
@@ -103,6 +117,24 @@ public class TableValues extends AbstractTableRowComponent
     public void setElementBinding(IBinding elementBinding)
     {
         m_objElementBinding = elementBinding;
+    }
+
+    /**
+     * Returns the columnBinding.
+     * @return IBinding
+     */
+    public IBinding getColumnBinding()
+    {
+        return m_objColumnBinding;
+    }
+
+    /**
+     * Sets the columnBinding.
+     * @param columnBinding The columnBinding to set
+     */
+    public void setColumnBinding(IBinding columnBinding)
+    {
+        m_objColumnBinding = columnBinding;
     }
 
     /**
