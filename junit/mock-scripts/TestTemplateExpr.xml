@@ -64,7 +64,7 @@ A binding for parameter 'value' of component TemplateExprConflict/insertApplicat
 		</assert-output>	
 	
 		<assert-output name="Error Message">
-The template for TemplateExprInformal contains a binding for parameter 'informal' of component TemplateExprInformal/block, but TemplateExprInformal/block does not allow informal parameters.
+The template for TemplateExprInformal contains a binding for parameter 'informal' of component TemplateExprInformal/block, which does not allow informal parameters.      
 		</assert-output>	
 		
 	</request>	
@@ -79,7 +79,7 @@ The template for TemplateExprInformal contains a binding for parameter 'informal
 		</assert-output>	
 	
 		<assert-output name="Error Message">
-The template for TemplateExprReserved contains a binding for parameter 'href' of component TemplateExprReserved/link, but 'href' is a reserved parameter name.
+The template for TemplateExprReserved contains a binding for parameter 'href' of component TemplateExprReserved/link, which is a reserved parameter name.
 		</assert-output>	
 		
 	</request>	

@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!-- $Id$ -->
 <!--
    Copyright 2004 The Apache Software Foundation
   
@@ -41,7 +39,7 @@ Static over Static: Pablo Picasso
 	    	
 	    	<assert-regexp name="Error Message">
 <![CDATA[
-Component insertPageName \(at context:/Two\.html.*\) conflicts with a prior declaration in the specification \(at context:/WEB-INF/Two\.page.*\)\.
+Component insertPageName conflicts with a prior declaration in the specification \(at context:/WEB-INF/Two\.page.*\)\.
 ]]>	    		
 	    	</assert-regexp>
 	</request>
