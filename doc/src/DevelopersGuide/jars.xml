@@ -12,12 +12,24 @@ examples), others are used at runtime (and must be added to the servlet containe
 
 	
 	<varlistentry>
+		<term><filename>commons-lang-<replaceable>x.x</replaceable></filename></term>
+		<term><filename>commons-logging-<replaceable>x.x.x</replaceable></filename></term>
+		<listitem>
+			<para>
+			Support classes for Tapestry, from the Jakarta Commons subproject.  These
+			libraries are needed at runtime.
+			</para>
+		</listitem>
+	</varlistentry>
+	
+	<varlistentry>
 		<term><filename>ejb.jar</filename></term>
 		<listitem>
 			<para>
 			Contains the EJB 1.1 packages.  These classes are needed by Tapestry at runtime 
 			(Tapestry includes some special handling
-			of EJB client stubs recorded by a &PageRecorder;.  However, most often, the servlet container or application server
+			of EJB client stubs recorded by a &PageRecorder;.  However, most often, the 
+			servlet container or application server
 			provides these interfaces and classes.
 			</para>
 		</listitem>
@@ -49,7 +61,9 @@ examples), others are used at runtime (and must be added to the servlet containe
 		<listitem>
 		<para>
 		The Java API for XML Processing.  Needed at runtime to allow Tapestry to locate an XML
-		processor, used to parse application and component specifications.
+		processor, used to parse application and component specifications.  These may be
+		provided by the servlet container or application server, or even be
+		directly provided by the JDK.
 		</para>
 		</listitem>
 	</varlistentry>
@@ -69,7 +83,9 @@ examples), others are used at runtime (and must be added to the servlet containe
 		<term><filename>log4j-<replaceable>x.x.x</replaceable>.jar</filename></term>
 		<listitem>
 		<para>
-		The &Log4J; logging framework.  This is used by Tapestry at runtime.
+		The &Log4J; logging framework.  This is used by Tapestry at runtime
+		(via the <filename>commons-logging-<replaceable>x.x.x</replaceable></filename>
+		library).
 		</para>
 		</listitem>
 	</varlistentry>
