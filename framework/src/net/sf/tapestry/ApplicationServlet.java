@@ -189,7 +189,8 @@ public class ApplicationServlet extends HttpServlet
      *
      **/
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
+    public void doGet(HttpServletRequest request, HttpServletResponse response)
+        throws IOException, ServletException
     {
         doService(request, response);
     }
@@ -227,7 +228,8 @@ public class ApplicationServlet extends HttpServlet
             IEngine engine = getEngine(context);
 
             if (engine == null)
-                throw new ServletException(Tapestry.getString("ApplicationServlet.could-not-locate-engine"));
+                throw new ServletException(
+                    Tapestry.getString("ApplicationServlet.could-not-locate-engine"));
 
             boolean dirty = engine.service(context);
 
@@ -247,22 +249,15 @@ public class ApplicationServlet extends HttpServlet
                 try
                 {
 
-                    boolean forceStore = engine.isStateful() && (session.getAttribute(_attributeName) == null);
+                    boolean forceStore =
+                        engine.isStateful() && (session.getAttribute(_attributeName) == null);
 
                     if (forceStore || dirty)
                     {
                         if (LOG.isDebugEnabled())
                             LOG.debug("Storing " + engine + " into session as " + _attributeName);
 
-                        // Some servlet container invoke valueUnbound(), then valueBound()
-                        // when "refreshing" this way, so we tell the engine it is being
-                        // refreshed.
-
-                        engine.setRefreshing(true);
-
                         session.setAttribute(_attributeName, engine);
-
-                        engine.setRefreshing(false);
                     }
                 }
                 catch (IllegalStateException ex)
@@ -283,7 +278,10 @@ public class ApplicationServlet extends HttpServlet
 
             if (engine.isStateful())
             {
-                LOG.error("Engine " + engine + " is stateful even though there is no session.  Discarding the engine.");
+                LOG.error(
+                    Tapestry.getString(
+                        "ApplicationServlet.engine-stateful-without-session",
+                        engine));
                 return;
             }
 
@@ -335,7 +333,9 @@ public class ApplicationServlet extends HttpServlet
      * 
      **/
 
-    protected RequestContext createRequestContext(HttpServletRequest request, HttpServletResponse response)
+    protected RequestContext createRequestContext(
+        HttpServletRequest request,
+        HttpServletResponse response)
         throws IOException
     {
         return new RequestContext(this, request, response);
@@ -357,7 +357,8 @@ public class ApplicationServlet extends HttpServlet
      *
      **/
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
+        throws IOException, ServletException
     {
         doService(request, response);
     }
@@ -599,7 +600,8 @@ public class ApplicationServlet extends HttpServlet
     {
         ApplicationSpecification result = new ApplicationSpecification();
 
-        IResourceLocation virtualLocation = new ContextResourceLocation(getServletContext(), "/WEB-INF/");
+        IResourceLocation virtualLocation =
+            new ContextResourceLocation(getServletContext(), "/WEB-INF/");
 
         result.setSpecificationLocation(virtualLocation);
 
@@ -631,7 +633,9 @@ public class ApplicationServlet extends HttpServlet
         {
             show(ex);
 
-            throw new ServletException(Tapestry.getString("ApplicationServlet.could-not-parse-spec", location), ex);
+            throw new ServletException(
+                Tapestry.getString("ApplicationServlet.could-not-parse-spec", location),
+                ex);
         }
     }
 

@@ -407,16 +407,15 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     }
 
     /**
-     *  Invokes {@link PageCleanupListener#pageCleanup(PageEvent)} on any
-     *  listener.
-     *
-     *  <p>Subclasses may override, but should invoke this implementation.
+     *  Does nothing.
+     * 
+     *  @deprecated With no replacement.
+     *  @see PageCleanupListener
      *
      **/
 
     public void cleanupPage()
     {
-        firePageCleanup();
     }
 
     /**
@@ -475,9 +474,16 @@ public abstract class AbstractPage extends BaseComponent implements IPage
         addListener(PageRenderListener.class, listener);
     }
 
+	/**
+	 *  Does nothing.
+	 * 
+	 *  @deprecated With no replacement.
+     *  @see PageCleanupListener
+     * 
+     **/
+	
     public void addPageCleanupListener(PageCleanupListener listener)
     {
-        addListener(PageCleanupListener.class, listener);
     }
 
     /**
@@ -560,36 +566,17 @@ public abstract class AbstractPage extends BaseComponent implements IPage
             }
         }
     }
-    protected void firePageCleanup()
-    {
-        if (_listenerList == null)
-            return;
 
-        PageEvent event = null;
-        Object[] listeners = _listenerList.getListenerList();
-
-        for (int i = 0; i < listeners.length; i += 2)
-        {
-            if (listeners[i] == PageCleanupListener.class)
-            {
-                PageCleanupListener l = (PageCleanupListener) listeners[i + 1];
-
-                if (event == null)
-                    event = new PageEvent(this, null);
-
-                l.pageCleanup(event);
-            }
-        }
-    }
-
-    /**
-     *  @since 2.1-beta-2
+	/**
+	 *  Does nothing.
+	 * 
+	 *  @deprecated With no replacement.
+     *  @see PageCleanupListener
      * 
      **/
 
     public void removePageCleanupListener(PageCleanupListener listener)
     {
-        removeListener(PageCleanupListener.class, listener);
     }
 
     /**

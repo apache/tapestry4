@@ -364,18 +364,13 @@ public interface IEngine
     public boolean isRefreshing();
 
     /** 
-     * 
-     *  Set by the application servlet just before the engine is
-     *  "refreshed" into the HttpSession.  Some servlet containers
-     *  will invoke the 
-     *  {@link javax.servlet.http.HttpSessionBindingListener#valueUnbound(javax.servlet.http.HttpSessionBindingEvent)}
-     *  event listener method (before updating the attribute and invoking
-     *  {@link javax.servlet.http.HttpSessionBindingListener#valueBound(javax.servlet.http.HttpSessionBindingEvent)}), 
-     *  which will be interpreted by the engine
-     *  as the session being invalidated, at which point it will (normally)
-     *  true to cleanup the pages ... setting this flag, prevents the unwanted cleanup.     
+     *  This method has been deprecated.  It existed as part
+     *  of support for {@link net.sf.tapestry.event.PageCleanupListener} interface,
+     *  which has also been deprecated.
+     *   
      * 
      *  @since 2.2
+     *  @deprecated With no replacement.
      * 
      **/
 

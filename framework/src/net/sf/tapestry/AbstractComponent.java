@@ -281,9 +281,8 @@ public abstract class AbstractComponent implements IComponent
 
     /**
      *  Registers this component as a listener of the page if it
-     *  implements {@link net.sf.tapestry.event.PageDetachListener},
-     *  {@link net.sf.tapestry.event.PageRenderListener} or 
-     *  {@link net.sf.tapestry.event.PageCleanupListener}.
+     *  implements {@link net.sf.tapestry.event.PageDetachListener} or 
+     *  {@link net.sf.tapestry.event.PageRenderListener}.
      * 
      *  <p>
      *  Invokes {@link #finishLoad()}.  Subclasses may overide as needed, but
@@ -293,7 +292,10 @@ public abstract class AbstractComponent implements IComponent
      *
      **/
 
-    public void finishLoad(IRequestCycle cycle, IPageLoader loader, ComponentSpecification specification)
+    public void finishLoad(
+        IRequestCycle cycle,
+        IPageLoader loader,
+        ComponentSpecification specification)
         throws PageLoaderException
     {
         if (this instanceof PageDetachListener)
@@ -301,9 +303,6 @@ public abstract class AbstractComponent implements IComponent
 
         if (this instanceof PageRenderListener)
             _page.addPageRenderListener((PageRenderListener) this);
-
-        if (this instanceof PageCleanupListener)
-            _page.addPageCleanupListener((PageCleanupListener) this);
 
         finishLoad();
     }
@@ -560,7 +559,8 @@ public abstract class AbstractComponent implements IComponent
     public void setContainer(IComponent value)
     {
         if (_container != null)
-            throw new ApplicationRuntimeException(Tapestry.getString("AbstractComponent.attempt-to-change-container"));
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("AbstractComponent.attempt-to-change-container"));
 
         _container = value;
     }
@@ -600,7 +600,8 @@ public abstract class AbstractComponent implements IComponent
         String containerIdPath;
 
         if (_container == null)
-            throw new NullPointerException(Tapestry.getString("AbstractComponent.null-container", this));
+            throw new NullPointerException(
+                Tapestry.getString("AbstractComponent.null-container", this));
 
         containerIdPath = _container.getIdPath();
 
@@ -620,7 +621,8 @@ public abstract class AbstractComponent implements IComponent
     public void setPage(IPage value)
     {
         if (_page != null)
-            throw new ApplicationRuntimeException(Tapestry.getString("AbstractComponent.attempt-to-change-page"));
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("AbstractComponent.attempt-to-change-page"));
 
         _page = value;
     }
@@ -633,7 +635,8 @@ public abstract class AbstractComponent implements IComponent
     public void setSpecification(ComponentSpecification value)
     {
         if (_specification != null)
-            throw new ApplicationRuntimeException(Tapestry.getString("AbstractComponent.attempt-to-change-spec"));
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("AbstractComponent.attempt-to-change-spec"));
 
         _specification = value;
     }
@@ -750,7 +753,7 @@ public abstract class AbstractComponent implements IComponent
 
         // Now, iterate over the formal parameters and add the formal parameters
         // that have a binding.
-        
+
         List names = _specification.getParameterNames();
 
         int count = names.size();
@@ -870,7 +873,8 @@ public abstract class AbstractComponent implements IComponent
      * 
      **/
 
-    public final void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    public final void render(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
     {
         try
         {
@@ -912,7 +916,8 @@ public abstract class AbstractComponent implements IComponent
      * 
      **/
 
-    protected abstract void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException;
+    protected abstract void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException;
 
     /**
      *  Invoked by {@link #render(IMarkupWriter, IRequestCycle)}
