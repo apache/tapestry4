@@ -2,95 +2,77 @@
 <html>
 <head>
 <title>Tapestry TODO List</title>
-<link rel="STYLESHEET" type="text/css" href="web/scripts/style_virtlib_pcIE55.css">
+<link rel="STYLESHEET" type="text/css" href="web/scripts/style_virtlib_pcIE55.css"/>
 </head>
 <body>
-<h1>Release 2.4</h1>
-	
-<br>$Id$
-			
-<p>Some of these items overlap requests in SourceForge and/or Bugzilla.
-		
-<p><i>This list is anything but final!</i> 
-	
-<UL>
-	
-	<li>Properly sign the distribution and have it mirrored with the other Jakarta downloads.</li>
-	
-	<li>Deal with character sets and localization properly 
-  
+<h1>Release 2.4 (aka 3.0 aka NextGen)</h1>
+<br/>
+$Id$
+<p>   Some of these items overlap requests Bugzilla.</p>
+<p><i>This list is anything but final! Not in any (prioritized) order.</i></p>
+<ul>
+	<li>Decide on final release number for "NextGen"</li>
+	<li>Bugzilla or Scarab?</li>
+	<li>Get Tapestry building under Gump</li>
+	<li>Properly sign the distribution and have it mirrored 
+  with the other Jakarta downloads</li>
+	<li>Deal with character sets and localization properly</li>
 	<li>Handle change of locale correctly, by reloading new 
-  instance of page in proper locale 
-  
+  instance of page in proper locale</li>
 	<li>Improved User's Guide to replace existing Developer's 
-  Guide
+  Guide</li>
 	<li>Replace the current tutorial with Neil Clayton's 
-  Tutorial2 
-  
+  Tutorial2</li>
 	<li>Reoganize directory structure to more standard format 
-  (compatible with Maven) 
-  
+  (compatible with Maven)</li>
 	<li>Use Forrest, or somesuch, for documentation 
-  (possibly, convert User's Guide and friends to alternate format) 
-  
+  (possibly, convert User's Guide and friends to alternate format)</li>
 	<li>Get Tapestry compiling under Maven, have nightly 
-  builds 
-  
+  builds</li>
 	<li>Fill out the test suite and code coverage, reach 85% 
-  or better 
-  
-	<li>Integrate David Solis' WML components contributions 
-  
+  or better</li>
 	<li>Fix all the Component Reference pages to use the 2.4 
-  syntax 
-  
+  syntax</li>
 	<li>New features for Script Specification:
-	<ul>
-		<li>Improve the "include script" element to support relative scripts, scripts in context, script in classpath
-		<li>Some kind of "include only once" block 
-    
-		<li>New DTD</li>
-	</ul></li>
-	
-	<li>Change build environment to NOT compile against LGPL frameworks (J2EE from JBoss).</li>
-	
-	<li>Unit testing stategy for the JSP tags and tagsupport service.</li>
-	
-	<li>Allow auto parameters to not be required.</li>
-</UL>
-
+  <ul>
+  	<li>Improve the "include script" element to support </li>
+    relative scripts, scripts in context, script in classpath</li>
+  	<li>Some kind of "include only once" block</li>
+  	<li>Name uniquer</li>
+  	<li>New DTD w/Jakarta public/system ids</li>
+  	<li>NextGen or NextGen++?</li>
+  </ul></li>
+	<li>Change build environment to NOT compile against LGPL 
+  frameworks (J2EE from JBoss)</li>
+	<li>Unit testing stategy for the JSP tags and tagsupport 
+  service</li>
+	<li>Allow auto parameters to not be required</li>
+</ul>
 <h2>Completed items in 2.4</h2>
 <ul>
-<li>Declarative transient properties - define transient properties in spec, 
+	<li>Declarative transient properties - define transient properties in spec, 
   Tapestry builds subclass with instance variables, accessors and 
-  initialize() <b>HLS</b>
-<li>Declarative persistant properties - as with transient, but properties are 
-  made persistant <b>HLS</b>
-<li>Traditional bin/src distros <b>HLS</b>
-<LI>Rename packages from net.sf.tapestry to org.apache.tapestry
-<b>HLS</b>
-<LI>Resolve GPL issues around McKoiDBMBean 
-<b>HLS</b>
-<li>Tapestry JSP tag library <b>HLS</b></li>
-<li>Support array types for declared properties and connected parameters. <b>HLS</b></li>	
-
-<li>Support primitive types for connected parameters. <b>HLS</b></li>
+  initialize() <b>HLS</b></li>
+	<li>Declarative persistant properties - as with transient, but properties are 
+  made persistant <b>HLS</b></li>
+	<li>Traditional bin/src distros <b>HLS</b></li>
+	<li>Rename packages from net.sf.tapestry to org.apache.tapestry <b>HLS</b></li>
+	<li>Resolve GPL issues around McKoiDBMBean <b>HLS</b></li>
+	<li>Tapestry JSP tag library <b>HLS</b></li>
+	<li>Support array types for declared properties and connected parameters <b>HLS</b></li>
+	<li>Support primitive types for connected parameters <b>HLS</b></li>
+	<li>Integrate David Solis' WML component contributions <b>DS</b></li>
 </ul>
-
 <h2>Rejected items in 2.4</h2>
-
 <ul>
 	<li>Change &lt;extension&gt; initializers to use OGNL 
-  expressions 
-  <b>HLS</b>
-  <i>Need an "object" for OGNL expressions, not clear what that would be.</i>	
+  expressions <b>HLS<BR></b><i>
+  <br/>Need an "object" for OGNL expressions, not clear what that would be.</i></li>
 </ul>
-<h1>Release 2.5</h1>
-
+<h1>Release 2.5 (aka 3.1 aka NextGen++)</h1>
 <ul>
-<li>Intersertials</li>	
-<li>Extend listener methods to take parameters (matching service parameters to actual method parameters)</li>
+	<li>Intersertials</li>
+	<li>Extend listener methods to take parameters (matching service parameters to actual method parameters)</li>
 </ul>
-
 </body>
 </html>
