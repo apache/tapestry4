@@ -240,14 +240,9 @@ public class SimpleSqlTableDataSource implements ISqlTableDataSource
 
 	protected String generateLimitClause(ITablePagingState objPagingState)
 	{
-		int nStart =
-			objPagingState.getCurrentPage() * objPagingState.getPageSize();
-		String strPagingBuf =
-			"LIMIT "
-				+ objPagingState.getPageSize()
-				+ " OFFSET "
-				+ objPagingState.getCurrentPage() * objPagingState.getPageSize()
-				+ " ";
+		int nPageSize = objPagingState.getPageSize();
+		int nStart = objPagingState.getCurrentPage() * nPageSize;
+		String strPagingBuf = "LIMIT " + nPageSize + " OFFSET " + nStart + " ";
 		return strPagingBuf;
 	}
 
