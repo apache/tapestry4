@@ -22,6 +22,7 @@ import org.apache.tapestry.spec.IApplicationSpecification;
 /**
  * A "global" holder for the servlet, servlet context and application specification.
  * 
+ * @author Howard Lewis Ship
  * @since 3.1
  */
 public interface ApplicationGlobals
@@ -29,11 +30,11 @@ public interface ApplicationGlobals
     /**
      * Invoked by the servlet at init(), after parsing the application specification.
      */
-    public void store(HttpServlet servlet, IApplicationSpecification applicationSpecification);
+    void store(HttpServlet servlet, IApplicationSpecification applicationSpecification);
 
-    public HttpServlet getServlet();
+    HttpServlet getServlet();
 
-    public IApplicationSpecification getSpecification();
+    IApplicationSpecification getSpecification();
 
-    public ServletContext getContext();
+    ServletContext getContext();
 }

@@ -27,6 +27,7 @@ import org.apache.tapestry.spec.IApplicationSpecification;
  * service implementation.
  *
  * @author Howard Lewis Ship
+ * @since 3.1
  */
 public class TestSpecificationParser extends TapestryTestCase
 {

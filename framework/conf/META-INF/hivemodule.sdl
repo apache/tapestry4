@@ -38,9 +38,9 @@ module (id=tapestry version="3.1.0")
     {
       element (name=initializer)
       {
-       attribute (name=service-id required=true translator=service)
+       attribute (name=name required=true)
         {
-          "The service, which must implement the ApplicationInitializer interface."
+          "A unique id used when ordering the initializers."
         }
       
         attribute (name=before translator=id-list)
@@ -52,20 +52,16 @@ module (id=tapestry version="3.1.0")
         {
           "A comma-seperated list of the names of initializers that should execute before this initializer."
         }
-      
-      	// Have to use the more cumbersome rules(), rather than conversion(), because we
-      	// map service-id to two different properties.
-      	
-        rules
-        {
-          create-object (class=org.apache.tapestry.services.impl.InitializerContribution)
-          read-attribute (attribute=service-id property=initializer)
-          read-attribute (attribute=service-id property=name translator=qualified-id)
-          read-attribute (attribute=before property=before)
-          read-attribute (attribute=after property=after)
-          invoke-parent (method=addElement)
-        }
         
+        attribute (name=object required=true translator=object)
+        {
+          "The object which implements the ApplicationInitializer interface."
+        }
+      
+		conversion (class=org.apache.tapestry.services.impl.InitializerContribution)
+		{
+		  map (attribute=object property=initializer)
+		}
       }  // element initializer
     } // schema
   }
@@ -73,6 +69,7 @@ module (id=tapestry version="3.1.0")
   service-point (id=ApplicationSpecificationInitializer interface=org.apache.tapestry.services.ApplicationInitializer)
   {
     "Locates and parses the application specification and informs the ApplicationGlobals service about it."
+    
     invoke-factory (service-id=hivemind.BuilderFactory)
     {
       construct (class=org.apache.tapestry.services.impl.ApplicationSpecificationInitializer)
@@ -98,7 +95,7 @@ module (id=tapestry version="3.1.0")
   {
     invoke-factory (service-id=hivemind.BuilderFactory model=pooled)
     {
-      construct (class=org.apache.tapestry.services.impl.SpecificationParserImpl initialize-method="initializeService")
+      construct (class=org.apache.tapestry.services.impl.SpecificationParserImpl)
     }
     
     interceptor (service-id=hivemind.LoggingInterceptor)
@@ -111,6 +108,11 @@ module (id=tapestry version="3.1.0")
   
   contribution (configuration-id=ApplicationInitializers)
   {
-    initializer (service-id=ApplicationSpecificationInitializer)
+    initializer (name=ApplicationSpecificationInitializer object=service:ApplicationSpecificationInitializer)
+  }
+  
+  service-point (id=EnginePool interface=org.apache.tapestry.services.ObjectPool)
+  {
+    create-instance (class=org.apache.tapestry.services.impl.ObjectPool)
   }
 }
