@@ -130,7 +130,7 @@ JavaServer Page that displays part of a shopping cart.
 </para>
       <informalexample>
         <programlisting>
-          <emphasis>&lt;%
+<emphasis>&lt;%
 	String userName = (String)session.getAttribute("userName");
 %&gt;</emphasis>
 &lt;h1&gt;Contents of shopping cart for 
@@ -508,7 +508,7 @@ structure.  They create a common language that can be used between members
 of a team, and even between the technical and creative groups within a team.
 </para>
     <para>
-Under Tapestry a page is also very well defined:  It consists of a component 
+Under Tapestry, a page is also very well defined:  It consists of a component 
 specification, a corresponding Java class, an HTML template, and a 
 set of contained components.
 </para>
@@ -780,8 +780,8 @@ is saved with the bean until it is used at runtime.
       <para>
 Parameters define the type of value needed, but not the actual value.  
 This value is provided by a special object called a binding.  
-The binding is responsible for providing the value 
-for the parameter as it is needed.
+The binding is a bridge between the component and the parameter value,
+exposing that value to the component as it is needed.
 </para>
       <para>
 A binding is a source and sink of data.  A component 
@@ -1074,7 +1074,7 @@ The Home page component has the following HTML template:
       <figure>
         <title>Home Page HTML Template</title>
         <programlisting>
-          <sgmltag class="starttag">jwc id="border"</sgmltag>;<![CDATA[
+<sgmltag class="starttag">jwc id="border"</sgmltag><![CDATA[
 
 Nothing much doing here on the <b>home</b> page.  Visit one of our other fine 
 pages.
@@ -1565,9 +1565,7 @@ Component specification files, which use the filename extension <literal>.jwc</l
   [ &lt;<link linkend="components.spec.property">property</link> ...&gt; ...]
   [ &lt;<link linkend="components.spec.bean">bean</link> ...&gt; ...]
   [ &lt;<link linkend="components.spec.component">component</link> ...&gt; ...]
-  [ &lt;<link linkend="components.spec.assets">
-              <replaceable>asset</replaceable>
-            </link> ...&gt; ...]
+  [ &lt;<link linkend="components.spec.assets"><replaceable>asset</replaceable></link> ...&gt; ...]
 &lt;/specification&gt;
 </programlisting>
         </figure>
@@ -1814,7 +1812,7 @@ and <sgmltag class="starttag">property-value</sgmltag> element.
           <title>Component specification: <sgmltag class="starttag">set-property</sgmltag> element</title>
           <programlisting>
 &lt;set-property name="<replaceable>name</replaceable>"&gt;
-  [ &lt;<link linkend="components.spec.field-value">field-value</link> ... &gt; &lt;<link linkend="components.spec.static-value">static-value</link> ... &gt; | &lt;<link linkend="components.spec.property-value">property-value</link> ... &gt; ]
+  [ &lt;<link linkend="components.spec.field-value">field-value</link> ... &gt; | &lt;<link linkend="components.spec.static-value">static-value</link> ... &gt; | &lt;<link linkend="components.spec.property-value">property-value</link> ... &gt; ]
 &lt;/set-property&gt;
 </programlisting>
         </figure>
@@ -3277,10 +3275,10 @@ access to the asset is completely static, as with any other image file or HTML p
       <para>
 To enable dynamic copying, it is necessary to inform the framework about what file system directory
 to copy the assets to, and what virtual file system directory that maps to.  This is accomplished
-using a pair of servlet context parameter (which are specified in the WAR deployment descriptor):
+using a pair of JVM system properties:
 </para>
       <variablelist>
-        <title>Servlet Context Parameters</title>
+        <title>JVM System Properties</title>
         <varlistentry>
           <term>
             <varname>com.primix.tapestry.asset.dir</varname>
@@ -4676,7 +4674,7 @@ Implements a component that manages an HTML
       <variablelist>
         <title>Parameters</title>
         <varlistentry>
-          <term>field</term>
+          <term>file</term>
           <listitem>
             <para>The &IUploadFile; (representing the content of the file provided
             by the client).</para>
@@ -6055,20 +6053,20 @@ examples), others are used at runtime (and must be added to the servlet containe
 	</varlistentry>
 
 	<varlistentry>
-		<term><filename>log4j-core.jar</filename></term>
-		<listitem>
-		<para>
-		The &Log4J; logging framework.  This is used by Tapestry at runtime.
-		</para>
-		</listitem>
-	</varlistentry>
-
-	<varlistentry>
 		<term><filename>javax.xml.jaxp.jar</filename></term>
 		<listitem>
 		<para>
 		The Java API for XML Processing.  Needed at runtime to allow Tapestry to locate an XML
 		processor, used to parse application and component specifications.
+		</para>
+		</listitem>
+	</varlistentry>
+	
+	<varlistentry>
+		<term><filename>log4j-core.jar</filename></term>
+		<listitem>
+		<para>
+		The &Log4J; logging framework.  This is used by Tapestry at runtime.
 		</para>
 		</listitem>
 	</varlistentry>
@@ -6121,6 +6119,16 @@ examples), others are used at runtime (and must be added to the servlet containe
 		<listitem>
 		<para>
 		Example Tapestry applications.
+		</para>
+		</listitem>
+	</varlistentry>
+	
+	
+	<varlistentry>
+		<term><filename>Tutorial.ear</filename></term>
+		<listitem>
+		<para>
+		A combination of the Virtual Library application and the Tutorial.
 		</para>
 		</listitem>
 	</varlistentry>
@@ -6365,7 +6373,7 @@ similar notification and there wasn't a way to cleanly accomplish this.  Secondl
 approach was desired, as different objects had different notification requirements.
 </para>
           <para>
-For release 1.05, the interface was replaced by a more standard approach; well defined JavaBeans events.
+For release 1.0.5, the interface was replaced by a more standard approach; well defined JavaBeans events.
 These are described in the <link linkend="pages.events">Page Events</link> section of this document.
 </para>
           <para>
@@ -6408,8 +6416,15 @@ a class loader issue.
 		much easier to create new kinds of validations and just plug them into the
 		&ValidField;.
 		</para>
-          <para>This was, regrettably, a completely non-backwards compatible change.
+        
+          <para>This was, regrettably, a completely non-backwards compatible change.  However,
+          compatible versions of three of the 1.0.7 components
+          (<classname>ValidatingTextField</classname>,
+		<classname>NumericField</classname> and
+		<classname>DateField</classname>) are now part of the 
+		<filename>net.sf.tapestry.contrib.jar</filename> library.
 		</para>
+		
           <para>
 		In addition, the old components had big disclaimers:  "Don't use these inside
 		any kind of loop (such as a &Foreach;)".  By expanding the role of the
@@ -6433,6 +6448,36 @@ a class loader issue.
 		</para>
         </answer>
       </qandaentry>
+      
+      
+      <qandaentry>
+      	<question>
+      		<para>Why isn't Tapestry a JSP taglib?</para>
+      	</question>
+      	<answer>
+      		<para>
+      		Simply put, Tapestry needs to run the whole show, from the point the request is receieved by
+      		the servlet all the way through to the end of sending a response page back to the client. 
+      		All the benefits of Tapestry come from
+      		features that JSPs just don't provide ... knowing the full component heirarchy for the page,
+      		and tracking which components are wrapped inside which others, no matter how dynamic the
+      		rendering process is.  The way components can work together to generate different
+      		portions of the page is both powerful and necessary -- 
+      		that's how Tapestry builds the URLs for links and forms.
+      		</para>
+      		
+      		<para>
+      		By comparison, something like 
+      		<ulink url="http://jakarta.apache.org/">Struts</ulink>
+      		still relies on the developer to do most of the work, by defining Actions ... which are
+      		little more than a dressed up version of a servlet.  Although it has some rudimentary
+      		forms support (that can also be leveraged to process query parameters from ordinary links),
+      		it's still an awful lot of coding.
+      		</para>
+      		
+      	</answer>
+      </qandaentry>
+      
     </qandaset>
   </appendix>
 </book>
