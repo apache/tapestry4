@@ -25,6 +25,10 @@
     <binding name="name" property-path="book.ownerName"/>
   </component>
 
+  <component id="insertDateAdded" type="Insert">
+  	<binding name="value" property-path="book.dateAdded"/>
+  </component>
+
   <component id="insertDescription" type="Insert">
     <binding name="value" property-path="book.description"/>
   </component>
