@@ -36,7 +36,7 @@ import org.apache.tapestry.util.io.DataSqueezer;
  * hidden fields during rendering and are taken from those fields during the rewind, 
  * thus no StaleLink exceptions occur. 
  *
- *  [<a href="../../../../../ComponentReference/Conditional.html">Component Reference</a>]
+ *  [<a href="../../../../../ComponentReference/contrib.FormConditional.html">Component Reference</a>]
  *
  *  @author Mindbridge
  *  @version $Id$

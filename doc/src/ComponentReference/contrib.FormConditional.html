@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- $Id$ --> 
+<html>
+<head>
+<title>contrib:FormConditional</title>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+ <tr>
+  <!-- Previous component in alphabetical order. -->
+  <td align="left"><a href="contrib.Choose.html"><img alt="contrib:Choose" src="common-images/prev.png"></a></td>  
+  <td align="middle"><a href="index.html"><img alt="Component Index" src="common-images/home.png" ></a></td>
+  <!-- Next component in alphabetical order. -->
+  <td align="right"><a href="contrib.FormTable.html"><img alt="contrib:FormTable" src="common-images/next.png"></a></td>  
+ <tr>
+ <tr>
+  <td colspan="3"><hr></td>  
+ </tr>
+ <tr>
+  <td colspan="3">
+   <table border="0" cellpadding="4" cellspacing="4" width="100%">
+
+<tr valign="top">
+ <td>
+  <table>
+   <tr>
+                <td><font size="+2"><b>contrib:FormConditional</b></font></td>
+   </tr>
+   <tr>
+                <td> <A href="../api/org/apache/tapestry/contrib/form/FormConditional.html">org.apache.tapestry.contrib.form.FormConditional</a> 
+                </td>
+   </tr>
+  </table>
+ </td>
+ <td>
+  <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
+   <tr>
+                <td> Non Visual Component</td>
+   </tr>
+  </table>
+ </td>
+</tr>
+
+<tr valign="center">
+ <td colspan="2">&nbsp;</td>
+</tr>
+
+<tr>
+          <td colspan="2"> 
+            <p><b>Description</b> <br>
+              FormConditional is a variant of <a href="Conditional.html">Conditional</a> 
+              designed to be used in a <a href="Form.html">Form</a>, similar to 
+              the relationship between <a href="Foreach.html">Foreach</a> and 
+              <a href="ListEdit.html">ListEdit</a>. It is used to guarantee that 
+              the data will be the same during rendering and rewind when a form 
+              is submitted avoiding a stale link.<br>
+              On render, FormConditional reads condition parameter, stores it 
+              into a hidden field, and could render or not according to condition 
+              value. On rewind, the FormConditional ignores condition parameter, 
+              reads the stored value, and could render or not matching previous 
+              render.</p>
+            </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>See Also</b>
+  <br>
+  <A href="Conditional.html">Conditional</a>, 
+  <A href="Form.html">Form</a>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Parameters</b>
+  <br>
+            <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+              <tr> 
+    <th>Name</th>
+    <th>Type</th>
+    <th>Direction</th>
+    <th>Required</th> 
+    <th>Default</th>
+    <th>Description</th>
+   </tr>
+   <tr>
+                <td>condition</td>
+                <td>boolean</td>
+    <td>in</td>
+    <td>yes</td>
+    <td>&nbsp;</td>
+                <td>The condition to evaluate.</td>
+   </tr>
+   <tr>
+                <td>element</td>
+    <td>String</td>
+    <td>in</td>
+    <td>no</td>
+    <td>&nbsp;</td>
+                <td>The element to emulate.</td>
+   </tr>
+   <tr>
+                <td>listener</td>
+    <td>String</td>
+    <td>in</td>
+    <td>no</td>
+    <td>&nbsp;</td>
+                <td>The listener, informed <u></u>at render.</td>
+   </tr>
+   <tr>
+                <td>conditionValue</td>
+                <td>boolean</td>
+                <td>custom</td>
+    <td>no</td>
+    <td>&nbsp;</td>
+                <td>The value of the condition. During render this is obtained 
+                  from the condition parameter. During rewind it is the submitted 
+                  condition.</td>
+   </tr>
+  </table>
+            <p> Body: <strong>rendered</strong><br>
+              Informal parameters: <strong>allowed</strong><br>
+               Reserved parameters: invert</p>    
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Examples</b>
+  <p>
+  This example is under construction.
+  </p>
+      
+
+ </td></tr></table>
+</td></tr>
+<tr>
+ <td colspan="3"><hr></td>  
+</tr>
+<tr>
+ <!-- Previous component in alphabetical order. -->
+ <td align="left"><a href="contrib.Choose.html"><img alt="contrib:Choose" src="common-images/prev.png"></a></td>  
+ <td align="middle"><a href="index.html"><img alt="Component Index" src="common-images/home.png" ></a></td>
+ <!-- Next component in alphabetical order. -->
+ <td align="right"><a href="contrib.FormTable.html"><img alt="contrib:FormTable" src="common-images/next.png"></a></td>  
+</tr>
+</table>
+
+</body>
+</html>

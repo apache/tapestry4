@@ -243,6 +243,10 @@ NextGen) be released as version number 3.0.
  		Workbench/Upload exception when no file specified   	
  	</action>
  		
+ 	<action type="fix" dev="DS" fixes-bug="28396">
+ 		Add FormConditional to Component Reference   	
+ 	</action>
+
  	</release>
   	
 <!-- Use due-to to give acknowledgement for patches. -->
