@@ -92,7 +92,18 @@ public class MockTestCase extends TapestryTestCase
 
     // Should also look at JUnit documentation; perhaps there's a way to
     // implicitly define tests based on the found XML files?  Possibly
-    // in a static suite() method.
+    // in a static suite() method?
+
+	/**
+	 *  Tests related to link renderers.
+	 * 
+	 **/
+	
+	public void testLinkRenderers()
+	throws Exception
+	{
+		attempt("TestLinkRenderers.xml");
+	}
 
 	/**
 	 *  Tests related to specified properties.

@@ -98,10 +98,10 @@ public class DefaultLinkRenderer implements ILinkRenderer
 
         if (!disabled)
         {
-           ILink l = linkComponent.getLink(cycle);
+            ILink l = linkComponent.getLink(cycle);
 
             writer.begin("a");
-            writer.attribute("href", constructURL(l, cycle));
+            writer.attribute("href", constructURL(l, linkComponent.getAnchor(), cycle));
 
             beforeBodyRender(writer, cycle, linkComponent);
 
@@ -134,13 +134,13 @@ public class DefaultLinkRenderer implements ILinkRenderer
 
     /**
      *  Converts the EngineServiceLink into a URI or URL.  This implementation
-     *  simply invokes {@link net.sf.tapestry.EngineServiceLink#getURL()}.
+     *  simply invokes {@link ILink#getURL(String, boolean)}.
      * 
      **/
 
-    protected String constructURL(ILink link, IRequestCycle cycle)
+    protected String constructURL(ILink link, String anchor, IRequestCycle cycle)
     {
-        return link.getURL();
+        return link.getURL(anchor, true);
     }
 
     /**

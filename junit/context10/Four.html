@@ -1,0 +1,16 @@
+<html jwcid="@Shell" title="Four">
+<body jwcid="@Body">
+	
+
+<a jwcid="first@DirectLink" listener="[[ listeners.link ]]">first (okay)</a>
+
+<br/>
+
+<a jwcid="link@DirectLink" listener="[[ listeners.link ]]">
+<span jwcid="@Delegator" delegate="[[ linkContentRender ]]"/>	
+</a>
+
+
+</body>
+
+</html>
