@@ -299,8 +299,7 @@
 		<delete dir="${private.dir}" quiet="true"/>
 		<mkdir dir="${private.dir}"/>
 		<echo>Running Tapestry Workbench on port 8080 ...</echo>
-		<java classname="org.mortbay.jetty.Server" fork="true" maxmemory="128MB"
-			>
+		<java classname="org.mortbay.jetty.Server" fork="true" maxmemory="128M">
 			<classpath>
 				<path refid="jetty.classpath"/>
 			</classpath>
