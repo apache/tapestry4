@@ -43,14 +43,24 @@ public class MissingPropertyException extends RuntimeException
 	
 	private transient Object instance;
 	private String propertyName;
+    private transient Object rootObject;
+    private String propertyPath;
     
-	public MissingPropertyException(Object instance, String propertyName)
+    public MissingPropertyException(Object instance, String propertyName)
+    {
+        this(null, null, instance, propertyName);
+    }
+
+	public MissingPropertyException(Object rootObject, String propertyPath,
+	    Object instance, String propertyName)
 	{
 		super("Class " + instance.getClass().getName() + " does not implement a " +
 			propertyName + " property.");
 
 		this.instance = instance;
 		this.propertyName = propertyName;
+        this.rootObject = rootObject;
+        this.propertyPath = propertyPath;
 	}
     
 	public Object getInstance()
@@ -62,5 +72,15 @@ public class MissingPropertyException extends RuntimeException
 	{
 		return propertyName;
 	}
+
+    public Object getRootObject()
+    {
+        return rootObject;
+    }
+
+    public String getPropertyPath()
+    {
+        return propertyPath;
+    }
 }
 

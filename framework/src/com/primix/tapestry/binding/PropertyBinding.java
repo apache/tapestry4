@@ -1,5 +1,6 @@
 package com.primix.tapestry.binding;
 
+import com.primix.foundation.*;
 import com.primix.foundation.prop.*;
 import java.util.*;
 import com.primix.tapestry.*;
@@ -43,6 +44,9 @@ import com.primix.tapestry.*;
 
 public class PropertyBinding extends AbstractBinding
 {
+    private static final StringSplitter splitter 
+        = new StringSplitter(PropertyHelper.PATH_SEPERATOR);
+
 	/**
 	*  The root object against which the nested property name is evaluated.
 	*
@@ -69,6 +73,21 @@ public class PropertyBinding extends AbstractBinding
 	*/
 
 	private String propertyPath;
+
+    /**
+     *  Property path split to individual Strings.
+     *
+     */
+
+    private String[] splitPropertyPath;
+    
+    /**
+     *  If true, the propertyPath is a simple propertyName (and
+     *  splitPropertyPath will be null).
+     *
+     */
+
+    private boolean simple = false;
 
 	/**
 	*  Creates a {@link PropertyBinding} from the root object
@@ -134,7 +153,10 @@ public class PropertyBinding extends AbstractBinding
 
 		try
 		{
-			return helper.get(root, propertyPath);
+            if (simple)
+                return helper.get(root, propertyPath);
+            else
+                return helper.getPath(root, splitPropertyPath);
 		}
 		catch (Throwable e)
 		{
@@ -182,7 +204,20 @@ public class PropertyBinding extends AbstractBinding
 
 	private void setupHelper()
 	{
+        String[] split;
+
 		helper = PropertyHelper.forClass(root.getClass());
+
+        // Split the property path into individual property names.
+        // In some cases, the property path is just a property
+        // name, so we don't need the split array.
+
+        split = splitter.splitToArray(propertyPath);
+
+        if (split.length == 1)
+            simple = true;
+        else
+            splitPropertyPath = split;
 	}
 
 	/**
@@ -199,7 +234,10 @@ public class PropertyBinding extends AbstractBinding
 
 		try
 		{
-			helper.set(root, propertyPath, value);
+            if (simple)
+			    helper.set(root, propertyPath, value);
+            else
+                helper.setPath(root, splitPropertyPath, value);
 		}
 		catch (Throwable e)
 		{
