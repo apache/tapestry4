@@ -27,7 +27,6 @@ import org.apache.tapestry.Tapestry;
  *  For example, the widget mapping may be to a graphically rendered button, a soft or function key, a voice-activated command sequence, or any other interface that has a simple "activate" operation with no inter-operation persistent state.
  *  The do element may appear at both the card and deck-level.
  *
- *  @version $Id$
  *  @author David Solis
  *  @since 3.0
  *

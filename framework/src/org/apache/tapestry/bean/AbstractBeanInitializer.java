@@ -23,7 +23,6 @@ import org.apache.tapestry.util.prop.OgnlUtils;
  *  Base class for initializing a property of a JavaBean.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.5
  * 
  **/

@@ -25,7 +25,6 @@ import org.apache.tapestry.util.AdaptorRegistry;
  *  This has particular uses involving HTTP URLs and Cookies.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *
  **/
 

@@ -29,7 +29,6 @@ import org.apache.tapestry.util.prop.OgnlUtils;
  *  to support for {@link org.apache.tapestry.spec.IPropertySpecification}s.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  */
 

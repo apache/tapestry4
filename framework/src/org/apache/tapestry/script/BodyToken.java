@@ -22,7 +22,6 @@ import org.apache.hivemind.Location;
  *  to {@link ScriptSession#setBody(String)}.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 0.2.9
  * 
  **/

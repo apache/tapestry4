@@ -39,7 +39,6 @@ import org.apache.tapestry.Tapestry;
  *  that usually renders the text in a non-proportional font.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  * 
  **/
 

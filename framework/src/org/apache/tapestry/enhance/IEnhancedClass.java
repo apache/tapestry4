@@ -20,7 +20,6 @@ package org.apache.tapestry.enhance;
  *  and is specific to the selected system of enhancement.
  * 
  *  @author Mindbridge
- *  @version $Id$
  *  @since 3.0
  */
 public interface IEnhancedClass

@@ -35,7 +35,6 @@ import org.apache.tapestry.spec.IComponentSpecification;
  *  Default implementation of {@link IComponentClassEnhancer}.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  * 
  **/

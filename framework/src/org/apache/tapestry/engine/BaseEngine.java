@@ -38,7 +38,6 @@ import org.apache.tapestry.record.SessionPageRecorder;
  *  instances of {@link org.apache.tapestry.record.SessionPageRecorder}.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

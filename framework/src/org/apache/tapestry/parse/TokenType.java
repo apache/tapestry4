@@ -22,7 +22,6 @@ import org.apache.commons.lang.enum.Enum;
  * @see TemplateToken
  *
  * @author Howard Lewis Ship
- * @version $Id$
  * 
  **/
 

@@ -24,7 +24,6 @@ import org.apache.tapestry.IRequestCycle;
  *  The user agent must ignore any onevent element specifying a type that does not correspond to a legal intrinsic event
  *  for the immediately enclosing element.
  *
- *  @version $Id$
  *  @author David Solis
  *  @since 3.0
  *

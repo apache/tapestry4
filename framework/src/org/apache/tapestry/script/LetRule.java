@@ -23,7 +23,6 @@ import org.xml.sax.Attributes;
  * from a &lt;let&gt; element, which may contain full content.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 class LetRule extends AbstractTokenRule

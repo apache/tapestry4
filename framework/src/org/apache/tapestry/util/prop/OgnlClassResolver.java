@@ -23,7 +23,6 @@ import ognl.ClassResolver;
  * the same as HiveMind's ClassResolver).
  *
  * @author Howard Lewis Ship
- * @version $Id$
  */
 public class OgnlClassResolver implements ClassResolver
 {

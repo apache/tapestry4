@@ -20,7 +20,6 @@ package org.apache.tapestry.enhance;
  *  of a bug in the Tapestry code.
  *   
  *  @author Mindbridge
- *  @version $Id$
  *  @since 3.0
  */
 public class CodeGenerationException extends RuntimeException

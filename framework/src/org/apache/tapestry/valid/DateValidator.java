@@ -32,7 +32,6 @@ import org.apache.tapestry.form.IFormComponent;
  *  allows a minimum and maximum date to be set.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.8
  *
  **/

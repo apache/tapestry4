@@ -20,7 +20,6 @@ import org.apache.tapestry.IComponent;
  *  An interface defining an entity that is interested in examining a particular component 
  * 
  *  @author mindbridge
- *  @version $Id$
  *  @since 3.0
  */
 public interface IComponentVisitor

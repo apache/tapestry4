@@ -48,7 +48,6 @@ import org.apache.tapestry.util.IPropertyHolder;
  *  @see org.apache.tapestry.engine.IPageLoader
  * 
  * @author glongman@intelligentworks.com
- * @version $Id$
  */
 public interface IComponentSpecification extends IPropertyHolder, LocationHolder, Locatable
 {

@@ -45,7 +45,6 @@ import org.apache.tapestry.util.pool.Pool;
  * <p>Engine instances are persisted in the {@link javax.servlet.http.HttpSession} and are serializable.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  **/
 
 public interface IEngine

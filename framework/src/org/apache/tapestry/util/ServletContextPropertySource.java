@@ -21,7 +21,6 @@ package org.apache.tapestry.util;
  *  <code>web.xml</code> deployment descriptor.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.3
  *
  **/

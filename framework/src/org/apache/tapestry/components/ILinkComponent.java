@@ -25,7 +25,6 @@ import org.apache.tapestry.engine.ILink;
  *  the {@link org.apache.tapestry.html.Rollover} component.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

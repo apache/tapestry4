@@ -22,7 +22,6 @@ import org.apache.tapestry.IForm;
  *  create interactive elements in the rendered page).
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  **/
 
 public interface IFormComponent extends IComponent

@@ -34,7 +34,6 @@ import org.apache.tapestry.request.ResponseOutputStream;
  *  the page, component and an action id in the service context.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.9
  *
  **/

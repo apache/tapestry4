@@ -23,7 +23,6 @@ import org.apache.tapestry.util.ComponentAddress;
  *  Squeezes a org.apache.tapestry.ComponentAddress.
  * 
  *  @author mindbridge
- *  @version $Id$
  *  @since 2.2
  * 
  **/

@@ -23,7 +23,6 @@ import org.apache.hivemind.impl.BaseLocatable;
  *  <p>TBD: Identify arrays in some way.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

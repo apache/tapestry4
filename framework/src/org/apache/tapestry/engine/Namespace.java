@@ -37,7 +37,6 @@ import org.apache.tapestry.spec.ILibrarySpecification;
  *  obtain page and component specifications as needed.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.2
  *
  **/

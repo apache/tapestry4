@@ -29,7 +29,6 @@ import org.apache.tapestry.event.ChangeObserver;
  *  as client-side cookies, in a flat file, or in a database.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

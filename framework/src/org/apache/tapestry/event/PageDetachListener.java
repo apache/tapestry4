@@ -22,7 +22,6 @@ import java.util.EventListener;
  *  to just one request cycle can be released.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.5
  **/
 

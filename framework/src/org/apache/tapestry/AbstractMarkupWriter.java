@@ -54,7 +54,6 @@ import org.apache.tapestry.util.text.ICharacterTranslatorSource;
  * <a href="http://www.gjt.org/servlets/JCVSlet/list/gjt/com/primix/servlet">The Giant 
  * Java Tree</a>.
  *
- * @version $Id$
  * @author Howard Ship, David Solis
  * @since 0.2.9
  *

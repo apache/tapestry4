@@ -26,7 +26,6 @@ import org.apache.tapestry.util.IPropertyHolder;
  * for the component.
 
  * @author glongman@intelligentworks.com
- * @version $Id$
  */
 public interface IContainedComponent extends IPropertyHolder, LocationHolder, Locatable
 {

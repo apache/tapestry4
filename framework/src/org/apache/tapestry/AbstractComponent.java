@@ -47,7 +47,6 @@ import org.apache.tapestry.util.prop.PropertyInfo;
  *  Abstract base class implementing the {@link IComponent} interface.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

@@ -44,7 +44,6 @@ import org.apache.commons.logging.LogFactory;
  * should no longer be necessary.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 

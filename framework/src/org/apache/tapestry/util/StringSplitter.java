@@ -20,7 +20,6 @@ package org.apache.tapestry.util;
  *  {@link java.util.StringTokenizer}.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

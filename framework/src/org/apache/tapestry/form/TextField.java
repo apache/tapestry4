@@ -23,7 +23,6 @@ import org.apache.tapestry.IBinding;
  *  [<a href="../../../../../ComponentReference/TextField.html">Component Reference</a>]
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

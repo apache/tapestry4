@@ -26,7 +26,6 @@ import org.apache.tapestry.spec.IComponentSpecification;
  * Base implementation for most components that use an HTML template.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  * 
  **/
 

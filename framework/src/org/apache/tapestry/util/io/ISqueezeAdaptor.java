@@ -22,7 +22,6 @@ import java.io.IOException;
  *  or convert from a String back into a Java type (unsqueeze).
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

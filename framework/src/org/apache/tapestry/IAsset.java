@@ -30,7 +30,6 @@ import org.apache.hivemind.Resource;
  *  <p>In the latter two cases, the resource may be localized.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *
  **/
 

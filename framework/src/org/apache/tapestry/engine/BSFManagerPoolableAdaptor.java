@@ -23,7 +23,6 @@ import org.apache.tapestry.util.pool.IPoolableAdaptor;
  *  when it is discarded.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

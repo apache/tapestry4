@@ -26,7 +26,6 @@ import org.apache.tapestry.form.IPropertySelectionModel;
  *  a Select and Option or a concrete class of {@link org.apache.tapestry.link.ILinkRenderer} with the
  *  {@link OptionRenderer}.
  *
- *  @version $Id$
  *  @author David Solis
  */
 

@@ -25,7 +25,6 @@ import org.apache.tapestry.spec.ILibrarySpecification;
  *  @see IComponentSpecification
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

@@ -57,7 +57,6 @@ import org.apache.tapestry.util.MultiKey;
  *  must be threadsafe.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

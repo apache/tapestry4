@@ -31,7 +31,6 @@ import org.apache.tapestry.Tapestry;
  *  a URL.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

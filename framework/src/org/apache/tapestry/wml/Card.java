@@ -24,7 +24,6 @@ import org.apache.tapestry.Tapestry;
  *  A deck contains a collection of cards. There is a variety of card types, each specifying a different mode of
  *  user interaction.
  *
- *  @version $Id$
  *  @author David Solis
  *  @since 3.0
  *

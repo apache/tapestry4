@@ -22,7 +22,6 @@ import org.apache.hivemind.Location;
  * (that can be assigned as a property).
  *
  * @author Howard Lewis Ship
- * @version $Id$
  */
 interface ConfigureValueConverter
 {

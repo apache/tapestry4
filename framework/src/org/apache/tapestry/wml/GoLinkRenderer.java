@@ -22,7 +22,6 @@ import org.apache.tapestry.link.ILinkRenderer;
  *  the WML Go element.
  *
  *  @author David Solis
- *  @version $Id$
  *  @since 3.0
  **/
 public class GoLinkRenderer extends DefaultLinkRenderer

@@ -21,7 +21,6 @@ package org.apache.tapestry.enhance;
  *  caches, can be stored here.
  * 
  *  @author Mindbridge
- *  @version $Id$
  *  @since 3.0
  */
 public interface IEnhancedClassFactory

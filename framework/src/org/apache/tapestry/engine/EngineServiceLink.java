@@ -35,7 +35,6 @@ import org.apache.tapestry.request.RequestContext;
  *  constructing {@link org.apache.tapestry.form.Form forms}.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  * 
  **/

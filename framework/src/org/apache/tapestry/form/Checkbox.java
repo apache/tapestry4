@@ -25,7 +25,6 @@ import org.apache.tapestry.IRequestCycle;
  *  [<a href="../../../../../ComponentReference/Checkbox.html">Component Reference</a>]
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

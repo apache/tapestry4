@@ -1,5 +1,4 @@
 <?xml version="1.0"?>
-<!-- $Id$ -->
 <project name="Tapestry Framework" default="install">
 	<property name="root.dir" value=".."/>
 	<property file="${root.dir}/config/Version.properties"/>

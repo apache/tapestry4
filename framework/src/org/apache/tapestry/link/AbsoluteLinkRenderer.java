@@ -24,7 +24,6 @@ import org.apache.tapestry.engine.ILink;
  *  switching between secure and insecure portions of an application).
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  * 
  **/

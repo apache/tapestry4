@@ -28,7 +28,6 @@ import org.apache.hivemind.Locatable;
  *  back through a property to some other object (typically, another component).
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  **/
 
 public interface IBinding extends Locatable

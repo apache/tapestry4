@@ -21,7 +21,6 @@ import org.apache.tapestry.Tapestry;
  *  A conditional portion of the generated script.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.1
  *
  **/

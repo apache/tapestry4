@@ -32,7 +32,6 @@ import org.apache.tapestry.Tapestry;
  *  if the Tapestry framework is loaded by the system class loader.
  * 
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.2
  * 
  **/

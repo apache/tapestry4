@@ -44,7 +44,6 @@ import org.apache.tapestry.request.IUploadFile;
 
  *
  *  @author Joe Panico
- *  @version $Id$
  *  @since 2.0.1
  *
  **/

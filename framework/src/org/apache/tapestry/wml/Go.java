@@ -26,7 +26,6 @@ import org.apache.tapestry.valid.IValidationDelegate;
  *  The go element declares a go task, indicating navigation to a URI. If the URI
  *  names a WML card or deck, it is displayed. 
  *
- *  @version $Id$
  *  @author David Solis
  *  @since 3.0
  *

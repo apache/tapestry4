@@ -30,7 +30,6 @@ import org.apache.tapestry.util.prop.OgnlUtils;
  *  Contains common code and methods for all the Tapestry JSP tag implementations.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

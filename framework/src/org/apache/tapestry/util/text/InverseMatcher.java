@@ -18,7 +18,6 @@ package org.apache.tapestry.util.text;
  * Matches a given character only if the provided object does NOT match it.
  * 
  * @author mb
- * @version $Id$
  * @since 3.1
  */
 public class InverseMatcher implements ICharacterMatcher

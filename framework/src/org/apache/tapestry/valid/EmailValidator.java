@@ -29,7 +29,6 @@ import org.apache.tapestry.form.IFormComponent;
  *
  *
  *  @author Malcolm Edgar
- *  @version $Id$
  *  @since 2.3
  *
  **/

@@ -33,7 +33,6 @@ import org.apache.tapestry.request.ResponseOutputStream;
  *  current page after discarding all data.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.9
  *  @see org.apache.tapestry.IEngine#isResetServiceEnabled()
  * 

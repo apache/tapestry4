@@ -39,7 +39,6 @@ import org.apache.tapestry.IRequestCycle;
  *  by the Block to be passed parameters.  Note - it is the responsibility of the
  *  inserting component to set itself as the Block's inserter.
  *
- *  @version $Id$
  *  @author Howard Lewis Ship
  *  @since 0.2.9
  * 

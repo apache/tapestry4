@@ -33,7 +33,6 @@ import org.apache.tapestry.Tapestry;
  *  is a specialized kind of library.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.2
  *
  **/

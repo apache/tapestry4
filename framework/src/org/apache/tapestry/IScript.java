@@ -24,7 +24,6 @@ import org.apache.hivemind.Resource;
  *  <p>IScript implementation must be threadsafe.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.2
  * 
  **/

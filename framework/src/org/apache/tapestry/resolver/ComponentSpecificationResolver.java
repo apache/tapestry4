@@ -57,7 +57,6 @@ import org.apache.tapestry.spec.IComponentSpecification;
  *
  * 
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

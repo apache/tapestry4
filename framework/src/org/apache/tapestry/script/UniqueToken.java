@@ -24,7 +24,6 @@ import org.apache.tapestry.IRequestCycle;
  * to identify whether a particular block has rendered yet.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 

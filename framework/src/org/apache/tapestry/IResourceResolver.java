@@ -32,7 +32,6 @@ import ognl.ClassResolver;
  *  {@link ognl.ClassResolver}.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  **/
 
 public interface IResourceResolver extends ClassResolver

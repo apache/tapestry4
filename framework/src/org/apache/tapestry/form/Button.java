@@ -28,7 +28,6 @@ import org.apache.tapestry.IRequestCycle;
  *  @author Howard Lewis Ship
  *  @author Paul Geerts
  *  @author Malcolm Edgar
- *  @version $Id$
  **/
 
 public abstract class Button extends AbstractFormComponent

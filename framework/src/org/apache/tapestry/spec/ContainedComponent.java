@@ -25,7 +25,6 @@ import java.util.Map;
  * for the component.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  * 
  **/
 

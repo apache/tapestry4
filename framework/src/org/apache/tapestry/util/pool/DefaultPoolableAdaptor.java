@@ -19,7 +19,6 @@ package org.apache.tapestry.util.pool;
  *  the {@link org.apache.tapestry.util.pool.IPoolable} interface.
  * 
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

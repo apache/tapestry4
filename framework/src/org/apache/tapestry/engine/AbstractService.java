@@ -36,7 +36,6 @@ import org.apache.tapestry.util.io.DataSqueezer;
  * 
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.3
  * 
  **/

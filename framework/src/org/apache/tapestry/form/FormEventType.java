@@ -21,7 +21,6 @@ import org.apache.commons.lang.enum.Enum;
  *  with a {@link Form} via {@link Form#addEventHandler(FormEventType, String)}.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.2
  **/
 

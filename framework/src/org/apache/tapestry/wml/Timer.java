@@ -24,7 +24,6 @@ import org.apache.tapestry.Tapestry;
  *  The Timer element declares a card timer, which exposes a means of processing inactivity or idle time.
  *  The timer is initialised and started at card entry and is stopped when the card is exited.
  *
- *  @version $Id$
  *  @author David Solis
  *  @since 3.0
  */

@@ -21,7 +21,6 @@ import org.apache.commons.lang.enum.Enum;
  *  can provide handlers for.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 0.2.9
  *
  **/

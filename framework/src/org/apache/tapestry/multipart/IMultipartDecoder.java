@@ -26,7 +26,6 @@ import org.apache.tapestry.request.IUploadFile;
  *  
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.3
  **/
 

@@ -22,7 +22,6 @@ import java.util.EventListener;
  *  after a form rewinds.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.5
  * 
  **/

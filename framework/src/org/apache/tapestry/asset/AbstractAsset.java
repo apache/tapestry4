@@ -24,7 +24,6 @@ import org.apache.tapestry.IAsset;
  *  the location property.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

@@ -21,7 +21,6 @@ import org.apache.tapestry.request.RequestContext;
  * that returns the {@link org.apache.tapestry.engine.NullMonitor}.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  */
 public class DefaultMonitorFactory implements IMonitorFactory
 {

@@ -24,7 +24,6 @@ package org.apache.tapestry.spec;
  *  the script is written in.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

@@ -23,7 +23,6 @@ import org.apache.hivemind.Location;
  *  and an {@link IComponent}.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *
  **/
 

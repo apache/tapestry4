@@ -171,7 +171,6 @@ diff -c -r1.1 DefaultMultipartDecoder.java
   
    *
 !  *  @author Howard Lewis Ship
-!  *  @version $Id: DefaultMultipartDecoder.java,v 1.1 2003/03/05 22:59:49 hlship Exp $
    *  @since 2.0.1
    *
    **/
@@ -569,7 +568,6 @@ diff -c -r1.1 DefaultMultipartDecoder.java
   
    *
 !  *  @author Joe Panico
-!  *  @version $Id: DefaultMultipartDecoder.java,v 1.1 2003/01/16 00:53:56 hlship Exp $
    *  @since 2.0.1
    *
    **/
@@ -832,7 +830,6 @@ diff -c -r1.1 UploadPart.java
    *  Portion of a multi-part request representing an uploaded file.
    *
 !  *  @author Howard Lewis Ship
-!  *  @version $Id: UploadPart.java,v 1.1 2003/03/05 22:59:49 hlship Exp $
    *  @since 2.0.1
    *
    **/
@@ -1026,7 +1023,6 @@ diff -c -r1.1 UploadPart.java
    *  Portion of a multi-part request representing an uploaded file.
    *
 !  *  @author Joe Panico
-!  *  @version $Id: UploadPart.java,v 1.10 2003/01/13 03:33:23 hlship Exp $
    *  @since 2.0.1
    *
    **/

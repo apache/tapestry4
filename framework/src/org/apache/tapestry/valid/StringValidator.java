@@ -28,7 +28,6 @@ import org.apache.tapestry.form.IFormComponent;
  *
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.8
  *
  **/

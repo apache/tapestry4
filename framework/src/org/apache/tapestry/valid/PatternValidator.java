@@ -40,7 +40,6 @@ import org.apache.tapestry.util.RegexpMatcher;
  * script via {@link #setScriptPath(String)}.
  * 
  * @author  Harish Krishnaswamy
- * @version $Id$
  * @since   3.0
  */
 public class PatternValidator extends BaseValidator

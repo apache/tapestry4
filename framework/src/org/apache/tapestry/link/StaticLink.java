@@ -21,7 +21,6 @@ import org.apache.tapestry.engine.ILink;
  *  an external, static URL.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  * 
  **/

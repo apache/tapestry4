@@ -27,7 +27,6 @@ import org.apache.tapestry.IRequestCycle;
  *  page (and all of its nested components).
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

@@ -21,7 +21,6 @@ import org.apache.tapestry.IMarkupWriter;
  *  (i.e., by the Inspector).
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.6
  * 
  **/

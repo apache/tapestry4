@@ -36,7 +36,6 @@ import org.apache.tapestry.engine.IScriptSource;
  *  [<a href="../../../../../ComponentReference/Script.html">Component Reference</a>]
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *
  **/
 

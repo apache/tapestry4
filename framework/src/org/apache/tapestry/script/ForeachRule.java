@@ -25,7 +25,6 @@ import org.xml.sax.Attributes;
  * track of the current index of the iterating collection.</p>
  *
  * @author Howard Lewis Ship, Harish Krishnaswamy
- * @version $Id$
  * @since 3.0
  */
 class ForeachRule extends AbstractTokenRule

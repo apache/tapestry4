@@ -30,7 +30,6 @@ import org.apache.tapestry.Tapestry;
  *  [<a href="../../../../../ComponentReference/RadioGroup.html">Component Reference</a>]
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

@@ -22,7 +22,6 @@ import org.apache.tapestry.IRequestCycle;
  *  Connects a parameter to a property of type double.
  * 
  *  @author Howard Lewis Ship 
- *  @version $Id$
  *  @since 2.0.3
  * 
  **/

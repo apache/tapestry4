@@ -26,7 +26,6 @@ import org.apache.tapestry.request.RequestContext;
  * is used instead.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 public interface IMonitorFactory

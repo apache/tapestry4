@@ -19,7 +19,6 @@ package org.apache.tapestry.record;
  *  a datum of information stored by a {@link org.apache.tapestry.engine.IPageRecorder}.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  **/
 
 public interface IPageChange

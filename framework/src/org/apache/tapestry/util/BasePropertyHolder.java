@@ -24,7 +24,6 @@ import java.util.Map;
  *  Base class implementation for the {@link IPropertyHolder} interface.
  *
  *
- *  @version $Id$
  *  @author Howard Lewis Ship
  *
  **/

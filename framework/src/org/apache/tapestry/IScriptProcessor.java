@@ -21,7 +21,6 @@ import org.apache.hivemind.Resource;
  * execute.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  * @see org.apache.tapestry.html.Body
  */

@@ -38,7 +38,6 @@ import org.apache.tapestry.Tapestry;
  *  to provide these methods as named properties of the ListenerMap.
  *
  *  @author Howard Ship
- *  @version $Id$
  *  @since 1.0.2
  * 
  **/

@@ -27,7 +27,6 @@ package org.apache.tapestry;
  *
  *  @author Howard Lewis Ship
  *  @author Malcolm Edgar
- *  @version $Id$
  *  @since 2.2
  **/
 

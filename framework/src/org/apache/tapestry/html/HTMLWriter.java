@@ -32,7 +32,6 @@ import org.apache.tapestry.util.text.ICharacterTranslatorSource;
  *  Similar measures are taken by the {@link #attribute(String, String)} method.
  *  Other invalid characters are converted to their numeric entity equivalent.
  *
- *  @version $Id$
  *  @author Howard Lewis Ship
  **/
 

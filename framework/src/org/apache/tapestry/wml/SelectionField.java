@@ -20,7 +20,6 @@ import org.apache.tapestry.form.IPropertySelectionModel;
 /**
  *  SelectionField specifies a postfield element and it is used to complement the {@link PropertySelection} component.
  *
- *  @version $Id$
  *  @author David Solis
  *  @since 3.0
  *

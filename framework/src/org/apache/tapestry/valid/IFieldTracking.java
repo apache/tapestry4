@@ -30,7 +30,6 @@ import org.apache.tapestry.form.IFormComponent;
  *  a {@link org.apache.tapestry.valid.RenderString} wrapper around a simple string).
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.8
  *
  **/

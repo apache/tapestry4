@@ -34,7 +34,6 @@ import java.util.List;
  *  from it.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

@@ -22,7 +22,6 @@ package org.apache.tapestry.spec;
  *  name and engineClassName.
  *
  *  @author Geoffrey Longman
- *  @version $Id$
  *
  **/
 

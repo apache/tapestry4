@@ -24,7 +24,6 @@ import org.apache.tapestry.IRequestCycle;
  *  interfaces.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.5
  * 
  **/

@@ -27,7 +27,6 @@ import org.apache.tapestry.engine.ILink;
  * 
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.0.2
  * 
  **/

@@ -21,7 +21,6 @@ import org.apache.tapestry.IRequestCycle;
  *  Defines an object that works with a {@link PropertySelection} component
  *  to render the individual elements obtained from the {@link IPropertySelectionModel model}.
  *
- *  @version $Id$
  *  @author Howard Lewis Ship
  *
  **/

@@ -27,7 +27,6 @@ import org.apache.tapestry.util.IPropertyHolder;
  *  lifecycle as the application).
  * 
  * @author glongman@intelligentworks.com
- * @version $Id$
  */
 public interface IExtensionSpecification extends IPropertyHolder, LocationHolder, Locatable
 {

@@ -34,7 +34,6 @@ import org.apache.tapestry.spec.ILibrarySpecification;
  *  @see org.apache.tapestry.resolver.ComponentSpecificationResolver
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.2
  *
  **/

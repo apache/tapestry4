@@ -35,7 +35,6 @@ import org.apache.tapestry.util.io.DataSqueezer;
  *  [<a href="../../../../../ComponentReference/ListEdit.html">Component Reference</a>]
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.2
  * 
  **/

@@ -20,7 +20,6 @@ package org.apache.tapestry.util.pool;
  *  type behavior to arbitrary objects.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

@@ -30,7 +30,6 @@ import org.apache.tapestry.request.ResponseOutputStream;
  *  Basic server for creating a link to another page in the application.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.9
  *
  **/

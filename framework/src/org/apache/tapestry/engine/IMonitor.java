@@ -20,7 +20,6 @@ package org.apache.tapestry.engine;
  *  decides what to do with them (such as record them to a database).
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

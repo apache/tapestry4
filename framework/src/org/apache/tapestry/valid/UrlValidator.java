@@ -31,7 +31,6 @@ import org.apache.tapestry.util.StringSplitter;
 
 /**
  *
- *  @version $Id$
  *  @since 3.0
  *
  **/

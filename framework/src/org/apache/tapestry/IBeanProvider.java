@@ -25,7 +25,6 @@ import org.apache.hivemind.ClassResolver;
  *  aggregation.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.4
  **/
 

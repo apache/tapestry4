@@ -21,7 +21,6 @@ import org.apache.tapestry.engine.IPropertySource;
  *  for instances that implement {@link org.apache.tapestry.util.IPropertyHolder}.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.3
  *
  **/

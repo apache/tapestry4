@@ -82,7 +82,6 @@ import org.apache.tapestry.Tapestry;
  *  @see org.apache.tapestry.IExternalPage
  *  @see org.apache.tapestry.engine.ExternalService
  *
- *  @version $Id$
  *  @author Malcolm Edgar
  *  @since 2.3
  *

@@ -22,7 +22,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  *  name and engineClassName.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *
  **/
 

@@ -29,7 +29,6 @@ import org.apache.tapestry.Tapestry;
  *
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

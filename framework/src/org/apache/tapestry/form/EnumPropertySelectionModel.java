@@ -31,7 +31,6 @@ import org.apache.commons.lang.enum.Enum;
  *  resources won't be visible.  This requires that the application resolve
  *  the resource to a {@link ResourceBundle} before creating this model.
  *  
- *  @version $Id$
  *  @author Howard Lewis Ship
  * 
  **/

@@ -30,7 +30,6 @@ import org.apache.tapestry.Tapestry;
  *  and analyze properties for those beans.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.2
  *
  **/

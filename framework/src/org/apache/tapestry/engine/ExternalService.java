@@ -104,7 +104,6 @@ import org.apache.tapestry.request.ResponseOutputStream;
  * @author Howard Lewis Ship
  * @author Malcolm Edgar
  * @since 2.2
- * @version $Id$
  */
 
 public class ExternalService extends AbstractService

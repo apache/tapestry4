@@ -25,7 +25,6 @@ import org.apache.tapestry.IRequestCycle;
  * @see IComponent#finishLoad(IRequestCycle, IPageLoader, org.apache.tapestry.spec.IComponentSpecification)
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * 
  **/
 

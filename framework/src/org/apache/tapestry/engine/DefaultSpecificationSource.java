@@ -49,7 +49,6 @@ import org.apache.tapestry.util.xml.DocumentParseException;
  * so it must be threadsafe.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  * 
  **/
 

@@ -30,7 +30,6 @@ import org.apache.tapestry.enhance.CodeGenerationException;
 
 /**
  *  @author Mindbridge
- *  @version $Id$
  *  @since 3.0
  */
 public class ClassFabricator

@@ -23,7 +23,6 @@ import org.apache.tapestry.bean.IBeanInitializer;
  *  A specification of a helper bean for a component.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.4
  * 
  **/

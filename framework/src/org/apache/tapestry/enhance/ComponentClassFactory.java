@@ -41,7 +41,6 @@ import org.apache.tapestry.spec.IPropertySpecification;
  *  Internally, this class makes use of {@link IEnhancedClassFactory}.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

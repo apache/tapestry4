@@ -23,7 +23,6 @@ import org.apache.tapestry.Tapestry;
 /**
  *  The setvar element specifies the variable to set in the current browser context as a side effect of executing a task.
  *
- *  @version $Id$
  *  @author David Solis
  *  @since 3.0
  *

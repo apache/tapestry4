@@ -18,7 +18,6 @@ package org.apache.tapestry.util.io;
  *  Squeezes a String (which is pretty simple, most of the time).
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *
  **/
 

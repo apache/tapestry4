@@ -27,7 +27,6 @@ import org.apache.tapestry.util.IPropertyHolder;
  *  is a specialized kind of library.
  *
  *  @author Geoffrey Longman
- *  @version $Id$
  *  @since 2.2
  *
  **/

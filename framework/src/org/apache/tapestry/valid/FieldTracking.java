@@ -21,7 +21,6 @@ import org.apache.tapestry.form.IFormComponent;
  *  Default implementation of {@link IFieldTracking}.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.8
  *
  **/

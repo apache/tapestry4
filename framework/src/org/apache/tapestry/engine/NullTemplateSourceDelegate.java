@@ -24,7 +24,6 @@ import org.apache.tapestry.parse.ComponentTemplate;
  *  Null implementation of {@link org.apache.tapestry.engine.ITemplateSourceDelegate}. 
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

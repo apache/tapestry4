@@ -22,7 +22,6 @@ import org.apache.tapestry.IRequestCycle;
  *  Implements {@link IParameterConnector} for object parameters.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.0.3
  *
  **/

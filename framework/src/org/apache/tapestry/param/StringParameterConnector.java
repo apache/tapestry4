@@ -22,7 +22,6 @@ import org.apache.tapestry.IRequestCycle;
  *  Creates a connection between a parameter and a property of type {@link String}.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.0.3
  *
  **/

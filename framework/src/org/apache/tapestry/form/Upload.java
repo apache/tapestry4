@@ -26,7 +26,6 @@ import org.apache.tapestry.request.IUploadFile;
  *  [<a href="../../../../../ComponentReference/Upload.html">Component Reference</a>]
  * 
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.8
  * 
  **/

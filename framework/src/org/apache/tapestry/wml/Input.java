@@ -23,7 +23,6 @@ import org.apache.tapestry.Tapestry;
 /**
  *  The Input element specifies a text entry object.
  *
- *  @version $Id$
  *  @author David Solis
  *  @since 3.0
  *

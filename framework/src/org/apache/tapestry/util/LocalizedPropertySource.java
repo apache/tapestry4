@@ -25,7 +25,6 @@ import org.apache.tapestry.engine.IPropertySource;
  *  Useful when peoperties related to localization are needed.
  * 
  *  @author mindbridge
- *  @version $Id$
  *  @since 3.0
  */
 public class LocalizedPropertySource extends DelegatingPropertySource

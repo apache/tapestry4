@@ -19,7 +19,6 @@ package org.apache.tapestry.util.pool;
  *  This gives the object a last chance to reset any state.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.4
  * 
  **/

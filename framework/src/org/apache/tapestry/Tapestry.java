@@ -48,7 +48,6 @@ import org.apache.tapestry.util.StringSplitter;
  *  as a global location for static constants.
  *
  *  @since 1.0.1
- *  @version $Id$
  *  @author Howard Lewis Ship
  *
  **/

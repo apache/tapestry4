@@ -27,7 +27,6 @@ import org.apache.tapestry.components.ILinkComponent;
  *  A link rendered may be used in many threads, and must be threadsafe.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  * 
  **/

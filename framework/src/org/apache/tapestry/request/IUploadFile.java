@@ -21,7 +21,6 @@ import java.io.InputStream;
  *  Represents a file uploaded from a client side form.
  * 
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.8
  *
  **/

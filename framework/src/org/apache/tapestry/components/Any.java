@@ -26,7 +26,6 @@ import org.apache.tapestry.Tapestry;
  *  [<a href="../../../../../ComponentReference/Any.html">Component Reference</a>]
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

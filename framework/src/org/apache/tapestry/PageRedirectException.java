@@ -22,7 +22,6 @@ import org.apache.hivemind.ApplicationRuntimeException;
  *  to protect a sensitive page until the user is authenticated.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  **/
 
 public class PageRedirectException extends ApplicationRuntimeException

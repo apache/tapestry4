@@ -60,7 +60,6 @@ import org.xml.sax.helpers.DefaultHandler;
  *  Based on SAX2.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 

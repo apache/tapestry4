@@ -19,7 +19,6 @@ package org.apache.tapestry.util.text;
  * of the provided objects matches it.
  * 
  * @author mb
- * @version $Id$
  * @since 3.1
  */
 public class CompoundMatcher implements ICharacterMatcher

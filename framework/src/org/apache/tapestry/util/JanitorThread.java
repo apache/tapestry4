@@ -29,7 +29,6 @@ import org.apache.tapestry.Tapestry;
  *  the objects it operates on.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.5
  *
  **/

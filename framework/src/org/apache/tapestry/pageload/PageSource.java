@@ -42,7 +42,6 @@ import org.apache.tapestry.util.pool.Pool;
  *  for reporting pool statistics would be useful.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

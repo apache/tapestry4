@@ -22,7 +22,6 @@ import org.apache.tapestry.Tapestry;
  *  Inserts just the URL for a page service request into the output.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

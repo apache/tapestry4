@@ -33,7 +33,6 @@ import org.apache.tapestry.util.AdaptorRegistry;
  *  for anything tricky and application specific, such as parsing currency.  
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.8
  *
  **/

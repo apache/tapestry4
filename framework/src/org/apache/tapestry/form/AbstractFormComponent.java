@@ -26,7 +26,6 @@ import org.apache.tapestry.valid.IValidationDelegate;
  *  All such components must be wrapped (directly or indirectly) by
  *  a {@link Form} component.
  *
- *  @version $Id$
  *  @author Howard Lewis Ship
  *  @since 1.0.3
  * 

@@ -30,7 +30,6 @@ import java.util.Map;
  * In short, non-latin characters no longer need to be quoted using native2ascii.
  * 
  * @author mb
- * @version $Id$
  * @since 3.1
  */
 public class LocalizedPropertiesLoader

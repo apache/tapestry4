@@ -21,7 +21,6 @@ import java.io.Serializable;
  *  an {@link ExceptionDescription}.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

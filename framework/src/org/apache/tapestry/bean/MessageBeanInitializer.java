@@ -22,7 +22,6 @@ import org.apache.tapestry.IComponent;
  *  component.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.2
  * 
  **/

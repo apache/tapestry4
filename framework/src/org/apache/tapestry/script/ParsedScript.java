@@ -26,7 +26,6 @@ import org.apache.tapestry.IScriptProcessor;
  *  A top level container for a number of {@link IScriptToken script tokens}.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 0.2.9
  * 
  **/

@@ -19,7 +19,6 @@ package org.apache.tapestry;
  *  service.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  **/
 
 public interface IDirect extends IComponent

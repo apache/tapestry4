@@ -18,7 +18,6 @@ package org.apache.tapestry.util.text;
  * An object for matching a set of provided ASCII characters.
  * 
  * @author mb
- * @version $Id$
  * @since 3.1
  */
 public class AsciiCharacterMatcher implements ICharacterMatcher 

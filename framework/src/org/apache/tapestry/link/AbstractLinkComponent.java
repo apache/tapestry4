@@ -41,7 +41,6 @@ import org.apache.tapestry.html.Body;
  *  used when no specific renderer is provided.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *
  **/
 

@@ -21,7 +21,6 @@ import org.apache.tapestry.IMarkupWriter;
  *  Defines a number of ways to format multi-line text for proper
  *  renderring.
  *
- *  @version $Id$
  *  @author Howard Lewis Ship
  *
  **/

@@ -22,7 +22,6 @@ import org.apache.tapestry.IComponent;
  *  {@link org.apache.tapestry.IMessages}.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.0.4
  *
  **/

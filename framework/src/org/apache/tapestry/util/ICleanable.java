@@ -27,7 +27,6 @@ package org.apache.tapestry.util;
  *  wishes to be periodically told to "clean up".
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.5
  *
  **/

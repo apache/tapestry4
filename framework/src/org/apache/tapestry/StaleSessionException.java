@@ -26,7 +26,6 @@ import org.apache.hivemind.ApplicationRuntimeException;
  *
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *
  **/
 

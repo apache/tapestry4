@@ -20,7 +20,6 @@ import org.apache.tapestry.Tapestry;
  *  Creates a link from a JSP page to a Tapestry application page.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

@@ -28,7 +28,6 @@ import org.apache.tapestry.Tapestry;
  *  In order to have a dynamic onpick attribute it is better to use a concrete class of
  *  {@link org.apache.tapestry.link.ILinkRenderer} with the {@link OptionRenderer}.
  *
- *  @version $Id$
  *  @author David Solis
  *  @since 3.0
  *

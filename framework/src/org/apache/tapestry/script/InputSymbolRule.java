@@ -26,7 +26,6 @@ import org.xml.sax.Attributes;
  * from an &lt;input-symbol&gt; element.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 class InputSymbolRule extends BaseRule

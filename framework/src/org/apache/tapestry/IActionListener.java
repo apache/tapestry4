@@ -22,7 +22,6 @@ package org.apache.tapestry;
  *  also make use of this interface.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *
  **/
 

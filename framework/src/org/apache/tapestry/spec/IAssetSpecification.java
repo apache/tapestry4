@@ -22,7 +22,6 @@ import org.apache.tapestry.util.IPropertyHolder;
  *  Defines an internal, external or private asset.
  * 
  * @author glongman@intelligentworks.com
- * @version $Id$
  */
 public interface IAssetSpecification extends IPropertyHolder, LocationHolder, Locatable
 {

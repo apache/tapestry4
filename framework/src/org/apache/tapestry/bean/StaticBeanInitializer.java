@@ -20,7 +20,6 @@ import org.apache.tapestry.IBeanProvider;
  *  Initializes a bean with a static value.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.5
  * 
  **/

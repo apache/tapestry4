@@ -34,7 +34,6 @@ import org.apache.tapestry.request.ResponseOutputStream;
  *  the service context, and passes application-defined parameters as well.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.9
  *
  **/

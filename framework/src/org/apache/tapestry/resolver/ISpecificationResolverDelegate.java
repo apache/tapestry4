@@ -27,7 +27,6 @@ import org.apache.tapestry.spec.IComponentSpecification;
  *  <p>The delegate must be coded in a threadsafe manner.
  * 
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *
  **/

@@ -34,7 +34,6 @@ import org.apache.tapestry.engine.ILink;
  *  {@link ContextAsset}.
  *
  *  @author Howard Ship
- *  @version $Id$
  * 
  **/
 

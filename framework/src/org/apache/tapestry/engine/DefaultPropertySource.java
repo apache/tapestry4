@@ -47,7 +47,6 @@ import org.apache.tapestry.util.SystemPropertiesPropertySource;
  *  in some way).  
  *  
  *  @author mb
- *  @version $Id$
  *  @since 3.1
  */
 public class DefaultPropertySource implements IPropertySource

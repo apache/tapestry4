@@ -21,7 +21,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
  *  Represents a change to a component on a page.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

@@ -28,7 +28,6 @@ import org.apache.tapestry.parse.ComponentTemplate;
  *  The delegate must be threadsafe.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 3.0
  *  @see org.apache.tapestry.engine.DefaultTemplateSource
  * 

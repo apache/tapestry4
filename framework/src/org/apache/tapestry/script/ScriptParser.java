@@ -50,7 +50,6 @@ import org.apache.tapestry.util.xml.RuleDirectedParser;
  *  (i.e., from the HTML &lt;body&gt; element's onLoad event handler).
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 

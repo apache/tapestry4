@@ -23,7 +23,6 @@ import org.apache.tapestry.Tapestry;
  * Event which describes a change to a particular {@link IComponent}.
  *
  * @author Howard Ship
- * @version $Id$
  * 
  **/
 

@@ -35,7 +35,6 @@ import org.apache.tapestry.enhance.IEnhancer;
  *  parameter.
  *
  *  @author Mindbridge
- *  @version $Id$
  *  @since 3.0
  *
  **/

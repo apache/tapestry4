@@ -18,7 +18,6 @@ package org.apache.tapestry.util.text;
  * A factory for creating character translators depending on the encoding
  * 
  * @author mb
- * @version $Id$
  * @since 3.1
  */
 public interface ICharacterTranslatorSource 
