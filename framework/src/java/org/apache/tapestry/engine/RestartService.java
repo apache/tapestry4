@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -56,8 +55,8 @@ public class RestartService implements IEngineService
 
     /** @since 3.1 */
     private LinkFactory _linkFactory;
-    
-    /** @since 3.1 */    
+
+    /** @since 3.1 */
     private String _servletPath;
 
     public ILink getLink(IRequestCycle cycle, Object parameter)
@@ -72,8 +71,7 @@ public class RestartService implements IEngineService
         return _linkFactory.constructLink(cycle, parameters, true);
     }
 
-    public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
-            IOException
+    public void service(IRequestCycle cycle, ResponseOutputStream output) throws IOException
     {
         HttpSession session = _request.getSession();
 
@@ -130,7 +128,7 @@ public class RestartService implements IEngineService
     {
         _linkFactory = linkFactory;
     }
-    
+
     /** @since 3.1 */
     public void setServletPath(String servletPath)
     {

@@ -22,9 +22,9 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.request.ResponseOutputStream;
 
 /**
- * Responsible for rendering the active page as the response.  Works with
- * the {@link org.apache.tapestry.services.RequestLocaleManager}
- * to persist any change to the selected locale.
+ * Responsible for rendering the active page as the response. Works with the
+ * {@link org.apache.tapestry.services.RequestLocaleManager}to persist any change to the selected
+ * locale.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
@@ -35,7 +35,6 @@ public interface ResponseRenderer
      * Renders the reponse, using the current active page defined by the request cycle.
      */
 
-    public void renderResponse(IRequestCycle cycle, ResponseOutputStream output)
-            throws ServletException, IOException;
+    public void renderResponse(IRequestCycle cycle, ResponseOutputStream output);
 
 }

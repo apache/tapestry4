@@ -15,6 +15,7 @@
 package org.apache.tapestry.web;
 
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.tapestry.describe.Describable;
 
@@ -132,4 +133,10 @@ public interface WebRequest extends AttributeHolder, Describable
      *          requests).
      */
     public String getActivationPath();
+
+    /**
+     * Returns the preferred locale to which content should be localized, as specified by the client
+     * or by the container. May return null.
+     */
+    public Locale getLocale();
 }

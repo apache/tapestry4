@@ -100,8 +100,7 @@ public class TestPortletServicerBridges extends HiveMindTestCase
         prg.store(request, response);
 
         request.removeAttribute("FOO");
-        response.encodeURL("FOO");
-        responsec.setReturnValue(null);
+        response.setContentType("foo/bar");
 
         replayControls();
 
@@ -115,7 +114,10 @@ public class TestPortletServicerBridges extends HiveMindTestCase
         // encapsulate the RenderRequest and RenderResponse
 
         wrs._request.setAttribute("FOO", null);
-        wrs._response.encodeURL("FOO");
+
+        // Prove that the *correct* wrapper type, RenderWebResponse, has been used.
+
+        wrs._response.setContentType("foo/bar");
 
         verifyControls();
     }
@@ -174,7 +176,7 @@ public class TestPortletServicerBridges extends HiveMindTestCase
         Throwable t = new RuntimeException("Failure.");
 
         prg.store(request, response);
-        servicer.service(new PortletWebRequest(request), new PortletWebResponse(response));
+        servicer.service(new PortletWebRequest(request), new RenderWebResponse(response));
         control.setMatcher(new AggregateArgumentsMatcher(new ArgumentMatcher[]
         { new TypeMatcher(), new TypeMatcher() }));
         control.setThrowable(t);

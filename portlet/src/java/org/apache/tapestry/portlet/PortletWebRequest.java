@@ -15,6 +15,7 @@
 package org.apache.tapestry.portlet;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletSession;
@@ -138,5 +139,10 @@ public class PortletWebRequest implements WebRequest
     public void describeTo(DescriptionReceiver receiver)
     {
         receiver.describeAlternate(_portletRequest);
+    }
+
+    public Locale getLocale()
+    {
+        return _portletRequest.getLocale();
     }
 }

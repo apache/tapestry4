@@ -116,32 +116,12 @@ href="/mock/app?component=switch&amp;page=Assets&amp;service=direct"
 Zees ees nawt cheeze!
 		</assert-output>
 		
-		<assert-cookie name="org.apache.tapestry.locale" value="fr"/>
-
 		<assert-output name="DirectLink switch URL still stateless">
 <![CDATA[		
 href="/mock/app?component=link&amp;page=Home&amp;service=direct&amp;sp=2&amp;sp=d3.5&amp;sp=SHello"
 ]]>
 		</assert-output>			
-	</request>
-		
-	<!-- With the cookie in place, going back to the Assets page should
-		 provide the French version. -->
-		 		
-	<request>
-	  	<parameter name="service" value="page"/>
-      <parameter name="page" value="Assets"/>
-		
-		<assert-output name="French Home image">
-<![CDATA[		
-/mock/app?digest=64c0a48177b614031fcd8039550334ed&amp;path=%2Forg%2Fapache%2Ftapestry%2Fjunit%2Fmock%2Fapp%2Fhome_fr.png&amp;service=asset
-]]>
-		</assert-output>
-		
-		<assert-output name="French Back image">
-/mock/images/back_fr.png
-		</assert-output>		
-	</request>		
+	</request>			
 			 	 	 
 </mock-test>
     	

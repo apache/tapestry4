@@ -77,6 +77,9 @@ public interface ApplicationGlobals
 
     /**
      * Stores the {@link org.apache.tapestry.services.ResponseRenderer}.
+     * <p>
+     * TODO: Perhaps we should just override the default implementation from within the portlet
+     * hivemodule.xml.
      */
 
     public void storeResponseRenderer(ResponseRenderer renderer);

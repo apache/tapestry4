@@ -241,7 +241,6 @@ public abstract class AbstractEngine implements IEngine
      */
 
     public void renderResponse(IRequestCycle cycle, ResponseOutputStream output)
-            throws ServletException, IOException
     {
         _infrastructure.getResponseRenderer().renderResponse(cycle, output);
     }
@@ -262,6 +261,8 @@ public abstract class AbstractEngine implements IEngine
 
         try
         {
+            // TODO: this would work better if it was obtained from the WebResponse object.
+            
             output = new ResponseOutputStream(response);
         }
         catch (Exception ex)
@@ -342,8 +343,7 @@ public abstract class AbstractEngine implements IEngine
                 cycle.cleanup();
                 _infrastructure.getApplicationStateManager().flush();
 
-                // Closing the buffered output closes the underlying stream as
-                // well.
+                // Ensure any buffered output is posted.
 
                 if (output != null)
                     output.forceFlush();

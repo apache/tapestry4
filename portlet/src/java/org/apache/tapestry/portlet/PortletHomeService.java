@@ -17,42 +17,44 @@ package org.apache.tapestry.portlet;
 import java.io.IOException;
 
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.engine.IEngineService;
-import org.apache.tapestry.engine.ILink;
+import org.apache.tapestry.engine.HomeService;
 import org.apache.tapestry.request.ResponseOutputStream;
-import org.apache.tapestry.services.ServiceConstants;
 
 /**
- * Responsible for rendering out a page; a Portlet render URL is built during action processing that
- * stores the active page; this is the page that will be rendered.
+ * Replacement for the standard home service, used by Portlets. This exists to handle the special
+ * case where a Portlet render request arrives when there is not a Portlet action request prior ...
+ * this can happen when a Portlet is first added to a Portal page.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
- * @see org.apache.tapestry.services.impl.ResponseRendererImpl
  */
-public class RenderService implements IEngineService
+public class PortletHomeService extends HomeService
 {
     private PortletRenderer _portletRenderer;
 
-    public ILink getLink(IRequestCycle cycle, Object parameter)
-    {
-        throw new UnsupportedOperationException(PortletMessages.unsupportedMethod("getLink"));
-    }
+    private PortletRequestGlobals _requestGlobals;
 
     public void service(IRequestCycle cycle, ResponseOutputStream output) throws IOException
     {
-        String pageName = cycle.getParameter(ServiceConstants.PAGE);
+        if (_requestGlobals.isRenderRequest())
+        {
+            String pageName = getPageName();
 
-        _portletRenderer.renderPage(cycle, pageName, output);
-    }
+            _portletRenderer.renderPage(cycle, pageName, output);
 
-    public String getName()
-    {
-        return PortletConstants.RENDER_SERVICE;
+            return;
+        }
+
+        super.service(cycle, output);
     }
 
     public void setPortletRenderer(PortletRenderer portletRenderer)
     {
         _portletRenderer = portletRenderer;
+    }
+
+    public void setRequestGlobals(PortletRequestGlobals requestGlobals)
+    {
+        _requestGlobals = requestGlobals;
     }
 }

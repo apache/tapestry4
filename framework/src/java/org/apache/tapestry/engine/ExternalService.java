@@ -18,8 +18,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletException;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IExternalPage;
@@ -136,8 +134,7 @@ public class ExternalService implements IEngineService
         return _linkFactory.constructLink(cycle, parameters, true);
     }
 
-    public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
-            IOException
+    public void service(IRequestCycle cycle, ResponseOutputStream output) throws IOException
     {
         String pageName = cycle.getParameter(ServiceConstants.PAGE);
         IPage rawPage = cycle.getPage(pageName);

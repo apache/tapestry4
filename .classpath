@@ -8,29 +8,29 @@
 	<classpathentry kind="src" path="contrib/src/test"/>
 	<classpathentry kind="src" path="examples/Workbench/src/java"/>
 	<classpathentry kind="lib" path="config"/>
-	<classpathentry kind="lib" path="framework/src/descriptor"/>
-	<classpathentry kind="lib" path="contrib/src/descriptor"/>
+	<classpathentry exported="true" kind="lib" path="framework/src/descriptor"/>
+	<classpathentry exported="true" kind="lib" path="portlet/src/descriptor"/>
+	<classpathentry exported="true" kind="lib" path="contrib/src/descriptor"/>
 	<classpathentry sourcepath="JRE_SRC" kind="var" path="JRE_LIB"/>
 	<classpathentry kind="var" path="JYTHON_DIR/jython.jar"/>
-	<classpathentry kind="lib" path="ext-package/lib/bsf-2.3.0.jar"/>
-	<classpathentry kind="lib" path="ext-package/lib/commons-codec-1.3.jar"/>
-	<classpathentry kind="lib" path="ext-package/lib/commons-fileupload-1.0.jar"/>
-	<classpathentry kind="lib" path="ext-package/lib/commons-lang-2.0.jar"/>
-	<classpathentry kind="lib" path="ext-package/lib/commons-logging-1.0.4.jar"/>
+	<classpathentry exported="true" kind="lib" path="ext-package/lib/bsf-2.3.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="ext-package/lib/commons-codec-1.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="ext-package/lib/commons-fileupload-1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="ext-package/lib/commons-lang-2.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="ext-package/lib/commons-logging-1.0.4.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/easymock-1.1.jar"/>
-	<classpathentry kind="lib" path="ext-package/lib/javassist-3.0-rc-1.jar"/>
+	<classpathentry exported="true" kind="lib" path="ext-package/lib/javassist-3.0-rc-1.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/jdom-1.0.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/junit-3.8.1.jar"/>
-	<classpathentry kind="lib" path="ext-package/lib/log4j-1.2.8.jar"/>
-	<classpathentry kind="lib" path="ext-package/lib/ognl-2.6.7.jar"/>
-	<classpathentry kind="lib" path="ext-package/lib/oro-2.0.8.jar"/>
-	<classpathentry kind="lib" path="ext-package/lib/servletapi-2.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="ext-package/lib/log4j-1.2.8.jar"/>
+	<classpathentry exported="true" kind="lib" path="ext-package/lib/ognl-2.6.7.jar"/>
+	<classpathentry exported="true" kind="lib" path="ext-package/lib/oro-2.0.8.jar"/>
+	<classpathentry exported="true" kind="lib" path="ext-package/lib/servletapi-2.3.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/cglib-full-2.0.2.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/easymockclassextension-1.1.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/jboss-j2ee-3.2.1.jar"/>
-	<classpathentry kind="lib" path="ext-package/lib/hivemind-1.1-alpha-3-snapshot.jar"/>
-	<classpathentry kind="lib" path="ext-package/lib/hivemind-lib-1.1-alpha-3-snapshot.jar"/>
-	<classpathentry kind="lib" path="portlet/src/descriptor"/>
+	<classpathentry exported="true" kind="lib" path="ext-package/lib/hivemind-1.1-alpha-3-snapshot.jar"/>
+	<classpathentry exported="true" kind="lib" path="ext-package/lib/hivemind-lib-1.1-alpha-3-snapshot.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/portlet-api-1.0.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/jcharts-0.6.0.jar"/>
 	<classpathentry kind="output" path="bin"/>

@@ -18,8 +18,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletException;
-
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
@@ -56,8 +54,7 @@ public class PageService implements IEngineService
 
     }
 
-    public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
-            IOException
+    public void service(IRequestCycle cycle, ResponseOutputStream output) throws IOException
     {
         String pageName = cycle.getParameter(ServiceConstants.PAGE);
 

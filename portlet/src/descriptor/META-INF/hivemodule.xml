@@ -20,6 +20,7 @@
   Add on for Tapestry that adds native Portlet support.
   
   <dependency module-id="tapestry" version="3.1.0"/>
+  <dependency module-id="hivemind.lib" version="1.1.0"/>
   
   <sub-module descriptor="tapestry.portlet.services.xml"/>
   
@@ -145,7 +146,7 @@
     
     Stores the current request and response objects.
     
-    <create-instance class="PortletRequestGlobals" model="threaded"/>
+    <create-instance class="PortletRequestGlobalsImpl" model="threaded"/>
     
   </service-point>
   
@@ -167,5 +168,13 @@
       <construct service-id="PortletRequestGlobals" property="renderResponse"/>
     </invoke-factory>
   </service-point>
+  
+  <!-- There's nothing in the Portlet API to support cookies, so override
+       the default (servlet) implementation with an empty placeholder. 
+       This may break some tests when running JUnit inside Eclipse. -->
+       
+  <implementation service-id="tapestry.request.CookieSource">
+    <invoke-factory service-id="hivemind.lib.PlaceholderFactory" model="primitive"/>
+  </implementation>
   
 </module>

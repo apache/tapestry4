@@ -36,4 +36,14 @@ class PortletMessages
     {
         return _formatter.format("error-getting-resource", path, cause);
     }
+
+    public static String errorProcessingAction(Throwable cause)
+    {
+        return _formatter.format("error-processing-action", cause);
+    }
+
+    public static String errorProcessingRender(Throwable cause)
+    {
+        return _formatter.format("error-processing-render", cause);
+    }
 }

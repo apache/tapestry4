@@ -16,13 +16,11 @@ package org.apache.tapestry.services.impl;
 
 import java.util.Locale;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.hivemind.service.ThreadLocale;
 import org.apache.hivemind.test.HiveMindTestCase;
-import org.apache.tapestry.ApplicationServlet;
 import org.apache.tapestry.TapestryConstants;
 import org.apache.tapestry.services.CookieSource;
+import org.apache.tapestry.web.WebRequest;
 import org.easymock.MockControl;
 
 /**
@@ -54,8 +52,8 @@ public class TestRequestLocaleManager extends HiveMindTestCase
         MockControl sourceControl = newControl(CookieSource.class);
         CookieSource source = (CookieSource) sourceControl.getMock();
 
-        MockControl requestControl = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) requestControl.getMock();
+        MockControl requestControl = newControl(WebRequest.class);
+        WebRequest request = (WebRequest) requestControl.getMock();
 
         ThreadLocale tl = newThreadLocale();
 
@@ -152,8 +150,8 @@ public class TestRequestLocaleManager extends HiveMindTestCase
         MockControl sourceControl = newControl(CookieSource.class);
         CookieSource source = (CookieSource) sourceControl.getMock();
 
-        MockControl requestControl = newControl(HttpServletRequest.class);
-        HttpServletRequest request = (HttpServletRequest) requestControl.getMock();
+        MockControl requestControl = newControl(WebRequest.class);
+        WebRequest request = (WebRequest) requestControl.getMock();
 
         MockControl tlc = newControl(ThreadLocale.class);
         ThreadLocale tl = (ThreadLocale) tlc.getMock();

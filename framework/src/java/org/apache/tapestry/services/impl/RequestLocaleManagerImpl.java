@@ -23,6 +23,7 @@ import org.apache.tapestry.TapestryConstants;
 import org.apache.tapestry.services.CookieSource;
 import org.apache.tapestry.services.RequestLocaleManager;
 import org.apache.tapestry.util.StringSplitter;
+import org.apache.tapestry.web.WebRequest;
 
 /**
  * Identifies the Locale provided by the client (either in a Tapestry-specific cookie, or
@@ -34,7 +35,7 @@ import org.apache.tapestry.util.StringSplitter;
  */
 public class RequestLocaleManagerImpl implements RequestLocaleManager
 {
-    private HttpServletRequest _request;
+    private WebRequest _request;
 
     /**
      * Extracted at start of request, and used at end of request to see if locale has changed.
@@ -107,7 +108,7 @@ public class RequestLocaleManagerImpl implements RequestLocaleManager
         _cookieSource = source;
     }
 
-    public void setRequest(HttpServletRequest request)
+    public void setRequest(WebRequest request)
     {
         _request = request;
     }

@@ -141,7 +141,7 @@ public class ApplicationPortlet implements Portlet
         }
         catch (RuntimeException ex)
         {
-            throw new PortletException(ex);
+            throw new PortletException(PortletMessages.errorProcessingAction(ex), ex);
         }
         finally
         {
@@ -158,7 +158,7 @@ public class ApplicationPortlet implements Portlet
         }
         catch (RuntimeException ex)
         {
-            throw new PortletException(ex);
+            throw new PortletException(PortletMessages.errorProcessingRender(ex), ex);
         }
         finally
         {
