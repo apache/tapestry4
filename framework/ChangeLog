@@ -1,3 +1,7 @@
+* Oct 5 2000 hship
+
+Minor documentation and JWC errors in the TextField component.
+
 * Oct 4 2000 hship
 
 Fix a NullPointerException in SimpleApplication.cleanupAfterRequest().  The exception may be thrown
