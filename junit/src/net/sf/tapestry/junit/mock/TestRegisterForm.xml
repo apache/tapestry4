@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id -->
+<!-- $Id$ -->
 
 
 <!-- Perform basic code coverage tests of Forms and form-related components using
@@ -104,7 +104,7 @@ document.Form0.onsubmit = onsubmit_Form0;
 		</assert-matches>												 		
   	</request>
   	
-  	<!-- Provoke an error by "submitting" the form but leaving some fields blank." -->
+  	<!-- Provoke an error by "submitting" the form but leaving some fields blank. -->
   	
   	<request>
   		<parameter name="service" value="direct"/>
@@ -168,4 +168,46 @@ document.Form0.inputLastName.select\(\);
 		</assert-output>				
 	</request>
 	
+	<request>
+  		<parameter name="service" value="direct"/>
+  		<parameter name="context" value="Register/form"/>
+  		<parameter name="sp" value="S0"/>
+  		<parameter name="inputFirstName" value="Suzy"/>
+  		<parameter name="inputLastName" value="Lewis Ship"/>
+  		<parameter name="inputSex" value="1"/>
+  		<parameter name="inputAgeRange" value="2"/>
+  		<parameter name="Form0" value="4"/>	
+  		
+  		
+  		<assert-output name="Title">
+<![CDATA[
+<title>Registration Confirmation</title>
+]]>  		
+		</assert-output>
+		
+		<assert-output name="First Name">
+<![CDATA[
+<th>First Name:</th>\s*<td>Suzy</td>
+]]>
+		</assert-output>
+		
+		<assert-output name="Last Name">
+<![CDATA[
+<th>Last Name:</th>\s*<td>Lewis Ship</td>
+]]>
+		</assert-output>	
+		
+		<assert-output name="Sex">
+<![CDATA[
+<th>Sex:</th>\s*<td>Female</td>
+]]>
+		</assert-output>	
+		
+		<assert-output name="Age">
+<![CDATA[
+<th>Age:</th>\s*<td>Adult \(18 \- 60\)</td>
+]]>
+		</assert-output>	
+									
+  	</request>		
 </mock-test>	

@@ -112,4 +112,19 @@ public class MockTestCase extends TapestryTestCase
     {
         attempt("/net/sf/tapestry/junit/mock/TestRegisterForm.xml");
     }
+    
+    /**
+     *  Tests the validate() method, tests handling
+     *  of {@link net.sf.tapestry.PageRedirectException}, and tests
+     *  {@link net.sf.tapestry.callback.PageCallback} along the way.
+     * 
+     *  @since 2.3
+     * 
+     **/
+    
+    public void testValidate()
+    throws Exception
+    {
+        attempt("/net/sf/tapestry/junit/mock/TestValidate.xml");
+    }
 }

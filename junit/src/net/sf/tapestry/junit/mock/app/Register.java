@@ -6,6 +6,7 @@ import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.form.EnumPropertySelectionModel;
 import net.sf.tapestry.form.IPropertySelectionModel;
 import net.sf.tapestry.html.BasePage;
+import net.sf.tapestry.valid.IValidationDelegate;
 
 /**
  *
@@ -35,5 +36,16 @@ public class Register extends BasePage
 
     public void formSubmit(IRequestCycle cycle)
     {
+        IValidationDelegate delegate = (IValidationDelegate)getBeans().getBean("delegate");
+        
+        if (delegate.getHasErrors())
+            return;
+            
+        User user = (User)getBeans().getBean("user");
+        
+        RegisterConfirm page = (RegisterConfirm)cycle.getPage("RegisterConfirm");
+        
+        page.setUser(user);
+        cycle.setPage(page);
     }
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+	
+<page-specification class="net.sf.tapestry.junit.mock.app.RegisterConfirm">
+
+
+  <component id="border" type="lib:Border">
+  	<static-binding name="title">Registration Confirmation</static-binding>
+  </component>
+  
+  <component id="insertFirstName" type="Insert">
+  	<binding name="value" expression="user.firstName"/>
+  </component>
+  
+  <component id="insertLastName" type="Insert">
+  	<binding name="value" expression="user.lastName"/>
+  </component>
+  
+  <component id="insertSex" type="Insert">
+  	<binding name="value" expression="user.male ? &quot;Male&quot; : &quot;Female&quot;"/>
+  </component>
+  
+  <component id="insertAge" type="Insert">
+  	<binding name="value" expression="formattedAge"/>
+  </component>
+    
+</page-specification>
