@@ -3,13 +3,22 @@
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="com.primix.tapestry.form.Text" allow-body="no">
 
+  <description>
+  A multi-line text area.
+  </description>
+
   <!-- value replaces parameter 'text' -->
   
   <parameter name="value" java-type="java.lang.String"/>
   
   <!-- parameter 'text' is deprecated, and will be removed in 1.1.0 -->
   
-  <parameter name="text" java-type="java.lang.String"/>
+  <parameter name="text" java-type="java.lang.String">
+    <description>
+    Deprecated, use parameter value instead.
+    </description>
+  </parameter>
+  
   <parameter name="disabled"/>
   <parameter name="columns" java-type="java.lang.Integer"/>
   <parameter name="rows" java-type="java.lang.Integer"/>

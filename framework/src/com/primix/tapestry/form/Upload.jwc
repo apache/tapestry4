@@ -9,6 +9,10 @@
 	
 <specification class="com.primix.tapestry.form.Upload" allow-body="no">
 
+  <description>
+  Allows a file to be uploaded as part of a form.
+  </description>
+
   <parameter name="file" java-type="com.primix.tapestry.IUploadFile" required="yes">
   	<description>
   	Parameter updated with the information (filename and content) of the file

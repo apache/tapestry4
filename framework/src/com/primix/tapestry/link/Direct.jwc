@@ -2,8 +2,20 @@
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="com.primix.tapestry.link.Direct">
+
+  <description>
+  Creates a non-contextual link.  Non-persistent state can be stored within the link
+  using the context.
+  </description>
+
   <parameter name="listener" java-type="com.primix.tapestry.IDirectListener" required="yes"/>
-  <parameter name="context"/>
+  <parameter name="context">
+    <description>
+    A object or string, or array of objects and strings, encoded into the URL and
+    provided to the listener.
+    </description>
+  </parameter>
+  
   <parameter name="stateful"/>
   <parameter name="disabled"/>
   <parameter name="scheme" java-type="java.lang.String"/>

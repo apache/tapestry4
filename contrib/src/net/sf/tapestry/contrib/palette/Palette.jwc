@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="net.sf.tapestry.contrib.palette.Palette" allow-body="no" allow-informal-parameters="no">
-  <description>Presents a "Palette"; a combination of two selection boxes.  On the left is a list of items to be selected, on the right a list of items already selected.  Two buttons allow values to be moved between the two lists.  This is a highly usable alternative to presenting a simple list of items with checkboxes, or a select box with simple multiple selection.</description>
+  <description>
+  A complex component used to manage multiple selection of items from a list.
+  </description>
   
   <parameter name="selectedTitleBlock" 
   	java-type="com.primix.tapestry.components.Block" 

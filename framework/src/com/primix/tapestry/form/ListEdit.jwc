@@ -7,6 +7,11 @@
 <specification allow-body="yes" allow-informal-parameters="yes"
 	class="com.primix.tapestry.form.ListEdit">
 	
+  <description>
+  A looping component, like Foreach, which works well in a form
+  because it stores each element as a hidden field.
+  </description>
+	
   <parameter name="source" required="yes" java-type="Object[] or java.util.List"/>
   
   <parameter name="value" required="yes"/>
