@@ -32,6 +32,7 @@ import java.io.ObjectOutput;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -1261,7 +1262,7 @@ public abstract class AbstractEngine
             try
             {
                 INamespace namespace = specSource.getNamespaceForPageName(name);
-                IPage page = source.getPage(this, namespace, name, null);
+                IPage page = source.getPage(this, name, null);
                 IPageRecorder recorder = getPageRecorder(name);
 
                 recorder.rollback(page);
@@ -1512,15 +1513,32 @@ public abstract class AbstractEngine
         if (CAT.isDebugEnabled())
             CAT.debug("Creating service map.");
 
-        HashMap result = new HashMap();
+ISpecificationSource source = getSpecificationSource();
+
+// Build the initial version of the result map,
+// where each value is the *name* of a class.
+
+Map result = new HashMap();
+
+// Do the framework first.
+
+addServices(source.getFrameworkNamespace(), result);
+
+// And allow the application to override the framework.
+
+addServices(source.getApplicationNamespace(), result);
+
         IResourceResolver resolver = getResourceResolver();
 
-        Iterator i = _specification.getServiceNames().iterator();
+        Iterator i = result.entrySet().iterator();
 
         while (i.hasNext())
         {
-            String name = (String) i.next();
-            String className = _specification.getServiceClassName(name);
+            Map.Entry entry = (Map.Entry)i.next();
+            
+            
+            String name = (String) entry.getKey();
+            String className =(String)entry.getValue();
 
             if (CAT.isDebugEnabled())
                 CAT.debug("Creating service " + name + " as instance of " + className);
@@ -1540,7 +1558,10 @@ public abstract class AbstractEngine
                             serviceClass,
                             serviceName));
 
-                result.put(serviceName, service);
+                // Replace the class name with an instance
+                // of the named class.
+                
+                entry.setValue(service);
             }
             catch (InstantiationException ex)
             {
@@ -1572,6 +1593,39 @@ public abstract class AbstractEngine
         // We could wrap it in an unmodifiable, but for efficiency we don't.
 
         return result;
+    }
+
+    /** 
+     *  Locates all services in the namespace and adds key/value
+     *  pairs to the map (name and class name).  Then recursively
+     *  descendends into child namespaces to collect more
+     *  service names.
+     * 
+     *  @since 2.2 
+     * 
+     **/
+    
+    private void addServices(INamespace namespace, Map map)
+    {
+        List names = namespace.getServiceNames();
+        int count = names.size();
+        
+        for (int i = 0; i < count; i++)
+        {
+            String name = (String)names.get(i);
+            
+            map.put(name, namespace.getServiceClassName(name));
+        }
+        
+        List namespaceIds = namespace.getChildIds();
+        count = namespaceIds.size();
+        
+        for (int i = 0; i < count; i++)
+        {
+            String id = (String)namespaceIds.get(i);
+            
+            addServices(namespace.getChildNamespace(id), map);
+        }        
     }
 
     /**

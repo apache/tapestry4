@@ -218,12 +218,11 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
         if (result == null)
         {
             ISpecificationSource specSource = _engine.getSpecificationSource();
-            INamespace namespace = specSource.getNamespaceForPageName(name);
             IPageSource pageSource = _engine.getPageSource();
 
             try
             {
-                result = pageSource.getPage(_engine, namespace, name, _monitor);
+                result = pageSource.getPage(_engine, name, _monitor);
             }
             catch (PageLoaderException ex)
             {

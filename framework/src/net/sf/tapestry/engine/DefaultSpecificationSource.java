@@ -393,7 +393,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
         {
             LibrarySpecification ls = getLibrarySpecification("/net/sf/tapestry/Framework.library");
 
-            _frameworkNamespace = new Namespace("framework", null, ls, this);
+            _frameworkNamespace = new Namespace(null, null, ls, this);
         }
 
         return _frameworkNamespace;

@@ -34,7 +34,10 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServlet;
+
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.IResourceResolver;
@@ -215,18 +218,14 @@ public class AssetExternalizer
 
     public static AssetExternalizer get(IRequestCycle cycle)
     {
-        ServletContext context;
-        String attributeName;
-        String applicationName;
-        AssetExternalizer result;
+        HttpServlet servlet = cycle.getRequestContext().getServlet();
+        ServletContext context = servlet.getServletContext();
 
-        context = cycle.getRequestContext().getServlet().getServletContext();
+        String servletName = servlet.getServletName();
+        
+        String attributeName = "net.sf.tapestry.AssetExternalizer." + servletName;
 
-        applicationName = cycle.getEngine().getSpecification().getName();
-
-        attributeName = "net.sf.tapestry.AssetExternalizer." + applicationName;
-
-        result = (AssetExternalizer) context.getAttribute(attributeName);
+        AssetExternalizer result = (AssetExternalizer) context.getAttribute(attributeName);
 
         if (result == null)
         {
@@ -253,9 +252,9 @@ public class AssetExternalizer
      *  multi-threaded.  It synchronizes on the internal
      *  <code>Map</code> used to map resource paths to URLs.
      *
-     * @param resourcePath The full path of the resource within the
-     * classpath.  This is expected to include a leading slash.  For
-     * example: <code>/com/skunkworx/Banner.gif</code>.
+     *  @param resourcePath The full path of the resource within the
+     *  classpath.  This is expected to include a leading slash.  For
+     *  example: <code>/com/skunkworx/Banner.gif</code>.
      *
      **/
 
