@@ -15,6 +15,7 @@
 package org.apache.tapestry.link;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
@@ -22,21 +23,18 @@ import org.apache.tapestry.components.ILinkComponent;
 import org.apache.tapestry.engine.ILink;
 
 /**
- *  Default implementation of {@link org.apache.tapestry.link.ILinkRenderer}, which
- *  does nothing special.  Can be used as a base class to provide
- *  additional handling.
- *
- *  @author Howard Lewis Ship, David Solis
- *  @since 3.0
- **/
+ * Default implementation of {@link org.apache.tapestry.link.ILinkRenderer}, which does nothing
+ * special. Can be used as a base class to provide additional handling.
+ * 
+ * @author Howard Lewis Ship, David Solis
+ * @since 3.0
+ */
 
 public class DefaultLinkRenderer implements ILinkRenderer
 {
     /**
-     *  A shared instance used as a default for any link that doesn't explicitly
-     *  override.
-     * 
-     **/
+     * A shared instance used as a default for any link that doesn't explicitly override.
+     */
 
     public static final ILinkRenderer SHARED_INSTANCE = new DefaultLinkRenderer();
 
@@ -45,11 +43,8 @@ public class DefaultLinkRenderer implements ILinkRenderer
         IMarkupWriter wrappedWriter = null;
 
         if (cycle.getAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME) != null)
-            throw new ApplicationRuntimeException(
-                Tapestry.getMessage("AbstractLinkComponent.no-nesting"),
-                linkComponent,
-                null,
-                null);
+            throw new ApplicationRuntimeException(Tapestry
+                    .getMessage("AbstractLinkComponent.no-nesting"), linkComponent, null, null);
 
         cycle.setAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME, linkComponent);
 
@@ -69,12 +64,10 @@ public class DefaultLinkRenderer implements ILinkRenderer
             writer.attribute(getUrlAttribute(), constructURL(l, linkComponent.getAnchor(), cycle));
 
             String target = linkComponent.getTarget();
-            
-            if (target == null)
-            {
+
+            if (HiveMind.isNonBlank(target))
                 writer.attribute(getTargetAttribute(), target);
-            }
-            
+
             beforeBodyRender(writer, cycle, linkComponent);
 
             // Allow the wrapped components a chance to render.
@@ -111,10 +104,9 @@ public class DefaultLinkRenderer implements ILinkRenderer
     }
 
     /**
-     *  Converts the EngineServiceLink into a URI or URL.  This implementation
-     *  simply invokes {@link ILink#getURL(String, boolean)}.
-     * 
-     **/
+     * Converts the EngineServiceLink into a URI or URL. This implementation simply invokes
+     * {@link ILink#getURL(String, boolean)}.
+     */
 
     protected String constructURL(ILink link, String anchor, IRequestCycle cycle)
     {
@@ -122,34 +114,29 @@ public class DefaultLinkRenderer implements ILinkRenderer
     }
 
     /**
-     *  Invoked after the href attribute has been written but before
-     *  the body of the link is rendered (but only if the link
-     *  is not disabled).
-     * 
-     *  <p>
-     *  This implementation does nothing.
-     * 
-     **/
+     * Invoked after the href attribute has been written but before the body of the link is rendered
+     * (but only if the link is not disabled).
+     * <p>
+     * This implementation does nothing.
+     */
 
     protected void beforeBodyRender(IMarkupWriter writer, IRequestCycle cycle, ILinkComponent link)
     {
     }
 
     /**
-     *  Invoked after the body of the link is rendered, but before
-     *  {@link ILinkComponent#renderAdditionalAttributes(IMarkupWriter, IRequestCycle)} is invoked
-     *  (but only if the link is not disabled).
-     * 
-     *  <p>
-     *  This implementation does nothing.
-     * 
-     **/
+     * Invoked after the body of the link is rendered, but before
+     * {@link ILinkComponent#renderAdditionalAttributes(IMarkupWriter, IRequestCycle)}is invoked
+     * (but only if the link is not disabled).
+     * <p>
+     * This implementation does nothing.
+     */
 
     protected void afterBodyRender(IMarkupWriter writer, IRequestCycle cycle, ILinkComponent link)
     {
     }
 
-    /** @since 3.0 **/
+    /** @since 3.0 * */
 
     protected String getElement()
     {
@@ -165,7 +152,7 @@ public class DefaultLinkRenderer implements ILinkRenderer
     {
         return "target";
     }
-    
+
     protected boolean getHasBody()
     {
         return true;
