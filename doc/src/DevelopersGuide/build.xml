@@ -6,50 +6,24 @@
 
 <project name="Tapestry Developer's Guide" default="install">
 
-<property name="html.output.dir" value="html"/>
-
 <property name="html.install.dir" value="../../DevelopersGuide"/>
 
-<property file="../../../config/build.properties"/>
-
 &docbook-setup;
-
-  <target name="setup">
-    <mkdir dir="${html.output.dir}"/>
-  </target>
-
-  <target name="clean">
-    <delete dir="${html.output.dir}"/>
-  </target>
     
-  <target name="html" depends="setup,docbook-setup" description="Build HTML version of documentation.">
-    <copy todir="${html.output.dir}/images" >
-      <fileset dir="images"/>
-    </copy>
-    <copy todir="${html.output.dir}/standard-images">
-      <fileset dir="${docbook.xsl.dir}/images">
-        <include name="**/*.png"/>
-      </fileset>
-    </copy>
-    <style destdir="${html.output.dir}"
-    	style="../common/Tapestry-Chunked.xsl"
-    	processor="trax" 
-    	includes="DevelopersGuide.xml">
-    	<param name="root.filename" expression="DevelopersGuide"/>
-    </style>
-    <style destdir="${html.output.dir}"
-    	style="../common/Tapestry-Single.xsl"
-    	processor="trax" 
-    	in="DevelopersGuide.xml"
-    	out="html/DevelopersGuide-Printable.html"/>
+  <target name="html" description="Build HTML version of documentation.">
+    <antcall target="build-html">
+      <param name="root.filename" value="DevelopersGuide"/>
+    </antcall>
   </target>
-    
-  <target name="install" depends="html" description="Build and install HTML documentation.">
+
+<!-- Invoking script must define property html.install.dir -->
+
+<target name="install" depends="html" 
+	description="Build and install HTML documentation.">
   	<copy todir="${html.install.dir}">
   	  <fileset dir="${html.output.dir}"/>
   	</copy>
-  </target>
-
+</target>
 </project>
 
 

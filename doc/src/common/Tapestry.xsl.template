@@ -14,7 +14,7 @@
 <!-- The common buildfiles ensure that the XSL files are unpacked
      to this relative directory. -->
      
-<xsl:import href="../common/@docbook.xsl.base@/html/@format@.xsl"/>
+<xsl:import href="@docbook.xsl.base@/html/@format@.xsl"/>
 
 <!-- Enable shading of verbatim blocks, such as programlisting. -->
  
@@ -33,8 +33,6 @@
      frameset even when the use clicks a link "outside" the documentation.  -->
      
 <xsl:param name="ulink.target">_self</xsl:param>
-
-<xsl:param name="use.id.as.filename" select="1"/>
 
 </xsl:stylesheet>
 

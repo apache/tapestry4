@@ -1,7 +1,4 @@
 docbkx412
 docbook-xsl-1.45
+*.xsl
 docbook-xsl-1.50.0
-Tapestry-Chunked.xsl.template
-Tapestry-Single.xsl.template
-Tapestry-Chunked.xsl
-Tapestry-Single.xsl
