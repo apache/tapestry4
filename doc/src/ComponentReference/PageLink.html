@@ -172,8 +172,87 @@
  <td colspan="2">
   <b>Examples</b>
 	<p>
-  This example is under construction.</p>
-      
+  This example uses the PageLink component to create a navigation menu bar
+  across the top of the page. If the user is not authenticated, in their Visit
+  object, all the navigation bar links are disabled.
+  </p>
+  <p>
+  Typically you would create an navigation menu component, using the 
+  <a href="RenderBody.html">RenderBody</a> component. This navigation menu
+  component would then be included as the first element in all the application's 
+  pages. 
+  </p>
+
+<table bgcolor="navy" cellpadding="8" cellspacing="6" width="100%">
+ <tr>
+   <td><font color="white"><b><a href="PageLink.html">Home</a></b></font></td>
+   <td><font color="white"><b><a href="PageLink.html">Inbox</a></b></font></td>
+   <td><font color="white"><b><a href="PageLink.html">Sent</a></b></font></td>
+   <td><font color="white"><b><a href="PageLink.html">Compose</a></b></font></td>
+   <td><font color="white"><b><a href="PageLink.html">Contacts</a></b></font></td>
+   <td><font color="white"><b><a href="PageLink.html">Options</a></b></font></td>
+   <td><font color="white"><b><a href="PageLink.html">Help</a></b></font></td>
+   <td><font color="white"><b><a href="PageLink.html">Logout</a></b></font></td>
+ </tr>
+</table>
+<table class="examples" cellpadding="6" width="100%">
+ <tr>
+   <td>My mail page content.</td>
+ </tr>
+</table>
+
+<pre>
+&lt;!-- Navigation Bar --&gt;
+&lt;table bgcolor="navy" cellpadding="8" cellspacing="6" width="100%"&gt;
+ &lt;tr&gt;
+  &lt;span jwcid="foreachNavigationPage"&gt;
+   &lt;td&gt;&lt;font color="white"&gt;&lt;b&gt;&lt;span jwcid="<span class="jwcid">navigationPageLink</span>"/&gt;&lt;/b&gt;&lt;/font&gt;&lt;/td&gt;
+  &lt;/span&gt;
+ &lt;/tr&gt;
+&lt;/table&gt;
+
+
+&lt;component id="foreachNavigationPage" type="<a href="Foreach.html">Foreach</a>"&gt;
+    &lt;binding name="source" expression="engine@NAVIGATION_PAGES"/&gt;
+    &lt;binding name="value" expression="navigationPage"/&gt;
+&lt;/component&gt;
+
+&lt;component id="<span class="jwcid">navigationPageLink</span>" type="<a href="PageLink.html">PageLink</a>"&gt;
+    &lt;binding name="page" expression="navigationPage"/&gt;
+    &lt;binding name="disabled" expression="! visit.authenticated"/&gt;
+&lt;/component&gt;
+
+
+public class MailPage extends BasePage {
+    private String navigationPage;
+
+    public String getNavigationPage() { return navigationPage; }
+
+    public void setNavigationPage(String value) {
+        navigationPage = value;
+    }
+    
+    public void detach() {
+        navigationPage = null;
+        super.detach();
+    }
+}
+
+public class Visit implements Serializable {
+    private boolean authenticated;
+
+    public boolean isAuthenticated() { return authenticated; }
+
+    public void setAuthenticated(boolean value) {
+        authenticated = value;
+    }
+}
+
+public class MailEngine extends <a href="../api/net/sf/tapestry/engine/SimpleEngine">SimpleEngine</a> implements Serializable {
+    public static final String[] NAVIGATION_PAGES = 
+        { "Home", "Inbox", "Sent", "Compose", "Contacts", "Options", "Help", "Logout" };
+}
+</pre>
 
  </td></tr></table>
 </td></tr>
