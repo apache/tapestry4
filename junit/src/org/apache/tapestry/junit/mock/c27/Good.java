@@ -59,7 +59,7 @@ import java.util.Locale;
 
 import org.apache.tapestry.BaseComponent;
 
-public class Good extends BaseComponent
+public abstract class Good extends BaseComponent
 {
     public String getDefaultPrefix()
     {
@@ -70,4 +70,7 @@ public class Good extends BaseComponent
     {
         return Locale.US;
     }
+    
+    public abstract boolean isBooleanValue1();
+    
 }

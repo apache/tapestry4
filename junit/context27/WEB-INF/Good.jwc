@@ -12,4 +12,7 @@
 	<parameter name="doubleValue" type="double" direction="in" default-value="3.14"/>
 	<parameter name="objectValue" type="java.util.Locale" direction="in" default-value="defaultLocale"/>
 
+	<parameter name="booleanValue1" type="boolean" direction="auto" default-value="false"/>
+	<parameter name="booleanValue2" type="boolean" direction="auto" default-value="isBooleanValue1()"/>
+
 </component-specification>
