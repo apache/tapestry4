@@ -14,7 +14,6 @@
 
 package org.apache.tapestry;
 
-import java.io.OutputStream;
 import java.util.EventListener;
 import java.util.Locale;
 

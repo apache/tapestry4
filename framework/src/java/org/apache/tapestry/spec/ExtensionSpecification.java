@@ -26,7 +26,6 @@ import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.coerce.ValueConverter;
-import org.apache.tapestry.services.ExpressionEvaluator;
 
 /**
  * Defines an "extension", which is much like a helper bean, but is part of a library or application

@@ -16,8 +16,6 @@ package org.apache.tapestry.engine;
 
 import java.io.IOException;
 
-import javax.servlet.ServletException;
-
 import org.apache.tapestry.IRequestCycle;
 
 /**

@@ -14,10 +14,6 @@
 
 package org.apache.tapestry.engine.state;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.easymock.MockControl;
 

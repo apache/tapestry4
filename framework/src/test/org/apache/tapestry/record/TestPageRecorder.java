@@ -27,7 +27,6 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.event.ObservedChangeEvent;
-import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IPropertySpecification;
 import org.apache.tapestry.test.Creator;

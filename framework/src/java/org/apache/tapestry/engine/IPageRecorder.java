@@ -14,10 +14,7 @@
 
 package org.apache.tapestry.engine;
 
-import java.util.Collection;
-
 import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.event.ChangeObserver;
 
 /**

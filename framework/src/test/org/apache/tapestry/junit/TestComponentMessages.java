@@ -33,7 +33,6 @@ import org.apache.tapestry.enhance.EnhancementOperationImpl;
 import org.apache.tapestry.enhance.InjectMessagesWorker;
 import org.apache.tapestry.enhance.InjectSpecificationWorker;
 import org.apache.tapestry.html.BasePage;
-import org.apache.tapestry.junit.mock.c21.NullPropertySource;
 import org.apache.tapestry.services.ComponentPropertySource;
 import org.apache.tapestry.services.impl.ComponentMessagesSourceImpl;
 import org.apache.tapestry.spec.ComponentSpecification;

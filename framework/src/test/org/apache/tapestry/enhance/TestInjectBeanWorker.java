@@ -24,7 +24,6 @@ import org.apache.hivemind.Location;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.BaseComponent;
-import org.apache.tapestry.IComponent;
 import org.apache.tapestry.spec.BeanSpecification;
 import org.apache.tapestry.spec.IBeanSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;

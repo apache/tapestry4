@@ -16,7 +16,6 @@ package org.apache.tapestry.workbench.tree.examples;
 
 import java.util.Date;
 
-import org.apache.tapestry.IEngine;
 import org.apache.tapestry.contrib.tree.model.ITreeDataModel;
 import org.apache.tapestry.contrib.tree.model.ITreeModel;
 import org.apache.tapestry.contrib.tree.simple.SimpleTreeDataModel;

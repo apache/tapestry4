@@ -25,8 +25,6 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.impl.DefaultClassResolver;
-import org.apache.hivemind.impl.DefaultErrorHandler;
-import org.apache.hivemind.impl.ErrorLogImpl;
 import org.apache.hivemind.service.ClassFactory;
 import org.apache.hivemind.service.impl.ClassFactoryImpl;
 import org.apache.hivemind.util.PropertyUtils;

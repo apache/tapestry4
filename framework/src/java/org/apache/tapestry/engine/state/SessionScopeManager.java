@@ -14,9 +14,6 @@
 
 package org.apache.tapestry.engine.state;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebSession;
 

@@ -16,9 +16,7 @@ package org.apache.tapestry.spec;
 
 import java.util.Map;
 
-import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.LocationHolder;
-import org.apache.tapestry.coerce.ValueConverter;
 import org.apache.tapestry.util.IPropertyHolder;
 
 /**

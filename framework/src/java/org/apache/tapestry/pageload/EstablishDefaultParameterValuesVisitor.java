@@ -20,9 +20,7 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.binding.BindingConstants;
-import org.apache.tapestry.binding.BindingFactory;
 import org.apache.tapestry.binding.BindingSource;
-import org.apache.tapestry.binding.BindingUtils;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
 

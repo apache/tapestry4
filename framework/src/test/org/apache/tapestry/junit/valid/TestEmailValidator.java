@@ -14,14 +14,10 @@
 
 package org.apache.tapestry.junit.valid;
 
-import java.util.Locale;
-
-import org.apache.tapestry.IPage;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.valid.EmailValidator;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidatorException;
-import org.easymock.MockControl;
 
 /**
  * Tests for {@link org.apache.tapestry.valid.EmailValidator}.

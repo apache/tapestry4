@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.web;
 
-import java.io.IOException;
-
 import org.apache.hivemind.impl.MessageFormatter;
 import org.apache.tapestry.util.ContentType;
 

@@ -17,7 +17,6 @@ package org.apache.tapestry.binding;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.coerce.ValueConverter;
 
 /**
  * @author Howard M. Lewis Ship
