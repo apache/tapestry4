@@ -50,10 +50,11 @@ public interface IPageRecorder extends ChangeObserver
      *  Persists all changes that have been accumulated.  If the recorder
      *  saves change incrementally, this should ensure that all changes have been persisted.
      *
+     *  <p>After commiting, a page record automatically locks itself.
      */
  
     public void commit()
-        throws PageRecorderCommitException;
+    throws PageRecorderCommitException;
 
     /**
      *  Returns an <code>Collection</code> of {@link IPageChange} objects that represent
@@ -90,6 +91,14 @@ public interface IPageRecorder extends ChangeObserver
     public boolean isDirty();
 
     /**
+     *  Returns true if the recorder is in a locked state, following
+     *  a {@link #commit()}.
+     *
+     */
+
+    public boolean isLocked();
+
+    /**
      *  Rolls back the page to the currently persisted state.
      *
      *  <p>A page recorder can only rollback changes to properties
@@ -106,4 +115,13 @@ public interface IPageRecorder extends ChangeObserver
      */
  
     public void setActive(boolean value);
+
+    /**
+     *  Invoked to lock or unlock the recorder.  Recoders are locked
+     *  after they are commited, and stay locked until
+     *  explicitly unlocked in a subsequent request cycle.
+     *
+     */
+
+    public void setLocked(boolean value);
 }

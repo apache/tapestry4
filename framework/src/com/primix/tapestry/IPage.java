@@ -152,6 +152,21 @@ public interface IPage extends IComponent
     /**
      *  Invoked to render the entire page.  This should only be invoked by
      *  {@link IRequestCycle#renderPage(IResponseWriter writer)}.
+     *
+     *  <p>The page is responsible for:     
+     * <ul>
+     * <li>Invoking 
+     *  {@link #beginResponse(IResponseWriter,IRequestCycle)}
+     *  <li>Invoking {@link ILifecycle#prepareForRender(IRequestCycle)} on 
+     *  each lifecycle component 
+     *  <li>Invoking
+     *  {@link IRequestCycle#commitPageChanges()}
+     *  (unless the {@link IRequestCycle#isRewinding() cycle is rewinding})
+     *  <li>Invoking
+     *  {@link #render(IResponseWriter,IRequestCycle)}
+     *  <li>Invoking
+     *  {@link ILifecycle#cleanupAfterRender(IRequestCycle)} on each lifecycle component
+     * </ul>
      */
  
     public void renderPage(IResponseWriter writer, IRequestCycle cycle)
@@ -177,7 +192,7 @@ public interface IPage extends IComponent
      */
  
     public void validate(IRequestCycle cycle)
-        throws RequestCycleException;
+    throws RequestCycleException;
 	
 	/**
 	 *  Invoked to create a response writer appropriate to the page
@@ -193,9 +208,15 @@ public interface IPage extends IComponent
 
     /**
      *  Invoked just before rendering of the page is initiated.  This gives
-     *  the page a chance to perform any additional setup.  Typically, this
-     *  invokes setting HTTP headers and cookies.
+     *  the page a chance to perform any additional setup.  One possible behavior is
+     *  to set HTTP headers and cookies before any output is generated.
      *
+     *  <p>The timing of this explicitly <em>before</em> {@link IPageRecorder page recorder}
+     *  changes are committed.  Rendering occurs <em>after</em> the recorders
+     *  are committed, when it is too late to make changes to dynamic page
+     *  properties.
+     *
+     *  
      */
      
     public void beginResponse(IResponseWriter writer, IRequestCycle cycle)

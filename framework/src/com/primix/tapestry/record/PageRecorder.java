@@ -5,6 +5,8 @@ import com.primix.tapestry.*;
 import com.primix.tapestry.event.*;
 import java.util.*;
 import java.io.*;
+import java.rmi.*;
+import javax.ejb.*;
 
 /*
  * Tapestry Web Application Framework
@@ -45,9 +47,6 @@ import java.io.*;
  *  Subclasses must implement <code>readExternal()</code> and
  *  <code>writeExternal()</code>.
  *
- * <p>TBD:  Explicit state (set during page render) that <i>prevents</i> property changes
- * by throwing a runtime exception when they occur.
- *
  * @author Howard Ship
  * @version $Id$
  */
@@ -58,6 +57,7 @@ public abstract class PageRecorder
 {
 	protected transient boolean active = false;
 	protected transient boolean dirty = false;
+    protected transient boolean locked = false;
 
 	/**
 	*  Invoked to persist all changes that have been accumulated.  If the recorder
@@ -105,6 +105,22 @@ public abstract class PageRecorder
 		return dirty;
 	}
 
+    /**
+     *  Returns true if the recorder is locked.  The locked flag
+     *  is set by {@link #commit()}.
+     *
+     */
+
+    public boolean isLocked()
+    {
+        return locked;
+    }
+
+    public void setLocked(boolean value)
+    {
+        locked = value;
+    }
+
 	/**
 	*  Observes the change.  The object of the event is expected to
 	*  be an {@link IComponent}.  Ignores the change if not active,
@@ -127,12 +143,21 @@ public abstract class PageRecorder
 	{
 		IComponent component;
 		String propertyName;
+        Serializable newValue;
 
 		if (!active)
 			return;
 
 		component = event.getComponent();
 		propertyName = event.getPropertyName();
+
+		if (locked)
+		    throw new ApplicationRuntimeException(
+		        "Page recorder for page " + component.getPage().getName() +
+                    " is locked after a commit(), but received a change to " +
+                    " property " + propertyName + " of " +
+                    component.getExtendedId() + ".");
+
 		
 		if (propertyName == null)
 		{
@@ -140,7 +165,24 @@ public abstract class PageRecorder
 			return;
 		}
 
-		recordChange(component.getIdPath(), propertyName, event.getNewValue());
+        // Record the change, converting EJBObject to
+        // Handle along the way.
+
+        newValue = event.getNewValue();
+
+        try
+        {
+		    recordChange(component.getIdPath(), propertyName, 
+		        persistValue(newValue));
+        }
+        catch (Throwable t)
+        {
+            t.printStackTrace();
+            throw new ApplicationRuntimeException
+                ("Unable to persist property " + propertyName + 
+                    " of " + component.getExtendedId() + 
+                    " as " + newValue + ".", t);
+        }
 	}
 
 	/**
@@ -190,7 +232,10 @@ public abstract class PageRecorder
 
 			try
 			{
-				helper.set(component, change.propertyName, change.newValue);
+                // Restore the object, converting Handle to EJBObject
+                // along the way.
+
+				helper.set(component, change.propertyName, restoreValue(change.newValue));
 			}
 			catch (Throwable t)
 			{
@@ -199,6 +244,39 @@ public abstract class PageRecorder
 			}
 		}
 	}
+
+    /**
+     *  Converts an {@link EJBObject} into its handle for persistent storage.
+     *
+     */
+
+    private Serializable persistValue(Serializable value)
+    throws RemoteException
+    {
+        if (!(value instanceof EJBObject))
+            return value;
+
+        EJBObject ejb = (EJBObject)value;
+
+        return ejb.getHandle();
+    }
+
+    /**
+     *  Converts a {@link Handle}, previously stored by the recorder,
+     *  back into a {@link EJBObject}.
+     *
+     */
+
+    private Object restoreValue(Object value)
+    throws RemoteException
+    {
+        if (!(value instanceof Handle))
+            return value;
+
+        Handle handle = (Handle)value;
+
+        return handle.getEJBObject();
+    }
 
 	public void setActive(boolean value)
 	{

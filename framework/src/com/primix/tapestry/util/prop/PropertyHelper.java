@@ -377,7 +377,7 @@ public class PropertyHelper
 	/**
 	*  Gets the value of a property from the given object.
     *  Splits the propertyPath into an array of properties,
-    *  and invokes {@link #getPath(Object,String[]}.
+    *  and invokes {@link #getPath(Object,String[])}.
 	*
 	*  @param object The object to retrieve a property from.
 	*  @param propertyPath a list of properties to get, seperated
@@ -518,7 +518,7 @@ public class PropertyHelper
 	/**
 	*  Changes the value of one of a bean's properties.  For all but the
     *  last property in the path, this works like
-    *  just like {@link #getPath(Object,String[]), since the goal for those
+    *  just like {@link #getPath(Object,String[])}, since the goal for those
     *  properties is to traverse to the correct object.
     *
     *  <p>On the final property in the path, we update instead of reading,

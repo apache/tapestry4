@@ -178,7 +178,6 @@ public class RequestCycle
 		IPage result = null;
 		IPageRecorder recorder;
 		IPageSource pageSource;
-		ApplicationSpecification specification;
 
 		if (monitor != null)
 			monitor.pageLoadBegin(name);
@@ -188,8 +187,6 @@ public class RequestCycle
 
 		if (result == null)
 		{
-			specification = application.getSpecification();
-
 			pageSource = application.getPageSource();
 
 			try
@@ -221,12 +218,12 @@ public class RequestCycle
 			// From this point on, any changes must be tracked.
 
 			recorder.setActive(true);
+            recorder.setLocked(false);
 
 			if (loadedPages == null)
 				loadedPages = new HashMap(MAP_SIZE);
 
 			loadedPages.put(name, result);
-
 		}
 
 		if (monitor != null)
@@ -479,8 +476,6 @@ public class RequestCycle
 			recorder = (IPageRecorder)i.next();
 
 			recorder.commit();
-
-			recorder.setActive(false);
 		}
 	}
 }
