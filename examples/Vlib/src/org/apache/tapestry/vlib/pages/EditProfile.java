@@ -68,8 +68,7 @@ import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.valid.IValidationDelegate;
-import org.apache.tapestry.vlib.IActivate;
-import org.apache.tapestry.vlib.Protected;
+import org.apache.tapestry.vlib.ActivatePage;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
 import org.apache.tapestry.vlib.ejb.IOperations;
@@ -82,7 +81,7 @@ import org.apache.tapestry.vlib.ejb.IOperations;
  * 
  **/
 
-public abstract class EditProfile extends Protected implements PageRenderListener, IActivate
+public abstract class EditProfile extends ActivatePage implements PageRenderListener
 {
     public abstract String getPassword1();
 
@@ -109,7 +108,7 @@ public abstract class EditProfile extends Protected implements PageRenderListene
     public void activate(IRequestCycle cycle)
     {
         Visit visit = (Visit) getVisit();
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine)cycle.getEngine();
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine) cycle.getEngine();
 
         Integer userId = visit.getUserId();
         Map attributes = null;
@@ -181,7 +180,7 @@ public abstract class EditProfile extends Protected implements PageRenderListene
         }
 
         Visit visit = (Visit) getVisit();
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine)cycle.getEngine();
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine) cycle.getEngine();
         Integer userId = visit.getUserId();
 
         int i = 0;
@@ -213,7 +212,7 @@ public abstract class EditProfile extends Protected implements PageRenderListene
 
         vengine.clearCache();
 
-        MyLibrary myLibrary = (MyLibrary)cycle.getPage("MyLibrary");
+        MyLibrary myLibrary = (MyLibrary) cycle.getPage("MyLibrary");
         myLibrary.activate(cycle);
     }
 

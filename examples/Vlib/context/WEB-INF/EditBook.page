@@ -5,6 +5,8 @@
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
   
 <page-specification class="org.apache.tapestry.vlib.pages.EditBook">
+	
+	<property name="page-type" value="MyLibrary"/>
   
   <property-specification name="error" type="java.lang.String"/>
   <property-specification name="attributes" type="java.util.Map"/>

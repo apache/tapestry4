@@ -155,6 +155,15 @@ public abstract class Browser extends AbstractComponent implements PageRenderLis
         return result;
     }
 
+	/**
+	 *  Invoked to change the displayed page number.
+	 * 
+	 *  @param page page to display, numbered from one.  The currentPage property will be
+	 *  updated.  The value is constrained to fit in the valid range of pages
+	 *  for the component.
+	 * 
+	 **/
+	
     public void jump(int page)
     {
         if (page < 2)
@@ -198,13 +207,11 @@ public abstract class Browser extends AbstractComponent implements PageRenderLis
     {
         Object[] books = getPageResults();
         int count = Tapestry.size(books);
-
+		String element = getElement();
+		
         for (int i = 0; i < count; i++)
         {
-
             setValue(books[i]);
-
-            String element = getElement();
 
             if (element != null)
             {
@@ -236,8 +243,8 @@ public abstract class Browser extends AbstractComponent implements PageRenderLis
             return;
 
         Book[] pageResults = null;
+        
         int i = 0;
-
         while (true)
         {
 
@@ -267,7 +274,6 @@ public abstract class Browser extends AbstractComponent implements PageRenderLis
 
     public void pageEndRender(PageEvent event)
     {
-        setPageResults(null);
     }
 
 }

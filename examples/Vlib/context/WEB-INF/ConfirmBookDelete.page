@@ -6,7 +6,7 @@
   
 <page-specification class="org.apache.tapestry.vlib.pages.ConfirmBookDelete">
  
-  <property name="page-type">MyLibrary</property>
+  <property name="page-type" value="MyLibrary"/>
   
   <property-specification name="bookId" type="java.lang.Integer"/>
   <property-specification name="bookTitle" type="java.lang.String"/>
