@@ -10,7 +10,7 @@ Examples:
 
 <ul>
 <li><a href="#" jwcid="@DirectLink" listener="ognl:listeners.redirectInternal">Forward to internal resource</a>  (redirect-target.html)
-<li><a href="#" jwcid="@DirectLink" listener="ognl:listeners.redirectExternal">Redirect to external URL</a>  (http://jakarta.apache.org/proposals/tapestry)
+<li><a href="#" jwcid="@DirectLink" listener="ognl:listeners.redirectExternal">Redirect to external URL</a>  (http://jakarta.apache.org/tapestry)
 </ul>
 
 <p>
@@ -22,11 +22,11 @@ The code for both these cases is very simple:
     {
         throw new RedirectException("redirect-target.html");
     }
-    
+
     public void redirectExternal(IRequestCycle cycle)
     throws RequestCycleException
     {
-        throw new RedirectException("http://jakarta.apache.org/proposals/tapestry");
+        throw new RedirectException("http://jakarta.apache.org/tapestry");
     }
 </pre>
 </span>
