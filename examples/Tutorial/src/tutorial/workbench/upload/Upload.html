@@ -1,0 +1,55 @@
+<!-- $Id$ -->
+
+<span jwcid="$content$">
+
+<span jwcid="border">
+
+<p>The Upload component is used as a form element and allows files to be uploaded to Tapestry.  It can
+be freely mixed<a href="#note"><sup>*</sup></a> with other components in a form.
+
+<p>The following form allows you to upload a file and see a hexadecimal dump of it.
+
+<span jwcid="showError"/>
+
+<form jwcid="form" enctype="multipart/form-data">
+
+<table class="form">
+	<tr>
+		<th>File:</th>
+		<td><input jwcid="inputFile" size=30/></td>
+	</tr>
+	<tr>
+		<th>Options:</th>
+		<td>
+			<table class="form">
+				<tr>
+					<th><input jwcid="inputAscii"/></th>
+					<td>Display ASCII</td>
+				</tr>
+				<tr>
+					<th><select jwcid="inputWidth"/></th>
+					<td>bytes per line</td>
+				</tr>
+			</table>
+	</tr>
+	
+	<tr>
+		<td></td>
+		<td><input jwcid="continue"/></td>
+	</tr>
+	
+</table>
+</form>
+
+
+<p>
+<a name="note"><sup>*</sup>
+At this time, it will not work with the Palette or MultiplePropertySelection 
+components properly 
+(or any other component that can send multiple values with the form submission).
+In addition, the user must manually set the containing form's enctype attribute 
+to multipart/form-data.
+
+</span>
+
+</span>

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN"
+	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+	
+<specification class="tutorial.workbench.upload.Results">
+
+  <component id="border" type="Border"/>
+  
+  <component id="insertFileName" type="Insert">
+  	<binding name="value" property-path="file.fileName"/>
+  </component>
+  
+  <component id="insertFileDump" type="Insert">
+  	<binding name="value" property-path="fileDump"/>
+  </component>
+  
+  <component id="back" type="Page">
+  	<static-binding name="page">Upload</static-binding>
+  </component>
+  
+  <component id="backRollover" type="Rollover">
+    <binding name="image" property-path="assets.back"/>
+    <binding name="focus" property-path="assets.back-focus"/>
+  </component>
+  
+  <context-asset name="back" path="/images/workbench/Back.gif"/>
+  <context-asset name="back-focus" path="/images/workbench/Back-focus.gif"/>
+  
+</specification>
