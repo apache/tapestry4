@@ -45,6 +45,28 @@ public class SurveyPage extends BasePage
 	private String age;
 	private IPropertySelectionModel sexModel;
 	private IPropertySelectionModel raceModel;
+
+	public void detachFromApplication()
+	{
+		survey = null;
+		error = null;
+		age = null;
+		
+		// We keep the models, since they are stateless
+
+    	super.detachFromApplication();
+	}
+
+
+	public void beginResponse(IResponseWriter writer, IRequestCycle cycle)
+	throws RequestCycleException
+	{
+	    // Force the creation of the survey *before* the page starts
+	    // rendering!
+
+		getSurvey();
+	}
+
 	
 	public IPropertySelectionModel getRaceModel()
 	{
@@ -127,16 +149,6 @@ public class SurveyPage extends BasePage
 		fireObservedChange("survey", survey);
 	}
 	
-	public void detachFromApplication()
-	{
-		super.detachFromApplication();
-		
-		survey = null;
-		error = null;
-		age = null;
-		
-		// We keep the models, since they are stateless
-	}
 	
 	public void setError(String value)
 	{
@@ -169,4 +181,5 @@ public class SurveyPage extends BasePage
 	{
 		age = value;
 	}
+
 }

@@ -1,5 +1,8 @@
 package tutorial.hangman;
 
+import com.primix.tapestry.*;
+import com.primix.tapestry.app.*;
+
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -34,8 +37,6 @@ package tutorial.hangman;
  *
  */ 
 
-import com.primix.tapestry.*;
-
 public class HangmanServlet extends ApplicationServlet
 {
 	protected String getApplicationSpecificationPath()
@@ -45,6 +46,6 @@ public class HangmanServlet extends ApplicationServlet
 
 	protected IApplication createApplication(RequestContext context)
 	{
-		return new HangmanApplication(context, null);
+		return new SimpleApplication(context, null);
 	}
 }
