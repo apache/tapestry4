@@ -38,8 +38,8 @@ import net.sf.tapestry.bean.StaticBeanInitializer;
  *  The default implementation here creates the expected runtime
  *  instances of classes in packages:
  *  <ul>
- *  <li>com.primix.tapestry.spec</li>
- *  <li>com.primix.tapestry.bean</li>
+ *  <li>net.sf.tapestry.spec</li>
+ *  <li>net.sf.tapestry.bean</li>
  *  </ul>
  * 
  *  <p>

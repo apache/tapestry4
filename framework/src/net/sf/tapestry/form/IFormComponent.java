@@ -52,7 +52,7 @@ public interface IFormComponent extends IComponent
      *  during renderring.
      *
      *  <p>This value is set inside the component's render method and is
-     *  <em>not</em> cleared.  If the component is inside a {@link com.primix.tapestry.components.Foreach}, the
+     *  <em>not</em> cleared.  If the component is inside a {@link net.sf.tapestry.components.Foreach}, the
      *  value returned is the most recent name generated for the component.
      *
      *  <p>This property is made available to facilitate writing JavaScript that

@@ -82,8 +82,8 @@
       <jvmarg line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20150"/>
       <sysproperty key="java.compiler" value="NONE"/>
       
-      <sysproperty key="com.primix.tapestry.disable-caching" value="true"/>
-      <sysproperty key="com.primix.tapestry.enable-reset-service" value="true"/>
+      <sysproperty key="com.net.sf.tapestry.disable-caching" value="true"/>
+      <sysproperty key="com.net.sf.tapestry.enable-reset-service" value="true"/>
  	  <sysproperty key="org.mortbay.util.FileResource.checkAliases" value="false"/>
 
     </java>

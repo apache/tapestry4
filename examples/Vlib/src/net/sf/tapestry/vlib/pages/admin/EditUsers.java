@@ -1,39 +1,49 @@
-/*
- * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
- *
- * Howard Lewis Ship
- * http://sf.net/projects/tapestry
- * mailto:hship@users.sf.net
- *
- * This library is free software.
- *
- * You may redistribute it and/or modify it under the terms of the GNU
- * Lesser General Public License as published by the Free Software Foundation.
- *
- * Version 2.1 of the license should be included with this distribution in
- * the file LICENSE, as well as License.html. If the license is not
- * included with this distribution, you may find a copy at the FSF web
- * site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
- * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied waranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- */
+//
+// Tapestry Web Application Framework
+// Copyright (c) 2000-2002 by Howard Lewis Ship
+//
+// Howard Lewis Ship
+// http://sf.net/projects/tapestry
+// mailto:hship@users.sf.net
+//
+// This library is free software.
+//
+// You may redistribute it and/or modify it under the terms of the GNU
+// Lesser General Public License as published by the Free Software Foundation.
+//
+// Version 2.1 of the license should be included with this distribution in
+// the file LICENSE, as well as License.html. If the license is not
+// included with this distribution, you may find a copy at the FSF web
+// site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
+// Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied waranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
 
 package net.sf.tapestry.vlib.pages.admin;
 
-import com.primix.tapestry.*;
-import java.util.*;
-import javax.ejb.*;
-import java.rmi.*;
-import net.sf.tapestry.vlib.*;
-import net.sf.tapestry.vlib.ejb.*;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import net.sf.tapestry.*;
+import javax.ejb.FinderException;
+import javax.ejb.RemoveException;
+
+import net.sf.tapestry.ApplicationRuntimeException;
+import net.sf.tapestry.IMarkupWriter;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.vlib.AdminPage;
+import net.sf.tapestry.vlib.VirtualLibraryEngine;
+import net.sf.tapestry.vlib.Visit;
+import net.sf.tapestry.vlib.ejb.IOperations;
+import net.sf.tapestry.vlib.ejb.Person;
 
 /**
  *  Allows editting of the users.  Simple flags about the
@@ -42,234 +52,233 @@ import net.sf.tapestry.*;
  *  or the user can be out-right deleted.
  *
  *
- *  @author Howard Ship
+ *  @author Howard Lewis Ship
  *  @version $Id$
- */
+ * 
+ **/
 
 public class EditUsers extends AdminPage
 {
-	private Person[] users;
+    private Person[] users;
 
-	/**
-	 *  Map of users, keyed on Person primaryKey.
-	 *
-	 */
+    /**
+     *  Map of users, keyed on Person primaryKey.
+     *
+     **/
 
-	private Map userMap;
+    private Map userMap;
 
-	/**
-	 *  The PK of the current user being editted.
-	 *
-	 */
+    /**
+     *  The PK of the current user being editted.
+     *
+     **/
 
-	private Integer userKey;
+    private Integer userKey;
 
-	/**
-	 *  The Person corresponding to userKey.
-	 *
-	 */
+    /**
+     *  The Person corresponding to userKey.
+     *
+     **/
 
-	private Person user;
+    private Person user;
 
-	/**
-	 *  List of Person PKs of users to have passwords reset.
-	 *
-	 */
+    /**
+     *  List of Person PKs of users to have passwords reset.
+     *
+     **/
 
-	private List resetPassword;
+    private List resetPassword;
 
-	/**
-	 *  List of Person PKs, of users to be removed.
-	 *
-	 */
+    /**
+     *  List of Person PKs, of users to be removed.
+     *
+     **/
 
-	private List deleteUser;
+    private List deleteUser;
 
-	public void detach()
-	{
-		users = null;
-		userMap = null;
-		userKey = null;
-		user = null;
-		resetPassword = null;
-		deleteUser = null;
+    public void detach()
+    {
+        users = null;
+        userMap = null;
+        userKey = null;
+        user = null;
+        resetPassword = null;
+        deleteUser = null;
 
-		super.detach();
-	}
+        super.detach();
+    }
 
-	public void beginResponse(IMarkupWriter writer, IRequestCycle cycle)
-		throws RequestCycleException
-	{
-		super.beginResponse(writer, cycle);
+    public void beginResponse(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    {
+        super.beginResponse(writer, cycle);
 
-		readUsers();
-	}
+        readUsers();
+    }
 
-	private void readUsers()
-	{
-		VirtualLibraryEngine vengine = (VirtualLibraryEngine) engine;
+    private void readUsers()
+    {
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine) engine;
 
-		for (int i = 0; i < 2; i++)
-		{
-			try
-			{
-				IOperations operations = vengine.getOperations();
+        for (int i = 0; i < 2; i++)
+        {
+            try
+            {
+                IOperations operations = vengine.getOperations();
 
-				users = operations.getPersons();
+                users = operations.getPersons();
 
-				break;
-			}
-			catch (RemoteException ex)
-			{
-				vengine.rmiFailure("Unable to retrieve list of users.", ex, i > 0);
-			}
-		}
+                break;
+            }
+            catch (RemoteException ex)
+            {
+                vengine.rmiFailure("Unable to retrieve list of users.", ex, i > 0);
+            }
+        }
 
-		userMap = new HashMap();
+        userMap = new HashMap();
 
-		for (int i = 0; i < users.length; i++)
-			userMap.put(users[i].getPrimaryKey(), users[i]);
-	}
+        for (int i = 0; i < users.length; i++)
+            userMap.put(users[i].getPrimaryKey(), users[i]);
+    }
 
-	/**
-	 *  Returns the primary keys of all the Persons, in a sort order (by last name, then first name).
-	 *
-	 */
+    /**
+     *  Returns the primary keys of all the Persons, in a sort order (by last name, then first name).
+     *
+     **/
 
-	public Integer[] getUserKeys()
-	{
-		Integer[] result = new Integer[users.length];
+    public Integer[] getUserKeys()
+    {
+        Integer[] result = new Integer[users.length];
 
-		for (int i = 0; i < users.length; i++)
-			result[i] = users[i].getPrimaryKey();
+        for (int i = 0; i < users.length; i++)
+            result[i] = users[i].getPrimaryKey();
 
-		return result;
-	}
+        return result;
+    }
 
-	/**
-	 *  Sets the user property from the primary key (value parameter).
-	 *
-	 */
+    /**
+     *  Sets the user property from the primary key (value parameter).
+     *
+     **/
 
-	public void setUserKey(Integer value)
-	{
-		userKey = value;
+    public void setUserKey(Integer value)
+    {
+        userKey = value;
 
-		if (users == null)
-			readUsers();
+        if (users == null)
+            readUsers();
 
-		user = (Person) userMap.get(userKey);
+        user = (Person) userMap.get(userKey);
 
-		// Latent bug:  what if the user was deleted between the time the form was rendered and 
-		// now?  user will be null, which will trip up some of the components.
-	}
+        // Latent bug:  what if the user was deleted between the time the form was rendered and 
+        // now?  user will be null, which will trip up some of the components.
+    }
 
-	public Person getUser()
-	{
-		return user;
-	}
+    public Person getUser()
+    {
+        return user;
+    }
 
-	public boolean getResetPassword()
-	{
-		return false;
-	}
+    public boolean getResetPassword()
+    {
+        return false;
+    }
 
-	public void setResetPassword(boolean value)
-	{
-		if (value)
-		{
-			if (resetPassword == null)
-				resetPassword = new ArrayList();
+    public void setResetPassword(boolean value)
+    {
+        if (value)
+        {
+            if (resetPassword == null)
+                resetPassword = new ArrayList();
 
-			resetPassword.add(userKey);
-		}
-	}
+            resetPassword.add(userKey);
+        }
+    }
 
-	public boolean getDeleteUser()
-	{
-		return false;
-	}
+    public boolean getDeleteUser()
+    {
+        return false;
+    }
 
-	public void setDeleteUser(boolean value)
-	{
-		if (value)
-		{
-			if (deleteUser == null)
-				deleteUser = new ArrayList();
+    public void setDeleteUser(boolean value)
+    {
+        if (value)
+        {
+            if (deleteUser == null)
+                deleteUser = new ArrayList();
 
-			deleteUser.add(userKey);
+            deleteUser.add(userKey);
 
-			// Remove the user from the userMap ... this will prevent it from
-			// being included in the update list.
+            // Remove the user from the userMap ... this will prevent it from
+            // being included in the update list.
 
-			userMap.remove(userKey);
-		}
-	}
+            userMap.remove(userKey);
+        }
+    }
 
-	/**
-	 *  Invoked when the form is submitted.
-	 *
-	 */
+    /**
+     *  Invoked when the form is submitted.
+     *
+     **/
 
-	public void updateUsers(IRequestCycle cycle)
-	{
-		if (isInError())
-			return;	
-	
-		Visit visit = (Visit) getVisit();
-		VirtualLibraryEngine vengine = visit.getEngine();
+    public void updateUsers(IRequestCycle cycle)
+    {
+        if (isInError())
+            return;
 
-		// Collection of non-deleted persons.
+        Visit visit = (Visit) getVisit();
+        VirtualLibraryEngine vengine = visit.getEngine();
 
-		Collection updatedPersons = userMap.values();
+        // Collection of non-deleted persons.
 
-		Person[] updated =
-			(Person[]) updatedPersons.toArray(new Person[updatedPersons.size()]);
+        Collection updatedPersons = userMap.values();
 
-		Integer[] resetPasswordArray = toArray(resetPassword);
-		Integer[] deleted = toArray(deleteUser);
+        Person[] updated = (Person[]) updatedPersons.toArray(new Person[updatedPersons.size()]);
 
-		Integer adminPK = visit.getUserPK();
+        Integer[] resetPasswordArray = toArray(resetPassword);
+        Integer[] deleted = toArray(deleteUser);
 
-		for (int i = 0; i < 2; i++)
-		{
-			try
-			{
-				IOperations operations = vengine.getOperations();
+        Integer adminPK = visit.getUserPK();
 
-				operations.updatePersons(updated, resetPasswordArray, deleted, adminPK);
+        for (int i = 0; i < 2; i++)
+        {
+            try
+            {
+                IOperations operations = vengine.getOperations();
 
-				break;
-			}
-			catch (RemoteException ex)
-			{
-				vengine.rmiFailure("Unable to update users.", ex, i > 0);
-			}
-			catch (RemoveException ex)
-			{
-				throw new ApplicationRuntimeException(ex);
-			}
-			catch (FinderException ex)
-			{
-				throw new ApplicationRuntimeException(ex);
-			}
-		}
+                operations.updatePersons(updated, resetPasswordArray, deleted, adminPK);
 
-		setMessage("Users updated.");
+                break;
+            }
+            catch (RemoteException ex)
+            {
+                vengine.rmiFailure("Unable to update users.", ex, i > 0);
+            }
+            catch (RemoveException ex)
+            {
+                throw new ApplicationRuntimeException(ex);
+            }
+            catch (FinderException ex)
+            {
+                throw new ApplicationRuntimeException(ex);
+            }
+        }
 
-		users = null;
-		userMap = null;
+        setMessage("Users updated.");
 
-	}
+        users = null;
+        userMap = null;
 
-	private Integer[] toArray(List list)
-	{
-		if (list == null)
-			return null;
+    }
 
-		if (list.size() == 0)
-			return null;
+    private Integer[] toArray(List list)
+    {
+        if (list == null)
+            return null;
 
-		return (Integer[]) list.toArray(new Integer[list.size()]);
-	}
+        if (list.size() == 0)
+            return null;
+
+        return (Integer[]) list.toArray(new Integer[list.size()]);
+    }
 }

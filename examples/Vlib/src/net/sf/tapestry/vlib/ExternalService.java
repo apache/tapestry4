@@ -1,28 +1,27 @@
-/*
- * Tapestry Web Application Framework
- * Copyright (c) 2000-2002 by Howard Lewis Ship
- *
- * Howard Lewis Ship
- * http://sf.net/projects/tapestry
- * mailto:hship@users.sf.net
- *
- * This library is free software.
- *
- * You may redistribute it and/or modify it under the terms of the GNU
- * Lesser General Public License as published by the Free Software Foundation.
- *
- * Version 2.1 of the license should be included with this distribution in
- * the file LICENSE, as well as License.html. If the license is not
- * included with this distribution, you may find a copy at the FSF web
- * site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
- * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied waranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- */
+//
+// Tapestry Web Application Framework
+// Copyright (c) 2000-2002 by Howard Lewis Ship
+//
+// Howard Lewis Ship
+// http://sf.net/projects/tapestry
+// mailto:hship@users.sf.net
+//
+// This library is free software.
+//
+// You may redistribute it and/or modify it under the terms of the GNU
+// Lesser General Public License as published by the Free Software Foundation.
+//
+// Version 2.1 of the license should be included with this distribution in
+// the file LICENSE, as well as License.html. If the license is not
+// included with this distribution, you may find a copy at the FSF web
+// site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
+// Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied waranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
 
 package net.sf.tapestry.vlib;
 
@@ -30,8 +29,6 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 
-
-import net.sf.tapestry.*;
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.Gesture;
 import net.sf.tapestry.IComponent;
@@ -39,7 +36,6 @@ import net.sf.tapestry.IEngineServiceView;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.ResponseOutputStream;
-import net.sf.tapestry.engine.*;
 import net.sf.tapestry.engine.AbstractService;
 
 /**
@@ -51,67 +47,61 @@ import net.sf.tapestry.engine.AbstractService;
  *  @version $Id$
  *  @since 1.0.9
  *
- */
+ **/
 
 public class ExternalService extends AbstractService
 {
-	public static final String SERVICE_NAME = "external";
+    public static final String SERVICE_NAME = "external";
 
-	public Gesture buildGesture(
-		IRequestCycle cycle,
-		IComponent component,
-		String[] parameters)
-	{
-		if (parameters == null || parameters.length != 2)
-			throw new ApplicationRuntimeException("external service requires two parameters.");
+    public Gesture buildGesture(IRequestCycle cycle, IComponent component, String[] parameters)
+    {
+        if (parameters == null || parameters.length != 2)
+            throw new ApplicationRuntimeException("external service requires two parameters.");
 
-		return assembleGesture(cycle, SERVICE_NAME, null, parameters, true);
+        return assembleGesture(cycle, SERVICE_NAME, null, parameters, true);
 
-	}
+    }
 
-	public boolean service(
-		IEngineServiceView engine,
-		IRequestCycle cycle,
-		ResponseOutputStream output)
-		throws RequestCycleException, ServletException, IOException
-	{
-		IExternalPage page;
+    public boolean service(IEngineServiceView engine, IRequestCycle cycle, ResponseOutputStream output)
+        throws RequestCycleException, ServletException, IOException
+    {
+        IExternalPage page;
 
-		String[] parameters = getParameters(cycle.getRequestContext());
+        String[] parameters = getParameters(cycle.getRequestContext());
 
-		if (parameters == null || parameters.length != 2)
-			throw new ApplicationRuntimeException("external service requires two parameters.");
+        if (parameters == null || parameters.length != 2)
+            throw new ApplicationRuntimeException("external service requires two parameters.");
 
-		String pageName = parameters[0];
-		String key = parameters[1];
-		Integer primaryKey = new Integer(key);
+        String pageName = parameters[0];
+        String key = parameters[1];
+        Integer primaryKey = new Integer(key);
 
-		try
-		{
-			page = (IExternalPage) cycle.getPage(pageName);
-		}
-		catch (ClassCastException e)
-		{
-			throw new ApplicationRuntimeException(
-				"Page " + pageName + " may not be used with the " + SERVICE_NAME + " service.");
-		}
+        try
+        {
+            page = (IExternalPage) cycle.getPage(pageName);
+        }
+        catch (ClassCastException e)
+        {
+            throw new ApplicationRuntimeException(
+                "Page " + pageName + " may not be used with the " + SERVICE_NAME + " service.");
+        }
 
-		page.setup(primaryKey, cycle);
+        page.setup(primaryKey, cycle);
 
-		// We don't invoke page.validate() because the whole point of this
-		// service is to allow unknown (fresh) users to jump right
-		// to the page.
+        // We don't invoke page.validate() because the whole point of this
+        // service is to allow unknown (fresh) users to jump right
+        // to the page.
 
-		// Render the response.
+        // Render the response.
 
-		engine.renderResponse(cycle, output);
+        engine.renderResponse(cycle, output);
 
-		return true;
-	}
+        return true;
+    }
 
-	public String getName()
-	{
-		return SERVICE_NAME;
-	}
+    public String getName()
+    {
+        return SERVICE_NAME;
+    }
 
 }

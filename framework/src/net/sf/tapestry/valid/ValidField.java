@@ -297,7 +297,7 @@ public class ValidField
     }
 
     private static final String SELECTED_ATTRIBUTE_NAME =
-        "com.primix.tapestry.component.html.valid.SelectedFieldSet";
+        "net.sf.tapestry.component.html.valid.SelectedFieldSet";
 
     /**
      *  Creates JavaScript to set the cursor on the first required or error
