@@ -10,6 +10,7 @@
 <!ENTITY chap-apps SYSTEM "chap-apps.sgml">
 <!ENTITY chap-coding SYSTEM "chap-coding.sgml">
 <!ENTITY chap-coding-components SYSTEM "chap-coding-components.sgml">
+<!ENTITY chap-script SYSTEM "chap-script.sgml">
 <!ENTITY chap-inspector SYSTEM "chap-inspector.sgml">
 
 <!ENTITY jwc-tag "<sgmltag class=starttag>jwc</sgmltag>">
@@ -24,6 +25,8 @@
 <!-- Common classes and components -->
 
 <!ENTITY HttpSession "<classname>HttpSession</>">
+<!ENTITY Map "<classname>Map</>">
+
 <!ENTITY Action '<link linkend="builtin.Action"><classname>Action</classname></link>'>
 <!ENTITY Form '<link linkend="builtin.Form"><classname>Form</classname></link>'>
 <!ENTITY Page '<link linkend="builtin.Page"><classname>Page</classname></link>'>
@@ -45,6 +48,8 @@
 <!ENTITY Text '<link linkend="builtin.Text"><classname>Text</classname></link>'>
 <!ENTITY Radio '<link linkend="builtin.Radio"><classname>Radio</classname></link>'>
 <!ENTITY RadioGroup '<link linkend="builtin.RadioGroup"><classname>RadioGroup</classname></link>'>
+<!ENTITY Rollover '<link linkend="builtin.Rollover"><classname>Rollover</classname></link>'>
+<!ENTITY Script '<link linkend="builtin.Script"><classname>Script</classname></link>'>
 <!ENTITY ValidatingTextField 
 	'<link linkend="builtin.ValidatingTextField"><classname>ValidatingTextField</classname></link>'>
 <!ENTITY Option '<link linkend="builtin.Option"><classname>Option</classname></link>'>
@@ -94,6 +99,7 @@
 &chap-apps;
 &chap-coding;
 &chap-coding-components;
+&chap-script;
 &chap-inspector;
 
 </book>
