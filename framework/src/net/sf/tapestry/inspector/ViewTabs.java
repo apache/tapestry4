@@ -76,7 +76,7 @@ public class ViewTabs extends BaseComponent
         boolean selected;
         String key;
 
-        inspector = (Inspector) page;
+        inspector = (Inspector) getPage();
 
         selected = (view == inspector.getView());
 
@@ -109,7 +109,7 @@ public class ViewTabs extends BaseComponent
         View selectedView;
         String key;
 
-        inspector = (Inspector) page;
+        inspector = (Inspector) getPage();
         selectedView = inspector.getView();
         key = selectedView.getEnumerationId() + "-banner";
 

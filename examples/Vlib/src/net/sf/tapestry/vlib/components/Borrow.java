@@ -115,7 +115,7 @@ public class Borrow extends BaseComponent
 
     public boolean isLinkDisabled()
     {
-        Visit visit = (Visit) page.getVisit();
+        Visit visit = (Visit) getPage().getVisit();
 
         if (!visit.isUserLoggedIn())
             return true;
@@ -140,7 +140,7 @@ public class Borrow extends BaseComponent
         Object[] parameters = cycle.getServiceParameters();
         Integer bookPK = (Integer)parameters[0];
 
-        Visit visit = (Visit) page.getVisit();
+        Visit visit = (Visit) getPage().getVisit();
         Home home = (Home) cycle.getPage("Home");
         VirtualLibraryEngine vengine = visit.getEngine();
 

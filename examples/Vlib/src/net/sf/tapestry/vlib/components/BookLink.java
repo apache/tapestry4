@@ -83,7 +83,7 @@ public class BookLink extends BaseComponent
 
     public boolean isNew()
     {
-        IEngine engine = page.getEngine();
+        IEngine engine = getPage().getEngine();
         Visit visit = (Visit) engine.getVisit();
         Timestamp lastAccess = null;
 

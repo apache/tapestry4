@@ -67,7 +67,7 @@ public class ShowEngine extends BaseComponent implements PageDetachListener
 
     protected void finishLoad()
     {
-        page.addPageDetachListener(this);
+        getPage().addPageDetachListener(this);
     }
 
     public void pageDetached(PageEvent event)
@@ -95,7 +95,7 @@ public class ShowEngine extends BaseComponent implements PageDetachListener
 
             // Write the application object to the stream.
 
-            oos.writeObject(page.getEngine());
+            oos.writeObject(getPage().getEngine());
 
             // Extract the application as an array of bytes.
 
@@ -203,7 +203,7 @@ public class ShowEngine extends BaseComponent implements PageDetachListener
 
     public boolean isResetServiceDisabled()
     {
-        IEngine engine = page.getEngine();
+        IEngine engine = getPage().getEngine();
 
         return !engine.isResetServiceEnabled();
     }

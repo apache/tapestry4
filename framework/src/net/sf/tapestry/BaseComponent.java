@@ -418,19 +418,12 @@ public class BaseComponent extends AbstractComponent
     private void checkAllComponentsReferenced(Set seenIds)
         throws PageLoaderException
     {
-        Set ids = null;
-
         // First, contruct a modifiable copy of the ids of all expected components
         // (that is, components declared in the specification).
 
         Map components = getComponents();
 
-        // Occasionally, a component will have a template but no embedded components.
-
-        if (components == null)
-            ids = Collections.EMPTY_SET;
-        else
-            ids = components.keySet();
+        Set ids = components.keySet();
 
         // If the seen ids ... ids referenced in the template, matches
         // all the ids in the specification then we're fine.

@@ -67,12 +67,12 @@ public class Border extends BaseComponent implements PageRenderListener
 
     public void finishLoad()
     {
-        page.addPageRenderListener(this);
+        getPage().addPageRenderListener(this);
     }
 
     public void pageBeginRender(PageEvent event)
     {
-        Visit visit = (Visit) page.getEngine().getVisit(event.getRequestCycle());
+        Visit visit = (Visit) getPage().getEngine().getVisit(event.getRequestCycle());
 
         activePageName = visit.getActiveTabName();
 
@@ -149,7 +149,7 @@ public class Border extends BaseComponent implements PageRenderListener
         Object[] parameters = cycle.getServiceParameters();
         String newPageName = (String)parameters[0];
 
-        Visit visit = (Visit) page.getEngine().getVisit(cycle);
+        Visit visit = (Visit) getPage().getEngine().getVisit(cycle);
 
         visit.setActiveTabName(newPageName);
 

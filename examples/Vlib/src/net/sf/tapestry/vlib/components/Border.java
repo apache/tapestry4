@@ -131,7 +131,7 @@ public class Border extends BaseComponent
     {
         // Get the visit, if it exists, without creating it.
 
-        Visit visit = (Visit) page.getEngine().getVisit();
+        Visit visit = (Visit) getPage().getEngine().getVisit();
 
         if (visit == null)
             return false;
@@ -147,7 +147,7 @@ public class Border extends BaseComponent
 
     public boolean isAdmin()
     {
-        Visit visit = (Visit) page.getEngine().getVisit();
+        Visit visit = (Visit) getPage().getEngine().getVisit();
 
         return (visit != null && visit.isUserLoggedIn() && visit.getUser().isAdmin());
     }
@@ -184,7 +184,7 @@ public class Border extends BaseComponent
         // to go to the MyLibrary page).
 
         if (getPageType() != LOGIN_PAGE_TYPE)
-            login.setCallback(new PageCallback(page));
+            login.setCallback(new PageCallback(getPage()));
 
         cycle.setPage(login);
     }

@@ -89,7 +89,7 @@ public class Selector extends BaseComponent
     {
         List result = null;
 
-        Inspector inspector = (Inspector) page;
+        Inspector inspector = (Inspector) getPage();
         IComponent component = inspector.getInspectedComponent();
         IComponent container = null;
 

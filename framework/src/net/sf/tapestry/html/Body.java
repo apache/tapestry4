@@ -48,7 +48,33 @@ import net.sf.tapestry.Tapestry;
  *  page access to an initialization script (that is written the start, just before
  *  the &lt;body&gt; tag).  This is currently used by {@link Rollover} and {@link Script}
  *  components.
+ * 
+ *  <p><table border=1>
+ *  <tr>
+ *    <th>Parameter</th>
+ *    <th>Type</th>
+ *    <th>Direction</th>
+ *    <th>Required</th>
+ *    <th>Default</th>
+ *    <th>Description</th>
+ *  </tr>
  *
+ *  <tr>
+ *    <td>name</td>
+ *    <td>{@link String}</td>
+ *    <td>in</td> 
+ *    <td>no</td>
+ *    <td>body</td> 
+ *    <td>The element to use when rendering a tag.  When using a Body component in a
+ *      frameset, this may be changed to "frameset". 
+ * </td>
+ *  </tr>
+ *
+ *  ...
+ *
+ *  <p>Informal parameters are allowed.  The component
+ *  must have a body.
+ * 
  *  @author Howard Lewis Ship
  *  @version $Id$
  * 
@@ -56,33 +82,32 @@ import net.sf.tapestry.Tapestry;
 
 public class Body extends AbstractComponent
 {
-
     // Unique id number, used for naming DOM items in the HTML.
 
-    private int uniqueId;
+    private int _uniqueId;
 
     // Lines that belong inside the onLoad event handler for the <body> tag.
-    private StringBuffer otherInitialization;
+    private StringBuffer _otherInitialization;
 
     // The writer initially passed to render() ... wrapped elements render
     // into a nested response writer.
 
-    private IMarkupWriter outerWriter;
+    private IMarkupWriter _outerWriter;
 
     // Any other scripting desired
 
-    private StringBuffer otherScript;
+    private StringBuffer _otherScript;
 
     // Contains text lines related to image initializations
 
-    private StringBuffer imageInitializations;
+    private StringBuffer _imageInitializations;
 
     /**
      *  Map of URLs to Strings (preloaded image references).
      *
      **/
 
-    private Map imageMap;
+    private Map _imageMap;
 
     /**
      *  Set of included scripts.
@@ -91,7 +116,16 @@ public class Body extends AbstractComponent
      *
      **/
 
-    private Set includedScripts;
+    private Set _includedScripts;
+    
+    /** 
+     *  Element name to use.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    private String _element = "body";
 
     private static final String ATTRIBUTE_NAME = "net.sf.tapestry.active.Body";
 
@@ -112,30 +146,30 @@ public class Body extends AbstractComponent
 
     public String getPreloadedImageReference(String URL)
     {
-        if (imageMap == null)
-            imageMap = new HashMap();
+        if (_imageMap == null)
+            _imageMap = new HashMap();
 
-        String reference = (String) imageMap.get(URL);
+        String reference = (String) _imageMap.get(URL);
 
         if (reference == null)
         {
-            int count = imageMap.size();
+            int count = _imageMap.size();
             String varName = "tapestry_preload[" + count + "]";
             reference = varName + ".src";
 
-            if (imageInitializations == null)
-                imageInitializations = new StringBuffer();
+            if (_imageInitializations == null)
+                _imageInitializations = new StringBuffer();
 
-            imageInitializations.append("  ");
-            imageInitializations.append(varName);
-            imageInitializations.append(" = new Image();\n");
-            imageInitializations.append("  ");
-            imageInitializations.append(reference);
-            imageInitializations.append(" = \"");
-            imageInitializations.append(URL);
-            imageInitializations.append("\";\n");
+            _imageInitializations.append("  ");
+            _imageInitializations.append(varName);
+            _imageInitializations.append(" = new Image();\n");
+            _imageInitializations.append("  ");
+            _imageInitializations.append(reference);
+            _imageInitializations.append(" = \"");
+            _imageInitializations.append(URL);
+            _imageInitializations.append("\";\n");
 
-            imageMap.put(URL, reference);
+            _imageMap.put(URL, reference);
         }
 
         return reference;
@@ -151,11 +185,11 @@ public class Body extends AbstractComponent
 
     public void addOtherInitialization(String script)
     {
-        if (otherInitialization == null)
-            otherInitialization = new StringBuffer(script.length() + 1);
+        if (_otherInitialization == null)
+            _otherInitialization = new StringBuffer(script.length() + 1);
 
-        otherInitialization.append(script);
-        otherInitialization.append('\n');
+        _otherInitialization.append(script);
+        _otherInitialization.append('\n');
 
     }
 
@@ -184,10 +218,10 @@ public class Body extends AbstractComponent
 
     public void addOtherScript(String script)
     {
-        if (otherScript == null)
-            otherScript = new StringBuffer(script.length());
+        if (_otherScript == null)
+            _otherScript = new StringBuffer(script.length());
 
-        otherScript.append(script);
+        _otherScript.append(script);
     }
 
     /**
@@ -202,22 +236,22 @@ public class Body extends AbstractComponent
 
     public void includeScript(String URL)
     {
-        if (includedScripts == null)
-            includedScripts = new HashSet();
+        if (_includedScripts == null)
+            _includedScripts = new HashSet();
 
-        if (includedScripts.contains(URL))
+        if (_includedScripts.contains(URL))
             return;
 
-        outerWriter.begin("script");
-        outerWriter.attribute("language", "JavaScript");
-        outerWriter.attribute("type", "text/javascript");
-        outerWriter.attribute("src", URL);
-        outerWriter.end();
-        outerWriter.println();
+        _outerWriter.begin("script");
+        _outerWriter.attribute("language", "JavaScript");
+        _outerWriter.attribute("type", "text/javascript");
+        _outerWriter.attribute("src", URL);
+        _outerWriter.end();
+        _outerWriter.println();
 
         // Record the URL so we don't include it twice.
 
-        includedScripts.add(URL);
+        _includedScripts.add(URL);
     }
 
     /**
@@ -242,7 +276,7 @@ public class Body extends AbstractComponent
 
     public String getUniqueId()
     {
-        return Integer.toString(uniqueId++);
+        return Integer.toString(_uniqueId++);
     }
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
@@ -256,8 +290,8 @@ public class Body extends AbstractComponent
 
         cycle.setAttribute(ATTRIBUTE_NAME, this);
 
-        uniqueId = 0;
-        outerWriter = writer;
+        _uniqueId = 0;
+        _outerWriter = writer;
 
         try
         {
@@ -288,22 +322,22 @@ public class Body extends AbstractComponent
         }
         finally
         {
-            if (imageMap != null)
-                imageMap.clear();
+            if (_imageMap != null)
+                _imageMap.clear();
 
-            if (includedScripts != null)
-                includedScripts.clear();
+            if (_includedScripts != null)
+                _includedScripts.clear();
 
-            if (otherInitialization != null)
-                otherInitialization.setLength(0);
+            if (_otherInitialization != null)
+                _otherInitialization.setLength(0);
 
-            if (imageInitializations != null)
-                imageInitializations.setLength(0);
+            if (_imageInitializations != null)
+                _imageInitializations.setLength(0);
 
-            if (otherScript != null)
-                otherScript.setLength(0);
+            if (_otherScript != null)
+                _otherScript.setLength(0);
 
-            outerWriter = null;
+            _outerWriter = null;
         }
 
     }
@@ -326,45 +360,45 @@ public class Body extends AbstractComponent
 
     private String writeScript()
     {
-        if (!(any(otherInitialization)
-            || any(otherScript)
-            || any(imageInitializations)))
+        if (!(any(_otherInitialization)
+            || any(_otherScript)
+            || any(_imageInitializations)))
             return null;
 
-        outerWriter.begin("script");
-        outerWriter.attribute("language", "JavaScript");
-        outerWriter.printRaw("<!--");
+        _outerWriter.begin("script");
+        _outerWriter.attribute("language", "JavaScript");
+        _outerWriter.printRaw("<!--");
 
-        if (any(imageInitializations))
+        if (any(_imageInitializations))
         {
-            outerWriter.printRaw("\n\nvar tapestry_preload = new Array();\n");
-            outerWriter.printRaw("if (document.images)\n");
-            outerWriter.printRaw("{\n");
-            outerWriter.printRaw(imageInitializations.toString());
-            outerWriter.printRaw("}\n");
+            _outerWriter.printRaw("\n\nvar tapestry_preload = new Array();\n");
+            _outerWriter.printRaw("if (document.images)\n");
+            _outerWriter.printRaw("{\n");
+            _outerWriter.printRaw(_imageInitializations.toString());
+            _outerWriter.printRaw("}\n");
         }
 
-        if (any(otherScript))
+        if (any(_otherScript))
         {
-            outerWriter.printRaw("\n\n");
-            outerWriter.printRaw(otherScript.toString());
+            _outerWriter.printRaw("\n\n");
+            _outerWriter.printRaw(_otherScript.toString());
         }
 
         String result = null;
 
-        if (any(otherInitialization))
+        if (any(_otherInitialization))
         {
             result = "tapestry_onLoad";
 
-            outerWriter.printRaw("\n\n" + "function " + result + "()\n" + "{\n");
+            _outerWriter.printRaw("\n\n" + "function " + result + "()\n" + "{\n");
 
-            outerWriter.printRaw(otherInitialization.toString());
+            _outerWriter.printRaw(_otherInitialization.toString());
 
-            outerWriter.printRaw("}");
+            _outerWriter.printRaw("}");
         }
 
-        outerWriter.printRaw("\n\n// -->");
-        outerWriter.end();
+        _outerWriter.printRaw("\n\n// -->");
+        _outerWriter.end();
 
         return result;
     }
@@ -401,8 +435,8 @@ public class Body extends AbstractComponent
         if (includes == null || includes.size() == 0)
             return;
 
-        IRequestCycle cycle = page.getRequestCycle();
-        IEngine engine = page.getEngine();
+        IRequestCycle cycle = getPage().getRequestCycle();
+        IEngine engine = getPage().getEngine();
         IPageSource source = engine.getPageSource();
 
         Iterator i = includes.iterator();
@@ -415,4 +449,19 @@ public class Body extends AbstractComponent
             includeScript(URL);
         }
     }
+    
+    /** @since 2.2 **/
+    
+    public String getElement()
+    {
+        return _element;
+    }
+
+    /** @since 2.2 **/
+    
+    public void setElement(String element)
+    {
+        _element = element;
+    }
+
 }

@@ -59,7 +59,7 @@ public class ShowTemplate extends BaseComponent implements IDirect
     {
         Inspector inspector;
 
-        inspector = (Inspector) page;
+        inspector = (Inspector) getPage();
 
         // Components that inherit from BaseComponent have templates,
         // others do not.
@@ -267,7 +267,7 @@ public class ShowTemplate extends BaseComponent implements IDirect
 
     public void trigger(IRequestCycle cycle)
     {
-        Inspector inspector = (Inspector) page;
+        Inspector inspector = (Inspector) getPage();
 
         Object[] parameters = cycle.getServiceParameters();
 

@@ -67,7 +67,7 @@ public class ShowLogging extends BaseComponent implements PageDetachListener
 
     protected void finishLoad()
     {
-        page.addPageDetachListener(this);
+        getPage().addPageDetachListener(this);
     }
 
     /**

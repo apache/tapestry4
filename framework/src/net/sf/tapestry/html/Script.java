@@ -90,11 +90,11 @@ public class Script extends AbstractComponent
 {
     private static final Category CAT = Category.getInstance(Script.class);
 
-	private String lastScriptPath;
-	private String scriptPath;
-	private Map baseSymbols;
+    private String _lastScriptPath;
+    private String _scriptPath;
+    private Map _baseSymbols;
 
-    private IScript script;
+    private IScript _script;
 
     /**
      *  Constructs the symbols {@link Map}.  This starts with the
@@ -110,9 +110,9 @@ public class Script extends AbstractComponent
         Map result = null;
         boolean copy = false;
 
-        if (baseSymbols != null)
+        if (_baseSymbols != null)
         {
-            result = baseSymbols;
+            result = _baseSymbols;
 
             // Make a writable copy if there are any informal parameters
             copy = true;
@@ -129,7 +129,7 @@ public class Script extends AbstractComponent
 
             // Skip formal parameters
 
-            if (specification.getParameter(bindingName) != null)
+            if (getSpecification().getParameter(bindingName) != null)
                 continue;
 
             IBinding binding = getBinding(bindingName);
@@ -141,11 +141,12 @@ public class Script extends AbstractComponent
 
             if (result == null)
                 result = new HashMap();
-            else if (copy)
-            {
-                result = new HashMap(result);
-                copy = false;
-            }
+            else
+                if (copy)
+                {
+                    result = new HashMap(result);
+                    copy = false;
+                }
 
             result.put(bindingName, value);
         }
@@ -159,26 +160,23 @@ public class Script extends AbstractComponent
      *
      **/
 
-    private IScript getParsedScript(IRequestCycle cycle)
-        throws RequiredParameterException
+    private IScript getParsedScript(IRequestCycle cycle) throws RequiredParameterException
     {
-        if (script!= null &&
-        	scriptPath.equals(lastScriptPath))
-        	return script;
-        	
+        if (_script != null && _scriptPath.equals(_lastScriptPath))
+            return _script;
+
         IEngine engine = cycle.getEngine();
         IScriptSource source = engine.getScriptSource();
 
-	// Cache for later
-	
-        IScript script = source.getScript(scriptPath);
-		lastScriptPath = scriptPath;
-		
-		return script;
+        // Cache for later
+
+        IScript script = source.getScript(_scriptPath);
+        _lastScriptPath = _scriptPath;
+
+        return script;
     }
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
         ScriptSession session;
 
@@ -188,9 +186,7 @@ public class Script extends AbstractComponent
         Body body = Body.get(cycle);
 
         if (body == null)
-            throw new RequestCycleException(
-                Tapestry.getString("Script.must-be-contained-by-body"),
-                this);
+            throw new RequestCycleException(Tapestry.getString("Script.must-be-contained-by-body"), this);
 
         try
         {
@@ -208,23 +204,22 @@ public class Script extends AbstractComponent
 
     public String getScriptPath()
     {
-        return scriptPath;
+        return _scriptPath;
     }
 
     public void setScriptPath(String scriptPath)
     {
-        this.scriptPath = scriptPath;
+        this._scriptPath = scriptPath;
     }
-
 
     public Map getBaseSymbols()
     {
-        return baseSymbols;
+        return _baseSymbols;
     }
 
     public void setBaseSymbols(Map baseSymbols)
     {
-        this.baseSymbols = baseSymbols;
+        this._baseSymbols = baseSymbols;
     }
 
 }

@@ -217,6 +217,9 @@ public class Gesture
             
             try
             {
+                // We use the older, deprecated version of this method, which is compatible
+                // with the JDK 1.2.2.
+                
                 String encoded = URLEncoder.encode(_serviceParameters[i]);
                 
                 buffer.append(encoded);

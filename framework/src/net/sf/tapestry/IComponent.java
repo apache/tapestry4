@@ -70,9 +70,10 @@ public interface IComponent extends IRender
     public void addWrapped(IRender element);
 
     /**
-     *  Returns the asset map for the component, which may be null.
+     *  Returns the asset map for the component, which may be empty but will not be null.
      *
      *  <p>The return value is unmodifiable.
+     * 
      **/
 
     public Map getAssets();
@@ -248,8 +249,8 @@ public interface IComponent extends IRender
      *  a component by interacting directly with components it embeds.  This creates
      *  ugly interelationships between components that should be seperated.
      *
-     *  @return A Map of components keyed on component id, or null if the
-     *  component contains no other components.
+     *  @return A Map of components keyed on component id.  May return an empty map, but won't return
+     *  null.
      *
      **/
 

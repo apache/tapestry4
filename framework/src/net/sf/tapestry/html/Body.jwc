@@ -1,15 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC 
-  "-//Howard Ship//Tapestry Specification 1.1//EN" 
-  "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
-<specification class="net.sf.tapestry.html.Body">
+<!DOCTYPE component-specification PUBLIC 
+  "-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+  "http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+<component-specification class="net.sf.tapestry.html.Body">
 
   <description>
   Takes the place of the normal HTML &lt;body&gt; element, providing various
   forms of support to all components it wraps.
   </description>
 
+  <parameter
+  	name="element"
+  	java-type="java.lang.String"
+  	direction="in">
+  	<description>
+  	Name of element to use, defaults to "body".
+  	</description>
+  </parameter>
+ 
   <reserved-parameter name="onload"/>
-  
-</specification>
+    
+</component-specification>
