@@ -51,8 +51,7 @@ public class Border extends BaseComponent
 {
     private static final String WINDOW_TITLE = "Virtual Library";
 
-    private IBinding titleBinding;
-    private IBinding subtitleBinding;
+    private String _subtitle;
 
     private static final int SEARCH_PAGE_TYPE = 1;
     private static final int LIBRARY_PAGE_TYPE = 2;
@@ -63,29 +62,9 @@ public class Border extends BaseComponent
 
     private static final int ADMIN_PAGE_TYPE = 4;
 
-    private int pageType = 0;
+    private int _pageType = 0;
 
-    private IAsset subheader;
-
-    public void setTitleBinding(IBinding value)
-    {
-        titleBinding = value;
-    }
-
-    public IBinding getTitleBinding()
-    {
-        return titleBinding;
-    }
-
-    public void setSubtitleBinding(IBinding value)
-    {
-        subtitleBinding = value;
-    }
-
-    public IBinding getSubtitleBinding()
-    {
-        return subtitleBinding;
-    }
+    private IAsset _subheader;
 
     /**
      *  Determines the 'type' of page, which is used to highlight (with an icon) one of the options
@@ -105,26 +84,23 @@ public class Border extends BaseComponent
 
     protected int getPageType()
     {
-        if (pageType == 0)
+        if (_pageType == 0)
         {
             String typeName = getPage().getSpecification().getProperty("page-type");
 
-            pageType = SEARCH_PAGE_TYPE;
+            _pageType = SEARCH_PAGE_TYPE;
 
             if ("library".equals(typeName))
-                pageType = LIBRARY_PAGE_TYPE;
-            else if ("login".equals(typeName))
-                pageType = LOGIN_PAGE_TYPE;
-            else if ("admin".equals(typeName))
-                pageType = ADMIN_PAGE_TYPE;
+                _pageType = LIBRARY_PAGE_TYPE;
+            else
+                if ("login".equals(typeName))
+                    _pageType = LOGIN_PAGE_TYPE;
+                else
+                    if ("admin".equals(typeName))
+                        _pageType = ADMIN_PAGE_TYPE;
         }
 
-        return pageType;
-    }
-
-    public boolean isLoggedOut()
-    {
-        return !isLoggedIn();
+        return _pageType;
     }
 
     public boolean isLoggedIn()
@@ -133,10 +109,7 @@ public class Border extends BaseComponent
 
         Visit visit = (Visit) getPage().getEngine().getVisit();
 
-        if (visit == null)
-            return false;
-
-        return visit.isUserLoggedIn();
+        return visit != null && visit.isUserLoggedIn();
     }
 
     /**
@@ -149,30 +122,15 @@ public class Border extends BaseComponent
     {
         Visit visit = (Visit) getPage().getEngine().getVisit();
 
-        return (visit != null && visit.isUserLoggedIn() && visit.getUser().isAdmin());
-    }
-
-    /**
-     *  Show the Logout button on all pages except the Logout page itself.
-     *
-     **/
-
-    public boolean getShowLogout()
-    {
-        return !getPage().getName().equals("Logout");
+        return visit != null && visit.isUserLoggedIn() && visit.getUser().isAdmin();
     }
 
     public String getWindowTitle()
     {
-        String subtitle = null;
-
-        if (subtitleBinding != null)
-            subtitle = subtitleBinding.getString();
-
-        if (subtitle == null)
+        if (_subtitle == null)
             return WINDOW_TITLE;
-        else
-            return WINDOW_TITLE + ": " + subtitle;
+
+        return WINDOW_TITLE + ": " + _subtitle;
     }
 
     public void login(IRequestCycle cycle) throws RequestCycleException
@@ -264,17 +222,27 @@ public class Border extends BaseComponent
 
     public IAsset getSubheader()
     {
-        if (subheader == null)
+        if (_subheader == null)
         {
             String name = "header_" + getPage().getName();
 
-            subheader = getAsset(name);
+            _subheader = getAsset(name);
 
-            if (subheader == null)
-                subheader = getAsset("spacer");
+            if (_subheader == null)
+                _subheader = getAsset("spacer");
         }
 
-        return subheader;
+        return _subheader;
+    }
+
+    public String getSubtitle()
+    {
+        return _subtitle;
+    }
+
+    public void setSubtitle(String subtitle)
+    {
+        _subtitle = subtitle;
     }
 
 }

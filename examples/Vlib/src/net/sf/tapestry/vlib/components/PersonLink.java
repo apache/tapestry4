@@ -84,67 +84,49 @@ import net.sf.tapestry.vlib.pages.PersonPage;
 
 public class PersonLink extends BaseComponent
 {
-    private Integer primaryKey;
-    private String name;
-    private boolean omit;
-    private String styleClass;
-
-    /**
-     *  Return parameters for the
-     *  {@link net.sf.tapestry.vlib.ExternalService}.
-     *   The first parameter is the page to jump to
-     *  ("Person", for {@link PersonPage}), 
-     *  the second is the primary key of the person.
-     *
-     **/
-
-    public Object[] getPersonParameters()
-    {
-        return new Object[]
-        {
-            "Person",
-            primaryKey
-        };
-    }
+    private Integer _primaryKey;
+    private String _name;
+    private boolean _omit;
+    private String _styleClass;
 
     public String getStyleClass()
     {
-        return styleClass;
+        return _styleClass;
     }
 
     public void setStyleClass(String styleClass)
     {
-        this.styleClass = styleClass;
+        _styleClass = styleClass;
     }
 
     public String getName()
     {
-        return name;
+        return _name;
     }
 
     public void setName(String name)
     {
-        this.name = name;
+        _name = name;
     }
 
     public boolean getOmit()
     {
-        return omit;
+        return _omit;
     }
 
     public void setOmit(boolean omit)
     {
-        this.omit = omit;
+        _omit = omit;
     }
 
     public Integer getPrimaryKey()
     {
-        return primaryKey;
+        return _primaryKey;
     }
 
     public void setPrimaryKey(Integer primaryKey)
     {
-        this.primaryKey = primaryKey;
+        _primaryKey = primaryKey;
     }
 
 }

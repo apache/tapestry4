@@ -49,12 +49,12 @@ import net.sf.tapestry.vlib.ejb.IBookQuery;
 
 public class Browser extends BaseComponent implements PageDetachListener
 {
-    private IBinding queryBinding;
-    private IBookQuery query;
-    private int currentPage;
-    private int resultCount;
-    private int pageCount;
-    private List pageResults;
+    private IBinding _queryBinding;
+    private IBookQuery _query;
+    private int _currentPage;
+    private int _resultCount;
+    private int _pageCount;
+    private List _pageResults;
 
     /**
      *  Default for the page size; the number of results viewed on each page.
@@ -88,60 +88,61 @@ public class Browser extends BaseComponent implements PageDetachListener
      * Clear out cached values at the end of the request cycle.
      *
      *  @since 1.0.5
+     * 
      **/
 
     public void pageDetached(PageEvent event)
     {
-        query = null;
-        resultCount = 0;
-        currentPage = 0;
-        pageCount = 0;
+        _query = null;
+        _resultCount = 0;
+        _currentPage = 0;
+        _pageCount = 0;
 
-        if (pageResults != null)
-            pageResults.clear();
+        if (_pageResults != null)
+            _pageResults.clear();
     }
 
     public void setQueryBinding(IBinding value)
     {
-        queryBinding = value;
-        query = null;
+        _queryBinding = value;
+        _query = null;
     }
 
     public IBinding getQueryBinding()
     {
-        return queryBinding;
+        return _queryBinding;
     }
 
     public IBookQuery getQuery()
     {
-        if (query == null)
-            query = (IBookQuery) queryBinding.getObject("query", IBookQuery.class);
+        if (_query == null)
+            _query = (IBookQuery) _queryBinding.getObject("query", IBookQuery.class);
 
-        return query;
+        return _query;
     }
 
     public int getResultCount()
     {
-        return resultCount;
+        return _resultCount;
     }
 
-    public void setResultCount(int value)
+    public void setResultCount(int resultCount)
     {
-        resultCount = value;
+        _resultCount = resultCount;
 
-        fireObservedChange("resultCount", value);
+        fireObservedChange("resultCount", resultCount);
     }
 
     public int getCurrentPage()
     {
-        return currentPage;
+        return _currentPage;
     }
 
-    public void setCurrentPage(int value)
+    public void setCurrentPage(int currentPage)
     {
-        currentPage = value;
+        _currentPage = currentPage;
 
-        fireObservedChange("currentPage", value);
+        fireObservedChange("currentPage", currentPage);
     }
 
     /**
@@ -159,39 +160,29 @@ public class Browser extends BaseComponent implements PageDetachListener
 
     public int getPageCount()
     {
-        if (pageCount == 0)
-            pageCount = computePageCount();
+        if (_pageCount == 0)
+            _pageCount = computePageCount();
 
-        return pageCount;
+        return _pageCount;
     }
 
     private int computePageCount()
     {
         // For 0 ... pageSize  elements, its just one page.
 
-        if (resultCount <= pageSize)
+        if (_resultCount <= pageSize)
             return 1;
 
         // We need the number of results divided by the results per page.
 
-        int result = resultCount / pageSize;
+        int result = _resultCount / pageSize;
 
         // If there's any left-over, then we need an additional page.
 
-        if (resultCount % pageSize > 0)
+        if (_resultCount % pageSize > 0)
             result++;
 
         return result;
-    }
-
-    public int getPreviousPage()
-    {
-        return Math.max(currentPage - 1, 1);
-    }
-
-    public int getNextPage()
-    {
-        return Math.min(currentPage + 1, getPageCount());
     }
 
     /**
@@ -204,15 +195,15 @@ public class Browser extends BaseComponent implements PageDetachListener
 
     public Book[] getPageResults()
     {
-        if (pageResults == null)
-            pageResults = new ArrayList(pageSize);
+        if (_pageResults == null)
+            _pageResults = new ArrayList(pageSize);
 
-        pageResults.clear();
+        _pageResults.clear();
 
         int resultCount = getResultCount();
 
-        int low = (currentPage - 1) * pageSize;
-        int high = Math.min(currentPage * pageSize, resultCount) - 1;
+        int low = (_currentPage - 1) * pageSize;
+        int high = Math.min(_currentPage * pageSize, resultCount) - 1;
 
         if (low > high)
             return null;
@@ -258,19 +249,9 @@ public class Browser extends BaseComponent implements PageDetachListener
     {
         int resultCount = getResultCount();
 
-        int low = (currentPage - 1) * pageSize + 1;
-        int high = Math.min(currentPage * pageSize, resultCount);
+        int low = (_currentPage - 1) * pageSize + 1;
+        int high = Math.min(_currentPage * pageSize, resultCount);
 
         return low + " - " + high;
-    }
-
-    public boolean getShowPreviousLink()
-    {
-        return currentPage > 1;
-    }
-
-    public boolean getShowNextLink()
-    {
-        return currentPage < getPageCount();
     }
 }

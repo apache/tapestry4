@@ -22,7 +22,7 @@
   </component>
   
   <component id="inputRootLevel" type="PropertySelection">
-    <binding name="value" expression="rootLogger.level"/>
+    <binding name="value" expression="@org.apache.log4j.LogManager@getRootLogger().level"/>
     <binding name="model" expression="rootLevelModel"/>
   </component>
   

@@ -210,16 +210,4 @@ public class ShowEngine extends BaseComponent implements PageDetachListener
         }
     }
 
-    /**
-     *  Invokes {@link IEngine#isResetServiceEnabled()} and inverts the result.
-     *
-     **/
-
-    public boolean isResetServiceDisabled()
-    {
-        IEngine engine = getPage().getEngine();
-
-        return !engine.isResetServiceEnabled();
-    }
-
 }

@@ -18,28 +18,28 @@
     <binding name="value" expression="range"/>
   </component>
       
-  <component id="insertWrapped" type="InsertWrapped"/>
+  <component id="renderBody" type="RenderBody"/>
   
   <component id="ifResults" type="Conditional">
   	<binding name="condition" expression="resultCount"/>
   </component>
   
   <component id="ifShowPrev" type="Conditional">
-    <binding name="condition" expression="showPreviousLink"/>
+    <binding name="condition" expression="currentPage > 1"/>
   </component>
    
   <component id="prev" type="Direct">
     &listener;
-    <binding name="parameters" expression="previousPage"/>
+    <binding name="parameters" expression="@@max(currentPage - 1, 1)"/>
   </component>
  
   <component id="ifShowNext" type="Conditional">
-    <binding name="condition" expression="showNextLink"/>
+    <binding name="condition" expression="currentPage &lt; pageCount"/>
   </component>
   
   <component id="next" type="Direct">
     &listener;
-    <binding name="parameters" expression="nextPage"/>
+    <binding name="parameters" expression="@@min(currentPage + 1, pageCount)"/>
   </component>
 
 </component-specification>

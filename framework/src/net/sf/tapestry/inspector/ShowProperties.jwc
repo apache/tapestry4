@@ -28,7 +28,7 @@
   <component id="selectComponent" type="DirectLink">
     <binding name="listener" expression="page.listeners.selectComponent"/>
     <binding name="parameters" expression="change.componentPath"/>
-    <binding name="disabled" expression="disableComponentLink"/>
+    <binding name="disabled" expression="change.componentPath == null"/>
   </component>
   
   <component id="insertPath" type="Insert">

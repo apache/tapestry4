@@ -130,11 +130,6 @@ public class ShowLogging extends BaseComponent implements PageDetachListener
         return result;
     }
 
-    public Logger getRootLogger()
-    {
-        return LogManager.getRootLogger();
-    }
-
     /**
      *  Returns a {@link IPropertySelectionModel} for {@link org.apache.log4j.Level}
      *  that does not allow a null value to be selected.
@@ -144,7 +139,7 @@ public class ShowLogging extends BaseComponent implements PageDetachListener
     public IPropertySelectionModel getRootLevelModel()
     {
         if (_rootLevelModel == null)
-            _rootLevelModel = new PriorityModel(false);
+            _rootLevelModel = new LevelModel(false);
 
         return _rootLevelModel;
     }
@@ -159,7 +154,7 @@ public class ShowLogging extends BaseComponent implements PageDetachListener
     public IPropertySelectionModel getLevelModel()
     {
         if (_levelModel == null)
-            _levelModel = new PriorityModel();
+            _levelModel = new LevelModel();
 
         return _levelModel;
     }
@@ -210,17 +205,4 @@ public class ShowLogging extends BaseComponent implements PageDetachListener
 
     }
     
-    protected void prepareForRender(IRequestCycle cycle) throws RequestCycleException
-    {
-        super.prepareForRender(cycle);
-        
-        // Used to set this in the specification, but on a repaint
-        // (after form submission), it wouldn't always be set
-        // correctly.
-        
-        EvenOdd levelClass = (EvenOdd)getBeans().getBean("levelClass");
-        
-        levelClass.setEven(false);
-    }
-
 }
