@@ -941,7 +941,7 @@ Let's look at the specification for those three components (<varname>e</varname>
 
 &lt;component id="guess" type="Direct"&gt;
   &lt;binding name="listener" property-path="listeners.makeGuess"/&gt;
-  &lt;binding name="context" property-path="components.e.value"/&gt;
+  &lt;binding name="parameters" property-path="components.e.value"/&gt;
 &lt;/component&gt;
 
 &lt;component id="insertLetter" type="Insert"&gt;
@@ -968,18 +968,20 @@ though;  the application needs to know which letter was actually clicked.
 </para>
       <para>
 Passing that kind of information along is accomplished by setting the 
-<varname>context</varname> parameter for the 
-component.  The <varname>context</varname> parameter is a &String;, or array of 
+<varname>parameters</varname> parameter for the 
+component.  The <varname>parameters</varname> parameter is a &String;, or array of 
 &String;s, that will be encoded into the 
-URL for the hyperlink.  When the component's listener is notified, it is passed the same 
-&String;s.
+URL for the hyperlink.  When the component's listener is notified, it
+can obtain the array of &String;s from the &IRequestCycle;.
 </para>
       <para>
-The context is often used to encode primary keys of objects, names of columns or other 
+These <emphasis>service parameters</emphasis>
+are often used to encode primary keys of objects, names of columns or other 
 information specific to the application.
 </para>
       <para>
-In this case, the context is simply the letter to be guessed.
+In this case, the service parameters consist of a single value,
+the letter to be guessed.
 </para>
       <para>
 All of this comes together in the Java code for the Guess page.
@@ -1019,9 +1021,10 @@ public void makeGuess(IRequestCycle cycle)
       </figure>
       <para> 
 
-The component specification showed how data was encoded into the URL as the context; here we see how the 
+The component specification showed how data was encoded into the URL as the 
+service parameters; here we see how the 
 <function>makeGuess()</function> listener
-method has access to the context and uses it.
+method has access to the service parameters and uses them.
 The listener method extracts the letter and informs the game object, which throws an exception
 if the letter is not in the word being guessed.
 </para>

@@ -55,9 +55,9 @@ import net.sf.tapestry.Tapestry;
 
 public abstract class GestureLink extends AbstractServiceLink
 {
-    private String anchor;
-    private String scheme;
-    private int port;
+    private String _anchor;
+    private String _scheme;
+    private int _port;
 
     /**
      *  Constructs a URL based on the service, context plus scheme, port and anchor.
@@ -66,22 +66,39 @@ public abstract class GestureLink extends AbstractServiceLink
 
     protected String getURL(IRequestCycle cycle) throws RequestCycleException
     {
-        return buildURL(cycle, getContext(cycle));
+        return buildURL(cycle, getServiceParameters(cycle));
     }
 
+
     /**
-     *  Invoked by {@link #getURL(IRequestCycle)}.
-     *  The default implementation returns null; other
-     *  implementations can provide appropriate parameters as needed.
-     *  
+     *  @deprecated to be removed in 2.3, use {@link #getServiceParameters(IRequestCycle)}
+     *  @return null subclasses may override (but should override
+     *  {@link #getServiceParameters(IRequestCycle)} instead)
+     * 
      **/
 
     protected String[] getContext(IRequestCycle cycle) throws RequestCycleException
     {
-        return null;
+        return getServiceParameters(cycle);
     }
 
-    private String buildURL(IRequestCycle cycle, String[] context)
+    /**
+     *  Invoked by {@link #getURL(IRequestCycle)}.
+     *  The default implementation 
+     *  invokes {@link #getContext(IRequestCycle)}, which returns null.
+     *  (In 2.3, this method will simply return null).
+     *  Implementations can provide appropriate parameters as needed.
+     *  
+     *  @since 2.2
+     * 
+     **/
+        
+    protected String[] getServiceParameters(IRequestCycle cycle) throws RequestCycleException
+    {
+        return getContext(cycle);
+    }
+
+    private String buildURL(IRequestCycle cycle, String[] serviceParameters)
         throws RequestCycleException
     {
         String URL = null;
@@ -94,20 +111,20 @@ public abstract class GestureLink extends AbstractServiceLink
                 Tapestry.getString("GestureLink.missing-service", serviceName),
                 this);
 
-        Gesture g = service.buildGesture(cycle, this, context);
+        Gesture g = service.buildGesture(cycle, this, serviceParameters);
 
         // Now, dress up the URL with scheme, server port and anchor,
         // as necessary.
 
-        if (scheme == null && port == 0)
+        if (_scheme == null && _port == 0)
             URL = g.getURL();
         else
-            URL = g.getAbsoluteURL(scheme, null, port);
+            URL = g.getAbsoluteURL(_scheme, null, _port);
 
-        if (anchor == null)
+        if (_anchor == null)
             return URL;
 
-        return URL + "#" + anchor;
+        return URL + "#" + _anchor;
     }
 
     /**
@@ -120,32 +137,32 @@ public abstract class GestureLink extends AbstractServiceLink
 
     public String getAnchor()
     {
-        return anchor;
+        return _anchor;
     }
 
     public void setAnchor(String anchor)
     {
-        this.anchor = anchor;
+        this._anchor = anchor;
     }
 
     public int getPort()
     {
-        return port;
+        return _port;
     }
 
     public void setPort(int port)
     {
-        this.port = port;
+        this._port = port;
     }
 
     public String getScheme()
     {
-        return scheme;
+        return _scheme;
     }
 
     public void setScheme(String scheme)
     {
-        this.scheme = scheme;
+        this._scheme = scheme;
     }
 
 }

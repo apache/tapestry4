@@ -3965,7 +3965,7 @@ on state that changes during the rendering of the page.  In those cases, the
 (and &Action; or &Form; components) should be used.
 </para>
       <para>
-The &Direct; component has an optional parameter named <varname>context</varname>. 
+The &Direct; component has an optional parameter named <varname>parameters</varname>. 
 The value for this may be a single &String;, an array of &String;s,
 or a &List; of &String;s.  
 These strings are added to the URL after the id path.  
@@ -3975,10 +3975,11 @@ This is primarily used to encode dynamic page state directly
 into the URL when doing so is not compatible with the action service (described in the next section).
 </para>
       <para>
-The most common use for this context is to record 
+The most common use for these service parameters is to record 
 an identifier for some object that is affected by the link.  For 
 example, if the link is designed to remove an item from 
-the shopping cart (in an e-commerce example), the context could identify which item 
+the shopping cart (in an e-commerce example), the service parameters
+could identify which item 
 to remove in terms of a primary key, or line number within the order.
 </para>
     </section>
@@ -4026,11 +4027,13 @@ If the data on the page is not easily accessible then the action service should 
 For example, if the page is generated from a long running database query.  
 Alternate measures, such as storing the results of the query as persistent page state should be used. 
 Another alternative is to use the direct service (and &Direct; component) instead, as 
-it allows the necessary context to be encoded into the URL.  This can be very useful when the dynamic state of the page is dependant on 
+it allows the necessary context to be encoded into the URL, using service
+parameters.  This can be very useful when the dynamic state of the page is dependant on 
 expensive or unpredictably changing data (such as a database query).  
 </para>
       <para>
-For example, a product catalog could encode the primary key of the products listed as the context
+For example, a product catalog could encode the primary key of the products listed as the 
+service parameters,
 to create links to a product details page.
 </para>
     </section>
