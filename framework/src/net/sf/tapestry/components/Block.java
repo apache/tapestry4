@@ -35,8 +35,7 @@ import net.sf.tapestry.RequestCycleException;
  *  Prevents its contents from being rendered until triggered by
  *  an {@link InsertBlock} component.
  *
- *  <p>Has no parameters and does not allow informal parameters.  Allows
- *  a body (in fact, its pretty useless without one).
+ *  [<a href="../../../../../ComponentReference/Block.html">Component Reference</a>]
  *
  *  <p>Block and {@link InsertBlock} are used to build a certain class
  *  of complicated component that can't be assembled using the normal
@@ -48,7 +47,7 @@ import net.sf.tapestry.RequestCycleException;
  * 
  *  <p>The inserter property gives the components inside the block access to
  *  the component (typically an {@link InsertBlock}) that inserted the block,
- *  including access to ints informal bindings which allows components contained
+ *  including access to its informal bindings which allows components contained
  *  by the Block to be passed parameters.  Note - it is the responsibility of the
  *  inserting component to set itself as the Block's inserter.
  *
@@ -60,7 +59,7 @@ import net.sf.tapestry.RequestCycleException;
 
 public class Block extends AbstractComponent
 {
-	private IComponent inserter;
+	private IComponent _inserter;
 
     /**
      *  Does nothing; the idea of a Block is to defer the rendering of
@@ -76,11 +75,11 @@ public class Block extends AbstractComponent
     
     public IComponent getInserter()
     {
-    	return this.inserter;
+    	return this._inserter;
     }
     
     public void setInserter(IComponent value)
     {
-    	this.inserter = value;
+    	_inserter = value;
     }
 }

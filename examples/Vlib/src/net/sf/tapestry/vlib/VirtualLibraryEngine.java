@@ -90,6 +90,10 @@ public class VirtualLibraryEngine extends SimpleEngine
 
     public Object createVisit(IRequestCycle cycle)
     {
+        cycle.getRequestContext().createSession();
+
+        setStateful();
+
         return new Visit(this);
     }
 

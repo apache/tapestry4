@@ -35,28 +35,7 @@ import net.sf.tapestry.RequiredParameterException;
 /**
  *  A component that can substitute for any HTML element.  
  *
- * <table border=1>
- * <tr> 
- *    <th>Parameter</th>
- *    <th>Type</th>
- *	  <th>Direction</th>
- *    <th>Required</th> 
- *    <th>Default</th>
- *    <th>Description</th>
- * </tr>
- *
- * <tr>
- *  <td>element</td>
- *  <td>java.lang.String</td>
- *  <td>in</td>
- *  <td>yes</td>
- *  <td>&nbsp;</td>
- *  <td>The element to be produced.</td>
- * </tr>
- *
- *  </table>
- *
- * <p>Informal parameters are allowed.
+ *  [<a href="../../../../../ComponentReference/Any.html">Component Reference</a>]
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -65,15 +44,14 @@ import net.sf.tapestry.RequiredParameterException;
 
 public class Any extends AbstractComponent
 {
-    private String element;
+    private String _element;
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
         if (!cycle.isRewinding())
         {
-
-            writer.begin(element);
+            writer.begin(_element);
 
             generateAttributes(writer, cycle);
         }
@@ -82,19 +60,19 @@ public class Any extends AbstractComponent
 
         if (!cycle.isRewinding())
         {
-            writer.end(element);
+            writer.end(_element);
         }
 
     }
 
     public String getElement()
     {
-        return element;
+        return _element;
     }
 
     public void setElement(String element)
     {
-        this.element = element;
+        _element = element;
     }
 
 }

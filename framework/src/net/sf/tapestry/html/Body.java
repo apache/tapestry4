@@ -49,31 +49,7 @@ import net.sf.tapestry.Tapestry;
  *  the &lt;body&gt; tag).  This is currently used by {@link Rollover} and {@link Script}
  *  components.
  * 
- *  <p><table border=1>
- *  <tr>
- *    <th>Parameter</th>
- *    <th>Type</th>
- *    <th>Direction</th>
- *    <th>Required</th>
- *    <th>Default</th>
- *    <th>Description</th>
- *  </tr>
- *
- *  <tr>
- *    <td>name</td>
- *    <td>{@link String}</td>
- *    <td>in</td> 
- *    <td>no</td>
- *    <td>body</td> 
- *    <td>The element to use when rendering a tag.  When using a Body component in a
- *      frameset, this may be changed to "frameset". 
- * </td>
- *  </tr>
- *
- *  ...
- *
- *  <p>Informal parameters are allowed.  The component
- *  must have a body.
+ *  [<a href="../../../../../ComponentReference/Body.html">Component Reference</a>]
  * 
  *  @author Howard Lewis Ship
  *  @version $Id$
