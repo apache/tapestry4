@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v3.0 NT (http://www.xmlspy.com) by Howard Ship (Primix Solutions) -->
+<!DOCTYPE application PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"  "http://tapestry.primix.com/dtd/Tapestry_1_0.dtd">
+<application>
+	<name>Primix Virtual Library</name>
+	<page>
+		<name>home</name>
+		<specification-path>/com/primix/vlib/pages/Home.jwc</specification-path>
+	</page>
+	<page>
+		<name>login</name>
+		<specification-path>/com/primix/vlib/pages/Login.jwc</specification-path>
+	</page>
+	<page>
+		<name>logout</name>
+		<specification-path>/com/primix/vlib/pages/Logout.jwc</specification-path>
+	</page>
+	<component-alias>
+		<alias>Border</alias>
+		<specification-path>/com/primix/vlib/components/Border.jwc</specification-path>
+	</component-alias>
+</application>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v3.0 NT (http://www.xmlspy.com) by Howard Ship (Primix Solutions) -->
+<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"  "http://tapestry.primix.com/dtd/Tapestry_1_0.dtd">
+<specification>
+	<class>com.primix.vlib.pages.Home</class>
+	<components>
+		<component>
+			<id>border</id>
+			<type>Border</type>
+			<bindings>
+				<static-binding>
+					<name>title</name>
+					<value>Primix Virtual Library</value>
+				</static-binding>
+			</bindings>
+		</component>
+		<component>
+			<id>searchForm</id>
+			<type>Form</type>
+			<bindings>
+				<binding>
+					<name>listener</name>
+					<property-path>searchFormListener</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>titleTextField</id>
+			<type>TextField</type>
+			<bindings>
+				<binding>
+					<name>text</name>
+					<property-path>searchTitle</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>publisherSelection</id>
+			<type>PropertySelection</type>
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>searchPublisherPK</property-path>
+				</binding>
+				<binding>
+					<name>model</name>
+					<property-path>publisherModel</property-path>
+				</binding>
+			</bindings>
+		</component>
+	</components>
+</specification>

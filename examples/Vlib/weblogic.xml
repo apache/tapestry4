@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XML Spy v3.0 NT (http://www.xmlspy.com) by Howard Ship (Primix Solutions) -->
+<!DOCTYPE weblogic-web-app PUBLIC "-//BEA Systems, Inc.//DTD Web Application 2.2//EN" 
+ "http://www.beasys.com/j2ee/dtds/weblogic.web-jar.dtd">
+<!--$Id$-->
+<weblogic-web-app>
+	<reference-descriptor>
+		<ejb-reference-description>
+			<ejb-ref-name>ejb/Person</ejb-ref-name>
+			<jndi-name>com.primix.vlib.Person</jndi-name>
+		</ejb-reference-description>
+		<ejb-reference-description>
+			<ejb-ref-name>ejb/Book</ejb-ref-name>
+			<jndi-name>com.primix.vlib.Book</jndi-name>
+		</ejb-reference-description>
+		<ejb-reference-description>
+			<ejb-ref-name>ejb/Publisher</ejb-ref-name>
+			<jndi-name>com.primix.vlib.Publisher</jndi-name>
+		</ejb-reference-description>
+	</reference-descriptor>
+</weblogic-web-app>
