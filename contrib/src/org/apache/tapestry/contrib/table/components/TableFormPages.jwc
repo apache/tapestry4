@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+	
+<component-specification class="org.apache.tapestry.contrib.table.components.TableFormPages" 
+	allow-body="no" allow-informal-parameters="yes">
+	
+	<description>
+	</description>
+  
+	<parameter name="pagesDisplayed" 
+		type="int" 
+		required="no"
+		direction="custom"/>
+  
+	<property-specification name="selectedPage" type="int"/>
+  
+	<component id="hiddenCurrentPage" type="Conditional">
+		<binding name="value" expression="currentPage"/>
+	</component>
+  
+	<component id="hiddenPageCount" type="Conditional">
+		<binding name="value" expression="pageCount"/>
+	</component>
+  
+	<component id="hiddenStartPage" type="Conditional">
+		<binding name="value" expression="startPage"/>
+	</component>
+  
+	<component id="hiddenStopPage" type="Conditional">
+		<binding name="value" expression="stopPage"/>
+	</component>
+  
+	<component id="condCurrent" type="Conditional">
+		<binding name="condition" expression="condCurrent"/>
+	</component>
+  
+	<component id="condOther" type="Conditional">
+		<binding name="condition" expression="condCurrent"/>
+		<static-binding name="invert">true</static-binding>
+	</component>
+  
+	<component id="iterPage" type="Foreach">
+		<binding name="source" expression="pageList"/>
+		<binding name="value" expression="displayPage"/>
+	</component>
+
+	<component id="insertCurrentPage" type="Insert">
+	    <binding name="value" expression="displayPage"/>
+	</component>
+
+	<component id="insertOtherPage" type="Insert">
+	    <binding name="value" expression="displayPage"/>
+	</component>
+
+	<component id="linkPage" type="LinkSubmit">
+	    <binding name="listener" expression="listeners.changePage"/>
+	    <binding name="tag" expression="displayPage"/>
+	    <binding name="selected" expression="selectedPage"/>
+	</component>
+
+	<component id="linkFirst" type="LinkSubmit">
+	    <binding name="listener" expression="listeners.changePage"/>
+	    <binding name="tag" expression="1"/>
+	    <binding name="selected" expression="selectedPage"/>
+	    <binding name="disabled" expression="!condBack"/>
+	</component>
+
+	<component id="linkBack" type="LinkSubmit">
+	    <binding name="listener" expression="listeners.changePage"/>
+	    <binding name="tag" expression="currentPage - 1"/>
+	    <binding name="selected" expression="selectedPage"/>
+	    <binding name="disabled" expression="!condBack"/>
+	</component>
+
+	<component id="linkFwd" type="LinkSubmit">
+	    <binding name="listener" expression="listeners.changePage"/>
+	    <binding name="tag" expression="currentPage + 1"/>
+	    <binding name="selected" expression="selectedPage"/>
+	    <binding name="disabled" expression="!condFwd"/>
+	</component>
+	
+	<component id="linkLast" type="LinkSubmit">
+	    <binding name="listener" expression="listeners.changePage"/>
+	    <binding name="tag" expression="pageCount"/>
+	    <binding name="selected" expression="selectedPage"/>
+	    <binding name="disabled" expression="!condFwd"/>
+	</component>
+
+</component-specification>

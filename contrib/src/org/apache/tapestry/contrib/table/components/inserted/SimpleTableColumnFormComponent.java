@@ -65,47 +65,32 @@ import org.apache.tapestry.contrib.table.model.ITableModelSource;
 import org.apache.tapestry.contrib.table.model.ITableRendererListener;
 import org.apache.tapestry.contrib.table.model.ITableSortingState;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumn;
-import org.apache.tapestry.event.PageDetachListener;
-import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.util.ComponentAddress;
 
 /**
- * A component that renders the default column header.
+ * A component that renders the default column header in a form.
  * 
  * If the current column is sortable, it renders the header as a link.
  * Clicking on the link causes the table to be sorted on that column.
  * Clicking on the link again causes the sorting order to be reversed.
  * 
+ * This component renders links that cause the form to be submitted. 
+ * This ensures that the updated data in the other form fields is preserved. 
+ * 
  * @version $Id$
  * @author mindbridge
  */
-public class SimpleTableColumnComponent
+public abstract class SimpleTableColumnFormComponent
 	extends BaseComponent
-	implements ITableRendererListener, PageDetachListener
+	implements ITableRendererListener
 {
-	// transient
-	private ITableColumn m_objColumn;
-	private ITableModelSource m_objModelSource;
 
-	public SimpleTableColumnComponent()
-	{
-		init();
-	}
+    public abstract ITableColumn getTableColumn();
+    public abstract void setTableColumn(ITableColumn objColumn);
 
-	/**
-	 * @see org.apache.tapestry.event.PageDetachListener#pageDetached(PageEvent)
-	 */
-	public void pageDetached(PageEvent arg0)
-	{
-		init();
-	}
+    public abstract ITableModelSource getTableModelSource();
+    public abstract void setTableModelSource(ITableModelSource objSource);
 
-	private void init()
-	{
-		m_objColumn = null;
-		m_objModelSource = null;
-	}
-
+    public abstract String getSelectedColumnName();
 
     /**
      * @see org.apache.tapestry.contrib.table.model.ITableRendererListener#initializeRenderer(IRequestCycle, ITableModelSource, ITableColumn, Object)
@@ -116,34 +101,36 @@ public class SimpleTableColumnComponent
         ITableColumn objColumn,
         Object objRow)
     {
-        m_objModelSource = objSource;
-        m_objColumn = objColumn;
+        setTableModelSource(objSource);
+        setTableColumn(objColumn);
     }
 
 	public ITableModel getTableModel()
 	{
-		return m_objModelSource.getTableModel();
+		return getTableModelSource().getTableModel();
 	}
 
 	public boolean getColumnSorted()
 	{
-		return m_objColumn.getSortable();
+		return getTableColumn().getSortable();
 	}
 
 	public String getDisplayName()
 	{
-        if (m_objColumn instanceof SimpleTableColumn) {
-            SimpleTableColumn objSimpleColumn = (SimpleTableColumn) m_objColumn;
+        ITableColumn objColumn = getTableColumn();
+        
+        if (objColumn instanceof SimpleTableColumn) {
+            SimpleTableColumn objSimpleColumn = (SimpleTableColumn) objColumn;
     		return objSimpleColumn.getDisplayName();
         }
-        return m_objColumn.getColumnName();
+        return objColumn.getColumnName();
 	}
 
 	public boolean getIsSorted()
 	{
 		ITableSortingState objSortingState = getTableModel().getSortingState();
 		String strSortColumn = objSortingState.getSortColumn();
-		return m_objColumn.getColumnName().equals(strSortColumn);
+		return getTableColumn().getColumnName().equals(strSortColumn);
 	}
 
 	public IAsset getSortImage()
@@ -173,24 +160,10 @@ public class SimpleTableColumnComponent
 		return objImageAsset;
 	}
 
-	public Object[] getColumnSelectedParameters()
-	{
-		return new Object[] {
-			new ComponentAddress(m_objModelSource),
-			m_objColumn.getColumnName()};
-	}
-
 	public void columnSelected(IRequestCycle objCycle)
 	{
-		Object[] arrArgs = objCycle.getServiceParameters();
-		ComponentAddress objAddr = (ComponentAddress) arrArgs[0];
-		String strColumnName = (String) arrArgs[1];
-
-		ITableModelSource objSource =
-			(ITableModelSource) objAddr.findComponent(objCycle);
-		ITableModel objModel = objSource.getTableModel();
-
-		ITableSortingState objState = objModel.getSortingState();
+        String strColumnName = getSelectedColumnName();
+		ITableSortingState objState = getTableModel().getSortingState();
 		if (strColumnName.equals(objState.getSortColumn()))
 			objState.setSortColumn(strColumnName, !objState.getSortOrder());
 		else
@@ -199,7 +172,7 @@ public class SimpleTableColumnComponent
 				ITableSortingState.SORT_ASCENDING);
 
 		// ensure that the change is saved
-		objSource.fireObservedStateChange();
+		getTableModelSource().fireObservedStateChange();
 	}
 
 }

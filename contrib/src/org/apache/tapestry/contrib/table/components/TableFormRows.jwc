@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+	
+<component-specification class="org.apache.tapestry.contrib.table.components.TableFormRows" 
+	allow-body="yes" allow-informal-parameters="yes">
+	
+	<description>
+	</description>
+  
+	<parameter name="row" 
+		type="Object" 
+		required="no"
+		direction="custom"/>
+
+	<parameter name="element" 
+		type="java.lang.String" 
+		required="no"
+		direction="custom"
+		default-value='"tr"'/>
+
+	<component id="iterRows" type="ListEdit" inherit-informal-parameters="yes">
+		<binding name="source" expression="tableRowsIterator"/>
+		<binding name="value" expression="tableRow"/>
+		<binding name="element" expression="element"/>
+	</component>
+  
+</component-specification>

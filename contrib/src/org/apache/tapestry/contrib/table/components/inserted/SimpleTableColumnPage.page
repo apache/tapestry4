@@ -7,5 +7,6 @@
 <page-specification>
 
 	<component id="tableColumnComponent" type="SimpleTableColumnComponent"/>
+	<component id="tableColumnFormComponent" type="SimpleTableColumnFormComponent"/>
 
 </page-specification>
