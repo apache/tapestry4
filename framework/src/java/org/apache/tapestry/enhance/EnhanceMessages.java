@@ -87,4 +87,9 @@ class EnhanceMessages
         return _formatter.format("incompatible-inject-type", locator, value, ClassFabUtils
                 .getJavaClassName(propertyType));
     }
+
+    public static String initialValueForProperty(String propertyName)
+    {
+        return _formatter.format("initial-value-for-property", propertyName);
+    }
 }

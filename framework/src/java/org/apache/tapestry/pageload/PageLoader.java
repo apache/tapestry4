@@ -19,8 +19,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
-import javax.servlet.ServletContext;
-
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
@@ -48,14 +46,12 @@ import org.apache.tapestry.services.BSFManagerFactory;
 import org.apache.tapestry.services.ComponentConstructor;
 import org.apache.tapestry.services.ComponentConstructorFactory;
 import org.apache.tapestry.services.ComponentTemplateLoader;
-import org.apache.tapestry.services.TemplateSource;
 import org.apache.tapestry.spec.BindingType;
 import org.apache.tapestry.spec.IAssetSpecification;
 import org.apache.tapestry.spec.IBindingSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
 import org.apache.tapestry.spec.IListenerBindingSpecification;
-import org.apache.tapestry.spec.IPropertySpecification;
 
 /**
  * Runs the process of building the component hierarchy for an entire page.
@@ -382,16 +378,13 @@ public class PageLoader implements IPageLoader
 
             // Finish the load of the component; most components (which
             // subclass BaseComponent) load their templates here.
+            // Properties with initial values will be set here (or the
+            // initial value will be recorded for later use in pageDetach().
             // That may cause yet more components to be created, and more
             // bindings to be set, so we defer some checking until
             // later.
 
             container.finishLoad(cycle, this, containerSpec);
-
-            // Finally, we create an initializer for each
-            // specified property.
-
-            createPropertyInitializers(page, container, containerSpec);
 
             // Have the component switch over to its active state.
 
@@ -653,54 +646,6 @@ public class PageLoader implements IPageLoader
     }
 
     /**
-     * Invoked from
-     * {@link #constructComponent(IRequestCycle, IPage, IComponent, IComponentSpecification, INamespace)}
-     * after {@link IComponent#finishLoad(IRequestCycle, IPageLoader, IComponentSpecification)}is
-     * invoked. This iterates over any {@link org.apache.tapestry.spec.IPropertySpecification}s for
-     * the component, create an initializer for each.
-     * 
-     * <p>
-     * TODO: This logic should be moved into {@link org.apache.tapestry.enhance.SpecifiedPropertyWorker}.
-     * 
-     */
-
-    private void createPropertyInitializers(IPage page, IComponent component,
-            IComponentSpecification spec)
-    {
-        List names = spec.getPropertySpecificationNames();
-        int count = names.size();
-
-        PageDetachListener initializer = null;
-
-        for (int i = 0; i < count; i++)
-        {
-            String name = (String) names.get(i);
-            IPropertySpecification ps = spec.getPropertySpecification(name);
-
-            String initialValue = ps.getInitialValue();
-
-            if (initialValue == null)
-                initializer = new PropertyReinitializer(component, name);
-            else
-            {
-                String description = PageloadMessages.initializerName(name);
-
-                IBinding initialValueBinding = _bindingSource.createBinding(
-                        component,
-                        description,
-                        initialValue,
-                        ps.getLocation());
-
-                initializer = new PropertyBindingInitializer(component, name, initialValueBinding);
-            }
-
-            _propertyInitializers.add(initializer);
-            page.addPageDetachListener(initializer);
-        }
-
-    }
-
-    /**
      * Builds an instance of {@link IAsset}from the specification.
      */
 
@@ -712,7 +657,7 @@ public class PageLoader implements IPageLoader
 
         return _assetSource.findAsset(location.getResource(), path, _locale, location);
     }
-    
+
     /** @since 3.1 */
 
     public void setLog(Log log)

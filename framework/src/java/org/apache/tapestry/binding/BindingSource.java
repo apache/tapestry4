@@ -28,10 +28,9 @@ public interface BindingSource
 {
     /**
      * Creates a new binding. The locator is used to identify the <em>type</em> of binding to
-     * create as well as configure the binding instance. 
-     * The locator is either a literal value (resulting in a
-     * {@link org.apache.tapestry.binding.LiteralBinding literal binding}) or consists of prefix and
-     * a path, i.e., <code>ognl:myProperty</code>.
+     * create as well as configure the binding instance. The locator is either a literal value
+     * (resulting in a {@link org.apache.tapestry.binding.LiteralBinding literal binding}) or
+     * consists of prefix and a path, i.e., <code>ognl:myProperty</code>.
      * <p>
      * When a prefix exists and is identified, it is used to select the correct
      * {@link BindingFactory}, and the remainder of the path (i.e., <code>myProperty</code)
@@ -42,8 +41,11 @@ public interface BindingSource
      * as a kind of context for certain types of bindings (for example, the root object when
      * evaluating OGNL expressions).
      * @param description {@link IBinding#getDescription() description} for the new binding
-     * @param locator the binding to be created, possibly including a prefix to define the type
+     * @param reference the binding reference used to create the binding, possibly including a prefix to define the type. A default
+     * binding factory ({@link LiteralBindingFactory}) is used when the prefix is missing
+     * or doesn't match a known binding factory.
      * @param location location used to report errors in the binding
      */
-    public IBinding createBinding(IComponent component, String description, String locator, Location location);
+    public IBinding createBinding(IComponent component, String description, String reference,
+            Location location);
 }

@@ -15,7 +15,10 @@
 package org.apache.tapestry.enhance;
 
 import java.lang.reflect.Modifier;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.apache.hivemind.service.ClassFabUtils;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IBinding;
@@ -185,4 +188,80 @@ public class EnhanceUtils
 
         return wrapped.doubleValue();
     }
+
+    /**
+     * Used to unwrap primitive types inside the accessor method. In each case, the binding is in a
+     * variable named "binding", and {0} will be the actual type of the property. The Map is keyed
+     * on the primtive type.
+     */
+
+    private static Map _unwrappers = new HashMap();
+
+    static
+    {
+        _unwrappers.put(boolean.class, "toBoolean");
+        _unwrappers.put(byte.class, "toByte");
+        _unwrappers.put(char.class, "toChar");
+        _unwrappers.put(short.class, "toShort");
+        _unwrappers.put(int.class, "toInt");
+        _unwrappers.put(long.class, "toLong");
+        _unwrappers.put(float.class, "toFloat");
+        _unwrappers.put(double.class, "toDouble");
+    }
+
+    /**
+     * Returns the name of the static method, within EnhanceUtils, used to unwrap a binding to a
+     * primitive type. Returns null if the type is not a primitve.
+     */
+
+    public static String getUnwrapperMethodName(Class type)
+    {
+        return (String) _unwrappers.get(type);
+    }
+
+    /**
+     * Builds a Javassist expression for unwrapping a binding's value to a type (either primitive or
+     * a class type).
+     * 
+     * @param op
+     *            the enhancement operation
+     * @param bindingName
+     *            the name of the field (or an expression) that will evaluate to the binding from
+     *            which a value will be extracted.
+     * @param valueType
+     *            the type of value to be extracted from the binding.
+     */
+
+    public static String createUnwrapExpression(EnhancementOperation op, String bindingName,
+            Class valueType)
+    {
+        StringBuffer buffer = new StringBuffer();
+
+        String unwrapper = getUnwrapperMethodName(valueType);
+
+        if (unwrapper == null)
+        {
+            String propertyTypeRef = op.getClassReference(valueType);
+
+            buffer.append("(");
+            buffer.append(ClassFabUtils.getJavaClassName(valueType));
+            buffer.append(") ");
+            buffer.append(bindingName);
+            buffer.append(".getObject(");
+            buffer.append(propertyTypeRef);
+            buffer.append(")");
+        }
+        else
+        {
+            buffer.append(EnhanceUtils.class.getName());
+            buffer.append(".");
+            buffer.append(unwrapper);
+            buffer.append("(");
+            buffer.append(bindingName);
+            buffer.append(")");
+        }
+
+        return buffer.toString();
+    }
+
 }
