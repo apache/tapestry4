@@ -67,10 +67,10 @@ used in Tapestry.
 </table>
 
 <para>
-It should be noted that four of the five applications share the same DTD and, in fact, share
-a good number of common elements.
+The four general Tapestry specifications (&spec.application;, &spec.component-specification;
+&spec.page-specification; and &spec.library-specification;) all share the same DTD, but use different
+root elements.
 </para>
-
 
 <section id="spec.application">
 	<title><sgmltag class="starttag">application</sgmltag> element</title>
@@ -130,7 +130,7 @@ It also defines any libraries that are used within the application.
 </section>  <!-- spec.application -->
 
 <section id="spec.bean">
-	<title><sgmltag class="starttag">beam</sgmltag> element</title>
+	<title><sgmltag class="starttag">bean</sgmltag> element</title>
 	
 	
 <para>
@@ -141,7 +141,7 @@ Appears in:
 <para>
 A <sgmltag class="starttag">bean</sgmltag> is used to add behaviors to a page or component via aggregation.
 Each <sgmltag class="starttag">bean</sgmltag> defines a named JavaBean that is instantiated on demand.
-Beans are accessed through the &OGNL; expression <literal>beans.<replaceable>name</replaceable></literal>.
+Beans are accessed through the OGNL expression <literal>beans.<replaceable>name</replaceable></literal>.
 </para>
 
 <para>
@@ -265,13 +265,13 @@ Appears in: &spec.component;
 </para>
 
 <para>
-Binds a parameter of an embedded component to an &OGNL; expression rooted
+Binds a parameter of an embedded component to an OGNL expression rooted
 in its container.
 </para>
 
 <para>
 In an instantiated component, bindings can be accessed with
-the &OGNL; expression <literal>bindings.<replaceable>name</replaceable></literal>.
+the OGNL expression <literal>bindings.<replaceable>name</replaceable></literal>.
 </para>
 
 
@@ -298,10 +298,10 @@ the &OGNL; expression <literal>bindings.<replaceable>name</replaceable></literal
 </row>
 <row>
 	<entry>expression</entry>
-	<entry>OGNL expression</entry>
+	<entry>string</entry>
 	<entry>yes</entry>
 	<entry/>
-	<entry>The expression, relative to the container, to be bound to the parameter.</entry>
+	<entry>The OGNL expression, relative to the container, to be bound to the parameter.</entry>
 </row>
 </tbody>
 </tgroup>
@@ -375,7 +375,7 @@ Defines an embedded component within a container (a page or another component).
 
 <para>
 In an instantiated component, embedded components can be accessed with
-the &OGNL; expression <literal>components.<replaceable>id</replaceable></literal>.
+the OGNL expression <literal>components.<replaceable>id</replaceable></literal>.
 </para>
 
 
@@ -640,7 +640,7 @@ may be accessed using the OGNL expression <literal>assets.<replaceable>name</rep
 </section> <!-- spec.context-asset -->
 
 <section id="spec.description">
-	<title><sgmltag class="starttag">description</sgmltag> Attributes</title>
+	<title><sgmltag class="starttag">description</sgmltag> element</title>
 	
 <para>
 Appears in: <emphasis>many</emphasis>
@@ -698,15 +698,257 @@ should be short; external documentation can provide greater details.
 </section> <!-- spec.description -->
 
 <section id="spec.extension">
+	<title><sgmltag class="starttag">extension</sgmltag> element</title>
+
+<para>
+Appears in: &spec.application; and &spec.library-specification;
+</para>
+
+<para>
+Defines an extension, a JavaBean that is instantiated as needed to provide
+a global service to the application.
+</para>
+
+<figure>
+	<title><sgmltag class="starttag">extension</sgmltag> Attributes</title>
+<informaltable>
+<tgroup cols="5">
+<thead>
+<row>
+  <entry>Name</entry>
+  <entry>Type</entry>
+  <entry>Required ?</entry>
+  <entry>Default Value</entry>
+  <entry>Description</entry>
+</row>
+
+</thead>
+<tbody>
+<row>
+	<entry>name</entry>
+	<entry>string</entry>
+	<entry>yes</entry>
+	<entry/>
+	<entry>A name for the extension, which can (and should) look like
+	a qualified class name, but may also include the dash character.
+	</entry>
+</row>
+<row>
+	<entry>class</entry>
+	<entry>string</entry>
+	<entry>yes</entry>
+	<entry/>
+	<entry>The Java class to instantiate.  The class must have a zero-arguments
+	constructor.</entry>
+</row>
+<row>
+	<entry>immediate</entry>
+	<entry><literal>yes|no</literal></entry>
+	<entry>no</entry>
+	<entry><literal>no</literal></entry>
+	<entry>If <literal>yes</literal>, the extension is instantiated when the specification is read.  If 
+	<literal>no</literal>, then the extension is not created until first needed.
+	</entry>
+</row>
+</tbody>
+</tgroup>
+</informaltable>
+</figure>
+
+
+<figure>
+	<title><sgmltag class="starttag">component-specification</sgmltag> Elements</title>
+<literallayout>
+  &spec.property; *, &spec.configure; *
+</literallayout>
+</figure>
+
 </section> <!-- spec.extension -->
 
 <section id="spec.external-asset">
+	<title><sgmltag class="starttag">external-asset</sgmltag> element</title>
+
+<para>
+Appears in: &spec.component-specification; and &spec.page-specification;
+</para>
+
+<para>
+Defines an asset at an arbitrary URL.  The URL may begin with a slash to indicate an asset on the same
+web server as the application, or may be a complete URL to an arbitrary location on the Internet.
+</para>
+
+<para>
+External assets may be accessed at runtime with the OGNL expression
+<literal>assets.<replaceable>name</replaceable></literal>.
+</para>
+
+<figure>
+	<title><sgmltag class="starttag">external-asset</sgmltag> Attributes</title>
+<informaltable>
+<tgroup cols="5">
+<thead>
+<row>
+  <entry>Name</entry>
+  <entry>Type</entry>
+  <entry>Required ?</entry>
+  <entry>Default Value</entry>
+  <entry>Description</entry>
+</row>
+
+</thead>
+<tbody>
+<row>
+	<entry>name</entry>
+	<entry>string</entry>
+	<entry>yes</entry>
+	<entry/>
+	<entry>A name for the asset. Asset names must be valid Java identifiers.
+	</entry>
+</row>
+<row>
+	<entry>URL</entry>
+	<entry>string</entry>
+	<entry>yes</entry>
+	<entry/>
+	<entry>The URL used to access the asset.</entry>
+</row>
+per</tbody>
+</tgroup>
+</informaltable>
+</figure>
+
+
 </section> <!-- spec.external-asset -->
 
 <section id="spec.field-binding">
+	<title><sgmltag class="starttag">field-binding</sgmltag> element</title>
+
+<para>
+Appears in: &spec.component;
+</para>
+
+<para>
+Binds a parameter of an embedded component to a public static final field.
+</para>
+
+<note>
+<para>
+Although the same result can be accomplished using a &spec.binding;
+element and the OGNL expression
+<literal>@<replaceable>class-name</replaceable>@<replaceable>field-name</replaceable></literal>,
+using a <sgmltag class="starttag">field-binding</sgmltag>
+is more efficient, because Tapestry knows that the value is
+invariant.
+</para>
+</note>
+
+<para>
+The class name must be the qualified class name.  If the package
+is ommitted, <literal>java.lang</literal> is assumed (this makes
+it easier to reference common fields
+such as <literal>Boolean.TRUE</literal>).
+</para>
+
+<para>
+In an instantiated component, bindings can be accessed with
+the OGNL expression <literal>bindings.<replaceable>name</replaceable></literal>.
+</para>
+
+
+<figure>
+	<title><sgmltag class="starttag">field-binding</sgmltag> Attributes</title>
+<informaltable>
+<tgroup cols="5">
+<thead>
+<row>
+  <entry>Name</entry>
+  <entry>Type</entry>
+  <entry>Required ?</entry>
+  <entry>Default Value</entry>
+  <entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+	<entry>name</entry>
+	<entry>string</entry>
+	<entry>yes</entry>
+	<entry/>
+	<entry>The name of the parameter to bind.</entry>
+</row>
+<row>
+	<entry>field-name</entry>
+	<entry>string</entry>
+	<entry>yes</entry>
+	<entry/>
+	<entry>The name of a public static final field, in the form
+	<literal><replaceable>class-name.field-name</replaceable></literal>.
+	</entry>
+</row>
+</tbody>
+</tgroup>
+</informaltable>
+</figure>
+
+
 </section> <!-- spec.field-binding -->
 
 <section id="spec.inherited-binding">
+	<title><sgmltag class="starttag">inherited-binding</sgmltag> element</title>
+
+<para>
+Appears in: &spec.component;
+</para>
+
+<para>
+Binds a parameter of an embedded component to a parameter
+of its container.
+</para>
+
+
+<para>
+In an instantiated component, bindings can be accessed with
+the OGNL expression <literal>bindings.<replaceable>name</replaceable></literal>.
+</para>
+
+
+<figure>
+	<title><sgmltag class="starttag">inherited-binding</sgmltag> Attributes</title>
+<informaltable>
+<tgroup cols="5">
+<thead>
+<row>
+  <entry>Name</entry>
+  <entry>Type</entry>
+  <entry>Required ?</entry>
+  <entry>Default Value</entry>
+  <entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+	<entry>name</entry>
+	<entry>string</entry>
+	<entry>yes</entry>
+	<entry/>
+	<entry>The name of the parameter to bind.</entry>
+</row>
+<row>
+	<entry>parameter-name</entry>
+	<entry>string</entry>
+	<entry>yes</entry>
+	<entry/>
+	<entry>The name of a parameter of the containing component.
+	</entry>
+</row>
+</tbody>
+</tgroup>
+</informaltable>
+</figure>
+
+
+
+
 </section> <!-- spec.inherited-binding -->
 
 <section id="spec.library">
@@ -747,6 +989,5 @@ should be short; external documentation can provide greater details.
 
 <section id="spec.string-binding">
 </section> <!-- spec.string-binding -->
-
 
 </appendix>
