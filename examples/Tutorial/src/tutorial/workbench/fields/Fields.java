@@ -42,7 +42,6 @@ import net.sf.tapestry.html.BasePage;
 
 public class Fields extends BasePage
 {
-
     public static final int INT_MIN = 5;
     public static final int INT_MAX = 20;
     public static final double DOUBLE_MIN = 3.14;
@@ -57,6 +56,21 @@ public class Fields extends BasePage
 
     public static final int STRING_MIN_LENGTH = 3;
 
+    private boolean _clientValidationEnabled = true;
+    
+    public void detach()
+    {
+        _clientValidationEnabled = true;
+        
+        super.detach();
+    }
+       
+    
+    public void clientValidationChanged(IRequestCycle cycle)
+    {
+        // Do nothing.
+    }
+
     public void formSubmit(IRequestCycle cycle)
     {
 
@@ -68,6 +82,18 @@ public class Fields extends BasePage
 
         if (!delegate.getHasErrors())
             cycle.setPage("fields.Results");
+    }
+
+    public boolean isClientValidationEnabled()
+    {
+        return _clientValidationEnabled;
+    }
+
+    public void setClientValidationEnabled(boolean clientValidationEnabled)
+    {
+        _clientValidationEnabled = clientValidationEnabled;
+        
+        fireObservedChange("clientValidationEnabled", _clientValidationEnabled);
     }
 
 }

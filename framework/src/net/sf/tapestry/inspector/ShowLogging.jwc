@@ -12,9 +12,7 @@
   <bean name="delegate" class="net.sf.tapestry.inspector.InspectorValidationDelegate"/>
   
   <bean name="levelClass" class="net.sf.tapestry.bean.EvenOdd" lifecycle="render">
-    <set-property name="even">
-    	<static-value type="boolean">false</static-value>
-    </set-property>
+    <set-property name="even" expression="false"/>
   </bean>
   
   <component id="levelForm" type="Form">

@@ -8,73 +8,59 @@
 
   <bean name="delegate" class="tutorial.workbench.WorkbenchValidationDelegate"/>
 
-  <bean name="dateValidator" class="net.sf.tapestry.valid.DateValidator">
-  	<set-property name="required">
-  		<field-value field-name="Boolean.TRUE"/>
-  	</set-property>
+  <bean name="dateValidator" lifecycle="render" class="net.sf.tapestry.valid.DateValidator">
+  	<set-property name="required" expression="true"/>
   </bean>
 
-  <bean name="intValidator" class="net.sf.tapestry.valid.NumberValidator">
-  	<set-property name="required">
-  		<field-value field-name="Boolean.TRUE"/>
-  	</set-property>
-  	<set-property name="minimum">
-  		<field-value field-name="tutorial.workbench.fields.Fields.INT_MIN"/>
-  	</set-property>
-  	<set-property name="maximum">
-  		<field-value field-name="tutorial.workbench.fields.Fields.INT_MAX"/>
-  	</set-property>
+  <bean name="intValidator" lifecycle="render" class="net.sf.tapestry.valid.NumberValidator">
+  	<set-property name="required" expression="true"/>
+  	<set-property name="minimum" expression="@tutorial.workbench.fields.Fields@INT_MIN"/>
+  	<set-property name="maximum" expression="@tutorial.workbench.fields.Fields@INT_MAX"/>
+  	<set-property name="clientScriptingEnabled" expression="clientValidationEnabled"/>
   </bean>
 
-  <bean name="doubleValidator" class="net.sf.tapestry.valid.NumberValidator">
-  	<set-property name="required">
-  		<field-value field-name="Boolean.TRUE"/>
-  	</set-property>
-  	<set-property name="minimum">
-  		<field-value field-name="tutorial.workbench.fields.Fields.DOUBLE_MIN"/>
-  	</set-property>
-  	<set-property name="maximum">
-  		<field-value field-name="tutorial.workbench.fields.Fields.DOUBLE_MAX"/>
-  	</set-property>
+  <bean name="doubleValidator" lifecycle="render" class="net.sf.tapestry.valid.NumberValidator">
+  	<set-property name="required" expression="true"/>
+  	<set-property name="minimum" expression="@tutorial.workbench.fields.Fields@DOUBLE_MIN"/>
+  	<set-property name="maximum" expression="@tutorial.workbench.fields.Fields@DOUBLE_MAX"/>
+  	<set-property name="clientScriptingEnabled" expression="clientValidationEnabled"/>
   </bean>
 
 
-  <bean name="bigDecimalValidator" class="net.sf.tapestry.valid.NumberValidator">
-  	<set-property name="required">
-  		<field-value field-name="Boolean.TRUE"/>
-  	</set-property>
-  	<set-property name="minimum">
-  		<field-value field-name="tutorial.workbench.fields.Fields.DECIMAL_MIN"/>
-  	</set-property>
-  	<set-property name="maximum">
-  		<field-value field-name="tutorial.workbench.fields.Fields.DECIMAL_MAX"/>
-  	</set-property>
+  <bean name="bigDecimalValidator" lifecycle="render" class="net.sf.tapestry.valid.NumberValidator">
+  	<set-property name="required" expression="true"/>
+  	<set-property name="minimum" expression="@tutorial.workbench.fields.Fields@DECIMAL_MIN"/>
+  	<set-property name="maximum" expression="@tutorial.workbench.fields.Fields@DECIMAL_MAX"/>
+  	<set-property name="clientScriptingEnabled" expression="clientValidationEnabled"/>
   </bean>
 
-  <bean name="longValidator" class="net.sf.tapestry.valid.NumberValidator">
-  	<set-property name="required">
-  		<field-value field-name="Boolean.TRUE"/>
-  	</set-property>
-  	<set-property name="minimum">
-  		<field-value field-name="tutorial.workbench.fields.Fields.LONG_MIN"/>
-  	</set-property>
-  	<set-property name="maximum">
-  		<field-value field-name="tutorial.workbench.fields.Fields.LONG_MAX"/>
-  	</set-property>
+  <bean name="longValidator" lifecycle="render" class="net.sf.tapestry.valid.NumberValidator">
+  	<set-property name="required" expression="true"/>
+  	<set-property name="minimum" expression="@tutorial.workbench.fields.Fields@LONG_MIN"/>
+  	<set-property name="maximum" expression="@tutorial.workbench.fields.Fields@LONG_MAX"/>
+  	<set-property name="clientScriptingEnabled" expression="clientValidationEnabled"/>
   </bean>
 
-  <bean name="stringValidator" class="net.sf.tapestry.valid.StringValidator">
-  	<set-property name="required">
-  		<field-value field-name="Boolean.TRUE"/>
-  	</set-property>
-  	<set-property name="minimumLength">
-  		<field-value field-name="tutorial.workbench.fields.Fields.STRING_MIN_LENGTH"/>
-  	</set-property>
+  <bean name="stringValidator" lifecycle="render" class="net.sf.tapestry.valid.StringValidator">
+  	<set-property name="required" expression="true"/>
+  	<set-property name="minimumLength" expression="@tutorial.workbench.fields.Fields@STRING_MIN_LENGTH"/>
+  	<set-property name="clientScriptingEnabled" expression="clientValidationEnabled"/>
   </bean>
 
 
   <component id="border" type="Border"/>
 
+  <component id="enabledForm" type="Form">
+    <binding name="listener" expression="listeners.clientValidationChanged"/>
+  </component>
+  
+  <component id="inputEnabled" type="Checkbox">
+    <binding name="selected" expression="clientValidationEnabled"/> 
+    <static-binding name="onclick">
+    	javascript:this.form.submit();
+    </static-binding>    
+  </component>
+  
   <component id="showError" type="ShowError">
      <binding name="delegate" expression="beans.delegate"/>
   </component>

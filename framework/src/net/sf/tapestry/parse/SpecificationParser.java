@@ -912,7 +912,16 @@ public class SpecificationParser extends AbstractDocumentParser
 
             if (isElement(child, "set-property"))
             {
-                convertSetProperty(bspec, child);
+                if (_version3)
+                    convertSetProperty(bspec, child);
+                else
+                    convertSetProperty_2(bspec, child);
+                continue;
+            }
+            
+            if (isElement(child, "set-string-property"))
+            {
+                convertSetStringProperty(bspec, child);
                 continue;
             }
         }
@@ -920,7 +929,7 @@ public class SpecificationParser extends AbstractDocumentParser
 
     /** @since 1.0.5 **/
 
-    private void convertSetProperty(BeanSpecification spec, Node node) throws DocumentParseException
+    private void convertSetProperty_2(BeanSpecification spec, Node node) throws DocumentParseException
     {
         String name = getAttribute(node, "name");
 
@@ -939,41 +948,50 @@ public class SpecificationParser extends AbstractDocumentParser
                 convertFieldValue(spec, name, child);
                 continue;
             }
-
-            // New in 1.3 spec, replacing
-            // <property-value>
-
-            if (isElement(child, "expression-value"))
-            {
-                convertExpressionValue(spec, name, child);
-                continue;
-            }
-            
-            // This is in the 1.2 spec
             
             if (isElement(child, "property-value"))
             {
                 convertPropertyValue(spec, name, child);
                 continue;
             }
-
-            if (isElement(child, "string-value"))
-            {
-                convertStringValue(spec, name, child);
-                continue;
-            }
         }
     }
 
-    /** @since 2.2 **/
-
-    private void convertStringValue(BeanSpecification spec, String propertyName, Node node)
+    /**
+     *  This is a new simplified version structured around OGNL, in the 1.3 DTD.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    
+    private void convertSetProperty(BeanSpecification spec, Node node) throws DocumentParseException
     {
-        String key = getAttribute(node, "key");
-        IBeanInitializer iz = _factory.createStringBeanInitializer(propertyName, key);
-
+        String name = getAttribute(node, "name");
+        String expression = getAttribute(node, "expression");
+        
+        IBeanInitializer iz = _factory.createExpressionBeanInitializer(name, expression);
+        
         spec.addInitializer(iz);
     }
+
+    /**
+     *  String properties in the 1.3 DTD are handled a little differently.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    private void convertSetStringProperty(BeanSpecification spec, Node node) throws DocumentParseException
+    {
+        String name = getAttribute(node, "name");
+        String key = getAttribute(node, "key");
+        
+        IBeanInitializer iz = _factory.createStringBeanInitializer(name, key);
+        
+        spec.addInitializer(iz);
+    }
+    
 
     /** @since 1.0.8 **/
 

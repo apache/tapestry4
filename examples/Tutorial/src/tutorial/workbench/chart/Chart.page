@@ -9,12 +9,8 @@
   <bean name="delegate" class="tutorial.workbench.WorkbenchValidationDelegate"/>
 
   <bean name="intValidator" class="net.sf.tapestry.valid.NumberValidator">
-  	<set-property name="required">
-  		<field-value field-name="Boolean.TRUE"/>
-  	</set-property>
-  	<set-property name="minimum">
-  		<static-value type="int">0</static-value>
-  	</set-property>
+  	<set-property name="required" expression="true"/>
+  	<set-property name="minimum" expression="0"/>
   </bean>
 
   <component id="border" type="Border"/>
