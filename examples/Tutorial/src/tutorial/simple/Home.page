@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
-<specification class="tutorial.simple.Home">
+<!DOCTYPE page-specification PUBLIC "-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+	
+<page-specification class="tutorial.simple.Home">
+  
   <component id="insertDate" type="Insert">
     <binding name="value" property-path="currentDate"/>
   </component>
+  
   <component id="refresh" type="Page">
     <static-binding name="page">Home</static-binding>
   </component>
-</specification>
+  
+</page-specification>

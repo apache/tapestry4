@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC 
-	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
-	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+<!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 
 	
-<specification class="tutorial.portal.Home">
+<page-specification class="tutorial.portal.Home">
 
 <component id="border" type="Border"/>
 
@@ -32,4 +32,4 @@
   <binding name="model" property-path="visit.portletSelectionModel"/>
 </component>
 
-</specification>
+</page-specification>

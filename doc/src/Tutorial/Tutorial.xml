@@ -218,21 +218,22 @@ application, the specification lives with the application's class files, in the
         <title>HelloWorld.application</title>
         <programlisting><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE application PUBLIC 
-  "-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
-  "http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+  "-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+  "http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 <application
   name="Hello World Tutorial"
   engine-class="net.sf.tapestry.engine.SimpleEngine">
   
   <page name="Home" 
-    specification-path="/tutorial/hello/Home.jwc"/>
+    specification-path="/tutorial/hello/Home.page"/>
 
 </application>]]></programlisting>
       </figure>
       <para> 
 Our application is very simple; we give the application a name, use the standard engine, and define 
 a single page, named "Home".  In Tapestry, pages and components are specified with the path to their 
-specification file (a file that end with '.jwc').
+specification file (a file that end with '.page' for page specifications or '.jwc' 
+for component specifications).
 </para>
       <para>
 Page "Home" has a special meaning to Tapestry: when you first launch a Tapestry application, it 
@@ -247,14 +248,14 @@ The page specification defines the Tapestry component responsible for the page. 
 example, our component is very simple.
 </para>
       <figure>
-        <title>Home.jwc</title>
+        <title>Home.page</title>
         <programlisting><![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE specification PUBLIC
-  "-//Howard Lewis Ship//Tapestry Specification 1.2//EN"
-  "http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+<!DOCTYPE page-specification PUBLIC
+  "-//Howard Lewis Ship//Tapestry Specification 1.3//EN"
+  "http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 
-<specification class="net.sf.tapestry.html.BasePage"/>
+<page-specification class="net.sf.tapestry.html.BasePage"/>
 ]]></programlisting>
       </figure>
       <para>
@@ -364,11 +365,11 @@ The application specification is also straight forward:
       <programlisting><![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE application PUBLIC 
-  "-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
-  "http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+  "-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+  "http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 
 <application name="Simple Tutorial" engine-class="net.sf.tapestry.engine.SimpleEngine">
-  <page name="Home" specification-path="/tutorial/simple/Home.jwc"/>
+  <page name="Home" specification-path="/tutorial/simple/Home.page"/>
 </application>
 ]]></programlisting>
     </figure>
@@ -451,14 +452,14 @@ The page's component specification defines what types of components are used and
 moves between the application, page and any components.
 </para>
     <figure>
-      <title>Home.jwc</title>
+      <title>Home.page</title>
       <programlisting><![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE specification PUBLIC 
-  "-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
-  "http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+<!DOCTYPE page-specification PUBLIC 
+  "-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+  "http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 
-<specification class="tutorial.simple.Home">
+<page-specification class="tutorial.simple.Home">
 
   <component id="insertDate" type="Insert">
     <binding name="value" property-path="currentDate"/>
@@ -468,7 +469,7 @@ moves between the application, page and any components.
     <static-binding name="page">Home</static-binding>
   </component>
 
-</specification>]]></programlisting>
+</page-specification>]]></programlisting>
     </figure>
     <para>
 Here's what all that means:  The <varname>Home</varname> page is implemented with a custom class, 
@@ -549,7 +550,7 @@ This application demonstrates some dynamic behavior using Tapestry components.
 
 <p>The current date and time is: <b>Fri Nov 23 17:05:53 PST 2001</b>
 
-<p>Click <a href="/tutorial/simple?service=page&context=Home">here</a> to refresh.
+<p>Click <a href="/tutorial/simple...">here</a> to refresh.
 
 </body>
 </html>
@@ -644,20 +645,20 @@ the visit object.
         <programlisting>
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!DOCTYPE application PUBLIC
-  "-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
-  "http://tapestry.sf.net/dtd/Tapestry_1_2.dtd"&gt;
+  "-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+  "http://tapestry.sf.net/dtd/Tapestry_1_3.dtd"&gt;
 
 &lt;application name="Tapestry Hangman" engine-class="net.sf.tapestry.engine.SimpleEngine"&gt; 
 
   &lt;property name="net.sf.tapestry.visit-class"&gt;tutorial.hangman.Visit&lt;/property&gt; <co id="hangman.app.visit"/>
 
-  &lt;page name="Home" specification-path="/tutorial/hangman/Home.jwc"/&gt;
+  &lt;page name="Home" specification-path="/tutorial/hangman/Home.page"/&gt;
 
-  &lt;page name="Guess" specification-path="/tutorial/hangman/Guess.jwc"/&gt;
+  &lt;page name="Guess" specification-path="/tutorial/hangman/Guess.page"/&gt;
 
-  &lt;page name="Failed" specification-path="/tutorial/hangman/Failed.jwc"/&gt;
+  &lt;page name="Failed" specification-path="/tutorial/hangman/Failed.page"/&gt;
 
-  &lt;page name="Success" specification-path="/tutorial/hangman/Success.jwc"/&gt;
+  &lt;page name="Success" specification-path="/tutorial/hangman/Success.page"/&gt;
 
 &lt;/application&gt;    
 </programlisting>
@@ -819,7 +820,7 @@ property, when that radio button is selected by the user.
 This comes together in the Home page specification:
 </para>
       <figure>
-        <title>Home.jwc (excerpt)</title>
+        <title>Home.page (excerpt)</title>
         <programlisting>
   &lt;component id="group" type="RadioGroup"&gt;
     &lt;binding name="selected" property-path="misses"/&gt;
@@ -969,10 +970,15 @@ though;  the application needs to know which letter was actually clicked.
       <para>
 Passing that kind of information along is accomplished by setting the 
 <varname>parameters</varname> parameter for the 
-component.  The <varname>parameters</varname> parameter is a &String;, or array of 
-&String;s, that will be encoded into the 
+component.  The <varname>parameters</varname> parameter is an object, or
+array or objects, that will be encoded into the 
 URL for the hyperlink.  When the component's listener is notified, it
-can obtain the array of &String;s from the &IRequestCycle;.
+can obtain the array of objects from the &IRequestCycle;
+<footnote>
+Tapestry takes care of converting objects into strings when constructing the URL, then
+converts those strings back into objects when the link is clicked.  Your listener method
+will be able to get <emphasis>copies</emphasis> of the original parameters.
+</footnote>.
 </para>
       <para>
 These <emphasis>service parameters</emphasis>
@@ -1223,14 +1229,14 @@ In fact, the
 application engine provides the list.
 </para>
     <figure>
-      <title>Border specification</title>
+      <title>Border.jwc </title>
       <programlisting>
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;!DOCTYPE specification PUBLIC
-  "-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
-  "http://tapestry.sf.net/dtd/Tapestry_1_2.dtd"&gt;
+&lt;!DOCTYPE component-specification PUBLIC
+  "-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+  "http://tapestry.sf.net/dtd/Tapestry_1_3.dtd"&gt;
   
-&lt;specification class="tutorial.border.Border" allow-informal-parameters="no"&gt;
+&lt;component-specification class="tutorial.border.Border" allow-informal-parameters="no"&gt;
   
   &lt;parameter name="title" java-type="java.lang.String" required="yes"/&gt; <co id="reuse.border.spec.title"/>
   
@@ -1263,7 +1269,7 @@ application engine provides the list.
   &lt;component id="wrapped" type="InsertWrapped"/&gt;
   
   &lt;component id="showInspector" type="ShowInspector"/&gt; <co id="resuse.border.spec.showInspector"/>
-&lt;/specification&gt;
+&lt;/component-specification&gt;
 </programlisting>
     </figure>
     <para>
@@ -1369,18 +1375,18 @@ static, the literal value "Home" (this isn't the best approach if localization i
       <title>Home page specification</title>
       <programlisting>
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;!DOCTYPE specification PUBLIC
+&lt;!DOCTYPE page-specification PUBLIC
   "-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
   "http://tapestry.sf.net/dtd/Tapestry_1_2.dtd"&gt;
 
-&lt;specification class="net.sf.tapestry.html.BasePage"&gt;
+&lt;page-specification class="net.sf.tapestry.html.BasePage"&gt;
 
   &lt;component id="border" type="Border"&gt;
     &lt;static-binding name="title"&gt;Home&lt;/static-binding&gt;
     &lt;binding name="pages" property-path="engine.pageNames"/&gt;
   &lt;/component&gt;
 
-&lt;/specification&gt;
+&lt;/page-specification&gt;
 </programlisting>
     </figure>
     <para>  
