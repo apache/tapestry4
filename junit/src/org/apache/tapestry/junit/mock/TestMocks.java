@@ -181,7 +181,7 @@ public class TestMocks extends TapestryTestCase
 
         // Open and truncate file.
 
-        FileOutputStream fos = new FileOutputStream(file, false);
+        FileOutputStream fos = new FileOutputStream(file);
 
         BufferedOutputStream bos = new BufferedOutputStream(fos);
 
