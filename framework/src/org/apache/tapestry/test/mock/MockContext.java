@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.junit.mock;
+package org.apache.tapestry.test.mock;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,16 +31,15 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 /**
- *  Mock implementation of {@link javax.servlet.ServletContext}.
+ * Mock implementation of {@link javax.servlet.ServletContext}.
  *
- *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *  @since 2.2
+ * @author Howard Lewis Ship
+ * @version $Id$
+ * @since 3.1
  * 
- **/
+ */
 
-public class MockContext extends AttributeHolder implements ServletContext, IInitParameterHolder
+public class MockContext extends AttributeHolder implements ServletContext, InitParameterHolder
 {
     private MockSession _session;
 

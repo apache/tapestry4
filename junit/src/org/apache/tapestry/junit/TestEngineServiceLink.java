@@ -32,9 +32,9 @@ import org.apache.tapestry.ApplicationServlet;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.EngineServiceLink;
 import org.apache.tapestry.request.RequestContext;
+import org.apache.tapestry.test.mock.MockContext;
+import org.apache.tapestry.test.mock.MockServletConfig;
 
-import org.apache.tapestry.junit.mock.MockContext;
-import org.apache.tapestry.junit.mock.MockServletConfig;
 
 public class TestEngineServiceLink extends TapestryTestCase
 {

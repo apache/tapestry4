@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.junit.mock;
+package org.apache.tapestry.test.mock;
 
 import java.util.Collections;
 import java.util.Enumeration;
@@ -23,17 +23,15 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 
 /**
- *  An implementation of {@link javax.servlet.ServletConfig} used
- *  for Mock testing. 
- * 
+ * An implementation of {@link javax.servlet.ServletConfig} used
+ * for Mock testing. 
  *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *  @since 2.2
- *
- **/
+ * @author Howard Lewis Ship
+ * @version $Id$
+ * @since 3.1
+ */
 
-public class MockServletConfig implements ServletConfig, IInitParameterHolder
+public class MockServletConfig implements ServletConfig, InitParameterHolder
 {
     private String _name;
     private ServletContext _context;

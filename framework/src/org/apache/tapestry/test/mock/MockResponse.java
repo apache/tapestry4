@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.junit.mock;
+package org.apache.tapestry.test.mock;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -25,14 +25,14 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- *  Mock implementation of {@link javax.servlet.http.HttpServletResponse}.
+ * Mock implementation of {@link javax.servlet.http.HttpServletResponse}.
  *
  *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *  @since 2.2
+ * @author Howard Lewis Ship
+ * @version $Id$
+ * @since 3.1
  * 
- **/
+ */
 
 public class MockResponse implements HttpServletResponse
 {
@@ -40,6 +40,7 @@ public class MockResponse implements HttpServletResponse
     private boolean _commited = false;
     private ByteArrayOutputStream _outputByteStream;
     private ServletOutputStream _outputStream;
+    private String _outputString;
     private List _cookies = new ArrayList();
 
     private String _redirectLocation;
@@ -141,8 +142,8 @@ public class MockResponse implements HttpServletResponse
         if (_commited)
             throw new IllegalStateException("sendRedirect() when committed.");
 
-		if (location.endsWith("/FAIL_IO"))
-			throw new IOException("Forced IOException in MockResponse.sendRedirect().");
+        if (location.endsWith("/FAIL_IO"))
+            throw new IOException("Forced IOException in MockResponse.sendRedirect().");
 
         _redirectLocation = location;
 
@@ -213,7 +214,7 @@ public class MockResponse implements HttpServletResponse
 
     public void setContentType(String contentType)
     {
-    	_contentType = contentType;
+        _contentType = contentType;
     }
 
     public void setBufferSize(int arg0)
@@ -259,8 +260,8 @@ public class MockResponse implements HttpServletResponse
 
     public void end() throws IOException
     {
-    	// For redirects, we may never open an output stream.
-    	
+        // For redirects, we may never open an output stream.
+
         if (_outputStream != null)
             _outputStream.close();
     }
@@ -272,29 +273,39 @@ public class MockResponse implements HttpServletResponse
 
     public String getOutputString()
     {
-    	if (_outputByteStream == null)
-    		return null;
-    		
-        try {
+        if (_outputString != null)
+            return _outputString;
+
+        if (_outputByteStream == null)
+            return null;
+
+        try
+        {
             String encoding = _request.getCharacterEncoding();
-            return new String(_outputByteStream.toByteArray(), encoding);
+
+            if (encoding != null)
+                _outputString = new String(_outputByteStream.toByteArray(), encoding);
         }
-        catch (UnsupportedEncodingException e) {
-            // use the default encoding if the provided one is unsupported
-            return _outputByteStream.toString();
+        catch (UnsupportedEncodingException e)
+        {
         }
+
+        if (_outputString == null)
+            _outputString = _outputByteStream.toString();
+
+        return _outputString;
     }
 
-	public byte[] getResponseBytes()
-	{
-		return _outputByteStream.toByteArray();
-	}
+    public byte[] getResponseBytes()
+    {
+        return _outputByteStream.toByteArray();
+    }
 
     public Cookie[] getCookies()
     {
         return (Cookie[]) _cookies.toArray(new Cookie[_cookies.size()]);
     }
-    
+
     public String getContentType()
     {
         return _contentType;

@@ -43,6 +43,7 @@ import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
 import org.apache.tapestry.ApplicationServlet;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.test.mock.*;
 import org.apache.tapestry.util.xml.DocumentParseException;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -298,7 +299,7 @@ public class MockTester
         _request.setParameter(name, array);
     }
 
-    private void setInitParameters(Element parent, IInitParameterHolder holder)
+    private void setInitParameters(Element parent, InitParameterHolder holder)
     {
         List children = parent.getChildren("init-parameter");
 

@@ -12,31 +12,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.junit.mock;
-
-import java.util.Enumeration;
+package org.apache.tapestry.test;
 
 /**
- *  Common interface for several mock objects that can contain
- *  initial parameters.
+ * Interface for classes that can test a response from the (simulated) web server
+ * for conformance to some expectation; most implementions check the 
+ * response content for particular literal values or regular expressions.
  *
- *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *  @since 2.2
- * 
- **/
-
-public interface IInitParameterHolder
+ * @author Howard Lewis Ship
+ * @version $Id$
+ */
+public interface ResponseAssertion
 {
-    public String getInitParameter(String name);
-
-    public Enumeration getInitParameterNames();
-    
-    /**
-     *  Allows Mock objects to have initial parameters set.
-     * 
-     **/
-    
-    public void setInitParameter(String name, String value);
+	/**
+	 * Invoked after a response has been recieved from the simulated servlet container;
+	 * assertions run to check that the response is as expected.
+	 */
+	public void execute(ScriptedTestSession session);
 }

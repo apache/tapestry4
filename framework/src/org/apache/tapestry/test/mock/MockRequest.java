@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.junit.mock;
+package org.apache.tapestry.test.mock;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -34,14 +34,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
- *  Mock implementation of {@link javax.servlet.http.HttpServletRequest}.
+ * Mock implementation of {@link javax.servlet.http.HttpServletRequest}.
  *
  *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *  @since 2.2
- * 
- **/
+ * @author Howard Lewis Ship
+ * @version $Id$
+ * @since 3.1
+ */
 
 public class MockRequest extends AttributeHolder implements HttpServletRequest
 {
@@ -52,14 +51,14 @@ public class MockRequest extends AttributeHolder implements HttpServletRequest
     /**
      *  Map of String[].
      * 
-     **/
+     */
 
     private Map _parameters = new HashMap();
 
     /**
      *  Map of String[]
      * 
-     **/
+     */
 
     private Map _headers = new HashMap();
 
@@ -76,7 +75,7 @@ public class MockRequest extends AttributeHolder implements HttpServletRequest
     /**
      *  This can be stored within the header, but doing it this way emulates a browser that 
      *  does not put the encoding in the request, which appears to be the general case. 
-     **/
+     */
     private String _encoding = null;
 
     public MockRequest(MockContext servletContext, String servletPath)
@@ -284,7 +283,7 @@ public class MockRequest extends AttributeHolder implements HttpServletRequest
     /** 
      *  Not part of 2.1 API, not used by Tapestry.
      * 
-     **/
+     */
 
     public Map getParameterMap()
     {
@@ -404,7 +403,7 @@ public class MockRequest extends AttributeHolder implements HttpServletRequest
      *  Delegates this to the {@link org.apache.tapestry.junit.mock.MockSession}, if
      *  it exists.
      * 
-     **/
+     */
 
     public void simulateFailover()
     {

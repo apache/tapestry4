@@ -55,7 +55,6 @@ import org.apache.tapestry.util.IPropertyHolder;
 import org.apache.tapestry.util.RegexpMatcher;
 import org.apache.tapestry.util.xml.DocumentParseException;
 import org.apache.tapestry.util.xml.InvalidStringException;
-import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -81,7 +80,6 @@ public class SpecificationParser extends AbstractParser
             if (result == null || !(result instanceof Boolean))
                 throw new DocumentParseException(
                     Tapestry.format("SpecificationParser.fail-convert-boolean", value),
-                    location.getResource(),
                     location,
                     null);
 
@@ -101,7 +99,6 @@ public class SpecificationParser extends AbstractParser
             {
                 throw new DocumentParseException(
                     Tapestry.format("SpecificationParser.fail-convert-double", value),
-                    location.getResource(),
                     location,
                     ex);
             }
@@ -120,7 +117,6 @@ public class SpecificationParser extends AbstractParser
             {
                 throw new DocumentParseException(
                     Tapestry.format("SpecificationParser.fail-convert-int", value),
-                    location.getResource(),
                     location,
                     ex);
             }
@@ -139,7 +135,6 @@ public class SpecificationParser extends AbstractParser
             {
                 throw new DocumentParseException(
                     Tapestry.format("SpecificationParser.fail-convert-long", value),
-                    location.getResource(),
                     location,
                     ex);
             }
@@ -416,8 +411,11 @@ public class SpecificationParser extends AbstractParser
         _factory = factory;
     }
 
-    private void begin()
+    protected void begin(String elementName, Map attributes)
     {
+        _elementName = elementName;
+        _attributes = attributes;
+
         switch (getState())
         {
             case STATE_COMPONENT_SPECIFICATION_INITIAL :
@@ -812,24 +810,6 @@ public class SpecificationParser extends AbstractParser
         push(_elementName, cs, STATE_PAGE_SPECIFICATION);
     }
 
-    private void buildAttributes(Attributes attributes)
-    {
-        _attributes.clear();
-
-        int count = attributes.getLength();
-        for (int i = 0; i < count; i++)
-        {
-            String key = attributes.getLocalName(i);
-
-            if (Tapestry.isBlank(key))
-                key = attributes.getQName(i);
-
-            String value = attributes.getValue(i);
-
-            _attributes.put(key, value);
-        }
-    }
-
     /**
      * Close a stream (if not null), ignoring any errors.
      */
@@ -855,7 +835,6 @@ public class SpecificationParser extends AbstractParser
         if (source == null)
             throw new DocumentParseException(
                 Tapestry.format("SpecificationParser.unable-to-copy", sourceComponentId),
-                getResource(),
                 getLocation(),
                 null);
 
@@ -866,12 +845,14 @@ public class SpecificationParser extends AbstractParser
             IBindingSpecification binding = source.getBinding(bindingName);
             target.setBinding(bindingName, binding);
         }
-        
+
         target.setType(source.getType());
     }
 
-    private void end()
+    protected void end(String elementName)
     {
+        _elementName = elementName;
+
         switch (getState())
         {
             case STATE_DESCRIPTION :
@@ -958,15 +939,6 @@ public class SpecificationParser extends AbstractParser
         String description = peekContent();
 
         setter.apply(description);
-    }
-
-    // Note: can this can move up to AbstractParser?
-
-    public void endElement(String uri, String localName, String qName) throws SAXException
-    {
-        _elementName = qName != null ? qName : localName;
-
-        end();
     }
 
     private void endLibrarySpecification()
@@ -1117,7 +1089,6 @@ public class SpecificationParser extends AbstractParser
             if (Tapestry.isNonBlank(type))
                 throw new DocumentParseException(
                     Tapestry.format("SpecificationParser.both-type-and-copy-of", id),
-                    getResource(),
                     getLocation(),
                     null);
         }
@@ -1126,7 +1097,6 @@ public class SpecificationParser extends AbstractParser
             if (Tapestry.isBlank(type))
                 throw new DocumentParseException(
                     Tapestry.format("SpecificationParser.missing-type-or-copy-of", id),
-                    getResource(),
                     getLocation(),
                     null);
         }
@@ -1497,7 +1467,6 @@ public class SpecificationParser extends AbstractParser
                 "AbstractDocumentParser.incorrect-document-type",
                 _elementName,
                 elementName),
-            getResource(),
             getLocation(),
             null);
 
@@ -1549,7 +1518,6 @@ public class SpecificationParser extends AbstractParser
                     "SpecificationParser.no-attribute-and-body",
                     attributeName,
                     _elementName),
-                getResource(),
                 getLocation(),
                 null);
         }
@@ -1561,7 +1529,6 @@ public class SpecificationParser extends AbstractParser
                     "SpecificationParser.required-extended-attribute",
                     _elementName,
                     attributeName),
-                getResource(),
                 getLocation(),
                 null);
         }
@@ -1738,17 +1705,5 @@ public class SpecificationParser extends AbstractParser
         throw new DocumentParseException(
             Tapestry.format("AbstractDocumentParser.unknown-public-id", getResource(), publicId),
             getResource());
-    }
-
-    // Note: can this can move up to AbstractParser?
-
-    public void startElement(String uri, String localName, String qName, Attributes attributes)
-        throws SAXException
-    {
-        _elementName = qName != null ? qName : localName;
-
-        buildAttributes(attributes);
-
-        begin();
     }
 }
