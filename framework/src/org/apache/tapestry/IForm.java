@@ -181,4 +181,20 @@ public interface IForm extends IAction
      **/
     
     public void setEncodingType(String encodingType);
+    
+    
+    /**
+     * Adds a hidden field value to be stored in the form. This ensures that all
+     * of the &lt;input type="hidden"&gt; (or equivalent) are grouped together, 
+     * which ensures that the output HTML is valid (ie. doesn't 
+     * have &lt;input&gt; improperly nested with &lt;tr&gt;, etc.).
+     * 
+     * <p>
+     * It is acceptible to add multiple hidden fields with the same name.
+     * They will be written in the order they are received.
+     * 
+     * @since 3.0
+     */
+
+	public void addHiddenValue(String name, String value);
 }

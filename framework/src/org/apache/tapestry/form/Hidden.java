@@ -113,10 +113,7 @@ public abstract class Hidden extends AbstractFormComponent
             else
                 externalValue = (String) getValueBinding().getObject("value", String.class);
 
-            writer.beginEmpty("input");
-            writer.attribute("type", "hidden");
-            writer.attribute("name", name);
-            writer.attribute("value", externalValue);
+			form.addHiddenValue(name, externalValue);
 
             return;
         }
