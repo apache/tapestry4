@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+<component-specification class="net.sf.tapestry.link.ExternalLink">
+
+  <description>Creates a IExternalPage link.</description>
+
+  <parameter name="page" 
+  	java-type="java.lang.String" 
+  	required="yes" 
+  	property-name="targetPage"
+  	direction="in"/>
+
+  <parameter name="parameters" java-type="java.lang.Object" direction="in">
+    <description>
+    An object, or list of objects, encoded into the URL
+    as service parameters.
+    </description>
+  </parameter>
+  
+  <parameter name="disabled"
+  	java-type="boolean"
+  	direction="in"/>
+  	
+  <parameter name="scheme" 
+  	java-type="java.lang.String"
+  	direction="in"/>
+  	
+  <parameter name="port"
+  	java-type="int"
+  	direction="in"/>
+  	
+  <reserved-parameter name="href"/>
+    
+</component-specification>
