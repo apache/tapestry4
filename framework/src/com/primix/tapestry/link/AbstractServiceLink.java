@@ -118,9 +118,9 @@ public abstract class AbstractServiceLink extends AbstractComponent implements I
 			port = portBinding.getInt();
 
 		if (scheme == null && port == 0)
-			URL = g.getURL(cycle);
+			URL = g.getURL();
 		else
-			URL = g.getAbsoluteURL(scheme, null, port, cycle);
+			URL = g.getAbsoluteURL(scheme, null, port);
 
         if (anchorValue != null)
             anchor = anchorValue;

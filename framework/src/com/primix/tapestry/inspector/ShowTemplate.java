@@ -180,7 +180,7 @@ public class ShowTemplate extends BaseComponent implements IDirect
 			writer.attribute("class", "jwc-id");
 
 			writer.begin("a");
-			writer.attribute("href", g.getURL(cycle));
+			writer.attribute("href", g.getURL());
 			writer.print(id);
 
 			writer.end(); // <a>

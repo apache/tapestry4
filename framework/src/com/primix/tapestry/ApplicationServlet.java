@@ -182,15 +182,15 @@ abstract public class ApplicationServlet extends HttpServlet
 		HttpServletResponse response)
 		throws IOException, ServletException
 	{
-		RequestContext context;
+		RequestContext context = null;
 		IEngine engine;
-
-		// Create a context from the various bits and pieces.
-
-		context = new RequestContext(this, request, response);
 
 		try
 		{
+
+            // Create a context from the various bits and pieces.
+
+            context = new RequestContext(this, request, response);
 
 			// The subclass provides the engine.
 
@@ -282,6 +282,12 @@ abstract public class ApplicationServlet extends HttpServlet
 
 			throw ex;
 		}
+        finally
+        {
+            if (context != null)
+                context.cleanup();
+        }
+
 	}
 
 	protected void show(Exception ex)

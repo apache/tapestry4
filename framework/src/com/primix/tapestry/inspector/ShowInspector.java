@@ -106,7 +106,7 @@ public class ShowInspector extends BaseComponent implements IDirect
 		IEngineService service =
 			page.getEngine().getService(IEngineService.DIRECT_SERVICE);
 		Gesture g = service.buildGesture(cycle, this, null);
-		String URL = g.getAbsoluteURL(cycle);
+		String URL = g.getAbsoluteURL();
 
 		symbols.put("URL", URL);
 

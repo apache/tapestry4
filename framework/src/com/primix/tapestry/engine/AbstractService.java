@@ -113,7 +113,7 @@ public abstract class AbstractService implements IEngineService
 			map.put(PARAMETERS_QUERY_PARAMETER_NAME, buffer.toString());
 		}
 
-		return new Gesture(cycle.getEngine().getServletPath(), map, stateful);
+		return new Gesture(cycle, map, stateful);
 	}
 
 	/**

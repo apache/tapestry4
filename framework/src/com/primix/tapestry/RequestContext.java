@@ -52,9 +52,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Category;
-import org.mortbay.http.HttpResponse;
-import org.mortbay.servlet.MultiPartRequest;
 
+
+import com.primix.tapestry.multipart.MultipartDecoder;
 import com.primix.tapestry.util.StringSplitter;
 
 /**
@@ -94,46 +94,13 @@ import com.primix.tapestry.util.StringSplitter;
 
 public class RequestContext implements IRender
 {
-	/**
-	 *  Implementation of {@link IUploadFile}.
-	 * 
-	 *  @since 1.0.8
-	 * 
-	 **/
-
-	public class UploadFile implements IUploadFile
-	{
-		private String name;
-
-		UploadFile(String name)
-		{
-			this.name = name;
-		}
-
-		public String getFileName()
-		{
-			return multipart.getFilename(name);
-		}
-
-		public boolean isTruncated()
-		{
-			return false;
-		}
-
-		public InputStream getStream()
-		{
-			return multipart.getInputStream(name);
-		}
-
-	}
-
 	private static final Category CAT = Category.getInstance(RequestContext.class);
 
 	private HttpSession session;
 	private HttpServletRequest request;
 	private HttpServletResponse response;
 	private ApplicationServlet servlet;
-	private MultiPartRequest multipart;
+	private MultipartDecoder decoder;
 
 	/**
 	 * A mapping of the cookies available in the request.
@@ -199,10 +166,8 @@ public class RequestContext implements IRender
 		this.request = request;
 		this.response = response;
 
-		String contentType = request.getContentType();
-
-		if (contentType != null && contentType.startsWith("multipart/form-data"))
-			multipart = new MultiPartRequest(request);
+        if (MultipartDecoder.isMultipartRequest(request))
+            decoder = new MultipartDecoder(request);    
 	}
 
 	/**
@@ -458,8 +423,8 @@ public class RequestContext implements IRender
 
 	public String getParameter(String name)
 	{
-		if (multipart != null)
-			return multipart.getString(name);
+		if (decoder != null)
+			return decoder.getString(name);
 
 		return request.getParameter(name);
 	}
@@ -467,11 +432,6 @@ public class RequestContext implements IRender
 	/**
 	 * For parameters that are, or are possibly, multi-valued, this
 	 * method returns all the values as an array of Strings.
-	 * 
-	 * <p>Note: when a multipart form is submitted, this value is
-	 *  broken and will return <em>only the first value</em>.  Fixing
-	 *  this will require a change to Jetty ({@link MultiPartRequest} is broken
-	 *  in Jetty 3.1.5), but is forthcoming.
 	 * 
 	 *  @see #getParameter(String)
 	 *
@@ -481,8 +441,8 @@ public class RequestContext implements IRender
 	{
 		// Note: this may not be quite how we want it to work; we'll have to see.
 
-		if (multipart != null)
-			return new String[] { multipart.getString(name)};
+		if (decoder != null)
+            return decoder.getStrings(name);
 
 		return request.getParameterValues(name);
 	}
@@ -498,18 +458,25 @@ public class RequestContext implements IRender
 
 	public IUploadFile getUploadFile(String name)
 	{
-		if (multipart == null)
+		if (decoder == null)
 			return null;
 
-		if (!multipart.contains(name))
-			return null;
-
-		// Hm.  How to determine difference between
-		// uploaded file and ordinary form value?
-
-		return new UploadFile(name);
+        return decoder.getUploadFile(name);
 	}
 
+    /**
+     *  Invoked at the end of the request cycle to cleanup and temporary resources.
+     *  This is chained to the {@link MultipartDecoder}, if there is one.
+     * 
+     *  @since 2.0.1
+     **/
+    
+    public void cleanup()
+    {
+        if (decoder != null)
+            decoder.cleanup();
+    }
+    
 	/**
 	 * Returns the pathInfo string at the given index. If the index
 	 * is out of range, this returns null.
