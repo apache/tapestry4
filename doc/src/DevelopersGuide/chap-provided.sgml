@@ -629,6 +629,39 @@ A name for the the component, used when formulating error messages.
 
 	</section>
 
+	<section id="builtin.ListEdit">
+		<title>ListEdit</>
+
+<para>
+Similar to a &Foreach;, this component must be wrapped by
+a &Form;.  It provides the iteration of the &Foreach; but helps to avoid stale link
+exceptions by recorded the number of items in its source, as well as an encoding of
+each value, as hidden fields in the form.
+</>
+
+<variablelist>
+	<title>Parameters</>
+
+	<varlistentry>
+		<term>source</>
+		<listitem>
+			<para>The source of objects to be iterated, and array or <classname>List</> of objects.
+			This is only accessed when the containing page is renderred, not when the
+			containing form is rewound.
+			</>
+		</>
+	</>
+
+	<varlistentry>
+		<term>value</>
+		<listitem>
+			<para>Used to update the current value on each iteration.</>
+		</>
+	</>
+</>
+
+	</section>
+
 	<section id="builtin.NumericField">
 		<title>NumericField</>
 

@@ -3,7 +3,7 @@
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="tutorial.hangman.Home">
   <component id="form" type="Form">
-    <binding name="listener" property-path="formListener"/>
+    <binding name="listener" property-path="listeners.formSubmit"/>
     <field-binding name="stateful" field-name="Boolean.FALSE"/>
   </component>
   <component id="group" type="RadioGroup">

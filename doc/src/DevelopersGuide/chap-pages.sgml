@@ -103,14 +103,14 @@ In Tapestry, the lifespan of each property is very important.  There are three l
 
 	<listitem>
 		<para>
-			Transient.  The property is set before the page is rendered and will be reset (
-			to default value) at the end of the current request cycle.
+			Transient.  The property is set before the page is rendered and will be reset 
+			(to its default value) at the end of the current request cycle.
 		</>
 	</>
 
 	<listitem>
 		<para>
-			Dynamic.  The property changes event while the page is rendered, but 
+			Dynamic.  The property changes even while the page is rendered, but 
 			(like transient) the property is 
 			reset at the end of the current request cycle.
 		</>
@@ -118,8 +118,8 @@ In Tapestry, the lifespan of each property is very important.  There are three l
 </>
 
 <para>
-Persistent properties are things like the user's name, the product being displayed in an e-
-commerce application, etc.  Transient properties are more commonly things needed just once, 
+Persistent properties are things like the user's name, the product being displayed in an 
+e-commerce application, etc.  Transient properties are more commonly things needed just once, 
 such as an error message.  Dynamic properties are intimately tied to the rendering process ... for 
 example, to display a list of items in an order, it may be necessary to have a dynamic property take 
 the value of each line item in sequence, as part of a loop.
@@ -151,7 +151,7 @@ in the client browser.
 </>
 
 <para>
-Some minor burden is placed on the page designer to support persistent state.
+Some minor burden is placed on the developer to support persistent state.
 The mutator method of every persistent property must include a line of code that notifies the 
 observer of the change.
 </>
@@ -325,24 +325,28 @@ items in the shopping cart.  Each line item identifies the product, cost and qua
 <example>
 	<title>HTML template for Shopping Cart</>
 	<programlisting><![CDATA[
-<h1>Contents of shopping cart for
-]]>&start-jwc; id="insertUserName"/&end-jwc;:<![CDATA[</h1>
+<h1>Context of shopping cart for
+<span jwcid="insertUserName">John Doe</span></h1>
 <table>
-  <tr> <th>Product</th> <th>Qty</th> <th>Price</th> </tr>]]>
-&start-jwc; id="e-item"&end-jwc;
-<![CDATA[<tr>
-  <td> ]]>&start-jwc; id="insertProductName"&end-jwc;<![CDATA[ </td>
-  <td> ]]>&start-jwc; id="insertQuantity"/&end-jwc;<![CDATA[ </td>
-  <td> ]]>&start-jwc; id="insertPrice"/&end-jwc;<![CDATA[ </td>
-  <td> ]]>&start-jwc; id="remove"&end-jwc;remove&close-jwc;<![CDATA[ </td>
-</tr>
-]]>&close-jwc;
-<![CDATA[</table>]]></programlisting>
+  <tr>
+    <th>Product</th> <th>Qty</th> <th>Price</th>
+  </tr>
+  <span jwcid="e-item">
+  <tr>
+    <td><span jwcid="insertProductName">Product Name</span></td>
+    <td><span jwcid="insertQuantity">5</span></td>
+    <td><span jwcid="insertPrice">$1.50</span></td>
+    <td><a jwcid="remove">remove</a></td>
+  </tr>
+  </span>
+</table>]]>
+</programlisting>
 </example>
 
 <para>
-(Obviously, we've glossed over many details, such as allowing the quantity to be updated, and 
-showing subtotals).
+This example shows a reasonable template, including sample static values used
+when previewing the HTML layout (they are removed by Tapestry at runtime).  Some
+areas have been glossed over, such as allowing quantities to be changed.
 </>
 
 <para>
@@ -399,7 +403,7 @@ Part of the page's specification would configure these embedded components.
 &lt;/component&gt;
 
 &lt;component id="remove" type="Action"&gt;
-  &lt;binding name="listener" property-path="removeListener"/&gt;
+  &lt;binding name="listener" property-path="listeners.removeItem"/&gt;
 &lt;/component&gt;
 </programlisting>
 </example>
@@ -444,7 +448,8 @@ was previously rendered.
 <para>
 A small effort is required of the developer to always ensure that this rewind operation works.  In 
 cases where this can't be guaranteed (for instance, if the source of this dynamic data is a stock 
-ticker or unpredictable database query) then other options must be used.
+ticker or unpredictable database query) then other options must be used, including the use of
+the &ListEdit; component.
 </>
 
 <para>
@@ -453,33 +458,19 @@ implemented in its containing page that removes the current <varname>lineItem</>
 </>
 
 <para>
-The application is responsible for providing a listener, an object that is notified when the 
-&Action; component is triggered.  Action listeners implement the 
-<classname>IActionListener</> interface, which has a 
-single method, <function>actionTriggered()</>.  
+The application is responsible for providing a
+<link linkend="cycle.listeners">listener method</>, a method which is invoked
+when the link is triggered.
 </>
-
-<para>
-Typically, the accessor method that provides the listener returns an instance of an inner class.  
-Since our specification identified <varname>removeListener</> as the
-listener property for the <varname>remove</>
-component, the page must implement a <varname>removeListener</> property.
-</>
-
+	
 <example>
-	<title>Action Listener for remove component</>
-	<programlisting>public IActionListener getRemoveListener()
+	<title>Listener method for remove component</>
+	<programlisting>
+public void removeItem(IRequestCycle cycle)
 {
-  return new IActionListener()
-  {
-    public void actionTriggered(IComponent component,
-	IRequestCycle cycle)
-	throws RequestCycleException
-    {
-      getCart().remove(lineItem);
-    }
-  };
-}</programlisting>
+  getCart().remove(lineItem);
+}
+</programlisting>
 </example>
  
 <para>
@@ -489,6 +480,18 @@ The listener gets the shopping cart and removes the current line item from it.
 This whole rewinding process has ensured that <varname>lineItem</> is the correct value, even though the remove 
 component was rendered several times on the page (because it was wrapped by the &Foreach;
 component).
+</>
+
+<note>
+	<title>Listener Methods vs. Listener Objects</>
+	<para>
+	Listener methods were introduced in Tapestry 1.0.2.  Prior to that, it was necessary
+	to create a listener object, typically as an inner class, to be notified when
+	the link or form was triggered.  This worked against the basic goal of Tapestry: to 
+	eliminate or simplify coding.  In reality, the listener objects are still there,
+	they are created automatically and use Java reflection to invoke the
+	correct listener method.
+	</>
 </>
 
 <para>
@@ -512,7 +515,7 @@ such that the URL it expects changes structure, all pages referencing the servle
 
 <para>
 Tapestry eliminates all of these issues, reducing the issue of manipulating the shopping cart down 
-to the listener class, and its single, small method.  
+to the single, small listener method.  
 </>
 
 	</section>
@@ -590,6 +593,13 @@ even forms safe.  Borrowing an idea from more traditional JavaServer Pages devel
 hidden field can be included in the form to sychronize the form and the application ... for 
 example, including the primary key of the Minolta or Nikon product.  Tapestry includes a 
 &Hidden; component used for just this purpose.
+</>
+
+<para>
+Finally, the &ListEdit; component exists to help.  It works like a &Foreach;, but encodes the
+number and value of the items it iterates as hidden form fields.
+</>
+
 
 	</section>
 

@@ -123,7 +123,7 @@ Each formal parameter has a specific
 In many cases, there is a 1:1 mapping between a Tapestry component and a specific
 HTML tag.  For example, &Body; and <sgmltag class=starttag>body</>,
 &Form; and <sgmltag class=starttag>form</>, etc.  In other cases, a Tapestry component
-produces a known single HTML tag.  That is, &Action;, &Direct; &Page; and &Service;
+produces a known single HTML tag.  That is, &Action;, &Direct;, &Page; and &Service;
 all produce an <sgmltag class=starttag>a</> tag.
 </>
 
@@ -149,7 +149,7 @@ are added as additional HTML attributes (there are a few special exceptions, suc
 </>
 
 <para>
-Informal parameters to have some limitions.  Informal parameters that conflict with the names of
+Informal parameters do have some limitations.  Informal parameters that conflict with the names of
 any formal parameters, or with any the HTML attributes generated directly by the component, are silently
 ommitted.  The comparison is case-insensitve.  Thus, for a &Direct; component, you can not change
 the <varname>href</> attribute, even if you supply a <varname>Href</> (or other variation) attribute.
@@ -157,8 +157,7 @@ the <varname>href</> attribute, even if you supply a <varname>Href</> (or other 
 
 <para>
 Not all Tapestry components even allow informal parameters; this is explicitly 
-specified in the component
-specification.
+stated in the <link linkend="components.specification">component specification</>.
 </>
 
 <note>
@@ -179,7 +178,8 @@ supplied for the attribute.
 <para>
 Under Tapestry, it is common to define new components 
 by combining existing components.  The existing components are 
-embedded in the containing component.
+embedded in the containing component.  This is always true at the top level; Pages, 
+which are still Tapestry components, always embed other Tapestry components.
 </>
 
 <para>
@@ -243,40 +243,10 @@ These inner components are referenced in the containing component's template.
 <para>
 Templates look like standard HTML files, though they are rarely complete 
 HTML documents; usually they are snippets.  
-In addition, a new element, &jwc-tag; (for Java Web Component), 
-is added to represent a component in the HTML template.
 </>
 
 <para>
-The &jwc-tag; element has two forms:
-</>
-	
-
-
-&start-listing;
-&lt;jwc id="<replaceable>component id</>"&gt;  <replaceable>body</>  &lt;/jwc&gt;
-&end-listing;
-
-<para>or
-</>
-
-
-&start-listing;
-&lt;jwc id="<replaceable>component id</>"/&gt;
-&end-listing;
-
-
-<para>
-The parser used by Tapestry is relatively forgiving about case 
-and white space.  Also, the component id can be enclosed in 
-double quotes (as above) or single quotes.
-</>
-
-<para>
-As unobtrusive as the &jwc-tag; tag is, it would be nice, in many cases,
-to simply indicate that part of the HTML template that appears static 
-will really be dynamic at runtime. 
-This is accomplished by adding a <varname>jwcid</> attribute to the tag.
+Identifying a Tapestry component is accomplished by adding a <varname>jwcid</> attribute to a tag.
 </>
 
 &start-listing;
@@ -292,11 +262,37 @@ This is accomplished by adding a <varname>jwcid</> attribute to the tag.
 &end-listing;
 
 <para>
+Most often, the tag chosen is <sgmltag class=starttag>span</>, though (in fact) Tapestry
+completely ignores the tag, except to make sure the open and close tags balance.
+</>
+
+<para>
+The parser used by Tapestry is relatively forgiving about case 
+and white space.  Also, the component id can be enclosed in 
+double quotes (as above) or single quotes.
+</>
+
+<para>
 When using the <varname>jwcid</> attribute, you are free to specify additional
 attributes.  These attributes will become
 <link linkend="components.informal-parameters">informal parameters</> for the Tapestry component.
-When using the &jwc-tag; tag, you may only specify the <varname>id</> attribute.
 </>
+
+<para>
+An alternative to using the <varname>jwcid</> attribute is to use
+the &jwc-tag; element.  The &jwc-tag; element has two forms:
+</>
+	
+&start-listing;
+&lt;jwc id="<replaceable>component id</>"&gt;  <replaceable>body</>  &lt;/jwc&gt;
+&end-listing;
+
+<para>or
+</>
+
+&start-listing;
+&lt;jwc id="<replaceable>component id</>"/&gt;
+&end-listing;
 
 <note>
 	<para>
@@ -306,10 +302,16 @@ When using the &jwc-tag; tag, you may only specify the <varname>id</> attribute.
 	</>
 </>
 
+<para>
+When using the &jwc-tag; tag, you may only specify the <varname>id</> attribute.  You may
+not specify any additional informal parameters, as you can when using the standard
+notation.
+</>
 
 <para>
 The ability to convert static HTML tags into dynamic tags is really to streamline the 
-<link linkend="components.html-production">integration process</> (whereby the efforts of HTML designers are 
+<link linkend="components.html-production">integration process</> 
+(whereby the efforts of HTML designers are 
 converted into Tapestry components and templates).
 </>
 
@@ -330,7 +332,7 @@ Tapestry divides the contents of the HTML template into two categories:
 	</>
 	<listitem>
 		<para>
-		Tapestry components (&jwc-tag;, or tags with the <varname>jwcid</> attribute).
+		Tapestry components (tags with the <varname>jwcid</> attribute, and the &jwc-tag;).
 		The related tags are removed, and the HTML is supplied by the actual
 		components.
 		</>
@@ -643,7 +645,7 @@ final HTML:
 
 <para>
 This editting out isn't limited to simple text; any HTML inside the body is removed.  However,
-none of that content may be dynamic ... if presence of a &jwc-tag; tag or a
+none of that content may be dynamic ... the presence of a &jwc-tag; tag or a
 <varname>jwcid</> attribute will cause a parsing exception.
 </>
 
@@ -669,8 +671,29 @@ the other rows?
 To handle this case,
 Tapestry recognizes a special <varname>jwcid</> attribute value: <literal>$remove$</>.  Using this special id causes
 Tapestry to edit out the tag and all of its contents.  Thus, each additional <sgmltag class=starttag>tr</> in the
-table should specify that <literal>$remove$</literal> <varname>jwcid</>.
+table should specify the value <literal>$remove$</literal> for attribute <varname>jwcid</>.
 </>
+
+<informalexample>
+<programlisting><![CDATA[
+<table>
+  <span jwcid="foreach">
+  <tr>
+    <td><span jwcid="insertUserName">John Doe</span></td>
+    <td><span jwcid="insertAge">42</span></td>
+  </tr>
+  </span>
+  <tr jwcid="$remove$">
+  	<td>Frank N. Furter</td>
+  	<td>47</td>
+  </tr>
+  <tr jwcid="$remove$">
+    <td>Bob Doyle</td>
+    <td>24</td>
+  </tr>
+</table>]]>
+</programlisting>
+</informalexample>
 
 </section>
 
@@ -701,7 +724,7 @@ To eliminated this problem, Tapestry has a second special <varname>jwcid</> attr
 this special id causes Tapestry to limit its view of the HTML template to just the content inside the tag.  Anything outside
 the defined content is completely ignored.
 </>
-</section>
+
 
 	</section>
 	
@@ -723,6 +746,7 @@ some of the HTML page content to form the HTML template.
 
 
 	</section>
+</section>
 
 	<section id="components.localization">
 		<title>Localization</>
@@ -949,7 +973,7 @@ This is one of the ways that Tapestry eases deployment.
 
 <para>
 The <sgmltag class=starttag>specification</> element wraps around all other elements in
-the specification (which are used to defined parameters, embedded components and assets).  The following
+the specification (which are used to define parameters, embedded components and assets).  The following
 sections describe these additional elements.
 
 			</section>
@@ -959,7 +983,10 @@ sections describe these additional elements.
 				
 <para>
 One or more <sgmltag class=starttag>description</> elements may be included in the specification.  These are descriptions of 
-the component's features and behavior, suitable for inclusion in some form of IDE.  Multiple descriptions are used to support
+the component's features and behavior, suitable for inclusion in some form of IDE
+<footnote>
+	<para>If someone write such an IDE, please let me know!</>
+</>.  Multiple descriptions are used to support
 multiple languages.
 </>
 

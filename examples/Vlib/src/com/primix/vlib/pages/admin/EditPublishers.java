@@ -66,44 +66,39 @@ public class EditPublishers
 		super.detach();
 	}
 	
-	public void beginResponse(IResponseWriter writer, IRequestCycle cycle)
-		throws RequestCycleException
-	{
-		super.beginResponse(writer, cycle);
-		
-		getPublishers();
-	}
-	
-	public void setPublishers(Publisher[] value)
-	{
-		publishers = value;
-		
-		fireObservedChange("publishers", value);
-	}
-	
-	/**
-	 *  Gets the publishers; this value is cached as a persistent page property.
-	 *
-	 */
-	
-	public Publisher[] getPublishers()
+	public Integer[] getPublisherIds()
 	{
 		if (publishers == null)
 			readPublishers();
 		
-		return publishers;
+		Integer[] ids = new Integer[publishers.length];
+		
+		for (int i = 0; i < publishers.length; i++)
+			ids[i] = publishers[i].getPrimaryKey();
+		
+		return ids;
 	}
 	
-	public void setPublisher(Publisher value)
+	public void setPublisherId(Integer value)
 	{
-		publisher = value;
+		if (publishers == null)
+			readPublishers();
+		
+		for (int i = 0; i < publishers.length; i++)
+			if (publishers[i].getPrimaryKey().equals(value))
+			{
+				publisher = publishers[i];
+				return;
+			}
+		
+		publisher = null;
 	}
-	
+			
 	public Publisher getPublisher()
 	{
 		return publisher;
 	}
-	
+
 	public Set getDeletedPublishers()
 	{
 		if (deletedPublishers == null)
@@ -122,7 +117,7 @@ public class EditPublishers
 			{
 				IOperations operations = vengine.getOperations();
 				
-				setPublishers(operations.getPublishers());
+				publishers = operations.getPublishers();
 				
 				break;
 			}
@@ -136,7 +131,6 @@ public class EditPublishers
 		
 	public void processForm(IRequestCycle cycle)
 	{
-		Publisher[] publishers = getPublishers();
 		List updateList = new ArrayList(publishers.length);
 		Set deletedKeys = getDeletedPublishers();
 		
@@ -151,7 +145,9 @@ public class EditPublishers
 			updateList.add(publishers[i]);
 		}
 
-		setPublishers(null);
+		// Forget any information about publishers that was previously read.
+		
+		publishers = null;
 		
 		Publisher[] updated = (Publisher[])updateList.toArray(new Publisher[updateList.size()]);
 		
@@ -159,11 +155,7 @@ public class EditPublishers
 		
 		if (deletedKeys != null)
 			deleted = (Integer[])deletedKeys.toArray(new Integer[deletedKeys.size()]);
-		
-		// Clear the cache of Publishers, since that'll likely change
-		
-		setPublishers(null);
-		
+				
 		// Now, push the updates through to the database
 		
 		VirtualLibraryEngine vengine = (VirtualLibraryEngine)getEngine();

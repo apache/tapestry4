@@ -43,205 +43,171 @@ import org.apache.log4j.*;
  *  @author Howard Ship
  *  @since 0.2.9
  */
- 
+
 public class ShowLogging extends BaseComponent
-implements ILifecycle
+	implements ILifecycle
 {
-	private List categories;
+	private Category category;
 	private String error;
 	private String newCategory;
 	private IValidationDelegate validationDelegate;
 	private IPropertySelectionModel rootPriorityModel;
 	private IPropertySelectionModel priorityModel;
-
+	
 	public void reset()
 	{
-		categories = null;
+		category = null;
 		error = null;
 		newCategory = null;
 	}
-
-	private static class CategoryComparator 
-	implements Comparator
-	{
-		public int compare(Object left,
-			Object right)
-		{
-			Category cLeft = (Category)left;
-			Category cRight = (Category)right;
-
-			return cLeft.getName().compareTo(cRight.getName());
-		}
-	}
-
+	
 	private class ValidationDelegate
-	extends BaseValidationDelegate
+		extends BaseValidationDelegate
 	{
 		public void invalidField(IValidatingTextField field,
-			ValidationConstraint constraint,
-			String defaultErrorMessage)
+				ValidationConstraint constraint,
+				String defaultErrorMessage)
 		{
 			if (error == null)
 				error = defaultErrorMessage;
 		}
-
+		
 		public void writeErrorSuffix(IValidatingTextField field,
-			IResponseWriter writer,
-			IRequestCycle cycle)
+				IResponseWriter writer,
+				IRequestCycle cycle)
 		{
 			writer.begin("span");
 			writer.attribute("class", "error");
 			writer.print("**");
 			writer.end();
 		}
-
+		
 	}
-
+	
 	public String getError()
 	{
 		return error;
 	}
-
+	
 	public void setError(String value)
 	{
 		error = value;
 	}
-
+	
 	public String getNewCategory()
 	{
 		return newCategory;
 	}
-
+	
 	public void setNewCategory(String value)
 	{
 		newCategory = value;
 	}
-
+	
+	public void setCategoryName(String value)
+	{
+		category = Category.getInstance(value);
+	}
+	
+	public Category getCategory()
+	{
+		return category;
+	}
+	
 	/**
-	 *  Returns a {@link List} of {@link Category categories}, ordered by
-	 *  category name.
+	 *  Returns a sorted list of all known categorys.
 	 *
 	 */
-
-	public List getCategories()
-	{
-		if (categories == null)
-			categories = buildCategories();
-
-		return categories;	
-	}
-
-	private List buildCategories()
+	
+	public List getCategoryNames()
 	{
 		List result = new ArrayList();
 		Enumeration e;
-
+		
 		e = Category.getCurrentCategories();
 		while (e.hasMoreElements())
 		{
-			result.add(e.nextElement());
+			Category c = (Category)e.nextElement();
+			
+			result.add(c.getName());
 		}
-
-		Collections.sort(result, new CategoryComparator());
-
+		
+		Collections.sort(result);
+		
 		return result;
 	}
-
+	
 	public Category getRootCategory()
 	{
 		return Category.getRoot();
 	}
-
+	
 	/**
 	 *  Returns a {@link IPropertySelectionModel} for {@link Priority}
 	 *  that does not allow a null value to be selected.
 	 *
 	 */
-
+	
 	public IPropertySelectionModel getRootPriorityModel()
 	{
 		if (rootPriorityModel == null)
 			rootPriorityModel = new PriorityModel(false);
-
+		
 		return rootPriorityModel;	
 	}
-
+	
 	/**
 	 *  Returns a {@link IPropertySelectionModel} for {@link Priority}
 	 *  include a null option.
 	 *
 	 */
-
+	
 	public IPropertySelectionModel getPriorityModel()
 	{
 		if (priorityModel == null)
 			priorityModel = new PriorityModel();
-
+		
 		return priorityModel;	
 	}
-
+	
 	public IValidationDelegate getValidationDelegate()
 	{
 		if (validationDelegate == null)
 			validationDelegate = new ValidationDelegate();
-
+		
 		return validationDelegate;
 	}	
-
-	public IActionListener getPriorityFormListener()
+	
+	public void priorityChange(IRequestCycle cycle)
 	{
-		return new IActionListener()
-		{
-			public void actionTriggered(IComponent component, IRequestCycle cycle)
-			throws RequestCycleException
-			{
-				// Do nothing.  This will redisplay the logging page after the
-				// priorities are updated.
-			}
-		};
+		// Do nothing.  This will redisplay the logging page after the
+		// priorities are updated.
 	}
-
-	public IActionListener getNewCategoryFormListener()
-	{
-		return new IActionListener()
-		{
-			public void actionTriggered(IComponent component, IRequestCycle cycle)
-			throws RequestCycleException
-			{
-				processNewCategory();
-			}
-		};
-	}
-
-	private void processNewCategory()
+	
+	public void addNewCategory(IRequestCycle cycle)
 	{
 		// If the validating text field has an error, then go no further.
-
+		
 		if (error != null)
 			return;
-
-			IValidatingTextField field =
+		
+		IValidatingTextField field =
 			(IValidatingTextField)getComponent("inputNewCategory");
-
+		
 		if (Category.exists(newCategory) != null)
 		{
 			error = "Category " + newCategory + " already exists.";
 			field.setError(true);
 			return;
 		}
-
+		
 		// Force the new category into existence
-
+		
 		Category.getInstance(newCategory);
-
-		// Force a refresh on the list of categories, now that we've
-		// added a new one.
-
-		categories = null;
-
+		
 		// Clear the field
 		newCategory = null;
 		field.refresh();
-
+		
 	}
 }

@@ -21,7 +21,7 @@
     <binding name="source" property-path="unused"/>
   </component>
   <component id="guess" type="Direct">
-    <binding name="listener" property-path="guessListener"/>
+    <binding name="listener" property-path="listeners.makeGuess"/>
     <binding name="context" property-path="components.e.value"/>
   </component>
   <component id="insertLetter" type="Insert">

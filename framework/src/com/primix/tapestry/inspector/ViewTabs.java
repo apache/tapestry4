@@ -41,17 +41,17 @@ import java.util.*;
  *  @author Howard Ship
  *
  */
- 
+
 public class ViewTabs extends BaseComponent
 {
 	private static View[] views =
 	{
 		View.SPECIFICATION, View.TEMPLATE, View.PROPERTIES, View.ENGINE,
-		View.LOGGING
+			View.LOGGING
 	};
-		
+	
 	private View view;
-
+	
 	public View[] getViews()
 	{
 		return views;
@@ -65,7 +65,7 @@ public class ViewTabs extends BaseComponent
     // We don't worry about cleaning this up at the end of the request cycle
     // because the value is an Enum, a singleton that would stay in memory
     // anyway.
-
+	
 	public View getView()
 	{
 		return view;
@@ -118,17 +118,11 @@ public class ViewTabs extends BaseComponent
 		return (IAsset)getAssets().get(key);
 	}
 	
-	public IActionListener getSelectListener()
+	public void selectTab(IRequestCycle cycle)
 	{
-		return new IActionListener()
-		{
-			public void actionTriggered(IComponent component, IRequestCycle cycle)
-			{
-				Inspector inspector;
-				
-				inspector = (Inspector)getPage();
-				inspector.setView(view);
-			}
-		};
+		Inspector inspector;
+		
+		inspector = (Inspector)getPage();
+		inspector.setView(view);
 	}
 }

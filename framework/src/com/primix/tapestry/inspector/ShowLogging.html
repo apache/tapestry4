@@ -2,7 +2,7 @@
 
 <h1>Log4J Logging Controls</h1>
 
-<jwc id="priorityForm">
+<form jwcid="priorityForm">
 
 <table class="inspector-data">
 
@@ -12,37 +12,37 @@
 		
 	<tr class="even">
 		<td><em>Root Category</em></td>
-		<td><jwc id="inputRootLevel"/></td>
+		<td><input type=text jwcid="inputRootLevel"/></td>
 	</tr>
 
-<jwc id="e">
+<span jwcid="e">
 	<jwc id="evenOdd">
-		<td><jwc id="insertCategoryName"/></td>
-		<td><jwc id="inputCategoryLevel"/></td>
+		<td><input type=text jwcid="insertCategoryName"/></td>
+		<td><select jwcid="inputCategoryLevel"/></td>
 	</jwc>
-</jwc>
+</span>
 
 	<tr class="heading">
 		<td><input type="submit" value="Update"></td>
 	</tr>
 </table>
 
-</jwc>
+</form>
 
 <h1>Create new Category</h1>
 
-<jwc id="newCategoryForm">
+<form jwcid="newCategoryForm">
 
-<jwc id="ifError">
-<span class="error"><jwc id="insertError"/>
+<span jwcid="ifError">
+<span class="error"><span jwcid="insertError"/>
 </span>
-</jwc>
+</span>
 
 <table class="inspector-data">
 
 	<tr class="even">
 		<th>New Category:</th>
-		<td><jwc id="inputNewCategory"/></td>
+		<td><input type=text jwcid="inputNewCategory"/></td>
 	</tr>
 
 	<tr class="even">
@@ -53,7 +53,7 @@
 
 </table>
 
-</jwc>
+</form>
 
 
 

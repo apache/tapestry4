@@ -4,16 +4,13 @@
 <specification class="com.primix.tapestry.inspector.ShowInspector" allow-body="no" allow-informal-parameters="no">
   <component id="link" type="Direct">
     <binding name="target" property-path="windowTarget"/>
-    <binding name="listener" property-path="listener"/>
+    <binding name="listener" property-path="listeners.showInspector"/>
     <inherited-binding name="enabled" parameter-name="enabled"/>
     <field-binding name="stateful" field-name="Boolean.FALSE"/>
   </component>
   <component id="button" type="Rollover">
     <binding name="image" property-path="assets.image"/>
     <binding name="focus" property-path="assets.focus"/>
-    <static-binding name="alt">Show Inspector</static-binding>
-    <static-binding name="width">40</static-binding>
-    <static-binding name="height">40</static-binding>
   </component>
   <private-asset name="image" resource-path="/com/primix/tapestry/inspector/ShowInspector.gif"/>
   <private-asset name="focus" resource-path="/com/primix/tapestry/inspector/ShowInspector-focus.gif"/>

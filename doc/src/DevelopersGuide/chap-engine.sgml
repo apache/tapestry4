@@ -301,8 +301,14 @@ on the application server.
 </>
 
 <para>
-Of course, if rendering the <classname>Home</> page of your application creates triggers
-the creation of the &HttpSession; , then nothing is gained.  A well
+Of course, if rendering the <classname>Home</> page of your application triggers
+the creation of the &HttpSession;
+<footnote>
+<para>
+That is, changes a persistent page property, or forces the creation
+of the visit object.
+</para>
+</footnote>, then nothing is gained.  A well
 designed application will attempt to defer creation of the session so that, at least,
 the <classname>Home</> page can be displayed without creating a session.
 </>
@@ -343,7 +349,9 @@ shows how the &Page; component is used to create a link between application page
 First, an extract from the page's HTML template:
 </>
 
-&start-listing;Click &start-jwc; id="login"&end-jwc;here&close-jwc; to login.&end-listing;
+&start-listing;
+Click &lt;a jwcid="login"&gt;here&lt;/a&gt; to login.
+&end-listing;
  
 <para>
 This is combined with the a <sgmltag class=starttag>component</> declaration in the the page's specification:

@@ -71,6 +71,118 @@ The request cycle for the page service is relatively simple.
 
 	</section>
 
+<section id="cycle.listeners">
+	<title>Action and Direct listeners</title>
+	
+<para>
+The &Action;, &Direct; and &Form; components (which make use of
+the <link linkend="cycle.action">action</> and <link linkend="cycle.direct">direct</>
+services) inform the application when they have been triggered using listeners.
+</>
+
+<para>
+A listener is an object that implements one of two listener interfaces.
+</>
+
+<para>
+For &Direct;, the listener is specified by the <classname>IDirectListener</> interface:
+&start-listing;
+public void directTriggered(IDirect component, String[] context,
+  IRequestCycle cycle)
+  throws RequestCycleException;
+&end-listing;
+</>
+
+<para>For &Action; and &Form;, the listener is specified by the
+<classname>IActionListener</> interface.
+
+&start-listing;
+public void actionTriggered(IComponent component, IRequestCycle cycle)
+  throws RequestCycleException;
+&end-listing;
+</>
+
+<para>
+Prior to release 1.0.2, it was necessary to create an object to be notified
+by the component; this was almost always an annonymous inner class:
+
+&start-listing;
+public IActionListener getFormListener()
+{
+  return new IActionListener()
+  {
+    public void actionTriggered(IComponent component, IRequestCycle cycle)
+      throws RequestCycleException
+    {
+      // perform some operation ...
+    }
+  };
+}
+&end-listing;
+</>
+
+<para>
+Although elegant in theory, that's simply too much Java code for too little effect.
+Starting with Tapestry 1.0.2, it is possible to create a
+<emphasis>listener method</> instead.
+</>
+
+<para>
+A listener method takes one of two forms:
+
+&start-listing;
+public void <replaceable>method-name</>(IRequestCycle cycle)
+throws RequestCycleException;
+&end-listing;
+</>
+
+<para>
+Or:
+&start-listing;
+public void <replaceable>method-name</>(String[] context, IRequestCycle cycle)
+throws RequestCycleException;
+&end-listing;
+</>
+
+<para>
+The first option can act as either kind of listener.  The second option is always
+a <classname>IDirectListener</>.  In both cases, the method may omit the throws clause.
+</>
+
+<para>
+In reality, listener <emphasis>objects</> have not gone away.  Instead, there's a mechanism
+whereby the appropriate listener object is created automatically when needed.
+Each component includes a property, <varname>listeners</>, that is a collection of
+listener objects for the component, synthesized from the available public methods.  The
+listeners objects are properties, with the names corresponding to the method names.
+</>
+
+<note>
+<para>
+The class <classname>AbstractEngine</> (the baseclass for <classname>SimpleEngine</>)
+also implements a listeners property.  This allows you to easily add listener methods
+to your application engine.
+</>
+</>
+
+<para>
+The earlier example is much simpler:
+</>
+
+&start-listing;
+public void formSubmit(IRequestCycle cycle)
+{
+  // perform some operation ...
+}
+&end-listing;
+
+<para>
+However, the property path for the listener binding must be changed, from <varname>formListener</> to
+<varname>listeners.formSubmit</>.
+</>
+
+	</section>
+	
 	<section id="cycle.direct">
 		<title>Direct service</>
 

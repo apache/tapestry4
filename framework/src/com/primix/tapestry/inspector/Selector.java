@@ -47,95 +47,87 @@ import java.util.*;
 public class Selector extends BaseComponent
 {
 	private IPropertySelectionRenderer renderer;
-
+	
 	/**
-	 *  Gets the listener for the form.  When the form is submitted,
+	 *  When the form is submitted,
 	 *  the inspectedPageName of the {@link Inspector} page will be updated,
 	 *  but we need to reset the inspectedIdPath as well.
 	 *
 	 */
-
-	public IActionListener getFormListener()
+	
+	public void formSubmit(IRequestCycle cycle)
 	{
-		return new IActionListener()
-		{
-			public void actionTriggered(IComponent component, IRequestCycle cycle)
-			{
-				Inspector inspector;
-
-				inspector = (Inspector)getPage();
-
-				inspector.setInspectedIdPath(null);
-			}
-		};
+		Inspector inspector = (Inspector)getPage();
+		
+		inspector.setInspectedIdPath(null);
 	}
-
+	
 	/**
 	 *  Returns an {IPropertySelectionModel} used to select the name of the page
 	 *  to inspect.  The page names are sorted.
 	 *
 	 */
-
+	
 	public IPropertySelectionModel getPageModel()
 	{
 		List sortedPageNames;
 		String[] pageNames;
-
+		
 		sortedPageNames = new ArrayList(page.getEngine().getSpecification().getPageNames());
-
+		
 		Collections.sort(sortedPageNames);
-
+		
 		pageNames = new String[sortedPageNames.size()];
 		pageNames = (String[])sortedPageNames.toArray(pageNames);
-
+		
 		// It would be nice to cache this between request cycles ... but this same
 		// component may be used for a different application in a subsequent cycle,
 		// in which case the page names wouldn't match.  
-
+		
 		return new StringPropertySelectionModel(pageNames);
 	}
-
+	
 	/**
 	 *  The crumb trail is all the components from the inspected component up to
 	 *  (but not including) the page.
 	 *
 	 */
-
+	
 	public List getCrumbTrail()
 	{
 		List list = null;
 		IComponent component;
 		Inspector inspector;
 		IComponent container;
-
+		
 		inspector = (Inspector)page;
-
+		
 		component = inspector.getInspectedComponent();
-
+		
 		while (true)
 		{
 			container = component.getContainer();
 			if (container == null)
 				break;
-
+			
 			if (list == null)
 				list = new ArrayList();
-
+			
 			list.add(component);
-
+			
 			component = container;
-
+			
 		}
-
+		
 		if (list == null)
 			return null;
-
+		
 		// Reverse the list, such that the inspected component is last, and the
 		// top-most container is first.
-
+		
 		Collections.reverse(list);
-
+		
 		return list;
 	}
-
+	
 }

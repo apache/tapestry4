@@ -97,19 +97,31 @@ to describe their requirements for each page.</>
 Many template-oriented systems add several different directives 
 for inserting values into the HTML, marking blocks as conditional, 
 performing repetitions and other operations.  
-Tapestry adds exactly one directive, and it's designed to look just like an HTML element.</>
+Tapestry works quite differently; it allows existing tags to be marked
+as dynamic in a completely unobtrusive way.</>
 
-<para>A Tapestry component is identified by a &jwc-tag; tag (Java Web Component).
+<para>A Tapestry component is any HTML tag with a <varname>jwcid</>
+attribute ("jwc" stands for "Java Web Component").
 For comparison, an equivalent Tapestry template to the previous JSP example:
 </>
 
-&start-listing;&lt;h1&gt;Contents of shopping cart for
-&start-jwc; id="insertUserName"/&end-jwc;:&lt;/h1&gt;&end-listing;
+&start-listing;<![CDATA[
+<h1>Contents of shopping cart for
+<span jwcid="insertUserName">John Doe</span>:</h1>
+]]>
+&end-listing;
 
-<para>This defines a component named <varname>insertUserName</> on the page.  
-Because we use just a single tag, &jwc-tag; for <emphasis>all</> components, it is not possible to 
-say exactly what dynamic content will be inserted ... that is defined elsewhere.  The 
-&jwc-tag; tag simply identifies where the dynamic content will go.</>
+<para>This defines a component named <varname>insertUserName</> on the page.
+To assist HTML development, a sample value, "<literal>John Doe</>" is included, but
+this is automatically editted out when the HTML template is used.
+</>
+
+<para>
+The <sgmltag class=starttag>span</> tag simply indicated where the Tapestry component
+will go ... it doesn't identify any of its behavior.  That is provided elsewhere, in
+a <link linkend="components.specification">component specification</>.
+</>
+
 
 <para>A portion of the page's specification file defines what
 the <varname>insertUserName</> component is and what it does:
@@ -183,11 +195,10 @@ The corresponding Tapestry HTML template is much simpler:
 </>
 
 &start-listing;<emphasis><![CDATA[
-<jwc id="checkoutLink"><jwc id="checkoutButton"/></jwc>]]></>&end-listing;
+<a jwcid="checkoutLink"><img jwcid="checkoutButton"/></a>]]></>&end-listing;
 
 <para>
-A bit more goes into the component specification (a separate XML document that 
-describes the configuration of the page and all components on the page; an excerpt is shown here):
+A bit more goes into the page's specification :
 </>
 
 <informalexample id="intro.ex2">

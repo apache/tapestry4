@@ -257,7 +257,6 @@ public class TemplateParser
 	private static final char[] COMMENT_START = new char[] { '<', '!', '-', '-' };
 	private static final char[] COMMENT_END = new char[] { '-', '-', '>' };
 	private static final char[] CLOSE_TAG = new char[] { '<', '/' };
-	private static final char[] CLOSE_EMPTY_TAG = new char[] { '/', '>'};
 	
 	private void parse()
 		throws TemplateParseException
@@ -326,15 +325,15 @@ public class TemplateParser
 					startLine, resourcePath);
 			
 			if (lookahead(COMMENT_END))
-			{
-				cursor += COMMENT_END.length;
 				break;
-			}
 			
 			// Not the end of the comment, advance over it.
 			
 			advance();
 		}
+		
+		cursor += COMMENT_END.length;
+		advanceOverWhitespace();
 	}
 	
 	private void addTextToken(int end)
@@ -813,6 +812,7 @@ public class TemplateParser
 		// Advance cursor past '>'
 		
 		advance();
+		advanceOverWhitespace();
 		
 		// If we were ignoring the body of the tag, then clear the ignoring
 		// flag, since we're out of the body.
@@ -862,5 +862,18 @@ public class TemplateParser
 		
 	}
 	
+	private void advanceOverWhitespace()
+	{
+		int length = templateData.length;
+		
+		while (cursor < length)
+		{
+			char ch = templateData[cursor];
+			if (!Character.isWhitespace(ch))
+				return;
+			
+			advance();
+		}
+	}
 }
 

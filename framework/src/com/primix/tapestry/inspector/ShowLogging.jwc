@@ -3,27 +3,30 @@
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="com.primix.tapestry.inspector.ShowLogging" allow-body="no" allow-informal-parameters="no">
   <component id="priorityForm" type="Form">
-    <binding name="listener" property-path="priorityFormListener"/>
+    <binding name="listener" property-path="listeners.priorityChange"/>
+    <field-binding name="direct" field-name="Boolean.TRUE"/>
   </component>
   <component id="inputRootLevel" type="PropertySelection">
     <binding name="value" property-path="rootCategory.priority"/>
     <binding name="model" property-path="rootPriorityModel"/>
   </component>
-  <component id="e" type="Foreach">
-    <binding name="source" property-path="categories"/>
+  <component id="e" type="ListEdit">
+    <binding name="source" property-path="categoryNames"/>
+    <binding name="value" property-path="categoryName"/>
   </component>
   <component id="evenOdd" type="/com/primix/tapestry/inspector/EvenOdd.jwc">
     <field-binding name="initial" field-name="Boolean.FALSE"/>
   </component>
   <component id="insertCategoryName" type="Insert">
-    <binding name="value" property-path="components.e.value.name"/>
+    <binding name="value" property-path="category.name"/>
   </component>
   <component id="inputCategoryLevel" type="PropertySelection">
     <binding name="model" property-path="priorityModel"/>
-    <binding name="value" property-path="components.e.value.priority"/>
+    <binding name="value" property-path="category.priority"/>
   </component>
   <component id="newCategoryForm" type="Form">
-    <binding name="listener" property-path="newCategoryFormListener"/>
+    <binding name="listener" property-path="listeners.addNewCategory"/>
+    <field-binding name="direct" field-name="Boolean.TRUE"/>
   </component>
   <component id="ifError" type="Conditional">
     <binding name="condition" property-path="error"/>
