@@ -27,7 +27,7 @@ package net.sf.tapestry.junit;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
-import net.sf.tapestry.junit.mock.MockSuite;
+import net.sf.tapestry.junit.mock.MockTestCase;
 import net.sf.tapestry.junit.parse.SpecificationParserTest;
 import net.sf.tapestry.junit.parse.TemplateParserTest;
 import net.sf.tapestry.junit.script.ScriptTest;
@@ -65,7 +65,7 @@ public class TapestrySuite extends TestSuite
         suite.addTestSuite(TestDataSqueezer.class);
         suite.addTestSuite(ScriptTest.class);
         suite.addTestSuite(TestComponentSpecification.class);
-        suite.addTest(MockSuite.suite());
+        suite.addTestSuite(MockTestCase.class);
 
 		return suite;
 	}

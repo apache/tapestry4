@@ -23,59 +23,30 @@
 // Lesser General Public License for more details.
 //
 
-package net.sf.tapestry.junit.mock;
 
-import net.sf.tapestry.junit.TapestryTestCase;
+package net.sf.tapestry.junit.mock.app;
+
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.html.BasePage;
+import net.sf.tapestry.junit.mock.lib.Dumper;
 
 /**
- *  Test case for Mock Servlet API tests using the Simple application.
+ *  Part of the Mock application test suite.
  *
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 2.2
- * 
+ *
  **/
 
-public class MockTestCase extends TapestryTestCase
+public class Home extends BasePage
 {
-
-    public MockTestCase(String name)
+    public void linkClicked(IRequestCycle cycle)
     {
-        super(name);
-    }
-
-    private MockTester attempt(String path)
-    throws Exception
-    {
-        MockTester tester = new MockTester(path);
+        Dumper dumper = (Dumper)cycle.getPage("lib:Dumper");
         
-        tester.execute();
+        dumper.setObjects(cycle.getServiceParameters());
         
-        return tester;
+        cycle.setPage(dumper);
     }
-
-    /**
-     *  Test basics including the PageLink and DirectLink (w/o parameters).
-     * 
-     **/
-    
-    public void testSimple()
-    throws Exception
-    {
-        attempt("/net/sf/tapestry/junit/mock/TestSimple.xml");
-    }
-    
-    /**
-     *  Test ability to embed component in a library and reference
-     *  those components.  Also, test RenderBody component.
-     * 
-     **/
-    
-    public void testLibrary()
-    throws Exception
-    {
-        attempt("/net/sf/tapestry/junit/mock/TestLibrary.xml");
-    }
-       
 }

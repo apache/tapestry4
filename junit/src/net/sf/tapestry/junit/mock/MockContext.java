@@ -21,9 +21,10 @@ import javax.servlet.ServletException;
  * 
  **/
 
-public class MockContext extends AttributeHolder
-    implements ServletContext, IInitParameterHolder
+public class MockContext extends AttributeHolder implements ServletContext, IInitParameterHolder
 {
+    private MockSession _session;
+
     private String _servletContextName = "test";
     private Map _initParameters = new HashMap();
 
@@ -113,7 +114,7 @@ public class MockContext extends AttributeHolder
 
     public String getInitParameter(String name)
     {
-        return (String)_initParameters.get(name);
+        return (String) _initParameters.get(name);
     }
 
     public Enumeration getInitParameterNames()
@@ -131,14 +132,23 @@ public class MockContext extends AttributeHolder
         return _servletContextName;
     }
 
-
     public MockSession createSession()
     {
-        String id = Long.toHexString(System.currentTimeMillis());
-        
-        return new MockSession(this, id);
+        if (_session == null)
+        {
+            String id = Long.toHexString(System.currentTimeMillis());
+
+            _session = new MockSession(this, id);
+        }
+
+        return _session;
     }
     
+    public MockSession getSession()
+    {
+        return _session;
+    }
+
     public void setServletContextName(String servletContextName)
     {
         _servletContextName = servletContextName;
