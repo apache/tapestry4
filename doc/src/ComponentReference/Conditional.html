@@ -40,6 +40,8 @@
 	<br>
 	Makes part of an HTML template conditional. The body of the Conditional 
 	component is only rendered if a specified condition is met.
+  <p>
+  This component may wrap around other components and static HTML. 
  </td>
 </tr>
 
@@ -55,7 +57,7 @@
 
 <tr>
  <td colspan="2">
-  <b>Parameters</b> &nbsp;&nbsp; (informal parameters allowed)
+  <b>Parameters</b>
 	<br>
   <table border="1" cellpadding="4" cellspacing="4" class="parameters">
   <tr> 
@@ -87,6 +89,8 @@
 		</td>
 	</tr>
 	</table>		
+  Informal parameters: NOT allowed<br>
+  Reserved parameters: none
  </td>
 </tr>
 
@@ -94,8 +98,8 @@
  <td colspan="2">
   <b>Examples</b>
 	<p>
-  The Conditional component is used to display whether the person is a manager
-	and if they are a manager whether they have any staff.	
+  The Conditional component in this example is used to display whether the 
+  person is a manager and if they are a manager whether they have any staff.	
 	<p>
 	
 <table class="examples" cellpadding="8">
@@ -107,19 +111,13 @@ John Smith is a Manager with <font color="red"><b>no</b></font> staff.
 </table>
 		
 <pre>
-&lt;span jwcid="insertName"&gt;
-&lt;span jwcid="<span class="jwcid">ifManager</span>"&gt;
- is a Manager
- &lt;span jwcid="<span class="jwcid">ifHasStaff</span>"&gt;
-   with staff.
- &lt;/span&gt;
+&lt;span jwcid="insertName"/&gt;
+&lt;span jwcid="<span class="jwcid">ifManager</span>"&gt; is a Manager
+ &lt;span jwcid="<span class="jwcid">ifHasStaff</span>"&gt; with staff.&lt;/span&gt;
  &lt;span jwcid="<span class="jwcid">ifNoHasStaff</span>"&gt;
-   with &lt;font color="red"&gt;&lt;b&gt;no&lt;/b&gt;&lt;/font&gt; staff.
- &lt;/span&gt;
+  with &lt;font color="red"&gt;&lt;b&gt;no&lt;/b&gt;&lt;/font&gt; staff.&lt;/span&gt;
 &lt;/span&gt;
-&lt;span jwcid="<span class="jwcid">ifNotManager</span>"&gt;
- is not a Manager.
-&lt;/span&gt;
+&lt;span jwcid="<span class="jwcid">ifNotManager</span>"&gt; is not a Manager.&lt;/span&gt;
 
 
 &lt;component id="insertName" type="<a href="Insert.html">Insert</a>"&gt;
@@ -136,30 +134,30 @@ John Smith is a Manager with <font color="red"><b>no</b></font> staff.
 &lt;/component&gt;
 
 &lt;component id="<span class="jwcid">ifHasStaff</span>" type="<a href="Conditional.html">Conditional</a>"&gt;
-   &lt;binding name="condition" property-path="staff.empty"/&gt;
+   &lt;binding name="condition" property-path="staffList.empty"/&gt;
    &lt;static-binding name="invert"&gt;true&lt;/static-binding&gt;
 &lt;/component&gt;
 
 &lt;component id="<span class="jwcid">ifHasNoStaff</span>" type="<a href="Conditional.html">Conditional</a>"&gt;
-   &lt;binding name="condition" property-path="staff.empty"/&gt;
+   &lt;binding name="condition" property-path="staffList.empty"/&gt;
 &lt;/component&gt;
 
 
 public class EnquiryPage extends BasePage {
     private String fullName;
-    private List staff;
     private boolean isManager;
+    private List staffList;
 
     public String getFullName() { return fullName; }
 
-    public List getStaff() { return staff;  }
-
     public boolean isManager() { return isManager; }
     
+    public List getStaffList() { return staffList;  }
+
     public void detach() {
         fullName = null;
-        staff = null;
         isManager = false;
+        staffList = null;
         super.detach();
     }
 }

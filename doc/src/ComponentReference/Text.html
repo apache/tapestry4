@@ -163,9 +163,9 @@
 
 public class CustomerCommentsPage extends BasePage {
     private final static String COMMENTS = "Please enter your comments here"; 
+    private String comments = COMMENTS;
     private final int column = 20;
     private final int rows = 5;
-    private String comments = COMMENTS;
 
     public void formSubmit(IRequestCycle requestCycle) {
         // Proccess customer comments

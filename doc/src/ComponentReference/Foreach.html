@@ -42,6 +42,8 @@
 	value before rendering its wrapped elements. The <a href="ListEdit.html">
 	ListEdit</a> component is often more useful if the items are inside a 
 	<a href="Form.html">Form</a>. 	
+  <p>
+  This component may wrap around other components and static HTML. 
  </td>
 </tr>
 
@@ -57,7 +59,7 @@
 
 <tr>
  <td colspan="2">
-  <b>Parameters</b> &nbsp;&nbsp;&nbsp; (informal parameters allowed)
+  <b>Parameters</b>
 	<br>
   <table border="1" cellpadding="4" cellspacing="4" class="parameters">
   <tr> 
@@ -119,6 +121,8 @@
     </td>
 	</tr>
 	</table>
+  Informal parameters: allowed<br>
+  Reserved parameters: none
  </td>
 </tr>
 
@@ -126,8 +130,7 @@
  <td colspan="2">
   <b>Examples</b>
 	<p>
-	The Foreach component is used to generate a table of customers sourced
-	from the pages Customer list.
+	The Foreach component is used to generate a table from a Customer List.
 	<p>
 
 <table class="examples" cellspacing="6">
@@ -219,11 +222,11 @@ public class SalesPage extends BasePage {
 	 
     public List getCustomerList() { return customerList; }
 	 
+    public Customer getCustomer() { return customer; }
+
     public void setCustomer(Customer value) {
         customer = value;
     }
-
-    public Customer getCustomer() { return customer; }
 
     public void detach() {
         customerList = null;
