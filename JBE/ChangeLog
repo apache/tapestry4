@@ -1,5 +1,10 @@
 * Jan 31 2001 hship
 
+Fix DocBook.mk to change into the HTML directory when running openjade
+(otherwise, intra-document links are broken).
+
+* Jan 31 2001 hship
+
 Remove some older SITE_xxx variables, no longer used.
 Use the -c option with openjade, instead of setting SGML_CATALOG_FILES variable.
 
