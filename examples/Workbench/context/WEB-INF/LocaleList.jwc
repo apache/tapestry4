@@ -33,14 +33,18 @@
 	</component>
 
 	<component id="tableView" type="contrib:TableView">
-		<binding name="tableModel" expression="tableModel"/>
-		<binding name="tableSessionStateManager" expression="tableSessionStateManager"/>
+        <binding name="source" expression="@java.util.Locale@getAvailableLocales()"/>
+        <binding name="columns">
+            '* Locale:toString(), Language:displayLanguage, Country:displayCountry, ' +
+            'Variant:displayVariant, ISO Language:ISO3Language, ISO Country:ISO3Country'
+        </binding>
 	</component>
 
 	<component id="tableColumns" type="contrib:TableColumns"/>
 
 	<component id="tableRows" type="contrib:TableFormRows">
 		<binding name="row" expression="currentLocale"/>
+        <binding name="convertor" expression="localeConvertor"/>
 		<binding name="class" expression="beans.rowClass.next"/>
 	</component>
 
