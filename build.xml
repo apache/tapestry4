@@ -158,7 +158,7 @@
 				<filter token="JAVA_VM_VERSION" value="${java.vm.version}"/>
 				<filter token="COPY_YEARS" value="${copyright.years}"/>
 				<filter token="HOME_PAGE_URL"
-					value="http://jakarta.apache.org/proposals/tapestry"/>
+					value="http://jakarta.apache.org/tapestry"/>
 			</filterset>
 		</copy>
 		<copy todir="${dist.dir}/lib">
