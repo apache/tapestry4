@@ -30,7 +30,7 @@
 # DSSSL stylesheets and the jade DSSSL processor.
 
 	
-default: html
+default: documentation
 
 include $(SYS_MAKEFILE_DIR)/CommonDefs.mk
 include $(SYS_MAKEFILE_DIR)/CommonRules.mk
@@ -38,6 +38,9 @@ include $(SYS_MAKEFILE_DIR)/CommonRules.mk
 HTML_DIR := html
 
 DOCUMENT_RESOURCE_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/document-resources
+HTML_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/html
+
+RTF_OUTPUT_FILE := $(addsuffix .rtf,$(basename $(MAIN_DOCUMENT)))
 
 DISTRO_STAMP_FILE := $(DOCBOOK_DIR)/.distro-stamp
 
@@ -47,6 +50,9 @@ DOCBOOK_DISTROS := \
 	$(OPENJADE_DISTRO)
 
 initialize: setup-jbe-util $(DISTRO_STAMP_FILE)
+ifeq "$(OPENJADE)" ""
+	$(error DocBook modules are not supported on this platform.)
+endif
 	@$(MKDIRS) $(SYS_BUILD_DIR_NAME) $(HTML_DIR)
 
 $(DISTRO_STAMP_FILE): $(DOCBOOK_DISTROS)
@@ -64,39 +70,86 @@ SGML_CATALOG_FILES := \
 	$(DOCBOOK_DSSSL_DIR)/catalog \
 	$(DOCBOOK_OPENJADE_DIR)/dsssl/catalog
 
-MOD_VARIABLE_DEFS := \
+MOD_HTML_VARIABLE_DEFS := \
 	%html-ext%=.html \
+	use-output-dir \
+	%output-dir%=$(HTML_DIR) \
 	%root-filename%=$(basename $(MAIN_DOCUMENT))
 	
-FINAL_VARIABLE_DEFS := $(MOD_VARIABLE_DEFS) $(VARIABLE_DEFS)
+FINAL_HTML_VARIABLE_DEFS := $(MOD_HTML_VARIABLE_DEFS) $(HTML_VARIABLE_DEFS) $(VARIABLE_DEFS)
 
-ifdef STYLESHEET
-FINAL_STYLESHEET := $(call JBE_CANONICALIZE, $(STYLESHEET))
-else
-FINAL_STYLESHEET := $(DOCBOOK_DSSSL_DIR)/html/docbook.dsl
-endif
+FINAL_HTML_STYLESHEET := \
+	$(firstword $(HTML_STYLESHEET) $(STYLESHEET) $(DOCBOOK_DSSSL_DIR)/html/docbook.dsl)
 
-html: initialize $(DOCUMENT_RESOURCE_STAMP_FILE)
-	$(call NOTE, Generating HTML documentation from $(MAIN_DOCUMENT) ...)
-	$(CD) $(HTML_DIR); \
-	$(OPENJADE) -t sgml -d $(FINAL_STYLESHEET) $(OPENJADE_OPT) \
-	$(foreach vardef,$(FINAL_VARIABLE_DEFS),-V $(vardef)) \
+# Callable for generating documentation using OpenJade.
+#
+# Usage:
+#
+#  $(call RUN_OPENJADE, main document, type, stylesheet, variable defs, type-specific opts)
+#
+# Example:
+#
+#  $(call RUN_OPENJADE, sgml, $(FINAL_HTML_STYLESHEET), \
+#		$(FINAL_HTML_VARIABLE_DEFS), $(HTML_OPENJADE_OPT))
+#
+
+RUN_OPENJADE = \
+	$(OPENJADE) -t $(1) -d $(2) $(OPENJADE_OPT) $(4) \
+	$(foreach vardef,$(3),-V $(vardef)) \
 	$(foreach cat,$(SGML_CATALOG_FILES),-c $(cat)) \
-	../$(MAIN_DOCUMENT)
+	$(MAIN_DOCUMENT)
 
+# -t sgml-raw:  This is voodoo black magic.  sgml and sgml-raw both work
+# (sgml-raw is prettier), html takes forever and does nothing!
+
+html: initialize $(HTML_STAMP_FILE)
+
+$(HTML_STAMP_FILE): $(DOCUMENT_RESOURCE_STAMP_FILE)  \
+	$(MAIN_DOCUMENT) $(FINAL_HTML_STYLESHEET) $(OTHER_DOC_FILES)
+	$(call NOTE, Generating HTML from $(MAIN_DOCUMENT) ...)
+	$(call RUN_OPENJADE, sgml-raw, $(FINAL_HTML_STYLESHEET), \
+		$(FINAL_HTML_VARIABLE_DEFS), $(HTML_OPENJADE_OPT))
+	@$(TOUCH) $@
+
+FINAL_RTF_VARIABLE_DEFS := $(RTF_VARIABLE_DEFS) $(VARIABLE_DEFS)
+
+FINAL_RTF_STYLESHEET := \
+	$(firstword  $(RTF_STYLESHEET) $(STYLESHEET) $(DOCBOOK_DSSSL_DIR)/print/docbook.dsl)
+	
+rtf: initialize $(RTF_OUTPUT_FILE)
+
+# Note: this still makes references to the image files.
+
+$(RTF_OUTPUT_FILE): $(MAIN_DOCUMENT) $(FINAL_RTF_STYLESHEET) $(OTHER_DOC_FILES)
+	$(call NOTE, Generating RTF from $(MAIN_DOCUMENT) ...)
+	$(call RUN_OPENJADE, rtf, $(FINAL_RTF_STYLESHEET), \
+		$(FINAL_RTF_VARIABLE_DEFS), $(RTF_OPENJADE_OPT) -o $(RTF_OUTPUT_FILE))
+
+FINAL_RTF_INSTALL_DIR := $(firstword $(RTF_INSTALL_DIR) $(INSTALL_DIR))
+
+
+install-rtf: rtf
+ifeq "$(FINAL_RTF_INSTALL_DIR)" ""
+	$(error You must set a value for RTF_INSTALL_DIR or INSTALL_DIR)
+endif
+	$(call NOTE, Installing HTML documentation to $(FINAL_RTF_INSTALL_DIR) ...)
+	@$(MKDIRS) $(FINAL_RTF_INSTALL_DIR)
+	@$(call COPY_TREE, . ,$(RTF_OUTPUT_FILE) $(FINAL_DOCUMENT_RESOURCES), $(FINAL_RTF_INSTALL_DIR))	
 
 clean:
 	$(call  NOTE, "Cleaning ...")
-	@$(RM) $(HTML_DIR) $(SYS_BUILD_DIR_NAME)
+	@$(RM) $(HTML_DIR) $(SYS_BUILD_DIR_NAME) $(RTF_OUTPUT_FILE)
 	
-install: html
-ifeq "$(INSTALL_DIR)" ""
-	$(error You must set a value for INSTALL_DIR)
+FINAL_HTML_INSTALL_DIR := \
+	$(firstword $(HTML_INSTALL_DIR) $(INSTALL_DIR))
+	
+install-html: html
+ifeq "$(FINAL_HTML_INSTALL_DIR)" ""
+	$(error You must set a value for HTML_INSTALL_DIR or INSTALL_DIR)
 endif
-	$(call NOTE, Installing HTML documentation to $(INSTALL_DIR) ...)
-	@$(RM) $(INSTALL_DIR)
-	@$(MKDIRS) $(INSTALL_DIR)
-	@$(call COPY_TREE, $(HTML_DIR), . , $(INSTALL_DIR))	
+	$(call NOTE, Installing HTML documentation to $(FINAL_HTML_INSTALL_DIR) ...)
+	@$(MKDIRS) $(FINAL_HTML_INSTALL_DIR)
+	@$(call COPY_TREE, $(HTML_DIR), . , $(FINAL_HTML_INSTALL_DIR))	
 
 # Rules for dealing with DOCUMENT_RESOURCES, generally images (or directories of images)
 # that should be included with the generated HTML. 
@@ -116,4 +169,11 @@ ifneq "$(FINAL_DOCUMENT_RESOURCES)" ""
 endif
 	@$(TOUCH) $@
 
-.PHONY: default html initialize install
+FINAL_FORMATS := $(if $(FORMATS),$(FORMATS),html)
+
+documentation: $(FINAL_FORMATS)
+
+install: $(addprefix install-,$(FINAL_FORMATS))
+
+.PHONY: default html initialize install-html documentation rtf
+.PHONY: install
