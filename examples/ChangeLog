@@ -1,5 +1,10 @@
 * Nov 20 2000 hship
 
+Minor fixes to Makefiles; especially to make them work correctly before the JBE Util class
+has been compiled.
+
+* Nov 20 2000 hship
+
 Final documentation changes for release 0.2.6.
 
 * Nov 17 2000 hship

@@ -25,7 +25,7 @@ include $(SYS_MAKEFILE_DIR)/jBoss.mk
 # Rule to configure the jBoss server for the VlibBeans
 # demo.
 
-configure-jboss:
+configure-jboss: 
 ifeq ("$(JBOSS_DIR)","")
 	@$(ECHO) "You must set JBOSS_DIR (in $(SYS_MAKEFILE_DIR)/config/LocalConfig.mk)"
 	@$(ECHO) "before configuring jBoss."
