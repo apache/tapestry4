@@ -36,11 +36,93 @@ No page specification.
 ]]>
 		</assert-output>		
 
-		<assert-output name="Text from Home Page">
+		<assert-output name="Text from page">
 This page's specification is a sibling of the app specification.
 		</assert-output>
 				
 	</request>	
-			 	 	 
+			
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="InPages"/>
+		
+		<assert-output name="Title">
+<![CDATA[
+<title>InPages Page</title>
+]]>
+		</assert-output>		
+
+		<assert-output name="Text from page">
+The specification, and properties files, are located in WEB-INF/pages.
+		</assert-output>
+				
+	</request>
+	
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="InWebInf"/>
+		
+		<assert-output name="Title">
+<![CDATA[
+<title>InWebInf Page</title>
+]]>
+		</assert-output>		
+
+		<assert-output name="Text from page">
+The specification, and properties files, are located in directly in WEB-INF.
+		</assert-output>
+				
+	</request>	
+	
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="InAppRoot"/>
+		
+		<assert-output name="Title">
+<![CDATA[
+<title>InAppRoot Page</title>
+]]>
+		</assert-output>		
+
+		<assert-output name="Text from page">
+The specification, and properties files, are located in the application root.
+		</assert-output>
+				
+	</request>	
+	
+		
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="StaleLink"/>
+		
+		<assert-output name="Title">
+<![CDATA[
+<title>Application StaleLink Page</title>
+]]>
+		</assert-output>		
+
+		<assert-output name="Text from page">
+This is an application-provided version of the StaleLink page.
+		</assert-output>
+				
+	</request>	
+	
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="framework:StaleLink"/>
+		
+		<assert-output name="Title">
+<![CDATA[
+<title>Stale Link</title>
+]]>
+		</assert-output>		
+
+		<assert-output name="Text from page">
+<![CDATA[
+You have clicked on a <i>stale link</i>.
+]]>
+		</assert-output>
+				
+	</request>							 	 	 
 </mock-test>
     	

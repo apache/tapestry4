@@ -1,35 +1,23 @@
 package net.sf.tapestry.pageload;
 
-import java.net.URL;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 
-import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IAsset;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IEngine;
-import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IMonitor;
-import net.sf.tapestry.INamespace;
 import net.sf.tapestry.IPage;
 import net.sf.tapestry.IPageSource;
-import net.sf.tapestry.IRenderDescription;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.IResourceLocation;
 import net.sf.tapestry.IResourceResolver;
-import net.sf.tapestry.ISpecificationSource;
 import net.sf.tapestry.PageLoaderException;
-import net.sf.tapestry.Tapestry;
-import net.sf.tapestry.asset.ContextAsset;
 import net.sf.tapestry.asset.ExternalAsset;
-import net.sf.tapestry.asset.PrivateAsset;
 import net.sf.tapestry.binding.FieldBinding;
 import net.sf.tapestry.binding.StaticBinding;
-import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.util.MultiKey;
 import net.sf.tapestry.util.pool.Pool;
 
@@ -67,8 +55,15 @@ import net.sf.tapestry.util.pool.Pool;
  * 
  **/
 
-public class PageSource implements IPageSource, IRenderDescription
+public class PageSource implements IPageSource
 {
+    /**
+     *  Key used to find PageLoader instances in the Pool.
+     * 
+     **/
+
+    private static final String PAGE_LOADER_POOL_KEY = "net.sf.tapestry.PageLoader";
+
     private Map _fieldBindings = new HashMap();
     private Map _staticBindings = new HashMap();
 
@@ -85,7 +80,10 @@ public class PageSource implements IPageSource, IRenderDescription
 
     /**
      *  The pool of {@link PooledPage}s.  The key is a {@link MultiKey},
-     *  built from the page name and the page locale.
+     *  built from the page name and the page locale.  This is a reference
+     *  to a shared pool.
+     * 
+     *  @see IEngine#getPool()
      *
      **/
 
@@ -100,11 +98,12 @@ public class PageSource implements IPageSource, IRenderDescription
 
     private PageSpecificationResolver _pageSpecificationResolver;
 
-    public PageSource(IResourceResolver resolver)
+    public PageSource(IEngine engine)
     {
-        _resolver = resolver;
+        _resolver = engine.getResourceResolver();
+        ;
 
-        _pool = new Pool();
+        _pool = engine.getPool();
     }
 
     public IResourceResolver getResourceResolver()
@@ -170,15 +169,22 @@ public class PageSource implements IPageSource, IRenderDescription
             // Page loader's are not threadsafe, so we create a new
             // one as needed.  However, they would make an excellent
             // candidate for pooling.
-            
-            PageLoader loader = new PageLoader(this, cycle);
 
-            result =
-                loader.loadPage(
-                    pageName,
-                    _pageSpecificationResolver.getNamespace(),
-                    cycle,
-                    _pageSpecificationResolver.getSpecification());
+            PageLoader loader = getPageLoader(cycle);
+
+            try
+            {
+                result =
+                    loader.loadPage(
+                        pageName,
+                        _pageSpecificationResolver.getNamespace(),
+                        cycle,
+                        _pageSpecificationResolver.getSpecification());
+            }
+            finally
+            {
+                discardPageLoader(loader);
+            }
 
             if (monitor != null)
                 monitor.pageCreateEnd(pageName);
@@ -192,6 +198,38 @@ public class PageSource implements IPageSource, IRenderDescription
         }
 
         return result;
+    }
+
+    /**
+     *  Invoked to obtain an instance of 
+     *  {@link PageLoader}.  An instance if aquired from the pool or,
+     *  if none are available, created fresh.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    protected PageLoader getPageLoader(IRequestCycle cycle)
+    {
+        PageLoader result = (PageLoader) _pool.retrieve(PAGE_LOADER_POOL_KEY);
+
+        if (result == null)
+            result = new PageLoader(this, cycle);
+
+        return result;
+    }
+
+    /**
+     *  Invoked once the {@link PageLoader} is not
+     *  longer needed; it is then returned to the pool.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    protected void discardPageLoader(PageLoader loader)
+    {
+        _pool.store(PAGE_LOADER_POOL_KEY, loader);
     }
 
     /**
@@ -215,8 +253,6 @@ public class PageSource implements IPageSource, IRenderDescription
 
     public synchronized void reset()
     {
-        _pool.clear();
-
         _fieldBindings.clear();
         _staticBindings.clear();
         _assets.clear();
@@ -327,67 +363,4 @@ public class PageSource implements IPageSource, IRenderDescription
         buffer.append(label);
     }
 
-    /** @since 1.0.6 **/
-
-    public void renderDescription(IMarkupWriter writer)
-    {
-        writer.print("PageSource");
-        writer.begin("ul");
-
-        if (_pool != null)
-        {
-            writer.begin("li");
-            writer.print("pool = ");
-            _pool.renderDescription(writer);
-            writer.end();
-        }
-
-        describe(writer, _fieldBindings, "field bindings");
-        describe(writer, _staticBindings, "static bindings");
-        describe(writer, _assets, "assets");
-
-        writer.end(); // <ul>
-    }
-
-    /** @since 1.0.6 **/
-
-    private void describe(IMarkupWriter writer, Map map, String label)
-    {
-        if (map == null)
-            return;
-
-        synchronized (map)
-        {
-            Set entrySet = map.entrySet();
-            int count = entrySet.size();
-
-            if (count > 0)
-            {
-                writer.begin("li");
-                writer.print(" ");
-
-                writer.print(count);
-                writer.print(" cached ");
-                writer.print(label);
-
-                writer.begin("ul");
-
-                Iterator i = map.entrySet().iterator();
-
-                while (i.hasNext())
-                {
-                    Map.Entry e = (Map.Entry) i.next();
-
-                    writer.begin("li");
-                    writer.print(e.getKey().toString());
-                    writer.println();
-                    writer.end();
-                }
-
-                writer.end(); // <ul>
-                writer.end(); // <li>
-
-            }
-        }
-    }
 }

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -42,7 +43,7 @@ public class Pool implements ICleanable, IRenderDescription
      *  @since 1.0.5
      **/
 
-    private int generation;
+    private int _generation;
 
     /**
      *  The generation window, used to identify which
@@ -51,21 +52,21 @@ public class Pool implements ICleanable, IRenderDescription
      *  @since 1.0.5
      **/
 
-    private int window = 10;
+    private int _window = 10;
 
     /**
      *  The number of objects pooled.
      *
      **/
 
-    private int pooledCount;
+    private int _pooledCount;
 
     /**
      *  A map of PoolLists, keyed on an arbitrary object.
      *
      **/
 
-    private Map map;
+    private Map _map;
 
     /**
      *  Creates a new Pool using the default map size.  Creation of the map is deferred.
@@ -116,7 +117,7 @@ public class Pool implements ICleanable, IRenderDescription
     {
         this(useSharedJanitor);
 
-        map = new HashMap(mapSize);
+        _map = new HashMap(mapSize);
     }
 
     /**
@@ -130,7 +131,7 @@ public class Pool implements ICleanable, IRenderDescription
 
     public int getWindow()
     {
-        return window;
+        return _window;
     }
 
     /**
@@ -147,7 +148,7 @@ public class Pool implements ICleanable, IRenderDescription
         if (value < 1)
             throw new IllegalArgumentException("Pool window may not be less than 1.");
 
-        window = value;
+        _window = value;
     }
 
     /**
@@ -162,16 +163,16 @@ public class Pool implements ICleanable, IRenderDescription
         PoolList list;
         Object result = null;
 
-        if (map == null)
-            map = new HashMap();
+        if (_map == null)
+            _map = new HashMap();
 
-        list = (PoolList) map.get(key);
+        list = (PoolList) _map.get(key);
 
         if (list != null)
             result = list.retrieve();
 
         if (result != null)
-            pooledCount--;
+            _pooledCount--;
 
         if (LOG.isDebugEnabled())
             LOG.debug("Retrieved " + result + " from " + key);
@@ -196,20 +197,20 @@ public class Pool implements ICleanable, IRenderDescription
             ((IPoolable) object).resetForPool();
         }
 
-        if (map == null)
-            map = new HashMap();
+        if (_map == null)
+            _map = new HashMap();
 
-        list = (PoolList) map.get(key);
+        list = (PoolList) _map.get(key);
 
         if (list == null)
         {
             list = new PoolList();
-            map.put(key, list);
+            _map.put(key, list);
         }
 
-        count = list.store(generation, object);
+        count = list.store(_generation, object);
 
-        pooledCount++;
+        _pooledCount++;
 
         if (LOG.isDebugEnabled())
             LOG.debug("Stored " + object + " into " + key + " (" + count + " pooled)");
@@ -222,10 +223,10 @@ public class Pool implements ICleanable, IRenderDescription
 
     public synchronized void clear()
     {
-        if (map != null)
-            map.clear();
+        if (_map != null)
+            _map.clear();
 
-        pooledCount = 0;
+        _pooledCount = 0;
 
         if (LOG.isDebugEnabled())
             LOG.debug("Cleared");
@@ -242,7 +243,7 @@ public class Pool implements ICleanable, IRenderDescription
 
     public int getPooledCount()
     {
-        return pooledCount;
+        return _pooledCount;
     }
 
     /**
@@ -253,10 +254,10 @@ public class Pool implements ICleanable, IRenderDescription
 
     public synchronized int getKeyCount()
     {
-        if (map == null)
+        if (_map == null)
             return 0;
 
-        return map.size();
+        return _map.size();
     }
 
     /**
@@ -268,20 +269,20 @@ public class Pool implements ICleanable, IRenderDescription
 
     public synchronized void executeCleanup()
     {
-        if (map == null)
+        if (_map == null)
             return;
 
         if (LOG.isDebugEnabled())
             LOG.debug("Executing cleanup of " + this);
 
-        generation++;
+        _generation++;
 
-        int oldestGeneration = generation - window;
+        int oldestGeneration = _generation - _window;
 
         if (oldestGeneration < 0)
             return;
 
-        int oldCount = pooledCount;
+        int oldCount = _pooledCount;
         int culledKeys = 0;
 
         // During the cleanup, we keep the entire instance synchronized
@@ -291,7 +292,7 @@ public class Pool implements ICleanable, IRenderDescription
 
         int newCount = 0;
 
-        Iterator i = map.entrySet().iterator();
+        Iterator i = _map.entrySet().iterator();
         while (i.hasNext())
         {
             Map.Entry e = (Map.Entry) i.next();
@@ -309,97 +310,58 @@ public class Pool implements ICleanable, IRenderDescription
                 newCount += count;
         }
 
-        pooledCount = newCount;
+        _pooledCount = newCount;
 
         if (LOG.isDebugEnabled())
-            LOG.debug(
-                "Culled "
-                    + (oldCount - pooledCount)
-                    + " pooled objects and "
-                    + culledKeys
-                    + " keys.");
+            LOG.debug("Culled " + (oldCount - _pooledCount) + " pooled objects and " + culledKeys + " keys.");
     }
 
     public String toString()
     {
-        if (map == null)
-            return super.toString();
+        ToStringBuilder builder = new ToStringBuilder(this);
 
-        StringBuffer buffer = new StringBuffer();
+        builder.append("generation", _generation);
+        builder.append("pooledCount", _pooledCount);
 
-        buffer.append("Pool@");
-        buffer.append(Integer.toHexString(hashCode()));
-
-        buffer.append("[Generation ");
-        buffer.append(generation);
-
-        if (pooledCount > 0)
-        {
-            buffer.append(", ");
-            buffer.append(pooledCount);
-            buffer.append(" pooled");
-        }
-
-        synchronized (this)
-        {
-            Iterator i = map.entrySet().iterator();
-            while (i.hasNext())
-            {
-                Map.Entry entry = (Map.Entry) i.next();
-                PoolList list = (PoolList) entry.getValue();
-
-                buffer.append(", ");
-                buffer.append(entry.getKey());
-                buffer.append('=');
-                buffer.append(list.getPooledCount());
-            }
-        }
-
-        buffer.append(']');
-
-        return buffer.toString();
+        return builder.toString();
     }
 
     /** @since 1.0.6 **/
 
-    public void renderDescription(IMarkupWriter writer)
+    public synchronized void renderDescription(IMarkupWriter writer)
     {
-        writer.print("Pool[Generation = ");
-        writer.print(generation);
-        writer.print(" Pooled = ");
-        writer.print(pooledCount);
-        writer.print("]");
+        writer.begin("table");
+        writer.attribute("border", "1");
+        writer.println();
 
-        if (map == null)
-            return;
+        writer.begin("tr");
+        writer.begin("th");
+        writer.attribute("colspan", "2");
+        writer.print(toString());
+        writer.end();
+        writer.end();
+        writer.println();
 
-        boolean first = true;
-
-        synchronized (this)
+        if (_map != null)
         {
-            Iterator i = map.entrySet().iterator();
+            Iterator i = _map.entrySet().iterator();
 
             while (i.hasNext())
             {
                 Map.Entry entry = (Map.Entry) i.next();
                 PoolList list = (PoolList) entry.getValue();
 
-                if (first)
-                {
-                    writer.begin("ul");
-                    first = false;
-                }
-
-                writer.begin("li");
+                writer.begin("tr");
+                writer.begin("td");
                 writer.print(entry.getKey().toString());
-                writer.print(" = ");
-                writer.print(list.getPooledCount());
-                writer.println();
                 writer.end();
+                writer.begin("td");
+                writer.print(list.getPooledCount());
+                writer.end();
+                writer.end();
+
+                writer.println();
             }
         }
-
-        if (!first)
-            writer.end(); // <ul>		
     }
 }

@@ -22,7 +22,8 @@ import net.sf.tapestry.spec.ComponentSpecification;
  * 
  *  <ul>
  *  <li><i>simple-name</i>.page in the same folder as the application specification
- *  <li><i>simple-name</i>.page in WEB-INF of the context root
+ *  <li><i>simple-name</i> page in the WEB-INF/pages/<i>servlet-name</i> directory of the context root
+ *  <li><i>simple-name</i>.page in WEB-INF
  *  <li><i>simple-name</i>.page in the application root (within the context root)
  *  <li><i>simple-name</i>.html as a template, for which an implicit specification is generated
  *  </ul>
@@ -58,12 +59,25 @@ public class PageSpecificationResolver
 
         _applicationRootLocation = Tapestry.getApplicationRootLocation(cycle);
 
+        String servletName = cycle.getRequestContext().getServlet().getServletConfig().getServletName();
+
         _webInfLocation = _applicationRootLocation.getRelativeLocation("/WEB-INF/");
-        _webInfPagesLocation = _webInfLocation.getRelativeLocation("pages/");
+        _webInfPagesLocation = _webInfLocation.getRelativeLocation("pages/" + servletName + "/");
     }
 
+    /**
+     *  Resolve the name (which may have a library id prefix) to a namespace
+     *  (see {@link #getNamespace()}) and a specification (see {@link #getSpecification()}).
+     * 
+     *  @throws ApplicationRuntimeException if the name cannot be resolved
+     * 
+     **/
+    
     public void resolve(String pageName)
     {
+        _namespace = null;
+        _specification = null;
+        
         int colonx = pageName.indexOf(':');
 
         if (colonx > 0)
@@ -104,11 +118,6 @@ public class PageSpecificationResolver
     public ComponentSpecification getSpecification()
     {
         return _specification;
-    }
-
-    public String getSimplePageName()
-    {
-        return _simplePageName;
     }
 
     private void searchForPage()

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import net.sf.tapestry.spec.ApplicationSpecification;
 import net.sf.tapestry.spec.IApplicationSpecification;
 import net.sf.tapestry.util.io.DataSqueezer;
+import net.sf.tapestry.util.pool.Pool;
 
 /**
  * Defines the core, session-persistant object used to run a Tapestry
@@ -315,5 +316,18 @@ public interface IEngine
      **/
     
     public IPropertySource getPropertySource();
+    
+    /**
+     *  Returns a {@link net.sf.tapestry.util.pool.Pool} that is used
+     *  to store all manner of objects that are needed throughout the system.
+     *  This is the best way to deal with objects that are both expensive to
+     *  create and not threadsafe.  The reset service
+     *  will clear out this Pool.
+     * 
+     *  @since 2.4
+     * 
+     **/
+    
+    public Pool getPool();
     
 }

@@ -63,6 +63,7 @@ import net.sf.tapestry.util.ServletPropertySource;
 import net.sf.tapestry.util.SystemPropertiesPropertySource;
 import net.sf.tapestry.util.exception.ExceptionAnalyzer;
 import net.sf.tapestry.util.io.DataSqueezer;
+import net.sf.tapestry.util.pool.Pool;
 import net.sf.tapestry.util.prop.OgnlUtils;
 
 /**
@@ -333,6 +334,17 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     private transient Map _serviceMap;
 
     protected static final String SERVICE_MAP_NAME = "net.sf.tapestry.ServiceMap";
+
+    /**
+     *  A shared instance of {@link Pool}.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    private transient Pool _pool;
+
+    protected static final String POOL_NAME = "net.sf.tapestry.Pool";
 
     /**
      *  Sets the Exception page's exception property, then renders the Exception page.
@@ -872,6 +884,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
     public void clearCachedData()
     {
+        _pool.clear();
         _pageSource.reset();
         _specificationSource.reset();
         _templateSource.reset();
@@ -916,6 +929,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      *
      *  <p>In addition, this method locates and/or creates the:
      *  <ul>
+     *  <li>{@link Pool}
      *  <li>{@link ITemplateSource} 
      *  <li>{@link ISpecificationSource}
      *  <li>{@link IPageSource}
@@ -924,6 +938,10 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      *  <li>{@link IComponentStringsSource}
      *  <li>{@link IPropertySource}
      *  </ul>
+     * 
+     *  <p>This order is important, because some of the later shared objects
+     *  depend on some of the earlier shared objects already been located or created
+     *  (especially {@link #getPool() pool}).
      *
      *  <p>Subclasses should invoke this implementation first, then perform their
      *  own setup.
@@ -967,6 +985,20 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         }
 
         String servletName = context.getServlet().getServletName();
+
+        if (_pool == null)
+        {
+            String name = POOL_NAME + "." + servletName;
+
+            _pool = (Pool) servletContext.getAttribute(name);
+
+            if (_pool == null)
+            {
+                _pool = createPool(context);
+
+                servletContext.setAttribute(name, _pool);
+            }
+        }
 
         if (_templateSource == null)
         {
@@ -1122,7 +1154,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
     protected IPageSource createPageSource(RequestContext context)
     {
-        return new PageSource(getResourceResolver());
+        return new PageSource(this);
     }
 
     /**
@@ -1137,7 +1169,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
     protected ISpecificationSource createSpecificationSource(RequestContext context)
     {
-        return new DefaultSpecificationSource(getResourceResolver(), _specification);
+        return new DefaultSpecificationSource(getResourceResolver(), _specification, _pool);
     }
 
     /**
@@ -1176,7 +1208,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      **/
 
     public String toString()
-    {        
+    {
         StringBuffer buffer;
 
         buffer = new StringBuffer(super.toString());
@@ -1801,4 +1833,25 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
         return result;
     }
+
+    /** 
+     *  Returns an new instance of {@link Pool}.  Subclasses may override this
+     *  method to configure the Pool differently.
+     * 
+     *  @since 2.4 
+     * 
+     **/
+
+    protected Pool createPool(RequestContext context)
+    {
+        return new Pool();
+    }
+
+    /** @since 2.4 **/
+
+    public Pool getPool()
+    {
+        return _pool;
+    }
+
 }

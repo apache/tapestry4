@@ -32,6 +32,25 @@ public class MockTestCase extends TapestryTestCase
         return tester;
     }
 
+    // Note: JUnit runs tests in order they are defined here.  I typically
+    // add new tests first since they run first that way.  Perhaps at some
+    // point, I will order them differently (though since they all pass,
+    // the order isn't that important).
+    
+    // Should also look at JUnit documentation; perhaps there's a way to
+    // implicitly define tests based on the found XML files?  Possibly
+    // in a static suite() method.
+    
+    /**
+     *  Test the reset service.
+     *
+     **/
+    
+    public void testReset() throws Exception
+    {
+        attempt("TestReset.xml");
+    }
+
     /**
      *  Test failure for application that doesn't provide a home page.
      * 

@@ -19,6 +19,7 @@ import net.sf.tapestry.RequestContext;
 import net.sf.tapestry.spec.ApplicationSpecification;
 import net.sf.tapestry.spec.IApplicationSpecification;
 import net.sf.tapestry.util.io.DataSqueezer;
+import net.sf.tapestry.util.pool.Pool;
 
 /**
  *  An implementation of {@link IEngine} used for unit testing.
@@ -34,6 +35,7 @@ public class MockEngine implements IEngine
 	private IComponentStringsSource componentStringsSource;
 
     private boolean _refreshing;
+    private Pool _pool = new Pool();
 
     public void forgetPage(String name)
     {
@@ -161,6 +163,11 @@ public class MockEngine implements IEngine
     public IPropertySource getPropertySource()
     {
         return null;
+    }
+
+    public Pool getPool()
+    {
+        return _pool;
     }
 
 }

@@ -13,6 +13,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import net.sf.tapestry.ApplicationRuntimeException;
+import net.sf.tapestry.IEngine;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.INamespace;
 import net.sf.tapestry.IRenderDescription;
@@ -28,6 +29,7 @@ import net.sf.tapestry.spec.IApplicationSpecification;
 import net.sf.tapestry.spec.ILibrarySpecification;
 import net.sf.tapestry.spec.LibrarySpecification;
 import net.sf.tapestry.util.StringSplitter;
+import net.sf.tapestry.util.pool.Pool;
 import net.sf.tapestry.util.xml.DocumentParseException;
 
 /**
@@ -48,6 +50,16 @@ import net.sf.tapestry.util.xml.DocumentParseException;
 public class DefaultSpecificationSource implements ISpecificationSource, IRenderDescription
 {
     private static final Log LOG = LogFactory.getLog(DefaultSpecificationSource.class);
+
+    /**
+     *  Key used to get and store {@link SpecificationParser} instances
+     *  from the Pool.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    private static final String PARSER_POOL_KEY = "net.sf.tapestry.SpecificationParser";
 
     private IResourceResolver _resolver;
     private IApplicationSpecification _specification;
@@ -89,10 +101,22 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
 
     private Map _namespaceCache = new HashMap();
 
-    public DefaultSpecificationSource(IResourceResolver resolver, IApplicationSpecification specification)
+    /**
+     *  Reference to the shared {@link net.sf.tapestry.util.pool.Pool}.
+     * 
+     *  @see IEngine#getPool()
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    private Pool _pool;
+
+    public DefaultSpecificationSource(IResourceResolver resolver, IApplicationSpecification specification, Pool pool)
     {
         _resolver = resolver;
         _specification = specification;
+        _pool = pool;
     }
 
     /**
@@ -132,6 +156,10 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
             throw new ApplicationRuntimeException(
                 Tapestry.getString("DefaultSpecificationSource.unable-to-parse-specification", resourceLocation),
                 ex);
+        }
+        finally
+        {
+            discardParser(parser);
         }
 
         return result;
@@ -197,14 +225,14 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
     public synchronized String toString()
     {
         ToStringBuilder builder = new ToStringBuilder(this);
-        
+
         builder.append("applicationNamespace", _applicationNamespace);
         builder.append("frameworkNamespace", _frameworkNamespace);
         builder.append("specification", _specification);
-        
+
         return builder.toString();
     }
-    
+
     /** @since 1.0.6 **/
 
     public synchronized void renderDescription(IMarkupWriter writer)
@@ -235,7 +263,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
         while (i.hasNext())
         {
             // The keys are now IResourceLocation instances
-            
+
             Object key = i.next();
 
             if (first)
@@ -318,14 +346,23 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
 
     /** @since 2.2 **/
 
-    private SpecificationParser getParser()
+    protected SpecificationParser getParser()
     {
-        // It would be good if this could get resused.  SpecificationParser
-        // is not threadsafe, so it would have to be pooled.
+        SpecificationParser result = (SpecificationParser) _pool.retrieve(PARSER_POOL_KEY);
         
-        return new SpecificationParser();
+        if (result == null)
+            result = new SpecificationParser();
+            
+        return result;            
     }
 
+    /** @since 2.4 **/
+    
+    protected void discardParser(SpecificationParser parser)
+    {
+        _pool.store(PARSER_POOL_KEY, parser);
+    }
+    
     public synchronized INamespace getApplicationNamespace()
     {
         if (_applicationNamespace == null)
@@ -340,7 +377,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
         {
             IResourceLocation frameworkLocation =
                 new ClasspathResourceLocation(_resolver, "/net/sf/tapestry/Framework.library");
-                
+
             ILibrarySpecification ls = getLibrarySpecification(frameworkLocation);
 
             _frameworkNamespace = new Namespace(INamespace.FRAMEWORK_NAMESPACE, null, ls, this);

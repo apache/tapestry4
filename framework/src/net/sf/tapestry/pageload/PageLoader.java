@@ -136,7 +136,13 @@ public class PageLoader implements IPageLoader
     {
         _pageSource = pageSource;
 
-         RequestContext context = cycle.getRequestContext();
+        IEngine engine = cycle.getEngine();
+
+        _specificationSource = engine.getSpecificationSource();
+        _resolver = engine.getResourceResolver();
+        _componentResolver = new ComponentResolver(_specificationSource);
+
+        RequestContext context = cycle.getRequestContext();
 
         // Need the location of the servlet within the context as the basis
         // for building relative context asset paths.
@@ -546,9 +552,6 @@ public class PageLoader implements IPageLoader
         _engine = cycle.getEngine();
 
         _locale = _engine.getLocale();
-        _specificationSource = _engine.getSpecificationSource();
-        _resolver = _engine.getResourceResolver();
-        _componentResolver = new ComponentResolver(_specificationSource);
 
         _count = 0;
         _depth = 0;
@@ -570,9 +573,6 @@ public class PageLoader implements IPageLoader
         {
             _locale = null;
             _engine = null;
-            _specificationSource = null;
-            _resolver = null;
-            _componentResolver = null;
             _inheritedBindingQueue.clear();
         }
 
@@ -640,7 +640,7 @@ public class PageLoader implements IPageLoader
         // One known problem is that relative private assets for pages
         // whose spec is in the context (not the classpath) will be computed
         // wrong!  In fact, they'll be ContextAssets.
-        
+
         IResourceLocation assetLocation = baseLocation.getRelativeLocation(path);
 
         return _pageSource.getAsset(assetLocation);
