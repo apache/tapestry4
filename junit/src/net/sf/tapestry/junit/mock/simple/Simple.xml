@@ -79,6 +79,20 @@
 ]]>	
 	</assert-output>	
 	
-  </request>	
+  </request>
+  
+<!-- Request #3: Simulate clicking the DirectLink. -->
+  
+  <request>
+  	<parameter name="service" value="direct"/>
+  	<parameter name="context" value="Two/link"/>	
   	
+	<assert-output name="Third request, message displayed">
+<![CDATA[
+	<body>\s*Note: You clicked the link!\s*<p>This page
+]]>
+	</assert-output>	
+
+  </request>
+		
 </mock-test>
