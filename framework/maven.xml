@@ -2,5 +2,16 @@
 <!-- $Id$ -->
 <project xmlns:j="jelly:core" xmlns:u="jelly:util">
 
+<postGoal name="site:generate">
+	
+		
+	<echo>Copying framework docs to master project ...</echo>
+	<mkdir dir="${basedir}/../target/docs/framework"/>
+	<copy todir="${basedir}/../target/docs/framework">
+		<fileset dir="${basedir}/target/docs"/>	
+	</copy>
+	
+</postGoal>
+
 
 </project>

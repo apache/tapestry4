@@ -4,6 +4,11 @@
 	<extend>${basedir}/../project.xml</extend>
 	<id>tapestry</id>
 	<name>Tapestry Framework</name>
+	
+	  <description>
+	This is the subproject for the master Tapestry framework.
+  </description>
+  
 	<build>
 		<sourceDirectory>src</sourceDirectory>
 		<!-- J A R  R E S O U R C E S -->
@@ -29,10 +34,10 @@
 	</build>
 	
   <reports>
-    <report>maven-javadoc-plugin</report>
-    <report>maven-jxr-plugin</report>
+    <!-- report>maven-javadoc-plugin</report -->
+    <!-- report>maven-jxr-plugin</report>
     <report>maven-junit-report-plugin</report>  
-    <report>maven-clover-plugin</report>  
+    <report>maven-clover-plugin</report -->  
    </reports>
    	
 </project>
