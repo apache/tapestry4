@@ -1,0 +1,21 @@
+<html jwcid="@Shell" title="NullSelection">
+<body jwcid="@Body">
+
+<form jwcid="@Form">
+	
+<span jwcid="group@RadioGroup" selected="ognl:framework">
+	
+	<input type="radio" jwcid="r0@Radio"/> No Choice
+	<input type="radio" jwcid="r1@Radio" value="tapestry"/> Tapestry
+	<br/>
+	<input type="radio" jwcid="r2@Radio" value="struts"/> Struts
+	<br/>
+	<input type="radio" jwcid="r3@Radio" value="webwork"/> WebWork
+</span>
+
+</form>
+
+Framework: [<span jwcid="@Insert" value="ognl:framework"/>]
+
+</body>
+</html>
