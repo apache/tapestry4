@@ -33,6 +33,8 @@
     	   
     <!-- depend project="commons-fileupload"/ -->
     
+    <depend project="tapestry-bundled-fileupload"/>
+    
     <depend project="commons-logging"/>
     <depend project="commons-lang"/>
     <depend project="jakarta-bcel"/>
