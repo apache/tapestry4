@@ -15,5 +15,9 @@
 			<name>stylesheet</name>
 			<java-type>com.primix.tapestry.IAsset</java-type>
 		</parameter>
+		<parameter>
+			<name>refresh</name>
+			<java-type>java.lang.Integer</java-type>
+		</parameter>
 	</parameters>
 </specification>

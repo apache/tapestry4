@@ -66,6 +66,25 @@ import java.util.*;
  *      <td>If given, creates a &lt;link rel=stylesheet&gt; element.</td>
  *  </tr>
  *
+ *  <tr>
+ *      <td>refresh</td>
+ *      <td>int</td>
+ *      <td>R</td>
+ *      <td>no</td>
+ *      <td>&nbsp;</td>
+ *      <td>If provided (and non-zero), then a &lt;meta http-equiv="Refresh"&gt; element is
+ *  included in the header.  The refresh interval is the value provided (which is the time to
+ * display the page, in seconds).
+ *
+ * <p>The refresh will be the same page (not necessarily the same URL as that which initially
+ *  presented the page, since the page will often be initially displayed because of a link
+ * or form submission).
+ *
+ * <p>Note that to the &lt;meta&gt; tag, a refresh of zero means refresh immediately.  For this
+ * component, a refresh of zero is the same as unspecified: no automatic refresh.
+ *  </td>
+ *  </tr>
+ *
  * </table>
  *
  * <p>Informal parameters are not allowed, but a body is (and is virtually required).
@@ -79,6 +98,8 @@ public class Shell extends AbstractComponent
     private IBinding titleBinding;
     private String titleValue;
     private IBinding stylesheetBinding;
+
+    private IBinding refreshBinding;
 
     public void setTitleBinding(IBinding value)
     {
@@ -100,6 +121,16 @@ public class Shell extends AbstractComponent
     public IBinding getStylesheetBinding()
     {
         return stylesheetBinding;
+    }
+
+    public IBinding getRefreshBinding()
+    {
+        return refreshBinding;
+    }
+
+    public void setRefreshBinding(IBinding value)
+    {
+        refreshBinding = value;
     }
 
     public void render(IResponseWriter writer, IRequestCycle cycle)
@@ -124,8 +155,12 @@ public class Shell extends AbstractComponent
 
             startTime = System.currentTimeMillis();
 
-            writer.printRaw("<!DOCTYPE HTML PUBLIC \"-//W3C/DTD HTML 4.0//EN\" " +
-                            "\"http://www.w3c.org/TR/REC-html40/strict.dtd\">");
+            // Note: Dec 24 is my birthday.  Just a coincidence.
+            // This public identifier and DTD URL are from the www.w3c.org website.
+
+            writer.printRaw("<!DOCTYPE HTML PUBLIC " +
+                            "\"-//W3C//DTD HTML 4.01 Transitional//EN\" " +
+                            "\"http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd\">");
 
             page = getPage();
 
@@ -154,7 +189,7 @@ public class Shell extends AbstractComponent
             writer.attribute("name", "generator");
             writer.attribute("content", "Tapestry Web Application Framework");
 
-            // Refresh will go here.
+            writeRefresh(writer, cycle);
 
             writer.end();  // end
         }
@@ -171,6 +206,52 @@ public class Shell extends AbstractComponent
 
             writer.comment("Render time: ~ " + (endTime - startTime) + " ms");
         }
+
+    }
+
+    private void writeRefresh(IResponseWriter writer, IRequestCycle cycle)
+    throws RequestCycleException
+    {
+        int refresh;
+        StringBuffer buffer;
+        String URI;
+        String URL;
+        RequestContext context;
+        IApplicationService pageService;
+        String pageName;
+
+        if (refreshBinding == null)
+            return;
+
+        refresh = refreshBinding.getInt();
+        if (refresh <= 0)
+            return;
+
+
+        // Here comes the tricky part ... have to assemble a complete URL
+        // for the current page!
+
+
+        context = cycle.getRequestContext();
+        pageService = cycle.getApplication().getService(IApplicationService.PAGE_SERVICE);
+        pageName = getPage().getName();
+
+        URI = pageService.buildURL(cycle, null, new String[] 
+        { pageName 
+        });
+
+        URL = context.getAbsoluteURL(URI);
+
+        buffer = new StringBuffer();
+        buffer.append(refresh);
+        buffer.append("; URL=");
+        buffer.append(URL);
+
+        // Write out the <meta> tag
+
+        writer.beginOrphan("meta");
+        writer.attribute("http-equiv", "Refresh");
+        writer.attribute("content", buffer.toString());
 
     }
 }

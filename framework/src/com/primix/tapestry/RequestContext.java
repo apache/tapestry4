@@ -9,6 +9,7 @@ import java.util.StringTokenizer;
 import java.util.*;
 import java.io.Writer;
 import com.primix.foundation.*;
+
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -334,7 +335,8 @@ public class RequestContext
 		if (raw == null)
 			return "";
 
-			length = raw.length();
+		length = raw.length();
+		
 		buffer = new StringBuffer(length);
 
 		try
@@ -411,7 +413,7 @@ public class RequestContext
 
 		// If not 'dirty', meaning there were no encoded characters in
 		// the string, then return the raw input value.  If
-		// subsitutions did take place, return the decoded buffer.
+		// substitutions did take place, return the decoded buffer.
 
 		if (dirty)
 			return buffer.toString();
@@ -529,58 +531,65 @@ public class RequestContext
 		dispatcher.forward(request, response);
 	}
 
-	public String getAbsoluteURL(String path)
+    /**
+     * Builds an absolute URL from the given URI, using the {@link HttpServletRequest}
+     * as the source for scheme, server name and port.
+     *
+     * @see #getAbsoluteURL(String, String, String, int)
+     */
+
+	public String getAbsoluteURL(String URI)
 	{
 		String server;
 		int port;
 		String scheme;
+
 		scheme = request.getScheme();
 		server = request.getServerName();
 		port = request.getServerPort();
 
 		// Keep things simple ... port 80 is accepted as the
 		// standard port for http so it can be ommitted.
+        // Some of the Tomcat code indicates that port 443 is the default
+        // for https, and that needs to be researched.
 
 		if (scheme.equals("http") && port == 80)
 			port = 0;
 
-		return getAbsoluteURL(path, scheme, server, port);
+		return getAbsoluteURL(URI, scheme, server, port);
 	}
 
 	/**
-	* Does some easy checks to turn a path into an absolute URL. We assume
+	* Does some easy checks to turn a path (or URI) into an absolute URL. We assume
 	* <ul>
 	* <li>The presense of a colon means the path is complete already (any other colons
 	* in the URI portion should have been converted to %3A).
 	*
 	* <li>A leading pair of forward slashes means the path is simply missing
 	* the scheme.
-	* <li>Otherwise, we assemble the scheme, server, port (if non-zero) and the path
+	* <li>Otherwise, we assemble the scheme, server, port (if non-zero) and the URI
 	* as given.
 	* </ul>
 	*
-	* <p>The Servlet 2.2 API claims to do this, and do it right. This is just
-	* a stopgap for Servlet 2.1 API.
-	*
 	*/
 
-	public String getAbsoluteURL(String path, String scheme, String server, int port)
+	public String getAbsoluteURL(String URI, String scheme, String server, int port)
 	{
 		StringBuffer buffer = new StringBuffer();
 
 		// Though, really, what does a leading colon with no scheme before it
 		// mean?
 
-		if (path.indexOf(':') >= 0)
-			return path;
+		if (URI.indexOf(':') >= 0)
+			return URI;
 
 		// Should check the length here, first.
 
-		if (path.substring(0, 1).equals("//"))
+		if (URI.substring(0, 1).equals("//"))
 		{
 			buffer.append(scheme);
 			buffer.append(':');
-			buffer.append(path);
+			buffer.append(URI);
 			return buffer.toString();
 		}
 
@@ -594,10 +603,10 @@ public class RequestContext
 			buffer.append(port);
 		}
 
-		if (path.charAt(0) != '/')
+		if (URI.charAt(0) != '/')
 			buffer.append('/');
 
-		buffer.append(path);
+		buffer.append(URI);
 
 		return buffer.toString();
 	}
@@ -610,11 +619,7 @@ public class RequestContext
 
 	public Object getAttribute(String name)
 	{
-		Object result;
-
-		result = request.getAttribute(name);
-
-		return result;
+		return request.getAttribute(name);
 	}
 
 	/**
