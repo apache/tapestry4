@@ -38,6 +38,7 @@ public class TestAdaptorRegistry extends TapestryTestCase
         result.register(Serializable.class, "SERIALIZABLE");
         result.register(int[].class, "INT[]");
         result.register(double.class, "DOUBLE");
+        result.register(Number[].class, "NUMBER[]");
 
         return result;
     }
@@ -71,11 +72,12 @@ public class TestAdaptorRegistry extends TapestryTestCase
 
     public void testObjectSubclassArray()
     {
-        // This is likely to change soon!  The superclass of Foo[]
-        // is defined by the JVM as Object but a more natural
-        // search path is Foo[] -> Object[] -> Object
-
-        expect("SERIALIZABLE", String[].class);
+        expect("OBJECT[]", String[].class);
+    }
+    
+    public void testRegisteredSubclassArray()
+    {
+    	expect("NUMBER[]", Number[].class);
     }
 
     public void testScalarArrayMatch()
