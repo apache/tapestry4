@@ -3,7 +3,10 @@ package com.primix.tapestry.spec;
 import com.primix.tapestry.*;
 import java.util.*;
 import com.primix.tapestry.components.*;
-import com.primix.tapestry.components.validating.*;
+import com.primix.tapestry.components.html.*;
+import com.primix.tapestry.components.html.form.*;
+import com.primix.tapestry.components.html.link.*;
+import com.primix.tapestry.components.html.valid.*;
 import com.primix.foundation.exception.*;
 import com.primix.foundation.*;
 import com.primix.tapestry.inspector.*;
@@ -11,10 +14,10 @@ import com.primix.tapestry.script.*;
 
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ * Copyright (c) 2000, 2001 by Howard Ship and Primix
  *
- * Primix Solutions
- * One Arsenal Marketplace
+ * Primix
+ * 311 Arsenal Street
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com
@@ -49,32 +52,32 @@ public class ApplicationSpecification
 extends BasePropertyHolder
 {
 	private String name;
-    private String engineClassName;
+	private String engineClassName;
 
 	private final static int MAP_SIZE = 11;
 
-    // Map of PageSpecification, keyed on String (name of page), specific
-    // to this application.  Will not be null in a running application.
+	// Map of PageSpecification, keyed on String (name of page), specific
+	// to this application.  Will not be null in a running application.
 
 	private Map pageMap;
-    
-    // Map of String (full path to component specification), 
-    // keyed on String (component alias), may often be null.
 
-    private Map componentMap;
+	// Map of String (full path to component specification), 
+	// keyed on String (component alias), may often be null.
 
-    // The Default component map is shared by all specifications
+	private Map componentMap;
+
+	// The Default component map is shared by all specifications
 
 	private static Map defaultComponentMap = new HashMap(MAP_SIZE);
 
-	static 
+	static
 	{
 		defaultComponentMap.put("Insert", 
 			"/com/primix/tapestry/components/Insert.jwc");
 		defaultComponentMap.put("Action", 
-			"/com/primix/tapestry/components/Action.jwc");
+			"/com/primix/tapestry/components/html/link/Action.jwc");
 		defaultComponentMap.put("Checkbox",
-			"/com/primix/tapestry/components/Checkbox.jwc");
+			"/com/primix/tapestry/components/html/form/Checkbox.jwc");
 		defaultComponentMap.put("InsertWrapped",
 			"/com/primix/tapestry/components/InsertWrapped.jwc");
 		defaultComponentMap.put("Conditional", 
@@ -82,87 +85,83 @@ extends BasePropertyHolder
 		defaultComponentMap.put("Foreach", 
 			"/com/primix/tapestry/components/Foreach.jwc");
 		defaultComponentMap.put("ExceptionDisplay",
-			"/com/primix/tapestry/components/ExceptionDisplay.jwc");
+			"/com/primix/tapestry/components/html/ExceptionDisplay.jwc");
 		defaultComponentMap.put("Delegator",
 			"/com/primix/tapestry/components/Delegator.jwc");
 		defaultComponentMap.put("Form",
-			"/com/primix/tapestry/components/Form.jwc");
+			"/com/primix/tapestry/components/html/form/Form.jwc");
 		defaultComponentMap.put("TextField",
-			"/com/primix/tapestry/components/TextField.jwc");
+			"/com/primix/tapestry/components/html/form/TextField.jwc");
 		defaultComponentMap.put("Text",
-			"/com/primix/tapestry/components/Text.jwc");
+			"/com/primix/tapestry/components/html/form/Text.jwc");
 		defaultComponentMap.put("Select",
-			"/com/primix/tapestry/components/Select.jwc");
+			"/com/primix/tapestry/components/html/form/Select.jwc");
 		defaultComponentMap.put("Option",
-			"/com/primix/tapestry/components/Option.jwc");
+			"/com/primix/tapestry/components/html/form/Option.jwc");
 		defaultComponentMap.put("Image",
-			"/com/primix/tapestry/components/Image.jwc");
+			"/com/primix/tapestry/components/html/Image.jwc");
 		defaultComponentMap.put("Any",
 			"/com/primix/tapestry/components/Any.jwc");
 		defaultComponentMap.put("RadioGroup",
-			"/com/primix/tapestry/components/RadioGroup.jwc");
+			"/com/primix/tapestry/components/html/form/RadioGroup.jwc");
 		defaultComponentMap.put("Radio",
-			"/com/primix/tapestry/components/Radio.jwc");
-		defaultComponentMap.put("DatabaseQuery",
-			"/com/primix/tapestry/components/DatabaseQuery.jwc");
+			"/com/primix/tapestry/components/html/form/Radio.jwc");
 		defaultComponentMap.put("Rollover",
-			"/com/primix/tapestry/components/Rollover.jwc");
+			"/com/primix/tapestry/components/html/Rollover.jwc");
 		defaultComponentMap.put("Body",
-			"/com/primix/tapestry/components/Body.jwc");
+			"/com/primix/tapestry/components/html/Body.jwc");
 		defaultComponentMap.put("Direct",
-			"/com/primix/tapestry/components/Direct.jwc");
+			"/com/primix/tapestry/components/html/link/Direct.jwc");
 		defaultComponentMap.put("Page",
-			"/com/primix/tapestry/components/Page.jwc");
+			"/com/primix/tapestry/components/html/link/Page.jwc");
 		defaultComponentMap.put("Service",
-			"/com/primix/tapestry/components/Service.jwc");
-		defaultComponentMap.put("InsertURL",
-			"/com/primix/tapestry/components/InsertURL.jwc");
-		defaultComponentMap.put("ImageButton",
-			"/com/primix/tapestry/components/ImageButton.jwc");	
+			"/com/primix/tapestry/components/html/link/Service.jwc");
+		defaultComponentMap.put("ImageSubmit",
+			"/com/primix/tapestry/components/html/form/ImageSubmit.jwc");	
 		defaultComponentMap.put("PropertySelection",
-			"/com/primix/tapestry/components/PropertySelection.jwc");
+			"/com/primix/tapestry/components/html/form/PropertySelection.jwc");
 		defaultComponentMap.put("Submit",
-			"/com/primix/tapestry/components/Submit.jwc");	
+			"/com/primix/tapestry/components/html/form/Submit.jwc");	
 		defaultComponentMap.put("Hidden",
-			"/com/primix/tapestry/components/Hidden.jwc");	
+			"/com/primix/tapestry/components/html/form/Hidden.jwc");	
 		defaultComponentMap.put("ShowInspector",
 			"/com/primix/tapestry/inspector/ShowInspector.jwc");		
-        defaultComponentMap.put("Shell",
-            "/com/primix/tapestry/components/Shell.jwc");
-        defaultComponentMap.put("InsertText",
-            "/com/primix/tapestry/components/InsertText.jwc");
-        defaultComponentMap.put("ValidatingTextField",
-            "/com/primix/tapestry/components/validating/ValidatingTextField.jwc");
-        defaultComponentMap.put("DateField",
-            "/com/primix/tapestry/components/validating/DateField.jwc");
-        defaultComponentMap.put("IntegerField",
-              "/com/primix/tapestry/components/validating/IntegerField.jwc");
-        defaultComponentMap.put("FieldLabel",
-              "/com/primix/tapestry/components/validating/FieldLabel.jwc");
-        defaultComponentMap.put("Script",
-                "/com/primix/tapestry/script/Script.jwc");
+		defaultComponentMap.put("Shell",
+			"/com/primix/tapestry/components/html/Shell.jwc");
+		defaultComponentMap.put("InsertText",
+			"/com/primix/tapestry/components/html/InsertText.jwc");
+		defaultComponentMap.put("ValidatingTextField",
+			"/com/primix/tapestry/components/html/valid/ValidatingTextField.jwc");
+		defaultComponentMap.put("DateField",
+			"/com/primix/tapestry/components/html/valid/DateField.jwc");
+		defaultComponentMap.put("IntegerField",
+			"/com/primix/tapestry/components/html/valid/IntegerField.jwc");
+		defaultComponentMap.put("FieldLabel",
+			"/com/primix/tapestry/components/html/valid/FieldLabel.jwc");
+		defaultComponentMap.put("Script",
+			"/com/primix/tapestry/script/Script.jwc");
 	}
 
-    // Default page map shared by all applications.
+	// Default page map shared by all applications.
 
 	private static Map defaultPageMap = new HashMap(MAP_SIZE);
 	{
-	    // Provide defaults for three of the four standard pages.
-	    // An application must provide a home page and may override
-	    // any of these.
+		// Provide defaults for three of the four standard pages.
+		// An application must provide a home page and may override
+		// any of these.
 
-	    defaultPageMap.put("StaleLink",
-		    new PageSpecification("/com/primix/tapestry/pages/StaleLink.jwc"));
-	    defaultPageMap.put("StaleSession",
-		    new PageSpecification("/com/primix/tapestry/pages/StaleSession.jwc"));
-	    defaultPageMap.put("Exception",
-		    new PageSpecification("/com/primix/tapestry/pages/Exception.jwc"));
+		defaultPageMap.put("StaleLink",
+			new PageSpecification("/com/primix/tapestry/pages/StaleLink.jwc"));
+		defaultPageMap.put("StaleSession",
+			new PageSpecification("/com/primix/tapestry/pages/StaleSession.jwc"));
+		defaultPageMap.put("Exception",
+			new PageSpecification("/com/primix/tapestry/pages/Exception.jwc"));
 
-	    // Provide the Inspector, which is quietly available and never
-	    // overriden.
+		// Provide the Inspector, which is quietly available and never
+		// overriden.
 
-	    defaultPageMap.put("Inspector",
-		    new PageSpecification("/com/primix/tapestry/inspector/Inspector.jwc"));		
+		defaultPageMap.put("Inspector",
+			new PageSpecification("/com/primix/tapestry/inspector/Inspector.jwc"));		
 	}
 
 	/**
@@ -177,10 +176,10 @@ extends BasePropertyHolder
 	*  <table border=1>
 	* 	<tr> <th>Specification</th> <th>Class / Alias</th></tr>
 	*  <tr>
-	*	 <td>/com/primix/tapestry/components/Action.jwc</td>
+	*	 <td>/com/primix/tapestry/components/html/link/Action.jwc</td>
 	*	 <td>{@link Action}</td></tr>
 	* <tr>
-	*		<td>/com/primix/tapestry/components/Checkbox.jwc</td>
+	*		<td>/com/primix/tapestry/components/html/form/Checkbox.jwc</td>
 	*		<td>{@link Checkbox}</td>
 	* </tr>
 	*
@@ -188,148 +187,141 @@ extends BasePropertyHolder
 	*		<td>/com/primix/tapestry/components/Any.jwc</td>
 	*		<td>{@link Any}</td> </tr>
 	*  <tr>
-	*		<td>/com/primix/tapestry/components/Body.jwc</td>
+	*		<td>/com/primix/tapestry/components/html/Body.jwc</td>
 	*		<td>{@link Body}</td>
 	* </tr>
 	* <tr>
 	*   <td>/com/primix/tapestry/component/Conditional.jwc</td>
 	*		<td>{@link Conditional}</td> </tr>
 	* </tr>
-	*		<td>/com/primix/tapestry/components/DatabaseQuery.jwc</td>
-	*		<td>{@link DatabaseQuery}</td> </tr>
-    *
 	*  <tr>
-	*       <td>/com/primix/tapestry/components/validating/DateField.jwc</td>
+	*       <td>/com/primix/tapestry/components/html/valid/DateField.jwc</td>
 	*       <td>{@link DateField}</td>
 	* </tr>
-    *
+	*
 	* <tr>
 	*		<td>/com/primix/tapestry/components/Delegator.jwc</td>
 	*		<td>{@link Delegator}</td> </tr>
 	*  <tr>
-	*		<td>/com/primix/tapestry/components/Direct.jwc</td>
+	*		<td>/com/primix/tapestry/components/html/link/Direct.jwc</td>
 	*		<td>{@link Direct}</td>
 	* </tr>
 	* <tr>
-	*     <td>/com/primix/tapestry/components/ExceptionDisplay.jwc</td>
+	*     <td>/com/primix/tapestry/components/html/ExceptionDisplay.jwc</td>
 	*	 	<td>{@link BaseComponent}</td> </tr>
-    *
+	*
 	*  <tr>
-	*       <td>/com/primix/tapestry/components/validating/FieldLabel.jwc</td>
+	*       <td>/com/primix/tapestry/components/html/valid/FieldLabel.jwc</td>
 	*       <td>{@link FieldLabel}</td>
 	* </tr>
-    *
+	*
 	* <tr>
 	*		<td>/com/primix/tapestry/components/Foreach.jwc</td>
 	*		<td>{@link Foreach}</td> </tr>
 	* <tr>
-	*		<td>/com/primix/tapestry/components/Form.jwc</td>
+	*		<td>/com/primix/tapestry/components/html/form/Form.jwc</td>
 	*		<td>{@link Form}</td> </tr>
 	* <tr>
-	*		<td>/com/primix/tapestry/components/Hidden.jwc</td>
+	*		<td>/com/primix/tapestry/components/html/form/Hidden.jwc</td>
 	*		<td>{@link Hidden}</td>
 	* </tr>
 	* <tr>
-	*		<td>/com/primix/tapestry/components/Image.jwc</td>
+	*		<td>/com/primix/tapestry/components/html/Image.jwc</td>
 	*		<td>{@link Image}</td>
 	* </tr>
 	* <tr>
-	*		<td>/com/primix/tapestry/components/ImageButton.jwc</td>
-	*		<td>{@link ImageButton}</td>
+	*		<td>/com/primix/tapestry/components/html/form/ImageSubmit.jwc</td>
+	*		<td>{@link ImageSubmit}</td>
 	* </tr>
 	*  <tr>
 	* <td>/com/primix/tapestry/components/Insert.jwc </td> 
 	*		<td>{@link Insert}</td></tr>
-    *
-    *   <tr>
-    *       <td>/com/primix/tapestry/components/InsertText.jwc</td>
-    *       <td>{@link InsertText}</td>
-    *   </tr>
-    *
-	*  <tr>
-	*		<td>/com/primix/tapestry/components/InsertURL.jwc</td>
-	*		<td>{@link InsertURL}</td>
-	*	</tr>
+	*
+	*   <tr>
+	*       <td>/com/primix/tapestry/components/html/InsertText.jwc</td>
+	*       <td>{@link InsertText}</td>
+	*   </tr>
+	*
 	*  <tr>
 	* <td>/com/primix/tapestry/components/InsertWrapped.jwc</td> 
 	*		<td>{@link InsertWrapped}</td> </tr>
 	*
-    *  <tr>
-    *       <td>/com/primix/tapestry/components/validating/IntegerField.jwc</td>
-    *       <td>{@link IntegerField}</td>
-    * </tr>
+	*  <tr>
+	*       <td>/com/primix/tapestry/components/html/valid/IntegerField.jwc</td>
+	*       <td>{@link IntegerField}</td>
+	* </tr>
 	*
 	* <tr>
-	*		<td>/com/primix/tapestry/components/Option.jwc</td>
+	*		<td>/com/primix/tapestry/components/html/form/Option.jwc</td>
 	*		<td>{@link Option}</td>
 	* </tr>
 	*  <tr>
-	*	 <td>/com/primix/tapestry/components/Page.jwc</td>
+	*	 <td>/com/primix/tapestry/components/html/link/Page.jwc</td>
 	*	 <td>{@link Page}</td></tr>
 	* <tr>
 	* <tr>
-	*  <td>/com/primix/tapestry/components/PropertySelection.jwc</td>
+	*  <td>/com/primix/tapestry/components/html/form/PropertySelection.jwc</td>
 	*  <td>{@link PropertySelection}</td> </tr>
 	*
-	*		<td>/com/primix/tapestry/components/Radio.jwc</td>
+	*		<td>/com/primix/tapestry/components/html/form/Radio.jwc</td>
 	*		<td>{@link Radio}</td> </tr>
 	* <tr>
-	*		<td>/com/primix/tapestry/components/RadioGroup.jwc</td>
+	*		<td>/com/primix/tapestry/components/html/form/RadioGroup.jwc</td>
 	*		<td>{@link RadioGroup}</td> </tr>
 	* <tr>
-	*		<td>/com/primix/tapestry/components/Rollover.jwc</td>
+	*		<td>/com/primix/tapestry/components/html/Rollover.jwc</td>
 	*		<td>{@link Rollover} </td> </tr>
-    *
-    * <tr>
-    *       <td>/com/primix/tapestry/script/Script.jwc</td>
-    *       <td>{@link Script}</td>
-    * </tr>
+	*
 	* <tr>
-	*		<td>/com/primix/tapestry/components/Select.jwc</td>
+	*       <td>/com/primix/tapestry/script/Script.jwc</td>
+	*       <td>{@link Script}</td>
+	* </tr>
+	* <tr>
+	*		<td>/com/primix/tapestry/components/html/form/Select.jwc</td>
 	*		<td>{@link Select}</td>
 	* </tr>
 	* <tr>
-	*		<td>/com/primix/tapestry/components/Service.jwc</td>
+	*		<td>/com/primix/tapestry/components/html/link/Service.jwc</td>
 	*		<td>{@link Service}</td>
 	* </tr>
-    * <tr>
-    *       <td>/com/primix/tapestry/components/Shell.jwc</td>
-    *       <td>{@link Shell}</td>
-    * </tr>
+	* <tr>
+	*       <td>/com/primix/tapestry/components/html/Shell.jwc</td>
+	*       <td>{@link Shell}</td>
+	* </tr>
 	* <tr>
 	*		<td>/com/primix/tapestry/inspector/ShowInspector.jwc</td>
 	*		<td>{@link ShowInspector}</td>
 	* </tr>
 	* <tr>
-	*		<td>/com/primix/tapestry/components/Submit.jwc</td>
+	*		<td>/com/primix/tapestry/components/html/form/Submit.jwc</td>
 	*		<td>{@link Submit}</td>
 	* </tr>
 	* <tr>
-	*		<td>/com/primix/tapestry/components/Text.jwc</td>
+	*		<td>/com/primix/tapestry/components/html/form/Text.jwc</td>
 	*		<td>{@link Text}</td>	</tr>
 	*
 	* <tr>
-	*		<td>/com/primix/tapestry/components/TextField.jwc</td>
+	*		<td>/com/primix/tapestry/components/html/form/TextField.jwc</td>
 	*		<td>{@link TextField}</td> </tr>
-    *
-    *  <tr>
-    *       <td>/com/primix/tapestry/components/validating/ValidatingTextField.jwc</td>
-    *       <td>{@link ValidatingTextField}</td>
-    * </tr>
-    *
+	*
+	*  <tr>
+	*       <td>/com/primix/tapestry/components/html/valid/ValidatingTextField.jwc</td>
+	*       <td>{@link ValidatingTextField}</td>
+	* </tr>
+	*
 	*  </table>
 	*
 	*/
 
 	public String getComponentAlias(String alias)
 	{
-        String result = null;
+		String result = null;
 
-        if (componentMap != null)
-            result = (String)componentMap.get(alias);
+		if (componentMap != null)
+			result = (String)componentMap.get(alias);
 
-        if (result == null)
-            result = (String)defaultComponentMap.get(alias);
+		if (result == null)
+			result = (String)defaultComponentMap.get(alias);
 
 		return result;
 	}
@@ -339,40 +331,40 @@ extends BasePropertyHolder
 		return name;
 	}
 
-    public void setEngineClassName(String value)
-    {
-        engineClassName = value;
-    }
+	public void setEngineClassName(String value)
+	{
+		engineClassName = value;
+	}
 
-    public String getEngineClassName()
-    {
-        return engineClassName;
-    }
+	public String getEngineClassName()
+	{
+		return engineClassName;
+	}
 
 	/**
 	*  Returns a {@link Collection}
-    *  of the String names of the pages defined
+	*  of the String names of the pages defined
 	*  by the application.
 	*
 	*/
 
 	public Collection getPageNames()
 	{
-        Collection result;
+		Collection result;
 
-        result = new HashSet();
-        
-        // Add any pages specific to this application (a running application
-        // will always have at least one page, Home, but we check for null
-        // anyway).
+		result = new HashSet();
 
-        if (pageMap != null)
-            result.addAll(pageMap.keySet());
+		// Add any pages specific to this application (a running application
+		// will always have at least one page, Home, but we check for null
+		// anyway).
 
-        // Now add any additional pages (such as Inspector) that are provided
-        // by the system.
+		if (pageMap != null)
+			result.addAll(pageMap.keySet());
 
-        result.addAll(defaultPageMap.keySet());
+		// Now add any additional pages (such as Inspector) that are provided
+		// by the system.
+
+		result.addAll(defaultPageMap.keySet());
 
 		return result;
 	}
@@ -394,25 +386,25 @@ extends BasePropertyHolder
 	 *  <tr>
 	 *	 <td>/com/primix/tapestry/pages/StaleSession.jwc</td>
 	 *	 <td>StaleSession</td></tr>
-     *
-     *  <tr>
-     *  <td>/com/primix/tapestry/inspector/Inspector.jwc</td>
-     *  <td>{@link Inspector}</td>
-     *  </tr>
-     * </table>
+	*
+	*  <tr>
+	*  <td>/com/primix/tapestry/inspector/Inspector.jwc</td>
+	*  <td>{@link Inspector}</td>
+	*  </tr>
+	* </table>
 	 *
 	 *
 	 */
-	 
+
 	public PageSpecification getPageSpecification(String name)
 	{
-        PageSpecification result = null;
+		PageSpecification result = null;
 
 		if (pageMap != null)
 			result = (PageSpecification)pageMap.get(name);
 
-        if (result == null)
-            result = (PageSpecification)defaultPageMap.get(name);
+		if (result == null)
+			result = (PageSpecification)defaultPageMap.get(name);
 
 		return result;
 	}
@@ -423,8 +415,8 @@ extends BasePropertyHolder
 			throw new IllegalArgumentException("May not redefine component alias " +
 				alias + ".");
 
-        if (componentMap == null)
-            componentMap = new HashMap(MAP_SIZE);
+		if (componentMap == null)
+			componentMap = new HashMap(MAP_SIZE);
 
 		componentMap.put(alias, resourceName);
 	}

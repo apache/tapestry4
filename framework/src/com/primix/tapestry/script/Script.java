@@ -1,17 +1,17 @@
 package com.primix.tapestry.script;
 
 import com.primix.tapestry.*;
-import com.primix.tapestry.components.*;
+import com.primix.tapestry.components.html.*;
 import java.util.*;
 import java.io.*;
 import java.net.*;
 
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ * Copyright (c) 2000, 2001 by Howard Ship and Primix
  *
- * Primix Solutions
- * One Arsenal Marketplace
+ * Primix
+ * 311 Arsenal Street
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com
@@ -92,256 +92,256 @@ import java.net.*;
 public class Script
 extends AbstractComponent
 {
-    private IBinding scriptBinding;
+	private IBinding scriptBinding;
 
-    private IBinding cautiousBinding;
-    private boolean staticCautious;
-    private boolean cautiousValue;
+	private IBinding cautiousBinding;
+	private boolean staticCautious;
+	private boolean cautiousValue;
 
-    private IBinding symbolsBinding;
+	private IBinding symbolsBinding;
 
-    private String lastScript;
-    private ScriptGenerator generator;
+	private String lastScript;
+	private ScriptGenerator generator;
 
-    public void setScriptBinding(IBinding value)
-    {
-        scriptBinding = value;
-    }
+	public void setScriptBinding(IBinding value)
+	{
+		scriptBinding = value;
+	}
 
-    public IBinding getScriptBinding()
-    {
-        return scriptBinding;
-    }
+	public IBinding getScriptBinding()
+	{
+		return scriptBinding;
+	}
 
-    public void setCautiousBinding(IBinding value)
-    {
-        cautiousBinding = value;
-        staticCautious = value.isStatic();
-        if (staticCautious)
-            cautiousValue = value.getBoolean();
-    }
+	public void setCautiousBinding(IBinding value)
+	{
+		cautiousBinding = value;
+		staticCautious = value.isStatic();
+		if (staticCautious)
+			cautiousValue = value.getBoolean();
+	}
 
-    public IBinding getCautiousBinding()
-    {
-        return cautiousBinding;
-    }
+	public IBinding getCautiousBinding()
+	{
+		return cautiousBinding;
+	}
 
-    public void setSymbolsBinding(IBinding value)
-    {
-        symbolsBinding = value;
-    }
+	public void setSymbolsBinding(IBinding value)
+	{
+		symbolsBinding = value;
+	}
 
-    public IBinding getSymbolsBinding()
-    {
-        return symbolsBinding;
-    }
+	public IBinding getSymbolsBinding()
+	{
+		return symbolsBinding;
+	}
 
-    /**
-     *  Returns true if the script is configured cautious (may load
-     *  a different script on a subsequent render) or normal
-     *  (once a script is loaded, it is "locked in" for all subsequent
-     *  request cycles).  This is determined by the cautious parameter, which
-     *  defaults off.
-     *
-     */
+	/**
+	*  Returns true if the script is configured cautious (may load
+	*  a different script on a subsequent render) or normal
+	*  (once a script is loaded, it is "locked in" for all subsequent
+	*  request cycles).  This is determined by the cautious parameter, which
+	*  defaults off.
+	*
+	*/
 
-    public boolean isCautious()
-    {
-        if (staticCautious)
-            return cautiousValue;
+	public boolean isCautious()
+	{
+		if (staticCautious)
+			return cautiousValue;
 
-        if (cautiousBinding == null)
-            return false;
+		if (cautiousBinding == null)
+			return false;
 
-        return cautiousBinding.getBoolean();
-    }
+		return cautiousBinding.getBoolean();
+	}
 
-    /**
-     *  Constructs the symbols {@link Map}.  This starts with the
-     *  contents of the symbols parameter (if specified) to which is added
-     *  any informal parameters.  If both a symbols parameter and informal
-     *  parameters are bound, then a copy of the symbols parameter's value is made
-     *  (that is, the {@link Map} provided by the symbols parameter is read, but not modified).
-     *
-     */
+	/**
+	*  Constructs the symbols {@link Map}.  This starts with the
+	*  contents of the symbols parameter (if specified) to which is added
+	*  any informal parameters.  If both a symbols parameter and informal
+	*  parameters are bound, then a copy of the symbols parameter's value is made
+	*  (that is, the {@link Map} provided by the symbols parameter is read, but not modified).
+	*
+	*/
 
-    public Map getSymbols()
-    {
-        Map result = null;
-        boolean copy = false;
-        Iterator i;
-        String bindingName;
-        IBinding binding;
-        String value;
+	public Map getSymbols()
+	{
+		Map result = null;
+		boolean copy = false;
+		Iterator i;
+		String bindingName;
+		IBinding binding;
+		String value;
 
-        if (symbolsBinding != null)
-        {
-            result = (Map)symbolsBinding.getValue();
+		if (symbolsBinding != null)
+		{
+			result = (Map)symbolsBinding.getValue();
 
-            // Make a writable copy if there are any informal parameters
-            copy = true;
-        }
+			// Make a writable copy if there are any informal parameters
+			copy = true;
+		}
 
-        // Now, iterator through all the binding names (which includes both
-        // formal and informal parmeters).  Skip the formal ones and
-        // access the informal ones.
+		// Now, iterator through all the binding names (which includes both
+		// formal and informal parmeters).  Skip the formal ones and
+		// access the informal ones.
 
-        i = getBindingNames().iterator();
-        while (i.hasNext())
-        {
-            bindingName = (String)i.next();
+		i = getBindingNames().iterator();
+		while (i.hasNext())
+		{
+			bindingName = (String)i.next();
 
-            // Skip formal parameters
+			// Skip formal parameters
 
-            if (specification.getParameter(bindingName) != null)
-                continue;
+			if (specification.getParameter(bindingName) != null)
+				continue;
 
-            binding = getBinding(bindingName);
+			binding = getBinding(bindingName);
 
-            try
-            {
-                value = (String)binding.getValue();
-            }
-            catch (ClassCastException ex)
-            {
-                throw new BindingException("Parameter " + bindingName + " is not type String.",
-                        binding, ex);
-            }
+			try
+			{
+				value = (String)binding.getValue();
+			}
+			catch (ClassCastException ex)
+			{
+				throw new BindingException("Parameter " + bindingName + " is not type String.",
+					binding, ex);
+			}
 
-            if (value == null)
-                continue;
+			if (value == null)
+				continue;
 
-            if (result == null)
-                result = new HashMap();
-            else
-                if (copy)
-                {
-                    result = new HashMap(result);
-                    copy = false;
-                }
-    
-            result.put(bindingName, value);
-        }
+			if (result == null)
+				result = new HashMap();
+			else
+				if (copy)
+			{
+				result = new HashMap(result);
+				copy = false;
+			}
 
-        return result;
-    }
+			result.put(bindingName, value);
+		}
 
-    /**
-     *  Gets the {@link ScriptGenerator} initialized for the correct script.
-     *
-     *  <p>The generator is cached between invocations; once constructed, it will
-     *  be re-used for all future request cycles, unless this Script component
-     *  is configured to be cautious.
-     *
-     *  <p>When cautious, the script parameter is checked and, if it doesn't match
-     *  the script last parsed (i.e., the script that matches the generator), then
-     *  the current generator is discarded and a new one constructed, using
-     *  the new value of the script parameter.
-     *
-     */
+		return result;
+	}
 
-    public ScriptGenerator getGenerator()
-    {
-        String script;
+	/**
+	*  Gets the {@link ScriptGenerator} initialized for the correct script.
+	*
+	*  <p>The generator is cached between invocations; once constructed, it will
+	*  be re-used for all future request cycles, unless this Script component
+	*  is configured to be cautious.
+	*
+	*  <p>When cautious, the script parameter is checked and, if it doesn't match
+	*  the script last parsed (i.e., the script that matches the generator), then
+	*  the current generator is discarded and a new one constructed, using
+	*  the new value of the script parameter.
+	*
+	*/
 
-        if (generator != null && ! isCautious())
-            return generator;
+	public ScriptGenerator getGenerator()
+	{
+		String script;
 
-        try
-        {
-            script = (String)scriptBinding.getValue();
-        }
-        catch (ClassCastException ex)
-        {
-            throw new BindingException("Parameter script is not type String.",
-                    scriptBinding, ex);
-        }
+		if (generator != null && ! isCautious())
+			return generator;
 
-        if (script == null)
-            throw new BindingException("Parameter script is null.", scriptBinding);
+		try
+		{
+			script = (String)scriptBinding.getValue();
+		}
+		catch (ClassCastException ex)
+		{
+			throw new BindingException("Parameter script is not type String.",
+				scriptBinding, ex);
+		}
 
-        // If this script is different than the last script parsed by this
-        // component, then throw it away and parse again (using the new script).
- 
+		if (script == null)
+			throw new BindingException("Parameter script is null.", scriptBinding);
 
-        if (generator != null &&
-            lastScript != null &&
-            ! lastScript.equals(script))
-                generator = null;
+		// If this script is different than the last script parsed by this
+		// component, then throw it away and parse again (using the new script).
 
-        if (generator == null)
-        {
-            generator = buildGenerator(script);
 
-            lastScript = script;
-        }
+		if (generator != null &&
+			lastScript != null &&
+			! lastScript.equals(script))
+			generator = null;
 
-        return generator;
-    }
+		if (generator == null)
+		{
+			generator = buildGenerator(script);
 
-    private ScriptGenerator buildGenerator(String scriptPath)
-    {
-        IResourceResolver resolver = page.getEngine().getResourceResolver();
-        URL scriptURL;
-        InputStream stream = null;
-        
-        scriptURL = resolver.getResource(scriptPath);
-        if (scriptURL == null)
-            throw new ApplicationRuntimeException
-                ("Unable to locate script resource " + scriptPath + " in classpath.");
+			lastScript = script;
+		}
 
-        try
-        {
-            stream = scriptURL.openStream();
+		return generator;
+	}
 
-            return new ScriptGenerator(stream, scriptPath);
-        }
-        catch (ScriptParseException ex)
-        {
-            throw new ApplicationRuntimeException(ex);
-        }
-        catch (IOException ex)
-        {
-            throw new ApplicationRuntimeException
-                ("Unable to open stream for " + scriptURL + ".", ex);
-        }
-        finally
-        {
-            close(stream);
-        }
+	private ScriptGenerator buildGenerator(String scriptPath)
+	{
+		IResourceResolver resolver = page.getEngine().getResourceResolver();
+		URL scriptURL;
+		InputStream stream = null;
 
-    }
+			scriptURL = resolver.getResource(scriptPath);
+		if (scriptURL == null)
+			throw new ApplicationRuntimeException
+				("Unable to locate script resource " + scriptPath + " in classpath.");
 
-    private void close(InputStream stream)
-    {
-        try
-        {
-            if (stream != null)
-                stream.close();
-        }
-        catch (IOException ex)
-        {
-            // Ignore.
-        }
-    }
+		try
+		{
+			stream = scriptURL.openStream();
 
-    public void render(IResponseWriter writer, IRequestCycle cycle)
-    throws RequestCycleException
-    {
-        Body body;
-        
-        if (cycle.isRewinding())
-            return;
+			return new ScriptGenerator(stream, scriptPath);
+		}
+		catch (ScriptParseException ex)
+		{
+			throw new ApplicationRuntimeException(ex);
+		}
+		catch (IOException ex)
+		{
+			throw new ApplicationRuntimeException
+				("Unable to open stream for " + scriptURL + ".", ex);
+		}
+		finally
+		{
+			close(stream);
+		}
 
-        body = Body.get(cycle);
+	}
 
-        if (body == null)
-            throw new RequestCycleException(
-                "A Script component must be wrapped by a Body component.",
-                this, cycle);
+	private void close(InputStream stream)
+	{
+		try
+		{
+			if (stream != null)
+				stream.close();
+		}
+		catch (IOException ex)
+		{
+			// Ignore.
+		}
+	}
 
-        getGenerator().generateScript(body, getSymbols());
+	public void render(IResponseWriter writer, IRequestCycle cycle)
+	throws RequestCycleException
+	{
+		Body body;
 
-        // This component is not allowed to have a body.
-    }
+		if (cycle.isRewinding())
+			return;
+
+		body = Body.get(cycle);
+
+		if (body == null)
+			throw new RequestCycleException(
+				"A Script component must be wrapped by a Body component.",
+				this, cycle);
+
+		getGenerator().generateScript(body, getSymbols());
+
+		// This component is not allowed to have a body.
+	}
 }

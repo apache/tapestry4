@@ -1,14 +1,14 @@
 package com.primix.tapestry.inspector;
 
-import com.primix.tapestry.components.*;
+import com.primix.tapestry.components.html.form.*;
 import org.log4j.*;
 
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2001 by Howard Ship and Primix Solutions
+ * Copyright (c) 2001 by Howard Ship and Primix
  *
- * Primix Solutions
- * One Arsenal Marketplace
+ * Primix
+ * 311 Arsenal Street
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com
@@ -45,12 +45,12 @@ public class PriorityModel
 implements IPropertySelectionModel
 {
 	private Priority[] values;
-	
+
 	public PriorityModel()
 	{
 		this(true);
 	}
-	
+
 	public PriorityModel(boolean includeNull)
 	{
 		if (includeNull)
@@ -69,7 +69,7 @@ implements IPropertySelectionModel
 	public Object translateValue(String value)
 	{
 		int index = Integer.parseInt(value);
-	
+
 		return values[index];
 	}
 
@@ -91,10 +91,10 @@ implements IPropertySelectionModel
 	public String getLabel(int index)
 	{
 		Priority option = values[index];
-		
+
 		if (option == null)
 			return "";
-		
+
 		return values[index].toString();	
 	}
 }

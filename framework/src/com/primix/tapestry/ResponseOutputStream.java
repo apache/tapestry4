@@ -3,14 +3,14 @@ package com.primix.tapestry;
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
-import com.primix.tapestry.components.Body;
+import com.primix.tapestry.components.html.*;
 
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ * Copyright (c) 2000, 2001 by Howard Ship and Primix
  *
- * Primix Solutions
- * One Arsenal Marketplace
+ * Primix
+ * 311 Arsenal Street
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com
@@ -136,12 +136,12 @@ public class ResponseOutputStream extends OutputStream
 	*  the underlying output stream.  If the output stream has not yet been opened
 	*  (meaning the entire response page is in the internal buffer), then
 	*  <code>setContentLength()</code> is invoked on the <code>HttpServletResponse</code>
-    * ... this  allows the web server and client to use Keep-Alive connections.
-    *
-    * <p>In rare instances (such as sending a HTTP redirect), 
-    * the <code>ReponseOutputStream</code> is closed
-    * when no data has been written to it.  In that case, we never 
-    * invoke <code>HttpServletResponse.getOutputStream()</code>.
+	* ... this  allows the web server and client to use Keep-Alive connections.
+	*
+	* <p>In rare instances (such as sending a HTTP redirect), 
+	* the <code>ReponseOutputStream</code> is closed
+	* when no data has been written to it.  In that case, we never 
+	* invoke <code>HttpServletResponse.getOutputStream()</code>.
 	*
 	*/
 
@@ -152,12 +152,12 @@ public class ResponseOutputStream extends OutputStream
 
 		if (out == null)
 		{
-            // If we never got any output to send, fold with a wimper.
-            
+			// If we never got any output to send, fold with a wimper.
+
 			if (pos == 0)
-                return;
-            
-            response.setContentLength(pos);
+				return;
+
+			response.setContentLength(pos);
 
 			open();
 		}
@@ -197,8 +197,8 @@ public class ResponseOutputStream extends OutputStream
 	*  defaults to "text/html") and gets an output stream
 	*  from the response, then writes the current buffer to it and
 	*  releases the buffer.
-    *
-    *  @throws IOException if the content type has never been set.
+	*
+	*  @throws IOException if the content type has never been set.
 	*
 	*/
 
@@ -207,7 +207,7 @@ public class ResponseOutputStream extends OutputStream
 	{
 		if (contentType == null)
 			throw new IOException("Content type of response never set.");
-			
+
 		response.setContentType(contentType);
 
 		out = response.getOutputStream();
@@ -315,7 +315,7 @@ public class ResponseOutputStream extends OutputStream
 		if (tiny == null)
 			tiny = new byte[1];
 
-			tiny[0] = (byte)b;
+		tiny[0] = (byte)b;
 
 		write(tiny, 0, 1);
 	}
