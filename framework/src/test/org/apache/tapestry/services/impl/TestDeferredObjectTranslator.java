@@ -34,11 +34,6 @@ public class TestDeferredObjectTranslator extends HiveMindTestCase
         return (Module) newMock(Module.class);
     }
 
-    private Location newLocation()
-    {
-        return (Location) newMock(Location.class);
-    }
-
     private Translator newTranslator(Module module, String objectReference, Location location,
             Object result)
     {
