@@ -25,7 +25,6 @@
 	<classpathentry kind="lib" path="ext-package/lib/ognl-2.6.7.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/oro-2.0.8.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/servletapi-2.3.jar"/>
-	<classpathentry kind="lib" path="ext-package/lib/jCharts-0.6.0.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/cglib-full-2.0.2.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/easymockclassextension-1.1.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/jboss-j2ee-3.2.1.jar"/>
@@ -33,5 +32,6 @@
 	<classpathentry kind="lib" path="ext-package/lib/hivemind-lib-1.1-alpha-3-snapshot.jar"/>
 	<classpathentry kind="lib" path="portlet/src/descriptor"/>
 	<classpathentry kind="lib" path="ext-package/lib/portlet-api-1.0.jar"/>
+	<classpathentry kind="lib" path="ext-package/lib/jcharts-0.6.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

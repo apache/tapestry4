@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.portlet;
 
-import javax.portlet.Portlet;
+import javax.portlet.PortletConfig;
 
 /**
  * Command interface for the <code>tapestry.portlet.ApplicationInitializer</code> configuration
@@ -25,5 +25,5 @@ import javax.portlet.Portlet;
  */
 public interface PortletApplicationInitializer
 {
-    public void initialize(Portlet portlet);
+    public void initialize(PortletConfig portletConfig);
 }

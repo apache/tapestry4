@@ -62,7 +62,7 @@
     
     <invoke-factory>
       <construct class="ContextAssetFactory">
-        <set-service property="context" service-id="infrastructure:context"/>
+        <set-service property="context" service-id="tapestry.globals.WebContext"/>
         <set-object property="contextPath" value="infrastructure:contextPath"/>
       </construct>
     </invoke-factory>

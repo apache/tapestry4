@@ -27,7 +27,6 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
@@ -89,10 +88,17 @@ public abstract class DatePicker extends AbstractFormComponent
 
     private static final String SYM_BUTTONNAME = "buttonName";
 
+    /**
+     * Injected
+     * 
+     * @since 3.1
+     */
+
+    public abstract IScriptSource getScriptSource();
+
     protected void finishLoad()
     {
-        IEngine engine = getPage().getEngine();
-        IScriptSource source = engine.getScriptSource();
+        IScriptSource source = getScriptSource();
 
         Resource location = getSpecification().getSpecificationLocation().getRelativeResource(
                 "DatePicker.script");
