@@ -16,17 +16,20 @@
      
 <xsl:import href="@docbook.xsl.base@/html/@format@.xsl"/>
 
+<xsl:param name="chunk.first.sections" select="1"/>
+  
 <!-- Enable shading of verbatim blocks, such as programlisting. -->
  
 <xsl:param name="shade.verbatim" select="1"/>
-
-<!-- Each individual DocBook project is expected to copy the necessary admonition
-     and callout graphics -->
-     
+  
+<xsl:param name="navig.graphics" select="1"/>
+<xsl:param name="navig.graphics.path">standard-images/</xsl:param>
+<xsl:param name="navig.showtitles">1</xsl:param>
+<xsl:param name="navig.graphics.extension" select="'.png'"/>
 <xsl:param name="admon.graphics" select="1"/>
 <xsl:param name="admon.graphics.path">standard-images/</xsl:param>
 
-<xsl:param name="admom.callout.graphics" select="1"/>
+<xsl:param name="callout.graphics" select="1"/>
 <xsl:param name="callout.graphics.path">standard-images/callouts/</xsl:param>
 
 <!-- The Tapestry documentation is inside a frameset and we want to keep the

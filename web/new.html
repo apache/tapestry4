@@ -11,18 +11,29 @@
 	<tr>
 		<td valign="top" align="left"><img height="44" src="images/ico_t.gif" alt="[Tapestry Logo]" width="44" align="absMiddle" border="0">&nbsp;<img height="22" alt="Tapestry" src="images/hd_tapestry.gif" width="100" align="absMiddle" vspace="17" border="0">
 
+<h3>Release 2.0.3</h3>
+
+Renamed Java packages from <code>com.primix.tapestry.*</code>
+to <code>net.sf.tapestry.*</code>.
+
+<pre>
+[ 549479 ] Rename packages to net.sf.tapestry
+</pre>
+
 <h3>Release 2.0.2a</h3>
 
+<pre>
 [ 549482 ] NPE in RequestCycle.observeChange()
+</pre>
 
 <h3>Release 2.0.2</h3>
 
 Changed the inspector icon into an animated GIF for compatiblility with more browsers.
 
 <p>
-Created the new <a href="doc/api/com/primix/tapestry/link/GenericLink.html">GenericLink</a> component, which allows links to arbitrary URLs (including JavaScript event handlers), but
-is still an <a href="doc/api/com/primix/tapestry/components/IServiceLink.html">IServiceLink</a> which means it can wrap 
-<a href="doc/api/com/primix/tapestry/html/Rollover.html">Rollover</a> components.
+Created the new <a href="doc/api/net/sf/tapestry/link/GenericLink.html">GenericLink</a> component, which allows links to arbitrary URLs (including JavaScript event handlers), but
+is still an <a href="doc/api/net/sf/tapestry/components/IServiceLink.html">IServiceLink</a> which means it can wrap 
+<a href="doc/api/net/sf/tapestry/html/Rollover.html">Rollover</a> components.
 
 <pre>
 [ 463649 ] NN6 & ShowInspector
@@ -66,7 +77,7 @@ display component and parameter descriptions.
 create a pie chart.
 
 <p>Made it easier to create subclasses of 
-<a href="doc/api/com/primix/tapestry/AbstractResponseWriter.html">AbstractResponseWriter</a>.
+<a href="doc/api/net/sf/tapestry/AbstractResponseWriter.html">AbstractResponseWriter</a>.
 
 <pre>
 [ 532562 ] Submit.jwc contains error
@@ -94,11 +105,11 @@ and shared by all engine instances (for the application).
 
 <p>Made it easier to override the creation of the specification source, template source, etc. in subclasses
 of 
-<a href="doc/api/com/primix/tapestry/engine/AbstractApplication.html">AbstractApplication</a>.
+<a href="doc/api/net/sf/tapestry/engine/AbstractApplication.html">AbstractApplication</a>.
 
 
-<p>The <a href="doc/api/com/primix/tapestry/form/Submit.html">Submit</a> and 
-<a href="doc/api/com/primix/tapestry/form/ImageSubmit.html">ImageSubmit</a> components may now have 
+<p>The <a href="doc/api/net/sf/tapestry/form/Submit.html">Submit</a> and 
+<a href="doc/api/net/sf/tapestry/form/ImageSubmit.html">ImageSubmit</a> components may now have 
 their own listener, which is notified before the containing form's listener.
 
 <p>More reworking of validation; the validation delegate can now
@@ -115,10 +126,10 @@ aren't associated with any particular component.
 <p>A complete overhaul of the validating text field support.  The previous implementation
 used subclasses of AbstractValidatingTextField (which no longer exists) to add new types
 of validation; the new implementation has a single component, 
-<a href="doc/api/com/primix/tapestry/valid/ValidField.html">ValidField</a>, and many implementations
-of <a href="doc/api/com/primix/tapestry/valid/IValidator.html">IValidator</a>.
+<a href="doc/api/net/sf/tapestry/valid/ValidField.html">ValidField</a>, and many implementations
+of <a href="doc/api/net/sf/tapestry/valid/IValidator.html">IValidator</a>.
 
-<p>At long last, the <a href="doc/api/com/primix/tapestry/form/Upload.html">Upload</a> component.
+<p>At long last, the <a href="doc/api/net/sf/tapestry/form/Upload.html">Upload</a> component.
 
 <p>Reimplemented the Virtual Library application using
 <a target="_top" href="http://mckoi.com/database/">McKoi Database</a>, to be compatible with JBoss 2.4.3 (which no
@@ -170,7 +181,7 @@ accessing properties.
 				<h3>Release 1.0.5</h3>
 				
 				<p>Added a mechanism to clear out pooled objects when they haven't been used
-				for some time.  The interface <a href="doc/api/com/primix/tapestry/util/ICleanable.html">ICleanable</a>
+				for some time.  The interface <a href="doc/api/net/sf/tapestry/util/ICleanable.html">ICleanable</a>
 				has the details.
 				
 				<p>Made a number of other efficiency improvements.  Particularily, the page loader now weeds
@@ -179,7 +190,7 @@ accessing properties.
 				bindings.  The old method was to weed out the unwanted parameters on every
 				render, which was more expensive.
 				
-				<p>Improved the <a href="doc/api/com/primix/tapestry/valid/NumericField.html">NumericField</a>
+				<p>Improved the <a href="doc/api/net/sf/tapestry/valid/NumericField.html">NumericField</a>
 				component to deal with null values in an intelligent manner.
 				
 				<p>It is now possible to set properties of
