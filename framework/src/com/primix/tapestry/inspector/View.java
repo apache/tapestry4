@@ -4,7 +4,7 @@ import com.primix.foundation.*;
 
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ * Copyright (c) 2000, 2001 by Howard Ship and Primix Solutions
  *
  * Primix Solutions
  * One Arsenal Marketplace
@@ -46,23 +46,15 @@ public class View extends Enum
 	 *  assets.
 	 *
 	 */
-	 
+
 	public static final View SPECIFICATION = new View("SPECIFICATION");
-	
-	/**
-	 *  View that displays any embedded components of the currently
-	 *  inspected component, with type.
-	 *
-	 */
-	 
-	public static final View COMPONENTS = new View("COMPONENTS");
-	
+
 	/**
 	 *  View that displays the HTML template for the component, if one
 	 *  exists.
 	 *
 	 */
-	 
+
 	public static final View TEMPLATE = new View("TEMPLATE");
 
 
@@ -71,10 +63,17 @@ public class View extends Enum
 	 *  the inspected component.
 	 *
 	 */
-	 
-	 
+
+
 	public static final View PROPERTIES = new View("PROPERTIES");
-	 
+
+	/**
+	 *  View that shows information about the {@link IEngine}.
+	 *
+	 */
+
+	public static final View ENGINE = new View("ENGINE");
+
 	private View(String enumerationId)
 	{
 		super(enumerationId);

@@ -1,15 +1,11 @@
 package com.primix.tapestry.inspector;
 
 import com.primix.tapestry.*;
-import com.primix.tapestry.spec.*;
-import com.primix.tapestry.components.*;
-import com.primix.foundation.io.*;
-import java.io.*;
 import java.util.*;
 
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ * Copyright (c) 2000, 2001 by Howard Ship and Primix Solutions
  *
  * Primix Solutions
  * One Arsenal Marketplace
@@ -53,199 +49,77 @@ implements ILifecycle
 	private List properties;
 	private IPageChange change;
 	private IPage inspectedPage;
-    private byte[] serializedEngine;
 
 	public void cleanupAfterRender(IRequestCycle cycle)
 	{
 		properties = null;
 		change = null;
 		inspectedPage = null;
-        serializedEngine = null;
 	}
 
 	private void buildProperties()
 	{
 		Inspector inspector = (Inspector)page;
-		
-		inspectedPage = inspector.getInspectedPage();
+
+			inspectedPage = inspector.getInspectedPage();
 
 		IEngine engine = inspector.getEngine();
 		IPageRecorder recorder = engine.getPageRecorder(inspectedPage.getName());
-		
+
 		if (recorder.getHasChanges())
 			properties = new ArrayList(recorder.getChanges());
 	}
 
 	/**
 	 *  Returns a {@link List} of {@link IPageChange} objects.
-     *
-     * <p>Sort order is not defined.
+	*
+	* <p>Sort order is not defined.
 	 *
 	 */
-	 
+
 	public List getProperties()
 	{
 		if (properties == null)
 			buildProperties();
-			
+
 		return properties;
 	}
-	
+
 	public void setChange(IPageChange value)
 	{
 		change = value;
 	}
-	
+
 	public IPageChange getChange()
 	{
 		return change;
 	}
-	
+
 	/**
 	 *  Returns true if the current change has a non-null component path.
 	 *
 	 */
-	 
+
 	public boolean getEnableComponentLink()
 	{
 		return change.getComponentPath() != null;
 	}
-	
+
 	/**
 	 *  Returns the name of the value's class, if the value is non-null.
 	 *
 	 */
-	 
+
 	public String getValueClassName()
 	{
 		Object value;
-		
+
 		value = change.getNewValue();
-		
+
 		if (value == null)
 			return "<null>";
-		
+
 		return value.getClass().getName();
 	}	
-
-    private byte[] getSerializedEngine()
-    {
-        if (serializedEngine == null)
-            buildSerializedEngine();
-
-        return serializedEngine;
-
-    }
-
-    private void buildSerializedEngine()
-    {
-        ByteArrayOutputStream bos = null;
-        ObjectOutputStream oos = null;
-
-        try
-        {
-            bos = new ByteArrayOutputStream();
-            oos = new ObjectOutputStream(bos);
-
-            // Write the application object to the stream.
-
-            oos.writeObject(page.getEngine());
-
-            // Extract the application as an array of bytes.
-
-            serializedEngine = bos.toByteArray();
-        }
-        catch (IOException ex)
-        {
-            throw new ApplicationRuntimeException("Could not serialize the application engine.", ex);
-        }
-        finally
-        {
-            close(oos);
-            close(bos);
-        }
-
-        // It would be nice to deserialize the application object now, but in
-        // practice, that fails due to class loader problems.
-    }
-
-    private void close(OutputStream stream)
-    {
-        if (stream == null)
-            return;
-
-        try
-        {
-            stream.close();
-        }
-        catch (IOException ex)
-        {
-            // Ignore.
-        }
-    }
-
-    public int getEngineByteCount()
-    {
-        return getSerializedEngine().length;
-    }
-
-    public IRender getEngineDumpDelegate()
-    {
-        return new IRender()
-        {
-            public void render(IResponseWriter writer, IRequestCycle cycle)
-            throws RequestCycleException
-            {
-                dumpSerializedEngine(writer);
-            }
-        };
-    }
-
-    private void dumpSerializedEngine(IResponseWriter responseWriter)
-    {
-        CharArrayWriter writer = null;
-        BinaryDumpOutputStream bos = null;
-        
-        try
-        {
-            // Because IReponseWriter doesn't implement the
-            // java.io.Writer interface, we have to buffer this
-            // stuff then pack it in all at once.  Kind of a waste!
-
-            writer = new CharArrayWriter();
-
-            bos = new BinaryDumpOutputStream(writer);
-            bos.setBytesPerLine(32);
-
-            bos.write(getSerializedEngine());
-            bos.close();
-
-            responseWriter.print(writer.toString());            
-        }
-        catch (IOException ex)
-        {
-            // Ignore.
-        }
-        finally
-        {
-            if (bos != null)
-            {
-                try 
-                {
-                    bos.close();
-                }
-                catch (IOException ex)
-                {
-                    // Ignore.
-                }
-            }
-
-            if (writer != null)
-            {
-                writer.reset();
-                writer.close();
-            }
-        }
-    }
 
 }

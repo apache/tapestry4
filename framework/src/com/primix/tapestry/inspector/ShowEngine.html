@@ -1,0 +1,39 @@
+<!-- $Id$ -->
+
+<table class="inspector-data">
+
+	<tr class="even">
+		<th>Engine Class</th>
+		<td><jwc id="insertEngineClass"/></td>
+	</tr>
+	
+	<tr class="odd">
+		<th>Locale</th>
+		<td><jwc id="insertLocale"/></td>
+	</tr>
+
+	<tr class="even">
+		<th>Visit</th>
+		<td>
+<jwc id="ifNoVisit">
+<em>none</em>
+</jwc>
+
+<jwc id="ifVisit">
+<jwc id="insertVisit"/>
+</jwc>
+		</td>
+	</tr>
+
+</table>
+
+
+<h1>Serialized Engine</h1>
+
+<jwc id="insertByteCount"/> bytes:
+<pre><jwc id="insertSerializedEngine"/></pre>
+
+<h1>Request Context</h1>
+
+<jwc id="insertRequest"/>
+

@@ -1,5 +1,9 @@
 <!-- $Id$ -->
 
+<table>
+<tr valign=top>
+<td>
+
 <table class="inspector-data">
 	<tr class="even">
 		<th>Specification Resource Path</th>
@@ -22,8 +26,8 @@
 	</tr>
 </table>
 
-<jwc id="e-formal">
-<jwc id="ifFirstFormal">
+<jwc id="ifFormalParameters">
+
 <table class="inspector-data">
 	<tr class="heading">
 		<th colspan=4>Formal Parameters</th>
@@ -31,20 +35,20 @@
 	<tr class="heading">
 		<th>Name</th> <th>Required</th> <th>Java type</th> <th>Binding</th>
 	</tr>
-</jwc>
+
+<jwc id="e-formal">
 	<jwc id="evenOddFormal">
 		<td><jwc id="insertFormalName"/></td>
 		<td><jwc id="insertFormalRequired"/></td>
 		<td><jwc id="insertFormalType"/></td>
 		<td><jwc id="insertFormalBinding"/></td>
 	</jwc>
-<jwc id="ifLastFormal">
+</jwc>
 </table>
 </jwc>
-</jwc>
 
-<jwc id="e-informal">
-<jwc id="ifFirstInformal">
+<jwc id="ifInformalParameters">
+
 <table class="inspector-data">
 	<tr class="heading">
 		<th colspan=2>Informal Parameters</th>
@@ -52,18 +56,18 @@
 	<tr class="heading">
 		<th>Name</th> <th>Binding</th>
 	</tr>
-</jwc>
+
+<jwc id="e-informal">
 	<jwc id="evenOddInformal">
 		<td><jwc id="insertInformalName"/></td>
 		<td><jwc id="insertInformalBinding"/></td>
 	</jwc>
-<jwc id="ifLastInformal">
+</jwc>
 </table>
 </jwc>
-</jwc>
 
-<jwc id="e-asset">
-<jwc id="ifFirstAsset">
+<jwc id="ifAssets">
+
 <table class="inspector-data">
 	<tr class="heading">
 		<th colspan=2>Assets</th>
@@ -71,12 +75,43 @@
 	<tr class="heading">
 		<th>Name</th> <th>Asset</th>
 	</tr>
-</jwc>
+
+<jwc id="e-asset">
 	<jwc id="evenOddAsset">
 		<td><jwc id="insertAssetName"/></td>
 		<td><jwc id="insertAssetValue"/></td>
 	</jwc>
-<jwc id="ifLastAsset">
+</jwc>
+
 </table>
 </jwc>
+</td>
+
+<td>
+<jwc id="ifComponents">
+
+<table border="0" class="inspector-data">
+
+	<tr class="heading">
+		<th colspan=2>Embedded Components</th>
+	</tr>
+	<tr class="heading">
+		<th>Id</th> <th>Type</th>
+	</tr>
+
+<jwc id="e-components">
+	<jwc id="evenOddComponent">
+		<td>
+			<jwc id="selectComponent"><jwc id="insertComponentId"/></jwc>
+		</td>
+		<td>
+			<jwc id="insertComponentType"/>
+		</td>
+	</jwc>
 </jwc>
+</table>
+</jwc>
+
+</td>
+</tr>
+</table>

@@ -45,20 +45,6 @@
 			<type>/com/primix/tapestry/inspector/ShowSpecification.jwc</type>
 		</component>
 		<component>
-			<id>ifShowComponents</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>viewComponents</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>showComponents</id>
-			<type>/com/primix/tapestry/inspector/ShowComponents.jwc</type>
-		</component>
-		<component>
 			<id>ifShowTemplate</id>
 			<type>Conditional</type>
 			<bindings>
@@ -85,6 +71,20 @@
 		<component>
 			<id>showProperties</id>
 			<type>/com/primix/tapestry/inspector/ShowProperties.jwc</type>
+		</component>
+		<component>
+			<id>ifShowEngine</id>
+			<type>Conditional</type>
+			<bindings>
+				<binding>
+					<name>condition</name>
+					<property-path>viewEngine</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>showEngine</id>
+			<type>/com/primix/tapestry/inspector/ShowEngine.jwc</type>
 		</component>
 	</components>
 	<assets>

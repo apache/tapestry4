@@ -79,26 +79,6 @@
 			<resource-path>/com/primix/tapestry/inspector/Specification_NBanner.gif</resource-path>
 		</private-asset>
 		<private-asset>
-			<name>COMPONENTS</name>
-			<resource-path>/com/primix/tapestry/inspector/Components_Np1.gif</resource-path>
-		</private-asset>
-		<private-asset>
-			<name>COMPONENTS-selected</name>
-			<resource-path>/com/primix/tapestry/inspector/Components_Hp3.gif</resource-path>
-		</private-asset>
-		<private-asset>
-			<name>COMPONENTS-focus</name>
-			<resource-path>/com/primix/tapestry/inspector/Components_NRp2.gif</resource-path>
-		</private-asset>
-		<private-asset>
-			<name>COMPONENTS-selected-focus</name>
-			<resource-path>/com/primix/tapestry/inspector/Components_HRp4.gif</resource-path>
-		</private-asset>
-		<private-asset>
-			<name>COMPONENTS-banner</name>
-			<resource-path>/com/primix/tapestry/inspector/Components_NBanner.gif</resource-path>
-		</private-asset>
-		<private-asset>
 			<name>TEMPLATE</name>
 			<resource-path>/com/primix/tapestry/inspector/Template_Np1.gif</resource-path>
 		</private-asset>
@@ -137,6 +117,26 @@
 		<private-asset>
 			<name>PROPERTIES-banner</name>
 			<resource-path>/com/primix/tapestry/inspector/Properties_NBanner.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>ENGINE</name>
+			<resource-path>/com/primix/tapestry/inspector/Engine_Np1.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>ENGINE-selected</name>
+			<resource-path>/com/primix/tapestry/inspector/Engine_Hp3.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>ENGINE-focus</name>
+			<resource-path>/com/primix/tapestry/inspector/Engine_NRp2.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>ENGINE-selected-focus</name>
+			<resource-path>/com/primix/tapestry/inspector/Engine_HRp4.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>ENGINE-banner</name>
+			<resource-path>/com/primix/tapestry/inspector/Engine_NBanner.gif</resource-path>
 		</private-asset>
 	</assets>
 </specification>
