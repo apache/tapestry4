@@ -55,10 +55,10 @@
 
 package org.apache.tapestry.workbench.chart;
 
-import com.jrefinery.chart.JFreeChart;
+import org.jCharts.Chart;
 
 /**
- *  An object which can provide a {@link JFreeChart} (to the {@link ChartService}).
+ *  An object which can provide a {@link Chart} (to the {@link ChartService}).
  * 
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -68,5 +68,5 @@ import com.jrefinery.chart.JFreeChart;
 
 public interface IChartProvider
 {
-    public JFreeChart getChart();
+    public Chart getChart();
 }
