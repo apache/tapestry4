@@ -150,7 +150,7 @@ public abstract class SimpleTableColumn implements ITableColumn, Serializable
 		return new RenderString(getColumnValue(objRow).toString());
 	}
 
-	private class DefaultComparator implements Comparator
+	private class DefaultComparator implements Comparator, Serializable
 	{
 		public int compare(Object objRow1, Object objRow2)
 		{

@@ -25,6 +25,8 @@
 
 package net.sf.tapestry.contrib.table.components;
 
+import java.io.Serializable;
+
 import net.sf.tapestry.BaseComponent;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IMarkupWriter;
@@ -59,7 +61,7 @@ public class TableView
 	private String m_strElement;
 
 	// Persistent properties
-	private Object m_objSessionState;
+	private Serializable m_objSessionState;
 
 	// Transient objects
 	private ITableModel m_objTableModel;
@@ -127,7 +129,7 @@ public class TableView
 		// if null, first try to recreate the model from the session state
 		if (m_objTableModel == null)
 		{
-			Object objState = loadSessionState();
+			Serializable objState = loadSessionState();
 			m_objTableModel =
 				getTableSessionStateManager().recreateTableModel(objState);
 		}
@@ -198,7 +200,7 @@ public class TableView
 	 * Returns the sessionState.
 	 * @return Object
 	 */
-	public Object getSessionState()
+	public Serializable getSessionState()
 	{
 		return m_objSessionState;
 	}
@@ -207,18 +209,18 @@ public class TableView
 	 * Sets the sessionState.
 	 * @param sessionState The sessionState to set
 	 */
-	public void setSessionState(Object sessionState)
+	public void setSessionState(Serializable sessionState)
 	{
 		m_objSessionState = sessionState;
 	}
 
-	public void updateSessionState(Object sessionState)
+	public void updateSessionState(Serializable sessionState)
 	{
 		setSessionState(sessionState);
 		fireObservedChange("sessionState", sessionState);
 	}
 
-	protected Object loadSessionState()
+	protected Serializable loadSessionState()
 	{
 		ITableSessionStoreManager objManager = getTableSessionStoreManager();
 		if (objManager != null)
@@ -226,7 +228,7 @@ public class TableView
 		return getSessionState();
 	}
 
-	protected void saveSessionState(Object objState)
+	protected void saveSessionState(Serializable objState)
 	{
 		ITableSessionStoreManager objManager = getTableSessionStoreManager();
 		if (objManager != null)
@@ -247,7 +249,7 @@ public class TableView
 		// Save the session state of the table model
 		// This is the moment after changes and right before committing
 		ITableModel objModel = getTableModel();
-		Object objState =
+		Serializable objState =
 			getTableSessionStateManager().getSessionState(objModel);
 		saveSessionState(objState);
 	}

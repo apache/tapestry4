@@ -20,7 +20,7 @@ public class ExpressionTableColumn extends SimpleTableColumn
     private static final Logger LOG = LogManager.getLogger(ExpressionTableColumn.class);
 
     private String m_strExpression;
-    private Object m_objParsedExpression = null;
+    transient private Object m_objParsedExpression = null;
     
     public ExpressionTableColumn(String strColumnName, String strExpression) {
         this(strColumnName, strExpression, false);
@@ -49,8 +49,12 @@ public class ExpressionTableColumn extends SimpleTableColumn
             return "";
         
         if (m_objParsedExpression == null) {
-            // no need to synchronize, since the results should be identical
-            m_objParsedExpression = OgnlUtils.getParsedExpression(m_strExpression);
+            synchronized (this) {
+                if (m_objParsedExpression == null) {
+                    // no need to synchronize, since the results should be identical
+                    m_objParsedExpression = OgnlUtils.getParsedExpression(m_strExpression);
+                }
+            }
         }
         
 		try

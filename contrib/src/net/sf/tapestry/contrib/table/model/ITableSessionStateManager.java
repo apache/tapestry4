@@ -25,6 +25,8 @@
 
 package net.sf.tapestry.contrib.table.model;
 
+import java.io.Serializable;
+
 /**
  * An  interface responsible for determining <b>what</b> data would be stored 
  * in the session between requests. 
@@ -43,12 +45,12 @@ public interface ITableSessionStateManager
 	 * @param objModel the table model to extract the session state from
 	 * @return Object the session state to be saved between the requests
 	 */
-	Object getSessionState(ITableModel objModel);
+	Serializable getSessionState(ITableModel objModel);
 
 	/**
 	 * Method recreateTableModel recreates a table model from the saved session state
 	 * @param objState the saved session state
 	 * @return ITableModel the recreated table model
 	 */
-	ITableModel recreateTableModel(Object objState);
+	ITableModel recreateTableModel(Serializable objState);
 }

@@ -25,6 +25,8 @@
 
 package net.sf.tapestry.contrib.table.model.common;
 
+import java.io.Serializable;
+
 import net.sf.tapestry.contrib.table.model.ITableModel;
 import net.sf.tapestry.contrib.table.model.ITableSessionStateManager;
 
@@ -44,7 +46,7 @@ public class NullTableSessionStateManager implements ITableSessionStateManager
 	/**
 	 * @see net.sf.tapestry.contrib.table.model.ITableSessionManager#getSessionState(ITableModel)
 	 */
-	public Object getSessionState(ITableModel objModel)
+	public Serializable getSessionState(ITableModel objModel)
 	{
 		return null;
 	}
@@ -52,7 +54,7 @@ public class NullTableSessionStateManager implements ITableSessionStateManager
 	/**
 	 * @see net.sf.tapestry.contrib.table.model.ITableSessionManager#recreateTableModel(Object)
 	 */
-	public ITableModel recreateTableModel(Object objState)
+	public ITableModel recreateTableModel(Serializable objState)
 	{
 		return null;
 	}
