@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE project [
+    <!ENTITY docbook-setup SYSTEM "file:../common/docbook-setup.xml">
+]>
+
+<project name="Tapestry Contributor's Guide" default="install">
+
+<property name="html.install.dir" value="../../ContributorsGuide"/>
+
+&docbook-setup;
+    
+  <target name="html" description="Build HTML version of documentation.">
+    <antcall target="build-html">
+      <param name="root.filename" value="ContributorsGuide"/>
+    </antcall>
+  </target>
+
+<!-- Invoking script must define property html.install.dir -->
+
+<target name="install" depends="html" 
+	description="Build and install HTML documentation.">
+  	<copy todir="${html.install.dir}">
+  	  <fileset dir="${html.output.dir}"/>
+  	</copy>
+</target>
+</project>
+
+
