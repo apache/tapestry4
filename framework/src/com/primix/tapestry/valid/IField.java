@@ -32,48 +32,17 @@ import com.primix.tapestry.form.*;
 /**
  *  Interface for a number of components that act as a normal
  *  {@link TextField} component, but perform extra validation.
- *
+ * 
  *  @author Howard Ship
  *  @version $Id$
  *
  */
 
-public interface IValidatingTextField extends IComponent
+public interface IField extends IComponent
 {
-	/**
-	 *  Returns true if entering a non-null value into the field
-	 *  is required.
-	 *
-	 */
-
-	public boolean isRequired();
 
 	/**
-	 *  Forces the component to re-read through its value binding (whose
-	 *  name and type is dependant on the implementation).  Normally
-	 *  this only occurs once per request cycle.  This does not clear 
-	 *  the error property.
-	 *
-	 */
-
-	public void refresh();
-
-	/**
-	 *  Returns true if an error has been detected in this component.
-	 *
-	 */
-
-	public boolean getError();
-
-	/**
-	 *  Used to force an error flag on or off for this component.
-	 *
-	 */
-
-	public void setError(boolean value);
-
-	/**
-	 *  Returns the display name for the component, suitable for display
+	 *  Returns the localized display name for the component, suitable for display
 	 *  to a user.
 	 *
 	 */
@@ -88,5 +57,12 @@ public interface IValidatingTextField extends IComponent
 	 */
 
 	public String getName();
+	
+	/**
+	 *  Returns the type of value, derived from the fields value binding.
+	 * 
+	 **/
+	
+	public Class getValueType();
 
 }

@@ -29,7 +29,7 @@ package com.primix.tapestry.valid;
 import com.primix.tapestry.*;
 
 /**
- *  Used to label an {@link IValidatingTextField}.  Because such fields
+ *  Used to label an {@link IField}.  Because such fields
  *  know their displayName (user-presentable name), there's no reason
  *  to hard code the label in a page's HTML template (this also helps
  *  with localization).
@@ -52,7 +52,7 @@ import com.primix.tapestry.*;
  *
  * <tr>
  *  <td>field</td>
- *  <td>{@link IValidatingTextField}</td>
+ *  <td>{@link IField}</td>
  *  <td>R</td>
  *  <td>yes</td>
  *  <td>&nbsp;</td>
@@ -103,7 +103,7 @@ public class FieldLabel extends AbstractComponent
 	}
 
 	/**
-	*  Gets the {@link IValidatingTextField} 
+	*  Gets the {@link IField} 
 	*  and optional {@link IValidationDelegate delegate},
 	*  then renders the label obtained from the field.
 	*
@@ -112,7 +112,7 @@ public class FieldLabel extends AbstractComponent
 	public void render(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
-		IValidatingTextField field;
+		IField field;
 		IValidationDelegate delegate = null;
 
 		if (cycle.isRewinding())
@@ -121,9 +121,9 @@ public class FieldLabel extends AbstractComponent
 		try
 		{
 			field =
-				(IValidatingTextField) fieldBinding.getObject(
+				(IField) fieldBinding.getObject(
 					"field",
-					IValidatingTextField.class);
+					IField.class);
 
 			if (field == null)
 				throw new RequiredParameterException(this, "field", fieldBinding);
