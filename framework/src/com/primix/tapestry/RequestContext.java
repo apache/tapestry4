@@ -141,7 +141,7 @@ public class RequestContext
 	}
 
 	/**
-	* Adds a simple <code>Cookie</code>. To set a Cookie with attributes,
+	* Adds a simple {@link Cookie}. To set a Cookie with attributes,
 	* use {@link #addCookie(Cookie)}.
 	*
 	*/
@@ -152,11 +152,11 @@ public class RequestContext
 	}
 
 	/**
-	* Adds a <code>Cookie</code> to the response. Once added, the
+	* Adds a {@link Cookie} to the response. Once added, the
 	* Cookie will also be available to {@link #getCookie(String)} method.
 	*
 	* <p>Cookies should only be added <em>before</em> invoking
-	* <code>HttpServletResponse.getWriter()</code>.
+	* {@link HttpServletResponse#getWriter()}..
 	*
 	*/
 
