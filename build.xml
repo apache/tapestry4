@@ -240,10 +240,10 @@
 	<!-- Pack the directory (relative to ${dist.dir}), into a TAR file.  We go to the extra work
 	      of building a .tar.gz because the distro is smaller than an equivalent .zip file.
 	   -->
-	<property name="bin.tar.gz" value="${dist.dir}-bin.tar.gz"/>
+	<property name="core.tar.gz" value="${dist.dir}-core.tar.gz"/>
 	<property name="doc.tar.gz" value="${dist.dir}-doc.tar.gz"/>
 	
-	<tar tarfile="${bin.tar.gz}" 
+	<tar tarfile="${core.tar.gz}" 
 		longfile="gnu"
 		compression="gzip">
 		<tarfileset dir="${dist.root.dir}">
@@ -272,7 +272,8 @@
 		</tarfileset>
 	</tar>
 		 
-	<!-- Create the web distribution (to be put up at SourceForge) -->
+	<!-- Create the web distribution (to be put up at SourceForge).  This *does*
+	     include the code coverage report.  -->
 	
 	<property name="web.tar.gz" value="${dist.root.dir}/Tapestry-Web-${framework.version}.tar.gz"/>
 	
@@ -377,8 +378,8 @@
 	 
 		<!-- Enable debugging when running the tutorial -->
 		
-		<!-- jvmarg line="-showversion -Xdebug -Xnoagent"/>
-		<jvmarg line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20150"/ -->
+		<jvmarg line="-showversion -Xdebug -Xnoagent"/>
+		<jvmarg line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20150"/>
 		
 		<!-- Jetty can get easily confused (under NT) unless this is turned off. -->
 		
@@ -541,7 +542,7 @@
   		dir="${jboss.dir}/bin"
 		classname="org.jboss.Main">
 
-		<!-- Launch using the vlib configuration, not the default. -->
+		<!-- Launch using the tapestry configuration, not the default. -->
 
 		<arg line="--configuration=tapestry"/>
 
