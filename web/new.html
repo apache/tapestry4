@@ -23,7 +23,14 @@ smaller, source-only distribution.</li>
  the rendering portion of links into a separate interface.</li>
 <li>Upgrade to McKoi database 0.94h.</li>
 <li>Tapestry will now create properties for connected parameters, if the properties
- doe not already exist (or are abstract).</li>
+ do not already exist (or are abstract).</li>
+<li>Renamed the <code>java-type</code> attribute of the <code>&lt;parameter&gt;</code> element (in component
+ specifications) to <code>type</code> (for the 1.4 DTD).</li>
+<li>Allowed more elements to specify values as character data inside the element as an alternative
+to using a particular attribute (useful for complex OGNL expressions).
+<li>Created tests for <a href="doc/ComponentReference/ListEdit.html">ListEdit</a>
+as well as improving and simplifying the code for it.
+<li>Deprecated the <code>PageCleanupListener</code> interface and removed support for it.
 </ul>
 		
 <pre>
