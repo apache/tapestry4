@@ -32,7 +32,7 @@ document.Form0.onsubmit = onsubmit_Form0;
 ]]>
 		</assert-output>
 		
-		<assert-matches name="Hidden Fields - Names" subgroup="1">
+		<assert-output-matches name="Hidden Fields - Names" subgroup="1">
 <![CDATA[
 <input type="hidden" name="(.*?)" value="(.*?)"/>
 ]]>
@@ -40,25 +40,25 @@ document.Form0.onsubmit = onsubmit_Form0;
 			<match>context</match>
 			<match>sp</match>
 			<match>Form0</match>
-		</assert-matches>
+		</assert-output-matches>
 				
-		<assert-matches name="Hidden Fields - Values" subgroup="2">
+		<assert-output-matches name="Hidden Fields - Values" subgroup="2">
 <![CDATA[
 <input type="hidden" name="(.*?)" value="(.*?)"/>
 ]]>
 			<match>direct</match>
 			<match>0/Register/form</match>
 			<match>S0</match>
-			<match>4</match>
-		</assert-matches>
+			<match>inputFirstName,inputLastName,inputSex,inputAgeRange</match>
+		</assert-output-matches>
 			 	
-		<assert-matches name="Text Fields" subgroup="1">
+		<assert-output-matches name="Text Fields" subgroup="1">
 <![CDATA[
-<input type="text" name="(.*?)" size="40" maxlength="100"/>
+<input type="text" name="(.*?)" (.*?)/>
 ]]>
 			<match>inputFirstName</match>
 			<match>inputLastName</match>	
-		</assert-matches>
+		</assert-output-matches>
 		
 		<assert-output name="Radio Button - Male">
 <![CDATA[
@@ -78,34 +78,34 @@ document.Form0.onsubmit = onsubmit_Form0;
 ]]>
 		</assert-output>
 		
-		<assert-matches name="Option Values" subgroup="1">
+		<assert-output-matches name="Option Values" subgroup="1">
 <![CDATA[
-<option value="(.*?)" (selected="selected")?>(.*?)</option>
+<option value="(.*?)"( selected="selected")?>(.*?)</option>
 ]]>
 			<match>0</match>
 			<match>1</match>
 			<match>2</match>
 			<match>3</match>
 			<match>4</match>
-		</assert-matches>
+		</assert-output-matches>
 		
-		<assert-matches name="Option Labels" subgroup="3">
+		<assert-output-matches name="Option Labels" subgroup="3">
 <![CDATA[
-<option value="(.*?)" (selected="selected")?>(.*?)</option>
+<option value="(.*?)"( selected="selected")?>(.*?)</option>
 ]]>
 			<match>Child (0 - 9)</match>
 			<match>Teen (10 - 17)</match>
 			<match>Adult (18 - 60)</match>
 			<match>Retiree (61 - 75)</match>
 			<match>Elderly (76+)</match>
-		</assert-matches>
+		</assert-output-matches>
 				
-		<assert-matches name="Selected Option" subgroup="1">
+		<assert-output-matches name="Selected Option" subgroup="1">
 <![CDATA[
 <option value="(.*?)" selected="selected"
 ]]>
 			<match>2</match>
-		</assert-matches>												 		
+		</assert-output-matches>												 		
   	</request>
   	
   	<!-- Provoke an error by "submitting" the form but leaving some fields blank. -->
@@ -118,7 +118,7 @@ document.Form0.onsubmit = onsubmit_Form0;
   		<parameter name="inputLastName" value=""/>
   		<parameter name="inputSex" value="1"/>
   		<parameter name="inputAgeRange" value="1"/>
-  		<parameter name="Form0" value="4"/>
+  		<parameter name="Form0" value="inputFirstName,inputLastName,inputSex,inputAgeRange"/>
   		
     		
   		<assert-output name="Title">
@@ -142,19 +142,19 @@ document.Form0.inputLastName.select();
 ]]>  		
  		</assert-output>
  		 				
-  		<assert-matches name="Selected Option" subgroup="1">
+  		<assert-output-matches name="Selected Option" subgroup="1">
 <![CDATA[
 <option value="(.*?)" selected="selected"
 ]]>
 			<match>1</match>
-		</assert-matches>	
+		</assert-output-matches>	
 		
-		<assert-matches name="Selected Radio" subgroup="1">
+		<assert-output-matches name="Selected Radio" subgroup="1">
 <![CDATA[
 <input type="radio" name="inputSex" checked="checked" value="(.*?)"/>
 ]]>
 			<match>1</match>
-		</assert-matches>
+		</assert-output-matches>
 		
 <!-- This can be tricky, the order in which the maxlength and size attributes
      are emitted appears to be somewhat unpredictable. -->
@@ -180,7 +180,7 @@ document.Form0.inputLastName.select();
   		<parameter name="inputLastName" value="Lewis Ship"/>
   		<parameter name="inputSex" value="1"/>
   		<parameter name="inputAgeRange" value="2"/>
-  		<parameter name="Form0" value="4"/>	
+  		<parameter name="Form0" value="inputFirstName,inputLastName,inputSex,inputAgeRange"/>	
   		
   		
   		<assert-output name="Title">

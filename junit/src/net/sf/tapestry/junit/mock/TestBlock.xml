@@ -75,7 +75,7 @@ ActionLink HAS been triggered.
 		<parameter name="context" value="1/Home/FormHolder/$Form"/>
 		<parameter name="sp" value="S1"/>
 		<parameter name="$Submit" value="Trigger"/>
-		<parameter name="Form1" value="1"/>
+		<parameter name="Form1" value="$Submit"/>
 		
 		<assert-output name="Form Status">
 Form HAS been triggered.

@@ -56,7 +56,7 @@ href="/mock/app?service=action&amp;context=0/Stale/0/actionLink"
 			<match>direct</match>
 			<match>0/Stale/form</match>
 			<match>S1</match>
-			<match>0</match>
+			<match></match>
 		</assert-output-matches>
 
 				
@@ -99,7 +99,7 @@ href="/mock/app?service=action&amp;context=0/Stale/0/actionLink"
 		
 		<parameter name="context" value="1/Stale/form"/>
 		<parameter name="sp" value="S1"/>
-		<parameter name="Form1" value="0"/>
+		<parameter name="Form1" value=""/>
 		
 		<assert-output name="StaleSession (Form)">
 <![CDATA[

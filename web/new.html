@@ -13,14 +13,16 @@
 
 <h3>Release 2.4-alpha-1</h3>
 
-<p>
+<ul>
+<li>
 Added support for specifying expressions in the component template.  Expressions
 are specified as attributes with the format "<code>[[ <i>expression</i> ]]</code>".
 The brackets and leading and trailing whitespace are removed.
 Expressions specified this way are the equivalent of the
 <code>&lt;binding&gt;</code> element in a specification.
+</li>
 
-<p>
+<li>
 Tapestry now supports <i>implicit components</i>.  Implicit components are
 declared exclusively in the containing component's template (instead of in
 the containing component's specification) using a special
@@ -29,18 +31,47 @@ the containing component's specification) using a special
 <code><i>id</i>@<i>type</i></code> (for named components).  Implicit components
 are especially useful for components that take no parameters, but may also
 make use of template expressions.
+</li>
 
-<p>
+<li>
 A number of non-backwards compatible changes were made to several
 framework interfaces to support more flexibility on where specifications
 and templates may be located, but these should not affect the overwhelming
 majority of Tapestry users.  In addition, private assets and context assets
-may also be relative.  Private assets are relative to the component which declares
+may also be relative.  
+
+<br/>
+Private assets are relative to the component specification
+which declares
 them, context assets are relative to the application servlet (within the servlet
 context).
+</li>
 
-<p>
+<li>
 Moved the Inspector out of the framework and into the contrib library.
+</li>
+
+<li>
+Created smarter checks for stale sessions for ActionLink, DirectLink and Form.
+The action and direct services used by the components now encode whether the
+application was stateful into the URL.  The stateful check only occurs if the application
+was stateful when the URL was rendered.
+</li>
+
+<li>
+Changed Form to record the exact ids generated during the render (it used to just store the count).
+This allows a more useful exception message to be generated 
+for the
+<a href="doc/api/net/sf/tapestry/StaleLinkException.html">StaleLinkException</a>.
+</li>
+
+<li>
+Changed the default StaleLink page to have a message property, and to display
+the message from the StaleLinkException.
+</li>
+
+</ul>
+
 
 <h3>Release 2.3-alpha-1</h3>
 

@@ -361,7 +361,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         {
             IPage exceptionPage = cycle.getPage(EXCEPTION_PAGE);
 
-            OgnlUtils.set("exception", _resolver, exceptionPage, cause);
+            setProperty(exceptionPage, "exception", cause);
 
             cycle.setPage(exceptionPage);
 
@@ -837,21 +837,36 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     /**
      *  Invoked by {@link #service(RequestContext)} if a {@link StaleLinkException}
      *  is thrown by the {@link IEngineService service}.  This implementation
-     *  invokes 
+     *  sets the message property of the StaleLink page to the
+     *  message provided in the exception,
+     *  then invokes 
      *  {@link #redirect(String, IRequestCycle, ResponseOutputStream, RequestCycleException)}
      *  to render the StaleLink page.
      *
      *  <p>Subclasses may overide this method (without
      *  invoking this implementation).  A common practice
-     *  is to present an eror message on the application's
+     *  is to present an error message on the application's
      *  Home page.	
+     * 
+     *  <p>Alternately, the application may provide its own version of 
+     *  the StaleLink page, overriding
+     *  the framework's implementation (probably a good idea, because the
+     *  default page hints at "application errors" and isn't localized).  
+     *  The overriding StaleLink implementation must
+     *  implement a message property of type String.
      *
      *  @since 0.2.10
+     * 
      **/
 
     protected void handleStaleLinkException(StaleLinkException ex, IRequestCycle cycle, ResponseOutputStream output)
         throws IOException, ServletException, RequestCycleException
     {
+                IPage page = cycle.getPage(STALE_LINK_PAGE);
+        
+        setProperty(page, "message", ex.getMessage());
+        
+ 
         redirect(STALE_LINK_PAGE, cycle, output, ex);
     }
 
@@ -876,7 +891,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         ResponseOutputStream output)
         throws IOException, ServletException, RequestCycleException
     {
-        redirect(STALE_SESSION_PAGE, cycle, output, ex);
+       redirect(STALE_SESSION_PAGE, cycle, output, ex);
     }
 
     /**
@@ -1857,6 +1872,17 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         result.addSource(SystemPropertiesPropertySource.getInstance());
 
         return result;
+    }
+
+    /**
+     *  Sets a property of an object; this is used to initalize properties
+     *  of the Exception and StaleSession pages.
+     * 
+     **/
+
+    protected void setProperty(Object object, String propertyName, Object value)
+    {
+        OgnlUtils.set(propertyName, _resolver, object, value);
     }
 
     /** 

@@ -42,6 +42,17 @@ public class MockTestCase extends TapestryTestCase
 
 
     /**
+     *  Test several Stale Link scenarios for the Form component.
+     * 
+     **/
+    
+    public void testStaleForm()
+    throws Exception
+    {
+        attempt("TestStaleForm.xml");
+    }
+
+    /**
      *  Test Block and InsertBlock, especially w.r.t. links and forms
      *  inside the Block on foriegn pages.
      * 

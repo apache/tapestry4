@@ -28,6 +28,7 @@ import net.sf.tapestry.event.PageDetachListener;
 import net.sf.tapestry.event.PageEvent;
 import net.sf.tapestry.html.Body;
 import net.sf.tapestry.util.IdAllocator;
+import net.sf.tapestry.util.StringSplitter;
 import net.sf.tapestry.valid.IValidationDelegate;
 
 /**
@@ -71,13 +72,26 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
     private IBinding _statefulBinding;
 
     /**
-     *  Number of element ids allocated.
-     *
-     *  @since 1.0.2
-     *
+     *  Used when rewinding the form to figure to match allocated ids (allocated during
+     *  the rewind) against expected ids (allocated in the previous request cycle, when
+     *  the form was rendered).
+     * 
+     *  @since 2.4
+     * 
      **/
 
-    private int _elementCount;
+    private int _allocatedIdIndex;
+
+    /**
+     *  The list of allocated ids for form elements within this form.  This list
+     *  is constructed when a form renders, and is validated against when the
+     *  form is rewound.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    private List _allocatedIds = new ArrayList();
 
     /**
      *  {@link Map}, keyed on {@link FormEventType}.  Values are either a String (the name
@@ -90,7 +104,7 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
 
     private static final int EVENT_MAP_SIZE = 3;
 
-    private IdAllocator _elementIdAllocator;
+    private IdAllocator _elementIdAllocator = new IdAllocator();
 
     /**
      *  Returns the currently active {@link IForm}, or null if no form is
@@ -165,9 +179,9 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
      *  @since 1.0.2
      **/
 
-    public String getElementId(IComponent component)
+    public String getElementId(IComponent component) throws RequestCycleException
     {
-        return getElementId(component.getId());
+        return getElementId(component, component.getId());
     }
 
     /**
@@ -183,14 +197,43 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
      *
      **/
 
-    public String getElementId(String baseId)
+    public String getElementId(IComponent component, String baseId) throws RequestCycleException
     {
-        if (_elementIdAllocator == null)
-            _elementIdAllocator = new IdAllocator();
-
         String result = _elementIdAllocator.allocateId(baseId);
 
-        _elementCount++;
+        if (_rewinding)
+        {
+            if (_allocatedIdIndex >= _allocatedIds.size())
+            {
+                throw new StaleLinkException(
+                    Tapestry.getString(
+                        "Form.too-many-ids",
+                        getExtendedId(),
+                        Integer.toString(_allocatedIds.size()),
+                        component.getExtendedId()),
+                    this);
+            }
+
+            String expected = (String) _allocatedIds.get(_allocatedIdIndex);
+
+            if (!result.equals(expected))
+                throw new StaleLinkException(
+                    Tapestry.getString(
+                        "Form.id-mismatch",
+                        new Object[] {
+                            getExtendedId(),
+                            Integer.toString(_allocatedIdIndex + 1),
+                            expected,
+                            result,
+                            component.getExtendedId()}),
+                    this);
+        }
+        else
+        {
+            _allocatedIds.add(result);
+        }
+
+        _allocatedIdIndex++;
 
         return result;
     }
@@ -250,29 +293,33 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
 
         writeGestureParameters(writer, g, !renderForm);
 
-        _elementCount = 0;
+        _allocatedIdIndex = 0;
 
         _rendering = true;
+
+        if (rewound)
+        {
+            String storedIdList = cycle.getRequestContext().getParameter(_name);
+
+            reconstructAllocatedIds(storedIdList);
+        }
+
         renderBody(writer, cycle);
 
         if (renderForm)
         {
             // What's this for?  It's part of checking for stale links.  
-            // We record how many elements we allocated ids for.
-            // On rewind, we check that the same number of elements
+            // We record the list of allocated ids.
+            // On rewind, we check that the stored list against which
             // ids were allocated.  If the persistent state of the page or
             // application changed between render (previous request cycle)
-            // and rewind (current request cycle), then
-            // this count might change.
-            //
-            // In some cases, state can change without changing this
-            // number -- hopefully, such changes are benign since we
-            // don't have a way to detect them.
+            // and rewind (current request cycle), then the list
+            // of ids will change as well.
 
             writer.beginEmpty("input");
             writer.attribute("type", "hidden");
             writer.attribute("name", _name);
-            writer.attribute("value", _elementCount);
+            writer.attribute("value", buildAllocatedIdList());
             writer.println();
 
             writer.end("form");
@@ -284,10 +331,24 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
 
         if (rewound)
         {
-            String actual = cycle.getRequestContext().getParameter(_name);
+            int expected = _allocatedIds.size();
 
-            if (actual == null || Integer.parseInt(actual) != _elementCount)
-                throw new StaleLinkException(Tapestry.getString("Form.bad-element-count", getExtendedId()), getPage());
+            // The other case, _allocatedIdIndex > expected, is
+            // checked for inside getElementId().  Remember that
+            // _allocatedIdIndex is incremented after allocating.
+
+            if (_allocatedIdIndex < expected)
+            {
+                String nextExpectedId = (String) _allocatedIds.get(_allocatedIdIndex);
+
+                throw new StaleLinkException(
+                    Tapestry.getString(
+                        "Form.too-few-ids",
+                        getExtendedId(),
+                        Integer.toString(expected - _allocatedIdIndex),
+                        nextExpectedId),
+                    this);
+            }
 
             if (_listener != null)
                 _listener.actionTriggered(this, cycle);
@@ -388,15 +449,14 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
 
                 List l = (List) value;
                 int count = l.size();
-               
-                
+
                 for (int j = 0; j < count; j++)
                 {
                     String functionName = (String) l.get(j);
 
                     if (j > 0)
                     {
-                        
+
                         if (combineWithAnd)
                             buffer.append(" &&");
                         else
@@ -412,7 +472,7 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
                         else
                             buffer.append("  ");
                     }
-    
+
                     buffer.append(functionName);
                     buffer.append("()");
                 }
@@ -494,7 +554,7 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
 
             // Reserve the name.
 
-            getElementId(name);
+            _elementIdAllocator.allocateId(name);
 
             if (!reserveOnly)
                 writeHiddenFieldsForParameter(writer, g, name);
@@ -523,11 +583,13 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
     protected void cleanupAfterRender(IRequestCycle cycle)
     {
         _rendering = false;
-        _elementCount = 0;
+
+        _allocatedIdIndex = 0;
+        _allocatedIds.clear();
+
         _events = null;
-      
-        if (_elementIdAllocator != null)
-            _elementIdAllocator.clear();
+
+        _elementIdAllocator.clear();
 
         super.cleanupAfterRender(cycle);
     }
@@ -551,6 +613,54 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
     protected void finishLoad()
     {
         getPage().addPageDetachListener(this);
+    }
+
+    /**
+     *  Converts the allocateIds property into a string, a comma-separated list of ids.
+     *  This is included as a hidden field in the form and is used to identify
+     *  discrepencies when the form is submitted.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    protected String buildAllocatedIdList()
+    {
+        StringBuffer buffer = new StringBuffer();
+        int count = _allocatedIds.size();
+
+        for (int i = 0; i < count; i++)
+        {
+            if (i > 0)
+                buffer.append(',');
+
+            buffer.append(_allocatedIds.get(i));
+        }
+
+        return buffer.toString();
+    }
+
+    /**
+     *  Converts a string passed as a parameter (and containing a comma
+     *  separated list of ids) back into the allocateIds property.
+     * 
+     *  @see #buildAllocatedIdList()
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    protected void reconstructAllocatedIds(String storedIdList)
+    {
+        if (Tapestry.isNull(storedIdList))
+            return;
+
+        StringSplitter splitter = new StringSplitter(',');
+
+        String[] ids = splitter.splitToArray(storedIdList);
+
+        for (int i = 0; i < ids.length; i++)
+            _allocatedIds.add(ids[i]);
     }
 
     public IValidationDelegate getDelegate()
