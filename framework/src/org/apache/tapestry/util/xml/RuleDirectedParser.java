@@ -113,6 +113,7 @@ public class RuleDirectedParser extends DefaultHandler
     private List _objectStack = new ArrayList();
     private Object _documentObject;
 
+    private Locator _locator;
     private int _line = -1;
     private int _column = -1;
     private ILocation _location;
@@ -172,6 +173,7 @@ public class RuleDirectedParser extends DefaultHandler
             _line = -1;
             _column = -1;
             _location = null;
+            _locator = null;
         }
     }
 
@@ -228,6 +230,19 @@ public class RuleDirectedParser extends DefaultHandler
 
     public ILocation getLocation()
     {
+        if (_locator == null)
+            return null;
+
+        int line = _locator.getLineNumber();
+        int column = _locator.getColumnNumber();
+
+        if (_line != line || _column != column)
+        {
+            _location = null;
+            _line = line;
+            _column = column;
+        }
+
         if (_location == null)
             _location = new Location(_documentLocation, _line, _column);
 
@@ -366,21 +381,16 @@ public class RuleDirectedParser extends DefaultHandler
 
     /**
      * Uses the {@link Locator} to track the position
-     * in the document as a {@link ILocation}.
+     * in the document as a {@link ILocation}. This is invoked
+     * once (before the initial element is parsed) and
+     * the Locator is retained and queried as to
+     * the current file location.
      * 
      * @see #getLocation()
      */
     public void setDocumentLocator(Locator locator)
     {
-        int line = locator.getLineNumber();
-        int column = locator.getColumnNumber();
-
-        if (_line == line && _column == column)
-            return;
-
-        _line = line;
-        _column = column;
-        _location = null;
+        _locator = locator;
     }
 
     /**
@@ -398,10 +408,10 @@ public class RuleDirectedParser extends DefaultHandler
      */
     public void endElement(String uri, String localName, String qName) throws SAXException
     {
-		_uri = uri;
-		_localName = localName;
-		_qName = qName;
-		
+        _uri = uri;
+        _localName = localName;
+        _qName = qName;
+
         popRule().endElement(this);
     }
 
@@ -422,10 +432,10 @@ public class RuleDirectedParser extends DefaultHandler
     public void startElement(String uri, String localName, String qName, Attributes attributes)
         throws SAXException
     {
-    	_uri = uri;
-    	_localName = localName;
-    	_qName = qName;
-    	
+        _uri = uri;
+        _localName = localName;
+        _qName = qName;
+
         String name = extractName(uri, localName, qName);
 
         IRule newRule = selectRule(name, attributes);
