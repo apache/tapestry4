@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -26,12 +26,13 @@
 
 package com.primix.tapestry.bean;
 
+import java.lang.reflect.Field;
+
 import com.primix.tapestry.ApplicationRuntimeException;
 import com.primix.tapestry.IBeanProvider;
 import com.primix.tapestry.IResourceResolver;
 import com.primix.tapestry.Tapestry;
 import com.primix.tapestry.util.prop.PropertyHelper;
-import java.lang.reflect.Field;
 
 /**
  *  Initializes a bean with the value of a public static field.
@@ -40,12 +41,12 @@ import java.lang.reflect.Field;
  *  @version $Id$
  *  @since 1.0.8
  *
- */
+ **/
 
 public class FieldBeanInitializer extends AbstractBeanInitializer
 {
-	private String fieldName;
-	private Object fieldValue;
+	protected String fieldName;
+	protected Object fieldValue;
 	private boolean fieldResolved = false;
 
 	public FieldBeanInitializer(String propertyName, String fieldName)
@@ -59,10 +60,10 @@ public class FieldBeanInitializer extends AbstractBeanInitializer
 	{
 		if (!fieldResolved)
 			resolveField(provider.getResourceResolver());
-			
+
 		PropertyHelper helper = PropertyHelper.forInstance(bean);
 
-		helper.set(bean, propertyName, fieldValue);	
+		helper.set(bean, propertyName, fieldValue);
 	}
 
 	private synchronized void resolveField(IResourceResolver resolver)
@@ -76,7 +77,7 @@ public class FieldBeanInitializer extends AbstractBeanInitializer
 
 		if (dotx < 0)
 			throw new ApplicationRuntimeException(
-			Tapestry.getString("invalid-field-name", fieldName));
+				Tapestry.getString("invalid-field-name", fieldName));
 
 		String className = fieldName.substring(0, dotx);
 		String simpleFieldName = fieldName.substring(dotx + 1);
@@ -122,7 +123,7 @@ public class FieldBeanInitializer extends AbstractBeanInitializer
 		catch (IllegalAccessException ex)
 		{
 			throw new ApplicationRuntimeException(
-			Tapestry.getString("illegal-field-access", fieldName),
+				Tapestry.getString("illegal-field-access", fieldName),
 				ex);
 		}
 		catch (NullPointerException ex)

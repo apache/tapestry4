@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -27,7 +27,7 @@
 package com.primix.tapestry.spec;
 
 /**
- *  Specification for a page, which defines the component and buffer size.
+ *  Specification for a page, which defines the path to the page's component specification.
  *
  * <p>Future enhancements to Tapestry may allow for some or all of the following:
  *  <ul>
@@ -37,7 +37,7 @@ package com.primix.tapestry.spec;
  *
  *  @author Howard Ship
  *  @version $Id$
- */
+ **/
 
 public class PageSpecification
 {

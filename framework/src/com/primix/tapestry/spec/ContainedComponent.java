@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -26,9 +26,10 @@
 
 package com.primix.tapestry.spec;
 
-import com.primix.tapestry.util.*;
-import com.primix.tapestry.*;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Defines a contained component.  This includes the information needed to
@@ -37,21 +38,23 @@ import java.util.*;
  *
  * @author Howard Ship
  * @version $Id$
- */
+ **/
 
 public class ContainedComponent
 {
 	private String type;
 
-	private Map bindings;
+	private String copyOf;
+
+	protected Map bindings;
 
 	private static final int MAP_SIZE = 3;
 
 	/**
-	*  Returns the named binding, or null if the binding does not
-	*  exist.
-	*
-	*/
+	 *  Returns the named binding, or null if the binding does not
+	 *  exist.
+	 *
+	 **/
 
 	public BindingSpecification getBinding(String name)
 	{
@@ -62,11 +65,11 @@ public class ContainedComponent
 	}
 
 	/**
-	*  Returns an umodifiable <code>Collection</code>
-	*  of Strings, each the name of one binding
-	*  for the component.
-	*
-	*/
+	 *  Returns an umodifiable <code>Collection</code>
+	 *  of Strings, each the name of one binding
+	 *  for the component.
+	 *
+	 **/
 
 	public Collection getBindingNames()
 	{
@@ -92,5 +95,29 @@ public class ContainedComponent
 	public void setType(String value)
 	{
 		type = value;
+	}
+
+	/**
+	 * 	Sets the String Id of the component being copied from.
+	 *  For use by IDE tools like Spindle.
+	 * 
+	 *  @since 1.0.9
+	 **/
+
+	public void setCopyOf(String id)
+	{
+		copyOf = id;
+	}
+
+	/**
+	 * 	Returns the id of the component being copied from.
+	 *  For use by IDE tools like Spindle.
+	 * 
+	 *  @since 1.0.9
+	 **/
+
+	public String getCopyOf()
+	{
+		return copyOf;
 	}
 }

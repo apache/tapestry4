@@ -26,16 +26,33 @@
 
 package com.primix.tapestry.parse;
 
-import com.primix.tapestry.*;
-import com.primix.tapestry.spec.*;
-import com.primix.tapestry.util.*;
-import com.primix.tapestry.bean.*;
-import com.primix.tapestry.bean.FieldBeanInitializer;
-import org.w3c.dom.*;
-import java.io.*;
-import java.util.*;
-import org.xml.sax.*;
-import com.primix.tapestry.util.xml.*;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
+
+import com.primix.tapestry.Tapestry;
+import com.primix.tapestry.bean.IBeanInitializer;
+import com.primix.tapestry.spec.ApplicationSpecification;
+import com.primix.tapestry.spec.AssetSpecification;
+import com.primix.tapestry.spec.AssetType;
+import com.primix.tapestry.spec.BeanLifecycle;
+import com.primix.tapestry.spec.BeanSpecification;
+import com.primix.tapestry.spec.BindingSpecification;
+import com.primix.tapestry.spec.BindingType;
+import com.primix.tapestry.spec.ComponentSpecification;
+import com.primix.tapestry.spec.ContainedComponent;
+import com.primix.tapestry.spec.PageSpecification;
+import com.primix.tapestry.spec.ParameterSpecification;
+import com.primix.tapestry.spec.SpecFactory;
+import com.primix.tapestry.util.IPropertyHolder;
+import com.primix.tapestry.util.xml.AbstractDocumentParser;
+import com.primix.tapestry.util.xml.DocumentParseException;
 
 /**
  *  Used to parse an application or component specification into a
@@ -73,7 +90,8 @@ import com.primix.tapestry.util.xml.*;
  *
  *  @version $Id$
  *  @author Howard Ship
- */
+ * 
+ **/
 
 public class SpecificationParser extends AbstractDocumentParser
 {
@@ -85,6 +103,10 @@ public class SpecificationParser extends AbstractDocumentParser
 	private static final Map booleanMap;
 	private static final Map lifecycleMap;
 	private static final Map converterMap;
+
+	/** @since 1.0.9 **/
+
+	private SpecFactory factory;
 
 	private interface IConverter
 	{
@@ -183,6 +205,7 @@ public class SpecificationParser extends AbstractDocumentParser
 	{
 		register(TAPESTRY_DTD_1_0_PUBLIC_ID, "Tapestry_1_0.dtd");
 		register(TAPESTRY_DTD_1_1_PUBLIC_ID, "Tapestry_1_1.dtd");
+		factory = new SpecFactory();
 	}
 
 	/**
@@ -289,7 +312,7 @@ public class SpecificationParser extends AbstractDocumentParser
 		Node node;
 		ComponentSpecification result;
 
-		result = new ComponentSpecification();
+		result = factory.createComponentSpecification();
 
 		root = document.getDocumentElement();
 
@@ -343,7 +366,7 @@ public class SpecificationParser extends AbstractDocumentParser
 		Node node;
 		ApplicationSpecification specification;
 
-		specification = new ApplicationSpecification();
+		specification = factory.createApplicationSpecification();
 
 		root = document.getDocumentElement();
 
@@ -390,7 +413,7 @@ public class SpecificationParser extends AbstractDocumentParser
 		String name = null;
 		PageSpecification page;
 
-		page = new PageSpecification();
+		page = factory.createPageSpecification();
 
 		for (child = node.getFirstChild();
 			child != null;
@@ -477,7 +500,7 @@ public class SpecificationParser extends AbstractDocumentParser
 		String name = null;
 		ParameterSpecification parameter;
 
-		parameter = new ParameterSpecification();
+		parameter = factory.createParameterSpecification();
 
 		for (child = node.getFirstChild();
 			child != null;
@@ -534,7 +557,7 @@ public class SpecificationParser extends AbstractDocumentParser
 		Node child;
 		String id = null;
 
-		contained = new ContainedComponent();
+		contained = factory.createContainedComponent();
 
 		for (child = node.getFirstChild();
 			child != null;
@@ -626,7 +649,7 @@ public class SpecificationParser extends AbstractDocumentParser
 			}
 		}
 
-		contained.setBinding(name, new BindingSpecification(type, value));
+		contained.setBinding(name, factory.createBindingSpecification(type, value));
 	}
 
 	private void convertAssets_1(ComponentSpecification specification, Node node)
@@ -689,7 +712,7 @@ public class SpecificationParser extends AbstractDocumentParser
 			}
 		}
 
-		specification.addAsset(name, new AssetSpecification(type, path));
+		specification.addAsset(name, factory.createAssetSpecification(type, path));
 	}
 
 	private void convertProperties_1(IPropertyHolder holder, Node node)
@@ -770,7 +793,7 @@ public class SpecificationParser extends AbstractDocumentParser
 		Node node;
 		ApplicationSpecification specification;
 
-		specification = new ApplicationSpecification();
+		specification = factory.createApplicationSpecification();
 
 		root = document.getDocumentElement();
 
@@ -796,10 +819,15 @@ public class SpecificationParser extends AbstractDocumentParser
 				convertProperty_2(specification, node);
 				continue;
 			}
-			
+
 			if (isElement(node, "service"))
 			{
 				convertService(specification, node);
+				continue;
+			}
+			if (isElement(node, "description"))
+			{
+				specification.setDescription(getValue(node));
 				continue;
 			}
 		}
@@ -812,7 +840,7 @@ public class SpecificationParser extends AbstractDocumentParser
 		String name = getAttribute(node, "name");
 		String specificationPath = getAttribute(node, "specification-path");
 
-		PageSpecification page = new PageSpecification(specificationPath);
+		PageSpecification page = factory.createPageSpecification(specificationPath);
 
 		specification.setPageSpecification(name, page);
 	}
@@ -838,7 +866,7 @@ public class SpecificationParser extends AbstractDocumentParser
 	private ComponentSpecification convertComponentSpecification_2(Document document)
 		throws DocumentParseException
 	{
-		ComponentSpecification specification = new ComponentSpecification();
+		ComponentSpecification specification = factory.createComponentSpecification();
 		Element root = document.getDocumentElement();
 
 		specification.setAllowBody(getBooleanAttribute(root, "allow-body"));
@@ -897,6 +925,12 @@ public class SpecificationParser extends AbstractDocumentParser
 				convertProperty_2(specification, node);
 				continue;
 			}
+
+			if (isElement(node, "description"))
+			{
+				specification.setDescription(getValue(node));
+				continue;
+			}
 		}
 
 		return specification;
@@ -905,14 +939,21 @@ public class SpecificationParser extends AbstractDocumentParser
 	private void convertParameter_2(
 		ComponentSpecification specification,
 		Node node)
+		throws DocumentParseException
 	{
-		ParameterSpecification param = new ParameterSpecification();
+		ParameterSpecification param = factory.createParameterSpecification();
 
 		String name = getAttribute(node, "name");
 		param.setType(getAttribute(node, "java-type"));
 		param.setRequired(getBooleanAttribute(node, "required"));
 
 		specification.addParameter(name, param);
+
+		Node child = node.getFirstChild();
+		if (child != null && isElement(child, "description"))
+		{
+			param.setDescription(getValue(child));
+		}
 	}
 
 	/**
@@ -929,7 +970,7 @@ public class SpecificationParser extends AbstractDocumentParser
 
 		BeanLifecycle lifecycle = (BeanLifecycle) lifecycleMap.get(lifecycleString);
 
-		BeanSpecification bspec = new BeanSpecification(className, lifecycle);
+		BeanSpecification bspec = factory.createBeanSpecification(className, lifecycle);
 
 		specification.addBeanSpecification(name, bspec);
 
@@ -938,7 +979,10 @@ public class SpecificationParser extends AbstractDocumentParser
 			child = child.getNextSibling())
 		{
 			if (isElement(child, "description"))
+			{
+				bspec.setDescription(getValue(child));
 				continue;
+			}
 
 			if (isElement(child, "set-property"))
 			{
@@ -989,7 +1033,8 @@ public class SpecificationParser extends AbstractDocumentParser
 		Node node)
 	{
 		String fieldName = getAttribute(node, "field-name");
-		IBeanInitializer iz = new FieldBeanInitializer(propertyName, fieldName);
+		IBeanInitializer iz =
+			factory.createFieldBeanInitializer(propertyName, fieldName);
 
 		spec.addInitializer(iz);
 	}
@@ -1002,7 +1047,8 @@ public class SpecificationParser extends AbstractDocumentParser
 		Node node)
 	{
 		String propertyPath = getAttribute(node, "property-path");
-		IBeanInitializer iz = new PropertyBeanInitializer(propertyName, propertyPath);
+		IBeanInitializer iz =
+			factory.createPropertyBeanInitializer(propertyName, propertyPath);
 
 		spec.addInitializer(iz);
 	}
@@ -1026,7 +1072,8 @@ public class SpecificationParser extends AbstractDocumentParser
 
 		Object staticValue = converter.convert(value);
 
-		IBeanInitializer iz = new StaticBeanInitializer(propertyName, staticValue);
+		IBeanInitializer iz =
+			factory.createStaticBeanInitializer(propertyName, staticValue);
 
 		spec.addInitializer(iz);
 	}
@@ -1055,7 +1102,7 @@ public class SpecificationParser extends AbstractDocumentParser
 					Tapestry.getString("SpecificationParser.missing-type-or-copy-of", id),
 					getResourcePath());
 
-			c = new ContainedComponent();
+			c = factory.createContainedComponent();
 			c.setType(type);
 		}
 
@@ -1099,7 +1146,7 @@ public class SpecificationParser extends AbstractDocumentParser
 	{
 		String name = getAttribute(node, "name");
 		String value = getAttribute(node, attributeName);
-		BindingSpecification binding = new BindingSpecification(type, value);
+		BindingSpecification binding = factory.createBindingSpecification(type, value);
 
 		component.setBinding(name, binding);
 	}
@@ -1109,7 +1156,7 @@ public class SpecificationParser extends AbstractDocumentParser
 		String name = getAttribute(node, "name");
 		String value = getValue(node);
 		BindingSpecification binding =
-			new BindingSpecification(BindingType.STATIC, value);
+			factory.createBindingSpecification(BindingType.STATIC, value);
 
 		component.setBinding(name, binding);
 	}
@@ -1125,9 +1172,10 @@ public class SpecificationParser extends AbstractDocumentParser
 				Tapestry.getString("SpecificationParser.unable-to-copy", id),
 				getResourcePath());
 
-		ContainedComponent result = new ContainedComponent();
+		ContainedComponent result = factory.createContainedComponent();
 
 		result.setType(c.getType());
+		result.setCopyOf(id);
 
 		Iterator i = c.getBindingNames().iterator();
 		while (i.hasNext())
@@ -1148,7 +1196,7 @@ public class SpecificationParser extends AbstractDocumentParser
 	{
 		String name = getAttribute(node, "name");
 		String value = getAttribute(node, attributeName);
-		AssetSpecification asset = new AssetSpecification(type, value);
+		AssetSpecification asset = factory.createAssetSpecification(type, value);
 
 		specification.addAsset(name, asset);
 	}
@@ -1164,17 +1212,40 @@ public class SpecificationParser extends AbstractDocumentParser
 
 		spec.addReservedParameterName(name);
 	}
-	
+
 	/**
 	 *  @since 1.0.9
 	 * 
 	 **/
-	
+
 	private void convertService(ApplicationSpecification spec, Node node)
 	{
 		String name = getAttribute(node, "name");
 		String className = getAttribute(node, "class");
-		
+
 		spec.addService(name, className);
+	}
+
+	/**
+	 *  Sets the SpecFactory which instantiates Tapestry spec objects.
+	 * 
+	 *  @since 1.0.9
+	 **/
+
+	public void setFactory(SpecFactory factory)
+	{
+		this.factory = factory;
+	}
+
+	/**
+	 *  Returns the current SpecFactory which instantiates Tapestry spec objects.
+	 * 
+	 *  @since 1.0.9
+	 * 
+	 **/
+
+	public SpecFactory getFactory()
+	{
+		return factory;
 	}
 }

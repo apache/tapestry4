@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -26,20 +26,18 @@
 
 package com.primix.tapestry.spec;
 
-import com.primix.tapestry.*;
-import com.primix.tapestry.asset.*;
-
 /**
  *  Defines an internal, external or private asset.
  *
  *  @author Howard Ship
  *  @version $Id$
- */
+ *
+ **/
 
 public class AssetSpecification
 {
 	private AssetType type;
-	private String path;
+	protected String path;
 
 	public AssetSpecification(AssetType type, String path)
 	{
@@ -48,10 +46,10 @@ public class AssetSpecification
 	}
 
 	/**
-	*  Returns the base path for the asset.  This may be interpreted as a URL, relative URL
-	*  or the path to a resource, depending on the type of asset.
-	*
-	*/
+	 *  Returns the base path for the asset.  This may be interpreted as a URL, relative URL
+	 *  or the path to a resource, depending on the type of asset.
+	 *
+	 **/
 
 	public String getPath()
 	{

@@ -1,6 +1,6 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
+ * Copyright (c) 2000-2002 by Howard Lewis Ship
  *
  * Howard Lewis Ship
  * http://sf.net/projects/tapestry
@@ -38,18 +38,21 @@ package com.primix.tapestry.spec;
  *
  *  @author Howard Ship
  *  @version $Id$
- */
+ **/
 
 public class ParameterSpecification
 {
 	private boolean required = false;
 	private String type = "java.lang.Object";
 
+	/** @since 1.0.9 **/
+	private String description;
+
 	/**
-	*  Returns the class name of the expected type of the parameter.  The default value
-	*  is <code>java.lang.Object</code> which matches anything.
-	*
-	*/
+	 *  Returns the class name of the expected type of the parameter.  The default value
+	 *  is <code>java.lang.Object</code> which matches anything.
+	 *
+	 **/
 
 	public String getType()
 	{
@@ -57,10 +60,10 @@ public class ParameterSpecification
 	}
 
 	/**
-	*  Returns true if the parameter is required by the component.
-	*  The default is false, meaning the parameter is optional.
-	*
-	*/
+	 *  Returns true if the parameter is required by the component.
+	 *  The default is false, meaning the parameter is optional.
+	 *
+	 **/
 
 	public boolean isRequired()
 	{
@@ -75,5 +78,29 @@ public class ParameterSpecification
 	public void setType(String value)
 	{
 		type = value;
+	}
+
+	/**
+	 *  Returns the documentation for this parameter.
+	 * 
+	 *  @since 1.0.9
+	 * 
+	 **/
+
+	public String getDescription()
+	{
+		return description;
+	}
+
+	/**
+	 *  Sets the documentation for this parameter.
+	 * 
+	 *  @since 1.0.9
+	 *    	 
+	 **/
+
+	public void setDescription(String description)
+	{
+		this.description = description;
 	}
 }
