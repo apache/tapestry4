@@ -49,7 +49,7 @@ in the Java Servlet API 2.2 ... but Tapestry uses the 2.1 API.
 		<remote>com.primix.vlib.ejb.IBookQuery</remote>
 	</ejb-ref>
 	<ejb-ref>
-		<ejb-ref-name>ejb/VlibOperations</ejb-ref-name>
+		<ejb-ref-name>ejb/Operations</ejb-ref-name>
 		<ejb-ref-type>Session</ejb-ref-type>
 		<home>com.primix.vlib.ejb.IVlibOperationsHome</home>
 		<remote>com.primix.vlib.ejb.IVlibOperations</remote>

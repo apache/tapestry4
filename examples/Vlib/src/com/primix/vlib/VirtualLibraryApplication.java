@@ -68,6 +68,10 @@ public class VirtualLibraryApplication extends SimpleApplication
 	
 	private static final Map externalReferences = new HashMap();
 	
+    // This duplicates data normally in the weblogic.xml file ... but in
+    // standalone mode (i.e., under ServletExec Debugger), we don't have
+    // access to the environment naming context.
+    
 	static
 	{
 		externalReferences.put("ejb/Person", "com.primix.vlib.Person");
@@ -129,6 +133,14 @@ public class VirtualLibraryApplication extends SimpleApplication
 		}
 		
 		operations = null;
+        
+        // Force a rebuild of the publisher and person models on the next
+        // request cycle that needs them.  This is needed because new
+        // persons and publisher can be added by anyone at anytime.
+        
+		publisherModel = null;
+        personModel = null;
+        
 	}
 	
 	public IPerson getUser()

@@ -139,8 +139,11 @@ public class Login extends BasePage
 			
 			app.setUser(person);
 			
+			// After logging in, go to the MyBooks page, unless otherwise
+			// specified.
+			
 			if (targetPage == null)
-				cycle.setPage("Home");
+				cycle.setPage("MyBooks");
 			else	
 				cycle.setPage(targetPage);
 			

@@ -214,6 +214,23 @@ public class Matches extends BasePage
 		};
 	}
 	
+	/**
+	 *  Returns true if the holder of a book doesn't match the owner of the book.
+	 *  This cleans up the output a bit.
+	 *
+	 */
+	 
+	public boolean getShowHolder()
+	{
+		Integer ownerPrimaryKey;
+		Integer holderPrimaryKey;
+		
+		ownerPrimaryKey = currentMatch.getOwnerPrimaryKey();
+		holderPrimaryKey = currentMatch.getHolderPrimaryKey();
+		
+		return ! ownerPrimaryKey.equals(holderPrimaryKey);		
+	}
+	
 	public boolean getEnableBorrowBookLink()
 	{
 		VirtualLibraryApplication app;
