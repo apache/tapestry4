@@ -1,33 +1,50 @@
 <!-- $Id$ -->
 
 <span jwcid="$content$">
-<table jwcid="table">
+<table jwcid="@Any" element="table" class="[[ tableClass ]]">
   <tr>
   	<th>
- <span jwcid="insertAvailableTitle"/>
- <span jwcid="defaultAvailableTitleBlock">Available</span>
+ <span jwcid="@RenderBlock" block="[[ availableTitleBlock ]]"/>
+ <span jwcid="defaultAvailableTitleBlock@Block">Available</span>
 </th>
   	<td class="controls" rowspan=2>
-  	    <a jwcid="selectButton"><img jwcid="selectImage" alt="[Select]"/></a>
+  	    <a jwcid="@Any" 
+  	    	element="a" 
+  	    	href="[[ symbols.selectOnClickScript ]]"><img jwcid="@Image"
+  	    		image="[[ selectImage ]]"
+  	    		name="[[ symbols.selectImageName ]]"
+  	    		alt="[Select]"/></a>
     <br>
-    <a jwcid="deselectButton"><img jwcid="deselectImage" alt="[Deselect]"/></a>
+    <a jwcid="@Any" element="a"
+    	href="[[ symbols.deselectOnClickScript ]]"><img jwcid="@Image"
+    		image="[[ deselectImage ]]"
+    		name="[[ symbols.deselectImageName ]]"
+    		alt="[Deselect]"/></a>
     
-    <span jwcid="ifSortUser">
-    <br>
-    <a jwcid="moveUpButton"><img jwcid="upImage" alt="[Move Up]"/></a>
-    <br>
-    <a jwcid="moveDownButton"><img jwcid="downImage" alt="[Move Down]"/></a>
+    <span jwcid="@Conditional" condition="[[ sortUser ]]">
+    <br/>
+    <a jwcid="@Any" element="a"
+    	href="[[ symbols.upOnClickScript ]]"><img jwcid="@Image" 
+    		image="[[ upImage ]]"
+    		name="[[ symbols.upImageName ]]"
+    		alt="[Move Up]"/></a>
+    <br/>
+    <a jwcid="@Any" element="a"
+    	href="[[ symbols.downOnClickScript ]]"><img jwcid="@Image"
+    		image="[[ downImage ]]"
+    		name="[[ symbols.downImageName ]]"
+    		alt="[Move Down]"/></a>
     </span>
     
     </td>
   	<th>
- <span jwcid="insertSelectedTitle"/>
- <span jwcid="defaultSelectedTitleBlock">Selected</span>
+ <span jwcid="@RenderBlock" block="[[ selectedTitleBlock ]]"/>
+ <span jwcid="defaultSelectedTitleBlock@Block">Selected</span>
     </th>
   </tr>
   <tr>
-    <td><select jwcid="availableSelect"/></td>
-    <td><select jwcid="selectedSelect"/></td>
+    <td><select jwcid="@Delegator" delegate="[[ availableSelectDelegate ]]"/></td>
+    <td><select jwcid="@Delegator" delegate="[[ selectedSelectDelegate ]]"/></td>
   </tr>
 </table>
 </span>
