@@ -33,7 +33,7 @@ import com.primix.tapestry.spec.ComponentSpecification;
 /**
  * Interface exposed to components as they are loaded by the page loader.
  *
- * @see ILifecycle#finishLoad(IPageLoader, ComponentSpecification)
+ * @see IComponent#finishLoad(IPageLoader, ComponentSpecification)
  *
  * @author Howard Ship
  * @version $Id$

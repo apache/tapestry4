@@ -121,6 +121,14 @@ public abstract class AbstractEngine
 	private Locale locale;
 	
 	/**
+	 *  Set by {@link #setLocale(Locale)} when the locale is changed;
+	 *  this allows the locale cookie to be updated.
+	 *
+	 */
+	
+	private boolean localeChanged;
+	
+	/**
 	 *  The specification for the application, which
 	 *  lives in the {@link ServletContext}.  If the
 	 *  session (and application) moves to a different context (i.e.,
@@ -244,7 +252,7 @@ public abstract class AbstractEngine
 					parameters.length != 1)
 				throw new IllegalArgumentException(
 					"Service action requires one parameter.");
-		
+			
 			// See note in DirectService.buildURL().  Basically, I think
 			// reuse of the StringBuffer is kosher.
 			
@@ -256,7 +264,7 @@ public abstract class AbstractEngine
 			// Because we know that all of the terms are 'URL safe' (they contain
 			// only alphanumeric characters and the '.') we don't have to
 			// use HTMLUtils.buildURL().
-
+			
 			buffer.append(servletPrefix);
 			buffer.append('/');
 			buffer.append(ACTION_SERVICE);
@@ -642,16 +650,14 @@ public abstract class AbstractEngine
 	}
 	
 	/**
-	 *  Returns the locale for the engine, which may be null, which means
-	 *  to use the JVM default locale.
+	 *  Returns the locale for the engine.  This is initially set
+	 *  by the {@link ApplicationServlet} but may be updated
+	 *  by the application.
 	 *
 	 */
 	
 	public Locale getLocale()
 	{
-		if (locale == null)
-			return Locale.getDefault();
-		
 		return locale;
 	}
 	
@@ -759,7 +765,9 @@ public abstract class AbstractEngine
 	public void readExternal(ObjectInput in)
 		throws IOException, ClassNotFoundException
 	{
-		locale = (Locale)in.readObject();
+		String localeName = in.readUTF();
+		locale = Tapestry.getLocale(localeName);
+
 		visit = in.readObject();
 	}
 	
@@ -767,7 +775,7 @@ public abstract class AbstractEngine
 	 *  Writes the following properties:
 	 *
 	 *  <ul>
-	 *  <li>locale ({@link Locale})
+	 *  <li>locale name ({@link Locale#toString()})
 	 *  <li>visit
 	 *  </ul>
 	 *
@@ -776,7 +784,7 @@ public abstract class AbstractEngine
 	public void writeExternal(ObjectOutput out)
 		throws IOException
 	{
-		out.writeObject(locale);
+		out.writeUTF(locale.toString());
 		out.writeObject(visit);
 	}
 	
@@ -816,6 +824,20 @@ public abstract class AbstractEngine
 		
 		if (CAT.isDebugEnabled())
 			CAT.debug("Begin render response.");
+		
+		// If the locale has changed during this request cycle then
+		// do the work to propogate the locale change into
+		// subsequent request cycles.
+		
+		if (localeChanged)
+		{
+			localeChanged = false;
+			
+			RequestContext context = cycle.getRequestContext();
+			ApplicationServlet servlet = context.getServlet();
+			
+			servlet.writeLocaleCookie(locale, this, context);
+		}
 		
 		// Commit all changes and ignore further changes.
 		
@@ -886,122 +908,119 @@ public abstract class AbstractEngine
 		ResponseOutputStream output = null;
 		IMonitor monitor;
 		
+		if (CAT.isInfoEnabled())
+			CAT.info("Begin service " + context.getRequest().getRequestURI());
+		
+		if (specification == null)
+			specification = context.getServlet().getApplicationSpecification();
+		
+		// The servlet invokes setLocale() before invoking service().  We want
+		// to ignore that setLocale() ... that is, not force a cookie to be
+		// written.
+		
+		localeChanged = false;
+		
+		// Build the resolver around the servlet, since that's guarenteed
+		// to be in the application's class loader (which has the broadest
+		// possible view).
+		
+		if (resolver == null)
+			resolver = new ResourceResolver(context.getServlet());
+		
 		try
 		{
+			setupForRequest(context);
 			
-			NDC.push(context.getSession().getId());
+			monitor = getMonitor(context);
+			
+			cycle = new RequestCycle(this, context, monitor);
+			
+			output = new ResponseOutputStream(context.getResponse());
+		}
+		catch (Exception e)
+		{
+			reportException("Tapestry unable to begin processing request.", e);
+			
+			throw new ServletException(e.getMessage(), e);
+		}
+		
+		try
+		{
+			try
+			{
+				String serviceName = context.getPathInfo(0);
+				
+				if (serviceName == null ||
+						serviceName.equals(""))
+					serviceName = IEngineService.HOME_SERVICE;
+				
+				IEngineService service = getService(serviceName);
+				
+				cycle.setService(service);
+				
+				return service.service(cycle, output);		
+			}
+			catch (PageRedirectException ex)
+			{
+				redirect(ex.getTargetPageName(), cycle, output, ex);
+			}
+			catch (StaleLinkException ex)
+			{
+				handleStaleLinkException(ex, cycle, output);
+			}
+			catch (StaleSessionException ex)
+			{
+				handleStaleSessionException(ex, cycle, output);
+			}
+		}
+		catch (Exception ex)
+		{
+			if (monitor != null)
+				monitor.serviceException(ex);
+			
+			// Discard any output (if possible).  If output has already been sent to
+			// the client, then things get dicey.  Note that this block
+			// gets activated if the StaleLink or StaleSession pages throws
+			// any kind of exception.
+			
+			// Attempt to switch to the exception page.  However, this may itself fail
+			// for a number of reasons, in which case a ServletException is thrown.
+			
+			output.reset();
 			
 			if (CAT.isInfoEnabled())
-				CAT.info("Begin service " + context.getRequest().getRequestURI());
+				CAT.info("Uncaught exception", ex);
 			
-			if (specification == null)
-				specification = context.getServlet().getApplicationSpecification();
-			
-			// Build the resolver around the servlet, since that's guarenteed
-			// to be in the application's class loader (which has the broadest
-			// possible view).
-			
-			if (resolver == null)
-				resolver = new ResourceResolver(context.getServlet());
-			
-			try
-			{
-				setupForRequest(context);
-				
-				monitor = getMonitor(context);
-				
-				cycle = new RequestCycle(this, context, monitor);
-				
-				output = new ResponseOutputStream(context.getResponse());
-			}
-			catch (Exception e)
-			{
-				reportException("Tapestry unable to begin processing request.", e);
-				
-				throw new ServletException(e.getMessage(), e);
-			}
-			
-			try
-			{
-				try
-				{
-					String serviceName = context.getPathInfo(0);
-					
-					if (serviceName == null ||
-							serviceName.equals(""))
-						serviceName = IEngineService.HOME_SERVICE;
-					
-					IEngineService service = getService(serviceName);
-					
-					cycle.setService(service);
-					
-					return service.service(cycle, output);		
-				}
-				catch (PageRedirectException ex)
-				{
-					redirect(ex.getTargetPageName(), cycle, output, ex);
-				}
-				catch (StaleLinkException ex)
-				{
-					handleStaleLinkException(ex, cycle, output);
-				}
-				catch (StaleSessionException ex)
-				{
-					handleStaleSessionException(ex, cycle, output);
-				}
-			}
-			catch (Exception ex)
-			{
-				if (monitor != null)
-					monitor.serviceException(ex);
-				
-				// Discard any output (if possible).  If output has already been sent to
-				// the client, then things get dicey.  Note that this block
-				// gets activated if the StaleLink or StaleSession pages throws
-				// any kind of exception.
-				
-				// Attempt to switch to the exception page.  However, this may itself fail
-				// for a number of reasons, in which case a ServletException is thrown.
-				
-				output.reset();
-				
-				if (CAT.isInfoEnabled())
-					CAT.info("Uncaught exception", ex);
-				
-				activateExceptionPage(cycle, output, ex);
-			}
-			finally
-			{
-				cycle.cleanup();
-				
-				// Closing the buffered output closes the underlying stream as well.
-				
-				if (output != null)
-					output.forceClose();
-				
-				cleanupAfterRequest(cycle);
-				
-				if (disableCaching)
-				{
-					try
-					{
-						clearCachedData();
-					}
-					catch (Exception ex)
-					{
-						CAT.warn("Exception thrown while clearing caches.", ex);
-					}
-				}
-				
-				if (CAT.isInfoEnabled())
-					CAT.info("End service");
-				
-			}
+			activateExceptionPage(cycle, output, ex);
 		}
 		finally
 		{
-			NDC.pop();
+			cycle.cleanup();
+			
+			// Closing the buffered output closes the underlying stream as well.
+			
+			if (output != null)
+				output.forceClose();
+			
+			cleanupAfterRequest(cycle);
+			
+			if (disableCaching)
+			{
+				try
+				{
+					clearCachedData();
+				}
+				catch (Exception ex)
+				{
+					CAT.warn("Exception thrown while clearing caches.", ex);
+				}
+			}
+			
+			if (CAT.isInfoEnabled())
+				CAT.info("End service");
+			
 		}
+		
 		
 		// When in doubt, assume that the request did cause some change
 		// to the engine.
@@ -1102,7 +1121,7 @@ public abstract class AbstractEngine
 			monitor.serviceBegin(IEngineService.ACTION_SERVICE, pageName + "/" + targetActionId);
 		
 		IPage page = cycle.getPage(pageName);
-
+		
 		IPage componentPage = cycle.getPage(componentPageName);
 		IComponent component = componentPage.getNestedComponent(targetIdPath);
 		
@@ -1122,14 +1141,14 @@ public abstract class AbstractEngine
 		{
 			HttpSession session = cycle.getRequestContext().getSession();
 			
-			if (session.isNew())
+			if (session == null || session.isNew())
 				throw new StaleSessionException();
 		}
 		
 		// Allow the page to validate that the user is allowed to visit.  This is simple
 		// protection from malicious users who hack the URLs directly, or make inappropriate
 		// use of the back button. 
-	
+		
 		// Note that we validate the page that rendered the response which (again, due to
 		// Block/InsertBlock) is not necessarily the page that contains the component.
 		
@@ -1325,6 +1344,7 @@ public abstract class AbstractEngine
 	/**
 	 *  Discards all cached pages, component specifications and templates.
 	 *
+	 *  @since 1.0.1
 	 */
 	
 	protected void clearCachedData()
@@ -1341,7 +1361,17 @@ public abstract class AbstractEngine
 	
 	public void setLocale(Locale value)
 	{
-		locale = value;
+		if (value == null)
+			throw new IllegalArgumentException("May not change engine locale to null.");
+		
+		// Because locale changes are expensive (it involves writing a cookie and all that),
+		// we're careful not to really change unless there's a true change in value.
+		
+		if (! value.equals(locale))
+		{
+			locale = value;
+			localeChanged = true;
+		}
 	}
 	
 	/**
@@ -1377,8 +1407,13 @@ public abstract class AbstractEngine
 		HttpServlet servlet = context.getServlet();
 		ServletContext servletContext = servlet.getServletContext();
 		HttpServletRequest request = context.getRequest();
+		HttpSession session = context.getSession();
 		
-		sessionId = context.getSession().getId();
+		if (session != null)
+			sessionId = context.getSession().getId();
+		else
+			sessionId = null;
+		
 		clientAddress = request.getRemoteHost();
 		if (clientAddress == null)
 			clientAddress = request.getRemoteAddr();
@@ -1627,6 +1662,7 @@ public abstract class AbstractEngine
 	{
 		String visitClassName;
 		Class visitClass;
+		Object result = null;
 		
 		visitClassName = specification.getProperty(VISIT_CLASS_PROPERTY_NAME);
 		if (visitClassName == null)
@@ -1642,7 +1678,7 @@ public abstract class AbstractEngine
 		
 		try
 		{
-			return visitClass.newInstance();
+			result = visitClass.newInstance();
 		}
 		catch (Throwable t)
 		{
@@ -1651,5 +1687,11 @@ public abstract class AbstractEngine
 					visitClassName + ".", t);
 		}
 		
+		// Now that a visit object exists, we need to force the creation
+		// of a HttpSession.
+		
+		cycle.getRequestContext().createSession();
+		
+		return result;
 	}
 }

@@ -202,7 +202,7 @@ extends AbstractEngine
 		return (PageRecorder)recorders.get(pageName);
 	}
 
-	public IPageRecorder createPageRecorder(String pageName)
+	public IPageRecorder createPageRecorder(String pageName, IRequestCycle cycle)
 	{
 		IPageRecorder result;
 
@@ -224,6 +224,10 @@ extends AbstractEngine
 
 		recorders.put(pageName, result);
 
+		// Force the creation of the HttpSession
+		
+		cycle.getRequestContext().createSession();
+		
 		return result;
 	}
 

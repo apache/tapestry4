@@ -30,6 +30,7 @@
 package com.primix.tapestry.inspector;
 
 import com.primix.tapestry.*;
+import javax.servlet.http.*;
 
 // Appease Javadoc
 import com.primix.tapestry.html.*;
@@ -63,8 +64,14 @@ public class ShowInspector extends BaseComponent
 	 
 	public String getWindowTarget()
 	{
-		return "Tapestry Inspector " +
-			getPage().getRequestCycle().getRequestContext().getSession().getCreationTime();
+		IRequestCycle cycle = getPage().getRequestCycle();
+		RequestContext context = cycle.getRequestContext();
+		HttpSession session = context.getSession();
+		
+		if (session == null)
+			return "Tapestry Inspector";
+		
+		return "Tapestry Inspector " + session.getCreationTime();
 	}
 
 	/**

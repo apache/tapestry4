@@ -33,10 +33,10 @@ import com.primix.tapestry.link.*;
 import com.primix.tapestry.form.*;
 
 /**
- * Defines a listener to an {@link Action}, {@link Form} or some kind
- * of {@link AbstractFormComponent form component}, which is way to
+ * Defines a listener to an {@link IAction} component, which is way to
  * get behavior when the component's URL is triggered (or the form
- * containing the component is submitted).
+ * containing the component is submitted).  Certain form elements ({@link Hidden})
+ * also make use of this interface.
  *
  * @author Howard Ship
  * @version $Id$
@@ -44,16 +44,15 @@ import com.primix.tapestry.form.*;
 
 public interface IActionListener
 {
-
+	
 	/**
-	*  Method invoked by the component (an {@link Action}, {@link
-	*  Form} or some kind of {@link AbstractFormComponent form
-	*  component}), when its URL is triggered.
-	*
-	*  @param component The component which was "triggered".
-	*  @param cycle The request cycle in which the component was triggered.
-	*/
-
+	 *  Method invoked by the component (an {@link Action} or {@link
+	 *  Form}, when its URL is triggered.
+	 *
+	 *  @param action The component which was "triggered".
+	 *  @param cycle The request cycle in which the component was triggered.
+	 */
+	
 	public void actionTriggered(IComponent component, IRequestCycle cycle)
-	throws RequestCycleException;
+		throws RequestCycleException;
 }

@@ -1,3 +1,11 @@
+* May 30 hship
+
+Many minor changes to support stateless Tapestry applications (the HttpSession is
+not created until really needed).
+Allow Form to be stateless.
+Cleanup a bunch of innacurate Javadoc.
+Add additional types to ServiceLinkEventType.
+
 * May 25 2001 hship
 
 Created the IAction interface so that the action service can ask components

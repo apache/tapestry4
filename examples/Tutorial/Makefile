@@ -16,7 +16,9 @@ PACKAGES = \
 PROJ_CLASSPATH = \
 	$(INSTALL_DIR)/com.primix.tapestry.jar \
 	$(INSTALL_DIR)/javax.servlet.jar \
-	$(INSTALL_DIR)/log4j-core.jar
+	$(INSTALL_DIR)/log4j-core.jar \
+	$(INSTALL_DIR)/javax.xml.jaxp.jar \
+	$(INSTALL_DIR)/org.apache.crimson.jar
 	
 INSTALL_DIR = ../../lib
 
@@ -26,8 +28,6 @@ include $(SYS_MAKEFILE_DIR)/War.mk
 
 EXEC_CLASSPATH = \
 	$(PROJ_CLASSPATH) \
-	$(INSTALL_DIR)/javax.xml.jaxp.jar \
-	$(INSTALL_DIR)/org.apache.crimson.jar \
 	$(INSTALL_DIR)/gnu-regexp.jar \
 	$(INSTALL_DIR)/com.mortbay.jetty.jar \
 	$(INSTALL_DIR)/ejb.jar

@@ -551,7 +551,7 @@ public class RequestCycle
 			CAT.debug("Observed change in page " + pageName +
 						"; creating page recorder.");
 		
-		IPageRecorder recorder = engine.createPageRecorder(pageName);
+		IPageRecorder recorder = engine.createPageRecorder(pageName, this);
 		
 		page.setChangeObserver(recorder);
 		

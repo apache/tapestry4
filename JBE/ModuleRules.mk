@@ -97,19 +97,12 @@ inner-compile: $(MOD_JAVA_STAMP_FILE) $(RMI_STAMP_FILE)
 inner-copy-resources: $(MOD_META_STAMP_FILE) $(RESOURCE_STAMP_FILE)
 	@$(TOUCH) $(DUMMY_FILE)
 
-# The java catalog has the names of all .java files, including
-# a prefix that identifies the root of the source code tree;
-# since we change to the source code tree root directory,
-# we need to strip off that prefix.
-
 _JAVA_FILES := $(shell $(CAT) $(MOD_JAVA_CATALOG))
 
 $(MOD_JAVA_STAMP_FILE): $(_JAVA_FILES)
 ifneq "$(_JAVA_FILES)" ""
 	$(call NOTE, Compiling ...)
-	$(CD) $(FINAL_SOURCE_DIR) ; \
-	$(JAVAC) $(FINAL_JAVAC_OPT) $(patsubst $(FINAL_SOURCE_DIR)$(SLASH)%, \
-	  	%, $?)
+	$(JAVAC) $(FINAL_JAVAC_OPT) $?
 else
 	$(call NOTE, Nothing to compile)
 endif

@@ -57,7 +57,7 @@ import java.text.NumberFormat;
  * </ul>
  *
  * <p>This class is derived from the original class 
- * <code>com.primix.servlet.HTMLWriter</code>
+ * <code>com.primix.servlet.HTMLWriter</code>,
  * part of the <b>ServletUtils</b> framework available from
  * <a href="http://www.gjt.org/servlets/JCVSlet/list/gjt/com/primix/servlet">The Giant 
  * Java Tree</a>.

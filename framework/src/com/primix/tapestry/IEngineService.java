@@ -35,6 +35,7 @@ import java.io.*;
 import com.primix.tapestry.link.*;
 import com.primix.tapestry.form.*;
 import com.primix.tapestry.engine.*;
+import javax.servlet.http.*;
 
 /**
  *  A service, provided by the {@link IEngine}, for its pages and/or components.  
@@ -53,7 +54,7 @@ import com.primix.tapestry.engine.*;
  * <p>The service URI is additional path info values that are meaningful to the service.
  * For example, the page service provided by 
  * {@link AbstractEngine} and the
- * {@link Page} component stores the name of the target page there, for example:
+ * {@link Page} component stores the name of the target page there:
  *
  *  <blockquote>
  *  /some-app/page/target-page
@@ -72,21 +73,18 @@ import com.primix.tapestry.engine.*;
 public interface IEngineService
 {
     /**
-	 *  Name of a service that allows behavior to be associated with
-	 *  an {@link Action} or {@link Form} component.
+	 *  The name ("action") of a service that allows behavior to be associated with
+	 *  an {@link IAction} component, such as {@link Action} or {@link Form}.
 	 *  
 	 *  <p>This service is used with actions that are tied to the
-	 *  dynamic state of the page, which require a rewind of the page.
-	 *
-	 *  <p>The action service throws a {@link StaleSessionException} if invoked
-	 *  in a new session.
+	 *  dynamic state of the page, and which require a rewind of the page.
 	 *
 	 */
 	
     public final static String ACTION_SERVICE = "action";
 	
     /**
-	 *  Name of a service that allows stateless behavior for an {@link
+	 *  The name ("direct") of a service that allows stateless behavior for an {@link
 	 *  Direct} component.
 	 *
 	 *  <p>This service rolls back the state of the page but doesn't
@@ -97,15 +95,13 @@ public interface IEngineService
 	 *  service URL; these will be made available to the {@link Direct}
 	 *  component's listener.
 	 *
-	 *  <p>The direct service throws a {@link StaleSessionException} if invoked
-	 *  in a new session.
 	 */
 	
     public final static String DIRECT_SERVICE = "direct";
 	
 	
     /**
-	 *  Name of a service that allows a new page to be selected.
+	 *  The name ("page") of a service that allows a new page to be selected.
 	 *  Associated with a {@link Page} component.
 	 *
 	 *  <p>The service requires a single parameter:  the name of the target page.
@@ -114,7 +110,7 @@ public interface IEngineService
     public final static String PAGE_SERVICE = "page";
 	
     /**
-	 *  Name of service that jumps to the home page.  A stand-in for
+	 *  The name ("home") of a service that jumps to the home page.  A stand-in for
 	 *  when no service is provided, which is typically the entrypoint
 	 *  to the application.
 	 *
@@ -123,7 +119,7 @@ public interface IEngineService
     public final static String HOME_SERVICE = "home";
 	
     /**
-	 *  Name  ("restart") of a service that invalidates the session and restarts
+	 *  The name ("restart") of a service that invalidates the session and restarts
 	 *  the application.  Typically used just
 	 *  to recover from an exception.
 	 *
@@ -132,14 +128,14 @@ public interface IEngineService
     public static final String RESTART_SERVICE = "restart";
 	
     /**
-	 *  Name ("asset") of a service used to access internal assets.
+	 *  The name ("asset") of a service used to access internal assets.
 	 *
 	 */
 	
     public static final String ASSET_SERVICE = "asset";
 	
     /**
-	 *  Name ("reset") of a service used to clear cached template
+	 *  The name ("reset") of a service used to clear cached template
 	 *  and specification data and remove all pooled pages.
 	 *  This is only used when debugging as
 	 *  a quick way to clear the out cached data, to allow updated
@@ -173,7 +169,7 @@ public interface IEngineService
 	
     /**
 	 *  Perform the service, interpreting the URL (from the
-	 *  <code>HttpServletRequest</code>) responding appropriately, and
+	 *  {@link HttpServletRequest}) responding appropriately, and
 	 *  rendering a result page.
 	 *
 	 *  <p>The return value indicates whether processing of the request could, in any way,

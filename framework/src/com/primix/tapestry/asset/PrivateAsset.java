@@ -115,14 +115,11 @@ public class PrivateAsset implements IAsset
 
 		service = cycle.getEngine().getService(IEngineService.ASSET_SERVICE);
 
-		URL = service.buildURL(cycle, null, parameters);
-
-		// It would be nice to cache this, but a client without cookies will need
-		// it URL encoded for them, and one without won't, so we can't share
-		// this across clients.
-
-		return cycle.encodeURL(URL);
-
+		// Since it is no longer necessary to have an active HttpSession to
+		// use the asset service, there's no need to encode the URL anymore.
+		// This change was made in release 1.0.1.
+		
+		return service.buildURL(cycle, null, parameters);
 	}
 
 	public InputStream getResourceAsStream(IRequestCycle cycle)

@@ -40,19 +40,13 @@ import java.io.*;
  * Similar measures are taken by the {@link #attribute(String, String)} method.
  * Other invalid characters are converted to their numeric entity equivalent.
  *
- * <p>This class makes it easy to generate trivial and non-trivial HTML pages.
- * It is also useful to generate HTML snippets. It's ability to do simple
- * formatting is very useful. A JSP may create an instance of the class
- * and use it as an alternative to the simple-minded <b>&lt;%= ... %&gt;</b>
- * construct, espcially because it can handle null more cleanly.
- *
  * @version $Id$
  * @author Howard Ship
  */
 
 public class HTMLResponseWriter
 extends AbstractResponseWriter
-{
+{ 
 
 	private static String[] entities = new String[64];
 	private static boolean[] safe = new boolean[128];

@@ -30,10 +30,6 @@ package com.primix.tapestry.form;
 
 import com.primix.tapestry.*;
 
-// Appease Javadoc
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.html.*;
-
 /**
  *  Implements a component that manages an HTML &lt;input type=checkbox&gt;
  *  form element.

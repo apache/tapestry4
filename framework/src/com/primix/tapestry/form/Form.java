@@ -78,6 +78,18 @@ import com.primix.tapestry.components.*;
  *	      have had a chance to absorb the request.</td>
  *	</tr>
  *
+ * <tr>
+ *	<td>stateful</td>
+ *  <td>boolean</td>
+ *	<td>R</td>
+ *	<td>no</td>
+ *	<td>true</td>
+ *	<td>If true (the default), then the component requires an active (i.e., non-new)
+ * {@link HttpSession} when triggered.  Failing that, it throws a {@link StaleLinkException}.
+ *  If false, then no check is necessary.  Generally, forms are stateful, but it is possible
+ *  to put a stateless form onto the Home page of an application.</td>
+ * </tr>
+ *
  *	</table>
  *
  * <p>Informal parameters are allowed.
@@ -101,6 +113,10 @@ public class Form
     private StringBuffer buffer;
     private boolean rendering;
     private String name;
+	private IBinding statefulBinding;
+	private boolean staticStateful;
+	private boolean statefulValue;
+	
 	
     private static final String[] reservedNames = { "action" };
 	
@@ -122,16 +138,6 @@ public class Form
 		return (Form)cycle.getAttribute(ATTRIBUTE_NAME);
     }
 	
-	/**
-	 *  For the moment, Forms always require a session.  That may change.
-	 *
-	 *  @since 1.0.1
-	 */
-	
-	public boolean getRequiresSession()
-	{
-		return true;
-	}
 	
     public IBinding getMethodBinding()
     {
@@ -162,7 +168,40 @@ public class Form
 		
 		return rewinding;
     }
+
+		public void setStatefulBinding(IBinding value)
+	{
+		statefulBinding = value;
+		
+		staticStateful = value.isStatic();
+		if (staticStateful)
+			statefulValue = value.getBoolean();
+	}
 	
+	public IBinding getStatefulBinding()
+	{
+		return statefulBinding;
+	}
+	
+	/**
+	 *  Returns true if the stateful parameter is bound to
+	 *  a true value.  If stateful is not bound, also returns
+	 *  the default, true.
+	 *
+	 *  @since 1.0.1
+	 */
+	
+	public boolean getRequiresSession()
+	{
+		if (staticStateful)
+			return statefulValue;
+		
+		if (statefulBinding != null)
+			return statefulBinding.getBoolean();
+		
+		return true;
+	}
+
     /**
 	 *  Constructs a unique identifier (within the Form) from a prefix and a
 	 *  unique index.  The prefix typically corresponds to the component Class (i.e.

@@ -40,26 +40,16 @@ public class SlashdotParser
         
     }
     
-    protected DocumentBuilder constructBuilder()
-        throws ParserConfigurationException
-    {
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        
-        // The big difference, no doctype for the slashdot.xml file.
-        
-        factory.setValidating(false);
-        
-        factory.setIgnoringElementContentWhitespace(true);
-        factory.setIgnoringComments(true);
-        factory.setCoalescing(true);
-        
-        DocumentBuilder result = factory.newDocumentBuilder();
-        
-        result.setErrorHandler(this);
-        result.setEntityResolver(this);
-        
-        return result;
-    }
+	/**
+	 *  Returns false, since there's no DTD for the document
+	 *  we need to parse.
+	 *
+	 */
+	
+	protected boolean getRequireValidatingParser()
+	{
+		return false;
+	}
     
     private List build(Document document)
         throws DocumentParseException

@@ -35,15 +35,14 @@ import java.io.OutputStream;
 import javax.servlet.http.HttpSession;
 
 /**
- * A root level component responsible for generating an entire HTML page.
+ * A root level component responsible for generating an entire a page
+ * within the application.
  *
  * <p>The page has special knowledge of all the lifecycle components 
  * ({@link ILifecycle}) that are contained anywhere within it.
  *
  * <p>Pages are created dynamically from thier class names (part of the
- * {@link ComponentSpecification}).  Classes which
- * implement <code>IPage</code> must implement 
- * a no-arguments constructor (like any good JavaBean).
+ * {@link ComponentSpecification}).
  *
  * @see IPageSource
  * @see IPageLoader
@@ -64,11 +63,11 @@ public interface IPage extends IComponent
 	* <p>This method is invoked during the page loading process.  It
 	* is invoked after the component and all of its children have
 	* been created, and after {@link
-	* ILifecycle#finishLoad(IPageLoader, ComponentSpecification)} has
+	* IComponent#finishLoad(IPageLoader, ComponentSpecification)} has
 	* been invoked on the component.
 	*
 	*  <p>Note that the page itself may be one component passed to
-	*  <code>addLifecycleComponent()</code>, if it implements the *
+	*  <code>addLifecycleComponent()</code>, if it implements the
 	*  {@link ILifecycle} interface.
 	*
 	*/
@@ -242,7 +241,7 @@ public interface IPage extends IComponent
 	
 	/**
 	*  Invoked when the application terminates (that is, when the {@link HttpSession}
-	*  containing the {link IEngine} is invalidated or times out).  This gives
+	*  containing the {@link IEngine} is invalidated or times out).  This gives
 	*  the page a chance to release any additional resources it may have ... 
 	*  in particular,
 	*  it allows a page to remove stateful session EJBs it may be using.
