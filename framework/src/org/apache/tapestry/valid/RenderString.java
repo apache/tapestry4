@@ -14,24 +14,21 @@
 
 package org.apache.tapestry.valid;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- *  A wrapper around {@link String} that allows the String to
- *  be renderred.  This is primarily used to present
- *  error messages.
- *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *
- **/
+ * A wrapper around {@link String}that allows the String to be renderred. This is primarily used to
+ * present error messages.
+ * 
+ * @author Howard Lewis Ship
+ */
 
 public class RenderString implements IRender
 {
     private String _string;
+
     private boolean _raw = false;
 
     public RenderString(String string)
@@ -40,11 +37,12 @@ public class RenderString implements IRender
     }
 
     /**
-     *  @param string the string to render
-     *  @param raw if true, the String is rendered as-is, with no filtering.
-     *  If false (the default), the String is filtered.
-     *
-     **/
+     * @param string
+     *            the string to render
+     * @param raw
+     *            if true, the String is rendered as-is, with no filtering. If false (the default),
+     *            the String is filtered.
+     */
 
     public RenderString(String string, boolean raw)
     {
@@ -53,12 +51,9 @@ public class RenderString implements IRender
     }
 
     /**
-     *  Renders the String to the writer.  Does nothing if the string is null.
-     *  If raw is true, uses {@link IMarkupWriter#printRaw(String)}, otherwise
-     *  {@link IMarkupWriter#print(String)}.
-     * 
-     *
-     **/
+     * Renders the String to the writer. Does nothing if the string is null. If raw is true, uses
+     * {@link IMarkupWriter#printRaw(String)}, otherwise {@link IMarkupWriter#print(String)}.
+     */
 
     public void render(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -83,10 +78,6 @@ public class RenderString implements IRender
 
     public String toString()
     {
-        ToStringBuilder builder = new ToStringBuilder(this);
-        builder.append("string", _string);
-        builder.append("raw", _raw);
-
-        return builder.toString();
+        return _string;
     }
 }

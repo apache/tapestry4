@@ -49,7 +49,7 @@ See http://xml.apache.org/forrest/linking.html for more info
     
     <project label="Project">
         <item label="Mailing Lists"     href="http://jakarta.apache.org/site/mail2.html#tapestry"/>
-        <item label="Bug Database"     href="http://jakarta.apache.org/site/bugs.html"/>
+        <item label="Bug Database"     href="http://issues.apache.org/jira/secure/BrowseProject.jspa?id=10573"/>
         <item label="CVS Repositories"      href="http://jakarta.apache.org/site/cvsindex.html"/>
     </project>
     
@@ -63,8 +63,8 @@ See http://xml.apache.org/forrest/linking.html for more info
     </info>
     
     <downloads label="Downloads">
-      <item label="Binary" href="http://jakarta.apache.org/site/binindex.cgi#Milestone Builds"/>
-      <item label="Source" href="http://jakarta.apache.org/site/sourceindex.cgi#Milestone Source Drops"/>
+      <item label="Binary" href="http://jakarta.apache.org/site/binindex.cgi#tapestry-milestone"/>
+      <item label="Source" href="http://jakarta.apache.org/site/sourceindex.cgi#tapestry-milestone"/>
     </downloads>
     
     <related label="Related Projects">

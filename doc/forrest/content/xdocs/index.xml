@@ -76,15 +76,43 @@ with simple additions). Tapestry components are combined together
 </section>
 
 <section>
+  <title>Status</title>
+  
+<p>
+This release is Tapestry 3.0.2, the final bug fix release for Tapestry 3.0.
+</p>
+
+<p>Current development efforts are focused on Tapestry 3.1,
+which rebuilds Tapestry on top of the
+<link href="http://jakarta.apache.org/hivemind/">HiveMind</link> microkernel, simplifies code and development,
+and ads a boat load of new features.</p>
+
+<p>
+<a href="http://jakarta.apache.org/tapestry/current/">
+A preview of the Tapestry 3.1 documentation is available</a>.
+</p>
+
+</section>
+
+<section>
 		<title>Tapestry in Print</title>
 
 
 <figure src="images/tapestry-in-action.png" alt="Tapestry in Action Cover"/> 
 <p>
-	Tapestry in Action
+<link href="http://www.manning.com/lewisship/index.html">Tapestry in Action</link>
 is now available from
-<link href="http://www.manning.com/lewisship/index.html">Manning Publications</link>. It is the
+Manning Publications. It is the
 definitive introduction to Tapestry written by Howard Lewis Ship, the creator of Tapestry.
+</p>
+
+<figure src="images/tapestry-german-cover.gif" alt="Tapestry Webanwendungen mit dem Apache Framework"/>
+
+<p>
+<link href="http://entwickler.com/sus/sus_buch/psecom,id,60,nodeid,8,_language,uk.html">Tapestry Webanwendungen mit dem Apache Framework</link> is a fast-paced guide to using
+Tapestry, focusing on combining Tapestry with other open-source frameworks, as well as developing Tapestry applications using
+<a href="http://spindle.sourceforge.net/">Spindle</a>. The book is written in German, and authored by
+Stefan Edlich and Patrick Kunert.
 </p>
 
 <p>Tapestry has also  been described in the print journal 

@@ -1,30 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-    <classpathentry kind="var" path="JRE_LIB" sourcepath="JRE_SRC"/>
-    <classpathentry kind="lib" path="config"/>
-    <classpathentry kind="src" path="framework/src"/>
-    <classpathentry kind="src" path="contrib/src"/>
-    <classpathentry kind="src" path="junit/src"/>
-    <classpathentry kind="src" path="examples/VlibBeans/src"/>
-    <classpathentry kind="src" path="examples/Vlib/src"/>
-    <classpathentry kind="src" path="examples/Workbench/src"/>
-    <classpathentry kind="src" path="examples/wap/src"/>
-    <classpathentry exported="true" kind="lib" path="lib/ext/jakarta-oro-2.0.6.jar"/>
-    <classpathentry exported="true" kind="lib" path="lib/ext/commons-logging-1.0.2.jar"/>
-    <classpathentry exported="true" kind="lib" path="lib/ext/commons-lang-1.0.jar"/>
-    <classpathentry exported="true" kind="lib" path="lib/ext/bsf-2.3.0.jar"/>
-    <classpathentry kind="lib" path="ext-dist/jdom-b8.jar"/>
-    <classpathentry kind="lib" path="ext-dist/junit.jar"/>
-    <classpathentry exported="true" kind="lib" path="lib/ext/commons-beanutils-1.6.1.jar"/>
-    <classpathentry kind="lib" path="examples/Workbench/lib/jCharts-0.6.0.jar"/>
-    <classpathentry exported="true" kind="lib" path="lib/ext/commons-collections-2.1.jar"/>
-    <classpathentry kind="lib" path="lib/ext/commons-fileupload-1.0.jar"/>
-    <classpathentry exported="true" kind="lib" path="lib/ext/javassist-2.5.1.jar"/>
-    <classpathentry exported="true" kind="lib" path="lib/ext/commons-digester-1.5.jar"/>
-    <classpathentry kind="lib" path="lib/ext/commons-codec-1.2.jar"/>
-    <classpathentry kind="lib" path="lib/ext/ognl-2.6.3.jar"/>
-    <classpathentry kind="lib" path="lib/j2ee/geronimo-ejb.jar"/>
-    <classpathentry kind="lib" path="lib/j2ee/jsp-api.jar"/>
-    <classpathentry exported="true" kind="lib" path="lib/j2ee/servlet-api.jar"/>
-    <classpathentry kind="output" path="bin"/>
+	<classpathentry sourcepath="JRE_SRC" kind="var" path="JRE_LIB"/>
+	<classpathentry kind="lib" path="config"/>
+	<classpathentry kind="src" path="framework/src"/>
+	<classpathentry kind="src" path="contrib/src"/>
+	<classpathentry kind="src" path="junit/src"/>
+	<classpathentry kind="src" path="examples/VlibBeans/src"/>
+	<classpathentry kind="src" path="examples/Vlib/src"/>
+	<classpathentry kind="src" path="examples/Workbench/src"/>
+	<classpathentry kind="src" path="examples/wap/src"/>
+	<classpathentry exported="true" kind="lib" path="lib/ext/jakarta-oro-2.0.6.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ext/commons-logging-1.0.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ext/commons-lang-1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ext/bsf-2.3.0.jar"/>
+	<classpathentry kind="lib" path="ext-dist/junit.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ext/commons-beanutils-1.6.1.jar"/>
+	<classpathentry kind="lib" path="examples/Workbench/lib/jCharts-0.6.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ext/commons-collections-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/ext/commons-fileupload-1.0.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ext/javassist-2.5.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/ext/commons-digester-1.5.jar"/>
+	<classpathentry kind="lib" path="lib/ext/commons-codec-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/j2ee/geronimo-ejb.jar"/>
+	<classpathentry kind="lib" path="lib/j2ee/jsp-api.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/j2ee/servlet-api.jar"/>
+	<classpathentry kind="var" path="JYTHON_DIR/jython.jar"/>
+	<classpathentry kind="lib" path="lib/runtime/log4j-1.2.6.jar"/>
+	<classpathentry kind="lib" path="ext-dist/jdom-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/ext/ognl-2.6.7.jar"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>

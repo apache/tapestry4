@@ -42,7 +42,6 @@ import org.apache.tapestry.request.RequestContext;
  *  the {@link IEngine engine} and the {@link RequestContext}.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  * 
  **/
 
@@ -194,8 +193,6 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
             IPageSource pageSource = _engine.getPageSource();
 
             result = pageSource.getPage(this, name, _monitor);
-
-            result.setRequestCycle(this);
 
             // Get the recorder that will eventually observe and record
             // changes to persistent properties of the page.  If the page

@@ -30,7 +30,6 @@ import org.apache.tapestry.valid.ValidatorException;
  * 
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 1.0.8
  *
  **/
@@ -156,14 +155,42 @@ public class TestValidationDelegate extends TestCase
         checkRender("Overload!", t1);
 
         checkRender("Overload!", d.getFirstError());
-        
+
         List trackings = d.getUnassociatedTrackings();
         assertEquals(1, trackings.size());
         assertEquals(t1, trackings.get(0));
-        
+
         trackings = d.getAssociatedTrackings();
         assertEquals(1, trackings.size());
         assertEquals(t0, trackings.get(0));
+    }
+
+    /**
+     * In rare cases, you may add errors even though the page hasn't rendered and that's
+     * was causing a NPE.
+     */
+    public void testComponentNotRecorded()
+    {
+        // This mock field neaver rendered, so it does not have a Form-assigned name.
+
+        IFormComponent f = new MockField(null);
+
+        d.setFormComponent(f);
+        d.record("Never rendered.", ValidationConstraint.CONSISTENCY);
+
+        assertEquals(true, d.getHasErrors());
+
+        List fieldTracking = d.getFieldTracking();
+        assertEquals(1, fieldTracking.size());
+
+        List trackings = d.getUnassociatedTrackings();
+        assertEquals(1, trackings.size());
+
+        IFieldTracking t = (IFieldTracking) trackings.get(0);
+
+        assertEquals(null, t.getComponent());
+        assertEquals(true, t.isInError());
+        checkRender("Never rendered.", t);
     }
 
     private void checkRender(String errorMessage, IFieldTracking tracking)
@@ -259,5 +286,26 @@ public class TestValidationDelegate extends TestCase
 
         assertEquals(false, d.getHasErrors());
         assertNull(d.getFirstError());
+    }
+
+    public void testClearErrors()
+    {
+        IFormComponent f = new MockField("input");
+
+        d.setFormComponent(f);
+        d.recordFieldInputValue("hello");
+        d.record("An error in the input field.", null);
+
+        assertEquals(true, d.getHasErrors());
+
+        assertNotNull(d.getFirstError());
+
+        d.clearErrors();
+
+        assertEquals(false, d.getHasErrors());
+
+        d.setFormComponent(f);
+
+        assertEquals("hello", d.getFieldInputValue());
     }
 }

@@ -19,7 +19,7 @@
 	<path id="jetty.classpath">
 		<fileset dir="${jetty.dir}">
 			<include name="lib/javax.servlet.jar"/>
-			<include name="lib/org.mortbay.jetty-jdk1.2.jar"/>
+			<include name="lib/org.mortbay.jetty.jar"/>
 			<include name="ext/*.jar"/>
 		</fileset>
 		<!-- Needed to support JSP compilation -->
@@ -229,6 +229,7 @@
 				     are not stored in CVS and should not be part of the distribution. -->
 				<exclude name="**/Thumbs.db"/>
 				<exclude name="**/pspbrwse.jbf"/>
+        <exclude name="**/classes/"/>        
 			</fileset>
 		</copy>
 		
