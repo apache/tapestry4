@@ -68,8 +68,7 @@ import org.apache.tapestry.Tapestry;
  *  @version $Id$
  *  @since 2.0.3
  *
- **/
- 
+ */
  
 public class Direction extends Enum
 {
@@ -79,7 +78,7 @@ public class Direction extends Enum
      *  The property is set from the binding before the component renders,
      *  then reset to initial value after the component renders.
      * 
-     **/
+     */
     
 	public static final Direction IN = new Direction("IN");
 	
@@ -97,9 +96,9 @@ public class Direction extends Enum
      * 
      *  @since 2.2
      * 
-     **/
+     */
 
-    public static final Direction FORM = new Direction("FORM");    
+    public static final Direction FORM = new Direction("FORM", false);    
     
 	/**
 	 *  Processing of the parameter is entirely the responsibility
@@ -117,19 +116,44 @@ public class Direction extends Enum
 	 * 
 	 *  @since 3.0
 	 * 
-	 **/
+	 */
 	
 	public static final Direction AUTO = new Direction("AUTO");
 	
+	/**
+	 * If true, then this direction is allowed with invariant bindings (the usual case).
+	 * If false, then {@link org.apache.tapestry.param.ParameterManager} will not allow
+	 * an invariant binding.
+	 * 
+	 * @since 3.0
+	 */
+	
+	private boolean _allowInvariant;
+	
     protected Direction(String name)
     {
-        super(name);
+        this(name, true);
     }
+
+	protected Direction(String name, boolean allowInvariant)
+	{
+		super(name);
+		
+		_allowInvariant = allowInvariant;
+	}
+	
+	/**
+	 * @since 3.0
+	 */
+	public boolean getAllowInvariant()
+	{
+		return _allowInvariant;
+	}
 
     /**
      *  Returns a user-presentable name for the direction.
      * 
-     **/
+     */
     
     public String getDisplayName()
     {

@@ -68,6 +68,7 @@ import org.apache.tapestry.junit.parse.TestTemplateParser;
 import org.apache.tapestry.junit.script.TestScript;
 import org.apache.tapestry.junit.spec.TestApplicationSpecification;
 import org.apache.tapestry.junit.spec.TestComponentSpecification;
+import org.apache.tapestry.junit.spec.TestDirection;
 import org.apache.tapestry.junit.utils.TestAdaptorRegistry;
 import org.apache.tapestry.junit.utils.TestDataSqueezer;
 import org.apache.tapestry.junit.utils.TestEnum;
@@ -128,6 +129,7 @@ public class BasicTestSuite extends TestSuite
         suite.addTestSuite(TestListEditMap.class);
         suite.addTestSuite(TestContentType.class);
         suite.addTestSuite(TestRequestCycleToString.class);
+        suite.addTestSuite(TestDirection.class);
 
         return suite;
     }

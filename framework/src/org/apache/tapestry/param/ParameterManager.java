@@ -207,6 +207,21 @@ public class ParameterManager
                 continue;
             }
 
+            if (!direction.getAllowInvariant() && binding.isInvariant())
+                throw new ConnectedParameterException(
+                    Tapestry.format(
+                        "ParameterManager.incompatible-direction-and-binding",
+                        new Object[] {
+                            name,
+                            _component.getExtendedId(),
+                            direction.getDisplayName(),
+                            binding }),
+                    _component,
+                    name,
+                    null,
+                    binding.getLocation(),
+                    null);
+
             String propertyName = pspec.getPropertyName();
 
             if (debug && !name.equals(propertyName))
@@ -228,6 +243,7 @@ public class ParameterManager
                     _component,
                     name,
                     propertyName,
+                    binding.getLocation(),
                     null);
             }
 
@@ -241,6 +257,7 @@ public class ParameterManager
                     _component,
                     name,
                     propertyName,
+                    binding.getLocation(),
                     null);
             }
 
@@ -259,6 +276,7 @@ public class ParameterManager
                     _component,
                     name,
                     propertyName,
+                    binding.getLocation(),
                     null);
             }
 
@@ -275,6 +293,7 @@ public class ParameterManager
                     _component,
                     name,
                     propertyName,
+                    binding.getLocation(),
                     null);
             }
 
