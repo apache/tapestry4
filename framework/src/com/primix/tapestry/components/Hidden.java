@@ -76,10 +76,6 @@ public class Hidden extends AbstractFormComponent
 {
 	private IBinding valueBinding;
 	
-	private static final String[] reservedNames = 
-	{ "type", "name", "value" 
-	};
-
 	public Hidden(IPage page, IComponent container, String id,
 		ComponentSpecification specification)
 	{
@@ -101,12 +97,43 @@ public class Hidden extends AbstractFormComponent
 	{
 		Form form;
 		String name;
-		boolean rewinding;
+		boolean formRewound;
 		String value;
+		IActionListener listener;
 		
 		form = getForm(cycle);
+		formRewound = form.isRewinding();
 		
-		name = "Hidden" + cycle.getNextActionId();
+		name = form.getNextElementId("Hidden");
+		
+		// If the form containing the Hidden isn't rewound, then render.
+		
+		if (!formRewound)
+		{
+			// Optimiziation: if the page is rewinding (some other action or
+			// form was submitted), then don't bother rendering.
+			
+			if (cycle.isRewinding())
+				return;
+				
+			value = valueBinding.getString();
+			
+			writer.beginOrphan("input");
+			writer.attribute("type", "hidden");
+			writer.attribute("name", name);
+			writer.attribute("value", value);
+			
+			return;
+		}
+		
+		value = cycle.getRequestContext().getParameter(name);
+		
+		valueBinding.setString(value);
+		
+		listener = getListener(cycle);
+		if (listener != null)
+			listener.actionTriggered(this, cycle);
+		
 	}
 }
 
