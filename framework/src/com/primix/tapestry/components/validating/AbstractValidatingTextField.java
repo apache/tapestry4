@@ -437,8 +437,8 @@ implements ILifecycle, IValidatingTextField
 
         fullName = "document." + formName + "." + textFieldName;
 
-        body.addOtherInitialization(fullName + ".focus()");
-        body.addOtherInitialization(fullName + ".select()");
+        body.addOtherInitialization(fullName + ".focus();");
+        body.addOtherInitialization(fullName + ".select();");
 
         // Put a marker in, indicating that the selected field is known.
 

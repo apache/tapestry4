@@ -1,13 +1,31 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE script PUBLIC 
+	"-//Primix Solutions//Tapestry Script 1.0//EN"
+	"http://tapestry.sourceforge.net/dtd/Script_1_0.dtd">
 
-function $onMouseOverName$ ()
+<script>
+<!-- symbols:
+	onMouseOverName - the name of the event handler function for mouse overs
+	onMouseOutName - the name of the event handler function for mouse out
+	imageName - the name of the image to be changed (i.e., matches the
+			    <img> element's name attribute)
+	focusImageURL - the full and quoted URL for the image to be used on a mouse over
+	blurImageURL - the full and quoted URL for the iamge to be used on a mouse out
+-->
+<body>
+
+function <insert key="onMouseOverName"/>()
 {
   if (document.images)
-    document.$imageName$.src = $focusImageURL$;
+    document.<insert key="imageName"/>.src = <insert key="focusImageURL"/>;
 }
 
-function $onMouseOutName$ ()
+function <insert key="onMouseOutName"/>()
 {
   if (document.images)
-    document.$imageName$.src = $blurImageURL$;
+    document.<insert key="imageName"/>.src = <insert key="blurImageURL"/>;
 }
 
+</body>
+</script>

@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
+<!--The DTD for Tapestry application and component specifications.  Associated with the public identifier:
+
+	-//Primix Solutions//Tapestry Specification 1.0//EN
+	
+	For application specifications, the main element is application; for component specification the
+	main element is specification.
+	
+	Certain parts of the DTD are subject to change with the next version; these are marked (primarily
+	elements are deprecated here, and will be removed in the next version.
+-->
 <!ELEMENT alias (#PCDATA)>
 <!ELEMENT allow-body (#PCDATA)>
 <!ELEMENT allow-informal-parameters (#PCDATA)>

@@ -5,7 +5,6 @@ import com.primix.tapestry.spec.*;
 import com.primix.foundation.*;
 import org.apache.xerces.parsers.DOMParser;
 import org.w3c.dom.*;
-import org.xml.sax.SAXException;
 import java.io.*;
 import java.util.*;
 import org.xml.sax.*;

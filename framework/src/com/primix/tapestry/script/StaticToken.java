@@ -42,21 +42,21 @@ import java.io.*;
 class StaticToken
 implements ITemplateToken
 {
-    private char[] template;
-    private int offset;
-    private int length;
+    private String text;
 
-    StaticToken(char[] template, int offset, int length)
+    StaticToken(String text)
     {
-        this.template = template;
-        this.offset = offset;
-        this.length = length;
+        this.text = text;
     }
-    
+  
+    /**
+     *  Writes the text to the writer.
+     *
+     */  
 
 	public void write(Writer writer, Map symbols)
 	throws IOException
 	{
-		writer.write(template, offset, length);
+		writer.write(text);
 	}
 }
