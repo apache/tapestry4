@@ -53,61 +53,39 @@
  *
  */
 
-package org.apache.tapestry.components;
+package org.apache.tapestry.contrib.components;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 
 /**
- *  A conditional element on a page which will render its wrapped elements
- *  zero or one times.
+ *  This component is a container for {@link When} or {@link Otherwise} components; 
+ *  it provides the context for mutually exclusive conditional evaluation.
  *
- *  [<a href="../../../../../ComponentReference/Conditional.html">Component Reference</a>]
+ *  [<a href="../../../../../../ComponentReference/contrib.Choose.html">Component Reference</a>]
  *
- *  @author Howard Lewis Ship, David Solis
+ *  @author David Solis
  *  @version $Id$
  * 
  **/
+public abstract class Choose extends AbstractComponent {
 
-public abstract class Conditional extends AbstractComponent 
-{
-	/**
-	 *  Renders its wrapped components only if the condition is true (technically,
-	 *  if condition matches invert). 
-	 *  Additionally, if element is specified, can emulate that HTML element if condition is met
-	 *
-	 **/
 
-	protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) 
+	public void addBody(IRender element)
 	{
-		if (evaluateCondition()) 
-		{
-			String element = getElement();
-			
-			boolean render = !cycle.isRewinding() && StringUtils.isNotEmpty(element);
-			
-			if (render)
-			{
-				writer.begin(element);
-				renderInformalParameters(writer, cycle);
-			}
-
-			renderBody(writer, cycle);
-			
-			if (render)
-				writer.end(element);
-		}
+		super.addBody(element);
+		if (element instanceof When)
+			((When) element).setChoose(this);	
 	}
 	
-	protected boolean evaluateCondition()
+	/**  Renders its wrapped components. */
+	protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
 	{
-		return getCondition() != getInvert();
+		renderBody(writer, cycle);
 	}
-
-	public abstract boolean getCondition();
-	public abstract boolean getInvert();
-
-	public abstract String getElement();
+	
+	public abstract boolean isConditionMet();
+	public abstract void setConditionMet(boolean value);
 }

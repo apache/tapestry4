@@ -11,6 +11,10 @@
 
   <library id="inspector" specification-path="inspector/Inspector.library"/>
 
+  <component-type type="Choose" specification-path="components/Choose.jwc"/>
+  <component-type type="When" specification-path="components/When.jwc"/>
+  <component-type type="Otherwise" specification-path="components/Otherwise.jwc"/>
+
   <component-type type="Palette" specification-path="palette/Palette.jwc"/>
   <component-type type="MultiplePropertySelection" specification-path="form/MultiplePropertySelection.jwc"/>
   <component-type type="DateField" specification-path="valid/DateField.jwc"/>
