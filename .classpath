@@ -3,12 +3,12 @@
     <classpathentry kind="var" path="JRE_LIB" sourcepath="JRE_SRC"/>
     <classpathentry kind="lib" path="config"/>
     <classpathentry kind="src" path="framework/src"/>
-    <classpathentry kind="src" path="contrib/src"/>
     <classpathentry kind="src" path="junit/src"/>
-    <classpathentry kind="src" path="examples/VlibBeans/src"/>
-    <classpathentry kind="src" path="examples/Vlib/src"/>
+    <classpathentry kind="src" path="contrib/src"/>
     <classpathentry kind="src" path="examples/Workbench/src"/>
     <classpathentry kind="src" path="examples/wap/src"/>
+    <classpathentry kind="src" path="examples/VlibBeans/src"/>
+    <classpathentry kind="src" path="examples/Vlib/src"/>
     <classpathentry exported="true" kind="lib" path="lib/ext/jakarta-oro-2.0.6.jar"/>
     <classpathentry exported="true" kind="lib" path="lib/ext/commons-logging-1.0.2.jar"/>
     <classpathentry exported="true" kind="lib" path="lib/ext/commons-lang-1.0.jar"/>
@@ -26,5 +26,6 @@
     <classpathentry kind="lib" path="lib/j2ee/geronimo-ejb.jar"/>
     <classpathentry kind="lib" path="lib/j2ee/jsp-api.jar"/>
     <classpathentry exported="true" kind="lib" path="lib/j2ee/servlet-api.jar"/>
+    <classpathentry kind="src" path="/jakarta-hivemind"/>
     <classpathentry kind="output" path="bin"/>
 </classpath>

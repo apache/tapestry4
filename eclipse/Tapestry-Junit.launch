@@ -109,6 +109,9 @@
     internalArchive=&quot;/jakarta-tapestry/lib/ext/commons-codec-1.2.jar&quot;
     path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
+        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;runtimeClasspathEntry path=&quot;3&quot; projectName=&quot;jakarta-hivemind&quot; type=&quot;1&quot;/&gt;
+"/>
     </listAttribute>
     <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="jakarta-tapestry"/>
     <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dnet.sf.tapestry.enable-reset-service=true"/>
