@@ -18,6 +18,7 @@ import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.engine.IComponentClassEnhancer;
 import org.apache.tapestry.engine.IPageSource;
 import org.apache.tapestry.engine.IPropertySource;
+import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.spec.IApplicationSpecification;
 
@@ -95,4 +96,17 @@ public interface Infrastructure
      */
 
     public ClassResolver getClassResolver();
+    
+    /**
+     * The DataSqueezer, used when constructing and decoding values stored
+     * in URLs (as query parameters or hidden form fields).
+     */
+    
+    public DataSqueezer getDataSqueezer();
+    
+    /**
+     * The source for read-to-execute versions of Tapestry script templates.
+     */
+    
+    public IScriptSource getScriptSource();
 }

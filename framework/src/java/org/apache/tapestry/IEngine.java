@@ -29,10 +29,11 @@ import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.ComponentMessagesSource;
+import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.services.ObjectPool;
 import org.apache.tapestry.services.TemplateSource;
 import org.apache.tapestry.spec.IApplicationSpecification;
-import org.apache.tapestry.util.io.DataSqueezer;
+import org.apache.tapestry.util.io.DataSqueezerImpl;
 
 /**
  * Defines the core, session-persistant object used to run a Tapestry
@@ -313,7 +314,7 @@ public interface IEngine
 	public ComponentMessagesSource getComponentMessagesSource();
 
     /**
-     *  Returns a shared instance of {@link org.apache.tapestry.util.io.DataSqueezer}.
+     *  Returns a shared instance of {@link org.apache.tapestry.util.io.DataSqueezerImpl}.
      * 
      *  @since 2.2
      * 

@@ -18,26 +18,18 @@ import org.apache.hivemind.Resource;
 import org.apache.tapestry.IScript;
 
 /**
- *  Provides access to an {@link IScript}.
- *
- *  @author Howard Lewis Ship
- *  @since 1.0.2
- **/
+ * Provides access to an {@link IScript}.
+ * 
+ * @author Howard Lewis Ship
+ * @since 1.0.2
+ */
 
 public interface IScriptSource
 {
     /**
-     *  Retrieves the script identified by the location from the source's
-     *  cache, reading and parsing the script if necessary.
-     * 
-     **/
+     * Retrieves the script identified by the location from the source's cache,
+     * reading and parsing the script if necessary.
+     */
 
-    public IScript getScript(Resource scriptLocation);
-
-    /**
-     *  Invoked to clear any cached scripts.
-     *
-     **/
-
-    public void reset();
+    public IScript getScript(Resource resource);
 }

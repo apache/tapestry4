@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.util.io;
 
+import org.apache.tapestry.services.DataSqueezer;
+
 /**
  *  Squeezes a {@link Float}.
  *

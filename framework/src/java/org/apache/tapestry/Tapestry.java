@@ -1040,7 +1040,7 @@ public final class Tapestry
      *  (with {@link org.apache.tapestry.link.DirectLink}.  Assuming the keys
      *  and values are simple objects (String, Boolean, Integer, etc.), then
      *  the representation as an array will encode more efficiently
-     *  (via {@link org.apache.tapestry.util.io.DataSqueezer} than
+     *  (via {@link org.apache.tapestry.util.io.DataSqueezerImpl} than
      *  serializing the Map and its contents.
      *
      *  @return the array of keys and values, or null if the input

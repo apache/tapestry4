@@ -26,6 +26,7 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.services.DataSqueezer;
 
 /**
  *  The most complicated of the adaptors, this one takes an arbitrary serializable

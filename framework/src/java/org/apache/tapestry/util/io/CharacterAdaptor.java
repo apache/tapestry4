@@ -16,6 +16,8 @@ package org.apache.tapestry.util.io;
 
 import java.io.IOException;
 
+import org.apache.tapestry.services.DataSqueezer;
+
 /**
  *  Squeezes a Character.
  * 

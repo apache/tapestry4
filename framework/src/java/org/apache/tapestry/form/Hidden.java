@@ -22,7 +22,8 @@ import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.util.io.DataSqueezer;
+import org.apache.tapestry.services.DataSqueezer;
+import org.apache.tapestry.util.io.DataSqueezerImpl;
 
 /**
  *  Implements a hidden field within a {@link Form}.
@@ -152,7 +153,7 @@ public abstract class Hidden extends AbstractFormComponent
     /** 
      * 
      *  Returns true if the compent encodes object values using a
-     *  {@link org.apache.tapestry.util.io.DataSqueezer}, false
+     *  {@link org.apache.tapestry.util.io.DataSqueezerImpl}, false
      *  if values are always Strings.
      * 
      *  @since 2.2

@@ -32,11 +32,12 @@ import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.ComponentMessagesSource;
+import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.services.ObjectPool;
 import org.apache.tapestry.services.TemplateSource;
 import org.apache.tapestry.services.impl.ObjectPoolImpl;
 import org.apache.tapestry.spec.IApplicationSpecification;
-import org.apache.tapestry.util.io.DataSqueezer;
+import org.apache.tapestry.util.io.DataSqueezerImpl;
 
 /**
  *  An implementation of {@link IEngine} used for unit testing.

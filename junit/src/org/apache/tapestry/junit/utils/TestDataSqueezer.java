@@ -28,16 +28,17 @@ import junit.framework.TestCase;
 import ognl.ClassResolver;
 
 import org.apache.hivemind.impl.DefaultClassResolver;
+import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.spec.AssetType;
 import org.apache.tapestry.spec.BeanLifecycle;
 import org.apache.tapestry.util.ComponentAddress;
-import org.apache.tapestry.util.io.DataSqueezer;
+import org.apache.tapestry.util.io.DataSqueezerImpl;
 import org.apache.tapestry.util.io.ISqueezeAdaptor;
 import org.apache.tapestry.util.prop.OgnlClassResolver;
 import org.apache.tapestry.util.prop.OgnlUtils;
 
 /**
- *  A series of tests for {@link DataSqueezer} and friends.
+ *  A series of tests for {@link DataSqueezerImpl} and friends.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -47,7 +48,7 @@ import org.apache.tapestry.util.prop.OgnlUtils;
 public class TestDataSqueezer extends TestCase
 {
     private ClassResolver _resolver = new OgnlClassResolver();
-    private DataSqueezer s = new DataSqueezer(new DefaultClassResolver());
+    private DataSqueezerImpl ds = new DataSqueezerImpl(new DefaultClassResolver());
 
     public TestDataSqueezer(String name)
     {
@@ -56,7 +57,7 @@ public class TestDataSqueezer extends TestCase
 
     private void attempt(Object input, String expectedEncoding) throws IOException
     {
-        attempt(input, expectedEncoding, s);
+        attempt(input, expectedEncoding, ds);
     }
 
     private void attempt(Object input, String expectedEncoding, DataSqueezer ds) throws IOException
@@ -166,11 +167,11 @@ public class TestDataSqueezer extends TestCase
                 Boolean.TRUE,
                 new Double(22. / 7.)};
 
-        String[] encoded = s.squeeze(input);
+        String[] encoded = ds.squeeze(input);
 
         assertEquals("Encoded array length.", input.length, encoded.length);
 
-        Object[] output = s.unsqueeze(encoded);
+        Object[] output = ds.unsqueeze(encoded);
 
         assertEquals("Output array length.", input.length, output.length);
 
@@ -184,11 +185,11 @@ public class TestDataSqueezer extends TestCase
     {
         Object[] input = null;
 
-        String[] encoded = s.squeeze(input);
+        String[] encoded = ds.squeeze(input);
 
         assertNull(encoded);
 
-        Object[] output = s.unsqueeze(encoded);
+        Object[] output = ds.unsqueeze(encoded);
 
         assertNull(output);
     }
@@ -213,7 +214,7 @@ public class TestDataSqueezer extends TestCase
             "gamma",
             new BigDecimal("2590742358742358972.234592348957230948578975248972390857490725"));
 
-        attempt((Serializable) map, s);
+        attempt((Serializable) map, ds);
     }
 
     public static class BooleanHolder
@@ -292,7 +293,7 @@ public class TestDataSqueezer extends TestCase
     public void testCustom() throws IOException
     {
         DataSqueezer ds =
-            new DataSqueezer(new DefaultClassResolver(), new ISqueezeAdaptor[] { new BHSqueezer()});
+            new DataSqueezerImpl(new DefaultClassResolver(), new ISqueezeAdaptor[] { new BHSqueezer()});
 
         attempt(new BooleanHolder(true), "BT", ds);
         attempt(new BooleanHolder(false), "BF", ds);
@@ -304,7 +305,7 @@ public class TestDataSqueezer extends TestCase
     {
         try
         {
-            s.register("", BooleanHolder.class, new BHSqueezer());
+            ds.register("", BooleanHolder.class, new BHSqueezer());
 
             throw new AssertionFailedError("Null prefix should be invalid.");
         }
@@ -317,7 +318,7 @@ public class TestDataSqueezer extends TestCase
     {
         try
         {
-            s.register("\n", BooleanHolder.class, new BHSqueezer());
+            ds.register("\n", BooleanHolder.class, new BHSqueezer());
 
             throw new AssertionFailedError("Prefix should be invalid.");
         }
@@ -330,7 +331,7 @@ public class TestDataSqueezer extends TestCase
     {
         try
         {
-            s.register("b", BooleanHolder.class, new BHSqueezer());
+            ds.register("b", BooleanHolder.class, new BHSqueezer());
 
             throw new AssertionFailedError("Duplicate prefix should be invalid.");
         }
@@ -343,7 +344,7 @@ public class TestDataSqueezer extends TestCase
     {
         try
         {
-            s.register("B", null, new BHSqueezer());
+            ds.register("B", null, new BHSqueezer());
 
             throw new AssertionFailedError("Null data class should be invalid.");
         }
@@ -356,7 +357,7 @@ public class TestDataSqueezer extends TestCase
     {
         try
         {
-            s.register("B", BooleanHolder.class, null);
+            ds.register("B", BooleanHolder.class, null);
 
             throw new AssertionFailedError("Null squeezer should be invalid.");
         }
@@ -409,7 +410,7 @@ public class TestDataSqueezer extends TestCase
 
         OgnlUtils.set("stringValue", visit, stringValue);
 
-        DataSqueezer squeezer = new DataSqueezer(new DefaultClassResolver(visitClassLoader));
+        DataSqueezer squeezer = new DataSqueezerImpl(new DefaultClassResolver(visitClassLoader));
 
         String squeezed = squeezer.squeeze(visit);
 

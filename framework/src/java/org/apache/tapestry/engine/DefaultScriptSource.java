@@ -26,80 +26,55 @@ import org.apache.tapestry.script.ScriptParser;
 import org.apache.tapestry.util.xml.DocumentParseException;
 
 /**
- *  Provides basic access to scripts available on the classpath.  Scripts are cached in
- *  memory once parsed.
- *
- *  @author Howard Lewis Ship
- *  @since 1.0.2
+ * Provides basic access to scripts available on the classpath. Scripts are
+ * cached in memory once parsed.
  * 
- **/
+ * @author Howard Lewis Ship
+ * @since 1.0.2
+ */
 
 public class DefaultScriptSource implements IScriptSource
 {
-    private ClassResolver _resolver;
+    private ClassResolver _classResolver;
 
     private Map _cache = new HashMap();
-
-    public DefaultScriptSource(ClassResolver resolver)
-    {
-        _resolver = resolver;
-    }
 
     public synchronized void reset()
     {
         _cache.clear();
     }
 
-    public synchronized IScript getScript(Resource scriptLocation)
+    public synchronized IScript getScript(Resource resource)
     {
-        IScript result = (IScript) _cache.get(scriptLocation);
+        IScript result = (IScript) _cache.get(resource);
 
         if (result != null)
             return result;
 
-        result = parse(scriptLocation);
+        result = parse(resource);
 
-        _cache.put(scriptLocation, result);
+        _cache.put(resource, result);
 
         return result;
     }
 
-    private IScript parse(Resource location)
+    private IScript parse(Resource resource)
     {
-        ScriptParser parser = new ScriptParser(_resolver);
+        ScriptParser parser = new ScriptParser(_classResolver);
 
         try
         {
-            return parser.parse(location);
+            return parser.parse(resource);
         }
         catch (DocumentParseException ex)
         {
-            throw new ApplicationRuntimeException(
-                Tapestry.format("DefaultScriptSource.unable-to-parse-script", location),
-                ex);
+            throw new ApplicationRuntimeException(Tapestry.format("DefaultScriptSource.unable-to-parse-script",
+                    resource), ex);
         }
     }
 
-    public String toString()
+    public void setClassResolver(ClassResolver classResolver)
     {
-        StringBuffer buffer = new StringBuffer("DefaultScriptSource@");
-        buffer.append(Integer.toHexString(hashCode()));
-
-        buffer.append('[');
-
-        if (_cache != null)
-        {
-            synchronized (_cache)
-            {
-                buffer.append(_cache.keySet());
-            }
-
-            buffer.append(", ");
-        }
-
-        buffer.append("]");
-
-        return buffer.toString();
+        _classResolver = classResolver;
     }
-
 }

@@ -20,8 +20,9 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.RequestContext;
+import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.util.StringSplitter;
-import org.apache.tapestry.util.io.DataSqueezer;
+import org.apache.tapestry.util.io.DataSqueezerImpl;
 
 /**
  *  Abstract base class for implementing engine services.  Instances of services

@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.util.io;
 
+import org.apache.tapestry.services.DataSqueezer;
+
 /**
  *  Squeezes a String (which is pretty simple, most of the time).
  *
@@ -39,7 +41,7 @@ class StringAdaptor implements ISqueezeAdaptor
 
     /**
      *  Strips the prefix from the string.  This method is only
-     *  invoked by the {@link DataSqueezer} if the string leads
+     *  invoked by the {@link DataSqueezerImpl} if the string leads
      *  with its normal prefix (an 'S').
      *
      **/
