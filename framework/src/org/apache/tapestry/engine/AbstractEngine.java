@@ -362,7 +362,7 @@ public abstract class AbstractEngine
     /**
      *  The source for pages, which acts as a pool, but is capable of
      *  creating pages as needed.  Stored in the
-     *  {@link ServletContext}, like {@link #templateSource}.
+     *  {@link ServletContext}, like {@link #_templateSource}.
      *
      **/
 
@@ -1837,7 +1837,7 @@ public abstract class AbstractEngine
     /**
      *  Invoked when a {@link RedirectException} is thrown during the processing of a request.
      *
-     *  @throws RequestCycleException if an {@link IOException},
+     *  @throws ApplicationRuntimeException if an {@link IOException},
      *  {@link ServletException} is thrown by the redirect, or if no
      *  {@link RequestDispatcher} can be found for local resource.
      *

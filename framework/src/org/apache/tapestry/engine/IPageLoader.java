@@ -63,7 +63,7 @@ import org.apache.tapestry.IRequestCycle;
 /**
  * Interface exposed to components as they are loaded by the page loader.
  *
- * @see IComponent#finishLoad(IRequestCycle, IPageLoader, IComponentSpecification)
+ * @see IComponent#finishLoad(IRequestCycle, IPageLoader, org.apache.tapestry.spec.IComponentSpecification)
  * 
  * @author Howard Lewis Ship
  * @version $Id$
