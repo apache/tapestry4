@@ -6,8 +6,6 @@
 	
 <page-specification class="org.apache.tapestry.vlib.pages.NewBook">
 
-  <property name="page-type">library</property>
-  
   <property-specification name="error" type="java.lang.String"/>
   <property-specification name="publisherName" type="java.lang.String"/>
   <property-specification name="attributes" type="java.util.Map"/>

@@ -454,7 +454,7 @@ public class VirtualLibraryEngine extends BaseEngine
 
         page.setError(error);
 
-        cycle.setPage(pageName);
+        cycle.setPage(page);
     }
 
     /**

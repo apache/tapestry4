@@ -55,16 +55,16 @@
 
 package org.apache.tapestry.vlib.components;
 
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IAsset;
+import org.apache.tapestry.IEngine;
+import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.callback.PageCallback;
+import org.apache.tapestry.vlib.IMessageProperty;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
 import org.apache.tapestry.vlib.pages.EditProfile;
-import org.apache.tapestry.vlib.pages.Home;
-import org.apache.tapestry.vlib.pages.Login;
-import org.apache.tapestry.vlib.pages.NewBook;
 
 /**
  *  The standard Border component, which provides the title of the page,
@@ -77,211 +77,259 @@ import org.apache.tapestry.vlib.pages.NewBook;
  * 
  **/
 
-public class Border extends BaseComponent
+public abstract class Border extends BaseComponent
 {
-    private static final String WINDOW_TITLE = "Virtual Library";
+    public static final String WINDOW_TITLE = "Tapestry Virtual Library";
 
-    private String _subtitle;
+    // Determined by finishLoad(), static threafter.
 
-    private static final int SEARCH_PAGE_TYPE = 1;
-    private static final int LIBRARY_PAGE_TYPE = 2;
+    private String _pageType;
+    private IAsset _titleImage;
+    private IAsset _searchImage;
+    private IAsset _searchRolloverImage;
+    private IAsset _myLibraryImage;
+    private IAsset _myLibraryRolloverImage;
+    private IAsset _borrowedBooksImage;
+    private IAsset _borrowedBooksRolloverImage;
+    private IAsset _loginImage;
+    private IAsset _loginRolloverImage;
+    private IAsset _newBookImage;
+    private IAsset _newBookRolloverImage;
+    private IAsset _editProfileImage;
+    private IAsset _editProfileRolloverImage;
+    private IAsset _giveAwayImage;
+    private IAsset _giveAwayRolloverImage;
+    private IAsset _editUsersImage;
+    private IAsset _editUsersRolloverImage;
+    private IAsset _editPublishersImage;
+    private IAsset _editPublishersRolloverImage;
+    private IAsset _transferBooksImage;
+    private IAsset _transferBooksRolloverImage;
 
-    // Also used for logout and registration pages.
+    public abstract String getSubtitle();
 
-    private static final int LOGIN_PAGE_TYPE = 3;
-
-    private static final int ADMIN_PAGE_TYPE = 4;
-
-    private int _pageType = 0;
-
-    private IAsset _subheader;
-
-    /**
-     *  Determines the 'type' of page, which is used to highlight (with an icon) one of the options
-     *  on the left-side navigation bar.
-     *
-     *  This is determined from the page's specification; a property named "page-type" is read.  It
-     *  should be one of the following values:
-     *  <ul>
-     *  <li>search
-     *  <li>library
-     *  <li>login
-     * </ul>
-     * 
-     *  <p>If not specified, "search" is assumed.
-     *
-     **/
-
-    protected int getPageType()
+    public void finishLoad()
     {
-        if (_pageType == 0)
-        {
-            String typeName = getPage().getSpecification().getProperty("page-type");
+        IPage page = getPage();
 
-            _pageType = SEARCH_PAGE_TYPE;
+        String pageName = page.getPageName();
 
-            if ("library".equals(typeName))
-                _pageType = LIBRARY_PAGE_TYPE;
-            else
-                if ("login".equals(typeName))
-                    _pageType = LOGIN_PAGE_TYPE;
-                else
-                    if ("admin".equals(typeName))
-                        _pageType = ADMIN_PAGE_TYPE;
-        }
+        _pageType = page.getSpecification().getProperty("page-type");
 
-        return _pageType;
+        if (_pageType == null)
+            _pageType = pageName;
+
+        _titleImage = getAsset("title_" + pageName);
+
+        if (_titleImage == null)
+            _titleImage = getAsset("title_" + _pageType);
+
+        if (_titleImage == null)
+            throw new ApplicationRuntimeException(
+                "Cannot find title image for " + pageName + " or " + _pageType + ".",
+                this);
+
+        // Based on the type, select the images to use on this instance of Border
+        // in this particular page.
+
+        _searchImage = selectImage("Search", "search");
+        _searchRolloverImage = selectImage("Search", "search_h");
+
+        _myLibraryImage = selectImage("MyLibrary", "mylibrary");
+        _myLibraryRolloverImage = selectImage("MyLibrary", "mylibrary_h");
+
+        _borrowedBooksImage = selectImage("BorrowedBooks", "borrowedbooks");
+        _borrowedBooksRolloverImage = selectImage("BorrowedBooks", "borrowedbooks_h");
+
+        _newBookImage = selectImage("NewBook", "newbook");
+        _newBookRolloverImage = selectImage("NewBook", "newbook_h");
+
+        _editProfileImage = selectImage("EditProfile", "editprofile");
+        _editProfileRolloverImage = selectImage("EditProfile", "editprofile_h");
+
+        _giveAwayImage = selectImage("GiveAwayBooks", "giveaway");
+        _giveAwayRolloverImage = selectImage("GiveAwayBooks", "giveaway_h");
+
+        _editUsersImage = selectImage("EditUsers", "editusers");
+        _editUsersRolloverImage = selectImage("EditUsers", "editusers_h");
+
+        _editPublishersImage = selectImage("EditPublishers", "editpublishers");
+        _editPublishersRolloverImage = selectImage("EditPublishers", "editpublishers_h");
+
+        _transferBooksImage = selectImage("TransferBooks", "transferbooks");
+        _transferBooksRolloverImage = selectImage("TransferBooks", "transferbooks_h");
+
+        _loginImage = selectImage("Login", "login");
+        _loginRolloverImage = selectImage("Login", "login_h");
     }
 
-    public boolean isLoggedIn()
+    private IAsset selectImage(String type, String baseName)
     {
-        // Get the visit, if it exists, without creating it.
+        String key = _pageType.equals(type) ? baseName + "_s" : baseName;
 
-        Visit visit = (Visit) getPage().getEngine().getVisit();
-
-        return visit != null && visit.isUserLoggedIn();
-    }
-
-    /**
-     *  Returns true if the user is logged in and is an adminstrator.
-     *  This makes additional left-side options appear.
-     *
-     **/
-
-    public boolean isAdmin()
-    {
-        Visit visit = (Visit) getPage().getEngine().getVisit();
-
-        return visit != null && visit.isUserLoggedIn() && visit.getUser().isAdmin();
+        return getAsset(key);
     }
 
     public String getWindowTitle()
     {
-        if (_subtitle == null)
+        String subtitle = getSubtitle();
+
+        if (subtitle == null)
             return WINDOW_TITLE;
 
-        return WINDOW_TITLE + ": " + _subtitle;
+        return WINDOW_TITLE + ": " + subtitle;
     }
 
-    public void login(IRequestCycle cycle)
+    public boolean isLoggedIn()
     {
-        Login login = (Login) cycle.getPage("Login");
+        IEngine engine = getPage().getEngine();
+        Visit visit = (Visit) engine.getVisit();
 
-        // If on one of the Login pages (including Logout)
-        // then don't set a callback (this will cause the user
-        // to go to the MyLibrary page).
+        if (visit == null)
+            return false;
 
-        if (getPageType() != LOGIN_PAGE_TYPE)
-            login.setCallback(new PageCallback(getPage()));
-
-        cycle.setPage(login);
+        return visit.isUserLoggedIn();
     }
 
-    public void logout(IRequestCycle cycle)
+    public boolean isAdmin()
     {
-        VirtualLibraryEngine engine = (VirtualLibraryEngine) getPage().getEngine();
+        IEngine engine = getPage().getEngine();
+        Visit visit = (Visit) engine.getVisit();
 
-        engine.logout();
+        if (visit == null)
+            return false;
 
-        Home home = (Home) cycle.getPage("Home");
-
-        home.setMessage("Goodbye.");
-
-        cycle.setPage(home);
+        return visit.isUserLoggedIn() && visit.getUser().isAdmin();
     }
-
-    public IAsset getSearchIcon()
-    {
-        return getIcon(SEARCH_PAGE_TYPE);
-    }
-
-    public IAsset getMyLibraryIcon()
-    {
-        return getIcon(LIBRARY_PAGE_TYPE);
-    }
-
-    public IAsset getLoginIcon()
-    {
-        return getIcon(LOGIN_PAGE_TYPE);
-    }
-
-    public boolean isLibraryPage()
-    {
-        return getPageType() == LIBRARY_PAGE_TYPE;
-    }
-
-    /**
-     *  Show the slash on library pages that aren't "MyLibrary".
-     *
-     **/
-
-    public boolean getShowSlash()
-    {
-        return !getPage().getPageName().equals("MyLibrary");
-    }
-
-    public IAsset getAdminIcon()
-    {
-        return getIcon(ADMIN_PAGE_TYPE);
-    }
-
-    private IAsset getIcon(int type)
-    {
-        String name = (type == getPageType()) ? "dot" : "spacer";
-
-        return getAsset(name);
-    }
-
-    /**
-     *  Listener that invokes the {@link EditProfile} page to allow a user
-     *  to edit thier name, etc.
-     *
-     **/
 
     public void editProfile(IRequestCycle cycle)
     {
-        EditProfile page;
-
-        page = (EditProfile) cycle.getPage("EditProfile");
+        EditProfile page = (EditProfile) cycle.getPage("EditProfile");
 
         page.beginEdit(cycle);
     }
 
-    /**
-     *  Listener used to add a new book.
-     *
-     **/
-
-    public void addNewBook(IRequestCycle cycle)
+    public void logout(IRequestCycle cycle)
     {
-        NewBook page = (NewBook) cycle.getPage("NewBook");
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getPage().getEngine();
 
-        cycle.setPage(page);
+        vengine.logout();
+
+        IMessageProperty home = (IMessageProperty) cycle.getPage("Home");
+
+        home.setMessage(getString("goodbye"));
+
+        cycle.setPage(home);
     }
 
-    public IAsset getSubheader()
+    public IAsset getBorrowedBooksImage()
     {
-        if (_subheader == null)
-        {
-            String name = "header_" + getPage().getPageName();
-
-            _subheader = getAsset(name);
-
-            if (_subheader == null)
-                _subheader = getAsset("spacer");
-        }
-
-        return _subheader;
+        return _borrowedBooksImage;
     }
 
-    public String getSubtitle()
+    public IAsset getBorrowedBooksRolloverImage()
     {
-        return _subtitle;
+        return _borrowedBooksRolloverImage;
     }
 
-    public void setSubtitle(String subtitle)
+    public IAsset getTitleImage()
     {
-        _subtitle = subtitle;
+        return _titleImage;
+    }
+
+    public IAsset getSearchImage()
+    {
+        return _searchImage;
+    }
+
+    public IAsset getSearchRolloverImage()
+    {
+        return _searchRolloverImage;
+    }
+
+    public IAsset getMyLibraryImage()
+    {
+        return _myLibraryImage;
+    }
+
+    public IAsset getMyLibraryRolloverImage()
+    {
+        return _myLibraryRolloverImage;
+    }
+
+    public IAsset getLoginImage()
+    {
+        return _loginImage;
+    }
+
+    public IAsset getLoginRolloverImage()
+    {
+        return _loginRolloverImage;
+    }
+
+    public String getPageType()
+    {
+        return _pageType;
+    }
+
+    public IAsset getNewBookImage()
+    {
+        return _newBookImage;
+    }
+
+    public IAsset getNewBookRolloverImage()
+    {
+        return _newBookRolloverImage;
+    }
+
+    public IAsset getEditProfileImage()
+    {
+        return _editProfileImage;
+    }
+
+    public IAsset getEditProfileRolloverImage()
+    {
+        return _editProfileRolloverImage;
+    }
+
+    public IAsset getGiveAwayImage()
+    {
+        return _giveAwayImage;
+    }
+
+    public IAsset getGiveAwayRolloverImage()
+    {
+        return _giveAwayRolloverImage;
+    }
+
+    public IAsset getEditPublishersImage()
+    {
+        return _editPublishersImage;
+    }
+
+    public IAsset getEditPublishersRolloverImage()
+    {
+        return _editPublishersRolloverImage;
+    }
+
+    public IAsset getEditUsersImage()
+    {
+        return _editUsersImage;
+    }
+
+    public IAsset getEditUsersRolloverImage()
+    {
+        return _editUsersRolloverImage;
+    }
+
+    public IAsset getTransferBooksImage()
+    {
+        return _transferBooksImage;
+    }
+
+    public IAsset getTransferBooksRolloverImage()
+    {
+        return _transferBooksRolloverImage;
     }
 
 }

@@ -6,8 +6,6 @@
 
 <page-specification class="org.apache.tapestry.vlib.pages.BorrowedBooks">
 
-  <property name="page-type">library</property>
-  
   <property-specification name="error" type="java.lang.String"/>
   <property-specification name="message" type="java.lang.String"/>
   <property-specification name="currentBook" type="org.apache.tapestry.vlib.ejb.Book"/>
@@ -18,5 +16,13 @@
     <binding name="value" expression="currentBook"/>
     <static-binding name="element" value="tr"/>
   </component>  
+  
+  <component id="returnRollover" type="Rollover">
+    <binding name="image" expression="assets.return"/>
+    <binding name="focus" expression="assets.return_h"/>
+  </component>
+  
+  <context-asset name="return" path="images/return.png"/>
+  <context-asset name="return_h" path="images/return_h.png"/>
      
 </page-specification>

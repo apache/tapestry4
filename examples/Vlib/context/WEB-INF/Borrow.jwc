@@ -16,7 +16,14 @@
     <binding name="disabled" expression="linkDisabled"/>
   </component>
   
-  <context-asset name="enabled" path="/images/icon_borrow.gif"/>
-  <context-asset name="disabled" path="/images/spacer.gif"/>
+  <component id="rollover" type="Rollover">
+  	<binding name="image" expression="assets.enabled"/>
+  	<binding name="disabled" expression="assets.disabled"/>
+  	<binding name="focus" expression="assets.focus"/>
+  </component>
+  
+  <context-asset name="enabled" path="images/checkout.png"/>
+  <context-asset name="focus" path="images/checkout_h.png"/>
+  <context-asset name="disabled" path="images/spacer.png"/>
   
 </component-specification>

@@ -60,7 +60,6 @@ import java.rmi.RemoteException;
 import javax.ejb.FinderException;
 
 import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.IComponentStrings;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.vlib.IMessageProperty;
@@ -153,7 +152,6 @@ public abstract class BorrowedBooks extends Protected implements IMessagePropert
 
     public void returnBook(IRequestCycle cycle)
     {
-        IComponentStrings strings = getStrings();
         Object[] parameters = cycle.getServiceParameters();
         Integer bookPK = (Integer) parameters[0];
 
@@ -164,11 +162,11 @@ public abstract class BorrowedBooks extends Protected implements IMessagePropert
         {
             Book book = operations.returnBook(bookPK);
 
-            setMessage(strings.format("returned-book", book.getTitle()));
+            setMessage(formatString("returned-book", book.getTitle()));
         }
         catch (FinderException ex)
         {
-            setError(strings.format("unable-to-return-book", ex.getMessage()));
+            setError(formatString("unable-to-return-book", ex.getMessage()));
             return;
         }
         catch (RemoteException ex)

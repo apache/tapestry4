@@ -55,6 +55,8 @@
 
 package org.apache.tapestry.vlib;
 
+import org.apache.tapestry.IPage;
+
 /**
  *  Marks pages that have an error property (of type String).
  *
@@ -65,7 +67,7 @@ package org.apache.tapestry.vlib;
  * 
  **/
 
-public interface IErrorProperty
+public interface IErrorProperty extends IPage
 {
     public String getError();
 

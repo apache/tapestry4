@@ -67,7 +67,6 @@ import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.apache.tapestry.valid.ValidatorException;
 import org.apache.tapestry.vlib.IErrorProperty;
-import org.apache.tapestry.vlib.SimpleValidationDelegate;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
 import org.apache.tapestry.vlib.ejb.IOperations;

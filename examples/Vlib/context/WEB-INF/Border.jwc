@@ -8,32 +8,180 @@
 	class="org.apache.tapestry.vlib.components.Border"
 	allow-informal-parameters="no">
 
-  <parameter name="title" type="java.lang.String" direction="in"/>
   <parameter name="subtitle" type="java.lang.String" direction="in"/>
-  <parameter name="simpleTitle" type="boolean" direction="in"/>  
-            
-  <component id="ifImageTitle" type="Conditional">
-  	<inherited-binding name="condition" parameter-name="simpleTitle"/>
-  	<binding name="invert" expression="true"/>
+           
+  <component id="search" type="PageLink">
+    <static-binding name="page" value="Home"/>	
   </component>
   
-  <component id="ifSimpleTitle" type="Conditional">
-  	<inherited-binding name="condition" parameter-name="simpleTitle"/>
+  <component id="searchRollover" type="Rollover">
+    <binding name="image" expression="searchImage"/>
+    <binding name="focus" expression="searchRolloverImage"/>	
   </component>
- 
-  <context-asset name="stylesheet" path="/scripts/style_virtlib_pcIE55.css"/>
-  <context-asset name="dot" path="/images/dots_leftnav.gif"/>
-  <context-asset name="spacer" path="/images/spacer.gif"/>
+       
+  <component id="myLibrary" type="PageLink">
+    <static-binding name="page" value="MyLibrary"/>	
+  </component>    
   
-  <context-asset name="header_Home" path="/images/hd_searchforbooks.gif"/>
-  <context-asset name="header_Matches" path="/images/hd_matchingbooks.gif"/>
-  <context-asset name="header_NewBook" path="/images/hd_addnewbooks.gif"/>
-  <context-asset name="header_BorrowedBooks" path="/images/hd_borrowedbooks.gif"/>
-  <context-asset name="header_ConfirmBookDelete" path="/images/hd_deletebook.gif"/>
-  <context-asset name="header_Person" path="/images/hd_bookinventory.gif"/>
-  <context-asset name="header_EditProfile" path="/images/hd_editprofile.gif"/>
-  <context-asset name="header_Login" path="/images/hd_login.gif"/>
-  <context-asset name="header_Register" path="/images/hd_register_noslash.gif"/>
-  <context-asset name="header_ViewBook" path="/images/hd_viewbook.gif"/>
-  <context-asset name="header_EditBook" path="/images/hd_editbooks.gif"/>
+  <component id="myLibraryRollover" type="Rollover">
+    <binding name="image" expression="myLibraryImage"/>
+    <binding name="focus" expression="myLibraryRolloverImage"/>
+  </component>
+  
+  <component id="borrowedBooks" type="PageLink">
+  	<static-binding name="page" value="BorrowedBooks"/>	
+  </component>
+  
+  <component id="borrowedBooksRollover" type="Rollover">
+    <binding name="image" expression="borrowedBooksImage"/>
+    <binding name="focus" expression="borrowedBooksRolloverImage"/>	
+  </component>
+  
+  <component id="newBook" type="PageLink">
+    <static-binding name="page" value="NewBook"/>	
+  </component>
+  
+  <component id="newBookRollover" type="Rollover">
+    <binding name="image" expression="newBookImage"/>
+    <binding name="focus" expression="newBookRolloverImage"/>
+  </component>
+  
+  <component id="editProfile" type="DirectLink">
+  	<binding name="listener" expression="listeners.editProfile"/>	
+  </component>
+  
+  <component id="editProfileRollover" type="Rollover">
+    <binding name="image" expression="editProfileImage"/>
+    <binding name="focus" expression="editProfileRolloverImage"/>	
+  </component>
+  
+  <component id="giveAway" type="PageLink">
+	<static-binding name="page" value="GiveAwayBooks"/>	
+  </component>
+   
+  <component id="giveAwayRollover" type="Rollover">
+    <binding name="image" expression="giveAwayImage"/>
+    <binding name="focus" expression="giveAwayRolloverImage"/>	
+  </component>  
+   
+  <component id="editUsers" type="PageLink">
+    <static-binding name="page" value="EditUsers"/>
+  </component>
+  
+  <component id="editUsersRollover" type="Rollover">
+    <binding name="image" expression="editUsersImage"/>
+    <binding name="focus" expression="editUsersRolloverImage"/>
+  </component>
+  
+  <component id="editPublishers" type="PageLink">
+    <static-binding name="page" value="EditPublishers"/>	
+  </component>
+  
+  <component id="editPublishersRollover" type="Rollover">
+    <binding name="image" expression="editPublishersImage"/>
+    <binding name="focus" expression="editPublishersRolloverImage"/>	
+  </component>
+  
+  <component id="transferBooks" type="PageLink">
+    <static-binding name="page" value="TransferBooksSelect"/>	
+  </component>
+  
+  <component id="transferBooksRollover" type="Rollover">
+    <binding name="image" expression="transferBooksImage"/>
+    <binding name="focus" expression="transferBooksRolloverImage"/>
+  </component>
+   
+  <component id="logout" type="DirectLink">
+    <binding name="listener" expression="listeners.logout"/>
+  </component>
+  
+  <!-- Since there is no "Logout" page, the images for the Logout
+  	   link are invariant. -->
+  	   
+  <component id="logoutRollover" type="Rollover">
+    <binding name="image" expression="assets.logout"/>
+    <binding name="focus" expression="assets.logout_h"/>	
+  </component>
+  
+  <component id="login" type="PageLink">
+    <static-binding name="page" value="Login"/>	
+  </component>
+  
+  <component id="loginRollover" type="Rollover">
+    <binding name="image" expression="loginImage"/>
+    <binding name="focus" expression="loginRolloverImage"/>	
+  </component>
+   
+  <context-asset name="stylesheet" path="css/vlib.css"/>
+
+  <context-asset name="title_BookMatches" path="images/title/BookMatches.png"/>
+  <context-asset name="title_BorrowedBooks" path="images/title/BorrowedBooks.png"/>
+  <context-asset name="title_ConfirmBookDelete" path="images/title/DeleteBook.png"/> 
+  <context-asset name="title_EditBook" path="images/title/EditBook.png"/>
+  <context-asset name="title_EditProfile" path="images/title/EditProfile.png"/>
+  <context-asset name="title_EditPublishers" path="images/title/EditPublishers.png"/>
+  <context-asset name="title_EditUsers" path="images/title/EditUsers.png"/>
+  <context-asset name="title_GiveAwayBooks" path="images/title/GiveAwayBooks.png"/>
+  <context-asset name="title_Home" path="images/title/Search.png"/>
+  <context-asset name="title_Login" path="images/title/Login.png"/>
+  <context-asset name="title_MyLibrary" path="images/title/MyLibrary.png"/>
+  <context-asset name="title_NewBook" path="images/title/AddNewBook.png"/>
+  <context-asset name="title_Register" path="images/title/Register.png"/>
+  <context-asset name="title_TransferBooks" path="images/title/TransferBooks.png"/>
+  <context-asset name="title_ViewBook" path="images/title/ViewBook.png"/>
+  <context-asset name="title_ViewPerson" path="images/title/ViewPerson.png"/>
+  
+  <context-asset name="search" path="images/nav/nav_1x1.png"/>
+  <context-asset name="search_h" path="images/nav-h/nav_1x1.png"/>
+  <context-asset name="search_s" path="images/nav-selected/nav_1x1.png"/>
+  <context-asset name="search_h_s" path="images/nav-selected-h/nav_1x1.png"/>
+  
+  <context-asset name="mylibrary" path="images/nav/nav_2x1.png"/>
+  <context-asset name="mylibrary_h" path="images/nav-h/nav_2x1.png"/>
+  <context-asset name="mylibrary_s" path="images/nav-selected/nav_2x1.png"/>
+  <context-asset name="mylibrary_h_s" path="images/nav-selected-h/nav_2x1.png"/>
+  
+  <context-asset name="borrowedbooks" path="images/nav/nav_3x1.png"/>
+  <context-asset name="borrowedbooks_h" path="images/nav-h/nav_3x1.png"/>
+  <context-asset name="borrowedbooks_s" path="images/nav-selected/nav_3x1.png"/>
+  <context-asset name="borrowedbooks_h_s" path="images/nav-selected-h/nav_3x1.png"/>
+  
+  <context-asset name="newbook" path="images/nav/nav_4x1.png"/>
+  <context-asset name="newbook_h" path="images/nav-h/nav_4x1.png"/>
+  <context-asset name="newbook_s" path="images/nav-selected/nav_4x1.png"/>
+  <context-asset name="newbook_h_s" path="images/nav-selected-h/nav_4x1.png"/>
+  
+  <context-asset name="editprofile" path="images/nav/nav_5x1_editprofile.png"/>
+  <context-asset name="editprofile_h" path="images/nav-h/nav_5x1_editprofile.png"/>
+  <context-asset name="editprofile_s" path="images/nav-selected/nav_5x1_editprofile.png"/>
+  <context-asset name="editprofile_h_s" path="images/nav-selected-h/nav_5x1_editprofile.png"/>
+  
+  <context-asset name="giveaway" path="images/nav/nav_5x1.png"/>
+  <context-asset name="giveaway_h" path="images/nav-h/nav_5x1.png"/>
+  <context-asset name="giveaway_s" path="images/nav-selected/nav_5x1.png"/>
+  <context-asset name="giveaway_h_s" path="images/nav-selected-h/nav_5x1.png"/>
+  
+  <context-asset name="editusers" path="images/nav/nav_7x1.png"/>
+  <context-asset name="editusers_h" path="images/nav-h/nav_7x1.png"/>
+  <context-asset name="editusers_s" path="images/nav-selected/nav_7x1.png"/>
+  <context-asset name="editusers_h_s" path="images/nav-selected-h/nav_7x1.png"/>  
+  
+  <context-asset name="editpublishers" path="images/nav/nav_8x1.png"/>
+  <context-asset name="editpublishers_h" path="images/nav-h/nav_8x1.png"/>
+  <context-asset name="editpublishers_s" path="images/nav-selected/nav_8x1.png"/>
+  <context-asset name="editpublishers_h_s" path="images/nav-selected-h/nav_8x1.png"/>  
+  
+  <context-asset name="transferbooks" path="images/nav/nav_9x1.png"/>
+  <context-asset name="transferbooks_h" path="images/nav-h/nav_9x1.png"/>
+  <context-asset name="transferbooks_s" path="images/nav-selected/nav_9x1.png"/>
+  <context-asset name="transferbooks_h_s" path="images/nav-selected-h/nav_9x1.png"/>  
+  
+  <context-asset name="login" path="images/nav/nav_10x1_login.png"/>
+  <context-asset name="login_h" path="images/nav-h/nav_10x1_login.png"/>
+  <context-asset name="login_s" path="images/nav-selected/nav_10x1_login.png"/>
+  <context-asset name="login_h_s" path="images/nav-selected-h/nav_10x1_login.png"/>
+  
+  <context-asset name="logout" path="images/nav/nav_10x1.png"/>
+  <context-asset name="logout_h" path="images/nav-h/nav_10x1.png"/>
+  
 </component-specification>

@@ -90,7 +90,6 @@ public abstract class NewBook extends Protected implements PageRenderListener
 
     public void addBook(IRequestCycle cycle)
     {
-        IComponentStrings strings = getStrings();
         Map attributes = getAttributes();
 
         Integer publisherPK = (Integer) attributes.get("publisherPK");
@@ -98,13 +97,13 @@ public abstract class NewBook extends Protected implements PageRenderListener
 
         if (publisherPK == null && Tapestry.isNull(publisherName))
         {
-            setErrorField("inputPublisherName", strings.getString("need-publisher-name"));
+            setErrorField("inputPublisherName", getString("need-publisher-name"));
             return;
         }
 
         if (publisherPK != null && !Tapestry.isNull(publisherName))
         {
-            setErrorField("inputPublisherName", strings.getString("leave-publisher-name-empty"));
+            setErrorField("inputPublisherName", getString("leave-publisher-name-empty"));
             return;
         }
 
@@ -153,7 +152,7 @@ public abstract class NewBook extends Protected implements PageRenderListener
 
         MyLibrary myLibrary = (MyLibrary) cycle.getPage("MyLibrary");
 
-        myLibrary.setMessage(strings.format("added-book", attributes.get("title")));
+        myLibrary.setMessage(formatString("added-book", attributes.get("title")));
 
         cycle.setPage(myLibrary);
     }

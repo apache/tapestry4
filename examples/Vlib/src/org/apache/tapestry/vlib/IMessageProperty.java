@@ -55,6 +55,8 @@
 
 package org.apache.tapestry.vlib;
 
+import org.apache.tapestry.IPage;
+
 /**
  *  String message property, for many pages that can display an informational message.
  *
@@ -64,7 +66,7 @@ package org.apache.tapestry.vlib;
  *
  **/
 
-public interface IMessageProperty
+public interface IMessageProperty extends IPage
 {
     public String getMessage();
     public void setMessage(String message);

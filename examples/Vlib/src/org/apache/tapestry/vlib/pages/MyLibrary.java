@@ -175,7 +175,6 @@ public abstract class MyLibrary extends Protected implements IMessageProperty
 
     private void returnBook(Integer bookPK)
     {
-        IComponentStrings strings = getStrings();
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
         for (int i = 0; i < 2; i++)
@@ -185,13 +184,13 @@ public abstract class MyLibrary extends Protected implements IMessageProperty
                 IOperations operations = vengine.getOperations();
                 Book book = operations.returnBook(bookPK);
 
-                setMessage(strings.format("returned-book", book.getTitle()));
+                setMessage(formatString("returned-book", book.getTitle()));
 
                 break;
             }
             catch (FinderException ex)
             {
-                setError(strings.format("unable-to-return-book", ex.getMessage()));
+                setError(formatString("unable-to-return-book", ex.getMessage()));
                 return;
             }
             catch (RemoteException ex)

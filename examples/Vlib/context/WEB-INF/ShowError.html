@@ -1,17 +1,20 @@
 <!-- $Id$ -->
-
 <span jwcid="$content$">
-
-<span jwcid="@Conditional" condition="ognl:page.error">
-<!-- Warning Bar -->
-<table width="100%" border="0" cellspacing="0" cellpadding="0">
-  <tr>
-    <td class="clsInvalidField"><img src="images/ico_invalid.gif" width="35" height="30" alt="[Error]" border="0" vspace="10" align="absmiddle">&nbsp;&nbsp;<span class="clsInfoWarning" jwcid="@Insert" value="ognl:page.error">Error Message</span>
-    </td>
-  </tr>
-</table>
-<!-- END Warning Bar -->
-				
-</span>		
-
+	<span jwcid="@Conditional" condition="ognl:page.error">
+		<div class="error">
+			<table>
+				<tr>
+					<td>
+						<img src="images/error-icon.png" width="50" height="50"
+							alt="[Error]" border="0" vspace="10"
+							align="absmiddle"/>
+					</td>
+					<td>
+						<span jwcid="@Insert" value="ognl:page.error">Error
+							Message</span>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</span>
 </span>

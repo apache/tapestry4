@@ -1,24 +1,26 @@
 <!-- $Id$ -->
 <html jwcid="$content$">
-<body jwcid="@Border" title="Login">
+<body jwcid="@Border">
 <span jwcid="@ShowError"/><span jwcid="@ShowValidationError" delegate="ognl:beans.delegate"/>
 <form jwcid="@Form" listener="ognl:listeners.attemptLogin" delegate="ognl:beans.delegate">
-  <table width="600" border="0" cellspacing="0" cellpadding="0">
-    <tr class="clsBold">
-      <td width="110" height="30"><span jwcid="@FieldLabel" field="ognl:components.inputEmail">Email Address</span>
-      </td>
-      <td width="390">&nbsp;<input jwcid="inputEmail" type="text" name="email" class="inputTextForm" size="30" maxlength="60"/>
-      </td>
-    </tr>
-    <tr class="clsBold">
-      <td height="30"><span jwcid="@FieldLabel" field="ognl:components.inputPassword">Password</span>
-      </td>
-      <td width="420">&nbsp;<input jwcid="inputPassword" type="text" name="password" size="10" maxlength="20" class="inputTextForm"/>&nbsp;&nbsp;<input type="image" src="images/bt_login.gif" width="42" height="28" border="0" name="submit" value="Login" align="absmiddle">
+  <table class="form">
+    <tr>
+      <th><span jwcid="@FieldLabel" field="ognl:components.inputEmail">Email Address</span>
+      </th>
+      <td><input jwcid="inputEmail" type="text" name="email" class="inputTextForm" size="30" maxlength="60"/>
       </td>
     </tr>
-    <tr class="clsBold">
-      <td height="30" colspan="2">&nbsp;
-      </td>
+    <tr>
+      <th><span jwcid="@FieldLabel" field="ognl:components.inputPassword">Password</span>
+      </th>
+      <td valign="bottom"><input jwcid="inputPassword" type="text" name="password" size="10" maxlength="20" class="inputTextForm"/>
+	   </td>
+	</tr>
+	<tr>
+		<td></td>
+	  	<td>
+	  	<input type="image" src="images/login.png" width="35" height="20" border="0"/>
+	  	</td>
     </tr>
   </table>
 </form>

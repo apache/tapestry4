@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+
+<page-specification class="org.apache.tapestry.vlib.pages.admin.TransferBooksTransfer">
+
+  <property name="page-type" value="TransferBooks"/>
+  
+  <property-specification name="message" type="java.lang.String"/>
+  <property-specification name="error" type="java.lang.String"/>
+  
+  <property-specification name="fromUserPK" type="java.lang.Integer" persistent="yes"/>
+  <property-specification name="fromUser" type="org.apache.tapestry.vlib.ejb.Person"/>
+  <property-specification name="toUserPK" type="java.lang.Integer" persistent="yes"/>
+  <property-specification name="toUser" type="org.apache.tapestry.vlib.ejb.Person"/>
+  <property-specification name="userBookModel" type="org.apache.tapestry.form.IPropertySelectionModel"/>
+  <property-specification name="selectedBooks" type="java.util.List"/>
+    
+  <component id="selectBooks" type="contrib:Palette">
+    <binding name="model" expression="userBookModel"/>
+    <binding name="sort" expression="@org.apache.tapestry.contrib.palette.SortMode@LABEL"/>
+    <binding name="selected" expression="selectedBooks"/>
+    <binding name="selectedTitleBlock" expression="components.selectedTitle"/>
+    <binding name="availableTitleBlock" expression="components.availableTitle"/>
+  </component>
+  
+</page-specification>
+

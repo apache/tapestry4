@@ -6,7 +6,7 @@
 	
 <page-specification class="org.apache.tapestry.vlib.pages.Register">
 
-  <property name="page-type">login</property>
+  <property name="page-type" value="Login"/>
 
   <property-specification name="error" type="java.lang.String"/>
   <property-specification name="firstName" type="java.lang.String"/>

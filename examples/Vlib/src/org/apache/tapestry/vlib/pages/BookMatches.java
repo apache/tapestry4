@@ -57,7 +57,6 @@ package org.apache.tapestry.vlib.pages;
 
 import java.rmi.RemoteException;
 
-import org.apache.tapestry.IComponentStrings;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.vlib.IErrorProperty;
@@ -92,7 +91,6 @@ public abstract class BookMatches extends BasePage
 
     public void performQuery(String title, String author, Object publisherPK, IRequestCycle cycle)
     {
-    	IComponentStrings strings = getStrings();
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
         IBookQuery query = getBookQuery();
@@ -113,7 +111,7 @@ public abstract class BookMatches extends BasePage
                 if (count == 0)
                 {
                     Home home = (Home) cycle.getPage("Home");
-                    home.setMessage(strings.getString("no-matches"));
+                    home.setMessage(getString("no-matches"));
                     cycle.setPage(home);
                     return;
                 }
