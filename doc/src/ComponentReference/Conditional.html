@@ -48,7 +48,8 @@
  <td colspan="2">
   <b>See Also</b>
 	<br>
-	<a href="Insert.html">Insert</a>, <a href="Foreach.html">Foreach</a> 
+  <a href="Foreach.html">Foreach</a>, 
+	<a href="Insert.html">Insert</a>
  </td>
 </tr>
 
@@ -98,7 +99,7 @@
 	and if they are a manager whether they have any staff.	
 	<p>
 	
-<table bgcolor="#c0c0c0" cellpadding="8">
+<table class="examples" cellpadding="8">
 <tr>
  <td>
 John Smith is a Manager with <font color="red"><b>no</b></font> staff. 	
@@ -146,12 +147,22 @@ John Smith is a Manager with <font color="red"><b>no</b></font> staff.
 
 
 public class EnquiryPage extends BasePage {
+    private String fullName;
+    private List staff;
+    private boolean isManager;
 
     public String getFullName() { return fullName; }
 
     public List getStaff() { return staff;  }
 
     public boolean isManager() { return isManager; }
+    
+    public void detach() {
+        fullName = null;
+        staff = null;
+        isManager = false;
+        super.detach();
+    }
 }
 </pre>
 

@@ -159,7 +159,7 @@
 	The Form component is used to provide a simple login page.
 	<p>
 
-<table bgcolor="#c0c0c0" cellpadding="4">
+<table class="examples" cellpadding="4">
 <form>
  <tr>
   <td>Username:</td><td><input type="text" size="12"/></td>
@@ -208,7 +208,7 @@ public class LoginPage extends BasePage {
         Visit visit = (Visit) getVisit();
 			
         if (visit.isAuthenticated()) {
-            page.setPage("Home");		
+            cycle.setPage("Home");		
         } 
     }
 }

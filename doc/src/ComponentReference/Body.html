@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- $Id$ --> 
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+
+<body>
+<table border="0" cellpadding="4" cellspacing="4" width="100%">
+<tr>
+ <td>
+  <table>
+	 <tr>
+	  <td><font size="+2"><b>Body</b></font></td>
+	 </tr>
+	 <tr>
+	  <td>
+		 <a href="../api/net/sf/tapestry/html/Body.html">
+		 net.sf.tapestry.components.Body</a>
+		</td>
+	 </tr>
+  </table>
+ </td>
+ <td>
+  <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
+	 <tr>
+	  <td>Non Visual Component</input>
+		</td>
+	 </tr>
+  </table>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2"><hr></td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Description</b>
+	<br>
+  Replaces the &lt;body&gt; tag. The Body component provides support dynamic 
+  scripting and image preloaded, used by other components, such as the 
+  <a href="Rollover.html">Rollover</a> component. 
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>See Also</b>
+	<br>
+	<a href="Rollover.html">Rollover</a>, <a href="Script.html">Script</a> 
+ </td>
+</tr>
+
+
+<tr>
+ <td colspan="2">
+  <b>Parameters</b> &nbsp;&nbsp; (informal parameters allowed)
+	<br>
+  <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+  <tr> 
+    <th>Name</th>
+    <th>Type</th>
+	  <th>Direction</th>
+    <th>Required</th> 
+    <th>Default</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>name</td>
+    <td>String</td>
+    <td>in</td>
+   	<td>no</td>
+		<td>body</td>
+		<td>The element to use when rendering a tag. When using a Body component 
+    in a frameset, this may be changed to "frameset". 
+		</td>
+	</tr>
+	</table>		
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Examples</b>
+	<p>
+  The Body component is used here to dynamically set the page's background 
+  color using the informal parameter 'bgcolor'.	
+	<p>
+
+<table bgcolor="yellow" cellpadding="24">
+<tr>
+ <td>Your account of $645.35 is 2 Months overdue.<td>
+</tr>
+</table>
+		
+<pre>
+&lt;body jwcid="<span class="jwcid">body</span>"&gt;
+  Your account &lt;span jwcid="insertAccountStatus"/&gt;.
+&lt;/body&gt;
+
+
+&lt;component id="<span class="jwcid">body</span>" type="<a href="Body.html">Body</a>"&gt;
+   &lt;binding name="bgcolor" property-path="statusColor"/&gt;
+&lt;/component&gt;
+
+&lt;component id="insertAccountStatus" type="<a href="Insert.html">Insert</a>"&gt;
+   &lt;binding name="value" property-path="accountStatus"/&gt;
+&lt;/component&gt;
+
+
+public class AccountPage extends BasePage {
+    private String accountStatus;
+    private String statusColor;
+
+    public String getAccountStatus() { return accountStatus; }
+
+    public String getStatusColor() { return statusColor; }
+    
+    public void detach() {
+        accountStatus = null;
+        statusColor = null;
+        super.detach();
+    }
+}
+</pre>
+
+ </td>
+</tr>
+</table>
+
+</body>
+</html>
