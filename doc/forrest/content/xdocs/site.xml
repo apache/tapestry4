@@ -34,7 +34,7 @@ See http://xml.apache.org/forrest/linking.html for more info
     </tapestry>
     
     <project label="Project">
-        <item label="Mailing List"     href="http://jakarta.apache.org/site/mail2.html#tapestry"/>
+        <item label="Mailing Lists"     href="http://jakarta.apache.org/site/mail2.html#tapestry"/>
         <item label="Bug Database"     href="http://jakarta.apache.org/site/bugs.html"/>
         <item label="CVS Repositories"      href="http://jakarta.apache.org/site/cvsindex.html"/>
     </project>
