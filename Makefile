@@ -24,7 +24,7 @@ JAVADOC_MODULES = \
 	../Examples/Vlib
 
 # A list of Jar files redistributed with Tapestry.  xerces, gnu-regexp
-# and j2ee are needed to build Tapestry; the rest are needed
+# ejb and log4j are needed to build Tapestry; the rest are needed
 # for the tutorials and demos.  Note that org.apache.jasper.jar is
 # ony needed to run the JSP portion of the Primix Virtual Library
 # demo.
@@ -35,7 +35,8 @@ EXTERNAL_JARS = \
 	com.mortbay.jetty.jar \
 	javax.servlet.jar \
 	org.apache.jasper.jar \
-	ejb.jar
+	ejb.jar \
+	log4.jar
 
 # This reflects my personal build work area structure, where
 # I create a subdirectory and checkout all the files.
