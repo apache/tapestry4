@@ -7,42 +7,22 @@
 	<servlet>
 		<servlet-name>hello</servlet-name>
 		<servlet-class>tutorial.hello.HelloWorldServlet</servlet-class>
-		<init-param>
-			<param-name>com.primix.tapestry.context-path</param-name>
-			<param-value>/tutorial</param-value>
-		</init-param>
 	</servlet>
 	<servlet>
 		<servlet-name>simple</servlet-name>
 		<servlet-class>tutorial.simple.SimpleServlet</servlet-class>
-		<init-param>
-			<param-name>com.primix.tapestry.context-path</param-name>
-			<param-value>/tutorial</param-value>
-		</init-param>
 	</servlet>
 	<servlet>
 		<servlet-name>adder</servlet-name>
 		<servlet-class>tutorial.adder.AdderServlet</servlet-class>
-		<init-param>
-			<param-name>com.primix.tapestry.context-path</param-name>
-			<param-value>/tutorial</param-value>
-		</init-param>
 	</servlet>
 	<servlet>
 		<servlet-name>border</servlet-name>
 		<servlet-class>tutorial.border.BorderServlet</servlet-class>
-		<init-param>
-			<param-name>com.primix.tapestry.context-path</param-name>
-			<param-value>/tutorial</param-value>
-		</init-param>
 	</servlet>
 	<servlet>
 		<servlet-name>survey</servlet-name>
 		<servlet-class>tutorial.survey.SurveyServlet</servlet-class>
-		<init-param>
-			<param-name>com.primix.tapestry.context-path</param-name>
-			<param-value>/tutorial</param-value>
-		</init-param>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>hello</servlet-name>
