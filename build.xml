@@ -310,9 +310,10 @@ description="Builds the Tapestry documentation.">
   		  depends="deploy-vlib"
   		  description="Launch the JBoss application server.">
   		  
-  	<property name="private.dir" value="${jboss.dir}/private"/>
-  	<delete dir="${private.dir}" quiet="true"/>
-  	<mkdir dir="${private.dir}"/>
+  	<property name="jboss.private.dir" value="${jboss.dir}/${private.dir}"/>
+  	<delete dir="${jboss.private.dir}" quiet="true"/>
+  	<mkdir dir="${jboss.private.dir}"/>
+  	
   	<java fork="true"
   		dir="${jboss.dir}/bin"
 		classname="org.jboss.Main">
@@ -343,7 +344,7 @@ description="Builds the Tapestry documentation.">
       		 files.  This coordinates with portions of
       		 config/jboss/conf/jetty.xml -->
       		 
-     	<sysproperty key="com.primix.tapestry.asset.dir" value="${private.dir}"/>
+     	<sysproperty key="com.primix.tapestry.asset.dir" value="${jboss.private.dir}"/>
      	<sysproperty key="com.primix.tapestry.asset.URL" value="/private"/>
      	
       	<!-- The following is probably only necessary under Windows.  Jetty gets
