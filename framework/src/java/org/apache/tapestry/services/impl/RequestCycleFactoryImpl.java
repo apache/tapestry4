@@ -27,6 +27,7 @@ import org.apache.tapestry.engine.ServiceEncoder;
 import org.apache.tapestry.engine.ServiceEncodingImpl;
 import org.apache.tapestry.record.PropertyPersistenceStrategySource;
 import org.apache.tapestry.request.RequestContext;
+import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.RequestCycleFactory;
 import org.apache.tapestry.services.ServiceConstants;
 import org.apache.tapestry.services.ServiceMap;
@@ -42,13 +43,11 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
 
     private IMonitorFactory _monitorFactory;
 
-    private ServiceMap _serviceMap;
-
     private PropertyPersistenceStrategySource _strategySource;
 
-    private IPageSource _pageSource;
-
     private ErrorHandler _errorHandler;
+
+    private Infrastructure _infrastructure;
 
     public IRequestCycle newRequestCycle(IEngine engine, RequestContext context)
     {
@@ -60,8 +59,8 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
 
         IEngineService service = findService(parameters);
 
-        return new RequestCycle(engine, context, parameters, service, _pageSource, _strategySource,
-                _errorHandler, monitor);
+        return new RequestCycle(engine, context, parameters, service, _infrastructure,
+                _strategySource, _errorHandler, monitor);
     }
 
     private IEngineService findService(QueryParameterMap parameters)
@@ -71,7 +70,7 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
         if (serviceName == null)
             serviceName = Tapestry.HOME_SERVICE;
 
-        return _serviceMap.getService(serviceName);
+        return _infrastructure.getServiceMap().getService(serviceName);
     }
 
     /**
@@ -124,11 +123,6 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
         _monitorFactory = monitorFactory;
     }
 
-    public void setServiceMap(ServiceMap serviceMap)
-    {
-        _serviceMap = serviceMap;
-    }
-
     public void setStrategySource(PropertyPersistenceStrategySource strategySource)
     {
         _strategySource = strategySource;
@@ -139,8 +133,8 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
         _errorHandler = errorHandler;
     }
 
-    public void setPageSource(IPageSource pageSource)
+    public void setInfrastructure(Infrastructure infrastructure)
     {
-        _pageSource = pageSource;
+        _infrastructure = infrastructure;
     }
 }
