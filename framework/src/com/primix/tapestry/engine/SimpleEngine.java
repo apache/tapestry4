@@ -52,7 +52,7 @@ import com.primix.tapestry.record.SimplePageRecorder;
  *
  *  @author Howard Ship
  *  @version $Id$
- */
+ **/
 
 public class SimpleEngine extends AbstractEngine
 {
@@ -135,11 +135,12 @@ public class SimpleEngine extends AbstractEngine
 	}
 
 	/**
-	*  Removes all page recorders that contain no changes.  Subclasses
-	*  should invoke this implementation in addition to providing
-	*  thier own.
-	*
-	*/
+	 *  Removes all page recorders that contain no changes, or
+     *  are marked for discard.  Subclasses
+	 *  should invoke this implementation in addition to providing
+	 *  thier own.
+	 *
+	 **/
 
 	protected void cleanupAfterRequest(IRequestCycle cycle)
 	{
@@ -157,7 +158,7 @@ public class SimpleEngine extends AbstractEngine
 			entry = (Map.Entry) i.next();
 			recorder = (IPageRecorder) entry.getValue();
 
-			if (!recorder.getHasChanges())
+			if (!recorder.getHasChanges() || recorder.isMarkedForDiscard())
 				i.remove();
 		}
 	}
@@ -179,6 +180,7 @@ public class SimpleEngine extends AbstractEngine
 
 		recorders.remove(name);
 	}
+
 
 	/**
 	*  Returns an unmodifiable {@link Collection} of the page names for which

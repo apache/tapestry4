@@ -58,6 +58,7 @@ public abstract class PageRecorder implements IPageRecorder, Serializable
 {
 	protected transient boolean dirty = false;
 	protected transient boolean locked = false;
+    protected transient boolean discard = false;
 
 	/**
 	*  Invoked to persist all changes that have been accumulated.  If the recorder
@@ -288,6 +289,20 @@ public abstract class PageRecorder implements IPageRecorder, Serializable
 		{
 			throw new PageRecorderSerializationException(ex);
 		}
+	}
+
+    /** @since 2.0.2 **/
+    
+	public boolean isMarkedForDiscard()
+	{
+		return discard;
+	}
+
+    /** @since 2.0.2 **/
+    
+	public void markForDiscard()
+	{
+        discard = true;
 	}
 
 }
