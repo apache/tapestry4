@@ -91,9 +91,16 @@
 				
 <h3>Release 1.0.8</h3>
 
+<p>A complete overhaul of the validating text field support.  The previous implementation
+used subclasses of AbstractValidatingTextField (which no longer exists) to add new types
+of validation; the new implementation has a single component, 
+<a href="doc/api/com/primix/tapestry/valid/ValidField.html">ValidField</a>, and many implementations
+of <a href="doc/api/com/primix/tapestry/valid/IValidator.html">IValidator</a>.
+
 <pre>
 [ #487394 ] NumericField doesn't work with long
 </pre>
+
 
 <h3>Release 1.0.7</h3>
 				
