@@ -17,28 +17,34 @@
 
 <project name="Tapestry Export" default="build">
 
-<property name="export.dir" value="export"/>
-
-<target name="setup" description="Sets up the directory, gets the files via CVS.">
-	<delete dir="${export.dir}" quiet="true"/>
-	<mkdir dir="${export.dir}"/>
-	<cvs command="-z3 export"
-		tag="HEAD" package="Tapestry"
-		dest="${export.dir}"  
-		cvsroot=":pserver:anonymous@cvs.tapestry.sourceforge.net:/cvsroot/tapestry"/>
-	<copy file="config/build.properties"
-		todir="${export.dir}/Tapestry/config"/>
-</target>
-
-
-<target name="build" description="Builds the distribution.">
-	<ant inheritAll="false" dir="${export.dir}/Tapestry" target="dist"/>
-	<copy todir=".">
-	  <fileset dir="${export.dir}/Tapestry/dist">
-	    <include name="*.tar.gz"/>
-          </fileset>
-        </copy>
-</target>
-
-
+	<!-- This can be changed to build a historical release, or
+		 to build a branch release. -->
+		 
+	<property name="tag" value="HEAD"/>
+	
+	<property name="export.dir" value="export"/>
+	<property name="module" value="jakarta-tapestry"/>
+	<property name="work.dir" value="${export.dir}/${module}"/>
+	
+	<target name="setup" description="Sets up the directory, gets the files via CVS.">
+		<delete dir="${export.dir}" quiet="true"/>
+		<mkdir dir="${export.dir}"/>
+		<cvs command="-z3 export"
+			tag="${tag}" package="${module}"
+			dest="${export.dir}"  
+			cvsroot=":pserver:anoncvs@cvs.apache.org:/home/cvspublic"/>
+	</target>
+	
+	
+	<target name="build" description="Builds the distribution.">
+		<copy file="build.properties"
+			todir="${work.dir}/config"/>
+		<ant inheritAll="false" dir="${work.dir}" target="dist"/>
+		<copy todir=".">
+		  <fileset dir="${work.dir}/dist">
+		    <include name="*.tar.gz"/>
+	        </fileset>
+	      </copy>
+	</target>
+	
 </project>
