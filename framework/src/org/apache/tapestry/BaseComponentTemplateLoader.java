@@ -245,7 +245,7 @@ public class BaseComponentTemplateLoader
     /**
      *  Adds the token (which implements {@link IRender})
      *  to the active component (using {@link IComponent#addBody(IRender)}),
-     *  or to this component {@link #addOuter(IRender)}.
+     *  or to this component {@link BaseComponent#addOuter(IRender)}.
      * 
      *  <p>
      *  A check is made that the active component allows a body.
