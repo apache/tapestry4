@@ -1,3 +1,8 @@
+* Dec 26 2000 hship
+
+Change definition of JAVADOC_DIR to be the actual directory (i.e., no longer tack
+on MODULE_NAME).
+
 * Dec 22 2000 hship
 
 Reorganize the JBE Utils, add the new splice command (used to automatically

@@ -241,8 +241,8 @@ ifeq "$(PACKAGES)" ""
 	$(error Must define PACKAGES in Makefile)
 endif
 	@$(ECHO) "\n*** Generating Javadoc ... ***\n"
-	@$(MKDIRS) $(FINAL_JAVADOC_DIR)
-	$(JAVADOC) -d $(FINAL_JAVADOC_DIR) -sourcepath $(FINAL_SOURCE_DIR) \
+	@$(MKDIRS) $(JAVADOC_DIR)
+	$(JAVADOC) -d $(JAVADOC_DIR) -sourcepath $(FINAL_SOURCE_DIR) \
 	-classpath "$(call JBE_CANONICALIZE,-classpath $(MOD_CLASSPATH) $(LOCAL_CLASSPATH) $(MOD_CLASS_DIR))" \
 	$(JAVADOC_OPT) $(PACKAGES)
 
