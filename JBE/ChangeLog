@@ -2,6 +2,8 @@
 
 More cleanups and improvements; support some additional user-define pre- and post-
 targets.
+Simplify the rules for compiling the JBE utility; extend it to support compiling
+any additional Java files in the directory.
 
 * Dec 11 2000 hship
 
