@@ -36,12 +36,12 @@
     <depend project="commons-digester"/>
     <depend project="commons-lang"/>
     <depend project="jakarta-bsf"/>
-    
+    <depend project="javassist"/>
+        
     <!-- These aren't built, yet, by Gump.  We direct Gump to
     	   use the versions stored in our CVS. -->
     	   
     <depend project="ognl"/>
-    <depend project="javassist"/>
 
     <!-- contrib -->
     <work nested="framework/classes"/>
@@ -70,17 +70,7 @@
     <jar name="lib/ext/ognl-2.5.1.jar"/>
     <license name="lib/ext/LICENSE.ognl.txt"/>
   </project>
-  
-  <project name="javassist">
-    <package>javassist</package>
-    <url href="http://www.jboss.org/index.html?module=html&amp;op=userdisplay&amp;id=developers/projects/javassist"/>
-    
-    <!-- This needs to be kept up-to-date as we update to later versions of Javassist -->
-    
-    <jar name="lib/ext/javassist-2.5.1.jar"/>
-    <license name="lib/ext/LICENSE.javassist.txt"/>
-  </project>  
-  
+   
   <project name="jcharts">
     <package>org.jCharts</package>
     <url href="http://jcharts.sourceforge.net/"/>
