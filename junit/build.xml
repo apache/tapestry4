@@ -28,7 +28,8 @@
   <path id="base.class.path">
     <pathelement location="${lib.ext.dir}/ejb.jar"/>
     <pathelement location="${lib.ext.dir}/javax.servlet.jar"/>
-    <pathelement location="${lib.ext.dir}/${log4j.jar}"/>
+    <pathelement location="${lib.ext.dir}/${commons-logging.jar}"/>
+	<pathelement location="${lib.ext.dir}/${commons-lang.jar}"/>    
     <pathelement location="${lib.ext.dir}/javax.xml.jaxp.jar"/>
     <pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
     <pathelement location="${lib.ext.dir}/junit.jar"/>
@@ -61,6 +62,7 @@
   	      copy in junit.jar -->
   	 <path location="${src.dir}"/>
   	 <path refid="compile-tests.class.path"/>
+  	 <path location="${lib.ext.dir}/${log4j.jar}"/>
   </path>
   	  
   <target name="run" depends="compile" description="Run the test suite.">
@@ -95,12 +97,6 @@
   		
     <javac srcdir="${framework.src.dir}" destdir="${clover-classes.dir}" debug="on" target="1.1">
       <classpath refid="base.class.path"/>
-      
-      <!-- Exclude these two libraries since they aren't used anywhere within Tapestry. -->
-      <!-- They will be removed, or moved, in a later release. -->
-      
-      <exclude name="net/sf/tapestry/util/jdbc/**"/>
-      <exclude name="net/sf/tapestry/util/ejb/**"/>
     </javac>
     
     

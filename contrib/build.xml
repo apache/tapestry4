@@ -9,17 +9,18 @@
   
   <path id="project.class.path">
     <pathelement location="${lib.ext.dir}/javax.servlet.jar"/>
-    <pathelement location="${lib.ext.dir}/${log4j.jar}"/>
+    <pathelement location="${lib.ext.dir}/${commons-logging.jar}"/>
+	<pathelement location="${lib.ext.dir}/${commons-lang.jar}"/>    
     <pathelement location="${lib.ext.dir}/javax.xml.jaxp.jar"/>
     <pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
     <pathelement location="${framework.jar}"/>
     <pathelement location="${lib.ext.dir}/mckoidb.jar"/>
+    <pathelement location="${lib.ext.dir}/${ognl.jar}"/>
     <pathelement location="${jboss.client.dir}/jboss-client.jar"/>
     <pathelement location="${jboss.client.dir}/jboss-j2ee.jar"/>
     <pathelement location="${jboss.lib.dir}/jboss-jmx.jar"/>    
     <pathelement location="${jboss.lib.dir}/jboss-system.jar"/>
     <pathelement location="${jboss.lib.dir}/jboss-common.jar"/>
-	<pathelement location="${lib.ext.dir}/${ognl.jar}"/>
   </path>
   
   <target name="init">

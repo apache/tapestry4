@@ -31,8 +31,9 @@ import java.util.Locale;
 
 import javax.swing.event.EventListenerList;
 
-import org.apache.log4j.Logger;
-import org.apache.log4j.LogManager;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 
 import net.sf.tapestry.event.ChangeObserver;
 import net.sf.tapestry.event.PageCleanupListener;
@@ -52,7 +53,7 @@ import net.sf.tapestry.util.StringSplitter;
 
 public abstract class AbstractPage extends BaseComponent implements IPage
 {
-    private static final Logger LOG = LogManager.getLogger(AbstractPage.class);
+    private static final Log LOG = LogFactory.getLog(AbstractPage.class);
 
     /**
      *  Object to be notified when a observered property changes.  Observered

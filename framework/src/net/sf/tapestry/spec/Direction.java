@@ -26,8 +26,9 @@
 
 package net.sf.tapestry.spec;
 
+import org.apache.commons.lang.enum.Enum;
+
 import net.sf.tapestry.Tapestry;
-import net.sf.tapestry.util.Enum;
 
 /**
  *  Represents different types of parameters.  Currently only 
@@ -81,9 +82,9 @@ public class Direction extends Enum
 	
 	public static final Direction CUSTOM = new Direction("CUSTOM");
 
-    protected Direction(String enumerationId)
+    protected Direction(String name)
     {
-        super(enumerationId);
+        super(name);
     }
 
     /**
@@ -91,8 +92,8 @@ public class Direction extends Enum
      * 
      **/
     
-    public String getName()
+    public String getDisplayName()
     {
-        return Tapestry.getString("Direction." + getEnumerationId());
+        return Tapestry.getString("Direction." + getName());
     }
 }

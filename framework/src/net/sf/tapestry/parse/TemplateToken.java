@@ -196,7 +196,7 @@ public class TemplateToken
     {
         StringBuffer buffer = new StringBuffer("TemplateToken[");
 
-        buffer.append(type.getEnumerationId());
+        buffer.append(type.getName());
 
         if (id != null)
         {

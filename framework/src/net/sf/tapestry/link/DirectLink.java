@@ -40,9 +40,6 @@ import net.sf.tapestry.RequiredParameterException;
 import net.sf.tapestry.StaleSessionException;
 import net.sf.tapestry.Tapestry;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 /**
  *  A component for creating a link using the direct service; used for actions that
  *  are not dependant on dynamic page state.
@@ -56,12 +53,9 @@ import org.apache.log4j.Logger;
 
 public class DirectLink extends GestureLink implements IDirect
 {
-    private static final Logger LOG = LogManager.getLogger(DirectLink.class);
-
     private IBinding _listenerBinding;
     private Object _parameters;
     private IBinding _statefulBinding;
-    private boolean _warning = true;
 
     public void setStatefulBinding(IBinding value)
     {
@@ -101,18 +95,6 @@ public class DirectLink extends GestureLink implements IDirect
     protected Object[] getServiceParameters(IRequestCycle cycle)
     {
         return constructServiceParameters(_parameters);
-    }
-
-    /**
-     *  @deprecated To be removed in 2.3, use 
-     *  {@link #constructServiceParameters(Object)}
-     *  instead.
-     * 
-     **/
-
-    public static Object[] constructContext(Object contextValue)
-    {
-        return constructServiceParameters(contextValue);
     }
 
     /**
@@ -225,32 +207,5 @@ public class DirectLink extends GestureLink implements IDirect
     public void setParameters(Object context)
     {
         _parameters = context;
-    }
-
-    /**
-     *  @deprecated To be removed in 2.3, use {@link #getParameters()}.
-     * 
-     **/
-
-    public Object getContext()
-    {
-        return getParameters();
-    }
-
-    /**
-     *  @deprecated To be removed in 2.3, use {@link #setParameters(Object)}.
-     * 
-     **/
-
-    public void setContext(Object context)
-    {
-        if (_warning)
-        {
-            LOG.warn(Tapestry.getString("deprecated-component-param", getExtendedId(), "context", "parameters"));
-
-            _warning = false;
-        }
-
-        setParameters(context);
     }
 }

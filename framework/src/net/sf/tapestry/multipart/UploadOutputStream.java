@@ -31,8 +31,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
   *  An OutputStream that, when a certain limit is reached,
@@ -46,17 +46,16 @@ import org.apache.log4j.Logger;
 
 class UploadOutputStream extends OutputStream
 {
-    private static final Logger LOG =
-        LogManager.getLogger(UploadOutputStream.class);
+    private static final Log LOG = LogFactory.getLog(UploadOutputStream.class);
 
     public static final int DEFAULT_LIMIT = 2000;
 
-    private ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    private OutputStream active = baos;
-    private int limit;
-    private int count = 0;
-    private FileOutputStream fos;
-    private File file;
+    private ByteArrayOutputStream _byteArrayStream = new ByteArrayOutputStream();
+    private OutputStream _activeStream = _byteArrayStream;
+    private int _limit;
+    private int _count = 0;
+    private FileOutputStream _fileStream;
+    private File _file;
 
     UploadOutputStream()
     {
@@ -65,24 +64,24 @@ class UploadOutputStream extends OutputStream
 
     UploadOutputStream(int limit)
     {
-        this.limit = limit;
+        _limit = limit;
     }
 
     public void close() throws IOException
     {
-        active.close();
+        _activeStream.close();
     }
 
     public void flush() throws IOException
     {
-        active.close();
+        _activeStream.close();
     }
 
     public void write(byte[] b, int off, int len) throws IOException
     {
         check(len);
 
-        active.write(b, off, len);
+        _activeStream.write(b, off, len);
     }
 
     public void write(byte[] b) throws IOException
@@ -94,44 +93,44 @@ class UploadOutputStream extends OutputStream
     {
         check(1);
 
-        active.write(b);
+        _activeStream.write(b);
     }
 
     private void check(int length) throws IOException
     {
-        if (fos != null)
+        if (_fileStream != null)
             return;
 
-        count += length;
+        _count += length;
 
-        if (count < limit)
+        if (_count < _limit)
             return;
 
         if (LOG.isDebugEnabled())
-            LOG.debug("Limit of " + limit + " bytes reached.");
+            LOG.debug("Limit of " + _limit + " bytes reached.");
 
-        file = File.createTempFile("upload-", ".bin");
+        _file = File.createTempFile("upload-", ".bin");
 
-        fos = new FileOutputStream(file);
+        _fileStream = new FileOutputStream(_file);
 
-        baos.close();
+        _byteArrayStream.close();
 
-        baos.writeTo(fos);
+        _byteArrayStream.writeTo(_fileStream);
 
         if (LOG.isDebugEnabled())
-            LOG.debug("Writing upload content to " + file + ".");
+            LOG.debug("Writing upload content to " + _file + ".");
 
-        baos = null;
-        active = fos;
+        _byteArrayStream = null;
+        _activeStream = _fileStream;
     }
 
     public File getContentFile()
     {
-        return file;
+        return _file;
     }
 
     public byte[] getContent()
     {
-        return baos.toByteArray();
+        return _byteArrayStream.toByteArray();
     }
 }

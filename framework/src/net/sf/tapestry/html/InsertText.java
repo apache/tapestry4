@@ -30,9 +30,6 @@ import java.io.LineNumberReader;
 import java.io.Reader;
 import java.io.StringReader;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 import net.sf.tapestry.AbstractComponent;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IMarkupWriter;
@@ -60,9 +57,6 @@ import net.sf.tapestry.Tapestry;
 
 public class InsertText extends AbstractComponent
 {
-    private static final Logger LOG = LogManager.getLogger(InsertText.class);
-
-    private boolean _warning = true;
     private String _value;
     private InsertTextMode _mode = InsertTextMode.BREAK;
 
@@ -131,33 +125,6 @@ public class InsertText extends AbstractComponent
     public void setMode(InsertTextMode mode)
     {
         _mode = mode;
-    }
-
-    /** 
-     * 
-     *  @deprecated To be removed in 2.3.  Use {@link #getValue()}.
-     * 
-     **/
-
-    public String getText()
-    {
-        return getValue();
-    }
-
-    /**
-     *  @deprecated To be removed in 2.3.  Use {@link #setValue(String)}.
-     * 
-     **/
-
-    public void setText(String text)
-    {
-        if (_warning)
-        {
-            LOG.warn(Tapestry.getString("deprecated-component-param", getExtendedId(), "text", "value"));
-            _warning = false;
-        }
-
-        setValue(text);
     }
 
     public String getValue()

@@ -28,9 +28,6 @@ package net.sf.tapestry.link;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.Tapestry;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 /**
  *  A component for creating a link for an arbitrary {@link net.sf.tapestry.IEngineService
  *  engine service}.  A ServiceLink component can emulate an {@link ActionLink},
@@ -46,11 +43,9 @@ import org.apache.log4j.Logger;
 
 public class ServiceLink extends GestureLink
 {
-    private static final Logger LOG = LogManager.getLogger(ServiceLink.class);
-
     private String _service;
     private Object _parameters;
-    private boolean _warning = true;
+
 
     /**
      *  Returns name of the service specified by the service parameter.
@@ -73,33 +68,6 @@ public class ServiceLink extends GestureLink
 
     }
 
-    /**
-     *  @deprecated To be removed in 2.3, use {@link #getParameters()}.
-     * 
-     **/
-
-    public Object getContext()
-    {
-        return getParameters();
-    }
-
-    /**
-     *  @deprecated To be removed in 2.3, use {@link #setParameters(Object)}.
-     * 
-     **/
-
-    public void setContext(Object context)
-    {
-        if (_warning)
-        {
-            LOG.warn(Tapestry.getString("deprecated-component-param", getExtendedId(), "context", "parameters"));
-
-            _warning = false;
-        }
-
-        setParameters(context);
-    }
-
     public String getService()
     {
         return _service;
@@ -107,7 +75,7 @@ public class ServiceLink extends GestureLink
 
     public void setService(String service)
     {
-        this._service = service;
+        _service = service;
     }
 
     public Object getParameters()

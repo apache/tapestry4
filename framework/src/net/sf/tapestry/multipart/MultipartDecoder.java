@@ -35,13 +35,14 @@ import java.util.Iterator;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IUploadFile;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.util.StringSplitter;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
  *  Decodes the data in a <code>multipart/form-data</code> HTTP request, handling
@@ -66,7 +67,7 @@ import org.apache.log4j.Logger;
 
 public class MultipartDecoder
 {
-    private static final Logger LOG = LogManager.getLogger(MultipartDecoder.class);
+    private static final Log LOG = LogFactory.getLog(MultipartDecoder.class);
 
     public static final String MULTIPART_FORM_DATA_CONTENT_TYPE = "multipart/form-data";
 

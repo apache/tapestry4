@@ -36,8 +36,8 @@ import net.sf.tapestry.util.xml.DocumentParseException;
 import ognl.Ognl;
 import ognl.OgnlException;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.MatchResult;
 import org.apache.oro.text.regex.Pattern;
@@ -81,7 +81,7 @@ import junit.framework.AssertionFailedError;
 
 public class MockTester
 {
-    private static final Logger LOG = LogManager.getLogger(MockTester.class);
+    private static final Log LOG = LogFactory.getLog(MockTester.class);
 
     private String _resourcePath;
     private Document _document;

@@ -32,6 +32,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import net.sf.tapestry.BindingException;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IComponent;
@@ -44,8 +47,6 @@ import net.sf.tapestry.spec.Direction;
 import net.sf.tapestry.spec.ParameterSpecification;
 import net.sf.tapestry.util.prop.PropertyFinder;
 import net.sf.tapestry.util.prop.PropertyInfo;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
  *  Manages a set of {@link IParameterConnector}s for a
@@ -59,7 +60,7 @@ import org.apache.log4j.Logger;
 
 public class ParameterManager
 {
-    private static final Logger LOG = LogManager.getLogger(ParameterManager.class);
+    private static final Log LOG = LogFactory.getLog(ParameterManager.class);
 
     private static final Map scalarTypeMap = new HashMap();
 

@@ -11,12 +11,6 @@
   </description>
   
   <parameter name="value" java-type="java.lang.String" required="yes"/>
- 
-  <parameter name="text" java-type="java.lang.String" required="yes">
-  	<description>
-  	Deprecated name for 'value'.
-  	</description>
-  </parameter>
   
   <parameter name="disabled" java-type="boolean" direction="in"/>
   

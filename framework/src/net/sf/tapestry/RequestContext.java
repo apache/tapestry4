@@ -46,11 +46,13 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import net.sf.tapestry.multipart.MultipartDecoder;
 import net.sf.tapestry.spec.IApplicationSpecification;
 import net.sf.tapestry.util.StringSplitter;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
  *  This class encapsulates all the relevant data for one request cycle of an
@@ -118,7 +120,7 @@ public class RequestContext implements IRender
 
     }
 
-    private static final Logger LOG = LogManager.getLogger(RequestContext.class);
+    private static final Log LOG = LogFactory.getLog(RequestContext.class);
 
 
     /**

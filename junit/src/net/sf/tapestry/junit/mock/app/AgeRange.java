@@ -1,6 +1,7 @@
 package net.sf.tapestry.junit.mock.app;
 
-import net.sf.tapestry.util.Enum;
+import org.apache.commons.lang.enum.Enum;
+
 
 /**
  *  
@@ -29,9 +30,9 @@ public class AgeRange extends Enum
         };
     }
 
-    private AgeRange(String enumerationId)
+    private AgeRange(String name)
     {
-        super(enumerationId);
+        super(name);
     }
 
 }

@@ -31,11 +31,12 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IUploadFile;
 import net.sf.tapestry.Tapestry;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
  *  Portion of a multi-part request representing an uploaded file.
@@ -48,7 +49,7 @@ import org.apache.log4j.Logger;
 
 public class UploadPart implements IUploadFile, IPart
 {
-    private static final Logger LOG = LogManager.getLogger(UploadPart.class);
+    private static final Log LOG = LogFactory.getLog(UploadPart.class);
 
     private byte[] _content;
     private File _contentFile;

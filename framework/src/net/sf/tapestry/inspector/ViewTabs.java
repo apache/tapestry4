@@ -45,8 +45,7 @@ public class ViewTabs extends BaseComponent
             View.SPECIFICATION,
             View.TEMPLATE,
             View.PROPERTIES,
-            View.ENGINE,
-            View.LOGGING };
+            View.ENGINE };
 
     private View view;
 
@@ -80,7 +79,7 @@ public class ViewTabs extends BaseComponent
 
         selected = (view == inspector.getView());
 
-        buffer = new StringBuffer(view.getEnumerationId());
+        buffer = new StringBuffer(view.getName());
 
         if (selected)
             buffer.append("_selected");
@@ -111,7 +110,7 @@ public class ViewTabs extends BaseComponent
 
         inspector = (Inspector) getPage();
         selectedView = inspector.getView();
-        key = selectedView.getEnumerationId() + "_banner";
+        key = selectedView.getName() + "_banner";
 
         return (IAsset) getAssets().get(key);
     }

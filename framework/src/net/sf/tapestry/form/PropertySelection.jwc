@@ -26,7 +26,7 @@
   	java-type="net.sf.tapestry.form.IPropertySelectionRenderer"
   	direction="in">
   	<description>
-  	Deprecated, to be removed in 2.3
+	An alternate rendered for the property selection.
   	</description>
   </parameter>
   

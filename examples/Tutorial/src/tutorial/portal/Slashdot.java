@@ -29,8 +29,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.html.BasePage;
@@ -47,7 +47,7 @@ import net.sf.tapestry.util.xml.DocumentParseException;
 
 public class Slashdot extends BasePage
 {
-    private static final Logger LOG = LogManager.getLogger(Slashdot.class);
+    private static final Log LOG = LogFactory.getLog(Slashdot.class);
 
     /**
      *  The {@link List} of {@link SlashdotStory} items.  This is <em>not</em> cleared

@@ -551,16 +551,4 @@ public class ExpressionBinding extends AbstractBinding
         return buffer.toString();
     }
 
-    /**
-     * 
-     *  @return null
-     *  @deprecated To be removed in 2.3 with no replacement.
-     * 
-     **/
-
-    public Class getType()
-    {
-        return null;
-    }
-
 }

@@ -25,7 +25,7 @@
 
 package net.sf.tapestry.form;
 
-import net.sf.tapestry.util.Enum;
+import org.apache.commons.lang.enum.Enum;
 
 /**
  *  Lists different types of JavaScript events that can be associated
@@ -58,13 +58,13 @@ public class FormEventType extends Enum
 
     public static final FormEventType RESET = new FormEventType("RESET", "onreset");
 
-    private String propertyName;
+    private String _propertyName;
 
-    private FormEventType(String enumerationId, String propertyName)
+    private FormEventType(String name, String propertyName)
     {
-        super(enumerationId);
+        super(name);
 
-        this.propertyName = propertyName;
+        _propertyName = propertyName;
     }
 
     /** 
@@ -75,7 +75,7 @@ public class FormEventType extends Enum
 
     public String getPropertyName()
     {
-        return propertyName;
+        return _propertyName;
     }
 
     /**

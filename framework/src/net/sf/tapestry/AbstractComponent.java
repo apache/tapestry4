@@ -73,21 +73,19 @@ public abstract class AbstractComponent implements IComponent
     /**
      *  The specification used to originally build the component.
      *
-     *  @deprecated To be made private in 2.3.
      * 
      **/
 
-    protected ComponentSpecification specification;
+    private ComponentSpecification _specification;
 
     /**
      *  The page that contains the component, possibly itself (if the component is
      *  in fact, a page).
      *
-     *  @deprecated To be made private in 2.3.
      * 
      **/
 
-    protected IPage page;
+    private IPage _page;
 
     /**
      *  The component which contains the component.  This will only be
@@ -104,7 +102,7 @@ public abstract class AbstractComponent implements IComponent
      * 
      **/
 
-    protected String id;
+    private String _id;
 
     /**
      *  The fully qualified id of this component.  This is calculated the first time
@@ -126,7 +124,7 @@ public abstract class AbstractComponent implements IComponent
     private Map _bindings;
 
     private Map _components;
-    private static final int WRAPPED_INIT_SIZE = 5;
+    private static final int BODY_INIT_SIZE = 5;
 
     private INamespace _namespace;
 
@@ -139,23 +137,21 @@ public abstract class AbstractComponent implements IComponent
     private static final Map EMPTY_MAP = Collections.unmodifiableMap(new HashMap(1));
 
     /**
-     *  The number of {@link IRender} objects wrapped by
+     *  The number of {@link IRender} objects in the body of
      *  this component.
      *
-     *  @deprecated To be made private in 2.3.
      * 
      **/
 
-    protected int wrappedCount = 0;
+    private int _bodyCount = 0;
 
     /**
-     *  An aray of elements wrapped by this component.
+     *  An aray of elements in the body of this component.
      *
-     *  @deprecated To be made private in 2.3.
      * 
      **/
 
-    protected IRender[] wrapped;
+    private IRender[] _body;
 
     /**
      *  The components' asset map.
@@ -218,11 +214,6 @@ public abstract class AbstractComponent implements IComponent
         _components.put(component.getId(), component);
     }
 
-    public void addWrapped(IRender element)
-    {
-        addBody(element);
-    }
-
     /**
      *  Adds an element (which may be static text or a component) as a body
      *  element of this component.  Such elements are rendered
@@ -238,36 +229,36 @@ public abstract class AbstractComponent implements IComponent
         // allows body.  Curently, this is checked by the component
         // in render(), which is silly.
 
-        if (wrapped == null)
+        if (_body == null)
         {
-            wrapped = new IRender[WRAPPED_INIT_SIZE];
-            wrapped[0] = element;
+            _body = new IRender[BODY_INIT_SIZE];
+            _body[0] = element;
 
-            wrappedCount = 1;
+            _bodyCount = 1;
             return;
         }
 
         // No more room?  Make the array bigger.
 
-        if (wrappedCount == wrapped.length)
+        if (_bodyCount == _body.length)
         {
             IRender[] newWrapped;
 
-            newWrapped = new IRender[wrapped.length * 2];
+            newWrapped = new IRender[_body.length * 2];
 
-            System.arraycopy(wrapped, 0, newWrapped, 0, wrappedCount);
+            System.arraycopy(_body, 0, newWrapped, 0, _bodyCount);
 
-            wrapped = newWrapped;
+            _body = newWrapped;
         }
 
-        wrapped[wrappedCount++] = element;
+        _body[_bodyCount++] = element;
     }
 
     /**
      *  Invokes {@link #finishLoad()}.  Subclasses may overide as needed, but
      *  must invoke this implementation.
      *  {@link BaseComponent}
-     * loads its HTML template. 
+     *  loads its HTML template. 
      *
      **/
 
@@ -488,7 +479,7 @@ public abstract class AbstractComponent implements IComponent
             // Skip over formal parameters stored in the bindings
             // Map.  We're just interested in informal parameters.
 
-            if (specification.getParameter(name) != null)
+            if (_specification.getParameter(name) != null)
                 continue;
 
             IBinding binding = (IBinding) entry.getValue();
@@ -557,7 +548,7 @@ public abstract class AbstractComponent implements IComponent
 
     public ChangeObserver getChangeObserver()
     {
-        return page.getChangeObserver();
+        return _page.getChangeObserver();
     }
 
     public IComponent getComponent(String id)
@@ -596,24 +587,24 @@ public abstract class AbstractComponent implements IComponent
 
     public String getExtendedId()
     {
-        if (page == null)
+        if (_page == null)
             return null;
             
-        return page.getName() + "/" + getIdPath();
+        return _page.getName() + "/" + getIdPath();
     }
 
     public String getId()
     {
-        return id;
+        return _id;
     }
 
     public void setId(String value)
     {
-        if (id != null)
+        if (_id != null)
             throw new ApplicationRuntimeException(
                 Tapestry.getString("AbstractComponent.attempt-to-change-component-id"));
 
-        id = value;
+        _id = value;
     }
 
     public String getIdPath()
@@ -626,42 +617,37 @@ public abstract class AbstractComponent implements IComponent
         containerIdPath = _container.getIdPath();
 
         if (containerIdPath == null)
-            _idPath = id;
+            _idPath = _id;
         else
-            _idPath = containerIdPath + "." + id;
+            _idPath = containerIdPath + "." + _id;
 
         return _idPath;
     }
 
     public IPage getPage()
     {
-        return page;
+        return _page;
     }
 
     public void setPage(IPage value)
     {
-        if (page != null)
+        if (_page != null)
             throw new ApplicationRuntimeException(Tapestry.getString("AbstractComponent.attempt-to-change-page"));
 
-        page = value;
+        _page = value;
     }
 
     public ComponentSpecification getSpecification()
     {
-        return specification;
+        return _specification;
     }
 
     public void setSpecification(ComponentSpecification value)
     {
-        if (specification != null)
+        if (_specification != null)
             throw new ApplicationRuntimeException(Tapestry.getString("AbstractComponent.attempt-to-change-spec"));
 
-        specification = value;
-    }
-
-    public void renderWrapped(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
-    {
-        renderBody(writer, cycle);
+        _specification = value;
     }
 
     /**
@@ -671,8 +657,8 @@ public abstract class AbstractComponent implements IComponent
 
     public void renderBody(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
-        for (int i = 0; i < wrappedCount; i++)
-            wrapped[i].render(writer, cycle);
+        for (int i = 0; i < _bodyCount; i++)
+            _body[i].render(writer, cycle);
     }
 
     /**
@@ -766,7 +752,7 @@ public abstract class AbstractComponent implements IComponent
         if (_container == null)
             return null;
 
-        ContainedComponent contained = _container.getSpecification().getComponent(id);
+        ContainedComponent contained = _container.getSpecification().getComponent(_id);
 
         // If no informal parameters, then it's safe to return
         // just the names of the formal parameters.
@@ -814,7 +800,7 @@ public abstract class AbstractComponent implements IComponent
 
         // Now work on the formal parameters
 
-        Iterator i = specification.getParameterNames().iterator();
+        Iterator i = _specification.getParameterNames().iterator();
         while (i.hasNext())
         {
             String name = (String) i.next();
@@ -939,7 +925,8 @@ public abstract class AbstractComponent implements IComponent
     /**
      *  Invoked by {@link #render(IMarkupWriter, IRequestCycle)}
      *  after the component renders, to clear any parameters back to
-     *  null (or 0, or false).  Primarily, this is used to ensure
+     *  null (or 0, or false, or whatever the correct default is).  
+     *  Primarily, this is used to ensure
      *  that the component doesn't hold onto any objects that could
      *  otherwise be garbage collected.
      * 

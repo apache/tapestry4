@@ -25,8 +25,9 @@
 
 package net.sf.tapestry.html;
 
+import org.apache.commons.lang.enum.Enum;
+
 import net.sf.tapestry.IMarkupWriter;
-import net.sf.tapestry.util.Enum;
 
 /**
  *  Defines a number of ways to format multi-line text for proper
@@ -53,9 +54,9 @@ public abstract class InsertTextMode extends Enum
 
     public static final InsertTextMode PARAGRAPH = new ParagraphMode();
 
-    protected InsertTextMode(String enumerationId)
+    protected InsertTextMode(String name)
     {
-        super(enumerationId);
+        super(name);
     }
 
     /**

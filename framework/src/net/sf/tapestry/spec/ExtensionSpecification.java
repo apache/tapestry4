@@ -30,8 +30,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IResourceResolver;
@@ -52,7 +53,7 @@ import net.sf.tapestry.util.prop.OgnlUtils;
 
 public class ExtensionSpecification extends BasePropertyHolder
 {
-    private static final Logger LOG = LogManager.getLogger(ExtensionSpecification.class);
+    private static final Log LOG = LogFactory.getLog(ExtensionSpecification.class);
 
     private String _className;
     protected Map _configuration = new HashMap();

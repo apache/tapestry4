@@ -31,8 +31,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import net.sf.tapestry.parse.ComponentTemplate;
 import net.sf.tapestry.parse.TemplateToken;
@@ -49,7 +49,7 @@ import net.sf.tapestry.spec.ComponentSpecification;
 
 public class BaseComponent extends AbstractComponent
 {
-    private static final Logger LOG = LogManager.getLogger(BaseComponent.class);
+    private static final Log LOG = LogFactory.getLog(BaseComponent.class);
 
     private int _outerCount = 0;
 
@@ -246,7 +246,7 @@ public class BaseComponent extends AbstractComponent
             LOG.debug(this +" finished reading template");
     }
 
-    /** @since 2.1-beta-2 **/
+    /** @since 2.1 **/
 
     private void addStringLocalization(IComponent activeComponent, TemplateToken token)
     {
@@ -258,7 +258,7 @@ public class BaseComponent extends AbstractComponent
             activeComponent.addBody(renderer);
     }
 
-    /** @since 2.1-beta-2 **/
+    /** @since 2.1 **/
 
     private IComponent addStartComponent(
         IComponent activeComponent,
@@ -311,7 +311,7 @@ public class BaseComponent extends AbstractComponent
         return component;
     }
 
-    /** @since 2.1-beta-2 **/
+    /** @since 2.1 **/
 
     private void addText(IComponent activeComponent, TemplateToken token) throws BodylessComponentException
     {

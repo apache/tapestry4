@@ -30,7 +30,6 @@ import java.io.IOException;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.util.AdaptorRegistry;
-import net.sf.tapestry.util.Decorator;
 
 /**
  *  A class used to convert arbitrary objects to Strings and back.

@@ -66,32 +66,11 @@ public class BindingsTestCase extends TapestryTestCase
             return _object;
         }
 
-        public Class getType()
-        {
-            return null;
-        }
-
     }
 
     public BindingsTestCase(String name)
     {
         super(name);
-    }
-
-    public void testGetTypeObject()
-    {
-        IBinding binding =
-            new FieldBinding(new ResourceResolver(this), "net.sf.tapestry.junit.BindingsTestCase.STRING_FIELD");
-
-        assertEquals("Type", String.class, binding.getType());
-    }
-
-    public void testGetTypeNull()
-    {
-        IBinding binding =
-            new FieldBinding(new ResourceResolver(this), "net.sf.tapestry.junit.BindingsTestCase.NULL_FIELD");
-
-        assertNull("Type", binding.getType());
     }
 
     public void testGetObject()
@@ -186,13 +165,6 @@ public class BindingsTestCase extends TapestryTestCase
 
             assertEquals("Binding", binding, ex.getBinding());
         }
-    }
-
-    public void testStaticBindingType()
-    {
-        IBinding binding = new StaticBinding("foo");
-
-        assertEquals("Type", String.class, binding.getType());
     }
 
     public void testStaticBindingInt()

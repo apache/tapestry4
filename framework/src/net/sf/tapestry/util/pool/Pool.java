@@ -29,12 +29,13 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRenderDescription;
 import net.sf.tapestry.util.ICleanable;
 import net.sf.tapestry.util.JanitorThread;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
  *  A Pool is used to pool instances of a useful class.  It uses
@@ -58,7 +59,7 @@ import org.apache.log4j.Logger;
 
 public class Pool implements ICleanable, IRenderDescription
 {
-    private static final Logger LOG = LogManager.getLogger(Pool.class);
+    private static final Log LOG = LogFactory.getLog(Pool.class);
 
     /**
      *  The generation, used to cull unused pooled items.
