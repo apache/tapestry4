@@ -30,11 +30,12 @@
     <project-dependency artifact="tapestry"/>
 
     <ibiblio-dependency artifact="commons-logging"    version="1.0.4"               group="commons-logging"/>
-    <ibiblio-dependency artifact="hivemind"           version="1.0-rc-1"            group="hivemind"/>
-    <ibiblio-dependency artifact="commons-lang"       version="2.0"                 group="commons-lang"/>
+    <ibiblio-dependency artifact="hivemind"           version="1.0-rc-2-snapshot"   group="hivemind"/>
+    <ibiblio-dependency artifact="hivemind-lib"       version="1.0-rc-2-snapshot"   group="hivemind"/>
     <ibiblio-dependency artifact="commons-codec"      version="1.2"                 group="commons-codec"/>
     <ibiblio-dependency artifact="ognl"               version="2.6.3"               group="ognl"/>
     <ibiblio-dependency artifact="jboss-j2ee"         version="3.2.1"               group="jboss"/>
+    <ibiblio-dependency artifact="commons-lang"       version="2.0"                 group="commons-lang"/>
     
     <!--
     <ibiblio-dependency artifact="bsf"                version="2.3.0"               group="bsf"/>

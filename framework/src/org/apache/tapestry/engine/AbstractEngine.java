@@ -704,9 +704,8 @@ public abstract class AbstractEngine
             _localeChanged = false;
 
             RequestContext context = cycle.getRequestContext();
-            ApplicationServlet servlet = context.getServlet();
 
-            servlet.writeLocaleCookie(_locale, this, context);
+            ApplicationServlet.writeLocaleCookie(_locale, this, context);
         }
 
         // Commit all changes and ignore further changes.
@@ -791,7 +790,11 @@ public abstract class AbstractEngine
 
     public boolean service(RequestContext context) throws ServletException, IOException
     {
-        ApplicationServlet servlet = context.getServlet();
+    	// TODO: Switch this around sound that we don't downcast ... in fact,
+    	// all of the stuff we get from the servlet will be coming out of the
+    	// registry soon enough.
+    	
+        ApplicationServlet servlet = (ApplicationServlet) context.getServlet();
         IRequestCycle cycle = null;
         ResponseOutputStream output = null;
         IMonitor monitor = null;
@@ -800,7 +803,7 @@ public abstract class AbstractEngine
             LOG.debug("Begin service " + context.getRequestURI());
 
         if (_specification == null)
-            _specification = servlet.getApplicationSpecification();
+            _specification = context.getApplicationSpecification();
 
         // The servlet invokes setLocale() before invoking service().  We want
         // to ignore that setLocale() ... that is, not force a cookie to be

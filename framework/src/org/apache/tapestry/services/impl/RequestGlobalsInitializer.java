@@ -22,20 +22,24 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tapestry.services.RequestServicer;
 import org.apache.tapestry.services.RequestServicerFilter;
-import org.apache.tapestry.services.ServletInfo;
+import org.apache.tapestry.services.RequestGlobals;
 
 /**
- * {@link org.apache.tapestry.services.RequestServicerFilter} used
- * to store the current request and response into
- * {@link org.apache.tapestry.services.ServletInfo} where it
- * can be accessed by other services.
- *
- * @author Howard Lewis Ship
+ * A {@link org.apache.tapestry.services.RequestServicerFilter} threaded early onto the pipeline,
+ * which invokes {@link org.apache.tapestry.services.ServletInfo#store(HttpServletRequest, HttpServletResponse)}
+ * so that other services can obtain the current thread's request and response.
+ * 
+ * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class StoreServletInfoFilter implements RequestServicerFilter
+public class RequestGlobalsInitializer implements RequestServicerFilter
 {
-    private ServletInfo _servletInfo;
+    private RequestGlobals _requestGlobals;
+
+    public void setRequestGlobals(RequestGlobals info)
+    {
+        _requestGlobals = info;
+    }
 
     public void service(
         HttpServletRequest request,
@@ -43,14 +47,9 @@ public class StoreServletInfoFilter implements RequestServicerFilter
         RequestServicer servicer)
         throws IOException, ServletException
     {
-        _servletInfo.store(request, response);
+        _requestGlobals.store(request, response);
 
         servicer.service(request, response);
-    }
-
-    public void setServletInfo(ServletInfo info)
-    {
-        _servletInfo = info;
     }
 
 }

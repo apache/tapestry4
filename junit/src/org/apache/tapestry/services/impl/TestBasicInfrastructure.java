@@ -22,7 +22,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.Location;
 import org.apache.hivemind.Registry;
 import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.impl.DefaultErrorHandler;
@@ -30,10 +32,12 @@ import org.apache.hivemind.impl.RegistryBuilder;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.hivemind.util.ClasspathResource;
 import org.apache.tapestry.ApplicationServlet;
+import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.services.ApplicationInitializer;
 import org.apache.tapestry.services.ClasspathResourceFactory;
+import org.apache.tapestry.services.RequestGlobals;
 import org.apache.tapestry.services.RequestServicer;
-import org.apache.tapestry.services.ServletInfo;
+import org.easymock.MockControl;
 
 /**
  * Tests for:
@@ -50,9 +54,9 @@ public class TestBasicInfrastructure extends HiveMindTestCase
 {
     private static final Log LOG = LogFactory.getLog(TestBasicInfrastructure.class);
 
-    public void testServletInfoImpl()
+    public void testRequestGlobals()
     {
-        ServletInfoImpl si = new ServletInfoImpl();
+        RequestGlobalsImpl si = new RequestGlobalsImpl();
 
         HttpServletRequest r = (HttpServletRequest) newMock(HttpServletRequest.class);
         HttpServletResponse p = (HttpServletResponse) newMock(HttpServletResponse.class);
@@ -67,9 +71,9 @@ public class TestBasicInfrastructure extends HiveMindTestCase
         verifyControls();
     }
 
-    public void testStoreServletInfoFilter() throws Exception
+    public void testRequestGlobalsInitializer() throws Exception
     {
-        ServletInfo si = (ServletInfo) newMock(ServletInfo.class);
+        RequestGlobals si = (RequestGlobals) newMock(RequestGlobals.class);
         HttpServletRequest r = (HttpServletRequest) newMock(HttpServletRequest.class);
         HttpServletResponse p = (HttpServletResponse) newMock(HttpServletResponse.class);
         RequestServicer n = (RequestServicer) newMock(RequestServicer.class);
@@ -80,11 +84,11 @@ public class TestBasicInfrastructure extends HiveMindTestCase
 
         replayControls();
 
-        StoreServletInfoFilter f = new StoreServletInfoFilter();
+        RequestGlobalsInitializer rgi = new RequestGlobalsInitializer();
 
-        f.setServletInfo(si);
+        rgi.setRequestGlobals(si);
 
-        f.service(r, p, n);
+        rgi.service(r, p, n);
 
         verifyControls();
     }
@@ -156,13 +160,13 @@ public class TestBasicInfrastructure extends HiveMindTestCase
     {
         HttpServletRequest request = (HttpServletRequest) newMock(HttpServletRequest.class);
         HttpServletResponse response = (HttpServletResponse) newMock(HttpServletResponse.class);
-        ServletInfo servletInfo = (ServletInfo) newMock(ServletInfo.class);
+        RequestGlobals servletInfo = (RequestGlobals) newMock(RequestGlobals.class);
 
-        ServletInfoInitializer sii = new ServletInfoInitializer();
+        RequestGlobalsInitializer sii = new RequestGlobalsInitializer();
 
         RequestServicer rs = (RequestServicer) newMock(RequestServicer.class);
 
-        sii.setServletInfo(servletInfo);
+        sii.setRequestGlobals(servletInfo);
 
         // Training
 
@@ -174,6 +178,56 @@ public class TestBasicInfrastructure extends HiveMindTestCase
 
         sii.service(request, response, rs);
 
+        verifyControls();
+    }
+
+    public void testGlobalPropertyObjectProviderSuccess()
+    {
+        MockControl sourceControl = newControl(IPropertySource.class);
+        IPropertySource source = (IPropertySource) sourceControl.getMock();
+
+        // Training
+
+        source.getPropertyValue("foo");
+        sourceControl.setReturnValue("bar");
+
+        replayControls();
+
+        GlobalPropertyObjectProvider p = new GlobalPropertyObjectProvider();
+        p.setSource(source);
+
+        assertEquals("bar", p.provideObject(null, null, "foo", null));
+        
+        verifyControls();
+    }
+
+    public void testGlobalPropertyObjectProviderFailure()
+    {
+        Location l = fabricateLocation(223);
+
+        MockControl sourceControl = newControl(IPropertySource.class);
+        IPropertySource source = (IPropertySource) sourceControl.getMock();
+
+        // Training    	
+
+        source.getPropertyValue("foo");
+        sourceControl.setThrowable(new ApplicationRuntimeException("failure"));
+
+        replayControls();
+
+        GlobalPropertyObjectProvider p = new GlobalPropertyObjectProvider();
+        p.setSource(source);
+
+        try
+        {
+            p.provideObject(null, null, "foo", l);
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertEquals("failure", ex.getMessage());
+            assertEquals(l, ex.getLocation());
+        }
+        
         verifyControls();
     }
 }

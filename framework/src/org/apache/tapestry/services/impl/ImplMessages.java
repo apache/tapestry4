@@ -43,4 +43,9 @@ final class ImplMessages
     {
         return _formatter.format("error-instantiating-engine", engineClass.getName(), cause);
     }
+
+    public static String noSuchGlobalProperty(String propertyName)
+    {
+        return _formatter.format("no-such-global-property", propertyName);
+    }
 }

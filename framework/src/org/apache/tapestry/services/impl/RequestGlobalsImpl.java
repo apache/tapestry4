@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.hivemind.impl.BaseLocatable;
-import org.apache.tapestry.services.ServletInfo;
+import org.apache.tapestry.services.RequestGlobals;
 
 /**
  * Wrapper around {@link org.apache.hivemind.service.ThreadLocalStorage} used
@@ -27,7 +27,7 @@ import org.apache.tapestry.services.ServletInfo;
  * @author Howard Lewis Ship
  * @since 3.1
  */
-public class ServletInfoImpl extends BaseLocatable implements ServletInfo
+public class RequestGlobalsImpl extends BaseLocatable implements RequestGlobals
 {
     private HttpServletRequest _request;
     private HttpServletResponse _response;

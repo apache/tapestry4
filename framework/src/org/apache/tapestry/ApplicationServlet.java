@@ -24,7 +24,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -32,18 +31,17 @@ import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Registry;
 import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.impl.RegistryBuilder;
-import org.apache.tapestry.engine.BaseEngine;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.ApplicationGlobals;
 import org.apache.tapestry.services.ApplicationInitializer;
+import org.apache.tapestry.services.RequestServicer;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.util.DelegatingPropertySource;
 import org.apache.tapestry.util.ServletContextPropertySource;
 import org.apache.tapestry.util.ServletPropertySource;
 import org.apache.tapestry.util.SystemPropertiesPropertySource;
 import org.apache.tapestry.util.exception.ExceptionAnalyzer;
-import org.apache.tapestry.util.pool.Pool;
 
 /**
  *  Links a servlet container with a Tapestry application.  The servlet has some
@@ -99,37 +97,12 @@ public class ApplicationServlet extends HttpServlet
     public static final String LOCALE_COOKIE_NAME = "org.apache.tapestry.locale";
 
     /**
-     *  A {@link Pool} used to store {@link IEngine engine}s that are not currently
-     *  in use.  The key is on {@link Locale}.
-     *
-     */
-
-    private Pool _enginePool = new Pool();
-
-    /**
      *  The application specification, which is read once and kept in memory
      *  thereafter.
      *
      */
 
     private IApplicationSpecification _specification;
-
-    /**
-     * The name under which the {@link IEngine engine} is stored within the
-     * {@link HttpSession}.
-     *
-     */
-
-    private String _attributeName;
-
-    /**
-     *  The resolved class name used to instantiate the engine.
-     * 
-     *  @since 3.0
-     * 
-     */
-
-    private String _engineClassName;
 
     /**
      *  Used to search for configuration properties.
@@ -167,6 +140,8 @@ public class ApplicationServlet extends HttpServlet
 
     private Registry _registry;
 
+    private RequestServicer _requestServicer;
+
     /**
      * Handles the GET and POST requests. Performs the following:
      * <ul>
@@ -179,85 +154,9 @@ public class ApplicationServlet extends HttpServlet
     protected void doService(HttpServletRequest request, HttpServletResponse response)
         throws IOException, ServletException
     {
-        RequestContext context = null;
-
         try
         {
-
-            // Create a context from the various bits and pieces.
-
-            context = createRequestContext(request, response);
-
-            // The subclass provides the engine.
-
-            IEngine engine = getEngine(context);
-
-            if (engine == null)
-                throw new ServletException(
-                    Tapestry.getMessage("ApplicationServlet.could-not-locate-engine"));
-
-            boolean dirty = engine.service(context);
-
-            HttpSession session = context.getSession();
-
-            // When there's an active session, we *may* store it into
-            // the HttpSession and we *will not* store the engine
-            // back into the engine pool.
-
-            if (session != null)
-            {
-                // If the service may have changed the engine and the
-                // special storeEngine flag is on, then re-save the engine
-                // into the session.  Otherwise, we only save the engine
-                // into the session when the session is first created (is new).
-
-                try
-                {
-
-                    boolean forceStore =
-                        engine.isStateful() && (session.getAttribute(_attributeName) == null);
-
-                    if (forceStore || dirty)
-                    {
-                        if (LOG.isDebugEnabled())
-                            LOG.debug("Storing " + engine + " into session as " + _attributeName);
-
-                        session.setAttribute(_attributeName, engine);
-                    }
-                }
-                catch (IllegalStateException ex)
-                {
-                    // Ignore because the session been's invalidated.
-                    // Allow the engine (which has state particular to the client)
-                    // to be reclaimed by the garbage collector.
-
-                    if (LOG.isDebugEnabled())
-                        LOG.debug("Session invalidated.");
-                }
-
-                // The engine is stateful and stored in a session.  Even if it started
-                // the request cycle in the pool, it doesn't go back.
-
-                return;
-            }
-
-            if (engine.isStateful())
-            {
-                LOG.error(
-                    Tapestry.format("ApplicationServlet.engine-stateful-without-session", engine));
-                return;
-            }
-
-            // No session; the engine contains no state particular to
-            // the client (except for locale).  Don't throw it away,
-            // instead save it in a pool for later reuse (by this, or another
-            // client in the same locale).
-
-            if (LOG.isDebugEnabled())
-                LOG.debug("Returning " + engine + " to pool.");
-
-            _enginePool.store(engine.getLocale(), engine);
-
+            _requestServicer.service(request, response);
         }
         catch (ServletException ex)
         {
@@ -279,29 +178,6 @@ public class ApplicationServlet extends HttpServlet
 
             throw ex;
         }
-        finally
-        {
-            if (context != null)
-                context.cleanup();
-        }
-
-    }
-
-    /**
-     *  Invoked by {@link #doService(HttpServletRequest, HttpServletResponse)} to create
-     *  the {@link RequestContext} for this request cycle.  Some applications may need to
-     *  replace the default RequestContext with a subclass for particular behavior.
-     * 
-     *  @since 2.3
-     * 
-     */
-
-    protected RequestContext createRequestContext(
-        HttpServletRequest request,
-        HttpServletResponse response)
-        throws IOException
-    {
-        return new RequestContext(this, request, response);
     }
 
     protected void show(Exception ex)
@@ -330,80 +206,12 @@ public class ApplicationServlet extends HttpServlet
      *  Returns the application specification, which is read
      *  by the {@link #init(ServletConfig)} method.
      *
+     *  @deprecated Use {@link RequestContext#getApplicationSpecification()} instead.
      */
 
     public IApplicationSpecification getApplicationSpecification()
     {
         return _specification;
-    }
-
-    /**
-     *  Retrieves the {@link IEngine engine} that will process this
-     *  request.  This comes from one of the following places:
-     *  <ul>
-     *  <li>The {@link HttpSession}, if the there is one.
-     *  <li>From the pool of available engines
-     *  <li>Freshly created
-     *  </ul>
-     *
-     */
-
-    protected IEngine getEngine(RequestContext context) throws ServletException
-    {
-        IEngine engine = null;
-        HttpSession session = context.getSession();
-
-        // If there's a session, then find the engine within it.
-
-        if (session != null)
-        {
-            engine = (IEngine) session.getAttribute(_attributeName);
-            if (engine != null)
-            {
-                if (LOG.isDebugEnabled())
-                    LOG.debug("Retrieved " + engine + " from session " + session.getId() + ".");
-
-                return engine;
-            }
-
-            if (LOG.isDebugEnabled())
-                LOG.debug("Session exists, but doesn't contain an engine.");
-        }
-
-        Locale locale = getLocaleFromRequest(context);
-
-        engine = (IEngine) _enginePool.retrieve(locale);
-
-        if (engine == null)
-        {
-            engine = createEngine(context);
-            engine.setLocale(locale);
-        }
-        else
-        {
-            if (LOG.isDebugEnabled())
-                LOG.debug("Using pooled engine " + engine + " (from locale " + locale + ").");
-        }
-
-        return engine;
-    }
-
-    /**
-     *  Determines the {@link Locale} for the incoming request.
-     *  This is determined from the locale cookie or, if not set,
-     *  from the request itself.  This may return null
-     *  if no locale is determined.
-     *
-     */
-
-    protected Locale getLocaleFromRequest(RequestContext context) throws ServletException
-    {
-        Cookie cookie = context.getCookie(LOCALE_COOKIE_NAME);
-
-        if (cookie != null)
-            return Tapestry.getLocale(cookie.getValue());
-
-        return context.getRequest().getLocale();
     }
 
     /**
@@ -436,8 +244,6 @@ public class ApplicationServlet extends HttpServlet
 
             throw new ServletException(TapestryMessages.servletInitFailure(ex), ex);
         }
-
-        _attributeName = "org.apache.tapestry.engine:" + config.getServletName();
     }
 
     /**
@@ -474,74 +280,6 @@ public class ApplicationServlet extends HttpServlet
         {
             // Ignore it.
         }
-    }
-
-    /**
-     *  Invoked by {@link #getEngine(RequestContext)} to create
-     *  the {@link IEngine} instance specific to the
-     *  application, if not already in the
-     *  {@link HttpSession}.
-     *
-     *  <p>The {@link IEngine} instance returned is stored into the
-     *  {@link HttpSession}.
-     *
-     *  @see #getEngineClassName()    
-     *
-     */
-
-    protected IEngine createEngine(RequestContext context) throws ServletException
-    {
-        try
-        {
-            String className = getEngineClassName();
-
-            if (LOG.isDebugEnabled())
-                LOG.debug("Creating engine from class " + className);
-
-            Class engineClass = getClassResolver().findClass(className);
-
-            IEngine result = (IEngine) engineClass.newInstance();
-
-            if (LOG.isDebugEnabled())
-                LOG.debug("Created engine " + result);
-
-            return result;
-        }
-        catch (Exception ex)
-        {
-            throw new ServletException(ex);
-        }
-    }
-
-    /**
-     * 
-     *  Returns the name of the class to use when instantiating
-     *  an engine instance for this application.  
-     *  If the application specification
-     *  provides a value, this is returned.  Otherwise, a search for
-     *  the configuration property 
-     *  <code>org.apache.tapestry.engine-class</code>
-     *  occurs (see {@link #searchConfiguration(String)}).
-     * 
-     *  <p>If the search is still unsuccessful, then
-     *  {@link org.apache.tapestry.engine.BaseEngine} is used.
-     * 
-     */
-
-    protected String getEngineClassName()
-    {
-        if (_engineClassName != null)
-            return _engineClassName;
-
-        _engineClassName = _specification.getEngineClassName();
-
-        if (_engineClassName == null)
-            _engineClassName = searchConfiguration("org.apache.tapestry.engine-class");
-
-        if (_engineClassName == null)
-            _engineClassName = BaseEngine.class.getName();
-
-        return _engineClassName;
     }
 
     /**
@@ -598,7 +336,7 @@ public class ApplicationServlet extends HttpServlet
      *  @since 1.0.1
      */
 
-    public void writeLocaleCookie(Locale locale, IEngine engine, RequestContext cycle)
+    public static void writeLocaleCookie(Locale locale, IEngine engine, RequestContext cycle)
     {
         if (LOG.isDebugEnabled())
             LOG.debug("Writing locale cookie " + locale);
@@ -654,7 +392,8 @@ public class ApplicationServlet extends HttpServlet
         _registry.cleanupThread();
 
         // This is temporary, since most of the code still gets the
-        // specification from the servlet.
+        // specification from the servlet --- in fact, has to downcase
+        // RequestContext.getServlet() to do so.
 
         ApplicationGlobals ag =
             (ApplicationGlobals) _registry.getService(
@@ -662,6 +401,11 @@ public class ApplicationServlet extends HttpServlet
                 ApplicationGlobals.class);
 
         _specification = ag.getSpecification();
+
+        _requestServicer =
+            (RequestServicer) _registry.getService(
+                "tapestry.RequestServicerPipeline",
+                RequestServicer.class);
     }
 
     /**
