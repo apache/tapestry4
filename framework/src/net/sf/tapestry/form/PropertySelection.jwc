@@ -10,6 +10,7 @@
   </description>
   
   <parameter name="value" required="yes"/>
+  
   <parameter name="model" 
   	java-type="net.sf.tapestry.form.IPropertySelectionModel" 
   	required="yes"
@@ -21,6 +22,18 @@
   	
   <parameter name="renderer" 
   	java-type="net.sf.tapestry.form.IPropertySelectionRenderer"
-  	direction="in"/>
+  	direction="in">
+  	<description>
+  	Deprecated, to be removed in 2.3
+  	</description>
+  </parameter>
+  
+  <parameter name="submitOnChange"
+  	java-type="boolean"
+  	direction="in">
+  	<description>
+  	Enables logic to submit containing form when value changes.
+  	</description>
+  </parameter>
   	
 </specification>

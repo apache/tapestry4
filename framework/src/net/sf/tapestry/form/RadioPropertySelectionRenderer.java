@@ -33,6 +33,7 @@ import net.sf.tapestry.RequestCycleException;
  *  Implementation of {@link IPropertySelectionRenderer} that
  *  produces a table of radio (&lt;input type=radio&gt;) elements.
  *
+ *  @deprecated to be removed in 2.3
  *  @version $Id$
  *  @author Howard Lewis Ship
  *
