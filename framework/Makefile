@@ -9,6 +9,7 @@ PACKAGES = \
 	com.primix.foundation.prop \
 	com.primix.foundation.jdbc \
 	com.primix.foundation.ejb \
+    com.primix.foundation.pool \
 	com.primix.tapestry \
 	com.primix.tapestry.app \
 	com.primix.tapestry.asset \

@@ -127,7 +127,7 @@ public abstract class AbstractApplication
 	*/
 
 	protected static final String TEMPLATE_SOURCE_NAME = 
-		"com.primix.tapestry.DefaultTemplateSource";
+        "com.primix.tapestry.DefaultTemplateSource";
 
 	/**
 	*  Servlet context attribute name for the default {@link ISpecificationSource}
