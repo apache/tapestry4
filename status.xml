@@ -50,6 +50,14 @@
   
  <release version="3.0-beta-4" date="unreleased">
 
+<action type="update" dev="DS">
+Change direction of parameter model for WML components, SelectionField and PropertySelection
+</action>
+
+<action type="fix" dev="DS">
+Fixed the byte[] mapping in org.apache.tapestry.enhance.JavaClassMapping
+</action>
+
 <action type="update" dev="HLS" due-to="Tetsuya Kitahata">
 Convert the Tapestry home page to build using
 <link href="http://xml.apache.org/forrest/">Forrest</link>.
