@@ -15,14 +15,6 @@
     </description>
   </parameter>
   
-  <parameter name="invert" type="boolean" direction="in">
-    <description>
-    If true, inverts the condition, so that a false condition causes the 
-    content to be included.  If false (the default), then the condition
-    is evaluated normally.
-    </description>
-  </parameter>
-
   <parameter name="element" type="java.lang.String" direction="in" required="no">
   	<description>
   	The element to emulate.
@@ -38,12 +30,7 @@
     </description>
   </parameter>
 
-  <parameter name="invertValue" type="boolean">
-    <description>
-    Whether the condition is inverted or not. During render this is a obtained from 
-    the invert parameter. Diring rewind it is the submited value of invert.
-    </description>
-  </parameter>
+  <reserved-parameter name="invert"/>
   
   <property-specification name="name" type="java.lang.String"/>
   <property-specification name="form" type="org.apache.tapestry.IForm"/>
