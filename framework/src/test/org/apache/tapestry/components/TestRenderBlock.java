@@ -14,25 +14,21 @@
 
 package org.apache.tapestry.components;
 
-import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.test.Creator;
 import org.easymock.MockControl;
 
 /**
- * Tests for {@link org.apache.tapestry.components.RenderBlock}component.
+ * Tests for {@link org.apache.tapestry.components.RenderBlock}&nbsp;component.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class TestRenderBlock extends HiveMindTestCase
+public class TestRenderBlock extends BaseComponentTestCase
 {
     public void testNullBlock()
     {
-        Creator c = new Creator();
-
-        RenderBlock rb = (RenderBlock) c.newInstance(RenderBlock.class);
+        RenderBlock rb = (RenderBlock) newInstance(RenderBlock.class);
 
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newRequestCycle();
@@ -44,24 +40,12 @@ public class TestRenderBlock extends HiveMindTestCase
         verifyControls();
     }
 
-    private IRequestCycle newRequestCycle()
-    {
-        return (IRequestCycle) newMock(IRequestCycle.class);
-    }
-
-    private IMarkupWriter newWriter()
-    {
-        return (IMarkupWriter) newMock(IMarkupWriter.class);
-    }
-
     public void testNonNullBlock()
     {
-        Creator c = new Creator();
-
         MockControl bc = newControl(Block.class);
         Block b = (Block) bc.getMock();
 
-        RenderBlock rb = (RenderBlock) c.newInstance(RenderBlock.class, new Object[]
+        RenderBlock rb = (RenderBlock) newInstance(RenderBlock.class, new Object[]
         { "block", b });
 
         IMarkupWriter writer = newWriter();
@@ -85,15 +69,13 @@ public class TestRenderBlock extends HiveMindTestCase
 
     public void testSecondInserter()
     {
-        Creator c = new Creator();
-
         MockControl bc = newControl(Block.class);
         Block b = (Block) bc.getMock();
 
-        RenderBlock rb1 = (RenderBlock) c.newInstance(RenderBlock.class, new Object[]
+        RenderBlock rb1 = (RenderBlock) newInstance(RenderBlock.class, new Object[]
         { "block", b });
 
-        RenderBlock rb2 = (RenderBlock) c.newInstance(RenderBlock.class);
+        RenderBlock rb2 = (RenderBlock) newInstance(RenderBlock.class);
 
         IMarkupWriter writer = newWriter();
         IRequestCycle cycle = newRequestCycle();
