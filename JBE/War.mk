@@ -96,7 +96,7 @@ endif
 install: war war-install local-install
 
 war-install:war
-ifeq $(INSTALL_DIR)" ""
+ifeq "$(INSTALL_DIR)" ""
 	@$(ECHO) JBE Error: Must set INSTALL_DIR in Makefile
 else
 ifneq "$(MODULE_NAME)" ""
