@@ -185,9 +185,6 @@ public class ValidField extends AbstractTextField implements IField, IFormCompon
 
         super.renderComponent(writer, cycle);
 
-        if (rendering)
-            delegate.writeSuffix(writer, cycle);
-
         // If rendering and there's either an error in the field,
         // or the field is required but the value is currently null,
         // then we may have identified the default field (which will
@@ -211,6 +208,8 @@ public class ValidField extends AbstractTextField implements IField, IFormCompon
     protected void beforeCloseTag(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
+        _validator.renderValidatorContribution(this, writer, cycle);
+        
         getForm().getDelegate().writeAttributes(writer, cycle);
     }
 
@@ -276,7 +275,7 @@ public class ValidField extends AbstractTextField implements IField, IFormCompon
 
         try
         {
-            objectValue = getValidator().toObject(this, value);
+            objectValue = _validator.toObject(this, value);
         }
         catch (ValidatorException ex)
         {

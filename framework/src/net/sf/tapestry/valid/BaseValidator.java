@@ -26,10 +26,23 @@
 package net.sf.tapestry.valid;
 
 import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
 
+import net.sf.tapestry.IEngine;
+import net.sf.tapestry.IForm;
+import net.sf.tapestry.IMarkupWriter;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.IScript;
+import net.sf.tapestry.IScriptSource;
+import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.ScriptException;
+import net.sf.tapestry.ScriptSession;
 import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.form.FormEventType;
+import net.sf.tapestry.html.Body;
 
 /**
  *  Abstract base class for {@link IValidator}.  Supports a required and locale property.
@@ -42,7 +55,63 @@ import net.sf.tapestry.Tapestry;
 
 public abstract class BaseValidator implements IValidator
 {
+    /**
+     *  Input Symbol used to represent the field being validated.
+     * 
+     *  @see #processValidatorScript(String, IRequestCycle, IField, Map)
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    public static final String FIELD_SYMBOL = "field";
+
+    /**
+     *  Input symbol used to represent the validator itself to the script.
+     * 
+     *  @see #processValidatorScript(String, IRequestCycle, IField, Map)
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    public static final String VALIDATOR_SYMBOL = "validator";
+
+    /**
+     *  Input symbol used to represent the {@link IForm} containing the field
+     *  to the script.
+     * 
+     *  @see #processValidatorScript(String, IRequestCycle, IField, Map)
+     *  
+     *  @since 2.2
+     **/
+
+    public static final String FORM_SYMBOL = "form";
+
+    /**
+     *  Output symbol set by the script asthe name of the validator 
+     *  JavaScript function.
+     *  The function implemented must return true or false (true
+     *  if the field is valid, false otherwise).
+     *  After the script is executed, the function is added
+     *  to the {@link IForm} as a {@link net.sf.tapestry.form.FormEventType#SUBMIT}.
+     * 
+     *  @see #processValidatorScript(String, IRequestCycle, IField, Map)
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    public static final String FUNCTION_SYMBOL = "function";
+
     private boolean _required;
+
+    /** 
+     *  @since 2.2
+     * 
+     **/
+
+    private boolean _clientScriptingEnabled = true;
 
     /**
      *  Standard constructor.  Leaves locale as system default and required as false.
@@ -55,7 +124,7 @@ public abstract class BaseValidator implements IValidator
 
     protected BaseValidator(boolean required)
     {
-        this._required = required;
+        _required = required;
     }
 
     public boolean isRequired()
@@ -65,12 +134,19 @@ public abstract class BaseValidator implements IValidator
 
     public void setRequired(boolean required)
     {
-        this._required = required;
+        _required = required;
     }
 
     /**
      *  Gets a string from the standard resource bundle.  The string in the bundle
      *  is treated as a pattern for {@link MessageFormat#format(java.lang.String, java.lang.Object[])}.
+     * 
+     *  <p>Why do we not just lump these strings into TapestryStrings.properties?  
+     *  Because TapestryStrings.properties is localized to the server's locale, which is fine
+     *  for the logging, debugging and error messages it contains.  For field validation, whose errors
+     *  are visible to the end user normally, we want to localize to the page and engine's locale.
+     * 
+     *  <p>This will be more useful when we have actual localizations of ValidationStrings.properties.
      * 
      *  @since 2.1
      * 
@@ -84,7 +160,6 @@ public abstract class BaseValidator implements IValidator
 
         return MessageFormat.format(pattern, args);
     }
-
 
     /**
      *  Convienience method for invoking {@link #getString(String, Locale, Object[])}.
@@ -129,4 +204,93 @@ public abstract class BaseValidator implements IValidator
 
         return isNull;
     }
+
+    /**
+     *  This implementation does nothing.  Subclasses may supply their own implementation.
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    public void renderValidatorContribution(IField field, IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
+    {
+    }
+
+    /**
+     *  Invoked (from sub-class
+     *  implementations of {@link #renderValidatorContribution(IField, IMarkupWriter, IRequestCycle)}
+     *  to process a standard validation script.  This expects that:
+     *  <ul>
+     *  <li>The {@link IField} is (ultimately) wrapped by a {@link Body}
+     *  <li>The script generates a symbol named "function" (as per {@link #FUNCTION_SYMBOL})
+     *  </ul>
+     * 
+     *  @param scriptPath the resource path of the script to execute
+     *  @param cycle The active request cycle
+     *  @param field The field to be validated
+     *  @param symbols a set of input symbols needed by the script.  These symbols
+     *  are augmented with symbols for the field, form and validator.  symbols may be
+     *  null, but will be modified if not null.
+     *  @throws RequestCycleException if there's an error processing the script.
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    protected void processValidatorScript(String scriptPath, IRequestCycle cycle, IField field, Map symbols)
+        throws RequestCycleException
+    {
+        IEngine engine = field.getPage().getEngine();
+        IScriptSource source = engine.getScriptSource();
+        IForm form = field.getForm();
+
+        Map finalSymbols = (symbols == null) ? new HashMap() : symbols;
+
+        finalSymbols.put(FIELD_SYMBOL, field);
+        finalSymbols.put(FORM_SYMBOL, form);
+        finalSymbols.put(VALIDATOR_SYMBOL, this);
+
+        IScript script = source.getScript(scriptPath);
+
+        ScriptSession session;
+
+        try
+        {
+            session = script.execute(finalSymbols);
+        }
+        catch (ScriptException ex)
+        {
+            throw new RequestCycleException(ex.getMessage(), field, ex);
+        }
+
+        Body body = Body.get(cycle);
+
+        body.process(session);
+
+        String functionName = (String) finalSymbols.get(FUNCTION_SYMBOL);
+
+        form.addEventHandler(FormEventType.SUBMIT, functionName);
+    }
+
+    /**
+     *  Returns true if client scripting is enabled.  Some validators are
+     *  capable of generating client-side scripting to perform validation
+     *  when the form is submitted.  By default, this flag is true and
+     *  subclasses should check it before generating client side script.
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    public boolean isClientScriptingEnabled()
+    {
+        return _clientScriptingEnabled;
+    }
+
+    public void setClientScriptingEnabled(boolean clientScriptingEnabled)
+    {
+        _clientScriptingEnabled = clientScriptingEnabled;
+    }
+
 }
