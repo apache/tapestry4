@@ -3,7 +3,6 @@
 <status>
 
   <developers>
-    <person name="Tetsuya Kitahata"      email="tetsuya@apache.org"      id="TK" />
     <person name="Howard M. Lewis Ship"  email="hlship@comcast.net"      id="HLS" />
     <person name="David Solis"      email="dsolis@legosoft.com.mx"      id="DS" />
     <person name="Harish Krishnaswamy"  id="HK"/>
@@ -62,6 +61,10 @@
   
  <release version="3.0-beta-4" date="unreleased">
 
+<action type="update" dev="HLS" due-to="Tetsuya Kitahata">
+Convert the Tapestry home page to build using
+<link href="http://xml.apache.org/forrest/">Forrest</link>.
+</action>
 
 <action type="update" due-to="Michael M. Brzycki">
 Updated javadoc build target to link to JDK 1.3
@@ -234,6 +237,6 @@ fixed broken links in doc\src\common\TapestryLinks.xml
 </action>
 
 
-        </release>
-      </changes>
-    </status>
+			</release>
+		</changes>
+	</status>
