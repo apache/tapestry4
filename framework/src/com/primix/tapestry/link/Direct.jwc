@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
+	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
+<specification>
+	<class>com.primix.tapestry.components.html.link.Direct</class>
+	<parameters>
+		<parameter>
+			<name>listener</name>
+			<java-type>com.primix.tapestry.components.IDirectListener</java-type>
+			<required>yes</required>
+		</parameter>
+		<parameter>
+			<name>context</name>
+		</parameter>
+		<parameter>
+			<name>enabled</name>
+		</parameter>
+		<parameter>
+			<name>anchor</name>
+			<java-type>java.lang.String</java-type>
+		</parameter>
+	</parameters>
+</specification>

@@ -14,7 +14,10 @@ PACKAGES = \
 	com.primix.tapestry.asset \
 	com.primix.tapestry.binding \
 	com.primix.tapestry.components \
-	com.primix.tapestry.components.validating \
+	com.primix.tapestry.components.html \
+	com.primix.tapestry.components.html.link \
+	com.primix.tapestry.components.html.form \
+	com.primix.tapestry.components.html.valid \
 	com.primix.tapestry.engine \
 	com.primix.tapestry.event \
 	com.primix.tapestry.pageload \

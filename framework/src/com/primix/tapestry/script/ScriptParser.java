@@ -1,6 +1,7 @@
 package com.primix.tapestry.script;
 
 import com.primix.tapestry.*;
+import com.primix.tapestry.components.html.*;
 import com.primix.tapestry.spec.*;
 import com.primix.foundation.*;
 import org.apache.xerces.parsers.DOMParser;
@@ -12,10 +13,10 @@ import org.xml.sax.*;
  
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ * Copyright (c) 2000, 2001 by Howard Ship and Primix
  *
- * Primix Solutions
- * One Arsenal Marketplace
+ * Primix
+ * 311 Arsenal Street
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com
@@ -40,11 +41,10 @@ import org.xml.sax.*;
 
 /**
  *  Parses a Tapestry Script, an XML file defined by the public identifier
- *  <code>-//Primix Solutions//Tapestry Script 1.0//EN</code>.
+ *  <code>-//Primix//Tapestry Script 1.0//EN</code>.
  *
  *  <p>A Tapestry Script is used, in association with the 
- *  {@link com.primix.tapestry.components.Body} and/or
- *  {@link Script} components,
+ *  {@link Body} and/or {@link Script} components,
  *  to generate JavaScript for use with a Tapestry component.  Two seperate pieces
  *  of JavaScript can be generated.  The body section (associated with the <code>body</code>
  *  element of the XML document) is typically used to define JavaScript functions

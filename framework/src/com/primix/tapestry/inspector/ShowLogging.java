@@ -1,17 +1,17 @@
 package com.primix.tapestry.inspector;
 
 import com.primix.tapestry.*;
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.components.validating.*;
+import com.primix.tapestry.components.html.form.*;
+import com.primix.tapestry.components.html.valid.*;
 import java.util.*;
 import org.log4j.*;
 
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2001 by Howard Ship and Primix Solutions
+ * Copyright (c) 2001 by Howard Ship and Primix
  *
- * Primix Solutions
- * One Arsenal Marketplace
+ * Primix
+ * 311 Arsenal Street
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com
@@ -200,7 +200,7 @@ implements ILifecycle
 			}
 		};
 	}
-	
+
 	public IActionListener getNewCategoryFormListener()
 	{
 		return new IActionListener()
@@ -212,17 +212,17 @@ implements ILifecycle
 			}
 		};
 	}
-	
+
 	private void processNewCategory()
 	{
-			// If the validating text field has an error, then go no further.
-		
+		// If the validating text field has an error, then go no further.
+
 		if (error != null)
 			return;
-			
-		IValidatingTextField field =
+
+			IValidatingTextField field =
 			(IValidatingTextField)getComponent("inputNewCategory");
-			
+
 		if (Category.exists(newCategory) != null)
 		{
 			error = "Category " + newCategory + " already exists.";
@@ -231,17 +231,17 @@ implements ILifecycle
 		}
 
 		// Force the new category into existence
-		
+
 		Category.getInstance(newCategory);
-		
+
 		// Force a refresh on the list of categories, now that we've
 		// added a new one.
-		
+
 		categories = null;
-		
+
 		// Clear the field
 		newCategory = null;
 		field.refresh();
-				
+
 	}
 }

@@ -2,16 +2,17 @@ package com.primix.tapestry.script;
 
 import com.primix.tapestry.*;
 import com.primix.tapestry.components.*;
+import com.primix.tapestry.components.html.*;
 import java.util.*;
 import java.io.*;
 import org.xml.sax.*;
 
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ * Copyright (c) 2000, 2001 by Howard Ship and Primix
  *
- * Primix Solutions
- * One Arsenal Marketplace
+ * Primix
+ * 311 Arsenal Street
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com
@@ -53,88 +54,88 @@ import org.xml.sax.*;
 
 public class ScriptGenerator
 {
-    private ITemplateToken[] bodyTokens;
-    private ITemplateToken[] initTokens; 
-    private String resourcePath;
+	private ITemplateToken[] bodyTokens;
+	private ITemplateToken[] initTokens; 
+	private String resourcePath;
 
-    /**
-     *  Constructs a {@link InputSource} around the {@link InputStream} and
-     *  invokes the standard constructor.
-     *
-     */
+	/**
+	*  Constructs a {@link InputSource} around the {@link InputStream} and
+	*  invokes the standard constructor.
+	*
+	*/
 
-    public ScriptGenerator(InputStream stream, String resourcePath)
-    throws ScriptParseException
-    {
-        this(new InputSource(stream), resourcePath);
-    }
+	public ScriptGenerator(InputStream stream, String resourcePath)
+	throws ScriptParseException
+	{
+		this(new InputSource(stream), resourcePath);
+	}
 
-    /**
-     * Standard constructor, takes an {@link InputSource} which will be parsed,
-     * and the resourcePath (a String used to identify what the InputSource
-     * is parsing, used in any error message).
-     *
-     */
+	/**
+	* Standard constructor, takes an {@link InputSource} which will be parsed,
+	* and the resourcePath (a String used to identify what the InputSource
+	* is parsing, used in any error message).
+	*
+	*/
 
-    public ScriptGenerator(InputSource inputSource, String resourcePath)
-    throws ScriptParseException
-    {
-        this.resourcePath = resourcePath;
+	public ScriptGenerator(InputSource inputSource, String resourcePath)
+	throws ScriptParseException
+	{
+		this.resourcePath = resourcePath;
 
-        parseTemplate(inputSource, resourcePath);
-    }
+		parseTemplate(inputSource, resourcePath);
+	}
 
-    private void parseTemplate(InputSource inputSource, String resourcePath)
-    throws ScriptParseException
-    {
-        ScriptParser parser;
+	private void parseTemplate(InputSource inputSource, String resourcePath)
+	throws ScriptParseException
+	{
+		ScriptParser parser;
 
-        parser = new ScriptParser(inputSource, resourcePath);
+		parser = new ScriptParser(inputSource, resourcePath);
 
-        parser.parse();
+		parser.parse();
 
-        bodyTokens = parser.getBodyTokens();
-        initTokens = parser.getInitializationTokens();
-    }
+		bodyTokens = parser.getBodyTokens();
+		initTokens = parser.getInitializationTokens();
+	}
 
-    /**
-     *  Interacts with the {@link Body} component to generate the Script
-     *  in the proper way.
-     *
-     */
+	/**
+	*  Interacts with the {@link Body} component to generate the Script
+	*  in the proper way.
+	*
+	*/
 
-    public void generateScript(Body body, Map symbols)
-    {
-        if (bodyTokens != null)
-            body.addOtherScript(generateScript(bodyTokens, symbols));
+	public void generateScript(Body body, Map symbols)
+	{
+		if (bodyTokens != null)
+			body.addOtherScript(generateScript(bodyTokens, symbols));
 
-        if (initTokens != null)
-            body.addOtherInitialization(generateScript(initTokens, symbols));
-    }
+		if (initTokens != null)
+			body.addOtherInitialization(generateScript(initTokens, symbols));
+	}
 
-    /**
-     *  Extracts the {@link Body} (via {@link Body#get(IRequestCycle)})
-     *  and invokes {@link #generateScript(Body, Map)}.
-     *
-     */
+	/**
+	*  Extracts the {@link Body} (via {@link Body#get(IRequestCycle)})
+	*  and invokes {@link #generateScript(Body, Map)}.
+	*
+	*/
 
-    public void generateScript(IRequestCycle cycle, Map symbols)
-    {
-        Body body;
+	public void generateScript(IRequestCycle cycle, Map symbols)
+	{
+		Body body;
 
-        body = Body.get(cycle);
+		body = Body.get(cycle);
 
-        if (body == null)
-            throw new ApplicationRuntimeException(
-                "GenerateScript requires a Body component.");
+		if (body == null)
+			throw new ApplicationRuntimeException(
+				"GenerateScript requires a Body component.");
 
-        generateScript(body, symbols);
-    }
+		generateScript(body, symbols);
+	}
 
 
-    private String generateScript(ITemplateToken[] tokens, Map symbols)
-    {
-        StringWriter writer = null;
+	private String generateScript(ITemplateToken[] tokens, Map symbols)
+	{
+		StringWriter writer = null;
 
         try
         {
@@ -143,34 +144,34 @@ public class ScriptGenerator
 
             writer = new StringWriter();
 
-            for (int i = 0; i < tokens.length; i++)
-                tokens[i].write(writer, symbols);
+			for (int i = 0; i < tokens.length; i++)
+				tokens[i].write(writer, symbols);
 
-            return writer.toString();
-        }
+			return writer.toString();
+			}
         catch (IOException ex)
         {
             throw new ApplicationRuntimeException(
                 "Unexpected exception processing script " + resourcePath + ".", ex);
-        }
+			}
         finally
         {
             close(writer);
-        }
+			}
     }
 
-    private void close(Writer writer)
-    {
-        if (writer != null)
-        {
-            try
-            {
-                writer.close();
-            }
-            catch (IOException ex)
-            {
-                // Ignore.
-            }
-        }
-    }
+	private void close(Writer writer)
+	{
+		if (writer != null)
+		{
+			try
+			{
+				writer.close();
+			}
+			catch (IOException ex)
+			{
+				// Ignore.
+			}
+		}
+	}
 }
