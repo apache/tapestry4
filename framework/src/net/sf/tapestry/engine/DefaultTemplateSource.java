@@ -21,6 +21,7 @@ import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.INamespace;
 import net.sf.tapestry.IRenderDescription;
 import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.IResourceLocation;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.ISpecificationSource;
 import net.sf.tapestry.ITemplateSource;
@@ -90,19 +91,17 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
             return _component.getSpecification().getComponent(componentId) != null;
         }
 
-        public boolean getAllowBody(String componentId)
-        throws NoSuchComponentException
+        public boolean getAllowBody(String componentId) throws NoSuchComponentException
         {
-             IComponent embedded = _component.getComponent(componentId);
-             
-             if (embedded == null)
-             throw new NoSuchComponentException(componentId, _component);
-             
-             return embedded.getSpecification().getAllowBody();
+            IComponent embedded = _component.getComponent(componentId);
+
+            if (embedded == null)
+                throw new NoSuchComponentException(componentId, _component);
+
+            return embedded.getSpecification().getAllowBody();
         }
 
-        public boolean getAllowBody(String libraryId, String type)
-        throws PageLoaderException
+        public boolean getAllowBody(String libraryId, String type) throws PageLoaderException
         {
             INamespace namespace = _component.getNamespace();
 
@@ -137,21 +136,23 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
      *  Reads the template for the component.
      *
      *  <p>Returns null if the template can't be found.
+     * 
      **/
 
     public ComponentTemplate getTemplate(IRequestCycle cycle, IComponent component)
     {
         ComponentSpecification specification = component.getSpecification();
-        String specificationResourcePath = specification.getSpecificationResourcePath();
+        IResourceLocation specificationLocation = specification.getSpecificationLocation();
+
         Locale locale = component.getPage().getLocale();
 
-        Object key = new MultiKey(new Object[] { specificationResourcePath, locale }, false);
+        Object key = new MultiKey(new Object[] { specificationLocation, locale }, false);
 
         ComponentTemplate result = searchCache(key);
         if (result != null)
             return result;
 
-        result = findTemplate(cycle, specificationResourcePath, component, locale);
+        result = findTemplate(cycle, specificationLocation, component, locale);
 
         if (result == null)
         {
@@ -186,7 +187,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
 
     private synchronized ComponentTemplate findTemplate(
         IRequestCycle cycle,
-        String specificationResourcePath,
+        IResourceLocation location,
         IComponent component,
         Locale locale)
     {
@@ -195,7 +196,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
         if (templateAsset != null)
             return readTemplateFromAsset(cycle, component, templateAsset, locale);
 
-        return findStandardTemplate(cycle, specificationResourcePath, component, locale);
+        return findStandardTemplate(cycle, location, component, locale);
     }
 
     /**
@@ -215,7 +216,6 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
 
         try
         {
-
             templateData = readTemplateStream(stream);
 
             stream.close();
@@ -238,86 +238,40 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
      **/
 
     private synchronized ComponentTemplate findStandardTemplate(
-    IRequestCycle cycle,
-        String specificationResourcePath,
+        IRequestCycle cycle,
+        IResourceLocation location,
         IComponent component,
         Locale locale)
     {
-        String candidatePath = null;
-        String language = null;
-        String country = null;
-
         if (LOG.isDebugEnabled())
             LOG.debug(
                 "Searching for localized version of template for "
-                    + specificationResourcePath
+                    + location
                     + " in locale "
                     + locale.getDisplayName());
 
-        int dotx = specificationResourcePath.lastIndexOf('.');
-        StringBuffer buffer = new StringBuffer(dotx + 20);
-        buffer.append(specificationResourcePath.substring(0, dotx));
-        int rawLength = buffer.length();
-        int start = 2;
+        String name = location.getName();
 
-        if (locale != null)
-        {
-            country = locale.getCountry();
-            if (country.length() > 0)
-                start--;
+        int dotx = name.lastIndexOf('.');
 
-            // This assumes that you never have the case where there's
-            // a null language code and a non-null country code.
+        String templateBaseName = name.substring(0, dotx) + ".html";
 
-            language = locale.getLanguage();
-            if (language.length() > 0)
-                start--;
-        }
+        IResourceLocation baseTemplateLocation = location.getRelativeLocation(templateBaseName);
 
-        ComponentTemplate result = null;
+        IResourceLocation localizedTemplateLocation = baseTemplateLocation.getLocalization(locale);
 
-        // On pass #0, we use language code and country code
-        // On pass #1, we use language code
-        // On pass #2, we use neither.
-        // We skip pass #0 or #1 depending on whether the language code
-        // and/or country code is null.
+        // See if it's been parsed before
 
-        for (int i = start; i < 3; i++)
-        {
-            buffer.setLength(rawLength);
+        ComponentTemplate result = (ComponentTemplate) _templates.get(localizedTemplateLocation);
+        if (result != null)
+            return result;
 
-            if (i < 2)
-            {
-                buffer.append('_');
-                buffer.append(language);
-            }
+        // Ok, see if it exists.
 
-            if (i == 0)
-            {
-                buffer.append('_');
-                buffer.append(country);
-            }
+        result = parseTemplate(cycle, localizedTemplateLocation, component);
 
-            buffer.append(".html");
-
-            candidatePath = buffer.toString();
-
-            // See if it's been parsed before
-
-            result = (ComponentTemplate) _templates.get(candidatePath);
-            if (result != null)
-                break;
-
-            // Ok, see if it exists.
-
-            result = parseTemplate(cycle, candidatePath, component);
-
-            if (result != null)
-            {
-                _templates.put(candidatePath, result);
-                break;
-            }
-        }
+        if (result != null)
+            _templates.put(localizedTemplateLocation, result);
 
         return result;
     }
@@ -330,35 +284,39 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
      *
      **/
 
-    private ComponentTemplate parseTemplate(IRequestCycle cycle, String resourceName, IComponent component)
+    private ComponentTemplate parseTemplate(IRequestCycle cycle, IResourceLocation location, IComponent component)
     {
-        char[] templateData = readTemplate(resourceName);
+        char[] templateData = readTemplate(location);
         if (templateData == null)
             return null;
 
-        return constructTokens(cycle, templateData, resourceName, component);
+        return constructTokens(cycle, templateData, location.toString(), component);
     }
 
-    private ComponentTemplate constructTokens(IRequestCycle cycle, char[] templateData, String resourceName, IComponent component)
+    private ComponentTemplate constructTokens(
+        IRequestCycle cycle,
+        char[] templateData,
+        String location,
+        IComponent component)
     {
         if (_parser == null)
             _parser = new TemplateParser();
 
         IEngine engine = cycle.getEngine();
         ISpecificationSource specificationSource = engine.getSpecificationSource();
-        
+
         ITemplateParserDelegate delegate = new ParserDelegate(component, specificationSource);
 
         TemplateToken[] tokens;
 
         try
         {
-            tokens = _parser.parse(templateData, delegate, resourceName);
+            tokens = _parser.parse(templateData, delegate, location);
         }
         catch (TemplateParseException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("DefaultTemplateSource.unable-to-parse-template", resourceName),
+                Tapestry.getString("DefaultTemplateSource.unable-to-parse-template", location),
                 ex);
         }
 
@@ -376,18 +334,17 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
      *
      **/
 
-    private char[] readTemplate(String resourceName)
+    private char[] readTemplate(IResourceLocation location)
     {
-        URL url;
-        InputStream stream = null;
-
-        url = _resolver.getResource(resourceName);
+        URL url = location.getResourceURL();
 
         if (url == null)
             return null;
 
         if (LOG.isDebugEnabled())
-            LOG.debug("Reading template " + resourceName + " from " + url);
+            LOG.debug("Reading template " + location + " from " + url);
+
+        InputStream stream = null;
 
         try
         {
@@ -398,7 +355,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
         catch (IOException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("DefaultTemplateSource.unable-to-read-template", resourceName),
+                Tapestry.getString("DefaultTemplateSource.unable-to-read-template", location),
                 ex);
         }
         finally

@@ -19,8 +19,8 @@ public interface ISpecificationSource
     /**
      *  Retrieves a component specification, parsing it as necessary.
      *  
-     *  @param resourcePath a full resource path of a
-     *  component specification file.
+     *  @param resourceLocation the location where the specification
+     *  may be read from.
      * 
      *  @throws ApplicationRuntimeException if the specification doesn't
      *  exist, is unreadable or invalid.
@@ -29,13 +29,13 @@ public interface ISpecificationSource
      * 
      **/
     
-    public ComponentSpecification getComponentSpecification(String resourcePath);  
+    public ComponentSpecification getComponentSpecification(IResourceLocation specificationLocation);  
  
     /**
      *  Retrieves a component specification, parsing it as necessary.
      *  
-     *  @param resourcePath a full resource path of a
-     *  page specification file.
+     *  @param resourceLocation the location where the specification
+     *  may be read from.
      * 
      *  @throws ApplicationRuntimeException if the specification doesn't
      *  exist, is unreadable or invalid.
@@ -44,24 +44,8 @@ public interface ISpecificationSource
      * 
      **/
         
-    public ComponentSpecification getPageSpecification(String resourcePath);
-            
-	/**
-	 *  Gets a specification from the cache, possibly parsing it at the same time.
-	 *
-	 *  <p>The type is used to locate the resource that defines the specification.  In
-	 *  practical terms, this is the XML file which contains the specification.
-	 *
-	 *  @throws ApplicationRuntimeException if the specification cannot be located or loaded.
-	 *
-     *  @deprecated To be removed in 2.3.  
-     *  Use {@link #getComponentSpecification(String)} or {@link #getPageSpecification(String)}
-     *  instead.
-     * 
-	 **/
-
-	public ComponentSpecification getSpecification(String type);
-    
+    public ComponentSpecification getPageSpecification(IResourceLocation specificationLocation);
+                
 	/**
 	 *  Invoked to have the source clear any internal cache.  This is most often
 	 *  used when debugging an application.
@@ -98,7 +82,7 @@ public interface ISpecificationSource
      * 
      **/
     
-    public ILibrarySpecification getLibrarySpecification(String resourcePath);
+    public ILibrarySpecification getLibrarySpecification(IResourceLocation specificationLocation);
     
     /**
      *  Returns the {@link INamespace} for the application.

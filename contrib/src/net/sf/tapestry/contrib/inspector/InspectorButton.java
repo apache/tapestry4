@@ -13,6 +13,7 @@ import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.INamespace;
 import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.IResourceLocation;
 import net.sf.tapestry.IScript;
 import net.sf.tapestry.IScriptSource;
 import net.sf.tapestry.RequestCycleException;
@@ -69,7 +70,10 @@ public class InspectorButton extends BaseComponent implements IDirect
         IEngine engine = getPage().getEngine();
         IScriptSource source = engine.getScriptSource();
 
-        IScript script = source.getScript("/net/sf/tapestry/contrib/inspector/InspectorButton.script");
+        IResourceLocation scriptLocation = 
+            getSpecification().getSpecificationLocation().getRelativeLocation("InspectorButton.script");
+            
+        IScript script = source.getScript(scriptLocation);
 
         Map symbols = new HashMap();
 

@@ -3,6 +3,7 @@ package net.sf.tapestry.spec;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.tapestry.IResourceLocation;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.util.IPropertyHolder;
 
@@ -138,4 +139,16 @@ public interface ILibrarySpecification extends IPropertyHolder
     
     public void setPublicId(String value);
 
+    /**
+     *  Returns the location from which the specification was read.
+     * 
+     *  @since 2.4
+     * 
+     **/
+    
+    public IResourceLocation getSpecificationLocation();
+    
+    /** @since 2.4 **/
+    
+    public void setSpecificationLocation(IResourceLocation specificationLocation);    
 }

@@ -2,10 +2,15 @@ package net.sf.tapestry.junit.mock;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.ApplicationServlet;
+import net.sf.tapestry.DefaultResourceResolver;
+import net.sf.tapestry.IResourceLocation;
+import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.resource.ClasspathResourceLocation;
 import net.sf.tapestry.util.xml.DocumentParseException;
 
 import ognl.Ognl;
@@ -59,7 +64,7 @@ public class MockTester
 {
     private static final Log LOG = LogFactory.getLog(MockTester.class);
 
-    private String _resourcePath;
+    private IResourceLocation _resourceLocation;
     private Document _document;
     private MockContext _context;
     private String _servletName;
@@ -84,9 +89,11 @@ public class MockTester
      * 
      **/
 
-    public MockTester(String resourcePath) throws JDOMException, ServletException, DocumentParseException
+    public MockTester(String resourcePath) throws JDOMException, ServletException, DocumentParseException, IOException
     {
-        _resourcePath = resourcePath;
+        IResourceResolver resolver = new DefaultResourceResolver();
+
+        _resourceLocation = new ClasspathResourceLocation(resolver, resourcePath);
 
         parse();
 
@@ -147,18 +154,22 @@ public class MockTester
         executeAssertions(request);
     }
 
-    private void parse() throws JDOMException, DocumentParseException
+    private void parse() throws JDOMException, DocumentParseException, IOException
     {
         SAXBuilder builder = new SAXBuilder();
 
-        InputStream stream = getClass().getResourceAsStream(_resourcePath);
-
+        URL resourceURL = _resourceLocation.getResourceURL();
+        
+        InputStream stream = resourceURL.openStream();
+        
         if (stream == null)
             throw new DocumentParseException(
-                "Mock test script file " + _resourcePath + " does not exist.",
-                _resourcePath);
+                "Mock test script file " + _resourceLocation + " does not exist.",
+                _resourceLocation);
 
         _document = builder.build(stream);
+        
+        stream.close();
     }
 
     private void setup() throws ServletException, DocumentParseException
@@ -166,7 +177,7 @@ public class MockTester
         Element root = _document.getRootElement();
 
         if (!root.getName().equals("mock-test"))
-            throw new DocumentParseException("Root element must be 'mock-test'.", _resourcePath);
+            throw new DocumentParseException("Root element must be 'mock-test'.", _resourceLocation);
 
         setupContext(root);
         setupServlet(root);
@@ -433,14 +444,14 @@ public class MockTester
 
     }
 
-/**
-     *  Handles &lt;assert-output&gt; elements inside &lt;request&gt;.
-     *  Checks that a substring appears in the output.
-     *  Content of element is the substring to search for.
-     *  <p>
-     *  Attribute name is used in error messages.
-     * 
-     **/
+    /**
+         *  Handles &lt;assert-output&gt; elements inside &lt;request&gt;.
+         *  Checks that a substring appears in the output.
+         *  Content of element is the substring to search for.
+         *  <p>
+         *  Attribute name is used in error messages.
+         * 
+         **/
 
     private void executeOutputAssertions(Element request) throws DocumentParseException
     {
@@ -463,7 +474,6 @@ public class MockTester
         }
 
     }
-
 
     private PatternMatcher getMatcher()
     {
@@ -490,7 +500,7 @@ public class MockTester
         }
         catch (MalformedPatternException ex)
         {
-            throw new DocumentParseException("Malformed regular expression: " + pattern, _resourcePath, ex);
+            throw new DocumentParseException("Malformed regular expression: " + pattern, _resourceLocation, ex);
         }
 
         _patternCache.put(pattern, result);

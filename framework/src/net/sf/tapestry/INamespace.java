@@ -187,5 +187,13 @@ public interface INamespace
     **/
    
    public String constructQualifiedName(String pageName);
+   
+   /**
+    *  Returns the location of the resource from which the
+    *  specification for this namespace was read.
+    * 
+    **/
+   
+   public IResourceLocation getSpecificationLocation();
     
 }

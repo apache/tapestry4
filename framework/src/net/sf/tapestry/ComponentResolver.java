@@ -46,16 +46,6 @@ public class ComponentResolver
 
     public void resolve(INamespace containerNamespace, String type) throws PageLoaderException
     {
-        // For compatibility with the 1.1 and 1.2 specifications, which allow
-        // the component type to be a complete specification path.
-
-        if (type.startsWith("/"))
-        {
-            _namespace = _specificationSource.getApplicationNamespace();
-            _spec = _specificationSource.getComponentSpecification(type);
-            return;
-        }
-
         int colonx = type.indexOf(':');
 
         if (colonx > 0)

@@ -7,6 +7,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
+import net.sf.tapestry.IResourceLocation;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.util.BasePropertyHolder;
@@ -82,6 +85,14 @@ public class LibrarySpecification extends BasePropertyHolder implements ILibrary
      **/
 
     private String _publicId;
+
+
+    /**
+     *  The location of the specification.
+     * 
+     **/
+    
+    private IResourceLocation _specificationLocation;
 
     public String getLibrarySpecificationPath(String id)
     {
@@ -509,6 +520,54 @@ public class LibrarySpecification extends BasePropertyHolder implements ILibrary
     public void setPublicId(String publicId)
     {
         _publicId = publicId;
+    }
+
+    /** @since 2.4 **/
+    
+    public IResourceLocation getSpecificationLocation()
+    {
+        return _specificationLocation;
+    }
+
+    /** @since 2.4 **/
+    
+    public void setSpecificationLocation(IResourceLocation specificationLocation)
+    {
+        _specificationLocation = specificationLocation;
+    }
+
+    /** @since 2.4 **/
+    
+    public String toString()
+    {
+        ToStringBuilder builder = new ToStringBuilder(this);
+        
+        builder.append("components", _components);
+        builder.append("description", _description);
+        builder.append("instantiatedExtensions", _instantiatedExtensions);
+        builder.append("libraries", _libraries);
+        builder.append("pages", _pages);
+        builder.append("publicId", _publicId);
+        builder.append("resolver", _resolver);
+        builder.append("services", _services);
+        builder.append("specificationLocation", _specificationLocation);
+        
+        extendDescription(builder);
+        
+        return builder.toString();
+    }
+    
+    /**
+     *  Does nothing, subclasses may override to add additional
+     *  description.
+     * 
+     *  @see #toString()
+     *  @since 2.4
+     * 
+     **/
+    
+    protected void extendDescription(ToStringBuilder builder)
+    {
     }
 
 }

@@ -50,7 +50,7 @@ public class SpecificationParserTest extends TapestryTestCase
     }
 
     /**
-     *  Tests that the parser can handle a 1.2 specification
+     *  Tests that the parser can handle a specification
      *  that includes a &lt;string-binding&gt; element.
      * 
      **/

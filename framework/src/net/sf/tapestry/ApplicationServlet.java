@@ -2,11 +2,9 @@ package net.sf.tapestry;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 import java.util.Locale;
 
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -18,9 +16,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import net.sf.tapestry.parse.SpecificationParser;
-import net.sf.tapestry.spec.ApplicationSpecification;
+import net.sf.tapestry.resource.ClasspathResourceLocation;
 import net.sf.tapestry.spec.IApplicationSpecification;
-import net.sf.tapestry.util.StringSplitter;
 import net.sf.tapestry.util.exception.ExceptionAnalyzer;
 import net.sf.tapestry.util.pool.Pool;
 import net.sf.tapestry.util.xml.DocumentParseException;
@@ -433,35 +430,12 @@ public class ApplicationServlet extends HttpServlet
     {
         String path = getApplicationSpecificationPath();
 
-        URL specificationURL = _resolver.getResource(path);
-        InputStream stream = null;
+        IResourceLocation specLocation = new ClasspathResourceLocation(_resolver, path);
 
-        try
-        {
-            if (specificationURL != null)
-                stream = specificationURL.openStream();
+        if (LOG.isDebugEnabled())
+            LOG.debug("Loading application specification from " + specLocation);
 
-            if (stream == null)
-                throw new ServletException(Tapestry.getString("ApplicationServlet.could-not-load-spec", path));
-
-            if (LOG.isDebugEnabled())
-                LOG.debug("Loading application specification from " + path);
-
-            IApplicationSpecification result = parseApplicationSpecification(stream, path);
-
-            stream.close();
-            stream = null;
-
-            return result;
-        }
-        catch (IOException ex)
-        {
-            throw new ServletException(Tapestry.getString("ApplicationServlet.could-not-open-spec", path), ex);
-        }
-        finally
-        {
-            close(stream);
-        }
+        return parseApplicationSpecification(specLocation);
     }
 
     /**
@@ -473,20 +447,20 @@ public class ApplicationServlet extends HttpServlet
      * 
      **/
 
-    protected IApplicationSpecification parseApplicationSpecification(InputStream stream, String path)
+    protected IApplicationSpecification parseApplicationSpecification(IResourceLocation location)
         throws ServletException
     {
         try
         {
             SpecificationParser parser = new SpecificationParser();
 
-            return parser.parseApplicationSpecification(stream, path, _resolver);
+            return parser.parseApplicationSpecification(location, _resolver);
         }
         catch (DocumentParseException ex)
         {
             show(ex);
 
-            throw new ServletException(Tapestry.getString("ApplicationServlet.could-not-parse-spec", path), ex);
+            throw new ServletException(Tapestry.getString("ApplicationServlet.could-not-parse-spec", location), ex);
         }
     }
 

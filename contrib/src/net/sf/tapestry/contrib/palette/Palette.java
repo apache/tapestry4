@@ -18,6 +18,7 @@ import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IPageLoader;
 import net.sf.tapestry.IRender;
 import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.IResourceLocation;
 import net.sf.tapestry.IScript;
 import net.sf.tapestry.IScriptSource;
 import net.sf.tapestry.PageLoaderException;
@@ -331,7 +332,10 @@ public class Palette extends BaseComponent implements IFormComponent
             IEngine engine = getPage().getEngine();
             IScriptSource source = engine.getScriptSource();
 
-            _script = source.getScript("/net/sf/tapestry/contrib/palette/Palette.script");
+            IResourceLocation scriptLocation
+                 = getSpecification().getSpecificationLocation().getRelativeLocation("Palette.script");
+
+            _script = source.getScript(scriptLocation);
         }
 
         Body body = Body.get(cycle);

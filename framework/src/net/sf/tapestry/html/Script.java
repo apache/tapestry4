@@ -12,6 +12,7 @@ import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IEngine;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.IResourceLocation;
 import net.sf.tapestry.IScript;
 import net.sf.tapestry.IScriptSource;
 import net.sf.tapestry.RequestCycleException;
@@ -102,7 +103,13 @@ public class Script extends AbstractComponent
         IEngine engine = cycle.getEngine();
         IScriptSource source = engine.getScriptSource();
 
-        return source.getScript(_scriptPath);
+        // If the script path is relative, it should be relative to the Script component's
+        // container (i.e., relative to a page in the application).
+
+        IResourceLocation rootLocation = getContainer().getSpecification().getSpecificationLocation();
+        IResourceLocation scriptLocation = rootLocation.getRelativeLocation(_scriptPath);
+
+        return source.getScript(scriptLocation);
     }
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException

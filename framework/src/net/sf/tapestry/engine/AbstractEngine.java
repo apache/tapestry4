@@ -976,7 +976,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
             if (_templateSource == null)
             {
-                _templateSource = createTemplateSource();
+                _templateSource = createTemplateSource(context);
 
                 servletContext.setAttribute(name, _templateSource);
             }
@@ -990,7 +990,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
             if (_specificationSource == null)
             {
-                _specificationSource = createSpecificationSource();
+                _specificationSource = createSpecificationSource(context);
 
                 servletContext.setAttribute(name, _specificationSource);
             }
@@ -1004,7 +1004,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
             if (_pageSource == null)
             {
-                _pageSource = createPageSource();
+                _pageSource = createPageSource(context);
 
                 servletContext.setAttribute(name, _pageSource);
             }
@@ -1018,7 +1018,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
             if (_scriptSource == null)
             {
-                _scriptSource = createScriptSource();
+                _scriptSource = createScriptSource(context);
 
                 servletContext.setAttribute(name, _scriptSource);
             }
@@ -1046,7 +1046,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
             if (_stringsSource == null)
             {
-                _stringsSource = createComponentStringsSource();
+                _stringsSource = createComponentStringsSource(context);
 
                 servletContext.setAttribute(name, _stringsSource);
             }
@@ -1087,9 +1087,9 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      * 
      **/
 
-    public IComponentStringsSource createComponentStringsSource()
+    public IComponentStringsSource createComponentStringsSource(RequestContext context)
     {
-        return new DefaultStringsSource(getResourceResolver());
+        return new DefaultStringsSource();
     }
 
     /**
@@ -1104,7 +1104,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      * 
      **/
 
-    protected IScriptSource createScriptSource()
+    protected IScriptSource createScriptSource(RequestContext context)
     {
         return new DefaultScriptSource(getResourceResolver());
     }
@@ -1120,7 +1120,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      * 
      **/
 
-    protected IPageSource createPageSource()
+    protected IPageSource createPageSource(RequestContext context)
     {
         return new PageSource(getResourceResolver());
     }
@@ -1135,7 +1135,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      *  @since 1.0.9
      **/
 
-    protected ISpecificationSource createSpecificationSource()
+    protected ISpecificationSource createSpecificationSource(RequestContext context)
     {
         return new DefaultSpecificationSource(getResourceResolver(), _specification);
     }
@@ -1151,7 +1151,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      * 
      **/
 
-    protected ITemplateSource createTemplateSource()
+    protected ITemplateSource createTemplateSource(RequestContext context)
     {
         return new DefaultTemplateSource(getResourceResolver());
     }
@@ -1176,7 +1176,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      **/
 
     public String toString()
-    {
+    {        
         StringBuffer buffer;
 
         buffer = new StringBuffer(super.toString());

@@ -6,6 +6,7 @@ import java.util.Map;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.INamespace;
+import net.sf.tapestry.IResourceLocation;
 import net.sf.tapestry.ISpecificationSource;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.spec.ComponentSpecification;
@@ -235,7 +236,9 @@ public class Namespace implements INamespace
         if (path == null)
             throw new ApplicationRuntimeException(Tapestry.getString("Namespace.no-such-page", name, getNamespaceId()));
 
-        return _specificationSource.getPageSpecification(path);
+        IResourceLocation location = getSpecificationLocation().getRelativeLocation(path);
+
+        return _specificationSource.getPageSpecification(location);
     }
 
     private ComponentSpecification locateComponentSpecification(String alias)
@@ -245,9 +248,10 @@ public class Namespace implements INamespace
         if (path == null)
             throw new ApplicationRuntimeException(
                 Tapestry.getString("Namespace.no-such-alias", alias, getNamespaceId()));
-        ;
 
-        return _specificationSource.getComponentSpecification(path);
+       IResourceLocation location = getSpecificationLocation().getRelativeLocation(path);
+
+        return _specificationSource.getComponentSpecification(location);
     }
 
     private INamespace createNamespace(String id)
@@ -258,7 +262,9 @@ public class Namespace implements INamespace
             throw new ApplicationRuntimeException(
                 Tapestry.getString("Namespace.library-id-not-found", id, getNamespaceId()));
 
-        ILibrarySpecification ls = _specificationSource.getLibrarySpecification(path);
+        IResourceLocation location = getSpecificationLocation().getRelativeLocation(path);
+
+        ILibrarySpecification ls = _specificationSource.getLibrarySpecification(location);
 
         return new Namespace(id, this, ls, _specificationSource);
     }
@@ -283,6 +289,12 @@ public class Namespace implements INamespace
             return pageName;
 
         return prefix + SEPARATOR + pageName;
+    }
+
+
+    public IResourceLocation getSpecificationLocation()
+    {
+        return _specification.getSpecificationLocation();
     }
 
 }

@@ -93,7 +93,7 @@ public class Slashdot extends BasePage
 
         try
         {
-            stories = parser.parseStories(url, RESOURCE_PATH);
+            stories = parser.parseStories(url);
         }
         catch (DocumentParseException ex)
         {

@@ -2,6 +2,8 @@ package net.sf.tapestry.util.xml;
 
 import org.xml.sax.SAXParseException;
 
+import net.sf.tapestry.IResourceLocation;
+
 /**
  *  Exception thrown if there is any kind of error parsing the
  *  an XML document. 
@@ -16,17 +18,17 @@ import org.xml.sax.SAXParseException;
 
 public class DocumentParseException extends Exception
 {
-    private Throwable rootCause;
-    private int lineNumber;
-    private int column;
-    private String resourcePath;
+    private Throwable _rootCause;
+    private int _lineNumber;
+    private int _column;
+    private IResourceLocation _resourceLocation;
 
     public DocumentParseException(String message, Throwable rootCause)
     {
         this(message, null, rootCause);
     }
 
-    public DocumentParseException(String message, String resourcePath)
+    public DocumentParseException(String message, IResourceLocation resourcePath)
     {
         this(message, resourcePath, null);
     }
@@ -38,27 +40,27 @@ public class DocumentParseException extends Exception
 
     public DocumentParseException(
         String message,
-        String resourcePath,
+        IResourceLocation resourceLocation,
         Throwable rootCause)
     {
         super(message);
 
-        this.resourcePath = resourcePath;
+        _resourceLocation = resourceLocation;
 
-        this.rootCause = rootCause;
+        _rootCause = rootCause;
     }
 
     public DocumentParseException(
         String message,
-        String resourcePath,
+        IResourceLocation resourceLocation,
         SAXParseException rootCause)
     {
-        this(message, resourcePath, (Throwable) rootCause);
+        this(message, resourceLocation, (Throwable) rootCause);
 
         if (rootCause != null)
         {
-            lineNumber = rootCause.getLineNumber();
-            column = rootCause.getColumnNumber();
+            _lineNumber = rootCause.getLineNumber();
+            _column = rootCause.getColumnNumber();
         }
     }
 
@@ -79,22 +81,22 @@ public class DocumentParseException extends Exception
 
     public Throwable getRootCause()
     {
-        return rootCause;
+        return _rootCause;
     }
 
     public int getLineNumber()
     {
-        return lineNumber;
+        return _lineNumber;
     }
 
     public int getColumn()
     {
-        return column;
+        return _column;
     }
 
-    public String getResourcePath()
+    public IResourceLocation getResourcePath()
     {
-        return resourcePath;
+        return _resourceLocation;
     }
 
 }

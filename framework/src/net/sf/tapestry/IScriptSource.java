@@ -11,12 +11,12 @@ package net.sf.tapestry;
 public interface IScriptSource
 {
     /**
-     *  Retrieves the script identified by the resource path from the source's
+     *  Retrieves the script identified by the location from the source's
      *  cache, reading and parsing the script if necessary.
      * 
      **/
 
-    public IScript getScript(String resourcePath);
+    public IScript getScript(IResourceLocation scriptLocation);
 
     /**
      *  Invoked to clear any cached scripts.
