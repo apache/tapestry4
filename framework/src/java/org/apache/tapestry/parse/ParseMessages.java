@@ -138,11 +138,6 @@ class ParseMessages
         return _formatter.format("missing-type-or-copy-of", id);
     }
 
-    public static String unknownStaticValueType(String type)
-    {
-        return _formatter.format("unknown-static-value-type", type);
-    }
-
     public static String frameworkLibraryIdIsReserved(String id)
     {
         return _formatter.format("framework-library-id-is-reserved", id);

@@ -21,9 +21,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import ognl.PropertyAccessor;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.util.PropertyAdaptor;
+import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
@@ -32,34 +36,29 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.spec.Direction;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
-import org.apache.tapestry.util.prop.PropertyFinder;
-import org.apache.tapestry.util.prop.PropertyInfo;
 
 /**
- *  Manages a set of {@link IParameterConnector}s for a
- *  {@link IComponent}.
- *
- *  @author Howard Lewis Ship
- *  @since 2.0.3
- *
- **/
+ * Manages a set of {@link IParameterConnector}s for a {@link IComponent}.
+ * 
+ * @author Howard Lewis Ship
+ * @since 2.0.3
+ */
 
 public class ParameterManager
 {
     private static final Log LOG = LogFactory.getLog(ParameterManager.class);
 
     /**
-     *  Special types that aren't resolved by class lookups, including
-     *  scalars, arrays of scalars, etc.
-     * 
-     *  <p>
-     *  There's some overlap here with ComponentClassFactory.
-     * 
-     **/
+     * Special types that aren't resolved by class lookups, including scalars, arrays of scalars,
+     * etc.
+     * <p>
+     * There's some overlap here with ComponentClassFactory.
+     */
 
     private static final Map SPECIAL_TYPE_MAP = new HashMap();
 
-    static {
+    static
+    {
         SPECIAL_TYPE_MAP.put("boolean", boolean.class);
         SPECIAL_TYPE_MAP.put("boolean[]", boolean[].class);
         SPECIAL_TYPE_MAP.put("byte", byte.class);
@@ -82,6 +81,7 @@ public class ParameterManager
     }
 
     private IComponent _component;
+
     private IParameterConnector[] _connectors;
 
     public ParameterManager(IComponent component)
@@ -90,10 +90,9 @@ public class ParameterManager
     }
 
     /**
-     *  Invoked just before a component renders.  Converts bindings to values
-     *  that are assigned to connected properties.
-     * 
-     **/
+     * Invoked just before a component renders. Converts bindings to values that are assigned to
+     * connected properties.
+     */
 
     public void setParameters(IRequestCycle cycle)
     {
@@ -105,14 +104,11 @@ public class ParameterManager
     }
 
     /**
-     *  Invoked just after the component renders.  Returns component properties
-     *  back to initial values (unless the corresponding binding is
-     *  {@link IBinding#isInvariant() invariant}).  In addition, for
-     *  {@link Direction#FORM} parameters, the property is read and the binding
-     *  is set from the property value (if the cycle is rewinding and the current
-     *  form is rewinding).
-     * 
-     **/
+     * Invoked just after the component renders. Returns component properties back to initial values
+     * (unless the corresponding binding is {@link IBinding#isInvariant() invariant}). In addition,
+     * for {@link Direction#FORM}parameters, the property is read and the binding is set from the
+     * property value (if the cycle is rewinding and the current form is rewinding).
+     */
 
     public void resetParameters(IRequestCycle cycle)
     {
@@ -166,19 +162,11 @@ public class ParameterManager
             }
 
             if (!direction.getAllowInvariant() && binding.isInvariant())
-                throw new ConnectedParameterException(
-                    Tapestry.format(
+                throw new ConnectedParameterException(Tapestry.format(
                         "ParameterManager.incompatible-direction-and-binding",
-                        new Object[] {
-                            name,
-                            _component.getExtendedId(),
-                            direction.getDisplayName(),
-                            binding }),
-                    _component,
-                    name,
-                    null,
-                    binding.getLocation(),
-                    null);
+                        new Object[]
+                        { name, _component.getExtendedId(), direction.getDisplayName(), binding }),
+                        _component, name, null, binding.getLocation(), null);
 
             String propertyName = pspec.getPropertyName();
 
@@ -188,81 +176,62 @@ public class ParameterManager
             // Next,verify that there is a writable property with the same
             // name as the parameter.
 
-            PropertyInfo propertyInfo =
-                PropertyFinder.getPropertyInfo(_component.getClass(), propertyName);
+            PropertyAdaptor adaptor = null;
 
-            if (propertyInfo == null)
+            try
             {
-                throw new ConnectedParameterException(
-                    Tapestry.format(
-                        "ParameterManager.no-accessor",
-                        _component.getExtendedId(),
-                        propertyName),
-                    _component,
-                    name,
-                    propertyName,
-                    binding.getLocation(),
-                    null);
+                adaptor = PropertyUtils.getPropertyAdaptor(_component, propertyName);
+            }
+            catch (Exception ex)
+            {
+                throw new ConnectedParameterException(ex.getMessage(), _component, name,
+                        propertyName, binding.getLocation(), ex);
             }
 
-            if (!propertyInfo.isReadWrite())
+            if (!(adaptor.isReadable() && adaptor.isWritable()))
             {
-                throw new ConnectedParameterException(
-                    Tapestry.format(
+                throw new ConnectedParameterException(Tapestry.format(
                         "ParameterManager.property-not-read-write",
                         _component.getExtendedId(),
-                        propertyName),
-                    _component,
-                    name,
-                    propertyName,
-                    binding.getLocation(),
-                    null);
+                        propertyName), _component, name, propertyName, binding.getLocation(), null);
             }
 
             // Check if the parameter type matches the property type
 
-            Class propertyType = propertyInfo.getType();
+            Class propertyType = adaptor.getPropertyType();
             Class parameterType = getType(pspec.getType(), resolver);
 
             if (parameterType == null)
             {
-                throw new ConnectedParameterException(
-                    Tapestry.format(
+                throw new ConnectedParameterException(Tapestry.format(
                         "ParameterManager.java-type-not-specified",
                         name,
-                        _component.getExtendedId()),
-                    _component,
-                    name,
-                    propertyName,
-                    binding.getLocation(),
-                    null);
+                        _component.getExtendedId()), _component, name, propertyName, binding
+                        .getLocation(), null);
             }
 
             if (!propertyType.equals(parameterType))
             {
-                throw new ConnectedParameterException(
-                    Tapestry.format(
+                throw new ConnectedParameterException(Tapestry.format(
                         "ParameterManager.type-mismatch",
-                        new String[] {
-                            name,
-                            _component.getExtendedId(),
-                            parameterType.toString(),
-                            propertyType.toString()}),
-                    _component,
-                    name,
-                    propertyName,
-                    binding.getLocation(),
-                    null);
+                        new String[]
+                        { name, _component.getExtendedId(), parameterType.toString(),
+                                propertyType.toString() }), _component, name, propertyName, binding
+                        .getLocation(), null);
             }
 
             // Here's where we will sniff it for type, for the moment
             // assume its some form of object (not scalar) type.
 
-            IParameterConnector connector =
-                createConnector(_component, name, binding, propertyType, parameterType);
+            IParameterConnector connector = createConnector(
+                    _component,
+                    name,
+                    binding,
+                    propertyType,
+                    parameterType);
 
             // Static bindings are set here and then forgotten
-            // about.  Dynamic bindings are kept for later.
+            // about. Dynamic bindings are kept for later.
 
             if (binding.isInvariant())
             {
@@ -275,16 +244,11 @@ public class ParameterManager
                 }
                 catch (BindingException ex)
                 {
-                    throw new ConnectedParameterException(
-                        Tapestry.format(
+                    throw new ConnectedParameterException(Tapestry.format(
                             "ParameterManager.static-initialization-failure",
                             propertyName,
                             _component.getExtendedId(),
-                            binding.toString()),
-                        _component,
-                        name,
-                        propertyName,
-                        ex);
+                            binding.toString()), _component, name, propertyName, ex);
                 }
 
                 continue;
@@ -312,12 +276,8 @@ public class ParameterManager
 
     }
 
-    private IParameterConnector createConnector(
-        IComponent component,
-        String parameterName,
-        IBinding binding,
-        Class propertyType,
-        Class requiredType)
+    private IParameterConnector createConnector(IComponent component, String parameterName,
+            IBinding binding, Class propertyType, Class requiredType)
     {
         // Could convert this code to use a Decorator, but then I'd need
         // some kind of factory for these parameter connectors.

@@ -19,25 +19,22 @@ import org.apache.tapestry.spec.IExtensionSpecification;
 
 /**
  * Used to hold data about a &lt;configure&gt; element while it is being parsed.
- *
+ * 
  * @author Howard Lewis Ship
  */
 class ExtensionConfigurationSetter extends BaseLocatable
 {
     private IExtensionSpecification _extension;
+
     private String _propertyName;
-    private ConfigureValueConverter _converter;
+
     private String _value;
 
-    ExtensionConfigurationSetter(
-        IExtensionSpecification extension,
-        String propertyName,
-        ConfigureValueConverter converter,
-        String value)
+    ExtensionConfigurationSetter(IExtensionSpecification extension, String propertyName,
+            String value)
     {
         _extension = extension;
         _propertyName = propertyName;
-        _converter = converter;
         _value = value;
     }
 
@@ -48,9 +45,7 @@ class ExtensionConfigurationSetter extends BaseLocatable
 
     void apply(String value)
     {
-        Object objectValue = _converter.convert(value, getLocation());
-
-        _extension.addConfiguration(_propertyName, objectValue);
+        _extension.addConfiguration(_propertyName, value);
     }
 
 }

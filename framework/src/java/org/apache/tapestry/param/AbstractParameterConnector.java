@@ -15,6 +15,7 @@
 package org.apache.tapestry.param;
 
 import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IForm;
@@ -26,33 +27,38 @@ import org.apache.tapestry.spec.IParameterSpecification;
 import org.apache.tapestry.util.prop.OgnlUtils;
 
 /**
- *  Standard implementation of {@link IParameterConnector}.
- *  Subclasses add in the ability to clear parameters.
- *
- *  @author Howard Lewis Ship
- *  @since 2.0.3
+ * Standard implementation of {@link IParameterConnector}. Subclasses add in the ability to clear
+ * parameters.
  * 
- **/
+ * @author Howard Lewis Ship
+ * @since 2.0.3
+ */
 
 public abstract class AbstractParameterConnector implements IParameterConnector
 {
     private String _parameterName;
+
     private String _propertyName;
+
     private IBinding _binding;
+
     private IComponent _component;
+
     private boolean _required;
+
     private Object _clearValue;
+
     private Direction _direction;
+
     private ClassResolver _resolver;
 
     /**
-     *  Creates a connector.  In addition, obtains the current value
-     *  of the component property; this value will be used to
-     *  restore the component property.
-     * 
-     **/
+     * Creates a connector. In addition, obtains the current value of the component property; this
+     * value will be used to restore the component property.
+     */
 
-    protected AbstractParameterConnector(IComponent component, String parameterName, IBinding binding)
+    protected AbstractParameterConnector(IComponent component, String parameterName,
+            IBinding binding)
     {
         _component = component;
         _parameterName = parameterName;
@@ -66,7 +72,7 @@ public abstract class AbstractParameterConnector implements IParameterConnector
         _clearValue = readCurrentPropertyValue();
     }
 
-    /** @since 2.2 **/
+    /** @since 2.2 */
 
     private Object readCurrentPropertyValue()
     {
@@ -74,23 +80,22 @@ public abstract class AbstractParameterConnector implements IParameterConnector
     }
 
     /**
-     *  Sets the property of the component to the specified value.
-     * 
-     **/
+     * Sets the property of the component to the specified value.
+     */
 
     protected void setPropertyValue(Object value)
     {
-        OgnlUtils.set(_propertyName, _component, value);
+        PropertyUtils.write(_component, _propertyName, value);
     }
 
     /**
-     *  Gets the value of the binding.
-     *  @param requiredType if not null, the expected type of the value object.
+     * Gets the value of the binding.
      * 
-     * 
-     *  @see IBinding#getObject()
-     *  @see IBinding#getObject(String, Class)
-     **/
+     * @param requiredType
+     *            if not null, the expected type of the value object.
+     * @see IBinding#getObject()
+     * @see IBinding#getObject(String, Class)
+     */
 
     protected Object getBindingValue(Class requiredType)
     {
@@ -131,12 +136,9 @@ public abstract class AbstractParameterConnector implements IParameterConnector
     }
 
     /**
-     *  Restores the property to its default value.  For
-     *  {@link Direction#FORM} parameters, extracts the
-     *  property value and sets the binding form it
-     *  (when appropriate).
-     * 
-     **/
+     * Restores the property to its default value. For {@link Direction#FORM}parameters, extracts
+     * the property value and sets the binding form it (when appropriate).
+     */
 
     public void resetParameter(IRequestCycle cycle)
     {
@@ -163,15 +165,13 @@ public abstract class AbstractParameterConnector implements IParameterConnector
     }
 
     /**
-     *  Returns true if the connector should update the property value from
-     *  the binding.  For {@link org.apache.tapestry.spec.Direction#IN}, this
-     *  always returns true.  For {@link org.apache.tapestry.spec.Direction#FORM},
-     *  this returns true only if the request cycle and the active form
-     *  are rewinding.
+     * Returns true if the connector should update the property value from the binding. For
+     * {@link org.apache.tapestry.spec.Direction#IN}, this always returns true. For
+     * {@link org.apache.tapestry.spec.Direction#FORM}, this returns true only if the request cycle
+     * and the active form are rewinding.
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     protected boolean shouldSetPropertyValue(IRequestCycle cycle)
     {

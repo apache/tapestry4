@@ -60,251 +60,171 @@ import org.xml.sax.SAXException;
 
 /**
  * Parses the different types of Tapestry specifications.
- * 
  * <p>
- * Not threadsafe; it is the callers responsibility to ensure
- * thread safety.
- *
+ * Not threadsafe; it is the callers responsibility to ensure thread safety.
+ * 
  * @author Howard Lewis Ship
  */
 public class SpecificationParser extends AbstractParser implements ISpecificationParser
 {
-    private class BooleanConverter implements ConfigureValueConverter
-    {
-        public Object convert(String value, Location location)
-        {
-            Object result = CONVERSION_MAP.get(value.toLowerCase());
+    /**
+     * Perl5 pattern for asset names. Letter, followed by letter, number or underscore. Also allows
+     * the special "$template" value.
+     * 
+     * @since 2.2
+     */
 
-            if (result == null || !(result instanceof Boolean))
-                throw new DocumentParseException(
-                    ParseMessages.failConvertBoolean(value),
-                    location,
-                    null);
-
-            return result;
-        }
-    }
-
-    private static class DoubleConverter implements ConfigureValueConverter
-    {
-        public Object convert(String value, Location location)
-        {
-            try
-            {
-                return new Double(value);
-            }
-            catch (NumberFormatException ex)
-            {
-                throw new DocumentParseException(
-                    ParseMessages.failConvertDouble(value),
-                    location,
-                    ex);
-            }
-        }
-    }
-
-    private static class IntConverter implements ConfigureValueConverter
-    {
-        public Object convert(String value, Location location)
-        {
-            try
-            {
-                return new Integer(value);
-            }
-            catch (NumberFormatException ex)
-            {
-                throw new DocumentParseException(ParseMessages.failConvertInt(value), location, ex);
-            }
-        }
-    }
-
-    private static class LongConverter implements ConfigureValueConverter
-    {
-        public Object convert(String value, Location location)
-        {
-            try
-            {
-                return new Long(value);
-            }
-            catch (NumberFormatException ex)
-            {
-                throw new DocumentParseException(
-                    ParseMessages.failConvertLong(value),
-                    location,
-                    ex);
-            }
-        }
-    }
-
-    private static class StringConverter implements ConfigureValueConverter
-    {
-        public Object convert(String value, Location location)
-        {
-            return value;
-        }
-    }
+    public static final String ASSET_NAME_PATTERN = "(\\$template)|("
+            + Tapestry.SIMPLE_PROPERTY_NAME_PATTERN + ")";
 
     /**
-     *  Perl5 pattern for asset names.  Letter, followed by
-     *  letter, number or underscore.  Also allows
-     *  the special "$template" value.
+     * Perl5 pattern for helper bean names. Letter, followed by letter, number or underscore.
      * 
-     *  @since 2.2
-     * 
-     **/
-
-    public static final String ASSET_NAME_PATTERN =
-        "(\\$template)|(" + Tapestry.SIMPLE_PROPERTY_NAME_PATTERN + ")";
-
-    /**
-     *  Perl5 pattern for helper bean names.  
-     *  Letter, followed by letter, number or underscore.
-     * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public static final String BEAN_NAME_PATTERN = Tapestry.SIMPLE_PROPERTY_NAME_PATTERN;
 
     /**
-     *  Perl5 pattern for component alias. 
-     *  Letter, followed by letter, number, or underscore.
-     *  This is used to validate component types registered
-     *  in the application or library specifications.
+     * Perl5 pattern for component alias. Letter, followed by letter, number, or underscore. This is
+     * used to validate component types registered in the application or library specifications.
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public static final String COMPONENT_ALIAS_PATTERN = Tapestry.SIMPLE_PROPERTY_NAME_PATTERN;
 
     /**
-     *  Perl5 pattern for component ids.  Letter, followed by
-     *  letter, number or underscore.
+     * Perl5 pattern for component ids. Letter, followed by letter, number or underscore.
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public static final String COMPONENT_ID_PATTERN = Tapestry.SIMPLE_PROPERTY_NAME_PATTERN;
 
     /**
-     *  Perl5 pattern for component types.  Component types are an optional
-     *  namespace prefix followed by a normal identifier.
+     * Perl5 pattern for component types. Component types are an optional namespace prefix followed
+     * by a normal identifier.
      * 
-     *  @since 2.2
-     **/
+     * @since 2.2
+     */
 
     public static final String COMPONENT_TYPE_PATTERN = "^(_?[a-zA-Z]\\w*:)?[a-zA-Z_](\\w)*$";
 
     /**
-     *  We can share a single map for all the XML attribute to object conversions,
-     *  since the keys are unique.
-     * 
-     **/
+     * We can share a single map for all the XML attribute to object conversions, since the keys are
+     * unique.
+     */
 
     private final Map CONVERSION_MAP = new HashMap();
 
     /**
-     *  Like modified property name, but allows periods in the name as
-     *  well.
+     * Like modified property name, but allows periods in the name as well.
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public static final String EXTENDED_PROPERTY_NAME_PATTERN = "^_?[a-zA-Z](\\w|-|\\.)*$";
 
     /**
-     *  Per5 pattern for extension names.  Letter followed
-     *  by letter, number, dash, period or underscore. 
+     * Per5 pattern for extension names. Letter followed by letter, number, dash, period or
+     * underscore.
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public static final String EXTENSION_NAME_PATTERN = EXTENDED_PROPERTY_NAME_PATTERN;
 
     /**
-     *  Perl5 pattern for library ids.  Letter followed
-     *  by letter, number or underscore.
+     * Perl5 pattern for library ids. Letter followed by letter, number or underscore.
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public static final String LIBRARY_ID_PATTERN = Tapestry.SIMPLE_PROPERTY_NAME_PATTERN;
 
     private final Log _log;
 
     /**
-     *  Perl5 pattern for page names.  Letter
-     *  followed by letter, number, dash, underscore or period.
+     * Perl5 pattern for page names. Letter followed by letter, number, dash, underscore or period.
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public static final String PAGE_NAME_PATTERN = EXTENDED_PROPERTY_NAME_PATTERN;
 
     /**
-     *  Perl5 pattern that parameter names must conform to.  
-     *  Letter, followed by letter, number or underscore.
+     * Perl5 pattern that parameter names must conform to. Letter, followed by letter, number or
+     * underscore.
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public static final String PARAMETER_NAME_PATTERN = Tapestry.SIMPLE_PROPERTY_NAME_PATTERN;
 
     /**
-     *  Perl5 pattern that property names (that can be connected to
-     *  parameters) must conform to.  
-     *  Letter, followed by letter, number or underscore.
-     *  
+     * Perl5 pattern that property names (that can be connected to parameters) must conform to.
+     * Letter, followed by letter, number or underscore.
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public static final String PROPERTY_NAME_PATTERN = Tapestry.SIMPLE_PROPERTY_NAME_PATTERN;
 
     /**
-     *  Perl5 pattern for service names.  Letter
-     *  followed by letter, number, dash, underscore or period.
+     * Perl5 pattern for service names. Letter followed by letter, number, dash, underscore or
+     * period.
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public static final String SERVICE_NAME_PATTERN = EXTENDED_PROPERTY_NAME_PATTERN;
 
     private static final int STATE_ALLOW_DESCRIPTION = 2000;
+
     private static final int STATE_ALLOW_PROPERTY = 2001;
+
     private static final int STATE_APPLICATION_SPECIFICATION_INITIAL = 1002;
+
     private static final int STATE_BEAN = 4;
+
     private static final int STATE_BINDING = 7;
+
     private static final int STATE_COMPONENT = 6;
+
     private static final int STATE_COMPONENT_SPECIFICATION = 1;
+
     private static final int STATE_COMPONENT_SPECIFICATION_INITIAL = 1000;
+
     private static final int STATE_CONFIGURE = 14;
+
     private static final int STATE_DESCRIPTION = 2;
+
     private static final int STATE_EXTENSION = 13;
+
     private static final int STATE_LIBRARY_SPECIFICATION = 12;
+
     private static final int STATE_LIBRARY_SPECIFICATION_INITIAL = 1003;
+
     private static final int STATE_LISTENER_BINDING = 8;
+
     private static final int STATE_NO_CONTENT = 3000;
+
     private static final int STATE_PAGE_SPECIFICATION = 11;
+
     private static final int STATE_PAGE_SPECIFICATION_INITIAL = 1001;
+
     private static final int STATE_PROPERTY = 3;
+
     private static final int STATE_PROPERTY_SPECIFICATION = 10;
+
     private static final int STATE_SET_PROPERTY = 5;
+
     private static final int STATE_STATIC_BINDING = 9;
 
-    /** @since 3.0 **/
+    /** @since 3.0 */
 
-    public static final String TAPESTRY_DTD_3_0_PUBLIC_ID =
-        "-//Apache Software Foundation//Tapestry Specification 3.0//EN";
+    public static final String TAPESTRY_DTD_3_0_PUBLIC_ID = "-//Apache Software Foundation//Tapestry Specification 3.0//EN";
 
     /**
      * The attributes of the current element, as a map (string keyed on string).
@@ -318,7 +238,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     private String _elementName;
 
-    /** @since 1.0.9 **/
+    /** @since 1.0.9 */
 
     private final SpecFactory _factory;
 
@@ -329,21 +249,20 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     private SAXParserFactory _parserFactory = SAXParserFactory.newInstance();
 
     /**
-     *  @since 3.0 
-     * 
-     **/
+     * @since 3.0
+     */
 
     private final ClassResolver _resolver;
 
     /**
-     * The root object parsed: a component or page specification, a library
-     * specification, or an application specification.
+     * The root object parsed: a component or page specification, a library specification, or an
+     * application specification.
      */
     private Object _rootObject;
 
     // Identify all the different acceptible values.
     // We continue to sneak by with a single map because
-    // there aren't conflicts;  when we have 'foo' meaning
+    // there aren't conflicts; when we have 'foo' meaning
     // different things in different places in the DTD, we'll
     // need multiple maps.
 
@@ -368,12 +287,6 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         CONVERSION_MAP.put("page", BeanLifecycle.PAGE);
         CONVERSION_MAP.put("render", BeanLifecycle.RENDER);
 
-        CONVERSION_MAP.put("boolean", new BooleanConverter());
-        CONVERSION_MAP.put("int", new IntConverter());
-        CONVERSION_MAP.put("double", new DoubleConverter());
-        CONVERSION_MAP.put("String", new StringConverter());
-        CONVERSION_MAP.put("long", new LongConverter());
-
         CONVERSION_MAP.put("in", Direction.IN);
         CONVERSION_MAP.put("form", Direction.FORM);
         CONVERSION_MAP.put("custom", Direction.CUSTOM);
@@ -392,8 +305,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     }
 
     /**
-     * Create a new instance with resolver and a provided
-     * SpecFactory (used by Spindle).
+     * Create a new instance with resolver and a provided SpecFactory (used by Spindle).
      */
     public SpecificationParser(ClassResolver resolver, SpecFactory factory)
     {
@@ -417,67 +329,67 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
         switch (getState())
         {
-            case STATE_COMPONENT_SPECIFICATION_INITIAL :
+            case STATE_COMPONENT_SPECIFICATION_INITIAL:
 
                 beginComponentSpecificationInitial();
                 break;
 
-            case STATE_PAGE_SPECIFICATION_INITIAL :
+            case STATE_PAGE_SPECIFICATION_INITIAL:
 
                 beginPageSpecificationInitial();
                 break;
 
-            case STATE_APPLICATION_SPECIFICATION_INITIAL :
+            case STATE_APPLICATION_SPECIFICATION_INITIAL:
 
                 beginApplicationSpecificationInitial();
                 break;
 
-            case STATE_LIBRARY_SPECIFICATION_INITIAL :
+            case STATE_LIBRARY_SPECIFICATION_INITIAL:
 
                 beginLibrarySpecificationInitial();
                 break;
 
-            case STATE_COMPONENT_SPECIFICATION :
+            case STATE_COMPONENT_SPECIFICATION:
 
                 beginComponentSpecification();
                 break;
 
-            case STATE_PAGE_SPECIFICATION :
+            case STATE_PAGE_SPECIFICATION:
 
                 beginPageSpecification();
                 break;
 
-            case STATE_ALLOW_DESCRIPTION :
+            case STATE_ALLOW_DESCRIPTION:
 
                 beginAllowDescription();
                 break;
 
-            case STATE_ALLOW_PROPERTY :
+            case STATE_ALLOW_PROPERTY:
 
                 beginAllowProperty();
                 break;
 
-            case STATE_BEAN :
+            case STATE_BEAN:
 
                 beginBean();
                 break;
 
-            case STATE_COMPONENT :
+            case STATE_COMPONENT:
 
                 beginComponent();
                 break;
 
-            case STATE_LIBRARY_SPECIFICATION :
+            case STATE_LIBRARY_SPECIFICATION:
 
                 beginLibrarySpecification();
                 break;
 
-            case STATE_EXTENSION :
+            case STATE_EXTENSION:
 
                 beginExtension();
                 break;
 
-            default :
+            default:
 
                 unexpectedElement(_elementName);
         }
@@ -500,8 +412,8 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     }
 
     /**
-     * Special state for a number of types that can support the &lt;property&gt; 
-     * (meta-data) element.
+     * Special state for a number of types that can support the &lt;property&gt; (meta-data)
+     * element.
      */
 
     private void beginAllowProperty()
@@ -810,17 +722,13 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         }
     }
 
-    private void copyBindings(
-        String sourceComponentId,
-        IComponentSpecification cs,
-        IContainedComponent target)
+    private void copyBindings(String sourceComponentId, IComponentSpecification cs,
+            IContainedComponent target)
     {
         IContainedComponent source = cs.getComponent(sourceComponentId);
         if (source == null)
-            throw new DocumentParseException(
-                ParseMessages.unableToCopy(sourceComponentId),
-                getLocation(),
-                null);
+            throw new DocumentParseException(ParseMessages.unableToCopy(sourceComponentId),
+                    getLocation(), null);
 
         Iterator i = source.getBindingNames().iterator();
         while (i.hasNext())
@@ -839,52 +747,52 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
         switch (getState())
         {
-            case STATE_DESCRIPTION :
+            case STATE_DESCRIPTION:
 
                 endDescription();
                 break;
 
-            case STATE_PROPERTY :
+            case STATE_PROPERTY:
 
                 endProperty();
                 break;
 
-            case STATE_SET_PROPERTY :
+            case STATE_SET_PROPERTY:
 
                 endSetProperty();
                 break;
 
-            case STATE_BINDING :
+            case STATE_BINDING:
 
                 endBinding();
                 break;
 
-            case STATE_LISTENER_BINDING :
+            case STATE_LISTENER_BINDING:
 
                 endListenerBinding();
                 break;
 
-            case STATE_STATIC_BINDING :
+            case STATE_STATIC_BINDING:
 
                 endStaticBinding();
                 break;
 
-            case STATE_PROPERTY_SPECIFICATION :
+            case STATE_PROPERTY_SPECIFICATION:
 
                 endPropertySpecification();
                 break;
 
-            case STATE_LIBRARY_SPECIFICATION :
+            case STATE_LIBRARY_SPECIFICATION:
 
                 endLibrarySpecification();
                 break;
 
-            case STATE_CONFIGURE :
+            case STATE_CONFIGURE:
 
                 endConfigure();
                 break;
 
-            default :
+            default:
                 break;
         }
 
@@ -1013,8 +921,9 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     {
         String name = getValidatedAttribute("name", BEAN_NAME_PATTERN, "invalid-bean-name");
         String className = getAttribute("class");
-        BeanLifecycle lifecycle =
-            (BeanLifecycle) getConvertedAttribute("lifecycle", BeanLifecycle.REQUEST);
+        BeanLifecycle lifecycle = (BeanLifecycle) getConvertedAttribute(
+                "lifecycle",
+                BeanLifecycle.REQUEST);
 
         IBeanSpecification bs = _factory.createBeanSpecification();
 
@@ -1044,8 +953,10 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     {
         String id = getValidatedAttribute("id", COMPONENT_ID_PATTERN, "invalid-component-id");
 
-        String type =
-            getValidatedAttribute("type", COMPONENT_TYPE_PATTERN, "invalid-component-type");
+        String type = getValidatedAttribute(
+                "type",
+                COMPONENT_TYPE_PATTERN,
+                "invalid-component-type");
         String copyOf = getAttribute("copy-of");
         boolean inherit = getBooleanAttribute("inherit-informal-parameters", false);
 
@@ -1056,18 +967,14 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         if (hasCopyOf)
         {
             if (Tapestry.isNonBlank(type))
-                throw new DocumentParseException(
-                    ParseMessages.bothTypeAndCopyOf(id),
-                    getLocation(),
-                    null);
+                throw new DocumentParseException(ParseMessages.bothTypeAndCopyOf(id),
+                        getLocation(), null);
         }
         else
         {
             if (Tapestry.isBlank(type))
-                throw new DocumentParseException(
-                    ParseMessages.missingTypeOrCopyOf(id),
-                    getLocation(),
-                    null);
+                throw new DocumentParseException(ParseMessages.missingTypeOrCopyOf(id),
+                        getLocation(), null);
         }
 
         IContainedComponent cc = _factory.createContainedComponent();
@@ -1087,8 +994,10 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     private void enterComponentType()
     {
-        String type =
-            getValidatedAttribute("type", COMPONENT_ALIAS_PATTERN, "invalid-component-type");
+        String type = getValidatedAttribute(
+                "type",
+                COMPONENT_ALIAS_PATTERN,
+                "invalid-component-type");
         String path = getAttribute("specification-path");
 
         ILibrarySpecification ls = (ILibrarySpecification) peekObject();
@@ -1100,24 +1009,17 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     private void enterConfigure()
     {
-        String propertyName =
-            getValidatedAttribute("property-name", PROPERTY_NAME_PATTERN, "invalid-property-name");
-
-        ConfigureValueConverter converter =
-            (ConfigureValueConverter) getConvertedAttribute("type", null);
-
-        if (converter == null)
-            throw new DocumentParseException(
-                ParseMessages.unknownStaticValueType(getAttribute("type")),
-                getLocation(),
-                null);
+        String propertyName = getValidatedAttribute(
+                "property-name",
+                PROPERTY_NAME_PATTERN,
+                "invalid-property-name");
 
         String value = getAttribute("value");
 
         IExtensionSpecification es = (IExtensionSpecification) peekObject();
 
-        ExtensionConfigurationSetter setter =
-            new ExtensionConfigurationSetter(es, propertyName, converter, value);
+        ExtensionConfigurationSetter setter = new ExtensionConfigurationSetter(es, propertyName,
+                value);
 
         push(_elementName, setter, STATE_CONFIGURE, false);
     }
@@ -1134,8 +1036,10 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     private void enterExtension()
     {
-        String name =
-            getValidatedAttribute("name", EXTENSION_NAME_PATTERN, "invalid-extension-name");
+        String name = getValidatedAttribute(
+                "name",
+                EXTENSION_NAME_PATTERN,
+                "invalid-extension-name");
 
         boolean immediate = getBooleanAttribute("immediate", false);
         String className = getAttribute("class");
@@ -1179,10 +1083,9 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         String path = getAttribute("specification-path");
 
         if (libraryId.equals(INamespace.FRAMEWORK_NAMESPACE))
-            throw new DocumentParseException(
-                ParseMessages.frameworkLibraryIdIsReserved(INamespace.FRAMEWORK_NAMESPACE),
-                getLocation(),
-                null);
+            throw new DocumentParseException(ParseMessages
+                    .frameworkLibraryIdIsReserved(INamespace.FRAMEWORK_NAMESPACE), getLocation(),
+                    null);
 
         ILibrarySpecification ls = (ILibrarySpecification) peekObject();
 
@@ -1235,11 +1138,15 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     {
         IParameterSpecification ps = _factory.createParameterSpecification();
 
-        String name =
-            getValidatedAttribute("name", PARAMETER_NAME_PATTERN, "invalid-parameter-name");
+        String name = getValidatedAttribute(
+                "name",
+                PARAMETER_NAME_PATTERN,
+                "invalid-parameter-name");
 
-        String propertyName =
-            getValidatedAttribute("property-name", PROPERTY_NAME_PATTERN, "invalid-property-name");
+        String propertyName = getValidatedAttribute(
+                "property-name",
+                PROPERTY_NAME_PATTERN,
+                "invalid-property-name");
 
         if (propertyName == null)
             propertyName = name;
@@ -1250,8 +1157,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         ps.setDefaultValue(getAttribute("default-value"));
         ps.setDirection((Direction) getConvertedAttribute("direction", Direction.CUSTOM));
 
-        String type = 
-           getAttribute("type"); // Current, 3.0+ DTD 
+        String type = getAttribute("type"); // Current, 3.0+ DTD
 
         if (type != null)
             ps.setType(type);
@@ -1354,11 +1260,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
         IBeanSpecification bs = (IBeanSpecification) peekObject();
 
-        push(
-            _elementName,
-            new BeanSetPropertySetter(bs, bi, expression),
-            STATE_SET_PROPERTY,
-            false);
+        push(_elementName, new BeanSetPropertySetter(bs, bi, expression), STATE_SET_PROPERTY, false);
     }
 
     private void enterStaticBinding()
@@ -1378,10 +1280,9 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         if (_elementName.equals(elementName))
             return;
 
-        throw new DocumentParseException(
-            ParseMessages.incorrectDocumentType(_elementName, elementName),
-            getLocation(),
-            null);
+        throw new DocumentParseException(ParseMessages.incorrectDocumentType(
+                _elementName,
+                elementName), getLocation(), null);
 
     }
 
@@ -1426,18 +1327,16 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
         if (asAttribute && asContent)
         {
-            throw new DocumentParseException(
-                ParseMessages.noAttributeAndBody(attributeName, _elementName),
-                getLocation(),
-                null);
+            throw new DocumentParseException(ParseMessages.noAttributeAndBody(
+                    attributeName,
+                    _elementName), getLocation(), null);
         }
 
         if (required && !(asAttribute || asContent))
         {
-            throw new DocumentParseException(
-                ParseMessages.requiredExtendedAttribute(_elementName, attributeName),
-                getLocation(),
-                null);
+            throw new DocumentParseException(ParseMessages.requiredExtendedAttribute(
+                    _elementName,
+                    attributeName), getLocation(), null);
         }
 
         if (asAttribute)
@@ -1456,10 +1355,8 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         if (_matcher.matches(pattern, value))
             return value;
 
-        throw new InvalidStringException(
-            ParseMessages.invalidAttribute(errorKey, value),
-            value,
-            getLocation());
+        throw new InvalidStringException(ParseMessages.invalidAttribute(errorKey, value), value,
+                getLocation());
     }
 
     protected void initializeParser(Resource resource, int startState)
@@ -1534,10 +1431,8 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         {
             _parser = null;
 
-            throw new DocumentParseException(
-                ParseMessages.errorReadingResource(resource, ex),
-                resource,
-                ex);
+            throw new DocumentParseException(ParseMessages.errorReadingResource(resource, ex),
+                    resource, ex);
         }
         finally
         {
@@ -1597,16 +1492,15 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     }
 
     /**
-     * Resolved an external entity, which is assumed to be the doctype.  Might need a check
-     * to ensure that specs without a doctype fail.
+     * Resolved an external entity, which is assumed to be the doctype. Might need a check to ensure
+     * that specs without a doctype fail.
      */
     public InputSource resolveEntity(String publicId, String systemId) throws SAXException
     {
         if (TAPESTRY_DTD_3_0_PUBLIC_ID.equals(publicId))
             return getDTDInputSource("Tapestry_3_0.dtd");
 
-        throw new DocumentParseException(
-            ParseMessages.unknownPublicId(getResource(), publicId),
-            getResource());
+        throw new DocumentParseException(ParseMessages.unknownPublicId(getResource(), publicId),
+                getResource());
     }
 }

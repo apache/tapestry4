@@ -34,9 +34,8 @@ import org.apache.tapestry.spec.ListenerBindingSpecification;
 import org.apache.tapestry.util.xml.DocumentParseException;
 
 /**
- * Tests the specification parser (which reads page and component
- * specifications). Came into being somewhat late, so it just tests new features
- * for the meantime.
+ * Tests the specification parser (which reads page and component specifications). Came into being
+ * somewhat late, so it just tests new features for the meantime.
  * 
  * @author Howard Lewis Ship
  * @since 2.0.4
@@ -318,8 +317,7 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     * Test an an application specification can omit the name and engine-class
-     * attributes.
+     * Test an an application specification can omit the name and engine-class attributes.
      * 
      * @since 3.0
      */
@@ -349,8 +347,7 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     * Test omitting the class name from a component specification (new, in DTD
-     * 1.4).
+     * Test omitting the class name from a component specification (new, in DTD 1.4).
      */
 
     public void testNulledComponent() throws Exception
@@ -365,8 +362,7 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     * Test omitting the class name from a component specification (new, in DTD
-     * 1.4).
+     * Test omitting the class name from a component specification (new, in DTD 1.4).
      */
 
     public void testNulledPage() throws Exception
@@ -381,8 +377,7 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     * Test the value attribute for the property element (which is new in DTD
-     * 1.4).
+     * Test the value attribute for the property element (which is new in DTD 1.4).
      * 
      * @since 3.0
      */
@@ -567,7 +562,8 @@ public class TestSpecificationParser extends TapestryTestCase
         }
         catch (DocumentParseException ex)
         {
-            checkException(ex,
+            checkException(
+                    ex,
                     "Element <binding> does not specify a value for attribute 'expression', or contain a body value.");
         }
     }
@@ -605,9 +601,13 @@ public class TestSpecificationParser extends TapestryTestCase
         IApplicationSpecification spec = parseApp("ConfigureExtension.application");
         IExtensionSpecification es = spec.getExtensionSpecification("my-extension");
 
-        assertEquals(new Long(-227), es.getConfiguration().get("long"));
-        assertEquals(new Double(22.7), es.getConfiguration().get("double"));
-        assertEquals(Boolean.TRUE, es.getConfiguration().get("boolean"));
+        // Note: this is in transition; under 3.0 and earlier, the spec parser was
+        // responsible for converting values into object types ... that is now
+        // done futher down stream.
+        
+        assertEquals("-227", es.getConfiguration().get("long"));
+        assertEquals("22.7", es.getConfiguration().get("double"));
+        assertEquals("true", es.getConfiguration().get("boolean"));
         assertEquals("An extended string.", es.getConfiguration().get("string"));
     }
 
@@ -619,51 +619,7 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals("my-value", es.getProperty("my-property"));
     }
 
-    /** @since 3.1 */
-
-    public void testConfigureBadBoolean() throws Exception
-    {
-        try
-        {
-            parseApp("ConfigureBadBoolean.application");
-            unreachable();
-        }
-        catch (DocumentParseException ex)
-        {
-            checkException(ex, "Could not convert 'sure!' to boolean.");
-        }
-    }
-
-    /** @since 3.1 */
-
-    public void testConfigureBadDouble() throws Exception
-    {
-        try
-        {
-            parseApp("ConfigureBadDouble.application");
-            unreachable();
-        }
-        catch (DocumentParseException ex)
-        {
-            checkException(ex, "Could not convert 'nogo!' to double.");
-        }
-    }
-
-    /** @since 3.1 */
-
-    public void testConfigureBadLong() throws Exception
-    {
-        try
-        {
-            parseApp("ConfigureBadLong.application");
-            unreachable();
-        }
-        catch (DocumentParseException ex)
-        {
-            checkException(ex, "Could not convert 'nogo!' to long.");
-        }
-    }
-
+ 
     /** @since 3.1 */
 
     public void testComponentProperty() throws Exception
@@ -729,14 +685,15 @@ public class TestSpecificationParser extends TapestryTestCase
         }
         catch (Exception ex)
         {
-            checkException(ex,
+            checkException(
+                    ex,
                     "Incorrect document type; expected page-specification but received component-specification.");
         }
     }
 
     /**
-     * Checks to make sure that a application or library may not defined a
-     * lbirary with id 'framework'.
+     * Checks to make sure that a application or library may not defined a lbirary with id
+     * 'framework'.
      * 
      * @since 3.1
      */
@@ -755,8 +712,7 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     * Tests that a &lt;component&gt; element may not have both type and copy-of
-     * attributes.
+     * Tests that a &lt;component&gt; element may not have both type and copy-of attributes.
      * 
      * @since 3.1
      */
@@ -789,7 +745,9 @@ public class TestSpecificationParser extends TapestryTestCase
         }
         catch (Exception ex)
         {
-            checkException(ex, "Contained component bad does not specify attribute type or copy-of.");
+            checkException(
+                    ex,
+                    "Contained component bad does not specify attribute type or copy-of.");
         }
     }
 

@@ -27,23 +27,22 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.prop.OgnlUtils;
 
 /**
- *  Defines an "extension", which is much like a helper bean, but 
- *  is part of a library or application specification (and has the same
- *  lifecycle as the application).
- *
- *  @author Howard Lewis Ship
- *  @since 2.2
+ * Defines an "extension", which is much like a helper bean, but is part of a library or application
+ * specification (and has the same lifecycle as the application).
  * 
- **/
+ * @author Howard Lewis Ship
+ * @since 2.2
+ */
 
-public class ExtensionSpecification
-    extends LocatablePropertyHolder
-    implements IExtensionSpecification
+public class ExtensionSpecification extends LocatablePropertyHolder implements
+        IExtensionSpecification
 {
     private static final Log LOG = LogFactory.getLog(ExtensionSpecification.class);
 
     private String _className;
+
     protected Map _configuration = new HashMap();
+
     private boolean _immediate;
 
     public String getClassName()
@@ -56,11 +55,10 @@ public class ExtensionSpecification
         _className = className;
     }
 
-    public void addConfiguration(String propertyName, Object value)
+    public void addConfiguration(String propertyName, String value)
     {
         if (_configuration.containsKey(propertyName))
-            throw new IllegalArgumentException(
-                Tapestry.format(
+            throw new IllegalArgumentException(Tapestry.format(
                     "ExtensionSpecification.duplicate-property",
                     this,
                     propertyName));
@@ -69,10 +67,9 @@ public class ExtensionSpecification
     }
 
     /**
-     *  Returns an immutable Map of the configuration; keyed on property name,
-     *  with values as properties to assign.
-     * 
-     **/
+     * Returns an immutable Map of the configuration; keyed on property name, with values as
+     * properties to assign.
+     */
 
     public Map getConfiguration()
     {
@@ -80,10 +77,9 @@ public class ExtensionSpecification
     }
 
     /**
-     *  Invoked to instantiate an instance of the extension and return it.
-     *  It also configures properties of the extension.
-     * 
-     **/
+     * Invoked to instantiate an instance of the extension and return it. It also configures
+     * properties of the extension.
+     */
 
     public Object instantiateExtension(ClassResolver resolver)
     {
@@ -98,10 +94,9 @@ public class ExtensionSpecification
         }
         catch (Exception ex)
         {
-            throw new ApplicationRuntimeException(
-                Tapestry.format("ExtensionSpecification.bad-class", _className),
-                getLocation(),
-                ex);
+            throw new ApplicationRuntimeException(Tapestry.format(
+                    "ExtensionSpecification.bad-class",
+                    _className), getLocation(), ex);
         }
 
         result = instantiateInstance(extensionClass, result);
@@ -122,8 +117,11 @@ public class ExtensionSpecification
             Map.Entry entry = (Map.Entry) i.next();
 
             String propertyName = (String) entry.getKey();
+            String textValue = (String) entry.getValue();
 
-            OgnlUtils.set(propertyName, extension, entry.getValue());
+            // Let OGNL do any conversions.
+
+            OgnlUtils.set(propertyName, extension, textValue);
         }
     }
 
@@ -160,13 +158,10 @@ public class ExtensionSpecification
     }
 
     /**
-     *  Returns true if the extensions should be instantiated
-     *  immediately after the containing 
-     *  {@link org.apache.tapestry.spec.LibrarySpecification}
-     *  if parsed.  Non-immediate extensions are instantiated
-     *  only as needed.
-     * 
-     **/
+     * Returns true if the extensions should be instantiated immediately after the containing
+     * {@link org.apache.tapestry.spec.LibrarySpecification}if parsed. Non-immediate extensions are
+     * instantiated only as needed.
+     */
 
     public boolean isImmediate()
     {
