@@ -353,7 +353,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     {
         try
         {
-            IPage exceptionPage = findOverridablePage(cycle, EXCEPTION_PAGE);
+            IPage exceptionPage = cycle.getPage(EXCEPTION_PAGE);
 
             OgnlUtils.set("exception", _resolver, exceptionPage, cause);
 
@@ -577,7 +577,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
         out.reset();
 
-        IPage page = findOverridablePage(cycle, pageName);
+        IPage page = cycle.getPage(pageName);
 
         cycle.setPage(page);
 
@@ -1725,30 +1725,6 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     protected String extractServiceName(RequestContext context)
     {
         return context.getParameter(IEngineService.SERVICE_QUERY_PARAMETER_NAME);
-    }
-
-    /**
-     *  Finds a page that may be defined by the application or,
-     *  failing that, in the framework.  This is invoked by
-     *  several methods that need to find a page such as
-     *  StaleLink or Exception.
-     * 
-     *  @param cycle The active request cycle.
-     *  @param pageName The "bare" name of a page (no namespace prefix).
-     * 
-     *  @since 2.2
-     **/
-
-    protected IPage findOverridablePage(IRequestCycle cycle, String pageName)
-    {
-        // The thought here is that the name is a bare name.
-        // We first search for it in the application namespace and,
-        // failing that, we assume its in the framework namespace.
-
-        if (_specification.getPageSpecificationPath(pageName) != null)
-            return cycle.getPage(pageName);
-
-        return cycle.getPage(INamespace.FRAMEWORK_NAMESPACE + ":" + pageName);
     }
 
     /** @since 2.2 **/
