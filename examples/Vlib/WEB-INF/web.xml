@@ -14,7 +14,7 @@
 
   <servlet-mapping>
     <servlet-name>vlib</servlet-name>
-    <url-pattern>/app</url-pattern>
+    <url-pattern>/app/*</url-pattern>
   </servlet-mapping>
   
   <session-config>

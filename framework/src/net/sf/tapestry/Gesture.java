@@ -25,6 +25,8 @@
 
 package net.sf.tapestry;
 
+import java.net.URLEncoder;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -37,57 +39,89 @@ import javax.servlet.http.HttpServletRequest;
  *  can be generated, or the query parameters for the Gesture can be extracted
  *  (seperately from the servlet path).  The latter case is used when submitting
  *  forms.
+ * 
+ *  <p>Note: This class was changed signficantly in a non-backwards compatible
+ *  way in release 2.2.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
  *  @since 1.0.3
- */
+ * 
+ **/
 
 public class Gesture
 {
     private static final int DEFAULT_HTTP_PORT = 80;
 
-    private IRequestCycle cycle;
-    private Map queryParameters;
-    private boolean stateful;
+    private IRequestCycle _cycle;
+    private String _serviceName;
+    private String[] _serviceContext;
+    private String[] _serviceParameters;
+    private boolean _stateful;
 
     /**
-     *  Creates a new Gesture, for the given request cycle and with a set
-     *  or query parameters.
+     *  Creates a new Gesture.  A Gesture always names a service to be activated
+     *  by the Gesture, has an optional list of service context strings,
+     *  an optional list of service parameter strings and may be stateful
+     *  or stateless.
+     * 
+     *  <p>Service parameter strings may contain any characters.
+     * 
+     *  <p>Service context strings must be URL safe, and may not contain
+     *  slash ('/') characters.  Typically, only letters, numbers and simple
+     *  punctuation ('.', '-', '_') is recommended (no checks are currently made,
+     *  however).
      *  
-     *  @param cycle the {@link IRequestCycle} the Gesture is to be created for
-     *  @param queryParameters a {@link Map} of parameters.  Keys and values
-     *  are both String.  Map not be null; one query parameter must be
-     *  specify the engine service.
+     *  @param cycle The {@link IRequestCycle} the Gesture is to be created for.
+     *  @param serviceName The name of the service to be invoked by the Gesture.
+     *  @param serviceContext an optional array of strings to be provided
+     *  to the service to provide a context for executing the service.  May be null
+     *  or empty.  <b>Note: retained, not copied.</b>
+     *  @param serviceParameters An array of parameters, may be 
+     *  null or empty. <b>Note: retained, not copied.</b>
      *  @param stateful if true, the service which generated the Gesture
      *  is stateful and expects that the final URL will be passed through
      *  {@link IRequestCycle#encodeURL(String)}.
      **/
 
-    public Gesture(IRequestCycle cycle, Map queryParameters, boolean stateful)
+    public Gesture(IRequestCycle cycle, String serviceName, String[] serviceContext, String[] serviceParameters, boolean stateful)
     {
-        this.cycle = cycle;
+        _cycle = cycle;
+        _serviceName= serviceName;
+        _serviceContext = serviceContext;
+        _serviceParameters = serviceParameters;
+        _stateful = stateful;
+    }
 
-        this.queryParameters = new HashMap(queryParameters);
-        this.stateful = stateful;
+
+    /**
+     *  Returns the URI for the Gesture, exclusing any service parameters.
+     *  This is used (for example) by {@link net.sf.tapestry.form.Form} which encodes
+     *  the service parameters as hidden form fields.  The URL is encoded
+     *  if the service is stateful.
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    public String getBareURL()
+    {
+        return constructURL(new StringBuffer(), false);
     }
 
     /**
-     *  Returns the {@link Iterator} for the query parameter map's entry set.
-     *  Each value will be {@link Map} entry.
-     *
+     *  Returns an array of parameters (possibly null) that should be included
+     *  as multiple values of query parameter {@link IEngineService#PARAMETERS_QUERY_PARAMETER_NAME}
+     *  in the request.  This is primarily for the benefit of
+     *  {@link net.sf.tapestry.form.Form}, which encodes these as hidden fields.
+     * 
      **/
-
-    public Iterator getQueryParameters()
+    
+    public String[] getServiceParameters()
     {
-        return queryParameters.entrySet().iterator();
+        return _serviceParameters;
     }
-
-    public String getServletPath()
-    {
-        return cycle.getEngine().getServletPath();
-    }
-
+    
     /**
      *  Something of a misnomer; returns the URI, relative to the server's root.
      *  If the Gesture is stateful, then the URI is filtered
@@ -97,16 +131,7 @@ public class Gesture
 
     public String getURL()
     {
-        StringBuffer buffer = new StringBuffer();
-
-        constructURL(buffer);
-
-        String result = buffer.toString();
-
-        if (stateful)
-            return cycle.encodeURL(result);
-
-        return result;
+        return constructURL(new StringBuffer(), true);
     }
 
     /**
@@ -131,7 +156,7 @@ public class Gesture
     public String getAbsoluteURL(String scheme, String server, int port)
     {
         StringBuffer buffer = new StringBuffer();
-        HttpServletRequest request = cycle.getRequestContext().getRequest();
+        HttpServletRequest request = _cycle.getRequestContext().getRequest();
 
         if (scheme == null)
             scheme = request.getScheme();
@@ -154,54 +179,82 @@ public class Gesture
         }
 
         // Add the servlet path and the rest of the URL & query parameters.
-        // The servlet path start with a leading slash.
+        // The servlet path starts with a leading slash.
 
-        constructURL(buffer);
-
-        String result = buffer.toString();
-
-        if (stateful)
-            result = cycle.encodeURL(result);
-
-        return result;
+        return constructURL(buffer, true);
     }
 
-    private void constructURL(StringBuffer buffer)
+    private String constructURL(StringBuffer buffer, boolean includeParameters)
     {
-        buffer.append(getServletPath());
+        buffer.append(_cycle.getEngine().getServletPath());
 
-        Iterator i = getQueryParameters();
-        boolean first = true;
+        buffer.append('/');
+        buffer.append(_serviceName);
+        
 
-        while (i.hasNext())
+        if (_serviceContext != null)
         {
-            Map.Entry entry = (Map.Entry) i.next();
+            for (int i = 0; i < _serviceContext.length; i++)
+            {
+                buffer.append('/');
 
-            if (first)
+                buffer.append(_serviceContext[i]);
+            }
+        }
+
+        int count = 
+            includeParameters ? Tapestry.size(_serviceParameters) : 0;
+            
+        for (int i = 0; i < count; i++)
+        {
+            if (i == 0)
                 buffer.append('?');
             else
                 buffer.append('&');
-
-            first = false;
-
-            buffer.append(entry.getKey().toString());
+                
+            buffer.append(IEngineService.PARAMETERS_QUERY_PARAMETER_NAME);
             buffer.append('=');
-            buffer.append(entry.getValue().toString());
+            
+            try
+            {
+                String encoded = URLEncoder.encode(_serviceParameters[i]);
+                
+                buffer.append(encoded);
+            }
+            catch (Exception ex)
+            {
+                // JDK1.2.2 claims this throws Exception.  It doesn't
+                // and we ignore it.
+            }
         }
 
+        String result = buffer.toString();
+
+        if (_stateful)
+            result = _cycle.encodeURL(result);
+
+        return result;
     }
 
     public String toString()
     {
         StringBuffer buffer = new StringBuffer("Gesture[");
 
-        buffer.append(getServletPath());
+        buffer.append(getBareURL());
         buffer.append(' ');
 
-        buffer.append(queryParameters);
+        for (int i = 0; i < Tapestry.size(_serviceParameters); i++)
+        {
+            if (i == 0)
+                buffer.append(" parameters=");
+            else
+                buffer.append(',');
+                
+            buffer.append(_serviceParameters[i]);
+        }
 
-        if (stateful)
-            buffer.append(" stateful");
+        if (_stateful)
+            buffer.append(" (stateful)");
 
         buffer.append(']');
 

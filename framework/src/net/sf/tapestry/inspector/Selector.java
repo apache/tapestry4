@@ -50,8 +50,6 @@ import net.sf.tapestry.spec.ApplicationSpecification;
 
 public class Selector extends BaseComponent
 {
-    private IPropertySelectionRenderer renderer;
-
     /**
      *  When the form is submitted,
      *  the inspectedPageName of the {@link Inspector} page will be updated,
@@ -96,39 +94,35 @@ public class Selector extends BaseComponent
 
     public List getCrumbTrail()
     {
-        List list = null;
-        IComponent component;
-        Inspector inspector;
-        IComponent container;
-
-        inspector = (Inspector) page;
-
-        component = inspector.getInspectedComponent();
-
+        List result = null;
+        
+        Inspector inspector = (Inspector) page;
+        IComponent component = inspector.getInspectedComponent();
+        IComponent container = null;
+        
         while (true)
         {
             container = component.getContainer();
             if (container == null)
                 break;
 
-            if (list == null)
-                list = new ArrayList();
+            if (result == null)
+                result = new ArrayList();
 
-            list.add(component);
+            result.add(component);
 
             component = container;
-
         }
 
-        if (list == null)
+        if (result == null)
             return null;
 
         // Reverse the list, such that the inspected component is last, and the
         // top-most container is first.
 
-        Collections.reverse(list);
+        Collections.reverse(result);
 
-        return list;
+        return result;
     }
 
 }

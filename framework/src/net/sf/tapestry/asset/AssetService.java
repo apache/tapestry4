@@ -77,16 +77,16 @@ public class AssetService extends AbstractService
      *
      **/
 
-    private final static Map mimeTypes;
+    private final static Map _mimeTypes;
 
     static {
-        mimeTypes = new HashMap(17);
-        mimeTypes.put("css", "text/css");
-        mimeTypes.put("gif", "image/gif");
-        mimeTypes.put("jpg", "image/jpeg");
-        mimeTypes.put("jpeg", "image/jpeg");
-        mimeTypes.put("htm", "text/html");
-        mimeTypes.put("html", "text/html");
+        _mimeTypes = new HashMap(17);
+        _mimeTypes.put("css", "text/css");
+        _mimeTypes.put("gif", "image/gif");
+        _mimeTypes.put("jpg", "image/jpeg");
+        _mimeTypes.put("jpeg", "image/jpeg");
+        _mimeTypes.put("htm", "text/html");
+        _mimeTypes.put("html", "text/html");
     }
 
     private static final int BUFFER_SIZE = 10240;
@@ -99,18 +99,14 @@ public class AssetService extends AbstractService
      *
      **/
 
-    public Gesture buildGesture(
-        IRequestCycle cycle,
-        IComponent component,
-        String[] parameters)
+    public Gesture buildGesture(IRequestCycle cycle, IComponent component, String[] parameters)
     {
-        if (parameters == null || parameters.length != 1)
-            throw new ApplicationRuntimeException(
-                Tapestry.getString("service-single-parameter", ASSET_SERVICE));
+        if (Tapestry.size(parameters) != 1)
+            throw new ApplicationRuntimeException(Tapestry.getString("service-single-parameter", ASSET_SERVICE));
 
         // Service is stateless
 
-        return assembleGesture(cycle, ASSET_SERVICE, parameters, null, false);
+        return assembleGesture(cycle, ASSET_SERVICE, null, parameters, false);
     }
 
     public String getName()
@@ -127,7 +123,7 @@ public class AssetService extends AbstractService
         dotx = path.lastIndexOf('.');
         key = path.substring(dotx + 1).toLowerCase();
 
-        result = (String) mimeTypes.get(key);
+        result = (String) _mimeTypes.get(key);
 
         if (result == null)
             result = "text/plain";
@@ -141,34 +137,43 @@ public class AssetService extends AbstractService
      *
      *  <p>TBD: Security issues.  Hackers can download .class files.
      *
-     *  <p>TBD: Error handling.  What to do if an IOException is
-     *  thrown, or the resource doesn't exist?  Typically, we're
-     *  downloading an image file and there's no way to communicate
-     *  the error back to the client web browser.
      *
      **/
 
-    public boolean service(
-        IEngineServiceView engine,
-        IRequestCycle cycle,
-        ResponseOutputStream output)
+    public boolean service(IEngineServiceView engine, IRequestCycle cycle, ResponseOutputStream output)
         throws ServletException, IOException, RequestCycleException
     {
         RequestContext context = cycle.getRequestContext();
-        String resourcePath = context.getParameter(CONTEXT_QUERY_PARMETER_NAME);
+        String[] parameters = getParameters(context);
 
-        URL resourceURL =
-            cycle.getEngine().getResourceResolver().getResource(resourcePath);
+        String resourcePath = parameters[0];
+        
+        URL resourceURL = cycle.getEngine().getResourceResolver().getResource(resourcePath);
 
         if (resourceURL == null)
-            throw new ApplicationRuntimeException(
-                Tapestry.getString("missing-resource", resourcePath));
+            throw new ApplicationRuntimeException(Tapestry.getString("missing-resource", resourcePath));
 
         URLConnection resourceConnection = resourceURL.openConnection();
 
-        ServletContext servletContext =
-            cycle.getRequestContext().getServlet().getServletContext();
+        ServletContext servletContext = cycle.getRequestContext().getServlet().getServletContext();
 
+        writeAssetContent(engine, cycle, output, resourcePath, resourceConnection, servletContext);
+
+        // Return false, to indicate that no server side state could have changed.
+
+        return false;
+    }
+
+    /**  @since 2.2 **/
+    
+    private void writeAssetContent(
+        IEngineServiceView engine,
+        IRequestCycle cycle,
+        ResponseOutputStream output,
+        String resourcePath,
+        URLConnection resourceConnection,
+        ServletContext servletContext)
+    {
         // Getting the content type and length is very dependant
         // on support from the application server (represented
         // here by the servletContext).
@@ -179,8 +184,7 @@ public class AssetService extends AbstractService
         try
         {
             if (contentLength > 0)
-                cycle.getRequestContext().getResponse().setContentLength(
-                    contentLength);
+                cycle.getRequestContext().getResponse().setContentLength(contentLength);
 
             // Set the content type.  If the servlet container doesn't
             // provide it, try and guess it by the extension.
@@ -209,22 +213,12 @@ public class AssetService extends AbstractService
             }
 
             input.close();
-
-            // Return false, to indicate that no server side state could have changed.
-
-            return false;
         }
-
         catch (Throwable ex)
         {
-            String title =
-                Tapestry.getString(
-                    "AssetService.exception-report-title",
-                    resourcePath);
+            String title = Tapestry.getString("AssetService.exception-report-title", resourcePath);
 
             engine.reportException(title, ex);
-
-            return false;
         }
     }
 }

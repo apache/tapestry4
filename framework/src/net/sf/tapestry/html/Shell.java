@@ -28,6 +28,7 @@ package net.sf.tapestry.html;
 import java.net.URL;
 import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import net.sf.tapestry.AbstractComponent;
 import net.sf.tapestry.Gesture;
@@ -171,6 +172,10 @@ public class Shell extends AbstractComponent
             writer.attribute("name", "generator");
             writer.attribute("content", generatorContent);
             writer.println();
+            
+            writer.beginEmpty("base");
+            writer.attribute("href", buildBaseURL(cycle));
+            writer.println();
 
             writer.begin("title");
 
@@ -235,6 +240,15 @@ public class Shell extends AbstractComponent
         writer.beginEmpty("meta");
         writer.attribute("http-equiv", "Refresh");
         writer.attribute("content", buffer.toString());
+    }
+
+    /** @since 2.2 **/
+    
+    private String buildBaseURL(IRequestCycle cycle)
+    {
+        RequestContext context = cycle.getRequestContext();
+        
+        return context.getAbsoluteURL(cycle.getEngine().getServletPath());
     }
 
     public IRender getDelegate()
