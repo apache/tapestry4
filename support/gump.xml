@@ -77,7 +77,7 @@
   
   <project name="javassist">
     <package>javassist</package>
-    <url href="http://www.jboss.org/index.html?module=html&op=userdisplay&id=developers/projects/javassist"/>
+    <url href="http://www.jboss.org/index.html?module=html&amp;op=userdisplay&amp;id=developers/projects/javassist"/>
     
     <!-- This needs to be kept up-to-date as we update to later versions of Javassist -->
     
