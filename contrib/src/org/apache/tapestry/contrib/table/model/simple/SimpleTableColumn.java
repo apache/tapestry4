@@ -222,7 +222,7 @@ public class SimpleTableColumn extends AbstractTableColumn
 				return 0;
 
             // non-comparable values (null included) are considered smaller 
-            // than the comparable one
+            // than the comparable ones
             if (!bComparable1)
                 return -1;
 

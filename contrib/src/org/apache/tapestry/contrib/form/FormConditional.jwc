@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  
+<component-specification class="org.apache.tapestry.contrib.form.FormConditional">
+  <description>
+  Conditionally emulates an element and its attributes (if element is specified) and/or includes a block of content if a condition is met.
+  </description>
+  
+  <parameter name="condition" type="boolean" direction="in">
+    <description>
+    The condition to evaluate.
+    </description>
+  </parameter>
+  
+  <parameter name="invert" type="boolean" direction="in">
+    <description>
+    If true, inverts the condition, so that a false condition causes the 
+    content to be included.  If false (the default), then the condition
+    is evaluated normally.
+    </description>
+  </parameter>
+
+  <parameter name="element" type="java.lang.String" direction="in" required="no">
+  	<description>
+  	The element to emulate.
+  	</description>
+  </parameter>
+
+  <parameter name="listener" type="org.apache.tapestry.IActionListener" direction="in"/>
+
+  <parameter name="conditionValue" type="boolean">
+    <description>
+    The value of the condition. During render this is a obtained from 
+    the condition parameter. Diring rewind it is the submited condition.
+    </description>
+  </parameter>
+
+  <parameter name="invertValue" type="boolean">
+    <description>
+    Whether the condition is inverted or not. During render this is a obtained from 
+    the invert parameter. Diring rewind it is the submited value of invert.
+    </description>
+  </parameter>
+  
+  <property-specification name="name" type="java.lang.String"/>
+  <property-specification name="form" type="org.apache.tapestry.IForm"/>
+  
+</component-specification>
