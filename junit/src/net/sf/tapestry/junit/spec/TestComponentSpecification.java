@@ -26,6 +26,7 @@
 package net.sf.tapestry.junit.spec;
 
 import net.sf.tapestry.junit.TapestryTestCase;
+import net.sf.tapestry.spec.AssetSpecification;
 import net.sf.tapestry.spec.BeanSpecification;
 import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.spec.ContainedComponent;
@@ -71,5 +72,24 @@ public class TestComponentSpecification extends TapestryTestCase
         checkProperty(c, "chocolate", "cake");
         checkProperty(c, "frozen", "yogurt");
 
+    }
+    
+    public void testAssetProperty() throws Exception
+    {
+        ComponentSpecification s = parseComponent("AssetProperty.jwc");
+        
+        checkAsset(s, "private", "hugh", "grant");
+        checkAsset(s, "external", "joan", "rivers");
+        checkAsset(s, "context", "john", "cusak");
+    }
+    
+    private void checkAsset(ComponentSpecification s, String assetName, String propertyName,
+    String expectedValue)
+    {
+        AssetSpecification a = s.getAsset(assetName);
+        
+        assertEquals("Property " + propertyName + ".",
+        expectedValue,
+        a.getProperty(propertyName));
     }
 }

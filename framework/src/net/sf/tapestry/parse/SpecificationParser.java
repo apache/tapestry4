@@ -1109,6 +1109,26 @@ public class SpecificationParser extends AbstractDocumentParser
         AssetSpecification asset = _factory.createAssetSpecification(type, value);
 
         specification.addAsset(name, asset);
+        
+        processPropertiesInNode(asset, node);      
+    }
+
+    /**
+     *  Used in several places where an elements only possible children are
+     *  &lt;property&gt; elements.
+     * 
+     **/
+    
+    private void processPropertiesInNode(IPropertyHolder holder, Node node) throws DocumentParseException
+    {
+        for (Node child = node.getFirstChild(); child != null; child = child.getNextSibling())
+        {
+            if (isElement(child, "property"))
+            {
+                convertProperty(holder, child);
+                continue;
+            }
+        }  
     }
 
     /**
@@ -1239,7 +1259,13 @@ public class SpecificationParser extends AbstractDocumentParser
         {
             if (isElement(child, "configure"))
             {
-                processConfigure(exSpec, child);
+                convertConfigure(exSpec, child);
+                continue;
+            }
+            
+            if (isElement(child, "property"))
+            {
+                convertProperty(exSpec, child);
                 continue;
             }
         }
@@ -1247,7 +1273,7 @@ public class SpecificationParser extends AbstractDocumentParser
 
     /** @since 2.2 **/
 
-    private void processConfigure(ExtensionSpecification spec, Node node) throws DocumentParseException
+    private void convertConfigure(ExtensionSpecification spec, Node node) throws DocumentParseException
     {
         String propertyName = getAttribute(node, "property-name");
         String type = getAttribute(node, "type");

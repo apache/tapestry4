@@ -25,6 +25,8 @@
 
 package net.sf.tapestry.spec;
 
+import net.sf.tapestry.util.BasePropertyHolder;
+
 /**
  *  Defines an internal, external or private asset.
  *
@@ -33,7 +35,7 @@ package net.sf.tapestry.spec;
  *
  **/
 
-public class AssetSpecification
+public class AssetSpecification extends BasePropertyHolder
 {
     private AssetType type;
     protected String path;

@@ -26,7 +26,7 @@ This DTD is backwards compatible with the 1.2 DTD, with the following exceptions
 - added library element
 - added extension element
 - added static value type 'long'
-- allow <property> within <bean> and <component>
+- allow <property> within <bean>, <component>, <extension>, <private-asset>, <context-asset> and <external-asset>
 
 -->
 
@@ -213,7 +213,7 @@ Attributes:
   name: The name of the asset.
   path: The path, relative to the web application context, of the resource.
 -->
-<!ELEMENT context-asset EMPTY>
+<!ELEMENT context-asset (property*)>
 <!ATTLIST context-asset
   name CDATA #REQUIRED
   path CDATA #REQUIRED
@@ -248,7 +248,7 @@ Attributes:
   class: Java class to instantiate.
   
 -->
-<!ELEMENT extension (configure)*>
+<!ELEMENT extension (property*, configure*)>
 <!ATTLIST extension
   name CDATA #REQUIRED
   class CDATA #REQUIRED
@@ -264,7 +264,7 @@ Attributes:
   name: The name of the asset.
   URL: The URL used to reference the asset.
 -->
-<!ELEMENT external-asset EMPTY>
+<!ELEMENT external-asset (property*)>
 <!ATTLIST external-asset
   name CDATA #REQUIRED
   URL CDATA #REQUIRED
@@ -424,7 +424,7 @@ Attributes:
   name: The name of the asset.
   resource-path: The complete pathname of the resource.
 -->
-<!ELEMENT private-asset EMPTY>
+<!ELEMENT private-asset (property*)>
 <!ATTLIST private-asset
   name CDATA #REQUIRED
   resource-path CDATA #REQUIRED
@@ -432,7 +432,7 @@ Attributes:
 
 <!-- =======================================================
 Element: property
-Contained by: application, library-specification, component-specification, page-specification
+Contained by: (many other elements)
 
 Defines a key/value pair associated with the application or component specification.  Properties
 are used to capture information that doesn't fit into the DTD.  The value for the property is

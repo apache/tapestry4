@@ -35,6 +35,7 @@ import org.apache.log4j.Category;
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.util.BasePropertyHolder;
 import net.sf.tapestry.util.prop.PropertyHelper;
 
 /**
@@ -48,7 +49,7 @@ import net.sf.tapestry.util.prop.PropertyHelper;
  * 
  **/
 
-public class ExtensionSpecification
+public class ExtensionSpecification extends BasePropertyHolder
 {
     private static final Category CAT = Category.getInstance(ExtensionSpecification.class);
 
