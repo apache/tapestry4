@@ -1,3 +1,7 @@
+* Dec 28 2000 hship
+
+Include the config directory in the distribution, with a README.
+
 * Dec 26 2000 hship
 
 Change definition of JAVADOC_DIR to be the actual directory (i.e., no longer tack
