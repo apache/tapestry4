@@ -526,7 +526,7 @@ public class SpecificationParser extends AbstractDocumentParser
         return attributeValue.equals("yes");
     }
 
-    private IApplicationSpecification convertApplicationSpecification(
+    protected IApplicationSpecification convertApplicationSpecification(
         Document document,
         IResourceResolver resolver)
         throws DocumentParseException
@@ -545,7 +545,7 @@ public class SpecificationParser extends AbstractDocumentParser
 
     /** @since 2.2 **/
 
-    private ILibrarySpecification convertLibrarySpecification(
+    protected ILibrarySpecification convertLibrarySpecification(
         Document document,
         IResourceResolver resolver)
         throws DocumentParseException
@@ -687,7 +687,7 @@ public class SpecificationParser extends AbstractDocumentParser
         holder.setProperty(name, value);
     }
 
-    private ComponentSpecification convertComponentSpecification(Document document, boolean isPage)
+    protected ComponentSpecification convertComponentSpecification(Document document, boolean isPage)
         throws DocumentParseException
     {
         ComponentSpecification specification = _factory.createComponentSpecification();
