@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="c26" root="context26"/>
+
+    <servlet name="app" class="org.apache.tapestry.ApplicationServlet">
+  		<init-parameter
+  			name="org.apache.tapestry.global-class"
+  			value="org.apache.tapestry.junit.mock.c26.Global"/>
+        <init-parameter
+            name="org.apache.tapestry.visit-class"
+            value="org.apache.tapestry.junit.mock.xxx.Visit"/>
+  	</servlet>
+
+    <request>
+          <parameter name="service" value="page/Global"/>
+
+
+          <assert-output name="Title">
+<![CDATA[
+<title>Global</title>
+]]>
+        </assert-output>
+
+        <assert-output name="Name">
+        Osamu Tezuka
+        </assert-output>
+
+    </request>
+
+    <request>
+          <parameter name="service" value="page/Visit"/>
+
+
+        <assert-output name="Page Title">
+<![CDATA[
+<title>Exception</title>
+]]>
+        </assert-output>
+
+        <assert-output name="Exception Name">
+        org.apache.tapestry.BindingException
+        </assert-output>
+
+        <assert-output name="Exception Messge">
+        Unable to resolve expression
+        </assert-output>
+
+        <assert-output name="Inner Exception Name">
+        org.apache.tapestry.ApplicationRuntimeException
+        </assert-output>
+
+        <assert-output name="Class Name">
+        org.apache.tapestry.junit.mock.xxx.Visit
+        </assert-output>
+
+    </request>
+
+</mock-test>
