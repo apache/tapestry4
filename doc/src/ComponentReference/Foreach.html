@@ -2,6 +2,7 @@
 <!-- $Id$ --> 
 <html>
 <head>
+<title>Foreach</title>
 <link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
 </head>
 
@@ -73,18 +74,20 @@
   <tr>
     <td>source</td>
     <td>
-		<a href="http://java.sun.com/products/jdk/1.2/docs/api/java/util/Iterator.html">
-		<tt>Iterator</tt></a>, 
-		<a href="http://java.sun.com/products/jdk/1.2/docs/api/java/util/Collection.html">
-		<tt>Collection</tt></a>, 
-		<tt>Object[]</tt>
+		<a href="http://java.sun.com/products/jdk/1.2/docs/api/java/util/Iterator.html"><tt>Iterator</tt></a>, 
+		<a href="http://java.sun.com/products/jdk/1.2/docs/api/java/util/Collection.html"><tt>Collection</tt></a>, 
+		<tt>Object[]</tt>, or
+		<tt>Object</tt>
 		</td>
     <td>in</td>
    	<td>no</td>
 		<td>&nbsp;</td>
 		<td>The source of objects to be iterated, which may be a Collection, an 
-		Iterator or an array of Objects, or a single object (which is treated as a 
-		singleton collection).
+		Iterator, an array of Objects, or a even a single Object (which is treated as a 
+		singleton collection).  
+		
+		<p>The source parameter may even be null, in which case the
+		Foreach's body is never renderred.
 		</td>
 	</tr>
   <tr>
@@ -199,20 +202,20 @@
 
 
 &lt;component id="<span class="jwcid">foreachCustomer</span>" type="<a href="Foreach.html">Foreach</a>"&gt;
-    &lt;binding name="source" property-path="customerList"/&gt;
-    &lt;binding name="value" property-path="customer"/&gt;
+    &lt;binding name="source" expression="customerList"/&gt;
+    &lt;binding name="value" expression="customer"/&gt;
 &lt;/component&gt;
 
 &lt;component id="insertId" type="<a href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" property-path="id"/&gt;
+    &lt;binding name="value" expression="id"/&gt;
 &lt;/component&gt;
 
 &lt;component id="insertFullName" type="<a href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" property-path="fullName"/&gt;
+    &lt;binding name="value" expression="fullName"/&gt;
 &lt;/component&gt;
 
 &lt;component id="insertMemberLevel" type="<a href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" property-path="memberLevel"/&gt;
+    &lt;binding name="value" expression="memberLevel"/&gt;
 &lt;/component&gt;
 
 
