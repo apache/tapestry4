@@ -31,7 +31,7 @@
       <mbean code="org.jboss.resource.connectionmanager.RARDeployment" 
       	name="jboss.jca:service=LocalTxDS,name=McKoiDBDataSource">
 
-        <attribute name="JndiName">java:/McKoiDB</attribute>
+        <attribute name="JndiName">McKoiDB</attribute>
         <attribute name="ManagedConnectionFactoryProperties">
           <properties>
             <config-property name="ConnectionURL" type="java.lang.String">jdbc:mckoi://localhost/</config-property>

@@ -374,13 +374,6 @@
 		</filterset>
 	</copy>
 	
-	<!-- Set a flag if the vlib already exists, then extract it if necessary. -->
-
-	<mkdir dir="${tapestry.db.dir}"/>
-		
-	<available file="${tapestry.db.dir}/vlib.conf" property="vlib.db.exists"/>
-	<antcall target="unpack-vlib-database"/>	
-	
 	<mkdir dir="${tapestry.deploy.dir}"/>
 	
 	<copy todir="${tapestry.deploy.dir}">
@@ -406,6 +399,9 @@
 	
 	<delete dir="${temp.dir}" quiet="true"/> 
 		
+	<!-- Technically, this isn't necessary any longer (the filtering part),
+		 but it does no harm, and may be needed again in the future.  -->
+		 		
 	<copy todir="${tapestry.deploy.dir}" filtering="true">
 		<fileset dir="config/jboss/deploy">
 			<include name="*.xml"/>
@@ -415,7 +411,13 @@
 			<filter token="jboss.dir" value="${jboss.dir}"/>
 		</filterset>
 	</copy>
-				    	
+
+	<!-- Set a flag if the vlib already exists, then extract it if necessary. -->
+
+	<mkdir dir="${tapestry.db.dir}"/>
+		
+	<available file="${tapestry.db.dir}/vlib.conf" property="vlib.db.exists"/>
+	<antcall target="unpack-vlib-database"/>					    	
 </target>
  
 
