@@ -57,11 +57,14 @@ package org.apache.tapestry.engine;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Enumeration;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;
@@ -85,17 +88,19 @@ import org.apache.tapestry.request.ResponseOutputStream;
 
 public class TagSupportService implements IEngineService
 {
+    private static final Log LOG = LogFactory.getLog(TagSupportService.class);
 
-	/**
-	 *  Not to be invoked; this service is different than the others.
-	 * 
-	 *  @throws ApplicationRuntimeException always
-	 * 
-	 **/
-	
+    /**
+     *  Not to be invoked; this service is different than the others.
+     * 
+     *  @throws ApplicationRuntimeException always
+     * 
+     **/
+
     public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
-        throw new ApplicationRuntimeException(Tapestry.getMessage("TagSupportService.service-only"));
+        throw new ApplicationRuntimeException(
+            Tapestry.getMessage("TagSupportService.service-only"));
     }
 
     public void service(
@@ -131,14 +136,34 @@ public class TagSupportService implements IEngineService
 
         String URI = link.getURL();
 
+        if (LOG.isDebugEnabled())
+        {
+        	LOG.debug("Request servlet path = " + request.getServletPath());
+        	
+            Enumeration e = request.getParameterNames();
+            while (e.hasMoreElements())
+            {
+                String name = (String) e.nextElement();
+                LOG.debug("Request parameter " + name + " = " + request.getParameter(name));
+            }
+            e = request.getAttributeNames();
+            while (e.hasMoreElements())
+            {
+                String name = (String) e.nextElement();
+                LOG.debug("Request attribute " + name + " = " + request.getAttribute(name));
+            }
+
+            LOG.debug("Result URI: " + URI);
+        }
+
         HttpServletResponse response = context.getResponse();
         PrintWriter servletWriter = response.getWriter();
 
-		IMarkupWriter writer = new HTMLWriter(servletWriter);
-		
-		writer.print(URI);
-		
-		writer.flush();
+        IMarkupWriter writer = new HTMLWriter(servletWriter);
+
+        writer.print(URI);
+
+        writer.flush();
     }
 
     private String getAttribute(HttpServletRequest request, String name) throws ServletException
@@ -146,8 +171,7 @@ public class TagSupportService implements IEngineService
         Object result = request.getAttribute(name);
 
         if (result == null)
-            throw new ServletException(
-                Tapestry.format("TagSupportService.null-attribute", name));
+            throw new ServletException(Tapestry.format("TagSupportService.null-attribute", name));
 
         try
         {
@@ -164,11 +188,11 @@ public class TagSupportService implements IEngineService
         }
     }
 
-	/**
-	 *  @return {@link org.apache.tapestry.Tapestry#TAGSUPPORT_SERVICE}.
-	 * 
-	 **/
-	
+    /**
+     *  @return {@link org.apache.tapestry.Tapestry#TAGSUPPORT_SERVICE}.
+     * 
+     **/
+
     public String getName()
     {
         return Tapestry.TAGSUPPORT_SERVICE;

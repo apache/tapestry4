@@ -63,6 +63,8 @@ import javax.servlet.ServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.PageContext;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.Tapestry;
 
 /**
@@ -76,6 +78,8 @@ import org.apache.tapestry.Tapestry;
  **/
 public class URLRetriever
 {
+    private static final Log LOG = LogFactory.getLog(URLRetriever.class);
+
     private PageContext _pageContext;
     private String _serviceName;
     private Object[] _serviceParameters;
@@ -97,6 +101,9 @@ public class URLRetriever
 
     public void insertURL(String servletPath) throws JspException
     {
+        if (LOG.isDebugEnabled())
+            LOG.debug("Obtaining Tapestry URL for service " + _serviceName + " at " + servletPath);
+
         ServletRequest request = _pageContext.getRequest();
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(servletPath);
@@ -107,6 +114,7 @@ public class URLRetriever
 
         request.setAttribute(Tapestry.TAG_SUPPORT_SERVICE_ATTRIBUTE, _serviceName);
         request.setAttribute(Tapestry.TAG_SUPPORT_PARAMETERS_ATTRIBUTE, _serviceParameters);
+        request.setAttribute(Tapestry.TAG_SUPPORT_SERVLET_PATH_ATTRIBUTE, servletPath);
 
         try
         {
@@ -130,6 +138,7 @@ public class URLRetriever
         {
             request.removeAttribute(Tapestry.TAG_SUPPORT_SERVICE_ATTRIBUTE);
             request.removeAttribute(Tapestry.TAG_SUPPORT_PARAMETERS_ATTRIBUTE);
+            request.removeAttribute(Tapestry.TAG_SUPPORT_SERVLET_PATH_ATTRIBUTE);
         }
 
     }
