@@ -67,5 +67,18 @@ public class PlotValue implements Serializable
 	{
 		this.value = value;
 	}
+	
 
+	public String toString()
+	{
+		StringBuffer buffer = new StringBuffer("PlotValue@");
+		buffer.append(Integer.toHexString(hashCode()));
+		buffer.append('[');
+		buffer.append(name);
+		buffer.append(' ');
+		buffer.append(value);
+		buffer.append(']');
+		
+		return buffer.toString();
+	}
 }
