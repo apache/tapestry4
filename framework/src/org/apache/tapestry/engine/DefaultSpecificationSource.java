@@ -63,6 +63,9 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.INamespace;
@@ -76,12 +79,8 @@ import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
 import org.apache.tapestry.spec.LibrarySpecification;
 import org.apache.tapestry.util.IRenderDescription;
-import org.apache.tapestry.util.StringSplitter;
 import org.apache.tapestry.util.pool.Pool;
 import org.apache.tapestry.util.xml.DocumentParseException;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  *  Default implementation of {@link ISpecificationSource} that

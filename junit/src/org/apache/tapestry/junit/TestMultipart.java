@@ -55,16 +55,12 @@
 
 package org.apache.tapestry.junit;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 
 import org.apache.commons.fileupload.DefaultFileItem;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.multipart.DefaultMultipartDecoder;
 import org.apache.tapestry.multipart.UploadPart;
 import org.apache.tapestry.multipart.ValuePart;
 

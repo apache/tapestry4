@@ -58,24 +58,7 @@ package org.apache.tapestry.junit;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-import org.apache.tapestry.junit.enhance.TestClassFabricator;
-import org.apache.tapestry.junit.form.TestListEditMap;
 import org.apache.tapestry.junit.mock.MockTestCase;
-import org.apache.tapestry.junit.parse.TestLocation;
-import org.apache.tapestry.junit.parse.TestSpecificationParser;
-import org.apache.tapestry.junit.parse.TestTemplateParser;
-import org.apache.tapestry.junit.script.TestScript;
-import org.apache.tapestry.junit.spec.TestApplicationSpecification;
-import org.apache.tapestry.junit.spec.TestComponentSpecification;
-import org.apache.tapestry.junit.utils.TestAdaptorRegistry;
-import org.apache.tapestry.junit.utils.TestDataSqueezer;
-import org.apache.tapestry.junit.utils.TestEnum;
-import org.apache.tapestry.junit.utils.TestIdAllocator;
-import org.apache.tapestry.junit.utils.TestLocalizedNameGenerator;
-import org.apache.tapestry.junit.utils.TestPool;
-import org.apache.tapestry.junit.utils.TestPropertyFinder;
-import org.apache.tapestry.junit.utils.TestRegexpMatcher;
-import org.apache.tapestry.junit.valid.ValidSuite;
 
 /**
  *  Master suite of Tapestry tests, combining all other test suites.
