@@ -10,4 +10,7 @@
   <page name="Home" specification-path="/tutorial/forms/Home.page"/>
   <page name="Success" specification-path="/tutorial/forms/Success.page"/>
   <page name="Part1" specification-path="/tutorial/forms/Part1.page"/>
+  <page name="Part2" specification-path="/tutorial/forms/Part2.page"/>
+  <page name="Part3" specification-path="/tutorial/forms/Part3.page"/>
+  <page name="Part4" specification-path="/tutorial/forms/Part4.page"/>
 </application>

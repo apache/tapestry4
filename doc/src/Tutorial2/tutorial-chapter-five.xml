@@ -2,7 +2,7 @@
 	<title>Using Forms</title>
 	<para>This chapter will introduce you to the way in which Tapestry handles HTML forms. 
 	It begins with basics on general form submission, covers server and client side 
-	validation and also how to use multiple submit buttons</para>
+	validation, use of multiple submit buttons and non-trivial components. </para>
 
 	<para>The provided example tutorial code groups together the examples shown
 	here into a single Tapestry application.  The examples provided will be developed
@@ -16,30 +16,30 @@
 	
   	<section id="form-non-validated">
   		<title>Basic non-validated form</title>
-	<para>
-		Lets begin by creating a form that allows you to enter some information about yourself, 
-		which is simply echoed back to you. Initially, we will use straight text fields - 
-		but as the tutorial progresses we will replace these with smarter (and cooler!) 
-		implementations which include error handling.
-	</para>
+		<para>
+			Lets begin by creating a form that allows you to enter some information about yourself, 
+			which is simply echoed back to you. Initially, we will use straight text fields - 
+			but as the tutorial progresses we will replace these with smarter (and cooler!) 
+			implementations which include error handling.
+		</para>
 
-	<para>The application specification below is used for all examples in this chapter:</para>
-
-	<figure>
-	<title>The Application Specification</title>
-	<programlisting>
-	<para><emphasis>INSERT APP SPEC HERE</emphasis></para>
-	</programlisting>
-	</figure>
-		
-	<para>The Home page of this application provides some description of what the application is,
-	and some links to various examples. We will skip it here for brevity. It can be found within
-	the <filename>examples/tutorial</filename> directory if you wish to view it</para>
+		<para>The application specification below is used for all examples in this chapter.:</para>
 	
-	<para>The following listing shows the HTML for the first example:</para>
-	<figure>
-	<title>HTML for Part One</title>
-	<programlisting>
+		<figure>
+			<title>The Application Specification</title>
+			<programlisting>
+			<para><emphasis>INSERT APP SPEC HERE</emphasis></para>
+			</programlisting>
+		</figure>
+		
+		<para>The Home page of this application provides some description of what the application is,
+		and some links to various examples. We will skip it here for brevity. It can be found within
+		the <filename>examples/tutorial</filename> directory if you wish to view it</para>
+	
+		<para>The following listing shows the HTML for the first example:</para>
+		<figure>
+			<title>HTML for Part One</title>
+			<programlisting>
 &lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"&gt;
 &lt;html&gt;
 &lt;head&gt;
@@ -75,13 +75,13 @@ Enter some fields on this page, and press the submit button.
 
 &lt;/body&gt;
 &lt;/html&gt;
-	</programlisting>				
-	</figure>
+			</programlisting>				
+		</figure>
 
-We will now write a page specification to handle these fields, using standard InputText fields:
-	<figure>
-	<title>Page Specification for Part One</title>
-	<programlisting>
+		<para>We will now write a page specification to handle these fields, using standard InputText fields:</para>
+		<figure>
+			<title>Page Specification for Part One</title>
+			<programlisting>
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- $Id: Home.page,v 1.6 2002/05/13 14:00:37 scornflake Exp $ --&gt;
 &lt;!DOCTYPE page-specification PUBLIC 
@@ -111,48 +111,48 @@ We will now write a page specification to handle these fields, using standard In
 		&lt;binding name="listener" expression="listeners.enterDetails"/&gt;
 	&lt;/component&gt;
 &lt;/page-specification&gt;
-	</programlisting>				
-	</figure>
+			</programlisting>				
+		</figure>
 
-	<para>An &InputText; component allows you to show simple &lt;input&gt; HTML tags, and have the value bound 
-	to some property of an object. As we have have already seen, Tapestry is capable of getting the value which 
-	will appear in the form from almost anywhere. In these examples, we will create a Visit object for the application 
-	and bind the form's values to properties on that object. There is however nothing from stopping us using OGNL to 
-	bind the component to some other object, (e.g: a static method, or property of some EJB object, for example).
-	</para>
+		<para>An &InputText; component allows you to show simple &lt;input&gt; HTML tags, and have the value bound 
+		to some property of an object. As we have have already seen, Tapestry is capable of getting the value which 
+		will appear in the form from almost anywhere. In these examples, we will create a Visit object for the application 
+		and bind the form's values to properties on that object. There is however nothing from stopping us using OGNL to 
+		bind the component to some other object, (e.g: a static method, or property of some EJB object, for example).
+		</para>
 	
-	<para>For the above specification, we have used simple OGNL bindings.  These will be used to both get the 
-	property value when Tapestry renders the form, and also to set the value when the user submits the form.
-	</para>
+		<para>For the above specification, we have used simple OGNL bindings.  These will be used to both get the 
+		property value when Tapestry renders the form, and also to set the value when the user submits the form.
+		</para>
+		
+		<para>Moving along, lets examine the &Form; component. This has two properties, 
+		<varname>delegate</varname> and <varname>listener</varname>.  The <varname>delegate</varname> is used to 
+		store validataion error information.  This can be used by your submit handler to see if the form has any errors.
+		We have bound the value to <varname>beans.delegate</varname> which is an instance of the Tapestry 
+		supplied <varname>ValidationDelegate</varname> class.    This class handles the state required to 
+		peform validation and associates error messages with components.</para>
+		
+		<para>In most applications, you can just use the Tapestry supplied validator - as we have done here.</para>
+		
+		<para>The second property, <varname>submit</varname> is used to tell Tapestry what method to call 
+		on your Java object when the form is submitted.   The expression, <varname>listeners.submit</varname> 
+		refers to the <varname>public void submit(IRequestCycle)</varname> method on the page object. </para>
+		
+		<para>Lastly, there is the actual submit button itself. This is rendered using a &Submit; component,
+		which requires only two properties, the lable to use, and the method to call. 
+		Here, since we are not implementing a localized version of the form, we will use a <varname>static-binding</varname> 
+		for the button label, and we will refer to the same listener method that the form is using.</para>
 	
-	<para>Moving along, lets examine the &Form; component. This has two properties, 
-	<varname>delegate</varname> and <varname>listener</varname>.  The <varname>delegate</varname> is used to 
-	store validataion error information.  This can be used by your submit handler to see if the form has any errors.
-	We have bound the value to <varname>beans.delegate</varname> which is an instance of the Tapestry 
-	supplied <varname>ValidationDelegate</varname> class.    This class handles the state required to 
-	peform validation and associates error messages with components.</para>
+		<para>Note that it is worth specifying the listener on both the &Form; and &Submit; components, 
+		as by doing so the user will be able to use "default submit behavior" on the browser (i.e.: fill in the form and hit enter.)</para>
+		
+		<para>The Java object for the page and Visit Object is listed below. 
+		You should be able to match up the OGNL expressions to JavaBean properties on the form. 
+		The submit and form listeners refer to a method, not a property.</para>
 	
-	<para>In most applications, you can just use the Tapestry supplied validator - as we have done here.</para>
-	
-	<para>The second property, <varname>submit</varname> is used to tell Tapestry what method to call 
-	on your Java object when the form is submitted.   The expression, <varname>listeners.submit</varname> 
-	refers to the <varname>public void submit(IRequestCycle)</varname> method on the page object. </para>
-	
-	<para>Lastly, there is the actual submit button itself. This is rendered using a &Submit; component,
-	which requires only two properties, the lable to use, and the method to call. 
-	Here, since we are not implementing a localized version of the form, we will use a <varname>static-binding</varname> 
-	for the button label, and we will refer to the same listener method that the form is using.</para>
-
-	<para>Note that it is worth specifying the listener on both the &Form; and &Submit; components, 
-	as by doing so the user will be able to use "default submit behavior" on the browser (i.e.: fill in the form and hit enter.)</para>
-	
-	<para>The Java object for the page and Visit Object is listed below. 
-	You should be able to match up the OGNL expressions to JavaBean properties on the form. 
-	The submit and form listeners refer to a method, not a property.</para>
-
-	<figure>
-	<title>Page1 Java Object, Part One</title>
-	<programlisting>
+		<figure>
+			<title>Page1 Java Object, Part One</title>
+			<programlisting>
 package tutorial.forms;
 
 import net.sf.tapestry.IRequestCycle;
@@ -170,59 +170,58 @@ public class Part1 extends BasePage {
 	}
 	
 }
-	</programlisting>
-	</figure>
+			</programlisting>
+		</figure>
 
-	<figure>
-	<title>The Visit Object, Part One</title>
-	<programlisting>
+		<figure>
+			<title>The Visit Object, Part One</title>
+			<programlisting>
  INSERT VISIT OBJECT HERE WHEN DONE
-	</programlisting>
-	</figure>
+			</programlisting>
+		</figure>
 
+		<para>Compile and run this example. You should see the following form:</para>
 
-	<para>Compile and run this example. You should see the following form:</para>
+		<figure>
+			<title>Form Input, Part 1</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="images/forms-part1-form.gif" format="GIF"/>
+				</imageobject>
+			</mediaobject>
+		</figure>
 
-    <figure>
-      <title>Form Input, Part 1</title>
-      <mediaobject>
-	<imageobject>
-	  <imagedata fileref="images/forms-part1-form.gif" format="GIF"/>
-	</imageobject>
-      </mediaobject>
-    </figure>
+		<para>When you enter the data and hit the submit button, you should see:</para>
+		
+		<figure>
+			<title>Form Input, Result - Part 1</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="images/forms-part1-result.gif" format="GIF"/>
+				</imageobject>
+			</mediaobject>
+		</figure>
 
-	<para>When you enter the data and hit the submit button, you should see:</para>
+		<para>This section has shown basic form field handling using components with no validation. 
+		The next section introduces some validation logic, and a method for showing errors on the page.</para>
+	  	</section>
 
-    <figure>
-      <title>Form Input, Result - Part 1</title>
-      <mediaobject>
-	<imageobject>
-	  <imagedata fileref="images/forms-part1-result.gif" format="GIF"/>
-	</imageobject>
-      </mediaobject>
-    </figure>
-
-	<para>This section has shown basic form field handling using components with no validation. 
-	The next section introduces some validation logic, and a method for showing errors on the page.</para>
-  	</section>
-
-  	<section id="server-side-validation">
+		<section id="server-side-validation">
   		<title>Adding Server-side Validation Logic</title>  	
 
-	<para>Many Tapestry components use validators (they implement the <varname>IValidator</varname> interface) - 
-	these validators encapsulate specific validation rules, such as 'required, mininum length of 5 and maximum length of 12'.
-	Tapestry also provides some default validation implementations, to make life a little easier.</para>
+		<para>Many Tapestry components use validators (they implement the <varname>IValidator</varname> interface) - 
+		these validators encapsulate specific validation rules, such as 'required, mininum length of 5 and maximum length of 12'.
+		Tapestry also provides some default validation implementations, to make life a little easier.</para>
 	
-	<para>The next example shows a complete page specification using a single StringValidator for the three
-	input fields. A StringValidator will accept any string type value. In this example, the only real validation
-	will be that a value for every field is that the value is <emphasis>required</emphasis>.  
-	The example will also show some new components such 
-	as &Delegator;and &Body; which are required in order to support validation. Here is the page specification:</para>
+		<para>The next example shows a complete page specification using a single StringValidator for the three
+		input fields. A StringValidator will accept any string type value. In this example, the only real validation
+		will be that a value for every field is that the value is <emphasis>required</emphasis>.  
+		The example will also show some new components such 
+		as &Delegator;and &Body; which are required in order to support validation. Here is the page specification:</para>
 
-	<figure>
-	<title>Component Specification, with StringValidator</title>
-	<programlisting>
+		<figure>
+			<title>Component Specification, with StringValidator</title>
+			<programlisting>
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!-- $Id: Home.page,v 1.6 2002/05/13 14:00:37 scornflake Exp $ --&gt;
 &lt;!DOCTYPE page-specification PUBLIC 
@@ -269,31 +268,32 @@ public class Part1 extends BasePage {
 		&lt;binding name="listener" expression="listeners.enterDetails"/&gt;
 	&lt;/component&gt;
 &lt;/page-specification&gt;
-	</programlisting>
-	</figure>
+			</programlisting>
+		</figure>
 
-	<para>The fields themselves are now &ValidField;s. A ValidField requires two additional properties, 
-	<varname>validator</varname> and <varname>displayName</varname>. The first specifies an instance of
-	a validator, and the later is used as a textual description of the form element if an error occurs.</para>
+		<para>The fields themselves are now &ValidField;s. A ValidField requires two additional properties, 
+		<varname>validator</varname> and <varname>displayName</varname>. The first specifies an instance of
+		a validator, and the later is used as a textual description of the form element if an error occurs.</para>
+		
+		<para>The &Body; component is required and used to insert client side validation
+		in the form of JavaScript at the top of the page (although for this example, client side
+		validation is turned off).  Tapestry will provide server side validation
+		all the time, and client side validation is possible if the user agent supports JavaScript.</para>
 	
-	<para>The &Body; component is required and used to insert client side validation
-	in the form of JavaScript at the top of the page.  Tapestry will provide server side validation
-	all the time, and client side validation is possible if the user agent supports JavaScript.</para>
+		<para>Finally, in order to show an error with validation on the page, we have added an
+		<varname>errors</varname> component, which simply shows the first error.  The &Delegate; 
+		component is an easy way to pass the responsibility for rendering to some other object. 
+		As the first error of a validator implements &IRender;, we can use the &Delegator; component to 
+		include its output into the page during the rendering process.  
+		This is of course only one example of presenting errors. It
+		would be possible to use an alternative error page, or a custom component to render all errors
+		that are present in the validation delegate. The option presented here has been chosen for
+		its simplicity.</para>
 
-	<para>Finally, in order to show an error with validation on the page, we have added an
-	<varname>errors</varname> component, which simply shows the first error.  The &Delegate; 
-	component is an easy way to pass the responsibility for rendering to some other object. 
-	As the first error of a validator implements &IRender;, we can use the &Delegator; component to 
-	include its output into the page during the rendering process.  
-	This is of course only one example of presenting errors. It
-	would be possible to use an alternative error page, or a custom component to render all errors
-	that are present in the validation delegate. The option presented here has been chosen for
-	its simplicity.</para>
-
-	<para>The new HTML template is as shown</para>
-	<figure>
-	<title>HTML Template, with StringValidator</title>
-	<programlisting>
+		<para>The new HTML template is as shown</para>
+		<figure>
+			<title>HTML Template, with StringValidator</title>
+			<programlisting>
 &lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"&gt;
 &lt;html&gt;
 &lt;head&gt;
@@ -335,13 +335,13 @@ Enter some fields on this page, and press the submit button.
 
 &lt;/body&gt;
 &lt;/html&gt;
-	</programlisting>
-	</figure>
+			</programlisting>
+		</figure>
 	
-	<para>And lastly, the associated Java object:</para>
-	<figure>
-	<title>Java Object, with Validator</title>
-	<programlisting>
+		<para>And lastly, the associated Java object:</para>
+		<figure>
+			<title>Java Object, with Validator</title>
+			<programlisting>
 package tutorial.forms;
 
 import net.sf.tapestry.IRequestCycle;
@@ -366,38 +366,179 @@ public class Part2 extends BasePage {
 	}
 	
 }
-	</programlisting>
-	</figure>
+			</programlisting>
+		</figure>
 
-	<para>In order to return the user to the previous page, we simply return from the
-	submit method, without having set any alternative page for the rendering cycle. As a result,
-	the same input page will show the user their error</para>
+		<para>In order to return the user to the previous page, we simply return from the
+		submit method, without having set any alternative page for the rendering cycle. As a result,
+		the same input page will show the user their error</para>
 	
-	<para>Compile and run the example. If you are using the precompiled examples, choose
-	the second link on the forms tutorial page. If you ommit a value for any field, you 
-	will see an error just above the submit button:</para>
+		<para>Compile and run the example. If you are using the precompiled examples, choose
+		the second link on the forms tutorial page. If you ommit a value for any field, you 
+		will see an error just above the submit button:</para>
 
-    <figure>
-      <title>Form Input, Part 2 - Required fields</title>
-      <mediaobject>
-	<imageobject>
-	  <imagedata fileref="images/forms-part2-form.gif" format="GIF"/>
-	</imageobject>
-      </mediaobject>
-    </figure>
+		<figure>
+			<title>Form Input, Part 2 - Required fields</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="images/forms-part2-form.gif" format="GIF"/>
+				</imageobject>
+			</mediaobject>
+		</figure>
 
-The next section shows some more advanced validation
-  		
+		<para>The next section shows some more advanced validation</para>
+	</section>
+	
+	<section id="better-validation">
+		<title>Advanced Validation</title>
+		<para>The previous section showed some simple server side validation. 
+		This next section shows how to use client side Javascript validation, as well as some further validators.
+		Enabling client side validation is very simple in Tapestry. First, the page itself requires a &Body; component - 
+		then we just need to turn it on! If this is sounding too good to be true, 
+		it isn't.. really :-)</para>
+			
+		<para>Lets get started.  For this example, you don't need to do much, as the previous example code contained
+		all of the required components (&Body;). To enable client side scripting, change the page specification 
+		so that the <varname>stringValidator</varname> definition looks like this:</para>
+			
+		<figure>
+			<title>Part3 Component Specification, with client side enabled StringValidator</title>
+			<programlisting>
+...
+&lt;bean name="stringValidator" class="net.sf.tapestry.valid.StringValidator" lifecycle="page"&gt;
+  		&lt;set-property name="required" expression="true"/>
+  		&lt;set-property name="clientScriptingEnabled" expression="true"/>
+&lt;/bean>
+...
+ 			</programlisting>
+		</figure>
+		<para>This example can be found in <filename>Part3.page</filename> and is referred to as 'client and server side scripting
+		from the index page of the complete forms example.	Compile and run the example.  
+		Again, submit the form. If your browser supports JavaScript, you should see a popup 
+		telling you that a field value is required.</para>
+
+		<figure>
+			<title>Form Input, Part 3 - Required fields with Client Side Validation</title>
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="images/forms-part3-result.gif" format="GIF"/>
+				</imageobject>
+			</mediaobject>
+		</figure>
+
+		<para>Note that enabling client side validation does not <emphasis>disable</emphasis> server side validation. 
+		If the browser does not support JavaScript, any incorrect values will still be caught and handled correctly.</para>
+
+		<section id="date-validator">
+			<title>A more specific Validator</title>
+			<para>Now, lets use a more suitable validator for the "date of birth" field.  
+			First, we need to instantiate an alternative IValidator instance. To do this, we will use another bean definition:</para>
+
+			<figure>
+				<title>Date Validator - bean definition</title>
+				<programlisting>
+...
+&lt;bean name="stringValidator" class="net.sf.tapestry.valid.DateValidator" lifecycle="page"&gt;
+  		&lt;set-property name="required" expression="true"/>
+  		&lt;set-property name="clientScriptingEnabled" expression="true"/>
+&lt;/bean>
+...
+	 			</programlisting>
+			</figure>
+
+			<para>Update the validator binding for the <varname>dateOfBirth</varname> component, to use the new validator.
+			That done, you shoul be able to compile and run the code. Enter any non valid date, and you will get an appropriate 
+			error message</para>
+			<figure>
+				<title>Updated Component Properties, for dateOfBirth</title>
+				<programlisting>
+...
+&lt;component id="dateOfBirth" type="ValidField"&gt;
+	&lt;binding name="value" expression="visit.dateOfBirth"/&gt;
+    &lt;binding name="validator" expression='beans.dateValidator'/&gt;
+    &lt;static-binding name="displayName"&gt;Date of birth&lt;/static-binding&gt;
+&lt;/component&gt;
+...
+	 			</programlisting>
+			</figure>
+			<para>If you enter an incorrect value for date of birth, you will see:</para>
+			<figure>
+				<title>Form Input, Part 3 - Required fields with Client Side Validation</title>
+				<mediaobject>
+					<imageobject>
+						<imagedata fileref="images/forms-part3-date-result.gif" format="GIF"/>
+					</imageobject>
+				</mediaobject>
+			</figure>
+		</section>
+		<section id="validation-summary">
+			<title>Summary</title>
+			<para>This section has the basics of validation. By now you should be familiar with simple string based
+			validation, and also the use of alternative validators such as the <varname>DateValidator</varname>.
+			All standard Tapestry supplied component validation follows a similar pattern to what you have seen here.
+			You need to first choose the validator, and then setup its properties.
+			</para>
+			
+			<para>
+			Tapestry contains more validators that those shown here, and of course it is not that hard to write
+			your own.  Also, there are specific components that help in this regard. For example, the &DateField;
+			component sets it's own validator, saving you the time in having to declare and attach it yourself.
+			</para>
+		</section>
+	</section>		  		
   			
-	  	<section id="built-in">
-	  		<title>Built in Components</title>
-	  	</section>
-	  	<section id="contributed-components">
-	  		<title>Contributed Components</title>
-	  	</section>
-	  	<section id="custom-rendering">
-	  		<title>Custom Error Rendering</title>
-	  	</section>
+  	<section id="built-in">
+  		<title>Smart Components</title>
+		<para>The final part of this chapter shows the use of some smarter components for appropriate fields. 
+		In terms of getting user input "right", prevention of bad input data is the best strategy. 
+		If the user can't enter invalid input - your form processing is going to be simpler.  
+		An excellent example is using the DatePicker, so that rather than the user having to type a date, they can just select one.
+		For the user, this is 100% more intuitive, easier to use and virtually eliminates all entry errors.</para>
+
+		<para>Tapestry includes some more advanced form components, which are used in this example. 
+		We will use a DatePicker for the date of birth field, and a PropertySeletion for favouriteColour.<footnote>
+		DatePicker uses JavaScript to perform its work, so you will required something like IE5 (or above), Mozilla or Konqueror to use it</footnote>
+		</para>
+
+		<para>This example is named <varname>Part4</varname>. It is identical to <varname>Part3</varname>
+		except that there are additional component definitions, and the definition for <varname>dateOfBirth</varname> and
+		<varname>favColour</varname> have been modified. The examples provided are only extracts from the
+		full page specification, so that you can clearly see what is being done. The specification for dateOfBirth is changed to read:
+		</para>
+		
+
+<insert specification here>
+
+Now, to restrict the inputs for favourite colour, we will use the PropertySelection component. This component takes as one of it's inputs a <emphasis>model</emphasis>. The model describes the data available (it's very MVC like). Tapestry provides a number of pre-built models, one of which is the StringPropertySelection.
+
+The StringPropertySelection exposes an array of strings - which is very good if you have a discrete set of values from whih a user must choose.
+
+Modify the component property for favouriteColour to read:
+
+<component id="favouriteColour" type="PropertySelection">
+<binding name="model" expression="colourModel"/>
+<binding name="value" expression="favoutieColour"/>
+</component>
+
+What happens here is that Tapestry takes care of rending a selection HTML element for you, and sticks whatever value the user chooses into the favouriteColour property.
+
+We use the Java code below to create the model:
+
+public IPropertySelectionModel colourModel() {
+return new StringPropertySelection(new String[] { "red","blue","pink","green", "white", "fiji blue", "black", "gray"}));
+} 
+
+Upon compiling and running this new code, your form should look like this:
+
+<insert shot here>
+
+Conclusion:
+We've looked at basic form handling, including different form fields, binding values of a form to properties on an object, and Tapestry supplied error handling. We have also introduced a couple of the smarter components - and seen how easy it is to switch a component type without having to modify the page template.
+
+  	</section>
+  	
+  	<section id="custom-rendering">
+  		<title>Custom Error Rendering</title>
   	</section>
 
   	<section id="multi-button">
@@ -406,12 +547,9 @@ The next section shows some more advanced validation
 
   	<section id="action-and-direct">
   		<title>Action amd Direct Services</title>
+  	</section>
+  	
   	<section id="stale-link-handling">
   		<title>Handling Stale Links</title>
-  	</section>
-  	</section>
-
-  	<section id="client-side">
-  		<title>Client side validation</title>
   	</section>
   </chapter>

@@ -8,5 +8,17 @@
 	<component id="page1" type="PageLink">
 		<static-binding name="page">Part1</static-binding>
 	</component>
+	
+	<component id="page2" type="PageLink">
+		<static-binding name="page">Part2</static-binding>
+	</component>
+
+	<component id="page3" type="PageLink">
+		<static-binding name="page">Part3</static-binding>
+	</component>
+
+	<component id="page4" type="PageLink">
+		<static-binding name="page">Part4</static-binding>
+	</component>
 </page-specification>
 
