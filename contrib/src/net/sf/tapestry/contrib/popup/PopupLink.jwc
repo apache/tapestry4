@@ -4,20 +4,16 @@
 
 <component-specification class="net.sf.tapestry.contrib.popup.PopupLink" allow-body="yes" allow-informal-parameters="yes">
 
-	<parameter name="url" java-type="String" direction="custom" required="yes"/>
+	<parameter name="href" java-type="String" direction="custom" required="yes"/>
 	<parameter name="windowName" java-type="String" direction="custom" required="no"/>
 	<parameter name="features" java-type="String" direction="custom" required="no"/>
-	<parameter name="height" java-type="Integer" direction="custom" required="no"/>
-	<parameter name="width" java-type="Integer" direction="custom" required="no"/>
 
 	<component id="popoutScript" type="Script">
 		<binding name="script" expression='"/net/sf/tapestry/contrib/popup/popup.script"'/>
 		<binding name="popupFunctionName" expression="popupFunctionName"/>
-        <binding name="url" expression="url"/>
+        <binding name="url" expression="href"/>
 		<binding name="windowName" expression="windowName"/>
         <binding name="features" expression="features"/>
-		<binding name="height" expression="height"/>
-		<binding name="width" expression="width"/>
 	</component>
 
   	<component id="link" type="Any">
