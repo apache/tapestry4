@@ -72,6 +72,9 @@
         <res-auth>Container</res-auth>
       </resource-ref>
     </session>
+    
+    <!-- Temporarily removed, as InstantDB was removed from the JBoss distro
+    
     <session>
       <ejb-name>MailSender</ejb-name>
       <home>com.primix.vlib.ejb.IMailSenderHome</home>
@@ -85,6 +88,9 @@
         <res-auth>Container</res-auth>
       </resource-ref>
     </session>
+    
+    -->
+    
     <entity>
       <display-name>Person</display-name>
       <ejb-name>Person</ejb-name>
@@ -229,6 +235,9 @@
         <remote>com.primix.vlib.ejb.IKeyAllocator</remote>
       </ejb-ref>
     </entity>
+    
+    <!-- Temporarily removed 
+    
     <message-driven>
       <ejb-name>MailQueue</ejb-name>
       <ejb-class>com.primix.vlib.ejb.impl.MailQueueBean</ejb-class>
@@ -246,6 +255,9 @@
         <remote>com.primix.vlib.ejb.IMailSender</remote>
       </ejb-ref>
     </message-driven>
+    
+    -->
+    
   </enterprise-beans>
   <assembly-descriptor>
     <container-transaction>
@@ -273,6 +285,9 @@
         <ejb-name>Operations</ejb-name>
         <method-name>*</method-name>
       </method>
+      
+      <!--
+      
       <method>
         <ejb-name>MailQueue</ejb-name>
         <method-name>*</method-name>
@@ -281,6 +296,9 @@
         <ejb-name>MailSender</ejb-name>
         <method-name>*</method-name>
       </method>
+      
+      -->
+      
       <trans-attribute>Required</trans-attribute>
     </container-transaction>
   </assembly-descriptor>

@@ -1234,6 +1234,12 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
 	protected void sendMail(String emailAddress, String subject, String content)
 		throws EJBException
 	{
+		
+		// Sending mail is temporarily disabled
+		
+		if (true)
+			return;
+			
 		try
 		{
 			QueueSender sender = getMailQueueSender();
