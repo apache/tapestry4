@@ -6,7 +6,7 @@
 <specification class="net.sf.tapestry.contrib.form.MultiplePropertySelection" 
 	allow-body="no" allow-informal-parameters="no">
   <parameter name="model" 
-  	java-type="com.primix.tapestry.form.IPropertySelectionModel" required="yes"/>
+  	java-type="net.sf.tapestry.form.IPropertySelectionModel" required="yes"/>
   <parameter name="selectedList" java-type="java.util.List" required="yes"/>
   <parameter name="disabled"/>
   <parameter name="renderer" 

@@ -7,7 +7,7 @@
 
   <bean name="delegate" class="tutorial.workbench.WorkbenchValidationDelegate"/>
 
-  <bean name="intValidator" class="com.primix.tapestry.valid.NumberValidator">
+  <bean name="intValidator" class="net.sf.tapestry.valid.NumberValidator">
   	<set-property name="required">
   		<field-value field-name="Boolean.TRUE"/>
   	</set-property>
@@ -36,7 +36,7 @@
   <component id="inputName" type="ValidField">
   	<static-binding name="displayName">Name</static-binding>
   	<binding name="value" property-path="plotValue.name"/>
-  	<field-binding name="validator" field-name="com.primix.tapestry.valid.StringValidator.REQUIRED"/>
+  	<field-binding name="validator" field-name="net.sf.tapestry.valid.StringValidator.REQUIRED"/>
   </component>
 
   <component id="inputValue" type="ValidField">	

@@ -25,16 +25,20 @@
  */
 package tutorial.workbench.upload;
 
-import com.primix.tapestry.BasePage;
-import com.primix.tapestry.IRequestCycle;
-import com.primix.tapestry.IUploadFile;
-import com.primix.tapestry.RequestCycleException;
-import com.primix.tapestry.Tapestry;
-import com.primix.tapestry.form.IFormComponent;
-import com.primix.tapestry.form.IPropertySelectionModel;
-import com.primix.tapestry.form.StringPropertySelectionModel;
-import com.primix.tapestry.valid.IValidationDelegate;
-import com.primix.tapestry.valid.ValidationConstraint;
+import net.sf.tapestry.valid.IValidationDelegate;
+import net.sf.tapestry.valid.ValidationConstraint;
+
+import net.sf.tapestry.*;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.IUploadFile;
+import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.form.*;
+import net.sf.tapestry.form.IFormComponent;
+import net.sf.tapestry.form.IPropertySelectionModel;
+import net.sf.tapestry.form.StringPropertySelectionModel;
+import net.sf.tapestry.html.*;
+import net.sf.tapestry.html.BasePage;
 
 public class Upload extends BasePage
 {

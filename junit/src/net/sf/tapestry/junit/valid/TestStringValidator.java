@@ -26,9 +26,9 @@
 
 package net.sf.tapestry.junit.valid;
 
-import com.primix.tapestry.valid.StringValidator;
-import com.primix.tapestry.valid.ValidatorException;
-import com.primix.tapestry.valid.ValidationConstraint;
+import net.sf.tapestry.valid.StringValidator;
+import net.sf.tapestry.valid.ValidatorException;
+import net.sf.tapestry.valid.ValidationConstraint;
 import junit.framework.TestCase;
 
 /**

@@ -6,15 +6,15 @@
   </description>
   
   <parameter name="selectedTitleBlock" 
-  	java-type="com.primix.tapestry.components.Block" 
+  	java-type="net.sf.tapestry.components.Block" 
   	required="no"/>
   
   <parameter name="availableTitleBlock" 
-   	java-type="com.primix.tapestry.components.Block" 
+   	java-type="net.sf.tapestry.components.Block" 
    	required="no"/>
    	
   <parameter name="model" 
-  java-type="com.primix.tapestry.form.IPropertySelectionModel" 
+  java-type="net.sf.tapestry.form.IPropertySelectionModel" 
   required="yes"/>
   
   <parameter name="selected" java-type="java.util.List" 
@@ -30,16 +30,16 @@
   java-type="java.lang.String" 
   required="no"/>
   
-  <parameter name="selectImage" java-type="com.primix.tapestry.IAsset"/>
-  <parameter name="selectDisabledImage" java-type="com.primix.tapestry.IAsset"/>
-  <parameter name="deselectImage" java-type="com.primix.tapestry.IAsset"/>
-  <parameter name="deselectDisabledImage" java-type="com.primix.tapestry.IAsset"/>
-  <parameter name="upImage" java-type="com.primix.tapestry.IAsset"/>
-  <parameter name="upDisabledImage" java-type="com.primix.tapestry.IAsset"/>
-  <parameter name="downImage" java-type="com.primix.tapestry.IAsset"/>
-  <parameter name="downDisabledImage" java-type="com.primix.tapestry.IAsset"/>
+  <parameter name="selectImage" java-type="net.sf.tapestry.IAsset"/>
+  <parameter name="selectDisabledImage" java-type="net.sf.tapestry.IAsset"/>
+  <parameter name="deselectImage" java-type="net.sf.tapestry.IAsset"/>
+  <parameter name="deselectDisabledImage" java-type="net.sf.tapestry.IAsset"/>
+  <parameter name="upImage" java-type="net.sf.tapestry.IAsset"/>
+  <parameter name="upDisabledImage" java-type="net.sf.tapestry.IAsset"/>
+  <parameter name="downImage" java-type="net.sf.tapestry.IAsset"/>
+  <parameter name="downDisabledImage" java-type="net.sf.tapestry.IAsset"/>
   
-  <bean name="selectedTitleBlock" class="com.primix.tapestry.bean.Default">
+  <bean name="selectedTitleBlock" class="net.sf.tapestry.bean.Default">
     <set-property name="binding"> 
       <property-value property-path="bindings.selectedTitleBlock"/>
     </set-property>
@@ -48,7 +48,7 @@
     </set-property>
   </bean>
   
-  <bean name="availableTitleBlock" class="com.primix.tapestry.bean.Default">
+  <bean name="availableTitleBlock" class="net.sf.tapestry.bean.Default">
      <set-property name="binding"> 
       <property-value property-path="bindings.availableTitleBlock"/>
     </set-property>

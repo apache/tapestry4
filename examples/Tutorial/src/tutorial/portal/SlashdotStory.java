@@ -28,6 +28,8 @@ package tutorial.portal;
 
 import com.primix.tapestry.util.prop.*;
 
+import net.sf.tapestry.util.prop.*;
+
 /**
  *  Encapsulates some data about a Slashdot story.
  *

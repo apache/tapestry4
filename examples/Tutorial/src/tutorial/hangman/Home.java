@@ -28,6 +28,9 @@ package tutorial.hangman;
 
 import com.primix.tapestry.*;
 
+import net.sf.tapestry.*;
+import net.sf.tapestry.html.*;
+
 /**
  *
  *  The home page for the hangman application, allows a new game to

@@ -26,9 +26,9 @@
 
 package net.sf.tapestry.junit.valid;
 
-import com.primix.tapestry.valid.IField;
-import com.primix.tapestry.valid.NumberValidator;
-import com.primix.tapestry.valid.ValidatorException;
+import net.sf.tapestry.valid.IField;
+import net.sf.tapestry.valid.NumberValidator;
+import net.sf.tapestry.valid.ValidatorException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import junit.framework.TestCase;

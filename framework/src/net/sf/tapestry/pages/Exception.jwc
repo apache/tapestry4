@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="net.sf.tapestry.pages.Exception">
+  <component id="shell" type="Shell">
+    <static-binding name="title">Exception</static-binding>
+    <binding name="stylesheet" property-path="assets.stylesheet"/>
+  </component>
+  <component id="exceptionDisplay" type="ExceptionDisplay">
+    <binding name="exceptions" property-path="exceptions"/>
+  </component>
+  <component id="restart" type="Service">
+    <field-binding name="service" field-name="net.sf.tapestry.IEngineService.RESTART_SERVICE"/>
+  </component>
+  <component id="showDebug" type="Delegator">
+    <binding name="delegate" property-path="page.requestCycle.requestContext"/>
+  </component>
+  <private-asset name="stylesheet" resource-path="/net/sf/tapestry/pages/Exception.css"/>
+</specification>

@@ -28,6 +28,13 @@ package net.sf.tapestry.contrib.palette;
 
 import com.primix.tapestry.*;
 import com.primix.tapestry.components.*;
+
+import net.sf.tapestry.*;
+import net.sf.tapestry.components.*;
+import net.sf.tapestry.form.*;
+import net.sf.tapestry.html.*;
+import net.sf.tapestry.spec.*;
+
 import com.primix.tapestry.html.*;
 import com.primix.tapestry.form.*;
 import com.primix.tapestry.spec.*;
@@ -200,7 +207,7 @@ public class Palette extends BaseComponent implements IFormComponent
 	 *
 	 */
 
-	private IResponseWriter availableWriter;
+	private IMarkupWriter availableWriter;
 
 	/**
 	 *  Contains the text for the first &lt;select&gt; element, that
@@ -208,7 +215,7 @@ public class Palette extends BaseComponent implements IFormComponent
 	 *
 	 */
 
-	private IResponseWriter selectedWriter;
+	private IMarkupWriter selectedWriter;
 
 	/**
 	 *  A cached copy of the script used with the component.
@@ -354,7 +361,7 @@ public class Palette extends BaseComponent implements IFormComponent
 		return form;
 	}
 
-	public void render(IResponseWriter writer, IRequestCycle cycle)
+	public void render(IMarkupWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
 		form = Form.get(page.getRequestCycle());
@@ -541,13 +548,13 @@ public class Palette extends BaseComponent implements IFormComponent
 	}
 
 	/**
-	 *  Buffers the two &lt;select&gt;s, each in its own nested {@link IResponseWriter}.
+	 *  Buffers the two &lt;select&gt;s, each in its own nested {@link IMarkupWriter}.
 	 *  The idea is to run through the property selection model just once, assigning
 	 *  each item to one or the other &lt;select&gt;.
 	 *
 	 */
 
-	private void bufferSelects(IResponseWriter writer)
+	private void bufferSelects(IMarkupWriter writer)
 	{
 		List selected = (List) selectedBinding.getObject("selected", List.class);
 		IPropertySelectionModel model =
@@ -583,7 +590,7 @@ public class Palette extends BaseComponent implements IFormComponent
 		for (int i = 0; i < count; i++)
 		
 			{
-			IResponseWriter w = availableWriter;
+			IMarkupWriter w = availableWriter;
 
 			Object optionValue = model.getOption(i);
 
@@ -612,7 +619,7 @@ public class Palette extends BaseComponent implements IFormComponent
 	{
 		return new IRender()
 		{
-			public void render(IResponseWriter writer, IRequestCycle cycle)
+			public void render(IMarkupWriter writer, IRequestCycle cycle)
 				throws RequestCycleException
 			{
 				availableWriter.close();
@@ -630,7 +637,7 @@ public class Palette extends BaseComponent implements IFormComponent
 	{
 		return new IRender()
 		{
-			public void render(IResponseWriter writer, IRequestCycle cycle)
+			public void render(IMarkupWriter writer, IRequestCycle cycle)
 				throws RequestCycleException
 			{
 				selectedWriter.close();

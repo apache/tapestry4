@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<!DOCTYPE specification PUBLIC 
+	"-//Howard Ship//Tapestry Specification 1.1//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+	
+	
+<specification class="net.sf.tapestry.form.Upload" allow-body="no">
+
+  <description>
+  Allows a file to be uploaded as part of a form.
+  </description>
+
+  <parameter name="file" java-type="net.sf.tapestry.IUploadFile" required="yes">
+  	<description>
+  	Parameter updated with the information (filename and content) of the file
+  	when the form is submitted.
+  	</description>
+  </parameter>
+
+  <parameter name="disabled"/>
+ 
+  <reserved-parameter name="type"/>
+  <reserved-parameter name="name"/>
+  
+</specification>

@@ -29,10 +29,15 @@ package tutorial.workbench.palette;
 import java.util.*;
 import com.primix.tapestry.*;
 import com.primix.tapestry.form.*;
-import com.primix.tapestry.valid.*;
+import net.sf.tapestry.valid.*;
 import com.primix.tapestry.util.*;
 import java.math.*;
+
+import net.sf.tapestry.*;
 import net.sf.tapestry.contrib.palette.*;
+import net.sf.tapestry.form.*;
+import net.sf.tapestry.html.*;
+import net.sf.tapestry.util.*;
 
 /**
  *  @version $Id$

@@ -30,11 +30,15 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.primix.tapestry.BasePage;
-import com.primix.tapestry.IRequestCycle;
-import com.primix.tapestry.form.IFormComponent;
-import com.primix.tapestry.valid.IValidationDelegate;
-import com.primix.tapestry.valid.RenderString;
+import net.sf.tapestry.valid.IValidationDelegate;
+import net.sf.tapestry.valid.RenderString;
+
+import net.sf.tapestry.*;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.form.*;
+import net.sf.tapestry.form.IFormComponent;
+import net.sf.tapestry.html.*;
+import net.sf.tapestry.html.BasePage;
 
 /**
  *  Page that presents (fake) stock information.

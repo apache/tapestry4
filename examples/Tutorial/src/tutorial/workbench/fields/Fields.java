@@ -27,6 +27,10 @@
 package tutorial.workbench.fields;
 
 import com.primix.tapestry.*;
+
+import net.sf.tapestry.*;
+import net.sf.tapestry.html.*;
+
 import java.math.BigDecimal;
 import tutorial.workbench.*;
 

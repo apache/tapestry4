@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
-<specification class="com.primix.tapestry.BasePage">
+<specification class="net.sf.tapestry.BasePage">
   <component id="border" type="Border">
     <static-binding name="title">Credo</static-binding>
     <binding name="pages" property-path="engine.pageNames"/>

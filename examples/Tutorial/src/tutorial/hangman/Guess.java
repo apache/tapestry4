@@ -28,6 +28,10 @@ package tutorial.hangman;
 
 import com.primix.tapestry.*;
 import com.primix.tapestry.components.*;
+
+import net.sf.tapestry.*;
+import net.sf.tapestry.html.*;
+
 import java.util.*;
 
 /**

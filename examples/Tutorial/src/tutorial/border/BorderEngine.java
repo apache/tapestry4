@@ -30,6 +30,8 @@ import java.util.*;
 import com.primix.tapestry.*;
 import com.primix.tapestry.engine.*;
 
+import net.sf.tapestry.engine.*;
+
 /**
  *  @version $Id$
  *  @author Howard Ship

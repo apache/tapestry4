@@ -28,6 +28,11 @@ package tutorial.workbench.localization;
 
 import com.primix.tapestry.*;
 import com.primix.tapestry.form.*;
+
+import net.sf.tapestry.*;
+import net.sf.tapestry.form.*;
+import net.sf.tapestry.html.*;
+
 import java.util.*;
 
 /**

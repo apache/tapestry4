@@ -28,7 +28,12 @@ package tutorial.workbench.components;
 
 import com.primix.tapestry.*;
 import com.primix.tapestry.event.*;
-import com.primix.tapestry.util.StringSplitter;
+
+import net.sf.tapestry.*;
+import net.sf.tapestry.event.*;
+import net.sf.tapestry.util.*;
+import net.sf.tapestry.util.StringSplitter;
+
 import java.util.ResourceBundle;
 import tutorial.workbench.*;
 

@@ -26,7 +26,7 @@
 
 package tutorial.portal;
 
-import com.primix.tapestry.util.xml.*;
+import net.sf.tapestry.util.xml.*;
 import java.net.*;
 import java.util.*;
 import org.xml.sax.*;

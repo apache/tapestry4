@@ -6,12 +6,16 @@ import java.io.OutputStream;
 import java.io.StringWriter;
 
 import java.io.Writer;
-import com.primix.tapestry.BasePage;
-import com.primix.tapestry.IRequestCycle;
-import com.primix.tapestry.IResponseWriter;
-import com.primix.tapestry.IUploadFile;
-import com.primix.tapestry.RequestCycleException;
-import com.primix.tapestry.util.io.BinaryDumpOutputStream;
+
+import net.sf.tapestry.*;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.IMarkupWriter;
+import net.sf.tapestry.IUploadFile;
+import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.html.*;
+import net.sf.tapestry.html.BasePage;
+import net.sf.tapestry.util.io.*;
+import net.sf.tapestry.util.io.BinaryDumpOutputStream;
 
 public class Results extends BasePage
 {

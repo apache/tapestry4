@@ -27,10 +27,13 @@
 package tutorial.workbench;
 
 import com.primix.tapestry.*;
-import com.primix.tapestry.valid.*;
-import com.primix.tapestry.valid.ValidationDelegate;
-import com.primix.tapestry.form.IFormComponent;
+import net.sf.tapestry.valid.*;
+import net.sf.tapestry.valid.ValidationDelegate;
 import com.primix.tapestry.util.pool.*;
+
+import net.sf.tapestry.*;
+import net.sf.tapestry.form.*;
+import net.sf.tapestry.form.IFormComponent;
 
 /**
  *
@@ -44,7 +47,7 @@ public class WorkbenchValidationDelegate
 	extends ValidationDelegate
 {
 	public void writeAttributes(
-		IResponseWriter writer,
+		IMarkupWriter writer,
 		IRequestCycle cycle)
 		throws RequestCycleException
 	{
@@ -53,7 +56,7 @@ public class WorkbenchValidationDelegate
 	}
 
 	public void writeSuffix(
-		IResponseWriter writer,
+		IMarkupWriter writer,
 		IRequestCycle cycle)
 	{
 		if (isInError())
@@ -68,7 +71,7 @@ public class WorkbenchValidationDelegate
 
 	public void writeLabelPrefix(
 		IFormComponent component,
-		IResponseWriter writer,
+		IMarkupWriter writer,
 		IRequestCycle cycle)
 		throws RequestCycleException
 	{
@@ -81,7 +84,7 @@ public class WorkbenchValidationDelegate
 
 	public void writeLabelSuffix(
 		IFormComponent component,
-		IResponseWriter writer,
+		IMarkupWriter writer,
 		IRequestCycle cycle)
 		throws RequestCycleException
 	{

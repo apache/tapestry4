@@ -28,14 +28,17 @@ package net.sf.tapestry.contrib.form;
 
 import java.util.List;
 
-import com.primix.tapestry.IBinding;
-import com.primix.tapestry.IForm;
-import com.primix.tapestry.IRequestCycle;
-import com.primix.tapestry.IResponseWriter;
-import com.primix.tapestry.RequestCycleException;
-import com.primix.tapestry.RequiredParameterException;
-import com.primix.tapestry.form.AbstractFormComponent;
-import com.primix.tapestry.form.IPropertySelectionModel;
+
+import net.sf.tapestry.*;
+import net.sf.tapestry.IBinding;
+import net.sf.tapestry.IForm;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.IMarkupWriter;
+import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.RequiredParameterException;
+import net.sf.tapestry.form.*;
+import net.sf.tapestry.form.AbstractFormComponent;
+import net.sf.tapestry.form.IPropertySelectionModel;
 
 /**
  *  A component which uses &lt;input type=checkbox&gt; to
@@ -196,7 +199,7 @@ public class MultiplePropertySelection extends AbstractFormComponent
 	 *
 	 */
 
-	public void render(IResponseWriter writer, IRequestCycle cycle)
+	public void render(IMarkupWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
 		IMultiplePropertySelectionRenderer renderer = null;

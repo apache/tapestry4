@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="net.sf.tapestry.form.Submit" allow-body="no">
+
+  <description>
+  Creates a labeled submit button within a form.
+  </description>
+
+  <parameter name="label" java-type="java.lang.String"/>
+  <parameter name="disabled"/>
+  <parameter name="selected"/>
+  <parameter name="tag"/>
+  <parameter name="listener" java-type="net.sf.tapestry.IActionListener"/>
+  
+  <reserved-parameter name="name"/>
+  <reserved-parameter name="type"/>
+  
+</specification>

@@ -31,9 +31,12 @@ import java.util.Map;
 
 import org.omg.CORBA.BooleanHolder;
 
-import com.primix.tapestry.spec.BeanLifecycle;
-import com.primix.tapestry.util.io.DataSqueezer;
-import com.primix.tapestry.util.io.ISqueezeAdaptor;
+
+import net.sf.tapestry.spec.*;
+import net.sf.tapestry.spec.BeanLifecycle;
+import net.sf.tapestry.util.io.*;
+import net.sf.tapestry.util.io.DataSqueezer;
+import net.sf.tapestry.util.io.ISqueezeAdaptor;
 
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;

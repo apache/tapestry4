@@ -7,13 +7,13 @@
 
   <bean name="delegate" class="tutorial.workbench.WorkbenchValidationDelegate"/>
 
-  <bean name="dateValidator" class="com.primix.tapestry.valid.DateValidator">
+  <bean name="dateValidator" class="net.sf.tapestry.valid.DateValidator">
   	<set-property name="required">
   		<field-value field-name="Boolean.TRUE"/>
   	</set-property>
   </bean>
 
-  <bean name="intValidator" class="com.primix.tapestry.valid.NumberValidator">
+  <bean name="intValidator" class="net.sf.tapestry.valid.NumberValidator">
   	<set-property name="required">
   		<field-value field-name="Boolean.TRUE"/>
   	</set-property>
@@ -25,7 +25,7 @@
   	</set-property>
   </bean>
 
-  <bean name="doubleValidator" class="com.primix.tapestry.valid.NumberValidator">
+  <bean name="doubleValidator" class="net.sf.tapestry.valid.NumberValidator">
   	<set-property name="required">
   		<field-value field-name="Boolean.TRUE"/>
   	</set-property>
@@ -38,7 +38,7 @@
   </bean>
 
 
-  <bean name="bigDecimalValidator" class="com.primix.tapestry.valid.NumberValidator">
+  <bean name="bigDecimalValidator" class="net.sf.tapestry.valid.NumberValidator">
   	<set-property name="required">
   		<field-value field-name="Boolean.TRUE"/>
   	</set-property>
@@ -50,7 +50,7 @@
   	</set-property>
   </bean>
 
-  <bean name="longValidator" class="com.primix.tapestry.valid.NumberValidator">
+  <bean name="longValidator" class="net.sf.tapestry.valid.NumberValidator">
   	<set-property name="required">
   		<field-value field-name="Boolean.TRUE"/>
   	</set-property>
@@ -62,7 +62,7 @@
   	</set-property>
   </bean>
 
-  <bean name="stringValidator" class="com.primix.tapestry.valid.StringValidator">
+  <bean name="stringValidator" class="net.sf.tapestry.valid.StringValidator">
   	<set-property name="required">
   		<field-value field-name="Boolean.TRUE"/>
   	</set-property>

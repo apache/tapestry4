@@ -28,6 +28,9 @@ package tutorial.portal;
 
 import com.primix.tapestry.*;
 
+import net.sf.tapestry.*;
+import net.sf.tapestry.html.*;
+
 /**
  *  Home page for the Portal tutorial.
  *

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="net.sf.tapestry.form.TextField" allow-body="no">
+
+  <description>
+  A text input field.
+  </description>
+  
+  <!-- value replaces parameter 'text' -->
+  
+  <parameter name="value" java-type="java.lang.String"/>
+  
+  <!-- parameter 'text' is deprecated, and will be removed in 1.1.0 -->
+  
+  <parameter name="text" java-type="java.lang.String">
+    <description>
+    Deprecated, use value instead.
+    </description>
+  </parameter>
+  
+  <parameter name="disabled"/>
+  <parameter name="hidden"/>
+  <parameter name="displayWidth" java-type="java.lang.Integer"/>
+  <parameter name="maximumLength" java-type="java.lang.Integer"/>
+  
+  <reserved-parameter name="type"/>
+  <reserved-parameter name="value"/>
+  
+</specification>

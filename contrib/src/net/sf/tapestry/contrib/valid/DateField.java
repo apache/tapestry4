@@ -29,11 +29,13 @@ package net.sf.tapestry.contrib.valid;
 import com.primix.tapestry.*;
 
 import com.primix.tapestry.form.*;
-import com.primix.tapestry.valid.DateValidator;
-import com.primix.tapestry.valid.IValidator;
-import com.primix.tapestry.valid.ValidField;
-import com.primix.tapestry.valid.ValidatorException;
+import net.sf.tapestry.valid.DateValidator;
+import net.sf.tapestry.valid.IValidator;
+import net.sf.tapestry.valid.ValidField;
+import net.sf.tapestry.valid.ValidatorException;
 import com.primix.tapestry.event.*;
+
+import net.sf.tapestry.*;
 
 import java.util.*;
 import java.text.*;

@@ -28,6 +28,9 @@ package net.sf.tapestry.junit.prop;
 
 import junit.framework.*;
 import com.primix.tapestry.util.prop.*;
+
+import net.sf.tapestry.util.prop.*;
+
 import java.io.*;
 import java.util.*;
 

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="net.sf.tapestry.form.ImageSubmit" allow-body="no">
+
+  <description>
+  Creates a clickable image within a form.
+  </description>
+
+  <parameter name="image" java-type="net.sf.tapestry.IAsset" required="yes"/>
+  <parameter name="name" java-type="java.lang.String"/>
+  <parameter name="disabledImage" java-type="net.sf.tapestry.IAsset"/>
+  <parameter name="disabled"/>
+  <parameter name="point" java-type="java.awt.Point"/>
+  <parameter name="selected"/>
+  <parameter name="tag"/>
+  <parameter name="listener" java-type="net.sf.tapestry.IActionListener"/>
+  
+  <reserved-parameter name="type"/>
+  <reserved-parameter name="src"/>
+  <reserved-parameter name="border"/>
+  
+</specification>

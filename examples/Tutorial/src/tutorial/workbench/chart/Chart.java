@@ -30,13 +30,17 @@ import java.util.List;
 import com.jrefinery.chart.ChartFactory;
 import com.jrefinery.chart.JFreeChart;
 import com.jrefinery.data.DefaultPieDataset;
-import com.primix.tapestry.BasePage;
-import com.primix.tapestry.IAsset;
-import com.primix.tapestry.IRequestCycle;
-import com.primix.tapestry.IResponseWriter;
-import com.primix.tapestry.RequestCycleException;
-import com.primix.tapestry.Tapestry;
-import com.primix.tapestry.valid.IValidationDelegate;
+
+import net.sf.tapestry.html.*;
+import net.sf.tapestry.html.BasePage;
+import net.sf.tapestry.valid.IValidationDelegate;
+
+import net.sf.tapestry.*;
+import net.sf.tapestry.IAsset;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.IMarkupWriter;
+import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.Tapestry;
 
 /**
  *  Demonstrates more complex form handling (including loops and dynamic addition/deletion of
@@ -70,7 +74,7 @@ public class Chart extends BasePage implements IChartProvider
 	 * 
 	 **/
 	
-	public void beginResponse(IResponseWriter writer, IRequestCycle cycle)
+	public void beginResponse(IMarkupWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
 		getPlotValues();
