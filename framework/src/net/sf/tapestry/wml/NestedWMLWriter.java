@@ -43,18 +43,18 @@ import net.sf.tapestry.IMarkupWriter;
 
 public class NestedWMLWriter extends WMLWriter
 {
-    private IMarkupWriter parent;
-    private CharArrayWriter internalBuffer;
+    private IMarkupWriter _parent;
+    private CharArrayWriter _internalBuffer;
 
     public NestedWMLWriter(IMarkupWriter parent)
     {
         super(parent.getContentType());
 
-        this.parent = parent;
+        _parent = parent;
 
-        internalBuffer = new CharArrayWriter();
+        _internalBuffer = new CharArrayWriter();
 
-        writer = new PrintWriter(internalBuffer);
+       setWriter(new PrintWriter(_internalBuffer));
     }
 
     /**
@@ -69,12 +69,11 @@ public class NestedWMLWriter extends WMLWriter
     {
         super.close();
 
-        char[] data = internalBuffer.toCharArray();
+        char[] data = _internalBuffer.toCharArray();
 
-        parent.printRaw(data, 0, data.length);
+        _parent.printRaw(data, 0, data.length);
 
-        internalBuffer = null;
-        writer = null;
-        parent = null;
+        _internalBuffer = null;
+        _parent = null;
     }
 }

@@ -63,17 +63,17 @@ import java.util.Stack;
  *
  **/
 
-public abstract class AbstractResponseWriter implements IMarkupWriter
+public abstract class AbstractMarkupWriter implements IMarkupWriter
 {
     /**
      * The underlying {@link PrintWriter} that output is sent to. 
      *  
      **/
 
-    protected PrintWriter writer;
+    private PrintWriter _writer;
 
     /**
-    	 * Indicates whether a tag is open or not. A tag is opened by
+     * Indicates whether a tag is open or not. A tag is opened by
      * {@link #begin(String)} or {@link #beginEmpty(String)}.
      * It stays open while calls to the <code>attribute()</code>
      * methods are made. It is closed
@@ -81,7 +81,7 @@ public abstract class AbstractResponseWriter implements IMarkupWriter
      *
      **/
 
-    protected boolean openTag = false;
+    private boolean _openTag = false;
 
     /**
      * A Stack of Strings used to track the active tag elements. Elements are active
@@ -90,7 +90,7 @@ public abstract class AbstractResponseWriter implements IMarkupWriter
      *
      **/
 
-    private Stack activeElementStack;
+    private Stack _activeElementStack;
 
     /**
      * The depth of the open tag stack.
@@ -98,12 +98,12 @@ public abstract class AbstractResponseWriter implements IMarkupWriter
      *
      **/
 
-    private int depth = 0;
+    private int _depth = 0;
 
-    private char[] buffer;
+    private char[] _buffer;
 
-    private String[] entities;
-    private boolean[] safe;
+    private String[] _entities;
+    private boolean[] _safe;
 
     /**
      *  Implemented in concrete subclasses to provide an indication of which
@@ -113,11 +113,11 @@ public abstract class AbstractResponseWriter implements IMarkupWriter
      *
      **/
 
-    private String contentType;
+    private String _contentType;
 
     public String getContentType()
     {
-        return contentType;
+        return _contentType;
     }
 
     abstract public IMarkupWriter getNestedWriter();
@@ -137,7 +137,7 @@ public abstract class AbstractResponseWriter implements IMarkupWriter
      *
      **/
 
-    protected AbstractResponseWriter(
+    protected AbstractMarkupWriter(
         boolean safe[],
         String[] entities,
         String contentType,
@@ -145,7 +145,7 @@ public abstract class AbstractResponseWriter implements IMarkupWriter
     {
         this(safe, entities, contentType);
 
-        writer = new PrintWriter(stream);
+        _writer = new PrintWriter(stream);
     }
 
     /**
@@ -154,16 +154,21 @@ public abstract class AbstractResponseWriter implements IMarkupWriter
      * 
      **/
 
-    protected AbstractResponseWriter(boolean safe[], String[] entities, String contentType)
+    protected AbstractMarkupWriter(boolean safe[], String[] entities, String contentType)
     {
-        this.entities = entities;
-        this.safe = safe;
-        this.contentType = contentType;
+        this._entities = entities;
+        this._safe = safe;
+        this._contentType = contentType;
 
         if (entities == null || safe == null || contentType == null)
             throw new IllegalArgumentException(
-                Tapestry.getString("AbstractResponseWriter.missing-constructor-parameters"));
+                Tapestry.getString("AbstractMarkupWriter.missing-constructor-parameters"));
 
+    }
+
+    protected void setWriter(PrintWriter writer)
+    {
+        _writer = writer;
     }
 
     /**
@@ -180,8 +185,8 @@ public abstract class AbstractResponseWriter implements IMarkupWriter
     {
         checkTagOpen();
 
-        writer.print(' ');
-        writer.print(name);
+        _writer.print(' ');
+        _writer.print(name);
     }
 
     /**
@@ -197,11 +202,11 @@ public abstract class AbstractResponseWriter implements IMarkupWriter
     {
         checkTagOpen();
 
-        writer.print(' ');
-        writer.print(name);
-        writer.print("=\"");
-        writer.print(value);
-        writer.print('"');
+        _writer.print(' ');
+        _writer.print(name);
+        _writer.print("=\"");
+        _writer.print(value);
+        _writer.print('"');
     }
 
     /**
@@ -227,27 +232,27 @@ public abstract class AbstractResponseWriter implements IMarkupWriter
         checkTagOpen();
         int length;
 
-        writer.print(' ');
+        _writer.print(' ');
 
         // Could use a check here that name contains only valid characters
 
-        writer.print(name);
+        _writer.print(name);
         if (value == null)
             return;
 
         length = value.length();
 
-        if (buffer == null || buffer.length < length)
-            buffer = new char[length];
+        if (_buffer == null || _buffer.length < length)
+            _buffer = new char[length];
 
-        value.getChars(0, length, buffer, 0);
+        value.getChars(0, length, _buffer, 0);
 
         // Have to assume that ANY attribute could be a URL and allow the ampersand
         // as legit.
 
-        writer.print("=\"");
-        safePrint(buffer, 0, length, true);
-        writer.print('"');
+        _writer.print("=\"");
+        safePrint(_buffer, 0, length, true);
+        _writer.print('"');
     }
 
     /**
@@ -257,15 +262,15 @@ public abstract class AbstractResponseWriter implements IMarkupWriter
 
     public void begin(String name)
     {
-        if (openTag)
+        if (_openTag)
             closeTag();
 
         push(name);
 
-        writer.print('<');
-        writer.print(name);
+        _writer.print('<');
+        _writer.print(name);
 
-        openTag = true;
+        _openTag = true;
     }
 
     /**
@@ -277,13 +282,13 @@ public abstract class AbstractResponseWriter implements IMarkupWriter
 
     public void beginEmpty(String name)
     {
-        if (openTag)
+        if (_openTag)
             closeTag();
 
-        writer.print('<');
-        writer.print(name);
+        _writer.print('<');
+        _writer.print(name);
 
-        openTag = true;
+        _openTag = true;
     }
 
     /**
@@ -293,13 +298,13 @@ public abstract class AbstractResponseWriter implements IMarkupWriter
 
     public boolean checkError()
     {
-        return writer.checkError();
+        return _writer.checkError();
     }
 
     private void checkTagOpen()
     {
-        if (!openTag)
-            throw new IllegalStateException(Tapestry.getString("AbstractResponseWriter.tag-not-open"));
+        if (!_openTag)
+            throw new IllegalStateException(Tapestry.getString("AbstractMarkupWriter.tag-not-open"));
     }
 
     /**
@@ -312,24 +317,24 @@ public abstract class AbstractResponseWriter implements IMarkupWriter
     {
         String name;
 
-        if (openTag)
+        if (_openTag)
             closeTag();
 
         // Close any active elements.
 
-        while (depth > 0)
+        while (_depth > 0)
         {
             name = pop();
-            writer.print("</");
-            writer.print(name);
-            writer.print('>');
+            _writer.print("</");
+            _writer.print(name);
+            _writer.print('>');
         }
 
-        writer.close();
+        _writer.close();
 
-        writer = null;
-        activeElementStack = null;
-        buffer = null;
+        _writer = null;
+        _activeElementStack = null;
+        _buffer = null;
     }
 
     /**
@@ -341,9 +346,9 @@ public abstract class AbstractResponseWriter implements IMarkupWriter
 
     public void closeTag()
     {
-        writer.print('>');
+        _writer.print('>');
 
-        openTag = false;
+        _openTag = false;
     }
 
     /**
@@ -359,12 +364,12 @@ public abstract class AbstractResponseWriter implements IMarkupWriter
 
     public void comment(String value)
     {
-        if (openTag)
+        if (_openTag)
             closeTag();
 
-        writer.print("<!-- ");
-        writer.print(value);
-        writer.println(" -->");
+        _writer.print("<!-- ");
+        _writer.print(value);
+        _writer.println(" -->");
     }
 
     /**
@@ -379,14 +384,14 @@ public abstract class AbstractResponseWriter implements IMarkupWriter
     {
         String name;
 
-        if (openTag)
+        if (_openTag)
             closeTag();
 
         name = pop();
 
-        writer.print("</");
-        writer.print(name);
-        writer.print('>');
+        _writer.print("</");
+        _writer.print(name);
+        _writer.print('>');
     }
 
     /**
@@ -401,16 +406,16 @@ public abstract class AbstractResponseWriter implements IMarkupWriter
     {
         String tagName;
 
-        if (openTag)
+        if (_openTag)
             closeTag();
 
         while (true)
         {
             tagName = pop();
 
-            writer.print("</");
-            writer.print(tagName);
-            writer.print('>');
+            _writer.print("</");
+            _writer.print(tagName);
+            _writer.print('>');
 
             if (tagName.equals(name))
                 break;
@@ -418,14 +423,14 @@ public abstract class AbstractResponseWriter implements IMarkupWriter
     }
 
     /**
-     * Forwards <code>flush()</code> to this <code>AbstractResponseWriter</code>'s 
+     * Forwards <code>flush()</code> to this <code>AbstractMarkupWriter</code>'s 
      * <code>PrintWriter</code>.
      *
      **/
 
     public void flush()
     {
-        writer.flush();
+        _writer.flush();
     }
 
     /**
@@ -437,8 +442,8 @@ public abstract class AbstractResponseWriter implements IMarkupWriter
     {
         String result;
 
-        result = (String) activeElementStack.pop();
-        depth--;
+        result = (String) _activeElementStack.pop();
+        _depth--;
 
         return result;
     }
@@ -467,7 +472,7 @@ public abstract class AbstractResponseWriter implements IMarkupWriter
         if (data == null)
             return;
 
-        if (openTag)
+        if (_openTag)
             closeTag();
 
         safePrint(data, offset, length, false);
@@ -485,28 +490,28 @@ public abstract class AbstractResponseWriter implements IMarkupWriter
     {
         String entity = null;
 
-        if (openTag)
+        if (_openTag)
             closeTag();
 
-        if (value < safe.length && safe[value])
+        if (value < _safe.length && _safe[value])
         {
-            writer.print(value);
+            _writer.print(value);
             return;
         }
 
-        if (value < entities.length)
-            entity = entities[value];
+        if (value < _entities.length)
+            entity = _entities[value];
 
         if (entity != null)
         {
-            writer.print(entity);
+            _writer.print(entity);
             return;
         }
 
         // Not a well-known entity.  Print it's numeric equivalent.  Note:  this omits
         // the leading '0', but most browsers (IE 5.0) don't seem to mind.  Is this a bug?
 
-        writer.print("&#" + (int) value + ";");
+        _writer.print("&#" + (int) value + ";");
     }
 
     /**
@@ -518,10 +523,10 @@ public abstract class AbstractResponseWriter implements IMarkupWriter
 
     public void print(int value)
     {
-        if (openTag)
+        if (_openTag)
             closeTag();
 
-        writer.print(value);
+        _writer.print(value);
     }
 
     /**
@@ -546,12 +551,12 @@ public abstract class AbstractResponseWriter implements IMarkupWriter
 
         length = value.length();
 
-        if (buffer == null || buffer.length < length)
-            buffer = new char[length];
+        if (_buffer == null || _buffer.length < length)
+            _buffer = new char[length];
 
-        value.getChars(0, length, buffer, 0);
+        value.getChars(0, length, _buffer, 0);
 
-        print(buffer, 0, length);
+        print(_buffer, 0, length);
     }
 
     /**
@@ -561,10 +566,10 @@ public abstract class AbstractResponseWriter implements IMarkupWriter
 
     public void println()
     {
-        if (openTag)
+        if (_openTag)
             closeTag();
 
-        writer.println();
+        _writer.println();
     }
 
     /**
@@ -583,10 +588,10 @@ public abstract class AbstractResponseWriter implements IMarkupWriter
         if (buffer == null)
             return;
 
-        if (openTag)
+        if (_openTag)
             closeTag();
 
-        writer.write(buffer, offset, length);
+        _writer.write(buffer, offset, length);
     }
 
     /**
@@ -604,10 +609,10 @@ public abstract class AbstractResponseWriter implements IMarkupWriter
         if (value == null)
             return;
 
-        if (openTag)
+        if (_openTag)
             closeTag();
 
-        writer.print(value);
+        _writer.print(value);
     }
 
     /**
@@ -617,12 +622,12 @@ public abstract class AbstractResponseWriter implements IMarkupWriter
 
     protected final void push(String name)
     {
-        if (activeElementStack == null)
-            activeElementStack = new Stack();
+        if (_activeElementStack == null)
+            _activeElementStack = new Stack();
 
-        activeElementStack.push(name);
+        _activeElementStack.push(name);
 
-        depth++;
+        _depth++;
     }
 
     /**
@@ -648,7 +653,7 @@ public abstract class AbstractResponseWriter implements IMarkupWriter
             // Ignore safe characters.  In an attribute, quotes
             // are not ok and are escaped.
 
-            isSafe = (ch < safe.length && safe[ch]);
+            isSafe = (ch < _safe.length && _safe[ch]);
 
             if (isAttribute && ch == '"')
                 isSafe = false;
@@ -662,28 +667,28 @@ public abstract class AbstractResponseWriter implements IMarkupWriter
             // Write the safe stuff.
 
             if (safelength > 0)
-                writer.write(data, start, safelength);
+                _writer.write(data, start, safelength);
 
             entity = null;
 
             // Look for a known entity.
 
-            if (ch < entities.length)
-                entity = entities[ch];
+            if (ch < _entities.length)
+                entity = _entities[ch];
 
             // Failing that, emit a numeric entity.
 
             if (entity == null)
                 entity = "&#" + (int) ch + ";";
 
-            writer.print(entity);
+            _writer.print(entity);
 
             start = offset + i + 1;
             safelength = 0;
         }
 
         if (safelength > 0)
-            writer.write(data, start, safelength);
+            _writer.write(data, start, safelength);
     }
 
 }
