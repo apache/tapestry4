@@ -1,0 +1,157 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title>wml:Input</title>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr> 
+    <td align="left"><a href="wml.Image.html"><img alt="Image" src="common-images/prev.png"></a></td>
+    <td align="middle"><a href="index.html"><img alt="Component Index" src="common-images/home.png" ></a></td>
+    <td align="right"><a href="wml.OnEvent.html"><img alt="OnEvent" src="common-images/next.png"></a></td>
+  <tr> 
+  <tr> 
+    <td colspan="3">
+      <hr>
+    </td>
+  </tr>
+  <tr> 
+    <td colspan="3"> 
+      <table border="0" cellpadding="4" cellspacing="4" width="100%">
+        <tr valign="top"> 
+          <td> 
+            <table>
+              <tr> 
+                <td><font size="+2"><b>wml:Input</b></font></td>
+              </tr>
+              <tr> 
+                <td> <A href="../api/org/apache/tapestry/wml/Input.html">org.apache.tapestry.wml.Input</a> 
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td> 
+            <table align="right" valign="middle" cellpadding="8">
+              <tr> 
+                <td><IMG alt="Image Component" src="images/wml.input.png" ></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr valign="center"> 
+          <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr> 
+          <td colspan="2"> <b>Description</b> <br>
+            The wml:Input component defines an input field (a text field where 
+            the user can enter some text).</td>
+        </tr>
+        <tr> 
+          <td colspan="2"> <b>See Also</b> <br>
+            <A href="wml.Go.html">wml:Go</a>, <A href="wml.Postfield.html">wml:Postfield</a> 
+          </td>
+        </tr>
+        <tr> 
+          <td colspan="2"> <b>Parameters</b> <br>
+            <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+              <tr> 
+                <th>Name</th>
+                <th>Type</th>
+                <th>Direction</th>
+                <th>Required</th>
+                <th>Default</th>
+                <th>Description</th>
+              </tr>
+              <tr> 
+                <td>title</td>
+                <td>String</td>
+                <td>in</td>
+                <td>no</td>
+                <td>&nbsp;</td>
+                <td> The title attribute specifies advisory information about 
+                  the element. The title may be rendered in a variety of ways 
+                  by the user agent (eg, suggested bookmark name, pop-up tooltip, 
+                  etc.). </td>
+              </tr>
+              <tr> 
+                <td>hidden</td>
+                <td>boolean</td>
+                <td>in</td>
+                <td>no</td>
+                <td>&nbsp;</td>
+                <td> If true, then the text field is written as a &#60;input type="password"&#62; 
+                  form element. </td>
+              </tr>
+              <tr> 
+                <td>name</td>
+                <td>String</td>
+                <td>in</td>
+                <td>yes</td>
+                <td>&nbsp;</td>
+                <td>The name attribute specifies a variable name.</td>
+              </tr>
+              <tr> 
+                <td>format</td>
+                <td>String</td>
+                <td>in</td>
+                <td>no</td>
+                <td>&nbsp;</td>
+                <td> The format attribute specifies an input mask for user input 
+                  entries. The string consists of mask control characters and 
+                  static text that is displayed in the input area. The user agent 
+                  may use the format mask to facilitate accelerated data input. 
+                  An input mask is only valid when it contains only legal format 
+                  codes. User agents must ignore invalid masks. The format control 
+                  characters specify the data format expected to be entered by 
+                  the user. See the WML specification for valid format control 
+                  characters. </td>
+              </tr>
+              <tr> 
+                <td>emptyok</td>
+                <td>boolean</td>
+                <td>in</td>
+                <td>no</td>
+                <td>&nbsp;</td>
+                <td> The emptyok attribute indicates that this input element accepts 
+                  empty input although a non-empty format string has been specified. 
+                </td>
+              </tr>
+              <tr> 
+                <td>value</td>
+                <td>String</td>
+                <td>in</td>
+                <td>yes</td>
+                <td>&nbsp;</td>
+                <td>Bind value to the variable that should recieve the user input 
+                  string.</td>
+              </tr>
+            </table>
+            <p> Body: <strong>removed</strong><br>
+              Informal parameters: <strong>allowed</strong><br>
+              <!-- component-specification "reserved-parameter" -->
+              Reserved parameters: type </p>
+          </td>
+        </tr>
+          <td colspan="2"> <b>Examples</b> 
+            <p> Please see the documentation for the <a href="wml.Go.html">wml:Go</a> 
+              component.</p>
+          </td>
+        <tr>          
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr> 
+    <td colspan="3">
+      <hr>
+    </td>
+  </tr>
+  <tr> 
+    <td align="left"><a href="wml.Image.html"><img alt="Image" src="common-images/prev.png"></a></td>
+    <td align="middle"><a href="index.html"><img alt="Component Index" src="common-images/home.png" ></a></td>
+    <td align="right"><a href="wml.OnEvent.html"><img alt="OnEvent" src="common-images/next.png"></a></td>
+  </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title>wml:Go</title>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr> 
+    <td align="left"><a href="wml.Do.html"><img alt="Do" src="common-images/prev.png"></a></td>
+    <td align="middle"><a href="index.html"><img alt="Component Index" src="common-images/home.png" ></a></td>
+    <td align="right"><a href="wml.Image.html"><img alt="Image" src="common-images/next.png"></a></td>
+  <tr> 
+  <tr> 
+    <td colspan="3"> 
+      <hr>
+    </td>
+  </tr>
+  <tr> 
+    <td colspan="3"> 
+      <table border="0" cellpadding="4" cellspacing="4" width="100%">
+        <tr valign="top"> 
+          <td> 
+            <table>
+              <tr> 
+                <td><font size="+2"><b>wml:Go</b></font></td>
+              </tr>
+              <tr> 
+                <td> <A href="../api/org/apache/tapestry/wml/Go.html">org.apache.tapestry.wml.Go</a> 
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td> 
+            <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
+              <tr> 
+                <td>Non Visual Component</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr valign="center"> 
+          <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr> 
+          <td colspan="2"> <b>Description</b> <br>
+            The <go> wml:Go component represents the action of switching to a 
+            new card.</td>
+        </tr>
+        <tr> 
+          <td colspan="2"> <b>See Also</b> <br>
+            <A href="wml.Input.html">wml:Input</a>, <A href="wml.PropertySelection.html">wml:PropertySelection</a>, 
+            <A href="wml.Select.html">wml:Select</a> </td>
+        </tr>
+        <tr> 
+          <td colspan="2"> <b>Parameters</b> <br>
+            <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+              <tr> 
+                <th>Name</th>
+                <th>Type</th>
+                <th>Direction</th>
+                <th>Required</th>
+                <th>Default</th>
+                <th>Description</th>
+              </tr>
+              <tr> 
+                <td>method</td>
+                <td>String</td>
+                <td>in</td>
+                <td>yes</td>
+                <td>&nbsp;</td>
+                <td>The method used by the form when it is submitted, defaults 
+                  to POST.</td>
+              </tr>
+              <tr> 
+                <td>listener</td>
+                <td> <A href="../api/org/apache/tapestry/IActionListener.html"><tt>IActionListener</tt></a> 
+                </td>
+                <td>in</td>
+                <td>no</td>
+                <td>&nbsp;</td>
+                <td> Object invoked when the form is submitted, after all form 
+                  components have responded to the submission. </td>
+              </tr>
+              <tr> 
+                <td>stateful</td>
+                <td>boolean</td>
+                <td>custom</td>
+                <td>no</td>
+                <td>&nbsp;</td>
+                <td>If true (the default), then an active HttpSession is required.</td>
+              </tr>
+              <tr> 
+                <td>direct</td>
+                <td>boolean</td>
+                <td>in</td>
+                <td>no</td>
+                <td>&nbsp;</td>
+                <td> If true (the default), then the more efficient direct service 
+                  is used. If false, then the action service is used. </td>
+              </tr>
+            </table>
+            <p> Body: <strong>removed</strong><br>
+              Informal parameters: <strong>allowed</strong><br>
+              Reserved parameters: href </p>
+          </td>
+        </tr>
+        <tr> 
+          <td colspan="2"> <p><b>Example</b></p>
+		  
+            <p>This example is the first part of the Hello world example.<br>
+            </p>
+              Template 
+            <p> <code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;iso-8859-1&quot; 
+              ?&gt;<br>
+              &lt;!DOCTYPE wml PUBLIC &quot;-//WAPFORUM//DTD WML 1.1//EN&quot; 
+              <br>
+              &quot;http://www.wapforum.org/DTD/wml_1.1.xml&quot;&gt;<br>
+              </code></p>
+            <p><code>&lt;wml&gt;</code></p>
+            <p><code>&lt;card jwcid=&quot;wml:Card&quot; id=&quot;Hello&quot; 
+              title=&quot;ognl:@org.apache.tapestry.wap.hello.Home@TITLE&quot;&gt;<br>
+              &nbsp;&lt;p&gt;<br>
+              &nbsp;&nbsp;What is your name?<br>
+              &nbsp;&nbsp;&lt;input jwcid=&quot;userInput@wml:Input&quot; name=&quot;username&quot; 
+              value=&quot;ognl:username&quot;/&gt;<br>
+              &nbsp;&lt;/p&gt;<br>
+              &nbsp;&lt;do type=&quot;accept&quot; label=&quot;Accept&quot;&gt;<br>
+              &nbsp;&nbsp;&lt;go jwcid=&quot;go@wml:Go&quot; stateful=&quot;ognl:false&quot; 
+              listener=&quot;ognl:listeners.submit&quot;&gt;<br>
+              &nbsp;&nbsp;&nbsp;&lt;postfield jwcid=&quot;username@wml:Postfield&quot; 
+              name=&quot;ognl:components.userInput.name&quot; value=&quot;ognl:username&quot;/&gt;<br>
+              &nbsp;&nbsp;&lt;/go&gt;<br>
+              &nbsp;&lt;/do&gt;<br>
+              &lt;/card&gt;<br>
+              <br>
+              &lt;/wml&gt; </code></p>
+            Specification<br><br>
+            <code>&lt;page-specification class=&quot;org.apache.tapestry.wap.hello.Home&quot;&gt;<br>
+              &nbsp;&lt;property-specification name=&quot;username&quot; type=&quot;java.lang.String&quot; 
+              persistent=&quot;yes&quot; initial-value=&quot;null&quot;/&gt;<br>
+              &lt;/page-specification&gt;</code><br>
+            
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr> 
+    <td colspan="3"> 
+      <hr>
+    </td>
+  </tr>
+  <tr> 
+    <td align="left"><a href="wml.Do.html"><img alt="Do" src="common-images/prev.png"></a></td>
+    <td align="middle"><a href="index.html"><img alt="Component Index" src="common-images/home.png" ></a></td>
+    <td align="right"><a href="wml.Image.html"><img alt="Image" src="common-images/next.png"></a></td>
+  </tr>
+</table>
+</body>
+</html>

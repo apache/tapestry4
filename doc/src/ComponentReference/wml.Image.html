@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title>wml:Image</title>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr> 
+    <td align="left"><a href="wml.Go.html"><img alt="Go" src="common-images/prev.png"></a></td>
+    <td align="middle"><a href="index.html"><img alt="Component Index" src="common-images/home.png" ></a></td>
+    <td align="right"><a href="wml.Input.html"><img alt="Input" src="common-images/next.png"></a></td>
+  <tr> 
+  <tr> 
+    <td colspan="3"> 
+      <hr>
+    </td>
+  </tr>
+  <tr> 
+    <td colspan="3"> 
+      <table border="0" cellpadding="4" cellspacing="4" width="100%">
+        <tr valign="top"> 
+          <td> 
+            <table>
+              <tr> 
+                <td><font size="+2"><b>wml:Image</b></font></td>
+              </tr>
+              <tr> 
+                <td> <A href="../api/org/apache/tapestry/wml/Image.html">org.apache.tapestry.wml.Image</a> 
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td> 
+            <table align="right" valign="middle" cellpadding="8">
+              <tr> 
+                <td><IMG alt="Image Component" src="images/wml.image.png" ></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr valign="center"> 
+          <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr> 
+          <td colspan="2"> <b>Description</b> <br>
+            Displays a WML image, deriving the source URL for the image from an 
+            asset. Note that not all devices can display images. </td>
+        </tr>
+        <tr> 
+          <td colspan="2"> <b>See Also</b> <br>
+          </td>
+        </tr>
+        <tr> 
+          <td colspan="2"> <b>Parameters</b> <br>
+            <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+              <tr> 
+                <th>Name</th>
+                <th>Type</th>
+                <th>Direction</th>
+                <th>Required</th>
+                <th>Default</th>
+                <th>Description</th>
+              </tr>
+              <tr> 
+                <td>image</td>
+                <td> <A href="../api/org/apache/tapestry/IAsset.html"><tt>IAsset</tt></a> 
+                </td>
+                <td>in</td>
+                <td>yes</td>
+                <td>&nbsp;</td>
+                <td>The asset to display.</td>
+              </tr>
+              <tr> 
+                <td>alt</td>
+                <td>String</td>
+                <td>in</td>
+                <td>no</td>
+                <td>&nbsp;</td>
+                <td> This attribute specifies an alternative textual representation 
+                  for the image. This representation is used when the image can 
+                  not be displayed using any other method </td>
+              </tr>
+            </table>
+            <p> Body: <strong>removed</strong><br>
+              Informal parameters: <strong>allowed</strong><br>
+              Reserved parameters: src </p>
+          </td>
+        </tr>
+        <tr> 
+          <td colspan="2"> 
+            <p><b>Example</b></p>
+            <p>This example uses a &lt;context-asset&gt; to reference the image. 
+              It implements a splash screen.</p>
+            <table valign="middle">
+              <tr> 
+                <td> <IMG alt="WML Image Example" src="images/wml.image-example.gif" > 
+                </td>
+              </tr>
+            </table>
+            <br>
+            Template 
+            <p> <code>&lt;?xml version=&quot;1.0&quot;?&gt;<br>
+              &lt;!DOCTYPE wml PUBLIC &quot;-//WAPFORUM//DTD WML 1.2//EN&quot;<br>
+              &quot;http://www.wapforum.org/DTD/wml12.dtd&quot;&gt;</code></p>
+            <p><code>&lt;wml&gt;</code></p>
+            <p><code>&lt;card id=&quot;card0&quot; title=&quot;Animal QUIZ&quot; 
+              ontimer=&quot;#card1&quot; newcontext=&quot;true&quot;&gt;<br>
+              &nbsp;&lt;timer name=&quot;t&quot; value=&quot;20&quot;/&gt;<br>
+              &nbsp;&lt;p align=&quot;center&quot;&gt;<br>
+              &nbsp;&nbsp;&lt;br/&gt;<br>
+              &nbsp;&nbsp;&lt;img jwcid=&quot;@wml:Image&quot; image=&quot;ognl:assets.logo&quot; 
+              alt=&quot;WMLZoo&quot;/&gt;<br>
+              &nbsp;&nbsp;&lt;br/&gt;<br>
+              &nbsp;&nbsp;&lt;strong&gt;Animal QUIZ&lt;/strong&gt;<br>
+              &nbsp;&nbsp;&lt;br/&gt;<br>
+              &nbsp;&lt;/p&gt;<br>
+              &lt;/card&gt;<br>
+              </code></p>
+            <p> <code>&lt;card id=&quot;card1&quot; title=&quot;Animal QUIZ&quot; 
+              newcontext=&quot;true&quot;&gt;<br>
+              &lt;p&gt;Welcome!<br>
+              &lt;br/&gt;<br>
+              &lt;/p&gt;</code></p>
+            <p><code>&lt;/card&gt; <br>
+              <br>
+              &lt;/wml&gt; </code></p>
+            <p>Specification </p>
+            <p> <code>&lt;page-specification class=&quot;org.apache.tapestry.wap.quiz.Home&quot;&gt;<br>
+              &nbsp;&lt;context-asset name=&quot;logo&quot; path=&quot;images/logo.wbmp&quot;/&gt;<br>
+              &lt;/page-specification&gt;<br>
+              </code> </p>
+            <p>&nbsp; </p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr> 
+    <td colspan="3"> 
+      <hr>
+    </td>
+  </tr>
+  <tr> 
+    <td align="left"><a href="wml.Go.html"><img alt="Go" src="common-images/prev.png"></a></td>
+    <td align="middle"><a href="index.html"><img alt="Component Index" src="common-images/home.png" ></a></td>
+    <td align="right"><a href="wml.Input.html"><img alt="Input" src="common-images/next.png"></a></td>
+  </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title>wml:Timer</title>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr> 
+    <td align="left"><a href="wml.Setvar.html"><img alt="Setvar" src="common-images/prev.png"></a></td>
+    <td align="right"><a href="index.html"><img alt="Component Index" src="common-images/home.png" ></a></td>
+  </tr>
+  <tr/> 
+  <tr> 
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr> 
+    <td colspan="3"> 
+      <table border="0" cellpadding="4" cellspacing="4" width="100%">
+        <tr valign="top"> 
+          <td> 
+            <table>
+              <tr> 
+                <td><font size="+2"><b>wml:Timer</b></font></td>
+              </tr>
+              <tr> 
+                <td> <A href="../api/org/apache/tapestry/wml/Timer.html">org.apache.tapestry.wml.Timer</a> 
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td> 
+            <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
+              <tr> 
+                <td>Non Visual Component</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr valign="center"> 
+          <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr> 
+          <td colspan="2"> <b>Description</b> <br>
+            The wml:Timer element declares a card timer, which provides a method 
+            for invoking a task automatically after some period of user inactivity. 
+            Any task or user action that activates the card starts the timer, 
+            and executing any task element stops it. You can only associate one 
+            task for each timer, and you can only define one timer for each card. 
+          </td>
+        </tr>
+        <tr> 
+          <td colspan="2"> <b>See Also</b> <br></td>
+        </tr>
+        <tr> 
+          <td colspan="2"> <b>Parameters</b> <br>
+            <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+              <tr> 
+                <th>Name</th>
+                <th>Type</th>
+                <th>Direction</th>
+                <th>Required</th>
+                <th>Default</th>
+                <th>Description</th>
+              </tr>
+              <tr> 
+                <td>name</td>
+                <td>String</td>
+                <td>in</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td> The name attribute specifies the name of the variable to 
+                  be set with the value of the timer. The name variable's value 
+                  is used to set the timeout period upon timer initialisation. 
+                  The variable named by the name attribute will be set with the 
+                  current timer value when the card is exited or when the timer 
+                  expires. For example, if the timer expires, the name variable 
+                  is set to a value of "0". </td>
+              </tr>
+              <tr> 
+                <td>value</td>
+                <td>String</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+                <td> The value attribute indicates the default value of the variable 
+                  named in the name attribute. When the timer is initialised and 
+                  the variable named in the name attribute is not set, the name 
+                  variable is assigned the value specified in the value attribute. 
+                  If the name variable already contains a value, the value attribute 
+                  is ignored. If the name attribute is not specified, the timeout 
+                  is always initialised to the value specified in the value attribute. 
+                </td>
+              </tr>
+            </table>
+            <p> Body: <strong>removed</strong><br>
+              Informal parameters: <strong>allowed</strong><br>
+              Reserved parameters: none </p>
+          </td>
+        </tr>
+        <tr> 
+          <td colspan="2"> <b>Examples</b> 
+            <p> Please see the documentation for the <a href="wml.Image.html">wml:Image</a> 
+              component.</p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr> 
+    <td colspan="2">
+      <hr>
+    </td>
+  </tr>
+  <tr> 
+    <td align="left"><a href="wml.Setvar.html"><img alt="Setvar" src="common-images/prev.png"></a></td>
+    <td align="right"><a href="index.html"><img alt="Component Index" src="common-images/home.png" ></a></td>
+  </tr>
+</table>
+</body>
+</html>

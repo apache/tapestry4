@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title>wml:PropertySelection</title>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr> 
+    <td align="left"><a href="wml.Postfield.html"><img alt="Postfield" src="common-images/prev.png"></a></td>
+    <td align="middle"><a href="index.html"><img alt="Component Index" src="common-images/home.png" ></a></td>
+    <td align="right"><a href="wml.Select.html"><img alt="Select" src="common-images/next.png"></a></td>
+  <tr> 
+  <tr> 
+    <td colspan="3">
+      <hr>
+    </td>
+  </tr>
+  <tr> 
+    <td colspan="3"> 
+      <table border="0" cellpadding="4" cellspacing="4" width="100%">
+        <tr valign="top"> 
+          <td> 
+            <table>
+              <tr> 
+                <td><font size="+2"><b>wml:PropertySelection</b></font></td>
+              </tr>
+              <tr> 
+                <td> <A href="../api/org/apache/tapestry/wml/PropertySelection.html">org.apache.tapestry.wml.PropertySelection</a> 
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td> 
+            <table align="right" valign="middle" cellpadding="8">
+              <tr> 
+                <td><IMG alt="Image Component" src="images/wml.propertyselection.png" ></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr valign="center"> 
+          <td colspan="2" height="23">&nbsp;</td>
+        </tr>
+        <tr> 
+          <td colspan="2"> <b>Description</b> <br>
+            Creates an WML select to choose a single property from a list of options. 
+          </td>
+        </tr>
+        <tr> 
+          <td colspan="2"> <b>See Also</b> <br>
+            <A href="wml.Go.html">wml:Go</a>, <A href="wml.SelectionField.html">wml:SelectionField</a> 
+          </td>
+        </tr>
+        <tr> 
+          <td colspan="2"> <b>Parameters</b> <br>
+            <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+              <tr> 
+                <th>Name</th>
+                <th>Type</th>
+                <th>Direction</th>
+                <th>Required</th>
+                <th>Default</th>
+                <th>Description</th>
+              </tr>
+              <tr> 
+                <td>name</td>
+                <td>String</td>
+                <td>in</td>
+                <td>yes</td>
+                <td>&nbsp;</td>
+                <td> The property to set. During rendering, this property is read, 
+                  and sets the default value of the selection (if it is null, 
+                  no element is selected). When the &lt;go&gt; is submitted, this 
+                  property is updated, with the help of SelectionField component, 
+                  based on the new selection. </td>
+              </tr>
+              <tr> 
+                <td>model</td>
+                <td> <A href="../api/org/apache/tapestry/form/IPropertySelectionModel.html"><tt>IPropertySelectionModel</tt></a> 
+                </td>
+                <td>in</td>
+                <td>no</td>
+                <td>&nbsp;</td>
+                <td> The model provides a list of possible labels, and matches 
+                  those labels against possible values that can be assigned back 
+                  to the property. </td>
+              </tr>
+            </table>
+            <p> Body: <strong>removed</strong><br>
+              Informal parameters: <strong>allowed</strong><br>
+              Reserved parameters: none </p>
+          </td>
+        </tr>
+        <tr> 
+          <td colspan="2"> <p><b>Example</b> </p>
+            <p>Template</p>
+            <pre>    &lt;card id=&quot;card1&quot; title=&quot;Animal QUIZ&quot; newcontext=&quot;true&quot;&gt;<br>        &lt;p&gt;Welcome!<br>            &lt;br/&gt;<br>            Your name:<br>            &lt;input jwcid=&quot;userInput&quot; name=&quot;username&quot; title=&quot;Your name&quot; value=&quot;&quot;/&gt;<br>        &lt;/p&gt;<br>        &lt;p&gt;<br>            Difficulty:<br>            &lt;b jwcid=&quot;selectLevel&quot;/&gt;<br>        &lt;/p&gt;<br>        &lt;p&gt;<br>            &lt;do type=&quot;help&quot; label=&quot;Instructions&quot;&gt;<br>                &lt;go href=&quot;#help&quot;/&gt;<br>            &lt;/do&gt;<br>            &lt;do type=&quot;options&quot; label=&quot;Zoo home&quot;&gt;<br>                &lt;go jwcid=&quot;@ServiceLink&quot; service=&quot;ognl:@org.apache.tapestry.Tapestry@HOME_SERVICE&quot; renderer=&quot;ognl:@org.apache.tapestry.wml.GoLinkRenderer@SHARED_INSTANCE&quot; href=&quot;&quot;/&gt;<br>            &lt;/do&gt;<br>        &lt;/p&gt;<br>        &lt;p&gt;<br>           &lt;anchor title=&quot;Start&quot;&gt;Start<br>                &lt;go jwcid=&quot;go&quot;&gt;<br>                    &lt;postfield jwcid=&quot;username&quot; name=&quot;username&quot; value=&quot;username&quot;/&gt;<br>                    &lt;postfield jwcid=&quot;level&quot; name=&quot;level&quot; value=&quot;level&quot;/&gt;<br>                &lt;/go&gt;<br>            &lt;/anchor&gt;<br>            &lt;br/&gt;<br>            &lt;anchor title=&quot;Instructions&quot;&gt;Instructions<br>                &lt;go href=&quot;#help&quot;/&gt;<br>            &lt;/anchor&gt;<br>        &lt;/p&gt;<br>    &lt;/card&gt;<br>
+             </pre>
+            <p>Specification</p>
+			<pre>       &lt;page-specification class=&quot;org.apache.tapestry.wap.quiz.Home&quot;&gt;
+            &lt;component id=&quot;username&quot; type=&quot;wml:Postfield&quot;&gt;
+              &lt;binding name=&quot;value&quot; expression=&quot;username&quot;/&gt;
+              &lt;binding name=&quot;name&quot; expression=&quot;components.userInput.name&quot;/&gt;
+            &lt;/component&gt;
+            &lt;component id=&quot;level&quot; type=&quot;wml:SelectionField&quot;&gt;
+              &lt;binding name=&quot;value&quot; expression=&quot;level&quot;/&gt;
+              &lt;binding name=&quot;model&quot; expression=&quot;@org.apache.tapestry.wap.quiz.Home@LEVEL_MODEL&quot;/&gt;
+              &lt;binding name=&quot;name&quot; expression=&quot;components.selectLevel.name&quot;/&gt;
+            &lt;/component&gt;
+            &lt;component id=&quot;userInput&quot; type=&quot;wml:Input&quot;&gt;
+              &lt;static-binding name=&quot;name&quot;&gt;username&lt;/static-binding&gt;
+              &lt;binding name=&quot;value&quot; expression=&quot;username&quot;/&gt;
+              &lt;/component&gt;
+            &lt;component id=&quot;selectLevel&quot; type=&quot;wml:PropertySelection&quot;&gt;
+              &lt;static-binding name=&quot;name&quot;&gt;level&lt;/static-binding&gt;
+              &lt;binding name=&quot;model&quot; expression=&quot;@org.apache.tapestry.wap.quiz.Home@LEVEL_MODEL&quot;/&gt;
+              &lt;/component&gt;
+            &lt;component id=&quot;go&quot; type=&quot;wml:Go&quot;&gt;
+              &lt;binding name=&quot;stateful&quot; expression=&quot;false&quot;/&gt;
+              &lt;binding name=&quot;listener&quot; expression=&quot;listeners.start&quot;/&gt;
+              &lt;/component&gt;
+            &lt;property-specification name=&quot;username&quot; type=&quot;java.lang.String&quot; persistent=&quot;yes&quot;/&gt;
+            &lt;property-specification name=&quot;level&quot; type=&quot;java.lang.String&quot; persistent=&quot;yes&quot; initial-value='&quot;easy&quot;'/&gt;
+       &lt;/page-specification&gt;</pre>
+            <p>Java </p>
+            <pre>
+public abstract class Home extends Deck
+{
+
+	public static final IPropertySelectionModel LEVEL_MODEL = new StringPropertySelectionModel
+            (new String[] { Global.EASY_LEVEL, Global.MEDIUM_LEVEL, Global.HARD_LEVEL });
+	
+	public void start(IRequestCycle cycle)
+	{
+        .....
+        .....
+	}
+	
+	public abstract String getUsername();
+	
+	public abstract String getLevel();
+}</pre>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr> 
+    <td colspan="3">
+      <hr>
+    </td>
+  </tr>
+  <tr> 
+    <td align="left"><a href="wml.Postfield.html"><img alt="Postfield" src="common-images/prev.png"></a></td>
+    <td align="middle"><a href="index.html"><img alt="Component Index" src="common-images/home.png" ></a></td>
+    <td align="right"><a href="wml.Select.html"><img alt="Select" src="common-images/next.png"></a></td>
+  </tr>
+</table>
+</body>
+</html>

@@ -1,0 +1,172 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title>wml:Select</title>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr> 
+    <td align="left"><a href="wml.PropertySelection.html"><img alt="PropertySelection" src="common-images/prev.png"></a></td>
+    <td align="middle"><a href="index.html"><img alt="Component Index" src="common-images/home.png" ></a></td>
+    <td align="right"><a href="wml.SelectionField.html"><img alt="SelectionField" src="common-images/next.png"></a></td>
+  <tr> 
+  <tr> 
+    <td colspan="3">
+      <hr>
+    </td>
+  </tr>
+  <tr> 
+    <td colspan="3"> 
+      <table border="0" cellpadding="4" cellspacing="4" width="100%">
+        <tr valign="top"> 
+          <td> 
+            <table>
+              <tr> 
+                <td><font size="+2"><b>wml:Select</b></font></td>
+              </tr>
+              <tr> 
+                <td> <A href="../api/org/apache/tapestry/wml/Select.html">org.apache.tapestry.wml.Select</a> 
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td> 
+            <table align="right" valign="middle" cellpadding="8">
+              <tr> 
+                <td><IMG alt="Image Component" src="images/wml.select.png" ></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr valign="center"> 
+          <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr> 
+          <td colspan="2"> <b>Description</b> <br>
+            The wml:Select component lets users pick from a list of options. Each 
+            option is specified by an wml:Option component. Each Option element 
+            may have one line of formatted text (which may be wrapped or truncated 
+            by the user agent if too long). </td>
+        </tr>
+        <tr> 
+          <td colspan="2"> <b>See Also</b> <br>
+            <A href="wml.Go.html">wml:Go</a>, <A href="wml.Option.html">wml:Option</a> 
+          </td>
+        </tr>
+        <tr> 
+          <td colspan="2"> <b>Parameters</b> <br>
+            <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+              <tr> 
+                <th>Name</th>
+                <th>Type</th>
+                <th>Direction</th>
+                <th>Required</th>
+                <th>Default</th>
+                <th>Description</th>
+              </tr>
+              <tr> 
+                <td>multiple</td>
+                <td>boolean</td>
+                <td>in</td>
+                <td>no</td>
+                <td>&nbsp;</td>
+                <td> This attribute specifies a title for this element, which 
+                  may be used in the presentation of this object. This attribute 
+                  specifies a title for this element, which may be used in the 
+                  presentation of this object. </td>
+              </tr>
+              <tr> 
+                <td>name</td>
+                <td>String</td>
+                <td>in</td>
+                <td>no</td>
+                <td>&nbsp;</td>
+                <td> The name attribute indicates the name of the variable to 
+                  set with the result of the selection. The variable is set to 
+                  the string value of the chosen option element, which is specified 
+                  with the value attribute. The name variable's value is used 
+                  to pre-select options in the select list. </td>
+              </tr>
+              <tr> 
+                <td>value</td>
+                <td>String</td>
+                <td>in</td>
+                <td>no</td>
+                <td>&nbsp;</td>
+                <td> The value attribute indicates the default value of the variable 
+                  named in the name attribute. When the element is displayed, 
+                  and the variable named in the name attribute is not set, the 
+                  name variable may be assigned the value specified in the value 
+                  attribute, depending on the values defined in iname and ivalue. 
+                  If the name variable already contains a value, the value attribute 
+                  is ignored. Any application of the default value is done before 
+                  the list is pre-selected with the value of the name variable. 
+                  If this element allows the selection of multiple options, the 
+                  result of the user's choice is a list of all selected values, 
+                  separated by the semicolon character. The name variable is set 
+                  with this result. In addition, the value attribute is interpreted 
+                  as a semicolon-separated list of pre-selected options. </td>
+              </tr>
+            </table>
+            <p> Body: <strong>removed</strong><br>
+              Informal parameters: <strong>allowed</strong><br>
+              Reserved parameters: none </p>
+          </td>
+        </tr>
+        <tr> 
+          <td colspan="2"> <p><b>Example</b></p>
+            <p>This example show how to use a WML Select and Option components. 
+              Because of simplicity we recommend to use the <a href="wml.PropertySelection.html">wml:PropertySelection</a> 
+              component. </p>
+            <table valign="middle">
+              <tr> 
+                <td> <IMG alt="WML Image Example" src="images/wml.select-example.png" > 
+                </td>
+              </tr>
+            </table>
+            <br>
+<p>Template</p>
+            <p>
+			  &lt;card jwcid=&quot;@wml:Card&quot; id=&quot;incomecard&quot;&gt;<br>
+              &nbsp;&lt;p&gt;<br>
+              &nbsp;&nbsp;How much do you make?<br>
+              &nbsp;&nbsp;&lt;select jwcid=&quot;incomeSelect@wml:Select&quot; name=&quot;ognl:components.income.varName&quot; 
+              title=&quot;income&quot;&gt;<br>
+              &nbsp;&nbsp;&nbsp;&lt;option jwcid=&quot;@wml:Option&quot; value=&quot;$10-50K&quot;&gt; 
+              $$10-25K &lt;/option&gt;<br>
+              &nbsp;&nbsp;&nbsp;&lt;option jwcid=&quot;@wml:Option&quot; value=&quot;$25-50K&quot;&gt; 
+              $$25-50K &lt;/option&gt;<br>
+              &nbsp;&nbsp;&nbsp;&lt;option jwcid=&quot;@wml:Option&quot; value=&quot;$50-100K&quot;&gt; 
+              $$50-100K &lt;/option&gt;<br>
+              &nbsp;&nbsp;&nbsp;&lt;option jwcid=&quot;@wml:Option&quot; value=&quot;Over $100K&quot;&gt; 
+              Over $$100K &lt;/option&gt;<br>
+              &nbsp;&nbsp;&lt;/select&gt;<br>
+              &nbsp;&lt;/p&gt;<br>
+              &lt;/card&gt;<br>
+            </p>
+		    <p>Specification</p>
+            <p> &lt;page-specification class=&quot;org.apache.tapestry.junit.mock.wml.Select&quot;&gt; 
+              <br>
+              &nbsp;&lt;property-specification name=&quot;income&quot; type=&quot;java.lang.String&quot; 
+              persistent=&quot;yes&quot;/&gt;<br>
+			  &lt;/page-specification&gt;<br>
+            </p>
+            </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr> 
+    <td colspan="3">
+      <hr>
+    </td>
+  </tr>
+  <tr> 
+    <td align="left"><a href="wml.PropertySelection.html"><img alt="PropertySelection" src="common-images/prev.png"></a></td>
+    <td align="middle"><a href="index.html"><img alt="Component Index" src="common-images/home.png" ></a></td>
+    <td align="right"><a href="wml.SelectionField.html"><img alt="SelectionField" src="common-images/next.png"></a></td>
+  </tr>
+</table>
+</body>
+</html>
