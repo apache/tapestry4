@@ -9,6 +9,18 @@
 #  run-tutorial:  Starts up Jetty to serve up the Tapestry tutorial
 #
 
+# Preparing for a distribution:
+# 1) Get an export of the Tapestry module
+# 2) Store the files in a directory name Tapestry-x.x.x where x.x.x is the release number
+# 3) Change into the new directory and make dist
+#
+# Example:
+#
+#  cvs -z3 -d:ext:hship@cvs.tapestry.sourceforge.net:/cvsroot/tapestry export -r HEAD -d Tapestry-x.x.x Tapestry
+#  cd Tapestry-x.x.x
+#  make dist
+
+
 default:
 	$(error You must specify a make target (run-tutorial or dist))
 
@@ -61,10 +73,7 @@ javadoc:
        $(RECURSE) -C $$module javadoc || exit 2 ; \
 	done
 
-# Get the last piece of the current directory, which will be
-# something like Tapestry-x.y.z
-
-RELEASE_DIR := $(notdir $(shell $(CD) .. && $(PWD)))
+RELEASE_DIR := $(notdir $(shell $(PWD)))
 
 # The small release contains the precompiled JAR and javadoc, but
 # virtually nothing else.  We include gnu-regexp because its very
@@ -112,12 +121,12 @@ FULL_RELEASE = \
 	
 create-archives:
 	$(call NOTE, Creating full distribution archive ...)
-	@$(RM) -f ..\$(RELEASE_DIR)-*.gz 
-	@$(CD) ../.. ; $(GNUTAR) czf $(RELEASE_DIR)-full.tar.gz $(FULL_RELEASE)
+	@$(RM) -f ../$(RELEASE_DIR)-*.gz 
+	@$(CD) .. ; $(GNUTAR) czf $(RELEASE_DIR)-full.tar.gz $(FULL_RELEASE)
 	$(call NOTE, Creating small distribution archive ...)
-	@$(CD) ../.. ; $(GNUTAR) czf $(RELEASE_DIR)-small.tar.gz $(SMALL_RELEASE)
+	@$(CD) .. ; $(GNUTAR) czf $(RELEASE_DIR)-small.tar.gz $(SMALL_RELEASE)
 	$(call NOTE, Creating medium distribution archive ...)
-	@$(CD) ../.. ; $(GNUTAR) czf $(RELEASE_DIR)-medium.tar.gz $(MEDIUM_RELEASE)
+	@$(CD) .. ; $(GNUTAR) czf $(RELEASE_DIR)-medium.tar.gz $(MEDIUM_RELEASE)
 
 
 dist: clean install javadoc
@@ -144,7 +153,6 @@ run-tutorial: setup-jbe-util
 	$(call NOTE, Running the Tapestry Tutorial on port 8080 ...)
 	$(call EXEC_JAVA, $(TUTORIAL_CLASSPATH), \
 		-showversion \
-		-Dorg.xml.sax.parser=org.apache.xerces.parsers.SAXParser \
 		com.mortbay.Jetty.Server config/jetty-tutorial.xml)
 
 .PHONY: javadoc create-archives reinvoke run-tutorial
