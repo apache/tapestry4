@@ -24,13 +24,13 @@
 
 	<Call name="addWebApplication">
 		<Arg>/vlib/*</Arg>
-		<Arg>../../lib/Vlib.war</Arg>
+		<Arg>../Vlib</Arg>
 		<Arg>jetty-default-web.xml</Arg>
 	</Call>
 	
   <Call name="addContext">
-    <Arg>/private-assets/*</Arg>
-    <Set name="ResourceBase">.build/private-assets</Set>
+    <Arg>/private/*</Arg>
+    <Set name="ResourceBase">private</Set>
     <Set name="ServingResources">TRUE</Set>
   </Call>
 
