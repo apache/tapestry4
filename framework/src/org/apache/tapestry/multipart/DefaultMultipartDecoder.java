@@ -55,6 +55,7 @@
 
 package org.apache.tapestry.multipart;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -179,6 +180,15 @@ public class DefaultMultipartDecoder implements IMultipartDecoder
 
         request.setAttribute(PART_MAP_ATTRIBUTE_NAME, partMap);
 
+        // The encoding that will be used to decode the string parameters
+        // It should NOT be null at this point
+        String encoding = request.getCharacterEncoding();
+        if (encoding == null)
+        {
+            throw new ApplicationRuntimeException(
+                Tapestry.getMessage("DefaultMultipartDecoder.encoding-not-set"));
+        }
+        
         // FileUpload is not quite threadsafe, so we create a new instance
         // for each request.
 
@@ -205,16 +215,23 @@ public class DefaultMultipartDecoder implements IMultipartDecoder
 
             if (uploadItem.isFormField())
             {
-                String name = uploadItem.getFieldName();
-                ValuePart valuePart = (ValuePart) partMap.get(name);
-                if (valuePart != null)
-                {
-                    valuePart.add(uploadItem.getString());
+                try {
+                    String name = uploadItem.getFieldName();
+                    ValuePart valuePart = (ValuePart) partMap.get(name);
+                    if (valuePart != null)
+                    {
+                        valuePart.add(uploadItem.getString(encoding));
+                    }
+                    else
+                    {
+                        valuePart = new ValuePart(uploadItem.getString(encoding));
+                        partMap.put(name, valuePart);
+                    }
                 }
-                else
-                {
-                    valuePart = new ValuePart(uploadItem.getString());
-                    partMap.put(name, valuePart);
+                catch (UnsupportedEncodingException ex) {
+                    throw new ApplicationRuntimeException(
+                        Tapestry.format("DefaultMultipartDecoder.unsupported-encoding", encoding),
+                        ex);
                 }
             }
             else
