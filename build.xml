@@ -11,7 +11,7 @@ In the Readme.html
 In some of the documentation in the web directory.
 -->
 
-<property name="framework.version" value="1.0.6"/>
+<property name="framework.version" value="1.0.7"/>
 
 <property name="lib" value="lib"/>
 
@@ -98,8 +98,12 @@ description="Builds the Tapestry documentation.">
 	<ant dir="doc/src/DevelopersGuide" target="install"/>
 </target>
 
+<target name="junit" description="Run the JUnit test suite for Tapestry.">
+	<ant dir="junit" target="run" inheritAll="false"/>
+</target>
+
 <target name="dist" description="Builds the Tapestry distribution from scratch."
-  depends="clean-all,install,documentation,javadoc">
+  depends="clean-all,install,junit,documentation,javadoc">
   <!-- Dont want to make build-dist depend on all that so that we can
   test generating the .tar.gz easier. -->
   <antcall target="build-dist"/>

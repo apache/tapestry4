@@ -1,3 +1,21 @@
+* Oct 18 2001 hship
+
+Bump framework version up to 1.0.7.
+
+junit:
+- Make a successful run required to generate a build
+
+framework:
+- Improve the properties explorer, making it more robust
+  in terms of exceptions and the browser back button
+- Display request parameters earlier when emitting RequestContext
+  as HTML
+  
+tutorial:
+- Consolidate a bunch of one-off apps as pages in
+  the new Workbench app
+- Reorganize the Tutorial project to ease debugging
+
 * Oct 8 2001 hship
 
 Release 1.0.6

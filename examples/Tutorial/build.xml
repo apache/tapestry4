@@ -47,17 +47,19 @@
         <exclude name="**/package.html"/>
       </fileset>
     </copy>
-    <war warfile="${tutorial.war}" webxml="web.xml">
+    <war warfile="${tutorial.war}" webxml="WEB-INF/web.xml">
 
       <fileset dir=".">
         <include name="images/**"/>
         <include name="*.html"/>
+        <!-- These are left around by Paint Shop Pro -->
+        <exclude name="**/pspbrwse.jbf"/>
      </fileset>
 	  <classes dir="${classes}"/>         
     </war>
   </target>
 
-  <target name="run" description="Run the Tutorial application." depends="install">
+  <target name="run" description="Run the Tutorial application." depends="compile">
     <java classname="org.mortbay.jetty.Server" fork="true">
       <classpath>
         <path refid="project.class.path"/>

@@ -23,9 +23,12 @@
     <New class="org.mortbay.util.WriterLogSink"/>
   </Set>
   
+  <!-- By moiving web.xml into WEB-INF, the working directory ends up with the
+       approximate format of a WAR. -->
+       
   <Call name="addWebApplication">
     <Arg>/tutorial/*</Arg>
-    <Arg>../../lib/Tutorial.war</Arg>
+    <Arg>.</Arg>
     <Arg/>
   </Call>
 

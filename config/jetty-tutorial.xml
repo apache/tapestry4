@@ -27,14 +27,6 @@
     <Arg>/tutorial/*</Arg>
     <Arg>lib/Tutorial.war</Arg>
     <Arg/>
-    <Call name="setInitParameter">
-    	<Arg>com.primix.tapestry.asset.dir</Arg>
-    	<Arg>private</Arg>
-    </Call>
-    <Call name="setInitParameter">
-    	<Arg>com.primix.tapestry.asset.URL</Arg>
-    	<Arg>/private</Arg>
-    </Call>
   </Call>
   
    <Call name="addContext">

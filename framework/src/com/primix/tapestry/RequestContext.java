@@ -707,6 +707,39 @@ public class RequestContext
 		writer.begin("table");
 		writer.attribute("class", "request-context-object");
 		
+		// Parameters ...
+		
+		first = true;
+		e = request.getParameterNames();
+		while (e.hasMoreElements())
+		{
+			if (first)
+			{
+				section(writer, "Parameters");
+				header(writer, "Name", "Value(s)");
+				first = false;
+			}
+			
+			name = (String)e.nextElement();
+			values = request.getParameterValues(name);
+			
+			for (i = 0; i < values.length; i++)
+			{
+				writer.begin("tr");
+				writer.attribute("class", getRowClass());
+				writer.begin("td");
+				
+				if (i == 0)
+					writer.print(name);
+				
+				writer.end();
+				
+				writer.begin("td");
+				writer.print(values[i]);
+				writer.end("tr");
+			}
+		}
+		
 		section(writer, "Properties");
 		header(writer, "Name", "Value");
 		
@@ -755,38 +788,6 @@ public class RequestContext
 			pair(writer, name, value);
 		}
 		
-		// Parameters ...
-		
-		first = true;
-		e = request.getParameterNames();
-		while (e.hasMoreElements())
-		{
-			if (first)
-			{
-				section(writer, "Parameters");
-				header(writer, "Name", "Value(s)");
-				first = false;
-			}
-			
-			name = (String)e.nextElement();
-			values = request.getParameterValues(name);
-			
-			for (i = 0; i < values.length; i++)
-			{
-				writer.begin("tr");
-				writer.attribute("class", getRowClass());
-				writer.begin("td");
-				
-				if (i == 0)
-					writer.print(name);
-				
-				writer.end();
-				
-				writer.begin("td");
-				writer.print(values[i]);
-				writer.end("tr");
-			}
-		}
 		
 		// Attributes
 		

@@ -32,13 +32,13 @@ package com.primix.tapestry.inspector;
 import com.primix.tapestry.*;
 import com.primix.tapestry.event.*;
 import com.primix.tapestry.util.prop.*;
+import com.primix.tapestry.util.exception.*;
 import java.util.*;
 
 /**
  *  Component of the {@link Inspector} page used to display
- *  the persisent properties of the page, and the serialized view
- *  of the {@link IEngine}.
- *
+ *  the persisent properties of the page as well as the
+ *  properties explorer.
  *
  *  @version $Id$
  *  @author Howard Ship
@@ -68,27 +68,33 @@ public class ShowProperties
 		public String propertyName;
 	}
 
-	/**
-	 *  Sorts {@link IPropertyAccessor}s by name.
-	 *
-	 *  @since 1.0.6
-	 *
-	 */
-	
-	private static class AccessorSorter implements Comparator
+	public static class AccessorElement
+		implements IPublicBean, Comparable
 	{
-		public int compare(Object left, Object right)
+		public String propertyPath;
+		public String propertyName;
+		public String propertyType;
+		public boolean error;
+		
+		/**
+		 *  The names will be unique and we want to sort
+		 *  into ascending order by name.
+		 *
+		 */
+		
+		public int compareTo(Object other)
 		{
-			IPropertyAccessor aLeft = (IPropertyAccessor)left;
-			IPropertyAccessor aRight = (IPropertyAccessor)right;
+			AccessorElement otherElement = (AccessorElement)other;
 			
-			return aLeft.getName().compareTo(aRight.getName());
+			return propertyName.compareTo(otherElement.propertyName);
 		}
 	}
+	
 	private List properties;
 	private IPageChange change;
 	private IPage inspectedPage;
-	private IPropertyAccessor accessor;
+	private String errorPropertyName;
+	private ExceptionDescription[] propertyException;
 	
 	/**
 	 *  Registers this component as a {@link PageRenderListener}.
@@ -123,7 +129,8 @@ public class ShowProperties
 		properties = null;
 		change = null;
 		inspectedPage = null;
-		accessor = null;
+		errorPropertyName = null;
+		propertyException = null;
 	}
 
 	private void buildProperties()
@@ -193,7 +200,7 @@ public class ShowProperties
 		if (value == null)
 			return "<null>";
 
-		return value.getClass().getName();
+		return convertClassToName(value.getClass());
 	}
 
 	public List getExplorePath()
@@ -273,30 +280,67 @@ public class ShowProperties
 	{
 		Inspector inspector = (Inspector)page;
 		
-		inspector.setExplorePath(context[0]);
+		String fullPath = context[0];
+		String[] splitPath = PropertyHelper.splitPropertyPath(fullPath);
+		
+		StringBuffer buffer = new StringBuffer();
+		
+		Object focus = inspector.getInspectedComponent();
+		
+		for (int i = 0; i < splitPath.length; i++)
+		{
+			String name = splitPath[i];
+			
+			PropertyHelper helper = PropertyHelper.forInstance(focus);
+			
+			try
+			{
+				focus = helper.get(focus, name);
+			}
+			catch (Throwable ex)
+			{
+				errorPropertyName = name;
+				
+				propertyException = new ExceptionAnalyzer().analyze(ex);
+				
+				break;
+			}
+			
+			if (i > 0)
+				buffer.append(PropertyHelper.PATH_SEPERATOR);
+			
+			buffer.append(name);
+		}
+		
+		// Inform the page about the object we've explored.
+		
+		inspector.setExplorePath(buffer.toString());
 	}
 	
-	public void exploreProperty(String[] context, IRequestCycle cycle)
-	{
-		Inspector inspector = (Inspector)page;
 		
-		String propertyName = context[0];
-		
-		String explorePath = inspector.getExplorePath();
-		
-		if (explorePath == null)
-			explorePath = propertyName;
-		else
-			explorePath = explorePath + PropertyHelper.PATH_SEPERATOR + propertyName;
-		
-		inspector.setExplorePath(explorePath);	
-	}
-		
+	/**
+	 *  Returns a List of AccessorElement.
+	 *
+	 */
+	
 	public List getAccessors()
 	{
 		Object explored = getExploredObject();
 		if (explored == null)
 			return null;
+	
+		Inspector inspector = (Inspector)page;
+		String currentPath = inspector.getExplorePath();
+
+		StringBuffer buffer = new StringBuffer();
+		
+		if (currentPath != null)
+		{
+			buffer.append(currentPath);
+			buffer.append(PropertyHelper.PATH_SEPERATOR);
+		}
+		
+		int baseLength = buffer.length();
 		
 		List result = new ArrayList();
 		PropertyHelper helper = PropertyHelper.forInstance(explored);
@@ -309,27 +353,33 @@ public class ShowProperties
 			IPropertyAccessor ac = (IPropertyAccessor)i.next();
 			
 			if (ac.isReadable())
-				result.add(ac);
+			{
+				AccessorElement element = new AccessorElement();
+				element.propertyName = ac.getName();
+				
+				buffer.setLength(baseLength);
+				buffer.append(element.propertyName);
+				element.propertyPath = buffer.toString();
+				
+				element.propertyType = convertClassToName(ac.getType());
+				
+				element.error = element.propertyName.equals(errorPropertyName);
+				
+				result.add(element);
+			}
 		}
 		
-		Collections.sort(result, new AccessorSorter());
-		
+		Collections.sort(result);
 		return result;
 	}
-	
-	public IPropertyAccessor getAccessor()
-	{
-		return accessor;
-	}
-	
-	public void setAccessor(IPropertyAccessor value)
-	{
-		accessor = value;
-	}
 
-	public String getAccessorTypeName()
+	public ExceptionDescription[] getPropertyException()
 	{
-		return convertClassToName(accessor.getType());
+		return propertyException;
 	}
 	
+	public String getErrorPropertyName()
+	{
+		return errorPropertyName;
+	}
 }

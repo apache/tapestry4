@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id$ -->
-<!DOCTYPE application PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
-<application name="Locale Demonstration" engine-class="com.primix.tapestry.engine.SimpleEngine">
-  <page name="Home" specification-path="/tutorial/locale/Home.jwc"/>
-  <page name="Change" specification-path="/tutorial/locale/Change.jwc"/>
-  <component-alias type="Border" specification-path="/tutorial/locale/Border.jwc"/>
-</application>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN"
+	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd" [
+
+<!ENTITY here "/tutorial/workbench/components">
+	
+]>
+<specification
+  class="tutorial.workbench.components.Border"
+  allow-informal-parameters="no">
+
+  <component id="shell" type="Shell">
+    <static-binding name="title">Tapestry Workbench</static-binding>
+  </component>
+  
+  <component id="body" type="Body"/>
+  
+  <component id="eachPage" type="Foreach">
+    <static-binding name="element">td</static-binding>
+    <binding name="source" property-path="pageTabNames"/>
+    <binding name="value" property-path="pageName"/>
+  </component>
+  
+  <component id="pageLink" type="Direct">
+    <binding name="listener" property-path="listeners.selectPage"/>
+    <binding name="context" property-path="pageName"/>
+    <field-binding name="stateful" field-name="Boolean.FALSE"/>
+  </component>
+  
+  <component id="pageRollover" type="Rollover">
+    <binding name="image" property-path="pageImage"/>
+    <binding name="focus" property-path="pageFocusImage"/>
+  </component>
+  
+  <component id="insertWrapped" type="InsertWrapped"/>
+  
+  <component id="form" type="Form">
+    <binding name="listener" property-path="listeners.formListener"/>
+  </component>
+  
+  <component id="inputRequestDebug" type="Checkbox">
+    <binding name="selected" property-path="page.visit.requestDebug"/>
+    <static-binding name="onclick">
+    	javascript:this.form.submit();
+    </static-binding>
+  </component>
+  
+  <component id="ifRequestDebug" type="Conditional">
+  	<binding name="condition" property-path="page.visit.requestDebug"/>
+  </component>
+  
+  <component id="displayRequestDebug" type="Delegator">
+    <binding name="delegate" property-path="page.requestCycle.requestContext"/>
+  </component>
+  
+  <component id="showInspector" type="ShowInspector"/>
+
+  <private-asset name="Home-active" resource-path="&here;/Home.gif"/>
+  <private-asset name="Home-inactive" resource-path="&here;/Home-inactive.gif"/>
+  <private-asset name="Home-focus" resource-path="&here;/Home-hover.gif"/>
+  <private-asset name="Home-inactive-focus" resource-path="&here;/Home-inactive-hover.gif"/>
+  
+  <private-asset name="Palette-active" resource-path="&here;/Palette.gif"/>
+  <private-asset name="Palette-inactive" resource-path="&here;/Palette-inactive.gif"/>
+  <private-asset name="Palette-focus" resource-path="&here;/Palette-hover.gif"/>
+  <private-asset name="Palette-inactive-focus" resource-path="&here;/Palette-inactive-hover.gif"/>
+
+  <private-asset name="Localization-active" resource-path="&here;/Localization.gif"/>
+  <private-asset name="Localization-inactive" resource-path="&here;/Localization-inactive.gif"/>
+  <private-asset name="Localization-focus" resource-path="&here;/Localization-hover.gif"/>
+  <private-asset name="Localization-inactive-focus" resource-path="&here;/Localization-inactive-hover.gif"/>
+
+ </specification>

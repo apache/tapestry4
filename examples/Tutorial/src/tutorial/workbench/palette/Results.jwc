@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN"
+	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+	
+<specification class="tutorial.workbench.palette.Results">
+
+  <component id="border" type="Border"/>
+  
+  <component id="loop" type="Foreach">
+  	<static-binding name="element">li</static-binding>
+  	<binding name="source" property-path="selectedColors"/>
+  </component>
+  
+  <component id="insertColor" type="Insert">
+  	<binding name="value" property-path="components.loop.value"/>
+  </component>
+  
+  <component id="ifNone" type="Conditional">
+  	<binding name="condition" property-path="selectedColors"/>
+  	<field-binding name="invert" field-name="Boolean.TRUE"/>
+  </component>
+  
+  <component id="back" type="Page">
+  	<static-binding name="page">Palette</static-binding>
+  </component>
+  
+  <component id="backRollover" type="Rollover">
+    <binding name="image" property-path="assets.back"/>
+    <binding name="focus" property-path="assets.back-focus"/>
+  </component>
+  
+  <context-asset name="back" path="/images/workbench/Back.gif"/>
+  <context-asset name="back-focus" path="/images/workbench/Back-focus.gif"/>
+  
+</specification>
