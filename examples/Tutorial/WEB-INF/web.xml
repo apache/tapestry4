@@ -13,10 +13,6 @@
     <servlet-class>tutorial.simple.SimpleServlet</servlet-class>
   </servlet>
   <servlet>
-    <servlet-name>adder</servlet-name>
-    <servlet-class>tutorial.adder.AdderServlet</servlet-class>
-  </servlet>
-  <servlet>
     <servlet-name>border</servlet-name>
     <servlet-class>tutorial.border.BorderServlet</servlet-class>
   </servlet>
@@ -43,10 +39,6 @@
   <servlet-mapping>
     <servlet-name>simple</servlet-name>
     <url-pattern>/simple/*</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>adder</servlet-name>
-    <url-pattern>/adder/*</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>survey</servlet-name>

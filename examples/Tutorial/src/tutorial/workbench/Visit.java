@@ -54,6 +54,13 @@ public class Visit
 	
 	private boolean requestDebug;
 	
+	/**
+	 *  Used by the Fields demo page.
+	 *
+	 */
+	
+	private Integer intValue;
+	
 	public String getActiveTabName()
 	{
 		return activeTabName;
@@ -72,6 +79,16 @@ public class Visit
 	public boolean getRequestDebug()
 	{
 		return requestDebug;
+	}
+	
+	public void setIntValue(Integer value)
+	{
+		intValue = value;
+	}
+	
+	public Integer getIntValue()
+	{
+		return intValue;
 	}
 }
 

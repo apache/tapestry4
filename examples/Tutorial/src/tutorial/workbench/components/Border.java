@@ -53,6 +53,7 @@ public class Border
 	{
 			"Home",
 			"Localization",
+			"Fields",
 			"Palette"
 	};	
 	

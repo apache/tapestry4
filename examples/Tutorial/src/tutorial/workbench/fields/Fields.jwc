@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN"
+	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+	
+<specification class="tutorial.workbench.fields.Fields">
+
+  <bean name="delegate" class="tutorial.workbench.ValidationDelegate"/>
+
+  <component id="border" type="Border"/>
+  
+  <component id="showError" type="ShowError">
+     <binding name="message" property-path="beans.delegate.errorMessage"/>
+  </component>
+  
+  <component id="form" type="Form">
+    <binding name="listener" property-path="listeners.formSubmit"/>
+  </component>
+  
+  <component id="intLabel" type="FieldLabel">
+    <binding name="field" property-path="components.inputInt"/>
+    <binding name="delegate" property-path="beans.delegate"/>
+  </component>
+  
+  <component id="inputInt" type="NumericField">
+    <binding name="delegate" property-path="beans.delegate"/>
+    <binding name="value" property-path="visit.intValue"/>
+    <field-binding name="minimum" field-name="tutorial.workbench.fields.Fields.INT_MIN"/>
+    <field-binding name="maximum" field-name="tutorial.workbench.fields.Fields.INT_MAX"/>
+    <field-binding name="required" field-name="Boolean.TRUE"/>
+    <static-binding name="displayName">Integer Field</static-binding>
+  </component>
+  
+  <component id="continue" type="ImageSubmit">
+   	<binding name="image" property-path="assets.continue"/>
+  </component>
+ 
+  <context-asset name="continue" path="/images/workbench/Continue.gif"/>
+  
+  
+</specification>

@@ -71,4 +71,9 @@
   <private-asset name="Localization-focus" resource-path="&here;/Localization-hover.gif"/>
   <private-asset name="Localization-inactive-focus" resource-path="&here;/Localization-inactive-hover.gif"/>
 
+  <private-asset name="Fields-active" resource-path="&here;/Fields.gif"/>
+  <private-asset name="Fields-inactive" resource-path="&here;/Fields-inactive.gif"/>
+  <private-asset name="Fields-focus" resource-path="&here;/Fields-hover.gif"/>
+  <private-asset name="Fields-inactive-focus" resource-path="&here;/Fields-inactive-hover.gif"/>
+
  </specification>

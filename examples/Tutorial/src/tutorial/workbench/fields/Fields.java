@@ -1,12 +1,9 @@
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ * Copyright (c) 2001 by Howard Lewis Ship
  *
- * Primix Solutions
- * One Arsenal Marketplace
- * Watertown, MA 02472
- * http://www.primix.com
- * mailto:hship@primix.com
+ * Howard Lewis Ship
+ * mailto:hship@users.sf.net
  * 
  * This library is free software.
  * 
@@ -26,20 +23,33 @@
  *
  */
 
-package tutorial.adder;
+package tutorial.workbench.fields;
 
 import com.primix.tapestry.*;
+import tutorial.workbench.*;
 
 /**
- *  @version $Id$
- *  @author Howard Ship
  *
- */ 
-
-public class AdderServlet extends ApplicationServlet
+ *  @author Howard Lewis Ship
+ *  @version $Id$
+ *  @since 1.0.7
+ *
+ */
+	 
+public class Fields extends BasePage
 {
-	protected String getApplicationSpecificationPath()
+	public static final int INT_MIN = 5;
+	public static final int INT_MAX = 20;
+	
+	public void formSubmit(IRequestCycle cycle)
 	{
-		return "/tutorial/adder/Adder.application";
+		ValidationDelegate delegate = (ValidationDelegate)getBeans().getBean("delegate");
+		
+		// If no error message, advance to the Results page,
+		// otherwise, stay here and show the error message.
+		
+		if (delegate.getErrorMessage() == null)
+			cycle.setPage("fields.Results");
 	}
 }
+
