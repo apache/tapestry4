@@ -116,19 +116,11 @@
 </tr>
 </table>
 		
-<pre>
-&lt;body jwcid="<span class="jwcid">body</span>"&gt;
-  Your account &lt;span jwcid="insertAccountStatus"/&gt;.
+<pre>			
+&lt;body jwcid="@<span class="jwcid"><A href="Body.html">Body</A></span>" bgcolor="ognl:statusColor"&gt;
+  Your account &lt;span jwcid="@<a href="Insert.html">Insert</a>" value="ognl:accountStatus"/&gt;.
 &lt;/body&gt;
 
-
-&lt;component id="<span class="jwcid">body</span>" type="<A href="Body.html">Body</A>"&gt;
-   &lt;binding name="bgcolor" expression="statusColor"/&gt;
-&lt;/component&gt;
-
-&lt;component id="insertAccountStatus" type="<A href="Insert.html">Insert</A>"&gt;
-   &lt;binding name="value" expression="accountStatus"/&gt;
-&lt;/component&gt;
 
 
 public class AccountPage extends BasePage {

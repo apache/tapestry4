@@ -121,16 +121,11 @@
 
 <pre>&lt;?xml version="1.0" encoding="ISO-8859-1" ?&gt; 
 &lt;order-list&gt;
- &lt;span jwcid="foreachOrderItem</SPAN>"&gt;
+ &lt;span jwcid="@<a href="Foreach.html">Foreach</a>" source="ognl:orderItemList" value=&quot;ognl:orderItem&quot;&gt;
   &lt;span jwcid="<span class="jwcid">orderItem</span>" element="order-item"&gt; 
  &lt;/span&gt;
 &lt;/order-list&gt;
 
-
-&lt;component jwcid="foreachOrderItem" type="<A href="Foreach.html">Foreach</a>"&gt;
-    &lt;binding name="source" expression="orderItemList"/&gt;
-    &lt;binding name="value" expression="orderItem"/&gt;
-&lt;/component&gt;
 
 &lt;component id="<span class="jwcid">orderItem</span>" type="<A href="Any.html">Any</a>"&gt;
     &lt;binding name="id" expression="orderItem.id"/&gt;

@@ -104,8 +104,8 @@
   JavaScript field validation is not invoked when the form is submitted. 
   For example:
 <pre>
-  &lt;input jwcid="okSubmit" type="Submit" value="  OK  "/&gt;
-  &lt;input jwcid="cancelSubmit" type="Submit" value="Cancel" <b>onclick</b>="form.onsubmit = null;"/&gt;
+  &lt;input jwcid="@<a href="Submit.html">Submit</a>" listener="ognl:listeners.okSubmit" type="Submit" value="  OK  "/&gt;
+  &lt;input jwcid="@<a href="Submit.html">Submit</a>" listener="ognl:listeners.cancelSubmit" type="Submit" value="Cancel" <b>onclick</b>="form.onsubmit = null;"/&gt;
 </pre>
  </td>
 </tr>
@@ -184,7 +184,6 @@
     form element.
    </td>
   </tr>
-
 	<tr>
 	 <td>hidden</td>
 	 <td>boolean</td>
@@ -292,8 +291,9 @@
 </table>
 </form>
 
-<pre>
-&lt;form jwcid="form"&gt;
+            <pre>
+
+&lt;form jwcid="@<a href="Form.html">Form</a>" delegate="ognl:beans.delegate"&gt;
 &lt;table class="examples" cellpadding="2"&gt;
 &lt;tr&gt;
  &lt;td colspan="2"&gt;&lt;span class="title"&gt;Regal Auctions Bid Page&lt;/span&gt;&lt;/td&gt;
@@ -302,7 +302,7 @@
  &lt;td colspan="2"&gt;&lt;hr&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
- &lt;td colspan="2"&gt;&lt;span jwcid="showError"/&gt;&lt;/td&gt;
+ &lt;td colspan="2"&gt;&lt;span jwcid="@ShowError" delegate="ognl:beans.delegate"/&gt;&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
  &lt;td&gt;Lot Number&lt;/td&gt;&lt;td&gt;&lt;input jwcid="<span class="jwcid">lotNoField</span>" type="text"/&gt;&lt;/td&gt;
@@ -321,8 +321,8 @@
 &lt;/tr&gt;
 &lt;tr&gt;
  &lt;td colspan="2" align="right"&gt;
-  &lt;input jwcid="okSubmit" type="Submit" value="   OK   "/&gt;
-  &lt;input jwcid="cancelSubmit" type="Submit" value="Cancel" onclick="form.onsubmit = null;"/&gt;
+  &lt;input jwcid="@<a href="Submit.html">Submit</a>" listener="ognl:listeners.okSubmit"  type="Submit" value="   OK   "/&gt;
+  &lt;input jwcid="@<a href="Submit.html">Submit</a>" listener="ognl:listeners.cancelSubmit"onclick="form.onsubmit = null;"/&gt;
  &lt;/td&gt;
 &lt;/tr&gt;
 &lt;/table&gt;
@@ -359,14 +359,6 @@
     &lt;set-property name="required" expression="true"/&gt;
     &lt;set-property name="minimum" expression="11"/&gt;
 &lt;/bean&gt;
-
-&lt;component id="form" type="<A href="Form.html">Form</a>"&gt;
-    &lt;binding name="delegate" expression="beans.delegate"/&gt;
-&lt;/component&gt;
-
-&lt;component id="showError" type="ShowError"&gt;
-    &lt;binding name="delegate" expression="beans.delegate"/&gt;
-&lt;/component&gt;
 
 &lt;component id="<span class="jwcid">lotNoField</span>" type="<A href="ValidField.html">ValidField</a>"&gt;
     &lt;binding name="value" expression="lotBid.lotNo"/&gt;
@@ -408,13 +400,6 @@
     &lt;binding name="maximumLength" expression="30"/&gt;
 &lt;/component&gt;
 
-&lt;component id="okSubmit" type="<A href="Submit.html">Submit</a>"&gt;
-    &lt;binding name="listener" expression="listeners.okSubmit"/&gt;
-&lt;/component&gt;
-
-&lt;component id="cancelSubmit" type="<A href="Submit.html">Submit</a>"&gt;
-    &lt;binding name="listener" expression="listeners.cancelSubmit"/&gt;
-&lt;/component&gt;
 
 
 public class LotBidPage extends BasePage {

@@ -217,38 +217,14 @@
   &lt;tr&gt;
    &lt;td colspan="5"&gt;&lt;hr&gt;&lt;/td&gt;
   &lt;/tr&gt;
- &lt;span jwcid="foreachCustomer"&gt;
-  &lt;tr&gt;
-   &lt;td&gt;&lt;span jwcid="insertId"/&gt;&lt;/td&gt;
+  &lt;tr jwcid="@<a href="Foreach.html">Foreach</a>" source=&quot;ognl:customerList&quot; value=&quot;ognl:customer&quot; element=&quot;tr&quot;&gt;
+   &lt;td&gt;&lt;span jwcid="@<a href="Insert.html">Insert</a>" value="ognl:customer.id"/&gt;&lt;/td&gt;
    &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-   &lt;td&gt;&lt;span jwcid="<span class="jwcid">actionLinkCustomer</span>"&gt; &lt;span jwcid="insertFullName"/&gt; &lt;/span&gt;&lt;/td&gt;
+   &lt;td&gt;&lt;span jwcid="<span class="jwcid">@<a href="ActionLink.html">ActionLink</a></span>" listener=&quot;ognl:listeners.customerSelectAction&quot;&gt; &lt;span jwcid="@<a href="Insert.html">Insert</a>" value="ognl:customer.fullName"/&gt; &lt;/span&gt;&lt;/td&gt;
    &lt;td&gt;&amp;nbsp;&lt;/td&gt;
-   &lt;td&gt;&lt;span jwcid="insertMemberLevel"/&gt;&lt;/td&gt;
+   &lt;td&gt;&lt;span jwcid="@<a href="Insert.html">Insert</a>" value="ognl:customer.memberLevel"/&gt;&lt;/td&gt;
   &lt;/tr&gt;
- &lt;/span&gt;
 &lt;/table&gt;
-
-
-&lt;component id="foreachCustomer" type="<A href="Foreach.html">Foreach</a>"&gt;
-    &lt;binding name="source" expression="customerList"/&gt;
-    &lt;binding name="value" expression="customer"/&gt;
-&lt;/component&gt;
-
-&lt;component id="<span class="jwcid">actionLinkCustomer</span>" type="<A href="ActionLink.html">ActionLink</a>"&gt;
-    &lt;binding name="listener" expression="listeners.customerSelectAction"/&gt;
-&lt;/component&gt;
-
-&lt;component id="insertId" type="<A href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" expression="customer.id"/&gt;
-&lt;/component&gt;
-
-&lt;component id="insertFullName" type="<A href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" expression="customer.fullName"/&gt;
-&lt;/component&gt;
-
-&lt;component id="insertMemberLevel" type="<A href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" expression="customer.memberLevel"/&gt;
-&lt;/component&gt;
 
 
 public class SalesPage extends BasePage {
