@@ -25,59 +25,54 @@
 
 package net.sf.tapestry;
 
-import java.io.*;
-import javax.servlet.*;
-import javax.servlet.http.*;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.SocketException;
 
-import net.sf.tapestry.html.Body;
+import javax.servlet.http.HttpServletResponse;
+import org.apache.log4j.Category;
 
 /**
  *  A special output stream works with a {@link HttpServletResponse}, buffering
  *  data so as to defer opening the response's output stream.
- *
- *  <p>A <code>ResponseOutputStream</code> must be closed specially, using
- *  {@link #forceClose()}.  Otherwise, it ignores {@link #close()}, because
- *  of unwanted chaining of <code>close()</code> from outer writers and streams.
  *
  *  <p>The buffering is pretty simple because the code
  *  between {@link IMarkupWriter} and this shows lots of buffering
  *  after the <code>PrintWriter</code> and inside the <code>OutputStreamWriter</code> that
  *  can't be configured.
  *
- *  <p>Possibly, this needs to be rethunk.  Perhaps we need a <code>ResponseWriter</code>
- *  class instead that could trap the output characters before they get into the PrintWriter
- *  and its crew.  This would save on the number of conversions between characters and
- *  bytes.
- *
- *  <p>In fact, this is now even less useful, because the 
+ *  <p>This class performs some buffering, but it is not all that
+ *  useful because the 
  *  {@link Body} component (which will
  *  be used on virtually all Tapestry pages), buffers its wrapped contents
  *  (that is, evertyhing inside the &lt;body&gt; tag in the generated HTML).
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
+ * 
  **/
 
 public class ResponseOutputStream extends OutputStream
 {
+    private static final Category CAT =
+        Category.getInstance(ResponseOutputStream.class);
+
     /**
-    *  Default size for the buffer (2000 bytes).
-    *
-    **/
+     *  Default size for the buffer (2000 bytes).
+     *
+     **/
 
     public static final int DEFAULT_SIZE = 2000;
 
-    private int pos;
-    private int maxSize;
-    private byte[] buffer;
+    private int _pos;
+    private int _maxSize;
+    private byte[] _buffer;
 
-    private String contentType;
-    private HttpServletResponse response;
-    private OutputStream out;
+    private String _contentType;
+    private HttpServletResponse _response;
+    private OutputStream _out;
 
-    private byte tiny[];
-
-    private boolean discard = false;
+    private boolean _discard = false;
 
     /**
      *  Creates the stream with the default maximum buffer size.
@@ -96,14 +91,14 @@ public class ResponseOutputStream extends OutputStream
 
     public ResponseOutputStream(HttpServletResponse response, int maxSize)
     {
-        this.response = response;
-
-        this.maxSize = maxSize;
+        _response = response;
+        _maxSize = maxSize;
     }
 
     /**
      *  Does nothing.  This is because of chaining of <code>close()</code> from
      *  {@link IMarkupWriter#close()} ... see {@link #flush()}.
+     * 
      **/
 
     public void close() throws IOException
@@ -112,57 +107,43 @@ public class ResponseOutputStream extends OutputStream
     }
 
     /**
-    *  Flushes the underlying output stream, if is has been opened.  
-    *
-    *  <p>This method explicitly <em>does not</em> flush the internal buffer ...
-    *  that's because when an {@link IMarkupWriter} is closed (for instance, because
-    *  an exception is thrown), that <code>close()</code> spawns <code>flush()</code>es
-    *  and <code>close()</code>s throughout the output stream chain, eventually
-    *  reaching this method.
-    *
-    *  @see #forceFlush()
-    *  @see #forceClose()
-    **/
+     *  Flushes the underlying output stream, if is has been opened.  
+     *
+     *  <p>This method explicitly <em>does not</em> flush the internal buffer ...
+     *  that's because when an {@link IMarkupWriter} is closed (for instance, because
+     *  an exception is thrown), that <code>close()</code> spawns <code>flush()</code>es
+     *  and <code>close()</code>s throughout the output stream chain, eventually
+     *  reaching this method.
+     *
+     *  @see #forceFlush()
+     *
+     **/
 
     public void flush() throws IOException
     {
-        if (out != null)
-            out.flush();
+        try
+        {
+            if (_out != null)
+                _out.flush();
+        }
+        catch (SocketException ex)
+        {
+            CAT.debug("Socket exception.");
+        }
     }
 
     /**
-    *  Flushes the internal buffer to the underlying output stream, then closes
-    *  the underlying output stream.  If the output stream has not yet been opened
-    *  (meaning the entire response page is in the internal buffer), then
-    *  <code>setContentLength()</code> is invoked on the <code>HttpServletResponse</code>
-    * ... this  allows the web server and client to use Keep-Alive connections.
-    *
-    * <p>In rare instances (such as sending a HTTP redirect), 
-    * the <code>ReponseOutputStream</code> is closed
-    * when no data has been written to it.  In that case, we never 
-    * invoke <code>HttpServletResponse.getOutputStream()</code>.
-    *
-    **/
+     *  At one time, this method erroneously invoked <code>close()</code>
+     *  on the HttpResponse output stream; that has been corrected.
+     *  This method simply invokes {@link #forceFlush()}.
+     * 
+     *  @depecated use {@link #forceFlush()} instead
+     * 
+     **/
 
     public void forceClose() throws IOException
     {
-        // Invoke open() now to write the current buffer to the output stream.
-
-        if (out == null)
-        {
-            // If we never got any output to send, fold with a wimper.
-
-            if (pos == 0)
-                return;
-
-            response.setContentLength(pos);
-
-            open();
-        }
-
-        // And close it.
-
-        out.close();
+        forceFlush();
     }
 
     /**
@@ -173,20 +154,27 @@ public class ResponseOutputStream extends OutputStream
 
     public void forceFlush() throws IOException
     {
-        if (out == null)
+        if (_out == null)
             open();
 
-        out.flush();
+        try
+        {
+            _out.flush();
+        }
+        catch (SocketException ex)
+        {
+            CAT.debug("Socket exception.");
+        }
     }
 
     public String getContentType()
     {
-        return contentType;
+        return _contentType;
     }
 
     public boolean getDiscard()
     {
-        return discard;
+        return _discard;
     }
 
     /**
@@ -201,18 +189,19 @@ public class ResponseOutputStream extends OutputStream
 
     private void open() throws IOException
     {
-        if (contentType == null)
-            throw new IOException(Tapestry.getString("ResponseOutputStream.content-type-not-set"));
+        if (_contentType == null)
+            throw new IOException(
+                Tapestry.getString(
+                    "ResponseOutputStream.content-type-not-set"));
 
-        response.setContentType(contentType);
+        _response.setContentType(_contentType);
 
-        out = response.getOutputStream();
+        _out = _response.getOutputStream();
 
-        if (buffer != null && pos > 0)
-            out.write(buffer, 0, pos);
+        innerWrite(_buffer, 0, _pos);
 
-        pos = 0;
-        buffer = null;
+        _pos = 0;
+        _buffer = null;
     }
 
     /**
@@ -225,13 +214,12 @@ public class ResponseOutputStream extends OutputStream
 
     public void reset() throws IOException
     {
-        pos = 0;
-
-        discard = false;
+        _pos = 0;
+        _discard = false;
     }
 
     /**
-     *  Changes the maximum buffer size.  If the new buffer size is smaller \
+     *  Changes the maximum buffer size.  If the new buffer size is smaller
      *  than the number of
      *  bytes already in the buffer, the buffer is immediately flushed.
      *
@@ -239,18 +227,18 @@ public class ResponseOutputStream extends OutputStream
 
     public void setBufferSize(int value) throws IOException
     {
-        if (value < pos)
+        if (value < _pos)
         {
             open();
             return;
         }
 
-        maxSize = value;
+        _maxSize = value;
     }
 
     public void setContentType(String value)
     {
-        contentType = value;
+        _contentType = value;
     }
 
     /**
@@ -260,7 +248,22 @@ public class ResponseOutputStream extends OutputStream
 
     public void setDiscard(boolean value)
     {
-        discard = value;
+        _discard = value;
+    }
+    
+    private void innerWrite(byte[] b, int off, int len) throws IOException
+    {
+      if (b == null || len == 0 || _discard)
+        return;
+        
+      try
+      {
+        _out.write(b, off, len);
+      }   
+      catch (SocketException ex)
+      {
+        CAT.debug("Socket exception.");
+      }
     }
 
     public void write(byte b[], int off, int len) throws IOException
@@ -269,48 +272,45 @@ public class ResponseOutputStream extends OutputStream
         int newSize;
         byte[] newBuffer;
 
-        if (len == 0 || discard)
+        if (len == 0 || _discard)
             return;
 
-        if (out != null)
+        if (_out != null)
         {
-            out.write(b, off, len);
+            _out.write(b, off, len);
             return;
         }
 
         // If too large for the maximum size buffer, then open the output stream
         // write out and free the buffer, and write out the new stuff.
 
-        if (pos + len >= maxSize)
+        if (_pos + len >= _maxSize)
         {
             open();
-            out.write(b, off, len);
+            innerWrite(b, off, len);
             return;
         }
 
         // Allocate the buffer when it is initially needed.
 
-        if (buffer == null)
-            buffer = new byte[maxSize];
+        if (_buffer == null)
+            _buffer = new byte[_maxSize];
 
         // Copy the new bytes into the buffer and advance the position.
 
-        System.arraycopy(b, off, buffer, pos, len);
-        pos += len;
+        System.arraycopy(b, off, _buffer, _pos, len);
+        _pos += len;
     }
 
     public void write(int b) throws IOException
     {
-        if (discard)
+        if (_discard)
             return;
 
         // This method is rarely called so this little inefficiency is better than
         // maintaining that ugly buffer expansion code in two places.
 
-        if (tiny == null)
-            tiny = new byte[1];
-
-        tiny[0] = (byte) b;
+        byte[] tiny = new byte[] {(byte) b };
 
         write(tiny, 0, 1);
     }

@@ -140,26 +140,26 @@ public abstract class AbstractEngine
 	
 	private static final long serialVersionUID = 6884834397673817117L;
 	
-    private transient String contextPath;
-    private transient String servletPath;
-    private transient String clientAddress;
-    private transient String sessionId;
-    private transient boolean stateful;
-    private transient ListenerMap listeners;
+    private transient String _contextPath;
+    private transient String _servletPath;
+    private transient String _clientAddress;
+    private transient String _sessionId;
+    private transient boolean _stateful;
+    private transient ListenerMap _listeners;
 
     /**
      *  An object used to contain application-specific server side state.
      *
      **/
 
-    private Object visit;
+    private Object _visit;
 
     /**
      *  The curent locale for the engine, which may be changed at any time.
      *
      **/
 
-    private Locale locale;
+    private Locale _locale;
 
     /**
      *  Set by {@link #setLocale(Locale)} when the locale is changed;
@@ -167,7 +167,7 @@ public abstract class AbstractEngine
      *
      **/
 
-    private boolean localeChanged;
+    private boolean _localeChanged;
 
     /**
      *  The specification for the application, which
@@ -180,7 +180,7 @@ public abstract class AbstractEngine
      *
      **/
 
-    protected transient ApplicationSpecification specification;
+    protected transient ApplicationSpecification _specification;
 
     /**
      *  The source for template data. The template source is stored
@@ -190,7 +190,7 @@ public abstract class AbstractEngine
      *
      **/
 
-    protected transient ITemplateSource templateSource;
+    protected transient ITemplateSource _templateSource;
 
     /**
      *  The source for component specifications, stored in the
@@ -198,7 +198,7 @@ public abstract class AbstractEngine
      *
      **/
 
-    protected transient ISpecificationSource specificationSource;
+    protected transient ISpecificationSource _specificationSource;
 
     /**
      *  The source for parsed scripts, again, stored in the
@@ -208,7 +208,7 @@ public abstract class AbstractEngine
      *
      **/
 
-    private transient IScriptSource scriptSource;
+    private transient IScriptSource _scriptSource;
 
     /** 
      *  The name of the context attribute for the {@link IScriptSource} instance.
@@ -232,11 +232,7 @@ public abstract class AbstractEngine
     protected static final String STRINGS_SOURCE_NAME =
         "net.sf.tapestry.StringsSource";
 
-    private transient IComponentStringsSource stringsSource;
-
-    private transient Map services;
-
-    private static final int MAP_SIZE = 7;
+    private transient IComponentStringsSource _stringsSource;
 
     /**
      *  The name of the application specification property used to specify the
@@ -280,7 +276,7 @@ public abstract class AbstractEngine
      *
      **/
 
-    protected transient IPageSource pageSource;
+    private transient IPageSource _pageSource;
 
     /**
      *  If true (set from JVM system parameter
@@ -291,7 +287,7 @@ public abstract class AbstractEngine
      *
      **/
 
-    private static boolean resetServiceEnabled =
+    private static final boolean _resetServiceEnabled =
         Boolean.getBoolean("net.sf.tapestry.enable-reset-service");
 
     /**
@@ -302,10 +298,10 @@ public abstract class AbstractEngine
      *
      **/
 
-    private static boolean disableCaching =
+    private static final boolean _disableCaching =
         Boolean.getBoolean("net.sf.tapestry.disable-caching");
 
-    private transient IResourceResolver resolver;
+    private transient IResourceResolver _resolver;
 
     /**
      *  Map from service name to service instance.
@@ -314,7 +310,7 @@ public abstract class AbstractEngine
      * 
      **/
 
-    private transient Map serviceMap;
+    private transient Map _serviceMap;
 
     protected static final String SERVICE_MAP_NAME = "net.sf.tapestry.ServiceMap";
 
@@ -383,9 +379,9 @@ public abstract class AbstractEngine
 
         System.err.println(
             "\n\n      Session id: "
-                + sessionId
+                + _sessionId
                 + "\n  Client address: "
-                + clientAddress
+                + _clientAddress
                 + "\n\nExceptions:\n");
 
         new ExceptionAnalyzer().reportException(ex, System.err);
@@ -419,10 +415,10 @@ public abstract class AbstractEngine
         // the engine has a change to obtain the specification
         // from the servlet.
 
-        if (specification == null)
+        if (_specification == null)
             buffer.append(Tapestry.getString("AbstractEngine.unknown-specification"));
         else
-            buffer.append(specification.getName());
+            buffer.append(_specification.getName());
     }
 
     /**
@@ -434,7 +430,7 @@ public abstract class AbstractEngine
 
     public Locale getLocale()
     {
-        return locale;
+        return _locale;
     }
 
     /**
@@ -458,7 +454,7 @@ public abstract class AbstractEngine
 
     public IPageSource getPageSource()
     {
-        return pageSource;
+        return _pageSource;
     }
 
     /**
@@ -468,7 +464,7 @@ public abstract class AbstractEngine
 
     public IEngineService getService(String name)
     {
-        IEngineService result = (IEngineService) serviceMap.get(name);
+        IEngineService result = (IEngineService) _serviceMap.get(name);
 
         if (result == null)
             throw new ApplicationRuntimeException(
@@ -479,7 +475,7 @@ public abstract class AbstractEngine
 
     public String getServletPath()
     {
-        return servletPath;
+        return _servletPath;
     }
 
     /**
@@ -492,7 +488,7 @@ public abstract class AbstractEngine
 
     public String getContextPath()
     {
-        return contextPath;
+        return _contextPath;
     }
 
     /**
@@ -508,17 +504,17 @@ public abstract class AbstractEngine
 
     public ApplicationSpecification getSpecification()
     {
-        return specification;
+        return _specification;
     }
 
     public ISpecificationSource getSpecificationSource()
     {
-        return specificationSource;
+        return _specificationSource;
     }
 
     public ITemplateSource getTemplateSource()
     {
-        return templateSource;
+        return _templateSource;
     }
 
     /**
@@ -531,12 +527,12 @@ public abstract class AbstractEngine
     public void readExternal(ObjectInput in)
         throws IOException, ClassNotFoundException
     {
-        stateful = true;
+        _stateful = true;
 
         String localeName = in.readUTF();
-        locale = Tapestry.getLocale(localeName);
+        _locale = Tapestry.getLocale(localeName);
 
-        visit = in.readObject();
+        _visit = in.readObject();
     }
 
     /**
@@ -551,8 +547,8 @@ public abstract class AbstractEngine
 
     public void writeExternal(ObjectOutput out) throws IOException
     {
-        out.writeUTF(locale.toString());
-        out.writeObject(visit);
+        out.writeUTF(_locale.toString());
+        out.writeObject(_visit);
     }
 
     /**
@@ -591,14 +587,14 @@ public abstract class AbstractEngine
         // do the work to propogate the locale change into
         // subsequent request cycles.
 
-        if (localeChanged)
+        if (_localeChanged)
         {
-            localeChanged = false;
+            _localeChanged = false;
 
             RequestContext context = cycle.getRequestContext();
             ApplicationServlet servlet = context.getServlet();
 
-            servlet.writeLocaleCookie(locale, this, context);
+            servlet.writeLocaleCookie(_locale, this, context);
         }
 
         // Commit all changes and ignore further changes.
@@ -668,9 +664,9 @@ public abstract class AbstractEngine
         // Make isStateful() return false, so that the servlet doesn't
         // try to store the engine back into the (now invalid) session.
 
-        stateful = false;
+        _stateful = false;
 
-        String url = context.getAbsoluteURL(servletPath);
+        String url = context.getAbsoluteURL(_servletPath);
 
         context.redirect(url);
     }
@@ -690,21 +686,21 @@ public abstract class AbstractEngine
         if (CAT.isInfoEnabled())
             CAT.info("Begin service " + context.getRequest().getRequestURI());
 
-        if (specification == null)
-            specification = context.getServlet().getApplicationSpecification();
+        if (_specification == null)
+            _specification = context.getServlet().getApplicationSpecification();
 
         // The servlet invokes setLocale() before invoking service().  We want
         // to ignore that setLocale() ... that is, not force a cookie to be
         // written.
 
-        localeChanged = false;
+        _localeChanged = false;
 
         // Build the resolver around the servlet, since that's guarenteed
         // to be in the application's class loader (which has the broadest
         // possible view).
 
-        if (resolver == null)
-            resolver = new ResourceResolver(context.getServlet());
+        if (_resolver == null)
+            _resolver = new ResourceResolver(context.getServlet());
 
         try
         {
@@ -795,11 +791,11 @@ public abstract class AbstractEngine
             // Closing the buffered output closes the underlying stream as well.
 
             if (output != null)
-                output.forceClose();
+                output.forceFlush();
 
             cleanupAfterRequest(cycle);
 
-            if (disableCaching)
+            if (_disableCaching)
             {
                 try
                 {
@@ -881,11 +877,11 @@ public abstract class AbstractEngine
 
     public void clearCachedData()
     {
-        pageSource.reset();
-        specificationSource.reset();
-        templateSource.reset();
-        scriptSource.reset();
-        stringsSource.reset();
+        _pageSource.reset();
+        _specificationSource.reset();
+        _templateSource.reset();
+        _scriptSource.reset();
+        _stringsSource.reset();
     }
 
     /**
@@ -901,10 +897,10 @@ public abstract class AbstractEngine
         // Because locale changes are expensive (it involves writing a cookie and all that),
         // we're careful not to really change unless there's a true change in value.
 
-        if (!value.equals(locale))
+        if (!value.equals(_locale))
         {
-            locale = value;
-            localeChanged = true;
+            _locale = value;
+            _localeChanged = true;
         }
     }
 
@@ -944,20 +940,20 @@ public abstract class AbstractEngine
         HttpSession session = context.getSession();
 
         if (session != null)
-            sessionId = context.getSession().getId();
+            _sessionId = context.getSession().getId();
         else
-            sessionId = null;
+            _sessionId = null;
 
-        clientAddress = request.getRemoteHost();
-        if (clientAddress == null)
-            clientAddress = request.getRemoteAddr();
+        _clientAddress = request.getRemoteHost();
+        if (_clientAddress == null)
+            _clientAddress = request.getRemoteAddr();
 
         // servletPath is null, so this means either we're doing the
         // first request in this session, or we're handling a subsequent
         // request in another JVM (i.e. another server in the cluster).
         // In any case, we have to do some late (re-)initialization.
 
-        if (servletPath == null)
+        if (_servletPath == null)
         {
             // Get the path *within* the servlet context
 
@@ -966,95 +962,95 @@ public abstract class AbstractEngine
             // Get the context path, which may be the empty string
             // (but won't be null).
 
-            contextPath = request.getContextPath();
+            _contextPath = request.getContextPath();
 
-            servletPath = contextPath + path;
+            _servletPath = _contextPath + path;
 
         }
 
-        String applicationName = specification.getName();
+        String applicationName = _specification.getName();
 
-        if (templateSource == null)
+        if (_templateSource == null)
         {
             String name = TEMPLATE_SOURCE_NAME + "." + applicationName;
 
-            templateSource = (ITemplateSource) servletContext.getAttribute(name);
+            _templateSource = (ITemplateSource) servletContext.getAttribute(name);
 
-            if (templateSource == null)
+            if (_templateSource == null)
             {
-                templateSource = createTemplateSource();
+                _templateSource = createTemplateSource();
 
-                servletContext.setAttribute(name, templateSource);
+                servletContext.setAttribute(name, _templateSource);
             }
         }
 
-        if (specificationSource == null)
+        if (_specificationSource == null)
         {
             String name = SPECIFICATION_SOURCE_NAME + "." + applicationName;
 
-            specificationSource = (ISpecificationSource) servletContext.getAttribute(name);
+            _specificationSource = (ISpecificationSource) servletContext.getAttribute(name);
 
-            if (specificationSource == null)
+            if (_specificationSource == null)
             {
-                specificationSource = createSpecificationSource();
+                _specificationSource = createSpecificationSource();
 
-                servletContext.setAttribute(name, specificationSource);
+                servletContext.setAttribute(name, _specificationSource);
             }
         }
 
-        if (pageSource == null)
+        if (_pageSource == null)
         {
             String name = PAGE_SOURCE_NAME + "." + applicationName;
 
-            pageSource = (IPageSource) servletContext.getAttribute(name);
+            _pageSource = (IPageSource) servletContext.getAttribute(name);
 
-            if (pageSource == null)
+            if (_pageSource == null)
             {
-                pageSource = createPageSource();
+                _pageSource = createPageSource();
 
-                servletContext.setAttribute(name, pageSource);
+                servletContext.setAttribute(name, _pageSource);
             }
         }
 
-        if (scriptSource == null)
+        if (_scriptSource == null)
         {
             String name = SCRIPT_SOURCE_NAME + "." + applicationName;
 
-            scriptSource = (IScriptSource) servletContext.getAttribute(name);
+            _scriptSource = (IScriptSource) servletContext.getAttribute(name);
 
-            if (scriptSource == null)
+            if (_scriptSource == null)
             {
-                scriptSource = createScriptSource();
+                _scriptSource = createScriptSource();
 
-                servletContext.setAttribute(name, scriptSource);
+                servletContext.setAttribute(name, _scriptSource);
             }
         }
 
-        if (serviceMap == null)
+        if (_serviceMap == null)
         {
             String name = SERVICE_MAP_NAME + "." + applicationName;
 
-            serviceMap = (Map) servletContext.getAttribute(name);
+            _serviceMap = (Map) servletContext.getAttribute(name);
 
-            if (serviceMap == null)
+            if (_serviceMap == null)
             {
-                serviceMap = createServiceMap();
+                _serviceMap = createServiceMap();
 
-                servletContext.setAttribute(name, serviceMap);
+                servletContext.setAttribute(name, _serviceMap);
             }
         }
 
-        if (stringsSource == null)
+        if (_stringsSource == null)
         {
             String name = STRINGS_SOURCE_NAME + "." + applicationName;
 
-            stringsSource = (IComponentStringsSource) servletContext.getAttribute(name);
+            _stringsSource = (IComponentStringsSource) servletContext.getAttribute(name);
 
-            if (stringsSource == null)
+            if (_stringsSource == null)
             {
-                stringsSource = createComponentStringsSource();
+                _stringsSource = createComponentStringsSource();
 
-                servletContext.setAttribute(name, stringsSource);
+                servletContext.setAttribute(name, _stringsSource);
             }
         }
     }
@@ -1116,7 +1112,7 @@ public abstract class AbstractEngine
 
     protected ISpecificationSource createSpecificationSource()
     {
-        return new DefaultSpecificationSource(getResourceResolver(), specification);
+        return new DefaultSpecificationSource(getResourceResolver(), _specification);
     }
 
     /**
@@ -1142,7 +1138,7 @@ public abstract class AbstractEngine
 
     public IResourceResolver getResourceResolver()
     {
-        return resolver;
+        return _resolver;
     }
 
     /**
@@ -1259,7 +1255,7 @@ public abstract class AbstractEngine
 
     public boolean isResetServiceEnabled()
     {
-        return resetServiceEnabled;
+        return _resetServiceEnabled;
     }
 
     /**
@@ -1277,7 +1273,7 @@ public abstract class AbstractEngine
 
     public Object getVisit()
     {
-        return visit;
+        return _visit;
     }
 
     /**
@@ -1289,26 +1285,26 @@ public abstract class AbstractEngine
 
     public Object getVisit(IRequestCycle cycle)
     {
-        if (visit == null && cycle != null)
+        if (_visit == null && cycle != null)
         {
             // Force the creation of the HttpSession
 
             cycle.getRequestContext().createSession();
 
-            visit = createVisit(cycle);
+            _visit = createVisit(cycle);
         }
 
-        return visit;
+        return _visit;
     }
 
     public void setVisit(Object value)
     {
-        visit = value;
+        _visit = value;
     }
 
     public boolean getHasVisit()
     {
-        return visit != null;
+        return _visit != null;
     }
 
     /**
@@ -1327,7 +1323,7 @@ public abstract class AbstractEngine
         Class visitClass;
         Object result = null;
 
-        visitClassName = specification.getProperty(VISIT_CLASS_PROPERTY_NAME);
+        visitClassName = _specification.getProperty(VISIT_CLASS_PROPERTY_NAME);
         if (visitClassName == null)
             throw new ApplicationRuntimeException(
                 Tapestry.getString(
@@ -1337,7 +1333,7 @@ public abstract class AbstractEngine
         if (CAT.isDebugEnabled())
             CAT.debug("Creating visit object as instance of " + visitClassName);
 
-        visitClass = resolver.findClass(visitClassName);
+        visitClass = _resolver.findClass(visitClassName);
 
         try
         {
@@ -1364,12 +1360,12 @@ public abstract class AbstractEngine
 
     public IScriptSource getScriptSource()
     {
-        return scriptSource;
+        return _scriptSource;
     }
 
     public boolean isStateful()
     {
-        return stateful;
+        return _stateful;
     }
 
     /**
@@ -1384,7 +1380,7 @@ public abstract class AbstractEngine
 
     protected void setStateful()
     {
-        stateful = true;
+        _stateful = true;
     }
 
     /**
@@ -1395,10 +1391,10 @@ public abstract class AbstractEngine
 
     public ListenerMap getListeners()
     {
-        if (listeners == null)
-            listeners = new ListenerMap(this);
+        if (_listeners == null)
+            _listeners = new ListenerMap(this);
 
-        return listeners;
+        return _listeners;
     }
 
     /**
@@ -1452,12 +1448,12 @@ public abstract class AbstractEngine
         HashMap result = new HashMap();
         IResourceResolver resolver = getResourceResolver();
 
-        Iterator i = specification.getServiceNames().iterator();
+        Iterator i = _specification.getServiceNames().iterator();
 
         while (i.hasNext())
         {
             String name = (String) i.next();
-            String className = specification.getServiceClassName(name);
+            String className = _specification.getServiceClassName(name);
 
             if (CAT.isDebugEnabled())
                 CAT.debug("Creating service " + name + " as instance of " + className);
@@ -1518,7 +1514,7 @@ public abstract class AbstractEngine
 
     public IComponentStringsSource getComponentStringsSource()
     {
-        return stringsSource;
+        return _stringsSource;
     }
 
 }
