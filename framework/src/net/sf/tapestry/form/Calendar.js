@@ -31,16 +31,26 @@ var giYear = gdCurDate.getFullYear();
 var giMonth = gdCurDate.getMonth()+1;
 var giDay = gdCurDate.getDate();
 
-var monthShortNames = new Array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
-var monthLongNames = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
-var dayNames = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday','Friday', 'Saturday');
+// Selected date
+var gdSelectedDate = null;
+
+// Constants
+
+var MONTH_SHORT_NAMES = new Array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
+var MONTH_LONG_NAMES = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+var DAY_NAMES = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday','Friday', 'Saturday');
 
 // Colors
-var gcGray = "#808080";
+var gcOtherMonth = "#808080";
 var gcToggle = "#ffff00";
+var gcTodayRollover = "blue";
 var gcBG = "#cccccc";
+var gcTableHeader = "white";
+var gcTableHeaderBG = "#808080";
+var gcTableCell = "black";
+var gcTableCellBG = "white";
 
-/**  
+/**
  * This function displays the popup Calendar control.
  * E.g.
  * <input type="text" name="dc" style="text-align:center" readonly>
@@ -66,6 +76,9 @@ function showPopCalendar(dateField, dateHidden, popCal)
   var d = new Date();
   if (gHiddenField.value != "") {
     d.setTime(gHiddenField.value);
+    gdSelectedDate = d;
+  } else {
+    gdSelectedDate = null;
   }
 
   fSetYearMon(d.getYear(), d.getMonth() + 1);
@@ -95,15 +108,16 @@ function hidePopCalendar()
 }
 
 /**
- * Set date display the Hide the popup calendar
+ * Set displayed date and hide the popup calendar
  **/
-function fSetDate(iYear, iMonth, iDay)
+function setDate(iYear, iMonth, iDay)
 {
   var d = new Date();
   d.setYear(iYear);
   d.setMonth(iMonth - 1);
   d.setDate(iDay);
 
+  gdSelectedDate = d;
   gDateField.value = formatDate(d);
   gHiddenField.value = d.getTime();
 
@@ -125,12 +139,12 @@ function formatDate(date)
     var bits = new Array();
     bits['d'] = date.getDate();
     bits['dd'] = pad(date.getDate(),2);
-    bits['dddd'] = dayNames[date.getDay()];
+    bits['dddd'] = DAY_NAMES[date.getDay()];
 
     bits['M'] = date.getMonth()+1;
     bits['MM'] = pad(date.getMonth()+1,2);
-    bits['MMM'] = monthShortNames[date.getMonth()];
-    bits['MMMM'] = monthLongNames[date.getMonth()];
+    bits['MMM'] = MONTH_SHORT_NAMES[date.getMonth()];
+    bits['MMMM'] = MONTH_LONG_NAMES[date.getMonth()];
     
     var yearStr = "" + date.getYear();
     yearStr = (yearStr.length == 2) ? '19' + yearStr: yearStr;
@@ -152,12 +166,12 @@ function fSetSelected(aCell)
   var iYear = parseInt(tbSelYear.value);
   var iMonth = parseInt(tbSelMonth.value);
 
-  aCell.bgColor = gcBG;
+  aCell.bgColor = gcTableCellBG;
   
   with (aCell.children["cellText"])
   {
     var iDay = parseInt(innerText);
-    if (color == gcGray) 
+    if (color == gcOtherMonth) 
     {
       if (iDay < 13) 
       {
@@ -181,7 +195,7 @@ function fSetSelected(aCell)
       iMonth = 1;
     }
   }
-  fSetDate(iYear, iMonth, iDay);
+  setDate(iYear, iMonth, iDay);
   window.event.cancelBubble = true;
 }
 
@@ -221,19 +235,18 @@ function fBuildCal(iYear, iMonth)
   return aMonth;
 }
 
-function fDrawCal(iYear, iMonth, iCellWidth, iDateTextSize) 
+function fDrawCal(iYear, iMonth) 
 {
-  var WeekDay = new Array("Su","Mo","Tu","We","Th","Fr","Sa");
-  var styleTD = " bgcolor='" + gcBG + "' width='" + iCellWidth + 
-                "' height = 19 bordercolor='" + gcBG + 
-                "' valign='middle' align='center'  style='font:bold " + 
-                iDateTextSize + " Courier;";
+  var WeekDay = new Array("S","M","T","W","T","F","S");
+  var styleTD = " bgcolor='" + gcTableCellBG + "' bordercolor='" + gcTableCellBG + 
+                "' valign='middle' align='center' style='font:normal 11 Arial;";
 
   // Draw calendar table header
   var txt= "";
   txt += "<tr>";
   for (i = 0; i < 7; i++) {
-    txt += "<td " + styleTD + "color:#000099' >" + WeekDay[i] + "</td>";
+    txt += "<td bgcolor='" + gcTableHeaderBG + "' " + 
+           styleTD + "color:" + gcTableHeader + "'  >" + WeekDay[i] + "</td>";
   }
   txt += "</tr>";
 
@@ -242,7 +255,7 @@ function fDrawCal(iYear, iMonth, iCellWidth, iDateTextSize)
     txt += "<tr>";
     for (d = 0; d < 7; d++) {
       txt += "<td id=calCell " + styleTD + 
-             "cursor:hand;' onMouseOver='this.bgColor=gcToggle' onMouseOut='this.bgColor=gcBG' onclick='fSetSelected(this)'>";
+             "cursor:hand;' onMouseOver='this.bgColor=gcToggle' onMouseOut='this.bgColor=gcTableCellBG' onclick='fSetSelected(this)'>";
       txt += "<font id=cellText> </font>";
       txt += "</td>";
     }
@@ -255,26 +268,38 @@ function fDrawCal(iYear, iMonth, iCellWidth, iDateTextSize)
  * Update the calendar. This function is called by month select and year select
  * onChange event handler.
  **/
-function fUpdateCal(iYear, iMonth) 
+function updateCalendar(iYear, iMonth) 
 {
+  var isSelectedYearMonth = false;
+  var selectedDate = 0;
+  if (gdSelectedDate != null) {
+    isSelectedYearMonth = (gdSelectedDate.getFullYear() == iYear) &&
+                          (gdSelectedDate.getMonth() + 1 == iMonth);   
+    selectedDate = gdSelectedDate.getDate();
+  }
+
   myMonth = fBuildCal(iYear, iMonth);
   var i = 0;
   for (w = 0; w < 6; w++) 
   {
     for (d = 0; d < 7; d++) 
     {
+      // Mozilla 5.0 Error: cellText is not defined 
       with (cellText[(7*w)+d]) 
       {
         i++;
         if (myMonth[w+1][d] < 0) 
         {
-          color = gcGray;
+          color = gcOtherMonth;
           innerText = -myMonth[w+1][d];
         } 
-        else 
+        else
         {
-          color = ((d==0)||(d==6)) ? "white" : "black";
+          color = gcTableCell;
           innerText = myMonth[w+1][d];
+          if (isSelectedYearMonth && selectedDate == myMonth[w+1][d]) {
+            color = "blue";
+          }
         }
       }
     }
@@ -292,35 +317,7 @@ function fSetYearMon(iYear, iMon)
       tbSelYear.options[i].selected = true;
     }
   }
-  fUpdateCal(iYear, iMon);
-}
-
-function fPrevMonth()
-{
-  var iMon = tbSelMonth.value;
-  var iYear = tbSelYear.value;
-
-  if (--iMon<1) {
-    iMon = 12;
-    iYear--;
-  }
-
-  fSetYearMon(iYear, iMon);
-  window.event.cancelBubble = true;
-}
-
-function fNextMonth()
-{
-  var iMon = tbSelMonth.value;
-  var iYear = tbSelYear.value;
-
-  if (++iMon>12) {
-    iMon = 1;
-    iYear++;
-  }
-
-  fSetYearMon(iYear, iMon);
-  window.event.cancelBubble = true;
+  updateCalendar(iYear, iMon);
 }
 
 function fGetXY(aTag)
@@ -335,7 +332,7 @@ function fGetXY(aTag)
   return pt;
 }
 
-function doNuffin() 
+function consumeEvent() 
 {
     window.event.cancelBubble = true;
 }
