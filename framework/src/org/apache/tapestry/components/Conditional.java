@@ -55,6 +55,7 @@
 
 package org.apache.tapestry.components;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
@@ -70,20 +71,38 @@ import org.apache.tapestry.IRequestCycle;
  * 
  **/
 
-public abstract class Conditional extends AbstractComponent
+public abstract class Conditional extends AbstractComponent 
 {
-    /**
-     *  Renders its wrapped components only if the condition is true (technically,
-     *  if condition matches invert).
-     *
-     **/
+	/**
+	 *  Renders its wrapped components only if the condition is true (technically,
+	 *  if condition matches invert). 
+	 *  Additionally, if element is specified, can emulate an HTML element if condition is met
+	 *
+	 **/
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-    {
-      if (getCondition() != getInvert())
-            renderBody(writer, cycle);
-    }
-    
-    public abstract boolean getCondition();
-    public abstract boolean getInvert();
+	protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) 
+	{
+		if (getCondition() != getInvert()) 
+		{
+			String element = getElement();
+			
+			boolean render = !cycle.isRewinding() && StringUtils.isNotEmpty(element);
+			
+			if (render)
+			{
+				writer.begin(element);
+				renderInformalParameters(writer, cycle);
+			}
+
+			renderBody(writer, cycle);
+			
+			if (render)
+				writer.end(element);
+		}
+	}
+
+	public abstract boolean getCondition();
+	public abstract boolean getInvert();
+
+	public abstract String getElement();
 }

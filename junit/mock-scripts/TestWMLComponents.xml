@@ -26,6 +26,7 @@
             ]]>
             <match>logo</match>
             <match>main</match>
+            <match>anotherCard</match>
         </assert-output-matches>
 
         <assert-output name="Timer">
