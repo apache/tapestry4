@@ -1,198 +1,160 @@
 <?xml version="1.0"?>
 <!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
 	"http://tapestry.primix.com/dtd/Tapestry_1_0.dtd">
-
 <specification>
-  <class>tutorial.survey.SurveyPage</class>
-
+	<class>tutorial.survey.SurveyPage</class>
 	<components>
-	  <component>
-	    <id>border</id>
-	    <type>Border</type>
-
-		<bindings>
-		    <static-binding>
-		      <name>title</name>
-		      <value>Survey</value>
-		    </static-binding>
-
-		    <binding>
-		      <name>pages</name>
-		      <property-path>application.pageNames</property-path>
-		    </binding>
-		</bindings>
-	  </component>
-
-	<component>
-		<id>ifError</id>
-		<type>Conditional</type>
-
-		<bindings>
-			<binding>
-				<name>condition</name>
-				<property-path>error</property-path>
-			</binding>
-		</bindings>
-	</component>
-
-	<component>
-		<id>insertError</id>
-		<type>Insert</type>
-
-		<bindings>
-			<binding>
-				<name>value</name>
-				<property-path>error</property-path>
-			</binding>
-		</bindings>
-	</component>
-
-
-	<component>
-		<id>surveyForm</id>
-		<type>Form</type>
-
-		<bindings>
-			<binding>
-				<name>listener</name>
-				<property-path>formListener</property-path>
-			</binding>
-		</bindings>
-	</component>
-
-	<component>
-		<id>inputName</id>
-		<type>TextField</type>
-
-		<bindings>
-			<static-binding>
-				<name>displayWidth</name>
-				<value>30</value>
-			</static-binding>
-
-			<static-binding>
-				<name>maximumWidth</name>
-				<value>100</value>
-			</static-binding>
-
-			<binding>
-				<name>text</name>
-				<property-path>survey.name</property-path>
-			</binding>
-		</bindings>
-	</component>
-
-	<component>
-		<id>inputAge</id>
-		<type>TextField</type>
-
-		<bindings>
-			<static-binding>
-				<name>displayWidth</name>
-				<value>4</value>
-			</static-binding>
-
-			<static-binding>
-				<name>maximumWidth</name>
-				<value>4</value>
-			</static-binding>
-
-			<binding>
-				<name>text</name>
-				<property-path>age</property-path>
-			</binding>
-		</bindings>
-	</component>
-
-	<component>
-		<id>inputSex</id>
-		<type>PropertySelection</type> 
-
-		<bindings>
-			<binding>
-				<name>value</name>
-				<property-path>survey.sex</property-path>
-			</binding>
-
-			<binding>
-				<name>model</name>
-				<property-path>sexModel</property-path>
-			</binding>
-
-			<static-binding>
-				<name>radio</name>
-				<value>true</value>
-			</static-binding>
-		</bindings>
-	</component>
-
-
-	<component>
-		<id>inputRace</id>
-		<type>PropertySelection</type>
-		
-		<bindings>
-			<binding>
-				<name>value</name>
-				<property-path>survey.race</property-path>
-			</binding>
-
-			<binding>
-				<name>model</name>
-				<property-path>raceModel</property-path>
-			</binding>
-		</bindings>
-	</component>
-
-
-	<component>
-		<id>inputCats</id>
-		<type>Checkbox</type>
-
-		<bindings>
-			<binding>
-				<name>selected</name>
-				<property-path>survey.likesCats</property-path>
-			</binding>
-		</bindings>
-	</component>
-
-	<component>
-		<id>inputDogs</id>
-		<type>Checkbox</type>
-
-		<bindings>
-			<binding>
-				<name>selected</name>
-				<property-path>survey.likesDogs</property-path>
-			</binding>
-		</bindings>
-	</component>
-
-	<component>
-		<id>inputFerrits</id>
-		<type>Checkbox</type>
-
-		<bindings>
-			<binding>
-				<name>selected</name>
-				<property-path>survey.likesFerrits</property-path>
-			</binding>
-		</bindings>
-	</component>
-
-	<component>
-		<id>inputTurnips</id>
-		<type>Checkbox</type>
-
-		<bindings>
-			<binding>
-				<name>selected</name>
-				<property-path>survey.likesTurnips</property-path>
-			</binding>
-		</bindings>
-	</component>
-
-  	</components>
-
+		<component>
+			<id>border</id>
+			<type>Border</type>
+			<bindings>
+				<static-binding>
+					<name>title</name>
+					<value>Survey</value>
+				</static-binding>
+				<binding>
+					<name>pages</name>
+					<property-path>application.pageNames</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>ifError</id>
+			<type>Conditional</type>
+			<bindings>
+				<binding>
+					<name>condition</name>
+					<property-path>error</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>insertError</id>
+			<type>Insert</type>
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>error</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>surveyForm</id>
+			<type>Form</type>
+			<bindings>
+				<binding>
+					<name>listener</name>
+					<property-path>formListener</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>inputName</id>
+			<type>TextField</type>
+			<bindings>
+				<static-binding>
+					<name>displayWidth</name>
+					<value>30</value>
+				</static-binding>
+				<static-binding>
+					<name>maximumWidth</name>
+					<value>100</value>
+				</static-binding>
+				<binding>
+					<name>text</name>
+					<property-path>survey.name</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>inputAge</id>
+			<type>TextField</type>
+			<bindings>
+				<static-binding>
+					<name>displayWidth</name>
+					<value>4</value>
+				</static-binding>
+				<static-binding>
+					<name>maximumWidth</name>
+					<value>4</value>
+				</static-binding>
+				<binding>
+					<name>text</name>
+					<property-path>age</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>inputSex</id>
+			<type>PropertySelection</type>
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>survey.sex</property-path>
+				</binding>
+				<binding>
+					<name>model</name>
+					<property-path>sexModel</property-path>
+				</binding>
+				<binding>
+					<name>renderer</name>
+					<property-path>components.inputSex.defaultRadioRenderer</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>inputRace</id>
+			<type>PropertySelection</type>
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>survey.race</property-path>
+				</binding>
+				<binding>
+					<name>model</name>
+					<property-path>raceModel</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>inputCats</id>
+			<type>Checkbox</type>
+			<bindings>
+				<binding>
+					<name>selected</name>
+					<property-path>survey.likesCats</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>inputDogs</id>
+			<type>Checkbox</type>
+			<bindings>
+				<binding>
+					<name>selected</name>
+					<property-path>survey.likesDogs</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>inputFerrits</id>
+			<type>Checkbox</type>
+			<bindings>
+				<binding>
+					<name>selected</name>
+					<property-path>survey.likesFerrits</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>inputTurnips</id>
+			<type>Checkbox</type>
+			<bindings>
+				<binding>
+					<name>selected</name>
+					<property-path>survey.likesTurnips</property-path>
+				</binding>
+			</bindings>
+		</component>
+	</components>
 </specification>

@@ -60,7 +60,7 @@ public class SurveyPage extends BasePage
 				new Race[] 
 				{
 					Race.CAUCASIAN, Race.AFRICAN, Race.ASIAN, Race.INUIT, Race.MARTIAN
-				}, page.getLocale(), "tutorial.survey.SurveyStrings", "Race");
+				}, getLocale(), "tutorial.survey.SurveyStrings", "Race");
 				
 		return raceModel;
 	}
