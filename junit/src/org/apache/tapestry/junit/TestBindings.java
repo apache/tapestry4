@@ -799,6 +799,6 @@ public class TestBindings extends TapestryTestCase
         // for Timestamp suggest using nanos/1000000 to find the actual millis.
         // Otherwise, just using assertEquals(date, page.getDateValue()) fails 
         // under JDK 1.3.
-        assertEquals(date, new Date(page.getDateValue().getTime() + page.getDateValue().getNanos() / 1000000));
+        assertEquals(date, new Date((page.getDateValue().getTime()/1000)*1000 + page.getDateValue().getNanos() / 1000000));
     }
 }
