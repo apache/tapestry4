@@ -52,7 +52,7 @@
     A kind of "clearing house" of other services. The Infrastructure is provided to the
     IEngine instance via the InvokeEngineTerminator service (using an HttpServletRequest
     attribute).  The engine can then get the other services it depends upon.
-    The infrastructure: object provider interface allows access to the properties
+    The infrastructure: object provider allows access to the properties
     of this service.
     
     <invoke-factory>
@@ -73,6 +73,10 @@
         <set-service property="linkFactory" service-id="tapestry.url.LinkFactory"/>
         <set-service property="requestCycleFactory" service-id="tapestry.request.RequestCycleFactory"/>
         <set-service property="applicationStateManager" service-id="tapestry.state.ApplicationStateManager"/>
+        <set-service property="request" service-id="tapestry.globals.HttpServletRequest"/>
+        <set-service property="response" service-id="tapestry.globals.HttpServletResponse"/>
+        <set-object property="applicationId" value="service-property:tapestry.globals.ApplicationGlobals:servletName"/>
+        <set-object property="context" value="service-property:tapestry.globals.ApplicationGlobals:context"/>
       </construct>
     </invoke-factory>
     
@@ -166,7 +170,7 @@
     
     <invoke-factory>
       <construct class="org.apache.tapestry.services.impl.RequestExceptionReporterImpl">
-        <set-service property="request" service-id="tapestry.globals.HttpServletRequest"/>
+        <set-object property="request" value="infrastructure:request"/>
       </construct>
     </invoke-factory>
   </service-point>

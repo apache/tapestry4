@@ -82,8 +82,8 @@
     <invoke-factory model="primitive">
       <construct class="org.apache.tapestry.engine.RestartService">
         <set-service property="builder" service-id="tapestry.request.AbsoluteURLBuilder"/>
-        <set-service property="request" service-id="tapestry.globals.HttpServletRequest"/>
-        <set-service property="response" service-id="tapestry.globals.HttpServletResponse"/>
+        <set-object property="request" value="infrastructure:request"/>
+        <set-object property="response" value="infrastructure:response"/>
         <set-object property="servletPath" value="app-property:org.apache.tapestry.servlet-path"/>
       </construct>
     </invoke-factory>
@@ -102,7 +102,7 @@
     <invoke-factory model="primitive">
       <construct class="org.apache.tapestry.engine.ActionService">
         <set-object property="responseRenderer" value="infrastructure:responseRenderer"/>
-        <set-service property="request" service-id="tapestry.globals.HttpServletRequest"/>
+        <set-object property="request" value="infrastructure:request"/>
         <set-object property="linkFactory" value="infrastructure:linkFactory"/>
       </construct>
     </invoke-factory>
@@ -112,7 +112,7 @@
     <invoke-factory model="primitive">
       <construct class="org.apache.tapestry.engine.DirectService">
         <set-object property="responseRenderer" value="infrastructure:responseRenderer"/>
-        <set-service property="request" service-id="tapestry.globals.HttpServletRequest"/>
+        <set-object property="request" value="infrastructure:request"/>
       </construct>
     </invoke-factory>
   </service-point>

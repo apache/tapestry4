@@ -39,7 +39,6 @@
         <set-service property="componentResolver" service-id="ComponentSpecificationResolver"/>      
         <set-service property="bindingSource" service-id="tapestry.bindings.BindingSource"/>
         <set-service property="componentTemplateLoader" service-id="ComponentTemplateLoader"/>
-        <set-object property="context" value="service-property:tapestry.globals.ApplicationGlobals:context"/>
         <set-service property="establishDefaultParameterValuesVisitor"
           service-id="EstablishDefaultParameterValuesVisitor"/>
         <set-object property="defaultPageClassName"
@@ -80,8 +79,8 @@
       <construct class="org.apache.tapestry.resolver.PageSpecificationResolverImpl">
         <set-object property="specificationSource" value="infrastructure:specificationSource"/>
         <set-service property="delegate" service-id="SpecificationResolverDelegate"/>
-        <set-object property="servletName" value="service-property:tapestry.globals.ApplicationGlobals:servletName"/>
-        <set-object property="context" value="service-property:tapestry.globals.ApplicationGlobals:context"/>
+        <set-object property="applicationId" value="infrastructure:applicationId"/>
+        <set-object property="contextRoot" value="infrastructure:contextRoot"/>
       </construct>
     </invoke-factory>
     
@@ -102,8 +101,8 @@
       <construct class="org.apache.tapestry.resolver.ComponentSpecificationResolverImpl">
         <set-object property="specificationSource" value="infrastructure:specificationSource"/>
         <set-service property="delegate" service-id="SpecificationResolverDelegate"/>
-        <set-object property="servletName" value="service-property:tapestry.globals.ApplicationGlobals:servletName"/>
-        <set-object property="context" value="service-property:tapestry.globals.ApplicationGlobals:context"/>
+        <set-object property="applicationId" value="infrastructure:applicationId"/>
+        <set-object property="contextRoot" value="infrastructure:contextRoot"/>
       </construct>
     </invoke-factory>    
   </service-point>

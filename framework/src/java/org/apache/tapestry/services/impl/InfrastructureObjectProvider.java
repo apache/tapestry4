@@ -14,6 +14,9 @@
 
 package org.apache.tapestry.services.impl;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.internal.Module;
@@ -36,8 +39,23 @@ public class InfrastructureObjectProvider implements ObjectProvider
 
     private Infrastructure _infrastructure;
 
-    public Object provideObject(Module contributingModule, Class propertyType, String locator,
-            Location location)
+    private Map _cache = new HashMap();
+
+    public synchronized Object provideObject(Module contributingModule, Class propertyType,
+            String locator, Location location)
+    {
+        Object result = _cache.get(locator);
+
+        if (result == null)
+        {
+            result = readProperty(locator, location);
+            _cache.put(locator, result);
+        }
+
+        return result;
+    }
+
+    Object readProperty(String locator, Location location)
     {
         try
         {

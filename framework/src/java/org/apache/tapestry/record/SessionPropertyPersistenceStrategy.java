@@ -39,7 +39,7 @@ public class SessionPropertyPersistenceStrategy implements PropertyPersistenceSt
     // to keep things straight if multiple Tapestry apps are deployed
     // in the same WAR.
 
-    private String _applicationName;
+    private String _applicationId;
 
     private HttpServletRequest _request;
 
@@ -54,7 +54,7 @@ public class SessionPropertyPersistenceStrategy implements PropertyPersistenceSt
 
         StringBuffer buffer = new StringBuffer();
 
-        buffer.append(_applicationName);
+        buffer.append(_applicationId);
         buffer.append(",");
         buffer.append(pageName);
 
@@ -86,7 +86,7 @@ public class SessionPropertyPersistenceStrategy implements PropertyPersistenceSt
 
         Collection result = new ArrayList();
 
-        String prefix = _applicationName + "," + pageName + ",";
+        String prefix = _applicationId + "," + pageName + ",";
 
         Enumeration e = session.getAttributeNames();
         while (e.hasMoreElements())
@@ -126,7 +126,7 @@ public class SessionPropertyPersistenceStrategy implements PropertyPersistenceSt
         if (session == null)
             return;
 
-        String prefix = _applicationName + "," + pageName + ",";
+        String prefix = _applicationId + "," + pageName + ",";
 
         Enumeration e = session.getAttributeNames();
         while (e.hasMoreElements())
@@ -138,9 +138,9 @@ public class SessionPropertyPersistenceStrategy implements PropertyPersistenceSt
         }
     }
 
-    public void setApplicationName(String applicationName)
+    public void setApplicationId(String applicationName)
     {
-        _applicationName = applicationName;
+        _applicationId = applicationName;
     }
 
     public void setRequest(HttpServletRequest request)

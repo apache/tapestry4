@@ -171,7 +171,7 @@ public class PageSpecificationResolverImpl
             if (found(getWebInfLocation().getRelativeResource(expectedName)))
                 return;
 
-            if (found(getApplicationRootLocation().getRelativeResource(expectedName)))
+            if (found(getContextRoot().getRelativeResource(expectedName)))
                 return;
 
             // The wierd one ... where we see if there's a template in the application root location.
@@ -179,7 +179,7 @@ public class PageSpecificationResolverImpl
             String templateName = _simpleName + "." + getTemplateExtension();
 
             Resource templateResource =
-                getApplicationRootLocation().getRelativeResource(templateName);
+                getContextRoot().getRelativeResource(templateName);
 
             if (templateResource.getResourceURL() != null)
             {

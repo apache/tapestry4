@@ -75,10 +75,6 @@ public class PageLoader implements IPageLoader
 
     /** @since 3.1 */
 
-    private ServletContext _context;
-
-    /** @since 3.1 */
-
     private String _defaultPageClassName;
 
     /** @since 3.1 */
@@ -725,13 +721,6 @@ public class PageLoader implements IPageLoader
     public void setComponentResolver(ComponentSpecificationResolver resolver)
     {
         _componentResolver = resolver;
-    }
-
-    /** @since 3.1 */
-
-    public void setContext(ServletContext context)
-    {
-        _context = context;
     }
 
     /** @since 3.1 */

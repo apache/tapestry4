@@ -63,7 +63,7 @@
     <invoke-factory>
       <construct class="org.apache.tapestry.asset.ContextAssetFactory">
         <set-service property="servletContext" service-id="tapestry.globals.ServletContext"/>
-        <set-object property="contextPath" value="service-property:tapestry.globals.HttpServletRequest:contextPath"/>
+        <set-object property="contextPath" value="infrastructure:contextPath"/>
       </construct>
     </invoke-factory>
     

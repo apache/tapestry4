@@ -194,7 +194,7 @@ public class ComponentSpecificationResolverImpl
             if (found(getWebInfLocation().getRelativeResource(expectedName)))
                 return;
 
-            if (found(getApplicationRootLocation().getRelativeResource(expectedName)))
+            if (found(getContextRoot().getRelativeResource(expectedName)))
                 return;
         }
 
