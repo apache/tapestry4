@@ -1,3 +1,10 @@
+* Aug 31 2001 hship
+
+framework:
+- Replace the ShowInspector rollover with a Flash animation
+- Make the ShowInspector glue itself to the lower right corner of the window
+- Change the background color of the Inspector page
+
 * Aug 30 2001 hship
 
 doc:

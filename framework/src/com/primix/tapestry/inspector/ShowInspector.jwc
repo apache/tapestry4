@@ -2,16 +2,17 @@
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="com.primix.tapestry.inspector.ShowInspector" allow-body="no" allow-informal-parameters="no">
-  <component id="link" type="Direct">
-    <binding name="target" property-path="windowTarget"/>
-    <binding name="listener" property-path="listeners.showInspector"/>
-    <inherited-binding name="enabled" parameter-name="enabled"/>
-    <field-binding name="stateful" field-name="Boolean.FALSE"/>
-  </component>
-  <component id="button" type="Rollover">
-    <binding name="image" property-path="assets.image"/>
-    <binding name="focus" property-path="assets.focus"/>
-  </component>
-  <private-asset name="image" resource-path="/com/primix/tapestry/inspector/ShowInspector.gif"/>
-  <private-asset name="focus" resource-path="/com/primix/tapestry/inspector/ShowInspector-focus.gif"/>
+
+<component id="movieName1" type="Any">
+  <static-binding name="element">PARAM</static-binding>
+  <binding name="value" property-path="movieURL"/>
+</component>
+  
+<component id="movieName2" type="Any">
+  <static-binding name="element">EMBED</static-binding>
+  <binding name="src" property-path="movieURL"/>
+</component>
+
+<private-asset name="movie" resource-path="/com/primix/tapestry/inspector/inspector_gear.swf"/>
+  
 </specification>
