@@ -155,6 +155,7 @@
 				<include name="${workbench.war}"/>
 				<include name="${vlib.ear}"/>
 				<include name="**/*.jar"/>
+				<include name="**/LICENSE*"/>
 				<exclude name="${vlibbeans.jar}"/>
 			</fileset>
 		</copy>
