@@ -686,6 +686,105 @@ public class OperationsBean
 		}
 	}
 	
+	public void updatePersons(Person[] updated, Integer[] resetPassword, Integer[] deleted, Integer adminPK)
+		throws FinderException, RemoveException, RemoteException
+	{
+		IPersonHome home = getPersonHome();
+		
+		if (updated != null & updated.length > 0)
+		{
+			for (int i = 0; i < updated.length; i++)
+			{
+				Person u = updated[i];
+				IPerson person = home.findByPrimaryKey(updated[i].getPrimaryKey());
+				
+				person.setAdmin(u.isAdmin());
+				person.setLockedOut(u.isLockedOut());
+				person.setVerified(u.isVerified());
+			}
+		}
+		
+		if (resetPassword != null && resetPassword.length > 0)
+		{
+			Random r = new Random(System.currentTimeMillis());
+			long value = 0;
+			
+			for (int i = 0; i < resetPassword.length; i++)
+			{
+				IPerson person = home.findByPrimaryKey(resetPassword[i]);
+				
+				do
+				{
+					value = ((value << 32) ^ r.nextLong());
+					if (value < 0)
+						value = -value;
+					// Repeat until a magic number equivalent to seven digits
+				} while (value < 2176782336l);
+				
+				String password = Long.toString(value, Character.MAX_RADIX);
+				
+				person.setPassword(password);
+				
+				sendMail(person.getEmail(), "Virtual Library password reset.",
+						"Your password for the Virtual Library has been reset to '" + password + "'.");
+			}
+		}
+		
+		if (deleted != null && deleted.length > 0)
+		{
+			moveBooksFromDeletedPersons(deleted, adminPK);
+			
+			for (int i = 0; i < deleted.length; i++)
+				home.remove(deleted[i]);
+		}
+	}
+	
+	/**
+	 *  Invoked to execute a bulk update that moves books to the new admin.
+	 *
+	 */
+	
+	
+	private void moveBooksFromDeletedPersons(Integer deleted[], Integer adminPK)
+		throws RemoveException
+	{
+		StatementAssembly assembly = new StatementAssembly();
+		
+		assembly.add("UPDATE BOOK");
+		assembly.newLine("SET OWNER_ID = ");
+		assembly.add(adminPK);
+		assembly.newLine("WHERE OWNER_ID IN (");
+		assembly.addList(deleted, ", ");
+		assembly.add(")");
+		
+		Connection connection = null;
+		IStatement statement = null;
+		
+		try
+		{
+			connection = getConnection();
+			
+			statement = assembly.createStatement(connection);
+			
+			statement.executeUpdate();
+			
+			statement.close();
+			statement = null;
+			
+			connection.close();
+			connection = null;
+		}
+		catch (SQLException ex)
+		{
+			throw new XRemoveException("Unable to move books from deleted owners: " + ex.getMessage(), ex);
+		}
+		finally
+		{
+			close(connection, statement, null);
+		}
+		
+	}
+	
 	/**
 	 *  Translates the next row from the result set into a {@link Book}.
 	 *
@@ -783,7 +882,7 @@ public class OperationsBean
 		if (trimmed.length() == 0)
 			return;
 		
-		// InstantDB is configure to always do case-insentive matching
+		// InstantDB is configured to always do case-insentive matching
 		// for like.
 		
 		assembly.addSep(" AND ");

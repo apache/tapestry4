@@ -94,16 +94,13 @@ named file systems.</para>
 <para>On any operating system it is necessary to have a JDK installed.
 JBE was developed using Sun's JDK 1.2.2 and JDK 1.3.
 The JDK used by the JBE is configurable (details are below).</para>
-
 <section id="solaris">
 <title>Installing under Solaris</title>
 <para>The JBE has been ported to work with Solaris 2.6 or above.  
 This version of Solaris does not, by default, include the GNU tools.  
 The JBE requires the presense of three of the GNU tools: GNU Make, GNU tar and GNU zip, which are a separate install. 
 GNU tar should be installed as /usr/local/bin/gtar.</para>
-
 </section>
-
 <section id="windows">
 <title>Installing under Windows</title>
 <para>Cygwin is a set of GNU 	s ported so as to run in the Windows NT or Windows 2000 
@@ -1042,6 +1039,7 @@ If you use the auxilliary descriptor files (<filename>jboss.xml</filename> and/o
 </varlistentry>
 </variablelist>
 </section>
+
 <section id="docbook">
 <title>DocBook modules</title>
 <para>The DocBook module is the standout of the available modules, because it 
@@ -1061,13 +1059,11 @@ to be produced as HTML.  PDF output will be available in the future.
 Like the other types of Modules, DocBook modules have, at their core, a Makefile.  This Makefile
 defines the information needed to build the target documents from the DocBook XML source.
 </para>
-
 <para>
 A seperate download of <ulink url="http://xml.apache.org/xalan-j/index.html">Xalan</ulink> XSL processor is
 required.  In addition, the variable <envar>XALAN_DIR</envar> must be set to the directory where 
 Xalan is installed.  The DocBook module has been tested using Xalan 2.2.D6.
 </para>
-
 <para>
 The DocBook module makes use of 
 The Modular DocBook Stylesheets available from
@@ -1079,6 +1075,10 @@ content from DocBook XML files.
 Recent versions of the Stylesheets are bundled with the JBE, no seperate download
 is required.
 </para>
+
+
+<section id="docbook.config">
+<title>Configuring DocBook Projects</title>
 <variablelist>
 <title>DocBook module variables</title>
 <varlistentry>
@@ -1117,7 +1117,7 @@ is required.
 </listitem>
 </varlistentry>
 <varlistentry>
-<term>
+<term id="docbook.vars.HTML_STYLESHEET">
 <varname>HTML_STYLESHEET</varname>
 </term>
 <listitem>
@@ -1127,7 +1127,17 @@ is required.
 			</para>
 </listitem>
 </varlistentry>
-<!-- TBD: HTML_XSLT_OPTS -->
+<varlistentry>
+<term id="docbook.vars.HTML_XSLT_OPTS">
+<varname>HTML_XSLT_OPTS</varname>
+</term>
+<listitem>
+<para>Additional options to pass to the Xalan XSL processor.  The most common use of this
+variable is to specify values for XSL Stylesheet parameters via the 
+<literal>-param</literal> commandl ine option.
+</para>
+</listitem>
+</varlistentry>
 <varlistentry>
 <term>
 <varname>INSTALL_DIR</varname>
@@ -1172,39 +1182,96 @@ is required.
 			</para>
 </listitem>
 </varlistentry>
-<varlistentry>
-<term>
-<varname>VARIABLE_DEFS</varname>
-</term>
-<listitem>
-<para>Additional stylesheet variables uses with all kinds of documents.</para>
-</listitem>
-</varlistentry>
 </variablelist>
+</section>
+<section id="docbook.stylesheets">
+<title>Using Custom HTML Stylesheets</title>
+<para>
+
+The DocBook stylesheets are designed to be easily customizable.  Many small tweaks can be
+specified using parameters 
+(and the <link linkend="docbook.vars.HTML_XSLT_OPTS">
+<varname>HTML_XSLT_OPTS</varname>
+</link>
+variable).
+</para>
+<para>
+However, more involved changes are often desirable, and these involve customizing template rules.
+Most of the details for this are coverred in the 
+<ulink url="http://docbook.sourceforge.net/projects/xsl/doc/index.html">DocBook XSL Stylesheet Documentation</ulink>.
+Basically, a new XSL stylesheet is created (and identified using the
+<link linkend="docbook.vars.HTML_STYLESHEET">
+<varname>HTML_STYLESHEET</varname>
+</link> variable).  This
+new stylesheet imports the DocBook stylesheet and adds an desired changes, replacing previously defined rules.
+</para>
+<figure>
+<title>Custom XSL Stylesheet</title>
+<programlisting>
+&lt;?xml version='1.0'?&gt;
+&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+                version='1.0'
+                xmlns="http://www.w3.org/TR/xhtml1/transitional"
+                exclude-result-prefixes="#default"&gt;
+
+&lt;xsl:import href="<replaceable>DocBook XSL Directory</replaceable>/html/chunk.xsl"/&gt;
+
+
+<replaceable>New rules and parameter values ...</replaceable>
+
+&lt;/xsl:stylesheet&gt;
+</programlisting>
+</figure>
+<para>
+The problem here is that the <replaceable>DocBook XSL Directory</replaceable> must be 
+hard-coded into the stylesheet.  That violates one of the basic rules of the JBE ... everything must be
+easily transportable.
+</para>
+<para>
+This problem is solved with a little bit of pre-processing.  The stylesheet specified
+is <emphasis>editted</emphasis> creating a new stylesheet, where the directory is specified.  Specifically,
+the value <literal>##DOCBOOK_XSL_DIR##</literal> is replaced by the appropriate directory.  Processing
+then continues with the <emphasis>marked up</emphasis> copy, rather than with the original.
+</para>
+<para>
+In the above example, the import line is changed to:
+</para>
+<informalfigure>
+<programlisting>
+&lt;xsl:import href="##DOCBOOK_XSL_DIR##/html/chunk.xsl"/&gt;
+</programlisting>
+</informalfigure>
+</section>
+<section id="docbook.running">
+<title>Running DocBook</title>
 <para>
 When the DocBook module executes, executed the Xalan stylesheet processor (bundled with the
-distribution) to convert the input document into HTML.  It automatically sets up the "chunking" option, so each major chaptor or section will be in its own, individual file.
+distribution) to convert the input document into HTML.  
+It automatically sets up the "chunking" option, so each major chapter 
+or section will be in its own, individual file.
 </para>
 <para>
 A typical run, building this manual as HTML.
 </para>
 <informalexample>
-<programlisting><![CDATA[C:\Work\Tapestry\doc\src\JBE>make
+<programlisting><![CDATA[C:\Work\Tapestry\doc\src\JBE>make html
 
 *** Copying document resources ... ***
 
 Copying: cyg-action.gif cyg-dir.gif cyg-final.gif cyg-package.gif cyg-proxy.gif
 cyg-root.gif cyg-setup.gif cyg-site.gif proj-layout.gif
 
+*** Generating .build/marked.xsl from ../common/Tapestry.xsl ... ***
+
+
 *** Generating HTML from JBE.xml ... ***
 
 C:/jdk1.3/bin/java -classpath "C:/Library/xalan-j_2_2_D6/bin/xml.jar;C:/Library/
 xalan-j_2_2_D6/bin/xerces.jar;C:/Library/xalan-j_2_2_D6/bin/xalan.jar"  -Xms256m
-b -Xmx512mb org.apache.xalan.xslt.Process -HTML -in JBE.xml -xsl C:/Work/Tapestr
-y/JBE/docbook/docbook-xsl-1.41/html/chunk.xsl -param base.dir html/ -param root.
-filename JBE -param use.id.as.filename 1  -param admon.graphics 1 -param admon.g
-raphics.path standard-images/ -param callout.graphics 1 -param callout.graphics.
-path standard-images/callouts/
+b -Xmx512mb org.apache.xalan.xslt.Process -HTML -in JBE.xml -xsl .build/marked.x
+sl -param base.dir html/ -param root.filename JBE -param use.id.as.filename 1  -
+param admon.graphics 1 -param admon.graphics.path standard-images/ -param callou
+t.graphics 1 -param callout.graphics.path standard-images/callouts/
 file:///c:/Work/Tapestry/JBE/docbook/docbook-xsl-1.41/html/chunker.xsl; Line 58;
  Column 16; Writing html/introduction.html for chapter(introduction)
 file:///c:/Work/Tapestry/JBE/docbook/docbook-xsl-1.41/html/chunker.xsl; Line 58;
@@ -1225,8 +1292,6 @@ file:///c:/Work/Tapestry/JBE/docbook/docbook-xsl-1.41/html/chunker.xsl; Line 58;
  Column 16; Writing html/JBoss.html for section(JBoss)
 file:///c:/Work/Tapestry/JBE/docbook/docbook-xsl-1.41/html/chunker.xsl; Line 58;
  Column 16; Writing html/docbook.html for section(docbook)
-file:///c:/Work/Tapestry/JBE/docbook/docbook-xsl-1.41/html/chunker.xsl; Line 58;
- Column 16; Writing html/additional-vars.html for section(additional-vars)
 file:///c:/Work/Tapestry/JBE/docbook/docbook-xsl-1.41/html/chunker.xsl; Line 58;
  Column 16; Writing html/modules.html for chapter(modules)
 file:///c:/Work/Tapestry/JBE/docbook/docbook-xsl-1.41/html/chunker.xsl; Line 58;
@@ -1328,10 +1393,10 @@ variables will affect all modules.
 </listitem>
 </varlistentry>
 </variablelist>
-
+</section>
+<!-- FIX: -->
 </section>
 </chapter>
-
 <chapter id="future">
 <title>Future development of the JBE</title>
 <para>Like Tapestry overall, the JBE is an ongoing effort.  

@@ -2,6 +2,8 @@
 
 MAIN_DOCUMENT =	DevelopersGuide.xml
 
+HTML_STYLESHEET := ../common/Tapestry.xsl
+
 HTML_INSTALL_DIR := ../../DevelopersGuide
 
 DOCUMENT_RESOURCES = images

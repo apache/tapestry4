@@ -2,6 +2,8 @@
 
 MAIN_DOCUMENT =	Tutorial.xml
 
+HTML_STYLESHEET := ../common/Tapestry.xsl
+
 HTML_INSTALL_DIR := ../../Tutorial
 
 DOCUMENT_RESOURCES := images

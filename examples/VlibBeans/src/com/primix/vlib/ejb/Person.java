@@ -31,7 +31,7 @@ package com.primix.vlib.ejb;
 import java.io.*;
 
 /**
- *  A light-weight, read-only version of the {@link IPerson} bean.
+ *  A light-weight version of the {@link IPerson} bean.
  *
  *  @version $Id$
  *  @author Howard Ship
@@ -116,14 +116,35 @@ public class Person implements Serializable
 		return getBit(ADMIN_COLUMN);
 	}
 	
+	public void setAdmin(boolean value)
+	{
+		setBit(ADMIN_COLUMN, value);
+	}
+	
 	public boolean isLockedOut()
 	{
 		return getBit(LOCKED_OUT_COLUMN);
 	}
 	
+	public void setLockedOut(boolean value)
+	{
+		setBit(LOCKED_OUT_COLUMN, value);
+	}
+	
 	public boolean isVerified()
 	{
 		return getBit(VERIFIED_COLUMN);
+	}
+	
+	public void setVerified(boolean value)
+	{
+		setBit(VERIFIED_COLUMN, value);
+	}
+	
+	private void setBit(int column, boolean value)
+	{
+		columns[column] = 
+				value ? Boolean.TRUE : Boolean.FALSE;
 	}
 	
 	private boolean getBit(int column)
