@@ -287,11 +287,6 @@ public class TemplateParser
 			
 			if (lookahead(COMMENT_START))
 			{
-				// The start of a comment ends the current text block.  That is, we edit out
-				// comments as we parse.
-				
-				addTextToken(cursor - 1);
-				
 				skipComment();
 				continue;
 			}
@@ -336,16 +331,6 @@ public class TemplateParser
 			// Not the end of the comment, advance over it.
 			
 			advance();
-		}
-		
-		// Ok, advance over any whitespace.
-		
-		while (cursor < length)
-		{
-			if (Character.isWhitespace(templateData[cursor]))
-				advance();
-			else
-				break;
 		}
 	}
 	

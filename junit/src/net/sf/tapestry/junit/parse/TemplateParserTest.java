@@ -246,21 +246,6 @@ public class TemplateParserTest
 		assertOpenToken(tokens[5], "row");
 	}
 	
-	public void testCommentsRemoved()
-		throws TemplateParseException
-	{
-		TemplateToken[] tokens = run("CommentsRemoved.html");
-		
-		assertTokenCount(tokens, 7);
-		assertTextToken(tokens[0], 0, 90);
-		assertTextToken(tokens[1], 169, 220);
-		assertOpenToken(tokens[2], "e");
-		assertOpenToken(tokens[3], "insertName");
-		assertCloseToken(tokens[4]);
-		assertTextToken(tokens[5], 303, 303);
-		assertCloseToken(tokens[6]);
-	}
-	
 	public void testStartWithStaticTag()
 		throws TemplateParseException
 	{

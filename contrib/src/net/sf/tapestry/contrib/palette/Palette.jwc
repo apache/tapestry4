@@ -46,27 +46,23 @@
   </component>
   
   <component id="selectButton" type="Any">
-    <static-binding name="element">button</static-binding>
-    <binding name="id" property-path="symbols.selectButtonId"/>
-    <static-binding name="disabled">true</static-binding>
+    <static-binding name="element">a</static-binding>
+    <binding name="onClick" property-path="symbols.selectOnClickScript"/>
   </component>
 
   <component id="selectImage" type="Image">
-  	<binding name="image" property-path="assets.Select-dis"/>
+  	<binding name="image" property-path="assets.Select"/>
   	<binding name="name" property-path="symbols.selectImageName"/>
-    <static-binding name="alt">[Select]</static-binding>
   </component>
   	  
   <component id="deselectButton" type="Any">
-    <static-binding name="element">button</static-binding>
-    <binding name="id" property-path="symbols.deselectButtonId"/>
-    <static-binding name="disabled">true</static-binding>
+    <static-binding name="element">a</static-binding>
+    <binding name="onClick" property-path="symbols.deselectOnClickScript"/>
   </component>
 
   <component id="deselectImage" type="Image">
-  	<binding name="image" property-path="assets.Deselect-dis"/>
+  	<binding name="image" property-path="assets.Deselect"/>
   	<binding name="name" property-path="symbols.deselectImageName"/>
-    <static-binding name="alt">[Deselect]</static-binding>
   </component>
     
   <component id="ifSortUser" type="Conditional">
@@ -74,27 +70,23 @@
   </component>
   
   <component id="moveUpButton" type="Any">
-  	<static-binding name="element">button</static-binding>
-  	<binding name="id" property-path="symbols.upButtonId"/>
-    <static-binding name="disabled">true</static-binding>
-  </component>
+  	<static-binding name="element">a</static-binding>
+    <binding name="onClick" property-path="symbols.upOnClickScript"/>
+   </component>
 
   <component id="upImage" type="Image">
-    <binding name="image" property-path="assets.Up-dis"/>
+    <binding name="image" property-path="assets.Up"/>
     <binding name="name" property-path="symbols.upImageName"/>
-  	<static-binding name="alt">[Move Up]</static-binding>
-  </component>
+   </component>
   
   <component id="moveDownButton" type="Any">
-    <static-binding name="element">button</static-binding>
-    <binding name="id" property-path="symbols.downButtonId"/>
-   <static-binding name="disabled">true</static-binding>
+    <static-binding name="element">a</static-binding>
+    <binding name="onClick" property-path="symbols.downOnClickScript"/>
   </component>
   
   <component id="downImage" type="Image">
-    <binding name="image" property-path="assets.Down-dis"/>
+    <binding name="image" property-path="assets.Down"/>
     <binding name="name" property-path="symbols.downImageName"/>
-    <static-binding name="alt">[Move Down]</static-binding>
   </component>
     
   <component id="available" type="Delegator">

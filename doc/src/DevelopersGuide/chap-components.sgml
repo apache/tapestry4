@@ -105,6 +105,74 @@ which is approximately equivalent to <function>getVisit().getUser().getName()</>
 
 	</section>
 
+	<section id="components.informal-parameters">
+		<title>Formal vs. Informal Parameters</>
+		
+<para>
+Tapestry components have two types of parameters: formal and informal.
+</>
+
+<para>
+Formal parameters are parameters defined in the 
+<link linkend="components.spec.parameter">component specification</>.  
+Each formal parameter has a specific
+(case sensitive) name and may be required or optional.
+</>
+
+<para>
+In many cases, there is a 1:1 mapping between a Tapestry component and a specific
+HTML tag.  For example, &Body; and <sgmltag class=starttag>body</>,
+&Form; and <sgmltag class=starttag>form</>, etc.  In other cases, a Tapestry component
+produces a known single HTML tag.  That is, &Action;, &Direct; &Page; and &Service;
+all produce an <sgmltag class=starttag>a</> tag.
+</>
+
+<para>
+To support truly rich interfaces, it is often necessary to specify additional attributes
+of the HTML tags; usually this means setting the <varname>class</> of a tag so as to
+get visual properties from a stylesheet.  In other cases, display attributes may be specified inline
+(this is often the case with attributes related to display width and height, since
+CSS support for these properties are inconsistent between the major HTML 4.0 browsers).
+</>
+
+<para>
+In theory, these components <emphasis>could</> define additional formal parameters for
+each possible HTML attribute ... but there are a huge number of possible attributes, many of
+which are specific to a particular browser.
+</>
+
+<para>
+Instead, Tapestry has the concept of an <emphasis>informal parameter</>.  
+This is an "additional" parameter, not specified
+in the component's specification.  In most cases, where informal parameters are allowed, they
+are added as additional HTML attributes (there are a few special exceptions, such as the &Script; component).
+</>
+
+<para>
+Informal parameters to have some limitions.  Informal parameters that conflict with the names of
+any formal parameters, or with any the HTML attributes generated directly by the component, are silently
+ommitted.  The comparison is case-insensitve.  Thus, for a &Direct; component, you can not change
+the <varname>href</> attribute, even if you supply a <varname>Href</> (or other variation) attribute.
+</>
+
+<para>
+Not all Tapestry components even allow informal parameters; this is explicitly 
+specified in the component
+specification.
+</>
+
+<note>
+	<title>Informal Parameters that are Assets
+<para>
+Tapestry includes a special case when an informal parameter is actually an 
+<link linkend="components.assets">asset</>.  The URL for the asset is determined and that is the value
+supplied for the attribute.
+</>
+</>
+
+
+	</section>
+
 	<section id="components.embedded">
 		<title>Embedded Components</>
 
@@ -212,7 +280,7 @@ This is accomplished by adding a <varname>jwcid</> attribute to the tag.
 </>
 
 &start-listing;
-&lt;<replaceable>any</> jwcid="<replaceable>component id</>"&gt;  <replaceable>body</>  &lt;/<replaceable>any</>&gt;
+&lt;<replaceable>any</> jwcid="<replaceable>component id</>" ... &gt;  <replaceable>body</>  &lt;/<replaceable>any</>&gt;
 &end-listing;
 
 <para>or
@@ -220,29 +288,44 @@ This is accomplished by adding a <varname>jwcid</> attribute to the tag.
 
 
 &start-listing;
-&lt;<replaceable>any</> jwcid="<replaceable>component id</>"/&gt;
+&lt;<replaceable>any</> jwcid="<replaceable>component id</>" ... /&gt;
 &end-listing;
+
+<para>
+When using the <varname>jwcid</> attribute, you are free to specify additional
+attributes.  These attributes will become
+<link linkend="components.informal-parameters">informal parameters</> for the Tapestry component.
+When using the &jwc-tag; tag, you may only specify the <varname>id</> attribute.
+</>
+
+<note>
+	<para>
+	Through Tapestry release 1.0.1, only the &jwc-tag; tag was supported 
+	in HTML templates.  Support for the <varname>jwcid</> attribute was
+	added in release 1.0.2.
+	</>
+</>
 
 
 <para>
-When using the <varname>jwcid</> attribute, all other attributes are ignored by Tapestry
-<footnote>
-	<para>
-	At least through release 1.0.2.  A future release of Tapestry will likely collect
-	the attributes specified in the HTML and apply them as informal parameters 
-	to the component.
-	</>
-</>.  The ability to convert static HTML tags into dynamic tags is really to streamline the 
-integration process (whereby the efforts of HTML designers are 
+The ability to convert static HTML tags into dynamic tags is really to streamline the 
+<link linkend="components.html-production">integration process</> (whereby the efforts of HTML designers are 
 converted into Tapestry components and templates).
 </>
 
 <para>
-Tapestry divides the contents of the HTML template into three categories:
+The start and end tags for Tapestry components must balance properly. This includes cases where the
+end tag is normally ommitted, such as <sgmltag class=starttag>input</> elements.  Either a closing
+tag must be supplied, or the XML-style syntax for an empty element must be used (that is, a slash before
+the end of the tag).
+</>
+
+<para>
+Tapestry divides the contents of the HTML template into two categories:
 <itemizedlist mark=bullet>
 	<listitem>
 		<para>
-		Static HTML, which passes through unchanged.
+		Static HTML and HTML comments, which pass through unchanged.
 		</>
 	</>
 	<listitem>
@@ -250,17 +333,6 @@ Tapestry divides the contents of the HTML template into three categories:
 		Tapestry components (&jwc-tag;, or tags with the <varname>jwcid</> attribute).
 		The related tags are removed, and the HTML is supplied by the actual
 		components.
-		</>
-	</>
-	<listitem>
-		<para>
-		HTML comments, which are simply removed
-		<footnote>
-			<para>
-			Through Tapestry release 1.0.1, HTML comments were treated like any other
-			static HTML.  Starting with release 1.0.2, they are removed.
-			</>
-		</>.
 		</>
 	</>
 </>
@@ -283,6 +355,7 @@ form element and it makes no sense for it to contain anything else.
 Whether a component can have a body (and wrap other elements) is defined in the 
 component's specification.
 </>
+
 
 <para>
 Tapestry includes a special component, &InsertWrapped;, 
@@ -489,6 +562,165 @@ controlling their contents, just exactly like a
 wraps its <sgmltag class=starttag>tr</>'s or a <sgmltag class=starttag>form</> wraps its 
 <sgmltag class=starttag>input</>'s.
 </>
+
+	</section>
+	
+	<section id="components.html-production">
+		<title>Tapestry and HTML Production</>
+		
+<para>
+Tapestry is design to work in a large-scale environment, that typically features
+two seperate teams: a "creative" team that produces HTML and a 
+"technical" team that produces Tapestry pages, components and Java code.
+</>
+
+<para>
+The division of skills is such that the creative team has virtually no knowledge of Java and
+a minimal understanding of Tapestry, and the technical team has a limited understanding of HTML 
+(and tend to be color blind).
+</>
+
+<para>
+The typical workflow is that the technical team implements the application, using very minimal HTML 
+... that is, minimal attention to layout, font size, colors, etc.  Just enough to be sure that
+the functionality of the application is there.
+</>
+
+<para>
+Meanwhile, the creative team is producing HTML pages of what the finished application will look like.  
+These pages are like snapshots of the HTML produced by the running application.
+</>
+
+<para>
+<emphasis>Integration</> is the process of merging these two views of the application together.
+Primarily, this involves marking up the HTML page with <varname>jwcid</> attributes, to indicate
+to Tapestry which portions of the page are dynamic.  In this way, the 
+page can be used as a Tapestry HTML template.
+</>
+
+<para>
+Tapestry includes a number of features to ease this whole process.
+</>
+
+<section>
+	<title>Implicitly removed bodies</>
+	
+<para>
+In many cases, a component doesn't allow a body, but one may be present in the HTML template.
+Tapestry considers that body to be a sample value, that exists to allow the HTML producer
+to verify the layout of the page.  Tapestry edits out the body.
+</>
+
+<para>For example, an HTML producer may create an HTML template that includes a table
+cell to display the user's name.  The producer includes a sample value so that the
+cell isn't empty (when previewing the HTML layout).
+</>
+
+<informalexample>
+<programlisting>
+   &lt;td&gt;&lt;span jwcid="insertName"&gt;John Doe&lt;/span&gt;&lt;/td&gt;
+</programlisting>
+</informalexample>
+
+<para>
+The &Insert; component doesn't allow a body, so Tapestry edits out the 
+content of the <sgmltag class=starttag>span</> tag from the HTML template.  The fact that
+a <sgmltag class=starttag>span</> was used to represent the &Insert; component in the
+HTML template is irrelevant to Tapestry; any tag could have been used, Tapestry just
+cares that the start and end tags balance.
+</>
+
+<para>
+At runtime, Tapestry will combine the HTML template and the &Insert; component to produce the
+final HTML:
+</>
+
+<informalexample>
+<programlisting>
+  &lt;td&gt;Frank N. Furter&lt;/td&gt;
+</programlisting>
+</informalexample>
+
+<para>
+This editting out isn't limited to simple text; any HTML inside the body is removed.  However,
+none of that content may be dynamic ... if presence of a &jwc-tag; tag or a
+<varname>jwcid</> attribute will cause a parsing exception.
+</>
+
+</section>
+
+<section>
+	<title>Explicitly removed bodies
+	</>
+	
+<para>
+Another feature related to production and integration is the ability to remove sections of the HTML template.
+Producers often include some optional portions on the page.  The canonical example of this is a page that 
+shows a table of results; the HTML producer will usually include extra rows to demonstrate the look and layout of
+a fully populated page.
+</>
+
+<para>
+The first row will be wrapped by a &Foreach; and otherwise changed to include dynamic links and output, but what about
+the other rows?
+</>
+
+<para>
+To handle this case,
+Tapestry recognizes a special <varname>jwcid</> attribute value: <literal>$remove$</>.  Using this special id causes
+Tapestry to edit out the tag and all of its contents.  Thus, each additional <sgmltag class=starttag>tr</> in the
+table should specify that <literal>$remove$</literal> <varname>jwcid</>.
+</>
+
+</section>
+
+<section>
+	<title>Limiting template content
+	</>
+	
+<para>
+In a typical Tapestry application, some form of Border component provides a significant portion of every page.
+This typically includes the outermost <sgmltag class=starttag>html</>, <sgmltag class=starttag>head</> and <sgmltag class=starttag>body</>
+tags, as well as <sgmltag class=starttag>table</>s used to control layout.
+</>
+
+<para>
+In the static HTML pages from the creative team, this is not directly visible ... they <emphasis>must</> include all the content
+normally generated by the Border component in order to see what the HTML page actually looks like.
+</>
+
+<para>
+By default, the <emphasis>entire</> HTML template is the content for the page.  
+This causes a problem, even after a <sgmltag class=starttag>span</>
+is added, to represent the Border component ... much of the HTML is duplicated, 
+once from the static HTML, then dynamically from the Border component.
+</>
+
+<para>
+To eliminated this problem, Tapestry has a second special <varname>jwcid</> attribute: <literal>$content$</>.  Using
+this special id causes Tapestry to limit its view of the HTML template to just the content inside the tag.  Anything outside
+the defined content is completely ignored.
+</>
+</section>
+
+	</section>
+	
+	<section>
+		<title>Limits</>
+		
+<para>
+Ideally, the HTML pages created by the HTML producers would be used as is
+as the HTML templates.  Changes made for integration, the adding of <varname>jwcid</> attributes and such,
+would be copied back into the HTML pages.
+</>
+
+<para>
+Given the use of the <literal>$remove$</> and <literal>$content$</> <varname>jwcid</>'s, this is practical
+to a point.  Once the application starts using a number of re-usable components, there
+isn't a good way to perform the integration short of cutting and replacing
+some of the HTML page content to form the HTML template.
+</>
+
 
 	</section>
 
@@ -765,7 +997,7 @@ multiple languages.
 
 			</section>
 
-			<section>
+			<section id="components.spec.parameter">
 				<title><sgmltag class=starttag>parameter</> element</>
 				
 <para>
