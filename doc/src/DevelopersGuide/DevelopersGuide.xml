@@ -267,7 +267,7 @@ The corresponding Tapestry HTML template is much simpler:
 </para>
       <informalexample>
         <programlisting><emphasis><![CDATA[
-<a jwcid="checkoutLink"><img jwcid="checkoutButton"/></a>]]></emphasis>
+<a jwcid="checkoutLink"><img jwcid="checkoutButton" alt="Checkout"/></a>]]></emphasis>
         </programlisting>
       </informalexample>
       <para>
@@ -282,7 +282,6 @@ A bit more goes into the page's specification :
 &lt;component id="checkoutButton" type="Rollover"&gt; <co id="intro.ex2.co.Rollover"/>
   &lt;binding name="image" property-path="assets.checkout"/&gt;
   &lt;binding name="disabled" property-path="assets.checkout-disabled"/&gt; 
-  &lt;static-binding name="alt"&gt;Checkout&lt;/static-binding&gt;
 &lt;/component&gt;
 
 &lt;external-asset name="checkout" URL="/images/Checkout.gif"/&gt; <co id="intro.ex2.co.checkout-asset"/>
@@ -309,7 +308,7 @@ A bit more goes into the page's specification :
     link component (such as the &Page;) and is sensitive to whether the link
     is enabled or disabled; inserting a different image when disabled.  Not shown here
     is the ability of the &Rollover; component to 
-    generate dynamic mouse over effects as well.
+    generate dynamic mouse-over effects as well.
     </para>
           </callout>
           <callout arearefs="intro.ex2.co.checkout-asset">
@@ -614,7 +613,9 @@ treat any object as a collection of named properties.  Tapestry frequently reads
 from or to these named properties.
 </para>
       <para>
-A property is <emphasis>not</emphasis> the same as an <emphasis>attribute</emphasis> ... though, most often, each property is backed up by an attribute.  To Tapestry, and the Reflection API, a property is a set public methods on the object.  Accessing a property involves invoking one of these methods.
+A property is <emphasis>not</emphasis> the same as an <emphasis>attribute</emphasis> ... though, most often, each property is backed up by an attribute. 
+ To Tapestry, and the Reflection API, a property is a set of public methods on the object.  
+ Accessing a property involves invoking one of these methods.
 </para>
       <example>
         <title>JavaBeans getter method</title>
@@ -738,8 +739,10 @@ but the last a read; only the last property is written.  In other words, updatin
 would be similar to the JavaCode <literal>getVisit().setUserName(<replaceable>value</replaceable>)</literal>.
 </para>
       <para>
-Property paths can be of any length; however, they are just as suseptible to <classname>NullPointerException</classname>s
-as any other JavaCode.  Care must be taken that none of the properties in a property path, except the final one, return null.  This can often be accomplished using <link linkend="beans.properties.synthesized">synthesized properties</link>
+Property paths can be of any length; however, they are just as susceptable to <classname>NullPointerException</classname>s
+as any other JavaCode.  Care must be taken that none of the properties in a property path, 
+except the final one, return null.  This can often be accomplished 
+using <link linkend="beans.properties.synthesized">synthesized properties</link>.
       </para>
       <para>
 The Tapestry class &PropertyHelper; is used to streamline property path access to objects.  It also provides hooks that
@@ -1450,12 +1453,10 @@ table should specify the value <literal>$remove$</literal> for attribute <varnam
         <informalexample>
           <programlisting><![CDATA[
 <table>
-  <span jwcid="foreach">
-  <tr>
+  <tr jwcid="foreach">
     <td><span jwcid="insertUserName">John Doe</span></td>
     <td><span jwcid="insertAge">42</span></td>
   </tr>
-  </span>
   <tr jwcid="$remove$">
   	<td>Frank N. Furter</td>
   	<td>47</td>
@@ -1514,7 +1515,7 @@ some of the HTML page content to form the HTML template.
       <para>
 Tapestry has built in support for localization, designed to be easy to use. This localization support
 is defined in terms of transforming the user interface into a format appropriate the the locale
-of the user.  This transformation primarily takes the form of localized text (translated into the
+of the user.  This primarily takes the form of localized text (translated into the
 end-user's language), but can also affect other aspects of look and feel including colors, images and layout.
 </para>
 
@@ -1653,13 +1654,13 @@ A French speaking Belgian visitor would provoke the following search:
       <title>Assets</title>
       <para>
 Assets are images (GIF, JPEG, etc.), movies, sounds or other collateral associated 
-with a web application.  Assets come in three flavors:  external, internal and private.
+with a web application.  Assets come in three flavors:  external, context and private.
 </para>
       <para>
-External assets live at an arbitrary URL.  Internal assets use a URL within the 
+External assets live at an arbitrary URL.  Context assets use a URL within the 
 servlet context hosting the Tapestry application; 
-these assets are deployed on the same web server as the application, 
-or within the same Web Application Archive (WAR).
+these assets are deployed 
+within the same Web Application Archive (WAR) as the application.
 </para>
       <para>
 Private assets come from the Java classpath and are 
@@ -1677,8 +1678,7 @@ External assets can't be localized in this way.
       <para>
 Private assets allow for easy deployment because the assets are 
 packaged with the HTML templates and Java code of the application, 
-inside a Java Archive (JAR) file, or within the <filename class="directory">WEB-INF/classes</filename>
-directory of a Web Application Archive (WAR) file.
+inside a Java Archive (JAR) file.
 </para>
       <para>
 Private assets support re-usability; a re-usable component may be 
@@ -5662,7 +5662,7 @@ files, sounds, Flash animations, QuickTime movies or whatever.  These are
 collectively called "assets".  
 </para>
       <para>
-Assets come in three flavors:  external, internal and private.
+Assets come in three flavors:  external, context and private.
 </para>
       <itemizedlist>
         <listitem>
@@ -5670,7 +5670,7 @@ Assets come in three flavors:  external, internal and private.
 		</para>
         </listitem>
         <listitem>
-          <para>An internal asset represents a file with a URL 
+          <para>A context asset represents a file with a URL 
 		relative to the web server containing the Tapestry application.</para>
         </listitem>
         <listitem>
@@ -5769,13 +5769,15 @@ into major web browsers such as Internet Explorer and Netscape Navigator.
 </para>
     <para>
 These effects range from simple effects such as image rollovers (changing 
-the icon used for a link whent he cursor is over it) to more involved
+the icon used for a link when the cursor is over it) to more involved
 patterns such as client side validation of forms or even complex animations.
 </para>
     <para>
-In traditional, static web page development, the author is completely responsible
+In traditional, static web page development, the HTML producer (the person creating
+the static HTML page)
+is completely responsible
 for this aspect of development, usually aided by a web page authoring tool, such as
-Dreamweaver.  Ultimately, though, the web page developer assigns unique names or ids to
+Dreamweaver.  Ultimately, though, the HTML producer assigns unique names or ids to
 various elements on the page, and attaches JavaScript event handlers to 
 the elements.</para>
     <example>
@@ -5989,7 +5991,7 @@ Any number of other scripts may be included.
         </figure>
         <para>
 This element is used to include external, static, JavaScript scripts on the rendered page.
-This is useful to in cases where large parts of the JavaScript do not depend on any dynamic symbols.
+This is useful in cases where large parts of the JavaScript do not depend on any dynamic symbols.
 The path is to a resource on the classpath, much like
 a <link linkend="components.spec.assets">private asset</link>.
 </para>
@@ -6064,7 +6066,9 @@ names of functions.
         <para>
 The <sgmltag class="starttag">insert</sgmltag> element is used to insert the value of a property.
 Simple names are just the names of symbols passed to the script, or the names can be
-a full property path (operating like a <sgmltag class="starttag">binding</sgmltag> element
+a full property path (operating like a 
+<link linkend="components.spec.bindings"><sgmltag class="starttag">binding</sgmltag></link>
+element
 in a component specification).
 </para>
       </section>
@@ -6117,7 +6121,8 @@ property, including its content if the property is false.
         </figure>
         <para>
 The <sgmltag class="starttag">foreach</sgmltag> element is an analog of the &Foreach; component;
-it iterates through a list of objects.  On each iteration, it sets the named symbol
+it iterates through a list of objects defined
+by the <varname>property-path</varname> attribute.  On each iteration, it sets the named symbol
 (via the <varname>key</varname> attribute) and inserts its body.
 </para>
       </section>
@@ -6159,7 +6164,7 @@ HTML <sgmltag class="starttag">body</sgmltag> element's
     <section id="script.script-component">
       <title>Script component</title>
       <para>
-The &Script; component is one of the more common ways to add scripting to a Tapestry page.
+The &Script; component is a convinient way to add scripting to a Tapestry page.
 </para>
       <para>
 The component has a single required parameter, <varname>script</varname> that is the path to

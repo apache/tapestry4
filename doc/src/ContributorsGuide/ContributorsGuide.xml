@@ -501,7 +501,10 @@ must come after all <literal>import</literal> statements, and before the start o
 
 <para>
 The <replaceable>Version</replaceable> should be replaced with the numeric version number of
-the Tapestry release the file will first appear in, i.e., 2.1.7.
+the Tapestry release the type will first appear in.  This is the 
+<link linkend="releases">minor release number</link>; for example,
+a change introduced in release <literal>2.3-beta-3</literal>
+would be identified as <literal>2.3</literal>.
 </para>
 
 </section>
@@ -539,6 +542,8 @@ entries should describe any runtime exceptions that may also be thrown.
 Methods should always include a <literal>@since</literal> entry, unless the method
 was added as part of a new Java class or interface, in which case
 the <literal>@since</literal> for the containing type is sufficient.
+Use the same version number as <link linkend="standards.typecomment">type comments</link>
+when adding individual methods.
 </para>
 
 <para>
@@ -550,7 +555,7 @@ always much more interesting and useful than <emphasis>how?</emphasis> or <empha
 
 <para>
 It is appropriate to create JavaDoc comments for variables, even private variables (to at least
-provide a <literal>@since</literal> value).
+provide an <literal>@since</literal> value).
 </para>
 
 <para>
@@ -587,7 +592,7 @@ documentation far eaiser to use.
 	
 <para>
 Ah, a <emphasis>religous issue</emphasis>. The most important things are to be consistent
-(and editor that indents code for you is helpful) and to
+(an editor that indents code for you is helpful) and to
 <emphasis>conform to the existing style</emphasis> when editting someone else's code.
 </para>
 
