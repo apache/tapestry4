@@ -1,3 +1,9 @@
+* Feb 22 2001 hship
+
+No longer distribute OpenJade with the JBE.
+Add support for SED and CHMOD to the Platform.*.mk files.
+More tweaking on the DocBook module.
+
 * Feb 9 2001 hship
 
 Reinstate SGML validation of DocBook documents (before apply stylesheets), even though

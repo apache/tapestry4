@@ -60,10 +60,10 @@ JBE_UTIL := $(JAVA) -classpath $(SYS_MAKEFILE_DIR) com.primix.jbe.Util
 
 # Command for accessing the JBE utility.
 # Usage:
-#	$(call JBE_CANONICALIZE,options)
+#	$(call JBE_CANONICALIZE, options)
 #
 # Typically, something like
-# $(call JBE_CANONICALIZE,-classpath $(CLASSPATH)) 
+# $(call JBE_CANONICALIZE, -classpath $(CLASSPATH)) 
 #
 # Runs the JBE_UTIL in a shell and captures the output.
 
@@ -71,13 +71,13 @@ JBE_CANONICALIZE = $(shell $(JBE_UTIL) canonicalize $(strip $(1)))
 
 # Splice command
 # Usage:
-#   $(call JBE_SPLICE,tag,target file,source file[,other options])
+#   $(call JBE_SPLICE, tag, target file, source file[, other options])
 
 JBE_SPLICE = $(JBE_UTIL) splice -tag $(1) -target $(2) -source $(3) $(4)
  
 # Command for running a Java command
 # Usage
-#	$(call EXEC_JAVA,classpath,options)
+#	$(call EXEC_JAVA, classpath, options)
 #
 # classpath is a space seperated list of stuff for the classpath.
 # options is passed as is to $(JAVAC), it should include JVM options,
@@ -89,10 +89,10 @@ EXEC_JAVA = $(JAVA) -classpath "$(call JBE_CANONICALIZE,-classpath $(1))" $(2)
 # directory.
 #
 # Usage
-#  $(call COPY_TREE,source dir, source files, target dir)
+#  $(call COPY_TREE, source dir, source files, target dir)
 #
 # Example:
-#  $(call COPY_TREE,$(SOURCE_DIR),. images,$(TARGET_DIR))
+#  $(call COPY_TREE, $(SOURCE_DIR),. images,$(TARGET_DIR))
 
 COPY_TREE = ($(CD) $(1) && $(GNUTAR) $(GNUTAR_CREATE_OPT) $(2))  | \
 			($(CD) $(3) && $(GNUTAR) $(GNUTAR_EXTRACT_OPT) )
@@ -100,10 +100,10 @@ COPY_TREE = ($(CD) $(1) && $(GNUTAR) $(GNUTAR_CREATE_OPT) $(2))  | \
 # Command for producing output
 #
 # Usage
-#   $(call NOTE,text)
+#   $(call NOTE, text)
 #
 # Example
-#  $(call NOTE,About to do something ...)
+#  $(call NOTE, About to do something ...)
 
 NOTE = @ $(ECHO) "\n*** $(strip $(1)) ***\n"
 

@@ -47,12 +47,14 @@ DISTRO_STAMP_FILE := $(DOCBOOK_DIR)/.distro-stamp
 
 DOCBOOK_DISTROS := \
 	$(DOCBOOK_DIR)/dtd-4.1.tar.gz \
-	$(DOCBOOK_DIR)/dsssl-1.62.tar.gz \
-	$(OPENJADE_DISTRO)
+	$(DOCBOOK_DIR)/dsssl-1.62.tar.gz
 
 initialize: setup-jbe-util $(DISTRO_STAMP_FILE)
 ifeq "$(OPENJADE)" ""
 	$(error DocBook modules are not supported on this platform.)
+endif
+ifeq "$(OPENJADE_DIR)" ""
+	$(error You must set OPENJADE_DIR to the OpenJade installation directory.)
 endif
 	@$(MKDIRS) $(SYS_BUILD_DIR_NAME) $(HTML_DIR)
 
@@ -69,7 +71,7 @@ $(DISTRO_STAMP_FILE): $(DOCBOOK_DISTROS)
 SGML_CATALOG_FILES := \
 	$(DOCBOOK_DIR)/dtd/docbook.cat \
 	$(DOCBOOK_DSSSL_DIR)/catalog \
-	$(DOCBOOK_OPENJADE_DIR)/dsssl/catalog
+	$(OPENJADE_DIR)/dsssl/catalog
 
 CATALOG_OPT := $(foreach cat,$(SGML_CATALOG_FILES),-c $(cat))
 
@@ -81,7 +83,7 @@ CATALOG_OPT := $(foreach cat,$(SGML_CATALOG_FILES),-c $(cat))
 # produce valid error messages (in the 1.3 release).  To be investigated.
 #
 
-$(VALID_PARSE_STAMP_FILE): initialize $(MAIN_DOCUMENT) $(OTHER_DOC_FILES)
+$(VALID_PARSE_STAMP_FILE): $(MAIN_DOCUMENT) $(OTHER_DOC_FILES)
 	$(call NOTE, "Validating $(MAIN_DOCUMENT) ...")
 	$(ONSGMLS) $(CATALOG_OPT) -s $(MAIN_DOCUMENT)
 	@$(TOUCH) $@
@@ -102,17 +104,17 @@ FINAL_HTML_STYLESHEET := \
 #
 # Usage:
 #
-#  $(call RUN_OPENJADE, main document, type, stylesheet, variable defs, type-specific opts)
+#  $(call RUN_OPENJADE, main document, type, variable defs, type-specific opts)
 #
 # Example:
 #
-#  $(call RUN_OPENJADE, sgml, $(FINAL_HTML_STYLESHEET), \
-#		$(FINAL_HTML_VARIABLE_DEFS), $(HTML_OPENJADE_OPT))
+#  $(call RUN_OPENJADE, sgml, \
+#		$(FINAL_HTML_VARIABLE_DEFS), -d $(FINAL_HTML_STYLESHEET) $(HTML_OPENJADE_OPT))
 #
 
 RUN_OPENJADE = \
-	$(OPENJADE) -t $(1) -d $(2) $(OPENJADE_OPT) $(4) \
-	$(foreach vardef,$(3),-V $(vardef)) \
+	$(OPENJADE) -t $(1)  $(OPENJADE_OPT) $(3) \
+	$(foreach vardef,$(2),-V $(vardef)) \
 	$(CATALOG_OPT) \
 	$(MAIN_DOCUMENT)
 
@@ -124,8 +126,10 @@ html: initialize $(HTML_STAMP_FILE)
 $(HTML_STAMP_FILE): $(DOCUMENT_RESOURCE_STAMP_FILE)  \
 	$(MAIN_DOCUMENT) $(FINAL_HTML_STYLESHEET) $(OTHER_DOC_FILES) $(VALID_PARSE_STAMP_FILE)
 	$(call NOTE, Generating HTML from $(MAIN_DOCUMENT) ...)
-	$(call RUN_OPENJADE, sgml-raw, $(FINAL_HTML_STYLESHEET), \
-		$(FINAL_HTML_VARIABLE_DEFS), $(HTML_OPENJADE_OPT))
+	$(call RUN_OPENJADE, sgml-raw, \
+		$(FINAL_HTML_VARIABLE_DEFS), \
+		-d $(FINAL_HTML_STYLESHEET) \
+		$(HTML_OPENJADE_OPT))
 	@$(TOUCH) $@
 
 FINAL_RTF_VARIABLE_DEFS := $(RTF_VARIABLE_DEFS) $(VARIABLE_DEFS)
@@ -137,10 +141,12 @@ rtf: initialize $(RTF_OUTPUT_FILE)
 
 # Note: this still makes references to the image files.
 
-$(RTF_OUTPUT_FILE): $(MAIN_DOCUMENT) $(FINAL_RTF_STYLESHEET) $(OTHER_DOC_FILES)
+$(RTF_OUTPUT_FILE): $(MAIN_DOCUMENT) $(FINAL_RTF_STYLESHEET) $(OTHER_DOC_FILES) $(VALID_PARSE_STAMP_FILE)
 	$(call NOTE, Generating RTF from $(MAIN_DOCUMENT) ...)
-	$(call RUN_OPENJADE, rtf, $(FINAL_RTF_STYLESHEET), \
-		$(FINAL_RTF_VARIABLE_DEFS), $(RTF_OPENJADE_OPT) -o $(RTF_OUTPUT_FILE))
+	$(call RUN_OPENJADE, rtf,  \
+		$(FINAL_RTF_VARIABLE_DEFS), \
+		-d $(FINAL_RTF_STYLESHEET) \
+		$(RTF_OPENJADE_OPT) -o $(RTF_OUTPUT_FILE))
 
 FINAL_RTF_INSTALL_DIR := $(firstword $(RTF_INSTALL_DIR) $(INSTALL_DIR))
 
@@ -168,6 +174,8 @@ endif
 	@$(MKDIRS) $(FINAL_HTML_INSTALL_DIR)
 	@$(call COPY_TREE, $(HTML_DIR), . , $(FINAL_HTML_INSTALL_DIR))	
 
+
+
 # Rules for dealing with DOCUMENT_RESOURCES, generally images (or directories of images)
 # that should be included with the generated HTML. 
 
@@ -193,4 +201,4 @@ documentation: $(FINAL_FORMATS)
 install: $(addprefix install-,$(FINAL_FORMATS))
 
 .PHONY: default html initialize install-html documentation rtf
-.PHONY: install
+.PHONY: install install-rtf

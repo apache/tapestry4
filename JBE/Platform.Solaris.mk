@@ -56,9 +56,9 @@ GNUTAR_GZIP_OPT := --gzip
 
 PWD := $(TOOLS_DIR)/pwd
 
+SED := $(TOOLS_DIR)/sed
+SED_QUIET_OPT := --quiet
+SED_EXPRESSION_OPT := -e 
 
-# Use the cd command of the bourne shell
-
-CD := cd
-
+CHMOD := $(TOOLS_DIR)/chmod
 
