@@ -64,6 +64,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
@@ -146,12 +147,18 @@ public abstract class DatePicker extends AbstractFormComponent
         {
             Body body = Body.get(cycle);
 
+            if (body == null)
+                if (body == null)
+                    throw new ApplicationRuntimeException(
+                        Tapestry.getString("must-be-contained-by-body", "DatePicker"),
+                        this);
+
             Locale locale = getPage().getLocale();
             DateFormatSymbols dfs = new DateFormatSymbols(locale);
             Calendar cal = Calendar.getInstance(locale);
 
-			Date value = getValue();
-			
+            Date value = getValue();
+
             Map symbols = new HashMap();
 
             symbols.put(SYM_NAME, name);
@@ -181,11 +188,6 @@ public abstract class DatePicker extends AbstractFormComponent
 
             if (disabled)
                 writer.attribute("disabled", "disabled");
-
-            if (value == null)
-                writer.attribute("value", "");
-            else
-                writer.attribute("value", Long.toString(value.getTime()));
 
             writer.beginEmpty("input");
             writer.attribute("type", "button");

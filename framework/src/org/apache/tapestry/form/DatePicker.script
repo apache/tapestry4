@@ -35,13 +35,12 @@ var ${calendarObject};
 <initialization>
 	
 <if expression="value == null">
-${name} = new Calendar();
+${calendarObject} = new Calendar();
 </if>
 <if expression="value != null">
-${name} = new Calendar(${value.time});
+${calendarObject} = new Calendar(${value.time});
 </if>
 		
-${calendarObject} = new Calendar();
 ${calendarObject}.setMonthNames(new Array(${monthNames}));
 ${calendarObject}.setShortMonthNames(new Array(${shortMonthNames}));
 ${calendarObject}.setWeekDayNames(new Array(${weekDayNames}));
