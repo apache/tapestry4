@@ -37,7 +37,7 @@
 	</target>
 	<target name="install" depends="compile"
 		description="Compile all classes and build the installed WAR.">
-		<war warfile="${root.lib.dir}/${workbench.war}"
+		<war warfile="${root.lib.dir}/${wap.war}"
 			webxml="context/WEB-INF/web.xml">
 			<fileset dir="context">
 				<exclude name="WEB-INF/web.xml"/>
@@ -47,9 +47,6 @@
 				<exclude name="**/*.java"/>
 				<exclude name="**/package.html"/>
 			</classes>
-			<lib dir="${lib.dir}">
-				<include name="*.jar"/>
-			</lib>
 		</war>
 	</target>
 
