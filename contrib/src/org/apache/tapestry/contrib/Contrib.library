@@ -40,6 +40,8 @@
 
   <component-type type="PopupLink" specification-path="popup/PopupLink.jwc"/>
 
+    <component-type type="Tree"
+        specification-path="/org/apache/tapestry/contrib/tree/components/Tree.jwc"/>
     <component-type type="TreeDataView"
         specification-path="/org/apache/tapestry/contrib/tree/components/TreeDataView.jwc"/>
     <component-type type="TreeNodeView"
