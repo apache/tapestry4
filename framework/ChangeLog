@@ -1,5 +1,10 @@
 * Oct 4 2000 hship
 
+Fix a NullPointerException in SimpleApplication.cleanupAfterRequest().  The exception may be thrown
+if another exception is thrown earlier in the request cycle (before any page recoders are accessed).
+
+* Oct 4 2000 hship
+
 Revise Submit and ImageButton components to set a property if clicked, remove
 listener parameters from Form-related components.
 

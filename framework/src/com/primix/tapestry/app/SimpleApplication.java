@@ -85,6 +85,9 @@ public class SimpleApplication extends AbstractApplication
 		Map.Entry entry;
 		IPageRecorder recorder;
 		
+        if (recorders == null)
+            return;
+
 		i = recorders.entrySet().iterator();
 		
 		while (i.hasNext())
