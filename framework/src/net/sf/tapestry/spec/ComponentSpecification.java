@@ -165,7 +165,7 @@ public class ComponentSpecification extends BasePropertyHolder
         if (_assets == null)
             _assets = new HashMap();
 
-        else if (_assets.containsKey(name))
+        if (_assets.containsKey(name))
             throw new IllegalArgumentException(
                 Tapestry.getString("ComponentSpecification.duplicate-asset", this, name));
 
@@ -182,7 +182,7 @@ public class ComponentSpecification extends BasePropertyHolder
         if (_components == null)
             _components = new HashMap();
 
-        else if (_components.containsKey(id))
+        if (_components.containsKey(id))
             throw new IllegalArgumentException(
                 Tapestry.getString("ComponentSpecification.duplicate-component", this, id));
 
@@ -200,7 +200,7 @@ public class ComponentSpecification extends BasePropertyHolder
         if (_parameters == null)
             _parameters = new HashMap();
 
-        else if (_parameters.containsKey(name))
+        if (_parameters.containsKey(name))
             throw new IllegalArgumentException(
                 Tapestry.getString("ComponentSpecification.duplicate-parameter", this, name));
 

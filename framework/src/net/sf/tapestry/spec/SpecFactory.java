@@ -176,4 +176,16 @@ public class SpecFactory
     {
         return new StringBeanInitializer(propertyName, key);
     }
+    
+    /**
+     *  Creates a concrete instance of {@link net.sf.tapestry.spec.ExtensionSpecification}.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public ExtensionSpecification createExtensionSpecification()
+    {
+        return new ExtensionSpecification();
+    }
 }

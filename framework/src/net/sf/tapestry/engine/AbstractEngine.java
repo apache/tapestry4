@@ -691,12 +691,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
         _localeChanged = false;
 
-        // Build the resolver around the servlet, since that's guarenteed
-        // to be in the application's class loader (which has the broadest
-        // possible view).
-
         if (_resolver == null)
-            _resolver = new ResourceResolver(context.getServlet());
+            _resolver = _specification.getResourceResolver();
 
         try
         {

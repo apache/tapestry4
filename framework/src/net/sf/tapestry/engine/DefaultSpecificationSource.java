@@ -192,7 +192,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
 
         try
         {
-            return getParser().parseLibrarySpecification(inputStream, resourcePath);
+            return getParser().parseLibrarySpecification(inputStream, resourcePath, _resolver);
         }
         catch (DocumentParseException ex)
         {
