@@ -72,10 +72,11 @@ In some of the documentation in the web directory.
     <delete>
     <fileset dir="${lib}">
       <include name="*.war"/>
+      <include name="*.ear"/>
       <include name="com.primix.tapestry.jar"/>
       <include name="net.sf.tapestry.contrib.jar"/>
-      <include name="VlibBeans.jar"/>
-     </fileset>
+      <include name="VlibBeans.jar"/>  
+   </fileset>
   </delete>
 </target>
 
@@ -90,6 +91,7 @@ In some of the documentation in the web directory.
    <ant dir="examples/Tutorial" target="install" inheritAll="false"/>
    <ant dir="examples/VlibBeans" target="install" inheritAll="false"/>
    <ant dir="examples/Vlib" target="install" inheritAll="false"/>
+   <ant dir="examples/VlibEAR" target="install" inheritAll="false"/>
  </target>
 
 <target name="documentation"
@@ -308,6 +310,11 @@ description="Builds the Tapestry documentation.">
     		<include name="net.sf.tapestry.contrib.jar"/>
     		<include name="com.primix.tapestry.jar"/>
     		<include name="mckoidb.jar"/>
+    		<include name="org.mortbay.jetty.jar"/>
+    		<include name="javax.servlet.jar"/>
+    	</fileset>
+    	<fileset dir="config/jboss/lib">
+    		<include name="*.jar"/>
     	</fileset>
     </copy>
     
@@ -315,7 +322,11 @@ description="Builds the Tapestry documentation.">
     
     <delete dir="${jboss.dir}/conf/vlib" quiet="true"/>
 	<mkdir dir="${jboss.dir}/conf/vlib"/>
-	<copy todir="${jboss.dir}/conf/vlib">
+	
+	<filter token="jboss.dir" value="${jboss.dir}"/>
+	<filter token="user.dir" value="${user.dir}"/>
+	
+	<copy todir="${jboss.dir}/conf/vlib" filtering="true">
 		<fileset dir="config/jboss/conf"/>
 	</copy>
 
@@ -336,7 +347,7 @@ description="Builds the Tapestry documentation.">
   <target name="deploy-vlib" description="Deploys the Virtual Library demo into JBoss.">
   	<copy todir="${jboss.dir}/deploy">
   		<fileset dir="lib">
-  			<include name="VlibBeans.jar"/>
+  			<include name="Vlib.ear"/>
   		</fileset>
   	</copy>
   </target>

@@ -96,11 +96,10 @@
     <attribute name="BeanCacheJMSMonitoringEnabled">false</attribute>
   </mbean>
 
-  <!-- Uncomment and set file URL to add Jetty service (you can set config more than once)
-  <mbean code="org.jboss.jetty.JettyService" name="DefaultDomain:service=Jetty">
-    <attribute name="Configuration">file URL to jetty.xml e.g. file:/usr/local/jboss/dist/conf/default/jetty.xml</attribute>
-  </mbean>
-   -->
+ <mbean code="org.jboss.jetty.JettyService" name="DefaultDomain:service=Jetty">
+    <attribute name="Configuration">file:@jboss.dir@/conf/vlib/jetty.xml</attribute>
+ </mbean>
+
   <!-- ==================================================================== -->
   <!-- JBossMQ                                                              -->
   <!-- ==================================================================== -->

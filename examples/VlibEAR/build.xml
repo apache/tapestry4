@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+
+<project name="Virtual Library - Enterprise Application Archive" default="install">
+
+  <property name="lib" value="../../lib"/>
+
+  <target name="install">
+  
+  	<jar jarfile="${lib}/Vlib.ear">
+  	  <fileset dir=".">
+  	    <include name="META-INF/*"/>
+  	  </fileset>
+  	  <fileset dir="${lib}">
+  	  	<include name="Vlib.war"/>
+  	  	<include name="VlibBeans.jar"/>
+  	  	<include name="Tutorial.war"/>
+  	  </fileset>
+  	</jar>
+  
+  </target>
+
+</project>
