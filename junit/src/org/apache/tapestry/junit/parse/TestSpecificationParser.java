@@ -66,7 +66,7 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals("type", BindingType.STRING, bs.getType());
         assertEquals("key", "label.hello", bs.getValue());
 
-        checkLine(bs, 10);
+        checkLine(bs, 25);
     }
 
     /**
@@ -82,7 +82,7 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals("type", BindingType.STRING, bs.getType());
         assertEquals("key", "label.hello", bs.getValue());
 
-        checkLine(bs, 10);
+        checkLine(bs, 25);
     }
 
     /**
@@ -99,7 +99,7 @@ public class TestSpecificationParser extends TapestryTestCase
         IParameterSpecification ps = spec.getParameter("valid");
 
         assertNotNull("Parameter specification.", ps);
-        checkLine(ps, 9);
+        checkLine(ps, 24);
     }
 
     /**
@@ -387,7 +387,7 @@ public class TestSpecificationParser extends TapestryTestCase
         IComponentSpecification spec = parseComponent("NulledComponent.jwc");
 
         assertNull(spec.getComponentClassName());
-        checkLine(spec, 7);
+        checkLine(spec, 22);
     }
 
     /**
@@ -401,7 +401,7 @@ public class TestSpecificationParser extends TapestryTestCase
         IComponentSpecification spec = parsePage("NulledPage.page");
 
         assertNull(spec.getComponentClassName());
-        checkLine(spec, 7);
+        checkLine(spec, 22);
     }
 
     /**
@@ -616,12 +616,12 @@ public class TestSpecificationParser extends TapestryTestCase
         IComponentSpecification spec = parsePage("StringBeanInitializer.page");
 
         IBeanSpecification bs = spec.getBeanSpecification("fred");
-        checkLine(bs, 9);
+        checkLine(bs, 24);
         MessageBeanInitializer i = (MessageBeanInitializer) bs.getInitializers().get(0);
 
         assertEquals("barney", i.getPropertyName());
         assertEquals("rubble", i.getKey());
-        checkLine(i, 10);
+        checkLine(i, 25);
     }
 
     /** @since 3.0 **/

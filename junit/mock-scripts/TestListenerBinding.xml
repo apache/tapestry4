@@ -96,7 +96,7 @@ Message: Component was clicked.
 		</assert-output>
 		
 		<assert-output name="Invalid Script Error Message part 1">
-		Unable to execute listener script "context:/WEB-INF/Two.page, line 18
+		Unable to execute listener script "context:/WEB-INF/Two.page, line 33
 		</assert-output>		
 
 		<assert-output name="Invalid Script Error Message part 2">
@@ -116,7 +116,7 @@ Message: Component was clicked.
 		</assert-output>
 		
 		<assert-output name="Unknown Language Error Message part 1">
-			Unable to execute listener script "context:/WEB-INF/Two.page, line 28
+			Unable to execute listener script "context:/WEB-INF/Two.page, line 43
 		</assert-output>		
 
 		<assert-output name="Unknown Language Error Message part 2">
