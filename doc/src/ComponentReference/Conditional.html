@@ -127,34 +127,13 @@ John Smith is a Manager with <font color="red"><b>no</b></font> staff.
 </table>
 		
 <pre>
-&lt;span jwcid="insertName"/&gt;
-&lt;span jwcid="<span class="jwcid">ifManager</span>"&gt; is a Manager
- &lt;span jwcid="<span class="jwcid">ifHasStaff</span>"&gt; with staff.&lt;/span&gt;
- &lt;span jwcid="<span class="jwcid">ifNotHasStaff</span>"&gt;
+&lt;span jwcid="@<a href="Insert.html">Insert</a>" value="ognl:fullName"/&gt;
+&lt;span jwcid="<span class="jwcid">@<a href="Conditional.html">Conditional</a></span>" condition="ognl:manager"&gt; is a Manager
+ &lt;span jwcid="<span class="jwcid">@<a href="Conditional.html">Conditional</a></span>" condition="ognl:staffList.empty"&gt; with staff.&lt;/span&gt;
+ &lt;span jwcid="<span class="jwcid">@<a href="Conditional.html">Conditional</a></span>" condition="ognl:! staffList.empty"&gt;
   with &lt;font color="red"&gt;&lt;b&gt;no&lt;/b&gt;&lt;/font&gt; staff.&lt;/span&gt;
 &lt;/span&gt;
-&lt;span jwcid="<span class="jwcid">ifNotManager</span>"&gt; is not a Manager.&lt;/span&gt;
-
-
-&lt;component id="insertName" type="<A href="Insert.html">Insert</a>"&gt;
-   &lt;binding name="value" expression="fullName"/&gt;
-&lt;/component&gt;
-
-&lt;component id="<span class="jwcid">ifManager</span>" type="<A href="Conditional.html">Conditional</a>"&gt;
-   &lt;binding name="condition" expression="manager"/&gt;
-&lt;/component&gt;
-
-&lt;component id="<span class="jwcid">ifNotManager</span>" type="<A href="Conditional.html">Conditional</a>"&gt;
-   &lt;binding name="condition" expression="! manager"/&gt;
-&lt;/component&gt;
-
-&lt;component id="<span class="jwcid">ifHasStaff</span>" type="<A href="Conditional.html">Conditional</a>"&gt;
-   &lt;binding name="condition" expression="! staffList.empty"/&gt;
-&lt;/component&gt;
-
-&lt;component id="<span class="jwcid">ifNotHasStaff</span>" type="<A href="Conditional.html">Conditional</a>"&gt;
-   &lt;binding name="condition" expression="staffList.empty"/&gt;
-&lt;/component&gt;
+&lt;span jwcid="@<a href="Conditional.html">Conditional</a>" condition="ognl:! manager"&gt; is not a Manager.&lt;/span&gt;
 
 
 public class EnquiryPage extends BasePage {

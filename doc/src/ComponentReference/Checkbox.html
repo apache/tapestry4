@@ -126,19 +126,9 @@
 </table>
 		
 <pre>
-&lt;form jwcid="enquiryForm"&gt;
- &lt;input type="checkbox" jwcid="<span class="jwcid">contactRepCheckbox</span>"/&gt; Contact Sales Rep
+&lt;form jwcid="@<a href="Form.html">Form</a>" listener="ognl:listeners.formSubmit"&gt;
+ &lt;input type="checkbox" jwcid="<span class="jwcid">@<a href="Checkbox.html">Checkbox</a></span>" selected="ognl:contactRep" disabled="ognl:staff"/&gt; Contact Sales Rep
 &lt;/form&gt;
-
-
-&lt;component id="enquiryForm" type="<A href="Form.html">Form</a>"&gt;
-    &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
-&lt;/component&gt;
-
-&lt;component id="<span class="jwcid">contactRepCheckbox</span>" type="<A href="Checkbox.html">Checkbox</a>"&gt;
-    &lt;binding name="selected" expression="contactRep"/&gt;
-    &lt;binding name="disabled" expression="staff"/&gt;
-&lt;/component&gt;
 
 
 public class EnquiryPage extends BasePage {

@@ -54,7 +54,7 @@
   A form element used to handle file uploads.  The uploaded file is represented 
   by an instance of <a href="../api/org/apache/tapestry/IUploadFile.html">IUploadFile</a>.
 
- </td>
+          </td>
 </tr>
 
 <tr>
@@ -147,10 +147,10 @@
 </form>
 
 <pre>
-&lt;form jwcid="form"&gt;
+&lt;form jwcid="@<a href="Form.html">Form</a>" listener="ognl:listener.formSubmit"&gt;
  &lt;table bgcolor="#c0c0c0" cellpadding="4"&gt;
   &lt;tr&gt;
-   &lt;td colspan="2"&gt;File:&amp;nbsp;&lt;input jwcid="<span class="jwcid">fileUpload</span>" type= "file"&gt;&lt;/input&gt;&lt;/td&gt;
+   &lt;td colspan="2"&gt;File:&amp;nbsp;&lt;input jwcid="<span class="jwcid">@<a href="Upload.html">Upload</a></span>" file="ognl:file" type= "file"&gt;&lt;/input&gt;&lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
    &lt;td colspan="2"&gt;&lt;input type= "submit"value="Upload"&gt;&lt;/input&gt;&lt;/td&gt;
@@ -159,52 +159,23 @@
    &lt;td colspan="2"&gt;&lt;hr&gt;&lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td&gt;Filename:&lt;/td&gt;&lt;td&gt;&lt;span jwcid="insertFileName"/&gt;/td&gt;
+   &lt;td&gt;Filename:&lt;/td&gt;&lt;td&gt;&lt;span jwcid="@<a href="Insert.html">Insert</a>" value="ognl:filename"/&gt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td&gt;Client path:&lt;/td&gt;&lt;td&gt;&lt;span jwcid="insertClientPath"/&gt;&lt;/td&gt;
+   &lt;td&gt;Client path:&lt;/td&gt;&lt;td&gt;&lt;span jwcid="@<a href="Insert.html">Insert</a>" value="ognl:clientPath"/&gt;&lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td&gt;Server Path:&lt;/td&gt;&lt;td&gt;&lt;span jwcid="insertServerPath"/&gt;&lt;/td&gt;
+   &lt;td&gt;Server Path:&lt;/td&gt;&lt;td&gt;&lt;span jwcid="@<a href="Insert.html">Insert</a>" value="ognl:serverPath"/&gt;&lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td&gt;File Truncated:&lt;/td&gt;&lt;td&gt;&lt;span jwcid="insertFileTruncated"/&gt;&lt;/td&gt;
+   &lt;td&gt;File Truncated:&lt;/td&gt;&lt;td&gt;&lt;span jwcid="@<a href="Insert.html">Insert</a>" value="ognl:fileTruncated"/&gt;&lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr&gt;
-   &lt;td&gt;File Size:&lt;/td&gt;&lt;td&gt;&lt;span jwcid="insertFileSize"/&gt;&amp;nbsp;bytes&lt;/td&gt;
+   &lt;td&gt;File Size:&lt;/td&gt;&lt;td&gt;&lt;span jwcid="@<a href="Insert.html">Insert</a>" value="ognl:fileSize" format="ognl:@UploadPage@SIZE_FORMAT"/&gt;&amp;nbsp;bytes&lt;/td&gt;
   &lt;/tr&gt;
  &lt;/table&gt;
 &lt;/form&gt;
 
-
-&lt;component id="form" type="<A href="Form.html">Form</a>"&gt;
-   &lt;binding name="listener" expression="listener.formSubmit"/&gt;
-&lt;/component&gt;
-
-&lt;component id="<span class="jwcid">fileUpload</span>" type="<A href="Upload.html">Upload</a>"&gt;
-   &lt;binding name="file" expression="file"/&gt;
-&lt;/component&gt;
-
-&lt;component id="insertFileName" type="<A href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" expression="filename"/&gt;
-&lt;/component&gt;
-
-&lt;component id="insertClientPath" type="<A href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" expression="clientPath"/&gt;
-&lt;/component&gt;
-
-&lt;component id="insertServerPath" type="<A href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" expression="serverPath"/&gt;
-&lt;/component&gt;
-
-&lt;component id="insertFileTruncated" type="<A href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" expression="fileTruncated"/&gt;
-&lt;/component&gt;
-
-&lt;component id="insertFileSize" type="<A href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" expression="fileSize"/&gt;
-    &lt;binding name="format" expression="@UploadPage@SIZE_FORMAT"/&gt;
-&lt;/component&gt;
 
 
 public class UploadPage extends BasePage {

@@ -193,11 +193,11 @@
 </table>
 
 <pre>
-&lt;form jwcid="<span class="jwcid">loginForm</span>"&gt;
+&lt;form jwcid="<span class="jwcid">@<a href="Form.html">Form</a></span>" listener="ognl:listeners.formSubmit"&gt;
  &lt;table cellpadding="4"&gt;
-   &lt;tr&gt;&lt;td&gt;Username:&lt;/td&gt;&lt;td&gt;&lt;input jwcid="usernameTextField" size="12"/&gt;&lt;/td&gt;
+   &lt;tr&gt;&lt;td&gt;Username:&lt;/td&gt;&lt;td&gt;&lt;input jwcid="@<a href="TextField.html">TextField</a>" value="ognl:visit.username" size="12"/&gt;&lt;/td&gt;
   &lt;/tr&gt;
-   &lt;tr&gt;&lt;td&gt;Password:&lt;/td&gt;&lt;td&gt;&lt;input jwcid="passwordTextField" size="12"/&gt;&lt;/td&gt;
+   &lt;tr&gt;&lt;td&gt;Password:&lt;/td&gt;&lt;td&gt;&lt;input jwcid="@<a href="TextField.html">TextField</a>" value="ognl:visit.password" hidden="ognl:true" size="12"/&gt;&lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr align="right"&gt;
    &lt;td colspan="2"&gt;&lt;input type="submit" value="Login"/&gt;&lt;/td&gt;
@@ -205,19 +205,6 @@
  &lt;/table&gt;
 &lt;/form&gt;
 
-
-&lt;component id="<span class="jwcid">loginForm</span>" type="<A href="Form.html">Form</a>"&gt;
-   &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
-&lt;/component&gt;
-
-&lt;component id="usernameTextField" type="<A href="TextField.html">TextField</a>"&gt;
-   &lt;binding name="value" expression="visit.username"/&gt;
-&lt;/component&gt;
-
-&lt;component id="passwordTextField" type="<A href="TextField.html">TextField</a>"&gt;
-   &lt;binding name="value" expression="visit.password"/&gt;
-   &lt;binding name="hidden" expression="true"/&gt;
-&lt;/component&gt;
 
 
 public class LoginPage extends BasePage {

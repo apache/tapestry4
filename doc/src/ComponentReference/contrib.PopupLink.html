@@ -134,18 +134,11 @@
 <pre>
 &lt;tr&gt;
  &lt;td&gt; Account Number: &lt;/td&gt;
- &lt;td&gt; &lt;input jwcid="accountField"/&gt; &lt;/td&gt;
- &lt;td&gt; &lt;a href="help/account-number-help.html" jwcid="<span class="jwcid">helpLink</span>"&gt;Help&lt;/a&gt; &lt;/td&gt;
+ &lt;td&gt; &lt;input jwcid="@<a href="TextField.html">TextField</a>" value='ognl:visit.accountNumber'/&gt; &lt;/td&gt;
+ &lt;td&gt; &lt;a href="help/account-number-help.html" jwcid="@<a href="contrib.PopupLink.html">contrib:PopupLink</a>" features='ognl:"resizable,scrollbars,top=100,left=100,height=400,width=300"'&gt;Help&lt;/a&gt; &lt;/td&gt;
 &lt;/tr&gt;
 
 
-&lt;component id="accountField" type="<a href="TextField.html">TextField</a>"&gt;
-   &lt;binding name="value" expression='visit.accountNumber'/&gt;
-&lt;/component&gt;
-
-&lt;component id="helpLink" type="<a href="contrib.PopupLink.html">contrib:PopupLink</a>"&gt;
-   &lt;binding name="features" expression='"resizable,scrollbars,top=100,left=100,height=400,width=300"'/&gt;
-&lt;/component&gt;
 </pre>
       
 
