@@ -42,6 +42,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import net.sf.tapestry.ApplicationRuntimeException;
+import net.sf.tapestry.IPropertySource;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.Tapestry;
@@ -54,7 +55,8 @@ import net.sf.tapestry.util.StringSplitter;
  *
  *  <p>The externalizer uses the name <code>net.sf.tapestry.AssetExternalizer.<i>application name</i>
  *  </code>.  It configures itself using two additional 
- *  context initial parameters:
+ *  properties (searching in 
+ *  {@link net.sf.tapestry.IEngine#getPropertySource()}.
  *
  *  <table border=1>
  *  <tr> <th>Parameter</th> <th>Description</th> </tr>
@@ -117,13 +119,16 @@ public class AssetExternalizer
     protected AssetExternalizer(IRequestCycle cycle)
     {
         _resolver = cycle.getEngine().getResourceResolver();
+    
+        IPropertySource properties = cycle.getEngine().getPropertySource();
 
-        String directory = System.getProperty("net.sf.tapestry.asset.dir");
+
+        String directory = properties.getPropertyValue("net.sf.tapestry.asset.dir");
 
         if (directory == null)
             return;
 
-        _URL = System.getProperty("net.sf.tapestry.asset.URL");
+        _URL = properties.getPropertyValue("net.sf.tapestry.asset.URL");
 
         if (_URL == null)
             return;

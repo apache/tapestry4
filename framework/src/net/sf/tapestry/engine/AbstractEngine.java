@@ -63,6 +63,7 @@ import net.sf.tapestry.INamespace;
 import net.sf.tapestry.IPage;
 import net.sf.tapestry.IPageRecorder;
 import net.sf.tapestry.IPageSource;
+import net.sf.tapestry.IPropertySource;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.IScriptSource;
@@ -80,6 +81,11 @@ import net.sf.tapestry.listener.ListenerMap;
 import net.sf.tapestry.pageload.PageSource;
 import net.sf.tapestry.spec.ApplicationSpecification;
 import net.sf.tapestry.spec.IApplicationSpecification;
+import net.sf.tapestry.util.DelegatingPropertySource;
+import net.sf.tapestry.util.PropertyHolderPropertySource;
+import net.sf.tapestry.util.ServletContextPropertySource;
+import net.sf.tapestry.util.ServletPropertySource;
+import net.sf.tapestry.util.SystemPropertiesPropertySource;
 import net.sf.tapestry.util.exception.ExceptionAnalyzer;
 import net.sf.tapestry.util.io.DataSqueezer;
 import net.sf.tapestry.util.prop.OgnlUtils;
@@ -162,7 +168,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      *  @since 2.2
      * 
      **/
-    
+
     private transient boolean _refreshing;
 
     /** @since 2.2 **/
@@ -329,6 +335,18 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     private static final boolean _disableCaching = Boolean.getBoolean("net.sf.tapestry.disable-caching");
 
     private transient IResourceResolver _resolver;
+
+    /**
+     *  Constant used to store a {@link net.sf.tapestry.util.IPropertyHolder}
+     *  in the servlet context.
+     * 
+     *  @since 2.3
+     * 
+     **/
+
+    protected static final String PROPERTY_SOURCE_NAME = "net.sf.tapestry.PropertySource";
+
+    private transient IPropertySource _propertySource;
 
     /**
      *  Map from service name to service instance.
@@ -926,7 +944,10 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      *  <li>{@link ITemplateSource} 
      *  <li>{@link ISpecificationSource}
      *  <li>{@link IPageSource}
-     *  <li>ServiceLink {@link Map}
+     *  <li>{@link IEngineService} {@link Map}
+     *  <ll>{@link IScriptSource}
+     *  <li>{@link IComponentStringsSource}
+     *  <li>{@link IPropertySource}
      *  </ul>
      *
      *  <p>Subclasses should invoke this implementation first, then perform their
@@ -1065,6 +1086,18 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
                 _dataSqueezer = createDataSqueezer();
 
                 servletContext.setAttribute(DATA_SQUEEZER_NAME, _dataSqueezer);
+            }
+        }
+
+        if (_propertySource == null)
+        {
+            _propertySource = (IPropertySource) servletContext.getAttribute(PROPERTY_SOURCE_NAME);
+
+            if (_propertySource == null)
+            {
+                _propertySource = createPropertySource(context);
+
+                servletContext.setAttribute(PROPERTY_SOURCE_NAME, _propertySource);
             }
         }
     }
@@ -1209,8 +1242,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     {
         if (_refreshing)
             return;
-            
-            
+
         // Note: there's a possible latent bug here.  If cleaning up the
         // application requires loading any resources (specifically
         // component specifications) and we need a ResourceResolver and
@@ -1730,17 +1762,69 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     }
 
     /** @since 2.2 **/
-    
+
     public boolean isRefreshing()
     {
         return _refreshing;
     }
-    
+
     /** @since 2.2 **/
-    
+
     public void setRefreshing(boolean refreshing)
     {
         _refreshing = refreshing;
     }
 
+    /** @since 2.3 **/
+
+    public IPropertySource getPropertySource()
+    {
+        return _propertySource;
+    }
+
+    private static final String EXTENSION_PROPERTY_SOURCE_NAME = "net.sf.tapestry.property-source";
+
+    /**
+     *  Creates a shared property source that will be stored into
+     *  the servlet context.
+     *  Subclasses may override this method to build thier
+     *  own search path.
+     * 
+     *  <p>If the application specification contains an extension
+     *  named "net.sf.tapestry.property-source" it is inserted
+     *  in the search path just before
+     *  the property source for JVM System Properties.  This is a simple
+     *  hook at allow application-specific methods of obtaining
+     *  configuration values (typically, from a database or from JMX,
+     *  in some way).  Alternately, subclasses may
+     *  override this method to provide whatever search path 
+     *  is appropriate.
+     * 
+     * 
+     *  @since 2.3
+     * 
+     **/
+
+    protected IPropertySource createPropertySource(RequestContext context)
+    {
+        DelegatingPropertySource result = new DelegatingPropertySource();
+
+        ApplicationServlet servlet = context.getServlet();
+        IApplicationSpecification spec = servlet.getApplicationSpecification();
+
+        result.addSource(new PropertyHolderPropertySource(spec));
+        result.addSource(new ServletPropertySource(servlet.getServletConfig()));
+        result.addSource(new ServletContextPropertySource(servlet.getServletContext()));
+
+        if (spec.checkExtension(EXTENSION_PROPERTY_SOURCE_NAME))
+        {
+            IPropertySource source = (IPropertySource) spec.getExtension(EXTENSION_PROPERTY_SOURCE_NAME);
+
+            result.addSource(source);
+        }
+
+        result.addSource(SystemPropertiesPropertySource.getInstance());
+
+        return result;
+    }
 }

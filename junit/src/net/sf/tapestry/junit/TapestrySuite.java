@@ -66,6 +66,7 @@ public class TapestrySuite extends TestSuite
         suite.addTestSuite(ScriptTest.class);
         suite.addTestSuite(TestComponentSpecification.class);
         suite.addTestSuite(BindingsTestCase.class);
+        suite.addTestSuite(TestPropertySource.class);
         suite.addTestSuite(MockTestCase.class);
 
 		return suite;

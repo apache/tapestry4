@@ -34,6 +34,7 @@ import net.sf.tapestry.IEngine;
 import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IPageRecorder;
 import net.sf.tapestry.IPageSource;
+import net.sf.tapestry.IPropertySource;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.IScriptSource;
@@ -180,6 +181,11 @@ public class MockEngine implements IEngine
     public void setRefreshing(boolean refreshing)
     {
         _refreshing = refreshing;
+    }
+
+    public IPropertySource getPropertySource()
+    {
+        return null;
     }
 
 }

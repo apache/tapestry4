@@ -102,45 +102,7 @@ public class MockTester
     private PatternMatcher _matcher;
     private PatternCompiler _compiler;
 
-    private static class ServletConfigImpl implements ServletConfig, IInitParameterHolder
-    {
-        private String _name;
-        private ServletContext _context;
-        private Map _initParameters = new HashMap();
-
-        private ServletConfigImpl(String name, ServletContext context)
-        {
-            _name = name;
-            _context = context;
-        }
-
-        public String getInitParameter(String name)
-        {
-            return (String) _initParameters.get(name);
-        }
-
-        public Enumeration getInitParameterNames()
-        {
-            return Collections.enumeration(_initParameters.keySet());
-        }
-
-        public ServletContext getServletContext()
-        {
-            return _context;
-        }
-
-        public String getServletName()
-        {
-            return _name;
-        }
-
-        public void setInitParameter(String name, String value)
-        {
-            _initParameters.put(name, value);
-        }
-
-    }
-
+    
     /**
      *  Constructs a new MockTester for the given resource path
      *  (which is the XML file to read).
@@ -253,7 +215,7 @@ public class MockTester
 
         _servlet = createServlet(className);
 
-        ServletConfigImpl config = new ServletConfigImpl(_servletName, _context);
+        MockServletConfig config = new MockServletConfig(_servletName, _context);
 
         setInitParameters(servlet, config);
 
