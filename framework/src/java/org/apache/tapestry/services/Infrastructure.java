@@ -19,6 +19,7 @@ import org.apache.tapestry.engine.IPageSource;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.engine.ISpecificationSource;
+import org.apache.tapestry.engine.state.ApplicationStateManager;
 import org.apache.tapestry.spec.IApplicationSpecification;
 
 /**
@@ -126,9 +127,17 @@ public interface Infrastructure
     public LinkFactory getLinkFactory();
 
     /**
-     * Usec by the {@link org.apache.tapestry.IEngine}to create instances of
+     * Used by the {@link org.apache.tapestry.IEngine}to create instances of
      * {@link org.apache.tapestry.IRequestCycle}.
      */
 
     public RequestCycleFactory getRequestCycleFactory();
+    
+    /**
+     * Accesses application state objects (Visit and Global from Tapestry 3.0, but now
+     * more can be created).
+     * 
+     */
+    
+    public ApplicationStateManager getApplicationStateManager();
 }

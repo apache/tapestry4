@@ -96,7 +96,7 @@ public class TestAssetSource extends HiveMindTestCase
         verifyControls();
     }
 
-    public void testUnkownPrefix()
+    public void testUnknownPrefix()
     {
         Location l = fabricateLocation(17);
 

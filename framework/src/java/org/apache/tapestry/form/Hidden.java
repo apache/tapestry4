@@ -107,10 +107,7 @@ public abstract class Hidden extends AbstractFormComponent
 
     /** @since 2.2 * */
 
-    private DataSqueezer getDataSqueezer()
-    {
-        return getPage().getEngine().getDataSqueezer();
-    }
+    public abstract DataSqueezer getDataSqueezer();
 
     public abstract Object getValue();
 

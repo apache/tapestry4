@@ -133,6 +133,7 @@
       <action type="update" dev="HLS"> Removed support for the Tapestry JSP taglib. This can now be accomplished using service paths recognized by service encoders. </action>
       <action type="update" dev="HLS"> Changed to Form to prevent collisions between query parameters supplied by services (in an ILink) and form element ids. </action>
       <action type="update" dev="HLS"> Change Form (and WML Go) to have the direct and action services injected. </action>
+      <action type="update" dev="HLS"> Refactoring to move application state object management out of IEngine and generalize it. </action>
     </release>
     <release version="3.0" date="Apr 18 2004">
       <action type="fix" dev="HLS" fixes-bug="28345"> Workbench/Upload exception when no file specified </action>

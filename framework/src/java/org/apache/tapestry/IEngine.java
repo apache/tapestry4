@@ -19,19 +19,13 @@ import java.util.Locale;
 
 import javax.servlet.ServletException;
 
-import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
-import org.apache.tapestry.engine.IComponentClassEnhancer;
 import org.apache.tapestry.engine.IEngineService;
-import org.apache.tapestry.engine.IPageSource;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.ComponentMessagesSource;
-import org.apache.tapestry.services.DataSqueezer;
-import org.apache.tapestry.services.ObjectPool;
-import org.apache.tapestry.services.TemplateSource;
 import org.apache.tapestry.spec.IApplicationSpecification;
 
 /**
@@ -51,56 +45,6 @@ import org.apache.tapestry.spec.IApplicationSpecification;
 public interface IEngine
 {
     /**
-     * The name ("Home") of the default page presented when a user first accesses the application.
-     * 
-     * @see org.apache.tapestry.engine.HomeService
-     */
-
-    public static final String HOME_PAGE = "Home";
-
-    /**
-     * The name ("Exception") of the page used for reporting exceptions.
-     * <p>
-     * Such a page must have a writable JavaBeans property named 'exception' of type
-     * <code>java.lang.Throwable</code>.
-     */
-
-    public static final String EXCEPTION_PAGE = "Exception";
-
-    /**
-     * The name ("StaleLink") of the page used for reporting stale links.
-     * <p>
-     * The page must implement a writeable JavaBeans proeprty named 'message' of type
-     * <code>String</code>.
-     */
-
-    public static final String STALE_LINK_PAGE = "StaleLink";
-
-    /**
-     * The name ("StaleSession") of the page used for reporting state sessions.
-     */
-
-    public static final String STALE_SESSION_PAGE = "StaleSession";
-
-    /**
-     * Forgets changes to the named page by discarding the page recorder for the page. This is used
-     * when transitioning from one part of an application to another. All property changes for the
-     * page are lost.
-     * <p>
-     * This should be done if the page is no longer needed or relevant, otherwise the properties for
-     * the page will continue to be recorded by the engine, which is wasteful (especially if
-     * clustering or failover is employed on the application).
-     * <p>
-     * Throws an {@link ApplicationRuntimeException}if there are uncommitted changes for the
-     * recorder (in the current request cycle).
-     * 
-     * @deprecated. To be removed in 3.2 Do not use.
-     * @see IRequestCycle#forgetPage(String)
-     */
-
-    public void forgetPage(String name);
-
-    /**
      * Returns the locale for the engine. This locale is used when selecting templates and assets.
      */
 
@@ -115,43 +59,18 @@ public interface IEngine
     public void setLocale(Locale value);
 
     /**
-     * Returns the object used to load a page from its specification.
-     * 
-     * @deprecated To be removed in 3.2.
-     */
-
-    public IPageSource getPageSource();
-
-    /**
      * Gets the named service, or throws an {@link org.apache.tapestry.ApplicationRuntimeException}
      * if the engine can't provide the named service.
+     * 
+     * @deprecated To be removed in 3.2. Engine service can now be injected.
      */
 
     public IEngineService getService(String name);
 
     /**
-     * Returns the URL path that corresponds to the servlet for the application. This is required by
-     * instances of {@link IEngineService}that need to construct URLs for the application. This
-     * value will include the context path.
-     * 
-     * @deprecated To be removed in 3.2.
-     */
-
-    public String getServletPath();
-
-    /**
-     * Returns the context path, a string which is prepended to the names of any assets or servlets.
-     * This may be the empty string, but won't be null.
-     * <p>
-     * This value is obtained from {@link javax.servlet.http.HttpServletRequest#getContextPath()}.
-     * 
-     * @deprecated To be removed in 3.2.
-     */
-
-    public String getContextPath();
-
-    /**
      * Returns the application specification that defines the application and its pages.
+     * 
+     * @deprecated To be removed in 3.2.
      */
 
     public IApplicationSpecification getSpecification();
@@ -165,15 +84,6 @@ public interface IEngine
      */
 
     public ISpecificationSource getSpecificationSource();
-
-    /**
-     * Returns the source for HTML templates.
-     * 
-     * @see org.apache.tapestry.engine.AbstractEngine#createTemplateSource(RequestContext)
-     * @deprecated To be removed in 3.2.
-     */
-
-    public TemplateSource getTemplateSource();
 
     /**
      * Method invoked from the {@link org.apache.tapestry.ApplicationServlet}to perform processing
@@ -199,12 +109,16 @@ public interface IEngine
      * properties).
      * <p>
      * Returns the visit, if it exists, or null if it has not been created.
+     * 
+     * @deprecated To be removed in 3.2.
      */
 
     public Object getVisit();
 
     /**
      * Returns the visit object, creating it if necessary.
+     * 
+     * @deprecated To be removed in 3.2.
      */
 
     public Object getVisit(IRequestCycle cycle);
@@ -224,6 +138,7 @@ public interface IEngine
      * Returns the global object, if it exists, or null if not defined.
      * 
      * @since 2.3
+     * @deprecated To be removed in 3.2.
      */
 
     public Object getGlobal();
@@ -239,18 +154,6 @@ public interface IEngine
     public IScriptSource getScriptSource();
 
     /**
-     * Returns true if the engine has state and, therefore, should be stored in the HttpSession.
-     * This starts as false, but becomes true when the engine requires state (such as when a visit
-     * object is created, or when a peristent page property is set).
-     * <p>
-     * NOTE: With the changes to persistent page properties in 3.1, this may no longer be accurate!
-     * 
-     * @since 1.0.2
-     */
-
-    public boolean isStateful();
-
-    /**
      * Returns a shared object that allows components to find their set of localized strings.
      * 
      * @since 2.0.4
@@ -259,16 +162,6 @@ public interface IEngine
      */
 
     public ComponentMessagesSource getComponentMessagesSource();
-
-    /**
-     * Returns a shared instance of {@link org.apache.tapestry.util.io.DataSqueezerImpl}.
-     * 
-     * @since 2.2
-     * @see org.apache.tapestry.engine.AbstractEngine#createDataSqueezer()
-     * @deprecated To be removed in 3.2.
-     */
-
-    public DataSqueezer getDataSqueezer();
 
     /**
      * Returns a {@link org.apache.tapestry.engine.IPropertySource}that should be used to obtain
@@ -289,27 +182,6 @@ public interface IEngine
      */
 
     public IPropertySource getPropertySource();
-
-    /**
-     * Returns a {@link org.apache.tapestry.util.pool.Pool}that is used to store all manner of
-     * objects that are needed throughout the system. This is the best way to deal with objects that
-     * are both expensive to create and not threadsafe. The reset service will clear out this Pool.
-     * 
-     * @since 3.0
-     * @see org.apache.tapestry.engine.AbstractEngine#createPool(RequestContext)
-     * @deprecated To be removed in 3.2.
-     */
-
-    public ObjectPool getPool();
-
-    /**
-     * @since 3.0
-     * @see org.apache.tapestry.engine.AbstractEngine#createComponentClassEnhancer(RequestContext)
-     * @throws UnsupportedOperationException
-     * @deprecated To be removed in 3.2.
-     */
-
-    public IComponentClassEnhancer getComponentClassEnhancer();
 
     /**
      * Returns the encoding to be used to generate the servlet responses and accept the servlet

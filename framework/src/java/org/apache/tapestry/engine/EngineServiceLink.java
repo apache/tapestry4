@@ -27,11 +27,10 @@ import org.apache.tapestry.util.QueryParameterMap;
 
 /**
  * A EngineServiceLink represents a possible action within the client web browser; either clicking a
- * link or submitting a form, which is constructed primarily from the
- * {@link org.apache.tapestry.IEngine#getServletPath() servlet path}, with some additional query
- * parameters. A full URL for the EngineServiceLink can be generated, or the query parameters for
- * the EngineServiceLink can be extracted (separately from the servlet path). The latter case is
- * used when submitting constructing {@link org.apache.tapestry.form.Form forms}.
+ * link or submitting a form, which is constructed primarily from the servlet path, with some
+ * additional query parameters. A full URL for the EngineServiceLink can be generated, or the query
+ * parameters for the EngineServiceLink can be extracted (separately from the servlet path). The
+ * latter case is used when submitting constructing {@link org.apache.tapestry.form.Form forms}.
  * 
  * @author Howard Lewis Ship
  * @since 3.0

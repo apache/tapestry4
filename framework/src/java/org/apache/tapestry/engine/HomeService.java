@@ -23,6 +23,7 @@ import javax.servlet.ServletException;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.TapestryConstants;
 import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
@@ -61,7 +62,7 @@ public class HomeService implements IEngineService
     public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
             IOException
     {
-        cycle.activate(IEngine.HOME_PAGE);
+        cycle.activate(TapestryConstants.HOME_PAGE);
 
         _responseRenderer.renderResponse(cycle, output);
     }

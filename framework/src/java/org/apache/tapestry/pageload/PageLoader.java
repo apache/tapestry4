@@ -25,8 +25,6 @@ import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Location;
-import org.apache.hivemind.Resource;
-import org.apache.hivemind.util.ContextResource;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IAsset;
@@ -148,15 +146,8 @@ public class PageLoader implements IPageLoader
 
     private int _maxDepth;
 
-    /**
-     * Used to figure relative paths for context assets.
-     */
-
-    private Resource _applicationRoot;
-
     public void initializeService()
     {
-        _applicationRoot = new ContextResource(_context, "/");
 
         // Create the mechanisms for walking the component tree when it is
         // complete
@@ -721,12 +712,7 @@ public class PageLoader implements IPageLoader
 
         return _assetSource.findAsset(location.getResource(), path, _locale, location);
     }
-
-    public TemplateSource getTemplateSource()
-    {
-        return _engine.getTemplateSource();
-    }
-
+    
     /** @since 3.1 */
 
     public void setLog(Log log)

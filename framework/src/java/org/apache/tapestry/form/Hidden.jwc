@@ -46,5 +46,7 @@
   </parameter>
 
   <parameter name="encode" default-value="true"/>
+  
+  <inject name="dataSqueezer" object="infrastructure:dataSqueezer"/>
    
 </component-specification>

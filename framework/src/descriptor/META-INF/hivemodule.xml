@@ -36,6 +36,7 @@
   <sub-module descriptor="tapestry.monitor.xml"/>
   <sub-module descriptor="tapestry.asset.xml"/>
   <sub-module descriptor="tapestry.persist.xml"/>
+  <sub-module descriptor="tapestry.state.xml"/>
   
   <service-point id="ClasspathResourceFactory" interface="org.apache.tapestry.services.ClasspathResourceFactory">
   
@@ -71,6 +72,7 @@
         <set-service property="responseRenderer" service-id="tapestry.request.ResponseRenderer"/>
         <set-service property="linkFactory" service-id="tapestry.url.LinkFactory"/>
         <set-service property="requestCycleFactory" service-id="tapestry.request.RequestCycleFactory"/>
+        <set-service property="applicationStateManager" service-id="tapestry.state.ApplicationStateManager"/>
       </construct>
     </invoke-factory>
     

@@ -44,8 +44,10 @@ import org.apache.tapestry.services.TemplateSource;
  * @author Howard Lewis Ship
  */
 
-public class ShowTemplate extends BaseComponent implements IDirect
+public abstract class ShowTemplate extends BaseComponent implements IDirect
 {
+    /** @since 3.1 */
+    public abstract TemplateSource getTemplateSource();
 
     public boolean getHasTemplate()
     {
@@ -81,11 +83,10 @@ public class ShowTemplate extends BaseComponent implements IDirect
     {
         IComponent inspectedComponent = getInspectedComponent();
         ComponentTemplate template = null;
-        TemplateSource source = getPage().getEngine().getTemplateSource();
 
         try
         {
-            template = source.getTemplate(cycle, inspectedComponent);
+            template = getTemplateSource().getTemplate(cycle, inspectedComponent);
         }
         catch (Exception ex)
         {

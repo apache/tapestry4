@@ -104,7 +104,6 @@ public interface IRequestCycle
      * request cycle, that page is returned. Otherwise, the engine's page loader is used to load the
      * page.
      * 
-     * @see IEngine#getPageSource()
      */
 
     public IPage getPage(String name);
