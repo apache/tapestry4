@@ -29,7 +29,7 @@ import java.util.Locale;
 import net.sf.tapestry.IPage;
 
 /**
- *  Tests the class {@link DefaultStringsSource}.
+ *  Tests the class {@link net.sf.tapestry.engine.DefaultStringsSource}.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$

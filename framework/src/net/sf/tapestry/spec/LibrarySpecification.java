@@ -99,7 +99,7 @@ public class LibrarySpecification extends BasePropertyHolder implements ILibrary
      **/
 
     private Map _instantiatedExtensions;
-    
+
     /**
      *  The XML Public Id used when the library specification was read
      *  (if applicable).
@@ -109,7 +109,6 @@ public class LibrarySpecification extends BasePropertyHolder implements ILibrary
      **/
 
     private String _publicId;
-    
 
     public String getLibrarySpecificationPath(String id)
     {
@@ -397,112 +396,130 @@ public class LibrarySpecification extends BasePropertyHolder implements ILibrary
     }
 
     /**
-     * Returns the extensions map.
-     * @return Map
-     */
-    protected Map getExtensions() {
-      return _extensions;
-    }
-
-   /**
-    * Updates the extension map.
-    * @param extensions A Map of extension specification paths 
-    * keyed on extension id.
-    * 
-    * The map is retained, not copied.
-    *
-    */
-   
-    protected void setExtensions(Map extension) {
-      _extensions = extension;
-    }
-
-
-    /**
-     * Returns the libraries map.
-     * @return Map
-     */
-    protected Map getLibraries() {
-      return _libraries;
-    }
-
-   /**
-    * Updates the library map.
-    * @param libraries A Map of library specification paths 
-    * keyed on library id.
-    * 
-    * The map is retained, not copied.
-    *
-    */
-   
-    protected void setLibraries(Map libraries) {
-      _libraries = libraries;
+     *  Returns the extensions map.
+     *  @return Map of objects.
+     * 
+     **/
+    
+    protected Map getExtensions()
+    {
+        return _extensions;
     }
 
     /**
-     * Returns the pages map.
-     * @return Map
-     */
-    
-    protected Map getPages() {
-      return _pages;
+     *  Updates the extension map.
+     *  @param extensions A Map of extension specification paths 
+     *  keyed on extension id.
+     * 
+     * <p>The map is retained, not copied.
+     *
+     **/
+
+    protected void setExtensions(Map extension)
+    {
+        _extensions = extension;
     }
+
+    /**
+     *  Returns the libraries map.
+     *  @return Map of {@link LibrarySpecification}.
+     * 
+     **/
     
-   /**
-    * Updates the page map.
-    * @param pages A Map of page specification paths 
-    * keyed on page id.
-    * 
-    * The map is retained, not copied.
-    *
-    */
-    
-    protected void setPages(Map pages) {
-      _pages = pages;
+    protected Map getLibraries()
+    {
+        return _libraries;
+    }
+
+    /**
+     *  Updates the library map.
+     *  @param libraries A Map of library specification paths 
+     *  keyed on library id.
+     * 
+     *  <p>The map is retained, not copied.
+     *
+     **/
+
+    protected void setLibraries(Map libraries)
+    {
+        _libraries = libraries;
+    }
+
+    /**
+     *  Returns the pages map.
+     *  @return Map of {@link ComponentSpecification}.
+     * 
+     **/
+
+    protected Map getPages()
+    {
+        return _pages;
+    }
+
+    /**
+     *  Updates the page map.
+     *  @param pages A Map of page specification paths 
+     *  keyed on page id.
+     * 
+     *  <p>The map is retained, not copied.
+     *
+     **/
+
+    protected void setPages(Map pages)
+    {
+        _pages = pages;
     }
 
     /**
      * Returns the services.
-     * @return Map
-     */
-    
-    protected Map getServices() {
-      return _services;
-    }
+     * @return Map of service class names.
+     * 
+     **/
 
-   /**
-    * Updates the services map.
-    * @param services A Map of the fully qualified names of classes of type {@link IEngineService} 
-    * keyed on service id.
-    * 
-    * The map is retained, not copied.
-    *
-    */
-   
-    protected void setServices(Map services) {
-      _services = services;
+    protected Map getServices()
+    {
+        return _services;
     }
 
     /**
-     * Returns the components map.
-     * @return Map
-     */
-    
-    protected Map getComponents() {
-      return _components;
+     *  Updates the services map.
+     *  @param services A Map of the fully qualified names of classes 
+     *  which implement
+     *  {@link net.sf.tapestry.IEngineService} 
+     *  keyed on service id.
+     * 
+     *  <p>The map is retained, not copied.
+     *
+     **/
+
+    protected void setServices(Map services)
+    {
+        _services = services;
     }
 
-   /**
-    * Updates the components map.
-    * @param components A Map of {@link ContainedComponent} keyed on component id.
-    * The map is retained, not copied.
-    *
-    */
-   
-    protected void setComponents(Map components) {
-      _components = components;
+    /**
+     *  Returns the components map.
+     *  @return Map of {@link ContainedComponent}.
+     * 
+     **/
+
+    protected Map getComponents()
+    {
+        return _components;
     }
-    
+
+    /**
+     *  Updates the components map.
+     *  @param components A Map of {@link ContainedComponent} keyed on component id.
+     *  The map is retained, not copied.
+     *
+     **/
+
+    protected void setComponents(Map components)
+    {
+        _components = components;
+    }
+
     /**
      *  Returns the XML Public Id for the library file, or null
      *  if not applicable.
@@ -512,7 +529,6 @@ public class LibrarySpecification extends BasePropertyHolder implements ILibrary
      *  A previous method used an arbitrary version string, the
      *  public id is more useful and less ambiguous.
      *  
-     *  @since 2.2
      * 
      **/
 
@@ -520,8 +536,6 @@ public class LibrarySpecification extends BasePropertyHolder implements ILibrary
     {
         return _publicId;
     }
-
-    /** @since 2.2 **/
 
     public void setPublicId(String publicId)
     {
