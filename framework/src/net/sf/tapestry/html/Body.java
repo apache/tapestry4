@@ -283,7 +283,7 @@ public class Body extends AbstractComponent
 
             // Start the body tag.
             writer.println();
-            writer.begin("body");
+            writer.begin(_element);
             generateAttributes(writer, cycle);
 
             if (onLoadName != null)
