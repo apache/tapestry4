@@ -30,7 +30,8 @@ public class Slashdot
     private List stories;
     private SlashdotStory story;
     private long lastRefresh = 0;
-    
+    private int index;
+	
     private static final int REFRESH_INTERVAL = 30 * 1024;
     
     private static String RESOURCE_PATH = "http://slashdot.org/slashdot.xml";
@@ -97,5 +98,15 @@ public class Slashdot
         }
         
         lastRefresh = System.currentTimeMillis();
-    }
+   }
+	
+	public void setIndex(int value)
+	{
+		index = value;
+	}
+	
+	public String getRowClass()
+	{
+		return (index % 2) == 0 ? "even" : "odd";
+	}
 }

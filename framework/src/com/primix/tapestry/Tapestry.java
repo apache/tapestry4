@@ -54,11 +54,10 @@ public final class Tapestry
 	
 	/**
 	 *  The version of the framework; this is updated for major releases.
-	 *  A trailing '+' indicates that the exact version is not known.
 	 *
 	 */
 	
-	public static final String VERSION = "1.0.1";
+	public static final String VERSION = "1.0.2";
 	
 	/**
 	 *  A {@link Map} that links Locale names (as in {@link Locale#toString()} to
@@ -68,7 +67,7 @@ public final class Tapestry
 	 */
 	
 	private static final Map localeMap = new HashMap();
-
+	
 	static
 	{
 		Locale[] locales = Locale.getAvailableLocales();
@@ -360,12 +359,12 @@ public final class Tapestry
 			
 			return l.iterator();
 		}
-
+		
 		IteratorAdaptor adaptor = (IteratorAdaptor)iteratorDecorator.getAdaptor(valueClass);
 		
 		return adaptor.coerce(value);		
 	}
-
+	
 	/**
 	 *  Gets the {@link Locale} for the given string, which is the result
 	 *  of {@link Locale#toString()}.  If no such locale is already registered,
@@ -418,9 +417,9 @@ public final class Tapestry
 		}
 		
 		return result;
-	
+		
 	}
-
+	
 	/** 
 	 *  Closes the stream (if not null), ignoring any {@link IOException} thrown.
 	 *

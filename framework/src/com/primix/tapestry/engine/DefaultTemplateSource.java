@@ -302,7 +302,15 @@ implements ITemplateSource
 		// In the future, the parser may be more complicated and will be able to
 		// detect errors in the template data.
 
-		tokens = parser.parse(templateData);
+		try
+		{
+			tokens = parser.parse(templateData, resourceName);
+		}
+		catch (TemplateParseException ex)
+		{
+			throw new ResourceUnavailableException(
+				"Unable to parse template " + resourceName + ".", ex);
+		}
 
 		if (CAT.isDebugEnabled())
 			CAT.debug("Parsed " + tokens.length + " tokens from template");
@@ -338,10 +346,10 @@ implements ITemplateSource
         
         	return readTemplateStream(stream);
 		}
-		catch (IOException e)
+		catch (IOException ex)
 		{
 			throw new ResourceUnavailableException("Could not read from " + 
-				resourceName + ".", e);
+				resourceName + ".", ex);
 		}
 		finally
 		{

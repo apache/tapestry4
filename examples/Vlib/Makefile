@@ -40,7 +40,6 @@ EXEC_CLASSPATH := \
 	$(PROJ_CLASSPATH) \
 	$(INSTALL_DIR)/javax.xml.jaxp.jar \
 	$(INSTALL_DIR)/org.apache.crimson.jar \
-	$(INSTALL_DIR)/gnu-regexp.jar \
 	$(INSTALL_DIR)/com.mortbay.jetty.jar \
 	$(INSTALL_DIR)/log4j-core.jar \
 	$(JBOSS_DIR)/client/jboss-client.jar \

@@ -85,45 +85,6 @@ import com.primix.tapestry.*;
  *
  *	</td> </tr>
  *
- *  <tr>
- *   <td>first</td>
- *   <td>java.lang.Boolean</td>
- *  <td>W</td>
- *  <td>no</td>
- *  <td>&nbsp;</td>
- *  <td>Set to <code>Boolean.TRUE</code> when the first value is processed.
- *  Set to <code>Boolean.FALSE</code> when the second value is processed.
- *
- *  <p>Allows special behavior when processing the very first value.
- *
- *  <p>Wrapped component may alternately access this value via the
- *  {@link #isFirst() first property}.
- *
- * <p>This parameter may be removed in a future version of Tapestry.
- *
- *  </td>
- *  </tr>
- *
- *  <tr>
- *  <td>last</td>
- *  <td>java.lang.Boolean</td>
- *  <td>W</td>
- *  <td>no</td>
- * <td>&nbsp;</td>
- * <td>Set to <code>Boolean.FALSE</code> when the first value is processed.
- *  Set to <code>Boolean.TRUE</code> when the last value is processed.
- *
- *  <p>Allows special handling of the last value.
- *
- * <p>Wrapped components may alternately access this value via the
- *  {@link #isLast() last property}.
-
- *
- * <p>This parameter may be removed in a future version of Tapestry.
- *
- *  </td>
- * </tr>
- *
  * </table>
  *
  * <p>Informal parameters are not allowed.
@@ -137,28 +98,25 @@ public class Foreach extends AbstractComponent
 {
 	private IBinding sourceBinding;
 	private IBinding valueBinding;
-	private IBinding firstBinding;
-	private IBinding lastBinding;
 	private IBinding indexBinding;
 	
 	private Object value;
-	private boolean first;
-	private boolean last;
 	private boolean rendering;
 	
-	public IBinding getFirstBinding()
-	{
-		return firstBinding;
-	}
-	
-	public IBinding getLastBinding()
-	{
-		return lastBinding;
-	}
 	
 	public IBinding getSourceBinding()
 	{
 		return sourceBinding;
+	}
+	
+	public IBinding getIndexBinding()
+	{
+		return indexBinding;
+	}
+	
+	public void setIndexBinding(IBinding value)
+	{
+		indexBinding = value;
 	}
 	
 	/**
@@ -218,25 +176,7 @@ public class Foreach extends AbstractComponent
 			{
 				value = dataSource.next();
 				hasNext = dataSource.hasNext();
-				
-				// On the first pass, set the 'first' to true and
-				// (usually) the 'last' binding to false
-				// On the second pass, set the 'first' binding to false
-				// On the last pass, set the 'last' binding to true
-				
-				if (i == 0)
-				{
-					setFirst(true);
 					
-					if (hasNext)
-						setLast(false);
-				}
-				else if (i == 1)
-					setFirst(false);
-				
-				if (!hasNext)
-					setLast(true);
-				
 				if (indexBinding != null)
 					indexBinding.setInt(i);
 				
@@ -254,17 +194,7 @@ public class Foreach extends AbstractComponent
 			rendering = false;
 		}
 	}
-	
-	public void setFirstBinding(IBinding value)
-	{
-		firstBinding = value;
-	}
-	
-	public void setLastBinding(IBinding value)
-	{
-		lastBinding = value;
-	}
-	
+		
 	public void setSourceBinding(IBinding value)
 	{
 		sourceBinding = value;
@@ -274,63 +204,7 @@ public class Foreach extends AbstractComponent
 	{
 		valueBinding = value;
 	}
-	
-	private void setFirst(boolean value)
-	{
-		first = value;
-		
-		if (firstBinding != null)
-			firstBinding.setBoolean(value);
-	}
-	
-	/**
-	 *  Returns true if the current {@link #getValue() value}
-	 *  is the first value extracted from the
-	 *  source.
-	 *
-	 *  <p>This method may be removed in a future version of Tapestry.
-	 *
-	 *  @throws RenderOnlyPropertyException is the Foreach is not currently rendering.
-	 *
-	 *  @deprecated
-	 */
-	
-	public boolean isFirst()
-	{
-		if (!rendering)
-			throw new RenderOnlyPropertyException(this, "first");
-		
-		return first; 
-	}
-	
-	
-	private void setLast(boolean value)
-	{
-		last = value;
-		
-		if (lastBinding != null)
-			lastBinding.setBoolean(value);
-	}
-	
-	/**
-	 *  Returns true if the current {@link #getValue() value}
-	 *  is the last value extracted from the
-	 *  source.
-	 *
-	 *  <p>This method may be removed in a future version of Tapestry.
-	 *
-	 *  @throws RenderOnlyPropertyException is the Foreach is not currently rendering.
-	 *  @deprecated
-	 */
-	
-	public boolean isLast()
-	{
-		if (!rendering)
-			throw new RenderOnlyPropertyException(this, "last");
-		
-		return last;	
-	}
-	
+			
 	/**
 	 *  Returns the most recent value extracted from the source parameter.
 	 *

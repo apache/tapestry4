@@ -5,7 +5,7 @@
 <body>
 <a href="http://sf.net/project/?group_id=4754"><img src="http://sf.net/sflogo.php?group_id=4754&amp;type=1" align="right" valign="top" width="88" height="31" border="0" alt="SourceForge Logo"></a>
 
-<h1>Tapestry Release 1.0.1
+<h1>Tapestry Release 1.0.2
 
 </h1>
 <p>Tapestry is a component based framework for creating sophisticated web applications.
@@ -17,7 +17,7 @@ is, how to use it and why you can't live without it!
 
 <p>Tapestry is distributed in three different sizes:
 <ul>
-	<li><b>small</b> -- just Tapestry.jar, gnu-regexp.jar,
+	<li><b>small</b> -- just Tapestry.jar,
 the <a href="doc/DevelopersGuide/DevelopersGuide.html">Tapestry Developer's Guide</a> and the 
 <a href="doc/api/overview-summary.html">javadoc for Tapestry</a>
 	<li><b>medium</b> -- small, plus 
@@ -35,7 +35,7 @@ to rebuild the JARs on different platforms and different compilers (JDK 1.2 and 
 
 <h2>Third party JARs</h2>
 
- Tapestry requires some third party JARs when it is compiled, as well as
+Tapestry requires some third party JARs when it is compiled, as well as
 at  runtime. If you
 downloaded the full distribution, these libraries are already included.  
 With the small and medium distribution, you will need to download the other files seperately.
@@ -73,7 +73,7 @@ With the small and medium distribution, you will need to download the other file
 		</td>
 		<td>from jBoss 2.2.1
 		</td>
-		<td>Unknown license, probably GPL</a>
+		<td>Unknown license, probably LGPL</a>
 			<td>Copied from the
 	<a href="http://www.jboss.org">jBoss</a> distribution, which claims to
 	be open source (but neglects to provide a license).
@@ -81,21 +81,8 @@ With the small and medium distribution, you will need to download the other file
       to compile and run the demos and tutorials.</p>
 			</td>
 	</tr>
+
 	<tr valign="top">
-		<td>gnu-regexp.jar
-		</td>
-		<td>GNU regular expression compiler
-<p>Used by Tapestry to parse HTML templates</p>
-		</td>
-		<td>1.0.8
-		</td>
-		<td><a href="http://www.gnu.org/copyleft/gpl.html">GNU Public License</a>
-		</td>
-		<td><a href="ftp://tapestry.sourceforge.net/pub/tapestry/gnu-regexp-0.1.8.zip">
-		ftp://tapestry.sourceforge.net/pub/tapestry/gnu-regexp-0.1.8.zip</a>
-		</td>
-	</tr>
-	<tr valign="top" bgcolor="silver">
 		<td>javax.servlet.jar
 		</td>
 		<td>Servlet API 2.2 reference implementation
@@ -106,7 +93,7 @@ With the small and medium distribution, you will need to download the other file
 			<td>Distributed with Jetty
 			</td>
 	</tr>
-	<tr valign="top">
+	<tr valign="top"  bgcolor="silver">
 		<td>javax.xml.jaxp.jar
 		</td>
 		<td>Java API for XML Processing
@@ -118,6 +105,21 @@ With the small and medium distribution, you will need to download the other file
 		<td>Distributed with Jetty
 		</td>
 	</tr>
+	
+	<tr valign="top">
+		<td>junit.jar</td>
+		<td>JUnit Testing Framework</td>
+		<td>3.6</td>
+		<td><a href="http://oss.software.ibm.com/developerworks/opensource/license10.html">IBM Public License</a>
+		</td>
+		<td>
+		<a href="http://www.junit.org">www.junit.org</a>
+		<p>This version is slightly modified to 
+		<a href="http://junit.sourceforge.net/doc/faq/faq.htm#ClassNotFoundException">exclude additional classes</a>
+		related to XML parsing.
+		</td>
+	</tr>
+	
 	<tr valign="top" bgcolor="silver">
 		<td>log4j-core.jar
 		</td>
@@ -130,6 +132,7 @@ With the small and medium distribution, you will need to download the other file
 	More information at the <a href="http://jakarta.apache.org/log4j">log4j home page</a>.
 			</td>
 	</tr>
+	
 	<tr valign="top">
 		<td>org.apache.crimson.jar
 		</td>
@@ -142,6 +145,7 @@ With the small and medium distribution, you will need to download the other file
 		<td>Distributed with Jetty
 		</td>
 	</tr>
+	
 	<tr bgcolor="black">
 		<td colspan="5" height=1><img src="images/shim.gif"></td>
 	</tr>

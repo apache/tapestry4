@@ -25,7 +25,6 @@ include $(SYS_MAKEFILE_DIR)/War.mk
 EXEC_CLASSPATH = \
 	$(FINAL_SOURCE_DIR) \
 	$(PROJ_CLASSPATH) \
-	$(INSTALL_DIR)/gnu-regexp.jar \
 	$(INSTALL_DIR)/com.mortbay.jetty.jar 
 
 run: war

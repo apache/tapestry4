@@ -1,3 +1,13 @@
+* Jun 28 2001 hship
+
+Rewrite the template parser to not use GNU Regexp library and perform
+more powerful parsing.
+Remove the first and last parameters and properties from the Foreach component.
+Remove lib/gnu-regexp.jar.
+Add lib/junit.jar.
+Add a suite of junit tests.
+Distribute the WAP hello-world example in the full distribution.
+
 * Jun 25 2001 hship
 
 framework:

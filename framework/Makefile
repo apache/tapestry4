@@ -35,7 +35,6 @@ RESOURCE_EXTENSIONS = \
 	jwc html gif dtd script properties css
 
 PROJ_CLASSPATH = \
-	$(INSTALL_DIR)/gnu-regexp.jar \
 	$(INSTALL_DIR)/javax.servlet.jar \
 	$(INSTALL_DIR)/javax.xml.jaxp.jar \
 	$(INSTALL_DIR)/org.apache.crimson.jar \

@@ -4,8 +4,6 @@
 <specification class="com.primix.tapestry.components.Foreach" allow-informal-parameters="no">
   <parameter name="source"/>
   <parameter name="value"/>
-  <parameter name="first" java-type="java.lang.Boolean"/>
-  <parameter name="last" java-type="java.lang.Boolean"/>
   <parameter name="index" java-type="int"/>
   
 </specification>

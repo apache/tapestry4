@@ -10,9 +10,13 @@
 <component id="e" type="Foreach">
   <binding name="source" property-path="stocks"/>
   <binding name="value" property-path="stock"/>
+  <binding name="index" property-path="index"/>
 </component>
 
-<component id="evenOdd" type="EvenOdd"/>
+<component id="evenOdd" type="Any">
+	<static-binding name="element">tr</static-binding>
+	<binding name="class" property-path="rowClass"/>
+</component>
 
 <component id="insertStock" type="Insert">
   <binding name="value" property-path="stock.tickerId"/>
