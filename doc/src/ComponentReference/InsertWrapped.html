@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- $Id$ --> 
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+
+<body>
+<table border="0" cellpadding="4" cellspacing="4" width="100%">
+<tr>
+ <td>
+  <table>
+	 <tr>
+	  <td><font size="+2"><b>InsertWrapped</b></font></td>
+	 </tr>
+	 <tr>
+	  <td>
+		 <a href="../api/net/sf/tapestry/components/InsertWrapped.html">
+		 net.sf.tapestry.components.InsertWrapped</a>
+		</td>
+	 </tr>
+  </table>
+ </td>
+ <td>
+  <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
+	 <tr>
+	  <td>Non Visual Component</td>
+	 </tr>
+  </table>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2"><hr></td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Description</b>
+	<br>
+  Renders the static HTML and components wrapped by the container of the 
+  InsertWrapped component. Components which have HTML templates and can wrap 
+  other elements should include exactly one InsertWrapped component in their 
+  template. 
+  <p>
+  This component is very useful for creating a common navigational component 
+  used by multiple pages of an application. Typically you create a common 
+  navigational component which contains navigational links 
+  (<a href="Page.html">Page</a>) to other pages and an InsertWrapped component 
+  which will insert the actual content of the page. The application pages
+  then use the navigational component as their first element, and then their
+  usual content. When the pages renders, it renders the surrounding navigational
+  component and then the page's content. 
+  <p>
+  This component may NOT wrap around other components or static HTML. 
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>See Also</b>
+	<br>
+	<a href="Block.html">Block</a>,
+	<a href="Insert.html">Insert</a>, 
+	<a href="InsertBlock.html">InsertBlock</a>, 
+	<a href="InsertText.html">InsertText</a> 
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Parameters</b>
+	<br>
+  None
+	<p>
+  Informal parameters: NOT allowed<br>
+  Reserved parameters: none
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Examples</b>
+	<p>
+  This example is under construction. See the Tutorial Border for an example
+  usage of this component.
+ </td>
+</tr>
+</tr>
+
+<tr>
+ <td colspan="2"><hr></td>  
+</tr>
+<tr>
+ <td colspan="2">
+  <table width="100%">
+   <tr>
+    <td align="left">
+     <a href="InsertText.html"><img src="common-images/prev.png" alt="Previous"/></a>
+    </td>
+    <td align="center">
+     <a href="index.html"><img src="common-images/home.png" alt="Home"/></a>
+    </td>
+    <td align="right">
+     <a href="ListEdit.html"><img src="common-images/next.png" alt="Next"/></a>
+    </td>  
+   <tr>
+  </table>
+ </td>
+</tr>
+</table>
+
+</body>
+</html>
