@@ -341,7 +341,7 @@ value: \[(.*?)\]
 		</assert-output>
 		
 		<assert-output name="Message">
-		Method 'public abstract long org.apache.tapestry.junit.mock.c9.Eight.getEnhancedProperty()' (declared in class org.apache.tapestry.junit.mock.c9.Eight) has no implementation in class org.apache.tapestry.junit.mock.c9.Eight (or enhanced subclass org.apache.tapestry.junit.mock.c9.Eight$
+		Method 'public abstract long org.apache.tapestry.junit.mock.c9.Eight.setEnhancedProperty(long)' (declared in class org.apache.tapestry.junit.mock.c9.Eight) has no implementation in class org.apache.tapestry.junit.mock.c9.Eight (or enhanced subclass org.apache.tapestry.junit.mock.c9.Eight$
 		</assert-output>
 	</request>
 
