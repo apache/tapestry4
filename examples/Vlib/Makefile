@@ -22,17 +22,11 @@ WEB_INF_RESOURCES = weblogic.xml
 
 include $(SYS_MAKEFILE_DIR)/War.mk
 
-
-SERVER_CLASSPATH = \
-	$(WEBLOGIC_DIR)/lib/weblogic510sp3.jar \
-	$(WEBLOGIC_CLASSPATH) \
-    $(WEBLOGIC_DIR)/license
-    
 # Classpath entries needed when WebLogic starts up.  This includes the Cloudscape
 # libraries needed to setup the Cloudscape vlib connection pool.
 
 WEBLOGIC_BOOT_CLASSPATH := \
-	$(WEBLOGIC_DIR)/lib/weblogic510sp3boot.jar \
+	$(WEBLOGIC_DIR)/lib/weblogic510sp4boot.jar \
 	$(CLOUDSCAPE_INSTALL)/lib/cloudscape.jar \
 	$(CLOUDSCAPE_INSTALL)/lib/license.jar
 
@@ -40,7 +34,7 @@ WEBLOGIC_BOOT_CLASSPATH := \
 # This includes WebLogic licensing as well.
 
 WEBLOGIC_CLASSPATH := \
-	$(WEBLOGIC_DIR)/lib/weblogic510sp3.jar \
+	$(WEBLOGIC_DIR)/lib/weblogic510sp4.jar \
 	$(WEBLOGIC_DIR)/license \
 	$(WEBLOGIC_DIR)/classes \
 	$(WEBLOGIC_DIR)/lib/weblogicaux.jar \
@@ -64,3 +58,5 @@ WEBLOGIC_OPTS = \
 configure-weblogic: initialize
 	@ $(ECHO) "\n*** Configuring WebLogic Server options ***\n"
 	$(WEBLOGIC_DIR)/bin/wlconfig.exe $(WEBLOGIC_OPTS)
+
+

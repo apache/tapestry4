@@ -40,18 +40,15 @@ import com.primix.tapestry.*;
 public class VirtualLibraryServlet extends ApplicationServlet
 {
 
-	protected IApplication getApplication(RequestContext context)
+	protected String getApplicationSpecificationPath()
 	{
-		String name = "application.vlib";
-		IApplication application;
-	
-		application = (IApplication)context.getSessionAttribute(name);
-		if (application == null)
-		{
-			application = new VirtualLibraryApplication(context);
-			context.setSessionAttribute(name, application);
-		}
-		
-		return application;		
+		return "/com/primix/vlib/Vlib.application";	
 	}
+	
+
+	protected IApplication createApplication(RequestContext context)
+	{
+		return new VirtualLibraryApplication(context);
+	}
+
 }

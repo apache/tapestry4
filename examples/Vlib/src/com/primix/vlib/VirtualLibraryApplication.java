@@ -157,16 +157,6 @@ public class VirtualLibraryApplication extends SimpleApplication
 		super(context, null);
 	}
 	
-	protected String getSpecificationAttributeName()
-	{
-		return "vlib.spec";	
-	}
-	
-	
-	protected String getSpecificationResourceName()
-	{
-		return "/com/primix/vlib/Vlib.application";	
-	}
 	
 	/**
 	 *  Removes the operations bean instance, if accessed this request cycle.
