@@ -38,7 +38,7 @@ import net.sf.tapestry.event.PageEvent;
  *
  * <tr>
  *  <td>column</td>
- *  <td>net.sf.tapestry.contrib.table.model.ITableColumn</td>
+ *  <td>{@link net.sf.tapestry.contrib.table.model.ITableColumn}</td>
  *  <td>out</td>
  *  <td>no</td>
  *  <td>&nbsp;</td>

@@ -103,6 +103,7 @@
 	</component>
 
 	<component id="tableValues" type="TableValues">
+		<inherited-binding name="column" parameter-name="column"/>
 		<inherited-binding name="class" parameter-name="valuesClass"/>
 	</component>
   

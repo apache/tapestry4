@@ -15,6 +15,11 @@
 		required="no"
 		direction="custom"/>
 
+	<parameter name="column" 
+		java-type="net.sf.tapestry.contrib.table.model.ITableColumn" 
+		required="no"
+		direction="custom"/>
+
 	<component id="iterColumns" type="Foreach">
 		<binding name="source" expression="tableColumnIterator"/>
 		<binding name="value" expression="tableColumn"/>
