@@ -165,6 +165,10 @@ public class ActionService extends AbstractService
 
         IPage page = cycle.getPage(pageName);
 
+		// Setup the page for the rewind, then do the rewind.
+
+		cycle.activate(page);
+		
         IPage componentPage = cycle.getPage(componentPageName);
         IComponent component = componentPage.getNestedComponent(targetIdPath);
 
@@ -192,9 +196,6 @@ public class ActionService extends AbstractService
                 throw new StaleSessionException();
         }
 
-        // Setup the page for the rewind, then do the rewind.
-
-        cycle.activate(page);
         cycle.rewindPage(targetActionId, action);
 
         // During the rewind, a component may change the page.  This will take

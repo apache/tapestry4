@@ -55,10 +55,8 @@
 
 package org.apache.tapestry.engine;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
@@ -72,7 +70,6 @@ import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.PageRedirectException;
 import org.apache.tapestry.RenderRewoundException;
 import org.apache.tapestry.StaleLinkException;
 import org.apache.tapestry.Tapestry;
@@ -713,59 +710,23 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
     public void activate(String name)
     {
         IPage page = getPage(name);
+
         activate(page);
     }
+
+    /** @since 3.0 */
 
     public void activate(IPage page)
     {
         if (LOG.isDebugEnabled())
             LOG.debug("Activating page " + page);
 
-        // using a list is not as fast as using a set, but we need the loop sequence
-        List activatedPages = new ArrayList();
+        Tapestry.clearMethodInvocations();
 
-        while (true)
-        {
-            // detect loops
-            int pageIndex = activatedPages.indexOf(page);
-            if (pageIndex >= 0)
-            {
-                StringBuffer pageLoop = new StringBuffer();
-                int count = activatedPages.size();
+        page.validate(this);
 
-                for (int i = pageIndex; i < count; i++)
-                {
-                    IPage loopPage = (IPage) activatedPages.get(i);
-                    pageLoop.append(loopPage.getPageName());
-                    pageLoop.append("; ");
-                }
-                pageLoop.append(page.getExtendedId());
+        Tapestry.checkMethodInvocation(Tapestry.IPAGE_VALIDATE_METHOD_ID, "validate()", page);
 
-                throw new ApplicationRuntimeException(
-                    Tapestry.getString("RequestCycle.validate-cycle", pageLoop.toString()));
-            }
-
-            activatedPages.add(page);
-
-            try
-            {
-                Tapestry.clearMethodInvocations();
-
-                page.validate(this);
-
-                Tapestry.checkMethodInvocation(
-                    Tapestry.IPAGE_VALIDATE_METHOD_ID,
-                    "validate()",
-                    page);
-
-                setPage(page);
-                break;
-            }
-            catch (PageRedirectException ex)
-            {
-                page = getPage(ex.getTargetPageName());
-            }
-        }
-
+        setPage(page);
     }
 }

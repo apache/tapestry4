@@ -144,7 +144,7 @@ public interface IRequestCycle
     public String getNextActionId();
 
     /**
-     *  Identifies the page being rendered.
+     *  Identifies the active page, the page which will ultimately render the response.
      *
      **/
 
