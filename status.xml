@@ -275,6 +275,9 @@ NextGen) be released as version number 3.0.
     <action type="fix" dev="HLS" due-to="Sadanori Ito" fixes-bug="TAPESTRY-200">
       ListEdit component reference should list source and value as required.
     </action>
+    <action type="fix" dev="HLS" due-to="Wouter de Vaal" fixes-bug="TAPESTRY-189">
+      FAQ link to Spring integration document is broken.
+    </action>
       
   </release>
 
