@@ -31,7 +31,7 @@ import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.html.BasePage;
 
 /**
- *  Page to demonstrate redirect from a listener method.
+ *  PageLink to demonstrate redirect from a listener method.
  * 
  *  @author Howard Lewis Ship
  *  @version $Id$

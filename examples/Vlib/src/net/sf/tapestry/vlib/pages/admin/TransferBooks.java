@@ -45,7 +45,7 @@ import net.sf.tapestry.vlib.ejb.IOperations;
 import net.sf.tapestry.vlib.ejb.Person;
 
 /**
- *  Page which allows books to be transferred, en mass, from one user to another.
+ *  PageLink which allows books to be transferred, en mass, from one user to another.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$

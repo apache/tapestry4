@@ -45,7 +45,7 @@ import net.sf.tapestry.ResponseOutputStream;
 import net.sf.tapestry.engine.AbstractService;
 
 /**
- *  Service that works with a {@link JFreeChart} to dynamically render
+ *  ServiceLink that works with a {@link JFreeChart} to dynamically render
  *  a chart as a JPEG.  This is a very limited implementation; a full version
  *  would include features such as setting the size of the image, and more flexibility
  *  in defining where the {@link JFreeChart} instance is obtained from.

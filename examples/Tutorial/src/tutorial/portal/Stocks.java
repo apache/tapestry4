@@ -36,7 +36,7 @@ import net.sf.tapestry.valid.IValidationDelegate;
 import net.sf.tapestry.valid.RenderString;
 
 /**
- *  Page that presents (fake) stock information.
+ *  PageLink that presents (fake) stock information.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$

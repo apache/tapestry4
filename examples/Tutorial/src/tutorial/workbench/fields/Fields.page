@@ -102,6 +102,7 @@
     <binding name="validator" expression="beans.intValidator"/>
     <binding name="value" expression="visit.intValue"/>
     <static-binding name="displayName">Integer Field</static-binding>
+    <static-binding name="type">Integer</static-binding>
   </component>
 
   <component id="doubleLabel" type="FieldLabel">
@@ -112,6 +113,7 @@
     <binding name="validator" expression="beans.doubleValidator"/>
     <binding name="value" expression="visit.doubleValue"/>
     <static-binding name="displayName">Double Field</static-binding>
+    <static-binding name="type">Double</static-binding>
   </component>
 
   <component id="bigDecimalLabel" type="FieldLabel">
@@ -122,6 +124,7 @@
    <binding name="value" expression="visit.bigDecimalValue"/>
     <binding name="validator" expression="beans.bigDecimalValidator"/>
     <static-binding name="displayName">Big Decimal Field</static-binding>
+    <static-binding name="type">java.math.BigDecimal</static-binding>
   </component>
 
   <component id="longLabel" type="FieldLabel">
@@ -132,6 +135,7 @@
     <binding name="value" expression="visit.longValue"/>
     <binding name="validator" expression="beans.longValidator"/>
     <static-binding name="displayName">Long Field</static-binding>
+    <static-binding name="type">Long</static-binding>
   </component>
 
   <component id="stringLabel" type="FieldLabel">

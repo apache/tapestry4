@@ -9,7 +9,7 @@
     <binding name="value" expression="currentDate"/>
   </component>
   
-  <component id="refresh" type="Page">
+  <component id="refresh" type="PageLink">
     <static-binding name="page">Home</static-binding>
   </component>
   

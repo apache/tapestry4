@@ -29,10 +29,10 @@ import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.html.BasePage;
 
 /**
- *  Page to demonstrate various form element components.
+ *  PageLink to demonstrate various form element components.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
+ *  @version Forms.java,v 1.1 2002/08/23 22:18:31 hship Exp
  *  @since 2.2
  * 
  **/

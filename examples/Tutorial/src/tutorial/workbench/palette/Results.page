@@ -22,7 +22,7 @@
   	<field-binding name="invert" field-name="Boolean.TRUE"/>
   </component>
   
-  <component id="back" type="Page">
+  <component id="back" type="PageLink">
     <binding name="namespace" expression="namespace"/>
   	<static-binding name="page">Palette</static-binding>
   </component>
