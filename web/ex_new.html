@@ -41,7 +41,21 @@
 		
 	<IMG height=44 src="images/ico_t.gif" width=44 align=absMiddle border=0>&nbsp;
 	  <IMG height=22 alt="" src="images/hd_tapestry.gif" width=100 align=absMiddle vspace=17 border=0> 
-				
+	
+<h3>Release 1.0.9</h3>
+
+<p>The way engine services are defined and used has been completely redone.  Services are now defined
+in the application specification and a shared instance of the service object is instantiated
+and shared by all engine instances (for the application).
+
+<p>Made it easier to override the creation of the specification source, template source, etc. in subclasses
+of 
+<a href="doc/api/com/primix/tapestry/engine/AbstractApplication.html">AbstractApplication</a>.
+
+<pre>
+[ #510175 ] add service registration to .application
+</pre>
+
 <h3>Release 1.0.8</h3>
 
 <p>A complete overhaul of the validating text field support.  The previous implementation

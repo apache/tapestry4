@@ -11,7 +11,7 @@ In the Readme.html
 In some of the documentation in the web directory.
 -->
 
-<property name="framework.version" value="1.0.8"/>
+<property name="framework.version" value="1.0.9"/>
 
 <property name="lib" value="lib"/>
 
