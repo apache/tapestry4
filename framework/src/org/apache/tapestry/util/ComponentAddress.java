@@ -124,7 +124,7 @@ public class ComponentAddress implements Serializable
 
     /**
      * Finds a component with the current address using the given RequestCycle.
-     * @param objCycle the RequestCycle to use to locate the component
+     * @param cycle the RequestCycle to use to locate the component
      * @return IComponent a component that has been initialized for the given RequestCycle
      */
     public IComponent findComponent(IRequestCycle cycle)
