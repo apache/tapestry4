@@ -14,7 +14,6 @@
   	  <fileset dir="${lib}">
   	  	<include name="Vlib.war"/>
   	  	<include name="VlibBeans.jar"/>
-  	  	<include name="Tutorial.war"/>
   	  </fileset>
   	</jar>
   
