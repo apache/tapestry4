@@ -258,18 +258,11 @@ First, an extract from the page's HTML template:
 This is combined with the a <sgmltag class=starttag>component</> declaration in the the page's specification:
 </>
 
-&start-listing;<![CDATA[
-<component>
-  <id>]]><emphasis>login</><![CDATA[</id>
-  <type>Page</type>
-  
-  <bindings>
-    <static-binding>
-      <name>page</name>
-      <value>Login</value>
-    </static-binding>
-  </bindings>
-</component>]]>&end-listing;
+&start-listing;
+&lt;component id="<emphasis>login</>" type="Page">&gt;
+  &lt;static-binding name="page"&gt;Login&lt;/static-binding&gt;
+&lt;/component&gt;
+&end-listing;
  
 <para>
 The <varname>login</> component will locate the page service, and provide 'Login'

@@ -111,27 +111,38 @@ Because we use just a single tag, &jwc-tag; for <emphasis>all</> components, it 
 say exactly what dynamic content will be inserted ... that is defined elsewhere.  The 
 &jwc-tag; tag simply identifies where the dynamic content will go.</>
 
-<para>A portion of the page's specification file defines what <varname>insertUserName</>
-is and what it does:
+<para>A portion of the page's specification file defines what
+the <varname>insertUserName</> component is and what it does:
 </>
 
-
-&start-listing;&lt;component&gt;
-  &lt;id&gt;<emphasis>insertUserName</>&lt;/id&gt;
-  &lt;type&gt;Insert&lt;/type&gt;
-
-  &lt;bindings&gt;
-    &lt;binding&gt;
-      &lt;name&gt;value&lt;/name&gt;
-      &lt;property-path&gt;application.userName&lt;/property-path&gt;
-    &lt;/binding&gt;
-  &lt;/bindings&gt;
-&lt;/component&gt;&end-listing;
-
-<para>This declares <varname>insertUserName</> as an <classname>Insert</> component; 
-a component that inserts some text into the response page's HTML.  
-It further identifies what gets inserted (the component's <varname>value</>) as the 
-<varname>userName</> property of the application object.</>
+<informalexample id="intro.ex">
+  <programlisting>
+&lt;component id="insertUserName" type="Insert"&gt; <co 
+	id="intro.ex.co.id-and-type">
+  &lt;binding name="value" property-path="visit.userName"/&gt;  <co 
+  id="intro.ex.co.value-binding">
+&lt;/component&gt;
+</programlisting>
+<calloutlist>
+	<callout arearefs="intro.ex.co.id-and-type">
+		<para>
+		The <varname>id</> attribute gives the component a unique identifier, that matches against the
+		HTML template.  The <varname>type</> attribute is used to specify which kind of component
+		is to be used.
+		</para>
+	</callout>
+	<callout arearefs="intro.ex.co.value-binding">
+		<para>
+		Bindings identify how the component gets the data it needs.  In this example, 
+		the <classname>Insert</> component requires a binding for its <varname>value</>
+		parameter, which is what will be inserted into the response HTML page.  This
+		type of binding (there are others), extracts the userName property from the
+		visit object (a central, application-defined object used to store most
+		server-side state in a Tapestry application).
+		</>
+	</>		
+</calloutlist>
+</informalexample>
 
 <para>Tapestry really excels when it is doing something 
 more complicated that simply producing output.  
@@ -179,56 +190,43 @@ A bit more goes into the component specification (a separate XML document that
 describes the configuration of the page and all components on the page; an excerpt is shown here):
 </>
 
-&start-listing;<![CDATA[
-<component>
-  <id>]]><emphasis>checkoutLink</><![CDATA[</id>
-  <type>Page</type>
-
-  <bindings>
-    <static-binding>
-      <name>page</name>
-      <value>Checkout</value>
-    </static-bindint</value>
-    </static-binding>
-    <binding>
-      <name>disabled</name>
-      <property-path>visit.cartEmpty</property-path>
-    </binding>
-  </bindings>
-</component>
-
-<component>
-  <id>]]><emphasis>checkoutButton</><![CDATA[</id>
-  <type>Rollover</type>
-
-  <bindings>
-    <binding>
-      <name>image</name>
-      <property-path>assets.checkout</property-path>
-    </binding>
-    <binding>
-      <name>disabled</name>
-      <property-path>assets.checkout-disabled</property-path>
-    </binding>
-    <static-binding>
-      <name>alt</name>
-      <value>Checkout</value>
-    </static-binding>
-  </bindings>
-</component>]]>&end-listing;
-
-<para>
-Again, a bit of hand waving is necessary.  
-Here the <varname>checkoutLink</> component creates a link to the 
-<varname>Checkout</> page of the application, but only if the visit object 
-(an object that tracks client state) enables it (the link is disabled if the shopping cart
-is empty).  The 
-<varname>checkoutButton</> is a <classname>Rollover</> component, 
-which automatically adjusts its image based on whether the link that surrounds it is enabled or disabled 
-(it can also handle changing the image dynamically when the mouse is moved over it). 
-We also reference the image assets, 
-<filename>Checkout.gif</> and <filename>Checkout-disabled.gif</>, indirectly.
-</>
+<informalexample id="intro.ex2">
+  <programlisting>
+&lt;component id="checkoutLink" type="Page"&gt; <co id="intro.ex2.co.checkoutLink">
+  &lt;static-binding name="page"&gt;Checkout&lt;/static-binding&gt;
+  &lt;binding name="disabled" property-path="visit.cartEmpty"/&gt; <co id="intro.ex2.co.link-disabled">
+&lt;/component&gt;
+&lt;component id="checkoutButton" type="Rollover"&gt; <co id="intro.ex2.co.Rollover">
+  &lt;binding name="image" property-path="assets.checkout"/&gt;
+  &lt;binding name="disabled" property-path="assets.checkout-disabled"/&gt; 
+  &lt;static-binding name="alt"&gt;Checkout&lt;/static-binding&gt;
+&lt;/component&gt;
+</programlisting>
+<calloutlist>
+  <callout arearefs="intro.ex2.co.checkoutLink">
+    <para>
+    Component <varname>checkoutLink</> is a <classname>Page</>, a component that creates
+    a link to another page in the application.  Tapestry takes care of generating the
+    appropriate URL.
+    </>
+  </callout>
+  <callout arearefs="intro.ex2.co.link-disabled">
+  	<para>
+  	The <varname>disabled</> parameter allows the link to be "turned off"; here it is turned
+  	off when the shopping cart is empty.
+  	</>
+  </callout>
+  <callout arearefs="intro.ex2.co.Rollover">
+    <para>
+    A <classname>Rollover</> component inserts an image; it must be inside some kind of
+    link component (such as the <classname>Page</>) and is sensitive to whether the link
+    is enabled or disabled; inserting a different image when disabled.  Not shown here
+    is the ability of the <varname>Rollover</> component to 
+    generate dynamic mouse over effects as well.
+    </>
+  </callout>
+</calloutlist>
+</informalexample>
 
 <para>
 The point of this example is that the JSP developer had to worry about character-by-character 

@@ -363,70 +363,28 @@ Part of the page's specification would configure these embedded components.
 
 <example>
 	<title>Shopping Cart Specification (excerpt)</>
-	<programlisting><![CDATA[<component>
-  <id>]]><emphasis>e-item</><![CDATA[</id>
-  <type>Foreach</type>
+	<programlisting>
+&lt;component id="e-item" type="Foreach"&gt;
+  &lt;binding name="source" property-path="items"/&gt;
+  &lt;binding name="value" property-path="lineItem"/&gt;
+&lt;/component&gt;
 
-  <bindings>
-    <binding>
-      <name>source</name>
-      <property-path>items</property-path>
-    </binding>
+&lt;component id="insertProductName type="Insert"&gt;
+  &lt;binding name="value" property-path="lineItem.productName"/&gt;
+&lt;/component&gt;
 
-    <binding> 
-      <name>value</name>
-      <property-path>lineItem</property-path>
-    </binding>
-  </bindings>
-</component>
+&lt;component id="insertQuantity" type="Insert"&gt;
+  &lt;binding name="value" property-path="lineItem.quantity"/&gt;
+&lt;/component&gt;
 
-<component>
-  <id>]]><emphasis>insertProductName</><![CDATA[</id>
-  <type>Insert</type>
+&lt;component id="insertPrice" type="Insert"&gt;
+  &lt;binding name="value" property-path="lineItem.price"/&gt;
+&lt;/component&gt;
 
-  <bindings>
-    <binding>
-      <name>value</name>
-      <property-path>lineItem.productName</property-path>
-    </binding>
-  </bindings>
-</component>
-
-<component>
-  <id>]]><emphasis>insertQuantity</><![CDATA[</id>
-  <type>Insert</type>
-
-  <bindings>
-    <binding>
-      <name>value</name>
-      <property-path>lineItem.quantity</property-path>
-    </binding>
-  </bindings>
-</component>
-
-<component>
-  <id>]]><emphasis>insertPrice</><![CDATA[</id>
-  <type>Insert</type>
-
-  <bindings>
-    <binding>
-      <name>value</name>
-      <property-path>lineItem.price</property-path>
-    </binding>
-  </bindings>
-</component>
-
-<component>
-  <id>]]><emphasis>remove</><![CDATA[</id>
-  <type>Action</type>
-
-  <bindings>
-    <binding>
-      <name>listener</name>
-      <property-path>removeListener</property-path>
-    </binding>
-  </bindings>
-</component>]]></programlisting>
+&lt;component id="remove" type="Action"&gt;
+  &lt;binding name="listener" property-path="removeListener"/&gt;
+&lt;/component&gt;
+</programlisting>
 </example>
  
 <para>

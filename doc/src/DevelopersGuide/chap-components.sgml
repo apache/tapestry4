@@ -45,7 +45,7 @@ Parameters have a name, a type and may be required or optional.
 
 <para>
 To developers experienced with Java GUIs, it may appear that Tapestry 
-component parameters are the same as JavaBeans properties.  This is not actually true.  
+component parameters are the same as JavaBeans properties.  This is not completes true.  
 JavaBeans properties are set-and-forget; the designer sets a value 
 for the property using a visual editor and the value 
 is saved with the bean until it is used at runtime.
@@ -567,36 +567,76 @@ directory of the WAR (Web Application Archive).
 </>
 
 <para>
-These specifications can be quite verbose, 
+These specifications can be somewhat verbose, 
 it is strongly advised that a DTD-aware XML editor be used, 
 rather than hand editting the files.
 </>
 
 		<section>
-			<title>Preamble</>
-
+			<title><sgmltag class=starttag>specification</> element
+		
 <para>
-The specification begins as follows:
+Component specification files, which use the filename extension <literal>.jwc</>, consist of a
+<sgmltag class=starttag>specification</> element.
 </>
-
-&start-listing;<![CDATA[
+	
+<figure>
+	<title>Component specification: <sgmltag class=starttag>specification</> element
+<programlisting>
+<![CDATA[
 <?xml version="1.0"?>
 <!DOCTYPE specification PUBLIC 
-    "-//Primix Solutions//Tapestry Specification 1.0//EN"
-	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
+  "-//Howard Ship//Tapestry Specification 1.1//EN"
+  "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+]]>
 
-<specification>]]>&end-listing;
+&lt;specification 
+  allow-body="<replaceable>yes</>|<replaceable>no</>" <co id="components.spec.co.allow-body">
+  allow-informal-parameters="<replaceable>yes</>|<replaceable>no</>" <co id="components.spec.co.informal">
+  class="<replaceable>java-class</>"&gt; <co id="components.spec.co.java-class">
+  
+  [ &lt;description ...&gt; ...]
+  [ &lt;parameter ...&gt; ...]
+  [ &lt;property ...&gt; ...]
+  [ &lt;component ...&gt; ...]
+  [ &lt;<replaceable>asset</> ...&gt; ...]
+&lt;/specification&gt;
+</programlisting>
+</figure>
 
 <para>
-This begins the XML document, and identifies it as a component specification.
-Next, the type of the component, the Java class to instantiate, is defined.
+<calloutlist>
+  <callout arearefs="components.spec.co.allow-body">
+  	<para>
+  	Whether the component is allowed to have a body, that is, wrap around other components
+  	and static HTML.  The default is 'yes', so this attribute is usually ommitted.
+  	</>
+  </>
+  <callout arearefs="components.spec.co.informal">
+  	<para>
+  	Whether informal parameters are allowed.  Informal parameters are additional parameters
+  	beyond the ones formally defined.  These are typically used with components that map
+  	directly to an HTML element, to allow additional HTML attributes to be specified.
+  	The default is 'yes', so this attribute is usually ommitted.
+  	</>
+  </>
+  <callout arearefs="components.spec.co.java-class">
+	<para>
+	The complete class name of the component class, 
+	for example, <classname>com.skunkworx.skunkapp.Border</>.
+	</>
+  </>
+ </calloutlist>
 </>
 
-&start-listing;&lt;class&gt;<replaceable>class name</>&lt;/class&gt;&end-listing;
-
-
-<para>
-This must be a full class name, such as <classname>com.skunkworx.skunkapp.Border</>.
+<note>
+	<title>Versions of the DTD</>
+	<para>
+	There was an earlier version of the DTD, version 1.0, which is the version
+	used with Tapestry Release 1.0.0.  Version 1.1 is more succinct and readable
+	than version 1.0 and has a few extra features.  Both versions are supported by
+	Tapestry until at least release 1.1.0.
+	</>
 </>
 
 <para>
@@ -612,145 +652,166 @@ This is one of the ways that Tapestry eases deployment.
 </>
 
 <para>
-Next, the specification describes whether the component can have a 
-body (that is, wrap around other HTML or components).  
+The <sgmltag class=starttag>specification</> element wraps around all other elements in
+the specification (which are used to defined parameters, embedded components and assets).  The following
+sections describe these additional elements.
+
+			</section>
+
+			<section>
+				<title><sgmltag class=starttag>description</> element
+				
+<para>
+One or more <sgmltag class=starttag>description</> elements may be included in the specification.  These are descriptions of 
+the component's features and behavior, suitable for inclusion in some form of IDE.  Multiple descriptions are used to support
+multiple languages.
 </>
 
+
+<figure>
+	<title>Component specification: <sgmltag class=starttag>description</> element
+	<programlisting>
+&lt;description 
+  xml:lang="<replaceable>language code</>"&gt; <co id="component.specification.description.lang">
+  ... <replaceable>text</> ... 
+&lt;/description&gt;
+</programlisting>
+</figure>
+
 <para>
-This is specified using the <sgmltag class=starttag>allow-body</> element:
+<calloutlist>
+	<callout arearefs="component.specification.description.lang">
+	<para>
+	The language in which the descriptive text is written. This takes the form
+	of a two letter code, defined by the ISO-639 standard.
+	</>
+	</>
+</calloutlist>
 </>
-
-&start-listing;&lt;allow-body&gt;<replaceable>boolean</>&lt;/allow-body&gt;&end-listing;
-
-
-<para>
-The value specified should be <literal>true</> or <literal>false</>.
-If not specified (the usual case), it defaults to <literal>true</>,
-allowing the component to have a body.
+<note>
+	<title><sgmltag class=starttag>description</> usage
+	<para>
+	The <sgmltag class=starttag>description</> element is really used for future expansion, towards
+	a time when an  integrated HTML / Tapestry Specification editor does exist.  
+	Also, a Javadoc doclet may be created that can read
+	Tapestry specifications and include them with Javadoc.  In the meantime, descriptions can be used
+	like XML comments.
+	</>
 </>
 
 			</section>
 
 			<section>
-				<title>Parameters</>
+				<title><sgmltag class=starttag>parameter</> element</>
+				
+<para>
+This element is used to describe formal parameters used by a component.
+
+<figure>
+	<title>Component specification: <sgmltag class=starttag>parameter</> element
+	<programlisting>
+&lt;parameter
+  name="<replaceable>name</>" <co id="components.spec.parameter.name">
+  java-class="<replaceable>text</>" <co id="components.spec.parameter.java-class">
+  required="<replaceable>yes</>|<replaceable>no</>"&gt; <co id="components.spec.parameter.required">
+  [ &lt;description ... &gt; ...] <co id="components.spec.parameter.description">
+&lt;/parameter&gt;
+</programlisting>
+</figure>
 
 <para>
-The next section describes the parameters to the component, 
-all of which is specified inside a <sgmltag class=starttag>parameters</>
-element. Components can have two types of parameters:  
-formal and informal.  
-Formal parameters describe the interface to the component 
-and have already been touched on.
-</>
-
-<para>
-Informal parameters are a kind of 'back door' to the HTML 
-generated by the component.  The majority of components have a 
-one-to-one relationship to an HTML element.  
-</>
-
-<para>
-Each informal parameter will be converted to an 
-attribute / value pair and added to the HTML element.  
-The component will silently filter out any informal parameters whose 
-name conflicts with either a formal parameter name 
-or an attribute controlled by the component.  
-For example, the <classname>Action</> component (which generates an 
-<sgmltag class=starttag>a</> 
-element) will not allow an informal parameter to 
-specify the <token>href</> attribute.  
-Note that the check is case insensitive, so an informal parameter of <literal>Href</>
-would also be skipped.
-</>
-
-<para>
-Informal parameters are primarily used to set the <token>class</>
-attribute (used in conjunction with cascading style sheets) 
-and to create JavaScript event handlers.
-</>
-
-<para>Some components do not have the necessary 
-one-to-one mapping to an HTML element that 
-makes informal parameters useful.  
-The <sgmltag class=starttag>allow-informal-parameters</>
-element controls this:
-</>
-
-&start-listing;<![CDATA[<parameters>
- 	<allow-informal-parameters>]]><replaceable>boolean</>&lt;/allow-informal-parameters&gt;&end-listing;
-
-<para>
-By default, informal parameters are allowed, so 
-this is used to turn them off.  
-This element is optional, and usually omitted.
-</>
-
-<para>
-Following this, each parameter is specified with a 
-<sgmltag class=starttag>parameter</> element:
-</>
-
-&start-listing;><![CDATA[<parameter>
-	<name>]]><replaceable>string</><![CDATA[</name>
-	<java-type>]]><replaceable>class name</><![CDATA[</java-type>
-	<required>]]><replaceable>boolean</><![CDATA[</required>
-</parameter>]]>&end-listing;
-
-<para>Each parameter must have a unique name.  
-Parameter names must start with a letter and may contain letters, numbers 
-and the underscore.
-</>
-
-<para>
-The Java type is the complete class name of a Java class that represents the 
-type of data required (or provided) by the component.  
-If not specified, it defaults to <classname>java.lang.Object</>
-	<footnote>
+<calloutlist>
+	<callout arearefs="components.spec.parameter.name">
 		<para>
-			This is simply used for documentation; the value is never used in the framework.
+		Each parameter must have a unique name.  
+		Parameter names must start with a letter and may contain letters, numbers 
+		and the underscore.
 		</>
-	</>.
-</>
+	</>
+	<callout arearefs="components.spec.parameter.java-class">
+		<para>
+		Identifies the Java class or type that must be provided for the parameter.
+		This is for descriptive purposes only, there is no validation by the framework.
+		Additionally, most components will do their best to cooerce whatever value
+		is given them into a useful type, such as parsing a String into an int.
+		</>
+		<para>
+		The <varname>java-type</> attribute is optional.
+	</>
+	<callout arearefs="components.spec.parameter.required">
+		<para>
+		If 'yes', then the parameter must be bound when the page is loaded.  The default, 'no',
+		allows a parameter to not be bound.
+		</>
+		<para>
+		Individual components may do a second check, that the bound parameter provides a non-null value.
+		</>
+	</>
+	<callout arearefs="components.spec.parameter.description">
+		<para>
+		Each parameter is allowed to have its own set of localized descriptions.
+		</>
+	</>
+</calloutlist>
+</para>
 
-<para>
-If a parameter is required, then a binding must be provided for the 
-parameter when it is embedded in another component.  
-The  <sgmltag class=starttag>required</> element is optional, and defaults to 
-<literal>false</> (meaning the parameter is optional).
-</>
-
-<para>
-Once all formal parameters are defined, the parameters element is closed:
-</>
-
-
-&start-listing;<![CDATA[</parameters>]]>&end-listing;
 
 			</section>
 
 			<section>
-				<title>Components and Bindings</>
+				<title><sgmltag class=starttag>component</> element</>
 
 <para>
-Following the parameters, embedded components are detailed.  
-A <sgmltag class=starttag>components</>
-element surrounds a list of <sgmltag class=starttag>component</> elements.
+The <sgmltag class=starttag>component</> element is used to describe an embedded component, a
+component with a corresponding &jwc-tag; tag in the containing component's HTML template.
 </>
 
-&start-listing;&lt;components&gt;&end-listing;
+<figure>
+	<title>Component specification:<sgmltag class=starttag>component</> element
+<programlisting>
+&lt;component
+  id="<replaceable>id</>" <co id="component.spec.component.id">
+  type="<replaceable>type</>" <co id="component.spec.component.type">
+  copy-of="<replaceable>id</>"&gt; <co id="component.spec.component.copy-of">
+  [ &lt;binding|field-binding|inherited-binding|static-binding ...&gt; ... ]
+&lt;/component&gt;
+</programlisting>
+</figure>
 
 <para>
-A <sgmltag class=starttag>component</> tag starts each component:
+<calloutlist>
+  <callout arearefs="component.spec.component.id">
+  	<para>
+  	Each component must have a unique identifier within its container.  The <varname>id</>
+  	attribute must conform to an XML id:  start with a letter, and contain only letters, numbers
+  	and underscores.
+  	</>
+  </>
+  
+  <callout arearefs="component.spec.component.type">
+  	<para>
+  	The component type is either the the complete path to a component specification, or a well known alias.
+  	All the components provided with the framework have well known aliases, at it is possible
+  	to create additional aliases in the Tapestry application specification.
+  	</>
+  </>
+  
+  <callout arearefs="component.spec.component.copy-of">
+  	<para>
+	Instead of specifying a type, a component may be a copy of one of its siblings.  In this case,
+	the new component is created by copying the type and bindings of the existing component.  It is possible
+	to specify additional bindings as well.
+	</>
+	<para>
+	The component being copied from must be declared first.
+	</>
+ </calloutlist>
+</para>
 
-&start-listing;&lt;component&gt;
-  &lt;id&gt;<replaceable>component id</>&lt;/id&gt;
-  &lt;type&gt;<replaceable>component type</>&lt;/type&gt;&end-listing;
-
-<para>
-Each component has a short id, which must be unique within its containing component.  
-This id is used to match the component against a &jwc-tag; tag in the HTML template.
-</>
-
+	<para>
+  	You must specify either the <varname>type</> or <varname>copy-of</> attributes, but not both.
+  	</>
+  	
 <para>
 Each component must also have a type.  Types are resource paths for a component 
 specification.  Specifications end with '.jwc'.  An example would be 
@@ -774,104 +835,85 @@ For example, the component
 has a standard alias of <classname>Action</>.
 </>
 
+
+		</section>
+		
+		<section>
+			<title>Binding elements
+			
 <para>
-Most components have parameters, and therefore, bindings.  
-Bindings are contained within a <sgmltag class=starttag>bindings</> element.
-</>
+There are four different types of bindings.  The standard binding is most common, as it binds a parameter
+to a property of an object, and may be read, write or read/write.
 
-
-&start-listing;<![CDATA[<bindings>]]>&end-listing;
-
-<para>
-There are four different elements to specify bindings.
-</>
-
-<para>
-The <sgmltag class=starttag>binding</> element specifies a dynamic 
-binding for the parameter.
-</>
-
-&start-listing;<![CDATA[<binding>
-	<name>]]><replaceable>parameter name</><![CDATA[</name>
-	<property-path>]]><replaceable>property path</><![CDATA[</property-path>
-</binding>]]>&end-listing;
-
-<para>
-The property path is specified relative to the containing component.
-</>
-
-<para>
-In some cases, the value for the parameter will never change; 
-in this case a <sgmltag class=starttag>static-binding</> is used:
-</>
-
-&start-listing;<![CDATA[<static-binding>
-	<name>]]><replaceable>parameter name</><![CDATA[</name>
-	<property-path>]]><replaceable>value</><![CDATA[</property-path>
-</static-binding>]]>&end-listing;
+<figure>
+	<title>Component specification: binding elements
+<programlisting>
+&lt;binding
+  name="<replaceable>name</>" <co id="components.spec.binding.name">
+  property-path="<replaceable>property-path</>"/&gt; <co id="components.spec.binding.path">
+  
+&lt;field-binding
+  name="<replaceable>name</>"
+  field-name="<replaceable>field-name</>"/&gt; <co id="components.spec.binding.field-name">
+  
+&lt;inherited-binding
+  name="<replaceable>name</>"
+  parameter-name="<replaceable>parameter-name</>"/&gt; <co id="components.spec.binding.parameter-name">
+  
+&lt;static-binding
+  name="<replaceable>name</>"&gt;
+  	... <replaceable>value</> ... <co id="components.spec.binding.static-value">
+&lt;/static-binding&gt;
+</programlisting>
+</figure>
 
 <para>
-Obviously, this only works for parameters that expect 
-<classname>String</>s or can coerce a <classname>String</> to a useful value 
-(such as a <type>boolean</> or <type>int</>).  Static bindings also 
-work quite well with informal parameters.
-</>
+<calloutlist>
+	<callout arearefs="components.spec.binding.name">
+		<para>
+		A name of the parameter to bind.  This usually matches the name of
+		a formal parameter of the component.  For components which
+		allow informal parameters, this may be any value.
+		</>
+	</>
+	<callout arearefs="components.spec.binding.path">
+		<para>
+		The name of a property reachable from the containing component.
+		</>
+	</>
+	<callout arearefs="components.spec.binding.field-name">
+		<para>
+		The name of a public static field.  This takes the form
+		<replaceable>class name</>.<replaceable>field name</>.  The class name is the complete
+		class name (including the package names), unless the package is <varname>java.lang</>, in which
+		case the package portion can be ommitted.
+		</>
+		<para>
+		Field bindings are often more useful than static bindings, because the value does't have to
+		be a convertable from a string.  This means true objects, not just holders of single values,
+		can be used, this is quite useful when dealing with the form element components.
+		</>
+	</>
+	<callout arearefs="components.spec.binding.parameter-name">
+		<para>
+		The name of a formal or informal parameter of the containing component.  The contained component
+		will share the same binding.  This is one of the ways in which it is possible to build complex
+		components by combining simple ones.
+		</>
+	</>
+	<callout arearefs="components.spec.binding.static-value">
+		<para>
+		Unlike the other binding types, the <sgmltag class=starttag>static-binding</> element
+		wraps around its static value, which allows for maximum flexibility.  It does, however,
+		remove all leading and trailing whitespace from the value.
+		</>
+	</>
+</calloutlist>
+</para>
 
 <para>
-The third type of binding allows a parameter to be set from a public static field:
-</>
-
-&start-listing;<![CDATA[<field-binding>
-	<name>]]><replaceable>parameter name</><![CDATA[</name>
-	<property-path>]]><replaceable>field name</><![CDATA[</property-path>
-</field-binding>]]>&end-listing;
-
-<para>
-The field name is the complete name of a class, 
-followed by a period, and then the name of a public, static 
-(usually final) field.  For example, the value 
-<literal>com.primix.tapestry.IEngineService.HOME_SERVICE</>
-references the public static <classname>String</> variable, 
-<varname>HOME_SERVICE</>
-contained within the interface <classname>IEngineService</>.
-</>
-
-<para>
-This is both more precise and more efficient than a static binding.  
-In many cases, it ensures that the component and the related Java code agree 
-on the exact value, rather than approximating the value with a 
-<classname>String</>.  In addition, the 
-value can be any data type, both scalars (such as <type>int</> or <type>double</>) 
-or real object types.
-</>
-
-<para>
-Because certain values in the <classname>java.lang</> 
-package are so useful, 
-a classname without a package is assumed to be in the <classname>java.lang</>
-package.  Thus the value <literal>Boolean.TRUE</> is an acceptible field name.
-</>
-
-<para>
-Finally, in some cases, it makes sense for an embedded component to 
-<emphasis>share</> a binding with its container.  
-This is accomplished with the <sgmltag class=starttag>inherited-binding</>
-element:
-</>
-
-&start-listing;<![CDATA[<inherited-binding>
-	<name>]]><replaceable>parameter name</><![CDATA[</name>
-	<property-path>]]><replaceable>parameter name</><![CDATA[</property-path>
-</inherited-binding>]]>&end-listing;
-
-<para>
-In this case, the first parameter name is the name of a parameter of 
-the embedded component.  The second parameter name is the name 
-of a parameter of the containing component.
-</>
-
-<para>
-An example of this is a <classname>Border</> component, 
+An example of using an
+<sgmltag class=starttag>inherited-binding</> is the <classname>Border</> component, 
 which has a <varname>title</> parameter that gives the name of the page.  
 The <classname>Border</> component embeds an <classname>Insert</> component, 
 and uses an inherited binding to set the 
@@ -879,71 +921,40 @@ and uses an inherited binding to set the
 containing <classname>Border</> component's <varname>title</> parameter.
 </>
 
-<para>
-Once all bindings for a component are specified, the 
-<sgmltag class=starttag>bindings</> and 
-<sgmltag class=starttag>component</>
-elements are closed.
-
-	<informalfigure>
-		<programlisting><![CDATA[  </bindings>
-</component>]]></programlisting>
-	</informalfigure>
-</para>
-
-<para>
-Additional components may be specified within their own 
-<sgmltag class=starttag>component</> elements.  
-Once all components are specified, the 
-<sgmltag class=starttag>components</>
-element is closed.
-</>
-
-&start-listing;<![CDATA[</components>]]>&end-listing;
-
 			</section>
 
 			<section>
-				<title>Assets</>
+				<title>Asset elements</>
 
 <para>
-Next, any assets for the component are specified.   
 Assets are a way of identifying resources whose URLs will appear in a web page.  
 Most often, the assets are image files used with an <classname>Image</> or 
-<classname>Rollover</> component.
+<classname>Rollover</> components.
 </>
+
+
+<figure>
+	<title>Component specification: Asset elements
+	
+<programlisting>
+&lt;context-asset
+	name="<replaceable>name</>"
+	path="<replaceable>path</>"/&gt;
+	
+&lt;external-asset
+	name="<replaceable>name</>"
+	URL="<replaceable>URL</>"/&gt;
+	
+&lt;private-asset
+	name="<replaceable>name</>"
+	resource-path="<replaceable>resource-path</>"/&gt;
+</programlisting>
+</figure>
 
 <para>
 Assets may be stored at some arbitrary URL, may be within the same web application context as the 
 Tapestry application, or may be stored as a resource inside Java VM class path.
 </>
-
-<para>
-Assets are contained within an 
-<sgmltag class=starttag>assets</> element.
-</>
-
-&start-listing;&lt;assets&gt;&end-listing;
-
-
-<para>
-There are three types of elements for specifying assets:
-</>
-
-&start-listing;><![CDATA[<external-asset>
-	<name>]]><replaceable>name</><![CDATA[</name>
-	<URL>]]><replaceable>URL</><![CDATA[</URL>
-</external-asset>
-
-<context-asset>
-	<name>]]><replaceable>name</><![CDATA[</name>
-	<path>]]><replaceable>path</><![CDATA[</path>
-</context-asset>
-
-<private-asset>
-	<name>]]><replaceable>name</><![CDATA[</name>
-	<resource-path>]]><replaceable>resource path</><![CDATA[</resource-path>
-</private-asset>]]>&end-listing;
 
 <para>
 In all three cases, the name must be very simple:  
@@ -952,18 +963,13 @@ Assets names must be unique within the component.
 </>
 
 <para>
-For external assets, the URL must be complete:  it will be inserted into the HTML unchanged.
+For external assets, the URL must be complete:  it will be inserted into the HTML unchanged.  In many cases,
+the URL can omit the <literal>http://<replaceable>hostname</></> portion of the URL, if the asset is located
+on the same site as the web application.
 </>
 
 <para>
 For context assets
-	<footnote>
-		<para>An earlier version of the framework called these "internal assets"
-		and <sgmltag class=starttag>internal-asset</>
-		may still be defined in the Tapestry DTD, though it
-		is subject to removal at any time.
-		</>
-	</>, 
 the path must be relative to the servlet context.  
 Context assets may be localized; this will be reflected in the 
 actual file chosen and in the URL inserted into the HTML.  
@@ -976,46 +982,8 @@ For private assets, the resource path must be a resource path within the
 Java VM class path, as with a specification or HTML template resource path.  
 This means the asset can be stored in the 
 <filename class=directory>WEB-INF/classes</> directory of the application's WAR, 
-or inside some JAR in the classpath.
+or inside some JAR in the classpath.  Like context assets, private assets may be localized.
 </>
-
-<para>
-Context and private assets may be localized:  
-Tapestry will perform a search similar to the one for 
-HTML templates to locate the best match.
-</>
-
-<para>
-Once all assets have been specified, the 
-<sgmltag class=starttag>assets</> element is closed:
-</>
-
-&start-listing;<![CDATA[</assets>]]>&end-listing;
-
-
-		</section>
-
-		<section>
-			<title>Postamble</>
-
-<para>
-Since that's the last element in a component specification, 
-the specification itself is closed:
-</>
-
-&start-listing;<![CDATA[</specification>]]>&end-listing;
-
-<para>
-The major tags, <sgmltag class=starttag>parameters</>, 
-<sgmltag class=starttag>components</>, 
-<sgmltag class=starttag>bindings</> and 
-<sgmltag class=starttag>assets</> are only specified if there are elements to be contained.  
-A component which contains no embedded components will not have a
-<sgmltag class=starttag>components</> element.  
-An embedded component with no bindings will not have a <sgmltag class=starttag>bindings</> element.  
-In many cases, a component specification will be only a few lines long.
-</>
-
 		</section>
 	</section>
 </chapter>
