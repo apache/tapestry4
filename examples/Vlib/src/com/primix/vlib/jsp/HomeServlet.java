@@ -62,15 +62,22 @@ public class HomeServlet extends VlibServlet
 	{
 		VirtualLibraryApplication application;
 		String label = "[Borrow]";
+		boolean enabled;
 		
 		application = VirtualLibraryApplication.get(context);
 		
-		if (application.isLoggedInUser(book.getHolderPrimaryKey()))
+		// Enabled if user is logged in but not already holding the
+		// book.
+		
+		enabled = application.isUserLoggedIn() &&
+		  		 !application.isLoggedInUser(book.getHolderPrimaryKey());
+		
+		if (!enabled)
 		{
 			writer.print(label);
 			return;
 		}
 		
-		writeLink(context, writer, "/home/" + book.getPrimaryKey(), label);
+		writeLink(context, writer, "/home/borrow/" + book.getPrimaryKey(), label);
 	}
 }

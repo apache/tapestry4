@@ -1,4 +1,4 @@
-<%-- $Id --%>
+<%-- $Id$ --%>
 <%@ page import="com.primix.vlib.ejb.*" %>
 <%@ include file="Border.jsp" %>
 <%
@@ -42,9 +42,7 @@
 		<td><% writer.print(book.getDescription()); %></td>
 	</tr>
 <%
-	boolean showHolder = delegate.getShowHolder();
-	
-	if (showHolder)
+	if (application.showHolder(book))
 	{
 %>
 	<tr>

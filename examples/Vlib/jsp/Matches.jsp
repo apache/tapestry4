@@ -9,10 +9,8 @@
 	writer.print(matches.length);
 %> matches.
 <%
-	for (int i = 0; i < matches.length; i++)
+	if (matches.length > 0)
 	{
-		if (i == 0)
-		{
 %>
 <table>
 	<tr>
@@ -23,27 +21,31 @@
 		<th>Borrowed By</th>
 	</tr>
 <%
-		} %>
+	} // if 
+	
+	for (int i = 0; i < matches.length; i++)
+	{
+		Book book = matches[i];
+
+%>
 	<tr>
 		<td><%
-		
-		Book book = matches[i];
-		Integer ownerPK = book.getOwnerPrimaryKey();
-		Integer holderPK = book.getHolderPrimaryKey();
-	
 		BookServlet.writeLink(context, writer, book); %>
 		</td>
 		<td><%  writer.print(book.getAuthor()); %></td>
 		<td><%  writer.print(book.getPublisherName()); %></td>
 		<td><%
-		PersonServlet.writeLink(context, writer, ownerPK,
+		PersonServlet.writeLink(context, writer, 
+				book.getOwnerPrimaryKey(),
 				book.getOwnerName());
 %>
 		</td>
 		<td>
 <%
-		if (! ownerPK.equals(holderPK))
-			PersonServlet.writeLink(context, writer, holderPK, book.getHolderName());
+			if (vlib.getShowHolder(book))
+				PersonServlet.writeLink(context, writer, 
+					book.getHolderPrimaryKey(),
+					book.getHolderName());
 %>
 		</td>
 		<td>
@@ -54,12 +56,13 @@
 	</tr>
 
 <%
-		if (i + 1 == matches.length)
-		{
+	}  // for i
+	
+	if (matches.length > 0)
+	{
 %>
 </table>
 <%
-		}
 	}
 %>
 <%@ include file="Border-trailer.jsp" %>

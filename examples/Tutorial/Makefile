@@ -7,6 +7,7 @@ PACKAGES = \
 
 RESOURCE_PACKAGES = $(PACKAGES)
 
+CONTEXT_RESOURCES = index.html
 	
 LOCAL_CLASSPATH = \
 	../../lib/Tapestry.jar \
@@ -17,7 +18,7 @@ INSTALL_DIR = ../../lib
 
 MODULE_NAME = Tutorial
 
-include $(SYS_MAKEFILE_DIR)/Jar.mk
+include $(SYS_MAKEFILE_DIR)/War.mk
 
 
 

@@ -29,6 +29,10 @@ in the Java Servlet API 2.2 ... but Tapestry uses the 2.1 API.
 		<servlet-class>com.primix.vlib.jsp.BookServlet</servlet-class>
 	</servlet>
 	<servlet>
+		<servlet-name>person</servlet-name>
+		<servlet-class>com.primix.vlib.jsp.PersonServlet</servlet-class>
+	</servlet>
+	<servlet>
 		<servlet-name>mybooks</servlet-name>
 		<servlet-class>com.primix.vlib.jsp.MyBooksServlet</servlet-class>
 	</servlet>
@@ -47,6 +51,10 @@ in the Java Servlet API 2.2 ... but Tapestry uses the 2.1 API.
 	<servlet-mapping>
 		<servlet-name>book</servlet-name>
 		<url-pattern>/book/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>person</servlet-name>
+		<url-pattern>/person/*</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>mybooks</servlet-name>

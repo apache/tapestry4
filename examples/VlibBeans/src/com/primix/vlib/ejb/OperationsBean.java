@@ -500,7 +500,7 @@ public class OperationsBean implements SessionBean
 			connection = getConnection();
 			
 			assembly = buildBasePersonQuery();
-			assembly.addParameter("PERSON_ID = ?", primaryKey);
+			assembly.addParameter("WHERE PERSON_ID = ?", primaryKey);
 			
 			statement = assembly.createStatement(connection);
 			

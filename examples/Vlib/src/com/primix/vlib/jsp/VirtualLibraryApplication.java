@@ -420,4 +420,20 @@ public class VirtualLibraryApplication implements Serializable
 		fullUserName = null;
 	}
 
+	/**
+	 *  Returns true only if the book's owner is not the same as its holder.
+	 *
+	 */
+	 
+	public boolean getShowHolder(Book book)
+	{
+		Integer ownerPK;
+		Integer holderPK;
+		
+		ownerPK = book.getOwnerPrimaryKey();
+		holderPK = book.getHolderPrimaryKey();
+		
+		return ! ownerPK.equals(holderPK);
+	}
+
 }

@@ -75,6 +75,8 @@ public class VirtualLibraryApplication extends SimpleApplication
 	
 	private transient Context environment;	
 	
+    private boolean killSession;
+
 	private static final Map externalReferences = new HashMap();
 	
     // This duplicates data normally in the weblogic.xml file ... but in
@@ -161,9 +163,10 @@ public class VirtualLibraryApplication extends SimpleApplication
 	/**
 	 *  Removes the operations bean instance, if accessed this request cycle.
 	 *
+     *  <p>May invalidate the {@link HttpSession} (see {@link #logout()}).
 	 */
 	 
-	protected void cleanupAfterRequest()
+	protected void cleanupAfterRequest(IRequestCycle cycle)
 	{
 		if (operations != null)
 		{
@@ -185,6 +188,9 @@ public class VirtualLibraryApplication extends SimpleApplication
         
 		publisherModel = null;
         personModel = null;
+
+        if (killSession)
+            cycle.getRequestContext().getSession().invalidate();
 	}
 	
 	/**
@@ -687,5 +693,16 @@ public class VirtualLibraryApplication extends SimpleApplication
 		if (monitor != null)
 			monitor.serviceEnd(EXTERNAL_SERVICE);
 	}
-	
+
+    /**
+     *  Sets the user property to null, and sets a flag that
+     *  invalidates the {@link HttpSession} at the end of the request cycle.
+     *
+     */
+
+    public void logout()
+    {
+        user = null;
+        killSession = true;
+    }
 }
