@@ -20,7 +20,15 @@ import net.sf.tapestry.util.JanitorThread;
  *  A Pool is used to pool instances of a useful class.  It uses
  *  keys, much like a {@link Map}, to identify a list of pooled objects.
  *  Retrieving an object from the Pool atomically removes it from the
- *  pool.  It can then be stored again later.
+ *  pool.  It can then be stored again later.  In this way, a single
+ *  Pool instance can manage many different types of pooled objects,
+ *  filed under different keys.
+ * 
+ *  <p>
+ *  Unlike traditional Pools, this class does not create new instances of
+ *  the objects it stores (with the exception of simple Java Beans,
+ *  via {@link #retrieve(Class)}.  The usage pattern is to retrieve an instance
+ *  from the Pool, and if the instance is null, create a new instance.
  *
  *  <p>The implementation of Pool is threadsafe.
  *
@@ -28,13 +36,13 @@ import net.sf.tapestry.util.JanitorThread;
  *  only keeping pooled objects that have been needed within
  *  a recent time frame.  A generational system is used, where each
  *  pooled object is assigned a generation count.  {@link #executeCleanup}
- *  culls objects whose generation count is too old (outside of a
+ *  discards objects whose generation count is too old (outside of a
  *  {@link #getWindow() window}).
  * 
  *  <p>
  *  Objects in the pool can receive two notifications: one notification
  *  when they are {@link #store(Object, Object) stored} into the pool,
- *  and one when they are discarded form the pool.
+ *  and one when they are discarded from the pool.
  * 
  *  <p>
  *  Classes that implement {@link net.sf.tapestry.util.pool.IPoolable}
@@ -44,8 +52,8 @@ import net.sf.tapestry.util.JanitorThread;
  *  <p>
  *  Alternately, an adaptor for the other classes can be
  *  registerered (using {@link #registerAdaptor(Class, IPoolableAdaptor)}.
- *  The adaptor will be invoked to perform the desred cleanup
- *  of the object instead.
+ *  The adaptor will be invoked to handle the notification when a 
+ *  pooled object is stored or discarded.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -103,6 +111,8 @@ public class Pool implements ICleanable, IRenderDescription
     /**
      *  Creates a new Pool using the specified map size.  The map is created immediately.
      *
+     *  @deprecated Use {@link #Pool()} instead.
+     * 
      **/
 
     public Pool(int mapSize)
@@ -134,6 +144,8 @@ public class Pool implements ICleanable, IRenderDescription
      *  the {@link JanitorThread#getSharedJanitorThread() shared janitor}.
      *
      *  @since 1.0.5
+     *  @deprecated Use {@link #Pool(boolean) instead.
+     * 
      **/
 
     public Pool(int mapSize, boolean useSharedJanitor)
@@ -183,13 +195,12 @@ public class Pool implements ICleanable, IRenderDescription
 
     public synchronized Object retrieve(Object key)
     {
-        PoolList list;
         Object result = null;
 
         if (_map == null)
             _map = new HashMap();
 
-        list = (PoolList) _map.get(key);
+        PoolList list = (PoolList) _map.get(key);
 
         if (list != null)
             result = list.retrieve();
@@ -208,6 +219,16 @@ public class Pool implements ICleanable, IRenderDescription
      *  instance is available, a new instance is created
      *  (using the no arguments constructor).  Objects are
      *  pooled using their actual class as a key.
+     * 
+     *  <p>
+     *  However, don't be fooled by false economies.  Unless
+     *  an object is very expensive to create, pooling is 
+     *  <em>more</em> expensive than simply instantiating temporary
+     *  instances and letting the garbage collector deal with it
+     *  (this is counter intuitive, but true).  For example,
+     *  this method was originally created to allow pooling
+     *  of {@link StringBuffer}, but testing showed that it
+     *  was a net defecit.
      * 
      **/
 
