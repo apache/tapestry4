@@ -166,7 +166,7 @@ public class ExternalService extends AbstractService
         return constructLink(cycle, Tapestry.EXTERNAL_SERVICE, context, pageParameters, true);
     }
 
-    public boolean service(
+    public void service(
         IEngineServiceView engine,
         IRequestCycle cycle,
         ResponseOutputStream output)
@@ -203,8 +203,6 @@ public class ExternalService extends AbstractService
 
         // Render the response.
         engine.renderResponse(cycle, output);
-
-        return true;
     }
 
     public String getName()

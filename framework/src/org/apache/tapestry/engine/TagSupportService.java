@@ -98,7 +98,7 @@ public class TagSupportService implements IEngineService
         throw new ApplicationRuntimeException(Tapestry.getString("TagSupportService.service-only"));
     }
 
-    public boolean service(
+    public void service(
         IEngineServiceView engine,
         IRequestCycle cycle,
         ResponseOutputStream output)
@@ -139,8 +139,6 @@ public class TagSupportService implements IEngineService
 		writer.print(URI);
 		
 		writer.flush();
-
-        return false;
     }
 
     private String getAttribute(HttpServletRequest request, String name) throws ServletException

@@ -77,7 +77,7 @@ import org.apache.tapestry.request.ResponseOutputStream;
 public class WorkbenchHomeService extends HomeService
 {
 
-    public boolean service(IEngineServiceView engine, IRequestCycle cycle, ResponseOutputStream output)
+    public void service(IEngineServiceView engine, IRequestCycle cycle, ResponseOutputStream output)
         throws ServletException, IOException
     {
         Visit visit = (Visit) engine.getVisit();
@@ -85,7 +85,7 @@ public class WorkbenchHomeService extends HomeService
         if (visit != null)
             visit.setActiveTabName("Home");
 
-        return super.service(engine, cycle, output);
+        super.service(engine, cycle, output);
     }
 
 }

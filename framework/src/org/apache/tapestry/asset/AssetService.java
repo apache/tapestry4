@@ -168,7 +168,7 @@ public class AssetService extends AbstractService
      *
      **/
 
-    public boolean service(
+    public void service(
         IEngineServiceView engine,
         IRequestCycle cycle,
         ResponseOutputStream output)
@@ -193,10 +193,6 @@ public class AssetService extends AbstractService
         ServletContext servletContext = cycle.getRequestContext().getServlet().getServletContext();
 
         writeAssetContent(engine, cycle, output, resourcePath, resourceConnection, servletContext);
-
-        // Return false, to indicate that no server side state could have changed.
-
-        return false;
     }
 
     /**  @since 2.2 **/

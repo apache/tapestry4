@@ -89,7 +89,7 @@ public class PageService extends AbstractService
 
     }
 
-    public boolean service(
+    public void service(
         IEngineServiceView engine,
         IRequestCycle cycle,
         ResponseOutputStream output)
@@ -116,8 +116,6 @@ public class PageService extends AbstractService
         cycle.activate(page);
 
         engine.renderResponse(cycle, output);
-
-        return true;
     }
 
     public String getName()

@@ -130,7 +130,7 @@ public class ActionService extends AbstractService
         return constructLink(cycle, Tapestry.ACTION_SERVICE, serviceContext, null, true);
     }
 
-    public boolean service(
+    public void service(
         IEngineServiceView engine,
         IRequestCycle cycle,
         ResponseOutputStream output)
@@ -204,8 +204,6 @@ public class ActionService extends AbstractService
         // Render the response.
 
         engine.renderResponse(cycle, output);
-
-        return true;
     }
 
     public String getName()
