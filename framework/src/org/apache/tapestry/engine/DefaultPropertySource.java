@@ -48,7 +48,9 @@ import org.apache.tapestry.util.SystemPropertiesPropertySource;
  *  in some way).  
  *  
  *  @author mb
- *  @since 3.1
+ *  @since 3.0
+ *  @deprecated To be removed in 3.2, replaced with the <code>tapestry.ApplicationPropertySource</code>
+ *  service
  */
 public class DefaultPropertySource implements IPropertySource
 {

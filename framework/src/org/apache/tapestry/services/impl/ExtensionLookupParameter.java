@@ -14,33 +14,27 @@
 
 package org.apache.tapestry.services.impl;
 
-import javax.servlet.http.HttpServlet;
-
-import org.apache.hivemind.impl.MessageFormatter;
+import org.apache.hivemind.impl.BaseLocatable;
 
 /**
- * 
+ * Parameters to the {@link org.apache.tapestry.services.impl.ExtensionLookupFactory}
+ * service implementation factory.
  *
  * @author Howard Lewis Ship
  * @since 3.1
  */
-final class ImplMessages
+public class ExtensionLookupParameter extends BaseLocatable
 {
-    private static final MessageFormatter _formatter =
-        new MessageFormatter(ImplMessages.class, "ImplStrings");
-
-    public static String initializerContribution()
+	private String _extensionName;
+	
+    public String getExtensionName()
     {
-        return _formatter.getMessage("initializer-contribution");
+        return _extensionName;
     }
 
-    public static String noApplicationSpecification(HttpServlet servlet)
+    public void setExtensionName(String string)
     {
-        return _formatter.format("no-application-specification", servlet.getServletName());
+        _extensionName = string;
     }
 
-    public static String errorInstantiatingEngine(Class engineClass, Throwable cause)
-    {
-        return _formatter.format("error-instantiating-engine", engineClass.getName(), cause);
-    }
 }
