@@ -23,7 +23,7 @@ PROJ_CLASSPATH = \
 	
 INSTALL_DIR = ../../lib
 
-CONTEXT_RESOURCES = index.html images
+CONTEXT_RESOURCES = *.html images
 
 RESOURCE_EXTENSIONS = application properties html jwc script gif
 

@@ -1,46 +1,46 @@
-<jwc id="border">
+<span jwcid="border">
 
 <p>This tutorial demostrates how to use the various kinds
 and configurations of validating text fields.
 It collects a number of values on this page and displays them on the next.
 
-<jwc id="showError"/>
+<span jwcid="showError"/>
 
-<jwc id="form">
+<form jwcid="form">
 
 <table>
 	<tr>
 		<th><span jwcid="labelString"/>:</th>
-		<td><input type=text name=foo jwcid="inputString"/></td>
+		<td><input jwcid="inputString"/></td>
 	</tr>
 	
 	<tr>
-		<th><jwc id="labelInteger"/>:</th>
-		<td><jwc id="inputInteger"/></td>
+		<th><span jwcid="labelInteger"/>:</th>
+		<td><input jwcid="inputInteger"/></td>
 	</tr>
 	
 	<tr>
-		<th><jwc id="labelDouble"/>:</th>
-		<td><jwc id="inputDouble"/></td>
+		<th><span jwcid="labelDouble"/>:</th>
+		<td><input jwcid="inputDouble"/></td>
 	</tr>
 	
 	<tr>
-		<th><jwc id="labelDecimal"/>:</th>
-		<td><jwc id="inputDecimal"/></td>
+		<th><span jwcid="labelDecimal"/>:</th>
+		<td><input jwcid="inputDecimal"/></td>
 	</tr>
 	
 	<tr>
-		<th><jwc id="labelBigInt"/>:</th>
-		<td><jwc id="inputBigInt"/></td>
+		<th><span jwcid="labelBigInt"/>:</th>
+		<td><input jwcid="inputBigInt"/></td>
 	</tr>
 	
 	<tr valign=top>
 		<th rowspan=2>Palette configuration:</th>
-		<td>Sort Mode: <jwc id="inputColorSort"/>
+		<td>Sort Mode: <select jwcid="inputColorSort"/>
 	</tr>
 	
 	<tr>
-		<td><jwc id="inputColor"/></td>
+		<td><select jwcid="inputColor"/></td>
 	</tr>
 	
 	<tr>
@@ -49,6 +49,11 @@ It collects a number of values on this page and displays them on the next.
 	</tr>
 </table>
 
-</jwc>
+</form>
 
-</jwc>
+<nr>
+A completely unrelated test.
+
+Click <a jwcid="redirect">here</a> to redirect out of Tapestry.
+
+</span>

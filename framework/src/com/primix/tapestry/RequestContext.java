@@ -141,7 +141,7 @@ public class RequestContext
 	 */
 	
 	public RequestContext(ApplicationServlet servlet, HttpServletRequest request,
-			HttpServletResponse response)
+						  HttpServletResponse response)
 	{
 		this.servlet = servlet;
 		this.request = request;
@@ -724,11 +724,11 @@ public class RequestContext
 		pair(writer, "remoteUser", request.getRemoteUser());
 		pair(writer, "requestedSessionId", request.getRequestedSessionId());
 		pair(writer, "requestedSessionIdFromCookie",
-				request.isRequestedSessionIdFromCookie());
+			 request.isRequestedSessionIdFromCookie());
 		pair(writer, "requestedSessionIdFromURL",
-				request.isRequestedSessionIdFromURL());
+			 request.isRequestedSessionIdFromURL());
 		pair(writer, "requestedSessionIdValid",
-				request.isRequestedSessionIdValid());
+			 request.isRequestedSessionIdValid());
 		pair(writer, "requestURI", request.getRequestURI());
 		pair(writer, "scheme", request.getScheme());
 		pair(writer, "serverName", request.getServerName());
@@ -824,20 +824,24 @@ public class RequestContext
 		// Cookies ...
 		
 		cookies = request.getCookies();
-		for (i = 0; i < cookies.length; i++)
+		
+		if (cookies != null)
 		{
-			
-			if (i == 0)
+			for (i = 0; i < cookies.length; i++)
 			{
-				section(writer, "Cookies");
-				header(writer, "Name", "Value");
-			}
-			
-			cookie = cookies[i];
-			
-			pair(writer, cookie.getName(), cookie.getValue());
-			
-		} // Cookies loop
+				
+				if (i == 0)
+				{
+					section(writer, "Cookies");
+					header(writer, "Name", "Value");
+				}
+				
+				cookie = cookies[i];
+				
+				pair(writer, cookie.getName(), cookie.getValue());
+				
+			} // Cookies loop
+		}
 		
 		writer.end(); // Request
 		
