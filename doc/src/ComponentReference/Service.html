@@ -100,26 +100,20 @@
 	</tr>
   <tr>
     <td>parameters</td>
-    <td><tt>String[]</tt></td>
+    <td><tt>Object</tt>,<br>
+    	<tt>Object[]</tt> or<nr>
+    	<tt>List</tt></td>
     <td>in</td>
    	<td>no</td>
 		<td>&nbsp;</td>
 		<td>
-    An array of Strings to be encoded into the URL. These parameters will be 
+    An array of Objects to be encoded into the URL. These parameters will be 
     decoded when the link is triggered.
-    <p> 
-    If the context is simply an Object, then toString() is invoked on it. It is 
-    assumed that the listener will be able to convert it back. 
-    <p>    
-    In a web application built onto of Enterprise JavaBeans, the context is 
-    often the primary key of some Entity bean; typically such keys are Strings 
-    or Integers (which can be freely converted from String to Integer by the 
-    listener). 
     </td>
 	</tr>
   <tr>
     <td>context</td>
-    <td><tt>String[]</tt></td>
+    <td><tt>Object]</tt></td>
     <td>in</td>
    	<td>no</td>
 		<td>&nbsp;</td>

@@ -37,46 +37,12 @@ import net.sf.tapestry.Tapestry;
  *  Such a component must be wrapped (possibly indirectly)
  *  inside a {@link RadioGroup} component.
  *
+ *  [<a href="../../../../../ComponentReference/Radio.html">Component Reference</a>]
+ *
+ * 
  *  <p>{@link Radio} and {@link RadioGroup} are generally not used (except
  *  for very special cases).  Instead, a {@link PropertySelection} component is used.
  *
- * <table border=1>
- * <tr> 
- *    <td>Property</td>
- *    <td>Type</td>
- *	  <td>Direction</td>
- *    <td>Required</td> 
- *    <td>Default</td>
- *    <td>Description</td>
- * </tr>
- *
- *
- *  <tr>
- *      <td>value</td>
- *      <td>{@link Object}</td>
- *      <td>in</td>
- *      <td>yes</td>
- *      <td>&nbsp;</td>
- *      <td>The value is used to determine if the radio button is initially selected
- *  (when rendering) and is the value assigned to the selected parameter when the
- *  form is submitted, if the HTML radio button is selected.
- *      </td>
- *  </tr>
- *
- *  <tr>
- *		<td>disabled</td>
- *		<td>boolean</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>false</td>
- *		<td>If true, then the <code>Radio</code> is disabled.  It will
- * write a disabled attribute into its tag when rendering, and will not update
- * its selected binding.
- * 		<p>A binding may also be disabled if its containing {@link RadioGroup} is
- *		   disabled. </td> </tr>
- *	</table>
- *
- *  <p>Informal parameters are allowed, but may not contain a body.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -92,9 +58,6 @@ public class Radio extends AbstractComponent
      *  Renders the form element, or responds when the form containing the element
      *  is submitted (by checking {@link Form#isRewinding()}.
      *
-     *
-     * <p>If the <code>label</code> property is set, it is inserted after the
-     * &lt;input&gt; tag.
      *
      **/
 
@@ -134,7 +97,7 @@ public class Radio extends AbstractComponent
         if (group.isSelection(_value))
             writer.attribute("checked");
 
-        if (_disabled)
+        if (_disabled || group.isDisabled())
             writer.attribute("disabled");
 
         // The value for the Radio matches the option number (provided by the RadioGroup).

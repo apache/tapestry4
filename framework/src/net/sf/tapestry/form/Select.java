@@ -42,40 +42,10 @@ import net.sf.tapestry.Tapestry;
  *  The most common situation, using a &lt;select&gt; to set a specific
  *  property of some object, is best handled using a {@link PropertySelection} component.
  *
+ *  [<a href="../../../../../ComponentReference/Select.html">Component Reference</a>]
+ * 
  *  <p>Otherwise, this component is very similar to {@link RadioGroup}.
  *
- * <table border=1>
- * <tr> 
- *    <td>Parameter</td>
- *    <td>Type</td>
- *	  <td>Direction</td>
- *    <td>Required</td> 
- *    <td>Default</td>
- *    <td>Description</td>
- * </tr>
- *
- *  <tr>
- *		<td>multiple</td>
- *		<td>boolean</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>false</td>
- *		<td>If true, the component allows multiple selection.</td> </tr>
- *
- *  <tr>
- * 		<td>disabled</td>
- *		<td>boolean</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>false</td>
- *		<td>Controls whether the select is active or not. 
- *			
- *			<p>Corresponds to the <code>disabled</code> HTML attribute.</td>
- *	</tr>
- *
- *	</table>
- *
- * <p>Informal parameters are allowed.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -84,19 +54,19 @@ import net.sf.tapestry.Tapestry;
 
 public class Select extends AbstractFormComponent
 {
-    private boolean multiple;
-    private boolean disabled;
-    private boolean rewinding;
-    private boolean rendering;
+    private boolean _multiple;
+    private boolean _disabled;
+    private boolean _rewinding;
+    private boolean _rendering;
 
-    private Set selections;
-    private int nextOptionId;
+    private Set _selections;
+    private int _nextOptionId;
 
-    private String name;
+    private String _name;
 
     public String getName()
     {
-        return name;
+        return _name;
     }
 
     /**
@@ -115,43 +85,43 @@ public class Select extends AbstractFormComponent
 
     public boolean isDisabled()
     {
-        return disabled;
+        return _disabled;
     }
 
-		public boolean isMultiple() 
-		{
-			return multiple;
-		}
+    public boolean isMultiple()
+    {
+        return _multiple;
+    }
 
-		public void setMultiple(boolean newValue) 
-		{
-			multiple = newValue;
-		}
+    public void setMultiple(boolean newValue)
+    {
+        _multiple = newValue;
+    }
 
     public boolean isRewinding()
     {
-        if (!rendering)
+        if (!_rendering)
             throw new RenderOnlyPropertyException(this, "rewinding");
 
-        return rewinding;
+        return _rewinding;
     }
 
     public String getNextOptionId()
     {
-        if (!rendering)
+        if (!_rendering)
             throw new RenderOnlyPropertyException(this, "nextOptionId");
 
         // Return it as a hex value.
 
-        return Integer.toString(nextOptionId++);
+        return Integer.toString(_nextOptionId++);
     }
 
     public boolean isSelected(String value)
     {
-        if (selections == null)
+        if (_selections == null)
             return false;
 
-        return selections.contains(value);
+        return _selections.contains(value);
     }
 
     /**
@@ -159,52 +129,49 @@ public class Select extends AbstractFormComponent
      *  is submitted (by checking {@link IForm#isRewinding()}.
      **/
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
         IForm form = getForm(cycle);
 
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-            throw new RequestCycleException(
-                Tapestry.getString("Select.may-not-nest"),
-                this);
+            throw new RequestCycleException(Tapestry.getString("Select.may-not-nest"), this);
 
         // It isn't enough to know whether the cycle in general is rewinding, need to know
         // specifically if the form which contains this component is rewinding.
 
-        rewinding = form.isRewinding();
+        _rewinding = form.isRewinding();
 
         // Used whether rewinding or not.
 
-        name = form.getElementId(this);
+        _name = form.getElementId(this);
 
         cycle.setAttribute(ATTRIBUTE_NAME, this);
 
-        if (rewinding)
+        if (_rewinding)
         {
-            selections = buildSelections(cycle, name);
+            _selections = buildSelections(cycle, _name);
         }
         else
         {
             writer.begin("select");
 
-            writer.attribute("name", name);
+            writer.attribute("name", _name);
 
-            if (multiple)
+            if (_multiple)
                 writer.attribute("multiple");
 
-            if (disabled)
+            if (_disabled)
                 writer.attribute("disabled");
 
             generateAttributes(writer, cycle);
         }
 
-        rendering = true;
-        nextOptionId = 0;
+        _rendering = true;
+        _nextOptionId = 0;
 
         renderWrapped(writer, cycle);
 
-        if (!rewinding)
+        if (!_rewinding)
         {
             writer.end();
         }
@@ -215,8 +182,8 @@ public class Select extends AbstractFormComponent
 
     protected void cleanupAfterRender(IRequestCycle cycle)
     {
-        rendering = false;
-        selections = null;
+        _rendering = false;
+        _selections = null;
 
         super.cleanupAfterRender(cycle);
     }
@@ -228,30 +195,22 @@ public class Select extends AbstractFormComponent
 
     private Set buildSelections(IRequestCycle cycle, String parameterName)
     {
-        RequestContext context;
-        String[] parameters;
-        int size = 7;
-        int length;
-        int i;
-        Set result;
+        RequestContext context = cycle.getRequestContext();
 
-        context = cycle.getRequestContext();
-
-        parameters = context.getParameters(parameterName);
+        String[] parameters = context.getParameters(parameterName);
 
         if (parameters == null)
             return null;
 
-        length = parameters.length;
+        int length = parameters.length;
         if (parameters.length == 0)
             return null;
 
-        if (parameters.length > 30)
-            size = 101;
+        int size = (parameters.length > 30) ? 101 : 7;
 
-        result = new HashSet(size);
+        Set result = new HashSet(size);
 
-        for (i = 0; i < length; i++)
+        for (int i = 0; i < length; i++)
             result.add(parameters[i]);
 
         return result;

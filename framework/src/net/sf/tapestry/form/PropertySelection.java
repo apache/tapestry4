@@ -37,6 +37,8 @@ import net.sf.tapestry.Tapestry;
  *  A component used to render a drop-down list of options that
  *  the user may select.
  * 
+ *  [<a href="../../../../../ComponentReference/PropertySelection.html">Component Reference</a>]
+ *
  *  <p>Earlier versions of PropertySelection (through release 2.2)
  *  were more flexible, they included a <b>renderer</b> property
  *  that controlled how the selection was rendered.  Ultimately,
@@ -51,82 +53,6 @@ import net.sf.tapestry.Tapestry;
  *  <p>Often, this is used to select a particular 
  *  {@link net.sf.tapestry.util.Enum} to assign to a property; the
  *  {@link EnumPropertySelectionModel} class simplifies this.
- *
- *  <p>
- *
- * <table border=1>
- * <tr> 
- *    <td>Parameter</td>
- *    <td>Type</td>
- *	  <td>Direction</td>
- *    <td>Required</td> 
- *    <td>Default</td>
- *    <td>Description</td>
- * </tr>
- *
- * <tr>
- *		<td>value</td>
- *		<td>java.lang.Object</td>
- *		<td>in-out</td>
- *		<td>yes</td>
- *		<td>&nbsp;</td>
- *		<td>The property to set.  During rendering, this property is read, and sets
- * the default value of the selection (if it is null, no element is selected).
- * When the form is submitted, this property is updated based on the new
- * selection. </td> </tr>
- *
- * <tr>
- *		<td>renderer</td>
- *		<td>{@link IPropertySelectionRenderer}</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>shared instance of {@link SelectPropertySelectionRenderer}</td>
- *		<td>Defines the object used to render the PropertySelection.
- * <p>{@link SelectPropertySelectionRenderer} renders the component as a &lt;select&gt;.
- * <p>{@link RadioPropertySelectionRenderer} renders the component as a table of
- * radio buttons.
- * 
- * <p>This parameter is deprecated in 2.2 and will be removed in 2.3.
- * 
- * </td></tr>
- *
- *  <tr>
- *		<td>model</td>
- *		<td>{@link IPropertySelectionModel}</td>
- *		<td>in</td>
- *		<td>yes</td>
- *		<td>&nbsp;</td>
- *		<td>The model provides a list of possible labels, and matches those labels
- *  against possible values that can be assigned back to the property.</td> </tr>
- * 
- *  <tr>
- * 		<td>disabled</td>
- *		<td>boolean</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>false</td>
- *		<td>Controls whether the &lt;select&gt; is active or not. A disabled PropertySelection
- * does not update its value parameter.
- *			
- *			<p>Corresponds to the <code>disabled</code> HTML attribute.</td>
- *	</tr>
- *
- *  <tr>
- *      <td>submitOnChange</td>
- *      <td>boolean</td>
- *      <td>in</td>
- *      <td>no</td>
- *      <td>false</td>
- *      <td>If true, then additional JavaScript is added to submit the
- * containing form when select is changed.  Equivalent to
- *  specifying a JavaScript event handler of <code>this.form.submit()</code>.
- * </td>
- *  </tr>
- * 
- * </table>
- *
- * <p>Informal parameters are allowed, and are applied to
- * the &lt;select&gt; tag.  A body is not allowed.
  *
  *
  *  @version $Id$

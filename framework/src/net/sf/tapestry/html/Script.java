@@ -49,39 +49,7 @@ import org.apache.log4j.Logger;
  *  Works with the {@link Body} component to add a script (and perhaps some initialization) 
  *  to the HTML response.
  *
- * <table border=1>
- * <tr> 
- *    <th>Property</th>
- *    <th>Type</th>
- *	  <th>Direction</th>
- *    <th>Required</th> 
- *    <th>Default</th>
- *    <th>Description</th>
- * </tr>
- *
- * <tr>
- *  <td>script</td>
- *  <td>{@link String}</td>
- *  <td>in</td>
- *  <td>yes</td>
- *  <td>&nbsp;</td>
- *  <td>The path of a resource (on the classpath) containing the script.</td>
- * </tr>
- *
- * <tr>
- *  <td>symbols</td>
- *  <td>{@link Map}</td>
- *  <td>in</td>
- *  <td>no</td>
- *  <td>&nbsp;</td>
- *  <td>The base set of symbols to be provided to the {@link IScript}.
- *  To this is added (in a copy of the {@link Map}) any informal parameters.
- *  </tr>
- *
- * </table>
- *
- *  <p>Allows informal parameters (which become symbols visible to the script), but
- *  does not allow a body.
+ *  [<a href="../../../../../ComponentReference/RadioGroup.html">Component Reference</a>]
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -211,7 +179,7 @@ public class Script extends AbstractComponent
 
     public void setScriptPath(String scriptPath)
     {
-        this._scriptPath = scriptPath;
+        _scriptPath = scriptPath;
     }
 
     public Map getBaseSymbols()
@@ -221,7 +189,7 @@ public class Script extends AbstractComponent
 
     public void setBaseSymbols(Map baseSymbols)
     {
-        this._baseSymbols = baseSymbols;
+        _baseSymbols = baseSymbols;
     }
 
 }

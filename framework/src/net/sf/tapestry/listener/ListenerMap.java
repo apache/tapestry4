@@ -47,8 +47,8 @@ import org.apache.log4j.Logger;
 
 /**
  *  Maps a class to a set of listeners based on the public methods of the class.
- *  {@link ListenerMapHelper} is registered as the {@link PropertyHelper} for
- *  this class.
+ *  {@link net.sf.tapestry.listener.ListenerMapPropertyAccessor} is setup
+ *  to provide these methods as named properties of the ListenerMap.
  *
  *  @author Howard Ship
  *  @version $Id$

@@ -64,16 +64,15 @@
   to map between Java values that will be assigned, and textual labels that will 
   appear in the HTML response.
 	<p>
-  There are a range property selection models you can use, including the
+  There are a range property selection models you can use, including 
   <a href="../api/net/sf/tapestry/form/StringPropertySelectionModel.html">
-  <tt>StringPropertySelectionModel</tt></a>,
-  <a href="../api/net/sf/tapestry/vlib/EntitySelectionModel.html">
-  <tt>EntitySelectionModel</tt></a>, and
+  <tt>StringPropertySelectionModel</tt></a>
+  and
   <a href="../api/net/sf/tapestry/form/EnumPropertySelectionModel.html">
   <tt>EnumPropertySelectionModel</tt></a>. You can also create your own model, 
   as illustrated in the Examples below.
 	<p>
-	Note complex value Object's need to properly implement the 
+	Note THAT complex value Objects need to properly implement the 
   <tt>Object.equals()</tt> method if the correct item intial item is to be 
   displayed.  
   <p>
@@ -152,7 +151,7 @@
 		</td>
 	</tr>
 	</table>		
-  Informal parameters: NOT allowed<br>
+  Informal parameters: allowed<br>
   Reserved parameters: none
  </td>
 </tr>
@@ -241,7 +240,7 @@ public class GenderPropertySelectionModel implements <a href="../api/net/sf/tape
         }
     }
 
-    public String getValue(int index) { return "" + index; }
+    public String getValue(int index) { return Integer.toString(index); }
 
     public Object translateValue(String value) {
         return getOption(Integer.parseInt(value));
@@ -394,7 +393,7 @@ public class ItemSelectionModel implements <a href="../api/net/sf/tapestry/form/
         return ((Item) itemList.get(index)).getName();
     }
 
-    public String getValue(int index) { return "" + index; }
+    public String getValue(int index) { Integer.toString(index); }
 
     public Object translateValue(String value) {
         return getOption(Integer.parseInt(value));
