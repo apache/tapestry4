@@ -70,6 +70,7 @@
     <invoke-factory model="primitive">
       <construct class="org.apache.tapestry.engine.ExternalService">
         <set-object property="responseRenderer" value="infrastructure:responseRenderer"/>
+        <set-object property="linkFactory" value="infrastructure:linkFactory"/>
       </construct>
     </invoke-factory>
   </service-point>  
@@ -79,6 +80,7 @@
       <construct class="org.apache.tapestry.asset.AssetService">
         <set-object property="exceptionReporter" value="infrastructure:requestExceptionReporter"/>
         <set-service property="assetExternalizer" service-id="AssetExternalizer"/>
+        <set-object property="linkFactory" value="infrastructure:linkFactory"/>
       </construct>
     </invoke-factory>
   </service-point>  
@@ -97,6 +99,7 @@
     <invoke-factory model="primitive">
       <construct class="org.apache.tapestry.engine.HomeService">
         <set-object property="responseRenderer" value="infrastructure:responseRenderer"/>
+        <set-object property="linkFactory" value="infrastructure:linkFactory"/>
       </construct>
     </invoke-factory>
   </service-point>
@@ -105,6 +108,7 @@
     <invoke-factory model="primitive">
       <construct class="org.apache.tapestry.engine.ActionService">
         <set-object property="responseRenderer" value="infrastructure:responseRenderer"/>
+        <set-object property="linkFactory" value="infrastructure:linkFactory"/>
       </construct>
     </invoke-factory>
   </service-point>
@@ -121,6 +125,7 @@
     <invoke-factory model="primitive">
       <construct class="org.apache.tapestry.engine.PageService">
         <set-object property="responseRenderer" value="infrastructure:responseRenderer"/>
+        <set-object property="linkFactory" value="infrastructure:linkFactory"/>
       </construct>
     </invoke-factory>
   </service-point>
@@ -131,6 +136,7 @@
         <set-object property="responseRenderer" value="infrastructure:responseRenderer"/>
         <set-service property="resetEventCoordinator" service-id="tapestry.ResetEventCoordinator"/>
         <set property="enabled" value="${org.apache.tapestry.enable-reset-service}"/>
+        <set-object property="linkFactory" value="infrastructure:linkFactory"/>
       </construct>
     </invoke-factory>
   </service-point>

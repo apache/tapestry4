@@ -19,11 +19,11 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.ResponseOutputStream;
+import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResetEventCoordinator;
 import org.apache.tapestry.services.ResponseRenderer;
 
@@ -35,10 +35,9 @@ import org.apache.tapestry.services.ResponseRenderer;
  * 
  * @author Howard Lewis Ship
  * @since 1.0.9
- * @see org.apache.tapestry.IEngine#isResetServiceEnabled()
  */
 
-public class ResetService extends AbstractService
+public class ResetService implements IEngineService
 {
     /** @since 3.1 */
 
@@ -51,6 +50,10 @@ public class ResetService extends AbstractService
     /** @since 3.1 */
     private boolean _enabled;
 
+    /** @since 3.1 */
+
+    private LinkFactory _linkFactory;
+
     public ILink getLink(IRequestCycle cycle, Object parameter)
     {
         if (parameter != null)
@@ -59,7 +62,7 @@ public class ResetService extends AbstractService
         String[] context = new String[]
         { cycle.getPage().getPageName() };
 
-        return constructLink(cycle, Tapestry.RESET_SERVICE, context, null, true);
+        return _linkFactory.constructLink(cycle, Tapestry.RESET_SERVICE, context, null, true);
     }
 
     public String getName()
@@ -70,7 +73,7 @@ public class ResetService extends AbstractService
     public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
             IOException
     {
-        String[] context = getServiceContext(cycle.getRequestContext());
+        String[] context = ServiceUtils.getServiceContext(cycle.getRequestContext());
 
         if (Tapestry.size(context) != 1)
             throw new ApplicationRuntimeException(Tapestry.format(
@@ -109,5 +112,11 @@ public class ResetService extends AbstractService
     public void setEnabled(boolean enabled)
     {
         _enabled = enabled;
+    }
+
+    /** @since 3.1 */
+    public void setLinkFactory(LinkFactory linkFactory)
+    {
+        _linkFactory = linkFactory;
     }
 }

@@ -22,6 +22,7 @@ import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.services.ComponentMessagesSource;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.services.Infrastructure;
+import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ObjectPool;
 import org.apache.tapestry.services.RequestExceptionReporter;
 import org.apache.tapestry.services.ResetEventCoordinator;
@@ -52,7 +53,7 @@ public class InfrastructureImpl implements Infrastructure
 
     private ObjectPool _objectPool;
 
-     private IPageSource _pageSource;
+    private IPageSource _pageSource;
 
     private ClassResolver _classResolver;
 
@@ -65,6 +66,8 @@ public class InfrastructureImpl implements Infrastructure
     private RequestExceptionReporter _requestExceptionReporter;
 
     private ResponseRenderer _responseRenderer;
+
+    private LinkFactory _linkFactory;
 
     public IScriptSource getScriptSource()
     {
@@ -205,5 +208,15 @@ public class InfrastructureImpl implements Infrastructure
     public void setResponseRenderer(ResponseRenderer responseRenderer)
     {
         _responseRenderer = responseRenderer;
+    }
+
+    public LinkFactory getLinkFactory()
+    {
+        return _linkFactory;
+    }
+
+    public void setLinkFactory(LinkFactory linkFactory)
+    {
+        _linkFactory = linkFactory;
     }
 }

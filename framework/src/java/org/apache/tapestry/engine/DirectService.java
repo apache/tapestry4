@@ -29,6 +29,7 @@ import org.apache.tapestry.StaleSessionException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.request.ResponseOutputStream;
+import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 
 /**
@@ -39,10 +40,13 @@ import org.apache.tapestry.services.ResponseRenderer;
  * @since 1.0.9
  */
 
-public class DirectService extends AbstractService
+public class DirectService implements IEngineService
 {
     /** @since 3.1 */
     private ResponseRenderer _responseRenderer;
+
+    /** @since 3.1 */
+    private LinkFactory _linkFactory;
 
     /**
      * Encoded into URL if engine was stateful.
@@ -97,7 +101,12 @@ public class DirectService extends AbstractService
         context[i++] = componentPage.getPageName();
         context[i++] = component.getIdPath();
 
-        return constructLink(cycle, Tapestry.DIRECT_SERVICE, context, serviceParameters, true);
+        return _linkFactory.constructLink(
+                cycle,
+                Tapestry.DIRECT_SERVICE,
+                context,
+                serviceParameters,
+                true);
     }
 
     public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
@@ -108,7 +117,7 @@ public class DirectService extends AbstractService
         String componentPageName;
         IPage componentPage;
         RequestContext requestContext = cycle.getRequestContext();
-        String[] serviceContext = getServiceContext(requestContext);
+        String[] serviceContext = ServiceUtils.getServiceContext(requestContext);
 
         if (serviceContext != null)
             count = serviceContext.length;
@@ -165,7 +174,7 @@ public class DirectService extends AbstractService
                         direct.getExtendedId()), direct.getPage());
         }
 
-        Object[] parameters = getParameters(cycle);
+        Object[] parameters = _linkFactory.extractServiceParameters(cycle);
 
         cycle.setServiceParameters(parameters);
         direct.trigger(cycle);
@@ -185,5 +194,11 @@ public class DirectService extends AbstractService
     public void setResponseRenderer(ResponseRenderer responseRenderer)
     {
         _responseRenderer = responseRenderer;
+    }
+
+    /** @since 3.1 */
+    public void setLinkFactory(LinkFactory linkFactory)
+    {
+        _linkFactory = linkFactory;
     }
 }

@@ -117,4 +117,11 @@ public interface Infrastructure
      */
 
     public ResponseRenderer getResponseRenderer();
+
+    /**
+     * Constructs {@link org.apache.tapestry.engine.ILink}instances for
+     * {@link org.apache.tapestry.engine.IEngineService}s.
+     */
+
+    public LinkFactory getLinkFactory();
 }

@@ -26,6 +26,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.AbsoluteURLBuilder;
+import org.apache.tapestry.services.LinkFactory;
 
 /**
  * Restarts the Tapestry application. This is normally reserved for dealing with catastrophic
@@ -36,7 +37,7 @@ import org.apache.tapestry.services.AbsoluteURLBuilder;
  * @since 1.0.9
  */
 
-public class RestartService extends AbstractService
+public class RestartService implements IEngineService
 {
     /** @since 3.1 */
     private Log _log;
@@ -50,12 +51,15 @@ public class RestartService extends AbstractService
     /** @since 3.1 */
     private AbsoluteURLBuilder _builder;
 
+    /** @since 3.1 */
+    private LinkFactory _linkFactory;
+
     public ILink getLink(IRequestCycle cycle, Object parameter)
     {
         if (parameter != null)
             throw new IllegalArgumentException(EngineMessages.serviceNoParameter(this));
 
-        return constructLink(cycle, Tapestry.RESTART_SERVICE, null, null, true);
+        return _linkFactory.constructLink(cycle, Tapestry.RESTART_SERVICE, null, null, true);
     }
 
     public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
@@ -114,5 +118,11 @@ public class RestartService extends AbstractService
     public void setResponse(HttpServletResponse response)
     {
         _response = response;
+    }
+
+    /** @since 3.1 */
+    public void setLinkFactory(LinkFactory linkFactory)
+    {
+        _linkFactory = linkFactory;
     }
 }

@@ -28,6 +28,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.StaleSessionException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.ResponseOutputStream;
+import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 
 /**
@@ -39,10 +40,13 @@ import org.apache.tapestry.services.ResponseRenderer;
  * @since 1.0.9
  */
 
-public class ActionService extends AbstractService
+public class ActionService implements IEngineService
 {
     /** @since 3.1 */
     private ResponseRenderer _responseRenderer;
+
+    /** @since 3.1 */
+    private LinkFactory _linkFactory;
 
     /**
      * Encoded into URL if engine was stateful.
@@ -91,7 +95,12 @@ public class ActionService extends AbstractService
 
         serviceContext[i++] = component.getIdPath();
 
-        return constructLink(cycle, Tapestry.ACTION_SERVICE, serviceContext, null, true);
+        return _linkFactory.constructLink(
+                cycle,
+                Tapestry.ACTION_SERVICE,
+                serviceContext,
+                null,
+                true);
     }
 
     public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
@@ -101,7 +110,7 @@ public class ActionService extends AbstractService
         String componentPageName;
         int count = 0;
 
-        String[] serviceContext = getServiceContext(cycle.getRequestContext());
+        String[] serviceContext = ServiceUtils.getServiceContext(cycle.getRequestContext());
 
         if (serviceContext != null)
             count = serviceContext.length;
@@ -174,5 +183,11 @@ public class ActionService extends AbstractService
     public void setResponseRenderer(ResponseRenderer responseRenderer)
     {
         _responseRenderer = responseRenderer;
+    }
+
+    /** @since 3.1 */
+    public void setLinkFactory(LinkFactory linkFactory)
+    {
+        _linkFactory = linkFactory;
     }
 }

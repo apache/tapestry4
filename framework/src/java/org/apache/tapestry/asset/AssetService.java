@@ -28,10 +28,12 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Defense;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.engine.AbstractService;
+import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
+import org.apache.tapestry.engine.ServiceUtils;
 import org.apache.tapestry.link.StaticLink;
 import org.apache.tapestry.request.ResponseOutputStream;
+import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.RequestExceptionReporter;
 
 /**
@@ -49,10 +51,13 @@ import org.apache.tapestry.services.RequestExceptionReporter;
  * @author Howard Lewis Ship
  */
 
-public class AssetService extends AbstractService
+public class AssetService implements IEngineService
 {
     /** @since 3.1 */
     private AssetExternalizer _assetExternalizer;
+
+    /** @since 3.1 */
+    private LinkFactory _linkFactory;
 
     /**
      * Defaults MIME types, by extension, used when the servlet container doesn't provide MIME
@@ -98,7 +103,7 @@ public class AssetService extends AbstractService
 
         // Service is stateless
 
-        return constructLink(cycle, Tapestry.ASSET_SERVICE, null, new Object[]
+        return _linkFactory.constructLink(cycle, Tapestry.ASSET_SERVICE, null, new Object[]
         { path }, false);
     }
 
@@ -130,9 +135,9 @@ public class AssetService extends AbstractService
     public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
             IOException
     {
-        Object[] parameters = getParameters(cycle);
+        Object[] parameters = _linkFactory.extractServiceParameters(cycle);
 
-        if (Tapestry.size(parameters) != 1)
+        if (parameters.length != 1)
             throw new ApplicationRuntimeException(Tapestry.format(
                     "service-single-parameter",
                     Tapestry.ASSET_SERVICE));
@@ -215,5 +220,11 @@ public class AssetService extends AbstractService
     public void setAssetExternalizer(AssetExternalizer assetExternalizer)
     {
         _assetExternalizer = assetExternalizer;
+    }
+
+    /** @since 3.1 */
+    public void setLinkFactory(LinkFactory linkFactory)
+    {
+        _linkFactory = linkFactory;
     }
 }

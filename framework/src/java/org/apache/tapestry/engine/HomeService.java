@@ -22,6 +22,7 @@ import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.ResponseOutputStream;
+import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 
 /**
@@ -33,17 +34,21 @@ import org.apache.tapestry.services.ResponseRenderer;
  * @since 1.0.9
  */
 
-public class HomeService extends AbstractService
+public class HomeService implements IEngineService
 {
     /** @since 3.1 */
     private ResponseRenderer _responseRenderer;
+
+    /** @since 3.1 */
+
+    private LinkFactory _linkFactory;
 
     public ILink getLink(IRequestCycle cycle, Object parameter)
     {
         if (parameter != null)
             throw new IllegalArgumentException(EngineMessages.serviceNoParameter(this));
 
-        return constructLink(cycle, Tapestry.HOME_SERVICE, null, null, true);
+        return _linkFactory.constructLink(cycle, Tapestry.HOME_SERVICE, null, null, true);
     }
 
     public void service(IRequestCycle cycle, ResponseOutputStream output) throws ServletException,
@@ -63,5 +68,11 @@ public class HomeService extends AbstractService
     public void setResponseRenderer(ResponseRenderer responseRenderer)
     {
         _responseRenderer = responseRenderer;
+    }
+
+    /** @since 3.1 */
+    public void setLinkFactory(LinkFactory linkFactory)
+    {
+        _linkFactory = linkFactory;
     }
 }
