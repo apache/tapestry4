@@ -16,12 +16,14 @@
 -->
 
 <!DOCTYPE application PUBLIC
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN"
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN"
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 
 <application name="JUnit Mock WML Application" engine-class="org.apache.tapestry.wml.WMLEngine">
 
-    <property name="org.apache.tapestry.template-extension" value="wml"/>
+    <meta key="org.apache.tapestry.exception-page-name" value="WMLException"/>
+	
+    <meta key="org.apache.tapestry.template-extension" value="wml"/>
 
     <library id="wml" specification-path="/org/apache/tapestry/wml/WML.library"/>
 

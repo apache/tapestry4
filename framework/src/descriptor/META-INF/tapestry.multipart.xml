@@ -19,7 +19,7 @@
   
   Support for multipart/form-data encoded requests used for file uploads.
   
-  <service-point id="MultipartDecoder" interface="MultipartDecoder">
+  <service-point id="MultipartDecoder">
     
     Service responsible for parsing and decoding multipart form submissions. 
     

@@ -46,7 +46,7 @@
     
   </service-point>
   
-  <service-point id="EnhancedClassValidator" interface="EnhancedClassValidator">
+  <service-point id="EnhancedClassValidator">
     
     Validates that an enhanced class does implement all abstract methods inherited from super-classes.
     

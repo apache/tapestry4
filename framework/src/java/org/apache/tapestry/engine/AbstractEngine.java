@@ -42,6 +42,7 @@ import org.apache.tapestry.StaleSessionException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.TapestryConstants;
 import org.apache.tapestry.listener.ListenerMap;
+import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.spec.IApplicationSpecification;
@@ -121,49 +122,18 @@ public abstract class AbstractEngine implements IEngine
     public static final String VISIT_CLASS_PROPERTY_NAME = "org.apache.tapestry.visit-class";
 
     /**
-     * Sets the Exception page's exception property, then renders the Exception page.
-     * <p>
-     * If the render throws an exception, then copious output is sent to <code>System.err</code>
-     * and a {@link ServletException}is thrown.
+     * @see org.apache.tapestry.error.ExceptionPresenter
      */
 
     protected void activateExceptionPage(IRequestCycle cycle, Throwable cause)
     {
-        try
-        {
-            IPage exceptionPage = cycle.getPage(getExceptionPageName());
-
-            exceptionPage.setProperty("exception", cause);
-
-            cycle.activate(exceptionPage);
-
-            renderResponse(cycle);
-
-        }
-        catch (Throwable ex)
-        {
-            // Worst case scenario. The exception page itself is broken, leaving
-            // us with no option but to write the cause to the output.
-
-            reportException(
-                    Tapestry.getMessage("AbstractEngine.unable-to-process-client-request"),
-                    cause);
-
-            // Also, write the exception thrown when redendering the exception
-            // page, so that can get fixed as well.
-
-            reportException(
-                    Tapestry.getMessage("AbstractEngine.unable-to-present-exception-page"),
-                    ex);
-
-            // And throw the exception.
-
-            throw new ApplicationRuntimeException(ex.getMessage(), ex);
-        }
+        _infrastructure.getExceptionPresenter().presentException(cycle, cause);
     }
 
     /**
      * Writes a detailed report of the exception to <code>System.err</code>.
+     * 
+     * @see org.apache.tapestry.services.RequestExceptionReporter
      */
 
     public void reportException(String reportTitle, Throwable ex)

@@ -12,26 +12,26 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.portlet;
+package org.apache.tapestry.error;
 
-import javax.portlet.PortletConfig;
-
-import org.apache.tapestry.services.impl.AbstractSetupApplicationGlobals;
+import org.apache.hivemind.impl.MessageFormatter;
 
 /**
- * Alternative to {@link org.apache.tapestry.services.impl.SetupServletApplicationGlobals}, but for
- * Portlets and the <code>tapestry.portlet.services.FactoryServices</code> configuration point.
- * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class SetupPortletApplicationGlobals extends AbstractSetupApplicationGlobals implements
-        PortletApplicationInitializer
+public final class ErrorMessages
 {
+    private static final MessageFormatter _formatter = new MessageFormatter(ErrorMessages.class,
+            "ErrorStrings");
 
-    public void initialize(PortletConfig portletConfig)
+    public static String unableToProcessClientRequest(Throwable cause)
     {
-        initialize("portlet");
+        return _formatter.format("unable-to-process-client-request", cause);
     }
 
+    static String unableToPresentExceptionPage(Throwable cause)
+    {
+        return _formatter.format("unable-to-present-exception-page", cause);
+    }
 }

@@ -23,6 +23,7 @@ import java.util.Locale;
 import javax.servlet.http.HttpServlet;
 
 import org.apache.hivemind.HiveMind;
+import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.MessageFormatter;
 import org.apache.tapestry.IComponent;
@@ -235,5 +236,32 @@ final class ImplMessages
     static String serviceNameMismatch(IEngineService service, String expectedName, String actualName)
     {
         return _formatter.format("service-name-mismatch", service, expectedName, actualName);
+    }
+
+
+
+    static String infrastructureAlreadyInitialized(String newMode, String initializedMode)
+    {
+        return _formatter.format("infrastructure-already-initialized", newMode, initializedMode);
+    }
+
+    static String duplicateInfrastructureContribution(InfrastructureContribution conflict,
+            Location existingLocation)
+    {
+        return _formatter.format(
+                "duplicate-infrastructure-contribution",
+                conflict.getProperty(),
+                conflict.getMode(),
+                existingLocation);
+    }
+
+    static String infrastructureNotInitialized()
+    {
+        return _formatter.getMessage("infrastructure-not-initialized");
+    }
+
+    static String missingInfrastructureProperty(String propertyName)
+    {
+        return _formatter.format("missing-infrastructure-property", propertyName);
     }
 }

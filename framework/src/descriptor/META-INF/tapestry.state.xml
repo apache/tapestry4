@@ -195,7 +195,7 @@
     
   </service-point>
   
-  <service-point id="ApplicationStateManager" interface="ApplicationStateManager">
+  <service-point id="ApplicationStateManager">
     
     <invoke-factory model="pooled">
       <construct class="ApplicationStateManagerImpl">

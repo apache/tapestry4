@@ -200,14 +200,17 @@
   <invoke-factory model="primitive">
     <construct class="SetupPortletApplicationGlobals">
       <set-service property="globals" service-id="tapestry.globals.ApplicationGlobals"/>
-      <set-service property="responseRenderer" service-id="tapestry.portlet.services.ResponseRenderer"/>
-      <set-service property="linkFactory" service-id="PortletLinkFactory"/>
       <set-configuration property="factoryServices" configuration-id="tapestry.portlet.services.FactoryServices"/>
-      <set-service property="HTMLDescriber" service-id="PortletHTMLDescriber"/>      
+      <set-service property="infrastructure" service-id="tapestry.Infrastructure"/>      
     </construct>
   </invoke-factory>
  </service-point>
  
+  <contribution configuration-id="tapestry.Infrastructure">
+    <property name="linkFactory" mode="portlet" object="service:PortletLinkFactory"/>
+    <property name="HTMLDescriber" mode="portlet" object="service:PortletHTMLDescriber"/>
+  </contribution>
+   
  <contribution configuration-id="PortletApplicationInitializers">
   <command id="SetupServletApplicationGlobals" object="service:SetupPortletApplicationGlobals"/>
  </contribution> 

@@ -24,6 +24,7 @@ import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.engine.state.ApplicationStateManager;
+import org.apache.tapestry.error.ExceptionPresenter;
 import org.apache.tapestry.markup.MarkupWriterSource;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.web.WebRequest;
@@ -39,28 +40,48 @@ import org.apache.tapestry.web.WebResponse;
 public interface Infrastructure
 {
     /**
-     * Returns the {@link org.apache.tapestry.spec.IApplicationSpecification}for the current
+     * Initializes the Infrastructure for a particular mode.
+     * 
+     * @throws IllegalStateException
+     *             if the Infrastructure has already been initialized.
+     */
+
+    public void initialize(String mode);
+
+    /**
+     * Returns a named property.
+     * 
+     * @throws IllegalStateException
+     *             if the Infrastructure has not yet been initialized.
+     * @throws org.apache.hivemind.ApplicationRuntimeException
+     *             if no value has been contributed for specified property name.
+     */
+
+    public Object getProperty(String propertyName);
+
+    /**
+     * Returns the {@link org.apache.tapestry.spec.IApplicationSpecification}&nbsp;for the current
      * application.
      */
 
     public IApplicationSpecification getApplicationSpecification();
 
     /**
-     * Returns an {@link IPropertySource}configured to search the application specification, etc.
-     * See <code>tapestry.ApplicationPropertySource</code>.
+     * Returns an {@link IPropertySource}&nbsp;configured to search the application specification,
+     * etc. See <code>tapestry.ApplicationPropertySource</code>.
      */
     public IPropertySource getApplicationPropertySource();
 
     /**
-     * Returns an {@link IPropertySource}configured to search the servlet, servlet context, and
-     * factory defaults.
+     * Returns an {@link IPropertySource}&nbsp;configured to search the servlet, servlet context,
+     * and factory defaults.
      */
 
     public IPropertySource getGlobalPropertySource();
 
     /**
      * Returns the coordinator to be notified of reset events (which will, in turn, notify other
-     * services).
+     * services that they should discard cached data).
      */
 
     public ResetEventCoordinator getResetEventCoordinator();
@@ -110,7 +131,7 @@ public interface Infrastructure
     public DataSqueezer getDataSqueezer();
 
     /**
-     * The source for read-to-execute versions of Tapestry script templates.
+     * The source for ready-to-execute versions of Tapestry script templates.
      */
 
     public IScriptSource getScriptSource();
@@ -134,14 +155,14 @@ public interface Infrastructure
     public ResponseRenderer getResponseRenderer();
 
     /**
-     * Constructs {@link org.apache.tapestry.engine.ILink}instances for
+     * Constructs {@link org.apache.tapestry.engine.ILink}&nbsp;instances for
      * {@link org.apache.tapestry.engine.IEngineService}s.
      */
 
     public LinkFactory getLinkFactory();
 
     /**
-     * Used by the {@link org.apache.tapestry.IEngine}to create instances of
+     * Used by the {@link org.apache.tapestry.IEngine}&nbsp;to create instances of
      * {@link org.apache.tapestry.IRequestCycle}.
      */
 
@@ -155,13 +176,13 @@ public interface Infrastructure
     public ApplicationStateManager getApplicationStateManager();
 
     /**
-     * Returns the container request for the current request cycle.
+     * Returns the request for the current request cycle.
      */
 
     public WebRequest getRequest();
 
     /**
-     * Returns the container response for the current request cycle.
+     * Returns the response for the current request cycle.
      */
 
     public WebResponse getResponse();
@@ -206,6 +227,12 @@ public interface Infrastructure
     public String getOutputEncoding();
 
     public MarkupWriterSource getMarkupWriterSource();
-    
+
     public HTMLDescriber getHTMLDescriber();
+
+    /**
+     * Responsible for presenting an exception error report to the user.
+     */
+
+    public ExceptionPresenter getExceptionPresenter();
 }

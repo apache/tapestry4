@@ -12,26 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.portlet;
+package org.apache.tapestry.services.impl;
 
-import javax.portlet.PortletConfig;
-
-import org.apache.tapestry.services.impl.AbstractSetupApplicationGlobals;
+import org.apache.hivemind.Locatable;
 
 /**
- * Alternative to {@link org.apache.tapestry.services.impl.SetupServletApplicationGlobals}, but for
- * Portlets and the <code>tapestry.portlet.services.FactoryServices</code> configuration point.
+ * Interface for an object that can provide a second, target object. This encapsulates the process
+ * of obtaining the target object (which is presumably expensive) so that the operation can be
+ * deferred or even avoided.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
+ * @see org.apache.tapestry.services.impl.DeferredObjectTranslator
  */
-public class SetupPortletApplicationGlobals extends AbstractSetupApplicationGlobals implements
-        PortletApplicationInitializer
+public interface DeferredObject extends Locatable
 {
-
-    public void initialize(PortletConfig portletConfig)
-    {
-        initialize("portlet");
-    }
+    /**
+     * Returns the target object. The caller is expected to cache the result, if appropriate.
+     */
+    public Object getObject();
 
 }

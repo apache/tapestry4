@@ -38,6 +38,10 @@
   <contribution configuration-id="hivemind.FactoryDefaults">
     <default symbol="org.apache.tapestry.servlet-path" value="/app"/>
   </contribution>
+  
+  <contribution configuration-id="tapestry.Infrastructure">
+    <property name="linkFactory" object="service:LinkFactory"/>
+  </contribution>  
 
   <configuration-point id="ServiceEncoders">
     

@@ -35,7 +35,7 @@
 		<strategy class="javax.servlet.Servlet" object="instance:ServletStrategy"/>
 	</contribution>
 	
-	<service-point id="DescribableStrategy" interface="DescribableStrategy">
+	<service-point id="DescribableStrategy">
 		Strategy registry facade for DescribableStrategy.
 		
 		<invoke-factory service-id="hivemind.lib.StrategyFactory">
@@ -43,7 +43,7 @@
 		</invoke-factory>
 	</service-point>
 	
-	<service-point id="HTMLDescriber" interface="HTMLDescriber">
+	<service-point id="HTMLDescriber">
 		
 		Describes an object in an HTML format.
 		
@@ -53,6 +53,10 @@
 			</construct>
 		</invoke-factory>
 	</service-point>
+  
+  <contribution configuration-id="tapestry.Infrastructure">
+     <property name="HTMLDescriber" object="service:HTMLDescriber"/>
+  </contribution>  
 	
 	<service-point id="DefaultRenderStrategy" interface="RenderStrategy">
 		
@@ -77,7 +81,7 @@
 		<strategy class="org.apache.hivemind.Location" object="instance:LocationRenderStrategy"/>
 	</contribution>
 	
-	<service-point id="RenderStrategy" interface="RenderStrategy">
+	<service-point id="RenderStrategy">
 		
 		Strategy service based on the RenderStrategies configuration point, which
     allows arbitrary objects to be rendered as HTML.
@@ -87,7 +91,7 @@
 		</invoke-factory>
 	</service-point>
 	
-	<service-point id="RenderableAdapterFactory" interface="RenderableAdapterFactory">
+	<service-point id="RenderableAdapterFactory">
 		
 		Provider renderable (IRender) adapters for arbitrary objects.
 		

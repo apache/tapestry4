@@ -23,21 +23,20 @@
     
     Maps asset path prefixes to AssetFactory implementations.
     
-<schema>
+    <schema>
       <element name="factory">
-      <attribute name="prefix" required="true" unique="true">
-        The prefix to map.
-      </attribute>
-      <attribute name="object" required="true" translator="object">
-        The asset factory for the prefix.
-      </attribute>
+        <attribute name="prefix" required="true" unique="true">
+          The prefix to map.
+        </attribute>
+        <attribute name="object" required="true" translator="object">
+          The asset factory for the prefix.
+        </attribute>
       
-      <conversion class="AssetFactoryContribution">
-        <map attribute="object" property="factory"/>
-      </conversion>
-    </element>
-
-</schema>    
+        <conversion class="AssetFactoryContribution">
+          <map attribute="object" property="factory"/>
+        </conversion>
+      </element>
+    </schema>    
   </configuration-point>
   
   <contribution configuration-id="AssetFactories">
@@ -103,7 +102,7 @@
     </invoke-factory>
   </service-point>
   
-  <service-point id="AssetSource" interface="AssetSource">
+  <service-point id="AssetSource">
     
     The master factory for assets, which identifies the correct
     AssetFactory based on the prefix of the asset path (if any).
@@ -118,7 +117,7 @@
   </service-point>
 
 
-  <service-point id="ResourceDigestSource" interface="ResourceDigestSource">
+  <service-point id="ResourceDigestSource">
     
     Reads and caches Digest digests of files exposed by the AssetService.
     
@@ -127,7 +126,7 @@
     </invoke-factory>
   </service-point>  
   
-  <service-point id="AssetExternalizer" interface="AssetExternalizer">
+  <service-point id="AssetExternalizer">
     
     Used by the AssetService to copy private assets out onto the file system within
     a web folder, so that static URLs to the assets may be generated.

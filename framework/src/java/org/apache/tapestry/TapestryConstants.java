@@ -24,6 +24,7 @@ public class TapestryConstants
      * The name ("Home") of the default page presented when a user first accesses the application.
      * 
      * @see org.apache.tapestry.engine.HomeService
+     * @deprecated To be removed in 3.2.
      */
 
     public static final String HOME_PAGE = "Home";
@@ -33,6 +34,8 @@ public class TapestryConstants
      * <p>
      * Such a page must have a writable JavaBeans property named 'exception' of type
      * <code>java.lang.Throwable</code>.
+     * 
+     * @deprecated To be removed in 3.2.
      */
 
     public static final String EXCEPTION_PAGE = "Exception";
