@@ -44,7 +44,7 @@ import org.apache.log4j.Category;
  * </tr>
  *
  *  <tr>
- *    <td>text</td>
+ *    <td>value</td>
  *    <td>java.lang.String</td>
  *    <td>in-out</td>
  *   	<td>yes</td>
@@ -52,7 +52,19 @@ import org.apache.log4j.Category;
  *		<td>The text inside the text field.  The binding is only updated
  *			when the the component is not disabled.
  *
- *			<p>Corresponds to the <code>value</code> HTML attribute.</td>
+ *			<p>Corresponds to the <code>value</code> HTML attribute.
+ * </td>
+ *	</tr>
+ *
+ *  <tr>
+ *    <td>text</td>
+ *    <td>java.lang.String</td>
+ *    <td>in-out</td>
+ *   	<td>no</td>
+ *		<td>&nbsp;</td>
+ *		<td>Deprecated name for the <code>value</code>
+ * parameter.  Existing code should be changed.
+ * </td>
  *	</tr>
  *
  *	<tr>
@@ -112,6 +124,8 @@ import org.apache.log4j.Category;
 
 public class TextField extends AbstractTextField
 {
+    private static final Category CAT = Category.getInstance(TextField.class);
+
     private IBinding valueBinding;
 
     public IBinding getValueBinding()
@@ -132,5 +146,28 @@ public class TextField extends AbstractTextField
     public void updateValue(String value)
     {
         valueBinding.setString(value);
+    }
+
+    private boolean warning = true;
+
+    public IBinding getTextBinding()
+    {
+        return getValueBinding();
+    }
+
+    public void setTextBinding(IBinding value)
+    {
+        if (warning)
+        {
+            CAT.warn(
+                Tapestry.getString(
+                    "deprecated-component-param",
+                    getExtendedId(),
+                    "text",
+                    "value"));
+            warning = false;
+        }
+        
+        setValueBinding(value);
     }
 }

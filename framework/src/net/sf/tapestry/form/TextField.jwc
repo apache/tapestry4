@@ -10,7 +10,13 @@
   A text input field.
   </description>
   
-  <parameter name="value" java-type="java.lang.String"/>
+  <parameter name="value" java-type="java.lang.String" required="true"/>
+ 
+  <parameter name="text" java-type="java.lang.String" required="true">
+  	<description>
+  	Deprecated name for 'value'.
+  	</description>
+  </parameter>
   
   <parameter name="disabled" java-type="boolean" direction="in"/>
   
