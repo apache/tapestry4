@@ -68,7 +68,7 @@ import net.sf.tapestry.engine.AbstractService;
 
 public class AssetService extends AbstractService
 {
-    private String servletPath;
+    private String _servletPath;
 
     /**
      *  Defaults MIME types, by extension, used when the servlet container
@@ -77,7 +77,7 @@ public class AssetService extends AbstractService
      *
      **/
 
-    private static Map mimeTypes;
+    private final static Map mimeTypes;
 
     static {
         mimeTypes = new HashMap(17);
@@ -99,7 +99,10 @@ public class AssetService extends AbstractService
      *
      **/
 
-    public Gesture buildGesture(IRequestCycle cycle, IComponent component, String[] parameters)
+    public Gesture buildGesture(
+        IRequestCycle cycle,
+        IComponent component,
+        String[] parameters)
     {
         if (parameters == null || parameters.length != 1)
             throw new ApplicationRuntimeException(
@@ -145,20 +148,26 @@ public class AssetService extends AbstractService
      *
      **/
 
-    public boolean service(IEngineServiceView engine, IRequestCycle cycle, ResponseOutputStream output)
+    public boolean service(
+        IEngineServiceView engine,
+        IRequestCycle cycle,
+        ResponseOutputStream output)
         throws ServletException, IOException, RequestCycleException
     {
         RequestContext context = cycle.getRequestContext();
         String resourcePath = context.getParameter(CONTEXT_QUERY_PARMETER_NAME);
 
-        URL resourceURL = cycle.getEngine().getResourceResolver().getResource(resourcePath);
+        URL resourceURL =
+            cycle.getEngine().getResourceResolver().getResource(resourcePath);
 
         if (resourceURL == null)
-            throw new ApplicationRuntimeException(Tapestry.getString("missing-resource", resourcePath));
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("missing-resource", resourcePath));
 
         URLConnection resourceConnection = resourceURL.openConnection();
 
-        ServletContext servletContext = cycle.getRequestContext().getServlet().getServletContext();
+        ServletContext servletContext =
+            cycle.getRequestContext().getServlet().getServletContext();
 
         // Getting the content type and length is very dependant
         // on support from the application server (represented
@@ -167,40 +176,55 @@ public class AssetService extends AbstractService
         String contentType = servletContext.getMimeType(resourcePath);
         int contentLength = resourceConnection.getContentLength();
 
-        if (contentLength > 0)
-            cycle.getRequestContext().getResponse().setContentLength(contentLength);
-
-        // Set the content type.  If the servlet container doesn't
-        // provide it, try and guess it by the extension.
-
-        if (contentType == null || contentType.length() == 0)
-            contentType = getMimeType(resourcePath);
-
-        output.setContentType(contentType);
-
-        // Disable any further buffering inside the ResponseOutputStream
-
-        output.forceFlush();
-
-        InputStream input = resourceConnection.getInputStream();
-
-        byte[] buffer = new byte[BUFFER_SIZE];
-
-        while (true)
+        try
         {
-            int bytesRead = input.read(buffer);
+            if (contentLength > 0)
+                cycle.getRequestContext().getResponse().setContentLength(
+                    contentLength);
 
-            if (bytesRead < 0)
-                break;
+            // Set the content type.  If the servlet container doesn't
+            // provide it, try and guess it by the extension.
 
-            output.write(buffer, 0, bytesRead);
+            if (contentType == null || contentType.length() == 0)
+                contentType = getMimeType(resourcePath);
+
+            output.setContentType(contentType);
+
+            // Disable any further buffering inside the ResponseOutputStream
+
+            output.forceFlush();
+
+            InputStream input = resourceConnection.getInputStream();
+
+            byte[] buffer = new byte[BUFFER_SIZE];
+
+            while (true)
+            {
+                int bytesRead = input.read(buffer);
+
+                if (bytesRead < 0)
+                    break;
+
+                output.write(buffer, 0, bytesRead);
+            }
+
+            input.close();
+
+            // Return false, to indicate that no server side state could have changed.
+
+            return false;
         }
 
-        input.close();
+        catch (Throwable ex)
+        {
+            String title =
+                Tapestry.getString(
+                    "AssetService.exception-report-title",
+                    resourcePath);
 
-        // The IEngine is responsible for closing the ResponseOutputStream
-        // Return false, to indicate that no server side state could have changed.
+            engine.reportException(title, ex);
 
-        return false;
+            return false;
+        }
     }
 }
