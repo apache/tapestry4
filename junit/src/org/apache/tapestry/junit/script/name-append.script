@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!-- $Id: invalid-key-let.script,v 1.1 2003/03/05 23:19:36 hlship Exp $ -->
+<!DOCTYPE script PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Script 1.2//EN"
+	"http://tapestry.sf.net/dtd/Script_1_2.dtd">
+	
+<script>
+
+<input-symbol key="name" class="java.lang.String" required="yes"/>
+
+<let key="output">
+	
+	<!-- There was a bug where the last letter ('x') was getting clipped. -->
+	
+	${name}$suffix
+</let>
+
+</script>
