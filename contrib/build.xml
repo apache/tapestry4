@@ -49,4 +49,9 @@
     -->
 	</target>	
   
+  <target name="run-reports">
+    <javadoc-report/>
+    <hivedoc-report/>    
+  </target> 
+    
 </project>

@@ -26,6 +26,7 @@
   <tab label="Quick Start" dir="QuickStart" id="quick-start"/>
   <tab label="Users Guide" dir="UsersGuide"  id="users-guide"/>
   <tab label="Framework" dir="tapestry" id="tapestry"/>
+  <tab label="Contrib Library" dir="tapestry-contrib" id="contrib"/>
   <tab label="Portlet Support" dir="tapestry-portlet" id="portlet"/>
 
  </tabs>
