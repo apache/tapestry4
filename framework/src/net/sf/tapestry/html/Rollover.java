@@ -72,49 +72,36 @@ public class Rollover extends AbstractComponent
      *
      **/
 
-    protected String getAssetURL(IAsset asset, IRequestCycle cycle)
-        throws RequestCycleException
+    protected String getAssetURL(IAsset asset, IRequestCycle cycle) throws RequestCycleException
     {
-
         if (asset == null)
             return null;
 
         return asset.buildURL(cycle);
     }
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
-        String imageURL = null;
-        String focusURL = null;
-        String blurURL = null;
-        String uniqueId = null;
-        String onMouseOverName = null;
-        boolean dynamic = false;
-        String onMouseOutName = null;
-        String focusImageName = null;
-        String blurImageName = null;
-        String imageName = null;
-        String script;
-
-        Body body = Body.get(cycle);
-        if (body == null)
-            throw new RequestCycleException(
-                Tapestry.getString("Rollover.must-be-contained-by-body"),
-                this);
-
-        IServiceLink serviceLink =
-            (IServiceLink) cycle.getAttribute(IServiceLink.ATTRIBUTE_NAME);
-        if (serviceLink == null)
-            throw new RequestCycleException(
-                Tapestry.getString("Rollover.must-be-contained-by-link"),
-                this);
-
         // No body, so we skip it all if not rewinding (assumes no side effects on
         // accessors).
 
         if (cycle.isRewinding())
             return;
+
+        String imageURL = null;
+        String focusURL = null;
+        String blurURL = null;
+        boolean dynamic = false;
+        String imageName = null;
+
+        Body body = Body.get(cycle);
+        if (body == null)
+            throw new RequestCycleException(Tapestry.getString("Rollover.must-be-contained-by-body"), this);
+
+        IServiceLink serviceLink = (IServiceLink) cycle.getAttribute(IServiceLink.ATTRIBUTE_NAME);
+
+        if (serviceLink == null)
+            throw new RequestCycleException(Tapestry.getString("Rollover.must-be-contained-by-link"), this);
 
         boolean linkDisabled = serviceLink.isDisabled();
 
@@ -182,12 +169,7 @@ public class Rollover extends AbstractComponent
         return _parsedScript;
     }
 
-    private String writeScript(
-        Body body,
-        IServiceLink link,
-        String focusURL,
-        String blurURL)
-        throws ScriptException
+    private String writeScript(Body body, IServiceLink link, String focusURL, String blurURL) throws ScriptException
     {
         String uniqueId = body.getUniqueId();
         String focusImageURL = body.getPreloadedImageReference(focusURL);
@@ -208,12 +190,8 @@ public class Rollover extends AbstractComponent
         // there won't be any timing issues (such as cause
         // bug #113893).
 
-        link.addEventHandler(
-            ServiceLinkEventType.MOUSE_OVER,
-            (String) symbols.get("onMouseOverName"));
-        link.addEventHandler(
-            ServiceLinkEventType.MOUSE_OUT,
-            (String) symbols.get("onMouseOutName"));
+        link.addEventHandler(ServiceLinkEventType.MOUSE_OVER, (String) symbols.get("onMouseOverName"));
+        link.addEventHandler(ServiceLinkEventType.MOUSE_OUT, (String) symbols.get("onMouseOutName"));
 
         String imageName = (String) symbols.get("imageName");
 

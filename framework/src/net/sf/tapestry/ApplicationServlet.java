@@ -99,7 +99,7 @@ public class ApplicationServlet extends HttpServlet
     private static final Log LOG = LogFactory.getLog(ApplicationServlet.class);
 
     /** @since 2.3 **/
-    
+
     private static final String APP_SPEC_PATH_PARAM = "net.sf.tapestry.application-specification";
 
     /**
@@ -172,7 +172,7 @@ public class ApplicationServlet extends HttpServlet
 
             // Create a context from the various bits and pieces.
 
-            context = new RequestContext(this, request, response);
+            context = createRequestContext(request, response);
 
             // The subclass provides the engine.
 
@@ -276,6 +276,21 @@ public class ApplicationServlet extends HttpServlet
                 context.cleanup();
         }
 
+    }
+
+    /**
+     *  Invoked by {@link #doService(HttpServletRequest, HttpServletResponse)} to create
+     *  the {@link RequestContext} for this request cycle.  Some applications may need to
+     *  replace the default RequestContext with a subclass for particular behavior.
+     * 
+     *  @since 2.3
+     * 
+     **/
+
+    protected RequestContext createRequestContext(HttpServletRequest request, HttpServletResponse response)
+        throws IOException
+    {
+        return new RequestContext(this, request, response);
     }
 
     protected void show(Exception ex)
@@ -413,9 +428,8 @@ public class ApplicationServlet extends HttpServlet
      *  @since 2.3
      * 
      **/
-    
-    protected IResourceResolver createResourceResolver()
-    throws ServletException
+
+    protected IResourceResolver createResourceResolver() throws ServletException
     {
         return new DefaultResourceResolver();
     }

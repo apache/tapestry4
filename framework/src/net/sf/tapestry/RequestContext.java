@@ -212,7 +212,23 @@ public class RequestContext implements IRender
         // AbstractEngine.cleanupEngine().
 
         if (_request != null && MultipartDecoder.isMultipartRequest(request))
-            _decoder = new MultipartDecoder(request);
+            _decoder = createMultipartDecoder(request);
+    }
+
+    /**
+     *  Invoked from the constructor to create a {@link MultipartDecoder} instance.
+     *  Applications with specific upload needs may need to override this to
+     *  provide a subclass instance instead.
+     * 
+     *  @see ApplicationServlet#createRequestContext(HttpServletRequest, HttpServletResponse)
+     *  @since 2.3
+     * 
+     **/
+    
+    protected MultipartDecoder createMultipartDecoder(HttpServletRequest request)
+    throws IOException
+    {
+        return new MultipartDecoder(request);
     }
 
     /**
@@ -529,6 +545,18 @@ public class RequestContext implements IRender
             return _decoder.getString(name);
 
         return _request.getParameter(name);
+    }
+
+    /**
+     *  Convienience method for getting a {@link HttpServletRequest} attribute.
+     * 
+     *  @since 2.3
+     * 
+     **/
+    
+    public Object getAttribute(String name)
+    {
+        return _request.getAttribute(name);
     }
 
     /**
