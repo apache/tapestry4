@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title>wml:Setvar</title>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <tr> 
+    <td align="left"><a href="wml.SelectionField.html"><img alt="SelectionField" src="common-images/prev.png"></a></td>
+    <td align="middle"><a href="index.html"><img alt="Component Index" src="common-images/home.png" ></a></td>
+    <td align="right"><a href="wml.Timer.html"><img alt="Timer" src="common-images/next.png"></a></td>
+  <tr> 
+  <tr> 
+    <td colspan="3">
+      <hr>
+    </td>
+  </tr>
+  <tr> 
+    <td colspan="3"> 
+      <table border="0" cellpadding="4" cellspacing="4" width="100%">
+        <tr valign="top"> 
+          <td> 
+            <table>
+              <tr> 
+                <td><font size="+2"><b>Setvar</b></font></td>
+              </tr>
+              <tr> 
+                <td> <A href="../api/org/apache/tapestry/wml/Setvar.html">org.apache.tapestry.wml.Setvar</a> 
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td> 
+            <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
+              <tr> 
+                <td>Non Visual Component</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr valign="center"> 
+          <td colspan="2">&nbsp;</td>
+        </tr>
+        <tr> 
+          <td colspan="2"> <b>Description</b> <br>
+            The wml:Setvar component specifies the variable to set in the current 
+            browser context as a side effect of executing a task such as &#60;go&gt;, 
+            &#60;prev&#62;, or &#60;refresh&#62;. </td>
+        </tr>
+        <tr> 
+          <td colspan="2"> <b>See Also</b> <br>
+            <A href="wml.Go.html">wml:Go</a> </td>
+        </tr>
+        <tr> 
+          <td colspan="2"> <b>Parameters</b> <br>
+            <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+              <tr> 
+                <th>Name</th>
+                <th>Type</th>
+                <th>Direction</th>
+                <th>Required</th>
+                <th>Default</th>
+                <th>Description</th>
+              </tr>
+              <tr> 
+                <td>name</td>
+                <td>String</td>
+                <td>in</td>
+                <td>yes</td>
+                <td>&nbsp;</td>
+                <td>The name attribute specifies a WML variable name.</td>
+              </tr>
+              <tr> 
+                <td>value</td>
+                <td>String</td>
+                <td>&nbsp;</td>
+                <td>no</td>
+                <td>&nbsp;</td>
+                <td>Bind value to the variable that should recieve the user input 
+                  string.</td>
+              </tr>
+            </table>
+            <p> Body: <strong>removed</strong><br>
+              Informal parameters: <strong>allowed</strong><br>
+              Reserved parameters: none </p>
+          </td>
+        </tr>
+        <tr> 
+          <td colspan="2"> 
+            <p><b>Example</b></p>
+            <p>Template</p>
+            <p> &lt;?xml version=&quot;1.0&quot;?&gt;<br>
+              &lt;!DOCTYPE wml PUBLIC &quot;-//WAPFORUM//DTD WML 1.2//EN&quot;<br>
+              &quot;http://www.wapforum.org/DTD/wml12.dtd&quot;&gt;</p>
+            <p>&lt;wml&gt;</p>
+            <p>&lt;card id=&quot;Hello&quot; title=&quot;Hello&quot;&gt;<br>
+              &nbsp;&lt;onevent type=&quot;onenterforward&quot;&gt;<br>
+              &nbsp;&nbsp;&lt;refresh&gt;<br>
+              &nbsp;&nbsp;&nbsp;&lt;setvar jwcid=&quot;@wml:Setvar&quot; name=&quot;username&quot; 
+              value=&quot;ognl:username&quot;/&gt;<br>
+              &nbsp;&nbsp;&lt;/refresh&gt;<br>
+              &nbsp;&lt;/onevent&gt;<br>
+              &nbsp;&lt;p&gt;<br>
+              &nbsp;&nbsp;What is your name?<br>
+              &nbsp;&nbsp;&lt;input jwcid=&quot;userInput@wml:Input&quot; name=&quot;username&quot; 
+              value=&quot;ognl:username&quot;/&gt;<br>
+              &nbsp;&lt;/p&gt;<br>
+              &nbsp;&lt;do type=&quot;accept&quot; label=&quot;Accept&quot;&gt;<br>
+              &nbsp;&nbsp;&lt;go jwcid=&quot;go@wml:Go&quot; stateful=&quot;ognl:false&quot; 
+              listener=&quot;ognl:listeners.submit&quot;&gt;<br>
+              &nbsp;&nbsp;&nbsp;&lt;postfield jwcid=&quot;username@wml:Postfield&quot; 
+              name=&quot;ognl:components.userInput.name&quot; value=&quot;ognl:username&quot;/&gt;<br>
+              &nbsp;&nbsp;&lt;/go&gt;<br>
+              &nbsp;&lt;/do&gt;<br>
+              &lt;/card&gt;<br><br>
+              &lt;/wml&gt; </p>
+            </td>
+        </tr>
+        <tr>
+          <td colspan="2">&nbsp;</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr> 
+    <td colspan="3">
+      <hr>
+    </td>
+  </tr>
+  <tr> 
+    <td align="left"><a href="wml.SelectionField.html"><img alt="SelectionField" src="common-images/prev.png"></a></td>
+    <td align="middle"><a href="index.html"><img alt="Component Index" src="common-images/home.png" ></a></td>
+    <td align="right"><a href="wml.Timer.html"><img alt="Timer" src="common-images/next.png"></a></td>
+  </tr>
+</table>
+</body>
+</html>
