@@ -27,6 +27,9 @@
 package com.primix.vlib;
 
 import com.primix.tapestry.*;
+import com.primix.tapestry.IRequestCycle;
+import com.primix.tapestry.IResponseWriter;
+import com.primix.tapestry.RequestCycleException;
 import com.primix.tapestry.valid.*;
 
 /**
@@ -60,17 +63,23 @@ public class SimpleValidationDelegate extends ValidationDelegate
 			writer.end();
 	}
 
+	public void writePrefix(IResponseWriter writer, IRequestCycle cycle)
+		throws RequestCycleException
+	{
+		if (currentTracking != null)
+		{
+			writer.begin("span");
+			writer.attribute("class", "error");
+		}
+	}
+	
 	public void writeSuffix(
 		IResponseWriter writer,
 		IRequestCycle cycle)
 	{
 		if (currentTracking != null)
-		{
-		writer.print(" ");
-		writer.begin("span");
-		writer.attribute("class", "clsInvalidField");
-		writer.print("**");
-		writer.end();
-		}
+			writer.end(); // <span>
 	}
+
+
 }

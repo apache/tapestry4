@@ -25,6 +25,15 @@
     <binding name="value" property-path="components.browser.resultCount"/>
   </component>
   
+  <component id="ifOwnsNoBooks" type="Conditional">
+    <binding name="condition" property-path="components.browser.resultCount"/>
+    <field-binding name="invert" field-name="Boolean.TRUE"/>
+  </component>
+  
+  <component id="ifOwnsBooks" type="Conditional">
+    <binding name="condition" property-path="components.browser.resultCount"/>
+  </component>
+
   <component id="browser" type="Browser">
     <binding name="query" property-path="query"/>
   </component>
