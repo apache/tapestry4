@@ -30,6 +30,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
+
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.bean.IBeanInitializer;
 import net.sf.tapestry.spec.ApplicationSpecification;
@@ -48,16 +53,12 @@ import net.sf.tapestry.spec.SpecFactory;
 import net.sf.tapestry.util.IPropertyHolder;
 import net.sf.tapestry.util.xml.AbstractDocumentParser;
 import net.sf.tapestry.util.xml.DocumentParseException;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
 
 /**
  *  Used to parse an application or component specification into a
  *  {@link ApplicationSpecification} or {@link ComponentSpecification}.
- *  This is all somewhat temporary; parsing will be revised to use
- *  Adelard (Java XML Binding) once it is available.
+ *  This may someday be revised to use
+ *  Java XML Binding (once JAXB is available).
  *
  *  <p>This class supports the 1.1 DTD (introduced in release 1.0.1)
  *  as well as the "old" 1.0 DTD.
@@ -84,7 +85,7 @@ import org.xml.sax.InputSource;
  * 	<td>1.2</td>
  *  <td><code>-//Howard Lewis Ship//Tapestry Specification 1.2//EN</code></td>
  * <td><code>http://tapestry.sf.net/dtd/Tapestry_1_2.dtd</code></td>
- *  <td>Adds property-name attribute to &lt;parameter&gt;
+ *  <td>Adds property-name attribute to element &lt;parameter&gt;
  * </td>
  * </tr>
  *  </table>
@@ -102,11 +103,14 @@ public class SpecificationParser extends AbstractDocumentParser
     public static final String TAPESTRY_DTD_1_2_PUBLIC_ID =
         "-//Howard Lewis Ship//Tapestry Specification 1.2//EN";
 
-    private static final Map booleanMap = new HashMap();
-    private static final Map lifecycleMap = new HashMap() ;
-    private static final Map converterMap = new HashMap();
-    private static final Map directionMap = new HashMap();
-
+    /**
+     *  We can share a single map for all the XML attribute to object conversions,
+     *  since the keys are unique.
+     * 
+     **/
+    
+    private static final Map conversionMap = new HashMap();
+    
     /** @since 1.0.9 **/
 
     private SpecFactory factory;
@@ -121,7 +125,7 @@ public class SpecificationParser extends AbstractDocumentParser
     {
         public Object convert(String value) throws DocumentParseException
         {
-            Object result = booleanMap.get(value.toLowerCase());
+            Object result = conversionMap.get(value.toLowerCase());
 
             if (result == null)
                 throw new DocumentParseException(
@@ -177,33 +181,33 @@ public class SpecificationParser extends AbstractDocumentParser
 
     static {
  
-        booleanMap.put("true", Boolean.TRUE);
-        booleanMap.put("t", Boolean.TRUE);
-        booleanMap.put("1", Boolean.TRUE);
-        booleanMap.put("y", Boolean.TRUE);
-        booleanMap.put("yes", Boolean.TRUE);
-        booleanMap.put("on", Boolean.TRUE);
+        conversionMap.put("true", Boolean.TRUE);
+        conversionMap.put("t", Boolean.TRUE);
+        conversionMap.put("1", Boolean.TRUE);
+        conversionMap.put("y", Boolean.TRUE);
+        conversionMap.put("yes", Boolean.TRUE);
+        conversionMap.put("on", Boolean.TRUE);
 
-        booleanMap.put("false", Boolean.FALSE);
-        booleanMap.put("f", Boolean.FALSE);
-        booleanMap.put("0", Boolean.FALSE);
-        booleanMap.put("off", Boolean.FALSE);
-        booleanMap.put("no", Boolean.FALSE);
-        booleanMap.put("n", Boolean.FALSE);
+        conversionMap.put("false", Boolean.FALSE);
+        conversionMap.put("f", Boolean.FALSE);
+        conversionMap.put("0", Boolean.FALSE);
+        conversionMap.put("off", Boolean.FALSE);
+        conversionMap.put("no", Boolean.FALSE);
+        conversionMap.put("n", Boolean.FALSE);
 
-         lifecycleMap.put("none", BeanLifecycle.NONE);
-        lifecycleMap.put("request", BeanLifecycle.REQUEST);
-        lifecycleMap.put("page", BeanLifecycle.PAGE);
+         conversionMap.put("none", BeanLifecycle.NONE);
+        conversionMap.put("request", BeanLifecycle.REQUEST);
+        conversionMap.put("page", BeanLifecycle.PAGE);
 
-        converterMap.put("boolean", new BooleanConverter());
-        converterMap.put("int", new IntConverter());
-        converterMap.put("double", new DoubleConverter());
-        converterMap.put("String", new StringConverter());
+        conversionMap.put("boolean", new BooleanConverter());
+        conversionMap.put("int", new IntConverter());
+        conversionMap.put("double", new DoubleConverter());
+        conversionMap.put("String", new StringConverter());
         
-        directionMap.put("in", Direction.IN);
-        directionMap.put("out", Direction.OUT);
-        directionMap.put("in-out", Direction.IN_OUT);
-        directionMap.put("custom", Direction.CUSTOM);
+        conversionMap.put("in", Direction.IN);
+        conversionMap.put("out", Direction.OUT);
+        conversionMap.put("in-out", Direction.IN_OUT);
+        conversionMap.put("custom", Direction.CUSTOM);
     }
 
     public SpecificationParser()
@@ -271,12 +275,9 @@ public class SpecificationParser extends AbstractDocumentParser
 
     private boolean getBooleanValue(Node node) throws DocumentParseException
     {
-        String key;
-        Boolean value;
+        String key = getValue(node).toLowerCase();
 
-        key = getValue(node).toLowerCase();
-
-        value = (Boolean) booleanMap.get(key);
+        Boolean value = (Boolean) conversionMap.get(key);
 
         if (value == null)
             throw new DocumentParseException(
@@ -293,7 +294,7 @@ public class SpecificationParser extends AbstractDocumentParser
     {
         String attributeValue = getAttribute(node, attributeName);
 
-        return attributeValue != null && attributeValue.equals("yes");
+        return attributeValue.equals("yes");
     }
 
     private ApplicationSpecification convertApplicationSpecification(Document document)
@@ -468,7 +469,7 @@ public class SpecificationParser extends AbstractDocumentParser
 		String direction = getAttribute(node, "direction");
 		
 		if (direction != null)
-			param.setDirection((Direction)directionMap.get(direction));			
+			param.setDirection((Direction)conversionMap.get(direction));			
 
         specification.addParameter(name, param);
 
@@ -491,7 +492,7 @@ public class SpecificationParser extends AbstractDocumentParser
         String className = getAttribute(node, "class");
         String lifecycleString = getAttribute(node, "lifecycle");
 
-        BeanLifecycle lifecycle = (BeanLifecycle) lifecycleMap.get(lifecycleString);
+        BeanLifecycle lifecycle = (BeanLifecycle) conversionMap.get(lifecycleString);
 
         BeanSpecification bspec = factory.createBeanSpecification(className, lifecycle);
 
@@ -587,7 +588,7 @@ public class SpecificationParser extends AbstractDocumentParser
         String type = getAttribute(node, "type");
         String value = getValue(node);
 
-        IConverter converter = (IConverter) converterMap.get(type);
+        IConverter converter = (IConverter) conversionMap.get(type);
 
         if (converter == null)
             throw new DocumentParseException(
