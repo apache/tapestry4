@@ -7,8 +7,8 @@
     similar to spirit to using the Java Swing component object model to build GUIs.
   </para>
   <para>
-    This tutorial exists to help newcomers quickly understand Tapestry. 
-    <xref linkend="intro"/> 
+    This tutorial exists to help newcomers quickly understand Tapestry.
+    <xref linkend="intro"/>
     begins by providing some detail on various ways in which you can use Tapestry in your environment.
     <xref linkend="getting-started"/> and <xref linkend="Introductory-examples"/> provide both a basic
     understanding of Tapestry, along with some introductory examples.
@@ -17,8 +17,8 @@
     <xref linkend="forms"/>,
     <xref linkend="built-ins"/>,
     <xref linkend="assets"/> and
-    <xref linkend="localization"/> 
-    explain the core Tapestry concepts in detail, providing full 
+    <xref linkend="localization"/>
+    explain the core Tapestry concepts in detail, providing full
     examples along the way to assist you in learning how the framework is used.
 
     The remainder of the tutorial provides useful information on advanced topics including component creation,
@@ -32,7 +32,12 @@
   <section id="working-with-tapestry">
     <title>Working with Tapestry</title>
     <para>
-      The goal of Tapestry is to eliminate most of the coding in a web application.  Under Tapestry,
+      The goal of Tapestry is to eliminate most of the unnecessary <footnote>
+          Session management, manual validation and other "application plumbing" tasks.  In other words,
+          you get to focus on the problem you're trying to solve as opposed to writting a web framework
+          every time you go to write a web app or site.
+          </footnote>
+        coding in a web application.  Under Tapestry,
       nearly all code is directly related to application functionality, with very little "plumbing".  If you
       have previously developed a web application using Microsoft Active Server Pages, JavaServer
       Pages or Java Servlets, you may take for granted all the plumbing:  writing servlets, assembling
@@ -47,6 +52,8 @@
       environment such that you are able to both run the provided tutorial applications,
       and also such that you are able to
       compile and run the code that you develop while moving through this tutorial.
+        If you're keen to read through some of the tutorial content without doing this setup,
+        you can skip to <xref linkend="getting-started"/>.
     </para>
   </section>
 
@@ -55,34 +62,25 @@
 
     <para>
       This document expects that you will have extracted the full Tapestry distribution to your
-      <filename class="directory">C:</filename> drive
+      <filename class="directory">C:</filename> drive.
       <footnote>
-        <para>
-	  If you are using Solaris or another non-Windows operating system, you're expected
-	  to be savvy enough to translate to a sensibly constructed file system.
-	</para>
+          If you are using Solaris or another non-Windows operating system, you're expected
+          to be savvy enough to translate to a sensibly constructed file system.
       </footnote>
-    </para>
-    <para>
+
       This will have created a directory <filename class="directory">C:\Tapestry-<replaceable>x.x</replaceable>
       </filename>
       and, beneath it, several more directories.
       <footnote>
-        <para>
-	  The three numbers are the release number.  At the time of this writing, the release
-	  was 2.2, but this is constantly changing.  Simply adjust the actual pathname to
-	  reflect the release of Tapestry you downloaded.
-	</para>
+          The three numbers are the release number.  At the time of this writing, the release
+          was 2.2, but this is constantly changing.  Simply adjust the actual pathname to
+          reflect the release of Tapestry you downloaded.
       </footnote>
     </para>
     <para>
       The source code for the Tutorial is distributed as a JAR file,
       <filename>src/examples-src.jar</filename>.  A precompiled WAR file,
       <filename>lib/tutorial.war</filename> is included in the distribution.
-    </para>
-
-
-    <para>
       The Tapestry distribution includes an &Ant; build file that allows the
       Tutorial to be directly executed.  Ant release 1.5 is required.
     </para>
@@ -94,8 +92,8 @@
     </para>
     <para>
       Once Jetty is running, you can access the Tutorials using the URL
-      <ulink url="http://localhost:8080/tutorial">
-	<filename>http://localhost:8080/tutorial</filename>
+      <ulink url="http://localhost:8081/tutorial">
+	<filename>http://localhost:8081/tutorial</filename>
       </ulink>.
       You should do this now, in order to check that your
       environment is setup correctly so far.
