@@ -37,7 +37,6 @@ import org.apache.tapestry.parse.TemplateAttribute;
 import org.apache.tapestry.parse.TemplateToken;
 import org.apache.tapestry.parse.TextToken;
 import org.apache.tapestry.parse.TokenType;
-import org.apache.tapestry.spec.ContainedComponent;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
 
@@ -47,13 +46,12 @@ import org.apache.tapestry.spec.IContainedComponent;
  *  which involves working through the nested structure of the template and hooking
  *  the various static template blocks and components together using
  *  {@link IComponent#addBody(IRender)} and 
- *  {@link org.apache.tapestry.BaseComponent#addOuter(IRender)}.
+ *  {@link org.apache.tapestry.BaseComponen	t#addOuter(IRender)}.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
  *  @since 3.0
- *
- **/
+ */
 
 public class BaseComponentTemplateLoader
 {
@@ -72,9 +70,7 @@ public class BaseComponentTemplateLoader
     /**
      *  A class used with invisible localizations.  Constructed
      *  from a {@link TextToken}.
-     * 
-     * 
-     **/
+     */
 
     private static class LocalizedStringRender implements IRender
     {
@@ -210,8 +206,7 @@ public class BaseComponentTemplateLoader
      * 
      *  <p>
      *  A check is made that the active component allows a body.
-     * 
-     **/
+     */
 
     private void process(TextToken token)
     {
@@ -344,10 +339,7 @@ public class BaseComponentTemplateLoader
 
     /**
      *  Adds bindings based on attributes in the template.
-     * 
-     *  @since 3.0
-     * 
-     **/
+     */
 
     private void addTemplateBindings(IComponent component, OpenToken token)
     {
@@ -422,9 +414,7 @@ public class BaseComponentTemplateLoader
      *  <p>It is an error to specify expression 
      *  bindings in both the specification
      *  and the template.
-     * 
-     *  @since 3.0
-     **/
+     */
 
     private void addExpressionBinding(
         IComponent component,
@@ -497,9 +487,7 @@ public class BaseComponentTemplateLoader
       *  <p>It is an error to specify expression 
       *  bindings in both the specification
       *  and the template.
-      * 
-      *  @since 3.0
-      **/
+      */
 
     private void addStringBinding(
         IComponent component,
@@ -566,10 +554,7 @@ public class BaseComponentTemplateLoader
      *  <p>
      *  Static bindings that conflict with bindings in the
      *  specification are quietly ignored.
-     *
-     *  @since 3.0
-     *
-     **/
+     */
 
     private void addStaticBinding(
         IComponent component,
