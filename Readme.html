@@ -40,13 +40,31 @@ compiler.
 <p>This product includes software developed by the Apache Software Foundation 
 (<a href="http://www.apache.org/">http://www.apache.org/</a>).
 
+<br><br>.....................................................<br><br>
+<h2>Non-ASL Libraries</h2>
+
+<p>
+Tapestry depends on a handful of non-ASL libraries. Because these libraries are not distributed under the terms
+of the Apache Software License, they may not be redistributed with as part of Tapestry. Tapestry's build scripts will
+automatically download the libraries as needed. Several libraries are only needed at build time, but
+some are needed at runtime (and are typically copied into <code>WEB-INF/lib</code>). The two runtime libraries are:
+<ul>
+<li><a href="http://www.ognl.org/">OGNL</a> (Object Graph Navigation Library), version @OGNL_VERSION@
+<li><a href="http://jboss.org/developers/projects/javassist.html">Javassist</a> (byte code enhancement library), version @JAVASSIST_VERSION@
+</ul>
+
+<p>
+The necessary libraries will automatically be downloaded when building the examples. The
+Ant target <code>download-ext-framework</code> will also download the libraries. If you
+are behind a firewall, you may need to <a href="ext-dist/README.html">provide some additional properties</a> in
+<code>config/build.properties</code>.
 
 <br><br>.....................................................<br><br>
 <h2>Configuration</h2>
 
 <p>
-In order to run the Tapestry demos, you need both the <b>binary</b> and <b>source</b> distributions, installed
-into the same directory. Tapestry will compile and build the Workbench and the Virtual Library example
+In order to run the Tapestry demos, you need only the <b>binary</b> distribution (it includes the source code
+for the examples). The Ant build scripts will compile and build the Workbench and the Virtual Library example
 applications on your workstation, then deploy them into Jetty, Tomcat or JBoss.
 
 <pTo run these Tapestry applications please ensure:
@@ -75,7 +93,7 @@ and put an <em>absolute path</em> to the installation directory (of Jetty, JBoss
 <b>Always use only forward slashes in the path name.</b>
 
 <p>
-A sample file, <code>config/build.properties.template</code> is provided.  You can simply edit
+A sample file, <code>config/build.properties.template</code>, is provided.  You may  edit
 and rename this file.
 
 <p>
@@ -173,15 +191,19 @@ Tomcat servlet container:
 <a href="http://localhost:8080/workbench">Tapestry Workbench</a> application.
 </blockquote>
 
+<br><br>.....................................................<br><br>
 <h2>Building from Source</h2>
 
 <p>
+The source distribution includes the source code for the framework and the contrib library. You should extract
+the source distribution to the same directory as the binary distribution.
 You may then execute <b><code>ant install</code></b> to compile all the frameworks and examples.
 Building documentation and running the unit tests requires some additional
 setup that is discussed in
 the <A href="web/doc/ContributorsGuide/ContributorsGuide.html">Tapestry Contributor's Guide</A>.
 </p>
 			
+<br><br>.....................................................<br><br>
 <h2>Documentation</h2>
 
 A complete set of <a href="web/doc.html">documentation</a> is distributed with Tapestry.

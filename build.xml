@@ -159,8 +159,6 @@
 				<include name="ext-dist/README.html"/>
 				<exclude name="lib/*"/>
 				<exclude name="lib/**"/>
-				<!-- Exclude class files left around by IDEs. -->
-				<exclude name="**/*.class"/>
 				<!-- Exclude Paint Shop Pro files (used to generate images
 			  in various places) -->
 				<exclude name="**/*.psp"/>
@@ -195,6 +193,8 @@
 				<filter token="COPY_YEARS" value="${copyright.years}"/>
 				<filter token="HOME_PAGE_URL"
 					value="http://jakarta.apache.org/tapestry"/>
+				<filter token="OGNL_VERSION" value="${ognl.version}"/>
+				<filter token="JAVASSIST_VERSION" value="${javassist.version}"/>
 			</filterset>
 		</copy>
 		
@@ -220,9 +220,15 @@
 				<include name="framework/**"/>
 				<include name="contrib/**"/>
 				<include name="examples/**"/>
+				
 				<!-- These two aren't quite ready for primetime.  -->
 				<exclude name="examples/DevelopmentEnvironment/**"/>
 				<exclude name="examples/Tutorial2/**"/>
+				
+				<!-- These are thumnail files that turn up in directories that contain images. These
+				     are not stored in CVS and should not be part of the distribution. -->
+				<exclude name="**/Thumbs.db"/>
+				<exclude name="**/pspbrwse.jbf"/>
 			</fileset>
 		</copy>
 		
@@ -260,21 +266,35 @@
 		<property name="bin.tar.gz" value="${dist.dir}-bin.tar.gz"/>
 		<property name="src.tar.gz" value="${dist.dir}-src.tar.gz"/>
 		<tar tarfile="${bin.tar.gz}" longfile="gnu" compression="gzip">
-			<tarfileset dir="${dist.root.dir}">
-				<include name="${dist.base}/**"/>
+			<tarfileset dir="${dist.root.dir}" id="dist.bin.set">
+				<include name="${dist.base}/*"/>
+				<include name="${dist.base}/config/**"/>
+				<include name="${dist.base}/lib/**"/>
+				<!-- Have to include a lot of Workbench source in the binary distro, because
+				     it has to be compiled and built using the dynamically downloaded non-ASL
+				     libraries (such as OGNL). -->
+				<include name="${dist.base}/examples/Workbench/**"/>
+				<exclude name="${dist.base}/examples/Workbench/.build/**"/>
+				<exclude name="${dist.base}/examples/Workbench/image-src/**"/>
+				
+				<include name="${dist.base}/examples/Vlib/**"/>
+				<include name="${dist.base}/examples/VlibBeans/**"/>
+				<include name="${dist.base}/examples/VlibEAR/**"/>
+				
+				<include name="${dist.base}/examples/wap/**"/>
+				
+				<include name="${dist.base}/examples/build.xml"/>
+				
 				<!-- Don't ship the code coverage report; it's huge. -->
-				<exclude name="${dist.base}/framework/**"/>
-				<exclude name="${dist.base}/contrib/**"/>
-				<exclude name="${dist.base}/examples/**"/>
+				<include name="${dist.base}/web/**"/>
 				<exclude name="${dist.base}/web/doc/clover/**"/>
 			</tarfileset>
 		</tar>
 		<tar tarfile="${src.tar.gz}" longfile="gnu" compression="gzip">
-			<tarfileset dir="${dist.root.dir}">
+			<tarfileset dir="${dist.root.dir}" id="dist.src.set">
 				<!-- Include the sub-projects excluded from the -bin distro. -->
 				<include name="${dist.base}/framework/**"/>
 				<include name="${dist.base}/contrib/**"/>
-				<include name="${dist.base}/examples/**"/>
 			</tarfileset>
 		</tar>
 		
@@ -282,23 +302,11 @@
 		<property name="src.zip" value="${dist.dir}-src.zip"/>
 		
 		<zip destfile="${bin.zip}">
-			<zipfileset dir="${dist.root.dir}">
-				<include name="${dist.base}/**"/>
-				<!-- Don't ship the code coverage report; it's huge. -->
-				<exclude name="${dist.base}/framework/**"/>
-				<exclude name="${dist.base}/contrib/**"/>
-				<exclude name="${dist.base}/examples/**"/>
-				<exclude name="${dist.base}/web/doc/clover/**"/>
-			</zipfileset>		  
+			<zipfileset refid="dist.bin.set"/>
 		</zip>
 		
 		<zip destfile="${src.zip}">
-			<zipfileset dir="${dist.root.dir}">
-				<!-- Include the sub-projects excluded from the -bin distro. -->
-				<include name="${dist.base}/framework/**"/>
-				<include name="${dist.base}/contrib/**"/>
-				<include name="${dist.base}/examples/**"/>
-			</zipfileset>		
+			<zipfileset refid="dist.src.set"/>	
 		</zip>
 		
 		<!-- Create the web distribution (to be put up on the web site).  This *does*
@@ -596,7 +604,7 @@
 		description="Download binary packages for the install target"/>
 
 	<target name="download-ext-framework" depends="proxyflags" 
-		description="Download binary packages for compiling the framework" >
+		description="Download binary packages for compiling the framework and examples" >
 		<mkdir dir="${ext.download.dir}" />
     	
 		<antcall target="installgz">
