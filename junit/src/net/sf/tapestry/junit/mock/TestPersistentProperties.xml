@@ -352,6 +352,10 @@ Float value: 0.0
 Double value: 0.0	
  		</assert-output>
  		
+ 		<assert-output name="StringHolder">
+StringHolder value: []
+		</assert-output> 		
+ 		
  		<assert-output name="Create Link">
 <![CDATA[
 /c6/app?service=direct&amp;context=1/Four/$DirectLink
@@ -405,6 +409,9 @@ Float value: -1.5
 Double value: 3.142857142857143	
  		</assert-output>
 
+ 		<assert-output name="StringHolder">
+StringHolder value: [StringHolder[Surprise!]]
+		</assert-output> 	
 	</request>
 	
 	<!-- And return to ensure that values are properly restored. -->
@@ -443,7 +450,11 @@ Float value: -1.5
  		
  		 <assert-output name="Double">
 Double value: 3.142857142857143	
- 		</assert-output>		
+ 		</assert-output>	
+ 		
+ 		<assert-output name="StringHolder">
+StringHolder value: [StringHolder[Surprise!]]
+		</assert-output> 	 			
 	</request>
 	
 </mock-test>
