@@ -1,3 +1,14 @@
+* Sep 12 2001 hship
+
+framework:
+- Reorganize the order in which components are built and bindings set
+- Allow attributes from the template to provide bindings for formal parameters
+
+vlib:
+- Create a test case for [ #450988 ] on the admin.TransferBooks page.
+
+[ #450988 ] Inherited bindings vs. HTML static
+
 * Sep 11 2001 hship
 
 framework:

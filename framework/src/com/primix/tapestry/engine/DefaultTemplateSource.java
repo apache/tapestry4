@@ -496,7 +496,7 @@ implements ITemplateSource, IRenderDescription
 		synchronized(cache)
 		{
 			boolean first = true;
-			Iterator i = cache.keySet().iterator();
+			Iterator i = cache.entrySet().iterator();
 			
 			while (i.hasNext())
 			{
@@ -506,8 +506,16 @@ implements ITemplateSource, IRenderDescription
 					first = false;
 				}
 				
+				Map.Entry e = (Map.Entry)i.next();
+				Object key = e.getKey();
+				ComponentTemplate template = (ComponentTemplate)e.getValue();
+				
 				writer.begin("li");
-				writer.print(i.next().toString());
+				writer.print(key.toString());
+				writer.print(" (");
+				writer.print(template.getTokenCount());
+				writer.print(" tokens)");
+				writer.println();
 				writer.end();
 			}
 			

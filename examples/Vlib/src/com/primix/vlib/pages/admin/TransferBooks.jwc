@@ -9,7 +9,6 @@
   <property name="page-type">admin</property>
   
   <component id="border" type="Border">
-    <static-binding name="title">Transfer Books</static-binding>
     <field-binding name="simpleTitle" field-name="Boolean.TRUE"/>
   </component>
   
