@@ -38,7 +38,11 @@
  <td colspan="2">
   <b>Description</b>
 	<br>
-  ???
+	A ValidField is used to get input from the user, and apply some simple
+	validation at the same time. Out of the box, the component can provide validation based on type and
+	length of field input. Of course, it is possible to supply your own IValidator implemenation
+	to make this component do whatever you want.<p>
+	The ValidField component creates HTML of form: &lt;input type="text" name="personAge" value="25"&gt;
   <p>
   This component may NOT wrap around other components or static HTML. 
  </td>
@@ -165,17 +169,115 @@
 </tr>
 
 <tr>
- <td colspan="2">
+ <td colspan="2"  bgcolor="#c0c0c0">
   <b>Examples</b>
 	<p>
-  This example is under construction.
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<form method="post" name="Form0" action="/componentref">
+<input type="hidden" name="service" value="direct">
+<input type="hidden" name="context" value="ValidField/form">
+<input type="hidden" name="sp" value="S0">
+	<table>
+		<tr>
+			<td>Enter date: </td>
+			<td><input type="text" name="example4" value="08/26/2002"></td>
+		</tr>
+	</table>	<input type="hidden" name="Form0" value="4">
+</form>
  </td>
-</tr>
 </tr>
 
 <tr>
  <td colspan="2"><hr></td>  
 </tr>
+
+<tr>
+<td colspan="2">
+The HTML for the above example:
+<pre>
+	&lt;form jwcid="<b>form</b>"&gt;
+	&lt;table&gt;
+		&lt;tr&gt;
+			&lt;td&gt;Enter date: &lt;/td&gt;								
+			&lt;td&gt;&lt;input jwcid="<b>example4</b>"/&gt;&lt;/td&gt;
+		&lt;/tr&gt;
+	&lt;/table&gt;
+	&lt;/form&gt;
+</pre>
+</td></tr>
+<tr>
+ <td colspan="2"><hr></td>  
+</tr>
+
+
+<tr>
+<td colspan="2">
+The related Tapestry page specification:
+<pre>
+
+&lt;specification class="examples.componentref.ValidField" allow-body="yes" allow-informal-parameters="yes" &gt;
+    &lt;bean name="validationDelegate" class="net.sf.tapestry.valid.ValidationDelegate" lifecycle="request"/&gt;
+    
+    &lt;bean name="<b>ex4Validator</b>" class="<b>net.sf.tapestry.valid.DateValidator</b>"&gt;
+    	&lt;set-property name="required"&gt;&lt;field-value field-name="Boolean.FALSE"/&gt;&lt;/set-property&gt;
+    &lt;/bean&gt;
+
+    &lt;component id="form" type="Form"&gt;
+    	&lt;binding name="delegate" property-path="beans.validationDelegate"/&gt;
+    	&lt;binding name="listener" property-path="listeners.validFormSubmit"/&gt;
+    	&lt;field-binding name="stateful" field-name="Boolean.TRUE"/&gt;
+    &lt;/component&gt;
+    
+    &lt;component id="example4" type="<b>ValidField</b>"&gt;
+    	&lt;binding name="value" property-path="visit.exampleFourValue"/&gt;
+    	&lt;binding name="<B>validator</b>" property-path="<b>beans.ex4Validator</b>"/&gt;
+    	&lt;static-binding name="displayName"&gt;Enter Date:&lt;/static-binding&gt;
+    &lt;/component&gt;
+&lt;/specification&gt;
+
+</pre>
+</td></tr>
+<tr>
+ <td colspan="2"><hr></td>  
+</tr>
+
+<tr>
+<td colspan="2">
+The visit object (the page object is not shown, because it has nothing in it at all - just a submit method handler):
+<pre>
+
+package examples.componentref;
+
+import java.util.Date;
+
+import org.apache.log4j.Category;
+
+/**
+ * Contains some state shared by the examples.
+ * @author neil
+ */
+public class Visit {
+	public Date getExampleFourValue() {
+		return exampleFourValue;
+	}
+
+	public void setExampleFourValue(Date exampleFourValue) {
+		this.exampleFourValue = exampleFourValue;
+	}
+
+	private Date exampleFourValue = new Date();
+}
+
+</pre>
+</td></tr>
+<tr>
+ <td colspan="2"><hr></td>  
+</tr>
+
+
+
 <tr>
  <td colspan="2">
   <table width="100%">
