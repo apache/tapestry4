@@ -132,10 +132,11 @@ GNU tar should be installed as /usr/local/bin/gtar.</>
 		<section id="windows">
 			<title>Installing under Windows</title>
 
-<para>Cygwin is a set of GNU tools ported so as to run in the Windows NT or Windows 2000 
+<para>Cygwin is a set of GNU 	s ported so as to run in the Windows NT or Windows 2000 
 environments (it may also work under Windows 95/98/ME).</>
 
-<para>Cygwin is available at http://sources.redhat.com/cygwin/.</>
+<para>Cygwin is available at 
+<ulink url="http://sources.redhat.com/cygwin/">http://sources.redhat.com/cygwin/</>.</>
 
 <para>Installing Cygwin is very easy; Cygwin starts by downloading a small installer 
 called setup.exe.  Running this program allows the user to install any of the many
@@ -260,7 +261,7 @@ with newer versions of the packages).
 					</>
 				</>
 			</>
-			<member>shellutils</>
+			<member>sh-utils</>
 			<member>tar</>
 			<member>textutils</>
 		</simplelist>
@@ -316,6 +317,13 @@ Use forward slashes as the path seperator, even under Windows.  A typical
 value for this is <filename class=directory>C:/Tapestry-x.x.x/JBE</> 
 (depending on which release of Tapestry you downloaded, and where you installed it).</>
 
+<para>
+In addition, the variable <envar>PATH</> should be changed to add the
+<filename class=directory><replaceable>CYGWIN</>/bin</> directory (typically,
+<filename class=directory>C:/cygwin/bin</>) to the search path.  This is primarily to
+support the <command>make</> command (all commands executed during a make use complete pathnames).
+</>
+
 		</section>
 
 		<section id="conf">
@@ -369,8 +377,7 @@ is used to establish the directories into which related tools have been installe
 
 <example>
 	<title>config/LocalConfig.mk</title>
-	<programlisting>TOOLS_DIR := C:/cygwin/bin
-
+	<programlisting>
 JDK_Sun_1.2.2_DIR := C:/jdk1.2.2
 JDK_Sun_1.3_DIR := C:/jdk1.3
 
@@ -381,15 +388,12 @@ WEBLOGIC_DIR := C:/WebLogic</>
 	<para>
 	An example file, <filename>LocalConfig.example.mk</filename> is provided in the
 	<filename class=directory>config</> directory, you can simply copy or rename it
-	to <filename>SiteConfig.mk</>.  It sets <varname>TOOLS_DIR</varname> and the
+	to <filename>SiteConfig.mk</>.  It sets the
 	two JDK directories (as shown above), but not <varname>WEBLOGIC_DIR</>.
 	</>
 </>
 
-<para>The first variable, <varname>TOOLS_DIR</>, is the directory for the GNU tools.   
-Since this example is for Windows 2000 using Cygwin, the tools directory is the Cygwin bin directory.</>
-
-<para>The next two variables define the locations of two JDKs installed on the local workstation.  
+<para>The first two variables define the locations of two JDKs installed on the local workstation.  
 The JBE considers a JDK to be a combination of a vendor and a release. 
 You must create a variable <filename>JDK_<replaceable>vendor</>_<replaceable>release</>_DIR</>
 for each combination.
@@ -1001,9 +1005,14 @@ to the list of <varname>META_RESOURCES</> (files copied to the
 	<section id="jboss">
 		<title>jBoss modules</>
 
-<para>jBoss is an open-source J2EE application server available from http://www.ejboss.org/.</>
+<para>
+jBoss is an open-source J2EE application server available from 
+<ulink url="http://www.jboss.org/">http://www.jboss.org/</>.   The current version of the JBE is
+compatibly with JBoss 2.2.1.
+</>
 
-<para>The jBoss module type is a specialization of the Jar type used to create EJB JARS for 
+<para>
+The jBoss module type is a specialization of the Jar type used to create EJB JARS for 
 use with the jBoss.  jBoss is easier to work with than WebLogic, since it doesn't require the 
 creation of stubs and skeletons, and deployment is as simple as copying the JAR file to 
 a predetermined directory.</>
@@ -1047,13 +1056,33 @@ If you use the auxilliary descriptor files (<filename>jboss.xml</> and/or
 	<title>Additional jBoss module variables</>
 
 	<varlistentry>
-		<term><varname>JBOSS_OPT</></>
+		<term><varname>JBOSS_JAVA_OPT</></>
 		<listitem>
 			<para>Additional java options used when running jBoss 
 			(the run target for a jBoss module).  Typically used to specify JVM 
-			options such as runtime memory pool configuration.</>
+			options such as runtime memory pool configuration, or to set JVM system
+			properties for selecting XML processers (via JAXP).</>
 		</>
 	</>
+
+	<varlistentry>
+		<term><varname>OTHER_JBOSS_CLASSPATH</></>
+		<listitem>
+			<para>Additional classpath entries used when running JBoss.  Typically, this
+			is used to specify additional XML parsers, though it is easier to copy
+			such files to <filename class=directory><replaceable>JBOSS_DIR</>/lib/ext</>.
+			</>
+		</>
+	</>
+
+	<varlistentry>
+		<term><varname>OTHER_JBOSS_OPT</></>
+		<listitem>
+			<para>Additional options passed to <classname>org.jboss.Main</>, the class
+			that is executed to start jBoss.</>
+		</>
+	</>
+
 </variablelist>
 
 <variablelist>
@@ -1098,7 +1127,7 @@ using the DocBook SGML format.</>
 DocBook is a standard SGML format for online and print media.  It is widely
 used by publishers, including O'Reilly.  More information on DocBook
 is available at
-http://www.oasis-open.org/docbook/.
+<ulink url="http://www.oasis-open.org/docbook/">http://www.oasis-open.org/docbook/</>.
 </>
 
 <para>The current implementation of the DocBook module allows documentation
@@ -1121,13 +1150,15 @@ DSSSL
 stylesheet to
 produce the output.  <command>OpenJade</> has been ported to Windows, Cygwin and Solaris.
 Like Tapestry, <command>OpenJade</> is an open source project at SourceForge.  It's
-project page is http://sourceforge.net/projects/openjade.
+project page is 
+<ulink url="http://sourceforge.net/projects/openjade">http://sourceforge.net/projects/openjade</>.
 </>
 
 <para>
 The Cygwin port of <command>OpenJade</> can be a bit hard to find; a copy of it is available
 at
-ftp://tapestry.sourceforge.net/pub/tapestry/cygwin1.1.4-openjade1.3-sp1.4.tar.gz
+<ulink 
+url="ftp://tapestry.sourceforge.net/pub/tapestry/cygwin1.1.4-openjade1.3-sp1.4.tar.gz">ftp://tapestry.sourceforge.net/pub/tapestry/cygwin1.1.4-openjade1.3-sp1.4.tar.gz</>.
 </>
 
 
@@ -1156,7 +1187,7 @@ ftp://tapestry.sourceforge.net/pub/tapestry/cygwin1.1.4-openjade1.3-sp1.4.tar.gz
 				<listitem>
 					<para>The directory into which the <command>OpenJade</>
 					executables were installed.  The default location for this is
-					<filename class="directory">C:/cygwin/usr/local/bin</>.
+					<filename class="directory">/usr/local/bin</>.
 					</>
 				</>
 			</>
@@ -1168,7 +1199,7 @@ ftp://tapestry.sourceforge.net/pub/tapestry/cygwin1.1.4-openjade1.3-sp1.4.tar.gz
 					The directory into which the DSSSL stylesheets were
 					installed.  
 					The default location for this is
-					<filename class="directory">C:/cygwin/usr/local/lib/sgml/dtd/dss</>.
+					<filename class="directory">/local/lib/sgml/dtd/dss</>.
 					</>
 				</>
 			</>
@@ -1188,7 +1219,8 @@ defines the information needed to build the target documents from the DocBook SG
 
 <para>
 The DocBook module makes use of 
-The Modular DocBook Stylesheets available from http://nwalsh.com/docbook/dsssl/.  This is
+The Modular DocBook Stylesheets available from
+<ulink url="http://nwalsh.com/docbook/dsssl/">http://nwalsh.com/docbook/dsssl/</>.  This is
 a collection of customizable, modifable DSSSL stylesheets for generating print and online
 content from DocBook SGML files.
 </>
