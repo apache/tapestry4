@@ -78,5 +78,30 @@ Fran&#231;ais
 		</assert-output>
 	</request>
 	
+	<request>
+		<parameter name="service" value="direct/0/Home/$DirectLink"/>
+	  	<parameter name="sp">
+	  		<value>STwo</value>
+	  		<value>Sbg</value>
+	  	</parameter>
+
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Two</title>
+]]>
+		</assert-output>
+
+		<assert-output name="Language Name">
+<![CDATA[
+&#1041;&#1098;&#1083;&#1075;&#1072;&#1088;&#1089;&#1082;&#1080;
+]]>
+		</assert-output>
+
+		<assert-output name="Language Word">
+<![CDATA[
+&#1045;&#1079;&#1080;&#1082;
+]]>
+		</assert-output>
+	</request>
 
 </mock-test>
