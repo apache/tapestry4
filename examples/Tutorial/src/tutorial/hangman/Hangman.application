@@ -1,28 +1,28 @@
 <?xml version="1.0"?>
 <!DOCTYPE application PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
 	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-
 <application>
 	<name>Tapestry Hangman</name>
-	
 	<page>
 		<name>Home</name>
 		<specification-path>/tutorial/hangman/Home.jwc</specification-path>
 	</page>
-	
 	<page>
 		<name>Guess</name>
 		<specification-path>/tutorial/hangman/Guess.jwc</specification-path>
 	</page>
-	
 	<page>
 		<name>Failed</name>
 		<specification-path>/tutorial/hangman/Failed.jwc</specification-path>
 	</page>
-
 	<page>
 		<name>Success</name>
 		<specification-path>/tutorial/hangman/Success.jwc</specification-path>
 	</page>
-
+	<properties>
+		<property>
+			<name>com.primix.tapestry.visit-class</name>
+			<value>tutorial.hangman.Visit</value>
+		</property>
+	</properties>
 </application>
