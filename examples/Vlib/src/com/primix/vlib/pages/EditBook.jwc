@@ -65,6 +65,7 @@
   
   <component id="inputPublisherName" type="ValidatingTextField">
     <static-binding name="maximumLength">40</static-binding>
+    <static-binding name="displayWidth">20</static-binding>
     <binding name="text" property-path="publisherName"/>
     <static-binding name="displayName">Publisher</static-binding>
     <binding name="delegate" property-path="validationDelegate"/>
@@ -72,8 +73,8 @@
   
   <component id="inputDescription" type="Text">
     <binding name="text" property-path="attributes.description"/>
-    <static-binding name="columns">60</static-binding>
-    <static-binding name="rows">10</static-binding>
+    <static-binding name="columns">35</static-binding>
+    <static-binding name="rows">8</static-binding>
   </component>
   
   <component id="inputHolder" type="PropertySelection">
@@ -95,10 +96,14 @@
     <binding name="field" property-path="components.inputPublisherName"/>
   </component>
   
+  <!-- Temporarily removed
+  
   <component id="cancel" type="Submit">
   	<static-binding name="label">Cancel</static-binding>
   	<binding name="selected" property-path="cancel"/>
   	<field-binding name="tag" field-name="Boolean.TRUE"/>
   </component>
+  
+  -->
 
 </specification>

@@ -85,22 +85,9 @@ public class Stocks
         return stocks;
     }
     
-    public IActionListener getFormListener()
+   
+    public void addStock(IRequestCycle cycle)
     {
-        return new IActionListener()
-        {
-            public void actionTriggered(IComponent component, IRequestCycle cycle)
-                throws RequestCycleException
-            {
-                addStock();
-            }
-        };
-    }
-    
-    private void addStock()
-    {
-        int i;
-        
         if (Tapestry.isNull(tickerId))
         {
             setErrorField("inputTickerId", "No stock ticker value entered.");
@@ -110,7 +97,7 @@ public class Stocks
         String newId = tickerId.trim().toUpperCase();
         List existingStocks = getStocks();
         int count = existingStocks.size();
-        for (i = 0; i < count; i++)
+        for (int i = 0; i < count; i++)
         {
             Stock s = (Stock)existingStocks.get(i);
             if (s.tickerId.equals(newId))
@@ -120,7 +107,7 @@ public class Stocks
             }
         }
         
-        for (i = 0; i < otherStocks.length; i++)
+        for (int i = 0; i < otherStocks.length; i++)
         {
             if (otherStocks[i].tickerId.equals(newId))
             {

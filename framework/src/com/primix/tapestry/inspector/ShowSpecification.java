@@ -57,6 +57,9 @@ public class ShowSpecification extends BaseComponent
 	private List informalParameterNames;
 	private List sortedPropertyNames;
 	private String propertyName;
+	private List beanNames;
+	private String beanName;
+	private BeanSpecification beanSpecification;
 	
 	private static class ComponentComparitor implements Comparator
 	{
@@ -93,6 +96,9 @@ public class ShowSpecification extends BaseComponent
 		informalParameterNames = null;
 		sortedPropertyNames = null;
 		propertyName = null;
+		beanNames = null;
+		beanName = null;
+		beanSpecification = null;
 	}
 	
 	/**
@@ -339,5 +345,37 @@ public class ShowSpecification extends BaseComponent
 	public String getPropertyValue()
 	{
 		return inspectedSpecification.getProperty(propertyName);
+	}
+	
+	public List getBeanNames()
+	{
+		if (beanNames != null)
+			return beanNames;
+		
+		Collection names = inspectedSpecification.getBeanNames();
+		
+		if (names != null && names.size() > 0)
+		{
+			beanNames = new ArrayList(names);
+			Collections.sort(beanNames);
+		}
+		
+		return beanNames;
+	}
+	
+	public void setBeanName(String value)
+	{
+		beanName = value;
+		beanSpecification = inspectedSpecification.getBeanSpecification(beanName);
+	}
+	
+	public String getBeanName()
+	{
+		return beanName;
+	}
+	
+	public BeanSpecification getBeanSpecification()
+	{
+		return beanSpecification;
 	}
 }

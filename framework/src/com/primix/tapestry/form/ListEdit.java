@@ -77,8 +77,20 @@ import java.io.*;
  *	<td>The index (starting at zero) for each iteration through the list.
  *	</td> </tr>
  *
+ * <tr>
+ *  <td>element</td>
+ *  <td>R</td>
+ *  <td>no</td> <td>&nbsp;</td>
+ *	<td>If specified, then a tag for the specified element is placed around
+ *  the content on each iteration.  This emulates the
+ *  {@link com.primix.tapestry.components.Any} component.  Most often
+ *  the element specified is "tr" when the ListEdit is part of a table.
+ *  Any informal parameters are applied to the element.
+ *	</td>
+ *
  *  </table>
  *
+ *  <p>Informal parameters are allowed.  A body is allowed (and expected).
  *
  * <p>An instance of {@link DataSqueezer} is used to convert arbitrary objects into 
  *  Strings and then back into objects.  However, for best efficiency, the list
@@ -166,6 +178,8 @@ public class ListEdit
 	private IBinding sourceBinding;
 	private IBinding valueBinding;
 	private IBinding indexBinding;
+	private IBinding elementBinding;
+	private String staticElement;
 	
 	/**
 	 *  The squeezer that converts values to and from Strings for storage in
@@ -206,6 +220,23 @@ public class ListEdit
 		return indexBinding;
 	}
 	
+	/** @since 1.0.4 **/
+	
+	public void setElementBinding(IBinding value)
+	{
+		elementBinding = value;
+		
+		if (value.isStatic())
+			staticElement = value.getString();
+	}
+	
+	/** @since 1.0.4 **/
+	
+	public IBinding getElementBinding()
+	{
+		return elementBinding;
+	}
+	
 	public void render(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
@@ -213,6 +244,7 @@ public class ListEdit
 		int count;
 		RequestContext context = null;
 		Object value = null;
+		String element = null;
 		
 		Form form = Form.get(cycle);
 		if (form == null)
@@ -223,6 +255,14 @@ public class ListEdit
 		boolean cycleRewinding = cycle.isRewinding();
 		boolean formRewinding = form.isRewinding();
 		
+		if (!cycleRewinding && elementBinding != null)
+		{
+			if (staticElement == null)
+				element = (String)elementBinding.getObject("element", String.class);
+			else
+				element = staticElement;
+		}
+			
 		// If the cycle is rewinding, but not this particular form,
 		// then do nothing (don't even render the body).
 		
@@ -240,6 +280,7 @@ public class ListEdit
 			writer.attribute("type", "hidden");
 			writer.attribute("name", name);
 			writer.attribute("value", count);
+			writer.println();
 		}
 		else
 		{
@@ -262,7 +303,16 @@ public class ListEdit
 			
 			valueBinding.setObject(value);
 			
+			if (element != null)
+			{
+				writer.begin(element);
+				generateAttributes(cycle, writer, null);
+			}
+			
 			renderWrapped(writer, cycle);
+			
+			if (element != null)
+				writer.end();
 		}
 	}
 	
@@ -286,6 +336,7 @@ public class ListEdit
 		writer.attribute("type", "hidden");
 		writer.attribute("name", name);
 		writer.attribute("value", externalValue);
+		writer.println();
 	}
 	
 	private Object extractValue(RequestContext context, String name)

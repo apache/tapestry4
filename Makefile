@@ -170,5 +170,13 @@ run-intranet: setup-jbe-util
 	  -showversion \
 	  com.mortbay.Jetty.Server config/jetty-intranet.xml)
 	  
+run-extranet: setup-jbe-util
+	$(call NOTE, Running Extranet on port 80 ...)
+	@$(RM) .build
+	@$(MKDIRS) .build ../TapestryLogs
+	$(call EXEC_JAVA, $(VLIB_CLASSPATH), \
+	  -showversion \
+	  com.mortbay.Jetty.Server config/jetty-extranet.xml)
+	  
 .PHONY: javadoc create-archives reinvoke run-tutorial
 .PHONY: clean install dist default

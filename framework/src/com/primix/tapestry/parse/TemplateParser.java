@@ -812,7 +812,13 @@ public class TemplateParser
 		// Advance cursor past '>'
 		
 		advance();
-		advanceOverWhitespace();
+		
+		// If editting out the tag (i.e., $remove$) then kill any whitespace.
+		// For components that simply don't contain a body, removeTag will
+		// be false.
+		
+		if (tag.removeTag)
+			advanceOverWhitespace();
 		
 		// If we were ignoring the body of the tag, then clear the ignoring
 		// flag, since we're out of the body.

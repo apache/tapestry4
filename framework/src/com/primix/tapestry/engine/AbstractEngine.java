@@ -41,6 +41,7 @@ import com.primix.tapestry.parse.*;
 import java.util.*;
 import com.primix.tapestry.pageload.*;
 import com.primix.tapestry.asset.*;
+import com.primix.tapestry.util.pool.*;
 import java.net.*;
 import javax.servlet.http.*;
 import org.apache.log4j.*;
@@ -108,6 +109,7 @@ public abstract class AbstractEngine
 	private transient String sessionId;
 	private transient boolean stateful;
 	private transient ListenerMap listeners;
+	private transient Pool helperBeanPool;
 	
 	/**
 	 *  An object used to contain application-specific server side state.
@@ -212,6 +214,17 @@ public abstract class AbstractEngine
 	
 	protected static final String SPECIFICATION_SOURCE_NAME =
 		"com.primix.tapestry.DefaultSpecificationSource";
+	
+	
+	/**
+	 * Servlet context attribute name for the {@link Pool} used to obtain
+	 * helper beans.  The application's name is appended.
+	 *
+	 *  @since 1.0.4
+	 *
+	 */
+	
+	protected static final String HELPER_BEAN_POOL_NAME = "com.primix.tapestry.HelperBeanPool";
 	
 	/**
 	 *  Servlet context attribute name for the {@link IPageSource}
@@ -1367,6 +1380,7 @@ public abstract class AbstractEngine
 	 *  <li>{@link ITemplateSource} 
 	 *  <li>{@link ISpecificationSource}
 	 *  <li>{@link IPageSource}
+	 *  <li>Helper object {@link Pool}
 	 *  </ul>
 	 *
 	 *  <p>Subclasses should invoke this implementation first, then perform their
@@ -1470,6 +1484,29 @@ public abstract class AbstractEngine
 				servletContext.setAttribute(name, scriptSource);
 			}
 		}
+		
+		if (helperBeanPool == null)
+		{
+			String name = HELPER_BEAN_POOL_NAME + "." + applicationName;
+			
+			helperBeanPool = (Pool)servletContext.getAttribute(name);
+			
+			if (helperBeanPool == null)
+			{
+				helperBeanPool = new Pool();
+				servletContext.setAttribute(name, helperBeanPool);
+			}
+		}
+	}
+	
+	/**
+	 *  @since 1.0.4
+	 *
+	 */
+	
+	public Pool getHelperBeanPool()
+	{
+		return helperBeanPool;
 	}
 	
 	/**

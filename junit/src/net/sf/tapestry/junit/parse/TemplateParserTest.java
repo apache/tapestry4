@@ -205,7 +205,7 @@ public class TemplateParserTest
 	{
 		TemplateToken[] tokens = run("SimpleNested.html");
 		
-		assertTokenCount(tokens, 7);
+		assertTokenCount(tokens, 8);
 		assertOpenToken(tokens[1], "outer");
 		assertOpenToken(tokens[3], "inner");
 		assertCloseToken(tokens[4]);
@@ -237,7 +237,7 @@ public class TemplateParserTest
 	{
 		TemplateToken[] tokens = run("Complex.html");
 		
-		assertTokenCount(tokens, 17);
+		assertTokenCount(tokens, 19);
 		
 		// Just pick a few highlights out of it.
 		
@@ -321,7 +321,7 @@ public class TemplateParserTest
 	{
 		TemplateToken[] tokens = run("BasicRemove.html");
 		
-		assertTokenCount(tokens, 9);
+		assertTokenCount(tokens, 10);
 		assertTextToken(tokens[0], 0, 126);
 		assertTextToken(tokens[1], 201, 287);
 		assertOpenToken(tokens[2], "e");
@@ -329,8 +329,8 @@ public class TemplateParserTest
 		assertOpenToken(tokens[4], "row");
 		assertTextToken(tokens[5], 378, 398);
 		assertCloseToken(tokens[6]);
-		assertCloseToken(tokens[7]);
-		assertTextToken(tokens[8], 414, 425);
+		assertCloseToken(tokens[8]);
+		assertTextToken(tokens[9], 412, 425);
 	}
 	
 	public void testBodyRemove()
@@ -351,11 +351,11 @@ public class TemplateParserTest
 		
 		TemplateToken[] tokens = run("BodyRemove.html", delegate);
 		
-		assertTokenCount(tokens, 7);
+		assertTokenCount(tokens, 8);
 		assertOpenToken(tokens[1], "form");
 		assertOpenToken(tokens[3], "inputType");
 		assertCloseToken(tokens[4]);
-		assertCloseToken(tokens[5]);		
+		assertCloseToken(tokens[6]);		
 	}
 	
 	public void testRemovedComponentFailure()
@@ -401,7 +401,7 @@ public class TemplateParserTest
 	{
 		TemplateToken[] tokens = run("TagAttributes.html");
 		
-		assertTokenCount(tokens, 4);
+		assertTokenCount(tokens, 5);
 		assertOpenToken(tokens[1], "tag");
 		
 		Map a = tokens[1].getAttributes();

@@ -82,6 +82,7 @@ public class SpecificationParser
 	public static final String TAPESTRY_DTD_1_1_PUBLIC_ID = "-//Howard Ship//Tapestry Specification 1.1//EN";
 	
 	private static final Map booleanMap;
+	private static final Map lifecycleMap;
 	
 	// Identify all the different acceptible values.
 	
@@ -102,6 +103,11 @@ public class SpecificationParser
 		booleanMap.put("off", Boolean.FALSE);
 		booleanMap.put("no", Boolean.FALSE);
 		booleanMap.put("n", Boolean.FALSE);
+		
+		lifecycleMap = new HashMap();
+		lifecycleMap.put("none", BeanLifecycle.NONE);
+		lifecycleMap.put("request", BeanLifecycle.REQUEST);
+		lifecycleMap.put("page", BeanLifecycle.PAGE);
 	}
 	
 	
@@ -731,6 +737,12 @@ public class SpecificationParser
 				continue;
 			}
 			
+			if (isElement(node, "bean"))
+			{
+				convertBean(specification, node);
+				continue;
+			}
+			
 			if (isElement(node, "component"))
 			{
 				convertComponent_2(specification, node);
@@ -774,6 +786,25 @@ public class SpecificationParser
 		param.setRequired(getBooleanAttribute(node, "required"));
 		
 		specification.addParameter(name, param);
+	}
+	
+	/**
+	 *  @since 1.0.4
+	 *
+	 */
+	
+	private void convertBean(ComponentSpecification specification, Node node)
+	{
+		String name = getAttribute(node, "name");
+		String className = getAttribute(node, "class");
+		String lifecycleString = getAttribute(node, "lifecycle");
+		
+		BeanLifecycle lifecycle = (BeanLifecycle)lifecycleMap.get(lifecycleString);
+		
+		BeanSpecification bspec = new BeanSpecification(className, lifecycle);
+		
+		specification.addBeanSpecification(name, bspec);
+		
 	}
 	
 	private void convertComponent_2(ComponentSpecification specification, Node node)

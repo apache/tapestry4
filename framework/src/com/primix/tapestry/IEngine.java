@@ -32,6 +32,7 @@ import java.io.*;
 import javax.servlet.*;
 import java.util.*;
 import com.primix.tapestry.spec.*;
+import com.primix.tapestry.util.pool.*;
 import java.net.*;
 
 // Appease Javadoc
@@ -276,4 +277,15 @@ public interface IEngine
 	 */
 	
 	public boolean isStateful();
+	
+	/**
+	 *  Returns a {@link Pool} from which helper objects may be obtained,
+	 *  and to which they should be returned.
+	 *  The pool is keyed on class name.
+	 *
+	 *  @since 1.0.4
+	 */
+	
+	public Pool getHelperBeanPool();
+	
 }

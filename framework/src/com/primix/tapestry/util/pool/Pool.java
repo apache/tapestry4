@@ -120,7 +120,9 @@ public class Pool
 	}
 	
 	/**
-	 *  Stores an object in the pool for later retrieval.
+	 *  Stores an object in the pool for later retrieval.  Invokes
+	 *  {@link IPoolable#resetForPool()}, if the object
+	 *  implements the {@link IPoolable} interface.
 	 *
 	 */
 	
@@ -128,6 +130,19 @@ public class Pool
 	{
 		PoolList list;
 		int count;
+		IPoolable poolable = null;
+		
+		try
+		{
+			poolable = (IPoolable)object;
+		}
+		catch (ClassCastException ex)
+		{
+			// Ignore.  The Object wasn't poolable.
+		}
+		
+		if (poolable != null)			
+			poolable.resetForPool();
 		
 		if (map == null)
 		{

@@ -42,6 +42,7 @@ import java.util.*;
  * <li>A set of contained components
  * <li>Bindings for the properties of each contained component
  * <li>A set of named assets
+ *  <li>Definitions for helper beans
  * </ul>
  *
  * <p>From this information, an actual component may be instantiated and
@@ -61,233 +62,295 @@ public class ComponentSpecification extends BasePropertyHolder
 {
 	private String componentClassName;
 	private String specificationResourcePath;
-
+	
+	/**
+	 *  Keyed on component id, value is {@link ContainedComponent}.
+	 *
+	 */
+	
 	private Map components;
-
+	
 	private static final int MAP_SIZE = 7;
-
+	
+	/**
+	 *  Keyed on asset name, value is {@link AssetSpecification}.
+	 *
+	 */
+	
 	private Map assets;
-
+	
 	/**
-	*  Defines all formal parameters.
-	*
-	*/
-
+	 *  Defines all formal parameters.  Keyed on parameter name, value is
+	 * {@link ParameterSpecification}.
+	 *
+	 */
+	
 	private Map parameters;
-
+	
 	/**
-	*  Is the component allowed to have a body (that is, wrap other elements?).
-	*
-	*/
-
+	 *  Defines all helper beans.  Keyed on name, value is {@link BeanSpecification}.
+	 *
+	 *  @since 1.0.4
+	 */
+	
+	private Map beans;
+	
+	/**
+	 *  Is the component allowed to have a body (that is, wrap other elements?).
+	 *
+	 */
+	
 	private boolean allowBody = true;
-
+	
 	/**
-	*  Is the component allow to have informal parameter specified.
-	*
-	*/
-
+	 *  Is the component allow to have informal parameter specified.
+	 *
+	 */
+	
 	private boolean allowInformalParameters = true;
-
+	
 	public void addAsset(String name, AssetSpecification asset)
 	{
 		if (assets == null)
 			assets = new HashMap(MAP_SIZE);
-
+		
 		assets.put(name, asset);
 	}
-
+	
 	public void addComponent(String id, ContainedComponent component)
 	{
 		if (components == null)
 			components = new HashMap(MAP_SIZE);
-
+		
 		components.put(id, component);
 	}
-
+	
 	public void addParameter(String name, ParameterSpecification spec)
 	{
 		if (parameters == null)
 			parameters = new HashMap(MAP_SIZE);
-
+		
 		parameters.put(name, spec);
 	}
-
+	
 	/**
-	*  Returns true if the component is allowed to wrap other elements (static HTML
-	*  or other components).  The default is true.
-	*
-	*  @see #setAllowBody(boolean)
-	*
-	*/
-
+	 *  Returns true if the component is allowed to wrap other elements (static HTML
+	 *  or other components).  The default is true.
+	 *
+	 *  @see #setAllowBody(boolean)
+	 *
+	 */
+	
 	public boolean getAllowBody()
 	{
 		return allowBody;
 	}
-
+	
 	/**
-	*  Returns true if the component allows informal parameters (parameters
-	*  not formally defined).  Informal parameters are generally used to create
-	*  additional HTML attributes for an HTML tag rendered by the
-	*  component.  This is often used to specify JavaScript event handlers or the class
-	*  of the component (for Cascarding Style Sheets).
-	*
-	* <p>The default value is true.
-	*
-	*  @see #setAllowInformalParameters(boolean)
-	*/
-
+	 *  Returns true if the component allows informal parameters (parameters
+	 *  not formally defined).  Informal parameters are generally used to create
+	 *  additional HTML attributes for an HTML tag rendered by the
+	 *  component.  This is often used to specify JavaScript event handlers or the class
+	 *  of the component (for Cascarding Style Sheets).
+	 *
+	 * <p>The default value is true.
+	 *
+	 *  @see #setAllowInformalParameters(boolean)
+	 */
+	
 	public boolean getAllowInformalParameters()
 	{
 		return allowInformalParameters;
 	}
-
+	
 	/**
-	*  Returns the {@link AssetSpecification} with the given name, or null
-	*  if no such specification exists.
-	*
-	*  @see #addAsset(String,AssetSpecification)
-	*/
-
+	 *  Returns the {@link AssetSpecification} with the given name, or null
+	 *  if no such specification exists.
+	 *
+	 *  @see #addAsset(String,AssetSpecification)
+	 */
+	
 	public AssetSpecification getAsset(String name)
 	{
 		if (assets == null)
 			return null;
-
+		
 		return (AssetSpecification)assets.get(name);
 	}
-
+	
 	/**
-	*  Returns an unmodifiable <code>Collection</code>
-    *  of the String names of all assets.
-	*
-	*/
-
+	 *  Returns an unmodifiable <code>Collection</code>
+	 *  of the String names of all assets.
+	 *
+	 */
+	
 	public Collection getAssetNames()
 	{
-    	if (assets == null)
-        		return Collections.EMPTY_SET;
-            
-        return Collections.unmodifiableCollection(assets.keySet());
+		if (assets == null)
+			return Collections.EMPTY_SET;
+		
+		return Collections.unmodifiableCollection(assets.keySet());
 	}
-
+	
 	/**
-	*  Returns the specification of a contained component with the given id, or
-	*  null if no such contained component exists.
-	*
-	*  @see #addComponent(String, ContainedComponent)
-	*
-	*/
-
+	 *  Returns the specification of a contained component with the given id, or
+	 *  null if no such contained component exists.
+	 *
+	 *  @see #addComponent(String, ContainedComponent)
+	 *
+	 */
+	
 	public ContainedComponent getComponent(String id)
 	{
 		if (components == null)
 			return null;
-
+		
 		return (ContainedComponent)components.get(id);
 	}
-
+	
 	public String getComponentClassName()
 	{
 		return componentClassName;
 	}
-
+	
 	/**
-	*  Returns an umodifiable <code>Collection</code>
-    *  of the String names of the {@link ContainedComponent}s
-	*  for this component.
-	*
-	*  @see #addComponent(String, ContainedComponent)
-	*
-	*/
-
+	 *  Returns an umodifiable <code>Collection</code>
+	 *  of the String names of the {@link ContainedComponent}s
+	 *  for this component.
+	 *
+	 *  @see #addComponent(String, ContainedComponent)
+	 *
+	 */
+	
 	public Collection getComponentIds()
 	{
 		if (components == null)
 			return Collections.EMPTY_SET;
-        
-        return Collections.unmodifiableCollection(components.keySet());    
+		
+		return Collections.unmodifiableCollection(components.keySet());    
 	}
-
+	
 	/**
-	*  Returns the specification of a parameter with the given name, or
-	*  null if no such parameter exists.
-	*
-	*  @see #addParameter(String, ParameterSpecification)
-	*
-	*/
-
+	 *  Returns the specification of a parameter with the given name, or
+	 *  null if no such parameter exists.
+	 *
+	 *  @see #addParameter(String, ParameterSpecification)
+	 *
+	 */
+	
 	public ParameterSpecification getParameter(String name)
 	{
 		if (parameters == null)
 			return null;
-
+		
 		return (ParameterSpecification)parameters.get(name);
 	}
-
+	
 	/**
-	*  Returns an umodifiable <code>Collection</code>
-    *  of String names of all parameters.
-	*
-	*  @see #addParameter(String, ParameterSpecification)
-	*
-	*/
-
+	 *  Returns an umodifiable <code>Collection</code>
+	 *  of String names of all parameters.
+	 *
+	 *  @see #addParameter(String, ParameterSpecification)
+	 *
+	 */
+	
 	public Collection getParameterNames()
 	{
 		if (parameters == null)
 			return Collections.EMPTY_LIST;
-
+		
 		return Collections.unmodifiableCollection(parameters.keySet());
 	}
-
+	
 	/**
-	*  Returns the String used to identify the resource parsed to form this
-	*  <code>ComponentSpecification</code>.
-	*
-	*/
-
+	 *  Returns the String used to identify the resource parsed to form this
+	 *  <code>ComponentSpecification</code>.
+	 *
+	 */
+	
 	public String getSpecificationResourcePath()
 	{
 		return specificationResourcePath;
 	}
-
+	
 	public void setAllowBody(boolean value)
 	{
 		allowBody = value;
 	}
-
+	
 	public void setAllowInformalParameters(boolean value)
 	{
 		allowInformalParameters = value;
 	}
-
+	
 	public void setComponentClassName(String value)
 	{
 		componentClassName = value;
 	}
-
+	
 	public void setSpecificationResourcePath(String value)
 	{
 		specificationResourcePath = value;
 	}     
+	
 
+	/**
+	 *  @since 1.0.4
+	 *
+	 */
+	
+	public void addBeanSpecification(String name, BeanSpecification specification)
+	{
+		if (beans == null)
+			beans = new HashMap(MAP_SIZE);
+		
+		beans.put(name, specification);
+	}
+	
+	/**
+	 * Returns the {@link BeanSpecification} for the given name, or null
+	 * if not such specification exists.
+	 *
+	 * @since 1.0.4
+	 *
+	 */
+	
+	public BeanSpecification getBeanSpecification(String name)
+	{
+		if (beans == null)
+			return null;
+		
+		return (BeanSpecification)beans.get(name);
+	}
+	
+	/**
+	 *  Returns an unmodifiable collection of the names of all beans.
+	 *
+	 */
+	
+	public Collection getBeanNames()
+	{
+		if (beans == null)
+			return Collections.EMPTY_LIST;
+		
+		return Collections.unmodifiableCollection(beans.keySet());
+	}
+	
 	public String toString()
 	{
 		StringBuffer buffer;
 		buffer = new StringBuffer(super.toString());
-
+		
 		buffer.append('[');
-
+		
 		if (specificationResourcePath != null)
 			buffer.append(specificationResourcePath);
 		else
 			if (componentClassName != null)
 				buffer.append(componentClassName);
-
+		
 		buffer.append(']');
-
+		
 		return buffer.toString();
 	}
 }

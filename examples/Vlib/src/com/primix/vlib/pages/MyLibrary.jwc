@@ -29,9 +29,14 @@
   	<binding name="query" property-path="ownedQuery"/>
   </component>
   
+  <component id="insertResultCount" type="Insert">
+  	<binding name="value" property-path="components.browser.resultCount"/>
+  </component>
+  
   <component id="e" type="Foreach">
     <binding name="source" property-path="components.browser.pageResults"/>
     <binding name="value" property-path="currentBook"/>
+    <static-binding name="element">tr</static-binding>
   </component>
 
   <component id="insertTitle" type="Insert">
@@ -46,13 +51,11 @@
     <binding name="value" property-path="currentBook.publisherName"/>
   </component>
 
-  <component id="ifShowHolder" type="Conditional">
-    <binding name="condition" property-path="currentBook.borrowed"/>
-  </component>
-
   <component id="holderLink" type="PersonLink">
     <binding name="primaryKey" property-path="currentBook.holderPrimaryKey"/>
     <binding name="name" property-path="currentBook.holderName"/>
+    <binding name="omit" property-path="omitHolderLink"/>
+    <static-binding name="class">clsDataBlue</static-binding>
   </component>
 
   <component id="edit" type="Direct">

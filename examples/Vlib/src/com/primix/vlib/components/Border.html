@@ -1,16 +1,23 @@
-<jwc id="shell">
-<!-- $Id$ -->
-<jwc id="body">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 
+<!-- $Id$ -->
+
+<html>
+<head>
+	<title>Primix Virtual Library: Border Template</title>
+<link rel="STYLESHEET" type="text/css" href="scripts/style_virtlib_pcIE55.css">
+</head>
+
+<!-- Odd to have a span around a body, but that's just the way it is -->
+
+<span jwcid="$content$">
+
+<span jwcid="shell">
+
+<body jwcid="body" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#8e9cd1">
 
 <!-- ****BODY WRAPPER**** -->
-
 <table width="790" border="0" cellspacing="0" cellpadding="0">
-
-	<!-- Added by HS to compensate for the removal of the "white" navigation bar -->
-	
-<tr colspan="*" height=20> <td>&nbsp;</td></tr>
-
 	<tr>
 		<td width="124" valign="top">
 			<!-- Left Nav -->
@@ -19,51 +26,50 @@
 					<td height="35" colspan="3">&nbsp;</td>
 				</tr>
 				<tr>
-				<!-- HS:  Need to add stuff to show the dots for the right option ... -->
-				
-					<td width="19" height="22"><jwc id="searchIcon"/></td>
-					<td width="89"><jwc id="search">Search</jwc></td>
-					<td width="1" valign="top" rowspan="5" bgcolor="#4B5887"><img src="/vlib/images/vert_ltblue.gif" width="1" height="7" alt="" border="0"></td>
+					<td width="19" height="22"><img jwcid="searchIcon" src="images/spacer.gif" width="14" height="12" border="0"/></td>
+					<td width="89"><a jwcid="search" href="#" class="clsLeftNav">Search</a></td>
+					<td width="1" valign="top" rowspan="5" bgcolor="#4B5887"><img src="images/vert_ltblue.gif" width="1" height="7" border="0"></td>
 				</tr>
 				<tr>
-					<td valign="top" height="22"><jwc id="myLibraryIcon"/></td>
-					<td><jwc id="myLibrary">My Library</jwc>
+					<td height="22" valign="top"><img jwcid="myLibraryIcon" src="images/dots_leftnav.gif" width="14" height="12" border="0"/></td>
+					<td><a jwcid="myLibrary" href="#" class="clsLeftNav">My Library</a>
 					
-					<jwc id="ifLoggedIn">
-					<br>
-					<img src="/vlib/images/dots_subleft.gif" width="7" height="10" alt="" border="0" align="absmiddle"><jwc id="borrowed">Borrowed Books</jwc><br>
-					<img src="/vlib/images/dots_subleft.gif" width="7" height="10" alt="" border="0" align="absmiddle"><jwc id="addNewBook">Add New Book</jwc><br>
-					<img src="/vlib/images/dots_subleft.gif" width="7" height="10" alt="" border="0" align="absmiddle"><jwc id="editProfile">Edit Profile</jwc><br>
-					</jwc>
-					</td>					
+					<span jwcid="ifLoggedIn"><br>
+					<img src="images/dots_subleft.gif" width="7" height="10" border="0" align="absmiddle"><a jwcid="borrowed" href="#" class="clsLeftNav">Borrowed Books</a><br>
+					<img src="images/dots_subleft.gif" width="7" height="10" border="0" align="absmiddle"><a jwcid="addNewBook" href="#" class="clsLeftNav">Add New Book</a><br>
+					<img src="images/dots_subleft.gif" width="7" height="10" border="0" align="absmiddle"><a jwcid="editProfile" href="#" class="clsLeftNav">Edit Profile</a><br>
+					</span>
+					</td>
 				</tr>
-<jwc id="ifAdmin">
+		<span jwcid="ifAdmin">
 				<tr>
-					<td valign="top" height="22" class=".clsLeftNav"><jwc id="adminIcon"/></td>
-					<td><span class="clsLeftNav">Admin</span>
+					<td height="22" valign="top"><img jwcid="adminIcon" src="images/spacer.gif" width="14" height="12" border="0"/></td>
+					<td><span class="clsLeftNavTxt">Admin</span>
+					
 					<br>
-					<img src="/vlib/images/dots_subleft.gif" width="7" height="10" alt="" border="0" align="absmiddle"><jwc id="xferBooks">Transfer Books</jwc><br>
-					<img src="/vlib/images/dots_subleft.gif" width="7" height="10" alt="" border="0" align="absmiddle"><jwc id="editPublishers">Edit Publishers</jwc><br>
-					<img src="/vlib/images/dots_subleft.gif" width="7" height="10" alt="" border="0" align="absmiddle"><jwc id="editUsers">Edit Users</jwc><br>
-				
-				</tr>
-</jwc>
+					<img src="images/dots_subleft.gif" width="7" height="10" border="0" align="absmiddle"><a jwcid="xferBooks" href="#" class="clsLeftNav">Transfer Books</a><br>
+					<img src="images/dots_subleft.gif" width="7" height="10" border="0" align="absmiddle"><a jwcid="editPublishers" href="#" class="clsLeftNav">Edit Publishers</a><br>
+					<img src="images/dots_subleft.gif" width="7" height="10" border="0" align="absmiddle"><a jwcid="editUsers" href="#" class="clsLeftNav">Edit Users</a><br>
+					</td>
+				</tr>		
+		</span>
+		
 				<tr>
-					<td height="22"><jwc id="loginIcon"/></td>
+					<td height="22"><img jwcid="loginIcon" src="images/spacer.gif" width="14" height="12" border="0"/></td>
 					<td>
 					
-					<jwc id="ifLoggedIn2">
-					<jwc id="logout">Logout</jwc>
-					</jwc>
+					<span jwcid="ifLoggedIn2">
+						<a jwcid="logout" href="#" class="clsLeftNav">Logout</a>
+					</span>
 					
-					<jwc id="ifNotLoggedIn">
-					<jwc id="login">Login</jwc>
-					</jwc>
+					<span jwcid="ifNotLoggedIn">
+						<a jwcid="login" href="#" class="clsLeftNav">Login</a>
+					</span>
 					
 					</td>
 				</tr>
 				<tr>
-					<td height="200"><img src="/vlib/images/spacer.gif" width="14" height="1" alt="" border="0"></td>
+					<td height="200"><img src="images/spacer.gif" width="14" height="1" border="0"></td>
 					<td>&nbsp;</td>
 				</tr>
 			</table>
@@ -71,21 +77,25 @@
 		</td>
 		<td width="66" align="center" valign="top">
 			<!-- Gutter -->
-				<img src="/vlib/images/ico_t.gif" width="44" height="44" border="0" vspace="5">
+				<img src="images/ico_t.gif" width="44" height="44" border="0" vspace="5">
 			<!-- END Gutter -->
 		</td>
 		<td width="600" valign="top">
 			<!-- Content -->
 				<!-- head -->
-				<img src="/vlib/images/hd_primixvirtlib.gif" width="241" height="22" alt="" border="0" vspace="17"><br>
-<jwc id="ifLibraryPage"><img 
-src="/vlib/images/hd_mybooks.gif" 
-width="97" height="16" alt="" border="0"></jwc><jwc id="subheaderImage"/>
-				
+				<img src="images/hd_primixvirtlib.gif" width="241" height="22" border="0" vspace="17"><br>
+				<span jwcid="ifLibraryPage"><img 
+				src="images/hd_mylibrary.gif" width="84" height="18"
+				 border="0"><span jwcid="ifShowSlash"><img src="images/hd_slash.gif" 
+				 width="19" height="18" border="0"></span></span><img jwcid="subheaderImage" src="images/hd_addnewbooks.gif" border="0"/>
 				<!-- END head -->
 				<br><br>
 				
-<jwc id="wrapped"/>
+				<span jwcid="insertWrapped">
+				
+				<h1>Page Content</h1>
+				
+				</span>
 				
 			<!-- END Content -->
 		</td>
@@ -100,12 +110,14 @@ width="97" height="16" alt="" border="0"></jwc><jwc id="subheaderImage"/>
 			<table width="737" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td width="181">&nbsp;</td>
-					<td width="503" valign="bottom">&nbsp;&nbsp;&nbsp;&nbsp;Copyright 2000, 2001 <a href="http://www.primix.com">Primix</a> and released under the <a 
-					target="gnu-copyleft" href="http://www.gnu.org/copyleft/lesser.html">Lesser GNU Public License.</a></td>
-					<td width="53"><jwc id="ifShowInspector">
-	<jwc id="showInspector"/>
-</jwc></td>
-</tr>
+					<td width="503" valign="bottom">&nbsp;&nbsp;&nbsp;&nbsp;Copyright 2000, 2001 <a href="http://www.primix.com">Primix</a> and 
+					released under the <a href="http://www.gnu.org/copyleft/lesser.html">Lesser GNU Public License.</a></td>
+					<td width="53">
+					
+					<span jwcid="ifShowInspector">
+						<span jwcid="showInspector"/>
+					</span>
+				</tr>
 				<tr>
 					<td colspan="3">&nbsp;</td>
 				</tr>
@@ -117,8 +129,8 @@ width="97" height="16" alt="" border="0"></jwc><jwc id="subheaderImage"/>
 			<table width="500" border="0" cellspacing="0" cellpadding="0">
 				<tr>
 					<td width="181">&nbsp;</td>
-					<td width="319"><a href="http://sf.net/projects/jetty"><img src="/vlib/images/lgo_jetty.gif" width="79" height="31" alt="" border="0"></a>
-						&nbsp;<a href="http://sf.net/projects/tapestry"><img src="/vlib/images/lgo_srcforge.gif" width="88" height="31" alt="" border="0"></a>
+					<td width="319"><a href="#"><img src="images/lgo_jetty.gif" width="79" height="31" border="0"></a>
+						&nbsp;<a href="#"><img src="images/lgo_srcforge.gif" width="88" height="31" border="0"></a>
 					</td>
 				</tr>
 			</table>
@@ -146,7 +158,10 @@ width="97" height="16" alt="" border="0"></jwc><jwc id="subheaderImage"/>
 	</tr>
 </table>
 <!-- ****END FOOTER**** -->
+</body>
 
-</jwc>
-</jwc>
+</span>
 
+</span>
+
+</html>

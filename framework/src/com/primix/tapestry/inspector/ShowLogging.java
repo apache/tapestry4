@@ -53,12 +53,14 @@ public class ShowLogging extends BaseComponent
 	private IValidationDelegate validationDelegate;
 	private IPropertySelectionModel rootPriorityModel;
 	private IPropertySelectionModel priorityModel;
+	private EvenOdd categoryClass;
 	
 	public void reset()
 	{
 		category = null;
 		error = null;
 		newCategory = null;
+		categoryClass = null;
 	}
 	
 	private class ValidationDelegate
@@ -209,5 +211,15 @@ public class ShowLogging extends BaseComponent
 		newCategory = null;
 		field.refresh();
 		
+	}
+	
+	/** @since 1.0.4 **/
+	
+	public EvenOdd getCategoryClass()
+	{
+		if (categoryClass == null)
+			categoryClass = new EvenOdd(false);
+		
+		return categoryClass;
 	}
 }

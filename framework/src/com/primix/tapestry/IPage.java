@@ -258,5 +258,15 @@ public interface IPage extends IComponent
 	*/
 
 	public Object getVisit();
+	
+	/**
+	 * Registers a {@link IBeanProvider} so that it can be
+	 * notified at the end of the request cycle.  This allows the
+	 * provider to delete any beans that have a "request" lifecycle.
+	 *
+	 * @since 1.0.4
+	 */
+	
+	public void registerBeanProvider(IBeanProvider provider);
 }
 

@@ -33,6 +33,7 @@ import com.primix.tapestry.util.prop.*;
 import com.primix.tapestry.event.*;
 import com.primix.tapestry.spec.*;
 import com.primix.tapestry.listener.*;
+import com.primix.tapestry.bean.*;
 import java.util.*;
 
 
@@ -49,6 +50,14 @@ import java.util.*;
 
 public abstract class AbstractComponent implements IComponent
 {	
+	static
+	{
+		// Register the BeanProviderHelper to provide access to the
+		// beans of a bean provider as named properties.
+		
+		PropertyHelper.register(IBeanProvider.class, BeanProviderHelper.class);
+	}
+	
 	/**
 	 *  The specification used to originally build the component.
 	 *
@@ -142,6 +151,14 @@ public abstract class AbstractComponent implements IComponent
 	 */
 	
 	private ListenerMap listeners;
+
+	/**
+	 * A bean provider; these are lazily created as needed.
+	 *
+	 * @since 1.0.4
+	 */
+	
+	private IBeanProvider beans;
 	
     public void addAsset(String name, IAsset asset)
     {
@@ -842,5 +859,21 @@ public abstract class AbstractComponent implements IComponent
 			listeners = new ListenerMap(this);
 		
 		return listeners;
+	}
+	
+	/**
+	 *  Returns the {@link IBeanProvider} for this component.  This is lazily created the
+	 *  first time it is needed.
+	 *
+	 *  @since 1.0.4
+	 *
+	 */
+	
+	public IBeanProvider getBeans()
+	{
+		if (beans == null)
+			beans = new BeanProvider(this);
+		
+		return beans;
 	}
 }

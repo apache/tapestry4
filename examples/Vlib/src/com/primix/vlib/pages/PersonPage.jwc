@@ -8,25 +8,21 @@
   
   <component id="border" type="Border">
     <static-binding name="title">Book Inventory</static-binding>
-    <binding name="subtitle" property-path="fullName"/>
+    <binding name="subtitle" property-path="person.naturalName"/>
   </component>
   
   <component id="insertName" type="Insert">
-    <binding name="value" property-path="fullName"/>
+    <binding name="value" property-path="person.naturalName"/>
   </component>
   <component id="emailLink" type="Any">
     <static-binding name="element">a</static-binding>
     <binding name="href" property-path="emailURL"/>
   </component>
   <component id="insertEmail" type="Insert">
-    <binding name="value" property-path="email"/>
+    <binding name="value" property-path="person.email"/>
   </component>
-  <component id="insertMatchCount" type="Insert">
+  <component id="insertCount" type="Insert">
     <binding name="value" property-path="components.browser.resultCount"/>
-  </component>
-  
-  <component id="ifBooks" type="Conditional">
-    <binding name="condition" property-path="components.browser.resultCount"/>
   </component>
   
   <component id="browser" type="Browser">
@@ -36,7 +32,9 @@
   <component id="e" type="Foreach">
     <binding name="source" property-path="components.browser.pageResults"/>
     <binding name="value" property-path="currentMatch"/>
+    <static-binding name="element">tr</static-binding>
   </component>
+
   <component id="bookLink" type="BookLink">
     <binding name="book" property-path="currentMatch"/>
   </component>
@@ -46,13 +44,14 @@
   <component id="insertPublisherName" type="Insert">
     <binding name="value" property-path="currentMatch.publisherName"/>
   </component>
-  <component id="ifShowHolder" type="Conditional">
-    <binding name="condition" property-path="currentMatch.borrowed"/>
-  </component>
+  
   <component id="holderLink" type="PersonLink">
     <binding name="primaryKey" property-path="currentMatch.holderPrimaryKey"/>
     <binding name="name" property-path="currentMatch.holderName"/>
+    <static-binding name="class">clsDataBlue</static-binding>
+    <binding name="omit" property-path="omitHolderLink"/>
   </component>
+
   <component id="borrow" type="Borrow">
     <binding name="book" property-path="currentMatch"/>
   </component>

@@ -14,7 +14,7 @@
     <binding name="listener" property-path="formListener"/>
   </component>
   <component id="inputFirstName" type="TextField">
-    <static-binding name="displayWidth">30</static-binding>
+    <static-binding name="displayWidth">15</static-binding>
     <static-binding name="maximumLength">30</static-binding>
     <binding name="text" property-path="attributes.firstName"/>
   </component>
@@ -24,7 +24,7 @@
   </component>
   <component id="inputLastName" type="ValidatingTextField">
     <binding name="text" property-path="attributes.lastName"/>
-    <static-binding name="displayWidth">30</static-binding>
+    <static-binding name="displayWidth">15</static-binding>
     <static-binding name="maximumLength">30</static-binding>
     <static-binding name="displayName">Last Name</static-binding>
     <field-binding name="required" field-name="Boolean.TRUE"/>
@@ -36,7 +36,7 @@
   </component>
   <component id="inputEmail" type="ValidatingTextField">
     <binding name="text" property-path="attributes.email"/>
-    <static-binding name="displayWidth">30</static-binding>
+    <static-binding name="displayWidth">15</static-binding>
     <static-binding name="maximumLength">60</static-binding>
     <static-binding name="displayName">E-Mail</static-binding>
     <field-binding name="required" field-name="Boolean.TRUE"/>
@@ -48,7 +48,7 @@
   </component>
   <component id="inputPassword1" type="ValidatingTextField">
     <binding name="text" property-path="password1"/>
-    <static-binding name="displayWidth">20</static-binding>
+    <static-binding name="displayWidth">15</static-binding>
     <static-binding name="maximumLength">20</static-binding>
     <static-binding name="displayName">Password</static-binding>
     <binding name="delegate" property-path="validationDelegate"/>
@@ -60,18 +60,21 @@
   </component>
   <component id="inputPassword2" type="ValidatingTextField">
     <binding name="text" property-path="password2"/>
-    <static-binding name="displayWidth">20</static-binding>
+    <static-binding name="displayWidth">15</static-binding>
     <static-binding name="maximumLength">20</static-binding>
     <static-binding name="displayName">Password (again)</static-binding>
     <binding name="delegate" property-path="validationDelegate"/>
     <field-binding name="hidden" field-name="Boolean.TRUE"/>
   </component>
   
+  <!-- Temporarily Removed
+  
   <component id="cancel" type="Submit">
   	<static-binding name="label">Cancel</static-binding>
   	<binding name="selected" property-path="cancel"/>
   	<field-binding name="tag" field-name="Boolean.TRUE"/>
    </component>
-   
+  
+  --> 
 
 </specification>

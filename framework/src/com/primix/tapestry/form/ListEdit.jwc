@@ -4,7 +4,7 @@
   "-//Howard Ship//Tapestry Specification 1.1//EN" 
   "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
   
-<specification allow-body="yes" allow-informal-parameters="no"
+<specification allow-body="yes" allow-informal-parameters="yes"
 	class="com.primix.tapestry.form.ListEdit">
 	
   <parameter name="source" required="yes" java-type="Object[] or java.util.List"/>
@@ -12,6 +12,8 @@
   <parameter name="value" required="yes"/>
   
   <parameter name="index" java-type="int"/>
+  
+  <parameter name="element" java-type="java.lang.String"/>
   
 </specification>
 
