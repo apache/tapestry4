@@ -1,0 +1,23 @@
+<!-- $Id$ -->
+
+
+<span jwcid="block@Block">
+
+<span jwcid="@Conditional" condition="[[ visit.formTriggered ]]">
+Form HAS been triggered.
+</span>
+
+<span jwcid="@Conditional" condition="[[ ! visit.formTriggered ]]">
+Form HAS NOT been triggered.
+</span>
+
+<p>
+
+<form jwcid="@Form">
+
+<input type="submit" jwcid="@Submit" label="Trigger" listener="[[ visit.listeners.formTrigger ]]"/>
+
+</form>
+
+
+</span>

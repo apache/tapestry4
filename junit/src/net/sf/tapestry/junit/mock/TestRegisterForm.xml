@@ -47,7 +47,7 @@ document.Form0.onsubmit = onsubmit_Form0;
 <input type="hidden" name="(.*?)" value="(.*?)"/>
 ]]>
 			<match>direct</match>
-			<match>Register/form</match>
+			<match>0/Register/form</match>
 			<match>S0</match>
 			<match>4</match>
 		</assert-matches>
@@ -112,7 +112,7 @@ document.Form0.onsubmit = onsubmit_Form0;
   	
   	<request>
   		<parameter name="service" value="direct"/>
-  		<parameter name="context" value="Register/form"/>
+  		<parameter name="context" value="0/Register/form"/>
   		<parameter name="sp" value="S0"/>
   		<parameter name="inputFirstName" value="Suzy"/>
   		<parameter name="inputLastName" value=""/>
@@ -174,7 +174,7 @@ document.Form0.inputLastName.select();
 	
 	<request>
   		<parameter name="service" value="direct"/>
-  		<parameter name="context" value="Register/form"/>
+  		<parameter name="context" value="0/Register/form"/>
   		<parameter name="sp" value="S0"/>
   		<parameter name="inputFirstName" value="Suzy"/>
   		<parameter name="inputLastName" value="Lewis Ship"/>

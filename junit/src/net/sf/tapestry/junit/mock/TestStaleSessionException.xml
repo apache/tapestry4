@@ -28,14 +28,14 @@
 		
 		<assert-output name="DirectLink URL">
 <![CDATA[
-href="/mock/app?service=direct&amp;context=Stale/directLink"
+href="/mock/app?service=direct&amp;context=0/Stale/directLink"
 ]]>		
 		</assert-output>
 		
 
 		<assert-output name="ActionLink URL">
 <![CDATA[
-href="/mock/app?service=action&amp;context=Stale/0/actionLink"
+href="/mock/app?service=action&amp;context=0/Stale/0/actionLink"
 ]]>		
 		</assert-output>		
 		
@@ -54,7 +54,7 @@ href="/mock/app?service=action&amp;context=Stale/0/actionLink"
 <input type="hidden".*? value="(.*?)".*?/>		
 ]]>
 			<match>direct</match>
-			<match>Stale/form</match>
+			<match>0/Stale/form</match>
 			<match>S1</match>
 			<match>0</match>
 		</assert-output-matches>
@@ -66,7 +66,11 @@ href="/mock/app?service=action&amp;context=Stale/0/actionLink"
 	
 	<request>
 		<parameter name="service" value="direct"/>
-		<parameter name="context" value="Stale/directLink"/>
+		
+		<!-- The one simulates a stateful link (when rendered), but there's
+		     no session, so there's a check and the exception is thrown. -->
+		     
+		<parameter name="context" value="1/Stale/directLink"/>
 		
 		<assert-output name="StaleSession (DirectLink)">
 <![CDATA[
@@ -75,9 +79,11 @@ href="/mock/app?service=action&amp;context=Stale/0/actionLink"
 		</assert-output>
 	</request>
 	
+	<!-- Simulate stateful action link. -->
+	
 	<request>
 		<parameter name="service" value="action"/>
-		<parameter name="context" value="Stale/0/actionLink"/>
+		<parameter name="context" value="1/Stale/0/actionLink"/>
 		
 		<assert-output name="StaleSession (ActionLink)">
 <![CDATA[
@@ -88,7 +94,10 @@ href="/mock/app?service=action&amp;context=Stale/0/actionLink"
 	
 	<request>
 		<parameter name="service" value="direct"/>
-		<parameter name="context" value="Stale/form"/>
+		
+		<!-- Again, fudge things to force a stateful check -->
+		
+		<parameter name="context" value="1/Stale/form"/>
 		<parameter name="sp" value="S1"/>
 		<parameter name="Form1" value="0"/>
 		

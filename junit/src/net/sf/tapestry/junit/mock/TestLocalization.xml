@@ -49,7 +49,13 @@ Zees ees nawt cheeze!
 		
 		<assert-output name="English Back image">
 /mock/images/back.png
-		</assert-output>		
+		</assert-output>	
+		
+		<assert-output name="DirectLink switch URL">
+<![CDATA[		
+href="/mock/app?service=direct&amp;context=0/Assets/switch"
+]]>
+		</assert-output>	
 	</request>
 	
 	<request locale="fr">
@@ -64,7 +70,13 @@ Zees ees nawt cheeze!
 		
 		<assert-output name="French Back image">
 /mock/images/back_fr.png
-		</assert-output>		
+		</assert-output>	
+		
+		<assert-output name="DirectLink switch URL still stateless">
+<![CDATA[		
+href="/mock/app?service=direct&amp;context=0/Assets/switch"
+]]>
+		</assert-output>							
 	</request>	
 	
 	
@@ -73,7 +85,7 @@ Zees ees nawt cheeze!
 	 	 
 	<request>
 		<parameter name="service" value="direct"/>
-		<parameter name="context" value="Assets/switch"/>
+		<parameter name="context" value="0/Assets/switch"/>
 		
 		<!-- Switch sends us back to the Home page, but in French. -->
 		
@@ -82,7 +94,12 @@ Zees ees nawt cheeze!
 		</assert-output>
 		
 		<assert-cookie name="net.sf.tapestry.locale" value="fr"/>
-		
+
+		<assert-output name="DirectLink switch URL still stateless">
+<![CDATA[		
+href="/mock/app?service=direct&amp;context=0/Home/link&amp;sp=2&amp;sp=d3.5&amp;sp=Hello"
+]]>
+		</assert-output>			
 	</request>
 		
 	<!-- With the cookie in place, going back to the Assets page should

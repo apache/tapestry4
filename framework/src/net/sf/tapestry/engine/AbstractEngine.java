@@ -1396,8 +1396,8 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     /**
      *  Invoked to lazily create a new visit object when it is first
      *  referenced (by {@link #getVisit(IRequestCycle)}).  This implementation works
-     *  by looking up the name of the class
-     *  in the application specification.
+     *  by looking up the name of the class to instantiate
+     *  in the {@link #getPropertySource() configuration}.
      *
      *  <p>Subclasses may want to overide this method if some other means
      *  of instantiating a visit object is required.
@@ -1409,7 +1409,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         Class visitClass;
         Object result = null;
 
-        visitClassName = _specification.getProperty(VISIT_CLASS_PROPERTY_NAME);
+        visitClassName = _propertySource.getPropertyValue(VISIT_CLASS_PROPERTY_NAME);
         if (visitClassName == null)
             throw new ApplicationRuntimeException(
                 Tapestry.getString("AbstractEngine.visit-class-property-not-specified", VISIT_CLASS_PROPERTY_NAME));

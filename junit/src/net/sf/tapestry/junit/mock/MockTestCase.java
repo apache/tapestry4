@@ -40,6 +40,18 @@ public class MockTestCase extends TapestryTestCase
     // implicitly define tests based on the found XML files?  Possibly
     // in a static suite() method.
 
+
+    /**
+     *  Test Block and InsertBlock, especially w.r.t. links and forms
+     *  inside the Block on foriegn pages.
+     * 
+     **/
+
+    public void testBlock() throws Exception
+    {
+        attempt("TestBlock.xml");
+    }
+
     /**
      *  Test behavior when the application specification doesn't exist.
      * 
@@ -235,12 +247,12 @@ public class MockTestCase extends TapestryTestCase
     }
 
     /**
-     *  Tests {@link net.sf.tapestry.StaleLinkException} with
+     *  Tests {@link net.sf.tapestry.StaleSessionException} with
      *  DirectLink (ActionLink and Form to come).
      * 
      **/
 
-    public void testStaleLinkException() throws Exception
+    public void testStaleSessionException() throws Exception
     {
         attempt("TestStaleSessionException.xml");
     }
