@@ -9,9 +9,9 @@
 <body>
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
  <tr>
-  <td align="left"><a href="Shell.html"><img src="common-images/prev.png" alt="Shell"/></a></td>  
-  <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
-  <td align="right"><a href="Submit.html"><img src="common-images/next.png" alt="Submit"/></a></td>  
+  <td align="left"><A href="Shell.html"><IMG alt=Shell src="common-images/prev.png"></a></td>  
+  <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
+  <td align="right"><A href="Submit.html"><IMG alt=Submit src="common-images/next.png"></a></td>  
  <tr>
  <tr>
   <td colspan="3"><hr></td>  
@@ -28,7 +28,7 @@
 	 </tr>
 	 <tr>
 	  <td>
-		 <a href="../api/net/sf/tapestry/inspector/ShowInspector.html">
+		 <A href="../api/net/sf/tapestry/inspector/ShowInspector.html">
 		 net.sf.tapestry.inspector.ShowInspector</a>
 		</td>
 	 </tr>
@@ -37,13 +37,13 @@
  <td>
   <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
 	 <tr>
-	  <td><img src="images/inspector-rollover.gif" alt="Show Inspector"/></td>
+	  <td><IMG alt="Show Inspector" src="images/inspector-rollover.gif" ></td>
 	 </tr>
   </table>
  </td>
 </tr>
 
-<tr valign="middle">
+<tr valign="center">
  <td colspan="2">&nbsp;</td>
 </tr>
 
@@ -52,17 +52,21 @@
   <b>Description</b>
 	<br>
   Adds a link to a page that is used to raise the 
-  <a href="../DevelopersGuide\inspector.html">Tapestry Inspector</a> in a new 
+  <A href="../DevelopersGuide\inspector.html">Tapestry Inspector</a> in a new 
   window. 
   <p>
   The Tapestry Inspector enables you at runtime to examine composition of a
   Tapestry application, inspect persistent page properties, clear
-  <tt>HttpSession</tt>s and Tapestry caches, and modify Log4J logging settings.
+  <tt>HttpSession</tt>s and Tapestry caches, and 
+            modify Log4J logging 
+  configuration. 
+  <p>
+  Typically, a ShowInspector is wrapped by a 
+            <a href="Conditional.html">Conditional</a> component, configured so that it only is displayed when some form of development mode flag is enabled.
   <p>
   Pages incorporating a ShowInspector component must also include a 
-  <a href="Body.html">Body</a> component.
-  <p>
-  This component may NOT wrap around other components or static HTML. 
+  <A href="Body.html">Body</a> component.</p>
+             
  </td>
 </tr>
 
@@ -70,8 +74,8 @@
  <td colspan="2">
   <b>See Also</b>
 	<br>
-	<a href="Body.html">Body</a>, 
-	<a href="ExceptionDisplay.html">ExceptionDisplay</a> 
+	<A href="Body.html">Body</a>, 
+	<A href="ExceptionDisplay.html">ExceptionDisplay</a> 
  </td>
 </tr>
 
@@ -81,8 +85,10 @@
 	<br>
   None
   <p>
-  Informal parameters: NOT allowed<br>
-  Reserved parameters: none
+  Body: <STRONG>removed</STRONG><BR>Informal 
+            parameters: <STRONG>forbidden</STRONG><BR>Reserved parameters: 
+            <EM>none</EM></p>
+    
  </td>
 </tr>
 
@@ -90,7 +96,8 @@
  <td colspan="2">
   <b>Examples</b>
 	<p>
-  This example is under construction.
+  This example is under construction.</p>
+      
 
  </td></tr></table>
 </td></tr>
@@ -98,9 +105,9 @@
  <td colspan="3"><hr></td>  
 </tr>
 <tr>
- <td align="left"><a href="Shell.html"><img src="common-images/prev.png" alt="Shell"/></a></td>  
- <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
- <td align="right"><a href="Submit.html"><img src="common-images/next.png" alt="Submit"/></a></td>  
+ <td align="left"><A href="Shell.html"><IMG alt=Shell src="common-images/prev.png"></a></td>  
+ <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
+ <td align="right"><A href="Submit.html"><IMG alt=Submit src="common-images/next.png"></a></td>  
 </tr>
 </table>
 

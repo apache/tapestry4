@@ -46,82 +46,11 @@ import net.sf.tapestry.Tapestry;
 /**
  *  Component for creating a standard 'shell' for a page, which comprises
  *  the &lt;html&gt; and &lt;head&gt; portions of the page.
+ * 
+ *  [<a href="../../../../../ComponentReference/Shell.html">Component Reference</a>]
  *
  *  <p>Specifically does <em>not</em> provide a &lt;body&gt; tag, that is
  *  usually accomplished using a {@link Body} component.
- *
- * <table border=1>
- * <tr> 
- *    <th>Parameter</th>
- *    <th>Type</th>
- *	  <th>Direction</th>
- *    <th>Required</th> 
- *    <th>Default</th>
- *    <th>Description</th>
- * </tr>
- *
- *  <tr>
- *      <td>title</td>
- *      <td>{@link String}</td>
- *      <td>in</td>
- *      <td>yes</td>
- *      <td>&nbsp;</td>
- *      <td>Used to provide the window title for the page.</td>
- *  </tr>
- *
- *  <tr>
- *      <td>stylesheet</td>
- *      <td>{@link IAsset}</td>
- *      <td>in</td>
- *      <td>no</td>
- *      <td>&nbsp;</td>
- *      <td>If given, creates a &lt;link rel=stylesheet&gt; element.</td>
- *  </tr>
- *
- *  <tr>
- *      <td>DTD</td>
- *      <td>{@link String}</td>
- *      <td>in</td>
- *      <td>no</td>
- *      <td>-//W3C//DTD HTML 4.0 Transitional//EN</td>
- *      <td>Used to specify the DOCTYPE of the generate HTML document.  If set to null,
- * then no DOCTYPE is generated.</td>
- *  </tr>
- * 
- *  <tr>
- *      <td>refresh</td>
- *      <td>int</td>
- *      <td>in</td>
- *      <td>no</td>
- *      <td>&nbsp;</td>
- *      <td>If provided (and non-zero), then a &lt;meta http-equiv="Refresh"&gt; element is
- *   included in the header.  The refresh interval is the value provided (which is the time to
- *   display the page, in seconds).
- *
- *  <p>The refresh will be the same page (not necessarily the same URL as that which initially
- *   presented the page, since the page will often be initially displayed because of a link
- *   or form submission).
- *
- *   <p>Note that to the &lt;meta&gt; tag, a refresh of zero means refresh immediately.  For this
- *   component, a refresh of zero is the same as unspecified: no automatic refresh.
- *  </td>
- *  </tr>
- *
- *  <tr>
- *		<td>delegate</td>
- *		<td>{@link IRender}</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>&nbsp;</td>
- *		<td>If specified, the delegate is invoked just before the
- * &lt;/head&gt; tag.  This allows the delegate to write additional tags,
- * often meta tags of various types.
- *  </td> </tr>
- *
- *
- * </table>
- *
- *  <p>Informal parameters are not allowed, but a body is (and is virtually required).
  *
  *  @version $Id$
  *  @author Howard Lewis Ship

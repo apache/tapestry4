@@ -9,9 +9,9 @@
 <body>
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
  <tr>
-  <td align="left"><a href="Action.html"><img src="common-images/prev.png" alt="Action"/></a></td>  
-  <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
-  <td align="right"><a href="Block.html"><img src="common-images/next.png" alt="Block"/></a></td>  
+  <td align="left"><A href="Action.html"><IMG alt=Action src="common-images/prev.png"></a></td>  
+  <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
+  <td align="right"><A href="Block.html"><IMG alt=Block src="common-images/next.png"></a></td>  
  <tr>
  <tr>
   <td colspan="3"><hr></td>  
@@ -28,7 +28,7 @@
 	 </tr>
 	 <tr>
 	  <td>
-		 <a href="../api/net/sf/tapestry/components/Any.html">net.sf.tapestry.components.Any</a>
+		 <A href="../api/net/sf/tapestry/components/Any.html">net.sf.tapestry.components.Any</a>
 		</td>
 	 </tr>
   </table>
@@ -42,7 +42,7 @@
  </td>
 </tr>
 
-<tr valign="middle">
+<tr valign="center">
  <td colspan="2">&nbsp;</td>
 </tr>
 
@@ -50,10 +50,10 @@
  <td colspan="2">
   <b>Description</b>
 	<br>
-  A component that can substitute for any HTML or XML element. Informal 
-  parameters are used to fill in the attributes of the element.
-  <p>
-  This component may wrap around other components and static HTML.   
+  A 
+            component that can substitute for any HTML or XML element. Informal 
+            parameters
+  are used to fill in the attributes of the element.   
  </td>
 </tr>
 
@@ -61,8 +61,8 @@
  <td colspan="2">
   <b>See Also</b>
 	<br>
-	<a href="Insert.html">Insert</a>, 
-  <a href="Hidden.html">Hidden</a>
+	<A href="Insert.html">Insert</a>, 
+  <A href="Hidden.html">Hidden</a>
  </td>
 </tr>
 
@@ -87,9 +87,13 @@
 		<td>&nbsp;</td>
 		<td>The element to be produced.</td>
 	</tr>
-	</table>		
-  Informal parameters: allowed<br>
-  Reserved parameters: none
+	</table>
+            <P>Body: <STRONG>rendered<BR></STRONG>Informal parameters: 
+            <STRONG>allowed</STRONG>		
+    <br>
+  Reserved parameters: 
+            <EM>none</EM> </P>
+    
  </td>
 </tr>
 
@@ -115,21 +119,20 @@
 </tr>
 </table>
 
-<pre>
-&lt;?xml version="1.0" encoding="ISO-8859-1" ?&gt; 
+<pre>&lt;?xml version="1.0" encoding="ISO-8859-1" ?&gt; 
 &lt;order-list&gt;
- &lt;span jwcid="foreachOrderItem</span>"&gt;
+ &lt;span jwcid="foreachOrderItem</SPAN>"&gt;
   &lt;span jwcid="<span class="jwcid">orderItem</span>" element="order-item"&gt; 
  &lt;/span&gt;
 &lt;/order-list&gt;
 
 
-&lt;component jwcid="foreachOrderItem" type="<a href="Foreach.html">Foreach</a>"&gt;
+&lt;component jwcid="foreachOrderItem" type="<A href="Foreach.html">Foreach</a>"&gt;
     &lt;binding name="source" expression="orderItemList"/&gt;
     &lt;binding name="value" expression="orderItem"/&gt;
 &lt;/component&gt;
 
-&lt;component id="<span class="jwcid">orderItem</span>" type="<a href="Any.html">Any</a>"&gt;
+&lt;component id="<span class="jwcid">orderItem</span>" type="<A href="Any.html">Any</a>"&gt;
     &lt;binding name="id" expression="orderItem.id"/&gt;
     &lt;binding name="order-id" expression="orderItem.orderId"/&gt;
     &lt;binding name="cust-id" expression="orderItem.customerId"/&gt;
@@ -192,9 +195,9 @@ public class OrderItem {
  <td colspan="3"><hr></td>  
 </tr>
 <tr>
- <td align="left"><a href="Action.html"><img src="common-images/prev.png" alt="Action"/></a></td>  
- <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
- <td align="right"><a href="Block.html"><img src="common-images/next.png" alt="Block"/></a></td>  
+ <td align="left"><A href="Action.html"><IMG alt=Action src="common-images/prev.png"></a></td>  
+ <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
+ <td align="right"><A href="Block.html"><IMG alt=Block src="common-images/next.png"></a></td>  
 </tr>
 </table>
 

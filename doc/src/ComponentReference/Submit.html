@@ -9,9 +9,9 @@
 
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
  <tr>
-  <td align="left"><a href="ShowInspector.html"><img src="common-images/prev.png" alt="ShowInspector"/></a></td>  
-  <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
-  <td align="right"><a href="Text.html"><img src="common-images/next.png" alt="Text"/></a></td>  
+  <td align="left"><A href="ShowInspector.html"><IMG alt=ShowInspector src="common-images/prev.png"></A></td>  
+  <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></A></td>  
+  <td align="right"><A href="Text.html"><IMG alt=Text src="common-images/next.png"></A></td>  
  <tr>
  <tr>
   <td colspan="3"><hr></td>  
@@ -19,6 +19,7 @@
  <tr>
   <td colspan="3">
    <table border="0" cellpadding="4" cellspacing="4" width="100%">
+        <TBODY>
 
 <tr valign="top">
  <td>
@@ -28,8 +29,8 @@
 	 </tr>
 	 <tr>
 	  <td>
-		 <a href="../api/net/sf/tapestry/form/Submit.html">
-		 net.sf.tapestry.form.Submit</a>
+		 <A href="../api/net/sf/tapestry/form/Submit.html">
+		 net.sf.tapestry.form.Submit</A>
 		</td>
 	 </tr>
   </table>
@@ -37,7 +38,7 @@
  <td>
   <table align="right" valign="middle" bgcolor="#c0c0c0" cellspacing="8">
 	 <tr>
-	  <td><input type="submit" value="Submit"/></td>
+	  <td><input type="submit" value="Submit"></td>
 	 </tr>
   </table>
  </td>
@@ -45,7 +46,7 @@
  </td>
 </tr>
 
-<tr valign="middle">
+<tr valign="center">
  <td colspan="2">&nbsp;</td>
 </tr>
 
@@ -54,15 +55,27 @@
   <b>Description</b>
 	<br>
   Provides a HTML form submission element &lt;input type="submit"&gt;. 
-	The Submit component must be wrapped by a <a href="Form.html">Form</a>.  
+	The Submit component must be wrapped by a <A href="Form.html">Form</A>.  
   <p>
   This component is generally only used when the form has multiple submit 
   buttons, and it is important for the application to know which one was 
   pressed. You may also want to use 
-  <a href="ImageSubmit.html">ImageSubmit</a> which accomplishes much the same 
-  thing, but uses a graphic image instead.
-  <p>
-  This component may NOT wrap around other components or static HTML. 
+  <A href="ImageSubmit.html">ImageSubmit</A> which accomplishes 
+            much the same thing, but uses a graphic image instead. 
+            <P>In typical use, the application needs to know which Submit was 
+            the one clicked by the user. This can be accomplished in two ways: 
+            <UL>
+              <LI>Use the <B>selected</B> and <B>tag</B> parameters to identify 
+              the button. 
+              <LI>Use the <B>listener</B> to perform an operation directly 
+            </LI></UL>
+            <P>If a listener is used, it will be invoked as the Submit component 
+            is rewound. In addition, the <A href="Form.html">Form</A>'s listener 
+            will always be invoked. 
+            <P>Use the first method if you need to be sure that the entire form 
+            has rewound before any logic specific to the ImageSubmit is 
+            triggered. </P>
+             
  </td>
 </tr>
 
@@ -70,18 +83,18 @@
  <td colspan="2">
   <b>See Also</b>
 	<br>
-	<a href="Form.html">Form</a>, 
-	<a href="Checkbox.html">Checkbox</a>, 
-	<a href="Hidden.html">Hidden</a>, 
-	<a href="ImageSubmit.html">ImageSubmit</a>, 
-	<a href="ListEdit.html">ListEdit</a>, 
-	<a href="Option.html">Option</a>, 
-	<a href="Radio.html">Radio</a>, 
-	<a href="RadioGroup.html">RadioGroup</a>, 
-	<a href="Select.html">Select</a>, 
-	<a href="Text.html">Text</a>, 
-	<a href="TextField.html">TextField</a>, 
-	<a href="ValidField.html">ValidField</a>
+	<A href="Form.html">Form</A>, 
+	<A href="Checkbox.html">Checkbox</A>, 
+	<A href="Hidden.html">Hidden</A>, 
+	<A href="ImageSubmit.html">ImageSubmit</A>, 
+	<A href="ListEdit.html">ListEdit</A>, 
+	<A href="Option.html">Option</A>, 
+	<A href="Radio.html">Radio</A>, 
+	<A href="RadioGroup.html">RadioGroup</A>, 
+	<A href="Select.html">Select</A>, 
+	<A href="Text.html">Text</A>, 
+	<A href="TextField.html">TextField</A>, 
+	<A href="ValidField.html">ValidField</A>
  </td>
 </tr>
 
@@ -108,7 +121,7 @@
 		</td>
 	 </tr>
    <tr>
-	  <td>disabled</id>
+	  <td>disabled</ID>
 	  <td>boolean</td>
     <td>in</td>
     <td>no</td>
@@ -144,20 +157,22 @@
    <tr>
  		<td>listener</td>
  		<td>
-     <a href="../api/net/sf/tapestry/IActionListener.html"><tt>IActionListener</tt></a>
+     <A href="../api/net/sf/tapestry/IActionListener.html"><tt>IActionListener</tt></A>
     </td>
  		<td>in</td>
  		<td>no</td>
  		<td>&nbsp;</td>
  		<td>
     If specified, the listener is notified.  This notification occurs as the 
-    component is rewinded, i.e., prior to the <a href="Form.html">Form</a>'s 
+    component is rewinded, i.e., prior to the <A href="Form.html">Form</A>'s 
     listener. In addition, the selected property (if bound) will be updated 
     <u>before</u> the listener is notified.
  		</td>
    </tr>
-	</table>
-  Informal parameters: allowed<br>
+	</table><BR>Body: 
+            <STRONG>removed</STRONG><BR>Informal parameters: 
+            <STRONG>allowed</STRONG>
+    <br>
   Reserved parameters: "name", "type"  
  </td>
 </tr>
@@ -167,7 +182,7 @@
   <b>Examples</b>
   <p>
   The following example shows a standard, simple submit button. This example 
-  shows both a form, and a single <a href="Submit.html">Submit</a> component.
+  shows both a form, and a single <A href="Submit.html">Submit</A> component.
   The component is setup to call a method on the page implementation when it is 
   clicked.
   <p>
@@ -188,11 +203,11 @@
 &lt;/form&gt;
 
 
-&lt;component id="form" type="<a href="Form.html">Form</a>"&gt;
+&lt;component id="form" type="<A href="Form.html">Form</A>"&gt;
     &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
 &lt;/component&gt;
     
-&lt;component id="<span class="jwcid">simpleSubmit</span>" type="<a href="Submit.html">Submit</a>"&gt;
+&lt;component id="<span class="jwcid">simpleSubmit</span>" type="<A href="Submit.html">Submit</A>"&gt;
     &lt;binding name="listener" expression="listeners.submitButtonClick"/&gt;
 &lt;/component&gt;
 
@@ -207,8 +222,7 @@ public class Submit extends BasePage {
     }
 }
 </pre>
-<td>
-</tr>
+<td></td>
 
 <tr>
  <td colspan="2"><hr></td>
@@ -233,7 +247,8 @@ public class Submit extends BasePage {
 	 <table border=0>
     <tr>
  	   <td>Button Name</td>
-     <td><input type="text" name="buttonName" size="35" value="Submit"></td>
+     <td><input name="buttonName" size="35" value="Submit" 
+                       ></td>
 	  </tr>
 	  <tr>
      <td>Disabled?</td>
@@ -241,11 +256,11 @@ public class Submit extends BasePage {
 	  </tr>
     <tr>
      <td>Dynamic Submit Button</td>
-     <td><input type="submit" name="complexsubmit" disabled="true" value="Submit"></td>
+     <td><input type="submit" name="complexsubmit" disabled value="Submit"></td>
     </tr>
     <tr>
      <td>&nbsp;</td>
-     <td><input type="submit" value="Make Changes!"/></td>
+     <td><input type="submit" value="Make Changes!"></td>
 	  </tr>
    </table>
   </form>
@@ -278,23 +293,23 @@ public class Submit extends BasePage {
   
 &lt;bean name="validationDelegate" class="net.sf.tapestry.valid.ValidationDelegate" lifecycle="request"/&gt;
     
-&lt;component id="form" type="<a href="Form.html">Form</a>"&gt;
+&lt;component id="form" type="<A href="Form.html">Form</A>"&gt;
     &lt;binding name="delegate" expression="beans.validationDelegate"/&gt;
     &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
 &lt;/component&gt;
 
-&lt;component id="<span class="jwcid">complexSubmit</span>" type="<a href="Submit.html">Submit</a>"&gt;
+&lt;component id="<span class="jwcid">complexSubmit</span>" type="<A href="Submit.html">Submit</A>"&gt;
     &lt;binding name="value" expression="buttonName"/&gt;
     &lt;binding name="disabled" expression="buttonDisabled"/&gt;
     &lt;binding name="listener" expression="listeners.complexFormSubmit"/&gt;
 &lt;/component&gt;
     
-&lt;component id="buttonName" type="<a href="TextField.html">TextField</a>"&gt;
+&lt;component id="buttonName" type="<A href="TextField.html">TextField</A>"&gt;
     &lt;binding name="value" expression="buttonName"/&gt;
     &lt;static-binding name="displayWidth"&gt;35&lt;/static-binding&gt;
 &lt;/component&gt;
 	
-&lt;component id="buttonDisabled" type="<a href="Checkbox.html">Checkbox</a>"&gt;
+&lt;component id="buttonDisabled" type="<A href="Checkbox.html">Checkbox</A>"&gt;
     &lt;binding name="selected" expression="buttonDisabled"/&gt;
 &lt;/component&gt;
 
@@ -334,17 +349,15 @@ public class ComplexSubmit extends BasePage {
 }
 </pre>
 
- </td></tr></table>
-</td></tr>
+ </td></tr></table></TD></TR>
 <tr>
  <td colspan="3"><hr></td>  
 </tr>
 <tr>
- <td align="left"><a href="ShowInspector.html"><img src="common-images/prev.png" alt="ShowInspector"/></a></td>  
- <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
- <td align="right"><a href="Text.html"><img src="common-images/next.png" alt="Text"/></a></td>  
-</tr>
-</table>
+ <td align="left"><A href="ShowInspector.html"><IMG alt=ShowInspector src="common-images/prev.png"></A></td>  
+ <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></A></td>  
+ <td align="right"><A href="Text.html"><IMG alt=Text src="common-images/next.png"></A></td>  
+</tr></TBODY></TABLE>
 
 </body>
 </html>

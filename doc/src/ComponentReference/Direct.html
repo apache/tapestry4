@@ -9,9 +9,9 @@
 <body>
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
  <tr>
-  <td align="left"><a href="Delegator.html"><img src="common-images/prev.png" alt="Delegator"/></a></td>  
-  <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
-  <td align="right"><a href="ExceptionDisplay.html"><img src="common-images/next.png" alt="ExceptionDisplay"/></a></td>  
+  <td align="left"><A href="Delegator.html"><IMG alt=Delegator src="common-images/prev.png"></a></td>  
+  <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
+  <td align="right"><A href="ExceptionDisplay.html"><IMG alt=ExceptionDisplay src="common-images/next.png"></a></td>  
  <tr>
  <tr>
   <td colspan="3"><hr></td>  
@@ -28,7 +28,7 @@
 	 </tr>
 	 <tr>
 	  <td>
-		 <a href="../api/net/sf/tapestry/link/Direct.html">
+		 <A href="../api/net/sf/tapestry/link/Direct.html">
 		 net.sf.tapestry.link.Direct</a>
 		</td>
 	 </tr>
@@ -37,13 +37,13 @@
  <td>
   <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
 	 <tr>
-	  <td><a href="Direct.html"><font color="blue">Direct Link</font></a></td>
+	  <td><A href="Direct.html"><font color="blue">Direct Link</font></a></td>
 	 </tr>
   </table>
  </td>
 </tr>
 
-<tr valign="middle">
+<tr valign="center">
  <td colspan="2">&nbsp;</td>
 </tr>
 
@@ -54,12 +54,11 @@
   Creates a &lt;a&gt; hyperlink that notifies the component when the link is 
   triggered. The link includes some context-specific data that is made available
   to the component's listener. This is used in cases where the 
-  <a href="Action.html">Action</a> component can't be used (or is too inefficient).
+  <A href="Action.html">Action</a> component can't be used (or is too inefficient).
   <p>
-  See the Developers Guide <a href="../DevelopersGuide/cycle.listeners.html">
-  Action and Direct listeners</a> for a more complete description.  
-  <p>
-  This component may wrap around other components and static HTML. 
+  See the Developers Guide <A href="../DevelopersGuide/cycle.listeners.html">
+  Action and Direct listeners</a> for a more complete description.</p>
+            
  </td>
 </tr>
 
@@ -67,10 +66,10 @@
  <td colspan="2">
   <b>See Also</b>
 	<br>
-	<a href="Action.html">Action</a>, 
-  <a href="GenericLink.html">GenericLink</a>,
-  <a href="Page.html">Page</a>,
-  <a href="Service.html">Service</a>
+	<A href="Action.html">Action</a>, 
+  <A href="GenericLink.html">GenericLink</a>,
+  <A href="Page.html">Page</a>,
+  <A href="Service.html">Service</a>
  </td>
 </tr>
 
@@ -90,7 +89,7 @@
   <tr>
     <td>listener</td>
     <td>
-     <a href="../api/net/sf/tapestry/IActionListener.html"><tt>IActionListener</tt></a>
+     <A href="../api/net/sf/tapestry/IActionListener.html"><tt>IActionListener</tt></a>
     </td>
     <td>in</td>
    	<td>yes</td>
@@ -118,14 +117,14 @@
     or Integers.
     <p>
     A listener method can retrieve the parameters using 
-    <a href="/api/net/sf/tapestry/IRequestCycle.html#getServiceParameters()">
+    <A href="/api/net/sf/tapestry/IRequestCycle.html#getServiceParameters()">
     <tt>IRequestCycle.getServiceParameters()</tt></a>. 
     <p>
     Prior to release 2.2, the parameters were always type String. They may now 
     be of any type; type will be maintained when the parameters are later 
     retrieved by a listener. See 
-    <a href="../api/net/sf/tapestry/util/io/DataSqueezer.html"><tt>DataSqueezer</tt></a> 
-    for more details. 
+    <A href="../api/net/sf/tapestry/util/io/DataSqueezer.html"><tt>DataSqueezer</tt></a> for more details.</p> 
+       
     </td>
 	</tr>
   <tr>
@@ -147,7 +146,7 @@
 		<td>
     If true (the default), then the component requires an active (i.e., non-new) 
     <tt>HttpSession</tt> when triggered. Failing that, it throws a 
-    <a href="../api/net/sf/tapestry/StaleLinkException"><tt>StaleLinkException</tt></a>. 
+    <A href="../api/net/sf/tapestry/StaleLinkException"><tt>StaleLinkException</tt></a>. 
     If false, then no check is necessary. The 
     latter works well with links that encode all necessary state inside the URL 
     itself.
@@ -191,8 +190,12 @@
     </td>
 	</tr>
 	</table>
-  Informal parameters: allowed<br>
-  Reserved parameters: "href"
+            <P>Body: <STRONG>rendered</STRONG><BR>Informal parameters: 
+            <STRONG>allowed</STRONG>
+    <br>
+  Reserved parameters: 
+            "href" </P>
+    
  </td>
 </tr>
 
@@ -200,7 +203,8 @@
  <td colspan="2">
   <b>Examples</b>
 	<p>
-  This example is under construction.
+  This example is under construction.</p>
+      
 
  </td></tr></table>
 </td></tr>
@@ -208,9 +212,9 @@
  <td colspan="3"><hr></td>
 </tr>
 <tr>
- <td align="left"><a href="Delegator.html"><img src="common-images/prev.png" alt="Delegator"/></a></td>  
- <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
- <td align="right"><a href="ExceptionDisplay.html"><img src="common-images/next.png" alt="ExceptionDisplay"/></a></td>  
+ <td align="left"><A href="Delegator.html"><IMG alt=Delegator src="common-images/prev.png"></a></td>  
+ <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
+ <td align="right"><A href="ExceptionDisplay.html"><IMG alt=ExceptionDisplay src="common-images/next.png"></a></td>  
 </tr>
 </table>
 

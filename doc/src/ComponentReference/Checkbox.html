@@ -9,9 +9,9 @@
 <body>
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
  <tr>
-  <td align="left"><a href="Body.html"><img src="common-images/prev.png" alt="Body"/></a></td>  
-  <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
-  <td align="right"><a href="Conditional.html"><img src="common-images/next.png" alt="Conditional"/></a></td>  
+  <td align="left"><A href="Body.html"><IMG alt=Body src="common-images/prev.png"></a></td>  
+  <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
+  <td align="right"><A href="Conditional.html"><IMG alt=Conditional src="common-images/next.png"></a></td>  
  <tr>
  <tr>
   <td colspan="3"><hr></td>  
@@ -28,7 +28,7 @@
 	 </tr>
 	 <tr>
 	  <td>
-		 <a href="../api/net/sf/tapestry/form/Checkbox.html">net.sf.tapestry.form.Checkbox</a>
+		 <A href="../api/net/sf/tapestry/form/Checkbox.html">net.sf.tapestry.form.Checkbox</a>
 		</td>
 	 </tr>
   </table>
@@ -37,14 +37,14 @@
   <table align="right" valign="middle" bgcolor="#c0c0c0" cellspacing="8">
 	 <tr>
 	  <td>
-		 <input type="checkbox" checked="true">checkbox</input>
+		 <input type="checkbox" checked>checkbox</input>
 		</td>
 	 </tr>
   </table>
  </td>
 </tr>
 
-<tr valign="middle">
+<tr valign="center">
  <td colspan="2">&nbsp;</td>
 </tr>
 
@@ -53,9 +53,7 @@
   <b>Description</b>
 	<br>
   Provides a HTML checkbox form element &lt;input type="checkbox"&gt;. 
-	The Checkbox component must be wrapped by a <a href="Form.html">Form</a>.
-  <p>
-  This component may NOT wrap around other components or static HTML. 
+	The Checkbox component must be wrapped by a <A href="Form.html">Form</a>.
  </td>
 </tr>
 
@@ -63,8 +61,8 @@
  <td colspan="2">
   <b>See Also</b>
 	<br>
-	<a href="Form.html">Form</a>, <a href="Radio.html">Radio</a>, 
-	<a href="RadioGroup.html">RadioGroup</a> 
+	<A href="Form.html">Form</a>, <A href="Radio.html">Radio</a>, 
+	<A href="RadioGroup.html">RadioGroup</a> 
  </td>
 </tr>
 
@@ -103,8 +101,12 @@
 		</td>
 	</tr>
 	</table>
-  Informal parameters: allowed<br>
-  Reserved parameters: "type", "checked", "name"
+            <P>Body: <STRONG>removed<BR></STRONG>Informal parameters: 
+            <STRONG>allowed</STRONG>
+    <br>
+  Reserved parameters: 
+            "type", "checked", "name" </P>
+      
  </td>
 </tr>
 
@@ -118,22 +120,22 @@
 <table class="examples" cellspacing="8">
  <tr>
 	<td>
-	 <input type="checkbox" checked="true">Contact Sales Rep</input>
+	 <input type="checkbox" checked> Contact Sales Rep
 	</td>
  </tr>
 </table>
 		
 <pre>
 &lt;form jwcid="enquiryForm"&gt;
- &lt;input type="checkbox" jwcid="<span class="jwcid">contactRepCheckbox</span>"&gt;Contact Sales Rep&lt;/input&gt;
+ &lt;input type="checkbox" jwcid="<span class="jwcid">contactRepCheckbox</span>"/&gt; Contact Sales Rep
 &lt;/form&gt;
 
 
-&lt;component id="enquiryForm" type="<a href="Form.html">Form</a>"&gt;
+&lt;component id="enquiryForm" type="<A href="Form.html">Form</a>"&gt;
     &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
 &lt;/component&gt;
 
-&lt;component id="<span class="jwcid">contactRepCheckbox</span>" type="<a href="Checkbox.html">Checkbox</a>"&gt;
+&lt;component id="<span class="jwcid">contactRepCheckbox</span>" type="<A href="Checkbox.html">Checkbox</a>"&gt;
     &lt;binding name="selected" expression="contactRep"/&gt;
     &lt;binding name="disabled" expression="staff"/&gt;
 &lt;/component&gt;
@@ -172,9 +174,9 @@ public class EnquiryPage extends BasePage {
  <td colspan="3"><hr></td>  
 </tr>
 <tr>
- <td align="left"><a href="Body.html"><img src="common-images/prev.png" alt="Body"/></a></td>  
- <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
- <td align="right"><a href="Conditional.html"><img src="common-images/next.png" alt="Conditional"/></a></td>  
+ <td align="left"><A href="Body.html"><IMG alt=Body src="common-images/prev.png"></a></td>  
+ <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
+ <td align="right"><A href="Conditional.html"><IMG alt=Conditional src="common-images/next.png"></a></td>  
 </tr>
 </table>
 

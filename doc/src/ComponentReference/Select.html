@@ -9,9 +9,9 @@
 <body>
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
  <tr>
-  <td align="left"><a href="Script.html"><img src="common-images/prev.png" alt="Script"/></a></td>  
-  <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
-  <td align="right"><a href="Service.html"><img src="common-images/next.png" alt="Service"/></a></td>  
+  <td align="left"><A href="Script.html"><IMG alt=Script src="common-images/prev.png"></a></td>  
+  <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
+  <td align="right"><A href="Service.html"><IMG alt=Service src="common-images/next.png"></a></td>  
  <tr>
  <tr>
   <td colspan="3"><hr></td>  
@@ -28,7 +28,7 @@
 	 </tr>
 	 <tr>
 	  <td>
-		 <a href="../api/net/sf/tapestry/form/Select.html">net.sf.tapestry.form.Select</a>
+		 <A href="../api/net/sf/tapestry/form/Select.html">net.sf.tapestry.form.Select</a>
 		</td>
 	 </tr>
   </table>
@@ -38,7 +38,7 @@
 	 <tr>
 	  <td>Multiple Select:</td>
 	  <td>
-		 <select multiple="true" size="3">
+		 <select multiple size="3">
 		  <option>Apple</option>
 		  <option>Orange</option>
 		  <option>Banana</option>
@@ -53,7 +53,7 @@
  </td>
 </tr>
 
-<tr valign="middle">
+<tr valign="center">
  <td colspan="2">&nbsp;</td>
 </tr>
 
@@ -64,13 +64,13 @@
   Implements a component that manages an HTML &lt;select&gt; form element. The
   Select component can take the form of a drop down list (default) or a list 
   selection box if the "multiple" parameter is set to true. The Select component
-  must wrap around <a href="Option.html">Option</a> components within a 
-  <a href="Form.html">Form</a>.
+  must wrap around <A href="Option.html">Option</a> components within a 
+  <A href="Form.html">Form</a>.
   <p>
   Unless multiple selections are required it is generally easier to use the 
-  <a href="PropertySelection.html">PropertySelection</a> component.  
-  <p>
-  This component may wrap around other components and static HTML.
+  <A href="PropertySelection.html">PropertySelection</a> 
+            component.</p>
+           
  </td>
 </tr>
 
@@ -78,11 +78,11 @@
  <td colspan="2">
   <b>See Also</b>
 	<br>
-	<a href="Form.html">Form</a>, 
-  <a href="Option.html">Option</a>, 
-  <a href="RadioGroup.html">RadioGroup</a>,
-  <a href="Radio.html">Radio</a>,
-  <a href="PropertySelection.html">PropertySelection</a>
+	<A href="Form.html">Form</a>, 
+  <A href="Option.html">Option</a>, 
+  <A href="RadioGroup.html">RadioGroup</a>,
+  <A href="Radio.html">Radio</a>,
+  <A href="PropertySelection.html">PropertySelection</a>
  </td>
 </tr>
 
@@ -118,8 +118,12 @@
     </td>
 	</tr>
 	</table>
-  Informal parameters: allowed<br>
-  Reserved parameters: "name"
+            <P>Body: <STRONG>rendered</STRONG><BR>Informal parameters: 
+            <STRONG>allowed</STRONG>
+    <br>
+  Reserved 
+            parameters: "name" </P>
+    
  </td>
 </tr>
 
@@ -127,11 +131,11 @@
  <td colspan="2">
   <b>Examples</b>
 	<p>
-	This examples shows how to setup a standard Select and <a href="Option.html">Option</a> component.
-	Note that Select and <a href="Option.html">Option</a> are typically only used like this when a 
-	<a href="PropertySelection.html">PropertySelection</a>
+	This examples shows how to setup a standard Select and <A href="Option.html">Option</a> component.
+	Note that Select and <A href="Option.html">Option</a> are typically only used like this when a 
+	<A href="PropertySelection.html">PropertySelection</a>
 	component is unable to fulfil the required need. Normally, most users will want to use
-	the <a href="PropertySelection.html">PropertySelection</a>, since it requires less work, and can express similar semantics 
+	the <A href="PropertySelection.html">PropertySelection</a>, since it requires less work, and can express similar semantics 
 	with only a single component (instead of three, as will be shown below).
 	<p>
 
@@ -145,7 +149,7 @@
 		<option value="3">White
 		<option value="4">Purple
 		<option value="5">Dark Black
-		<option value="6">Fiji Blue
+		<option value="6">Fiji Blue</option> 
 	 </select>
 	</td>
  </tr>
@@ -154,7 +158,7 @@
 <pre>
 &lt;form jwcid="form"&gt;
  Select a color
- &lt;input jwcid="<span class="jwcid">colorSelect</span>>"&gt;
+ &lt;input jwcid="<span class="jwcid">colorSelect</span>&gt;"&gt;
   &lt;span jwcid="colorForeach"&gt;
    &lt;option jwcid="colorOption"/&gt;
   &lt;/span&gt;
@@ -166,25 +170,25 @@
 
 <tr>
  <td colspan="2">
-	 This example uses a pre-existing collection as the source of the <a href="Option.html">Option</a> list. The
-	 <a href="Foreach.html">Foreach</a> is used to iterate through the list, rendering multiple HTML option
+	 This example uses a pre-existing collection as the source of the <A href="Option.html">Option</a> list. The
+	 <A href="Foreach.html">Foreach</a> is used to iterate through the list, rendering multiple HTML option
 	 elements on the way.
    <p>
 <pre>
-&lt;component id="form" type="<a href="Form.html">Form</a>"&gt;
+&lt;component id="form" type="<A href="Form.html">Form</a>"&gt;
     &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
 &lt;/component&gt;
     
-&lt;component id="colorForeach" type="<a href="Foreach.html">Foreach</a>"&gt;
+&lt;component id="colorForeach" type="<A href="Foreach.html">Foreach</a>"&gt;
     &lt;binding name="source" expression="visit.colorList"/&gt;
     &lt;binding name="value" expression="visit.currentColor"/&gt;
 &lt;/component&gt;
 
-&lt;component id="<span class="jwcid">colorSelect</span>" type="<a href="Select.html">Select</a>"&gt;
+&lt;component id="<span class="jwcid">colorSelect</span>" type="<A href="Select.html">Select</a>"&gt;
     &lt;field-binding name="multiple" field-name="Boolean.TRUE"/&gt;
 &lt;/component&gt;
     
-&lt;component id="colorOption" type="<a href="Option.html">Option</a>"&gt;
+&lt;component id="colorOption" type="<A href="Option.html">Option</a>"&gt;
     &lt;binding name="selected" expression="visit.currentColor.selected"/&gt;
     &lt;binding name="label" expression="visit.currentColor.label"/&gt;
 &lt;/component&gt;
@@ -225,8 +229,8 @@
  <td colspan="2">
 	In this example, the page object (the .java file) is not important, since it contains nothing. 
 	The example has purposely tied both the option list, and the currently selected value (the
-	<a href="Foreach.html">Foreach</a> component's <b>value</b> field) to a property of
-	the Visit object.<p>
+	<A href="Foreach.html">Foreach</a> component's <b>value</b> field) to a property of
+	the Visit object.<p>>
  	The Visit object is defined as follows: 	
  	<pre>
 
@@ -282,9 +286,9 @@ public class Color implements Serializable {
  <td colspan="3"><hr></td>  
 </tr>
 <tr>
- <td align="left"><a href="Script.html"><img src="common-images/prev.png" alt="Script"/></a></td>  
- <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
- <td align="right"><a href="Service.html"><img src="common-images/next.png" alt="Service"/></a></td>  
+ <td align="left"><A href="Script.html"><IMG alt=Script src="common-images/prev.png"></a></td>  
+ <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
+ <td align="right"><A href="Service.html"><IMG alt=Service src="common-images/next.png"></a></td>  
 </tr>
 </table>
 

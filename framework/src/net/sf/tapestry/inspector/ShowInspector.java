@@ -49,12 +49,12 @@ import net.sf.tapestry.html.Body;
 /**
  *  Component that can be placed into application pages that will launch
  *  the inspector in a new window.
+ * 
+ *  [<a href="../../../../../ComponentReference/ShowInspector.html">Component Reference</a>]
  *
  *  <p>Because the ShowInspector component is implemented using a {@link net.sf.tapestry.html.Rollover},
  *  the containing page must use a {@link Body} component instead of
  *  a &lt;body&gt; tag.
- *
- *  Informal parameters are not allowed.  May not contain a body.
  *
  *  @version $Id$
  *  @author Howard Lewis Ship
@@ -110,10 +110,6 @@ public class ShowInspector extends BaseComponent implements IDirect
         {
             throw new RequestCycleException(this, ex);
         }
-        finally
-        {
-            symbols.clear();
-        }
 
         Body body = Body.get(cycle);
 
@@ -122,8 +118,8 @@ public class ShowInspector extends BaseComponent implements IDirect
 
         body.process(scriptSession);
 
+        // Now, go render the rest from the template.
+        
         super.renderComponent(writer, cycle);
-
-        symbols = null;
     }
 }

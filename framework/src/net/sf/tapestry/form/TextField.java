@@ -35,89 +35,7 @@ import org.apache.log4j.Logger;
  *  Implements a component that manages an HTML &lt;input type=text&gt; or
  *  &lt;input type=password&gt; form element.
  *
- * <table border=1>
- * <tr> 
- *    <td>Parameter</td>
- *    <td>Type</td>
- *	  <td>Direction</td>
- *    <td>Required</td> 
- *    <td>Default</td>
- *    <td>Description</td>
- * </tr>
- *
- *  <tr>
- *    <td>value</td>
- *    <td>java.lang.String</td>
- *    <td>in-out</td>
- *   	<td>yes</td>
- *		<td>&nbsp;</td>
- *		<td>The text inside the text field.  The binding is only updated
- *			when the the component is not disabled.
- *
- *			<p>Corresponds to the <code>value</code> HTML attribute.
- * </td>
- *	</tr>
- *
- *  <tr>
- *    <td>text</td>
- *    <td>java.lang.String</td>
- *    <td>in-out</td>
- *   	<td>no</td>
- *		<td>&nbsp;</td>
- *		<td>Deprecated name for the <code>value</code>
- * parameter.  Existing code should be changed.
- * </td>
- *	</tr>
- *
- *	<tr>
- *		<td>hidden</td>
- *		<td>boolean</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>false</td>
- *		<td>If true, then the text field is written as a
- *			&lt;input type=password&gt; form element.  </td>  </tr>
- *
- *  <tr>
- * 		<td>disabled</td>
- *		<td>boolean</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>false</td>
- *		<td>Controls whether the text field is active or not.  If disabled, then
- *			any value that comes up when the form is submitted is ignored.
- *			
- *			<p>Corresponds to the <code>disabled</code> HTML attribute.</td>
- *	</tr>
- *
- *	<tr>
- *		<td>displayWidth</td>
- *		<td>integer</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>&nbsp;</td>
- *		<td>Controls the display width of the text control in the client browser.  If
- *			unspecified or zero, then the width is left to the client browser to
- *			determine.
- *
- *			<p>Corresponds to the <code>size</code> HTML attribute.</td> </tr>
- *
- *	<tr>
- *		<td>maximumLength</td>
- *		<td>integer</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>&nbsp;</td>
- *		<td>Controls the maximum characters that the text control will accept.  If
- *			unspecified or zero, then the value is left to the client browser to
- *			determine.
- *
- *			<p>Corresponds to the <code>maxlength</code> HTML attribute.</td> </tr>
- *
- *	</table>
- *
- * <p>Informal parameters are allowed, but the component may not contain a body.
- *
+ *  [<a href="../../../../../ComponentReference/TextField.html">Component Reference</a>]
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -128,29 +46,29 @@ public class TextField extends AbstractTextField
 {
     private static final Logger LOG = LogManager.getLogger(TextField.class);
 
-    private IBinding valueBinding;
-
+    private IBinding _valueBinding;
+    private boolean _warning = true;
+    
     public IBinding getValueBinding()
     {
-        return valueBinding;
+        return _valueBinding;
     }
 
     public void setValueBinding(IBinding value)
     {
-        valueBinding = value;
+        _valueBinding = value;
     }
 
     public String readValue()
     {
-        return valueBinding.getString();
+        return _valueBinding.getString();
     }
 
     public void updateValue(String value)
     {
-        valueBinding.setString(value);
+        _valueBinding.setString(value);
     }
 
-    private boolean warning = true;
 
     public IBinding getTextBinding()
     {
@@ -159,7 +77,7 @@ public class TextField extends AbstractTextField
 
     public void setTextBinding(IBinding value)
     {
-        if (warning)
+        if (_warning)
         {
             LOG.warn(
                 Tapestry.getString(
@@ -167,7 +85,7 @@ public class TextField extends AbstractTextField
                     getExtendedId(),
                     "text",
                     "value"));
-            warning = false;
+            _warning = false;
         }
         
         setValueBinding(value);
