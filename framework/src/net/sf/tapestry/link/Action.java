@@ -35,87 +35,9 @@ import net.sf.tapestry.RequestCycleException;
 
 /**
  *  A component for creating a link that is handled using the action service.
- *
- *
- *  <table border=1>
- *  <tr> <th>Parameter</th> 
- *  <th>Type</th> 
- *  <th>Direction</th> 
- *  <th>Required</th> 
- *  <th>Default</th> 
- *  <th>Description</th>
- *  </tr>
  * 
- *  <tr>
- *  <td>listener</td> 
- *  <td>{@link IActionListener}</td>
- *  <td>in</td>
- *  <td>yes</td> 
- *  <td>&nbsp;</td>
- *  <td>Specifies an object that is notified when the link is clicked.</td> </tr>
+ *  [<a href="../../../../../ComponentReference/Action.html">Component Reference</a>]
  *
- *  <tr>
- *  <td>disabled</td> 
- *  <td>boolean</td> 
- *  <td>in</td> 
- *  <td>no</td> 
- *  <td>false</td>
- *  <td>Controls whether the link is produced.  If disabled, the portion of the template
- *      the link surrounds is still rendered, but not the link itself.
- *  </td>
- *  </tr>
- *
- *  <tr>
- *	<td>stateful</td>
- *  <td>boolean</td>
- *	<td>in</td>
- *	<td>no</td>
- *	<td>true</td>
- *	<td>If true (the default), then the component requires an active (i.e., non-new)
- *  {@link javax.servlet.http.HttpSession} 
- *  when triggered.  Failing that, it throws a {@link net.sf.tapestry.StaleLinkException}.
- *  If false, then no check is necessary.  The latter works well with links that
- *  encode all necessary state inside the URL itself.</td>
- *  </tr>
- *
- * <tr>
- *		<td>scheme</td>
- *		<td>{@link String}</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>&nbsp;</td>
- *		<td>If specified, then a longer URL (including scheme, server and possibly port)
- *   is generated using the specified scheme. Server is determined fromt he incoming request,
- *   and port is deterimined from the port paramter or the incoming request.
- *  </td>
- *  </tr>
- *
- * <tr>
- *		<td>port</td>
- *		<td>int</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>&nbsp;</td>
- *		<td>If specified, then a longer URL (including scheme, server and port)
- *  is generated using the specified port.  The server is determined from the incoming
- *  request, the scheme from the scheme paramter or the incoming request.
- *  </td>
- *  </tr>
- *
- *  <tr>
- *		<td>anchor</td>
- *		<td>{@link String}</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>&nbsp;</td>
- *		<td>The name of an anchor or element to link to.  The final URL will have '#'
- *   and the anchor appended to it.
- *  </td> 
- *  </tr>
- *
- *  </table>
- *
- *  <p>Informal  parameters are allowed.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$

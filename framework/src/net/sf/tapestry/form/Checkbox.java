@@ -35,45 +35,7 @@ import net.sf.tapestry.RequestCycleException;
  *  Implements a component that manages an HTML &lt;input type=checkbox&gt;
  *  form element.
  *
- * <table border=1>
- * <tr> 
- *    <td>Parameter</td>
- *    <td>Type</td>
- *	  <td>Direction</td>
- *    <td>Required</td> 
- *    <td>Default</td>
- *    <td>Description</td>
- * </tr>
- *
- *  <tr>
- *    <td>selected</td>
- *    <td>boolean</td>
- *    <td>in-out</td>
- *   	<td>yes</td>
- *		<td>&nbsp;</td>
- *		<td>Indicates whether the checkbox is selected or not.
- *
- *			<p>Corresponds to the <code>checked</code> HTML attribute.</td>
- *	</tr>
- *
- *
- *  <tr>
- * 		<td>disabled</td>
- *		<td>boolean</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>false</td>
- *		<td>Controls whether the text field is active or not.  If disabled, then
- *			any value that comes up when the form is submitted is ignored.
- *			
- *			<p>Corresponds to the <code>disabled</code> HTML attribute.</td>
- *	</tr>
- *
- *
- *	</table>
- *
- * <p>Informal parameters are allowed.  A body is not allowed.
- 
+ *  [<a href="../../../../../ComponentReference/Checkbox.html">Component Reference</a>]
  *
  *  @author Howard Lewis Ship
  *  @version $Id$

@@ -33,6 +33,7 @@
   <echo>Installing Component Reference documentation ...</echo>
   <copy todir="${html.install.dir}">
   	<fileset dir=".">
+  	    <exclude name="_template.html"/>
   		<include name="*.html"/>
   		<include name="*.css"/>
   	</fileset>

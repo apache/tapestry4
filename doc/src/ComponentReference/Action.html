@@ -2,6 +2,7 @@
 <!-- $Id$ --> 
 <html>
 <head>
+<title>Action</title>
 <link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
 </head>
 
@@ -15,8 +16,7 @@
 	 </tr>
 	 <tr>
 	  <td>
-		 <a href="../api/net/sf/tapestry/link/Action.html">
-		 net.sf.tapestry.link.Action</a>
+		 <a href="../api/net/sf/tapestry/link/Action.html">net.sf.tapestry.link.Action</a>
 		</td>
 	 </tr>
   </table>
@@ -42,8 +42,9 @@
   triggered, then the Action retrieves its listener, and invokes 
   <tt>actionTriggered()</tt> on it.
   <p>
-  See the Developers Guide <a href="../DevelopersGuide/cycle.listeners.html">
-  Action and Direct listeners</a> for a more complete description.  
+  See the Developers Guide 
+  <a href="../DevelopersGuide/cycle.listeners.html">Action and Direct listeners</a>
+  for a more complete description.  
   <p>
   This component may wrap around other components and static HTML. 
  </td>
@@ -81,7 +82,9 @@
     <td>in</td>
    	<td>yes</td>
 		<td>&nbsp;</td>
-		<td>Specifies an object that is notified when the link is clicked.</td>
+		<td>Specifies an object that is notified when the link is clicked,
+		which is typically a listener method of its container
+		(for example, <tt>listeners.<i>method</i></tt>).</td>
 	</tr>
   <tr>
     <td>disabled</td>
@@ -102,8 +105,8 @@
 		<td>
     If true (the default), then the component requires an active (i.e., non-new) 
     <tt>HttpSession</tt> when triggered. Failing that, it throws a 
-    <a href="../api/net/sf/tapestry/StaleLinkException">
-    <tt>StaleLinkException</tt></a>. If false, then no check is necessary. The 
+    <a href="../api/net/sf/tapestry/StaleLinkException"><tt>StaleLinkException</tt></a>. 
+    If false, then no check is necessary. The 
     latter works well with links that encode all necessary state inside the URL 
     itself.
     </td>

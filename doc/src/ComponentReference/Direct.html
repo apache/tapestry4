@@ -2,6 +2,7 @@
 <!-- $Id$ --> 
 <html>
 <head>
+<title>Direct</title>
 <link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
 </head>
 
@@ -39,9 +40,9 @@
   <b>Description</b>
 	<br>
   Creates a &lt;a&gt; hyperlink that notifies the component when the link is 
-  triggered. The link includes some context-specific data that is passed on to 
-  the component's listener. This is used in cases where the 
-  <a href="Action">Action</a> component can't be used (or is too inefficient).
+  triggered. The link includes some context-specific data that is made available
+  to the component's listener. This is used in cases where the 
+  <a href="Action.html">Action</a> component can't be used (or is too inefficient).
   <p>
   See the Developers Guide <a href="../DevelopersGuide/cycle.listeners.html">
   Action and Direct listeners</a> for a more complete description.  
@@ -82,11 +83,14 @@
     <td>in</td>
    	<td>yes</td>
 		<td>&nbsp;</td>
-		<td>Specifies an object that is notified when the link is clicked.</td>
+		<td>Specifies an object that is notified when the link is clicked,
+		which is typically a listener method of its container
+		(for example, <tt>listeners.<i>method</i></tt>).</td>
 	</tr>
   <tr>
     <td>parameters</td>
-    <td>Object[]<br> 
+    <td>Object or<br>
+        Object[] or<br> 
      <a href="http://java.sun.com/products/jdk/1.2/docs/api/java/util/List.html">
      <tt>List</tt></a>    
     </td>
@@ -94,15 +98,12 @@
    	<td>no</td>
 		<td>&nbsp;</td>
 		<td>
-    An array of Strings to be encoded into the URL. These parameters will be 
-    decoded when the link is triggered. If the context is simply an Object, 
-    then toString() is invoked on it. It is assumed that the listener will be 
-    able to convert it back. 
+    An array of objects to be encoded into the URL. These parameters will be 
+    decoded when the link is triggered.
     <p>
     In a web application built onto of Enterprise JavaBeans, the context is 
     often the primary key of some Entity bean; typically such keys are Strings 
-    or Integers (which can be freely converted from String to Integer by the 
-    listener). 
+    or Integers.
     <p>
     A listener method can retrieve the parameters using 
     <a href="/api/net/sf/tapestry/IRequestCycle.html#getServiceParameters()">
@@ -111,8 +112,8 @@
     Prior to release 2.2, the parameters were always type String. They may now 
     be of any type; type will be maintained when the parameters are later 
     retrieved by a listener. See 
-    <a href="../api/net/sf/tapestry/util/io/DataSqueezer.html"><tt>DataSqueezer
-    </tt></a> for more details. 
+    <a href="../api/net/sf/tapestry/util/io/DataSqueezer.html"><tt>DataSqueezer</tt></a> 
+    for more details. 
     </td>
 	</tr>
   <tr>
@@ -134,8 +135,8 @@
 		<td>
     If true (the default), then the component requires an active (i.e., non-new) 
     <tt>HttpSession</tt> when triggered. Failing that, it throws a 
-    <a href="../api/net/sf/tapestry/StaleLinkException">
-    <tt>StaleLinkException</tt></a>. If false, then no check is necessary. The 
+    <a href="../api/net/sf/tapestry/StaleLinkException"><tt>StaleLinkException</tt></a>. 
+    If false, then no check is necessary. The 
     latter works well with links that encode all necessary state inside the URL 
     itself.
     </td>
@@ -162,7 +163,7 @@
 		<td>
     If specified, then a longer URL (including scheme, server and port) is 
     generated using the specified port. The server is determined from the 
-    incoming request, the scheme from the scheme paramter or the incoming 
+    incoming request, the scheme from the scheme parameter or the incoming 
     request. 
     </td>
 	</tr>
