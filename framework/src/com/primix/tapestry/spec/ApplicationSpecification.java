@@ -7,6 +7,7 @@ import com.primix.tapestry.components.validating.*;
 import com.primix.foundation.exception.*;
 import com.primix.foundation.*;
 import com.primix.tapestry.inspector.*;
+import com.primix.tapestry.script.*;
 
 /*
  * Tapestry Web Application Framework
@@ -135,6 +136,8 @@ extends BasePropertyHolder
             "/com/primix/tapestry/components/validating/DateField.jwc");
         defaultComponentMap.put("IntegerField",
               "/com/primix/tapestry/components/validating/IntegerField.jwc");
+        defaultComponentMap.put("Script",
+                "/com/primix/tapestry/script/Script.jwc");
 	}
 
     // Default page map shared by all applications.
@@ -267,6 +270,11 @@ extends BasePropertyHolder
 	* <tr>
 	*		<td>/com/primix/tapestry/components/Rollover.jwc</td>
 	*		<td>{@link Rollover} </td> </tr>
+    *
+    * <tr>
+    *       <td>/com/primix/tapestry/script/Script.jwc</td>
+    *       <td>{@link Script}</td>
+    * </tr>
 	* <tr>
 	*		<td>/com/primix/tapestry/components/Select.jwc</td>
 	*		<td>{@link Select}</td>

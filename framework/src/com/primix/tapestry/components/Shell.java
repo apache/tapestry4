@@ -147,20 +147,16 @@ public class Shell extends AbstractComponent
 
         if (!rewinding)
         {
+            startTime = System.currentTimeMillis();
+
             if (stylesheetBinding != null)
                 stylesheet = (IAsset)stylesheetBinding.getValue();
 
             if (title == null)
                 title = titleBinding.getString();
 
-            startTime = System.currentTimeMillis();
-
-            // Note: Dec 24 is my birthday.  Just a coincidence.
-            // This public identifier and DTD URL are from the www.w3c.org website.
-
             writer.printRaw("<!DOCTYPE HTML PUBLIC " +
-                            "\"-//W3C//DTD HTML 4.01 Transitional//EN\" " +
-                            "\"http://www.w3.org/TR/1999/REC-html401-19991224/loose.dtd\">");
+                            "\"-//W3C//DTD HTML 4.0 Transitional//EN\">");
 
             page = getPage();
 
