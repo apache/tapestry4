@@ -25,7 +25,7 @@
  * Lesser General Public License for more details.
  *
  */
- 
+
 package com.primix.tapestry.util.xml;
 
 import com.primix.tapestry.util.*;
@@ -35,7 +35,7 @@ import java.util.*;
 import org.xml.sax.*;
 import javax.xml.parsers.*; 
 import org.apache.log4j.*;
- 
+
 /**
  *  A wrapper around {@link DocumentBuilder} (itself a wrapper around
  *  some XML parser), this class provides error handling and entity
@@ -45,13 +45,13 @@ import org.apache.log4j.*;
  *  @author Howard Ship
  *  @since 0.2.10
  */
- 
+
 public abstract class AbstractDocumentParser
-implements ErrorHandler, EntityResolver
+	implements ErrorHandler, EntityResolver
 {
 	private static final Category CAT =
 		Category.getInstance(AbstractDocumentParser.class);
-		
+	
 	private DocumentBuilder builder;
 	private String resourcePath;
 	private static final int MAP_SIZE = 7;
@@ -60,9 +60,9 @@ implements ErrorHandler, EntityResolver
 	 *  Map used to resolve public identifiers to corresponding InputSource.
 	 *
 	 */
-	 
+	
 	private Map entities;
-
+	
 	/**
 	 *  Invoked by subclasses (usually inside thier constructor) to register
 	 *  a public id and corresponding input source.  Generally, the source
@@ -76,12 +76,12 @@ implements ErrorHandler, EntityResolver
 	 *  within the classpath.
 	 *
 	 */
-	 
+	
 	protected void register(String publicId, String entityPath)
 	{
 		if (CAT.isDebugEnabled())
 			CAT.debug("Registerring " + publicId + " as " + entityPath);
-			
+		
 		if (entities == null)
 			entities = new HashMap(MAP_SIZE);
 		
@@ -110,9 +110,9 @@ implements ErrorHandler, EntityResolver
 	 *  {@link IOException}, or if the root element is wrong.
 	 *
 	 */
-	 
+	
 	protected Document parse(InputSource source, String resourcePath, String rootElementName)
-	throws DocumentParseException
+		throws DocumentParseException
 	{
 		Document document;
 		Element root;
@@ -120,15 +120,15 @@ implements ErrorHandler, EntityResolver
 		
 		if (CAT.isDebugEnabled())
 			CAT.debug("Parsing " + source + " (" + resourcePath + ") for element " +
-				rootElementName);
-				
+						rootElementName);
+		
 		try
 		{
 			if (builder == null)
 				builder = constructBuilder();
-
+			
 			document = builder.parse(source);
-
+			
 			error = false;
 			
 			root = document.getDocumentElement();
@@ -136,10 +136,10 @@ implements ErrorHandler, EntityResolver
 			{
 				throw new DocumentParseException(
 					"Incorrect document type; expected " + rootElementName + 
-					" but received " + root.getTagName() + ".", resourcePath,
+						" but received " + root.getTagName() + ".", resourcePath,
 					null);
 			}
-
+			
 			return document;
 		}
 		catch (SAXParseException ex)
@@ -147,25 +147,25 @@ implements ErrorHandler, EntityResolver
 			// This constructor captures the line number and column number
 			
 			throw new DocumentParseException("Unable to parse " + resourcePath + ": "
-				+ ex.getMessage(), 
-				resourcePath, ex);
+						+ ex.getMessage(), 
+					resourcePath, ex);
 		}
 		catch (SAXException ex)
 		{
 			throw new DocumentParseException("Unable to parse " + resourcePath + ": " +
-				ex.getMessage(), 
-				resourcePath, ex);
+						ex.getMessage(), 
+					resourcePath, ex);
 		}
 		catch (IOException ex)
 		{
 			throw new DocumentParseException("Error reading " + resourcePath + ": " +
-				ex.getMessage(),
-				resourcePath, ex);
+						ex.getMessage(),
+					resourcePath, ex);
 		}
 		catch (ParserConfigurationException ex)
 		{
 			throw new DocumentParseException("Unable to construct DocumentBuilder: " +
-				ex.getMessage(), ex);
+						ex.getMessage(), ex);
 		}
 		finally
 		{
@@ -179,168 +179,168 @@ implements ErrorHandler, EntityResolver
 			}
 		}	
 	}
-
+	
 	/**
 	 *  Throws the exception, which is caught and wrapped
 	 *  in a {@link DocumentParseException} by {@link #parse(InputSource,String,String)}.
 	 *
 	 */
-	 
+	
 	public void warning(SAXParseException exception)
-	throws SAXException
+		throws SAXException
 	{
 		throw exception;
 	}
-
+	
 	/**
 	 *  Throws the exception, which is caught and wrapped
 	 *  in a {@link DocumentParseException} by {@link #parse(InputSource,String,String)}.
 	 *
 	 */
-	 
+	
 	public void error(SAXParseException exception)
-	throws SAXException
+		throws SAXException
 	{
 		throw exception;
 	}
-
+	
 	/**
 	 *  Throws the exception, which is caught and wrapped
 	 *  in a {@link DocumentParseException} by {@link #parse(InputSource,String,String)}.
 	 *
 	 */
-	 
+	
 	public void fatalError(SAXParseException exception)
-	throws SAXException
+		throws SAXException
 	{
 		throw exception;
 	}
-
+	
 	/**
-	*  Checks for a previously registered public ID and returns the corresponding
-	*  input source.
-	*
-	*/
-
+	 *  Checks for a previously registered public ID and returns the corresponding
+	 *  input source.
+	 *
+	 */
+	
 	public InputSource resolveEntity(String publicId,
-		String systemId)
-	throws SAXException, IOException
+			String systemId)
+		throws SAXException, IOException
 	{
 		if (CAT.isDebugEnabled())
 			CAT.debug("Attempting to resolve entity; publicId = " +
-				publicId + 
-				" systemId = " + systemId);
-				
+						publicId + 
+						" systemId = " + systemId);
+		
 		if (entities == null)
 			return null;
 		
 		String entityPath = (String)entities.get(publicId);
 		if (entityPath == null)
 			return null;
-				
+		
 		InputStream stream = getClass().getResourceAsStream(entityPath);
 		
 		InputSource result = new InputSource(stream);
 		
 		if (result != null && CAT.isDebugEnabled())
 			CAT.debug("Resolved " + publicId + " as " + result + " (for " +
-				entityPath + ")");
+						entityPath + ")");
 		
 		return result;	
 	}
-
-
+	
+	
 	/**
 	 *  Returns true if the node is an element with the specified
 	 *  name.
 	 *
 	 */
-	 
+	
 	protected boolean isElement(Node node, String elementName)
-	throws DocumentParseException
+		throws DocumentParseException
 	{
 		if (node.getNodeType() != Node.ELEMENT_NODE)
 			return false;
-
+		
 		// Cast it to Element
-
+		
 		Element element = (Element)node;
-
+		
 		// Note:  Using Xerces 1.0.3 and deferred DOM loading
 		// (which is explicitly turned off), this sometimes
 		// throws a NullPointerException.
-
+		
 		return element.getTagName().equals(elementName);
-
+		
 	}	
-
+	
 	/**
-	*  Returns the value of an {@link Element} node.  That is, all the {@link Text}
-	*  nodes appended together.  Invokes trim() to remove leading and trailing spaces.
-	*
-	*/
-
+	 *  Returns the value of an {@link Element} node.  That is, all the {@link Text}
+	 *  nodes appended together.  Invokes trim() to remove leading and trailing spaces.
+	 *
+	 */
+	
 	protected String getValue(Node node)
 	{
 		String result;
 		Node child;
 		Text text;
 		StringBuffer buffer;
-
+		
 		buffer = new StringBuffer();
-
+		
 		for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
 		{
 			text = (Text)child;
-
+			
 			buffer.append(text.getData());
 		}
-
+		
 		result = buffer.toString().trim();
-
+		
 		return result;
 	}
-
+	
 	/**
-	*  Returns the value of an {@link Element} node (via {@link #getValue(Node)}),
-	*  but then validates that the result is a good identifier (starts with a
-	*  letter, contains letters, numbers, dashes, underscore).
-	*
-	*/
-
+	 *  Returns the value of an {@link Element} node (via {@link #getValue(Node)}),
+	 *  but then validates that the result is a good identifier (starts with a
+	 *  letter, contains letters, numbers, dashes, underscore).
+	 *
+	 */
+	
 	protected String getId(Node node)
-	throws DocumentParseException
+		throws DocumentParseException
 	{
 		String result = getValue(node);
 		char[] array = result.toCharArray();
 		char ch;
 		boolean fail = false;
-
+		
 		for (int i = 0; i < array.length; i++)
 		{
 			ch = array[i];
-
+			
 			if (i == 0)
 				fail = ! Character.isLetter(ch);
 			else
 			{
 				fail = ! (Character.isLetter(ch) ||
-					Character.isDigit(ch) ||
-					ch == '-' ||
-					ch == '_');
+							Character.isDigit(ch) ||
+							ch == '-' ||
+							ch == '_');
 			}
-
+			
 			if (fail)
 				throw new DocumentParseException
 					(result + " is not a valid identifier (in element " +
-					getNodePath(node.getParentNode()) + ").",
-					resourcePath, null);
+							getNodePath(node.getParentNode()) + ").",
+						resourcePath, null);
 		}
-
+		
 		return result;
 	}
-
-
+	
+	
 	/**
 	 *  Returns a 'path' to the given node, which is a list of enclosing
 	 *  element names seperated by periods.  The root element name is first,
@@ -348,7 +348,7 @@ implements ErrorHandler, EntityResolver
 	 *  parse errors.
 	 *
 	 */
-	 
+	
 	protected String getNodePath(Node node)
 	{
 		int count = 0;
@@ -372,28 +372,28 @@ implements ErrorHandler, EntityResolver
 			
 			path[count++] = nodeName;
 			node = node.getParentNode();
-
+			
 			length += nodeName.length() + 1;
 			
 		}
-
+		
 		StringBuffer buffer = new StringBuffer(length);
 		boolean addDot = false;
-
+		
 		for (int i = count - 1; i >= 0; i--)
 		{
-
+			
 			if (addDot)
 				buffer.append('.');
-
+			
 			buffer.append(path[i]);
 			
 			addDot = true;
 		}
-
+		
 		return buffer.toString();
 	}		
-
+	
 	/**
 	 *  Constructs a new {@link DocumentBuilder} to be used for parsing.
 	 *  The builder is used and reused, at least until there is an error
@@ -416,27 +416,49 @@ implements ErrorHandler, EntityResolver
 	 *  as the entity resolver and error handler.
 	 *
 	 */
-	 
+	
 	protected DocumentBuilder constructBuilder()
-	throws ParserConfigurationException
+		throws ParserConfigurationException
 	{
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-
+		
 		factory.setValidating(true);
 		factory.setIgnoringElementContentWhitespace(true);
 		factory.setIgnoringComments(true);
 		factory.setCoalescing(true);
-
+		
 		DocumentBuilder result = factory.newDocumentBuilder();
-
+		
 		result.setErrorHandler(this);
 		result.setEntityResolver(this);
-
+		
 		if (CAT.isDebugEnabled())
 			CAT.debug("Constructed new builder " + result);
-			
+		
 		return result;
 	}
-
+	
+	/**
+	 *  Returns the value of the named attribute of the node.  Returns null
+	 *  if the node doesn't contain an attribute with the given name.
+	 *
+	 *  @since 1.0.1
+	 */
+	
+    protected String getAttribute(Node node, String attributeName)
+    {
+		NamedNodeMap map = node.getAttributes();
+		
+		if (map == null)
+			return null;
+		
+		Node attributeNode = map.getNamedItem(attributeName);
+		
+		if (attributeNode == null)
+			return null;
+		
+		return attributeNode.getNodeValue();
+    }
+	
 }
 

@@ -1,32 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
-	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-<specification>
-  <class>com.primix.tapestry.BaseComponent</class>
-  <allow-body>no</allow-body>
-  <parameters>
-    <allow-informal-parameters>no</allow-informal-parameters>
-  </parameters>
-  <components>
-    <component>
-      <id>ifError</id>
-      <type>Conditional</type>
-      <bindings>
-        <binding>
-          <name>condition</name>
-          <property-path>page.error</property-path>
-        </binding>
-      </bindings>
-    </component>
-    <component>
-      <id>insertError</id>
-      <type>Insert</type>
-      <bindings>
-        <binding>
-          <name>value</name>
-          <property-path>page.error</property-path>
-        </binding>
-      </bindings>
-    </component>
-  </components>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN"
+	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="com.primix.tapestry.BaseComponent" allow-body="no" allow-informal-parameters="no">
+  <component id="ifError" type="Conditional">
+    <binding name="condition" property-path="page.error"/>
+  </component>
+  <component id="insertError" type="Insert">
+    <binding name="value" property-path="page.error"/>
+  </component>
 </specification>
