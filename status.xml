@@ -278,6 +278,9 @@ NextGen) be released as version number 3.0.
     <action type="fix" dev="HLS" due-to="Wouter de Vaal" fixes-bug="TAPESTRY-189">
       FAQ link to Spring integration document is broken.
     </action>
+    <action type="fix" dev="HLS" due-to="Dominik Kreutz" fixes-bug="TAPESTRY-167">
+      [PATCH] ValidationStrings_de.properties
+    </action>
       
   </release>
 
