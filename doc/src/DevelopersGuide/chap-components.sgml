@@ -214,7 +214,7 @@ its body multiple times.
 <para>
 Not all Tapestry components should have a body.  
 For example, the <classname>TextField</> component creates an
-&start-tag;input type=text&end-tag;
+<sgmltag class=starttag>input type=text</>
 form element and it makes no sense for it to contain anything else.  
 Whether a component can have a body (and wrap other elements) is defined in the 
 component's specification.
@@ -278,12 +278,12 @@ The Home page component has the following HTML template:
 <figure>
 	<title>Home Page HTML Template</>
 	<programlisting>
-&start-jwc;jwc id="border"&end-jwc;<![CDATA[
+&start-jwc; id="border"&end-jwc;<![CDATA[
 
 Nothing much doing here on the <b>home</b> page.  Visit one of our other fine 
 pages.
 
-]]>&start-jwc;/jwc&end-jwc;</programlisting>
+]]>&close-jwc;</programlisting>
 </figure>
 
 
@@ -306,19 +306,19 @@ The <classname>Border</> component has a much larger HTML template:
 <table border=0 bgcolor=gray cellspacing=0>
   <tr valign=top>
     <td colspan=3 align=left>
-      <font size=5 color="White">]]>&start-jwc;jwc id="insertPageTitle"/&end-jwc;<![CDATA[</font>
+      <font size=5 color="White">]]>&start-jwc; id="insertPageTitle"/&end-jwc;<![CDATA[</font>
     </td>
   </tr>
   <tr valign=top>
     <td align=right>
       <font color=white>
-]]>&start-jwc;jwc id="e"&end-jwc;<![CDATA[
+]]>&start-jwc; id="e"&end-jwc;<![CDATA[
         <br>]]><emphasis><![CDATA[<jwc id="link"><jwc id="insertName"></jwc>
 </jwc>]]></emphasis><![CDATA[
       </font>
     </td>
     <td valign=top bgcolor=silver>
-      ]]>&start-jwc;jwc id="wrapped"/&end-jwc;<![CDATA[
+      ]]>&start-jwc; id="wrapped"/&end-jwc;<![CDATA[
     </td>
     <td>&nbsp;</td>
   </tr>
@@ -352,7 +352,7 @@ The <varname>e</> component wraps some static HTML and the
 <para>
 When it comes time to render, Tapestry parses the HTML template and breaks 
 them into blocks of static HTML, component starts 
-(the &jwc-tag; tag) and component ends (the &start-tag;;/jwc&end-tag; tag).
+(the &jwc-tag; tag) and component ends (the <sgmltag class=endtag>jwc</> tag).
 </>
 
 <para>
@@ -421,9 +421,9 @@ page template.
 It may seem complicated, but ultimately its very natural from a markup language point of view; 
 the &jwc-tag; tags continue to act like HTML elements, wrapping around and 
 controlling their contents, just exactly like a 
-&start-tag;table&end-tag;
-wraps its &start-tag;tr&end-tag;'s or a &start-tag;form&end-tag; wraps its 
-&start-tag;input&end-tag;'s.
+<sgmltag class=starttag>table</>
+wraps its <sgmltag class=starttag>tr</>'s or a <sgmltag class=starttag>form</> wraps its 
+<sgmltag class=starttag>input</>'s.
 </>
 
 	</section>
@@ -617,7 +617,7 @@ body (that is, wrap around other HTML or components).
 </>
 
 <para>
-This is specified using the &start-tag;allow-body&end-tag; element:
+This is specified using the <sgmltag class=starttag>allow-body</> element:
 </>
 
 &start-listing;&lt;allow-body&gt;<replaceable>boolean</>&lt;/allow-body&gt;&end-listing;
@@ -636,7 +636,7 @@ allowing the component to have a body.
 
 <para>
 The next section describes the parameters to the component, 
-all of which is specified inside a &start-tag;parameters&end-tag;
+all of which is specified inside a <sgmltag class=starttag>parameters</>
 element. Components can have two types of parameters:  
 formal and informal.  
 Formal parameters describe the interface to the component 
@@ -656,7 +656,7 @@ The component will silently filter out any informal parameters whose
 name conflicts with either a formal parameter name 
 or an attribute controlled by the component.  
 For example, the <classname>Action</> component (which generates an 
-&start-tag;a&end-tag; 
+<sgmltag class=starttag>a</> 
 element) will not allow an informal parameter to 
 specify the <token>href</> attribute.  
 Note that the check is case insensitive, so an informal parameter of <literal>Href</>
@@ -672,7 +672,7 @@ and to create JavaScript event handlers.
 <para>Some components do not have the necessary 
 one-to-one mapping to an HTML element that 
 makes informal parameters useful.  
-The &start-tag;allow-informal-parameters&end-tag;
+The <sgmltag class=starttag>allow-informal-parameters</>
 element controls this:
 </>
 
@@ -687,7 +687,7 @@ This element is optional, and usually omitted.
 
 <para>
 Following this, each parameter is specified with a 
-&start-tag;parameter&end-tag; element:
+<sgmltag class=starttag>parameter</> element:
 </>
 
 &start-listing;><![CDATA[<parameter>
@@ -715,7 +715,7 @@ If not specified, it defaults to <classname>java.lang.Object</>
 <para>
 If a parameter is required, then a binding must be provided for the 
 parameter when it is embedded in another component.  
-The  &start-tag;required&end-tag; element is optional, and defaults to 
+The  <sgmltag class=starttag>required</> element is optional, and defaults to 
 <literal>false</> (meaning the parameter is optional).
 </>
 
@@ -733,14 +733,14 @@ Once all formal parameters are defined, the parameters element is closed:
 
 <para>
 Following the parameters, embedded components are detailed.  
-A &start-tag;components&end-tag;
-element surrounds a list of &start-tag;component&end-tag; elements.
+A <sgmltag class=starttag>components</>
+element surrounds a list of <sgmltag class=starttag>component</> elements.
 </>
 
 &start-listing;&lt;components&gt;&end-listing;
 
 <para>
-A &start-tag;component&end-tag; tag starts each component:
+A <sgmltag class=starttag>component</> tag starts each component:
 
 &start-listing;&lt;component&gt;
   &lt;id&gt;<replaceable>component id</>&lt;/id&gt;
@@ -776,7 +776,7 @@ has a standard alias of <classname>Action</>.
 
 <para>
 Most components have parameters, and therefore, bindings.  
-Bindings are contained within a &start-tag;bindings&end-tag; element.
+Bindings are contained within a <sgmltag class=starttag>bindings</> element.
 </>
 
 
@@ -787,7 +787,7 @@ There are four different elements to specify bindings.
 </>
 
 <para>
-The &start-tag;binding&end-tag; element specifies a dynamic 
+The <sgmltag class=starttag>binding</> element specifies a dynamic 
 binding for the parameter.
 </>
 
@@ -802,7 +802,7 @@ The property path is specified relative to the containing component.
 
 <para>
 In some cases, the value for the parameter will never change; 
-in this case a &start-tag;static-binding&end-tag; is used:
+in this case a <sgmltag class=starttag>static-binding</> is used:
 </>
 
 &start-listing;<![CDATA[<static-binding>
@@ -855,7 +855,7 @@ package.  Thus the value <literal>Boolean.TRUE</> is an acceptible field name.
 <para>
 Finally, in some cases, it makes sense for an embedded component to 
 <emphasis>share</> a binding with its container.  
-This is accomplished with the &start-tag;inherited-binding&end-tag;
+This is accomplished with the <sgmltag class=starttag>inherited-binding</>
 element:
 </>
 
@@ -881,8 +881,8 @@ containing <classname>Border</> component's <varname>title</> parameter.
 
 <para>
 Once all bindings for a component are specified, the 
-&start-tag;bindings&end-tag; and 
-&start-tag;component&end-tag;
+<sgmltag class=starttag>bindings</> and 
+<sgmltag class=starttag>component</>
 elements are closed.
 
 	<informalfigure>
@@ -893,9 +893,9 @@ elements are closed.
 
 <para>
 Additional components may be specified within their own 
-&start-tag;component&end-tag; elements.  
+<sgmltag class=starttag>component</> elements.  
 Once all components are specified, the 
-&start-tag;components&end-tag;
+<sgmltag class=starttag>components</>
 element is closed.
 </>
 
@@ -920,7 +920,7 @@ Tapestry application, or may be stored as a resource inside Java VM class path.
 
 <para>
 Assets are contained within an 
-&start-tag;assets&end-tag; element.
+<sgmltag class=starttag>assets</> element.
 </>
 
 &start-listing;&lt;assets&gt;&end-listing;
@@ -959,7 +959,7 @@ For external assets, the URL must be complete:  it will be inserted into the HTM
 For context assets
 	<footnote>
 		<para>An earlier version of the framework called these "internal assets"
-		and &start-tag;internal-asset&end-tag;
+		and <sgmltag class=starttag>internal-asset</>
 		may still be defined in the Tapestry DTD, though it
 		is subject to removal at any time.
 		</>
@@ -987,7 +987,7 @@ HTML templates to locate the best match.
 
 <para>
 Once all assets have been specified, the 
-&start-tag;assets&end-tag; element is closed:
+<sgmltag class=starttag>assets</> element is closed:
 </>
 
 &start-listing;<![CDATA[</assets>]]>&end-listing;
@@ -1006,13 +1006,13 @@ the specification itself is closed:
 &start-listing;<![CDATA[</specification>]]>&end-listing;
 
 <para>
-The major tags, &start-tag;parameters&end-tag;, 
-&start-tag;components&end-tag;, 
-&start-tag;bindings&end-tag; and 
-&start-tag;assets&end-tag; are only specified if there are elements to be contained.  
+The major tags, <sgmltag class=starttag>parameters</>, 
+<sgmltag class=starttag>components</>, 
+<sgmltag class=starttag>bindings</> and 
+<sgmltag class=starttag>assets</> are only specified if there are elements to be contained.  
 A component which contains no embedded components will not have a
-&start-tag;components&end-tag; element.  
-An embedded component with no bindings will not have a &start-tag;bindings&end-tag; element.  
+<sgmltag class=starttag>components</> element.  
+An embedded component with no bindings will not have a <sgmltag class=starttag>bindings</> element.  
 In many cases, a component specification will be only a few lines long.
 </>
 

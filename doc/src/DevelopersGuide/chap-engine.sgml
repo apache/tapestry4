@@ -252,10 +252,10 @@ shows how the <classname>Page</> component is used to create a link between appl
 First, an extract from the page's HTML template:
 </>
 
-&start-listing;Click <emphasis>&lt;jwc id="login"&gt;</>here<emphasis>&lt;/jwc&gt;</> to login.&end-listing;
+&start-listing;Click &start-jwc; id="login"&end-jwc;here&close-jwc; to login.&end-listing;
  
 <para>
-This is combined with the a &start-tag;component&end-tag; declaration in the the page's specification:
+This is combined with the a <sgmltag class=starttag>component</> declaration in the the page's specification:
 </>
 
 &start-listing;<![CDATA[
@@ -276,7 +276,7 @@ The <varname>login</> component will locate the page service, and provide 'Login
 (the name of the target 
 page) as a parameter.  The page service will build and return an appropriate URL (
 <filename>/<replaceable>servlet path</>/page/Login</>), 
-which the <varname>login</> component will incorporate into the &start-tag;a&end-tag; hyperlink it 
+which the <varname>login</> component will incorporate into the <sgmltag class=starttag>a</> hyperlink it 
 generates.
 </>
 
@@ -528,7 +528,7 @@ same as the page naming guidelines.
 			<title>Properties</>
 
 <para>
-If needed, any application properties may be defined in a &start-tag;properties&end-tag; element.
+If needed, any application properties may be defined in a <sgmltag class=starttag>properties</> element.
 </>
 
 &start-listing;<![CDATA[<properties>
@@ -539,8 +539,8 @@ If needed, any application properties may be defined in a &start-tag;properties&
 </properties>]]>&end-listing;
  
 <para>
-Any number of &start-tag;property&end-tag; elements may be included within the 
-&start-tag;properties&end-tag; element.  Each 
+Any number of <sgmltag class=starttag>property</> elements may be included within the 
+<sgmltag class=starttag>properties</> element.  Each 
 one specifies a name/value pairing (both the name and the value are strings).  These properties 
 are used to express additional information about the application that isn't captured in the main 
 DTD.

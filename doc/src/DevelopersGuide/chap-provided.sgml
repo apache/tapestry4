@@ -23,7 +23,7 @@ an application specification.
 		<title>Action</>
 
 <para>
-Creates an &start-tag;a&end-tag hyperlink in the HTML response.  
+Creates an <sgmltag class=starttag>a</> hyperlink in the HTML response.  
 If the link is triggered, then the <classname>Action</> retrieves its listener, and invokes 
 <function>actionTriggered()</> on it.
 </>
@@ -39,9 +39,9 @@ If the link is triggered, then the <classname>Action</> retrieves its listener, 
 	</>
 
 	<varlistentry>
-		<term>enabled</>
+		<term>disabled</>
 		<listitem>
-			<para>Controls whether the link is produced.  If false, the link is not
+			<para>Controls whether the link is produced.  If true, the link is not
 			created (but wrapped elements are still rendered).
 			</>
 		</>
@@ -90,7 +90,7 @@ to a component.
 		<title>Body</>
 
 <para>
-Replaces the &start-tag;body&end-tag tag.  
+Replaces the <sgmltag class=starttag>body</> tag.  
 The <classname>Body</> component provides some support for other 
 components, such as the <classname>Rollover</> component.
 </>
@@ -101,7 +101,7 @@ components, such as the <classname>Rollover</> component.
 		<title>Checkbox</>
 
 <para>
-Used to implement a checkbox form element (&start-tag;input type=checkbox&end-tag;). 
+Used to implement a checkbox form element (<sgmltag class=starttag>input type=checkbox</>). 
 Must be wrapped by a <classname>Form</> component.
 </>
 
@@ -232,7 +232,7 @@ from some source outside of Tapestry).
 		<title>Direct</>
 
 <para>
-Creates a &start-tag;a&end-tag; hyperlink that notifies 
+Creates a <sgmltag class=starttag>a</> hyperlink that notifies 
 the component when the link is triggered.  
 The link includes some context-specific data that 
 is passed on to the component's listener.  This  
@@ -259,9 +259,9 @@ is used in cases where the <classname>Action</> component can't be used
 	</>
 
 	<varlistentry>
-		<term>enabled</>
+		<term>disabled</>
 		<listitem>
-			<para>Controls whether the link is produced. If disabled, the 
+			<para>Controls whether the link is produced. If true, the 
 			portion of the template the link surrounds is still rendered, but 
 			not the link itself.</>
 		</>
@@ -367,7 +367,7 @@ The other form-related components must be wrapped inside the <classname>Form</>.
 	<varlistentry>
 		<term>method</>
 		<listitem>
-			<para>The value to use for the method attribute of the &start-tag;form&end-tag;
+			<para>The value to use for the method attribute of the <sgmltag class=starttag>form</>
 		 	tag.</>
 		</>
 	</>
@@ -387,7 +387,7 @@ The other form-related components must be wrapped inside the <classname>Form</>.
 		<title>Hidden</>
 
 <para>
-Adds a hidden (&start-tag;input type=hidden&end-tag;) field to a 
+Adds a hidden (<sgmltag class=starttag>input type=hidden</>) field to a 
 <classname>Form</>.  This is often used to synchronize 
 data when the form is submitted with values
 known when the page was rendered .
@@ -586,7 +586,7 @@ A type of validating text field that is used to edit an integer property.
 
 <para>
 Implements a component that manages an HTML
-&start-tag;option&end-tag; form element, and must 
+<sgmltag class=starttag>option</> form element, and must 
 be wrapped by a <classname>Select</> component.
 </>
 
@@ -621,9 +621,9 @@ Creates a hyperlink to another page within the application.
 	</>
 
 	<varlistentry>
-		<term>enabled</>
+		<term>disabled</>
 		<listitem>
-			<para>Controls whether the link is produced. If disabled, the portion of 
+			<para>Controls whether the link is produced. If true, the portion of 
 			the template the link surrounds is still rendered, but not the link itself.
 			</>
 		</>
@@ -637,7 +637,7 @@ Creates a hyperlink to another page within the application.
 
 <para>
 Creates form elements that allow a property of an object to be selected.  This may take the form
-of a &start-tag;select&end-tag; or a sequence of &start-tag;input type=radio&end-tag; elements.
+of a <sgmltag class=starttag>select</> or a sequence of <sgmltag class=starttag>input type=radio</> elements.
 </>
 
 <para>
@@ -823,7 +823,7 @@ substitutions are made before the final scripting code is inserted into the page
 		<title>Select</>
 
 <para>
-A component which creates a &start-tag;select&end-tag form element (it is
+A component which creates a <sgmltag class=starttag>select</> form element (it is
 also a wrapper around <classname>Option</> components), within a <classname>Form</>.
 </>
 
@@ -864,9 +864,9 @@ that uses no parameters, such as the reset or home service.
 	</>
 
 	<varlistentry>
-		<term>enabled</>
+		<term>disabled</>
 		<listitem>
-			<para>Controls whether the link is produced. If disabled, 
+			<para>Controls whether the link is produced. If true, 
 			the portion of the template the link surrounds is still rendered, 
 			but not the link itself.
 			</>
@@ -881,8 +881,8 @@ that uses no parameters, such as the reset or home service.
 
 <para>
 Provides the outer "shell" of a page, including the 
-&start-tag;html>&end-tag;, &start-tag;head&end-tag; and &start-tag;title&end-tag; tags 
-(but not the &start-tag;body&end-tag; tag).
+<sgmltag class=starttag>html></>, <sgmltag class=starttag>head</> and <sgmltag class=starttag>title</> tags 
+(but not the <sgmltag class=starttag>body</> tag).
 </>
 
 <variablelist>
@@ -891,7 +891,7 @@ Provides the outer "shell" of a page, including the
 	<varlistentry>
 		<term>title</>
 		<listitem>
-			<para>Title for the page, placed within a &start-tag;title&end-tag; element.</>
+			<para>Title for the page, placed within a <sgmltag class=starttag>title</> element.</>
 		</>
 	</>
 
@@ -968,7 +968,7 @@ when developing the application (disabled in deployment).
 		<title>Text</>
 
 <para>
-Implements a component that manages an HTML &start-tag;textarea&end-tag; form element, 
+Implements a component that manages an HTML <sgmltag class=starttag>textarea</> form element, 
 within a <classname>Form</> component.
 </>
 
@@ -997,7 +997,7 @@ within a <classname>Form</> component.
 	<varlistentry>
 		<term>columns</>
 		<listitem>
-			<para>The width of the &start-tag;textarea&end-tag;, in characters.
+			<para>The width of the <sgmltag class=starttag>textarea</>, in characters.
 			</>
 		</>
 	</>
@@ -1006,7 +1006,7 @@ within a <classname>Form</> component.
 		<term>rows</>
 
 		<listitem>
-			<para>The number of rows in the &start-tag;textarea&end-tag;.
+			<para>The number of rows in the <sgmltag class=starttag>textarea</>.
 			</>
 		</>
 	</>
@@ -1019,8 +1019,8 @@ within a <classname>Form</> component.
 
 <para>
 Implements a component that manages an HTML 
-&start-tag;input type=text&end-tag; or 
-&start-tag;input type=password&end-tag; form element, within a 
+<sgmltag class=starttag>input type=text</> or 
+<sgmltag class=starttag>input type=password</> form element, within a 
 <classname>Form</> component.
 </>
 
@@ -1038,7 +1038,7 @@ Implements a component that manages an HTML
 		<term>hidden</>
 		<listitem>
 			<para>If true, then the text field is written as a 
-			&start-tag;input type=password&end-tag; form element.
+			<sgmltag class=starttag>input type=password</> form element.
 			</>
 		</>
 	</>
@@ -1094,7 +1094,7 @@ The field may be required, and a minimum length may be specified.
 		<term>hidden</>
 		<listitem>
 			<para>If true, then the text field is written as a 
-			&start-tag;input type=password&end-tag; form element.
+			<sgmltag class=starttag>input type=password</> form element.
 			</>
 		</>
 	</>
