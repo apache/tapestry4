@@ -1,5 +1,9 @@
 * Oct 6 2000 hship
 
+Service component didn't declare its formal context parameter in its specification.
+
+* Oct 6 2000 hship
+
 Fix the Hidden component to not throw NullPointerException if the listener parameter
 is not bound.
 
