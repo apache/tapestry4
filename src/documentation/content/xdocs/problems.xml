@@ -101,7 +101,7 @@ response, post as much of this as possible.
 In farily rare cases, you may have uncovered an actual problem. In other cases, we (the Tapestry developers)
 may discuss an improvement to the framework to address your situtation. In <em>either case</em>, it is incumbent
 upon you to add a bug or improvement request into the 
-<link href="http://jakarta.apache.org/site/bugs.html">Bugzilla</link> issue tracking system. If it doesn't go into Bugzilla,
+<link href="http://issues.apache.org/jira">JIRA</link> issue tracking system. If it doesn't go into Bugzilla,
 its very unlikely that anything further will happen. Think of this tiny effort as
 your payment for all the free software and support we've provided you with.
 </p>

@@ -35,6 +35,10 @@
       <dev label="Developers" href="dev.html"/>
     </project>
     
+    <QuickStart label="Quick Start" tab="quick-start" href="QuickStart/">
+      <qsintro label="Introduction" href="index.html"/>
+    </QuickStart>
+    
     <UsersGuide label="Users Guide" tab="users-guide" href="UsersGuide/">
       <intro label="Introduction" href="index.html"/>
       <templates label="Page and component templates" href="template.html"/>
