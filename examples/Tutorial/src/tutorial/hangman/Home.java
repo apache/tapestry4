@@ -45,9 +45,9 @@ public class Home
 extends BasePage
 implements IActionListener
 {
-    private static final int EASY = 10;
-    private static final int MEDIUM = 5;
-    private static final int HARD = 3;
+    public static final int EASY = 10;
+    public static final int MEDIUM = 5;
+    public static final int HARD = 3;
 
     private int misses;
     private String error;
@@ -72,44 +72,10 @@ implements IActionListener
         fireObservedChange("misses", value);
     }
 
-    public void setEasy(boolean value)
-    {
-        if (value)
-            setMisses(EASY);
-    }
-
-    public boolean isEasy()
-    {
-        return misses == EASY;
-    }
-
-    public void setMedium(boolean value)
-    {
-        if (value)
-            setMisses(MEDIUM);
-    }
-
-    public boolean isMedium()
-    {
-        return misses == MEDIUM;
-    }
-
-    public void setHard(boolean value)
-    {
-        if (value)
-            setMisses(HARD);
-    }
-
-    public boolean isHard()
-    {
-        return misses == HARD;
-    }
-
     public String getError()
     {
         return error;
     }
-
 
     public IActionListener getFormListener()
     {
