@@ -31,9 +31,9 @@ import net.sf.tapestry.ComponentAddress;
 import net.sf.tapestry.Tapestry;
 
 /**
- *  Squeezes a Character.
+ *  Squeezes a net.sf.tapestry.ComponentAddress.
  * 
- *  @author Howard Lewis Ship
+ *  @author mindbridge
  *  @version $Id$
  *  @since 2.2
  * 
