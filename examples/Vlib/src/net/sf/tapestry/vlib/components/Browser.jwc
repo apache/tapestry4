@@ -28,7 +28,7 @@
    
   <component id="prev" type="Direct">
     &listener;
-    <binding name="context" property-path="previousPage"/>
+    <binding name="parameters" property-path="previousPage"/>
   </component>
  
   <component id="ifShowNext" type="Conditional">
@@ -37,7 +37,7 @@
   
   <component id="next" type="Direct">
     &listener;
-    <binding name="context" property-path="nextPage"/>
+    <binding name="parameters" property-path="nextPage"/>
   </component>
 
 </specification>

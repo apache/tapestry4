@@ -31,7 +31,7 @@
   </component>
 
   <component id="insertDescription" type="InsertText">
-    <binding name="text" property-path="book.description"/>
+    <binding name="value" property-path="book.description"/>
   </component>
   
   <component id="ifShowHolder" type="Conditional">

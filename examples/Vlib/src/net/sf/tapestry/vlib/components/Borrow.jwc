@@ -5,7 +5,7 @@
   <parameter name="book" java-type="net.sf.tapestry.vlib.ejb.Book" required="yes"/>
     
   <component id="link" type="Direct">
-    <binding name="context" property-path="book.primaryKey"/>
+    <binding name="parameters" property-path="book.primaryKey"/>
     <binding name="listener" property-path="listeners.borrow"/>
     <binding name="disabled" property-path="linkDisabled"/>
   </component>

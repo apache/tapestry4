@@ -25,6 +25,8 @@
 
 package net.sf.tapestry.form;
 
+import java.io.IOException;
+
 import net.sf.tapestry.BindingException;
 import net.sf.tapestry.IActionListener;
 import net.sf.tapestry.IBinding;
@@ -32,6 +34,7 @@ import net.sf.tapestry.IForm;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.util.io.DataSqueezer;
 
 /**
  *  Implements a hidden field within a {@link Form}.
@@ -48,12 +51,14 @@ import net.sf.tapestry.RequestCycleException;
  *
  *  <tr>
  *		<td>value</td>
- *		<td>java.lang.String</td>
+ *		<td>java.lang.Object</td>
  *		<td>in-out</td>
  *		<td>yes</td>
  *		<td>&nbsp;</td>
  *		<td>The value to be stored in the the hidden field.  The parameter is read
  *  when the HTML response is generated, and then written when the form is submitted.
+ *  A {@link net.sf.tapestry.util.io.DataSqueezer} is used
+ *  to convert the value between an arbitrary type and a String.
  *	</tr>
  *
  * <tr>
@@ -82,23 +87,21 @@ import net.sf.tapestry.RequestCycleException;
 
 public class Hidden extends AbstractFormComponent
 {
-    private IBinding valueBinding;
-    private IActionListener listener;
-
-    private String name;
+    private IBinding _valueBinding;
+    private IActionListener _listener;
+    private String _name;
 
     public String getName()
     {
-        return name;
+        return _name;
     }
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
         IForm form = getForm(cycle);
         boolean formRewound = form.isRewinding();
 
-        name = form.getElementId(this);
+        _name = form.getElementId(this);
 
         // If the form containing the Hidden isn't rewound, then render.
 
@@ -110,45 +113,74 @@ public class Hidden extends AbstractFormComponent
             if (cycle.isRewinding())
                 return;
 
-            String value = valueBinding.getString();
+            Object value = _valueBinding.getObject();
+
+            String externalValue = null;
+
+            try
+            {
+                externalValue = getDataSqueezer().squeeze(value);
+            }
+            catch (IOException ex)
+            {
+                throw new RequestCycleException(this, ex);
+            }
 
             writer.beginEmpty("input");
             writer.attribute("type", "hidden");
-            writer.attribute("name", name);
-            writer.attribute("value", value);
+            writer.attribute("name", _name);
+            writer.attribute("value", externalValue);
 
             return;
         }
 
-        String value = cycle.getRequestContext().getParameter(name);
+        String externalValue = cycle.getRequestContext().getParameter(_name);
+        Object value = null;
+
+        try
+        {
+            value = getDataSqueezer().unsqueeze(externalValue);
+        }
+        catch (IOException ex)
+        {
+            throw new RequestCycleException(this, ex);
+        }
 
         // A listener is not always necessary ... it's easy to code
         // the synchronization as a side-effect of the accessor method.
 
-        valueBinding.setString(value);
+        _valueBinding.setObject(value);
 
-        if (listener != null)
-            listener.actionTriggered(this, cycle);
+        if (_listener != null)
+            _listener.actionTriggered(this, cycle);
+    }
+
+
+    /** @since 2.2 **/
+    
+    private DataSqueezer getDataSqueezer()
+    {
+        return getPage().getEngine().getDataSqueezer();
     }
 
     public IActionListener getListener()
     {
-        return listener;
+        return _listener;
     }
 
     public void setListener(IActionListener listener)
     {
-        this.listener = listener;
+        _listener = listener;
     }
 
     public IBinding getValueBinding()
     {
-        return valueBinding;
+        return _valueBinding;
     }
 
     public void setValueBinding(IBinding valueBinding)
     {
-        this.valueBinding = valueBinding;
+        _valueBinding = valueBinding;
     }
 
 }
