@@ -49,6 +49,10 @@ import java.text.*;
  *  <p>Doesn't work inside a {@link Foreach} ... it maintains a little bit
  *  of state (invalid text, error flag) 
  *  that will get confused if the component is re-used on the page.
+ *
+ *  <p>For inputting non-integer types (especially double), use
+ * {@link NumericField}.
+ *
  * 
  * <table border=1>
  * <tr> 
@@ -257,6 +261,8 @@ implements ILifecycle
 
                 notifyDelegate(ValidationConstraint.TOO_SMALL,
                         errorMessage);
+				
+				return;
             }
         }
 
@@ -274,6 +280,8 @@ implements ILifecycle
 
                 notifyDelegate(ValidationConstraint.TOO_LARGE,
                         errorMessage);
+				
+				return;
             }
         }
 
