@@ -122,8 +122,9 @@ it is expected that there will be some runtime warnings).
   <li>The &lt;inherited-binding&gt; element has been removed; parameters of parent components may be
     accessed as properties.</li>
   <li>The &lt;property&gt; element (in 3.0) has been renamed to &spec.meta;.</li>
-  <li>The &lt;property-specification&gt; element (in 3.0) has been renamed to &spec.property;, and the type
-    attribute has been dropped.</li>
+  <li>The &lt;property-specification&gt; element (in 3.0) has been renamed to &spec.property;. The type
+    attribute has been dropped. The persistent attribute has been renamed to persist, and is a string
+    (allowing a variety of persistence strategies to be applied).</li>
   <li>The &spec.inject; element has been added.</li>
   <li>The &spec.parameter; element has been simplified; the type and direction attributes have been dropped. The
     default-value attribute is now a <em>&binding-reference;</em>, as with the &spec.binding; element's value attribute.</li>
@@ -1305,13 +1306,14 @@ itself.
 	<td>The name of the property to create.</td>
 </tr>
 <tr>
-	<td>persistent</td>
-	<td>yes|no</td>
+	<td>persist</td>
+	<td>string</td>
 	<td>no</td>
 	<td>no</td>
 	<td>
-	If true, the generated property will be persistent, firing change notifications
-	when it is updated.
+	If blank (the default), then the property is transient (i.e., not persistent).  Otherwise, the
+  name of a persistence strategy must be supplied. The most common persistence
+  strategy is "session" (the property is stored into an HttpSession attribute).
 	</td>
 </tr>
 <tr>
@@ -1328,7 +1330,10 @@ itself.
 
 <note> In the Tapestry 3.0 DTD, this element was named &lt;property-specification&gt; and had an additional attribute, 
   type. In Tapestry 3.1, the type of the implemented property will simply match the type of any existing (abstract) 
-  property, or will default to Object. </note>
+  property, or will default to Object. In addition, Tapestry 3.0 only had persistent or not persistent; Tapestry 3.1
+  has different kinds of persistence, denoted by the different strategies.  Tapestry 3.0 persistence is equivalent
+  to Tapestry 3.1 "session" persistence.
+  </note>
 
 </section> <!-- spec.property -->
 

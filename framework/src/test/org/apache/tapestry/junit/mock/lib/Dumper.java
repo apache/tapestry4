@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.junit.mock.lib;
 
-import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.html.BasePage;
 
 /**
@@ -23,41 +22,13 @@ import org.apache.tapestry.html.BasePage;
  * @author Howard Lewis Ship
  */
 
-public class Dumper extends BasePage
+public abstract class Dumper extends BasePage
 {
-    private Object[] _objects;
+    public abstract Object[] getObjects();
 
-    private Object _currentObject;
+    public abstract void setObjects(Object[] objects);
 
-    public void detach()
-    {
-        _objects = null;
-        _currentObject = null;
-
-        super.detach();
-    }
-
-    public Object[] getObjects()
-    {
-        return _objects;
-    }
-
-    public void setObjects(Object[] objects)
-    {
-        _objects = objects;
-
-        Tapestry.fireObservedChange(this, "objects", _objects);
-    }
-
-    public Object getCurrentObject()
-    {
-        return _currentObject;
-    }
-
-    public void setCurrentObject(Object currentObject)
-    {
-        _currentObject = currentObject;
-    }
+    public abstract Object getCurrentObject();
 
     /**
      * Returns the class name of the current object. OGNL has trouble getting properties from Class
@@ -66,9 +37,11 @@ public class Dumper extends BasePage
 
     public String getClassName()
     {
-        if (_currentObject == null)
+        Object current = getCurrentObject();
+
+        if (current == null)
             return "<Null>";
 
-        return _currentObject.getClass().getName();
+        return current.getClass().getName();
     }
 }

@@ -23,7 +23,6 @@ import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.valid.IValidationDelegate;
 import org.jCharts.Chart;
@@ -43,20 +42,8 @@ import org.jCharts.test.TestDataGenerator;
  * @since 1.0.10
  */
 
-public class ChartPage extends BasePage implements IChartProvider
+public abstract class ChartPage extends BasePage implements IChartProvider
 {
-    private List _plotValues;
-
-    private List _removeValues;
-
-    private PlotValue _plotValue;
-
-    public void initialize()
-    {
-        _plotValues = null;
-        _removeValues = null;
-        _plotValue = null;
-    }
 
     /**
      * Invokes {@link #getPlotValues()}, which ensures that (on the very first request cycle), the
@@ -65,41 +52,27 @@ public class ChartPage extends BasePage implements IChartProvider
 
     public void beginResponse(IMarkupWriter writer, IRequestCycle cycle)
     {
-        getPlotValues();
-    }
-
-    public List getPlotValues()
-    {
-        if (_plotValues == null)
+        if (getPlotValues() == null)
         {
-            _plotValues = new ArrayList();
+            List plotValues = new ArrayList();
 
-            _plotValues.add(new PlotValue("Fred", 10));
-            _plotValues.add(new PlotValue("Barney", 15));
-            _plotValues.add(new PlotValue("Dino", 7));
+            plotValues.add(new PlotValue("Fred", 10));
+            plotValues.add(new PlotValue("Barney", 15));
+            plotValues.add(new PlotValue("Dino", 7));
 
-            Tapestry.fireObservedChange(this, "plotValues", _plotValues);
+            setPlotValues(plotValues);
         }
-
-        return _plotValues;
     }
 
-    public void setPlotValues(List plotValues)
-    {
-        _plotValues = plotValues;
+    public abstract List getPlotValues();
 
-        Tapestry.fireObservedChange(this, "plotValues", plotValues);
-    }
+    public abstract void setPlotValues(List plotValues);
 
-    public PlotValue getPlotValue()
-    {
-        return _plotValue;
-    }
+    public abstract PlotValue getPlotValue();
 
-    public void setPlotValue(PlotValue plotValue)
-    {
-        _plotValue = plotValue;
-    }
+    public abstract List getRemoveValues();
+
+    public abstract void setRemoveValues(List removeValues);
 
     /**
      * Invoked during the render; always returns false.
@@ -120,10 +93,15 @@ public class ChartPage extends BasePage implements IChartProvider
     {
         if (value)
         {
-            if (_removeValues == null)
-                _removeValues = new ArrayList();
+            List removeValues = getRemoveValues();
 
-            _removeValues.add(_plotValue);
+            if (removeValues == null)
+            {
+                removeValues = new ArrayList();
+                setRemoveValues(removeValues);
+            }
+
+            removeValues.add(getPlotValue());
 
             // Deleting things screws up the validation delegate.
             // That's because the errors are associated with the form name
@@ -165,11 +143,13 @@ public class ChartPage extends BasePage implements IChartProvider
 
     public void delete(IRequestCycle cycle)
     {
-        if (_removeValues != null)
+        List removeValues = getRemoveValues();
+
+        if (removeValues != null)
         {
             List plotValues = getPlotValues();
 
-            plotValues.removeAll(_removeValues);
+            plotValues.removeAll(removeValues);
 
             setPlotValues(plotValues);
         }
@@ -179,10 +159,7 @@ public class ChartPage extends BasePage implements IChartProvider
 
     public IAsset getChartImageAsset()
     {
-        if (chartImageAsset == null)
-            chartImageAsset = new ChartAsset(getRequestCycle(), this);
-
-        return chartImageAsset;
+        return new ChartAsset(getRequestCycle(), this);
     }
 
     /**

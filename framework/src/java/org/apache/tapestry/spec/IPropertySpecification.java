@@ -25,23 +25,40 @@ import org.apache.hivemind.LocationHolder;
  */
 public interface IPropertySpecification extends LocationHolder
 {
-    public abstract String getInitialValue();
+    public String getInitialValue();
 
-    public abstract String getName();
+    public String getName();
 
-    public abstract boolean isPersistent();
+    /**
+     * Returns true if {@link #getPersistence()}is null.
+     */
+    public boolean isPersistent();
 
-    public abstract String getType();
+    public String getType();
 
-    public abstract void setInitialValue(String initialValue);
+    public void setInitialValue(String initialValue);
 
     /**
      * Sets the name of the property. This should not be changed once this IPropertySpecification is
      * added to a {@link org.apache.tapestry.spec.IComponentSpecification}.
      */
-    public abstract void setName(String name);
+    public void setName(String name);
 
-    public abstract void setPersistent(boolean persistant);
+    public void setType(String type);
 
-    public abstract void setType(String type);
+    /**
+     * A string indicating how the property is persisted.
+     * 
+     * @since 3.1
+     */
+
+    public void setPersistence(String persistence);
+
+    /**
+     * If null, then the property is not persistent.
+     * 
+     * @since 3.1
+     */
+    public String getPersistence();
+
 }

@@ -50,7 +50,7 @@ public class TestSpecifiedPropertyWorker extends HiveMindTestCase
         PropertySpecification ps = new PropertySpecification();
         ps.setName(name);
         ps.setType(type);
-        ps.setPersistent(persistent);
+        ps.setPersistence(persistent ? "session" : null);
         ps.setLocation(location);
 
         return Collections.singletonList(ps);

@@ -24,6 +24,10 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ErrorHandler;
+import org.apache.hivemind.ErrorLog;
+import org.apache.hivemind.impl.ErrorLogImpl;
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IForm;
@@ -33,8 +37,8 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.RenderRewoundException;
 import org.apache.tapestry.StaleLinkException;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.event.ChangeObserver;
-import org.apache.tapestry.event.ObservedChangeEvent;
+import org.apache.tapestry.record.PageRecorderImpl;
+import org.apache.tapestry.record.PropertyPersistenceStrategySource;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.util.QueryParameterMap;
 
@@ -45,21 +49,25 @@ import org.apache.tapestry.util.QueryParameterMap;
  * @author Howard Lewis Ship
  */
 
-public class RequestCycle implements IRequestCycle, ChangeObserver
+public class RequestCycle implements IRequestCycle
 {
     private static final Log LOG = LogFactory.getLog(RequestCycle.class);
 
     private IPage _page;
 
-    private final IEngine _engine;
+    private IEngine _engine;
 
-    private final IEngineService _service;
+    private IEngineService _service;
 
-    private final RequestContext _requestContext;
+    private RequestContext _requestContext;
 
-    private final IMonitor _monitor;
+    private IMonitor _monitor;
 
     private HttpServletResponse _response;
+
+    /** @since 3.1 */
+
+    private PropertyPersistenceStrategySource _strategySource;
 
     /**
      * Contains parameters extracted from the request context, plus any decoded by any
@@ -68,7 +76,7 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
      * @since 3.1
      */
 
-    private/* final */QueryParameterMap _parameters;
+    private QueryParameterMap _parameters;
 
     /**
      * A mapping of pages loaded during the current request cycle. Key is the page name, value is
@@ -82,7 +90,7 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
      * {@link IPageRecorder}instance.
      */
 
-    private Map _loadedRecorders;
+    private Map _pageRecorders;
 
     private boolean _rewinding = false;
 
@@ -98,18 +106,35 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 
     private Object[] _serviceParameters;
 
+    /** @since 3.1 */
+
+    private ErrorLog _log;
+
     /**
      * Standard constructor used to render a response page.
      */
 
     public RequestCycle(IEngine engine, RequestContext requestContext,
-            QueryParameterMap parameters, IEngineService service, IMonitor monitor)
+            QueryParameterMap parameters, IEngineService service,
+            PropertyPersistenceStrategySource strategySource, ErrorHandler errorHandler,
+            IMonitor monitor)
     {
         _engine = engine;
         _requestContext = requestContext;
         _parameters = parameters;
         _service = service;
+        _strategySource = strategySource;
+        _log = new ErrorLogImpl(errorHandler, LOG);
         _monitor = monitor;
+    }
+
+    /**
+     * Alternate constructor used <b>only for testing purposes </b>.
+     * 
+     * @since 3.1
+     */
+    public RequestCycle()
+    {
     }
 
     /**
@@ -133,7 +158,7 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
         }
 
         _loadedPages = null;
-        _loadedRecorders = null;
+        _pageRecorders = null;
 
     }
 
@@ -203,38 +228,20 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
             result.setRequestCycle(this);
 
             // Get the recorder that will eventually observe and record
-            // changes to persistent properties of the page. If the page
-            // has never emitted any page changes, then it will
-            // not have a recorder.
+            // changes to persistent properties of the page.
 
             IPageRecorder recorder = getPageRecorder(name);
 
-            if (recorder != null)
-            {
-                // Have it rollback the page to the prior state. Note that
-                // the page has a null observer at this time.
+            // Have it rollback the page to the prior state. Note that
+            // the page has a null observer at this time (which keeps
+            // these changes from being sent to the page recorder).
 
-                recorder.rollback(result);
+            recorder.rollback(result);
 
-                // Now, have the page use the recorder for any future
-                // property changes.
+            // Now, have the page use the recorder for any future
+            // property changes.
 
-                result.setChangeObserver(recorder);
-
-                // And, if this recorder observed changes in a prior request cycle
-                // (and was locked after committing in that cycle), it's time
-                // to unlock.
-
-                recorder.setLocked(false);
-            }
-            else
-            {
-                // No page recorder for the page. We'll observe its
-                // changes and create the page recorder dynamically
-                // if it emits any.
-
-                result.setChangeObserver(this);
-            }
+            result.setChangeObserver(recorder);
 
             _monitor.pageLoadEnd(name);
 
@@ -248,55 +255,21 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
     }
 
     /**
-     * Returns the page recorder for the named page. This may come from the cycle's cache of page
-     * recorders or, if not yet encountered in this request cycle, the
-     * {@link IEngine#getPageRecorder(String, IRequestCycle)}is invoked to get the recorder, if it
-     * exists.
+     * Returns the page recorder for the named page. Starting with Tapestry 3.1, page recorders are
+     * shortlived objects managed exclusively by the request cycle.
      */
 
     protected IPageRecorder getPageRecorder(String name)
     {
-        IPageRecorder result = null;
+        if (_pageRecorders == null)
+            _pageRecorders = new HashMap();
 
-        if (_loadedRecorders != null)
-            result = (IPageRecorder) _loadedRecorders.get(name);
-
-        if (result != null)
-            return result;
-
-        result = _engine.getPageRecorder(name, this);
-
-        if (result == null)
-            return null;
-
-        if (_loadedRecorders == null)
-            _loadedRecorders = new HashMap();
-
-        _loadedRecorders.put(name, result);
-
-        return result;
-    }
-
-    /**
-     * Gets the page recorder from the loadedRecorders cache, or from the engine (putting it into
-     * loadedRecorders). If the recorder does not yet exist, it is created.
-     * 
-     * @see IEngine#createPageRecorder(String, IRequestCycle)
-     * @since 2.0.3
-     */
-
-    private IPageRecorder createPageRecorder(String name)
-    {
-        IPageRecorder result = getPageRecorder(name);
+        IPageRecorder result = (IPageRecorder) _pageRecorders.get(name);
 
         if (result == null)
         {
-            result = _engine.createPageRecorder(name, this);
-
-            if (_loadedRecorders == null)
-                _loadedRecorders = new HashMap();
-
-            _loadedRecorders.put(name, result);
+            result = new PageRecorderImpl(name, this, _strategySource, _log);
+            _pageRecorders.put(name, result);
         }
 
         return result;
@@ -568,10 +541,10 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
         if (LOG.isDebugEnabled())
             LOG.debug("Committing page changes");
 
-        if (_loadedRecorders == null || _loadedRecorders.isEmpty())
+        if (_pageRecorders == null || _pageRecorders.isEmpty())
             return;
 
-        Iterator i = _loadedRecorders.values().iterator();
+        Iterator i = _pageRecorders.values().iterator();
 
         while (i.hasNext())
         {
@@ -582,56 +555,14 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
     }
 
     /**
-     * For pages without a {@link IPageRecorder page recorder}, we're the
-     * {@link ChangeObserver change observer}. If such a page actually emits a change, then we'll
-     * obtain a new page recorder from the {@link IEngine engine}, set the recorder as the page's
-     * change observer, and forward the event to the newly created recorder. In addition, the new
-     * page recorder is remembered so that it will be committed by {@link #commitPageChanges()}.
-     */
-
-    public void observeChange(ObservedChangeEvent event)
-    {
-        IPage page = event.getComponent().getPage();
-        String pageName = page.getPageName();
-
-        if (LOG.isDebugEnabled())
-            LOG.debug("Observed change in page " + pageName + "; creating page recorder.");
-
-        IPageRecorder recorder = createPageRecorder(pageName);
-
-        page.setChangeObserver(recorder);
-
-        recorder.observeChange(event);
-    }
-
-    /**
-     * Finds the page and its page recorder, creating the page recorder if necessary. The page
-     * recorder is marked for discard regardless of its current state.
-     * <p>
-     * This may make the application stateful even if the page recorder does not yet exist.
-     * <p>
-     * The page recorder will be discarded at the end of the current request cycle.
+     * As of 3.1, just a synonym for {@link #forgetPage(String)}.
      * 
      * @since 2.0.2
      */
 
     public void discardPage(String name)
     {
-        if (LOG.isDebugEnabled())
-            LOG.debug("Discarding page " + name);
-
-        IPageRecorder recorder = _engine.getPageRecorder(name, this);
-
-        if (recorder == null)
-        {
-            _page = getPage(name);
-
-            recorder = createPageRecorder(name);
-
-            _page.setChangeObserver(recorder);
-        }
-
-        recorder.markForDiscard();
+        forgetPage(name);
     }
 
     /** @since 2.0.3 * */
@@ -718,4 +649,14 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 
         return _requestContext.getAbsoluteURL(contextPath + partialURL);
     }
+
+    /** @since 3.1 */
+
+    public void forgetPage(String pageName)
+    {
+        Defense.notNull(pageName, "pageName");
+
+        _strategySource.discardAllStoredChanged(pageName, this);
+    }
+
 }

@@ -151,7 +151,8 @@
         <set-object property="encoders"
                     value="service-property:tapestry.url.LinkFactory:serviceEncoders"/>
         <set-service property="monitorFactory" service-id="tapestry.monitor.MonitorFactory"/>
-        <set-object property="serviceMap" value="infrastructure:serviceMap"/>        
+        <set-object property="serviceMap" value="infrastructure:serviceMap"/> 
+        <set-service property="strategySource" service-id="tapestry.persist.PropertyPersistenceStrategySource"/>       
       </construct>
     </invoke-factory>
     

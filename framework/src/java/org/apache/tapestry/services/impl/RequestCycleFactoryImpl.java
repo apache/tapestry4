@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.services.impl;
 
+import org.apache.hivemind.ErrorHandler;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
@@ -23,6 +24,7 @@ import org.apache.tapestry.engine.IMonitorFactory;
 import org.apache.tapestry.engine.RequestCycle;
 import org.apache.tapestry.engine.ServiceEncoder;
 import org.apache.tapestry.engine.ServiceEncodingImpl;
+import org.apache.tapestry.record.PropertyPersistenceStrategySource;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.RequestCycleFactory;
 import org.apache.tapestry.services.ServiceConstants;
@@ -41,6 +43,10 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
 
     private ServiceMap _serviceMap;
 
+    private PropertyPersistenceStrategySource _strategySource;
+
+    private ErrorHandler _errorHandler;
+
     public IRequestCycle newRequestCycle(IEngine engine, RequestContext context)
     {
         IMonitor monitor = _monitorFactory.createMonitor(context);
@@ -51,7 +57,8 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
 
         IEngineService service = findService(parameters);
 
-        return new RequestCycle(engine, context, parameters, service, monitor);
+        return new RequestCycle(engine, context, parameters, service, _strategySource,
+                _errorHandler, monitor);
     }
 
     private IEngineService findService(QueryParameterMap parameters)
@@ -117,5 +124,15 @@ public class RequestCycleFactoryImpl implements RequestCycleFactory
     public void setServiceMap(ServiceMap serviceMap)
     {
         _serviceMap = serviceMap;
+    }
+
+    public void setStrategySource(PropertyPersistenceStrategySource strategySource)
+    {
+        _strategySource = strategySource;
+    }
+
+    public void setErrorHandler(ErrorHandler errorHandler)
+    {
+        _errorHandler = errorHandler;
     }
 }

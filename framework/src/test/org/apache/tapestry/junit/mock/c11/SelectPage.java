@@ -24,63 +24,32 @@ import org.apache.tapestry.html.BasePage;
  * @since 3.0
  */
 
-public class SelectPage extends BasePage
+public abstract class SelectPage extends BasePage
 {
-    private boolean _animal;
+    public abstract boolean isAnimal();
 
-    private boolean _mineral;
+    public abstract boolean isMineral();
 
-    private boolean _vegetable;
+    public abstract boolean isVegetable();
 
-    public void initialize()
-    {
-        _animal = false;
-        _mineral = false;
-        _vegetable = false;
-    }
+    public abstract void setAnimal(boolean animal);
 
-    public boolean isAnimal()
-    {
-        return _animal;
-    }
+    public abstract void setMineral(boolean mineral);
 
-    public boolean isMineral()
-    {
-        return _mineral;
-    }
-
-    public boolean isVegetable()
-    {
-        return _vegetable;
-    }
-
-    public void setAnimal(boolean animal)
-    {
-        _animal = animal;
-    }
-
-    public void setMineral(boolean mineral)
-    {
-        _mineral = mineral;
-    }
-
-    public void setVegetable(boolean vegetable)
-    {
-        _vegetable = vegetable;
-    }
+    public abstract void setVegetable(boolean vegetable);
 
     public void formSubmit(IRequestCycle cycle)
     {
         StringBuffer buffer = new StringBuffer("Selections: ");
         boolean needComma = false;
 
-        if (_animal)
+        if (isAnimal())
         {
             buffer.append("animal");
             needComma = true;
         }
 
-        if (_vegetable)
+        if (isVegetable())
         {
             if (needComma)
                 buffer.append(", ");
@@ -90,7 +59,7 @@ public class SelectPage extends BasePage
             needComma = true;
         }
 
-        if (_mineral)
+        if (isMineral())
         {
             if (needComma)
                 buffer.append(", ");

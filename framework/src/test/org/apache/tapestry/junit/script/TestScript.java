@@ -101,7 +101,7 @@ public class TestScript extends TapestryTestCase
     {
         IScript script = read("unique.script");
 
-        IRequestCycle cycle = new RequestCycle(null, null, null, null, null);
+        IRequestCycle cycle = new RequestCycle();
 
         script.execute(cycle, _processor, null);
         script.execute(cycle, _processor, null);

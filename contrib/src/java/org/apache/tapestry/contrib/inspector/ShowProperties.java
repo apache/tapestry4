@@ -14,12 +14,11 @@
 
 package org.apache.tapestry.contrib.inspector;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.hivemind.service.ClassFabUtils;
 import org.apache.tapestry.BaseComponent;
-import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.engine.IPageRecorder;
 import org.apache.tapestry.event.PageEvent;
@@ -27,34 +26,32 @@ import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.record.IPageChange;
 
 /**
- *  Component of the {@link Inspector} page used to display
- *  the persisent properties of the page.
- *
- *  @author Howard Lewis Ship
- *
- **/
+ * Component of the {@link Inspector}page used to display the persisent properties of the page.
+ * 
+ * @author Howard Lewis Ship
+ */
 
 public class ShowProperties extends BaseComponent implements PageRenderListener
 {
     private List _properties;
+
     private IPageChange _change;
+
     private IPage _inspectedPage;
 
     /**
-     *  Does nothing.
-     *
-     *  @since 1.0.5
-     *
-     **/
+     * Does nothing.
+     * 
+     * @since 1.0.5
+     */
 
     public void pageBeginRender(PageEvent event)
     {
     }
 
     /**
-     *  @since 1.0.5
-     *
-     **/
+     * @since 1.0.5
+     */
 
     public void pageEndRender(PageEvent event)
     {
@@ -69,11 +66,13 @@ public class ShowProperties extends BaseComponent implements PageRenderListener
 
         _inspectedPage = inspector.getInspectedPage();
 
-        IEngine engine = getPage().getEngine();
-        IPageRecorder recorder =
-            engine.getPageRecorder(_inspectedPage.getPageName(), inspector.getRequestCycle());
+        //  IEngine engine = getPage().getEngine();
+        IPageRecorder recorder = null;
 
-        // No page recorder?  No properties.
+        // TODO: This is going to blow up with UnsupportedOperationException
+        // engine.getPageRecorder(_inspectedPage.getPageName(), inspector.getRequestCycle());
+
+        // No page recorder? No properties.
 
         if (recorder == null)
         {
@@ -81,16 +80,18 @@ public class ShowProperties extends BaseComponent implements PageRenderListener
             return;
         }
 
-        if (recorder.getHasChanges())
-            _properties = new ArrayList(recorder.getChanges());
+        _properties = Collections.EMPTY_LIST;
+
+        // The getChanges() method was removed
+        // from IPageRecorder in release 3.1
+        // new ArrayList(recorder.getChanges());
     }
 
     /**
-     *  Returns a {@link List} of {@link IPageChange} objects.
-     *
-     *  <p>Sort order is not defined.
-     *
-     **/
+     * Returns a {@link List}of {@link IPageChange}objects.
+     * <p>
+     * Sort order is not defined.
+     */
 
     public List getProperties()
     {
@@ -111,9 +112,8 @@ public class ShowProperties extends BaseComponent implements PageRenderListener
     }
 
     /**
-     *  Returns the name of the value's class, if the value is non-null.
-     *
-     **/
+     * Returns the name of the value's class, if the value is non-null.
+     */
 
     public String getValueClassName()
     {
@@ -124,18 +124,6 @@ public class ShowProperties extends BaseComponent implements PageRenderListener
         if (value == null)
             return "<null>";
 
-        return convertClassToName(value.getClass());
+        return ClassFabUtils.getJavaClassName(value.getClass());
     }
-
-    private String convertClassToName(Class cl)
-    {
-        // TODO: This only handles one-dimensional arrays
-        // property.
-
-        if (cl.isArray())
-            return "array of " + cl.getComponentType().getName();
-
-        return cl.getName();
-    }
-
 }

@@ -16,37 +16,39 @@
 -->
 
 <!DOCTYPE page-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 	
 <page-specification
 	class="org.apache.tapestry.junit.mock.lib.Dumper">
 
+    <property name="objects" persist="session"/>
+    
 	<component id="border" type="Border">
-		<static-binding name="title">Dumper</static-binding>
+        <binding name="title" value="Dumper"/>
 	</component>
 	
 	<component id="foreach" type="Foreach">
-		<binding name="source" expression="objects"/>
-		<binding name="value" expression="currentObject"/>
-		<static-binding name="element">tr</static-binding>
+		<binding name="source" value="ognl:objects"/>
+		<binding name="value" value="ognl:currentObject"/>
+        <binding name="element" value="tr"/>
 	</component>
 	
 	<component id="insertIndex" type="Insert">
-		<binding name="value" expression="components.foreach.index"/>
+		<binding name="value" value="ognl:components.foreach.index"/>
 	</component>
 	
 	<component id="insertClass" type="Insert">
-		<binding name="value" expression="className"/>
+		<binding name="value" value="ognl:className"/>
 	</component>
 	
 	<component id="insertValue" type="Insert">
-		<binding name="value" expression="currentObject"/>
+		<binding name="value" value="ognl:currentObject"/>
 	</component>
 	
 	<component id="refresh" type="PageLink">
-		<static-binding name="page">Dumper</static-binding>
-		<binding name="namespace" expression="namespace"/>
+		<binding name="page" value="Dumper"/>
+		<binding name="namespace" value="ognl:namespace"/>
 	</component>
 	
 </page-specification>	

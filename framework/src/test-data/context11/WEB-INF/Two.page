@@ -16,7 +16,13 @@
 -->
 
 <!DOCTYPE page-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
   
-<page-specification class="org.apache.tapestry.junit.mock.c11.PersistentSelectPage"/>
+<page-specification class="org.apache.tapestry.junit.mock.c11.SelectPage">
+    
+    <property name="animal" persist="session"/>
+    <property name="mineral" persist="session"/>
+    <property name="vegetable" persist="session"/>
+    
+</page-specification>

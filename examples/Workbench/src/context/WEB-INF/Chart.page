@@ -21,6 +21,8 @@
 
 <page-specification class="org.apache.tapestry.workbench.chart.ChartPage">
 
+  <property name="plotValues" persist="session"/>
+  
   <bean name="delegate" class="org.apache.tapestry.workbench.WorkbenchValidationDelegate"/>
   
 	<bean name="required" class="org.apache.tapestry.valid.StringValidator" lifecycle="page">

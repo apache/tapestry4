@@ -372,6 +372,13 @@ be careful <em>not</em> to change the internal state of a persistent property va
 setter method.
 </p>
 
+<note>
+Starting with Tapestry 3.1, persistence strategies are pluggable. In theory, properties can be stored 
+can be stored in query parameters or HTTP cookies, or by other means. The persist attribute of the
+&lt;property; element defines the stategy used, but only the "session" strategy is provided with
+the framework.
+</note>
+
 
 <p>
 Persistent properties make use of a &spec.property; element in the
@@ -437,7 +444,7 @@ in the page's specification:
 
   <property
     name="itemsPerPage"
-    persistent="yes"
+    persist="session"
     initial-value="10"/>
 
 </page-specification>
