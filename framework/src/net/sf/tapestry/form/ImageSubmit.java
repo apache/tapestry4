@@ -102,7 +102,6 @@ public class ImageSubmit extends AbstractFormComponent
             _name = form.getElementId(this);
         else
             _name = form.getElementId(_nameOverride);
-        ;
 
         if (rewinding)
         {
@@ -241,6 +240,14 @@ public class ImageSubmit extends AbstractFormComponent
     public void setNameOverride(String nameOverride)
     {
         _nameOverride = nameOverride;
+    }
+
+    protected void prepareForRender(IRequestCycle cycle) throws RequestCycleException
+    {
+        super.prepareForRender(cycle);
+        
+        if (_image == null)
+            throw new RequiredParameterException(this, "image", getBinding("image"))
     }
 
 }
