@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC 
-  "-//Howard Ship//Tapestry Specification 1.1//EN" 
-  "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<!DOCTYPE page-specification PUBLIC 
+  "-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+  "http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 
-<specification class="net.sf.tapestry.vlib.pages.admin.EditUsers">
+<page-specification class="net.sf.tapestry.vlib.pages.admin.EditUsers">
 
   <property name="page-type">admin</property>
   
@@ -16,36 +16,36 @@
   <component id="showMessage" type="ShowMessage"/>
   
   <component id="form" type="Form">
-  	<binding name="listener" property-path="listeners.updateUsers"/>
+  	<binding name="listener" expression="listeners.updateUsers"/>
   </component>
   
   <component id="e" type="ListEdit">
-  	<binding name="source" property-path="userKeys"/>
-  	<binding name="value" property-path="userKey"/>
+  	<binding name="source" expression="userKeys"/>
+  	<binding name="value" expression="userKey"/>
   </component>
   
   <component id="insertUser" type="Insert">
-  	<binding name="value" property-path="user.naturalName"/>
+  	<binding name="value" expression="user.naturalName"/>
   </component>
   
   <component id="insertEmail" type="Insert">
-  	<binding name="value" property-path="user.email"/>
+  	<binding name="value" expression="user.email"/>
   </component>
   
   <component id="inputAdmin" type="Checkbox">
-  	<binding name="selected" property-path="user.admin"/>
+  	<binding name="selected" expression="user.admin"/>
   </component>
   
   <component id="inputLockedOut" type="Checkbox">
-  	<binding name="selected" property-path="user.lockedOut"/>
+  	<binding name="selected" expression="user.lockedOut"/>
   </component>
   
   <component id="inputResetPassword" type="Checkbox">
-  	<binding name="selected" property-path="resetPassword"/>
+  	<binding name="selected" expression="resetPassword"/>
   </component>
   
   <component id="inputDelete" type="Checkbox">
-  	<binding name="selected" property-path="deleteUser"/>
+  	<binding name="selected" expression="deleteUser"/>
   </component>
 
-</specification>
+</page-specification>

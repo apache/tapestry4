@@ -1,24 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC
-	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
-	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+<!DOCTYPE component-specification PUBLIC
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 	
-<specification class="net.sf.tapestry.vlib.components.BookLink" allow-body="no" allow-informal-parameters="no">
+<component-specification class="net.sf.tapestry.vlib.components.BookLink"
+	allow-body="no" 
+	allow-informal-parameters="no">
   
   <parameter name="book" java-type="net.sf.tapestry.vlib.ejb.Book" required="yes" direction="in"/>
   
   <component id="link" type="Service">
     <field-binding name="service" field-name="net.sf.tapestry.vlib.ExternalService.SERVICE_NAME"/>
-    <binding name="parameters" property-path="bookParameters"/>
+    <binding name="parameters" expression="bookParameters"/>
   </component>
   
   <component id="insertBookTitle" type="Insert">
-    <binding name="value" property-path="book.title"/>
+    <binding name="value" expression="book.title"/>
   </component>
   
   <component id="ifNew" type="Conditional">
-    <binding name="condition" property-path="new"/>
+    <binding name="condition" expression="newlyAdded"/>
   </component>
   
-</specification>
+</component-specification>

@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
-<specification class="net.sf.tapestry.vlib.pages.EditBook">
+<!DOCTYPE page-specification PUBLIC
+	 "-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	 "http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+<page-specification class="net.sf.tapestry.vlib.pages.EditBook">
 
   <property name="page-type">library</property>
   
@@ -12,24 +14,24 @@
   <component id="showError" type="ShowError"/>
   
   <component id="showValidationError" type="ShowValidationError">
-  	<binding name="delegate" property-path="validationDelegate"/>
+  	<binding name="delegate" expression="validationDelegate"/>
   </component>
   
   <component id="form" type="Form">
-    <binding name="listener" property-path="listeners.formSubmit"/>
-    <binding name="delegate" property-path="validationDelegate"/>
+    <binding name="listener" expression="listeners.formSubmit"/>
+    <binding name="delegate" expression="validationDelegate"/>
   </component>
   
   <component id="syncPrimaryKey" type="Hidden">
-    <binding name="value" property-path="bookPrimaryKey"/>
+    <binding name="value" expression="bookPrimaryKey"/>
   </component>
   
   <component id="labelTitle" type="FieldLabel">
-    <binding name="field" property-path="components.inputTitle"/>
+    <binding name="field" expression="components.inputTitle"/>
   </component>
   
   <component id="inputTitle" type="ValidField">
-    <binding name="value" property-path="attributes.title"/>
+    <binding name="value" expression="attributes.title"/>
     <static-binding name="maximumLength">100</static-binding>
     <static-binding name="displayWidth">50</static-binding>
     <static-binding name="displayName">Title</static-binding>
@@ -37,11 +39,11 @@
   </component>
   
   <component id="labelAuthor" type="FieldLabel">
-    <binding name="field" property-path="components.inputAuthor"/>
+    <binding name="field" expression="components.inputAuthor"/>
   </component>
   
   <component id="inputAuthor" type="ValidField">
-    <binding name="value" property-path="attributes.author"/>
+    <binding name="value" expression="attributes.author"/>
     <static-binding name="maximumLength">60</static-binding>
     <static-binding name="displayWidth">30</static-binding>
     <static-binding name="displayName">Author</static-binding>
@@ -51,49 +53,49 @@
   <component id="inputISBN" type="TextField">
     <static-binding name="maximumLength">20</static-binding>
     <static-binding name="displayWidth">20</static-binding>
-    <binding name="value" property-path="attributes.ISBN"/>
+    <binding name="value" expression="attributes.ISBN"/>
   </component>
   
   <component id="labelPublisher" type="FieldLabel">
-    <binding name="field" property-path="components.inputPublisherName"/>
+    <binding name="field" expression="components.inputPublisherName"/>
   </component>
   
   <component id="inputPublisher" type="PropertySelection">
-    <binding name="value" property-path="attributes.publisherPK"/>
-    <binding name="model" property-path="engine.publisherModel"/>
+    <binding name="value" expression="attributes.publisherPK"/>
+    <binding name="model" expression="engine.publisherModel"/>
   </component>
   
   <component id="inputPublisherName" type="ValidField">
     <static-binding name="maximumLength">40</static-binding>
     <static-binding name="displayWidth">20</static-binding>
-    <binding name="value" property-path="publisherName"/>
+    <binding name="value" expression="publisherName"/>
     <static-binding name="displayName">Publisher</static-binding>
     <field-binding name="validator" field-name="net.sf.tapestry.valid.StringValidator.OPTIONAL"/>
   </component>
   
   <component id="inputDescription" type="Text">
-    <binding name="value" property-path="attributes.description"/>
+    <binding name="value" expression="attributes.description"/>
     <static-binding name="columns">35</static-binding>
     <static-binding name="rows">8</static-binding>
   </component>
   
   <component id="inputHolder" type="PropertySelection">
-    <binding name="value" property-path="attributes.holderPK"/>
-    <binding name="model" property-path="engine.personModel"/>
+    <binding name="value" expression="attributes.holderPK"/>
+    <binding name="model" expression="engine.personModel"/>
   </component>
   
   <component id="inputHidden" type="Checkbox">
-  	<binding name="selected" property-path="attributes.hidden"/>
+  	<binding name="selected" expression="attributes.hidden"/>
   </component>
   
   <component id="inputLendable" type="Checkbox">
-  	<binding name="selected" property-path="attributes.lendable"/>
+  	<binding name="selected" expression="attributes.lendable"/>
   </component>
   
   <component id="publisherScript" type="Script">
     <static-binding name="script">/net/sf/tapestry/vlib/pages/Publisher.script</static-binding>
-    <binding name="select" property-path="components.inputPublisher"/>
-    <binding name="field" property-path="components.inputPublisherName"/>
+    <binding name="select" expression="components.inputPublisher"/>
+    <binding name="field" expression="components.inputPublisherName"/>
   </component>
 
-</specification>
+</page-specification>

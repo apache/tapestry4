@@ -266,7 +266,7 @@ public class Border extends BaseComponent
     {
         if (subheader == null)
         {
-            String name = "header-" + getPage().getName();
+            String name = "header_" + getPage().getName();
 
             subheader = getAsset(name);
 

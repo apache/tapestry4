@@ -1,20 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
-<specification class="net.sf.tapestry.vlib.components.Borrow" allow-body="no" allow-informal-parameters="no">
+<!DOCTYPE component-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+	
+<component-specification class="net.sf.tapestry.vlib.components.Borrow"
+	allow-body="no" 
+	allow-informal-parameters="no">
+	
   <parameter name="book" java-type="net.sf.tapestry.vlib.ejb.Book" required="yes"/>
     
   <component id="link" type="Direct">
-    <binding name="parameters" property-path="book.primaryKey"/>
-    <binding name="listener" property-path="listeners.borrow"/>
-    <binding name="disabled" property-path="linkDisabled"/>
+    <binding name="parameters" expression="book.primaryKey"/>
+    <binding name="listener" expression="listeners.borrow"/>
+    <binding name="disabled" expression="linkDisabled"/>
   </component>
   
   <component id="image" type="Rollover">
-  	<binding name="image" property-path="assets.enabled"/>
-  	<binding name="disabled" property-path="assets.disabled"/>
+  	<binding name="image" expression="assets.enabled"/>
+  	<binding name="disabled" expression="assets.disabled"/>
   </component>
   
   <context-asset name="enabled" path="/images/icon_borrow.gif"/>
   <context-asset name="disabled" path="/images/spacer.gif"/>
-</specification>
+  
+</component-specification>

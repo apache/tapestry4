@@ -1,11 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
-<specification class="net.sf.tapestry.BaseComponent" allow-informal-parameters="no">
+<!DOCTYPE component-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+	
+<component-specification 
+	class="net.sf.tapestry.BaseComponent" 
+	allow-informal-parameters="no">
+	
   <component id="ifError" type="Conditional">
-    <binding name="condition" property-path="page.error"/>
+    <binding name="condition" expression="page.error"/>
   </component>
+  
   <component id="insertError" type="Insert">
-    <binding name="value" property-path="page.error"/>
+    <binding name="value" expression="page.error"/>
   </component>
-</specification>
+  
+</component-specification>

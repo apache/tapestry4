@@ -39,6 +39,8 @@ import java.sql.Timestamp;
 
 public class Person implements Serializable
 {
+    private static final long serialVersionUID = 4191736656532597561L;
+    
 	private Object[] columns;
 
 	public static final int PRIMARY_KEY_COLUMN = 0;

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC 
-	"-//Howard Ship//Tapestry Specification 1.1//EN" 
-	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 
-<specification class="net.sf.tapestry.vlib.pages.MyLibrary">
+<page-specification class="net.sf.tapestry.vlib.pages.MyLibrary">
 
   <property name="page-type">library</property>
   
@@ -18,7 +18,7 @@
   <component id="showMessage" type="ShowMessage"/>
 
   <component id="ifShowOwnedBooks" type="Conditional">
-    <binding name="condition" property-path="components.browser.resultCount"/>
+    <binding name="condition" expression="components.browser.resultCount"/>
   </component>
 
   <component id="ifNoOwnedBooks" copy-of="ifShowOwnedBooks">
@@ -26,46 +26,46 @@
   </component>
   
   <component id="browser" type="Browser">
-  	<binding name="query" property-path="ownedQuery"/>
+  	<binding name="query" expression="ownedQuery"/>
   </component>
   
   <component id="insertResultCount" type="Insert">
-  	<binding name="value" property-path="components.browser.resultCount"/>
+  	<binding name="value" expression="components.browser.resultCount"/>
   </component>
   
   <component id="e" type="Foreach">
-    <binding name="source" property-path="components.browser.pageResults"/>
-    <binding name="value" property-path="currentBook"/>
+    <binding name="source" expression="components.browser.pageResults"/>
+    <binding name="value" expression="currentBook"/>
     <static-binding name="element">tr</static-binding>
   </component>
 
   <component id="insertTitle" type="Insert">
-    <binding name="value" property-path="currentBook.title"/>
+    <binding name="value" expression="currentBook.title"/>
   </component>
 
   <component id="insertAuthor" type="Insert">
-    <binding name="value" property-path="currentBook.author"/>
+    <binding name="value" expression="currentBook.author"/>
   </component>
 
   <component id="insertPublisher" type="Insert">
-    <binding name="value" property-path="currentBook.publisherName"/>
+    <binding name="value" expression="currentBook.publisherName"/>
   </component>
 
   <component id="holderLink" type="PersonLink">
-    <binding name="primaryKey" property-path="currentBook.holderPrimaryKey"/>
-    <binding name="name" property-path="currentBook.holderName"/>
-    <binding name="omit" property-path="omitHolderLink"/>
+    <binding name="primaryKey" expression="currentBook.holderPrimaryKey"/>
+    <binding name="name" expression="currentBook.holderName"/>
+    <binding name="omit" expression="omitHolderLink"/>
     <static-binding name="class">clsDataBlue</static-binding>
   </component>
 
   <component id="edit" type="Direct">
-    <binding name="listener" property-path="listeners.editBook"/>
-    <binding name="parameters" property-path="currentBook.primaryKey"/>
+    <binding name="listener" expression="listeners.editBook"/>
+    <binding name="parameters" expression="currentBook.primaryKey"/>
   </component>
 
   <component id="delete" type="Direct">
-    <binding name="listener" property-path="listeners.deleteBook"/>
-    <binding name="parameters" property-path="currentBook.primaryKey"/>
+    <binding name="listener" expression="listeners.deleteBook"/>
+    <binding name="parameters" expression="currentBook.primaryKey"/>
   </component>
  
-</specification>
+</page-specification>

@@ -1,44 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id $ -->
-<!DOCTYPE specification PUBLIC 
-	"-//Howard Ship//Tapestry Specification 1.1//EN" 
-	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd" [
+<!DOCTYPE component-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd" [
 
-<!ENTITY listener '<binding name="listener" property-path="listeners.jump"/>'>
+<!ENTITY listener '<binding name="listener" expression="listeners.jump"/>'>
 
 ]>
 	
-<specification allow-informal-parameters="no" class="net.sf.tapestry.vlib.components.Browser">
+<component-specification 
+	allow-informal-parameters="no" 
+	class="net.sf.tapestry.vlib.components.Browser">
 
   <parameter name="query" required="yes" java-type="net.sf.tapestry.vlib.IBookQuery"/>
 
   <component id="insertRange" type="Insert">
-    <binding name="value" property-path="range"/>
+    <binding name="value" expression="range"/>
   </component>
       
   <component id="insertWrapped" type="InsertWrapped"/>
   
   <component id="ifResults" type="Conditional">
-  	<binding name="condition" property-path="resultCount"/>
+  	<binding name="condition" expression="resultCount"/>
   </component>
   
   <component id="ifShowPrev" type="Conditional">
-    <binding name="condition" property-path="showPreviousLink"/>
+    <binding name="condition" expression="showPreviousLink"/>
   </component>
    
   <component id="prev" type="Direct">
     &listener;
-    <binding name="parameters" property-path="previousPage"/>
+    <binding name="parameters" expression="previousPage"/>
   </component>
  
   <component id="ifShowNext" type="Conditional">
-    <binding name="condition" property-path="showNextLink"/>
+    <binding name="condition" expression="showNextLink"/>
   </component>
   
   <component id="next" type="Direct">
     &listener;
-    <binding name="parameters" property-path="nextPage"/>
+    <binding name="parameters" expression="nextPage"/>
   </component>
 
-</specification>
+</component-specification>
 
