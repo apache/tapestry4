@@ -38,6 +38,9 @@ import java.awt.Point;
  *  of the HTML element), it is more commonly used to provide a graphic
  *  image for the user to click, rather than the rather plain &lt;input type=submit&gt;.
  *
+ * <p>It is likely that this component's functionality will be rolled into
+ * the {@link Submit} component at some point in the near future.
+ *
  * <table border=1>
  * <tr> 
  *    <td>Parameter</td>

@@ -55,6 +55,16 @@ import java.text.Format;
  *  <td>An optional format object used to convert the value parameter for
  *  insertion into the HTML response. </td> </tr>
  *
+ *  <tr>
+ *      <td>raw</td>
+ *      <td>boolean</td>
+ *      <td>no</td>
+ *      <td>false</td>
+ *      <td>If true, then the method {@link IResponseWriter#printRaw(String)} is used
+ *  , rather than {@link IResponseWriter#print(String)}.
+ *      </td>
+ *  </tr>
+ *
  * </table>
  *
  * <p>Informal parameters are not allowed.  The component must not have a body.
@@ -69,6 +79,9 @@ public class Insert extends AbstractComponent
 {
 	private IBinding valueBinding;
 	private IBinding formatBinding;
+    private IBinding rawBinding;
+    private boolean staticRawValue;
+    private boolean rawValue;
 
 	public IBinding getFormatBinding()
 	{
@@ -84,6 +97,20 @@ public class Insert extends AbstractComponent
 	{
 		return valueBinding;
 	}
+
+    public IBinding getRawBinding()
+    {
+        return rawBinding;
+    }
+
+    public void setRawBinding(IBinding value)
+    {
+        rawBinding = value;
+        staticRawValue = value.isStatic();
+
+        if (staticRawValue)
+            rawValue = value.getBoolean();
+    }
 
 	/**
 	*  Prints its value parameter, possibly formatted by its format parameter.
@@ -102,6 +129,7 @@ public class Insert extends AbstractComponent
 		Object value = null;
 		Format format = null;
 		String insert;
+        boolean raw = false;
 
 		if (cycle.isRewinding())
 			return;
@@ -120,7 +148,15 @@ public class Insert extends AbstractComponent
 		else
 			insert = format.format(value);
 
-		writer.print(insert);
+        if (staticRawValue)
+            raw = rawValue;
+        else if (rawBinding != null)
+            raw = rawBinding.getBoolean();
+
+        if (raw)
+            writer.printRaw(insert);
+        else
+		    writer.print(insert);
 			
 	}
 
