@@ -52,105 +52,104 @@
  *  information on the Apache Software Foundation, please see
  *  <http://www.apache.org/>.
  */
-package net.sf.tapestry.form;
+package net.sf.tapestry.junit.mock.c11;
 
-import net.sf.tapestry.AbstractComponent;
-import net.sf.tapestry.IBinding;
-import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.RequestCycleException;
-import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.html.BasePage;
 
 /**
- *  A component that renders an HTML &lt;option&gt; form element.
- *  Such a component must be wrapped (possibly indirectly)
- *  inside a {@link Select} component.
- *
- *  [<a href="../../../../../ComponentReference/Option.html">Component Reference</a>]
+ *  Used to test the Select and Option elements.
+ * 
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- * 
+ *  @since 2.4
  **/
 
-public class Option extends AbstractComponent
+public class TestSelect extends BasePage
 {
-    private IBinding _selectedBinding;
-    private String _label;
-
-    public IBinding getSelectedBinding()
+	private boolean _animal;
+	private boolean _mineral;
+	private boolean _vegetable;
+	
+	public void initialize()
+	{
+		_animal = false;
+		_mineral = false;
+		_vegetable = false;
+	}
+	
+    public boolean isAnimal()
     {
-        return _selectedBinding;
+        return _animal;
     }
 
-    /**
-     *  Renders the &lt;option&gt; element, or responds when the form containing the element 
-     *  is submitted (by checking {@link Form#isRewinding()}.
-     *
-     *  <p>If the <code>label</code> property is set, it is inserted inside the
-     *  &lt;option&gt; element.
-     *
-     **/
-
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
+    public boolean isMineral()
     {
-        Select select = Select.get(cycle);
-        if (select == null)
-            throw new RequestCycleException(
-                Tapestry.getString("Option.must-be-contained-by-select"),
-                this);
-
-        // It isn't enough to know whether the cycle in general is rewinding, need to know
-        // specifically if the form which contains this component is rewinding.
-
-        boolean rewinding = select.isRewinding();
-
-        String value = select.getNextOptionId();
-
-        if (rewinding)
-        {
-            if (!select.isDisabled())
-                _selectedBinding.setBoolean(select.isSelected(value));
-
-            renderBody(writer, cycle);
-        }
-        else
-        {
-            writer.begin("option");
-
-            writer.attribute("value", value);
-
-            if (_selectedBinding.getBoolean())
-                writer.attribute("selected");
-
-            generateAttributes(writer, cycle);
-
-            if (_label != null)
-            {
-                writer.print(_label);
-            }
-
-            renderBody(writer, cycle);
-
-            writer.end();
-        }
-
+        return _mineral;
     }
 
-    public void setSelectedBinding(IBinding value)
+    public boolean isVegetable()
     {
-        _selectedBinding = value;
-    }
-    
-    public String getLabel()
-    {
-        return _label;
+        return _vegetable;
     }
 
-    public void setLabel(String label)
+    public void setAnimal(boolean animal)
     {
-        _label = label;
+        _animal = animal;
     }
 
+    public void setMineral(boolean mineral)
+    {
+        _mineral = mineral;
+    }
+
+    public void setVegetable(boolean vegetable)
+    {
+        _vegetable = vegetable;
+    }
+
+	public void formSubmit(IRequestCycle cycle)
+	{
+		StringBuffer buffer = new StringBuffer("Selections: ");
+		boolean needComma = false;
+		
+		if (_animal)
+		{
+			buffer.append("animal");
+			needComma = true;
+		}
+		
+		if (_vegetable)
+		{
+			if (needComma)
+			buffer.append(", ");
+			
+			buffer.append("vegetable");
+			
+			needComma = true;
+		}
+		
+		if (_mineral)
+		{
+			if (needComma) buffer.append(", ");
+			
+			buffer.append("mineral");
+			
+			needComma = true;
+		}
+			
+			if (!needComma)
+			buffer.append("none");
+			
+		buffer.append(".");
+		
+		Result result = (Result)cycle.getPage("Result");
+		
+		String message = buffer.toString();
+		
+		result.setMessage(message);
+		
+		cycle.setPage(result);
+	}
 }

@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="selopt" root="context11"/>
+
+  	<servlet name="app" class="net.sf.tapestry.ApplicationServlet"/>
+
+	<request>
+	
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Home</title>
+]]>		
+		</assert-output>	
+		
+		<assert-output name="Form">
+<![CDATA[
+<form method="post" name="Form0" action="/selopt/app">
+]]>
+		</assert-output>
+		
+		<assert-output-matches name="Hidden Fields" subgroup="1">
+<![CDATA[			
+<input type="hidden" (name="(.*?)" value="(.*?)")/>
+]]>
+			<match>name="service" value="direct"</match>
+			<match>name="context" value="0/Home/$Form"</match>
+			<match>name="sp" value="S0"</match>
+			<match>name="Form0" value="$Select"</match>
+		</assert-output-matches>
+
+		<assert-output name="Select Tag">
+<![CDATA[
+<select name="$Select">	<option/>
+]]>
+		</assert-output>
+
+		<assert-output-matches name="Option Tags">
+<![CDATA[
+<option value="(.*?)">(.*?)</option>
+]]>
+			<match><![CDATA[<option value="0">Animal</option>]]></match>
+			<match><![CDATA[<option value="1">Vegetable</option>]]></match>			
+			<match><![CDATA[<option value="2">Mineral (or unknown)</option>]]></match>
+		</assert-output-matches>
+		
+	</request>
+	
+	<!-- Submit the form, and specify nothing. -->
+	
+	<request>
+		<parameter name="service" value="direct"/>
+		<parameter name="context" value="0/Home/$Form"/>
+		<parameter name="sp" value="S0"/>
+		<parameter name="Form0" value="$Select"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Result</title>
+]]>		
+		</assert-output>	
+		
+		<assert-output name="Selections">
+Selections: none.
+		</assert-output>
+			
+	</request>
+	
+	<!-- Select one of the items. -->
+	
+	<request>
+		<parameter name="service" value="direct"/>
+		<parameter name="context" value="0/Home/$Form"/>
+		<parameter name="sp" value="S0"/>
+		<parameter name="Form0" value="$Select"/>
+		<parameter name="$Select" value="1"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Result</title>
+]]>		
+		</assert-output>	
+		
+		<assert-output name="Selections">
+Selections: vegetable.
+		</assert-output>
+			
+	</request>
+			
+
+	<!-- Go to the page with the persistent multiple options. -->
+	
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="Two"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Two</title>
+]]>		
+		</assert-output>	
+		
+		<assert-output name="Form">
+<![CDATA[
+<form method="post" name="Form0" action="/selopt/app">
+]]>
+		</assert-output>
+		
+		<assert-output-matches name="Hidden Fields" subgroup="1">
+<![CDATA[			
+<input type="hidden" (name="(.*?)" value="(.*?)")/>
+]]>
+			<match>name="service" value="direct"</match>
+			<match>name="context" value="0/Two/$Form"</match>
+			<match>name="sp" value="S0"</match>
+			<match>name="Form0" value="$Select"</match>
+		</assert-output-matches>
+
+		<assert-output name="Select Tag">
+<![CDATA[
+<select name="$Select" multiple="multiple">
+]]>
+		</assert-output>
+
+		<assert-output-matches name="Option Tags">
+<![CDATA[
+<option value="(.*?)"(.*?)>(.*?)</option>
+]]>
+			<match><![CDATA[<option value="0">Animal</option>]]></match>
+			<match><![CDATA[<option value="1">Vegetable</option>]]></match>			
+			<match><![CDATA[<option value="2">Mineral (or unknown)</option>]]></match>
+		</assert-output-matches>
+		
+	</request>
+
+	
+	
+	<!-- Select two items. -->
+	
+	<request>
+		<parameter name="service" value="direct"/>
+		<parameter name="context" value="0/Two/$Form"/>
+		<parameter name="sp" value="S0"/>
+		<parameter name="Form0" value="$Select"/>
+		<parameter name="$Select">
+				<value>1</value>
+				<value>2</value>
+		</parameter>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Result</title>
+]]>		
+		</assert-output>	
+		
+		<assert-output name="Selections">
+Selections: vegetable, mineral.
+		</assert-output>
+			
+	</request>		
+	
+	<!-- Back to the page, see if the tags reflect right values. -->
+	
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="Two"/>
+		
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Two</title>
+]]>		
+		</assert-output>
+				
+		<assert-output-matches name="Option Tags">
+<![CDATA[
+<option value="(.*?)"(.*?)>(.*?)</option>
+]]>
+			<match><![CDATA[<option value="0">Animal</option>]]></match>
+			<match><![CDATA[<option value="1" selected="selected">Vegetable</option>]]></match>			
+			<match><![CDATA[<option value="2" selected="selected">Mineral (or unknown)</option>]]></match>
+		</assert-output-matches>		
+	</request>
+
+	<!-- Next up, a page that has a disabled Select. -->
+	
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="Three"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Three</title>
+]]>		
+		</assert-output>	
+		
+		<assert-output name="Form">
+<![CDATA[
+<form method="post" name="Form0" action="/selopt/app">
+]]>
+		</assert-output>
+		
+		<assert-output-matches name="Hidden Fields" subgroup="1">
+<![CDATA[			
+<input type="hidden" (name="(.*?)" value="(.*?)")/>
+]]>
+			<match>name="service" value="direct"</match>
+			
+			<!-- Remember the persistent properties?  Those made the app go stateful. -->
+			
+			<match>name="context" value="1/Three/$Form"</match>
+			<match>name="sp" value="S0"</match>
+			<match>name="Form0" value="$Select"</match>
+		</assert-output-matches>
+
+		<assert-output name="Select Tag">
+<![CDATA[
+<select name="$Select" disabled="disabled">
+]]>
+		</assert-output>
+
+		<assert-output-matches name="Option Tags">
+<![CDATA[
+<option value="(.*?)"(.*?)>(.*?)</option>
+]]>
+			<match><![CDATA[<option value="0">Animal</option>]]></match>
+			<match><![CDATA[<option value="1">Vegetable</option>]]></match>			
+			<match><![CDATA[<option value="2">Mineral (or unknown)</option>]]></match>
+		</assert-output-matches>
+		
+	</request>	
+	
+	<!-- Pretend to be a browser that ignores the disabled flag on the select.
+		 Check that the values are ignored. -->
+		 
+	<request>
+		<parameter name="service" value="direct"/>
+		<parameter name="context" value="1/Three/$Form"/>
+		<parameter name="sp" value="S0"/>
+		<parameter name="Form0" value="$Select"/>
+		<parameter name="$Select" value="1"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Result</title>
+]]>		
+		</assert-output>	
+		
+		<assert-output name="Selections">
+Selections: none.
+		</assert-output>
+			
+	</request>
+	
+	<!-- Page Four has a second form that uses the action service.   We check
+		 that the form containing the Select ignores the request property. -->
+		 
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="Four"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Four</title>
+]]>		
+		</assert-output>
+		
+		<assert-output name="Second Form">
+<![CDATA[
+<form method="post" name="Form1" action="/selopt/app">
+]]>	
+		</assert-output>
+	</request>
+	
+	<!-- Submit the second form. -->
+	
+	<request>
+		<parameter name="service" value="action"/>
+		<parameter name="context" value="1/Four/1/$Form_0"/>
+		<parameter name="Form1" value=""/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Result</title>
+]]>				
+		</assert-output>
+		
+		<assert-output name="Message">
+Second form triggered.
+		</assert-output>
+		
+	</request>
+	
+	<!-- And on to the degenerate cases. -->
+	
+	<!-- #1 Select not in a Form. -->
+	
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="Five"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Exception</title>
+]]>				
+		</assert-output>
+			
+		<assert-output name="Message">
+		This component must be contained within a Form.	
+		</assert-output>
+	</request>
+	
+	<!-- #2 Nested Selects. -->
+	
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="Six"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Exception</title>
+]]>				
+		</assert-output>
+			
+		<assert-output name="Message">
+		Select components may not be nested.
+		</assert-output>
+	</request>	
+	
+	<!-- #3:  Option not in a Select -->
+	
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="Seven"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Exception</title>
+]]>				
+		</assert-output>
+			
+		<assert-output name="Message">
+		Option component must be contained within a Select.
+		</assert-output>
+	</request>		
+	
+</mock-test>

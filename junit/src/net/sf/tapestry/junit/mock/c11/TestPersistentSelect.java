@@ -52,105 +52,42 @@
  *  information on the Apache Software Foundation, please see
  *  <http://www.apache.org/>.
  */
-package net.sf.tapestry.form;
+package net.sf.tapestry.junit.mock.c11;
 
-import net.sf.tapestry.AbstractComponent;
-import net.sf.tapestry.IBinding;
-import net.sf.tapestry.IMarkupWriter;
-import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.RequestCycleException;
-import net.sf.tapestry.Tapestry;
 
 /**
- *  A component that renders an HTML &lt;option&gt; form element.
- *  Such a component must be wrapped (possibly indirectly)
- *  inside a {@link Select} component.
- *
- *  [<a href="../../../../../ComponentReference/Option.html">Component Reference</a>]
+ *  Makes the three properties persistent.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- * 
+ *  @since 2.4
  **/
 
-public class Option extends AbstractComponent
+public class TestPersistentSelect extends TestSelect
 {
-    private IBinding _selectedBinding;
-    private String _label;
-
-    public IBinding getSelectedBinding()
+    public void setAnimal(boolean animal)
     {
-        return _selectedBinding;
+    	super.setAnimal(animal);
+    	
+        fireObservedChange("animal", animal);
     }
 
-    /**
-     *  Renders the &lt;option&gt; element, or responds when the form containing the element 
-     *  is submitted (by checking {@link Form#isRewinding()}.
-     *
-     *  <p>If the <code>label</code> property is set, it is inserted inside the
-     *  &lt;option&gt; element.
-     *
-     **/
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
+    public void setMineral(boolean mineral)
     {
-        Select select = Select.get(cycle);
-        if (select == null)
-            throw new RequestCycleException(
-                Tapestry.getString("Option.must-be-contained-by-select"),
-                this);
-
-        // It isn't enough to know whether the cycle in general is rewinding, need to know
-        // specifically if the form which contains this component is rewinding.
-
-        boolean rewinding = select.isRewinding();
-
-        String value = select.getNextOptionId();
-
-        if (rewinding)
-        {
-            if (!select.isDisabled())
-                _selectedBinding.setBoolean(select.isSelected(value));
-
-            renderBody(writer, cycle);
-        }
-        else
-        {
-            writer.begin("option");
-
-            writer.attribute("value", value);
-
-            if (_selectedBinding.getBoolean())
-                writer.attribute("selected");
-
-            generateAttributes(writer, cycle);
-
-            if (_label != null)
-            {
-                writer.print(_label);
-            }
-
-            renderBody(writer, cycle);
-
-            writer.end();
-        }
-
+    	super.setMineral(mineral);
+    	
+    	fireObservedChange("mineral", mineral);
     }
 
-    public void setSelectedBinding(IBinding value)
+
+    public void setVegetable(boolean vegetable)
     {
-        _selectedBinding = value;
-    }
-    
-    public String getLabel()
-    {
-        return _label;
+      	super.setVegetable(vegetable);
+      	
+      	fireObservedChange("vegetable", vegetable);
     }
 
-    public void setLabel(String label)
-    {
-        _label = label;
-    }
+
 
 }
