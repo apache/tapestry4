@@ -4,7 +4,7 @@
   	code="org.jboss.jdbc.XADataSourceLoader"
 	name="DefaultDomain:service=XADataSource,name=PrimixVlib">
     <attribute name="PoolName">PrimixVlib</attribute>
-    <attribute name="DataSourceClass">org.opentools.minerva.jdbc.xa.wrapper.XADataSourceImpl</attribute>
+    <attribute name="DataSourceClass">org.jboss.pool.jdbc.xa.wrapper.XADataSourceImpl</attribute>
     <attribute name="URL">jdbc:idb:../conf/default/vlib.properties</attribute>
     <attribute name="JDBCUser"></attribute>
     <attribute name="Password"/>

@@ -14,49 +14,27 @@
 <!ENTITY Map "<classname>Map</classname>">
 <!ENTITY ServletContext "<classname>ServletContext</classname>">
 <!ENTITY String "<classname>String</classname>">
-
 <!-- Tapestry components and classes -->
-
 <!ENTITY ApiRoot "../api/com/primix/tapestry">
- 
-<!ENTITY Action
-	'<ulink url="&ApiRoot;/link/Action.html"><classname>Action</classname></ulink>'>
-<!ENTITY ApplicationServlet 
-	'<ulink url="&ApiRoot;/ApplicationServlet.html"><classname>ApplicationServlet</classname></ulink>'>
-<!ENTITY Conditional
-	'<ulink url="&ApiRoot;/components/Conditional.html"><classname>Conditional</classname></ulink>'>
-<!ENTITY Direct
-	'<ulink url="&ApiRoot;/link/Direct.html"><classname>Direct</classname></ulink>'>
-<!ENTITY Enum
-	'<ulink url="&ApiRoot;/util/Enum.html"><classname>Enum</classname></ulink>'>
-<!ENTITY EnumPropertySelectionModel
-	'<ulink url="&ApiRoot;/form/EnumPropertySelectionModel.html"><classname>EnumPropertySelectionModel</classname></ulink>'>
-<!ENTITY Foreach
-	'<ulink url="&ApiRoot;/components/Foreach.html"><classname>Foreach</classname></ulink>'>
-<!ENTITY Form 
-	'<ulink url="&ApiRoot;/form/Form.html"><classname>Form</classname></ulink>'>
-<!ENTITY IActionListener 
-	'<ulink url="&ApiRoot;/IActionListener.html"><classname>IActionListener</classname></ulink>'>
-<!ENTITY IPropertySelectionModel
-	'<ulink url="&ApiRoot;/form/IPropertySelectionModel.html"><classname>IPropertySelectionModel</classname></ulink>'>
-<!ENTITY Insert
-	'<ulink url="&ApiRoot;/components/Insert.html"><classname>Insert</classname></ulink>'>
-<!ENTITY ImageSubmit 
-	'<ulink url="&ApiRoot;/form/ImageSubmit.html"><classname>ImageSubmit</classname></ulink>'>
-<!ENTITY Page
-	'<ulink url="&ApiRoot;/link/Page.html"><classname>Page</classname></ulink>'>
-<!ENTITY PropertySelection
-	'<ulink url="&ApiRoot;/form/PropertySelection.html"><classname>PropertySelection</classname></ulink>'>
-<!ENTITY Radio
-	'<ulink url="&ApiRoot;/form/Radio.html"><classname>Radio</classname></ulink>'>
-<!ENTITY RadioGroup
-	'<ulink url="&ApiRoot;/form/RadioGroup.html"><classname>RadioGroup</classname></ulink>'>
-<!ENTITY Rollover 
-	'<ulink url="&ApiRoot;/html/Rollover.html"><classname>Rollover</classname></ulink>'>
-<!ENTITY SimpleEngine 
-	'<ulink url="&ApiRoot;/engine/SimpleEngine.html"><classname>SimpleEngine</classname></ulink>'>
-<!ENTITY TextField 
-	'<ulink url="&ApiRoot;/form/TextField.html"><classname>TextField</classname></ulink>'>
+<!ENTITY Action '<ulink url="&ApiRoot;/link/Action.html"><classname>Action</classname></ulink>'>
+<!ENTITY ApplicationServlet '<ulink url="&ApiRoot;/ApplicationServlet.html"><classname>ApplicationServlet</classname></ulink>'>
+<!ENTITY Conditional '<ulink url="&ApiRoot;/components/Conditional.html"><classname>Conditional</classname></ulink>'>
+<!ENTITY Direct '<ulink url="&ApiRoot;/link/Direct.html"><classname>Direct</classname></ulink>'>
+<!ENTITY Enum '<ulink url="&ApiRoot;/util/Enum.html"><classname>Enum</classname></ulink>'>
+<!ENTITY EnumPropertySelectionModel '<ulink url="&ApiRoot;/form/EnumPropertySelectionModel.html"><classname>EnumPropertySelectionModel</classname></ulink>'>
+<!ENTITY Foreach '<ulink url="&ApiRoot;/components/Foreach.html"><classname>Foreach</classname></ulink>'>
+<!ENTITY Form '<ulink url="&ApiRoot;/form/Form.html"><classname>Form</classname></ulink>'>
+<!ENTITY IActionListener '<ulink url="&ApiRoot;/IActionListener.html"><classname>IActionListener</classname></ulink>'>
+<!ENTITY IPropertySelectionModel '<ulink url="&ApiRoot;/form/IPropertySelectionModel.html"><classname>IPropertySelectionModel</classname></ulink>'>
+<!ENTITY Insert '<ulink url="&ApiRoot;/components/Insert.html"><classname>Insert</classname></ulink>'>
+<!ENTITY ImageSubmit '<ulink url="&ApiRoot;/form/ImageSubmit.html"><classname>ImageSubmit</classname></ulink>'>
+<!ENTITY Page '<ulink url="&ApiRoot;/link/Page.html"><classname>Page</classname></ulink>'>
+<!ENTITY PropertySelection '<ulink url="&ApiRoot;/form/PropertySelection.html"><classname>PropertySelection</classname></ulink>'>
+<!ENTITY Radio '<ulink url="&ApiRoot;/form/Radio.html"><classname>Radio</classname></ulink>'>
+<!ENTITY RadioGroup '<ulink url="&ApiRoot;/form/RadioGroup.html"><classname>RadioGroup</classname></ulink>'>
+<!ENTITY Rollover '<ulink url="&ApiRoot;/html/Rollover.html"><classname>Rollover</classname></ulink>'>
+<!ENTITY SimpleEngine '<ulink url="&ApiRoot;/engine/SimpleEngine.html"><classname>SimpleEngine</classname></ulink>'>
+<!ENTITY TextField '<ulink url="&ApiRoot;/form/TextField.html"><classname>TextField</classname></ulink>'>
 ]>
 <!-- Conventions:
 
@@ -1933,7 +1911,6 @@ circle) and will be explained shortly.
 </callout>
 </calloutlist>
 </para>
-
 <para>
 The <classname>Border</classname> component is designed to be usable in other Tapestry 
 applications, so it doesn't hard 
@@ -2058,7 +2035,7 @@ components it uses and how they are configured.
 <title>Show Inspector Button</title>
 <mediaobject>
 <imageobject>
-<imagedata fileref="images/show-inspector-button.jpg" format="JPEG"/>
+<imagedata fileref="images/show-inspector.gif" format="GIF"/>
 </imageobject>
 </mediaobject>
 </figure>
@@ -2137,7 +2114,6 @@ Had we failed to do this, we would have had to specify the complete resource pat
 alias pre-registered into every application specification.  These short 
 aliases are simply a convienience.
 </para>
-
 </chapter>
 <chapter id="inspector">
 <title>The Tapestry Inspector</title>
@@ -2149,13 +2125,13 @@ provide some unusual functionality.
 </para>
 <para>
 Run the Border tutorial from the previous chapter and click on the show inspector button (the 
-circle with the italic "i").  A new window will launch, containing the Inspector:
+gear icon in the lower right corner).  A new window will launch, containing the Inspector:
 </para>
 <figure>
 <title>Tapestry Inspector</title>
 <mediaobject>
 <imageobject>
-<imagedata fileref="images/inspector/main.jpg" format="JPEG"/>
+<imagedata fileref="images/inspector/specification.jpg" format="JPEG"/>
 </imageobject>
 </mediaobject>
 </figure>
@@ -2194,23 +2170,18 @@ inspector views.
 </mediaobject>
 </figure>
 <para>
-The specification view shows four sets of information about the selected component.
+The specification view shows several sets of information about the selected component.
 </para>
-<section>
-<title>Basic Properties</title>
+
 <para>
-First, are basic properties, such as the specification path and Java class.
+First shown are basic properties, such as the specification path and Java class.
 </para>
-</section>
-<section>
-<title>Formal Parameters</title>
+
 <para>
 Each formal parameter is displayed.  Unbound parameters will show no value in
 the Binding column.
 </para>
-</section>
-<section>
-<title>Informal Parameters</title>
+
 <para>
 Beneath formal parameters are informal parameters (the <classname>Border</classname>
 component has none, so there is nothing to see).  Informal parameters are
@@ -2218,14 +2189,18 @@ usually mapped directly to HTML attributes.  They are most often used with
 components that generate a single HTML tag, such as the &Action;,
 &Direct; or &TextField; components.
 </para>
-</section>
-<section>
-<title>Embedded Components</title>
+
+<para>
+If the component contains assets, they are shown next.
+</para>
+
+Any helper beans for the component are displayed last.
+
 <para>
 On the right side is a list of each embedded component and its type.  Clicking
 the comopnent id will navigate to the selected component.
 </para>
-</section>
+
 </section>
 <section id="inspector.template">
 <title>Template View</title>
@@ -2238,7 +2213,7 @@ the comopnent id will navigate to the selected component.
 </mediaobject>
 </figure>
 <para>
-The template view shows the HTML template for the component.  It shows &jwc-tag; tags in bold,
+The template view shows the HTML template for the component.  It shows dynamic tags in bold,
 and makes the component id a clickable link (which navigates to the component, but maintains
 the Template View).  This allows the developer to quickly drill down through the components.
 </para>
@@ -2257,8 +2232,6 @@ the Template View).  This allows the developer to quickly drill down through the
 The properties view shows persistant properties stored by the page (or any components on
 the page).  Most pages do not store any persistent state (it is more often stored
 in the application's visit object).
-The image above is from the Hangman demo, and shows how the game difficulty is stored 
-between request cycles.
 </para>
 </section>
 <section id="inspector.engine">
@@ -2303,7 +2276,7 @@ is that vast amount of data also displayed when an unexpected exception is throw
 <title>Logging View (Level Selection)</title>
 <mediaobject>
 <imageobject>
-<imagedata fileref="images/inspector/logging-top.jpg" format="JPEG"/>
+<imagedata fileref="images/inspector/logging.jpg" format="JPEG"/>
 </imageobject>
 </mediaobject>
 </figure>
@@ -2322,16 +2295,9 @@ classes
 </footnote>
 can be individually enabled or disable.
 </para>
-<figure>
-<title>Logging View (Category Creation)</title>
-<mediaobject>
-<imageobject>
-<imagedata fileref="images/inspector/logging-bottom.jpg" format="JPEG"/>
-</imageobject>
-</mediaobject>
-</figure>
+
 <para>
-The bottom section is a second form, allowing new categories to be created.
+The right side is a small second form, allowing new categories to be created.
 This can be useful to make broad changes in logging levels.  For instance, creating
 a category "com.primix.tapestry" would allow the logging level of all Tapestry classes to be
 set in a single place.

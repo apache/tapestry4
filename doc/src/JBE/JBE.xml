@@ -931,9 +931,8 @@ to the list of <varname>META_RESOURCES</varname> (files copied to the
 <title>JBoss modules</title>
 <para>
 JBoss is an open-source J2EE application server available from 
-<ulink url="http://www.jboss.org/">http://www.jboss.org/</ulink>.   The current version of the JBE is
-compatibly with JBoss 2.2.1.
-</para>
+<ulink url="http://www.jboss.org/">http://www.jboss.org/</ulink>.   The JBE has been used with
+a variety of releases of JBoss, from 2.2 through the current 2.4.0.</para>
 <para>
 The JBoss module type is a specialization of the Jar type used to create EJB JARS for 
 use with the JBoss.  JBoss is easier to work with than WebLogic, since it doesn't require the 
@@ -1039,7 +1038,6 @@ If you use the auxilliary descriptor files (<filename>jboss.xml</filename> and/o
 </varlistentry>
 </variablelist>
 </section>
-
 <section id="docbook">
 <title>DocBook modules</title>
 <para>The DocBook module is the standout of the available modules, because it 
@@ -1075,8 +1073,6 @@ content from DocBook XML files.
 Recent versions of the Stylesheets are bundled with the JBE, no seperate download
 is required.
 </para>
-
-
 <section id="docbook.config">
 <title>Configuring DocBook Projects</title>
 <variablelist>
@@ -1420,6 +1416,5 @@ As new situations arise, it is extended to meet the need.</para>
 <para>Support for Linux platforms, and for IBM JDKs.</para>
 </listitem>
 </itemizedlist>
-
 </chapter>
 </book>

@@ -139,7 +139,7 @@ TUTORIAL_CLASSPATH := \
 	$(LIB_DIR)/log4j-core.jar \
 	$(LIB_DIR)/javax.xml.jaxp.jar \
 	$(LIB_DIR)/org.apache.crimson.jar \
-	$(LIB_DIR)/com.mortbay.jetty.jar \
+	$(LIB_DIR)/org.mortbay.jetty.jar \
 	$(LIB_DIR)/ejb.jar
 
 # Quick start for folks who download the full distribution (this Makefile
@@ -150,7 +150,7 @@ run-tutorial: setup-jbe-util
 	$(call NOTE, Running the Tapestry Tutorial on port 8080 ...)
 	$(call EXEC_JAVA, $(TUTORIAL_CLASSPATH), \
 		-showversion \
-		com.mortbay.Jetty.Server config/jetty-tutorial.xml)
+		org.mortbay.Jetty.Server config/jetty-tutorial.xml)
 
 VLIB_CLASSPATH := \
 	$(TUTORIAL_CLASSPATH) \
@@ -166,7 +166,7 @@ run-intranet: setup-jbe-util
 	@$(MKDIRS) .build ../TapestryLogs
 	$(call EXEC_JAVA, $(VLIB_CLASSPATH), \
 	  -showversion \
-	  com.mortbay.Jetty.Server config/jetty-intranet.xml)
+	  org.mortbay.jetty.Server config/jetty-intranet.xml)
 	  
 run-extranet: setup-jbe-util
 	$(call NOTE, Running Extranet on port 80 ...)
@@ -175,7 +175,7 @@ run-extranet: setup-jbe-util
 	$(call EXEC_JAVA, $(VLIB_CLASSPATH), \
 	  -showversion \
 	  -Dcom.primix.vlib.debug-enabled=true \
-	  com.mortbay.Jetty.Server config/jetty-extranet.xml)
+	  org.mortbay.jetty.Server config/jetty-extranet.xml)
 	  
 .PHONY: javadoc create-archives reinvoke run-tutorial
 .PHONY: clean install dist default

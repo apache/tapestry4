@@ -1,5 +1,20 @@
 * Sep 4 2001 hship
 
+- Updated to Jetty 3.1RC9
+
+doc:
+- Add description of <include-script> element in Tapestry Script
+- Update the Inspector images in the Developer's Guide and Tutorial
+- Mention JBoss 2.4.0
+
+vlibbeans:
+- Modify config files for JBoss 2.4.0
+
+web:
+- Improve navigation
+
+* Sep 4 2001 hship
+
 framework:
 - More tweaking to ShowInspector scripts (Netscape 4 and 6 work, but have trouble with scrollbars)
 - Reinstate ILifecycle.java with temporary "bridging" code to the new page event model (in AbstractComponent)

@@ -10,10 +10,10 @@ This is the configuration for the Tapestry Extranet site, tapestry.primix.com.
 
 
 -->
-<Configure class="com.mortbay.HTTP.HttpServer">
+<Configure class="org.mortbay.http.HttpServer">
   <Call name="addListener">
     <Arg>
-      <New class="com.mortbay.HTTP.SocketListener">
+      <New class="org.mortbay.http.SocketListener">
         <Set name="Port">80</Set>
         <Set name="MinThreads">5</Set>
         <Set name="MaxThreads">255</Set>
@@ -23,7 +23,7 @@ This is the configuration for the Tapestry Extranet site, tapestry.primix.com.
   </Call>
   
   <Set name="LogSink">
-    <New class="com.mortbay.Util.WriterLogSink">
+    <New class="org.mortbay.util.WriterLogSink">
       <Set name="Filename">../TapestryLogs/JettyLog.yyyy_mm_dd</Set>
       <Set name="RetainDays">90</Set>
       <Set name="Append">true</Set>
