@@ -1,3 +1,7 @@
+* Nov 22 2000 hship
+
+Update Virtual Library documentation.
+
 * Nov 20 2000 hship
 
 Minor fixes to Makefiles; especially to make them work correctly before the JBE Util class
