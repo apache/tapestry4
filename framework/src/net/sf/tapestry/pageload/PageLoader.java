@@ -54,7 +54,8 @@ import net.sf.tapestry.spec.BindingType;
 import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.spec.ContainedComponent;
 import net.sf.tapestry.spec.ParameterSpecification;
-import org.apache.log4j.Category;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *  Runs the process of building the component hierarchy for an entire page.
@@ -66,7 +67,7 @@ import org.apache.log4j.Category;
 
 public class PageLoader implements IPageLoader
 {
-    private static final Category CAT = Category.getInstance(PageLoader.class);
+    private static final Logger LOG = LogManager.getLogger(PageLoader.class);
 
     private IEngine _engine;
     private IResourceResolver _resolver;
@@ -493,8 +494,8 @@ public class PageLoader implements IPageLoader
             _resolver = null;
         }
 
-        if (CAT.isInfoEnabled())
-            CAT.info("Loaded page " + page + " with " + _count + " components (maximum depth " + _maxDepth + ")");
+        if (LOG.isInfoEnabled())
+            LOG.info("Loaded page " + page + " with " + _count + " components (maximum depth " + _maxDepth + ")");
 
         return page;
     }

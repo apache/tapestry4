@@ -34,7 +34,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import net.sf.tapestry.Tapestry;
-import org.apache.log4j.Category;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -59,7 +60,7 @@ import org.xml.sax.SAXParseException;
 
 public abstract class AbstractDocumentParser implements ErrorHandler, EntityResolver
 {
-    private static final Category CAT = Category.getInstance(AbstractDocumentParser.class);
+    private static final Logger LOG = LogManager.getLogger(AbstractDocumentParser.class);
 
     private DocumentBuilder _builder;
     private String _resourcePath;
@@ -87,8 +88,8 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
 
     protected void register(String publicId, String entityPath)
     {
-        if (CAT.isDebugEnabled())
-            CAT.debug("Registering " + publicId + " as " + entityPath);
+        if (LOG.isDebugEnabled())
+            LOG.debug("Registering " + publicId + " as " + entityPath);
 
         if (_entities == null)
             _entities = new HashMap();
@@ -125,8 +126,8 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
     {
         boolean error = true;
 
-        if (CAT.isDebugEnabled())
-            CAT.debug(
+        if (LOG.isDebugEnabled())
+            LOG.debug(
                 "Parsing "
                     + source
                     + " ("
@@ -184,7 +185,7 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
 
             if (error && _builder != null)
             {
-                CAT.debug("Discarding builder due to parse error.");
+                LOG.debug("Discarding builder due to parse error.");
                 _builder = null;
             }
         }
@@ -260,16 +261,16 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
     {
         String entityPath = null;
 
-        if (CAT.isDebugEnabled())
-            CAT.debug("Attempting to resolve entity; publicId = " + publicId + " systemId = " + systemId);
+        if (LOG.isDebugEnabled())
+            LOG.debug("Attempting to resolve entity; publicId = " + publicId + " systemId = " + systemId);
 
         if (_entities != null)
             entityPath = (String) _entities.get(publicId);
 
         if (entityPath == null)
         {
-            if (CAT.isDebugEnabled())
-                CAT.debug("Entity not found, using " + systemId);
+            if (LOG.isDebugEnabled())
+                LOG.debug("Entity not found, using " + systemId);
 
             return null;
         }
@@ -278,8 +279,8 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
 
         InputSource result = new InputSource(stream);
 
-        if (result != null && CAT.isDebugEnabled())
-            CAT.debug("Resolved " + publicId + " as " + result + " (for " + entityPath + ")");
+        if (result != null && LOG.isDebugEnabled())
+            LOG.debug("Resolved " + publicId + " as " + result + " (for " + entityPath + ")");
 
         return result;
     }
@@ -462,8 +463,8 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
         result.setErrorHandler(this);
         result.setEntityResolver(this);
 
-        if (CAT.isDebugEnabled())
-            CAT.debug("Constructed new builder " + result);
+        if (LOG.isDebugEnabled())
+            LOG.debug("Constructed new builder " + result);
 
         return result;
     }

@@ -29,7 +29,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.html.BasePage;
@@ -46,7 +47,7 @@ import net.sf.tapestry.util.xml.DocumentParseException;
 
 public class Slashdot extends BasePage
 {
-    private static final Category CAT = Category.getInstance(Slashdot.class);
+    private static final Logger LOG = LogManager.getLogger(Slashdot.class);
 
     /**
      *  The {@link List} of {@link SlashdotStory} items.  This is <em>not</em> cleared
@@ -86,8 +87,8 @@ public class Slashdot extends BasePage
 
         if (now - lastRefresh > REFRESH_INTERVAL)
         {
-            if (CAT.isDebugEnabled())
-                CAT.debug("Forcing refresh");
+            if (LOG.isDebugEnabled())
+                LOG.debug("Forcing refresh");
 
             stories = null;
         }
@@ -100,8 +101,8 @@ public class Slashdot extends BasePage
 
     private void readStories()
     {
-        if (CAT.isDebugEnabled())
-            CAT.debug("Reading Slashdot stories from " + RESOURCE_PATH);
+        if (LOG.isDebugEnabled())
+            LOG.debug("Reading Slashdot stories from " + RESOURCE_PATH);
 
         URL url = null;
         SlashdotParser parser = new SlashdotParser();

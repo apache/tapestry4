@@ -43,7 +43,8 @@ import net.sf.tapestry.spec.Direction;
 import net.sf.tapestry.spec.ParameterSpecification;
 import net.sf.tapestry.util.prop.IPropertyAccessor;
 import net.sf.tapestry.util.prop.PropertyHelper;
-import org.apache.log4j.Category;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *  Manages a set of {@link IParameterConnector}s for a
@@ -57,8 +58,7 @@ import org.apache.log4j.Category;
 
 public class ParameterManager
 {
-    private static final Category CAT =
-        Category.getInstance(ParameterManager.class);
+    private static final Logger LOG = LogManager.getLogger(ParameterManager.class);
 
     private static final Map scalarTypeMap = new HashMap();
 
@@ -99,16 +99,15 @@ public class ParameterManager
 
     private void setup() throws RequiredParameterException
     {
-        boolean debug = CAT.isDebugEnabled();
+        boolean debug = LOG.isDebugEnabled();
 
         if (debug)
-            CAT.debug(component + ": connecting parameters and properties");
+            LOG.debug(component + ": connecting parameters and properties");
 
         List list = new ArrayList();
         ComponentSpecification spec = component.getSpecification();
         PropertyHelper helper = PropertyHelper.forInstance(component);
-        IResourceResolver resolver =
-            component.getPage().getEngine().getResourceResolver();
+        IResourceResolver resolver = component.getPage().getEngine().getResourceResolver();
 
         Collection names = spec.getParameterNames();
         Iterator i = names.iterator();
@@ -117,13 +116,13 @@ public class ParameterManager
             String name = (String) i.next();
 
             if (debug)
-                CAT.debug("Connecting parameter " + name + ".");
+                LOG.debug("Connecting parameter " + name + ".");
 
             IBinding binding = component.getBinding(name);
             if (binding == null)
             {
                 if (debug)
-                    CAT.debug("Not bound.");
+                    LOG.debug("Not bound.");
 
                 continue;
             }
@@ -133,7 +132,7 @@ public class ParameterManager
             if (pspec.getDirection() != Direction.IN)
             {
                 if (debug)
-                    CAT.debug("Parameter is " + pspec.getDirection().getName() + ".");
+                    LOG.debug("Parameter is " + pspec.getDirection().getName() + ".");
 
                 continue;
             }
@@ -141,7 +140,7 @@ public class ParameterManager
             String propertyName = pspec.getPropertyName();
 
             if (debug && !name.equals(propertyName))
-                CAT.debug("Connecting to property " + propertyName + ".");
+                LOG.debug("Connecting to property " + propertyName + ".");
 
             // Next,verify that there is a writable property with the same
             // name as the parameter.
@@ -150,10 +149,7 @@ public class ParameterManager
             if (accessor == null)
             {
                 throw new ConnectedParameterException(
-                    Tapestry.getString(
-                        "ParameterManager.no-accessor",
-                        component.getExtendedId(),
-                        propertyName),
+                    Tapestry.getString("ParameterManager.no-accessor", component.getExtendedId(), propertyName),
                     component,
                     name,
                     propertyName);
@@ -179,10 +175,7 @@ public class ParameterManager
             if (parameterType == null)
             {
                 throw new ConnectedParameterException(
-                    Tapestry.getString(
-                        "ParameterManager.java-type-not-specified",
-                        name,
-                        component.getExtendedId()),
+                    Tapestry.getString("ParameterManager.java-type-not-specified", name, component.getExtendedId()),
                     component,
                     name,
                     propertyName);
@@ -206,8 +199,7 @@ public class ParameterManager
             // Here's where we will sniff it for type, for the moment
             // assume its some form of object (not scalar) type.
 
-            IParameterConnector connector =
-                createConnector(component, name, binding, propertyType, parameterType);
+            IParameterConnector connector = createConnector(component, name, binding, propertyType, parameterType);
 
             // Static bindings are set here and then forgotten
             // about.  Dynamic bindings are kept for later.
@@ -215,7 +207,7 @@ public class ParameterManager
             if (binding.isInvariant())
             {
                 if (debug)
-                    CAT.debug("Setting invariant value using " + connector + ".");
+                    LOG.debug("Setting invariant value using " + connector + ".");
 
                 try
                 {
@@ -238,7 +230,7 @@ public class ParameterManager
             else
             {
                 if (debug)
-                    CAT.debug("Adding " + connector + ".");
+                    LOG.debug("Adding " + connector + ".");
 
                 list.add(connector);
             }
@@ -246,8 +238,7 @@ public class ParameterManager
 
         // Convert for List to array
 
-        connectors =
-            (IParameterConnector[]) list.toArray(new IParameterConnector[list.size()]);
+        connectors = (IParameterConnector[]) list.toArray(new IParameterConnector[list.size()]);
 
     }
 
@@ -275,11 +266,7 @@ public class ParameterManager
 
         // The default is for any kind of object type
 
-        return new ObjectParameterConnector(
-            component,
-            parameterName,
-            binding,
-            requiredType);
+        return new ObjectParameterConnector(component, parameterName, binding, requiredType);
     }
 
     private Class getType(String name, IResourceResolver resolver)

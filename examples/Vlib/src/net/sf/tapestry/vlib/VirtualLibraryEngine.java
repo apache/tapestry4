@@ -34,7 +34,8 @@ import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IRequestCycle;
@@ -64,7 +65,7 @@ import net.sf.tapestry.vlib.ejb.Publisher;
 
 public class VirtualLibraryEngine extends SimpleEngine
 {
-    public static final Category CAT = Category.getInstance(VirtualLibraryEngine.class);
+    public static final Logger LOG = LogManager.getLogger(VirtualLibraryEngine.class);
 
     private static boolean debugEnabled = Boolean.getBoolean("net.sf.tapestry.vlib.debug-enabled");
 
@@ -427,7 +428,7 @@ public class VirtualLibraryEngine extends SimpleEngine
 
     public void rmiFailure(String message, RemoteException ex, boolean throwException)
     {
-        CAT.error(message, ex);
+        LOG.error(message, ex);
 
         if (throwException)
             throw new ApplicationRuntimeException(message, ex);
@@ -443,7 +444,7 @@ public class VirtualLibraryEngine extends SimpleEngine
 
     public void namingFailure(String message, NamingException ex, boolean throwException)
     {
-        CAT.error(message, ex);
+        LOG.error(message, ex);
 
         if (throwException)
             throw new ApplicationRuntimeException(message, ex);

@@ -34,7 +34,8 @@ import java.io.InputStream;
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IUploadFile;
 import net.sf.tapestry.Tapestry;
-import org.apache.log4j.Category;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *  Portion of a multi-part request representing an uploaded file.
@@ -47,7 +48,7 @@ import org.apache.log4j.Category;
 
 public class UploadPart implements IUploadFile, IPart
 {
-    private static final Category CAT = Category.getInstance(UploadPart.class);
+    private static final Logger LOG = LogManager.getLogger(UploadPart.class);
 
     private byte[] content;
     private File contentFile;
@@ -117,13 +118,13 @@ public class UploadPart implements IUploadFile, IPart
     {
         if (contentFile != null)
         {
-            if (CAT.isDebugEnabled())
-                CAT.debug("Deleting upload file " + contentFile + ".");
+            if (LOG.isDebugEnabled())
+                LOG.debug("Deleting upload file " + contentFile + ".");
 
             boolean success = contentFile.delete();
 
             if (!success)
-                CAT.warn(
+                LOG.warn(
                     Tapestry.getString(
                         "UploadPart.temporary-file-not-deleted",
                         contentFile.getAbsolutePath()));

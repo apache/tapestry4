@@ -35,7 +35,8 @@ import javax.jms.TextMessage;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 import net.sf.tapestry.vlib.ejb.IMailMessageConstants;
 import net.sf.tapestry.vlib.ejb.IMailSender;
@@ -52,7 +53,7 @@ import net.sf.tapestry.vlib.ejb.IMailSenderHome;
 
 public class MailQueueBean extends AbstractMessageDrivenBean implements IMailMessageConstants
 {
-    private static final Category CAT = Category.getInstance(MailQueueBean.class);
+    private static final Logger LOG = LogManager.getLogger(MailQueueBean.class);
 
     private static IMailSenderHome mailSenderHome;
     private transient IMailSender mailSender;
@@ -80,7 +81,7 @@ public class MailQueueBean extends AbstractMessageDrivenBean implements IMailMes
         }
         catch (JMSException ex)
         {
-            CAT.error("Unable to extract properties from message.", ex);
+            LOG.error("Unable to extract properties from message.", ex);
 
             return;
         }
@@ -91,7 +92,7 @@ public class MailQueueBean extends AbstractMessageDrivenBean implements IMailMes
         }
         catch (RemoteException ex)
         {
-            CAT.error("Unable to obtain IMailSender instance.", ex);
+            LOG.error("Unable to obtain IMailSender instance.", ex);
         }
 
         try
@@ -100,13 +101,13 @@ public class MailQueueBean extends AbstractMessageDrivenBean implements IMailMes
         }
         catch (RemoteException ex)
         {
-            CAT.error("Remote exception sending mail.", ex);
+            LOG.error("Remote exception sending mail.", ex);
 
             return;
         }
         catch (EJBException ex)
         {
-            CAT.error("Error sending mail: " + ex.getMessage(), ex);
+            LOG.error("Error sending mail: " + ex.getMessage(), ex);
 
             return;
         }

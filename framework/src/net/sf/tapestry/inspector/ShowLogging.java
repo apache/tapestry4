@@ -32,6 +32,8 @@ import java.util.List;
 
 import net.sf.tapestry.BaseComponent;
 import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.bean.EvenOdd;
 import net.sf.tapestry.event.PageDetachListener;
 import net.sf.tapestry.event.PageEvent;
 import net.sf.tapestry.form.IPropertySelectionModel;
@@ -207,4 +209,18 @@ public class ShowLogging extends BaseComponent implements PageDetachListener
                 _newLogger));
 
     }
+    
+    protected void prepareForRender(IRequestCycle cycle) throws RequestCycleException
+    {
+        super.prepareForRender(cycle);
+        
+        // Used to set this in the specification, but on a repaint
+        // (after form submission), it wouldn't always be set
+        // correctly.
+        
+        EvenOdd levelClass = (EvenOdd)getBeans().getBean("levelClass");
+        
+        levelClass.setEven(false);
+    }
+
 }

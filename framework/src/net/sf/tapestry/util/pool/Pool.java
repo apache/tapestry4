@@ -33,7 +33,8 @@ import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRenderDescription;
 import net.sf.tapestry.util.ICleanable;
 import net.sf.tapestry.util.JanitorThread;
-import org.apache.log4j.Category;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *  A Pool is used to pool instances of a useful class.  It uses
@@ -57,7 +58,7 @@ import org.apache.log4j.Category;
 
 public class Pool implements ICleanable, IRenderDescription
 {
-    private static final Category CAT = Category.getInstance(Pool.class);
+    private static final Logger LOG = LogManager.getLogger(Pool.class);
 
     /**
      *  The generation, used to cull unused pooled items.
@@ -196,8 +197,8 @@ public class Pool implements ICleanable, IRenderDescription
         if (result != null)
             pooledCount--;
 
-        if (CAT.isDebugEnabled())
-            CAT.debug("Retrieved " + result + " from " + key);
+        if (LOG.isDebugEnabled())
+            LOG.debug("Retrieved " + result + " from " + key);
 
         return result;
     }
@@ -234,8 +235,8 @@ public class Pool implements ICleanable, IRenderDescription
 
         pooledCount++;
 
-        if (CAT.isDebugEnabled())
-            CAT.debug("Stored " + object + " into " + key + " (" + count + " pooled)");
+        if (LOG.isDebugEnabled())
+            LOG.debug("Stored " + object + " into " + key + " (" + count + " pooled)");
     }
 
     /**
@@ -250,8 +251,8 @@ public class Pool implements ICleanable, IRenderDescription
 
         pooledCount = 0;
 
-        if (CAT.isDebugEnabled())
-            CAT.debug("Cleared");
+        if (LOG.isDebugEnabled())
+            LOG.debug("Cleared");
     }
 
     /**
@@ -294,8 +295,8 @@ public class Pool implements ICleanable, IRenderDescription
         if (map == null)
             return;
 
-        if (CAT.isDebugEnabled())
-            CAT.debug("Executing cleanup of " + this);
+        if (LOG.isDebugEnabled())
+            LOG.debug("Executing cleanup of " + this);
 
         generation++;
 
@@ -334,8 +335,8 @@ public class Pool implements ICleanable, IRenderDescription
 
         pooledCount = newCount;
 
-        if (CAT.isDebugEnabled())
-            CAT.debug(
+        if (LOG.isDebugEnabled())
+            LOG.debug(
                 "Culled "
                     + (oldCount - pooledCount)
                     + " pooled objects and "

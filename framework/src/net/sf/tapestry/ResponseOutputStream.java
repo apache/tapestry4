@@ -30,7 +30,9 @@ import java.io.OutputStream;
 import java.net.SocketException;
 
 import javax.servlet.http.HttpServletResponse;
-import org.apache.log4j.Category;
+
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *  A special output stream works with a {@link HttpServletResponse}, buffering
@@ -54,8 +56,8 @@ import org.apache.log4j.Category;
 
 public class ResponseOutputStream extends OutputStream
 {
-    private static final Category CAT =
-        Category.getInstance(ResponseOutputStream.class);
+    private static final Logger LOG =
+        LogManager.getLogger(ResponseOutputStream.class);
 
     /**
      *  Default size for the buffer (2000 bytes).
@@ -128,7 +130,7 @@ public class ResponseOutputStream extends OutputStream
         }
         catch (SocketException ex)
         {
-            CAT.debug("Socket exception.");
+            LOG.debug("Socket exception.");
         }
     }
 
@@ -159,7 +161,7 @@ public class ResponseOutputStream extends OutputStream
         }
         catch (SocketException ex)
         {
-            CAT.debug("Socket exception.");
+            LOG.debug("Socket exception.");
         }
     }
 
@@ -258,7 +260,7 @@ public class ResponseOutputStream extends OutputStream
       }   
       catch (SocketException ex)
       {
-        CAT.debug("Socket exception.");
+        LOG.debug("Socket exception.");
       }
     }
 

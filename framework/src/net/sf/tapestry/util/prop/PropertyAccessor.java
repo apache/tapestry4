@@ -30,7 +30,8 @@ import java.lang.reflect.Method;
 
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.util.DynamicInvocationException;
-import org.apache.log4j.Category;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 
 /**
  *  Streamlines dynamic access to one of a single class's properties.  
@@ -46,8 +47,7 @@ import org.apache.log4j.Category;
 
 class PropertyAccessor implements IPropertyAccessor
 {
-    private static final Category CAT =
-        Category.getInstance(PropertyAccessor.class);
+    private static final Logger LOG = LogManager.getLogger(PropertyAccessor.class);
 
     protected PropertyDescriptor pd;
     private Method accessor;
@@ -81,8 +81,8 @@ class PropertyAccessor implements IPropertyAccessor
         Object result;
         String propertyName;
 
-        if (CAT.isDebugEnabled())
-            CAT.debug("Getting property " + pd.getName() + " from " + target);
+        if (LOG.isDebugEnabled())
+            LOG.debug("Getting property " + pd.getName() + " from " + target);
 
         if (accessor == null)
         {
@@ -101,10 +101,7 @@ class PropertyAccessor implements IPropertyAccessor
         catch (Exception ex)
         {
             throw new DynamicInvocationException(
-                Tapestry.getString(
-                    "PropertyAccessor.method-invoke-error",
-                    accessor.getName(),
-                    target),
+                Tapestry.getString("PropertyAccessor.method-invoke-error", accessor.getName(), target),
                 ex);
         }
 
@@ -151,9 +148,8 @@ class PropertyAccessor implements IPropertyAccessor
                 propertyName);
         }
 
-        if (CAT.isDebugEnabled())
-            CAT.debug(
-                "Setting property " + pd.getName() + " of " + subject + " to " + value);
+        if (LOG.isDebugEnabled())
+            LOG.debug("Setting property " + pd.getName() + " of " + subject + " to " + value);
 
         // The array is lazily allocated and then held onto for any future work.
         // This creates a window for multithreading problems.
@@ -170,10 +166,7 @@ class PropertyAccessor implements IPropertyAccessor
         catch (Exception ex)
         {
             throw new DynamicInvocationException(
-                Tapestry.getString(
-                    "PropertyAccessor.method-invoke-error",
-                    accessor.getName(),
-                    subject),
+                Tapestry.getString("PropertyAccessor.method-invoke-error", accessor.getName(), subject),
                 ex);
         }
     }

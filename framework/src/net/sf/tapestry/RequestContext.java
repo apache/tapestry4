@@ -49,7 +49,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import net.sf.tapestry.multipart.MultipartDecoder;
 import net.sf.tapestry.util.StringSplitter;
-import org.apache.log4j.Category;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.mortbay.util.URI;
 
 /**
@@ -90,7 +91,7 @@ import org.mortbay.util.URI;
 
 public class RequestContext implements IRender
 {
-    private static final Category CAT = Category.getInstance(RequestContext.class);
+    private static final Logger LOG = LogManager.getLogger(RequestContext.class);
 
     private HttpSession _session;
     private HttpServletRequest _request;
@@ -185,8 +186,8 @@ public class RequestContext implements IRender
 
     public void addCookie(Cookie cookie)
     {
-        if (CAT.isDebugEnabled())
-            CAT.debug("Adding cookie " + cookie);
+        if (LOG.isDebugEnabled())
+            LOG.debug("Adding cookie " + cookie);
 
         _response.addCookie(cookie);
 
@@ -542,8 +543,8 @@ public class RequestContext implements IRender
     {
         if (_session == null)
         {
-            if (CAT.isDebugEnabled())
-                CAT.debug("Creating HttpSession");
+            if (LOG.isDebugEnabled())
+                LOG.debug("Creating HttpSession");
 
             _session = _request.getSession(true);
         }
