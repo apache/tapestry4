@@ -767,7 +767,7 @@ public abstract class AbstractEngine
 	{
 		String localeName = in.readUTF();
 		locale = Tapestry.getLocale(localeName);
-
+		
 		visit = in.readObject();
 	}
 	
@@ -884,7 +884,7 @@ public abstract class AbstractEngine
 	protected void restart(IRequestCycle cycle)
 		throws IOException
 	{
-
+		
 		RequestContext context = cycle.getRequestContext();
 		
 		HttpSession session = context.getSession();
@@ -1646,7 +1646,13 @@ public abstract class AbstractEngine
 	public Object getVisit(IRequestCycle cycle)
 	{
 		if (visit == null && cycle != null)
+		{
+			// Force the creation of the HttpSession
+			
+			cycle.getRequestContext().createSession();
+			
 			visit = createVisit(cycle);
+		}
 		
 		return visit;
 	}

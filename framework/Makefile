@@ -31,7 +31,7 @@ PACKAGES = \
 	com.primix.tapestry.util.pool \
 	com.primix.tapestry.util.xml
 
-RESOURCE_EXTENTIONS = \
+RESOURCE_EXTENSIONS = \
 	jwc html gif dtd script properties css
 
 PROJ_CLASSPATH = \
