@@ -48,11 +48,10 @@ import net.sf.tapestry.RequestCycleException;
  */
 public class DatePicker extends BaseComponent
 {
-    private static final SimpleDateFormat JS_DATE_FORMAT = new SimpleDateFormat("MMM dd, yyyy");
     private static final SimpleDateFormat SQL_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     private static final String FIRST_USE_ATTRIBUTE_KEY = "net.sf.tapestry.DatePicker-first";
 
-    private Date _value = new Date(System.currentTimeMillis());
+    private Date _value;
     private IBinding _valueBinding;
     private SimpleDateFormat _dateFormat = new SimpleDateFormat("dd MMM yyyy");
     private boolean _firstTime;
@@ -67,18 +66,12 @@ public class DatePicker extends BaseComponent
         _dateFormat = new SimpleDateFormat(format);
     }
 
-    /**
-     *  Return a JavaScript Date format <tt>String</tt> value "MMM, dd, yyyy"
-     * 
-     *  @return a JavaScript Date format <tt>String</tt> value []
-     * 
-     **/
-    public String getJavaScriptValue()
+    public String getTimeMillis()
     {
-        return (_value != null) ? JS_DATE_FORMAT.format(_value) : "";
+        return (_value != null) ? "" + _value.getTime() : "";
     }
 
-    public void setJavaScriptValue(String v)
+    public void setTimeMillis(String value)
     {        
     }
 

@@ -25,15 +25,14 @@
 function ${popupFunctionName}() 
 {
     // See Calendar.js  
-    fPopCalendar(document.${formName}.${dateField.name}, 
-                 document.${formName}.${dateField.name}, 
-                 document.${formName}.${dateHidden.name}, 
-                 popCal);        
+    showPopCalendar(document.${formName}.${dateField.name}, 
+                    document.${formName}.${dateHidden.name}, 
+                    popCal);        
 } 
 function ${hideFunctionName}() 
 {
     // See Calendar.js  
-    fHideCalendar();
+    hidePopCalendar();
 }
 </body>
 
