@@ -218,8 +218,8 @@ application, the specification lives with the application's class files, in the
         <title>HelloWorld.application</title>
         <programlisting><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE application PUBLIC 
-  "-//Howard Ship//Tapestry Specification 1.1//EN" 
-  "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+  "-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
+  "http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
 <application
   name="Hello World Tutorial"
   engine-class="net.sf.tapestry.engine.SimpleEngine">
@@ -251,8 +251,8 @@ example, our component is very simple.
         <programlisting><![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE specification PUBLIC
-  "-//Howard Ship//Tapestry Specification 1.1//EN"
-  "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+  "-//Howard Lewis Ship//Tapestry Specification 1.2//EN"
+  "http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
 
 <specification class="net.sf.tapestry.html.BasePage"/>
 ]]></programlisting>
@@ -364,8 +364,8 @@ The application specification is also straight forward:
       <programlisting><![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE application PUBLIC 
-  "-//Howard Ship//Tapestry Specification 1.1//EN" 
-  "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+  "-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
+  "http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
 
 <application name="Simple Tutorial" engine-class="net.sf.tapestry.engine.SimpleEngine">
   <page name="Home" specification-path="/tutorial/simple/Home.jwc"/>
@@ -455,8 +455,8 @@ moves between the application, page and any components.
       <programlisting><![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE specification PUBLIC 
-  "-//Howard Ship//Tapestry Specification 1.1//EN" 
-  "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+  "-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
+  "http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
 
 <specification class="tutorial.simple.Home">
 
@@ -644,8 +644,8 @@ the visit object.
         <programlisting>
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!DOCTYPE application PUBLIC
-  "-//Howard Ship//Tapestry Specification 1.1//EN" 
-  "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd"&gt;
+  "-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
+  "http://tapestry.sf.net/dtd/Tapestry_1_2.dtd"&gt;
 
 &lt;application name="Tapestry Hangman" engine-class="net.sf.tapestry.engine.SimpleEngine"&gt; 
 
@@ -1225,8 +1225,8 @@ application engine provides the list.
       <programlisting>
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!DOCTYPE specification PUBLIC
-  "-//Howard Ship//Tapestry Specification 1.1//EN" 
-  "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd"&gt;
+  "-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
+  "http://tapestry.sf.net/dtd/Tapestry_1_2.dtd"&gt;
   
 &lt;specification class="tutorial.border.Border" allow-informal-parameters="no"&gt;
   
@@ -1368,8 +1368,8 @@ static, the literal value "Home" (this isn't the best approach if localization i
       <programlisting>
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
 &lt;!DOCTYPE specification PUBLIC
-  "-//Howard Ship//Tapestry Specification 1.1//EN" 
-  "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd"&gt;
+  "-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
+  "http://tapestry.sf.net/dtd/Tapestry_1_2.dtd"&gt;
 
 &lt;specification class="net.sf.tapestry.html.BasePage"&gt;
 
