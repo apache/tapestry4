@@ -28,7 +28,7 @@
 clean: clean-root local-clean clean-packages
 
 clean-root:
-	@$(ECHO) Cleaning ...
+	@$(ECHO) "\n*** Cleaning ... ***\n"
 	@$(RMDIRS) $(SYS_BUILD_DIR_NAME) $(JAR_FILE)
 
 compile: setup-catalogs
@@ -51,12 +51,12 @@ setup-catalogs: initialize
 force: setup-catalogs
 	@$(RM) --force $(MOD_JAVA_STAMP_FILE)
 	@$(RECURSE) POST_SETUP=t inner-compile
-	
-ifdef POST_SETUP
 
 # Used to allow the inner targets to do something, even if fully up-to date.
 
 DUMMY_FILE := $(SYS_BUILD_DIR_NAME)/dummy
+	
+ifdef POST_SETUP
 
 # Build the compile-time classpath
 
@@ -66,7 +66,7 @@ ABSOLUTE_MOD_BUILD_DIR := $(word 1,$(_ABSOLUTE_DIRS))
 ABSOLUTE_CLASS_DIR := $(word 2,$(_ABSOLUTE_DIRS))
 
 FINAL_CLASSPATH = $(shell $(JBE_CANONICALIZE) -classpath \
-	. $(MOD_CLASS_DIR) $(MOD_CLASSPATH) $(SITE_CLASSPATH) $(LOCAL_CLASSPATH))
+	$(FINAL_SOURCE_DIR) $(MOD_CLASS_DIR) $(MOD_CLASSPATH) $(SITE_CLASSPATH) $(LOCAL_CLASSPATH))
 	
 FINAL_CLASSPATH_OPTION = -classpath "$(FINAL_CLASSPATH)"
 	
@@ -99,11 +99,15 @@ _JAVA_FILES := $(addprefix $(FINAL_SOURCE_DIR)$(SLASH), \
 	$(shell $(CAT) $(MOD_JAVA_CATALOG)))
 
 $(MOD_JAVA_STAMP_FILE): $(_JAVA_FILES)
+ifneq "$(_JAVA_FILES)" ""
 	@$(ECHO) "\n*** Compiling ... ***\n"
 	$(CD) $(FINAL_SOURCE_DIR) ; \
-	  $(JAVAC) $(FINAL_JAVAC_OPT) $(patsubst $(FINAL_SOURCE_DIR)$(SLASH)%, \
+	$(JAVAC) $(FINAL_JAVAC_OPT) $(patsubst $(FINAL_SOURCE_DIR)$(SLASH)%, \
 	  	%, $?)
 	@$(TOUCH) $@ $(MOD_DIRTY_JAR_STAMP_FILE)
+else
+	@$(ECHO) "\n*** Nothing to compile ***\n"
+endif
 
 # Read the catalog file
 
@@ -144,7 +148,7 @@ ifneq "$(_RESOURCE_FILES)" ""
 	@$(ECHO) "\n*** Copying package resources ...***\n"
 	@$(ECHO) Copying: $(notdir $?)
 	@$(CD) $(FINAL_SOURCE_DIR) ; \
-	  $(CP) --force --parents $? $(ABSOLUTE_CLASS_DIR)
+	$(CP) --force --parents $? $(ABSOLUTE_CLASS_DIR)
 	@$(TOUCH) $(MOD_DIRTY_JAR_STAMP_FILE)
 endif
 	@$(TOUCH) $@
@@ -156,19 +160,19 @@ endif
 ifdef SETUP_CATALOGS
 
 inner-setup-catalogs: $(MOD_JAVA_CATALOG) $(MOD_RMI_CLASS_CATALOG) $(MOD_RESOURCE_CATALOG)
-
+	@$(TOUCH) $(DUMMY_FILE)
+	
 ABSOLUTE_MOD_BUILD_DIR := $(shell $(JBE_CANONICALIZE) $(MOD_BUILD_DIR))
 
 # Rules for rebuilding the catalog by visiting each
-# Package.
+# Package.  Certain types of modules have no Java source (no PACKAGES are defined)
+# but that's OK.
 
 $(MOD_JAVA_CATALOG) $(MOD_RMI_CLASS_CATALOG) $(MOD_RESOURCE_CATALOG):
-ifeq "$(PACKAGES)" ""
-	@$(ECHO) JBE Error: Must define PACKAGES in Makefile
-else
 	@$(ECHO) -n > $(MOD_JAVA_CATALOG)
 	@$(ECHO) -n > $(MOD_RMI_CLASS_CATALOG)
 	@$(ECHO) -n > $(MOD_RESOURCE_CATALOG)
+ifneq "$(PACKAGES)" ""
 	@for package in $(PACKAGES) ; do \
 	  $(RECURSE) PACKAGE_RECURSE=t PACKAGE="$$package" \
 	  ABSOLUTE_MOD_BUILD_DIR="$(ABSOLUTE_MOD_BUILD_DIR)" catalog-package ; \
@@ -206,9 +210,6 @@ catalog-package:
 # End of PACKAGE_RECURSE block
 
 endif
-
-	
-
 
 
 JAVADOC_CLASSPATH = \
