@@ -132,14 +132,14 @@ public class SpecFactory
 	}
 
     /**
-     *  Creates a new instance of {@link ListenerBindingSpecification} for the
+     *  Creates a new concrete instance of {@link IListenerBindingSpecification} for the
      *  given language (which is option) and script.
      * 
      *  @since 2.4
      *  
      **/
 
-    public ListenerBindingSpecification createListenerBindingSpecification()
+    public IListenerBindingSpecification createListenerBindingSpecification()
     {
         return new ListenerBindingSpecification();
     }

@@ -58,7 +58,7 @@ package org.apache.tapestry.parse;
 /**
  *  Variation of {@link org.apache.commons.digester.BeanPropertySetterRule}
  *  that does <em>not</em> trim the body text of leading and trailing
- *  whitespace.  This is important for {@link org.apache.tapestry.spec.ListenerBindingSpecification}s,
+ *  whitespace.  This is important for {@link org.apache.tapestry.spec.IListenerBindingSpecification}s,
  *  where the whitespace may be relevant!
  *
  *  @author Howard Lewis Ship
