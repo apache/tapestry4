@@ -130,6 +130,6 @@ public class TestStringValidator extends TestCase
 		
 		Object out = v.toObject(new TestingField("minimum"), in);
 		
-		assertEquals("Result", in, out);
+		assertNull("Result", out);
 	}	
 }
