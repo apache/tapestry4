@@ -112,6 +112,9 @@ public class PageLoader implements IPageLoader
 
         private ComponentResolver(INamespace containerNamespace, String alias)
         {
+            // For compatibility with the 1.1 and 1.2 specifications, which allow
+            // the component type to be a complete specification path.
+            
             if (alias.startsWith("/"))
             {
                 _namespace = _specificationSource.getApplicationNamespace();
@@ -131,9 +134,14 @@ public class PageLoader implements IPageLoader
                 return;
             }
 
-            _namespace = _specificationSource.getApplicationNamespace();
+            // A bare component type may be in the namespace of the container
+            // (typically the application namespace, but possibly a 
+            // library namespace).  Check there first and, if not found,
+            // check the framework namespace.
 
-            if (!_namespace.containsAlias(alias))
+            if (containerNamespace.containsAlias(alias))
+                _namespace = containerNamespace;
+            else
                 _namespace = _specificationSource.getFrameworkNamespace();
 
             _spec = _namespace.getComponentSpecification(alias);

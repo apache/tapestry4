@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
 
-<!DOCTYPE specification PUBLIC 
-  "-//Howard Ship//Tapestry Specification 1.1//EN" 
-  "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd" [
+<!DOCTYPE component-specification PUBLIC 
+  "-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+  "http://tapestry.sf.net/dtd/Tapestry_1_3.dtd" [
   
 <!ENTITY EvenOdd "net.sf.tapestry.bean.EvenOdd">
 
 ]>
   
-<specification class="net.sf.tapestry.inspector.ShowSpecification">
+<component-specification class="net.sf.tapestry.inspector.ShowSpecification">
 
   <bean name="formalClass" class="&EvenOdd;"/>
   <bean name="informalClass" class="&EvenOdd;"/>
@@ -22,7 +22,7 @@
     <binding name="value" property-path="inspectedSpecification.specificationResourcePath"/>
   </component>
   
-  <component id="showComponentDescription" type="/net/sf/tapestry/inspector/ShowDescription.jwc">
+  <component id="showComponentDescription" type="ShowDescription">
     <binding name="description" property-path="inspectedSpecification.description"/>
   </component>
   
@@ -58,7 +58,7 @@
     <binding name="value" property-path="parameterName"/>
   </component>
 
-  <component id="showParameterDescription" type="/net/sf/tapestry/inspector/ShowDescription.jwc">
+  <component id="showParameterDescription" type="ShowDescription">
     <binding name="description" property-path="parameterSpecification.description"/>
   </component>
   
@@ -178,4 +178,4 @@
   	<binding name="value" property-path="beanSpecification.lifecycle.enumerationId"/>
   </component>
   	
-</specification>
+</component-specification>

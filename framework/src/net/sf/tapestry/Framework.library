@@ -69,4 +69,6 @@
     <service name="restart" class="net.sf.tapestry.engine.RestartService"/>
     <service name="asset" class="net.sf.tapestry.asset.AssetService"/>
 
+	<library id="inspector" specification-path="/net/sf/tapestry/inspector/Inspector.library"/>
+
 </library-specification>

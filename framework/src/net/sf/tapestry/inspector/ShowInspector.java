@@ -36,6 +36,7 @@ import net.sf.tapestry.IDirect;
 import net.sf.tapestry.IEngine;
 import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IMarkupWriter;
+import net.sf.tapestry.INamespace;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.IScript;
 import net.sf.tapestry.IScriptSource;
@@ -70,7 +71,7 @@ public class ShowInspector extends BaseComponent implements IDirect
 
     public void trigger(IRequestCycle cycle) throws RequestCycleException
     {
-        Inspector inspector = (Inspector) cycle.getPage("Inspector");
+        Inspector inspector = (Inspector) cycle.getPage(INamespace.FRAMEWORK_NAMESPACE + ":Inspector");
 
         inspector.inspect(getPage().getName(), cycle);
     }

@@ -1,63 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
-<specification class="net.sf.tapestry.inspector.ShowEngine" allow-body="no" allow-informal-parameters="no">
+<!DOCTYPE component-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+	
+<component-specification class="net.sf.tapestry.inspector.ShowEngine" allow-body="no" allow-informal-parameters="no">
+
   <component id="insertFrameworkVersion" type="Insert">
   	<field-binding name="value" field-name="net.sf.tapestry.Tapestry.VERSION"/>
   </component>
+  
   <component id="insertApplicationName" type="Insert">
     <binding name="value" property-path="page.engine.specification.name"/>
   </component>
+  
   <component id="insertContextPath" type="Insert">
     <binding name="value" property-path="page.engine.contextPath"/>
   </component>
+  
   <component id="insertServletPath" type="Insert">
     <binding name="value" property-path="page.engine.servletPath"/>
   </component>
+  
   <component id="insertEngineClass" type="Insert">
     <binding name="value" property-path="page.engine.class.name"/>
   </component>
+  
   <component id="insertLocale" type="Insert">
     <binding name="value" property-path="page.engine.locale.displayName"/>
   </component>
+  
   <component id="ifNoVisit" type="Conditional">
     <binding name="condition" property-path="page.engine.hasVisit"/>
     <field-binding name="invert" field-name="Boolean.TRUE"/>
   </component>
+  
   <component id="insertVisit" type="Insert">
     <binding name="value" property-path="page.engine.visit"/>
   </component>
+  
   <component id="ifVisit" type="Conditional">
     <binding name="condition" property-path="page.engine.hasVisit"/>
   </component>
+  
   <component id="restart" type="Service">
     <field-binding name="service" field-name="net.sf.tapestry.IEngineService.RESTART_SERVICE"/>
   </component>
+  
   <component id="restartButton" type="Rollover">
     <binding name="image" property-path="assets.restart"/>
     <binding name="focus" property-path="assets.restart-focus"/>
   </component>
+  
   <component id="reset" type="Service">
     <field-binding name="service" field-name="net.sf.tapestry.IEngineService.RESET_SERVICE"/>
     <binding name="disabled" property-path="resetServiceDisabled"/>
   </component>
+  
   <component id="resetButton" type="Rollover">
     <binding name="image" property-path="assets.reset"/>
     <binding name="focus" property-path="assets.reset-focus"/>
     <binding name="disabled" property-path="assets.reset-disabled"/>
   </component>
+  
   <component id="insertByteCount" type="Insert">
     <binding name="value" property-path="engineByteCount"/>
   </component>
+  
   <component id="insertSerializedEngine" type="Delegator">
     <binding name="delegate" property-path="engineDumpDelegate"/>
   </component>
+  
   <component id="insertRequest" type="Delegator">
     <binding name="delegate" property-path="page.requestCycle.requestContext"/>
   </component>
+  
   <private-asset name="reset" resource-path="/net/sf/tapestry/inspector/Reset_Np1.gif"/>
   <private-asset name="reset-focus" resource-path="/net/sf/tapestry/inspector/Reset_NRp2.gif"/>
   <private-asset name="reset-disabled" resource-path="/net/sf/tapestry/inspector/Reset_Np1_disabled.gif"/>
   <private-asset name="restart" resource-path="/net/sf/tapestry/inspector/Restart_Np1.gif"/>
   <private-asset name="restart-focus" resource-path="/net/sf/tapestry/inspector/Restart_NRp2.gif"/>
-</specification>
+</component-specification>

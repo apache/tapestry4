@@ -22,7 +22,7 @@ For library specifiations, the root element is library-specification.
 This DTD is backwards compatible with the 1.2 DTD, with the following exceptions:
 - specification (in 1.1) has been split into page-specification and component-specification
 - added string-value element
-- added library root element
+- added library-specification root element
 - added library element
 - added extension element
 - added static value type 'long'
