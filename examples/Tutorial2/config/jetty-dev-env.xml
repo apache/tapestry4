@@ -22,13 +22,6 @@
   <Call name="addWebApplication">
     <Arg>/learn-tapestry</Arg>
     <Arg>webapps/learn-tapestry.war</Arg>
-    <Arg>config/webdefault.xml</Arg>
-    <Arg type="boolean">false</Arg>
+    <Set name="DefaultsDescriptor">config/webdefault.xml</Set>
   </Call>
-  
-  <Call name="addContext">
-    <Arg>/private/*</Arg>
-    <Set name="ResourceBase">private</Set>
-    <Set name="ServingResources">TRUE</Set>
-  </Call>
-</Configure>
+  </Configure>
