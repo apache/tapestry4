@@ -156,8 +156,7 @@ public class Namespace implements INamespace
         {
             result = locatePageSpecification(name);
 
-            if (result != null)
-                _pages.put(name, result);
+           _pages.put(name, result);
         }
 
         return result;

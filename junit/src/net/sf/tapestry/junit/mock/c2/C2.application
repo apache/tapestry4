@@ -6,6 +6,8 @@
 	
 <application name="Test Application for Implicit Pages"
 	engine-class="net.sf.tapestry.engine.SimpleEngine">
+		
+	<page name="Relative" specification-path="pages/Relative.page"/>
 											
 	<library id="lib" specification-path="/net/sf/tapestry/junit/mock/lib/MockLibrary.library"/>
 	

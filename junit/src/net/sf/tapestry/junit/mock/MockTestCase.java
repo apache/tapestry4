@@ -42,6 +42,20 @@ public class MockTestCase extends TapestryTestCase
     // in a static suite() method.
     
     /**
+     *  Test that relative specification paths in the application specification
+     *  work.
+     * 
+     **/
+    
+    public void testRelative() throws Exception
+    {
+        // Note, this needs to be expanded to include relative
+        // paths to components and libraries.
+        
+        attempt("TestRelative.xml");
+    }    
+    
+    /**
      *  Test the reset service.
      *
      **/
