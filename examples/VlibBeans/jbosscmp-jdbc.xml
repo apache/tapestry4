@@ -102,7 +102,7 @@
       </cmp-field>
       <cmp-field>
         <field-name>password</field-name>
-        <column-name>PASSWORD</column-name>
+        <column-name>PASSWD</column-name>
         <jdbc-type>VARCHAR</jdbc-type>
         <sql-type>VARCHAR(20)</sql-type>
       </cmp-field>
@@ -121,11 +121,8 @@
       <cmp-field>
         <field-name>verified</field-name>
         <column-name>VERIFIED</column-name>
-        <!-- 
         <jdbc-type>BIT</jdbc-type>
         <sql-type>BIT</sql-type>
-        
-        -->
       </cmp-field>
       <cmp-field>
         <field-name>lockedOut</field-name>

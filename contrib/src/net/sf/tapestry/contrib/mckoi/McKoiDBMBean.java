@@ -66,16 +66,7 @@ import org.jboss.system.ServiceMBean;
  **/
 
 public interface McKoiDBMBean extends ServiceMBean
-{
-    public String getRootPath();
-    
-    /**
-     *  Sets the root directory name, which is where database files are stored.
-     * 
-     **/
-    
-    public void setRootPath(String path);
-    
+{   
     public String getConfigPath();
     
     /**

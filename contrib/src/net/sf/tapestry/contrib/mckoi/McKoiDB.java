@@ -55,14 +55,17 @@
 package net.sf.tapestry.contrib.mckoi;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.PropertyResourceBundle;
-import java.util.ResourceBundle;
+import java.io.IOException;
+
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
+
 import org.jboss.system.ServiceMBeanSupport;
-import com.mckoi.runtime.BootMain;
+
+import com.mckoi.database.control.DBController;
+import com.mckoi.database.control.DBSystem;
+import com.mckoi.database.control.DefaultDBConfig;
+import com.mckoi.database.control.TCPJDBCServer;
 
 /**
  *  An MBean used to start and stop an embedded instance of
@@ -76,60 +79,68 @@ import com.mckoi.runtime.BootMain;
 
 public class McKoiDB extends ServiceMBeanSupport implements McKoiDBMBean
 {
-    private String rootPath;
-    private String configPath;
-    
-    public String getRootPath()
-    {
-        return rootPath;
-    }
-    
-    public void setRootPath(String path)
-    {
-        log.debug("Root path set to: " + path);
-        rootPath = path;
-    }
-    
+    private String _configPath;
+    private DBSystem _database;
+    private TCPJDBCServer _server;
+
     public String getConfigPath()
     {
-        return configPath;
+        return _configPath;
     }
-    
+
     public void setConfigPath(String path)
     {
         log.debug("Config path set to: " + path);
-        configPath = path;
+        _configPath = path;
     }
-    
-    public ObjectName preRegister(MBeanServer server, ObjectName name)
-        throws Exception
+
+    public ObjectName preRegister(MBeanServer server, ObjectName name) throws Exception
     {
         if (name != null)
             return name;
+            
         return new ObjectName(":service=McKoiDB");
     }
-    
+
     public String getName()
     {
-        return "McKoiDB";
-    }
-    
+        return "McKoiDB";    }
+
     public void startService() throws Exception
     {
-        if (rootPath == null)
-            throw new NullPointerException("McKoiDB: rootPath not specified.");
-        if (configPath == null)
+        if (_configPath == null)
             throw new NullPointerException("McKoiDB: configPath not specified.");
-        log.debug("Root path: " + rootPath);
-        log.debug("Config path: " + configPath);
-        File file = new File(rootPath);
-        InputStream stream = new FileInputStream(configPath);
-        ResourceBundle bundle = new PropertyResourceBundle(stream);
-        BootMain.boot(file, bundle);
+
+        log.debug("Config path: " + _configPath);
+
+        File configFile = new File(_configPath).getAbsoluteFile();
+        File rootFile = configFile.getParentFile();
+
+        DefaultDBConfig config = new DefaultDBConfig(rootFile);
+
+        try
+        {
+            config.loadFromFile(configFile);
+        }
+        catch (IOException ex)
+        {
+            log.error("Unable to initialize McKoi database.", ex);
+        }
+
+        DBController controller = DBController.getDefault();
+        _database = controller.startDatabase(config);
+
+        _server = new TCPJDBCServer(_database);
+
+        _server.start();
+
+        log.info(_server);
+
     }
-    
+
     public void stopService()
     {
-        BootMain.shutdown();
+        _server.stop();
+        _database.close();
     }
 }
