@@ -1,5 +1,5 @@
 // $Id$
-// Requires: /com/primix/tapestry/html/PracticalBrowserSniffer.js
+// Requires: /net/sf/tapestry/html/PracticalBrowserSniffer.js
 
 function palette_clear_selections(element)
 {

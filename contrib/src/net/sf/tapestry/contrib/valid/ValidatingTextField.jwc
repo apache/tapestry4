@@ -2,6 +2,7 @@
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="net.sf.tapestry.contrib.valid.ValidatingTextField" allow-body="no">
+
   <parameter name="disabled"/>
   <parameter name="hidden"/>
   <parameter name="displayWidth" java-type="java.lang.Integer"/>
@@ -10,7 +11,7 @@
   <parameter name="minimumLength" java-type="java.lang.Integer"/>
   <parameter name="required"/>
   <parameter name="text" java-type="java.lang.String" required="yes"/>
-  
+ 
   <reserved-parameter name="type"/>
   <reserved-parameter name="value"/>
   <reserved-parameter name="name"/>

@@ -4,7 +4,6 @@
 <specification class="net.sf.tapestry.contrib.valid.NumericField">
 
   <parameter name="value" java-type="java.lang.Number" required="yes"/>
-  
   <parameter name="displayName" java-type="java.lang.String" required="yes"/>
   <parameter name="maximum" java-type="java.lang.Number"/>
   <parameter name="minimum" java-type="java.lang.Number"/>
@@ -13,8 +12,6 @@
   <parameter name="hidden"/>
   <parameter name="displayWidth" java-type="java.lang.Integer"/>
   <parameter name="maximumLength" java-type="java.lang.Integer"/>
-  
-  
+ 
   <reserved-parameter name="type"/>
-   
 </specification>
