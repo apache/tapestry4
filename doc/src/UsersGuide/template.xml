@@ -1,0 +1,287 @@
+<!-- $Id$ -->
+
+<chapter id="template">
+	<title>Tapestry Page and Component Templates</title>
+
+<para>
+Unlike many other web frameworks, such as 
+&Struts; or &WebWork;,
+Tapestry does not "plug into" an external templating system such as JavaServer Pages or
+&Velocity;.  Instead, Tapestry integrates its own templating system.
+	
+</para>
+
+<para>
+Tapestry templates are designed to look like valid HTML files (component HTML templates
+will just be snippets). Tapestry "hides" its extensions into special attributes of ordinary HTML elements.	
+	
+</para>
+
+<para>
+Don't be fooled by the terminology; we say "HTML templates" because that is the prevalent use of Tapestry ... but
+Tapestry is equally adept at WML or XML.
+</para>
+
+<section id="template.locations">
+	<title>Template locations</title>
+	
+	
+<para>
+The general rule of thumb is that a page's HTML template is simply an HTML file, stored in the context root directory. 
+That is, you'll have a <filename><replaceable>MyPage</replaceable>.html</filename> HTML template,
+a <filename>WEB-INF/<replaceable>MyPage</replaceable>.page</filename> page specification,
+and a <classname>MyPage</classname> class, in some Java package.
+</para>
+
+<para>
+Tapestry always starts knowing the name of the page and the location of the page's specification when it
+searches for the page's HTML template.  Starting with this, it performs the following search:
+</para>
+
+<itemizedlist>
+	<listitem>
+		<para>
+			In the same location as the specification
+		</para>
+		</listitem>
+	<listitem>
+		<para>
+		In the web application's context root directory (if the page is an application page, not a page from a library)	
+		</para>	
+	</listitem>
+</itemizedlist>
+
+<para>
+In addition, any HTML template in the web application context is considered a page, even if there is no matching
+page specification. For simple pages that don't need to have any page-specific logic or properties, there's no need
+for a page specification.  Such a page may still use the special Tapestry attributes (described in the following sections).	
+</para>
+
+<para>
+Finally, with some <link linkend="configuration.search-path">minor configuration</link>	
+it is possible to change the extension searched for, which is appropriate if you are, for example,
+building a WML application using Tapestry.
+</para>
+
+</section> <!-- template.locations -->
+
+<section id="template.contents">
+	<title>Template Contents</title>	
+	
+<para>
+Tapestry templates contain a mix of the following elements:
+</para>
+
+<itemizedlist>
+<listitem>
+	<para>Static HTML markup</para>	
+</listitem>	
+<listitem>	
+	<para>Tapestry components</para>
+</listitem>	
+<listitem>
+	<para>Localized messages</para>
+</listitem>		
+<listitem>
+	<para>Special template directives</para>
+</listitem>	
+</itemizedlist>
+
+<para>
+Usually, about 90% of a template is ordinary HTML markup.  Hidden inside that markup are particular tags that
+are placeholders for Tapestry components; these tags are recognized by the presence of the &jwc; attribute.  "JWC"
+is short for "Java Web Component", and was chosen as the "magic" attribute so as not to conflict with any real HTML attribute.	
+</para>
+
+
+<para>
+Tapestry's parser is quite flexible, accepting all kinds of invalid HTML markup. That is, attributes don't <emphasis>have</emphasis> to be
+quoted. Start and end tags don't have to balance.  Case is ignored when matching start and end tags.  Basically,
+the kind of ugly HTML you'll find "in the field" is accepted.
+</para>
+
+</section> <!-- template.contents -->
+
+<section id="template.components">
+	<title>Components in Templates</title>
+	
+<para>
+Components can be placed anywhere inside a template, simply  by adding the &jwc; attribute to 
+any existing tag.  For example:
+
+<example>
+	<title>Example HTML template containing components</title>
+<programlisting><![CDATA[
+<html>
+  <head>
+    <title>Example HTML Template</title>
+  </head>
+  <body>]]>
+    &lt;span jwcid="border"&gt;  <co id="template.components.border"/>
+    
+      Hello,
+      &lt;span jwcid="@&Insert;" value="ognl:user.name">Joe User&lt;/span&gt; <co id="template.components.insert"/>
+<![CDATA[    
+    </span>
+  </body>
+</html>]]>	
+</programlisting>
+</example>
+
+<calloutlist>
+<callout arearefs="template.components.border">
+<para>
+This is a reference to a <emphasis>declared component</emphasis>; the type and parameters
+of the component are in the page's specification.
+</para>	
+</callout>	
+<callout arearefs="template.components.insert">
+This is a <emphasis>implicit component</emphasis>; the type of the component is &Insert;. The
+value parameter is bound to the &OGNL; expression <literal>user.name</literal>.
+</callout>
+</calloutlist>
+</para>	
+	
+<para>
+The point of all this is that the HTML template should preview properly in a WYSIWYG HTML editor. Unlike
+&Velocity; or JSPs, there are no strange directives to get in the way of a preview (or necessitate
+a special editting tool), Tapestry hides what's needed inside existing tags; at worst, it adds
+a few non-standard attributes (such as &jwc;) to tags. This rarely causes a problem with most HTML editors.
+</para>
+
+<para>
+Templates may contain components using two different styles.  <emphasis>Declared components</emphasis>	 are
+little more than a placeholder; the type of the component is defined elsewhere, in the page (or component) 
+specification.
+</para>
+
+<para>
+Alternately, an <emphasis>implicit component</emphasis> can be defined in place, by preceding
+the component type with an "@" symbol.  Tapestry includes over forty components with the framework, additional components
+may be created as part of your application, or may be provided inside a component library.
+</para>	
+
+<para>
+In the above example, a <sgmltag class="starttag">span</sgmltag>	 was used for both components. Tapestry
+doesn't care what tag is used for a component, as long as the start and end tags for components balance (it doesn't
+even care if the case of the start tag matches the case of the end tag). The example could just
+as easily use <sgmltag class="starttag">div</sgmltag> or <sgmltag class="starttag">fred</sgmltag>, the
+rendered page sent back to the client web browser will be the same.
+</para>
+
+<section id="templates.components.ids">
+	<title>Component Ids</title>
+	
+<para>
+Every component in Tapestry has its own id.  In the above example, the first component has the id "border".  The second component
+is anonymous; the framework provides a unique id for the component since one was not supplied in the HTML template. The 
+framework provided id is built from the component's type; this component would have an id of
+<literal>$Insert</literal>; other &Insert; components
+would have ids <literal>$Insert$0</literal>, <literal>$Insert$1</literal>, etc.
+</para>
+
+<para>
+A component's id must only be unique within its immediate container.  Pages are top-level containers, but
+components can also contain other components. 
+</para>
+
+
+<para>
+Implicit components can also have a specific id, by placing the id in front of the "@" symbol:
+
+<informalexample>
+<programlisting>
+  &lt;span jwcid="insert@&Insert;" value="ognl:user.name"&gt;Joe User&lt;/span&gt;
+</programlisting>	
+</informalexample>	
+</para>
+
+<para>
+The component is still implicit; nothing about the component would go in the specification, but the id
+of the component would be "insert".	
+</para>
+
+<para>
+Each component may only appear <emphasis>once</emphasis>	 in the template. You simply can't use the same component
+repeatedly ... but you can duplicate a component fairly easily; make the component a declared component,
+then use the <literal>copy-of</literal> attribute of the &spec.component; element to create clones of
+the component with new ids.
+</para>
+
+
+</section> <!-- templates.components.ids -->
+
+<section id="templates.components.parameters">
+		<title>Specifying Parameters</title>
+		
+<para>
+Using either style, parameters of the component may be bound by adding attributes to the tag.
+Most attributes bind static parameters, equivalent to using
+the &spec.static-binding; element in the specification.
+</para>
+
+<para>
+Prefixing an attribute value with <literal>ognl:</literal>	 indicates that the value
+is really an &OGNL; expression, equivalent to using the &spec.binding; element in the specification.
+</para>
+
+<para>
+Finally, prefixing an attribute value with <literal>message:</literal> indicates that the value
+is really a key used to get a localized message, equivalent to the &spec.message-binding; element
+in the specification.
+</para>
+
+</section> <!-- templates.components.parameters -->
+
+<section id="template.components.formal">
+		<title>Formal and Informal Parameters</title>
+		
+<para>
+Components may accept two types of parameters: <emphasis>formal</emphasis>
+and <emphasis>informal</emphasis>.  Formal parameters are those defined in the
+component specification, using the &spec.parameter; element.
+Informal parameters are <emphasis>additional</emphasis> parameters, beyond those
+known when the component was created.
+</para>
+
+<para>
+The majority of components that accept informal parameters simply emit the informal
+parameters as additional attributes.  Why is that useful?  Because it allows you to
+specify common HTML attributes such as <literal>class</literal>	or <literal>id</literal>,
+or JavaScript event handlers, without requiring that each component define each possible 
+HTML attribute (a list which expands all the time).
+</para>
+
+<para>
+Informal and formal parameters can be specified in either the specification or in the template.
+Informal parameters <emphasis>are not</emphasis>	 limited to literal strings, you may use
+the <literal>ognl:</literal> and <literal>message:</literal> prefixes with them as well.
+</para>
+	
+
+<para>
+Not all components allow informal parameters; this is controlled by the
+<literal>allow-informal-parameters</literal>	 attribute of the
+&spec.component-specification; element. Many components do not map directly to an HTML element,
+those are the ones that do not allow informal parameters. If a component forbids informal parameters,
+then any informal parameters in the specification or the template will result in errors, with one exception:
+static strings in the HTML template are simply ignored when informal parameters are forbidden; they
+are presumed to be there only to support WYSIWYG preview.
+</para>
+
+<para>
+Each component declares a list of reserved names using the &spec.reserved-parameter; element; these
+are  names which are not allowed as informal parameters, because the component generates the
+the named attribute itself, and doesn't want the value it writes to be overriden by an informal
+parameters.  For example, the &DirectLink; component reserves the name "href" ... putting an 
+<literal>href</literal>	 attribute in the HTML template is simply ignored (again, presumed to
+be there to support WYSIWYG preview).  Case is ignored when comparing attribute names to reserved names.
+</para>
+
+</section> <!-- template.components.formal -->
+
+
+
+</section>  <!-- template.components -->
+
+</chapter>

@@ -373,6 +373,18 @@ the OGNL expression <literal>components.<replaceable>id</replaceable></literal>.
 	component will be copied to this component.
 	</entry>
 </row>
+
+<row>
+	<entry>inherit-informal-parameters</entry>	
+	<entry><literal>yes|no</literal></entry>
+	<entry>no</entry>
+	<entry><literal>no</literal></entry>
+	<entry>
+	If <literal>yes</literal>, then any informal parameters of the containing
+	component will be copied into this component.
+	</entry>
+</row>
+
 </tbody>
 </tgroup>
 </informaltable>
@@ -1316,6 +1328,16 @@ is not rendering.
   component is not rendering.
   </para>
   </entry>
+</row>
+
+<row>
+	<entry>default-value</entry>	
+	<entry>OGNL expression</entry>
+	<entry>no</entry>
+	<entry/>
+	<entry>
+	Specifies the default value for the parameter, if the parameter is not bound.	
+	</entry>
 </row>
 
 </tbody>
