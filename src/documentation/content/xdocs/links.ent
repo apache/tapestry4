@@ -26,6 +26,7 @@
 <!-- Common Tapestry classes -->
 
 <!ENTITY apiroot "&projectroot;tapestry/apidocs/org/apache/tapestry">
+<!ENTITY hivedoc "&projectroot;tapestry/hivedocs">
 
 <!ENTITY AbstractComponent 			'<link href="&apiroot;/AbstractComponent.html">AbstractComponent</link>'>
 <!ENTITY AbstractEngine 			'<link href="&apiroot;/engine/AbstractEngine.html">AbstractEngine</link>'>
@@ -94,6 +95,7 @@
 <!ENTITY Pool 						'<link href="&apiroot;/util/pool/Pool.html">Pool</link>'>
 <!ENTITY RedirectFilter 			'<link href="&apiroot;/RedirectFilter.html">RedirectFilter</link>'>
 <!ENTITY RequestContext 			'<link href="&apiroot;/RequestContext.html">RequestContext</link>'>
+<!ENTITY ServiceEncoder				'<link href="&apiroot;/engine/ServiceEncoder.html">ServiceEncoder</link>'>
 <!ENTITY SimpleEngine 				'<link href="&apiroot;/engine/SimpleEngine.html">SimpleEngine</link>'>
 <!ENTITY SpecificationParser 		'<link href="&apiroot;/parse/SpecificationParser">SpecificationParser</link>'>
 <!ENTITY StaleLinkException 		'<link href="&apiroot;/StaleLinkException.html">StaleLinkException</link>'>
@@ -169,7 +171,8 @@
 
 <!-- HiveMind service and configuration extension points -->
 
-<!ENTITY tapestry.services.ApplicationServices 'tapestry.services.ApplicationServices'>
+<!ENTITY tapestry.services.ApplicationServices '<link href="&hivedoc;/service/tapestry.services.ApplicationServices.html">tapestry.services.ApplicationServices</link>'>
+<!ENTITY tapestry.url.ServiceEncoders '<link href="&hivedoc;/config/tapestry.url.ServiceEncoders.html">tapestry.url.ServiceEncoders</link>'>
 
 <!-- Other useful stuff -->
 

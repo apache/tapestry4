@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+   Copyright 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "./dtd/document-v12.dtd"
+[
+	<!ENTITY projectroot '../'>
+	<!ENTITY % links.ent SYSTEM "../links.ent">
+  <!ENTITY % common.ent SYSTEM "common.ent">
+	%links.ent;
+  %common.ent;
+]>
+<document>
+  <header>
+    <title>Configuring Friendly URLs</title>
+  </header>
+  <body>
+    
+    <p>
+    Earlier versions of Tapestry have had a long-standing tradition of
+    <em>really ugly URLs</em>. Because the framework generates the URLs and
+    is also responsible for parsing and dispatching on them in later requests, it was
+    not seen as an issue.
+    </p>
+    
+    <p>
+    In fact, the ugly URLs <em>do</em> cause some problems:
+    </p>
+    
+    <ul>
+      <li>Since all requests are routed through a single  servlet
+        (typically mapped to <code>/app</code>), J2EE declarative security, which is path-based,
+        is defeated.</li>
+     <li>A single directory may contain all the artifacts (HTML templates,  specifications, properties files) for
+      all the pages in an entire application.  There isn't a sanctioned approach to organizing
+      things into subdirectories.</li>
+      <li>The reliance on query parameters means that common search engines will only see
+        a tiny fraction of the application.</li>
+    </ul>
+    
+    <p>
+    Starting with 3.1, <em>friendly URLs</em> are integrated directly into framework (in 3.0 an
+    ambitious, but more limited, patch was required). 
+    </p>
+    
+    <p>
+    Friendly URLs are divided into two aspects:
+    </p>
+    
+    <ul>
+      <li>Converting information normally stored as a query parameter into part of the URL path.</li>
+      <li>Parsing the path to restore the information previously encoded.</li>
+    </ul>
+    
+    <p>
+      For example, the ugly URL <code>/app?page=news/Thread&amp;service=page</code> may be converted into
+      the friendly URL <code>/news/Threads.html</code>.  In this case, the <code>page=news/Thread</code> query parameter
+      becamethe <code>news/Thread</code> portion of the URL, and the <code>service=page</code> query parameter
+      became the <code>.html</code> extension to the URL.
+    </p>
+    
+  <section>
+    <title>Understanding Tapestry URLs</title>
+    
+    <p>
+      To understand how to get friendly URLs, you must understand a little about what 
+      information Tapestry packs into URLs.
+    </p>
+    
+    <p>
+    Every request to a Tapestry application is mapped to an <em>engine service</em>. An engine service
+    is something like a servlet, embedded within Tapestry. The <code>service</code> query parameter
+    is used to select an engine service by name.  A number of services are provided with the framework, the most common
+    of which are:
+    </p>
+    
+    <dl>
+      <dt>page</dt>
+      <dd>Activates and renders a specific page.</dd>
+      <dt>direct</dt>
+      <dd>Used with the &DirectLink; and &Form; components.</dd>
+      <dt>home</dt>
+      <dd>Default service used when the service parameter is not specified (such as when
+        first accessing the application); activates and renders the Home page.</dd>
+    </dl>
+    
+    <p>
+      Each service is responsible for creating URLs with the correct query parameters.
+      By default, the URL path is always <code>/app</code> and any additional information comes out
+      of the query parameters.  The most common parameters are:
+    </p>
+    
+    <dl>
+      <dt>page</dt>
+      <dd>The name of a page to activate.</dd>
+      <dt>service</dt>
+      <dd>The service responsible for the request.</dd>
+      <dt>component</dt>
+      <dd>The nested component id of a component.</dd>
+      <dt>sp
+        
+      </dt>
+      <dd>
+        Stores service parameters passed in the URL (used by &DirectLink;).
+      </dd>
+    </dl>
+    
+    <p>
+      This a typical URL might be
+      <code>/app?component=border.logout&amp;page=news/Thread&amp;service=direct</code>.  Yep, that's UGLY.
+    </p>
+    
+  </section>
+  
+  <section>
+    <title>Enabling Friendly URLs</title>
+    
+    <p>
+      To use ordinary ugly URLs, Tapestry requires only a 
+      <link href="configuration.html#configuration.deployment-descriptor">small amount of configuration
+        in web.xml</link>.  Enabling friendly URLs requires adding more
+        configuration to web.xml, and to your &hivemind-descriptor;.
+    </p>
+    
+    <p>
+      Friendly URLs are controlled by
+      &ServiceEncoder;s. Getting Tapestry to output friendly URLs is a matter of
+      plugging encoders into the correct pipeline ... this is all done using HiveMind.
+    </p>
+    
+    <section>
+      <title>page-service-encoder</title>
+      
+      <p>
+        The most common type of encoder is the <code>page-service-encoder</code>, which encodes
+        the <code>page</code> and <code>service</code> parameters.  In your hivemodule.xml:
+      </p>
+      
+      <source><![CDATA[
+<contribution configuration-id="tapestry.url.ServiceEncoders">
+  <page-service-encoder id="page" extension="html" service="page"/>
+</contribution>]]></source>
+      
+      <p>
+        This contribution to the &tapestry.url.ServiceEncoders; configuration point
+        creates a &ServiceEncoder; that maps the <code>.html</code> extension (on the URL path)
+        to the page service. The <code>id</code> attribute must be unique for all
+        contributed encoders.
+      </p>
+      
+      <p>
+        For Tapestry to recognize the URLs, you must inform the servlet container
+        to send them to the Tapestry application servlet, by addining a mapping
+        to web.xml:
+      </p>
+      <source><![CDATA[
+<servlet-mapping>
+  <servlet-name>myapp</servlet-name>
+  <url-pattern>*.html</url-pattern>
+</servlet-mapping>]]></source>  
+      
+
+<note>
+  This means that even static HTML pages that are part of your web application will be
+  treated as Tapestry pages; any incoming request that ends with .html will be routed
+  into the Tapestry application. Page specifications are optional, so Tapestry will treat
+  the HTML pages are if they were HTML page templates.  If you want to allow ordinary static
+  content, then you should use another extension such as ".page" or ".tap" (the choice
+  is arbitrary).
+</note>      
+      
+    </section>
+    
+  </section>
+    
+  </body>
+</document>

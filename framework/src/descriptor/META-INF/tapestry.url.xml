@@ -67,7 +67,7 @@
       </element>
       
       
-      <element name="path-encoder">
+      <element name="page-service-encoder">
         
         An encoder that identifies the service as a pathname extension, and encodes the page as the
         servlet path.
@@ -95,7 +95,7 @@
           <read-attribute attribute="after" property="after"/>
           <invoke-parent method="addElement"/>
           
-          <create-object class="org.apache.tapestry.engine.encoders.ServicePathEncoder"/>
+          <create-object class="org.apache.tapestry.engine.encoders.PageServiceEncoder"/>
           <read-attribute attribute="extension" property="extension"/>
           <read-attribute attribute="service" property="serviceName"/>
           <invoke-parent method="setEncoder"/>          

@@ -46,6 +46,7 @@
 
 <!ENTITY binding-reference			'binding reference'>
 <!ENTITY listener-method			'listener method'>
+<!ENTITY hivemind-descriptor		'<link href="site:hivemind">HiveMind module deployment descriptor</link>'>
 
 <!ENTITY configuration-property		'<link href="configuration.html#configuration.search-path">configuration property</link>'>
 <!ENTITY configuration.character-sets

@@ -20,12 +20,12 @@ import org.apache.tapestry.services.ServiceConstants;
 import org.easymock.MockControl;
 
 /**
- * Tests for {@link org.apache.tapestry.engine.encoders.ServicePathEncoder}.
+ * Tests for {@link org.apache.tapestry.engine.encoders.PageServiceEncoder}.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class TestServicePathEncoder extends HiveMindTestCase
+public class TestPageServiceEncoder extends HiveMindTestCase
 {
     public void testEncodeOtherService()
     {
@@ -37,7 +37,7 @@ public class TestServicePathEncoder extends HiveMindTestCase
 
         replayControls();
 
-        ServicePathEncoder encoder = new ServicePathEncoder();
+        PageServiceEncoder encoder = new PageServiceEncoder();
         encoder.setServiceName("page");
 
         encoder.encode(e);
@@ -62,7 +62,7 @@ public class TestServicePathEncoder extends HiveMindTestCase
 
         replayControls();
 
-        ServicePathEncoder encoder = new ServicePathEncoder();
+        PageServiceEncoder encoder = new PageServiceEncoder();
         encoder.setServiceName("page");
         encoder.setExtension("html");
 
@@ -84,7 +84,7 @@ public class TestServicePathEncoder extends HiveMindTestCase
 
         replayControls();
 
-        ServicePathEncoder encoder = new ServicePathEncoder();
+        PageServiceEncoder encoder = new PageServiceEncoder();
         encoder.setServiceName("page");
 
         encoder.encode(e);
@@ -102,7 +102,7 @@ public class TestServicePathEncoder extends HiveMindTestCase
 
         replayControls();
 
-        ServicePathEncoder encoder = new ServicePathEncoder();
+        PageServiceEncoder encoder = new PageServiceEncoder();
 
         encoder.decode(e);
 
@@ -119,7 +119,7 @@ public class TestServicePathEncoder extends HiveMindTestCase
 
         replayControls();
 
-        ServicePathEncoder encoder = new ServicePathEncoder();
+        PageServiceEncoder encoder = new PageServiceEncoder();
 
         encoder.decode(e);
 
@@ -136,7 +136,7 @@ public class TestServicePathEncoder extends HiveMindTestCase
 
         replayControls();
 
-        ServicePathEncoder encoder = new ServicePathEncoder();
+        PageServiceEncoder encoder = new PageServiceEncoder();
 
         encoder.decode(e);
 
@@ -156,7 +156,7 @@ public class TestServicePathEncoder extends HiveMindTestCase
 
         replayControls();
 
-        ServicePathEncoder encoder = new ServicePathEncoder();
+        PageServiceEncoder encoder = new PageServiceEncoder();
         encoder.setExtension("html");
         encoder.setServiceName("page");
 

@@ -28,7 +28,7 @@ import org.apache.tapestry.services.ServiceConstants;
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class ServicePathEncoder implements ServiceEncoder
+public class PageServiceEncoder implements ServiceEncoder
 {
     private String _extension;
 
