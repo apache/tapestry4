@@ -72,7 +72,7 @@
     	type="org.apache.tapestry.contrib.table.model.IPrimaryKeyConvertor"
     	required="no"
     	direction="auto"
-    	default-value="null"/>
+    	default-value="null">
         <description>
         An interface defining how the items iterated upon by this component 
         will be stored in the form as Hidden values. This interface allows only 
