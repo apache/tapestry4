@@ -1,5 +1,9 @@
 * Jan 26 2001 hship
 
+Change the Publisher.script to make use of the new <let> tag.
+
+* Jan 26 2001 hship
+
 Update some Makefiles.
 
 * Jan 25 2001 hship
