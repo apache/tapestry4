@@ -51,6 +51,8 @@ public class TreeNodeView extends BaseComponent implements PageDetachListener{
 
     private IAsset m_objOpenNodeImage;
     private IAsset m_objCloseNodeImage;
+    
+    private int m_CurrentForeachConnectImageValue = TreeRowObject.LINE_CONN_IMG;
 
     public TreeNodeView(){
         super();
@@ -62,6 +64,7 @@ public class TreeNodeView extends BaseComponent implements PageDetachListener{
         m_objShowNodeImages = null;
         m_objNodeRenderFactory = null;
         m_objMakeNodeDirect = null;
+        m_CurrentForeachConnectImageValue = TreeRowObject.LINE_CONN_IMG;
     }
 
     public IRender getCurrentRenderer(){
@@ -205,6 +208,99 @@ public class TreeNodeView extends BaseComponent implements PageDetachListener{
      * @return IAsset
      */
     public IAsset getNodeImage() {
+    	IAsset objResult = null;
+    	ITreeRowSource objRowSource = getTreeRowSource();
+    	boolean bLeaf = objRowSource.getTreeRow().getLeaf();
+    	int nRowType = objRowSource.getTreeRow().getTreeRowPossiotionType();
+    	if(!bLeaf){
+	    	if(isNodeOpen()) {
+	        	switch (nRowType) {
+					case  TreeRowObject.FIRST_LAST_ROW:{
+						objResult = getAsset("_topLastOpenNodeImage");
+						break;
+					}
+					
+					case  TreeRowObject.FIRST_ROW:{
+						objResult = getAsset("_topOpenNodeImage");
+						break;
+					}
+	
+					case  TreeRowObject.MIDDLE_ROW:{
+						objResult = getAsset("_middleOpenNodeImage");
+						break;
+					}
+					
+					case  TreeRowObject.LAST_ROW:{
+						objResult = getAsset("_bottomOpenNodeImage");
+						break;
+					}
+					
+					default : {
+						objResult = getAsset("_openNodeImage");
+						break;
+					}
+				}
+	        } else {
+	        	switch (nRowType) {
+					case  TreeRowObject.FIRST_LAST_ROW:{
+						objResult = getAsset("_topLastCloseNodeImage");
+						break;
+					}
+					
+					case  TreeRowObject.FIRST_ROW:{
+						objResult = getAsset("_topCloseNodeImage");
+						break;
+					}
+	
+					case  TreeRowObject.MIDDLE_ROW:{
+						objResult = getAsset("_middleCloseNodeImage");
+						break;
+					}
+					
+					case  TreeRowObject.LAST_ROW:{
+						objResult = getAsset("_bottomCloseNodeImage");
+						break;
+					}
+					
+					default : {
+						objResult = getAsset("_closeNodeImage");
+						break;
+					}
+	        	}
+	        }
+    	}else{
+        	switch (nRowType) {
+				case  TreeRowObject.FIRST_LAST_ROW:{
+					objResult = getAsset("_topLineImage");
+					break;
+				}
+				
+				case  TreeRowObject.FIRST_ROW:{
+					objResult = getAsset("_topLineImage");
+					break;
+				}
+
+				case  TreeRowObject.MIDDLE_ROW:{
+					objResult = getAsset("_middleCrossLineImage");
+					break;
+				}
+				
+				case  TreeRowObject.LAST_ROW:{
+					objResult = getAsset("_bottomLineImage");
+					break;
+				}
+				
+				default : {
+					objResult = getAsset("_bottomLineImage");
+					break;
+				}
+        	}
+   		
+    	}
+    	return objResult;
+    }
+
+    public IAsset getNodeImageOld() {
         if(isNodeOpen()) {
             if (m_objOpenNodeImage == null) {
                 m_objOpenNodeImage = getAsset("_openNodeImage");
@@ -217,7 +313,7 @@ public class TreeNodeView extends BaseComponent implements PageDetachListener{
             return m_objCloseNodeImage;
         }
     }
-
+    
     /**
      * Returns the closeNodeImage.
      * @return IAsset
@@ -307,14 +403,16 @@ public class TreeNodeView extends BaseComponent implements PageDetachListener{
     }
 
     public String getOffsetStyle() {
-        //return "width: " + getTreeDataView().getTreeDeep() * 15;
+       //return "width: " + getTreeDataView().getTreeDeep() * 15;
 		ITreeRowSource objTreeRowSource = getTreeRowSource();
 		TreeRowObject objTreeRowObject = objTreeRowSource.getTreeRow();
         int nTreeRowDepth = 0;
         if(objTreeRowObject != null){
 			nTreeRowDepth = objTreeRowObject.getTreeRowDepth();
+			if(nTreeRowDepth != 0)
+				nTreeRowDepth = nTreeRowDepth - 1;
         }
-        return "padding-left: " + nTreeRowDepth * 15+"px";
+        return "padding-left: " + nTreeRowDepth * 19+"px";
     }
 
     /**
@@ -427,5 +525,63 @@ public class TreeNodeView extends BaseComponent implements PageDetachListener{
 	public ITreeModelSource getTreeModelSource(){
 		ITreeModelSource objSource = (ITreeModelSource)getPage().getRequestCycle().getAttribute(ITreeModelSource.TREE_MODEL_SOURCE_ATTRIBUTE);
 		return objSource;
+	}
+	
+	public boolean getShowConnectImage(){
+    	ITreeRowSource objRowSource = getTreeRowSource();
+    	int nRowType = objRowSource.getTreeRow().getTreeRowPossiotionType();
+    	if(TreeRowObject.MIDDLE_ROW == nRowType)
+    		return true;
+    	return false;
+	}
+	
+	public int[] getForeachConnectImageList(){
+		ITreeRowSource objTreeRowSource = getTreeRowSource();
+		TreeRowObject objTreeRowObject = objTreeRowSource.getTreeRow();
+		return objTreeRowObject.getLineConnImages();
+	}
+	
+	public boolean getDisableLink(){
+    	ITreeRowSource objRowSource = getTreeRowSource();
+    	boolean bLeaf = objRowSource.getTreeRow().getLeaf();
+    	return bLeaf;
+	}
+    /**
+     * Returns the openNodeImage.
+     * @return IAsset nevalidno neshto
+     */
+    public IAsset getConnectImage() {
+    	IAsset objResult = null;
+    	int nConnectImageType = getCurrentForeachConnectImageValue();
+    	switch (nConnectImageType) {
+			case  TreeRowObject.EMPTY_CONN_IMG:{
+				objResult = getAsset("_whiteSpaceImage");
+				break;
+			}
+
+			case  TreeRowObject.LINE_CONN_IMG:{
+				objResult = getAsset("_middleLineImage");
+				break;
+			}
+			
+			default : {
+				objResult = getAsset("_whiteSpaceImage");
+				break;
+			}
+		}
+    	return objResult;
+    }
+	/**
+	 * @return Returns the m_CurrentForeachConnectImageValue.
+	 */
+	public int getCurrentForeachConnectImageValue() {
+		return m_CurrentForeachConnectImageValue;
+	}
+	/**
+	 * @param currentForeachConnectImageValue The m_CurrentForeachConnectImageValue to set.
+	 */
+	public void setCurrentForeachConnectImageValue(
+			int currentForeachConnectImageValue) {
+		m_CurrentForeachConnectImageValue = currentForeachConnectImageValue;
 	}
 }

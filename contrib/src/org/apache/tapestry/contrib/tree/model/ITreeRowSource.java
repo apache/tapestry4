@@ -25,7 +25,7 @@ package org.apache.tapestry.contrib.tree.model;
 public interface ITreeRowSource
 {
     final static String TREE_ROW_SOURCE_ATTRIBUTE = "org.apache.tapestry.contrib.tree.model.ITreeRowSource";
-
+    
 	/**
 	 * Method getTreeRow
 	 * @return Object the current tree row object.

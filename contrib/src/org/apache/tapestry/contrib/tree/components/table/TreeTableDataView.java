@@ -93,11 +93,23 @@ public class TreeTableDataView extends BaseComponent implements ITreeRowSource, 
 	        Object objRoot = objTreeDataModel.getRoot();
 	        Object objRootUID = objTreeDataModel.getUniqueKey(objRoot, null);
 	        if(getShowRootNode()){
+	            walkTree(arrAllExpandedNodes, objRoot, objRootUID, 0, objTreeModel, TreeRowObject.FIRST_LAST_ROW, new int[0], true);
 	        }else{
+	        	int nChildenCount = objTreeModel.getTreeDataModel().getChildCount(objRoot);
+	        	int nRowPossiotionType = nChildenCount == 1 ? TreeRowObject.FIRST_LAST_ROW : TreeRowObject.FIRST_ROW;
+	        	boolean bFirst = true;
 	            for (Iterator iter = objTreeModel.getTreeDataModel().getChildren(objRoot); iter.hasNext();) {
 	                Object objChild = iter.next();
 	                Object objChildUID = objTreeModel.getTreeDataModel().getUniqueKey(objChild, objRoot);
-					walkTree(arrAllExpandedNodes, objChild, objChildUID, 0, objTreeModel);
+	                boolean bChildLast = !iter.hasNext();
+	                if( !bFirst){
+	                    if(bChildLast)
+	                		nRowPossiotionType = TreeRowObject.LAST_ROW;
+	                	else
+	                    	nRowPossiotionType = TreeRowObject.MIDDLE_ROW;
+	                }
+					walkTree(arrAllExpandedNodes, objChild, objChildUID, 0, objTreeModel, nRowPossiotionType, new int[0], bChildLast);
+	                bFirst = false;
 	            }
 	        }			
 
@@ -109,19 +121,32 @@ public class TreeTableDataView extends BaseComponent implements ITreeRowSource, 
     }
 
     public void walkTree(ArrayList arrAllExpandedNodes, Object objParent, Object objParentUID, int nDepth,
-                         ITreeModel objTreeModel) {
+                         ITreeModel objTreeModel, int nRowPossiotionType, int[] arrConnectImages, boolean bLast) {
         m_nTreeDeep = nDepth;
 
-		TreeRowObject objTreeRowObject = new TreeRowObject(objParent, objParentUID, nDepth);
+    	int nNumberOfChildren = objTreeModel.getTreeDataModel().getChildCount(objParent);
+    	boolean bLeaf = (nNumberOfChildren == 0) ? true : false;
+		TreeRowObject objTreeRowObject = new TreeRowObject(objParent, objParentUID, nDepth, bLeaf, nRowPossiotionType, arrConnectImages);
 		arrAllExpandedNodes.add(objTreeRowObject);
 
         boolean bContain = objTreeModel.getTreeStateModel().isUniqueKeyExpanded(objParentUID);
         if (bContain) {
+        	int[] arrConnectImagesNew = new int[arrConnectImages.length+1];
+        	System.arraycopy(arrConnectImages, 0, arrConnectImagesNew, 0, arrConnectImages.length);
+        	if(bLast)
+        		arrConnectImagesNew[arrConnectImagesNew.length-1] = TreeRowObject.EMPTY_CONN_IMG;
+        	else
+        		arrConnectImagesNew[arrConnectImagesNew.length-1] = TreeRowObject.LINE_CONN_IMG;
 			Iterator colChildren = objTreeModel.getTreeDataModel().getChildren(objParent);
             for (Iterator iter = colChildren; iter.hasNext();) {
                 Object objChild = iter.next();
                 Object objChildUID = objTreeModel.getTreeDataModel().getUniqueKey(objChild, objParentUID);
-                walkTree(arrAllExpandedNodes, objChild, objChildUID, nDepth+1, objTreeModel);
+                boolean bChildLast = !iter.hasNext();
+                if(!bChildLast)
+            		nRowPossiotionType = TreeRowObject.LAST_ROW;
+            	else
+                	nRowPossiotionType = TreeRowObject.MIDDLE_ROW;
+               walkTree(arrAllExpandedNodes, objChild, objChildUID, nDepth+1, objTreeModel, nRowPossiotionType, arrConnectImagesNew, bChildLast);
             }
         }
     }
@@ -241,4 +266,5 @@ public class TreeTableDataView extends BaseComponent implements ITreeRowSource, 
 		}
 		return bShowRootNode;
 	}
+	
 }

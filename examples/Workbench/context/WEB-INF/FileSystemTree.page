@@ -34,7 +34,7 @@
     <component id="treeData" type="contrib:TreeDataView">
         <binding name="treeView" expression='components.treeView'/>
         <binding name="value" expression='value'/>
-        <binding name="showRootNode" expression="@java.lang.Boolean@FALSE"/>
+        <!--binding name="showRootNode" expression="@java.lang.Boolean@FALSE"/-->
     </component>
 
     <component id="treeNodeView" type="contrib:TreeNodeView">

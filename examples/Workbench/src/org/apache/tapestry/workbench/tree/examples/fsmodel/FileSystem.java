@@ -44,7 +44,10 @@ public class FileSystem implements IFileSystemTreeNode
     if (arrFile != null)
       for(int i=0; i<arrFile.length; i++)
       {
-        m_vDrives.addElement(new Drive(this, arrFile[i]));
+        File objFile = arrFile[i];
+        boolean bFloppy = objFile.getAbsolutePath().startsWith("A:") || objFile.getAbsolutePath().startsWith("B:");
+        if(!bFloppy)
+            m_vDrives.addElement(new Drive(this, objFile));
       }
   }
 

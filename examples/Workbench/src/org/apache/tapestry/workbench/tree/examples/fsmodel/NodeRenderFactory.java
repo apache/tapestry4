@@ -82,7 +82,7 @@ public class NodeRenderFactory implements INodeRenderFactory {
             objWriter.begin("img");
             objWriter.attribute("border", "0");
             objWriter.attribute("src", objAsset.buildURL(objCycle));
-            objWriter.attribute("align", "bottom");
+            objWriter.attribute("valign", "middle");
             objWriter.end();
             objWriter.print(" ");
             objWriter.begin("span");

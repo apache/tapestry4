@@ -23,11 +23,6 @@
     class="org.apache.tapestry.contrib.tree.components.TreeNodeView"
     allow-body="yes" allow-informal-parameters="yes">
 
-    <parameter name="closeNodeImage" type="org.apache.tapestry.IAsset"
-               required="no" direction="in"/>
-    <parameter name="openNodeImage" type="org.apache.tapestry.IAsset"
-               required="no" direction="in"/>
-
     <parameter name="showNodeImages" type="boolean" required="no"
                direction="custom"/>
     <parameter name="makeNodeDirect" type="boolean" required="no"
@@ -37,14 +32,7 @@
                type="org.apache.tapestry.contrib.tree.components.INodeRenderFactory"
                required="no" direction="custom"/>
 
-    <!--parameter name="treeStateListener"
-        type="org.apache.tapestry.contrib.tree.model.ITreeStateListener"
-        direction="custom" required="no">
-    </parameter-->
-
-    <reserved-parameter name="opennodeimage"/>
     <reserved-parameter name="treedataview"/>
-    <reserved-parameter name="closenodeimage"/>
     <reserved-parameter name="nodeviewdirect"/>
 
     <component id="expandCollapsDirect" type="DirectLink">
@@ -53,6 +41,7 @@
         <binding name="stateful" expression="false"/>
         <binding name="name" expression="selectedID"/>
         <binding name="anchor" expression="cleanSelectedID"/>
+        <binding name="disabled" expression="disableLink"/>
     </component>
 
     <component id="nodeDirect" type="DirectLink">
@@ -87,12 +76,39 @@
     </component>
     <component id="insertValue2" copy-of="insertValue"/>
 
-    <component id="offset" type="Any">
-        <static-binding name="element">span</static-binding>
-        <binding name="style" expression="offsetStyle"/>
+    <component id="class" type="Any">
+        <static-binding name="element">div</static-binding>
         <binding name="class" expression="nodeStyleClass"/>
     </component>
-
-    <private-asset name="_closeNodeImage" resource-path="plus.gif"/>
-    <private-asset name="_openNodeImage" resource-path="minus.gif"/>
+    
+    <private-asset name="_topCloseNodeImage" resource-path="TopPlus.gif"/>
+    <private-asset name="_topOpenNodeImage" resource-path="TopMinus.gif"/>
+    <private-asset name="_topLineImage" resource-path="TopLine.gif"/>
+    
+    <private-asset name="_topLastOpenNodeImage" resource-path="TopLastMinus.gif"/>
+    <private-asset name="_topLastCloseNodeImage" resource-path="TopLastPlus.gif"/>
+    
+    <private-asset name="_middleCloseNodeImage" resource-path="MiddlePlus.gif"/>
+    <private-asset name="_middleOpenNodeImage" resource-path="MiddleMinus.gif"/>
+    <private-asset name="_middleCrossLineImage" resource-path="MiddleCrossLine.gif"/>
+    <private-asset name="_middleLineImage" resource-path="MiddleLine.gif"/>
+    
+    <private-asset name="_bottomCloseNodeImage" resource-path="BottomPlus.gif"/>
+    <private-asset name="_bottomOpenNodeImage" resource-path="BottomMinus.gif"/>
+    <private-asset name="_bottomLineImage" resource-path="BottomLine.gif"/>
+    
+    <private-asset name="_whiteSpaceImage" resource-path="WhiteSpace.gif"/>
+    
+    <component id="showConnectImage" type="Conditional">
+        <binding name="condition" expression="showConnectImage"/>
+    </component>
+    <component id="connectImage" type="Image">
+        <binding name="image" expression="connectImage"/>
+    </component>
+    <component id="foreachConnectImage" type="Foreach">
+        <binding name="source" expression="foreachConnectImageList"/>
+        <binding name="value" expression="currentForeachConnectImageValue"/>
+    </component>
+    
+    
 </component-specification>
