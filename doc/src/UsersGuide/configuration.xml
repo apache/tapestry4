@@ -7,8 +7,127 @@
 	<title>Web Deployment Descriptor</title>
 	
 <para>
-.... what goes into the web.xml ...
+All Tapestry applications make use of the &ApplicationServlet; class as their
+servlet; it is rarely necessary to create a subclass.
 </para>
+
+
+<example>
+	<title>Virtual Library Deployment Descriptor</title>
+<programlisting>
+&lt;?xml version="1.0"?&gt;
+&lt;!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN"
+ "http://java.sun.com/j2ee/dtds/web-app_2_2.dtd"&gt;
+&lt;web-app&gt;
+  &lt;display-name&gt;Tapestry Virtual Library Demo&lt;/display-name&gt;
+  &lt;servlet&gt;
+    &lt;servlet-name&gt;vlib&lt;/servlet-name&gt; <co id="configuration.web.servlet-name"/>
+    &lt;servlet-class&gt;net.sf.tapestry.&ApplicationServlet;&lt;/servlet-class&gt; <co id="configuration.web.servlet-class"/>
+    &lt;init-param&gt;
+    	&lt;param-name&gt;net.sf.tapestry.application-specification&lt;/param-name&gt; <co id="configuration.web.spec-path"/>
+    	&lt;param-value&gt;/net/sf/tapestry/vlib/Vlib.application&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;load-on-startup&gt;0&lt;/load-on-startup&gt;
+  &lt;/servlet&gt;
+  
+  &lt;!-- The single mapping used for the Virtual Library application --&gt;
+
+  &lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;vlib&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;/app&lt;/url-pattern&gt; <co id="configuration.web.url"/>
+  &lt;/servlet-mapping&gt;
+  
+  &lt;session-config&gt;
+  	&lt;session-timeout&gt;15&lt;/session-timeout&gt;
+  &lt;/session-config&gt;
+    
+  &lt;welcome-file-list&gt;
+    &lt;welcome-file&gt;index.html&lt;/welcome-file&gt;
+  &lt;/welcome-file-list&gt;
+&lt;/web-app&gt;
+</programlisting>
+</example>
+
+<calloutlist>
+<callout arearefs="configuration.web.servlet-name">
+	<para>
+	The servlet name may be used when locating the application specification (though
+	not in this example).
+	</para>
+</callout>
+<callout arearefs="configuration.web.servlet-class">
+	<para>
+	The servlet class is nearly always &ApplicationServlet;.  There's rarely
+	a need to create a subclass; Tapestry has many hooks for extending the
+	application.
+	</para>
+</callout>
+<callout arearefs="configuration.web.spec-path">
+	<para>
+	The Virtual Library application stores its specification on the classpath, rather
+	than under &WEB-INF;, so it is necessary to provide the complete
+	path to the specification.
+	</para>
+</callout>
+<callout arearefs="configuration.web.url">
+	<para>
+	The servlet is mapped to <filename>/app</filename> within the context.  The context
+	itself has a path, determined by the application server, but typically
+	<filename>/vlib</filename>.  The client web browser will see the Tapestry application
+	as <filename>http://<replaceable>host</replaceable>/vlib/app</filename>.
+	</para>
+	
+	<para>
+	Using <filename>/app</filename> as the URL is a common convention when creating
+	Tapestry applications, but is not a requirement.
+	</para>
+</callout>
+</calloutlist>
+
+<para>
+On initialization, the Tapestry servlet will locate its
+application specification; a file that identifies details about the
+application, the pages and components within it, and any
+component libraries it uses.  Tapestry provides a great deal of
+flexibility on where the specification is stored; trivial Tapestry
+applications can operate without an application specification.
+</para>
+
+<para>
+Prior to release 2.4, application specifications had to be stored on the classpath.  This 
+is maintained for backwards compatibility.  In modern applications, the specification is
+stored under &WEB-INF;.  In fact, Tapestry performs a search to find the specification:
+</para>
+
+<orderedlist>
+<listitem>
+	<para>
+	On the classpath, as defined by the <literal>net.sf.tapestry.application-specification</literal>
+	configuration parameter.
+	</para>
+</listitem>
+<listitem>
+	<para>
+	As <filename>/WEB-INF/<replaceable>name</replaceable>/<replaceable>name</replaceable>.application</filename>.
+	The <replaceable>name</replaceable> is the servlet name.  This location
+	is only used in the rare case of a single WAR containing multiple Tapestry
+	applications.
+	</para>
+</listitem>
+<listitem>
+	<para>
+	As <filename>/WEB-INF/<replaceable>name</replaceable>.application</filename>.
+	Again, <replaceable>name</replaceable> is the
+	servlet name.  This is the standard scenario.
+	</para>
+</listitem>
+</orderedlist>
+
+<para>
+If the application specification still can not be found, then an empty, "stand in"
+application specification is used.
+</para>
+	
 	
 </section>  <!-- configuration.deployment-descriptor -->
 
