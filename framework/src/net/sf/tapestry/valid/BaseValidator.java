@@ -111,7 +111,7 @@ public abstract class BaseValidator implements IValidator
      * 
      **/
 
-    private boolean _clientScriptingEnabled = true;
+    private boolean _clientScriptingEnabled = false;
 
     /**
      *  Standard constructor.  Leaves locale as system default and required as false.
