@@ -1,0 +1,1145 @@
+<!doctype book public "-//OASIS//DTD DocBook V4.1//EN">
+<!-- $Id$ -->
+
+
+<book>
+	<title>Java Build Environment</title>
+	<titleabbrev>JBE</titleabbrev>
+	<bookinfo>
+		<author>
+			<firstname>Howard</>
+			<surname>Ship</>
+			<affiliation>
+				<orgname>Primix</orgname>
+			</affiliation>
+		</author>
+		<copyright>
+			<year>2000</year>
+			<year>2001</year>
+			<holder>Primix Solutions</holder>
+		</copyright>
+	</bookinfo>
+
+
+	<chapter>
+		<title>Introduction</title>
+		 
+<para>As envisioned but most tool makers, the life of a Java developer is a solitary one.  
+Parked at his or her desk, with only his trusty tools, IDEs and the command line, 
+the developer creates the wonderful applets, applications and frameworks possible using Java.</>
+		
+<para>The developer has and requires great freedom; each tool in his or her arsenal may have come from
+a different company; each tool may have been installed into a directory of his or her liking.  
+This is not a problem because the developer is only accountable to him- or her-self, and these 
+selections of tools and locations will only aftect one person.</>
+
+<para>Alas, in the real world, developers work on teams and share code using source code repositories. 
+They may be physically located across the hallway, or across the planet.  
+As they work, they may make conflicting changes to code.</>
+
+<!-- Move the following paragraph -->
+
+<para>In addition, it is good to have precise control over which JDK is used to
+compile and execute modules. [footnote]  
+The JBE uses a simple system to allow developers to control exactly which 
+JDK vendor and release is used.</>
+		
+<para>What's needed is a system that can adjust for local differences in developer's
+environments and allow for "clean builds" of modules directly from source. 
+That's what the Java Build Environment (JBE) is for.</>
+
+<para>JBE is designed to start with basic Java source and utlimately produce a Java Archive (JAR) 
+or Web Archive (WAR) ready for testing or deployment.  
+This may involve many steps, including compiling Java code, 
+creating RMI stubs and skeletons,  using application-server specific tools 
+(such as WebLogic ejbc), combining the results into a JAR file ... even creating Javadoc.</>
+
+<para>
+Without JBE, there are three options for doing all this:
+			<itemizedlist>
+
+				<listitem>
+<para>The command line.  Developers may simply execute the <command>java</> and 
+<command>jar</> commands themselves.
+This leads to problems when steps are missed, or the commands are in some way dependent
+on a single developer's environment (for example, the setting of the <envar>CLASSPATH</> variable).</>
+				</listitem>
+			
+				<listitem>
+<para>Batch commands / shell scripts.  Hard to develop and debug and non-portable between platforms.
+Often assembled in a hurry that leads to the same kind of environment problems as using 
+the command line.</>
+				</listitem>
+
+				<listitem>
+<para>IDE.  Some IDEs can assemble JARs, or even interface to an application server
+to build and deploy EJBs and WARs; however, this will require that the user interactively
+use the IDE's tools.  Also, these tools are idiosyncratic; getting them to package up the correct Java classes 
+and resources is often challenging.</>
+				</listitem>
+
+			</itemizedlist>
+</para>
+
+<para>JBE includes many hooks to allow custom directories, compiliation options
+or other configuration to be specified.  Other hooks allow for additional processing, 
+such as signing a JAR.</>
+
+<para>JBE is designed to be portable, meaning the same source files and Makefiles will work across
+multiple developer's workstations ... even when using different operating systems
+(such as Windows, Linux and Solaris).</>
+
+<para>
+Because the JBE is based on GNU Make it is extermely adaptable and extensible.
+JBE Makefiles can do more than simply compile Java files, they can also run tests, 
+launch applications, prepare distributions virtually any operation that can be
+done using shell scripts or command macros, though Makefile syntax is cleaner, easier
+and platform independent.</>
+
+<para>
+JBE is most useful with medium to large scale Java projects.
+It has no support for compiling anything but Java; projects which 
+use native code are beyond its scope.</>
+
+	</chapter>
+
+
+	<chapter>
+		<title>Installation and Configuration</title>
+
+<para>JBE is distributed as a part of the Tapestry distribution, in the JBE directory.</>
+
+<para>Under Windows, it is necessary to perform a separate installation to
+provide the necessary GNU tools, including GNU Make. 
+JBE was developed under Windows (Windows NT 4.0 Workstation and Windows 2000 Professional), 
+and makes use of the Cygwin tools library.</>
+
+<para>The JBE is also operational under Solaris, and future plans are ports
+to various Linux distributions.</>
+
+<para>Because my direct experience is to suffer the indignities of Windows development,
+the examples in this document use Windows pathnames.  
+Developers using Linux or Solaris should be able to translate to their sensibly 
+named file systems.</>
+
+<para>On any operating system it is necessary to have a JDK installed.
+JBE was developed using Sun's JDK 1.2.2 and JDK 1.3.
+The JDK used by the JBE is configurable (details are below).</>
+
+		<section>
+			<title>Installing under Solaris</title>
+
+<para>The JBE has been ported to work with Solaris 2.6 or above.  
+This version of Solaris does not, by default, include the GNU tools.  
+The JBE requires the presense of GNU tar and GNU zip, which are a separate install. 
+GNU tar should be installed as /usr/local/bin/gtar.</>
+		</section>
+
+		<section>
+			<title>Installing under Windows</title>
+
+<para>Cygwin is a set of GNU tools ported so as to run in the Windows NT or Windows 2000 
+environments (it may also work under Windows 95/98/ME).</>
+
+<para>Cygwin is available at http://sources.redhat.com/cygwin/.</>
+
+<para>Installing Cygwin is very easy; Cygwin starts by downloading a small installer 
+called setup.exe.  Running this program allows the user to install any of the many
+individual packages in Cygwin individually.  
+You should download this program from the Cygnus web site to a safe 
+directory (you use the same program later to update your installation
+with newer versions of the packages).
+</>
+ 
+<procedure>
+	<title>Installing Cygwin tools</>
+
+	<step>
+		<para>Execute the <filename>setup.exe</> program and click Next.
+
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="images/cyg-setup.gif" format="gif">
+				</>
+			</>
+		</>
+
+	<step>
+		<para>Select the "Install from Internet" option and click Next.</>
+
+		<para>This will cause the installer to download the files and then 
+		install them on your workstation.
+
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="images/cyg-action.gif" format="gif">
+				</>
+			</>
+		</>
+	</>
+
+	<step>
+		<para>Select a directory to store the downloaed distribution files, then click Next.
+
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="images/cyg-dir.gif" format="gif">
+				</>
+			</>
+		</>
+	</>
+
+	<step>
+		<para>Select the directory to install the Cygwin tools and click Next.
+
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="images/cyg-root.gif" format="gif">
+				</>
+			</>
+		</>
+	</>
+
+	<step>
+		<para>Select proxy settings (this is used with some kinds of firewalls).  Select
+		the most appropriate option (usually "IE5 settings") and click Next.
+
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="images/cyg-proxy.gif" format="gif">
+				</>
+			</>
+		</>
+	</>
+
+	<step>
+		<para>Select a site from the list to download from then click Next.   
+
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="images/cyg-site.gif" format="gif">
+				</>
+			</>
+		</>
+
+		<para>Where you choose is a matter of hunting around for a good connection;
+		you'll do best with a site that is near you.</>
+	</>
+
+	<step>
+		<para>Select packages to install (by clicking in the "New" column) and click Next.
+
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="images/cyg-package.gif" format="gif">
+				</>
+			</>
+		</>
+
+		<para>By default, all known packages are installed ... this will require downloading over
+		125 MB of distributions.</>
+		
+		<para>If you want to be choosy, you can select just which packages to install.  
+		Clicking the release number (the text to the right of the double arrows symbol, in
+		the column labeled "New") 
+		will cycle through available options, one of which is "Skip".</>
+
+ 
+		<para>The JBE requires the following packages:
+			<simplelist>
+				<member>ash</>
+				<member>cygwin</>
+				<member>fileutils</>
+				<member>findutils</>
+				<member>gzip</>
+				<member>make</>
+				<member>shellutils</>
+				<member>tar</>
+				<member>textutils</>
+			</simplelist>
+		</para>
+
+		<para>
+		These downloads total approxmately 3 MB.  In addition, you may want to
+		install the following additional packages:
+			<simplelist>
+				<member>groff</>
+				<member>grep</>
+				<member>less</>
+				<member>man</>
+			</simplelist>
+		</para>
+
+		<para>The optional packages allow the use of the man commnand, and add another 2 MB of downloads.</>
+
+		<para>After making your selections and clicking Next, the installer 
+		will download the necessary package files and install them.  
+		This may take a few minutes, depending on the speed of your Internet connection.  
+		The installer will display its progress as it works, then display the last panel:</>
+ 
+	</step>
+
+	<step>
+		<para>After installation, click Next to exit the installer.
+
+			<mediaobject>
+				<imageobject>
+					<imagedata fileref="images/cyg-final.gif" format="gif">
+				</>
+			</>
+		</>
+
+
+	</step>
+</procedure>
+
+		</section>
+				
+		<section>
+			<title>Environment Variables</title>
+
+<para>The JBE is packaged with Tapestry; if you are reading this document, 
+then you have probably already unpacked the Tapestry distribtution.  
+The JBE is stored in the JBE subdirectory of the distribution.</>
+
+<para>It is necessary to create an environment variable, 
+<envar>SYS_MAKEFILE_DIR</>,
+that points to the directory.   
+Use forward slashes as the path seperator, even under Windows.  A typical 
+value for this is <filename class=directory>C:/Tapestry-x.x.x/JBE</> 
+(depending on which release of Tapestry you downloaded, and where you installed it).</>
+
+		</section>
+
+		<section>
+			<title>Configuration</title>
+
+<para>Configuration is accomplished by creating additional files used by GNU Make at runtime.</>
+
+<para>Under the JBE directory will be a <filename class=directory>config</> directory.  
+Create a new file, <filename>SiteConfig.mk</filename>, in the directory.  
+This file is used to specify the platform for the local workstation.
+
+	<example>
+		<title>config/SiteConfig.mk</title>
+		<programlisting># Defines the local platform.
+
+SITE_PLATFORM := Cygwin
+</programlisting>
+	</example>
+
+<para>Platforms correspond to the <filename>Platform.<replaceable>name</>.mk</>
+file in the main JBE directory.</para>
+
+<para>This file may also be used to store addtional, site-wide options 
+(typically, variables that start with the prefix 
+<varname>SITE_</>).  Such options will apply to all modules built on the local workstation.</>
+
+<para>In a multiple-developer environment, all developers on the
+same platform will use identical copies of the <filename>SiteConfig.mk</> file.
+
+<para>A second configuration file, <filename>config/LocalConfig.mk</filename>, 
+is used to establish the directories into which related tools have been installed.  For example:
+
+	<example>
+		<title>config/LocalConfig.mk</title>
+		<programlisting>TOOLS_DIR := C:/cygwin/bin
+
+JDK_Sun_1.2.2_DIR := C:/jdk1.2.2
+JDK_Sun_1.3_DIR := C:/jdk1.3
+
+WEBLOGIC_DIR := C:/WebLogic</>
+	</example>
+</para>
+
+<para>The first variable, <varname>TOOLS_DIR</>, is the directory for the GNU tools.   
+Since this example is for Windows 2000 using Cygwin, the tools directory is the Cygwin bin directory.</>
+
+<para>The next two variables define the locations of two JDKs installed on the local workstation.  
+The JBE considers a JDK to be a combination of a vendor and a release. 
+You must create a variable <filename>JDK_<replaceable>vendor</>_<replaceable>release</>_DIR</>
+for each combination.
+
+<para>Unless overriden in some way, the default JDK is Sun 1.3.</>
+
+<para><filename>LocalConfig.mk</>
+is also a useful place to specify other global variables.  
+In the example, the variable <varname>WEBLOGIC_DIR</> is specified,
+to identify where the WebLogic application server was installed ... 
+this is only needed you will be creating EJB deployments for Weblogic.</>
+
+<para>A sample pair of configuration files is shipped with the JBE; 
+these can be copied to set up a default configuration for Windows development.</>
+ 
+		</section>
+	</chapter>
+
+
+	<chapter>
+		<title>Using JBE</title>
+
+<para>JBE performs builds on modules.  
+For JBE, a module is a directory which contains a number of Java packages.  
+The source code in all the packages will be compiled and eventually combined into a single JAR file.</>
+
+<para>JBE requires a master <filename>Makefile</> in the module directory, 
+whose job is to set global options for the entire module, and to identify the list of Java packages.
+Each package <emphasis >may</> also have its own <filename>Makefile</>,
+which is used to identify the Java source files, resource files and RMI classes for that package.</>
+
+<para>The standard directory hierarchy for a module has the module directory 
+as the root of the Java package tree for the module:</>
+ 
+<para>
+This lays out a module with two package directories.  The first, 
+com.example.snood contains the class <filename>SnoodClient.java</>,
+the interface <filename>ISnood.java</> and a resource file: <filename>SnoodClient.properties</>.  
+The second package, com.example.snood.server contains the class <filename>SnoodImpl.java</>.</>
+
+<para>A module makefile must provide a name for the module 
+(which is used to name the JAR or WAR file) and a list of packages.  
+It may provide additional options used when compiling, generating Javadoc or installing the JAR.</>
+
+<para>The module directory doesn't have to be the source code root, 
+by setting the <varname>SOURCE_DIR</> variable, the source code root directory can be moved to 
+another location.  Many developers prefer to put the Java source code in a directory named "src". 
+In other situations, the Java source code may be in a sibling directory to the module directory.</>
+
+<para>In our example, the module directory is also the root source code directory, 
+so the <filename>Makefile</> is very simple:
+
+	<example>
+		<title>Makefile</>
+		<programlisting>MODULE_NAME = Snood
+
+PACKAGES = \
+	com.example.snood \
+	com.example.snood.server
+
+include $(SYS_MAKEFILE_DIR)/Jar.mk</>
+	</example>
+</para>
+
+<para>The last line identifies this module as a Jar module; one that builds a JAR file.</>
+
+<para>The other two Makefiles identify the Java source files in the package, 
+any resource files that should be copied into the JAR, and any classes that must be compiled with the 
+RMI compiler.
+
+	<example>
+		<title>com/example/snood/Makefile</>
+		<programlisting>JAVA_FILES = *.java
+
+RESOURCE_FILES = *.properties
+
+include $(SYS_MAKEFILE_DIR)/Package.mk
+
+com/example/snood/server/Makefile
+JAVA_FILES = *.java
+
+RMI_CLASSES = SnoodImpl
+
+include $(SYS_MAKEFILE_DIR)/Package.mk</>
+	</example>
+</para>
+
+<para>
+Building this module executes a sequence of commands:</>
+
+<para>
+	<screen>
+make 
+
+*** Cataloging package com.example.snood ... ***
+
+
+*** Cataloging package com.example.snood.server ... ***
+
+
+*** Compiling ... ***
+
+C:/jdk1.3/bin/javac.exe -d .build/classes -classpath "D:/Temp/Snood;D:/Temp/Snood/.build/classes" com/example/snood/ISnood.java com/example/snood/SnoodClient.java com/example/snood/server/SnoodImpl.java
+
+*** Compiling RMI stubs and skeletons ... ***
+
+C:/jdk1.3/bin/rmic.exe -d .build/classes -classpath "D:/Temp/Snood;D:/Temp/Snood/.build/classes" \
+	   com.example.snood.server.SnoodImpl
+
+*** Copying package resources ...***
+
+Copying: SnoodClient.properties
+
+*** Building Snood.jar ... ***
+
+C:/jdk1.3/bin/jar.exe cf Snood.jar -C .build/classes .
+	</screen>
+</para>
+
+<para>When a module is first built, JBE catalogs the Java source files, resource files 
+and RMI classes in the packages (this information is kept for subsequent makes ).  
+It then uses this information to perform all the remaining work from the module directory.</>
+
+<para>Here it compiled all the Java files in one pass, 
+built the RMI stubs and skeletons, then copied resource files, 
+and created the final JAR file. On a subsequent build, 
+only files which had changed since the previous build 
+would be recompiled or re-copied.</>
+
+<para>You can also see that full pathnames are used to access 
+the various GNU and JDK tools.  This ensures that the correct JDK is used.  
+It also means the tools are available, even if the user hasn't added the JDK's 
+<filename class=directory>bin</>
+directory to the system <envar>PATH</>.</>
+
+<para>JBE creates a <filename class=directory>.build</> directory in the module directory  
+and directs compilation to this directory as well as copying resource files into it.  
+It just becomes a matter of using the JDK <command>jar</> tool to create a JAR from the directory.  
+WARs are generated the same way (but with a different structure).</>
+
+	</chapter>
+
+	<chapter>
+		<title>JBE Modules</title>
+
+<para>This section describes each of the different types of JBE modules.</>
+
+		<section>
+			<title>Jar modules</title>
+
+<para>The most basic type of JBE module is the Jar module, 
+which builds a JAR file that can be used as a framework or standalone application.  
+The JAR file is created in the module directory (though it can be removed by <userinput>make clean</>).
+
+<para>
+A Jar module Makefile should define the following values:
+
+	<variablelist>
+		<title>Jar module variables</title>
+
+		<varlistentry>
+			<term><varname>INSTALL_DIR</></>
+			<listitem>
+				<para>The directory to which the final JAR should be copied after it is built.</>
+			</>
+		</>
+
+
+		<varlistentry>
+			<term><varname>JAVAC_OPT</></>
+			<listitem>
+				<para>Module specific java compiler options.</>
+			</>
+		</>
+
+		<varlistentry>
+			<term><varname>JAVADOC_DIR</></>
+			<listitem>
+				<para>The directory to which Javadoc should be written.</>
+			</>
+		</>
+
+		<varlistentry>
+			<term><varname>JAVADOC_OPT</></>
+			<listitem>
+				<para>Javadoc options.</>
+			</>
+		</>
+
+
+		<varlistentry>
+			<term><varname>JDK_RELEASE</></>
+			<listitem>
+				<para>Optional: The release of the JDK to use when compiling.</>
+			</>
+		</>
+
+		<varlistentry>
+			<term><varname>JDK_VENDOR</></>
+			<listitem>
+				<para>Optional: The JDK vendor to use when compiling.</>
+			</>
+		</>
+
+		<varlistentry>
+			<term><varname>LOCAL_CLASSPATH</></>
+			<listitem>
+				<para>A space seperated list of the classpath entries (typically, other JAR files)  
+				used when compiling.   Absolute or relative pathnames may be used.  
+				Use the forward slash as the path seperator (even on Windows).</>
+			</>
+		</>
+
+		<varlistentry>
+			<term><varname>META_RESOURCES</></>
+			<listitem>
+				<para>The names of any resources that should be copied from the module directory
+				into the JAR's META-INF directory.  This is optional.</>
+			</>
+		</>
+
+		<varlistentry>
+			<term><varname>MODULE_NAME</></>
+			<listitem>
+				<para>The name used when building the JAR.</>
+			</>
+		</>
+
+		<varlistentry>
+			<term><varname>PACKAGES</></>
+			<listitem>
+				<para>The names of all packages in the module.</para>
+			</>
+		</>
+
+		<varlistentry>
+			<term><varname>RMIC_OPT</></>
+			<listitem>
+				<para>RMI compiler  options.</>
+			</>
+		</>
+
+		<varlistentry>
+			<term><varname>SOURCE_DIR</></>
+			<listitem>
+				<para>Optional: An alternate directory to serve as the root directory 
+				for Java source and Java class resources.  
+				If not specified the module directory 
+				is treated as the source directory.</>
+			</>
+		</>
+	</variablelist>
+</para>
+
+<para>A Jar module has a number of standard make targets:
+
+	<variablelist>
+		<title>Jar module targets</title>
+
+		<varlistentry>
+			<term>catalog</>
+			<listitem>
+				<para>Rebuild the catalog of Java files, resource files and RMI classes.  
+				Used after adding or removing such files from a package.</>
+			</>
+		</>
+
+		<varlistentry>
+			<term>clean</>
+			<listitem>
+				<para>Remove JAR and the <filename class=directory>.build</> directory.</>
+			</>
+		</>
+
+		<varlistentry>
+			<term>compile</>
+			<listitem>
+				<para>Compile changed Java source files, then compile any changed RMI classes.</>
+			</>
+		</>
+
+		<varlistentry>
+			<term>default</>
+			<listitem>
+				<para>Alias for compile.</>
+			</>
+		</>
+
+		<varlistentry>
+			<term>force</>
+			<listitem>
+				<para>Compile all, not just dirty, then compile all RMI classes.</>
+			</>
+		</>
+
+		<varlistentry>
+			<term>install</>
+			<listitem>
+				<para>Build JAR, then copy it to <varname>INSTALL_DIR</>.</>
+			</>
+		</>
+
+		<varlistentry>
+			<term>javadoc</>
+			<listitem>
+				<para>Generate Javadoc for the contents of the JAR</>
+			</>
+		</>
+	</variablelist>
+</para>
+
+		</section>
+
+
+	<section>
+		<title>Package Makefiles</>
+
+<para>Package Makefiles are very simple.  They are only used when cataloging; 
+they simply declare what types of files are in the package.
+The form of a Package makefile is very simple:
+
+<informalexample>
+	<programlisting>JAVA_FILES = <replaceable>list of files</>
+
+RESOURCE_FILES = <replaceable>list of files</>
+
+RMI_CLASSES = <replaceable>list of class names</>
+
+include $(SYS_MAKEFILE_DIR)/Package.mk
+</programlisting>
+</informalexample>
+</para>
+
+<para>As shown in the prior examples, the 
+<varname>JAVA_FILES</> and <varname>RESOURCE_FILES</> may use wild cards (such as <literal>*.java</>
+ or <literal>*.properties</>).</>
+
+<para>The <varname>RMI_CLASSES</> is simply a list of the class names of RMI implementation classes; 
+just the simple name of the class (no extension, and no package name; the package is known implicitly).</>
+
+<para>Package makefiles are optional, if not provided a default makefile is used.  
+The default makefile assumes all files ending in the following extensions are resource files:
+
+	<itemizedlist>
+		<listitem><para>jwc (Tapestry Component Specifications)</></>
+		<listitem><para>application (Tapestry Application Specifications)</></>
+		<listitem><para>html (Tapestry HTML templates)</></>
+		<listitem><para>properties (Java properties files)</></>
+		<listitem><para>script (Tapestry script files)</></>
+	</itemizedlist>
+</para>
+
+		</section>
+
+		<section>
+			<title>War modules</>
+
+<para>
+A War module is similar to a Jar module, except that the final file has the extension 
+".war" instead of ".jar" and the internal layout is different. 
+A Web Application Archive (WAR) is a file that can be deployed into a 
+J2EE compatible application server; it contains servlets and other Java code as well 
+as context resources (images and other assets that are visible to the web server).</>
+
+<para>In a WAR, classes are stored in the directory <filename class=directory>WEB-INF/classes</>, 
+rather than at the root.  Context resources go in the root of the WAR 
+(these are images and other files that are accessible by the client web browser).  
+There will deployment descriptor files that must also be copied from the 
+module directory into the <filename class=directory>WEB-INF</> directory as well, 
+and a WAR can include libraries of code in its <filename class=directory>WEB-INF/lib</> directory.  
+
+
+	<variablelist>
+		<title>Jar module variables</title>
+
+		<varlistentry>
+			<term><varname>CONTEXT_RESOURCES</></>
+			<listitem>
+				<para>The names of individual files or directories that should be 
+				copied from the module directory into the root of the WAR.  
+				Relative pathnames will be maintained when copied.  
+				Directories are copied recusively (but directories named '<filename class=directory>CVS</>'
+				are pruned).</>
+			</>
+		</>
+
+		<varlistentry>
+			<term><varname>INSTALL_DIR</></>
+			<listitem>
+				<para>The directory to which the WAR should be copied after it is built.</>
+			</>
+		</>
+
+		<varlistentry>
+			<term><varname>INSTALL_LIBRARIES</></>
+			<listitem>
+				<para>A space seperated list of libraries that should be installed into the 
+				<filename class=directory>WEB-INF/lib</> directory.  
+				The entries here should be a subset of 
+				<varname>LOCAL_CLASSPATH</>.</>
+			</>
+		</>
+
+		<varlistentry>
+			<term><varname>JAVADOC_DIR</></>
+			<listitem>
+				<para>The directory to which Javadoc should be written.</>
+			</>
+		</>
+
+		<varlistentry>
+			<term><varname>JDK_RELEASE</></>
+			<listitem>
+				<para>Optional: The release of the JDK to use when compiling.</>
+			</>
+		</>
+
+		<varlistentry>
+			<term><varname>JDK_VENDOR</></>
+			<listitem>
+				<para>Optional: The JDK vendor to use when compiling.</>
+			</>
+		</>
+
+		<varlistentry>
+			<term><varname>LOCAL_CLASSPATH</></>
+			<listitem>
+				<para>A space seperated list of the classpath entries (typically, other JAR files)  
+				used when compiling.   Absolute or relative pathnames may be used.  
+				Use the forward slash as the path seperator (even on Windows).</>
+			</>
+		</>
+
+		<varlistentry>
+			<term><varname>META_RESOURCES</></>
+			<listitem>
+				<para>The names of any resources that should be copied from the module directory
+				into the WAR's <filename class=directory>META-INF</> directory.  This is optional.</>
+			</>
+		</>
+
+		<varlistentry>
+			<term><varname>MODULE_NAME</></>
+			<listitem>
+				<para>The name used when building the WAR.</>
+			</>
+		</>
+
+		<varlistentry>
+			<term><varname>PACKAGES</></>
+			<listitem>
+				<para>The names of all packages in the module.</para>
+			</>
+		</>
+
+
+		<varlistentry>
+			<term><varname>SOURCE_DIR</></>
+			<listitem>
+				<para>Optional: An alternate directory to serve as the root directory 
+				for Java source and Java class resources.  
+				If not specified the module directory 
+				is treated as the source directory.</>
+			</>
+		</>
+
+		<varlistentry>
+			<term><varname>WEB_INF_RESOURCES</></>
+			<listitem>
+				<para>The names of files that should be copied into the  
+				<filename class=directory>WEB-INF</> directory.  
+				This should include the application-server specific deployment descriptor.  
+				The J2EE deployment descriptor, <filename>web.xml</>, is required and
+				automatically copied.</>
+			</>
+		</>
+
+	</variablelist>
+
+
+	<variablelist>
+		<title>War module targets</title>
+
+		<varlistentry>
+			<term>catalog</>
+			<listitem>
+				<para>Rebuild the catalog of Java files, resource files and RMI classes.  
+				Used after adding or removing such files from a package.</>
+			</>
+		</>
+
+		<varlistentry>
+			<term>clean</>
+			<listitem>
+				<para>Remove WAR and the <filename class=directory>.build</> directory.</>
+			</>
+		</>
+
+		<varlistentry>
+			<term>compile</>
+			<listitem>
+				<para>Compile changed Java source files, then compile any changed RMI classes.</>
+			</>
+		</>
+
+		<varlistentry>
+			<term>default</>
+			<listitem>
+				<para>Alias for compile.</>
+			</>
+		</>
+
+		<varlistentry>
+			<term>force</>
+			<listitem>
+				<para>Compile all, not just dirty, then compile all RMI classes.</>
+			</>
+		</>
+
+		<varlistentry>
+			<term>install</>
+			<listitem>
+				<para>Build WAR, then copy it to <varname>INSTALL_DIR</>.</>
+			</>
+		</>
+
+		<varlistentry>
+			<term>javadoc</>
+			<listitem>
+				<para>Generate Javadoc for the contents of the JAR</>
+			</>
+		</>
+
+		<varlistentry>
+			<term>war</>
+			<listitem>
+				<para>Build the WAR, recompiling files and copying resources as
+				necessary.</>
+			</>
+		</>
+
+	</variablelist>
+
+<!-- Should document default target -->
+
+</para>
+
+	</section>
+
+	<section>
+		<title>WebLogic modules</>
+
+<para>The WebLogic module type is a specialization of the 
+Jar type used to create deployable EJB JARS for use with the 
+WebLogic application server version 5.1.  
+To use it, the <varname>WEBLOGIC_DIR</> variable must be set, usually in <filename>LocalConfig.mk</>.
+</>
+
+<para>Unless overriden, WebLogic modules are always compiled using Sun's JDK 1.2.2.</>
+
+<para>The libraries <filename class=directory><replaceable>WEBLOGIC_DIR</>/classes</>
+and <filename class=directory><replaceable>WEBLOGIC_DIR</>/lib/weblogicaux.jar</>
+are automatically added to the classpath.  
+These add WebLogic's implementations of the J2EE frameworks (JNDI, EJB, etc.).</>
+
+<para>For the most part, WebLogic modules work the same as Jar modules.  
+However, the jar rule is changed to not only build the normal JAR, but also build the 
+depoyable JAR.  
+It does this by running the WebLogic <command>ejbc</> command, which provides all the 
+WebLogic specific classes needed to deploy (such as stubs and skeletons for EJBs, and 
+a variety of files to support container managed persistence).</>
+
+<para>The deployable JAR is called <filename><replaceable>MODULE_NAME</>-deploy.jar</>.  
+The install rule copies <emphasis>both</> JARs to the <varname>INSTALL_DIR</> directory.</>
+
+<para>JAR files in the <varname>LOCAL_CLASSPATH</> are treated as dependencies 
+of the deployable JAR.  If any of them change, then the deployable JAR is rebuilt (using <command>ejbc</>).</>
+
+<para>The WebLogic module automatically adds the files 
+<filename>ejb-jar.xml</> (the generic EJB deployment descriptor) and 
+<filename>weblogic-ejb-jar.xml</> (the WebLogic specific EJB deployment descriptor) 
+to the list of <varname>META_RESOURCES</> (files copied to the 
+<filename class=directory>META-INF</> directory of the JAR).
+
+
+	<variablelist>
+		<title>Additional WebLogic module variables</>
+
+		<varlistentry>
+			<term><varname>EJBC_OPT</></>
+			<listitem>
+				<para>Additional options passed to the WebLogic <command>ejbc</command> command.
+				</>
+			</>
+		</>
+
+	</variablelist>
+</para>
+
+	</section>
+
+	<section>
+		<title>jBoss modules</>
+
+<para>jBoss is an open-source J2EE application server available from http://www.ejboss.org/.</>
+
+<para>The jBoss module type is a specialization of the Jar type used to create EJB JARS for 
+use with the jBoss.  jBoss is easier to work with than WebLogic, since it doesn't require the 
+creation of stubs and skeletons, and deployment is as simple as copying the JAR file to 
+a predetermined directory.</>
+
+<para>The <varname>JBOSS_DIR</> variable must be set, usually in <filename>LocalConfig.mk</>.
+This is the directory into which the jBoss distribution was installed.</>
+
+<para>The following libraries are automatically included in the classpath:
+
+	<simplelist>
+		<member>
+			<filename><replaceable>JBOSS_DIR</>/lib/ext/ejb.jar</>
+		</>
+		<member>
+			<filename><replaceable>JBOSS_DIR</>/lib/ext/jndi.jar</>
+		</>
+		<member>
+			<filename><replaceable>JBOSS_DIR</>/lib/jdbc2_0-stdext.jar</>
+		</>
+	</simplelist>
+</para>
+
+<para>These three libraries provide the basic J2EE functionality.  
+<filename>ejb.jar</> provides the <classname>javax.ejb</> classes, 
+<filename>jndi.jar</> provides the <classname>javax.naming classes</>
+and <filename>jbdc2_0-stdext.jar</> provides the <classname>javax.sql</> classes.</>
+
+<para>
+For the most part, jBoss modules work the same as Jar modules.
+The jBoss module automatically adds the file 
+<filename>ejb-jar.xml</> (the generic EJB deployment descriptor) 
+to the list of <varname>META_RESOURCES</>
+files copied to the <filename class=directory>META-INF</> directory of the JAR).  
+If you use the auxilliary descriptor files (<filename>jboss.xml</> and/or 
+<filename>jaws.xml</>) you'll need to manually add those to <varname>META_RESOURCES</>.
+
+JBOSS_OPT	Makefile or command line	
+
+	<variablelist>
+		<title>Additional jBoss module variables</>
+
+		<varlistentry>
+			<term><varname>JBOSS_OPT</></>
+			<listitem>
+				<para>Additional java options used when running jBoss 
+				(the run target for a jBoss module).  Typically used to specify JVM 
+				options such as runtime memory pool configuration.</>
+			</>
+		</>
+	</variablelist>
+
+	<variablelist>
+		<title>Additional jBoss module targets</title>
+
+		<varlistentry>
+			<term>deploy</>
+			<listitem>
+				<para>Build the JAR, then copy it to the
+				<filename><replaceable>JBOSS_DIR</>/deploy</>
+				directory to be hot deployed into the running jBoss server.</>
+			</>
+		</>
+
+		<varlistentry>
+			<term>run</>
+			<listitem>
+				<para>Deploys the JAR, then starts the jBoss server.</para>
+			</>
+		</>
+
+		<varlistentry>
+			<term>run-ejx</>
+			<listitem>
+				<para>Runs the jBoss EJX tool (a GUI used to edit deployment descriptors).
+				</>
+			</>
+		</>
+	</variablelist>
+</para>
+
+		</section>
+
+		<section>
+			<title>DocBook modules</title>
+
+<para>The DocBook module is the standout of the available modules, because it doesn't compile any Java code 
+at all.  The DocBook module is used to create documentation and manuals, using the DocBook SGML format.</>
+
+<para>More details forthcoming ...</para>
+
+		</section>
+
+		<section>
+			<title>Additional Variables</title>
+
+<para>In addition to variables defined in individual module Makefiles, additional variables
+can be defined in <filename>LocalConfig.mk</filename>.  These
+variables will affect all modules.
+
+	<variablelist>
+		<title>Additional module variables</>
+
+		<varlistentry>
+			<term><varname>LOCAL_EJBC_OPT</></>
+			<listitem>
+				<para>Additional options for WebLogic <command>ejbc</>.</>
+			</>
+		</>
+
+		<varlistentry>
+			<term><varname>LOCAL_JAVAC_OPT</></>
+			<listitem>
+				<para>Additional java compiler options.</>
+			</>
+		</>
+
+		<varlistentry>
+			<term><varname>LOCAL_RMIC_OPT</></>
+			<listitem>
+				<para>Additional RMI compiler options.</>
+			</>
+		</>
+
+		<varlistentry>
+			<term><varname>SITE_JDK_RELEASE</></>
+			<listitem>
+				<para>Default JDK  release. If not specified, the default is <literal>1.3</>.</>
+			</>
+		</>
+
+		<varlistentry>
+			<term><varname>SITE_JDK_VENDOR</></>
+			<listitem>
+				<para>Default JDK vendor.   If not specified, the default is <literal>Sun</>.</>
+			</>
+		</>
+
+	</variablelist>
+
+</para>
+
+		</section>
+
+	</chapter>
+
+	<chapter>
+		<title>Future development of the JBE</>
+
+<para>Like Tapestry overall, the JBE is an ongoing effort.  
+As new situations arise, it is extended to meet the need.</>
+
+<para>Future plans include:
+
+	<itemizedlist>
+
+		<listitem>
+			<para>Support for EARs (Enterprise Application Archives).</>
+		</>
+
+		<listitem>
+			<para>Support for more application servers.</>
+		</>
+
+		<listitem>
+			<para>Support for derived source; compiling Java code generated by tools
+			(such as the IDL compiler).</>
+		</>
+
+		<listitem>
+			<para>JAR signing.</>
+		</>
+
+		<listitem>
+			<para>Support for Linux platforms, and for IBM JDKs.</>
+		</>
+	</>
+</para>
+
+	</chapter>
+</book>
