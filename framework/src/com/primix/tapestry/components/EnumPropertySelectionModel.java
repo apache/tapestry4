@@ -38,6 +38,8 @@ import java.util.*;
   *  some information needed to extract labels from a {@link ResourceBundle}
   *  are provided.
   *
+  *  <p>Uses a simple index number as the value (used to represent the option).
+  *
   *  @version $Id$
   *  @author Howard Ship
   */
@@ -117,6 +119,20 @@ implements IPropertySelectionModel
 			readLabels();
 		
 		return labels[index];	
+	}
+	
+	public String getValue(int index)
+	{
+		return Integer.toString(index);
+	}
+	
+	public Object translateValue(String value)
+	{
+		int index;
+		
+		index = Integer.parseInt(value);
+		
+		return options[index];
 	}
 	
 	private void readLabels()

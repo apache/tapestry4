@@ -33,7 +33,18 @@ import com.primix.tapestry.spec.*;
 
 /**
  * Component which contains form element components.  Forms use the
- * action service to handle the form submission.
+ * action service to handle the form submission.  A Form will wrap
+ * other components and static HTML, including
+ * form component such as {@link Text}, {@link TextField}, {@link Checkbox}, etc.
+ *
+ * <p>When a form is submitted, it continues through the rewind cycle until
+ * <em>after</em> all of its wrapped elements have renderred.  As the form
+ * component render (in the rewind cycle), they will be updating
+ * properties of the containing page and notifying thier listeners.  Again:
+ * each form component is responsible not only for rendering HTML (to present the
+ * form), but for handling it's share of the form submission.
+ *
+ * <p>Only after all that is done will the Form notify its listener.
  *
  * <table border=1>
  * <tr> 
@@ -127,7 +138,7 @@ public class Form extends AbstractFormComponent
 	{
 		String method = "post";
 		boolean rewound;
-		boolean renderring;
+		boolean rendering;
 		String URL;
 		IApplicationService service;
 		String actionId;
@@ -140,12 +151,12 @@ public class Form extends AbstractFormComponent
 
 		actionId = cycle.getNextActionId();
 
-			renderring = !cycle.isRewinding();
-		rewound = cycle.isRewound();
+		rendering = !cycle.isRewinding();
+		rewound = cycle.isRewound(this);
 
 		rewinding = rewound;
 
-		if (renderring)
+		if (rendering)
 		{
 			if (methodValue != null)
 				method = methodValue;
@@ -171,7 +182,7 @@ public class Form extends AbstractFormComponent
 
 		renderWrapped(writer, cycle);
 
-		if (renderring)
+		if (rendering)
 		{
 			writer.end("form");
 		}

@@ -61,7 +61,7 @@ import com.primix.foundation.*;
  *		<td>R / W</td>
  *		<td>yes</td>
  *		<td>&nbsp;</td>
- *		<td>The property to set.  During renderring, this property is read, and sets
+ *		<td>The property to set.  During rendering, this property is read, and sets
  * the default value of the selection (if it is null, no element is selected).
  * When the form is submitted, this property is updated based on the new
  * selection. </td> </tr>
@@ -194,9 +194,9 @@ public class PropertySelection extends AbstractFormComponent
 		Object currentValue;
 		Object option;
 		String label;
+		String optionValue;
 		int i;
 		boolean needDefault = true;
-		String indexString;
 		int index;
 		int count;
 		boolean radio = false;
@@ -205,7 +205,7 @@ public class PropertySelection extends AbstractFormComponent
 		
 		rewinding = form.isRewinding();
 		
-		name = cycle.getNextActionId();
+		name = "PropertySelection" + cycle.getNextActionId();
 		
 		if (disabledBinding == null)
 			disabled = false;
@@ -223,15 +223,12 @@ public class PropertySelection extends AbstractFormComponent
 			if (disabled)
 				return;		
 			
-			indexString = cycle.getRequestContext().getParameter(name);
+			optionValue = cycle.getRequestContext().getParameter(name);
 			
-			if (indexString == null)
+			if (optionValue == null)
 				newValue = null;
 			else
-			{
-				index = Integer.parseInt(indexString);
-				newValue = model.getOption(index);
-			}		
+				newValue = model.translateValue(optionValue);
 			
 			valueBinding.setValue(newValue);
 			
@@ -268,6 +265,7 @@ public class PropertySelection extends AbstractFormComponent
 		{
 			option = model.getOption(i);
 			label = model.getLabel(i);
+			optionValue = model.getValue(i);
 			
 			// This gets a bit tricky, since sometimes we're using <input type=radio>
 			// and sometimes <option> within a <select>
@@ -287,7 +285,7 @@ public class PropertySelection extends AbstractFormComponent
 			else
 				writer.beginOrphan("option");
 	
-			writer.attribute("value", i);
+			writer.attribute("value", optionValue);
 			
 			// We use needDefault as an optimization ... once the default/selected
 			// value has been found, we can stop looking, which saves on

@@ -90,6 +90,8 @@ public class RadioGroup extends AbstractFormComponent
 	private String name;
 	private boolean disabled;
 	private boolean rewinding;
+	private boolean rendering;
+	private int nextOptionId;
 
 	/**
 	*  A <code>RadioGroup</code> places itself into the {@link IRequestCycle} as
@@ -120,8 +122,19 @@ public class RadioGroup extends AbstractFormComponent
 
 	public String getName()
 	{
+		if (!rendering)
+			throw new RenderOnlyPropertyException(this, "name");
+			
 		return name;
 	}
+
+	public String getNextOptionId()
+	{
+		if (!rendering)
+			throw new RenderOnlyPropertyException(this, "nextOptionId");
+		
+		return Integer.toString(nextOptionId++);
+	}	
 
 	/**
 	*  Used by {@link Radio} components wrapped by this <code>RadioGroup</code> to see
@@ -131,11 +144,17 @@ public class RadioGroup extends AbstractFormComponent
 
 	public boolean isDisabled()
 	{
+		if (!rendering)
+			throw new RenderOnlyPropertyException(this, "disabled");
+
 		return disabled;
 	}
 
 	public boolean isRewinding()
 	{
+		if (!rendering)
+			throw new RenderOnlyPropertyException(this, "rewinding");
+
 		return rewinding;
 	}
 
@@ -184,7 +203,7 @@ public class RadioGroup extends AbstractFormComponent
 
 		// Used whether rewinding or not.
 
-		name = cycle.getNextActionId();
+		name = "RadioGroup" + cycle.getNextActionId();
 
 		if (disabledBinding == null)
 			disabled = false;
@@ -198,10 +217,14 @@ public class RadioGroup extends AbstractFormComponent
 
 		try
 		{
+			rendering = true;
+			nextOptionId = 0;
+			
 			renderWrapped(writer, cycle);
 		}
 		finally
 		{
+			rendering = false;
 			selections = null;
 			name = null;
 		}

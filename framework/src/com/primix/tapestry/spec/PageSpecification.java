@@ -76,7 +76,7 @@ public class PageSpecification extends BasePropertyHolder
 	}
 
 	/**
-	*  Sets the size of the buffer used when renderring the page, in bytes.
+	*  Sets the size of the buffer used when rendering the page, in bytes.
 	*/
 
 	public void setBufferSize(int value)

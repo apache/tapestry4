@@ -61,16 +61,15 @@ public class SimplePageRecorder extends PageRecorder
 	private Map changes;
 
 	/**
-	*  Increments the version number if dirty.  With a
-	*  <code>SimplePageRecorder</code> there's no external storage.
+	*  Simply clears the dirty flag, because there is no external place
+	*  to store changed page properties.
 	*
 	*/
 
 	public void commit()
 	throws PageRecorderCommitException
 	{
-		if (dirty)
-			incrementVersion();
+		dirty = false;
 	}
 
 	public Collection getChanges()

@@ -144,7 +144,7 @@ public class Radio extends AbstractComponent
 
 		rewinding = group.isRewinding();
 
-			value = cycle.getNextActionId();
+		value = group.getNextOptionId();
 
 		if (staticDisabled)
 			disabled = disabledValue;

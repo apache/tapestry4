@@ -182,7 +182,7 @@ public class Text extends AbstractFormComponent
 
 		// Used whether rewinding or not.
 
-		name = cycle.getNextActionId();
+		name = "Text" + cycle.getNextActionId();
 
 		if (disabledBinding != null)
 			disabled = disabledBinding.getBoolean();

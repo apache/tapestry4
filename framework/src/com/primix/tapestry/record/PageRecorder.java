@@ -55,15 +55,12 @@ public abstract class PageRecorder
 	protected boolean active = false;
 	protected boolean dirty = false;
 
-	private int version = 0;
-	private transient String versionString;
-
 	/**
 	*  Invoked to persist all changes that have been accumulated.  If the recorder
 	*  saves change incrementally, this should ensure that all changes have been persisted.
 	*
 	*  <p>Subclasses should check the dirty flag.  If the recorder is dirty, changes
-	* should be recorded, the dirty flag cleared and should invoke <code>incrementState()</code>.
+	* should be recorded and the dirty flag cleared.
 	*
 	*/
 
@@ -77,30 +74,6 @@ public abstract class PageRecorder
 	*/
 
 	public abstract Collection getChanges();
-
-	public String getVersion()
-	{
-		if (versionString == null)
-			versionString = Integer.toHexString(version);
-
-		return versionString;
-	}
-
-	/**
-	*  Increments the version number.  This should be invoked from <code>commit()</code>
-	*  if the recorder is dirty.  It also clears the dirty flag.
-	*
-	*/
-
-	protected void incrementVersion()
-	{
-		version++;
-
-		versionString = null;
-
-		dirty = false;
-	}
-
 
 	/**
 	*  Indicates whether the recorder is active and recording
@@ -137,7 +110,9 @@ public abstract class PageRecorder
 	*  <p>If the property name in the event is null, then the recorder
 	*  is marked dirty (but 
 	*  {@link #recordChange(String, String,
-	*  Serializable)} is not invoked.
+	*  Serializable)} is not invoked.  This is how a "distant" property changes
+	*  are propogated to the page recorder (a distant property change is a change to
+	*  a property of an object that is itself a property of the page).
 	*
 	*  <p>If the recorder is not active (typically, when a page is
 	*  being rewound), then the event is simply ignored.

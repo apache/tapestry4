@@ -97,8 +97,10 @@ public class Select extends AbstractFormComponent
 
 	private boolean disabled;
 	private boolean rewinding;
+	private boolean rendering;
 
 	private Set selections;
+	private int nextOptionId;
 
 	/**
 	*  Used by the <code>Select</code> to record itself as a
@@ -137,14 +139,30 @@ public class Select extends AbstractFormComponent
 
 	public boolean isDisabled()
 	{
+		if (!rendering)
+			throw new RenderOnlyPropertyException(this, "disabled");
+
 		return disabled;
 	}
 
 	public boolean isRewinding()
 	{
+		if (!rendering)
+			throw new RenderOnlyPropertyException(this, "rewinding");
+			
 		return rewinding;
 	}
 
+	public String getNextOptionId()
+	{
+		if (!rendering)
+			throw new RenderOnlyPropertyException(this, "nextOptionId");
+		
+		// Return it as a hex value.
+		
+		return Integer.toString(nextOptionId++);	
+	}
+	
 	public boolean isSelected(String value)
 	{
 		if (selections == null)
@@ -189,7 +207,7 @@ public class Select extends AbstractFormComponent
 
 		// Used whether rewinding or not.
 
-		name = cycle.getNextActionId();
+		name = "Select" + cycle.getNextActionId();
 
 		if (disabledBinding == null)
 			disabled = false;
@@ -224,10 +242,15 @@ public class Select extends AbstractFormComponent
 
 		try
 		{
+			rendering = true;
+			nextOptionId = 0;
+
 			renderWrapped(writer, cycle);
 		}
 		finally
 		{
+
+			rendering = false;
 			selections = null;
 		}
 

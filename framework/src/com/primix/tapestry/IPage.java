@@ -191,4 +191,12 @@ public interface IPage extends IComponent
      
     public void beginResponse(IResponseWriter writer, IRequestCycle cycle)
         throws RequestCycleException;
+	
+	/**
+	 *  Returns the current {@link IRequestCycle} for the page, or null
+	 *  if the page is not renderring.
+	 *
+	 */
+	 
+	public IRequestCycle getRequestCycle();	
 }

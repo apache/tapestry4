@@ -87,6 +87,7 @@ public class RequestCycle
 
 	private int actionId;
 	private int targetActionId;
+	private String targetIdPath;
 
 	/**
 	*  Standard constructor used to render a response page.
@@ -272,14 +273,26 @@ public class RequestCycle
 		return rewinding;
 	}
 
-	public boolean isRewound()
+	public boolean isRewound(IComponent component)
+	throws StaleLinkException
 	{
 		// If not rewinding ...
 
 		if (!rewinding)
 			return false;
 
-		return actionId == targetActionId;		
+		if (actionId != targetActionId)
+			return false;
+		
+		// OK, we're there, is the page is good order?
+		
+		if (component.getIdPath().equals(targetIdPath))
+			return true;
+			
+		// Woops.  Mismatch.
+		
+		throw new StaleLinkException(component, this, 
+			Integer.toString(targetActionId), targetIdPath);
 	}
 
 	public void removeAttribute(String name)
@@ -326,7 +339,7 @@ public class RequestCycle
 			// RenderExceptions don't need to be wrapped.
 			throw e;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			// But wrap other exceptions in a RequestCycleException ... this
 			// will ensure that some of the context is available.
@@ -358,7 +371,7 @@ public class RequestCycle
 	*
 	*/
 
-	public void rewindPage(String targetActionId)
+	public void rewindPage(String targetActionId, String targetIdPath)
 	throws RequestCycleException
 	{
 		IResponseWriter writer;
@@ -374,7 +387,8 @@ public class RequestCycle
 		attributes = null;
 		actionId = -1;
 
-		this.targetActionId = Integer.parseInt(targetActionId, 16);
+		this.targetActionId = Integer.parseInt(targetActionId);
+		this.targetIdPath = targetIdPath;
 
 		writer  = new HTMLResponseWriter(new NullWriter());
 
@@ -385,10 +399,8 @@ public class RequestCycle
 			// Shouldn't get this far, because the target component should
 			// throw the RenderRewoundException.
 
-			throw new RequestCycleException(
-				"Could not rewind page state from action id " +
-				actionId + ".", 
-				null, this);
+			throw new StaleLinkException(page, this, 
+				targetActionId, targetIdPath);
 		}
 		catch (RenderRewoundException e)
 		{
@@ -396,10 +408,10 @@ public class RequestCycle
 		}
 		catch (RequestCycleException e)
 		{
-			// RenderExceptions don't need to be wrapped.
+			// RequestCycleException don't need to be wrapped.
 			throw e;
 		}
-		catch (Exception e)
+		catch (Throwable e)
 		{
 			// But wrap other exceptions in a RequestCycleException ... this
 			// will ensure that some of the context is available.
@@ -413,6 +425,7 @@ public class RequestCycle
 			rewinding = false;
 			actionId = 0;
 			this.targetActionId = 0;
+			this.targetIdPath = null;
 		}
 
 		if (monitor != null)

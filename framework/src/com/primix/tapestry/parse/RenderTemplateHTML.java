@@ -31,7 +31,8 @@ import com.primix.tapestry.*;
  */
 
 /**
- *  Renders static HTML text from a template.
+ *  Renders static HTML text from a template.  To neaten up the response HTML, leading
+ *  and trailing whitespace is reduced to a single character.
  *
  * @author Howard Ship
  * @version $Id$
@@ -42,7 +43,7 @@ public class RenderTemplateHTML implements IRender
 	private char[] templateData;
 	private int offset;
 	private int length;
-	private boolean needsOptimize = true;
+	private boolean needsTrim = true;
 
 	public RenderTemplateHTML(char[] templateData, int offset, int length)
 	{
@@ -54,8 +55,8 @@ public class RenderTemplateHTML implements IRender
 	public void render(IResponseWriter writer, IRequestCycle cycle)
 	throws RequestCycleException
 	{
-		if (needsOptimize)
-			optimize();
+		if (needsTrim)
+			trim();
 			
 		if (length == 0)
 			return;
@@ -69,11 +70,12 @@ public class RenderTemplateHTML implements IRender
 	 *
 	 */
 	 
-	private void optimize()
+	private void trim()
 	{
 		char ch;
+		boolean didTrim = false;
 		
-		needsOptimize = false;
+		needsTrim = false;
 
 		if (length == 0)
 			return;
@@ -81,7 +83,7 @@ public class RenderTemplateHTML implements IRender
 		// Shave characters off the end until we hit a non-whitespace
 		// character.
 		
-		while (true)
+		while (length > 0)
 		{
 			ch = templateData[offset + length - 1];
 			
@@ -89,15 +91,20 @@ public class RenderTemplateHTML implements IRender
 				break;
 				
 			length--;
-			
-			if (length <= 0)
-				return;
+			didTrim = true;
 		}
 		
+		// Restore one character of whitespace to the end
+		
+		if (didTrim)
+			length++;
+		
+		didTrim = false;
+			
 		// Strip characters off the front until we hit a non-whitespace
 		// character.
 		
-		while (true)
+		while (length > 0)
 		{
 			ch = templateData[offset];
 			
@@ -106,12 +113,22 @@ public class RenderTemplateHTML implements IRender
 				
 			offset++;
 			length--;
-			
-			if (length <= 0)
-				return;
-			
+			didTrim = true;
 		}
 		
+		// Again, restore one character of whitespace.
+		
+		if (didTrim)
+		{
+			offset--;
+			length++;
+		}
+		
+		
+		// Ok, this isn't perfect.  I don't want to write into templateData[] even
+		// though I'd prefer that my single character of whitespace was always a space.
+		// It would also be kind of neat to shave whitespace within the static HTML, rather
+		// than just on the edges.
 	}
 }
 

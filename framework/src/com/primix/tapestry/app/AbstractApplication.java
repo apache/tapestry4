@@ -178,7 +178,7 @@ public abstract class AbstractApplication
 			if (parameters == null ||
 				parameters.length != 1)
 				throw new IllegalArgumentException(
-					"Service action requires single action id parameter.");
+					"Service action requires one parameter.");
 
 			pageName = cycle.getPage().getName();
 			recorder = getPageRecorder(pageName);
@@ -190,8 +190,8 @@ public abstract class AbstractApplication
 			return servletPrefix +
 				"/" + ACTION_SERVICE +
 				"/" + pageName +
-				"/" + recorder.getVersion() +
-				"/" + parameters[0];
+				"/" + parameters[0] +
+				"/" + component.getIdPath();
 
 		}
 	}
@@ -312,8 +312,6 @@ public abstract class AbstractApplication
 			buffer.append(DIRECT_SERVICE);
 			buffer.append('/');
 			buffer.append(pageName);
-			buffer.append('/');
-			buffer.append(recorder.getVersion());
 			buffer.append('/');
 			buffer.append(component.getIdPath());
 
@@ -954,8 +952,10 @@ public abstract class AbstractApplication
 	*  Processes an 'action' URL.
 	*  <ul>
 	*  <li>The specified page is loaded and rolled back to its prior state.
-	*  <li>{@link IRequestCycle#rewindPage(String)} is invoked, to rewind the page to
-	*  the target action id, by going through the motions of
+	*  <li>{@link IRequestCycle#rewindPage(String, String)} is invoked, 
+	*  to rewind the page to
+	*  the target action id and target component id path,
+	*  by going through the motions of
 	*  rendering again.
 	*  <li>{@link #render(IRequestCycle, ResponseOutputStream)} is invoked, to render
 	*  the response page.
@@ -968,11 +968,9 @@ public abstract class AbstractApplication
 	{
 		String pageName;
 		String targetActionId;
+		String targetIdPath;
 		IResponseWriter writer;
 		RequestContext context;
-		String pageVersion;
-		IPageRecorder recorder;
-		String recorderPageVersion;
 		IMonitor monitor;
 		IPage page;
 
@@ -983,8 +981,8 @@ public abstract class AbstractApplication
 		context = cycle.getRequestContext();
 
 		pageName = context.getPathInfo(1);
-		pageVersion = context.getPathInfo(2);
-		targetActionId = context.getPathInfo(3);
+		targetActionId = context.getPathInfo(2);
+		targetIdPath = context.getPathInfo(3);
 
 		monitor = cycle.getMonitor();
 		if (monitor != null)
@@ -993,12 +991,6 @@ public abstract class AbstractApplication
 		if (context.getSession().isNew())
 			throw new StaleSessionException();
 
-			recorder = getPageRecorder(pageName);
-		recorderPageVersion = recorder.getVersion();
-
-		if (!pageVersion.equals(recorderPageVersion))
-			throw new StaleLinkException();
-
 		page = cycle.getPage(pageName);
 
 		// Allow the page to validate that the user is allowed to visit.  This is simple
@@ -1006,11 +998,14 @@ public abstract class AbstractApplication
 		// use of the back button. 
 
 		page.validate(cycle);
+		
+		// Setup the page for the rewind, then do the rewind.
+		
 		cycle.setPage(page);
-		cycle.rewindPage(targetActionId);
+		cycle.rewindPage(targetActionId, targetIdPath);
 
 		// During the rewind, a component may change the page.  This will take
-		// effect during the second render, which renders the response.
+		// effect during the second render, which renders the HTML response.
 
 		// Render the response.
 
@@ -1041,9 +1036,6 @@ public abstract class AbstractApplication
 		String componentPath;
 		IResponseWriter writer;
 		RequestContext context;
-		String pageVersion;
-		IPageRecorder recorder;
-		String recorderPageVersion;
 		IComponent component;
 		Direct direct;
 		String[] parameters = null;
@@ -1061,8 +1053,7 @@ public abstract class AbstractApplication
 		context = cycle.getRequestContext();
 
 		pageName = context.getPathInfo(1);
-		pageVersion = context.getPathInfo(2);
-		componentPath = context.getPathInfo(3);
+		componentPath = context.getPathInfo(2);
 
 		if (monitor != null)
 			monitor.serviceBegin("direct", pageName + "/" + componentPath);
@@ -1070,23 +1061,10 @@ public abstract class AbstractApplication
 		if (context.getSession().isNew())
 			throw new StaleSessionException();
 
-		recorder = getPageRecorder(pageName);
-		recorderPageVersion = recorder.getVersion();
-
-		// Just because the encoded state doesn't match the current state is no reason to
-		// just throw it out.  Record (for the component's listener) the
-		// encoded page state.  If it is interested (most components that don't care about
-		// dynamic page state don't care about perstant page state either), it can throw
-		// the StaleLinkException or otherwise react or redirect.
-
-		if (!pageVersion.equals(recorderPageVersion))
-			cycle.setAttribute(IApplicationService.ENCODED_PAGE_VERSION_ATTRIBUTE_NAME, 
-				pageVersion);
-
-			page = cycle.getPage(pageName);
+		page = cycle.getPage(pageName);
 
 		// Allow the page to validate that the user is allowed to visit.  This is simple
-		// protected from malicious users who hack the URLs directly, or make inappropriate
+		// protection from malicious users who hack the URLs directly, or make inappropriate
 		// use of the back button. 
 
 		page.validate(cycle);
@@ -1110,12 +1088,12 @@ public abstract class AbstractApplication
 
 		// Get any parameters encoded in the URL.
 
-		if (pathInfoCount > 4)
+		if (pathInfoCount > 3)
 		{
-			parameters = new String[pathInfoCount - 4];
+			parameters = new String[pathInfoCount - 3];
 
-			for (i = 4; i < pathInfoCount; i++)
-				parameters[i - 4] = context.getPathInfo(i);
+			for (i = 3; i < pathInfoCount; i++)
+				parameters[i - 3] = context.getPathInfo(i);
 		}
 
 		direct.trigger(cycle, parameters);

@@ -37,7 +37,7 @@ import com.primix.tapestry.components.*;
  *
  *  <p>The advantage of these methods versus simply 
  *  overriding {@link IComponent#render(IResponseWriter, IRequestCycle)} is that
- *  they are called just once, before and after all renderring takes place.
+ *  they are called just once, before and after all rendering takes place.
  *  Components may be inside one or more {@link Foreach} components, or something
  *  similar, in which case <code>render()</code> is invoked multiple times.
  *

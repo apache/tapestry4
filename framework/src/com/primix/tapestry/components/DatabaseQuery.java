@@ -131,7 +131,7 @@ public class DatabaseQuery extends AbstractComponent
 	private String queryValue;
 	private IBinding rowBinding;
 	private Map row;
-	private boolean renderring;
+	private boolean rendering;
 
 	public DatabaseQuery(IPage page, IComponent container, String id, 
 		ComponentSpecification specification)
@@ -223,7 +223,7 @@ public class DatabaseQuery extends AbstractComponent
 
 		try
 		{
-			renderring = true;
+			rendering = true;
 
 			statement = jdbcConnection.createStatement();
 
@@ -291,7 +291,7 @@ public class DatabaseQuery extends AbstractComponent
 		}
 		finally
 		{
-			renderring = false;
+			rendering = false;
 			row = null;
 			
 			try
@@ -338,13 +338,13 @@ public class DatabaseQuery extends AbstractComponent
 	 *  Returns the most recently fetched row of the query as an unmodifiable
 	 *  {@link Map}.
 	 *
-	 *  @throws RenderOnlyPropertyException if the component is not renderring.
+	 *  @throws RenderOnlyPropertyException if the component is not rendering.
 	 *
 	 */
 	 
 	public Map getRow()
 	{
-		if (!renderring)
+		if (!rendering)
 			throw new RenderOnlyPropertyException(this, "row");
 		
 		return row;

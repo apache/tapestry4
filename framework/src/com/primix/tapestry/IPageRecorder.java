@@ -64,21 +64,6 @@ public interface IPageRecorder extends ChangeObserver
     public Collection getChanges();
 
     /**
-     *  Returns an encoding of the version number of the page.  The
-     *  version number is used when encoding and decoding action URLs
-     *  to ensure that the page state hasn't changed between the time
-     *  the URL was created and the time it was triggered.
-     *
-     *  <p>The version number changes whenever the recorder is
-     *  commited with changes.
-     *
-     *  @see #commit()
-     *
-     */
- 
-    public String getVersion();
-
-    /**
      *  Indicates whether the recorder is active and recording
      *  changes.  An inactive recorder ignores changes until it is
      *  activated.

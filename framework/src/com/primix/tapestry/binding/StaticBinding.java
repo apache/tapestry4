@@ -49,7 +49,7 @@ public class StaticBinding extends AbstractBinding
 	}
 
 	/**
-	*  Invokes <code>getInteger()</code> and converts the result.
+	*  Invokes {@link #getInteger()} and converts the result.
 	*
 	*/
 
@@ -88,16 +88,6 @@ public class StaticBinding extends AbstractBinding
 	public Object getValue()
 	{
 		return value;
-	}
-
-	/**
-	*  Returns true.
-	*
-	*/
-
-	public boolean isReadOnly()
-	{
-		return true;
 	}
 
 	/**

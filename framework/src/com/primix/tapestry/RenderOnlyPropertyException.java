@@ -30,7 +30,7 @@ package com.primix.tapestry;
 
 /**
  *  Exception thrown when a property of an {@link IComponent} is accessed that
- *  is only valid while the component is actually renderring (such properties
+ *  is only valid while the component is actually rendering (such properties
  *  are related to parameters, and satisfied by {@link IBinding bindings}.
  *
  *  @version $Id$
@@ -46,7 +46,7 @@ public class RenderOnlyPropertyException extends ApplicationRuntimeException
 	public RenderOnlyPropertyException(IComponent component, String propertyName)
 	{
 		super("Property " + propertyName + " of " + component + 
-		" may only be accessed while the component is renderring.");
+		" may only be accessed while the component is rendering.");
 		
 		this.component = component;
 		this.propertyName = propertyName;

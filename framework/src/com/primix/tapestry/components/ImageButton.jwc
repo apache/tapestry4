@@ -9,16 +9,40 @@
 	<allow-body>no</allow-body>
 	
 	<parameters>
+
+		<!-- The normal image to display. -->
+
 		<parameter>
 			<name>image</name>
 			<java-type>com.primix.tapestry.IAsset</java-type>
 			<required>yes</required>
 		</parameter>
+
+		<!-- The optional image to display when the button is
+			 disabled. -->
+
+		<parameter>
+			<name>disabledImage</name>
+			<java-type>com.primix.tapestry.IAsset</java-type>
+		</parameter>
 		
+		<!-- If set to true, the button is disabled (and the alternate
+			 image, if any, is displayed. -->
+
+		<parameter>
+			<name>disabled</name>
+		</parameter>
+
+		<!-- Rarely used; allow the (x, y) location clicked within
+		     the image to be pushed back to the application.  -->
+
 		<parameter>
 			<name>point</name>
 			<java-type>java.awt.Point</java-type>
 		</parameter>
+
+	    <!-- Listener notified IF the image button was clicked (causing the
+		     form to be submitted) -->
 
 		<parameter>
 			<name>listener</name>
