@@ -120,13 +120,9 @@ public class PrivateAsset implements IAsset
 
 		service = cycle.getEngine().getService(IEngineService.ASSET_SERVICE);
 
-		// Since it is no longer necessary to have an active HttpSession to
-		// use the asset service, there's no need to encode the URL anymore.
-		// This change was made in release 1.0.1.
-
 		Gesture g = service.buildGesture(cycle, null, parameters);
 
-		return g.getFullURL();
+		return g.getURL(cycle);
 	}
 
 	public InputStream getResourceAsStream(IRequestCycle cycle) throws ResourceUnavailableException

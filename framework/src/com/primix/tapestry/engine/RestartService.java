@@ -61,7 +61,7 @@ public class RestartService extends AbstractService
 			throw new IllegalArgumentException(
 				Tapestry.getString("service-no-parameters", RESTART_SERVICE));
 
-		return assembleGesture(cycle, RESTART_SERVICE, null, null);
+		return assembleGesture(cycle, RESTART_SERVICE, null, null, true);
 	}
 
 	public boolean service(

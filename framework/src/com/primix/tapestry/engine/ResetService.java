@@ -67,7 +67,7 @@ public class ResetService extends AbstractService
 		String[] context = new String[1];
 		context[0] = component.getPage().getName();
 
-		return assembleGesture(cycle, RESET_SERVICE, context, null);
+		return assembleGesture(cycle, RESET_SERVICE, context, null, true);
 	}
 
 	public String getName()

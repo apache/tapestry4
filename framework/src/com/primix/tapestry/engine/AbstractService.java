@@ -61,6 +61,7 @@ public abstract class AbstractService implements IEngineService
 	 *  @param otherContext additional context provided by the component; this is application specific
 	 *  information, and is encoded with {@link URLEncoder#encode(String)} before being added
 	 *  to the query.
+     *  @param stateful if true, the final URL must be encoded with the HttpSession id
 	 *
 	 **/
 
@@ -68,7 +69,8 @@ public abstract class AbstractService implements IEngineService
 		IRequestCycle cycle,
 		String serviceName,
 		String[] serviceContext,
-		String[] parameters)
+		String[] parameters,
+        boolean stateful)
 	{
 		Map map = new HashMap();
 		StringBuffer buffer = null;
@@ -111,7 +113,7 @@ public abstract class AbstractService implements IEngineService
 			map.put(PARAMETERS_QUERY_PARAMETER_NAME, buffer.toString());
 		}
 
-		return new Gesture(cycle.getEngine().getServletPath(), map);
+		return new Gesture(cycle.getEngine().getServletPath(), map, stateful);
 	}
 
 	/**

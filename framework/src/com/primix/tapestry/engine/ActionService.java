@@ -86,7 +86,7 @@ public class ActionService extends AbstractService
 
 		serviceContext[i++] = component.getIdPath();
 
-		return assembleGesture(cycle, ACTION_SERVICE, serviceContext, null);
+		return assembleGesture(cycle, ACTION_SERVICE, serviceContext, null, true);
 	}
 
 	public boolean service(

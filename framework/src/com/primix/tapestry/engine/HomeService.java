@@ -57,7 +57,7 @@ public class HomeService extends AbstractService
 			throw new IllegalArgumentException(
 				Tapestry.getString("service-no-parameters", HOME_SERVICE));
 
-		return assembleGesture(cycle, HOME_SERVICE, null, null);
+		return assembleGesture(cycle, HOME_SERVICE, null, null, true);
 	}
 
 	public boolean service(

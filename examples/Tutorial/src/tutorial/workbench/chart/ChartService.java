@@ -76,7 +76,7 @@ public class ChartService extends AbstractService
             
 		context[0] = pageName;
 		
-		return assembleGesture(cycle, SERVICE_NAME, context, null);
+		return assembleGesture(cycle, SERVICE_NAME, context, null, true);
 	}
 
 	public boolean service(

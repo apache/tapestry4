@@ -52,6 +52,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Category;
+import org.mortbay.http.HttpResponse;
 import org.mortbay.servlet.MultiPartRequest;
 
 import com.primix.tapestry.util.StringSplitter;
@@ -99,7 +100,7 @@ public class RequestContext implements IRender
 	 *  @since 1.0.8
 	 * 
 	 **/
-	
+
 	public class UploadFile implements IUploadFile
 	{
 		private String name;
@@ -141,8 +142,6 @@ public class RequestContext implements IRender
 
 	private Map cookieMap;
 
-	private static final int MAP_SIZE = 5;
-
 	/**
 	 * Used to contain the parsed, decoded pathInfo.
 	 *
@@ -159,8 +158,7 @@ public class RequestContext implements IRender
 
 	private static BitSet safe;
 
-	static
-	{
+	static {
 		int i;
 		safe = new BitSet(256);
 
@@ -184,23 +182,7 @@ public class RequestContext implements IRender
 	 **/
 
 	private static final char HEX[] =
-		{
-			'0',
-			'1',
-			'2',
-			'3',
-			'4',
-			'5',
-			'6',
-			'7',
-			'8',
-			'9',
-			'A',
-			'B',
-			'C',
-			'D',
-			'E',
-			'F' };
+		{ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
 
 	/**
 	 * Creates a <code>RequestContext</code> from its components.
@@ -282,9 +264,9 @@ public class RequestContext implements IRender
 		{
 			try
 			{
-                // Note: deprecation warning for compatibility with
-                // Servlet API 2.2
-                
+				// Note: deprecation warning for compatibility with
+				// Servlet API 2.2
+
 				pathInfo[i] = URLDecoder.decode(pathInfo[i]);
 			}
 			catch (Exception e)
@@ -352,6 +334,7 @@ public class RequestContext implements IRender
 	 * as the source for scheme, server name and port.
 	 *
 	 * @see #getAbsoluteURL(String, String, String, int)
+	 * 
 	 **/
 
 	public String getAbsoluteURL(String URI)
@@ -389,11 +372,7 @@ public class RequestContext implements IRender
 	 *
 	 **/
 
-	public String getAbsoluteURL(
-		String URI,
-		String scheme,
-		String server,
-		int port)
+	public String getAbsoluteURL(String URI, String scheme, String server, int port)
 	{
 		StringBuffer buffer = new StringBuffer();
 
@@ -469,7 +448,7 @@ public class RequestContext implements IRender
 	 *  Returns the named parameter from the {@link HttpServletRequest}.
 	 *
 	 *  <p>Use {@link #getParameters(String)} for parameters that may
-	 *  invlude multiple values.
+	 *  include multiple values.
 	 * 
 	 *  <p>This is the preferred way to obtain parameter values (rather than
 	 *  obtaining the {@link HttpServletRequest} itself).  For form/multipart-data
@@ -507,7 +486,7 @@ public class RequestContext implements IRender
 
 		return request.getParameterValues(name);
 	}
-	
+
 	/**
 	 * Returns the named {@link IUploadFile}, if it exists, or null if it doesn't.
 	 * Uploads require an encoding of <code>multipart/form-data</code>
@@ -516,18 +495,18 @@ public class RequestContext implements IRender
 	 * is not so, or if no upload matches the name, then this method returns null.
 	 * 
 	 **/
-	
+
 	public IUploadFile getUploadFile(String name)
 	{
 		if (multipart == null)
 			return null;
-			
+
 		if (!multipart.contains(name))
 			return null;
 
 		// Hm.  How to determine difference between
 		// uploaded file and ordinary form value?
-		
+
 		return new UploadFile(name);
 	}
 
@@ -718,7 +697,7 @@ public class RequestContext implements IRender
 
 	private void readCookieMap()
 	{
-		cookieMap = new HashMap(MAP_SIZE);
+		cookieMap = new HashMap();
 
 		Cookie[] cookies = request.getCookies();
 
@@ -728,9 +707,9 @@ public class RequestContext implements IRender
 	}
 
 	/**
-	 * Invokes <code>HttpResponse.sendRedirect()</code>, but
+	 * Invokes {@liknk HttpResponse#sendRedirect(String)}</code>, but
 	 * massages <code>path</code>, supplying missing elements to
-	 * make it a full URL (i.e., specifying scheme, server, port, etc.).
+	 * make it an absolute URL (i.e., specifying scheme, server, port, etc.).
 	 *
 	 * <p>The 2.2 Servlet API will do this automatically, and a little more,
 	 * according to the early documentation.
@@ -763,28 +742,23 @@ public class RequestContext implements IRender
 		writer.end("tr");
 	}
 
+	private List getSorted(Enumeration e)
+	{
+		List result = Collections.list(e);
+		Collections.sort(result);
+
+		return result;
+	}
+
 	/**
 	 * Writes the state of the context to the writer, typically for inclusion
 	 * in a HTML page returned to the user. This is useful
-	 * when debugging.
+	 * when debugging.  The Inspector uses this as well.
 	 *
 	 **/
 
 	public void write(IResponseWriter writer)
 	{
-		int i;
-		String names[];
-		String values[];
-		Enumeration e;
-		String name;
-		String value;
-		boolean first;
-		;
-		Cookie[] cookies;
-		Cookie cookie;
-		ServletConfig config;
-		ServletContext context;
-
 		// Create a box around all of this stuff ...
 
 		writer.begin("table");
@@ -811,21 +785,18 @@ public class RequestContext implements IRender
 			pair(writer, "maxInactiveInterval", session.getMaxInactiveInterval());
 			pair(writer, "new", session.isNew());
 
-			first = true;
-			e = session.getAttributeNames();
+			List names = getSorted(session.getAttributeNames());
+			int count = names.size();
 
-			while (e.hasMoreElements())
+			for (int i = 0; i < count; i++)
 			{
-
-				if (first)
+				if (i == 0)
 				{
 					section(writer, "Attributes");
 					header(writer, "Name", "Value");
-					first = false;
 				}
 
-				name = (String) e.nextElement();
-
+				String name = (String) names.get(i);
 				pair(writer, name, session.getAttribute(name));
 			}
 
@@ -839,35 +810,41 @@ public class RequestContext implements IRender
 
 		// Parameters ...
 
-		first = true;
-		e = request.getParameterNames();
-		while (e.hasMoreElements())
+		List parameters = getSorted(request.getParameterNames());
+		int count = parameters.size();
+
+		for (int i = 0; i < count; i++)
 		{
-			if (first)
+
+			if (i == 0)
 			{
 				section(writer, "Parameters");
 				header(writer, "Name", "Value(s)");
-				first = false;
 			}
 
-			name = (String) e.nextElement();
-			values = request.getParameterValues(name);
+			String name = (String) parameters.get(i);
+			String[] values = request.getParameterValues(name);
 
-			for (i = 0; i < values.length; i++)
+			writer.begin("tr");
+			writer.attribute("class", getRowClass());
+			writer.begin("td");
+			writer.print(name);
+			writer.end();
+			writer.begin("td");
+
+			if (values.length > 1)
+				writer.begin("ul");
+
+			for (int j = 0; j < values.length; j++)
 			{
-				writer.begin("tr");
-				writer.attribute("class", getRowClass());
-				writer.begin("td");
+				if (values.length > 1)
+					writer.beginEmpty("li");
 
-				if (i == 0)
-					writer.print(name);
+				writer.print(values[j]);
 
-				writer.end();
-
-				writer.begin("td");
-				writer.print(values[i]);
-				writer.end("tr");
 			}
+
+			writer.end("tr");
 		}
 
 		section(writer, "Properties");
@@ -886,14 +863,8 @@ public class RequestContext implements IRender
 		pair(writer, "remoteHost", request.getRemoteHost());
 		pair(writer, "remoteUser", request.getRemoteUser());
 		pair(writer, "requestedSessionId", request.getRequestedSessionId());
-		pair(
-			writer,
-			"requestedSessionIdFromCookie",
-			request.isRequestedSessionIdFromCookie());
-		pair(
-			writer,
-			"requestedSessionIdFromURL",
-			request.isRequestedSessionIdFromURL());
+		pair(writer, "requestedSessionIdFromCookie", request.isRequestedSessionIdFromCookie());
+		pair(writer, "requestedSessionIdFromURL", request.isRequestedSessionIdFromURL());
 		pair(writer, "requestedSessionIdValid", request.isRequestedSessionIdValid());
 		pair(writer, "requestURI", request.getRequestURI());
 		pair(writer, "scheme", request.getScheme());
@@ -904,38 +875,37 @@ public class RequestContext implements IRender
 
 		// Now deal with any headers
 
-		first = true;
-		e = request.getHeaderNames();
-		while (e.hasMoreElements())
+		List headers = getSorted(request.getHeaderNames());
+		count = headers.size();
+
+		for (int i = 0; i < count; i++)
 		{
-			if (first)
+			if (i == 0)
 			{
 				section(writer, "Headers");
 				header(writer, "Name", "Value");
-				first = false;
 			}
 
-			name = (String) e.nextElement();
-			value = request.getHeader(name);
+			String name = (String) headers.get(i);
+			String value = request.getHeader(name);
 
 			pair(writer, name, value);
 		}
 
 		// Attributes
 
-		first = true;
-		e = request.getAttributeNames();
+		List attributes = getSorted(request.getAttributeNames());
+		count = attributes.size();
 
-		while (e.hasMoreElements())
+		for (int i = 0; i < count; i++)
 		{
-			if (first)
+			if (i == 0)
 			{
 				section(writer, "Attributes");
 				header(writer, "Name", "Value");
-				first = false;
 			}
 
-			name = (String) e.nextElement();
+			String name = (String) attributes.get(i);
 
 			pair(writer, name, request.getAttribute(name));
 		}
@@ -943,7 +913,7 @@ public class RequestContext implements IRender
 		if (pathInfo == null)
 			buildPathInfo();
 
-		for (i = 0; i < pathInfo.length; i++)
+		for (int i = 0; i < pathInfo.length; i++)
 		{
 			if (i == 0)
 			{
@@ -956,11 +926,11 @@ public class RequestContext implements IRender
 
 		// Cookies ...
 
-		cookies = request.getCookies();
+		Cookie[] cookies = request.getCookies();
 
 		if (cookies != null)
 		{
-			for (i = 0; i < cookies.length; i++)
+			for (int i = 0; i < cookies.length; i++)
 			{
 
 				if (i == 0)
@@ -969,7 +939,7 @@ public class RequestContext implements IRender
 					header(writer, "Name", "Value");
 				}
 
-				cookie = cookies[i];
+				Cookie cookie = cookies[i];
 
 				pair(writer, cookie.getName(), cookie.getValue());
 
@@ -988,28 +958,29 @@ public class RequestContext implements IRender
 		pair(writer, "servlet", servlet);
 		pair(writer, "servletInfo", servlet.getServletInfo());
 
-		config = servlet.getServletConfig();
+		ServletConfig config = servlet.getServletConfig();
 
-		first = true;
+		List names = getSorted(config.getInitParameterNames());
+		count = names.size();
 
-		e = config.getInitParameterNames();
-		while (e.hasMoreElements())
+		for (int i = 0; i < count; i++)
 		{
-			if (first)
+
+			if (i == 0)
 			{
 				section(writer, "Init Parameters");
 				header(writer, "Name", "Value");
-				first = false;
 			}
 
-			name = (String) e.nextElement();
+			String name = (String) names.get(i);
+			;
 			pair(writer, name, config.getInitParameter(name));
 
 		}
 
 		writer.end(); // Servlet
 
-		context = config.getServletContext();
+		ServletContext context = config.getServletContext();
 
 		object(writer, "Servlet Context");
 		writer.begin("table");
@@ -1022,33 +993,31 @@ public class RequestContext implements IRender
 		pair(writer, "minorVersion", context.getMinorVersion());
 		pair(writer, "serverInfo", context.getServerInfo());
 
-		first = true;
-		e = context.getInitParameterNames();
-		while (e.hasMoreElements())
+		names = getSorted(context.getInitParameterNames());
+		count = names.size();
+		for (int i = 0; i < count; i++)
 		{
-			if (first)
+			if (i == 0)
 			{
 				section(writer, "Initial Parameters");
 				header(writer, "Name", "Value");
-				first = false;
 			}
 
-			name = (String) e.nextElement();
+			String name = (String) names.get(i);
 			pair(writer, name, context.getInitParameter(name));
 		}
 
-		first = true;
-		e = context.getAttributeNames();
-		while (e.hasMoreElements())
+		names = getSorted(context.getAttributeNames());
+		count = names.size();
+		for (int i = 0; i < count; i++)
 		{
-			if (first)
+			if (i == 0)
 			{
 				section(writer, "Attributes");
 				header(writer, "Name", "Value");
-				first = false;
 			}
 
-			name = (String) e.nextElement();
+			String name = (String) names.get(i);
 			pair(writer, name, context.getAttribute(name));
 		}
 
@@ -1061,14 +1030,7 @@ public class RequestContext implements IRender
 
 	private void writeSystemProperties(IResponseWriter writer)
 	{
-		boolean first = true;
-		Properties properties;
-		List names;
-		Iterator i;
-		String name;
-		String property;
-		String pathSeparator;
-		StringTokenizer tokenizer;
+		Properties properties = null;
 
 		object(writer, "JVM System Properties");
 
@@ -1083,40 +1045,49 @@ public class RequestContext implements IRender
 			return;
 		}
 
-		pathSeparator = System.getProperty("path.separator", ";");
+		String pathSeparator = System.getProperty("path.separator", ";");
 
 		writer.begin("table");
 		writer.attribute("class", "request-context-object");
 
-		names = new ArrayList(properties.keySet());
+		List names = new ArrayList(properties.keySet());
 		Collections.sort(names);
+		int count = names.size();
 
-		i = names.iterator();
-		while (i.hasNext())
+		for (int i = 0; i < count; i++)
 		{
-			name = (String) i.next();
 
-			property = properties.getProperty(name);
-
-			if (first)
-			{
+			if (i == 0)
 				header(writer, "Name", "Value");
-				first = false;
-				first = false;
-			}
+
+			String name = (String) names.get(i);
+
+			String property = properties.getProperty(name);
 
 			if (property.indexOf(pathSeparator) < 0)
 				pair(writer, name, property);
 			else
 			{
-				tokenizer = new StringTokenizer(property, pathSeparator);
+
+				writer.begin("tr");
+				writer.attribute("class", getRowClass());
+
+				writer.begin("th");
+				writer.print(name);
+				writer.end();
+
+				writer.begin("td");
+				writer.begin("ul");
+
+				StringTokenizer tokenizer = new StringTokenizer(property, pathSeparator);
 
 				while (tokenizer.hasMoreTokens())
 				{
-					pair(writer, name, tokenizer.nextToken());
-
-					name = "";
+					writer.beginEmpty("li");
+					writer.print(tokenizer.nextToken());
 				}
+
+				writer.end("tr");
 			}
 		}
 
@@ -1128,8 +1099,7 @@ public class RequestContext implements IRender
 	 *
 	 **/
 
-	public void render(IResponseWriter writer, IRequestCycle cycle)
-		throws RequestCycleException
+	public void render(IResponseWriter writer, IRequestCycle cycle) throws RequestCycleException
 	{
 		write(writer);
 	}

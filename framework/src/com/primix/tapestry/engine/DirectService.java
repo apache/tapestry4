@@ -88,7 +88,7 @@ public class DirectService extends AbstractService
 			context[2] = component.getIdPath();
 		}
 
-		return assembleGesture(cycle, DIRECT_SERVICE, context, parameters);
+		return assembleGesture(cycle, DIRECT_SERVICE, context, parameters, true);
 	}
 
 	public boolean service(

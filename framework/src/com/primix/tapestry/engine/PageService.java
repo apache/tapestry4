@@ -63,7 +63,7 @@ public class PageService extends AbstractService
 			throw new IllegalArgumentException(
 				Tapestry.getString("service-single-parameter", PAGE_SERVICE));
 
-		return assembleGesture(cycle, PAGE_SERVICE, parameters, null);
+		return assembleGesture(cycle, PAGE_SERVICE, parameters, null, true);
 
 	}
 
