@@ -29,6 +29,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import net.sf.tapestry.AbstractComponent;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IEngine;
@@ -41,8 +44,6 @@ import net.sf.tapestry.RequiredParameterException;
 import net.sf.tapestry.ScriptException;
 import net.sf.tapestry.ScriptSession;
 import net.sf.tapestry.Tapestry;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
  *  Works with the {@link Body} component to add a script (and perhaps some initialization) 
@@ -57,7 +58,7 @@ import org.apache.log4j.Logger;
 
 public class Script extends AbstractComponent
 {
-    private static final Logger LOG = LogManager.getLogger(Script.class);
+    private static final Log LOG = LogFactory.getLog(Script.class);
 
     private String _scriptPath;
     private Map _baseSymbols;

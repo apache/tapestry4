@@ -25,7 +25,7 @@
 
 package net.sf.tapestry.spec;
 
-import net.sf.tapestry.util.Enum;
+import org.apache.commons.lang.enum.Enum;
 
 /**
  *  Defines the types of assets.

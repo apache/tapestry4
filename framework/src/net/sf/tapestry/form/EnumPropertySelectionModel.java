@@ -27,7 +27,7 @@ package net.sf.tapestry.form;
 
 import java.util.ResourceBundle;
 
-import net.sf.tapestry.util.Enum;
+import org.apache.commons.lang.enum.Enum;
 
 /**
  *  Implementation of {@link IPropertySelectionModel} that wraps around
@@ -49,14 +49,14 @@ import net.sf.tapestry.util.Enum;
 
 public class EnumPropertySelectionModel implements IPropertySelectionModel
 {
-    private Enum[] options;
-    private String[] labels;
+    private Enum[] _options;
+    private String[] _labels;
 
-    private String resourcePrefix;
-    private ResourceBundle bundle;
+    private String _resourcePrefix;
+    private ResourceBundle _bundle;
 
     /**
-     *  1Standard constructor.
+     *  Standard constructor.
      *
      *  <p>Labels for the options are extracted from a resource bundle.  resourceBaseName
      *  identifies the bundle.  Typically, the bundle will be a <code>.properties</code>
@@ -83,9 +83,9 @@ public class EnumPropertySelectionModel implements IPropertySelectionModel
 
     public EnumPropertySelectionModel(Enum[] options, ResourceBundle bundle, String resourcePrefix)
     {
-        this.options = options;
-        this.bundle = bundle;
-        this.resourcePrefix = resourcePrefix;
+        _options = options;
+        _bundle = bundle;
+        _resourcePrefix = resourcePrefix;
     }
 
     /**
@@ -95,26 +95,25 @@ public class EnumPropertySelectionModel implements IPropertySelectionModel
 
     public EnumPropertySelectionModel(Enum[] options, ResourceBundle bundle)
     {
-        this.options = options;
-        this.bundle = bundle;
+        this(options, bundle, null);
     }
 
     public int getOptionCount()
     {
-        return options.length;
+        return _options.length;
     }
 
     public Object getOption(int index)
     {
-        return options[index];
+        return _options[index];
     }
 
     public String getLabel(int index)
     {
-        if (labels == null)
+        if (_labels == null)
             readLabels();
 
-        return labels[index];
+        return _labels[index];
     }
 
     public String getValue(int index)
@@ -128,27 +127,25 @@ public class EnumPropertySelectionModel implements IPropertySelectionModel
 
         index = Integer.parseInt(value);
 
-        return options[index];
+        return _options[index];
     }
 
     private void readLabels()
     {
-        int i;
-        String key;
-        String enumerationId;
+        _labels = new String[_options.length];
 
-        labels = new String[options.length];
-
-        for (i = 0; i < options.length; i++)
+        for (int i = 0; i < _options.length; i++)
         {
-            enumerationId = options[i].getEnumerationId();
+            String enumerationId = _options[i].getName();
 
-            if (resourcePrefix == null)
+            String key;
+
+            if (_resourcePrefix == null)
                 key = enumerationId;
             else
-                key = resourcePrefix + "." + enumerationId;
+                key = _resourcePrefix + "." + enumerationId;
 
-            labels[i] = bundle.getString(key);
+            _labels[i] = _bundle.getString(key);
         }
 
     }

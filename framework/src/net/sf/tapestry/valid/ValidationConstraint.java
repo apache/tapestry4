@@ -25,7 +25,7 @@
 
 package net.sf.tapestry.valid;
 
-import net.sf.tapestry.util.Enum;
+import org.apache.commons.lang.enum.Enum;
 
 /**
  *  Defines an enumeration of different types of validation constraints
@@ -95,9 +95,9 @@ public class ValidationConstraint extends Enum
      * 
      **/
 
-    protected ValidationConstraint(String enumerationId)
+    protected ValidationConstraint(String name)
     {
-        super(enumerationId);
+        super(name);
     }
 
 }

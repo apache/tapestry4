@@ -34,8 +34,8 @@ import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IAsset;
@@ -69,7 +69,7 @@ import net.sf.tapestry.util.MultiKey;
 
 public class DefaultTemplateSource implements ITemplateSource, IRenderDescription
 {
-    private static final Logger LOG = LogManager.getLogger(DefaultTemplateSource.class);
+    private static final Log LOG = LogFactory.getLog(DefaultTemplateSource.class);
 
     // Cache of previously retrieved templates.  Key is a multi-key of 
     // specification resource path and locale (local may be null), value

@@ -30,8 +30,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import net.sf.tapestry.Tapestry;
 
@@ -79,7 +79,7 @@ import net.sf.tapestry.Tapestry;
 
 public class AdaptorRegistry
 {
-    private static final Logger LOG = LogManager.getLogger(AdaptorRegistry.class);
+    private static final Log LOG = LogFactory.getLog(AdaptorRegistry.class);
 
     /**
      *  A Map of adaptor objects, keyed on registration Class.

@@ -38,10 +38,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-import org.apache.log4j.Priority;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import net.sf.tapestry.engine.ResourceResolver;
 import net.sf.tapestry.parse.SpecificationParser;
@@ -71,12 +69,6 @@ import net.sf.tapestry.util.xml.DocumentParseException;
  * servlet to restore the engine into the {@link HttpSession} at the
  * end of each request cycle.
  *
- * <p>The application servlet also has a default implementation of
- * {@link #setupLogging} that configures logging for 
- *  <a href="http://jakarta.apache.org/log4j">Log4J</a>.  Subclasses
- * with more sophisticated logging needs will need to overide this
- * method.
- *
  * <p>As of release 1.0.1, it is no longer necessary for a {@link HttpSession}
  * to be created on the first request cycle.  Instead, the HttpSession is created
  * as needed by the {@link IEngine} ... that is, when a visit object is created,
@@ -98,7 +90,7 @@ import net.sf.tapestry.util.xml.DocumentParseException;
 
 abstract public class ApplicationServlet extends HttpServlet
 {
-    private static final Logger LOG = LogManager.getLogger(ApplicationServlet.class);
+    private static final Log LOG = LogFactory.getLog(ApplicationServlet.class);
 
     /**
      *  Name of the cookie written to the client web browser to
@@ -381,8 +373,6 @@ abstract public class ApplicationServlet extends HttpServlet
     {
         super.init(config);
 
-        setupLogging();
-
         _specification = constructApplicationSpecification();
 
         _attributeName = "net.sf.tapestry.engine." + config.getServletName();
@@ -473,41 +463,6 @@ abstract public class ApplicationServlet extends HttpServlet
         catch (IOException ex)
         {
             // Ignore it.
-        }
-    }
-
-    /**
-     *  Invoked from {@link #init(ServletConfig)} before the specification is loaded to
-     *  setup log4j logging.  Over time, the usefulness of this method
-     *  has decreased; it is now meant only for testing, to provide an easy
-     *  override of the Log4J root logger level.
-     *
-     *  <p>Gets the JVM system property <code>net.sf.tapestry.root-logging-level</code>,
-     *  and (if non-null), converts it to a {@link Level} and assigns it to the root
-     *  {@link Logger}.
-     * 
-     *  <p>Prior to Tapestry release 2.2, individual Category (the then-name
-     *  for Log4J's {@link Logger}) levels could be
-     *  set using additional JVM system properties, but with
-     *  the change in API for Log4J, that is no longer practical.  Again,
-     *  this can be better done using a log4j.properties file.
-     *
-     *  @since 0.2.9
-     * 
-     **/
-
-    protected void setupLogging() throws ServletException
-    {
-        Level level = Level.ERROR;
-
-        String value = System.getProperty("net.sf.tapestry.root-logging-level");
-
-        if (value != null)
-        {
-            level = Level.toLevel(value, Level.ERROR);
-
-            Logger root = LogManager.getRootLogger();
-            root.setLevel(level);
         }
     }
 

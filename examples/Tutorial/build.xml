@@ -10,7 +10,8 @@
   <path id="project.class.path">
     <pathelement location="${lib.ext.dir}/ejb.jar"/>
     <pathelement location="${lib.ext.dir}/javax.servlet.jar"/>
-    <pathelement location="${lib.ext.dir}/${log4j.jar}"/>
+    <pathelement location="${lib.ext.dir}/${commons-logging.jar}"/>
+	<pathelement location="${lib.ext.dir}/${commons-lang.jar}"/>    
     <pathelement location="${lib.ext.dir}/javax.xml.jaxp.jar"/>
     <pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
     <pathelement location="${lib.ext.dir}/${jcommon.jar}"/>
@@ -69,7 +70,7 @@
               	     
         <path refid="project.class.path"/>
         <pathelement location="${lib.ext.dir}/${jetty.jar}"/>
-        
+    	<pathelement location="${lib.ext.dir}/${log4j.jar}"/>        
         <pathelement location="${classes.dir}"/>
       </classpath>
       

@@ -25,7 +25,7 @@
 
 package net.sf.tapestry.parse;
 
-import net.sf.tapestry.util.Enum;
+import org.apache.commons.lang.enum.Enum;
 
 /**
  * An {@link Enum} of the different possible token types.

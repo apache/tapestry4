@@ -31,8 +31,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.Gesture;
@@ -56,7 +56,7 @@ import net.sf.tapestry.Tapestry;
 
 public class PrivateAsset implements IAsset
 {
-    private static final Logger LOG = LogManager.getLogger(PrivateAsset.class);
+    private static final Log LOG = LogFactory.getLog(PrivateAsset.class);
 
     private AssetExternalizer _externalizer;
 

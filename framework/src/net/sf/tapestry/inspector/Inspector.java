@@ -71,7 +71,6 @@ public class Inspector extends BasePage
         _blocks.put(View.SPECIFICATION, getComponent("specificationBlock"));
         _blocks.put(View.ENGINE, getComponent("engineBlock"));
         _blocks.put(View.PROPERTIES, getComponent("propertiesBlock"));
-        _blocks.put(View.LOGGING, getComponent("loggingBlock"));
     }
 
     public View getView()

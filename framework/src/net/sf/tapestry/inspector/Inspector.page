@@ -37,10 +37,6 @@
 
   <component id="showEngine" type="inspector:ShowEngine"/>
 
-  <component id="loggingBlock" type="Block"/>
-
-  <component id="showLogging" type="inspector:ShowLogging"/>
-
   <private-asset name="stylesheet" resource-path="/net/sf/tapestry/inspector/Inspector.css"/>
 
 </page-specification>

@@ -31,8 +31,8 @@ import java.net.SocketException;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  *  A special output stream works with a {@link HttpServletResponse}, buffering
@@ -56,8 +56,7 @@ import org.apache.log4j.Logger;
 
 public class ResponseOutputStream extends OutputStream
 {
-    private static final Logger LOG =
-        LogManager.getLogger(ResponseOutputStream.class);
+    private static final Log LOG = LogFactory.getLog(ResponseOutputStream.class);
 
     /**
      *  Default size for the buffer (2000 bytes).
@@ -144,17 +143,17 @@ public class ResponseOutputStream extends OutputStream
     {
         if (_out == null)
         {
-            
+
             // In certain cases (such as when the Tapestry service sends a redirect),
             // there is no output to send back (and no content type set).  In this
             // case, forceFlush() does nothing.
-            
+
             if (_buffer == null)
                 return;
-                
+
             open();
         }
-        
+
         try
         {
             _out.flush();
@@ -188,9 +187,7 @@ public class ResponseOutputStream extends OutputStream
     private void open() throws IOException
     {
         if (_contentType == null)
-            throw new IOException(
-                Tapestry.getString(
-                    "ResponseOutputStream.content-type-not-set"));
+            throw new IOException(Tapestry.getString("ResponseOutputStream.content-type-not-set"));
 
         _response.setContentType(_contentType);
 
@@ -248,20 +245,20 @@ public class ResponseOutputStream extends OutputStream
     {
         _discard = value;
     }
-    
+
     private void innerWrite(byte[] b, int off, int len) throws IOException
     {
-      if (b == null || len == 0 || _discard)
-        return;
-        
-      try
-      {
-        _out.write(b, off, len);
-      }   
-      catch (SocketException ex)
-      {
-        LOG.debug("Socket exception.");
-      }
+        if (b == null || len == 0 || _discard)
+            return;
+
+        try
+        {
+            _out.write(b, off, len);
+        }
+        catch (SocketException ex)
+        {
+            LOG.debug("Socket exception.");
+        }
     }
 
     public void write(byte b[], int off, int len) throws IOException

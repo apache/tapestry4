@@ -20,7 +20,9 @@
 <path id="tutorial.classpath">
 	<pathelement location="${framework.jar}"/>
 	<pathelement location="${contrib.jar}"/>
-	<pathelement location="${lib.ext.dir}/javax.servlet.jar"/>
+	<pathelement location="${lib.ext.dir}/javax.servlet.jar"/>	
+	<pathelement location="${lib.ext.dir}/${commons-logging.jar}"/>
+	<pathelement location="${lib.ext.dir}/${commons-lang.jar}"/>	
 	<pathelement location="${lib.ext.dir}/${log4j.jar}"/>
 	<pathelement location="${lib.ext.dir}/javax.xml.jaxp.jar"/>
 	<pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
@@ -432,15 +434,21 @@
 			<include name="*tapestry*.jar"/>
 			<include name="jakarta-oro-*.jar"/>
 			<include name="ognl-*.jar"/>
+			<include name="commons-logging*.jar"/>
+			<include name="commons-lang*.jar"/>
 		</fileset>
 	</delete>
 		
 	<copy todir="${tapestry.lib.dir}" flatten="true">
 		<fileset dir="${lib.dir}">
 			<include name="*-${framework.version}.jar"/>
-			<include name="ext/mckoidb.jar"/>
-			<include name="ext/${jakarta-oro.jar}"/>
-			<include name="ext/${ognl.jar}"/>
+		</fileset>
+		<fileset dir="${lib.ext.dir}">
+			<include name="mckoidb.jar"/>
+			<include name="${jakarta-oro.jar}"/>
+			<include name="${ognl.jar}"/>
+			<include name="${commons-logging.jar}"/>
+			<include name="${commons-lang.jar}"/>
 		</fileset>
 		<fileset dir="${jboss.server.default.dir}/lib">
 		

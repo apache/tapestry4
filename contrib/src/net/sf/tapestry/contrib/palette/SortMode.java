@@ -25,7 +25,7 @@
 
 package net.sf.tapestry.contrib.palette;
 
-import net.sf.tapestry.util.Enum;
+import org.apache.commons.lang.enum.Enum;
 
 /**
  *  Defines different sorting strategies for the {@link Palette} component.
@@ -67,9 +67,9 @@ public class SortMode extends Enum
 
     public static final SortMode USER = new SortMode("USER");
 
-    private SortMode(String enumerationId)
+    private SortMode(String name)
     {
-        super(enumerationId);
+        super(name);
     }
 
 }

@@ -104,7 +104,7 @@ public class BeanSpecification extends BasePropertyHolder
 
         buffer.append(className);
         buffer.append(", lifecycle ");
-        buffer.append(lifecycle.getEnumerationId());
+        buffer.append(lifecycle.getName());
 
         if (initializers != null && initializers.size() > 0)
         {

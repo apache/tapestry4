@@ -63,17 +63,6 @@ public interface IComponent extends IRender
     public void addComponent(IComponent component);
 
     /**
-     *  Adds a new renderable element to the receiver.  The element may be either
-     *  another component, or static HTML.
-     * 
-     *  @deprecated To be removed in 2.3.  Use {@link #addBody(IRender)} instead.
-     * 
-     **/
-
-    public void addWrapped(IRender element);
-
-
-    /**
      *  Adds a new renderable element to the receiver's body.  The element may be either
      *  another component, or static HTML.  Such elements come from inside
      *  the receiver's tag within its container's template, and represent static
@@ -237,20 +226,6 @@ public interface IComponent extends IRender
      **/
 
     public void setSpecification(ComponentSpecification value);
-
-    /**
-     *  Invoked to make the receiver render any elements it wraps.  This is typically
-     *  invoked by the receiver itself.  This method is public so that the
-     *  {@link net.sf.tapestry.components.RenderBody} component may operate.
-     *
-     *  @deprecated To be removed in 2.3.  Use {@link #renderBody(IMarkupWriter, IRequestCycle)}
-     *  instead.
-     * 
-     **/
-
-    public void renderWrapped(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException;
-
 
     /**
      *  Invoked to make the receiver render its body (the elements and components

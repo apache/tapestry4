@@ -40,23 +40,23 @@ import net.sf.tapestry.IComponent;
 
 public class StringBinding extends AbstractBinding
 {
-    private IComponent component;
-    private String key;
+    private IComponent _component;
+    private String _key;
 
     public StringBinding(IComponent component, String key)
     {
-        this.component = component;
-        this.key = key;
+        _component = component;
+        _key = key;
     }
 
     public IComponent getComponent()
     {
-        return component;
+        return _component;
     }
 
     public String getKey()
     {
-        return key;
+        return _key;
     }
 
     /**
@@ -66,17 +66,7 @@ public class StringBinding extends AbstractBinding
 
     public Object getObject()
     {
-        return component.getString(key);
-    }
-
-    /**
-     *  Returns String.class.
-     * 
-     **/
-
-    public Class getType()
-    {
-        return String.class;
+        return _component.getString(_key);
     }
 
     /**
@@ -94,9 +84,9 @@ public class StringBinding extends AbstractBinding
     {
         StringBuffer buffer = new StringBuffer("StringBinding");
         buffer.append('[');
-        buffer.append(component.getExtendedId());
+        buffer.append(_component.getExtendedId());
         buffer.append(' ');
-        buffer.append(key);
+        buffer.append(_key);
         buffer.append(']');
 
         return buffer.toString();

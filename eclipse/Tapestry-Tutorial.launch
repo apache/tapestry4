@@ -29,7 +29,8 @@
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry
-    internalArchive=&quot;/Tapestry/lib/ext/org.mortbay.jetty-jdk1.2.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;
+    internalArchive=&quot;/Tapestry/lib/ext/org.mortbay.jetty-jdk1.2.jar&quot;
+    path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry
@@ -50,6 +51,15 @@
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry
     internalArchive=&quot;/Tapestry/lib/ext/ognl-2.1.4-opt.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;
+"/>
+        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;runtimeClasspathEntry
+    internalArchive=&quot;/Tapestry/lib/ext/commons-lang-1.0.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;
+"/>
+        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;runtimeClasspathEntry
+    internalArchive=&quot;/Tapestry/lib/ext/commons-logging-1.0.2.jar&quot;
+    path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
     </listAttribute>
     <stringAttribute key="org.eclipse.debug.ui.target_debug_perspective" value="perspective_default"/>

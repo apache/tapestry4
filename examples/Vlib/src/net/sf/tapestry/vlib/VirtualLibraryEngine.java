@@ -35,8 +35,8 @@ import javax.rmi.PortableRemoteObject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IRequestCycle;
@@ -68,7 +68,7 @@ import net.sf.tapestry.vlib.pages.ApplicationUnavailable;
 
 public class VirtualLibraryEngine extends SimpleEngine
 {
-    public static final Logger LOG = LogManager.getLogger(VirtualLibraryEngine.class);
+    public static final Log LOG = LogFactory.getLog(VirtualLibraryEngine.class);
 
     private static final boolean DEBUG_ENABLED = Boolean.getBoolean("net.sf.tapestry.vlib.debug-enabled");
 

@@ -32,6 +32,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import net.sf.tapestry.IAsset;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IComponent;
@@ -55,8 +58,6 @@ import net.sf.tapestry.spec.BindingType;
 import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.spec.ContainedComponent;
 import net.sf.tapestry.spec.ParameterSpecification;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
  *  Runs the process of building the component hierarchy for an entire page.
@@ -68,7 +69,7 @@ import org.apache.log4j.Logger;
 
 public class PageLoader implements IPageLoader
 {
-    private static final Logger LOG = LogManager.getLogger(PageLoader.class);
+    private static final Log LOG = LogFactory.getLog(PageLoader.class);
 
     private IEngine _engine;
     private IResourceResolver _resolver;

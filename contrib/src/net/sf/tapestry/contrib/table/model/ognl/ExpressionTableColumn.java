@@ -2,8 +2,8 @@ package net.sf.tapestry.contrib.table.model.ognl;
 
 import java.util.Map;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import ognl.Ognl;
 import ognl.OgnlException;
@@ -17,7 +17,7 @@ import net.sf.tapestry.util.prop.OgnlUtils;
  */
 public class ExpressionTableColumn extends SimpleTableColumn
 {
-    private static final Logger LOG = LogManager.getLogger(ExpressionTableColumn.class);
+    private static final Log LOG = LogFactory.getLog(ExpressionTableColumn.class);
 
     private String m_strExpression;
     transient private Object m_objParsedExpression = null;

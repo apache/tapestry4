@@ -36,7 +36,6 @@ import net.sf.tapestry.RequestCycleException;
  *  @version $Id$
  *  @author Howard Lewis Ship
  *
- *  @deprecated To be removed in 2.3
  **/
 
 public interface IPropertySelectionRenderer

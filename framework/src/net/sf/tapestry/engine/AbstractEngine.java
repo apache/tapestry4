@@ -46,9 +46,10 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import ognl.Ognl;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.ApplicationServlet;
@@ -137,7 +138,7 @@ import net.sf.tapestry.util.prop.OgnlUtils;
 
 public abstract class AbstractEngine implements IEngine, IEngineServiceView, Externalizable, HttpSessionBindingListener
 {
-    private static final Logger LOG = LogManager.getLogger(AbstractEngine.class);
+    private static final Log LOG = LogFactory.getLog(AbstractEngine.class);
 
     /**
      *  @since 2.0.4

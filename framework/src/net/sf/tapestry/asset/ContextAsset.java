@@ -34,12 +34,14 @@ import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IAsset;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.Tapestry;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
  *  An asset whose path is relative to the {@link ServletContext} containing
@@ -51,7 +53,7 @@ import org.apache.log4j.Logger;
 
 public class ContextAsset implements IAsset
 {
-    private static final Logger LOG = LogManager.getLogger(ContextAsset.class.getName());
+    private static final Log LOG = LogFactory.getLog(ContextAsset.class.getName());
 
     private static class Localization
     {

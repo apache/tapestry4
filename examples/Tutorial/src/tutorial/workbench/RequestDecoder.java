@@ -27,8 +27,8 @@ package tutorial.workbench;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import net.sf.tapestry.DecodedRequest;
 import net.sf.tapestry.IRequestDecoder;
@@ -45,7 +45,7 @@ import net.sf.tapestry.IRequestDecoder;
 
 public class RequestDecoder implements IRequestDecoder
 {
-    private static final Logger LOG = LogManager.getLogger(RequestDecoder.class);
+    private static final Log LOG = LogFactory.getLog(RequestDecoder.class);
 
     public RequestDecoder()
     {

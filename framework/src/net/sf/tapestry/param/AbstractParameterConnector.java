@@ -145,7 +145,7 @@ public abstract class AbstractParameterConnector implements IParameterConnector
         buffer.append(_binding);
 
         buffer.append(' ');
-        buffer.append(_direction.getEnumerationId());
+        buffer.append(_direction.getName());
 
         if (_required)
             buffer.append(" required");

@@ -37,27 +37,15 @@ package net.sf.tapestry.binding;
 
 public class StaticBinding extends AbstractBinding
 {
-    private String value;
-    private boolean parsedInt;
-    private int intValue;
-    private boolean parsedDouble;
-    private double doubleValue;
+    private String _value;
+    private boolean _parsedInt;
+    private int _intValue;
+    private boolean _parsedDouble;
+    private double _doubleValue;
 
     public StaticBinding(String value)
     {
-        this.value = value;
-    }
-
-    /**
-     *  Always returns String, even if the String has been
-     *  parsed as an integer or double.
-     *
-     * @since 1.0.5
-     **/
-
-    public Class getType()
-    {
-        return String.class;
+        this._value = value;
     }
 
     /**
@@ -67,13 +55,13 @@ public class StaticBinding extends AbstractBinding
 
     public int getInt()
     {
-        if (!parsedInt)
+        if (!_parsedInt)
         {
-            intValue = Integer.parseInt(value);
-            parsedInt = true;
+            _intValue = Integer.parseInt(_value);
+            _parsedInt = true;
         }
 
-        return intValue;
+        return _intValue;
     }
 
     /**
@@ -83,27 +71,27 @@ public class StaticBinding extends AbstractBinding
 
     public double getDouble()
     {
-        if (!parsedDouble)
+        if (!_parsedDouble)
         {
-            doubleValue = Double.parseDouble(value);
-            parsedDouble = true;
+            _doubleValue = Double.parseDouble(_value);
+            _parsedDouble = true;
         }
 
-        return doubleValue;
+        return _doubleValue;
     }
 
     public String getString()
     {
-        return value;
+        return _value;
     }
 
     public Object getObject()
     {
-        return value;
+        return _value;
     }
 
     public String toString()
     {
-        return "StaticBinding[" + value + "]";
+        return "StaticBinding[" + _value + "]";
     }
 }

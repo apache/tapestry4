@@ -25,7 +25,7 @@
 
 package net.sf.tapestry.components;
 
-import net.sf.tapestry.util.Enum;
+import org.apache.commons.lang.enum.Enum;
 
 /**
  *  Different types of JavaScript events that an {@link IServiceLink}
@@ -39,7 +39,7 @@ import net.sf.tapestry.util.Enum;
 
 public class ServiceLinkEventType extends Enum
 {
-    private String attributeName;
+    private String _attributeName;
 
     /**
      *  Type for <code>onMouseOver</code>.  This may also be called "focus".
@@ -109,7 +109,7 @@ public class ServiceLinkEventType extends Enum
     {
         super(name);
 
-        this.attributeName = attributeName;
+        _attributeName = attributeName;
     }
 
     /**
@@ -120,6 +120,6 @@ public class ServiceLinkEventType extends Enum
 
     public String getAttributeName()
     {
-        return attributeName;
+        return _attributeName;
     }
 }

@@ -34,8 +34,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IBeanProvider;
@@ -60,7 +60,7 @@ import net.sf.tapestry.spec.ComponentSpecification;
 
 public class BeanProvider implements IBeanProvider, PageDetachListener, PageRenderListener
 {
-    private static final Logger LOG = LogManager.getLogger(BeanProvider.class);
+    private static final Log LOG = LogFactory.getLog(BeanProvider.class);
 
     /**
      *  Indicates whether this instance has been registered with its
@@ -285,7 +285,7 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageRend
                 Object bean = e.getValue();
 
                 if (LOG.isDebugEnabled())
-                    LOG.debug("Removing " + lifecycle.getEnumerationId() + " bean " + name + ": " + bean);
+                    LOG.debug("Removing " + lifecycle.getName() + " bean " + name + ": " + bean);
 
                 i.remove();
             }

@@ -86,7 +86,7 @@ public class BlockRenderer implements IRender
 	public void render(IMarkupWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
-		m_objBlock.renderWrapped(writer, cycle);
+		m_objBlock.renderBody(writer, cycle);
 	}
 
 }

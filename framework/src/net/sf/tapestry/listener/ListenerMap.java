@@ -34,6 +34,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IActionListener;
 import net.sf.tapestry.IComponent;
@@ -42,8 +45,6 @@ import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.Tapestry;
 import ognl.OgnlRuntime;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
  *  Maps a class to a set of listeners based on the public methods of the class.
@@ -58,7 +59,7 @@ import org.apache.log4j.Logger;
 
 public class ListenerMap
 {
-    private static final Logger LOG = LogManager.getLogger(ListenerMap.class);
+    private static final Log LOG = LogFactory.getLog(ListenerMap.class);
 
     static {
         OgnlRuntime.setPropertyAccessor(ListenerMap.class, new ListenerMapPropertyAccessor());

@@ -41,8 +41,8 @@ import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.util.MultiKey;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  *  Global object (stored in the servlet context) that accesses
@@ -56,7 +56,7 @@ import org.apache.log4j.Logger;
 
 public class DefaultStringsSource implements IComponentStringsSource
 {
-    private static final Logger LOG = LogManager.getLogger(DefaultStringsSource.class);
+    private static final Log LOG = LogFactory.getLog(DefaultStringsSource.class);
 
     private IResourceResolver resolver;
 

@@ -36,8 +36,9 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.Tapestry;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.Pattern;
 import org.apache.oro.text.regex.PatternCompiler;
@@ -68,7 +69,7 @@ import org.xml.sax.SAXParseException;
 
 public abstract class AbstractDocumentParser implements ErrorHandler, EntityResolver
 {
-    private static final Logger LOG = LogManager.getLogger(AbstractDocumentParser.class);
+    private static final Log LOG = LogFactory.getLog(AbstractDocumentParser.class);
 
     private DocumentBuilder _builder;
     private String _resourcePath;

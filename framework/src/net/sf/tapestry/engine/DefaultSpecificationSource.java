@@ -33,8 +33,8 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IMarkupWriter;
@@ -69,7 +69,7 @@ import net.sf.tapestry.util.xml.DocumentParseException;
 
 public class DefaultSpecificationSource implements ISpecificationSource, IRenderDescription
 {
-    private static final Logger LOG = LogManager.getLogger(DefaultSpecificationSource.class);
+    private static final Log LOG = LogFactory.getLog(DefaultSpecificationSource.class);
 
     private IResourceResolver _resolver;
     private IApplicationSpecification _specification;

@@ -25,7 +25,8 @@
 
 package net.sf.tapestry.spec;
 
-import net.sf.tapestry.util.Enum;
+import org.apache.commons.lang.enum.Enum;
+
 
 /**
  *  An {@link Enum} of the different possible lifecycles for a JavaBean.

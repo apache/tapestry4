@@ -38,14 +38,14 @@ import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.util.StringSplitter;
-
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 
 /**
  *  Responsible for copying assets from the classpath to an external directory that
@@ -99,7 +99,7 @@ import org.apache.log4j.Logger;
 
 public class AssetExternalizer
 {
-    private static final Logger LOG = LogManager.getLogger(AssetExternalizer.class);
+    private static final Log LOG = LogFactory.getLog(AssetExternalizer.class);
 
     private IResourceResolver _resolver;
     private File _assetDir;

@@ -28,9 +28,6 @@ package net.sf.tapestry.form;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.Tapestry;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
-
 /**
  *  Implements a component that manages an HTML &lt;input type=text&gt; or
  *  &lt;input type=password&gt; form element.
@@ -44,10 +41,7 @@ import org.apache.log4j.Logger;
 
 public class TextField extends AbstractTextField
 {
-    private static final Logger LOG = LogManager.getLogger(TextField.class);
-
     private IBinding _valueBinding;
-    private boolean _warning = true;
     
     public IBinding getValueBinding()
     {
@@ -67,27 +61,5 @@ public class TextField extends AbstractTextField
     public void updateValue(String value)
     {
         _valueBinding.setString(value);
-    }
-
-
-    public IBinding getTextBinding()
-    {
-        return getValueBinding();
-    }
-
-    public void setTextBinding(IBinding value)
-    {
-        if (_warning)
-        {
-            LOG.warn(
-                Tapestry.getString(
-                    "deprecated-component-param",
-                    getExtendedId(),
-                    "text",
-                    "value"));
-            _warning = false;
-        }
-        
-        setValueBinding(value);
     }
 }

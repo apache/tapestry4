@@ -152,15 +152,18 @@ document.Form0.inputLastName.select\(\);
 			<match>1</match>
 		</assert-matches>
 		
+<!-- This can be tricky, the order in which the maxlength and size attributes
+     are emitted appears to be somewhat unpredictable. -->
+     		
 		<assert-output name="First Name">
 <![CDATA[
-<input type="text" name="inputFirstName" value="Suzy" size="40" maxlength="100"/>
+<input type="text" name="inputFirstName" value="Suzy" maxlength="100" size="40"/>
 ]]>
 		</assert-output>
 		
 		<assert-output name="Last Name">
 <![CDATA[
-<input type="text" name="inputLastName" size="40" maxlength="100"/>&nbsp;<font color="red">\*\*</font>
+<input type="text" name="inputLastName" maxlength="100" size="40"/>&nbsp;<font color="red">\*\*</font>
 ]]>
 		</assert-output>				
 	</request>

@@ -25,7 +25,7 @@
 
 package net.sf.tapestry.inspector;
 
-import net.sf.tapestry.util.Enum;
+import org.apache.commons.lang.enum.Enum;
 
 /**
  *  Identifies different views for the inspector.
@@ -70,16 +70,10 @@ public class View extends Enum
 
     public static final View ENGINE = new View("ENGINE");
 
-    /**
-     *  View for controlling logging of the application as it runs.
-     *
-     **/
 
-    public static final View LOGGING = new View("LOGGING");
-
-    private View(String enumerationId)
+    private View(String name)
     {
-        super(enumerationId);
+        super(name);
     }
 
 }

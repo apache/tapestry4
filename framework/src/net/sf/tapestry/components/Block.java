@@ -75,7 +75,7 @@ public class Block extends AbstractComponent
     
     public IComponent getInserter()
     {
-    	return this._inserter;
+    	return _inserter;
     }
     
     public void setInserter(IComponent value)
