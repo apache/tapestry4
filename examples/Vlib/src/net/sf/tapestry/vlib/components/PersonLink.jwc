@@ -22,7 +22,7 @@
   </component>
   
   <component id="link" type="Service">
-    <field-binding name="service" field-name="net.sf.vlib.ExternalService.SERVICE_NAME"/>
+    <field-binding name="service" field-name="net.sf.tapestry.vlib.ExternalService.SERVICE_NAME"/>
     <binding name="context" property-path="context"/>
     <inherited-binding name="class" parameter-name="class"/>
   </component>
