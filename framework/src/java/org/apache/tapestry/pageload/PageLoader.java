@@ -584,6 +584,11 @@ public class PageLoader implements IPageLoader
             // parameters are bound
             _verifyRequiredParametersWalker.walkComponentTree(page);
 
+            // Note that we defer this until last, because
+            // we want to ensure that the page is attached to the engine,
+            // and that all sub-components of components are created
+            // because everything is free to reference everthing else!
+
             establishDefaultPropertyValues();
         }
         finally
@@ -672,14 +677,27 @@ public class PageLoader implements IPageLoader
         List names = spec.getPropertySpecificationNames();
         int count = names.size();
 
+        PageDetachListener initializer = null;
+
         for (int i = 0; i < count; i++)
         {
             String name = (String) names.get(i);
             IPropertySpecification ps = spec.getPropertySpecification(name);
-            String expression = ps.getInitialValue();
 
-            PageDetachListener initializer = new PropertyInitializer(component, name, expression,
-                    ps.getLocation(), _expressionEvaluator);
+            String initialValue = ps.getInitialValue();
+
+            if (initialValue == null)
+                initializer = new PropertyReinitializer(component, name);
+            else
+            {
+                IBinding initialValueBinding = _bindingSource.createBinding(
+                        component,
+                        name,
+                        initialValue,
+                        ps.getLocation());
+
+                initializer = new PropertyBindingInitializer(component, name, initialValueBinding);
+            }
 
             _propertyInitializers.add(initializer);
             page.addPageDetachListener(initializer);

@@ -289,6 +289,17 @@ In addition, any abstract properties in the Java code will be converted into tra
 matching &spec.parameter; element.  Typically, the &spec.property; element is only used when the property is either
 not referenced inside Java code (such as a listener method), or when when the property must be persistent.
 </p>
+
+<p>
+In the 3.0 DTDs, properties could have an initial value set. The initial-value attribute was an OGNL expression used to
+initial the property when the page is first constructed, and when the page is detached (at the end of a request cycle). The initial value
+may instead be specified as the enclosed character data of the &lt;property-specification&gt; element.
+</p>
+
+<p>
+Using the 3.1 DTDs, this is still true, but the initial-value attribute (or the enclosed character data) is a binding reference. To get
+the same behavior as the 3.0 DTD, it must be prefixed with "ognl:".
+</p>
   
 </section> <!-- upgrade.property -->
 

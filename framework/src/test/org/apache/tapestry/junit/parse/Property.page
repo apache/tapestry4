@@ -23,7 +23,10 @@
 
   <property name="bool"/>
   <property name="persist" persistent="yes"/>
-  <property name="init" initial-value="pageName"/>
+  <property name="init" initial-value="ognl:pageName"/>
+  <property name="longInit">
+      message:long-init-key
+  </property>
 
 </page-specification>
 
