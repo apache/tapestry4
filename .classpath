@@ -20,5 +20,7 @@
     <classpathentry kind="lib" path="lib/ext/mckoidb.jar"/>
     <classpathentry kind="lib" path="lib/ext/org.apache.crimson.jar"/>
     <classpathentry kind="lib" path="lib/ext/org.mortbay.jetty.jar"/>
+    <classpathentry kind="lib" path="lib/ext/jcommon-0.5.6.jar"/>
+    <classpathentry kind="lib" path="lib/ext/jfreechart-0.7.4.jar"/>
     <classpathentry kind="output" path="bin"/>
 </classpath>

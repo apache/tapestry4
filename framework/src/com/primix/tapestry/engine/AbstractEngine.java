@@ -375,7 +375,7 @@ public abstract class AbstractEngine
 	 *
 	 */
 
-	protected void reportException(String reportTitle, Throwable ex)
+	public void reportException(String reportTitle, Throwable ex)
 	{
 		CAT.warn(reportTitle, ex);
 

@@ -50,6 +50,13 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 	private List trackings;
 	private Map trackingMap;
 
+	public void clear()
+	{
+		currentComponent = null;
+		trackings = null;
+		trackingMap = null;
+	}
+
 	public void resetForPool()
 	{
 		currentComponent = null;
