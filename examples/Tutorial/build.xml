@@ -13,8 +13,8 @@
     <pathelement location="${lib.ext.dir}/log4j-core.jar"/>
     <pathelement location="${lib.ext.dir}/javax.xml.jaxp.jar"/>
     <pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
-    <pathelement location="${lib.ext.dir}/jcommon-0.5.6.jar"/>
-    <pathelement location="${lib.ext.dir}/jfreechart-0.7.4.jar"/>
+    <pathelement location="${lib.ext.dir}/${jcommon.jar}"/>
+    <pathelement location="${lib.ext.dir}/${jfreechart.jar}"/>
     <pathelement location="${lib.ext.dir}/${jakarta-oro.jar}"/>    
     <pathelement location="${framework.jar}"/>
     <pathelement location="${contrib.jar}"/>    
@@ -47,8 +47,8 @@
       </fileset>
 
 	  <lib dir="${lib.ext.dir}">
-	   	<include name="jcommon-*.jar"/>
-	   	<include name="jfreechart-*.jar"/>
+	   	<include name="${jcommon.jar}"/>
+	   	<include name="${jfreechart.jar}"/>
 	  </lib>
 
  	  <classes dir="${classes.dir}"/>
