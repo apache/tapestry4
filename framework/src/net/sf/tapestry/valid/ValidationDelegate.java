@@ -51,36 +51,34 @@ import net.sf.tapestry.util.pool.IPoolable;
 
 public class ValidationDelegate implements IValidationDelegate, IPoolable
 {
-    private IFormComponent currentComponent;
-    private List trackings;
-    private Map trackingMap;
+    private IFormComponent _currentComponent;
+    private List _trackings;
+    
+    /**
+     *  A Map of Maps, keyed on the name of the Form.  Each inner map contains
+     *  the trackings for one form, keyed on component name.  Care must
+     *  be taken, because the inner Map is not always present.
+     * 
+     **/
+    
+    private Map _trackingMap;
 
     public void clear()
     {
-        currentComponent = null;
-        trackings = null;
-        trackingMap = null;
+        _currentComponent = null;
+        _trackings = null;
+        _trackingMap = null;
     }
 
     public void resetForPool()
     {
-        currentComponent = null;
+        _currentComponent = null;
 
-        if (trackings != null)
-            trackings.clear();
+        if (_trackings != null)
+            _trackings.clear();
 
-        if (trackingMap != null)
-            trackingMap.clear();
-    }
-
-    private boolean inError(IFormComponent component)
-    {
-        if (trackingMap == null)
-            return false;
-
-        String fieldName = component.getName();
-
-        return trackingMap.containsKey(fieldName);
+        if (_trackingMap != null)
+            _trackingMap.clear();
     }
 
     /**
@@ -95,7 +93,7 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
         IRequestCycle cycle)
         throws RequestCycleException
     {
-        if (inError(component))
+        if (isInError(component))
         {
             writer.begin("font");
             writer.attribute("color", "red");
@@ -115,7 +113,7 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
         IRequestCycle cycle)
         throws RequestCycleException
     {
-        if (inError(component))
+        if (isInError(component))
         {
             writer.end();
         }
@@ -139,15 +137,22 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 
     protected IFieldTracking getComponentTracking()
     {
-        if (trackingMap == null)
+        if (_trackingMap == null)
             return null;
-
-        return (IFieldTracking) trackingMap.get(currentComponent.getName());
+    
+        String formName = _currentComponent.getForm().getName();
+        
+        Map formMap = (Map)_trackingMap.get(formName);
+        
+        if (formMap == null)
+            return null;
+        
+        return (IFieldTracking) formMap.get(_currentComponent.getName());
     }
 
     public void setFormComponent(IFormComponent component)
     {
-        currentComponent = component;
+        _currentComponent = component;
     }
 
     public boolean isInError()
@@ -161,16 +166,16 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
     }
 
     /**
-     *  Returns all the field trackings.
+     *  Returns all the field trackings as an unmodifiable List.
      * 
      **/
 
     public List getFieldTracking()
     {
-        if (trackings == null)
+        if (_trackings == null)
             return null;
 
-        return Collections.unmodifiableList(trackings);
+        return Collections.unmodifiableList(_trackings);
     }
 
     public void reset()
@@ -179,8 +184,14 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 
         if (tracking != null)
         {
-            trackings.remove(tracking);
-            trackingMap.remove(tracking.getFieldName());
+            _trackings.remove(tracking);
+            
+            String formName = tracking.getFormComponent().getForm().getName();
+            
+            Map formMap = (Map)_trackingMap.get(formName);
+            
+            if (formMap != null)
+                formMap.remove(tracking.getFieldName());
         }
     }
 
@@ -233,20 +244,20 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
     {
         IFieldTracking tracking = null;
 
-        if (trackings == null)
-            trackings = new ArrayList();
+        if (_trackings == null)
+            _trackings = new ArrayList();
 
-        if (trackingMap == null)
-            trackingMap = new HashMap();
+        if (_trackingMap == null)
+            _trackingMap = new HashMap();
 
-        if (currentComponent == null)
+        if (_currentComponent == null)
         {
             tracking = new FieldTracking();
 
             // Add it to the *ahem* field trackings, but not to the
             // map.
 
-            trackings.add(tracking);
+            _trackings.add(tracking);
         }
         else
         {
@@ -254,12 +265,22 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 
             if (tracking == null)
             {
-                String fieldName = currentComponent.getName();
+                String formName = _currentComponent.getForm().getName();
+                
+                Map formMap = (Map)_trackingMap.get(formName);
+                
+                if (formMap == null)
+                {
+                    formMap = new HashMap();
+                    _trackingMap.put(formName, formMap);
+                }
+                
+                String fieldName = _currentComponent.getName();
 
-                tracking = new FieldTracking(fieldName, currentComponent);
+                tracking = new FieldTracking(fieldName, _currentComponent);
 
-                trackings.add(tracking);
-                trackingMap.put(fieldName, tracking);
+                _trackings.add(tracking);
+                formMap.put(fieldName, tracking);
             }
         }
 
@@ -296,7 +317,7 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 
     public boolean getHasErrors()
     {
-        return trackings != null && trackings.size() > 0;
+        return _trackings != null && _trackings.size() > 0;
     }
 
     /**
@@ -308,13 +329,13 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 
     public IRender getFirstError()
     {
-        if (trackings == null)
+        if (_trackings == null)
             return null;
 
-        if (trackings.size() == 0)
+        if (_trackings.size() == 0)
             return null;
 
-        IFieldTracking tracking = (IFieldTracking) trackings.get(0);
+        IFieldTracking tracking = (IFieldTracking) _trackings.get(0);
 
         return tracking.getRenderer();
     }
@@ -329,10 +350,16 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 
     protected boolean isInError(IFormComponent component)
     {
-        if (trackingMap == null)
+        if (_trackingMap == null)
             return false;
 
-        return trackingMap.containsKey(component.getName());
+        String formName = component.getForm().getName();
+        Map formMap = (Map)_trackingMap.get(formName);
+        
+        if (formMap == null)
+            return false;
+
+        return formMap.containsKey(component.getName());
     }
 
     /**
@@ -347,7 +374,7 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 
     public List getAssociatedTrackings()
     {
-        int count = (trackings == null) ? 0 : trackings.size();
+        int count = (_trackings == null) ? 0 : _trackings.size();
 
         if (count == 0)
             return null;
@@ -356,7 +383,7 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 
         for (int i = 0; i < count; i++)
         {
-            IFieldTracking tracking = (IFieldTracking) trackings.get(i);
+            IFieldTracking tracking = (IFieldTracking) _trackings.get(i);
 
             if (tracking.getFieldName() == null)
                 continue;
@@ -380,7 +407,7 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 
     public List getUnassociatedTrackings()
     {
-        int count = (trackings == null) ? 0 : trackings.size();
+        int count = (_trackings == null) ? 0 : _trackings.size();
 
         if (count == 0)
             return null;
@@ -389,7 +416,7 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
 
         for (int i = 0; i < count; i++)
         {
-            IFieldTracking tracking = (IFieldTracking) trackings.get(i);
+            IFieldTracking tracking = (IFieldTracking) _trackings.get(i);
 
             if (tracking.getFieldName() != null)
                 continue;
