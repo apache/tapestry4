@@ -6,8 +6,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-import com.jrefinery.ui.about.SystemProperties;
-
 import junit.framework.TestCase;
 
 import net.sf.tapestry.junit.TapestryTestCase;
