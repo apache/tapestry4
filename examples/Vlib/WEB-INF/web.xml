@@ -7,12 +7,19 @@
   <servlet>
     <servlet-name>vlib</servlet-name>
     <servlet-class>com.primix.vlib.VirtualLibraryServlet</servlet-class>
+    <load-on-startup/>
   </servlet>
   <!--The single mapping used for the Tapestry application-->
   <servlet-mapping>
     <servlet-name>vlib</servlet-name>
     <url-pattern>/app</url-pattern>
   </servlet-mapping>
+  
+  <session-config>
+  	<session-timeout>15</session-timeout>
+  </session-config>
+  
+  
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>

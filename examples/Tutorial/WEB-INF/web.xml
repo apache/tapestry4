@@ -10,31 +10,45 @@
        this (you'll notice that each object stored in the ServletContext has a unique
        name to avoid collisions between sibling Tapestry applications.
        
+       It's a good idea to load the servlet on startup; this helps get the large
+       number of Tapestry classes loaded.
+       
        -->
        
   <servlet>
     <servlet-name>hello</servlet-name>
     <servlet-class>tutorial.hello.HelloWorldServlet</servlet-class>
+  	<load-on-startup/>
   </servlet>
+
   <servlet>
     <servlet-name>simple</servlet-name>
     <servlet-class>tutorial.simple.SimpleServlet</servlet-class>
+  	<load-on-startup/>
   </servlet>
+
   <servlet>
     <servlet-name>border</servlet-name>
     <servlet-class>tutorial.border.BorderServlet</servlet-class>
+  	<load-on-startup/>
   </servlet>
+
   <servlet>
     <servlet-name>hangman</servlet-name>
     <servlet-class>tutorial.hangman.HangmanServlet</servlet-class>
+  	<load-on-startup/>
   </servlet>
+
   <servlet>
   	<servlet-name>portal</servlet-name>
   	<servlet-class>tutorial.portal.PortalServlet</servlet-class>
+  	<load-on-startup/>
   </servlet>
+
   <servlet>
   	<servlet-name>workbench</servlet-name>
   	<servlet-class>tutorial.workbench.WorkbenchServlet</servlet-class>
+  	<load-on-startup/>
   </servlet>
   <servlet-mapping>
     <servlet-name>hello</servlet-name>
@@ -60,6 +74,11 @@
   	<servlet-name>workbench</servlet-name>
   	<url-pattern>/workbench/*</url-pattern>
   </servlet-mapping>
+  
+  <session-config>
+  	<session-timeout>15</session-timeout>
+  </session-config>
+  
   <welcome-file-list>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
