@@ -40,7 +40,7 @@
 		</component>
 		
 		<component>
-			<id>insertPageTitle</id>
+			<id>insertPageTitle1</id>
 			<type>Insert</type>
 			
 			<bindings>
@@ -51,6 +51,18 @@
 			</bindings>
 		</component>
 		
+		<component>
+			<id>insertPageTitle2</id>
+			<type>Insert</type>
+			
+			<bindings>
+				<inherited-binding>
+					<name>value</name>
+					<parameter-name>title</parameter-name>
+				</inherited-binding>
+			</bindings>
+		</component>
+
 		<component>
 			<id>ifShowNavigation</id>
 			<type>Conditional</type>
