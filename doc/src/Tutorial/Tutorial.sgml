@@ -21,6 +21,8 @@
 <!ENTITY start-listing "<informalexample><programlisting>">
 <!ENTITY end-listing "</programlisting></informalexample>">
 
+<!ENTITY HttpSession " <classname>HttpSession</>">
+
 ]>
 
 <!-- $Id$ -->                                  

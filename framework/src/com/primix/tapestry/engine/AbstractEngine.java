@@ -884,14 +884,27 @@ public abstract class AbstractEngine
 	protected void restart(IRequestCycle cycle)
 		throws IOException
 	{
-		RequestContext context;
-		String url;
+
+		RequestContext context = cycle.getRequestContext();
 		
-		context = cycle.getRequestContext();
+		HttpSession session = context.getSession();
 		
-		url = context.getAbsoluteURL(servletPrefix);
+		if (session != null)
+		{
+			try
+			{
+				session.invalidate();
+			}
+			catch (IllegalStateException ex)
+			{
+				if (CAT.isDebugEnabled())
+					CAT.debug("Exception thrown invalidating HttpSession.", ex);
+				
+				// Otherwise, ignore it.
+			}
+		}
 		
-		context.getSession().invalidate();
+		String url = context.getAbsoluteURL(servletPrefix);
 		
 		context.redirect(url);
 	}

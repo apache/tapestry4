@@ -17,7 +17,7 @@ Application engines will be serialized and de-serialized as part of
 load balancing and fail over.  As much as possible, attributes of the application 
 object should be transient.  For example, the instance variable that 
 holds the <classname>ApplicationSpecification</> is transient; if 
-needed (after de-serialization), the application can locate the specification from 
+needed (after de-serialization), the engine can locate the specification from 
 its servlet (the servlet reads the application specification once, when it is first initialized).
 </>
 
@@ -25,7 +25,8 @@ its servlet (the servlet reads the application specification once, when it is fi
 This is largely not an issue, since most applications use a provided class, 
 such as <classname>com.primix.tapestry.engine.SimpleEngine</>.  Subclassing 
 is only necessary when the application requires new engine services, 
-or needs a different method of instantiating the visit object.
+or needs a different method of instantiating the visit object, or
+needs to store additional data (see <link linkend="coding.stateless" endterm="coding.stateless.title"></link>).
 </>
 
 	</section>
@@ -54,6 +55,47 @@ stable, the more efficient <classname>java.io.Externalizable</> interface should
 <para>
 In addition, deferring the creation of the visit object as late as 
 possible is also of benefit, since this is the best way to keep the serialized engine small.
+</>
+
+	</section>
+	
+	<section id="coding.stateless">
+		<title id="coding.stateless.title">Operating Stateless
+		
+<para>
+Tapestry applications can operate in a stateless mode, that is, without a &HttpSession;.  The
+framework automatically creates a session when needed; when the Visit object is first created,
+or when any persistent page properties are changed.
+</>
+
+<para>
+Ideally, the <classname>Home</> page of the application should not trigger the creation of a session: 
+it should be careful not to create the Visit object.  Remember that hits on your application will form
+a curve:  The <classname>Home</> page is at the top of the curve, and it drops of rapidly as
+users penetrate deeper into the application ... how many times have you visited the front page of a web site
+and gone no further?
+</>
+
+<para>
+Stateless operations will affect &Action;, &Direct; and &Form; components on your pages.  By default, they
+will reject requests while the application is running stateless; the user will be redirected
+to the <classname>StaleSession</> page.  This is appropriate, since normally, the lack of a session
+means that the previous session timed out and was discarded.
+</>
+
+<para>
+Each of these components has a <varname>stateful</> parameter which may be bound to 
+<classname>Boolean.FALSE</>.  When <varname>stateful</> is false, the components will accept stateless
+requests.
+</>
+
+<para>
+As the developer, you must keep a careful eye on what's stateful vs. stateless, and look to move
+stateless data into the engine, so as to avoid creating a visit object as long as possible.  For example,
+the engine can resolve and store 
+EJB home interfaces and references to <emphasis>stateless</> session EJBs.  
+Even read-only database data can be stored in the engine.  However, anything that is related to a particular 
+user must be stored in the visit object (or a persistent page property).
 </>
 
 	</section>

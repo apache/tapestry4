@@ -24,7 +24,7 @@ The goal of Tapestry is to eliminate most of the coding in a web application.  U
 nearly all code is directly related to application functionality, with very little "plumbing".  If you 
 have previously developed a web application using Microsoft Active Server Pages, JavaServer 
 Pages or Java Servlets, you may take for granted all the plumbing:  writing servlets, assembling 
-URLs, parsing URLs, managing objects inside the <classname>HttpSession</>, etc.
+URLs, parsing URLs, managing objects inside the &HttpSession;, etc.
 </>
 
 <para>
