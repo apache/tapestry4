@@ -103,11 +103,19 @@
     
   &appendix-jars;
   
+    &appendix-spec;
+    
   <!-- FOP is gagging on something in the FAQ. -->
   
-  <!-- appendix-faq; -->
+  <appendix id="faq">
+    <title>Frequently Asked Questions</title>
+    
+    <para>
+    The FAQ is currently on hiatus due to problems related
+    to generating a PDF version of this document.  This should
+    be resolved before Tapestry release 2.2.
+    </para>
+    
+   </appendix>
   
-  &appendix-spec;
-
-
 </book>

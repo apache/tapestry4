@@ -24,6 +24,16 @@ examples), others are used at runtime (and must be added to the servlet containe
 	</varlistentry>
 	
 	<varlistentry>
+		<term><filename>jakarta-oro-<replaceable>x.x.x</replaceable>.jar</filename></term>
+		<listitem>
+		<para>
+		Regular expression library, used to validate specification ids.
+		Needed by Tapestry at runtime.
+		</para>
+		</listitem>
+	</varlistentry>
+		
+	<varlistentry>
 		<term><filename>javax.servlet.jar</filename></term>
 		<listitem>
 			<para>
@@ -68,7 +78,7 @@ examples), others are used at runtime (and must be added to the servlet containe
 
 	
 	<varlistentry>
-		<term><filename>log4j-core.jar</filename></term>
+		<term><filename>log4j-<replaceable>x.x.x</replaceable>.jar</filename></term>
 		<listitem>
 		<para>
 		The &Log4J; logging framework.  This is used by Tapestry at runtime.
@@ -88,6 +98,20 @@ examples), others are used at runtime (and must be added to the servlet containe
 	</varlistentry>
 
 	<varlistentry>
+		<term><filename>ognl-<replaceable>x.x.x</replaceable>.jar</filename></term>
+		<listitem>
+		<para>
+		The <ulink url="http://www.ognl.org">Object Graph Navigation Library</ulink>,
+		which provides dynamic evaluation of JavaBeans property expressions.  This
+		is used by Tapestry at runtime. 
+		</para>
+		</listitem>
+	</varlistentry>
+
+
+	<!-- alphabetize as "net.sf.tapestry...." -->
+	
+		<varlistentry>
 		<term>&TapestryFrameworkJar;</term>
 		<listitem>
 			<para>
@@ -129,6 +153,10 @@ examples), others are used at runtime (and must be added to the servlet containe
 		</listitem>
 	</varlistentry>
 	
+	
+
+	
+		
 	<varlistentry>
 		<term><filename>Tutorial.war</filename></term>
 		<term><filename>Vlib.ear</filename></term>
@@ -136,7 +164,8 @@ examples), others are used at runtime (and must be added to the servlet containe
 		<term><filename>Wap.war</filename></term>
 		<listitem>
 		<para>
-		Example Tapestry applications.
+		Example Tapestry applications.  <filename>Vlib.war</filename> is
+		incorporated into <filename>Vlib.ear</filename>.
 		</para>
 		</listitem>
 	</varlistentry>
@@ -147,6 +176,8 @@ examples), others are used at runtime (and must be added to the servlet containe
 		<listitem>
 		<para>
 		An EJB JAR, containing entity and session EJBs for deployment with &JBoss;.
+		<filename>VlibBeans.jar</filename> is incorporated into
+		<filename>Vlib.ear</filename>.
 		</para>
 		</listitem>
 	</varlistentry>
