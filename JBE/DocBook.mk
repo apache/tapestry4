@@ -40,7 +40,6 @@ HTML_DIR := html
 DOCUMENT_RESOURCE_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/document-resources
 HTML_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/html
 VALID_PARSE_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/valid-parse
-
 HTML_PACKAGE_FILE := $(basename $(MAIN_DOCUMENT)).tar.gz
 
 DISTRO_STAMP_FILE := $(DOCBOOK_DIR)/.distro-stamp
@@ -94,7 +93,33 @@ MOD_HTML_VARIABLE_DEFS := \
 	%output-dir%=$(HTML_DIR) \
 	%root-filename%=$(basename $(MAIN_DOCUMENT))
 	
-FINAL_HTML_VARIABLE_DEFS := $(MOD_HTML_VARIABLE_DEFS) $(HTML_VARIABLE_DEFS) $(VARIABLE_DEFS)
+FINAL_HTML_VARIABLE_DEFS = $(MOD_HTML_VARIABLE_DEFS) $(HTML_VARIABLE_DEFS) $(VARIABLE_DEFS)
+
+ifdef USE_STANDARD_IMAGES
+
+STANDARD_IMAGES_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/standard-images
+
+$(STANDARD_IMAGES_STAMP_FILE):
+	$(call NOTE, Copying standard images from Modular DSSSL distribution ...)
+	@$(MKDIRS) $(HTML_DIR)/standard-images
+	$(call COPY_TREE, \
+		$(DOCBOOK_DSSSL_DIR)/images,\
+		. , $(HTML_DIR)/standard-images)
+	@$(TOUCH) $(STANDARD_IMAGES_STAMP_FILE)
+
+html: copy-standard-images
+
+copy-standard-images: initialize $(STANDARD_IMAGES_STAMP_FILE)
+
+# Add rules to use the standard graphics in admonitions and callouts
+
+MOD_HTML_VARIABLE_DEFS += \
+	%admon-graphics% \
+	%admon-graphics-path%="standard-images/" \
+	%callout-graphics% \
+	%callout-graphics-path%="standard-images/callouts/"
+	
+endif
 
 FINAL_HTML_STYLESHEET := \
 	$(firstword $(HTML_STYLESHEET) $(STYLESHEET) $(DOCBOOK_DSSSL_DIR)/html/docbook.dsl)
