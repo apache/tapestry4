@@ -12,7 +12,7 @@ width="88" height="31" border="0" alt="SourceForge Logo">
 
 <h1>Tapestry Release 
 
-0.2.9
+0.2.10
 
 </h1>
 
@@ -28,7 +28,10 @@ about what Tapestry is, how to use it and why you should!
 <li><b>small</b> -- just Tapestry.jar, gnu-regexp.jar,
 the <a href="doc/DevelopersGuide/DevelopersGuide.html">Tapestry Developer's Guide</a> and the 
 <a href="doc/api/overview-summary.html">javadoc for Tapestry</a>
-<li><b>medium</b> -- small, plus Tapestry source code, the JBE (Java Build Environment) and JBE documentation
+<li><b>medium</b> -- small, plus 
+	Tapestry source code, 
+	the JBE (Java Build Environment) 
+	and JBE documentation
 <li><b>full</b> -- medium, plus third party JARs used by Tapestry, 
 more Tapestry documentation, Tapestry tutorials and the
 Primix Virtual Library examples  
@@ -36,7 +39,6 @@ Primix Virtual Library examples
 
 <p>The JARs were compiled on Windows 2000 using Sun's JDK 1.3 compiler, however it is easy
 to rebuild the JARs on different platforms and different compilers (JDK 1.2 and above).
-
 
 <p>This product includes software developed by the Apache Software Foundation (
 <a href="http://www.apache.org/">http://www.apache.org/</a>).
@@ -59,6 +61,34 @@ With the small and medium distribution, you will need to download the other file
 </tr>
 
 
+<tr valign=top>
+	<td>com.mortbay.jetty.jar
+	</td>
+	<td>Jetty HTTP Servlet Server
+	</td>
+	<td>3.0.1</td>
+	<td><a href="LICENSE.Jetty.html">Jetty License</a>
+	<td>
+		<a href="http://sourceforge.net/projects/jetty">
+			http://sourceforge.net/projects/jetty
+		</a>
+	</td>
+</tr>
+
+
+<tr valign=top bgcolor=silver>
+	<td>ejb.jar</td>
+	<td>EJB 1.1</td>
+	<td>from jBoss 2.0 FINAL</td>
+	<td>Unknown license, probably GPL</a>
+	<td>Copied from the
+	<a href="http://www.jboss.org">jBoss</a> distribution, which claims to
+	be open source (but neglects to provide a license).  
+	<p>This library is required to compile Tapestry and to compile and
+	run the demos and tutorials.
+	</td>
+</tr>
+
 
 <tr valign=top>
 	<td>gnu-regexp.jar</td>
@@ -72,6 +102,33 @@ With the small and medium distribution, you will need to download the other file
 </tr>
 
 <tr valign=top bgcolor=silver>
+	<td>javax.servlet.jar</td>
+	<td>Servlet API 2.2 reference implementation</td>
+	<td>&nbsp;</td>
+	<td><a href="LICENSE.javax.servlet.txt">Apache Software License, Version 1.1</a>
+	<td>Distributed with Jetty</td>
+</tr>
+
+
+
+<tr valign=top>
+	<td>log4j.jar</td>
+	<td>Logging Toolkit</td>
+	<td>1.0</td>
+	<td><a href="LICENSE.log4j.txt">Apache Software License, Version 1.1</a></a>
+	<td>Logging toolkit used by Tapestry framework classes.
+	More information at the <a href="http://jakarta.apache.org/log4j">log4j home page</a>.</td>
+</tr>
+
+<tr valign=top bgcolor=silver>
+	<td>org.apache.jasper.jar</td>
+	<td>Jasper JSP Engine</td>
+	<td>3.2.1</td>
+	<td><a href="LICENSE.javax.servlet.txt">Apache Software License, Version 1.1</a>
+	<td>Distributed with Jetty</td>
+</tr>
+
+<tr valign=top>
 	<td>xerces.jar</td>
 	<td>Xerces XML Parser
 	<p>Used by Tapestry to parse application and 
@@ -89,57 +146,7 @@ With the small and medium distribution, you will need to download the other file
 	</td>
 </tr>
 
-<tr valign=top>
-	<td>com.mortbay.jetty.jar
-	</td>
-	<td>Jetty HTTP Servlet Server
-	</td>
-	<td>3.0.1</td>
-	<td><a href="LICENSE.Jetty.html">Jetty License</a>
-	<td>
-		<a href="http://sourceforge.net/projects/jetty">
-			http://sourceforge.net/projects/jetty
-		</a>
-	</td>
-</tr>
 
-<tr valign=top bgcolor=silver>
-	<td>javax.servlet.jar</td>
-	<td>Servlet API 2.2 reference implementation</td>
-	<td>&nbsp;</td>
-	<td><a href="LICENSE.javax.servlet.txt">Apache Software License, Version 1.1</a>
-	<td>Distributed with Jetty</td>
-</tr>
-
-<tr valign=top>
-	<td>org.apache.jasper.jar</td>
-	<td>Jasper JSP Engine</td>
-	<td>3.2.1</td>
-	<td><a href="LICENSE.javax.servlet.txt">Apache Software License, Version 1.1</a>
-	<td>Distributed with Jetty</td>
-</tr>
-
-<tr valign=top bgcolor=silver>
-	<td>ejb.jar</td>
-	<td>EJB 1.1</td>
-	<td>from jBoss 2.0 FINAL</td>
-	<td>Unknown license, probably GPL</a>
-	<td>Copied from the
-	<a href="http://www.jboss.org">jBoss</a> distribution, which claims to
-	be open source (but neglects to provide a license).  
-	<p>This library is required to compile Tapestry and to compile and
-	run the demos and tutorials.
-	</td>
-</tr>
-
-<tr valign=top>
-	<td>log4j.jar</td>
-	<td>Logging Toolkit</td>
-	<td>1.0</td>
-	<td><a href="LICENSE.log4j.txt">Apache Software License, Version 1.1</a></a>
-	<td>Logging toolkit used by Tapestry framework classes.
-	More information at the <a href="http://jakarta.apache.org/log4j">log4j home page</a>.</td>
-</tr>
 
 <tr bgcolor=black>
 <td colspan=5><img src="images/shim.gif"></td>
@@ -154,7 +161,7 @@ With the small and medium distribution, you will need to download the other file
 broken if you did not download the <b>full</b> distribution).
 
 <ul>
-	<li><a href="doc/Tapestry-Tutorial.pdf">Tapestry Tutorial</a> (PDF) 
+	<li><a href="doc/Tutorial/Tutorial.html">Tapestry Tutorial</a> (HTML) 
 		-- A good introduction to what Tapestry is and how to use it.
 	<li><a href="doc/Virtual-Library.pdf">Primix Virtual Library Guide</a> (PDF)
 		-- Describes how to setup and run the Virtual Library demonstration, a complete
