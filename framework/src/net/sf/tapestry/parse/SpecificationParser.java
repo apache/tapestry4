@@ -142,7 +142,7 @@ public class SpecificationParser extends AbstractDocumentParser
      * 
      **/
 
-    private static final String SIMPLE_PROPERTY_NAME_PATTERN = "^[a-zA-Z_]\\w*$";
+    private static final String SIMPLE_PROPERTY_NAME_PATTERN = "^_?[a-zA-Z]\\w*$";
 
 
     /**
@@ -153,7 +153,7 @@ public class SpecificationParser extends AbstractDocumentParser
      * 
      **/
 
-    private static final String EXTENDED_PROPERTY_NAME_PATTERN = "^[a-zA-Z_](\\w|-|\\.)*$";
+    private static final String EXTENDED_PROPERTY_NAME_PATTERN = "^_?[a-zA-Z](\\w|-|\\.)*$";
 
     /**
      *  Perl5 pattern that parameter names must conform to.  
@@ -188,14 +188,14 @@ public class SpecificationParser extends AbstractDocumentParser
     public static final String PAGE_NAME_PATTERN = EXTENDED_PROPERTY_NAME_PATTERN;
 
     /**
-     *  Perl5 pattern for component aliases. 
-     *  Letter, followed by letter, number, dash, underscore or period.
+     *  Perl5 pattern for component alias. 
+     *  Letter, followed by letter, number, or underscore.
      * 
      *  @since 2.2
      * 
      **/
 
-    public static final String COMPONENT_ALIAS_PATTERN = EXTENDED_PROPERTY_NAME_PATTERN;
+    public static final String COMPONENT_ALIAS_PATTERN = SIMPLE_PROPERTY_NAME_PATTERN;
 
     /**
      *  Perl5 pattern for helper bean names.  
@@ -264,7 +264,7 @@ public class SpecificationParser extends AbstractDocumentParser
      *  @since 2.2
      **/
 
-    public static final String COMPONENT_TYPE_PATTERN = "^([a-zA-Z_](\\w|-)*:)?[a-zA-Z_](\\w|-|\\.)*$";
+    public static final String COMPONENT_TYPE_PATTERN = "^(_?[a-zA-Z]\\w*:)?[a-zA-Z_](\\w)*$";
 
     /**
      *  Flag set at the start of the parse to indicate that it is a version 3 (i.e. 1.3)
