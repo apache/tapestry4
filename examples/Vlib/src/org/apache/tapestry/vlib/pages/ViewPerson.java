@@ -83,18 +83,17 @@ public abstract class ViewPerson extends BasePage implements IExternalPage
     public abstract void setPerson(Person value);
 
     public abstract Person getPerson();
-    
+
     public abstract IBookQuery getQuery();
 
     public abstract void setQuery(IBookQuery value);
-    
+
     private Browser _browser;
 
     public void finishLoad()
     {
         _browser = (Browser) getComponent("browser");
     }
-
 
     /**
      *  Invoked by the external service to being viewing the
@@ -108,7 +107,8 @@ public abstract class ViewPerson extends BasePage implements IExternalPage
 
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
-        for (int i = 0; i < 2; i++)
+        int i = 0;
+        while (true)
         {
             try
             {
@@ -139,7 +139,7 @@ public abstract class ViewPerson extends BasePage implements IExternalPage
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure("Remote exception for owner query.", ex, i > 0);
+                vengine.rmiFailure("Remote exception for owner query.", ex, i++);
 
                 setQuery(null);
             }

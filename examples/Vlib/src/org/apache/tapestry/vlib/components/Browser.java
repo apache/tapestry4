@@ -57,9 +57,11 @@ package org.apache.tapestry.vlib.components;
 
 import java.rmi.RemoteException;
 
+import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.BaseComponent;
+import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.vlib.ejb.Book;
 import org.apache.tapestry.vlib.ejb.IBookQuery;
 
@@ -72,7 +74,7 @@ import org.apache.tapestry.vlib.ejb.IBookQuery;
  *
  **/
 
-public abstract class Browser extends BaseComponent
+public abstract class Browser extends AbstractComponent
 {
     public abstract IBookQuery getQuery();
 
@@ -97,6 +99,12 @@ public abstract class Browser extends BaseComponent
     public abstract int getCurrentPage();
 
     public abstract void setCurrentPage(int currentPage);
+
+    public abstract void setElement(String element);
+
+    public abstract String getElement();
+
+    public abstract void setValue(Object value);
 
     /**
      *  Invoked by the container when the query (otherwise accessed via the query
@@ -166,7 +174,7 @@ public abstract class Browser extends BaseComponent
         }
     }
 
-    private void jump(int page)
+    public void jump(int page)
     {
         if (page < 2)
         {
@@ -183,19 +191,20 @@ public abstract class Browser extends BaseComponent
 
         setCurrentPage(page);
     }
-
-    public void jump(IRequestCycle cycle)
+    
+    public boolean getDisableBack()
     {
-        Object[] parameters = cycle.getServiceParameters();
-
-        int page = ((Integer) parameters[0]).intValue();
-
-        jump(page);
+    	return getCurrentPage() <= 1;
+    }
+    
+    public boolean getDisableNext()
+    {
+		return getCurrentPage() >= getPageCount();
     }
 
     public String getRange()
     {
-    	int currentPage = getCurrentPage();
+        int currentPage = getCurrentPage();
         int resultCount = getResultCount();
 
         int low = (currentPage - 1) * _pageSize + 1;
@@ -203,4 +212,35 @@ public abstract class Browser extends BaseComponent
 
         return low + " - " + high;
     }
+
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+    {
+        Book[] books = getPageResults();
+        int count = Tapestry.size(books);
+
+        for (int i = 0; i < count; i++)
+        {
+
+            setValue(books[i]);
+
+            String element = getElement();
+
+            if (element != null)
+            {
+                writer.begin(element);
+                generateAttributes(writer, cycle);
+            }
+
+            renderBody(writer, cycle);
+
+            if (element != null)
+                writer.end();
+        }
+    }
+
+    protected void finishLoad()
+    {
+        setElement("tr");
+    }
+
 }

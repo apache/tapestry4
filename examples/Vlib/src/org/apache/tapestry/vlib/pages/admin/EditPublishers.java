@@ -119,7 +119,8 @@ public abstract class EditPublishers extends AdminPage implements PageRenderList
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
         Publisher[] publishers = null;
 
-        for (int i = 0; i < 2; i++)
+        int i = 0;
+        while (true)
         {
             try
             {
@@ -131,7 +132,7 @@ public abstract class EditPublishers extends AdminPage implements PageRenderList
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure("Unable to obtain list of publishers.", ex, i > 0);
+                vengine.rmiFailure("Unable to obtain list of publishers.", ex, i++);
             }
         }
 
@@ -139,7 +140,7 @@ public abstract class EditPublishers extends AdminPage implements PageRenderList
 
         int count = Tapestry.size(publishers);
 
-        for (int i = 0; i < count; i++)
+        for (i = 0; i < count; i++)
         {
             map.add(publishers[i].getPrimaryKey(), publishers[i]);
         }
@@ -167,7 +168,8 @@ public abstract class EditPublishers extends AdminPage implements PageRenderList
 
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
-        for (int i = 0; i < 2; i++)
+		int i = 0;
+		while (true)
         {
             try
             {
@@ -187,7 +189,7 @@ public abstract class EditPublishers extends AdminPage implements PageRenderList
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure("Remote exception updating publishers.", ex, i > 0);
+                vengine.rmiFailure("Remote exception updating publishers.", ex, i++);
             }
         }
 

@@ -104,7 +104,8 @@ public abstract class EditBook extends Protected implements PageRenderListener
 
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
-        for (int i = 0; i < 2; i++)
+        int i = 0;
+        while (true)
         {
             try
             {
@@ -128,7 +129,7 @@ public abstract class EditBook extends Protected implements PageRenderListener
                 vengine.rmiFailure(
                     "Remote exception setting up page for book #" + bookPK + ".",
                     ex,
-                    i > 0);
+                    i++);
             }
         }
 
@@ -170,7 +171,8 @@ public abstract class EditBook extends Protected implements PageRenderListener
         VirtualLibraryEngine vengine = visit.getEngine();
         Integer bookPK = getBookPrimaryKey();
 
-        for (int i = 0; i < 2; i++)
+        int i = 0;
+        while (true)
         {
             IOperations bean = vengine.getOperations();
 
@@ -196,7 +198,7 @@ public abstract class EditBook extends Protected implements PageRenderListener
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure("Remote exception updating book #" + bookPK + ".", ex, i > 0);
+                vengine.rmiFailure("Remote exception updating book #" + bookPK + ".", ex, i++);
 
                 continue;
             }

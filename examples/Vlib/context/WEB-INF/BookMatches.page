@@ -10,14 +10,7 @@
   
   <property-specification name="bookQuery" type="org.apache.tapestry.vlib.ejb.IBookQuery" persistent="yes"/>
   <property-specification name="currentMatch" type="org.apache.tapestry.vlib.ejb.Book"/>
-  
-  <component id="e" type="Foreach">
-    <binding name="source" expression="components.browser.pageResults"/>
-    <binding name="value" expression="currentMatch"/>
-    <static-binding name="element" value="tr"/>
-  </component>
-  
-  
+   
   <component id="ownerLink" type="PersonLink">
     <binding name="primaryKey" expression="currentMatch.ownerPrimaryKey"/>
     <binding name="name" expression="currentMatch.ownerName"/>

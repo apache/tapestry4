@@ -116,7 +116,8 @@ public abstract class NewBook extends Protected implements PageRenderListener
         attributes.put("ownerPK", userPK);
         attributes.put("holderPK", userPK);
 
-        for (int i = 0; i < 2; i++)
+        int i = 0;
+        while (true)
         {
             try
             {
@@ -143,7 +144,7 @@ public abstract class NewBook extends Protected implements PageRenderListener
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure("Remote exception adding new book.", ex, i > 0);
+                vengine.rmiFailure("Remote exception adding new book.", ex, i++);
             }
         }
 

@@ -182,7 +182,8 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageRen
 
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
-        for (int i = 0; i < 2; i++)
+        int i = 0;
+        while (true)
         {
             try
             {
@@ -198,7 +199,7 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageRen
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure("Unable to transfer ownership of books.", ex, i > 0);
+                vengine.rmiFailure("Unable to transfer ownership of books.", ex, i++);
             }
         }
 
@@ -218,7 +219,8 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageRen
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
         Book[] books = null;
 
-        for (int i = 0; i < 2; i++)
+        int i = 0;
+        while (true)
         {
             books = null;
 
@@ -238,14 +240,14 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageRen
                 vengine.rmiFailure(
                     "Unable to retrieve books owned by " + user.getNaturalName() + ".",
                     ex,
-                    i > 0);
+                    i++);
             }
         }
 
         EntitySelectionModel model = new EntitySelectionModel();
 
         if (books != null)
-            for (int i = 0; i < books.length; i++)
+            for (i = 0; i < books.length; i++)
                 model.add(books[i].getPrimaryKey(), books[i].getTitle());
 
         return model;
@@ -254,29 +256,7 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageRen
     private Person readPerson(Integer primaryKey)
     {
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-        Person result = null;
-
-        for (int i = 0; i < 2; i++)
-        {
-            try
-            {
-                IOperations ops = vengine.getOperations();
-
-                result = ops.getPerson(primaryKey);
-
-                break;
-            }
-            catch (RemoteException ex)
-            {
-                vengine.rmiFailure("Unable to retrieve person #" + primaryKey + ".", ex, i > 0);
-            }
-            catch (FinderException ex)
-            {
-                throw new ApplicationRuntimeException(ex);
-            }
-
-        }
-
-        return result;
+        
+        return vengine.readPerson(primaryKey);
     }
 }

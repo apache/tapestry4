@@ -11,12 +11,6 @@
   <property-specification name="currentBook" type="org.apache.tapestry.vlib.ejb.Book"/>
   <property-specification name="ownedQuery" type="org.apache.tapestry.vlib.ejb.IBookQuery" persistent="yes"/>
   
- 
-  <component id="e" type="Foreach">
-    <binding name="source" expression="components.browser.pageResults"/>
-    <binding name="value" expression="currentBook"/>
-    <static-binding name="element" value="tr"/>
-  </component>
 
   <component id="holderLink" type="PersonLink">
     <binding name="primaryKey" expression="currentBook.holderPrimaryKey"/>

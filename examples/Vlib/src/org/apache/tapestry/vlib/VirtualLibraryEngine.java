@@ -58,6 +58,7 @@ package org.apache.tapestry.vlib;
 import java.rmi.RemoteException;
 
 import javax.ejb.CreateException;
+import javax.ejb.FinderException;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -209,16 +210,15 @@ public class VirtualLibraryEngine extends BaseEngine
 
     public IOperations getOperations()
     {
-        IOperationsHome home;
-
-        for (int i = 0; i < 2; i++)
+        if (_operations == null)
         {
-
-            if (_operations == null)
+            int i = 0;
+            while (true)
             {
                 try
                 {
-                    home = getOperationsHome();
+                    IOperationsHome home = getOperationsHome();
+
                     _operations = home.create();
 
                     break;
@@ -229,7 +229,7 @@ public class VirtualLibraryEngine extends BaseEngine
                 }
                 catch (RemoteException ex)
                 {
-                    rmiFailure("Remote exception creating operations bean.", ex, i > 0);
+                    rmiFailure("Remote exception creating operations bean.", ex, i++);
                 }
             }
         }
@@ -241,7 +241,8 @@ public class VirtualLibraryEngine extends BaseEngine
     {
         Object result = null;
 
-        for (int i = 0; i < 2; i++)
+        int i = 0;
+        while (true)
         {
             try
             {
@@ -259,7 +260,7 @@ public class VirtualLibraryEngine extends BaseEngine
             }
             catch (NamingException ex)
             {
-                namingFailure("Unable to resolve object " + name + ".", ex, i > 0);
+                namingFailure("Unable to resolve object " + name + ".", ex, i++);
             }
         }
 
@@ -268,9 +269,10 @@ public class VirtualLibraryEngine extends BaseEngine
 
     public Context getRootNamingContext()
     {
-        for (int i = 0; i < 2; i++)
+        if (_rootNamingContext == null)
         {
-            if (_rootNamingContext == null)
+            int i = 0;
+            while (true)
             {
                 try
                 {
@@ -280,7 +282,7 @@ public class VirtualLibraryEngine extends BaseEngine
                 }
                 catch (NamingException ex)
                 {
-                    namingFailure("Unable to locate root naming context.", ex, i > 0);
+                    namingFailure("Unable to locate root naming context.", ex, i++);
                 }
             }
         }
@@ -290,9 +292,7 @@ public class VirtualLibraryEngine extends BaseEngine
 
     /**
      *  Builds a model for entering in a publisher name, including an intial
-     *  blank option.  Problem:  thie model is held for a long while, so it won't
-     *  reflect publishers added by this user or others.  Solution:  coming; perhaps
-     *  we'll age-out the model after a few minutes.
+     *  blank option.
      *
      **/
 
@@ -315,7 +315,8 @@ public class VirtualLibraryEngine extends BaseEngine
 
         model.add(null, "");
 
-        for (int i = 0; i < 2; i++)
+        int i = 0;
+        while (true)
         {
             IOperations operations = getOperations();
 
@@ -329,13 +330,13 @@ public class VirtualLibraryEngine extends BaseEngine
             }
             catch (RemoteException ex)
             {
-                rmiFailure("Unable to obtain list of publishers.", ex, i > 0);
+                rmiFailure("Unable to obtain list of publishers.", ex, i++);
             }
         }
 
         // Add in the actual publishers.  They are sorted by name.
 
-        for (int i = 0; i < publishers.length; i++)
+        for (i = 0; i < publishers.length; i++)
             model.add(publishers[i].getPrimaryKey(), publishers[i].getName());
 
         return model;
@@ -372,7 +373,8 @@ public class VirtualLibraryEngine extends BaseEngine
     {
         Person[] persons = null;
 
-        for (int i = 0; i < 2; i++)
+        int i = 0;
+        while (true)
         {
             IOperations operations = getOperations();
 
@@ -384,15 +386,13 @@ public class VirtualLibraryEngine extends BaseEngine
             }
             catch (RemoteException ex)
             {
-                rmiFailure("Unable to obtain list of persons.", ex, i > 0);
+                rmiFailure("Unable to obtain list of persons.", ex, i++);
             }
         }
 
         EntitySelectionModel model = new EntitySelectionModel();
 
-        // On this one, we don't include a null option.
-
-        for (int i = 0; i < persons.length; i++)
+        for (i = 0; i < persons.length; i++)
             model.add(persons[i].getPrimaryKey(), persons[i].getNaturalName());
 
         return model;
@@ -408,7 +408,8 @@ public class VirtualLibraryEngine extends BaseEngine
     {
         IBookQuery result = null;
 
-        for (int i = 0; i < 2; i++)
+        int i = 0;
+        while (true)
         {
             IBookQueryHome home = getBookQueryHome();
 
@@ -424,7 +425,7 @@ public class VirtualLibraryEngine extends BaseEngine
             }
             catch (RemoteException ex)
             {
-                rmiFailure("Remote exception creating BookQuery bean.", ex, i > 0);
+                rmiFailure("Remote exception creating BookQuery bean.", ex, i++);
             }
         }
 
@@ -464,18 +465,18 @@ public class VirtualLibraryEngine extends BaseEngine
      *
      * @param message the message for the exception, or for the log message
      * @param ex the exception thrown
-     * @param finalFailure if true, an {@link ApplicationRuntimeException}
-     * is thrown after the message is logged.
+     * @param attempt the attempt number.  Attempt #0 simply clears the EJBs,
+     *  attempt #1 is the real failure.
      *
      **/
 
-    public void rmiFailure(String message, RemoteException ex, boolean finalFailure)
+    public void rmiFailure(String message, RemoteException ex, int attempt)
     {
         LOG.error(message, ex);
 
         clearEJBs();
 
-        if (finalFailure)
+        if (attempt > 0)
             punt(message, ex);
 
     }
@@ -488,18 +489,18 @@ public class VirtualLibraryEngine extends BaseEngine
     }
 
     /**
-     *  As with {@link #rmiFailure(String, RemoteException, boolean)}, but for
+     *  As with {@link #rmiFailure(String, RemoteException, int)}, but for
      * {@link NamingException}.
      *
      **/
 
-    public void namingFailure(String message, NamingException ex, boolean finalFailure)
+    public void namingFailure(String message, NamingException ex, int attempt)
     {
         LOG.error(message, ex);
 
         clearEJBs();
 
-        if (finalFailure)
+        if (attempt > 0)
             punt(message, ex);
     }
 
@@ -550,6 +551,39 @@ public class VirtualLibraryEngine extends BaseEngine
         {
             super.activateExceptionPage(cycle, output, cause);
         }
+    }
+
+    /**
+     *  Reads a person by id.
+     * 
+     **/
+
+    public Person readPerson(Integer personId)
+    {
+        Person result = null;
+
+        int i = 0;
+        while (true)
+        {
+            IOperations operations = getOperations();
+
+            try
+            {
+                result = operations.getPerson(personId);
+
+                break;
+            }
+            catch (FinderException ex)
+            {
+                throw new ApplicationRuntimeException("No such Person #" + personId + ".", ex);
+            }
+            catch (RemoteException ex)
+            {
+                rmiFailure("Unable to read Person #" + personId + ".", ex, i++);
+            }
+        }
+
+        return result;
     }
 
 }

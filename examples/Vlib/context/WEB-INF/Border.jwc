@@ -9,6 +9,8 @@
 	allow-informal-parameters="no">
 
   <parameter name="subtitle" type="java.lang.String" direction="in"/>
+  
+  <parameter name="browser" type="org.apache.tapestry.vlib.components.Browser" direction="in"/>
            
   <component id="search" type="PageLink">
     <static-binding name="page" value="Home"/>	
@@ -112,6 +114,58 @@
     <binding name="focus" expression="loginRolloverImage"/>	
   </component>
    
+  <component id="first" type="DirectLink">
+    <binding name="listener" expression="listeners.selectBrowserPage"/>
+    <binding name="parameters" expression="1"/>
+    <binding name="disabled" expression="browser.disableBack"/>	
+  </component>
+  
+  <component id="firstRollover" type="Rollover">
+    <binding name="image" expression="assets.first"/>
+    <binding name="focus" expression="assets.first_h"/>
+    <binding name="disabled" expression="assets.first_d"/>	
+  </component>
+  
+  <component id="previous" type="DirectLink">
+    <binding name="listener" expression="listeners.selectBrowserPage"/>
+    <binding name="parameters">
+      @@max(browser.currentPage - 1, 1)	
+    </binding>	
+    <binding name="disabled" expression="browser.disableBack"/>
+  </component>
+  
+  <component id="previousRollover" type="Rollover">
+    <binding name="image" expression="assets.previous"/>
+    <binding name="focus" expression="assets.previous_h"/>
+    <binding name="disabled" expression="assets.previous_d"/>
+  </component>
+  
+  <component id="next" type="DirectLink">
+    <binding name="listener" expression="listeners.selectBrowserPage"/>
+    <binding name="parameters">
+    @@min(browser.currentPage + 1, browser.pageCount)	
+    </binding>	
+    <binding name="disabled" expression="browser.disableNext"/>
+  </component>
+  
+  <component id="nextRollover" type="Rollover">
+    <binding name="image" expression="assets.next"/>
+    <binding name="focus" expression="assets.next_h"/>
+    <binding name="disabled" expression="assets.next_d"/>	
+  </component>
+  
+  <component id="last" type="DirectLink">
+    <binding name="listener" expression="listeners.selectBrowserPage"/>
+    <binding name="parameters" expression="browser.pageCount"/>
+    <binding name="disabled" expression="browser.disableNext"/>	
+  </component>
+  
+  <component id="lastRollover" type="Rollover">
+    <binding name="image" expression="assets.last"/>
+    <binding name="focus" expression="assets.last_h"/>
+    <binding name="disabled" expression="assets.last_d"/>	
+  </component>
+   
   <context-asset name="stylesheet" path="css/vlib.css"/>
 
   <context-asset name="title_BookMatches" path="images/title/BookMatches.png"/>
@@ -183,5 +237,21 @@
   
   <context-asset name="logout" path="images/nav/nav_10x1.png"/>
   <context-asset name="logout_h" path="images/nav-h/nav_10x1.png"/>
+  
+  <context-asset name="first" path="images/browser/browser_4x2.png"/>
+  <context-asset name="first_h" path="images/browser_h/browser_4x2.png"/>
+  <context-asset name="first_d" path="images/browser_d/browser_4x2.png"/>
+  
+  <context-asset name="previous" path="images/browser/browser_4x3.png"/>
+  <context-asset name="previous_h" path="images/browser_h/browser_4x3.png"/>
+  <context-asset name="previous_d" path="images/browser_d/browser_4x3.png"/>
+  
+  <context-asset name="next" path="images/browser/browser_4x5.png"/>
+  <context-asset name="next_h" path="images/browser_h/browser_4x5.png"/>
+  <context-asset name="next_d" path="images/browser_d/browser_4x5.png"/>
+  
+  <context-asset name="last" path="images/browser/browser_4x6.png"/>
+  <context-asset name="last_h" path="images/browser_h/browser_4x6.png"/>
+  <context-asset name="last_d" path="images/browser_d/browser_4x6.png"/>
   
 </component-specification>

@@ -58,9 +58,11 @@ package org.apache.tapestry.vlib.components;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IAsset;
+import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.vlib.IMessageProperty;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
@@ -107,6 +109,8 @@ public abstract class Border extends BaseComponent
     private IAsset _transferBooksRolloverImage;
 
     public abstract String getSubtitle();
+
+    public abstract IBinding getBrowserBinding();
 
     public void finishLoad()
     {
@@ -220,6 +224,22 @@ public abstract class Border extends BaseComponent
         home.setMessage(getString("goodbye"));
 
         cycle.setPage(home);
+    }
+
+    public void selectBrowserPage(IRequestCycle cycle)
+    {
+        Integer page = (Integer) cycle.getServiceParameters()[0];
+
+        // Not rendering, so have to access the browser the hard way.
+
+        IBinding browserBinding = getBrowserBinding();
+
+        Browser browser = (Browser) browserBinding.getObject("browser", Browser.class);
+
+        if (browser == null)
+            throw Tapestry.createRequiredParameterException(this, "browser");
+
+        browser.jump(page.intValue());
     }
 
     public IAsset getBorrowedBooksImage()

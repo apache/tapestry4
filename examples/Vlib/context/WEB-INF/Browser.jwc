@@ -1,14 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id $ -->
+<!-- $Id$ -->
 <!DOCTYPE component-specification PUBLIC 
   "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
 	
 <component-specification 
-	allow-informal-parameters="no" 
+	allow-informal-parameters="yes" 
 	class="org.apache.tapestry.vlib.components.Browser">
 
   <parameter name="query" required="yes" type="org.apache.tapestry.vlib.ejb.IBookQuery" direction="in"/>
+  
+  <parameter name="value" type="java.lang.Object" required="yes" direction="auto"/>
+  
+  <parameter name="element" type="java.lang.String" direction="in"/>
+  
   
   <property-specification name="resultCount" type="int" persistent="yes"/>
   <property-specification name="currentPage" type="int" persistent="yes"/>

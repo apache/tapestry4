@@ -146,7 +146,8 @@ public abstract class Register extends BasePage implements IErrorProperty
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
         Login login = (Login) cycle.getPage("Login");
 
-        for (int i = 0; i < 2; i++)
+        int i = 0;
+        while (true)
         {
             try
             {
@@ -172,7 +173,7 @@ public abstract class Register extends BasePage implements IErrorProperty
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure("Remote exception registering new user.", ex, i > 0);
+                vengine.rmiFailure("Remote exception registering new user.", ex, i++);
             }
         }
     }

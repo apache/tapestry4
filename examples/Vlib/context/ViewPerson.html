@@ -1,6 +1,6 @@
 <!-- $Id$ -->
 <html jwcid="$content$">
-<body jwcid="@Border" subtitle="ognl:person.naturalName">
+<body jwcid="@Border" subtitle="ognl:person.naturalName" browser="ognl:components.browser">
 	
 <table class="form">
   <tr>
@@ -15,16 +15,17 @@
 
 
 <span jwcid="@Conditional" condition="ognl:components.browser.resultCount  == 0">
-Owns no books.
+
+<span jwcid="@Information">
+<span jwcid="@Insert" value="ognl:person.naturalName">Jim Moran</span>
+has no books available for lending.
+</span>
 </span>
 
 <span jwcid="@Conditional" condition="ognl:components.browser.resultCount != 0">
 
-<span jwcid="browser@Browser" query="ognl:query">
-			
-<br/>
-Owns <span jwcid="@Insert" value="ognl:components.browser.resultCount">10</span> books
-				 
+<span >
+						 
 <table class="data">
   <tr>
     <th>Title</th>
@@ -33,7 +34,7 @@ Owns <span jwcid="@Insert" value="ognl:components.browser.resultCount">10</span>
     <th>Borrowed&nbsp;By</th>
     <th>Borrow</th>
   </tr>
-  <tr jwcid="e">
+  <tr jwcid="browser@Browser" query="ognl:query" value="ognl:currentMatch">
     <td><a href="#" jwcid="@BookLink" book="ognl:currentMatch">DocBook:The Definitive Guide</a>
     </td>
     <td><span jwcid="@Insert" value="ognl:currentMatch.author">Walsh &#38; Muellner</span>

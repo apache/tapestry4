@@ -7,7 +7,8 @@
 <page-specification class="org.apache.tapestry.vlib.pages.ApplicationUnavailable">
 
   <property-specification name="error" type="java.lang.String"/>
-
-  <context-asset name="stylesheet" path="/scripts/style_virtlib_pcIE55.css"/>
+  
+  <context-asset name="stylesheet" path="css/vlib.css"/>
+  <private-asset name="exception_stylesheet" resource-path="/org/apache/tapestry/pages/Exception.css"/>
   
 </page-specification>

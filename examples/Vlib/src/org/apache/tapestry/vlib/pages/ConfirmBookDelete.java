@@ -80,7 +80,7 @@ import org.apache.tapestry.vlib.ejb.IOperations;
 public abstract class ConfirmBookDelete extends BasePage
 {
     public abstract void setBookPrimaryKey(Integer key);
-    
+
     public abstract void setBookTitle(String title);
 
     /** 
@@ -96,7 +96,8 @@ public abstract class ConfirmBookDelete extends BasePage
 
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
-        for (int i = 0; i < 2; i++)
+        int i = 0;
+        while (true)
         {
             try
             {
@@ -113,10 +114,7 @@ public abstract class ConfirmBookDelete extends BasePage
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure(
-                    "Remote exception reading read book #" + bookPK + ".",
-                    ex,
-                    i > 0);
+                vengine.rmiFailure("Remote exception reading read book #" + bookPK + ".", ex, i++);
             }
         }
 
@@ -136,7 +134,8 @@ public abstract class ConfirmBookDelete extends BasePage
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
         Book book = null;
 
-        for (int i = 0; i < 2; i++)
+        int i = 0;
+        while (true)
         {
             try
             {
@@ -152,7 +151,7 @@ public abstract class ConfirmBookDelete extends BasePage
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure("Remote exception deleting book #" + bookPK + ".", ex, i > 0);
+                vengine.rmiFailure("Remote exception deleting book #" + bookPK + ".", ex, i++);
             }
         }
 
