@@ -85,76 +85,10 @@ import net.sf.tapestry.util.io.DataSqueezer;
 
 public class ListEdit extends AbstractComponent
 {
-    /**
-     *  Interface that allows a ListEdit to treat an Object[] array or
-     *  a {@link List} identically.
-     *
-     **/
-
-    private interface ISource
-    {
-        public int getCount();
-
-        public Object get(int index);
-    }
-
-    private static class ArraySource implements ISource
-    {
-        Object[] _array;
-
-        ArraySource(Object[] array)
-        {
-            _array = array;
-        }
-
-        public int getCount()
-        {
-            return _array.length;
-        }
-
-        public Object get(int index)
-        {
-            return _array[index];
-        }
-    }
-
-    private static class ListSource implements ISource
-    {
-        List _list;
-
-        ListSource(List list)
-        {
-            _list = list;
-        }
-
-        public int getCount()
-        {
-            return _list.size();
-        }
-
-        public Object get(int index)
-        {
-            return _list.get(index);
-        }
-    }
-
-    private static class EmptySource implements ISource
-    {
-        public int getCount()
-        {
-            return 0;
-        }
-
-        public Object get(int index)
-        {
-            throw new IndexOutOfBoundsException("ListEdit.EmptySource contains no values.");
-        }
-    }
-
     private IBinding _valueBinding;
     private IBinding _indexBinding;
+    private IBinding _sourceBinding;
 
-    private Object _source;
     private String _element;
 
     /** @since 2.2 **/
@@ -181,19 +115,19 @@ public class ListEdit extends AbstractComponent
         return _indexBinding;
     }
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
     {
-        ISource source = null;
-        int count;
-        RequestContext context = null;
-        Object value = null;
+        Iterator i = null;
 
         IForm form = Form.get(cycle);
         if (form == null)
-            throw new RequestCycleException(Tapestry.getString("must-be-wrapped-by-form", "ListEdit"), this);
+            throw new RequestCycleException(
+                Tapestry.getString("must-be-wrapped-by-form", "ListEdit"),
+                this);
 
         boolean cycleRewinding = cycle.isRewinding();
-    
+
         // If the cycle is rewinding, but not this particular form,
         // then do nothing (don't even render the body).
 
@@ -204,32 +138,38 @@ public class ListEdit extends AbstractComponent
 
         if (!cycleRewinding)
         {
-            source = getSourceData();
-            count = source.getCount();
-
-            writer.beginEmpty("input");
-            writer.attribute("type", "hidden");
-            writer.attribute("name", name);
-            writer.attribute("value", count);
-            writer.println();
+            i = Tapestry.coerceToIterator(_sourceBinding.getObject());
         }
         else
         {
-            context = cycle.getRequestContext();
-            count = Integer.parseInt(context.getParameter(name));
+            RequestContext context = cycle.getRequestContext();
+            String[] submittedValues = context.getParameters(name);
+
+            i = Tapestry.coerceToIterator(submittedValues);
         }
 
-        for (int i = 0; i < count; i++)
+		// If the source (when rendering), or the submitted values (on submit)
+		// are null, then skip the remainder (nothing to update, nothing to
+		// render).
+		
+		if (i == null)
+			return;
+			
+        int index = 0;
+
+        while (i.hasNext())
         {
+            Object value = null;
+
             if (_indexBinding != null)
-                _indexBinding.setInt(i);
+                _indexBinding.setInt(index++);
 
             if (cycleRewinding)
-                value = extractValue(context, form.getElementId(this));
+                value = convertValue((String) i.next());
             else
             {
-                value = source.get(i);
-                writeValue(writer, form.getElementId(this), value);
+                value = i.next();
+                writeValue(writer, name, value);
             }
 
             _valueBinding.setObject(value);
@@ -247,10 +187,12 @@ public class ListEdit extends AbstractComponent
 
             if (_element != null)
                 writer.end();
+
         }
     }
 
-    private void writeValue(IMarkupWriter writer, String name, Object value) throws RequestCycleException
+    private void writeValue(IMarkupWriter writer, String name, Object value)
+        throws RequestCycleException
     {
         String externalValue;
 
@@ -260,7 +202,10 @@ public class ListEdit extends AbstractComponent
         }
         catch (IOException ex)
         {
-            throw new RequestCycleException(Tapestry.getString("ListEdit.unable-to-convert-value", value), this, ex);
+            throw new RequestCycleException(
+                Tapestry.getString("ListEdit.unable-to-convert-value", value),
+                this,
+                ex);
         }
 
         writer.beginEmpty("input");
@@ -270,42 +215,19 @@ public class ListEdit extends AbstractComponent
         writer.println();
     }
 
-    private Object extractValue(RequestContext context, String name) throws RequestCycleException
+    private Object convertValue(String value) throws RequestCycleException
     {
-        String value = context.getParameter(name);
-
         try
         {
             return getDataSqueezer().unsqueeze(value);
         }
         catch (IOException ex)
         {
-            throw new RequestCycleException(Tapestry.getString("ListEdit.unable-to-convert-string", value), this, ex);
+            throw new RequestCycleException(
+                Tapestry.getString("ListEdit.unable-to-convert-string", value),
+                this,
+                ex);
         }
-    }
-
-    private ISource getSourceData() throws RequestCycleException
-    {
-        if (_source == null)
-            return new EmptySource();
-
-        if (_source instanceof List)
-            return new ListSource((List) _source);
-
-        if (_source.getClass().isArray())
-            return new ArraySource((Object[]) _source);
-
-        if (_source instanceof Iterator)
-        {
-            Iterator i = (Iterator) _source;
-            List list = new ArrayList();
-            while (i.hasNext())
-                list.add(i.next());
-
-            return new ListSource(list);
-        }
-
-        throw new RequestCycleException(Tapestry.getString("ListEdit.unable-to-convert-source", _source), this);
     }
 
     public String getElement()
@@ -316,16 +238,6 @@ public class ListEdit extends AbstractComponent
     public void setElement(String element)
     {
         _element = element;
-    }
-
-    public void setSource(Object source)
-    {
-        _source = source;
-    }
-
-    public Object getSource()
-    {
-        return _source;
     }
 
     private DataSqueezer getDataSqueezer()
@@ -345,6 +257,20 @@ public class ListEdit extends AbstractComponent
     public void setListener(IActionListener listener)
     {
         _listener = listener;
+    }
+
+	/** @since 2.4 **/
+	
+    public IBinding getSourceBinding()
+    {
+        return _sourceBinding;
+    }
+
+	/** @since 2.4 **/
+	
+    public void setSourceBinding(IBinding sourceBinding)
+    {
+        _sourceBinding = sourceBinding;
     }
 
 }
