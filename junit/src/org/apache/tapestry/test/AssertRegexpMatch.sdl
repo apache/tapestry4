@@ -14,22 +14,19 @@
 
 // $Id$
 
-// required.element-name.attribute-name=true|false
-// Defines allowed and required attributes for each element
+test-script (context=test-context)
+{
+  request
+  {
+    assert-regexp (subgroup=1) 
+    {
+    	"<(.*?)>" 
+    
+    	match { "title" }
+    	match { "/title" }    
+    	match { "body" }
+    	match { "/body" }
+    }
+  }
+}
 
-required.test-script.context=true
-required.test-script.directory=false
-
-required.servlet.name=true
-required.servlet.class=false
-
-required.init-parameter.name=true
-required.init-parameter.value=true
-
-required.request.servlet=false
-required.request.servlet-path=false
-
-required.parameter.name=true
-required.parameter.value=true
-
-required.assert-regexp.subgroup=false

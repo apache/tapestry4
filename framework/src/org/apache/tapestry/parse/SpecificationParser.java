@@ -66,7 +66,6 @@ import org.xml.sax.SAXException;
  * thread safety.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  */
 public class SpecificationParser extends AbstractParser
 {
@@ -1415,8 +1414,8 @@ public class SpecificationParser extends AbstractParser
 
         IBeanInitializer bi = _factory.createMessageBeanInitializer();
 
-        PropertyUtils.write(bi, "propertyName", name, getLocation());
-        PropertyUtils.write(bi, "key", key, getLocation());
+        PropertyUtils.write(bi, "propertyName", name);
+        PropertyUtils.write(bi, "key", key);
 
         bi.setLocation(getLocation());
 
@@ -1434,7 +1433,7 @@ public class SpecificationParser extends AbstractParser
 
         IBeanInitializer bi = _factory.createExpressionBeanInitializer();
 
-        PropertyUtils.write(bi, "propertyName", name, getLocation());
+        PropertyUtils.write(bi, "propertyName", name);
 
         IBeanSpecification bs = (IBeanSpecification) peekObject();
 

@@ -17,9 +17,16 @@ package org.apache.tapestry.test.assertions;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.impl.BaseLocatable;
 import org.apache.tapestry.test.ResponseAssertion;
+import org.apache.tapestry.test.ScriptMessages;
 import org.apache.tapestry.test.ScriptedTestSession;
 import org.apache.tapestry.test.mock.MockResponse;
 
+/**
+ * Assertion that checks for the presence of a particular
+ * substring within the response text.
+ *
+ * @author Howard Lewis Ship
+ */
 public class AssertOutput extends BaseLocatable implements ResponseAssertion
 {
     private String _expectedSubstring;
@@ -39,7 +46,7 @@ public class AssertOutput extends BaseLocatable implements ResponseAssertion
             return;
 
         throw new ApplicationRuntimeException(
-            "Expected output '" + _expectedSubstring + "' not found in response.",
+            ScriptMessages.expectedSubstringMissing(_expectedSubstring, getLocation()),
             getLocation(),
             null);
     }

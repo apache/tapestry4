@@ -22,7 +22,6 @@ import org.apache.hivemind.util.PropertyUtils;
  * &lt;description&gt; element.
  *
  * @author Howard Lewis Ship
- * @version $Id$
  */
 class DescriptionSetter extends BaseLocatable
 {
@@ -35,6 +34,6 @@ class DescriptionSetter extends BaseLocatable
     
     void apply(String description)
     {
-        PropertyUtils.write(_descriptionHolder, "description", description, getLocation());
+        PropertyUtils.write(_descriptionHolder, "description", description);
     }
 }

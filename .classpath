@@ -23,6 +23,7 @@
     <classpathentry kind="lib" path="lib/j2ee/geronimo-ejb.jar"/>
     <classpathentry kind="lib" path="lib/j2ee/jsp-api.jar"/>
     <classpathentry exported="true" kind="lib" path="lib/j2ee/servlet-api.jar"/>
-    <classpathentry kind="src" path="/jakarta-hivemind"/>
+    <classpathentry kind="lib" path="lib/ext/hivemind-1.0-beta-1-snapshot.jar"/>
+    <classpathentry kind="lib" path="lib/ext/hivemind-lib-1.0-beta-1-snapshot.jar"/>
     <classpathentry kind="output" path="bin"/>
 </classpath>

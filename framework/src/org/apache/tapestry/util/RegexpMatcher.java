@@ -1,10 +1,10 @@
-//  Copyright 2004 The Apache Software Foundation
+//	Copyright 2004 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//     http://www.apache.org/licenses/LICENSE-2.0
+//	   http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
 // distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,14 +14,18 @@
 
 package org.apache.tapestry.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.oro.text.regex.MalformedPatternException;
+import org.apache.oro.text.regex.MatchResult;
 import org.apache.oro.text.regex.Pattern;
 import org.apache.oro.text.regex.PatternCompiler;
 import org.apache.oro.text.regex.PatternMatcher;
+import org.apache.oro.text.regex.PatternMatcherInput;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
 
@@ -118,6 +122,36 @@ public class RegexpMatcher
         }
 
         return result;
+    }
+
+    /**
+     * Given an input string, finds all matches in an input string for the pattern.
+     * 
+     * @param pattern the regexp pattern for matching
+     * @param input the string to search for matches within
+     * @param subgroup the group (sub-expression) within the pattern to return as a match
+     * @return array (possibly empty) of matching strings
+     * 
+     */
+    public String[] getMatches(String pattern, String input, int subgroup)
+    {
+        Pattern compiledPattern = getCompiledPattern(pattern);
+
+        PatternMatcher matcher = getPatternMatcher();
+        PatternMatcherInput matcherInput = new PatternMatcherInput(input);
+
+        List matches = new ArrayList();
+
+        while (matcher.contains(matcherInput, compiledPattern))
+        {
+            MatchResult match = matcher.getMatch();
+
+            String matchedInput = match.group(subgroup);
+
+            matches.add(matchedInput);
+        }
+
+        return (String[]) matches.toArray(new String[matches.size()]);
     }
 
 }
