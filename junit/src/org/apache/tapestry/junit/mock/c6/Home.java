@@ -15,6 +15,7 @@
 package org.apache.tapestry.junit.mock.c6;
 
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.html.BasePage;
 
 /**
@@ -44,7 +45,7 @@ public class Home extends BasePage
     {
         _message = message;
         
-        fireObservedChange("message", message);
+        Tapestry.fireObservedChange(this, "message", message);
     }
 
     public void updateMessage(IRequestCycle cycle)

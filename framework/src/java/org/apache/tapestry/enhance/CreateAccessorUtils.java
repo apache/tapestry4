@@ -33,34 +33,32 @@ public class CreateAccessorUtils
     private static final Log LOG = LogFactory.getLog(CreateAccessorUtils.class);
 
     /**
-     *  The code template for the standard property accessor method.    
-     *                                      <p>
-     *  Legend:                             <br>
-     *      {0} = property field name       <br>
+     * The code template for the standard property accessor method.
+     * <p>
+     * Legend: <br>
+     * {0} = property field name <br>
      */
     private static final String PROPERTY_ACCESSOR_TEMPLATE = "" + "'{'" + "  return {0}; " + "'}'";
 
     /**
-     *  The code template for the standard property mutator method.    
-     *                                      <p>
-     *  Legend:                             <br>
-     *      {0} = property field name       <br>
+     * The code template for the standard property mutator method.
+     * <p>
+     * Legend: <br>
+     * {0} = property field name <br>
      */
     private static final String PROPERTY_MUTATOR_TEMPLATE = "" + "'{'" + "  {0} = $1; " + "'}'";
 
     /**
-     *  The code template for the standard persistent property mutator method.    
-     *                                      <p>
-     *  Legend:                             <br>
-     *      {0} = property field name       <br>
-     *      {1} = property name             <br>
+     * The code template for the standard persistent property mutator method.
+     * <p>
+     * Legend: <br>
+     * {0} = property field name <br>
+     * {1} = property name <br>
      */
-    private static final String PERSISTENT_PROPERTY_MUTATOR_TEMPLATE =
-        "" + "'{'" + "  {0} = $1;" + "  fireObservedChange(\"{1}\", {0}); " + "'}'";
+    private static final String PERSISTENT_PROPERTY_MUTATOR_TEMPLATE = "'{' {0} = $1;  org.apache.tapestry.Tapestry#fireObservedChange(this, \"{1}\", ($w) {0}); '}'";
 
     /**
-     *  Constructs an accessor method name.
-     * 
+     * Constructs an accessor method name.
      */
 
     public static String buildMethodName(String prefix, String propertyName)
@@ -77,26 +75,23 @@ public class CreateAccessorUtils
     }
 
     /**
-     *  Creates an accessor (getter) method for the property.
+     * Creates an accessor (getter) method for the property.
      * 
-     *  @param fieldType the return type for the method
-     *  @param fieldName the name of the field (not the name of the property)
-     *  @param propertyName the name of the property (used to build the name of the method)
-     *  @param readMethodName if not null, the name of the method to use
-     * 
+     * @param fieldType
+     *            the return type for the method
+     * @param fieldName
+     *            the name of the field (not the name of the property)
+     * @param propertyName
+     *            the name of the property (used to build the name of the method)
+     * @param readMethodName
+     *            if not null, the name of the method to use
      */
 
-    public static void createPropertyAccessor(
-        ClassFab classFab,
-        Class fieldType,
-        String fieldName,
-        String propertyName,
-        String methodName)
+    public static void createPropertyAccessor(ClassFab classFab, Class fieldType, String fieldName,
+            String propertyName, String methodName)
     {
-        String body =
-            MessageFormat.format(
-                PROPERTY_ACCESSOR_TEMPLATE,
-                new Object[] { fieldName, propertyName });
+        String body = MessageFormat.format(PROPERTY_ACCESSOR_TEMPLATE, new Object[]
+        { fieldName, propertyName });
 
         MethodSignature sig = new MethodSignature(fieldType, methodName, null, null);
 
@@ -104,30 +99,30 @@ public class CreateAccessorUtils
     }
 
     /**
-     *  Creates a mutator (aka "setter") method.
+     * Creates a mutator (aka "setter") method.
      * 
-     *  @param fieldType type of field value (and type of parameter value)
-     *  @param fieldName name of field (not property!)
-     *  @param propertyName name of property (used to construct method name)
-     *  @param isPersistent if true, adds a call to fireObservedChange()
-     * 
+     * @param fieldType
+     *            type of field value (and type of parameter value)
+     * @param fieldName
+     *            name of field (not property!)
+     * @param propertyName
+     *            name of property (used to construct method name)
+     * @param isPersistent
+     *            if true, adds a call to fireObservedChange()
      */
 
-    public static void createPropertyMutator(
-        ClassFab classFab,
-        Class fieldType,
-        String fieldName,
-        String propertyName,
-        boolean isPersistent)
+    public static void createPropertyMutator(ClassFab classFab, Class fieldType, String fieldName,
+            String propertyName, boolean isPersistent)
     {
-        String bodyTemplate =
-            isPersistent ? PERSISTENT_PROPERTY_MUTATOR_TEMPLATE : PROPERTY_MUTATOR_TEMPLATE;
+        String bodyTemplate = isPersistent ? PERSISTENT_PROPERTY_MUTATOR_TEMPLATE
+                : PROPERTY_MUTATOR_TEMPLATE;
 
-        String body = MessageFormat.format(bodyTemplate, new Object[] { fieldName, propertyName });
+        String body = MessageFormat.format(bodyTemplate, new Object[]
+        { fieldName, propertyName });
         String methodName = buildMethodName("set", propertyName);
 
-        MethodSignature sig =
-            new MethodSignature(void.class, methodName, new Class[] { fieldType }, null);
+        MethodSignature sig = new MethodSignature(void.class, methodName, new Class[]
+        { fieldType }, null);
 
         classFab.addMethod(Modifier.PUBLIC | Modifier.FINAL, sig, body);
     }
