@@ -108,7 +108,7 @@
         </description>
     </parameter>
     
-    <property name="sessionState" persistent="yes"/>
+    <property name="sessionState" persist="session"/>
     
     <component id="table" type="Any" inherit-informal-parameters="yes">
         <binding name="element" value="ognl:element"/>
