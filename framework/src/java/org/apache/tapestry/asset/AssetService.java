@@ -135,13 +135,13 @@ public class AssetService implements IEngineService
         if (externalURL != null)
             return new StaticLink(externalURL);
 
-        String md5 = _digestSource.getDigestForResource(path);
+        String digest = _digestSource.getDigestForResource(path);
 
         Map parameters = new HashMap();
 
         parameters.put(ServiceConstants.SERVICE, Tapestry.ASSET_SERVICE);
         parameters.put(PATH, path);
-        parameters.put(DIGEST, md5);
+        parameters.put(DIGEST, digest);
 
         // Service is stateless, which is the exception to the rule.
 
