@@ -187,4 +187,11 @@ public interface Infrastructure
      */
     
     public Resource getContextRoot();
+    
+    /**
+     * Returns an object used to access component meta-data properties.
+     * 
+     */
+    
+    public ComponentPropertySource getComponentPropertySource();
 }

@@ -24,20 +24,14 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Resource;
-import org.apache.hivemind.util.ContextResource;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.engine.DefaultComponentPropertySource;
-import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.engine.ITemplateSourceDelegate;
 import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.parse.ComponentTemplate;
@@ -47,6 +41,7 @@ import org.apache.tapestry.parse.TemplateParseException;
 import org.apache.tapestry.parse.TemplateParser;
 import org.apache.tapestry.parse.TemplateToken;
 import org.apache.tapestry.resolver.ComponentSpecificationResolver;
+import org.apache.tapestry.services.ComponentPropertySource;
 import org.apache.tapestry.services.TemplateSource;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.util.MultiKey;
@@ -92,12 +87,11 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener
 
     /** @since 3.1 */
 
-    private IPropertySource _applicationPropertySource;
-
+    private ComponentSpecificationResolver _componentSpecificationResolver;
 
     /** @since 3.1 */
 
-    private ComponentSpecificationResolver _componentSpecificationResolver;
+    private ComponentPropertySource _componentPropertySource;
 
     /**
      * Clears the template cache. This is used during debugging.
@@ -210,7 +204,7 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener
         // specification was Bar.page. We would then search for /Bar.page. Confusing? Yes.
         // In 3.1, we are more reliant on the page name, which may include a folder prefix (i.e.,
         // "admin/EditUser", so when we search it is based on the page name and not the
-        // specification resource file name. We would search for Foo.html.  Moral of the
+        // specification resource file name. We would search for Foo.html. Moral of the
         // story is to use the page name for the page specifiation and the template.
 
         String templateBaseName = page.getPageName() + "." + templateExtension;
@@ -449,27 +443,17 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener
 
     private String getTemplateExtension(IComponent component)
     {
-        String extension = component.getSpecification().getProperty(
+        return _componentPropertySource.getComponentProperty(
+                component,
                 Tapestry.TEMPLATE_EXTENSION_PROPERTY);
-
-        if (extension != null)
-            return extension;
-
-        extension = component.getNamespace().getSpecification().getProperty(
-                Tapestry.TEMPLATE_EXTENSION_PROPERTY);
-
-        if (extension != null)
-            return extension;
-
-        return Tapestry.DEFAULT_TEMPLATE_EXTENSION;
     }
 
     private String getTemplateEncoding(IComponent component, Locale locale)
     {
-        IPropertySource source = new DefaultComponentPropertySource(component,
-                _applicationPropertySource, locale);
-
-        return source.getPropertyValue(TEMPLATE_ENCODING_PROPERTY_NAME);
+        return _componentPropertySource.getLocalizedComponentProperty(
+                component,
+                locale,
+                TEMPLATE_ENCODING_PROPERTY_NAME);
     }
 
     /** @since 3.1 */
@@ -477,13 +461,6 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener
     public void setParser(ITemplateParser parser)
     {
         _parser = parser;
-    }
-
-    /** @since 3.1 */
-
-    public void setApplicationPropertySource(IPropertySource source)
-    {
-        _applicationPropertySource = source;
     }
 
     /** @since 3.1 */
@@ -511,5 +488,11 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener
     public void setContextRoot(Resource contextRoot)
     {
         _contextRoot = contextRoot;
+    }
+
+    /** @since 3.1 */
+    public void setComponentPropertySource(ComponentPropertySource componentPropertySource)
+    {
+        _componentPropertySource = componentPropertySource;
     }
 }

@@ -20,45 +20,44 @@ import org.apache.hivemind.Resource;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.services.ComponentPropertySource;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
- *  Performs the tricky work of resolving a page name to a page specification.
- *  The search for pages in the application namespace is the most complicated,
- *  since Tapestry searches for pages that aren't explicitly defined in the
- *  application specification.  The search, based on the <i>simple-name</i>
- *  of the page, goes as follows:
+ * Performs the tricky work of resolving a page name to a page specification. The search for pages
+ * in the application namespace is the most complicated, since Tapestry searches for pages that
+ * aren't explicitly defined in the application specification. The search, based on the
+ * <i>simple-name </i> of the page, goes as follows:
+ * <ul>
+ * <li>As declared in the application specification
+ * <li><i>simple-name </i>.page in the same folder as the application specification
+ * <li><i>simple-name </i> page in the WEB-INF/ <i>servlet-name </i> directory of the context root
+ * <li><i>simple-name </i>.page in WEB-INF
+ * <li><i>simple-name </i>.page in the application root (within the context root)
+ * <li><i>simple-name </i>.html as a template in the application root, for which an implicit
+ * specification is generated
+ * <li>By searching the framework namespace
+ * <li>By invoking
+ * {@link org.apache.tapestry.resolver.ISpecificationResolverDelegate#findPageSpecification(IRequestCycle, INamespace, String)}
+ * </ul>
+ * <p>
+ * Pages in a component library are searched for in a more abbreviated fashion:
+ * <ul>
+ * <li>As declared in the library specification
+ * <li><i>simple-name </i>.page in the same folder as the library specification
+ * <li>By searching the framework namespace
+ * <li>By invoking
+ * {@link org.apache.tapestry.resolver.ISpecificationResolverDelegate#findPageSpecification(IRequestCycle, INamespace, String)}
+ * </ul>
  * 
- *  <ul>
- *  <li>As declared in the application specification
- *  <li><i>simple-name</i>.page in the same folder as the application specification
- *  <li><i>simple-name</i> page in the WEB-INF/<i>servlet-name</i> directory of the context root
- *  <li><i>simple-name</i>.page in WEB-INF
- *  <li><i>simple-name</i>.page in the application root (within the context root)
- *  <li><i>simple-name</i>.html as a template in the application root, 
- *      for which an implicit specification is generated
- *  <li>By searching the framework namespace
- *  <li>By invoking {@link org.apache.tapestry.resolver.ISpecificationResolverDelegate#findPageSpecification(IRequestCycle, INamespace, String)}
- *  </ul>
- * 
- *  <p>Pages in a component library are searched for in a more abbreviated fashion:
- *  <ul>
- *  <li>As declared in the library specification
- *  <li><i>simple-name</i>.page in the same folder as the library specification
- *  <li>By searching the framework namespace
- *  <li>By invoking {@link org.apache.tapestry.resolver.ISpecificationResolverDelegate#findPageSpecification(IRequestCycle, INamespace, String)}
- *  </ul>
- *
- *  @see org.apache.tapestry.engine.IPageSource
- *  @author Howard Lewis Ship
- *  @since 3.0
- *
+ * @see org.apache.tapestry.engine.IPageSource
+ * @author Howard Lewis Ship
+ * @since 3.0
  */
 
-public class PageSpecificationResolverImpl
-    extends AbstractSpecificationResolver
-    implements PageSpecificationResolver
+public class PageSpecificationResolverImpl extends AbstractSpecificationResolver implements
+        PageSpecificationResolver
 {
     /** set by container */
     private Log _log;
@@ -66,11 +65,15 @@ public class PageSpecificationResolverImpl
     /** Set by resolve() */
     private String _simpleName;
 
-    /** @since 3.1 **/
+    /** @since 3.1 * */
     private INamespace _applicationNamespace;
 
-    /** @since 3.1 **/
+    /** @since 3.1 * */
     private INamespace _frameworkNamespace;
+
+    /** @since 3.1 */
+
+    private ComponentPropertySource _componentPropertySource;
 
     public void initializeService()
     {
@@ -88,11 +91,11 @@ public class PageSpecificationResolverImpl
     }
 
     /**
-     *  Resolve the name (which may have a library id prefix) to a namespace
-     *  (see {@link #getNamespace()}) and a specification (see {@link #getSpecification()}).
+     * Resolve the name (which may have a library id prefix) to a namespace (see
+     * {@link #getNamespace()}) and a specification (see {@link #getSpecification()}).
      * 
-     *  @throws ApplicationRuntimeException if the name cannot be resolved
-     * 
+     * @throws ApplicationRuntimeException
+     *             if the name cannot be resolved
      */
 
     public void resolve(IRequestCycle cycle, String prefixedName)
@@ -133,8 +136,9 @@ public class PageSpecificationResolverImpl
         searchForPage(cycle);
 
         if (getSpecification() == null)
-            throw new ApplicationRuntimeException(
-                ResolverMessages.noSuchPage(_simpleName, namespace));
+            throw new ApplicationRuntimeException(ResolverMessages.noSuchPage(
+                    _simpleName,
+                    namespace));
     }
 
     public String getSimplePageName()
@@ -174,12 +178,12 @@ public class PageSpecificationResolverImpl
             if (found(getContextRoot().getRelativeResource(expectedName)))
                 return;
 
-            // The wierd one ... where we see if there's a template in the application root location.
+            // The wierd one ... where we see if there's a template in the application root
+            // location.
 
             String templateName = _simpleName + "." + getTemplateExtension();
 
-            Resource templateResource =
-                getContextRoot().getRelativeResource(templateName);
+            Resource templateResource = getContextRoot().getRelativeResource(templateName);
 
             if (templateResource.getResourceURL() != null)
             {
@@ -196,8 +200,8 @@ public class PageSpecificationResolverImpl
 
                 setNamespace(_frameworkNamespace);
 
-                // Note:  This implies that normal lookup rules don't work
-                // for the framework!  Framework pages must be
+                // Note: This implies that normal lookup rules don't work
+                // for the framework! Framework pages must be
                 // defined in the framework library specification.
 
                 setSpecification(_frameworkNamespace.getPageSpecification(_simpleName));
@@ -208,8 +212,10 @@ public class PageSpecificationResolverImpl
         // Not found by any normal rule, so its time to
         // consult the delegate.
 
-        IComponentSpecification specification =
-            getDelegate().findPageSpecification(cycle, namespace, _simpleName);
+        IComponentSpecification specification = getDelegate().findPageSpecification(
+                cycle,
+                namespace,
+                _simpleName);
 
         setSpecification(specification);
     }
@@ -219,7 +225,7 @@ public class PageSpecificationResolverImpl
         if (_log.isDebugEnabled())
             _log.debug("Found HTML template at " + resource);
 
-        // TODO The SpecFactory in Specification parser should be used in some way to 
+        // TODO The SpecFactory in Specification parser should be used in some way to
         // create an IComponentSpecification!
 
         IComponentSpecification specification = new ComponentSpecification();
@@ -252,28 +258,23 @@ public class PageSpecificationResolverImpl
         IComponentSpecification specification = getSpecification();
 
         if (_log.isDebugEnabled())
-            _log.debug(
-                "Installing page " + _simpleName + " into " + namespace + " as " + specification);
+            _log.debug("Installing page " + _simpleName + " into " + namespace + " as "
+                    + specification);
 
         namespace.installPageSpecification(_simpleName, specification);
     }
 
     /**
-     *  If the namespace defines the template extension (as property
-     *  {@link Tapestry#TEMPLATE_EXTENSION_PROPERTY}, then that is used, otherwise
-     *  the default is used.
-     * 
+     * If the namespace defines the template extension (as property
+     * {@link Tapestry#TEMPLATE_EXTENSION_PROPERTY}, then that is used, otherwise the default is
+     * used.
      */
 
     private String getTemplateExtension()
     {
-        String extension =
-            getNamespace().getSpecification().getProperty(Tapestry.TEMPLATE_EXTENSION_PROPERTY);
-
-        if (extension == null)
-            extension = Tapestry.DEFAULT_TEMPLATE_EXTENSION;
-
-        return extension;
+        return _componentPropertySource.getNamespaceProperty(
+                getNamespace(),
+                Tapestry.TEMPLATE_EXTENSION_PROPERTY);
     }
 
     /** @since 3.1 */
@@ -283,4 +284,9 @@ public class PageSpecificationResolverImpl
         _log = log;
     }
 
+    /** @since 3.1 */
+    public void setComponentPropertySource(ComponentPropertySource componentPropertySource)
+    {
+        _componentPropertySource = componentPropertySource;
+    }
 }

@@ -75,11 +75,10 @@
     <invoke-factory>
       <construct class="org.apache.tapestry.services.impl.TemplateSourceImpl">
         <set-service property="parser" service-id="TemplateParser"/>
-        <set-object property="applicationPropertySource" 
-                       value="infrastructure:applicationPropertySource"/>
         <set-service property="delegate" service-id="TemplateSourceDelegate"/>
         <set-object property="contextRoot" value="infrastructure:contextRoot"/>
         <set-service property="componentSpecificationResolver" service-id="tapestry.page.ComponentSpecificationResolver"/>
+        <set-object property="componentPropertySource"  value="infrastructure:componentPropertySource"/>
         <event-listener service-id="tapestry.ResetEventCoordinator"/>
       </construct>
     </invoke-factory>

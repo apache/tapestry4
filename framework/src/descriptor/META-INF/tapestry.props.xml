@@ -187,6 +187,7 @@
     <default symbol="org.apache.tapestry.output-encoding" value="UTF-8"/>
     <default symbol="org.apache.tapestry.enhance.disable-abstract-method-validation" value="false"/>
     <default symbol="org.apache.tapestry.default-page-class" value="org.apache.tapestry.html.BasePage"/>
+    <default symbol="org.apache.tapestry.template-extension" value="html"/>    
   </contribution>    
   
   <!-- This may nedd to be converted into an IPropertySource and injected into the ApplicationPropertySources

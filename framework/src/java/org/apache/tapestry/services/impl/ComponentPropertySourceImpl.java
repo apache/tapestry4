@@ -23,6 +23,7 @@ import java.util.Map;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.lib.chain.ChainBuilder;
 import org.apache.tapestry.IComponent;
+import org.apache.tapestry.INamespace;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.services.ComponentPropertySource;
@@ -45,10 +46,31 @@ public class ComponentPropertySourceImpl implements ComponentPropertySource, Res
 
     private Map _localizedComponentSources = new HashMap();
 
+    private Map _namespaceSources = new HashMap();
+
+    private Map _localizedNamespaceSources = new HashMap();
+
     public synchronized void resetEventDidOccur()
     {
         _componentSources.clear();
         _localizedComponentSources.clear();
+        _namespaceSources.clear();
+        _localizedNamespaceSources.clear();
+    }
+
+    private synchronized IPropertySource getSourceForNamespace(INamespace namespace)
+    {
+        Resource key = namespace.getSpecificationLocation();
+
+        IPropertySource result = (IPropertySource) _namespaceSources.get(key);
+
+        if (result == null)
+        {
+            result = createSourceForNamespace(namespace);
+            _namespaceSources.put(key, result);
+        }
+
+        return result;
     }
 
     private synchronized IPropertySource getSourceForComponent(IComponent component)
@@ -70,17 +92,34 @@ public class ComponentPropertySourceImpl implements ComponentPropertySource, Res
     {
         Resource key = component.getSpecification().getSpecificationLocation();
 
-        LocalizedPropertySource result = (LocalizedPropertySource) _componentSources.get(key);
+        LocalizedPropertySource result = (LocalizedPropertySource) _localizedComponentSources
+                .get(key);
 
         if (result == null)
         {
             result = new LocalizedPropertySource(getSourceForComponent(component));
 
-            _componentSources.put(key, result);
+            _localizedComponentSources.put(key, result);
         }
 
         return result;
+    }
 
+    private synchronized LocalizedPropertySource getLocalizedSourceForNamespace(INamespace namespace)
+    {
+        Resource key = namespace.getSpecificationLocation();
+
+        LocalizedPropertySource result = (LocalizedPropertySource) _localizedNamespaceSources
+                .get(key);
+
+        if (result == null)
+        {
+            result = new LocalizedPropertySource(getSourceForNamespace(namespace));
+
+            _localizedNamespaceSources.put(key, result);
+        }
+
+        return result;
     }
 
     private IPropertySource createSourceForComponent(IComponent component)
@@ -90,13 +129,25 @@ public class ComponentPropertySourceImpl implements ComponentPropertySource, Res
         List sources = new ArrayList();
 
         sources.add(new PropertyHolderPropertySource(specification));
-        sources.add(new PropertyHolderPropertySource(component.getNamespace().getSpecification()));
-        sources.add(_globalProperties);
+        sources.add(getSourceForNamespace(component.getNamespace()));
 
         return (IPropertySource) _chainBuilder.buildImplementation(
                 IPropertySource.class,
                 sources,
                 ImplMessages.componentPropertySourceDescription(specification));
+    }
+
+    private IPropertySource createSourceForNamespace(INamespace namespace)
+    {
+        List sources = new ArrayList();
+
+        sources.add(new PropertyHolderPropertySource(namespace.getSpecification()));
+        sources.add(_globalProperties);
+
+        return (IPropertySource) _chainBuilder.buildImplementation(
+                IPropertySource.class,
+                sources,
+                ImplMessages.namespacePropertySourceDescription(namespace));
     }
 
     public String getComponentProperty(IComponent component, String propertyName)
@@ -108,6 +159,17 @@ public class ComponentPropertySourceImpl implements ComponentPropertySource, Res
             String propertyName)
     {
         return getLocalizedSourceForComponent(component).getPropertyValue(propertyName, locale);
+    }
+
+    public String getNamespaceProperty(INamespace namespace, String propertyName)
+    {
+        return getSourceForNamespace(namespace).getPropertyValue(propertyName);
+    }
+
+    public String getLocalizedNamespaceProperty(INamespace namespace, Locale locale,
+            String propertyName)
+    {
+        return getLocalizedSourceForNamespace(namespace).getPropertyValue(propertyName, locale);
     }
 
     public void setChainBuilder(ChainBuilder chainBuilder)

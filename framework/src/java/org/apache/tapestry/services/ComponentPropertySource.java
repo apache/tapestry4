@@ -17,9 +17,14 @@ package org.apache.tapestry.services;
 import java.util.Locale;
 
 import org.apache.tapestry.IComponent;
+import org.apache.tapestry.INamespace;
 
 /**
- * Enapsulates the logic for searching for component meta-data.
+ * Enapsulates the logic for searching for component meta-data. Deployed as service
+ * tapestry.props.ComponentPropertySource.
+ * <p>
+ * TODO: Adjust name, since it now provides access to namespace properties as well as component
+ * properties.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
@@ -50,5 +55,26 @@ public interface ComponentPropertySource
      * @return the value of the given property name, or null if not found.
      */
     public String getLocalizedComponentProperty(IComponent component, Locale locale,
+            String propertyName);
+
+    /**
+     * Returns the property value for a particular named meta-data property of the namespace. The
+     * search order is:
+     * <ul>
+     * <li>The library or application specification for the namespace.</li>
+     * <li>The chain of global property sources.</li>
+     * </ul>
+     * 
+     * @return the value of the given key, or null if not found.
+     */
+
+    public String getNamespaceProperty(INamespace namespace, String propertyName);
+
+    /**
+     * As with {@link #getLocalizedComponentProperty(IComponent, Locale, String)}, but with a
+     * {@link INamespace}.
+     */
+
+    public String getLocalizedNamespaceProperty(INamespace namespace, Locale locale,
             String propertyName);
 }

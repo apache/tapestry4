@@ -76,6 +76,7 @@
         <set-service property="applicationStateManager" service-id="tapestry.state.ApplicationStateManager"/>
         <set-service property="request" service-id="tapestry.globals.HttpServletRequest"/>
         <set-service property="response" service-id="tapestry.globals.HttpServletResponse"/>
+        <set-service property="componentPropertySource" service-id="tapestry.props.ComponentPropertySource"/>
         <set-object property="applicationId" value="service-property:tapestry.globals.ApplicationGlobals:servletName"/>
         <set-object property="context" value="service-property:tapestry.globals.ApplicationGlobals:context"/>
       </construct>
@@ -141,8 +142,7 @@
     <invoke-factory>
       <construct class="org.apache.tapestry.services.impl.ComponentMessagesSourceImpl">
         <event-listener service-id="ResetEventCoordinator"/>
-        <set-object property="globalPropertySource" value="infrastructure:globalPropertySource"/>
-        <set-service property="componentPropertySource" service-id="tapestry.props.ComponentPropertySource"/>
+        <set-object property="componentPropertySource" value="infrastructure:componentPropertySource"/>
       </construct>
     </invoke-factory>
     

@@ -34,8 +34,6 @@ import org.apache.hivemind.util.Defense;
 import org.apache.hivemind.util.LocalizedNameGenerator;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.INamespace;
-import org.apache.tapestry.engine.DefaultNamespacePropertySource;
-import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.services.ComponentMessagesSource;
 import org.apache.tapestry.services.ComponentPropertySource;
@@ -67,8 +65,6 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
      */
 
     private Map _componentCache = new HashMap();
-
-    private IPropertySource _globalPropertySource;
 
     private ComponentPropertySource _componentPropertySource;
 
@@ -338,15 +334,10 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
 
     private String getNamespaceMessagesEncoding(INamespace namespace, Locale locale)
     {
-        IPropertySource source = new DefaultNamespacePropertySource(namespace,
-                _globalPropertySource, locale);
-
-        return source.getPropertyValue(MESSAGES_ENCODING_PROPERTY_NAME);
-    }
-
-    public void setGlobalPropertySource(IPropertySource source)
-    {
-        _globalPropertySource = source;
+        return _componentPropertySource.getLocalizedNamespaceProperty(
+                namespace,
+                locale,
+                MESSAGES_ENCODING_PROPERTY_NAME);
     }
 
     public void setComponentPropertySource(ComponentPropertySource componentPropertySource)
