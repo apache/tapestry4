@@ -329,7 +329,7 @@ public abstract class Body extends AbstractComponent implements IScriptProcessor
      *  then a function to execute them is created.
      **/
 
-    private void writeScript(IMarkupWriter writer)
+    protected void writeScript(IMarkupWriter writer)
     {
         if (!Tapestry.isEmpty(_externalScripts))
             writeExternalScripts(writer);
