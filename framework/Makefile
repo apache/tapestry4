@@ -4,6 +4,12 @@
 MODULE_NAME = Tapestry
 
 PACKAGES = \
+	com.primix.foundation \
+	com.primix.foundation.exception \
+	com.primix.foundation.io \
+	com.primix.foundation.prop \
+	com.primix.foundation.jdbc \
+	com.primix.foundation.ejb \
 	com.primix.tapestry \
 	com.primix.tapestry.app \
 	com.primix.tapestry.asset \
@@ -20,8 +26,7 @@ PACKAGES = \
 LOCAL_CLASSPATH = \
 	../lib/gnu-regexp.jar \
 	../lib/xerces.jar \
-	../lib/j2ee.jar \
-	../lib/PrimixFoundation.jar
+	../lib/j2ee.jar
 
 INSTALL_DIR = ../lib
 
@@ -29,9 +34,8 @@ JAVADOC_DIR = ../javadoc
 
 JAVADOC_OPT = \
 	-version -author -windowtitle "Tapestry API"
-	
-#	-link http://java.sun.com/products/jdk/1.2/docs/api 
-#	-link http://java.sun.com/j2ee/j2sdkee/techdocs/api
+	-link http://java.sun.com/products/jdk/1.2/docs/api 
+	-link http://java.sun.com/j2ee/j2sdkee/techdocs/api
 
 include $(SYS_MAKEFILE_DIR)/Jar.mk
 
