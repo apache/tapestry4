@@ -12,30 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.engine;
+package org.apache.tapestry.services.impl;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
-import org.apache.hivemind.util.ClasspathResource;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Resource;
-import org.apache.tapestry.IMarkupWriter;
+import org.apache.hivemind.util.ClasspathResource;
 import org.apache.tapestry.INamespace;
-import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.parse.SpecificationParser;
+import org.apache.tapestry.engine.ISpecificationSource;
+import org.apache.tapestry.engine.Namespace;
+import org.apache.tapestry.event.ResetEventListener;
+import org.apache.tapestry.parse.ISpecificationParser;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
 import org.apache.tapestry.spec.LibrarySpecification;
-import org.apache.tapestry.util.IRenderDescription;
-import org.apache.tapestry.util.pool.Pool;
 import org.apache.tapestry.util.xml.DocumentParseException;
 
 /**
@@ -43,31 +37,19 @@ import org.apache.tapestry.util.xml.DocumentParseException;
  *  expects to use the normal class loader to locate component
  *  specifications from within the classpath.
  *
- * <p>Caches specifications in memory forever, or until {@link #reset()} is invoked.
+ * <p>Caches specifications in memory forever, or until {@link #resetDidOccur()()} is invoked.
  *
- * <p>An instance of this class acts like a singleton and is shared by multiple sessions,
- * so it must be threadsafe.
  *
  * @author Howard Lewis Ship
  * 
- **/
+ */
 
-public class DefaultSpecificationSource implements ISpecificationSource, IRenderDescription
+public class SpecificationSourceImpl implements ISpecificationSource, ResetEventListener
 {
-    private static final Log LOG = LogFactory.getLog(DefaultSpecificationSource.class);
+    private ClassResolver _classResolver;
 
-    /**
-     *  Key used to get and store {@link SpecificationParser} instances
-     *  from the Pool.
-     * 
-     *  @since 3.0
-     * 
-     **/
-
-    private static final String PARSER_POOL_KEY = "org.apache.tapestry.SpecificationParser";
-
-    private ClassResolver _resolver;
     private IApplicationSpecification _specification;
+    private ISpecificationParser _parser;
 
     private INamespace _applicationNamespace;
     private INamespace _frameworkNamespace;
@@ -75,7 +57,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
     /**
      *  Contains previously parsed component specifications.
      *
-     **/
+     */
 
     private Map _componentCache = new HashMap();
 
@@ -84,7 +66,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
      * 
      *  @since 2.2
      * 
-     **/
+     */
 
     private Map _pageCache = new HashMap();
 
@@ -94,7 +76,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
      * 
      *  @since 2.2
      * 
-     **/
+     */
 
     private Map _libraryCache = new HashMap();
 
@@ -102,37 +84,16 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
      *  Contains {@link INamespace} instances, keyed on id (which will
      *  be null for the application specification).
      * 
-     **/
+     */
 
     private Map _namespaceCache = new HashMap();
 
     /**
-     *  Reference to the shared {@link org.apache.tapestry.util.pool.Pool}.
-     * 
-     *  @see org.apache.tapestry.IEngine#getPool()
-     * 
-     *  @since 3.0
-     * 
-     **/
-
-    private Pool _pool;
-
-    public DefaultSpecificationSource(
-        ClassResolver resolver,
-        IApplicationSpecification specification,
-        Pool pool)
-    {
-        _resolver = resolver;
-        _specification = specification;
-        _pool = pool;
-    }
-
-    /**
      *  Clears the specification cache.  This is used during debugging.
      *
-     **/
+     */
 
-    public synchronized void reset()
+    public synchronized void resetDidOccur()
     {
         _componentCache.clear();
         _pageCache.clear();
@@ -143,117 +104,40 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
         _frameworkNamespace = null;
     }
 
-    protected IComponentSpecification parseSpecification(
-        Resource resourceLocation,
-        boolean asPage)
+    protected IComponentSpecification parseSpecification(Resource resource, boolean asPage)
     {
         IComponentSpecification result = null;
-
-        if (LOG.isDebugEnabled())
-            LOG.debug("Parsing component specification " + resourceLocation);
-
-        SpecificationParser parser = getParser();
 
         try
         {
             if (asPage)
-                result = parser.parsePageSpecification(resourceLocation);
+                result = _parser.parsePageSpecification(resource);
             else
-                result = parser.parseComponentSpecification(resourceLocation);
+                result = _parser.parseComponentSpecification(resource);
         }
         catch (DocumentParseException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.format(
-                    "DefaultSpecificationSource.unable-to-parse-specification",
-                    resourceLocation),
+                ImplMessages.unableToParseSpecification(resource),
                 ex);
-        }
-        finally
-        {
-            discardParser(parser);
         }
 
         return result;
     }
 
-    protected ILibrarySpecification parseLibrarySpecification(Resource resourceLocation)
+    protected ILibrarySpecification parseLibrarySpecification(Resource resource)
     {
-        if (LOG.isDebugEnabled())
-            LOG.debug("Parsing library specification " + resourceLocation);
-
         try
         {
-            return getParser().parseLibrarySpecification(resourceLocation);
+            return _parser.parseLibrarySpecification(resource);
         }
         catch (DocumentParseException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.format(
-                    "DefaultSpecificationSource.unable-to-parse-specification",
-                    resourceLocation),
+                ImplMessages.unableToParseSpecification(resource),
                 ex);
         }
 
-    }
-
-    public synchronized String toString()
-    {
-        ToStringBuilder builder = new ToStringBuilder(this);
-
-        builder.append("applicationNamespace", _applicationNamespace);
-        builder.append("frameworkNamespace", _frameworkNamespace);
-        builder.append("specification", _specification);
-
-        return builder.toString();
-    }
-
-    /** @since 1.0.6 **/
-
-    public synchronized void renderDescription(IMarkupWriter writer)
-    {
-        writer.print("DefaultSpecificationSource[");
-
-        writeCacheDescription(writer, "page", _pageCache);
-        writer.beginEmpty("br");
-        writer.println();
-
-        writeCacheDescription(writer, "component", _componentCache);
-        writer.print("]");
-        writer.println();
-    }
-
-    private void writeCacheDescription(IMarkupWriter writer, String name, Map cache)
-    {
-        Set keySet = cache.keySet();
-
-        writer.print(Tapestry.size(keySet));
-        writer.print(" cached ");
-        writer.print(name);
-        writer.print(" specifications:");
-
-        boolean first = true;
-
-        Iterator i = keySet.iterator();
-        while (i.hasNext())
-        {
-            // The keys are now IResourceLocation instances
-
-            Object key = i.next();
-
-            if (first)
-            {
-                writer.begin("ul");
-                first = false;
-            }
-
-            writer.begin("li");
-            writer.print(key.toString());
-            writer.end();
-        }
-
-        if (!first)
-            writer.end(); // <ul>
     }
 
     /**
@@ -262,7 +146,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
      *  @param resourcePath the complete resource path to the specification.
      *  @throws ApplicationRuntimeException if the specification cannot be obtained.
      * 
-     **/
+     */
 
     public synchronized IComponentSpecification getComponentSpecification(Resource resourceLocation)
     {
@@ -306,25 +190,6 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
         return result;
     }
 
-    /** @since 2.2 **/
-
-    protected SpecificationParser getParser()
-    {
-        SpecificationParser result = (SpecificationParser) _pool.retrieve(PARSER_POOL_KEY);
-
-        if (result == null)
-            result = new SpecificationParser(_resolver);
-
-        return result;
-    }
-
-    /** @since 3.0 **/
-
-    protected void discardParser(SpecificationParser parser)
-    {
-        _pool.store(PARSER_POOL_KEY, parser);
-    }
-
     public synchronized INamespace getApplicationNamespace()
     {
         if (_applicationNamespace == null)
@@ -338,7 +203,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
         if (_frameworkNamespace == null)
         {
             Resource frameworkLocation =
-                new ClasspathResource(_resolver, "/org/apache/tapestry/Framework.library");
+                new ClasspathResource(_classResolver, "/org/apache/tapestry/Framework.library");
 
             ILibrarySpecification ls = getLibrarySpecification(frameworkLocation);
 
@@ -348,4 +213,18 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
         return _frameworkNamespace;
     }
 
+    public void setParser(ISpecificationParser parser)
+    {
+        _parser = parser;
+    }
+
+    public void setClassResolver(ClassResolver resolver)
+    {
+        _classResolver = resolver;
+    }
+
+    public void setSpecification(IApplicationSpecification specification)
+    {
+        _specification = specification;
+    }
 }

@@ -61,14 +61,6 @@ public interface ISpecificationSource
     public IComponentSpecification getPageSpecification(Resource specificationLocation);
 
     /**
-     *  Invoked to have the source clear any internal cache.  This is most often
-     *  used when debugging an application.
-     *
-     **/
-
-    public void reset();
-
-    /**
      *  Returns a {@link org.apache.tapestry.spec.LibrarySpecification} with the given path.
      * 
      *  @param specificationLocation the resource path of the specification

@@ -41,7 +41,7 @@ import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.parse.ComponentTemplate;
 import org.apache.tapestry.parse.ITemplateParserDelegate;
 import org.apache.tapestry.parse.TemplateParseException;
-import org.apache.tapestry.parse.TemplateParser;
+import org.apache.tapestry.parse.ITemplateParser;
 import org.apache.tapestry.parse.TemplateToken;
 import org.apache.tapestry.resource.ContextResource;
 import org.apache.tapestry.services.TemplateSource;
@@ -81,7 +81,7 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener
 
     private static final int BUFFER_SIZE = 2000;
 
-    private TemplateParser _parser;
+    private ITemplateParser _parser;
 
     /** @since 2.2 */
 
@@ -506,7 +506,7 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener
         return source.getPropertyValue(TEMPLATE_ENCODING_PROPERTY_NAME);
     }
 
-    public void setParser(TemplateParser parser)
+    public void setParser(ITemplateParser parser)
     {
         _parser = parser;
     }

@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.parse;
 
+import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.MessageFormatter;
 
 /**
@@ -100,5 +101,85 @@ class ParseMessages
     public static String unmatchedCloseTag(String tagName, int line)
     {
         return _formatter.format("unmatched-close-tag", tagName, new Integer(line));
+    }
+
+    public static String failConvertBoolean(String value)
+    {
+        return _formatter.format("fail-convert-boolean", value);
+    }
+
+    public static String failConvertDouble(String value)
+    {
+        return _formatter.format("fail-convert-double", value);
+    }
+
+    public static String failConvertInt(String value)
+    {
+        return _formatter.format("fail-convert-int", value);
+    }
+
+    public static String failConvertLong(String value)
+    {
+        return _formatter.format("fail-convert-long", value);
+    }
+
+    public static String unableToCopy(String id)
+    {
+        return _formatter.format("unable-to-copy", id);
+    }
+
+    public static String bothTypeAndCopyOf(String id)
+    {
+        return _formatter.format("both-type-and-copy-of", id);
+    }
+
+    public static String missingTypeOrCopyOf(String id)
+    {
+        return _formatter.format("missing-type-or-copy-of", id);
+    }
+
+    public static String unknownStaticValueType(String type)
+    {
+        return _formatter.format("unknown-static-value-type", type);
+    }
+
+    public static String frameworkLibraryIdIsReserved(String id)
+    {
+        return _formatter.format("framework-library-id-is-reserved", id);
+    }
+
+    public static String incorrectDocumentType(String expected, String actual)
+    {
+        return _formatter.format("incorrect-document-type", expected, actual);
+    }
+
+    public static String noAttributeAndBody(String attributeName, String elementName)
+    {
+        return _formatter.format("no-attribute-and-body", attributeName, elementName);
+    }
+
+    public static String requiredExtendedAttribute(String elementName, String attributeName)
+    {
+        return _formatter.format("required-extended-attribute", elementName, attributeName);
+    }
+
+    public static String invalidAttribute(String key, String value)
+    {
+        return _formatter.format(key, value);
+    }
+
+    public static String missingResource(Resource resource)
+    {
+        return _formatter.format("missing-resource", resource);
+    }
+
+    public static String errorReadingResource(Resource resource, Throwable cause)
+    {
+        return _formatter.format("error-reading-resource", resource, cause);
+    }
+
+    public static String unknownPublicId(Resource resource, String publicId)
+    {
+        return _formatter.format("unknown-public-id", resource, publicId);
     }
 }

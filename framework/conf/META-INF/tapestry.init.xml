@@ -67,7 +67,7 @@
       <construct class="org.apache.tapestry.services.impl.ApplicationSpecificationInitializer">
         <set-service property="classpathResourceFactory" service-id="tapestry.ClasspathResourceFactory"/>
         <set-service property="globals" service-id="tapestry.globals.ApplicationGlobals"/>
-        <set-service property="parser" service-id="tapestry.SpecificationParser"/>
+        <set-service property="parser" service-id="tapestry.parse.SpecificationParser"/>
       </construct>
     </invoke-factory>
   </service-point>

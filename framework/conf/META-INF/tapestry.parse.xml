@@ -18,12 +18,43 @@
   
   Template and specification parsers.
   
-  <service-point id="TemplateParser" interface="org.apache.tapestry.parse.TemplateParser">
+  <service-point id="SpecificationParser" interface="org.apache.tapestry.parse.ISpecificationParser">
+    
+    The parser for all types of specifications (page, component, library and application).
+    
+    <!-- This one is constructed a little wierdly, to help maintain compatibility with Spindle. -->
+    
+    <invoke-factory model="pooled">
+      <construct class="org.apache.tapestry.parse.SpecificationParser" autowire-services="false">
+        <log/>
+        <class-resolver/>
+        <object> instance:org.apache.tapestry.spec.SpecFactory </object>
+      </construct>
+    </invoke-factory>
+    
+    <interceptor service-id="hivemind.LoggingInterceptor"/>
+  </service-point>  
+  
+  <service-point id="SpecificationSource" interface="org.apache.tapestry.engine.ISpecificationSource">
+    
+    Used to obtain specifications for pages, components and libraries.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.SpecificationSourceImpl">
+        <set-service property="parser" service-id="SpecificationParser"/>
+        <set-service property="specification" service-id="tapestry.globals.ApplicationSpecification"/>
+        <event-listener service-id="tapestry.ResetEventCoordinator"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <service-point id="TemplateParser" interface="org.apache.tapestry.parse.ITemplateParser">
     
     Parses a template into a series of tokens that are used to construct a component's body.
     
     <invoke-factory model="threaded">
-      <construct class="org.apache.tapestry.parse.TemplateParserImpl">
+      <construct class="org.apache.tapestry.parse.TemplateParser">
         <set-object property="factory" value="instance:org.apache.tapestry.parse.TemplateTokenFactory"/>
       </construct>
     </invoke-factory>

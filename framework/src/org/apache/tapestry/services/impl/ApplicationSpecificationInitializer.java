@@ -19,11 +19,11 @@ import javax.servlet.http.HttpServlet;
 
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.Resource;
+import org.apache.tapestry.parse.ISpecificationParser;
 import org.apache.tapestry.resource.ContextResource;
 import org.apache.tapestry.services.ApplicationGlobals;
 import org.apache.tapestry.services.ApplicationInitializer;
 import org.apache.tapestry.services.ClasspathResourceFactory;
-import org.apache.tapestry.services.SpecificationParser;
 import org.apache.tapestry.spec.ApplicationSpecification;
 import org.apache.tapestry.spec.IApplicationSpecification;
 
@@ -39,7 +39,7 @@ public class ApplicationSpecificationInitializer implements ApplicationInitializ
     private Log _log;
     private ClasspathResourceFactory _classpathResourceFactory;
     private ApplicationGlobals _globals;
-    private SpecificationParser _parser;
+    private ISpecificationParser _parser;
 
     public static final String APP_SPEC_PATH_PARAM =
         "org.apache.tapestry.application-specification";
@@ -129,7 +129,7 @@ public class ApplicationSpecificationInitializer implements ApplicationInitializ
         _globals = globals;
     }
 
-    public void setParser(SpecificationParser parser)
+    public void setParser(ISpecificationParser parser)
     {
         _parser = parser;
     }

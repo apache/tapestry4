@@ -33,14 +33,6 @@
       <construct class="org.apache.tapestry.services.impl.ClasspathResourceFactoryImpl"/>
     </invoke-factory>
   </service-point>
-  
-  <service-point id="SpecificationParser" interface="org.apache.tapestry.services.SpecificationParser">
-    <invoke-factory model="pooled">
-      <construct class="org.apache.tapestry.services.impl.SpecificationParserImpl"/>
-    </invoke-factory>
-    
-    <interceptor service-id="hivemind.LoggingInterceptor"/>
-  </service-point>
    
   <service-point id="Infrastructure" interface="org.apache.tapestry.services.Infrastructure">
     
@@ -55,6 +47,7 @@
         <set-service property="componentMessagesSource" service-id="ComponentMessagesSource"/>
         <set-service property="resetEventCoordinator" service-id="ResetEventCoordinator"/>
         <set-service property="templateSource" service-id="tapestry.parse.TemplateSource"/>
+        <set-service property="specificationSource" service-id="tapestry.parse.SpecificationSource"/>
       </construct>
     </invoke-factory>
     

@@ -67,9 +67,8 @@ import org.xml.sax.SAXException;
  *
  * @author Howard Lewis Ship
  */
-public class SpecificationParser extends AbstractParser
+public class SpecificationParser extends AbstractParser implements ISpecificationParser
 {
-
     private class BooleanConverter implements ConfigureValueConverter
     {
         public Object convert(String value, Location location)
@@ -78,7 +77,7 @@ public class SpecificationParser extends AbstractParser
 
             if (result == null || !(result instanceof Boolean))
                 throw new DocumentParseException(
-                    Tapestry.format("SpecificationParser.fail-convert-boolean", value),
+                    ParseMessages.failConvertBoolean(value),
                     location,
                     null);
 
@@ -97,7 +96,7 @@ public class SpecificationParser extends AbstractParser
             catch (NumberFormatException ex)
             {
                 throw new DocumentParseException(
-                    Tapestry.format("SpecificationParser.fail-convert-double", value),
+                    ParseMessages.failConvertDouble(value),
                     location,
                     ex);
             }
@@ -114,10 +113,7 @@ public class SpecificationParser extends AbstractParser
             }
             catch (NumberFormatException ex)
             {
-                throw new DocumentParseException(
-                    Tapestry.format("SpecificationParser.fail-convert-int", value),
-                    location,
-                    ex);
+                throw new DocumentParseException(ParseMessages.failConvertInt(value), location, ex);
             }
         }
     }
@@ -133,7 +129,7 @@ public class SpecificationParser extends AbstractParser
             catch (NumberFormatException ex)
             {
                 throw new DocumentParseException(
-                    Tapestry.format("SpecificationParser.fail-convert-long", value),
+                    ParseMessages.failConvertLong(value),
                     location,
                     ex);
             }
@@ -238,7 +234,8 @@ public class SpecificationParser extends AbstractParser
      **/
 
     public static final String LIBRARY_ID_PATTERN = Tapestry.SIMPLE_PROPERTY_NAME_PATTERN;
-    private static final Log LOG = LogFactory.getLog(SpecificationParser.class);
+
+    private final Log _log;
 
     /**
      *  Perl5 pattern for page names.  Letter
@@ -328,7 +325,7 @@ public class SpecificationParser extends AbstractParser
 
     /** @since 1.0.9 **/
 
-    private SpecFactory _factory;
+    private final SpecFactory _factory;
 
     private RegexpMatcher _matcher = new RegexpMatcher();
 
@@ -341,7 +338,7 @@ public class SpecificationParser extends AbstractParser
      * 
      **/
 
-    private ClassResolver _resolver;
+    private final ClassResolver _resolver;
 
     /**
      * The root object parsed: a component or page specification, a library
@@ -392,8 +389,7 @@ public class SpecificationParser extends AbstractParser
     }
 
     /**
-     * Create a new instance with the provided class resolver and
-     * a default {@link SpecFactory}.
+     * This constructor is a convienience used by some tests.
      */
     public SpecificationParser(ClassResolver resolver)
     {
@@ -406,6 +402,15 @@ public class SpecificationParser extends AbstractParser
      */
     public SpecificationParser(ClassResolver resolver, SpecFactory factory)
     {
+        this(LogFactory.getLog(SpecificationParser.class), resolver, factory);
+    }
+
+    /**
+     * The full constructor, used within Tapestry.
+     */
+    public SpecificationParser(Log log, ClassResolver resolver, SpecFactory factory)
+    {
+        _log = log;
         _resolver = resolver;
         _factory = factory;
     }
@@ -833,7 +838,7 @@ public class SpecificationParser extends AbstractParser
         IContainedComponent source = cs.getComponent(sourceComponentId);
         if (source == null)
             throw new DocumentParseException(
-                Tapestry.format("SpecificationParser.unable-to-copy", sourceComponentId),
+                ParseMessages.unableToCopy(sourceComponentId),
                 getLocation(),
                 null);
 
@@ -1009,11 +1014,7 @@ public class SpecificationParser extends AbstractParser
 
     private void enterAsset(String pathAttributeName, AssetType type)
     {
-        String name =
-            getValidatedAttribute(
-                "name",
-                ASSET_NAME_PATTERN,
-                "SpecificationParser.invalid-asset-name");
+        String name = getValidatedAttribute("name", ASSET_NAME_PATTERN, "invalid-asset-name");
         String path = getAttribute(pathAttributeName);
 
         IAssetSpecification ia = _factory.createAssetSpecification();
@@ -1030,11 +1031,7 @@ public class SpecificationParser extends AbstractParser
 
     private void enterBean()
     {
-        String name =
-            getValidatedAttribute(
-                "name",
-                BEAN_NAME_PATTERN,
-                "SpecificationParser.invalid-bean-name");
+        String name = getValidatedAttribute("name", BEAN_NAME_PATTERN, "invalid-bean-name");
         String className = getAttribute("class");
         BeanLifecycle lifecycle =
             (BeanLifecycle) getConvertedAttribute("lifecycle", BeanLifecycle.REQUEST);
@@ -1065,17 +1062,10 @@ public class SpecificationParser extends AbstractParser
 
     private void enterComponent()
     {
-        String id =
-            getValidatedAttribute(
-                "id",
-                COMPONENT_ID_PATTERN,
-                "SpecificationParser.invalid-component-id");
+        String id = getValidatedAttribute("id", COMPONENT_ID_PATTERN, "invalid-component-id");
 
         String type =
-            getValidatedAttribute(
-                "type",
-                COMPONENT_TYPE_PATTERN,
-                "SpecificationParser.invalid-component-type");
+            getValidatedAttribute("type", COMPONENT_TYPE_PATTERN, "invalid-component-type");
         String copyOf = getAttribute("copy-of");
         boolean inherit = getBooleanAttribute("inherit-informal-parameters", false);
 
@@ -1087,7 +1077,7 @@ public class SpecificationParser extends AbstractParser
         {
             if (Tapestry.isNonBlank(type))
                 throw new DocumentParseException(
-                    Tapestry.format("SpecificationParser.both-type-and-copy-of", id),
+                    ParseMessages.bothTypeAndCopyOf(id),
                     getLocation(),
                     null);
         }
@@ -1095,7 +1085,7 @@ public class SpecificationParser extends AbstractParser
         {
             if (Tapestry.isBlank(type))
                 throw new DocumentParseException(
-                    Tapestry.format("SpecificationParser.missing-type-or-copy-of", id),
+                    ParseMessages.missingTypeOrCopyOf(id),
                     getLocation(),
                     null);
         }
@@ -1118,10 +1108,7 @@ public class SpecificationParser extends AbstractParser
     private void enterComponentType()
     {
         String type =
-            getValidatedAttribute(
-                "type",
-                COMPONENT_ALIAS_PATTERN,
-                "SpecificationParser.invalid-component-type");
+            getValidatedAttribute("type", COMPONENT_ALIAS_PATTERN, "invalid-component-type");
         String path = getAttribute("specification-path");
 
         ILibrarySpecification ls = (ILibrarySpecification) peekObject();
@@ -1134,20 +1121,16 @@ public class SpecificationParser extends AbstractParser
     private void enterConfigure()
     {
         String propertyName =
-            getValidatedAttribute(
-                "property-name",
-                PROPERTY_NAME_PATTERN,
-                "SpecificationParser.invalid-property-name");
+            getValidatedAttribute("property-name", PROPERTY_NAME_PATTERN, "invalid-property-name");
 
         ConfigureValueConverter converter =
             (ConfigureValueConverter) getConvertedAttribute("type", null);
 
         if (converter == null)
             throw new DocumentParseException(
-                Tapestry.format(
-                    "SpecificationParser.unknown-static-value-type",
-                    getAttribute("type")),
-                getResource());
+                ParseMessages.unknownStaticValueType(getAttribute("type")),
+                getLocation(),
+                null);
 
         String value = getAttribute("value");
 
@@ -1172,10 +1155,7 @@ public class SpecificationParser extends AbstractParser
     private void enterExtension()
     {
         String name =
-            getValidatedAttribute(
-                "name",
-                EXTENSION_NAME_PATTERN,
-                "SpecificationParser.invalid-extension-name");
+            getValidatedAttribute("name", EXTENSION_NAME_PATTERN, "invalid-extension-name");
 
         boolean immediate = getBooleanAttribute("immediate", false);
         String className = getAttribute("class");
@@ -1232,19 +1212,14 @@ public class SpecificationParser extends AbstractParser
 
     private void enterLibrary()
     {
-        String libraryId =
-            getValidatedAttribute(
-                "id",
-                LIBRARY_ID_PATTERN,
-                "SpecificationParser.invalid-library-id");
+        String libraryId = getValidatedAttribute("id", LIBRARY_ID_PATTERN, "invalid-library-id");
         String path = getAttribute("specification-path");
 
         if (libraryId.equals(INamespace.FRAMEWORK_NAMESPACE))
             throw new DocumentParseException(
-                Tapestry.format(
-                    "SpecificationParser.framework-library-id-is-reserved",
-                    INamespace.FRAMEWORK_NAMESPACE),
-                getResource());
+                ParseMessages.frameworkLibraryIdIsReserved(INamespace.FRAMEWORK_NAMESPACE),
+                getLocation(),
+                null);
 
         ILibrarySpecification ls = (ILibrarySpecification) peekObject();
 
@@ -1283,11 +1258,7 @@ public class SpecificationParser extends AbstractParser
 
     private void enterPage()
     {
-        String name =
-            getValidatedAttribute(
-                "name",
-                PAGE_NAME_PATTERN,
-                "SpecificationParser.invalid-page-name");
+        String name = getValidatedAttribute("name", PAGE_NAME_PATTERN, "invalid-page-name");
         String path = getAttribute("specification-path");
 
         ILibrarySpecification ls = (ILibrarySpecification) peekObject();
@@ -1302,16 +1273,10 @@ public class SpecificationParser extends AbstractParser
         IParameterSpecification ps = _factory.createParameterSpecification();
 
         String name =
-            getValidatedAttribute(
-                "name",
-                PARAMETER_NAME_PATTERN,
-                "SpecificationParser.invalid-parameter-name");
+            getValidatedAttribute("name", PARAMETER_NAME_PATTERN, "invalid-parameter-name");
 
         String propertyName =
-            getValidatedAttribute(
-                "property-name",
-                PROPERTY_NAME_PATTERN,
-                "SpecificationParser.invalid-property-name");
+            getValidatedAttribute("property-name", PROPERTY_NAME_PATTERN, "invalid-property-name");
 
         if (propertyName == null)
             propertyName = name;
@@ -1357,11 +1322,7 @@ public class SpecificationParser extends AbstractParser
 
     private void enterPropertySpecification()
     {
-        String name =
-            getValidatedAttribute(
-                "name",
-                PROPERTY_NAME_PATTERN,
-                "SpecificationParser.invalid-property-name");
+        String name = getValidatedAttribute("name", PROPERTY_NAME_PATTERN, "invalid-property-name");
         String type = getAttribute("type");
         boolean persistent = getBooleanAttribute("persistent", false);
         String initialValue = getAttribute("initial-value");
@@ -1393,11 +1354,7 @@ public class SpecificationParser extends AbstractParser
 
     private void enterService()
     {
-        String name =
-            getValidatedAttribute(
-                "name",
-                SERVICE_NAME_PATTERN,
-                "SpecificationParser.invalid-service-name");
+        String name = getValidatedAttribute("name", SERVICE_NAME_PATTERN, "invalid-service-name");
         String className = getAttribute("class");
 
         ILibrarySpecification ls = (ILibrarySpecification) peekObject();
@@ -1462,10 +1419,7 @@ public class SpecificationParser extends AbstractParser
             return;
 
         throw new DocumentParseException(
-            Tapestry.format(
-                "AbstractDocumentParser.incorrect-document-type",
-                _elementName,
-                elementName),
+            ParseMessages.incorrectDocumentType(_elementName, elementName),
             getLocation(),
             null);
 
@@ -1513,10 +1467,7 @@ public class SpecificationParser extends AbstractParser
         if (asAttribute && asContent)
         {
             throw new DocumentParseException(
-                Tapestry.format(
-                    "SpecificationParser.no-attribute-and-body",
-                    attributeName,
-                    _elementName),
+                ParseMessages.noAttributeAndBody(attributeName, _elementName),
                 getLocation(),
                 null);
         }
@@ -1524,13 +1475,11 @@ public class SpecificationParser extends AbstractParser
         if (required && !(asAttribute || asContent))
         {
             throw new DocumentParseException(
-                Tapestry.format(
-                    "SpecificationParser.required-extended-attribute",
-                    _elementName,
-                    attributeName),
+                ParseMessages.requiredExtendedAttribute(_elementName, attributeName),
                 getLocation(),
                 null);
         }
+
         if (asAttribute)
             return attributeValue;
 
@@ -1547,7 +1496,10 @@ public class SpecificationParser extends AbstractParser
         if (_matcher.matches(pattern, value))
             return value;
 
-        throw new InvalidStringException(Tapestry.format(errorKey, value), value, getLocation());
+        throw new InvalidStringException(
+            ParseMessages.invalidAttribute(errorKey, value),
+            value,
+            getLocation());
     }
 
     protected void initializeParser(Resource resource, int startState)
@@ -1606,9 +1558,7 @@ public class SpecificationParser extends AbstractParser
             URL resourceURL = resource.getResourceURL();
 
             if (resourceURL == null)
-                throw new DocumentParseException(
-                    Tapestry.format("AbstractDocumentParser.missing-resource", resource),
-                    resource);
+                throw new DocumentParseException(ParseMessages.missingResource(resource), resource);
 
             InputStream rawStream = resourceURL.openStream();
             stream = new BufferedInputStream(rawStream);
@@ -1625,10 +1575,7 @@ public class SpecificationParser extends AbstractParser
             _parser = null;
 
             throw new DocumentParseException(
-                Tapestry.format(
-                    "SpecificationParser.error-reading-resource",
-                    resource,
-                    ex.getMessage()),
+                ParseMessages.errorReadingResource(resource, ex),
                 resource,
                 ex);
         }
@@ -1702,7 +1649,7 @@ public class SpecificationParser extends AbstractParser
             return getDTDInputSource("Tapestry_3_0.dtd");
 
         throw new DocumentParseException(
-            Tapestry.format("AbstractDocumentParser.unknown-public-id", getResource(), publicId),
+            ParseMessages.unknownPublicId(getResource(), publicId),
             getResource());
     }
 }

@@ -12,10 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.services;
+package org.apache.tapestry.parse;
 
 import org.apache.hivemind.Resource;
 import org.apache.tapestry.spec.IApplicationSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.spec.ILibrarySpecification;
 
 /**
  * Service interface for a wrapper around the class
@@ -24,15 +26,25 @@ import org.apache.tapestry.spec.IApplicationSpecification;
  * is not threadsafe, the implementation of this
  * service uses the pooled service model.
  *
+ * <p>
+ * Note: had to use the 'I' prefix, so that {@link org.apache.tapestry.parse.SpecificationParser}
+ * could keep its name. Otherwise, it makes Spindle support really, really ugly.
+ * 
  * @author Howard Lewis Ship
  * @since 3.1
  */
-public interface SpecificationParser
+public interface ISpecificationParser
 {
-	/**
-	 * Parses an application specification from the provided Resource.
-	 * 
-	 * @throws org.apache.hivemind.ApplicationRuntimeException on any error.
-	 */
-	public IApplicationSpecification parseApplicationSpecification(Resource resource);
+    /**
+     * Parses an application specification from the provided Resource.
+     * 
+     * @throws org.apache.hivemind.ApplicationRuntimeException on any error.
+     */
+    public IApplicationSpecification parseApplicationSpecification(Resource resource);
+
+    public IComponentSpecification parseComponentSpecification(Resource resource);
+
+    public ILibrarySpecification parseLibrarySpecification(Resource resource);
+
+    public IComponentSpecification parsePageSpecification(Resource resource);
 }
