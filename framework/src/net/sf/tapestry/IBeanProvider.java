@@ -64,7 +64,7 @@ public interface IBeanProvider
 	 *  be provided.
 	 *
 	 *  @since 1.0.6
-	 *  @see ComponentSpecification#getBeanNames()
+	 *  @see net.sf.tapestry.spec.ComponentSpecification#getBeanNames()
 	 *
 	 **/
 	

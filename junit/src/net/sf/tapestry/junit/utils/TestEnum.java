@@ -34,7 +34,8 @@ import junit.framework.TestCase;
 import net.sf.tapestry.spec.AssetType;
 
 /**
- *  Tests the ability of an {@link Enum} to be serialized and deserialized properly.
+ *  Tests the ability of an {@link net.sf.tapestry.util.Enum} 
+ *  to be serialized and deserialized properly.
  * 
  *  @author Howard Lewis Ship
  *  @version $Id$

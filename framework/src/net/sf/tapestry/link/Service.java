@@ -29,7 +29,7 @@ import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IRequestCycle;
 
 /**
- *  A component for creating a link for an arbitrary {@link IEngineService
+ *  A component for creating a link for an arbitrary {@link net.sf.tapestry.IEngineService
  *  engine service}.  A Service component can emulate an {@link Action},
  *  {@link Page} or {@link Direct} component, but is most often used in
  *  conjunction with an application-specific service.  

@@ -192,9 +192,10 @@
 	      of building a .tar.gz because the disto is smaller than an equivalent .zip file.
 	   -->
 	 
-	<tar basedir="${dist.root.dir}" tarfile="${dist.tar}" includes="${dist.base}/**" 
-
-longfile="gnu"/>
+	<tar basedir="${dist.root.dir}" 
+		tarfile="${dist.tar}" 
+		includes="${dist.base}/**"
+		longfile="gnu"/>
 	 
 	<!-- Zip up the TAR file -->
 	 
@@ -219,20 +220,18 @@ longfile="gnu"/>
 	
 		<doctitle>Tapestry API (Release ${framework.version})</doctitle>
 		
-		<package name="com.primix.tapestry.*"/>
 		<package name="net.sf.tapestry.*"/>
 		<package name="tutorial.*"/>
-		<package name="com.primix.vlib.*"/>
 		
 		<link href="http:/java.sun.com/j2se/1.4/docs/api/"/>
 		<link href="http:/java.sun.com/j2ee/j2sdkee/techdocs/api"/>
 		<link href="http:/jakarta.apache.org/log4j/docs/api"/>
 		<link href="http:/www.junit.org/junit/javadoc/3.7"/>
 		  
-		<group title="Tapestry Framework" packages="com.primix.tapestry:com.primix.tapestry.*"/>
-		<group title="Tapestry Contributions Framework" packages="net.sf.tapestry.*"/>
+		<group title="Tapestry Framework" packages="net.sf.tapestry:net.sf.tapestry.*"/>
+		<group title="Tapestry Contributions Framework" packages="net.sf.tapestry.contrib.*"/>
 		<group title="Tapestry Tutorials" packages="tutorial.*"/>
-		<group title="Virtual Library" packages="com.primix.vlib:com.primix.vlib.*"/>
+		<group title="Virtual Library" packages="net.sf.tapestry.vlib:net.sf.tapestry.vlib.*"/>
 		<group title="JUnit Tests" packages="net.sf.tapestry.junit,net.sf.tapestry.junit.*"/>
 		  
 		<sourcepath>
@@ -375,15 +374,15 @@ longfile="gnu"/>
 	<sysproperty key="javax.xml.parsers.DocumentBuilderFactory"
 		value="org.apache.crimson.jaxp.DocumentBuilderFactoryImpl"/>
 
-  	<sysproperty key="com.primix.tapestry.enable-reset-service" value="true"/>
-  	<sysproperty key="com.primix.vlib.debug-enabled" value="true"/>
+  	<sysproperty key="net.sf.tapestry.enable-reset-service" value="true"/>
+  	<sysproperty key="net.sf.tapestry.vlib.debug-enabled" value="true"/>
   	
   	<!-- These allow private assets to be exported as static
   		 files.  This coordinates with portions of
   		 config/jboss/conf/jetty.xml -->
   		 
- 	<sysproperty key="com.primix.tapestry.asset.dir" value="${jboss.private.dir}"/>
- 	<sysproperty key="com.primix.tapestry.asset.URL" value="/private"/>
+ 	<sysproperty key="net.sf.tapestry.asset.dir" value="${jboss.private.dir}"/>
+ 	<sysproperty key="net.sf.tapestry.asset.URL" value="/private"/>
  	
   	<!-- The following is probably only necessary under Windows.  Jetty gets
   	     tripped up by the fact that pathnames are case-insensitive.  -->

@@ -83,7 +83,7 @@ public class BeanProviderHelper extends PropertyHelper
 
         /**
          *  Returns {@link Object}.class, because we never know the
-         *  type of objects stored in a {@link Map}.
+         *  type of objects stored in a {@link java.util.Map}.
          *
          **/
 

@@ -42,6 +42,7 @@ import net.sf.tapestry.vlib.components.Browser;
 import net.sf.tapestry.vlib.ejb.Book;
 import net.sf.tapestry.vlib.ejb.IBookQuery;
 import net.sf.tapestry.vlib.ejb.IOperations;
+import net.sf.tapestry.vlib.ejb.IPerson;
 import net.sf.tapestry.vlib.ejb.Person;
 
 /**

@@ -38,7 +38,8 @@ import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.Tapestry;
 
 /**
- *  Inserts formatted text (possibly collected using a {@link Text} component.
+ *  Inserts formatted text (possibly collected using a {@link net.sf.tapestry.form.Text} 
+ *  component.
  *  To maintain the line breaks provided originally, this component will
  *  break the input into individual lines and insert additional
  *  HTML to make each line seperate.

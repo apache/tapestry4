@@ -220,7 +220,7 @@ public interface IComponent extends IRender
     /**
      *  Invoked to make the receiver render any elements it wraps.  This is typically
      *  invoked by the receiver itself.  This method is public so that the
-     *  {@link InsertWrapped} component may operate.
+     *  {@link net.sf.tapestry.components.InsertWrapped} component may operate.
      *
      **/
 
@@ -240,13 +240,13 @@ public interface IComponent extends IRender
     /**
      *  Returns the contained components as an unmodifiable {@link Map}.  This
      *  allows peer components to work together without directly involving their
-     *  container ... the classic example is to have an {@link Insert} work with
-     *  an enclosing {@link Foreach}.
+     *  container ... the classic example is to have an {@link net.sf.tapestry.components.Insert} 
+     *  work with an enclosing {@link net.sf.tapestry.components.Foreach}.
      *
      *  <p>This is late addition to Tapestry, because it also opens the door
-     * to abuse, since it is quite possible to break the "black box" aspect of
-     * a component by interacting directly with components it embeds.  This creates
-     * ugly interelationships between components that should be seperated.
+     *  to abuse, since it is quite possible to break the "black box" aspect of
+     *  a component by interacting directly with components it embeds.  This creates
+     *  ugly interelationships between components that should be seperated.
      *
      *  @returns A Map of components keyed on component id, or null if the
      *  component contains no other components.

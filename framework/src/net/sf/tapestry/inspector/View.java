@@ -63,7 +63,8 @@ public class View extends Enum
     public static final View PROPERTIES = new View("PROPERTIES");
 
     /**
-     *  View that shows information about the {@link IEngine}.
+     *  View that shows information about the 
+     *  {@link net.sf.tapestry.IEngine}.
      *
      **/
 

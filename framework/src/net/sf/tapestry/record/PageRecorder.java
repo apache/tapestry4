@@ -76,7 +76,8 @@ public abstract class PageRecorder implements IPageRecorder, Serializable
     public abstract void commit() throws PageRecorderCommitException;
 
     /**
-     *  Returns a <code>Collection</code> of {@link IPageChange} objects
+     *  Returns a <code>Collection</code> of 
+     *  {@link net.sf.tapestry.IPageChange} objects
      *  identifying changes to the page and its components.
      *
      **/

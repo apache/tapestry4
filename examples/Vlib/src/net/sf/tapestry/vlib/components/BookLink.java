@@ -37,9 +37,10 @@ import net.sf.tapestry.vlib.Visit;
 import net.sf.tapestry.vlib.ejb.Book;
 
 /**
- *  Creates a link to the {@link ViewBook} page using the external service.
+ *  Creates a link to the {@link net.sf.tapestry.vlib.pages.ViewBook} 
+ *  page using the external service.
  *
-  *
+ *
  * <table border=1>
  * <tr> <th>Parameter</th> <th>Type</th> <th>Read / Write </th> <th>Required</th> <th>Default</th> <th>Description</th>
  * </tr>

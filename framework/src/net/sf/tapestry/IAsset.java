@@ -47,7 +47,7 @@ public interface IAsset
     /**
      *  Returns a URL for the asset, ready to be inserted into the output HTML.
      *  If the asset can be localized, the localized version (matching the
-     *  {@link Locale} of the current {@link IPage page}) is returned.
+     *  {@link java.util.Locale} of the current {@link IPage page}) is returned.
      *
      **/
 

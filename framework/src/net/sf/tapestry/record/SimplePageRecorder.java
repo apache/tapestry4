@@ -39,7 +39,7 @@ import java.util.Map;
 import net.sf.tapestry.PageRecorderCommitException;
 
 /**
- *  Simple implementation of {@link IPageRecorder}
+ *  Simple implementation of {@link net.sf.tapestry.IPageRecorder}
  *  that stores page changes in-memory using
  *  collections.
  *

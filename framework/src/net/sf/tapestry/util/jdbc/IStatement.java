@@ -30,7 +30,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- *  A wrapper around {@link Statement} or {@link PreparedStatement}.
+ *  A wrapper around {@link Statement} or {@link java.sql.PreparedStatement}.
  *
  *  @version $Id$
  *  @author Howard Lewis Ship

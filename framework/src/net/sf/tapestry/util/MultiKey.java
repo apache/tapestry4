@@ -34,7 +34,7 @@ import net.sf.tapestry.Tapestry;
 
 /**
  *  A complex key that may be used as an alternative to nested
- *  {@link Map}s.
+ *  {@link java.util.Map}s.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$

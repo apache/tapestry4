@@ -165,7 +165,7 @@ public interface IEngine
      *  Returns the context path, a string which is prepended to the names of
      *  any assets or servlets.  This may be the empty string, but won't be null.
      *
-     *  <p>This value is obtained from {@link HttpServletRequest#getContextPath()}.
+     *  <p>This value is obtained from {@link javax.servlet.http.HttpServletRequest#getContextPath()}.
      **/
 
     public String getContextPath();
@@ -201,7 +201,7 @@ public interface IEngine
      *  work to ensure that the engine is properly replicated in a clustering environment; if
      *  this method returns false, it can skip that extra work.
      *
-     *  @returns true if the state of the engine was, or could have been, changed during
+     *  @return true if the state of the engine was, or could have been, changed during
      *  processing.
      *
      **/

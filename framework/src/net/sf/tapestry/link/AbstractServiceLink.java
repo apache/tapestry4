@@ -42,7 +42,7 @@ import net.sf.tapestry.html.Body;
 
 /**
  *  Base class for
- *  implementations of {@link net.sf.tapestry.components.IServiceLink}.
+ *  implementations of {@link IServiceLink}.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -91,7 +91,7 @@ public abstract class AbstractServiceLink
 
     /**
      *  Adds an event handler (typically, from a wrapped component such
-     *  as a {@link Rollover}).
+     *  as a {@link net.sf.tapestry.html.Rollover}).
      *
      **/
 

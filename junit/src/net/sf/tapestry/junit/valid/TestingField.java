@@ -43,7 +43,8 @@ import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.valid.IField;
 
 /**
- *  Used as a stand-in for a real component when testing the {@link IValidator}
+ *  Used as a stand-in for a real component when testing the 
+ *  {@link net.sf.tapestry.valid.IValidator}
  *  implementations.
  *
  *  @author Howard Lewis Ship

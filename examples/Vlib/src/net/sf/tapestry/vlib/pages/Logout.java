@@ -32,7 +32,7 @@ import net.sf.tapestry.html.BasePage;
 import net.sf.tapestry.vlib.VirtualLibraryEngine;
 
 /**
- *  Logs the user out, invalidating the {@link HttpSession} and showing
+ *  Logs the user out, invalidating the {@link javax.servlet.http.HttpSession} and showing
  *  a goodbye message.
  *
  *  @author Howard Lewis Ship

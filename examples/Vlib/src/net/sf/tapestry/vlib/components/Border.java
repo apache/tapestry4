@@ -38,8 +38,9 @@ import net.sf.tapestry.vlib.pages.NewBook;
 
 /**
  *  The standard Border component, which provides the title of the page,
- *  the link to {@link MyLibrary}, the {@link Login} page and the {@link Logout}
- *  page.
+ *  the link to {@link net.sf.tapestry.vlib.pages.MyLibrary}, 
+ *  the {@link net.sf.tapestry.vlib.pages.Login} page and the 
+ *  {@link net.sf.tapestry.vlib.pages.Logout} page.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$

@@ -92,7 +92,7 @@ public interface IForm extends IAction
      *  to the id.
      *
      *  <p>This method is provided simply so that some components
-     * ({@link ImageSubmit}) have more specific control over
+     *  ({@link net.sf.tapestry.form.ImageSubmit}) have more specific control over
      *  their names.
      *
      *  @since 1.0.5

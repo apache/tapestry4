@@ -29,7 +29,7 @@ import net.sf.tapestry.form.IFormComponent;
 
 /**
  *  Interface for a number of components that act as a normal
- *  {@link TextField} component, but perform extra validation.
+ *  {@link net.sf.tapestry.form.TextField} component, but perform extra validation.
  * 
  * 
  *  <p>In release 1.0.9, it was changed to extend

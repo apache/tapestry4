@@ -41,12 +41,13 @@ import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.record.SimplePageRecorder;
 
 /**
- *  Concrete implementation of {@link IEngine} used for relatively
+ *  Concrete implementation of {@link net.sf.tapestry.IEngine} used for relatively
  *  small applications.  All page state information is maintained in memory.  Since
- *  the instance is stored within the {@link HttpSession}, all page state information
+ *  the instance is stored within the {@link javax.servlet.http.HttpSession}, 
+ *  all page state information
  *  will be carried along to other servers in the cluster.
  *
- *  @author Howard Ship
+ *  @author Howard Lewis Ship
  *  @version $Id$
  * 
  **/

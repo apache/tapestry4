@@ -27,7 +27,7 @@ package net.sf.tapestry.contrib.mckoi;
 import org.jboss.util.ServiceMBean;
 
 /**
- *  MBean interface for{@link McKoiDB}.
+ *  MBean interface for {@link net.sf.tapestry.contrib.mckoi.McKoiDB}.
  * 
  *  @author Howard Lewis Ship
  *  @version $Id$

@@ -60,7 +60,7 @@ import net.sf.tapestry.util.StringSplitter;
  *  	<li>{@link HttpServletRequest}
  *		<li>{@link HttpServletResponse}
  *		<li>{@link HttpSession}
- * 		<li>{@link HttpServlet}
+ * 		<li>{@link javax.servlet.http.HttpServlet}
  * </ul>
  * <p>It also provides methods for:
  * <ul>
@@ -73,9 +73,9 @@ import net.sf.tapestry.util.StringSplitter;
  * <li>Writing an HTML description of the <code>RequestContext</code> (for debugging).
  * </ul>
  *
- * <p>This class is not a component, but does implement {@link IRender}.  When asked to render
- * (perhaps as the delegate of a {@link com.primix.tapestry.components.Delegator} component}
- * it simply invokes {@link #write(IMarkupWriter)} to display all debugging output.
+ *  <p>This class is not a component, but does implement {@link IRender}.  When asked to render
+ *  (perhaps as the delegate of a {@link net.sf.tapestry.components.Delegator} component}
+ *  it simply invokes {@link #write(IMarkupWriter)} to display all debugging output.
  *
  * <p>This class is derived from the original class 
  * <code>com.primix.servlet.RequestContext</code>,

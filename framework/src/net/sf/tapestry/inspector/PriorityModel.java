@@ -30,7 +30,7 @@ import org.apache.log4j.Priority;
 
 /**
  *  Provides a {@link IPropertySelectionModel} for setting the priority of
- *  a {@link Category}.
+ *  a {@link org.apache.log4j.Category}.
  *
  *  @version $Id$
  *  @author Howard Lewis Ship

@@ -132,7 +132,7 @@ public class ShowLogging extends BaseComponent implements PageDetachListener
     }
 
     /**
-     *  Returns a {@link IPropertySelectionModel} for {@link Priority}
+     *  Returns a {@link IPropertySelectionModel} for {@link org.apache.log4j.Priority}
      *  that does not allow a null value to be selected.
      *
      **/
@@ -146,7 +146,8 @@ public class ShowLogging extends BaseComponent implements PageDetachListener
     }
 
     /**
-     *  Returns a {@link IPropertySelectionModel} for {@link Priority}
+     *  Returns a {@link IPropertySelectionModel} for 
+     *  {@link org.apache.log4j.Priority}
      *  include a null option.
      *
      **/

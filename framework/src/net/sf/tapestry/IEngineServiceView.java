@@ -53,7 +53,7 @@ public interface IEngineServiceView extends IEngine
 
     /**
      *  Invoked to restart the application from start; this most frequently follows
-     *  some kind of catastrophic failure.  This will invalidate any {@link HttpSession}
+     *  some kind of catastrophic failure.  This will invalidate any {@link javax.servlet.http.HttpSession}
      *  and force a redirect to the application servlet (i.e., invoking the home service
      *  in a subsequent request cycle).
      * 
@@ -62,9 +62,10 @@ public interface IEngineServiceView extends IEngine
     public void restart(IRequestCycle cycle) throws IOException;
 
     /**
-     *  Invoked (typically by the reset service) to clear all cached data
-     *  (pages, templates, helper beans, specifications, etc.)
-     *  known to the application.  This is used during debugging of the application.
+     *  Invoked (typically by the reset service) to clear all cached data known
+     *  to the engine.  This includes 
+     *  pages, templates, helper beans, specifications, etc., and
+     *  is used during debugging.
      * 
      **/
 

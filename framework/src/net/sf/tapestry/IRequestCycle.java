@@ -45,13 +45,13 @@ package net.sf.tapestry;
  * </ul>
  *
  * <p>A request cycle is broken up into two phases.   The <em>rewind</em> phase
- * is optional, as it tied to {@link Action} or
- * {@link Form} components.  In the rewind phase,
+ * is optional, as it tied to {@link javax.swing.Action} or
+ * {@link net.sf.tapestry.form.Form} components.  In the rewind phase,
  * a previous page render is redone (discarding output) until a specific component
  * of the page is reached.  This rewinding ensures that the page
  * is restored to the exact state it had when the URL for the request cycle was
- * generated, taking into account the dynamic nature of the page ({@link Foreach},
- * {@link Conditional}, etc.).  Once this component is reached, it can notify
+ * generated, taking into account the dynamic nature of the page ({@link net.sf.tapestry.components.Foreach},
+ * {@link java.awt.Conditional}, etc.).  Once this component is reached, it can notify
  * its {@link IActionListener}.  The listener has the ability to update the state
  * of any pages and select a new result page.
  *
@@ -74,7 +74,8 @@ public interface IRequestCycle
     public void cleanup();
 
     /**
-     *  Passes the String through <code>HttpServletResponse.encodeURL()</code>, which
+     *  Passes the String through 
+     *  {@link javax.servlet.http.HttpServletResponse#encodeURL(java.lang.String)}, which
      *  ensures that the session id is encoded in the URL (if necessary).
      *
      **/

@@ -31,7 +31,7 @@ import java.io.InputStream;
 
 /**
  *  Allows an input stream to be read as both individual lines
- *  (ala {@link LineInputReader} and as binary.
+ *  (ala {@link java.io.LineNumberReader}) and as binary.
  * 
  *  <p>This is not nearly as good as the one inside Jetty; that
  *  will have to come over time.
