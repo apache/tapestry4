@@ -101,4 +101,20 @@ public interface IContainedComponent extends IPropertyHolder, ILocationHolder, I
      *  @since 1.0.9
      **/
     public abstract String getCopyOf();
+
+    /**
+     * Returns whether the contained component will inherit 
+     * the informal parameters of its parent. 
+     * 
+     * @since 3.0
+     **/
+    public abstract boolean getInheritInformalParameters();
+
+    /**
+     * Sets whether the contained component will inherit 
+     * the informal parameters of its parent. 
+     * 
+     * @since 3.0
+     */
+    public abstract void setInheritInformalParameters(boolean value);
 }

@@ -170,6 +170,7 @@ The Tapestry page loader ensures that either type or copy-of is specified, but n
   id ID #REQUIRED
   type CDATA #IMPLIED
   copy-of IDREF #IMPLIED
+  inherit-informal-parameters %attribute-flag; "no"
 >
 
 <!-- =======================================================

@@ -106,7 +106,6 @@ import org.apache.tapestry.spec.IContainedComponent;
 import org.apache.tapestry.spec.IListenerBindingSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
 import org.apache.tapestry.spec.IPropertySpecification;
-import org.apache.tapestry.spec.ListenerBindingSpecification;
 import org.apache.tapestry.util.prop.OgnlUtils;
 
 /**
@@ -171,7 +170,12 @@ public class PageLoader implements IPageLoader
 
     private IResourceLocation _servletLocation;
 
-    private static class QueuedInheritedBinding
+    private static interface IQueuedInheritedBinding
+    {
+        void connect();
+    }
+
+    private static class QueuedInheritedBinding implements IQueuedInheritedBinding
     {
         private IComponent _component;
         private String _containerParameterName;
@@ -187,7 +191,7 @@ public class PageLoader implements IPageLoader
             _parameterName = parameterName;
         }
 
-        private void connect()
+        public void connect()
         {
             IBinding binding = _component.getContainer().getBinding(_containerParameterName);
 
@@ -195,6 +199,52 @@ public class PageLoader implements IPageLoader
                 return;
 
             _component.setBinding(_parameterName, binding);
+        }
+    }
+
+    private static class QueuedInheritInformalBindings implements IQueuedInheritedBinding
+    {
+        private IComponent _component;
+        
+        private QueuedInheritInformalBindings(IComponent component)
+        {
+            _component = component;
+        }
+        
+		public void connect()
+		{
+
+            IComponent container = _component.getContainer();
+            
+            for (Iterator it = container.getBindingNames().iterator(); it.hasNext();)
+			{
+				String bindingName = (String) it.next();
+                connectInformalBinding(container, _component, bindingName);
+    		}
+		}
+        
+        private void connectInformalBinding(IComponent container, IComponent component, String bindingName)
+        {
+            IComponentSpecification componentSpec = component.getSpecification();
+            IComponentSpecification containerSpec = container.getSpecification();
+
+            // check if binding already exists in the component
+            if (component.getBinding(bindingName) != null)
+                return;
+
+            // check if parameter is informal for the component
+            if (componentSpec.getParameter(bindingName) != null ||
+                componentSpec.isReservedParameterName(bindingName))
+                return;
+                
+            // check if parameter is informal for the container
+            if (containerSpec.getParameter(bindingName) != null ||
+                containerSpec.isReservedParameterName(bindingName))
+                return;
+
+            // if everything passes, establish binding
+            IBinding binding = container.getBinding(bindingName);
+            component.setBinding(bindingName, binding);
         }
     }
 
@@ -247,6 +297,35 @@ public class PageLoader implements IPageLoader
     {
         IComponentSpecification spec = component.getSpecification();
         boolean formalOnly = !spec.getAllowInformalParameters();
+
+        IComponentSpecification containerSpec = container.getSpecification();
+        boolean containerFormalOnly = !containerSpec.getAllowInformalParameters();
+
+        if (contained.getInheritInformalParameters())
+        {
+            if (formalOnly)
+                throw new ApplicationRuntimeException(
+                    Tapestry.getString(
+                        "PageLoader.inherit-informal-invalid-component-formal-only",
+                        component.getExtendedId()),
+                    component,
+                    contained.getLocation(),
+                    null);
+
+            if (containerFormalOnly)                    
+                throw new ApplicationRuntimeException(
+                    Tapestry.getString(
+                        "PageLoader.inherit-informal-invalid-container-formal-only",
+                        container.getExtendedId(),
+                        component.getExtendedId()),
+                    component,
+                    contained.getLocation(),
+                    null);
+
+            IQueuedInheritedBinding queued =
+                new QueuedInheritInformalBindings(component);
+            _inheritedBindingQueue.add(queued);
+        }
 
         Iterator i = contained.getBindingNames().iterator();
 
@@ -791,7 +870,7 @@ public class PageLoader implements IPageLoader
 
         for (int i = 0; i < count; i++)
         {
-            QueuedInheritedBinding queued = (QueuedInheritedBinding) _inheritedBindingQueue.get(i);
+            IQueuedInheritedBinding queued = (IQueuedInheritedBinding) _inheritedBindingQueue.get(i);
 
             queued.connect();
         }

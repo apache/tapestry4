@@ -61,6 +61,7 @@ import java.util.Locale;
 import org.apache.tapestry.event.ChangeObserver;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageRenderListener;
+import org.apache.tapestry.event.PageValidateListener;
 
 /**
  *  A root level component responsible for generating an entire a page
@@ -232,7 +233,7 @@ public interface IPage extends IComponent
      *  able to visit directly.  This method acts as the first line of
      *  defense against a malicous user hacking URLs.
      *
-     *  <p>Pages that should be protected will typically thow a {@link
+     *  <p>Pages that should be protected will typically throw a {@link
      *  PageRedirectException}, to redirect the user to an appropriate
      *  part of the system (such as, a login page).
      *
@@ -329,5 +330,20 @@ public interface IPage extends IComponent
      **/
 
     public void removePageDetachListener(PageDetachListener listener);
+
+    /**
+     *  @since 3.0
+     *
+     **/
+
+    public void addPageValidateListener(PageValidateListener listener);
+
+    /**
+     * 
+     *  @since 3.0
+     * 
+     **/
+
+    public void removePageValidateListener(PageValidateListener listener);
 
 }

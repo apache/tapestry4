@@ -1180,6 +1180,10 @@ public class SpecificationParser
         digester.addSetLimitedProperties(pattern, "type", "type");
         digester.addRule(pattern, new ComponentCopyOfRule());
         digester.addConnectChild(pattern, "addComponent", "id");
+        digester.addSetBooleanProperty(
+            pattern,
+            "inherit-informal-parameters",
+            "inheritInformalParameters");
 
         // <binding> inside <component>
 

@@ -67,6 +67,7 @@ import org.apache.tapestry.event.ChangeObserver;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.event.PageRenderListener;
+import org.apache.tapestry.event.PageValidateListener;
 import org.apache.tapestry.util.StringSplitter;
 
 /**
@@ -356,7 +357,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     public void validate(IRequestCycle cycle)
     {
-        // Does nothing.
+        firePageValidate();
     }
 
     /**
@@ -551,4 +552,37 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     {
         return _pageName;
     }
+    
+	public void addPageValidateListener(PageValidateListener listener)
+	{
+        addListener(PageValidateListener.class, listener);
+	}
+
+    public void removePageValidateListener(PageValidateListener listener)
+    {
+        removeListener(PageValidateListener.class, listener);
+    }
+
+    protected void firePageValidate()
+    {
+        if (_listenerList == null)
+            return;
+
+        PageEvent event = null;
+        Object[] listeners = _listenerList.getListenerList();
+
+        for (int i = 0; i < listeners.length; i += 2)
+        {
+            if (listeners[i] == PageValidateListener.class)
+            {
+                PageValidateListener l = (PageValidateListener) listeners[i + 1];
+
+                if (event == null)
+                    event = new PageEvent(this, _requestCycle);
+
+                l.pageValidate(event);
+            }
+        }
+    }
+
 }

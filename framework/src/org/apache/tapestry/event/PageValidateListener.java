@@ -53,126 +53,26 @@
  *
  */
 
-package org.apache.tapestry.spec;
+package org.apache.tapestry.event;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.EventListener;
 
 /**
- * Defines a contained component.  This includes the information needed to
- * get the contained component's specification, as well as any bindings
- * for the component.
+ *  An interface for objects that want to take part in the validation of the page.
  *
- * @author Howard Lewis Ship
- * @version $Id$
- * 
+ *  @author Mindbridge
+ *  @version $Id$
+ *  @since 3.0
  **/
 
-public class ContainedComponent extends LocatablePropertyHolder implements IContainedComponent
+public interface PageValidateListener extends EventListener
 {
-	private String type;
+    /**
+     *  Invoked by the page from its {@link org.apache.tapestry.IPage#validate()} method.
+     *
+     *  <p>May throw a {@link PageRedirectException}, to redirect the user 
+     *  to an appropriate part of the system (such as, a login page).
+     **/
 
-	private String copyOf;
-    
-    private boolean inheritInformalParameters;
-
-	protected Map bindings;
-
-	private static final int MAP_SIZE = 3;
-
-	/**
-	 *  Returns the named binding, or null if the binding does not
-	 *  exist.
-	 *
-	 **/
-
-	public IBindingSpecification getBinding(String name)
-	{
-		if (bindings == null)
-			return null;
-
-		return (IBindingSpecification) bindings.get(name);
-	}
-
-	/**
-	 *  Returns an umodifiable <code>Collection</code>
-	 *  of Strings, each the name of one binding
-	 *  for the component.
-	 *
-	 **/
-
-	public Collection getBindingNames()
-	{
-		if (bindings == null)
-			return Collections.EMPTY_LIST;
-
-		return Collections.unmodifiableCollection(bindings.keySet());
-	}
-
-	public String getType()
-	{
-		return type;
-	}
-
-	public void setBinding(String name, IBindingSpecification spec)
-	{
-		if (bindings == null)
-			bindings = new HashMap(MAP_SIZE);
-
-		bindings.put(name, spec);
-	}
-
-	public void setType(String value)
-	{
-		type = value;
-	}
-
-	/**
-	 * 	Sets the String Id of the component being copied from.
-	 *  For use by IDE tools like Spindle.
-	 * 
-	 *  @since 1.0.9
-	 **/
-
-	public void setCopyOf(String id)
-	{
-		copyOf = id;
-	}
-
-	/**
-	 * 	Returns the id of the component being copied from.
-	 *  For use by IDE tools like Spindle.
-	 * 
-	 *  @since 1.0.9
-	 **/
-
-	public String getCopyOf()
-	{
-		return copyOf;
-	}
-
-	/**
-     * Returns whether the contained component will inherit 
-     * the informal parameters of its parent. 
-     * 
-	 * @since 3.0
-	 **/
-	public boolean getInheritInformalParameters()
-	{
-		return inheritInformalParameters;
-	}
-
-	/**
-     * Sets whether the contained component will inherit 
-     * the informal parameters of its parent. 
-     * 
-     * @since 3.0
-	 */
-	public void setInheritInformalParameters(boolean value)
-	{
-		inheritInformalParameters = value;
-	}
-
+    public void pageValidate(PageEvent event);
 }
