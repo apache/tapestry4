@@ -254,9 +254,13 @@ NextGen) be released as version number 3.0.
     <action type="fix" dev="EH">
       Upgrade OGNL to 2.6.7.  This should move to 2.7.0 as soon as it is released.
     </action>
-    <action type="fix" dev="EH">
-      Added call to onchange for DatePicker pop-up selections.  (TAPESTRY-238)
+    <action type="fix" dev="EH" fixes-bug="TAPESTRY-238">
+      Added call to onchange for DatePicker pop-up selections.
     </action>
+    <action type="fix" dev="HLS" due-to="Xi Ping Wang" fixes-bug="TAPESTRY-249">
+      Provide localized validation messages for Simplified Chinese (zh_CN).
+    </action>
+      
   </release>
 
   <release version="3.0.1" date="Oct 16 2004">
