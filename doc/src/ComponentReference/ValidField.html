@@ -318,58 +318,33 @@ Also, the names of Java scalar types are acceptible.
 &lt;bean name="delegate" class="com.mycorp.FormValidationDelegate"/&gt;
 
 &lt;bean name="lotNoValidator" class="<A href="../api/net/sf/tapestry/valid/NumberValidator.html">net.sf.tapestry.valid.NumberValidator</a>"&gt;
-    &lt;set-property name="required"&gt;
-        &lt;field-value field-name="Boolean.TRUE"/&gt;
-    &lt;/set-property&gt;
-    &lt;set-property name="minimum"&gt;
-        &lt;static-value type="int"&gt;1&lt;/static-value&gt;
-    &lt;/set-property>
-    &lt;set-property name="maximum"&gt;
-        &lt;property-value expression="auctionDetails.numberLots"/&gt;
-    &lt;/set-property&gt;
+    &lt;set-property name="required" expression="true"/&gt;
+    &lt;set-property name="minimum" expression="1"/&gt;
+    &lt;set-property name="maximum" expression="auctionDetails.numberLots"/&gt;
 &lt;/bean&gt;
 
 &lt;bean name="bidAmountValidator" class="<A href="../api/net/sf/tapestry/valid/NumberValidator.html">net.sf.tapestry.valid.NumberValidator</a>"&gt;
-    &lt;set-property name="required"&gt;
-        &lt;field-value field-name="Boolean.TRUE"/&gt;
-    &lt;/set-property&gt;
-    &lt;set-property name="minimum"&gt;
-        &lt;property-value expression="auctionDetails.minBid"/&gt;
-    &lt;/set-property>
-    &lt;set-property name="maximum"&gt;
-        &lt;property-value expression="auctionDetails.maxBid"/&gt;
-    &lt;/set-property&gt;
+    &lt;set-property name="required" expression="true"/&gt;
+    &lt;set-property name="minimum" expression="auctionDetails.minBid"/&gt;
+    &lt;set-property name="maximum" expression="auctionDetails.maxBid"/&gt;
 &lt;/bean&gt;
 
 &lt;bean name="fullNameValidator" class="<A href="../api/net/sf/tapestry/valid/StringValidator.html">net.sf.tapestry.valid.StringValidator</a>"&gt;
-    &lt;set-property name="required"&gt;
-        &lt;field-value field-name="Boolean.TRUE"/&gt;
-    &lt;/set-property&gt;
-    &lt;set-property name="minimum"&gt;
-        &lt;static-value type="float"&gt;3&lt;/static-value&gt;
-    &lt;/set-property>
+    &lt;set-property name="required" expression="true"/&gt;
+    &lt;set-property name="minimum" expression="3"/&gt;
 &lt;/bean&gt;
 
 &lt;bean name="emailValidator" class="<A href="../api/net/sf/tapestry/valid/StringValidator.html">net.sf.tapestry.valid.StringValidator</a>"&gt;
-    &lt;set-property name="required"&gt;
-        &lt;field-value field-name="Boolean.TRUE"/&gt;
-    &lt;/set-property&gt;
-    &lt;set-property name="minimum"&gt;
-        &lt;static-value type="float"&gt;12&lt;/static-value&gt;
-    &lt;/set-property>
+    &lt;set-property name="required" expression="true"/&gt;
+    &lt;set-property name="minimum" expression="12"/&gt;
 &lt;/bean&gt;
 
 &lt;bean name="telephoneValidator" class="<A href="../api/net/sf/tapestry/valid/StringValidator.html">net.sf.tapestry.valid.StringValidator</a>"&gt;
-    &lt;set-property name="required"&gt;
-        &lt;field-value field-name="Boolean.TRUE"/&gt;
-    &lt;/set-property&gt;
-    &lt;set-property name="minimum"&gt;
-        &lt;static-value type="float"&gt;11&lt;/static-value&gt;
-    &lt;/set-property>
+    &lt;set-property name="required" expression="true"/&gt;
+    &lt;set-property name="minimum" expression="11"/&gt;
 &lt;/bean&gt;
 
 &lt;component id="form" type="<A href="Form.html">Form</a>"&gt;
-    &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
     &lt;binding name="delegate" expression="beans.delegate"/&gt;
 &lt;/component&gt;
 
@@ -380,41 +355,41 @@ Also, the names of Java scalar types are acceptible.
 &lt;component id="<span class="jwcid">lotNoField</span>" type="<A href="ValidField.html">ValidField</a>"&gt;
     &lt;binding name="value" expression="lotBid.lotNo"/&gt;
     &lt;binding name="validator" expression="beans.lotNoValidator"/&gt;
-    &lt;static-binding name="displayName"&gt;Lot Number&lt;/static-binding&gt;
-    &lt;static-binding name="displayWidth"&gt;4&lt;/static-binding&gt;
-    &lt;static-binding name="maximumLength"&gt;4&lt;/static-binding&gt;
+    &lt;binding name="displayName" expression='"Lot Number"'/&gt;
+    &lt;binding name="displayWidth" expression="4"/&gt;
+    &lt;binding name="maximumLength" expression="4"/&gt;
 &lt;/component&gt;
 
 &lt;component id="<span class="jwcid">bidAmountField</span>" type="<A href="ValidField.html">ValidField</a>"&gt;
     &lt;binding name="value" expression="lotBid.bidAmount"/&gt;
     &lt;binding name="validator" expression="beans.bidAmountNoValidator"/&gt;
-    &lt;static-binding name="displayName"&gt;Bid Amount&lt;/static-binding&gt;
-    &lt;static-binding name="displayWidth"&gt;7&lt;/static-binding&gt;
-    &lt;static-binding name="maximumLength"&gt;7&lt;/static-binding&gt;
+    &lt;binding name="displayName" expression='"Bid Amount"'/&gt;
+    &lt;binding name="displayWidth" expression="7"/&gt;
+    &lt;binding name="maximumLength" expression="7"/&gt;
 &lt;/component&gt;
 
 &lt;component id="<span class="jwcid">fullNameField</span>" type="<A href="ValidField.html">ValidField</a>"&gt;
     &lt;binding name="value" expression="lotBid.bidderName"/&gt;
     &lt;binding name="validator" expression="beans.fullNameValidator"/&gt;
-    &lt;static-binding name="displayName"&gt;Full Name&lt;/static-binding&gt;
-    &lt;static-binding name="displayWidth"&gt;25&lt;/static-binding&gt;
-    &lt;static-binding name="maximumLength"&gt;30&lt;/static-binding&gt;
+    &lt;binding name="displayName" expression='"Full Name"'/&gt;
+    &lt;binding name="displayWidth" expression="25"/&gt;
+    &lt;binding name="maximumLength" expression="30"/&gt;
 &lt;/component&gt;
 
 &lt;component id="<span class="jwcid">emailField</span>" type="<A href="ValidField.html">ValidField</a>"&gt;
     &lt;binding name="value" expression="lotBid.bidderEmail"/&gt;
     &lt;binding name="validator" expression="beans.emailValidator"/&gt;
-    &lt;static-binding name="displayName"&gt;Email&lt;/static-binding&gt;
-    &lt;static-binding name="displayWidth"&gt;25&lt;/static-binding&gt;
-    &lt;static-binding name="maximumLength"&gt;30&lt;/static-binding&gt;
+    &lt;binding name="displayName" expression='"Email"'/&gt;
+    &lt;binding name="displayWidth" expression="25"/&gt;
+    &lt;binding name="maximumLength" expression="30"/&gt;
 &lt;/component&gt;
 
 &lt;component id="<span class="jwcid">telephoneField</span>" type="<A href="ValidField.html">ValidField</a>"&gt;
     &lt;binding name="value" expression="lotBid.bidderTelephone"/&gt;
     &lt;binding name="validator" expression="beans.telephoneValidator"/&gt;
-    &lt;static-binding name="displayName"&gt;Telephone&lt;/static-binding&gt;
-    &lt;static-binding name="displayWidth"&gt;25&lt;/static-binding&gt;
-    &lt;static-binding name="maximumLength"&gt;30&lt;/static-binding&gt;
+    &lt;binding name="displayName" expression='"Telephone"'/&gt;
+    &lt;binding name="displayWidth" expression="25"/&gt;
+    &lt;binding name="maximumLength" expression="30"/&gt;
 &lt;/component&gt;
 
 &lt;component id="okSubmit" type="<A href="Submit.html">Submit</a>"&gt;
@@ -468,8 +443,6 @@ public class LotBidPage extends BasePage {
     public void cancelSubmit(IRequestCycle cycle) {
         cycle.setPage("AuctionListPage");
     }
-
-    public void formSubmit(IRequestCycle cycle) { }        
 }
 
 public class LotBid implements Serializable {
