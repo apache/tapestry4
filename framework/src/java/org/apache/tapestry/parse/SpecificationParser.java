@@ -74,6 +74,10 @@ import org.xml.sax.SAXParseException;
  */
 public class SpecificationParser extends AbstractParser implements ISpecificationParser
 {
+    private static final String IDENTIFIER_PATTERN = "_?[a-zA-Z]\\w*";
+
+    private static final String EXTENDED_IDENTIFIER_PATTERN = "_?[a-zA-Z](\\w|-)*";
+
     /**
      * Perl5 pattern for asset names. Letter, followed by letter, number or underscore. Also allows
      * the special "$template" value.
@@ -116,7 +120,8 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
      * @since 2.2
      */
 
-    public static final String COMPONENT_TYPE_PATTERN = "^(_?[a-zA-Z]\\w*:)?[a-zA-Z_](\\w)*$";
+    public static final String COMPONENT_TYPE_PATTERN = "^(" + IDENTIFIER_PATTERN + ":)?"
+            + IDENTIFIER_PATTERN + "$";
 
     /**
      * We can share a single map for all the XML attribute to object conversions, since the keys are
@@ -126,12 +131,15 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     private final Map CONVERSION_MAP = new HashMap();
 
     /**
-     * Like modified property name, but allows periods in the name as well.
+     * Extended version of {@link Tapestry.SIMPLE_PROPERTY_NAME_PATTERN}, but allows a series of
+     * individual property names, seperated by periods. In addition, each name within the dotted
+     * sequence is allowed to contain dashes.
      * 
      * @since 2.2
      */
 
-    public static final String EXTENDED_PROPERTY_NAME_PATTERN = "^_?[a-zA-Z](\\w|-|\\.)*$";
+    public static final String EXTENDED_PROPERTY_NAME_PATTERN = "^" + EXTENDED_IDENTIFIER_PATTERN
+            + "(\\." + EXTENDED_IDENTIFIER_PATTERN + ")*$";
 
     /**
      * Per5 pattern for extension names. Letter followed by letter, number, dash, period or
@@ -165,12 +173,16 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     private boolean _DTD_3_1;
 
     /**
-     * Perl5 pattern for page names. Letter followed by letter, number, dash, underscore or period.
+     * Perl5 pattern for page names. Page names appear in library and application specifications, in
+     * the &lt;page&gt; element. Starting with 3.1, the page name may look more like a path name,
+     * consisting of a number of ids seperated by slashes. This is used to determine the folder
+     * which contains the page specification or the page's template.
      * 
      * @since 2.2
      */
 
-    public static final String PAGE_NAME_PATTERN = EXTENDED_PROPERTY_NAME_PATTERN;
+    public static final String PAGE_NAME_PATTERN = "^" + IDENTIFIER_PATTERN + "(/"
+            + IDENTIFIER_PATTERN + ")*$";
 
     /**
      * Perl5 pattern that parameter names must conform to. Letter, followed by letter, number or
