@@ -31,7 +31,7 @@ import com.primix.tapestry.*;
  */
 
 /**
- *  Implementation of {@link IPropertySelectonRenderer} that
+ *  Implementation of {@link IPropertySelectionRenderer} that
  *  produces a &lt;select&gt; element (containing &lt;option&gt; elements).
  *
  *  @version $Id$
