@@ -9,10 +9,49 @@
 -->
 
 <mock-test>
-  <setup>
     <context name="junit"/>
-  	<servlet name="simple" class="net.sf.tapestry.junit.mock.simple.SimpleServlet"/>
-  	<request/>
-  </setup>
 
+  	<servlet name="simple" class="net.sf.tapestry.junit.mock.simple.SimpleServlet"/>
+
+  	<request>
+  	
+  	  	
+  	  <assert-output name="Insert render">
+  	  	The start of the JUnit test suite: JUnit Simple Application\.
+  	  </assert-output>
+  	  
+  	  <assert-output-matches name="Page structure">
+<![CDATA[
+  (</?\w+(?=.*)>)
+]]>
+		<match>&lt;html&gt;</match>
+		<match>&lt;head&gt;</match>
+		<match>&lt;title&gt;</match>
+		<match>&lt;/title&gt;</match>
+		<match>&lt;/head&gt;</match>
+		<match>&lt;body&gt;</match>
+		<match>&lt;/body&gt;</match>
+		<match>&lt;/html&gt;</match>		
+	</assert-output-matches>
+  	  	  
+  	  <assert-output name="Shell HTML render">
+<![CDATA[    	  
+  	  <html>(.|\s)*</html>
+]]>  	  
+  	  </assert-output>
+
+  	  <assert-output name="Shell title render">
+<![CDATA[    	  
+  	  <title>JUnit Simple Home Page</title>
+]]>  	  
+  	  </assert-output>
+  	  
+    	  <assert-output name="Body render">
+<![CDATA[    	  
+  	  <body>(.|\s)+</body>
+]]>  	  
+  	  </assert-output>	  
+  	  <assert name="Session not created" expression="request.session == null"/>
+  	  
+  	</request>
 </mock-test>

@@ -20,21 +20,19 @@ public class SimpleMockTest extends TapestryTestCase
         super(name);
     }
 
-    private String attempt(String path)
+    private MockTester attempt(String path)
     throws Exception
     {
         MockTester tester = new MockTester(path);
         
         tester.execute();
         
-        return tester.getResponse().getOutputString();
+        return tester;
     }
 
     public void testInitialRequest()
     throws Exception
     {
-        String result = attempt("/net/sf/tapestry/junit/mock/simple/Simple.xml");
-        
-        System.out.println(result);
+        attempt("/net/sf/tapestry/junit/mock/simple/Simple.xml");
     }
 }
