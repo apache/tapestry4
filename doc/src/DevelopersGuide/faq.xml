@@ -1,0 +1,464 @@
+<!-- $Id$ -->
+
+
+  
+  <appendix id="faq">
+    <title>Frequently Asked Questions</title>
+    <para>
+This section contains a few Q's and A's gleemed from the Tapestry developer mailing list. 
+</para>
+    <qandaset defaultlabel="qanda">
+      <qandaentry>
+        <question>
+          <para>
+            <classname>java.lang.NoSuchMethodError</classname> gets thrown
+		when I attempt to use Tapestry with Tomcat.  How do I fix this?
+		</para>
+        </question>
+        <answer>
+          <para>
+            <ulink url="http://jakarta.apache.org/tomcat/index.html">Tomcat</ulink> ships with version 1.0 of the 
+	<ulink url="http://java.sun.com/xml/xml_jaxp.html">JAXP (Java API for XML Processing)</ulink> 
+	framework.  Tapestry is coded against version 1.1.  You must replace the
+	<filename>jaxp.jar</filename> in Tomcat with the
+	<filename>javax.xml.jaxp.jar</filename> from Tapestry.  Simply delete the old file
+	and copy the new one into the Tomcat distribution.
+		</para>
+          <para>
+		In addition you must replace <filename>parser.jar</filename> (which contains
+		an XML parser) with
+		<filename>org.apache.crimson.jar</filename>, Sun's default XML parser.
+		</para>
+        </answer>
+      </qandaentry>
+      <qandaentry>
+        <question>
+          <para>Can Tapestry be used to create a Portal application?</para>
+        </question>
+        <answer>
+          <para>
+		Of course it can!
+		</para>
+          <para>
+		This question came up pretty frequently on the SourceForge forum, so
+		I put together a mini-portal application as one of the tutorials.  This sounded
+		out some limitations in the framework: the <classname>Porlet</classname> component
+		dynamically combines components from multiple pages (using the &Block; and
+		&InsertBlock; components).
+		</para>
+        </answer>
+      </qandaentry>
+      
+      <qandaentry>
+      	<question>
+      		<para>
+      		Is Jetty required to use Tapestry?
+      		</para>
+      	</question>
+      	<answer>
+      	<para>
+      	For a brief period of time, Tapestry used some Jetty specific code
+      	to process file uploads.  This showed up in release 2.0.0 and was fixed (removing all Jetty
+      	dependencies) in release 2.0.1.
+      	</para>
+      	<para>
+      	Tapestry still includes Jetty since it so easy to embed Jetty
+      	and use it for testing and development, but it is not required.  Many users
+      	have had great success using Tomcat or Resin with Tapestry.
+      	</para>
+      	</answer>
+      </qandaentry>
+      
+      <qandaentry>
+      	<question>
+      		<para>
+      		Why do I get NoClassDefFoundError exceptions in my Tapestry application
+      		deployed under WebLogic 6.1?
+      		</para>
+   		</question>
+   		<answer>
+   		<para>
+WebLogic appears to have a bug when deploying WAR files that contain libraries.  If the library name,
+in this case &TapestryFrameworkJar;
+contains any periods, then WebLogic fails to expand the JAR file into its temporary deployment
+directory.  The end result is that
+ the Tapestry classes aren't on the classpath.
+ </para>
+ 
+   		<para>
+   		The solution is to rename the Tapestry JAR file to not have periods in the name.  Simply renaming it to <filename>tapestry.jar</filename>
+   		or <filename>tapestry<replaceable>123</replaceable>.jar</filename>
+   		will do.
+   		</para>
+   		</answer>
+   	</qandaentry>
+      
+      <qandaentry>
+        <question>
+          <para>
+		One more time.  What's this business about rewinding things for forms?
+		</para>
+        </question>
+        <answer>
+          <para>
+		This is one of the big stumbling blocks for some users of Tapestry.
+		The way Tapestry deals with forms is very complex, with a reason: it allows
+		for incredibly dynamic pages.
+		</para>
+          <para>
+		In tradional web appllications, the developer is responsible for
+		naming each form element, as well as writing a servlet to
+		handle the request cycle when the form is submitted.  That turns into
+		a lot of code to extract name parameters from the &HttpServletRequest;, 
+		convert them from Strings to other datatypes, and push the values
+		into appropriate business objects.
+		</para>
+          <para>
+		This works fine as far as it goes ... but the developer has an advantage 
+		that the Tapestry framework doesn't have:  the exact name, type and number
+		of form elements is known during development.
+		</para>
+          <para>
+		By contrast, Tapestry has to figure this all out on the fly.  In addition,
+		Tapestry forms can wrap around &Foreach; components ... that means the same
+		&TextField; component may be responsible for updating a property of
+		a whole slew of objects.  On top of that, the use
+		of &Conditional;, &Block; and &InsertBlock; components
+		mean that the exact set of components involved may be determined dynamically.
+		</para>
+          <note>
+            <para>
+			An example of this is the 
+			<link linkend="inspector.logging">Tapestry Inspector Logging View</link>.  A single
+			&PropertySelection; is wrapped by a &ListEdit; which iterates throught
+			a list of the possible categories.
+			</para>
+            <para>
+			Categories may be added at any time (in fact, that's another function
+			of the page).
+			</para>
+          </note>
+          <para>
+		Now, it's natural to envision Tapestry dynamically walking through its components
+		and HTML templates to render the form seen in the user's web browser.  The
+		mental leap required is that
+		the initial renderring process has to be <emphasis>run again</emphasis> in order to figure out
+		which components are involved in processing the submission, and how.  That's
+		the <emphasis>rewind phase</emphasis>.
+		</para>
+          <para>
+		Just as with the initial render, Tapestry must work through 
+		just the right set of components, in just the right order, taking into account
+		&Conditional; and &Foreach; components.  You must also factor in that Tapestry is
+		assigning the names used for the HTML form elements, which must also be "rediscovered"
+		so that the right HTTP parameter can be combined with the correct component and
+		assigned to the appropriate business object property.
+		</para>
+          <para>
+		Sure, this is overkill when you have a simple form to enter the user's name.
+		But doesn't it give you a warm feeling to know that when you do create
+		your killer dynamic form, the <emphasis>very same code</emphasis> you've come to know
+		and trust will be waiting to handle it, just as easily?
+		</para>
+        </answer>
+      </qandaentry>
+      <qandaentry>
+        <question>
+          <para>
+	How do I specify the CSS class used for a Tapestry component?
+	</para>
+        </question>
+        <answer>
+          <para>
+	Most Tapestry components support
+	<link linkend="components.informal-parameters">informal parameters</link>.  
+	These are used to specify
+	additional HTML attributes for the tag generated by the component.
+	</para>
+          <para>
+	You can set the value for such informal parameters
+	in the <link linkend="components.specification">component specification</link>, or
+	in the <link linkend="components.html-template">HTML template</link>.
+	</para>
+        </answer>
+      </qandaentry>
+      <qandaentry>
+        <question>
+          <para>
+	I get the StaleSession page when I submit a form on my home page.  Why?
+	</para>
+        </question>
+        <answer>
+          <para>
+	Tapestry applications run in a <link linkend="engine.stateless">stateless</link> mode initially.  That is, they
+	don't create a &HttpSession;.  This continues until the application has
+	some specific server-side state, at which point the &HttpSession; is created.
+	</para>
+          <para>
+	By default, &Form;s (as well as &Action;s) are stateful; they require that
+	an active &HttpSession; exists.  If there isn't an active session, they
+	throw a <classname>StaleSessionException</classname>.  However, you can bind
+	the <varname>stateful</varname> parameter of these components to
+	<classname>Boolean.FALSE</classname> to remove this check.
+	</para>
+          <para>
+	This check makes sense once there's server side state; it detects when
+	an &HttpSession; has expired from lack of use.  It's better than seeing
+	an anomolous <classname>NullPointerException</classname>, which is quite likely
+	when all state is lost.
+	</para>
+        </answer>
+      </qandaentry>
+      <qandaentry>
+        <question>
+          <para>What happened to the &ILifecycle; interface?</para>
+        </question>
+        <answer>
+          <para>
+Prior to release 1.0.5, there was an interface, &ILifecycle;, that could
+optionally be implemented by components so that they could be informed about the lifecycle
+of the page which contains them, especially knowing when the page was detached from the engine (so that
+the components could reset thier state accordingly).  
+</para>
+          <para>
+By release 1.0.5, this has become somewhat awkward.  Firstly, several non-component objects needed
+similar notification and there wasn't a way to cleanly accomplish this.  Secondly, a finer grained
+approach was desired, as different objects had different notification requirements.
+</para>
+          <para>
+For release 1.0.5, the interface was replaced by a more standard approach; well defined JavaBeans events.
+These are described in the <link linkend="pages.events">Page Events</link> section of this document.
+</para>
+          <para>
+The &ILifecycle; interface was removed in release 2.0.0.
+</para>
+        </answer>
+      </qandaentry>
+      <qandaentry>
+        <question>
+          <para>Why do I need to subclass &ApplicationServlet;?
+		</para>
+        </question>
+        <answer>
+          <para>
+Several folks have suggested that subclassing &ApplicationServlet; is unneccessary,
+and it's primary job, identifying the application specification path, could be accomplished 
+using servlet initial parameters.
+There are several reasons why a subclass is necessary, outlined in this
+<link linkend="engine.servlet.subclass-note">note</link>.  Primarily, it's
+a class loader issue.
+</para>
+        </answer>
+      </qandaentry>
+      <qandaentry>
+        <question>
+          <para>What happened to <classname>ValidatingTextField</classname>,
+		<classname>NumericField</classname>,
+		<classname>DateField</classname>
+		and <classname>IntegerField</classname>?
+		</para>
+        </question>
+        <answer>
+          <para>
+		In release 1.0.8, the entire suite of components related to validating
+		form input was rewritten.  A single component, &ValidField;, now does the work
+		of all the others.  In the earlier version, component subclasses were needed
+		to change the behavior:  converting objects to strings, strings to objects and
+		validating.  This is now encapsulated in the &IValidator; interface.  In short, it is now
+		much easier to create new kinds of validations and just plug them into the
+		&ValidField;.
+		</para>
+        
+          <para>This was, regrettably, a completely non-backwards compatible change.  However,
+          compatible versions of three of the 1.0.7 components
+          (<classname>ValidatingTextField</classname>,
+		<classname>NumericField</classname> and
+		<classname>DateField</classname>) are now part of the 
+		&TapestryContribJar; library.
+		</para>
+		
+          <para>
+		In addition, the old components had big disclaimers:  "Don't use these inside
+		any kind of loop (such as a &Foreach;)".  By expanding the role of the
+		&IValidationDelegate;, this is no longer so, the delegate now does much more,
+		including the ability to track errors for fields even inside loops.
+		</para>
+        </answer>
+      </qandaentry>
+      <qandaentry>
+        <question>
+          <para>Why don't my &Upload; components work?  I keep getting NullPointerExceptions.
+		</para>
+        </question>
+        <answer>
+          <para>
+		The &Upload; component creates an <sgmltag class="starttag">input type="file"</sgmltag>
+		HTML element.  This requires that the containing <sgmltag class="starttag">form</sgmltag> element
+		use the encoding MIME type <literal>multipart/form-data</literal>.  This is accomplished by
+		setting the informal parameter <property>enctype</property> of the containing &Form; component to
+		 <literal>multipart/form-data</literal>.
+		</para>
+        </answer>
+      </qandaentry>
+      
+      
+      <qandaentry>
+      	<question>
+      		<para>Why isn't Tapestry a JSP taglib?</para>
+      	</question>
+      	<answer>
+      		<para>
+      		Simply put, Tapestry needs to run the whole show, from the point the request is receieved by
+      		the servlet all the way through to the end of sending a response page back to the client. 
+      		All the benefits of Tapestry come from
+      		features that JSPs just don't provide ... knowing the full component heirarchy for the page,
+      		and tracking which components are wrapped inside which others, no matter how dynamic the
+      		rendering process is.  The way components can work together to generate different
+      		portions of the page is both powerful and necessary -- 
+      		that's how Tapestry builds the URLs for links and forms.
+      		</para>
+      		
+      		<para>
+      		By comparison, something like 
+      		<ulink url="http://jakarta.apache.org/">Struts</ulink>
+      		still relies on the developer to do most of the work, by defining Actions ... which are
+      		little more than a dressed up version of a servlet.  Although it has some rudimentary
+      		forms support (that can also be leveraged to process query parameters from ordinary links),
+      		it's still an awful lot of coding.
+      		</para>
+      		
+      	</answer>
+      </qandaentry>
+      
+ 
+      
+<qandaentry>
+	<question>
+		<para>None of my code compiles!  What happened to everything in 
+		the <filename class="directory">com.primix.tapestry</filename>
+		package?
+		</para>
+	</question>
+	<answer>
+		<para>
+		Between Tapestry release 2.0.0 and 2.1
+		a signficant number of changes occurred,
+		including renaming everything <filename class="directory">com.primix.tapestry.*</filename>
+		to <filename class="directory">net.sf.tapestry.*</filename>.
+		</para>
+		
+		<para>
+		This is to mark the fact that the principal author of Tapestry, and Primix, had gone
+		their seperate ways.
+		</para>
+		
+		<para>
+		In addition, a few things were moved or renamed:
+
+	<itemizedlist mark="opencircle">
+          <listitem>
+            <para>
+              <filename>com.primix.tapestry.BasePage</filename> moved to
+              <filename>net.sf.tapestry.html.BasePage</filename>
+            </para>
+            </listitem>
+           <listitem>
+           <para>
+           	<filename>com.primix.tapestry.IResponseWriter</filename>
+           	renamed to
+           	<filename>net.sf.tapestry.IMarkupWriter</filename>
+           	</para>
+           </listitem>
+           <listitem>
+           	<para>	
+           	<filename>com.primix.tapestry.IDirectListener</filename>
+			deleted
+			</para>
+			</listitem>
+           </itemizedlist> 		
+		</para>
+		</answer>
+	</qandaentry>
+	
+<qandaentry>
+<question>
+<para>
+I've fixed all my imports to use <filename>net.sf.tapestry</filename>, but
+my &Direct; listener methods no longer work.  How do I fix things?
+</para>
+</question>
+<answer>
+<para>
+With the removal of the <classname>IDirectListener</classname>
+interface, the corresponding listener method variation was removed.  The following
+method signature <emphasis>used to</emphasis>
+be recognized as a listener method:
+</para>
+
+<informalexample>
+<programlisting>
+public void <replaceable>my-method</replaceable>(String[] parameters, IRequestCycle cycle)
+throws RequestCycleException
+{
+  ...
+}
+</programlisting>
+</informalexample>
+
+<para>
+In the new, simpler, scheme, listener methods take exactly one parameter,
+the &IRequestCycle;.
+The service parameters are now available from the &IRequestCycle;:
+</para>
+
+<informalexample>
+<programlisting>
+public void <replaceable>my-method</replaceable>(IRequestCycle cycle)
+throws RequestCycleException
+{
+  Object[] parameters = cycle.getServiceParameters();
+  ...
+}
+</programlisting>
+</informalexample>
+
+<para>
+Starting in release 2.2, the type of each parameter is encoded with its
+value in the URL (in release 2.1 and earlier, the parameters were always Strings,
+and it was your responsibility to convert them).  
+You can cast from &Object;
+to a particular type (say, &Integer; or &String;).
+</para>
+
+</answer>
+</qandaentry>
+
+
+<qandaentry>
+<question>
+<para>
+How do I duplicate a component several times in the same HTML template?
+</para>
+</question>
+
+<answer>
+<para>
+Simply put: you can't.  Component ids must be unique in the template and
+must match aganst component specification.  Even when two components
+are the same type and have identical bindings, they are still unique
+instances and have instance-specific state ... such as the portion of
+the HTML template they wrap (for components with bodies).
+</para>
+
+<para>
+A useful shortcut is to use
+the <literal>copy-of</literal>
+attribute of the
+<link linkend="components.spec.component">component</link> element.
+</para>
+</answer>
+
+</qandaentry>
+      
+    </qandaset>
+  </appendix>

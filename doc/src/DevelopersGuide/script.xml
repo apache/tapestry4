@@ -1,0 +1,560 @@
+<!-- $Id$ -->
+
+  
+  <chapter id="script">
+    <title>Tapestry and JavaScript</title>
+    <para>
+Building cutting edge Web applications is not entirely about the server side.
+A significant amount of work must be done on the client side to support truly dynamic
+user experiences.  Typically, this scripting is done using the JavaScript language embedded
+into major web browsers such as Internet Explorer and Netscape Navigator.
+</para>
+    <para>
+These effects range from simple effects such as image rollovers (changing 
+the icon used for a link when the cursor is over it) to more involved
+patterns such as client side validation of forms or even complex animations.
+</para>
+    <para>
+In traditional, static web page development, the HTML producer (the person creating
+the static HTML page)
+is completely responsible
+for this aspect of development, usually aided by a web page authoring tool, such as
+Dreamweaver.  Ultimately, though, the HTML producer assigns unique names or ids to
+various elements on the page, and attaches JavaScript event handlers to 
+the elements.</para>
+    <example>
+      <title>Traditional JavaScript usage</title>
+      <programlisting><![CDATA[
+
+var preload = new Array();
+preload[0] = new Image();
+preload[0].src = "/images/button.gif";
+preload[1] = new Image();
+preload[1].src "/images/button-highlight.gif";
+
+function rollover(image, index)
+{
+  image.src = preload[index].src;
+}
+
+.
+.
+.
+  <a href="..."
+    onMouseOver="javascript:rollover(document.button, 1);"
+    onMouseOut="javascript:rollover(document.button, 0);">
+    <img name="button" src="/images/button.gif">
+  </a>
+
+]]></programlisting>
+    </example>
+    <para>
+The preloading business is all about forcing the browser to load the image <emphasis>before</emphasis>
+it is needed, so that it is already in memory when the mouseover event handler
+needs it.
+</para>
+    <para>
+From here, adding additional rollovers means extending the <varname>preload</varname> array, providing
+names for the additional <sgmltag class="starttag">img</sgmltag> elements and writing the additional
+event handlers for the <sgmltag class="starttag">a</sgmltag> elements.
+</para>
+    <para>
+Now, envision a running Tapestry application.  With everything so dynamic (especially when you account for things like the
+&Foreach; component), it's all but impossible to even know how many links and buttons will be on the page, never 
+mind what they'll
+all be named.  At first glance, it may appear that Tapestry prevents the use of this kind of scripting.
+</para>
+    <para>
+In fact, Tapestry is structured to enhance this kind of scripting.  This is faciliated by the &Body; component, which replaces
+the <sgmltag class="starttag">body</sgmltag> element of the page.
+The <link linkend="script.body">next section</link> described the services
+the &Body; component povides to facilitate complex client-side scripting.
+</para>
+    <section id="script.body">
+      <title>The Body component</title>
+      <para>
+The &Body; component provides a number of services to the components it wraps.  It handles preloading of
+images.  It provides the ability to add arbitrary JavaScript to the page, to include an external static
+JavaScript document, or to add JavaScript
+to the
+<sgmltag class="starttag">body</sgmltag> element's onload event handler.  Finally, it provides an easy way 
+to generate unique identifiers needed for things like image and function names.
+</para>
+      <para>
+When the &Body; component renders, it registers itself as an attribute of the &IRequestCycle;.  This
+allows components wrapped by the &Body; component, directly or indirectly, to locate it and invoke methods
+on it.  These methods are used to define preloaded images, and add JavaScript code to the response HTML.
+</para>
+      <figure>
+        <title>Body Component Rendering Sequence</title>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/Body-sequence.gif" format="GIF"/>
+          </imageobject>
+        </mediaobject>
+      </figure>
+      <para>
+When rendering is complete, the &Body; component will have produced four distinct portions of the
+HTML response:
+</para>
+      <informalexample>
+        <programlisting>
+&lt;script language="JavaScript" src="..."&gt;&lt;/script&gt; <co id="script.body.include"/>
+&lt;script language="JavaScript"&gt;&lt;!-- <co id="script.body.script"/>
+
+...
+
+function tapestry_onLoad()  <co id="script.body.onload"/>
+{
+}
+
+// --&gt; &lt;/script&gt;
+&lt;body onload="javascript:tapestry_onLoad();"&gt; <co id="script.body.tag"/>
+
+... <co id="script.body.wrapped"/>
+
+&lt;/body&gt;
+
+</programlisting>
+      </informalexample>
+      <para>
+        <calloutlist>
+          <callout arearefs="script.body.include">
+            <para>Any number of included static scripts may be added to the page.</para>
+          </callout>
+          <callout arearefs="script.body.script">
+            <para>
+  This script block is only emitted when necessary; that is, because some component
+  needed to generate scripting or initialization (or preloaded images).  The block
+  is properly "commented" so that older browsers, those that fail to support scripting,
+  will not be confused by the JavaScript code.
+  </para>
+          </callout>
+          <callout arearefs="script.body.onload">
+            <para>
+  The onload event handler function is only generated if some component requests some
+  onload initialization.
+  </para>
+          </callout>
+          <callout arearefs="script.body.tag">
+            <para>
+  The <sgmltag class="starttag">body</sgmltag> tag only specfies a <varname>onload</varname>
+  event handler function if one is needed.
+  </para>
+          </callout>
+          <callout arearefs="script.body.wrapped">
+            <para>
+  The content of the <sgmltag class="starttag">body</sgmltag> element is defined by the
+  Tapestry components it wraps.  Importantly, the rollovers, JavaScript, event handlers and
+  the content are all generated in parallel (the &Body; component uses buffering so that
+  the JavaScript portion is written out first).
+  </para>
+          </callout>
+        </calloutlist>
+      </para>
+    </section>
+    <section id="script.script">
+      <title>Script documents</title>
+      <para>
+Scripting in Tapestry requires some extra thought; in the examples above, the web developer
+specifically knew the URLs of the images to preload and the name of the 
+<sgmltag class="starttag">img</sgmltag> element to be affected.  
+For Tapestry, those things are not
+known ahead of time; scripting is a matter of plugging in variable content to a template.
+</para>
+
+     <para>
+Tapestry supports scripting with the Tapestry script document, another XML document type.  
+This script document isn't simply JavaScript, it is a description of
+<emphasis>how to build</emphasis> JavaScript and include it in the correct
+places within the response page.
+</para>
+
+<para>
+The usage of script documents is, of course, completely open ended.  Their most
+common use is to create client-side interactions.  This takes the form
+of <emphasis>event handler methods</emphasis> and <emphasis>initializations</emphasis>.
+The initializations are executed when a page finishs loading, to connect client-side elements
+to JavaScript event handler methods.  These methods are invoked in response to
+user activity, such as clicking a button or submitting a form.
+</para>
+
+<para>
+A Tapestry
+script document takes as input a number of <emphasis>symbols</emphasis> and uses them to construct 
+the desired JavaScript event handlers, and to provide initializations for them.
+Within a script document it is possible to
+<link linkend="script.spec.ant-syntax">insert the value for a symbol</link>, 
+or even the value of
+a property reachable from a symbol.  In this way, each usage of the script is
+customized, producing just exactly the JavaScript required by the components.
+</para>
+
+<para>
+In typical HTML production, the roles are often reversed:  a completely static JavaScript
+code snippet is used, and the HTML producer customizes the names of relevant items
+(such as forms and form elements) to accomidate the script.  In the dynamic world of Tapestry,
+it makes more sense for the script to adapt to the components.
+</para>
+
+
+      <section>
+        <title>
+          <sgmltag class="starttag">script</sgmltag> element</title>
+        <para>
+Script documents, which use the filename extension <literal>.script</literal>, consist
+of a <sgmltag class="starttag">script</sgmltag> element.
+</para>
+        <figure>
+          <title>Script document: <sgmltag class="starttag">script</sgmltag> element</title>
+          <programlisting><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script PUBLIC 
+  "-//Howard Ship//Tapestry Script 1.1//EN"
+  "http://tapestry.sf.net/dtd/Script_1_1.dtd">
+]]>
+
+&lt;script&gt;
+  [ &lt;<link linkend="script.spec.include-script">include-script</link> ... /&gt; ... ] <co id="script.dtd.script.include-script"/>
+  [ &lt;<link linkend="script.spec.let">let</link> ...&gt; ...] <co id="script.dtd.script.let"/>
+  [ &lt;<link linkend="script.spec.body">body</link>&gt; ] <co id="script.dtd.script.body"/>
+  [ &lt;<link linkend="script.spec.initialization">initialization</link>&gt; ] <co id="script.dtd.script.initialization"/>
+  
+&lt;/script&gt;
+</programlisting>
+        </figure>
+        <para>
+          <calloutlist>
+            <callout arearefs="script.dtd.script.include-script">
+              <para>
+Any number of other scripts may be included.
+</para>
+            </callout>
+            <callout arearefs="script.dtd.script.let">
+              <para>
+  The <sgmltag class="starttag">script</sgmltag> may contain any number of 
+  <sgmltag class="starttag">let</sgmltag> elements, used to define new symbols.
+  </para>
+            </callout>
+            <callout arearefs="script.dtd.script.initialization">
+              <para>
+  The <sgmltag class="starttag">body</sgmltag> element contains
+  JavaScript event handling logic.  This is optional, and may appear
+  only once.
+  </para>
+            </callout>
+            <callout arearefs="script.dtd.script.initialization">
+              <para>
+  The <sgmltag class="starttag">initialization</sgmltag> element
+  contains JavaScript statements added to the HTML
+  <sgmltag class="starttag">body</sgmltag> element's 
+  <function>onLoad</function> event handler.
+  </para>
+            </callout>
+          </calloutlist>
+        </para>
+      </section>
+      <section id="script.spec.include-script">
+        <title>
+          <sgmltag class="starttag">include-script</sgmltag> element</title>
+        <figure>
+          <title>Script document: <sgmltag class="starttag">include-script</sgmltag> element</title>
+          <programlisting>
+&lt;include-script resource-path="<replaceable>path</replaceable>" /&gt;
+</programlisting>
+        </figure>
+        <para>
+This element is used to include external, static, JavaScript scripts on the rendered page.
+This is useful in cases where large parts of the JavaScript do not depend on any dynamic symbols.
+The path is to a resource on the classpath, much like
+a <link linkend="components.spec.assets">private asset</link>.
+</para>
+      </section>
+      <section id="script.spec.let">
+        <title>
+          <sgmltag class="starttag">let</sgmltag> element</title>
+        <figure>
+          <title>Script document: <sgmltag class="starttag">let</sgmltag> element</title>
+          <programlisting>
+&lt;let key="<replaceable>symbol-name</replaceable>"&gt; <co id="script.dtd.let.key"/>
+  [
+     [ <replaceable>text</replaceable> ] <co id="script.dtd.let.text"/>
+     [ &lt;<link linkend="script.spec.insert">insert</link> ...&gt; ] 
+     [ &lt;<link linkend="script.spec.if">if</link> ...&gt; ] 
+     [ &lt;<link linkend="script.spec.if-not">if-not</link> ...&gt; ] 
+     [ &lt;<link linkend="script.spec.foreach">foreach</link>...&gt; ] 
+  ... ] <co id="script.dtd.let.full-content"/>
+&lt;/let&gt;
+
+</programlisting>
+        </figure>
+        <para>
+          <calloutlist>
+            <callout arearefs="script.dtd.let.key">
+              <para>
+ The new symbol to define.  This should be a new name, though no check is made.  The
+ symbol gets the result of evaluating the body of the
+ <sgmltag class="starttag">let</sgmltag> element, though leading and trailing whitespace
+ is removed.
+ </para>
+            </callout>
+            <callout arearefs="script.dtd.let.text">
+              <para>
+ The <sgmltag class="starttag">let</sgmltag> element
+ consists of static text intermixed with the other elements (which produce
+ dynamic text).
+ </para>
+            </callout>
+            <callout arearefs="script.dtd.let.full-content">
+              <para>
+ The allowed content of the <sgmltag class="starttag">let</sgmltag> element is called
+ <emphasis>full content</emphasis>.  Most of the other elements defined by the document type
+ also use full content.  <sgmltag class="starttag">let</sgmltag> elements generally don't have
+ a need for other than text and the <sgmltag class="starttag">insert</sgmltag> element.
+ </para>
+            </callout>
+          </calloutlist>
+        </para>
+        <para>
+This element is used to define new symbols.  The most common use of this is to define the
+name of a function, usually by combining some unique name or id with other text.  This new
+symbol is then used in the <sgmltag class="starttag">body</sgmltag> element to define the function, and
+in the <sgmltag class="starttag">initialization</sgmltag> element to establish the function as the
+handler for some HTML element's event.
+</para>
+        <para>
+The <sgmltag class="starttag">let</sgmltag> elements are evaluated in order.  Often, some building
+block symbols are established first; other symbols add suffixes and prefixes to form the final
+names of functions.
+</para>
+      </section>
+      <section id="script.spec.insert">
+        <title>
+          <sgmltag class="starttag">insert</sgmltag> element</title>
+        <figure>
+          <title>Script document: <sgmltag class="starttag">insert</sgmltag> element</title>
+          <programlisting>
+&lt;insert property-path="<replaceable>property-path</replaceable>"/&gt;
+</programlisting>
+        </figure>
+        <para>
+The <sgmltag class="starttag">insert</sgmltag> element is used to insert the value of a property.
+Simple names are just the names of symbols passed to the script, or the names can be
+a full property path (operating like a 
+<link linkend="components.spec.bindings"><sgmltag class="starttag">binding</sgmltag></link>
+element
+in a component specification).
+</para>
+
+<para>
+However, the <sgmltag class="starttag">insert</sgmltag> element is no longer often used.
+Beginning in release 2.2, it is possible to use an alternate syntax (based on &Ant;)
+to specify the value to insert.
+</para>
+
+<figure id="script.spec.ant-syntax">
+	<title>Alternate property insertion syntax</title>
+<programlisting>
+${<replaceable>property-path</replaceable>}
+</programlisting>
+</figure>
+
+<para>
+This Ant-like syntax is much easier to use.  It may even be
+used inside CDATA sections of a Script
+document.
+</para>
+
+      </section>
+      <section id="script.spec.if">
+        <title>
+          <sgmltag class="starttag">if</sgmltag> element</title>
+        <figure>
+          <title>Script document: <sgmltag class="starttag">if</sgmltag> element</title>
+          <programlisting>
+&lt;if property-path="<replaceable>property-path</replaceable>"&gt;
+  [ <replaceable>full content</replaceable> ]
+&lt;/if&gt;
+</programlisting>
+        </figure>
+        <para>
+The <sgmltag class="starttag">if</sgmltag> element provides some conditional content.  It evaluates
+its property and, if true (generally, non-null, non-empty or non-zero, depending on the type),
+it includes its content.  The content is full content, meaning just about anything can be
+contained (including <sgmltag class="starttag">if</sgmltag>, <sgmltag class="starttag">foreach</sgmltag>, etc.).
+</para>
+      </section>
+      <section id="script.spec.if-not">
+        <title>
+          <sgmltag class="starttag">if-not</sgmltag> element</title>
+        <figure>
+          <title>Script document: <sgmltag class="starttag">if-not</sgmltag> element</title>
+          <programlisting>
+&lt;if-not property-path="<replaceable>property-path</replaceable>"&gt;
+  [ <replaceable>full content</replaceable> ]
+&lt;/if&gt;
+</programlisting>
+        </figure>
+        <para>
+The <sgmltag class="starttag">if-not</sgmltag> element is the same as the
+<sgmltag class="starttag">if</sgmltag> element, but it inverts the meaning of the
+property, including its content if the property is false.
+</para>
+      </section>
+      <section id="script.spec.foreach">
+        <title>
+          <sgmltag class="starttag">foreach</sgmltag> element</title>
+        <figure>
+          <title>Script document: <sgmltag class="starttag">foreach</sgmltag> element</title>
+          <programlisting>
+&lt;foreach key="<replaceable>key</replaceable>"
+  property-path="<replaceable>property-path</replaceable>"&gt;
+  [ <replaceable>full content</replaceable> ]
+&lt;/foreach&gt;
+</programlisting>
+        </figure>
+        <para>
+The <sgmltag class="starttag">foreach</sgmltag> element is an analog of the &Foreach; component;
+it iterates through a list of objects defined
+by the <varname>property-path</varname> attribute.  On each iteration, it sets the named symbol
+(via the <varname>key</varname> attribute) and inserts its body.
+</para>
+      </section>
+      <section id="script.spec.body">
+        <title>
+          <sgmltag class="starttag">body</sgmltag> element</title>
+        <figure>
+          <title>Script document: <sgmltag class="starttag">body</sgmltag> element</title>
+          <programlisting>
+&lt;body&gt;
+  [ <replaceable>full content</replaceable> ]
+&lt;/body&gt;
+</programlisting>
+        </figure>
+        <para>
+The <sgmltag class="starttag">body</sgmltag> element evaluates its content and the result is added to the
+script block preceding the HTML <sgmltag class="starttag">body</sgmltag> element in the response HTML.
+</para>
+      </section>
+      <section id="script.spec.initialization">
+        <title>
+          <sgmltag class="starttag">initialization</sgmltag> element</title>
+        <figure>
+          <title>Script document: <sgmltag class="starttag">initialization</sgmltag> element</title>
+          <programlisting>
+&lt;initialization&gt;
+  [ <replaceable>full content</replaceable> ]
+&lt;/initialization&gt;
+</programlisting>
+        </figure>
+        <para>
+The <sgmltag class="starttag">initialization</sgmltag> element evaluates its content and the result is 
+added to the 
+HTML <sgmltag class="starttag">body</sgmltag> element's 
+<varname>onLoad</varname> event handler function.
+</para>
+      </section>
+    </section>
+    <section id="script.script-component">
+      <title>Script component</title>
+      <para>
+The &Script; component is a convinient way to add scripting to a Tapestry page.
+</para>
+      <para>
+The component has a single required parameter, <varname>script</varname> that is the path to
+a Script document within the classpath.  The optional <varname>symbols</varname> parameter
+allows a &Map; to be specified as the base set of symbols, to which are added any informal
+parameters.
+</para>
+      <para>
+A handful of scripts are included with the framework.  The following script
+is used by the <link linkend="inspector">Tapestry Inspector</link>
+to force a &Form; to submit when a &PropertySelection;
+changes value.
+</para>
+      <figure>
+        <title>SelectSubmit.script</title>
+        <programlisting>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE script PUBLIC 
+  "-//Howard Ship//Tapestry Script 1.1//EN"
+  "http://tapestry.sf.net/dtd/Script_1_1.dtd"&gt;
+&lt;!--
+
+Adds a handler that forces the form containing a particular select element
+to submit when the select changes its value.
+
+Input symbols:
+  component: The PropertySelection component the script is to be attached to.
+--&gt;
+&lt;script&gt;
+&lt;let key="formName"&gt; <co id="script.ex.formName"/>
+  ${component.form.name}
+&lt;/let&gt;
+&lt;let key="selectName"&gt;
+  ${component.name}
+&lt;/let&gt;
+&lt;let key="formPath"&gt; <co id="script.ex.formPath"/>
+  document.${formName}
+&lt;/let&gt;
+&lt;let key="selectPath"&gt;
+  ${formPath}.${selectName}
+&lt;/let&gt;
+&lt;let key="functionName"&gt; <co id="script.ex.functionName"/>
+  onChange_${formName}_${selectName}
+&lt;/let&gt;
+
+&lt;body&gt;
+
+function ${functionName}()
+{
+  ${formPath}.submit();
+}
+
+&lt;/body&gt;
+
+&lt;initialization&gt;
+${selectPath}.onchange = ${functionName};
+&lt;/initialization&gt;
+&lt;/script&gt;
+</programlisting>
+      </figure>
+      <calloutlist>
+        <callout arearefs="script.ex.formName">
+          <para>
+	The property path makes it easy to find the &Form; containing the &PropertySelection;
+	component.  Part of the necessity for this script is that form and form element names
+	are assigned by Tapestry.
+	</para>
+        </callout>
+        <callout arearefs="script.ex.formPath">
+          <para>
+	Here, the <emphasis>path</emphasis> refers to how to identify the HTML element in the
+	browser's DOM.
+	</para>
+        </callout>
+        <callout arearefs="script.ex.functionName">
+          <para>
+	The function name is used twice; to define the function and to setup the event handler.
+	Note how the name incorporates the unique form name and element name, this ensures
+	that any number of &PropertySelection; components, inside any number of &Form;s can
+	use this script without concern for naming conflicts.
+	</para>
+        </callout>
+      </calloutlist>
+      <para>
+Using the script simply involves declaring it in the component specification and configuring
+its input parameters.  It must also be in the HTML template, before the closing
+tag of the &Form; component.
+</para>
+      <figure>
+        <title>SubmitScript usage</title>
+        <programlisting>
+&lt;component id="submitScript" type="Script"&gt;
+  &lt;static-binding name="script"&gt;/net/sf/tapestry/form/SelectSubmit.script&lt;/static-binding&gt;
+  &lt;binding name="component" property-path="components.selectPage"/&gt;
+&lt;/component&gt;
+</programlisting>
+      </figure>
+    </section>
+  </chapter>
