@@ -79,7 +79,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import net.sf.tapestry.multipart.MultipartDecoder;
+import net.sf.tapestry.multipart.IMultipartDecoder;
+import net.sf.tapestry.multipart.DefaultMultipartDecoder;
 import net.sf.tapestry.spec.IApplicationSpecification;
 import net.sf.tapestry.util.StringSplitter;
 
@@ -166,7 +167,7 @@ public class RequestContext implements IRender
     private HttpServletRequest _request;
     private HttpServletResponse _response;
     private ApplicationServlet _servlet;
-    private MultipartDecoder _decoder;
+    private IMultipartDecoder _decoder;
     private DecodedRequest _decodedRequest;
 
     /**
@@ -240,24 +241,29 @@ public class RequestContext implements IRender
         // All three parameters may be null if created from
         // AbstractEngine.cleanupEngine().
 
-        if (_request != null && MultipartDecoder.isMultipartRequest(request))
+        if (_request != null && DefaultMultipartDecoder.isMultipartRequest(request))
+        {
             _decoder = createMultipartDecoder(request);
+            _decoder.decode(request);
+        }
     }
 
     /**
-     *  Invoked from the constructor to create a {@link MultipartDecoder} instance.
+     *  Invoked from the constructor to create a {@link DefaultMultipartDecoder} instance.
      *  Applications with specific upload needs may need to override this to
-     *  provide a subclass instance instead.
+     *  provide a subclass instance instead.  The caller will invoke
+     *  {@link IMultipartDecoder#decode(HttpServletRequest)} on the
+     *  returned object.
      * 
      *  @see ApplicationServlet#createRequestContext(HttpServletRequest, HttpServletResponse)
      *  @since 2.3
      * 
      **/
     
-    protected MultipartDecoder createMultipartDecoder(HttpServletRequest request)
+    protected IMultipartDecoder createMultipartDecoder(HttpServletRequest request)
     throws IOException
     {
-        return new MultipartDecoder(request);
+        return new DefaultMultipartDecoder();
     }
 
     /**
@@ -625,7 +631,7 @@ public class RequestContext implements IRender
 
     /**
      *  Invoked at the end of the request cycle to cleanup and temporary resources.
-     *  This is chained to the {@link MultipartDecoder}, if there is one.
+     *  This is chained to the {@link DefaultMultipartDecoder}, if there is one.
      * 
      *  @since 2.0.1
      **/

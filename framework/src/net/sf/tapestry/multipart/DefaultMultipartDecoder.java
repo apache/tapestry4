@@ -94,9 +94,9 @@ import net.sf.tapestry.util.StringSplitter;
  *
  **/
 
-public class MultipartDecoder
+public class DefaultMultipartDecoder implements IMultipartDecoder
 {
-    private static final Log LOG = LogFactory.getLog(MultipartDecoder.class);
+    private static final Log LOG = LogFactory.getLog(DefaultMultipartDecoder.class);
 
     public static final String MULTIPART_FORM_DATA_CONTENT_TYPE = "multipart/form-data";
 
@@ -114,15 +114,6 @@ public class MultipartDecoder
         return contentType.startsWith(MULTIPART_FORM_DATA_CONTENT_TYPE);
     }
 
-    public MultipartDecoder(HttpServletRequest request)
-    {
-        if (!isMultipartRequest(request))
-            throw new ApplicationRuntimeException(
-                Tapestry.getString("MultipartDecoder.wrong-content-type", request.getContentType()));
-
-        decode(request);
-    }
-
     private void close(InputStream stream)
     {
         try
@@ -138,9 +129,11 @@ public class MultipartDecoder
 
     private static final String BOUNDARY = "boundary=";
 
-    private void decode(HttpServletRequest request)
+    public void decode(HttpServletRequest request)
     {
-        boolean debug = LOG.isDebugEnabled();
+        if (!isMultipartRequest(request))
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("MultipartDecoder.wrong-content-type", request.getContentType()));
 
         String contentType = request.getContentType();
         int pos = contentType.indexOf(BOUNDARY);
@@ -439,13 +432,6 @@ public class MultipartDecoder
         }
     }
 
-    /**
-     *  Returns the single value (or first value) for the parameter
-     *  with the specified name.  Returns null if no such parameter
-     *  was in the request.
-     * 
-     **/
-
     public String getString(String name)
     {
         ValuePart p = (ValuePart) partMap.get(name);
@@ -456,12 +442,6 @@ public class MultipartDecoder
         return p.getValue();
     }
 
-    /**
-     *  Returns an array of values (possibly a single element array).
-     *  Returns null if no such parameter was in the request.
-     * 
-     **/
-
     public String[] getStrings(String name)
     {
         ValuePart p = (ValuePart) partMap.get(name);
@@ -471,12 +451,6 @@ public class MultipartDecoder
 
         return p.getValues();
     }
-
-    /**
-     *  Returns the uploaded file with the specified parameter name,
-     *  or null if no such parameter was in the request.
-     * 
-     **/
 
     public IUploadFile getUploadFile(String name)
     {
