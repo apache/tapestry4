@@ -1,0 +1,620 @@
+<!-- $Id$ -->
+
+<chapter>
+	<title>Tapestry Pages</>
+
+<para>
+Pages are specialized versions of components.  As components, they have a specification, 
+embedded components, assets and an HTML template.
+</>
+
+<para>
+Pages do not have parameters, because they are the outermost component in the component 
+hierarchy.
+</>
+
+<para>
+All components, however deep their nesting, have a page property that points back to the page 
+they are ultimately embedded within.   Pages have an engine property that points to the engine 
+they are currently attached to.
+</>
+
+<para>
+Pages participate in a pooling mechanism, so that a single instance of a page component can be 
+used by multiple sessions of the same web application.  Even when a large number of client 
+sessions are active, it is rare for more than a handful to be actively processing requests in the 
+application server.  This pooling mechanism minimizes the number of instances of a page that 
+must exist concurrently on the server.  There are some implications to this design that are 
+discussed in the following sections.
+</>
+
+<para>
+Pages may have persistent state, properties that persist between request cycles.  In fact, any 
+component may have persistent state, and use the page as means for recording that state.
+</>
+
+<para>
+The engine is a session persistent object.  The implementation of this varies from application 
+server to application server, but the basic idea is that the
+<classname>HttpSession</> is serialized after each 
+request and stored in a file or database.  It may then be removed from memory.  When a 
+subsequent request for the same session arrives, it is restored from the persistent storage.
+</>
+
+<para>
+In a clustering server application, consequtive requests for the same session may be serviced by 
+different servers within the cluster.  Serializing and deserializing the
+<classname>HttpSession</> is the mechanism 
+by which the servers are kept synchronized.
+</>
+
+<para>
+The visit object is a property of the engine object, so it is serialized and de-serialized with the 
+engine.
+</>
+
+<para>
+Pages are <emphasis>not</> session persistent.  They exist only within the memory of the Java VM in which they 
+are first created.  Pages and components don't need to implement the 
+<classname>java.io.Serializable</>
+interface; they will never be serialized.
+</>
+
+<para>
+The application engine can always instantiate a new page instance and restore its previously 
+recorded state (the recorded state information is serialized with the engine).
+</>
+
+	<section>
+		<title>Page State</>
+
+<para>
+Pages, and the components on them, have state.  State is considered the set of values for the 
+properties of the page.
+</>
+
+<para>
+In Tapestry, the lifespan of each property is very important.  There are three lifespans:
+</>
+
+<itemizedlist>
+	<listitem>
+		<para>
+			Persistent.  Changes the property are recorded and persist between request cycles.  
+			Persistent properties are restored when the page is next loaded.
+		</>
+	</>
+
+	<listitem>
+		<para>
+			Transient.  The property is set before the page is rendered and will be reset (
+			to default value) when the page is next loaded.
+		</>
+	</>
+
+	<listitem>
+		<para>
+			Dynamic.  The property changes while the page is rendered, but 
+			(like transient) the property is 
+			reset when the page is next loaded.
+		</>
+	</>
+</>
+
+<para>
+Persistent properties are things like the user's name, the product being displayed in an e-
+commerce application, etc.  Transient properties are more commonly things needed just once, 
+such as an error message.  Dynamic properties are intimately tied to the rendering process ... for 
+example, to display a list of items in an order, it may be necessary to have a dynamic property take 
+the value of each line item in sequence, as part of a loop.
+</>
+
+	</section>
+
+	<section>
+		<title>Persistent Page State</>
+
+<para>
+The Tapestry framework is responsible for tracking changes to page state during the request cycle, 
+and storing that state between request cycles.   Ultimately, this is the responsiblility of the 
+application engine.  This is accomplished through page recorder objects.  As a page's persistent 
+state changes, it notifies its page recorder, providing the name of the property and the new value.  
+</>
+
+<para>
+This information is stored persistently between request cycles.  In a later request cycle, the page 
+recorder combines this information with a page instance to rollback the state of the page.
+</>
+
+<para>
+Pages are blind as to how their state is stored.  The basic implementation of Tapestry simply 
+stores the page state information in memory (and serializes it with the engine, in the 
+<classname>HttpSession</>), 
+but future options may include storing the data in flat files, relational databases or even as cookies 
+in the client browser.
+</>
+
+<para>
+Some minor burden is placed on the page designer to support persistent state.
+The mutator method of every persistent property must include a line of code that notifies the 
+observer of the change.
+</>
+
+<para>
+For example, consider a page that has a persistent property for storing an email address.  It would 
+implement the normal accessor and mutator methods:
+</>
+
+&start-listing;private String emailAddress;
+
+public String getEmailAddress()
+{
+  return emailAddress;
+}
+
+public void setEmailAddress(String value)
+{
+  emailAddress = value;
+
+  <emphasis>fireObservedChange("emailAddress", value);</>
+}&end-listing;
+ 
+<para>
+The mutator method does slightly more than change the private instance variable; it must also 
+notify the observer of the change, by   invoking the method 
+<function>fireObservedChange()</>, 
+which is 
+implemented by the class 
+<classname>com.primix.tapestry.AbstractComponent</>.  This method is 
+overloaded; implementations are provided for every type of scalar value, and for 
+<classname>java.lang.Object</>.
+</>
+
+<para>
+The value itself must be serializable (scalar values are converted to wrapper classes, which are 
+serializable).
+</>
+
+<para>
+The page designer must provide some additional code to manage the lifecycle of the page and its 
+persistent properties.  This is necessary to support the "shell game" that allows a page instance to 
+be separate from its persistent state, and is best explained by example.  Let's pretend that the user 
+can select a personal preference for the color scheme of a page.  The default color is blue.
+</>
+
+<para>
+The first user, Suzanne, reaches the page first.  Disliking the blue color scheme, she uses a form 
+on the page to select a green color scheme.  The instance variable of the page is changed to green, 
+and the page recorder inside Suzanne's session records that the persistent value for the color 
+property is green.
+</>
+
+<para>
+When Suzanne revisits the page, an arbitrary instance of the page is taken from the pool. The page 
+recorder changes the color of the page to green and Suzanne sees a green page.
+</>
+
+<para>
+However, if Nancy visits the same page for the first time, what is the color?  Her page recorder 
+will not note any particular selection for the page color property.  She'll get whatever was left in 
+the page's instance variable ... green if she gets the instance last used to display the page for 
+Suzanne, or some other color if some other user recently hit the same page.
+</>
+
+<para>
+This may seem relatively minor when the persistent page state is just the background color.  
+However, in a real application the persistent page state information may include user login 
+information, credit card data, the contents of a shopping cart  or whatever.
+The way to deal with this properly is for each page with persistent state to override the method 
+<function>detach()</>.  The implementation should reset any instance variables on the page to their initial 
+(freshly allocated) values.
+</>
+
+<para>
+In our example, when Suzanne is done with the page, its <function>detach()</> method will reset the page 
+color property back to blue before releasing it into the pool.  When Nancy hits the page for the 
+first time, the page retrieved from the pool with have the expected blue property.
+</>
+
+<para>
+In our earlier email address example, the following additional code must be implemented by the 
+page:
+</>
+
+&start-listing;public void detach()
+{
+  emailAddress = null;
+
+  super.detach();
+}&end-listing;
+
+<para> 
+All properties, dynamic, transient and persistent, should be reset inside the 
+<function>detach()</> method.
+</>
+
+<para>
+Individual components on a page may also have dynamic, transient or persistent properties.  If so, 
+they should implement the <classname>ILifecycle</> interface and implement the 
+<function>reset()</> method and clear 
+out such properties, just as a page does in 
+<function>detach()</>.
+</>
+
+	</section>
+
+	<section>
+		<title>EJB Page Properties</>
+
+<para>
+Tapestry make a single, special case for one particular type of persistent page property:  references 
+to Enterprise JavaBeans.
+</>
+
+<para>
+The page recorders check to see if a page property is type 
+<classname>javax.ejb.EJBObject</>.  If so, they don't 
+store the object itself (<classname>EJBObjects</> are not directly serializable), 
+instead they get the <classname>Handle</> for the object 
+and store that instead (<classname>Handle</>s are serializable).
+</>
+
+<para>
+When the page is next accessed, the <classname>Handle</> is converted back into an 
+<classname>EJBObject</> before assigning 
+it to the page property.
+</>
+
+<para>
+A side effect of this is that you may not have a <classname>Handle</> as a 
+persistant page property; the page 
+recorders don't have a way to differentiate a <classname>Handle</> from an 
+<classname>EJBObject</> converted to a <classname>Handle</>
+and always assume the latter.
+</>
+
+	</section>
+
+	<section>
+		<title>Dynamic Page State</>
+
+<para>
+The properties of a page and components on the page can change during the rendering process.   
+These are changes to the page's dynamic state.
+</>
+
+<para>
+The majority of components in an application use their bindings to pull data from the page (or 
+from business objects reachable from the page).
+</>
+
+<para>
+A small number of components, notably the <classname>Foreach</> component, work the other way; pushing 
+data back to the page (or some other component).
+</>
+
+<para>
+The <classname>Foreach</> component is used to loop over 
+a set of items.  It has one parameter from which it 
+reads the list of items.  A second parameter is used to write each item back to a property of its 
+container.
+</>
+
+<para>
+For example, in our shopping cart example, we may use a <classname>Foreach</> to run 
+through the list of line 
+items in the shopping cart.  Each line item identifies the product, cost and quantity.
+</>
+
+<example>
+	<title>HTML template for Shopping Cart</>
+	<programlisting><![CDATA[<h1>Contents of shopping cart for
+]]><emphasis>&lt;jwc id="insertUserName"/&gt;</>:<![CDATA[</h1>
+<table>
+  <tr> <th>Product</th> <th>Qty</th> <th>Price</th> </tr>]]>
+<emphasis>&lt;jwc id="e-item"&gt;</>
+<![CDATA[<tr>
+  <td> ]]><emphasis>&lt;jwc id="insertProductName"&gt;</><![CDATA[ </td>
+  <td> ]]><emphasis>&lt;jwc id="insertQuantity"/&gt;</><![CDATA[ </td>
+  <td> ]]><emphasis>&lt;jwc id="insertPrice"/&gt;</><![CDATA[ </td>
+  <td> ]]><emphasis>&lt;jwc id="remove"&gt;</>remove<emphasis>&lt;/jwc&gt;</><![CDATA[ </td>
+</tr>
+]]><emphasis>&lt;/jwc&gt;</>
+<![CDATA[</table>]]></programlisting>
+</example>
+
+<para>
+(Obviously, we've glossed over many details, such as allowing the quantity to be updated, and 
+showing subtotals).
+</>
+
+<para>
+Component <varname>e-item</> is our <classname>Foreach</>.   
+It will render its body (all the text and components it wraps) several times, 
+depending on the number of line items in the cart.  On each pass it:
+</>
+
+<itemizedlist>
+	<listitem>
+		<para>Gets the next value from the source</>
+	</>
+
+	<listitem>
+		<para>Updates the value into some property of its container</>
+	</>
+
+	<listitem>
+		<para>Renders its body</>
+	</>
+</>
+
+<para>
+This continues until there are no more values in its source.  Lets say this is a page that has a 
+<varname>lineItem</> property that is being updated by the 
+<varname>e-item</> component.  The <varname>insertProductName</>, 
+<varname>insertQuantity</> and <varname>insertPrice</> components use dynamic 
+bindings such as <literal>lineItem.productName</>, 
+<literal>lineItem.quantity</> and <literal>lineItem.price</>.
+</>
+
+<para>
+Part of the page's specification would configure these embedded components.
+</>
+
+<example>
+	<title>Shopping Cart Specification (excerpt)</>
+	<programlisting><![CDATA[<component>
+  <id>]]><emphasis>e-item</><![CDATA[</id>
+  <type>Foreach</type>
+
+  <bindings>
+    <binding>
+      <name>source</name>
+      <property-path>items</property-path>
+    </binding>
+
+    <binding> 
+      <name>value</name>
+      <property-path>lineItem</property-path>
+    </binding>
+  </bindings>
+</component>
+
+<component>
+  <id>]]><emphasis>insertProductName</><![CDATA[</id>
+  <type>Insert</type>
+
+  <bindings>
+    <binding>
+      <name>value</name>
+      <property-path>lineItem.productName</property-path>
+    </binding>
+  </bindings>
+</component>
+
+<component>
+  <id>]]><emphasis>insertQuantity</><![CDATA[</id>
+  <type>Insert</type>
+
+  <bindings>
+    <binding>
+      <name>value</name>
+      <property-path>lineItem.quantity</property-path>
+    </binding>
+  </bindings>
+</component>
+
+<component>
+  <id>]]><emphasis>insertPrice</><![CDATA[</id>
+  <type>Insert</type>
+
+  <bindings>
+    <binding>
+      <name>value</name>
+      <property-path>lineItem.price</property-path>
+    </binding>
+  </bindings>
+</component>
+
+<component>
+  <id>]]><emphasis>remove</><![CDATA[</id>
+  <type>Action</type>
+
+  <bindings>
+    <binding>
+      <name>listener</name>
+      <property-path>removeListener</property-path>
+    </binding>
+  </bindings>
+</component>]]></programlisting>
+</example>
+ 
+<para>
+This is very important to the <varname>remove</> component.  On some future request cycle, it will be 
+expected to remove a specific line item from the shopping cart, but how will it know which one?
+</>
+
+<para>
+<![CDATA[
+This is at the heart of the action service.  One aspect of the IRequestCycle's functionality is to 
+dole out a sequence of action ids that are used for this purpose (they are also involved in forms 
+and form elements).  As the Action component renders itself, it allocates the next action id from 
+the request cycle.  Regardless of what path through the page's component hierarchy the rendering 
+takes, the numbers are doled out in sequence.  This includes conditional blocks and loops such as 
+the Foreach. 
+The steps taken to render an HTML response are very deterministic.  If it were possible to 
+'rewind the clock' and restore all the involved objects back to the same state (the same values for 
+their instance variables) that they were just before the rendering took place, the end result would 
+be the same.  The exact same HTML response would be created.
+This is similar to the way in which compiling a program for source code results in the same object 
+code.  Because the inputs are the same, the results will be identical.
+This fact is exploited by the action service to respond to the URL.  In fact, the state of the page 
+and components is rolled back and the rendering processes fired again (with output discarded).  
+Code inside the Action component can compare the action id against the target action id encoded 
+within the URL.  When a match is found, the Action component can count on the state of the 
+page and all components on the page to be in the exact same state they were in when the page 
+was previously rendered.
+A small effort is required of the developer to always ensure that this rewind operation works.  In 
+cases where this can't be guaranteed (for instance, if the source of this dynamic data is a stock 
+ticker or unpredictable database query) then other options must be used.
+In our example, the remove component would trigger some application specific code 
+implemented in its containing page that removes the current lineItem from the shopping cart.
+The application is responsible for providing a listener, an object that is notified when the Action 
+component is triggered.  Action listeners implement the IActionListener interface, which has a 
+single method, actionTriggered().  
+Typically, the accessor method that provides the listener returns an instance of an inner class.  
+Since our specification identified removeListener as the listener property for the remove 
+component, the page must implement a remoteListener property:
+	public IActionListener getRemoveListener()
+	{
+	  return new IActionListener()
+	  {
+	    public void actionTriggered(IComponent component,
+		IRequestCycle cycle)
+		throws RequestCycleException
+	    {
+		getCart().remove(lineItem);
+	    }
+	  };
+	}
+ 
+This method is only invoked after all the page state is rewound; especially relevant is the lineItem 
+property.  The listener gets the shopping cart and removes the current line item from it.  This 
+whole rewinding process has ensured that lineItem is the correct value, even though the remove 
+component was rendered several times on the page (because it was wrapped by the Foreach 
+component).
+An equivalent JavaServer Pages application would have needed to define a servlet for removing 
+items from the cart, and would have had to encode in the URL some identifier for the item to be 
+removed.  The servlet would have to pick apart the URL to find the cart item identifier, locate the 
+ShoppingCart (probably stored in the HttpSession) and the particular CartItem and invoke 
+the remove() method directly.  Finally, it would forward to the JSP that would produce the 
+updated page.
+The page containing the shopping cart would need to have special knowledge of the cart 
+modifying servlet; its servlet prefix and the structure of the URL (that is, how the item to remove 
+is identified).  This creates a tight coupling between any page that wants to display the shopping 
+cart and the servlet used to modify the shopping cart.  If the shopping cart servlet is modified 
+such that the URL it expects changes structure, all pages referencing the servlet will be broken. 
+Tapestry eliminates all of these issues, reducing the issue of manipulating the shopping cart down 
+to the listener class, and its single, small method.  
+Stale Links and the Browser Back Button
+The fact that web browsers have a "back" button is infuriating to application developers.  What 
+right does the user have to dictate the order of navigation through the application?  Who'se 
+application is this anyway?
+In a truly stateless application, the browser back button is not a great hardship, because each page 
+carrys within itself (as cookies, hidden form fields and encoded URLs) all the state necessary to 
+process the page.
+Tapestry applications can be more stateful, which is a blessing and a curse.  The blessing is that 
+the Tapestry application, running on the server, can maintain state in terms of business objects, 
+data from databases, Enterprise JavaBeans and more.  The curse is that a user hitting the back 
+button on the browser loses synchronization with that state.
+Let's use an e-commerce example.  A user is browsing a list of available cameras from a product 
+catalog.  The user clicks on a Minolta camera and is presented with pictures, prices and details 
+about the Minolta camera.
+Part of the page lists similar or related items.  The user clicks on the name of a similar Nikon 
+camera and is shown the pictures, prices and details of the Nikon camera.  The user then hits the 
+browser back button, returning to the (out of date) page showing the Minolta camera, and clicks 
+the "add to shopping cart" button.
+The user is sent to the shopping cart page, but what has been added to the cart, the Minolta or the 
+Nikon?  It depends on how the Tapestry application has been structured.
+Presumably, the application has a single page, named "ProductDetails", that shows the pictures, 
+prices and details of any product.  The product details page will have a persistent property named 
+product, of type Product.  Product is a business class that contains all that pricing and detail 
+information.
+The question is, how is the add to shopping link implemented?  If its logic is to add whatever the 
+current value of the product property is (i.e., an Action component or part of a form) then it will 
+add the Nikon camera, since that's the current product.  This is the naïve approach, since it 
+doesn't take into account the possiblility that the user worked backwards to a prior page.
+On the other hand, if a Direct component is used, it can encode into the URL the primary key of 
+the Minolta product, and that will be the product added to the shopping cart, regardless of the 
+current value of the product property.
+Forms, controlled by the Form component, must make use of the action service, and so they are 
+susceptible to these issues related to the browser back button.  Still, there are techniques to make 
+even forms safe.  Borrowing an idea from more traditional JavaServer Pages development, a 
+hidden field can be included in the form to sychronize the form and the application ... for 
+example, including the primary key of the Minolta or Nikon product.  Tapestry includes a Hidden 
+component used for just this purpose.
+Page Loading and Pooling
+The process of loading a page (instantiating the page and its components) can be somewhat 
+expensive.  It involves reading the page's specification as well as the specification of all embedded 
+components within the page.  It also involves locating, reading and parsing the HTML templates 
+of all components.  Component bindings must be created and assigned.
+All of this takes time ... not much time on an unloaded server but potentially longer than is 
+acceptable on a busy site.
+It would certainly be wasteful to create these pages just to discard them at the end of the request 
+cycle.
+Instead, pages are used during a request cycle, and then stored in a pool for later re-use.  In 
+practice, this means that a relatively small number of page objects can be shared, even when there 
+are a large number of clients (a single pool is shared by all clients).  The maximum number of 
+instances of any one page is determined by the maximum number of clients that simultaneously 
+process a request that involves that page.
+A page is taken out of the pool only long enough to process a request for a client that involves it.  
+A page is involved in a request if it contains the component identified in the service URL, or if 
+application code involves the page explicitly (for instance, uses the page to render the HTML 
+response).  In either case, as soon as the response HTML stream is sent back to the client, any 
+pages used during the request cycle are released back to the pool.
+This means that pages are out of the pool only for short periods of time.  The duration of any 
+single request should be very short, a matter of a second or two.  If, during that window, a second 
+request arrives (from a different client) that involves the same page, a new instance will be created.  
+Unless and until that happens, a single instance will be used and re-used by all clients, regardless of 
+the number of clients.
+The current version of Tapestry never clears out the page pool; this potentially means that a 
+sudden glut of requests may create a large number of pages that may later not be used.  This will 
+be addressed in future versions of the framework.
+Page Localization
+When a page is first created, its locale is set to match the locale of the application it is loaded into.  
+This page locale is read-only; it is set when the page is first created and never changes.
+Any component or asset on the page that needs to be locale-specific (for instance, to load the 
+correct HTML template) will reference the page's locale.
+As noted previously, pages are not discarded; they are pooled for later reuse.  When an application 
+gets an existing page from the pool, it always matches its locale against the pooled page's locale.  
+Thus a page and its application will always agree on locale, with one exception:  if the application 
+locale is changed during the request cycle.
+When the application locale changes, any pages loaded in the current request cycle will reflect the 
+prior locale.  On subsequent request cycles, new pages will be loaded (or retrieved from the pool) 
+with locales matching the application's new locale.
+Tapestry does not currently have a mechanism for unloading a page in the same request cycle it 
+was loaded (except at the end of the request cycle, when all pages are returned to the pool).  If an 
+application includes the ability to change locale, it should change to a new page after the locale 
+change occurs.
+Changing locale may have other, odd effects.  If part of a page's persistent state is localized and 
+the application locale is changed, then on a subsequent request cycle, the old localized state will be 
+loaded into the new page (with the new locale).  This may also affect any components on the page 
+that have persistent state (though components with persistent state are quite rare).
+In general, however, page localization is as easy as component localization and is usually not much 
+of a consideration when designing web applications with Tapestry.
+Page Buffering
+The HTML response generated by a page during rendering is buffered.  Eight kilobytes of 8-bit 
+ASCII HTML is allowed to accumulate before any HTML output is actually sent back to the 
+client web browser.
+If a Java exception is thrown during the page rendering process, any buffered output is discarded, 
+and the application-defined exception page is used to report the exception.
+If a page generates a large amount of HTML and then throws an exception, the exception page is 
+still used to report the exception, however the page finally viewed in the client browser will be 
+"ugly", because part of the failed page's HTML will appear, then the complete HTML of the 
+exception page.
+In practice, virtually all Tapestry pages will use a Body component, and a Body component 
+buffers the output of all components it wraps.  This buffering is necessary so that the Body 
+component can write out various JavaScript handlers before the main body of HTML is written 
+(this is often related to the use of the Rollover component).    In any case, whenever a Body 
+component is used, and exception thrown during the rendering of the page will cause all the 
+HTML buffered by the Body component to be cleanly discarded, allowing for a clean 
+presentation of the exception page.
+There is a second aspect to page buffering; related to the HTTP protocol itself. An important 
+optimization is the 'Keep Alive' session.  When possible, one connection between a web browser 
+and a web server should be used for multiple requests ... for example, to get a web page and then 
+get all the images on the web page.  Early web browsers and clients didn't support this behavior, 
+so each request required opening a new connection to the server.  All modern web browsers and 
+servers will take advantage of Keep Alive sessions ... if possible.
+For sessions to be kept alive, each request and response must identify the exact length of its 
+content, in bytes, before transferring the content.  For static web pages and static images, this is 
+quite normal; the web browser simply looks up the size of the page or image before transferring 
+its contents as a byte stream.
+Dynamic web sites are different because, by their very nature, the number of bytes is not known 
+when the first byte is written.  For the server to indicate the end of the document to the client 
+web browser, it must close the connection.
+This is overcome by page buffering, where the first byte isn't written until the buffer is filled or the 
+complete HTML response assembled in memory.  If the entire HTML response is in the in-
+memory buffer before any of the response is returned to the client web browser, then the exact 
+number of bytes will be known, just like a static page.
+
+]]></para></section></chapter>

@@ -1,0 +1,1021 @@
+<!-- $Id$ -->
+
+<chapter>
+	<title>Tapestry Components</>
+
+<para>
+Tapestry components are "black boxes" that are involved with both rendering 
+HTML responses and responding to HTTP requests.
+</>
+
+<para>
+A Tapestry component is defined by its specification.  
+The specification is an XML file that defines the type of the component, it parameters, 
+the template used by the component, any components embedded within it and 
+how they are 'wired up', and (less often) any assets used by the component.
+</>
+
+<para>
+At runtime, the specification is used to identify and instantiate a class 
+for the component.  When the page containing the component is rendered, the 
+component will access its HTML template (whose location is defined 
+in the specification) to find the static HTML and embedded 
+components it will render.
+</>
+
+	<section>
+		<title>Parameters and Bindings</>
+
+<para>
+Tapestry components are designed to work with each other, 
+within the context of a page and application.  The process of rendering a page 
+is largely about pulling information from a source into a component  
+and doing something with it.
+</>
+
+<para>
+For example, on a welcome page, a component might get the <varname>userName</> property from 
+the <varname>visit</> object and insert it into the HTML response.
+</>
+
+<para>
+Each component has a specific set of parameters.  
+Parameters have a name, a type and may be required or optional.
+</>
+
+<para>
+To developers experienced with Java GUIs, it may appear that Tapestry 
+component parameters are the same as JavaBeans properties.  This is not actually true.  
+JavaBeans properties are set-and-forget; the designer sets a value 
+for the property using a visual editor and the value 
+is saved with the bean until it is used at runtime.
+</>
+
+<para>
+Parameters define the type of value needed, but not the actual value.  
+This value is provided by a special object called a binding.  
+The binding is responsible for providing the value 
+for the parameter as it is needed.
+</>
+
+<para>
+A binding is a source and sink of data.  A component 
+uses a binding to import or export a data value.
+</>
+
+<para>
+There are two types of bindings:  static and dynamic.  
+Static bindings are read-only; the value for the binding is 
+specified in the component specification. 
+</>
+
+<para>
+Dynamic bindings are more prevalent and useful.  A dynamic 
+binding uses a JavaBeans property name to retrieve the value when needed 
+by the component.  The source of this data is a property of some component.
+</>
+
+<para>
+In fact, dynamic bindings use something more powerful than just a 
+property name, they can use a property path.  
+A property path is a series of property names separated by periods.  
+We've already seen an example:  <literal>visit.userName</>.  
+This is equivalent to the Java code <function>getVisit().getUserName()</>,
+except that the actual class of each object is used, 
+rather than the declared type of each method<footnote>
+<para>In other words, property paths are not typesafe.</para></footnote>.
+</>
+
+<para>
+Property paths can be very useful, since they can allow a binding to 
+'crawl' deeply through an object graph to access the value it needs.  
+This frees the components from relying totally on the properties of their container, 
+instead they are free to access properties of more distant objects.
+</>
+
+<para>
+Let's change the example:  now the <varname>visit</> object contains a <varname>user</> property, 
+which is an object of class <classname>User</> that has a number of 
+properties related to the real-life user (such as name, e-mail, account number, etc.).
+</>
+
+<para>
+We can still use an <classname>Insert</> component to display the user's name; 
+we just have to extend the property path to <literal>visit.user.name</>,
+which is approximately equivalent to <function>getVisit().getUser().getName()</>.
+
+	</section>
+
+	<section>
+		<title>Embedded Components</>
+
+<para>
+Under Tapestry, it is common to define new components 
+by combining existing components.  The existing components are 
+embedded in the containing component.
+</>
+
+<para>
+Each embedded component has an <varname>id</> (an identifying string) 
+that must be unique within the containing component.  
+Every non-page component is embedded inside some other 
+component forming a hierarchy that can get quite deep 
+(in real Tapestry applications, some pages have components nested three to five levels deep).
+</>
+
+<para>
+In some cases, a component will be referenced by its id path.  
+This is a series of component ids separated by periods, representing a path from 
+the page to a specific component.  The same notation as a property path 
+is used, but the information being represented is quite different.
+</>
+
+<para>
+For example, the id path <literal>border.navbar.homeLink</>
+represents the component named <varname>homeLink</>, 
+embedded inside a component named <varname>navbar</>, 
+embedded inside a component named <varname>border</>, embedded inside some page.
+</>
+
+<para>
+Tapestry components are "black boxes".  They have a set of parameters that may 
+be bound, but their internals, how they are implemented, is not revealed.
+</>
+
+<para>
+Primitive components may not embed other components, or even 
+have a template.  Nearly all the built-in components are primitive; they are 
+building blocks for constructing more complex components.
+</>
+
+<para>
+Alternately, a component may be implemented using a template and embedded components.  
+In either case, the names, types or very existence of embedded components is private, 
+hidden inside the containing component's "black box".
+</>
+
+	</section>
+
+	<section>
+		<title>HTML Templates</>
+
+<para>Nearly all Tapestry components combine static HTML
+	<footnote>
+		<para>
+			The initial relase of Tapestry is specifically oriented around HTML.  Some support for
+			non-HTML languages, such as XML, XHTML or WML is already present
+			and will be expanded in the future.
+		</>
+	</>
+from a template with additional dynamic content 
+(some few components are just dynamic content).  
+Often, a Tapestry component embeds other Tapestry components.  
+These inner components are referenced in the containing component's template.
+</>
+
+<para>
+Templates look like standard HTML files, though they are rarely complete 
+HTML documents; usually they are snippets.  
+In addition, a new element, &jwc-tag; (for Java Web Component), 
+is added to represent a component in the HTML template.
+</>
+
+<para>
+The &jwc-tag; element has two forms:
+</>
+	
+
+
+&start-listing;&lt;jwc id="<replaceable>component id</>"&gt;  <replaceable>body</>  &lt;/jwc&gt;&end-listing;
+
+<para>or
+</>
+
+
+&start-listing;&lt;jwc id="<replaceable>component id</>"/&gt;&end-listing;
+
+
+<para>
+The parser used by Tapestry is relatively forgiving about case 
+and white space.  Also, the component id can be enclosed in 
+double quotes (as above) or single quotes.
+</>
+
+<para>
+The body listed above can be either static HTML or other Tapestry 
+components or both.  Elements in the body of a component are 
+wrapped by the containing component.  The containing component controls the 
+rendering of the elements it wraps in its body.  For example, 
+the <classname>Conditional</> component may decide not to 
+render its body and the <classname>Foreach</> component may render 
+its body multiple times.
+</>
+
+<para>
+Not all Tapestry components should have a body.  
+For example, the <classname>TextField</> component creates an
+&start-tag;input type=text&end-tag;
+form element and it makes no sense for it to contain anything else.  
+Whether a component can have a body (and wrap other elements) is defined in the 
+component's specification.
+</>
+
+<para>
+Tapestry includes a special component, <classname>InsertWrapped</>, 
+which is used to render the body of a component.  
+It makes it easy to create components that wrap other components.
+</>
+
+<para>
+In many scripting systems, scripting constructs are one-dimensional.... 
+they appear at a certain point on the page and dynamically 
+insert some content into a stream of HTML that eventually 
+ends up on the client web browser.
+</>
+
+<para>
+Tapestry components are more powerful ... they have open and 
+close tags and thus can contain a body.  This body is made up 
+of static HTML from the template and other Tapestry components.  The outer component 
+wraps the inner elements.
+</>
+
+<para>
+An example of this is the <classname>Border</> component in the Tapestry Tutorial
+	<footnote>
+		<para>
+			The Border tutorial has changed slightly since this
+			was initially written, but the basic ideas still hold.
+		</para>
+	</footnote>.  
+It shows how a component can wrap the entire content of a page.
+</>
+
+<figure>
+	<title>Border Component</>
+	<mediaobject>
+		<imageobject>
+			<imagedata fileref="images/Border-Screenshot.jpg" format=jpeg>
+		</>
+	</>
+</>
+
+
+
+
+<para>
+Here, the <varname>border</> component provides the application title ("Reusable Component Tutorial",
+in the title bar of the window), the page title (upper left corner) and navigation 
+controls (left side).  The page provides the content in the light gray box in the center. 
+In this example, the page content is simply static HTML but in a real application the 
+content would include other components.
+</>
+
+<para>
+The Home page component has the following HTML template:
+</>
+
+<figure>
+	<title>Home Page HTML Template</>
+	<programlisting>
+&start-jwc;jwc id="border"&end-jwc;<![CDATA[
+
+Nothing much doing here on the <b>home</b> page.  Visit one of our other fine 
+pages.
+
+]]>&start-jwc;/jwc&end-jwc;</programlisting>
+</figure>
+
+
+<para>
+In other words, the <varname>border</>
+component gets to produce HTML first.  At some point, the page's content 
+(wrapped inside the <varname>border</> component) will be produced.  
+Afterwards, the <varname>border</> component will have an opportunity to produce more HTML.
+The <classname>Border</> component has a much larger HTML template:
+</>
+
+<figure>
+	<title>Border component HTML template</>
+	<programlisting><![CDATA[
+<HTML>
+<head>
+<title>Reusable Component Tutorial</title>
+</head>
+<body>
+<table border=0 bgcolor=gray cellspacing=0>
+  <tr valign=top>
+    <td colspan=3 align=left>
+      <font size=5 color="White">]]>&start-jwc;jwc id="insertPageTitle"/&end-jwc;<![CDATA[</font>
+    </td>
+  </tr>
+  <tr valign=top>
+    <td align=right>
+      <font color=white>
+]]>&start-jwc;jwc id="e"&end-jwc;<![CDATA[
+        <br>]]><emphasis><![CDATA[<jwc id="link"><jwc id="insertName"></jwc>
+</jwc>]]></emphasis><![CDATA[
+      </font>
+    </td>
+    <td valign=top bgcolor=silver>
+      ]]>&start-jwc;jwc id="wrapped"/&end-jwc;<![CDATA[
+    </td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan=3>&nbsp;</td>
+  </tr>
+</table>
+</body>
+</HTML>
+]]></programlisting>
+</figure>
+
+<para>
+The <classname>Border</> component contains five components:
+
+	<itemizedlist>
+		<listitem><para><varname>insertPageTitle</></></>
+		<listitem><para><varname>e</></></>
+		<listitem><para><varname>link</></></>
+		<listitem><para><varname>insertName</></></>
+		<listitem><para><varname>wrapped</></></>
+	</>
+</>
+
+<para>
+The <varname>e</> component wraps some static HTML and the 
+<varname>link</> component.  The 
+<varname>link</> component wraps the <varname>insertName</> component.
+</>
+
+<para>
+When it comes time to render, Tapestry parses the HTML template and breaks 
+them into blocks of static HTML, component starts 
+(the &jwc-tag; tag) and component ends (the &start-tag;;/jwc&end-tag; tag).
+</>
+
+<para>
+The framework determines what each component wraps.  
+For components with their own templates, such as <classname>Home</> and 
+<classname>Border</>, it figures out what the outer elements are, 
+the outermost static HTML and components that aren't wrapped by other components.
+</>
+
+<para>
+This information turns into a data structure:
+</>
+
+<figure>
+	<title>Border Component Construction</>
+	<mediaobject>
+		<imageobject>
+			<imagedata fileref="images/Border-Construction.gif" format=gif>
+		</>
+	</>
+</>
+
+
+<para>
+The left side shows how the components are embedded.  
+The <classname>Home</> page component contains the <varname>border</> component.  
+The <varname>border</> component contains the other components.
+</>
+
+<para>
+The outermost elements for the <classname>Home</> page is 
+a list of one item: the  <varname>border</> component.  
+There's no text before or after the <varname>border</> component's &jwc-tag; tag, 
+and the remaining text in the template is wrapped by the <varname>border</> component.
+</>
+
+<para>
+The <varname>border</> component is 
+more complicated; it has several outer elements, 
+representing static HTML text and components.  
+The other components don't have templates, 
+so they don't have outer elements, but some do wrap other components.
+</>
+
+<para>
+When it's time to render, the process starts in the <classname>Home</> page, since a page
+is always the outermost component. 
+It iterates through its outer list, which contains a single element: the
+<varname>border</> component.  The process then recursively renders the 
+<varname>border</> component.  Its outer list is rendered in order.  
+Each component decides where it will render its wrapped elements (if it has any).  
+The <varname>e</> component is a <classname>Foreach</>; 
+it will render its wrapped elements any number of times.
+</para>
+
+
+<para>
+Eventually, the process reaches the <varname>wrapped</> component, 
+which is of type <classname>InsertWrapped</>.  
+This is a special component; it jumps up one level to its container (the <varname>border</> component)
+and renders the <varname>border</>'s wrapped elements ... the text from the <classname>Home</>
+page template.
+</>
+
+<para>
+It may seem complicated, but ultimately its very natural from a markup language point of view; 
+the &jwc-tag; tags continue to act like HTML elements, wrapping around and 
+controlling their contents, just exactly like a 
+&start-tag;table&end-tag;
+wraps its &start-tag;tr&end-tag;'s or a &start-tag;form&end-tag; wraps its 
+&start-tag;input&end-tag;'s.
+</>
+
+	</section>
+
+	<section>
+		<title>Localization</>
+
+<para>
+Tapestry has built in support for localization, designed to be easy to use.  
+Tapestry allows multiple versions of HTML templates and assets (described in a later section) 
+to be deployed with the application.
+</>
+
+<para>Each client connecting to the application will select a particular <classname>Locale</>. 
+When a page for the application is created, the locale is used to select the correct template.  
+Locales are defined by the ISO (International Standards Organization).  
+A locale consists of a language code (such as 'en' for English, 'de' for German or 'fr' for French) 
+and a country code (such as 'AU' for Australia, 'BE' for Belguim, or  'GB' for United Kingdom).
+</>
+
+<para>
+The base template name is derived from the specification name, 
+by changing the '.jwc' extension to '.html.  
+For example, component <filename>/com/skunkworx/skunkapp/Banner.jwc</>
+will have a base template name of  <filename>/com/skunkworx/skunkapp/Banner.html</>.
+This resource name is used as the basis of a search that includes the locale.  
+Various suffixes are inserted just before the '.html' extension.
+</>
+
+<para>
+A French speaking Belgian visitor would provoke the following search:
+</>
+
+<itemizedlist>
+	<listitem>
+		<para>
+			<filename>/com/skunkworx/skunkapp/Banner_fr_BE.html</>
+		</>
+	</>
+
+	<listitem>
+		<para>
+			<filename>/com/skunkworx/skunkapp/Banner_fr.html</>
+		</>
+	</>
+
+	<listitem>
+		<para>
+			<filename>/com/skunkworx/skunkapp/Banner.html</>
+		</>
+	</>
+</>
+
+
+<para>
+The Tapestry framework automatically provides this basic level of support.  
+To this, an application could add custom logic to allow the locale to be selected at 
+runtime, and to store a user's locale preference (in a cookie, or in some form of profile)
+for later visits.
+</>
+
+	</section>
+
+	<section>
+		<title>Assets
+
+<para>
+Assets are images (GIF, JPEG, etc.), movies, sounds or other collateral associated 
+with a web application.  Assets come in three flavors:  external, internal and private.
+</>
+
+<para>
+External assets live at an arbitrary URL.  Internal assets use a URL within the 
+servlet context hosting the Tapestry application; 
+these assets are deployed on the same web server as the application, 
+or within the same Web Application Archive (WAR).
+</para>
+
+<para>
+Private assets come from the Java class path and are 
+resources not normally visible to the web server.
+</>
+
+<para>
+Tapestry uses the assets concept to address two areas:  localization and deployment.
+</>
+
+<para>
+For localization:  internal and private assets are localized, 
+just like HTML templates.  That is, the path name provided is 
+used as the basis for a search that takes into account the desired locale.  
+External assets can't be localized in this way.
+</>
+
+<para>
+Private assets allow for easy deployment because the assets are 
+packaged with the HTML templates and Java code of the application, 
+inside a Java Archive (JAR) file, or within the <filename class=directory>WEB-INF/classes</>
+directory of a Web Application Archive (WAR) file.
+</>
+
+<para>
+Private assets support re-usability; a re-usable component may be 
+packaged with supporting assets (typically, image files) and used in any 
+Tapestry application without change, and without having to locate, extract or 
+otherwise fiddle with those assets.
+</>
+
+<para>
+The Tapestry framework provides two ways of exposing the assets to the client web browser.
+</>
+
+<para>
+First, it provides a service that will access the asset dynamically.  
+The URL encodes the application servlet and the resource to download, 
+and Tapestry framework code will pump the bytes down to the client web browser.  
+This is the default behavior (and is most useful during development).
+</>
+
+<para>
+The second method involves copying the asset out to a directory visible 
+to the web server, and creating a URL for it in its final location.  
+This requires some extra configuration of the application.  
+This method also has some implications when deploying new versions of the web application.  
+These are addressed later in this document.
+</>
+
+	</section>
+
+	<section>
+		<title>Component Specification</>
+
+<para>
+The component specification is an XML document.  
+This discussion assumes a passing familiarity with XML documents.   
+The specification is located inside the running Java VMs class path; 
+in a deployed application, it will be a package resource, 
+located (along with the Java class files) in the 
+<filename class=directory>WEB-INF/classes</> 
+directory of the WAR (Web Application Archive).
+</>
+
+<para>
+These specifications can be quite verbose, 
+it is strongly advised that a DTD-aware XML editor be used, 
+rather than hand editting the files.
+</>
+
+		<section>
+			<title>Preamble</>
+
+<para>
+The specification begins as follows:
+</>
+
+&start-listing;<![CDATA[
+<?xml version="1.0"?>
+<!DOCTYPE specification PUBLIC 
+    "-//Primix Solutions//Tapestry Specification 1.0//EN"
+	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
+
+<specification>]]>&end-listing;
+
+<para>
+This begins the XML document, and identifies it as a component specification.
+Next, the type of the component, the Java class to instantiate, is defined.
+</>
+
+&start-listing;&lt;class&gt;<replaceable>class name</>&lt;/class&gt;&end-listing;
+
+
+<para>
+This must be a full class name, such as <classname>com.skunkworx.skunkapp.Border</>.
+</>
+
+<para>
+As previously described, the specification name is used to find the base 
+HTML template name (by replacing the '.jwc' extension with '.html').  
+</>
+
+<para>
+During development, such resources may be in the developer's work areas, 
+but when the application is deployed, they will almost always be distributed inside a 
+Java Archive (JAR) file or Web Application Archive (WAR) file.  
+This is one of the ways that Tapestry eases deployment.
+</>
+
+<para>
+Next, the specification describes whether the component can have a 
+body (that is, wrap around other HTML or components).  
+</>
+
+<para>
+This is specified using the &start-tag;allow-body&end-tag; element:
+</>
+
+&start-listing;&lt;allow-body&gt;<replaceable>boolean</>&lt;/allow-body&gt;&end-listing;
+
+
+<para>
+The value specified should be <literal>true</> or <literal>false</>.
+If not specified (the usual case), it defaults to <literal>true</>,
+allowing the component to have a body.
+</>
+
+			</section>
+
+			<section>
+				<title>Parameters</>
+
+<para>
+The next section describes the parameters to the component, 
+all of which is specified inside a &start-tag;parameters&end-tag;
+element. Components can have two types of parameters:  
+formal and informal.  
+Formal parameters describe the interface to the component 
+and have already been touched on.
+</>
+
+<para>
+Informal parameters are a kind of 'back door' to the HTML 
+generated by the component.  The majority of components have a 
+one-to-one relationship to an HTML element.  
+</>
+
+<para>
+Each informal parameter will be converted to an 
+attribute / value pair and added to the HTML element.  
+The component will silently filter out any informal parameters whose 
+name conflicts with either a formal parameter name 
+or an attribute controlled by the component.  
+For example, the <classname>Action</> component (which generates an 
+&start-tag;a&end-tag; 
+element) will not allow an informal parameter to 
+specify the <token>href</> attribute.  
+Note that the check is case insensitive, so an informal parameter of <literal>Href</>
+would also be skipped.
+</>
+
+<para>
+Informal parameters are primarily used to set the <token>class</>
+attribute (used in conjunction with cascading style sheets) 
+and to create JavaScript event handlers.
+</>
+
+<para>Some components do not have the necessary 
+one-to-one mapping to an HTML element that 
+makes informal parameters useful.  
+The &start-tag;allow-informal-parameters&end-tag;
+element controls this:
+</>
+
+&start-listing;<![CDATA[<parameters>
+ 	<allow-informal-parameters>]]><replaceable>boolean</>&lt;/allow-informal-parameters&gt;&end-listing;
+
+<para>
+By default, informal parameters are allowed, so 
+this is used to turn them off.  
+This element is optional, and usually omitted.
+</>
+
+<para>
+Following this, each parameter is specified with a 
+&start-tag;parameter&end-tag; element:
+</>
+
+&start-listing;><![CDATA[<parameter>
+	<name>]]><replaceable>string</><![CDATA[</name>
+	<java-type>]]><replaceable>class name</><![CDATA[</java-type>
+	<required>]]><replaceable>boolean</><![CDATA[</required>
+</parameter>]]>&end-listing;
+
+<para>Each parameter must have a unique name.  
+Parameter names must start with a letter and may contain letters, numbers 
+and the underscore.
+</>
+
+<para>
+The Java type is the complete class name of a Java class that represents the 
+type of data required (or provided) by the component.  
+If not specified, it defaults to <classname>java.lang.Object</>
+	<footnote>
+		<para>
+			This is simply used for documentation; the value is never used in the framework.
+		</>
+	</>.
+</>
+
+<para>
+If a parameter is required, then a binding must be provided for the 
+parameter when it is embedded in another component.  
+The  &start-tag;required&end-tag; element is optional, and defaults to 
+<literal>false</> (meaning the parameter is optional).
+</>
+
+<para>
+Once all formal parameters are defined, the parameters element is closed:
+</>
+
+
+&start-listing;<![CDATA[</parameters>]]>&end-listing;
+
+			</section>
+
+			<section>
+				<title>Components and Bindings</>
+
+<para>
+Following the parameters, embedded components are detailed.  
+A &start-tag;components&end-tag;
+element surrounds a list of &start-tag;component&end-tag; elements.
+</>
+
+&start-listing;&lt;components&gt;&end-listing;
+
+<para>
+A &start-tag;component&end-tag; tag starts each component:
+
+&start-listing;&lt;component&gt;
+  &lt;id&gt;<replaceable>component id</>&lt;/id&gt;
+  &lt;type&gt;<replaceable>component type</>&lt;/type&gt;&end-listing;
+
+<para>
+Each component has a short id, which must be unique within its containing component.  
+This id is used to match the component against a &jwc-tag; tag in the HTML template.
+</>
+
+<para>
+Each component must also have a type.  Types are resource paths for a component 
+specification.  Specifications end with '.jwc'.  An example would be 
+<filename>/com/skunkworx/skunkapp/Banner.jwc</>.
+</>
+
+<para>
+Unlike HTML templates, specifications are never localized.
+</>
+
+<para>
+As a convenience, aliases may be defined for components.  
+An alias is a short name that takes the place of the specification resource path.  
+All built-in components for Tapestry have aliases, and an 
+application specification may define additional aliases.
+</>
+
+<para>
+For example, the component 
+<filename>/com/primix/tapestry/components/Action.jwc</>
+has a standard alias of <classname>Action</>.
+</>
+
+<para>
+Most components have parameters, and therefore, bindings.  
+Bindings are contained within a &start-tag;bindings&end-tag; element.
+</>
+
+
+&start-listing;<![CDATA[<bindings>]]>&end-listing;
+
+<para>
+There are four different elements to specify bindings.
+</>
+
+<para>
+The &start-tag;binding&end-tag; element specifies a dynamic 
+binding for the parameter.
+</>
+
+&start-listing;<![CDATA[<binding>
+	<name>]]><replaceable>parameter name</><![CDATA[</name>
+	<property-path>]]><replaceable>property path</><![CDATA[</property-path>
+</binding>]]>&end-listing;
+
+<para>
+The property path is specified relative to the containing component.
+</>
+
+<para>
+In some cases, the value for the parameter will never change; 
+in this case a &start-tag;static-binding&end-tag; is used:
+</>
+
+&start-listing;<![CDATA[<static-binding>
+	<name>]]><replaceable>parameter name</><![CDATA[</name>
+	<property-path>]]><replaceable>value</><![CDATA[</property-path>
+</static-binding>]]>&end-listing;
+
+<para>
+Obviously, this only works for parameters that expect 
+<classname>String</>s or can coerce a <classname>String</> to a useful value 
+(such as a <type>boolean</> or <type>int</>).  Static bindings also 
+work quite well with informal parameters.
+</>
+
+<para>
+The third type of binding allows a parameter to be set from a public static field:
+</>
+
+&start-listing;<![CDATA[<field-binding>
+	<name>]]><replaceable>parameter name</><![CDATA[</name>
+	<property-path>]]><replaceable>field name</><![CDATA[</property-path>
+</field-binding>]]>&end-listing;
+
+<para>
+The field name is the complete name of a class, 
+followed by a period, and then the name of a public, static 
+(usually final) field.  For example, the value 
+<literal>com.primix.tapestry.IEngineService.HOME_SERVICE</>
+references the public static <classname>String</> variable, 
+<varname>HOME_SERVICE</>
+contained within the interface <classname>IEngineService</>.
+</>
+
+<para>
+This is both more precise and more efficient than a static binding.  
+In many cases, it ensures that the component and the related Java code agree 
+on the exact value, rather than approximating the value with a 
+<classname>String</>.  In addition, the 
+value can be any data type, both scalars (such as <type>int</> or <type>double</>) 
+or real object types.
+</>
+
+<para>
+Because certain values in the <classname>java.lang</> 
+package are so useful, 
+a classname without a package is assumed to be in the <classname>java.lang</>
+package.  Thus the value <literal>Boolean.TRUE</> is an acceptible field name.
+</>
+
+<para>
+Finally, in some cases, it makes sense for an embedded component to 
+<emphasis>share</> a binding with its container.  
+This is accomplished with the &start-tag;inherited-binding&end-tag;
+element:
+</>
+
+&start-listing;<![CDATA[<inherited-binding>
+	<name>]]><replaceable>parameter name</><![CDATA[</name>
+	<property-path>]]><replaceable>parameter name</><![CDATA[</property-path>
+</inherited-binding>]]>&end-listing;
+
+<para>
+In this case, the first parameter name is the name of a parameter of 
+the embedded component.  The second parameter name is the name 
+of a parameter of the containing component.
+</>
+
+<para>
+An example of this is a <classname>Border</> component, 
+which has a <varname>title</> parameter that gives the name of the page.  
+The <classname>Border</> component embeds an <classname>Insert</> component, 
+and uses an inherited binding to set the 
+<classname>Insert</> component's <varname>value</> parameter to the 
+containing <classname>Border</> component's <varname>title</> parameter.
+</>
+
+<para>
+Once all bindings for a component are specified, the 
+&start-tag;bindings&end-tag; and 
+&start-tag;component&end-tag;
+elements are closed.
+
+	<informalfigure>
+		<programlisting><![CDATA[  </bindings>
+</component>]]></programlisting>
+	</informalfigure>
+</para>
+
+<para>
+Additional components may be specified within their own 
+&start-tag;component&end-tag; elements.  
+Once all components are specified, the 
+&start-tag;components&end-tag;
+element is closed.
+</>
+
+&start-listing;<![CDATA[</components>]]>&end-listing;
+
+			</section>
+
+			<section>
+				<title>Assets</>
+
+<para>
+Next, any assets for the component are specified.   
+Assets are a way of identifying resources whose URLs will appear in a web page.  
+Most often, the assets are image files used with an <classname>Image</> or 
+<classname>Rollover</> component.
+</>
+
+<para>
+Assets may be stored at some arbitrary URL, may be within the same web application context as the 
+Tapestry application, or may be stored as a resource inside Java VM class path.
+</>
+
+<para>
+Assets are contained within an 
+&start-tag;assets&end-tag; element.
+</>
+
+&start-listing;&lt;assets&gt;&end-listing;
+
+
+<para>
+There are three types of elements for specifying assets:
+</>
+
+&start-listing;><![CDATA[<external-asset>
+	<name>]]><replaceable>name</><![CDATA[</name>
+	<URL>]]><replaceable>URL</><![CDATA[</URL>
+</external-asset>
+
+<context-asset>
+	<name>]]><replaceable>name</><![CDATA[</name>
+	<path>]]><replaceable>path</><![CDATA[</path>
+</context-asset>
+
+<private-asset>
+	<name>]]><replaceable>name</><![CDATA[</name>
+	<resource-path>]]><replaceable>resource path</><![CDATA[</resource-path>
+</private-asset>]]>&end-listing;
+
+<para>
+In all three cases, the name must be very simple:  
+start with a letter and contain only letters, numbers and underscores or dashes.  
+Assets names must be unique within the component.
+</>
+
+<para>
+For external assets, the URL must be complete:  it will be inserted into the HTML unchanged.
+</>
+
+<para>
+For context assets
+	<footnote>
+		<para>An earlier version of the framework called these "internal assets"
+		and &start-tag;internal-asset&end-tag;
+		may still be defined in the Tapestry DTD, though it
+		is subject to removal at any time.
+		</>
+	</>, 
+the path must be relative to the servlet context.  
+Context assets may be localized; this will be reflected in the 
+actual file chosen and in the URL inserted into the HTML.  
+The final URL inserted into the HTML will include the servlet context prefix and may reflect 
+a localized path.
+</>
+
+<para>
+For private assets, the resource path must be a resource path within the 
+Java VM class path, as with a specification or HTML template resource path.  
+This means the asset can be stored in the 
+<filename class=directory>WEB-INF/classes</> directory of the application's WAR, 
+or inside some JAR in the classpath.
+</>
+
+<para>
+Context and private assets may be localized:  
+Tapestry will perform a search similar to the one for 
+HTML templates to locate the best match.
+</>
+
+<para>
+Once all assets have been specified, the 
+&start-tag;assets&end-tag; element is closed:
+</>
+
+&start-listing;<![CDATA[</assets>]]>;&end-listing;
+
+
+		</section>
+
+		<section>
+			<title>Postamble</>
+
+<para>
+Since that's the last element in a component specification, 
+the specification itself is closed:
+</>
+
+&start-listing;<![CDATA[</specification>]]>&end-listing;
+
+<para>
+The major tags, &start-tag;parameters&end-tag;, 
+&start-tag;components&end-tag;, 
+&start-tag;bindings&end-tag; and 
+&start-tag;assets&end-tag; are only specified if there are elements to be contained.  
+A component which contains no embedded components will not have a
+&start-tag;components&end-tag; element.  
+An embedded component with no bindings will not have a &start-tag;bindings&end-tag; element.  
+In many cases, a component specification will be only a few lines long.
+</>
+
+		</section>
+	</section>
+</chapter>
