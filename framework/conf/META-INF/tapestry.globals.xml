@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2004 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<module id="tapestry.globals" version="3.1.0">
+  
+  Contains global information about the application and (inside threaded
+  services) about the current request. In addition, services based
+  on this global information are provided.
+  
+  <service-point id="ApplicationGlobals" interface="org.apache.tapestry.services.ApplicationGlobals">
+    <create-instance class="org.apache.tapestry.services.impl.ApplicationGlobalsImpl"/>
+  </service-point>
+  
+  <service-point id="ApplicationSpecification" interface="org.apache.tapestry.spec.IApplicationSpecification">
+    
+    The specification property of ApplicationGlobals as its own service.
+    
+    <invoke-factory service-id="hivemind.lib.ServicePropertyFactory">
+      <construct service-id="ApplicationGlobals" property="specification"/>
+    </invoke-factory>
+    
+  </service-point>  
+  
+  <service-point id="RequestGlobals" interface="org.apache.tapestry.services.RequestGlobals">
+    Stores the request and response for the current thread.
+    
+    <create-instance class="org.apache.tapestry.services.impl.RequestGlobalsImpl" model="threaded"/>
+  </service-point>
+  
+  <service-point id="RequestGlobalsInitializer" interface="org.apache.tapestry.services.RequestServicerFilter">
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.RequestGlobalsInitializer">
+        <set-service property="requestGlobals" service-id="RequestGlobals"/>
+      </construct>
+    </invoke-factory>
+  </service-point>  
+  
+  <contribution configuration-id="tapestry.request.RequestServicerPipeline">
+    <filter name="RequestGlobalsInitializer" before="*" object="service:RequestGlobalsInitializer"/>
+  </contribution>  
+  
+  <service-point id="HttpServletRequest" interface="javax.servlet.http.HttpServletRequest">
+    
+    Exposes the current thread's HttpServletRequest as a service. The request is actually
+    stored in the RequestGlobals service.
+    
+    <invoke-factory service-id="hivemind.lib.ServicePropertyFactory">
+      <construct service-id="RequestGlobals" property="request"/>
+    </invoke-factory>
+  </service-point>  
+  
+</module>

@@ -403,14 +403,14 @@ public class TestApplicationSpecificationInitializer extends HiveMindTestCase
 
         ApplicationInitializer ai =
             (ApplicationInitializer) registry.getService(
-                "tapestry.ApplicationSpecificationInitializer",
+                "tapestry.init.ApplicationSpecificationInitializer",
                 ApplicationInitializer.class);
 
         ai.initialize(servlet);
 
         ApplicationGlobals ag =
             (ApplicationGlobals) registry.getService(
-                "tapestry.ApplicationGlobals",
+                "tapestry.globals.ApplicationGlobals",
                 ApplicationGlobals.class);
 
         assertEquals("ParseApp", ag.getSpecification().getName());
