@@ -44,7 +44,6 @@
     <ibiblio-dependency artifact="easymockclassextension" version="1.1"             group="easymock" use="test"/>
     <ibiblio-dependency artifact="cglib-full"         version="2.0.2"               group="cglib"    use="test"/>
     <ibiblio-dependency artifact="log4j"              version="${log4j.version}"    group="log4j"    use="test"/>
-	  <ibiblio-dependency artifact="oro"                version="2.0.6"               group="oro"/>
     <ibiblio-dependency artifact="javassist"          version="${javassist.version}" group="javassist"/>
     <ibiblio-dependency artifact="servletapi"         version="${servlet.version}"  group="servletapi"/>
       

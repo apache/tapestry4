@@ -88,6 +88,7 @@
         <set-service property="request" service-id="tapestry.globals.HttpServletRequest"/>
         <set-service property="response" service-id="tapestry.globals.HttpServletResponse"/>
         <set-object property="servletPath" value="app-property:org.apache.tapestry.servlet-path"/>
+        <set-object property="linkFactory" value="infrastructure:linkFactory"/>
       </construct>
     </invoke-factory>
   </service-point>
@@ -117,6 +118,7 @@
       <construct class="DirectService">
         <set-object property="responseRenderer" value="infrastructure:responseRenderer"/>
         <set-object property="request" value="infrastructure:request"/>
+        <set-object property="linkFactory" value="infrastructure:linkFactory"/>        
       </construct>
     </invoke-factory>
   </service-point>
@@ -182,25 +184,6 @@
   
  <contribution configuration-id="hivemind.ObjectProviders">
     <provider prefix="engine-service" service-id="EngineServiceObjectProvider"/>
- </contribution>
- 
- <service-point id="SetupServletEngineServices" interface="org.apache.tapestry.services.ApplicationInitializer">
-  
-  Contributed into the tapestry.init.ApplicationInitializers configuration point
-  to install the servlet-specific framework services into the
-  tapestry.globals.ApplicationGlobals service.
-  
-  <invoke-factory model="primitive">
-    <construct class="SetupServletEngineServices">
-      <set-service property="globals" service-id="tapestry.globals.ApplicationGlobals"/>
-      <set-service property="responseRenderer" service-id="tapestry.request.ResponseRenderer"/>
-      <set-configuration property="factoryServices" configuration-id="FactoryServices"/>
-    </construct>
-  </invoke-factory>
- </service-point>
- 
- <contribution configuration-id="tapestry.init.ApplicationInitializers">
-  <command id="SetupServletEngineServices" object="service:SetupServletEngineServices"/>
  </contribution>
 
 </module>

@@ -12,36 +12,37 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.engine;
+package org.apache.tapestry.services.impl;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServlet;
-
 import org.apache.tapestry.services.ApplicationGlobals;
-import org.apache.tapestry.services.ApplicationInitializer;
+import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 
 /**
- * Invokes {@link org.apache.tapestry.services.ApplicationGlobals#storeFactoryServices(List)}
- * &nbsp;to set up the based set of <em>servlet</em> engine services. Portlets use a seperate
- * configuration of to define a slightly different set of engine services.
+ * Base class for settting up services and configurations inside
+ * {@link org.apache.tapestry.services.ApplicationGlobals tapestry.globals.ApplicationGlobals}.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class SetupServletEngineServices implements ApplicationInitializer
+public class AbstractSetupApplicationGlobals
 {
+
     private ApplicationGlobals _globals;
 
     private List _factoryServices;
 
     private ResponseRenderer _responseRenderer;
 
-    public void initialize(HttpServlet servlet)
+    private LinkFactory _linkFactory;
+
+    protected void initialize()
     {
         _globals.storeFactoryServices(_factoryServices);
         _globals.storeResponseRenderer(_responseRenderer);
+        _globals.storeLinkFactory(_linkFactory);
     }
 
     public void setGlobals(ApplicationGlobals globals)
@@ -53,10 +54,14 @@ public class SetupServletEngineServices implements ApplicationInitializer
     {
         _factoryServices = factoryServices;
     }
-    
+
     public void setResponseRenderer(ResponseRenderer responseRenderer)
     {
         _responseRenderer = responseRenderer;
     }
-    
+
+    public void setLinkFactory(LinkFactory linkFactory)
+    {
+        _linkFactory = linkFactory;
+    }
 }
