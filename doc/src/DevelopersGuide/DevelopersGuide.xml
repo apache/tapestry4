@@ -35,7 +35,7 @@
   <!ENTITY ShowInspector '<link linkend="builtin.ShowInspector"><classname>ShowInspector</classname></link>'>
   <!ENTITY Text '<link linkend="builtin.Text"><classname>Text</classname></link>'>
   <!ENTITY TextField '<link linkend="builtin.TextField"><classname>TextField</classname></link>'>
-  <!ENTITY ValidatingTextField '<link linkend="builtin.ValidatingTextField"><classname>ValidatingTextField</classname></link>'>
+  <!ENTITY ValidField '<link linkend="builtin.ValidField"><classname>ValidField</classname></link>'>
 ]>
 <!-- Conventions:
 
@@ -1520,7 +1520,9 @@ only occurs with helper beans that implement the &IPoolable; interface.
 </para>
       <para>
 Tapestry includes a handful of useful helper beans.  &Default; is used to provide default values for optional parameters.
-&ValidationDelegate; cal be used with &ValidatingTextField;, it allows simple handling of validation errors and presentation.
+&ValidationDelegate; 
+and several implementions of &IValidator;
+used with &ValidField;, it allows simple handling of validation and presentating validation errors.
 &EvenOdd; is used by the <link linkend="inspector">Tapestry Inspector</link>; it generates a stream of values alternating between "even" and "odd"; this is combined with cascading stylesheets to make the rows alternate between white and grey backgrounds.
 </para>
     </section>
@@ -1814,7 +1816,7 @@ and <sgmltag class="starttag">property-value</sgmltag> element.
           <title>Component specification: <sgmltag class="starttag">set-property</sgmltag> element</title>
           <programlisting>
 &lt;set-property name="<replaceable>name</replaceable>"&gt;
-  [ &lt;<link linkend="components.spec.static-value">static-value</link> ... &gt; | &lt;<link linkend="components.spec.property-value">property-value</link> ... &gt; ]
+  [ &lt;<link linkend="components.spec.field-value">field-value</link> ... &gt; &lt;<link linkend="components.spec.static-value">static-value</link> ... &gt; | &lt;<link linkend="components.spec.property-value">property-value</link> ... &gt; ]
 &lt;/set-property&gt;
 </programlisting>
         </figure>
@@ -1831,11 +1833,41 @@ or
 element.
 </para>
       </section>
+      
+      <section id="components.spec.field-value">
+      <title>
+      	<sgmltag class="starttag">field-value</sgmltag> element</title>
+      	<para>
+ This element, which appears only within a
+<link linkend="components.spec.set-property">
+            <sgmltag class="starttag">set-property</sgmltag> element</link>
+provides a static value with which to set the property obtained from a public static
+variable of some class.
+</para>
+
+<figure>     	
+              <title>Component specification: <sgmltag class="starttag">field-value</sgmltag> element</title>
+              
+<programlisting>
+&lt;field-value field-name="<replaceable>field-name</replaceable>"/&gt;
+</programlisting>
+        </figure> 
+        
+       <para>
+The field name specifies the complete class name (including package name) and the name of a field within the class.  
+As a convienience, the package name may be ommitted if the class is in the
+<property>java.lang</property>
+package.
+
+       </para>
+       
+</section>
+               
       <section id="components.spec.static-value">
         <title>
           <sgmltag class="starttag">static-value</sgmltag> element</title>
         <para>
-This element, which apparers only within a
+This element, which appears only within a
 <link linkend="components.spec.set-property">
             <sgmltag class="starttag">set-property</sgmltag> element</link>
 provides a static value with which to set the property.
@@ -2783,7 +2815,7 @@ whether this is a normal render, or for rewind purposes.
       <para>
 The &PageDetachListener; interface is used by objects that wish to know when the page is detached from the
 application, prior to be stored into the page pool (for later reuse).  This is used by any components
-that maintain any independant state, such as &ValidatingTextField;.
+that maintain any independent state.
 </para>
       <figure>
         <title>Page Detach Sequence</title>
@@ -3789,11 +3821,11 @@ efficiently handle this and can produce HTML for either
 a popup list or a collection of radio buttons.
 </para>
       <para>
-Tapestry also includes more complicated components, 
-&ValidatingTextField; and some relatives.  
-These are similar to the simple &TextField; component, 
+Tapestry also includes the more involved component, 
+ &ValidField;,
+ which is similar to the simple &TextField; component, 
 but provide greater validation and checking of input, and 
-provide the ability to visually mark fields that are required or in error.
+provides the ability to visually mark fields that are required or in error.
 </para>
       <para>
 Regardless of which service the &Form; uses, it encodes the query parameters
@@ -3929,54 +3961,6 @@ specified condition is met.
         </varlistentry>
       </variablelist>
     </section>
-    <section id="builtin.DateField">
-      <title>DateField</title>
-      <para>
-A kind of validating text field that allows a date to be entered.
-</para>
-      <variablelist>
-        <title>Parameters</title>
-        <varlistentry>
-          <term>date</term>
-          <listitem>
-            <para>The date property to be editted.</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>displayName</term>
-          <listitem>
-            <para>
-A name for the the component, used when formulating error messages.
-</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>delegate</term>
-          <listitem>
-            <para>An &IValidationDelegate; used to handle validation exceptions.
-			</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>maximum</term>
-          <listitem>
-            <para>The lastest acceptible date (optional).</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>minimum</term>
-          <listitem>
-            <para>The earliest acceptible date (optional).</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>required</term>
-          <listitem>
-            <para>If true, a value must be entered.</para>
-          </listitem>
-        </varlistentry>
-      </variablelist>
-    </section>
     <section id="builtin.Delegator">
       <title>Delegator</title>
       <para>
@@ -4049,7 +4033,7 @@ A component, used on the standard exception page, which renders a detailed list 
     <section id="builtin.FieldLabel">
       <title>FieldLabel</title>
       <para>
-A component, used with a &ValidatingTextField; (or similar component) 
+A component, used with a &ValidField;
 that provides the label for the field.  A delegate object may be 
 specified that will change the visual formatting of the label to reflect the 
 state of the field, for instance, to make the label red when the field itself is in error.
@@ -4059,7 +4043,7 @@ state of the field, for instance, to make the label red when the field itself is
         <varlistentry>
           <term>field</term>
           <listitem>
-            <para>The validating text field (type &IValidatingTextField;>)
+            <para>The validating text field (type &IField;>)
 			associated with the label.</para>
           </listitem>
         </varlistentry>
@@ -4262,54 +4246,7 @@ which have HTML templates and can wrap other elements should
 include exactly one <classname>InsertWrapped</classname> component in their template.
 </para>
     </section>
-    <section id="builtin.IntegerField">
-      <title>IntegerField</title>
-      <para>
-A type of validating text field that is used to edit an integer property.
-</para>
-      <variablelist>
-        <title>Parameters</title>
-        <varlistentry>
-          <term>value</term>
-          <listitem>
-            <para>The property to edit.</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>displayName</term>
-          <listitem>
-            <para>
-A name for the the component, used when formulating error messages.
-</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>delegate</term>
-          <listitem>
-            <para>An &IValidationDelegate; that is used to 
-			handle validation exceptions.</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>required</term>
-          <listitem>
-            <para>If true, a value must be provided by the user.</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>minimum</term>
-          <listitem>
-            <para>Optional minimum acceptible value.</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>maximum</term>
-          <listitem>
-            <para>Optional maximum acceptible value.</para>
-          </listitem>
-        </varlistentry>
-      </variablelist>
-    </section>
+
     <section id="builtin.ListEdit">
       <title>ListEdit</title>
       <para>
@@ -4333,54 +4270,6 @@ each value, as hidden fields in the form.
           <term>value</term>
           <listitem>
             <para>Used to update the current value on each iteration.</para>
-          </listitem>
-        </varlistentry>
-      </variablelist>
-    </section>
-    <section id="builtin.NumericField">
-      <title>NumericField</title>
-      <para>
-A type of validating text field that is used to edit any kind of numeric property.
-</para>
-      <variablelist>
-        <title>Parameters</title>
-        <varlistentry>
-          <term>value</term>
-          <listitem>
-            <para>The numeric property to edit.</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>displayName</term>
-          <listitem>
-            <para>
-A name for the the component, used when formulating error messages.
-</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>delegate</term>
-          <listitem>
-            <para>An &IValidationDelegate; that is used to 
-			handle validation exceptions.</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>required</term>
-          <listitem>
-            <para>If true, a value must be provided by the user.</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>minimum</term>
-          <listitem>
-            <para>Optional minimum acceptible value.</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>maximum</term>
-          <listitem>
-            <para>Optional maximum acceptible value.</para>
           </listitem>
         </varlistentry>
       </variablelist>
@@ -4787,18 +4676,19 @@ Implements a component that manages an HTML
         </varlistentry>
       </variablelist>
     </section>
-    <section id="builtin.ValidatingTextField">
-      <title>ValidatingTextField</title>
+    <section id="builtin.ValidField">
+      <title>ValidField</title>
       <para>
-An improved &TextField; that can perform simple validations.  
-The field may be required, and a minimum length may be specified.
+An improved &TextField; that can perform simple validations and translations
+between a string representation (used in the client web browser) and
+an object representation.  
 </para>
       <variablelist>
         <title>Parameters</title>
         <varlistentry>
-          <term>text</term>
+          <term>value</term>
           <listitem>
-            <para>The text inside the text field.</para>
+            <para>The object value editted by field.</para>
           </listitem>
         </varlistentry>
         <varlistentry>
@@ -4817,6 +4707,7 @@ A name for the the component, used when formulating error messages.
 </para>
           </listitem>
         </varlistentry>
+        
         <varlistentry>
           <term>delegate</term>
           <listitem>
@@ -4824,19 +4715,19 @@ A name for the the component, used when formulating error messages.
 			</para>
           </listitem>
         </varlistentry>
-        <varlistentry>
-          <term>minimumLength</term>
-          <listitem>
-            <para>The minimum number of characters allowed.</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
-          <term>required</term>
-          <listitem>
-            <para>If true, a value must be entered.</para>
-          </listitem>
-        </varlistentry>
-        <varlistentry>
+ 
+ 		<varlistentry>
+ 			<term>validator</term>
+ 				<listitem>
+ 					<para>An &IValidator; used to convert between string and object
+ 					representations.  The validator may also enforce rules on the
+ 					input value, such as minimum and maximums, or to make the
+ 					value required.
+ 				</para>
+ 				</listitem>
+ 			</varlistentry>
+ 
+         <varlistentry>
           <term>disabled</term>
           <listitem>
             <para>Controls whether the text field is active or not.  Netscape Navigator 4
@@ -6300,6 +6191,38 @@ There are several reasons why a subclass is necessary, outlined in this
 <link linkend="engine.servlet.subclass-note">note</link>.  Primarily, it's
 a class loader issue.
 </para></answer>
+</qandaentry>
+
+<qandaentry>
+	<question>
+		<para>What happened to <classname>ValidatingTextField</classname>,
+		<classname>NumericField</classname>,
+		<classname>DateField</classname>
+		and <classname>IntegerField</classname>?
+		</para>
+	</question>
+	
+	<answer>
+		<para>
+		In release 1.0.8, the entire suite of components related to validating
+		form input was rewritten.  A single component, &ValidField;, now does the work
+		of all the others.  In the earlier version, component subclasses were needed
+		to change the behavior:  converting objects to strings, strings to objects and
+		validating.  This is now encapsulated in the &IValidator; interface.  In short, it is now
+		much easier to create new kinds of validations and just plug them into the
+		&ValidField;.
+		</para>
+		
+		<para>This was, regrettably, a completely non-backwards compatible change.
+		</para>
+		
+		<para>
+		In addition, the old components had big disclaimers:  "Don't use these inside
+		any kind of loop (such as a &Foreach;)".  By expanding the role of the
+		&IValidationDelegate;, this is no longer so, the delegate now does much more,
+		including the ability to track errors for fields even inside loops.
+		</para>
+	</answer>
 </qandaentry>
 
     </qandaset>
