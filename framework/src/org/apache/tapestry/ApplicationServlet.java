@@ -332,7 +332,7 @@ public class ApplicationServlet extends HttpServlet
     {
         ApplicationInitializer ai =
             (ApplicationInitializer) _registry.getService(
-                "tapestry.MasterInitializer",
+                "tapestry.init.MasterInitializer",
                 ApplicationInitializer.class);
 
         ai.initialize(this);
@@ -345,14 +345,14 @@ public class ApplicationServlet extends HttpServlet
 
         ApplicationGlobals ag =
             (ApplicationGlobals) _registry.getService(
-                "tapestry.ApplicationGlobals",
+                "tapestry.globals.ApplicationGlobals",
                 ApplicationGlobals.class);
 
         _specification = ag.getSpecification();
 
         _requestServicer =
             (RequestServicer) _registry.getService(
-                "tapestry.RequestServicerPipeline",
+                "tapestry.request.RequestServicerPipeline",
                 RequestServicer.class);
     }
 
