@@ -87,6 +87,6 @@ public class MockTestCase extends TapestryTestCase
     public void testExternal()
     throws Exception
     {
-        attempt("/net/sf/tapestry/junit/mock/TestService.xml");
+        attempt("/net/sf/tapestry/junit/mock/TestExternal.xml");
     }       
 }
