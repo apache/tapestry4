@@ -28,6 +28,8 @@ package com.primix.tapestry.event;
 
 import java.util.EventListener;
 
+import com.primix.tapestry.IPage;
+
 /**
  *  An object that listens to page events.  The {@link IPage page} generates
  *  events before and after rendering a response.

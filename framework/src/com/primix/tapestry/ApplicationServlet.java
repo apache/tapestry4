@@ -449,7 +449,8 @@ abstract public class ApplicationServlet extends HttpServlet
 	 *  <li>Gets the JVM system property <code>com.primix.tapestry.root-logging-priority</code>,
 	 *  and (if non-null), converts it to an {@link Priority} and assigns it to the root
 	 *  {@link Category}.
-	 *  <li>Gets the JVM system property <code></code> and uses it as the pattern
+	 *  <li>Gets the JVM system property <code>com.primix.tapestry.log-pattern</code> 
+	 * and uses it as the pattern
 	 * for a {@link PatternLayout}.  If the property is not defined, then the
 	 * default pattern <code>%c{1} [%p] %m%n</code> is used.
 	 *  <li>Configures a single {@link ConsoleAppender} for the root {@link Category},

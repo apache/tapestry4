@@ -209,10 +209,15 @@ description="Builds the Tapestry documentation.">
   
   <classpath>
   	<path refid="full.classpath"/>
+    <pathelement location="${lib}/mckoidb.jar"/>
   	<pathelement location="${lib}/junit.jar"/>
   	<pathelement location="${jboss.dir}/lib/jboss-jdbc_ext.jar"/>
   	<pathelement location="${jboss.dir}/lib/ext/mail.jar"/>
+    <pathelement location="${jboss.dir}/lib/jmxri.jar"/>
+    <pathelement location="${jboss.dir}/lib/ext/jboss.jar"/>
+    <pathelement location="${jboss.dir}/lib/ext/jboss-j2ee.jar"/>
   </classpath>
+
   </javadoc>
 
 </target>

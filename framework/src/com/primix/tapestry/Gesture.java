@@ -30,6 +30,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  *  A Gesture represents a possible action within the client web browser;
  *  either clicking a link or submitting a form.  A full URL for the Gesture

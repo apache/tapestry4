@@ -38,6 +38,7 @@ import javax.servlet.ServletException;
 
 import com.primix.tapestry.ApplicationRuntimeException;
 import com.primix.tapestry.Gesture;
+import com.primix.tapestry.IAsset;
 import com.primix.tapestry.IComponent;
 import com.primix.tapestry.IEngine;
 import com.primix.tapestry.IMonitor;

@@ -26,6 +26,9 @@
 
 package com.primix.tapestry;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  *  Exception thrown to force a redirection to an arbitrary location.
  *  This is used when, after processing a request (such as a form
@@ -52,8 +55,8 @@ public class RedirectException extends RequestCycleException
 	 *  @param location The location to redirect to, may be a relative path (relative
 	 *  to the {@link ServletContext}).
 	 *
-	 *  @see javax.servlet.http.HttpServletResponse#sendRedirect(String)
-	 *  @see javax.servlet.http.HttpServletResponse#encodeRedirectURL(String)
+	 *  @see HttpServletResponse#sendRedirect(String)
+	 *  @see HttpServletResponse#encodeRedirectURL(String)
 	 *
 	 */
 
