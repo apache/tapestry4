@@ -1,18 +1,14 @@
 package com.primix.tapestry;
 
-import com.primix.tapestry.event.ChangeObserver;
-import com.primix.tapestry.spec.*;
-import java.util.*;
 import java.io.OutputStream;
-import javax.servlet.http.*;
-import com.primix.foundation.*;
+
 
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000, 2001 by Howard Ship and Primix Solutions
+ * Copyright (c) 2000, 2001 by Howard Ship and Primix
  *
- * Primix Solutions
- * One Arsenal Marketplace
+ * Primix
+ * 311 Arsenal Street
  * Watertown, MA 02472
  * http://www.primix.com
  * mailto:hship@primix.com
@@ -36,21 +32,22 @@ import com.primix.foundation.*;
  */
 
 /**
- * Concrete class for HTML pages. Most pages
+ * Concrete class for WML decks. Most decks
  * should be able to simply subclass this, adding new properties and
- * methods.  An unlikely exception would be a page that was not based
+ * methods.  An unlikely exception would be a deck that was not based
  * on a template.
  *
  * @version $Id$
- * @author Howard Ship
+ * @author David Solis
+ * @since 0.2.9
  */
 
 
-public class BasePage extends AbstractPage
+public class Deck extends AbstractPage
 {
     public IResponseWriter getResponseWriter(OutputStream out)
     {
-        return new HTMLResponseWriter(out);
+        return new WMLResponseWriter(out);
     }
 
 }
