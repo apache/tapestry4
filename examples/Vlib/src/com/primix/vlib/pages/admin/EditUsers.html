@@ -3,21 +3,30 @@
 
 <span jwcid="showMessage"/>
 
+<p>This page is used to edit the roster of users on the system.
+<ul>
+<li>Admin: If checked, the user is an administrator.
+<li>Locked Out: If checked, the user will not be allowed to login.
+<li>Reset Password:  If checked, the system will assign a new password to the user and mail them
+that password.
+<li>Delete:  If checked, the user will be irrevocably removed from the Virtual Library database.
+Any books owned by the user will be transferred to the current user.
+</ul>
+
 <form jwcid="form">
 
-<table>
-	<tr>
-		<th>User</th>
-		<th>E-Mail</th>
+<table width="565" border="0" cellspacing="2" cellpadding="0" bgcolor="#4b5887">
+	<tr height="20" class="clsBold" bgcolor="#8e9cd1">
+		<th>User / E-Mail</th>
 		<th>Admin</th>
 		<th>Locked Out</th>
 		<th>Reset Password</th>
 		<th>Delete</th>
 	</tr>
 <span jwcid="e">
-	<tr>
-		<td><span jwcid="insertUser"/></td>
-		<td><span jwcid="insertEmail"/></td>
+	<tr bgcolor="#ffffff">
+		<td><span jwcid="insertUser"/> <br>
+		<span jwcid="insertEmail"/></td>
 		<td><input type=checkbox jwcid="inputAdmin"/></td>
 		<td><input type=checkbox jwcid="inputLockedOut"/></td>
 		<td><input type=checkbox jwcid="inputResetPassword"/></td>

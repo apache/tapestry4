@@ -42,7 +42,6 @@ public class Stocks
     
     private String tickerId;
     private Stock stock;
-	private int index;
 	
     /**
      *  The composite list of stocks, by combining stockBase with
@@ -164,15 +163,5 @@ public class Stocks
         
         fireObservedChange("userStocks", value);
     }
- 
-	public void setIndex(int value)
-	{
-		index = value;
-	}
-	
-	public String getRowClass()
-	{
-		return (index % 2) == 0 ? "even" : "odd";
-	}
-	
+ 	
 }

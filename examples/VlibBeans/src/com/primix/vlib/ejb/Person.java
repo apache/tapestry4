@@ -29,6 +29,7 @@
 package com.primix.vlib.ejb;
 
 import java.io.*;
+import java.sql.Timestamp;
 
 /**
  *  A light-weight version of the {@link IPerson} bean.
@@ -50,8 +51,9 @@ public class Person implements Serializable
 	public static final int LOCKED_OUT_COLUMN = 5;
 	public static final int ADMIN_COLUMN = 6;
 	public static final int AUTHORIZATION_CODE_COLUMN = 7;
+	public static final int LAST_ACCESS_COLUMN = 8;
 	
-	public static final int N_COLUMNS = 8;
+	public static final int N_COLUMNS = 9;
 	
 	public Person(Object[] columns)
 	{
@@ -91,6 +93,11 @@ public class Person implements Serializable
 			return (String)columns[LAST_NAME_COLUMN];
 		
 		return (String)columns[FIRST_NAME_COLUMN] + " " + (String)columns[LAST_NAME_COLUMN];
+	}
+	
+	public Timestamp getLastAccess()
+	{
+		return (Timestamp)columns[LAST_ACCESS_COLUMN];
 	}
 	
 	public String toString()

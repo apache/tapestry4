@@ -71,6 +71,12 @@
         <sql-type>BIT</sql-type>
         <jdbc-type/>
       </cmp-field>
+      <cmp-field>
+        <field-name>dateAdded</field-name>
+        <column-name>DATE_ADDED</column-name>
+        <sql-type>TIMESTAMP</sql-type>
+        <jdbc-type/>
+      </cmp-field>
     </entity>
     <entity>
       <ejb-name>Person</ejb-name>
@@ -133,6 +139,12 @@
         <field-name>admin</field-name>
         <column-name>ADMIN</column-name>
         <sql-type>BIT</sql-type>
+        <jdbc-type/>
+      </cmp-field>
+      <cmp-field>
+        <field-name>lastAccess</field-name>
+        <column-name>LAST_ACCESS</column-name>
+        <sql-type>TIMESTAMP</sql-type>
         <jdbc-type/>
       </cmp-field>
     </entity>

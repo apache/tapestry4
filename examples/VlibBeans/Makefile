@@ -100,4 +100,9 @@ snapshot-database:
 
 .PHONY: setup-db configure-jboss
 
+# New columns
+# Added in 1.0.5:
+#
+# alter table person add last_access timestamp default null
+# alter table book add date_added timestamp default null
 

@@ -29,6 +29,7 @@
 package com.primix.vlib.ejb;
 
 import java.io.*;
+import java.sql.Timestamp;
 
 /**
  *  Represents a single result row from a {@link IBookQuery}.  In effect,
@@ -80,12 +81,14 @@ public class Book implements Serializable
     
 	public static final int HIDDEN_COLUMN = 11;
 	public static final int LENDABLE_COLUMN = 12;
+	public static final int DATE_ADDED_COLUMN = 13;
+	
 	/**
 	 *  Number of columns in the result.
 	 *
 	 */
 	 
-	public static final int N_COLUMNS = 13;
+	public static final int N_COLUMNS = 14;
 	
 	private Object[] columns;
 	
@@ -164,6 +167,11 @@ public class Book implements Serializable
 	public String getAuthor()
 	{
 		return (String)get(AUTHOR_COLUMN);
+	}
+	
+	public Timestamp getDateAdded()
+	{
+		return (Timestamp)get(DATE_ADDED_COLUMN);
 	}
 	
 	public String toString()

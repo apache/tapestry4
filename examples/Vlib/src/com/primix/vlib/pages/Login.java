@@ -181,6 +181,8 @@ public class Login
 			
 				loginUser(person, cycle);
 				
+				break;
+				
 			}
 			catch (LoginException ex)
 			{

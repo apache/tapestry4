@@ -130,6 +130,10 @@
         <description>A code mailed to the user; the user is not verified until they can provide this code back.</description>
         <field-name>authorizationCode</field-name>
       </cmp-field>
+      <cmp-field>
+      	<description>The time of last access to the system by the user; this is set when the user logs in.</description>
+      	<field-name>lastAccess</field-name>
+      </cmp-field>
       <primkey-field>personId</primkey-field>
       <ejb-ref>
         <description/>
@@ -187,6 +191,10 @@
       <cmp-field>
         <description>If true (the default), the book may be lent out.</description>
         <field-name>lendable</field-name>
+      </cmp-field>
+      <cmp-field>
+      	<description>The time at which the book was initially added to the database.</description>
+      	<field-name>dateAdded</field-name>
       </cmp-field>
       <primkey-field>bookId</primkey-field>
       <ejb-ref>

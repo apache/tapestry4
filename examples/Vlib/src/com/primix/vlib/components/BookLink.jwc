@@ -10,4 +10,9 @@
   <component id="insertBookTitle" type="Insert">
     <binding name="value" property-path="book.title"/>
   </component>
+  
+  <component id="ifNew" type="Conditional">
+    <binding name="condition" property-path="new"/>
+  </component>
+  
 </specification>

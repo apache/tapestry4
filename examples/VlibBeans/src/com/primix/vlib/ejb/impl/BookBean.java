@@ -32,6 +32,7 @@ import javax.ejb.*;
 import java.rmi.*;
 import java.util.*;
 import com.primix.vlib.ejb.*;
+import java.sql.Timestamp;
 
 /**
  *  Implementation of the Book entity.
@@ -72,6 +73,7 @@ public class BookBean extends AbstractEntityBean
 		
 	public boolean hidden;
 	public boolean lendable;
+	public Timestamp dateAdded;
 	
 	protected String[] getAttributePropertyNames()
 	{
@@ -79,7 +81,7 @@ public class BookBean extends AbstractEntityBean
 		{
 			"title", "description", "ISBN",  
 			"holderPK", "ownerPK", "publisherPK",
-			"author", "hidden", "lendable"
+			"author", "hidden", "lendable", "dateAdded"
 		};
 	}
 	
@@ -203,6 +205,18 @@ public class BookBean extends AbstractEntityBean
 		dirty = false;
 	}
 		
+	public Timestamp getDateAdded()
+	{
+		return dateAdded;
+	}
+	
+	public void setDateAdded(Timestamp value)
+	{
+		dateAdded = value;
+		
+		dirty = true;
+	}
+	
 	// Create methods
 	
 	public Integer ejbCreate(Map attributes)

@@ -33,6 +33,7 @@ import java.rmi.*;
 import java.util.*;
 import com.primix.tapestry.util.ejb.*;
 import com.primix.vlib.ejb.*;
+import java.sql.Timestamp;
 
 /**
  *  Implementation of the Person entity.
@@ -64,12 +65,14 @@ public class PersonBean extends AbstractEntityBean
 	public boolean lockedOut;
 	public boolean admin;
 	public String authorizationCode;
+	public Timestamp lastAccess;
 	
 	protected String[] getAttributePropertyNames()
 	{
 		return new String[] 
 		{ "firstName", "lastName", "email", "password", 
-				"verified", "lockedOut", "admin", "authorizationCode"
+				"verified", "lockedOut", "admin", "authorizationCode",
+				"lastAccess"
 		};
 	}
 	
@@ -164,6 +167,17 @@ public class PersonBean extends AbstractEntityBean
 		authorizationCode = value;
 		
 		dirty = true;
+	}
+	
+	public void setLastAccess(Timestamp value)
+	{
+		lastAccess = value;
+		dirty = true;
+	}
+	
+	public Timestamp getLastAccess()
+	{
+		return lastAccess;
 	}
 	
 	public Integer ejbCreate(Map attributes)

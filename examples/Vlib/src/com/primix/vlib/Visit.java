@@ -40,6 +40,7 @@ import com.primix.vlib.pages.*;
 import javax.servlet.*;
 import java.io.*;
 import java.net.*;
+import java.sql.Timestamp;
 
 /**
  *  The visit object for the {@link VirtualLibraryEngine}.
@@ -64,6 +65,15 @@ public class Visit
 	private transient Person user;
 	private Integer userPK;
 
+	/**
+	 *  Set when the user first logs in.  This is the time of their previous
+	 *  last login (logging in returns the old value then updates the value
+	 *  for subsequent logins).
+	 *
+	 */
+	
+	private Timestamp lastAccess;
+	
 	private VirtualLibraryEngine engine;
 	
 	public Visit(VirtualLibraryEngine engine)
@@ -74,6 +84,17 @@ public class Visit
 	public VirtualLibraryEngine getEngine()
 	{
 		return engine;
+	}
+	
+	/**
+	 *  Returns the time the user last accessed the database, which may
+	 *  be null if the user hasn't logged in yet.
+	 *
+	 */
+	
+	public Timestamp getLastAccess()
+	{
+		return lastAccess;
 	}
 	
 	/**
@@ -131,6 +152,7 @@ public class Visit
 	
 	public void setUser(Person value)
 	{
+		lastAccess = null;
 		user = value;
 		userPK = null;		
 		
@@ -138,6 +160,8 @@ public class Visit
 			return;
 		
 		userPK = user.getPrimaryKey();
+		
+		lastAccess = user.getLastAccess();
 	}
 		
 	/**
