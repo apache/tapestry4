@@ -107,7 +107,9 @@ public abstract class PersonBean extends AbstractEntityBean
         setVerified(true);
         updateEntityAttributes(attributes);
         
-        return allocateKey();
+        setPersonId(allocateKey());
+        
+        return null;
 	}
 
 	public void ejbPostCreate(Map attributes)
