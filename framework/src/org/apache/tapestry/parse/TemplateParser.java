@@ -165,17 +165,17 @@ public class TemplateParser
             return new OpenToken(tagName, jwcId, type, location);
         }
 
-        public Object createCloseToken(String tagName, ILocation location)
+        public CloseToken createCloseToken(String tagName, ILocation location)
         {
             return new CloseToken(tagName, location);
         }
 
-        public TemplateToken createTextToken(char[] templateData, int blockStart, int end, ILocation templateLocation)
+        public TextToken createTextToken(char[] templateData, int blockStart, int end, ILocation templateLocation)
         {
             return new TextToken(templateData, blockStart, end, templateLocation);
         }
 
-        public TemplateToken createLocalizationToken(
+        public LocalizationToken createLocalizationToken(
             String tagName,
             String localizationKey,
             boolean raw,
