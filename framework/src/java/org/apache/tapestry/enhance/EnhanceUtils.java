@@ -82,17 +82,6 @@ public class EnhanceUtils
         { propertyType }, null), fieldName + " = $1;");
     }
 
-    public static void createSimpleProperty(EnhancementOperation op, String propertyName,
-            Class propertyType)
-    {
-        String fieldName = "_$" + propertyName;
-
-        op.addField(fieldName, propertyType);
-
-        createSimpleAccessor(op, fieldName, propertyName, propertyType);
-        createSimpleMutator(op, fieldName, propertyName, propertyType);
-    }
-
     /**
      * Returns the correct class for a property to be enhanced into a class. If a type name is
      * non-null, then it is converted to a Class. If the class being enhanced defines a property,
