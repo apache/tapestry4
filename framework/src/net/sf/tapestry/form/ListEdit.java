@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.util.List;
 
 import net.sf.tapestry.AbstractComponent;
+import net.sf.tapestry.IActionListener;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IForm;
 import net.sf.tapestry.IMarkupWriter;
@@ -47,7 +48,7 @@ import net.sf.tapestry.util.io.DataSqueezer;
  * <tr> 
  *    <td>Parameter</td>
  *    <td>Type</td>
- *	  <td>Read / Write </td>
+ *	  <td>Direction </td>
  *    <td>Required</td> 
  *    <td>Default</td>
  *    <td>Description</td>
@@ -55,7 +56,7 @@ import net.sf.tapestry.util.io.DataSqueezer;
  *
  * <tr> <td>source</td>
  *	<td>Object[] or {@link List}</td>
- *	<td>R</td>
+ *	<td>in</td>
  *	<td>yes</td> <td>&nbsp;</td>
  *	<td>The list of values to be editted within the form.  This list is only
  *  read when the component renders; it records hidden input fields in the
@@ -69,8 +70,8 @@ import net.sf.tapestry.util.io.DataSqueezer;
  *
  *  <tr>
  *	<td>value</td>
-	<td>any</td>
- *	<td>R / W</td>
+ *	<td>any</td>
+ *	<td>out</td>
  *	<td>yes</td>
  *	<td>&nbsp;</td>
  *	<td>The value for each iteration through the list (during render or rewind).
@@ -79,7 +80,7 @@ import net.sf.tapestry.util.io.DataSqueezer;
  *  <tr>
  *	<td>index</td>
  *  <td>int</td>
- *	<td>W</td>
+ *	<td>out</td>
  *	<td>no</td> <td>&nbsp;</td>
  *	<td>The index (starting at zero) for each iteration through the list.
  *	</td> </tr>
@@ -87,7 +88,7 @@ import net.sf.tapestry.util.io.DataSqueezer;
  * <tr>
  *  <td>element</td>
  *  <td>{@link String}</td>
- *  <td>R</td>
+ *  <td>in</td>
  *  <td>no</td> <td>&nbsp;</td>
  *	<td>If specified, then a tag for the specified element is placed around
  *  the content on each iteration.  This emulates the
@@ -102,8 +103,8 @@ import net.sf.tapestry.util.io.DataSqueezer;
  *
  * <p>An instance of {@link DataSqueezer} is used to convert arbitrary objects into 
  *  Strings and then back into objects.  However, for best efficiency, the list
- * should be simple Strings or numeric types, typically a primary key or other
- * identifier from which the rest of an object may be retrieved or constructed.
+ *  should be simple Strings or numeric types, typically a primary key or other
+ *  identifier from which the rest of an object may be retrieved or constructed.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -113,271 +114,249 @@ import net.sf.tapestry.util.io.DataSqueezer;
 
 public class ListEdit extends AbstractComponent
 {
-	/**
-	 *  Interface that allows a ListEdit to treat an Object[] array or
-	 *  a {@link List} identically.
-	 *
-	 **/
+    /**
+     *  Interface that allows a ListEdit to treat an Object[] array or
+     *  a {@link List} identically.
+     *
+     **/
 
-	private interface ISource
-	{
-		public int getCount();
+    private interface ISource
+    {
+        public int getCount();
 
-		public Object get(int index);
-	}
+        public Object get(int index);
+    }
 
-	private static class ArraySource implements ISource
-	{
-		Object[] array;
+    private static class ArraySource implements ISource
+    {
+        Object[] array;
 
-		ArraySource(Object[] array)
-		{
-			this.array = array;
-		}
+        ArraySource(Object[] array)
+        {
+            this.array = array;
+        }
 
-		public int getCount()
-		{
-			return array.length;
-		}
+        public int getCount()
+        {
+            return array.length;
+        }
 
-		public Object get(int index)
-		{
-			return array[index];
-		}
-	}
+        public Object get(int index)
+        {
+            return array[index];
+        }
+    }
 
-	private static class ListSource implements ISource
-	{
-		List list;
+    private static class ListSource implements ISource
+    {
+        List list;
 
-		ListSource(List list)
-		{
-			this.list = list;
-		}
+        ListSource(List list)
+        {
+            this.list = list;
+        }
 
-		public int getCount()
-		{
-			return list.size();
-		}
+        public int getCount()
+        {
+            return list.size();
+        }
 
-		public Object get(int index)
-		{
-			return list.get(index);
-		}
-	}
+        public Object get(int index)
+        {
+            return list.get(index);
+        }
+    }
 
-	private static class EmptySource implements ISource
-	{
-		public int getCount()
-		{
-			return 0;
-		}
+    private static class EmptySource implements ISource
+    {
+        public int getCount()
+        {
+            return 0;
+        }
 
-		public Object get(int index)
-		{
-			throw new IndexOutOfBoundsException("ListEdit.EmptySource contains no values.");
-		}
-	}
+        public Object get(int index)
+        {
+            throw new IndexOutOfBoundsException("ListEdit.EmptySource contains no values.");
+        }
+    }
 
-	private IBinding sourceBinding;
-	private IBinding valueBinding;
-	private IBinding indexBinding;
-	private IBinding elementBinding;
-	private String staticElement;
+    private IBinding valueBinding;
+    private IBinding indexBinding;
 
-	/**
-	 *  The squeezer that converts values to and from Strings for storage in
-	 *  hidden fields.  DataSqueezer is thread-safe so we can share this
-	 *  across all instances.
-	 *
-	 **/
+    private Object source;
+    private String element;
 
-	private static final DataSqueezer squeezer = new DataSqueezer();
+    /**
+     *  The squeezer that converts values to and from Strings for storage in
+     *  hidden fields.  DataSqueezer is thread-safe so we can share this
+     *  across all instances.
+     *
+     **/
 
-	public void setSourceBinding(IBinding value)
-	{
-		sourceBinding = value;
-	}
+    private static final DataSqueezer squeezer = new DataSqueezer();
 
-	public IBinding getSourceBinding()
-	{
-		return sourceBinding;
-	}
+    public void setValueBinding(IBinding value)
+    {
+        valueBinding = value;
+    }
 
-	public void setValueBinding(IBinding value)
-	{
-		valueBinding = value;
-	}
+    public IBinding getValueBinding()
+    {
+        return valueBinding;
+    }
 
-	public IBinding getValueBinding()
-	{
-		return valueBinding;
-	}
+    public void setIndexBinding(IBinding value)
+    {
+        indexBinding = value;
+    }
 
-	public void setIndexBinding(IBinding value)
-	{
-		indexBinding = value;
-	}
+    public IBinding getIndexBinding()
+    {
+        return indexBinding;
+    }
 
-	public IBinding getIndexBinding()
-	{
-		return indexBinding;
-	}
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
+    {
+        ISource source = null;
+        int count;
+        RequestContext context = null;
+        Object value = null;
+        String element = null;
 
-	/** @since 1.0.4 **/
+        IForm form = Form.get(cycle);
+        if (form == null)
+            throw new RequestCycleException(
+                Tapestry.getString("must-be-wrapped-by-form", "ListEdit"),
+                this);
 
-	public void setElementBinding(IBinding value)
-	{
-		elementBinding = value;
+        boolean cycleRewinding = cycle.isRewinding();
+        boolean formRewinding = form.isRewinding();
 
-		if (value.isStatic())
-			staticElement = value.getString();
-	}
+        // If the cycle is rewinding, but not this particular form,
+        // then do nothing (don't even render the body).
 
-	/** @since 1.0.4 **/
+        if (cycleRewinding && !form.isRewinding())
+            return;
 
-	public IBinding getElementBinding()
-	{
-		return elementBinding;
-	}
+        String name = form.getElementId(this);
 
-	protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-		throws RequestCycleException
-	{
-		ISource source = null;
-		int count;
-		RequestContext context = null;
-		Object value = null;
-		String element = null;
+        if (!cycleRewinding)
+        {
+            source = getSourceData();
+            count = source.getCount();
 
-		IForm form = Form.get(cycle);
-		if (form == null)
-			throw new RequestCycleException(
-				"ListEdit components must be wrapped by a Form.",
-				this);
+            writer.beginEmpty("input");
+            writer.attribute("type", "hidden");
+            writer.attribute("name", name);
+            writer.attribute("value", count);
+            writer.println();
+        }
+        else
+        {
+            context = cycle.getRequestContext();
+            count = Integer.parseInt(context.getParameter(name));
+        }
 
-		boolean cycleRewinding = cycle.isRewinding();
-		boolean formRewinding = form.isRewinding();
+        for (int i = 0; i < count; i++)
+        {
+            if (indexBinding != null)
+                indexBinding.setInt(i);
 
-		if (!cycleRewinding && elementBinding != null)
-		{
-			if (staticElement == null)
-				element = (String) elementBinding.getObject("element", String.class);
-			else
-				element = staticElement;
-		}
+            if (cycleRewinding)
+                value = extractValue(context, form.getElementId(this));
+            else
+            {
+                value = source.get(i);
+                writeValue(writer, form.getElementId(this), value);
+            }
 
-		// If the cycle is rewinding, but not this particular form,
-		// then do nothing (don't even render the body).
+            valueBinding.setObject(value);
 
-		if (cycleRewinding && !form.isRewinding())
-			return;
+            if (element != null)
+            {
+                writer.begin(element);
+                generateAttributes(writer, cycle);
+            }
 
-		String name = form.getElementId(this);
+            renderWrapped(writer, cycle);
 
-		if (!cycleRewinding)
-		
-			{
-			source = getSource();
-			count = source.getCount();
+            if (element != null)
+                writer.end();
+        }
+    }
 
-			writer.beginEmpty("input");
-			writer.attribute("type", "hidden");
-			writer.attribute("name", name);
-			writer.attribute("value", count);
-			writer.println();
-		}
-		else
-		{
-			context = cycle.getRequestContext();
-			count = Integer.parseInt(context.getParameter(name));
-		}
+    private void writeValue(IMarkupWriter writer, String name, Object value)
+        throws RequestCycleException
+    {
+        String externalValue;
 
-		for (int i = 0; i < count; i++)
-		{
-			if (indexBinding != null)
-				indexBinding.setInt(i);
+        try
+        {
+            externalValue = squeezer.squeeze(value);
+        }
+        catch (IOException ex)
+        {
+            throw new RequestCycleException(
+                Tapestry.getString("ListEdit.unable-to-convert-value", value),
+                this,
+                ex);
+        }
 
-			if (cycleRewinding)
-				value = extractValue(context, form.getElementId(this));
-			else
-			{
-				value = source.get(i);
-				writeValue(writer, form.getElementId(this), value);
-			}
+        writer.beginEmpty("input");
+        writer.attribute("type", "hidden");
+        writer.attribute("name", name);
+        writer.attribute("value", externalValue);
+        writer.println();
+    }
 
-			valueBinding.setObject(value);
+    private Object extractValue(RequestContext context, String name)
+        throws RequestCycleException
+    {
+        String value = context.getParameter(name);
 
-			if (element != null)
-			{
-				writer.begin(element);
-				generateAttributes(writer, cycle);
-			}
+        try
+        {
+            return squeezer.unsqueeze(value);
+        }
+        catch (IOException ex)
+        {
+            throw new RequestCycleException(
+                Tapestry.getString("ListEdit.unable-to-convert-string", value),
+                this,
+                ex);
+        }
+    }
 
-			renderWrapped(writer, cycle);
+    private ISource getSourceData() throws RequestCycleException
+    {
+        if (source == null)
+            return new EmptySource();
 
-			if (element != null)
-				writer.end();
-		}
-	}
+        if (source instanceof List)
+            return new ListSource((List) source);
 
-	private void writeValue(IMarkupWriter writer, String name, Object value)
-		throws RequestCycleException
-	{
-		String externalValue;
+        if (source.getClass().isArray())
+            return new ArraySource((Object[]) source);
 
-		try
-		{
-			externalValue = squeezer.squeeze(value);
-		}
-		catch (IOException ex)
-		{
-			throw new RequestCycleException(
-				Tapestry.getString("ListEdit.unable-to-convert-value", value),
-				this,
-				ex);
-		}
+        throw new RequestCycleException(
+            Tapestry.getString("ListEdit.unable-to-convert-source", source),
+            this);
+    }
 
-		writer.beginEmpty("input");
-		writer.attribute("type", "hidden");
-		writer.attribute("name", name);
-		writer.attribute("value", externalValue);
-		writer.println();
-	}
+    public String getElement()
+    {
+        return element;
+    }
 
-	private Object extractValue(RequestContext context, String name)
-		throws RequestCycleException
-	{
-		String value = context.getParameter(name);
+    public void setElement(String element)
+    {
+        this.element = element;
+    }
 
-		try
-		{
-			return squeezer.unsqueeze(value);
-		}
-		catch (IOException ex)
-		{
-			throw new RequestCycleException(
-				Tapestry.getString("ListEdit.unable-to-convert-string", value),
-				this,
-				ex);
-		}
-	}
+    public void setSource(Object source)
+    {
+        this.source = source;
+    }
 
-	private ISource getSource() throws RequestCycleException
-	{
-		Object raw = sourceBinding.getObject();
-
-		if (raw == null)
-			return new EmptySource();
-
-		if (raw instanceof List)
-			return new ListSource((List) raw);
-
-		if (raw.getClass().isArray())
-			return new ArraySource((Object[]) raw);
-
-		throw new RequestCycleException(
-			Tapestry.getString("ListEdit.unable-to-convert-source", raw),
-			this);
-	}
 }

@@ -39,7 +39,7 @@ import net.sf.tapestry.RequiredParameterException;
  * <tr> 
  *    <th>Parameter</th>
  *    <th>Type</th>
- *	  <th>Read / Write </th>
+ *	  <th>Direction</th>
  *    <th>Required</th> 
  *    <th>Default</th>
  *    <th>Description</th>
@@ -48,7 +48,7 @@ import net.sf.tapestry.RequiredParameterException;
  * <tr>
  *  <td>element</td>
  *  <td>java.lang.String</td>
- *  <td>R</td>
+ *  <td>in</td>
  *  <td>yes</td>
  *  <td>&nbsp;</td>
  *  <td>The element to be produced.</td>

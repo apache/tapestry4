@@ -41,7 +41,7 @@ import org.apache.log4j.Category;
  * <tr> 
  *    <td>Parameter</td>
  *    <td>Type</td>
- *	  <td>Read / Write </td>
+ *	  <td>Direction</td>
  *    <td>Required</td> 
  *    <td>Default</td>
  *    <td>Description</td>
@@ -50,7 +50,7 @@ import org.apache.log4j.Category;
  *  <tr>
  *    <td>value</td>
  *    <td>java.lang.String</td>
- *    <td>R / W</td>
+ *    <td>in-out</td>
  *   	<td>no</td>
  *		<td>post</td>
  *		<td>The text inside the textarea.  The parameter is only updated
@@ -60,7 +60,7 @@ import org.apache.log4j.Category;
  *  <tr>
  * 		<td>disabled</td>
  *		<td>boolean</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>false</td>
  *		<td>Controls whether the textarea is active or not.  If disabled, then
@@ -72,7 +72,7 @@ import org.apache.log4j.Category;
  *	<tr>
  *		<td>columns</td>
  *		<td>integer</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>&nbsp;</td>
  *		<td>The width of the textarea, in characters.  If zero, or unspecified
@@ -83,7 +83,7 @@ import org.apache.log4j.Category;
  *	<tr>
  *		<td>rows</td>
  *		<td>integer</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>&nbsp;</td>
  *		<td>The number of rows in the textarea. If
@@ -104,12 +104,10 @@ import org.apache.log4j.Category;
 
 public class Text extends AbstractFormComponent
 {
-    private static final Category CAT = Category.getInstance(Text.class);
-
+	private int rows;
+	private int columns;
+	private boolean disabled;	
     private IBinding valueBinding;
-    private IBinding rowsBinding;
-    private IBinding columnsBinding;
-    private IBinding disabledBinding;
     private String name;
 
     public String getName()
@@ -117,25 +115,6 @@ public class Text extends AbstractFormComponent
         return name;
     }
 
-    public IBinding getColumnsBinding()
-    {
-        return columnsBinding;
-    }
-
-    public IBinding getDisabledBinding()
-    {
-        return disabledBinding;
-    }
-
-    public IBinding getRowsBinding()
-    {
-        return rowsBinding;
-    }
-
-    public IBinding getTextBinding()
-    {
-        return getValueBinding();
-    }
 
     public IBinding getValueBinding()
     {
@@ -164,12 +143,7 @@ public class Text extends AbstractFormComponent
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
-        boolean disabled = false;
-
         IForm form = getForm(cycle);
-
-        if (valueBinding == null)
-            throw new RequiredParameterException(this, "value", null);
 
         // It isn't enough to know whether the cycle in general is rewinding, need to know
         // specifically if the form which contains this component is rewinding.
@@ -180,8 +154,6 @@ public class Text extends AbstractFormComponent
 
         name = form.getElementId(this);
 
-        if (disabledBinding != null)
-            disabled = disabledBinding.getBoolean();
 
         if (rewinding)
         {
@@ -202,11 +174,11 @@ public class Text extends AbstractFormComponent
         if (disabled)
             writer.attribute("disabled");
 
-        if (rowsBinding != null)
-            writer.attribute("rows", rowsBinding.getInt());
+        if (rows != 0)
+            writer.attribute("rows", rows);
 
-        if (columnsBinding != null)
-            writer.attribute("cols", columnsBinding.getInt());
+        if (columns != 0)
+            writer.attribute("cols", columns);
 
         generateAttributes(writer, cycle);
 
@@ -218,37 +190,34 @@ public class Text extends AbstractFormComponent
 
     }
 
-    public void setColumnsBinding(IBinding value)
+    public int getColumns()
     {
-        columnsBinding = value;
+        return columns;
     }
 
-    public void setDisabledBinding(IBinding value)
+    public void setColumns(int columns)
     {
-        disabledBinding = value;
+        this.columns = columns;
     }
 
-    public void setRowsBinding(IBinding value)
+    public boolean getDisabled()
     {
-        rowsBinding = value;
+        return disabled;
     }
 
-    private boolean warning = true;
-
-    public void setTextBinding(IBinding value)
+    public void setDisabled(boolean disabled)
     {
-        if (warning)
-        {
-            CAT.warn(
-                Tapestry.getString(
-                    "deprecated-component-param",
-                    getExtendedId(),
-                    "text",
-                    "value"));
-            warning = false;
-        }
+        this.disabled = disabled;
+    }
 
-        setValueBinding(value);
+    public int getRows()
+    {
+        return rows;
+    }
+
+    public void setRows(int rows)
+    {
+        this.rows = rows;
     }
 
 }

@@ -43,7 +43,7 @@ import net.sf.tapestry.Tapestry;
  * <tr> 
  *    <td>Parameter</td>
  *    <td>Type</td>
- *	  <td>Read / Write </td>
+ *	  <td>Direction</td>
  *    <td>Required</td> 
  *    <td>Default</td>
  *    <td>Description</td>
@@ -52,7 +52,7 @@ import net.sf.tapestry.Tapestry;
  * <tr>
  *      <td>selected</td>
  *      <td>{@link Object}</td>
- *      <td>R / W</td>
+ *      <td>in-out</td>
  *      <td>yes</td>
  *      <td>&nbsp;</td>
  *      <td>Read during rendering to determine which {@link Radio} will be the default.
@@ -63,7 +63,7 @@ import net.sf.tapestry.Tapestry;
  *  <tr>
  *		<td>disabled</td>
  *		<td>boolean</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>no</td>
  *		<td>If true, then all contained {@link Radio} components will be
@@ -81,8 +81,9 @@ import net.sf.tapestry.Tapestry;
 public class RadioGroup extends AbstractFormComponent
 {
     private IBinding selectedBinding;
-    private IBinding disabledBinding;
-
+  
+  	private boolean disabled;
+  	
     // Cached copy of the value from the selectedBinding
     private Object selection;
 
@@ -95,7 +96,6 @@ public class RadioGroup extends AbstractFormComponent
 
     private String name;
 
-    private boolean disabled;
     private boolean rewinding;
     private boolean rendering;
     private int nextOptionId;
@@ -124,15 +124,6 @@ public class RadioGroup extends AbstractFormComponent
         selectedBinding = value;
     }
 
-    public IBinding getDisabledBinding()
-    {
-        return disabledBinding;
-    }
-
-    public void setDisabledBinding(IBinding value)
-    {
-        disabledBinding = value;
-    }
 
     public String getName()
     {
@@ -155,9 +146,6 @@ public class RadioGroup extends AbstractFormComponent
 
     public boolean isDisabled()
     {
-        if (!rendering)
-            throw new RenderOnlyPropertyException(this, "disabled");
-
         return disabled;
     }
 
@@ -236,11 +224,6 @@ public class RadioGroup extends AbstractFormComponent
 
         name = form.getElementId(this);
 
-        if (disabledBinding == null)
-            disabled = false;
-        else
-            disabled = disabledBinding.getBoolean();
-
         cycle.setAttribute(ATTRIBUTE_NAME, this);
 
         // When rewinding, find out which (if any) radio was selected by
@@ -275,6 +258,11 @@ public class RadioGroup extends AbstractFormComponent
         }
 
         cycle.removeAttribute(ATTRIBUTE_NAME);
+    }
+
+    public void setDisabled(boolean disabled)
+    {
+        this.disabled = disabled;
     }
 
 }

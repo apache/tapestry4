@@ -44,7 +44,7 @@ import net.sf.tapestry.Tapestry;
  * <tr> 
  *    <td>Property</td>
  *    <td>Type</td>
- *	  <td>Read / Write </td>
+ *	  <td>Direction</td>
  *    <td>Required</td> 
  *    <td>Default</td>
  *    <td>Description</td>
@@ -54,11 +54,11 @@ import net.sf.tapestry.Tapestry;
  *  <tr>
  *      <td>value</td>
  *      <td>{@link Object}</td>
- *      <td>R</td>
- *      <td>no</td>
- *      <td>Boolean.TRUE</td>
+ *      <td>in</td>
+ *      <td>yes</td>
+ *      <td>&nbsp;</td>
  *      <td>The value is used to determine if the radio button is initially selected
- * (when rendering) and is the value assigned to the selected parameter when the
+ *  (when rendering) and is the value assigned to the selected parameter when the
  *  form is submitted, if the HTML radio button is selected.
  *      </td>
  *  </tr>
@@ -66,7 +66,7 @@ import net.sf.tapestry.Tapestry;
  *  <tr>
  *		<td>disabled</td>
  *		<td>boolean</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>false</td>
  *		<td>If true, then the <code>Radio</code> is disabled.  It will
@@ -76,7 +76,7 @@ import net.sf.tapestry.Tapestry;
  *		   disabled. </td> </tr>
  *	</table>
  *
- * <p>Informal parameters are allowed, but may not contain a body.
+ *  <p>Informal parameters are allowed, but may not contain a body.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -85,50 +85,9 @@ import net.sf.tapestry.Tapestry;
 
 public class Radio extends AbstractComponent
 {
-    private IBinding disabledBinding;
-    private boolean staticDisabled;
-    private boolean disabledValue;
-    private IBinding valueBinding;
-    private Object staticValue;
-
-    public IBinding getDisabledBinding()
-    {
-        return disabledBinding;
-    }
-
-    public void setDisabledBinding(IBinding value)
-    {
-        disabledBinding = value;
-
-        staticDisabled = value.isStatic();
-        if (staticDisabled)
-            disabledValue = value.getBoolean();
-    }
-
-    public IBinding getValueBinding()
-    {
-        return valueBinding;
-    }
-
-    public void setValueBinding(IBinding value)
-    {
-        valueBinding = value;
-
-        if (valueBinding.isStatic())
-            staticValue = valueBinding.getObject();
-    }
-
-    public Object getValue()
-    {
-        if (staticValue != null)
-            return staticValue;
-
-        if (valueBinding == null)
-            return Boolean.TRUE;
-
-        return valueBinding.getObject();
-    }
-
+ 	private Object value;
+ 	private boolean disabled;
+ 	
     /**
      *  Renders the form element, or responds when the form containing the element
      *  is submitted (by checking {@link Form#isRewinding()}.
@@ -141,27 +100,16 @@ public class Radio extends AbstractComponent
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
-        boolean rewinding;
-        boolean disabled = false;
-        IBinding binding;
-        String name;
-        int option;
-        RadioGroup group;
 
-        group = RadioGroup.get(cycle);
+        RadioGroup group = RadioGroup.get(cycle);
         if (group == null)
             throw new RequestCycleException(Tapestry.getString("Radio.must-be-contained-by-group"), this);
 
         // The group determines rewinding from the form.
 
-        rewinding = group.isRewinding();
+        boolean rewinding = group.isRewinding();
 
-        option = group.getNextOptionId();
-
-        if (staticDisabled)
-            disabled = disabledValue;
-        else if (disabledBinding != null)
-            disabled = disabledBinding.getBoolean();
+        int option = group.getNextOptionId();
 
         if (rewinding)
         {
@@ -170,7 +118,7 @@ public class Radio extends AbstractComponent
             // radio button.  This will update the selected parameter of the RadioGroup.
 
             if (!disabled && group.isSelected(option))
-                group.updateSelection(getValue());
+                group.updateSelection(value);
             return;
         }
 
@@ -183,7 +131,7 @@ public class Radio extends AbstractComponent
         // As the group if the value for this Radio matches the selection
         // for the group as a whole; if so this is the default radio and is checked.
 
-        if (group.isSelection(getValue()))
+        if (group.isSelection(value))
             writer.attribute("checked");
 
         if (disabled)
@@ -197,6 +145,26 @@ public class Radio extends AbstractComponent
 
         generateAttributes(writer, cycle);
 
+    }
+
+    public boolean getDisabled()
+    {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled)
+    {
+        this.disabled = disabled;
+    }
+
+    public Object getValue()
+    {
+        return value;
+    }
+
+    public void setValue(Object value)
+    {
+        this.value = value;
     }
 
 }

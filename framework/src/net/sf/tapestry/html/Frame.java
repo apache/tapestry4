@@ -67,22 +67,17 @@ import net.sf.tapestry.RequiredParameterException;
 
 public class Frame extends AbstractComponent
 {
-    private IBinding pageBinding;
-    
-    public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+	private String targetPage;
+	    
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
         if (cycle.isRewinding())
             return;
             
-        String page = pageBinding.getString();
-        
-        if (page == null)   
-            throw new RequiredParameterException(this, "page", pageBinding);
-            
         IEngine engine = cycle.getEngine();
         IEngineService pageService = engine.getService(IEngineService.PAGE_SERVICE);
         
-        Gesture g = pageService.buildGesture(cycle, this, new String[] { page });
+        Gesture g = pageService.buildGesture(cycle, this, new String[] { targetPage });
         
         writer.beginEmpty("frame");
         writer.attribute("src", g.getURL());
@@ -92,14 +87,15 @@ public class Frame extends AbstractComponent
         writer.end();
     }
 
-    public IBinding getPageBinding()
+
+    public String getTargetPage()
     {
-        return pageBinding;
+        return targetPage;
     }
 
-    public void setPageBinding(IBinding pageBinding)
+    public void setTargetPage(String targetPage)
     {
-        this.pageBinding = pageBinding;
+        this.targetPage = targetPage;
     }
 
 }

@@ -48,7 +48,7 @@ import net.sf.tapestry.RequiredParameterException;
  * <tr> 
  *    <td>Parameter</td>
  *    <td>Type</td>
- *	  <td>Read / Write </td>
+ *	  <td>Direction</td>
  *    <td>Required</td> 
  *    <td>Default</td>
  *    <td>Description</td>
@@ -57,7 +57,7 @@ import net.sf.tapestry.RequiredParameterException;
  *  <tr>
  *    <td>image</td>
  *    <td>{@link IAsset}</td>
- *    <td>R</td>
+ *    <td>in</td>
  *   	<td>yes</td>
  *		<td>&nbsp;</td>
  *		<td>The image to show.</td>
@@ -66,7 +66,7 @@ import net.sf.tapestry.RequiredParameterException;
  * <tr>
  *		<td>name</td>
  *		<td>{@link String}</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>&nbsp;</td>
  *		<td>The name to use for the form element.  Under Netscape Navigator 4, this
@@ -76,7 +76,7 @@ import net.sf.tapestry.RequiredParameterException;
  *  <tr>
  *	  <td>disabled</id>
  *	  <td>boolean</td>
- *    <td>R</td>
+ *    <td>in</td>
  *    <td>no</td>
  *	  <td>&nbsp;</td>
  *    <td>If set to true, the button will be disabled (will not respond to
@@ -86,15 +86,17 @@ import net.sf.tapestry.RequiredParameterException;
  *  <tr>
  * 	  <td>disabledImage</td>
  *	  <td>{@link IAsset}</td>
- *	  <td>R</td>
+ *	  <td>in</td>
  *	  <td>no</td>
  *		<td>&nbsp;</td>
- *	  <td>An alternate image to display if the component is disabled.</td> </tr>
+ *	  <td>An alternate image to display if the component is disabled.  If the
+ *  component is disabled and this parameter is not specified,
+ *  the normal image is used. </td> </tr>
  *
  * <tr>
  *		<td>point</td>
  *		<td>java.awt.Point</td>
- *		<td>W</td>
+ *		<td>out</td>
  *		<td>no</td>
  *		<td>&nbsp;</td>
  *		<td>The point at which the image was clicked; used for rare
@@ -104,7 +106,7 @@ import net.sf.tapestry.RequiredParameterException;
  *  <tr>
  *      <td>selected</td>
  *      <td>java.lang.Object</td>
- *      <td>W</td>
+ *      <td>out</td>
  *      <td>no</td>
  *      <td>&nbsp;</td>
  *      <td>This parameter is bound to a property that is
@@ -116,7 +118,7 @@ import net.sf.tapestry.RequiredParameterException;
  *  <tr>
  *      <td>tag</td>
  *      <td>java.lang.Object</td>
- *      <td>R</td>
+ *      <td>in</td>
  *      <td>no</td>
  *      <td>&nbsp;</td>
  *      <td>Tag used with the selected parameter to indicate which image button
@@ -128,7 +130,7 @@ import net.sf.tapestry.RequiredParameterException;
  *  <tr>
  * 		<td>listener</td>
  * 		<td>{@link IActionListener}</td>
- * 		<td>R</td>
+ * 		<td>in</td>
  * 		<td>no</td>
  * 		<td>&nbsp;</td>
  * 		<td>If specified, the listener is notified.  This notification occurs
@@ -149,32 +151,15 @@ import net.sf.tapestry.RequiredParameterException;
 
 public class ImageSubmit extends AbstractFormComponent
 {
-    private IBinding imageBinding;
-    private IBinding pointBinding;
-    private IBinding disabledBinding;
-    private IBinding disabledImageBinding;
-    private IBinding selectedBinding;
-    private IBinding tagBinding;
-    private IBinding nameBinding;
-    private IBinding listenerBinding;
-    private String staticName;
-    private Object staticTagValue;
+    private IAsset image;
+    private IAsset disabledImage;
+    private Object tag;
     private String name;
+    private IActionListener listener;
+    private boolean disabled;
 
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setImageBinding(IBinding value)
-    {
-        imageBinding = value;
-    }
-
-    public IBinding getImageBinding()
-    {
-        return imageBinding;
-    }
+    private IBinding pointBinding;
+    private IBinding selectedBinding;
 
     public void setPointBinding(IBinding value)
     {
@@ -184,26 +169,6 @@ public class ImageSubmit extends AbstractFormComponent
     public IBinding getPointBinding()
     {
         return pointBinding;
-    }
-
-    public IBinding getDisabledBinding()
-    {
-        return disabledBinding;
-    }
-
-    public void setDisabledBinding(IBinding value)
-    {
-        disabledBinding = value;
-    }
-
-    public IBinding getDisabledImageBinding()
-    {
-        return disabledImageBinding;
-    }
-
-    public void setDisabledImageBinding(IBinding value)
-    {
-        disabledImageBinding = value;
     }
 
     public void setSelectedBinding(IBinding value)
@@ -216,66 +181,16 @@ public class ImageSubmit extends AbstractFormComponent
         return selectedBinding;
     }
 
-    public void setTagBinding(IBinding value)
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
     {
-        tagBinding = value;
-
-        if (value.isStatic())
-            staticTagValue = value.getObject();
-    }
-
-    public IBinding getTagBinding()
-    {
-        return tagBinding;
-    }
-
-    public IBinding getNameBinding()
-    {
-        return nameBinding;
-    }
-
-    public void setNameBinding(IBinding value)
-    {
-        nameBinding = value;
-
-        if (value.isStatic())
-            staticName = value.getString();
-    }
-
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
-    {
-        String parameterName;
-        String value;
-        int x;
-        int y;
-        RequestContext context;
-        IAsset image = null;
-        String imageURL;
-        boolean disabled = false;
-        Object tagValue = staticTagValue;
-
         IForm form = getForm(cycle);
 
         boolean rewinding = form.isRewinding();
 
-        name = null;
-
-        if (nameBinding != null)
-        {
-            String baseId = staticName;
-            if (baseId == null)
-                baseId = nameBinding.getString();
-
-            if (baseId != null)
-                name = form.getElementId(baseId);
-        }
-
-        if (name == null)
-            name = form.getElementId(this);
-
-        if (disabledBinding != null)
-            disabled = disabledBinding.getBoolean();
-
+        String finalName = 
+        	(name == null) ? form.getElementId(this) : form.getElementId(name);
+        
         if (rewinding)
         {
             // If disabled, do nothing.
@@ -283,14 +198,14 @@ public class ImageSubmit extends AbstractFormComponent
             if (disabled)
                 return;
 
-            context = cycle.getRequestContext();
+            RequestContext context = cycle.getRequestContext();
 
             // Image clicks get submitted as two request parameters: 
             // foo.x and foo.y
 
-            parameterName = name + ".x";
+            String parameterName = name + ".x";
 
-            value = context.getParameter(parameterName);
+            String value = context.getParameter(parameterName);
 
             if (value == null)
                 return;
@@ -303,12 +218,12 @@ public class ImageSubmit extends AbstractFormComponent
 
             if (pointBinding != null)
             {
-                x = Integer.parseInt(value);
+                int x = Integer.parseInt(value);
 
                 parameterName = name + ".y";
                 value = context.getParameter(parameterName);
 
-                y = Integer.parseInt(value);
+                int y = Integer.parseInt(value);
 
                 pointBinding.setObject(new Point(x, y));
             }
@@ -317,55 +232,19 @@ public class ImageSubmit extends AbstractFormComponent
             // to the tag parameter.
 
             if (selectedBinding != null)
-            {
+                selectedBinding.setObject(tag);
 
-                if (tagBinding == null)
-                    throw new RequestCycleException(
-                        "The tag parameter is required if the selected parameter is bound.",
-                        this);
-
-                // OK, now to notify the application code (via the parameters)
-                // that *this* ImageButton was selected.  We do this by applying
-                // a tag (presumably, specific to the ImageButton in question)
-                // to the selected binding.  When the containing Form's listener
-                // is invoked, it can determine which (if any) ImageButton
-                // (or Submit) was clicked.
-
-                if (tagValue == null)
-                    tagValue = tagBinding.getObject();
-
-                if (tagValue == null)
-                    throw new RequiredParameterException(this, "tag", tagBinding);
-
-                selectedBinding.setObject(tagValue);
-            }
-
-            if (listenerBinding != null)
-            {
-                IActionListener listener =
-                    (IActionListener) listenerBinding.getObject("listener", IActionListener.class);
-
-                if (listener != null)
-                    listener.actionTriggered(this, cycle);
-            }
+            if (listener != null)
+                listener.actionTriggered(this, cycle);
 
             return;
         }
 
         // Not rewinding, do the real render
 
-        if (disabled && disabledImageBinding != null)
-            image = (IAsset) disabledImageBinding.getObject("disabledImage", IAsset.class);
+        IAsset finalImage = (disabled && disabledImage != null) ? disabledImage : image;
 
-        if (image == null)
-        {
-            image = (IAsset) imageBinding.getObject("image", IAsset.class);
-
-            if (image == null)
-                throw new RequiredParameterException(this, "image", imageBinding);
-        }
-
-        imageURL = image.buildURL(cycle);
+        String imageURL = image.buildURL(cycle);
 
         writer.beginEmpty("input");
         writer.attribute("type", "image");
@@ -386,14 +265,64 @@ public class ImageSubmit extends AbstractFormComponent
         writer.closeTag();
     }
 
-    public IBinding getListenerBinding()
+    public boolean getDisabled()
     {
-        return listenerBinding;
+        return disabled;
     }
 
-    public void setListenerBinding(IBinding listenerBinding)
+    public void setDisabled(boolean disabled)
     {
-        this.listenerBinding = listenerBinding;
+        this.disabled = disabled;
+    }
+
+    public IAsset getDisabledImage()
+    {
+        return disabledImage;
+    }
+
+    public void setDisabledImage(IAsset disabledImage)
+    {
+        this.disabledImage = disabledImage;
+    }
+
+    public IAsset getImage()
+    {
+        return image;
+    }
+
+    public void setImage(IAsset image)
+    {
+        this.image = image;
+    }
+
+    public IActionListener getListener()
+    {
+        return listener;
+    }
+
+    public void setListener(IActionListener listener)
+    {
+        this.listener = listener;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public void setName(String name)
+    {
+        this.name = name;
+    }
+
+    public Object getTag()
+    {
+        return tag;
+    }
+
+    public void setTag(Object tag)
+    {
+        this.tag = tag;
     }
 
 }

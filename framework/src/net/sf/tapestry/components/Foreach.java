@@ -44,7 +44,7 @@ import net.sf.tapestry.Tapestry;
  * <tr> 
  *    <th>Parameter</th>
  *    <th>Type</th>
- *    <th>Read / Write</th>
+ *    <th>Direction</th>
  *    <th>Required</th> 
  *    <th>Default</th>
  *    <th>Description</th>
@@ -56,7 +56,7 @@ import net.sf.tapestry.Tapestry;
  *		<br>{@link Collection}
  *      <br>java.lang.Object[]
  *  </td>
- *  <td>R</th>
+ *  <td>in</th>
  *  <td>no</td>
  *  <td>&nbsp;</td>
  *  <td>The source of objects to be iterated, which may be a Collection,
@@ -68,7 +68,7 @@ import net.sf.tapestry.Tapestry;
  * <tr>
  *  <td>value</td>
  *  <td>java.lang.Object</td>
- *  <td>W</td>
+ *  <td>out</td>
  *  <td>no</td>
  *  <td>&nbsp;</td>
  *  <td>Used to update the current value on each iteration.
@@ -79,7 +79,7 @@ import net.sf.tapestry.Tapestry;
  * <tr>
  *	<td>index</td>
  * 	<td>int</td>
- *	<td>W</td>
+ *	<td>out</td>
  *	<td>no</td>
  *	<td>&nbsp;</td>
  *	<td>Used to store the index of the current value within the stream of
@@ -92,7 +92,7 @@ import net.sf.tapestry.Tapestry;
  *  <tr>
  *		<td>element</td>
  *		<td>{@link String}</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>&nbsp;</td>
  *		<td>If specified, then the component acts like an {@link Any}, emitting an open

@@ -81,13 +81,8 @@ import net.sf.tapestry.Tapestry;
 public class Option extends AbstractComponent
 {
     private IBinding selectedBinding;
-    private IBinding labelBinding;
-    private String labelValue;
+	private String label;
 
-    public IBinding getLabelBinding()
-    {
-        return labelBinding;
-    }
 
     public IBinding getSelectedBinding()
     {
@@ -100,7 +95,7 @@ public class Option extends AbstractComponent
      *
      *  <table border=1>
      *  <tr>  <th>attribute</th>  <th>value</th> </tr>
-     *  <tr>  <td>value</td>  <td>from {@link IRequestCycle#getNextActionId()}</td>  </tr>
+     *  <tr>  <td>value</td>  <td>from {@link Select#getNextOptionId()}</td>  </tr>
      *  <tr> <td>selected</td> <td>from selected property</td> </tr>
      *  <tr> <td><i>other</i></td> <td>from extra bindings</td> </tr>
      *  </tr>
@@ -121,9 +116,6 @@ public class Option extends AbstractComponent
         select = Select.get(cycle);
         if (select == null)
             throw new RequestCycleException(Tapestry.getString("Option.must-be-contained-by-select"), this);
-
-        if (selectedBinding == null)
-            throw new RequiredParameterException(this, "selected", null);
 
         // It isn't enough to know whether the cycle in general is rewinding, need to know
         // specifically if the form which contains this component is rewinding.
@@ -148,11 +140,6 @@ public class Option extends AbstractComponent
 
             generateAttributes(writer, cycle);
 
-            if (labelValue != null)
-                label = labelValue;
-            else if (labelBinding != null)
-                label = labelBinding.getString();
-
             if (label != null)
                 writer.print(label);
 
@@ -161,16 +148,18 @@ public class Option extends AbstractComponent
 
     }
 
-    public void setLabelBinding(IBinding value)
-    {
-        labelBinding = value;
-
-        if (value.isStatic())
-            labelValue = value.getString();
-    }
-
     public void setSelectedBinding(IBinding value)
     {
         selectedBinding = value;
     }
+    public String getLabel()
+    {
+        return label;
+    }
+
+    public void setLabel(String label)
+    {
+        this.label = label;
+    }
+
 }

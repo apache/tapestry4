@@ -40,7 +40,7 @@ import net.sf.tapestry.RequestCycleException;
  * <tr> 
  *    <td>Parameter</td>
  *    <td>Type</td>
- *	  <td>Read / Write </td>
+ *	  <td>Direction </td>
  *    <td>Required</td> 
  *    <td>Default</td>
  *    <td>Description</td>
@@ -49,7 +49,7 @@ import net.sf.tapestry.RequestCycleException;
  *  <tr>
  *		<td>value</td>
  *		<td>java.lang.String</td>
- *		<td>R / W</td>
+ *		<td>in-out</td>
  *		<td>yes</td>
  *		<td>&nbsp;</td>
  *		<td>The value to be stored in the the hidden field.  The parameter is read
@@ -59,12 +59,12 @@ import net.sf.tapestry.RequestCycleException;
  * <tr>
  *		<td>listener</td>
  *		<td>{@link IActionListener}</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>&nbsp;</td>
  *		<td>A listener that is informed after the value parameter is updated.  This
  * allows the data set operated on by the rest of the {@link Form} components
- * to be synchronized.
+ * to be synchronized to the  value stored in the hidden field.
  *
  *  <p>A typical use is to encode the primary key of an entity as a Hidden; when the
  *  form is submitted, the Hidden's listener re-reads the corresponding entity

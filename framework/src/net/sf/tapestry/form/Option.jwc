@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<!DOCTYPE specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+	
 <specification class="net.sf.tapestry.form.Option" allow-body="no">
 
   <description>
@@ -8,7 +11,7 @@
   </description>
   
   <parameter name="selected" java-type="java.lang.Boolean" required="yes"/>  
-  <parameter name="label" java-type="java.lang.String"/>
+  <parameter name="label" java-type="java.lang.String" direction="in"/>
   
   <reserved-parameter name="value"/>
   

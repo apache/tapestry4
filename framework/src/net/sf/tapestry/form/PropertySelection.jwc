@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<!DOCTYPE specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
 <specification class="net.sf.tapestry.form.PropertySelection" allow-body="no" allow-informal-parameters="no">
   
   <description>
@@ -8,7 +10,17 @@
   </description>
   
   <parameter name="value" required="yes"/>
-  <parameter name="model" java-type="net.sf.tapestry.form.IPropertySelectionModel" required="yes"/>
-  <parameter name="disabled"/>
-  <parameter name="renderer" java-type="net.sf.tapestry.form.IPropertySelectionRenderer"/>
+  <parameter name="model" 
+  	java-type="net.sf.tapestry.form.IPropertySelectionModel" 
+  	required="yes"
+  	direction="in"/>
+  	
+  <parameter name="disabled"
+  	java-type="boolean"
+  	direction="in"/>
+  	
+  <parameter name="renderer" 
+  	java-type="net.sf.tapestry.form.IPropertySelectionRenderer"
+  	direction="in"/>
+  	
 </specification>

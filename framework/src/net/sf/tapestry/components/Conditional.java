@@ -37,9 +37,9 @@ import net.sf.tapestry.RequestCycleException;
  *
  * <table border=1>
  * <tr> 
- *    <th>Property</th>
+ *    <th>Parameter</th>
  *    <th>Type</th>
- *	  <th>Read / Write </th>
+ *	  <th>Direction</th>
  *    <th>Required</th> 
  *    <th>Default</th>
  *    <th>Description</th>
@@ -48,7 +48,7 @@ import net.sf.tapestry.RequestCycleException;
  * <tr>
  *  <td>condition</td>
  *  <td>boolean</td>
- *  <td>R</td>
+ *  <td>in</td>
  *  <td>no</td>
  *  <td>false</td>
  *  <td>The condition to be met.  If this value is true, then the wrapped elements
@@ -60,7 +60,7 @@ import net.sf.tapestry.RequestCycleException;
  * <tr>
  *  <td>invert</td>
  *  <td>boolean</td>
- *  <td>R</td>
+ *  <td>in</td>
  *  <td>no</td>
  *  <td>false</td>
  *  <td>If true, then the condition is inverted.  This is useful for simulating
