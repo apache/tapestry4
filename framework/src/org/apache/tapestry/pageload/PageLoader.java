@@ -301,7 +301,7 @@ public class PageLoader implements IPageLoader
         {
             if (formalOnly)
                 throw new ApplicationRuntimeException(
-                    Tapestry.getString(
+                    Tapestry.format(
                         "PageLoader.inherit-informal-invalid-component-formal-only",
                         component.getExtendedId()),
                     component,
@@ -310,7 +310,7 @@ public class PageLoader implements IPageLoader
 
             if (containerFormalOnly)                    
                 throw new ApplicationRuntimeException(
-                    Tapestry.getString(
+                    Tapestry.format(
                         "PageLoader.inherit-informal-invalid-container-formal-only",
                         container.getExtendedId(),
                         component.getExtendedId()),
@@ -338,7 +338,7 @@ public class PageLoader implements IPageLoader
 
             if (formalOnly && !isFormal)
                 throw new ApplicationRuntimeException(
-                    Tapestry.getString(
+                    Tapestry.format(
                         "PageLoader.formal-parameters-only",
                         component.getExtendedId(),
                         name),
@@ -410,7 +410,7 @@ public class PageLoader implements IPageLoader
 
             if (parameterSpec.isRequired() && component.getBinding(name) == null)
                 throw new ApplicationRuntimeException(
-                    Tapestry.getString(
+                    Tapestry.format(
                         "PageLoader.required-parameter-not-bound",
                         name,
                         component.getExtendedId()),
@@ -609,7 +609,7 @@ public class PageLoader implements IPageLoader
         catch (RuntimeException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString(
+                Tapestry.format(
                     "PageLoader.unable-to-instantiate-component",
                     container.getExtendedId(),
                     ex.getMessage()),
@@ -689,7 +689,7 @@ public class PageLoader implements IPageLoader
         catch (ClassCastException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("PageLoader.class-not-component", enhancedClassName),
+                Tapestry.format("PageLoader.class-not-component", enhancedClassName),
                 container,
                 spec.getLocation(),
                 ex);
@@ -697,7 +697,7 @@ public class PageLoader implements IPageLoader
         catch (Throwable ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("PageLoader.unable-to-instantiate", enhancedClassName),
+                Tapestry.format("PageLoader.unable-to-instantiate", enhancedClassName),
                 container,
                 spec.getLocation(),
                 ex);
@@ -705,7 +705,7 @@ public class PageLoader implements IPageLoader
 
         if (result instanceof IPage)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("PageLoader.page-not-allowed", result.getExtendedId()),
+                Tapestry.format("PageLoader.page-not-allowed", result.getExtendedId()),
                 result);
 
         result.setNamespace(namespace);
@@ -778,14 +778,14 @@ public class PageLoader implements IPageLoader
         catch (ClassCastException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("PageLoader.class-not-page", enhancedClassName),
+                Tapestry.format("PageLoader.class-not-page", enhancedClassName),
                 location,
                 ex);
         }
         catch (Exception ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("PageLoader.unable-to-instantiate", enhancedClassName),
+                Tapestry.format("PageLoader.unable-to-instantiate", enhancedClassName),
                 location,
                 ex);
         }
@@ -941,7 +941,7 @@ public class PageLoader implements IPageLoader
             catch (Exception ex)
             {
                 throw new ApplicationRuntimeException(
-                    Tapestry.getString(
+                    Tapestry.format(
                         "PageLoader.unable-to-initialize-property",
                         name,
                         component,
@@ -1020,7 +1020,7 @@ public class PageLoader implements IPageLoader
 
         if (localizedLocation == null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString(
+                Tapestry.format(
                     "PageLoader.missing-asset",
                     assetName,
                     component.getExtendedId(),

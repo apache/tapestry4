@@ -78,7 +78,7 @@ public abstract class TransferBooksSelect extends AdminPage
 
         if (fromUserId.equals(toUserId))
         {
-            setError(getString("select-different-users"));
+            setError(getMessage("select-different-users"));
             return;
         }
 

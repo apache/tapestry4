@@ -244,7 +244,7 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
 
         if (entities == null || safe == null || contentType == null)
             throw new IllegalArgumentException(
-                Tapestry.getString("AbstractMarkupWriter.missing-constructor-parameters"));
+                Tapestry.getMessage("AbstractMarkupWriter.missing-constructor-parameters"));
 
     }
 
@@ -430,7 +430,7 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
     {
         if (!_openTag)
             throw new IllegalStateException(
-                Tapestry.getString("AbstractMarkupWriter.tag-not-open"));
+                Tapestry.getMessage("AbstractMarkupWriter.tag-not-open"));
     }
 
     /**

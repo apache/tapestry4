@@ -159,7 +159,7 @@ public class PageSpecificationResolver extends AbstractSpecificationResolver
 
         if (getSpecification() == null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString(
+                Tapestry.format(
                     "Namespace.no-such-page",
                     _simpleName,
                     namespace.getNamespaceId()));

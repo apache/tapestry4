@@ -273,7 +273,7 @@ public class EngineServiceLink implements ILink
         }
 
         throw new IllegalArgumentException(
-            Tapestry.getString("EngineServiceLink.unknown-parameter-name", name));
+            Tapestry.format("EngineServiceLink.unknown-parameter-name", name));
     }
 
     public String toString()

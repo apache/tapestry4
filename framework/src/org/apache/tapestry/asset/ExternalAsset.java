@@ -107,7 +107,7 @@ public class ExternalAsset extends AbstractAsset
         {
             // MalrformedURLException or IOException
 
-            throw new ApplicationRuntimeException(Tapestry.getString("ExternalAsset.resource-missing", _URL), ex);
+            throw new ApplicationRuntimeException(Tapestry.format("ExternalAsset.resource-missing", _URL), ex);
         }
 
     }

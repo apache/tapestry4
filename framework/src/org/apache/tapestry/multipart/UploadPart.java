@@ -85,7 +85,7 @@ public class UploadPart extends Object implements IUploadFile, IPart
     {
         if (fileItem == null)
             throw new IllegalArgumentException(
-                Tapestry.getString("invalid-null-parameter", "fileItem"));
+                Tapestry.format("invalid-null-parameter", "fileItem"));
 
         _fileItem = fileItem;
     }
@@ -142,7 +142,7 @@ public class UploadPart extends Object implements IUploadFile, IPart
         catch (IOException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString(
+                Tapestry.format(
                     "UploadPart.unable-to-open-content-file",
                     _fileItem.getName(),
                     _fileItem.getStoreLocation()),
@@ -165,7 +165,7 @@ public class UploadPart extends Object implements IUploadFile, IPart
         File file = _fileItem.getStoreLocation();
         if (file != null && file.exists())
             throw new ApplicationRuntimeException(
-                Tapestry.getString("UploadPart.temporary-file-not-deleted", file));
+                Tapestry.format("UploadPart.temporary-file-not-deleted", file));
     }
 
 }

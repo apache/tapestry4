@@ -240,7 +240,7 @@ public abstract class Body extends AbstractComponent implements IScriptProcessor
 
         if (!(scriptLocation instanceof ClasspathResourceLocation))
             throw new ApplicationRuntimeException(
-                Tapestry.getString("Body.include-classpath-script-only", scriptLocation),
+                Tapestry.format("Body.include-classpath-script-only", scriptLocation),
                 this);
 
         // Record the URL so we don't include it twice.
@@ -293,7 +293,7 @@ public abstract class Body extends AbstractComponent implements IScriptProcessor
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-            throw new ApplicationRuntimeException(Tapestry.getString("Body.may-not-nest"), this);
+            throw new ApplicationRuntimeException(Tapestry.getMessage("Body.may-not-nest"), this);
 
         cycle.setAttribute(ATTRIBUTE_NAME, this);
 

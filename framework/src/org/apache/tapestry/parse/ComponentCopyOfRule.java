@@ -94,7 +94,7 @@ public class ComponentCopyOfRule extends AbstractSpecificationRule
         {
             if (Tapestry.isNull(type))
                 throw new DocumentParseException(
-                    Tapestry.getString("SpecificationParser.missing-type-or-copy-of", id),
+                    Tapestry.format("SpecificationParser.missing-type-or-copy-of", id),
                     getResourceLocation());
 
             return;
@@ -102,7 +102,7 @@ public class ComponentCopyOfRule extends AbstractSpecificationRule
 
         if (!Tapestry.isNull(type))
             throw new DocumentParseException(
-                Tapestry.getString("SpecificationParser.both-type-and-copy-of", id),
+                Tapestry.format("SpecificationParser.both-type-and-copy-of", id),
                 getResourceLocation());
 
         IComponentSpecification spec = (IComponentSpecification) digester.getRoot();
@@ -110,7 +110,7 @@ public class ComponentCopyOfRule extends AbstractSpecificationRule
         IContainedComponent source = spec.getComponent(copyOf);
         if (source == null)
             throw new DocumentParseException(
-                Tapestry.getString("SpecificationParser.unable-to-copy", copyOf),
+                Tapestry.format("SpecificationParser.unable-to-copy", copyOf),
                 getResourceLocation());
 
         IContainedComponent target = (IContainedComponent) digester.peek();

@@ -260,7 +260,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     {
         if (_locale != null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("AbstractPage.attempt-to-change-locale"));
+                Tapestry.getMessage("AbstractPage.attempt-to-change-locale"));
 
         _locale = value;
     }
@@ -348,7 +348,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     {
         if (_pageName != null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("AbstractPage.attempt-to-change-name"));
+                Tapestry.getMessage("AbstractPage.attempt-to-change-name"));
 
         _pageName = pageName;
     }

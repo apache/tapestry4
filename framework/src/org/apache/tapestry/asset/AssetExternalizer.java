@@ -216,7 +216,7 @@ public class AssetExternalizer
 
         inputURL = _resolver.getResource(resourcePath);
         if (inputURL == null)
-            throw new IOException(Tapestry.getString("missing-resource", resourcePath));
+            throw new IOException(Tapestry.format("missing-resource", resourcePath));
 
         in = inputURL.openStream();
 
@@ -314,7 +314,7 @@ public class AssetExternalizer
             catch (IOException ex)
             {
                 throw new ApplicationRuntimeException(
-                    Tapestry.getString("AssetExternalizer.externalize-failure", resourcePath, _assetDir),
+                    Tapestry.format("AssetExternalizer.externalize-failure", resourcePath, _assetDir),
                     ex);
             }
 

@@ -123,7 +123,7 @@ public abstract class InsertText extends AbstractComponent
         catch (IOException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("InsertText.conversion-error"),
+                Tapestry.getMessage("InsertText.conversion-error"),
                 this,
                 ex);
         }

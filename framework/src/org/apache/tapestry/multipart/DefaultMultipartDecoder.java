@@ -193,7 +193,7 @@ public class DefaultMultipartDecoder implements IMultipartDecoder
         catch (FileUploadException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("DefaultMultipartDecoder.unable-to-decode", ex.getMessage()),
+                Tapestry.format("DefaultMultipartDecoder.unable-to-decode", ex.getMessage()),
                 ex);
         }
 

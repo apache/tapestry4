@@ -131,7 +131,7 @@ public class MethodFabricator
     {
         if (_argumentsCommitted)
             throw new IllegalStateException(
-                Tapestry.getString("MethodFabricator.no-more-arguments"));
+                Tapestry.getMessage("MethodFabricator.no-more-arguments"));
 
         _arguments.add(new Argument(type, name));
 

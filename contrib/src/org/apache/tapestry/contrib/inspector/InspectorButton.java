@@ -137,7 +137,7 @@ public class InspectorButton extends BaseComponent implements IDirect
 
 		 if (body == null)
 			 throw new ApplicationRuntimeException(
-				 Tapestry.getString("InspectorButton.must-be-contained-by-body"),
+				 Tapestry.getMessage("InspectorButton.must-be-contained-by-body"),
 				 this);
 
 		script.execute(cycle, body, symbols);

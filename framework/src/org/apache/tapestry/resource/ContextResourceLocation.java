@@ -123,7 +123,7 @@ public class ContextResourceLocation extends AbstractResourceLocation
         catch (MalformedURLException ex)
         {
             LOG.warn(
-                Tapestry.getString(
+                Tapestry.format(
                     "ContextResourceLocation.unable-to-reference-context-path",
                     getPath()),
                 ex);

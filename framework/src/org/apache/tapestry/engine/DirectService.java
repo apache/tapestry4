@@ -146,7 +146,7 @@ public class DirectService extends AbstractService
             count = serviceContext.length;
 
         if (count != 3 && count != 4)
-            throw new ApplicationRuntimeException(Tapestry.getString("DirectService.context-parameters"));
+            throw new ApplicationRuntimeException(Tapestry.getMessage("DirectService.context-parameters"));
 
         boolean complex = count == 4;
 
@@ -179,7 +179,7 @@ public class DirectService extends AbstractService
         catch (ClassCastException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("DirectService.component-wrong-type", component.getExtendedId()),
+                Tapestry.format("DirectService.component-wrong-type", component.getExtendedId()),
                 component,
                 ex);
         }
@@ -193,7 +193,7 @@ public class DirectService extends AbstractService
 
             if (session == null || session.isNew())
                 throw new StaleSessionException(
-                    Tapestry.getString("DirectService.stale-session-exception", direct.getExtendedId()),
+                    Tapestry.format("DirectService.stale-session-exception", direct.getExtendedId()),
                     direct.getPage());
         }
 

@@ -83,7 +83,7 @@ public class PageService extends AbstractService
     {
         if (Tapestry.size(parameters) != 1)
             throw new IllegalArgumentException(
-                Tapestry.getString("service-single-parameter", Tapestry.PAGE_SERVICE));
+                Tapestry.format("service-single-parameter", Tapestry.PAGE_SERVICE));
 
         return constructLink(cycle, Tapestry.PAGE_SERVICE, (String[]) parameters, null, true);
 
@@ -100,7 +100,7 @@ public class PageService extends AbstractService
 
         if (Tapestry.size(serviceContext) != 1)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("service-single-parameter", Tapestry.PAGE_SERVICE));
+                Tapestry.format("service-single-parameter", Tapestry.PAGE_SERVICE));
 
         String pageName = serviceContext[0];
 

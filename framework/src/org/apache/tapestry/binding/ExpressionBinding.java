@@ -242,7 +242,7 @@ public class ExpressionBinding extends AbstractBinding
         catch (Throwable t)
         {
             throw new BindingException(
-                Tapestry.getString(
+                Tapestry.format(
                     "ExpressionBinding.unable-to-resolve-expression",
                     _expression,
                     _root),
@@ -420,7 +420,7 @@ public class ExpressionBinding extends AbstractBinding
         catch (Exception ex)
         {
             throw new BindingException(
-                Tapestry.getString(
+                Tapestry.format(
                     "ExpressionBinding.unable-to-resolve-expression",
                     _expression,
                     _root),
@@ -481,7 +481,7 @@ public class ExpressionBinding extends AbstractBinding
         catch (OgnlException ex)
         {
             throw new BindingException(
-                Tapestry.getString(
+                Tapestry.format(
                     "ExpressionBinding.unable-to-resolve-expression",
                     _expression,
                     _root),
@@ -563,7 +563,7 @@ public class ExpressionBinding extends AbstractBinding
         catch (Throwable ex)
         {
             throw new BindingException(
-                Tapestry.getString(
+                Tapestry.format(
                     "ExpressionBinding.unable-to-update-expression",
                     _expression,
                     _root,

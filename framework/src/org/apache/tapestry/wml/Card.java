@@ -82,7 +82,7 @@ public abstract class Card extends AbstractComponent
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-            throw new ApplicationRuntimeException(Tapestry.getString("Card.cards-may-not-nest"), this);
+            throw new ApplicationRuntimeException(Tapestry.getMessage("Card.cards-may-not-nest"), this);
 
         cycle.setAttribute(ATTRIBUTE_NAME, this);
 

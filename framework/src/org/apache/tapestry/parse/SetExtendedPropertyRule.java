@@ -106,7 +106,7 @@ public class SetExtendedPropertyRule extends AbstractSpecificationRule
         if (_valueSet)
         {
             throw new DocumentParseException(
-                Tapestry.getString(
+                Tapestry.format(
                     "SpecificationParser.no-attribute-and-body",
                     _attributeName,
                     name),
@@ -121,7 +121,7 @@ public class SetExtendedPropertyRule extends AbstractSpecificationRule
     {
         if (!_valueSet && _required)
             throw new DocumentParseException(
-                Tapestry.getString(
+                Tapestry.format(
                     "SpecificationParser.required-extended-attribute",
                     name,
                     _attributeName),

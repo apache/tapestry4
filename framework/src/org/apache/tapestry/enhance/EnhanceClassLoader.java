@@ -95,7 +95,7 @@ public class EnhanceClassLoader extends ClassLoader
         catch (Throwable ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString(
+                Tapestry.format(
                     "EnhancedClassLoader.unable-to-define-class",
                     enhancedClass,
                     ex.getMessage()),

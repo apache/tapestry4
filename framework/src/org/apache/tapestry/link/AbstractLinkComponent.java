@@ -162,7 +162,7 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
 
         if (body == null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("AbstractLinkComponent.events-need-body"),
+                Tapestry.getMessage("AbstractLinkComponent.events-need-body"),
                 this);
 
         Iterator i = _eventHandlers.entrySet().iterator();

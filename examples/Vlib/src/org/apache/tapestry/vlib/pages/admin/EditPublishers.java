@@ -100,7 +100,7 @@ public abstract class EditPublishers extends AdminPage implements PageRenderList
 
         if (publisher == null)
         {
-            setError(getString("out-of-date"));
+            setError(getMessage("out-of-date"));
             throw new PageRedirectException(this);
         }
 
@@ -132,7 +132,7 @@ public abstract class EditPublishers extends AdminPage implements PageRenderList
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure(getString("read-failure"), ex, i++);
+                vengine.rmiFailure(getMessage("read-failure"), ex, i++);
             }
         }
 
@@ -187,7 +187,7 @@ public abstract class EditPublishers extends AdminPage implements PageRenderList
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure(getString("update-failure"), ex, i++);
+                vengine.rmiFailure(getMessage("update-failure"), ex, i++);
             }
         }
 

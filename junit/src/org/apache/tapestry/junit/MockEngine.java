@@ -64,7 +64,7 @@ import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.engine.IComponentClassEnhancer;
-import org.apache.tapestry.engine.IComponentStringsSource;
+import org.apache.tapestry.engine.IComponentMessagesSource;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.IPageRecorder;
 import org.apache.tapestry.engine.IPageSource;
@@ -90,7 +90,7 @@ import org.apache.tapestry.util.pool.Pool;
 public class MockEngine implements IEngine
 {
     private IResourceResolver _resolver;
-    private IComponentStringsSource componentStringsSource;
+    private IComponentMessagesSource componentStringsSource;
 
     private Pool _pool = new Pool();
     private String _servletPath;
@@ -195,12 +195,12 @@ public class MockEngine implements IEngine
         return false;
     }
 
-    public IComponentStringsSource getComponentStringsSource()
+    public IComponentMessagesSource getComponentMessagesSource()
     {
         return componentStringsSource;
     }
 
-    public void setComponentStringsSource(IComponentStringsSource componentStringsSource)
+    public void setComponentStringsSource(IComponentMessagesSource componentStringsSource)
     {
         this.componentStringsSource = componentStringsSource;
     }

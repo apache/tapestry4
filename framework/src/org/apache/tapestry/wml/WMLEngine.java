@@ -82,7 +82,7 @@ public class WMLEngine extends BaseEngine
 		super.activateExceptionPage(cycle, output, cause);
 		// Sometimes the exception page isn't enough
         reportException(
-            Tapestry.getString("AbstractEngine.unable-to-process-client-request"),
+            Tapestry.getMessage("AbstractEngine.unable-to-process-client-request"),
             cause);
 	}
 

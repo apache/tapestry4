@@ -86,7 +86,7 @@ public class HomeService extends AbstractService
     {
         if (Tapestry.size(parameters) != 0)
             throw new IllegalArgumentException(
-                Tapestry.getString("service-no-parameters", Tapestry.HOME_SERVICE));
+                Tapestry.format("service-no-parameters", Tapestry.HOME_SERVICE));
 
         return constructLink(cycle, Tapestry.HOME_SERVICE, null, null, true);
     }

@@ -208,7 +208,7 @@ public class ComponentSpecificationResolver extends AbstractSpecificationResolve
         {
 
             throw new ApplicationRuntimeException(
-                Tapestry.getString(
+                Tapestry.format(
                     "Namespace.no-such-component-type",
                     type,
                     namespace.getNamespaceId()),

@@ -114,7 +114,7 @@ public class ContextAsset extends AbstractAsset implements IAsset
         catch (Exception ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("ContextAsset.resource-missing", getResourceLocation()),
+                Tapestry.format("ContextAsset.resource-missing", getResourceLocation()),
                 ex);
         }
     }

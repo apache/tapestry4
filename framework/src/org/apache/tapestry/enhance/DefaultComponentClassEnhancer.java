@@ -212,7 +212,7 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
 
             if (m != null)
                 throw new ApplicationRuntimeException(
-                    Tapestry.getString(
+                    Tapestry.format(
                         "DefaultComponentClassEnhancer.no-impl-for-abstract-method",
                         new Object[] { m, current, className, subject.getName()}),
                     specification.getLocation(),

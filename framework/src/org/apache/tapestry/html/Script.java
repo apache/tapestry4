@@ -176,7 +176,7 @@ public abstract class Script extends AbstractComponent
 
             if (body == null)
                 throw new ApplicationRuntimeException(
-                    Tapestry.getString("Script.must-be-contained-by-body"),
+                    Tapestry.getMessage("Script.must-be-contained-by-body"),
                     this);
 
             _symbols = getInputSymbols();

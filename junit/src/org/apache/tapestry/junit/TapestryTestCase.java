@@ -66,8 +66,8 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.engine.DefaultStringsSource;
-import org.apache.tapestry.engine.IComponentStringsSource;
+import org.apache.tapestry.engine.DefaultComponentMessagesSource;
+import org.apache.tapestry.engine.IComponentMessagesSource;
 import org.apache.tapestry.parse.SpecificationParser;
 import org.apache.tapestry.resource.ClasspathResourceLocation;
 
@@ -103,7 +103,7 @@ public class TapestryTestCase extends TestCase
     {
         IResourceLocation location = new ClasspathResourceLocation(_resolver, specificationPath);
 
-        IComponentStringsSource source = new DefaultStringsSource();
+        IComponentMessagesSource source = new DefaultComponentMessagesSource();
         MockEngine engine = new MockEngine();
         engine.setComponentStringsSource(source);
 

@@ -98,7 +98,7 @@ public class ValidatePublicIdRule extends BaseDocumentRule
 
                 if (!name.equals(_rootElement))
                     throw new DocumentParseException(
-                        Tapestry.getString(
+                        Tapestry.format(
                             "AbstractDocumentParser.incorrect-document-type",
                             _rootElement,
                             name),
@@ -110,7 +110,7 @@ public class ValidatePublicIdRule extends BaseDocumentRule
         }
 
         throw new DocumentParseException(
-            Tapestry.getString("AbstractDocumentParser.unknown-public-id", location, publicId),
+            Tapestry.format("AbstractDocumentParser.unknown-public-id", location, publicId),
             location);
     }
 

@@ -233,7 +233,7 @@ public class ApplicationServlet extends HttpServlet
 
             if (engine == null)
                 throw new ServletException(
-                    Tapestry.getString("ApplicationServlet.could-not-locate-engine"));
+                    Tapestry.getMessage("ApplicationServlet.could-not-locate-engine"));
 
             boolean dirty = engine.service(context);
 
@@ -283,7 +283,7 @@ public class ApplicationServlet extends HttpServlet
             if (engine.isStateful())
             {
                 LOG.error(
-                    Tapestry.getString(
+                    Tapestry.format(
                         "ApplicationServlet.engine-stateful-without-session",
                         engine));
                 return;
@@ -514,7 +514,7 @@ public class ApplicationServlet extends HttpServlet
         if (specLocation == null)
         {
             if (LOG.isDebugEnabled())
-                LOG.debug(Tapestry.getString("ApplicationServlet.no-application-specification"));
+                LOG.debug(Tapestry.getMessage("ApplicationServlet.no-application-specification"));
 
             return constructStandinSpecification();
         }
@@ -638,7 +638,7 @@ public class ApplicationServlet extends HttpServlet
             show(ex);
 
             throw new ServletException(
-                Tapestry.getString("ApplicationServlet.could-not-parse-spec", location),
+                Tapestry.format("ApplicationServlet.could-not-parse-spec", location),
                 ex);
         }
     }

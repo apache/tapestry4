@@ -316,7 +316,7 @@ public class SpecificationParser
 
             if (result == null || !(result instanceof Boolean))
                 throw new DocumentParseException(
-                    Tapestry.getString("SpecificationParser.fail-convert-boolean", value));
+                    Tapestry.format("SpecificationParser.fail-convert-boolean", value));
 
             return result;
         }
@@ -333,7 +333,7 @@ public class SpecificationParser
             catch (NumberFormatException ex)
             {
                 throw new DocumentParseException(
-                    Tapestry.getString("SpecificationParser.fail-convert-int", value),
+                    Tapestry.format("SpecificationParser.fail-convert-int", value),
                     ex);
             }
         }
@@ -350,7 +350,7 @@ public class SpecificationParser
             catch (NumberFormatException ex)
             {
                 throw new DocumentParseException(
-                    Tapestry.getString("SpecificationParser.fail-convert-long", value),
+                    Tapestry.format("SpecificationParser.fail-convert-long", value),
                     ex);
             }
         }
@@ -367,7 +367,7 @@ public class SpecificationParser
             catch (NumberFormatException ex)
             {
                 throw new DocumentParseException(
-                    Tapestry.getString("SpecificationParser.fail-convert-double", value),
+                    Tapestry.format("SpecificationParser.fail-convert-double", value),
                     ex);
             }
         }
@@ -533,7 +533,7 @@ public class SpecificationParser
 
             if (_converter == null)
                 throw new DocumentParseException(
-                    Tapestry.getString("SpecificationParser.unknown-static-value-type", type),
+                    Tapestry.format("SpecificationParser.unknown-static-value-type", type),
                     getResourceLocation());
 
         }
@@ -545,7 +545,7 @@ public class SpecificationParser
 
             if (_value != null)
                 throw new DocumentParseException(
-                    Tapestry.getString("SpecificationParser.no-attribute-and-body", "value", name),
+                    Tapestry.format("SpecificationParser.no-attribute-and-body", "value", name),
                     getResourceLocation());
 
             _value = text.trim();
@@ -555,7 +555,7 @@ public class SpecificationParser
         {
             if (_value == null)
                 throw new DocumentParseException(
-                    Tapestry.getString(
+                    Tapestry.format(
                         "SpecificationParser.required-extended-attribute",
                         name,
                         "value"),
@@ -671,7 +671,7 @@ public class SpecificationParser
 
             if (url == null)
                 throw new DocumentParseException(
-                    Tapestry.getString("AbstractDocumentParser.missing-resource", location),
+                    Tapestry.format("AbstractDocumentParser.missing-resource", location),
                     location);
 
             InputSource source = new InputSource(url.toExternalForm());
@@ -696,7 +696,7 @@ public class SpecificationParser
         catch (Exception ex)
         {
             throw new DocumentParseException(
-                Tapestry.getString(
+                Tapestry.format(
                     "SpecificationParser.error-reading-resource",
                     location,
                     ex.getMessage()),

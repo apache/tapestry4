@@ -56,9 +56,9 @@
 package org.apache.tapestry;
 
 /**
- * A set of localized strings.  This is somewhat like
+ * A set of localized message strings.  This is somewhat like
  * a {@link java.util.ResourceBundle}, but with more
- * flexibility about where the strings come from.  In addition,
+ * flexibility about where the messages come from.  In addition,
  * it includes methods similar to {@link java.text.MessageFormat}
  * for formatting the strings.
  *
@@ -71,7 +71,7 @@ package org.apache.tapestry;
  *
  */
 
-public interface IStrings
+public interface IMessages
 {
     /**
      * Searches for a localized string with the given key.
@@ -81,7 +81,7 @@ public interface IStrings
      * 
      */
 
-    public String getString(String key);
+    public String getMessage(String key);
 
     /**
      * Searches for a localized string with the given key.
@@ -92,7 +92,7 @@ public interface IStrings
      *
      */
 
-    public String getString(String key, String defaultValue);
+    public String getMessage(String key, String defaultValue);
 
     /**
      * Formats a string, using

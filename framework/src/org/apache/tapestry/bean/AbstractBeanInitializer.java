@@ -95,7 +95,7 @@ abstract public class AbstractBeanInitializer extends BaseLocatable implements I
         catch (ApplicationRuntimeException ex)
         {
             String message =
-                Tapestry.getString(
+                Tapestry.format(
                     "AbstractBeanInitializer.unable-to-set-property",
                     _propertyName,
                     bean,

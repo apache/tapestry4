@@ -179,7 +179,7 @@ public class ExternalCallback implements ICallback
         catch (ClassCastException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("ExternalCallback.page-not-compatible", _pageName),
+                Tapestry.format("ExternalCallback.page-not-compatible", _pageName),
                 ex);
         }
     }

@@ -146,7 +146,7 @@ public class DefaultResourceResolver implements IResourceResolver
         catch (Throwable t)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("ResourceResolver.unable-to-load-class", name, _loader, t.getMessage()),
+                Tapestry.format("ResourceResolver.unable-to-load-class", name, _loader, t.getMessage()),
                 t);
         }
     }

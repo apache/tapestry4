@@ -59,7 +59,8 @@ import java.util.EventListener;
 
 /**
  *  An object that listens to page events.  The {@link org.apache.tapestry.IPage page} generates
- *  events before and after rendering a response.
+ *  events before and after rendering a response.  These events also occur before and
+ *  after a form rewinds.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -83,6 +84,8 @@ public interface PageRenderListener extends EventListener
      *  Invoked after a successful render of the page.
      *  Allows objects to release any resources they needed during the
      *  the render.
+     * 
+     *  @see org.apache.tapestry.AbstractComponent#pageEndRender(PageEvent)
      *
      **/
 

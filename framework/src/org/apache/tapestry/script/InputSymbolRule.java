@@ -109,7 +109,7 @@ class InputSymbolRule extends BaseRule
         catch (Exception ex)
         {
             throw new DocumentParseException(
-                Tapestry.getString("ScriptParser.unable-to-resolve-class", className),
+                Tapestry.format("ScriptParser.unable-to-resolve-class", className),
                 parser.getDocumentLocation(),
                 parser.getLocation(),
                 ex);

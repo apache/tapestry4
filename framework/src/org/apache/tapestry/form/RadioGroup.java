@@ -184,7 +184,7 @@ public abstract class RadioGroup extends AbstractFormComponent
         IForm form = getForm(cycle);
 
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-            throw new ApplicationRuntimeException(Tapestry.getString("RadioGroup.may-not-nest"), this);
+            throw new ApplicationRuntimeException(Tapestry.getMessage("RadioGroup.may-not-nest"), this);
 
         // It isn't enough to know whether the cycle in general is rewinding, need to know
         // specifically if the form which contains this component is rewinding.

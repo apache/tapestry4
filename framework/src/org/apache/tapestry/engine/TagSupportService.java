@@ -95,7 +95,7 @@ public class TagSupportService implements IEngineService
 	
     public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
-        throw new ApplicationRuntimeException(Tapestry.getString("TagSupportService.service-only"));
+        throw new ApplicationRuntimeException(Tapestry.getMessage("TagSupportService.service-only"));
     }
 
     public void service(
@@ -119,7 +119,7 @@ public class TagSupportService implements IEngineService
         catch (ClassCastException ex)
         {
             throw new ServletException(
-                Tapestry.getString(
+                Tapestry.format(
                     "TagSupportService.attribute-not-array",
                     Tapestry.TAG_SUPPORT_PARAMETERS_ATTRIBUTE,
                     Tapestry.getClassName(raw.getClass())));
@@ -147,7 +147,7 @@ public class TagSupportService implements IEngineService
 
         if (result == null)
             throw new ServletException(
-                Tapestry.getString("TagSupportService.null-attribute", name));
+                Tapestry.format("TagSupportService.null-attribute", name));
 
         try
         {
@@ -156,7 +156,7 @@ public class TagSupportService implements IEngineService
         catch (ClassCastException ex)
         {
             throw new ServletException(
-                Tapestry.getString(
+                Tapestry.format(
                     "TagSupportService.attribute-not-string",
                     name,
                     Tapestry.getClassName(result.getClass())));

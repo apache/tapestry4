@@ -82,7 +82,7 @@ public class RestartService extends AbstractService
     {
         if (Tapestry.size(parameters) != 0)
             throw new IllegalArgumentException(
-                Tapestry.getString("service-no-parameters", Tapestry.RESTART_SERVICE));
+                Tapestry.format("service-no-parameters", Tapestry.RESTART_SERVICE));
 
         return constructLink(cycle, Tapestry.RESTART_SERVICE, null, null, true);
     }

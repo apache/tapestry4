@@ -63,7 +63,7 @@ import java.util.Map;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IStrings;
+import org.apache.tapestry.IMessages;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.INamespace;
@@ -280,7 +280,7 @@ public class MockPage extends BaseLocatable implements IPage
 
     public String getString(String key)
     {
-        return _engine.getComponentStringsSource().getStrings(this).getString(key);
+        return _engine.getComponentMessagesSource().getMessages(this).getMessage(key);
     }
 
     public void render(IMarkupWriter writer, IRequestCycle cycle)
@@ -344,7 +344,7 @@ public class MockPage extends BaseLocatable implements IPage
         return null;
     }
 
-    public IStrings getStrings()
+    public IMessages getMessages()
     {
         return null;
     }
@@ -352,13 +352,18 @@ public class MockPage extends BaseLocatable implements IPage
     public void addPageDetachListener(PageDetachListener listener)
     {
     }
-    
-	public void addPageValidateListener(PageValidateListener listener)
-	{
-	}
 
-	public void removePageValidateListener(PageValidateListener listener)
-	{
-	}
+    public void addPageValidateListener(PageValidateListener listener)
+    {
+    }
+
+    public void removePageValidateListener(PageValidateListener listener)
+    {
+    }
+
+    public String getMessage(String key)
+    {
+        return getString(key);
+    }
 
 }

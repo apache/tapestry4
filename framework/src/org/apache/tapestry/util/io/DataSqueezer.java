@@ -164,13 +164,13 @@ public class DataSqueezer
         int offset;
 
         if (prefixLength < 1)
-            throw new IllegalArgumentException(Tapestry.getString("DataSqueezer.short-prefix"));
+            throw new IllegalArgumentException(Tapestry.getMessage("DataSqueezer.short-prefix"));
 
         if (dataClass == null)
-            throw new IllegalArgumentException(Tapestry.getString("DataSqueezer.null-class"));
+            throw new IllegalArgumentException(Tapestry.getMessage("DataSqueezer.null-class"));
 
         if (adaptor == null)
-            throw new IllegalArgumentException(Tapestry.getString("DataSqueezer.null-adaptor"));
+            throw new IllegalArgumentException(Tapestry.getMessage("DataSqueezer.null-adaptor"));
 
         for (int i = 0; i < prefixLength; i++)
         {
@@ -178,13 +178,13 @@ public class DataSqueezer
 
             if (ch < '!' | ch > 'z')
                 throw new IllegalArgumentException(
-                    Tapestry.getString("DataSqueezer.prefix-out-of-range"));
+                    Tapestry.getMessage("DataSqueezer.prefix-out-of-range"));
 
             offset = ch - FIRST_ADAPTOR_OFFSET;
 
             if (_adaptorByPrefix[offset] != null)
                 throw new IllegalArgumentException(
-                    Tapestry.getString(
+                    Tapestry.format(
                         "DataSqueezer.adaptor-prefix-taken",
                         prefix.substring(i, i)));
 

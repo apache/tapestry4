@@ -113,14 +113,14 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
     public int getInt()
     {
         throw new BindingException(
-            Tapestry.getString("ListenerBinding.invalid-access", "getInt()"),
+            Tapestry.format("ListenerBinding.invalid-access", "getInt()"),
             this);
     }
 
     public double getDouble()
     {
         throw new BindingException(
-            Tapestry.getString("ListenerBinding.invalid-access", "getDouble()"),
+            Tapestry.format("ListenerBinding.invalid-access", "getDouble()"),
             this);
 
     }
@@ -189,7 +189,7 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
         catch (BSFException ex)
         {
             String message =
-                Tapestry.getString("ListenerBinding.bsf-exception", location, ex.getMessage());
+                Tapestry.format("ListenerBinding.bsf-exception", location, ex.getMessage());
 
             throw new ApplicationRuntimeException(message, _component, getLocation(), ex);
         }
@@ -222,7 +222,7 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
         }
         catch (BSFException ex)
         {
-            LOG.warn(Tapestry.getString("ListenerBinding.unable-to-undeclare-bean", ex));
+            LOG.warn(Tapestry.format("ListenerBinding.unable-to-undeclare-bean", ex));
         }
     }
 

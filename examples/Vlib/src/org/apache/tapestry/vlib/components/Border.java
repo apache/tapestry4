@@ -256,7 +256,7 @@ public abstract class Border extends BaseComponent
 
         IMessageProperty home = (IMessageProperty) cycle.getPage("Home");
 
-        home.setMessage(getString("goodbye"));
+        home.setMessage(getMessage("goodbye"));
 
         cycle.activate(home);
     }

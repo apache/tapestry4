@@ -120,7 +120,7 @@ public abstract class Rollover extends AbstractComponent
         Body body = Body.get(cycle);
         if (body == null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("Rollover.must-be-contained-by-body"),
+                Tapestry.getMessage("Rollover.must-be-contained-by-body"),
                 this);
 
         ILinkComponent serviceLink =
@@ -128,7 +128,7 @@ public abstract class Rollover extends AbstractComponent
 
         if (serviceLink == null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("Rollover.must-be-contained-by-link"),
+                Tapestry.getMessage("Rollover.must-be-contained-by-link"),
                 this);
 
         boolean linkDisabled = serviceLink.isDisabled();

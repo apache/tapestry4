@@ -137,14 +137,14 @@ public abstract class GiveAwayBooks extends Protected implements PageRenderListe
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure(getString("update-failure"), ex, i++);
+                vengine.rmiFailure(getMessage("update-failure"), ex, i++);
             }
         }
 
         MyLibrary myLibrary = (MyLibrary) cycle.getPage("MyLibrary");
 
         myLibrary.setMessage(
-            formatString("transfered-books", Integer.toString(count), target.getNaturalName()));
+            format("transfered-books", Integer.toString(count), target.getNaturalName()));
 
         myLibrary.activate(cycle);
     }
@@ -170,7 +170,7 @@ public abstract class GiveAwayBooks extends Protected implements PageRenderListe
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure(getString("read-users-failure"), ex, i++);
+                vengine.rmiFailure(getMessage("read-users-failure"), ex, i++);
             }
         }
 
@@ -234,7 +234,7 @@ public abstract class GiveAwayBooks extends Protected implements PageRenderListe
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure(getString("read-books-failure"), ex, i++);
+                vengine.rmiFailure(getMessage("read-books-failure"), ex, i++);
             }
         }
 

@@ -67,7 +67,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IStrings;
+import org.apache.tapestry.IMessages;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.MultiKey;
@@ -82,9 +82,9 @@ import org.apache.tapestry.util.MultiKey;
  *
  **/
 
-public class DefaultStringsSource implements IComponentStringsSource
+public class DefaultComponentMessagesSource implements IComponentMessagesSource
 {
-    private static final Log LOG = LogFactory.getLog(DefaultStringsSource.class);
+    private static final Log LOG = LogFactory.getLog(DefaultComponentMessagesSource.class);
 
     private Properties _emptyProperties = new Properties();
 
@@ -96,9 +96,6 @@ public class DefaultStringsSource implements IComponentStringsSource
 
     private Map _cache = new HashMap();
 
-    public DefaultStringsSource()
-    {
-    }
 
     /**
      *  Returns an instance of {@link Properties} containing
@@ -112,7 +109,7 @@ public class DefaultStringsSource implements IComponentStringsSource
     {
         if (component == null)
             throw new IllegalArgumentException(
-                Tapestry.getString("invalid-null-parameter", "component"));
+                Tapestry.format("invalid-null-parameter", "component"));
 
         IResourceLocation specificationLocation =
             component.getSpecification().getSpecificationLocation();
@@ -263,7 +260,7 @@ public class DefaultStringsSource implements IComponentStringsSource
         catch (IOException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("ComponentPropertiesStore.unable-to-read-input", propertiesURL),
+                Tapestry.format("ComponentPropertiesStore.unable-to-read-input", propertiesURL),
                 ex);
         }
 
@@ -280,9 +277,9 @@ public class DefaultStringsSource implements IComponentStringsSource
         _cache.clear();
     }
 
-    public IStrings getStrings(IComponent component)
+    public IMessages getMessages(IComponent component)
     {
-        return new ComponentStrings(getLocalizedProperties(component));
+        return new ComponentMessages(getLocalizedProperties(component));
     }
 
 }

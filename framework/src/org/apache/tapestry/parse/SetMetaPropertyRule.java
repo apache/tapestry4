@@ -94,7 +94,7 @@ public class SetMetaPropertyRule extends AbstractSpecificationRule
         if (_value != null)
         {
             throw new DocumentParseException(
-                Tapestry.getString("SpecificationParser.no-attribute-and-body", "value", name),
+                Tapestry.format("SpecificationParser.no-attribute-and-body", "value", name),
                 getResourceLocation());
         }
 
@@ -105,7 +105,7 @@ public class SetMetaPropertyRule extends AbstractSpecificationRule
     {
         if (_value == null)
             throw new DocumentParseException(
-                Tapestry.getString(
+                Tapestry.format(
                     "SpecificationParser.required-extended-attribute",
                     name,
                     "value"),

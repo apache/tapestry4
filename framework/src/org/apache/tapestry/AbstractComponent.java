@@ -238,7 +238,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
      * 
      **/
 
-    private IStrings _strings;
+    private IMessages _strings;
 
     public void addAsset(String name, IAsset asset)
     {
@@ -566,7 +566,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
 
         if (result == null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("no-such-component", this, id),
+                Tapestry.format("no-such-component", this, id),
                 this);
 
         return result;
@@ -581,7 +581,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     {
         if (_container != null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("AbstractComponent.attempt-to-change-container"));
+                Tapestry.getMessage("AbstractComponent.attempt-to-change-container"));
 
         _container = value;
     }
@@ -611,7 +611,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     {
         if (_id != null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("AbstractComponent.attempt-to-change-component-id"));
+                Tapestry.getMessage("AbstractComponent.attempt-to-change-component-id"));
 
         _id = value;
     }
@@ -622,7 +622,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
 
         if (_container == null)
             throw new NullPointerException(
-                Tapestry.getString("AbstractComponent.null-container", this));
+                Tapestry.format("AbstractComponent.null-container", this));
 
         containerIdPath = _container.getIdPath();
 
@@ -643,7 +643,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     {
         if (_page != null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("AbstractComponent.attempt-to-change-page"));
+                Tapestry.getMessage("AbstractComponent.attempt-to-change-page"));
 
         _page = value;
     }
@@ -657,7 +657,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     {
         if (_specification != null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("AbstractComponent.attempt-to-change-spec"));
+                Tapestry.getMessage("AbstractComponent.attempt-to-change-spec"));
 
         _specification = value;
     }
@@ -892,8 +892,8 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
             prepareForRender(cycle);
 
             Tapestry.checkMethodInvocation(PREPAREFORRENDER_METHOD_ID, "prepareForRender()", this);
-      
-      		renderComponent(writer, cycle);
+
+            renderComponent(writer, cycle);
         }
         finally
         {
@@ -921,8 +921,8 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
 
     protected void prepareForRender(IRequestCycle cycle)
     {
-    	Tapestry.addMethodInvocation(PREPAREFORRENDER_METHOD_ID);
-    	
+        Tapestry.addMethodInvocation(PREPAREFORRENDER_METHOD_ID);
+
         if (_parameterManager == null)
         {
             // Pages inherit from this class too, but pages (by definition)
@@ -965,84 +965,148 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
 
     protected void cleanupAfterRender(IRequestCycle cycle)
     {
-    	Tapestry.addMethodInvocation(CLEANUPAFTERRENDER_METHOD_ID);
-    	
+        Tapestry.addMethodInvocation(CLEANUPAFTERRENDER_METHOD_ID);
+
         if (_parameterManager != null)
             _parameterManager.resetParameters(cycle);
     }
 
     /** @since 3.0 **/
 
-    public IStrings getStrings()
+    public IMessages getMessages()
     {
         if (_strings == null)
-            _strings = getPage().getEngine().getComponentStringsSource().getStrings(this);
+            _strings = getPage().getEngine().getComponentMessagesSource().getMessages(this);
 
         return _strings;
     }
 
     /**
-     *  Obtains the {@link IComponentStrings} for this component
+     *  Obtains the {@link IMessages} for this component
      *  (if necessary), and gets the string from it.
      * 
      **/
 
     public String getString(String key)
     {
-        return getStrings().getString(key);
+        return getMessages().getMessage(key);
+    }
+
+    public String getMessage(String key)
+    {
+        // Invoke the deprecated implementation (for code coverage reasons).
+        // In 3.1, remove getString() and move its implementation
+        // here.
+
+        return getString(key);
     }
 
     /**
-     *  Formats a string, using
-     *  {@link MessageFormat#format(java.lang.String, java.lang.Object[])}.
+     *  Formats a message string, using
+     *  {@link IMessages#format(java.lang.String, java.lang.Object[])}.
      * 
      *  @param key the key used to obtain a localized pattern using
      *  {@link #getString(String)}
      *  @param arguments passed to the formatter
      * 
      *  @since 2.2
-     * 
+     *  @deprecated To be removed in 3.1.  Use {@link #format(String, Object[])} instead.
      **/
 
     public String formatString(String key, Object[] arguments)
     {
-        return getStrings().format(key, arguments);
+        return getMessages().format(key, arguments);
     }
 
     /**
-     *  Convienience method for {@link #formatString(String, Object[])}
+     * Formats a localized message string, using
+     * {@link IMessages#format(java.lang.String, java.lang.Object[])}.
+     *
+     * @param key the key used to obtain a localized pattern using
+     * {@link #getString(String)}
+     * @param arguments passed to the formatter
+     * 
+     * @since 3.0
+     */
+
+    public String format(String key, Object[] arguments)
+    {
+        // SOP: New name invokes deprecated method (consistency and 
+        // code coverage); in 3.1 we move the implementation here.
+
+        return formatString(key, arguments);
+    }
+
+    /**
+     *  Convienience method for invoking {@link IMessages#format(String, Object[])}
      * 
      *  @since 2.2
+     *  @deprecated To be removed in 3.1.  Use {@link #format(String, Object) instead.
      * 
      **/
 
     public String formatString(String key, Object argument)
     {
-        return getStrings().format(key, argument);
+        return getMessages().format(key, argument);
     }
 
     /**
-     *  Convienience method for {@link #formatString(String, Object[])}
+     * Convienience method for invoking {@link IMessages#format(String, Object)}
+     * 
+     * @since 3.0
+     * 
+     */
+
+    public String format(String key, Object argument)
+    {
+        return formatString(key, argument);
+    }
+
+    /**
+     *  Convienience method for invoking {@link IMessages#format(String, Object, Object)}.
      * 
      *  @since 2.2
-     * 
+     *  @deprecated To be removed in 3.1.  Use {@link #format(String, Object, Object)} instead.
      **/
 
     public String formatString(String key, Object argument1, Object argument2)
     {
-        return getStrings().format(key, argument1, argument2);
+        return getMessages().format(key, argument1, argument2);
     }
 
     /**
-     *  Convienience method for {@link #formatString(String, Object[])}
+     * Convienience method for invoking {@link IMessages#format(String, Object, Object)}.
      * 
-     *  @since 2.2
+     * @since 3.0
      * 
      **/
 
+    public String format(String key, Object argument1, Object argument2)
+    {
+        return formatString(key, argument1, argument2);
+    }
+
+    /**
+     * Convienience method for {@link IMessages#format(String, Object, Object, Object)}.
+     * 
+     * @since 2.2
+     * @deprecated To be removed in 3.1.  Use {@link #format(String, Object, Object, Object) instead.
+     */
+
     public String formatString(String key, Object argument1, Object argument2, Object argument3)
     {
-        return getStrings().format(key, new Object[] { argument1, argument2, argument3 });
+        return getMessages().format(key, argument1, argument2, argument3);
+    }
+
+    /**
+     * Convienience method for {@link IMessages#format(String, Object, Object, Object)}.
+     * 
+     * @since 3.0
+     */
+
+    public String format(String key, Object argument1, Object argument2, Object argument3)
+    {
+        return formatString(key, argument1, argument2, argument3);
     }
 
     public INamespace getNamespace()

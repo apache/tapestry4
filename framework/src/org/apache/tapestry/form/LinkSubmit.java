@@ -105,7 +105,7 @@ public abstract class LinkSubmit extends AbstractFormComponent {
         IMarkupWriter wrappedWriter;
 
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-            throw new ApplicationRuntimeException(Tapestry.getString("LinkSubmit.may-not-nest"), this);
+            throw new ApplicationRuntimeException(Tapestry.getMessage("LinkSubmit.may-not-nest"), this);
 
         cycle.setAttribute(ATTRIBUTE_NAME, this);
 

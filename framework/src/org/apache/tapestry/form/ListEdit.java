@@ -171,7 +171,7 @@ public abstract class ListEdit extends AbstractFormComponent
         catch (IOException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("ListEdit.unable-to-convert-value", value),
+                Tapestry.format("ListEdit.unable-to-convert-value", value),
                 this,
                 ex);
         }
@@ -189,7 +189,7 @@ public abstract class ListEdit extends AbstractFormComponent
         catch (IOException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("ListEdit.unable-to-convert-string", value),
+                Tapestry.format("ListEdit.unable-to-convert-string", value),
                 this,
                 ex);
         }

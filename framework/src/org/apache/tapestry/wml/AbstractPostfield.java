@@ -91,7 +91,7 @@ public abstract class AbstractPostfield extends AbstractFormComponent
         IForm result = Go.get(cycle);
 
         if (result == null)
-            throw new ApplicationRuntimeException(Tapestry.getString("Postfield.must-be-contained-by-go"), this);
+            throw new ApplicationRuntimeException(Tapestry.getMessage("Postfield.must-be-contained-by-go"), this);
 
         setForm(result);
 

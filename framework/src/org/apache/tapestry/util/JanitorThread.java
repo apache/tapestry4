@@ -160,10 +160,10 @@ public class JanitorThread extends Thread
     public void setInterval(long value)
     {
         if (lockInterval)
-            throw new IllegalStateException(Tapestry.getString("JanitorThread.interval-locked"));
+            throw new IllegalStateException(Tapestry.getMessage("JanitorThread.interval-locked"));
 
         if (value < 1)
-            throw new IllegalArgumentException(Tapestry.getString("JanitorThread.illegal-interval"));
+            throw new IllegalArgumentException(Tapestry.getMessage("JanitorThread.illegal-interval"));
 
         interval = value;
 
