@@ -63,10 +63,17 @@ import java.util.EventListener;
  *  require some kind of cleanup (typically, because they
  *  are references to EJBs, or something similar).
  *
+ *  <p>This mechanism has always been of limited use and stability.  It
+ *  has been deprecated.  As of release 2.4, each persistent page property
+ *  is stored as an individual {@link javax.servlet.http.HttpSession}
+ *  attribute; the {@link javax.servlet.http.HttpSessionBindingListener}
+ *  interface can more manageable accomplish the same thing.
+ * 
  *  @author Howard Lewis Ship
  *  @version $Id$
  *  @since 1.0.5
- *
+ *  @deprecated With no replacement.
+ * 
  **/
 
 public interface PageCleanupListener extends EventListener

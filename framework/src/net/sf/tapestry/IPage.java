@@ -313,15 +313,10 @@ public interface IPage extends IComponent
     public void setRequestCycle(IRequestCycle cycle);
 
     /**
-     *  Invoked when the application terminates (that is, when the 
-     *  {@link javax.servlet.http.HttpSession}
-     *  containing the {@link IEngine} is invalidated or times out).  This gives
-     *  the page a chance to release any additional resources it may have ...
-     *  in particular,
-     *  it allows a page to remove stateful session EJBs it may be using.
      *
-     *  <p>Invokes {@link PageCleanupListener#pageCleanup(PageEvent)} on any listeners.
-     *
+     *  @deprecated With no replacement.
+     *  @see PageCleanupListener
+     * 
      **/
 
     public void cleanupPage();
@@ -377,8 +372,11 @@ public interface IPage extends IComponent
     public void removePageDetachListener(PageDetachListener listener);
 
     /**
+     *  
      *  @since 1.0.5
-     *
+     *  @deprecated With no replacement.
+     *  @see PageCleanupListener
+     * 
      **/
 
     public void addPageCleanupListener(PageCleanupListener listener);
@@ -386,7 +384,8 @@ public interface IPage extends IComponent
     /**
      * 
      *  @since 2.1
-     * 
+     *  @deprecated With no replacement.
+     *  @see PageCleanupListener
      **/
 
     public void removePageCleanupListener(PageCleanupListener listener);

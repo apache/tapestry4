@@ -174,8 +174,7 @@ import org.apache.commons.logging.LogFactory;
  * 
  **/
 
-public abstract class AbstractEngine
-    implements IEngine, IEngineServiceView, Externalizable, HttpSessionBindingListener
+public abstract class AbstractEngine implements IEngine, IEngineServiceView, Externalizable
 {
     private static final Log LOG = LogFactory.getLog(AbstractEngine.class);
 
@@ -192,17 +191,6 @@ public abstract class AbstractEngine
     private transient String _sessionId;
     private transient boolean _stateful;
     private transient ListenerMap _listeners;
-
-    /**
-     *  Set to true just before the engine is "refreshed" into the 
-     *  HttpSesson, which causes it to ignore {@link #valueUnbound(HttpSessionBindingEvent)}
-     *  events.
-     * 
-     *  @since 2.2
-     * 
-     **/
-
-    private transient boolean _refreshing;
 
     /** @since 2.2 **/
 
@@ -1412,115 +1400,6 @@ public abstract class AbstractEngine
     }
 
     /**
-     *  Invoked when the application object is stored into
-     *  the {@link HttpSession}.  This implementation does nothing.
-     *
-     **/
-
-    public void valueBound(HttpSessionBindingEvent event)
-    {
-    }
-
-    /**
-     *  Invoked when the application object is removed from the {@link HttpSession}.
-     *  This occurs when the session times out or is explicitly invalidated
-     *  (for example, by the reset or restart services).  Invokes
-     *  {@link #cleanupEngine()}.
-     * 
-     *  <p>
-     *  If the refreshing flag is set to true, then the notification is ignored.
-     *  (Some servlet containers invoke valueUnbound(), then valueBound()
-     *  when setAttribute() is invoked for an existing attribute.
-     *
-     **/
-
-    public void valueUnbound(HttpSessionBindingEvent event)
-    {
-        if (_refreshing)
-            return;
-
-        // Note: there's a possible latent bug here.  If cleaning up the
-        // application requires loading any resources (specifically
-        // component specifications) and we need a ResourceResolver and
-        // the application instance is newly deserialized (i.e., was deserialized
-        // so that it could unbound from the HttpSession) ... then 
-        // we may trip over a NullPointerException because the resolver
-        // will be null.  Don't have a great solution for this!
-
-        cleanupEngine();
-
-    }
-
-    /**
-     *  Invoked when the engine is removed from the {@link HttpSession} i.e.,
-     *  because the sesssion timed out or was explicitly invalidated.
-     *
-     *  <p>Locates all active pages (pages which have been activated) and
-     *  invokes {@link IPage#cleanupPage()} on them.  This gives 
-     *  pages a chance to release any long held resources.  This primarily
-     *  exists so that pages that hold references to stateful session EJBs
-     *  can remove those EJBs in a timely manner.
-     *
-     *  <p>Subclasses may overide this method to clean up any engine-held
-     *  resources, but should invoke this implementation <em>first</em>.
-     **/
-
-    protected void cleanupEngine()
-    {
-        if (LOG.isInfoEnabled())
-            LOG.info(this +" cleanupEngine()");
-
-        Collection activePageNames = getActivePageNames();
-        if (activePageNames.isEmpty())
-            return;
-
-        IPageSource source = getPageSource();
-
-        // A bit of a hack, used only when cleaning up the engine and any pages
-        // as the session is invalidated.  We don't really have the stuff we
-        // need to create a context.
-
-        RequestContext fakeContext = null;
-
-        try
-        {
-            fakeContext = new RequestContext(null, null, null);
-        }
-        catch (IOException ex)
-        {
-            reportException(
-                Tapestry.getString("AbstractEngine.unable-to-create-cleanup-context"),
-                ex);
-            return;
-        }
-
-        IRequestCycle fakeCycle = new RequestCycle(this, fakeContext, new NullMonitor());
-
-        Iterator i = activePageNames.iterator();
-
-        while (i.hasNext())
-        {
-            String name = (String) i.next();
-
-            try
-            {
-                IPage page = source.getPage(fakeCycle, name, null);
-                IPageRecorder recorder = getPageRecorder(name, fakeCycle);
-
-                recorder.rollback(page);
-
-                page.cleanupPage();
-            }
-            catch (Throwable t)
-            {
-                reportException(
-                    Tapestry.getString("AbstractEngine.unable-to-cleanup-page", name),
-                    t);
-            }
-        }
-    }
-
-    /**
      *  Returns true if the reset service is curently enabled.
      *
      **/
@@ -1551,7 +1430,12 @@ public abstract class AbstractEngine
 
     /**
      *  Gets the visit object, invoking {@link #createVisit(IRequestCycle)} to create
-     *  it lazily if needed.
+     *  it lazily if needed.  If cycle is null, the visit will not be lazily created.
+     * 
+     *  <p>
+     *  After creating the visit, but before returning,
+     *  the {@link HttpSession} will be created, and
+     *  {@link #setStateful()} will be invoked.
      *
      *
      **/
@@ -1560,11 +1444,14 @@ public abstract class AbstractEngine
     {
         if (_visit == null && cycle != null)
         {
-            // Force the creation of the HttpSession
+            _visit = createVisit(cycle);
+
+            // Now that a visit object exists, we need to force the creation
+            // of a HttpSession.
 
             cycle.getRequestContext().createSession();
 
-            _visit = createVisit(cycle);
+            setStateful();
         }
 
         return _visit;
@@ -1618,13 +1505,6 @@ public abstract class AbstractEngine
                 Tapestry.getString("AbstractEngine.unable-to-instantiate-visit", visitClassName),
                 t);
         }
-
-        // Now that a visit object exists, we need to force the creation
-        // of a HttpSession.
-
-        cycle.getRequestContext().createSession();
-
-        setStateful();
 
         return result;
     }
@@ -1694,7 +1574,7 @@ public abstract class AbstractEngine
         {
             if (Tapestry.isNull(location))
             {
-                _location = "/";
+                _location = "";
                 _internal = true;
 
                 return;
@@ -1992,18 +1872,29 @@ public abstract class AbstractEngine
         return context.getParameter(Tapestry.SERVICE_QUERY_PARAMETER_NAME);
     }
 
-    /** @since 2.2 **/
+    /** 
+     *  Returns false.
+     *  
+     *  @deprecated With no replacement.
+     *  @since 2.2 
+     * 
+     **/
 
     public boolean isRefreshing()
     {
-        return _refreshing;
+        return false;
     }
 
-    /** @since 2.2 **/
+    /** 
+     *  Does nothing.
+     * 
+     *  @deprecated With no replacement.
+     *  @since 2.2 
+     * 
+     **/
 
     public void setRefreshing(boolean refreshing)
     {
-        _refreshing = refreshing;
     }
 
     /** @since 2.3 **/
