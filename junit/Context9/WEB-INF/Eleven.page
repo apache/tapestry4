@@ -14,4 +14,8 @@
   <property-specification name="objectValue" type="java.lang.Object"/> 
   <property-specification name="intValue" type="int"/> 
 
+  <property-specification name="intArray" type="int[]"/> 
+  <property-specification name="intArrayOfArray" type="int[][]"/> 
+  <property-specification name="localeArrayOfArray" type="java.util.Locale[][]"/> 
+
 </page-specification>
