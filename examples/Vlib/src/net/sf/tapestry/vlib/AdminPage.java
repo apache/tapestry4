@@ -62,7 +62,7 @@ public class AdminPage extends Protected
 
     public void validate(IRequestCycle cycle) throws RequestCycleException
     {
-        Visit visit = (Visit) engine.getVisit();
+        Visit visit = (Visit) getEngine().getVisit();
 
         if (visit == null || !visit.isUserLoggedIn())
         {

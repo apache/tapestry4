@@ -49,7 +49,7 @@ public class Logout extends BasePage
 
     public void beginResponse(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) engine;
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
         vengine.logout();
     }

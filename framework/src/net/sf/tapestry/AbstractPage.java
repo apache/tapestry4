@@ -41,11 +41,12 @@ import net.sf.tapestry.event.PageRenderListener;
 import net.sf.tapestry.util.StringSplitter;
 
 /**
- * Abstract base class implementing the {@link IPage} interface.
+ *  Abstract base class implementing the {@link IPage} interface.
  *
- * @version $Id$
- * @author Howard Lewis Ship, David Solis
- * @since 0.2.9
+ *  @version $Id$
+ *  @author Howard Lewis Ship, David Solis
+ *  @since 0.2.9
+ * 
  **/
 
 public abstract class AbstractPage extends BaseComponent implements IPage
@@ -59,11 +60,13 @@ public abstract class AbstractPage extends BaseComponent implements IPage
      *
      **/
 
-    private ChangeObserver changeObserver;
+    private ChangeObserver _changeObserver;
 
     /**
      *  The {@link IEngine} the page is currently attached to.  This may
      *  be read, but not changed, but subclasses.
+     * 
+     *  @deprecated this will be removed after 2.1, classes should use {@link #getEngine()}
      *
      **/
 
@@ -76,12 +79,14 @@ public abstract class AbstractPage extends BaseComponent implements IPage
      *
      **/
 
-    private Object visit;
+    private Object _visit;
 
     /**
      *  The name of this page.  This may be read, but not changed, by
      *  subclasses.
      *
+     *  @deprecated this will be removed after 2.1, classes should use {@link #getName()}
+     * 
      **/
 
     protected String name;
@@ -91,14 +96,14 @@ public abstract class AbstractPage extends BaseComponent implements IPage
      *
      **/
 
-    private IRequestCycle requestCycle;
+    private IRequestCycle _requestCycle;
 
     /**
      *  The locale of the page, initially determined from the {@link IEngine engine}.
      *
      **/
 
-    private Locale locale;
+    private Locale _locale;
 
     /**
      *  A list of listeners for the page.
@@ -108,7 +113,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
      *  @since 1.0.5
      **/
 
-    private EventListenerList listenerList;
+    private EventListenerList _listenerList;
 
     /**
      *  Implemented in subclasses to provide a particular kind of
@@ -136,9 +141,9 @@ public abstract class AbstractPage extends BaseComponent implements IPage
         firePageDetached();
 
         engine = null;
-        visit = null;
-        changeObserver = null;
-        requestCycle = null;
+        _visit = null;
+        _changeObserver = null;
+        _requestCycle = null;
     }
 
     public IEngine getEngine()
@@ -148,7 +153,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     public ChangeObserver getChangeObserver()
     {
-        return changeObserver;
+        return _changeObserver;
     }
 
     /**
@@ -179,15 +184,15 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     public Locale getLocale()
     {
-        return locale;
+        return _locale;
     }
 
     public void setLocale(Locale value)
     {
-        if (locale != null)
+        if (_locale != null)
             throw new ApplicationRuntimeException(Tapestry.getString("AbstractPage.attempt-to-change-locale"));
 
-        locale = value;
+        _locale = value;
     }
 
     public String getName()
@@ -278,7 +283,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     public void setChangeObserver(ChangeObserver value)
     {
-        changeObserver = value;
+        _changeObserver = value;
     }
 
     public void setName(String value)
@@ -311,12 +316,12 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     public IRequestCycle getRequestCycle()
     {
-        return requestCycle;
+        return _requestCycle;
     }
 
     public void setRequestCycle(IRequestCycle value)
     {
-        requestCycle = value;
+        _requestCycle = value;
     }
 
     /**
@@ -340,10 +345,10 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     public Object getVisit()
     {
-        if (visit == null)
-            visit = engine.getVisit(requestCycle);
+        if (_visit == null)
+            _visit = engine.getVisit(_requestCycle);
 
-        return visit;
+        return _visit;
     }
 
     public void addPageDetachListener(PageDetachListener listener)
@@ -353,10 +358,21 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     private void addListener(Class listenerClass, EventListener listener)
     {
-        if (listenerList == null)
-            listenerList = new EventListenerList();
+        if (_listenerList == null)
+            _listenerList = new EventListenerList();
 
-        listenerList.add(listenerClass, listener);
+        _listenerList.add(listenerClass, listener);
+    }
+    
+    /**
+     *  @seince 2.1-beta-2
+     * 
+     **/
+    
+    private void removeListener(Class listenerClass, EventListener listener)
+    {
+        if (_listenerList != null)
+            _listenerList.remove(listenerClass, listener);       
     }
 
     public void addPageRenderListener(PageRenderListener listener)
@@ -376,11 +392,11 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     protected void firePageDetached()
     {
-        if (listenerList == null)
+        if (_listenerList == null)
             return;
 
         PageEvent event = null;
-        Object[] listeners = listenerList.getListenerList();
+        Object[] listeners = _listenerList.getListenerList();
 
         for (int i = 0; i < listeners.length; i += 2)
         {
@@ -389,7 +405,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
                 PageDetachListener l = (PageDetachListener) listeners[i + 1];
 
                 if (event == null)
-                    event = new PageEvent(this, requestCycle);
+                    event = new PageEvent(this, _requestCycle);
 
                 l.pageDetached(event);
             }
@@ -403,11 +419,11 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     protected void firePageBeginRender()
     {
-        if (listenerList == null)
+        if (_listenerList == null)
             return;
 
         PageEvent event = null;
-        Object[] listeners = listenerList.getListenerList();
+        Object[] listeners = _listenerList.getListenerList();
 
         for (int i = 0; i < listeners.length; i += 2)
         {
@@ -416,7 +432,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
                 PageRenderListener l = (PageRenderListener) listeners[i + 1];
 
                 if (event == null)
-                    event = new PageEvent(this, requestCycle);
+                    event = new PageEvent(this, _requestCycle);
 
                 l.pageBeginRender(event);
             }
@@ -430,11 +446,11 @@ public abstract class AbstractPage extends BaseComponent implements IPage
 
     protected void firePageEndRender()
     {
-        if (listenerList == null)
+        if (_listenerList == null)
             return;
 
         PageEvent event = null;
-        Object[] listeners = listenerList.getListenerList();
+        Object[] listeners = _listenerList.getListenerList();
 
         for (int i = 0; i < listeners.length; i += 2)
         {
@@ -443,7 +459,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
                 PageRenderListener l = (PageRenderListener) listeners[i + 1];
 
                 if (event == null)
-                    event = new PageEvent(this, requestCycle);
+                    event = new PageEvent(this, _requestCycle);
 
                 l.pageEndRender(event);
             }
@@ -451,11 +467,11 @@ public abstract class AbstractPage extends BaseComponent implements IPage
     }
     protected void firePageCleanup()
     {
-        if (listenerList == null)
+        if (_listenerList == null)
             return;
 
         PageEvent event = null;
-        Object[] listeners = listenerList.getListenerList();
+        Object[] listeners = _listenerList.getListenerList();
 
         for (int i = 0; i < listeners.length; i += 2)
         {
@@ -470,4 +486,37 @@ public abstract class AbstractPage extends BaseComponent implements IPage
             }
         }
     }
+    
+    /**
+     *  @since 2.1-beta-2
+     * 
+     **/
+    
+    public void removePageCleanupListener(PageCleanupListener listener)
+    {
+        removeListener(PageCleanupListener.class, listener);
+    }
+
+     
+    /**
+     *  @since 2.1-beta-2
+     * 
+     **/
+    
+   public void removePageDetachListener(PageDetachListener listener)
+    {
+        removeListener(PageDetachListener.class, listener);
+    }
+
+    
+    /**
+     *  @since 2.1-beta-2
+     * 
+     **/
+    
+    public void removePageRenderListener(PageRenderListener listener)
+    {
+        removeListener(PageRenderListener.class, listener);
+    }
+
 }

@@ -70,7 +70,7 @@ public class ViewBook extends BasePage implements IExternalPage
 
     public void setup(Integer bookPK, IRequestCycle cycle)
     {
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine) engine;
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
         for (int i = 0; i < 2; i++)
         {
