@@ -52,7 +52,7 @@ import net.sf.tapestry.RequestCycleException;
  * <tr>
  *    <th>Parameter</th>
  *    <th>Type</th>
- *    <th>Read / Write </th>
+ *    <th>Direction</th>
  *    <th>Required</th>
  *    <th>Default</th>
  *    <th>Description</th>
@@ -61,7 +61,7 @@ import net.sf.tapestry.RequestCycleException;
  * <tr>
  *  <td>block</td>
  *  <td>{@link Block}</td>
- *  <td>R</td>
+ *  <td>in</td>
  *  <td>no</td>
  *  <td>&nbsp;</td>
  *  <td>The {@link Block} whose contents are to be rendered.</td>

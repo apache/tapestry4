@@ -46,7 +46,7 @@ import net.sf.tapestry.RequiredParameterException;
  * <tr> 
  *    <td>Parameter</td>
  *    <td>Type</td>
- *	  <td>Read / Write </td>
+ *	  <td>Direction</td>
  *    <td>Required</td> 
  *    <td>Default</td>
  *    <td>Description</td>
@@ -55,7 +55,7 @@ import net.sf.tapestry.RequiredParameterException;
  *  <tr>
  *		<td>label</td>
  *		<td>java.lang.String</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>&nbsp;</td>
  *		<td>The label put on the button (this becomes the HTML value attribute).
@@ -65,7 +65,7 @@ import net.sf.tapestry.RequiredParameterException;
  *  <tr>
  *	  <td>disabled</id>
  *	  <td>boolean</td>
- *    <td>R</td>
+ *    <td>in</td>
  *    <td>no</td>
  *	  <td>false</td>
  *    <td>If set to true, the button will be disabled (will not respond to
@@ -75,7 +75,7 @@ import net.sf.tapestry.RequiredParameterException;
  *  <tr>
  *      <td>selected</td>
  *      <td>java.lang.Object</td>
- *      <td>W</td>
+ *      <td>out</td>
  *      <td>no</td>
  *      <td>&nbsp;</td>
  *      <td>This parameter is bound to a property that is
@@ -86,7 +86,7 @@ import net.sf.tapestry.RequiredParameterException;
  *  <tr>
  *      <td>tag</td>
  *      <td>java.lang.Object</td>
- *      <td>R</td>
+ *      <td>in</td>
  *      <td>no</td>
  *      <td>&nbsp;</td>
  *      <td>Tag used with the selected parameter to indicate which Submit button
@@ -96,7 +96,7 @@ import net.sf.tapestry.RequiredParameterException;
  *  <tr>
  * 		<td>listener</td>
  * 		<td>{@link IActionListener}</td>
- * 		<td>R</td>
+ * 		<td>in</td>
  * 		<td>no</td>
  * 		<td>&nbsp;</td>
  * 		<td>If specified, the listener is notified.  This notification occurs
@@ -108,7 +108,7 @@ import net.sf.tapestry.RequiredParameterException;
  * 
  *	</table>
  *
- * <p>Allows informal parameters, but may not contain a body.
+ *  <p>Allows informal parameters, but may not contain a body.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -117,44 +117,17 @@ import net.sf.tapestry.RequiredParameterException;
 
 public class Submit extends AbstractFormComponent
 {
-    private IBinding labelBinding;
-    private String staticLabelValue;
-
-    private IBinding disabledBinding;
-    private IBinding listenerBinding;
-
+    private String label;
+    private IActionListener listener;
+    private boolean disabled;
+    private Object tag;
     private IBinding selectedBinding;
-    private IBinding tagBinding;
-    private Object staticTagValue;
 
     private String name;
 
     public String getName()
     {
         return name;
-    }
-
-    public IBinding getLabelBinding()
-    {
-        return labelBinding;
-    }
-
-    public void setLabelBinding(IBinding value)
-    {
-        labelBinding = value;
-
-        if (value.isStatic())
-            staticLabelValue = value.getString();
-    }
-
-    public IBinding getDisabledBinding()
-    {
-        return disabledBinding;
-    }
-
-    public void setDisabledBinding(IBinding value)
-    {
-        disabledBinding = value;
     }
 
     public void setSelectedBinding(IBinding value)
@@ -167,35 +140,15 @@ public class Submit extends AbstractFormComponent
         return selectedBinding;
     }
 
-    public void setTagBinding(IBinding value)
-    {
-        tagBinding = value;
-
-        if (value.isStatic())
-            staticTagValue = value.getObject();
-    }
-
-    public IBinding getTagBinding()
-    {
-        return tagBinding;
-    }
-
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
-        String label = null;
-        boolean disabled = false;
-        String value;
-        Object tagValue = staticTagValue;
 
         IForm form = getForm(cycle);
 
         boolean rewinding = form.isRewinding();
 
         name = form.getElementId(this);
-
-        if (disabledBinding != null)
-            disabled = disabledBinding.getBoolean();
 
         if (rewinding)
         {
@@ -209,7 +162,7 @@ public class Submit extends AbstractFormComponent
             // with its name and value (the value serves double duty as both
             // the label on the button, and the parameter value).
 
-            value = cycle.getRequestContext().getParameter(name);
+            String value = cycle.getRequestContext().getParameter(name);
 
             // If the value isn't there, then this button wasn't
             // selected.
@@ -218,43 +171,13 @@ public class Submit extends AbstractFormComponent
                 return;
 
             if (selectedBinding != null)
-            {
-                // OK, now to notify the application code (via the parameters)
-                // that *this* Submit was selected.  We do this by applying
-                // a tag (presumably, specific to the Submit in question)
-                // to the selected binding.
+                selectedBinding.setObject(tag);
 
-                if (tagBinding == null)
-                    throw new RequestCycleException(
-                        "The tag parameter is required if the selected parameter is bound.",
-                        this);
-
-                if (tagValue == null)
-                    tagValue = tagBinding.getObject();
-
-                if (tagValue == null)
-                    throw new RequiredParameterException(this, "tag", tagBinding);
-
-                if (tagValue != null)
-                    selectedBinding.setObject(tagValue);
-            }
-
-            if (listenerBinding != null)
-            {
-                IActionListener listener =
-                    (IActionListener) listenerBinding.getObject("listener", IActionListener.class);
-
-                if (listener != null)
-                    listener.actionTriggered(this, cycle);
-            }
+            if (listener != null)
+                listener.actionTriggered(this, cycle);
 
             return;
         }
-
-        if (staticLabelValue != null)
-            label = staticLabelValue;
-        else if (labelBinding != null)
-            label = labelBinding.getString();
 
         writer.beginEmpty("input");
         writer.attribute("type", "submit");
@@ -271,14 +194,44 @@ public class Submit extends AbstractFormComponent
         writer.closeTag();
     }
 
-    public IBinding getListenerBinding()
+    public String getLabel()
     {
-        return listenerBinding;
+        return label;
     }
 
-    public void setListenerBinding(IBinding listenerBinding)
+    public void setLabel(String label)
     {
-        this.listenerBinding = listenerBinding;
+        this.label = label;
+    }
+
+    public boolean getDisabled()
+    {
+        return disabled;
+    }
+
+    public void setDisabled(boolean disabled)
+    {
+        this.disabled = disabled;
+    }
+
+    public IActionListener getListener()
+    {
+        return listener;
+    }
+
+    public void setListener(IActionListener listener)
+    {
+        this.listener = listener;
+    }
+
+    public Object getTag()
+    {
+        return tag;
+    }
+
+    public void setTag(Object tag)
+    {
+        this.tag = tag;
     }
 
 }

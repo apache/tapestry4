@@ -31,6 +31,7 @@ import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.RequiredParameterException;
+import net.sf.tapestry.Tapestry;
 
 /**
  *  A component which uses either
@@ -41,7 +42,7 @@ import net.sf.tapestry.RequiredParameterException;
  *  an {@link IPropertySelectionModel} to provide the list of possible values.
  *
  *  <p>Often, this is used to select a particular {@link Enum} to assign to a property; the
- * {@link EnumPropertySelectionModel} class simplifies this.
+ *  {@link EnumPropertySelectionModel} class simplifies this.
  *
  *  <p>
  *
@@ -49,7 +50,7 @@ import net.sf.tapestry.RequiredParameterException;
  * <tr> 
  *    <td>Parameter</td>
  *    <td>Type</td>
- *	  <td>Read / Write </td>
+ *	  <td>Direction</td>
  *    <td>Required</td> 
  *    <td>Default</td>
  *    <td>Description</td>
@@ -58,7 +59,7 @@ import net.sf.tapestry.RequiredParameterException;
  * <tr>
  *		<td>value</td>
  *		<td>java.lang.Object</td>
- *		<td>R / W</td>
+ *		<td>in-out</td>
  *		<td>yes</td>
  *		<td>&nbsp;</td>
  *		<td>The property to set.  During rendering, this property is read, and sets
@@ -69,7 +70,7 @@ import net.sf.tapestry.RequiredParameterException;
  * <tr>
  *		<td>renderer</td>
  *		<td>{@link IPropertySelectionRenderer}</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>shared instance of {@link SelectPropertySelectionRenderer}</td>
  *		<td>Defines the object used to render the PropertySelection.
@@ -80,7 +81,7 @@ import net.sf.tapestry.RequiredParameterException;
  *  <tr>
  *		<td>model</td>
  *		<td>{@link IPropertySelectionModel}</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>yes</td>
  *		<td>&nbsp;</td>
  *		<td>The model provides a list of possible labels, and matches those labels
@@ -89,7 +90,7 @@ import net.sf.tapestry.RequiredParameterException;
  *  <tr>
  * 		<td>disabled</td>
  *		<td>boolean</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>false</td>
  *		<td>Controls whether the &lt;select&gt; is active or not. A disabled PropertySelection
@@ -110,12 +111,12 @@ import net.sf.tapestry.RequiredParameterException;
 
 public class PropertySelection extends AbstractFormComponent
 {
-    private IBinding valueBinding;
-    private IBinding modelBinding;
-    private IBinding disabledBinding;
-    private IBinding rendererBinding;
-    private String name;
+    private IPropertySelectionRenderer renderer;
+    private IPropertySelectionModel model;
     private boolean disabled;
+
+    private IBinding valueBinding;
+    private String name;
 
     /**
      *  A shared instance of {@link SelectPropertySelectionRenderer}.
@@ -141,36 +142,6 @@ public class PropertySelection extends AbstractFormComponent
     public void setValueBinding(IBinding value)
     {
         valueBinding = value;
-    }
-
-    public IBinding getModelBinding()
-    {
-        return modelBinding;
-    }
-
-    public void setModelBinding(IBinding value)
-    {
-        modelBinding = value;
-    }
-
-    public IBinding getDisabledBinding()
-    {
-        return disabledBinding;
-    }
-
-    public void setDisabledBinding(IBinding value)
-    {
-        disabledBinding = value;
-    }
-
-    public void setRendererBinding(IBinding value)
-    {
-        rendererBinding = value;
-    }
-
-    public IBinding getRendererBinding()
-    {
-        return rendererBinding;
     }
 
     /**
@@ -202,33 +173,16 @@ public class PropertySelection extends AbstractFormComponent
      *
      **/
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
     {
-        IPropertySelectionRenderer renderer = null;
-        Object newValue;
-        Object currentValue;
-        Object option;
-        String optionValue;
-        int i;
-        boolean selected = false;
-        boolean foundSelected = false;
-        int count;
-        boolean radio = false;
-
         IForm form = getForm(cycle);
+        if (form == null)
+            throw new RequestCycleException(
+                Tapestry.getString("must-be-wrapped-by-form", "PropertySelection"),
+                this);
 
         boolean rewinding = form.isRewinding();
-
-        if (disabledBinding == null)
-            disabled = false;
-        else
-            disabled = disabledBinding.getBoolean();
-
-        IPropertySelectionModel model =
-            (IPropertySelectionModel) modelBinding.getObject("model", IPropertySelectionModel.class);
-
-        if (model == null)
-            throw new RequiredParameterException(this, "model", modelBinding);
 
         name = form.getElementId(this);
 
@@ -239,35 +193,29 @@ public class PropertySelection extends AbstractFormComponent
             if (disabled)
                 return;
 
-            optionValue = cycle.getRequestContext().getParameter(name);
+            String optionValue = cycle.getRequestContext().getParameter(name);
 
-            if (optionValue == null)
-                newValue = null;
-            else
-                newValue = model.translateValue(optionValue);
+            Object newValue =
+                (optionValue == null) ? null : model.translateValue(optionValue);
 
             valueBinding.setObject(newValue);
 
             return;
         }
 
-        if (rendererBinding != null)
-            renderer =
-                (IPropertySelectionRenderer) rendererBinding.getObject(
-                    "renderer",
-                    IPropertySelectionRenderer.class);
+        IPropertySelectionRenderer finalRenderer =
+            (renderer == null) ? DEFAULT_SELECT_RENDERER : renderer;
 
-        if (renderer == null)
-            renderer = DEFAULT_SELECT_RENDERER;
+        finalRenderer.beginRender(this, writer, cycle);
 
-        renderer.beginRender(this, writer, cycle);
+        int count = model.getOptionCount();
+        Object currentValue = valueBinding.getObject();
+        boolean foundSelected = false;
+        boolean selected = false;
 
-        count = model.getOptionCount();
-        currentValue = valueBinding.getObject();
-
-        for (i = 0; i < count; i++)
+        for (int i = 0; i < count; i++)
         {
-            option = model.getOption(i);
+            Object option = model.getOption(i);
 
             if (!foundSelected)
             {
@@ -276,7 +224,7 @@ public class PropertySelection extends AbstractFormComponent
                     foundSelected = true;
             }
 
-            renderer.renderOption(this, writer, cycle, model, option, i, selected);
+            finalRenderer.renderOption(this, writer, cycle, model, option, i, selected);
 
             selected = false;
         }
@@ -284,7 +232,7 @@ public class PropertySelection extends AbstractFormComponent
         // A PropertySelection doesn't allow a body, so no need to worry about
         // wrapped components.
 
-        renderer.endRender(this, writer, cycle);
+        finalRenderer.endRender(this, writer, cycle);
     }
 
     private boolean isEqual(Object left, Object right)
@@ -303,4 +251,30 @@ public class PropertySelection extends AbstractFormComponent
 
         return left.equals(right);
     }
+
+    public void setDisabled(boolean disabled)
+    {
+        this.disabled = disabled;
+    }
+
+    public IPropertySelectionModel getModel()
+    {
+        return model;
+    }
+
+    public void setModel(IPropertySelectionModel model)
+    {
+        this.model = model;
+    }
+
+    public IPropertySelectionRenderer getRenderer()
+    {
+        return renderer;
+    }
+
+    public void setRenderer(IPropertySelectionRenderer renderer)
+    {
+        this.renderer = renderer;
+    }
+
 }

@@ -48,7 +48,7 @@ import net.sf.tapestry.Tapestry;
  * <tr> 
  *    <td>Parameter</td>
  *    <td>Type</td>
- *	  <td>Read / Write </td>
+ *	  <td>Direction</td>
  *    <td>Required</td> 
  *    <td>Default</td>
  *    <td>Description</td>
@@ -57,7 +57,7 @@ import net.sf.tapestry.Tapestry;
  *  <tr>
  *		<td>multiple</td>
  *		<td>boolean</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>false</td>
  *		<td>If true, the component allows multiple selection.</td> </tr>
@@ -65,7 +65,7 @@ import net.sf.tapestry.Tapestry;
  *  <tr>
  * 		<td>disabled</td>
  *		<td>boolean</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>false</td>
  *		<td>Controls whether the select is active or not. 
@@ -84,9 +84,7 @@ import net.sf.tapestry.Tapestry;
 
 public class Select extends AbstractFormComponent
 {
-    private IBinding multipleBinding;
-    private IBinding disabledBinding;
-
+    private boolean multiple;
     private boolean disabled;
     private boolean rewinding;
     private boolean rendering;
@@ -102,35 +100,21 @@ public class Select extends AbstractFormComponent
     }
 
     /**
-    *  Used by the <code>Select</code> to record itself as a
-    *  {@link IRequestCycle} attribute, so that the
-    *  {@link Option} components it wraps can have access to it.
-    *
-    **/
+     *  Used by the <code>Select</code> to record itself as a
+     *  {@link IRequestCycle} attribute, so that the
+     *  {@link Option} components it wraps can have access to it.
+     *
+     **/
 
-    private final static String ATTRIBUTE_NAME =
-        "net.sf.tapestry.active.Select";
+    private final static String ATTRIBUTE_NAME = "net.sf.tapestry.active.Select";
 
     public static Select get(IRequestCycle cycle)
     {
         return (Select) cycle.getAttribute(ATTRIBUTE_NAME);
     }
 
-    public IBinding getDisabledBinding()
-    {
-        return disabledBinding;
-    }
-
-    public IBinding getMultipleBinding()
-    {
-        return multipleBinding;
-    }
-
     public boolean isDisabled()
     {
-        if (!rendering)
-            throw new RenderOnlyPropertyException(this, "disabled");
-
         return disabled;
     }
 
@@ -168,8 +152,6 @@ public class Select extends AbstractFormComponent
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
-        boolean multiple;
-
         IForm form = getForm(cycle);
 
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
@@ -186,11 +168,6 @@ public class Select extends AbstractFormComponent
 
         name = form.getElementId(this);
 
-        if (disabledBinding == null)
-            disabled = false;
-        else
-            disabled = disabledBinding.getBoolean();
-
         cycle.setAttribute(ATTRIBUTE_NAME, this);
 
         if (rewinding)
@@ -199,11 +176,6 @@ public class Select extends AbstractFormComponent
         }
         else
         {
-            if (multipleBinding == null)
-                multiple = false;
-            else
-                multiple = multipleBinding.getBoolean();
-
             writer.begin("select");
 
             writer.attribute("name", name);
@@ -217,19 +189,10 @@ public class Select extends AbstractFormComponent
             generateAttributes(writer, cycle);
         }
 
-        try
-        {
-            rendering = true;
-            nextOptionId = 0;
+        rendering = true;
+        nextOptionId = 0;
 
-            renderWrapped(writer, cycle);
-        }
-        finally
-        {
-
-            rendering = false;
-            selections = null;
-        }
+        renderWrapped(writer, cycle);
 
         if (!rewinding)
         {
@@ -240,14 +203,12 @@ public class Select extends AbstractFormComponent
 
     }
 
-    public void setDisabledBinding(IBinding value)
+    protected void cleanupAfterRender(IRequestCycle cycle)
     {
-        disabledBinding = value;
-    }
+        rendering = false;
+        selections = null;
 
-    public void setMultipleBinding(IBinding value)
-    {
-        multipleBinding = value;
+        super.cleanupAfterRender(cycle);
     }
 
     /**

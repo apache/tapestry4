@@ -77,7 +77,7 @@ import net.sf.tapestry.valid.IValidationDelegate;
  * <tr> 
  *    <td>Parameter</td>
  *    <td>Type</td>
- *	  <td>Read / Write </td>
+ *	  <td>Direction</td>
  *    <td>Required</td> 
  *    <td>Default</td>
  *    <td>Description</td>
@@ -86,7 +86,7 @@ import net.sf.tapestry.valid.IValidationDelegate;
  *  <tr>
  *    <td>method</td>
  *    <td>java.lang.String</td>
- *    <td>R</td>
+ *    <td>in</td>
  *   	<td>no</td>
  *		<td>post</td>
  *		<td>The value to use for the method attribute of the &lt;form&gt; tag.</td>
@@ -96,7 +96,7 @@ import net.sf.tapestry.valid.IValidationDelegate;
  *  <tr>
  *    <td>listener</td>
  *    <td>{@link IActionListener}</td>
- * 	  <td>R</td>
+ * 	  <td>in</td>
  * 	  <td>yes</td>
  *	  <td>&nbsp;</td>
  *	  <td>The listener, informed <em>after</em> the wrapped components of the form
@@ -106,11 +106,11 @@ import net.sf.tapestry.valid.IValidationDelegate;
  * <tr>
  *	<td>stateful</td>
  *  <td>boolean</td>
- *	<td>R</td>
+ *	<td>in</td>
  *	<td>no</td>
  *	<td>true</td>
  *	<td>If true (the default), then the component requires an active (i.e., non-new)
- * {@link HttpSession} when triggered.  Failing that, it throws a {@link StaleLinkException}.
+ *  {@link HttpSession} when triggered.  Failing that, it throws a {@link StaleLinkException}.
  *  If false, then no check is necessary.  Generally, forms are stateful, but it is possible
  *  to put a stateless form onto the Home page of an application.</td>
  * </tr>
@@ -118,7 +118,7 @@ import net.sf.tapestry.valid.IValidationDelegate;
  * <tr>
  *		<td>direct</td>
  *		<td>boolean</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>true</td>
  *		<td>If true (the default), then the direct service is used for the form.  This
@@ -134,7 +134,7 @@ import net.sf.tapestry.valid.IValidationDelegate;
  *  <tr>
  *      <td>delegate</td>
  *      <td>{@link IValidationDelegate}</td>
- *      <td>R</td>
+ *      <td>in</td>
  *      <td>yes</td>
  *      <td>&nbsp;</td>
  *      <td>Object used to assist in error tracking and reporting.  A single
@@ -158,13 +158,13 @@ public class Form
     private boolean rewinding;
     private boolean rendering;
     private String name;
-    private boolean stateful;
+    private boolean statefulMode = true;
     private boolean direct = true;
     private IValidationDelegate delegate;
-    
-    // Needs the stateful binding, since isStateful() can be invoked
+
+    // Need the stateful binding, since isStateful() can be invoked
     // when not rendering.
-    
+
     private IBinding statefulBinding;
 
     /**
@@ -427,9 +427,7 @@ public class Form
 
         if (rewound)
         {
-            String actual;
-
-            actual = cycle.getRequestContext().getParameter(name);
+            String actual = cycle.getRequestContext().getParameter(name);
 
             if (actual == null || Integer.parseInt(actual) != elementCount)
                 throw new StaleLinkException(
@@ -576,7 +574,8 @@ public class Form
     /**
      *  Simply invokes {@link #render(IMarkupWriter, IRequestCycle)}.
      *
-     * @since 1.0.2
+     *  @since 1.0.2
+     * 
      **/
 
     public void rewind(IMarkupWriter writer, IRequestCycle cycle)
@@ -654,12 +653,13 @@ public class Form
 
     protected void cleanupAfterRender(IRequestCycle cycle)
     {
-        super.cleanupAfterRender(cycle);
-
         rendering = false;
         elementCount = 0;
         events = null;
         allocatorMap = null;
+
+        super.cleanupAfterRender(cycle);
+
     }
 
     /**
@@ -718,14 +718,18 @@ public class Form
         this.method = method;
     }
 
+    /**
+     *  Invoked when not rendering, so it uses the stateful binding.
+     *  If not bound, returns true.
+     * 
+     **/
+
     public boolean isStateful()
     {
-        return stateful;
-    }
+        if (statefulBinding == null)
+            return true;
 
-    public void setStateful(boolean stateful)
-    {
-        this.stateful = stateful;
+        return statefulBinding.getBoolean();
     }
 
     public IBinding getStatefulBinding()
@@ -736,6 +740,16 @@ public class Form
     public void setStatefulBinding(IBinding statefulBinding)
     {
         this.statefulBinding = statefulBinding;
+    }
+
+    public boolean getStatefulMode()
+    {
+        return statefulMode;
+    }
+
+    public void setStatefulMode(boolean statefulMode)
+    {
+        this.statefulMode = statefulMode;
     }
 
 }

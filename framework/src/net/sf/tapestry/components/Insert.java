@@ -39,10 +39,10 @@ import net.sf.tapestry.Tapestry;
  *
  * <table border=1>
  * <tr> <th>Parameter</th> <th>Type</th>
- * <th>Read / Write</th> <th>Required</th> <th>Default</th> <th>Description</th>
+ * <th>Direction</th> <th>Required</th> <th>Default</th> <th>Description</th>
  * </tr>
  * <tr>
- *  <td>value</td> <td>Object</td> <td>R</td>
+ *  <td>value</td> <td>Object</td> <td>in</td>
  *  <td>no</td> <td>&nbsp;</td>
  *  <td>The value to be inserted.  If the binding is null, then nothing is inserted.
  *  Any object may be inserted, the <code>toString()</code> method is used
@@ -51,6 +51,7 @@ import net.sf.tapestry.Tapestry;
  * <tr>
  *	<td>format</td>
  *	<td>{@link Format}</td>
+ *  <td>in</td>
  *  <td>no</td>
  *  <td>&nbsp;</td>
  *  <td>An optional format object used to convert the value parameter for
@@ -59,6 +60,7 @@ import net.sf.tapestry.Tapestry;
  *  <tr>
  *      <td>raw</td>
  *      <td>boolean</td>
+ *      <td>in</td>
  *      <td>no</td>
  *      <td>false</td>
  *      <td>If true, then the method {@link IMarkupWriter#printRaw(String)} is used,
@@ -69,6 +71,7 @@ import net.sf.tapestry.Tapestry;
  *  <tr>
  * 		<td>class</td>
  * 		<td>{@link String}</td>
+ *  <td>in</td>
  * 		<td>no</td>
  * 		<td>&nbsp;</td>
  * 		<td>
@@ -90,6 +93,8 @@ public class Insert extends AbstractComponent
 {
     private Object value;
     private Format format;
+    
+    // The class parameter is connected to the styleClass property
     private String styleClass;
     private boolean raw;
 

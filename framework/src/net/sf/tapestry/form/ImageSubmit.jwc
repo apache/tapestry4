@@ -1,20 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<!DOCTYPE specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
 <specification class="net.sf.tapestry.form.ImageSubmit" allow-body="no">
 
   <description>
   Creates a clickable image within a form.
   </description>
 
-  <parameter name="image" java-type="net.sf.tapestry.IAsset" required="yes"/>
-  <parameter name="name" java-type="java.lang.String"/>
-  <parameter name="disabledImage" java-type="net.sf.tapestry.IAsset"/>
-  <parameter name="disabled"/>
+  <parameter name="image" 
+  	java-type="net.sf.tapestry.IAsset" 
+  	required="yes"
+  	direction="in">
+  	<description>
+  	Image used for the button.
+  	</description>
+  </parameter>
+  	
+  <parameter name="name" 
+  	java-type="java.lang.String"
+  	direction="in"/>
+  	
+  <parameter name="disabledImage" 
+  	java-type="net.sf.tapestry.IAsset"
+  	direction="in">
+  	<description>
+  	Image used for the button, if disabled.
+  	</description>
+  </parameter>
+  	
+  <parameter name="disabled"
+  	java-type="boolean"
+  	direction="in"/>
+  	
   <parameter name="point" java-type="java.awt.Point"/>
-  <parameter name="selected"/>
-  <parameter name="tag"/>
-  <parameter name="listener" java-type="net.sf.tapestry.IActionListener"/>
+  
+  <parameter name="selected"
+  	java-type="java.lang.Object">
+  	<description>
+  	Property updated when the button is clicked.
+  	</description>
+  </parameter>
+  
+  <parameter name="tag" 
+  	java-type="java.lang.Object" 
+  	direction="in">
+  	<description>
+  	Value used when updating the selected parameter.
+  	</description>
+  </parameter>
+  
+  <parameter name="listener" 
+  	java-type="net.sf.tapestry.IActionListener"
+  	direction="in">
+  	<description>
+  	Notified when the button is clicked.
+  	</description>
+  </parameter>
   
   <reserved-parameter name="type"/>
   <reserved-parameter name="src"/>

@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC 
-	"-//Howard Ship//Tapestry Specification 1.1//EN" 
-	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
 	
-<specification class="net.sf.tapestry.html.Frame" allow-body="no" allow-informal-parameters="yes">
+<specification class="net.sf.tapestry.html.Frame" 
+	allow-body="no"
+	allow-informal-parameters="yes">
 
   <description>
   Identifies a page as the contents of a frame within a frameset.
   </description>
 
-  <parameter name="page" java-type="java.lang.String" required="yes">
+  <parameter name="page" 
+  		property-name="targetPage"
+  		java-type="java.lang.String" 
+  		required="yes" 
+  		direction="in">
     <description>
 	The page to display in the frame.
     </description>

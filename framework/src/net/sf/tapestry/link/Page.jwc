@@ -7,7 +7,12 @@
   Creates a link to another page within the application.
   </description>
   
-  <parameter name="page" java-type="java.lang.String" required="yes" property-name="targetPage"/>
+  <parameter name="page" 
+  	java-type="java.lang.String" 
+  	required="yes" 
+  	property-name="targetPage"
+  	direction="in"/>
+  	
   <parameter name="disabled"/>
   <parameter name="scheme" java-type="java.lang.String"/>
   <parameter name="port"/>

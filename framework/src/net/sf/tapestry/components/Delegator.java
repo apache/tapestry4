@@ -41,7 +41,7 @@ import net.sf.tapestry.RequiredParameterException;
  * <tr> 
  *    <th>Parameter</th>
  *    <th>Type</th>
- *	  <th>Read / Write </th>
+ *	  <th>Direction</th>
  *    <th>Required</th> 
  *    <th>Default</th>
  *    <th>Description</th>
@@ -50,7 +50,7 @@ import net.sf.tapestry.RequiredParameterException;
  * <tr>
  *  <td>delegate</td>
  *  <td>{@link IRender}</td>
- *  <td>R</td>
+ *  <td>in</td>
  *  <td>no</td>
  *  <td>&nbsp;</td>
  *  <td>If specified, the object which will provide the rendering for the component.</td>

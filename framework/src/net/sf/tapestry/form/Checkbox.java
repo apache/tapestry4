@@ -39,7 +39,7 @@ import net.sf.tapestry.RequestCycleException;
  * <tr> 
  *    <td>Parameter</td>
  *    <td>Type</td>
- *	  <td>Read / Write </td>
+ *	  <td>Direction</td>
  *    <td>Required</td> 
  *    <td>Default</td>
  *    <td>Description</td>
@@ -47,8 +47,8 @@ import net.sf.tapestry.RequestCycleException;
  *
  *  <tr>
  *    <td>selected</td>
- *    <td>java.lang.Boolean</td>
- *    <td>R / W</td>
+ *    <td>boolean</td>
+ *    <td>in-out</td>
  *   	<td>yes</td>
  *		<td>&nbsp;</td>
  *		<td>Indicates whether the checkbox is selected or not.
@@ -60,7 +60,7 @@ import net.sf.tapestry.RequestCycleException;
  *  <tr>
  * 		<td>disabled</td>
  *		<td>boolean</td>
- *		<td>R</td>
+ *		<td>in</td>
  *		<td>no</td>
  *		<td>false</td>
  *		<td>Controls whether the text field is active or not.  If disabled, then
