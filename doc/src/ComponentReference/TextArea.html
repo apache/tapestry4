@@ -149,30 +149,15 @@
 &lt;/form&gt;
 &lt;/table&gt;
 
-
+&lt;property-specification name=&quot;comments&quot; type=&quot;java.lang.String&quot; persistent=&quot;yes&quot; initial-value=&quot;'Please enter your comments here'&quot;/&gt;<br>
 public class CustomerCommentsPage extends BasePage {
-    private final static String COMMENTS = "Please enter your comments here"; 
-    private String comments = COMMENTS;
-
     public void formSubmit(IRequestCycle requestCycle) {
         // Proccess customer comments
     }
-
-    public String getComments() { return comments; }
-
-    public void setComments(String value) {
-        comments = value;
-        fireObservedChange("comments", value);
-    }
-
-    public void detach() {
-        comments = COMMENTS;
-        super.detach();
-    }        
 }
 </pre>
-
- </td></tr></table>
+          </td>
+        </tr></table>
 </td></tr>
 <tr>
  <td colspan="3"><hr></td>  

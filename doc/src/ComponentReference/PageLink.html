@@ -186,28 +186,15 @@
             <pre>
 &lt;!-- Navigation Bar --&gt;
 &lt;table bgcolor="navy" cellpadding="8" cellspacing="6" width="100%"&gt;
- &lt;tr&gt;
-  &lt;span jwcid="@<a href="Foreach.html">Foreach</a>" source="ognl:engine@NAVIGATION_PAGES" value="ognl:navigationPage"&gt;
+ &lt;tr jwcid="@<a href="Foreach.html">Foreach</a>" source="ognl:engine@NAVIGATION_PAGES" value="ognl:navigationPage" element=&quot;tr&quot;&gt;
    &lt;td&gt;&lt;font color="white"&gt;&lt;b&gt;&lt;span jwcid="<span class="jwcid">@<a href="PageLink.html">PageLink</a></span>" page="ognl:navigationPage" disabled="ognl:! visit.authenticated"/&gt;&lt;/b&gt;&lt;/font&gt;&lt;/td&gt;
-  &lt;/span&gt;
  &lt;/tr&gt;
 &lt;/table&gt;
 
 
-
-public class MailPage extends BasePage {
-    private String navigationPage;
-
-    public String getNavigationPage() { return navigationPage; }
-
-    public void setNavigationPage(String value) {
-        navigationPage = value;
-    }
-    
-    public void detach() {
-        navigationPage = null;
-        super.detach();
-    }
+&lt;property-specification name=&quot;navigationPage&quot; type=&quot;java.lang.String&quot;/&gt;<br>
+public abstract class MailPage extends BasePage {
+    public abstract String getNavigationPage();
 }
 
 public class Visit implements Serializable {

@@ -128,7 +128,7 @@
 &lt;/order-list&gt;
 
 
-&lt;property-specification name=&quot;orderItemList&quot; type=&quot;java.util.List&quot; persistent=&quot;no&quot;/&gt;<br>&lt;property-specification name=&quot;orderItem&quot; type=&quot;com.dsconsulting.order.model.OrderItem&quot; persistent=&quot;no&quot;/&gt;<br>
+&lt;property-specification name=&quot;orderItemList&quot; type=&quot;java.util.List&quot;/&gt;<br>&lt;property-specification name=&quot;orderItem&quot; type=&quot;com.dsconsulting.order.model.OrderItem&quot;/&gt;<br>
 &lt;component id="<span class="jwcid">orderItem</span>" type="<A href="Any.html">Any</a>"&gt;
     &lt;binding name="id" expression="orderItem.id"/&gt;
     &lt;binding name="order-id" expression="orderItem.orderId"/&gt;
@@ -142,14 +142,10 @@ public abstract class OrderItemsXML extends BasePage {
     
     public abstract List getOrderItemList(); 
     public abstract void setOrderItemList(List value); 
-
-    public abstract OrderItem getOrderItem();
-    public abstract void setOrderItem(OrderItem value);
 }
 
 public class OrderItem {
-    private static final SimpleDateFormat DATE_FORMAT =
-        new SimpleDateFormat("yyyy-MM-dd");
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     private Integer id;
     private Integer orderId;
     private Integer customerId;

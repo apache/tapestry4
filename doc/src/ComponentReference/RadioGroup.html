@@ -163,27 +163,14 @@
 &lt;/table&gt;
 &lt;/form&gt;
 
-
-
-public OrderPage extends BasePage {
+&lt;property-specification name=&quot;orderSize&quot; type=&quot;java.lang.Integer&quot; initial-value=&quot;@OrderPage@MEDIUM&quot;/&gt;<br>
+public abstract OrderPage extends BasePage {
    public final static Integer SMALL = new Integer(1);
    public final static Integer MEDIUM = new Integer(2);
    public final static Integer LARGE = new Integer(3);
+      
+   public abstract Integer getOrderSize();
    
-   private Integer orderSize = MEDIUM;
-   
-   public void setOrderSize(Integer value) {
-      orderSize = value;
-   }
-
-   public Integer getOrderSize() {
-      return orderSize;
-   }
-   
-   protected void initialize() {
-      orderSize = MEDIUM;
-   }
-
    public formSubmit(IRequestCycle cycle) {
       // process order
    }   

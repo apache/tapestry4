@@ -130,27 +130,18 @@
  &lt;input type="checkbox" jwcid="<span class="jwcid">@<a href="Checkbox.html">Checkbox</a></span>" selected="ognl:contactRep" disabled="ognl:staff"/&gt; Contact Sales Rep
 &lt;/form&gt;
 
+&lt;property-specification name=&quot;contactRep&quot; type=&quot;boolean&quot; persistent=&quot;yes&quot;/&gt;<br>&lt;property-specification name=&quot;staff&quot; type=&quot;boolean&quot;/&gt;<br>
+public abstract class EnquiryPage extends BasePage {
+    public abstract boolean isContactRep();
 
-public class EnquiryPage extends BasePage {
-    private boolean contactRep;
-    private boolean isStaff;
+    public abstract void setContactRep(boolean value);
    
-    public boolean getContactRep() { return contactRep;  }
+    public abstract boolean isStaff();
 
-    public void setContactRep(boolean value) { 
-        contactRep = value;
-        fireObservedChange("contactRep", contactRep);  
-    }
-
-    public boolean isStaff() { return isStaff; }
-   
-    protected void initialize() {
-        contactRep = false;
-        isStaff = false;
-    }
+    public abstract void setStaff(boolean staff);
 
     public void formSubmit(RequestCycle cycle) {
-        if (getContactRep()) {
+        if (isContactRep()) {
            // Process contact a sales representative request
         }
     }

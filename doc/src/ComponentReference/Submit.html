@@ -223,22 +223,16 @@
  &lt;/table&gt;
 &lt;/form&gt;
 
+&lt;property-specification name=&quot;username&quot; type=&quot;java.lang.String&quot;/&gt;<br>&lt;property-specification name=&quot;password&quot; type=&quot;java.lang.String&quot;/&gt;<br>
+public abstract class LoginPage extends BasePage {
 
-public class LoginPage extends BasePage {
-    private String username;
-    private String password;
+    public abstract String getUsername();
     
-    public String getUsername() { return username; }
+    public abstract void setUsername(String value);
     
-    public void setUsername(String value) {
-        username = value;
-    }
-
-    public String getPassword() { return password; }
+    public abstract String getPassword();
     
-    public void setPassword(String value) {
-        password = value;
-    }
+    public abstract void setPassword(String value);
 
     public void loginSubmitAction(IRequestCycle cycle) {
         // Authenticate user's login attempt
@@ -250,10 +244,6 @@ public class LoginPage extends BasePage {
         throw new PageRedirectException("HelpDesk");
     }
     
-    protected void initialize() {
-        username = null;
-        password = null;
-     }
 }
 </pre>
     
@@ -312,6 +302,7 @@ public class LoginPage extends BasePage {
 &lt;/form&gt;
 
 
+&lt;property-specification name=&quot;itemSelectionModel&quot; type=&quot;ItemSelectionModel&quot; persistent=&quot;yes&quot;/&gt;<br>&lt;property-specification name=&quot;clothingItem&quot; type=&quot;Item&quot; persistent=&quot;yes&quot;/&gt;<br>&lt;property-specification name=&quot;selectedComponent&quot; type=&quot;java.lang.String&quot;/&gt;<br>
 &lt;component id="purchaseForm" type="<A href="Form.html">Form</a>"&gt;
     &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
 &lt;/component&gt;
@@ -341,40 +332,19 @@ public class LoginPage extends BasePage {
     &lt;binding name="tag" expression='"SUBMIT_ADD_TO_CHART"'/&gt;
 &lt;/component&gt;
 
+public abstract class PurchagePage extends BasePage {
 
-public class PurchagePage extends BasePage {
-    private selectedComponent;
-    private String clothingItem;
-    private ItemSelectionModel itemSelectionModel;
+    public abstract String getSelectedComponent();
     
-    public String getSelectedComponent() { return selectedComponent; }
+    public abstract void setSelectedComponent(String value);
 
-    public void setSelectedComponent(String value) {
-        selectedComponent = value;
-    }
+    public abstract Item getClothingItem();
 
-    public Item getClothingItem() { return clothingItem;  }
+    public abstract void setClothingItem(Item value);
 
-    public void setClothingItem(Item value) { 
-        clothingItem = value;  
-        fireObservedChange("clothingItem", value);
-    }
+    public abstract ItemSelectionModel getItemSelectionModel();
 
-    public ItemSelectionModel getItemSelectionModel() { 
-        return itemSelectionModel;
-    } 
-
-    public ItemSelectionModel setItemSelectionModel(ItemSelectionModel value) { 
-        itemSelectionModel = value;
-        fireObservedChange("itemSelectionModel", value);
-    }
-
-    public void detach() {
-        selectedComponent = null;
-        clothingItem = null;
-        itemSelectionModel = null;
-        super.detach();
-    }
+    public abstract ItemSelectionModel setItemSelectionModel(ItemSelectionModel value);
 
     public void formSubmit(IRequestCycle cycle) {
         if (getSelectedComponent().equals("SELECT_ITEM")) {
@@ -441,7 +411,8 @@ public class ItemSelectionModel implements <A href="../api/org/apache/tapestry/f
     }
 }
 </pre>
- </td></tr></table>
+    </td>
+  </tr></table>
 <tr>
  <td colspan="3"><hr></td>  
 </tr>
