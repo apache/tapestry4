@@ -21,7 +21,7 @@
 	<classpathentry kind="lib" path="ext-package/lib/jdom-1.0.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/junit-3.8.1.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/log4j-1.2.8.jar"/>
-	<classpathentry kind="lib" path="ext-package/lib/ognl-2.6.5.jar"/>
+	<classpathentry kind="lib" path="ext-package/lib/ognl-2.6.7.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/oro-2.0.8.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/servletapi-2.3.jar"/>
 	<classpathentry kind="lib" path="ext-package/lib/jboss-j2ee-3.2.1.jar"/>

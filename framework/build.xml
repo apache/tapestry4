@@ -41,7 +41,7 @@
     <ibiblio-dependency artifact="oro"                version="2.0.8"               group="oro"/>
     <ibiblio-dependency artifact="javassist"          version="${javassist.version}" group="javassist"/>
     <ibiblio-dependency artifact="servletapi"         version="2.3"                 group="servletapi"/>
-    <ibiblio-dependency artifact="ognl"               version="2.6.5"               group="ognl"/>
+    <ibiblio-dependency artifact="ognl"               version="2.6.7"               group="ognl"/>
     
     <ibiblio-dependency artifact="log4j"              version="1.2.8"               group="log4j"    use="test"/>
     <ibiblio-dependency artifact="easymock"           version="1.1"                 group="easymock" use="test"/>
