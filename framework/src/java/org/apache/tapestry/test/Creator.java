@@ -28,20 +28,27 @@ import javassist.CtClass;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.hivemind.service.ClassFab;
 import org.apache.hivemind.service.ClassFabUtils;
+import org.apache.hivemind.service.ClassFactory;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.hivemind.service.impl.ClassFabImpl;
+import org.apache.hivemind.service.impl.ClassFactoryImpl;
 import org.apache.hivemind.service.impl.CtClassSource;
 import org.apache.hivemind.service.impl.HiveMindClassPool;
+import org.apache.tapestry.enhance.AbstractPropertyWorker;
+import org.apache.tapestry.enhance.EnhancementOperationImpl;
+import org.apache.tapestry.services.ComponentConstructor;
+import org.apache.tapestry.spec.ComponentSpecification;
 
 /**
- * A utility class that is used to instantiate abstract Tapestry pages and
- * components. It creates, at runtime, a subclass where all abstract properties
- * are filled in (complete with instance variable, accessor and mutator methods).
- * This isn't the same as how the class is enhanced at runtime, but is sufficient
- * to unit test the class, especially listener methods.
- *
+ * A utility class that is used to instantiate abstract Tapestry pages and components. It creates,
+ * at runtime, a subclass where all abstract properties are filled in (complete with instance
+ * variable, accessor and mutator methods). This isn't the same as how the class is enhanced at
+ * runtime, but is sufficient to unit test the class, especially listener methods.
+ * 
  * @author Howard Lewis Ship
  * @since 3.1
  */
@@ -50,164 +57,59 @@ public class Creator
     private static final Log LOG = LogFactory.getLog(Creator.class);
 
     /**
-     * Keyed on Class, value is another class (fully enhanced).
+     * Keyed on Class, value is an {@link ComponentConstructor}.
      */
-    private Map _classes = new HashMap();
-    private final CtClassSource _classSource;
+    private Map _constructors = new HashMap();
 
-    public Creator()
-    {
-        this(Thread.currentThread().getContextClassLoader());
-    }
+    private ClassFactory _classFactory = new ClassFactoryImpl();
 
-    public Creator(ClassLoader loader)
-    {
-        HiveMindClassPool pool = new HiveMindClassPool();
+    private ClassResolver _classResolver = new DefaultClassResolver();
 
-        pool.appendClassLoader(loader);
-
-        _classSource = new CtClassSource(pool);
-    }
-
-    private void addAccessorMethod(ClassFab classFab, PropertyDescriptor pd, String attributeName)
-    {
-        String methodName = getMethodName(pd.getReadMethod(), "get", pd.getName());
-
-        MethodSignature sig = new MethodSignature(pd.getPropertyType(), methodName, null, null);
-
-        classFab.addMethod(Modifier.PUBLIC, sig, "return " + attributeName + ";");
-    }
-
-    private void addField(ClassFab classFab, String fieldName, Class fieldType)
-    {
-        classFab.addField(fieldName, fieldType);
-    }
-
-    private void addMissingProperties(ClassFab classFab, BeanInfo info)
-    {
-        PropertyDescriptor[] pd = info.getPropertyDescriptors();
-
-        for (int i = 0; i < pd.length; i++)
-            addMissingProperty(classFab, pd[i]);
-    }
-
-    private void addMissingProperty(ClassFab classFab, PropertyDescriptor pd)
-    {
-        Method readMethod = pd.getReadMethod();
-        Method writeMethod = pd.getWriteMethod();
-
-        boolean abstractRead = isAbstract(readMethod);
-        boolean abstractWrite = isAbstract(writeMethod);
-
-        if (!(abstractRead || abstractWrite))
-            return;
-
-        String attributeName = "_$" + pd.getName();
-        Class propertyType = pd.getPropertyType();
-
-        addField(classFab, attributeName, propertyType);
-
-        if (abstractRead)
-            addAccessorMethod(classFab, pd, attributeName);
-
-        if (abstractWrite)
-            addMutatorMethod(classFab, pd, attributeName);
-
-    }
-
-    private void addMutatorMethod(ClassFab classFab, PropertyDescriptor pd, String attributeName)
-    {
-        String methodName = getMethodName(pd.getWriteMethod(), "set", pd.getName());
-
-        MethodSignature sig =
-            new MethodSignature(void.class, methodName, new Class[] { pd.getPropertyType()}, null);
-
-        classFab.addMethod(Modifier.PUBLIC, sig, attributeName + " = $1;");
-    }
-
-    private Class createEnhancedClass(Class inputClass)
+    private ComponentConstructor createComponentConstructor(Class inputClass)
     {
         if (inputClass.isInterface() || inputClass.isPrimitive() || inputClass.isArray())
             throw new IllegalArgumentException(ScriptMessages.wrongTypeForEnhancement(inputClass));
 
-        if (!Modifier.isAbstract(inputClass.getModifiers()))
-        {
-            LOG.error(ScriptMessages.classNotAbstract(inputClass));
-            return inputClass;
-        }
+        EnhancementOperationImpl op = new EnhancementOperationImpl(_classResolver,
+                new ComponentSpecification(), inputClass, _classFactory);
 
-        BeanInfo info = null;
+        new AbstractPropertyWorker().performEnhancement(op);
 
-        try
-        {
-            info = Introspector.getBeanInfo(inputClass, Object.class);
-        }
-        catch (IntrospectionException ex)
-        {
-            throw new ApplicationRuntimeException(
-                ScriptMessages.unableToIntrospect(inputClass, ex));
-        }
-
-        String name = ClassFabUtils.generateClassName("Enhance");
-
-        CtClass newClass = _classSource.newClass(name, inputClass);
-
-        ClassFab classFab = new ClassFabImpl(_classSource, newClass);
-
-        addMissingProperties(classFab, info);
-
-        return classFab.createClass();
+        return op.getConstructor();
     }
 
-    public Class getEnhancedClass(Class inputClass)
+    private ComponentConstructor getComponentConstructor(Class inputClass)
     {
-        Class result = (Class) _classes.get(inputClass);
+        ComponentConstructor result = (ComponentConstructor) _constructors.get(inputClass);
 
         if (result == null)
         {
-            result = createEnhancedClass(inputClass);
+            result = createComponentConstructor(inputClass);
 
-            _classes.put(inputClass, result);
+            _constructors.put(inputClass, result);
         }
 
         return result;
     }
 
     /**
-     * Given a particular abstract class; will create an instance of that class. A subclass
-     * is created with all abstract properties filled in with ordinary implementations.
+     * Given a particular abstract class; will create an instance of that class. A subclass is
+     * created with all abstract properties filled in with ordinary implementations.
      */
     public Object getInstance(Class abstractClass)
     {
-        Class enhancedClass = getEnhancedClass(abstractClass);
+        ComponentConstructor constructor = getComponentConstructor(abstractClass);
 
         try
         {
-            return enhancedClass.newInstance();
+            return constructor.newInstance();
         }
         catch (Exception ex)
         {
-            throw new ApplicationRuntimeException(
-                ScriptMessages.unableToInstantiate(abstractClass, ex));
+            throw new ApplicationRuntimeException(ScriptMessages.unableToInstantiate(
+                    abstractClass,
+                    ex));
         }
 
-    }
-
-    private String getMethodName(Method m, String prefix, String propertyName)
-    {
-        if (m != null)
-            return m.getName();
-
-        StringBuffer buffer = new StringBuffer(prefix);
-
-        buffer.append(propertyName.substring(0, 1).toUpperCase());
-        buffer.append(propertyName.substring(1));
-
-        return buffer.toString();
-    }
-
-    private boolean isAbstract(Method m)
-    {
-        return m == null || Modifier.isAbstract(m.getModifiers());
     }
 }

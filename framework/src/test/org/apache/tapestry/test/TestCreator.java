@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.hivemind.test.HiveMindTestCase;
@@ -27,20 +26,6 @@ import org.apache.hivemind.test.HiveMindTestCase;
  */
 public class TestCreator extends HiveMindTestCase
 {
-
-    public void testNonAbstract() throws Exception
-    {
-        interceptLogging("org.apache.tapestry.test");
-
-        Creator i = new Creator();
-
-        Object result = i.getInstance(ArrayList.class);
-
-        assertEquals(ArrayList.class, result.getClass());
-
-        assertLoggedMessage("Class java.util.ArrayList is not an abstract class.");
-
-    }
 
     public void testInterface() throws Exception
     {
