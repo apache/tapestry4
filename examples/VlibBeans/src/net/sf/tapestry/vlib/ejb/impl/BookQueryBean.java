@@ -333,7 +333,8 @@ public class BookQueryBean extends OperationsBean
         if (publisherPK != null)
         {
             assembly.addSep(" AND ");
-            assembly.addParameter("book.PUBLISHER_ID = ?", publisherPK);
+            assembly.add("book.PUBLISHER_ID = ");
+            assembly.addParameter(publisherPK);
         }
 
         assembly.newLine("ORDER BY book.TITLE");
@@ -350,7 +351,8 @@ public class BookQueryBean extends OperationsBean
 
         assembly.addSep(" AND ");
         assembly.add(personColumn);
-        assembly.addParameter(" = ?", personPK);
+        assembly.add(" = ");
+        assembly.addParameter(personPK);
 
         assembly.newLine("ORDER BY book.TITLE");
 
@@ -367,7 +369,8 @@ public class BookQueryBean extends OperationsBean
         // Get books held by the borrower but not owned by the borrower.
 
         assembly.addSep(" AND ");
-        assembly.addParameter("book.HOLDER_ID = ?", borrowerPK);
+        assembly.add("book.HOLDER_ID = ");
+        assembly.addParameter(borrowerPK);
         assembly.addSep(" AND ");
         assembly.add("book.HOLDER_ID <> book.OWNER_ID");
 
