@@ -291,6 +291,6 @@ public class PatternValidator extends BaseValidator
             + "; Script Path: "
             + _scriptPath
             + "; Pattern Delegate: "
-            + _patternDelegate.toString();
+            + _patternDelegate;
     }
 }
