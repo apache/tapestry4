@@ -16,8 +16,8 @@
 -->
 
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
   
 <component-specification class="org.apache.tapestry.form.ImageSubmit" allow-body="no">
 
@@ -25,52 +25,37 @@
   Creates a clickable image within a form.
   </description>
 
-  <parameter name="image" 
-  	type="org.apache.tapestry.IAsset" 
-  	required="yes"
-  	direction="in">
+  <parameter name="image" required="yes">
   	<description>
   	Image used for the button.
   	</description>
   </parameter>
   	
-  <parameter name="name" 
-    property-name="nameOverride"
-  	type="java.lang.String"
-  	direction="in"/>
+  <parameter name="name" property-name="nameOverride"/>
   	
-  <parameter name="disabledImage" 
-  	type="org.apache.tapestry.IAsset"
-  	direction="in">
+  <parameter name="disabledImage">
   	<description>
   	Image used for the button, if disabled.
   	</description>
   </parameter>
   	
-  <parameter name="disabled"
-  	type="boolean"
-  	direction="in"/>
+  <parameter name="disabled"/>
   	
-  <parameter name="point" type="java.awt.Point"/>
+  <parameter name="point"/>
   
-  <parameter name="selected"
-  	type="java.lang.Object">
+  <parameter name="selected">
   	<description>
   	Property updated when the button is clicked.
   	</description>
   </parameter>
   
-  <parameter name="tag" 
-  	type="java.lang.Object" 
-  	direction="in">
+  <parameter name="tag">
   	<description>
   	Value used when updating the selected parameter.
   	</description>
   </parameter>
   
-  <parameter name="listener" 
-  	type="org.apache.tapestry.IActionListener"
-  	direction="in">
+  <parameter name="listener">
   	<description>
   	Notified when the button is clicked.
   	</description>
@@ -79,8 +64,5 @@
   <reserved-parameter name="type"/>
   <reserved-parameter name="src"/>
   <reserved-parameter name="border"/>
-
-  <property-specification name="name" type="java.lang.String"/>
-  <property-specification name="form" type="org.apache.tapestry.IForm"/>
  
 </component-specification>

@@ -16,8 +16,8 @@
 -->
 
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
   
 <component-specification class="org.apache.tapestry.form.PropertySelection" 
 	allow-body="no" 
@@ -27,36 +27,24 @@
   Creates an HTML select to choose a single property from a list of options.
   </description>
   
-  <parameter name="value" required="yes" type="java.lang.Object" direction="form"/>
+  <parameter name="value" required="yes"/>
   
-  <parameter name="model" 
-  	type="org.apache.tapestry.form.IPropertySelectionModel" 
-  	required="yes"
-  	direction="in"/>
+  <parameter name="model" required="yes"/>
   	
-  <parameter name="disabled"
-  	type="boolean"
-  	direction="in"/>
+  <parameter name="disabled"/>
   	
-  <parameter name="renderer" 
-  	type="org.apache.tapestry.form.IPropertySelectionRenderer"
-  	direction="in">
+  <parameter name="renderer">
   	<description>
 	An alternate rendered for the property selection.
   	</description>
   </parameter>
   
-  <parameter name="submitOnChange"
-  	type="boolean"
-  	direction="in">
+  <parameter name="submitOnChange">
   	<description>
   	Enables logic to submit containing form when value changes.
   	</description>
   </parameter>
   	
   <reserved-parameter name="name"/>
-
-  <property-specification name="name" type="java.lang.String"/>
-  <property-specification name="form" type="org.apache.tapestry.IForm"/>
     
 </component-specification>

@@ -16,8 +16,8 @@
 -->
 
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 
 <component-specification class="org.apache.tapestry.form.LinkSubmit" allow-body="yes">
 
@@ -25,9 +25,7 @@
   Creates a hyperlink that submits its enclosing form using JavaScript.
   </description>
 
-  <parameter name="listener" 
-  	type="org.apache.tapestry.IActionListener" 
-  	direction="in">
+  <parameter name="listener">
   	<description>
 	    The listener is invoked during the rewind as the link component is encountered.  This is
 	    both attractive and dangerous when combined with a form.  When the listener is
@@ -37,14 +35,11 @@
   	</description>
   </parameter>
   	
-  <parameter name="disabled" type="boolean" direction="in"/>
+  <parameter name="disabled"/>
   <parameter name="selected"/>
-  <parameter name="tag" type="java.lang.Object" direction="in"/>
+  <parameter name="tag"/>
 
   <reserved-parameter name="name"/>
   <reserved-parameter name="href"/>
-
-  <property-specification name="name" type="java.lang.String"/>
-  <property-specification name="form" type="org.apache.tapestry.IForm"/>  
   
 </component-specification>

@@ -16,8 +16,8 @@
 -->
 
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
   
 <component-specification class="org.apache.tapestry.form.TextArea" allow-body="no">
 
@@ -25,13 +25,10 @@
   A multi-line text area.
   </description>
   
-  <parameter name="value" type="java.lang.String" required="yes" direction="form"/>
+  <parameter name="value" required="yes"/>
   
-  <parameter name="disabled" type="boolean" direction="in"/>
+  <parameter name="disabled"/>
   
   <reserved-parameter name="name"/>
-  
-  <property-specification name="name" type="java.lang.String"/>
-  <property-specification name="form" type="org.apache.tapestry.IForm"/>
   
 </component-specification>
