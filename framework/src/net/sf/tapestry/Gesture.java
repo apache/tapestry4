@@ -1,14 +1,8 @@
 package net.sf.tapestry;
 
-import java.util.List;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  *  A Gesture represents a possible action within the client web browser;

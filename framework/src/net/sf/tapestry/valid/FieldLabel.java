@@ -3,7 +3,6 @@ package net.sf.tapestry.valid;
 import net.sf.tapestry.AbstractComponent;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.NullValueForBindingException;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.form.Form;

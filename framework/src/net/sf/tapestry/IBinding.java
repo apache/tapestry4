@@ -1,7 +1,5 @@
 package net.sf.tapestry;
 
-import java.util.Collection;
-
 /**
  *  A binding is the mechanism used to provide values for parameters of
  *  specific {@link IComponent} instances. The component doesn't

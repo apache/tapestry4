@@ -3,23 +3,21 @@ package net.sf.tapestry.listener;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IActionListener;
 import net.sf.tapestry.IComponent;
-import net.sf.tapestry.IDirect;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.Tapestry;
 import ognl.OgnlRuntime;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  *  Maps a class to a set of listeners based on the public methods of the class.

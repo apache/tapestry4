@@ -24,8 +24,6 @@ import javax.servlet.http.HttpSessionBindingListener;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import ognl.Ognl;
-
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.ApplicationServlet;
 import net.sf.tapestry.IComponentStringsSource;
@@ -54,7 +52,6 @@ import net.sf.tapestry.StaleSessionException;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.listener.ListenerMap;
 import net.sf.tapestry.pageload.PageSource;
-import net.sf.tapestry.spec.ApplicationSpecification;
 import net.sf.tapestry.spec.IApplicationSpecification;
 import net.sf.tapestry.util.DelegatingPropertySource;
 import net.sf.tapestry.util.PropertyHolderPropertySource;

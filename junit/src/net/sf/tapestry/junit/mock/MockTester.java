@@ -2,12 +2,17 @@ package net.sf.tapestry.junit.mock;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import javax.servlet.ServletException;
+
+import junit.framework.AssertionFailedError;
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.ApplicationServlet;
-import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.util.xml.DocumentParseException;
-
 import ognl.Ognl;
 import ognl.OgnlException;
 
@@ -21,17 +26,10 @@ import org.apache.oro.text.regex.PatternMatcher;
 import org.apache.oro.text.regex.PatternMatcherInput;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
-import org.jdom.*;
+import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
-import java.util.*;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import junit.framework.AssertionFailedError;
 
 /**
  *  A complex class that reads an XML description

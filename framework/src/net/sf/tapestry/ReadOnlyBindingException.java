@@ -1,7 +1,5 @@
 package net.sf.tapestry;
 
-import net.sf.tapestry.binding.StaticBinding;
-
 /**
  *  Thrown when an attempt is made to update through a read-only binding (i.e,
  *  {@link StaticBinding}.

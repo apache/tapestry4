@@ -12,11 +12,9 @@ import javax.servlet.ServletException;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.Gesture;
-import net.sf.tapestry.IAsset;
 import net.sf.tapestry.IComponent;
 import net.sf.tapestry.IEngineServiceView;
 import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.RequestContext;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.ResponseOutputStream;
 import net.sf.tapestry.Tapestry;

@@ -1,7 +1,6 @@
 package net.sf.tapestry.vlib.pages.admin;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.ejb.FinderException;

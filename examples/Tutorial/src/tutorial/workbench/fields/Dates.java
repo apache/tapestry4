@@ -2,7 +2,6 @@ package tutorial.workbench.fields;
 
 import java.util.Date;
 
-import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.html.BasePage;
 
 /**

@@ -2,7 +2,6 @@ package net.sf.tapestry.contrib.table.components;
 
 import java.util.Iterator;
 
-import net.sf.tapestry.BaseComponent;
 import net.sf.tapestry.IAsset;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IMarkupWriter;
@@ -11,7 +10,6 @@ import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.contrib.table.model.ITableColumn;
 import net.sf.tapestry.contrib.table.model.ITableColumnModel;
-import net.sf.tapestry.contrib.table.model.ITableModelSource;
 import net.sf.tapestry.event.PageDetachListener;
 import net.sf.tapestry.event.PageEvent;
 

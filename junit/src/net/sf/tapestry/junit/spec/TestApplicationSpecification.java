@@ -1,7 +1,6 @@
 package net.sf.tapestry.junit.spec;
 
 import net.sf.tapestry.junit.TapestryTestCase;
-import net.sf.tapestry.spec.ApplicationSpecification;
 import net.sf.tapestry.spec.ExtensionSpecification;
 import net.sf.tapestry.spec.IApplicationSpecification;
 

@@ -7,17 +7,13 @@ import javax.ejb.RemoveException;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IExternalPage;
-import net.sf.tapestry.IPageLoader;
 import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.PageLoaderException;
 import net.sf.tapestry.html.BasePage;
-import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.vlib.VirtualLibraryEngine;
 import net.sf.tapestry.vlib.components.Browser;
 import net.sf.tapestry.vlib.ejb.Book;
 import net.sf.tapestry.vlib.ejb.IBookQuery;
 import net.sf.tapestry.vlib.ejb.IOperations;
-import net.sf.tapestry.vlib.ejb.IPerson;
 import net.sf.tapestry.vlib.ejb.Person;
 
 /**

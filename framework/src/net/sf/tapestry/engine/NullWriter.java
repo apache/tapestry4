@@ -1,6 +1,5 @@
 package net.sf.tapestry.engine;
 
-import net.sf.tapestry.*;
 import net.sf.tapestry.IMarkupWriter;
 
 /**

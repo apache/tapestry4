@@ -3,13 +3,6 @@ package net.sf.tapestry;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import net.sf.tapestry.form.Form;
-import net.sf.tapestry.link.ActionLink;
-import net.sf.tapestry.link.DirectLink;
-import net.sf.tapestry.link.PageLink;
 
 /**
  *  A service, provided by the {@link IEngine}, for its pages and/or components.  

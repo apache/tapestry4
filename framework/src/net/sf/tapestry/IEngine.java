@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.util.Locale;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpSession;
 
-import net.sf.tapestry.spec.ApplicationSpecification;
 import net.sf.tapestry.spec.IApplicationSpecification;
 import net.sf.tapestry.util.io.DataSqueezer;
 

@@ -3,7 +3,6 @@ package net.sf.tapestry.form;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IForm;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;

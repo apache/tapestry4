@@ -1,12 +1,9 @@
 package net.sf.tapestry.form;
 
-import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IForm;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
-import net.sf.tapestry.RequiredParameterException;
-import net.sf.tapestry.Tapestry;
 
 /**
  *  Implements a component that manages an HTML &lt;textarea&gt; form element.

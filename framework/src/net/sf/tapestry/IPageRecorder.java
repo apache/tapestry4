@@ -3,7 +3,6 @@ package net.sf.tapestry;
 import java.util.Collection;
 
 import net.sf.tapestry.event.ChangeObserver;
-import net.sf.tapestry.event.PageDetachListener;
 
 /**
  *  Defines an object that can observe changes to properties of

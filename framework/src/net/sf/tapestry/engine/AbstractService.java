@@ -1,7 +1,6 @@
 package net.sf.tapestry.engine;
 
 import java.io.IOException;
-import java.net.URLDecoder;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.Gesture;

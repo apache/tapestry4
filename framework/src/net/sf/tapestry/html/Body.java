@@ -1,6 +1,5 @@
 package net.sf.tapestry.html;
 
-import java.net.URL;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;

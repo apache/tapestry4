@@ -1,11 +1,9 @@
 package net.sf.tapestry.link;
 
-import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.INamespace;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
-import net.sf.tapestry.RequiredParameterException;
 
 /**
  *  A component for creating a navigation link to another page, 

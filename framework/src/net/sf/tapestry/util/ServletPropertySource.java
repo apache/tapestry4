@@ -1,6 +1,5 @@
 package net.sf.tapestry.util;
 
-import javax.servlet.Servlet;
 import javax.servlet.ServletConfig;
 
 import net.sf.tapestry.IPropertySource;

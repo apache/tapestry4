@@ -1,11 +1,7 @@
 package net.sf.tapestry.link;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.engine.ExternalService;
 
 /**
  *  A component for creating a link to {@link IExternalPage} using the 

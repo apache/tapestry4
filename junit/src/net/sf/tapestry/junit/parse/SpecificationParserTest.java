@@ -1,15 +1,12 @@
 package net.sf.tapestry.junit.parse;
 
 import junit.framework.AssertionFailedError;
-
 import net.sf.tapestry.junit.TapestryTestCase;
-import net.sf.tapestry.spec.ApplicationSpecification;
 import net.sf.tapestry.spec.BindingSpecification;
 import net.sf.tapestry.spec.BindingType;
 import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.spec.IApplicationSpecification;
 import net.sf.tapestry.spec.ILibrarySpecification;
-import net.sf.tapestry.spec.LibrarySpecification;
 import net.sf.tapestry.spec.ParameterSpecification;
 import net.sf.tapestry.util.xml.DocumentParseException;
 

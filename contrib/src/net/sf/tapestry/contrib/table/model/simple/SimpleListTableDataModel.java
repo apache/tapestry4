@@ -1,15 +1,12 @@
 package net.sf.tapestry.contrib.table.model.simple;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
 import net.sf.tapestry.contrib.table.model.CTableDataModelEvent;
-import net.sf.tapestry.contrib.table.model.ITableDataModel;
-import net.sf.tapestry.contrib.table.model.ITableDataModelListener;
 import net.sf.tapestry.contrib.table.model.common.AbstractTableDataModel;
 import net.sf.tapestry.contrib.table.model.common.ArrayIterator;
 

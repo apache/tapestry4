@@ -3,11 +3,7 @@ package net.sf.tapestry.vlib.components;
 import java.sql.Timestamp;
 
 import net.sf.tapestry.BaseComponent;
-import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IEngine;
-import net.sf.tapestry.IMarkupWriter;
-import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.vlib.Visit;
 import net.sf.tapestry.vlib.ejb.Book;
 

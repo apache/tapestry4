@@ -7,7 +7,6 @@ import net.sf.tapestry.event.ChangeObserver;
 import net.sf.tapestry.event.PageCleanupListener;
 import net.sf.tapestry.event.PageDetachListener;
 import net.sf.tapestry.event.PageRenderListener;
-import net.sf.tapestry.spec.ComponentSpecification;
 
 /**
  *  A root level component responsible for generating an entire a page

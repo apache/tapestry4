@@ -1,11 +1,7 @@
 package net.sf.tapestry.bean;
 
-import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IResourceResolver;
-import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.util.prop.OgnlUtils;
-import ognl.Ognl;
-import ognl.OgnlException;
 
 /**
  *  Base class for initializing a property of a JavaBean.

@@ -5,11 +5,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import org.apache.commons.lang.enum.Enum;
-
-import junit.framework.AssertionFailedError;
-import junit.framework.TestCase;
-
 import net.sf.tapestry.junit.TapestryTestCase;
 import net.sf.tapestry.spec.AssetType;
 import net.sf.tapestry.spec.Direction;

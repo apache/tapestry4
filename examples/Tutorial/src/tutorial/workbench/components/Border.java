@@ -4,12 +4,9 @@ import tutorial.workbench.Visit;
 
 import net.sf.tapestry.BaseComponent;
 import net.sf.tapestry.IAsset;
-import net.sf.tapestry.IPageLoader;
 import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.PageLoaderException;
 import net.sf.tapestry.event.PageEvent;
 import net.sf.tapestry.event.PageRenderListener;
-import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.util.StringSplitter;
 
 /**

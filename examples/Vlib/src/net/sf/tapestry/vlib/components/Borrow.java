@@ -7,7 +7,6 @@ import javax.ejb.FinderException;
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.BaseComponent;
 import net.sf.tapestry.IBinding;
-import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.NullValueForBindingException;
 import net.sf.tapestry.RequestCycleException;

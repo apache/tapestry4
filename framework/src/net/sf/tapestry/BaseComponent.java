@@ -1,18 +1,17 @@
 package net.sf.tapestry;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import net.sf.tapestry.parse.ComponentTemplate;
 import net.sf.tapestry.parse.TemplateToken;
 import net.sf.tapestry.parse.TokenType;
 import net.sf.tapestry.spec.ComponentSpecification;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Base implementation for most components that use an HTML template.

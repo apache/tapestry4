@@ -1,7 +1,6 @@
 package net.sf.tapestry.components;
 
 import net.sf.tapestry.AbstractComponent;
-import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;

@@ -6,7 +6,6 @@ import java.util.Locale;
 
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
-
 import net.sf.tapestry.DefaultResourceResolver;
 import net.sf.tapestry.IComponentStringsSource;
 import net.sf.tapestry.IPage;
@@ -14,11 +13,9 @@ import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.engine.DefaultStringsSource;
 import net.sf.tapestry.parse.SpecificationParser;
-import net.sf.tapestry.spec.ApplicationSpecification;
 import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.spec.IApplicationSpecification;
 import net.sf.tapestry.spec.ILibrarySpecification;
-import net.sf.tapestry.spec.LibrarySpecification;
 import net.sf.tapestry.util.IPropertyHolder;
 
 /**

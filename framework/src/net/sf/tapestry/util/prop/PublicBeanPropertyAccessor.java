@@ -1,9 +1,8 @@
 package net.sf.tapestry.util.prop;
 
-import java.beans.BeanInfo;
-import java.beans.Introspector;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 import ognl.ObjectPropertyAccessor;
 import ognl.OgnlException;

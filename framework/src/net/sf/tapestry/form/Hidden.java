@@ -2,7 +2,6 @@ package net.sf.tapestry.form;
 
 import java.io.IOException;
 
-import net.sf.tapestry.BindingException;
 import net.sf.tapestry.IActionListener;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IForm;

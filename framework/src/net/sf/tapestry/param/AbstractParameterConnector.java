@@ -11,7 +11,6 @@ import net.sf.tapestry.form.IFormComponent;
 import net.sf.tapestry.spec.Direction;
 import net.sf.tapestry.spec.ParameterSpecification;
 import net.sf.tapestry.util.prop.OgnlUtils;
-import ognl.Ognl;
 
 /**
  *  Standard implementation of {@link IParameterConnector}.

@@ -1,8 +1,5 @@
 package net.sf.tapestry;
 
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletResponse;
-
 /**
  *  Exception thrown to force a redirection to an arbitrary location.
  *  This is used when, after processing a request (such as a form

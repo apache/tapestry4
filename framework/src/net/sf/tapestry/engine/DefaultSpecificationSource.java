@@ -19,7 +19,6 @@ import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.ISpecificationSource;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.parse.SpecificationParser;
-import net.sf.tapestry.spec.ApplicationSpecification;
 import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.spec.IApplicationSpecification;
 import net.sf.tapestry.spec.ILibrarySpecification;

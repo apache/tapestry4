@@ -6,7 +6,6 @@ import java.net.URL;
 import java.util.Locale;
 
 import javax.servlet.ServletConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
@@ -14,16 +13,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import net.sf.tapestry.parse.SpecificationParser;
-import net.sf.tapestry.spec.ApplicationSpecification;
 import net.sf.tapestry.spec.IApplicationSpecification;
-import net.sf.tapestry.util.StringSplitter;
 import net.sf.tapestry.util.exception.ExceptionAnalyzer;
 import net.sf.tapestry.util.pool.Pool;
 import net.sf.tapestry.util.xml.DocumentParseException;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  *  Links a servlet container with a Tapestry application.  The servlet has some

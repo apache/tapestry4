@@ -3,7 +3,6 @@ package net.sf.tapestry.spec;
 import net.sf.tapestry.bean.ExpressionBeanInitializer;
 import net.sf.tapestry.bean.FieldBeanInitializer;
 import net.sf.tapestry.bean.IBeanInitializer;
-import net.sf.tapestry.bean.PropertyBeanInitializer;
 import net.sf.tapestry.bean.StaticBeanInitializer;
 import net.sf.tapestry.bean.StringBeanInitializer;
 

@@ -1,14 +1,10 @@
 package net.sf.tapestry.engine;
 
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IComponent;
@@ -17,7 +13,6 @@ import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IForm;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IMonitor;
-import net.sf.tapestry.INamespace;
 import net.sf.tapestry.IPage;
 import net.sf.tapestry.IPageRecorder;
 import net.sf.tapestry.IPageSource;
@@ -32,6 +27,9 @@ import net.sf.tapestry.StaleLinkException;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.event.ChangeObserver;
 import net.sf.tapestry.event.ObservedChangeEvent;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  *  Provides the logic for processing a single request cycle.  Provides access to

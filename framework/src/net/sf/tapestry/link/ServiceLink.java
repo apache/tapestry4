@@ -1,7 +1,6 @@
 package net.sf.tapestry.link;
 
 import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.Tapestry;
 
 /**
  *  A component for creating a link for an arbitrary {@link net.sf.tapestry.IEngineService

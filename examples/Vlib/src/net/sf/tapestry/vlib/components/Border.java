@@ -2,7 +2,6 @@ package net.sf.tapestry.vlib.components;
 
 import net.sf.tapestry.BaseComponent;
 import net.sf.tapestry.IAsset;
-import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.callback.PageCallback;

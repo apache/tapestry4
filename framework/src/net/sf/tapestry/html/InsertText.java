@@ -6,7 +6,6 @@ import java.io.Reader;
 import java.io.StringReader;
 
 import net.sf.tapestry.AbstractComponent;
-import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;

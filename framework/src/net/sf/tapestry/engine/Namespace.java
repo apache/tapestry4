@@ -10,7 +10,6 @@ import net.sf.tapestry.ISpecificationSource;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.spec.ILibrarySpecification;
-import net.sf.tapestry.spec.LibrarySpecification;
 
 /**
  *  Implementation of {@link net.sf.tapestry.INamespace}

@@ -2,7 +2,6 @@ package net.sf.tapestry;
 
 import net.sf.tapestry.spec.ComponentSpecification;
 import net.sf.tapestry.spec.ILibrarySpecification;
-import net.sf.tapestry.spec.LibrarySpecification;
 
 /**
  *  Defines access to component specifications.

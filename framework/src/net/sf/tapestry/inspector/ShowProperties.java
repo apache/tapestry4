@@ -1,9 +1,7 @@
 package net.sf.tapestry.inspector;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import net.sf.tapestry.BaseComponent;
@@ -11,11 +9,8 @@ import net.sf.tapestry.IEngine;
 import net.sf.tapestry.IPage;
 import net.sf.tapestry.IPageChange;
 import net.sf.tapestry.IPageRecorder;
-import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.event.PageEvent;
 import net.sf.tapestry.event.PageRenderListener;
-import net.sf.tapestry.util.prop.IPublicBean;
 
 /**
  *  Component of the {@link Inspector} page used to display

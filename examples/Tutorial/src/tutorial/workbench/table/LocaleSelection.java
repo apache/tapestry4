@@ -156,7 +156,7 @@ public class LocaleSelection
 	 */
 	public int getCurrentLocaleVerbosity()
 	{
-		return m_objVerbosityRating.calculateVerbosity(getCurrentLocale());
+		return VerbosityRating.calculateVerbosity(getCurrentLocale());
 	}
 
 	/**

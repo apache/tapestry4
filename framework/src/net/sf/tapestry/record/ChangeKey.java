@@ -1,7 +1,5 @@
 package net.sf.tapestry.record;
 
-import java.io.Serializable;
-
 /**
  *  Used to identify a property change.
  *
