@@ -168,17 +168,15 @@ public class JanitorThread extends Thread
      * successful, or false if the thread was interrupted (and should shut down).
      */
 
-    protected boolean waitForNextPass()
+    protected void waitForNextPass()
     {
         try
         {
             sleep(interval);
-
-            return true;
         }
         catch (InterruptedException ex)
         {
-            return false;
+            interrupt();
         }
     }
 
@@ -188,10 +186,9 @@ public class JanitorThread extends Thread
 
     public void run()
     {
-        while (true)
+        while (!isInterrupted())
         {
-            if (!waitForNextPass())
-                return;
+            waitForNextPass();
 
             sweep();
         }
