@@ -91,8 +91,33 @@ FINAL_EJBC_OPT := $(strip $(LOCAL_EJBC_OPT) $(EJBC_OPT))
 # EJBC leaves lots of garbage around, so we'll switch to the
 # build directory
 
-$(DEPLOY_JAR_FILE): $(JAR_FILE) $(filter %.jar %.zip,$(PROJ_CLASSPATH))
-	$(call NOTE, Creating $(DEPLOY_JAR_FILE) ...)
+# The intermediate jar is what's built by EJBC ... EJBC doesn't
+# bother to compress the file.
+
+INTERMEDIATE_JAR := $(MOD_BUILD_DIR)/deploy.jar
+
+# We unpack the intermediate jar and then repack (with compression)
+# to create the final deployable.
+
+DEPLOY_IMAGE_DIR := $(MOD_BUILD_DIR)/deploy-image
+
+$(INTERMEDIATE_JAR): $(JAR_FILE) $(filter %.jar %.zip,$(PROJ_CLASSPATH))
+	$(call NOTE, Running EJBC ...)
 	$(CD) $(MOD_BUILD_DIR) ; \
 	$(call EXEC_JAVA,$(EJBC_CLASSPATH), \
-		weblogic.ejbc $(FINAL_EJBC_OPT) ../$(JAR_FILE) ../$(DEPLOY_JAR_FILE))
+		weblogic.ejbc $(FINAL_EJBC_OPT) ../$(JAR_FILE) ../$(INTERMEDIATE_JAR))
+		
+# This is the unpack/repack step.
+
+$(DEPLOY_JAR_FILE): $(INTERMEDIATE_JAR)
+	@$(RM) $(DEPLOY_IMAGE_DIR)
+	@$(MKDIRS) $(DEPLOY_IMAGE_DIR)
+	$(call NOTE, Creating $(DEPLOY_JAR_FILE) ...)
+	$(CD) $(DEPLOY_IMAGE_DIR) ; \
+		$(JAR) xf ../deploy.jar
+	$(JAR) cf $(DEPLOY_JAR_FILE) -C $(DEPLOY_IMAGE_DIR) .
+
+deployable: $(DEPLOY_JAR_FILE)
+	@$(TOUCH) $(MOD_BUILD_DIR)/dummy
+	
+.PHONY: deployable
