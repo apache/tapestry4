@@ -177,7 +177,7 @@ implements ILifecycle
     }
 
     /**
-     *  Invokes {@link IEngine#isResetServiceEnabled)} and inverts the result.
+     *  Invokes {@link IEngine#isResetServiceEnabled()} and inverts the result.
      *
      */
      

@@ -1,5 +1,10 @@
 * Feb 12 2001 hship
 
+Fix some bad JavaDoc comments.
+Install accidentally ommitted classes.
+
+* Feb 12 2001 hship
+
 Replace NullOutputStream with NullResponseWriter.
 Minor formatting changes (for readability) to certain component's output.
 Standardize of "disabled" (with a default of false) for all components (there was
