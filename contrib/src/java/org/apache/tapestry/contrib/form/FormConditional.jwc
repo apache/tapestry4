@@ -15,15 +15,16 @@
    limitations under the License.
 -->
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
   
 <component-specification class="org.apache.tapestry.contrib.form.FormConditional">
+    
   <description>
   Conditionally emulates an element and its attributes (if element is specified) and/or includes a block of content if a condition is met.
   </description>
   
-  <parameter name="condition" type="boolean" direction="in" required="yes">
+  <parameter name="condition" required="yes">
     <description>
     The condition to evaluate.
     </description>
@@ -37,7 +38,7 @@
 
   <parameter name="listener"/>
 
-  <parameter name="conditionValue" type="boolean">
+  <parameter name="conditionValue">
     <description>
     The value of the condition. During render this is obtained from
     the condition parameter. During rewind it is the submitted condition.

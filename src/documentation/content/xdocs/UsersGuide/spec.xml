@@ -113,17 +113,24 @@ it is expected that there will be some runtime warnings).
   <li>
     In the 3.0 DTD, the &spec.binding; element was for specifying OGNL expressions only, and had an
     expression attribute.  In the 3.1 DTD, it is used for setting all types of attributes, and has
-    a value attribute (using a prefix to determine which type of binding is to be used).
+    a value attribute.  The value is a binding reference, which
+    uses a prefix to determine which type of binding is to be used.
   </li>
   <li>The &lt;static-binding&gt; and &lt;message-binding&gt; elements have been removed, replaced with
     the &spec.binding; element and the ognl: and message: prefixes, respectively.</li>
   <li>The &lt;inherited-binding&gt; element has been removed; parameters of parent components may be
     accessed as properties.</li>
   <li>The &lt;property&gt; element (in 3.0) has been renamed to &spec.meta;.</li>
-  <li>The &lt;property-specification; element (in 3.0) has been renamed to &spec.property;, and the type
+  <li>The &lt;property-specification&gt; element (in 3.0) has been renamed to &spec.property;, and the type
     attribute has been dropped.</li>
   <li>The &spec.inject; element has been added.</li>
+  <li>The &spec.parameter; element has been simplified; the type and direction attributes have been dropped. The
+    default-value attribute is now a <em>binding reference</em>, as with the &spec.binding; element's value attribute.</li>
 </ul>
+
+<p>
+More detailed notes on <a href="upgrade.html">upgrading from Tapestry 3.0 to Tapestry 3.1</a> are available.
+</p>
 
 </section>  <!-- changes -->
 
@@ -327,7 +334,7 @@ of single and double quotes).
 </table>
 
 <p>
-The value may be literal or interpreted; interpreted values are divided into a
+The value may be literal string, or a binding reference.  Binding references are divided into a
 <em>prefix</em> and a <em>locator</em>.  The prefix identifies how the locator is 
 interpreted.
 </p>
@@ -1178,24 +1185,6 @@ with attributes and entities related to parameters removed.
 Appears in: &spec.component-specification;
 </p>
 
-<p>
-Defines a formal parameter of a component.  Parameters may be connected 
-(in, form or auto)
-or unconnected (custom).  If a parameter is
-connected, but the class does not provide the property (or does, but
-the accessors are abstract), then the framework
-will create and use a subclass that contains the implementation
-of the necessary property.
-</p>
-
-<p>
-For auto parameters, the framework will create a synthetic property
-as a wrapper around the binding.  Reading the property will read the value from
-the binding and updating the property will update the binding value.  auto
-may only be used with required parameters.  auto is less
-efficient than in, but can be used even when the component
-is not rendering.
-</p>
 
 
 <table>
@@ -1216,18 +1205,7 @@ is not rendering.
 	<td>The name of the parameter, which must be 
 	a valid Java identifier.</td>
 </tr>
-<tr>
-  <td>type</td>
-  <td>scalar name, or class name</td>
-  <td>no</td>
-  <td/>
-  <td>Required for connected parameters.  Specifies
-   the type of the JavaBean property that a connected
-   parameter writes and reads.  The property must
-    match this exact value, which can be a fully specified class name,
-    or the name of a scalar Java type.  
-   </td>
-  </tr>
+
   
 <tr>
   <td>required</td>
@@ -1245,62 +1223,38 @@ is not rendering.
   <td>string</td>
   <td>no</td>
   <td/>
-  <td>For connected parameters only; allows the name of the property
+  <td>Allows the name of the property
   to differ from the name of the parameter.  If not specified,
   the property name will be the same as the parameter name.
   </td>
 </tr>
 
 <tr>
-  <td>direction</td>
-  <td>in|form|auto|custom</td>
-  <td>no</td>
-  <td>custom</td>
-  <td>
-  <p>
-  Identifies the semantics of how the parameter is used by the
-  component.  custom, the default, means the
-  component explicitly controls reading and writing values through
-  the binding.
-  </p>
-  
-  <p>
-  in means the property is set from the parameter
-  before the component renders, and is reset back to default value
-  after the component renders.
-  </p>
-  
-  <p>
-  form means that the property is set from the
-  parameter when the component renders (as with in).
-  When the form is submitted, the value is read from the property
-  and used to set the binding value after the component rewinds.
-  </p>
-  
-  <p>
-  auto creates a synthetic property that works
-  with the binding to read and update.  auto
-  parameters must be required, but can be used even when the
-  component is not rendering.
-  </p>
-  </td>
-</tr>
-
-<tr>
 	<td>default-value</td>	
-	<td>OGNL expression</td>
+	<td>string</td>
 	<td>no</td>
 	<td/>
 	<td>
-	Specifies the default value for the parameter, if the parameter is not bound.	
+	Specifies the default value for the parameter, if the parameter is not bound.	This value
+  is a <em>binding reference</em>, exactly like
+  a &spec.binding; element's value attribute.
 	</td>
 </tr>
 
-
 </table>
 
+<p>
+To a component, component parameters appear as new properties that can be read and updated (in Java code, or using OGNL).
+As with specified properties, you may define abstract accessor methods in you Java code, to allow type-safe access to the parameter values.
+</p>
 
-
+<note>
+In Tapestry 3.0 and earlier, it was necesary to specify a <em>parameter direction</em>, which informed Tapestry about how the
+parameter was used by the component. This allowed Tapestry to properly control when values moved between a component and its
+container ... but was an awkward solution.  Tapestry 3.1 adds much more sophisticated runtime code generation for parameters so
+they <em>just work</em>, regardless of whether you access a parameter property while the component is rendering, in a listener method,
+or at some other time entirely.
+</note>
 
 </section> <!-- spec.parameter -->
 
@@ -1431,7 +1385,7 @@ itself.
 
 <note> In the Tapestry 3.0 DTD, this element was named &lt;property-specification&gt; and had an additional attribute, 
   type. In Tapestry 3.1, the type of the implemented property will simply match the type of any existing (abstract) 
-  property, or will simply be type Object. </note>
+  property, or will default to Object. </note>
 
 </section> <!-- spec.property -->
 

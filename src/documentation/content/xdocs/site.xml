@@ -58,6 +58,7 @@ See http://xml.apache.org/forrest/linking.html for more info
       <hivemind label="HiveMind Integration" href="hivemind.html"/>
       <configuration label="Configuring Tapestry" href="configuration.html"/>
       <proprties label="Tapestry Object Properties" href="properties.html"/>
+      <upgrade label="Upgrading from 3.0" href="upgrade.html"/>
       <spec label="Specification DTDs" href="spec.html"/>
     </UsersGuide>
     

@@ -15,6 +15,7 @@
 package org.apache.tapestry.services.impl;
 
 import java.lang.reflect.Method;
+import java.util.Collections;
 import java.util.Date;
 
 import ognl.TypeConverter;
@@ -194,7 +195,8 @@ public class TestExpressionEvaluator extends HiveMindTestCase
 
         ee.setExpressionCache(cache);
         ee.setApplicationSpecification(as);
-
+        ee.setContributions(Collections.EMPTY_LIST);
+        
         ee.initializeService();
 
         verifyControls();

@@ -361,12 +361,10 @@ a later request, even though the request may use a different page instance (from
 </p>
 
 <p>
-Each persistent page property is stored individually as an HttpSession attribute.  A call
-to the static method <code>Tapestry.fireObservedChange()</code> must be added
-to the setter method for the property (as we'll see shortly, Tapestry can
-write this method for you, which is the best approach). When the property is changed, its value is stored
+Each persistent page property is stored individually as an HttpSession attribute. 
+When the property is changed, its value is stored
 as a session attribute.
-Like the Servlet API, persistent properties work best with immutable objects
+As with any other kind of HttpSession attribute,  persistent properties work best with immutable objects
 such as String and Integer.  For mutable objects (including List and Map and other collections, or any objects you
 create yourself), you must
 be careful <em>not</em> to change the internal state of a persistent property value after invoking the
@@ -384,7 +382,7 @@ methods and whatever extra initialization or cleanup is required.
 <p>
 You may also, optionally, make your class abstract, and define abstract accessor methods that will
 be filled in by Tapestry in the fabricated subclass.  This allows you to read and update properties inside
-your class, inside listener methods.
+your Java code, such as inside listener methods.
 </p>
 
 <note>
@@ -398,10 +396,11 @@ your class, inside listener methods.
 
 <note>
 Properties defined this way may be either transient or persistent. For transient properties (properties
-which do not persist between requests), it is only necessary to specify the property
+which do not persist between requests), it is only necessary to specify the property (with
+a &spec.property; element)
 if it has an initial value.  Tapestry scans the component class looking for abstract properties that don't
 match up against component parameters or &spec.property; elements; for each of these unclaimed properties,
-a concrete property is created. The property is a transient property, as if a &spec.property; element <em>did</em>
+a concrete property is created. The property is a transient property, exactly as if a &spec.property; element <em>did</em>
 exist for it.
 </note>
 	
@@ -484,205 +483,6 @@ when the page detaches is not defined and is subject to change.
 
 	
 </section> <!-- state.page-properties -->
-
-<section id="state.manual-page-properties">
-	<title>Implementing persistent page properties manually</title>
-	
-<warning>
-There is no reason to implement persistent page properties manually.  Using
-the &spec.property; element is much easier.
-</warning>	
-	
-<p>
-The preferred way to
-implement persistent page properties without using
-the &spec.property; element is to implement the method <code>initialize()</code> on your page.  This method is invoked
-once when the page is first created; it is invoked again at the end of each request cycle.  An empty implementation
-of this method is provided by &AbstractPage;.
-</p>
-
-
-<p>
-The first example demonstrates how to properly implement a transient property.  It is simply
-a normal JavaBean property implementation, with a little extra to reset the property
-back to its pristine value (null) at the end of the request.
-</p>
-
-<source>
-package mypackage;
-
-import org.apache.tapestry.html.BasePage;
-	
-public class MyPage extends &BasePage;
-{
-  private String _message;
-  
-  public String getMessage()
-  {
-    return _message;
-  }
-  
-  public void setMessage(String message)
-  {
-    _message = message;
-  }
-  
-  protected void initialize()
-  {
-    _message = null;
-  }
-}
-</source>
-
-
-<p>
-If your page has additional attributes, they should also be reset inside
-the <code>initialize()</code> method.
-</p>
-
-<p>
-Now that we've shown how to manually implement  <em>transient</em> state, we'll
-show how to handle <em>persistent</em> state.
-</p>	
-
-
-<p>
-For a property to be persistent, all that's necessary is that the accessor method notify
-the framework of changes.  Tapestry will record the changes (using an &IPageRecorder;)
-and, in later request cycles, will restore the property
-using using the recorded value and whichever page instance is taken out of the page pool.
-</p>
-
-<p>
-This notification takes the form of an invocation of the static  method
-<code>fireObservedChange()</code> in the &Tapestry; class.  
-This method is overloaded for all the scalar types, and for Object.
-</p>
-
-<source>
-package mypackage;
-
-import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.html.BasePage;
-
-public class MyPage extends &BasePage;
-{
-  private int _itemsPerPage;
-  
-  public int getItemsPerPage()
-  {
-    return _itemsPerPage;
-  }
-  
-  public void setItemsPerPage(int itemsPerPage)
-  {
-    _itemsPerPage = itemsPerPage;
-    
-    Tapestry.fireObservedChange(this, "itemsPerPage", new Integer(itemsPerPage));
-  }
-  
-  protected void initialize()
-  {
-    _itemsPerPage = 10;
-  }
-}
-</source>
-
-<p>
-This sets up a property, itemsPerPage, with a default value of 10.  If
-the value is changed (perhaps by a form or a &listener-method;),
-the changed value will "stick" with the user who changed it, for the duration of their
-session.
-</p>
-	
-</section> <!-- state.manual-page-properties -->
-
-<section id="state.manual-component-properties">
-	<title>Manual persistent component properties</title>
-	
-<warning>
-There is no reason to implement persistent component properties manually.  Using
-the &spec.property; element is much easier.
-</warning>	
-
-<p>
-Tapestry uses the same mechanism for persistent component properties as it does for
-persisting page properties (remember that pages are, in fact, specialized components).	
-Implementing transient and persistent properties inside components involves more work than with
-pages as the initialization of
-the component is more complicated.
-</p>
-
-<p>
-Components do not have the equivalent of the <code>initialize()</code> method.  Instead,
-they must register for an event notification to tell them when the page is being <em>detached</em>
-from the engine (prior to be stored back into the page pool).  This event is generated by the page itself.
-</p>
-
-<p>
-The Java interface &PageDetachListener; is the event listener interface for this purpose.  
-By simply implementing this interface, Tapestry will register the component as a listener and ensure that
-it receives event notifications at the right time (this works for the other
-page event interfaces, such as &PageRenderListener; as well; simply
-implement the interface and leave the rest to the framework).
-</p>
-
-<p>
-Tapestry provides a method, <code>finishLoad()</code>, for just this purpose: late initialization.
-</p>
-
-<source>
-package mypackage;
-
-import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.BaseComponent;
-import org.apache.tapestry.event.PageDetachListener;
-import org.apache.tapestry.event.PageEvent;
-	
-public class MyComponent extends &BaseComponent; implements &PageDetachListener;
-{
-  private String _myProperty;
-  
-  public void setMyProperty(String myProperty)
-  {
-    _myProperty = myProperty;
-    
-    Tapestry.fireObservedChange(this, "myProperty", myProperty);
-  }
-  
-  public String getMyProperty()
-  {
-    return _myProperty;
-  }
-  
-  protected void initialize()
-  {
-    _myProperty = "<em>a default value</em>";
-  }
-  
-  protected void finishLoad()
-  {
-    initialize();
-  }
-  
-  /**
-   * The method specified by &PageDetachListener;.
-   *
-   */
-  
-  public void pageDetached(PageEvent event)
-  {
-    initialize();
-  }
-}
-</source>
-
-<p>
-Again, there is no particular need to do all this; using the
-&spec.property; element is far, far simpler.	
-</p>
-	
-</section> <!-- state.manual-component-properties -->
 
 <section id="state.stateless">
 	<title>Stateless applications</title>

@@ -14,10 +14,13 @@
 
 package org.apache.tapestry.services.impl;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import ognl.ClassResolver;
 import ognl.Ognl;
+import ognl.OgnlRuntime;
 import ognl.TypeConverter;
 
 import org.apache.hivemind.ApplicationRuntimeException;
@@ -25,7 +28,6 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.services.ExpressionCache;
 import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.spec.IApplicationSpecification;
-import org.apache.tapestry.util.prop.OgnlClassResolver;
 
 /**
  * @author Howard M. Lewis Ship
@@ -43,17 +45,29 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator
 
     private TypeConverter _typeConverter;
 
+    private List _contributions;
+
     public void setApplicationSpecification(IApplicationSpecification applicationSpecification)
     {
         _applicationSpecification = applicationSpecification;
     }
-    
+
     public void initializeService()
     {
         if (_applicationSpecification.checkExtension(Tapestry.OGNL_TYPE_CONVERTER))
             _typeConverter = (TypeConverter) _applicationSpecification.getExtension(
                     Tapestry.OGNL_TYPE_CONVERTER,
                     TypeConverter.class);
+
+        Iterator i = _contributions.iterator();
+
+        while (i.hasNext())
+        {
+            PropertyAccessorContribution c = (PropertyAccessorContribution) i.next();
+
+            OgnlRuntime.setPropertyAccessor(c.getSubjectClass(), c.getAccessor());
+        }
+
     }
 
     public Object read(Object target, String expression)
@@ -126,5 +140,10 @@ public class ExpressionEvaluatorImpl implements ExpressionEvaluator
     public void setExpressionCache(ExpressionCache expressionCache)
     {
         _expressionCache = expressionCache;
+    }
+
+    public void setContributions(List contributions)
+    {
+        _contributions = contributions;
     }
 }

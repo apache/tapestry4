@@ -22,8 +22,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import ognl.OgnlRuntime;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Defense;
@@ -31,7 +29,6 @@ import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.BaseLocatable;
 import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.bean.BeanProvider;
-import org.apache.tapestry.bean.BeanProviderPropertyAccessor;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.event.ChangeObserver;
 import org.apache.tapestry.event.PageDetachListener;
@@ -49,15 +46,6 @@ import org.apache.tapestry.spec.IComponentSpecification;
 
 public abstract class AbstractComponent extends BaseLocatable implements IComponent
 {
-    static
-    {
-        // Register the BeanProviderHelper to provide access to the
-        // beans of a bean provider as named properties.
-        // TODO: move this into some kind of HiveMind configuration.
-
-        OgnlRuntime.setPropertyAccessor(IBeanProvider.class, new BeanProviderPropertyAccessor());
-    }
-
     /**
      * The specification used to originally build the component.
      */
@@ -172,6 +160,11 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
 
     public void addAsset(String name, IAsset asset)
     {
+        Defense.notNull(name, "name");
+        Defense.notNull(asset, "asset");
+
+        checkActiveLock();
+
         if (_assets == null)
             _assets = new HashMap(MAP_SIZE);
 
@@ -180,6 +173,10 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
 
     public void addComponent(IComponent component)
     {
+        Defense.notNull(component, "component");
+
+        checkActiveLock();
+
         if (_components == null)
             _components = new HashMap(MAP_SIZE);
 
@@ -195,6 +192,14 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
 
     public void addBody(IRender element)
     {
+        Defense.notNull(element, "element");
+
+        // TODO: Tweak the ordering of operations inside the PageLoader so that this
+        // check is allowable.  Currently, the component is entering active state
+        // before it loads its template.
+        
+        // checkActiveLock();
+
         // Should check the specification to see if this component
         // allows body. Curently, this is checked by the component
         // in render(), which is silly.
@@ -315,6 +320,8 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     /** @since 3.1 */
     private boolean isFormalParameter(String name)
     {
+        Defense.notNull(name, "name");
+
         return _specification.getParameter(name) != null;
     }
 
@@ -322,6 +329,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
      * Returns an object used to resolve classes.
      * 
      * @since 3.0
+     * @deprecated To be removed in 3.2
      */
     private ClassResolver getClassResolver()
     {
@@ -376,6 +384,8 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
 
     public IComponent getComponent(String id)
     {
+        Defense.notNull(id, "id");
+
         IComponent result = null;
 
         if (_components != null)
@@ -395,6 +405,8 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
 
     public void setContainer(IComponent value)
     {
+        checkActiveLock();
+
         if (_container != null)
             throw new ApplicationRuntimeException(Tapestry
                     .getMessage("AbstractComponent.attempt-to-change-container"));
@@ -586,40 +598,17 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     }
 
     /**
-     * Returns a {@link Map}of all bindings for this component. This implementation is expensive,
-     * since it has to merge the disassociated bindings (informal parameters, and parameters without
-     * a JavaBeans property) with the associated bindings (formal parameters with a JavaBeans
-     * property).
+     * Returns an unmodifiable {@link Map}of all bindings for this component.
      * 
      * @since 1.0.5
      */
 
     public Map getBindings()
     {
-        Map result = new HashMap();
+        if (_bindings == null)
+            return Collections.EMPTY_MAP;
 
-        // Add any informal parameters.
-
-        if (_bindings != null)
-            result.putAll(_bindings);
-
-        // Now work on the formal parameters
-
-        Iterator i = _specification.getParameterNames().iterator();
-        while (i.hasNext())
-        {
-            String name = (String) i.next();
-
-            if (result.containsKey(name))
-                continue;
-
-            IBinding binding = getBinding(name);
-
-            if (binding != null)
-                result.put(name, binding);
-        }
-
-        return result;
+        return Collections.unmodifiableMap(_bindings);
     }
 
     /**
@@ -943,7 +932,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
 
     /**
      * Returns true if the component has been transitioned into its active state by invoking
-     * {@link #}
+     * {@link #enterActiveState()}
      * 
      * @since 3.1
      */
@@ -957,5 +946,13 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     public void enterActiveState()
     {
         _active = true;
+    }
+
+    /** @since 3.1 */
+
+    protected void checkActiveLock()
+    {
+        if (_active)
+            throw new UnsupportedOperationException(TapestryMessages.componentIsLocked(this));
     }
 }

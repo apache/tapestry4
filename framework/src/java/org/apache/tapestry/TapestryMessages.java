@@ -29,4 +29,9 @@ final class TapestryMessages
     {
         return _formatter.format("servlet-init-failure", cause);
     }
+
+    public static String componentIsLocked(IComponent component)
+    {
+        return _formatter.format("component-is-locked", component.getExtendedId());
+    }
 }

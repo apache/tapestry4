@@ -30,7 +30,7 @@
         <description>The column currently being rendered [out]</description>
     </parameter>
 
-	<parameter name="element" default-value="'th'">
+	<parameter name="element" default-value="th">
         <description>The tag to use to wrap the column headers.</description>
     </parameter>
 

@@ -20,6 +20,7 @@ import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.services.BindingFactory;
+import org.apache.tapestry.services.BindingSource;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
 
@@ -32,12 +33,8 @@ import org.apache.tapestry.spec.IParameterSpecification;
  */
 public class EstablishDefaultParameterValuesVisitor implements IComponentVisitor
 {
-    private BindingFactory _bindingFactory;
-
-    public void setBindingFactory(BindingFactory bindingFactory)
-    {
-        _bindingFactory = bindingFactory;
-    }
+    /** @since 3.1 */
+    private BindingSource _bindingSource;
 
     /**
      * @see org.apache.tapestry.pageload.IComponentVisitor#visitComponent(org.apache.tapestry.IComponent)
@@ -63,13 +60,12 @@ public class EstablishDefaultParameterValuesVisitor implements IComponentVisitor
                         .parameterMustHaveNoDefaultValue(component, name), component, parameterSpec
                         .getLocation(), null);
 
-            // if there is no binding for this parameter, bind it to the default value
-            // Note: this presumes that initial values are always expressions, which
-            // is likely to change in 3.1 soon!
+            // if there is no binding for this parameter, bind it to the default value.
+            // In 3.0, default-value as always an OGNL expression, but now its a locator.
 
             if (component.getBinding(name) == null)
             {
-                IBinding binding = _bindingFactory.createBinding(
+                IBinding binding = _bindingSource.createBinding(
                         component,
                         name,
                         defaultValue,
@@ -77,7 +73,13 @@ public class EstablishDefaultParameterValuesVisitor implements IComponentVisitor
 
                 component.setBinding(name, binding);
             }
-
         }
+    }
+
+    /** @since 3.1 */
+
+    public void setBindingSource(BindingSource bindingSource)
+    {
+        _bindingSource = bindingSource;
     }
 }

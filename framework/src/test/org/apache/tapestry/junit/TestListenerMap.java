@@ -19,7 +19,6 @@ import java.util.Collections;
 import java.util.List;
 
 import junit.framework.AssertionFailedError;
-import ognl.Ognl;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IActionListener;
@@ -31,7 +30,6 @@ import org.apache.tapestry.listener.ListenerMap;
  * {@link org.apache.tapestry.listener.ListenerMapPropertyAccessor}classes.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 2.2
  */
 
@@ -158,32 +156,6 @@ public class TestListenerMap extends TapestryTestCase
         checkList("Method names.", new String[]
         { "actualListenerMethod", "invokeAndThrow", "invokeAndThrowRuntime", "listenerThrows",
                 "subclassMethod" }, names);
-    }
-
-    public void testListenerMethodPropertyAccess() throws Exception
-    {
-        Listener l = new ListenerSubclass();
-        ListenerMap m = new ListenerMap(l);
-
-        IActionListener al = (IActionListener) Ognl.getValue("subclassMethod", m);
-
-        int count = l.invokeCount;
-
-        al.actionTriggered(null, null);
-
-        assertEquals("Invocation count.", count + 1, l.invokeCount);
-    }
-
-    public void testPropertyAccess() throws Exception
-    {
-        Listener l = new ListenerSubclass();
-        ListenerMap m = new ListenerMap(l);
-
-        // class is a handy, read-only property.
-
-        Class c = (Class) Ognl.getValue("class", m);
-
-        assertEquals("ListenerMap class property.", ListenerMap.class, c);
     }
 
     public void testInvokeAndThrow() throws Exception

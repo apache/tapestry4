@@ -1,0 +1,296 @@
+<?xml version="1.0"?>
+<!--
+   Copyright 2004 The Apache Software Foundation
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "./dtd/document-v12.dtd"
+[
+	<!ENTITY projectroot '../'>
+	<!ENTITY % links.ent SYSTEM "../links.ent">
+  <!ENTITY % common.ent SYSTEM "common.ent">
+	%links.ent;
+  %common.ent;
+]>
+<document>
+  <header>
+    <title>Upgrading from Tapestry 3.0</title>
+  </header>
+
+<body>
+ 
+<p>
+One goal of Tapestry 3.1 is to make upgrading from release 3.0 as painless as possible.  
+</p>
+ 
+<p>
+Tapestry 3.1 still supports the Tapestry 3.0 DTDs (with minor exceptions). 
+</p>
+
+
+<section id="upgrade.service">
+  <title>Defining Engine Services</title>
+  
+<p>
+Tapestry 3.0 allowed engine services to be defined in the application specification using
+a &lt;service&gt; element. This is no longer supported in the 3.1 DTD.
+</p>
+  
+<p>
+Engine services are now defined using HiveMind, in the <code>tapestry.services.ApplicationServices</code> configuration point.
+</p>
+
+<p>
+The &lt;service&gt; element in a Tapestry 3.0 DTD is now ignored.
+</p>
+
+</section>  <!-- upgrade.service -->
+
+<section id="upgrade.parameters">
+  <title>Component Parameters</title>
+  
+<p>
+Tapestry 3.1 has greatly streamlined  <a href="components.html#components.parameters">component parameters</a>.
+</p>
+
+<section>
+  <title>Parameter Type</title>
+
+<p>
+In Tapestry 3.0, the &spec.parameter; element included a type attribute. This has been removed in Tapestry 3.1.  
+</p>
+
+<p>
+The parameter type is now determined from the Java class, by examining the accessor methods for the property.
+</p>
+
+<p>
+Tapestry 3.0 required an exact match on values bound to parameters. The bound value had to be assignable to the parameter's type.
+In Tapestry 3.1, parameters include built-in <em>coercion</em>; Tapestry will attempt to coerce the value extracted from the bound property 
+into the correct type.
+This is especially useful when using literal bindings for numeric properties.  For example, an HTML template may specify a numeric value
+to an attribute as a simple string:
+</p>
+  
+<source><![CDATA[
+  <span jwcid="@MyComponent" intParam="50"/>]]>
+</source>
+
+<p>
+The type of the parameter is determined from the accessor method:
+</p>
+
+<source>
+public abstract class MyComponent . . .
+
+  public abstact int getIntParam();
+</source>
+  
+<p>
+Tapestry will convert the string value to an integer automatically.
+</p>  
+
+<p>
+The coercion rules are driven by a number of configuration points and services, starting with
+the <code>tapestry.coerce.ValueConverter</code> service.
+</p>
+
+</section>
+  
+  
+<section>
+  <title>Parameter Direction</title>
+
+
+<p>
+In Tapestry 3.0, it was necessary to inform Tapestry of how and when a component parameter property was accessed -- this
+was parameter direction.
+Parameter direction is now ignored; Tapestry 3.1 now generates smart, caching accessor methods for parameter properties that work properly
+in all cases.  In effect, all parameters are now of direction auto (but its a smarter, more flexible version of direction
+auto than was available in Tapestry 3.0).
+</p>
+
+<p>
+This may be of concern if your component used the custom parameter direction. In Tapestry 3.0, direction custom meant that your code
+would directly access the &IBinding; object for the parameter, and no property for the parameter would be created.  In Tapestry 3.1, 
+a property <em>will</em> be created ... even if you continue to use the 3.0 DTD and specify direction custom.
+</p>
+
+<warning>
+  You should search for all component parameters that use direction custom and update the Java class.
+</warning>
+
+<p>
+For example, if you had a Tapestry 3.0 specification for a listener parameter:
+</p>
+
+<source><![CDATA[
+  <parameter name="listener" direction="custom" type="org.apache.tapestry.IActionListener"/>]]>  
+</source>
+
+<p>
+Then your 3.0 source code might look like:
+</p>
+
+<source>
+  public abstract IBinding getListenerBinding();
+  
+  public void someMethod(. . .)
+  {
+    IBinding binding = getListenerBinding();
+    
+    if (binding != null)
+    {
+      IActionListener listener = (IActionListener) binding.getObject("listener", IActionListener.class);
+      
+      if (listener != null)
+        listener.actionTriggered(this, cycle);
+    }
+    
+    . . .      
+</source>
+
+<p>
+In Tapestry 3.1, the specification is much simpler:
+</p>
+
+<source><![CDATA[
+  <parameter name="listener"/>]]>
+</source>
+
+<p>
+As is the Java code:
+</p>
+
+<source>
+  public abstract IActionListener getListener();
+  
+  public void someMethod(. . .)
+  {
+    IActionListener listener = getListener();
+    
+    if (listener != null)
+      listener.actionTriggered(this, cycle);
+  }
+  
+  . . .
+</source>
+
+<p>
+Tapestry takes care of de-referencing the binding (if the parameter is bound), along with type checks or coercions.
+</p>
+
+</section>
+
+<section>
+  <title>Accessing binding objects</title>
+  
+<p>
+In Tapestry 3.0, it was possible to access a &IBinding; object for a parameter by defining an additional property in your component's
+Java code:
+</p>
+
+<source>
+  public abstract IBinding getListenerBinding();
+</source>
+
+<p>
+This is no longer supported; the correct way to obtain a binding object is via the getBinding() method.  
+</p>
+
+<note>
+Because of the other improvements to parameters, it is virtually never necessary to obtain a binding object.
+</note>
+  
+</section>
+
+<section>
+  <title>Default value</title>
+  
+<p>
+In the Tapestry 3.0 DTD, the optional default-value attribute was used to provide an OGNL expression to use for a parameter, if the
+parameter is not otherwise bound.  In the Tapestry 3.1 DTD, the default-value attribute is a binding reference.  The following are
+equivalent:
+</p>
+
+<source><![CDATA[
+  <parameter name="foo" type="int" default-value="bar.baz"/>  <!-- 3.0 -->
+  
+  <parameter name="foo" default-value="ognl:bar.baz"/>        <!-- 3.1 -->]]>
+</source>
+  
+<p>
+The advantage in 3.1 is that it is easier to specify simple strings as defaults; it is also possible to use other binding prefixes
+(such as message:, or a user-supplied prefix).
+</p>
+  
+</section>
+
+<section>
+  <title>Inherited binding</title>
+  
+<p>
+Tapestry 3.0 included an &lt;inherited-binding&gt; element, this was a way to directly pass the &IBinding; object for a component parameter
+to a parameter of a nested component. This is no longer supported in Tapestry 3.1; instead, the property for the component parameter should be 
+bound to the nested component parameter:
+</p>
+
+<source><![CDATA[
+
+  <!-- 3.0 -->
+  
+  <parameter name="itemCount" type="int"/>
+
+  <component id="nested" type="Nested">
+    <inherited-binding name="count" parameter-name="itemCount"/>
+  </component>
+  
+  <!-- 3.1 -->
+  
+  <parameter name="itemCount"/>
+  
+  <component id="nested" type="Nested">
+    <binding name="count" value="ognl:itemCount"/>
+  </component>
+
+]]></source>
+  
+</section>
+  
+</section> <!-- upgrade.parameters -->
+
+
+<section id="upgrade.property">
+  <title>Specified Properties</title>
+  
+<p>
+Property specifications in Tapestry 3.1 have been simplified.  The specification element has changed
+from &lt;property-specification&gt; to the simpler, &spec.property;.
+</p>
+
+<p>
+In Tapestry 3.0, it was necessary to specify the type of the property; this is no longer necessary or possible. The type
+attribute has been removed, and the type is determined from the Java code (and defaults to Object if 
+the Java code does not define abstract accessors).
+</p>
+  
+<p>
+In addition, any abstract properties in the Java code will be converted into transient properties, even if there is no
+matching &spec.parameter; element.  Typically, the &spec.property; element is only used when the property is either
+not referenced inside Java code (such as a listener method), or when when the property must be persistent.
+</p>
+  
+</section> <!-- upgrade.property -->
+
+</body>
+</document>

@@ -45,8 +45,5 @@
   </parameter>
 
   <parameter name="encode" default-value="true"/>
-
-  <property name="name"/>
-  <property name="form"/>
    
 </component-specification>

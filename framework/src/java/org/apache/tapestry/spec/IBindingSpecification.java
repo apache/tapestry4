@@ -18,16 +18,32 @@ import org.apache.hivemind.Locatable;
 import org.apache.hivemind.LocationHolder;
 
 /**
- *  Stores a binding specification, which identifies the static value
- *  or OGNL expression for the binding.  The name of the binding (which
- *  matches a bindable property of the contined component) is implicitly known.
- *
+ * Stores a binding specification, which identifies the static value or OGNL expression for the
+ * binding. The name of the binding (which matches a bindable property of the contined component) is
+ * implicitly known.
+ * 
  * @author glongman@intelligentworks.com
  */
 public interface IBindingSpecification extends LocationHolder, Locatable
 {
-    public abstract BindingType getType();
-    public abstract String getValue();
-    public abstract void setType(BindingType type);
-    public abstract void setValue(String value);
+    /**
+     * Returns the type of binding specification; this is generally
+     * {@link org.apache.tapestry.spec.BindingType#PREFIXED}.
+     */
+
+    public BindingType getType();
+
+    /**
+     * For a prefixed binding specification (the typical type), the value is a binding reference; a
+     * string used to contruct the actual binding, and consists of a prefix (such as "ognl:" or
+     * "message:") and a locator. The prefix selects a
+     * {@link org.apache.tapestry.services.BindingFactory}, and the locator is passed to the
+     * factory, which uses it to construct the {@link org.apache.tapestry.IBinding}instance.
+     */
+
+    public String getValue();
+
+    public void setType(BindingType type);
+
+    public void setValue(String value);
 }

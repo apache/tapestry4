@@ -1,4 +1,4 @@
-//  Copyright 2004 The Apache Software Foundation
+// Copyright 2004 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -97,6 +97,10 @@ import org.apache.tapestry.event.PageRenderListener;
 public abstract class TableView extends BaseComponent implements PageDetachListener,
         PageRenderListener, ITableModelSource
 {
+    /** @since 3.1 */
+
+    public abstract TableColumnModelSource getModelSource();
+
     // Component properties
     private ITableSessionStateManager m_objDefaultSessionStateManager = null;
 
@@ -200,9 +204,7 @@ public abstract class TableView extends BaseComponent implements PageDetachListe
             m_objTableModel = generateTableModel(null);
 
         if (m_objTableModel == null)
-            throw new ApplicationRuntimeException(TableUtils.format(
-                    "missing-table-model",
-                    getExtendedId()));
+            throw new ApplicationRuntimeException(TableMessages.missingTableModel(this));
 
         return m_objTableModel;
     }
@@ -253,10 +255,9 @@ public abstract class TableView extends BaseComponent implements PageDetachListe
             objDataModel = new SimpleListTableDataModel((Iterator) objSourceValue);
 
         if (objDataModel == null)
-            throw new ApplicationRuntimeException(TableUtils.format(
-                    "invalid-table-source",
-                    getExtendedId(),
-                    objSourceValue.getClass()));
+            throw new ApplicationRuntimeException(TableMessages.invalidTableSource(
+                    this,
+                    objSourceValue));
 
         return new SimpleTableModel(objDataModel, objColumnModel, objState);
     }
@@ -297,9 +298,7 @@ public abstract class TableView extends BaseComponent implements PageDetachListe
             for (int i = 0; i < nColumnsNumber; i++)
             {
                 if (!(arrColumnsList.get(i) instanceof ITableColumn))
-                    throw new ApplicationRuntimeException(TableUtils.format(
-                            "columns-only-please",
-                            getExtendedId()));
+                    throw new ApplicationRuntimeException(TableMessages.columnsOnlyPlease(this));
             }
             //objColumns = arrColumnsList.toArray(new ITableColumn[nColumnsNumber]);
             return new SimpleTableColumnModel(arrColumnsList);
@@ -325,10 +324,7 @@ public abstract class TableView extends BaseComponent implements PageDetachListe
             return generateTableColumnModel(strColumns);
         }
 
-        throw new ApplicationRuntimeException(TableUtils.format(
-                "invalid-table-columns",
-                getExtendedId(),
-                objColumns.getClass()));
+        throw new ApplicationRuntimeException(TableMessages.invalidTableColumns(this, objColumns));
     }
 
     private void addAll(List arrColumnsList, Iterator objColumnsIterator)
@@ -351,7 +347,8 @@ public abstract class TableView extends BaseComponent implements PageDetachListe
     protected ITableColumnModel generateTableColumnModel(String strDesc)
     {
         IComponent objColumnSettingsContainer = getColumnSettingsContainer();
-        return TableUtils.generateTableColumnModel(strDesc, this, objColumnSettingsContainer);
+
+        return getModelSource().generateTableColumnModel(strDesc, this, objColumnSettingsContainer);
     }
 
     /**

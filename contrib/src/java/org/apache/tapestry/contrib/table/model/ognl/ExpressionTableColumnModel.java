@@ -1,4 +1,4 @@
-//  Copyright 2004 The Apache Software Foundation
+// Copyright 2004 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,52 +16,59 @@ package org.apache.tapestry.contrib.table.model.ognl;
 
 import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumnModel;
+import org.apache.tapestry.services.ExpressionEvaluator;
 
 /**
  * @author mindbridge
- *
  */
 public class ExpressionTableColumnModel extends SimpleTableColumnModel
 {
     /**
      * Constructs a table column model containting OGNL expression columns. <br>
-     * The data for the columns is provided in the form of a string array,
-     * where the info of each column is stored in two consecutive fields in
-     * the array, hence its size must be even. The expected info is the following:
+     * The data for the columns is provided in the form of a string array, where the info of each
+     * column is stored in two consecutive fields in the array, hence its size must be even. The
+     * expected info is the following:
      * <ul>
-     *   <li> Column Name
-     *   <li> OGNL expression
+     * <li>Column Name
+     * <li>OGNL expression
      * </ul>
-     * @param arrColumnInfo The information to construct the columns from
-     * @param bSorted Whether all columns are sorted or not
+     * 
+     * @param arrColumnInfo
+     *            The information to construct the columns from
+     * @param bSorted
+     *            Whether all columns are sorted or not
      */
-    public ExpressionTableColumnModel(String[] arrColumnInfo, boolean bSorted)
+    public ExpressionTableColumnModel(String[] arrColumnInfo, boolean bSorted,
+            ExpressionEvaluator expressionEvaluator)
     {
-        this(convertToDetailedArray(arrColumnInfo, bSorted));
+        this(convertToDetailedArray(arrColumnInfo, bSorted), expressionEvaluator);
     }
 
     /**
      * Constructs a table column model containting OGNL expression columns. <br>
-     * The data for the columns is provided in the form of a string array,
-     * where the info of each column is stored in four consecutive fields in
-     * the array, hence its size must be divisible by 4. <br>
+     * The data for the columns is provided in the form of a string array, where the info of each
+     * column is stored in four consecutive fields in the array, hence its size must be divisible by
+     * 4.<br>
      * The expected info is the following:
      * <ul>
-     *   <li> Column Name
-     *   <li> Display Name
-     *   <li> OGNL expression
-     *   <li> Sorting of the column. This is either a Boolean, 
-     *        or a String representation of a boolean.
+     * <li>Column Name
+     * <li>Display Name
+     * <li>OGNL expression
+     * <li>Sorting of the column. This is either a Boolean, or a String representation of a
+     * boolean.
      * </ul>
+     * 
      * @param arrColumnInfo
      */
-    public ExpressionTableColumnModel(Object[] arrColumnInfo)
+    public ExpressionTableColumnModel(Object[] arrColumnInfo,
+            ExpressionEvaluator expressionEvaluator)
     {
-        super(convertToColumns(arrColumnInfo));
+        super(convertToColumns(arrColumnInfo, expressionEvaluator));
     }
 
     /**
      * Method convertToDetailedArray.
+     * 
      * @param arrColumnInfo
      * @param bSorted
      * @return Object[]
@@ -90,10 +97,12 @@ public class ExpressionTableColumnModel extends SimpleTableColumnModel
 
     /**
      * Method convertToColumns.
+     * 
      * @param arrDetailedInfo
      * @return ITableColumn[]
      */
-    protected static ITableColumn[] convertToColumns(Object[] arrDetailedInfo)
+    protected static ITableColumn[] convertToColumns(Object[] arrDetailedInfo,
+            ExpressionEvaluator expressionEvaluator)
     {
         int nColumns = arrDetailedInfo.length / 4;
         ITableColumn[] arrColumns = new ITableColumn[nColumns];
@@ -128,8 +137,8 @@ public class ExpressionTableColumnModel extends SimpleTableColumnModel
                     bSorted = Boolean.valueOf(objTempValue.toString()).booleanValue();
             }
 
-            arrColumns[i] =
-                new ExpressionTableColumn(strColumnName, strDisplayName, strExpression, bSorted);
+            arrColumns[i] = new ExpressionTableColumn(strColumnName, strDisplayName, strExpression,
+                    bSorted, expressionEvaluator);
         }
 
         return arrColumns;

@@ -164,7 +164,7 @@ WEB-INF folder.  <link href="#components.libraries">Components packaged into
 	<title>Coding components</title>
 	
 <p>
-When creating a new component by subclassing &AbstractComponent;, you must write the
+When creating a new component by subclassing &AbstractComponent;, you must implement the
 <code>renderComponent()</code>	 method. This method is invoked when the component's container (typically, but not always,
 a page) invokes its own <code>renderBody()</code> method.
 </p>
@@ -266,14 +266,15 @@ set the properties of a component, but that's it: properties are write-and-forge
 	
 <p>
 The Tapestry model is a little more complex. A component's parameters are <em>bound</em>	
-to properties of the enclosing page. The component is allowed to read its parameter, to access
+to properties of the enclosing page (or component). The component is allowed to read its parameter, to access
 the page property the parameter is bound to.  A component may also <em>update</em> its
-parameter, to force a change to the bound page property.
+parameter, to force a change to the bound page property. In fact, behind the scenes, each component parameter
+has a <em>binding</em> object, an instance of type &IBinding;, that is used to read or update the property.
 </p>	
 
 <p>
 The vast majority of components simply read their parameters. Updating parameters is more rare; the most
-common components that update their parameters are form control components such as &TextField; or &Checkbox;.	
+common components that update their parameters are form element components such as &TextField; or &Checkbox;.	
 </p>
 
 <p>
@@ -293,203 +294,136 @@ name property using the OGNL expression lineItem.product.name.
 
 
 <p>
-Not all parameter bindings are writable. OGNL expressions may be writeable, if the expression
-identifies a property that is itself writeable. Other types of bindings, such as message bindings
-(the message: prefix), or literal bindings (no prefix) are read only.
+When using localized messages (the message: prefix) or literal strings (no prefix), there is still a binding object, just a binding
+of a different type. Not all bindings are writable. OGNL expressions may be writeable, if the expression
+identifies a property that is itself writeable. Most other types of bindings are read only.
 </p>
 	
-<section id="components.parameters.bindings">
-	<title>Using Bindings</title>
-	
-<p>
-To understand how Tapestry parameters work, you must understand how the binding objects work (even
-though, as we'll see, the binding objects are typically hidden). When a component needs access to
-a bound parameter value, it will invoke the method <code>getObject()</code>	 on &IBinding;
-</p>
-
-      <figure alt="Reading a parameter" src="&imageroot;/read-binding.png"/>
-      
-
-      <p>
-The <code>getObject()</code> method on &IBinding; will (if the binding is dynamic) evaluate the
-OGNL expression (provided in the &spec.binding; specification element) to access a property of the
-page. The result is that cast or otherwise coerced to a type useful to the component.
-     </p>
-
-
-
-<p>
-Updating a parameter is the same way, except that the method is
-<code>setObject()</code>. Most of the implementations of &IBinding; (those for literal strings
-and localized messages), will throw an exception immediately, since they are invariant.
-</p>
-
-<figure alt="Updating a parameter" src="&imageroot;/write-binding.png"/>
-
-
-      <p>
-The <code>setObject()</code> method will use OGNL to update a page property.
-     </p>
-
-
-<p>
-These flows are complicated by the fact that parameters may be optional; so not only do you need to acquire the
-correct binding object (method <code>getBinding()</code> defined in &IComponent;), 
-but your code must be prepared for that object to be null (if the parameter
-is optional). 	
-</p>
-
-</section> <!-- components.parameters.bindings -->
-		
-<section id="components.parameters.connected">
-	<title>Connected Parameter Properties</title>
-	
-<p>
-Accessing and manipulating the &IBinding; objects is tedious, so Tapestry has an alternate approach. Parameters may
-be represented as <em>connected parameter properties</em>	 that hide the existence of
-the binding objects entirely. If you component needs to know the value bound to a parameter, it can
-read the connected parameter property. If it wants to update the property bound to the parameter, the component
-will update the connected parameter. This is a much more natural approach, but requires a little bit of setup.
-</p>
-
-<p>
-As with <link href="state.html#state.page-properties">specified properties</link>, 
-Tapestry will fabricate an enhanced subclass with
-the necessary instance variables, accessor methods, and cleanup code.
-</p>
-	
-<p>
-Connected parameters are controlled by the direction	
-attribute of the &spec.parameter; element.
-There are four values:
-in, form, auto
-and custom.  The default is custom, which
-<em>does not</em> create a connected parameter property at all.
-</p>
-
-<warning>
-	The name, "direction", made sense initially, but is now a bit confusing. It probably
-	should have been called "processing" or "connection-type".  In addition, a focus of Tapestry 3.1
-  is to remove the direction attribute; all parameters will be accessed through a connected parameter property,
-  based on an enhanced implementation of the auto direction.
-</warning>
-
-<section id="components.parameters.connected.in">
-	<title>Direction: in</title>
-	
-<p>
-The majority of component parameters are read-only, and are only actually used
-within the component's <code>renderComponent()</code>	 method ... the method that
-actually produces HTML output. For such components, direction in
-is the standard, efficient choice.
-</p>
-
-<p>
-The connected parameter for each component is set just before <code>renderComponent()</code>	
-is invoked.  The parameter is reset to its initial value just after 
-<code>renderComponent()</code> is invoked.
-</p>
-
-<p>
-Each component has a &ParameterManager;, whose responsibility is to set and reset connected
-parameter properties.	
-</p>
-
-<figure alt="ParameterManage and renderComponent()"
-  src="&imageroot;/parameter-manager.png"/>
   
-      <p>
-The &ParameterManager; will read the values bound to each parameter, and update the
-connected parameter property before the component's <code>renderComponent()</code>
-method is invoked. The &ParameterManager; cleans up after <code>renderComponent()</code>
-is invoked.
-     </p>
-
-
 <p>
-For invariant bindings (literal strings and such), the &ParameterManager; will only set the connected parameter property once,
-and does not reset the property after <code>renderComponent()</code>.
-</p>
+To access a component parameter inside Java code is simply a matter of defining an accessor method.  For example,
+if your component has a title parameter, then you define a getTitle() accessor method:</p>
 
-<warning>
-		If your component has any &listener-method;s that need to access a parameter value, then you
-		can't use direction in (or direction form).  Listener methods are
-		invoked outside of the page rendering process, when value stored in the
-		connected parameter property is not set. You must use direction auto or 
-		custom in such cases.
-</warning>
-
-	
-</section> <!-- components.parameters.connected.in -->
-
-<section id="components.parameters.connected.form">
-	<title>Direction: form</title>
-	
-<p>
-Components, such as &TextField; or &Checkbox;, that produce form control elements are the
-most likely candidates for updating their parameters. The read a parameter (usually named
-value) when they render. When the form is submitted, the same components
-read a query parameter and update their value parameter.
-</p>
-
-<p>
-The formdirection simplifies this. For the most part, direction form
-is the same as direction in.  The diffference is, when the form is submitted, after the
-component's <code>renderComponent()</code> method has been invoked, the connected parameter property
-is read and used to update the binding (that is, invoke the binding object's <code>setObject()</code> 
-method).
-</p>
-	
-</section> <!-- components.parameters.connected.form -->
-
-<section id="components.parameters.connected.auto">
-	<title>Direction: auto</title>
-	
-<p>
-The previous direction values, in and form, have limitations. The value may only be
-accessed from within the component's <code>renderComponent()</code> method. That's often insufficient,
-especially when the component has a &listener-method; that needs access to a parameter.
-</p>
-
-<p>
-Direction auto	doesn't use the &ParameterManager;. Instead, the connected parameter property
-is <em>synthetic</em>.  Reading the property immediately turns around and invokes
-&IBinding;'s <code>getObject()</code> method.  Updating the property invokes
-the &IBinding;'s <code>setObject()</code> function.
-</p>
-
-<p>
-This can be a bit less efficient than direction in, as the &OGNL; expression may be
-evaluated multiple times. In Tapestry 3.0, the parameter must also be required. Future releases
-of Tapestry will relax these limitations.
+<source>
+public abstract String getTitle();
+  
+public void renderComponent(&IMarkupWriter; writer, &IRequestCycle; cycle)
+{
+  writer.begin("a");
+  writer.attribute("href", . . .);
+  writer.attribute("title", getTitle());
+  
+  . . .
+}
+</source>
+		
+<p>    
+When your code invokes getTitle(), the binding for the title parameter will be used to obtain a value, which is returned.  Likewise,
+invoking setTitle() will use the binding for the title parameter to update the bound value.
 </p>
 
 <note>
-Parameter directions are a bit of a sore spot: you must make too many decisions about how to use them, especially
-in terms of render-time-only vs. &listener-method;. Direction auto	 is too limited and
-possibly too inefficient. Tapestry 3.1 will address these limitations by improving direction
-auto. Instead of specifying a direction, you'll specify how long the component can cache the
-value obtained from the binding object (no caching, or only while the component is rendering, or until
-the page finishes rendering). It will soon no longer be necessary to think about or set a parameter direction.
+If you are upgrading from Tapestry 3.0, you may be wondering "how do I specify parameter direction now?".  Parameter direction was
+a hint you would provide to Tapestry that would tell Tapestry when it was appropriate to copy values into, or out of,  component
+parameter properties. This is no longer necessary in Tapestry 3.1 -- the runtime code generation for parameter properties is much
+more sophisticated.  All parameters are now similar to Tapestry 3.0's auto direction, but much smarter.  Tapestry 3.0 auto parameters
+were only useable with required parameters and were inefficient.  In Tapestry 3.1, parameter values are cached such that the OGNL expression
+does not have to be evaluated every time the parameter is accessed and things still work properly for optional parameters.
 </note>
-	
-</section> <!-- components.parameters.connected.auto -->	
-	
-<section id="components.parameters.connected.custom">
-	<title>Direction: custom</title>
-	
+
+
 <p>
-The custom	 direction, which is the default, <em>does not</em>
-create a connected parameter property. Your code is still responsible for
-accessing the &IBinding; object (via the <code>getBinding()</code> method of
-&IComponent;) and for invoking methods on the binding object.
-</p>	
+There are two ways to set default values for parameters.  You may provide a default-value attribute in the &spec.parameter; element.  This
+is, effectively, a binding to use if no binding is provided.
+</p>
+
+<source><![CDATA[
+  <parameter name="title" default-value="Link to current thread"/>]]>
+</source>
 
 
-</section> <!-- components.parameters.connected.custom -->	
+<p>
+Of course, the best practice for this type of example, where the value is a string that will be presented 
+to the user, is to store the message in the component's message catalog, and access it from there.  Default
+values are actually converted into bindings, and the value may be prefixed as with a binding:
+</p>
 
-</section> <!-- components.parameters.connected -->		
-		
+<source><![CDATA[
+  <parameter name="title" default-value="message:link-title"/>]]>  
+</source>
+
+<source>
+link-title=Link to current thread
+</source>
+
+<p>
+The second approach is to set the property from the component's finishLoad() method.
+</p>
+
+<source>
+public void setTitle(String title);
+
+protected void finishLoad()
+{
+  super.finishLoad();
+  
+  setTitle("Link to current thread");
+} 
+</source>
+    
+<p>
+Even with parameter defaults, there are times when you want to behave differently depending on whether a parameter is bound or not bound.
+The method isParameterBound() exists for those cases:
+</p>    
+
+<source>
+public abstract String getTitle();
+  
+public void renderComponent(&IMarkupWriter; writer, &IRequestCycle; cycle)
+{
+  writer.begin("a");
+  writer.attribute("href", . . .);
+  
+  if (isParameterBound("title"))
+    writer.attribute("title", getTitle());
+  
+  . . .
+}
+</source>
+  
+
+<p>
+Using isParameterBound() is most useful with parameters whose type is a primitive type.  In the previous example, we could simply invoke getTitle()
+and see if the result is null.  For, say, an int property, we would need a way to distinguish between 0 and no value provided ... that's
+what isParameterBound() is for.
+</p>  
+
+  
+<p>
+Note that you always pass the name of the <em>parameter</em> to the isParameterBound() method,
+even when you've used the property-name attribute of the &spec.parameter; element to
+use a different property name:
+</p>
+
+<source>
+<![CDATA[<parameter name="title" property-name="titleParameter"/>]]>  
+</source>
+
+<source>
+public abstract String getTitleParameter();
+  
+public void renderComponent(&IMarkupWriter; writer, &IRequestCycle; cycle)
+{
+  writer.begin("a");
+  writer.attribute("href", . . .);
+  
+  if (isParameterBound("title"))
+    writer.attribute("title", getTitleParameter());
+  
+  . . .
+}
+</source>
+    
 </section> <!-- components.parameters -->
 
 
@@ -594,7 +528,7 @@ the page or component specification.	For example:
   <private-asset name="logo" resource-path="images/logo_200.png"/>
   
   <component id="image" type="Image">
-    <binding name="image" expression="assets.logo"/>
+    <binding name="image" value="ognl:assets.logo"/>
   </component>
 ]]></source>
 

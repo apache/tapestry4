@@ -40,7 +40,6 @@ import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.spec.AssetType;
 import org.apache.tapestry.spec.BeanLifecycle;
 import org.apache.tapestry.spec.BindingType;
-import org.apache.tapestry.spec.Direction;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.spec.IAssetSpecification;
 import org.apache.tapestry.spec.IBeanSpecification;
@@ -1224,17 +1223,21 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         ps.setPropertyName(propertyName);
 
         ps.setRequired(getBooleanAttribute("required", false));
-        
-        // TODO: This should be like a binding, qualified with ognl: or whatnot
-        
-        ps.setDefaultValue(getAttribute("default-value"));
-        
-        // Direction can be specified in the 3.0 DTD but is now ignored.
-        // 3.1 automagically handles parameters.
 
-        // type will only be specified in a 3.0 DTD.
+        // In the 3.0 DTD, default-value was always an OGNL expression.
+        // Starting with 3.1, it's like a binding (prefixed). For a 3.0
+        // DTD, we supply the "ognl:" prefix.
+
+        String defaultValue = getAttribute("default-value");
+
+        if (defaultValue != null && !_DTD_3_1)
+            defaultValue = "ognl:" + defaultValue;
+
+        ps.setDefaultValue(defaultValue);
         
-        String type = getAttribute("type"); // Current, 3.0+ DTD
+        // type will only be specified in a 3.0 DTD.
+
+        String type = getAttribute("type");
 
         if (type != null)
             ps.setType(type);
