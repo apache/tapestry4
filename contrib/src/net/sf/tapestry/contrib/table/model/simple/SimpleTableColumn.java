@@ -109,7 +109,10 @@ public abstract class SimpleTableColumn implements ITableColumn, Serializable
 		m_objComparator = objComparator;
 	}
 
-	public abstract Object getColumnValue(Object objRow);
+	public Object getColumnValue(Object objRow)
+    {
+        return objRow.toString();
+    }
 
 	/**
 	 * @see net.sf.tapestry.contrib.table.model.ITableColumn#getColumnRender(IRequestCycle)

@@ -27,6 +27,7 @@ package net.sf.tapestry.contrib.table.components.inserted;
 
 import net.sf.tapestry.BaseComponent;
 import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.contrib.table.components.*;
 import net.sf.tapestry.contrib.table.model.ITableModel;
 import net.sf.tapestry.contrib.table.model.ITableModelSource;
 import net.sf.tapestry.contrib.table.model.ITableSortingState;

@@ -10,11 +10,11 @@
 	<description>
 	</description>
   
-	<parameter name="tableView" 
-		java-type="net.sf.tapestry.contrib.table.components.TableView" 
-		required="yes"
+	<parameter name="value" 
+		java-type="Object" 
+		required="no"
 		direction="custom"/>
-  
+
 	<component id="iterRows" type="Foreach">
 		<binding name="source" expression="tableRowsIterator"/>
 		<binding name="value" expression="tableRow"/>

@@ -22,7 +22,6 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 // Lesser General Public License for more details.
 //
-
 package net.sf.tapestry.contrib.table.model.simple;
 
 import java.io.Serializable;
@@ -30,9 +29,11 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Iterator;
 
+import net.sf.tapestry.contrib.table.model.CTableDataModelEvent;
 import net.sf.tapestry.contrib.table.model.ITableColumn;
 import net.sf.tapestry.contrib.table.model.ITableColumnModel;
 import net.sf.tapestry.contrib.table.model.ITableDataModel;
+import net.sf.tapestry.contrib.table.model.ITableDataModelListener;
 import net.sf.tapestry.contrib.table.model.ITableModel;
 import net.sf.tapestry.contrib.table.model.ITablePagingState;
 import net.sf.tapestry.contrib.table.model.ITableSortingState;
@@ -45,8 +46,9 @@ import net.sf.tapestry.contrib.table.model.common.ReverseComparator;
  * @version $Id$
  * @author mindbridge
  */
-public class SimpleTableModel implements ITableModel, Serializable
+public class SimpleTableModel implements ITableModel, ITableDataModelListener, Serializable
 {
+    private ITableDataModel m_objDataModel;
 	private Object[] m_arrRows;
 	private ITableColumnModel m_objColumnModel;
 	private SimpleTableState m_objState;
@@ -56,7 +58,7 @@ public class SimpleTableModel implements ITableModel, Serializable
 	public SimpleTableModel(Object[] arrData, ITableColumn[] arrColumns)
 	{
 		this(
-			new SimpleTableDataModel(arrData),
+			new SimpleListTableDataModel(arrData),
 			new SimpleTableColumnModel(arrColumns));
 	}
 
@@ -72,10 +74,13 @@ public class SimpleTableModel implements ITableModel, Serializable
 		ITableColumnModel objColumnModel,
 		SimpleTableState objState)
 	{
-		extractRows(objDataModel);
+        m_arrRows = null;
 		m_objColumnModel = objColumnModel;
 		m_objState = objState;
 		m_objLastSortingState = new SimpleTableSortingState();
+
+        m_objDataModel = objDataModel;
+        m_objDataModel.addTableDataModelListener(this);
 	}
 
 	public SimpleTableState getState()
@@ -136,16 +141,24 @@ public class SimpleTableModel implements ITableModel, Serializable
 
 	public int getRowCount()
 	{
+        updateRows();
 		return m_arrRows.length;
 	}
 
-	private void extractRows(ITableDataModel objDataModel)
+	private void updateRows()
 	{
-		int nRowCount = objDataModel.getRowCount();
+        // If it is not null, then there is no need to extract the data
+        if (m_arrRows != null) 
+            return;
+            
+        // Extract the data from the model
+        m_objLastSortingState = new SimpleTableSortingState();
+
+		int nRowCount = m_objDataModel.getRowCount();
 		Object[] arrRows = new Object[nRowCount];
 
 		int i = 0;
-		for (Iterator it = objDataModel.getRows(0, nRowCount); it.hasNext();)
+		for (Iterator it = m_objDataModel.getRows(); it.hasNext();)
 			arrRows[i++] = it.next();
 
 		m_arrRows = arrRows;
@@ -153,8 +166,11 @@ public class SimpleTableModel implements ITableModel, Serializable
 
 	protected void sortRows()
 	{
+        updateRows();
+
 		ITableSortingState objSortingState = getSortingState();
 
+        // see if there is sorting required
 		String strSortColumn = objSortingState.getSortColumn();
 		if (strSortColumn == null)
 			return;
@@ -174,12 +190,40 @@ public class SimpleTableModel implements ITableModel, Serializable
 		if (objCmp == null)
 			return;
 
+        // Okay, we have everything in place. Sort the rows.
 		if (bSortOrder == ITableSortingState.SORT_DESCENDING)
 			objCmp = new ReverseComparator(objCmp);
 
 		Arrays.sort(m_arrRows, objCmp);
 
 		m_objLastSortingState.setSortColumn(strSortColumn, bSortOrder);
+	}
+
+	/**
+	 * @see net.sf.tapestry.contrib.table.model.ITableDataModelListener#tableDataChanged(CTableDataModelEvent)
+	 */
+	public void tableDataChanged(CTableDataModelEvent objEvent)
+	{
+        m_arrRows = null;
+	}
+
+	/**
+	 * Returns the dataModel.
+	 * @return ITableDataModel
+	 */
+	public ITableDataModel getDataModel()
+	{
+		return m_objDataModel;
+	}
+
+	/**
+	 * Sets the dataModel.
+	 * @param dataModel The dataModel to set
+	 */
+	public void setDataModel(ITableDataModel dataModel)
+	{
+		m_objDataModel = dataModel;
+        m_arrRows = null;
 	}
 
 }

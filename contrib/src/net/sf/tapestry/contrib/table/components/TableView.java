@@ -27,6 +27,9 @@ package net.sf.tapestry.contrib.table.components;
 
 import net.sf.tapestry.BaseComponent;
 import net.sf.tapestry.IBinding;
+import net.sf.tapestry.IMarkupWriter;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.contrib.table.model.ITableModel;
 import net.sf.tapestry.contrib.table.model.ITableModelSource;
 import net.sf.tapestry.contrib.table.model.ITableSessionStateManager;
@@ -273,5 +276,19 @@ public class TableView
 	{
 		m_strElement = element;
 	}
+
+    /**
+	 * @see net.sf.tapestry.BaseComponent#renderComponent(IMarkupWriter, IRequestCycle)
+	 */
+	protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+		throws RequestCycleException
+	{
+        cycle.setAttribute(ITableModelSource.TABLE_MODEL_SOURCE_PROPERTY, this);
+
+		super.renderComponent(writer, cycle);
+
+        cycle.setAttribute(ITableModelSource.TABLE_MODEL_SOURCE_PROPERTY, null);
+	}
+
 
 }

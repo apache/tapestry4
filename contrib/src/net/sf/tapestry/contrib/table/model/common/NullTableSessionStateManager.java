@@ -37,6 +37,9 @@ import net.sf.tapestry.contrib.table.model.ITableSessionStateManager;
  */
 public class NullTableSessionStateManager implements ITableSessionStateManager
 {
+    
+    public final static NullTableSessionStateManager NULL_STATE_MANAGER =
+        new NullTableSessionStateManager();
 
 	/**
 	 * @see net.sf.tapestry.contrib.table.model.ITableSessionManager#getSessionState(ITableModel)
