@@ -89,10 +89,15 @@ public class NumberValidator extends BaseValidator
 
     private static AdaptorRegistry _numberAdaptors = new AdaptorRegistry();
 
-    private final static int NUMBER_TYPE_INTEGER    = 0;
-    private final static int NUMBER_TYPE_REAL       = 1;
+    public final static int NUMBER_TYPE_INTEGER = 0;
+	public final static int NUMBER_TYPE_REAL = 1;
 
-    private static abstract class NumberAdaptor
+	/**
+	 * This class is not meant for use outside of NumberValidator; it
+	 * is public only to fascilitate some unit testing.
+	 * 
+	 */
+    public static abstract class NumberAdaptor
     {
         /**
          *  Parses a non-empty {@link String} into the correct subclass of
@@ -115,10 +120,22 @@ public class NumberValidator extends BaseValidator
 
         public int compare(Number left, Number right)
         {
+            if (!left.getClass().equals(right.getClass()))
+                right = coerce(right);
+
             Comparable lc = (Comparable) left;
 
             return lc.compareTo(right);
         }
+
+        /**
+         * Invoked when comparing two Numbers of different types.
+         * The number is cooerced from its ordinary type to 
+         * the correct type for comparison.
+         * 
+         * @since 3.0
+         */
+        protected abstract Number coerce(Number number);
     }
 
     private static abstract class IntegerNumberAdaptor extends NumberAdaptor
@@ -143,6 +160,11 @@ public class NumberValidator extends BaseValidator
         {
             return new Byte(value);
         }
+
+        protected Number coerce(Number number)
+        {
+            return new Byte(number.byteValue());
+        }
     }
 
     private static class ShortAdaptor extends IntegerNumberAdaptor
@@ -150,6 +172,11 @@ public class NumberValidator extends BaseValidator
         public Number parse(String value)
         {
             return new Short(value);
+        }
+
+        protected Number coerce(Number number)
+        {
+            return new Short(number.shortValue());
         }
     }
 
@@ -159,6 +186,11 @@ public class NumberValidator extends BaseValidator
         {
             return new Integer(value);
         }
+
+        protected Number coerce(Number number)
+        {
+            return new Integer(number.intValue());
+        }
     }
 
     private static class LongAdaptor extends IntegerNumberAdaptor
@@ -166,6 +198,11 @@ public class NumberValidator extends BaseValidator
         public Number parse(String value)
         {
             return new Long(value);
+        }
+
+        protected Number coerce(Number number)
+        {
+            return new Long(number.longValue());
         }
     }
 
@@ -175,6 +212,11 @@ public class NumberValidator extends BaseValidator
         {
             return new Float(value);
         }
+
+        protected Number coerce(Number number)
+        {
+            return new Float(number.floatValue());
+        }
     }
 
     private static class DoubleAdaptor extends RealNumberAdaptor
@@ -182,6 +224,11 @@ public class NumberValidator extends BaseValidator
         public Number parse(String value)
         {
             return new Double(value);
+        }
+
+        protected Number coerce(Number number)
+        {
+            return new Double(number.doubleValue());
         }
     }
 
@@ -191,6 +238,11 @@ public class NumberValidator extends BaseValidator
         {
             return new BigDecimal(value);
         }
+
+        protected Number coerce(Number number)
+        {
+            return new BigDecimal(number.doubleValue());
+        }
     }
 
     private static class BigIntegerAdaptor extends IntegerNumberAdaptor
@@ -198,6 +250,11 @@ public class NumberValidator extends BaseValidator
         public Number parse(String value)
         {
             return new BigInteger(value);
+        }
+
+        protected Number coerce(Number number)
+        {
+            return new BigInteger(number.toString());
         }
     }
 
@@ -244,7 +301,7 @@ public class NumberValidator extends BaseValidator
 
     private NumberAdaptor getAdaptor(IFormComponent field)
     {
-        NumberAdaptor result = (NumberAdaptor) _numberAdaptors.getAdaptor(_valueTypeClass);
+        NumberAdaptor result = getAdaptor(_valueTypeClass);
 
         if (result == null)
             throw new ApplicationRuntimeException(
@@ -254,6 +311,22 @@ public class NumberValidator extends BaseValidator
                     _valueTypeClass.getName()));
 
         return result;
+    }
+
+	/**
+	 * Returns an adaptor for the given type.
+	 * 
+	 * <p>
+	 * Note: this method exists only for testing purposes. It is not meant to
+	 * be invoked by user code and is subject to change at any time.
+	 * 
+	 * @param type the type (a Number subclass) for which to return an adaptor
+	 * @returns the adaptor, or null if no such adaptor may be found
+	 * @since 3.0
+	 */
+    public static NumberAdaptor getAdaptor(Class type)
+    {
+        return (NumberAdaptor) _numberAdaptors.getAdaptor(type);
     }
 
     public Object toObject(IFormComponent field, String value) throws ValidatorException
@@ -597,13 +670,13 @@ public class NumberValidator extends BaseValidator
     }
 
     /** @since 3.0 */
-    
+
     public boolean isIntegerNumber()
     {
         NumberAdaptor result = (NumberAdaptor) _numberAdaptors.getAdaptor(_valueTypeClass);
         if (result == null)
             return false;
-        
+
         return result.getNumberType() == NUMBER_TYPE_INTEGER;
     }
 }

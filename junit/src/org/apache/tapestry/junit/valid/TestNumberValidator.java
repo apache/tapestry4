@@ -213,4 +213,76 @@ public class TestNumberValidator extends TapestryTestCase
             BigDecimal.class,
             new BigDecimal("-29574923857342908743.29058734289734907543289752345897234590872349085"));
     }
+
+    /** @since 3.0 **/
+
+    private void checkAdaptorType(int expectedType, Class numberType)
+    {
+        NumberValidator.NumberAdaptor a = NumberValidator.getAdaptor(numberType);
+
+        assertEquals(expectedType, a.getNumberType());
+    }
+
+    /** @since 3.0 **/
+
+    public void testAdaptorTypes() throws Exception
+    {
+        checkAdaptorType(NumberValidator.NUMBER_TYPE_INTEGER, Byte.class);
+        checkAdaptorType(NumberValidator.NUMBER_TYPE_INTEGER, Short.class);
+        checkAdaptorType(NumberValidator.NUMBER_TYPE_INTEGER, Integer.class);
+        checkAdaptorType(NumberValidator.NUMBER_TYPE_INTEGER, Long.class);
+        checkAdaptorType(NumberValidator.NUMBER_TYPE_INTEGER, BigInteger.class);
+        checkAdaptorType(NumberValidator.NUMBER_TYPE_REAL, Float.class);
+        checkAdaptorType(NumberValidator.NUMBER_TYPE_REAL, Double.class);
+        checkAdaptorType(NumberValidator.NUMBER_TYPE_REAL, BigDecimal.class);
+    }
+
+    /** @since 3.0 **/
+
+    private void checkCompare(Number left, Number right)
+    {
+        NumberValidator.NumberAdaptor a = NumberValidator.getAdaptor(left.getClass());
+
+        assertEquals(0, a.compare(left, right));
+    }
+
+    public void testByteCompare()
+    {
+        checkCompare(new Byte((byte) 3), new Long(3));
+    }
+
+    public void testShortCompare()
+    {
+        checkCompare(new Short((short) 14), new Double(14.0));
+    }
+
+    public void testIntegerCompare()
+    {
+        checkCompare(new Integer(19), new Long(19));
+    }
+
+    public void testLongCompare()
+    {
+        checkCompare(new Long(-22), new Short((short) - 22));
+    }
+
+    public void testBigIntegerCompare()
+    {
+        checkCompare(new BigInteger("300"), new Long("300"));
+    }
+    
+    public void testFloatCompare()
+    {
+    	checkCompare(new Float("0"), new Double("0"));
+    }
+    
+    public void testDoubleCompare()
+    {
+    	checkCompare(new Double("0"), new Float("0"));
+    }
+    
+    public void testBigDecimalCompare()
+    {
+    	checkCompare(new BigDecimal("-137.75"), new Double("-137.75"));
+    }
 }
