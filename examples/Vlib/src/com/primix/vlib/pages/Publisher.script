@@ -5,46 +5,69 @@
 	"http://tapestry.sourceforge.net/dtd/Script_1_0.dtd">
 
 <script>
-<!-- symbols:
-	formName - name of form containing the other components
-	selectName  - name of the select within the form
-	fieldName - name of the text field with in the form
+<!-- 
+
+input symbols:
+
+formName - name of form containing the other components
+selectName  - name of the select within the form
+fieldName - name of the text field with in the form
+
 -->
+
+<let key="formObject">
+	document.<insert key="formName"/>
+</let>
+
+<let key="selectObject">
+	<insert key="formObject"/>.<insert key="selectName"/>
+</let>
+
+<let key="fieldObject">
+	<insert key="formObject"/>.<insert key="fieldName"/>
+</let>
+
+<let key="functionName">
+	onChange_<insert key="formName"/>_<insert key="selectName"/>
+</let>
+
 <body>
 
-function onChange_<insert key="formName"/>_<insert key="selectName"/>()
+function <insert key="functionName"/>()
 {
-	var select = document.<insert key="formName"/>.<insert key="selectName"/>;
-	var field = document.<insert key="formName"/>.<insert key="fieldName"/>;
+  var select = <insert key="selectObject"/>;
+  var field = <insert key="fieldObject"/>;
 	
 	// Index 0 is the null value option, meaning enable the text field
 	
-	if (select.selectedIndex == 0)
-	{
-		field.disabled = false;
-		field.focus();
-		field.select();
-	}
-	else
-	{
-		// disabled only works with IE, not NN
-		field.disabled = true;
-		field.blur();
-		field.value = "";
-	}
+  if (select.selectedIndex == 0)
+  {
+    field.disabled = false;
+    field.focus();
+    field.select();
+  }
+  else
+  {
+	// disabled only works with IE, not NN
+    field.disabled = true;
+    field.blur();
+    field.value = "";
+  }
 }
 
 </body>
+
 <initialization>
 <!-- Navigator is not documented to respond to the onChange event, but this works,
 	 so my documentation must be wrong. -->
-document.<insert key="formName"/>.<insert key="selectName"/>.onchange =
-	onChange_<insert key="formName"/>_<insert key="selectName"/>;
+	 
+<insert key="selectObject"/>.onchange = <insert key="functionName"/>;
 
 <!-- Disable the text field unless the select is set for index 0 (the null value). -->
 
-if (document.<insert key="formName"/>.<insert key="selectName"/>.selectedIndex != 0)
-	document.<insert key="formName"/>.<insert key="fieldName"/>.disabled = true;
+if (<insert key="selectObject"/>.selectedIndex != 0)
+  <insert key="fieldObject"/>.disabled = true;
 
 </initialization>
+
 </script>
