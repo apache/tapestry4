@@ -1,12 +1,10 @@
 # $Id$
 
-MAIN_DOCUMENT =	JBE.sgml
+MAIN_DOCUMENT =	JBE.xml
 
-HTML_INSTALL_DIR := ../../JBE
+HTML_XSLT_OPTS :=
 
-DOCUMENT_RESOURCES = images
-
-HTML_VARIABLE_DEFS := %shade-verbatim% %use-id-as-filename%
+DOCUMENT_RESOURCES := images
 
 USE_STANDARD_IMAGES := t
 
