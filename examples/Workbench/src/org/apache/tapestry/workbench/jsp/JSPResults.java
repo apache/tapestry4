@@ -70,7 +70,7 @@ import org.apache.tapestry.RequestCycleException;
 
 public abstract class JSPResults extends JSP implements IExternalPage
 {
-	public abstract void setParameters(Object parameters);
+	public abstract void setParameters(Object[] parameters);
 
     public void activateExternalPage(Object[] parameters, IRequestCycle cycle)
         throws RequestCycleException

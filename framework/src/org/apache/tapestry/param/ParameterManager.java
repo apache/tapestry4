@@ -64,7 +64,6 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
@@ -92,15 +91,37 @@ public class ParameterManager
 {
     private static final Log LOG = LogFactory.getLog(ParameterManager.class);
 
-    private static final Map scalarTypeMap = new HashMap();
+    /**
+     *  Special types that aren't resolved by class lookups, including
+     *  scalars, arrays of scalars, etc.
+     * 
+     *  <p>
+     *  There's some overlap here with ComponentClassFactory.
+     * 
+     **/
+
+    private static final Map SPECIAL_TYPE_MAP = new HashMap();
 
     static {
-        scalarTypeMap.put("boolean", Boolean.TYPE);
-        scalarTypeMap.put("short", Short.TYPE);
-        scalarTypeMap.put("int", Integer.TYPE);
-        scalarTypeMap.put("long", Long.TYPE);
-        scalarTypeMap.put("float", Float.class);
-        scalarTypeMap.put("double", Double.class);
+        SPECIAL_TYPE_MAP.put("boolean", boolean.class);
+        SPECIAL_TYPE_MAP.put("boolean[]", boolean[].class);
+        SPECIAL_TYPE_MAP.put("byte", byte.class);
+        SPECIAL_TYPE_MAP.put("byte[]", byte[].class);
+        SPECIAL_TYPE_MAP.put("char", char.class);
+        SPECIAL_TYPE_MAP.put("char[]", char[].class);
+        SPECIAL_TYPE_MAP.put("short", short.class);
+        SPECIAL_TYPE_MAP.put("short[]", short[].class);
+        SPECIAL_TYPE_MAP.put("int", int.class);
+        SPECIAL_TYPE_MAP.put("int[]", int[].class);
+        SPECIAL_TYPE_MAP.put("long", long.class);
+        SPECIAL_TYPE_MAP.put("long[]", long[].class);
+        SPECIAL_TYPE_MAP.put("float", float.class);
+        SPECIAL_TYPE_MAP.put("float[]", float[].class);
+        SPECIAL_TYPE_MAP.put("double", double.class);
+        SPECIAL_TYPE_MAP.put("double[]", double[].class);
+
+        SPECIAL_TYPE_MAP.put("java.lang.Object[]", Object[].class);
+        SPECIAL_TYPE_MAP.put("java.lang.String[]", String[].class);
     }
 
     private IComponent _component;
@@ -116,7 +137,7 @@ public class ParameterManager
      *  that are assigned to connected properties.
      * 
      **/
-    
+
     public void setParameters(IRequestCycle cycle) throws RequiredParameterException
     {
         if (_connectors == null)
@@ -135,7 +156,7 @@ public class ParameterManager
      *  form is rewinding).
      * 
      **/
-    
+
     public void resetParameters(IRequestCycle cycle)
     {
         if (_connectors == null)
@@ -194,12 +215,16 @@ public class ParameterManager
             // Next,verify that there is a writable property with the same
             // name as the parameter.
 
-            PropertyInfo propertyInfo = PropertyFinder.getPropertyInfo(_component.getClass(), propertyName);
+            PropertyInfo propertyInfo =
+                PropertyFinder.getPropertyInfo(_component.getClass(), propertyName);
 
             if (propertyInfo == null)
             {
                 throw new ConnectedParameterException(
-                    Tapestry.getString("ParameterManager.no-accessor", _component.getExtendedId(), propertyName),
+                    Tapestry.getString(
+                        "ParameterManager.no-accessor",
+                        _component.getExtendedId(),
+                        propertyName),
                     _component,
                     name,
                     propertyName);
@@ -225,7 +250,10 @@ public class ParameterManager
             if (parameterType == null)
             {
                 throw new ConnectedParameterException(
-                    Tapestry.getString("ParameterManager.java-type-not-specified", name, _component.getExtendedId()),
+                    Tapestry.getString(
+                        "ParameterManager.java-type-not-specified",
+                        name,
+                        _component.getExtendedId()),
                     _component,
                     name,
                     propertyName);
@@ -249,7 +277,8 @@ public class ParameterManager
             // Here's where we will sniff it for type, for the moment
             // assume its some form of object (not scalar) type.
 
-            IParameterConnector connector = createConnector(_component, name, binding, propertyType, parameterType);
+            IParameterConnector connector =
+                createConnector(_component, name, binding, propertyType, parameterType);
 
             // Static bindings are set here and then forgotten
             // about.  Dynamic bindings are kept for later.
@@ -276,26 +305,25 @@ public class ParameterManager
                         propertyName,
                         ex);
                 }
-                
+
                 continue;
             }
-            
-            
-                if (debug)
-                    LOG.debug("Adding " + connector + ".");
 
-// To properly support forms elements, the disabled parameter
-// must always be processed last.
+            if (debug)
+                LOG.debug("Adding " + connector + ".");
 
-if (name.equals("disabled"))
-    disabledConnector = connector;
-    else
+            // To properly support forms elements, the disabled parameter
+            // must always be processed last.
+
+            if (name.equals("disabled"))
+                disabledConnector = connector;
+            else
                 list.add(connector);
-  
+
         }
 
-            if (disabledConnector != null)
-                list.add(disabledConnector);
+        if (disabledConnector != null)
+            list.add(disabledConnector);
 
         // Convert for List to array
 
@@ -335,7 +363,7 @@ if (name.equals("disabled"))
         if (Tapestry.isNull(name))
             return null;
 
-        Class result = (Class) scalarTypeMap.get(name);
+        Class result = (Class) SPECIAL_TYPE_MAP.get(name);
 
         if (result != null)
             return result;

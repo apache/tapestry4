@@ -43,5 +43,22 @@ Value: [100]
 		</assert-output>
 
 	</request>
+	
+	<!-- This test also works out some aspects of connected parameters. -->
+	
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="Three"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Three</title>
+]]>
+		</assert-output>	
+		
+		<assert-output name="Message">
+		Page name: [T h r e e]	
+		</assert-output>
+	</request>
 		
  </mock-test>

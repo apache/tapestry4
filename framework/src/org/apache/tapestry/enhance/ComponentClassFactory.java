@@ -75,6 +75,7 @@ import org.apache.tapestry.spec.ParameterSpecification;
 import org.apache.tapestry.spec.PropertySpecification;
 import org.apache.bcel.Constants;
 import org.apache.bcel.classfile.JavaClass;
+import org.apache.bcel.generic.ArrayType;
 import org.apache.bcel.generic.BasicType;
 import org.apache.bcel.generic.InstructionConstants;
 import org.apache.bcel.generic.InstructionFactory;
@@ -126,19 +127,43 @@ public class ComponentClassFactory
     /**
      *  Map of type (as Type), keyed on type name.
      * 
+     *  This should be kept in synch with ParameterManager, which maintains
+     *  a similar list.
+     * 
      **/
 
     private Map _objectTypeMap = new HashMap();
 
     {
         recordType("boolean", boolean.class, Type.BOOLEAN);
+        recordType("boolean[]", boolean[].class, new ArrayType(Type.BOOLEAN, 1));
+        
         recordType("short", short.class, Type.SHORT);
+        recordType("short[]", short[].class, new ArrayType(Type.SHORT, 1));
+        
         recordType("int", int.class, Type.INT);
+        recordType("int[]", int[].class, new ArrayType(Type.INT, 1));
+        
         recordType("long", long.class, Type.LONG);
+        recordType("long[]", long[].class, new ArrayType(Type.LONG, 1));
+        
         recordType("float", float.class, Type.FLOAT);
+        recordType("float[]", float[].class, new ArrayType(Type.FLOAT, 1));
+        
         recordType("double", double.class, Type.DOUBLE);
+        recordType("double[]", double[].class, new ArrayType(Type.DOUBLE, 1));
+        
         recordType("char", char.class, Type.CHAR);
+        recordType("char[]", char[].class, new ArrayType(Type.CHAR, 1));
+        
         recordType("byte", byte.class, Type.BYTE);
+        recordType("byte[]", byte.class, new ArrayType(Type.BYTE, 1));
+        
+        recordType("java.lang.Object", Object.class, Type.OBJECT);
+        recordType("java.lang.Object[]", Object[].class, new ArrayType(Type.OBJECT, 1));
+        
+        recordType("java.lang.String", String.class, Type.STRING);
+        recordType("java.lang.String[]", String[].class, new ArrayType(Type.STRING, 1));
     }
 
     public ComponentClassFactory(

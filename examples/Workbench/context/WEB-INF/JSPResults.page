@@ -6,7 +6,7 @@
 
 <page-specification class="org.apache.tapestry.workbench.jsp.JSPResults">
 
-  <property-specification name="parameters" type="java.lang.Object"/>
+  <property-specification name="parameters" type="java.lang.Object[]"/>
   <property-specification name="parameter"/>
 	
 </page-specification>
