@@ -36,6 +36,7 @@ import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.util.AdaptorRegistry;
 import net.sf.tapestry.util.Decorator;
 
 /**
@@ -56,7 +57,7 @@ public class NumberValidator extends BaseValidator
 
     private String _scriptPath = "/net/sf/tapestry/valid/NumberValidator.script";
 
-    private static Decorator numberAdaptors = new Decorator();
+    private static AdaptorRegistry _numberAdaptors = new AdaptorRegistry();
 
     private static abstract class NumberAdaptor
     {
@@ -149,21 +150,21 @@ public class NumberValidator extends BaseValidator
         NumberAdaptor floatAdaptor = new FloatAdaptor();
         NumberAdaptor doubleAdaptor = new DoubleAdaptor();
 
-        numberAdaptors.register(Byte.class, byteAdaptor);
-        numberAdaptors.register(Byte.TYPE, byteAdaptor);
-        numberAdaptors.register(Short.class, shortAdaptor);
-        numberAdaptors.register(Short.TYPE, shortAdaptor);
-        numberAdaptors.register(Integer.class, intAdaptor);
-        numberAdaptors.register(Integer.TYPE, intAdaptor);
-        numberAdaptors.register(Long.class, longAdaptor);
-        numberAdaptors.register(Long.TYPE, longAdaptor);
-        numberAdaptors.register(Float.class, floatAdaptor);
-        numberAdaptors.register(Float.TYPE, floatAdaptor);
-        numberAdaptors.register(Double.class, doubleAdaptor);
-        numberAdaptors.register(Double.TYPE, doubleAdaptor);
+        _numberAdaptors.register(Byte.class, byteAdaptor);
+        _numberAdaptors.register(Byte.TYPE, byteAdaptor);
+        _numberAdaptors.register(Short.class, shortAdaptor);
+        _numberAdaptors.register(Short.TYPE, shortAdaptor);
+        _numberAdaptors.register(Integer.class, intAdaptor);
+        _numberAdaptors.register(Integer.TYPE, intAdaptor);
+        _numberAdaptors.register(Long.class, longAdaptor);
+        _numberAdaptors.register(Long.TYPE, longAdaptor);
+        _numberAdaptors.register(Float.class, floatAdaptor);
+        _numberAdaptors.register(Float.TYPE, floatAdaptor);
+        _numberAdaptors.register(Double.class, doubleAdaptor);
+        _numberAdaptors.register(Double.TYPE, doubleAdaptor);
 
-        numberAdaptors.register(BigDecimal.class, new BigDecimalAdaptor());
-        numberAdaptors.register(BigInteger.class, new BigIntegerAdaptor());
+        _numberAdaptors.register(BigDecimal.class, new BigDecimalAdaptor());
+        _numberAdaptors.register(BigInteger.class, new BigIntegerAdaptor());
     }
 
     public String toString(IField field, Object value)
@@ -186,7 +187,7 @@ public class NumberValidator extends BaseValidator
     {
         Class valueType = field.getValueType();
 
-        NumberAdaptor result = (NumberAdaptor) numberAdaptors.getAdaptor(valueType);
+        NumberAdaptor result = (NumberAdaptor) _numberAdaptors.getAdaptor(valueType);
 
         if (result == null)
             throw new ApplicationRuntimeException(

@@ -25,17 +25,23 @@
 
 package net.sf.tapestry.junit.utils;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.HashMap;
 import java.util.Map;
 
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
+import net.sf.tapestry.IResourceResolver;
+import net.sf.tapestry.engine.ResourceResolver;
 import net.sf.tapestry.spec.BeanLifecycle;
 import net.sf.tapestry.util.io.DataSqueezer;
 import net.sf.tapestry.util.io.ISqueezeAdaptor;
+import net.sf.tapestry.util.prop.OgnlUtils;
 
 /**
  *  A series of tests for {@link DataSqueezer} and friends.
@@ -47,7 +53,7 @@ import net.sf.tapestry.util.io.ISqueezeAdaptor;
 
 public class TestDataSqueezer extends TestCase
 {
-    private DataSqueezer s = new DataSqueezer();
+    private DataSqueezer s = new DataSqueezer(new ResourceResolver(this));
 
     public TestDataSqueezer(String name)
     {
@@ -59,8 +65,7 @@ public class TestDataSqueezer extends TestCase
         attempt(input, expectedEncoding, s);
     }
 
-    private void attempt(Object input, String expectedEncoding, DataSqueezer ds)
-        throws IOException
+    private void attempt(Object input, String expectedEncoding, DataSqueezer ds) throws IOException
     {
         String encoding = ds.squeeze(input);
 
@@ -125,7 +130,7 @@ public class TestDataSqueezer extends TestCase
     }
 
     /** @since 2.2 **/
-    
+
     public void testCharacter() throws IOException
     {
         attempt(new Character('a'), "ca");
@@ -134,9 +139,7 @@ public class TestDataSqueezer extends TestCase
 
     public void testString() throws IOException
     {
-        attempt(
-            "Now is the time for all good men ...",
-            "Now is the time for all good men ...");
+        attempt("Now is the time for all good men ...", "Now is the time for all good men ...");
         attempt("X marks the spot!", "SX marks the spot!");
         attempt("So long, sucker!", "SSo long, sucker!");
     }
@@ -197,9 +200,7 @@ public class TestDataSqueezer extends TestCase
 
         map.put("alpha", Boolean.TRUE);
         map.put("beta", BeanLifecycle.NONE);
-        map.put(
-            "gamma",
-            new BigDecimal("2590742358742358972.234592348957230948578975248972390857490725"));
+        map.put("gamma", new BigDecimal("2590742358742358972.234592348957230948578975248972390857490725"));
 
         attempt((Serializable) map, s);
     }
@@ -264,8 +265,7 @@ public class TestDataSqueezer extends TestCase
 
         }
 
-        public Object unsqueeze(DataSqueezer squeezer, String string)
-            throws IOException
+        public Object unsqueeze(DataSqueezer squeezer, String string) throws IOException
         {
             if (string.equals(TRUE))
                 return new BooleanHolder(true);
@@ -280,7 +280,7 @@ public class TestDataSqueezer extends TestCase
 
     public void testCustom() throws IOException
     {
-        DataSqueezer ds = new DataSqueezer(new ISqueezeAdaptor[] { new BHSqueezer()});
+        DataSqueezer ds = new DataSqueezer(new ResourceResolver(this), new ISqueezeAdaptor[] { new BHSqueezer()});
 
         attempt(new BooleanHolder(true), "BT", ds);
         attempt(new BooleanHolder(false), "BF", ds);
@@ -352,4 +352,63 @@ public class TestDataSqueezer extends TestCase
         {
         }
     }
+
+    private void unable(String message)
+    {
+        System.err.println("Unable to run test " + getClass().getName() + " " + getName() + ":");
+        System.err.println(message);
+        System.err.println("This may be ignored when running tests inside Eclipse.");
+    }
+
+    public void testClassLoader() throws Exception
+    {
+
+        File cd = new File(System.getProperty("user.dir"));
+        File dir = new File(cd.getParentFile(), "examples/Tutorial/classes");
+
+        if (!dir.exists())
+        {
+            unable("Unable to find classes directory " + dir + ".");
+            return;
+        }
+
+        URL tutorialClassesURL = dir.toURL();
+
+        URLClassLoader classLoader = new URLClassLoader(new URL[] { tutorialClassesURL });
+
+        Class visitClass = classLoader.loadClass("tutorial.workbench.Visit");
+
+        Object visit = visitClass.newInstance();
+
+        if (getClass().getClassLoader() == visit.getClass().getClassLoader())
+        {
+            unable("Unable to setup necessary ClassLoaders for test.");
+            return;
+        }
+
+        // System.out.println("This classloader = " + getClass().getClassLoader());
+        // System.out.println("Visit classloader = " + visit.getClass().getClassLoader());
+
+        IResourceResolver resolver = new ResourceResolver(visit);
+
+        String stringValue = Long.toHexString(System.currentTimeMillis());
+
+        OgnlUtils.set("stringValue", resolver, visit, stringValue);
+
+        DataSqueezer squeezer = new DataSqueezer(resolver);
+
+        String squeezed = squeezer.squeeze(visit);
+
+        Object outVisit = squeezer.unsqueeze(squeezed);
+
+        // System.out.println("outVisit classloader = " + outVisit.getClass().getClassLoader());
+
+        assertNotNull(outVisit);
+        assertTrue("Input and output objects not same.", visit != outVisit);
+
+        String outStringValue = (String) OgnlUtils.get("stringValue", resolver, outVisit);
+
+        assertEquals("Stored string.", stringValue, outStringValue);
+    }
+
 }

@@ -27,7 +27,9 @@ package net.sf.tapestry.util.io;
 
 import java.io.IOException;
 
+import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.util.AdaptorRegistry;
 import net.sf.tapestry.util.Decorator;
 
 /**
@@ -55,27 +57,34 @@ public class DataSqueezer
      *
      **/
 
-    private ISqueezeAdaptor[] adaptorByPrefix = new ISqueezeAdaptor[ARRAY_SIZE];
+    private ISqueezeAdaptor[] _adaptorByPrefix = new ISqueezeAdaptor[ARRAY_SIZE];
 
     /**
-     *  Decorator cache of adaptors.
+     *  AdaptorRegistry cache of adaptors.
      *
      **/
 
-    private Decorator adaptors = new Decorator();
+    private AdaptorRegistry _adaptors = new AdaptorRegistry();
 
+    /**
+     *  Resource resolver used to deserialize classes.
+     * 
+     **/
+    
+    private IResourceResolver _resolver;
+    
     /**
      *  Creates a new squeezer with the default set of adaptors.
      *
      **/
 
-    public DataSqueezer()
+    public DataSqueezer(IResourceResolver resolver)
     {
-        this(null);
+        this(resolver, null);
     }
 
     /**
-     *  Creates a new data squeezer, which may have the default set of
+     *  Creates a new data squeezer, which will have the default set of
      *  adaptors, and may add additional adaptors.
      *
      *  @param adaptors an optional list of adaptors that will be registered to
@@ -83,8 +92,10 @@ public class DataSqueezer
      *
      **/
 
-    public DataSqueezer(ISqueezeAdaptor[] adaptors)
+    public DataSqueezer(IResourceResolver resolver, ISqueezeAdaptor[] adaptors)
     {
+        _resolver = resolver;
+        
         registerDefaultAdaptors();
 
         if (adaptors != null)
@@ -146,17 +157,17 @@ public class DataSqueezer
 
             offset = ch - FIRST_ADAPTOR_OFFSET;
 
-            if (adaptorByPrefix[offset] != null)
+            if (_adaptorByPrefix[offset] != null)
                 throw new IllegalArgumentException(
                     Tapestry.getString(
                         "DataSqueezer.adaptor-prefix-taken",
                         prefix.substring(i, i)));
 
-            adaptorByPrefix[offset] = adaptor;
+            _adaptorByPrefix[offset] = adaptor;
 
         }
 
-        adaptors.register(dataClass, adaptor);
+        _adaptors.register(dataClass, adaptor);
     }
 
     /**
@@ -172,7 +183,7 @@ public class DataSqueezer
         if (data == null)
             return NULL_PREFIX;
 
-        adaptor = (ISqueezeAdaptor) adaptors.getAdaptor(data.getClass());
+        adaptor = (ISqueezeAdaptor) _adaptors.getAdaptor(data.getClass());
 
         return adaptor.squeeze(this, data);
     }
@@ -220,8 +231,8 @@ public class DataSqueezer
 
         offset = string.charAt(0) - FIRST_ADAPTOR_OFFSET;
 
-        if (offset >= 0 && offset < adaptorByPrefix.length)
-            adaptor = adaptorByPrefix[offset];
+        if (offset >= 0 && offset < _adaptorByPrefix.length)
+            adaptor = _adaptorByPrefix[offset];
 
         // If the adaptor is not otherwise recognized, the it is simply
         // an encoded String (the StringAdaptor may not have added
@@ -275,10 +286,10 @@ public class DataSqueezer
         if (prefix == NULL_PREFIX_CH)
             return true;
 
-        if (offset < 0 || offset >= adaptorByPrefix.length)
+        if (offset < 0 || offset >= _adaptorByPrefix.length)
             return false;
 
-        return adaptorByPrefix[offset] != null;
+        return _adaptorByPrefix[offset] != null;
     }
 
     public String toString()
@@ -287,9 +298,22 @@ public class DataSqueezer
 
         buffer = new StringBuffer();
         buffer.append("DataSqueezer[adaptors=<");
-        buffer.append(adaptors.toString());
+        buffer.append(_adaptors.toString());
         buffer.append(">]");
 
         return buffer.toString();
     }
+    
+    /**
+     *  Returns the resource resolver used with this squeezer.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public IResourceResolver getResolver()
+    {
+        return _resolver;
+    }
+    
 }
