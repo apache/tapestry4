@@ -41,7 +41,7 @@ public class ServletWebRequest implements WebRequest
 
     private final HttpServletResponse _servletResponse;
 
-    private WebSession _containerSession;
+    private WebSession _webSession;
 
     public ServletWebRequest(HttpServletRequest request, HttpServletResponse response)
     {
@@ -74,15 +74,15 @@ public class ServletWebRequest implements WebRequest
 
     public WebSession getSession(boolean create)
     {
-        if (_containerSession != null)
-            return _containerSession;
+        if (_webSession != null)
+            return _webSession;
 
         HttpSession session = _servletRequest.getSession(create);
 
         if (session != null)
-            _containerSession = new ServletWebSession(session);
+            _webSession = new ServletWebSession(session);
 
-        return _containerSession;
+        return _webSession;
     }
 
     public List getAttributeNames()

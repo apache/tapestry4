@@ -96,6 +96,7 @@
       <construct class="HomeService">
         <set-object property="responseRenderer" value="infrastructure:responseRenderer"/>
         <set-object property="linkFactory" value="infrastructure:linkFactory"/>
+        <set-object property="pageName" value="app-property:org.apache.tapestry.home-page"/>
       </construct>
     </invoke-factory>
   </service-point>
@@ -141,6 +142,7 @@
   
   <contribution configuration-id="hivemind.FactoryDefaults">
     <default symbol="org.apache.tapestry.enable-reset-service" value="false"/>
+    <default symbol="org.apache.tapestry.home-page" value="Home"/>
   </contribution>
   
   <configuration-point id="ApplicationServices" schema-id="EngineServices">

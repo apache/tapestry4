@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!-- 
-   Copyright 2004, 2005 The Apache Software Foundation
+   Copyright 2005 The Apache Software Foundation
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -15,10 +15,10 @@
    limitations under the License.
 -->
 
-<project name="Tapestry Contrib Library" default="jar">
+<project name="Tapestry Portlet Support" default="jar">
   
-  <property name="module.name" value="tapestry-contrib"/>
-  <property name="javadoc.package" value="org.apache.tapestry.contrib.*"/>
+  <property name="module.name" value="tapestry-portlet"/>
+  <property name="javadoc.package" value="org.apache.tapestry.portlet.*"/>
     
   <property name="root.dir" value=".."/>
 	<property file="${root.dir}/config/build.properties"/>
@@ -36,9 +36,13 @@
     <ibiblio-dependency artifact="hivemind-lib"       version="${hivemind.version}" group="hivemind"/>
     <ibiblio-dependency artifact="commons-codec"      version="${codec.version}"    group="commons-codec"/>
     <ibiblio-dependency artifact="ognl"               version="${ognl.version}"     group="ognl"/>
-    <ibiblio-dependency artifact="jboss-j2ee"         version="3.2.1"               group="jboss"/>
     <ibiblio-dependency artifact="commons-lang"       version="${lang.version}"     group="commons-lang"/>
-    
+    <ibiblio-dependency artifact="portlet-api"        version="1.0"                 group="portlet-api"/>
+      
+    <ibiblio-dependency artifact="easymock"           version="1.1"                 group="easymock" use="test"/>
+    <ibiblio-dependency artifact="easymockclassextension" version="1.1"             group="easymock" use="test"/>
+    <ibiblio-dependency artifact="cglib-full"         version="2.0.2"               group="cglib"    use="test"/>
+      
     <!--
     <ibiblio-dependency artifact="bsf"                version="2.3.0"               group="bsf"/>
 		<ibiblio-dependency artifact="commons-fileupload" version="1.0"                 group="commons-fileupload"/>    

@@ -109,6 +109,8 @@ public interface WebRequest extends AttributeHolder
     /**
      * Returns the path portion of the request which triggered this request. Query parameters,
      * scheme, server and port are omitted.
+     * <p>
+     * Note: portlets do not know their request URI.
      */
 
     public String getRequestURI();
@@ -123,6 +125,8 @@ public interface WebRequest extends AttributeHolder
     /**
      * Returns the path of the resource which activated this request (this is the servlet path for a
      * servlet request).
+     * 
+     * @returns the servlet path (for servlet requests), or a blank string (for portlet requests).
      */
     public String getActivationPath();
 }
