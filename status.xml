@@ -210,10 +210,14 @@ NextGen) be released as version number 3.0.
   
  <release version="3.0-rc-1" date="unreleased">
  
+<action type="fix" dev="EH" fixes-bug="27656">
+  ValidationDelegate.writeLabelPrefix/Suffix does not have IValidator access
+</action>
+
 <action type="fix" dev="DS" fixes-bug="27630, 27631" due-to="Michael M. Brzycki">
  	Fix javadoc.
 </action>
- 
+
 <action type="fix" dev="DS" fixes-bug="27567">
  	Incorrect example code.
 </action>
