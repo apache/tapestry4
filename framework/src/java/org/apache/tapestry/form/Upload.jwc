@@ -38,4 +38,6 @@
   <reserved-parameter name="type"/>
   <reserved-parameter name="name"/>
   
+  <inject property="decoder" object="service:tapestry.multipart.MultipartDecoder"/>
+  
 </component-specification>

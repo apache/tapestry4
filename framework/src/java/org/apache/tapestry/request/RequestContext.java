@@ -39,9 +39,6 @@ import org.apache.tapestry.ApplicationServlet;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.multipart.DefaultMultipartDecoder;
-import org.apache.tapestry.multipart.IMultipartDecoder;
 import org.apache.tapestry.spec.IApplicationSpecification;
 
 /**
@@ -93,10 +90,6 @@ public class RequestContext implements IRender
 
     private HttpServlet _servlet;
 
-    private IMultipartDecoder _decoder;
-    
-    private boolean _decoded;
-
     private IApplicationSpecification _specification;
 
     /**
@@ -123,40 +116,6 @@ public class RequestContext implements IRender
         _request = request;
         _response = response;
         _specification = specification;
-
-        // All three parameters may be null if created from
-        // AbstractEngine.cleanupEngine().
-
-        if (_request != null && DefaultMultipartDecoder.isMultipartRequest(request))
-        {
-            IMultipartDecoder decoder = obtainMultipartDecoder(servlet, request);
-            setDecoder(decoder);
-        }
-    }
-
-    /**
-     * Invoked from the constructor to create a {@link DefaultMultipartDecoder}instance.
-     * Applications with specific upload needs may need to override this to provide a subclass
-     * instance instead. The caller will invoke {@link IMultipartDecoder#decode(HttpServletRequest)}
-     * on the returned object.
-     * <p>
-     * This implementation checks for application extension
-     * {@link Tapestry#MULTIPART_DECODER_EXTENSION_NAME}. If that is not defined, a shared instance
-     * of {@link DefaultMultipartDecoder}is returned.
-     * 
-     * @see ApplicationServlet#createRequestContext(HttpServletRequest, HttpServletResponse)
-     * @since 3.0
-     */
-
-    protected IMultipartDecoder obtainMultipartDecoder(HttpServlet servlet,
-            HttpServletRequest request) throws IOException
-    {
-        if (_specification.checkExtension(Tapestry.MULTIPART_DECODER_EXTENSION_NAME))
-            return (IMultipartDecoder) _specification.getExtension(
-                    Tapestry.MULTIPART_DECODER_EXTENSION_NAME,
-                    IMultipartDecoder.class);
-
-        return DefaultMultipartDecoder.getSharedInstance();
     }
 
     /**
@@ -194,9 +153,6 @@ public class RequestContext implements IRender
     {
         pair(writer, name, new Date(value));
     }
-
-
-
 
     /**
      * Builds an absolute URL from the given URI, using the {@link HttpServletRequest}as the source
@@ -255,7 +211,7 @@ public class RequestContext implements IRender
         buffer.append(scheme);
         buffer.append("://");
         buffer.append(server);
-        
+
         if (port > 0)
         {
             buffer.append(':');
@@ -315,10 +271,6 @@ public class RequestContext implements IRender
 
     public String getParameter(String name)
     {
-        IMultipartDecoder decoder = getDecoder();
-        if (decoder != null)
-            return decoder.getString(_request, name);
-
         return _request.getParameter(name);
     }
 
@@ -342,19 +294,11 @@ public class RequestContext implements IRender
 
     public String[] getParameters(String name)
     {
-        IMultipartDecoder decoder = getDecoder();
-        if (decoder != null)
-            return decoder.getStrings(_request, name);
-
         return _request.getParameterValues(name);
     }
 
     public String[] getParameterNames()
     {
-        IMultipartDecoder decoder = getDecoder();
-        if (decoder != null)
-            return decoder.getStringParameterNames(_request);
-
         Enumeration e = _request.getParameterNames();
         List names = new ArrayList();
 
@@ -366,35 +310,6 @@ public class RequestContext implements IRender
         String[] result = new String[count];
 
         return (String[]) names.toArray(result);
-    }
-
-    /**
-     * Returns the named {@link IUploadFile}, if it exists, or null if it doesn't. Uploads require
-     * an encoding of <code>multipart/form-data</code> (this is specified in the form's enctype
-     * attribute). If the encoding type is not so, or if no upload matches the name, then this
-     * method returns null.
-     */
-
-    public IUploadFile getUploadFile(String name)
-    {
-        IMultipartDecoder decoder = getDecoder();
-        if (decoder == null)
-            return null;
-
-        return decoder.getUploadFile(_request, name);
-    }
-
-    /**
-     * Invoked at the end of the request cycle to cleanup and temporary resources. This is chained
-     * to the {@link DefaultMultipartDecoder}, if there is one.
-     * 
-     * @since 2.0.1
-     */
-
-    public void cleanup()
-    {
-        if (_decoder != null)
-            _decoder.cleanup(_request);
     }
 
     /**
@@ -918,39 +833,6 @@ public class RequestContext implements IRender
     {
         if (!cycle.isRewinding())
             write(writer);
-    }
-
-    /**
-     * Returns the multipart decoder and lazily decodes the request parameters. This allows both for
-     * this operation to be performed only when really needed and for opening the request for
-     * reading much later, so that the Engine can have a chance to set the encoding that the request
-     * needs to use.
-     * 
-     * @return the multipart decoder or null if not needed for this request
-     * @since 3.0
-     */
-    private IMultipartDecoder getDecoder()
-    {
-        if (_decoder != null && !_decoded)
-        {
-            _decoder.decode(_request);
-            _decoded = true;
-        }
-
-        return _decoder;
-    }
-
-    /**
-     * Sets the multipart decoder to be used for the request.
-     * 
-     * @param decoder
-     *            the multipart decoder
-     * @since 3.0
-     */
-    public void setDecoder(IMultipartDecoder decoder)
-    {
-        _decoder = decoder;
-        _decoded = false;
     }
 
     /**

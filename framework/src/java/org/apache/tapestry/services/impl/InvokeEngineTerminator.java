@@ -13,6 +13,7 @@
 // limitations under the License.
 
 package org.apache.tapestry.services.impl;
+
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -29,22 +30,24 @@ import org.apache.tapestry.services.RequestServicer;
 import org.apache.tapestry.spec.IApplicationSpecification;
 
 /**
- * The terminatior for the <code>tapestry.RequestProcessor</code> pipeline,
- * this service is responsible for locating the correct engine instance and
- * letting it to the rest of the request.
- *
+ * The terminatior for the <code>tapestry.RequestProcessor</code> pipeline, this service is
+ * responsible for locating the correct engine instance and letting it to the rest of the request.
+ * 
  * @author Howard Lewis Ship
  * @since 3.1
  */
 public class InvokeEngineTerminator implements RequestServicer
 {
     private HttpServlet _servlet;
+
     private EngineManager _engineManager;
+
     private IApplicationSpecification _specification;
+
     private Infrastructure _infrastructure;
 
     public void service(HttpServletRequest request, HttpServletResponse response)
-        throws IOException, ServletException
+            throws IOException, ServletException
     {
         IEngine engine = _engineManager.getEngineInstance();
 
@@ -59,8 +62,6 @@ public class InvokeEngineTerminator implements RequestServicer
         finally
         {
             _engineManager.storeEngineInstance(engine);
-
-            context.cleanup();
         }
 
     }

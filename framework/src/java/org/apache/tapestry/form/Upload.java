@@ -17,39 +17,42 @@ package org.apache.tapestry.form;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.multipart.MultipartDecoder;
 import org.apache.tapestry.request.IUploadFile;
 
 /**
- *  Form element used to upload files.  For the momement, it is necessary to
- *  explicitly set the form's enctype to "multipart/form-data".
+ * Form element used to upload files. For the momement, it is necessary to explicitly set the form's
+ * enctype to "multipart/form-data". [ <a
+ * href="../../../../../ComponentReference/Upload.html">Component Reference </a>]
  * 
- *  [<a href="../../../../../ComponentReference/Upload.html">Component Reference</a>]
- * 
- *  @author Howard Lewis Ship
- *  @since 1.0.8
- * 
- **/
+ * @author Howard Lewis Ship
+ * @since 1.0.8
+ */
 
 public abstract class Upload extends AbstractFormComponent
 {
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         IForm form = getForm(cycle);
-		
+
         String name = form.getElementId(this);
 
         if (form.isRewinding())
         {
-        	if (!isDisabled())
-	            setFile(cycle.getRequestContext().getUploadFile(name));
+            if (!isDisabled())
+            {
+                IUploadFile file = getDecoder().getFileUpload(name);
+
+                setFile(file);
+            }
 
             return;
         }
 
-		// Force the form to use the correct encoding type for
-		// file uploads.
-		
-		form.setEncodingType("multipart/form-data");
+        // Force the form to use the correct encoding type for
+        // file uploads.
+
+        form.setEncodingType("multipart/form-data");
 
         writer.beginEmpty("input");
         writer.attribute("type", "file");
@@ -68,4 +71,6 @@ public abstract class Upload extends AbstractFormComponent
     public abstract boolean isDisabled();
 
     public abstract void setFile(IUploadFile file);
+
+    public abstract MultipartDecoder getDecoder();
 }
