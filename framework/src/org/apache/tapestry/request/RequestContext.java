@@ -155,8 +155,9 @@ public class RequestContext implements IRender
     private HttpServletRequest _request;
     private HttpServletResponse _response;
     private ApplicationServlet _servlet;
-    private IMultipartDecoder _decoder;
     private DecodedRequest _decodedRequest;
+    private IMultipartDecoder _decoder;
+    private boolean _decoded;
 
     /**
      * A mapping of the cookies available in the request.
@@ -192,8 +193,8 @@ public class RequestContext implements IRender
 
         if (_request != null && DefaultMultipartDecoder.isMultipartRequest(request))
         {
-            _decoder = obtainMultipartDecoder(servlet, request);
-            _decoder.decode(request);
+            IMultipartDecoder decoder = obtainMultipartDecoder(servlet, request);
+            setDecoder(decoder);
         }
     }
 
@@ -477,8 +478,9 @@ public class RequestContext implements IRender
 
     public String getParameter(String name)
     {
-        if (_decoder != null)
-            return _decoder.getString(_request, name);
+        IMultipartDecoder decoder = getDecoder();
+        if (decoder != null)
+            return decoder.getString(_request, name);
 
         return _request.getParameter(name);
     }
@@ -507,8 +509,9 @@ public class RequestContext implements IRender
     {
         // Note: this may not be quite how we want it to work; we'll have to see.
 
-        if (_decoder != null)
-            return _decoder.getStrings(_request, name);
+        IMultipartDecoder decoder = getDecoder();
+        if (decoder != null)
+            return decoder.getStrings(_request, name);
 
         return _request.getParameterValues(name);
     }
@@ -524,10 +527,11 @@ public class RequestContext implements IRender
 
     public IUploadFile getUploadFile(String name)
     {
-        if (_decoder == null)
+        IMultipartDecoder decoder = getDecoder();
+        if (decoder == null)
             return null;
 
-        return _decoder.getUploadFile(_request, name);
+        return decoder.getUploadFile(_request, name);
     }
 
     /**
@@ -1098,4 +1102,36 @@ public class RequestContext implements IRender
         if (!cycle.isRewinding())
             write(writer);
     }
+
+    /**
+     *  Returns the multipart decoder and lazily decodes the request parameters.
+     *  This allows both for this operation to be performed only when really needed
+     *  and for opening the request for reading much later, so that the Engine can
+     *  have a chance to set the encoding that the request needs to use.
+     * 
+     *  @return the multipart decoder or null if not needed for this request
+     *  @since 3.0
+     **/
+    private IMultipartDecoder getDecoder()
+    {
+        if (_decoder != null && !_decoded) {
+            _decoder.decode(_request);
+            _decoded = true;
+        }
+
+        return _decoder;
+    }
+
+    /**
+     *  Sets the multipart decoder to be used for the request.
+     * 
+     *  @param decoder the multipart decoder
+     *  @since 3.0
+     **/
+    public void setDecoder(IMultipartDecoder decoder)
+    {
+        _decoder = decoder;
+        _decoded = false;
+    }
+
 }
