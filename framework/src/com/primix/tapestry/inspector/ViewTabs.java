@@ -47,8 +47,7 @@ public class ViewTabs extends BaseComponent
 {
 	private static View[] views =
 	{
-		View.SPECIFICATION, View.COMPONENTS, View.TEMPLATE, View.PROPERTIES,
-		View.JAVA_SOURCE
+		View.SPECIFICATION, View.COMPONENTS, View.TEMPLATE, View.PROPERTIES
 	};
 		
 	private View view;
