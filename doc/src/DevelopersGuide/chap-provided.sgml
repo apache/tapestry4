@@ -1,0 +1,347 @@
+7
+
+Provided Components
+T
+he Tapestry framework provides a large set of pre-written components to use as a 
+starting point for building applications, or more complicated components.
+This section will provide a brief overview of the available components and their 
+most commonly used parameters.  The Javadoc is the final reference for this 
+information.
+Each of these components is automatically added as an alias in an application 
+specification.
+Action
+Creates an <a> hyperlink in the HTML response.  If the link is triggered, then the 
+Action retrieves its listener, and invokes actionTriggered() on it.
+Parameter
+Description
+listener
+The object notified when the link is triggered.
+enabled
+Controls whether the link is produced, if false, then the link is not created, but 
+the contents are still rendered.
+Any
+Used to make an existing HTML element dynamic.  Informal parameters are used to fill 
+in the attributes of the element.
+Parameter
+Description
+element
+The element to be produced
+Body
+Replaces the <body> tag.  The Body component provides some support for other 
+components, such as the Rollover component.
+Checkbox
+Used to implement a checkbox form element.  Must be wrapped by a Form component.
+Parameter
+Description
+selected
+Indicates whether the checkbox is selected or not.
+disabled
+Controls whether the text field is active or not.
+Conditional
+Makes part of an HTML template conditional.  The body of the Conditional component 
+is only rendered if a specified condition is met.
+Parameter
+Description
+condition
+The condition to be met.
+invert
+If true, then the condition is inverted. This is useful for simulating an else 
+clause.
+DateField
+A kind of validating text field that allows a date to be entered.
+Parameter
+Description
+date
+The date property to be editted.
+delegate
+An IValidationDelegate used to handle validation exceptions.
+maximum
+The lastest acceptible date (optional).
+minimum
+The earliest acceptible date (optional).
+required
+If true, a value must be entered.
+
+Delegator
+A component which delegates its behavior (that is, the HTML renders) to some other 
+object.  This is occasionally useful when the HTML to render is best generated from 
+pure Java code (or has been provided from some source outside of Tapestry).
+Parameter
+Description
+delegate
+The object which will provide the rendering for the component.
+Direct
+Creates a <a> hyperlink that notifies the component when the link is triggered.  The 
+link includes some context-specific data that is passed on to the component's 
+listener.  This  is used in cases where the Action component can't be used (or is 
+too inefficient).
+Parameter
+Description
+listener
+Specifies an object that is notified when the link is clicked.
+context
+An array of Strings to be encoded into the URL. These parameters will be decoded 
+when the link is triggered.
+enabled
+Controls whether the link is produced. If disabled, the portion of the template the 
+link surrounds is still rendered, but not the link itself.
+ExceptionDisplay
+A component, used on the standard exception page, used to render a detailed list of 
+the exceptions.
+Parameter
+Description
+exceptions
+An array of com.primix.foundation.exception.ExceptionDescription objects
+FieldLabel
+A component, used with a ValidatingTextField (or similar component) that provides 
+the label for the field.  A delegate object may be specified that will change the 
+visual formatting of the label to reflect the state of the field, for instance, to 
+make the label red when the field itself is in error.
+Parameter
+Description
+field
+The validating text field associated with the label.
+delegate
+An optional IValidationDelegate, responsible for the visual look of the label.
+
+Foreach
+A component that loops through a set of values, setting a property for each value 
+before rendering its wrapped elements.
+Parameter
+Description
+source
+The source of objects to be iterated.
+value
+Used to update the current value on each iteration.
+Form
+A component that manages an HTML form.  The other form-related components must be 
+wrapped inside the Form.
+Parameter
+Description
+method
+The value to use for the method attribute of the <form> tag.
+listener
+The listener, informed after the wrapped components of the form have had a chance to 
+respond to the request.
+Hidden
+Adds a hidden (<input type=hidden>) field to a Form.  This is often used to 
+synchronize data known when the page containing the Hidden was created.
+Parameter
+Description
+value
+Property to store when the form is renderred and to restore when the form is 
+submitted.
+Image
+Used to insert a static image.
+Parameter
+Description
+image
+The image to show, specified as an asset.
+ImageSubmit
+An image button inside a Form.  Clicking the button submits the form.	
+Parameter
+Description
+disabled
+If true, the image button will be disabled (not respond to the mouse).
+image
+The image to show, specified as an asset.
+selected
+A property updated if the button is clicked.
+tag
+The value assigned to the selected property if the button is clicked.
+Insert
+Inserts dynamic text into the HTML response.   Invalid characters (such as < and >) 
+are converted into HTML entities (&lt; and &gt;).
+Parameter
+Description
+value
+The value to be inserted, which may be a string or an arbitrary object (that is 
+converted to a string).
+format
+An format (java.text.Format) object used to format the String or object.
+InsertWrapped
+Renders the static HTML and components wrapped by the container of the InsertWrapped 
+component.  Components which have HTML templates and can wrap other elements should 
+include exactly one InsertWrapped component in their template.
+IntegerField
+A type of validating text field that is used to edit an integer property.
+Parameter
+Description
+value
+The property to edit.
+delegate
+An IValidationDelegate that is used to handle validation exceptions.
+required
+If true, a value must be provided by the user.
+minimum
+Optional minimum acceptible value.
+maximum
+Optional maximum acceptible value.
+Option
+Implements a component that manages an HTML <option> form element, and must be 
+wrapped by a Select component.
+Parameter
+Description
+selected
+Used to indicate whether the given option is selected.
+Page
+Creates a link to another page within the application.
+Parameter
+Description
+page
+The name of a page to link to.
+enabled
+Controls whether the link is produced. If disabled, the portion of the template the 
+link surrounds is still rendered, but not the link itself.
+PropertySelection
+Creates either a <select> or a sequence of <input type=radio> controls that 
+ultimately allow a property to be set.  Uses a model to map between Java values that 
+will be assigned, and textual labels that will appear in the HTML response.
+Parameter
+Description
+value
+The property value to edit.
+model
+The model used to enumerate the potential values, and to produce text labels for 
+each value.
+renderer
+An object used to render the property selection; two default implementations are 
+provided (on creates a pop up list, the other a table of radio buttons).
+
+Radio
+Implements a component that manages an HTML form element. Such a component must be 
+wrapped (possibly indirectly) inside a RadioGroup component.
+Parameter
+Description
+value
+The value to be assigned through the RadioGroup's selected parameter, if the Radio 
+is selected by the user.
+disabled
+If true, then the Radio is disabled. It will write a disabled attribute into its tag 
+when rendering, and will not update its selected binding.
+RadioGroup
+A container of Radio components, which itself must be within a Form component.  The 
+RadioGroup and Radio components combined provide similar functionality to the 
+PropertySelection component (though with some greater flexibility).
+Parameter
+Description
+selected
+The property to be updated by the RadioGroup based on which Radio button is selected 
+by the user.
+
+Rollover
+Works with any kind of link component, which must wrap it, to provide a rollover 
+image button ... a button where the image changes when the mouse move over it or off 
+of it.  A Rollover is disabled if the link that wraps it is disabled.
+Parameter
+Description
+image
+The (initial) image to show (if not disabled).
+focus
+The image displayed when the mouse moves over the button (unless disabled).
+blur
+The image displayed when the mouse moves off of the button (unless disabled).
+disabled
+The image displayed if the link is itself disabled.
+Script
+A component that accesses a script file and adds JavaScript functions and statements 
+to the response page.  The specified script file is read and parsed and 
+substitutions are made before the final scripting code is inserted into the page.
+Parameter
+Description
+script
+The resource path of the script file.
+
+Select
+A wrapper around Option components, within a Form.
+Parameter
+Description
+multiple
+If true, the component allows multiple selection.
+Service
+A component for creating a link for an arbitrary service that uses no parameters, 
+such as the reset or home service.
+Parameter
+Description
+service
+The name of the service.
+enabled
+Controls whether the link is produced. If disabled, the portion of the template the 
+link surrounds is still rendered, but not the link itself.
+Shell
+Provides the outer "shell" of a page, including the <html>, <head> and <title> tags 
+(but not the <body> tag).
+Parameter
+Description
+title
+Title for the page, placed within a <title> element.
+stylesheet
+Stylesheet to be used on the page.
+
+Submit
+Provides a form submit button (<input type=submit>).  This is most useful when the 
+form contains multiple submit buttons and the application needs to know which was 
+actually pressed.
+Parameter
+Description
+disabled
+If true, the submit button will be disabled.
+label
+The label to put on the button.
+selected
+A property updated if the button is the one clicked to submit the form.
+tag
+The value applied to the selected property if the button is the one clicked to 
+submit the form.
+
+ShowInspector
+Adds a link to a page that is used to raise the Tapestry Inspector in a new window.  
+This is generally added to the navigational border of an application.
+Text
+Implements a component that manages an HTML <textarea> form element, within a Form 
+component.
+Parameter
+Description
+text
+The text inside the text area.
+disabled
+Controls whether the textarea is active or not.
+columns
+The width of the textarea, in characters.
+rows
+The number of rows in the textarea.
+TextField
+Implements a component that manages an HTML <input type=text> or <input 
+type=password> form element, within a Form component.
+
+Parameter
+Description
+text
+The text inside the text field.
+hidden
+If true, then the text field is written as a <input type=password> form element.
+disabled
+Controls whether the text field is active or not.
+displayWidth
+Controls the display width of the text control in the client browser.
+maximumLength
+Controls the maximum number of characters that the text control will accept
+ValidatingTextField
+An improved TextField that can perform simple validations.  The field may be 
+required, and a mimum length may be specified.
+Parameter
+Description
+text
+The text inside the text field.
+hidden
+If true, then the text field is written as a <input type=password> form element.
+disabled
+Controls whether the text field is active or not.
+displayWidth
+Controls the display width of the text control in the client browser.
+required
+If true, a value must be provided by the user.
+delegate
+An IValidationDelegate instance used to handle validation errors.
+minimumLength
+Optional, the minimum number of characters that may be entered.
