@@ -179,7 +179,7 @@ public class TestSpecificationParser extends TapestryTestCase
     {
         ILibrarySpecification spec = parseLib("ValidLibrary.library");
 
-        checkLine(spec, 9);
+        checkLine(spec, 24);
 
         checkList("serviceNames", new String[] { "service1", "service2" }, spec.getServiceNames());
 
@@ -482,8 +482,8 @@ public class TestSpecificationParser extends TapestryTestCase
     {
         ILibrarySpecification spec = parseLib("ConfigureValue.library");
 
-        checkLine(spec, 7);
-        checkLine(spec.getExtensionSpecification("map"), 9);
+        checkLine(spec, 22);
+        checkLine(spec.getExtensionSpecification("map"), 24);
 
         Map map = (Map) spec.getExtension("map", Map.class);
 
