@@ -435,8 +435,10 @@ public abstract class AbstractEngine
 	*
 	*/
 
-	protected void reportException(String reportTitle, Throwable e)
+	protected void reportException(String reportTitle, Throwable ex)
 	{
+		CAT.warn(reportTitle, ex);
+	
 		System.err.println(
 			"\n\n**********************************************************\n\n");
 
@@ -446,7 +448,7 @@ public abstract class AbstractEngine
 			"\n  Client address: " + clientAddress +
 			"\n\nExceptions:\n");
 
-		new ExceptionAnalyzer().reportException(e, System.err);
+		new ExceptionAnalyzer().reportException(ex, System.err);
 
 		System.err.println(
 			"\n**********************************************************\n");
@@ -833,10 +835,10 @@ public abstract class AbstractEngine
 					redirect(STALE_SESSION_PAGE, cycle, output, e);
 				}
 			}
-			catch (Exception e)
+			catch (Exception ex)
 			{
 				if (monitor != null)
-					monitor.serviceException(e);
+					monitor.serviceException(ex);
 
 				// Discard any output (if possible).  If output has already been sent to
 				// the client, then things get dicey.
@@ -845,8 +847,11 @@ public abstract class AbstractEngine
 				// for a number of reasons, in which case a ServletException is thrown.
 
 				output.reset();
+				
+				if (CAT.isInfoEnabled())
+					CAT.info("Uncaught exception", ex);
 
-				activateExceptionPage(cycle, output, e);
+				activateExceptionPage(cycle, output, ex);
 			}
 			finally
 			{

@@ -104,16 +104,6 @@ class PropertyAccessor implements IPropertyAccessor
 
 	}
 
-	/**
-	*  Returns the type of the property.
-	*
-	*/
-
-	public Class getType()
-	{
-		return pd.getPropertyType();
-	}
-
 	public boolean isReadable()
 	{
 		return (accessor != null);
@@ -130,6 +120,11 @@ class PropertyAccessor implements IPropertyAccessor
 		return (mutator != null);
 	}
 
+	public Class getType()
+	{
+		return pd.getPropertyType();
+	}
+	
 	/**
 	*
 	*  @throws MissingAccessorException if the class does not define a mutator method

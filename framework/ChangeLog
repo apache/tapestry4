@@ -1,3 +1,11 @@
+* Jan 25 2001 hship
+
+Pool PageLoaders.
+Fix some latent threading bugs in PropertyAccessor and PageSource.
+Add a sanity check to AbstractPage.attach().
+Change AbstractApplication to log uncaught exceptions (in addition to raising the exception page).
+
+
 * Jan 19 2001 hship
 
 Change some method signatures in IEngine and AbstractEngine such that engine has

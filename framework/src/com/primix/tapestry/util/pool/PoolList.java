@@ -53,28 +53,36 @@ class PoolList
      *
      */
 
-    public Object get()
+    public Object retrieve()
     {
+		Object result;
+		
         if (count == 0)
             return null;
 
-        return array[--count];
+		count--;
+		result = array[count];
+		
+		array[count] = null;
+		
+		return result;
     }
 
     /**
      *  Adds the object to this PoolList.  An arbitrary number of objects can be
      *  stored.  The objects can later be retrieved using {@link #get()}.
      *
+	 *  @return The number of objects stored in the list (after adding the new object).
      */
 
-    public void add(Object object)
+    public int store(Object object)
     {
         if (array == null)
         {
             array = new Object[ARRAY_SIZE];
             array[0] = object;
             count = 1;
-            return;
+            return 1;
         }
 
         // If the array is full then expand it.
@@ -88,7 +96,9 @@ class PoolList
             array = newArray;
         }
 
-        array[count++] = object;            
+        array[count++] = object;  
+		
+		return count;          
     }
 
 	public String toString()

@@ -84,272 +84,331 @@ import com.primix.tapestry.asset.*;
 public class PageSource 
     implements IPageSource
 {
-    private Map fieldBindings;
-    private Map staticBindings;
-    private Map externalAssets;
-    private Map contextAssets;
-    private Map privateAssets;
-    private IResourceResolver resolver;
+	private Map fieldBindings;
+	private Map staticBindings;
+	private Map externalAssets;
+	private Map contextAssets;
+	private Map privateAssets;
+	private IResourceResolver resolver;
+	private static final int MAP_SIZE = 23;
 
-    private static final int MAP_SIZE = 23;
+	/**
+	*  The pool of {@link PooledPage}s.  The key is a {@link MultiKey},
+	*  built from the application name, the page name, and the page locale.
+	*  It is also used to pool {@link PageLoader}s.
+	*
+	*/
 
-    /**
-    *  The pool of {@link PooledPage}s.  The key is a {@link MultiKey},
-    *  built from the application name, the page name, and the page locale.
-    *
-    */
+	private Pool pool;
+	private boolean poolDisabled;
 
-    private Pool pool;
+	private static final String PAGE_LOADER_KEY = "PageLoader";
 
-    public PageSource(IResourceResolver resolver)
-    {
-        this.resolver = resolver;
+	public PageSource(IResourceResolver resolver)
+	{
+		this.resolver = resolver;
 
-        boolean poolDisabled = Boolean.getBoolean("com.primix.tapestry.disable-page-pool");
+		poolDisabled = Boolean.getBoolean("com.primix.tapestry.disable-page-pool");
 
-        if (!poolDisabled)
-            pool = new Pool();
-    }
+		pool = new Pool();
+	}
 
-    public IResourceResolver getResourceResolver()
-    {
-        return resolver;
-    }
+	public IResourceResolver getResourceResolver()
+	{
+		return resolver;
+	}
 
-    /**
-    *  Returns true if the page pool has been disabled.
-    *
-    */
+	/**
+	*  Returns true if the page pool has been disabled.
+	*
+	*/
 
-    public boolean isPoolDisabled()
-    {
-        return pool == null;
-    }
+	public boolean isPoolDisabled()
+	{
+		return poolDisabled;
+	}
 
 
 
-    /**
-    *  Builds a key for a named page in the application's current locale.
-    *
-    */
+	/**
+	*  Builds a key for a named page in the application's current locale.
+	*
+	*/
 
-    protected MultiKey buildKey(IEngine engine, String pageName)
-    {
-        Object[] keys;
+	protected MultiKey buildKey(IEngine engine, String pageName)
+	{
+		Object[] keys;
 
-        keys = new Object[] { pageName,
+		keys = new Object[] { pageName,
                               engine.getLocale() };
 
-        // Don't make a copy, this array is just for the MultiKey.
+		// Don't make a copy, this array is just for the MultiKey.
 
-        return new MultiKey(keys, false);
-    }
+		return new MultiKey(keys, false);
+	}
 
-    /**
-    *  Builds a key from an existing page, using the page's name and locale.  This is
-    *  used when storing a page into the pool.
-    *
-    */
+	/**
+	*  Builds a key from an existing page, using the page's name and locale.  This is
+	*  used when storing a page into the pool.
+	*
+	*/
 
-    protected MultiKey buildKey(IPage page)
-    {
-        Object[] keys;
+	protected MultiKey buildKey(IPage page)
+	{
+		Object[] keys;
 
-        keys = new Object[] { page.getName(),
+		keys = new Object[] { page.getName(),
                               page.getLocale() };
 
-        // Don't make a copy, this array is just for the MultiKey.
+		// Don't make a copy, this array is just for the MultiKey.
 
-        return new MultiKey(keys, false);
-    }
+		return new MultiKey(keys, false);
+	}
 
-    /**
-    *  Gets the page from a pool, or otherwise loads the page.  This operation
-    *  is threadsafe ... it synchronizes on the pool of pages.
-    *
+	/**
+	*  Gets the page from a pool, or otherwise loads the page.  This operation
+	*  is threadsafe ... it synchronizes on the pool of pages.
+	*
 
-    */
+	*/
 
-    public IPage getPage(IEngine engine, String pageName, IMonitor monitor)
-    throws PageLoaderException
-    {
-        Object key;
-        PageLoader loader;
-        IPage result = null;
-        String resource;
-        PageSpecification specification;
+	public IPage getPage(IEngine engine, String pageName, IMonitor monitor)
+	throws PageLoaderException
+	{
+		Object key = buildKey(engine, pageName);
+		IPage result = null;
 
-        key = buildKey(engine, pageName);
+		if (!poolDisabled)
+			result = (IPage)pool.retrieve(key);
 
-        if (pool != null)
-            result = (IPage)pool.retrieve(key);
+		if (result == null)
+		{
+			if (monitor != null)
+				monitor.pageCreateBegin(pageName);
 
-        if (result == null)
-        {
-            if (monitor != null)
-                monitor.pageCreateBegin(pageName);
+			PageSpecification specification = 
+				engine.getSpecification().getPageSpecification(pageName);
 
-            // Ok, need to load the page.  Note that we should also pool the page loader, instead
-            // we inneficiently create - use - discard it.
+			if (specification == null)
+				throw new ApplicationRuntimeException(
+					"This application does not contain a page named " + pageName + "."); 
 
-            loader = new PageLoader(this, engine);
+			PageLoader loader = retrievePageLoader();
 
-            specification = engine.getSpecification().getPageSpecification(pageName);
+			result = loader.loadPage(pageName, engine, specification.getSpecificationPath());
 
-            if (specification == null)
-                throw new ApplicationRuntimeException(
-                    "This application does not contain a page named " + pageName + "."); 
+			storePageLoader(loader);
 
-            result = loader.loadPage(pageName, specification.getSpecificationPath());
+			// Alas, the page loader is discarded, we should be pooling those as
+			// well.
 
-            // Alas, the page loader is discarded, we should be pooling those as
-            // well.
+			if (monitor != null)
+				monitor.pageCreateEnd(pageName);
+		}
 
-            if (monitor != null)
-                monitor.pageCreateEnd(pageName);
-        }
+		// Whether its new or reused, it must join the engine.
 
-        // Whether its new or reused, it must join the engine.
+		result.attach(engine);
 
-        result.attach(engine);
+		return result;
+	}
 
-        return result;
-    }
+	private PageLoader retrievePageLoader()
+	{
+		PageLoader result = (PageLoader)pool.retrieve(PAGE_LOADER_KEY);
+		
+		if (result == null)
+			result = new PageLoader(this);
 
-    /**
-    *  Returns the page to the appropriate pool.
-    *
-    */
+		return result;	
+	}
+	
+	private void storePageLoader(PageLoader loader)
+	{
+		pool.store(PAGE_LOADER_KEY, loader);
+	}
 
-    public void releasePage(IPage page)
-    {
-        page.detach();
+	/**
+	*  Returns the page to the appropriate pool.
+	*
+	*/
 
-        if (pool != null)
-            pool.store(buildKey(page), page);
-    }
+	public void releasePage(IPage page)
+	{
+		page.detach();
 
-    /**
-    *  Invoked (during testing primarily) to release the entire pool
-    *  of pages, and the caches of bindings and assets.
-    *
-    */
+		if (!poolDisabled)
+			pool.store(buildKey(page), page);
+	}
 
-    public void reset()
-    {
-        if (pool != null)
-            pool.clear();
+	/**
+	*  Invoked (during testing primarily) to release the entire pool
+	*  of pages, and the caches of bindings and assets.
+	*
+	*/
 
-        fieldBindings = null;
-        staticBindings = null;
-        externalAssets = null;
-        contextAssets = null;
-        privateAssets = null;
-    }
+	public void reset()
+	{
+		synchronized(this)
+		{
+			pool.clear();
 
-    /**
-    *  Gets a field binding for the named field (the name includes the class name
-    *  and the field).  If no such binding exists, then one is created, otherwise
-    *  the existing binding is returned. 
-    *
-    */
+			fieldBindings = null;
+			staticBindings = null;
+			externalAssets = null;
+			contextAssets = null;
+			privateAssets = null;
+		}
+	}
 
-    public synchronized IBinding getFieldBinding(String fieldName)
-    {
-        IBinding result = null;
+	/**
+	*  Gets a field binding for the named field (the name includes the class name
+	*  and the field).  If no such binding exists, then one is created, otherwise
+	*  the existing binding is returned. 
+	*
+	*/
 
-        if (fieldBindings == null)
-            fieldBindings = new HashMap(MAP_SIZE);
-        else
-            result = (IBinding)fieldBindings.get(fieldName);
+	public synchronized IBinding getFieldBinding(String fieldName)
+	{
+		IBinding result = null;
 
-        if (result == null)
-        {
-            result = new FieldBinding(resolver, fieldName);
+		if (fieldBindings == null)
+		{
+			synchronized(this)
+			{
+				if (fieldBindings == null)
+					fieldBindings = new HashMap(MAP_SIZE);
+			}	
+		}
 
-            fieldBindings.put(fieldName, result);
-        }
+		synchronized(fieldBindings)
+		{
+			result = (IBinding)fieldBindings.get(fieldName);
 
-        return result;
-    }
+			if (result == null)
+			{
+				result = new FieldBinding(resolver, fieldName);
 
-    /**
-    *  Like {@link #getFieldBinding(String)}, except for {@link StaticBinding}s.
-    *
-    */
+				fieldBindings.put(fieldName, result);
+			}
+		}
 
-    public synchronized IBinding getStaticBinding(String value)
-    {
-        IBinding result = null;
+		return result;
+	}
 
-        if (staticBindings == null)
-            staticBindings = new HashMap(MAP_SIZE);
-        else
-            result = (IBinding)staticBindings.get(value);
+	/**
+	*  Like {@link #getFieldBinding(String)}, except for {@link StaticBinding}s.
+	*
+	*/
 
-        if (result == null)
-        {
-            result = new StaticBinding(value);
+	public synchronized IBinding getStaticBinding(String value)
+	{
+		IBinding result = null;
 
-            staticBindings.put(value, result);
-        }
+		if (staticBindings == null)
+		{
+			synchronized(this)
+			{
+				if (staticBindings == null)
+					staticBindings = new HashMap(MAP_SIZE);
+			}
+		}
+		
+		synchronized(staticBindings)
+		{
+			result = (IBinding)staticBindings.get(value);
 
-        return result;
-    }
+			if (result == null)
+			{
+				result = new StaticBinding(value);
 
-    public synchronized IAsset getExternalAsset(String URL)
-    {
-        IAsset result = null;
+				staticBindings.put(value, result);
+			}
+		}
 
-        if (externalAssets == null)
-            externalAssets = new HashMap(MAP_SIZE);
-        else
-            result = (IAsset)externalAssets.get(URL);
+		return result;
+	}
 
-        if (result == null)
-        {
-            result = new ExternalAsset(URL);
-            externalAssets.put(URL, result);
-        }
+	public synchronized IAsset getExternalAsset(String URL)
+	{
+		IAsset result = null;
 
-        return result;
-    }
+		if (externalAssets == null)
+		{
+			synchronized(this)
+			{
+				if (externalAssets == null)
+					externalAssets = new HashMap(MAP_SIZE);
+			}
+		}
+		
+		synchronized(externalAssets)
+		{
+			result = (IAsset)externalAssets.get(URL);
 
-    public synchronized IAsset getContextAsset(String assetPath)
-    {
-        IAsset result = null;
+			if (result == null)
+			{
+				result = new ExternalAsset(URL);
+				externalAssets.put(URL, result);
+			}
+		}
 
-        if (contextAssets == null)
-            contextAssets = new HashMap(MAP_SIZE);
-        else
-            result = (IAsset)contextAssets.get(assetPath);
+		return result;
+	}
 
-        if (result == null)
-        {
-            result = new ContextAsset(assetPath);
-            contextAssets.put(assetPath, result);
-        }
+	public synchronized IAsset getContextAsset(String assetPath)
+	{
+		IAsset result = null;
 
-        return result;
+		if (contextAssets == null)
+		{
+			synchronized(this)
+			{
+				if (contextAssets == null)
+					contextAssets = new HashMap(MAP_SIZE);
+			}
+		}
+		
+		synchronized(contextAssets)
+		{
+			result = (IAsset)contextAssets.get(assetPath);
 
-    }
+			if (result == null)
+			{
+				result = new ContextAsset(assetPath);
+				contextAssets.put(assetPath, result);
+			}
+		}
+		
+		return result;
 
-    public synchronized IAsset getPrivateAsset(String resourcePath)
-    {
-        IAsset result = null;
+	}
 
-        if (privateAssets == null)
-            privateAssets = new HashMap(MAP_SIZE);
-        else
-            result = (IAsset)privateAssets.get(resourcePath);
+	public synchronized IAsset getPrivateAsset(String resourcePath)
+	{
+		IAsset result = null;
 
-        if (result == null)
-        {
-            result = new PrivateAsset(resourcePath);
-            privateAssets.put(resourcePath, result);
-        }
+		if (privateAssets == null)
+		{
+			synchronized(this)
+			{
+				if (privateAssets == null)
+					privateAssets = new HashMap(MAP_SIZE);
+			}
+		}
+		
+		synchronized(privateAssets)
+		{
+			result = (IAsset)privateAssets.get(resourcePath);
 
-        return result;
-    }
+			if (result == null)
+			{
+				result = new PrivateAsset(resourcePath);
+				privateAssets.put(resourcePath, result);
+			}
+		}
+		
+		return result;
+	}
 }
 
