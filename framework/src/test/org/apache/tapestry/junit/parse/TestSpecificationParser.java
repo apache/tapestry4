@@ -1,4 +1,4 @@
-// Copyright 2004 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,7 +19,6 @@ import java.util.Map;
 
 import org.apache.hivemind.Locatable;
 import org.apache.tapestry.bean.BindingBeanInitializer;
-import org.apache.tapestry.bean.MessageBeanInitializer;
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.spec.BindingType;
 import org.apache.tapestry.spec.IApplicationSpecification;
@@ -178,7 +177,7 @@ public class TestSpecificationParser extends TapestryTestCase
     {
         ILibrarySpecification spec = parseLib("ValidLibrary.library");
 
-        checkLine(spec, 23);
+        checkLine(spec, 24);
 
         checkList("pageNames", new String[]
         { "FirstPage", "SecondPage" }, spec.getPageNames());
@@ -619,9 +618,9 @@ public class TestSpecificationParser extends TapestryTestCase
     {
         IComponentSpecification spec = parsePage("BeanSet.page");
         IBeanSpecification bs = spec.getBeanSpecification("target");
-        
+
         BindingBeanInitializer i = (BindingBeanInitializer) bs.getInitializers().get(0);
-        
+
         assertEquals("literal", i.getPropertyName());
         assertEquals("literal-string", i.getBindingReference());
 

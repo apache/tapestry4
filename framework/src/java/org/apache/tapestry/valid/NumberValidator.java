@@ -1,4 +1,4 @@
-// Copyright 2004 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,9 +17,7 @@ package org.apache.tapestry.valid;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.lib.util.AdapterRegistry;
@@ -30,19 +28,19 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.form.IFormComponent;
 
 /**
- *  Simple validation for standard number classes.  This is probably insufficient
- *  for anything tricky and application specific, such as parsing currency.  
- *
- *  @author Howard Lewis Ship
- *  @since 1.0.8
- *
- **/
+ * Simple validation for standard number classes. This is probably insufficient for anything tricky
+ * and application specific, such as parsing currency.
+ * 
+ * @author Howard Lewis Ship
+ * @since 1.0.8
+ */
 
 public class NumberValidator extends BaseValidator
 {
     private static final Map TYPES = new HashMap();
 
-    static {
+    static
+    {
         TYPES.put("boolean", boolean.class);
         TYPES.put("Boolean", Boolean.class);
         TYPES.put("java.lang.Boolean", Boolean.class);
@@ -71,51 +69,54 @@ public class NumberValidator extends BaseValidator
         TYPES.put("java.math.BigDecimal", BigDecimal.class);
     }
 
-    private static final Set INT_TYPES = new HashSet();
-
     private Class _valueTypeClass = int.class;
 
     private boolean _zeroIsNull;
+
     private Number _minimum;
+
     private Number _maximum;
 
     private String _scriptPath = "/org/apache/tapestry/valid/NumberValidator.script";
 
     private String _invalidNumericFormatMessage;
+
     private String _invalidIntegerFormatMessage;
+
     private String _numberTooSmallMessage;
+
     private String _numberTooLargeMessage;
+
     private String _numberRangeMessage;
 
     private static AdapterRegistry _numberAdaptors = new AdapterRegistryImpl();
 
     public final static int NUMBER_TYPE_INTEGER = 0;
-	public final static int NUMBER_TYPE_REAL = 1;
 
-	/**
-	 * This class is not meant for use outside of NumberValidator; it
-	 * is public only to fascilitate some unit testing.
-	 * 
-	 */
+    public final static int NUMBER_TYPE_REAL = 1;
+
+    /**
+     * This class is not meant for use outside of NumberValidator; it is public only to fascilitate
+     * some unit testing.
+     */
     public static abstract class NumberAdaptor
     {
         /**
-         *  Parses a non-empty {@link String} into the correct subclass of
-         *  {@link Number}.
-         *
-         *  @throws NumberFormatException if the String can not be parsed.
-         **/
+         * Parses a non-empty {@link String}into the correct subclass of {@link Number}.
+         * 
+         * @throws NumberFormatException
+         *             if the String can not be parsed.
+         */
 
         abstract public Number parse(String value);
 
         /**
-         *  Indicates the type of the number represented -- integer or real.
-         *  The information is used to build the client-side validator.  
-         *  This method could return a boolean, but returns an int to allow
-         *  future extensions of the validator.
-         *   
-         *  @return one of the predefined number types
-         **/
+         * Indicates the type of the number represented -- integer or real. The information is used
+         * to build the client-side validator. This method could return a boolean, but returns an
+         * int to allow future extensions of the validator.
+         * 
+         * @return one of the predefined number types
+         */
         abstract public int getNumberType();
 
         public int compare(Number left, Number right)
@@ -129,9 +130,8 @@ public class NumberValidator extends BaseValidator
         }
 
         /**
-         * Invoked when comparing two Numbers of different types.
-         * The number is cooerced from its ordinary type to 
-         * the correct type for comparison.
+         * Invoked when comparing two Numbers of different types. The number is cooerced from its
+         * ordinary type to the correct type for comparison.
          * 
          * @since 3.0
          */
@@ -258,7 +258,8 @@ public class NumberValidator extends BaseValidator
         }
     }
 
-    static {
+    static
+    {
         NumberAdaptor byteAdaptor = new ByteAdaptor();
         NumberAdaptor shortAdaptor = new ShortAdaptor();
         NumberAdaptor intAdaptor = new IntAdaptor();
@@ -304,8 +305,7 @@ public class NumberValidator extends BaseValidator
         NumberAdaptor result = getAdaptor(_valueTypeClass);
 
         if (result == null)
-            throw new ApplicationRuntimeException(
-                Tapestry.format(
+            throw new ApplicationRuntimeException(Tapestry.format(
                     "NumberValidator.no-adaptor-for-field",
                     field,
                     _valueTypeClass.getName()));
@@ -313,17 +313,17 @@ public class NumberValidator extends BaseValidator
         return result;
     }
 
-	/**
-	 * Returns an adaptor for the given type.
-	 * 
-	 * <p>
-	 * Note: this method exists only for testing purposes. It is not meant to
-	 * be invoked by user code and is subject to change at any time.
-	 * 
-	 * @param type the type (a Number subclass) for which to return an adaptor
-	 * @return the adaptor, or null if no such adaptor may be found
-	 * @since 3.0
-	 */
+    /**
+     * Returns an adaptor for the given type.
+     * <p>
+     * Note: this method exists only for testing purposes. It is not meant to be invoked by user
+     * code and is subject to change at any time.
+     * 
+     * @param type
+     *            the type (a Number subclass) for which to return an adaptor
+     * @return the adaptor, or null if no such adaptor may be found
+     * @since 3.0
+     */
     public static NumberAdaptor getAdaptor(Class type)
     {
         return (NumberAdaptor) _numberAdaptors.getAdapter(type);
@@ -343,20 +343,17 @@ public class NumberValidator extends BaseValidator
         }
         catch (NumberFormatException ex)
         {
-            throw new ValidatorException(
-                buildInvalidNumericFormatMessage(field),
-                ValidationConstraint.NUMBER_FORMAT);
+            throw new ValidatorException(buildInvalidNumericFormatMessage(field),
+                    ValidationConstraint.NUMBER_FORMAT);
         }
 
         if (_minimum != null && adaptor.compare(result, _minimum) < 0)
-            throw new ValidatorException(
-                buildNumberTooSmallMessage(field),
-                ValidationConstraint.TOO_SMALL);
+            throw new ValidatorException(buildNumberTooSmallMessage(field),
+                    ValidationConstraint.TOO_SMALL);
 
         if (_maximum != null && adaptor.compare(result, _maximum) > 0)
-            throw new ValidatorException(
-                buildNumberTooLargeMessage(field),
-                ValidationConstraint.TOO_LARGE);
+            throw new ValidatorException(buildNumberTooLargeMessage(field),
+                    ValidationConstraint.TOO_LARGE);
 
         return result;
     }
@@ -392,10 +389,9 @@ public class NumberValidator extends BaseValidator
     }
 
     /**
-     *  If true, then when rendering, a zero is treated as a non-value, and null is returned.
-     *  If false, the default, then zero is rendered as zero.
-     * 
-     **/
+     * If true, then when rendering, a zero is treated as a non-value, and null is returned. If
+     * false, the default, then zero is rendered as zero.
+     */
 
     public boolean getZeroIsNull()
     {
@@ -407,16 +403,12 @@ public class NumberValidator extends BaseValidator
         _zeroIsNull = zeroIsNull;
     }
 
-    /** 
-     * 
-     *  @since 2.2
-     * 
-     **/
+    /**
+     * @since 2.2
+     */
 
-    public void renderValidatorContribution(
-        IFormComponent field,
-        IMarkupWriter writer,
-        IRequestCycle cycle)
+    public void renderValidatorContribution(IFormComponent field, IMarkupWriter writer,
+            IRequestCycle cycle)
     {
         if (!isClientScriptingEnabled())
             return;
@@ -452,9 +444,8 @@ public class NumberValidator extends BaseValidator
     }
 
     /**
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public String getScriptPath()
     {
@@ -462,53 +453,51 @@ public class NumberValidator extends BaseValidator
     }
 
     /**
-     *  Allows a developer to use the existing validation logic with a different client-side
-     *  script.  This is often sufficient to allow application-specific error presentation
-     *  (perhaps by using DHTML to update the content of a &lt;span&gt; tag, or to use
-     *  a more sophisticated pop-up window than <code>window.alert()</code>).
+     * Allows a developer to use the existing validation logic with a different client-side script.
+     * This is often sufficient to allow application-specific error presentation (perhaps by using
+     * DHTML to update the content of a &lt;span&gt; tag, or to use a more sophisticated pop-up
+     * window than <code>window.alert()</code>).
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public void setScriptPath(String scriptPath)
     {
         _scriptPath = scriptPath;
     }
 
-    /** Sets the value type from a string type name.  The name may be
-     *  a scalar numeric type, a fully qualified class name, or the name
-     *  of a numeric wrapper type from java.lang (with the package name omitted).
+    /**
+     * Sets the value type from a string type name. The name may be a scalar numeric type, a fully
+     * qualified class name, or the name of a numeric wrapper type from java.lang (with the package
+     * name omitted).
      * 
-     * @since 3.0 
-     * 
-     **/
+     * @since 3.0
+     */
 
     public void setValueType(String typeName)
     {
         Class typeClass = (Class) TYPES.get(typeName);
 
         if (typeClass == null)
-            throw new ApplicationRuntimeException(
-                Tapestry.format("NumberValidator.unknown-type", typeName));
+            throw new ApplicationRuntimeException(Tapestry.format(
+                    "NumberValidator.unknown-type",
+                    typeName));
 
         _valueTypeClass = typeClass;
     }
 
-    /** @since 3.0 **/
+    /** @since 3.0 * */
 
     public void setValueTypeClass(Class valueTypeClass)
     {
         _valueTypeClass = valueTypeClass;
     }
 
-    /** 
-     *  
-     *  Returns the value type to convert strings back into.  The default is int.
+    /**
+     * Returns the value type to convert strings back into. The default is int.
      * 
-     *  @since 3.0 
-     * 
-     **/
+     * @since 3.0
+     */
 
     public Class getValueTypeClass()
     {
@@ -550,9 +539,9 @@ public class NumberValidator extends BaseValidator
         return _numberTooSmallMessage;
     }
 
-    /** 
-     * Overrides the <code>invalid-numeric-format</code> bundle key.
-     * Parameter {0} is the display name of the field.
+    /**
+     * Overrides the <code>invalid-numeric-format</code> bundle key. Parameter {0} is the display
+     * name of the field.
      * 
      * @since 3.0
      */
@@ -562,9 +551,9 @@ public class NumberValidator extends BaseValidator
         _invalidNumericFormatMessage = string;
     }
 
-    /** 
-     * Overrides the <code>invalid-int-format</code> bundle key.
-     * Parameter {0} is the display name of the field.
+    /**
+     * Overrides the <code>invalid-int-format</code> bundle key. Parameter {0} is the display name
+     * of the field.
      * 
      * @since 3.0
      */
@@ -578,8 +567,7 @@ public class NumberValidator extends BaseValidator
 
     protected String buildInvalidNumericFormatMessage(IFormComponent field)
     {
-        String pattern =
-            getPattern(
+        String pattern = getPattern(
                 getInvalidNumericFormatMessage(),
                 "invalid-numeric-format",
                 field.getPage().getLocale());
@@ -591,20 +579,15 @@ public class NumberValidator extends BaseValidator
 
     protected String buildInvalidIntegerFormatMessage(IFormComponent field)
     {
-        String pattern =
-            getPattern(
-                getInvalidIntegerFormatMessage(),
-                "invalid-int-format",
-                field.getPage().getLocale());
+        String pattern = getPattern(getInvalidIntegerFormatMessage(), "invalid-int-format", field
+                .getPage().getLocale());
 
         return formatString(pattern, field.getDisplayName());
     }
 
-    /** 
-     * Overrides the <code>number-range</code> bundle key.
-     * Parameter [0} is the display name of the field.
-     * Parameter {1} is the minimum value.
-     * Parameter {2} is the maximum value.
+    /**
+     * Overrides the <code>number-range</code> bundle key. Parameter [0} is the display name of
+     * the field. Parameter {1} is the minimum value. Parameter {2} is the maximum value.
      * 
      * @since 3.0
      */
@@ -616,18 +599,18 @@ public class NumberValidator extends BaseValidator
 
     protected String buildNumberRangeMessage(IFormComponent field)
     {
-        String pattern =
-            getPattern(_numberRangeMessage, "number-range", field.getPage().getLocale());
+        String pattern = getPattern(_numberRangeMessage, "number-range", field.getPage()
+                .getLocale());
 
-        return formatString(pattern, new Object[] { field.getDisplayName(), _minimum, _maximum });
+        return formatString(pattern, new Object[]
+        { field.getDisplayName(), _minimum, _maximum });
     }
 
     /**
-     *  Overrides the <code>number-too-large</code> bundle key.
-     *  Parameter {0} is the display name of the field.
-     *  Parameter {1} is the maximum allowed value.
-     *  
-     *  @since 3.0
+     * Overrides the <code>number-too-large</code> bundle key. Parameter {0} is the display name
+     * of the field. Parameter {1} is the maximum allowed value.
+     * 
+     * @since 3.0
      */
 
     public void setNumberTooLargeMessage(String string)
@@ -639,19 +622,17 @@ public class NumberValidator extends BaseValidator
 
     protected String buildNumberTooLargeMessage(IFormComponent field)
     {
-        String pattern =
-            getPattern(_numberTooLargeMessage, "number-too-large", field.getPage().getLocale());
+        String pattern = getPattern(_numberTooLargeMessage, "number-too-large", field.getPage()
+                .getLocale());
 
         return formatString(pattern, field.getDisplayName(), _maximum);
     }
 
     /**
-     *  Overrides the <code>number-too-small</code> bundle key.
-     *  Parameter {0} is the display name of the field.
-     *  Parameter {1} is the minimum allowed value.
+     * Overrides the <code>number-too-small</code> bundle key. Parameter {0} is the display name
+     * of the field. Parameter {1} is the minimum allowed value.
      * 
-     *  @since 3.0
-     * 
+     * @since 3.0
      */
 
     public void setNumberTooSmallMessage(String string)
@@ -663,8 +644,8 @@ public class NumberValidator extends BaseValidator
 
     protected String buildNumberTooSmallMessage(IFormComponent field)
     {
-        String pattern =
-            getPattern(_numberTooSmallMessage, "number-too-small", field.getPage().getLocale());
+        String pattern = getPattern(_numberTooSmallMessage, "number-too-small", field.getPage()
+                .getLocale());
 
         return formatString(pattern, field.getDisplayName(), _minimum);
     }

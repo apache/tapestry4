@@ -14,8 +14,6 @@
 
 package org.apache.tapestry.form;
 
-import org.apache.tapestry.IBinding;
-
 /**
  * Implements a component that manages an HTML &lt;input type=text&gt; or &lt;input
  * type=password&gt; form element. [ <a

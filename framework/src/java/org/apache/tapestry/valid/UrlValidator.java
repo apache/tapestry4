@@ -1,4 +1,4 @@
-// Copyright 2004 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -30,246 +30,283 @@ import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.util.StringSplitter;
 
 /**
- *
- *  @since 3.0
- *
- **/
-public class UrlValidator extends BaseValidator {
-	private int _minimumLength;
-	private String _minimumLengthMessage;
-	private String _invalidUrlFormatMessage;
-	private String _disallowedProtocolMessage;
-	private Collection _allowedProtocols;
+ * @since 3.0
+ */
+public class UrlValidator extends BaseValidator
+{
+    private int _minimumLength;
 
-	private String _scriptPath = "/org/apache/tapestry/valid/UrlValidator.script"; //$NON-NLS-1$
+    private String _minimumLengthMessage;
 
-	public UrlValidator() {
-	}
+    private String _invalidUrlFormatMessage;
 
-	private UrlValidator(boolean required) {
-		super(required);
-	}
+    private String _disallowedProtocolMessage;
 
-	public String toString(IFormComponent field, Object value) {
-		if (value == null)
-			return null;
+    private Collection _allowedProtocols;
 
-		return value.toString();
-	}
+    private String _scriptPath = "/org/apache/tapestry/valid/UrlValidator.script"; //$NON-NLS-1$
 
-	public Object toObject(IFormComponent field, String input)
-		throws ValidatorException {
-		if (checkRequired(field, input))
-			return null;
+    public UrlValidator()
+    {
+    }
 
-		if (_minimumLength > 0 && input.length() < _minimumLength)
-			throw new ValidatorException(
-				buildMinimumLengthMessage(field),
-				ValidationConstraint.MINIMUM_WIDTH);
+    public String toString(IFormComponent field, Object value)
+    {
+        if (value == null)
+            return null;
 
-		if (!isValidUrl(input))
-			throw new ValidatorException(
-				buildInvalidUrlFormatMessage(field),
-				ValidationConstraint.URL_FORMAT);
+        return value.toString();
+    }
 
-		if (!isAllowedProtocol(input)) {
-			throw new ValidatorException(
-				buildDisallowedProtocolMessage(field),
-				ValidationConstraint.DISALLOWED_PROTOCOL);
-		}
+    public Object toObject(IFormComponent field, String input) throws ValidatorException
+    {
+        if (checkRequired(field, input))
+            return null;
 
-		return input;
-	}
+        if (_minimumLength > 0 && input.length() < _minimumLength)
+            throw new ValidatorException(buildMinimumLengthMessage(field),
+                    ValidationConstraint.MINIMUM_WIDTH);
 
-	public int getMinimumLength() {
-		return _minimumLength;
-	}
+        if (!isValidUrl(input))
+            throw new ValidatorException(buildInvalidUrlFormatMessage(field),
+                    ValidationConstraint.URL_FORMAT);
 
-	public void setMinimumLength(int minimumLength) {
-		_minimumLength = minimumLength;
-	}
+        if (!isAllowedProtocol(input))
+        {
+            throw new ValidatorException(buildDisallowedProtocolMessage(field),
+                    ValidationConstraint.DISALLOWED_PROTOCOL);
+        }
 
-	public void renderValidatorContribution(
-		IFormComponent field,
-		IMarkupWriter writer,
-		IRequestCycle cycle) {
-		if (!isClientScriptingEnabled())
-			return;
+        return input;
+    }
 
-		Map symbols = new HashMap();
+    public int getMinimumLength()
+    {
+        return _minimumLength;
+    }
 
-		if (isRequired())
-			symbols.put("requiredMessage", buildRequiredMessage(field)); //$NON-NLS-1$
+    public void setMinimumLength(int minimumLength)
+    {
+        _minimumLength = minimumLength;
+    }
 
-		if (_minimumLength > 0)
-			symbols.put("minimumLengthMessage", //$NON-NLS-1$
-			buildMinimumLengthMessage(field));
+    public void renderValidatorContribution(IFormComponent field, IMarkupWriter writer,
+            IRequestCycle cycle)
+    {
+        if (!isClientScriptingEnabled())
+            return;
 
-		symbols.put("urlFormatMessage", buildInvalidUrlFormatMessage(field)); //$NON-NLS-1$
+        Map symbols = new HashMap();
 
-		symbols.put("urlDisallowedProtocolMessage", //$NON-NLS-1$
-		buildDisallowedProtocolMessage(field));
+        if (isRequired())
+            symbols.put("requiredMessage", buildRequiredMessage(field)); //$NON-NLS-1$
 
-		symbols.put("urlRegexpProtocols", buildUrlRegexpProtocols()); //$NON-NLS-1$
+        if (_minimumLength > 0)
+            symbols.put("minimumLengthMessage", //$NON-NLS-1$
+                    buildMinimumLengthMessage(field));
 
-		processValidatorScript(_scriptPath, cycle, field, symbols);
-	}
+        symbols.put("urlFormatMessage", buildInvalidUrlFormatMessage(field)); //$NON-NLS-1$
 
-	private String buildUrlRegexpProtocols() {
-		if(_allowedProtocols == null) {
-			return null;
-		}
-		String regexp = "/("; //$NON-NLS-1$
-		Iterator iter = _allowedProtocols.iterator();
-		while (iter.hasNext()) {
-			String protocol = (String) iter.next();
-			regexp += protocol;
-			if (iter.hasNext()) {
-				regexp += "|"; //$NON-NLS-1$
-			}
-		}
-		regexp += "):///"; //$NON-NLS-1$
-		return regexp;
-	}
+        symbols.put("urlDisallowedProtocolMessage", //$NON-NLS-1$
+                buildDisallowedProtocolMessage(field));
 
-	public String getScriptPath() {
-		return _scriptPath;
-	}
+        symbols.put("urlRegexpProtocols", buildUrlRegexpProtocols()); //$NON-NLS-1$
 
-	public void setScriptPath(String scriptPath) {
-		_scriptPath = scriptPath;
-	}
+        processValidatorScript(_scriptPath, cycle, field, symbols);
+    }
 
-	protected boolean isValidUrl(String url) {
-		boolean bIsValid;
-		try {
-			new URL(url);
-			bIsValid = true;
-		} catch (MalformedURLException mue) {
-			bIsValid = false;
-		}
-		return bIsValid;
-	}
+    private String buildUrlRegexpProtocols()
+    {
+        if (_allowedProtocols == null)
+        {
+            return null;
+        }
+        String regexp = "/("; //$NON-NLS-1$
+        Iterator iter = _allowedProtocols.iterator();
+        while (iter.hasNext())
+        {
+            String protocol = (String) iter.next();
+            regexp += protocol;
+            if (iter.hasNext())
+            {
+                regexp += "|"; //$NON-NLS-1$
+            }
+        }
+        regexp += "):///"; //$NON-NLS-1$
+        return regexp;
+    }
 
-	protected boolean isAllowedProtocol(String url) {
-		boolean bIsAllowed = false;
-		if (_allowedProtocols != null) {
-			URL oUrl;
-			try {
-				oUrl = new URL(url);
-			} catch (MalformedURLException e) {
-				return false;
-			}
-			String actualProtocol = oUrl.getProtocol();
-			Iterator iter = _allowedProtocols.iterator();
-			while (iter.hasNext()) {
-				String protocol = (String) iter.next();
-				if (protocol.equals(actualProtocol)) {
-					bIsAllowed = true;
-					break;
-				}
-			}
-		} else {
-			bIsAllowed = true;
-		}
-		return bIsAllowed;
-	}
+    public String getScriptPath()
+    {
+        return _scriptPath;
+    }
 
-	public String getInvalidUrlFormatMessage() {
-		return _invalidUrlFormatMessage;
-	}
+    public void setScriptPath(String scriptPath)
+    {
+        _scriptPath = scriptPath;
+    }
 
-	public String getMinimumLengthMessage() {
-		return _minimumLengthMessage;
-	}
+    protected boolean isValidUrl(String url)
+    {
+        boolean bIsValid;
+        try
+        {
+            new URL(url);
+            bIsValid = true;
+        }
+        catch (MalformedURLException mue)
+        {
+            bIsValid = false;
+        }
+        return bIsValid;
+    }
 
-	public void setInvalidUrlFormatMessage(String string) {
-		_invalidUrlFormatMessage = string;
-	}
+    protected boolean isAllowedProtocol(String url)
+    {
+        boolean bIsAllowed = false;
+        if (_allowedProtocols != null)
+        {
+            URL oUrl;
+            try
+            {
+                oUrl = new URL(url);
+            }
+            catch (MalformedURLException e)
+            {
+                return false;
+            }
+            String actualProtocol = oUrl.getProtocol();
+            Iterator iter = _allowedProtocols.iterator();
+            while (iter.hasNext())
+            {
+                String protocol = (String) iter.next();
+                if (protocol.equals(actualProtocol))
+                {
+                    bIsAllowed = true;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            bIsAllowed = true;
+        }
+        return bIsAllowed;
+    }
 
-	public String getDisallowedProtocolMessage() {
-		return _disallowedProtocolMessage;
-	}
+    public String getInvalidUrlFormatMessage()
+    {
+        return _invalidUrlFormatMessage;
+    }
 
-	public void setDisallowedProtocolMessage(String string) {
-		_disallowedProtocolMessage = string;
-	}
+    public String getMinimumLengthMessage()
+    {
+        return _minimumLengthMessage;
+    }
 
-	public void setMinimumLengthMessage(String string) {
-		_minimumLengthMessage = string;
-	}
+    public void setInvalidUrlFormatMessage(String string)
+    {
+        _invalidUrlFormatMessage = string;
+    }
 
-	protected String buildMinimumLengthMessage(IFormComponent field) {
-			String pattern = getPattern(_minimumLengthMessage, "field-too-short", //$NON-NLS-1$
-	field.getPage().getLocale());
+    public String getDisallowedProtocolMessage()
+    {
+        return _disallowedProtocolMessage;
+    }
 
-		return formatString(
-			pattern,
-			Integer.toString(_minimumLength),
-			field.getDisplayName());
-	}
+    public void setDisallowedProtocolMessage(String string)
+    {
+        _disallowedProtocolMessage = string;
+    }
 
-	protected String buildInvalidUrlFormatMessage(IFormComponent field) {
-			String pattern = getPattern(_invalidUrlFormatMessage, "invalid-url-format", //$NON-NLS-1$
-	field.getPage().getLocale());
+    public void setMinimumLengthMessage(String string)
+    {
+        _minimumLengthMessage = string;
+    }
 
-		return formatString(pattern, field.getDisplayName());
-	}
+    protected String buildMinimumLengthMessage(IFormComponent field)
+    {
+        String pattern = getPattern(_minimumLengthMessage, "field-too-short", //$NON-NLS-1$
+                field.getPage().getLocale());
 
-	protected String buildDisallowedProtocolMessage(IFormComponent field) {
-		if(_allowedProtocols == null) {
-			return null;
-		}
-			String pattern = getPattern(_disallowedProtocolMessage, "disallowed-protocol", //$NON-NLS-1$
-	field.getPage().getLocale());
+        return formatString(pattern, Integer.toString(_minimumLength), field.getDisplayName());
+    }
 
-		String allowedProtocols = ""; //$NON-NLS-1$
-		Iterator iter = _allowedProtocols.iterator();
-		while (iter.hasNext()) {
-			String protocol = (String) iter.next();
-			if (!allowedProtocols.equals("")) { //$NON-NLS-1$
-				if(iter.hasNext()) {
-					allowedProtocols += ", "; //$NON-NLS-1$
-				} else {
-					allowedProtocols += " or "; //$NON-NLS-1$
-				}
-			}
-			allowedProtocols += protocol;			
-		}
+    protected String buildInvalidUrlFormatMessage(IFormComponent field)
+    {
+        String pattern = getPattern(_invalidUrlFormatMessage, "invalid-url-format", //$NON-NLS-1$
+                field.getPage().getLocale());
 
-		return formatString(pattern, allowedProtocols);
-	}
+        return formatString(pattern, field.getDisplayName());
+    }
 
-	protected String getPattern(String override, String key, Locale locale) {
-		if (override != null)
-			return override;
+    protected String buildDisallowedProtocolMessage(IFormComponent field)
+    {
+        if (_allowedProtocols == null)
+        {
+            return null;
+        }
+        String pattern = getPattern(_disallowedProtocolMessage, "disallowed-protocol", //$NON-NLS-1$
+                field.getPage().getLocale());
 
-		ResourceBundle strings;
-		String string;
-		try {
-				strings = ResourceBundle.getBundle("net.sf.cendil.tapestry.valid.ValidationStrings", //$NON-NLS-1$
-	locale);
-			string = strings.getString(key);
-		} catch (Exception exc) {
-				strings = ResourceBundle.getBundle("org.apache.tapestry.valid.ValidationStrings", //$NON-NLS-1$
-	locale);
-			string = strings.getString(key);
-		}
+        String allowedProtocols = ""; //$NON-NLS-1$
+        Iterator iter = _allowedProtocols.iterator();
+        while (iter.hasNext())
+        {
+            String protocol = (String) iter.next();
+            if (!allowedProtocols.equals("")) { //$NON-NLS-1$
+                if (iter.hasNext())
+                {
+                    allowedProtocols += ", "; //$NON-NLS-1$
+                }
+                else
+                {
+                    allowedProtocols += " or "; //$NON-NLS-1$
+                }
+            }
+            allowedProtocols += protocol;
+        }
 
-		return string;
-	}
+        return formatString(pattern, allowedProtocols);
+    }
 
-	/**
-	 * @param protocols comma separated list of allowed protocols
-	 */
-	public void setAllowedProtocols(String protocols) {
-		StringSplitter spliter = new StringSplitter(',');
-		//String[] aProtocols = protocols.split(","); //$NON-NLS-1$
-		String[] aProtocols = spliter.splitToArray(protocols); //$NON-NLS-1$
-		_allowedProtocols = new Vector();
-		for (int i = 0; i < aProtocols.length; i++) {
-			_allowedProtocols.add(aProtocols[i]);
-		}
-	}
+    protected String getPattern(String override, String key, Locale locale)
+    {
+        if (override != null)
+            return override;
+
+        ResourceBundle strings;
+        String string;
+        try
+        {
+            strings = ResourceBundle.getBundle("net.sf.cendil.tapestry.valid.ValidationStrings", //$NON-NLS-1$
+                    locale);
+            string = strings.getString(key);
+        }
+        catch (Exception exc)
+        {
+            strings = ResourceBundle.getBundle("org.apache.tapestry.valid.ValidationStrings", //$NON-NLS-1$
+                    locale);
+            string = strings.getString(key);
+        }
+
+        return string;
+    }
+
+    /**
+     * @param protocols
+     *            comma separated list of allowed protocols
+     */
+    public void setAllowedProtocols(String protocols)
+    {
+        StringSplitter spliter = new StringSplitter(',');
+        //String[] aProtocols = protocols.split(","); //$NON-NLS-1$
+        String[] aProtocols = spliter.splitToArray(protocols); //$NON-NLS-1$
+        _allowedProtocols = new Vector();
+        for (int i = 0; i < aProtocols.length; i++)
+        {
+            _allowedProtocols.add(aProtocols[i]);
+        }
+    }
 
 }

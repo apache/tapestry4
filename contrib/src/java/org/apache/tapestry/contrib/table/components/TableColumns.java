@@ -1,4 +1,4 @@
-// Copyright 2004 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@ package org.apache.tapestry.contrib.table.components;
 import java.util.Iterator;
 
 import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;

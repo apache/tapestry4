@@ -1,4 +1,4 @@
-// Copyright 2004 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,14 +23,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.ClassResolver;
-import org.apache.hivemind.Defense;
 import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.BaseLocatable;
+import org.apache.hivemind.util.Defense;
 import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.bean.BeanProvider;
 import org.apache.tapestry.engine.IPageLoader;
-import org.apache.tapestry.event.ChangeObserver;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.event.PageRenderListener;
@@ -195,9 +193,9 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
         Defense.notNull(element, "element");
 
         // TODO: Tweak the ordering of operations inside the PageLoader so that this
-        // check is allowable.  Currently, the component is entering active state
+        // check is allowable. Currently, the component is entering active state
         // before it loads its template.
-        
+
         // checkActiveLock();
 
         // Should check the specification to see if this component
@@ -323,17 +321,6 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
         Defense.notNull(name, "name");
 
         return _specification.getParameter(name) != null;
-    }
-
-    /**
-     * Returns an object used to resolve classes.
-     * 
-     * @since 3.0
-     * @deprecated To be removed in 3.2
-     */
-    private ClassResolver getClassResolver()
-    {
-        return getPage().getEngine().getClassResolver();
     }
 
     /**

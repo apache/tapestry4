@@ -19,6 +19,7 @@ import java.util.Locale;
 
 import javax.servlet.ServletException;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.engine.IComponentClassEnhancer;
 import org.apache.tapestry.engine.IEngineService;
@@ -34,7 +35,6 @@ import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.ObjectPool;
 import org.apache.tapestry.services.TemplateSource;
 import org.apache.tapestry.spec.IApplicationSpecification;
-import org.apache.tapestry.util.io.DataSqueezerImpl;
 
 /**
  * Defines the core, session-persistant object used to run a Tapestry application for a single
@@ -180,7 +180,6 @@ public interface IEngine
      * between sessions.
      * 
      * @see org.apache.tapestry.engine.AbstractEngine#createSpecificationSource(RequestContext)
-     * 
      * @deprecated To be removed in 3.2.
      */
 
@@ -190,7 +189,6 @@ public interface IEngine
      * Returns the source for HTML templates.
      * 
      * @see org.apache.tapestry.engine.AbstractEngine#createTemplateSource(RequestContext)
-     * 
      * @deprecated To be removed in 3.2.
      */
 
@@ -254,7 +252,6 @@ public interface IEngine
      * between all sessions.
      * 
      * @since 1.0.2
-     * 
      * @deprecated To be removed in 3.2.
      */
 
@@ -275,7 +272,6 @@ public interface IEngine
      * 
      * @since 2.0.4
      * @see org.apache.tapestry.engine.AbstractEngine#createComponentStringsSource(RequestContext)
-     * 
      * @deprecated To be removed in 3.2.
      */
 
@@ -286,7 +282,6 @@ public interface IEngine
      * 
      * @since 2.2
      * @see org.apache.tapestry.engine.AbstractEngine#createDataSqueezer()
-     * 
      * @deprecated To be removed in 3.2.
      */
 
@@ -325,8 +320,6 @@ public interface IEngine
     public ObjectPool getPool();
 
     /**
-     * 
-     * 
      * @since 3.0
      * @see org.apache.tapestry.engine.AbstractEngine#createComponentClassEnhancer(RequestContext)
      * @throws UnsupportedOperationException

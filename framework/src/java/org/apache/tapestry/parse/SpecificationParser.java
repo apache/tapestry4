@@ -1,4 +1,4 @@
-// Copyright 2004 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,11 +33,9 @@ import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.impl.DefaultErrorHandler;
 import org.apache.hivemind.parse.AbstractParser;
-import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.bean.BindingBeanInitializer;
-import org.apache.tapestry.bean.IBeanInitializer;
 import org.apache.tapestry.services.BindingSource;
 import org.apache.tapestry.services.ExpressionEvaluator;
 import org.apache.tapestry.spec.BeanLifecycle;

@@ -1,4 +1,4 @@
-// Copyright 2004 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,11 +23,11 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.Defense;
+import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.Messages;
 import org.apache.hivemind.Resource;
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.ComponentMessages;
 import org.apache.tapestry.engine.DefaultComponentPropertySource;
 import org.apache.tapestry.engine.IPropertySource;
@@ -127,7 +127,7 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
 
         Properties result = parent;
 
-        if (!Tapestry.isBlank(language))
+        if (!HiveMind.isBlank(language))
         {
             Locale l = new Locale(language, "");
             MultiKey key = buildKey(baseResourceLocation, l);
@@ -145,7 +145,7 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
         else
             language = "";
 
-        if (Tapestry.isNonBlank(country))
+        if (HiveMind.isNonBlank(country))
         {
             Locale l = new Locale(language, country);
             MultiKey key = buildKey(baseResourceLocation, l);
@@ -163,7 +163,7 @@ public class ComponentMessagesSourceImpl implements ComponentMessagesSource, Res
         else
             country = "";
 
-        if (Tapestry.isNonBlank(variant))
+        if (HiveMind.isNonBlank(variant))
         {
             Locale l = new Locale(language, country, variant);
             MultiKey key = buildKey(baseResourceLocation, l);

@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.workbench.upload;
 
+import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.form.IFormComponent;
@@ -56,7 +57,7 @@ public class Upload extends BasePage
 
     public void formSubmit(IRequestCycle cycle)
     {
-        if (Tapestry.isBlank(file.getFileName()))
+        if (HiveMind.isBlank(file.getFileName()))
         {
             IValidationDelegate delegate = (IValidationDelegate) getBeans().getBean("delegate");
 

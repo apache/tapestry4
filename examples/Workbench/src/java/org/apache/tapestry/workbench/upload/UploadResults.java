@@ -32,33 +32,15 @@ import org.apache.tapestry.util.io.BinaryDumpOutputStream;
  * @author Howard Lewis Ship
  */
 
-public class UploadResults extends BasePage
+public abstract class UploadResults extends BasePage
 {
-    private IUploadFile file;
+    public abstract void setFile(IUploadFile file);
 
-    private String fileDump;
-
-    public void detach()
-    {
-        file = null;
-        fileDump = null;
-
-        super.detach();
-    }
-
-    public IUploadFile getFile()
-    {
-        return file;
-    }
-
-    public String getFileDump()
-    {
-        return fileDump;
-    }
+    public abstract void setFileDump(String fileDump);
 
     public void activate(IUploadFile file, boolean showAscii, int bytesPerLine, IRequestCycle cycle)
     {
-        this.file = file;
+        setFile(file);
 
         StringWriter writer = null;
         BinaryDumpOutputStream out = null;
@@ -92,7 +74,7 @@ public class UploadResults extends BasePage
             out.close();
             out = null;
 
-            fileDump = writer.getBuffer().toString();
+            setFileDump(writer.getBuffer().toString());
 
             writer.close();
             writer = null;

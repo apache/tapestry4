@@ -27,22 +27,20 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.hivemind.HiveMind;
 
 /**
- * Filter used to redirect a root context URL (i.e., "/context" or "/context/"
- * to the Tapestry application servlet (typically, "/context/app").  This
- * servlet is mapped to "/" and must have a &lt;init-parameter&;gt; 
- * <code>redirect-path</code> that is the application servlet's path (i.e.,
- * "/app").  If no value is specified, then "/app" is used.  The path
- * is always relative to the servlet context, and should always
- * begin with a leading slash.
- *  
- * <p>Filters are only available in Servlet API 2.3 and above.
+ * Filter used to redirect a root context URL (i.e., "/context" or "/context/" to the Tapestry
+ * application servlet (typically, "/context/app"). This servlet is mapped to "/" and must have a
+ * &lt;init-parameter&;gt; <code>redirect-path</code> that is the application servlet's path
+ * (i.e., "/app"). If no value is specified, then "/app" is used. The path is always relative to the
+ * servlet context, and should always begin with a leading slash.
+ * <p>
+ * Filters are only available in Servlet API 2.3 and above.
+ * <p>
+ * Servlet API 2.4 is expected to allow a servlets in the welcome list (equivalent to index.html or
+ * index.jsp), at which point this filter should no longer be necessary.
  * 
- * <p>Servlet API 2.4 is expected to allow a servlets in the welcome list
- * (equivalent to index.html or index.jsp), at which point this filter
- * should no longer be necessary.
- *
  * @author Howard Lewis Ship
  * @since 3.0
  */
@@ -50,6 +48,7 @@ import org.apache.commons.logging.LogFactory;
 public class RedirectFilter implements Filter
 {
     private static final Log LOG = LogFactory.getLog(RedirectFilter.class);
+
     public static final String REDIRECT_PATH_PARAM = "redirect-path";
 
     private String _redirectPath;
@@ -58,7 +57,7 @@ public class RedirectFilter implements Filter
     {
         _redirectPath = config.getInitParameter(REDIRECT_PATH_PARAM);
 
-        if (Tapestry.isBlank(_redirectPath))
+        if (HiveMind.isBlank(_redirectPath))
             _redirectPath = "/app";
 
         if (LOG.isDebugEnabled())
@@ -71,14 +70,13 @@ public class RedirectFilter implements Filter
     }
 
     /**
-     * This filter intercepts the so-called "default" servlet, whose job is
-     * to provide access to standard resources packaged within the web application
-     * context.  This code is interested in only the very root, redirecting
-     * to the appropriate Tapestry application servlet.  Other values
+     * This filter intercepts the so-called "default" servlet, whose job is to provide access to
+     * standard resources packaged within the web application context. This code is interested in
+     * only the very root, redirecting to the appropriate Tapestry application servlet. Other values
      * are passed through unchanged.
      */
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-        throws IOException, ServletException
+            throws IOException, ServletException
     {
         HttpServletRequest hrequest = (HttpServletRequest) request;
         HttpServletResponse hresponse = (HttpServletResponse) response;
@@ -86,12 +84,12 @@ public class RedirectFilter implements Filter
         String servletPath = hrequest.getServletPath();
         String pathInfo = hrequest.getPathInfo();
 
-        // Been experimenting with different servlet containers.  In Jetty 4.2.8 and Tomcat 4.1,
-        // resources have a non-null servletPath.  If JBossWeb 3.0.6, the servletPath is
+        // Been experimenting with different servlet containers. In Jetty 4.2.8 and Tomcat 4.1,
+        // resources have a non-null servletPath. If JBossWeb 3.0.6, the servletPath is
         // null and the pathInfo indicates the relative location of the resource.
 
-        if ((Tapestry.isBlank(servletPath) || servletPath.equals("/"))
-            && (Tapestry.isBlank(pathInfo) || pathInfo.equals("/")))
+        if ((HiveMind.isBlank(servletPath) || servletPath.equals("/"))
+                && (HiveMind.isBlank(pathInfo) || pathInfo.equals("/")))
         {
             String path = hrequest.getContextPath() + _redirectPath;
 

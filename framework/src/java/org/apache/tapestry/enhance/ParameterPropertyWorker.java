@@ -20,11 +20,11 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.Defense;
 import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.ClassFabUtils;
 import org.apache.hivemind.service.MethodSignature;
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.spec.IComponentSpecification;

@@ -20,11 +20,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.tapestry.AbstractComponent;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.HiveMind;
+import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IActionListener;
-import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IDirect;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IForm;
@@ -666,7 +665,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
     protected void reconstructAllocatedIds(String storedIdList)
     {
-        if (Tapestry.isBlank(storedIdList))
+        if (HiveMind.isBlank(storedIdList))
             return;
 
         StringSplitter splitter = new StringSplitter(',');

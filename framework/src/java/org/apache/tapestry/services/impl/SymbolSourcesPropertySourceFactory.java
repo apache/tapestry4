@@ -1,4 +1,4 @@
-// Copyright 2004 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ import org.apache.hivemind.ServiceImplementationFactoryParameters;
 /**
  * Used to create an service instance of
  * {@link  org.apache.tapestry.services.impl.SymbolSourcesPropertySource}. This is because SSPS
- * needs an instance of {@link org.apache.hivemind.internal.Module}, and there's no way to do that
+ * needs an instance of {@link org.apache.hivemind.Module}, and there's no way to do that
  * with hivemind.BuilderFactory.
  * 
  * @author Howard Lewis Ship

@@ -40,7 +40,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
-import org.apache.hivemind.Defense;
+import org.apache.hivemind.HiveMind;
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.ApplicationServlet;
 import org.apache.tapestry.Constants;
 import org.apache.tapestry.IEngine;
@@ -1055,7 +1056,7 @@ public abstract class AbstractEngine implements IEngine, Externalizable, HttpSes
     {
         String className = getPropertySource().getPropertyValue("org.apache.tapestry.global-class");
 
-        if (Tapestry.isBlank(className))
+        if (HiveMind.isBlank(className))
             return Collections.synchronizedMap(new HashMap());
 
         Class globalClass = getClassResolver().findClass(className);

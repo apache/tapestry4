@@ -17,7 +17,6 @@ package org.apache.tapestry.components;
 import java.util.Iterator;
 
 import org.apache.tapestry.AbstractComponent;
-import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;

@@ -1,4 +1,4 @@
-// Copyright 2004 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,10 +15,7 @@
 package org.apache.tapestry.parse;
 
 import org.apache.hivemind.impl.BaseLocatable;
-import org.apache.hivemind.util.PropertyUtils;
-import org.apache.tapestry.IComponent;
 import org.apache.tapestry.bean.BindingBeanInitializer;
-import org.apache.tapestry.services.BindingSource;
 import org.apache.tapestry.spec.IBeanSpecification;
 
 /**

@@ -15,7 +15,6 @@
 package org.apache.tapestry.wml;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;

@@ -31,12 +31,12 @@ import java.util.Set;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
-import org.apache.hivemind.Defense;
 import org.apache.hivemind.HiveMind;
 import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.ClassFab;
 import org.apache.hivemind.service.ClassFactory;
 import org.apache.hivemind.service.MethodSignature;
+import org.apache.hivemind.util.Defense;
 import org.apache.hivemind.util.ToStringBuilder;
 import org.apache.tapestry.services.ComponentConstructor;
 import org.apache.tapestry.spec.IComponentSpecification;

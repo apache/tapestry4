@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.hivemind.Defense;
+import org.apache.hivemind.util.Defense;
 
 /**
  * A wrapper around a Map that stores query parameter values. Map keys are strings. Map values can

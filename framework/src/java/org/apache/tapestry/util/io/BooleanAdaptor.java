@@ -17,20 +17,18 @@ package org.apache.tapestry.util.io;
 import org.apache.tapestry.services.DataSqueezer;
 
 /**
- *  Squeezes a {@link Boolean}.
- *
- *  @author Howard Lewis Ship
- *
- **/
+ * Squeezes a {@link Boolean}.
+ * 
+ * @author Howard Lewis Ship
+ */
 
 class BooleanAdaptor implements ISqueezeAdaptor
 {
     private static final String PREFIX = "TF";
 
     /**
-     *  Registers using the prefixes 'T' and 'F' (for TRUE and FALSE).
-     *
-     **/
+     * Registers using the prefixes 'T' and 'F' (for TRUE and FALSE).
+     */
 
     public void register(DataSqueezer squeezer)
     {
@@ -38,25 +36,20 @@ class BooleanAdaptor implements ISqueezeAdaptor
     }
 
     /**
-     *  Squeezes the {@link Boolean} data to either 'T' or 'F'.
-     *
-     **/
+     * Squeezes the {@link Boolean}data to either 'T' or 'F'.
+     */
 
     public String squeeze(DataSqueezer squeezer, Object data)
     {
         Boolean bool = (Boolean) data;
 
-        if (bool.booleanValue())
-            return "T";
-        else
-            return "F";
+        return bool.booleanValue() ? "T" : "F";
     }
 
     /**
-     *  Unsqueezes the string to either {@link Boolean#TRUE} or {@link Boolean#FALSE},
-     *  depending on the prefix character.
-     *
-     **/
+     * Unsqueezes the string to either {@link Boolean#TRUE}or {@link Boolean#FALSE}, depending on
+     * the prefix character.
+     */
 
     public Object unsqueeze(DataSqueezer squeezer, String string)
     {

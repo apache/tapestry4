@@ -18,7 +18,6 @@ import java.io.IOException;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IActionListener;
-import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;

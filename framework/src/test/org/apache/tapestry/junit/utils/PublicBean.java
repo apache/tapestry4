@@ -38,8 +38,6 @@ public class PublicBean
 
     public long longProperty = random();
 
-    private long privateLongProperty = random();
-
     public double getSyntheticProperty()
     {
         return 3.14;

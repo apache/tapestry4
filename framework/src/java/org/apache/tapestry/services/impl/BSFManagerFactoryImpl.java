@@ -1,4 +1,4 @@
-// Copyright 2004, 2005 The Apache Software Foundation
+// Copyright 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,28 +14,29 @@
 
 package org.apache.tapestry.services.impl;
 
+import org.apache.bsf.BSFManager;
 import org.apache.hivemind.ClassResolver;
-import org.apache.hivemind.util.ClasspathResource;
-import org.apache.tapestry.services.ClasspathResourceFactory;
+import org.apache.tapestry.services.BSFManagerFactory;
 
 /**
- * Implementation of {@link org.apache.tapestry.services.ClasspathResourceFactory}.
- *
- * @author Howard Lewis Ship
+ * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class ClasspathResourceFactoryImpl implements ClasspathResourceFactory
+public class BSFManagerFactoryImpl implements BSFManagerFactory
 {
     private ClassResolver _classResolver;
 
-    public ClasspathResource newResource(String path)
+    public BSFManager createBSFManager()
     {
-        return new ClasspathResource(_classResolver, path);
+        BSFManager result = new BSFManager();
+
+        result.setClassLoader(_classResolver.getClassLoader());
+
+        return result;
     }
 
-    public void setClassResolver(ClassResolver resolver)
+    public void setClassResolver(ClassResolver classResolver)
     {
-        _classResolver = resolver;
+        _classResolver = classResolver;
     }
-
 }

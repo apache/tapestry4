@@ -14,13 +14,9 @@
 
 package org.apache.tapestry.services.impl;
 
-import java.util.Locale;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.hivemind.Resource;
-import org.apache.hivemind.impl.BaseLocatable;
 import org.apache.tapestry.services.RequestGlobals;
 
 /**

@@ -15,7 +15,6 @@
 package org.apache.tapestry.contrib.form;
 
 import org.apache.tapestry.BaseComponent;
-import org.apache.tapestry.IBinding;
 
 /**
  * Provides a mask edit HTML &lt;input type="text"&gt; form element.

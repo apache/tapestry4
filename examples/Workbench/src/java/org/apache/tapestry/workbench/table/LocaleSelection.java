@@ -1,4 +1,4 @@
-// Copyright 2004 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -31,9 +31,6 @@ import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumn;
  */
 public abstract class LocaleSelection extends BaseComponent implements ILocaleSelectionListener
 {
-    // immutable
-    private VerbosityRating m_objVerbosityRating;
-
     // temporary
     private Locale m_objCurrentLocale;
 
@@ -43,14 +40,6 @@ public abstract class LocaleSelection extends BaseComponent implements ILocaleSe
     public abstract Set getLocaleSet();
 
     public abstract void setLocaleSet(Set objLocaleSet);
-
-    /**
-     * Creates a new LocaleSelection component
-     */
-    public LocaleSelection()
-    {
-        m_objVerbosityRating = new VerbosityRating();
-    }
 
     /**
      * @see org.apache.tapestry.workbench.table.ILocaleSelectionListener#localesSelected(Locale[])

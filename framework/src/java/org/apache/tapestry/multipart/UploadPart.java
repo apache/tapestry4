@@ -19,30 +19,24 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.IUploadFile;
 
 /**
- *  Portion of a multi-part request representing an uploaded file.
- *
- *  @author Joe Panico
- *  @since 2.0.1
- *
- **/
+ * Portion of a multi-part request representing an uploaded file.
+ * 
+ * @author Joe Panico
+ * @since 2.0.1
+ */
 public class UploadPart extends Object implements IUploadFile, IPart
 {
-    private static final Log LOG = LogFactory.getLog(UploadPart.class);
-
     private FileItem _fileItem;
 
     public UploadPart(FileItem fileItem)
     {
-        if (fileItem == null)
-            throw new IllegalArgumentException(
-                Tapestry.format("invalid-null-parameter", "fileItem"));
+        Defense.notNull(fileItem, "fileItem");
 
         _fileItem = fileItem;
     }
@@ -53,10 +47,8 @@ public class UploadPart extends Object implements IUploadFile, IPart
     }
 
     /**
-     *  Leverages {@link File} to convert the full file path and extract
-     *  the name.
-     * 
-     **/
+     * Leverages {@link File}to convert the full file path and extract the name.
+     */
     public String getFileName()
     {
         File file = new File(this.getFilePath());
@@ -65,9 +57,8 @@ public class UploadPart extends Object implements IUploadFile, IPart
     }
 
     /**
-     *  @since 2.0.4
-     * 
-     **/
+     * @since 2.0.4
+     */
 
     public String getFilePath()
     {
@@ -82,16 +73,15 @@ public class UploadPart extends Object implements IUploadFile, IPart
         }
         catch (IOException ex)
         {
-            throw new ApplicationRuntimeException(
-                Tapestry.format("UploadPart.unable-to-open-content-file", _fileItem.getName()),
-                ex);
+            throw new ApplicationRuntimeException(Tapestry.format(
+                    "UploadPart.unable-to-open-content-file",
+                    _fileItem.getName()), ex);
         }
     }
 
     /**
-     *  Deletes the external content file, if one exists.
-     * 
-     **/
+     * Deletes the external content file, if one exists.
+     */
 
     public void cleanup()
     {
@@ -99,9 +89,8 @@ public class UploadPart extends Object implements IUploadFile, IPart
     }
 
     /**
-     * Writes the uploaded content to a file.  This should be invoked at most once
-     * (perhaps we should add a check for this).  This will often
-     * be a simple file rename.
+     * Writes the uploaded content to a file. This should be invoked at most once (perhaps we should
+     * add a check for this). This will often be a simple file rename.
      * 
      * @since 3.0
      */
@@ -113,9 +102,10 @@ public class UploadPart extends Object implements IUploadFile, IPart
         }
         catch (Exception ex)
         {
-            throw new ApplicationRuntimeException(
-                Tapestry.format("UploadPart.write-failure", file, ex.getMessage()),
-                ex);
+            throw new ApplicationRuntimeException(Tapestry.format(
+                    "UploadPart.write-failure",
+                    file,
+                    ex.getMessage()), ex);
         }
     }
 

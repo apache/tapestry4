@@ -46,8 +46,6 @@ public class LocalizedPropertiesLoader
         new CompoundMatcher(new ICharacterMatcher[] { WHITESPACE, SEPARATOR });
 
     private ExtendedReader _extendedReader;
-
-    private ExtendedReader m_objExtendedReader;
     
     /**
      * Creates a new loader that will load the properties from the given input stream

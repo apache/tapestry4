@@ -1,4 +1,4 @@
-// Copyright 2004 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,58 +14,55 @@
 
 package org.apache.tapestry.components;
 
+import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
 
 /**
- *  A conditional element on a page which will render its wrapped elements
- *  zero or one times.
- *
- *  [<a href="../../../../../ComponentReference/Conditional.html">Component Reference</a>]
- *
- *  @author Howard Lewis Ship, David Solis
+ * A conditional element on a page which will render its wrapped elements zero or one times. [ <a
+ * href="../../../../../ComponentReference/Conditional.html">Component Reference </a>]
  * 
- **/
+ * @author Howard Lewis Ship, David Solis
+ */
 
-public abstract class Conditional extends AbstractComponent 
+public abstract class Conditional extends AbstractComponent
 {
-	/**
-	 *  Renders its wrapped components only if the condition is true (technically,
-	 *  if condition matches invert). 
-	 *  Additionally, if element is specified, can emulate that HTML element if condition is met
-	 *
-	 **/
+    /**
+     * Renders its wrapped components only if the condition is true (technically, if condition
+     * matches invert). Additionally, if element is specified, can emulate that HTML element if
+     * condition is met
+     */
 
-	protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) 
-	{
-		if (evaluateCondition()) 
-		{
-			String element = getElement();
-			
-			boolean render = !cycle.isRewinding() && Tapestry.isNonBlank(element);
-			
-			if (render)
-			{
-				writer.begin(element);
-				renderInformalParameters(writer, cycle);
-			}
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+    {
+        if (evaluateCondition())
+        {
+            String element = getElement();
 
-			renderBody(writer, cycle);
-			
-			if (render)
-				writer.end(element);
-		}
-	}
-	
-	protected boolean evaluateCondition()
-	{
-		return getCondition() != getInvert();
-	}
+            boolean render = !cycle.isRewinding() && HiveMind.isNonBlank(element);
 
-	public abstract boolean getCondition();
-	public abstract boolean getInvert();
+            if (render)
+            {
+                writer.begin(element);
+                renderInformalParameters(writer, cycle);
+            }
 
-	public abstract String getElement();
+            renderBody(writer, cycle);
+
+            if (render)
+                writer.end(element);
+        }
+    }
+
+    protected boolean evaluateCondition()
+    {
+        return getCondition() != getInvert();
+    }
+
+    public abstract boolean getCondition();
+
+    public abstract boolean getInvert();
+
+    public abstract String getElement();
 }

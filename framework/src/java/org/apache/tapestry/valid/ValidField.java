@@ -1,4 +1,4 @@
-// Copyright 2004 The Apache Software Foundation
+// Copyright 2004, 2005 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,6 +15,7 @@
 package org.apache.tapestry.valid;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
@@ -25,39 +26,33 @@ import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.html.Body;
 
 /**
- *
- *  A {@link Form} component that creates a text field that
- *  allows for validation of user input and conversion between string and object
- *  values. 
+ * A {@link Form}component that creates a text field that allows for validation of user input and
+ * conversion between string and object values. [ <a
+ * href="../../../../../ComponentReference/ValidField.html">Component Reference </a>]
+ * <p>
+ * A ValidatingTextField uses an {@link IValidationDelegate}to track errors and an
+ * {@link IValidator}to convert between strings and objects (as well as perform validations). The
+ * validation delegate is shared by all validating text fields in a form, the validator may be
+ * shared my multiple elements as desired.
  * 
- *  [<a href="../../../../../ComponentReference/ValidField.html">Component Reference</a>]
- * 
- *  <p> A ValidatingTextField uses an {@link IValidationDelegate} to 
- *  track errors and an {@link IValidator} to convert between strings and objects
- *  (as well as perform validations).  The validation delegate is shared by all validating
- *  text fields in a form, the validator may be shared my multiple elements as desired.
- *
- *  @author Howard Lewis Ship
- *
- **/
+ * @author Howard Lewis Ship
+ */
 
 public abstract class ValidField extends AbstractTextField implements IFormComponent
 {
     public abstract Object getValue();
+
     public abstract void setValue(Object value);
 
     public abstract String getDisplayName();
 
     /**
-     *
-     *  Renders the component, which involves the {@link IValidationDelegate delegate}.
-     *
-     *  <p>During a render, the <em>first</em> field rendered that is either
-     *  in error, or required but null gets special treatment.  JavaScript is added
-     *  to select that field (such that the cursor jumps right to the field when the
-     *  page loads).
-     *
-     **/
+     * Renders the component, which involves the {@link IValidationDelegate delegate}.
+     * <p>
+     * During a render, the <em>first</em> field rendered that is either in error, or required but
+     * null gets special treatment. JavaScript is added to select that field (such that the cursor
+     * jumps right to the field when the page loads).
+     */
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -65,14 +60,10 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
         IValidationDelegate delegate = form.getDelegate();
 
         if (delegate == null)
-            throw new ApplicationRuntimeException(
-                Tapestry.format(
+            throw new ApplicationRuntimeException(Tapestry.format(
                     "ValidField.no-delegate",
                     getExtendedId(),
-                    getForm().getExtendedId()),
-                this,
-                null,
-                null);
+                    getForm().getExtendedId()), this, null, null);
 
         IValidator validator = getValidator();
 
@@ -104,9 +95,9 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
     }
 
     /**
-     *  Invokes {@link IValidationDelegate#writeAttributes(IMarkupWriter,IRequestCycle, IFormComponent,IValidator)}.
-     *
-     **/
+     * Invokes
+     * {@link IValidationDelegate#writeAttributes(IMarkupWriter,IRequestCycle, IFormComponent,IValidator)}.
+     */
 
     protected void beforeCloseTag(IMarkupWriter writer, IRequestCycle cycle)
     {
@@ -117,15 +108,13 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
         getForm().getDelegate().writeAttributes(writer, cycle, this, validator);
     }
 
-    private static final String SELECTED_ATTRIBUTE_NAME =
-        "org.apache.tapestry.component.html.valid.SelectedFieldSet";
+    private static final String SELECTED_ATTRIBUTE_NAME = "org.apache.tapestry.component.html.valid.SelectedFieldSet";
 
     /**
-     *  Creates JavaScript to set the cursor on the first required or error
-     *  field encountered while rendering.  This only works if the text field
-     *  is wrapped by a {@link Body} component (which is almost always true).
-     *
-     **/
+     * Creates JavaScript to set the cursor on the first required or error field encountered while
+     * rendering. This only works if the text field is wrapped by a {@link Body}component (which is
+     * almost always true).
+     */
 
     protected void addSelect(IRequestCycle cycle)
     {
@@ -166,7 +155,7 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
         Object value = getValue();
         String result = getValidator().toString(this, value);
 
-        if (Tapestry.isBlank(result) && getValidator().isRequired())
+        if (HiveMind.isBlank(result) && getValidator().isRequired())
             addSelect(getPage().getRequestCycle());
 
         return result;
