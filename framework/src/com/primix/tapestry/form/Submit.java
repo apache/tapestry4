@@ -33,7 +33,7 @@ import com.primix.tapestry.components.*;
 import com.primix.tapestry.html.*;
 
 /**
- *  Implements a component that manages an HTML &lt;submit&gt; form element.
+ *  Implements a component that manages an HTML &lt;input type=submit&gt; form element.
  *
  *  <p>This component is generally only used when the form has multiple
  *  submit buttons, and it is important for the application to know
@@ -75,7 +75,7 @@ import com.primix.tapestry.html.*;
  *      <td>selected</td>
  *      <td>java.lang.Object</td>
  *      <td>W</td>
- *      <td>yes</td>
+ *      <td>no</td>
  *      <td>&nbsp;</td>
  *      <td>This parameter is bound to a property that is
  *    updated when the submit button is clicked by the user.  The property
@@ -86,12 +86,25 @@ import com.primix.tapestry.html.*;
  *      <td>tag</td>
  *      <td>java.lang.Object</td>
  *      <td>R</td>
- *      <td>yes</td>
+ *      <td>no</td>
  *      <td>&nbsp;</td>
  *      <td>Tag used with the selected parameter to indicate which Submit button
  *  on a form was clicked.</td>
  *  </tr>
  *
+ *  <tr>
+ * 		<td>listener</td>
+ * 		<td>{@link IActionListener}</td>
+ * 		<td>R</td>
+ * 		<td>no</td>
+ * 		<td>&nbsp;</td>
+ * 		<td>If specified, the listener is notified.  This notification occurs
+ *  as the component is rewinded, i.e., prior to the {@link IForm form}'s listener.
+ *  In addition, the selected property (if bound) will be updated <em>before</em>
+ *  the listener is notified.
+ * 		</td>
+ *   </tr>
+ * 
  *	</table>
  *
  * <p>Allows informal parameters, but may not contain a body.
@@ -106,6 +119,7 @@ public class Submit extends AbstractFormComponent
 	private String staticLabelValue;
 
 	private IBinding disabledBinding;
+	private IBinding listenerBinding;
 
 	private IBinding selectedBinding;
 	private IBinding tagBinding;
@@ -209,10 +223,17 @@ public class Submit extends AbstractFormComponent
 			if (tagValue == null)
 				tagValue = tagBinding.getObject();
 
-			if (tagValue == null)
-				throw new RequiredParameterException(this, "tag", tagBinding);
+			if (tagValue != null)
+				selectedBinding.setObject(tagValue);
 
-			selectedBinding.setObject(tagValue);
+			if (listenerBinding != null)
+			{
+				IActionListener listener =
+					(IActionListener) listenerBinding.getObject("listener", IActionListener.class);
+
+				if (listener != null)
+					listener.actionTriggered(this, cycle);
+			}
 
 			return;
 		}
@@ -235,6 +256,17 @@ public class Submit extends AbstractFormComponent
 		generateAttributes(writer, cycle);
 
 		writer.closeTag();
+	}
+
+	public IBinding getListenerBinding()
+	
+	{
+		return listenerBinding;
+	}
+
+	public void setListenerBinding(IBinding listenerBinding)
+	{
+		this.listenerBinding = listenerBinding;
 	}
 
 }

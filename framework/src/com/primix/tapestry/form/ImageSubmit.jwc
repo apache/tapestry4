@@ -9,6 +9,7 @@
   <parameter name="point" java-type="java.awt.Point"/>
   <parameter name="selected"/>
   <parameter name="tag"/>
+  <parameter name="listener" java-type="com.primix.tapestry.IActionListener"/>
   
   <reserved-parameter name="type"/>
   <reserved-parameter name="src"/>
