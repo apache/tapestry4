@@ -16,6 +16,8 @@ package org.apache.tapestry.portlet;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
+import javax.portlet.RenderRequest;
+import javax.portlet.RenderResponse;
 
 /**
  * Implementation of the <code>tapestry.portlet.PortletRequestGlobals</code> service, which uses
@@ -30,10 +32,20 @@ public class PortletRequestGlobalsImpl implements PortletRequestGlobals
 
     private ActionResponse _actionResponse;
 
+    private RenderResponse _renderResponse;
+
+    private RenderRequest _renderRequest;
+
     public void store(ActionRequest request, ActionResponse response)
     {
         _actionRequest = request;
         _actionResponse = response;
+    }
+
+    public void store(RenderRequest request, RenderResponse response)
+    {
+        _renderRequest = request;
+        _renderResponse = response;
     }
 
     public ActionRequest getActionRequest()
@@ -46,4 +58,13 @@ public class PortletRequestGlobalsImpl implements PortletRequestGlobals
         return _actionResponse;
     }
 
+    public RenderRequest getRenderRequest()
+    {
+        return _renderRequest;
+    }
+
+    public RenderResponse getRenderResponse()
+    {
+        return _renderResponse;
+    }
 }

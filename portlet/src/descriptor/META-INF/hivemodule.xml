@@ -19,6 +19,10 @@
   
   Add on for Tapestry that adds native Portlet support.
   
+  <dependency module-id="tapestry" version="3.1.0"/>
+  
+  <sub-module descriptor="tapestry.portlet.services.xml"/>
+  
   <configuration-point id="PortletApplicationInitializers" schema-id="hivemind.lib.ChainContribution">
     
     Defines the steps for initializing a Tapestry portlet application.
@@ -83,26 +87,85 @@
     </invoke-factory>  
   </service-point>
   
-  <service-point id="ActionPortletToWebRequestServicerPipelineBridge" interface="ActionRequestServicer">
+  <service-point id="ActionRequestServicerToWebRequestServicerBridge" interface="ActionRequestServicer">
     
     Bridge from the ActionRequestServicerPipeline to
     the tapestry.request.WebRequestServicer pipeline.
     
     <invoke-factory model="primitive">
-      <construct class="ActionPortletToWebRequestServicerPipelineBridge">
+      <construct class="ActionRequestServicerToWebRequestServicerBridge">
         <set-service property="portletRequestGlobals" service-id="PortletRequestGlobals"/>
-        <set-service property="webRequestServicer" service-id="tapestry.request.WebRequestServicer"/>
+        <set-service property="webRequestServicer" service-id="tapestry.request.WebRequestServicerPipeline"/>
       </construct>
     </invoke-factory>
     
   </service-point>
   
+  <contribution configuration-id="ActionRequestServicerPipeline">
+    <terminator object="service:ActionRequestServicerToWebRequestServicerBridge"/>
+  </contribution>
+  
+  <configuration-point id="RenderRequestServicerPipeline" schema-id="hivemind.lib.Pipeline">
+    
+    A pipeline for processing an incoming Portlet action request.
+    
+  </configuration-point>   
+      
+  <service-point id="RenderRequestServicer" interface="RenderRequestServicer">  
+    
+    Service for handling Portlet action requests, built around
+    the RenderRequestServicerPipeline configuration.
+    
+    <invoke-factory service-id="hivemind.lib.PipelineFactory" model="primitive">
+      <create-pipeline filter-interface="RenderRequestServicerFilter"
+        configuration-id="RenderRequestServicerPipeline"/>
+    </invoke-factory>  
+  </service-point>
+  
+  <service-point id="RenderRequestServicerToWebRequestServicerBridge" interface="RenderRequestServicer">
+    
+    Bridge from the RenderRequestServicerPipeline to
+    the tapestry.request.WebRequestServicer pipeline.
+    
+    <invoke-factory model="primitive">
+      <construct class="RenderRequestServicerToWebRequestServicerBridge">
+        <set-service property="portletRequestGlobals" service-id="PortletRequestGlobals"/>
+        <set-service property="webRequestServicer" service-id="tapestry.request.WebRequestServicerPipeline"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <contribution configuration-id="RenderRequestServicerPipeline">
+    <terminator object="service:RenderRequestServicerToWebRequestServicerBridge"/>
+  </contribution>
+
+
   <service-point id="PortletRequestGlobals" interface="PortletRequestGlobals">
     
     Stores the current request and response objects.
     
     <create-instance class="PortletRequestGlobals" model="threaded"/>
     
+  </service-point>
+  
+  <service-point id="ActionResponse" interface="javax.portlet.ActionResponse">
+    
+    The ActionResponse for the current request.
+    
+    <invoke-factory service-id="hivemind.lib.ServicePropertyFactory" model="primitive">
+      <construct service-id="PortletRequestGlobals" property="actionResponse"/>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <service-point id="RenderResponse" interface="javax.portlet.RenderResponse">
+    
+    The RenderResponse for the current request.
+    
+    <invoke-factory service-id="hivemind.lib.ServicePropertyFactory" model="primitive">
+      <construct service-id="PortletRequestGlobals" property="renderResponse"/>
+    </invoke-factory>
   </service-point>
   
 </module>

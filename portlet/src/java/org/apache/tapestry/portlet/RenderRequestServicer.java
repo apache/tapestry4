@@ -15,40 +15,20 @@
 package org.apache.tapestry.portlet;
 
 import java.io.IOException;
-import java.io.OutputStream;
 
+import javax.portlet.PortletException;
+import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
 /**
- * Wrapper around {@link javax.portlet.RenderResponse}&nbsp;to adapt it as
- * {@link org.apache.tapestry.portlet.PortletWebResponse}.
+ * Used to define the commands in the <code>tapestry.portlet.RenderRequestServicerPipeline</code>
+ * configuration.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class RenderWebResponse extends PortletWebResponse
+public interface RenderRequestServicer
 {
-    private final RenderResponse _renderResponse;
-
-    public RenderWebResponse(RenderResponse renderResponse)
-    {
-        super(renderResponse);
-
-        _renderResponse = renderResponse;
-    }
-
-    public OutputStream getOutputStream() throws IOException
-    {
-        return _renderResponse.getPortletOutputStream();
-    }
-
-    public void reset()
-    {
-        _renderResponse.reset();
-    }
-
-    public void setContentType(String contentType)
-    {
-        _renderResponse.setContentType(contentType);
-    }
+    public void service(RenderRequest request, RenderResponse response) throws IOException,
+            PortletException;
 }

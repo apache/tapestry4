@@ -29,7 +29,7 @@ import org.apache.tapestry.services.WebRequestServicer;
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class ActionPortletToWebRequestServicerPipelineBridge implements ActionRequestServicer
+public class ActionRequestServicerToWebRequestServicerBridge implements ActionRequestServicer
 {
     private PortletRequestGlobals _portletRequestGlobals;
 

@@ -14,28 +14,20 @@
 
 package org.apache.tapestry.portlet;
 
-import javax.portlet.ActionRequest;
-import javax.portlet.ActionResponse;
-import javax.portlet.RenderRequest;
-import javax.portlet.RenderResponse;
-
 /**
- * Stores the current Portlet request and response, for access by other services.
- * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public interface PortletRequestGlobals
+public class PortletConstants
 {
-    public void store(ActionRequest request, ActionResponse response);
+    /**
+     * Name of the render service, whose job is to render a page. The page to render is identified
+     * in the {@link org.apache.tapestry.services.ServiceConstants#PAGE}parameter.
+     */
+    public static final String RENDER_SERVICE = "render";
 
-    public void store(RenderRequest request, RenderResponse response);
-
-    public ActionRequest getActionRequest();
-
-    public ActionResponse getActionResponse();
-
-    public RenderRequest getRenderRequest();
-
-    public RenderResponse getRenderResponse();
+    private PortletConstants()
+    {
+        // Prevent instantiation
+    }
 }

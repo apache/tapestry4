@@ -62,7 +62,7 @@ public class LinkFactoryImpl implements LinkFactory
     private final Object[] EMPTY = new Object[0];
 
     private URLCodec _codec = new URLCodec();
-    
+
     private WebRequest _request;
 
     public void initializeService()
@@ -133,7 +133,7 @@ public class LinkFactoryImpl implements LinkFactory
         return result;
     }
 
-    private void squeezeServiceParameters(Map parameters)
+    protected void squeezeServiceParameters(Map parameters)
     {
         Object[] serviceParameters = (Object[]) parameters.get(ServiceConstants.PARAMETER);
 
@@ -198,7 +198,7 @@ public class LinkFactoryImpl implements LinkFactory
     {
         _contextPath = contextPath;
     }
-    
+
     public void setRequest(WebRequest request)
     {
         _request = request;

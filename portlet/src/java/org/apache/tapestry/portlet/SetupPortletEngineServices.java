@@ -12,25 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.engine;
+package org.apache.tapestry.portlet;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServlet;
+import javax.portlet.PortletConfig;
 
 import org.apache.tapestry.services.ApplicationGlobals;
-import org.apache.tapestry.services.ApplicationInitializer;
 import org.apache.tapestry.services.ResponseRenderer;
 
 /**
- * Invokes {@link org.apache.tapestry.services.ApplicationGlobals#storeFactoryServices(List)}
- * &nbsp;to set up the based set of <em>servlet</em> engine services. Portlets use a seperate
- * configuration of to define a slightly different set of engine services.
+ * Alternative to {@link org.apache.tapestry.engine.SetupServletEngineServices}, but for Portlets
+ * and the <code>tapestry.portlet.services.FactoryServices</code> configuration point.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class SetupServletEngineServices implements ApplicationInitializer
+public class SetupPortletEngineServices implements PortletApplicationInitializer
 {
     private ApplicationGlobals _globals;
 
@@ -38,10 +36,15 @@ public class SetupServletEngineServices implements ApplicationInitializer
 
     private ResponseRenderer _responseRenderer;
 
-    public void initialize(HttpServlet servlet)
+    public void initialize(PortletConfig portletConfig)
     {
         _globals.storeFactoryServices(_factoryServices);
         _globals.storeResponseRenderer(_responseRenderer);
+    }
+
+    public void setFactoryServices(List factoryServices)
+    {
+        _factoryServices = factoryServices;
     }
 
     public void setGlobals(ApplicationGlobals globals)
@@ -49,14 +52,8 @@ public class SetupServletEngineServices implements ApplicationInitializer
         _globals = globals;
     }
 
-    public void setFactoryServices(List factoryServices)
-    {
-        _factoryServices = factoryServices;
-    }
-    
     public void setResponseRenderer(ResponseRenderer responseRenderer)
     {
         _responseRenderer = responseRenderer;
     }
-    
 }

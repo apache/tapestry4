@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<module id="tapestry.portlet.services" version="3.1.0" package="org.apache.tapestry.portlet">
+
+  Defines engine services used by Tapestry portlet support.
+  
+  <configuration-point id="FactoryServices" schema-id="tapestry.services.EngineServices">
+    
+    Configuration point for the factory default services. Each contributed service
+    must have a unique name.
+    
+  </configuration-point>
+    
+  <contribution configuration-id="FactoryServices">
+    <service object="service:tapestry.services.Home"/>
+    <service object="service:tapestry.services.Action"/>
+    <service object="service:tapestry.services.Direct"/>
+    <service object="service:tapestry.services.Page"/>
+    <service object="service:tapestry.services.Reset"/>
+    <service object="service:tapestry.services.Restart"/>
+    <service object="service:tapestry.services.Asset"/>
+	  <service object="service:tapestry.services.External"/>
+    <service object="service:Render"/>
+  </contribution>    
+  
+ <service-point id="Render" interface="org.apache.tapestry.engine.IEngineService">
+  
+  The single service that should be referenced by a Portlet render request.
+  
+  <create-instance class="RenderService" model="primitive"/>
+  
+ </service-point>
+ 
+ <service-point id="ResponseRenderer" interface="org.apache.tapestry.services.ResponseRenderer">
+  
+  Portal specific implementation of ResponseRender that builds a 
+  Portlet Render URL that references the render engine service.
+  
+  <invoke-factory model="primitive">
+    <construct class="PortletResponseRenderer">
+      <set-service property="response" service-id="tapestry.portlet.ActionResponse"/>
+    </construct>
+  </invoke-factory>
+ </service-point>
+  
+ <service-point id="SetupPortletEngineServices" interface="PortletApplicationInitializer">
+  
+  Contributed into the tapestry.init.ApplicationInitializers configuration point
+  to install the servlet-specific framework services into the
+  tapestry.globals.ApplicationGlobals service.
+  
+  <invoke-factory model="primitive">
+    <construct class="SetupPortletEngineServices">
+      <set-service property="globals" service-id="tapestry.globals.ApplicationGlobals"/>
+      <set-configuration property="factoryServices" configuration-id="FactoryServices"/>
+      <set-service property="responseRenderer" service-id="ResponseRenderer"/>
+    </construct>
+  </invoke-factory>
+ </service-point>
+ 
+ <contribution configuration-id="tapestry.portlet.PortletApplicationInitializers">
+  <command id="SetupPortletEngineServices" object="service:SetupPortletEngineServices"/>
+ </contribution>
+  
+</module>
