@@ -52,10 +52,9 @@
   <b>Description</b>
 	<br>
   A form element used to handle file uploads.  The uploaded file is represented 
-  by an instance of IUploadFile.
+  by an instance of <a href="../api/net/sf/tapestry/IUploadFile.html">IUploadFile</a>.
   <p>
-  Note for pre Tapestry 2.2 versions the form's enctype must be set to 
-  multipart/form-data, i.e.  
+  Note the form's enctype must be set to multipart/form-data, i.e.  
   <tt>&lt;form enctype="multipart/form-data"&gt;<tt>.
  </td>
 </tr>
@@ -116,6 +115,9 @@
 	<p>
   Provides a file upload form and displays the results of the upload.
 	<p>
+  To save the uploaded file to the WEB context path, rather than the default 
+  <tt>java</tt> path, use the <tt>ServletContext.getRealPath()</tt> method to 
+  obtain the web application's directory path.
 
 <form>
 <table class="examples" cellpadding="4">
@@ -147,7 +149,7 @@
 </form>
 
 <pre>
-&lt;form jwcid="form"&gt;
+&lt;form jwcid="form" enctype="<b>multipart/form-data</b>"&gt;
  &lt;table bgcolor="#c0c0c0" cellpadding="4"&gt;
   &lt;tr&gt;
    &lt;td colspan="2"&gt;File:&amp;nbsp;&lt;input jwcid="<span class="jwcid">fileUpload</span>" type= "file"&gt;&lt;/input&gt;&lt;/td&gt;
@@ -203,13 +205,13 @@
 
 &lt;component id="insertFileSize" type="<A href="Insert.html">Insert</a>"&gt;
     &lt;binding name="value" expression="fileSize"/&gt;
-    &lt;field-binding name="format" field-name="UploadPage.SIZE_FORMAT"/&gt;
+    &lt;binding name="format" expression="@UploadPage@SIZE_FORMAT"/&gt;
 &lt;/component&gt;
 
 
 public class UploadPage extends BasePage {
     public static final Format SIZE_FORMAT = NumberFormat.getNumberInstance();    
-    private IUploadFile file;
+    private <a href="../api/net/sf/tapestry/IUploadFile.html">IUploadFile</a> file;
     private File serverFile;
 
     public IUploadFile getFile() { return file; }
@@ -228,14 +230,14 @@ public class UploadPage extends BasePage {
 
     public String getClientPath() { 
         if (file != null) { 
-            returnfile.getFilePath(); 
+            return file.getFilePath(); 
         } else {
             return ""; 
         } 
     } 
     
     public String getServerPath() { 
-        if (serverFile ! = null) { 
+        if (serverFile != null) { 
             return serverFile.getAbsolutePath(); 
         } else { 
             return "";  
