@@ -35,11 +35,14 @@
 # Works just like a Jar project, except that it then produces a
 # deployable version of the Jar file as well, named $(JAR_NAME)-deploy.$(JAR_EXT)
 #
-# Overrides a number of local- rules: local-clean, local-install
+# Overrides a number of local- rules: local-clean, module-install
 #
 #
 # You may specify options for ejbc using SITE_EJBC_OPT or EJBC_OPT.
 # -keepgenerated is pretty useful.
+
+# All WebLogic module musthave these two files, which will be installed
+# into the  META-INF directory of the JAR.
 
 MOD_META_RESOURCES = ejb-jar.xml weblogic-ejb-jar.xml
 
@@ -50,28 +53,37 @@ DEPLOY_JAR_FILE := $(MODULE_NAME)-deploy.$(JAR_EXT)
 local-clean:
 	@$(RMDIRS) $(DEPLOY_JAR_FILE)
 
-ifneq "$(INSTALL_DIR)" ""
-
-local-install: $(INSTALL_DIR)/$(DEPLOY_JAR_FILE)
+module-install: $(INSTALL_DIR)/$(DEPLOY_JAR_FILE)
 
 $(INSTALL_DIR)/$(DEPLOY_JAR_FILE): $(DEPLOY_JAR_FILE)
+ifeq "$(INSTALL_DIR)" ""
+	$(error JBE Error: Must set INSTALL_DIR in Makefile)
+endif
 	@$(ECHO) "\n*** Installing $(DEPLOY_JAR_FILE) to $(INSTALL_DIR) ... ***\n"
 	@$(CP) -f $(DEPLOY_JAR_FILE) $(INSTALL_DIR)
-endif
 
-local-post-jar: $(DEPLOY_JAR_FILE)
+# Add a dependency to inner-jar that causes the deployable jar file to
+# be created.
 
-WEBLOGIC_CLASSPATH := $(WEBLOGIC_DIR)/lib/weblogicaux.jar $(WEBLOGIC_DIR)/classes
+inner-jar: $(DEPLOY_JAR_FILE)
+
+WEBLOGIC_CLASSPATH := \
+	$(WEBLOGIC_DIR)/lib/weblogicaux.jar \
+	$(WEBLOGIC_DIR)/classes
+
+# MOD_CLASSPATH will be added to the classpath of any module compiled
+# using this makefile.
 
 MOD_CLASSPATH := $(WEBLOGIC_CLASSPATH)
 
-EJBC_CLASSPATH =  $(call JBE_CANONICALIZE,-classpath \
+EJBC_CLASSPATH = $(call JBE_CANONICALIZE,-classpath \
 						$(WEBLOGIC_CLASSPATH) $(SITE_CLASSPATH) $(LOCAL_CLASSPATH))
 
 FINAL_EJBC_OPT := $(strip $(SITE_EJBC_OPT) $(EJBC_OPT))
 
 # After building the initial Jar, build the deployment jar too.
 
+# Make the deployable JAR dependent on any .jar or .zip in the classpath.
 # EJBC leaves lots of garbage around, so we'll switch to the
 # build directory
 

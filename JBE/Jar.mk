@@ -29,7 +29,7 @@ JAR_EXT := jar
 
 include $(SYS_MAKEFILE_DIR)/ModuleDefs.mk
 
-# Start of rules.  The default rule is to compile all packages.
+# Start of rules.  The default rule is to build the JAR.
 
 default: jar
 
@@ -42,75 +42,51 @@ include $(SYS_MAKEFILE_DIR)/ModuleRules.mk
 
 # Initializer, makes sure some directories are there
 
-initialize: setup-jbe-util jar-initialize local-initialize
-
-local-initialize: jar-initialize
-
-jar-initialize:
+module-initialize:
 	@$(MKDIRS) $(MOD_CLASS_DIR) $(MOD_META_INF_DIR)
 
+jar: initialize
+	@$(RECURSE) POST_SETUP=t inner-jar
+
 # To create a jar, you need to get everything compiled and copied over
-# all resources
+# all resources.  This inner rule is invoked in a recursive make, after
+# the cataloging has been done.
 
-jar: $(JAR_FILE) local-post-jar post-jar
+inner-jar: $(JAR_FILE)
+	@$(TOUCH) $(DUMMY_FILE)
 
-post-jar: local-post-jar
+# Rebuild the JAR file when its contents (from the staging area in $(MOD_CLASS_DIR))
+# has changed, as identified by the dirty jar stamp.
 
-pre-jar: local-pre-jar
-
-# Build the Jar file by compiling into it everything in the classes
-# directory.
-
-$(MOD_DIRTY_JAR_STAMP_FILE):: compile-and-copy-resources 
-
-$(JAR_FILE):: local-pre-jar pre-jar
-
-# local-pre-jar can perform any final changes to the build directory
-# before it is wrapped up as a Jar file
-
-local-pre-jar: $(MOD_DIRTY_JAR_STAMP_FILE)
-
-# local-post-jar may be implemented to perform additional work on
-# the jar file, such as signing it.
-
-local-post-jar: $(JAR_FILE)
-
-$(JAR_FILE):: $(MOD_DIRTY_JAR_STAMP_FILE)
+$(JAR_FILE): $(MOD_DIRTY_JAR_STAMP_FILE)
 ifeq "$(MODULE_NAME)" ""
-	@$(ECHO) JBE Error: Must set MODULE_NAME in Makefile
-else
+	$(error JBE Error: Must set MODULE_NAME in Makefile)
+endif
 	@$(ECHO) "\n*** Building $(JAR_FILE) ... ***\n"
 	$(JAR) cf $(JAR_FILE) -C $(MOD_CLASS_DIR) .
-endif
 
-install: jar-install local-install
+# Another rule invoked in the recursive make.
 
-# Default rule for when INSTALL_DIR or MODULE_NAME is undefined.
+inner-install: jar-install module-install
+	@$(TOUCH) $(DUMMY_FILE)
 
-jar-install: jar
-
-ifeq "$(INSTALL_DIR)" ""
-jar-install:
-	@$(ECHO) JBE Error: Must set INSTALL_DIR in Makefile
-endif
-
-ifneq "$(MODULE_NAME)" ""
 jar-install: $(INSTALL_DIR)/$(JAR_FILE)
 
 $(INSTALL_DIR)/$(JAR_FILE): $(JAR_FILE)
+ifeq "$(INSTALL_DIR)" ""
+	$(error JBE Error: Must set INSTALL_DIR in Makefile)
+endif
+ifeq "$(MODULE_NAME)" ""
+	$(error JBE Error: Must set MODULE_NAME in Makefile)
+endif
 	@$(ECHO) "\n*** Installing $(JAR_FILE) to $(INSTALL_DIR) ***\n"
 	@$(CP) $(JAR_FILE) -f $(INSTALL_DIR)
-endif
 
-# local-install allows additional installation work to follow the normal
+# module-install allows additional installation work to follow the normal
 # install.
 
-local-install: jar-install
+module-install: jar-install
 
-.PHONY: jar install initialize 
-.PHONY: default post-jar local-post-jar
-
-# Additional rules that can be implemented elsewhere
-
-.PHONY: local-initialize local-pre-jar local-post-jar local-install pre-jar
+.PHONY: jar install initialize jar-install module-install
+.PHONY: default inner-jar
 

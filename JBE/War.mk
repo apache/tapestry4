@@ -46,42 +46,12 @@ default: war
 
 include $(SYS_MAKEFILE_DIR)/ModuleRules.mk
 
-
-# Initializer, makes sure some directories are there
-
-initialize: setup-jbe-util war-initialize local-initialize
-
-war-initialize:
+module-initialize:
 	@$(MKDIRS) $(MOD_CLASS_DIR) $(WAR_LIB_DIR) $(MOD_META_INF_DIR)
 
-# To create a War, you need to get everything compiled and copy over
-# all resources.  It's still a Jar file, even though the extension is
-# different.
+war: $(JAR_FILE)
 
-web-application: compile-and-copy-resources \
-	copy-meta-resources copy-context-resources \
-	$(WAR_LIB_STAMP_FILE) local-web-application
-
-# local-web-application can be provided to do any final setup
-# of the web application directory after all normal rules
-# have processed.  This will happen before the application directory
-# is jar'ed up.
-
-local-web-application: compile copy-resources \
-	copy-meta-resources copy-context-resources \
-	$(WAR_LIB_STAMP_FILE)
-
-war: web-application $(JAR_FILE) local-post-jar
-
-# local-post-jar may be provided to do additional work to the web archive
-# file after it has been created, such as signing or sealing it.
-
-local-post-jar: $(JAR_FILE)
-
-# Build the Jar file by compiling into it everything in the classes
-# directory.
-
-$(MOD_DIRTY_JAR_STAMP_FILE):: web-application
+$(MOD_DIRTY_JAR_STAMP_FILE): $(WAR_CONTEXT_STAMP_FILE) $(WAR_LIB_STAMP_FILE) $(WAR_WEB_INF_STAMP_FILE)
 
 # Here's the main way a War differs from a Jar ... we Jar up
 # the entire web application directory.
@@ -94,43 +64,32 @@ else
 	$(JAR) cf $(JAR_FILE) -C $(WAR_APP_DIR) .
 endif
 
-install: war war-install local-install
-
-war-install:war
-
-ifeq "$(INSTALL_DIR)" ""
-war-install:
-	@$(ECHO) JBE Error: Must set INSTALL_DIR in Makefile
-else
-
-ifneq "$(MODULE_NAME)" ""
-war-install: $(INSTALL_DIR)/$(JAR_FILE)
+inner-install: $(INSTALL_DIR)/$(JAR_FILE)
+	@$(TOUCH) $(DUMMY_FILE)
 
 $(INSTALL_DIR)/$(JAR_FILE): $(JAR_FILE)
+ifeq "$(INSTALL_DIR)" ""
+	$(error JBE Error: Must set INSTALL_DIR in Makefile)
+endif
+ifeq "$(MODULE_NAME)" ""
+	$(error JBE Error: Must set MODULE_NAME in Makefile)
+endif
 	@$(ECHO) "\n*** Installing $(JAR_FILE) to $(INSTALL_DIR) ***\n"
 	@$(CP) -f $(JAR_FILE) $(INSTALL_DIR)
-endif
-endif
-
-
-# Additional rule that will fire after the WAR is installed.
-
-local-install: war-install
 
 $(WAR_LIB_STAMP_FILE): $(INSTALL_LIBRARIES)
 ifdef INSTALL_LIBRARIES
 	@$(ECHO) "\n*** Copying runtime libraries ... ***\n"
 	@$(ECHO) Copying: $(notdir $?)
 	@$(CP) -f $? $(WAR_LIB_DIR)
-	@$(TOUCH) $(MOD_DIRTY_JAR_STAMP_FILE)
-endif
 	@$(TOUCH) $@ 
+endif
 
 $(WAR_WEB_INF_STAMP_FILE): web.xml $(WEB_INF_RESOURCES)
 	@$(ECHO) "\n*** Copying WEB-INF resources ... ***\n"
 	@$(ECHO) Copying: $(notdir $?)
 	@$(CP) -f $? $(WAR_INF_DIR)
-	@$(TOUCH) $@ $(MOD_DIRTY_JAR_STAMP_FILE)
+	@$(TOUCH) $@
 
 ifneq "$(CONTEXT_RESOURCES)" ""
 
@@ -156,16 +115,8 @@ else
 $(WAR_CONTEXT_STAMP_FILE):
 endif
 
-copy-resources: $(WAR_WEB_INF_STAMP_FILE)
+.PHONY: default war
 
-copy-context-resources: $(WAR_CONTEXT_STAMP_FILE)
-
-.PHONY: war install initialize clean-root 
-.PHONY: web-application copy-meta-resources copy-context-resources
-
-# Rules that may be provided elsewhere.
-
-.PHONY: local-initialize local-post-jar local-web-application local-install
 
 
 

@@ -35,6 +35,7 @@ SEMI := ;
 PERIOD := .
 DOT := .
 DOTDOT := $(PERIOD)$(PERIOD)
+COLON := :
 
 SYS_BUILD_DIR_NAME := .build
 
