@@ -215,7 +215,7 @@ public class TextField extends AbstractFormComponent
 			disabled = disabledBinding.getBoolean();	
 
 		if (textBinding == null)
-			throw new RequiredParameterException(this, "text", cycle);		
+			throw new RequiredParameterException(this, "text", null, cycle);		
 
 		if (rewinding)
 		{

@@ -252,7 +252,8 @@ public class Form extends AbstractFormComponent
 			listener = getListener(cycle);
 
 			if (listener == null)
-				throw new RequiredParameterException(this, "listener", cycle);
+				throw new RequiredParameterException(this, "listener", getBinding("listener"),
+					cycle);
 
 			listener.actionTriggered(this, cycle);
 

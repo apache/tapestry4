@@ -167,7 +167,7 @@ public class Image extends AbstractComponent
 		}
 
 		if (imageAsset == null)
-			throw new RequiredParameterException(this, "image", cycle);
+			throw new RequiredParameterException(this, "image", imageBinding, cycle);
 
 			imageURL = imageAsset.buildURL(cycle);
 

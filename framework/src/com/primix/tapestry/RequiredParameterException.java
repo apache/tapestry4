@@ -42,20 +42,27 @@ import com.primix.tapestry.*;
 public class RequiredParameterException extends RequestCycleException
 {
 	private String parameterName;
+	private transient IBinding binding;
 
 	public RequiredParameterException(IComponent component, String parameterName,
-		IRequestCycle cycle)
+		IBinding binding, IRequestCycle cycle)
 	{
 		super("No binding or value for parameter " + parameterName + 
 			  " in component " + component.getExtendedId() + ".", 
 			  component, cycle);
 
 		this.parameterName = parameterName;
+		this.binding = binding;
 	}
 
 	public String getParameterName()
 	{
 		return parameterName;
+	}
+	
+	public IBinding getBinding()
+	{
+		return binding;
 	}
 }
 
