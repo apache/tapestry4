@@ -12,10 +12,18 @@
 			</New>
 		</Arg>
 	</Call>
+	
 	<Call name="addWebApplication">
 		<!--Because we use JSPs, we can't deploy as a .war, we deploy the directory instead.-->
 		<Arg>/vlib/*</Arg>
 		<Arg>.build/wapp</Arg>
 		<Arg>jetty-default-web.xml</Arg>
 	</Call>
+	
+  <Call name="addContext">
+    <Arg>/private-assets/*</Arg>
+    <Set name="ResourceBase">.build/private-assets</Set>
+    <Set name="ServingResources">TRUE</Set>
+  </Call>
+
 </Configure>

@@ -63,15 +63,10 @@ public class BookServlet extends VlibServlet
 
 	public static void writeLink(RequestContext context, HTMLWriter writer, Book book)
 	{
-		boolean compressed;
-		
-		compressed = writer.compress(true);
 		writer.begin("a");
 		writer.attribute("href",
 		    buildURL(context, "/book/" + book.getPrimaryKey()));
 		writer.print(book.getTitle());
 		writer.end();
-		
-		writer.setCompressed(compressed);
 	}
 }

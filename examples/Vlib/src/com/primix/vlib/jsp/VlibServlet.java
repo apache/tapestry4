@@ -54,15 +54,10 @@ import java.io.IOException;
  	protected static void writeLink(RequestContext context, HTMLWriter writer,
 			String URI, String label)
 	{
-		boolean compressed;
-		
-		compressed = writer.compress(true);
 		writer.begin("a");
 		writer.attribute("href", buildURL(context, URI));
 		writer.print(label);
 		writer.end();
-		
-		writer.setCompressed(compressed);
 	}
 	
 	public static void writeNYILink(RequestContext context, HTMLWriter writer,
