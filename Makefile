@@ -156,5 +156,21 @@ run-tutorial: setup-jbe-util
 		-showversion \
 		com.mortbay.Jetty.Server config/jetty-tutorial.xml)
 
+VLIB_CLASSPATH := \
+	$(TUTORIAL_CLASSPATH) \
+	lib/VlibBeans.jar \
+	examples/VlibBeans/jboss \
+	$(JBOSS_DIR)/client/jboss-client.jar \
+	$(JBOSS_DIR)/client/jbosssx-client.jar \
+	$(JBOSS_DIR)/client/jnp-client.jar
+	
+run-intranet: setup-jbe-util
+	$(call NOTE, Running Intranet on port 80 ...)
+	@$(RM) .build
+	@$(MKDIRS) .build ../TapestryLogs
+	$(call EXEC_JAVA, $(VLIB_CLASSPATH), \
+	  -showversion \
+	  com.mortbay.Jetty.Server config/jetty-intranet.xml)
+	  
 .PHONY: javadoc create-archives reinvoke run-tutorial
 .PHONY: clean install dist default
