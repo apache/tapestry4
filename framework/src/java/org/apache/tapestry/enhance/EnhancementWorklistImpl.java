@@ -17,27 +17,62 @@ package org.apache.tapestry.enhance;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.service.ClassFab;
+import org.apache.hivemind.service.ClassFactory;
+
 /**
  *
  *  @author Mindbridge
  *  @since 3.0
  *
  */
-public abstract class BaseEnhancedClass implements IEnhancedClass
+public class EnhancementWorklistImpl implements EnhancementWorklist
 {
-
     /**
      *  List of {@link IEnhancer}.
      * 
-     **/
+     */
     private List _enhancers;
+
+    private String _className;
+    private Class _parentClass;
+    private ClassResolver _classResolver;
+    private ClassFactory _classFactory;
+
+    public EnhancementWorklistImpl(
+        String className,
+        Class parentClass,
+        ClassResolver classResolver,
+        ClassFactory classFactory)
+    {
+        _className = className;
+        _parentClass = parentClass;
+        _classResolver = classResolver;
+        _classFactory = classFactory;
+    }
+
+    public String getClassName()
+    {
+        return _className;
+    }
+
+    public Class createEnhancedSubclass()
+    {
+        ClassFab classFab =
+            _classFactory.newClass(_className, _parentClass, new FalseModule(_classResolver));
+
+        performEnhancement(classFab);
+
+        return classFab.createClass();
+    }
 
     protected List getEnhancers()
     {
         return _enhancers;
     }
 
-    protected void addEnhancer(IEnhancer enhancer)
+    public void addEnhancer(IEnhancer enhancer)
     {
         if (_enhancers == null)
             _enhancers = new ArrayList();
@@ -45,18 +80,15 @@ public abstract class BaseEnhancedClass implements IEnhancedClass
         _enhancers.add(enhancer);
     }
 
-    /**
-     * @see org.apache.tapestry.enhance.IEnhancedClass#hasModifications()
-     */
     public boolean hasModifications()
     {
         return _enhancers != null && !_enhancers.isEmpty();
     }
 
-    public void performEnhancement()
+    public void performEnhancement(ClassFab classFab)
     {
         List enhancers = getEnhancers();
-        
+
         if (enhancers == null)
             return;
 
@@ -66,7 +98,7 @@ public abstract class BaseEnhancedClass implements IEnhancedClass
         {
             IEnhancer enhancer = (IEnhancer) enhancers.get(i);
 
-            enhancer.performEnhancement(this);
+            enhancer.performEnhancement(classFab);
         }
     }
 

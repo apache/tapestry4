@@ -24,6 +24,7 @@
   <sub-module descriptor="tapestry.props.xml"/>
   <sub-module descriptor="tapestry.request.xml"/>
   <sub-module descriptor="tapestry.parse.xml"/>
+  <sub-module descriptor="tapestry.enhance.xml"/>
   
   <service-point id="ClasspathResourceFactory" interface="org.apache.tapestry.services.ClasspathResourceFactory">
   
@@ -49,6 +50,7 @@
         <set-service property="templateSource" service-id="tapestry.parse.TemplateSource"/>
         <set-service property="specificationSource" service-id="tapestry.parse.SpecificationSource"/>
         <set-service property="objectPool" service-id="GlobalObjectPool"/>
+        <set-service property="componentClassEnhancer" service-id="tapestry.enhance.ComponentClassEnhancer"/>
       </construct>
     </invoke-factory>
     

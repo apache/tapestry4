@@ -15,16 +15,33 @@
 package org.apache.tapestry.enhance;
 
 /**
- *  An interface defining the factory for creation of new objects representing 
- *  an enhanced class. This object is used essentially as a singleton -- there is
- *  typically only one instance of it in the system. Common functionality, such as
- *  caches, can be stored here.
+ *  This interface represents a class to be enhanced, and a list of
+ *  enhancements to be performed.
  * 
  *  @author Mindbridge
  *  @since 3.0
  */
-public interface IEnhancedClassFactory
+public interface EnhancementWorklist
 {
-    void reset();
-    IEnhancedClass createEnhancedClass(String className, Class parentClass);
+    /**
+     * Returns the name of the class being enhanced.
+     */
+    public String getClassName();
+
+    /**
+     * Returns true if there is a need for enhancement. In some cases, a class
+     * can be used as-is, without enhancement.
+     */
+    public boolean hasModifications();
+
+    /**
+     * Adds another enhancement.
+     */
+
+    public void addEnhancer(IEnhancer enhancer);
+
+    /**
+     * Creates the enhanced class.
+     */
+    public Class createEnhancedSubclass();
 }

@@ -12,22 +12,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.enhance.javassist;
+package org.apache.tapestry.enhance;
 
+import java.lang.reflect.Modifier;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.Map;
 
-import javassist.CannotCompileException;
-import javassist.CtClass;
-import javassist.CtMethod;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.hivemind.service.ClassFab;
+import org.apache.hivemind.service.MethodSignature;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.enhance.CodeGenerationException;
-import org.apache.tapestry.enhance.IEnhancedClass;
-import org.apache.tapestry.enhance.IEnhancer;
 
 /**
  *  Creates a synthetic property for a
@@ -37,7 +33,7 @@ import org.apache.tapestry.enhance.IEnhancer;
  *  @author Mindbridge
  *  @since 3.0
  *
- **/
+ */
 
 public class CreateAutoParameterEnhancer implements IEnhancer
 {
@@ -97,44 +93,46 @@ public class CreateAutoParameterEnhancer implements IEnhancer
         VALUE_CAST_TYPES.put("float", "($w)");
     }
 
-    private EnhancedClass _enhancedClass;
     private String _propertyName;
     private String _parameterName;
-    private CtClass _type;
+    private Class _type;
     private String _readMethodName;
 
     public CreateAutoParameterEnhancer(
-        EnhancedClass enhancedClass,
         String propertyName,
         String parameterName,
-        CtClass type,
+        Class type,
         String readMethodName)
     {
-        _enhancedClass = enhancedClass;
+        Tapestry.notNull(propertyName, "propertyName");
+        Tapestry.notNull(parameterName, "parameterName");
+        Tapestry.notNull(type, "type");
+        Tapestry.notNull(readMethodName, "readMethodName");
+
         _propertyName = propertyName;
         _parameterName = parameterName;
         _type = type;
         _readMethodName = readMethodName;
     }
 
-    public void performEnhancement(IEnhancedClass enhancedClass)
+    public void performEnhancement(ClassFab classFab)
     {
         if (LOG.isDebugEnabled())
             LOG.debug("Creating auto property: " + _propertyName);
 
-        EnhancedClass jaEnhancedClass = (EnhancedClass) enhancedClass;
-        ClassFabricator cf = jaEnhancedClass.getClassFabricator();
-
         String readBindingMethodName =
-            cf.buildMethodName("get", _parameterName + Tapestry.PARAMETER_PROPERTY_NAME_SUFFIX);
+            CreateAccessorUtils.buildMethodName(
+                "get",
+                _parameterName + Tapestry.PARAMETER_PROPERTY_NAME_SUFFIX);
 
-        createReadMethod(cf, readBindingMethodName);
-        createWriteMethod(cf, readBindingMethodName);
+        createReadMethod(classFab, readBindingMethodName);
+        createWriteMethod(classFab, readBindingMethodName);
     }
 
     private String getSpecialBindingType()
     {
         String typeName = _type.getName();
+
         return (String) SPECIAL_BINDING_TYPES.get(typeName);
     }
 
@@ -145,75 +143,61 @@ public class CreateAutoParameterEnhancer implements IEnhancer
         return (String) VALUE_CAST_TYPES.get(typeName);
     }
 
-    private void createReadMethod(ClassFabricator cf, String readBindingMethodName)
+    private void createReadMethod(ClassFab classFab, String readBindingMethodName)
     {
-        String castToType;
-        String bindingValueAccessor;
+        String castToType = "";
+        String bindingValueAccessor = "getObject";
 
         String specialBindingType = getSpecialBindingType();
+
         if (specialBindingType != null)
         {
-            castToType = "";
-            bindingValueAccessor = cf.buildMethodName("get", specialBindingType);
+            bindingValueAccessor = CreateAccessorUtils.buildMethodName("get", specialBindingType);
         }
         else
         {
             castToType = "($r)";
-            bindingValueAccessor = "getObject";
         }
 
-        String readMethodBody =
+        String body =
             MessageFormat.format(
                 PARAMETER_ACCESSOR_TEMPLATE,
                 new Object[] { readBindingMethodName, bindingValueAccessor, castToType });
 
-        try
-        {
-            CtMethod method = cf.createAccessor(_type, _propertyName, _readMethodName);
-            method.setBody(readMethodBody);
-            cf.addMethod(method);
-        }
-        catch (CannotCompileException e)
-        {
-            throw new CodeGenerationException(e);
-        }
+        MethodSignature sig = new MethodSignature(_type, _readMethodName, null, null);
+
+        classFab.addMethod(Modifier.PUBLIC | Modifier.FINAL, sig, body);
     }
 
-    private void createWriteMethod(ClassFabricator cf, String readBindingMethodName)
+    private void createWriteMethod(ClassFab classFab, String readBindingMethodName)
     {
-        String bindingValueAccessor;
+        String bindingValueAccessor = "setObject";
         String valueCast = "";
 
         String specialBindingType = getSpecialBindingType();
+
         if (specialBindingType != null)
         {
-            bindingValueAccessor = cf.buildMethodName("set", specialBindingType);
+            bindingValueAccessor = CreateAccessorUtils.buildMethodName("set", specialBindingType);
         }
         else
         {
-            bindingValueAccessor = "setObject";
-
             String castForType = getValueCastType();
 
             if (castForType != null)
                 valueCast = castForType;
         }
 
-        String writeMethodBody =
+        String body =
             MessageFormat.format(
                 PARAMETER_MUTATOR_TEMPLATE,
                 new Object[] { readBindingMethodName, bindingValueAccessor, valueCast });
 
-        try
-        {
-            CtMethod method = cf.createMutator(_type, _propertyName);
-            method.setBody(writeMethodBody);
-            cf.addMethod(method);
-        }
-        catch (CannotCompileException e)
-        {
-            throw new CodeGenerationException(e);
-        }
-    }
+        String methodName = CreateAccessorUtils.buildMethodName("set", _propertyName);
 
+        MethodSignature sig =
+            new MethodSignature(void.class, methodName, new Class[] { _type }, null);
+
+        classFab.addMethod(Modifier.PUBLIC | Modifier.FINAL, sig, body);
+    }
 }

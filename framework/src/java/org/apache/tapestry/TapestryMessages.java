@@ -31,4 +31,9 @@ final class TapestryMessages
     {
         return _formatter.format("servlet-init-failure", cause);
     }
+
+    public static String paramNotNull(String parameterName)
+    {
+        return _formatter.format("param-not-null", parameterName);
+    }
 }

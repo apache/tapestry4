@@ -12,21 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.enhance;
+package org.apache.tapestry;
 
-import org.apache.hivemind.service.ClassFab;
+import org.apache.hivemind.test.HiveMindTestCase;
 
 /**
- *  Defines an object which may work with a 
- *  {@link org.apache.tapestry.enhance.ComponentClassFactory}
- *  to create an enhancement to a class.  These enhancements are
- *  typically in the form of adding new fields and methods.
+ * Test for {@link org.apache.tapestry.Tapestry#notNull(Object, String)}.
  *
- *  @author Howard Lewis Ship
- *  @since 3.0
+ * @author Howard Lewis Ship
+ * @since 3.1
  */
-
-public interface IEnhancer
+public class TestTapestryNotNull extends HiveMindTestCase
 {
-    public void performEnhancement(ClassFab classFab);
+    public void testSuccess()
+    {
+        Tapestry.notNull("foo", "bar");
+    }
+
+    public void testFailure()
+    {
+        try
+        {
+            Tapestry.notNull(null, "woops");
+            unreachable();
+        }
+        catch (NullPointerException ex)
+        {
+            assertEquals(TapestryMessages.paramNotNull("woops"), ex.getMessage());
+        }
+    }
 }

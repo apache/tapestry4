@@ -23,12 +23,12 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
-import org.apache.tapestry.Tapestry;
+import org.apache.hivemind.service.ClassFactory;
+import org.apache.hivemind.service.MethodSignature;
 import org.apache.tapestry.engine.IComponentClassEnhancer;
-import org.apache.tapestry.enhance.javassist.EnhancedClassFactory;
+import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
@@ -37,49 +37,26 @@ import org.apache.tapestry.spec.IComponentSpecification;
  *  @author Howard Lewis Ship
  *  @since 3.0
  * 
- **/
+ */
 
-public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
+public class DefaultComponentClassEnhancer implements IComponentClassEnhancer, ResetEventListener
 {
-    private static final Log LOG = LogFactory.getLog(DefaultComponentClassEnhancer.class);
+    private Log _log;
 
     /**
      *  Map of Class, keyed on IComponentSpecification.
      * 
-     **/
-
-    private Map _cachedClasses;
-    private ClassResolver _resolver;
-    private IEnhancedClassFactory _factory;
-    private boolean _disableValidation;
-
-    /**
-     * @param resolver resource resolver used to locate classes
-     * @param disableValidation if true, then validation (of unimplemented abstract methods)
-     * is skipped
      */
-    public DefaultComponentClassEnhancer(ClassResolver resolver, boolean disableValidation)
-    {
-        _cachedClasses = Collections.synchronizedMap(new HashMap());
-        _resolver = resolver;
-        _factory = createEnhancedClassFactory();
-        _disableValidation = disableValidation;
-    }
 
-    protected IEnhancedClassFactory createEnhancedClassFactory()
-    {
-        return new EnhancedClassFactory(getResourceResolver());
-    }
+    private Map _cachedClasses = Collections.synchronizedMap(new HashMap());
 
-    public synchronized void reset()
+    private ClassResolver _classResolver;
+    private boolean _disableValidation;
+    private ClassFactory _classFactory;
+
+    public void resetDidOccur()
     {
         _cachedClasses.clear();
-        _factory.reset();
-    }
-
-    public ClassResolver getResourceResolver()
-    {
-        return _resolver;
     }
 
     public Class getEnhancedClass(IComponentSpecification specification, String className)
@@ -102,12 +79,12 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
         return result;
     }
 
-    protected void storeCachedClass(IComponentSpecification specification, Class cachedClass)
+    private void storeCachedClass(IComponentSpecification specification, Class cachedClass)
     {
         _cachedClasses.put(specification, cachedClass);
     }
 
-    protected Class getCachedClass(IComponentSpecification specification)
+    private Class getCachedClass(IComponentSpecification specification)
     {
         return (Class) _cachedClasses.get(specification);
     }
@@ -116,17 +93,15 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
      *  Returns the class to be used for the component, which is either
      *  the class with the given name, or an enhanced subclass.
      * 
-     **/
+     */
 
-    protected Class constructComponentClass(
-        IComponentSpecification specification,
-        String className)
+    private Class constructComponentClass(IComponentSpecification specification, String className)
     {
         Class result = null;
 
         try
         {
-            result = _resolver.findClass(className);
+            result = _classResolver.findClass(className);
         }
         catch (Exception ex)
         {
@@ -145,11 +120,11 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
                     validateEnhancedClass(result, className, specification);
             }
         }
-        catch (CodeGenerationException e)
+        catch (Throwable ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.format("ComponentClassFactory.code-generation-error", className),
-                e);
+                EnhanceMessages.codeGenerationError(className, ex),
+                ex);
         }
 
         return result;
@@ -162,13 +137,17 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
      *  {@link org.apache.tapestry.enhance.ComponentClassFactory} adding those
      *  enhancements.
      * 
-     **/
+     */
 
-    protected ComponentClassFactory createComponentClassFactory(
+    private ComponentClassFactory createComponentClassFactory(
         IComponentSpecification specification,
         Class componentClass)
     {
-        return new ComponentClassFactory(_resolver, specification, componentClass, _factory);
+        return new ComponentClassFactory(
+            _classResolver,
+            specification,
+            componentClass,
+            _classFactory);
     }
 
     /**
@@ -179,17 +158,17 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
      *  errors when accessing unimplemented abstract methods.
      * 
      *
-     **/
+     */
 
-    protected void validateEnhancedClass(
+    private void validateEnhancedClass(
         Class subject,
         String className,
         IComponentSpecification specification)
     {
-        boolean debug = LOG.isDebugEnabled();
+        boolean debug = _log.isDebugEnabled();
 
         if (debug)
-            LOG.debug("Validating " + subject);
+            _log.debug("Validating " + subject);
 
         Set implementedMethods = new HashSet();
         Class current = subject;
@@ -200,9 +179,7 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
 
             if (m != null)
                 throw new ApplicationRuntimeException(
-                    Tapestry.format(
-                        "DefaultComponentClassEnhancer.no-impl-for-abstract-method",
-                        new Object[] { m, current, className, subject.getName()}),
+                    EnhanceMessages.noImplForAbstractMethod(m, current, className, subject),
                     specification.getLocation(),
                     null);
 
@@ -228,14 +205,14 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
      *  Searches the class for abstract methods, returning the first found.
      *  Records non-abstract methods in the implementedMethods set.
      * 
-     **/
+     */
 
     private Method checkForAbstractMethods(Class current, Set implementedMethods)
     {
-        boolean debug = LOG.isDebugEnabled();
+        boolean debug = _log.isDebugEnabled();
 
         if (debug)
-            LOG.debug("Searching for abstract methods in " + current);
+            _log.debug("Searching for abstract methods in " + current);
 
         Method[] methods = current.getDeclaredMethods();
 
@@ -244,7 +221,7 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
             Method m = methods[i];
 
             if (debug)
-                LOG.debug("Checking " + m);
+                _log.debug("Checking " + m);
 
             boolean isAbstract = Modifier.isAbstract(m.getModifiers());
 
@@ -262,6 +239,31 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
         }
 
         return null;
+    }
+
+    public void setLog(Log log)
+    {
+        _log = log;
+    }
+
+	/**
+	 * Because this is set from the application's property source, the value is obtained
+	 * as a string (HiveMind doesn't have an opportunity to coerce it to boolean for us),
+	 * so we do the conversion here. 
+	 */
+    public void setDisableValidation(String value)
+    {
+        _disableValidation = "true".equals(value);
+    }
+
+    public void setClassResolver(ClassResolver resolver)
+    {
+        _classResolver = resolver;
+    }
+
+    public void setClassFactory(ClassFactory factory)
+    {
+        _classFactory = factory;
     }
 
 }

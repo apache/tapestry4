@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id$ -->
 <!--
    Copyright 2004 The Apache Software Foundation
   
@@ -54,7 +53,7 @@ Final value: [boy]
  
 		<assert-regexp name="Page Class">
 <![CDATA[
-Page class: \[org\.apache\.tapestry\.html\.BasePage\$(.*?)\]
+Page class: \[org\.apache\.tapestry\.html\.\$BasePage\_(.*?)\]
 ]]>	
 		</assert-regexp>
  
@@ -164,7 +163,7 @@ Final value: [Taxi]
  
 		<assert-regexp name="Page Class">
 <![CDATA[
-Page class: \[org\.apache\.tapestry\.junit\.mock\.c9\.Three\$(.*?)\]
+Page class: \[org\.apache\.tapestry\.junit\.mock\.c9\.\$Three_(.*?)\]
 ]]>	
 		</assert-regexp>
  
@@ -354,8 +353,8 @@ value: \[(.*?)\]
 ]]>	
 		</assert-output>
 		
-		<assert-output name="Message">
-		Method 'public abstract long org.apache.tapestry.junit.mock.c9.Eight.setEnhancedProperty(long)' (declared in class org.apache.tapestry.junit.mock.c9.Eight) has no implementation in class org.apache.tapestry.junit.mock.c9.Eight (or enhanced subclass org.apache.tapestry.junit.mock.c9.Eight$
+		<assert-output name="Message">		
+Method 'public abstract long org.apache.tapestry.junit.mock.c9.Eight.setEnhancedProperty(long)' (declared in class org.apache.tapestry.junit.mock.c9.Eight) has no implementation in class org.apache.tapestry.junit.mock.c9.Eight (or enhanced subclass org.apache.tapestry.junit.mock.c9.$Eight_
 		</assert-output>
 	</request>
 
@@ -369,7 +368,7 @@ value: \[(.*?)\]
 		</assert-output>
 		
 		<assert-output name="Message">
-		Method 'public abstract void org.apache.tapestry.junit.mock.c9.Nine.pageDetached(org.apache.tapestry.event.PageEvent)' (declared in class org.apache.tapestry.junit.mock.c9.Nine) has no implementation in class org.apache.tapestry.junit.mock.c9.Nine (or enhanced subclass org.apache.tapestry.junit.mock.c9.Nine$	
+		Method 'public abstract void org.apache.tapestry.junit.mock.c9.Nine.pageDetached(org.apache.tapestry.event.PageEvent)' (declared in class org.apache.tapestry.junit.mock.c9.Nine) has no implementation in class org.apache.tapestry.junit.mock.c9.Nine (or enhanced subclass org.apache.tapestry.junit.mock.c9.$Nine_	
 		</assert-output>
 	</request>
 	

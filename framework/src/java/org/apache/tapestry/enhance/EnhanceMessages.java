@@ -1,0 +1,88 @@
+//  Copyright 2004 The Apache Software Foundation
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package org.apache.tapestry.enhance;
+
+import java.lang.reflect.Method;
+
+import org.apache.hivemind.impl.MessageFormatter;
+import org.apache.hivemind.service.ClassFabUtils;
+
+/**
+ * Messages for this package.
+ *
+ * @author Howard Lewis Ship
+ * @since 3.1
+ */
+class EnhanceMessages extends DefaultComponentClassEnhancer
+{
+    private static final MessageFormatter _formatter =
+        new MessageFormatter(EnhanceMessages.class, "EnhanceStrings");
+
+    public static String noImplForAbstractMethod(
+        Method method,
+        Class declareClass,
+        String className,
+        Class enhancedClass)
+    {
+        return _formatter.format(
+            "no-impl-for-abstract-method",
+            new Object[] { method, declareClass.getName(), className, enhancedClass.getName()});
+    }
+
+    public static String codeGenerationError(String className, Throwable cause)
+    {
+        return _formatter.format("code-generation-error", className, cause);
+    }
+
+    public static String unabelToIntrospectClass(Class targetClass, Throwable cause)
+    {
+        return _formatter.format("unable-to-introspect-class", targetClass.getName(), cause);
+    }
+
+    public static String badPropertyType(String type, Throwable cause)
+    {
+        return _formatter.format("bad-property-type", type, cause);
+    }
+
+    public static String propertyTypeMismatch(
+        Class componentClass,
+        String propertyName,
+        Class actualPropertyType,
+        Class expectedPropertyType)
+    {
+        return _formatter.format(
+            "property-type-mismatch",
+            new Object[] {
+                componentClass.getName(),
+                propertyName,
+                ClassFabUtils.getJavaClassName(actualPropertyType),
+                ClassFabUtils.getJavaClassName(expectedPropertyType)});
+    }
+
+    public static String nonAbstractWrite(Class declaringClass, String propertyName)
+    {
+        return _formatter.format("non-abstract-write", declaringClass.getName(), propertyName);
+    }
+
+    public static String nonAbstractRead(Class declaringClass, String propertyName)
+    {
+        return _formatter.format("non-abstract-read", declaringClass.getName(), propertyName);
+    }
+
+    public static String autoMustBeRequired(String propertyName)
+    {
+        return _formatter.format("auto-must-be-required", propertyName);
+    }
+}

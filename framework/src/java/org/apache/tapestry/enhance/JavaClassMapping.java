@@ -27,10 +27,9 @@ public class JavaClassMapping
     /**
      *  Map of type (as Class), keyed on type name. 
      * 
-     **/
+     */
 
     private Map _typeMap = new HashMap();
-
 
     {
         recordType("boolean", boolean.class);
@@ -63,7 +62,6 @@ public class JavaClassMapping
         recordType("java.lang.String", String.class);
         recordType("java.lang.String[]", String[].class);
     }
-
 
     public void recordType(String name, Class type)
     {
