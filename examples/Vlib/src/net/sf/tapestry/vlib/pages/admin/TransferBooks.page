@@ -9,7 +9,8 @@
   <property name="page-type">admin</property>
   
   <component id="border" type="Border">
-    <field-binding name="simpleTitle" field-name="Boolean.TRUE"/>
+    <static-binding name="title">Transfer Books</static-binding>  
+    <binding name="simpleTitle" expression="true"/>
   </component>
   
   <component id="showMessage" type="ShowMessage"/>
@@ -17,7 +18,6 @@
   
   <component id="selectForm" type="Form">
     <binding name="listener" expression="listeners.processSelectForm"/>  
-    <field-binding name="direct" field-name="Boolean.TRUE"/>
   </component>
   
   <component id="selectFrom" type="PropertySelection">
@@ -41,7 +41,7 @@
   <component id="selectBooks" type="contrib:Palette">
     <binding name="selected" expression="selectedBooks"/>
     <binding name="model" expression="userBookModel"/>
-    <field-binding name="sort" field-name="net.sf.tapestry.contrib.palette.SortMode.LABEL"/>
+    <binding name="sort" expression="@net.sf.tapestry.contrib.palette.SortMode@LABEL"/>
     <binding name="selectImage" expression="assets.Select"/>
     <binding name="selectDisabledImage" expression="assets.SelectOff"/>
     <binding name="deselectImage" expression="assets.Deselect"/>

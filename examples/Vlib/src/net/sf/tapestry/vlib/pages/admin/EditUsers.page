@@ -10,7 +10,7 @@
   
   <component id="border" type="Border">
     <static-binding name="title">Edit Users</static-binding>
-     <field-binding name="simpleTitle" field-name="Boolean.TRUE"/>
+     <binding name="simpleTitle" expression="true"/>
   </component>
   
   <component id="showMessage" type="ShowMessage"/>

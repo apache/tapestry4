@@ -8,6 +8,11 @@
 
   <property name="page-type">login</property>
 
+  <bean name="validator" class="net.sf.tapestry.valid.StringValidator" lifecycle="page">
+  	<set-property name="required" expression="true"/>
+  	<set-property name="clientScriptingEnabled" expression="true"/>
+  </bean>
+
   <component id="border" type="Border">
     <static-binding name="title">Login</static-binding>
   </component>
@@ -15,7 +20,7 @@
   <component id="form" type="Form">
     <binding name="listener" expression="listeners.attemptLogin"/>
     <binding name="delegate" expression="validationDelegate"/>
-    <field-binding name="stateful" field-name="Boolean.FALSE"/>
+    <binding name="stateful" expression="false"/>
   </component>
    
   <component id="showError" type="ShowError"/>
@@ -29,11 +34,11 @@
   </component>
   
   <component id="inputEmail" type="ValidField">
-    <static-binding name="displayWidth">30</static-binding>
-    <static-binding name="maximumLength">60</static-binding>
+    <binding name="displayWidth" expression="30"/>
+    <binding name="maximumLength" expression="60"/>
     <static-binding name="displayName">Email Address</static-binding>
     <binding name="value" expression="email"/>
-    <field-binding name="validator" field-name="net.sf.tapestry.valid.StringValidator.REQUIRED"/>
+    <binding name="validator" expression="beans.validator"/>
   </component>
   
   <component id="labelPassword" type="FieldLabel">
@@ -42,11 +47,11 @@
   
   <component id="inputPassword" type="ValidField">
     <binding name="value" expression="password"/>
-    <field-binding name="validator" field-name="net.sf.tapestry.valid.StringValidator.REQUIRED"/>
-    <static-binding name="displayWidth">10</static-binding>
-    <static-binding name="maximumLength">20</static-binding>
+    <binding name="validator" expression="beans.validator"/>
+    <binding name="displayWidth" expression="10"/>
+    <binding name="maximumLength" expression="20"/>
     <static-binding name="displayName">Password</static-binding>
-    <field-binding name="hidden" field-name="Boolean.TRUE"/>
+    <binding name="hidden" expression="true"/>
   </component>
   
   <component id="register" type="PageLink">

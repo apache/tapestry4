@@ -15,19 +15,19 @@
   
   <component id="searchForm" type="Form"> 
     <binding name="listener" expression="listeners.search"/>
-    <field-binding name="stateful" field-name="Boolean.FALSE"/>
+    <binding name="stateful" expression="false"/>
   </component>
   
   <component id="inputTitle" type="TextField">
     <binding name="value" expression="searchTitle"/>
-    <static-binding name="displayWidth">30</static-binding>
-    <static-binding name="maximumLength">100</static-binding>
+    <binding name="displayWidth" expression="30"/>
+    <binding name="maximumLength" expression="100"/>
   </component>
   
   <component id="inputAuthor" type="TextField">
     <binding name="value" expression="searchAuthor"/>
-    <static-binding name="maximumLength">100</static-binding>
-    <static-binding name="displayWidth">30</static-binding>
+    <binding name="displayWidth" expression="30"/>
+    <binding name="maximumLength" expression="100"/>
   </component>
   
   <component id="inputPublisher" type="PropertySelection">

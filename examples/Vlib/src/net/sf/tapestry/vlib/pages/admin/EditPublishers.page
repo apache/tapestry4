@@ -10,7 +10,7 @@
   
   <component id="border" type="Border">
     <static-binding name="title">Edit Publishers</static-binding>
-    <field-binding name="simpleTitle" field-name="Boolean.TRUE"/>
+    <binding name="simpleTitle" expression="true"/>
   </component>
   
   <component  id="showMessage" type="ShowMessage"/>
@@ -28,8 +28,8 @@
   
   <component id="inputPublisherName" type="TextField">
     <binding name="value" expression="publisher.name"/>
-    <static-binding name="displayWidth">40</static-binding>
-    <static-binding name="maximumLength">40</static-binding>
+    <binding name="displayWidth" expression="40"/>
+    <binding name="maximumLength" expression="40"/>
   </component>
   
   <component id="inputDelete" type="Checkbox">

@@ -7,6 +7,11 @@
 
   <property name="page-type">library</property>
   
+  <bean name="validator" class="net.sf.tapestry.valid.StringValidator" lifecycle="page">
+  	<set-property name="required" expression="true"/>
+  	<set-property name="clientScriptingEnabled" expression="true"/>
+  </bean>
+    
   <component id="border" type="Border">
     <static-binding name="title">Edit Book</static-binding>
   </component>
@@ -32,10 +37,10 @@
   
   <component id="inputTitle" type="ValidField">
     <binding name="value" expression="attributes.title"/>
-    <static-binding name="maximumLength">100</static-binding>
-    <static-binding name="displayWidth">50</static-binding>
     <static-binding name="displayName">Title</static-binding>
-    <field-binding name="validator" field-name="net.sf.tapestry.valid.StringValidator.REQUIRED"/>
+    <binding name="maximumLength" expression="100"/>
+    <binding name="displayWidth" expression="50"/>
+    <binding name="validator" expression="beans.validator"/>
   </component>
   
   <component id="labelAuthor" type="FieldLabel">
@@ -44,15 +49,15 @@
   
   <component id="inputAuthor" type="ValidField">
     <binding name="value" expression="attributes.author"/>
-    <static-binding name="maximumLength">60</static-binding>
-    <static-binding name="displayWidth">30</static-binding>
     <static-binding name="displayName">Author</static-binding>
-    <field-binding name="validator" field-name="net.sf.tapestry.valid.StringValidator.REQUIRED"/>
+    <binding name="maximumLength" expression="60"/>
+    <binding name="displayWidth" expression="30"/>
+    <binding name="validator" expression="beans.validator"/>
   </component>
   
   <component id="inputISBN" type="TextField">
-    <static-binding name="maximumLength">20</static-binding>
-    <static-binding name="displayWidth">20</static-binding>
+    <binding name="maximumLength" expression="20"/>
+    <binding name="displayWidth" expression="20"/>
     <binding name="value" expression="attributes.ISBN"/>
   </component>
   
@@ -66,17 +71,17 @@
   </component>
   
   <component id="inputPublisherName" type="ValidField">
-    <static-binding name="maximumLength">40</static-binding>
-    <static-binding name="displayWidth">20</static-binding>
+    <binding name="maximumLength" expression="40"/>
+    <binding name="displayWidth" expression="20"/>
     <binding name="value" expression="publisherName"/>
     <static-binding name="displayName">Publisher</static-binding>
-    <field-binding name="validator" field-name="net.sf.tapestry.valid.StringValidator.OPTIONAL"/>
+    <binding name="validator" expression="@net.sf.tapestry.valid.StringValidator@OPTIONAL"/>
   </component>
   
   <component id="inputDescription" type="TextArea">
     <binding name="value" expression="attributes.description"/>
-    <static-binding name="columns">35</static-binding>
-    <static-binding name="rows">8</static-binding>
+    <binding name="columns" expression="35"/>
+    <binding name="rows" expression="8"/>
   </component>
   
   <component id="inputHolder" type="PropertySelection">

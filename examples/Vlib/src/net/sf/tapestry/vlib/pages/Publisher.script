@@ -17,7 +17,7 @@ Both are assumed to be in the same form.
 -->
 
 <input-symbol key="select" class="net.sf.tapestry.form.PropertySelection" required="yes"/>
-<input-symbol key="field" class="net.sf.tapestry.form.TextField" required="yes"/>
+<input-symbol key="field" class="net.sf.tapestry.form.AbstractTextField" required="yes"/>
 
 <let key="formObject">
 	document.${select.form.name}
