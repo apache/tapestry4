@@ -54,6 +54,22 @@ implements IValidationDelegate
         // Do nothing!
 	}
 
+	/**
+	 *  Does nothing.  Subclasses may want to write the CSS "class"
+	 *  attribute, or otherwise change the appearance of
+	 *  the field.
+	 *
+	 *  @since 1.0.5
+	 *
+	 */
+	
+	public void writeAttributes(IValidatingTextField field,
+			IResponseWriter writer, IRequestCycle cycle)
+		throws RequestCycleException
+	{
+		// Do nothing.
+	}
+	
     /**
      *  Does nothing, rarely overriden.
      *

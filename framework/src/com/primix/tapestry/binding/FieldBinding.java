@@ -94,6 +94,24 @@ public class FieldBinding extends AbstractBinding
         return value;
     }
 
+	/**
+	 *  Returns the class of the object, or null if the field evaluates to
+	 *  null (a rare case).
+	 *
+	 *  @since 1.0.5
+	 */
+	
+	public Class getType()
+	{
+       if (!accessed)
+            accessValue();
+		
+		if (value == null)
+			return null;
+		
+		return value.getClass();
+	}
+	
     private void accessValue()
     {
         String className;

@@ -85,7 +85,7 @@ public class Home extends BasePage
 	public void detach()
 	{
 		error = null;
-		sort = SortMode.NONE;
+		sort = SortMode.USER;
 		
 		super.detach();
 	}

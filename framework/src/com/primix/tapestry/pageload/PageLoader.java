@@ -348,6 +348,11 @@ public class PageLoader
 				container, e);
 		}
 
+		if (result instanceof IPage)
+			throw new PageLoaderException(
+				"Component " + result.getExtendedId() + " may not implement the IPage interface.",
+				result);
+			
 		count++;
 
 		return result;

@@ -45,11 +45,11 @@ public class AdminPage
 {
 	private String message;
 	
-	public void reset()
+	public void detach()
 	{
 		message = null;
 		
-		super.reset();
+		super.detach();
 	}
 	
 	public String getMessage()

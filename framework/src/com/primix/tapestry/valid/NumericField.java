@@ -80,10 +80,12 @@ import java.math.*;
  *  <p>When the form is submitted, this parameter is only updated if the value
  *  is valid.
  *
- *  <p>Reading the binding must always return a non-null value that is
- *  a subclass of {@link Number}.  The NumericField component
- *  uses the current class of the value to convert the string entered
- * by the user.
+ *  <p>When rendering, a null value will render as the empty string.  A value
+ *  of zero will either render normally.
+ *
+ *  <p>When the form is submitted, the {@link IBinding#getType() type} of the binding
+ *  is used to determine what kind of object to convert the string to.
+ *
  * </td>
  *	</tr>
  *
@@ -260,12 +262,24 @@ implements ILifecycle
 	
 	static
 	{
-		numberAdaptors.register(Byte.class, new ByteAdaptor());
-		numberAdaptors.register(Short.class, new ShortAdaptor());
-		numberAdaptors.register(Integer.class, new IntAdaptor());
-		numberAdaptors.register(Long.class, new LongAdaptor());
-		numberAdaptors.register(Float.class, new FloatAdaptor());
-		numberAdaptors.register(Double.class, new DoubleAdaptor());
+		NumberAdaptor byteAdaptor = new ByteAdaptor();
+		NumberAdaptor shortAdaptor = new ShortAdaptor();
+		NumberAdaptor intAdaptor = new IntAdaptor();
+		NumberAdaptor longAdaptor = new LongAdaptor();
+		NumberAdaptor floatAdaptor = new FloatAdaptor();
+		NumberAdaptor doubleAdaptor = new DoubleAdaptor();
+		
+		numberAdaptors.register(Byte.class, byteAdaptor);
+		numberAdaptors.register(Byte.TYPE, byteAdaptor);
+		numberAdaptors.register(Short.class, shortAdaptor);
+		numberAdaptors.register(Short.TYPE, shortAdaptor);
+		numberAdaptors.register(Integer.class, intAdaptor);
+		numberAdaptors.register(Integer.TYPE, intAdaptor);
+		numberAdaptors.register(Float.class, floatAdaptor);
+		numberAdaptors.register(Float.TYPE, floatAdaptor);
+		numberAdaptors.register(Double.class, doubleAdaptor);
+		numberAdaptors.register(Double.TYPE, doubleAdaptor);
+		
 		numberAdaptors.register(BigDecimal.class, new BigDecimalAdaptor());
 		numberAdaptors.register(BigInteger.class, new BigIntegerAdaptor());
 	}
@@ -307,12 +321,22 @@ implements ILifecycle
 
     protected String read()
     {
-        // Get the value binding and convert it from an Number to a String.
+		Number value = (Number)valueBinding.getObject("value", Number.class);
+		
+		if (value == null)
+			return "";
 
-        return valueBinding.getString();
+		return value.toString();
     }
 
 
+	/**
+	 *  Takes the String and "{@link IBinding#getType() sniffs}"
+	 *  the value binding to see its type.  It then converts the string
+	 *  to that type, does range checks and assigns the
+	 *  value back through the value binding.
+	 *
+	 */
 
     protected void update(String value)
     {
@@ -338,13 +362,8 @@ implements ILifecycle
 
             return;
         }
-
-		Number currentValue = (Number)valueBinding.getObject("value", Number.class);
 		
-		if (currentValue == null)
-			throw new NullValueForBindingException(valueBinding);
-		
-		Class valueClass = currentValue.getClass();
+		Class valueClass = valueBinding.getType();
 		
         try
         {
@@ -366,7 +385,7 @@ implements ILifecycle
             return;
         }
 
-        // Check it within the given range.
+        // Check if within the given range.
 
 		if (minimumBinding != null)
 			minimum = (Number)minimumBinding.getObject("minimum", Number.class);

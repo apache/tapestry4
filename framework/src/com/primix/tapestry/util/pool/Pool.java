@@ -45,7 +45,7 @@ import com.primix.tapestry.util.*;
  *  a recent time frame.  A generational system is used, where each
  *  pooled object is assigned a generation count.  {@link #executeCleanup}
  *  culls objects whose generation count is too old (outside of a
- *  {@link #getWindow() window}.
+ *  {@link #getWindow() window}).
  *
  *  @author Howard Ship
  *  @version $Id$
@@ -112,6 +112,9 @@ public class Pool implements ICleanable
 	}
 	
 	/**
+	 *  @param useSharedJanitor if true, then the Pool is added to
+	 *  the {@link JanitorThread#getSharedJanitorThread() shared janitor}.
+	 *
 	 *  @since 1.0.5
 	 *
 	 */
@@ -159,6 +162,7 @@ public class Pool implements ICleanable
 	 *
 	 *  @throws IllegalArgumentException if value is less than 1.
 	 *
+	 *  @since 1.0.5
 	 */
 	
 	public void setWindow(int value)
@@ -306,6 +310,13 @@ public class Pool implements ICleanable
 			return map.size();
 		}
 	}
+
+	/**
+	 *  Peforms culling of unneeded pooled objects.
+	 *
+	 *  @since 1.0.5
+	 *
+	 */
 	
 	public void executeCleanup()
 	{

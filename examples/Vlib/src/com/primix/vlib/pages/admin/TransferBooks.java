@@ -47,8 +47,8 @@ import com.primix.vlib.ejb.*;
 public class TransferBooks
 	extends AdminPage
 {
-	private Integer fromUserPK;
-	private Integer toUserPK;
+	private Person fromUser;
+	private Person toUser;
 	private boolean selectionsOk;
 	private IPropertySelectionModel userBookModel;
 	private IBookQuery bookQuery;
@@ -62,8 +62,8 @@ public class TransferBooks
 	
 	public void detach()
 	{
-		fromUserPK = null;
-		toUserPK = null;
+		fromUser = null;
+		toUser = null;
 		selectionsOk = false;
 		userBookModel = null;
 		bookQuery = null;
@@ -80,27 +80,52 @@ public class TransferBooks
 			getUserBookModel();
 	}
 	
-	public void setFromUserPK(Integer value)
+	public void setFromUser(Person value)
 	{
-		fromUserPK = value;
-		fireObservedChange("fromUserPK", value);
+		fromUser = value;
+		fireObservedChange("fromUser", value);
+	}
+	
+	public Person getFromUser()
+	{
+		return fromUser;
+	}
+	
+	public void setToUser(Person value)
+	{
+		toUser = value;
+		fireObservedChange("toUser", value);
+	}
+		
+	public Person getToUser()
+	{
+		return toUser;
 	}
 	
 	public Integer getFromUserPK()
 	{
-		return fromUserPK;
+		if (fromUser == null)
+			return null;
+		
+		return fromUser.getPrimaryKey();
 	}
 	
-	public Integer getToUserPK()
+	public void setFromUserPK(Integer value)
 	{
-		return toUserPK;
+		setFromUser(readPerson(value));
 	}
 	
 	public void setToUserPK(Integer value)
 	{
-		toUserPK = value;
+		setToUser(readPerson(value));
+	}
+	
+	public Integer getToUserPK()
+	{
+		if (toUser == null)
+			return null;
 		
-		fireObservedChange("toUserPK", value);
+		return toUser.getPrimaryKey();
 	}
 	
 	public boolean isSelectionsOk()
@@ -138,7 +163,7 @@ public class TransferBooks
 	{
 		setSelectionsOk(false);
 		
-		if (fromUserPK.equals(toUserPK))
+		if (fromUser.getPrimaryKey().equals(toUser.getPrimaryKey()))
 		{
 			setError("Please select two different people.");
 			return;
@@ -155,18 +180,8 @@ public class TransferBooks
 		setSelectionsOk(true);
 	}
 	
-	public IActionListener getXferFormListener()
-	{
-		return new IActionListener()
-		{
-			public void actionTriggered(IComponent component, IRequestCycle cycle)
-			{
-				processXferForm();
-			}
-		};
-	}
 	
-	private void processXferForm()
+	public void processXferForm(IRequestCycle cycle)
 	{
 		setSelectionsOk(false);
 		
@@ -189,7 +204,7 @@ public class TransferBooks
 			{
 				IOperations operations = vengine.getOperations();
 				
-				operations.transferBooks(toUserPK, keys);
+				operations.transferBooks(toUser.getPrimaryKey(), keys);
 				
 				break;
 			}
@@ -203,7 +218,7 @@ public class TransferBooks
 			}
 		}
 		
-		setMessage("Transfered " + count + " books.");
+		setMessage("Transfered " + count + " books to " + toUser.getNaturalName() + ".");
 	}
 	
 	public List getSelectedBooks()
@@ -235,7 +250,7 @@ public class TransferBooks
 			{
 				IBookQuery query = getBookQuery();
 				
-				int count = query.ownerQuery(fromUserPK);
+				int count = query.ownerQuery(fromUser.getPrimaryKey());
 				
 		        if (count > 0)
 					books = query.get(0, count);
@@ -244,7 +259,7 @@ public class TransferBooks
 			}
 			catch (RemoteException ex)
 			{
-				vengine.rmiFailure("Unable to retrieve books owned by user.", ex, i > 0);
+				vengine.rmiFailure("Unable to retrieve books owned by " + fromUser.getNaturalName() + ".", ex, i > 0);
 				
 				setBookQuery(null);
 			}
@@ -258,6 +273,34 @@ public class TransferBooks
 		
 		return model;	  
 	}
+
+	private Person readPerson(Integer primaryKey)
+	{
+		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
+		Person result = null;
+		
+		for (int i = 0; i < 2; i++)
+		{
+			try
+			{
+				IOperations ops = vengine.getOperations();
 				
+				result = ops.getPerson(primaryKey);
+				
+				break;
+			}
+			catch (RemoteException ex)
+			{
+				vengine.rmiFailure("Unable to retrieve person #" + primaryKey + ".", ex, i > 0);
+			}
+			catch (FinderException ex)
+			{
+				throw new ApplicationRuntimeException(ex);
+			}
+	
+		}
+		
+		return result;
+	}
 }
 

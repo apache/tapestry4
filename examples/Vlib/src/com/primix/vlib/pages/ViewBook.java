@@ -61,6 +61,13 @@ public class ViewBook extends BasePage
 		return book;
 	}
 	
+	public void setBook(Book value)
+	{
+		book = value;
+		
+		fireObservedChange("book", value);
+	}
+	
 	public void setup(Integer bookPK, IRequestCycle cycle)
 	{
 		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
@@ -71,7 +78,7 @@ public class ViewBook extends BasePage
 			
 			try
 			{
-				book = bean.getBook(bookPK);
+				setBook(bean.getBook(bookPK));
 				
 				cycle.setPage(this);
 				

@@ -10,6 +10,7 @@
   
   <component id="border" type="Border">
     <static-binding name="title">Transfer Books</static-binding>
+    <field-binding name="simpleTitle" field-name="Boolean.TRUE"/>
   </component>
   
   <component id="showMessage" type="ShowMessage"/>
@@ -35,14 +36,39 @@
   </component>
   
   <component id="xferForm" type="Form">
-    <binding name="listener" property-path="xferFormListener"/>
+    <binding name="listener" property-path="listeners.processXferForm"/>
   </component>
   
   <component id="selectBooks" type="Palette">
     <binding name="selected" property-path="selectedBooks"/>
     <binding name="model" property-path="userBookModel"/>
     <field-binding name="sort" field-name="net.sf.tapestry.contrib.palette.SortMode.LABEL"/>
+    <binding name="selectImage" property-path="assets.Select"/>
+    <binding name="selectDisabledImage" property-path="assets.SelectOff"/>
+    <binding name="deselectImage" property-path="assets.Deselect"/>
+    <binding name="deselectDisabledImage" property-path="assets.DeselectOff"/>
+    <binding name="selectedTitleBlock" property-path="components.selectedTitleBlock"/>
+    <binding name="availableTitleBlock" property-path="components.availableTitleBlock"/>
   </component>
 
+  <component id="availableTitleBlock" type="Block"/>
+  
+  <component id="insertFromName" type="Insert">
+  	<binding name="value" property-path="fromUser.naturalName"/>
+  </component>
+  
+  
+  <component id="selectedTitleBlock" type="Block"/>
+
+  <component id="insertToName" type="Insert">
+    <binding name="value" property-path="toUser.naturalName"/>
+  </component>
+  
+	  
+  <context-asset name="Select" path="/images/select_right_bl.gif"/>
+  <context-asset name="SelectOff" path="/images/select_right_bl_off.gif"/>
+  <context-asset name="Deselect" path="/images/deselect_left_bl.gif"/>
+  <context-asset name="DeselectOff" path="/images/deselect_left_bl_off.gif"/>
+  
 </specification>
 

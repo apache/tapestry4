@@ -54,6 +54,18 @@ public class StaticBinding extends AbstractBinding
 	}
 
 	/**
+	 *  Always returns String, even if the String has been
+	 *  parsed as an integer or double.
+	 *
+	 * @since 1.0.5
+	 */
+	
+	public Class getType()
+	{
+		return String.class;
+	}
+	
+	/**
 	*  Interprets the static value as an integer.
 	*
 	*/

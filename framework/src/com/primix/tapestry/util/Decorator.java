@@ -231,7 +231,10 @@ public class Decorator
 			
 			searchClass = subjectClass;
 			
-			while (searchClass != Object.class)
+			// Primitive types have null, not Object, as their parent
+			// class.
+			
+			while (searchClass != Object.class && searchClass != null)
 			{
 				result = registrations.get(searchClass);
 				if (result != null)
@@ -251,7 +254,8 @@ public class Decorator
 				
 				// Advance up to the next superclass
 				
-				searchClass = searchClass.getSuperclass();                
+				searchClass = searchClass.getSuperclass();   
+				
 			}
 			
 			// Ok, the easy part failed, lets start searching
