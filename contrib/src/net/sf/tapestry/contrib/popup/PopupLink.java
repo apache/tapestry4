@@ -41,34 +41,24 @@ import net.sf.tapestry.event.PageRenderListener;
 import net.sf.tapestry.spec.ComponentSpecification;
 
 /**
- * TODO:
- * - javadoc
- * - port .script to DTD 1.3
- * - component reference page
- * - add demo usage on WorkBench page, possibly as help popup window
- * 
+ * This component provides a popup link to launch a new window using a given
+ * URL, windowName and windowFeatures for the javascript function:
+ * <tt>window.open(URL, windowName, windowFeatures)<tt>.
+ *
  * @version $Id$ 
  * @author Joe Panico
  */
-public class PopupLink extends BaseComponent implements PageDetachListener
+public class PopupLink extends BaseComponent
 {
-	// Constants
-	private static final String DEFAULT_WINDOW_NAME = "_popup_link_window_";
-	private static final Integer DEFAULT_WINDOW_HEIGHT = new Integer(480);
-	private static final Integer DEFAULT_WINDOW_WIDTH = new Integer(640);
-
-    private static final Log LOG = LogFactory.getLog(PopupLink.class);
+	/** The default popup window name 'popuplink_window'. */
+	public static final String DEFAULT_WINDOW_NAME = "popuplink_window";
 
 	//	Instance variables
 	private IBinding _urlBinding;
 	private IBinding _windowNameBinding;
-	private IBinding _windowHeightBinding;
-	private IBinding _windowWidthBinding;
-	private String _popoutFunctionName;
-	private String _windowName;
-	private Integer _windowHeight;
-	private Integer _windowWidth;
-	private boolean _needsToGenerateScript = true;
+	private IBinding _featuresBinding;
+	private IBinding _heightBinding;
+	private IBinding _widthBinding;
 
 	public IBinding getUrlBinding()
 	{
@@ -90,33 +80,34 @@ public class PopupLink extends BaseComponent implements PageDetachListener
 		_windowNameBinding = windowNameBinding;
 	}
 
-	public IBinding getWindowHeightBinding()
+	public IBinding getFeaturesBinding()
 	{
-		return _windowHeightBinding;
+		return _featuresBinding;
 	}
 
-	public void setWindowHeightBinding(IBinding windowHeightBinding)
+	public void setFeaturesBinding(IBinding featuresBinding)
 	{
-		_windowHeightBinding = windowHeightBinding;
+		_featuresBinding = featuresBinding;
 	}
 
-	public IBinding getWindowWidthBinding()
+	public IBinding getHeightBinding()
 	{
-		return _windowWidthBinding;
+		return _heightBinding;
 	}
 
-	public void setWindowWidthBinding(IBinding windowWidthBinding)
+	public void setHeightBinding(IBinding heightBinding)
 	{
-		_windowWidthBinding = windowWidthBinding;
+		_heightBinding = heightBinding;
 	}
 
-	public String getPopupFunctionName()
+	public IBinding getWidthBinding()
 	{
-		if (_popoutFunctionName == null)
-		{
-			_popoutFunctionName = "_" + getIdPath().replace('.', '_');
-		}
-		return _popoutFunctionName;
+		return _widthBinding;
+	}
+
+	public void setWidthBinding(IBinding widthBinding)
+	{
+		_widthBinding = widthBinding;
 	}
 
 	public String getUrl()
@@ -125,112 +116,66 @@ public class PopupLink extends BaseComponent implements PageDetachListener
 
 		if (aUrlBinding != null)
 		{
-			return (String) aUrlBinding.getObject();
+			return URLEncoder.encode(aUrlBinding.getString());
 		}
 
 		return null;
 	}
 
-	public String getLinkHref()
-	{
-		// Setting this to false prevents multiple javascript generation
-		setNeedsToGenerateScript(false);
-
-		String aUrl = getUrl();
-        
-        if (aUrl == null)
-            return null;
-        
-		// TTT: find out why this is necessary
-		String newUrl = URLEncoder.encode(aUrl);
-
-		return "javascript:" + getPopupFunctionName() + "(\"" + newUrl + "\")";
-	}
-
 	public String getWindowName()
 	{
-		if (_windowName == null)
+		IBinding aWindowNameBinding = getWindowNameBinding();
+		if (aWindowNameBinding != null)
 		{
-			IBinding aWindowNameBinding = getWindowNameBinding();
-			if (aWindowNameBinding != null)
-			{
-				_windowName = (String) aWindowNameBinding.getObject();
-			} else
-			{
-				_windowName = DEFAULT_WINDOW_NAME;
-			}
+			return aWindowNameBinding.getString();
 		}
-		return _windowName;
-	}
-
-	public Integer getWindowHeight()
-	{
-		if (_windowHeight == null)
+		else
 		{
-			IBinding aWindowHeightBinding = getWindowHeightBinding();
-			if (aWindowHeightBinding != null)
-			{
-				_windowHeight = (Integer) aWindowHeightBinding.getObject();
-			} else
-			{
-				_windowHeight = DEFAULT_WINDOW_HEIGHT;
-			}
+			return DEFAULT_WINDOW_NAME;
 		}
-		return _windowHeight;
 	}
 
-	public Integer getWindowWidth()
+	public int getHeight()
 	{
-		if (_windowWidth == null)
+		IBinding aHeightBinding = getHeightBinding();
+		if (aHeightBinding != null)
 		{
-			IBinding aWindowWidthBinding = getWindowWidthBinding();
-			if (aWindowWidthBinding != null)
-			{
-				_windowWidth = (Integer) aWindowWidthBinding.getObject();
-			} else
-			{
-				_windowWidth = DEFAULT_WINDOW_WIDTH;
-			}
+			return aHeightBinding.getInt();
 		}
-		return _windowWidth;
+		else
+		{
+			return 0;
+		}
 	}
 
-	public boolean getNeedsToGenerateScript()
+	public int getWidth()
 	{
-		return _needsToGenerateScript;
+		IBinding aWidthBinding = getWidthBinding();
+		if (aWidthBinding != null)
+		{
+			return aWidthBinding.getInt();
+		}
+		else
+		{
+			return 0;
+		}
 	}
 
-	public void setNeedsToGenerateScript(boolean aValue)
+	public String getFeatures()
 	{
-		_needsToGenerateScript = aValue;
+		IBinding aFeaturesBinding = getFeaturesBinding();
+		if (aFeaturesBinding != null)
+		{
+			return aFeaturesBinding.getString();
+		}
+		else
+		{
+			return "";
+		}
 	}
-
-    /**
-     * @see BaseComponent#finishLoad(IRequestCycle, IPageLoader, ComponentSpecification) 
-     */
-    public void finishLoad(IRequestCycle cycle, IPageLoader loader,
-            ComponentSpecification specification ) throws PageLoaderException
+    
+    public String getPopupFunctionName()
     {
-        if (LOG.isInfoEnabled()) 
-        {
-            LOG.info("finishLoad loader: " + loader 
-                     + " componentSpecification: " + specification);
-        }
-
-        getPage().addPageDetachListener(this);
-
-        super.finishLoad(cycle, loader, specification);
+        return getIdPath().replace('.', '_') + "_popup";
     }
-
-	/**
-	 * @see PageDetachListener#pageDetached(PageEvent)
-	 */
-	public void pageDetached(PageEvent event)
-	{
-		_popoutFunctionName = null;
-		_windowName = null;
-		_windowHeight = null;
-		_windowWidth = null;
-		_needsToGenerateScript = true;
-	}
 }
