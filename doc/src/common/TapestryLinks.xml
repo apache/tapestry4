@@ -23,6 +23,8 @@
 <!ENTITY ApiRoot "../api/net/sf/tapestry">
 
 <!ENTITY AbstractComponent '<ulink url="&ApiRoot;/AbstractComponent.html"><classname>AbstractComponent</classname></ulink>'>
+<!ENTITY AbstractEngine '<ulink url="&ApiRoot;/engine/AbstractEngine.html"><classname>AbstractEngine</classname></ulink>'>
+<!ENTITY AbstractPage '<ulink url="&ApiRoot;/AbstractPage.html"><classname>AbstractPage</classname></ulink>'>
 <!ENTITY ApplicationServlet '<ulink url="&ApiRoot;/ApplicationServlet.html"><classname>ApplicationServlet</classname></ulink>'>
 <!ENTITY BaseComponent '<ulink url="&ApiRoot;/BaseComponent.html"><classname>BaseComponent</classname></ulink>'>
 <!ENTITY BasePage '<ulink url="&ApiRoot;/html/BasePage.html"><classname>BasePage</classname></ulink>'>
@@ -44,6 +46,7 @@
 <!ENTITY IPage '<ulink url="&ApiRoot;/IPage.html"><classname>IPage</classname></ulink>'>
 <!ENTITY IPageRecorder '<ulink url="&ApiRoot;/IPageRecorder.html"><classname>IPageRecorder</classname></ulink>'>
 <!ENTITY IPropertySelectionModel '<ulink url="&ApiRoot;/form/IPropertySelectionModel.html"><classname>IPropertySelectionModel</classname></ulink>'>
+<!ENTITY IPropertySource '<ulink url="&ApiRoot;/IPropertySource.html"><classname>IPropertySource</classname></ulink>'>
 <!ENTITY IPoolable '<ulink url="&ApiRoot;/util/pool/IPoolable.html"><classname>IPoolable</classname></ulink>'>
 <!ENTITY IRequestCycle '<ulink url="&ApiRoot;/IRequestCycle.html"><classname>IRequestCycle</classname></ulink>'>
 <!ENTITY IValidator '<ulink url="&ApiRoot;/valid/IValidator.html"><classname>IValidator</classname></ulink>'>

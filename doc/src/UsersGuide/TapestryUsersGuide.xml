@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- $Id$ -->
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1//EN"
+  "http://www.oasis-open.org/docbook/xml/4.1/docbookx.dtd" [
+  <!-- Useful snippets -->
+  
+<!ENTITY % TapestryLinks SYSTEM "../common/TapestryLinks.xml">
+  
+%TapestryLinks;
+  
+<!-- Each chapter is in its own file -->
+  
+<!ENTITY chap-intro SYSTEM "intro.xml">
+<!ENTITY chap-state SYSTEM "state.xml">
+<!ENTITY chap-configuration SYSTEM "configuration.xml">
+  
+<!ENTITY appendix-spec SYSTEM "spec.xml"> 
+<!ENTITY appendix-script-spec SYSTEM "script-spec.xml">
+
+<!-- Application, page, library, component specification entities  -->
+
+<!ENTITY spec.application '<link linkend="spec.application"><sgmltag class="starttag">application</sgmltag></link>'>
+<!ENTITY spec.bean '<link linkend="spec.bean"><sgmltag class="starttag">bean</sgmltag></link>'>
+<!ENTITY spec.binding '<link linkend="spec.binding"><sgmltag class="starttag">binding</sgmltag></link>'>
+<!ENTITY spec.configure '<link linkend="spec.configure"><sgmltag class="starttag">configure</sgmltag></link>'>
+<!ENTITY spec.component '<link linkend="spec.component"><sgmltag class="starttag">component</sgmltag></link>'>
+<!ENTITY spec.component-alias '<link linkend="spec.component-alias"><sgmltag class="starttag">component-alias</sgmltag></link>'>
+<!ENTITY spec.component-specification '<link linkend="spec.component-specification"><sgmltag class="starttag">component-specification</sgmltag></link>'>
+<!ENTITY spec.context-asset '<link linkend="spec.context-asset"><sgmltag class="starttag">context-asset</sgmltag></link>'>
+<!ENTITY spec.description '<link linkend="spec.description"><sgmltag class="starttag">description</sgmltag></link>'>
+<!ENTITY spec.extension '<link linkend="spec.extension"><sgmltag class="starttag">extension</sgmltag></link>'>
+<!ENTITY spec.external-asset '<link linkend="spec.external-asset"><sgmltag class="starttag">external-asset</sgmltag></link>'>
+<!ENTITY spec.field-binding '<link linkend="spec.field-binding"><sgmltag class="starttag">field-binding</sgmltag></link>'>
+<!ENTITY spec.inherited-binding '<link linkend="spec.inherited-binding"><sgmltag class="starttag">inherited-binding</sgmltag></link>'>
+<!ENTITY spec.library '<link linkend="spec.library"><sgmltag class="starttag">library</sgmltag></link>'>
+<!ENTITY spec.library-specification '<link linkend="spec.library-specification"><sgmltag class="starttag">library-specification</sgmltag></link>'>
+<!ENTITY spec.page '<link linkend="spec.page"><sgmltag class="starttag">page</sgmltag></link>'>
+<!ENTITY spec.page-specification '<link linkend="spec.page-specification"><sgmltag class="starttag">page-specification</sgmltag></link>'>
+<!ENTITY spec.parameter '<link linkend="spec.parameter"><sgmltag class="starttag">parameter</sgmltag></link>'>
+<!ENTITY spec.private-asset '<link linkend="spec.private-asset"><sgmltag class="starttag">private-asset</sgmltag></link>'>
+<!ENTITY spec.property '<link linkend="spec.property"><sgmltag class="starttag">property</sgmltag></link>'>
+<!ENTITY spec.reserved-parameter '<link linkend="spec.reserved-parameter"><sgmltag class="starttag">reserved-parameter</sgmltag></link>'>
+<!ENTITY spec.service '<link linkend="spec.service"><sgmltag class="starttag">service</sgmltag></link>'>
+<!ENTITY spec.set-property '<link linkend="spec.set-property"><sgmltag class="starttag">set-property</sgmltag></link>'>
+<!ENTITY spec.set-string-property '<link linkend="spec.set-string-property"><sgmltag class="starttag">set-string-property</sgmltag></link>'>
+<!ENTITY spec.static-binding '<link linkend="spec.static-binding"><sgmltag class="starttag">static-binding</sgmltag></link>'>
+<!ENTITY spec.string-binding '<link linkend="spec.string-binding"><sgmltag class="starttag">string-binding</sgmltag></link>'>
+
+
+<!-- Script specification entities -->
+
+<!ENTITY script-spec.body '<link linkend="script-spec.body"><sgmltag class="starttag">body</sgmltag></link>'>
+<!ENTITY script-spec.foreach '<link linkend="script-spec.foreach"><sgmltag class="starttag">foreach</sgmltag></link>'>
+<!ENTITY script-spec.if '<link linkend="script-spec.if"><sgmltag class="starttag">if</sgmltag></link>'>
+<!ENTITY script-spec.if-not '<link linkend="script-spec.if-not"><sgmltag class="starttag">if-not</sgmltag></link>'>
+<!ENTITY script-spec.include-script '<link linkend="script-spec.include-script"><sgmltag class="starttag">include-script</sgmltag></link>'>
+<!ENTITY script-spec.initialization '<link linkend="script-spec.initialization"><sgmltag class="starttag">initialization</sgmltag></link>'>
+<!ENTITY script-spec.input-symbol '<link linkend="script-spec.input-symbol"><sgmltag class="starttag">input-symbol</sgmltag></link>'>
+<!ENTITY script-spec.let '<link linkend="script-spec.let"><sgmltag class="starttag">let</sgmltag></link>'>
+<!ENTITY script-spec.script '<link linkend="script-spec.script"><sgmltag class="starttag">script</sgmltag></link>'>
+<!ENTITY script-spec.set '<link linkend="script-spec.set"><sgmltag class="starttag">set</sgmltag></link>'>
+
+<!ENTITY script-spec.full-content '<replaceable>text</replaceable> | &script-spec.foreach; | &script-spec.if; | &script-spec.if-not;'>
+
+
+]>
+<!-- Conventions:
+
+	Component ids are <varname>
+	Java packages and class names are <classname>
+	Tapestry component aliases are <classname>
+
+	In-line code snippets use <function>
+	Property paths and JavaBeans property names used <varname>
+-->
+<book>
+  <title>Tapestry User's Guide</title>
+  <bookinfo>
+    <author>
+      <firstname>Howard</firstname>
+      <surname>Lewis Ship</surname>
+    </author>
+    <copyright>
+      <year>2003</year>
+      <holder>Howard M. Lewis Ship</holder>
+    </copyright>
+  </bookinfo>
+      
+  &chap-intro;
+  
+  &chap-state;
+         
+  &chap-configuration;
+                 
+  &appendix-spec;
+   
+  &appendix-script-spec;    
+    
+</book>

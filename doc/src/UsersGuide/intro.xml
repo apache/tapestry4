@@ -1,0 +1,142 @@
+<!-- $Id$ -->
+
+<chapter id="intro">
+	<title>Introduction</title>
+	
+<para>
+Tapestry is a component-based web application framework, written in Java.  Tapestry
+is more than a simple templating system; Tapestry builds on the Java Servlet API to
+build a platform for creating dynamic, interactive web sites.  More than
+just another templating language, Tapestry is a real framework for building
+complex applications from simple, reusable components.  Tapestry offloads
+much of the error-prone work in creating web applications into the framework itself,
+taking over mundane tasks such as dispatching incoming requests, constructing and
+interpretting URLs encoded with information, handling localization and internationalization
+and much  more besides.
+</para>
+
+<para>
+The "mantra" of Tapestry is "objects, methods and properties".  That is, rather than have developers concerned
+about the paraphanlia of the Servlet API: requests, responses, sessions, attributes, parameters, URLs and so on,
+Tapestry focuses the developer on objects (including Tapestry pages and components, but
+also including the domain objects  of the application), methods on those objects,
+and JavaBeans properties of those objects.  That is, in a Tapestry application, the
+actions of the user (clicking links and submitting forms) results in changes to object properties
+combined with the invocation of user-supplied methods (containing application logic).  Tapestry
+takes care of the plumbing necessary to connect these user actions 
+with the objects.
+</para>
+
+<para>
+This is not to say the Servlet API is inaccessible; it is simply not
+<emphasis>relevant</emphasis> to a typical Tapestry user.
+</para>
+
+<para>
+This document describes many of the internals of Tapestry.  It is not a tutorial,
+that is available as a separate document.  Instead, this document is a guide to
+some of the internals of Tapestry, and is intended for experienced developers
+who wish to leverage Tapestry fully.
+</para>
+
+<para>
+Tapestry is currently in release 2.4, and has come a long way in the last couple
+of years.  Tapestry's focus is still on generating dynamic HTML pages.
+</para>
+
+<para>
+Nearly all of Tapestry's API is described in terms of interfaces, with
+default implementations supplied.
+By substituting new objects with the correct interfaces, the behavior of the framework
+can be changed significantly.  This allows for changes to where Tapestry specifications and templates
+originate from, and how server-side state is persisted (for example).
+</para>
+
+<para>
+Finally, Tapestry boasts extremely complete JavaDoc API documentation.  This document
+exists to supplement that documentation, to fill in gaps that may not be obvious.  The JavaDoc
+is often the best reference.
+</para>
+
+<section id="intro.pages-and-components">
+	<title>Pages and Components</title>
+	
+<para>
+Tapestry divides an application into a set of pages.  Each page is assembled from Tapestry components.
+Components themselves may be assembled from other components ... there's no artificial depth limit.
+</para>
+
+
+<para>
+Tapestry pages are themselves components, but are components with some special responsibilities.
+</para>
+
+<para>
+All Tapestry components can be containers of other components.  Tapestry pages, and most
+user-defined components, have a template, a special HTML file that defines the static
+and dynamic portions of the component, with markers to indicate where embedded components are
+active.  Components do not have to have a template, most of the components provided with
+Tapestry generate their protion of response in code, not using a template.
+</para>
+
+<para>
+Components may have one or more named parameters which may be set (or, "bound") by the page or component
+which contains them.  Unlike Java method parameters, Tapestry component parameters may be
+bidirectional; a component may read a parameter to obtain a value, or write a parameter
+to set a value.
+</para>
+
+<para>
+Most components are concerned only with generating HTML.  A certain subset of components deal with the flip-side
+of requests; handling of incoming requests.  Link classes, such as &PageLink;, &DirectLink; and
+&ActionLink;, create clickable links in the rendered page and are involved in dispatching to user-supplied
+code when such a link is triggered by clicking it.
+</para>
+
+<para>
+Other components, &Form;, and the form element components (&TextField;, &PropertySelection;, &Checkbox;, etc.),
+facillitate HTML forms.  When such components render, they read properties from application objects so as
+to provide default values.  When forms are submitted, the components
+within the form read HTTP query parameters, convert the values to appropriate types
+and then update properties of application objects.
+</para> 
+
+</section> <!-- intro.pages-and-components -->
+
+<section id="intro.engine-service-visit">
+	<title>Engines, Services and the Visit</title>
+	
+<para>
+Tapestry has evolved its own jargon over time.
+</para>
+
+<para>
+The Engine is a central object, it occupies the same semantic space in Tapestry that the
+&HttpSession; does in the Servlet API.  The Engine is ultimately responsible for
+storing the persistant state of the application (properties that exist from one request to
+the next), and this is accomplished by storing the Engine into the &HttpSession;.
+This document will largely discuss the <emphasis>default</emphasis> implementation,
+with notes about how the default implementation may be extended or overriden, where appropriate.
+</para>
+	
+<para>
+Engine services are the bridge between servlets and URLs and the rest of Tapestry.  Engine services 
+are responsible	for encoding URLs, providing query parameters that identify, to the framework,
+the exact operation that should occur when the generated URL is triggered (by the end user
+clicking a link or submitting a form).  Services are also responsible for dispatching
+those incoming requests.  This encapsulation of URL encoding and decoding inside a single class
+is key to how Tapestry components can flexibily operate without concern for how they are contained and on which
+page ... the services take into account page and location when formulating URLs.
+</para>
+
+<para>
+The <link linkend="state.visit">Visit</link> is not a particular object, 
+it is an application-defined object that acts as a focal point
+for all server-side state (not associated with any single page).  Individual applications define for themselves
+the class of the Visit object.  The Visit is stored as a property of the Engine, and so is ultimately
+stored persistantly in the &HttpSession;
+</para>
+	
+</section> <!-- intro.engine-service-visit -->
+
+</chapter>

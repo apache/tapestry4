@@ -1,0 +1,77 @@
+<!-- $Id$ -->
+
+<chapter id="configuration">
+	<title>Configuring Tapestry</title>
+	
+<section id="configuration.deployment-descriptor">
+	<title>Web Deployment Descriptor</title>
+	
+<para>
+.... what goes into the web.xml ...
+</para>
+	
+</section>  <!-- configuration.deployment-descriptor -->
+
+<section id="configuration.search-path">
+	<title>Configuration Search Path</title>
+	
+<para>
+Tapestry occasionally must obtain a value for a configuration property.    These configuration
+properties are items that are frequently optional, and don't fit into any particular
+specification.  Many are related to the runtime environment, such as ...
+</para>
+
+<para>
+Tapestry
+is very flexible about where values for such properties may be obtained.  In general,
+the search path for properties is:
+</para>
+
+<itemizedlist>
+	<listitem>
+		<para>
+		As a &spec.property; of the &spec.application; (in the application specification,
+		if the application uses one).
+		</para>
+	</listitem>
+	<listitem>
+		<para>
+		As an <sgmltag class="starttag">init-parameter</sgmltag>
+		for the servlet, in the web application deployment descriptor.
+		</para>
+	</listitem>
+	<listitem>
+		<para>
+		As an <sgmltag class="starttag">init-parameter</sgmltag>
+		for the servlet context, also in the web application deployment descriptor.
+		</para>
+	</listitem>
+	<listitem>
+		<para>
+		As a JVM system property.
+		</para>
+	</listitem>
+</itemizedlist>
+
+<para>
+It is expected that some configurations are not defined at any level; those will
+return null.
+</para>
+
+
+<para>
+Applications are free to leverage this lookup mechanism as well.  &IEngine; defines
+a <varname>propertySource</varname> property (of type &IPropertySource;)
+that can be used to perform such lookups.
+</para>
+
+<para>
+Applications may also want to change or augment
+the default search path; this is accomplished by overriding
+&AbstractEngine; method <function>createPropertySource()</function>.
+</para>
+		
+	
+</section>  <!-- configuration.search-path -->
+
+</chapter>
