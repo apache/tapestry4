@@ -15,14 +15,6 @@
    limitations under the License.
 -->
 
-<link href="site:changes"> links to changes.html (or ../changes.html if in
-  subdir).
-- Provide aliases for external URLs in the external-refs section.  Eg, <link
-  href="ext:cocoon"> links to http://xml.apache.org/cocoon/ 
-
-See http://xml.apache.org/forrest/linking.html for more info
--->
-
 <!DOCTYPE site
 [
 <!ENTITY project-report-menu.ent SYSTEM "project-report-menu.ent">
@@ -72,6 +64,16 @@ See http://xml.apache.org/forrest/linking.html for more info
         <DatePicker label="DatePicker" href="DatePicker.html"/>
         <Delegator label="Delegator" href="Delegator.html"/>
         <DirectLink label="DirectLink" href="DirectLink.html"/>
+        <ExceptionDisplay label="ExceptionDisplay" href="ExceptionDisplay.html"/>
+        <ExternalLink label="ExternalLink" href="ExternalLink.html"/>
+        <FieldLabel label="FieldLabel" href="FieldLabel.html"/>
+        <Foreach label="Foreach" href="Foreach.html"/>
+        <Form label="Form" href="Form.html"/>
+        <Frame label="Frame" href="Frame.html"/>
+        <GenericLink label="GenericLink" href="GenericLink.html"/>
+        <Hidden label="Hidden" href="Hidden.html"/>
+        <Image label="Image" href="Image.html"/>
+        <ImageSubmit label="ImageSubmit" href="ImageSubmit.html"/>
         <Insert label="Insert" href="Insert.html"/>
         <InsertText label="InsertText" href="InsertText.html"/>
         <LinkSubmit label="LinkSubmit" href="LinkSubmit.html"/>
