@@ -41,6 +41,13 @@ import net.sf.tapestry.Tapestry;
  *
  *  [<a href="../../../../../ComponentReference/Foreach.html">Component Reference</a>]
  *
+ *  <p>
+ *  While the component is rendering, the property
+ *  {@link #getValue() value} (accessed as
+ *  <code>components.<i>foreach</i>.value</code>
+ *  is set to each successive value from the source,
+ *  and the property
+ *  {@link #getIndex
  *  @author Howard Lewis Ship
  *  @version $Id$
  * 
@@ -48,22 +55,23 @@ import net.sf.tapestry.Tapestry;
 
 public class Foreach extends AbstractComponent
 {
-    private Object source;
-    private IBinding valueBinding;
-    private IBinding indexBinding;
-	private String element;
+    private Object _source;
+    private IBinding _valueBinding;
+    private IBinding _indexBinding;
+	private String _element;
 
-    private Object value;
-    private boolean rendering;
+    private Object _value;
+    private int _index;
+    private boolean _rendering;
 
     public IBinding getIndexBinding()
     {
-        return indexBinding;
+        return _indexBinding;
     }
 
     public void setIndexBinding(IBinding value)
     {
-        indexBinding = value;
+        _indexBinding = value;
     }
 
 
@@ -80,15 +88,15 @@ public class Foreach extends AbstractComponent
 
     protected Iterator getSourceData()
     {
- 		if (source == null)
+ 		if (_source == null)
  			return null;
  		
-        return Tapestry.coerceToIterator(source);
+        return Tapestry.coerceToIterator(_source);
     }
 
     public IBinding getValueBinding()
     {
-        return valueBinding;
+        return _valueBinding;
     }
 
     /**
@@ -109,47 +117,47 @@ public class Foreach extends AbstractComponent
 
         try
         {
-            rendering = true;
-            value = null;
-            int i = 0;
+            _rendering = true;
+            _value = null;
+            _index = 0;
 
             boolean hasNext = dataSource.hasNext();
 
             while (hasNext)
             {
-                value = dataSource.next();
+                _value = dataSource.next();
                 hasNext = dataSource.hasNext();
 
-                if (indexBinding != null)
-                    indexBinding.setInt(i);
+                if (_indexBinding != null)
+                    _indexBinding.setInt(_index);
 
-                if (valueBinding != null)
-                    valueBinding.setObject(value);
+                if (_valueBinding != null)
+                    _valueBinding.setObject(_value);
 
-                if (element != null)
+                if (_element != null)
                 {
-                    writer.begin(element);
+                    writer.begin(_element);
                     generateAttributes(writer, cycle);
                 }
 
                 renderBody(writer, cycle);
 
-                if (element != null)
+                if (_element != null)
                     writer.end();
 
-                i++;
+                _index++;
             }
         }
         finally
         {
-            value = null;
-            rendering = false;
+            _value = null;
+            _rendering = false;
         }
     }
 
     public void setValueBinding(IBinding value)
     {
-        valueBinding = value;
+        _valueBinding = value;
     }
 
     /**
@@ -161,30 +169,48 @@ public class Foreach extends AbstractComponent
 
     public Object getValue()
     {
-        if (!rendering)
+        if (!_rendering)
             throw new RenderOnlyPropertyException(this, "value");
 
-        return value;
+        return _value;
     }
 
     public String getElement()
     {
-        return element;
+        return _element;
     }
 
     public void setElement(String element)
     {
-        this.element = element;
+        _element = element;
     }
 
     public Object getSource()
     {
-        return source;
+        return _source;
     }
 
     public void setSource(Object source)
     {
-        this.source = source;
+        _source = source;
+    }
+
+    /**
+     *  The index number, within the {@link #getSource() source}, of the
+     *  the current value.
+     * 
+     *  @throws RenderOnlyPropertyException if the Foreach is not currently rendering.
+     *
+     *  @since 2.2
+     * 
+     **/
+    
+    public int getIndex()
+    {
+        if (!_rendering)
+            throw new RenderOnlyPropertyException(this, "index");
+        
+        return _index;
     }
 
 }
