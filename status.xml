@@ -10,6 +10,7 @@
     <person name="Geoff Longman" id="GL"/>
     <person name="Tsvetelin Saykov" id="TS"/>
     <person name="Neil Clayton" id="NC"/>
+    <person name="Paul Ferraro" id="PF"/>
     <!-- Retired -->
     <person name="Malcom Edgar" id="ME"/>
     <!-- Add more people here -->
@@ -125,7 +126,7 @@
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-277"> DatePicker onchange event now only fires when date changes. </action>
       <action type="fix" dev="PF" due-to="Xi Ping Wang" fixes-bug="TAPESTRY-255"> Patch for bad translation in ValidationStrings_zh_TW.properties </action>
       <action type="fix" dev="PF" due-to="Xi Ping Wang" fixes-bug="TAPESTRY-251"> Patch for bad translation in ValidationStrings_zh_CN.properties </action>
-      <action type="fix" dev="PF" due-to="Michael Hamilton" fixes-bug="TAPESTRY-1"> Fixed incorrect test for enabling rendering of element in FormConditional component </action>
+      <action type="fix" dev="PF" due-to="Michael Hamilton" fixes-bug="TAPESTRY-1"> Fixed incorrect test for enabling rendering of element in FormConditional component. </action>
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-283"> Fixes missing type attribute of script tag in Body component. </action>
       <action type="update" dev="PF"> Build scripts are now Java 1.5 friendly. </action>
     </release>
