@@ -1,3 +1,7 @@
+* Dec 28 2000 hship
+
+Ship ejb.jar (from the jBoss distribution); remove references to j2ee.jar.
+
 * Dec 27 2000 hship
 
 Now distributing Jetty 3.0.1.
