@@ -45,7 +45,6 @@
     <depend project="jakarta-servletapi-4"/>
     <depend project="ognl"/>
     <depend project="xml-xerces"/>
-    <depend project="jakarta-servletapi"/>
     <depend project="jakarta-oro"/>
     <depend project="commons-digester"/>
     <depend project="commons-lang"/>
