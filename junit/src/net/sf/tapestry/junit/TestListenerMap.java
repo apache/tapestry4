@@ -77,6 +77,33 @@ public class TestListenerMap extends TapestryTestCase
         {
             invokeCount++;
         }
+
+        public static void nearMiss(IRequestCycle cycle)
+        {
+        }
+
+        static void mustBePublic(IRequestCycle cycle)
+        {
+        }
+
+        public void tooManyExceptionsThrown(IRequestCycle cycle) throws RequestCycleException, BindingException
+        {
+        }
+
+        public void invokeAndThrow(IRequestCycle cycle) throws RequestCycleException
+        {
+            throw new RequestCycleException("From invokeAndThrow");
+        }
+
+        public void invokeAndThrowRuntime(IRequestCycle cycle)
+        {
+            throw new RuntimeException("From invokeAndThrowRuntime");
+        }
+
+        public String toString()
+        {
+            return "TestListenerMap.Listener[" + invokeCount + "]";
+        }
     }
 
     public static class ListenerSubclass extends Listener
@@ -129,7 +156,10 @@ public class TestListenerMap extends TapestryTestCase
         List names = new ArrayList(m.getListenerNames());
         Collections.sort(names);
 
-        checkList("Method names.", new String[] { "actualListenerMethod", "listenerThrows" }, names);
+        checkList(
+            "Method names.",
+            new String[] { "actualListenerMethod", "invokeAndThrow", "invokeAndThrowRuntime", "listenerThrows" },
+            names);
     }
 
     public void testSubclassMethods()
@@ -150,7 +180,15 @@ public class TestListenerMap extends TapestryTestCase
         List names = new ArrayList(m.getListenerNames());
         Collections.sort(names);
 
-        checkList("Method names.", new String[] { "actualListenerMethod", "listenerThrows", "subclassMethod" }, names);
+        checkList(
+            "Method names.",
+            new String[] {
+                "actualListenerMethod",
+                "invokeAndThrow",
+                "invokeAndThrowRuntime",
+                "listenerThrows",
+                "subclassMethod" },
+            names);
     }
 
     public void testListenerMethodPropertyAccess() throws Exception
@@ -166,18 +204,99 @@ public class TestListenerMap extends TapestryTestCase
 
         assertEquals("Invocation count.", count + 1, l.invokeCount);
     }
-    
+
     public void testPropertyAccess() throws Exception
     {
         Listener l = new ListenerSubclass();
         ListenerMap m = new ListenerMap(l);
-        
+
         // class is a handy, read-only property.
-        
-        Class c = (Class)Ognl.getValue("class", m);
-        
+
+        Class c = (Class) Ognl.getValue("class", m);
+
         assertEquals("ListenerMap class property.", ListenerMap.class, c);
     }
-       
+
+    public void testInvokeAndThrow() throws Exception
+    {
+        Listener l = new ListenerSubclass();
+        ListenerMap m = new ListenerMap(l);
+        IActionListener listener = (IActionListener) m.getListener("invokeAndThrow");
+
+        try
+        {
+            listener.actionTriggered(null, null);
+
+            throw new AssertionFailedError("Unreachable.");
+        }
+        catch (RequestCycleException ex)
+        {
+            checkException(ex, "From invokeAndThrow");
+        }
+    }
+
+    public void testInvokeAndThrowRuntime() throws Exception
+    {
+        Listener l = new ListenerSubclass();
+        ListenerMap m = new ListenerMap(l);
+        IActionListener listener = (IActionListener) m.getListener("invokeAndThrowRuntime");
+
+        try
+        {
+            listener.actionTriggered(null, null);
+
+            throw new AssertionFailedError("Unreachable.");
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            checkException(
+                ex,
+                "Unable to invoke method invokeAndThrowRuntime on TestListenerMap.Listener[0]: From invokeAndThrowRuntime");
+        }
+    }
+
+    public void testToString() throws Exception
+    {
+        Listener l = new Listener();
+        ListenerMap m = new ListenerMap(l);
+
+        IActionListener listener = (IActionListener) m.getListener("actualListenerMethod");
+
+        assertEquals(
+            "ToString",
+            "SyntheticListener[TestListenerMap.Listener[0] public void net.sf.tapestry.junit.TestListenerMap$Listener.actualListenerMethod(net.sf.tapestry.IRequestCycle)]",
+            listener.toString());
+
+        assertEquals("ToString", "ListenerMap[TestListenerMap.Listener[0]]", m.toString());
+    }
+
+    public void testIsCached() throws Exception
+    {
+        Listener l = new Listener();
+        ListenerMap m = new ListenerMap(l);
+
+        IActionListener listener = (IActionListener) m.getListener("actualListenerMethod");
+
+        assertSame("Listener", listener, m.getListener("actualListenerMethod"));
+    }
+
+    public void testInvalidMethod() throws Exception
+    {
+        Listener l = new Listener();
+        ListenerMap m = new ListenerMap(l);
+
+        try
+        {
+            m.getListener("notQuiteListenerMethod");
+
+            throw new AssertionFailedError("Unreachable.");
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            checkException(
+                ex,
+                "Object TestListenerMap.Listener[0] does not implement a listener method named 'notQuiteListenerMethod'.");
+        }
+    }
 
 }
