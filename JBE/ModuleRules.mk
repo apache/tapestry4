@@ -25,6 +25,8 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 # Lesser General Public License for more details.
 
+include $(SYS_MAKEFILE_DIR)/CommonRules.mk
+
 clean: clean-root local-clean clean-packages
 
 clean-root:
@@ -245,16 +247,6 @@ endif
 
 initialize: setup-jbe-util
 	@$(MKDIRS) $(MOD_BUILD_DIR)
-
-# Rule to make sure the JBE Util class is around.  Usually executed just once, the first
-# time the JBE is used.
-
-setup-jbe-util: $(SYS_MAKEFILE_DIR)/com/primix/jbe/Util.class
-
-$(SYS_MAKEFILE_DIR)/com/primix/jbe/Util.class: $(SYS_MAKEFILE_DIR)/com/primix/jbe/Util.java
-	@$(ECHO) "\n*** Compiling JBE Utility ... ***\n";
-	$(CD) $(SYS_MAKEFILE_DIR) ; \
-	$(JAVAC) com/primix/jbe/Util.java
 
 # May be implemented
 

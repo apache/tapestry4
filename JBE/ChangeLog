@@ -1,5 +1,9 @@
 * Sep 19 2000 hship
 
+Split part of ModuleRules.mk into CommonRules.mk and some other re-organizing.
+
+* Sep 19 2000 hship
+
 Support modules with no packages, plus other minor tweaks.
 
 * Sep 18 2000 hship

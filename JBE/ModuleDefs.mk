@@ -60,20 +60,3 @@ RMI_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/rmi-stamp
 
 MOD_DIRTY_JAR_STAMP_FILE = $(SYS_BUILD_DIR_NAME)/dirty-jar-stamp
 
-# Create a macro for recursing into a specific packages.  --unix seems
-# to tame things under Windows.  We don't want or need any builtin
-# rules.
-
-RECURSE := $(MAKE) --unix --no-builtin-rules
-
-# Note, for this to work, SYS_MAKEFILE_DIR must use only forward slashes. Either
-# GNU Make or JAVA is eating the backslashes under NT.
-
-JBE_UTIL = $(JAVA) -classpath $(SYS_MAKEFILE_DIR) com.primix.jbe.Util 
-
-# Command to convert some absolute and/or relative pathnames into
-# a list of well-formatted (for GNU Make) absolute pathnames.  Add -classpath
-# to use the classpath seperator intead of putting the converted names onto
-# seperate lines.
-
-JBE_CANONICALIZE = $(JBE_UTIL) canonicalize
