@@ -279,6 +279,10 @@ Component parameters with direction 'form' should not allow static bindings.
 Fixed NPE in PatternValidator.toString().
 </action>
 
+<action type="fix" dev="HLS">
+Fix TestMocks to not use JDK 1.4 API.	
+</action>
+
 			</release>
 		</changes>
 	</status>
