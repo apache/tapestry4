@@ -26,6 +26,8 @@
 
 package com.primix.tapestry.util.prop;
 
+import com.primix.tapestry.Tapestry;
+
 /**
  *  Describes a case where the necessary accessor or mutator 
  *  method could not be located when dynamically getting or setting a property.
@@ -57,7 +59,7 @@ public class MissingAccessorException extends RuntimeException
 		Object object,
 		String propertyName)
 	{
-		super("Missing accessor in property path '" + propertyPath + "'.");
+		super(Tapestry.getString("MissingAccessorException.message", propertyPath));
 
 		this.rootObject = rootObject;
 		this.propertyPath = propertyPath;

@@ -136,14 +136,11 @@ public abstract class PageRecorder implements IPageRecorder, Serializable
 
 		if (locked)
 			throw new ApplicationRuntimeException(
-				"Page recorder for page "
-					+ component.getPage().getName()
-					+ " is locked after a commit(), but received a change to "
-					+ " property "
-					+ propertyName
-					+ " of component "
-					+ component.getExtendedId()
-					+ ".");
+				Tapestry.getString(
+					"PageRecorder.change-after-lock",
+					component.getPage().getName(),
+					propertyName,
+					component.getExtendedId()));
 
 		if (propertyName == null)
 		{
@@ -161,13 +158,11 @@ public abstract class PageRecorder implements IPageRecorder, Serializable
 		{
 			t.printStackTrace();
 			throw new ApplicationRuntimeException(
-				"Unable to persist property "
-					+ propertyName
-					+ " of "
-					+ component.getExtendedId()
-					+ " as "
-					+ newValue
-					+ ".",
+				Tapestry.getString(
+					"PageRecorder.unable-to-persist",
+					propertyName,
+					component.getExtendedId(),
+					newValue),
 				t);
 		}
 	}

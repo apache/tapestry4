@@ -100,7 +100,7 @@ public class SpecificationParser extends AbstractDocumentParser
 
 			if (result == null)
 				throw new DocumentParseException(
-					"Could not convert '" + value + "' to boolean.");
+					Tapestry.getString("SpecificationParser.fail-convert-boolean", value));
 
 			return result;
 		}
@@ -117,7 +117,7 @@ public class SpecificationParser extends AbstractDocumentParser
 			catch (NumberFormatException ex)
 			{
 				throw new DocumentParseException(
-					"Could not convert '" + value + "' to integer.",
+					Tapestry.getString("SpecificationParser.fail-convert-int", value),
 					ex);
 			}
 		}
@@ -134,7 +134,7 @@ public class SpecificationParser extends AbstractDocumentParser
 			catch (NumberFormatException ex)
 			{
 				throw new DocumentParseException(
-					"Could not convert '" + value + "' to double.",
+					Tapestry.getString("SpecificationParser.fail-convert-double", value),
 					ex);
 			}
 		}
@@ -253,7 +253,9 @@ public class SpecificationParser extends AbstractDocumentParser
 			return convertComponentSpecification_2(document);
 
 		throw new DocumentParseException(
-			"Unexpected document type with public identifier " + publicId + ".",
+			Tapestry.getString(
+				"SpecificationParser.unexpected-component-public-id",
+				publicId),
 			getResourcePath());
 	}
 
@@ -269,7 +271,9 @@ public class SpecificationParser extends AbstractDocumentParser
 			return convertApplicationSpecification_2(document);
 
 		throw new DocumentParseException(
-			"Unexpected application specification with public identifier " + publicId + ".",
+			Tapestry.getString(
+				"SpecificationParser.unexpected-application-public-id",
+				publicId),
 			getResourcePath());
 
 	}
@@ -743,10 +747,10 @@ public class SpecificationParser extends AbstractDocumentParser
 
 		if (value == null)
 			throw new DocumentParseException(
-				key
-					+ " can't be converted to boolean (in element "
-					+ getNodePath(node.getParentNode())
-					+ ").",
+				Tapestry.getString(
+					"SpecificationParser.unable-to-convert-node-to-boolean",
+					key,
+					getNodePath(node.getParentNode())),
 				getResourcePath());
 
 		return value.booleanValue();
@@ -962,7 +966,7 @@ public class SpecificationParser extends AbstractDocumentParser
 				convertFieldValue(spec, name, child);
 				continue;
 			}
-			
+
 			if (isElement(child, "property-value"))
 			{
 				convertPropertyValue(spec, name, child);
@@ -972,16 +976,18 @@ public class SpecificationParser extends AbstractDocumentParser
 	}
 
 	/** @since 1.0.8 **/
-	
-	private void convertFieldValue(BeanSpecification spec, String propertyName,
+
+	private void convertFieldValue(
+		BeanSpecification spec,
+		String propertyName,
 		Node node)
-		{
-			String fieldName = getAttribute(node, "field-name");
-			IBeanInitializer iz = new FieldBeanInitializer(propertyName, fieldName);
-			
-			spec.addInitializer(iz);
-		}
-	
+	{
+		String fieldName = getAttribute(node, "field-name");
+		IBeanInitializer iz = new FieldBeanInitializer(propertyName, fieldName);
+
+		spec.addInitializer(iz);
+	}
+
 	/** @since 1.0.5 **/
 
 	private void convertPropertyValue(
@@ -1031,7 +1037,7 @@ public class SpecificationParser extends AbstractDocumentParser
 
 		if (type != null && copyOf != null)
 			throw new DocumentParseException(
-				"Contained component " + id + " contains both type and copy-of attributes.",
+				Tapestry.getString("SpecificationParser.both-type-and-copy-of", id),
 				getResourcePath());
 
 		if (copyOf != null)
@@ -1040,7 +1046,7 @@ public class SpecificationParser extends AbstractDocumentParser
 		{
 			if (type == null)
 				throw new DocumentParseException(
-					"Contained component " + id + " does not specify attribute type or copy-of.",
+					Tapestry.getString("SpecificationParser.missing-type-or-copy-of", id),
 					getResourcePath());
 
 			c = new ContainedComponent();
@@ -1110,7 +1116,7 @@ public class SpecificationParser extends AbstractDocumentParser
 		ContainedComponent c = spec.getComponent(id);
 		if (c == null)
 			throw new DocumentParseException(
-				"Unable to copy component " + id + ", which does not exist.",
+				Tapestry.getString("SpecificationParser.unable-to-copy", id),
 				getResourcePath());
 
 		ContainedComponent result = new ContainedComponent();

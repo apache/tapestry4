@@ -90,7 +90,7 @@ class ResourceResolver implements IResourceResolver
 			throw new ApplicationRuntimeException(
 				Tapestry.getString(
 					"ResourceResolver.unable-to-load-class",
-					new Object[] { name, classLoader, t.getMessage()}),
+					name, classLoader, t.getMessage()),
 				t);
 		}
 	}

@@ -383,7 +383,9 @@ public class ListenerMap
 			throw new ApplicationRuntimeException(
 				Tapestry.getString(
 					"ListenerMap.unable-to-invoke-method",
-					new Object[] { method.getName(), target, ex.getMessage()}),
+					method.getName(),
+					target,
+					ex.getMessage()),
 				ex);
 		}
 	}

@@ -130,7 +130,7 @@ public class ComponentSpecification extends BasePropertyHolder
 			assets = new HashMap(MAP_SIZE);
 		else if (assets.containsKey(name))
 			throw new IllegalArgumentException(
-				this +" already contains asset " + name + ".");
+				Tapestry.getString("ComponentSpecification.duplicate-asset", this, name));
 
 		assets.put(name, asset);
 	}
@@ -146,7 +146,7 @@ public class ComponentSpecification extends BasePropertyHolder
 			components = new HashMap(MAP_SIZE);
 		else if (components.containsKey(id))
 			throw new IllegalArgumentException(
-				this +" already contains component " + id + ".");
+				Tapestry.getString("ComponentSpecification.duplicate-component", this, id));
 
 		components.put(id, component);
 	}
@@ -163,7 +163,7 @@ public class ComponentSpecification extends BasePropertyHolder
 			parameters = new HashMap(MAP_SIZE);
 		else if (parameters.containsKey(name))
 			throw new IllegalArgumentException(
-				this +" already contains parameter " + name + ".");
+				Tapestry.getString("ComponentSpecification.duplicate-parameter", this, name));
 
 		parameters.put(name, spec);
 
@@ -342,7 +342,7 @@ public class ComponentSpecification extends BasePropertyHolder
 			beans = new HashMap(MAP_SIZE);
 		else if (beans.containsKey(name))
 			throw new IllegalArgumentException(
-				this +" already contains bean definition for " + name + ".");
+				Tapestry.getString("ComponentSpecification.duplicate-bean", this, name));
 
 		beans.put(name, specification);
 	}

@@ -26,9 +26,10 @@
 
 package com.primix.tapestry.util.io;
 
-import java.util.*;
-import java.io.*;
-import com.primix.tapestry.util.*;
+import java.io.IOException;
+
+import com.primix.tapestry.Tapestry;
+import com.primix.tapestry.util.Decorator;
 
 /**
  *  A class used to convert arbitrary objects to Strings and back.
@@ -124,27 +125,30 @@ public class DataSqueezer
 		int offset;
 
 		if (prefixLength < 1)
-			throw new IllegalArgumentException("The adaptor prefix must contain at least one character.");
+			throw new IllegalArgumentException(
+			Tapestry.getString("DataSqueezer.short-prefix"));
 
 		if (dataClass == null)
-			throw new IllegalArgumentException("The dataClass may not be null.");
+			throw new IllegalArgumentException(
+				Tapestry.getString("DataSqueezer.null-class"));
 
 		if (adaptor == null)
-			throw new IllegalArgumentException("The adaptor may not be null.");
+			throw new IllegalArgumentException(Tapestry.getString("DataSqueezer.null-adaptor"));
 
 		for (int i = 0; i < prefixLength; i++)
 		{
 			char ch = prefix.charAt(i);
 
 			if (ch < '!' | ch > 'z')
-				throw new IllegalArgumentException("DataSqueezer prefix must be in the range '!' to 'z'.");
+				throw new IllegalArgumentException(Tapestry.getString("DataSqueezer.prefix-out-of-range"));
 
 			offset = ch - FIRST_ADAPTOR_OFFSET;
 
 			if (adaptorByPrefix[offset] != null)
 				throw new IllegalArgumentException(
-					"An adaptor for prefix '" + ch + "' is already registered.");
-
+				Tapestry.getString("DataSqueezer.adaptor-prefix-taken",
+					prefix.substring(i, i)));
+		
 			adaptorByPrefix[offset] = adaptor;
 
 		}

@@ -27,6 +27,7 @@
 package com.primix.tapestry.util;
 
 import java.util.*;
+import com.primix.tapestry.Tapestry;
 import java.lang.ref.*;
 
 /**
@@ -134,10 +135,12 @@ public class JanitorThread extends Thread
 	public void setInterval(long value)
 	{
 		if (lockInterval)
-			throw new IllegalStateException("The interval for this janitor thread is locked.");
+			throw new IllegalStateException(
+				Tapestry.getString("JanitorThread.interval-locked"));
 
 		if (value < 1)
-			throw new IllegalArgumentException("The interval for a janitor thread may not be less than 1 millisecond.");
+			throw new IllegalArgumentException(
+				Tapestry.getString("JanitorThread.illegal-interval"));
 
 		interval = value;
 

@@ -26,6 +26,7 @@
 
 package com.primix.tapestry.util.prop;
 
+import com.primix.tapestry.Tapestry;
 import com.primix.tapestry.util.*;
 import java.beans.*;
 import java.lang.reflect.*;
@@ -255,13 +256,12 @@ public class PropertyHelper
 
 			constructor = helperClass.getConstructor(new Class[] { Class.class });
 		}
-		catch (NoSuchMethodException e)
+		catch (NoSuchMethodException ex)
 		
 			{
 			throw new DynamicInvocationException(
-				helperClass.getName()
-					+ " does not implement the required contructor for use as a PropertyHelper.",
-				e);
+				Tapestry.getString("PropertyHelper.missing-constructor", helperClass.getName()),
+				ex);
 		}
 
 		// This is equivalent to invoking the constructor FooClass.FooClass(beanClass).
@@ -270,11 +270,11 @@ public class PropertyHelper
 		{
 			helper = (PropertyHelper) constructor.newInstance(new Object[] { beanClass });
 		}
-		catch (Exception e)
+		catch (Exception ex)
 		{
 			throw new DynamicInvocationException(
-				"Could not invoke PropertyHelper constructor.",
-				e);
+				Tapestry.getString("PropertyHelper.unable-to-invoke-constructor"),
+				ex);
 		}
 
 		// We don't want to go through this again, so record permanently the correct

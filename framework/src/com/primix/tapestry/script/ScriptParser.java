@@ -122,7 +122,7 @@ public class ScriptParser extends AbstractDocumentParser
 		if (!(publicId.equals(SCRIPT_DTD_1_0_PUBLIC_ID)
 			|| publicId.equals(SCRIPT_DTD_1_1_PUBLIC_ID)))
 			throw new DocumentParseException(
-				"Script uses unknown public identifier " + publicId + ".",
+				Tapestry.getString("ScriptParser.unknown-public-id", publicId),
 				getResourcePath());
 
 		for (Node child = root.getFirstChild();

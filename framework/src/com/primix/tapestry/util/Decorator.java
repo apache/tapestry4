@@ -26,6 +26,7 @@
 
 package com.primix.tapestry.util;
 
+import com.primix.tapestry.Tapestry;
 import java.util.*;
 import org.apache.log4j.*;
 
@@ -115,7 +116,7 @@ public class Decorator
 		{
 			if (registrations.containsKey(registrationClass))
 				throw new IllegalArgumentException(
-					"A registration for class " + registrationClass.getName() + " already exists.");
+				Tapestry.getString("Decorator.duplicate-registration", registrationClass.getName()));
 
 			registrations.put(registrationClass, adaptor);
 		}
@@ -291,8 +292,7 @@ public class Decorator
 		// No match?  That's rare ... and an error.
 
 		throw new IllegalArgumentException(
-			"Could not find an adaptor for class " + subjectClass.getName() + ".");
-
+			Tapestry.getString("Decorator.adaptor-not-found", subjectClass.getName()));
 	}
 
 	public String toString()

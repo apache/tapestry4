@@ -510,4 +510,16 @@ public final class Tapestry
 		return getString(key, new Object[] { arg1, arg2 });
 	}
 
+	/**
+	 *  Convienience method for invoking {@link #getString(String, Object[])}.
+	 * 
+	 *  @since 1.0.8
+	 * 
+	 **/
+
+	public static String getString(String key, Object arg1, Object arg2, Object arg3)
+	{
+		return getString(key, new Object[] { arg1, arg2, arg3 });
+	}
+
 }

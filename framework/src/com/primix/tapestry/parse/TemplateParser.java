@@ -26,6 +26,7 @@
 
 package com.primix.tapestry.parse;
 
+import com.primix.tapestry.Tapestry;
 import java.util.*;
 
 /**
@@ -316,7 +317,9 @@ public class TemplateParser
 		{
 			if (cursor >= length)
 				throw new TemplateParseException(
-					"Comment on line " + startLine + " did not end.",
+					Tapestry.getString(
+						"TemplateParser.comment-not-ended",
+						Integer.toString(startLine)),
 					startLine,
 					resourcePath);
 
@@ -400,10 +403,13 @@ public class TemplateParser
 		{
 			if (cursor >= length)
 			{
-				String message = tagName == null ? "Tag" : "Tag <" + tagName + ">";
+				String key =
+					(tagName == null)
+						? "TemplateParser.unclosed-unknown-tag"
+						: "TemplateParser.unclosed-tag";
 
 				throw new TemplateParseException(
-					message + " on line " + startLine + " is never closed.",
+					Tapestry.getString(key, tagName, Integer.toString(startLine)),
 					startLine,
 					resourcePath);
 			}
@@ -455,13 +461,9 @@ public class TemplateParser
 
 						if (isJwcTag && !attributeName.equalsIgnoreCase(jwcIdAttributeName))
 							throw new TemplateParseException(
-								"Tag <"
-									+ tagName
-									+ "> on line "
-									+ startLine
-									+ " may only contain attribute '"
-									+ jwcIdAttributeName
-									+ "'.",
+								Tapestry.getString(
+									"TemplateParser.unexpected-attribute",
+									tagName, Integer.toString(startLine), jwcIdAttributeName),
 								startLine,
 								resourcePath);
 
@@ -513,13 +515,9 @@ public class TemplateParser
 
 					if (ch == '/' || ch == '>')
 						throw new TemplateParseException(
-							"Tag <"
-								+ tagName
-								+ "> is missing a value for attribute "
-								+ attributeName
-								+ " on line "
-								+ line
-								+ ".",
+							Tapestry.getString(
+								"TemplateParser.missing-attiribute-value",
+								tagName, Integer.toString(line), attributeName),
 							line,
 							resourcePath);
 
@@ -598,7 +596,10 @@ public class TemplateParser
 
 		if (isJwcTag && jwcId == null)
 			throw new TemplateParseException(
-				"Tag <" + tagName + "> on line " + startLine + " does not specify an id.",
+				Tapestry.getString(
+					"TemplateParser.tag-missing-id",
+					tagName,
+					Integer.toString(startLine)),
 				startLine,
 				resourcePath);
 
@@ -608,21 +609,19 @@ public class TemplateParser
 			{
 				if (ignoring)
 					throw new TemplateParseException(
-						"Tag <"
-							+ tagName
-							+ "> on line "
-							+ startLine
-							+ " is the template content, and may not be in an ignored block.",
+						Tapestry.getString(
+							"TemplateParser.content-block-may-not-be-ignored",
+							tagName,
+							Integer.toString(startLine)),
 						startLine,
 						resourcePath);
 
 				if (emptyTag)
 					throw new TemplateParseException(
-						"Tag <"
-							+ tagName
-							+ "> on line "
-							+ startLine
-							+ " is the template content, and may not be empty.",
+						Tapestry.getString(
+							"TemplateParser.content-block-may-not-be-empty",
+							tagName,
+							Integer.toString(startLine)),
 						startLine,
 						resourcePath);
 
@@ -646,23 +645,18 @@ public class TemplateParser
 
 			if (!(isRemoveId || delegate.getKnownComponent(jwcId)))
 				throw new TemplateParseException(
-					"Tag <"
-						+ tagName
-						+ "> on line "
-						+ startLine
-						+ " references unknown component id '"
-						+ jwcId
-						+ "'.",
+					Tapestry.getString(
+						"TemplateParser.unknown-component-id",
+						tagName, Integer.toString(startLine), jwcId),
 					startLine,
 					resourcePath);
 
 			if (ignoring && !isRemoveId)
 				throw new TemplateParseException(
-					"Tag <"
-						+ tagName
-						+ "> on line "
-						+ startLine
-						+ " is a dynamic component, and may not appear inside an ignored block.",
+					Tapestry.getString(
+						"TemplateParser.component-may-not-be-ignored",
+						tagName,
+						Integer.toString(startLine)),
 					startLine,
 					resourcePath);
 
@@ -674,11 +668,10 @@ public class TemplateParser
 
 			if (ignoring && ignoreBody)
 				throw new TemplateParseException(
-					"Tag <"
-						+ tagName
-						+ "> on line "
-						+ startLine
-						+ " should be ignored, but is already inside an ignored block (ignored blocks may not be nested).",
+					Tapestry.getString(
+						"TemplateParser.nested-ignore",
+						tagName,
+						Integer.toString(startLine)),
 					startLine,
 					resourcePath);
 
@@ -763,7 +756,9 @@ public class TemplateParser
 		{
 			if (cursor >= length)
 				throw new TemplateParseException(
-					"Incomplete close tag on line " + startLine + ".",
+					Tapestry.getString(
+						"TemplateParser.incomplete-close-tag",
+						Integer.toString(startLine)),
 					startLine,
 					resourcePath);
 
@@ -789,15 +784,13 @@ public class TemplateParser
 
 			if (tag.mustBalance)
 				throw new TemplateParseException(
-					"Closing tag </"
-						+ tagName
-						+ "> on line "
-						+ startLine
-						+ " is improperly nested with tag <"
-						+ tag.tagName
-						+ "> on line "
-						+ tag.line
-						+ ".",
+					Tapestry.getString(
+						"TemplateParser.improperly-nested-close-tag",
+						new Object[] {
+							tagName,
+							Integer.toString(startLine),
+							tag.tagName,
+							Integer.toString(tag.line)}),
 					startLine,
 					resourcePath);
 
@@ -806,11 +799,10 @@ public class TemplateParser
 
 		if (stackPos < 0)
 			throw new TemplateParseException(
-				"Closing tag </"
-					+ tagName
-					+ "> on line "
-					+ startLine
-					+ " does not have a matching opening tag.",
+				Tapestry.getString(
+					"TemplateParser.unmatched-close-tag",
+					tagName,
+					Integer.toString(startLine)),
 				startLine,
 				resourcePath);
 

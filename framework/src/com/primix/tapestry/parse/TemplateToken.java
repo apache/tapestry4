@@ -72,7 +72,10 @@ public class TemplateToken
 			|| startIndex > templateData.length
 			|| endIndex > templateData.length)
 			throw new IllegalArgumentException(
-				this +" out of range for template length " + templateData.length + ".");
+				Tapestry.getString(
+					"TemplateToken.range-error",
+					this,
+					Integer.toString(templateData.length)));
 	}
 
 	/**
@@ -140,7 +143,8 @@ public class TemplateToken
 	public IRender getRender()
 	{
 		if (type != TokenType.TEXT)
-			throw new ApplicationRuntimeException(type + " tokens may not render.");
+			throw new ApplicationRuntimeException(
+				Tapestry.getString("TemplateToken.may-not-render", type));
 
 		if (render == null)
 		{

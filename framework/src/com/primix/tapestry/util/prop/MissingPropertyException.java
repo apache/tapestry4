@@ -26,6 +26,8 @@
 
 package com.primix.tapestry.util.prop;
 
+import com.primix.tapestry.Tapestry;
+
 /**
  *  Exception thrown by {@link PropertyHelper} when an propery is specified
  *  which does not exist.
@@ -55,11 +57,10 @@ public class MissingPropertyException extends RuntimeException
 		String propertyName)
 	{
 		super(
-			"Class "
-				+ instance.getClass().getName()
-				+ " does not implement a "
-				+ propertyName
-				+ " property.");
+			Tapestry.getString(
+				"MissingPropertyExcception.message",
+				instance.getClass().getName(),
+				propertyName));
 
 		this.instance = instance;
 		this.propertyName = propertyName;
