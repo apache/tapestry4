@@ -1,0 +1,208 @@
+<!--
+Tbis HTML document provides a base template for Component Reference pages.
+
+* All ??? text should be replaced.
+
+* Examples should illustrate near real world use of the component, see other
+  existing component page examples for formatting and style guidelines.
+  
+* Use Tapestry 2.2 Beta 1+ "expression" binding syntax instead of 
+  "property-path" syntax.
+  
+* Include links to Tapestry Javadoc API where appropriate.
+
+* Include Tapestry Developers Guide multi-page version where appropriate.
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- $Id$ --> 
+<html>
+<head>
+<title>contrib:Table</title>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+
+<body>
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
+ <tr><!-- Previous component in alphabetical order. -->
+  <td align="left"><A href="???.html"><IMG alt=??? src="common-images/prev.png"></a></td>  
+  <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td><!-- Next component in alphabetical order. -->
+  <td align="right"><A href="???.html"><IMG alt=??? src="common-images/next.png"></a></td>  
+ <tr>
+ <tr>
+  <td colspan="3"><hr></td>  
+ </tr>
+ <tr>
+  <td colspan="3">
+   <table border="0" cellpadding="4" cellspacing="4" width="100%">
+
+<tr valign="top">
+ <td>
+  <table>
+   <tr>
+    <td><font size="+2"><b>contrib:Table</b></font></td>
+   </tr>
+   <tr>
+    <td>
+     <A href="../api/net/sf/tapestry/contrib/table/components/Table.html">net.sf.tapestry.contrib.table.components.Table</a>
+    </td>
+   </tr>
+  </table>
+ </td>
+ <td>
+  <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
+   <tr>
+    <td>Visual Component</td>
+   </tr>
+  </table>
+ </td>
+</tr>
+
+<tr valign="center">
+ <td colspan="2">&nbsp;</td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Description</b>
+  <br> 
+  Provides a HTML &lt;table&gt; element. ??? 
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>See Also</b>
+  <br>
+  <A href="contrib.SimpleTableComponent.html">SimpleTableComponent</a>, 
+  <A href="contrib.TableColumns.html">TableColumns</a>, 
+  <A href="contrib.TablePages.html">TablePages</a>,
+  <A href="contrib.TableRows.html">TableRows</a>,
+  <A href="contrib.TableValues.html">TableValues</a>,
+  <A href="contrib.TableView.html">TableView</a>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Parameters</b>
+  <br>
+  <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+   <tr> 
+    <th>Name</th>
+    <th>Type</th>
+    <th>Direction</th>
+    <th>Required</th> 
+    <th>Default</th>
+    <th>Description</th>
+   </tr>
+   <tr>
+    <td>tableModel</td>
+    <td><a href="../api/net/sf/tapestry/contrib/table/model/ITableModel.html"><tt>ITableModel</tt></a></td>
+    <td>in/out</td>
+    <td>yes</td>
+    <td>&nbsp;</td>
+    <td>???</td>
+   </tr>
+   <tr>
+    <td>tableSessionStateManager</td>
+    <td><a href="../api/net/sf/tapestry/contrib/table/model/ITableSessionStateManager.html"><tt>ITableSessionStateManager</tt></a></td>
+    <td>in/out</td>
+    <td>no</td>
+    <td>&nbsp;</td>
+    <td>???</td>
+   </tr>
+   <tr>
+    <td>tableSessionStoreManager</td>
+    <td><a href="../api/net/sf/tapestry/contrib/table/model/ITableSessionStoreManager.html"><tt>ITableSessionStoreManager</tt></a></td>
+    <td>in/out</td>
+    <td>no</td>
+    <td>&nbsp;</td>
+    <td>???</td>
+   </tr>
+   <tr>
+    <td>pagesDisplayed</td>
+    <td>int</td>
+    <td>in/out</td>
+    <td>no</td>
+    <td>&nbsp;</td>
+    <td>???</td>
+   </tr>
+   <tr>
+    <td>arrowUpAsset</td>
+    <td><a href="../api/net/sf/tapestry/IAsset.html"><tt>IAsset</a></td>
+    <td>in</td>
+    <td>no</td>
+    <td>&nbsp;</td>
+    <td>???</td>
+   </tr>
+   <tr>
+    <td>arrowDownAsset</td>
+    <td><a href="../api/net/sf/tapestry/IAsset.html"><tt>IAsset</a></td>
+    <td>in</td>
+    <td>no</td>
+    <td>&nbsp;</td>
+    <td>???</td>
+   </tr>
+   <tr>
+    <td>pagesClass</td>
+    <td>string</td>
+    <td>in/out</td>
+    <td>no</td>
+    <td>&nbsp;</td>
+    <td>???</td>
+   </tr>
+   <tr>
+    <td>columnsClass</td>
+    <td>string</td>
+    <td>in/out</td>
+    <td>no</td>
+    <td>&nbsp;</td>
+    <td>???</td>
+   </tr>
+   <tr>
+    <td>rowsClass</td>
+    <td>string</td>
+    <td>in/out</td>
+    <td>no</td>
+    <td>&nbsp;</td>
+    <td>???</td>
+   </tr>
+   <tr>
+    <td>valuesClass</td>
+    <td>string</td>
+    <td>in/out</td>
+    <td>no</td>
+    <td>&nbsp;</td>
+    <td>???</td>
+   </tr>
+  </table>
+  <P>
+  Body: <STRONG>rendered</STRONG><BR>
+  Informal parameters: <STRONG>allowed</STRONG><br>
+  <!-- component-specification "reserved-parameter" -->
+  Reserved parameters: none 
+  </P>    
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Examples</b>
+  <p>
+  This example is under construction.</p>
+      
+
+ </td></tr></table>
+</td></tr>
+<tr>
+ <td colspan="3"><hr></td>  
+</tr>
+<tr><!-- Previous component in alphabetical order. -->
+ <td align="left"><A href="???.html"><IMG alt=??? src="common-images/prev.png"></a></td>  
+ <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td><!-- Next component in alphabetical order. -->
+ <td align="right"><A href="???.html"><IMG alt=??? src="common-images/next.png"></a></td>  
+</tr>
+</table>
+
+</body>
+</html>
