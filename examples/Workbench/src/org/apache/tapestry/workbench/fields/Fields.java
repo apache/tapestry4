@@ -111,7 +111,7 @@ public class Fields extends BasePage
         // otherwise, stay here and show the error message.
 
         if (!delegate.getHasErrors())
-            cycle.setPage("FieldsResults");
+            cycle.activate("FieldsResults");
     }
 
     public boolean isClientValidationEnabled()

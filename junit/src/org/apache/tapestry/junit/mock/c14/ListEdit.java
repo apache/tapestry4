@@ -145,7 +145,7 @@ public abstract class ListEdit extends BasePage
 		
 		results.setColorMap(getColorMap());
 		
-		cycle.setPage(results);
+		cycle.activate(results);
 	}
 
 }

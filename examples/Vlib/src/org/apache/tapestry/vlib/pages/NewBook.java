@@ -171,8 +171,4 @@ public abstract class NewBook extends Protected implements PageRenderListener
         }
     }
 
-    public void pageEndRender(PageEvent event)
-    {
-    }
-
 }

@@ -99,10 +99,6 @@ public abstract class Border extends BaseComponent implements PageRenderListener
         }
     }
 
-    public void pageEndRender(PageEvent event)
-    {
-    }
-
     /**
      *  Returns the logical names of the pages accessible via the
      *  navigation bar, in appopriate order.
@@ -165,6 +161,6 @@ public abstract class Border extends BaseComponent implements PageRenderListener
 
         visit.setActiveTabName(newPageName);
 
-        cycle.setPage(newPageName);
+        cycle.activate(newPageName);
     }
 }

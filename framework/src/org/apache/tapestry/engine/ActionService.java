@@ -192,18 +192,9 @@ public class ActionService extends AbstractService
                 throw new StaleSessionException();
         }
 
-        // Allow the page to validate that the user is allowed to visit.  This is simple
-        // protection from malicious users who hack the URLs directly, or make inappropriate
-        // use of the back button. 
-
-        // Note that we validate the page that rendered the response which (again, due to
-        // Block/InsertBlock) is not necessarily the page that contains the component.
-
-        page.validate(cycle);
-
         // Setup the page for the rewind, then do the rewind.
 
-        cycle.setPage(page);
+        cycle.activate(page);
         cycle.rewindPage(targetActionId, action);
 
         // During the rewind, a component may change the page.  This will take

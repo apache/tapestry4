@@ -57,6 +57,9 @@ package org.apache.tapestry.vlib;
 
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRedirectException;
+import org.apache.tapestry.event.PageEvent;
+import org.apache.tapestry.event.PageValidateListener;
+import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.vlib.pages.Login;
 
 /**
@@ -70,9 +73,9 @@ import org.apache.tapestry.vlib.pages.Login;
  *
  **/
 
-public abstract class ActivatePage extends Protected implements IActivate
+public abstract class ActivatePage extends Protected implements IActivate, PageValidateListener
 {
-    public void validate(IRequestCycle cycle)
+    public void pageValidate(PageEvent event)
     {
         Visit visit = (Visit) getVisit();
 
@@ -81,7 +84,7 @@ public abstract class ActivatePage extends Protected implements IActivate
 
         // User not logged in ... redirect through the Login page.
 
-        Login login = (Login) cycle.getPage("Login");
+        Login login = (Login) getRequestCycle().getPage("Login");
 
         login.setCallback(new ActivateCallback(this));
 

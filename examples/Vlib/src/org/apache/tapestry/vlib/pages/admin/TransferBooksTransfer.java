@@ -130,7 +130,7 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageRen
 
         setUserBookModel(model);
 
-        cycle.setPage(this);
+        cycle.activate(this);
     }
 
     /**
@@ -159,10 +159,6 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageRen
             toUser = readPerson(getToUserId());
             setToUser(toUser);
         }
-    }
-
-    public void pageEndRender(PageEvent event)
-    {
     }
 
     public void formSubmit(IRequestCycle cycle)
@@ -211,7 +207,7 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageRen
                 Integer.toString(count),
                 fromUser.getNaturalName(),
                 toUser.getNaturalName()));
-        cycle.setPage(selectPage);
+        cycle.activate(selectPage);
     }
 
     private IPropertySelectionModel buildUserBookModel(Person user)

@@ -97,14 +97,9 @@ public class HomeService extends AbstractService
         ResponseOutputStream output)
         throws ServletException, IOException
     {
-
         IPage home = cycle.getPage(IEngine.HOME_PAGE);
 
-        home.validate(cycle);
-
-        // If it validates, then render it.
-
-        cycle.setPage(home);
+        cycle.activate(home);
 
         engine.renderResponse(cycle, output);
 

@@ -118,10 +118,6 @@ public abstract class EditUsers extends AdminPage implements PageRenderListener
         setupListEditMap();
     }
 
-    public void pageEndRender(PageEvent event)
-    {
-    }
-
     private void setupListEditMap()
     {
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();

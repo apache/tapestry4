@@ -93,6 +93,6 @@ public abstract class Home extends BasePage
 		page.setDisabled(getDisabled());
 		page.setHidden(getHidden());
 		
-		cycle.setPage(page);
+		cycle.activate(page);
 	}
 }

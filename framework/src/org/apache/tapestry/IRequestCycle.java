@@ -228,6 +228,8 @@ public interface IRequestCycle
      *  Sets the page to be rendered.  This is called by a component
      *  during the rewind phase to specify an alternate page to render
      *  during the response phase.
+     * 
+     *  @deprecated To be removed in 3.1.  Use {@link #activate(IPage)}.
      *
      **/
 
@@ -238,6 +240,8 @@ public interface IRequestCycle
      *  during the rewind phase to specify an alternate page to render
      *  during the response phase.
      *
+     * @deprecated To be removed in 3.1.  Use {@link #activate(String)}.
+     * 
      **/
 
     public void setPage(String name);
@@ -283,7 +287,7 @@ public interface IRequestCycle
      **/
 
     public void discardPage(String name);
-    
+
     /**
      *  Invoked by a {@link IEngineService service} to store an array of application-specific parameters.
      *  These can later be retrieved (typically, by an application-specific listener method)
@@ -296,9 +300,9 @@ public interface IRequestCycle
      *  @since 2.0.3
      * 
      **/
-    
+
     public void setServiceParameters(Object[] parameters);
-    
+
     /**
      *  Returns parameters previously stored by {@link #setServiceParameters(Object[])}.
      * 
@@ -309,35 +313,42 @@ public interface IRequestCycle
      *  @since 2.0.3
      * 
      **/
-    
+
     public Object[] getServiceParameters();
-    
-    
+
     /**
-     *  Sets the page to be rendered.  This is called by a component
-     *  during the rewind phase to specify an alternate page to render
-     *  during the response phase.
-     * 
-     *  The validate() method of the page is invoked first and if it throws
-     *  a PageRedirectException, the page provided by the exception is set instead.
-	 *
-	 *  @since 3.0
+     *  A convienience for invoking {@link #activate(IPage)}.  Invokes
+     *  {@link #getPage(String)} to get an instance of the named page.
+     *
+     *  @since 3.0
      *  
      **/
 
     public void activate(String name);
 
     /**
-     *  Sets the page to be rendered.  This is called by a component
-     *  during the rewind phase to specify an alternate page to render
-     *  during the response phase.
+     *  Sets the active page for the request.  The active page is the page
+     *  which will ultimately render the response.  The activate page
+     *  is typically set by the {@link IEngineService service}.  Frequently,
+     *  the active page is changed (from a listener method) to choose 
+     *  an alternate page to render the response).
      * 
-     *  The validate() method of the page is invoked first and if it throws
-     *  a PageRedirectException, the page provided by the exception is set instead.
-     *
+     *  <p>
+     *  {@link IPage#validate(IRequestCycle)} is invoked on the
+     *  page to be activated.  {@link PageRedirectException} is caught
+     *  and the page specified in the exception will be the
+     *  active page instead (that is, a page may "pass the baton" to another
+     *  page using the exception).  The new page is also validated.  This
+     *  continues until a page does not throw {@link PageRedirectException}.
+     *  
+     *  <p>
+     *  Validation loops can occur, where page A redirects to page B and then page B
+     *  redirects back to page A (possibly with intermediate steps).  This is detected and results
+     *  in an {@link ApplicationRuntimeException}.
+     * 
      *  @since 3.0
      *  
-	 */
-	public void activate(IPage page);
-    
+     */
+    public void activate(IPage page);
+
 }

@@ -197,8 +197,7 @@ public class ExternalService extends AbstractService
 
         cycle.setServiceParameters(parameters);
 
-        page.validate(cycle);
-        cycle.setPage(page);
+        cycle.activate(page);
 
         page.activateExternalPage(parameters, cycle);
 

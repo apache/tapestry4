@@ -80,7 +80,7 @@ public abstract class Home extends Deck
         Result deck = (Result) cycle.getPage("Result");
         deck.setU(getU());
         deck.setL(getL());
-        cycle.setPage(deck);
+        cycle.activate(deck);
     }
 
     public abstract String getU();

@@ -65,6 +65,6 @@ public class Four extends TestSelect
 		
 		result.setMessage("Second form triggered.");
 		
-		cycle.setPage(result);
+		cycle.activate(result);
 	}
 }

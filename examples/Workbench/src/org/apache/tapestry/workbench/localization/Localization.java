@@ -75,7 +75,7 @@ public class Localization extends BasePage
 
 	public void formSubmit(IRequestCycle cycle)
 	{
-		cycle.setPage("LocalizationChange");
+		cycle.activate("LocalizationChange");
 	}
 
 	public IPropertySelectionModel getLocaleModel()

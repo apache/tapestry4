@@ -143,9 +143,4 @@ public abstract class ViewBook extends BasePage implements IExternalPage, PageRe
             readBook();
     }
 
-    public void pageEndRender(PageEvent event)
-    {
-
-    }
-
 }

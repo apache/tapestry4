@@ -467,7 +467,7 @@ public abstract class AbstractEngine
 
             setProperty(exceptionPage, "exception", cause);
 
-            cycle.setPage(exceptionPage);
+            cycle.activate(exceptionPage);
 
             renderResponse(cycle, output);
 
@@ -700,7 +700,7 @@ public abstract class AbstractEngine
 
         IPage page = cycle.getPage(pageName);
 
-        cycle.setPage(page);
+        cycle.activate(page);
 
         renderResponse(cycle, out);
     }

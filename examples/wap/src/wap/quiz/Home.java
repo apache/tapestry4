@@ -92,7 +92,7 @@ public abstract class Home extends Deck
         Quiz quizDeck = (Quiz) cycle.getPage("Quiz");
         quizDeck.setQuestionNumber(0);
         quizDeck.fetch();
-        cycle.setPage(quizDeck);
+        cycle.activate(quizDeck);
 	}
 	
 	public abstract String getUsername();

@@ -70,7 +70,7 @@ public abstract class Home extends Deck {
 	{
         Hello helloDeck = (Hello) cycle.getPage("Hello");
         helloDeck.setUsername(getUsername());
-		cycle.setPage(helloDeck);
+		cycle.activate(helloDeck);
 	}
 	
 	public abstract String getUsername();

@@ -245,7 +245,7 @@ public abstract class Border extends BaseComponent
         ICallback callback = new PageCallback(getPage().getPageName());
         Login loginPage = (Login) cycle.getPage("Login");
         loginPage.setCallback(callback);
-        cycle.setPage(loginPage);
+        cycle.activate(loginPage);
     }
 
     public void logout(IRequestCycle cycle)
@@ -258,7 +258,7 @@ public abstract class Border extends BaseComponent
 
         home.setMessage(getString("goodbye"));
 
-        cycle.setPage(home);
+        cycle.activate(home);
     }
 
     public void selectBrowserPage(IRequestCycle cycle)

@@ -203,7 +203,7 @@ public abstract class Login extends BasePage implements IErrorProperty, PageRend
         ICallback callback = getCallback();
 
         if (callback == null)
-            cycle.setPage("Home");
+            cycle.activate("Home");
         else
             callback.performCallback(cycle);
 
@@ -226,10 +226,6 @@ public abstract class Login extends BasePage implements IErrorProperty, PageRend
     {
         if (getEmail() == null)
             setEmail(getRequestCycle().getRequestContext().getCookieValue(COOKIE_NAME));
-    }
-
-    public void pageEndRender(PageEvent event)
-    {
     }
 
 }

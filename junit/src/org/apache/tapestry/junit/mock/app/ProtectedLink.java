@@ -83,13 +83,13 @@ public class ProtectedLink extends BasePage
         {
             ICallback callback = new DirectCallback((IDirect)getComponent("link"), parameters);
             guard.setCallback(callback);
-            cycle.setPage(guard);
+            cycle.activate(guard);
             return;
         }
         
         ProtectedLinkResult page = (ProtectedLinkResult)cycle.getPage("ProtectedLinkResult");
         page.setParameters(parameters);
         
-        cycle.setPage(page);
+        cycle.activate(page);
     }
 }

@@ -103,7 +103,7 @@ public abstract class BorrowedBooks
 	{
 		runQuery();
 		
-		cycle.setPage(this);
+		cycle.activate(this);
 	}
 
 	/**

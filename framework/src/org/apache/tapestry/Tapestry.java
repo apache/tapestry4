@@ -338,6 +338,23 @@ public final class Tapestry
     public static final String MULTIPART_DECODER_EXTENSION_NAME =
         "org.apache.tapestry.multipart-decoder";
 
+	/**
+	 * Method id used to check that {@link IPage#validate(IRequestCycle)}
+	 * is invoked.
+	 * @see #checkMethodInvocation(Object, String, Object)
+	 * @since 3.0
+	 */
+	
+	public static final String IPAGE_VALIDATE_METHOD_ID = "IPage.validate()";
+
+	/**
+	 * Method id used to check that {@link IPage#detach()} is invoked.
+	 * @see #checkMethodInvocation(Object, String, Object)
+	 * @since 3.0
+	 */
+	
+	public static final String IPAGE_DETACH_METHOD_ID = "IPage.detach()";
+
     /**
      *  Prevent instantiation.
      *
@@ -379,6 +396,12 @@ public final class Tapestry
             _localeMap.put(locales[i].toString(), locales[i]);
         }
     }
+
+    /**
+     *  Used for tracking if a particular super-class method has been invoked.
+     */
+
+    private static final ThreadLocal _invokedMethodIds = new ThreadLocal();
 
     /**
      *  A {@link org.apache.tapestry.util.AdaptorRegistry} used to coerce arbitrary objects
@@ -1211,7 +1234,9 @@ public final class Tapestry
     {
         return new ApplicationRuntimeException(
             getString("no-such-component", component.getExtendedId(), id),
-            component, location, null);
+            component,
+            location,
+            null);
     }
 
     /** @since 3.0 **/
@@ -1236,5 +1261,70 @@ public final class Tapestry
         return new ApplicationRuntimeException(
             getString("render-only-property", propertyName, component.getExtendedId()),
             component);
+    }
+
+    /**
+     * Clears the list of method invocations.
+     * @see #checkMethodInvocation(Object, String, Object)
+     * 
+     * @since 3.0
+     */
+
+    public static void clearMethodInvocations()
+    {
+        _invokedMethodIds.set(null);
+    }
+
+	/**
+	 * Adds a method invocation to the list of invocations. This is done
+	 * in a super-class implementations.  
+	 * 
+	 * @see #checkMethodInvocation(Object, String, Object)
+	 * @since 3.0
+	 * 
+	 */
+	
+    public static void addMethodInvocation(Object methodId)
+    {
+        List methodIds = (List) _invokedMethodIds.get();
+
+        if (methodIds == null)
+        {
+            methodIds = new ArrayList();
+            _invokedMethodIds.set(methodIds);
+        }
+
+        methodIds.add(methodId);
+    }
+
+    /**
+     * Checks to see if a particular method has been invoked.  The method is identified by a
+     * methodId (usually a String).  The methodName and object are used to create an
+     * error message.
+     * 
+     * <p>
+     * The caller should invoke {@link #clearMethodInvocations()}, then invoke a method on 
+     * the object.  The super-class implementation should invoke {@link #addMethodInvocation(Object)}
+     * to indicate that it was, in fact, invoked.  The caller then invokes
+     * this method to vlaidate that the super-class implementation was invoked.
+     * 
+     * <p>
+     * The list of method invocations is stored in a {@link ThreadLocal} variable.
+     * 
+     * @since 3.0
+     */
+    
+    public static void checkMethodInvocation(Object methodId, String methodName, Object object)
+    {
+        List methodIds = (List) _invokedMethodIds.get();
+
+        if (methodIds != null && methodIds.contains(methodId))
+            return;
+
+        throw new ApplicationRuntimeException(
+            Tapestry.getString(
+                "Tapestry.missing-method-invocation",
+                object.getClass().getName(),
+                methodName));
     }
 }

@@ -137,7 +137,7 @@ public abstract class EditProfile extends ActivatePage implements PageRenderList
         attributes.remove("password");
         setAttributes(attributes);
 
-        cycle.setPage(this);
+        cycle.activate(this);
     }
 
     public void updateProfile(IRequestCycle cycle)
@@ -220,10 +220,6 @@ public abstract class EditProfile extends ActivatePage implements PageRenderList
     {
         if (getAttributes() == null)
             setAttributes(new HashMap());
-    }
-
-    public void pageEndRender(PageEvent event)
-    {
     }
 
 }

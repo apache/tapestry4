@@ -101,6 +101,6 @@ public class Register extends BasePage
         RegisterConfirm page = (RegisterConfirm)cycle.getPage("RegisterConfirm");
         
         page.setUser(user);
-        cycle.setPage(page);
+        cycle.activate(page);
     }
 }

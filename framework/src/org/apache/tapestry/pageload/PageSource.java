@@ -60,6 +60,7 @@ import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceResolver;
+import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IMonitor;
 import org.apache.tapestry.engine.IPageSource;
 import org.apache.tapestry.resolver.PageSpecificationResolver;
@@ -255,7 +256,11 @@ public class PageSource implements IPageSource
 
     public void releasePage(IPage page)
     {
+    	Tapestry.clearMethodInvocations();
+    	
         page.detach();
+        
+        Tapestry.checkMethodInvocation(Tapestry.IPAGE_DETACH_METHOD_ID, "detach()", page);
 
         _pool.store(buildKey(page), page);
     }

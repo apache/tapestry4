@@ -247,11 +247,6 @@ public abstract class GiveAwayBooks extends Protected implements PageRenderListe
 
     }
 
-    public void pageEndRender(PageEvent event)
-    {
-
-    }
-
     public void validate(IRequestCycle cycle)
     {
         super.validate(cycle);

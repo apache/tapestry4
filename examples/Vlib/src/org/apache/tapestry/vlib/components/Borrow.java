@@ -157,7 +157,7 @@ public abstract class Borrow extends BaseComponent
             }
         }
 
-        cycle.setPage(home);
+        cycle.activate(home);
     }
 
 }

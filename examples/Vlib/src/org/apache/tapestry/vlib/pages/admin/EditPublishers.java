@@ -201,8 +201,4 @@ public abstract class EditPublishers extends AdminPage implements PageRenderList
         readPublishers();
     }
 
-    public void pageEndRender(PageEvent event)
-    {
-    }
-
 }

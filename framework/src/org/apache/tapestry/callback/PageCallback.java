@@ -143,13 +143,13 @@ public class PageCallback implements ICallback
     }
 
     /**
-     *  Invokes {@link IRequestCycle#setPage(String)} to select the previously
+     *  Invokes {@link IRequestCycle#activate(String)} to select the previously
      *  identified page as the response page.
      *
      **/
 
     public void performCallback(IRequestCycle cycle)
     {
-        cycle.setPage(_pageName);
+        cycle.activate(_pageName);
     }
 }

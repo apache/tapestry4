@@ -115,7 +115,7 @@ public abstract class MyLibrary
     {
         runQuery();
 
-        cycle.setPage(this);
+        cycle.activate(this);
     }
 
     public void requery(IRequestCycle cycle)
