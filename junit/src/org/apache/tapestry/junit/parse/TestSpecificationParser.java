@@ -66,6 +66,26 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
+     * Tests the new style &lt;binding&gt; element in 3.1 DTD.
+     */
+
+    public void testBinding31() throws Exception
+    {
+        IComponentSpecification spec = parseComponent("Binding31.jwc");
+        IContainedComponent cc = spec.getComponent("component");
+
+        IBindingSpecification bs = cc.getBinding("simple");
+
+        assertEquals(BindingType.PREFIXED, bs.getType());
+        assertEquals("message:some-key", bs.getValue());
+
+        bs = cc.getBinding("enclosed");
+
+        assertEquals(BindingType.PREFIXED, bs.getType());
+        assertEquals("ognl:zip.zap.zoop", bs.getValue());
+    }
+
+    /**
      * Test valid parameter name.
      * 
      * @since 2.2
@@ -782,7 +802,6 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     * 
      * Check that &lt;service&gt; elements are ignored properly.
      * 
      * @since 3.1
@@ -794,6 +813,6 @@ public class TestSpecificationParser extends TapestryTestCase
 
         parseLib("ServiceElement.library");
 
-        assertLoggedMessagePattern("The <service> element is no longer supported");        
+        assertLoggedMessagePattern("The <service> element is no longer supported");
     }
 }

@@ -27,6 +27,9 @@ The following changes have occured:
 - The <service> element has been removed; it was used to define engine services, which
   is now accomplished using the HiveMind tapestry.services.ApplicationServices
   configuration point.
+- The <static-binding>, <inherited-binding> and <message-binding> elements have been removed.
+  There is now just <binding>, whose value attribute contains a prefix to interpret how
+  the remainder of the value is interpreted (no prefix meaning a literal, or static, value).
 
 -->
 <!-- =======================================================
@@ -102,20 +105,20 @@ newly instantiated beans, and beans that are retrieved from a pool.
 Element: binding
 Appears in: component
 
-Binds a parameter of the component to a OGNL expression, relative
-to its container.  The expression may be provided as an attribute, or 
-as the body of the element.  The latter case is useful when the 
-expression is long, or uses problematic characters (such as a 
-mix of single and double quotes).
+Binds a parameter of the component to a value. The value may
+be literal, an OGNL expression, or something else, as
+determined by its prefix. The value attribute is optional,
+if not provided, the enclosed character data is the value
+(but it is not allowed to specify both value and character data).
 
 Attributes:
   name: The name of the component parameter to bind.
-  expression: The OGNL expression.
+  value The value to bind to the parameter.
 -->
 <!ELEMENT binding (#PCDATA)>
 <!ATTLIST binding
 	name CDATA #REQUIRED
-	expression CDATA #IMPLIED
+	value CDATA #IMPLIED
 >
 <!-- =======================================================
 Element: configure
@@ -152,7 +155,7 @@ Attribute:
 
 The Tapestry page loader ensures that either type or copy-of is specified, but not both.
 -->
-<!ELEMENT component (property*, (binding | inherited-binding | listener-binding | static-binding | message-binding)*)>
+<!ELEMENT component (property*, (binding | listener-binding)*)>
 <!ATTLIST component
 	id ID #REQUIRED
 	type CDATA #IMPLIED
@@ -256,22 +259,6 @@ Attributes:
 <!ATTLIST external-asset
 	name CDATA #REQUIRED
 	URL CDATA #REQUIRED
->
-<!-- =======================================================
-Element: inherited-binding
-Appears in: component
-
-Binds a parameter of the component to a parameter of the container.
-
-Attributes:
-  name: The name of the component parameter to bind.
-  parameter-name: The name of the container parameter to bind the
-    component parameter to.
--->
-<!ELEMENT inherited-binding EMPTY>
-<!ATTLIST inherited-binding
-	name CDATA #REQUIRED
-	parameter-name CDATA #REQUIRED
 >
 <!-- =======================================================
 Element: library
@@ -489,38 +476,4 @@ Attributes:
 	name CDATA #REQUIRED
 	key CDATA #REQUIRED
 >
-<!-- =======================================================
-Element: static-binding
-Appears in: component
 
-Binds a parameter of the component to a static value defined directly
-within this specification. The value either the value ttribute, or
-the PCDATA wrapped by the element (with leading and trailing whitespace removed).
-
-Attributes:
-  name: The name of the component parameter to bind.
-  value: The value of the binding.  If not specied, the PCDATA wrapped
-    by the element is the binding.
--->
-<!ELEMENT static-binding (#PCDATA)>
-<!ATTLIST static-binding
-	name CDATA #REQUIRED
-	value CDATA #IMPLIED
->
-<!-- =======================================================
-Element: message-binding
-Appears in: component
-
-Binds a parameter of the component to a localized message of
-its container.
-
-Attributes:
-  name: The name of the component parameter to bind.
-  key: The key used to access a localized string.
-  
--->
-<!ELEMENT message-binding EMPTY>
-<!ATTLIST message-binding
-	name CDATA #REQUIRED
-	key CDATA #REQUIRED
->

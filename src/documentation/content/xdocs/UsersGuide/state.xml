@@ -216,7 +216,6 @@ as a &lt;init-parameter&gt; in the web deployment descriptor (web.xml).
 </p>
 
 <source><![CDATA[
-<![CDATA[
 <application name="My Application">
   <property name="org.apache.tapestry.visit-class" value="mypackage.MyVisit"/>
 

@@ -281,8 +281,7 @@ the component with new ids.
 		
 <p>
 Component parameters may always be specified in the page or component 
-specification, using the
-&spec.binding;, &spec.static-binding; and &spec.message-binding; elements. Prior to Tapestry 3.0, that
+specification, using the &spec.binding; element. Prior to Tapestry 3.0, that
 was the only way ... but with 3.0, it is possible to specify parameters directly within the
 HTML template.
 </p>	
@@ -290,23 +289,25 @@ HTML template.
 <p>
 Using either style of component (declared or implicit), parameters of the component may be <em>bound</em>
 by adding attributes to the tag.
-Most attributes bind parameters to a static (unchanging) value, equivalent to using
-the &spec.static-binding; element in the specification. Static bindings are just the
-literal text, the attribute value from the HTML template.
+Most attributes bind parameters to a literal value, the exact value provided in the attribute.
 </p>
 
 <p>
 Prefixing an attribute value with <code>ognl:</code>	 indicates that the value
-is really an &OGNL; expression, equivalent to using the &spec.binding; element in the specification.
+is really an &OGNL; expression.
 </p>
 
 <p>
-Finally, prefixing an attribute value with <code>message:</code> indicates that the value
-is really a key used to get a localized message, equivalent to the &spec.message-binding; element
-in the specification. Every page, and every component, is allowed to have its own set of messages (stored
+Prefixing an attribute value with <code>message:</code> indicates that the value
+is really a key used to obtain a localized message. 
+Every page, and every component, is allowed to have its own set of messages (stored
 in a set of .properties files), and the <code>message:</code> prefix allows access
 to the localized messages stored in the files.
 </p>
+
+<note>
+Additional prefixes will be available in Tapestry 3.1, and it will also be possible to define your own prefixes.
+</note>
 
 <section>
 <title>Seperation of Concerns</title>	
@@ -448,8 +449,7 @@ MyComponent_fr.properties.
 
 <p>
 As we've seen, it is possible to access the messages for a page or component using the
-<code>message:</code>	 prefix on a component parameter (or use
-the &spec.message-binding; element in a page or component specification).
+<code>message:</code>	 prefix on a component parameter.
 </p>
 
 <p>

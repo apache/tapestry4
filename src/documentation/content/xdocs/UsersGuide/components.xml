@@ -277,7 +277,7 @@ common components that update their parameters are form control components such 
 </p>
 
 <p>
-Because bindings are in the form of &OGNL; expressions, the property bound to a component parameter
+Because bindings are often in the form of &OGNL; expressions, the property bound to a component parameter
 may not directly be a property of the page ... using a property sequence allows great flexibility.	
 </p>
 
@@ -293,12 +293,9 @@ name property using the OGNL expression lineItem.product.name.
 
 
 <p>
-Not all parameter bindings are writable. So far, the examples have been for parameters bound using
-the &spec.binding; specification element (or the equivalent use of the ognl:	prefix
-in an HTML template).  <em>Invariant bindings</em> are also possible--these are bindings directly to fixed
-values that never change and can't be updated.  The &spec.static-binding; element is invariant; it's
-HTML template equivalent is a attribute with no prefix. Likewise, the
-&spec.message-binding; element, and the message: prefix on an attribute, are invariant.
+Not all parameter bindings are writable. OGNL expressions may be writeable, if the expression
+identifies a property that is itself writeable. Other types of bindings, such as message bindings
+(the message: prefix), or literal bindings (no prefix) are read only.
 </p>
 	
 <section id="components.parameters.bindings">
@@ -324,7 +321,7 @@ page. The result is that cast or otherwise coerced to a type useful to the compo
 <p>
 Updating a parameter is the same way, except that the method is
 <code>setObject()</code>. Most of the implementations of &IBinding; (those for literal strings
-and localize messages), will throw an exception immediately, since they are invariant.
+and localized messages), will throw an exception immediately, since they are invariant.
 </p>
 
 <figure alt="Updating a parameter" src="&imageroot;/write-binding.png"/>
