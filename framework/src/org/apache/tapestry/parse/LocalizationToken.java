@@ -84,7 +84,7 @@ public class LocalizationToken extends TemplateToken
      *  @param tag the tag of the element from the template
      *  @param key the localization key specified
      *  @param raw if true, then the localized value contains markup that should not be escaped
-     *  @param attribute any additional attributes (beyond those used to define key and raw)
+     *  @param attributes any additional attributes (beyond those used to define key and raw)
      *  that were specified.  This value is retained, not copied.
      *  @param location location of the tag which defines this token
      * 

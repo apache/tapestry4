@@ -90,7 +90,7 @@ public class JanitorThread extends Thread
     private static JanitorThread shared = null;
 
     /**
-     *  A {@link List} of {@link WeakReference}s to {@link IJanitor} instances.
+     *  A {@link List} of {@link WeakReference}s to {@link ICleanable} instances.
      *
      **/
 
@@ -151,7 +151,7 @@ public class JanitorThread extends Thread
     /**
      *  Updates the property, then interrupts the thread.
      *
-     *  @param the interval, in milliseconds, between sweeps.
+     *  @param value the interval, in milliseconds, between sweeps.
      *
      *  @throws IllegalStateException always, if the receiver is the shared JanitorThread
      *  @throws IllegalArgumentException if value is less than 1

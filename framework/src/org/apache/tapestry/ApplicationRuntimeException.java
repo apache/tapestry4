@@ -59,7 +59,7 @@ package org.apache.tapestry;
  *  General wrapper for any exception (normal or runtime) that may occur during
  *  runtime processing for the application.  This is exception is used
  *  when the intent is to communicate a low-level failure to the user or
- *  developer; it is not expected to be caught.  The {@link #getRootCause() rootCause}
+ *  developer; it is not expected to be caught.  The {@link #getCause() rootCause}
  *  property is a <em>nested</em> exception (Tapestry supported this concept
  *  long before the JDK did).
  *

@@ -85,7 +85,7 @@ public class ValidatorException extends Exception
      *  Creates a new instance.
      *  @param errorMessage the default error message to be used (this may be
      *  overriden by the {@link IValidationDelegate})
-     *  @param renderer to use to render the error message (may be null) 
+     *  @param errorRenderer to use to render the error message (may be null)
      *  @param constraint a validation constraint that has been compromised, or
      *  null if no constraint is applicable
      * 
