@@ -5,41 +5,9 @@
   
 <script>
 
-<input-symbol key="dateField" class="net.sf.tapestry.form.TextField" required="yes"/>
-<input-symbol key="popupButton" class="net.sf.tapestry.form.Button" required="yes"/>
-<input-symbol key="dateHidden" class="net.sf.tapestry.form.Hidden" required="yes"/>
+<include-script resource-path="/net/sf/tapestry/form/DatePicker.js"/>
 
-<let key="formName"> 
-  ${dateField.form.name}
-</let>
-
-<let key="popupFunctionName"> 
-  onClick_${popupButton.name}
-</let>
-
-<let key="hideFunctionName"> 
-  onClick_${dateField.name}
-</let>
-
-<body>
-function ${popupFunctionName}() 
-{
-    // See Calendar.js  
-    showPopCalendar(document.${formName}.${dateField.name}, 
-                    document.${formName}.${dateHidden.name}, 
-                    document.getElementById("popCal"));        
-} 
-function ${hideFunctionName}() 
-{
-    // See Calendar.js  
-    hidePopCalendar();
-}
-</body>
-
-<initialization>
-document.${formName}.${popupButton.name}.onclick = ${popupFunctionName};
-document.${formName}.${dateField.name}.onclick = ${hideFunctionName};
-</initialization>
+<body/>
 
 </script>
 
