@@ -16,13 +16,9 @@ package org.apache.tapestry.services.impl;
 
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.hivemind.ClassResolver;
-import org.apache.hivemind.ErrorLog;
-import org.apache.hivemind.order.Orderer;
 import org.apache.hivemind.service.ClassFactory;
 import org.apache.tapestry.enhance.EnhancedClassValidator;
 import org.apache.tapestry.enhance.EnhancementOperationImpl;
@@ -42,17 +38,13 @@ import org.apache.tapestry.spec.IComponentSpecification;
 public class ComponentConstructorFactoryImpl implements ComponentConstructorFactory,
         ResetEventListener
 {
-    private ErrorLog _errorLog;
-
     private ClassFactory _classFactory;
 
     private ClassResolver _classResolver;
 
-    private List _contributions;
-
-    private List _workers;
-
     private EnhancedClassValidator _validator;
+
+    private EnhancementWorker _chain;
 
     /**
      * Map of {@link org.apache.tapestry.services.ComponentConstructor}keyed on
@@ -64,21 +56,6 @@ public class ComponentConstructorFactoryImpl implements ComponentConstructorFact
     public void resetEventDidOccur()
     {
         _cachedConstructors.clear();
-    }
-
-    public void initializeService()
-    {
-        Orderer orderer = new Orderer(_errorLog, "worker");
-
-        Iterator i = _contributions.iterator();
-        while (i.hasNext())
-        {
-            EnhancementWorkerContribution c = (EnhancementWorkerContribution) i.next();
-
-            orderer.add(c.getWorker(), c.getId(), c.getAfter(), c.getBefore());
-        }
-
-        _workers = orderer.getOrderedObjects();
     }
 
     public ComponentConstructor getComponentConstructor(IComponentSpecification specification,
@@ -93,13 +70,10 @@ public class ComponentConstructorFactoryImpl implements ComponentConstructorFact
             EnhancementOperationImpl eo = new EnhancementOperationImpl(_classResolver,
                     specification, baseClass, _classFactory);
 
-            Iterator i = _workers.iterator();
-            while (i.hasNext())
-            {
-                EnhancementWorker w = (EnhancementWorker) i.next();
+            // Invoking on the chain is the same as invoking on every
+            // object in the chain (because performEnhancement is type void).
 
-                w.performEnhancement(eo);
-            }
+            _chain.performEnhancement(eo);
 
             result = eo.getConstructor();
 
@@ -126,18 +100,13 @@ public class ComponentConstructorFactoryImpl implements ComponentConstructorFact
         _classResolver = classResolver;
     }
 
-    public void setContributions(List contributions)
-    {
-        _contributions = contributions;
-    }
-
     public void setValidator(EnhancedClassValidator validator)
     {
         _validator = validator;
     }
 
-    public void setErrorLog(ErrorLog errorLog)
+    public void setChain(EnhancementWorker chain)
     {
-        _errorLog = errorLog;
+        _chain = chain;
     }
 }
