@@ -304,6 +304,34 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 		return result;
 	}
 
+	/** 
+	 * 
+	 *  Gets the page recorder from the loadedRecorders cache, or from the engine
+	 *  (putting it into loadedRecorders).  If the recorder does not yet exist,
+	 *  it is created.
+	 * 
+	 *  @see IEngine#createPageRecorder(String, IRequestCycle)
+	 *  @since 2.0.3
+	 * 
+	 **/
+
+	private IPageRecorder createPageRecorder(String name)
+	{
+		IPageRecorder result = getPageRecorder(name);
+
+		if (result == null)
+		{
+			result = engine.createPageRecorder(name, this);
+
+			if (loadedRecorders == null)
+				loadedRecorders = new HashMap();
+
+			loadedRecorders.put(name, result);
+		}
+
+		return result;
+	}
+
 	public RequestContext getRequestContext()
 	{
 		return requestContext;
@@ -633,13 +661,12 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 		if (CAT.isDebugEnabled())
 			CAT.debug("Observed change in page " + pageName + "; creating page recorder.");
 
-		IPageRecorder recorder = getPageRecorder(pageName);
-         
+		IPageRecorder recorder = createPageRecorder(pageName);
+
 		page.setChangeObserver(recorder);
 
 		recorder.observeChange(event);
 	}
-
 
 	/**
 	 *  Finds the page and its page recorder, creating the page recorder if necessary.
@@ -656,9 +683,9 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 
 	public void discardPage(String name)
 	{
-        if (CAT.isDebugEnabled())
-            CAT.debug("Discarding page " + name);
-            
+		if (CAT.isDebugEnabled())
+			CAT.debug("Discarding page " + name);
+
 		IPageRecorder recorder = engine.getPageRecorder(name);
 
 		if (recorder == null)
@@ -666,7 +693,7 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 
 			page = getPage(name);
 
-			recorder = engine.createPageRecorder(name, this);
+			recorder = createPageRecorder(name);
 
 			page.setChangeObserver(recorder);
 		}
