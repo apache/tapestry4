@@ -477,7 +477,8 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
 
             assembly = buildBasePersonQuery();
             assembly.newLine("WHERE ");
-            assembly.addParameter("PERSON_ID = ?", primaryKey);
+            assembly.add("PERSON_ID = ");
+            assembly.addParameter(primaryKey);
             assembly.newLine("ORDER BY LAST_NAME, FIRST_NAME");
 
             statement = assembly.createStatement(connection);
@@ -571,7 +572,8 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
 
             assembly = buildBaseBookQuery();
             assembly.addSep(" AND ");
-            assembly.addParameter("book.BOOK_ID = ?", primaryKey);
+            assembly.add("book.BOOK_ID = ");
+            assembly.addParameter(primaryKey);
 
             statement = assembly.createStatement(connection);
 
@@ -791,9 +793,9 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
 
         assembly.add("UPDATE BOOK");
         assembly.newLine("SET OWNER_ID = ");
-        assembly.add(adminPK);
+        assembly.addParameter(adminPK);
         assembly.newLine("WHERE OWNER_ID IN (");
-        assembly.addList(deleted, ", ");
+        assembly.addParameterList(deleted, ", ");
         assembly.add(")");
 
         Connection connection = null;
@@ -927,7 +929,8 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
 
         assembly.addSep(" AND LOWER(");
         assembly.add(column);
-        assembly.addParameter(") LIKE ?", "%" + trimmed.toLowerCase() + "%");
+        assembly.add(") LIKE");
+        assembly.addParameter("%" + trimmed.toLowerCase() + "%");
     }
 
     /**
@@ -1127,7 +1130,8 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
             assembly.newLine("FROM PERSON");
             assembly.newLine("WHERE ");
 
-            assembly.addParameter("LOWER  (EMAIL) = ?", trimmedEmail);
+            assembly.add("LOWER(EMAIL) = ");
+            assembly.addParameter(trimmedEmail);
 
             statement = assembly.createStatement(connection);
             set = statement.executeQuery();
@@ -1142,9 +1146,11 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
             assembly.newLine("FROM PERSON");
             assembly.newLine("WHERE ");
 
-            assembly.addParameter("LOWER (FIRST_NAME) = ?", trimmedFirstName);
+            assembly.add("LOWER(FIRST_NAME) = ");
+            assembly.addParameter(trimmedFirstName);
             assembly.addSep(" AND ");
-            assembly.addParameter("LOWER (LAST_NAME) = ?", trimmedLastName);
+            assembly.add("LOWER(LAST_NAME) = ");
+            assembly.addParameter(trimmedLastName);
 
             statement = assembly.createStatement(connection);
             set = statement.executeQuery();

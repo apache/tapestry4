@@ -1,28 +1,3 @@
-//
-// Tapestry Web Application Framework
-// Copyright (c) 2000-2002 by Howard Lewis Ship
-//
-// Howard Lewis Ship
-// http://sf.net/projects/tapestry
-// mailto:hship@users.sf.net
-//
-// This library is free software.
-//
-// You may redistribute it and/or modify it under the terms of the GNU
-// Lesser General Public License as published by the Free Software Foundation.
-//
-// Version 2.1 of the license should be included with this distribution in
-// the file LICENSE, as well as License.html. If the license is not
-// included with this distribution, you may find a copy at the FSF web
-// site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
-// Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
-//
-// This library is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied waranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-// Lesser General Public License for more details.
-//
-
 package net.sf.tapestry.contrib.jdbc;
 
 import java.sql.Connection;
@@ -31,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  *  A wrapper around {@link PreparedStatement}.
@@ -42,50 +20,34 @@ import java.util.List;
 
 public class ParameterizedStatement implements IStatement
 {
-    private String SQL;
-    private PreparedStatement statement;
-    private Object[] parameters;
+    private static final Log LOG = LogFactory.getLog(ParameterizedStatement.class);
 
-    public ParameterizedStatement(
-        String SQL,
-        Connection connection,
-        List parameters)
-        throws SQLException
+    private String _SQL;
+    private PreparedStatement _statement;
+    private IParameter[] _parameters;
+
+    /**
+     *  Create a new instance; the parameters list is copied.
+     * 
+     *  @param SQL the SQL to execute (see {@link Connection#prepareStatement(java.lang.String)})
+     *  @param connection the JDBC connection to use
+     *  @param parameters list of {@link IParameter}
+     * 
+     **/
+    
+    public ParameterizedStatement(String SQL, Connection connection, List parameters) throws SQLException
     {
-        this.SQL = SQL;
+        _SQL = SQL;
 
-        statement = connection.prepareStatement(SQL);
+        _statement = connection.prepareStatement(SQL);
 
-        setupParameters(parameters);
-    }
+        _parameters = (IParameter[]) parameters.toArray(new IParameter[parameters.size()]);
 
-    /** @since 1.0.7 **/
-
-    public ParameterizedStatement(
-        String SQL,
-        Connection connection,
-        List parameters,
-        int resultSetType,
-        int resultSetConcurrency)
-        throws SQLException
-    {
-        this.SQL = SQL;
-
-        statement =
-            connection.prepareStatement(SQL, resultSetType, resultSetConcurrency);
-
-        setupParameters(parameters);
-    }
-
-    private void setupParameters(List list) throws SQLException
-    {
-        int i;
-
-        parameters = (Object[]) list.toArray();
-
-        for (i = 0; i < parameters.length; i++)
+        for (int i = 0; i < _parameters.length; i++)
         {
-            statement.setObject(i + 1, parameters[i]);
+            // JDBC numbers things from 1, not 0.
+
+            _parameters[i].set(_statement, i + 1);
         }
     }
 
@@ -96,7 +58,7 @@ public class ParameterizedStatement implements IStatement
 
     public String getSQL()
     {
-        return SQL;
+        return _SQL;
     }
 
     /**
@@ -106,7 +68,7 @@ public class ParameterizedStatement implements IStatement
 
     public Statement getStatement()
     {
-        return statement;
+        return _statement;
     }
 
     /**
@@ -116,10 +78,10 @@ public class ParameterizedStatement implements IStatement
 
     public void close() throws SQLException
     {
-        statement.close();
+        _statement.close();
 
-        statement = null;
-        SQL = null;
+        _statement = null;
+        _SQL = null;
     }
 
     /**
@@ -129,7 +91,10 @@ public class ParameterizedStatement implements IStatement
 
     public ResultSet executeQuery() throws SQLException
     {
-        return statement.executeQuery();
+        if (LOG.isDebugEnabled())
+            LOG.debug("Executing query: " + this);
+
+        return _statement.executeQuery();
     }
 
     /**
@@ -140,38 +105,29 @@ public class ParameterizedStatement implements IStatement
 
     public int executeUpdate() throws SQLException
     {
-        return statement.executeUpdate();
+        if (LOG.isDebugEnabled())
+            LOG.debug("Executing update: " + this);
+
+        return _statement.executeUpdate();
     }
 
     public String toString()
     {
-        StringBuffer buffer;
-        int i;
-        Object parameter;
-
-        buffer = new StringBuffer(super.toString());
-
+        StringBuffer buffer = new StringBuffer("ParameterizedStatement@");
+        buffer.append(Integer.toHexString(hashCode()));
         buffer.append("[SQL=\n<");
-        buffer.append(SQL);
+        buffer.append(_SQL);
         buffer.append("\n>");
 
-        for (i = 0; i < parameters.length; i++)
+        for (int i = 0; i < _parameters.length; i++)
         {
-            parameter = parameters[i];
+            IParameter parameter = _parameters[i];
 
             buffer.append(" ?");
             buffer.append(i + 1);
             buffer.append('=');
 
-            if (parameter == null)
-                buffer.append("null");
-            else
-            {
-                buffer.append('(');
-                buffer.append(parameter.getClass().getName());
-                buffer.append(") ");
-                buffer.append(parameter);
-            }
+            buffer.append(parameter);
         }
 
         buffer.append(']');
