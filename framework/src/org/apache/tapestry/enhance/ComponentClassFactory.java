@@ -218,8 +218,15 @@ public class ComponentClassFactory
         {
             try
             {
-
-                result = _resolver.findClass(type);
+                String typeName = type;
+                
+                // if it is an array name reformat it in the way Java expects it
+                if (type.endsWith("[]")) {
+                    String className = type.substring(0, type.length() - 2);
+                    typeName = "[L" + className + ";"; 
+                }
+            
+                result = _resolver.findClass(typeName);
             }
             catch (Exception ex)
             {
@@ -228,7 +235,7 @@ public class ComponentClassFactory
                     location,
                     ex);
             }
-
+            
             _classMapping.recordType(type, result);
         }
 
