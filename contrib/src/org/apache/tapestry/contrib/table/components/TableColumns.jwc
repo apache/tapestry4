@@ -18,7 +18,8 @@
 	<parameter name="element" 
 		type="java.lang.String" 
 		required="no"
-		direction="custom"/>
+		direction="auto"
+    	default-value="'th'"/>
 
 	<parameter name="arrowUpAsset" 
 		type="org.apache.tapestry.IAsset" 

@@ -64,8 +64,6 @@ import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.apache.tapestry.contrib.table.model.ITableColumnModel;
-import org.apache.tapestry.event.PageDetachListener;
-import org.apache.tapestry.event.PageEvent;
 
 /**
  * A low level Table component that renders the column headers in the table.
@@ -130,7 +128,7 @@ import org.apache.tapestry.event.PageEvent;
  * @version $Id$
  *
  */
-public class TableColumns extends AbstractTableViewComponent implements PageDetachListener
+public abstract class TableColumns extends AbstractTableViewComponent
 {
     public static final String TABLE_COLUMN_ARROW_UP_ATTRIBUTE = 
         "org.apache.tapestry.contrib.table.components.TableColumns.arrowUp";
@@ -138,35 +136,15 @@ public class TableColumns extends AbstractTableViewComponent implements PageDeta
     public static final String TABLE_COLUMN_ARROW_DOWN_ATTRIBUTE = 
         "org.apache.tapestry.contrib.table.components.TableColumns.arrowDown";
     
-    // Bindings (custom)
-    private IBinding m_objColumnBinding = null;
-    private IBinding m_objElementBinding = null;
-
-    // Bindings (in)
-    private IAsset m_objArrowUpAsset;
-    private IAsset m_objArrowDownAsset;
-
 	// Transient
 	private ITableColumn m_objTableColumn;
 
-    public TableColumns()
-    {
-        initialize();
-    }
+    // Bindings
+    public abstract IBinding getColumnBinding();
+    public abstract String getElement();
+    public abstract IAsset getArrowDownAsset();
+    public abstract IAsset getArrowUpAsset();
 
-    /**
-	 * @see org.apache.tapestry.event.PageDetachListener#pageDetached(PageEvent)
-	 */
-	public void pageDetached(PageEvent event)
-	{
-        initialize();
-	}
-    
-    protected void initialize()
-    {
-        m_objArrowUpAsset = null;
-        m_objArrowDownAsset = null;
-    }
 
 	public Iterator getTableColumnIterator()
 	{
@@ -203,93 +181,6 @@ public class TableColumns extends AbstractTableViewComponent implements PageDeta
 			getPage().getRequestCycle(),
 			getTableModelSource());
 	}
-
-    /**
-     * Returns the valueBinding.
-     * @return IBinding
-     */
-    public IBinding getColumnBinding()
-    {
-        return m_objColumnBinding;
-    }
-
-    /**
-     * Sets the valueBinding.
-     * @param valueBinding The valueBinding to set
-     */
-    public void setColumnBinding(IBinding valueBinding)
-    {
-        m_objColumnBinding = valueBinding;
-    }
-
-    /**
-     * Returns the elementBinding.
-     * @return IBinding
-     */
-    public IBinding getElementBinding()
-    {
-        return m_objElementBinding;
-    }
-
-    /**
-     * Sets the elementBinding.
-     * @param elementBinding The elementBinding to set
-     */
-    public void setElementBinding(IBinding elementBinding)
-    {
-        m_objElementBinding = elementBinding;
-    }
-
-    /**
-     * Returns the element.
-     * @return String
-     */
-    public String getElement()
-    {
-        IBinding objElementBinding = getElementBinding();
-        if (objElementBinding == null || objElementBinding.getObject() == null)
-            return "th";
-        return objElementBinding.getString();
-    }
-
-	/**
-	 * Returns the arrowDownAsset.
-	 * @return IAsset
-	 */
-	public IAsset getArrowDownAsset()
-	{
-		return m_objArrowDownAsset;
-	}
-
-	/**
-	 * Returns the arrowUpAsset.
-	 * @return IAsset
-	 */
-	public IAsset getArrowUpAsset()
-	{
-		return m_objArrowUpAsset;
-	}
-
-	/**
-	 * Sets the asset to use to render an image describing a column 
-     * sorted in a descending order.
-	 * @param arrowDownAsset The asset of a 'down' arrow image
-	 */
-	public void setArrowDownAsset(IAsset arrowDownAsset)
-	{
-		m_objArrowDownAsset = arrowDownAsset;
-	}
-
-	/**
-     * Sets the asset to use to render an image describing a column 
-     * sorted in an ascending order.
-	 * @param arrowUpAsset The asset of an 'up' arrow image
-	 */
-	public void setArrowUpAsset(IAsset arrowUpAsset)
-	{
-		m_objArrowUpAsset = arrowUpAsset;
-	}
-
 
     /**
 	 * @see org.apache.tapestry.BaseComponent#renderComponent(IMarkupWriter, IRequestCycle)

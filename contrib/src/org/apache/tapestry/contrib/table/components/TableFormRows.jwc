@@ -34,6 +34,6 @@
 	</component>
 
     <property-specification name="convertedValues" type="java.util.Map" initial-value="new java.util.HashMap()"/>
-    <property-specification name="convertorCache" type="org.apache.tapestry.contrib.table.model.IPrimaryKeyConvertor" initial-value="convertor"/>
+    <property-specification name="convertorCache" type="org.apache.tapestry.contrib.table.model.IPrimaryKeyConvertor" initial-value="null"/>
       
 </component-specification>
