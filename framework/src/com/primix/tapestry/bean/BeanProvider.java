@@ -39,7 +39,7 @@ import org.apache.log4j.*;
  *  @author Howard Ship
  *  @version $Id$
  *  @since 1.0.4
- */
+ **/
 
 public class BeanProvider implements IBeanProvider, PageDetachListener
 {
@@ -50,35 +50,36 @@ public class BeanProvider implements IBeanProvider, PageDetachListener
 	 *  page as a PageDetachListener.  Registration only occurs
 	 *  the first time a bean with lifecycle REQUEST is instantiated.
 	 *
-	 */
+	 **/
 
 	private boolean registered = false;
 
 	/**
 	 *  The component for which beans are being created and tracked.
 	 *
-	 */
+	 **/
 
 	private IComponent component;
 
 	/**
 	 *  Used for instantiating classes.
 	 *
-	 */
+	 **/
 
 	private IResourceResolver resolver;
 
 	/**
 	 *  The {@link Pool}, acquired from the {@link IEngine}.
 	 *
-	 */
+     *  @de
+	 **/
 
 	private Pool helperBeanPool;
 
 	/**
 	 *  Map of beans, keyed on name.
 	 *
-	 */
+	 **/
 
 	private Map beans;
 
@@ -105,7 +106,7 @@ public class BeanProvider implements IBeanProvider, PageDetachListener
 	/**
 	 *  @since 1.0.5
 	 *
-	 */
+	 **/
 
 	public IComponent getComponent()
 	{
@@ -222,7 +223,7 @@ public class BeanProvider implements IBeanProvider, PageDetachListener
 	 *  beans implement {@link IPoolable} they are stored into
 	 *  the {@link IEngine}'s helper pool.
 	 *
-	 */
+	 **/
 
 	public void pageDetached(PageEvent event)
 	{

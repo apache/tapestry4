@@ -56,6 +56,7 @@ public class DefaultScriptSource implements IScriptSource
 
 	private static final String PARSER_KEY = "parser";
 
+    /** @deprecated **/
 	private Pool parserPool = new Pool();
 	private Map cache;
 
