@@ -18,6 +18,7 @@ import java.lang.reflect.Modifier;
 
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.event.PageEvent;
@@ -126,4 +127,62 @@ public class EnhanceUtils
         return propertyType == null ? Object.class : propertyType;
     }
 
+    // The following methods are actually invoked from fabricated methods in
+    // enhanced classes.
+
+    public static boolean toBoolean(IBinding binding)
+    {
+        Boolean wrapped = (Boolean) binding.getObject(Boolean.class);
+
+        return wrapped.booleanValue();
+    }
+
+    public static byte toByte(IBinding binding)
+    {
+        Byte wrapped = (Byte) binding.getObject(Byte.class);
+
+        return wrapped.byteValue();
+    }
+
+    public static char toChar(IBinding binding)
+    {
+        Character wrapped = (Character) binding.getObject(Character.class);
+
+        return wrapped.charValue();
+    }
+
+    public static short toShort(IBinding binding)
+    {
+        Short wrapped = (Short) binding.getObject(Short.class);
+
+        return wrapped.shortValue();
+    }
+
+    public static int toInt(IBinding binding)
+    {
+        Integer wrapped = (Integer) binding.getObject(Integer.class);
+
+        return wrapped.intValue();
+    }
+
+    public static long toLong(IBinding binding)
+    {
+        Long wrapped = (Long) binding.getObject(Long.class);
+
+        return wrapped.longValue();
+    }
+
+    public static float toFloat(IBinding binding)
+    {
+        Float wrapped = (Float) binding.getObject(Float.class);
+
+        return wrapped.floatValue();
+    }
+
+    public static double toDouble(IBinding binding)
+    {
+        Double wrapped = (Double) binding.getObject(Double.class);
+
+        return wrapped.doubleValue();
+    }
 }

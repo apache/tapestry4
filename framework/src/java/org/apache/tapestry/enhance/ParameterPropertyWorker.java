@@ -48,14 +48,14 @@ public class ParameterPropertyWorker implements EnhancementWorker
     private Map _unwrappers = new HashMap();
 
     {
-        _unwrappers.put(boolean.class, "((Boolean) binding.getObject({0})).booleanValue();");
-        _unwrappers.put(byte.class, "((Byte) binding.getObject({0})).byteValue();");
-        _unwrappers.put(char.class, "((Character) binding.getObject({0})).charValue();");
-        _unwrappers.put(short.class, "((Short) binding.getObject({0})).shortValue();");
-        _unwrappers.put(int.class, "((Integer) binding.getObject({0})).intValue();");
-        _unwrappers.put(long.class, "((Long) binding.getObject({0})).longValue();");
-        _unwrappers.put(float.class, "((Float) binding.getObject({0})).floatValue();");
-        _unwrappers.put(double.class, "((Double) binding.getObject({0})).doubleValue();");
+        _unwrappers.put(boolean.class, "toBoolean");
+        _unwrappers.put(byte.class, "toByte");
+        _unwrappers.put(char.class, "toChar");
+        _unwrappers.put(short.class, "toShort");
+        _unwrappers.put(int.class, "toInt");
+        _unwrappers.put(long.class, "toLong");
+        _unwrappers.put(float.class, "toFloat");
+        _unwrappers.put(double.class, "toDouble");
     }
 
     public void performEnhancement(EnhancementOperation op, IComponentSpecification spec)
@@ -237,8 +237,6 @@ public class ParameterPropertyWorker implements EnhancementWorker
 
         builder.addln("if (binding == null) return {0};", defaultFieldName);
 
-        String propertyTypeRef = op.getClassReference(propertyType);
-
         String javaTypeName = ClassFabUtils.getJavaClassName(propertyType);
 
         builder.add("{0} result = ", javaTypeName);
@@ -246,9 +244,16 @@ public class ParameterPropertyWorker implements EnhancementWorker
         String unwrapper = (String) _unwrappers.get(propertyType);
 
         if (unwrapper == null)
+        {
+            String propertyTypeRef = op.getClassReference(propertyType);
             builder.addln("({0}) binding.getObject({1});", javaTypeName, propertyTypeRef);
+        }
         else
-            builder.addln(unwrapper, propertyTypeRef);
+        {
+            String expression = EnhanceUtils.class.getName() + "." + unwrapper + "(binding);";
+
+            builder.addln(expression);
+        }
 
         // Values read via the binding are cached during the render of
         // the component, or when the binding is invariant
