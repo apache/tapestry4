@@ -1,6 +1,7 @@
 * Nov 7 2000 hship
 
 Convert the Vlib demo over to using Jetty.
+Delete the old "blue border" demo.
 
 * Nov 1 2000 hship
 
