@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<!-- $Id -->
+<!-- $Id$ -->
    <!DOCTYPE wml PUBLIC "-//WAPFORUM//DTD WML 1.2//EN"
    "http://www.wapforum.org/DTD/wml12.dtd">
 
@@ -37,18 +37,21 @@
             <br/>
             Your name:
             <input jwcid="userInput" name="username" title="Your name" value=""/>
-            <br/>
+        </p>
+        <p>
             Difficulty:
             <b jwcid="selectLevel"/>
-            <br/>
+        </p>
+        <p>
             <do type="help" label="Instructions">
                 <go href="#help"/>
             </do>
             <do type="options" label="Zoo home">
                 <go jwcid="@ServiceLink" service="ognl:@org.apache.tapestry.Tapestry@HOME_SERVICE" renderer="ognl:@org.apache.tapestry.wml.GoLinkRenderer@SHARED_INSTANCE" href=""/>
             </do>
-            <br/>
-            <anchor title="Start">Start
+        </p>
+        <p>
+           <anchor title="Start">Start
                 <go jwcid="go">
                     <postfield jwcid="username" name="username" value="username"/>
                     <postfield jwcid="level" name="level" value="level"/>
@@ -73,4 +76,3 @@
     </card>
 
 </wml>
-
