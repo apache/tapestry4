@@ -48,25 +48,27 @@
 <tr>
           <td colspan="2"> 
             <p><b>Description</b> <br>
-              The Choose component is used in conjunction with When and Otherwise 
-              components to express mutually exclusive conditional tests. <br>
+              The contrib:Choose component is used in conjunction with contrib:When 
+              and contrib:Otherwise components to express mutually exclusive conditional 
+              tests. <br>
               <br>
-              The Choose component must contain one or more When componets and 
-              can contain only one optional Otherwise component (which must occur 
-              after all of the When components). If the Choose component only 
-              contains one When element, then for all practical purposes, it behaves 
-              just like the Conditional component. When faced with three or more 
-              choices, this component behaves like a switch/case/default statement. 
-              
-            <p>Each When component is examined in the order of occurrence. If 
-              and when the condition expression is satisfied the content in that 
-              component is rendered. Then all further When components are ignored. 
-              The optional Otherwise component is also automatically ignored. 
-              If none of the conditions in any When component is satisfied , then 
-              the Otherwise component is automatically selected (if it is present) 
-              and the content associated with that element is rendered.</p>
-			  The body of the Choose component can only contain:
-			  <ul>
+              The contrib:Choose component must contain one or more contrib:When 
+              components and can contain only one optional contrib:Otherwise component 
+              (which must occur after all of the contrib:When components). If 
+              the contrib:Choose component only contains one contrib:When element, 
+              then for all practical purposes, it behaves just like the Conditional 
+              component. When faced with three or more choices, this component 
+              behaves like a switch/case/default statement. 
+            <p>Each contrib:When component is examined in the order of occurrence. 
+              If and when the condition expression is satisfied the content in 
+              that component is rendered. Then all further contrib:When components 
+              are ignored. The optional contrib:Otherwise component is also automatically 
+              ignored. If none of the conditions in any contrib:When component 
+              is satisfied , then the contrib:Otherwise component is automatically 
+              selected (if it is present) and the content associated with that 
+              element is rendered.</p>
+			  The body of the contrib:Choose component can only contain: 
+            <ul>
 			  <li>White spaces<br>May appear anywhere around the When and Otherwise components.</li>
 			  <li>1 or more When components<br>Must all appear before Otherwise.</li>
 			  <li>0 or 1 Otherwise component<br>Must be the last component nested within Choose</li>
@@ -81,8 +83,8 @@
  <td colspan="2">
   <b>See Also</b>
   <br>
-            <A href="Conditional.html">Conditional</a>, <A href="contrib.When.html">When</a>, 
-            <A href="contrib.Otherwise.html">Otherwise</a> </td>
+            <A href="Conditional.html">Conditional</a>, <A href="contrib.When.html">contrib:When</a>, 
+            <A href="contrib.Otherwise.html">contrib:Otherwise</a> </td>
 </tr>
 
 <tr>
@@ -108,24 +110,24 @@
               on a user&#146;s membership category. 
             <pre>
 
-              &lt;span jwcid=&quot;contrib:Choose&gt;
-                 &lt;span jwcid=&quot;@contrib:When&quot; condition='ognl:&quot;visitor&quot;.equals(user.category)'&gt;
+              &lt;span jwcid=&quot;@<a href="contrib.Choose.html">contrib:Choose</a>&gt;
+                 &lt;span jwcid=&quot;@<a href="contrib.When.html">contrib:When</a>&quot; condition='ognl:&quot;visitor&quot;.equals(user.category)'&gt;
                     ...
                  &lt;/span&gt;
-                 &lt;span jwcid=&quot;@contrib:When&quot; condition='ognl:&quot;member&quot;.equals(user.category)'&gt;
+                 &lt;span jwcid=&quot;@<a href="contrib.When.html">contrib:When</a>&quot; condition='ognl:&quot;member&quot;.equals(user.category)'&gt;
                     ...
                  &lt;/span&gt;
-                 &lt;span jwcid=&quot;@contrib:When&quot; condition='ognl:&quot;customer&quot;.equals(user.category)'&gt;
-                    &lt;span jwcid=&quot;contrib:Choose&gt;
-                       &lt;span jwcid=&quot;@contrib:When&quot; condition='ognl:&quot;person&quot;.equals(user.profile)'&gt;
+                 &lt;span jwcid=&quot;@<a href="contrib.When.html">contrib:When</a>&quot; condition='ognl:&quot;customer&quot;.equals(user.category)'&gt;
+                    &lt;span jwcid=&quot;@<a href="contrib.Choose.html">contrib:Choose</a>&gt;
+                       &lt;span jwcid=&quot;@<a href="contrib.When.html">contrib:When</a>&quot; condition='ognl:&quot;person&quot;.equals(user.profile)'&gt;
                           ...
                        &lt;/span&gt;
-                       &lt;span jwcid=&quot;@contrib:When&quot; condition='ognl:&quot;enterprise&quot;.equals(user.profile)'&gt;
+                       &lt;span jwcid=&quot;@<a href="contrib.When.html">contrib:When</a>&quot; condition='ognl:&quot;enterprise&quot;.equals(user.profile)'&gt;
                           ...
                        &lt;/span&gt;
                     &lt;/span&gt;
                  &lt;/span&gt;
-                 &lt;span jwcid=&quot;@contrib:Otherwise&quot;&gt;
+                 &lt;span jwcid=&quot;@<a href="contrib.Otherwise.html">contrib:Otherwise</a>&quot;&gt;
                     ...
                  &lt;/span&gt;
               &lt;/span&gt;
@@ -133,12 +135,12 @@
             An if/then/else statement can be easily achieved as follows: 
             <pre>
 			
-              &lt;span jwcid=&quot;@contrib:Choose&quot;&gt;
-                 &lt;span jwcid=&quot;@contrib:When&quot; condition=&quot;ognl: count == 0&quot;&gt;
+              &lt;span jwcid=&quot;@<a href="contrib.Choose.html">contrib:Choose</a>&quot;&gt;
+                 &lt;span jwcid=&quot;@<a href="contrib.When.html">contrib:When</a>&quot; condition=&quot;ognl: count == 0&quot;&gt;
                     Your search did not match any documents.
                  &lt;/span&gt;
-                 &lt;span jwcid=&quot;@contrib:Otherwise&quot;&gt;
-                    &lt;span jwcid=&quot;@Insert&quot; value=&quot;ognl: count&quot;/&gt; documents matched your selection.
+                 &lt;span jwcid=&quot;@<a href="contrib.Otherwise.html">contrib:Otherwise</a>&quot;&gt;
+                    &lt;span jwcid=&quot;@Insert&quot; value=&quot;ognl: count&quot;&gt;51&lt;/span&gt;&amp;nbsp;documents matched your selection.
                  &lt;/span&gt;
               &lt;/span&gt;
 			  </pre> 
