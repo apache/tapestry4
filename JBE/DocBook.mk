@@ -39,6 +39,7 @@ HTML_DIR := html
 
 DOCUMENT_RESOURCE_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/document-resources
 HTML_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/html
+VALID_PARSE_STAMP_FILE := $(SYS_BUILD_DIR_NAME)/valid-parse
 
 RTF_OUTPUT_FILE := $(addsuffix .rtf,$(basename $(MAIN_DOCUMENT)))
 
@@ -70,6 +71,22 @@ SGML_CATALOG_FILES := \
 	$(DOCBOOK_DSSSL_DIR)/catalog \
 	$(DOCBOOK_OPENJADE_DIR)/dsssl/catalog
 
+CATALOG_OPT := $(foreach cat,$(SGML_CATALOG_FILES),-c $(cat))
+
+# This rule validates the document when it (or any component) changes.
+# We use the open NSGMLs parsed distributed with OpenJade.  The -s
+# option suppresses the normal output (though errors will still be generated).
+#
+# Note: use of this rule has been disabled because ONSGMLS can't seem to
+# produce valid error messages (in the 1.3 release).  To be investigated.
+#
+
+$(VALID_PARSE_STAMP_FILE): initialize $(MAIN_DOCUMENT) $(OTHER_DOC_FILES)
+	$(call NOTE, "Validating $(MAIN_DOCUMENT) ...")
+	$(ONSGMLS) $(CATALOG_OPT) -s $(MAIN_DOCUMENT)
+	@$(TOUCH) $@
+
+
 MOD_HTML_VARIABLE_DEFS := \
 	%html-ext%=.html \
 	use-output-dir \
@@ -96,7 +113,7 @@ FINAL_HTML_STYLESHEET := \
 RUN_OPENJADE = \
 	$(OPENJADE) -t $(1) -d $(2) $(OPENJADE_OPT) $(4) \
 	$(foreach vardef,$(3),-V $(vardef)) \
-	$(foreach cat,$(SGML_CATALOG_FILES),-c $(cat)) \
+	$(CATALOG_OPT) \
 	$(MAIN_DOCUMENT)
 
 # -t sgml-raw:  This is voodoo black magic.  sgml and sgml-raw both work
