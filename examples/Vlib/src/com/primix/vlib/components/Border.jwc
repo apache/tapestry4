@@ -142,5 +142,9 @@
 			<id>wrapped</id>
 			<type>InsertWrapped</type>
 		</component>
+		<component>
+			<id>showInspector</id>
+			<type>ShowInspector</type>
+		</component>
 	</components>
 </specification>
