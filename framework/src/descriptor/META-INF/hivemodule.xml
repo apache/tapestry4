@@ -83,7 +83,7 @@
         <set-service property="containerResponse" service-id="tapestry.globals.ContainerResponse"/>
         <set-service property="componentPropertySource" service-id="tapestry.props.ComponentPropertySource"/>
         <set-object property="applicationId" value="service-property:tapestry.globals.ApplicationGlobals:servletName"/>
-        <set-object property="context" value="service-property:tapestry.globals.ApplicationGlobals:context"/>
+        <set-object property="context" value="service-property:tapestry.globals.ApplicationGlobals:containerContext"/>
       </construct>
     </invoke-factory>
     

@@ -14,13 +14,13 @@
 
 package org.apache.tapestry.services.impl;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Resource;
-import org.apache.hivemind.util.ContextResource;
+import org.apache.tapestry.container.ContainerContext;
+import org.apache.tapestry.container.ContainerContextResource;
 import org.apache.tapestry.container.ContainerRequest;
 import org.apache.tapestry.container.ContainerResponse;
 import org.apache.tapestry.engine.IPageSource;
@@ -90,7 +90,7 @@ public class InfrastructureImpl implements Infrastructure
 
     private HttpServletResponse _response;
 
-    private ServletContext _context;
+    private ContainerContext _context;
 
     private String _applicationId;
 
@@ -306,14 +306,14 @@ public class InfrastructureImpl implements Infrastructure
         _applicationId = applicationId;
     }
 
-    public void setContext(ServletContext context)
+    public void setContext(ContainerContext context)
     {
         _context = context;
     }
 
     public Resource getContextRoot()
     {
-        return new ContextResource(_context, "/");
+        return new ContainerContextResource(_context, "/");
     }
 
     public IPropertySource getGlobalPropertySource()

@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.container;
 
+import java.net.URL;
+
 /**
  * A representation of a set of servlets (or portlets) packaged together as a web application
  * archive. Attributes stored within the context are global to all 'lets (but not distributed across
@@ -23,5 +25,10 @@ package org.apache.tapestry.container;
  */
 public interface ContainerContext extends AttributeHolder, InitializationParameterHolder
 {
+    /**
+     * Returns a URL to the resource that is mapped to a specified path. The path must begin with a
+     * "/" and is interpreted as relative to the current context root.
+     */
 
+    public URL getResource(String path);
 }

@@ -18,6 +18,7 @@ import org.apache.hivemind.impl.MessageFormatter;
 
 /**
  * @author Howard M. Lewis Ship
+ * @since 3.1
  */
 class ContainerMessages
 {
@@ -27,5 +28,10 @@ class ContainerMessages
     public static String streamOpenError(String contentType, Throwable cause)
     {
         return _formatter.format("stream-open-error", contentType, cause);
+    }
+
+    public static String errorGettingResource(String path, Throwable ex)
+    {
+        return _formatter.format("error-getting-resource", path, ex);
     }
 }
