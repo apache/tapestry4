@@ -43,8 +43,8 @@
  </td>
 </tr>
 
-<tr valign="middle">
- <td colspan="2">&nbsp;</td>
+<tr>
+ <td colspan="2"><hr></td>
 </tr>
 
 <tr>
@@ -131,7 +131,10 @@
     <a href="../api/net/sf/tapestry/IMarkupWriter.html#printRaw(java.lang.String)">
     <tt>IMarkupWriter.printRaw(String)</tt></a> is used, rather than 
     <a href="../api/net/sf/tapestry/IMarkupWriter.html#print(java.lang.String)">
-    <tt>IMarkupWriter.print(String)</tt></a>.		
+    <tt>IMarkupWriter.print(String)</tt></a>.
+    
+    <p>This bypasses the normal safeguards and is used when the value
+    to insert contains HTML markup that should be emitted as is.		
     </td>
 	</tr>
 	</table>		
@@ -160,9 +163,9 @@ The order was due on the &lt;span jwcid="<span class="jwcid">insertDueDate</span
 
 
 &lt;component id="<span class="jwcid">insertDueDate</span>" type="<a href="Insert.html">Insert</a>"&gt;
-    &lt;binding name="value" expression="dueDate"/&gt;
+    &lt;binding name="value" property-path="dueDate"/&gt;
     &lt;field-binding name="format" field-name="EnquiryPage.DATE_FORMAT"/&gt;
-    &lt;binding name="class" expression="dueClass"/&gt;
+    &lt;binding name="class" property-path="dueClass"/&gt;
 &lt;/component&gt;
 
 
@@ -183,16 +186,28 @@ public class EnquiryPage extends BasePage {
     }    
 }
 </pre>
+ </td>
+</tr>
 
- </td></tr></table>
-</td></tr>
 <tr>
- <td colspan="3"><hr></td>  
+ <td colspan="2"><hr></td>  
 </tr>
 <tr>
- <td align="left"><a href="ImageSubmit.html"><img src="common-images/prev.png" alt="ImageSubmit"/></a></td>  
- <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
- <td align="right"><a href="InsertBlock.html"><img src="common-images/next.png" alt="InsertBlock"/></a></td>  
+ <td colspan="2">
+  <table width="100%">
+   <tr>
+    <td align="left">
+     <a href="InsertImage.html"><img src="common-images/prev.png" alt="Previous"/></a>
+    </td>  
+    <td align="center">
+     <a href="index.html"><img src="common-images/home.png" alt="Home"/></a>
+    </td>  
+    <td align="right">
+     <a href="InsertBlock.html"><img src="common-images/next.png" alt="Next"/></a>
+    </td>  
+   <tr>
+  </table>
+ </td>
 </tr>
 </table>
 

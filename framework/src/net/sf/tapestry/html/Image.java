@@ -39,38 +39,7 @@ import net.sf.tapestry.RequiredParameterException;
  *  {@link Rollover} class, which integrates a link with the image assets
  *  used with the button.
  *
- * <table border=1>
- * <tr> 
- *    <td>Parameter</td>
- *    <td>Type</td>
- *	  <td>Direction</td>
- *    <td>Required</td> 
- *    <td>Default</td>
- *    <td>Description</td>
- * </tr>
- *
- *  <tr>
- *    <td>image</td>
- *    <td>{@link IAsset}</td>
- *    <td>in</td>
- *   	<td>yes</td>
- *		<td>&nbsp;</td>
- *		<td>The image to show.</td>
- *	</tr>
- *
- *
- * <tr>
- *		<td>border</td>
- *		<td>int</td>
- *		<td>in</td>
- *		<td>no</td>
- *		<td>0</td>
- *		<td>Corresponds to the HTML <code>border</code> attribute.</td>
- * </tr>
- *
- * </table>
- *
- * <p>Informal parameters are allowed.  A body is not allowed.
+ *  [<a href="../../../../../ComponentReference/Image.html">Component Reference</a>]
  *
  *
  *  @author Howard Lewis Ship
@@ -80,18 +49,12 @@ import net.sf.tapestry.RequiredParameterException;
 
 public class Image extends AbstractComponent
 {
-	private IAsset image;
-	private int border;
+	private IAsset _image;
+	private int _border;
 
     /**
      *  Renders the &lt;img&gt; element.
      *
-     * <table border=1>
-     * <tr> <th>attribute</th>  <th>value</th> </tr>
-     * <tr> <td>src</td> <td>from <code>image</code> property</td> </tr>
-     * <tr> <td>border</td> <td>from <code>border</td> property, or 0 if not
-     *		specified </td> </tr>
-     * </table>
      *
      **/
 
@@ -108,7 +71,7 @@ public class Image extends AbstractComponent
         if (cycle.isRewinding())
             return;
 
-        imageURL = image.buildURL(cycle);
+        imageURL = _image.buildURL(cycle);
 
         writer.beginEmpty("img");
 
@@ -124,22 +87,22 @@ public class Image extends AbstractComponent
 
     public int getBorder()
     {
-        return border;
+        return _border;
     }
 
     public void setBorder(int border)
     {
-        this.border = border;
+        _border = border;
     }
 
     public IAsset getImage()
     {
-        return image;
+        return _image;
     }
 
     public void setImage(IAsset image)
     {
-        this.image = image;
+        _image = image;
     }
 
 }

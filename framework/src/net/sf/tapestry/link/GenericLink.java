@@ -34,36 +34,7 @@ import net.sf.tapestry.RequestCycleException;
  *  the exact HREF to be specified, usually used for client side
  *  scripting.  
  * 
- * <table border=1>
- * <tr> <th>Parameter</th> <th>Type</th> <th>Read / Write </th> <th>Required</th> <th>Default</th> <th>Description</th>
- * </tr>
- *
- *
- * <tr>
- *   <td>disabled</td> 
- *   <td>boolean</td> 
- *   <td>in</td> 
- *   <td>no</td> 
- *   <td>false</td>
- *   <td>Controls whether the link is produced.  If disabled, the portion of the template
- *  the link surrounds is still rendered, but not the link itself.
- *  </td></tr>
- *
- *
- *  <tr>
- *   <td>href</td>
- *   <td>{@link String}
- *   <td>in</td>
- *   <td>yes</td>
- *   <td>&nbsp;</td>
- *   <td>The exact URL to invoked; typically of the form <code>javascript:...</code>.
- *   </td>
- *  </tr>
- *
- * </table>
- *
- *
- *  <p>Informal parameters are allowed.
+ *  [<a href="../../../../../ComponentReference/GenericLink.html">Component Reference</a>]
  * 
  *
  *  @author Howard Lewis Ship

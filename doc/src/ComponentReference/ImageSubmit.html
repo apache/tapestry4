@@ -43,8 +43,8 @@
  </td>
 </tr>
 
-<tr valign="middle">
- <td colspan="2">&nbsp;</td>
+<tr>
+ <td colspan="2"><hr></td>
 </tr>
 
 <tr>
@@ -59,6 +59,24 @@
   The <a href="http://java.sun.com/products/jdk/1.2/docs/api/java/awt/Point.html">
   <tt>Point</tt></a> parameter can be used to determine where on the image 
   the user clicked.
+  <p>
+  In typical use, the application needs to know which ImageSubmit
+  was the one clicked by the user.  This can be accomplished in two ways:
+  <ul>
+  <li>Use the <b>selected</b> and <b>tag</b> parameters to identify
+  the button.
+  <li>Use the <b>listener</b> to perform an operation directly
+  </ul>
+  <p>
+  If a listener is used, it will be invoked as the ImageSubmit
+  component is rewound.  In addition, the
+  <a href="Form.html">Form</a>'s listener will
+  always be invoked.
+  
+  <p>
+  Use the first method if you need to
+  be sure that the entire form has rewound before any logic
+  specific to the ImageSubmit is triggered.
   <p>   
   This component may NOT wrap around other components or static HTML. 
  </td>
@@ -146,7 +164,7 @@
     </td>
 	</tr>
   <tr>
-    <td>select</td>
+    <td>selected</td>
     <td>Object</td>
     <td>out</td>
    	<td>no</td>
@@ -180,7 +198,7 @@
 		<td>&nbsp;</td>
 		<td>
     If specified, the listener is notified. This notification occurs as the 
-    component is rewinded, i.e., prior to the <a href="Form.html">form</a>'s 
+    component is rewound, i.e., prior to the <a href="Form.html">form</a>'s 
     listener. In addition, the selected property (if bound) will be updated 
     before the listener is notified.
     </td>
@@ -196,16 +214,29 @@
   <b>Examples</b>
 	<p>
   This example is under construction.
+ </td>
+</tr>
+</tr>
 
- </td></tr></table>
-</td></tr>
 <tr>
- <td colspan="3"><hr></td>  
+ <td colspan="2"><hr></td>  
 </tr>
 <tr>
- <td align="left"><a href="Image.html"><img src="common-images/prev.png" alt="Image"/></a></td>  
- <td align="center"><a href="index.html"><img src="common-images/home.png" alt="Component Index"/></a></td>  
- <td align="right"><a href="Insert.html"><img src="common-images/next.png" alt="Insert"/></a></td>  
+ <td colspan="2">
+  <table width="100%">
+   <tr>
+    <td align="left">
+     <a href="Image.html"><img src="common-images/prev.png" alt="Previous"/></a>
+    </td>  
+    <td align="center">
+     <a href="index.html"><img src="common-images/home.png" alt="Home"/></a>
+    </td>  
+    <td align="right">
+     <a href="Insert.html"><img src="common-images/next.png" alt="Next"/></a>
+    </td>  
+   <tr>
+  </table>
+ </td>
 </tr>
 </table>
 
