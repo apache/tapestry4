@@ -56,10 +56,11 @@
 package org.apache.tapestry.junit.spec;
 
 import org.apache.tapestry.junit.TapestryTestCase;
-import org.apache.tapestry.spec.AssetSpecification;
-import org.apache.tapestry.spec.BeanSpecification;
-import org.apache.tapestry.spec.ComponentSpecification;
-import org.apache.tapestry.spec.ContainedComponent;
+import org.apache.tapestry.spec.IAssetSpecification;
+import org.apache.tapestry.spec.IBeanSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.spec.IContainedComponent;
+
 
 /**
  *  Test cases for page and component specifications.
@@ -80,8 +81,8 @@ public class TestComponentSpecification extends TapestryTestCase
 
     public void testBeanProperty() throws Exception
     {
-        ComponentSpecification s = parseComponent("BeanProperty.jwc");
-        BeanSpecification fred = s.getBeanSpecification("fred");
+        IComponentSpecification s = parseComponent("BeanProperty.jwc");
+        IBeanSpecification fred = s.getBeanSpecification("fred");
 
         checkList("propertyNames", new String[] { "bruce", "nicole", "zeta" }, fred.getPropertyNames());
 
@@ -93,8 +94,8 @@ public class TestComponentSpecification extends TapestryTestCase
 
     public void testComponentProperty() throws Exception
     {
-        ComponentSpecification s = parseComponent("ComponentProperty.jwc");
-        ContainedComponent c = s.getComponent("barney");
+        IComponentSpecification s = parseComponent("ComponentProperty.jwc");
+        IContainedComponent c = s.getComponent("barney");
 
         checkList("propertyNames", new String[] { "apple", "chocolate", "frozen" }, c.getPropertyNames());
 
@@ -106,17 +107,17 @@ public class TestComponentSpecification extends TapestryTestCase
     
     public void testAssetProperty() throws Exception
     {
-        ComponentSpecification s = parseComponent("AssetProperty.jwc");
+        IComponentSpecification s = parseComponent("AssetProperty.jwc");
         
         checkAsset(s, "private", "hugh", "grant");
         checkAsset(s, "external", "joan", "rivers");
         checkAsset(s, "context", "john", "cusak");
     }
     
-    private void checkAsset(ComponentSpecification s, String assetName, String propertyName,
+    private void checkAsset(IComponentSpecification s, String assetName, String propertyName,
     String expectedValue)
     {
-        AssetSpecification a = s.getAsset(assetName);
+        IAssetSpecification a = s.getAsset(assetName);
         
         assertEquals("Property " + propertyName + ".",
         expectedValue,

@@ -69,7 +69,7 @@ import org.apache.tapestry.bean.IBeanInitializer;
  * 
  **/
 
-public class BeanSpecification extends LocatablePropertyHolder
+public class BeanSpecification extends LocatablePropertyHolder implements IBeanSpecification
 {
     protected String className;
     protected BeanLifecycle lifecycle;

@@ -57,7 +57,7 @@ package org.apache.tapestry.resolver;
 
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.spec.ComponentSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
  *  Stand-in class used when the application fails to specify an actual delegate.
@@ -85,7 +85,7 @@ public class NullSpecificationResolverDelegate implements ISpecificationResolver
      * 
      **/
 
-    public ComponentSpecification findPageSpecification(
+    public IComponentSpecification findPageSpecification(
         IRequestCycle cycle,
         INamespace namespace,
         String simplePageName)
@@ -98,7 +98,7 @@ public class NullSpecificationResolverDelegate implements ISpecificationResolver
      * 
      **/
 
-    public ComponentSpecification findComponentSpecification(
+    public IComponentSpecification findComponentSpecification(
         IRequestCycle cycle,
         INamespace namespace,
         String type)

@@ -57,7 +57,7 @@ package org.apache.tapestry.resolver;
 
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.spec.ComponentSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
  *  Delegate interface used when a page or component specification
@@ -87,7 +87,7 @@ public interface ISpecificationResolverDelegate
      * 
      **/
 
-    public ComponentSpecification findPageSpecification(
+    public IComponentSpecification findPageSpecification(
         IRequestCycle cycle,
         INamespace namespace,
         String simplePageName);
@@ -106,7 +106,7 @@ public interface ISpecificationResolverDelegate
      * 
      **/
 
-    public ComponentSpecification findComponentSpecification(
+    public IComponentSpecification findComponentSpecification(
         IRequestCycle cycle,
         INamespace namespace,
         String type);

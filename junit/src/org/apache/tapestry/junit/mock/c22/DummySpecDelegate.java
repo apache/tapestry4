@@ -58,7 +58,7 @@ package org.apache.tapestry.junit.mock.c22;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.resolver.ISpecificationResolverDelegate;
-import org.apache.tapestry.spec.ComponentSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
  *  Part of the test harness for testing 
@@ -73,7 +73,7 @@ import org.apache.tapestry.spec.ComponentSpecification;
 public class DummySpecDelegate implements ISpecificationResolverDelegate
 {
 
-    public ComponentSpecification findPageSpecification(
+    public IComponentSpecification findPageSpecification(
         IRequestCycle cycle,
         INamespace namespace,
         String simplePageName)
@@ -83,7 +83,7 @@ public class DummySpecDelegate implements ISpecificationResolverDelegate
      	return null;
     }
 
-    public ComponentSpecification findComponentSpecification(
+    public IComponentSpecification findComponentSpecification(
         IRequestCycle cycle,
         INamespace namespace,
         String type)

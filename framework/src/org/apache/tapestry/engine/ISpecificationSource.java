@@ -57,13 +57,13 @@ package org.apache.tapestry.engine;
 
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IResourceLocation;
-import org.apache.tapestry.spec.ComponentSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
 
 /**
  *  Defines access to component specifications.
  *
- *  @see ComponentSpecification
+ *  @see IComponentSpecification
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -85,7 +85,7 @@ public interface ISpecificationSource
      * 
      **/
 
-    public ComponentSpecification getComponentSpecification(IResourceLocation specificationLocation);
+    public IComponentSpecification getComponentSpecification(IResourceLocation specificationLocation);
 
     /**
      *  Retrieves a component specification, parsing it as necessary.
@@ -100,7 +100,7 @@ public interface ISpecificationSource
      * 
      **/
 
-    public ComponentSpecification getPageSpecification(IResourceLocation specificationLocation);
+    public IComponentSpecification getPageSpecification(IResourceLocation specificationLocation);
 
     /**
      *  Invoked to have the source clear any internal cache.  This is most often

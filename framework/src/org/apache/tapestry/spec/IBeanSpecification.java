@@ -53,78 +53,44 @@
  *
  */
 
-package org.apache.tapestry.parse;
+package org.apache.tapestry.spec;
 
-import java.util.Iterator;
+import java.util.List;
 
-import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.spec.IBindingSpecification;
-import org.apache.tapestry.spec.IComponentSpecification;
-import org.apache.tapestry.spec.IContainedComponent;
-import org.apache.tapestry.util.xml.DocumentParseException;
-import org.xml.sax.Attributes;
+import org.apache.tapestry.ILocatable;
+import org.apache.tapestry.ILocationHolder;
+import org.apache.tapestry.bean.IBeanInitializer;
+import org.apache.tapestry.util.IPropertyHolder;
 
 /**
- *  A rule for processing the copy-of attribute
- *  of the &lt;component&gt; element (in a page
- *  or component specification).
+ *  A specification of a helper bean for a component.
  *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *  @since 2.4
- *
- **/
-
-public class ComponentCopyOfRule extends AbstractSpecificationRule
+ * @author glongman@intelligentworks.com
+ * @version $Id$
+ */
+public interface IBeanSpecification extends IPropertyHolder, ILocationHolder, ILocatable
 {
+    public abstract String getClassName();
+    public abstract BeanLifecycle getLifecycle();
     /**
-     *  Validates that the element has either type or copy-of (not both, not neither).
-     *  Uses the copy-of attribute to find a previously declared component
-     *  and copies its type and bindings into the new component (on top of the stack).
-     * 
+     *  @since 1.0.5
+     *
      **/
-
-    public void begin(String namespace, String name, Attributes attributes) throws Exception
-    {
-        String id = getValue(attributes, "id");
-        String copyOf = getValue(attributes, "copy-of");
-        String type = getValue(attributes, "type");
-
-        if (Tapestry.isNull(copyOf))
-        {
-            if (Tapestry.isNull(type))
-                throw new DocumentParseException(
-                    Tapestry.getString("SpecificationParser.missing-type-or-copy-of", id),
-                    getResourceLocation());
-
-            return;
-        }
-
-        if (!Tapestry.isNull(type))
-            throw new DocumentParseException(
-                Tapestry.getString("SpecificationParser.both-type-and-copy-of", id),
-                getResourceLocation());
-
-        IComponentSpecification spec = (IComponentSpecification) digester.getRoot();
-
-        IContainedComponent source = spec.getComponent(copyOf);
-        if (source == null)
-            throw new DocumentParseException(
-                Tapestry.getString("SpecificationParser.unable-to-copy", copyOf),
-                getResourceLocation());
-
-        IContainedComponent target = (IContainedComponent) digester.peek();
-
-        target.setType(source.getType());
-        target.setCopyOf(copyOf);
-
-        Iterator i = source.getBindingNames().iterator();
-        while (i.hasNext())
-        {
-            String bindingName = (String) i.next();
-            IBindingSpecification binding = source.getBinding(bindingName);
-            target.setBinding(bindingName, binding);
-        }
-    }
-
+    public abstract void addInitializer(IBeanInitializer initializer);
+    /**
+     *  Returns the {@link List} of {@link IBeanInitializer}s.  The caller
+     *  should not modify this value!.  May return null if there
+     *  are no initializers.
+     *
+     *  @since 1.0.5
+     *
+     **/
+    public abstract List getInitializers();
+    public abstract String toString();
+    public abstract String getDescription();
+    public abstract void setDescription(String desc);
+    /** @since 2.4 **/
+    public abstract void setClassName(String className);
+    /** @since 2.4 **/
+    public abstract void setLifecycle(BeanLifecycle lifecycle);
 }

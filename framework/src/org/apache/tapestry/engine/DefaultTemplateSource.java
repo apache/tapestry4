@@ -86,8 +86,8 @@ import org.apache.tapestry.parse.TemplateParseException;
 import org.apache.tapestry.parse.TemplateParser;
 import org.apache.tapestry.parse.TemplateToken;
 import org.apache.tapestry.resolver.ComponentSpecificationResolver;
-import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IApplicationSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.util.IRenderDescription;
 import org.apache.tapestry.util.MultiKey;
 
@@ -172,7 +172,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
 
             _resolver.resolve(_cycle, namespace, libraryId, type, location);
 
-            ComponentSpecification spec = _resolver.getSpecification();
+            IComponentSpecification spec = _resolver.getSpecification();
 
             return spec.getAllowBody();
         }
@@ -206,7 +206,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
 
     public ComponentTemplate getTemplate(IRequestCycle cycle, IComponent component)
     {
-        ComponentSpecification specification = component.getSpecification();
+        IComponentSpecification specification = component.getSpecification();
         IResourceLocation specificationLocation = specification.getSpecificationLocation();
 
         Locale locale = component.getPage().getLocale();

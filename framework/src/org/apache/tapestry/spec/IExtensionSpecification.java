@@ -53,78 +53,48 @@
  *
  */
 
-package org.apache.tapestry.parse;
+package org.apache.tapestry.spec;
 
-import java.util.Iterator;
+import java.util.Map;
 
-import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.spec.IBindingSpecification;
-import org.apache.tapestry.spec.IComponentSpecification;
-import org.apache.tapestry.spec.IContainedComponent;
-import org.apache.tapestry.util.xml.DocumentParseException;
-import org.xml.sax.Attributes;
+import org.apache.tapestry.ILocatable;
+import org.apache.tapestry.ILocationHolder;
+import org.apache.tapestry.IResourceResolver;
+import org.apache.tapestry.util.IPropertyHolder;
 
 /**
- *  A rule for processing the copy-of attribute
- *  of the &lt;component&gt; element (in a page
- *  or component specification).
- *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *  @since 2.4
- *
- **/
-
-public class ComponentCopyOfRule extends AbstractSpecificationRule
+ *  Defines an "extension", which is much like a helper bean, but 
+ *  is part of a library or application specification (and has the same
+ *  lifecycle as the application).
+ * 
+ * @author glongman@intelligentworks.com
+ * @version $Id$
+ */
+public interface IExtensionSpecification extends IPropertyHolder, ILocationHolder, ILocatable
 {
+    public abstract String getClassName();
+    public abstract void setClassName(String className);
+    public abstract void addConfiguration(String propertyName, Object value);
     /**
-     *  Validates that the element has either type or copy-of (not both, not neither).
-     *  Uses the copy-of attribute to find a previously declared component
-     *  and copies its type and bindings into the new component (on top of the stack).
+     *  Returns an immutable Map of the configuration; keyed on property name,
+     *  with values as properties to assign.
      * 
      **/
-
-    public void begin(String namespace, String name, Attributes attributes) throws Exception
-    {
-        String id = getValue(attributes, "id");
-        String copyOf = getValue(attributes, "copy-of");
-        String type = getValue(attributes, "type");
-
-        if (Tapestry.isNull(copyOf))
-        {
-            if (Tapestry.isNull(type))
-                throw new DocumentParseException(
-                    Tapestry.getString("SpecificationParser.missing-type-or-copy-of", id),
-                    getResourceLocation());
-
-            return;
-        }
-
-        if (!Tapestry.isNull(type))
-            throw new DocumentParseException(
-                Tapestry.getString("SpecificationParser.both-type-and-copy-of", id),
-                getResourceLocation());
-
-        IComponentSpecification spec = (IComponentSpecification) digester.getRoot();
-
-        IContainedComponent source = spec.getComponent(copyOf);
-        if (source == null)
-            throw new DocumentParseException(
-                Tapestry.getString("SpecificationParser.unable-to-copy", copyOf),
-                getResourceLocation());
-
-        IContainedComponent target = (IContainedComponent) digester.peek();
-
-        target.setType(source.getType());
-        target.setCopyOf(copyOf);
-
-        Iterator i = source.getBindingNames().iterator();
-        while (i.hasNext())
-        {
-            String bindingName = (String) i.next();
-            IBindingSpecification binding = source.getBinding(bindingName);
-            target.setBinding(bindingName, binding);
-        }
-    }
-
+    public abstract Map getConfiguration();
+    /**
+     *  Invoked to instantiate an instance of the extension and return it.
+     *  It also configures properties of the extension.
+     * 
+     **/
+    public abstract Object instantiateExtension(IResourceResolver resolver);
+    /**
+     *  Returns true if the extensions should be instantiated
+     *  immediately after the containing 
+     *  {@link org.apache.tapestry.spec.LibrarySpecification}
+     *  if parsed.  Non-immediate extensions are instantiated
+     *  only as needed.
+     * 
+     **/
+    public abstract boolean isImmediate();
+    public abstract void setImmediate(boolean immediate);
 }

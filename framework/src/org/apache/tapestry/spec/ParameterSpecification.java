@@ -56,8 +56,8 @@
 package org.apache.tapestry.spec;
 
 /**
- *  Defines a formal parameter to a component.  A <code>ParameterSpecification</code>
- *  is contained by a {@link ComponentSpecification}.
+ *  Defines a formal parameter to a component.  A <code>IParameterSpecification</code>
+ *  is contained by a {@link IComponentSpecification}.
  *
  *  <p>TBD: Identify arrays in some way.
  *
@@ -66,7 +66,7 @@ package org.apache.tapestry.spec;
  * 
  **/
 
-public class ParameterSpecification extends BaseLocatable
+public class ParameterSpecification extends BaseLocatable implements IParameterSpecification
 {
     private boolean required = false;
     private String type;

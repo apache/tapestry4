@@ -59,13 +59,13 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.apache.tapestry.engine.IPageLoader;
-import org.apache.tapestry.spec.ComponentSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
  *  Defines an object which may be used to provide dynamic content on a Tapestry web page.
  *
  *  <p>Components are created dynamically from thier class names (part of the
- *  {@link ComponentSpecification}).
+ *  {@link IComponentSpecification}).
  *
  *
  *  @author Howard Leiws Ship
@@ -247,7 +247,7 @@ public interface IComponent extends IRender, ILocationHolder
      *
      **/
 
-    public ComponentSpecification getSpecification();
+    public IComponentSpecification getSpecification();
 
     /**
      *  Sets the specification used by the component.  This is write-once, an attempt
@@ -255,7 +255,7 @@ public interface IComponent extends IRender, ILocationHolder
      *
      **/
 
-    public void setSpecification(ComponentSpecification value);
+    public void setSpecification(IComponentSpecification value);
 
     /**
      *  Invoked to make the receiver render its body (the elements and components
@@ -319,7 +319,7 @@ public interface IComponent extends IRender, ILocationHolder
     public void finishLoad(
         IRequestCycle cycle,
         IPageLoader loader,
-        ComponentSpecification specification);
+        IComponentSpecification specification);
 
     /**
      *  Returns a localized string.  Each component has an optional

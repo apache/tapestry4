@@ -103,30 +103,30 @@ public class SpecFactory
     }
 
 	/**
-	 *  Returns a new instance of {@link AssetSpecification}.
+	 *  Returns a new instance of {@link IAssetSpecification}.
 	 * 
 	 *  @since 2.4
 	 * 
 	 **/
 	
-	public AssetSpecification createAssetSpecification()
+	public IAssetSpecification createAssetSpecification()
 	{
 		return new AssetSpecification();
 	}
 
 	/**
-	 *  Creates a new instance of {@link BeanSpecification}.
+	 *  Creates a new instance of {@link IBeanSpecification}.
 	 * 
 	 *  @since 2.4
 	 * 
 	 **/
 	
-	public BeanSpecification createBeanSpecification()
+	public IBeanSpecification createBeanSpecification()
 	{
 		return new BeanSpecification();
 	}
 
-	public BindingSpecification createBindingSpecification()
+	public IBindingSpecification createBindingSpecification() 
 	{
 		return new BindingSpecification();
 	}
@@ -145,19 +145,19 @@ public class SpecFactory
     }
 
     /**
-     * Creates a concrete instance of {@link ComponentSpecification}.
+     * Creates a concrete instance of {@link IComponentSpecification}.
      **/
 
-    public ComponentSpecification createComponentSpecification()
+    public IComponentSpecification createComponentSpecification()
     {
         return new ComponentSpecification();
     }
 
     /**
-     * Creates a concrete instance of {@link ContainedComponent}.
+     * Creates a concrete instance of {@link IContainedComponent}.
      **/
 
-    public ContainedComponent createContainedComponent()
+    public IContainedComponent createContainedComponent()
     {
         return new ContainedComponent();
     }
@@ -166,7 +166,7 @@ public class SpecFactory
      * Creates a concrete instance of {@link ParameterSpecification}.
      **/
 
-    public ParameterSpecification createParameterSpecification()
+    public IParameterSpecification createParameterSpecification()
     {
         return new ParameterSpecification();
     }
@@ -196,25 +196,25 @@ public class SpecFactory
 	}
 
     /**
-     *  Creates a concrete instance of {@link org.apache.tapestry.spec.ExtensionSpecification}.
+     *  Creates a concrete instance of {@link org.apache.tapestry.spec.IExtensionSpecification}.
      * 
      *  @since 2.2
      * 
      **/
 
-    public ExtensionSpecification createExtensionSpecification()
+    public IExtensionSpecification createExtensionSpecification()
     {
         return new ExtensionSpecification();
     }
     
     /**
-     *  Creates a concrete instance of {@link org.apache.tapestry.spec.PropertySpecification}.
+     *  Creates a concrete instance of {@link org.apache.tapestry.spec.IPropertySpecification}.
      * 
      *  @since 2.4
      * 
      **/
     
-    public PropertySpecification createPropertySpecification()
+    public IPropertySpecification createPropertySpecification()
     {
     	return new PropertySpecification();
     }

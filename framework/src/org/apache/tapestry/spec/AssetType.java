@@ -60,7 +60,7 @@ import org.apache.commons.lang.enum.Enum;
 /**
  *  Defines the types of assets.
  *
- *  @see AssetSpecification
+ *  @see IAssetSpecification
  *
  *  @author Howard Lewis Ship
  *  @version $Id$

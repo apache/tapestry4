@@ -69,9 +69,11 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.event.PageEvent;
 import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.spec.BeanSpecification;
-import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.ContainedComponent;
-import org.apache.tapestry.spec.ParameterSpecification;
+import org.apache.tapestry.spec.IBeanSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.spec.IContainedComponent;
+import org.apache.tapestry.spec.IParameterSpecification;
 
 /**
  *  Component of the {@link Inspector} page used to display
@@ -86,7 +88,7 @@ import org.apache.tapestry.spec.ParameterSpecification;
 public class ShowSpecification extends BaseComponent implements PageRenderListener
 {
     private IComponent _inspectedComponent;
-    private ComponentSpecification _inspectedSpecification;
+    private IComponentSpecification _inspectedSpecification;
     private String _parameterName;
     private String _assetName;
     private List _sortedComponents;
@@ -98,7 +100,7 @@ public class ShowSpecification extends BaseComponent implements PageRenderListen
     private String _propertyName;
     private List _beanNames;
     private String _beanName;
-    private BeanSpecification _beanSpecification;
+    private IBeanSpecification _beanSpecification;
 
     private static class ComponentComparitor implements Comparator
     {
@@ -168,7 +170,7 @@ public class ShowSpecification extends BaseComponent implements PageRenderListen
         return _inspectedComponent;
     }
 
-    public ComponentSpecification getInspectedSpecification()
+    public IComponentSpecification getInspectedSpecification()
     {
         return _inspectedSpecification;
     }
@@ -234,7 +236,7 @@ public class ShowSpecification extends BaseComponent implements PageRenderListen
      *
      **/
 
-    public ParameterSpecification getParameterSpecification()
+    public IParameterSpecification getParameterSpecification()
     {
         return _inspectedSpecification.getParameter(_parameterName);
     }
@@ -325,10 +327,10 @@ public class ShowSpecification extends BaseComponent implements PageRenderListen
     {
         IComponent container = _component.getContainer();
 
-        ComponentSpecification containerSpecification = container.getSpecification();
+        IComponentSpecification containerSpecification = container.getSpecification();
 
         String id = _component.getId();
-        ContainedComponent contained = containerSpecification.getComponent(id);
+        IContainedComponent contained = containerSpecification.getComponent(id);
 
         // Temporary:  An implicit component will not be in the containing
         // component's specification as a ContainedComponent.
@@ -388,7 +390,7 @@ public class ShowSpecification extends BaseComponent implements PageRenderListen
         return _beanName;
     }
 
-    public BeanSpecification getBeanSpecification()
+    public IBeanSpecification getBeanSpecification()
     {
         return _beanSpecification;
     }

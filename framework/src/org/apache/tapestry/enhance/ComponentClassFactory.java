@@ -82,10 +82,10 @@ import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Location;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.Direction;
-import org.apache.tapestry.spec.ParameterSpecification;
-import org.apache.tapestry.spec.PropertySpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.spec.IParameterSpecification;
+import org.apache.tapestry.spec.IPropertySpecification;
 
 /**
  *  Contains the logic for analyzing and enhancing a single component class.
@@ -114,7 +114,7 @@ public class ComponentClassFactory
 
     private ClassFabricator _classFabricator;
     private Map _beanProperties = new HashMap();
-    private ComponentSpecification _specification;
+    private IComponentSpecification _specification;
     private Class _componentClass;
     private String _subclassName;
 
@@ -176,7 +176,7 @@ public class ComponentClassFactory
 
     public ComponentClassFactory(
         IResourceResolver resolver,
-        ComponentSpecification specification,
+        IComponentSpecification specification,
         Class componentClass)
     {
         _resolver = resolver;
@@ -586,7 +586,7 @@ public class ComponentClassFactory
         {
             String name = (String) names.get(i);
 
-            ParameterSpecification ps = _specification.getParameter(name);
+            IParameterSpecification ps = _specification.getParameter(name);
 
             scanForBindingProperty(name, ps);
 
@@ -604,13 +604,13 @@ public class ComponentClassFactory
         {
             String name = (String) names.get(i);
 
-            PropertySpecification ps = _specification.getPropertySpecification(name);
+            IPropertySpecification ps = _specification.getPropertySpecification(name);
 
             scanForSpecifiedProperty(ps);
         }
     }
 
-    protected void scanForBindingProperty(String parameterName, ParameterSpecification ps)
+    protected void scanForBindingProperty(String parameterName, IParameterSpecification ps)
     {
         String propertyName = parameterName + Tapestry.PARAMETER_PROPERTY_NAME_SUFFIX;
         PropertyDescriptor pd = getPropertyDescriptor(propertyName);
@@ -628,7 +628,7 @@ public class ComponentClassFactory
         addEnhancer(enhancer);
     }
 
-    protected void scanForParameterProperty(String parameterName, ParameterSpecification ps)
+    protected void scanForParameterProperty(String parameterName, IParameterSpecification ps)
     {
         Direction direction = ps.getDirection();
 
@@ -662,7 +662,7 @@ public class ComponentClassFactory
         addEnhancer(enhancer);
     }
 
-    protected void addAutoParameterEnhancer(String parameterName, ParameterSpecification ps)
+    protected void addAutoParameterEnhancer(String parameterName, IParameterSpecification ps)
     {
         Location location = ps.getLocation();
         String propertyName = ps.getPropertyName();
@@ -692,7 +692,7 @@ public class ComponentClassFactory
         addEnhancer(enhancer);
     }
 
-    protected void scanForSpecifiedProperty(PropertySpecification ps)
+    protected void scanForSpecifiedProperty(IPropertySpecification ps)
     {
         String propertyName = ps.getName();
         Location location = ps.getLocation();

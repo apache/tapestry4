@@ -53,78 +53,32 @@
  *
  */
 
-package org.apache.tapestry.parse;
+package org.apache.tapestry.spec;
 
-import java.util.Iterator;
-
-import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.spec.IBindingSpecification;
-import org.apache.tapestry.spec.IComponentSpecification;
-import org.apache.tapestry.spec.IContainedComponent;
-import org.apache.tapestry.util.xml.DocumentParseException;
-import org.xml.sax.Attributes;
+import org.apache.tapestry.ILocationHolder;
 
 /**
- *  A rule for processing the copy-of attribute
- *  of the &lt;component&gt; element (in a page
- *  or component specification).
- *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *  @since 2.4
- *
- **/
-
-public class ComponentCopyOfRule extends AbstractSpecificationRule
+ *  Defines a transient or persistant property of a component or page.  
+ *  A {@link org.apache.tapestry.IComponentClassEnhancer} uses this information
+ *  to create a subclass with the necessary instance variables and methods.  
+ *  
+ * @author glongman@intelligentworks.com
+ * @version $Id$
+ */
+public interface IPropertySpecification extends ILocationHolder
 {
+    public abstract String getInitialValue();
+    public abstract String getName();
+    public abstract boolean isPersistent();
+    public abstract String getType();
+    public abstract void setInitialValue(String initialValue);
     /**
-     *  Validates that the element has either type or copy-of (not both, not neither).
-     *  Uses the copy-of attribute to find a previously declared component
-     *  and copies its type and bindings into the new component (on top of the stack).
+     *  Sets the name of the property.  This should not be changed
+     *  once this IPropertySpecification is added to
+     *  a {@link org.apache.tapestry.spec.IComponentSpecification}.
      * 
      **/
-
-    public void begin(String namespace, String name, Attributes attributes) throws Exception
-    {
-        String id = getValue(attributes, "id");
-        String copyOf = getValue(attributes, "copy-of");
-        String type = getValue(attributes, "type");
-
-        if (Tapestry.isNull(copyOf))
-        {
-            if (Tapestry.isNull(type))
-                throw new DocumentParseException(
-                    Tapestry.getString("SpecificationParser.missing-type-or-copy-of", id),
-                    getResourceLocation());
-
-            return;
-        }
-
-        if (!Tapestry.isNull(type))
-            throw new DocumentParseException(
-                Tapestry.getString("SpecificationParser.both-type-and-copy-of", id),
-                getResourceLocation());
-
-        IComponentSpecification spec = (IComponentSpecification) digester.getRoot();
-
-        IContainedComponent source = spec.getComponent(copyOf);
-        if (source == null)
-            throw new DocumentParseException(
-                Tapestry.getString("SpecificationParser.unable-to-copy", copyOf),
-                getResourceLocation());
-
-        IContainedComponent target = (IContainedComponent) digester.peek();
-
-        target.setType(source.getType());
-        target.setCopyOf(copyOf);
-
-        Iterator i = source.getBindingNames().iterator();
-        while (i.hasNext())
-        {
-            String bindingName = (String) i.next();
-            IBindingSpecification binding = source.getBinding(bindingName);
-            target.setBinding(bindingName, binding);
-        }
-    }
-
+    public abstract void setName(String name);
+    public abstract void setPersistent(boolean persistant);
+    public abstract void setType(String type);
 }

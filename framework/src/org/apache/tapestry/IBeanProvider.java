@@ -95,7 +95,7 @@ public interface IBeanProvider
 	 *  be provided.
 	 *
 	 *  @since 1.0.6
-	 *  @see org.apache.tapestry.spec.ComponentSpecification#getBeanNames()
+	 *  @see org.apache.tapestry.spec.IComponentSpecification#getBeanNames()
 	 *
 	 **/
 	

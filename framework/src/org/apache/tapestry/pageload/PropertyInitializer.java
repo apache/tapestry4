@@ -65,7 +65,7 @@ import org.apache.tapestry.util.prop.OgnlUtils;
  *  Given a component, a property and a value, this object will
  *  reset the property to the value whenever the page
  *  (containing the component) is detached.  This is related
- *  to support for {@link org.apache.tapestry.spec.PropertySpecification}s.
+ *  to support for {@link org.apache.tapestry.spec.IPropertySpecification}s.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$

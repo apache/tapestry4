@@ -112,7 +112,7 @@ import org.apache.tapestry.util.IdAllocator;
  *  Both defined and implicit components may have additional attributes
  *  defined, simply by including them in the template.  They set formal or
  *  informal parameters of the component to static strings.
- *  {@link org.apache.tapestry.spec.ComponentSpecification#getAllowInformalParameters()},
+ *  {@link org.apache.tapestry.spec.IComponentSpecification#getAllowInformalParameters()},
  *  if false, will cause such attributes to be simply ignored.  For defined
  *  components, conflicting values defined in the template are ignored.
  * 
@@ -121,7 +121,7 @@ import org.apache.tapestry.util.IdAllocator;
  *
  *  <p>The parser removes
  *  the body of some tags (when the corresponding component doesn't
- *  {@link org.apache.tapestry.spec.ComponentSpecification#getAllowBody() allow a body},
+ *  {@link org.apache.tapestry.spec.IComponentSpecification#getAllowBody() allow a body},
  *  and allows
  *  portions of the template to be completely removed.
  *

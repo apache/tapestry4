@@ -75,7 +75,7 @@ import org.apache.tapestry.event.ChangeObserver;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.spec.BaseLocatable;
-import org.apache.tapestry.spec.ComponentSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
  *  Fake implementation of {@link IPage} used during unit testing.
@@ -90,7 +90,7 @@ public class MockPage extends BaseLocatable implements IPage
 {
     private IEngine _engine;
     private Locale locale;
-    private ComponentSpecification _specification;
+    private IComponentSpecification _specification;
 
     public void detach()
     {
@@ -244,12 +244,12 @@ public class MockPage extends BaseLocatable implements IPage
     {
     }
 
-    public ComponentSpecification getSpecification()
+    public IComponentSpecification getSpecification()
     {
         return _specification;
     }
 
-    public void setSpecification(ComponentSpecification value)
+    public void setSpecification(IComponentSpecification value)
     {
         _specification = value;
     }
@@ -266,7 +266,7 @@ public class MockPage extends BaseLocatable implements IPage
     public void finishLoad(
         IRequestCycle cycle,
         IPageLoader loader,
-        ComponentSpecification specification)
+        IComponentSpecification specification)
     {
     }
 

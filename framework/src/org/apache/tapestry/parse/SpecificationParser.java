@@ -69,10 +69,10 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.spec.AssetType;
 import org.apache.tapestry.spec.BeanLifecycle;
 import org.apache.tapestry.spec.BindingType;
-import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.Direction;
-import org.apache.tapestry.spec.ExtensionSpecification;
 import org.apache.tapestry.spec.IApplicationSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.spec.IExtensionSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
 import org.apache.tapestry.spec.SpecFactory;
 import org.apache.tapestry.util.xml.AbstractDocumentParser;
@@ -83,7 +83,7 @@ import org.xml.sax.SAXParseException;
 
 /**
  *  Used to parse an application or component specification into a
- *  {@link ApplicationSpecification} or {@link ComponentSpecification}.
+ *  {@link ApplicationSpecification} or {@link IComponentSpecification}.
  *
  *
  *  <table border=1
@@ -570,7 +570,7 @@ public class SpecificationParser
 
             Object objectValue = _converter.convert(_value);
 
-            ExtensionSpecification top = (ExtensionSpecification) digester.peek();
+            IExtensionSpecification top = (IExtensionSpecification) digester.peek();
 
             top.addConfiguration(_propertyName, objectValue);
 
@@ -629,14 +629,14 @@ public class SpecificationParser
 
     /**
      *  Parses an input stream containing a page or component specification and assembles
-     *  a {@link ComponentSpecification} from it.  
+     *  an {@link IComponentSpecification} from it.  
      *
      *  @throws DocumentParseException if the input stream cannot be fully
      *  parsed or contains invalid data.
      *
      **/
 
-    public ComponentSpecification parseComponentSpecification(IResourceLocation resourceLocation)
+    public IComponentSpecification parseComponentSpecification(IResourceLocation resourceLocation)
         throws DocumentParseException
     {
         if (_componentDigester == null)
@@ -644,8 +644,8 @@ public class SpecificationParser
 
         try
         {
-            ComponentSpecification result =
-                (ComponentSpecification) parse(_componentDigester, resourceLocation);
+            IComponentSpecification result =
+                (IComponentSpecification) parse(_componentDigester, resourceLocation);
 
             result.setSpecificationLocation(resourceLocation);
 
@@ -718,7 +718,7 @@ public class SpecificationParser
 
     /**
      *  Parses an input stream containing a page specification and assembles
-     *  a {@link ComponentSpecification} from it.  
+     *  an {@link IComponentSpecification} from it.  
      *
      *  @throws DocumentParseException if the input stream cannot be fully
      *  parsed or contains invalid data.
@@ -727,7 +727,7 @@ public class SpecificationParser
      *
      **/
 
-    public ComponentSpecification parsePageSpecification(IResourceLocation resourceLocation)
+    public IComponentSpecification parsePageSpecification(IResourceLocation resourceLocation)
         throws DocumentParseException
     {
         if (_pageDigester == null)
@@ -735,8 +735,8 @@ public class SpecificationParser
 
         try
         {
-            ComponentSpecification result =
-                (ComponentSpecification) parse(_pageDigester, resourceLocation);
+            IComponentSpecification result =
+                (IComponentSpecification) parse(_pageDigester, resourceLocation);
 
             result.setSpecificationLocation(resourceLocation);
 

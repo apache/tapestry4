@@ -67,7 +67,7 @@ import org.apache.tapestry.event.PageRenderListener;
  *  within the application.
  *
  *  <p>Pages are created dynamically from thier class names (part of the
- *  {@link ComponentSpecification}).
+ *  {@link IComponentSpecification}).
  *
  *  @see IPageSource
  *  @see IPageLoader

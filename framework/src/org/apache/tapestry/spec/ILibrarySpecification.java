@@ -162,7 +162,7 @@ public interface ILibrarySpecification extends IPropertyHolder, ILocationHolder
     
     /**
      *  Returns a Map of extensions; key is extension name, value is
-     *  {@link org.apache.tapestry.spec.ExtensionSpecification}.
+     *  {@link org.apache.tapestry.spec.IExtensionSpecification}.
      *  May return null.  The returned Map is immutable.
      * 
      **/
@@ -174,7 +174,7 @@ public interface ILibrarySpecification extends IPropertyHolder, ILocationHolder
      *  
      **/
 
-    public void addExtensionSpecification(String name, ExtensionSpecification extension);
+    public void addExtensionSpecification(String name, IExtensionSpecification extension);
     
     /**
      *  Returns a sorted List of the names of all extensions.  May return the empty list,
@@ -185,11 +185,11 @@ public interface ILibrarySpecification extends IPropertyHolder, ILocationHolder
     public List getExtensionNames();
     
     /**
-     *  Returns the named ExtensionSpecification, or null if it doesn't exist.
+     *  Returns the named IExtensionSpecification, or null if it doesn't exist.
      * 
      **/
 
-    public ExtensionSpecification getExtensionSpecification(String name);
+    public IExtensionSpecification getExtensionSpecification(String name);
     
 
     /**

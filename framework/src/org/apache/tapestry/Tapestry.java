@@ -75,7 +75,7 @@ import javax.servlet.ServletContext;
 
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.resource.ContextResourceLocation;
-import org.apache.tapestry.spec.ComponentSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.util.AdaptorRegistry;
 import org.apache.tapestry.util.StringSplitter;
 
@@ -727,7 +727,7 @@ public final class Tapestry
         if (names == null)
             return;
 
-        ComponentSpecification specification = source.getSpecification();
+        IComponentSpecification specification = source.getSpecification();
         Iterator i = names.iterator();
 
         while (i.hasNext())

@@ -57,13 +57,13 @@ package org.apache.tapestry.resolver;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.spec.ComponentSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
  *  Performs the tricky work of resolving a page name to a page specification.
@@ -239,7 +239,7 @@ public class PageSpecificationResolver extends AbstractSpecificationResolver
         // Not found by any normal rule, so its time to
         // consult the delegate.
 
-        ComponentSpecification specification =
+        IComponentSpecification specification =
             getDelegate().findPageSpecification(cycle, namespace, _simpleName);
             
         setSpecification(specification);
@@ -249,8 +249,8 @@ public class PageSpecificationResolver extends AbstractSpecificationResolver
     {
         if (LOG.isDebugEnabled())
             LOG.debug("Found HTML template at " + location);
-
-        ComponentSpecification specification = new ComponentSpecification();
+		// TODO The SpecFactory in Specification parser should be used in some way to create an IComponentSpecifciation!
+        IComponentSpecification specification = new ComponentSpecification();
         specification.setPageSpecification(true);
         specification.setSpecificationLocation(location);
 
@@ -277,7 +277,7 @@ public class PageSpecificationResolver extends AbstractSpecificationResolver
     private void install()
     {
         INamespace namespace = getNamespace();
-        ComponentSpecification specification = getSpecification();
+        IComponentSpecification specification = getSpecification();
 
         if (LOG.isDebugEnabled())
             LOG.debug(

@@ -63,13 +63,13 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.Location;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.spec.ComponentSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
  *  Utility class that understands the rules of component types (which
  *  may optionally have a library prefix) and can resolve 
  *  the type to a {@link org.apache.tapestry.INamespace} and a 
- *  {@link org.apache.tapestry.spec.ComponentSpecification}.
+ *  {@link org.apache.tapestry.spec.IComponentSpecification}.
  * 
  *  <p>Like {@link org.apache.tapestry.resolver.PageSpecificationResolver},
  *  if the component is not defined explicitly in the namespace, a search
@@ -249,11 +249,11 @@ public class ComponentSpecificationResolver extends AbstractSpecificationResolve
 
         if (framework.containsComponentType(_type))
         {
-            setSpecification(framework.getComponentSpecification(_type));
+            setSpecification(framework.getComponentSpecification(_type)); 
             return;
         }
 
-        ComponentSpecification specification =
+        IComponentSpecification specification =
             getDelegate().findComponentSpecification(cycle, namespace, _type);
 
         setSpecification(specification);
@@ -279,7 +279,7 @@ public class ComponentSpecificationResolver extends AbstractSpecificationResolve
     private void install()
     {
         INamespace namespace = getNamespace();
-        ComponentSpecification specification = getSpecification();
+        IComponentSpecification specification = getSpecification();
 
         if (LOG.isDebugEnabled())
             LOG.debug(

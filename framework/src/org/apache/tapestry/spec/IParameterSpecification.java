@@ -53,78 +53,71 @@
  *
  */
 
-package org.apache.tapestry.parse;
+package org.apache.tapestry.spec;
 
-import java.util.Iterator;
-
-import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.spec.IBindingSpecification;
-import org.apache.tapestry.spec.IComponentSpecification;
-import org.apache.tapestry.spec.IContainedComponent;
-import org.apache.tapestry.util.xml.DocumentParseException;
-import org.xml.sax.Attributes;
+import org.apache.tapestry.ILocationHolder;
 
 /**
- *  A rule for processing the copy-of attribute
- *  of the &lt;component&gt; element (in a page
- *  or component specification).
+ *  Defines a formal parameter to a component.  An <code>IParameterSpecification</code>
+ *  is contained by a {@link IComponentSpecification}.
  *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *  @since 2.4
- *
- **/
-
-public class ComponentCopyOfRule extends AbstractSpecificationRule
+ *  <p>TBD: Identify arrays in some way.
+ * 
+ * @author glongman@intelligentworks.com
+ * @version $Id$
+ */
+public interface IParameterSpecification extends ILocationHolder
 {
     /**
-     *  Validates that the element has either type or copy-of (not both, not neither).
-     *  Uses the copy-of attribute to find a previously declared component
-     *  and copies its type and bindings into the new component (on top of the stack).
+     *  Returns the class name of the expected type of the parameter.  The default value
+     *  is <code>java.lang.Object</code> which matches anything.
+     *
+     **/
+    public abstract String getType();
+    /**
+     *  Returns true if the parameter is required by the component.
+     *  The default is false, meaning the parameter is optional.
+     *
+     **/
+    public abstract boolean isRequired();
+    public abstract void setRequired(boolean value);
+    /**
+     *  Sets the type of value expected for the parameter.  This can be
+     *  left blank to indicate any type.
      * 
      **/
-
-    public void begin(String namespace, String name, Attributes attributes) throws Exception
-    {
-        String id = getValue(attributes, "id");
-        String copyOf = getValue(attributes, "copy-of");
-        String type = getValue(attributes, "type");
-
-        if (Tapestry.isNull(copyOf))
-        {
-            if (Tapestry.isNull(type))
-                throw new DocumentParseException(
-                    Tapestry.getString("SpecificationParser.missing-type-or-copy-of", id),
-                    getResourceLocation());
-
-            return;
-        }
-
-        if (!Tapestry.isNull(type))
-            throw new DocumentParseException(
-                Tapestry.getString("SpecificationParser.both-type-and-copy-of", id),
-                getResourceLocation());
-
-        IComponentSpecification spec = (IComponentSpecification) digester.getRoot();
-
-        IContainedComponent source = spec.getComponent(copyOf);
-        if (source == null)
-            throw new DocumentParseException(
-                Tapestry.getString("SpecificationParser.unable-to-copy", copyOf),
-                getResourceLocation());
-
-        IContainedComponent target = (IContainedComponent) digester.peek();
-
-        target.setType(source.getType());
-        target.setCopyOf(copyOf);
-
-        Iterator i = source.getBindingNames().iterator();
-        while (i.hasNext())
-        {
-            String bindingName = (String) i.next();
-            IBindingSpecification binding = source.getBinding(bindingName);
-            target.setBinding(bindingName, binding);
-        }
-    }
-
+    public abstract void setType(String value);
+    /**
+     *  Returns the documentation for this parameter.
+     * 
+     *  @since 1.0.9
+     * 
+     **/
+    public abstract String getDescription();
+    /**
+     *  Sets the documentation for this parameter.
+     * 
+     *  @since 1.0.9
+     *    	 
+     **/
+    public abstract void setDescription(String description);
+    /**
+     *  Sets the property name (of the component class)
+     *  to connect the parameter to.
+     * 
+     **/
+    public abstract void setPropertyName(String propertyName);
+    /**
+     *  Returns the name of the JavaBeans property to connect the
+     *  parameter to.
+     * 
+     **/
+    public abstract String getPropertyName();
+    /**
+     *  Returns the parameter value direction, defaulting to {@link Direction#CUSTOM}
+     *  if not otherwise specified.
+     * 
+     **/
+    public abstract Direction getDirection();
+    public abstract void setDirection(Direction direction);
 }

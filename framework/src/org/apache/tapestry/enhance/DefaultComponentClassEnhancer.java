@@ -69,7 +69,7 @@ import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IComponentClassEnhancer;
-import org.apache.tapestry.spec.ComponentSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
  *  Default implementation of {@link org.apache.tapestry.IComponentClassEnhancer}.
@@ -85,7 +85,7 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
     private static final Log LOG = LogFactory.getLog(DefaultComponentClassEnhancer.class);
 
     /**
-     *  Map of Class, keyed on ComponentSpecification.
+     *  Map of Class, keyed on IComponentSpecification.
      * 
      **/
 
@@ -109,7 +109,7 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
         return _resolver;
     }
 
-    public Class getEnhancedClass(ComponentSpecification specification, String className)
+    public Class getEnhancedClass(IComponentSpecification specification, String className)
     {
         Class result = getCachedClass(specification);
 
@@ -123,13 +123,13 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
     }
 
     protected synchronized void storeCachedClass(
-        ComponentSpecification specification,
+        IComponentSpecification specification,
         Class cachedClass)
     {
         _cachedClasses.put(specification, cachedClass);
     }
 
-    protected synchronized Class getCachedClass(ComponentSpecification specification)
+    protected synchronized Class getCachedClass(IComponentSpecification specification)
     {
         return (Class) _cachedClasses.get(specification);
     }
@@ -140,7 +140,7 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
      * 
      **/
 
-    protected Class constructComponentClass(ComponentSpecification specification, String className)
+    protected Class constructComponentClass(IComponentSpecification specification, String className)
     {
         Class result = null;
 
@@ -177,7 +177,7 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
      **/
 
     protected ComponentClassFactory createComponentClassFactory(
-        ComponentSpecification specification,
+        IComponentSpecification specification,
         Class componentClass)
     {
         return new ComponentClassFactory(_resolver, specification, componentClass);
@@ -196,7 +196,7 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
     protected void validateEnhancedClass(
         Class subject,
         String className,
-        ComponentSpecification specification)
+        IComponentSpecification specification)
     {
         boolean debug = LOG.isDebugEnabled();
 

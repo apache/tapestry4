@@ -57,7 +57,7 @@ package org.apache.tapestry;
 
 import java.util.List;
 
-import org.apache.tapestry.spec.ComponentSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
 
 /**
@@ -175,7 +175,7 @@ public interface INamespace extends ILocatable
      * 
      **/
 
-    public ComponentSpecification getPageSpecification(String name);
+    public IComponentSpecification getPageSpecification(String name);
 
     /**
      *  Returns true if this namespace contains the specified
@@ -203,7 +203,7 @@ public interface INamespace extends ILocatable
      * 
      **/
 
-    public ComponentSpecification getComponentSpecification(String type);
+    public IComponentSpecification getComponentSpecification(String type);
 
     /**
      *  Returns true if the namespace contains the indicated component type.
@@ -295,7 +295,7 @@ public interface INamespace extends ILocatable
      * 
      **/
 
-    public void installPageSpecification(String pageName, ComponentSpecification specification);
+    public void installPageSpecification(String pageName, IComponentSpecification specification);
 
     /**
      *  Used to specify additional components beyond those that came from
@@ -306,6 +306,6 @@ public interface INamespace extends ILocatable
      * 
      **/
 
-    public void installComponentSpecification(String type, ComponentSpecification specification);
+    public void installComponentSpecification(String type, IComponentSpecification specification);
 
 }

@@ -59,7 +59,7 @@ import org.apache.commons.lang.enum.Enum;
 
 /**
  *  Defines the different types of bindings possible for a component.
- *  These are used in the {@link BindingSpecification} and ultimately
+ *  These are used in the {@link IBindingSpecification} and ultimately
  *  used to create an instance of {@link org.apache.tapestry.IBinding}.
  *
  *

@@ -63,7 +63,7 @@ import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.form.Form;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.spec.Direction;
-import org.apache.tapestry.spec.ParameterSpecification;
+import org.apache.tapestry.spec.IParameterSpecification;
 import org.apache.tapestry.util.prop.OgnlUtils;
 
 /**
@@ -111,7 +111,7 @@ public abstract class AbstractParameterConnector implements IParameterConnector
 
         _resolver = component.getPage().getEngine().getResourceResolver();
 
-        ParameterSpecification pspec = _component.getSpecification().getParameter(_parameterName);
+        IParameterSpecification pspec = _component.getSpecification().getParameter(_parameterName);
         _required = pspec.isRequired();
         _propertyName = pspec.getPropertyName();
         _direction = pspec.getDirection();

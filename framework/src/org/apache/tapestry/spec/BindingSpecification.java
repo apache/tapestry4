@@ -65,7 +65,7 @@ package org.apache.tapestry.spec;
  * 
  **/
 
-public class BindingSpecification extends BaseLocatable
+public class BindingSpecification extends BaseLocatable implements IBindingSpecification
 {
     private BindingType _type;
     private String _value;

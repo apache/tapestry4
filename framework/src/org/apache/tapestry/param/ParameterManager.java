@@ -70,9 +70,9 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.Direction;
-import org.apache.tapestry.spec.ParameterSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.spec.IParameterSpecification;
 import org.apache.tapestry.util.prop.PropertyFinder;
 import org.apache.tapestry.util.prop.PropertyInfo;
 
@@ -173,7 +173,7 @@ public class ParameterManager
             LOG.debug(_component + ": connecting parameters and properties");
 
         List list = new ArrayList();
-        ComponentSpecification spec = _component.getSpecification();
+        IComponentSpecification spec = _component.getSpecification();
         IResourceResolver resolver = _component.getPage().getEngine().getResourceResolver();
 
         IParameterConnector disabledConnector = null;
@@ -196,7 +196,7 @@ public class ParameterManager
                 continue;
             }
 
-            ParameterSpecification pspec = spec.getParameter(name);
+            IParameterSpecification pspec = spec.getParameter(name);
             Direction direction = pspec.getDirection();
 
             if (direction != Direction.IN && direction != Direction.FORM)

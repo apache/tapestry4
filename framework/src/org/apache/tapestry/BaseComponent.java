@@ -57,10 +57,11 @@ package org.apache.tapestry;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.apache.tapestry.engine.*;
+import org.apache.tapestry.engine.IPageLoader;
+import org.apache.tapestry.engine.IPageSource;
+import org.apache.tapestry.engine.ITemplateSource;
 import org.apache.tapestry.parse.ComponentTemplate;
-import org.apache.tapestry.spec.ComponentSpecification;
+import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
  * Base implementation for most components that use an HTML template.
@@ -163,14 +164,14 @@ public class BaseComponent extends AbstractComponent
 
     /**
      *  Loads the template for the component, then invokes
-     *  {@link AbstractComponent#finishLoad(IRequestCycle, IPageLoader, ComponentSpecification))}.  
+     *  {@link AbstractComponent#finishLoad(IRequestCycle, IPageLoader, IComponentSpecification))}.  
      *  Subclasses must invoke this method first,
      *  before adding any additional behavior, though its usually
      *  simpler to override {@link #finishLoad()} instead.
      *
      **/
 
-    public void finishLoad(IRequestCycle cycle, IPageLoader loader, ComponentSpecification specification)
+    public void finishLoad(IRequestCycle cycle, IPageLoader loader, IComponentSpecification specification)
     {
         readTemplate(cycle, loader);
 
