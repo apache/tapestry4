@@ -690,4 +690,15 @@ public class Palette extends BaseComponent implements IFormComponent
 	{
 		return getAsset("downImage", "Down");
 	}
+
+	/**
+	 *  Returns null, but may make sense to implement a displayName parameter.
+	 * 
+	 **/
+	
+	public String getDisplayName()
+	{
+		return null;
+	}
+
 }
