@@ -6,7 +6,6 @@
 <!--                                                                       -->
 <!-- ===================================================================== -->
 
-<!-- $Id$ -->
 <jboss>
 	<enforce-ejb-restrictions>false</enforce-ejb-restrictions>
 	<container-configurations>
