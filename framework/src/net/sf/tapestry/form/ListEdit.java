@@ -91,7 +91,7 @@ import net.sf.tapestry.util.io.DataSqueezer;
  *  <td>no</td> <td>&nbsp;</td>
  *	<td>If specified, then a tag for the specified element is placed around
  *  the content on each iteration.  This emulates the
- *  {@link com.primix.tapestry.components.Any} component.  Most often
+ *  {@link net.sf.tapestry.components.Any} component.  Most often
  *  the element specified is "tr" when the ListEdit is part of a table.
  *  Any informal parameters are applied to the element.
  *	</td>

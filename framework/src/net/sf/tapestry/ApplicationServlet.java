@@ -66,7 +66,7 @@ import net.sf.tapestry.util.xml.DocumentParseException;
  * servers in the cluster.  Tapestry applications usually only have a single
  * persistent value, the {@link IEngine engine}.  For persistence to
  * work in such an environment, the
- * JVM system property <code>com.primix.tapestry.store-engine</code>
+ * JVM system property <code>net.sf.tapestry.store-engine</code>
  * must be set to <code>true</code>.  This will force the application
  * servlet to restore the engine into the {@link HttpSession} at the
  * end of each request cycle.
@@ -437,10 +437,10 @@ abstract public class ApplicationServlet extends HttpServlet
      *  be overiden in production applications.
      *
      *  <ul>
-     *  <li>Gets the JVM system property <code>com.primix.tapestry.root-logging-priority</code>,
+     *  <li>Gets the JVM system property <code>net.sf.tapestry.root-logging-priority</code>,
      *  and (if non-null), converts it to an {@link Priority} and assigns it to the root
      *  {@link Category}.
-     *  <li>Gets the JVM system property <code>com.primix.tapestry.log-pattern</code> 
+     *  <li>Gets the JVM system property <code>net.sf.tapestry.log-pattern</code> 
      * and uses it as the pattern
      * for a {@link PatternLayout}.  If the property is not defined, then the
      * default pattern <code>%c{1} [%p] %m%n</code> is used.
@@ -449,7 +449,7 @@ abstract public class ApplicationServlet extends HttpServlet
      *  </ul>
      *
      *  <p>In addition, for each priority, a check is made for a JVM system property
-     *  <code>com.primix.tapestry.log4j.<em>priority</em></code> (i.e. <code>...log4j.DEBUG</code>).
+     *  <code>net.sf.tapestry.log4j.<em>priority</em></code> (i.e. <code>...log4j.DEBUG</code>).
      *  The value is a list of categories seperated by semicolons.  Each of these
      *  categories will be assigned that priority.
      *
@@ -468,7 +468,7 @@ abstract public class ApplicationServlet extends HttpServlet
         Category root = Category.getRoot();
         root.setPriority(priority);
 
-        String pattern = System.getProperty("com.primix.tapestry.log-pattern", "%c{1} [%p] %m%n");
+        String pattern = System.getProperty("net.sf.tapestry.log-pattern", "%c{1} [%p] %m%n");
 
         Layout layout = new PatternLayout(pattern);
         Appender rootAppender = new ConsoleAppender(layout);

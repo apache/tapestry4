@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
-<specification class="com.primix.vlib.pages.Register">
+<specification class="net.sf.tapestry.vlib.pages.Register">
 
   <property name="page-type">login</property>
 
@@ -36,7 +36,7 @@
     <static-binding name="displayWidth">30</static-binding>
     <static-binding name="maximumLength">30</static-binding>
     <static-binding name="displayName">Last Name</static-binding>
-    <field-binding name="validator" field-name="com.primix.tapestry.valid.StringValidator.REQUIRED"/>
+    <field-binding name="validator" field-name="net.sf.tapestry.valid.StringValidator.REQUIRED"/>
   </component>
   
   <component id="labelEmail" type="FieldLabel">
@@ -45,7 +45,7 @@
   
   <component id="inputEmail" type="ValidField">
     <binding name="value" property-path="email"/>
-    <field-binding name="validator" field-name="com.primix.tapestry.valid.StringValidator.REQUIRED"/>
+    <field-binding name="validator" field-name="net.sf.tapestry.valid.StringValidator.REQUIRED"/>
     <static-binding name="displayWidth">30</static-binding>
     <static-binding name="maximumLength">60</static-binding>
     <static-binding name="displayName">E-Mail</static-binding>
@@ -60,7 +60,7 @@
     <static-binding name="displayWidth">20</static-binding>
     <static-binding name="maximumLength">20</static-binding>
     <static-binding name="displayName">Password</static-binding>
-    <field-binding name="validator" field-name="com.primix.tapestry.valid.StringValidator.REQUIRED"/>
+    <field-binding name="validator" field-name="net.sf.tapestry.valid.StringValidator.REQUIRED"/>
     <field-binding name="hidden" field-name="Boolean.TRUE"/>
   </component>
   
@@ -73,7 +73,7 @@
     <static-binding name="displayWidth">20</static-binding>
     <static-binding name="maximumLength">20</static-binding>
     <static-binding name="displayName">Password (again)</static-binding>
-    <field-binding name="validator" field-name="com.primix.tapestry.valid.StringValidator.REQUIRED"/>
+    <field-binding name="validator" field-name="net.sf.tapestry.valid.StringValidator.REQUIRED"/>
     <field-binding name="hidden" field-name="Boolean.TRUE"/>
   </component>
 

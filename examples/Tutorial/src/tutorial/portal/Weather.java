@@ -30,7 +30,7 @@ import net.sf.tapestry.html.BasePage;
 
 /**
  *  This is much simpler than the others, and mostly is here to demonstrate
- *  how to include {@link com.primix.tapestry.link.Direct} links in a Portlet
+ *  how to include {@link net.sf.tapestry.link.Direct} links in a Portlet
  *  content.
  *
  *  @author Howard Lewis Ship

@@ -93,7 +93,7 @@ public class Body extends AbstractComponent
 
     private Set includedScripts;
 
-    private static final String ATTRIBUTE_NAME = "com.primix.tapestry.active.Body";
+    private static final String ATTRIBUTE_NAME = "net.sf.tapestry.active.Body";
 
     /**
      *  Tracks a particular preloaded image.

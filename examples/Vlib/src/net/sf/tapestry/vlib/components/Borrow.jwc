@@ -3,8 +3,7 @@
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 <specification class="net.sf.tapestry,vlib.components.Borrow" allow-body="no" allow-informal-parameters="no">
   <parameter name="book" java-type="net.sf.tapestry.vlib.ejb.Book" required="yes"/>
-  
-  
+    
   <component id="link" type="Direct">
     <binding name="context" property-path="book.primaryKey"/>
     <binding name="listener" property-path="listeners.borrow"/>

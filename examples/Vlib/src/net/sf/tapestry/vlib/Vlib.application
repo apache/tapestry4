@@ -2,39 +2,39 @@
 <!--$Id$-->
 <!DOCTYPE application PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 
-<application name="Virtual Library" engine-class="com.primix.vlib.VirtualLibraryEngine">
+<application name="Virtual Library" engine-class="net.sf.tapestry.vlib.VirtualLibraryEngine">
 
-  <service name="external" class="com.primix.vlib.ExternalService"/>
+  <service name="external" class="net.sf.tapestry.vlib.ExternalService"/>
 
-  <page name="Home" specification-path="/com/primix/vlib/pages/Home.jwc"/>
-  <page name="Login" specification-path="/com/primix/vlib/pages/Login.jwc"/>
-  <page name="Logout" specification-path="/com/primix/vlib/pages/Logout.jwc"/>
-  <page name="Matches" specification-path="/com/primix/vlib/pages/Matches.jwc"/>
-  <page name="MyLibrary" specification-path="/com/primix/vlib/pages/MyLibrary.jwc"/>
-  <page name="BorrowedBooks" specification-path="/com/primix/vlib/pages/BorrowedBooks.jwc"/>
-  <page name="NewBook" specification-path="/com/primix/vlib/pages/NewBook.jwc"/>
-  <page name="EditBook" specification-path="/com/primix/vlib/pages/EditBook.jwc"/>
-  <page name="EditProfile" specification-path="/com/primix/vlib/pages/EditProfile.jwc"/>
-  <page name="ConfirmBookDelete" specification-path="/com/primix/vlib/pages/ConfirmBookDelete.jwc"/>
-  <page name="Person" specification-path="/com/primix/vlib/pages/PersonPage.jwc"/>
-  <page name="ViewBook" specification-path="/com/primix/vlib/pages/ViewBook.jwc"/>
-  <page name="Register" specification-path="/com/primix/vlib/pages/Register.jwc"/>
+  <page name="Home" specification-path="/net/sf/tapestry/vlib/pages/Home.jwc"/>
+  <page name="Login" specification-path="/net/sf/tapestry/vlib/pages/Login.jwc"/>
+  <page name="Logout" specification-path="/net/sf/tapestry/vlib/pages/Logout.jwc"/>
+  <page name="Matches" specification-path="/net/sf/tapestry/vlib/pages/Matches.jwc"/>
+  <page name="MyLibrary" specification-path="/net/sf/tapestry/vlib/pages/MyLibrary.jwc"/>
+  <page name="BorrowedBooks" specification-path="/net/sf/tapestry/vlib/pages/BorrowedBooks.jwc"/>
+  <page name="NewBook" specification-path="/net/sf/tapestry/vlib/pages/NewBook.jwc"/>
+  <page name="EditBook" specification-path="/net/sf/tapestry/vlib/pages/EditBook.jwc"/>
+  <page name="EditProfile" specification-path="/net/sf/tapestry/vlib/pages/EditProfile.jwc"/>
+  <page name="ConfirmBookDelete" specification-path="/net/sf/tapestry/vlib/pages/ConfirmBookDelete.jwc"/>
+  <page name="Person" specification-path="/net/sf/tapestry/vlib/pages/PersonPage.jwc"/>
+  <page name="ViewBook" specification-path="/net/sf/tapestry/vlib/pages/ViewBook.jwc"/>
+  <page name="Register" specification-path="/net/sf/tapestry/vlib/pages/Register.jwc"/>
   
   <page name="admin.TransferBooks" 
-  	specification-path="/com/primix/vlib/pages/admin/TransferBooks.jwc"/>
+  	specification-path="/net/sf/tapestry/vlib/pages/admin/TransferBooks.jwc"/>
   <page name="admin.EditPublishers"
-    specification-path="/com/primix/vlib/pages/admin/EditPublishers.jwc"/>
-   <page name="admin.EditUsers"
-    specification-path="/com/primix/vlib/pages/admin/EditUsers.jwc"/> 
+    specification-path="/net/sf/tapestry/vlib/pages/admin/EditPublishers.jwc"/>
+  <page name="admin.EditUsers"
+    specification-path="/net/sf/tapestry/vlib/pages/admin/EditUsers.jwc"/> 
  
-  <component-alias type="Border" specification-path="/com/primix/vlib/components/Border.jwc"/>
-  <component-alias type="BookLink" specification-path="/com/primix/vlib/components/BookLink.jwc"/>
-  <component-alias type="PersonLink" specification-path="/com/primix/vlib/components/PersonLink.jwc"/>
-  <component-alias type="ShowError" specification-path="/com/primix/vlib/components/ShowError.jwc"/>
-  <component-alias type="ShowValidationError" specification-path="/com/primix/vlib/components/ShowValidationError.jwc"/>
-  <component-alias type="ShowMessage" specification-path="/com/primix/vlib/components/ShowMessage.jwc"/>
-  <component-alias type="Borrow" specification-path="/com/primix/vlib/components/Borrow.jwc"/>
-  <component-alias type="Browser" specification-path="/com/primix/vlib/components/Browser.jwc"/>
+  <component-alias type="Border" specification-path="/net/sf/tapestry/vlib/components/Border.jwc"/>
+  <component-alias type="BookLink" specification-path="/net/sf/tapestry/vlib/components/BookLink.jwc"/>
+  <component-alias type="PersonLink" specification-path="/net/sf/tapestry/vlib/components/PersonLink.jwc"/>
+  <component-alias type="ShowError" specification-path="/net/sf/tapestry/vlib/components/ShowError.jwc"/>
+  <component-alias type="ShowValidationError" specification-path="/net/sf/tapestry/vlib/components/ShowValidationError.jwc"/>
+  <component-alias type="ShowMessage" specification-path="/net/sf/tapestry/vlib/components/ShowMessage.jwc"/>
+  <component-alias type="Borrow" specification-path="/net/sf/tapestry/vlib/components/Borrow.jwc"/>
+  <component-alias type="Browser" specification-path="/net/sf/tapestry/vlib/components/Browser.jwc"/>
   
   <component-alias type="Palette"
   	specification-path="/net/sf/tapestry/contrib/palette/Palette.jwc"/>

@@ -31,7 +31,7 @@
   
   <target name="install" depends="compile" description="Compile all classes and build the installed JAR including all package resources.">
    <copy file="${root.dir}/config/Version.properties"
-      	todir="${classes.dir}/com/primix/tapestry"/>
+      	todir="${classes.dir}/net/sf/tapestry"/>
  
    <jar jarfile="${framework.jar}">
       <fileset dir="${classes.dir}"/>

@@ -5,7 +5,7 @@
 	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 	
 <specification 
-	class="net.sf.vlib.components.PersonLink" 
+	class="net.sf.tapestry.vlib.components.PersonLink" 
 	allow-body="no" 
 	allow-informal-parameters="no">
   

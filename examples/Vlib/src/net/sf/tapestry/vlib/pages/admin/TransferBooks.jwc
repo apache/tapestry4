@@ -4,7 +4,7 @@
   "-//Howard Ship//Tapestry Specification 1.1//EN" 
   "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
 
-<specification class="net.sf.vlib.pages.admin.TransferBooks">
+<specification class="net.sf.tapestry.vlib.pages.admin.TransferBooks">
 
   <property name="page-type">admin</property>
   

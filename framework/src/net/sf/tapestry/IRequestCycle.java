@@ -183,7 +183,7 @@ public interface IRequestCycle
      *  except that values can be changed and removed as well.
      *
      *  <p>This is used by components to locate each other.  A component, such
-     *  as {@link com.primix.tapestry.html.Body}, will write itself under a well-known name
+     *  as {@link net.sf.tapestry.html.Body}, will write itself under a well-known name
      *  into the request cycle, and components it wraps can locate it by that name.
      **/
 

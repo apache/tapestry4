@@ -81,8 +81,8 @@
 
       <arg value="jetty.xml"/>
 
-      <sysproperty key="com.primix.tapestry.enable-reset-service" value="true"/>
-      <sysproperty key="com.primix.vlib.debug-enabled" value="true"/>
+      <sysproperty key="net.sf.tapestry.enable-reset-service" value="true"/>
+      <sysproperty key="net.sf.tapestry.vlib.debug-enabled" value="true"/>
       
       <!-- Enable debugging on port 20150 --> 
        
@@ -90,11 +90,11 @@
       <jvmarg line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20150"/>
       <sysproperty key="java.compiler" value="NONE"/>     
        
-      <sysproperty key="com.primix.tapestry.disable-caching" value="true"/>
-      <sysproperty key="com.primix.tapestry.enable-reset-service" value="true"/>
+      <sysproperty key="net.sf.tapestry.disable-caching" value="true"/>
+      <sysproperty key="net.sf.tapestry.enable-reset-service" value="true"/>
 
-	  <sysproperty key="com.primix.tapestry.asset.dir" value="${private.dir}"/>
-	  <sysproperty key="com.primix.tapestry.asset.URL" value="/${private.dir}"/>
+	  <sysproperty key="net.sf.tapestry.asset.dir" value="${private.dir}"/>
+	  <sysproperty key="net.sf.tapestry.asset.URL" value="/${private.dir}"/>
 
       <!-- JNDI Configuration for JBoss -->
       

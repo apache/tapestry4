@@ -97,7 +97,7 @@ public abstract class BaseValidator implements IValidator
 
             strings =
                 ResourceBundle.getBundle(
-                    "com.primix.tapestry.valid.ValidationStrings",
+                    "net.sf.tapestry.valid.ValidationStrings",
                     bundleLocale);
         }
 

@@ -1,40 +1,32 @@
-/*
- * Tapestry Web Application Framework
- * Copyright (c) 2000-2001 by Howard Lewis Ship
- *
- * Howard Lewis Ship
- * http://sf.net/projects/tapestry
- * mailto:hship@users.sf.net
- *
- * This library is free software.
- *
- * You may redistribute it and/or modify it under the terms of the GNU
- * Lesser General Public License as published by the Free Software Foundation.
- *
- * Version 2.1 of the license should be included with this distribution in
- * the file LICENSE, as well as License.html. If the license is not
- * included with this distribution, you may find a copy at the FSF web
- * site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
- * Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied waranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- */
+//
+// Tapestry Web Application Framework
+// Copyright (c) 2000-2002 by Howard Lewis Ship
+//
+// Howard Lewis Ship
+// http://sf.net/projects/tapestry
+// mailto:hship@users.sf.net
+//
+// This library is free software.
+//
+// You may redistribute it and/or modify it under the terms of the GNU
+// Lesser General Public License as published by the Free Software Foundation.
+//
+// Version 2.1 of the license should be included with this distribution in
+// the file LICENSE, as well as License.html. If the license is not
+// included with this distribution, you may find a copy at the FSF web
+// site at 'www.gnu.org' or 'www.fsf.org', or you may write to the
+// Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139 USA.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied waranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
 
 package net.sf.tapestry.vlib.components;
 
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.*;
-
-import net.sf.tapestry.*;
-
-import net.sf.tapestry.vlib.ejb.*;
-
-// Appease Javadoc
-import net.sf.tapestry.vlib.pages.PersonPage;
+import net.sf.tapestry.BaseComponent;
+import net.sf.tapestry.IBinding;
 
 /**
  *  Creates a link to the {@link PersonPage} page using the external service.
@@ -70,89 +62,90 @@ import net.sf.tapestry.vlib.pages.PersonPage;
  *		</td>
  *	</tr>
  *
- * </table>
+ *  </table>
  *
- * <p>Informal parameters are not allowed.  A body is not allowed.
+ *  <p>Informal parameters are not allowed.  A body is not allowed.
  *
- * @author Howard Ship
- * @version $Id$
- */
+ *  @author Howard Lewis Ship
+ *  @version $Id$
+ * 
+ **/
 
 public class PersonLink extends BaseComponent
 {
-	private IBinding primaryKeyBinding;
-	private IBinding nameBinding;
+    private IBinding primaryKeyBinding;
+    private IBinding nameBinding;
 
-	private String[] context;
-	private Integer primaryKey;
+    private String[] context;
+    private Integer primaryKey;
 
-	private IBinding omitBinding;
-	private boolean staticOmit;
-	private boolean staticOmitValue;
+    private IBinding omitBinding;
+    private boolean staticOmit;
+    private boolean staticOmitValue;
 
-	public IBinding getPrimaryKeyBinding()
-	{
-		return primaryKeyBinding;
-	}
+    public IBinding getPrimaryKeyBinding()
+    {
+        return primaryKeyBinding;
+    }
 
-	public void setPrimaryKeyBinding(IBinding value)
-	{
-		primaryKeyBinding = value;
-	}
+    public void setPrimaryKeyBinding(IBinding value)
+    {
+        primaryKeyBinding = value;
+    }
 
-	public IBinding getNameBinding()
-	{
-		return nameBinding;
-	}
+    public IBinding getNameBinding()
+    {
+        return nameBinding;
+    }
 
-	public void setNameBinding(IBinding value)
-	{
-		nameBinding = value;
-	}
+    public void setNameBinding(IBinding value)
+    {
+        nameBinding = value;
+    }
 
-	public IBinding getOmitBinding()
-	{
-		return omitBinding;
-	}
+    public IBinding getOmitBinding()
+    {
+        return omitBinding;
+    }
 
-	public void setOmitBinding(IBinding value)
-	{
-		omitBinding = value;
+    public void setOmitBinding(IBinding value)
+    {
+        omitBinding = value;
 
-		staticOmit = value.isStatic();
+        staticOmit = value.isStatic();
 
-		if (staticOmit)
-			staticOmitValue = value.getBoolean();
-	}
+        if (staticOmit)
+            staticOmitValue = value.getBoolean();
+    }
 
-	public boolean getShowLink()
-	{
-		if (omitBinding == null)
-			return true;
+    public boolean getShowLink()
+    {
+        if (omitBinding == null)
+            return true;
 
-		if (staticOmit)
-			return !staticOmitValue;
+        if (staticOmit)
+            return !staticOmitValue;
 
-		return !omitBinding.getBoolean();
-	}
+        return !omitBinding.getBoolean();
+    }
 
-	/**
-	*  The context has two elements.  The first is the page to jump to
-	*  ("Person", for {@link PersonPage}), the second is the primary key of the person.
-	*
-	*/
+    /**
+     *  The context has two elements.  The first is the page to jump to
+     *  ("Person", for {@link PersonPage}), the second is the primary key of the person.
+     *
+     **/
 
-	public String[] getContext()
-	{
-		if (context == null)
-		{
-			context = new String[2];
-			context[0] = "Person";
-		}
+    public String[] getContext()
+    {
+        if (context == null)
+        {
+            context = new String[2];
+            context[0] = "Person";
+        }
 
-		context[1] = primaryKeyBinding.getString();
+        context[1] = primaryKeyBinding.getString();
 
-		return context;
-	}
+        return context;
+    }
 
 }

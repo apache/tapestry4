@@ -4,7 +4,7 @@
 <specification class="net.sf.tapestry.vlib.pages.Home">
 
   <component id="border" type="Border">
-    <static-binding name="title">Primix Virtual Library</static-binding>
+    <static-binding name="title">Virtual Library</static-binding>
   </component>
   
   <component id="showError" type="ShowError"/>
