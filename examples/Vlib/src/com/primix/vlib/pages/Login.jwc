@@ -29,6 +29,20 @@
 			<type>ShowError</type>
 		</component>
 		<component>
+			<id>labelEmail</id>
+			<type>FieldLabel</type>
+			<bindings>
+				<binding>
+					<name>field</name>
+					<property-path>components.inputEmail</property-path>
+				</binding>
+				<binding>
+					<name>delegate</name>
+					<property-path>validationDelegate</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
 			<id>inputEmail</id>
 			<type>ValidatingTextField</type>
 			<bindings>
@@ -43,7 +57,6 @@
 				<static-binding>
 					<name>displayName</name>
 					<value>Email Address</value>
-				
 				</static-binding>
 				<binding>
 					<name>text</name>
@@ -57,6 +70,20 @@
 					<name>required</name>
 					<field-name>Boolean.TRUE</field-name>
 				</field-binding>
+			</bindings>
+		</component>
+		<component>
+			<id>labelPassword</id>
+			<type>FieldLabel</type>
+			<bindings>
+				<binding>
+					<name>field</name>
+					<property-path>components.inputPassword</property-path>
+				</binding>
+				<binding>
+					<name>delegate</name>
+					<property-path>validationDelegate</property-path>
+				</binding>
 			</bindings>
 		</component>
 		<component>

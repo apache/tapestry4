@@ -47,6 +47,20 @@
 			</bindings>
 		</component>
 		<component>
+			<id>labelLastName</id>
+			<type>FieldLabel</type>
+			<bindings>
+				<binding>
+					<name>field</name>
+					<property-path>components.inputLastName</property-path>
+				</binding>
+				<binding>
+					<name>delegate</name>
+					<property-path>validationDelegate</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
 			<id>inputLastName</id>
 			<type>ValidatingTextField</type>
 			<bindings>
@@ -70,6 +84,20 @@
 					<name>required</name>
 					<field-name>Boolean.TRUE</field-name>
 				</field-binding>
+				<binding>
+					<name>delegate</name>
+					<property-path>validationDelegate</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>labelEmail</id>
+			<type>FieldLabel</type>
+			<bindings>
+				<binding>
+					<name>field</name>
+					<property-path>components.inputEmail</property-path>
+				</binding>
 				<binding>
 					<name>delegate</name>
 					<property-path>validationDelegate</property-path>
@@ -107,6 +135,20 @@
 			</bindings>
 		</component>
 		<component>
+			<id>labelPassword1</id>
+			<type>FieldLabel</type>
+			<bindings>
+				<binding>
+					<name>field</name>
+					<property-path>components.inputPassword1</property-path>
+				</binding>
+				<binding>
+					<name>delegate</name>
+					<property-path>validationDelegate</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
 			<id>inputPassword1</id>
 			<type>ValidatingTextField</type>
 			<bindings>
@@ -134,6 +176,20 @@
 					<name>hidden</name>
 					<field-name>Boolean.TRUE</field-name>
 				</field-binding>
+			</bindings>
+		</component>
+		<component>
+			<id>labelPassword2</id>
+			<type>FieldLabel</type>
+			<bindings>
+				<binding>
+					<name>field</name>
+					<property-path>components.inputPassword2</property-path>
+				</binding>
+				<binding>
+					<name>delegate</name>
+					<property-path>validationDelegate</property-path>
+				</binding>
 			</bindings>
 		</component>
 		<component>
