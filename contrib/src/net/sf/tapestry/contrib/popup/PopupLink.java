@@ -43,7 +43,7 @@ import net.sf.tapestry.spec.ComponentSpecification;
 /**
  * This component provides a popup link to launch a new window using a given
  * URL, windowName and windowFeatures for the javascript function:
- * <tt>window.open(URL, windowName, windowFeatures)<tt>.
+ * <tt>window.open(URL, windowName, windowFeatures)</tt>.
  *
  * @version $Id$ 
  * @author Joe Panico

@@ -48,6 +48,11 @@
   	<set-property name="clientScriptingEnabled" expression="clientValidationEnabled"/>
   </bean>
 
+  <bean name="emailValidator" lifecycle="render" class="net.sf.tapestry.valid.EmailValidator">
+  	<set-property name="required" expression="true"/>
+  	<set-property name="minimumLength" expression='6'/>
+  	<set-property name="clientScriptingEnabled" expression="clientValidationEnabled"/>
+  </bean>
 
   <component id="border" type="Border"/>
 
@@ -133,6 +138,16 @@
     <binding name="value" expression="visit.stringValue"/>
     <binding name="validator" expression="beans.stringValidator"/>
     <static-binding name="displayName">String Field</static-binding>
+  </component>
+
+  <component id="emailLabel" type="FieldLabel">
+    <binding name="field" expression="components.emailString"/>
+   </component>
+
+  <component id="emailString" type="ValidField">
+    <binding name="value" expression="visit.emailValue"/>
+    <binding name="validator" expression="beans.emailValidator"/>
+    <static-binding name="displayName">Email Field</static-binding>
   </component>
 
   <component id="continue" type="ImageSubmit">

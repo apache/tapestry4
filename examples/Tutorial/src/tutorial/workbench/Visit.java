@@ -69,6 +69,7 @@ public class Visit implements Serializable
     private Long _longValue;
     private Date _dateValue;
     private String _stringValue;
+    private String _emailValue;
 
     public String getActiveTabName()
     {
@@ -139,6 +140,7 @@ public class Visit implements Serializable
     {
         _dateValue = value;
     }
+
     public String getStringValue()
     {
         return _stringValue;
@@ -147,6 +149,16 @@ public class Visit implements Serializable
     public void setStringValue(String value)
     {
         _stringValue = value;
+    }
+    
+    public String getEmailValue()
+    {
+        return _emailValue;
+    }
+
+    public void setEmailValue(String value)
+    {
+        _emailValue = value;
     }
     
     public boolean getDisableInspector()
