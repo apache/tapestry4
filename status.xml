@@ -250,6 +250,10 @@ NextGen) be released as version number 3.0.
   
   <release version="3.0.1" date="unreleased">
     
+    <action type="update" dev="DS">
+      Add PopupLinkRenderer to contrib, this renderer emits javascript to launch the link in a new window.
+    </action>
+
     <action type="fix" dev="HLS" fixes-bug="29850">
       Ensure that the page's requestCycle property is set before finishLoad() is invoked on any component.
     </action>
