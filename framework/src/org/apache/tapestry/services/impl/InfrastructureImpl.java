@@ -14,33 +14,26 @@
 
 package org.apache.tapestry.services.impl;
 
-import javax.servlet.http.HttpServlet;
-
-import org.apache.hivemind.impl.MessageFormatter;
+import org.apache.tapestry.engine.IPropertySource;
+import org.apache.tapestry.services.Infrastructure;
 
 /**
- * 
+ * Allows access to selected HiveMind services.
  *
  * @author Howard Lewis Ship
  * @since 3.1
  */
-final class ImplMessages
+public class InfrastructureImpl implements Infrastructure
 {
-    private static final MessageFormatter _formatter =
-        new MessageFormatter(ImplMessages.class, "ImplStrings");
+    private IPropertySource _applicationPropertySource;
 
-    public static String initializerContribution()
+    public void setApplicationPropertySource(IPropertySource source)
     {
-        return _formatter.getMessage("initializer-contribution");
+        _applicationPropertySource = source;
     }
 
-    public static String noApplicationSpecification(HttpServlet servlet)
+    public IPropertySource getApplicationPropertySource()
     {
-        return _formatter.format("no-application-specification", servlet.getServletName());
-    }
-
-    public static String errorInstantiatingEngine(Class engineClass, Throwable cause)
-    {
-        return _formatter.format("error-instantiating-engine", engineClass.getName(), cause);
+        return _applicationPropertySource;
     }
 }

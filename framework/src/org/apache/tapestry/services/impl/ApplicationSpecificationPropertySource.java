@@ -14,33 +14,32 @@
 
 package org.apache.tapestry.services.impl;
 
-import javax.servlet.http.HttpServlet;
-
-import org.apache.hivemind.impl.MessageFormatter;
+import org.apache.tapestry.engine.IPropertySource;
+import org.apache.tapestry.spec.IApplicationSpecification;
 
 /**
- * 
+ * Obtains meta-data properties from the
+ * {@link org.apache.tapestry.spec.IApplicationSpecification}.
  *
  * @author Howard Lewis Ship
  * @since 3.1
  */
-final class ImplMessages
+public class ApplicationSpecificationPropertySource implements IPropertySource
 {
-    private static final MessageFormatter _formatter =
-        new MessageFormatter(ImplMessages.class, "ImplStrings");
+    private IApplicationSpecification _specification;
 
-    public static String initializerContribution()
+    /**
+     * Invokes {@link org.apache.tapestry.util.IPropertyHolder#getProperty(String)}
+     * on the specification.
+     */
+    public String getPropertyValue(String propertyName)
     {
-        return _formatter.getMessage("initializer-contribution");
+        return _specification.getProperty(propertyName);
     }
 
-    public static String noApplicationSpecification(HttpServlet servlet)
+    public void setSpecification(IApplicationSpecification specification)
     {
-        return _formatter.format("no-application-specification", servlet.getServletName());
+        _specification = specification;
     }
 
-    public static String errorInstantiatingEngine(Class engineClass, Throwable cause)
-    {
-        return _formatter.format("error-instantiating-engine", engineClass.getName(), cause);
-    }
 }

@@ -17,7 +17,6 @@ package org.apache.tapestry.services.impl;
 import java.util.Collections;
 
 import org.apache.commons.logging.Log;
-import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorHandler;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.engine.IPropertySource;
@@ -78,14 +77,7 @@ public class TestPropertySource extends HiveMindTestCase
 
         ps.initializeService();
 
-        try
-        {
-            ps.getPropertyValue("foo");
-        }
-        catch (ApplicationRuntimeException ex)
-        {
-            assertEquals(ImplMessages.noSuchGlobalProperty("foo"), ex.getMessage());
-        }
+        assertNull(ps.getPropertyValue("foo"));
 
         verifyControls();
     }

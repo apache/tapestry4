@@ -18,7 +18,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
-import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorHandler;
 import org.apache.hivemind.order.Orderer;
 import org.apache.tapestry.engine.IPropertySource;
@@ -67,7 +66,9 @@ public class PropertySourceImpl implements IPropertySource
                 return result;
         }
 
-        throw new ApplicationRuntimeException(ImplMessages.noSuchGlobalProperty(propertyName));
+		// Not found, return null.
+		
+        return null;
     }
 
     public void setContributions(List list)

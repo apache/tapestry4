@@ -17,7 +17,8 @@
 
 <module id="tapestry" version="3.1.0">
 
-  The master module for the Apache Tapestry web application framework.
+  The master module for the Apache Tapestry web application framework.  This is growing rapidly 
+  and will likely split into a number of sub modules.
   
   <service-point id="MasterInitializer" interface="org.apache.tapestry.services.ApplicationInitializer">
     
@@ -190,6 +191,11 @@
   
   <contribution configuration-id="hivemind.FactoryDefaults">
     <default symbol="org.apache.tapestry.engine-class" value="org.apache.tapestry.engine.BaseEngine"/>
+    <default symbol="org.apache.tapestry.default-script-language" value="jython"/>
+    <default symbol="org.apache.tapestry.visit-class" value="java.util.HashMap"/>
+    <default symbol="org.apache.tapestry.output-encoding" value="UTF-8"/>
+    <default symbol="org.apache.tapestry.enhance.disable-abstract-method-validation" value="false"/>
+    <default symbol="org.apache.tapestry.default-page-class" value="org.apache.tapestry.html.BasePage"/>
   </contribution>
   
   <service-point id="RequestServicerPipeline" interface="org.apache.tapestry.services.RequestServicer">
@@ -212,6 +218,7 @@
         <set-service property="engineManager" service-id="EngineManager"/>
         <set-object property="specification" value="service-property:ApplicationGlobals:specification"/>
         <set-object property="servlet" value="service-property:ApplicationGlobals:servlet"/>
+        <set-service property="infrastructure" service-id="Infrastructure"/>
       </construct>
     </invoke-factory>
     
@@ -229,14 +236,11 @@
   </contribution>
   
   
-  
-  <configuration-point id="GlobalPropertySources">
+  <schema id="PropertySources">
     
-    Specifies a sequence of property sources used to resolve global application configuration data, which may
-    be in web.xml (servlet init parameters or servlet
-    context init parameters), or provided as HiveMind substitution symbol.
+      Used to build a list of IPropertySource instances in a specific
+      consultation order.
     
-    <schema>
       <element name="source">
         
         <attribute name="name" required="true">
@@ -260,12 +264,20 @@
         </conversion>
         
       </element>
-    </schema>
+
+  </schema>
+  
+  <configuration-point id="GlobalPropertySources" schema-id="PropertySources">
+    
+    Specifies a sequence of property sources used to resolve global application configuration data, which may
+    be in web.xml (servlet init parameters or servlet
+    context init parameters), or provided as HiveMind substitution symbol.
+    
   </configuration-point>
   
   <service-point id="GlobalPropertySource" interface="org.apache.tapestry.engine.IPropertySource">
     
-    Service point of obtaining configuration data resolved using GlobalPropertySourcePipeline
+    Service point for obtaining configuration data resolved using GlobalPropertySources
     configuration point.
     
     <invoke-factory>
@@ -321,20 +333,131 @@
     <source name="symbols" object="service:SymbolSourcesPropertySource" after="context"/>
   </contribution>
   
+  
+  <configuration-point id="ApplicationPropertySources" schema-id="PropertySources">
+    
+    Property sources used by the application, which includes a search of the
+    application specification, a delegate of the application specification, the servlet and
+    servlet context, and JVM System Properties.
+    
+  </configuration-point>
+  
+  <service-point id="ApplicationPropertySource" interface="org.apache.tapestry.engine.IPropertySource">
+    
+    Service point for obtaining configuration data resolved using ApplicationPropertySources
+    configuration point.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.PropertySourceImpl">
+        <set-configuration property="contributions" configuration-id="ApplicationPropertySources"/>
+      </construct>
+    </invoke-factory>
+        
+  </service-point>
+  
+  <contribution configuration-id="ApplicationPropertySources">
+    <source name="app-spec" object="service:ApplicationSpecificationPropertySource"/>
+    <source name="servlet" object="service:ServletPropertySource" after="app-spec"/>
+    <source name="context" object="service:ServletContextPropertySource" after="servlet"/>
+    <source name="delegate" object="service:DelegatePropertySource" after="context"/>
+    <source name="symbols" object="service:SymbolSourcesPropertySource" after="context"/>
+  </contribution>
+  
+  <service-point id="ApplicationSpecificationPropertySource" interface="org.apache.tapestry.engine.IPropertySource">
+    
+    Obtains property values from application specification meta-data.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.ApplicationSpecificationPropertySource">
+        <set-service property="specification" service-id="ApplicationSpecification"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <service-point id="DelegatePropertySource" interface="org.apache.tapestry.engine.IPropertySource">
+    
+    Property source provided as an application extension: org.apache.tapestry.property-source.
+    
+    <invoke-factory service-id="ExtensionLookupFactory">
+      <lookup extension-name="org.apache.tapestry.property-source"/>
+    </invoke-factory>
+    
+  </service-point>
+  
   <service-point id="GlobalPropertyObjectProvider" interface="org.apache.hivemind.service.ObjectProvider">
     
     An object provider based on obtaining global properties from the GlobalPropertySource
     service.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.GlobalPropertyObjectProvider">
+      <construct class="org.apache.tapestry.services.impl.PropertyObjectProvider">
         <set-service property="source" service-id="GlobalPropertySource"/>
       </construct>
     </invoke-factory>
     
   </service-point>
   
+  <service-point id="ApplicationPropertyObjectProvider" interface="org.apache.hivemind.service.ObjectProvider">
+    
+    An object provider based on obtained properties from the ApplicationPropertySource service.
+
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.PropertyObjectProvider">
+        <set-service property="source" service-id="ApplicationPropertySource"/>
+      </construct>
+    </invoke-factory>    
+    
+  </service-point>
+  
   <contribution configuration-id="hivemind.ObjectProviders">
     <provider prefix="global-property" service-id="GlobalPropertyObjectProvider"/>
+    <provider prefix="app-property" service-id="ApplicationPropertyObjectProvider"/>
+  </contribution>
+  
+  <service-point id="Infrastructure" interface="org.apache.tapestry.services.Infrastructure">
+    
+    A kind of "clearing house" of other services. The Infrastructure is provided to the
+    IEngine instance via the InvokeEngineTerminator service (using an HttpServletRequest
+    attribute).  The engine can then get the other services it depends upon.  Ultimately,
+    Infrastructure may be removed and the entire IEngine interface may go away!
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.InfrastructureImpl">
+        <set-service property="applicationPropertySource" service-id="ApplicationPropertySource"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <service-point id="ExtensionLookupFactory" interface="org.apache.hivemind.ServiceImplementationFactory">
+    
+    A service factory that, in fact, attempts to obtain service implementations
+    as application extensions.  Failing that, a default implementation is
+    constructed.
+    
+    <parameters-schema>
+      
+      <element name="lookup">
+        
+        <attribute name="extension-name" required="true"/>
+        
+        <conversion class="org.apache.tapestry.services.impl.ExtensionLookupParameter"/>
+        
+      </element>
+      
+    </parameters-schema>
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.ExtensionLookupFactory">
+        <set-service property="specification" service-id="ApplicationSpecification"/>
+        <set-service property="defaultBuilder" service-id="hivemind.lib.DefaultImplementationBuilder"/>
+      </construct>
+    </invoke-factory>
+  </service-point>
+  
+  <contribution configuration-id="hivemind.SymbolSources">
+    <source name="SystemProperties" before="hivemind.ApplicationDefaults" 
+      class="org.apache.hivemind.impl.SystemPropertiesSymbolSource"/>
   </contribution>
 </module>

@@ -20,9 +20,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.tapestry.Constants;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.EngineManager;
+import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.RequestServicer;
 import org.apache.tapestry.spec.IApplicationSpecification;
 
@@ -36,14 +38,17 @@ import org.apache.tapestry.spec.IApplicationSpecification;
  */
 public class InvokeEngineTerminator implements RequestServicer
 {
-	private HttpServlet _servlet;
+    private HttpServlet _servlet;
     private EngineManager _engineManager;
     private IApplicationSpecification _specification;
+    private Infrastructure _infrastructure;
 
     public void service(HttpServletRequest request, HttpServletResponse response)
         throws IOException, ServletException
     {
         IEngine engine = _engineManager.getEngineInstance();
+
+        request.setAttribute(Constants.INFRASTRUCTURE_KEY, _infrastructure);
 
         RequestContext context = new RequestContext(_servlet, request, response, _specification);
 
@@ -73,6 +78,11 @@ public class InvokeEngineTerminator implements RequestServicer
     public void setSpecification(IApplicationSpecification specification)
     {
         _specification = specification;
+    }
+
+    public void setInfrastructure(Infrastructure infrastructure)
+    {
+        _infrastructure = infrastructure;
     }
 
 }

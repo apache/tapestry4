@@ -45,6 +45,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.ApplicationServlet;
+import org.apache.tapestry.Constants;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.INamespace;
@@ -60,6 +61,7 @@ import org.apache.tapestry.listener.ListenerMap;
 import org.apache.tapestry.pageload.PageSource;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.request.ResponseOutputStream;
+import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.util.exception.ExceptionAnalyzer;
 import org.apache.tapestry.util.io.DataSqueezer;
@@ -69,14 +71,19 @@ import org.apache.tapestry.util.pool.Pool;
  *  Basis for building real Tapestry applications.  Immediate subclasses
  *  provide different strategies for managing page state and other resources
  *  between request cycles.
+ * 
+ * <p>
+ *  Note: much of this description is <em>in transition</em> as part
+ *  of Tapestry 3.1. All ad-hoc singletons and such are being replaced with
+ *  HiveMind services. 
  *
- *  Uses a shared instance of
+ *  <p>Uses a shared instance of
  *  {@link ITemplateSource}, {@link ISpecificationSource},
  *  {@link IScriptSource} and {@link IComponentMessagesSource}
  *  stored as attributes of the  {@link ServletContext}
  *  (they will be shared by all sessions).
  *
- *  <p>An application is designed to be very lightweight.
+ *  <p>An engine is designed to be very lightweight.
  *  Particularily, it should <b>never</b> hold references to any
  *  {@link IPage} or {@link org.apache.tapestry.IComponent} objects.  The entire system is
  *  based upon being able to quickly rebuild the state of any page(s).
@@ -127,6 +134,13 @@ public abstract class AbstractEngine
      **/
 
     private static final long serialVersionUID = 6884834397673817117L;
+
+    /**
+     * The link to the world of HiveMind services.
+     * 
+     * @since 3.1
+     */
+    private transient Infrastructure _infrastructure;
 
     private transient String _contextPath;
     private transient String _servletPath;
@@ -342,16 +356,6 @@ public abstract class AbstractEngine
         Boolean.getBoolean("org.apache.tapestry.disable-caching");
 
     private transient ClassResolver _resolver;
-
-    /**
-     *  Constant used to store a {@link org.apache.tapestry.util.IPropertyHolder}
-     *  in the servlet context.
-     *
-     *  @since 2.3
-     *
-     **/
-
-    protected static final String PROPERTY_SOURCE_NAME = "org.apache.tapestry.PropertySource";
 
     /**
      *  A shared instance of {@link IPropertySource}
@@ -790,10 +794,10 @@ public abstract class AbstractEngine
 
     public boolean service(RequestContext context) throws ServletException, IOException
     {
-    	// TODO: Switch this around sound that we don't downcast ... in fact,
-    	// all of the stuff we get from the servlet will be coming out of the
-    	// registry soon enough.
-    	
+        // TODO: Switch this around sound that we don't downcast ... in fact,
+        // all of the stuff we get from the servlet will be coming out of the
+        // registry soon enough.
+
         ApplicationServlet servlet = (ApplicationServlet) context.getServlet();
         IRequestCycle cycle = null;
         ResponseOutputStream output = null;
@@ -804,6 +808,9 @@ public abstract class AbstractEngine
 
         if (_specification == null)
             _specification = context.getApplicationSpecification();
+
+        if (_infrastructure == null)
+            _infrastructure = (Infrastructure) context.getAttribute(Constants.INFRASTRUCTURE_KEY);
 
         // The servlet invokes setLocale() before invoking service().  We want
         // to ignore that setLocale() ... that is, not force a cookie to be
@@ -1233,18 +1240,7 @@ public abstract class AbstractEngine
         String servletName = context.getServlet().getServletName();
 
         if (_propertySource == null)
-        {
-            String name = PROPERTY_SOURCE_NAME + ":" + servletName;
-
-            _propertySource = (IPropertySource) servletContext.getAttribute(name);
-
-            if (_propertySource == null)
-            {
-                _propertySource = createPropertySource(context);
-
-                servletContext.setAttribute(name, _propertySource);
-            }
-        }
+            _propertySource = _infrastructure.getApplicationPropertySource();
 
         if (_enhancer == null)
         {
@@ -2053,32 +2049,6 @@ public abstract class AbstractEngine
     }
 
     /**
-     *  Creates a shared property source that will be stored into
-     *  the servlet context.
-     *  Subclasses may override this method to build thier
-     *  own search path.
-     *
-     *  <p>If the application specification contains an extension
-     *  named "org.apache.tapestry.property-source" it is inserted
-     *  in the search path just before
-     *  the property source for JVM System Properties.  This is a simple
-     *  hook at allow application-specific methods of obtaining
-     *  configuration values (typically, from a database or from JMX,
-     *  in some way).  Alternately, subclasses may
-     *  override this method to provide whatever search path
-     *  is appropriate.
-     *
-     *
-     *  @since 2.3
-     *
-     **/
-
-    protected IPropertySource createPropertySource(RequestContext context)
-    {
-        return new DefaultPropertySource(context);
-    }
-
-    /**
      *  Creates the shared Global object.  This implementation looks for an configuration
      *  property, <code>org.apache.tapestry.global-class</code>, and instantiates that class
      *  using a no-arguments
@@ -2093,7 +2063,7 @@ public abstract class AbstractEngine
     {
         String className = _propertySource.getPropertyValue("org.apache.tapestry.global-class");
 
-        if (className == null)
+        if (Tapestry.isBlank(className))
             return Collections.synchronizedMap(new HashMap());
 
         Class globalClass = _resolver.findClass(className);

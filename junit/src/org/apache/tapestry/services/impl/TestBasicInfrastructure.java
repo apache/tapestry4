@@ -193,7 +193,7 @@ public class TestBasicInfrastructure extends HiveMindTestCase
 
         replayControls();
 
-        GlobalPropertyObjectProvider p = new GlobalPropertyObjectProvider();
+        PropertyObjectProvider p = new PropertyObjectProvider();
         p.setSource(source);
 
         assertEquals("bar", p.provideObject(null, null, "foo", null));
@@ -215,7 +215,7 @@ public class TestBasicInfrastructure extends HiveMindTestCase
 
         replayControls();
 
-        GlobalPropertyObjectProvider p = new GlobalPropertyObjectProvider();
+        PropertyObjectProvider p = new PropertyObjectProvider();
         p.setSource(source);
 
         try

@@ -50,7 +50,6 @@ import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.engine.ITemplateSource;
 import org.apache.tapestry.event.PageDetachListener;
-import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.resolver.ComponentSpecificationResolver;
 import org.apache.tapestry.resource.ContextResource;
@@ -677,9 +676,6 @@ public class PageLoader implements IPageLoader
             className =
                 _engine.getPropertySource().getPropertyValue(
                     "org.apache.tapestry.default-page-class");
-
-            if (className == null)
-                className = BasePage.class.getName();
 
             if (LOG.isDebugEnabled())
                 LOG.debug("Defaulting to class " + className);
