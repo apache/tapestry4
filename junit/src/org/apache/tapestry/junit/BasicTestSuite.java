@@ -106,7 +106,7 @@ public class BasicTestSuite extends TestSuite
         suite.addTestSuite(TestPropertyFinder.class);
         suite.addTestSuite(TestListenerMap.class);
         suite.addTestSuite(TestIdAllocator.class);
-        suite.addTestSuite(TestComponentStrings.class);
+        suite.addTestSuite(TestComponentMessages.class);
         suite.addTestSuite(TestTemplateParser.class);
         suite.addTestSuite(TestLocation.class);
         suite.addTestSuite(TestSpecificationParser.class);

@@ -56,6 +56,7 @@
 package org.apache.tapestry.engine;
 
 import java.text.MessageFormat;
+import java.util.Locale;
 import java.util.Properties;
 
 import org.apache.tapestry.IMessages;
@@ -75,9 +76,11 @@ import org.apache.tapestry.IMessages;
 public class ComponentMessages implements IMessages
 {
     private Properties _properties;
+    private Locale _locale;
 
-    public ComponentMessages(Properties properties)
+    public ComponentMessages(Locale locale, Properties properties)
     {
+        _locale = locale;
         _properties = properties;
     }
 
@@ -115,7 +118,9 @@ public class ComponentMessages implements IMessages
     {
         String pattern = getMessage(key);
 
-        return MessageFormat.format(pattern, arguments);
+        MessageFormat messageFormat = new MessageFormat(pattern, _locale);
+
+        return messageFormat.format(arguments);
     }
 
 }

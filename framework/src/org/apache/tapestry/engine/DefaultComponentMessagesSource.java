@@ -96,7 +96,6 @@ public class DefaultComponentMessagesSource implements IComponentMessagesSource
 
     private Map _cache = new HashMap();
 
-
     /**
      *  Returns an instance of {@link Properties} containing
      *  the properly localized messages for the component,
@@ -279,7 +278,9 @@ public class DefaultComponentMessagesSource implements IComponentMessagesSource
 
     public IMessages getMessages(IComponent component)
     {
-        return new ComponentMessages(getLocalizedProperties(component));
+        return new ComponentMessages(
+            component.getPage().getLocale(),
+            getLocalizedProperties(component));
     }
 
 }

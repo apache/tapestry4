@@ -55,6 +55,9 @@
 
 package org.apache.tapestry.junit;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import org.apache.tapestry.IPage;
@@ -68,10 +71,10 @@ import org.apache.tapestry.IPage;
  *
  **/
 
-public class TestComponentStrings extends TapestryTestCase
+public class TestComponentMessages extends TapestryTestCase
 {
 
-    public TestComponentStrings(String name)
+    public TestComponentMessages(String name)
     {
         super(name);
     }
@@ -131,32 +134,60 @@ public class TestComponentStrings extends TapestryTestCase
 
         check(page, "overwritten-in-variant", "VARIANT1_fr_CD_Foo");
     }
-    
+
     private static final String MOCK2 = "/org/apache/tapestry/junit/MockPage2.jwc";
-    
+
     /**
      *  Tests that the code that locates properties files can deal
      *  with the base path (i.e., Foo.properties) doesn't exist.
      * 
      **/
-    
+
     public void testMissingBase()
     {
         IPage page = createPage(MOCK2, new Locale("en", "US"));
-        
+
         check(page, "language-key", "LANGUAGE1");
     }
-    
+
     /**
      *  Tests that naming and search works correctly for locales
      *  that specify language and variant, but no country.
      * 
      **/
-    
+
     public void testMissingCountry()
     {
         IPage page = createPage(MOCK2, new Locale("en", "", "Tapestry"));
-        
+
         check(page, "overwritten-in-variant", "VARIANT1_en__Tapestry");
+    }
+
+    public void testDateFormatting()
+    {
+        IPage page = createPage(MOCK1, new Locale("en"));
+
+        Calendar c = new GregorianCalendar(1966, Calendar.DECEMBER, 24);
+
+        Date d = c.getTime();
+
+        assertEquals(
+            "A formatted date: 12/24/66",
+            page.getMessages().format("using-date-format", d));
+    }
+
+    public void testDateFormatLocalization()
+    {
+        IPage page = createPage(MOCK1, new Locale("fr"));
+
+        Calendar c = new GregorianCalendar(1966, Calendar.DECEMBER, 24);
+
+        Date d = c.getTime();
+
+        // French formatting puts the day before the month.
+
+        assertEquals(
+            "A formatted date: 24/12/66",
+            page.getMessages().format("using-date-format", d));
     }
 }
