@@ -25,6 +25,8 @@
 
 package net.sf.tapestry.bean;
 
+import net.sf.tapestry.util.prop.PropertyHelper;
+
 /**
  *  Base class for initializing a property of a JavaBean.
  *
@@ -36,15 +38,22 @@ package net.sf.tapestry.bean;
 
 abstract public class AbstractBeanInitializer implements IBeanInitializer
 {
-    protected String propertyName;
+    protected String _propertyName;
 
     public AbstractBeanInitializer(String propertyName)
     {
-        this.propertyName = propertyName;
+        this._propertyName = propertyName;
     }
 
     public String getPropertyName()
     {
-        return propertyName;
+        return _propertyName;
+    }
+    
+    protected void setBeanProperty(Object bean, Object value)
+    {
+        PropertyHelper helper = PropertyHelper.forInstance(bean);
+        
+        helper.set(bean, _propertyName, value);
     }
 }

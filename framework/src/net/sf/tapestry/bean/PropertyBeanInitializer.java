@@ -41,24 +41,23 @@ import net.sf.tapestry.util.prop.PropertyHelper;
 
 public class PropertyBeanInitializer extends AbstractBeanInitializer
 {
-    protected String[] propertyPath;
+    protected String[] _propertyPath;
 
     public PropertyBeanInitializer(String propertyName, String propertyPath)
     {
         super(propertyName);
 
-        this.propertyPath = PropertyHelper.splitPropertyPath(propertyPath);
+        _propertyPath = PropertyHelper.splitPropertyPath(propertyPath);
     }
 
     public void setBeanProperty(IBeanProvider provider, Object bean)
     {
         IComponent component = provider.getComponent();
-        PropertyHelper componentHelper = PropertyHelper.forInstance(component);
-        PropertyHelper beanHelper = PropertyHelper.forInstance(bean);
+        PropertyHelper helper = PropertyHelper.forInstance(component);
 
-        Object value = componentHelper.getPath(component, propertyPath);
+        Object value = helper.getPath(component, _propertyPath);
 
-        beanHelper.set(bean, propertyName, value);
+        setBeanProperty(bean, value);
     }
 
 }

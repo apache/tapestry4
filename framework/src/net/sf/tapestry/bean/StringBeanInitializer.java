@@ -1,6 +1,6 @@
 //
 // Tapestry Web Application Framework
-// Copyright (c) 2000-2002 by Howard Lewis Ship
+// Copyright (c) 2002 by Howard Lewis Ship
 //
 // Howard Lewis Ship
 // http://sf.net/projects/tapestry
@@ -26,32 +26,35 @@
 package net.sf.tapestry.bean;
 
 import net.sf.tapestry.IBeanProvider;
+import net.sf.tapestry.IComponent;
 import net.sf.tapestry.util.prop.PropertyHelper;
 
 /**
- *  Initializes a bean with a static value.
+ *  A bean initializer that uses a localized string from the containing
+ *  component.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 1.0.5
+ *  @since 2.2
  * 
  **/
 
-public class StaticBeanInitializer extends AbstractBeanInitializer
+public class StringBeanInitializer extends AbstractBeanInitializer
 {
-    protected Object _value;
+    protected String _key;
 
-    public StaticBeanInitializer(String propertyName, Object value)
+    public StringBeanInitializer(String propertyName, String key)
     {
         super(propertyName);
 
-        this._value = value;
+        _key = key;
     }
 
     public void setBeanProperty(IBeanProvider provider, Object bean)
     {
-        PropertyHelper helper = PropertyHelper.forInstance(bean);
-
-        helper.set(bean, _propertyName, _value);
+        IComponent component = provider.getComponent();
+        String value = component.getString(_key);
+        
+        setBeanProperty(bean, value);
     }
 }

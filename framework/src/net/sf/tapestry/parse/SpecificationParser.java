@@ -782,7 +782,23 @@ if (!isPage)
                 convertPropertyValue(spec, name, child);
                 continue;
             }
+            
+            if (isElement(child, "string-value"))
+            {
+                convertStringValue(spec, name, child);
+                continue;
+            }
         }
+    }
+
+    /** @since 2.2 **/
+    
+    private void convertStringValue(BeanSpecification spec, String propertyName, Node node)
+    {
+        String key = getAttribute(node, "key");
+        IBeanInitializer iz = _factory.createStringBeanInitializer(propertyName, key);
+        
+        spec.addInitializer(iz);
     }
 
     /** @since 1.0.8 **/
