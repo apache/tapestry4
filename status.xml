@@ -171,7 +171,7 @@ NextGen) be released as version number 3.0.
 	<action context="code" dev="open">Reoganize directory structure to more standard format (compatible with Maven)</action>
 	<action context="code" dev="open">Get Tapestry compiling under Maven, have nightly builds</action>
 	<action context="code" dev="open">Fill out the test suite and code coverage, reach 85% or better</action>
-	<action context="code" dev="open">Fix all the Component Reference pages to use the 3.0 syntax</action>
+	<action context="code" dev="DS">Fix all the Component Reference pages to use the 3.0 syntax</action>
   	<action context="script" dev="open">Improve the "include script" element to support relative scripts, scripts in context, script in classpath</action>
 	<action context="misc" dev="open">Unit testing stategy for the JSP tags and tagsupport service</action>
 	<action context="misc" dev="open">Allow auto parameters to not be required</action>
@@ -199,6 +199,10 @@ NextGen) be released as version number 3.0.
   
  <release version="3.0-rc-1" date="unreleased">
  
+ <action type="update" dev="DS">
+ 	Update Component Reference to use 3.0 syntax	
+ </action>
+
  <action type="update" dev="HLS">
  	Update the license to Apache Software License 2.0.	
  </action>
