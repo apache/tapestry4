@@ -1,7 +1,6 @@
 package tests.tapestry;
 
 import com.primix.tapestry.*;
-import com.primix.tapestry.spec.*;
 import com.primix.tapestry.components.*;
 import java.util.*;
 
@@ -129,11 +128,6 @@ public class SurveyPage extends BasePage
 		
 	}
 
-	public SurveyPage(IApplication application, ComponentSpecification componentSpecification)
-	{
-		super(application, componentSpecification);
-	}
-	
 	public void detachFromApplication()
 	{
 		// We return the page largely to its newly constructed state here.

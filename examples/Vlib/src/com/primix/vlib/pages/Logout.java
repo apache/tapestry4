@@ -1,7 +1,6 @@
 package com.primix.vlib.pages;
 
 import com.primix.tapestry.components.*;
-import com.primix.tapestry.spec.*;
 import com.primix.tapestry.*;
 import com.primix.vlib.*;
 
@@ -43,11 +42,6 @@ import com.primix.vlib.*;
 
 public class Logout extends BasePage implements ILifecycle
 {
-	public Logout(IApplication application, ComponentSpecification componentSpecification)
-	{
-		super(application, componentSpecification);
-	}
-	
 	/**
 	 *  Sets the application user to null.
 	 *

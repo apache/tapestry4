@@ -1,7 +1,6 @@
 package com.primix.vlib.pages;
 
 import com.primix.tapestry.components.*;
-import com.primix.tapestry.spec.*;
 import com.primix.tapestry.*;
 import com.primix.vlib.ejb.*;
 import com.primix.vlib.*;
@@ -53,11 +52,6 @@ public class Home extends BasePage
 	private String message;
 	private String searchAuthor;
 	
-	public Home(IApplication application, ComponentSpecification componentSpecification)
-	{
-		super(application, componentSpecification);
-	}
-
 	public void detachFromApplication()
 	{
 		super.detachFromApplication();

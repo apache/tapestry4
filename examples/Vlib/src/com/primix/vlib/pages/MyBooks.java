@@ -1,7 +1,6 @@
 package com.primix.vlib.pages;
 
 import com.primix.tapestry.components.*;
-import com.primix.tapestry.spec.*;
 import com.primix.tapestry.*;
 import com.primix.vlib.ejb.*;
 import com.primix.vlib.*;
@@ -61,11 +60,6 @@ public class MyBooks extends Protected
 	
 	private Book currentBook;
 	
-	public MyBooks(IApplication application, ComponentSpecification componentSpecification)
-	{
-		super(application, componentSpecification);
-	}
-
 	public void detachFromApplication()
 	{
 		super.detachFromApplication();

@@ -34,7 +34,6 @@ package tests.tapestry;
  */
  
 import com.primix.tapestry.*;
-import com.primix.tapestry.spec.*;
 import com.primix.sesstrack.*;
 import java.rmi.*;
 import java.util.*;
@@ -43,15 +42,17 @@ public class History extends BasePage
 {
     private ServerHit hit;
 
-    public History(IApplication application, ComponentSpecification specification)
+    public void detachFromApplication()
     {
-        super(application, specification);
+        super.detachFromApplication();
+
+        hit = null;
     }
 
     /**
-     *  Returns the URLs stored by the session tracker as an array.
-     *
-     */
+    *  Returns the URLs stored by the session tracker as an array.
+    *
+    */
 
     public Object[] getHits()
     {
@@ -69,7 +70,7 @@ public class History extends BasePage
         {
             throw new ApplicationRuntimeException(e.getMessage(), e);
         }
-        
+
         return list.toArray();
     }
 
@@ -83,10 +84,5 @@ public class History extends BasePage
         return hit;
     }
 
-    public void detachFromApplication()
-    {
-        super.detachFromApplication();
-
-        hit = null;
-    }
 }
+

@@ -1,7 +1,6 @@
 package com.primix.vlib.pages;
 
 import com.primix.tapestry.components.*;
-import com.primix.tapestry.spec.*;
 import com.primix.tapestry.*;
 import com.primix.vlib.ejb.*;
 import com.primix.vlib.*;
@@ -54,11 +53,6 @@ public class EditProfile extends Protected
 	
 	private static final int MAP_SIZE = 11;
 	
-	public EditProfile(IApplication application, ComponentSpecification componentSpecification)
-	{
-		super(application, componentSpecification);
-	}
-
 	public void detachFromApplication()
 	{
 		super.detachFromApplication();

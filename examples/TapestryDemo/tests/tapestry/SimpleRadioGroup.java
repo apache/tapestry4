@@ -2,7 +2,6 @@ package tests.tapestry;
 
 import com.primix.tapestry.*;
 import com.primix.tapestry.components.*;
-import com.primix.tapestry.spec.*;
 
 /*
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -45,11 +44,6 @@ implements ILifecycle
 
 	protected static final String ADAPTOR_NAME = "adaptor";
 
-	public SimpleRadioGroup(IPage page, IComponent container, String id, ComponentSpecification spec)
-	{
-		super(page, container, id, spec);
-	}
-	
 	public void cleanupAfterRender(IRequestCycle cycle)
 	{
 		adaptor = null;

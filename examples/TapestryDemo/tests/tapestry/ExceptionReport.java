@@ -2,7 +2,6 @@ package tests.tapestry;
 
 import com.primix.foundation.exception.*;
 import com.primix.foundation.*;
-import com.primix.tapestry.spec.*;
 import com.primix.tapestry.*;
 
 /*
@@ -43,21 +42,27 @@ import com.primix.tapestry.*;
 
 public class ExceptionReport extends BasePage
 {
-	private ExceptionDescription[] exceptions;
-public ExceptionReport(IApplication application, ComponentSpecification componentSpecification)
-{
-	super(application, componentSpecification);
-}
-public ExceptionDescription[] getExceptions()
-{
-	return exceptions;
-}
-public void setException(Throwable value)
-{
-	ExceptionAnalyzer analyzer;
-	
-	analyzer = new ExceptionAnalyzer();
+    private ExceptionDescription[] exceptions;
 
-	exceptions = analyzer.analyze(value);
+    public void detachFromApplication()
+    {
+        exceptions = null;
+
+        super.detachFromApplication();
+    }
+
+    public ExceptionDescription[] getExceptions()
+    {
+        return exceptions;
+    }
+
+    public void setException(Throwable value)
+    {
+        ExceptionAnalyzer analyzer;
+
+        analyzer = new ExceptionAnalyzer();
+
+        exceptions = analyzer.analyze(value);
+    }
 }
-}
+

@@ -2,7 +2,6 @@ package tutorial.survey;
 
 import com.primix.tapestry.*;
 import java.util.*;
-import com.primix.tapestry.spec.*;
 import java.text.*;
 import java.awt.Color;
 
@@ -45,11 +44,6 @@ public class Results extends BasePage
 	private SurveyDatabase surveyDatabase;
 	private boolean oddRow = false;
 	private NumberFormat percentFormat;
-	
-	public Results(IApplication application, ComponentSpecification specification)
-	{
-		super(application, specification);
-	}
 	
 	public SurveyDatabase getDatabase()
 	{

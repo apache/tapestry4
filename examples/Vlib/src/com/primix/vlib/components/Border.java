@@ -1,7 +1,6 @@
 package com.primix.vlib.components;
 
 import com.primix.tapestry.components.*;
-import com.primix.tapestry.spec.*;
 import com.primix.tapestry.*;
 import com.primix.vlib.*;
 import com.primix.vlib.pages.*;
@@ -44,12 +43,7 @@ import com.primix.vlib.pages.*;
 
 
 public class Border extends BaseComponent
-{
-	public Border(IPage page, IComponent container, String id, ComponentSpecification spec) 
-	{
-		super(page, container, id, spec);
-	}
-	
+{	
 	/**
 	 *  Show the Logout button on all pages except the Logout page itself.
 	 *

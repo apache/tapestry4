@@ -1,7 +1,6 @@
 package com.primix.vlib;
 
 import com.primix.tapestry.components.*;
-import com.primix.tapestry.spec.*;
 import com.primix.tapestry.*;
 import com.primix.vlib.pages.*;
 
@@ -45,11 +44,6 @@ import com.primix.vlib.pages.*;
 public class Protected extends BasePage
 {
 	private String error;
-
-	public Protected(IApplication application, ComponentSpecification componentSpecification)
-	{
-		super(application, componentSpecification);
-	}
 
 	public void detachFromApplication()
 	{

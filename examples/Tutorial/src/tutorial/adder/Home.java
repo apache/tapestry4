@@ -36,7 +36,6 @@ package tutorial.adder;
 
 import com.primix.tapestry.*;
 import com.primix.tapestry.components.*;
-import com.primix.tapestry.spec.*;
 import java.util.*;
 
 public class Home extends BasePage
@@ -44,12 +43,6 @@ public class Home extends BasePage
 	private List items;
 	private String newValue;
 	private String error;
-
-
-	public Home(IApplication application, ComponentSpecification specification)
-	{
-		super(application, specification);
-	}
 
 	public List getItems()
 	{
