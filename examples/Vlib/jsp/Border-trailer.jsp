@@ -6,3 +6,9 @@ Copyright 2000 Primix Solutions and released under the
 <p>JSP version
 </body>
 </html>
+<%
+	long endTime = System.currentTimeMillis();
+
+	// Note: startTime defined and initialized in Border.jsp
+
+%><!-- Render time: ~ <%= (endTime - startTime) %> ms -->

@@ -1,8 +1,6 @@
 package tests.tapestry;
 
 import java.util.*;
-import com.ibm.logging.*;
-import com.ibm.logging.mgr.*;
 import com.primix.tapestry.*;
 import com.primix.tapestry.app.*;
 import com.primix.tapestry.spec.*;
@@ -52,9 +50,7 @@ import javax.rmi.*;
 
 
 public class DemoApplication extends SimpleApplication
-    implements IRecordType
 {
-	private transient MessageLogger messageLogger;
 	
 	private transient static int activeCount = 0;
 
@@ -112,11 +108,6 @@ public class DemoApplication extends SimpleApplication
 	public DemoApplication(RequestContext context)
 	{
 		super(context, null);
-		
-		messageLogger = new MessageLogger();
-		messageLogger.addHandler(new ConsoleHandler());
-		
-		messageLogger.setSynchronous(true);
 	}
 
 
@@ -126,7 +117,7 @@ public class DemoApplication extends SimpleApplication
 			return null;
 	
 		if (monitor == null)
-			monitor = new SimpleMonitor(messageLogger);
+			monitor = new SimpleMonitor();
 
 		return monitor;
 	}
@@ -154,21 +145,15 @@ public class DemoApplication extends SimpleApplication
 	{
 		super.valueBound(event);
 		
-		messageLogger.text(TYPE_INFORMATION, this, "valueBound",
-			"New client from {0}, active count {1}.",
-			new Object[]
-			{ clientAddress, new Integer(++activeCount) 
-		});
-		
+		System.out.println(
+			"New client from " + clientAddress + ", active count " +
+			++activeCount + ".");
 	}
 
 	public void valueUnbound(HttpSessionBindingEvent event)
 	{
-		messageLogger.text(TYPE_INFORMATION, this, "valueUnbound",
-			"Client {0} timeout, active count {1}.",
-			new Object[]
-			{ clientAddress, new Integer(--activeCount) 
-		});
+		System.out.println(
+			"Client " + clientAddress + " timeout, active count " + --activeCount + ".");
 	
 		super.valueUnbound(event);	
 	}
@@ -232,11 +217,6 @@ public class DemoApplication extends SimpleApplication
             
             result = PortableRemoteObject.narrow(raw, interfaceClass);
             
-            if (raw != result)
-            	messageLogger.text(TYPE_PUBLIC, this, "getNamedObject",
-                "Lookup of environment name {0} returned {1}, narrowed to {2}.",
-                new Object[] { name, raw, result } );
-  
 		}
 		catch (NamingException e)
 		{

@@ -1,3 +1,8 @@
+* Nov 1 2000 hship
+
+Remove dependecy on IBM's JLog toolkit (to be replaced with Log4J, which is open source).
+Remove references to PrimixFoundation.jar, which has been merged into Tapestry.jar.
+
 * Oct 6 2000 hship
 
 Create better components for linking to Person and ViewBook pages.

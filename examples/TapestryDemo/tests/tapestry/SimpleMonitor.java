@@ -1,6 +1,5 @@
 package tests.tapestry;
 
-import com.ibm.logging.*;
 import com.primix.tapestry.*;
 
 /*
@@ -37,81 +36,71 @@ import com.primix.tapestry.*;
  */
  
 
-public class SimpleMonitor implements IRecordType, IMonitor
+public class SimpleMonitor implements IMonitor
 {
-    private MessageLogger logger;
-
-    public SimpleMonitor(MessageLogger logger)
-    {
-	this.logger = logger;
-    }
-
     public void pageCreateBegin(java.lang.String pageName)
     {
-	logger.text(TYPE_INFO, this, "pageCreateBegin",
-                    "BEGIN CREATE {0}", pageName);
+	    log("BEGIN CREATE " + pageName);
     }
 
     public void pageCreateEnd(java.lang.String pageName)
     {
-	logger.text(TYPE_INFO, this, "pageCreateEnd",
-                    "END CREATE {0}", pageName);
+	    log("END CREATE " + pageName);
     }
 
     public void pageLoadBegin(String pageName)
     {
-	logger.text(TYPE_INFO, this, "pageLoadBegin",
-                    "BEGIN LOAD {0}", pageName);
+	    log("BEGIN LOAD " + pageName);
     }
 
     public void pageLoadEnd(String pageName) 
     {
-	logger.text(TYPE_INFO, this, "pageLoadEnd",
-                    "END LOAD {0}", pageName);
+	    log("END LOAD " + pageName);
     }
 
     public void pageRenderBegin(String pageName)
     {
-	logger.text(TYPE_INFO, this, "pageRenderBegin",
-                    "BEGIN RENDER {0}", pageName);
+	    log("BEGIN RENDER " + pageName);
     }
 
     public void pageRenderEnd(String pageName)
     {
-	logger.text(TYPE_INFO, this, "pageRenderEnd",
-                    "END RENDER {0}", pageName);
+	    log("END RENDER " + pageName);
     }
 
     public void pageRewindBegin(String pageName)
     {
-	logger.text(TYPE_INFO, this, "pageRewindBegin",
-                    "BEGIN REWIND {0}", pageName);
+        log("BEGIN REWIND " + pageName);
     }
 
     public void pageRewindEnd(String pageName)
     {
-	logger.text(TYPE_INFO, this, "pageRewindEnd", "END REWIND {0}", pageName);
+	    log("END REWIND " + pageName);
     }
 
     public void serviceBegin(String serviceName, String detailMessage)
     {
-	logger.text(TYPE_INFO, this, "serviceBegin",
-                    "BEGIN SERVICE {0} {1}", serviceName, detailMessage);
+	    log("BEGIN SERVICE " + serviceName + " " + detailMessage);
     }
 
     public void serviceEnd(String serviceName)
     {
-	logger.text(TYPE_INFO, this, "serviceEnd", "END SERVICE {0}", serviceName);
+	    log("END SERVICE " + serviceName);
     }
 
     public void serviceException(Throwable exception)
     {
-	logger.exception(TYPE_INFO, this, "serviceException", exception);
+	    log("EXCEPTION");
+	    exception.printStackTrace();
     }
 
     public void sessionBegin()
     {
-	logger.text(TYPE_INFO, this, "sessionBegin",
-                    "Start of session.");
+	    log("Start of session.");
+    }
+
+    private final void log(String message)
+    {
+        System.out.println(message);
     }
 }

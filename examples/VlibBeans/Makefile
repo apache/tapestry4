@@ -10,7 +10,7 @@ EJBC_OPT = -keepgenerated
 
 LOCAL_CLASSPATH = \
 	$(INSTALL_DIR)/j2ee.jar \
-	$(INSTALL_DIR)/PrimixFoundation.jar
+	$(INSTALL_DIR)/Tapestry.jar
 
 INSTALL_DIR = ../../lib
 

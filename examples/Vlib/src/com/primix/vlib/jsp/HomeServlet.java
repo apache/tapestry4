@@ -80,4 +80,9 @@ public class HomeServlet extends VlibServlet
 		
 		writeLink(context, writer, "/home/borrow/" + book.getPrimaryKey(), label);
 	}
+
+    public static String getSearchURL(RequestContext context)
+    {
+        return buildURL(context, "/home/search");
+    }
 }

@@ -29,7 +29,6 @@
 <p>Search for books:
 
 <form method=post action="/home/search">
-
 <table>
 
 <tr>

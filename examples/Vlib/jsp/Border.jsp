@@ -1,13 +1,25 @@
 <!doctype html public "-//W3C//DTD HTML 4.0 Transitional//EN">
 <%-- $Id$ --%>
+<!-- Generated: <%= new Date() %> -->
 <%@ page import="com.primix.servlet.*" %>
 <%@ page import="com.primix.vlib.jsp.*" %>
 <%@ page import="java.util.*" %>
 <%@ page errorPage="/jsp/Error.jsp" %>
 <%
+	long startTime = System.currentTimeMillis();
+
 	RequestContext context = RequestContext.get(request);
 	HTMLWriter writer = new HTMLWriter(out);
 	
+//  Yes, I use WebLogic.  Can you tell?
+
+//	Object raw = context.getSessionAttribute("application");
+//	System.out.println("application = " + raw);
+//	if (raw != null)
+//		System.out.println("app class loader =  " + raw.getClass().getClassLoader());
+//	System.out.println("this = " + this);
+//	System.out.println("this class loader = " + this.getClass().getClassLoader());
+
 	VirtualLibraryApplication vlib = (VirtualLibraryApplication)context.getSessionAttribute("application");
 	
 	boolean isLoggedIn = vlib.isUserLoggedIn();

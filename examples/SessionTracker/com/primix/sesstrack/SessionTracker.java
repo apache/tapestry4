@@ -6,7 +6,6 @@ import javax.sql.*;
 import java.sql.*;
 import java.rmi.*;
 import java.util.*;
-import com.ibm.logging.*;
 
 /*
  * Tapestry Web Application Framework
@@ -43,28 +42,13 @@ import com.ibm.logging.*;
  *  @author Howard Ship
  */
 
-public class SessionTracker implements EntityBean, IRecordType
+public class SessionTracker implements EntityBean
 {
 	private static final String DATA_SOURCE_NAME = "jdbc/sessiondb";
 
 	private transient DataSource dataSource;
 
-	private static TraceLogger logger;
-	
 	private boolean dirty;
-    
-    static
-    {
-	    Handler handler;
-
-	    logger = new TraceLogger();
-		logger.setLogging(Boolean.getBoolean("com.primix.SessionTracker.enable-logging"));
-		logger.setSynchronous(true);
-
-	    handler = new ConsoleHandler();
-	    logger.addHandler(handler);
-    }
-    
 	private EntityContext context;
     
     // Fields that store database information.
@@ -77,19 +61,6 @@ public class SessionTracker implements EntityBean, IRecordType
     private Timestamp updated;
     
 	private List hits;
-
-	public SessionTracker()
-	{
-    	if (logger.isLogging)
-        		logger.text(TYPE_PUBLIC | TYPE_OBJ_CREATE, this, "<init>", 
-                "Created SessionTracker instance.");
-	}    
-
-	private void trace(String methodName)
-	{
-		if (logger.isLogging)
-			logger.text(TYPE_PUBLIC | TYPE_LEVEL1, this, methodName, null);
-	}
 
 
 	public String getSessionId()
@@ -146,10 +117,6 @@ public class SessionTracker implements EntityBean, IRecordType
         String parameterName;
         String[] parameterValue;
         
-		if (logger.isLogging)
-			logger.text(TYPE_PUBLIC | TYPE_LEVEL1, this, "addHit", 
-				"Adding: {0}", hit);
-
 		// Force a re-read of the hits next time we're asked.
         
 		hits = null;
@@ -190,10 +157,6 @@ public class SessionTracker implements EntityBean, IRecordType
                     parameterName = (String)entry.getKey();
                     parameterValue = (String[])entry.getValue();
             
-            		if (logger.isLogging)
-                    	logger.text(TYPE_PUBLIC | TYPE_LEVEL2, this, "addHit",
-                    		"Writing row for parameter {0}.", parameterName);
-                    
                     statement.setString(1, sessionId);
                     statement.setTimestamp(2, requestTime);
                     statement.setString(3, parameterName);
@@ -217,7 +180,7 @@ public class SessionTracker implements EntityBean, IRecordType
 	    }
 	    catch (SQLException e)
 	    {
-	    	logger.exception(TYPE_PUBLIC, this, "addHit", e);
+	    	e.printStackTrace();
 	        
 	    	throw new EJBException(e);
 	    }
@@ -230,9 +193,6 @@ public class SessionTracker implements EntityBean, IRecordType
 
 	public List getHits()
 	{
-		if (logger.isLogging)
-			logger.text(TYPE_PUBLIC | TYPE_LEVEL1, this, "getHits", "");
-
 		if (hits == null)
 			readHits();
 
@@ -244,9 +204,7 @@ public class SessionTracker implements EntityBean, IRecordType
 	{
     	Connection connection = null;
         PreparedStatement statement = null;
-        
- 		trace("ejbCreate");
-               
+             
 	   	if (sessionId == null)
         	throw new CreateException("Session id must not be null.");
         
@@ -280,7 +238,7 @@ public class SessionTracker implements EntityBean, IRecordType
         }
         catch (SQLException e)
         {
-        	logger.exception(TYPE_PUBLIC, this, "ejbCreate", e);
+            e.printStackTrace();
             
         	throw new EJBException(e);
         }
@@ -304,7 +262,6 @@ public class SessionTracker implements EntityBean, IRecordType
      
 	public void ejbPostCreate(String sessionId, String remoteAddress, String remoteHost)
 	{
-    	trace("ejbPostCreate");
 	}
     
 	public void ejbRemove()
@@ -315,9 +272,6 @@ public class SessionTracker implements EntityBean, IRecordType
         
         sessionId = (String)context.getPrimaryKey();
         
-        logger.text(TYPE_PUBLIC, this, "ejbRemove",
-        		"Removing SessionTracker for session {0}.", sessionId);
-                
         try
         {
         	connection = getConnection();
@@ -347,7 +301,7 @@ public class SessionTracker implements EntityBean, IRecordType
        	}
         catch (SQLException e)
         {
-        	logger.exception(TYPE_PUBLIC, this, "ejbRemove", e);
+            e.printStackTrace();
             
         	throw new EJBException(e);
         }
@@ -365,11 +319,7 @@ public class SessionTracker implements EntityBean, IRecordType
 	    PreparedStatement statement = null;
 	   
 	    sessionId = (String)context.getPrimaryKey();
-	   
-        if (logger.isLogging)
-        	logger.text(TYPE_PUBLIC, this, "ejbLoad",
-            "Loading SessionTracker for session {0}.", sessionId);
-             
+
 	    try
 	    {
 	    	connection = getConnection();
@@ -402,7 +352,7 @@ public class SessionTracker implements EntityBean, IRecordType
 	    }
 	    catch (SQLException e)
 	    {
-	    	logger.exception(TYPE_PUBLIC, this, "ejbLoad", e);
+	        e.printStackTrace();
 	        
 	    	throw new EJBException(e);
 	    }
@@ -420,9 +370,6 @@ public class SessionTracker implements EntityBean, IRecordType
         ResultSet set = null;
         PreparedStatement statement = null;
 
-        logger.text(TYPE_PUBLIC, this, "ejbFindByPrimaryKey",
-        		"Locating SessionTracker for session {0}.", sessionId);
-        
         try
         {
         	connection = getConnection();
@@ -442,7 +389,7 @@ public class SessionTracker implements EntityBean, IRecordType
          }
         catch (SQLException e)
         {
-        	logger.exception(TYPE_PUBLIC, this, "ejbLoad", e);
+            e.printStackTrace();
             
         	throw new EJBException(e);
         }
@@ -456,8 +403,6 @@ public class SessionTracker implements EntityBean, IRecordType
     {
         Connection connection = null;
         PreparedStatement statement = null;
-        
-        trace("ejbStore");
         
         sessionId = (String)context.getPrimaryKey();
         
@@ -482,7 +427,7 @@ public class SessionTracker implements EntityBean, IRecordType
         }
         catch (SQLException e)
         {
-        	logger.exception(TYPE_PUBLIC, this, "ejbStore", e);
+            e.printStackTrace();
             
         	throw new EJBException(e);
         }
@@ -506,9 +451,6 @@ public class SessionTracker implements EntityBean, IRecordType
         ServerHit hit;
         String parameterName;
         String[] parameterValue;
-        
-        if (logger.isLogging)
-        	logger.text(TYPE_LEVEL2, this, "readHits", null);
         
         try
         {
@@ -582,8 +524,8 @@ public class SessionTracker implements EntityBean, IRecordType
         }
         catch (SQLException e)
         {
-        	logger.exception(TYPE_PUBLIC, this, "readHits", e);
-            
+            e.printStackTrace();
+                        
         	throw new EJBException(e);
         }
         finally
@@ -603,7 +545,7 @@ public class SessionTracker implements EntityBean, IRecordType
    		}
         catch (SQLException e)
         {
-        	logger.exception(TYPE_PUBLIC, this, methodName, e);
+            e.printStackTrace();
         }
         
         try
@@ -613,7 +555,7 @@ public class SessionTracker implements EntityBean, IRecordType
         }
         catch (SQLException e)
         {
-        	logger.exception(TYPE_PUBLIC, this, methodName, e);
+            e.printStackTrace();
         }
         
         try
@@ -623,7 +565,7 @@ public class SessionTracker implements EntityBean, IRecordType
         }
         catch (SQLException e)
         {
-        	logger.exception(TYPE_PUBLIC, this, methodName, e);
+            e.printStackTrace();
         }
     }
        	    
@@ -652,12 +594,10 @@ public class SessionTracker implements EntityBean, IRecordType
 
 				dataSource = (DataSource)environment.lookup(DATA_SOURCE_NAME);
           
-				logger.text(TYPE_PUBLIC | TYPE_LEVEL3, this, "getConnection",
-					"Located data source: {0}.", dataSource);
 			}
 			catch (NamingException e)
 			{
-				logger.exception(TYPE_PUBLIC, this, "ejbCreate", e);
+                e.printStackTrace();
                 
                 throw new SQLException("Could not access data source: " + e);
 			}
@@ -665,34 +605,24 @@ public class SessionTracker implements EntityBean, IRecordType
         
         result = dataSource.getConnection();
         
-        if (logger.isLogging)
-        	logger.text(TYPE_PUBLIC | TYPE_LEVEL3, this, "getConnection",
-            			"Got connection: {0}.", result);
-                
         return result;      
 	}
 
 	public void ejbActivate()
 	{
-		trace("ejbActivate");
 	}
 
 	public void ejbPassivate()
 	{
-		trace("ejbPassivate");
 	}
 
 	public void setEntityContext(EntityContext context)
 	{
-    	trace("setEntityContext");
-        
 		this.context = context;
 	}
 
 	public void unsetEntityContext()
 	{
-    	trace("unsetEntityContext");
-        
     	context = null;
 	}
 }
