@@ -1,0 +1,720 @@
+<!-- $Id$ -->
+<!--
+   Copyright 2004 The Apache Software Foundation
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "./dtd/document-v12.dtd"
+[
+	<!ENTITY projectroot '../'>
+	<!ENTITY % links.ent SYSTEM "../links.ent">
+  <!ENTITY % common.ent SYSTEM "common.ent">
+	%links.ent;
+  %common.ent;
+]>
+<document>
+  <header>
+    <title>Users Guide - Page and component templates</title>
+  </header>
+
+<body>
+
+<p>
+Unlike many other web frameworks, such as 
+&Struts; or &WebWork;,
+Tapestry does not "plug into" an external templating system such as JavaServer Pages or
+&Velocity;.  Instead, Tapestry integrates its own templating system.
+	
+</p>
+
+<p>
+Tapestry templates are designed to look like valid HTML files (component HTML templates
+will just be snippets of HTML rather than complete pages). 
+Tapestry "hides" its extensions into special attributes of ordinary HTML elements.	
+	
+</p>
+
+<p>
+Don't be fooled by the terminology; we say "HTML templates" because that is the prevalent use of Tapestry ... but
+Tapestry is equally adept at WML or XML.
+</p>
+
+<section id="template.locations">
+	<title>Template locations</title>
+	
+	
+<p>
+The general rule of thumb is that a page's HTML template is simply an HTML file, stored in the context root directory. 
+That is, you'll have a <em>MyPage</em>.html HTML template,
+a WEB-INF/<em>MyPage</em>.page page specification,
+and a <em>MyPage</em> class, in some Java package.
+</p>
+
+<p>
+Tapestry always starts knowing the name of the page and the location of the page's specification when it
+searches for the page's HTML template.  Starting with this, it performs the following search:
+</p>
+
+<ul>
+<li>In the same location as the specification</li>
+<li>In the web application's context root directory (if the page is an application page, not a page from a component
+		library)	</li>
+</ul>
+
+<p>
+In addition, any HTML template in the web application context is considered a page, even if there is no matching
+page specification. For simple pages that don't need to have any page-specific logic or properties, there's no need
+for a page specification.  Such a page may still use the special Tapestry attributes 
+(described in the following sections).	
+</p>
+
+<p>
+Finally, with some <!-- link linkend="configuration.search-path">minor configuration</link -->	minor configuration
+it is possible to change the extension used for templates. For example, if you are developing a WML
+application, you may wish to name your files with the extension .wml.
+</p>
+
+</section> <!-- template.locations -->
+
+<section id="template.contents">
+	<title>Template Contents</title>	
+	
+<p>
+Tapestry templates contain a mix of the following elements:
+</p>
+
+<ul>
+  <li>Static HTML markup</li>
+  <li>Tapestry components</li>
+  <li>Localized messages</li>
+  <li>Special template directives</li>
+</ul>
+
+<p>
+Usually, about 90% of a template is ordinary HTML markup.  Hidden inside that markup are particular tags that
+are placeholders for Tapestry components; these tags are recognized by the presence of the jwcid attribute.  "JWC"
+is short for "Java Web Component", and was chosen as the "magic" attribute so as not to conflict with any real HTML attribute.	
+</p>
+
+
+<p>
+Tapestry's parser is quite flexible, accepting all kinds of invalid HTML markup. That is, attributes don't <em>have</em> to be
+quoted. Start and end tags don't have to balance.  Case is ignored when matching start and end tags.  Basically,
+the kind of ugly HTML you'll find "in the field" is accepted.
+</p>
+
+<p>
+The goal is to allow you to preview your HTML templates using a WYSIWYG HTML editor (or even an ordinary web browser).
+The editor will ignore the undefined HTML attributes (such as jwcid).	
+</p>
+
+<p>
+A larger goal is to support real project teams: The special markup for Tapestry is unobtrusive, even invisible.
+This allows an HTML designer to work on a template without breaking the dynamic portions of it.	This is completely unlike
+JSPs, where the changes to support dynamic output are extremelyobtrusive and result in a file that is meaningless to an HTML
+editor.
+</p>
+
+</section> <!-- template.contents -->
+
+<section id="template.components">
+	<title>Components in templates</title>
+	
+<p>
+Components can be placed anywhere inside a template, simply  by adding the jwcid attribute to 
+any existing tag.  For example:
+</p>
+
+<source><![CDATA[<html>
+  <head>
+    <title>Example HTML Template</title>
+  </head>
+  <body
+    <span jwcid="border">
+    
+      Hello,
+      <span jwcid="@Insert" value="ognl:user.name">Joe User</span>
+    </span>
+  </body>
+</html>]]></source>
+
+<p>
+The first span is a reference to a <em>declared component</em>; the type and parameters
+of the component are in the page's specification.
+</p>	
+
+<p>
+The second span is an <em>implicit component</em>; the type of the component is &Insert;. The
+value parameter is bound to the &OGNL; expression <code>user.name</code>.
+</p>	
+	
+<p>
+The point of all this is that the HTML template should preview properly in a WYSIWYG HTML editor. Unlike
+&Velocity; or JSPs, there are no strange directives to get in the way of a preview (or necessitate
+a special editting tool), Tapestry hides what's needed inside existing tags; at worst, it adds
+a few non-standard attributes (such as jwcid) to tags. This rarely causes a problem with most HTML editors.
+</p>
+
+<p>
+Templates may contain components using two different styles.  <em>Declared components</em>	 are
+little more than a placeholder; the type of the component is defined elsewhere, in the page (or component) 
+specification.
+</p>
+
+<p>
+Alternately, an <em>implicit component</em> can be defined in place, by preceding
+the component type with an "@" symbol.  Tapestry includes over forty components with the framework, additional components
+may be created as part of your application, or may be provided inside a component library.
+</p>	
+
+<p>
+In the above example, a &span;	 was used for both components. Tapestry
+doesn't care what tag is used for a component, as long as the start and end tags for components balance (it doesn't
+even care if the case of the start tag matches the case of the end tag). The example could just
+as easily use &lt;div&gt; or &lt;fred&gt;, the
+rendered page sent back to the client web browser will be the same.
+</p>
+
+<section id="templates.components.body">
+		<title>Component bodies</title>
+		
+<p>
+In Tapestry, each component is responsible for rendering itself and its <em>body</em>. 
+A component's body is the portion of its page's template
+  that its tags encloses. The Tapestry HTML template parser is responsible for dividing up the  template
+  into chunks: blocks of static HTML, component start tags (recognized by the jwcid attribute) and matching
+  component end tags. It is quite forgiving about case, quotes (which may be single quotes, double quotes, or even
+  omitted), and missing close tags (except for components, which must be balanced).
+</p>		
+
+<note>
+
+More correct would be to say "its container's template" as a component may be contained within
+another component. For simplicities sake, we'll describe this as if it was always a simple two-level
+heirarchy even though practical Tapestry applications can be many levels deep.
+
+</note>
+
+<figure alt="Component templates and bodies" src="&imageroot;/component-body.png"/>
+	
+<p>
+In most cases, a component will make use of its body; it simply controls if, when and how often its body
+is rendered (when rendering the HTML response sent to the client). Other components, such as &Insert;,
+have no use for their bodies, which they discard.  Each component declares in its own specification (the
+allow-body	 attribute of the &spec.component-specification;) whether is allows or
+discards its body.
+</p>
+
+<p>
+In the previous example, the &Insert; component had a body, the text "Joe User". This supports WYSIWYG preview; the text
+will be displayed when previewing. Since the &Insert; component discards its body,
+this text will not be used at runtime, instead the OGNL expression <code>user.name</code>	 will be evaluated
+and the result inserted into the response.
+</p>
+
+<warning>
+	If you put a component inside the body of an &Insert; (or any other component that discards
+	its body), then Tapestry will throw an exception. You aren't allowed to create a component
+	simply to discard it.	
+</warning>
+
+</section> <!-- templates.components.body -->
+
+<section id="templates.components.ids">
+	<title>Component ids</title>
+	
+<p>
+Every component in Tapestry has its own id.  In the above example, the first component has the id "border".  The second component
+is anonymous; the framework provides a unique id for the component since one was not supplied in the HTML template. The 
+framework provided id is built from the component's type; this component would have an id of
+<code>$Insert</code>; other &Insert; components
+would have ids <code>$Insert$0</code>, <code>$Insert$1</code>, etc.
+</p>
+
+<p>
+A component's id must only be unique within its immediate container.  Pages are top-level containers, but
+components can also contain other components. 
+</p>
+
+
+<p>
+Implicit components can also have a specific id, by placing the id in front of the "@" symbol:
+</p>
+
+<source><![CDATA[
+  <span jwcid="insert@Insert" value="ognl:user.name">Joe User</span>
+]]></source>
+
+<p>
+The component is still implicit; nothing about the component would go in the specification, but the id
+of the component would be <code>insert</code>.	
+</p>
+
+<p>
+Providing explicit ids for your components is rarely required, but often beneficial. It is especially
+useful for form control components.
+</p>
+
+<p>
+Each component may only appear <em>once</em>	 in the template. You simply can't 
+use the same component
+repatedly ... but you can duplicate a component fairly easily; make the component a declared component,
+then use the copy-of attribute of the &spec.component; element to create clones of
+the component with new ids.
+</p>
+
+
+</section> <!-- templates.components.ids -->
+
+<section id="templates.components.parameters">
+		<title>Specifying parameters</title>
+		
+<p>
+Component parameters may always be specified in the page or component 
+specification, using the
+&spec.binding;, &spec.static-binding; and &spec.message-binding; elements. Prior to Tapestry 3.0, that
+was the only way ... but with 3.0, it is possible to specify parameters directly within the
+HTML template.
+</p>	
+	
+<p>
+Using either style of component (declared or implicit), parameters of the component may be <em>bound</em>
+by adding attributes to the tag.
+Most attributes bind parameters to a static (unchanging) value, equivalent to using
+the &spec.static-binding; element in the specification. Static bindings are just the
+literal text, the attribute value from the HTML template.
+</p>
+
+<p>
+Prefixing an attribute value with <code>ognl:</code>	 indicates that the value
+is really an &OGNL; expression, equivalent to using the &spec.binding; element in the specification.
+</p>
+
+<p>
+Finally, prefixing an attribute value with <code>message:</code> indicates that the value
+is really a key used to get a localized message, equivalent to the &spec.message-binding; element
+in the specification. Every page, and every component, is allowed to have its own set of messages (stored
+in a set of .properties files), and the <code>message:</code> prefix allows access
+to the localized messages stored in the files.
+</p>
+
+<section>
+<title>Seperation of Concerns</title>	
+
+<p>
+Before Tapestry 3.0, there was a more clear separation of concerns. The template could only have declared
+components (not implicit), and any informal attributes in the template were always static values. The type
+of the component and all its formal parameters were always expressed in the specification. The template was very much
+focused on presentation, and the specification was very much focused on business logic. There were
+always minor exceptions to the rules, but in general, seperation of concerns was very good.
+</p>
+
+<p>
+With Tapestry 3.0, you can do more in the HTML template, and the specification file is much less
+important ... but the seperation of concerns is much more blurred together. It is very much acceptible to
+mix and match these approaches, even within a single page. In general, when learning Tapestry, or when prototyping, it
+is completely appopriate to do as much as possible in the HTML template. For large and complex
+applications, there are benefits to moving as much of the dynamic logic as possible out
+of the template and into the specification.
+</p>
+
+</section>
+
+</section> <!-- templates.components.parameters -->
+
+<section id="template.components.formal">
+		<title>Formal and informal parameters</title>
+		
+<p>
+Components may accept two types of parameters: <em>formal</em>
+and <em>informal</em>.  Formal parameters are those defined in the
+component's specification, using the &spec.parameter; element.
+Informal parameters are <em>additional</em> parameters, beyond those
+known when the component was created.
+</p>
+
+<p>
+The majority of components that accept informal parameters simply emit the informal
+parameters as additional attributes.  Why is that useful?  Because it allows you to
+specify common HTML attributes such as class	or id,
+or JavaScript event handlers, without requiring that each component define each possible 
+HTML attribute (the list of which expands all the time).
+</p>
+
+<note>
+If you are used to developing with JSPs and JSP tags, this will be quite a difference. JSP tags have
+the equivalent of	formal parameters (they are called "tag attributes"), but nothing like informal parameters. Often a relatively
+simply JSP tag must be bloated  with dozens of extra attributes, to support arbitrary
+HTML attributes.
+</note>
+
+<p>
+Informal and formal parameters can be specified in either the specification or in the template.
+Informal parameters <em>are not</em>	 limited to literal strings, you may use
+the <code>ognl:</code> and <code>message:</code> prefixes with them as well.
+</p>
+	
+
+<p>
+Not all components allow informal parameters; this is controlled by the
+allow-informal-parameters	 attribute of the
+&spec.component-specification; element. Many components do not map directly to an HTML element,
+those are the ones that do not allow informal parameters. If a component forbids informal parameters,
+then any informal parameters in the specification or the template will result in errors, with one exception:
+static strings in the HTML template are simply ignored when informal parameters are forbidden; they
+are presumed to be there only to support WYSIWYG preview.
+</p>
+
+<p>
+Another conflict can occur when the HTML template specified an attribute that the component needs
+to render itself. For example, the &DirectLink; component generates a <code>a&gt;</code> tag,
+and needs to control the href attribute. However, for preview purposes, it often will 
+be written into the HTML template as:
+</p>
+
+<source><![CDATA[
+  <a jwcid="@DirectLink" listener=". . ." href="#"> . . . </a>]]></source>
+
+
+<p>
+This creates a conflict: will the template href (the literal string "#")	 be used,
+or the dynamically generated URL produced by the &DirectLink; component, or both? The answer is: 
+the component wins. The href attribute in the template is ignored.
+</p>
+
+<p>
+Each component declares a list of reserved names using the &spec.reserved-parameter; element; these
+are  names which are not allowed as informal parameters, because the component generates 
+the named attribute itself, and doesn't want the value it writes to be overriden by an informal
+parameter.   Case is ignored when comparing attribute names to reserved names.
+</p>
+
+</section> <!-- template.components.formal -->
+
+
+
+</section>  <!-- template.components -->
+
+<section id="template.directives">
+	<title>Template directives</title>
+
+<p>
+For the most part, a Tapestry page or component template consists of 
+just static HTML intermixed with tags representing components (containing the jwcid attribute).
+The overarching goal is to make the Tapestry extensions completely invisible.
+</p>	
+
+<p>
+Tapestry supports a limited number of additional directives that are not about component placement, but 
+instead address other concerns about integrating the 
+efforts of HTML developers with the Java developers responsible
+for the running application.
+</p>
+
+<section id="template.directives.l10n">
+	 <title>Localization</title>
+	 
+<p>
+Tapestry includes a number of <!-- link linkend="configuration.character-sets">localization features</link -->
+localization features. An important part of which
+is to allow each page or component to have its own catalog of localized messages (modeled after the Java 
+ResourceBundle class).
+</p>	 
+
+<p>
+The page (or component) message catalog 	is a collection of .properties files
+that are stored with the page or component specification. They follow the same naming conventions 
+as for ResourceBundles, so component MyComponent (whose specification file
+is MyComponent.jwc) might have a default
+message file of MyComponent.properties, and a French translation as
+MyComponent_fr.properties.
+</p>
+
+<note>
+	On oft-requested feature for Tapestry is to have a global message catalog, and a way to
+	access that catalog from the individual pages and components. This would allow common messages
+	to be written (and translated) just once. This is a feature that may be added to Tapestry 3.1.	
+</note>
+
+<p>
+As we've seen, it is possible to access the messages for a page or component using the
+<code>message:</code>	 prefix on a component parameter (or use
+the &spec.message-binding; element in a page or component specification).
+</p>
+
+<p>
+What about the static text in the template itself?  How does that get translated?  One possibility
+would be to make use of the Insert component for each piece of text to be displayed, for example:
+</p>
+
+<source><![CDATA[
+  <span jwcid="@Insert" value="message:hello">Hello</span>]]></source>
+
+
+<p>
+This snippet will get the <code>hello</code> message from the page's  message catalog  
+and insert it into the response.  The text inside the &span;
+tag is useful for WYSIWYG preview, but will be discarded at runtime in favor of a message string
+from the catalog, such as "Hello", "Hola" or "Bonjour" (depending on the selected locale).
+</p>
+
+<p>
+Because, in an internationalized application, this  scenario
+will occur with great frequency, Tapestry includes
+a special directive to perform the equivalent function:
+</p>
+
+<source><![CDATA[
+  <span key="hello">Hello</span>]]></source>
+
+
+<p>
+This is not an &Insert; component, but behaves in a similar way. The tag used <em>must be</em>
+&span;. You do not use the <code>message:</code> prefix
+on the message key (<code>hello</code>). You can't use OGNL expressions.
+</p>
+
+<p>
+Normally, the &span; does not render, just the message.
+However, if you specify any additional attributes in the &span; tag (such as, commonly,
+id, class, or style, to specify a CSS style),
+then the &span; will render around the message.  For example, the template:
+</p>
+
+<source><![CDATA[
+  <span class="error" key="invalid-access">Invalid Access</span>]]></source>
+
+<p>
+might render as:
+</p>
+
+<source><![CDATA[
+  <span class="error">You do not have the necessary access.</span>
+]]></source>
+
+
+<p>
+In this example, the placeholder text "Invalid Access" was replaced with a much
+longer message acquired from the message catalog.
+
+</p>
+
+<p>
+In rare cases, your message may have pre-formatted HTML inside it.  Normally, output is
+filtered, so that any reserved
+HTML characters in a message string are expanded to HTML entities.  For example,
+a &lt;	 will be expanded to &amp;lt; If this is not desired,
+add  the attribute value raw="yes" to the &span;. This defeats the filtering, and text in the message
+is passed through as-is.
+</p>
+
+	
+</section> <!-- template.directives.l10n -->
+	
+<section id="template.directives.remove">
+	<title>$remove$ jwcid
+	 </title>
+
+<p>
+HTML templates in Tapestry serve two purposes. On the one hand, they are used to dynamically render
+pages that end up in client web browsers. On the other hand, they allow HTML developers to use WYSIWYG editors
+to modify the pages without running the full application.	
+</p>
+
+<p>
+We've already seen two ways in which Tapestry accomidates WYSIWYG preview.  Informal component
+parameters may be quietly dropped
+if they conflict with reserved names defined by the component.	Components that discard their body may enclose
+static text used for WYSIWYG prefix.
+</p>
+
+<p>
+In some cases, we need even more direct control over the content of the template.  Consider, for example,
+the following HTML template:	
+</p>
+
+<source><![CDATA[
+<table>
+  <tr>
+    <th>First Name</th>
+    <th>Last Name</h>
+  </tr>
+  <tr jwcid="loop">
+    <td><span jwcid="insertFirstName">John</span></td>
+    <td><span jwcid="insertLastName">Doe</span></td>
+  </tr>
+  <tr>
+    <td>Frank</td>
+    <td>Smith</td>
+  </tr>
+  <tr>
+    <td>Jane</td>
+    <td>Jones</td>
+  </tr>
+</table>
+]]></source>
+
+<p>
+This is part of the HTML template that writes out the names of a list of people, perhaps from some kind of database.
+When this page renders, the <code>loop</code>	 component (presumably a &Foreach;, such details
+being in the page's specification)
+will render its body zero or more times. So we might see rows for "Frank Miller", "Alan Moore" and so forth
+(depending on the content of the database).
+However, every listing will also include "Frank Smith" and "Jane Jones" ... because the HTML developer left those
+two rows in, to ensure that the layout of the table was correct with more than one row.
+</p>
+
+<p>
+Tapestry allows a special jwcid, <code>$remove$</code>, for this case. A tag so marked is
+not a component, but is instead eliminated from the 
+template. It is used, as in this case, to mark sections of the template that are just there for WYSIWYG preview.
+</p>
+
+<note>
+Normally, <code>$remove$</code>	 would not be a valid component id, because it contains a dollar sign.
+</note>
+
+<p>
+With this in mind, the template can be rewritten:	
+</p>
+
+
+<source><![CDATA[
+<table>
+  <tr>
+    <th>First Name</th>
+    <th>Last Name</h>
+  </tr>
+  <tr jwcid="loop">
+    <td><span jwcid="insertFirstName">John</span></td>
+    <td><span jwcid="insertLastName">Doe</span></td>
+  </tr>
+  <tr jwcid="$remove$">
+    <td>Frank</td>
+    <td>Smith</td>
+  </tr>
+  <tr jwcid="$remove$">
+    <td>Jane</td>
+    <td>Jones</td>
+  </tr>
+</table>
+]]></source>
+<p>
+With the <code>$remove$</code> blocks in place, the output is as expected, one table row for each
+row read from the database,
+and "Frank Smith" and "Jane Jones" nowhere to be seen.
+</p>
+
+<warning>
+	It's not allowed to put components inside a removed block. This is effectively the same rule that prevents
+	components from being put inside discarded component bodies. Tapestry will throw an exception if a template
+	violates this rule.	
+</warning>
+	
+	
+</section> <!-- template.directives.remove -->
+
+<section id="template.directives.content">
+	<title>$content$ jwcid</title>
+	
+<p>
+In Tapestry, components can have their own templates. Because of how components integrate their own templates
+with their bodies (the portion from their container's template), you can do a lot ofn iteresting things. It is very
+common for a Tapestry application to have a Border component: a component that produces the &html;,
+&head;, and &body; tags (along with additional tags
+to reference stylesheets), plus some form of navigational control (typically, a nested table and a collection of links and images).
+</p>	
+
+<p>
+Once again, maintaining the ability to use WYSIWYG preview is a problem.  Consider the following:
+</p>
+
+<source><![CDATA[
+<html>
+  <head>
+    <title>Home page</title>
+    <link ref="stylesheet" href="style.css" type="text/css"/>
+  </head>
+  <body>
+    <span jwcid="border">
+    
+      <!-- Page specific content: -->
+      
+      <form jwcid=". . .">
+        . . .
+      </form>
+    </span>
+  </body>
+</html>
+]]></source>
+
+
+
+<p>
+It is quite common for Tapestry applications to have a <em>Border</em>	
+component, a component that is used by pages to provide the
+&html;, &head;, and
+&body; tags, plus common navigational features (menus,
+copyrights, and so forth). In this example, it is presumed that the <code>border</code>
+component is a reference to just such as component.
+</p>
+
+<p>
+When this page renders, the page template will provide the &html;, &head; and &body; tags.
+Then when the <code>border</code> component renders, it will <em>again</em>
+render those tags (possibly with different attributes, and mixed in with much other stuff).
+</p>
+
+<p>
+If we put a <code>$remove$</code>	on the &html; tag in the page template, the entire page will
+be removed, causing runtime exceptions.
+</p>
+
+<p>
+Instead, we want to identify that the portion of the template <em>inside</em>
+the &body; tag (on the page template) is the only part that counts). The <code>$content$</code>
+component id is used for this purpose:
+</p>
+
+<source><![CDATA[
+<html>
+  <head>
+    <title>Home page</title>
+    <link ref="stylesheet" href="style.css" type="text/css"/>
+  </head>
+  <body jwcid="$content$">
+    <span jwcid="border">
+    
+      <!-- Page specific content: -->
+      
+      <form jwcid=". . .">
+        . . .
+      </form>
+    </span>
+  </body>
+</html>
+]]></source>
+
+
+<p>
+The &body; tag, the text preceding its open tag, the &lt;/body&gt;	tag, and the text following
+it are all removed.  It's as if the template consisted only of the &span; tag for the <code>border</code> component.
+</p>
+
+</section> <!-- template.directives.content -->
+
+	
+</section>  <!-- template.directives -->
+
+</body>
+</document>
