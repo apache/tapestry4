@@ -56,9 +56,10 @@ package net.sf.tapestry.link;
 
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.engine.ILink;
 
 /**
- *  An implementation of {@link net.sf.tapestry.components.IServiceLink} 
+ *  An implementation of {@link net.sf.tapestry.components.ILinkComponent} 
  *  that allows
  *  the exact HREF to be specified, usually used for client side
  *  scripting.  
@@ -72,31 +73,23 @@ import net.sf.tapestry.RequestCycleException;
  * 
  **/
 
-public class GenericLink extends AbstractServiceLink
+public class GenericLink extends AbstractLinkComponent
 {
-    private String href;
-
-    /**
-     *  Returns the String specified by the href binding (this method is invoked
-     *  while renderring).
-     * 
-     *  @throws RequiredParameterException if no href value was supplied.
-     * 
-     **/
-
-    protected String getURL(IRequestCycle cycle) throws RequestCycleException
-    {
-        return href;
-    }
+    private String _href;
 
     public String getHref()
     {
-        return href;
+        return _href;
     }
 
     public void setHref(String href)
     {
-        this.href = href;
+        _href = href;
+    }
+
+    public ILink getLink(IRequestCycle cycle) throws RequestCycleException
+    {
+        return new StaticLink(_href);
     }
 
 }

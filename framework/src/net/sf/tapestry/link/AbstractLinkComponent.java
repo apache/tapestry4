@@ -61,42 +61,47 @@ import java.util.List;
 import java.util.Map;
 
 import net.sf.tapestry.AbstractComponent;
+import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.Tapestry;
-import net.sf.tapestry.components.IServiceLink;
-import net.sf.tapestry.components.ServiceLinkEventType;
+import net.sf.tapestry.components.ILinkComponent;
+import net.sf.tapestry.components.LinkEventType;
+import net.sf.tapestry.engine.EngineServiceLink;
+import net.sf.tapestry.engine.ILink;
 import net.sf.tapestry.html.Body;
 
 /**
  *  Base class for
- *  implementations of {@link IServiceLink}.
+ *  implementations of {@link ILinkComponent}.  Includes a disabled attribute
+ *  (that should be bound to a disabled parameter), 
+ *  an anchor attribute, and a
+ *  renderer attribute (that should be bound to a renderer parameter).  A default,
+ *  shared instance of {@link net.sf.tapestry.link.DefaultLinkRenderer} is
+ *  used when no specific renderer is provided.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
  *
  **/
 
-public abstract class AbstractServiceLink extends AbstractComponent implements IServiceLink
+public abstract class AbstractLinkComponent extends AbstractComponent implements ILinkComponent
 {
-    private boolean disabled;
+    private boolean _disabled;
+    private ILinkRenderer _renderer = DefaultLinkRenderer.SHARED_INSTANCE;
+    private String _anchor;
 
-    protected Body body;
-
-    protected static final int MAP_SIZE = 3;
-
-    protected Map eventHandlers;
+    private Map _eventHandlers;
 
     public boolean isDisabled()
     {
-
-        return disabled;
+        return _disabled;
     }
 
     public void setDisabled(boolean disabled)
     {
-        this.disabled = disabled;
+        _disabled = disabled;
     }
 
     /**
@@ -105,20 +110,20 @@ public abstract class AbstractServiceLink extends AbstractComponent implements I
      *
      **/
 
-    public void addEventHandler(ServiceLinkEventType eventType, String functionName)
+    public void addEventHandler(LinkEventType eventType, String functionName)
     {
         Object currentValue;
 
-        if (eventHandlers == null)
-            eventHandlers = new HashMap(MAP_SIZE);
+        if (_eventHandlers == null)
+            _eventHandlers = new HashMap();
 
-        currentValue = eventHandlers.get(eventType);
+        currentValue = _eventHandlers.get(eventType);
 
         // The first value is added as a String
 
         if (currentValue == null)
         {
-            eventHandlers.put(eventType, functionName);
+            _eventHandlers.put(eventType, functionName);
             return;
         }
 
@@ -130,7 +135,7 @@ public abstract class AbstractServiceLink extends AbstractComponent implements I
             list.add(currentValue);
             list.add(functionName);
 
-            eventHandlers.put(eventType, list);
+            _eventHandlers.put(eventType, list);
             return;
         }
 
@@ -141,99 +146,54 @@ public abstract class AbstractServiceLink extends AbstractComponent implements I
     }
 
     /**
-     *  Renders the link.  This is somewhat complicated, because a
-     *  nested {@link IMarkupWriter response writer} is used
-     *  to render the contents of the link, before the link
-     *  itself actually renders.
-     *
-     *  <p>This is to support components such as {@link net.sf.tapestry.html.Rollover}, which
-     *  must specify some attributes of the service link 
-     *  as they render in order to
-     *  create some client-side JavaScript that works.  Thus the
-     *  service link renders its wrapped components into
-     *  a temporary buffer, then renders its own HTML.
+     *  Renders the link by delegating to an instance
+     *  of {@link ILinkRenderer}.
      *
      **/
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
-        IMarkupWriter wrappedWriter;
-
-        if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-            throw new RequestCycleException(Tapestry.getString("AbstractServiceLink.no-nesting"), this);
-
-        body = Body.get(cycle);
-
-        cycle.setAttribute(ATTRIBUTE_NAME, this);
-
-        if (!disabled)
-        {
-            writer.begin("a");
-            writer.attribute("href", getURL(cycle));
-
-            // Allow the wrapped components a chance to render.
-            // Along the way, they may interact with this component
-            // and cause the name variable to get set.
-
-            wrappedWriter = writer.getNestedWriter();
-        }
-        else
-            wrappedWriter = writer;
-
-        renderBody(wrappedWriter, cycle);
-
-        if (!disabled)
-        {
-            // Write any attributes specified by wrapped components.
-
-            writeEventHandlers(writer);
-
-            // Generate additional attributes from informal parameters.
-
-            generateAttributes(writer, cycle);
-
-            // Dump in HTML provided by wrapped components
-
-            wrappedWriter.close();
-
-            // Close the <a> tag
-
-            writer.end();
-        }
-
-        cycle.removeAttribute(ATTRIBUTE_NAME);
+        _renderer.renderLink(writer, cycle, this);
     }
 
     protected void cleanupAfterRender(IRequestCycle cycle)
     {
-        eventHandlers = null;
-        body = null;
+        _eventHandlers = null;
 
         super.cleanupAfterRender(cycle);
     }
 
-    protected void writeEventHandlers(IMarkupWriter writer) throws RequestCycleException
+    protected void writeEventHandlers(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
     {
         String name = null;
 
-        if (eventHandlers == null)
+        if (_eventHandlers == null)
             return;
 
-        Iterator i = eventHandlers.entrySet().iterator();
+        Body body = Body.get(cycle);
+
+        if (body == null)
+            throw new RequestCycleException(
+                Tapestry.getString("AbstractLinkComponent.events-need-body"),
+                this);
+
+        Iterator i = _eventHandlers.entrySet().iterator();
 
         while (i.hasNext())
         {
             Map.Entry entry = (Map.Entry) i.next();
-            ServiceLinkEventType type = (ServiceLinkEventType) entry.getKey();
+            LinkEventType type = (LinkEventType) entry.getKey();
 
-            name = writeEventHandler(writer, name, type.getAttributeName(), entry.getValue());
+            name = writeEventHandler(writer, body, name, type.getAttributeName(), entry.getValue());
         }
 
     }
 
     protected String writeEventHandler(
         IMarkupWriter writer,
+        Body body,
         String name,
         String attributeName,
         Object value)
@@ -247,12 +207,6 @@ public abstract class AbstractServiceLink extends AbstractComponent implements I
         }
         else
         {
-            if (body == null)
-                throw new RequestCycleException(
-                    Tapestry.getString("AbstractServiceLink.events-need-body"),
-                    this,
-                    null);
-
             if (name == null)
                 name = "Link" + body.getUniqueId();
 
@@ -281,16 +235,59 @@ public abstract class AbstractServiceLink extends AbstractComponent implements I
         writer.attribute(attributeName, "javascript:" + wrapperFunctionName + "();");
 
         return name;
+    }
 
+    /** @since 2.4 **/
+
+    public ILinkRenderer getRenderer()
+    {
+        return _renderer;
+    }
+
+    /** @since 2.4 **/
+
+    public void setRenderer(ILinkRenderer renderer)
+    {
+        _renderer = renderer;
+    }
+
+    public void renderAdditionalAttributes(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
+    {
+        writeEventHandlers(writer, cycle);
+
+        // Generate additional attributes from informal parameters.
+
+        generateAttributes(writer, cycle);
     }
 
     /**
+     *  Utility method for subclasses; Gets the named service from the engine
+     *  and invokes {@link net.sf.tapestry.IEngineService#buildGesture(IRequestCycle, IComponent, Object[])}
+     *  on it.
      * 
-     *  Implemented by subclasses to provide the URL for the HTML HREF attribute.
-     * 
-     *  @since 2.0.2
+     *  @since 2.4
      * 
      **/
 
-    protected abstract String getURL(IRequestCycle cycle) throws RequestCycleException;
+    protected ILink getLink(
+        IRequestCycle cycle,
+        String serviceName,
+        Object[] serviceParameters)
+    {
+        IEngineService service = cycle.getEngine().getService(serviceName);
+
+        return service.getLink(cycle, this, serviceParameters);
+    }
+    
+    public String getAnchor()
+    {
+        return _anchor;
+    }
+
+    public void setAnchor(String anchor)
+    {
+        _anchor = anchor;
+    }
+
 }

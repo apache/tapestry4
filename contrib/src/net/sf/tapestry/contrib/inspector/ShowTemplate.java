@@ -58,7 +58,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import net.sf.tapestry.BaseComponent;
-import net.sf.tapestry.Gesture;
 import net.sf.tapestry.IComponent;
 import net.sf.tapestry.IDirect;
 import net.sf.tapestry.IEngineService;
@@ -68,6 +67,7 @@ import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.ITemplateSource;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.engine.ILink;
 import net.sf.tapestry.parse.CloseToken;
 import net.sf.tapestry.parse.ComponentTemplate;
 import net.sf.tapestry.parse.LocalizationToken;
@@ -284,7 +284,7 @@ public class ShowTemplate extends BaseComponent implements IDirect
         // Build a URL to select that component, as if by the captive
         // component itself (it's a Direct).
 
-        Gesture g = service.buildGesture(getPage().getRequestCycle(), this, context);
+        ILink link = service.getLink(getPage().getRequestCycle(), this, context);
 
         writer.begin("span");
         writer.attribute("class", "jwc-tag");
@@ -298,7 +298,7 @@ public class ShowTemplate extends BaseComponent implements IDirect
         writer.attribute("class", "jwc-id");
 
         writer.begin("a");
-        writer.attribute("href", g.getURL());
+        writer.attribute("href", link.getURL());
         writer.print(id);
 
         writer.end(); // <a>

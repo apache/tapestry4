@@ -54,67 +54,62 @@
  */
 package net.sf.tapestry.link;
 
-import net.sf.tapestry.IEngineService;
-import net.sf.tapestry.INamespace;
-import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.RequestCycleException;
-import net.sf.tapestry.Tapestry;
-import net.sf.tapestry.engine.EngineServiceLink;
 import net.sf.tapestry.engine.ILink;
 
 /**
- *  A component for creating a navigation link to another page, 
- *  using the page service.
+ *  Used by {@link net.sf.tapestry.link.GenericLink} to represent
+ *  an external, static URL.
  *
- *  [<a href="../../../../../ComponentReference/PageLink.html">Component Reference</a>]
- *
- * @author Howard Ship
- * @version $Id$
- *
+ *  @author Howard Lewis Ship
+ *  @version $Id$
+ *  @since 2.4
+ * 
  **/
-
-public class PageLink extends AbstractLinkComponent
+public class StaticLink implements ILink
 {
-    private String _targetPage;
+	private String _url;
 
-    /** @since 2.2 **/
+	public StaticLink(String url)
+	{
+		_url = url;
+	}
 
-    private INamespace _targetNamespace;
-
-    public ILink getLink(IRequestCycle cycle) throws RequestCycleException
+    public String getURL()
     {
-        String parameter = null;
-
-        if (_targetNamespace == null)
-            parameter = _targetPage;
-        else
-            parameter = _targetNamespace.constructQualifiedName(_targetPage);
-
-        return getLink(cycle, Tapestry.PAGE_SERVICE, new String[] { parameter });
+        return _url;
     }
 
-    public String getTargetPage()
+    public String getURL(String anchor, boolean includeParameters)
     {
-        return _targetPage;
+        if (anchor == null)
+        	return _url;
+        	
+        	return _url + "#" + anchor;
     }
 
-    public void setTargetPage(String targetPage)
+    public String getAbsoluteURL()
     {
-        _targetPage = targetPage;
+        return _url;
     }
 
-    /** @since 2.2 **/
-
-    public INamespace getTargetNamespace()
+    public String getAbsoluteURL(
+        String scheme,
+        String server,
+        int port,
+        String anchor,
+        boolean includeParameters)
     {
-        return _targetNamespace;
+        return getURL(anchor, false);
     }
 
-    /** @since 2.2 **/
-
-    public void setTargetNamespace(INamespace targetNamespace)
+    public String[] getParameterNames()
     {
-        _targetNamespace = targetNamespace;
+        return null;
+    }
+
+    public String[] getParameterValues(String name)
+    {
+        throw new IllegalArgumentException();
     }
 
 }

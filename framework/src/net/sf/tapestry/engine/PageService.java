@@ -59,7 +59,6 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 
 import net.sf.tapestry.ApplicationRuntimeException;
-import net.sf.tapestry.Gesture;
 import net.sf.tapestry.IComponent;
 import net.sf.tapestry.IEngineServiceView;
 import net.sf.tapestry.IPage;
@@ -81,13 +80,13 @@ import net.sf.tapestry.Tapestry;
 public class PageService extends AbstractService
 {
 
-    public Gesture buildGesture(IRequestCycle cycle, IComponent component, Object[] parameters)
+    public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
         if (Tapestry.size(parameters) != 1)
             throw new IllegalArgumentException(
                 Tapestry.getString("service-single-parameter", Tapestry.PAGE_SERVICE));
 
-        return assembleGesture(cycle, Tapestry.PAGE_SERVICE, (String[]) parameters, null, true);
+        return constructLink(cycle, Tapestry.PAGE_SERVICE, (String[]) parameters, null, true);
 
     }
 

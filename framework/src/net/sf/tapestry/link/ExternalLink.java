@@ -54,9 +54,11 @@
  */
 package net.sf.tapestry.link;
 
-import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.engine.EngineServiceLink;
+import net.sf.tapestry.engine.ILink;
 
 /**
  *  A component for creating a link to {@link IExternalPage} using the 
@@ -72,38 +74,32 @@ import net.sf.tapestry.Tapestry;
  *
  **/
 
-public class ExternalLink extends GestureLink
+public class ExternalLink extends AbstractLinkComponent
 {
     private Object _parameters;
-
     private String _targetPage;
 
-    /**
-     *  Returns {@link Tapestry#EXTERNAL_SERVICE}.
-     *
-     **/
-
-    protected String getServiceName()
+    public ILink getLink(IRequestCycle cycle) throws RequestCycleException
     {
-        return Tapestry.EXTERNAL_SERVICE;
+        return getLink(cycle, Tapestry.EXTERNAL_SERVICE, getServiceParameters());
     }
 
-    protected Object[] getServiceParameters(IRequestCycle cycle)
+    private Object[] getServiceParameters()
     {
         Object[] pageParameters = DirectLink.constructServiceParameters(_parameters);
-        
+
         if (pageParameters == null)
-        return new Object[] { _targetPage  };
-        
+            return new Object[] { _targetPage };
+
         Object[] parameters = new Object[pageParameters.length + 1];
-        
+
         parameters[0] = _targetPage;
-        
+
         System.arraycopy(pageParameters, 0, parameters, 1, pageParameters.length);
-        
+
         return parameters;
     }
-        
+
     public Object getParameters()
     {
         return _parameters;
@@ -125,4 +121,3 @@ public class ExternalLink extends GestureLink
     }
 
 }
-

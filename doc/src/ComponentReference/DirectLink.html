@@ -155,32 +155,7 @@
     itself.
     </td>
 	</tr>
-  <tr>
-    <td>scheme</td>
-    <td>String</td>
-    <td>in</td>
-   	<td>no</td>
-		<td>&nbsp;</td>
-		<td>
-    If specified, then a longer URL (including scheme, server and possibly port) 
-    is generated using the specified scheme. Server is determined fromt he 
-    incoming request, and port is deterimined from the port paramter or the 
-    incoming request.     
-    </td>
-	</tr>
-  <tr>
-    <td>port</td>
-    <td>int</td>
-    <td>in</td>
-   	<td>no</td>
-		<td>&nbsp;</td>
-		<td>
-    If specified, then a longer URL (including scheme, server and port) is 
-    generated using the specified port. The server is determined from the 
-    incoming request, the scheme from the scheme parameter or the incoming 
-    request. 
-    </td>
-	</tr>
+
   <tr>
     <td>anchor</td>
     <td>String</td>
@@ -192,6 +167,16 @@
     and the anchor appended to it.
     </td>
 	</tr>
+	<tr>
+		<td>renderer</td>
+		<td><a href="../api/net/sf/tapestry/link/ILinkRenderer.html">ILinkRenderer</a></td>
+		<td>in</td>
+		<td>no</td>
+		<td>&nbsp;</td>
+		<td>
+		The object which will actually render the link.
+			</td>
+	</tr>	
 	</table>
             <P>Body: <STRONG>rendered</STRONG><BR>Informal parameters: 
             <STRONG>allowed</STRONG>

@@ -52,69 +52,69 @@
  *  information on the Apache Software Foundation, please see
  *  <http://www.apache.org/>.
  */
-package net.sf.tapestry.link;
+package net.sf.tapestry.junit;
 
-import net.sf.tapestry.IEngineService;
-import net.sf.tapestry.INamespace;
-import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.RequestCycleException;
-import net.sf.tapestry.Tapestry;
-import net.sf.tapestry.engine.EngineServiceLink;
 import net.sf.tapestry.engine.ILink;
+import net.sf.tapestry.link.StaticLink;
 
 /**
- *  A component for creating a navigation link to another page, 
- *  using the page service.
+ *  Tests for {@link net.sf.tapestry.link.StaticLink}.
  *
- *  [<a href="../../../../../ComponentReference/PageLink.html">Component Reference</a>]
- *
- * @author Howard Ship
- * @version $Id$
- *
+ *  @author Howard Lewis Ship
+ *  @version $Id$
+ *  @since 2.4
+ * 
  **/
 
-public class PageLink extends AbstractLinkComponent
+public class TestStaticLink extends TapestryTestCase
 {
-    private String _targetPage;
+	private static final String URL = "http://host/path";
+	
+		ILink l = new StaticLink(URL);
+		
 
-    /** @since 2.2 **/
-
-    private INamespace _targetNamespace;
-
-    public ILink getLink(IRequestCycle cycle) throws RequestCycleException
+    public TestStaticLink(String name)
     {
-        String parameter = null;
-
-        if (_targetNamespace == null)
-            parameter = _targetPage;
-        else
-            parameter = _targetNamespace.constructQualifiedName(_targetPage);
-
-        return getLink(cycle, Tapestry.PAGE_SERVICE, new String[] { parameter });
+        super(name);
     }
 
-    public String getTargetPage()
-    {
-        return _targetPage;
-    }
+	public void testURL()
+	{
+		assertEquals(URL, l.getURL());
+	}
+	
+	public void testAbsoluteURL()
+	{
+		assertEquals(URL, l.getAbsoluteURL());
+	}
 
-    public void setTargetPage(String targetPage)
-    {
-        _targetPage = targetPage;
-    }
-
-    /** @since 2.2 **/
-
-    public INamespace getTargetNamespace()
-    {
-        return _targetNamespace;
-    }
-
-    /** @since 2.2 **/
-
-    public void setTargetNamespace(INamespace targetNamespace)
-    {
-        _targetNamespace = targetNamespace;
-    }
-
+	public void testURLWithAnchor()
+	{
+		assertEquals(URL, l.getURL(null, false));
+		assertEquals(URL + "#anchor", l.getURL("anchor", false));
+		assertEquals(URL + "#feeble", l.getURL("feeble", true));
+	}
+	
+	public void testAbsoluteURLWithParameters()
+	{
+		assertEquals(URL + "#anchor", l.getAbsoluteURL("scheme", "server", 8080, "anchor", false));
+	}
+	
+	public void testGetParameterNames()
+	{
+		assertEquals(null, l.getParameterNames());
+	}
+	
+	public void testGetParameterValues()
+	{
+		try
+		{
+			l.getParameterValues("any");
+			
+			unreachable();
+		}
+		catch (IllegalArgumentException ex)
+		{
+		}
+	}
 }

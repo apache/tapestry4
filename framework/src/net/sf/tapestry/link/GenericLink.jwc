@@ -12,6 +12,16 @@
   
   <parameter name="href" java-type="java.lang.String" required="yes" direction="in"/>
 
-  <parameter name="disabled" java-type="boolean" direction="in"/>
+  <parameter name="disabled"
+  	java-type="boolean"
+  	direction="in"/>
+  	  	
+  <parameter name="anchor" 
+  	java-type="java.lang.String"
+  	direction="in"/>
+  	
+  <parameter name="renderer"
+  	java-type="net.sf.tapestry.link.ILinkRenderer"
+  	direction="in"/>
   
 </component-specification>

@@ -52,103 +52,49 @@
  *  information on the Apache Software Foundation, please see
  *  <http://www.apache.org/>.
  */
-package net.sf.tapestry.components;
+package net.sf.tapestry.link;
 
-import org.apache.commons.lang.enum.Enum;
+import net.sf.tapestry.IMarkupWriter;
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.components.ILinkComponent;
+import net.sf.tapestry.engine.EngineServiceLink;
 
 /**
- *  Different types of JavaScript events that an {@link IServiceLink}
- *  can provide handlers for.
+ *  Used by various instances of {@link net.sf.tapestry.components.ILinkComponent} to
+ *  actually renderer a link.  Implementations of the interface can manipulate
+ *  some of the details of how the link is written.
+ * 
+ *  <p>
+ *  A link rendered may be used in many threads, and must be threadsafe.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 0.2.9
- *
+ *  @since 2.4
+ * 
  **/
 
-public class ServiceLinkEventType extends Enum
+public interface ILinkRenderer
 {
-    private String _attributeName;
-
     /**
-     *  Type for <code>onMouseOver</code>.  This may also be called "focus".
-     *
+     *  Renders the link, taking into account whether the link is
+     *  {@link net.sf.tapestry.components.ILinkComponent#isDisabled() disabled}.
+     *  This is complicated by the fact that the rendering of the body must be done
+     *  within a nested writer, since the Link component will not render its tag
+     *  until after its body renders (to allow for any wrapped components that need
+     *  to write event handlers for the link).
+     * 
+     *  <p>
+     *  The renderer is expected to call back into the link component to handle
+     *  any informal parameters, and to handle events output.\
+     * 
+     * 
      **/
 
-    public static final ServiceLinkEventType MOUSE_OVER =
-        new ServiceLinkEventType("MOUSE_OVER", "onMouseOver");
+    public void renderLink(
+        IMarkupWriter writer,
+        IRequestCycle cycle,
+        ILinkComponent linkComponent)
+        throws RequestCycleException;
 
-    /**
-     * Type for <code>onMouseOut</code>.  This may also be called "blur".
-     *
-     **/
-
-    public static final ServiceLinkEventType MOUSE_OUT =
-        new ServiceLinkEventType("MOUSE_OUT", "onMouseOut");
-
-    /**
-     * Type for <code>onClick</code>.
-     *
-     * @since 1.0.1
-     *
-     **/
-
-    public static final ServiceLinkEventType CLICK = new ServiceLinkEventType("CLICK", "onClick");
-
-    /**
-     * Type for <code>onDblClick</code>.
-     *
-     * @since 1.0.1
-     *
-     **/
-
-    public static final ServiceLinkEventType DOUBLE_CLICK =
-        new ServiceLinkEventType("DOUBLE_CLICK", "onDblClick");
-
-    /**
-     * Type for <code>onMouseDown</code>.
-     *
-     * @since 1.0.1.
-     *
-     **/
-
-    public static final ServiceLinkEventType MOUSE_DOWN =
-        new ServiceLinkEventType("MOUSE_DOWN", "onMouseDown");
-
-    /**
-     * Type for <code>onMouseUp</code>.
-     *
-     * @since 1.0.1
-     *
-     **/
-
-    public static final ServiceLinkEventType MOUSE_UP =
-        new ServiceLinkEventType("MOUSE_UP", "onMouseUp");
-
-    /**
-     *  Constructs a new type of event.  The name should match the
-     *  static final variable (i.e., MOUSE_OVER) and the attributeName
-     *  is the name of the HTML attribute to be managed (i.e., "onMouseOver").
-     *
-     *  <p>This method is protected so that subclasses can be created
-     *  to provide additional managed event types.
-     **/
-
-    protected ServiceLinkEventType(String name, String attributeName)
-    {
-        super(name);
-
-        _attributeName = attributeName;
-    }
-
-    /**
-     *  Returns the name of the HTML attribute corresponding to this
-     *  type.
-     *
-     **/
-
-    public String getAttributeName()
-    {
-        return _attributeName;
-    }
 }

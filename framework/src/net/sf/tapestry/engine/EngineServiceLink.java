@@ -52,41 +52,46 @@
  *  information on the Apache Software Foundation, please see
  *  <http://www.apache.org/>.
  */
-package net.sf.tapestry;
+package net.sf.tapestry.engine;
 
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+
+import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.RequestContext;
+import net.sf.tapestry.Tapestry;
+
 /**
- *  A Gesture represents a possible action within the client web browser;
- *  either clicking a link or submitting a form.  A full URL for the Gesture
- *  can be generated, or the query parameters for the Gesture can be extracted
- *  (seperately from the servlet path).  The latter case is used when submitting
- *  forms.
- * 
- *  <p>Note: This class was changed signficantly in a non-backwards compatible
- *  way in release 2.2.
+ *  A EngineServiceLink represents a possible action within the client web browser;
+ *  either clicking a link or submitting a form, which is constructed primarily
+ *  from the {@link net.sf.tapestry.IEngine#getServletPath() servlet path},
+ *  with some additional query parameters.  A full URL for the EngineServiceLink
+ *  can be generated, or the query parameters for the EngineServiceLink can be extracted
+ *  (separately from the servlet path).  The latter case is used when submitting
+ *  constructing {@link net.sf.tapestry.form.Form forms}.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 1.0.3
+ *  @since 2.4
  * 
  **/
 
-public class Gesture
+public class EngineServiceLink implements ILink
 {
     private static final int DEFAULT_HTTP_PORT = 80;
 
     private IRequestCycle _cycle;
     private String _serviceName;
-    private String _serviceContext;
-    private String[] _serviceParameters;
+    private String _context;
+    private String[] _parameters;
     private boolean _stateful;
 
     /**
-     *  Creates a new Gesture.  A Gesture always names a service to be activated
-     *  by the Gesture, has an optional list of service context strings,
+     *  Creates a new EngineServiceLink.  A EngineServiceLink always names a service to be activated
+     *  by the link, has an optional list of service context strings,
      *  an optional list of service parameter strings and may be stateful
      *  or stateless.
      * 
@@ -94,23 +99,23 @@ public class Gesture
      * 
      *  <p>ServiceLink context strings must be URL safe, and may not contain
      *  slash ('/') characters.  Typically, only letters, numbers and simple
-     *  punctuation ('.', '-', '_') is recommended (no checks are currently made,
+     *  punctuation ('.', '-', '_', ':') is recommended (no checks are currently made,
      *  however).  Context strings are generally built from page names
      *  and component ids, which are limited to safe characters.
      *  
-     *  @param cycle The {@link IRequestCycle} the Gesture is to be created for.
-     *  @param serviceName The name of the service to be invoked by the Gesture.
+     *  @param cycle The {@link IRequestCycle} the EngineServiceLink is to be created for.
+     *  @param serviceName The name of the service to be invoked by the EngineServiceLink.
      *  @param serviceContext an optional array of strings to be provided
      *  to the service to provide a context for executing the service.  May be null
      *  or empty.  <b>Note: copied, not retained.</b>
      *  @param serviceParameters An array of parameters, may be 
      *  null or empty. <b>Note: retained, not copied.</b>
-     *  @param stateful if true, the service which generated the Gesture
+     *  @param stateful if true, the service which generated the EngineServiceLink
      *  is stateful and expects that the final URL will be passed through
      *  {@link IRequestCycle#encodeURL(String)}.
      **/
 
-    public Gesture(
+    public EngineServiceLink(
         IRequestCycle cycle,
         String serviceName,
         String[] serviceContext,
@@ -119,8 +124,8 @@ public class Gesture
     {
         _cycle = cycle;
         _serviceName = serviceName;
-        _serviceContext = constructContext(serviceContext);
-        _serviceParameters = serviceParameters;
+        _context = constructContext(serviceContext);
+        _parameters = serviceParameters;
         _stateful = stateful;
     }
 
@@ -144,53 +149,27 @@ public class Gesture
         return buffer.toString();
     }
 
-    /**
-     *  Returns the URI for the Gesture, exclusing any service parameters.
-     *  This is used (for example) by {@link net.sf.tapestry.form.Form} which encodes
-     *  the service parameters as hidden form fields.  The URL is encoded
-     *  if the service is stateful.
-     * 
-     *  @since 2.2
-     * 
-     **/
-
-    public String getBareURL()
-    {
-        return constructURL(new StringBuffer(), false);
-    }
-
-    /**
-     *  Something of a misnomer; returns the URI, relative to the server's root.
-     *  If the Gesture is stateful, then the URI is filtered
-     *  through {@link IRequestCycle#encodeURL(String)}.
-     *
-     **/
-
     public String getURL()
     {
-        return constructURL(new StringBuffer(), true);
+        return getURL(null, true);
     }
 
-    /**
-     *  Constructs an absolute URL, including scheme, server and port.
-     *  This is often useful when the URL will be included in a client-side script.
-     *
-     **/
+    public String getURL(String anchor, boolean includeParameters)
+    {
+        return constructURL(new StringBuffer(), anchor, includeParameters);
+    }
 
     public String getAbsoluteURL()
     {
-        return getAbsoluteURL(null, null, 0);
+        return getAbsoluteURL(null, null, 0, null, true);
     }
 
-    /**
-     *  Generates a complete URL.
-     *  @param scheme if non-null, used as the scheme (instead of the scheme defined by the cycle)
-     *  @param server if non-null, used as the server (instead of the server defined by the cycle)
-     *  @param port if non-zero, used as the port (instead of the port defined by the cycle)
-     * 
-     **/
-
-    public String getAbsoluteURL(String scheme, String server, int port)
+    public String getAbsoluteURL(
+        String scheme,
+        String server,
+        int port,
+        String anchor,
+        boolean includeParameters)
     {
         StringBuffer buffer = new StringBuffer();
         RequestContext context = _cycle.getRequestContext();
@@ -218,10 +197,10 @@ public class Gesture
         // Add the servlet path and the rest of the URL & query parameters.
         // The servlet path starts with a leading slash.
 
-        return constructURL(buffer, true);
+        return constructURL(buffer, anchor, includeParameters);
     }
 
-    private String constructURL(StringBuffer buffer, boolean includeParameters)
+    private String constructURL(StringBuffer buffer, String anchor, boolean includeParameters)
     {
         buffer.append(_cycle.getEngine().getServletPath());
 
@@ -232,15 +211,15 @@ public class Gesture
             buffer.append('=');
             buffer.append(_serviceName);
 
-            if (_serviceContext != null)
+            if (_context != null)
             {
                 buffer.append('&');
                 buffer.append(Tapestry.CONTEXT_QUERY_PARMETER_NAME);
                 buffer.append('=');
-                buffer.append(_serviceContext);
+                buffer.append(_context);
             }
 
-            int count = Tapestry.size(_serviceParameters);
+            int count = Tapestry.size(_parameters);
 
             for (int i = 0; i < count; i++)
             {
@@ -254,7 +233,7 @@ public class Gesture
                     // We use the older, deprecated version of this method, which is compatible
                     // with the JDK 1.2.2.
 
-                    String encoded = URLEncoder.encode(_serviceParameters[i]);
+                    String encoded = URLEncoder.encode(_parameters[i]);
 
                     buffer.append(encoded);
                 }
@@ -266,6 +245,12 @@ public class Gesture
             }
         }
 
+        if (anchor != null)
+        {
+            buffer.append('#');
+            buffer.append(anchor);
+        }
+
         String result = buffer.toString();
 
         if (_stateful)
@@ -274,40 +259,20 @@ public class Gesture
         return result;
     }
 
-    /**
-     *  Returns the names of any parameters that should be encoded
-     *  into a &lt;form&gt;.  This is used by the
-     *  {@link net.sf.tapestry.form.Form} component.
-     * 
-     *  @see #getParameterValues(String)
-     * 
-     *  @since 2.2
-     * 
-     **/
-
     public String[] getParameterNames()
     {
         List list = new ArrayList();
 
         list.add(Tapestry.SERVICE_QUERY_PARAMETER_NAME);
 
-        if (_serviceContext != null)
+        if (_context != null)
             list.add(Tapestry.CONTEXT_QUERY_PARMETER_NAME);
 
-        if (Tapestry.size(_serviceParameters) != 0)
+        if (Tapestry.size(_parameters) != 0)
             list.add(Tapestry.PARAMETERS_QUERY_PARAMETER_NAME);
 
         return (String[]) list.toArray(new String[list.size()]);
     }
-
-    /**
-     *  Returns an array of strings to be encoded into the &lt;form&gt;
-     *  (as hidden form elements). 
-     * 
-     *  @see #getParameterNames()
-     *  @since 2.2
-     * 
-     **/
 
     public String[] getParameterValues(String name)
     {
@@ -318,44 +283,29 @@ public class Gesture
 
         if (name.equals(Tapestry.CONTEXT_QUERY_PARMETER_NAME))
         {
-            return new String[] { _serviceContext };
+            return new String[] { _context };
         }
 
         if (name.equals(Tapestry.PARAMETERS_QUERY_PARAMETER_NAME))
         {
-            return _serviceParameters;
+            return _parameters;
         }
 
         throw new IllegalArgumentException(
-            Tapestry.getString("Gesture.unknown-parameter-name", name));
+            Tapestry.getString("EngineServiceLink.unknown-parameter-name", name));
 
     }
 
     public String toString()
     {
-        StringBuffer buffer = new StringBuffer("Gesture[");
+        ToStringBuilder builder = new ToStringBuilder(this);
 
-        buffer.append(getBareURL());
-        buffer.append(' ');
+        builder.append("serviceName", _serviceName);
+        builder.append("context", _context);
+        builder.append("parameters", _parameters);
+        builder.append("stateful", _stateful);
 
-        int count = Tapestry.size(_serviceParameters);
-
-        for (int i = 0; i < count; i++)
-        {
-            if (i == 0)
-                buffer.append(" parameters=");
-            else
-                buffer.append(',');
-
-            buffer.append(_serviceParameters[i]);
-        }
-
-        if (_stateful)
-            buffer.append(" (stateful)");
-
-        buffer.append(']');
-
-        return buffer.toString();
+        return builder.toString();
     }
 
 }

@@ -60,7 +60,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 
 import net.sf.tapestry.ApplicationRuntimeException;
-import net.sf.tapestry.Gesture;
 import net.sf.tapestry.IComponent;
 import net.sf.tapestry.IDirect;
 import net.sf.tapestry.IEngineServiceView;
@@ -100,7 +99,7 @@ public class DirectService extends AbstractService
 
     private static final String STATEFUL_OFF = "0";
 
-    public Gesture buildGesture(IRequestCycle cycle, IComponent component, Object[] parameters)
+    public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
 
         // New since 1.0.1, we use the component to determine
@@ -131,7 +130,7 @@ public class DirectService extends AbstractService
         context[i++] = componentPage.getPageName();
         context[i++] = component.getIdPath();
 
-        return assembleGesture(cycle, Tapestry.DIRECT_SERVICE, context, parameters, true);
+        return constructLink(cycle, Tapestry.DIRECT_SERVICE, context, parameters, true);
     }
 
     public boolean service(IEngineServiceView engine, IRequestCycle cycle, ResponseOutputStream output)

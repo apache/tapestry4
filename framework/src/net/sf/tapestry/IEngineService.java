@@ -58,10 +58,12 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 
+import net.sf.tapestry.engine.*;
+
 /**
  *  A service, provided by the {@link IEngine}, for its pages and/or components.  
  *  Services are
- *  responsible for constructing {@link Gesture}s (an encoding of URLs)
+ *  responsible for constructing {@link EngineServiceLink}s (an encoding of URLs)
  *  to represent dynamic application behavior, and for
  *  parsing those URLs when a subsequent request involves them.
  *
@@ -79,56 +81,56 @@ public interface IEngineService
      *
      **/
 
-    public final static String ACTION_SERVICE = "action";
+    public final static String ACTION_SERVICE = Tapestry.ACTION_SERVICE;
 
     /**
      *  @deprecated To be removed in 2.5.  Use {@link Tapestry#DIRECT_SERVICE} instead.
      *
      **/
 
-    public final static String DIRECT_SERVICE = "direct";
+    public final static String DIRECT_SERVICE = Tapestry.DIRECT_SERVICE;
 
     /**
      *  @deprecated To be removed in 2.5.  Use {@link Tapestry#EXTERNAL_SERVICE} instead.
      *
      **/
 
-    public final static String EXTERNAL_SERVICE = "external";
+    public final static String EXTERNAL_SERVICE = Tapestry.EXTERNAL_SERVICE;
 
     /**
      *  @deprecated To be removed in 2.5.  Use {@link Tapestry#PAGE_SERVICE} instead.
      *
      **/
 
-    public final static String PAGE_SERVICE = "page";
+    public final static String PAGE_SERVICE = Tapestry.PAGE_SERVICE;
 
     /**
      *  @deprecated To be removed in 2.5.  Use {@link Tapestry#HOME_SERVICE} instead.
      *
      **/
 
-    public final static String HOME_SERVICE = "home";
+    public final static String HOME_SERVICE = Tapestry.HOME_SERVICE;
 
     /**
      *  @deprecated To be removed in 2.5.  Use {@link Tapestry#RESTART_SERVICE} instead.
      *
      **/
 
-    public static final String RESTART_SERVICE = "restart";
+    public static final String RESTART_SERVICE = Tapestry.RESTART_SERVICE;
 
     /**
      *  @deprecated To be removed in 2.5.  Use {@link Tapestry#ASSET_SERVICE} instead.
      *
      **/
 
-    public static final String ASSET_SERVICE = "asset";
+    public static final String ASSET_SERVICE = Tapestry.ASSET_SERVICE;
 
     /**
      *  @deprecated To be removed in 2.5.  Use {@link Tapestry#RESET_SERVICE} instead.
      *
      **/
 
-    public static final String RESET_SERVICE = "reset";
+    public static final String RESET_SERVICE = Tapestry.RESET_SERVICE;
 
     /**
      *  @deprecated To be removed in 2.5.  Use 
@@ -136,14 +138,14 @@ public interface IEngineService
      *
      **/
 
-    public static final String SERVICE_QUERY_PARAMETER_NAME = "service";
+    public static final String SERVICE_QUERY_PARAMETER_NAME = Tapestry.SERVICE_QUERY_PARAMETER_NAME;
 
     /**
      *  @deprecated To be removed in 2.5.  Use {@link Tapestry#CONTEXT_QUERY_PARMETER_NAME} instead.
      *
      **/
 
-    public static final String CONTEXT_QUERY_PARMETER_NAME = "context";
+    public static final String CONTEXT_QUERY_PARMETER_NAME = Tapestry.CONTEXT_QUERY_PARMETER_NAME;
 
     /**
      *  @deprecated To be removed in 2.5.  Use 
@@ -151,7 +153,8 @@ public interface IEngineService
      *
      **/
 
-    public static final String PARAMETERS_QUERY_PARAMETER_NAME = "sp";
+    public static final String PARAMETERS_QUERY_PARAMETER_NAME =
+        Tapestry.PARAMETERS_QUERY_PARAMETER_NAME;
 
     /**
      *  Builds a URL for a service.  This is performed during the
@@ -162,13 +165,13 @@ public interface IEngineService
      *  @param component The component requesting the URL.  Generally, the
      *  service context is established from the component.
      *  @param parameters Additional parameters specific to the
-     *  component requesting the Gesture.
+     *  component requesting the EngineServiceLink.
      *  @return The URL for the service.  The URL will have to be encoded
      *  via {@link HttpServletResponse#encodeURL(java.lang.String)}.
      *
      **/
 
-    public Gesture buildGesture(IRequestCycle cycle, IComponent component, Object[] parameters);
+    public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters);
 
     /**
      *  Perform the service, interpreting the URL (from the

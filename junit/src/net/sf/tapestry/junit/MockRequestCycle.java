@@ -52,69 +52,151 @@
  *  information on the Apache Software Foundation, please see
  *  <http://www.apache.org/>.
  */
-package net.sf.tapestry.link;
+package net.sf.tapestry.junit;
 
+import net.sf.tapestry.IComponent;
+import net.sf.tapestry.IEngine;
 import net.sf.tapestry.IEngineService;
-import net.sf.tapestry.INamespace;
+import net.sf.tapestry.IForm;
+import net.sf.tapestry.IMarkupWriter;
+import net.sf.tapestry.IMonitor;
+import net.sf.tapestry.IPage;
 import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.PageRecorderCommitException;
+import net.sf.tapestry.RequestContext;
 import net.sf.tapestry.RequestCycleException;
-import net.sf.tapestry.Tapestry;
-import net.sf.tapestry.engine.EngineServiceLink;
-import net.sf.tapestry.engine.ILink;
+import net.sf.tapestry.StaleLinkException;
 
 /**
- *  A component for creating a navigation link to another page, 
- *  using the page service.
+ *  Used to simulate an {@link net.sf.tapestry.IRequestCycle} in some tests.
+ * 
  *
- *  [<a href="../../../../../ComponentReference/PageLink.html">Component Reference</a>]
- *
- * @author Howard Ship
- * @version $Id$
- *
+ *  @author Howard Lewis Ship
+ *  @version $Id$
+ *  @since 2.4
  **/
-
-public class PageLink extends AbstractLinkComponent
+public class MockRequestCycle implements IRequestCycle
 {
-    private String _targetPage;
+    private IEngine _engine;
+    private String _lastEncodedURL;
+    private RequestContext _context;
 
-    /** @since 2.2 **/
-
-    private INamespace _targetNamespace;
-
-    public ILink getLink(IRequestCycle cycle) throws RequestCycleException
+    public MockRequestCycle(IEngine engine, RequestContext context)
     {
-        String parameter = null;
-
-        if (_targetNamespace == null)
-            parameter = _targetPage;
-        else
-            parameter = _targetNamespace.constructQualifiedName(_targetPage);
-
-        return getLink(cycle, Tapestry.PAGE_SERVICE, new String[] { parameter });
+        _engine = engine;
+        _context = context;
     }
 
-    public String getTargetPage()
+    public void cleanup()
     {
-        return _targetPage;
     }
 
-    public void setTargetPage(String targetPage)
+    public String encodeURL(String URL)
     {
-        _targetPage = targetPage;
+        _lastEncodedURL = URL;
+        
+        return URL;
     }
 
-    /** @since 2.2 **/
-
-    public INamespace getTargetNamespace()
+    public IEngine getEngine()
     {
-        return _targetNamespace;
+        return _engine;
     }
 
-    /** @since 2.2 **/
-
-    public void setTargetNamespace(INamespace targetNamespace)
+    public Object getAttribute(String name)
     {
-        _targetNamespace = targetNamespace;
+        return null;
+    }
+
+    public IMonitor getMonitor()
+    {
+        return null;
+    }
+
+    public String getNextActionId()
+    {
+        return null;
+    }
+
+    public IPage getPage()
+    {
+        return null;
+    }
+
+    public IPage getPage(String name)
+    {
+        return null;
+    }
+
+    public RequestContext getRequestContext()
+    {
+        return _context;
+    }
+
+    public boolean isRewinding()
+    {
+        return false;
+    }
+
+    public boolean isRewound(IComponent component) throws StaleLinkException
+    {
+        return false;
+    }
+
+    public void removeAttribute(String name)
+    {
+    }
+
+    public void renderPage(IMarkupWriter writer) throws RequestCycleException
+    {
+    }
+
+    public void rewindPage(String targetActionId, IComponent targetComponent)
+        throws RequestCycleException
+    {
+    }
+
+    public void setAttribute(String name, Object value)
+    {
+    }
+
+    public void setPage(IPage page)
+    {
+    }
+
+    public void setPage(String name)
+    {
+    }
+
+    public void commitPageChanges() throws PageRecorderCommitException
+    {
+    }
+
+    public IEngineService getService()
+    {
+        return null;
+    }
+
+    public void rewindForm(IForm form, String targetActionId) throws RequestCycleException
+    {
+    }
+
+    public void discardPage(String name)
+    {
+    }
+
+    public void setServiceParameters(Object[] parameters)
+    {
+    }
+
+    public Object[] getServiceParameters()
+    {
+        return null;
+    }
+
+    public String getLastEncodedURL()
+    {
+        return _lastEncodedURL;
     }
 
 }

@@ -87,6 +87,8 @@ public class TapestrySuite extends TestSuite
     {
         TestSuite suite = new TestSuite();
 
+		suite.addTestSuite(TestStaticLink.class);
+		suite.addTestSuite(TestEngineServiceLink.class);
         suite.addTestSuite(TestAdaptorRegistry.class);
         suite.addTestSuite(TestTapestryCoerceToIterator.class);
         suite.addTestSuite(TestPool.class);

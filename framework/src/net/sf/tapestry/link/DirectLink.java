@@ -64,6 +64,8 @@ import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.RequiredParameterException;
 import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.engine.EngineServiceLink;
+import net.sf.tapestry.engine.ILink;
 
 /**
  *  A component for creating a link using the direct service; used for actions that
@@ -76,7 +78,7 @@ import net.sf.tapestry.Tapestry;
  *
  **/
 
-public class DirectLink extends GestureLink implements IDirect
+public class DirectLink extends AbstractLinkComponent implements IDirect
 {
     private IBinding _listenerBinding;
     private Object _parameters;
@@ -107,19 +109,12 @@ public class DirectLink extends GestureLink implements IDirect
         return _statefulBinding.getBoolean();
     }
 
-    /**
-     *  Returns {@link net.sf.tapestry.Tapestry#DIRECT_SERVICE}.
-     *
-     **/
-
-    protected String getServiceName()
+    public ILink getLink(IRequestCycle cycle) throws RequestCycleException
     {
-        return Tapestry.DIRECT_SERVICE;
-    }
-
-    protected Object[] getServiceParameters(IRequestCycle cycle)
-    {
-        return constructServiceParameters(_parameters);
+        return getLink(
+            cycle,
+            Tapestry.DIRECT_SERVICE,
+            constructServiceParameters(_parameters));
     }
 
     /**

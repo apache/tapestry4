@@ -59,7 +59,6 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 
 import net.sf.tapestry.ApplicationRuntimeException;
-import net.sf.tapestry.Gesture;
 import net.sf.tapestry.IComponent;
 import net.sf.tapestry.IEngineServiceView;
 import net.sf.tapestry.IExternalPage;
@@ -145,7 +144,7 @@ import net.sf.tapestry.Tapestry;
 public class ExternalService extends AbstractService
 {
 
-    public Gesture buildGesture(IRequestCycle cycle, IComponent component, Object[] parameters)
+    public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
         if (parameters == null || parameters.length == 0)
             throw new ApplicationRuntimeException(
@@ -157,7 +156,7 @@ public class ExternalService extends AbstractService
         Object[] pageParameters = new Object[parameters.length - 1];
         System.arraycopy(parameters, 1, pageParameters, 0, parameters.length - 1);
 
-        return assembleGesture(cycle, Tapestry.EXTERNAL_SERVICE, context, pageParameters, true);
+        return constructLink(cycle, Tapestry.EXTERNAL_SERVICE, context, pageParameters, true);
     }
 
     public boolean service(

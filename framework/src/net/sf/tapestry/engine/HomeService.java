@@ -58,7 +58,6 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 
-import net.sf.tapestry.Gesture;
 import net.sf.tapestry.IComponent;
 import net.sf.tapestry.IEngine;
 import net.sf.tapestry.IEngineServiceView;
@@ -84,13 +83,13 @@ import net.sf.tapestry.Tapestry;
 public class HomeService extends AbstractService
 {
 
-    public Gesture buildGesture(IRequestCycle cycle, IComponent component, Object[] parameters)
+    public ILink getLink(IRequestCycle cycle, IComponent component, Object[] parameters)
     {
         if (Tapestry.size(parameters) != 0)
             throw new IllegalArgumentException(
                 Tapestry.getString("service-no-parameters", Tapestry.HOME_SERVICE));
 
-        return assembleGesture(cycle, Tapestry.HOME_SERVICE, null, null, true);
+        return constructLink(cycle, Tapestry.HOME_SERVICE, null, null, true);
     }
 
     public boolean service(

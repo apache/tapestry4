@@ -54,84 +54,120 @@
  */
 package net.sf.tapestry.link;
 
-import net.sf.tapestry.IAction;
-import net.sf.tapestry.IActionListener;
-import net.sf.tapestry.IBinding;
+import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.RenderRewoundException;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.components.ILinkComponent;
 import net.sf.tapestry.engine.EngineServiceLink;
 import net.sf.tapestry.engine.ILink;
 
 /**
- *  A component for creating a link that is handled using the action service.
- * 
- *  [<a href="../../../../../ComponentReference/ActionLink.html">Component Reference</a>]
- *
+ *  Default implementation of {@link net.sf.tapestry.link.ILinkRenderer}, which
+ *  does nothing special.  Can be used as a base class to provide
+ *  additional handling.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *
+ *  @since 2.4
  **/
 
-public class ActionLink extends AbstractLinkComponent implements IAction
+public class DefaultLinkRenderer implements ILinkRenderer
 {
-    private IActionListener _listener;
-    private IBinding _statefulBinding;
-
     /**
-     *  Returns true if the stateful parameter is bound to
-     *  a true value.  If stateful is not bound, also returns
-     *  the default, true.
+     *  A shared instance used as a default for any link that doesn't explicitly
+     *  override.
      * 
-     *  <p>Note that this method can be called when the
-     *  component is not rendering, therefore it must
-     *  directly access the {@link IBinding} for the stateful
-     *  parameter.
-     *
      **/
 
-    public boolean getRequiresSession()
+    public static final ILinkRenderer SHARED_INSTANCE = new DefaultLinkRenderer();
+
+    public void renderLink(IMarkupWriter writer, IRequestCycle cycle, ILinkComponent linkComponent)
+        throws RequestCycleException
     {
-        if (_statefulBinding == null)
-            return true;
+        IMarkupWriter wrappedWriter = null;
 
-        return _statefulBinding.getBoolean();
-    }
+        if (cycle.getAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME) != null)
+            throw new RequestCycleException(
+                Tapestry.getString("AbstractLinkComponent.no-nesting"),
+                linkComponent);
 
-    public ILink getLink(IRequestCycle cycle) throws RequestCycleException
-    {
-        String actionId = cycle.getNextActionId();
+        cycle.setAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME, linkComponent);
 
-        if (cycle.isRewound(this))
+        boolean disabled = linkComponent.isDisabled();
+
+        if (!disabled)
         {
-            _listener.actionTriggered(this, cycle);
+           ILink l = linkComponent.getLink(cycle);
 
-            throw new RenderRewoundException(this);
+            writer.begin("a");
+            writer.attribute("href", constructURL(l, cycle));
+
+            beforeBodyRender(writer, cycle, linkComponent);
+
+            // Allow the wrapped components a chance to render.
+            // Along the way, they may interact with this component
+            // and cause the name variable to get set.
+
+            wrappedWriter = writer.getNestedWriter();
+        }
+        else
+            wrappedWriter = writer;
+
+        linkComponent.renderBody(wrappedWriter, cycle);
+
+        if (!disabled)
+        {
+            afterBodyRender(writer, cycle, linkComponent);
+
+            linkComponent.renderAdditionalAttributes(writer, cycle);
+
+            wrappedWriter.close();
+
+            // Close the <a> tag
+
+            writer.end();
         }
 
-        return getLink(cycle, Tapestry.ACTION_SERVICE, new Object[] { actionId });
+        cycle.removeAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME);
     }
 
-    public IBinding getStatefulBinding()
+    /**
+     *  Converts the EngineServiceLink into a URI or URL.  This implementation
+     *  simply invokes {@link net.sf.tapestry.EngineServiceLink#getURL()}.
+     * 
+     **/
+
+    protected String constructURL(ILink link, IRequestCycle cycle)
     {
-        return _statefulBinding;
+        return link.getURL();
     }
 
-    public void setStatefulBinding(IBinding statefulBinding)
+    /**
+     *  Invoked after the href attribute has been written but before
+     *  the body of the link is rendered (but only if the link
+     *  is not disabled).
+     * 
+     *  <p>
+     *  This implementation does nothing.
+     * 
+     **/
+
+    protected void beforeBodyRender(IMarkupWriter writer, IRequestCycle cycle, ILinkComponent link)
     {
-        _statefulBinding = statefulBinding;
     }
 
-    public IActionListener getListener()
+    /**
+     *  Invoked after the body of the link is rendered, but before
+     *  {@link ILinkComponent#renderAdditionalAttributes(IMarkupWriter, IRequestCycle)} is invoked
+     *  (but only if the link is not disabled).
+     * 
+     *  <p>
+     *  This implementation does nothing.
+     * 
+     **/
+
+    protected void afterBodyRender(IMarkupWriter writer, IRequestCycle cycle, ILinkComponent link)
     {
-        return _listener;
     }
-
-    public void setListener(IActionListener listener)
-    {
-        _listener = listener;
-    }
-
 }

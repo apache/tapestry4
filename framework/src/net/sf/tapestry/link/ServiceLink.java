@@ -55,6 +55,9 @@
 package net.sf.tapestry.link;
 
 import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.engine.EngineServiceLink;
+import net.sf.tapestry.engine.ILink;
 
 /**
  *  A component for creating a link for an arbitrary {@link net.sf.tapestry.IEngineService
@@ -69,31 +72,16 @@ import net.sf.tapestry.IRequestCycle;
  *
  **/
 
-public class ServiceLink extends GestureLink
+public class ServiceLink extends AbstractLinkComponent
 {
     private String _service;
     private Object _parameters;
 
-
-    /**
-     *  Returns name of the service specified by the service parameter.
-     **/
-
-    protected String getServiceName()
+    public ILink getLink(IRequestCycle cycle) throws RequestCycleException
     {
-        return _service;
-    }
+        Object[] parameters = DirectLink.constructServiceParameters(_parameters);
 
-    /** 
-     *  Invokes {@link DirectLink#constructContext(Object)} to create Object[]
-     *  from the context parameter (which may be an object, array of Strings or List of Strings).
-     * 
-     **/
-
-    protected Object[] getServiceParameters(IRequestCycle cycle)
-    {
-        return DirectLink.constructServiceParameters(_parameters);
-
+        return getLink(cycle, _service, parameters);
     }
 
     public String getService()

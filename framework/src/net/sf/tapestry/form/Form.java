@@ -61,7 +61,6 @@ import java.util.List;
 import java.util.Map;
 
 import net.sf.tapestry.AbstractComponent;
-import net.sf.tapestry.Gesture;
 import net.sf.tapestry.IActionListener;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IComponent;
@@ -76,6 +75,8 @@ import net.sf.tapestry.RenderRewoundException;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.StaleLinkException;
 import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.engine.EngineServiceLink;
+import net.sf.tapestry.engine.ILink;
 import net.sf.tapestry.event.PageDetachListener;
 import net.sf.tapestry.event.PageEvent;
 import net.sf.tapestry.html.Body;
@@ -328,14 +329,14 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
 
         _rewinding = rewound;
 
-        Gesture g = getGesture(cycle, actionId);
+        ILink link = getLink(cycle, actionId);
 
         if (renderForm)
         {
             writer.begin("form");
             writer.attribute("method", (_method == null) ? "post" : _method);
             writer.attribute("name", _name);
-            writer.attribute("action", g.getBareURL());
+            writer.attribute("action", link.getURL(null, false));
 
             generateAttributes(writer, cycle);
             writer.println();
@@ -344,7 +345,7 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
         // Write the hidden's, or at least, reserve the query parameters
         // required by the Gesture.
 
-        writeGestureParameters(writer, g, !renderForm);
+        writeLinkParameters(writer, link, !renderForm);
 
         _allocatedIdIndex = 0;
 
@@ -575,14 +576,14 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
     }
 
     /**
-     *  Builds the Gesture for the form, using either the direct or
+     *  Builds the EngineServiceLink for the form, using either the direct or
      *  action service. 
      *
      *  @since 1.0.3
      *
      **/
 
-    private Gesture getGesture(IRequestCycle cycle, String actionId)
+    private ILink getLink(IRequestCycle cycle, String actionId)
     {
         String serviceName = null;
 
@@ -596,12 +597,12 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
 
         // A single service parameter is used to store the actionId.
 
-        return service.buildGesture(cycle, this, new String[] { actionId });
+        return service.getLink(cycle, this, new String[] { actionId });
     }
 
-    private void writeGestureParameters(IMarkupWriter writer, Gesture g, boolean reserveOnly)
+    private void writeLinkParameters(IMarkupWriter writer, ILink link, boolean reserveOnly)
     {
-        String[] names = g.getParameterNames();
+        String[] names = link.getParameterNames();
         int count = Tapestry.size(names);
 
         for (int i = 0; i < count; i++)
@@ -614,7 +615,7 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
             _elementIdAllocator.allocateId(name);
 
             if (!reserveOnly)
-                writeHiddenFieldsForParameter(writer, g, name);
+                writeHiddenFieldsForParameter(writer, link, name);
         }
     }
 
@@ -625,10 +626,10 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
 
     private void writeHiddenFieldsForParameter(
         IMarkupWriter writer,
-        Gesture g,
+        ILink link,
         String parameterName)
     {
-        String[] values = g.getParameterValues(parameterName);
+        String[] values = link.getParameterValues(parameterName);
 
         for (int i = 0; i < values.length; i++)
         {

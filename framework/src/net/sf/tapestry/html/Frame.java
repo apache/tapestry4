@@ -55,13 +55,13 @@
 package net.sf.tapestry.html;
 
 import net.sf.tapestry.AbstractComponent;
-import net.sf.tapestry.Gesture;
 import net.sf.tapestry.IEngine;
 import net.sf.tapestry.IEngineService;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.engine.ILink;
 
 /**
  *  Implements a &lt;frame&gt; within a &lt;frameset&gt;.
@@ -86,10 +86,10 @@ public class Frame extends AbstractComponent
         IEngine engine = cycle.getEngine();
         IEngineService pageService = engine.getService(Tapestry.PAGE_SERVICE);
 
-        Gesture g = pageService.buildGesture(cycle, this, new String[] { _targetPage });
+        ILink link = pageService.getLink(cycle, this, new String[] { _targetPage });
 
         writer.beginEmpty("frame");
-        writer.attribute("src", g.getURL());
+        writer.attribute("src", link.getURL());
 
         generateAttributes(writer, cycle);
 

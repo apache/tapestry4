@@ -58,7 +58,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.sf.tapestry.BaseComponent;
-import net.sf.tapestry.Gesture;
 import net.sf.tapestry.IDirect;
 import net.sf.tapestry.IEngine;
 import net.sf.tapestry.IEngineService;
@@ -71,6 +70,7 @@ import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.ScriptException;
 import net.sf.tapestry.ScriptSession;
 import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.engine.ILink;
 import net.sf.tapestry.html.Body;
 
 /**
@@ -131,9 +131,9 @@ public class InspectorButton extends BaseComponent implements IDirect
         Map symbols = new HashMap();
 
         IEngineService service = engine.getService(Tapestry.DIRECT_SERVICE);
-        Gesture g = service.buildGesture(cycle, this, null);
+        ILink link = service.getLink(cycle, this, null);
 
-        symbols.put("URL", g.getURL());
+        symbols.put("URL", link.getURL());
 
         ScriptSession scriptSession = null;
 
