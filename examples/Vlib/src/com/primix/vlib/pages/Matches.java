@@ -269,5 +269,31 @@ public class Matches extends BasePage
 		
 		return ! app.isLoggedInUser(currentMatch.getHolderPrimaryKey());
 	}
-    
+ 
+ 	/**
+	 *  Removes the book query bean, if the handle to the bean
+	 *  is non-null.
+	 *
+	 */
+	 
+ 	public void cleanupPage()
+ 	{
+		if (bookQueryHandle == null)
+			return;
+		
+		try
+		{
+			getBookQuery().remove();
+		}
+		catch (RemoveException e)
+		{
+			throw new ApplicationRuntimeException(e);
+		}
+		catch (RemoteException e)
+		{
+			throw new ApplicationRuntimeException(e);
+		}
+		
+		super.cleanupPage();
+ 	}
 }

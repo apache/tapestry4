@@ -52,7 +52,7 @@ import javax.rmi.*;
 
 
 public class DemoApplication extends SimpleApplication
-    implements HttpSessionBindingListener, IRecordType
+    implements IRecordType
 {
 	private transient MessageLogger messageLogger;
 	
@@ -94,30 +94,6 @@ public class DemoApplication extends SimpleApplication
 
 	}
 
-	/**
-	*  Used during testing to reset the server state, to force reloads of templates and
-	*  specifications.
-	*
-	*/
-
-	private class ResetService implements IApplicationService
-	{
-		public void service(IRequestCycle cycle, ResponseOutputStream output)
-		throws RequestCycleException, IOException, ServletException
-		{
-			reset(cycle);
-		}
-
-		public String buildURL(IRequestCycle cycle, IComponent component, 
-			String[] parameters)
-		{
-			if (parameters != null &&
-				parameters.length > 0)
-				throw new IllegalArgumentException("Service reset requires no parameters.");
-
-			return getServletPrefix() + "/reset";
-		}
-	}
 
 	public DemoApplication(RequestContext context)
 	{
@@ -127,19 +103,6 @@ public class DemoApplication extends SimpleApplication
 		messageLogger.addHandler(new ConsoleHandler());
 		
 		messageLogger.setSynchronous(true);
-	}
-
-	/**
-	*  Constructs the 'reset' service, or invokes the super implementation.
-	*
-	*/
-
-	protected IApplicationService constructService(String name)
-	{
-		if (name.equals("reset"))
-			return new ResetService();
-
-		return super.constructService(name);
 	}
 
 
@@ -183,52 +146,17 @@ public class DemoApplication extends SimpleApplication
 		return "/tests/tapestry/Demo.application";
 	}
 
-	/**
-	*  Removes from the <code>ServletContext</code> the template
-	*  source, specification source, page source and application
-	*  specification, then invokes {@link #restart(IRequestCycle)} to
-	*  invalidate the session and redirects to the home page.
-	*
-	*  <p>Subclasses should perform their own restart before invoking
-	*  this implementation.
-	*
-	*/
-
-	protected void reset(IRequestCycle cycle)
-	throws IOException
-	{
-		RequestContext context;
-		ServletContext servletContext;
-		IMonitor monitor;
-
-		monitor = cycle.getMonitor();
-
-		if (monitor != null)
-			monitor.serviceBegin("reset", null);
-
-		context = cycle.getRequestContext();
-
-			servletContext = context.getServlet().getServletContext();
-
-		servletContext.removeAttribute(TEMPLATE_SOURCE_NAME);
-		servletContext.removeAttribute(SPECIFICATION_SOURCE_NAME);
-		servletContext.removeAttribute(PAGE_SOURCE_NAME + "." + specification.getName());
-
-		servletContext.removeAttribute(getSpecificationAttributeName());
-
-		restart(cycle);
-
-		if (monitor != null)
-			monitor.serviceEnd("reset");
-	}
 
 	public void valueBound(HttpSessionBindingEvent event)
 	{
+		super.valueBound(event);
+		
 		messageLogger.text(TYPE_INFORMATION, this, "valueBound",
 			"New client from {0}, active count {1}.",
 			new Object[]
 			{ clientAddress, new Integer(++activeCount) 
 		});
+		
 	}
 
 	public void valueUnbound(HttpSessionBindingEvent event)
@@ -238,6 +166,8 @@ public class DemoApplication extends SimpleApplication
 			new Object[]
 			{ clientAddress, new Integer(--activeCount) 
 		});
+	
+		super.valueUnbound(event);	
 	}
 
 
