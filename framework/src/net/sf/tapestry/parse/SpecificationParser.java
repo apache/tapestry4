@@ -1244,8 +1244,7 @@ public class SpecificationParser extends AbstractDocumentParser
 
     /** 
      * 
-     *  Returns a pattern compiled for single line matching, and
-     *  to be case insensitive.
+     *  Returns a pattern compiled for single line matching
      * 
      *  @since 2.2 
      * 
