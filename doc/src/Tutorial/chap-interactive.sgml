@@ -138,95 +138,43 @@ Next we have the specification:
 <figure>
 	<title>Home.jwc</>
 	<programlisting><![CDATA[
-<?xml version="1.0"?>
-<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 
-1.0//EN"
-	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-	
-<specification>
-  <class>tutorial.adder.Home</class>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE specification PUBLIC 
+  "-//Howard Ship//Tapestry Specification 1.1//EN" 
+  "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+  
+<specification class="tutorial.adder.Home">
 
-  <components>
-
-    <component>
-      <id>ifError</id>
-      <type>Conditional</type>
-      <bindings>
-        <binding>
-          <name>condition</name>
-          <property-path>error</property-path>
-        </binding>
-      </bindings>
-    </component>
-
-    <component>
-      <id>insertError</id>
-      <type>Insert</type>
-      <bindings>
-        <binding>
-          <name>value</name>
-          <property-path>error</property-path>
-        </binding>
-      </bindings>
-    </component>
-
-    <component>
-      <id>form</id>
-      <type>Form</type>
-      <bindings>
-        <binding>
-          <name>listener</name>
-          <property-path>formListener</property-path>
-        </binding>
-      </bindings>
-    </component>
-
-    <component>
-      <id>inputNewValue</id>
-      <type>TextField</type>
-      <bindings>
-        <binding>
-          <name>text</name>
-          <property-path>newValue</property-path>
-        </binding>
-      </bindings>
-    </component>
-
-    <component>
-      <id>e</id>
-      <type>Foreach</type>
-      <bindings>
-        <binding>
-          <name>source</name>
-          <property-path>items</property-path>
-        </binding>  
-      </bindings>
-    </component>
-
-    <component>
-      <id>insertCurrentValue</id>
-      <type>Insert</type>
-      <bindings>
-        <binding>
-          <name>value</name>
-          <property-path>components.e.value</property-path>
-        </binding>
-      </bindings>
-    </component>
-
-    <component>
-      <id>insertTotal</id>
-      <type>Insert</type>
-      <bindings>
-        <binding>
-          <name>value</name>
-          <property-path>total</property-path>
-        </binding>
-      </bindings>
-    </component>
-  </components>
-
-</specification>]]></programlisting></figure>
+  <component id="ifError" type="Conditional">
+    <binding name="condition" property-path="error"/>
+  </component>
+  
+  <component id="insertError" type="Insert">
+    <binding name="value" property-path="error"/>
+  </component>
+  
+  <component id="form" type="Form">
+    <binding name="listener" property-path="formListener"/>
+  </component>
+  
+  <component id="inputNewValue" type="TextField">
+    <binding name="text" property-path="newValue"/>
+  </component>
+  
+  <component id="e" type="Foreach">
+    <binding name="source" property-path="items"/>
+  </component>
+  
+  <component id="insertCurrentValue" type="Insert">
+    <binding name="value" property-path="components.e.value"/>
+  </component>
+  
+  <component id="insertTotal" type="Insert">
+    <binding name="value" property-path="total"/>
+  </component>
+  
+</specification>
+]]></programlisting></figure>
 
 <para>  
 We only want to display the error message if there is one, so the 
@@ -322,6 +270,16 @@ public class Home extends BasePage
     error = null;
 
     super.detach();
+  }
+
+  public void beginResponse(IResponseWriter writer,
+					  IRequestCycle cycle)
+			   throws RequestCycleException
+  {
+    super.beginResponse(writer, cycle);
+	
+	if (items == null)
+	  setItems(new ArrayList());
   }
 
   public void addItem(double value)
@@ -551,7 +509,7 @@ the list of numbers enterred so far.
 <para>
 In traditional JavaServer Pages or servlet applications, a good chunk of code must be written to 
 manage this.  The values must be encoded in cookies, as hidden form fields, as named attributes 
-of the <classname>HttpSession</>, or stored into a server-side flat file or database.  
+of the &HttpSession;, or stored into a server-side flat file or database.  
 Each servlet (or JSP) is 
 directly responsible for managing access to these values which leads to many half realized, ad-
 hoc solutions and an avalanche of bugs, and even security holes.
@@ -609,8 +567,8 @@ The developer has three responsibilities when coding a page with persistant stat
 	<listitem>
     	<para>
         The property must be serializable; this includes Java scalar types (boolean, int, double, 
-etc.), <classname>String</>s, common collection classes (
-<classname>ArrayList</>, <classname>HashMap</>, etc.) and other classes 
+etc.), <classname>String</>s, common collection classes
+(<classname>ArrayList</>, <classname>HashMap</>, etc.) and other classes 
 that implement <classname>java.io.Serializable</>.
 		</>
      </>
