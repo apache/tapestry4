@@ -6,7 +6,6 @@
     <classpathentry kind="src" path="contrib/src/java"/>
     <classpathentry kind="src" path="framework/src/java"/>
     <classpathentry kind="var" path="JYTHON_DIR/jython.jar"/>
-    <classpathentry kind="lib" path="framework/conf"/>
     <classpathentry kind="lib" path="ext-package/lib/bsf-2.3.0.jar"/>
     <classpathentry kind="lib" path="ext-package/lib/commons-codec-1.2.jar"/>
     <classpathentry kind="lib" path="ext-package/lib/commons-fileupload-1.0.jar"/>
