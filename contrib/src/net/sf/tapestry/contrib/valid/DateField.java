@@ -104,6 +104,16 @@ import net.sf.tapestry.valid.ValidField;
  *		<td>The format used to display and parse dates.</td>
  *	</tr>
  *
+ *  <tr>
+ *		<td>displayFormat</td>
+ *		<td>{@link String}</td>
+ *		<td>R</td>
+ *		<td>no</td>
+ *		<td><code>MM/DD/YYYY</code></td>
+ *		<td>The format string presented to the user if the date entered is in an 
+ *   incorrect format. e.g. the format object throws a ParseException.</td>
+ *	</tr>
+ *
  *  </table>
  *
  *  <p>Informal parameters are allowed.  A body is not allowed.
@@ -122,6 +132,7 @@ public class DateField extends ValidField
     private IBinding maximumBinding;
     private IBinding requiredBinding;
     private IBinding formatBinding;
+    private IBinding displayFormatBinding;
 
     /** Returns the valueBinding. **/
 
@@ -172,6 +183,13 @@ public class DateField extends ValidField
             validator.setFormat(format);
         }
 
+        if (displayFormatBinding != null)
+        {
+            String displayFormat =
+                (String) displayFormatBinding.getObject("displayFormat", String.class);
+            validator.setDisplayFormat(displayFormat);
+        }
+
         return validator;
     }
 
@@ -193,6 +211,16 @@ public class DateField extends ValidField
     public void setFormatBinding(IBinding formatBinding)
     {
         this.formatBinding = formatBinding;
+    }
+    
+    public IBinding getDisplayFormatBinding()
+    {
+    	return displayFormatBinding;
+    }
+    
+    public void setDisplayFormatBinding(IBinding displayFormatBinding)
+    {
+    	this.displayFormatBinding = displayFormatBinding;
     }
 
 }

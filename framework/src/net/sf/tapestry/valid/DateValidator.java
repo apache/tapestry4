@@ -45,11 +45,13 @@ import java.util.GregorianCalendar;
 public class DateValidator extends BaseValidator
 {
     private DateFormat format;
+    private String displayFormat;
     private Date minimum;
     private Date maximum;
     private Calendar calendar;
 
     private static DateFormat defaultDateFormat = new SimpleDateFormat("MM/dd/yyyy");
+    private static String defaultDateDisplayFormat = "MM/DD/YYYY";
 
     public void setFormat(DateFormat value)
     {
@@ -68,6 +70,24 @@ public class DateValidator extends BaseValidator
 
         return format;
     }
+
+	public String getDisplayFormat()
+	{
+		return displayFormat;
+	}
+	
+	public void setDisplayFormat(String value)
+	{
+		displayFormat = value;
+	}
+	
+	private String getEffectiveDisplayFormat()
+	{
+		if (displayFormat == null)
+		    return defaultDateDisplayFormat;
+		    
+		return displayFormat;
+	}
 
     public String toString(IField file, Object value)
     {
@@ -115,7 +135,7 @@ public class DateValidator extends BaseValidator
 
         if (result == null)
         {
-            String errorMessage = getString("invalid-date-format", field.getPage().getLocale(), field.getDisplayName());
+            String errorMessage = getString("invalid-date-format", field.getPage().getLocale(), field.getDisplayName(), getEffectiveDisplayFormat());
 
             throw new ValidatorException(errorMessage, ValidationConstraint.DATE_FORMAT, value);
         }

@@ -17,6 +17,7 @@
   <parameter name="minimum" java-type="java.util.Date" />
   <parameter name="required" />
   <parameter name="format" java-type="java.text.DateFormat" />
+  <parameter name="displayFormat" java-type="java.lang.String" />
     
   <reserved-parameter name="type"/>
   <reserved-parameter name="value"/>
