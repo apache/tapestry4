@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE application PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<!DOCTYPE application PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.2//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_2.dtd">
+	
 <application name="Simple Tutorial" engine-class="net.sf.tapestry.engine.SimpleEngine">
   <page name="Home" specification-path="/tutorial/simple/Home.jwc"/>
 </application>
