@@ -1,0 +1,219 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- $Id$ --> 
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+
+<body>
+<table border="0" cellpadding="4" cellspacing="4" width="100%">
+<tr>
+ <td>
+  <table>
+	 <tr>
+	  <td><font size="+2"><b>Shell</b></font></td>
+	 </tr>
+	 <tr>
+	  <td>
+		 <a href="../api/net/sf/tapestry/html/Shell.html">
+		 net.sf.tapestry.html.Shell</a>
+		</td>
+	 </tr>
+  </table>
+ </td>
+ <td>
+  <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
+	 <tr>
+	  <td>Non Visual Component</td>
+	 </tr>
+  </table>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2"><hr></td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Description</b>
+	<br>
+  Provides the outer 'shell' of a page, including the &lt;html&gt;, &lt;head&gt; 
+  and &lt;title&gt; tags, but not the &lt;body&gt; tag which is typically 
+  provided by a <a href="Body.html">Body</a> component.
+  <p>
+  Most Tapestry pages will include a Shell component followed by a Body 
+  component. The Shell is used to resolve the page's HTML stylesheet and Body 
+  is to generate JavaScript. Any HTML content outside of the Shell component 
+  will be ignored by Tapestry. 
+  <p>
+  When designing the look and feel of a Tapestry page include the normal 
+  HTML elements before the Shell component, including a &lt;link rel="stylesheet"&gt;
+  element, so that the page will render normally in a Browser.  
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>See Also</b>
+	<br>
+	<a href="Body.html">Body</a>, <a href="Script.html">Script</a> 
+ </td>
+</tr>
+
+
+<tr>
+ <td colspan="2">
+  <b>Parameters</b> &nbsp;&nbsp; (no informal parameters)
+	<br>
+  <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+  <tr> 
+    <th>Name</th>
+    <th>Type</th>
+	  <th>Direction</th>
+    <th>Required</th> 
+    <th>Default</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>title</td>
+    <td>String</td>
+    <td>in</td>
+   	<td>yes</td>
+		<td>&nbsp;</td>
+		<td>Used to provide the window title for the page.</td>
+	</tr>
+  <tr>
+    <td>stylesheet</td>
+    <td><a href="../api/net/sf/tapestry/IAsset.html"><tt>IAsset</tt></a></td>
+    <td>in</td>
+   	<td>no</td>
+		<td>&nbsp;</td>
+		<td>Creates a &lt;link rel="stylesheet"&gt; element.</td>
+	</tr>
+  <tr>
+    <td>refresh</td>
+    <td>int</td>
+    <td>in</td>
+   	<td>no</td>
+		<td>&nbsp;</td>
+		<td>
+    If provided (and non-zero), then a &lt;meta http-equiv="Refresh"&gt; element 
+    is included in the header. The refresh interval is the value provided 
+    (which is the time to display the page, in seconds).
+    <p> 
+    The refresh will be the same page (not necessarily the same URL as that 
+    which initially presented the page, since the page will often be initially 
+    displayed because of a link or form submission). 
+    <p> 
+    Note that to the <meta> tag, a refresh of zero means refresh immediately. 
+    For this component, a refresh of zero is the same as unspecified: no 
+    automatic refresh. 
+    </td>
+	</tr>
+  <tr>
+    <td>DTD</td>
+    <td>String</td>
+    <td>in</td>
+   	<td>no</td>
+		<td>-//W3C//DTD HTML 4.0 Transitional//EN</td>
+		<td>
+    Used to specify the DOCTYPE of the generate HTML document. If the DTD is 
+    explicity set to null, then no DOCTYPE is generated, otherwise the default 
+    value is generated.
+    </td>
+	</tr>
+  <tr>
+    <td>delegate</td>
+    <td><a href="../api/net/sf/tapestry/IRender.html"><tt>IRender</tt></a></td>
+    <td>in</td>
+   	<td>no</td>
+		<td>&nbsp;</td>
+		<td>
+    If specified, the delegate is invoked just before the &lt;/head&gt; tag. 
+    This allows the delegate to write additional tags, often meta tags of 
+    various types.
+    </td>
+	</tr>
+	</table>		
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Examples</b>
+	<p>
+  The Shell component is used here to provide the page's stylesheet and title.
+	<p>
+  Note in this example a common stylesheet file <tt>style.css</tt> is located in 
+  the class path directory <tt>/com/mycorp/pages/</tt> while the page's class is
+  in <tt>/com/mycorp/pages/customer/login/</tt>. The HTML header uses a relative 
+  path to resolve the stylesheet.
+	<p>
+
+<table class="examples" cellpadding="24">
+<tr>
+ <td>
+  <h2><i><font color="navy">Customer Login</font></i></h2>
+  Welcome to MyCorp's Customer Portal secure login page.
+  <p>
+  <i>Please call 1800 230 187 for TR-2 recall information.</i>
+ <td>
+</tr>
+</table>
+		
+<pre>
+&lt;html&gt;
+&lt;head&gt;
+ &lt;link rel="stylesheet" type="text/css" <b>href="../../style.css"</b> title="style"&gt;
+ &lt;title&gt;MyCorp Customer Login&lt;/title&gt;
+&lt;/head&gt;
+
+&lt;-- Shell start: everything above here will be ignored --&gt;
+&lt;span jwcid="<span class="jwcid">shell</span>" title="MyCorp Customer Login"&gt;
+&lt;body jwcid="body"&gt;
+
+&lt;h1&gt;Customer Login&lt;/h1&gt;
+Welcome to MyCorp's Customer Portal secure login page.
+&ltp&gt
+&lt;span class="daily-message" jwcid="insertMessage"/&gt;
+
+&lt;/body&gt;
+&lt;/span&gt;
+&lt;-- Shell end: everything below here will be ignored --&gt;
+&lt;/html&gt;
+
+
+&lt;component id="<span class="jwcid">shell</span>" type="<a href="Shell.html">Shell</a>"&gt;
+   &lt;binding name="stylesheet" property-path="assets.stylesheet"/&gt;
+&lt;/component&gt;
+
+&lt;component id="body" type="<a href="Body.html">Body</a>"/&gt;
+
+&lt;component id="insertMessage" type="<a href="Insert.html">Insert</a>"&gt;
+   &lt;binding name="value" property-path="dailyMessage"/&gt;
+&lt;/component&gt;
+
+&lt;private-asset name="stylesheet" resource-path="/com/mycorp/pages/style.css"/&gt;
+
+
+package com.mycorp.pages.customer.login;
+
+public class CustomerLoginPage extends BasePage {
+    private String dailyMessage;
+    
+    public String getDailyMessage() { return dailyMessage; }
+    
+    public void detach() {
+        dailyMessage = null;
+        super.detach();
+    }
+}
+</pre>
+
+ </td>
+</tr>
+</table>
+
+</body>
+</html>
