@@ -59,7 +59,7 @@ public class ChartAsset implements IAsset
 	{
 		Gesture g = chartService.buildGesture(cycle, chartProvider, null);
 
-		return g.getURL(cycle);
+		return g.getURL();
 	}
 
 	public InputStream getResourceAsStream(IRequestCycle cycle)

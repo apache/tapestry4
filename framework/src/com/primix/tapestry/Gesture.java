@@ -48,17 +48,16 @@ import javax.servlet.http.HttpServletResponse;
 public class Gesture
 {
     private static final int DEFAULT_HTTP_PORT = 80;
-
-	private String servletPath;
+    
+    private IRequestCycle cycle;
 	private Map queryParameters;
 	private boolean stateful;
 
 	/**
-	 *  Creates a new Gesture, for the given servlet and with a set
+	 *  Creates a new Gesture, for the given request cycle and with a set
 	 *  or query parameters.
 	 *  
-	 * @param servletPath the complete path (including context path) of
-	 *  the servlet (see {@link IEngine#getServletPath()}).
+	 * @param cycle the {@link IRequestCycle} the Gesture is to be created for
 	 * @param queryParameters a {@link Map} of parameters.  Keys and values
 	 *  are both String.  Map not be null; one query parameter must be
 	 *  specify the engine service.
@@ -67,9 +66,9 @@ public class Gesture
 	 * {@link IRequestCycle#encodeURL(String)}.
 	 */
 
-	public Gesture(String servletPath, Map queryParameters, boolean stateful)
+	public Gesture(IRequestCycle cycle, Map queryParameters, boolean stateful)
 	{
-		this.servletPath = servletPath;
+        this.cycle = cycle;
 
 		this.queryParameters = new HashMap(queryParameters);
 		this.stateful = stateful;
@@ -88,7 +87,7 @@ public class Gesture
 
 	public String getServletPath()
 	{
-		return servletPath;
+		return cycle.getEngine().getServletPath();
 	}
 
 	/**
@@ -98,7 +97,7 @@ public class Gesture
 	 *
 	 */
 
-	public String getURL(IRequestCycle cycle)
+	public String getURL()
 	{
 		StringBuffer buffer = new StringBuffer();
 
@@ -118,9 +117,9 @@ public class Gesture
 	 *
 	 **/
 
-	public String getAbsoluteURL(IRequestCycle cycle)
+	public String getAbsoluteURL()
 	{
-		return getAbsoluteURL(null, null, 0, cycle);
+		return getAbsoluteURL(null, null, 0);
 	}
 
 	/**
@@ -131,7 +130,7 @@ public class Gesture
 	 * 
 	 **/
 
-	public String getAbsoluteURL(String scheme, String server, int port, IRequestCycle cycle)
+	public String getAbsoluteURL(String scheme, String server, int port)
 	{
 		StringBuffer buffer = new StringBuffer();
 		HttpServletRequest request = cycle.getRequestContext().getRequest();
@@ -171,7 +170,7 @@ public class Gesture
 
 	private void constructURL(StringBuffer buffer)
 	{
-		buffer.append(servletPath);
+		buffer.append(getServletPath());
 
 		Iterator i = getQueryParameters();
         boolean first = true;
@@ -198,7 +197,7 @@ public class Gesture
 	{
 		StringBuffer buffer = new StringBuffer("Gesture[");
 
-		buffer.append(servletPath);
+		buffer.append(getServletPath());
 		buffer.append(' ');
 
 		buffer.append(queryParameters);

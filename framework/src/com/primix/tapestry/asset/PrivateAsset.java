@@ -122,7 +122,7 @@ public class PrivateAsset implements IAsset
 
 		Gesture g = service.buildGesture(cycle, null, parameters);
 
-		return g.getURL(cycle);
+		return g.getURL();
 	}
 
 	public InputStream getResourceAsStream(IRequestCycle cycle) throws ResourceUnavailableException
