@@ -181,13 +181,15 @@ public class PropertySelection extends AbstractFormComponent
                     foundSelected = true;
             }
 
-            writer.beginEmpty("option");
+            writer.begin("option");
             writer.attribute("value", _model.getValue(i));
 
             if (selected)
                 writer.attribute("selected");
 
             writer.print(_model.getLabel(i));
+
+            writer.end();
 
             writer.println();
 
