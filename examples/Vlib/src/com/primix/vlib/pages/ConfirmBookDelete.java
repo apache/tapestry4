@@ -39,7 +39,9 @@ import com.primix.foundation.prop.*;
  */
 
 /**
- *  
+ * Presents a confirmation page before deleting a book.  If the user
+ * selects "yes", the book is deleted; otherwise the user is returned
+ * to the {@link MyBooks} page.
  *
  * @author Howard Ship
  * @version $Id$
@@ -74,6 +76,13 @@ public class ConfirmBookDelete extends BasePage
 		return bookPK;
 	}
 	
+	/** 
+	 * Invoked (by {@link MyBooks}) to select a book to be
+	 * deleted.  This method sets the temporary page properties
+	 * (bookPrimaryKey and bookTitle) and invoked {@link IRequestCycle#setPage(IPage)}.
+	 *
+	 */
+	 
 	public void selectBook(Integer bookPK, IRequestCycle cycle)
 	{
 		VirtualLibraryApplication app;
@@ -104,6 +113,11 @@ public class ConfirmBookDelete extends BasePage
 	}
 	
 	
+	/**
+	 *  Hooked up to the yes component, this actually deletes the book.
+	 *
+	 */
+	 
 	public IDirectListener getDeleteBookListener()
 	{
 		return new IDirectListener()

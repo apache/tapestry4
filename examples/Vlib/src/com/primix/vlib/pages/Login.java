@@ -38,7 +38,10 @@ import javax.servlet.http.*;
  */
 
 /**
- *  
+ *  Allows the user to login, by providing email address and password.
+ *  After succesfully logging in, a cookie is placed on the client browser
+ *  that provides the default email address for future logins (the cookie
+ *  persists for a week).
  *
  * @author Howard Ship
  * @version $Id$
@@ -82,6 +85,12 @@ public class Login extends BasePage
 		email = value;
 	}
 	
+	/**
+	 *  Gets the email address.  If not previously set, it is retrieve from
+	 *  the cookie (thus forming the default).
+	 *
+	 */
+	 
 	public String getEmail()
 	{
 		// If not set, see if a value was previously recorded in a Cookie
@@ -169,6 +178,11 @@ public class Login extends BasePage
 		}
 	}
 	
+	/**
+	 *  Invoked when the login form is submitted.
+	 *
+	 */
+	 
 	public IActionListener getLoginFormListener()
 	{
 		return new IActionListener()
@@ -181,6 +195,14 @@ public class Login extends BasePage
 		};
 	}
 	
+	/**
+	 *  Sets up the {@link IPerson} as the logged in user, creates
+	 *  a cookie for thier email address (for subsequent logins),
+	 *  and redirects to the appropriate page ({@link MyBooks}, or
+	 *  a specified page).
+	 *
+	 */
+	 
 	public void loginUser(IPerson person, IRequestCycle cycle)
 	{
 		VirtualLibraryApplication app;

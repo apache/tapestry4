@@ -38,7 +38,8 @@ import javax.rmi.*;
  */
 
 /**
- *  
+ *  Shows a list of the user's books, allowing books to be editted or
+ *  even deleted.
  *
  * @author Howard Ship
  * @version $Id$
@@ -69,6 +70,12 @@ public class MyBooks extends Protected
 		currentBook = null;
 	}
 	
+	/**
+	 *  Updates the handle persistent page property, used to back the
+	 *  book query.
+	 *
+	 */
+	 
 	public void setHandle(Handle value)
 	{
 		handle = value;
@@ -81,6 +88,12 @@ public class MyBooks extends Protected
 		return handle;
 	}
 	
+	/**
+	 *  Gets a reference to the book query session bean, restoring it from
+	 *  the handle if necessary, or even creating it.
+	 *
+	 */
+	 
 	public IBookQuery getQuery()
 	{
 		IBookQueryHome home;
@@ -128,7 +141,12 @@ public class MyBooks extends Protected
 		return query;
 	}
 			
-			
+	
+	/**
+	 *  Gets the results of the query, the list of books owned by the user.
+	 *
+	 */
+	 		
 	public Book[] getOwnedBooks()
 	{
 		IBookQuery query;
@@ -154,6 +172,11 @@ public class MyBooks extends Protected
 		}
 	}
 
+	/**
+	 *  Updates the currentBook dynamic page property.
+	 *
+	 */
+	 
 	public void setCurrentBook(Book value)
 	{
 		currentBook = value;
@@ -174,6 +197,12 @@ public class MyBooks extends Protected
 		return message;
 	}
 
+	/**
+	 *  Listener that invokes the {@link EditProfile} page to allow a user
+	 *  to edit thier name, etc.
+	 *
+	 */
+	 
 	public IDirectListener getEditProfileListener()
 	{
 		return new IDirectListener()
@@ -190,6 +219,13 @@ public class MyBooks extends Protected
 		};
 	}
 	
+	/**
+	 *  Listener invoked to allow a user to edit a book.
+	 *
+	 *  <p>Note:  Could remove this if we change {@link EditBook} to
+	 *  implement a {@link IExternalPage}, but that would require
+	 */
+	 
 	public IDirectListener getEditListener()
 	{
 		return new IDirectListener()
@@ -207,6 +243,11 @@ public class MyBooks extends Protected
 			}
 		};
 	}
+	
+	/**
+	 *  Listener invoked to allow a user to delete a book.
+	 *
+	 */
 
 	public IDirectListener getDeleteListener()
 	{

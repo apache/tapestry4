@@ -29,7 +29,7 @@ package com.primix.vlib.ejb;
  */
 
 /**
- *  Exception thrown by {@link OperationsBean#registerUser(String,String,String,String)}
+ *  Exception thrown by {@link OperationsBean#registerNewUser(String,String,String,String)}
  *  if the registration is not allowed (usually, because of a duplicate email or
  *  name).
  *

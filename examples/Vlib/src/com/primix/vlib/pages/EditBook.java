@@ -39,16 +39,15 @@ import com.primix.foundation.prop.*;
  */
 
 /**
- *  
+ *  Edits the properties of at book.
  *
  * @author Howard Ship
  * @version $Id$
  */
 
 
-public class EditBook extends BasePage
+public class EditBook extends Protected
 {
-	private String error;
 	private Integer bookPK;	
 	private Map attributes;	
 	private String publisherName;
@@ -64,22 +63,11 @@ public class EditBook extends BasePage
 	{
 		super.detachFromApplication();
 
-		error = null;
 		attributes = null;
 		bookPK = null;	
 		publisherName = null;	
 	}
 		
-	public void setError(String value)
-	{
-		error = value;
-	}
-	
-	public String getError()
-	{
-		return error;
-	}
-	
 	public Map getAttributes()
 	{
 		if (attributes == null)
@@ -120,6 +108,13 @@ public class EditBook extends BasePage
 		bookPK = new Integer(value);
 	}
 	
+	/**
+	 *  Invoked (from {@link MyPage}) to begin editting a book.
+	 *  Gets the attributes from the {@link IBook} and updates
+	 *  the request cycle to render this page,
+	 *
+	 */
+	 
 	public void beginEdit(Integer bookPK, IRequestCycle cycle)
 	{
 		IBook book;
@@ -167,6 +162,11 @@ public class EditBook extends BasePage
 		return book;
 	}
 	
+	/**
+	 *  Used to update the book when the form is submitted.
+	 *
+	 */
+	 
 	public IActionListener getFormListener()
 	{
 		return new IActionListener()

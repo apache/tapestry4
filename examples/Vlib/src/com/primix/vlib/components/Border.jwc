@@ -106,12 +106,12 @@
 		</component>
 		<component>
 			<id>logout</id>
-			<type>Direct</type>
+			<type>Page</type>
 			<bindings>
-				<binding>
-					<name>listener</name>
-					<property-path>logoutListener</property-path>
-				</binding>
+				<static-binding>
+					<name>page</name>
+					<value>Logout</value>
+				</static-binding>
 			</bindings>
 		</component>
 		<component>

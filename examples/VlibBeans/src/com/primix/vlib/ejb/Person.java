@@ -87,5 +87,23 @@ public class Person implements Serializable
 			return (String)columns[LAST_NAME_COLUMN];
 		
 		return (String)columns[FIRST_NAME_COLUMN] + " " + (String)columns[LAST_NAME_COLUMN];
-	}	
+	}
+	
+	public String toString()
+	{
+		StringBuffer buffer;
+		
+		buffer = new StringBuffer("Person[");
+		
+		if (columns[FIRST_NAME_COLUMN] != null)
+		{
+			buffer.append((String)columns[FIRST_NAME_COLUMN]);
+			buffer.append(' ');
+		}
+		
+		buffer.append((String)columns[LAST_NAME_COLUMN]);
+		buffer.append(']');
+		
+		return buffer.toString();
+	}
 }

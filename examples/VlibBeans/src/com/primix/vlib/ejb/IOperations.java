@@ -34,7 +34,7 @@ import javax.naming.*;
  */
 
 /**
- *  Remote interface to the {@link Operations} stateless
+ *  Remote interface to the {@link OperationsBean} stateless
  *  session bean.  A repository for simple operations such as
  *  adding a new book or borrowing an existing book.
  *  

@@ -16,6 +16,8 @@ LOCAL_CLASSPATH = \
 
 INSTALL_DIR = ../../lib
 
+JAVADOC_DIR = ../../javadoc
+
 WEB_INF_RESOURCES = weblogic.xml
 
 include $(SYS_MAKEFILE_DIR)/War.mk
