@@ -57,32 +57,23 @@ package org.apache.tapestry.workbench.table;
 
 import java.text.DateFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.components.Block;
 import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.apache.tapestry.contrib.table.model.ITableColumnModel;
-import org.apache.tapestry.contrib.table.model.ITableModel;
-import org.apache.tapestry.contrib.table.model.ITableModelSource;
-import org.apache.tapestry.contrib.table.model.ITableRendererSource;
-import org.apache.tapestry.contrib.table.model.common.BlockTableRendererSource;
-import org.apache.tapestry.contrib.table.model.ognl.ExpressionTableColumn;
 import org.apache.tapestry.contrib.table.model.simple.ITableColumnEvaluator;
-import org.apache.tapestry.contrib.table.model.simple.SimpleSetTableDataModel;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumn;
-import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumnModel;
-import org.apache.tapestry.contrib.table.model.simple.SimpleTableModel;
 
 /**
  * @author mindbridge
  *
  */
-public class LocaleSelection extends BaseComponent implements ILocaleSelectionListener
+public abstract class LocaleSelection extends BaseComponent implements ILocaleSelectionListener
 {
     // immutable
     private ITableColumnModel m_objTableColumnModel;
@@ -90,6 +81,11 @@ public class LocaleSelection extends BaseComponent implements ILocaleSelectionLi
 
     // temporary
     private Locale m_objCurrentLocale;
+
+    // properties
+    public abstract Locale getCurrentLocale();
+    public abstract Set getLocaleSet();
+    public abstract void setLocaleSet(Set objLocaleSet);
 
     /**
      * Creates a new LocaleSelection component
@@ -100,99 +96,26 @@ public class LocaleSelection extends BaseComponent implements ILocaleSelectionLi
     }
 
     /**
-     * @see org.apache.tapestry.AbstractComponent#finishLoad()
+     * @see org.apache.tapestry.workbench.table.ILocaleSelectionListener#localesSelected(Locale[])
      */
-    protected void finishLoad()
+    public void localesSelected(Locale[] arrLocales)
     {
-        // We delay the initialization until now, since some columns
-        // rely on the completed page structure
-        m_objTableColumnModel = createColumnModel();
+        Set objLocaleSet = getLocaleSet();
+        CollectionUtils.addAll(objLocaleSet, arrLocales);
+        // ensure that the framework knows about the change and the set is persisted
+        setLocaleSet(objLocaleSet);
     }
 
-    /**
-     * Creates the columns that will be displayed by the Table component. <p>
-     * 
-     * This method demonstrates different ways to define table columns.
-     * Choose the one the fits your needs best.
-     * 
-     * @return ITableColumnModel the created column model
-     */
-    private ITableColumnModel createColumnModel()
+    public ITableColumn getCurrencyColumn()
     {
-        // The column value is extracted via OGNL using ExpressionTableColumn
-        ITableColumn objLocaleColumn = new ExpressionTableColumn("Locale", "toString()", true);
-
         // The column value is extracted in a custom evaluator class
-        ITableColumn objCurrencyColumn =
-            new SimpleTableColumn("Currency", new CurrencyEvaluator(), true);
+        return new SimpleTableColumn("Currency", new CurrencyEvaluator(), true);
+    }
 
+    public ITableColumn getDateFormatColumn()
+    {
         // The entire column is defined using a custom column class
-        ITableColumn objDateFormatColumn = new DateFormatColumn(new Date());
-
-        // The column value is extracted via OGNL using ExpressionTableColumn
-        // and the renderer of the column is defined in a Block
-        ExpressionTableColumn objVerbosityColumn =
-            new ExpressionTableColumn(
-                "Verbosity",
-                "@org.apache.tapestry.workbench.table.VerbosityRating@calculateVerbosity(#this)",
-                true);
-        Block objVerbosityBlock = (Block) getComponent("blockVerbosity");
-        ITableRendererSource objVerbosityRenderer = new BlockTableRendererSource(objVerbosityBlock);
-        objVerbosityColumn.setValueRendererSource(objVerbosityRenderer);
-
-        // The renderer of the column is defined in a Block and contains a link
-        SimpleTableColumn objDeleteColumn = new SimpleTableColumn("");
-        Block objDeleteBlock = (Block) getComponent("blockDelete");
-        ITableRendererSource objDeleteRenderer = new BlockTableRendererSource(objDeleteBlock);
-        objDeleteColumn.setValueRendererSource(objDeleteRenderer);
-
-        // Create the column model out of the above columns
-        return new SimpleTableColumnModel(
-            new ITableColumn[] {
-                objLocaleColumn,
-                objCurrencyColumn,
-                objDateFormatColumn,
-                objVerbosityColumn,
-                objDeleteColumn });
-    }
-
-    /**
-     * Creates a table model to be used by the Table component
-     * @return ITableModel the table model
-     */
-    public ITableModel getInitialTableModel()
-    {
-        SimpleSetTableDataModel objLocaleDataModel = new SimpleSetTableDataModel(new HashSet());
-        return new SimpleTableModel(objLocaleDataModel, m_objTableColumnModel);
-    }
-
-    /**
-     * Returns the data model used by the displayed table
-     * @return SimpleSetTableDataModel the data model
-     */
-    public SimpleSetTableDataModel getDataModel()
-    {
-        ITableModel objTableModel = ((ITableModelSource) getComponent("table")).getTableModel();
-        SimpleTableModel objSimpleTableModel = (SimpleTableModel) objTableModel;
-        return (SimpleSetTableDataModel) objSimpleTableModel.getDataModel();
-    }
-
-    /**
-     * Returns the currentLocale.
-     * @return Locale
-     */
-    public Locale getCurrentLocale()
-    {
-        return m_objCurrentLocale;
-    }
-
-    /**
-     * Sets the currentLocale.
-     * @param currentLocale The currentLocale to set
-     */
-    public void setCurrentLocale(Locale currentLocale)
-    {
-        m_objCurrentLocale = currentLocale;
+        return new DateFormatColumn(new Date());
     }
 
     /**
@@ -202,16 +125,8 @@ public class LocaleSelection extends BaseComponent implements ILocaleSelectionLi
      */
     public int getCurrentLocaleVerbosity()
     {
-        return VerbosityRating.calculateVerbosity(getCurrentLocale());
-    }
-
-    /**
-     * @see org.apache.tapestry.workbench.table.ILocaleSelectionListener#localesSelected(Locale[])
-     */
-    public void localesSelected(Locale[] arrLocales)
-    {
-        SimpleSetTableDataModel objDataModel = getDataModel();
-        objDataModel.addRows(Arrays.asList(arrLocales));
+        int nVerbosity = VerbosityRating.calculateVerbosity(getCurrentLocale());
+        return nVerbosity;
     }
 
     /**
@@ -242,7 +157,7 @@ public class LocaleSelection extends BaseComponent implements ILocaleSelectionLi
         Object[] arrParams = objCycle.getServiceParameters();
         Locale objLocale =
             new Locale(arrParams[0].toString(), arrParams[1].toString(), arrParams[2].toString());
-        getDataModel().removeRow(objLocale);
+        getLocaleSet().remove(objLocale);
     }
 
     /**
