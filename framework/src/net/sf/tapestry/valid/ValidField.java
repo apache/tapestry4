@@ -211,7 +211,7 @@ public class ValidField extends AbstractTextField implements IField, IFormCompon
     protected void beforeCloseTag(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
-        _validator.renderValidatorContribution(this, writer, cycle);
+        getValidator().renderValidatorContribution(this, writer, cycle);
         
         getForm().getDelegate().writeAttributes(writer, cycle);
     }
@@ -278,7 +278,7 @@ public class ValidField extends AbstractTextField implements IField, IFormCompon
 
         try
         {
-            objectValue = _validator.toObject(this, value);
+            objectValue = getValidator().toObject(this, value);
         }
         catch (ValidatorException ex)
         {
