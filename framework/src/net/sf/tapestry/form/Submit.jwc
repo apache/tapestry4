@@ -12,7 +12,7 @@
   <parameter name="label" java-type="java.lang.String" direction="in"/>
   <parameter name="disabled" java-type="boolean" direction="in"/>
   <parameter name="selected"/>
-  <parameter name="tag" java-type="boolean" direction="in"/>
+  <parameter name="tag" java-type="java.lang.Object" direction="in"/>
   <parameter name="listener" 
   	java-type="net.sf.tapestry.IActionListener"
   	direction="in"/>
