@@ -58,13 +58,14 @@ public class PropertyInitializer implements PageDetachListener
         _propertyName = propertyName;
         _expression = expression;
         _location = location;
-        
+
         prepareInvariant();
     }
 
     public void prepareInvariant()
     {
         _invariant = false;
+
         try
         {
             // If no initial value expression is provided, then read the current
@@ -76,12 +77,13 @@ public class PropertyInitializer implements PageDetachListener
                 _invariant = true;
                 _value = OgnlUtils.get(_propertyName, _resolver, _component);
             }
-            else if (Ognl.isConstant(_expression))
-            {
-                // If the expression is a constant, evaluate it and remember the value 
-                _invariant = true;
-                _value = OgnlUtils.get(_expression, _resolver, _component);
-            }
+            else
+                if (Ognl.isConstant(_expression, Ognl.createDefaultContext(_component, _resolver)))
+                {
+                    // If the expression is a constant, evaluate it and remember the value 
+                    _invariant = true;
+                    _value = OgnlUtils.get(_expression, _resolver, _component);
+                }
         }
         catch (Exception ex)
         {
@@ -98,10 +100,12 @@ public class PropertyInitializer implements PageDetachListener
 
     public void pageDetached(PageEvent event)
     {
-        try {
+        try
+        {
             if (_invariant)
                 OgnlUtils.set(_propertyName, _resolver, _component, _value);
-            else {
+            else
+            {
                 Object value = OgnlUtils.get(_expression, _resolver, _component);
                 OgnlUtils.set(_propertyName, _resolver, _component, value);
             }
