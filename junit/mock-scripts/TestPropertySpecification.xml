@@ -372,4 +372,27 @@ value: \[(.*?)\]
 		Long value: [123456]	
 		</assert-output>	
 	</request>
+	
+	<request>
+		<parameter name="service" value="page/Eleven"/>
+		
+		<assert-output name="Title">
+<![CDATA[
+<title>Eleven</title>
+]]>	
+		</assert-output>
+		
+		<assert-output name="Two">
+		two is 2
+		</assert-output>	
+
+		<assert-output name="Three">
+		three is 3
+		</assert-output>	
+
+		<assert-output name="Five">
+		five is 5
+		</assert-output>	
+	</request>	
  </mock-test>
+ 
