@@ -23,6 +23,7 @@ public class DatePicker extends BaseComponent
 {
     private IBinding _valueBinding;
     private SimpleDateFormat _dateFormat = new SimpleDateFormat("dd MMM yyyy");
+    private boolean _disabled;
 
     public String getFormat()
     {
@@ -96,4 +97,14 @@ public class DatePicker extends BaseComponent
     {
         _valueBinding = value;
     }
+
+    public boolean isDisabled()
+    {
+        return _disabled;
+    }
+
+    public void setDisabled(boolean disabled)
+    {
+        _disabled = disabled;
+    }        
 }

@@ -12,7 +12,7 @@
 
 	<component id="endDatePicker" type="DatePicker">
 		<binding name="value" expression="endDate"/>
-	</component>
+	</component>  
 	
 	<component id="insertEndDate" type="Insert">
 		<binding name="value" expression="endDate"/>
