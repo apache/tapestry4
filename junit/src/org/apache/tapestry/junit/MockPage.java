@@ -274,7 +274,7 @@ public class MockPage extends BaseLocatable implements IPage
     /**
      *  Gets the string source from the engine, gets the strings
      *  from the string source, and invokes
-     *  {@link org.apache.tapestry.IComponentStrings#getString(String)}.
+     *  {@link org.apache.tapestry.IMessages#getMessage(String)}.
      * 
      **/
 
