@@ -131,7 +131,7 @@ import com.primix.tapestry.util.prop.PropertyHelper;
  *
  * @author Howard Ship
  * @version $Id$
- */
+ **/
 
 public abstract class AbstractEngine
 	implements IEngine, IEngineServiceView, Externalizable, HttpSessionBindingListener
@@ -144,19 +144,21 @@ public abstract class AbstractEngine
 	private transient String sessionId;
 	private transient boolean stateful;
 	private transient ListenerMap listeners;
+    
+    /** @deprecated **/
 	private transient Pool helperBeanPool;
 
 	/**
 	 *  An object used to contain application-specific server side state.
 	 *
-	 */
+	 **/
 
 	private Object visit;
 
 	/**
 	 *  The curent locale for the engine, which may be changed at any time.
 	 *
-	 */
+	 **/
 
 	private Locale locale;
 
@@ -164,7 +166,7 @@ public abstract class AbstractEngine
 	 *  Set by {@link #setLocale(Locale)} when the locale is changed;
 	 *  this allows the locale cookie to be updated.
 	 *
-	 */
+	 **/
 
 	private boolean localeChanged;
 
@@ -177,7 +179,7 @@ public abstract class AbstractEngine
 	 *  A check is made on every request
 	 *  cycle as needed.
 	 *
-	 */
+	 **/
 
 	protected transient ApplicationSpecification specification;
 
@@ -187,7 +189,7 @@ public abstract class AbstractEngine
 	 *  After de-serialization, the application can re-connect to
 	 *  the template source (or create a new one).
 	 *
-	 */
+	 **/
 
 	protected transient ITemplateSource templateSource;
 
@@ -195,7 +197,7 @@ public abstract class AbstractEngine
 	 *  The source for component specifications, stored in the
 	 *  {@link ServletContext} (like {@link #templateSource}).
 	 *
-	 */
+	 **/
 
 	protected transient ISpecificationSource specificationSource;
 
@@ -204,7 +206,7 @@ public abstract class AbstractEngine
 	 * {@link ServletContext}.
 	 *
 	 * @since 1.0.2
-	 */
+	 **/
 
 	private transient IScriptSource scriptSource;
 
@@ -214,7 +216,7 @@ public abstract class AbstractEngine
 	 *
 	 *  @since 1.0.2
 	 *
-	 */
+	 **/
 
 	protected static final String SCRIPT_SOURCE_NAME =
 		"com.primix.tapestry.DefaultScriptSource";
@@ -227,7 +229,7 @@ public abstract class AbstractEngine
 	 *  The name of the application specification property used to specify the
 	 *  class of the visit object.
 	 *
-	 */
+	 **/
 
 	public static final String VISIT_CLASS_PROPERTY_NAME =
 		"com.primix.tapestry.visit-class";
@@ -236,7 +238,7 @@ public abstract class AbstractEngine
 	 *  Servlet context attribute name for the default {@link ITemplateSource}
 	 *  instance.  The application's name is appended.
 	 *
-	 */
+	 **/
 
 	protected static final String TEMPLATE_SOURCE_NAME =
 		"com.primix.tapestry.TemplateSource";
@@ -245,7 +247,7 @@ public abstract class AbstractEngine
 	 *  Servlet context attribute name for the default {@link ISpecificationSource}
 	 *  instance.  The application's name is appended.
 	 *
-	 */
+	 **/
 
 	protected static final String SPECIFICATION_SOURCE_NAME =
 		"com.primix.tapestry.SpecificationSource";
@@ -256,7 +258,7 @@ public abstract class AbstractEngine
 	 *
 	 *  @since 1.0.4
 	 *
-	 */
+	 **/
 
 	protected static final String HELPER_BEAN_POOL_NAME =
 		"com.primix.tapestry.HelperBeanPool";
@@ -265,7 +267,7 @@ public abstract class AbstractEngine
 	 *  Servlet context attribute name for the {@link IPageSource}
 	 *  instance.  The application's name is appended.
 	 *
-	 */
+	 **/
 
 	protected static final String PAGE_SOURCE_NAME =
 		"com.primix.tapestry.PageSource";
@@ -275,7 +277,7 @@ public abstract class AbstractEngine
 	 *  creating pages as needed.  Stored in the
 	 *  {@link ServletContext}, like {@link #templateSource}.
 	 *
-	 */
+	 **/
 
 	protected transient IPageSource pageSource;
 
@@ -286,7 +288,7 @@ public abstract class AbstractEngine
 	 *  the cache of pages, specifications and template
 	 *  to be cleared on demand.
 	 *
-	 */
+	 **/
 
 	private static boolean resetServiceEnabled =
 		Boolean.getBoolean("com.primix.tapestry.enable-reset-service");
@@ -297,7 +299,7 @@ public abstract class AbstractEngine
 	 * then the cache of pages, specifications and template
 	 * will be cleared after each request.
 	 *
-	 */
+	 **/
 
 	private static boolean disableCaching =
 		Boolean.getBoolean("com.primix.tapestry.disable-caching");
@@ -327,7 +329,7 @@ public abstract class AbstractEngine
 	 *  <p>If the render throws an exception, then copious output is sent to
 	 *  <code>System.err</code> and a {@link ServletException} is thrown.
 	 *
-	 */
+	 **/
 
 	protected void activateExceptionPage(
 		IRequestCycle cycle,
@@ -373,7 +375,7 @@ public abstract class AbstractEngine
 	/**
 	 *  Writes a detailed report of the exception to <code>System.err</code>.
 	 *
-	 */
+	 **/
 
 	public void reportException(String reportTitle, Throwable ex)
 	{
@@ -402,7 +404,7 @@ public abstract class AbstractEngine
 	 *  Invoked at the end of the request cycle to release any resources specific
 	 *  to the request cycle.
 	 *
-	 */
+	 **/
 
 	protected abstract void cleanupAfterRequest(IRequestCycle cycle);
 
@@ -414,7 +416,7 @@ public abstract class AbstractEngine
 	 *  before each value.
 	 *
 	 *  @see #toString()
-	 */
+	 **/
 
 	public void extendDescription(StringBuffer buffer)
 	{
@@ -433,7 +435,7 @@ public abstract class AbstractEngine
 	 *  by the {@link ApplicationServlet} but may be updated
 	 *  by the application.
 	 *
-	 */
+	 **/
 
 	public Locale getLocale()
 	{
@@ -452,7 +454,7 @@ public abstract class AbstractEngine
 	 *
 	 *  <p>TBD:  Lifecycle of the monitor ... should there be a commit?
 	 *
-	 */
+	 **/
 
 	public IMonitor getMonitor(RequestContext context)
 	{
@@ -467,7 +469,7 @@ public abstract class AbstractEngine
 	/**
 	 *  Returns a service with the given name.  Services are created by the
 	 *  first call to {@link #setupForRequest(RequestContext)}.
-	 */
+	 **/
 
 	public IEngineService getService(String name)
 	{
@@ -490,7 +492,7 @@ public abstract class AbstractEngine
 	 * are recognized as belonging to the Servlet 2.2 context.
 	 *
 	 *  @see ContextAsset
-	 */
+	 **/
 
 	public String getContextPath()
 	{
@@ -506,7 +508,7 @@ public abstract class AbstractEngine
 	 *  with the application specification by locating it in the {@link ServletContext}
 	 *  or parsing it fresh.
 	 *
-	 */
+	 **/
 
 	public ApplicationSpecification getSpecification()
 	{
@@ -528,7 +530,7 @@ public abstract class AbstractEngine
 	 *
 	 *  <p>This always set the stateful flag.  By default, a deserialized
 	 *  session is stateful (else, it would not have been serialized).
-	 */
+	 **/
 
 	public void readExternal(ObjectInput in)
 		throws IOException, ClassNotFoundException
@@ -549,7 +551,7 @@ public abstract class AbstractEngine
 	 *  <li>visit
 	 *  </ul>
 	 *
-	 */
+	 **/
 
 	public void writeExternal(ObjectOutput out) throws IOException
 	{
@@ -561,7 +563,7 @@ public abstract class AbstractEngine
 	 *  Invoked, typically, when an exception occurs while servicing the request.
 	 *  This method resets the output, sets the new page and renders it.
 	 *
-	 */
+	 **/
 
 	protected void redirect(
 		String pageName,
@@ -644,7 +646,7 @@ public abstract class AbstractEngine
 	 * <p>Subclasses should perform their own restart (if necessary, which is
 	 * rarely) before invoking this implementation.
 	 *
-	 */
+	 **/
 
 	public void restart(IRequestCycle cycle) throws IOException
 	{
@@ -681,7 +683,7 @@ public abstract class AbstractEngine
 	/**
 	 *  Delegate method for the servlet.  Services the request.
 	 *
-	 */
+	 **/
 
 	public boolean service(RequestContext context)
 		throws ServletException, IOException
@@ -839,7 +841,7 @@ public abstract class AbstractEngine
 	 *  Home page.	
 	 *
 	 *  @since 0.2.10
-	 */
+	 **/
 
 	protected void handleStaleLinkException(
 		StaleLinkException ex,
@@ -863,7 +865,7 @@ public abstract class AbstractEngine
 	 *  Home page.	
 	 *
 	 *  @since 0.2.10
-	 */
+	 **/
 
 	protected void handleStaleSessionException(
 		StaleSessionException ex,
@@ -882,7 +884,7 @@ public abstract class AbstractEngine
 	 *  Discards all cached pages, component specifications and templates.
 	 *
 	 *  @since 1.0.1
-	 */
+	 **/
 
 	public void clearCachedData()
 	{
@@ -896,7 +898,7 @@ public abstract class AbstractEngine
 	/**
 	 *  Changes the locale for the engine.
 	 *
-	 */
+	 **/
 
 	public void setLocale(Locale value)
 	{
@@ -940,7 +942,7 @@ public abstract class AbstractEngine
 	 *  <p>Subclasses should invoke this implementation first, then perform their
 	 *  own setup.
 	 *
-	 */
+	 **/
 
 	protected void setupForRequest(RequestContext context)
 	{
@@ -1128,7 +1130,8 @@ public abstract class AbstractEngine
 	/**
 	 *  @since 1.0.4
 	 *
-	 */
+     *  @deprecated
+	 **/
 
 	public Pool getHelperBeanPool()
 	{
@@ -1138,7 +1141,7 @@ public abstract class AbstractEngine
 	/**
 	 *  Returns an object which can find resources and classes.
 	 *
-	 */
+	 **/
 
 	public IResourceResolver getResourceResolver()
 	{
@@ -1152,7 +1155,7 @@ public abstract class AbstractEngine
 	 *
 	 *  @see #extendDescription(StringBuffer)
 	 *
-	 */
+	 **/
 
 	public String toString()
 	{
@@ -1173,7 +1176,7 @@ public abstract class AbstractEngine
 	 *  Invoked when the application object is stored into
 	 *  the {@link HttpSession}.  This implementation does nothing.
 	 *
-	 */
+	 **/
 
 	public void valueBound(HttpSessionBindingEvent event)
 	{
@@ -1185,7 +1188,7 @@ public abstract class AbstractEngine
 	 *  (for example, by the reset or restart services).  Invokes
 	 *  {@link #cleanupEngine()}.
 	 *
-	 */
+	 **/
 
 	public void valueUnbound(HttpSessionBindingEvent event)
 	{
@@ -1213,7 +1216,7 @@ public abstract class AbstractEngine
 	 *
 	 *  <p>Subclasses may overide this method to clean up any engine-held
 	 *  resources, but should invoke this implementation <em>first</em>.
-	 */
+	 **/
 
 	protected void cleanupEngine()
 	{
@@ -1255,7 +1258,7 @@ public abstract class AbstractEngine
 	/**
 	 *  Returns true if the reset service is curently enabled.
 	 *
-	 */
+	 **/
 
 	public boolean isResetServiceEnabled()
 	{
@@ -1266,14 +1269,14 @@ public abstract class AbstractEngine
 	 *  Implemented by subclasses to return the names of the active pages
 	 *  (pages for which recorders exist).
 	 *
-	 */
+	 **/
 
 	abstract public Collection getActivePageNames();
 
 	/**
 	 *  Gets the visit object, if it has been created already.
 	 *
-	 */
+	 **/
 
 	public Object getVisit()
 	{
@@ -1285,7 +1288,7 @@ public abstract class AbstractEngine
 	 *  it lazily if needed.
 	 *
 	 *
-	 */
+	 **/
 
 	public Object getVisit(IRequestCycle cycle)
 	{
@@ -1319,7 +1322,7 @@ public abstract class AbstractEngine
 	 *
 	 *  <p>Subclasses may want to overide this method if some other means
 	 *  of instantiating a visit object is required.
-	 */
+	 **/
 
 	protected Object createVisit(IRequestCycle cycle)
 	{
@@ -1380,7 +1383,7 @@ public abstract class AbstractEngine
 	 *
 	 *  @since 1.0.2
 	 *
-	 */
+	 **/
 
 	protected void setStateful()
 	{
@@ -1391,7 +1394,7 @@ public abstract class AbstractEngine
 	 *  Allows subclasses to include listener methods easily.
 	 *
 	 * @since 1.0.2
-	 */
+	 **/
 
 	public ListenerMap getListeners()
 	{
@@ -1408,7 +1411,7 @@ public abstract class AbstractEngine
 	 *
 	 *  @since 1.0.6
 	 *
-	 */
+	 **/
 
 	protected void redirectOut(IRequestCycle cycle, RedirectException ex)
 		throws RequestCycleException

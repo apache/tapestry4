@@ -67,7 +67,7 @@ import com.primix.tapestry.asset.*;
  *
  *  @author Howard Ship
  *  @version $Id$
- */
+ **/
 
 public class PageSource implements IPageSource, IRenderDescription
 {
@@ -81,10 +81,10 @@ public class PageSource implements IPageSource, IRenderDescription
 
 	/**
 	 *  The pool of {@link PooledPage}s.  The key is a {@link MultiKey},
-	 *  built from the application name, the page name, and the page locale.
+	 *  built from the page name and the page locale.
 	 *  It is also used to pool {@link PageLoader}s.
 	 *
-	 */
+	 **/
 
 	private Pool pool;
 
@@ -105,7 +105,7 @@ public class PageSource implements IPageSource, IRenderDescription
 	/**
 	 *  Builds a key for a named page in the application's current locale.
 	 *
-	 */
+	 **/
 
 	protected MultiKey buildKey(IEngine engine, String pageName)
 	{
@@ -122,7 +122,7 @@ public class PageSource implements IPageSource, IRenderDescription
 	 *  Builds a key from an existing page, using the page's name and locale.  This is
 	 *  used when storing a page into the pool.
 	 *
-	 */
+	 **/
 
 	protected MultiKey buildKey(IPage page)
 	{
@@ -140,7 +140,7 @@ public class PageSource implements IPageSource, IRenderDescription
 	 *  is threadsafe ... it synchronizes on the pool of pages.
 	 *
 	 
-	 */
+	 **/
 
 	public IPage getPage(IEngine engine, String pageName, IMonitor monitor)
 		throws PageLoaderException
@@ -199,7 +199,7 @@ public class PageSource implements IPageSource, IRenderDescription
 	/**
 	 *  Returns the page to the appropriate pool.
 	 *
-	 */
+	 **/
 
 	public void releasePage(IPage page)
 	{
@@ -212,7 +212,7 @@ public class PageSource implements IPageSource, IRenderDescription
 	 *  Invoked (during testing primarily) to release the entire pool
 	 *  of pages, and the caches of bindings and assets.
 	 *
-	 */
+	 **/
 
 	public void reset()
 	{
@@ -233,7 +233,7 @@ public class PageSource implements IPageSource, IRenderDescription
 	 *  and the field).  If no such binding exists, then one is created, otherwise
 	 *  the existing binding is returned. 
 	 *
-	 */
+	 **/
 
 	public IBinding getFieldBinding(String fieldName)
 	{
@@ -266,7 +266,7 @@ public class PageSource implements IPageSource, IRenderDescription
 	/**
 	 *  Like {@link #getFieldBinding(String)}, except for {@link StaticBinding}s.
 	 *
-	 */
+	 **/
 
 	public IBinding getStaticBinding(String value)
 	{

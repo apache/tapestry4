@@ -214,6 +214,8 @@ public interface IEngineService
 	 *  pool is.
 	 * 
 	 *  @since 1.0.9
+     * 
+     *  @deprecated
 	 **/
 	
 	public void setHelperBeanPool(Pool value);

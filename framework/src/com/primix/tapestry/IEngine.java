@@ -282,6 +282,7 @@ public interface IEngine
 	 *  The pool is keyed on class name.
 	 *
 	 *  @since 1.0.4
+     *  @deprecated Just let the Garbage Collector do its job
 	 */
 
 	public Pool getHelperBeanPool();

@@ -55,196 +55,225 @@ import com.primix.tapestry.util.pool.Pool;
 
 public abstract class AbstractService implements IEngineService
 {
-	private static final int MAP_SIZE = 3;
+    private static final int MAP_SIZE = 3;
 
-	private Pool helperBeanPool;
+    /** @deprecated **/
+    
+    private Pool helperBeanPool;
 
-	private static StringSplitter splitter = new StringSplitter('/');
+    private static StringSplitter splitter = new StringSplitter('/');
 
-	/**
-	 *  Returns a buffer, cleared and ready to go.  For efficiency, callers should
-	 *  invoke {@link #discard(StringBuffer)} when done with the buffer.
-	 * 
-	 */
+    /**
+     *  Returns a buffer, cleared and ready to go.  For efficiency, callers should
+     *  invoke {@link #discard(StringBuffer)} when done with the buffer.
+     * 
+     *  @deprecated 
+     *
+     **/
 
-	protected StringBuffer provideStringBuffer()
-	{
-		StringBuffer result =
-			(StringBuffer) helperBeanPool.retrieve(StringBuffer.class.getName());
+    protected StringBuffer provideStringBuffer()
+    {
+        StringBuffer result = (StringBuffer) helperBeanPool.retrieve(StringBuffer.class.getName());
 
-		if (result == null)
-			result = new StringBuffer();
+        if (result == null)
+            result = new StringBuffer();
 
-		return result;
-	}
+        return result;
+    }
 
-	private void discard(Object value)
-	
-	{
-		helperBeanPool.store(value.getClass().getName(), value);
-	}
+    private void discard(Object value)
+    {
+        helperBeanPool.store(value.getClass().getName(), value);
+    }
 
-	protected void discard(StringBuffer buffer)
-	{
-		buffer.setLength(0);
-		discard((Object) buffer);
-	}
+    /**
+     * 
+     *  @deprecated
+     * 
+     **/
 
-	protected String[] provideString(int length)
-	{
-		String key = "java.lang.String[" + length + "]";
+    protected void discard(StringBuffer buffer)
+    {
+        buffer.setLength(0);
+        discard((Object) buffer);
+    }
 
-		String[] result = (String[]) helperBeanPool.retrieve(key);
+    /**
+     *  @deprecated
+     * 
+     **/
 
-		if (result == null)
-			result = new String[length];
+    protected String[] provideString(int length)
+    {
+        String key = "java.lang.String[" + length + "]";
 
-		return result;
-	}
+        String[] result = (String[]) helperBeanPool.retrieve(key);
 
-	protected void discard(String[] array)
-	{
-		for (int i = 0; i < array.length; i++)
-			array[i] = null;
+        if (result == null)
+            result = new String[length];
 
-		String key = "java.lang.String[" + array.length + "]";
+        return result;
+    }
 
-		helperBeanPool.store(key, array);
-	}
+    /**
+      *  @deprecated
+      * 
+      **/
 
-	/**
-	 *  Returns an instance of {@link HashMap}.
-	 * 
-	 **/
+    protected void discard(String[] array)
+    {
+        for (int i = 0; i < array.length; i++)
+            array[i] = null;
 
-	protected Map provideMap()
-	{
-		Map result = (Map) helperBeanPool.retrieve(HashMap.class.getName());
+        String key = "java.lang.String[" + array.length + "]";
 
-		if (result == null)
-			result = new HashMap();
+        helperBeanPool.store(key, array);
+    }
 
-		return result;
-	}
+    /**
+     *  Returns an instance of {@link HashMap}.
+     * 
+     *  @deprecated
+     * 
+     **/
 
-	protected void discard(Map map)
-	
-	{
-		map.clear();
+    protected Map provideMap()
+    {
+        Map result = (Map) helperBeanPool.retrieve(HashMap.class.getName());
 
-		discard((Object) map);
-	}
+        if (result == null)
+            result = new HashMap();
 
-	/**
-	 *  Assembles a URL for the service.
-	 *
-	 *  @param the path for the servlet for this Tapestry application
-	 *  @param serviceName the name of the service
-	 *  @param serviceContext context related to the service itself which is added to the URL as-is
-	 *  @param otherContext additional context provided by the component; this is application specific
-	 *  information, and is encoded with {@link URLEncoder#encode(String)} before being added
-	 *  to the query.
-	 *
-	 */
+        return result;
+    }
 
-	protected Gesture assembleGesture(
-		IRequestCycle cycle,
-		String serviceName,
-		String[] serviceContext,
-		String[] parameters)
-	{
-		Map map = provideMap();
+    /**
+      *  @deprecated
+      * 
+      **/
 
-		map.put(SERVICE_QUERY_PARAMETER_NAME, serviceName);
+    protected void discard(Map map)
+    {
+        map.clear();
 
-		if (serviceContext != null && serviceContext.length > 0)
-		{
-			StringBuffer buffer = provideStringBuffer();
+        discard((Object) map);
+    }
 
-			for (int i = 0; i < serviceContext.length; i++)
-			{
-				if (i > 0)
-					buffer.append('/');
+    /**
+     *  Assembles a URL for the service.
+     *
+     *  @param the path for the servlet for this Tapestry application
+     *  @param serviceName the name of the service
+     *  @param serviceContext context related to the service itself which is added to the URL as-is
+     *  @param otherContext additional context provided by the component; this is application specific
+     *  information, and is encoded with {@link URLEncoder#encode(String)} before being added
+     *  to the query.
+     *
+     */
 
-				buffer.append(serviceContext[i]);
-			}
+    protected Gesture assembleGesture(
+        IRequestCycle cycle,
+        String serviceName,
+        String[] serviceContext,
+        String[] parameters)
+    {
+        Map map = provideMap();
 
-			map.put(CONTEXT_QUERY_PARMETER_NAME, buffer.toString());
+        map.put(SERVICE_QUERY_PARAMETER_NAME, serviceName);
 
-			discard(buffer);
-		}
+        if (serviceContext != null && serviceContext.length > 0)
+        {
+            StringBuffer buffer = provideStringBuffer();
 
-		if (parameters != null && parameters.length != 0)
-		{
-			StringBuffer buffer = provideStringBuffer();
+            for (int i = 0; i < serviceContext.length; i++)
+            {
+                if (i > 0)
+                    buffer.append('/');
 
-			for (int i = 0; i < parameters.length; i++)
-			{
-				if (i > 0)
-					buffer.append('/');
+                buffer.append(serviceContext[i]);
+            }
 
-				buffer.append(URLEncoder.encode(parameters[i]));
-			}
+            map.put(CONTEXT_QUERY_PARMETER_NAME, buffer.toString());
 
-			map.put(PARAMETERS_QUERY_PARAMETER_NAME, buffer.toString());
+            discard(buffer);
+        }
 
-			discard(buffer);
-		}
+        if (parameters != null && parameters.length != 0)
+        {
+            StringBuffer buffer = provideStringBuffer();
 
-		Gesture result = new Gesture(cycle.getEngine().getServletPath(), map);
+            for (int i = 0; i < parameters.length; i++)
+            {
+                if (i > 0)
+                    buffer.append('/');
 
-		discard(map);
+                buffer.append(URLEncoder.encode(parameters[i]));
+            }
 
-		return result;
-	}
+            map.put(PARAMETERS_QUERY_PARAMETER_NAME, buffer.toString());
 
-	/**
-	 *  Returns a {@link StringSplitter} configured to split on slashes.
-	 *
-	 */
+            discard(buffer);
+        }
 
-	protected StringSplitter getSplitter()
-	{
-		return splitter;
-	}
+        Gesture result = new Gesture(cycle.getEngine().getServletPath(), map);
 
-	/**
-	 *  Returns the service context as an array of Strings.
-	 *
-	 */
+        discard(map);
 
-	protected String[] getServiceContext(RequestContext context)
-	{
-		String parameter = context.getParameter(CONTEXT_QUERY_PARMETER_NAME);
+        return result;
+    }
 
-		return getSplitter().splitToArray(parameter);
-	}
+    /**
+     *  Returns a {@link StringSplitter} configured to split on slashes.
+     *
+     */
 
-	/**
-	 *  Returns the service parameters as an array of Strings.
-	 *  The strings will have been passed through
-	 *  {@link URLDecoder#decode(String)}.
-	 *
-	 */
+    protected StringSplitter getSplitter()
+    {
+        return splitter;
+    }
 
-	protected String[] getParameters(RequestContext context)
-	{
-		String parameter = context.getParameter(PARAMETERS_QUERY_PARAMETER_NAME);
+    /**
+     *  Returns the service context as an array of Strings.
+     *
+     */
 
-		if (parameter == null)
-			return null;
+    protected String[] getServiceContext(RequestContext context)
+    {
+        String parameter = context.getParameter(CONTEXT_QUERY_PARMETER_NAME);
 
-		String[] result = getSplitter().splitToArray(parameter);
+        return getSplitter().splitToArray(parameter);
+    }
 
-		for (int i = 0; i < result.length; i++)
-			result[i] = URLDecoder.decode(result[i]);
+    /**
+     *  Returns the service parameters as an array of Strings.
+     *  The strings will have been passed through
+     *  {@link URLDecoder#decode(String)}.
+     *
+     */
 
-		return result;
-	}
+    protected String[] getParameters(RequestContext context)
+    {
+        String parameter = context.getParameter(PARAMETERS_QUERY_PARAMETER_NAME);
 
-	public void setHelperBeanPool(Pool value)
-	{
-		helperBeanPool = value;
-	}
+        if (parameter == null)
+            return null;
+
+        String[] result = getSplitter().splitToArray(parameter);
+
+        for (int i = 0; i < result.length; i++)
+            result[i] = URLDecoder.decode(result[i]);
+
+        return result;
+    }
+
+    /**
+     *   @deprecated
+     * 
+     **/
+    
+    public void setHelperBeanPool(Pool value)
+    {
+        helperBeanPool = value;
+    }
 
 }
