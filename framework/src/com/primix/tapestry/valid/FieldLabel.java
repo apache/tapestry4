@@ -28,6 +28,7 @@ package com.primix.tapestry.valid;
 
 import com.primix.tapestry.*;
 import com.primix.tapestry.form.Form;
+import com.primix.tapestry.form.IFormComponent;
 
 /**
  *  Used to label an {@link IField}.  Because such fields
@@ -52,12 +53,23 @@ import com.primix.tapestry.form.Form;
  *
  * <tr>
  *  <td>field</td>
- *  <td>{@link IField}</td>
+ *  <td>{@link IFormComponent}</td>
  *  <td>R</td>
  *  <td>yes</td>
  *  <td>&nbsp;</td>
  *  <td>The field to be labeled.</td>
  * </tr>
+ * 
+ *  <tr>
+ * 		<td>displayName</td>
+ * 		<td>{@link String}</td>
+ * 		<td>R</td> <td>no</td> <td>&nbsp;</td>
+ * 		<td>
+ * 	Allows the display name to be overriden from the value supplied by a {@link IFormComponent}.
+ *  Most implementation of {@link IFormComponent} don't provide a null displayName, and it
+ *  is necessary to set one using this parameter.
+ * 	</td>
+ *  </tr>
  *
  *  </table>
  *
@@ -97,10 +109,10 @@ public class FieldLabel extends AbstractComponent
 
 		try
 		{
-			IField field =
-				(IField) fieldBinding.getObject(
+			IFormComponent field =
+				(IFormComponent) fieldBinding.getObject(
 					"field",
-					IField.class);
+					IFormComponent.class);
 
 			if (field == null)
 				throw new RequiredParameterException(this, "field", fieldBinding);

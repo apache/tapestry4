@@ -198,7 +198,7 @@ public class ShowLogging extends BaseComponent implements PageDetachListener
 
 		IField field = (IField) getComponent("inputNewCategory");
 
-		delegate.setField(field);
+		delegate.setFormComponent(field);
 		delegate.record(
 			new ValidatorException(
 				"Category " + newCategory + " already exists.",

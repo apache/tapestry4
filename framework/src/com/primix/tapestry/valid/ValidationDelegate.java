@@ -26,9 +26,11 @@
 
 package com.primix.tapestry.valid;
 
+import com.primix.tapestry.IRender;
 import com.primix.tapestry.IRequestCycle;
 import com.primix.tapestry.IResponseWriter;
 import com.primix.tapestry.RequestCycleException;
+import com.primix.tapestry.form.IFormComponent;
 import com.primix.tapestry.util.pool.*;
 import java.util.*;
 
@@ -42,49 +44,48 @@ import java.util.*;
  *  @since 1.0.5
  */
 
-public class ValidationDelegate
-	implements IValidationDelegate, IPoolable
+public class ValidationDelegate implements IValidationDelegate, IPoolable
 {
-	private IField currentField;
+	private IFormComponent currentComponent;
 	protected IFieldTracking currentTracking;
 	private List trackings;
 	private Map trackingMap;
 
 	public void resetForPool()
 	{
-		currentField = null;
+		currentComponent = null;
 		currentTracking = null;
-		
+
 		if (trackings != null)
 			trackings.clear();
-			
+
 		if (trackingMap != null)
 			trackingMap.clear();
 	}
 
-	private boolean inError(IField field)
+	private boolean inError(IFormComponent component)
 	{
 		if (trackingMap == null)
 			return false;
-			
-		String fieldName = field.getName();
-		
+
+		String fieldName = component.getName();
+
 		return trackingMap.containsKey(fieldName);
 	}
 
 	/**
-	 *  If the field is in error, places a &lt;font color="read"&lt; around it.
+	 *  If the form component is in error, places a &lt;font color="red"&lt; around it.
 	 *  Note: this will only work on the render phase after a rewind, and will be
 	 *  confused if components are inside any kind of loop.
 	 **/
-	
+
 	public void writeLabelPrefix(
-		IField field,
+		IFormComponent component,
 		IResponseWriter writer,
 		IRequestCycle cycle)
 		throws RequestCycleException
 	{
-		if (inError(field))
+		if (inError(component))
 		{
 			writer.begin("font");
 			writer.attribute("color", "red");
@@ -93,30 +94,30 @@ public class ValidationDelegate
 
 	/**
 	 *  Closes the &lt;font&gt; element,started by
-	 *  {@link #writeLabelPrefix(IField,IResponseWriter,IRequestCycle)},
-	 *  if the field is in error.
+	 *  {@link #writeLabelPrefix(IFormComponent,IResponseWriter,IRequestCycle)},
+	 *  if the form component is in error.
 	 *
 	 */
 
 	public void writeLabelSuffix(
-		IField field,
+		IFormComponent component,
 		IResponseWriter writer,
 		IRequestCycle cycle)
 		throws RequestCycleException
 	{
-		if (inError(field))
+		if (inError(component))
 		{
 			writer.end();
 		}
 	}
-	
-	public void setField(IField field)
+
+	public void setFormComponent(IFormComponent component)
 	{
-		currentField = field;
+		currentComponent = component;
 		currentTracking = null;
-		
-		if (trackingMap != null)
-			currentTracking = (FieldTracking)trackingMap.get(field.getName());			
+
+		if (trackingMap != null && component != null)
+			currentTracking = (FieldTracking) trackingMap.get(component.getName());
 	}
 
 	public boolean isInError()
@@ -128,15 +129,20 @@ public class ValidationDelegate
 	{
 		if (currentTracking == null)
 			return null;
-			
+
 		return currentTracking.getInvalidInput();
 	}
+
+	/**
+	 *  Returns all the field trackings.
+	 * 
+	 **/
 
 	public List getFieldTracking()
 	{
 		if (trackings == null)
 			return null;
-			
+
 		return Collections.unmodifiableList(trackings);
 	}
 
@@ -149,40 +155,88 @@ public class ValidationDelegate
 		}
 	}
 
+	/**
+	 *  Invokes {@link #record(String, ValidationConstraint, String)}.
+	 * 
+	 **/
+	
 	public void record(ValidatorException ex)
 	{
 		record(ex.getMessage(), ex.getConstraint(), ex.getInvalidInput());
 	}
 
+	/**
+	 *  Invokes {@link #record(IRender, ValidationConstraint, String)}, after
+	 *  wrapping the message parameter in a
+	 *  {@link RenderString}.
+	 * 
+	 **/
+	
+	public void record(
+		String message,
+		ValidationConstraint constraint,
+		String invalidInput)
+	{
+		record(new RenderString(message), constraint, invalidInput);
+	}
 
 	/**
-	 *  Records the information provided as a {@link ValidatorException}.
+	 *  Records error information about the currently selected component,
+	 *  or records unassociated (with any field) errors.
+	 * 
+	 *  <p>
+	 *  Currently, you may have at most one error per <em>field</em>
+	 *  (not difference between field and component), but any number of
+	 *  unassociated errors.
+	 * 
+	 *  <p>
 	 *  Subclasses may override the default error message (based on other
 	 *  factors, such as the field and constraint) before invoking this
 	 *  implementation.
 	 * 
+	 *  @since 1.0.9
 	 **/
-	
-	protected void record(String errorMessage, ValidationConstraint constraint, String invalidInput)
+
+	public void record(
+		IRender errorRenderer,
+		ValidationConstraint constraint,
+		String invalidInput)
 	{
 		if (trackings == null)
 			trackings = new ArrayList();
-			
+
 		if (trackingMap == null)
 			trackingMap = new HashMap();
-		
+
+		if (currentComponent == null)
+		{
+			IFieldTracking unassociated = new FieldTracking();
+			unassociated.setInvalidInput(invalidInput);
+			unassociated.setRenderer(errorRenderer);
+			unassociated.setConstraint(constraint);
+
+			// Add it to the *ahem* field trackings, but not to the
+			// map.
+
+			trackings.add(unassociated);
+			return;
+		}
+
 		if (currentTracking == null)
 		{
-			String fieldName = currentField.getName();
-			
-			currentTracking = new FieldTracking(fieldName, currentField);
-			
+			String fieldName = currentComponent.getName();
+
+			currentTracking = new FieldTracking(fieldName, currentComponent);
+
 			trackings.add(currentTracking);
 			trackingMap.put(fieldName, currentTracking);
 		}
-		
+
+		// Note that recording two errors for the same field is not advised; the
+		// second will override the first.
+
 		currentTracking.setInvalidInput(invalidInput);
-		currentTracking.setErrorMessage(errorMessage);
+		currentTracking.setRenderer(errorRenderer);
 		currentTracking.setConstraint(constraint);
 	}
 
@@ -208,44 +262,111 @@ public class ValidationDelegate
 			writer.end();
 		}
 	}
-	
-	
+
 	public boolean getHasErrors()
 	{
 		return trackings != null && trackings.size() > 0;
 	}
-	
+
 	/**
 	 *  A convienience, as most pages just show the first error on the page.
 	 * 
+	 *  <p>As of release 1.0.9, this returns an instance of {@link IRender}, not a {@link String}.
+	 * 
 	 **/
-	
-	public String getFirstError()
+
+	public IRender getFirstError()
 	{
 		if (trackings == null)
 			return null;
-			
+
 		if (trackings.size() == 0)
 			return null;
-			
-		IFieldTracking tracking = (IFieldTracking)trackings.get(0);
-		
-		return tracking.getErrorMessage();
+
+		IFieldTracking tracking = (IFieldTracking) trackings.get(0);
+
+		return tracking.getRenderer();
 	}
 
 	/**
 	 *  Checks to see if the field is in error.  This will <em>not</em> work properly
 	 *  in a loop, but is only used by {@link FieldLabel}.  Therefore, using {@link FieldLabel}
-	 *  in a loop (where the {@link IField} is renderred more than once) will not provide
+	 *  in a loop (where the {@link IFormComponent} is renderred more than once) will not provide
 	 *  correct results.
 	 * 
 	 **/
 
-	protected boolean isInError(IField field)
+	protected boolean isInError(IFormComponent component)
 	{
 		if (trackingMap == null)
 			return false;
-			
-		return trackingMap.containsKey(field.getName());
+
+		return trackingMap.containsKey(component.getName());
 	}
+
+	/**
+	 *  Returns a {@link List} of {@link IFieldTrackings}.  This is the master list
+	 *  of trackings, except that it omits and trackings that are not associated
+	 *  with a particular field.  May return an empty list, or null.
+	 * 
+	 *  <p>Order is not determined, though it is likely the order in which components
+	 *  are laid out on in the template (this is subject to change).
+	 * 
+	 **/
+
+	public List getAssociatedTrackings()
+	{
+		int count = (trackings == null) ? 0 : trackings.size();
+
+		if (count == 0)
+			return null;
+
+		List result = new ArrayList(count);
+
+		for (int i = 0; i < count; i++)
+		{
+			IFieldTracking tracking = (IFieldTracking) trackings.get(i);
+
+			if (tracking.getFieldName() == null)
+				continue;
+
+			result.add(tracking);
+		}
+
+		return result;
+	}
+
+	/**
+	 *  Like {@link #getAssociatedTrackings()}, but returns only the unassociated trackings.
+	 *  Unassociated trackings are new (in release 1.0.9), and are why
+	 *  interface {@link IFieldTracking} is not very well named.
+	 * 
+	 *  <p>The trackings are returned in an unspecified order, which (for the moment, anyway)
+	 *  is the order in which they were added (this could change in the future, or become
+	 *  more concrete).
+	 * 
+	 **/
+
+	public List getUnassociatedTrackings()
+	{
+		int count = (trackings == null) ? 0 : trackings.size();
+
+		if (count == 0)
+			return null;
+
+		List result = new ArrayList(count);
+
+		for (int i = 0; i < count; i++)
+		{
+			IFieldTracking tracking = (IFieldTracking) trackings.get(i);
+
+			if (tracking.getFieldName() != null)
+				continue;
+
+			result.add(tracking);
+		}
+
+		return result;
+	}
+
 }
