@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+
+<specification class="com.primix.tapestry.BaseComponent" 
+	allow-body="no" 
+	allow-informal-parameters="no">
+	
+	<parameter name="description" required="yes"/>
+	
+	<component id="ifDescription" type="Conditional">
+	  <inherited-binding name="condition" parameter-name="description"/>
+	</component>
+	
+	<component id="descriptionImage" type="Image">
+	  <binding name="image" property-path="assets.info"/>
+	  <inherited-binding name="alt" parameter-name="description"/>
+	</component>
+	
+	<private-asset name="info" resource-path="/com/primix/tapestry/inspector/info.gif"/>
+	
+</specification>

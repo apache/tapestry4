@@ -21,6 +21,11 @@
   <component id="insertSpecificationPath" type="Insert">
     <binding name="value" property-path="inspectedSpecification.specificationResourcePath"/>
   </component>
+  
+  <component id="showComponentDescription" type="/com/primix/tapestry/inspector/ShowDescription.jwc">
+    <binding name="description" property-path="inspectedSpecification.description"/>
+  </component>
+  
   <component id="insertJavaClass" type="Insert">
     <binding name="value" property-path="inspectedComponent.class.name"/>
   </component>
@@ -46,6 +51,10 @@
   
   <component id="insertFormalName" type="Insert">
     <binding name="value" property-path="parameterName"/>
+  </component>
+
+  <component id="showParameterDescription" type="/com/primix/tapestry/inspector/ShowDescription.jwc">
+    <binding name="description" property-path="parameterSpecification.description"/>
   </component>
   
   <component id="insertFormalRequired" type="Insert">
