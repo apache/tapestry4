@@ -193,7 +193,6 @@ public class Rollover extends AbstractComponent
 		String focusImageName = null;
 		String blurImageName = null;
 		IServiceLink serviceLink;
-		boolean enabled;
 		String imageName = null;
 		String script;
 
@@ -215,9 +214,9 @@ public class Rollover extends AbstractComponent
 		if (cycle.isRewinding())
 			return;
 
-		enabled = serviceLink.isEnabled();
+		boolean linkDisabled = serviceLink.isDisabled();
 
-		if (!enabled)
+		if (linkDisabled)
 		{
 			imageURL = getAssetURL("disabled", disabled, cycle);
 

@@ -41,7 +41,7 @@ import javax.servlet.http.*;
  *
  *  <ul>
  *  <li>scheme</li>
- *  <li>enabled</li>
+ *  <li>disabled</li>
  *  <li>anchor</li>
  * </ul>
  *
@@ -65,11 +65,11 @@ public abstract class AbstractServiceLink
 
 	private static final int URL_PAD = 50;
 
-	private IBinding enabledBinding;
-	private boolean staticEnabled;
-	private boolean enabledValue;
+	private IBinding disabledBinding;
+	private boolean staticDisabled;
+	private boolean disabledValue;
 
-	private boolean enabled;
+	private boolean disabled;
 
 	private IBinding anchorBinding;
 	private String anchorValue;
@@ -203,9 +203,9 @@ public abstract class AbstractServiceLink
 		return anchorBinding;
 	}
 
-	public IBinding getEnabledBinding()
+	public IBinding getDisabledBinding()
 	{
-		return enabledBinding;
+		return disabledBinding;
 	}
 
 	public IBinding getSchemeBinding()
@@ -244,18 +244,19 @@ public abstract class AbstractServiceLink
 	protected abstract String getServiceName(IRequestCycle cycle);
 
 	/**
-	 *  Returns true if the link is enabled, false otherwise.
+	 *  Returns true if the link is disabled, false otherwise.  If not otherwise
+	 *  specified, the link will be enabled (and this method will return false).
 	 *
 	 *  @throws RenderOnlyPropertyException if the component is not currently rendering.
 	 *
 	 */
 
-	public boolean isEnabled()
+	public boolean isDisabled()
 	{
 		if (!rendering)
-			throw new RenderOnlyPropertyException(this, "enabled");
+			throw new RenderOnlyPropertyException(this, "disabled");
 
-		return enabled;
+		return disabled;
 	}
 
 	public void setAnchorBinding(IBinding value)
@@ -266,14 +267,14 @@ public abstract class AbstractServiceLink
 			anchorValue = value.getString();
 	}
 
-	public void setEnabledBinding(IBinding value)
+	public void setDisabledBinding(IBinding value)
 	{
-		enabledBinding = value;
+		disabledBinding = value;
 
-		staticEnabled = value.isStatic();
+		staticDisabled = value.isStatic();
 
-		if (staticEnabled)
-			enabledValue = value.getBoolean();
+		if (staticDisabled)
+			disabledValue = value.getBoolean();
 	}
 
 	/**
@@ -286,13 +287,13 @@ public abstract class AbstractServiceLink
 
 	protected void setup(IRequestCycle cycle)
 	{
-		if (staticEnabled)
-			enabled = enabledValue;
+		if (staticDisabled)
+			disabled = disabledValue;
 		else
-			if (enabledBinding == null)
-			enabled = true;
+			if (disabledBinding == null)
+			disabled = false;
 		else
-			enabled = enabledBinding.getBoolean();
+			disabled = disabledBinding.getBoolean();
 	}
 
 	/**
@@ -355,10 +356,7 @@ public abstract class AbstractServiceLink
 	throws RequestCycleException
 	{
 		IResponseWriter wrappedWriter;
-		String href;
-		String[] context;
-		boolean enabled;
-
+		
 		if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
 			throw new RequestCycleException(
 				"IServiceLink components may not be nested.",
@@ -374,15 +372,14 @@ public abstract class AbstractServiceLink
 
 			setup(cycle);
 
-			enabled = isEnabled();
+			boolean disabled = isDisabled();
 
-			if (enabled)
+			if (!disabled)
 			{		
-				context = getContext(cycle);
+				String[] context = getContext(cycle);
+				String href = buildURL(cycle, context);
 
 				writer.begin("a");
-
-				href = buildURL(cycle, context);
 				writer.attribute("href", href);
 
 				// Allow the wrapped components a chance to render.
@@ -396,7 +393,7 @@ public abstract class AbstractServiceLink
 
 			renderWrapped(wrappedWriter, cycle);
 
-			if (enabled)
+			if (!disabled)
 			{
 				// Write any attributes specified by wrapped components.
 

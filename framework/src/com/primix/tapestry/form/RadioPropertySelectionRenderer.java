@@ -94,9 +94,13 @@ implements IPropertySelectionRenderer
 
 		writer.end(); // <td>
 
+		writer.println();
+
 		writer.begin("td");
 		writer.print(model.getLabel(index));
 		writer.end(); // <td>
 		writer.end(); // <tr>	
+		
+		writer.println();
 	}
 }

@@ -59,8 +59,8 @@
 					<property-path>change.componentPath</property-path>
 				</binding>
 				<binding>
-					<name>enabled</name>
-					<property-path>enableComponentLink</property-path>
+					<name>disabled</name>
+					<property-path>disableComponentLink</property-path>
 				</binding>
 			</bindings>
 		</component>

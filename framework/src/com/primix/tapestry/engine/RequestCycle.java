@@ -399,7 +399,6 @@ throw e;
 	public void rewindPage(String targetActionId, String targetIdPath)
 	throws RequestCycleException
 	{
-		IResponseWriter writer;
 		String pageName = null;
 
 		if (monitor != null)
@@ -415,11 +414,9 @@ throw e;
 		this.targetActionId = Integer.parseInt(targetActionId);
 		this.targetIdPath = targetIdPath;
 
-		writer  = new HTMLResponseWriter(new NullOutputStream());
-
 		try
 		{
-			page.renderPage(writer, this);
+			page.renderPage(NullResponseWriter.getSharedInstance(), this);
 
 			// Shouldn't get this far, because the target component should
 			// throw the RenderRewoundException.
@@ -445,8 +442,6 @@ throw e;
 		}
 		finally
 		{
-			writer.close();
-
 			rewinding = false;
 			actionId = 0;
 			this.targetActionId = 0;

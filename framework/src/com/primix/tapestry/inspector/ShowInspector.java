@@ -36,64 +36,11 @@ import java.util.*;
 
 /**
  *  Component that can be placed into application pages that will launch
- *  the inspector in a new window.  It's look and feel can be modified
- *  to blend into an application if desired.
- *
- *  <p>Typically, the inspector will be enabled only when debugging; the application
- *  can control this by binding the enabled parameter.  Most applications will include
- *  the ShowInspector component as a portion of the persistent navigational border,
- *  using images that blend into the page (especially when the inspector is disabled).
+ *  the inspector in a new window.
  *
  *  <p>Because the ShowInspector component is implemented using a {@link Rollover},
  *  the containing page must use a {@link Body} component instead of
  *  a &lt;body&gt; tag.
- *
- *
- * <p><table border=1>
- * <tr> 
- *    <td>Parameter</td>
- *    <td>Type</td>
- *	  <td>Read / Write </td>
- *    <td>Required</td> 
- *    <td>Default</td>
- *    <td>Description</td>
- * </tr>
- *
- *  <tr>
- *    <td>enabled</td>
- *	  <td>boolean</td>
- *	  <td>R</td>
- *	  <td>no</td>
- *	  <td>true</td>
- *	  <td>May be set to false to disable the inspector button.</td>
- *  </tr>
- *
- *  <tr>
- *    <td>image</td>
- *    <td>{@link IAsset}</td>
- *    <td>R</td>
- *   	<td>no</td>
- *		<td>The default inspector image.</td>
- *		<td>The (initial) image to show.</td>
- *	</tr>
- *
- *  <tr>
- *    <td>image</td>
- *    <td>{@link IAsset}</td>
- *    <td>R</td>
- *   	<td>no</td>
- *		<td>The default inspector focus image.</td>
- *		<td>The image to be displayed when the mouse is over the inspector button.</td>
- *	</tr>
-*
- * <tr>
- *		<td>disabled</td>
- *		<td>{@link IAsset}</td>
- *		<td>R</td>
- *		<td>no</td>
- *		<td>A blank space.</td>
- *		<td>A normally blank image displayed when the inspector is disabled.</td> </tr>
- * </table>
  *
  *  Informal parameters are not allowed.  May not contain a body.
  *
@@ -104,69 +51,6 @@ import java.util.*;
  
 public class ShowInspector extends BaseComponent
 {
-	private IBinding imageBinding;
-	private IBinding focusBinding;
-	private IBinding disabledBinding;
-
-	public void setImageBinding(IBinding value)
-	{
-		imageBinding = value;
-	}
-	
-	public IBinding getImageBinding()
-	{
-		return imageBinding;
-	}
-	
-	public void setFocusBinding(IBinding value)
-	{
-		focusBinding = value;
-	}
-	
-	public IBinding getFocusBinding()
-	{
-		return focusBinding;
-	}
-	
-	public IBinding getDisabledBinding()
-	{
-		return disabledBinding;
-	}
-	
-	public void setDisabledBinding(IBinding value)
-	{
-		disabledBinding = value;
-	}
-
-	private IAsset getAsset(String name)
-	{
-		return (IAsset)getAssets().get(name);
-	}
-	
-	public IAsset getImage()
-	{
-		if (imageBinding != null)
-			return (IAsset)imageBinding.getObject("image", IAsset.class);
-		
-		return getAsset("image");
-	}
-	
-	public IAsset getDisabled()
-	{
-		if (disabledBinding != null)
-			return (IAsset)disabledBinding.getObject("disabled", IAsset.class);
-		
-		return getAsset("disabled");	
-	}
-	
-	public IAsset getFocus()
-	{
-		if (focusBinding != null)
-			return (IAsset)focusBinding.getObject("focus", IAsset.class);
-		
-		return getAsset("focus");
-	}	
-	
 	/**
 	 *  Returns the window target (used in the target attribute of the &lt;a&gt; tag).
 	 *
@@ -202,4 +86,5 @@ public class ShowInspector extends BaseComponent
 			}
 		};
 	}
+	
 }

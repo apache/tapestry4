@@ -176,4 +176,16 @@ implements ILifecycle
         }
     }
 
+    /**
+     *  Invokes {@link IEngine#isResetServiceEnabled)} and inverts the result.
+     *
+     */
+     
+    public boolean isResetServiceDisabled()
+    {
+    	IEngine engine = page.getEngine();
+    	
+    	return ! engine.isResetServiceEnabled();
+    }
+
 }

@@ -55,9 +55,11 @@ public interface IServiceLink extends IComponent
 	/**
 	*  Returns whether this service link component is enabled or disabled.
 	*
+	*  @since 0.2.9
+	*
 	*/
 
-	public boolean isEnabled();
+	public boolean isDisabled();
 
 	/**
 	 *  Adds a new event handler.  When the event occurs, the JavaScript function
