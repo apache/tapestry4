@@ -248,7 +248,7 @@ NextGen) be released as version number 3.0.
 
   <changes>
   
-  <release version="3.0.1" date="unreleased">
+  <release version="3.0.1" date="Oct 16 2004">
     
     <action type="update" dev="DS">
       Add PopupLinkRenderer to contrib, this renderer emits javascript to launch the link in a new window.
