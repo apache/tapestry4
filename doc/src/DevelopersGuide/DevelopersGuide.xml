@@ -84,6 +84,7 @@
 
 <!ENTITY script-spec.full-content '<replaceable>text</replaceable> | &script-spec.foreach; | &script-spec.if; | &script-spec.if-not;'>
 
+<!ENTITY Gesture '<classname>Gesture</classname>'>
 
 ]>
 <!-- Conventions:
