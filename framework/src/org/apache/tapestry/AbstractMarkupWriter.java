@@ -102,6 +102,13 @@ import org.apache.tapestry.util.ContentType;
 public abstract class AbstractMarkupWriter implements IMarkupWriter
 {
     /**
+     * The encoding to be used should it be omitted in the constructors.
+     * This is only used for backward compatibility. New code always provides the encoding.
+     */
+
+    private static final String DEFAULT_ENCODING = "utf-8";
+
+    /**
      * The underlying {@link PrintWriter} that output is sent to. 
      *  
      **/
@@ -164,15 +171,15 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
 
     private String _contentType;
 
-	/**
-	 *  Indicates whether {@link #close()} should close the 
-	 *  underlying {@link PrintWriter}.
-	 * 
-	 *  @since 3.0
-	 * 
-	 **/
-	
-	private boolean _propagateClose = true;
+    /**
+     *  Indicates whether {@link #close()} should close the 
+     *  underlying {@link PrintWriter}.
+     * 
+     *  @since 3.0
+     * 
+     **/
+
+    private boolean _propagateClose = true;
 
     public String getContentType()
     {
@@ -209,10 +216,8 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
 
         _entities = entities;
         _safe = safe;
-        
-        ContentType contentTypeObject = new ContentType(contentType);
-        contentTypeObject.setParameter("charset", encoding);
-        _contentType = contentTypeObject.unparse();
+
+        _contentType = generateFullContentType(contentType, encoding);
 
         setOutputStream(stream, encoding);
     }
@@ -243,32 +248,35 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
 
         ContentType contentTypeObject = new ContentType(contentType);
         String encoding = contentTypeObject.getParameter("charset");
-        
+
         setOutputStream(stream, encoding);
     }
 
-	/**
-	 *  Creates new markup writer around the underlying {@link PrintWriter}.
-	 * 
-	 *  <p>This is primarily used by {@link org.apache.tapestry.engine.TagSupportService},
-	 *  which is inlcuding content, and therefore this method will not
-	 *  close the writer when the markup writer is closed.
-	 * 
-	 *  @since 3.0
-	 *  
-	 **/
-	
-	protected AbstractMarkupWriter(
-	boolean safe[], String[] entities, String contentType, PrintWriter writer)
-	{
-		this(safe, entities, contentType);
-		
-		// When the markup writer is closed, the underlying writer
-		// is NOT closed.
-		
-		_propagateClose = false;
-		_writer = writer;
-	}
+    /**
+     *  Creates new markup writer around the underlying {@link PrintWriter}.
+     * 
+     *  <p>This is primarily used by {@link org.apache.tapestry.engine.TagSupportService},
+     *  which is inlcuding content, and therefore this method will not
+     *  close the writer when the markup writer is closed.
+     * 
+     *  @since 3.0
+     *  
+     **/
+
+    protected AbstractMarkupWriter(
+        boolean safe[],
+        String[] entities,
+        String contentType,
+        PrintWriter writer)
+    {
+        this(safe, entities, contentType);
+
+        // When the markup writer is closed, the underlying writer
+        // is NOT closed.
+
+        _propagateClose = false;
+        _writer = writer;
+    }
 
     /**
      *  Special constructor used for nested response writers.
@@ -278,14 +286,28 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
 
     protected AbstractMarkupWriter(boolean safe[], String[] entities, String contentType)
     {
-        _entities = entities;
-        _safe = safe;
-        _contentType = contentType;
-
         if (entities == null || safe == null || contentType == null)
             throw new IllegalArgumentException(
                 Tapestry.getMessage("AbstractMarkupWriter.missing-constructor-parameters"));
 
+        _entities = entities;
+        _safe = safe;
+        _contentType = generateFullContentType(contentType, DEFAULT_ENCODING);
+    }
+
+    /**
+     * Ensures that the content type has a charset (encoding) parameter.
+     * 
+     * @param contentType The content type, e.g. text/html. It may contain a charset parameter.
+     * @param encoding The value of the charset parameter of the content type if it is not already present.
+     * @return The content type containing a charset parameter, e.g. text/html;charset=utf-8 
+     */
+    private String generateFullContentType(String contentType, String encoding)
+    {
+        ContentType contentTypeObject = new ContentType(contentType);
+        if (contentTypeObject.getParameter("charset") == null)
+            contentTypeObject.setParameter("charset", encoding);
+        return contentTypeObject.unparse();
     }
 
     protected void setWriter(PrintWriter writer)
@@ -298,7 +320,7 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
         try
         {
             OutputStreamWriter owriter;
-            if (encoding != null) 
+            if (encoding != null)
                 owriter = new OutputStreamWriter(stream, encoding);
             else
                 owriter = new OutputStreamWriter(stream);
@@ -309,7 +331,7 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
         catch (UnsupportedEncodingException e)
         {
             throw new IllegalArgumentException(
-                Tapestry.format("AbstractMarkupWriter.illegal-encoding", encoding));            
+                Tapestry.format("AbstractMarkupWriter.illegal-encoding", encoding));
         }
     }
 
@@ -513,8 +535,8 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
             _writer.print('>');
         }
 
-		if (_propagateClose)
-	        _writer.close();
+        if (_propagateClose)
+            _writer.close();
 
         _writer = null;
         _activeElementStack = null;
