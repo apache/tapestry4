@@ -16,13 +16,12 @@ package org.apache.tapestry.junit.form;
 
 import org.apache.tapestry.form.ListEditMap;
 import org.apache.tapestry.junit.TapestryTestCase;
-import org.apache.tapestry.spec.Direction;
+import org.apache.tapestry.spec.AssetType;
 
 /**
  * Suite of tests for {@link org.apache.tapestry.form.ListEditMap}.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.0
  */
 
@@ -33,9 +32,9 @@ public class TestListEditMap extends TapestryTestCase
     {
         ListEditMap m = new ListEditMap();
 
-        m.add("in", Direction.IN);
-        m.add("auto", Direction.AUTO);
-        m.add("custom", Direction.CUSTOM);
+        m.add("external", AssetType.EXTERNAL);
+        m.add("private", AssetType.PRIVATE);
+        m.add("context", AssetType.CONTEXT);
 
         return m;
     }
@@ -44,14 +43,14 @@ public class TestListEditMap extends TapestryTestCase
     {
         ListEditMap m = create();
 
-        assertEquals("custom", m.getKey());
+        assertEquals("context", m.getKey());
 
         checkList("keys", new Object[]
-        { "in", "auto", "custom" }, m.getKeys());
+        { "external", "private", "context" }, m.getKeys());
         checkList("all values", new Object[]
-        { Direction.IN, Direction.AUTO, Direction.CUSTOM }, m.getAllValues());
+        { AssetType.EXTERNAL, AssetType.PRIVATE, AssetType.CONTEXT }, m.getAllValues());
         checkList("all values", new Object[]
-        { Direction.IN, Direction.AUTO, Direction.CUSTOM }, m.getValues());
+        { AssetType.EXTERNAL, AssetType.PRIVATE, AssetType.CONTEXT }, m.getValues());
 
         assertNull(m.getDeletedKeys());
     }
@@ -60,10 +59,10 @@ public class TestListEditMap extends TapestryTestCase
     {
         ListEditMap m = create();
 
-        m.setKey("auto");
+        m.setKey("private");
 
-        assertEquals("auto", m.getKey());
-        assertSame(Direction.AUTO, m.getValue());
+        assertEquals("private", m.getKey());
+        assertSame(AssetType.PRIVATE, m.getValue());
     }
 
     public void testGetUnknown()
@@ -79,7 +78,7 @@ public class TestListEditMap extends TapestryTestCase
     {
         ListEditMap m = create();
 
-        m.setKey("auto");
+        m.setKey("private");
 
         assertEquals(false, m.isDeleted());
 
@@ -88,13 +87,13 @@ public class TestListEditMap extends TapestryTestCase
         assertEquals(true, m.isDeleted());
 
         checkList("all values", new Object[]
-        { Direction.IN, Direction.AUTO, Direction.CUSTOM }, m.getAllValues());
+        { AssetType.EXTERNAL, AssetType.PRIVATE, AssetType.CONTEXT }, m.getAllValues());
 
         checkList("undeleted values", new Object[]
-        { Direction.IN, Direction.CUSTOM }, m.getValues());
+        { AssetType.EXTERNAL, AssetType.CONTEXT }, m.getValues());
 
         checkList("deleted keys", new Object[]
-        { "auto" }, m.getDeletedKeys());
+        { "private" }, m.getDeletedKeys());
     }
 
     public void testMarkAlreadyDeleted()
@@ -102,7 +101,7 @@ public class TestListEditMap extends TapestryTestCase
 
         ListEditMap m = create();
 
-        m.setKey("auto");
+        m.setKey("private");
 
         assertEquals(false, m.isDeleted());
 
@@ -115,32 +114,32 @@ public class TestListEditMap extends TapestryTestCase
     {
         ListEditMap m = create();
 
-        m.setKey("auto");
+        m.setKey("private");
         m.setDeleted(true);
 
-        m.setKey("custom");
+        m.setKey("context");
         assertEquals(false, m.isDeleted());
         m.setDeleted(true);
 
         assertEquals(true, m.isDeleted());
 
         checkList("undeleted values", new Object[]
-        { Direction.IN }, m.getValues());
+        { AssetType.EXTERNAL }, m.getValues());
     }
 
     public void testDeleteUndelete()
     {
         ListEditMap m = create();
 
-        m.setKey("auto");
+        m.setKey("private");
         m.setDeleted(true);
         m.setDeleted(false);
 
-        m.setKey("custom");
+        m.setKey("context");
         m.setDeleted(true);
 
         checkList("undeleted values", new Object[]
-        { Direction.IN, Direction.AUTO }, m.getValues());
+        { AssetType.EXTERNAL, AssetType.PRIVATE }, m.getValues());
     }
 
 }

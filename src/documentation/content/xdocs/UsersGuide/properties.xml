@@ -143,6 +143,15 @@ This table is a quick guide to the most common objects and their properties.
 </tr>
 
 <tr>
+<td>classResolver</td>	
+<td>&IEngine;</td>
+<td>ClassResolver</td>
+<td>
+Object responsible for locating classes and classpath resources.	
+</td>
+</tr>
+
+<tr>
 <td>componentMessagesSource</td>	
 <td>&IEngine;</td>
 <td>&IComponentMessagesSource;</td>
@@ -386,6 +395,15 @@ This table is a quick guide to the most common objects and their properties.
 </tr>
 
 <tr>
+  <td>rendering</td>
+  <td>&IComponent;</td>
+  <td>boolean</td>
+  <td>
+    True if the component is actively rendering (inside it's <code>render()</code> method).
+  </td>
+</tr>
+
+<tr>
 	<td>requestCycle</td>	
 	<td>&IPage;</td>	
 	<td>&IRequestCycle;</td>
@@ -405,14 +423,7 @@ This table is a quick guide to the most common objects and their properties.
 
 
 
-<tr>
-<td>resourceResolver</td>	
-<td>&IEngine;</td>
-<td>&IResourceResolver;</td>
-<td>
-Object responsible for locating classes and classpath resources.	
-</td>
-</tr>
+
 
 <tr>
 <td>scriptSource</td>	

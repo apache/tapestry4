@@ -24,15 +24,13 @@ import javax.servlet.jsp.tagext.TagSupport;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.link.DirectLink;
 import org.apache.tapestry.parse.TemplateParser;
-import org.apache.tapestry.util.prop.OgnlUtils;
 
 /**
- *  Contains common code and methods for all the Tapestry JSP tag implementations.
- *
- *  @author Howard Lewis Ship
- *  @since 3.0
- *
- **/
+ * Contains common code and methods for all the Tapestry JSP tag implementations.
+ * 
+ * @author Howard Lewis Ship
+ * @since 3.0
+ */
 
 public abstract class AbstractTapestryTag extends TagSupport
 {
@@ -50,28 +48,22 @@ public abstract class AbstractTapestryTag extends TagSupport
     }
 
     /**
-     *  Implemented in subclasses to provide a 
-     *  {@link org.apache.tapestry.jsp.URLRetriever} instance that
-     *  can insert the correct URL into the output.
-     * 
-     **/
+     * Implemented in subclasses to provide a {@link org.apache.tapestry.jsp.URLRetriever}instance
+     * that can insert the correct URL into the output.
+     */
 
     protected abstract URLRetriever getURLRetriever() throws JspException;
 
     /**
-     *  Builds an object array appropriate for use as the service parameters
-     *  for the external service. The first object in the array is the name
-     *  of the page.  Any additional objects are service parameters to be
-     *  supplied to the listener method.
-     * 
-     *  <p>
-     *  The parameters are converted to an array of objects
-     *  via {@link #convertParameters(String)}.
-     * 
-     **/
+     * Builds an object array appropriate for use as the service parameters for the external
+     * service. The first object in the array is the name of the page. Any additional objects are
+     * service parameters to be supplied to the listener method.
+     * <p>
+     * The parameters are converted to an array of objects via {@link #convertParameters(String)}.
+     */
 
     protected Object[] constructExternalServiceParameters(String pageName, String parameters)
-        throws JspException
+            throws JspException
     {
 
         Object[] resolvedParameters = convertParameters(parameters);
@@ -79,7 +71,8 @@ public abstract class AbstractTapestryTag extends TagSupport
         int count = Tapestry.size(resolvedParameters);
 
         if (count == 0)
-            return new Object[] { pageName };
+            return new Object[]
+            { pageName };
 
         List list = new ArrayList();
         list.add(pageName);
@@ -91,24 +84,24 @@ public abstract class AbstractTapestryTag extends TagSupport
     }
 
     /**
-     *  <p>The external service allows service parameters (an array of
-     *  objects) to be passed along inside the URL.  This method converts
-     *  the input string into an array of parameter objects.
-     *  <ul>
-     *  <li>If parameters is null, the no parameters are passed
-     *  <li>If parameters starts with "ognl:" it is treated as an OGNL expression:
-     *     <ul>
-     *     <li>The expression is evaluated using the 
-     *         {@link javax.servlet.jsp.PageContext page context} as the root object
-     *     <li>If the expression value is a Map, then the Map is converted to
-     *  	   an array via (@link org.apache.tapestry.Tapestry#convertMapToArray(Map)}
-     *     <li>Otherwise, the expression value is converted using
-     *  {@link org.apache.tapestry.link.DirectLink#constructServiceParameters(Object)}.
-     * 		</ul>
-     *   <li>Otherwise, parameters are simply a string, which is included as the lone
-     *  service parameter
-     *  </ul>
-     **/
+     * <p>
+     * The external service allows service parameters (an array of objects) to be passed along
+     * inside the URL. This method converts the input string into an array of parameter objects.
+     * <ul>
+     * <li>If parameters is null, the no parameters are passed
+     * <li>If parameters starts with "ognl:" it is treated as an OGNL expression:
+     * <ul>
+     * <li>The expression is evaluated using the {@link javax.servlet.jsp.PageContext page context}
+     * as the root object
+     * <li>If the expression value is a Map, then the Map is converted to an array via (@link
+     * org.apache.tapestry.Tapestry#convertMapToArray(Map)}
+     * <li>Otherwise, the expression value is converted using
+     * {@link org.apache.tapestry.link.DirectLink#constructServiceParameters(Object)}.
+     * </ul>
+     * <li>Otherwise, parameters are simply a string, which is included as the lone service
+     * parameter
+     * </ul>
+     */
 
     protected Object[] convertParameters(String _parameters) throws JspException
     {
@@ -117,13 +110,14 @@ public abstract class AbstractTapestryTag extends TagSupport
 
         if (_parameters.startsWith(TemplateParser.OGNL_EXPRESSION_PREFIX))
         {
-            String expression =
-                _parameters.substring(TemplateParser.OGNL_EXPRESSION_PREFIX.length() + 1);
+            String expression = _parameters.substring(TemplateParser.OGNL_EXPRESSION_PREFIX
+                    .length() + 1);
 
             return convertExpression(expression);
         }
 
-        return new Object[] { _parameters };
+        return new Object[]
+        { _parameters };
     }
 
     private Object[] convertExpression(String expression) throws JspException
@@ -143,16 +137,17 @@ public abstract class AbstractTapestryTag extends TagSupport
     {
         try
         {
-            return OgnlUtils.get(expression, pageContext);
+            // return OgnlUtils.get(expression, pageContext);
+
+            throw new UnsupportedOperationException(
+                    "OGNL support in the Tapestry JSP tags is no longer available.");
         }
         catch (Throwable t)
         {
-            throw new JspException(
-                Tapestry.format(
+            throw new JspException(Tapestry.format(
                     "AbstractTapestryTag.unable-to-evaluate-expression",
                     expression,
-                    t.getMessage()),
-                t);
+                    t.getMessage()), t);
         }
     }
 }

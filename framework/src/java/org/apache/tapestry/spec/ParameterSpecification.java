@@ -14,7 +14,6 @@
 
 package org.apache.tapestry.spec;
 
-import org.apache.hivemind.Defense;
 import org.apache.hivemind.impl.BaseLocatable;
 
 /**
@@ -40,8 +39,6 @@ public class ParameterSpecification extends BaseLocatable implements IParameterS
 
     /** @since 3.0 * */
     private String _defaultValue = null;
-
-    private Direction _direction = Direction.CUSTOM;
 
     /**
      * Returns the class name of the expected type of the parameter. The default value is
@@ -116,23 +113,6 @@ public class ParameterSpecification extends BaseLocatable implements IParameterS
     public String getPropertyName()
     {
         return _propertyName;
-    }
-
-    /**
-     * Returns the parameter value direction, defaulting to {@link Direction#CUSTOM}if not
-     * otherwise specified.
-     */
-
-    public Direction getDirection()
-    {
-        return _direction;
-    }
-
-    public void setDirection(Direction direction)
-    {
-        Defense.notNull(direction, "direction");
-
-        _direction = direction;
     }
 
     /**

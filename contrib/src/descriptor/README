@@ -1,1 +1,0 @@
-The HiveBuild scripts expect a src/descriptor folder, but we don't have a HiveMind deployment descriptor yet.

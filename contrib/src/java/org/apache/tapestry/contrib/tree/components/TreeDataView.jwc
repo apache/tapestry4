@@ -23,7 +23,7 @@
 
     <parameter name="treeView" required="yes"/>
 
-    <parameter name="value" type="java.lang.Object" required="no" direction="custom"/>
+    <parameter name="value"/>
     <parameter name="showRootNode" default-value="true"/>
 
     <component id="renderBody" type="RenderBody"/>

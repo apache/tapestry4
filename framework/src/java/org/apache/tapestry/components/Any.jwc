@@ -15,8 +15,8 @@
    limitations under the License.
 -->
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 <component-specification class="org.apache.tapestry.components.Any">
 
   <description>
@@ -24,13 +24,13 @@
   informal parameters).
   </description>
   
-  <parameter name="element" type="java.lang.String" direction="in" required="no" default-value="templateTag">
+  <parameter name="element" default-value="ognl:templateTag">
   	<description>
   	The element to emulate.
   	</description>
   </parameter>
   
-  <parameter name="templateTag" type="java.lang.String" direction="auto" required="no" default-value="null">
+  <parameter name="templateTag">
   	<description>
   	The tag used to add this component in a template.
   	</description>

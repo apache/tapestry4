@@ -1,4 +1,4 @@
-//  Copyright 2004 The Apache Software Foundation
+// Copyright 2004 The Apache Software Foundation
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,35 +15,42 @@
 package org.apache.tapestry.contrib.table.model.ognl;
 
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumn;
+import org.apache.tapestry.services.ExpressionEvaluator;
 
 /**
  * @author mindbridge
- *
  */
 public class ExpressionTableColumn extends SimpleTableColumn
 {
-    public ExpressionTableColumn(String strColumnName, String strExpression)
+    /** @since 3.1 */
+
+    private ExpressionEvaluator _expressionEvaluator;
+
+    public ExpressionTableColumn(String strColumnName, String strExpression,
+            ExpressionEvaluator expressionEvaluator)
     {
-        this(strColumnName, strExpression, false);
+        this(strColumnName, strExpression, false, expressionEvaluator);
     }
 
-    public ExpressionTableColumn(String strColumnName, String strExpression, boolean bSortable)
+    public ExpressionTableColumn(String strColumnName, String strExpression, boolean bSortable,
+            ExpressionEvaluator expressionEvaluator)
     {
-        this(strColumnName, strColumnName, strExpression, bSortable);
+        this(strColumnName, strColumnName, strExpression, bSortable, expressionEvaluator);
     }
 
-    public ExpressionTableColumn(String strColumnName, String strDisplayName, String strExpression)
+    public ExpressionTableColumn(String strColumnName, String strDisplayName, String strExpression,
+            ExpressionEvaluator expressionEvaluator)
     {
-        this(strColumnName, strDisplayName, strExpression, false);
+        this(strColumnName, strDisplayName, strExpression, false, expressionEvaluator);
     }
 
-    public ExpressionTableColumn(
-        String strColumnName,
-        String strDisplayName,
-        String strExpression,
-        boolean bSortable)
+    public ExpressionTableColumn(String strColumnName, String strDisplayName, String strExpression,
+            boolean bSortable, ExpressionEvaluator expressionEvaluator
+
+    )
     {
         super(strColumnName, strDisplayName, bSortable);
-        setEvaluator(new OgnlTableColumnEvaluator(strExpression));
+
+        setEvaluator(new OgnlTableColumnEvaluator(strExpression, _expressionEvaluator));
     }
 }

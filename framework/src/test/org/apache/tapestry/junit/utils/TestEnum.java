@@ -21,14 +21,13 @@ import java.io.ObjectOutputStream;
 
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.spec.AssetType;
-import org.apache.tapestry.spec.Direction;
 
 /**
  * Tests the ability of an {@link org.apache.tapestry.util.Enum}to be serialized and deserialized
  * properly.
  * 
  * @author Howard Lewis Ship
- * @version $Id$
+ * @since 3.0
  */
 
 public class TestEnum extends TapestryTestCase
@@ -57,7 +56,6 @@ public class TestEnum extends TapestryTestCase
     public void testToString()
     {
         assertEquals("AssetType[EXTERNAL]", AssetType.EXTERNAL.toString());
-        assertEquals("Direction[CUSTOM]", Direction.CUSTOM.toString());
     }
 
 }

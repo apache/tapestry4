@@ -125,7 +125,7 @@ public class TestSpecificationParser extends TapestryTestCase
     }
 
     /**
-     * Test invalid parameter name.
+     * Test invalid component id.
      * 
      * @since 2.2
      */
@@ -887,6 +887,63 @@ public class TestSpecificationParser extends TapestryTestCase
         ps = spec.getPropertySpecification("unknown");
 
         assertNull("Unknown PropertySpecification", ps);
+    }
+
+    /**
+     * Tests parameters specification from a 3.0 DTD
+     * 
+     * @since 3.1
+     */
+
+    public void testParameter_3_0() throws Exception
+    {
+        IComponentSpecification spec = parseComponent("Parameter_3_0.jwc");
+
+        IParameterSpecification ps = spec.getParameter("noDefault");
+
+        assertEquals("noDefault", ps.getPropertyName());
+        assertEquals(true, ps.isRequired());
+        assertEquals("bar", ps.getType());
+        assertNull(ps.getDefaultValue());
+
+        ps = spec.getParameter("withDefault");
+        assertNull(ps.getType());
+        assertEquals(false, ps.isRequired());
+
+        // For 3.0 DTDs, where the default value was always an OGNL expression,
+        // the parser will provide the "ognl:" prefix.
+
+        assertEquals("ognl:an.expression", ps.getDefaultValue());
+
+        ps = spec.getParameter("withDescription");
+        assertEquals("A parameter with a description.", ps.getDescription());
+
+        ps = spec.getParameter("altName");
+        assertEquals("altNameParameter", ps.getPropertyName());
+    }
+
+    /**
+     * Tests the new way default-value is interpreted (as a binding-like value, prefixed to indicate
+     * type).
+     * 
+     * @since 3.1
+     */
+
+    public void testParameters() throws Exception
+    {
+        IComponentSpecification spec = parseComponent("Parameter.jwc");
+
+        IParameterSpecification ps = spec.getParameter("noDefault");
+
+        assertNull(ps.getDefaultValue());
+
+        ps = spec.getParameter("literalDefault");
+
+        assertEquals("literal-value", ps.getDefaultValue());
+
+        ps = spec.getParameter("expressionDefault");
+
+        assertEquals("ognl:an.expression", ps.getDefaultValue());
     }
 
 }

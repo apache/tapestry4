@@ -80,7 +80,7 @@ for a page specification.  Such a page may still use the special Tapestry attrib
 <p>
 Finally, with some <link href="configuration.html#configuration.search-path">minor configuration</link>
 it is possible to change the extension used for templates. For example, if you are developing a WML
-application, you may wish to name your files with the extension .wml.
+application, you may wish to name your application's template files with the extension .wml.
 </p>
 
 </section> <!-- template.locations -->
@@ -119,7 +119,8 @@ The editor will ignore the undefined HTML attributes (such as jwcid).
 
 <p>
 A larger goal is to support real project teams: The special markup for Tapestry is unobtrusive, even invisible.
-This allows an HTML designer to work on a template without breaking the dynamic portions of it.	This is completely unlike
+This allows an HTML designer to work on a template without breaking the dynamic portions of it.	Importantly, the designers can
+work with their normal tools and editors. This is completely unlike
 JSPs, where the changes to support dynamic output are extremely intrusive and result in a file that is meaningless to an HTML
 editor.
 </p>
@@ -377,7 +378,7 @@ are presumed to be there only to support WYSIWYG preview.
 
 <p>
 Another conflict can occur when the HTML template specified an attribute that the component needs
-to render itself. For example, the &DirectLink; component generates a <code>a&gt;</code> tag,
+to render itself. For example, the &DirectLink; component generates a <code>&lt;a&gt;</code> tag,
 and needs to control the href attribute. However, for preview purposes, it often will 
 be written into the HTML template as:
 </p>
@@ -628,7 +629,7 @@ and "Frank Smith" and "Jane Jones" nowhere to be seen.
 	
 <p>
 In Tapestry, components can have their own templates. Because of how components integrate their own templates
-with their bodies (the portion from their container's template), you can do a lot ofn iteresting things. It is very
+with their bodies (the portion from their container's template), you can do a lot of interesting things. It is very
 common for a Tapestry application to have a Border component: a component that produces the &html;,
 &head;, and &body; tags (along with additional tags
 to reference stylesheets), plus some form of navigational control (typically, a nested table and a collection of links and images).
@@ -681,7 +682,7 @@ be removed, causing runtime exceptions.
 
 <p>
 Instead, we want to identify that the portion of the template <em>inside</em>
-the &body; tag (on the page template) is the only part that counts). The <code>$content$</code>
+the &body; tag (on the page template) as the only part that should be used. The <code>$content$</code>
 component id is used for this purpose:
 </p>
 

@@ -75,7 +75,7 @@ which will be used to configure the chosen Forrest skin.
        default skin: renders it at the top-left corner -->
   <group-name>Tapestry</group-name>
   <group-description>Tapestry Web Application Framework</group-description>
-  <group-url>http://jakarta.apache.org/hivemind/</group-url>
+  <group-url>http://jakarta.apache.org/tapestry/</group-url>
   <group-logo>images/Tapestry-Banner.png</group-logo>
   <!-- Alternative static image:
   <group-logo>images/group-logo.gif</group-logo> -->

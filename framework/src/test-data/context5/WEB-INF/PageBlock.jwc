@@ -15,23 +15,21 @@
    limitations under the License.
 -->
 <!DOCTYPE component-specification PUBLIC
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 	
 <component-specification class="org.apache.tapestry.junit.mock.c5.PageBlock" 
 	allow-body="no" 
 	allow-informal-parameters="no">	
 	
-	<parameter name="title" type="java.lang.String" required="yes"/>	
+	<parameter name="title" required="yes"/>	
 	
-	<parameter name="page" type="java.lang.String" required="yes"
-		direction="in" property-name="targetPageName"/>
+	<parameter name="page" required="yes" property-name="targetPageName"/>
 		
-	<parameter name="blockId" type="java.lang.String"
-		direction="in" property-name="targetBlockId" default-value="'block'"/>
+	<parameter name="blockId" property-name="targetBlockId" default-value="block"/>
 		
 	<component id="insertTitle" type="Insert">
-		<inherited-binding name="value" parameter-name="title"/>
+		<binding name="value" value="ognl:title"/>
 	</component>
 			
 </component-specification>		

@@ -59,7 +59,7 @@
     
     <invoke-factory>
       <construct class="org.apache.tapestry.pageload.EstablishDefaultParameterValuesVisitor">
-        <set-service property="bindingFactory" service-id="tapestry.bindings.OGNLBindingFactory"/>
+        <set-service property="bindingSource" service-id="tapestry.bindings.BindingSource"/>
       </construct>
     </invoke-factory>
     

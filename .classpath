@@ -7,6 +7,7 @@
 	<classpathentry kind="src" path="examples/Workbench/src/java"/>
 	<classpathentry kind="lib" path="config"/>
 	<classpathentry kind="lib" path="framework/src/descriptor"/>
+	<classpathentry kind="lib" path="contrib/src/descriptor"/>
 	<classpathentry exported="true" kind="var" path="CLOVER_RUNTIME"/>
 	<classpathentry sourcepath="JRE_SRC" kind="var" path="JRE_LIB"/>
 	<classpathentry kind="var" path="JYTHON_DIR/jython.jar"/>

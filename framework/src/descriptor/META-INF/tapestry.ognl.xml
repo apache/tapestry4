@@ -26,6 +26,7 @@
     <invoke-factory>
       <construct class="org.apache.tapestry.services.impl.ExpressionEvaluatorImpl">
         <set-object property="applicationSpecification" value="infrastructure:applicationSpecification"/>
+        <set-configuration property="contributions" configuration-id="PropertyAccessors"/>
       </construct>
     </invoke-factory>
   </service-point>
@@ -37,4 +38,38 @@
       </construct>
     </invoke-factory>
   </service-point>
+  
+  <configuration-point id="PropertyAccessors">
+    
+    Defines accessor objects mapped to particular classes. OGNL property accessors
+    allow for additional properties to be applied to objects beyond those
+    provided by standard JavaBeans naming conventions.
+    
+    <schema>
+      
+      <element name="accessor">
+        
+        <attribute name="class" required="true" translator="class">
+          The class for which the accessor will be used.
+        </attribute>
+        
+        <attribute name="object" required="true" translator="object">
+          An object implementing the OGNL PropertyAccessor interface.
+        </attribute>
+        
+        <conversion class="org.apache.tapestry.services.impl.PropertyAccessorContribution">
+          <map attribute="class" property="subjectClass"/>
+          <map attribute="object" property="accessor"/>
+        </conversion>
+      </element>
+      
+    </schema>
+  </configuration-point>
+  
+  <contribution configuration-id="PropertyAccessors">
+    
+    <accessor class="org.apache.tapestry.IBeanProvider" object="instance:org.apache.tapestry.bean.BeanProviderPropertyAccessor"/>
+    <accessor class="org.apache.tapestry.listener.ListenerMap"
+      object="instance:org.apache.tapestry.listener.ListenerMapPropertyAccessor"/>
+  </contribution>
 </module>

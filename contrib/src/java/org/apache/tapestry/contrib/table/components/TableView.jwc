@@ -27,8 +27,7 @@
         TablePages and TableRows, as it provides the data they use.
     </description>
     
-    <parameter name="tableModel"
-        property-name="tableModelValue">
+    <parameter name="tableModel" property-name="tableModelValue">
         <description>
             The model describing the data to be presented by the table components.
             This parameter is optional, but either the 'tableModel' or both
@@ -83,7 +82,7 @@
         </description>
     </parameter>
   
-    <parameter name="tableSessionStateManager" default-value="defaultTableSessionStateManager">
+    <parameter name="tableSessionStateManager" default-value="ognl:defaultTableSessionStateManager">
         <description>
             The manager defining what part of the table model will be stored in 
             the session.
@@ -96,13 +95,13 @@
         </description>
     </parameter>
     
-    <parameter name="columnSettingsContainer" default-value="container">
+    <parameter name="columnSettingsContainer" default-value="ognl:container">
         <description>
             The component where Block and messages are pulled from when using source/columns.
         </description>
     </parameter>
     
-    <parameter name="element" default-value="'table'">
+    <parameter name="element" default-value="table">
         <description>
             The tag with which the component will be inserted in the generated content.
         </description>
@@ -115,5 +114,7 @@
     </component>
     
     <component id="renderBody" type="RenderBody"/>
+    
+    <inject name="modelSource" object="service:tapestry.contrib.TableColumnModelSource"/>
     
 </component-specification>

@@ -22,8 +22,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import ognl.OgnlRuntime;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hivemind.ApplicationRuntimeException;
@@ -33,52 +31,44 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 
 /**
- *  Maps a class to a set of listeners based on the public methods of the class.
- *  {@link org.apache.tapestry.listener.ListenerMapPropertyAccessor} is setup
- *  to provide these methods as named properties of the ListenerMap.
- *
- *  @author Howard Ship
- *  @since 1.0.2
+ * Maps a class to a set of listeners based on the public methods of the class.
+ * {@link org.apache.tapestry.listener.ListenerMapPropertyAccessor}is setup to provide these
+ * methods as named properties of the ListenerMap.
  * 
- **/
+ * @author Howard Ship
+ * @since 1.0.2
+ */
 
 public class ListenerMap
 {
     private static final Log LOG = LogFactory.getLog(ListenerMap.class);
 
-    static {
-        OgnlRuntime.setPropertyAccessor(ListenerMap.class, new ListenerMapPropertyAccessor());
-    }
-
     private Object _target;
 
     /**
-     *  A {@link Map} of relevant {@link Method}s, keyed on method name.
-     *  This is just the public void methods that take an {@link IRequestCycle}
-     *  and throw nothing or just {@link ApplicationRuntimeException}.
+     * A {@link Map}of relevant {@link Method}s, keyed on method name. This is just the public
+     * void methods that take an {@link IRequestCycle}and throw nothing or just
+     * {@link ApplicationRuntimeException}.
      */
 
     private Map _methodMap;
 
     /**
-     * A {@link Map} of cached listener instances, keyed on method name
-     *
-     **/
+     * A {@link Map}of cached listener instances, keyed on method name
+     */
 
     private Map _listenerCache = new HashMap();
 
     /**
-     * A {@link Map}, keyed on Class, of {@link Map} ... the method map
-     * for any particular instance of the given class.
-     *
-     **/
+     * A {@link Map}, keyed on Class, of {@link Map}... the method map for any particular instance
+     * of the given class.
+     */
 
     private static Map _classMap = new HashMap();
 
     /**
-     *  Implements both listener interfaces.
-     *
-     **/
+     * Implements both listener interfaces.
+     */
 
     private class SyntheticListener implements IActionListener
     {
@@ -91,7 +81,8 @@ public class ListenerMap
 
         private void invoke(IRequestCycle cycle)
         {
-            Object[] args = new Object[] { cycle };
+            Object[] args = new Object[]
+            { cycle };
 
             invokeTargetMethod(_target, _method, args);
         }
@@ -121,12 +112,12 @@ public class ListenerMap
     }
 
     /**
-     *  Gets a listener for the given name (which is both a property name
-     *  and a method name).  The listener is created as needed, but is
-     *  also cached for later use.
-     *
-     * @throws ApplicationRuntimeException if the listener can not be created.
-     **/
+     * Gets a listener for the given name (which is both a property name and a method name). The
+     * listener is created as needed, but is also cached for later use.
+     * 
+     * @throws ApplicationRuntimeException
+     *             if the listener can not be created.
+     */
 
     public synchronized Object getListener(String name)
     {
@@ -145,10 +136,9 @@ public class ListenerMap
     }
 
     /**
-     *  Returns an object that implements {@link IActionListener}.
-     *  This involves looking up the method by name and determining which
-     *  inner class to create.
-     **/
+     * Returns an object that implements {@link IActionListener}. This involves looking up the
+     * method by name and determining which inner class to create.
+     */
 
     private synchronized Object createListener(String name)
     {
@@ -158,17 +148,18 @@ public class ListenerMap
         Method method = (Method) _methodMap.get(name);
 
         if (method == null)
-            throw new ApplicationRuntimeException(
-                Tapestry.format("ListenerMap.object-missing-method", _target, name));
+            throw new ApplicationRuntimeException(Tapestry.format(
+                    "ListenerMap.object-missing-method",
+                    _target,
+                    name));
 
         return new SyntheticListener(method);
     }
 
     /**
-     *  Gets the method map for the current instance.  If necessary, it is constructed and cached (for other instances
-     *  of the same class).
-     *
-     **/
+     * Gets the method map for the current instance. If necessary, it is constructed and cached (for
+     * other instances of the same class).
+     */
 
     private synchronized Map getMethodMap()
     {
@@ -229,7 +220,7 @@ public class ListenerMap
             if (!parmTypes[0].equals(IRequestCycle.class))
                 continue;
 
-            // Ha!  Passed all tests.
+            // Ha! Passed all tests.
 
             result.put(m.getName(), m);
         }
@@ -239,10 +230,8 @@ public class ListenerMap
     }
 
     /**
-     *  Invoked by the inner listener/adaptor classes to
-     *  invoke the method.
-     *
-     **/
+     * Invoked by the inner listener/adaptor classes to invoke the method.
+     */
 
     private static void invokeTargetMethod(Object target, Method method, Object[] args)
     {
@@ -279,36 +268,35 @@ public class ListenerMap
             // Catch InvocationTargetException or, preferrably,
             // the inner exception here (if its a runtime exception).
 
-            throw new ApplicationRuntimeException(
-                Tapestry.format("ListenerMap.unable-to-invoke-method", method.getName(), target, ex.getMessage()),
-                ex);
+            throw new ApplicationRuntimeException(Tapestry.format(
+                    "ListenerMap.unable-to-invoke-method",
+                    method.getName(),
+                    target,
+                    ex.getMessage()), ex);
         }
     }
 
-    /** 
-     *  Returns an unmodifiable collection of the 
-     *  names of the listeners implemented by the target class.
-     *
-     *  @since 1.0.6
-     *
-     **/
+    /**
+     * Returns an unmodifiable collection of the names of the listeners implemented by the target
+     * class.
+     * 
+     * @since 1.0.6
+     */
 
     public synchronized Collection getListenerNames()
     {
-         return Collections.unmodifiableCollection(getMethodMap().keySet());
+        return Collections.unmodifiableCollection(getMethodMap().keySet());
     }
 
     /**
-     *  Returns true if this ListenerMap can provide a listener
-     *  with the given name.
+     * Returns true if this ListenerMap can provide a listener with the given name.
      * 
-     *  @since 2.2
-     * 
-     **/
+     * @since 2.2
+     */
 
     public synchronized boolean canProvideListener(String name)
     {
-         return getMethodMap().containsKey(name);
+        return getMethodMap().containsKey(name);
     }
 
     public String toString()

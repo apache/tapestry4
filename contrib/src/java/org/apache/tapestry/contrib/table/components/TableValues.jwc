@@ -31,14 +31,11 @@
         <description>The current column being rendered</description>
     </parameter>
 
-	<parameter name="element" 
-		type="java.lang.String" 
-    	default-value="'td'">
+	<parameter name="element" default-value="td">
         <description>The tag to use to wrap the values in, 'td' by default.</description>
     </parameter>
 
-    <parameter name="class"
-        property-name="cellClass">
+    <parameter name="class" property-name="cellClass">
         <description>The CSS class of the table values</description>
     </parameter>
     
