@@ -16,8 +16,8 @@
 -->
 
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
   
 <component-specification class="org.apache.tapestry.html.Image" allow-body="no">
 
@@ -25,18 +25,13 @@
   Displays an image, deriving the source URL for the image from an asset.
   </description>
 
-  <parameter name="image" 
-  	type="org.apache.tapestry.IAsset" 
-  	required="yes"
-  	direction="in">
+  <parameter name="image" required="yes">
     <description>
     The asset to display.
     </description>
   </parameter>
   
-  <parameter name="border"
-  	type="int"
-  	direction="in">
+  <parameter name="border">
     <description>
     Number of pixels of border.
     </description>

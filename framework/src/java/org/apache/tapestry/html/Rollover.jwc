@@ -16,8 +16,8 @@
 -->
 
 <!DOCTYPE component-specification PUBLIC
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 	
 <component-specification class="org.apache.tapestry.html.Rollover" allow-body="no">
 
@@ -26,37 +26,28 @@
   can reflect the enabled status of the link, and display rollover effects.
   </description>
 
-  <parameter name="image" 
-  	type="org.apache.tapestry.IAsset" 
-  	required="yes"
-  	direction="in">
+  <parameter name="image" required="yes">
     <description>
     The normal or default image to display, used as a default image for
     the other parameters.
     </description>
   </parameter>
   
-  <parameter name="focus"
-  	type="org.apache.tapestry.IAsset"
-  	direction="in">
+  <parameter name="focus">
     <description>
     If specified, provides an image displayed when the cursor is moved
     over the link.
     </description>
   </parameter>
   
-  <parameter name="blur" 
-  	type="org.apache.tapestry.IAsset"
-  	direction="in">
+  <parameter name="blur">
     <description>
     If specified, provides an image displayed when the cursor is moved
     off of the link.
     </description>
   </parameter>
   
-  <parameter name="disabled"
-  	type="org.apache.tapestry.IAsset"
-  	direction="in">
+  <parameter name="disabled">
     <description>
     If specified, provides an image displayed when the surrounding
     link is disabled.
