@@ -149,6 +149,8 @@
 	<component id="tableColumns" type="TableColumns">
 		<inherited-binding name="column" parameter-name="column"/>
 		<inherited-binding name="class" parameter-name="columnsClass"/>
+        <inherited-binding name="arrowUpAsset" parameter-name="arrowUpAsset"/>
+        <inherited-binding name="arrowDownAsset" parameter-name="arrowDownAsset"/>
 	</component>
 
 	<component id="tableRows" type="TableFormRows">

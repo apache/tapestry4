@@ -117,14 +117,27 @@ import org.apache.tapestry.contrib.table.model.*;
  */
 public abstract class TableFormRows extends TableRows
 {
-    //public abstract IPrimaryKeyConvertor getConvertor();
+    public abstract IPrimaryKeyConvertor getConvertor();
     public abstract IPrimaryKeyConvertor getConvertorCache();
+    public abstract void setConvertorCache(IPrimaryKeyConvertor convertor);
     public abstract Map getConvertedValues();
+    
+    public IPrimaryKeyConvertor getCachedConvertor()
+    {
+        IPrimaryKeyConvertor objConvertor = getConvertorCache();
+        
+        if (objConvertor == null) {
+            objConvertor = getConvertor();
+            setConvertorCache(objConvertor);
+        }
+        
+        return objConvertor;
+    }
     
     public Iterator getConvertedTableRowsIterator()
     {
         final Iterator objTableRowsIterator = getTableRowsIterator(); 
-        final IPrimaryKeyConvertor objConvertor = getConvertorCache();
+        final IPrimaryKeyConvertor objConvertor = getCachedConvertor();
         if (objConvertor == null)
             return objTableRowsIterator;
             
@@ -155,7 +168,7 @@ public abstract class TableFormRows extends TableRows
     {
         Object objValue = objConvertedTableRow;
 
-        IPrimaryKeyConvertor objConvertor = getConvertorCache();
+        IPrimaryKeyConvertor objConvertor = getCachedConvertor();
         if (objConvertor != null) {
             IRequestCycle objCycle = getPage().getRequestCycle();
             if (objCycle.isRewinding()) {
