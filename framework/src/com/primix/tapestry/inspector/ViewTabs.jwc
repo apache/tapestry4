@@ -138,25 +138,5 @@
 			<name>PROPERTIES-banner</name>
 			<resource-path>/com/primix/tapestry/inspector/Properties_NBanner.gif</resource-path>
 		</private-asset>
-		<private-asset>
-			<name>JAVA_SOURCE</name>
-			<resource-path>/com/primix/tapestry/inspector/Java_Source_Np1.gif</resource-path>
-		</private-asset>
-		<private-asset>
-			<name>JAVA_SOURCE-selected</name>
-			<resource-path>/com/primix/tapestry/inspector/Java_Source_Hp3.gif</resource-path>
-		</private-asset>
-		<private-asset>
-			<name>JAVA_SOURCE-focus</name>
-			<resource-path>/com/primix/tapestry/inspector/Java_Source_NRp2.gif</resource-path>
-		</private-asset>
-		<private-asset>
-			<name>JAVA_SOURCE-selected-focus</name>
-			<resource-path>/com/primix/tapestry/inspector/Java_Source_HRp4.gif</resource-path>
-		</private-asset>
-		<private-asset>
-			<name>JAVA_SOURCE-banner</name>
-			<resource-path>/com/primix/tapestry/inspector/Java_Source_NBanner.gif</resource-path>
-		</private-asset>
 	</assets>
 </specification>

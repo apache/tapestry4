@@ -104,20 +104,6 @@
 			<id>showProperties</id>
 			<type>/com/primix/tapestry/inspector/ShowProperties.jwc</type>
 		</component>
-		<component>
-			<id>ifShowSource</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>viewJavaSource</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>showJavaSource</id>
-			<type>/com/primix/tapestry/inspector/ShowJavaSource.jwc</type>
-		</component>
 	</components>
 	<assets>
 		<private-asset>

@@ -2,6 +2,9 @@
 
 Beef up the ShowInspector component, adding default images and rollover images, and
 add parameters to allow those to be overriden.
+Remove the Java Source tab from the Inspector ... turns out that shipping Java code in the
+Tapestry framework confuses the Java compiler when compiling projects that depend on
+the Tapestry framework.
 
 * Sep 11 2000 hship
 
