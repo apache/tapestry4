@@ -61,18 +61,16 @@ public class TestDateValidator extends TapestryTestCase
 
     public void testToStringFormat()
     {
+        if (IS_JDK13)
+            return;
+            
         DateFormat format = DateFormat.getDateInstance(DateFormat.SHORT, Locale.GERMAN);
 
         v.setFormat(format);
 
         String out = v.toString(null, buildDate(Calendar.DECEMBER, 8, 2001));
 
-        // JDK 1.3 does not inlcude a german localization, so we'll get the
-        // default, US English, localization of the date format.
-
-        String expected = IS_JDK13 ? "12/8/01" : "08.12.01";
-
-        assertEquals("Result.", expected, out);
+        assertEquals("Result.", "08.12.01", out);
     }
 
     public void testToObjectNull() throws ValidatorException
@@ -105,15 +103,16 @@ public class TestDateValidator extends TapestryTestCase
 
     public void testToObjectFormat() throws ValidatorException
     {
+        if (IS_JDK13)
+            return;
+            
         DateFormat format = DateFormat.getDateInstance(DateFormat.SHORT, Locale.GERMAN);
 
         v.setFormat(format);
 
         // Again, adjust for missing German localization in JDK 1.3
 
-        String value = IS_JDK13 ? "12/8/2001" : "08.12.01";
-
-        Object out = v.toObject(null, value);
+        Object out = v.toObject(null, "08.12.01");
 
         assertEquals("Result.", buildDate(Calendar.DECEMBER, 8, 2001), out);
     }
@@ -125,7 +124,7 @@ public class TestDateValidator extends TapestryTestCase
         try
         {
             v.toObject(new TestingField("toObjectMinimum"), "12/8/2001");
-            fail("Exception expected.");
+            unreachable();
         }
         catch (ValidatorException ex)
         {
