@@ -54,11 +54,9 @@
  */
 package net.sf.tapestry.multipart;
 
-import java.io.FileOutputStream;
-import java.io.FilterInputStream;
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 
 /**
  *  Allows an input stream to be read as both individual lines
@@ -73,7 +71,7 @@ import java.io.OutputStream;
  *
  **/
 
-public class LineInput extends FilterInputStream
+public class LineInput extends BufferedInputStream
 {
     public static final int EOF = -1;
     public static final int CR = 13;
@@ -119,7 +117,7 @@ public class LineInput extends FilterInputStream
 
     public String readLine() throws IOException
     {
-        ByteBuffer buffer = new ByteBuffer();
+        ByteBuffer buffer = null;
 
         while (true)
         {
@@ -131,15 +129,24 @@ public class LineInput extends FilterInputStream
             if (b == CR)
             {
                 // Skip the LF that follows
-                read();
+                mark(1);
+                if (read() != LF)
+                    reset();
+
                 break;
             }
 
             if (b == LF)
                 break;
+                
+            if (buffer == null)
+                buffer = new ByteBuffer();
 
             buffer.add((byte) b);
         }
+
+        if (buffer == null)
+            return null;
 
         return buffer.getString();
     }

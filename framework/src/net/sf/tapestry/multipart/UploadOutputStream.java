@@ -54,6 +54,7 @@
  */
 package net.sf.tapestry.multipart;
 
+import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -83,7 +84,7 @@ class UploadOutputStream extends OutputStream
     private OutputStream _activeStream = _byteArrayStream;
     private int _limit;
     private int _count = 0;
-    private FileOutputStream _fileStream;
+    private OutputStream _fileStream;
     private File _file;
 
     UploadOutputStream()
@@ -103,7 +104,7 @@ class UploadOutputStream extends OutputStream
 
     public void flush() throws IOException
     {
-        _activeStream.close();
+        _activeStream.flush();
     }
 
     public void write(byte[] b, int off, int len) throws IOException
@@ -140,7 +141,7 @@ class UploadOutputStream extends OutputStream
 
         _file = File.createTempFile("upload-", ".bin");
 
-        _fileStream = new FileOutputStream(_file);
+        _fileStream = new BufferedOutputStream(new FileOutputStream(_file));
 
         _byteArrayStream.close();
 
