@@ -1,234 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"  "http://tapestry.primix.com/dtd/Tapestry_1_0.dtd">
-<specification>
-	<class>com.primix.vlib.pages.Register</class>
-	<components>
-		<component>
-			<id>border</id>
-			<type>Border</type>
-			<bindings>
-				<static-binding>
-					<name>title</name>
-					<value>Register</value>
-				</static-binding>
-			</bindings>
-		</component>
-		<component>
-			<id>showError</id>
-			<type>ShowError</type>
-		</component>
-		<component>
-			<id>form</id>
-			<type>Form</type>
-			<bindings>
-				<binding>
-					<name>listener</name>
-					<property-path>formListener</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>inputFirstName</id>
-			<type>TextField</type>
-			<bindings>
-				<static-binding>
-					<name>displayWidth</name>
-					<value>30</value>
-				</static-binding>
-				<static-binding>
-					<name>maximumLength</name>
-					<value>30</value>
-				</static-binding>
-				<binding>
-					<name>text</name>
-					<property-path>firstName</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>labelLastName</id>
-			<type>FieldLabel</type>
-			<bindings>
-				<binding>
-					<name>field</name>
-					<property-path>components.inputLastName</property-path>
-				</binding>
-				<binding>
-					<name>delegate</name>
-					<property-path>validationDelegate</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>inputLastName</id>
-			<type>ValidatingTextField</type>
-			<bindings>
-				<binding>
-					<name>text</name>
-					<property-path>lastName</property-path>
-				</binding>
-				<static-binding>
-					<name>displayWidth</name>
-					<value>30</value>
-				</static-binding>
-				<static-binding>
-					<name>maximumLength</name>
-					<value>30</value>
-				</static-binding>
-				<static-binding>
-					<name>displayName</name>
-					<value>Last Name</value>
-				</static-binding>
-				<binding>
-					<name>delegate</name>
-					<property-path>validationDelegate</property-path>
-				</binding>
-				<field-binding>
-					<name>required</name>
-					<field-name>Boolean.TRUE</field-name>
-				</field-binding>
-			</bindings>
-		</component>
-		<component>
-			<id>labelEmail</id>
-			<type>FieldLabel</type>
-			<bindings>
-				<binding>
-					<name>field</name>
-					<property-path>components.inputEmail</property-path>
-				</binding>
-				<binding>
-					<name>delegate</name>
-					<property-path>validationDelegate</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>inputEmail</id>
-			<type>ValidatingTextField</type>
-			<bindings>
-				<binding>
-					<name>text</name>
-					<property-path>email</property-path>
-				</binding>
-				<binding>
-					<name>delegate</name>
-					<property-path>validationDelegate</property-path>
-				</binding>
-				<field-binding>
-					<name>required</name>
-					<field-name>Boolean.TRUE</field-name>
-				</field-binding>
-				<static-binding>
-					<name>displayWidth</name>
-					<value>30</value>
-				</static-binding>
-				<static-binding>
-					<name>maximumLength</name>
-					<value>60</value>
-				</static-binding>
-				<static-binding>
-					<name>displayName</name>
-					<value>E-Mail</value>
-				</static-binding>
-			</bindings>
-		</component>
-		<component>
-			<id>labelPassword1</id>
-			<type>FieldLabel</type>
-			<bindings>
-				<binding>
-					<name>field</name>
-					<property-path>components.inputPassword1</property-path>
-				</binding>
-				<binding>
-					<name>delegate</name>
-					<property-path>validationDelegate</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>inputPassword1</id>
-			<type>ValidatingTextField</type>
-			<bindings>
-				<binding>
-					<name>text</name>
-					<property-path>password1</property-path>
-				</binding>
-				<static-binding>
-					<name>displayWidth</name>
-					<value>20</value>
-				</static-binding>
-				<static-binding>
-					<name>maximumLength</name>
-					<value>20</value>
-				</static-binding>
-				<static-binding>
-					<name>displayName</name>
-					<value>Password</value>
-				</static-binding>
-				<binding>
-					<name>delegate</name>
-					<property-path>validationDelegate</property-path>
-				</binding>
-				<field-binding>
-					<name>required</name>
-					<field-name>Boolean.TRUE</field-name>
-				</field-binding>
-				<field-binding>
-					<name>hidden</name>
-					<field-name>Boolean.TRUE</field-name>
-				</field-binding>
-			</bindings>
-		</component>
-		<component>
-			<id>labelPassword2</id>
-			<type>FieldLabel</type>
-			<bindings>
-				<binding>
-					<name>field</name>
-					<property-path>components.inputPassword2</property-path>
-				</binding>
-				<binding>
-					<name>delegate</name>
-					<property-path>validationDelegate</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>inputPassword2</id>
-			<type>ValidatingTextField</type>
-			<bindings>
-				<binding>
-					<name>text</name>
-					<property-path>password2</property-path>
-				</binding>
-				<static-binding>
-					<name>displayWidth</name>
-					<value>20</value>
-				</static-binding>
-				<static-binding>
-					<name>maximumLength</name>
-					<value>20</value>
-				</static-binding>
-				<static-binding>
-					<name>displayName</name>
-					<value>Password (again)</value>
-				</static-binding>
-				<binding>
-					<name>delegate</name>
-					<property-path>validationDelegate</property-path>
-				</binding>
-				<field-binding>
-					<name>required</name>
-					<field-name>Boolean.TRUE</field-name>
-				</field-binding>
-				<field-binding>
-					<name>hidden</name>
-					<field-name>Boolean.TRUE</field-name>
-				</field-binding>
-			</bindings>
-		</component>
-	</components>
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="com.primix.vlib.pages.Register">
+  <component id="border" type="Border">
+    <static-binding name="title">Register</static-binding>
+  </component>
+  <component id="showError" type="ShowError"/>
+  <component id="form" type="Form">
+    <binding name="listener" property-path="formListener"/>
+  </component>
+  <component id="inputFirstName" type="TextField">
+    <static-binding name="displayWidth">30</static-binding>
+    <static-binding name="maximumLength">30</static-binding>
+    <binding name="text" property-path="firstName"/>
+  </component>
+  <component id="labelLastName" type="FieldLabel">
+    <binding name="field" property-path="components.inputLastName"/>
+    <binding name="delegate" property-path="validationDelegate"/>
+  </component>
+  <component id="inputLastName" type="ValidatingTextField">
+    <binding name="text" property-path="lastName"/>
+    <static-binding name="displayWidth">30</static-binding>
+    <static-binding name="maximumLength">30</static-binding>
+    <static-binding name="displayName">Last Name</static-binding>
+    <binding name="delegate" property-path="validationDelegate"/>
+    <field-binding name="required" field-name="Boolean.TRUE"/>
+  </component>
+  <component id="labelEmail" type="FieldLabel">
+    <binding name="field" property-path="components.inputEmail"/>
+    <binding name="delegate" property-path="validationDelegate"/>
+  </component>
+  <component id="inputEmail" type="ValidatingTextField">
+    <binding name="text" property-path="email"/>
+    <binding name="delegate" property-path="validationDelegate"/>
+    <field-binding name="required" field-name="Boolean.TRUE"/>
+    <static-binding name="displayWidth">30</static-binding>
+    <static-binding name="maximumLength">60</static-binding>
+    <static-binding name="displayName">E-Mail</static-binding>
+  </component>
+  <component id="labelPassword1" type="FieldLabel">
+    <binding name="field" property-path="components.inputPassword1"/>
+    <binding name="delegate" property-path="validationDelegate"/>
+  </component>
+  <component id="inputPassword1" type="ValidatingTextField">
+    <binding name="text" property-path="password1"/>
+    <static-binding name="displayWidth">20</static-binding>
+    <static-binding name="maximumLength">20</static-binding>
+    <static-binding name="displayName">Password</static-binding>
+    <binding name="delegate" property-path="validationDelegate"/>
+    <field-binding name="required" field-name="Boolean.TRUE"/>
+    <field-binding name="hidden" field-name="Boolean.TRUE"/>
+  </component>
+  <component id="labelPassword2" type="FieldLabel">
+    <binding name="field" property-path="components.inputPassword2"/>
+    <binding name="delegate" property-path="validationDelegate"/>
+  </component>
+  <component id="inputPassword2" type="ValidatingTextField">
+    <binding name="text" property-path="password2"/>
+    <static-binding name="displayWidth">20</static-binding>
+    <static-binding name="maximumLength">20</static-binding>
+    <static-binding name="displayName">Password (again)</static-binding>
+    <binding name="delegate" property-path="validationDelegate"/>
+    <field-binding name="required" field-name="Boolean.TRUE"/>
+    <field-binding name="hidden" field-name="Boolean.TRUE"/>
+  </component>
 </specification>

@@ -1,149 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--$Id$-->
-<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"  "http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-<specification>
-	<class>com.primix.vlib.components.Border</class>
-	<parameters>
-		<allow-informal-parameters>no</allow-informal-parameters>
-		<parameter>
-			<name>title</name>
-			<java-type>java.lang.String</java-type>
-		</parameter>
-		<parameter>
-			<name>subtitle</name>
-			<java-type>java.lang.String</java-type>
-		</parameter>
-	</parameters>
-	<components>
-		<component>
-			<id>shell</id>
-			<type>Shell</type>
-			<bindings>
-				<binding>
-					<name>title</name>
-					<property-path>windowTitle</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>body</id>
-			<type>Body</type>
-		</component>
-		<component>
-			<id>insertPageTitle</id>
-			<type>Insert</type>
-			<bindings>
-				<inherited-binding>
-					<name>value</name>
-					<parameter-name>title</parameter-name>
-				</inherited-binding>
-			</bindings>
-		</component>
-		<component>
-			<id>home</id>
-			<type>Service</type>
-			<bindings>
-				<static-binding>
-					<name>service</name>
-					<value>home</value>
-				</static-binding>
-			</bindings>
-		</component>
-		<component>
-			<id>myBooks</id>
-			<type>Page</type>
-			<bindings>
-				<static-binding>
-					<name>page</name>
-					<value>MyBooks</value>
-				</static-binding>
-				<binding>
-					<name>disabled</name>
-					<property-path>page.visit.userLoggedOut</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>ifLoggedIn</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>page.visit.userLoggedIn</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertUserName</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>page.visit.user.naturalName</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>ifLoggedOff</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>page.visit.userLoggedIn</property-path>
-				</binding>
-				<field-binding>
-					<name>invert</name>
-					<field-name>Boolean.TRUE</field-name>
-				</field-binding>
-			</bindings>
-		</component>
-		<component>
-			<id>login</id>
-			<type>Page</type>
-			<bindings>
-				<static-binding>
-					<name>page</name>
-					<value>Login</value>
-				</static-binding>
-			</bindings>
-		</component>
-		<component>
-			<id>ifShowLogout</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>showLogout</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>logout</id>
-			<type>Page</type>
-			<bindings>
-				<static-binding>
-					<name>page</name>
-					<value>Logout</value>
-				</static-binding>
-			</bindings>
-		</component>
-		<component>
-			<id>wrapped</id>
-			<type>InsertWrapped</type>
-		</component>
-		<component>
-			<id>ifShowInspector</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>page.engine.debugEnabled</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>showInspector</id>
-			<type>ShowInspector</type>
-		</component>
-	</components>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="com.primix.vlib.components.Border" allow-informal-parameters="no">
+  <parameter name="title" java-type="java.lang.String"/>
+  <parameter name="subtitle" java-type="java.lang.String"/>
+  <component id="shell" type="Shell">
+    <binding name="title" property-path="windowTitle"/>
+  </component>
+  <component id="body" type="Body"/>
+  <component id="insertPageTitle" type="Insert">
+    <inherited-binding name="value" parameter-name="title"/>
+  </component>
+  <component id="home" type="Service">
+    <static-binding name="service">home</static-binding>
+  </component>
+  <component id="myBooks" type="Page">
+    <static-binding name="page">MyBooks</static-binding>
+    <binding name="disabled" property-path="page.visit.userLoggedOut"/>
+  </component>
+  <component id="ifLoggedIn" type="Conditional">
+    <binding name="condition" property-path="page.visit.userLoggedIn"/>
+  </component>
+  <component id="insertUserName" type="Insert">
+    <binding name="value" property-path="page.visit.user.naturalName"/>
+  </component>
+  <component id="ifLoggedOff" type="Conditional">
+    <binding name="condition" property-path="page.visit.userLoggedIn"/>
+    <field-binding name="invert" field-name="Boolean.TRUE"/>
+  </component>
+  <component id="login" type="Page">
+    <static-binding name="page">Login</static-binding>
+  </component>
+  <component id="ifShowLogout" type="Conditional">
+    <binding name="condition" property-path="showLogout"/>
+  </component>
+  <component id="logout" type="Page">
+    <static-binding name="page">Logout</static-binding>
+  </component>
+  <component id="wrapped" type="InsertWrapped"/>
+  <component id="ifShowInspector" type="Conditional">
+    <binding name="condition" property-path="page.engine.debugEnabled"/>
+  </component>
+  <component id="showInspector" type="ShowInspector"/>
 </specification>

@@ -1,259 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XML Spy v3.0 NT (http://www.xmlspy.com) by Howard Ship (Primix Solutions) -->
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"  "http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-<specification>
-	<class>com.primix.vlib.pages.MyBooks</class>
-	<components>
-		<component>
-			<id>border</id>
-			<type>Border</type>
-			<bindings>
-				<static-binding>
-					<name>title</name>
-					<value>My Books</value>
-				</static-binding>
-				<static-binding>
-					<name>subtitle</name>
-					<value>My Books</value>
-				</static-binding>
-			</bindings>
-		</component>
-		<component>
-			<id>showError</id>
-			<type>ShowError</type>
-		</component>
-		<component>
-			<id>showMessage</id>
-			<type>ShowMessage</type>
-		</component>
-		<component>
-			<id>ifShowOwnedBooksHeader</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>ownedBooks</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>e-owned</id>
-			<type>Foreach</type>
-			<bindings>
-				<binding>
-					<name>source</name>
-					<property-path>ownedBooks</property-path>
-				</binding>
-				<binding>
-					<name>value</name>
-					<property-path>currentBook</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertOwnedTitle</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>currentBook.title</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertOwnedAuthor</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>currentBook.author</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertOwnedPublisher</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>currentBook.publisherName</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>ifShowHolder</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>currentBook.borrowed</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>holderLink</id>
-			<type>PersonLink</type>
-			<bindings>
-				<binding>
-					<name>primaryKey</name>
-					<property-path>currentBook.holderPrimaryKey</property-path>
-				</binding>
-				<binding>
-					<name>name</name>
-					<property-path>currentBook.holderName</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>edit</id>
-			<type>Direct</type>
-			<bindings>
-				<binding>
-					<name>listener</name>
-					<property-path>editListener</property-path>
-				</binding>
-				<binding>
-					<name>context</name>
-					<property-path>currentBook.primaryKey</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>delete</id>
-			<type>Direct</type>
-			<bindings>
-				<binding>
-					<name>listener</name>
-					<property-path>deleteListener</property-path>
-				</binding>
-				<binding>
-					<name>context</name>
-					<property-path>currentBook.primaryKey</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>ifShowOwnedBooksTrailer</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>ownedBooks</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>ifShowBorrowedBooksHeader</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>borrowedBooks</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>e-borrowed</id>
-			<type>Foreach</type>
-			<bindings>
-				<binding>
-					<name>source</name>
-					<property-path>borrowedBooks</property-path>
-				</binding>
-				<binding>
-					<name>value</name>
-					<property-path>currentBook</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>bookLink</id>
-			<type>BookLink</type>
-			<bindings>
-				<binding>
-					<name>book</name>
-					<property-path>currentBook</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertBorrowedAuthor</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>currentBook.author</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertBorrowedPublisher</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>currentBook.publisherName</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>ownerLink</id>
-			<type>PersonLink</type>
-			<bindings>
-				<binding>
-					<name>name</name>
-					<property-path>currentBook.ownerName</property-path>
-				</binding>
-				<binding>
-					<name>primaryKey</name>
-					<property-path>currentBook.ownerPrimaryKey</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>return</id>
-			<type>Direct</type>
-			<bindings>
-				<binding>
-					<name>context</name>
-					<property-path>currentBook.primaryKey</property-path>
-				</binding>
-				<binding>
-					<name>listener</name>
-					<property-path>returnListener</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>ifShowBorrowedBooksTrailer</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>borrowedBooks</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>addNewBook</id>
-			<type>Page</type>
-			<bindings>
-				<static-binding>
-					<name>page</name>
-					<value>NewBook</value>
-				</static-binding>
-			</bindings>
-		</component>
-		<component>
-			<id>editProfile</id>
-			<type>Direct</type>
-			<bindings>
-				<binding>
-					<name>listener</name>
-					<property-path>editProfileListener</property-path>
-				</binding>
-			</bindings>
-		</component>
-	</components>
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="com.primix.vlib.pages.MyBooks">
+  <component id="border" type="Border">
+    <static-binding name="title">My Books</static-binding>
+    <static-binding name="subtitle">My Books</static-binding>
+  </component>
+  <component id="showError" type="ShowError"/>
+  <component id="showMessage" type="ShowMessage"/>
+  <component id="ifShowOwnedBooksHeader" type="Conditional">
+    <binding name="condition" property-path="ownedBooks"/>
+  </component>
+  <component id="e-owned" type="Foreach">
+    <binding name="source" property-path="ownedBooks"/>
+    <binding name="value" property-path="currentBook"/>
+  </component>
+  <component id="insertOwnedTitle" type="Insert">
+    <binding name="value" property-path="currentBook.title"/>
+  </component>
+  <component id="insertOwnedAuthor" type="Insert">
+    <binding name="value" property-path="currentBook.author"/>
+  </component>
+  <component id="insertOwnedPublisher" type="Insert">
+    <binding name="value" property-path="currentBook.publisherName"/>
+  </component>
+  <component id="ifShowHolder" type="Conditional">
+    <binding name="condition" property-path="currentBook.borrowed"/>
+  </component>
+  <component id="holderLink" type="PersonLink">
+    <binding name="primaryKey" property-path="currentBook.holderPrimaryKey"/>
+    <binding name="name" property-path="currentBook.holderName"/>
+  </component>
+  <component id="edit" type="Direct">
+    <binding name="listener" property-path="editListener"/>
+    <binding name="context" property-path="currentBook.primaryKey"/>
+  </component>
+  <component id="delete" type="Direct">
+    <binding name="listener" property-path="deleteListener"/>
+    <binding name="context" property-path="currentBook.primaryKey"/>
+  </component>
+  <component id="ifShowOwnedBooksTrailer" type="Conditional">
+    <binding name="condition" property-path="ownedBooks"/>
+  </component>
+  <component id="ifShowBorrowedBooksHeader" type="Conditional">
+    <binding name="condition" property-path="borrowedBooks"/>
+  </component>
+  <component id="e-borrowed" type="Foreach">
+    <binding name="source" property-path="borrowedBooks"/>
+    <binding name="value" property-path="currentBook"/>
+  </component>
+  <component id="bookLink" type="BookLink">
+    <binding name="book" property-path="currentBook"/>
+  </component>
+  <component id="insertBorrowedAuthor" type="Insert">
+    <binding name="value" property-path="currentBook.author"/>
+  </component>
+  <component id="insertBorrowedPublisher" type="Insert">
+    <binding name="value" property-path="currentBook.publisherName"/>
+  </component>
+  <component id="ownerLink" type="PersonLink">
+    <binding name="name" property-path="currentBook.ownerName"/>
+    <binding name="primaryKey" property-path="currentBook.ownerPrimaryKey"/>
+  </component>
+  <component id="return" type="Direct">
+    <binding name="context" property-path="currentBook.primaryKey"/>
+    <binding name="listener" property-path="returnListener"/>
+  </component>
+  <component id="ifShowBorrowedBooksTrailer" type="Conditional">
+    <binding name="condition" property-path="borrowedBooks"/>
+  </component>
+  <component id="addNewBook" type="Page">
+    <static-binding name="page">NewBook</static-binding>
+  </component>
+  <component id="editProfile" type="Direct">
+    <binding name="listener" property-path="editProfileListener"/>
+  </component>
 </specification>

@@ -1,120 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"  "http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-<specification>
-	<class>com.primix.vlib.pages.ViewBook</class>
-	<components>
-		<component>
-			<id>border</id>
-			<type>Border</type>
-			<bindings>
-				<static-binding>
-					<name>title</name>
-					<value>View Book</value>
-				</static-binding>
-				<binding>
-					<name>subtitle</name>
-					<property-path>book.title</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertTitle</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>book.title</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertAuthor</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>book.author</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertPublisherName</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>book.publisherName</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertISBN</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>book.ISBN</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>ownerLink</id>
-			<type>PersonLink</type>
-			<bindings>
-				<binding>
-					<name>primaryKey</name>
-					<property-path>book.ownerPrimaryKey</property-path>
-				</binding>
-				<binding>
-					<name>name</name>
-					<property-path>book.ownerName</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertDescription</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>book.description</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>ifShowHolder</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>showHolder</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>holderLink</id>
-			<type>PersonLink</type>
-			<bindings>
-				<binding>
-					<name>primaryKey</name>
-					<property-path>book.holderPrimaryKey</property-path>
-				</binding>
-				<binding>
-					<name>name</name>
-					<property-path>book.holderName</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>borrow</id>
-			<type>Borrow</type>
-			<bindings>
-				<binding>
-					<name>book</name>
-					<property-path>book</property-path>
-				</binding>
-			</bindings>
-		</component>
-	</components>
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="com.primix.vlib.pages.ViewBook">
+  <component id="border" type="Border">
+    <static-binding name="title">View Book</static-binding>
+    <binding name="subtitle" property-path="book.title"/>
+  </component>
+  <component id="insertTitle" type="Insert">
+    <binding name="value" property-path="book.title"/>
+  </component>
+  <component id="insertAuthor" type="Insert">
+    <binding name="value" property-path="book.author"/>
+  </component>
+  <component id="insertPublisherName" type="Insert">
+    <binding name="value" property-path="book.publisherName"/>
+  </component>
+  <component id="insertISBN" type="Insert">
+    <binding name="value" property-path="book.ISBN"/>
+  </component>
+  <component id="ownerLink" type="PersonLink">
+    <binding name="primaryKey" property-path="book.ownerPrimaryKey"/>
+    <binding name="name" property-path="book.ownerName"/>
+  </component>
+  <component id="insertDescription" type="Insert">
+    <binding name="value" property-path="book.description"/>
+  </component>
+  <component id="ifShowHolder" type="Conditional">
+    <binding name="condition" property-path="showHolder"/>
+  </component>
+  <component id="holderLink" type="PersonLink">
+    <binding name="primaryKey" property-path="book.holderPrimaryKey"/>
+    <binding name="name" property-path="book.holderName"/>
+  </component>
+  <component id="borrow" type="Borrow">
+    <binding name="book" property-path="book"/>
+  </component>
 </specification>

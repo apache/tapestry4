@@ -2,10 +2,9 @@
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN"
 	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd" [
-
-<!ENTITY delegate '<binding name="delegate" property-path="delegate"/>'>
+  <!ENTITY delegate '<binding name="delegate" property-path="delegate"/>'>
+  <!ENTITY required '<field-binding name="required" field-name="Boolean.TRUE"/>'>
 ]>
-
 <specification class="tutorial.valid.Home">
   <component id="border" type="Border"/>
   <component id="showError" type="ShowError"/>
@@ -19,55 +18,55 @@
   <component id="inputString" type="ValidatingTextField">
     <field-binding name="required" field-name="Boolean.TRUE"/>
     <binding name="text" property-path="visit.stringData"/>
-    <binding name="delegate" property-path="delegate"/>
-    <static-binding name="displayName">String Data</static-binding>
+    &delegate;
+  <static-binding name="displayName">String Data</static-binding>
   </component>
   <component id="labelInteger" type="FieldLabel">
     <binding name="field" property-path="components.inputInteger"/>
-    <binding name="delegate" property-path="delegate"/>
+    &delegate;
   </component>
   <component id="inputInteger" type="NumericField">
-    <field-binding name="required" field-name="Boolean.TRUE"/>
     <field-binding name="minimum" field-name="tutorial.valid.Home.MIN_INT"/>
     <field-binding name="maximum" field-name="tutorial.valid.Home.MAX_INT"/>
     <binding name="value" property-path="visit.intData"/>
-    <binding name="delegate" property-path="delegate"/>
-    <static-binding name="displayName">Int Data</static-binding>
+	 &required;
+    &delegate;
+  <static-binding name="displayName">Int Data</static-binding>
   </component>
   <component id="labelDouble" type="FieldLabel">
     <binding name="field" property-path="components.inputDouble"/>
-    <binding name="delegate" property-path="delegate"/>
+    &delegate;
   </component>
   <component id="inputDouble" type="NumericField">
-    <field-binding name="required" field-name="Boolean.TRUE"/>
     <field-binding name="minimum" field-name="tutorial.valid.Home.MIN_DOUBLE"/>
     <field-binding name="maximum" field-name="tutorial.valid.Home.MAX_DOUBLE"/>
     <binding name="value" property-path="visit.doubleData"/>
-    <binding name="delegate" property-path="delegate"/>
-    <static-binding name="displayName">Double Data</static-binding>
+    &required;
+    &delegate;
+  <static-binding name="displayName">Double Data</static-binding>
   </component>
   <component id="labelDecimal" type="FieldLabel">
     <binding name="field" property-path="components.inputDecimal"/>
-    <binding name="delegate" property-path="delegate"/>
+    &delegate;
   </component>
   <component id="inputDecimal" type="NumericField">
-    <field-binding name="required" field-name="Boolean.TRUE"/>
     <field-binding name="minimum" field-name="tutorial.valid.Home.MIN_DECIMAL"/>
     <field-binding name="maximum" field-name="tutorial.valid.Home.MAX_DECIMAL"/>
     <binding name="value" property-path="visit.decimalData"/>
-    <binding name="delegate" property-path="delegate"/>
-    <static-binding name="displayName">Decimal Data</static-binding>
+    &required;
+    &delegate;
+  <static-binding name="displayName">Decimal Data</static-binding>
   </component>
   <component id="labelBigInt" type="FieldLabel">
     <binding name="field" property-path="components.inputBigInt"/>
-    <binding name="delegate" property-path="delegate"/>
+    &delegate;
   </component>
   <component id="inputBigInt" type="NumericField">
-    <field-binding name="required" field-name="Boolean.TRUE"/>
     <field-binding name="minimum" field-name="tutorial.valid.Home.MIN_BIGINT"/>
     <field-binding name="maximum" field-name="tutorial.valid.Home.MAX_BIGINT"/>
     <binding name="value" property-path="visit.bigIntData"/>
-    <binding name="delegate" property-path="delegate"/>
-    <static-binding name="displayName">BigInt Data</static-binding>
+    &required;
+    &delegate;
+  <static-binding name="displayName">BigInt Data</static-binding>
   </component>
 </specification>
