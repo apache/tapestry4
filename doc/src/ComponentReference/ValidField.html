@@ -72,6 +72,10 @@
     - validates date strings and allows a minimum and maximum date range to be set 
    </li>
    <li>
+    <A href="../api/net/sf/tapestry/valid/EmailValidator.html">EmailValidator</a>
+    - validates email strings and allows a minimum and maximum length to be set 
+   </li>
+   <li>
     <A href="../api/net/sf/tapestry/valid/NumberValidator.html">NumberValidator</a> 
     - validates number strings and allows a minimum and maximum values to be set
    </li>
@@ -84,25 +88,24 @@
   <A href="../api/net/sf/tapestry/valid/BaseValidator.html">BaseValidator</a> 
   classes automatically provide powerful client-side JavaScript field validation 
   when their parent <a href="Form.html">Form</a> is posted.
+  Validator client scripting is disabled by default. To enable the client 
+  scripting explicitly set the "clientScriptingEnabled" property to true in 
+  each validator. For example:
+<pre>
+&lt;bean name="emailValidator" class="net.sf.tapestry.valid.EmailValidator"&gt;
+    &lt;set-property name="<b>clientScriptingEnabled</b>" expression="true"/&gt;
+    &lt;set-property name="minimumLength" expression="8"/&gt;
+    &lt;set-property name="required" expression="true"/&gt;
+&lt;/bean&gt;
+</pre>
   <p> 
   Note if a form includes a "Cancel" style submit button, the cancel button will 
   need to set the form's <tt>onsubmit</tt> event handler to null, so that the 
   JavaScript field validation is not invoked when the form is submitted. 
   For example:
 <pre>
-  &lt;input jwcid="okSubmit" type="Submit" value="OK"/&gt;
+  &lt;input jwcid="okSubmit" type="Submit" value="  OK  "/&gt;
   &lt;input jwcid="cancelSubmit" type="Submit" value="Cancel" <b>onclick</b>="form.onsubmit = null;"/&gt;
-</pre>
-  <p>
-  Validator client scripting is enabled by default. To disable the client 
-  scripting explicitly set the "clientScriptingEnabled" property to false in 
-  each validator. For example:
-<pre>
-&lt;bean name="myValidator" class="net.sf.tapestry.valid.StringValidator"&gt;
-    &lt;set-property name="minimumLength" expression="3"/&gt;
-    &lt;set-property name="required" expression="true"/&gt;
-    &lt;set-property name="<b>clientScriptingEnabled</b>" expression="false"/&gt;
-&lt;/bean&gt;
 </pre>
  </td>
 </tr>

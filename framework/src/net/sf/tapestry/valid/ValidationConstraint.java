@@ -66,6 +66,15 @@ public class ValidationConstraint extends Enum
 
     /**
      *  Indicates a general error in the format of a string that is
+     *  to be interpreted as a email.
+     *
+     **/
+
+    public static final ValidationConstraint EMAIL_FORMAT =
+        new ValidationConstraint("EMAIL_FORMAT");
+
+    /**
+     *  Indicates a general error in the format of a string that is
      *  to be interpreted as a number.
      *
      **/

@@ -34,6 +34,10 @@
         <binding name="value" expression="visit.stringValue"/>
     </component>
 
+    <component id="insertEmailValue" type="Insert">
+        <binding name="value" expression="visit.emailValue"/>
+    </component>
+
   <component id="back" type="Page">
   	<static-binding name="page">Fields</static-binding>
   </component>
