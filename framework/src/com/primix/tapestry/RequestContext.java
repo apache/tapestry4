@@ -744,7 +744,15 @@ public class RequestContext implements IRender
 
 	private List getSorted(Enumeration e)
 	{
-		List result = Collections.list(e);
+		List result = new ArrayList();
+		
+		// JDK 1.4 includes a helper method in Collections for
+		// this; but we want 1.2 compatibility for the
+		// forseable future.
+		
+		while (e.hasMoreElements())
+			result.add(e.nextElement());
+			
 		Collections.sort(result);
 
 		return result;
