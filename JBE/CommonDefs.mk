@@ -56,11 +56,10 @@ MOD_RESOURCE_CATALOG = $(MOD_BUILD_DIR)/resource-catalog
 
 MOD_RMI_CLASS_CATALOG = $(MOD_BUILD_DIR)/rmi-class-catalog
 
-# Create a macro for recusively invoking Make.  --unix seems
-# to tame things under Windows.  We don't want or need any builtin
-# rules.
+# Create a macro for recusively invoking Make.
+# We don't want or need any builtin rules.
 
-RECURSE := $(MAKE) --unix --no-builtin-rules --no-print-directory
+RECURSE := $(MAKE) --no-builtin-rules --no-print-directory
 
 # Find out what out platform is.  Must set a value for SITE_PLATFORM.
 # The LocalConfig can set other things (such as locations of tools,
@@ -73,10 +72,6 @@ include $(CONFIG_DIR)/SiteConfig.mk
 # just set by CONFIG_DIR/SiteConfig.mk
 
 include $(SYS_MAKEFILE_DIR)/Platform.$(SITE_PLATFORM).mk
-
-# Assume building on Win32 unless overriden (usually in config/SiteConfig.mk).
-
-FINAL_JDK_PLATFORM := $(firstword $(SITE_JDK_PLATFORM) Win32)
 
 # Determine the JDK Vendor, which may be specified in the project
 # Makefile as JDK_VENDOR, in the module Makefile as MOD_JDK_VENDOR,
@@ -101,7 +96,7 @@ JDK_DIR := $($(JDK_DIR_VAR))
 # Optionally include it ... if it doesn't exist, we'll catch the error
 # in the check-jdk rule defined in CommonRules.mk
 
-SYS_JDK_CONFIG_FILE := $(SYS_MAKEFILE_DIR)/JDK.$(FINAL_JDK_VENDOR)_$(FINAL_JDK_PLATFORM).mk
+SYS_JDK_CONFIG_FILE := $(SYS_MAKEFILE_DIR)/JDK.$(FINAL_JDK_VENDOR)_$(SITE_PLATFORM).mk
 
 -include $(SYS_JDK_CONFIG_FILE)
 
