@@ -14,13 +14,10 @@
 
 package org.apache.tapestry.resolver;
 
-import java.net.URL;
-
 import org.apache.commons.logging.Log;
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
-import org.apache.hivemind.util.URLResource;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.ISpecificationSource;
@@ -35,42 +32,6 @@ import org.easymock.MockControl;
  */
 public class TestComponentSpecificationResolver extends AbstractSpecificationResolverTestCase
 {
-    protected IComponentSpecification newSpecification()
-    {
-        return (IComponentSpecification) newMock(IComponentSpecification.class);
-    }
-
-    protected IRequestCycle newCycle()
-    {
-        return (IRequestCycle) newMock(IRequestCycle.class);
-    }
-
-    protected Log newLog()
-    {
-        return (Log) newMock(Log.class);
-    }
-
-    protected URL newURL(String file)
-    {
-        return getClass().getResource(file);
-    }
-
-    protected Resource newResource(URL url)
-    {
-        MockControl control = newControl(Resource.class);
-        Resource resource = (Resource) control.getMock();
-
-        resource.getResourceURL();
-        control.setReturnValue(url);
-
-        return resource;
-    }
-
-    protected Resource newResource(String path)
-    {
-        return new URLResource(newURL(path));
-    }
-
     protected ISpecificationSource newSource(Resource resource, IComponentSpecification spec)
     {
         MockControl control = newControl(ISpecificationSource.class);
@@ -80,14 +41,6 @@ public class TestComponentSpecificationResolver extends AbstractSpecificationRes
         control.setReturnValue(spec);
 
         return source;
-    }
-
-    protected void train(Log log, MockControl control, String message)
-    {
-        log.isDebugEnabled();
-        control.setReturnValue(true);
-
-        log.debug(message);
     }
 
     protected ISpecificationSource newSource(INamespace framework)

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-   Copyright 2004, 2005 The Apache Software Foundation
+   Copyright 2005 The Apache Software Foundation
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -15,14 +15,7 @@
    limitations under the License.
 -->
 
-<!DOCTYPE page-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
-	
-<page-specification class="org.apache.tapestry.html.BasePage">
-
-  <component id="insertMessage" type="Insert">
-  		<static-binding name="value">This page's specification is a sibling of the app specification.</static-binding>
-  </component>
-
-</page-specification>
+<!DOCTYPE page-specification PUBLIC
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN"
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
+<page-specification/>

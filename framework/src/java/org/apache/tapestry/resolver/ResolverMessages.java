@@ -55,4 +55,25 @@ class ResolverMessages
     {
         return _formatter.format("installing-component", type, namespace, specification);
     }
+
+    static String installingPage(String pageName, INamespace namespace,
+            IComponentSpecification specification)
+    {
+        return _formatter.format("installing-page", pageName, namespace, specification);
+    }
+
+    static String resolvingPage(String pageName, INamespace namespace)
+    {
+        return _formatter.format("resolving-page", pageName, namespace);
+    }
+
+    static String foundFrameworkPage(String pageName)
+    {
+        return _formatter.format("found-framework-page", pageName);
+    }
+
+    static String foundHTMLTemplate(Resource resource)
+    {
+        return _formatter.format("found-html-template", resource);
+    }
 }
