@@ -16,7 +16,6 @@
   <parameter name="maximum" java-type="java.lang.Number"/>
   <parameter name="minimum" java-type="java.lang.Number"/>
   <parameter name="required"/>
- 
-  <reserved-parameter name="type"/>
+  <parameter name="type" java-type="java.lang.String" required="yes" direction="in" property-name="typeName" />
   
 </component-specification>
