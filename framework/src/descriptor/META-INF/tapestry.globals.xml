@@ -21,12 +21,12 @@
   services) about the current request. In addition, services based
   on this global information are provided.
   
-  <service-point id="ApplicationGlobals" interface="ApplicationGlobals">
+  <service-point id="ApplicationGlobals">
     <create-instance class="impl.ApplicationGlobalsImpl" model="primitive"/>
   </service-point>
  
   
-  <service-point id="RequestGlobals" interface="RequestGlobals">
+  <service-point id="RequestGlobals">
     Stores the request and response for the current thread.
     
     <create-instance class="impl.RequestGlobalsImpl" model="threaded"/>
@@ -94,10 +94,8 @@
   <invoke-factory model="primitive">
     <construct class="impl.SetupServletApplicationGlobals">
       <set-service property="globals" service-id="ApplicationGlobals"/>
-      <set-service property="responseRenderer" service-id="tapestry.request.ResponseRenderer"/>
-      <set-service property="linkFactory" service-id="tapestry.url.LinkFactory"/>
       <set-configuration property="factoryServices" configuration-id="tapestry.services.FactoryServices"/>
-      <set-service property="HTMLDescriber" service-id="tapestry.describe.HTMLDescriber"/>
+      <set-service property="infrastructure" service-id="tapestry.Infrastructure"/>
     </construct>
   </invoke-factory>
  </service-point>

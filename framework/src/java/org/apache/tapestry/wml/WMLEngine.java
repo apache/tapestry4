@@ -17,6 +17,7 @@ package org.apache.tapestry.wml;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.BaseEngine;
+import org.apache.tapestry.error.ErrorMessages;
 
 /**
  * Subclass of {@link BaseEngine}used for WML applications to change the Exception, StaleLink and
@@ -28,14 +29,12 @@ import org.apache.tapestry.engine.BaseEngine;
 
 public class WMLEngine extends BaseEngine
 {
-    protected void activateExceptionPage(IRequestCycle cycle,
-            Throwable cause)
+    protected void activateExceptionPage(IRequestCycle cycle, Throwable cause)
     {
         super.activateExceptionPage(cycle, cause);
+
         // Sometimes the exception page isn't enough
-        reportException(
-                Tapestry.getMessage("AbstractEngine.unable-to-process-client-request"),
-                cause);
+        reportException(ErrorMessages.unableToProcessClientRequest(cause), cause);
     }
 
     /** @since 3.0 * */

@@ -32,6 +32,6 @@ public class SetupServletApplicationGlobals extends AbstractSetupApplicationGlob
 {
     public void initialize(HttpServlet servlet)
     {
-        initialize();
+        initialize("servlet");
     }
 }

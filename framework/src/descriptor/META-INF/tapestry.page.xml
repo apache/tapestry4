@@ -141,7 +141,7 @@
     
   </configuration-point>
   
-  <service-point id="PageClassProvider" interface="PageClassProvider">
+  <service-point id="PageClassProvider">
     
     Chain built around thePgaeClassProviderChain configuration point, used to determine
     the class to instantiate for a particular page (within a namespace).

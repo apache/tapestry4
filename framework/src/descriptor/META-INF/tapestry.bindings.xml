@@ -167,7 +167,7 @@
     <binding prefix="hivemind" service-id="HiveMindBindingFactory"/>
   </contribution>
   
-  <service-point id="BindingSource" interface="BindingSource">
+  <service-point id="BindingSource">
     
     <invoke-factory>
       <construct class="org.apache.tapestry.services.impl.BindingSourceImpl">

@@ -14,17 +14,25 @@
 
 package org.apache.tapestry.services.impl;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.ErrorLog;
 import org.apache.hivemind.Resource;
 import org.apache.hivemind.service.ThreadLocale;
+import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.describe.HTMLDescriber;
 import org.apache.tapestry.engine.IPageSource;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.engine.state.ApplicationStateManager;
+import org.apache.tapestry.error.ExceptionPresenter;
 import org.apache.tapestry.markup.MarkupWriterSource;
 import org.apache.tapestry.services.ComponentMessagesSource;
 import org.apache.tapestry.services.ComponentPropertySource;
@@ -52,77 +60,51 @@ import org.apache.tapestry.web.WebResponse;
  */
 public class InfrastructureImpl implements Infrastructure
 {
+    /**
+     * List of {@link org.apache.tapestry.services.impl.InfrastructureContribution}.
+     */
+    private List _normalContributions;
 
-    private String _applicationId;
+    /**
+     * List of {@link org.apache.tapestry.services.impl.InfrastructureContribution}.
+     */
+    private List _overrideContributions;
 
-    private IPropertySource _applicationPropertySource;
+    private Map _properties = new HashMap();
 
-    private IApplicationSpecification _applicationSpecification;
+    private boolean _initialized;
 
-    private ApplicationStateManager _applicationStateManager;
+    private String _mode;
+
+    private ErrorLog _errorLog;
 
     private ClassResolver _classResolver;
 
-    private ComponentMessagesSource _componentMessagesSource;
-
-    private ComponentPropertySource _componentPropertySource;
-
-    private WebContext _context;
-
-    private DataSqueezer _dataSqueezer;
-
-    private IPropertySource _globalPropertySource;
-
-    private LinkFactory _linkFactory;
-
-    private ObjectPool _objectPool;
-
-    private IPageSource _pageSource;
-
-    private WebRequest _request;
-
-    private RequestCycleFactory _requestCycleFactory;
-
-    private RequestExceptionReporter _requestExceptionReporter;
-
-    private ResetEventCoordinator _resetEventCoordinator;
-
-    private WebResponse _response;
-
-    private ResponseRenderer _responseRenderer;
-
-    private IScriptSource _scriptSource;
-
-    private ServiceMap _serviceMap;
-
-    private ISpecificationSource _specificationSource;
-
-    private TemplateSource _templateSource;
-
     private ThreadLocale _threadLocale;
 
-    private MarkupWriterSource _markupWriterSource;
-
-    private HTMLDescriber _htmlDescriber;
+    public void setLocale(Locale locale)
+    {
+        _threadLocale.setLocale(locale);
+    }
 
     public String getApplicationId()
     {
-        return _applicationId;
+        return (String) getProperty("applicationId");
     }
 
     public IPropertySource getApplicationPropertySource()
     {
-        return _applicationPropertySource;
+        return (IPropertySource) getProperty("applicationPropertySource");
     }
 
     public IApplicationSpecification getApplicationSpecification()
     {
-        return _applicationSpecification;
+        return (IApplicationSpecification) getProperty("applicationSpecification");
     }
 
     public ApplicationStateManager getApplicationStateManager()
     {
-        return _applicationStateManager;
+        return (ApplicationStateManager) getProperty("applicationStateManager");
     }
 
     public ClassResolver getClassResolver()
@@ -132,218 +114,218 @@ public class InfrastructureImpl implements Infrastructure
 
     public ComponentMessagesSource getComponentMessagesSource()
     {
-        return _componentMessagesSource;
+        return (ComponentMessagesSource) getProperty("componentMessagesSource");
     }
 
     public ComponentPropertySource getComponentPropertySource()
     {
-        return _componentPropertySource;
+        return (ComponentPropertySource) getProperty("componentPropertySource");
     }
 
     public String getContextPath()
     {
-        return _request.getContextPath();
+        return getRequest().getContextPath();
     }
 
     public Resource getContextRoot()
     {
-        return new WebContextResource(_context, "/");
+        WebContext context = (WebContext) getProperty("context");
+
+        return new WebContextResource(context, "/");
     }
 
     public DataSqueezer getDataSqueezer()
     {
-        return _dataSqueezer;
-
+        return (DataSqueezer) getProperty("dataSqueezer");
     }
 
     public IPropertySource getGlobalPropertySource()
     {
-        return _globalPropertySource;
+        return (IPropertySource) getProperty("globalPropertySource");
     }
 
     public LinkFactory getLinkFactory()
     {
-        return _linkFactory;
+        return (LinkFactory) getProperty("linkFactory");
     }
 
     public ObjectPool getObjectPool()
     {
-        return _objectPool;
+        return (ObjectPool) getProperty("objectPool");
     }
 
     public IPageSource getPageSource()
     {
-        return _pageSource;
+        return (IPageSource) getProperty("pageSource");
     }
 
     public WebRequest getRequest()
     {
-        return _request;
+        return (WebRequest) getProperty("request");
     }
 
     public RequestCycleFactory getRequestCycleFactory()
     {
-        return _requestCycleFactory;
+        return (RequestCycleFactory) getProperty("requestCycleFactory");
     }
 
     public RequestExceptionReporter getRequestExceptionReporter()
     {
-        return _requestExceptionReporter;
+        return (RequestExceptionReporter) getProperty("requestExceptionReporter");
     }
 
     public ResetEventCoordinator getResetEventCoordinator()
     {
-        return _resetEventCoordinator;
+        return (ResetEventCoordinator) getProperty("resetEventCoordinator");
     }
 
     public WebResponse getResponse()
     {
-        return _response;
+        return (WebResponse) getProperty("response");
     }
 
     public ResponseRenderer getResponseRenderer()
     {
-        return _responseRenderer;
+        return (ResponseRenderer) getProperty("responseRenderer");
     }
 
     public IScriptSource getScriptSource()
     {
-        return _scriptSource;
+        return (IScriptSource) getProperty("scriptSource");
     }
 
     public ServiceMap getServiceMap()
     {
-        return _serviceMap;
+        return (ServiceMap) getProperty("serviceMap");
     }
 
     public ISpecificationSource getSpecificationSource()
     {
-        return _specificationSource;
+        return (ISpecificationSource) getProperty("specificationSource");
     }
 
     public TemplateSource getTemplateSource()
     {
-        return _templateSource;
+        return (TemplateSource) getProperty("templateSource");
     }
 
-    public void setApplicationId(String applicationId)
+    public String getOutputEncoding()
     {
-        _applicationId = applicationId;
+        return getApplicationPropertySource().getPropertyValue(
+                "org.apache.tapestry.output-encoding");
     }
 
-    public void setApplicationPropertySource(IPropertySource source)
+    public MarkupWriterSource getMarkupWriterSource()
     {
-        _applicationPropertySource = source;
+        return (MarkupWriterSource) getProperty("markupWriterSource");
     }
 
-    public void setApplicationSpecification(IApplicationSpecification specification)
+    public HTMLDescriber getHTMLDescriber()
     {
-        _applicationSpecification = specification;
+        return (HTMLDescriber) getProperty("HTMLDescriber");
     }
 
-    public void setApplicationStateManager(ApplicationStateManager applicationStateManager)
+    public ExceptionPresenter getExceptionPresenter()
     {
-        _applicationStateManager = applicationStateManager;
+        return (ExceptionPresenter) getProperty("exceptionPresenter");
     }
 
-    public void setClassResolver(ClassResolver resolver)
+    public Object getProperty(String propertyName)
     {
-        _classResolver = resolver;
+        Defense.notNull(propertyName, "propertyName");
+
+        if (!_initialized)
+            throw new IllegalStateException(ImplMessages.infrastructureNotInitialized());
+
+        Object result = _properties.get(propertyName);
+
+        if (result == null)
+            throw new ApplicationRuntimeException(ImplMessages
+                    .missingInfrastructureProperty(propertyName));
+
+        return result;
     }
 
-    public void setComponentMessagesSource(ComponentMessagesSource source)
+    public synchronized void initialize(String mode)
     {
-        _componentMessagesSource = source;
+        Defense.notNull(mode, "mode");
+
+        if (_initialized)
+            throw new IllegalStateException(ImplMessages.infrastructureAlreadyInitialized(
+                    mode,
+                    _mode));
+
+        Map normalByMode = buildMapFromContributions(_normalContributions, mode);
+        Map normal = buildMapFromContributions(_normalContributions, null);
+        Map overrideByMode = buildMapFromContributions(_overrideContributions, mode);
+        Map override = buildMapFromContributions(_overrideContributions, null);
+
+        addToProperties(overrideByMode);
+        addToProperties(override);
+        addToProperties(normalByMode);
+        addToProperties(normal);
+
+        _mode = mode;
+        _initialized = true;
     }
 
-    public void setComponentPropertySource(ComponentPropertySource componentPropertySource)
+    private Map buildMapFromContributions(List contributions, String mode)
     {
-        _componentPropertySource = componentPropertySource;
+        Map result = new HashMap();
+
+        Iterator i = contributions.iterator();
+        while (i.hasNext())
+        {
+            InfrastructureContribution ic = (InfrastructureContribution) i.next();
+
+            if (!ic.matchesMode(mode))
+                continue;
+
+            String propertyName = ic.getProperty();
+
+            InfrastructureContribution existing = (InfrastructureContribution) result
+                    .get(propertyName);
+
+            if (existing != null)
+            {
+                _errorLog.error(ImplMessages.duplicateInfrastructureContribution(ic, existing
+                        .getLocation()), ic.getLocation(), null);
+                continue;
+            }
+
+            result.put(propertyName, ic);
+        }
+
+        return result;
     }
 
-    public void setContext(WebContext context)
+    /**
+     * Adds to the master set of properties contributed objects that don't match an already existing
+     * key.
+     * 
+     * @param map
+     *            map of {@link org.apache.tapestry.services.impl.InfrastructureContribution}keyed
+     *            on property name (String).
+     */
+
+    private void addToProperties(Map map)
     {
-        _context = context;
+        Iterator i = map.values().iterator();
+        while (i.hasNext())
+        {
+            InfrastructureContribution ic = (InfrastructureContribution) i.next();
+            String propertyName = ic.getProperty();
+
+            if (_properties.containsKey(propertyName))
+                continue;
+
+            _properties.put(propertyName, ic.getObject());
+        }
     }
 
-    public void setDataSqueezer(DataSqueezer dataSqueezer)
+    public void setClassResolver(ClassResolver classResolver)
     {
-        _dataSqueezer = dataSqueezer;
-    }
-
-    public void setGlobalPropertySource(IPropertySource globalPropertySource)
-    {
-        _globalPropertySource = globalPropertySource;
-    }
-
-    public void setLinkFactory(LinkFactory linkFactory)
-    {
-        _linkFactory = linkFactory;
-    }
-
-    public void setLocale(Locale value)
-    {
-        _threadLocale.setLocale(value);
-    }
-
-    public void setObjectPool(ObjectPool pool)
-    {
-        _objectPool = pool;
-    }
-
-    public void setPageSource(IPageSource source)
-    {
-        _pageSource = source;
-    }
-
-    public void setRequest(WebRequest request)
-    {
-        _request = request;
-    }
-
-    public void setRequestCycleFactory(RequestCycleFactory requestCycleFactory)
-    {
-        _requestCycleFactory = requestCycleFactory;
-    }
-
-    public void setRequestExceptionReporter(RequestExceptionReporter requestExceptionReporter)
-    {
-        _requestExceptionReporter = requestExceptionReporter;
-    }
-
-    public void setResetEventCoordinator(ResetEventCoordinator coordinator)
-    {
-        _resetEventCoordinator = coordinator;
-    }
-
-    public void setResponse(WebResponse response)
-    {
-        _response = response;
-    }
-
-    public void setResponseRenderer(ResponseRenderer responseRenderer)
-    {
-        _responseRenderer = responseRenderer;
-    }
-
-    public void setScriptSource(IScriptSource scriptSource)
-    {
-        _scriptSource = scriptSource;
-    }
-
-    public void setServiceMap(ServiceMap serviceMap)
-    {
-        _serviceMap = serviceMap;
-    }
-
-    public void setSpecificationSource(ISpecificationSource source)
-    {
-        _specificationSource = source;
-    }
-
-    public void setTemplateSource(TemplateSource source)
-    {
-        _templateSource = source;
+        _classResolver = classResolver;
     }
 
     public void setThreadLocale(ThreadLocale threadLocale)
@@ -351,28 +333,18 @@ public class InfrastructureImpl implements Infrastructure
         _threadLocale = threadLocale;
     }
 
-    public String getOutputEncoding()
+    public void setNormalContributions(List normalContributions)
     {
-        return _applicationPropertySource.getPropertyValue("org.apache.tapestry.output-encoding");
+        _normalContributions = normalContributions;
     }
 
-    public MarkupWriterSource getMarkupWriterSource()
+    public void setOverrideContributions(List overrideContributions)
     {
-        return _markupWriterSource;
+        _overrideContributions = overrideContributions;
     }
 
-    public void setMarkupWriterSource(MarkupWriterSource markupWriterSource)
+    public void setErrorLog(ErrorLog errorLog)
     {
-        _markupWriterSource = markupWriterSource;
-    }
-
-    public HTMLDescriber getHTMLDescriber()
-    {
-        return _htmlDescriber;
-    }
-
-    public void setHTMLDescriber(HTMLDescriber htmlDescriber)
-    {
-        _htmlDescriber = htmlDescriber;
+        _errorLog = errorLog;
     }
 }

@@ -53,7 +53,7 @@
     <content type="text/vnd.wap.wml" filter="instance:org.apache.tapestry.wml.WMLMarkupFilter"/>
   </contribution>
   
-  <service-point id="MarkupWriterSource" interface="MarkupWriterSource">
+  <service-point id="MarkupWriterSource">
     
     Source for markup writer instances, used when rendering page-oriented
     responses to the client.

@@ -119,7 +119,7 @@ public class TestApplicationPortlet extends HiveMindTestCase
         PortletContext context = (PortletContext) contextc.getMock();
 
         config.getPortletName();
-        configc.setReturnValue("myportlet", 2);
+        configc.setReturnValue("myportlet", 3);
 
         // Called once in ApplicationPortlet code,
         // then inside PortletWebContextInitializer
