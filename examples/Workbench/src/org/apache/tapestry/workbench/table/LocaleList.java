@@ -56,6 +56,7 @@
 package org.apache.tapestry.workbench.table;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Set;
 
@@ -65,51 +66,33 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.contrib.table.model.ITableColumnModel;
 import org.apache.tapestry.contrib.table.model.ITableDataModel;
 import org.apache.tapestry.contrib.table.model.ITableModel;
+import org.apache.tapestry.contrib.table.model.ITableRendererSource;
 import org.apache.tapestry.contrib.table.model.ITableSessionStateManager;
+import org.apache.tapestry.contrib.table.model.ognl.ExpressionTableColumn;
 import org.apache.tapestry.contrib.table.model.ognl.ExpressionTableColumnModel;
 import org.apache.tapestry.contrib.table.model.simple.SimpleListTableDataModel;
+import org.apache.tapestry.contrib.table.model.simple.SimpleTableColumnFormRendererSource;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableSessionStateManager;
 import org.apache.tapestry.contrib.table.model.simple.SimpleTableState;
-import org.apache.tapestry.event.PageDetachListener;
-import org.apache.tapestry.event.PageEvent;
 
 /**
  * @author mindbridge
  *
  */
-public class LocaleList extends BaseComponent implements PageDetachListener
+public abstract class LocaleList extends BaseComponent
 {
     // immutable values
 	private ITableSessionStateManager m_objTableSessionStateManager;
-    
-    // bindings
-    private IBinding m_objLocaleSelectionListenerBinding;
-
-    // temporary    
-    private Locale m_objCurrentLocale;
-    
-    // transient
-    private Set m_setSelectedLocales;
-
-	public LocaleList()
-	{
-		// an initialization done only once for each pooled page instance
-		initTableSessionStateManager();
-        m_setSelectedLocales = new HashSet();
-	}
 
     /**
-     * @see org.apache.tapestry.event.PageDetachListener#pageDetached(PageEvent)
+     * @see org.apache.tapestry.AbstractComponent#finishLoad()
      */
-    public void pageDetached(PageEvent event)
+    protected void finishLoad()
     {
-        init();
+        super.finishLoad();
+        initTableSessionStateManager();
     }
-
-    private void init() {
-        m_setSelectedLocales.clear();
-    }
-
+    
 	/**
 	 * Method initTableSessionStateManager.
 	 * Creates the Table Session State Manager, and thus determines what part
@@ -137,6 +120,21 @@ public class LocaleList extends BaseComponent implements PageDetachListener
                     "ISO Country", "ISO3Country", 
                     },
 				true);
+
+
+        // Modify the columns to render headers designed for use in a form. 
+        // These headers ensure that the form is submitted when clicking on them
+        // and sorting by the column so that current form selections are preserved.
+        // Skip this if the table is not used in a form or you do not need 
+        // that behaviour.  
+        // This is usually used in conjunction with the TableFormPages and
+        // the TableFormRows components.
+        ITableRendererSource objRendererSource = new SimpleTableColumnFormRendererSource();
+        for (Iterator it = objColumnModel.getColumns(); it.hasNext(); ) {
+            ExpressionTableColumn objColumn = (ExpressionTableColumn) it.next();
+            objColumn.setColumnRendererSource(objRendererSource);
+        }
+
 
 		// Here we make a choice as to how the table would operate: 
 		//
@@ -175,67 +173,44 @@ public class LocaleList extends BaseComponent implements PageDetachListener
 		return m_objTableSessionStateManager;
 	}
 
-	/**
-	 * Returns the localeSelectionListenerBinding.
-	 * @return IBinding
-	 */
-	public IBinding getLocaleSelectionListenerBinding()
-	{
-		return m_objLocaleSelectionListenerBinding;
-	}
-
-	/**
-	 * Sets the localeSelectionListenerBinding.
-	 * @param localeSelectionListenerBinding The localeSelectionListenerBinding to set
-	 */
-	public void setLocaleSelectionListenerBinding(IBinding localeSelectionListenerBinding)
-	{
-		m_objLocaleSelectionListenerBinding = localeSelectionListenerBinding;
-	}
-
-	/**
-	 * Returns the currentLocale.
-	 * @return Locale
-	 */
-	public Locale getCurrentLocale()
-	{
-		return m_objCurrentLocale;
-	}
-
-	/**
-	 * Sets the currentLocale.
-	 * @param currentLocale The currentLocale to set
-	 */
-	public void setCurrentLocale(Locale currentLocale)
-	{
-		m_objCurrentLocale = currentLocale;
-	}
-
-
     public boolean getCheckboxSelected() 
     {
-        return m_setSelectedLocales.contains(getCurrentLocale());
+        return getSelectedLocales().contains(getCurrentLocale());
     }
     
     public void setCheckboxSelected(boolean bSelected) 
     {
+        Locale objLocale = getCurrentLocale();
+        Set setSelectedLocales = getSelectedLocales();
+        
         if (bSelected)
-            m_setSelectedLocales.add(getCurrentLocale());
+            setSelectedLocales.add(objLocale);
         else
-            m_setSelectedLocales.remove(getCurrentLocale());
+            setSelectedLocales.remove(objLocale);
+        
+        // persist value
+        setSelectedLocales(setSelectedLocales);
     }
 
-    public void formSubmit(IRequestCycle objCycle)
+    public void selectLocales(IRequestCycle objCycle)
     {
-        Locale[] arrLocales = new Locale[m_setSelectedLocales.size()];
-        m_setSelectedLocales.toArray(arrLocales);
+        Set setSelectedLocales = getSelectedLocales();
+        Locale[] arrLocales = new Locale[setSelectedLocales.size()];
+        setSelectedLocales.toArray(arrLocales);
 
         ILocaleSelectionListener objListener = 
             (ILocaleSelectionListener) getLocaleSelectionListenerBinding().getObject();
         objListener.localesSelected(arrLocales);
-        
-        m_setSelectedLocales.clear();
+
+        // clear selection
+        setSelectedLocales(new HashSet());
     }
 
+    public abstract IBinding getLocaleSelectionListenerBinding();
+    
+    public abstract Locale getCurrentLocale();
 
+    public abstract Set getSelectedLocales();
+
+    public abstract void setSelectedLocales(Set set);
 }
