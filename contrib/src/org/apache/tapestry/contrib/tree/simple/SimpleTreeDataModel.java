@@ -17,6 +17,8 @@ package org.apache.tapestry.contrib.tree.simple;
 import java.io.Serializable;
 import java.util.Iterator;
 
+import javax.swing.tree.TreePath;
+
 import org.apache.tapestry.contrib.tree.model.ITreeDataModel;
 import org.apache.tapestry.contrib.tree.model.ITreeNode;
 
