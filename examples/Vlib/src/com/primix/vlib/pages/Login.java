@@ -130,7 +130,7 @@ public class Login extends BasePage implements IErrorProperty
 		field = (IField) getComponent(componentId);
 
 		IValidationDelegate delegate = getValidationDelegate();
-		delegate.setField(field);
+		delegate.setFormComponent(field);
 		delegate.record(new ValidatorException(message));
 	}
 

@@ -440,7 +440,7 @@ public class VirtualLibraryEngine extends SimpleEngine
 	}
 
 	/**
-	 *  As with {@link #rmiFailure(RemoteException)}, but for
+	 *  As with {@link #rmiFailure(String, RemoteException, boolean)}, but for
 	 * {@link NamingException}.
 	 *
 	 */

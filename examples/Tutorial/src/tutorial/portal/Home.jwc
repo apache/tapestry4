@@ -7,10 +7,6 @@
 
 <component id="border" type="Border"/>
 
-<component id="showError" type="ShowError">
-  <binding name="message" property-path="error"/>
-</component>
-
 <component id="e" type="Foreach">
   <binding name="source" property-path="visit.models"/>
   <binding name="value" property-path="model"/>

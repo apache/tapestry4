@@ -27,6 +27,7 @@
 package com.primix.vlib;
 
 import com.primix.tapestry.components.*;
+import com.primix.tapestry.form.IFormComponent;
 import com.primix.tapestry.valid.*;
 import com.primix.tapestry.callback.*;
 import com.primix.tapestry.*;
@@ -72,16 +73,14 @@ public class Protected extends BasePage implements IErrorProperty
 		return error;
 	}
 
-	protected void setErrorField(String componentId, String message)
+	protected void setErrorField(String componentId, String message, String value)
 	{
-		IField field;
-
-		field = (IField) getComponent(componentId);
+		IFormComponent component = (IFormComponent) getComponent(componentId);
 
 		IValidationDelegate delegate = getValidationDelegate();
 
-		delegate.setField(field);
-		delegate.record(new ValidatorException(message));
+		delegate.setFormComponent(component);
+		delegate.record(message, null, value);
 
 	}
 

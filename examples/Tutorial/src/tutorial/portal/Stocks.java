@@ -30,8 +30,11 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.primix.tapestry.BasePage;
 import com.primix.tapestry.IRequestCycle;
+import com.primix.tapestry.form.IFormComponent;
 import com.primix.tapestry.valid.IValidationDelegate;
+import com.primix.tapestry.valid.RenderString;
 
 /**
  *  Page that presents (fake) stock information.
@@ -41,7 +44,7 @@ import com.primix.tapestry.valid.IValidationDelegate;
  *
  */
 
-public class Stocks extends ErrorPage
+public class Stocks extends BasePage
 {
 	/**
 	 * For this tutorial, we have a shared set of 'base stocks' that are
@@ -104,10 +107,22 @@ public class Stocks extends ErrorPage
 		return stocks;
 	}
 
+	private void setErrorField(
+		IValidationDelegate delegate,
+		String id,
+		String message)
+	{
+		IFormComponent component = (IFormComponent) getComponent(id);
+
+		delegate.setFormComponent(component);
+		delegate.record(new RenderString(message), null, null);
+	}
+
 	public void addStock(IRequestCycle cycle)
 	{
-		IValidationDelegate delegate = (IValidationDelegate)getBeans().getBean("delegate");
-		
+		IValidationDelegate delegate =
+			(IValidationDelegate) getBeans().getBean("delegate");
+
 		if (delegate.getHasErrors())
 			return;
 
@@ -119,7 +134,7 @@ public class Stocks extends ErrorPage
 			Stock s = (Stock) existingStocks.get(i);
 			if (s.tickerId.equals(newId))
 			{
-				setErrorField("inputTickerId", "Already in list.");
+				setErrorField(delegate, "inputTickerId", "Already in list.");
 				return;
 			}
 		}
@@ -142,6 +157,7 @@ public class Stocks extends ErrorPage
 		}
 
 		setErrorField(
+			delegate,
 			"inputTickerId",
 			"Unrecognized ticker id.  Try 'PMIX', 'MSFT' or 'SUN' (for the demo).'");
 	}

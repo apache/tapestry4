@@ -46,13 +46,11 @@ public class NewBook extends Protected
 {
 	private Map attributes;
 	private String publisherName;
-	private boolean cancel;
 
 	public void detach()
 	{
 		attributes = null;
 		publisherName = null;
-		cancel = false;
 
 		super.detach();
 	}
@@ -75,24 +73,8 @@ public class NewBook extends Protected
 		publisherName = value;
 	}
 
-	public void setCancel(boolean value)
-	{
-		cancel = value;
-	}
-
-	public boolean getCancel()
-	{
-		return cancel;
-	}
-
 	public void addBook(IRequestCycle cycle)
 	{
-		if (cancel)
-		{
-			cycle.setPage("MyLibrary");
-			return;
-		}
-
 		Map attributes = getAttributes();
 
 		Integer publisherPK = (Integer) attributes.get("publisherPK");
@@ -101,7 +83,7 @@ public class NewBook extends Protected
 		{
 			setErrorField(
 				"inputPublisherName",
-				"Must enter a publisher name or select an existing publisher from the list.");
+				"Must enter a publisher name or select an existing publisher from the list.", null);
 			return;
 		}
 
@@ -109,7 +91,8 @@ public class NewBook extends Protected
 		{
 			setErrorField(
 				"inputPublisherName",
-				"Must either select an existing publisher or enter a new publisher name.");
+				"Must either select an existing publisher or enter a new publisher name.",
+				publisherName);
 			return;
 		}
 

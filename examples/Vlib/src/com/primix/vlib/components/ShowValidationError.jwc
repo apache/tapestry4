@@ -8,7 +8,7 @@
   <component id="ifError" type="Conditional">
     <binding name="condition" property-path="bindings.delegate.object.hasErrors"/>
   </component>
-  <component id="insertError" type="Insert">
-    <binding name="value" property-path="bindings.delegate.object.firstError"/>
+  <component id="insertError" type="Delegator">
+    <binding name="delegate" property-path="bindings.delegate.object.firstError"/>
   </component>
 </specification>

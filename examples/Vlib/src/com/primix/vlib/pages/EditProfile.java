@@ -26,18 +26,20 @@
 
 package com.primix.vlib.pages;
 
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.valid.*;
-import com.primix.tapestry.*;
-import com.primix.vlib.ejb.*;
-import com.primix.vlib.*;
-import javax.ejb.*;
-import java.util.*;
-import java.rmi.*;
-import javax.rmi.*;
+import java.rmi.RemoteException;
+import java.util.HashMap;
+import java.util.Map;
 
-// Appease Javadoc
-import com.primix.tapestry.valid.ValidField;
+import javax.ejb.FinderException;
+
+import com.primix.tapestry.ApplicationRuntimeException;
+import com.primix.tapestry.IRequestCycle;
+import com.primix.tapestry.Tapestry;
+import com.primix.tapestry.valid.IValidationDelegate;
+import com.primix.vlib.Protected;
+import com.primix.vlib.VirtualLibraryEngine;
+import com.primix.vlib.Visit;
+import com.primix.vlib.ejb.IOperations;
 
 /**
  * Edit's a user's profile:  names, email and password.  
@@ -51,7 +53,6 @@ public class EditProfile extends Protected
 	private Map attributes;
 	private String password1;
 	private String password2;
-	private boolean cancel;
 
 	private static final int MAP_SIZE = 11;
 
@@ -60,7 +61,6 @@ public class EditProfile extends Protected
 		attributes = null;
 		password1 = null;
 		password2 = null;
-		cancel = false;
 
 		super.detach();
 	}
@@ -87,16 +87,6 @@ public class EditProfile extends Protected
 	public void setPassword2(String value)
 	{
 		password2 = value;
-	}
-
-	public boolean getCancel()
-	{
-		return cancel;
-	}
-
-	public void setCancel(boolean value)
-	{
-		cancel = value;
 	}
 
 	public Map getAttributes()
@@ -150,12 +140,6 @@ public class EditProfile extends Protected
 
 	public void updateProfile(IRequestCycle cycle)
 	{
-		if (cancel)
-		{
-			cycle.setPage("MyLibrary");
-			return;
-		}
-
 		IValidationDelegate delegate = getValidationDelegate();
 		
 		if (delegate.getHasErrors())
@@ -165,7 +149,7 @@ public class EditProfile extends Protected
 		{
 			setErrorField(
 				"inputPassword1",
-				"Enter the password, then re-enter it to confirm.");
+				"Enter the password, then re-enter it to confirm.", null);
 
 			return;
 		}
@@ -174,7 +158,7 @@ public class EditProfile extends Protected
 		{
 			if (!password1.equals(password2))
 			{
-				setErrorField("inputPassword1", "Enter the same password in both fields.");
+				setErrorField("inputPassword1", "Enter the same password in both fields.", null);
 				return;
 			}
 

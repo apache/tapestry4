@@ -30,11 +30,12 @@ import com.primix.tapestry.*;
 import com.primix.tapestry.IRequestCycle;
 import com.primix.tapestry.IResponseWriter;
 import com.primix.tapestry.RequestCycleException;
+import com.primix.tapestry.form.IFormComponent;
 import com.primix.tapestry.valid.*;
 
 /**
- *  Implementation of {@link IValidationDelegate} that
- *  works with pages that implements {@link IErrorProperty}.
+ *  Implementation of {@link IValidationDelegate} uses the
+ *  correct CSS class when rendering errors.
  *
  * @author Howard Ship
  * @version $Id$
@@ -43,11 +44,11 @@ import com.primix.tapestry.valid.*;
 public class SimpleValidationDelegate extends ValidationDelegate
 {
 	public void writeLabelPrefix(
-		IField field,
+		IFormComponent component,
 		IResponseWriter writer,
 		IRequestCycle cycle)
 	{
-		if (isInError(field))
+		if (isInError(component))
 		{
 			writer.begin("span");
 			writer.attribute("class", "clsInvalidField");
@@ -55,11 +56,11 @@ public class SimpleValidationDelegate extends ValidationDelegate
 	}
 
 	public void writeLabelSuffix(
-		IField field,
+		IFormComponent component,
 		IResponseWriter writer,
 		IRequestCycle cycle)
 	{
-		if (isInError(field))
+		if (isInError(component))
 			writer.end();
 	}
 
