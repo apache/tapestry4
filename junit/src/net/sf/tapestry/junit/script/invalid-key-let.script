@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE script PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Script 1.2//EN"
+	"http://tapestry.sf.net/dtd/Script_1_2.dtd">
+	
+<script>
+
+<let key="foo$bar"/>
+
+</script>

@@ -135,17 +135,6 @@ public class SpecificationParser extends AbstractDocumentParser
     public static final String TAPESTRY_DTD_1_3_PUBLIC_ID = "-//Howard Lewis Ship//Tapestry Specification 1.3//EN";
 
     /**
-     *  Simple property names match Java variable names; a leading letter
-     *  (or underscore), followed by letters, numbers and underscores.
-     * 
-     *  @since 2.2
-     * 
-     **/
-
-    private static final String SIMPLE_PROPERTY_NAME_PATTERN = "^_?[a-zA-Z]\\w*$";
-
-
-    /**
      *  Like modified property name, but allows periods in the name as
      *  well.
      * 
@@ -153,7 +142,7 @@ public class SpecificationParser extends AbstractDocumentParser
      * 
      **/
 
-    private static final String EXTENDED_PROPERTY_NAME_PATTERN = "^_?[a-zA-Z](\\w|-|\\.)*$";
+    public static final String EXTENDED_PROPERTY_NAME_PATTERN = "^_?[a-zA-Z](\\w|-|\\.)*$";
 
     /**
      *  Perl5 pattern that parameter names must conform to.  
@@ -163,7 +152,7 @@ public class SpecificationParser extends AbstractDocumentParser
      * 
      **/
 
-    public static final String PARAMETER_NAME_PATTERN = SIMPLE_PROPERTY_NAME_PATTERN;
+    public static final String PARAMETER_NAME_PATTERN = AbstractDocumentParser.SIMPLE_PROPERTY_NAME_PATTERN;
 
     /**
      *  Perl5 pattern that property names (that can be connected to
@@ -175,7 +164,7 @@ public class SpecificationParser extends AbstractDocumentParser
      * 
      **/
 
-    public static final String PROPERTY_NAME_PATTERN = SIMPLE_PROPERTY_NAME_PATTERN;
+    public static final String PROPERTY_NAME_PATTERN = AbstractDocumentParser.SIMPLE_PROPERTY_NAME_PATTERN;
 
     /**
      *  Perl5 pattern for page names.  Letter
@@ -195,7 +184,7 @@ public class SpecificationParser extends AbstractDocumentParser
      * 
      **/
 
-    public static final String COMPONENT_ALIAS_PATTERN = SIMPLE_PROPERTY_NAME_PATTERN;
+    public static final String COMPONENT_ALIAS_PATTERN = AbstractDocumentParser.SIMPLE_PROPERTY_NAME_PATTERN;
 
     /**
      *  Perl5 pattern for helper bean names.  
@@ -205,7 +194,7 @@ public class SpecificationParser extends AbstractDocumentParser
      * 
      **/
 
-    public static final String BEAN_NAME_PATTERN = SIMPLE_PROPERTY_NAME_PATTERN;
+    public static final String BEAN_NAME_PATTERN = AbstractDocumentParser.SIMPLE_PROPERTY_NAME_PATTERN;
 
     /**
      *  Perl5 pattern for component ids.  Letter, followed by
@@ -215,7 +204,7 @@ public class SpecificationParser extends AbstractDocumentParser
      * 
      **/
 
-    public static final String COMPONENT_ID_PATTERN = SIMPLE_PROPERTY_NAME_PATTERN;
+    public static final String COMPONENT_ID_PATTERN = AbstractDocumentParser.SIMPLE_PROPERTY_NAME_PATTERN;
 
     /**
      *  Perl5 pattern for asset names.  Letter, followed by
@@ -225,7 +214,7 @@ public class SpecificationParser extends AbstractDocumentParser
      * 
      **/
 
-    public static final String ASSET_NAME_PATTERN = SIMPLE_PROPERTY_NAME_PATTERN;
+    public static final String ASSET_NAME_PATTERN = AbstractDocumentParser.SIMPLE_PROPERTY_NAME_PATTERN;
 
     /**
      *  Perl5 pattern for service names.  Letter
@@ -245,7 +234,7 @@ public class SpecificationParser extends AbstractDocumentParser
      * 
      **/
 
-    public static final String LIBRARY_ID_PATTERN = SIMPLE_PROPERTY_NAME_PATTERN;
+    public static final String LIBRARY_ID_PATTERN = AbstractDocumentParser.SIMPLE_PROPERTY_NAME_PATTERN;
 
     /**
      *  Per5 pattern for extension names.  Letter followed
@@ -287,38 +276,6 @@ public class SpecificationParser extends AbstractDocumentParser
     /** @since 1.0.9 **/
 
     private SpecFactory _factory;
-
-    /** 
-     * 
-     *  Compiler used to convert pattern strings into {@link Pattern}
-     *  instances.
-     * 
-     *  @since 2.2 
-     * 
-     **/
-
-    private PatternCompiler _patternCompiler;
-
-    /** 
-     * 
-     *  Matcher used to match patterns against input strings.
-     * 
-     *  @since 2.2 
-     * 
-     **/
-
-    private PatternMatcher _matcher;
-
-    /** 
-     * 
-     *  Map of compiled {@link Pattern}s, keyed on pattern
-     *  string.  Patterns are lazily compiled as needed.
-     * 
-     *  @since 2.2 
-     * 
-     **/
-
-    private Map _compiledPatterns;
 
     private interface IConverter
     {
@@ -1027,7 +984,7 @@ public class SpecificationParser extends AbstractDocumentParser
     private void convertExpressionValue(BeanSpecification spec, String propertyName, Node node)
     {
         String expression = getAttribute(node, "expression");
-        IBeanInitializer iz = _factory.createPropertyBeanInitializer(propertyName, expression);
+        IBeanInitializer iz = _factory.createExpressionBeanInitializer(propertyName, expression);
 
         spec.addInitializer(iz);
     }
@@ -1266,63 +1223,6 @@ public class SpecificationParser extends AbstractDocumentParser
     public SpecFactory getFactory()
     {
         return _factory;
-    }
-
-    /**
-     *  Validates that the input value matches against the specified
-     *  Perl5 pattern.  If valid, the method simply returns.
-     *  If not a match, then an error message is generated (using the
-     *  errorKey and the input value) and a
-     *  {@link DocumentParseException} is thrown.
-     * 
-     *  @since 2.2
-     * 
-     **/
-
-    private void validate(String value, String pattern, String errorKey) throws DocumentParseException
-    {
-        if (_compiledPatterns == null)
-            _compiledPatterns = new HashMap();
-
-        Pattern compiled = (Pattern) _compiledPatterns.get(pattern);
-
-        if (compiled == null)
-        {
-            compiled = compilePattern(pattern);
-
-            _compiledPatterns.put(pattern, compiled);
-        }
-
-        if (_matcher == null)
-            _matcher = new Perl5Matcher();
-
-        if (_matcher.matches(value, compiled))
-            return;
-
-        throw new DocumentParseException(Tapestry.getString(errorKey, value), getResourcePath());
-    }
-
-    /** 
-     * 
-     *  Returns a pattern compiled for single line matching
-     * 
-     *  @since 2.2 
-     * 
-     **/
-
-    private Pattern compilePattern(String pattern)
-    {
-        if (_patternCompiler == null)
-            _patternCompiler = new Perl5Compiler();
-
-        try
-        {
-            return _patternCompiler.compile(pattern, Perl5Compiler.SINGLELINE_MASK);
-        }
-        catch (MalformedPatternException ex)
-        {
-            throw new ApplicationRuntimeException(ex);
-        }
     }
 
     /** @since 2.2 **/

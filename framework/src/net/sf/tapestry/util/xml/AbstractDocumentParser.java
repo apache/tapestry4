@@ -28,14 +28,44 @@ package net.sf.tapestry.util.xml;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
+import net.sf.tapestry.ApplicationRuntimeException;
+import net.sf.tapestry.INamespace;
+import net.sf.tapestry.IResourceResolver;
+import net.sf.tapestry.ITemplateSource;
 import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.bean.IBeanInitializer;
+import net.sf.tapestry.spec.ApplicationSpecification;
+import net.sf.tapestry.spec.AssetSpecification;
+import net.sf.tapestry.spec.AssetType;
+import net.sf.tapestry.spec.BeanLifecycle;
+import net.sf.tapestry.spec.BeanSpecification;
+import net.sf.tapestry.spec.BindingSpecification;
+import net.sf.tapestry.spec.BindingType;
+import net.sf.tapestry.spec.ComponentSpecification;
+import net.sf.tapestry.spec.ContainedComponent;
+import net.sf.tapestry.spec.Direction;
+import net.sf.tapestry.spec.ExtensionSpecification;
+import net.sf.tapestry.spec.IApplicationSpecification;
+import net.sf.tapestry.spec.ILibrarySpecification;
+import net.sf.tapestry.spec.LibrarySpecification;
+import net.sf.tapestry.spec.ParameterSpecification;
+import net.sf.tapestry.spec.SpecFactory;
+import net.sf.tapestry.util.IPropertyHolder;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.apache.oro.text.regex.MalformedPatternException;
+import org.apache.oro.text.regex.Pattern;
+import org.apache.oro.text.regex.PatternCompiler;
+import org.apache.oro.text.regex.PatternMatcher;
+import org.apache.oro.text.regex.Perl5Compiler;
+import org.apache.oro.text.regex.Perl5Matcher;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -71,6 +101,54 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
      **/
 
     private Map _entities;
+
+
+    /** 
+     * 
+     *  Compiler used to convert pattern strings into {@link Pattern}
+     *  instances.
+     * 
+     *  @since 2.2 
+     * 
+     **/
+
+    protected PatternCompiler _patternCompiler;
+
+
+
+    /** 
+     * 
+     *  Matcher used to match patterns against input strings.
+     * 
+     *  @since 2.2 
+     * 
+     **/
+
+    protected PatternMatcher _matcher;
+
+
+
+    /** 
+     * 
+     *  Map of compiled {@link Pattern}s, keyed on pattern
+     *  string.  Patterns are lazily compiled as needed.
+     * 
+     *  @since 2.2 
+     * 
+     **/
+
+    protected Map _compiledPatterns;
+
+    /**
+     *  Simple property names match Java variable names; a leading letter
+     *  (or underscore), followed by letters, numbers and underscores.
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    public static final String SIMPLE_PROPERTY_NAME_PATTERN = "^_?[a-zA-Z]\\w*$";
+
 
     /**
      *  Invoked by subclasses (usually inside thier constructor) to register
@@ -505,5 +583,66 @@ public abstract class AbstractDocumentParser implements ErrorHandler, EntityReso
 
         return attributeNode.getNodeValue();
     }
+
+    /**
+     *  Validates that the input value matches against the specified
+     *  Perl5 pattern.  If valid, the method simply returns.
+     *  If not a match, then an error message is generated (using the
+     *  errorKey and the input value) and a
+     *  {@link DocumentParseException} is thrown.
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    protected void validate(String value, String pattern, String errorKey) throws DocumentParseException
+    {
+        if (_compiledPatterns == null)
+            _compiledPatterns = new HashMap();
+
+        Pattern compiled = (Pattern) _compiledPatterns.get(pattern);
+
+        if (compiled == null)
+        {
+            compiled = compilePattern(pattern);
+
+            _compiledPatterns.put(pattern, compiled);
+        }
+
+        if (_matcher == null)
+            _matcher = new Perl5Matcher();
+
+        if (_matcher.matches(value, compiled))
+            return;
+
+        throw new DocumentParseException(Tapestry.getString(errorKey, value), getResourcePath());
+    }
+
+
+
+    /** 
+     * 
+     *  Returns a pattern compiled for single line matching
+     * 
+     *  @since 2.2 
+     * 
+     **/
+
+    protected Pattern compilePattern(String pattern)
+    {
+        if (_patternCompiler == null)
+            _patternCompiler = new Perl5Compiler();
+
+        try
+        {
+            return _patternCompiler.compile(pattern, Perl5Compiler.SINGLELINE_MASK);
+        }
+        catch (MalformedPatternException ex)
+        {
+            throw new ApplicationRuntimeException(ex);
+        }
+    }
+
+
 
 }

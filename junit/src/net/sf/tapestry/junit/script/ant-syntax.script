@@ -1,6 +1,8 @@
 <?xml version="1.0"?>
-<!DOCTYPE script PUBLIC "-//Howard Ship//Tapestry Script 1.1//EN"
-	"http://tapestry.sf.net/dtd/Script_1_1.dtd">
+<!-- $Id$ -->
+<!DOCTYPE script PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Script 1.2//EN"
+	"http://tapestry.sf.net/dtd/Script_1_2.dtd">
 	
 <script>
 
@@ -18,6 +20,10 @@ Incomplete: ${</let>
 
 <let key="nopath">
 This ${} ends up as literal.
+</let>
+
+<let key="OGNL">
+This is a brace: ${"{Hello}".toCharArray()[6]}.
 </let>
 
 </script>

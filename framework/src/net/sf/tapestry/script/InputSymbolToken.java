@@ -25,52 +25,45 @@
 
 package net.sf.tapestry.script;
 
-import java.util.Map;
-
 import net.sf.tapestry.ScriptException;
 import net.sf.tapestry.ScriptSession;
+import net.sf.tapestry.Tapestry;
 
 /**
- *  Allows for the creation of new symbols that can be used in the script
- *  or returned to the caller.
+ *  A token that validates that an input symbol exists or is of a
+ *  declared type.
  *
- *  <p>The &lt;let&gt; tag wraps around static text and &lt;insert&gt;
- *  elements.  The results are trimmed.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 0.2.9
+ *  @since 2.2
  * 
  **/
 
-class LetToken extends AbstractToken
+class InputSymbolToken extends AbstractToken
 {
     private String _key;
-    private int _bufferLengthHighwater = 20;
+    private Class _class;
+    private boolean _required;
 
-    public LetToken(String key)
+    InputSymbolToken(String key, Class clazz, boolean required)
     {
         _key = key;
+        _class = clazz;
+        _required = required;
     }
 
-    public void write(StringBuffer buffer, ScriptSession session)
-        throws ScriptException
+    public void write(StringBuffer buffer, ScriptSession session) throws ScriptException
     {
-        if (buffer != null)
-            throw new IllegalArgumentException();
+        Object value = session.getSymbols().get(_key);
 
-        buffer = new StringBuffer(_bufferLengthHighwater);
+        if (_required && value == null)
+            throw new ScriptException(Tapestry.getString("InputSymbolToken.required", _key), session);
 
-        writeChildren(buffer, session);
-
-        // Store the symbol back into the root set of symbols.
-
-        Map symbols = session.getSymbols();
-        symbols.put(_key, buffer.toString().trim());
-
-        // Store the buffer length from this run for the next run, since its
-        // going to be approximately the right size.
-
-        _bufferLengthHighwater = Math.max(_bufferLengthHighwater, buffer.length());
+        if (value != null && _class != null && !_class.isAssignableFrom(value.getClass()))
+            throw new ScriptException(
+                Tapestry.getString("InputSymbolToken.wrong-type", _key, value.getClass().getName(), _class.getName()),
+                session);
     }
+
 }
