@@ -1,3 +1,11 @@
+* Jun 19 2001 hship
+
+Include the web directory in the full distribution.
+Convert ExceptionAnalyzer to not use the GNU Regexp framework.
+
+[434570] direct service for forms
+[434578] double logging
+
 * Jun 18 2001 hship
 
 Put in provisional support for deploying on the Intranet.

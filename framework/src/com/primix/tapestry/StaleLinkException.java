@@ -85,6 +85,11 @@ public class StaleLinkException extends RequestCycleException
 		this.targetIdPath = targetIdPath;
 	}
 	
+	public StaleLinkException(String message, IComponent component)
+	{
+		super(message, component);
+	}
+	
 	public StaleLinkException(String message, IPage page)
 	{
 	

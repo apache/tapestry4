@@ -434,6 +434,8 @@ abstract public class ApplicationServlet
 		
 		Layout layout = new PatternLayout(pattern);
 		Appender rootAppender = new ConsoleAppender(layout);
+		
+		root.removeAllAppenders();
 		root.addAppender(rootAppender);
 		
 		Priority[] priorities = Priority.getAllPossiblePriorities();

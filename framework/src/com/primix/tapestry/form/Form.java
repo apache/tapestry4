@@ -39,7 +39,7 @@ import com.primix.tapestry.components.*;
  * Component which contains form element components.  Forms use the
  * action service to handle the form submission.  A Form will wrap
  * other components and static HTML, including
- * form component such as {@link Text}, {@link TextField}, {@link Checkbox}, etc.
+ * form components such as {@link Text}, {@link TextField}, {@link Checkbox}, etc.
  *
  * <p>When a form is submitted, it continues through the rewind cycle until
  * <em>after</em> all of its wrapped elements have renderred.  As the form
@@ -49,6 +49,13 @@ import com.primix.tapestry.components.*;
  * form), but for handling it's share of the form submission.
  *
  * <p>Only after all that is done will the Form notify its listener.
+ *
+ * <p>Starting in release 1.0.2, a Form can use either the direct service or
+ *  the action service.  The default is the direct service, even though
+ *  in earlier releases, only the action service was available.
+ *
+ * <p>The listener is always type {@link IActionListener}, even when
+ * the direct service is used.
  *
  * <table border=1>
  * <tr> 
@@ -92,6 +99,22 @@ import com.primix.tapestry.components.*;
  *  to put a stateless form onto the Home page of an application.</td>
  * </tr>
  *
+ * <tr>
+ *		<td>direct</td>
+ *		<td>boolean</td>
+ *		<td>R</td>
+ *		<td>no</td>
+ *		<td>true</td>
+ *		<td>If true (the default), then the direct service is used for the form.  This
+ *  decreases the amount of work required to process the form submission, and is acceptible
+ *  for most forms, even those that contain {@link Foreach}es (but not those that are
+ *  inside a {@link Foreach}.
+ *
+ *  <p>An abbreviated form of the rewind cycle takes place, that only references the form
+ *  and the components it wraps.
+ *  </td>
+ * </tr>
+ *
  *	</table>
  *
  * <p>Informal parameters are allowed.
@@ -103,7 +126,7 @@ import com.primix.tapestry.components.*;
 
 public class Form 
 	extends AbstractComponent
-	implements IAction
+	implements IForm, IDirect
 {
     private IBinding methodBinding;
     private String methodValue;
@@ -116,6 +139,10 @@ public class Form
 	private IBinding statefulBinding;
 	private boolean staticStateful;
 	private boolean statefulValue;
+	
+	private IBinding directBinding;
+	private boolean staticDirect;
+	private boolean directValue;
 	
 	/**
 	 *  Number of element ids allocated.
@@ -155,7 +182,7 @@ public class Form
 	 */
 	
     private static final String ATTRIBUTE_NAME = "com.primix.tapestry.active.Form";
-
+	
 	/**
 	 *  Class used to allocate ids (used as form element names).
 	 *
@@ -234,6 +261,51 @@ public class Form
 	}
 	
 	/**
+	 *  @since 1.0.2
+	 *
+	 */
+	
+	public IBinding getDirectBinding()
+	{
+		return directBinding;
+	}
+	
+	/**
+	 *  @since 1.0.2
+	 *
+	 */
+	
+	public void setDirectBinding(IBinding value)
+	{
+		directBinding = value;
+		
+		staticDirect = value.isStatic();
+		if (staticDirect)
+			directValue = value.getBoolean();
+	}
+	
+	/**
+	 *  Returns true if this Form is configured to use the direct
+	 *  service.
+	 *
+	 *  <p>This is derived from the direct parameter, and defaults
+	 *  to true if not bound.
+	 *
+	 *  @since 1.0.2
+	 */
+	
+	public boolean isDirect()
+	{
+		if (staticDirect)
+			return directValue;
+		
+		if (directBinding != null)
+			return directBinding.getBoolean();
+		
+		return true;
+	}
+	
+	/**
 	 *  Returns true if the stateful parameter is bound to
 	 *  a true value.  If stateful is not bound, also returns
 	 *  the default, true.
@@ -267,7 +339,7 @@ public class Form
 		
 		String baseId = component.getId();
 		String result = null;
-
+		
 		IdAllocator allocator = (IdAllocator)allocatorMap.get(baseId);
 		
 		if (allocator == null)
@@ -288,7 +360,7 @@ public class Form
 		
 		return result;
 	}
- 
+	
 	
     /**
 	 *  Returns the name generated for the form.  This is used to faciliate
@@ -346,18 +418,7 @@ public class Form
 				writer.begin("form");
 				writer.attribute("method", method);
 				writer.attribute("name", name);
-				
-				// Forms are processed using the 'action' service.
-				
-				service = cycle.getEngine().
-					getService(IEngineService.ACTION_SERVICE);
-				
-				URL = service.buildURL(cycle, this, 
-						new String[]
-						{ actionId 
-						});
-				
-				writer.attribute("action", cycle.encodeURL(URL));
+				writer.attribute("action", buildURL(cycle, actionId));
 				
 				generateAttributes(cycle, writer, reservedNames);
 			}
@@ -494,7 +555,7 @@ public class Form
 		if (body == null)
 			throw new RequestCycleException(
 				"A Form with event handlers must be wrapped by a Body.", this);
-				
+		
 		Iterator i = events.entrySet().iterator();
 		while (i.hasNext())
 		{
@@ -565,6 +626,55 @@ public class Form
 		
 	}
 	
+	/**
+	 *  Simply invokes {@link #render(IResponseWriter, IRequestCycle)}.
+	 *
+	 * @since 1.0.2
+	 */
+	
+	public void rewind(IResponseWriter writer, IRequestCycle cycle)
+		throws RequestCycleException
+	{
+		render(writer, cycle);
+	}
+	
+	/**
+	 *  Method invoked by the direct service.
+	 *
+	 *  @since 1.0.2
+	 *
+	 */
+	
+	public void trigger(IRequestCycle cycle, String[] context)
+		throws RequestCycleException
+	{
+		cycle.rewindForm(this, context[0]);
+	}
+	
+	/**
+	 *  Builds the URL for the form, using either the direct or
+	 *  action service.
+	 *
+	 *  @since 1.0.2
+	 *
+	 */
+	
+	private String buildURL(IRequestCycle cycle, String actionId)
+	{
+		String serviceName = null;
+
+		
+		if (isDirect())
+			serviceName = IEngineService.DIRECT_SERVICE;
+		else
+			serviceName = IEngineService.ACTION_SERVICE;
+		
+		IEngine engine = cycle.getEngine();
+		IEngineService service = engine.getService(serviceName);
+		String URL = service.buildURL(cycle, this, new String[] { actionId });
+		
+		return cycle.encodeURL(URL);
+	}
 }
 
 
