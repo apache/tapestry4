@@ -96,6 +96,14 @@ public class PageSource implements IPageSource
 
     private static final String PAGE_LOADER_POOL_KEY = "org.apache.tapestry.PageLoader";
 
+    /**
+     * Key used to find {@link PageSpecificationResolver} instance
+     * in the pool.
+     */
+
+    private static final String PAGE_SPECIFICATION_RESOLVER_KEY =
+        "org.apache.tapestry.PageSpecificationResolver";
+
     private IResourceResolver _resolver;
 
     /**
@@ -108,15 +116,6 @@ public class PageSource implements IPageSource
      **/
 
     private Pool _pool;
-
-    /**
-     *  Used to resolve page names to a namespace, a simple name, and a page specification.
-     * 
-     *  @since 3.0
-     * 
-     **/
-
-    private PageSpecificationResolver _pageSpecificationResolver;
 
     public PageSource(IEngine engine)
     {
@@ -178,14 +177,15 @@ public class PageSource implements IPageSource
         {
             monitor.pageCreateBegin(pageName);
 
-            if (_pageSpecificationResolver == null)
-                _pageSpecificationResolver = new PageSpecificationResolver(cycle);
+            // Resolvers are not threadsafe, so we get one from
+            // the pool or create as needed.
 
-            _pageSpecificationResolver.resolve(cycle, pageName);
+            PageSpecificationResolver pageSpecificationResolver =
+                getPageSpecificationResolver(cycle);
 
-            // Page loader's are not threadsafe, so we create a new
-            // one as needed.  However, they would make an excellent
-            // candidate for pooling.
+            pageSpecificationResolver.resolve(cycle, pageName);
+
+            // Likewise PageLoader
 
             PageLoader loader = getPageLoader(cycle);
 
@@ -193,14 +193,15 @@ public class PageSource implements IPageSource
             {
                 result =
                     loader.loadPage(
-                        _pageSpecificationResolver.getSimplePageName(),
-                        _pageSpecificationResolver.getNamespace(),
+                        pageSpecificationResolver.getSimplePageName(),
+                        pageSpecificationResolver.getNamespace(),
                         cycle,
-                        _pageSpecificationResolver.getSpecification());
+                        pageSpecificationResolver.getSpecification());
             }
             finally
             {
                 discardPageLoader(loader);
+                discardPageSpecificationResolver(pageSpecificationResolver);
             }
 
             monitor.pageCreateEnd(pageName);
@@ -246,6 +247,37 @@ public class PageSource implements IPageSource
     protected void discardPageLoader(PageLoader loader)
     {
         _pool.store(PAGE_LOADER_POOL_KEY, loader);
+    }
+
+    /**
+     * Invoked to obtain an instance of {@link PageSpecificationResolver}.
+     * An instance is acquired form the pool or, if none are available,
+     * a new one is instantiated.
+     * 
+     * @since 3.0
+     */
+
+    protected PageSpecificationResolver getPageSpecificationResolver(IRequestCycle cycle)
+    {
+        PageSpecificationResolver result =
+            (PageSpecificationResolver) _pool.retrieve(PAGE_SPECIFICATION_RESOLVER_KEY);
+
+        if (result == null)
+            result = new PageSpecificationResolver(cycle);
+
+        return result;
+    }
+
+    /**
+     * Invoked once the {@link PageSpecificationResolver} is no longer
+     * needed, it is returned to the pool.
+     * 
+     * @since 3.0
+     */
+
+    protected void discardPageSpecificationResolver(PageSpecificationResolver resolver)
+    {
+        _pool.store(PAGE_SPECIFICATION_RESOLVER_KEY, resolver);
     }
 
     /**

@@ -114,6 +114,13 @@ public class ComponentSpecificationResolver extends AbstractSpecificationResolve
         super(cycle);
     }
 
+    protected void reset()
+    {
+        _type = null;
+
+        super.reset();
+    }
+
     /**
      *  Passed the namespace of a container (to resolve the type in)
      *  and the type to resolve, performs the processing.  A "bare type"
@@ -249,7 +256,7 @@ public class ComponentSpecificationResolver extends AbstractSpecificationResolve
 
         if (framework.containsComponentType(_type))
         {
-            setSpecification(framework.getComponentSpecification(_type)); 
+            setSpecification(framework.getComponentSpecification(_type));
             return;
         }
 

@@ -63,6 +63,7 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.util.pool.IPoolable;
 
 /**
  *  Base class for resolving a {@link org.apache.tapestry.spec.IComponentSpecification}
@@ -75,7 +76,7 @@ import org.apache.tapestry.spec.IComponentSpecification;
  *
  **/
 
-public class AbstractSpecificationResolver
+public class AbstractSpecificationResolver implements IPoolable
 {
     private ISpecificationSource _specificationSource;
 
@@ -222,6 +223,19 @@ public class AbstractSpecificationResolver
     {
         _namespace = null;
         _specification = null;
+    }
+
+    /** Does nothing. */
+    public void discardFromPool()
+    {
+
+    }
+
+    /** Invokes {@link #reset()} */
+
+    public void resetForPool()
+    {
+        reset();
     }
 
 }

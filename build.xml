@@ -327,15 +327,14 @@
 				<include name="*-${framework.version}.jar"/>
 				<include name="${ext.dir}/*.jar"/>
 			</fileset>
+			<fileset dir="${ext.dist.dir}">
+				<include name="mckoidb*.jar"/>
+			</fileset>			
 			<fileset dir="${jboss.server.default.dir}/lib">
 				<!-- Could do a careful analysis of just what we need and copy only that,
 				 but this is good for now.  -->
 				<include name="*.jar"/>
 				<exclude name="bcel.jar"/>
-			</fileset>
-			<fileset dir="${ext.dist.dir}">
-				<include name="mckoidb*.jar"/>
-				<include name="jChart*.jar"/>
 			</fileset>
 		</copy>
 		<!-- Delete, recreate and copy -->
@@ -385,7 +384,7 @@
 			<fileset dir="${root.lib.dir}">
 				<include name="${vlib.ear}"/>
 				<include name="${workbench.war}"/>
-			</fileset>
+			</fileset>		
 		</copy>
 	</target>
 	
