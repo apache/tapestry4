@@ -41,19 +41,19 @@
   
 	<property-specification name="selectedPage" type="int"/>
   
-	<component id="hiddenCurrentPage" type="Conditional">
+	<component id="hiddenCurrentPage" type="Hidden">
 		<binding name="value" expression="currentPage"/>
 	</component>
   
-	<component id="hiddenPageCount" type="Conditional">
+	<component id="hiddenPageCount" type="Hidden">
 		<binding name="value" expression="pageCount"/>
 	</component>
   
-	<component id="hiddenStartPage" type="Conditional">
+	<component id="hiddenStartPage" type="Hidden">
 		<binding name="value" expression="startPage"/>
 	</component>
   
-	<component id="hiddenStopPage" type="Conditional">
+	<component id="hiddenStopPage" type="Hidden">
 		<binding name="value" expression="stopPage"/>
 	</component>
   
