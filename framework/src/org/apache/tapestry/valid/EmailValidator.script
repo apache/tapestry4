@@ -3,19 +3,19 @@
 <!DOCTYPE script PUBLIC
 	"-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
 	"http://jakarta.apache.org/tapestry/dtd/Script_3_0.dtd">
-	
-<!-- 
+
+<!--
 
   Creates a script for validating that a field is required and/or has a minimum
   field length.
-  
+
   Input symbols:
      field, form, validator:  As normal for a validation script.
 	 requiredMessage: Message to display if the field is required yet blank.
 	 minimumLengthMessage: Message to display if the field length is too short.
-     
+
 -->
-	
+
 <script>
 
 <include-script resource-path="/org/apache/tapestry/valid/Validator.js"/>
@@ -34,25 +34,26 @@ validate_${field.name}
 <body>
 function ${function}()
 {
-  var field = document.${form.name}.${field.name};   
-  
-  strValue = field.value.replace(/ /g,"");  
-  
+  var field = document.${form.name}.${field.name};
+
+  strValue = field.value.replace(/ /g,"");
+
   field.value = strValue;
 
 <if expression="validator.required">
   if (strValue.length == 0)
      return validator_invalid_field(field, "${requiredMessage}");
 </if>
+
+<if-not expression="validator.required">
+  if (strValue.length == 0)
+     return true;
+</if-not>
+
 <if expression="validator.minimumLength">
   if (strValue.length &lt; ${validator.minimumLength})
      return validator_invalid_field(field, "${minimumLengthMessage}");
 </if>
-
-<if-not expression="validator.required">
-  if (strValue.length == 0) 
-     return true;
-</if-not>
 
   atIndex = strValue.indexOf("@");
   if ((atIndex == -1) || (atIndex == 0) || (atIndex == strValue.length -1))
