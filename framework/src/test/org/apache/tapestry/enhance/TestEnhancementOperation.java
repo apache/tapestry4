@@ -20,16 +20,20 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.impl.DefaultClassResolver;
+import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.ClassFab;
 import org.apache.hivemind.service.ClassFactory;
 import org.apache.hivemind.service.MethodSignature;
 import org.apache.hivemind.service.impl.ClassFactoryImpl;
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.BaseComponent;
+import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.components.Insert;
+import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.services.ComponentConstructor;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.easymock.MockControl;
@@ -68,6 +72,23 @@ public class TestEnhancementOperation extends HiveMindTestCase
         public MissingConstructorFixture(String foo)
         {
             //
+        }
+    }
+
+    public abstract static class UnclaimedAbstractPropertiesFixture
+    {
+        public abstract String getReadOnly();
+
+        public abstract void setWriteOnly(String value);
+
+        public void setConcrete(int i)
+        {
+            //
+        }
+
+        public int getConcrete()
+        {
+            return -1;
         }
     }
 
@@ -416,6 +437,189 @@ public class TestEnhancementOperation extends HiveMindTestCase
                 BaseComponent.class, cf);
 
         eo.forceEnhancement();
+
+        verifyControls();
+    }
+
+    public void testFindUnclaimedAbstractProperties()
+    {
+        ClassResolver cr = (ClassResolver) newMock(ClassResolver.class);
+        IComponentSpecification spec = (IComponentSpecification) newMock(IComponentSpecification.class);
+        ClassFactory cf = (ClassFactory) newMock(ClassFactory.class);
+
+        replayControls();
+
+        EnhancementOperation eo = new EnhancementOperationImpl(cr, spec,
+                UnclaimedAbstractPropertiesFixture.class, cf);
+
+        List l = eo.findUnclaimedAbstractProperties();
+
+        assertEquals(2, l.size());
+        assertEquals(true, l.contains("readOnly"));
+        assertEquals(true, l.contains("writeOnly"));
+
+        eo.claimProperty("readOnly");
+
+        l = eo.findUnclaimedAbstractProperties();
+
+        assertEquals(1, l.size());
+        assertEquals(true, l.contains("writeOnly"));
+
+        eo.claimProperty("writeOnly");
+
+        l = eo.findUnclaimedAbstractProperties();
+
+        assertEquals(true, l.isEmpty());
+
+        verifyControls();
+    }
+
+    public void testGetNewMethod()
+    {
+        ClassResolver cr = new DefaultClassResolver();
+        MockControl specc = newControl(IComponentSpecification.class);
+        IComponentSpecification spec = (IComponentSpecification) specc.getMock();
+
+        MockControl cfc = newControl(ClassFactory.class);
+        ClassFactory cf = (ClassFactory) cfc.getMock();
+        MockControl fabc = newControl(ClassFab.class);
+        ClassFab fab = (ClassFab) fabc.getMock();
+
+        fab.addInterface(PageDetachListener.class);
+
+        cf.newClass("$BaseComponent_97", BaseComponent.class, cr.getClassLoader());
+        cfc.setReturnValue(fab);
+
+        replayControls();
+
+        EnhancementOperationImpl eo = new EnhancementOperationImpl(cr, spec, BaseComponent.class,
+                cf);
+
+        MethodSignature sig = EnhanceUtils.PAGE_DETACHED_SIGNATURE;
+
+        BodyBuilder b = eo.getBodyBuilderForMethod(PageDetachListener.class, sig);
+
+        assertEquals("{\n", b.toString());
+
+        verifyControls();
+
+        replayControls();
+
+        // Check that repeated calls return the same body builder and do not
+        // keep adding methods.
+
+        assertSame(b, eo.getBodyBuilderForMethod(PageDetachListener.class, sig));
+
+        verifyControls();
+
+        fab.addMethod(Modifier.PUBLIC, sig, "{\n}\n");
+        fabc.setReturnValue(null);
+
+        fab.createClass();
+        fabc.setReturnValue(BaseComponent.class);
+
+        spec.getLocation();
+        specc.setReturnValue(null);
+
+        replayControls();
+
+        eo.getConstructor();
+
+        assertEquals("{\n}\n", b.toString());
+
+        verifyControls();
+    }
+
+    public void testGetExistingMethod()
+    {
+        ClassResolver cr = new DefaultClassResolver();
+        MockControl specc = newControl(IComponentSpecification.class);
+        IComponentSpecification spec = (IComponentSpecification) specc.getMock();
+
+        MockControl cfc = newControl(ClassFactory.class);
+        ClassFactory cf = (ClassFactory) cfc.getMock();
+        MockControl fabc = newControl(ClassFab.class);
+        ClassFab fab = (ClassFab) fabc.getMock();
+
+        replayControls();
+
+        EnhancementOperationImpl eo = new EnhancementOperationImpl(cr, spec, BaseComponent.class,
+                cf);
+
+        MethodSignature sig = EnhanceUtils.FINISH_LOAD_SIGNATURE;
+
+        BodyBuilder b = eo.getBodyBuilderForMethod(IComponent.class, sig);
+
+        assertEquals("{\n  super.finishLoad($$);\n", b.toString());
+
+        verifyControls();
+
+        cf.newClass("$BaseComponent_97", BaseComponent.class, cr.getClassLoader());
+        cfc.setReturnValue(fab);
+
+        fab.addMethod(Modifier.PUBLIC, sig, "{\n  super.finishLoad($$);\n}\n");
+        fabc.setReturnValue(null);
+
+        fab.createClass();
+        fabc.setReturnValue(BaseComponent.class);
+
+        spec.getLocation();
+        specc.setReturnValue(null);
+
+        replayControls();
+
+        eo.getConstructor();
+
+        verifyControls();
+    }
+
+    public static abstract class ExistingAbstractMethodFixture extends BaseComponent implements
+            PageDetachListener
+    {
+    }
+
+    public void getExistingAbstractMethod()
+    {
+        ClassResolver cr = new DefaultClassResolver();
+        MockControl specc = newControl(IComponentSpecification.class);
+        IComponentSpecification spec = (IComponentSpecification) specc.getMock();
+
+        MockControl cfc = newControl(ClassFactory.class);
+        ClassFactory cf = (ClassFactory) cfc.getMock();
+        MockControl fabc = newControl(ClassFab.class);
+        ClassFab fab = (ClassFab) fabc.getMock();
+
+        replayControls();
+
+        EnhancementOperationImpl eo = new EnhancementOperationImpl(cr, spec,
+                ExistingAbstractMethodFixture.class, cf);
+
+        MethodSignature sig = EnhanceUtils.PAGE_DETACHED_SIGNATURE;
+
+        BodyBuilder b = eo.getBodyBuilderForMethod(PageDetachListener.class, sig);
+
+        assertEquals("{\n", b.toString());
+
+        verifyControls();
+
+        cf.newClass("$ExitingAbstractMethodFixture_97", ExistingAbstractMethodFixture.class, cr
+                .getClassLoader());
+        cfc.setReturnValue(fab);
+
+        fab.addMethod(Modifier.PUBLIC, sig, "{\n}\n");
+        fabc.setReturnValue(null);
+
+        fab.createClass();
+        fabc.setReturnValue(BaseComponent.class);
+
+        spec.getLocation();
+        specc.setReturnValue(null);
+
+        replayControls();
+
+        eo.getConstructor();
+
+        assertEquals("{\n}\n", b.toString());
 
         verifyControls();
     }

@@ -19,9 +19,12 @@ import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -34,6 +37,7 @@ import org.apache.hivemind.service.BodyBuilder;
 import org.apache.hivemind.service.ClassFab;
 import org.apache.hivemind.service.ClassFactory;
 import org.apache.hivemind.service.MethodSignature;
+import org.apache.hivemind.util.ToStringBuilder;
 import org.apache.tapestry.services.ComponentConstructor;
 import org.apache.tapestry.spec.IComponentSpecification;
 
@@ -63,6 +67,18 @@ public class EnhancementOperationImpl implements EnhancementOperation
     private List _constructorTypes = new ArrayList();
 
     private List _constructorArguments = new ArrayList();
+
+    /**
+     * Set of interfaces added to the enhanced class.
+     */
+
+    private Set _addedInterfaces = new HashSet();
+
+    /**
+     * Map of {@link BodyBuilder}, keyed on {@link MethodSignature}.
+     */
+
+    private Map _incompleteMethods = new HashMap();
 
     /**
      * Keyed on class to instance variable name.
@@ -96,6 +112,17 @@ public class EnhancementOperationImpl implements EnhancementOperation
         _classFactory = classFactory;
 
         introspectBaseClass();
+    }
+
+    public String toString()
+    {
+        ToStringBuilder builder = new ToStringBuilder(this);
+
+        builder.append("baseClass", _baseClass.getName());
+        builder.append("claimedProperties", _claimedProperties);
+        builder.append("classFab", _classFab);
+
+        return builder.toString();
     }
 
     private void introspectBaseClass()
@@ -312,6 +339,8 @@ public class EnhancementOperationImpl implements EnhancementOperation
 
     private void finalizeEnhancedClass()
     {
+        finalizeIncompleteMethods();
+
         if (_classFab == null)
             return;
 
@@ -323,6 +352,24 @@ public class EnhancementOperationImpl implements EnhancementOperation
                     .toArray(new Class[_constructorTypes.size()]);
 
             _classFab.addConstructor(types, null, _constructorBuilder.toString());
+        }
+    }
+
+    private void finalizeIncompleteMethods()
+    {
+        Iterator i = _incompleteMethods.entrySet().iterator();
+        while (i.hasNext())
+        {
+            Map.Entry e = (Map.Entry) i.next();
+            MethodSignature sig = (MethodSignature) e.getKey();
+            BodyBuilder builder = (BodyBuilder) e.getValue();
+
+            // Each BodyBuilder is created and given a begin(), this is
+            // the matching end()
+
+            builder.end();
+
+            classFab().addMethod(Modifier.PUBLIC, sig, builder.toString());
         }
     }
 
@@ -372,5 +419,94 @@ public class EnhancementOperationImpl implements EnhancementOperation
         int dotx = baseName.lastIndexOf('.');
 
         return "$" + baseName.substring(dotx + 1) + "_" + _uid++;
+    }
+
+    public BodyBuilder getBodyBuilderForMethod(Class interfaceClass, MethodSignature methodSignature)
+    {
+        addInterfaceIfNeeded(interfaceClass);
+
+        BodyBuilder result = (BodyBuilder) _incompleteMethods.get(methodSignature);
+
+        if (result == null)
+        {
+            result = createIncompleteMethod(methodSignature);
+
+            _incompleteMethods.put(methodSignature, result);
+        }
+
+        return result;
+    }
+
+    private void addInterfaceIfNeeded(Class interfaceClass)
+    {
+        if (interfaceClass.isAssignableFrom(_baseClass))
+            return;
+
+        if (_addedInterfaces.contains(interfaceClass))
+            return;
+
+        classFab().addInterface(interfaceClass);
+        _addedInterfaces.add(interfaceClass);
+    }
+
+    private BodyBuilder createIncompleteMethod(MethodSignature sig)
+    {
+        BodyBuilder result = new BodyBuilder();
+
+        // Matched inside finalizeIncompleteMethods()
+
+        result.begin();
+
+        try
+        {
+            Method m = _baseClass.getMethod(sig.getName(), sig.getParameterTypes());
+
+            if (!Modifier.isAbstract(m.getModifiers()))
+                result.addln("super.{0}($$);", sig.getName());
+        }
+        catch (NoSuchMethodException ex)
+        {
+            // Good; no super-implementation to invoke.
+        }
+
+        return result;
+    }
+
+    public List findUnclaimedAbstractProperties()
+    {
+        List result = new ArrayList();
+
+        Iterator i = _properties.values().iterator();
+
+        while (i.hasNext())
+        {
+            PropertyDescriptor pd = (PropertyDescriptor) i.next();
+
+            String name = pd.getName();
+
+            if (_claimedProperties.contains(name))
+                continue;
+
+            if (isAbstractProperty(pd))
+                result.add(name);
+        }
+
+        return result;
+    }
+
+    /**
+     * A property is abstract if either its read method or it write method is abstract. We could do
+     * some additional checking to ensure that both are abstract if either is. Note that in many
+     * cases, there will only be one accessor (a reader or a writer).
+     */
+    private boolean isAbstractProperty(PropertyDescriptor pd)
+    {
+        return isExistingAbstractMethod(pd.getReadMethod())
+                || isExistingAbstractMethod(pd.getWriteMethod());
+    }
+
+    private boolean isExistingAbstractMethod(Method m)
+    {
+        return m != null && Modifier.isAbstract(m.getModifiers());
     }
 }

@@ -15,7 +15,6 @@
 package org.apache.tapestry.html;
 
 import org.apache.tapestry.BaseComponent;
-import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.bean.EvenOdd;
@@ -28,15 +27,19 @@ import org.apache.tapestry.util.exception.ExceptionDescription;
  * @author Howard Lewis Ship
  */
 
-public class ExceptionDisplay extends BaseComponent
+public abstract class ExceptionDisplay extends BaseComponent
 {
+    public abstract ExceptionDescription[] getExceptions();
+
     private ExceptionDescription _exception;
 
-    private int _count;
-
-    private int _index;
-
     private EvenOdd _evenOdd;
+
+    public abstract int getIndex();
+
+    public abstract int getCount();
+
+    public abstract void setCount(int count);
 
     /**
      * Each time the current exception is set, as a side effect, the evenOdd helper bean is reset to
@@ -57,10 +60,9 @@ public class ExceptionDisplay extends BaseComponent
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        ExceptionDescription[] exceptions = (ExceptionDescription[]) getBinding("exceptions")
-                .getObject("exceptions", ExceptionDescription[].class);
+        ExceptionDescription[] exceptions = getExceptions();
 
-        _count = exceptions.length;
+        setCount(exceptions.length);
 
         try
         {
@@ -75,13 +77,8 @@ public class ExceptionDisplay extends BaseComponent
         }
     }
 
-    public void setIndex(int value)
-    {
-        _index = value;
-    }
-
     public boolean isLast()
     {
-        return _index == (_count - 1);
+        return getIndex() == (getCount() - 1);
     }
 }

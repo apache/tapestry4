@@ -75,9 +75,14 @@
     
     <!-- These can actually run in any order, so we don't specify before or after. -->
     
-    <worker id="specified-property" object="service:SpecifiedPropertyWorker"/>
-    <worker id="parameter" object="service:ParameterPropertyWorker"/>
-    <worker id="inject" object="service:InjectWorker"/>
+    <worker id="specified-property" object="service:SpecifiedPropertyWorker" before="abstract-property"/>
+    <worker id="parameter" object="service:ParameterPropertyWorker" before="abstract-property"/>
+    <worker id="inject" object="service:InjectWorker" before="abstract-property"/>
+    
+    <!-- This should be second to last, or at least, after all other workers have 
+         added and claimed any properties they are going to. -->
+    
+    <worker id="abstract-property" object="service:AbstractPropertyWorker"/>
     
     <!-- This needs to be absolutely last -->
     
@@ -114,6 +119,16 @@
       </construct>
     </invoke-factory>
     
+  </service-point>
+  
+  <service-point id="AbstractPropertyWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+    
+    Finds otherwise unclaimed abstract properties and converts them into concrete properties, as if
+    they were defined in the specification.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.enhance.AbstractPropertyWorker"/>
+    </invoke-factory>
   </service-point>
   
 </module>

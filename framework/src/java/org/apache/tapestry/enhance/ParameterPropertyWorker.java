@@ -96,38 +96,7 @@ public class ParameterPropertyWorker implements EnhancementWorker
             return;
         }
 
-        createSimpleParameterProperty(op, propertyName, propertyType);
-    }
-
-    private void createSimpleParameterProperty(EnhancementOperation op, String propertyName,
-            Class propertyType)
-    {
-        String fieldName = "_$" + propertyName;
-
-        op.addField(fieldName, propertyType);
-
-        createSimpleAccessor(op, fieldName, propertyName, propertyType);
-        createSimpleMutator(op, fieldName, propertyName, propertyType);
-    }
-
-    private void createSimpleAccessor(EnhancementOperation op, String fieldName,
-            String propertyName, Class propertyType)
-    {
-        String methodName = op.getAccessorMethodName(propertyName);
-
-        op.addMethod(
-                Modifier.PUBLIC,
-                new MethodSignature(propertyType, methodName, null, null),
-                "return " + fieldName + ";");
-    }
-
-    private void createSimpleMutator(EnhancementOperation op, String fieldName,
-            String propertyName, Class propertyType)
-    {
-        String methodName = EnhanceUtils.createMutatorMethodName(propertyName);
-
-        op.addMethod(Modifier.PUBLIC, new MethodSignature(void.class, methodName, new Class[]
-        { propertyType }, null), fieldName + " = $1;");
+        EnhanceUtils.createSimpleProperty(op, propertyName, propertyType);
     }
 
     private void createAutoParameterProperty(EnhancementOperation op, String parameterName,

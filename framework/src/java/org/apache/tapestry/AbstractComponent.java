@@ -236,8 +236,8 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
 
     /**
      * Registers this component as a listener of the page if it implements
-     * {@link org.apache.tapestry.event.PageDetachListener}or
-     * {@link org.apache.tapestry.event.PageRenderListener}.
+     * {@link org.apache.tapestry.event.PageDetachListener},
+     * {@link org.apache.tapestry.event.PageRenderListener}or {@link PageValidateListener}.
      * <p>
      * Invokes {@link #finishLoad()}. Subclasses may overide as needed, but must invoke this
      * implementation. {@link BaseComponent}loads its HTML template.
