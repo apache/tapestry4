@@ -82,6 +82,10 @@ import javax.servlet.http.HttpSession;
 public class MockRequest extends AttributeHolder implements HttpServletRequest
 {
     /**
+     * HTTP content type header name.
+     */
+	private static final String CONTENT_TYPE_HEADER_KEY = "Content-type";
+    /**
      *  Map of String[].
      * 
      **/
@@ -131,9 +135,15 @@ public class MockRequest extends AttributeHolder implements HttpServletRequest
         return 0;
     }
 
-    public String getHeader(String arg0)
+    public String getHeader(String key)
     {
-        return null;
+    	String getHeader = null;
+    	
+    	if( key != null)
+    	{
+    		getHeader = (String)_headers.get( key.toLowerCase() );
+    	}
+      return getHeader;
     }
 
     public Enumeration getHeaders(String name)
@@ -265,12 +275,12 @@ public class MockRequest extends AttributeHolder implements HttpServletRequest
 
     public String getContentType()
     {
-        return _contentType;
+    	return this.getHeader( CONTENT_TYPE_HEADER_KEY);
     }
     
     public void setContentType(String contentType)
     {
-    	_contentType = contentType;
+    	this.setHeader( CONTENT_TYPE_HEADER_KEY, contentType);
     }
 
     public ServletInputStream getInputStream() throws IOException
@@ -410,6 +420,14 @@ public class MockRequest extends AttributeHolder implements HttpServletRequest
             
         for (int i = 0; i < cookies.length; i++)
             addCookie(cookies[i]);
+    }
+    
+    private void setHeader(String key, String value)
+    {
+    	if( key != null)
+    	{
+    		_headers.put( key.toLowerCase(), value);
+    	}
     }
     
     /**

@@ -89,18 +89,6 @@ public interface IUploadFile
 	public String getFilePath();
 
 	/**
-	 *  Returns true if the uploaded file was truncated.  In the current
-	 *  implementation, truncation does not occur (which can result in uploaded
-	 *  files eating a lot of memory).  A future enhancement may limit the
-	 *  size of any single file uploaded, or various other measures.  Struts
-	 *  (for example) has
-	 *  a whole host of options targetted at defanging denial of service attacks.
-	 * 
-	 **/
-
-	public boolean isTruncated();
-
-	/**
 	 *  Returns an input stream of the content of the file.  There is no guarantee
 	 *  that this stream will be valid after the end of the current request cycle,
 	 *  so it should be processed immediately.

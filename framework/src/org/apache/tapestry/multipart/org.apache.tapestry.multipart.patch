@@ -1,0 +1,1156 @@
+Index: DefaultMultipartDecoder.java
+===================================================================
+RCS file: /home/cvspublic/jakarta-tapestry/framework/src/org/apache/tapestry/multipart/DefaultMultipartDecoder.java,v
+retrieving revision 1.1
+diff -c -r1.1 DefaultMultipartDecoder.java
+*** DefaultMultipartDecoder.java	5 Mar 2003 22:59:49 -0000	1.1
+--- DefaultMultipartDecoder.java	21 Mar 2003 22:51:11 -0000
+***************
+*** 1,75 ****
+! /* ====================================================================
+!  * The Apache Software License, Version 1.1
+!  *
+!  * Copyright (c) 2000-2003 The Apache Software Foundation.  All rights
+!  * reserved.
+!  *
+!  * Redistribution and use in source and binary forms, with or without
+!  * modification, are permitted provided that the following conditions
+!  * are met:
+!  *
+!  * 1. Redistributions of source code must retain the above copyright
+!  *    notice, this list of conditions and the following disclaimer.
+!  *
+!  * 2. Redistributions in binary form must reproduce the above copyright
+!  *    notice, this list of conditions and the following disclaimer in
+!  *    the documentation and/or other materials provided with the
+!  *    distribution.
+!  *
+!  * 3. The end-user documentation included with the redistribution,
+!  *    if any, must include the following acknowledgment:
+!  *       "This product includes software developed by the
+!  *        Apache Software Foundation (http://apache.org/)."
+!  *    Alternately, this acknowledgment may appear in the software itself,
+!  *    if and wherever such third-party acknowledgments normally appear.
+!  *
+!  * 4. The names "Apache" and "Apache Software Foundation", "Tapestry" 
+!  *    must not be used to endorse or promote products derived from this
+!  *    software without prior written permission. For written
+!  *    permission, please contact apache@apache.org.
+!  *
+!  * 5. Products derived from this software may not be called "Apache" 
+!  *    or "Tapestry", nor may "Apache" or "Tapestry" appear in their 
+!  *    name, without prior written permission of the Apache Software Foundation.
+!  *
+!  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+!  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+!  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+!  * DISCLAIMED.  IN NO EVENT SHALL THE TAPESTRY CONTRIBUTOR COMMUNITY
+!  * BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+!  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+!  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+!  * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+!  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+!  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+!  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+!  * SUCH DAMAGE.
+!  * ====================================================================
+!  *
+!  * This software consists of voluntary contributions made by many
+!  * individuals on behalf of the Apache Software Foundation.  For more
+!  * information on the Apache Software Foundation, please see
+!  * <http://www.apache.org/>.
+!  *
+   */
+- 
+  package org.apache.tapestry.multipart;
+  
+- import java.io.ByteArrayOutputStream;
+- import java.io.File;
+- import java.io.IOException;
+- import java.io.InputStream;
+- import java.io.OutputStream;
+  import java.util.HashMap;
+  import java.util.Iterator;
+  import java.util.Map;
+- 
+  import javax.servlet.http.HttpServletRequest;
+  
+  import org.apache.tapestry.ApplicationRuntimeException;
+- import org.apache.tapestry.Tapestry;
+  import org.apache.tapestry.request.IUploadFile;
+! import org.apache.tapestry.util.StringSplitter;
+  import org.apache.commons.logging.Log;
+  import org.apache.commons.logging.LogFactory;
+  
+--- 1,72 ----
+! /*
+!  *  ====================================================================
+!  *  The Apache Software License, Version 1.1
+!  *
+!  *  Copyright (c) 2002 The Apache Software Foundation.  All rights
+!  *  reserved.
+!  *
+!  *  Redistribution and use in source and binary forms, with or without
+!  *  modification, are permitted provided that the following conditions
+!  *  are met:
+!  *
+!  *  1. Redistributions of source code must retain the above copyright
+!  *  notice, this list of conditions and the following disclaimer.
+!  *
+!  *  2. Redistributions in binary form must reproduce the above copyright
+!  *  notice, this list of conditions and the following disclaimer in
+!  *  the documentation and/or other materials provided with the
+!  *  distribution.
+!  *
+!  *  3. The end-user documentation included with the redistribution,
+!  *  if any, must include the following acknowledgment:
+!  *  "This product includes software developed by the
+!  *  Apache Software Foundation (http://www.apache.org/)."
+!  *  Alternately, this acknowledgment may appear in the software itself,
+!  *  if and wherever such third-party acknowledgments normally appear.
+!  *
+!  *  4. The names "Apache" and "Apache Software Foundation" and
+!  *  "Apache Tapestry" must not be used to endorse or promote products
+!  *  derived from this software without prior written permission. For
+!  *  written permission, please contact apache@apache.org.
+!  *
+!  *  5. Products derived from this software may not be called "Apache",
+!  *  "Apache Tapestry", nor may "Apache" appear in their name, without
+!  *  prior written permission of the Apache Software Foundation.
+!  *
+!  *  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+!  *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+!  *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+!  *  DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+!  *  ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+!  *  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+!  *  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+!  *  USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+!  *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+!  *  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+!  *  OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+!  *  SUCH DAMAGE.
+!  *  ====================================================================
+!  *
+!  *  This software consists of voluntary contributions made by many
+!  *  individuals on behalf of the Apache Software Foundation.  For more
+!  *  information on the Apache Software Foundation, please see
+!  *  <http://www.apache.org/>.
+   */
+  package org.apache.tapestry.multipart;
+  
+  import java.util.HashMap;
+  import java.util.Iterator;
++ import java.util.List;
+  import java.util.Map;
+  import javax.servlet.http.HttpServletRequest;
+  
+  import org.apache.tapestry.ApplicationRuntimeException;
+  import org.apache.tapestry.request.IUploadFile;
+! 
+! import org.apache.commons.fileupload.FileItem;
+! import org.apache.commons.fileupload.FileUpload;
+! import org.apache.commons.fileupload.FileUploadException;
+! 
+  import org.apache.commons.logging.Log;
+  import org.apache.commons.logging.LogFactory;
+  
+***************
+*** 78,475 ****
+   *  file uploads and multi-valued parameters.  After decoding, the class is used
+   *  to access the parameter values.
+   * 
+!  *  <p>This implementation is partially based on the MultipartRequest from
+!  *  <a href="http://sf.net/projects/jetty">Jetty</a> (which is LGPL), and
+!  *  partly from research on the web, including a discussion of the 
+!  *  <a href="http://www.cis.ohio-state.edu/cgi-bin/rfc/rfc1867.html">RFC</a>.
+   *  
+   *  <p>Supports single valued parameters, multi-valued parameters and individual
+   *  file uploads.  That is, for file uploads, each upload must be a unique parameter
+!  *  (that is all the {@link org.apache.tapestry.form.Upload} component needs).
+  
+   *
+!  *  @author Howard Lewis Ship
+!  *  @version $Id: DefaultMultipartDecoder.java,v 1.1 2003/03/05 22:59:49 hlship Exp $
+   *  @since 2.0.1
+   *
+   **/
+! 
+! public class DefaultMultipartDecoder implements IMultipartDecoder
+  {
+!     private static final Log LOG = LogFactory.getLog(DefaultMultipartDecoder.class);
+! 
+!     public static final String MULTIPART_FORM_DATA_CONTENT_TYPE = "multipart/form-data";
+! 
+!     private static final String QUOTE = "\"";
+! 
+!     private Map partMap = new HashMap();
+! 
+!     public static boolean isMultipartRequest(HttpServletRequest request)
+!     {
+!         String contentType = request.getContentType();
+! 
+!         if (contentType == null)
+!             return false;
+! 
+!         return contentType.startsWith(MULTIPART_FORM_DATA_CONTENT_TYPE);
+!     }
+! 
+!     private void close(InputStream stream)
+!     {
+!         try
+!         {
+!             if (stream != null)
+!                 stream.close();
+!         }
+!         catch (IOException ex)
+!         {
+!             // Ignore.
+!         }
+!     }
+! 
+!     private static final String BOUNDARY = "boundary=";
+! 
+!     public void decode(HttpServletRequest request)
+!     {
+!         if (!isMultipartRequest(request))
+!             throw new ApplicationRuntimeException(
+!                 Tapestry.getString(
+!                     "MultipartDecoder.wrong-content-type",
+!                     request.getContentType()));
+! 
+!         String contentType = request.getContentType();
+!         int pos = contentType.indexOf(BOUNDARY);
+! 
+!         String boundaryString = "--" + contentType.substring(pos + BOUNDARY.length());
+!         byte[] boundary = (boundaryString + "--").getBytes();
+! 
+!         LineInput input = null;
+! 
+!         try
+!         {
+!             input = new LineInput(request.getInputStream());
+! 
+!             checkForInitialBoundary(input, boundaryString);
+! 
+!             boolean last = false;
+! 
+!             while (!last)
+!             {
+!                 last = readNextPart(input, boundary);
+!             }
+!         }
+!         catch (IOException ex)
+!         {
+!             LOG.error(
+!                 Tapestry.getString("MultipartDecoder.io-exception-reading-input", ex.getMessage()),
+!                 ex);
+! 
+!             // Cleanup any partial upload files.
+! 
+!             cleanup();
+! 
+!             throw new ApplicationRuntimeException(ex);
+!         }
+!         finally
+!         {
+!             //		close(input);
+!         }
+! 
+!     }
+! 
+!     private void checkForInitialBoundary(LineInput input, String boundary) throws IOException
+!     {
+!         String line = input.readLine();
+! 
+!         if (line != null && line.equals(boundary))
+!             return;
+! 
+!         throw new ApplicationRuntimeException(
+!             Tapestry.getString("MultipartDecoder.missing-initial-boundary"));
+!     }
+! 
+!     private boolean readNextPart(LineInput input, byte[] boundary) throws IOException
+!     {
+!         String disposition = null;
+!         String contentType = null;
+! 
+!         // First read the various headers (before the content)
+! 
+!         while (true)
+!         {
+!             String line = input.readLine();
+! 
+!             if (line == null || line.length() == 0)
+!                 break;
+! 
+!             int colonx = line.indexOf(':');
+! 
+!             if (colonx > 0)
+!             {
+!                 String key = line.substring(0, colonx).toLowerCase();
+! 
+!                 if (key.equals("content-disposition"))
+!                 {
+!                     disposition = line.substring(colonx + 1).trim();
+!                     continue;
+!                 }
+! 
+!                 if (key.equals("content-type"))
+!                 {
+!                     contentType = line.substring(colonx + 1).trim();
+!                     continue;
+!                 }
+!             }
+! 
+!         }
+! 
+!         if (disposition == null)
+!             throw new ApplicationRuntimeException(
+!                 Tapestry.getString("MultipartDecoder.missing-content-disposition"));
+! 
+!         Map dispositionMap = explodeDisposition(disposition);
+!         String name = (String) dispositionMap.get("name");
+! 
+!         if (Tapestry.isNull(name))
+!             throw new ApplicationRuntimeException(
+!                 Tapestry.getString("MultipartDecoder.invalid-content-disposition", disposition));
+! 
+!         if (!dispositionMap.containsKey("filename"))
+!             return readValuePart(input, boundary, name);
+! 
+!         String fileName = (String) dispositionMap.get("filename");
+! 
+!         return readFilePart(input, boundary, name, fileName, contentType);
+!     }
+! 
+!     private static StringSplitter splitter = new StringSplitter(';');
+! 
+!     private Map explodeDisposition(String disposition)
+!     {
+!         Map result = new HashMap();
+! 
+!         String[] elements = splitter.splitToArray(disposition);
+! 
+!         for (int i = 0; i < elements.length; i++)
+!         {
+!             String element = elements[i];
+!             int x = element.indexOf('=');
+! 
+!             if (x < 0)
+!                 continue;
+! 
+!             String key = element.substring(0, x).trim();
+!             String rawValue = element.substring(x + 1);
+! 
+!             if (!(rawValue.startsWith(QUOTE) && rawValue.endsWith(QUOTE)))
+!                 throw new ApplicationRuntimeException(
+!                     Tapestry.getString(
+!                         "MultipartDecoder.invalid-content-disposition",
+!                         disposition));
+! 
+!             result.put(key, rawValue.substring(1, rawValue.length() - 1));
+! 
+!         }
+! 
+!         return result;
+!     }
+! 
+!     private boolean readFilePart(
+!         LineInput input,
+!         byte[] boundary,
+!         String name,
+!         String fileName,
+!         String contentType)
+!         throws IOException
+!     {
+!         UploadOutputStream uploadStream = new UploadOutputStream();
+! 
+!         boolean last = readIntoStream(input, boundary, uploadStream);
+! 
+!         uploadStream.close();
+! 
+!         File file = uploadStream.getContentFile();
+! 
+!         UploadPart p;
+! 
+!         if (LOG.isDebugEnabled())
+!             LOG.debug("Read file part '" + name + "'.");
+! 
+!         if (file != null)
+!             p = new UploadPart(fileName, contentType, file);
+!         else
+!             p = new UploadPart(fileName, contentType, uploadStream.getContent());
+! 
+!         partMap.put(name, p);
+! 
+!         return last;
+!     }
+! 
+!     private boolean readValuePart(LineInput input, byte[] boundary, String name) throws IOException
+!     {
+!         ByteArrayOutputStream baos = new ByteArrayOutputStream();
+! 
+!         boolean last = readIntoStream(input, boundary, baos);
+! 
+!         baos.close();
+! 
+!         String value = baos.toString();
+! 
+!         if (LOG.isDebugEnabled())
+!             LOG.debug("Read value part '" + name + "' with value: " + value);
+! 
+!         ValuePart p = (ValuePart) partMap.get(name);
+! 
+!         if (p == null)
+!         {
+!             p = new ValuePart(value);
+!             partMap.put(name, p);
+!         }
+!         else
+!             p.add(value);
+! 
+!         return last;
+!     }
+! 
+!     private static final int CR = 13;
+!     private static final int LF = 10;
+!     private static final int SPECIAL = -2;
+! 
+!     /**
+!      *  Copies the input stream into the output stream, stopping once the boundary is seen
+!      *  (the boundary is not copied).  Returns true when the input stream is exhausted,
+!      *  false otherwise.
+!      * 
+!      *  This is an ugly cut and past of ugly code from Jetty.  This really needs to be fixed!
+!      * 
+!      **/
+! 
+!     private boolean readIntoStream(LineInput input, byte[] boundary, OutputStream stream)
+!         throws IOException
+!     {
+!         boolean result = false;
+!         int c = 0;
+!         boolean cr = false;
+!         boolean lf = false;
+!         int _char = SPECIAL;
+!         boolean more = true;
+! 
+!         while (true)
+!         {
+!             int b = 0;
+! 
+!             while (more)
+!             {
+!                 c = (_char != SPECIAL) ? _char : input.read();
+! 
+!                 if (c == -1)
+!                 {
+!                     more = false;
+!                     continue;
+!                 }
+! 
+!                 _char = SPECIAL;
+! 
+!                 // look for CR and/or LF
+!                 if (c == CR || c == LF)
+!                 {
+!                     if (c == CR)
+!                         _char = input.read();
+!                     break;
+!                 }
+! 
+!                 // look for boundary
+!                 if (b >= 0 && b < boundary.length && c == boundary[b])
+!                     b++;
+!                 else
+!                 {
+!                     // this is not a boundary
+!                     if (cr)
+!                         stream.write(CR);
+!                     if (lf)
+!                         stream.write(LF);
+!                     cr = lf = false;
+! 
+!                     if (b > 0)
+!                         stream.write(boundary, 0, b);
+!                     b = -1;
+! 
+!                     stream.write(c);
+!                 }
+!             }
+! 
+!             // check partial boundary
+!             if ((b > 0 && b < boundary.length - 2) || (b == boundary.length - 1))
+!             {
+!                 stream.write(boundary, 0, b);
+!                 b = -1;
+!             }
+! 
+!             // boundary match
+!             if (b > 0 || c == -1)
+!             {
+!                 if (b == boundary.length)
+!                     result = true;
+! 
+!                 if (_char == LF)
+!                     _char = SPECIAL;
+! 
+!                 break;
+!             }
+! 
+!             // handle CR LF
+!             if (cr)
+!                 stream.write(CR);
+!             if (lf)
+!                 stream.write(LF);
+! 
+!             cr = (c == CR);
+!             lf = (c == LF || _char == LF);
+! 
+!             if (_char == LF)
+!                 _char = SPECIAL;
+!         }
+! 
+!         return result;
+!     }
+  
+      /**
+       *  Invokes {@link IPart#cleanup()} on each part.
+       * 
+       **/
+- 
+      public void cleanup()
+      {
+!         Iterator i = partMap.values().iterator();
+          while (i.hasNext())
+          {
+              IPart part = (IPart) i.next();
+              part.cleanup();
+          }
+      }
+  
+!     public String getString(String name)
+!     {
+!         ValuePart p = (ValuePart) partMap.get(name);
+! 
+!         if (p == null)
+!             return null;
+! 
+!         return p.getValue();
+!     }
+! 
+!     public String[] getStrings(String name)
+!     {
+!         ValuePart p = (ValuePart) partMap.get(name);
+! 
+!         if (p == null)
+!             return null;
+! 
+!         return p.getValues();
+!     }
+! 
+!     public IUploadFile getUploadFile(String name)
+!     {
+!         return (UploadPart) partMap.get(name);
+!     }
+! }
+\ No newline at end of file
+--- 75,266 ----
+   *  file uploads and multi-valued parameters.  After decoding, the class is used
+   *  to access the parameter values.
+   * 
+!  *  <p>This implementation is a thin wrapper around the Apache Jakarta
+!  *  <a href="http://jakarta.apache.org/commons/fileupload/">FileUpload</a>. 
+   *  
+   *  <p>Supports single valued parameters, multi-valued parameters and individual
+   *  file uploads.  That is, for file uploads, each upload must be a unique parameter
+!  *  (that is all the {@link net.sf.tapestry.form.Upload} component needs).
+  
+   *
+!  *  @author Joe Panico
+!  *  @version $Id: DefaultMultipartDecoder.java,v 1.1 2003/01/16 00:53:56 hlship Exp $
+   *  @since 2.0.1
+   *
+   **/
+! public class DefaultMultipartDecoder
+! 	extends Object
+! 	implements IMultipartDecoder
+  {
+! 	public static final int DEFAULT_MAX_SIZE = 10000000;
+! 	public static final int DEFAULT_THRESHOLD_SIZE = 1024;
+! 	public static final String DEFAULT_REPOSITORY_PATH = System.getProperty("java.io.tmpdir");
+! 	 	
+! 	private static final Log LOG =
+! 		LogFactory.getLog(DefaultMultipartDecoder.class);
+! 		
+! 	private static int _maxSize = DEFAULT_MAX_SIZE;
+! 	private static int _thresholdSize = DEFAULT_THRESHOLD_SIZE;
+! 	private static String _repositoryPath = DEFAULT_REPOSITORY_PATH;
+! 	
+! 	private Map _partMap = new HashMap();
+! 
+! 
+! 	public static void setMaxSize(int maxSize)
+! 	{
+! 		_maxSize = maxSize;
+! 	}
+! 	
+! 	public static int getMaxSize()
+! 	{
+! 		return _maxSize;
+! 	}
+! 	
+! 	public static  void setThresholdSize(int thresholdSize)
+! 	{
+! 		_thresholdSize = thresholdSize;
+! 	}
+! 	
+! 	public static int getThresholdSize()
+! 	{
+! 		return _thresholdSize;
+! 	}
+! 	
+! 	public static void setRepositoryPath(String repositoryPath)
+! 	{
+! 		_repositoryPath = repositoryPath;
+! 	}
+! 	
+! 	public static String getRepositoryPath()
+! 	{
+! 		return _repositoryPath;
+! 	}
+! 	
+! 	public static boolean isMultipartRequest(HttpServletRequest request)
+! 	{
+! 		return FileUpload.isMultipartContent(request);
+! 	}
+  
+      /**
+       *  Invokes {@link IPart#cleanup()} on each part.
+       * 
+       **/
+      public void cleanup()
+      {
+!         Iterator i = _partMap.values().iterator();
+          while (i.hasNext())
+          {
+              IPart part = (IPart) i.next();
+              part.cleanup();
+          }
+      }
++ 	
++ 	/**
++ 	 * @see net.sf.tapestry.multipart.IMultipartDecoder#decode(HttpServletRequest)
++ 	 * 
++ 	 * @throws ApplicationRuntimeException if decode fails, for instance the
++ 	 * request exceeds getMaxSize()
++ 	 */
++ 	public void decode(HttpServletRequest request)
++ 	{
++ 		if (request != null)
++ 		{
++ 			try
++ 			{
++ 				FileUpload aFileUpload = new FileUpload();
++ 
++ 				aFileUpload.setSizeMax(_maxSize);
++ 				aFileUpload.setSizeThreshold(_thresholdSize);
++ 				aFileUpload.setRepositoryPath(_repositoryPath);
++ 
++ 				List someParts = aFileUpload.parseRequest(request);
++ 
++ 				if ((someParts != null) && (someParts.size() > 0))
++ 				{
++ 					Iterator aPartIterator = someParts.iterator();
++ 					while (aPartIterator.hasNext())
++ 					{
++ 						FileItem aPart = (FileItem) aPartIterator.next();
++ 						if (aPart.isFormField())
++ 						{
++ 							String aPartName = aPart.getFieldName();
++ 							ValuePart aValuePart = (ValuePart) _partMap.get(aPartName);
++ 							if (aValuePart != null)
++ 							{
++ 								aValuePart.add(aPart.getString());
++ 							}
++ 							else
++ 							{
++ 								aValuePart = new ValuePart(aPart.getString());
++ 								_partMap.put(aPartName, aValuePart);
++ 							}
++ 						}
++ 						else
++ 						{
++ 							UploadPart aFile = new UploadPart(aPart);
++ 
++ 							_partMap.put(aPart.getFieldName(), aFile);
++ 						}
++ 					}
++ 				}
++ 			}
++ 			catch (FileUploadException e)
++ 			{
++ 				LOG.warn("decode", e);
++ 				throw new ApplicationRuntimeException(e);
++ 			}
++ 		}
++ 
++ 	}
++ 
++ 	/**
++ 	 * @see net.sf.tapestry.multipart.IMultipartDecoder#getString(String)
++ 	 */
++ 	public String getString(String name)
++ 	{
++ 		String getString = null;
++ 
++ 		if (name != null)
++ 		{
++ 			ValuePart aPart = (ValuePart) _partMap.get(name);
++ 			if (aPart != null)
++ 			{
++ 				getString = aPart.getValue();
++ 			}
++ 		}
++ 		return getString;
++ 	}
++ 
++ 	/**
++ 	 * @see net.sf.tapestry.multipart.IMultipartDecoder#getStrings(String)
++ 	 */
++ 	public String[] getStrings(String name)
++ 	{
++ 		String[] getStrings = null;
++ 
++ 		if (name != null)
++ 		{
++ 			ValuePart aPart = (ValuePart) _partMap.get(name);
++ 			if (aPart != null)
++ 			{
++ 				getStrings = aPart.getValues();
++ 			}
++ 		}
++ 		return getStrings;
++ 	}
++ 
++ 	/**
++ 	 * @see net.sf.tapestry.multipart.IMultipartDecoder#getUploadFile(String)
++ 	 */
++ 	public IUploadFile getUploadFile(String name)
++ 	{
++ 		IUploadFile getUploadFile = null;
++ 
++ 		if (name != null)
++ 		{
++ 			getUploadFile = (IUploadFile) _partMap.get(name);
++ 		}
++ 		return getUploadFile;
++ 	}
+  
+! }
+Index: UploadPart.java
+===================================================================
+RCS file: /home/cvspublic/jakarta-tapestry/framework/src/org/apache/tapestry/multipart/UploadPart.java,v
+retrieving revision 1.1
+diff -c -r1.1 UploadPart.java
+*** UploadPart.java	5 Mar 2003 22:59:49 -0000	1.1
+--- UploadPart.java	21 Mar 2003 22:51:11 -0000
+***************
+*** 1,193 ****
+! /* ====================================================================
+!  * The Apache Software License, Version 1.1
+!  *
+!  * Copyright (c) 2000-2003 The Apache Software Foundation.  All rights
+!  * reserved.
+!  *
+!  * Redistribution and use in source and binary forms, with or without
+!  * modification, are permitted provided that the following conditions
+!  * are met:
+!  *
+!  * 1. Redistributions of source code must retain the above copyright
+!  *    notice, this list of conditions and the following disclaimer.
+!  *
+!  * 2. Redistributions in binary form must reproduce the above copyright
+!  *    notice, this list of conditions and the following disclaimer in
+!  *    the documentation and/or other materials provided with the
+!  *    distribution.
+!  *
+!  * 3. The end-user documentation included with the redistribution,
+!  *    if any, must include the following acknowledgment:
+!  *       "This product includes software developed by the
+!  *        Apache Software Foundation (http://apache.org/)."
+!  *    Alternately, this acknowledgment may appear in the software itself,
+!  *    if and wherever such third-party acknowledgments normally appear.
+!  *
+!  * 4. The names "Apache" and "Apache Software Foundation", "Tapestry" 
+!  *    must not be used to endorse or promote products derived from this
+!  *    software without prior written permission. For written
+!  *    permission, please contact apache@apache.org.
+!  *
+!  * 5. Products derived from this software may not be called "Apache" 
+!  *    or "Tapestry", nor may "Apache" or "Tapestry" appear in their 
+!  *    name, without prior written permission of the Apache Software Foundation.
+!  *
+!  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+!  * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+!  * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+!  * DISCLAIMED.  IN NO EVENT SHALL THE TAPESTRY CONTRIBUTOR COMMUNITY
+!  * BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+!  * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+!  * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+!  * USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+!  * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+!  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+!  * OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+!  * SUCH DAMAGE.
+!  * ====================================================================
+!  *
+!  * This software consists of voluntary contributions made by many
+!  * individuals on behalf of the Apache Software Foundation.  For more
+!  * information on the Apache Software Foundation, please see
+!  * <http://www.apache.org/>.
+!  *
+   */
+- 
+  package org.apache.tapestry.multipart;
+  
+- import java.io.ByteArrayInputStream;
+  import java.io.File;
+- import java.io.FileInputStream;
+  import java.io.IOException;
+  import java.io.InputStream;
+  
+  import org.apache.commons.logging.Log;
+  import org.apache.commons.logging.LogFactory;
+  
+- import org.apache.tapestry.ApplicationRuntimeException;
+- import org.apache.tapestry.Tapestry;
+- import org.apache.tapestry.request.IUploadFile;
+  
+  /**
+   *  Portion of a multi-part request representing an uploaded file.
+   *
+!  *  @author Howard Lewis Ship
+!  *  @version $Id: UploadPart.java,v 1.1 2003/03/05 22:59:49 hlship Exp $
+   *  @since 2.0.1
+   *
+   **/
+! 
+! public class UploadPart implements IUploadFile, IPart
+  {
+!     private static final Log LOG = LogFactory.getLog(UploadPart.class);
+  
+!     private byte[] _content;
+!     private File _contentFile;
+!     private String _filePath;
+!     private String _contentType;
+! 
+!     public UploadPart(String filePath, String contentType, byte[] content)
+!     {
+!         _filePath = filePath;
+!         _contentType = contentType;
+!         _content = content;
+!     }
+! 
+!     public UploadPart(String filePath, String contentType, File contentFile)
+!     {
+!         _filePath = filePath;
+!         _contentType = contentType;        
+!         _contentFile = contentFile;
+!     }
+  
+  	/**
+  	 *  @since 2.0.4
+  	 * 
+  	 **/
+! 	
+!     public String getFilePath()
+!     {
+!         return _filePath;
+!     }
+  
+  	/**
+! 	 *  Always returns false, at least so far.  Future enhancements
+! 	 *  may involve truncating the input if it exceeds a certain
+! 	 *  size or upload time (such things may be used for denial
+! 	 *  of service attacks).
+! 	 * 
+! 	 **/
+! 	
+!     public boolean isTruncated()
+!     {
+!         return false;
+!     }
+! 
+!     public InputStream getStream()
+!     {
+!         if (_content != null)
+!             return new ByteArrayInputStream(_content);
+! 
+!         try
+!         {
+!             return new FileInputStream(_contentFile);
+!         }
+!         catch (IOException ex)
+!         {
+!             throw new ApplicationRuntimeException(
+!                 Tapestry.getString(
+!                     "UploadPart.unable-to-open-content-file",
+!                     _filePath,
+!                     _contentFile.getAbsolutePath()),
+!                 ex);
+!         }
+!     }
+  
+!     /**
+!      *  Deletes the external content file, if one exists.
+!      * 
+!      **/
+  
+-     public void cleanup()
+-     {
+-         if (_contentFile != null)
+-         {
+-             if (LOG.isDebugEnabled())
+-                 LOG.debug("Deleting upload file " + _contentFile + ".");
+- 
+-             boolean success = _contentFile.delete();
+- 
+-             if (!success)
+-                 LOG.warn(
+-                     Tapestry.getString(
+-                         "UploadPart.temporary-file-not-deleted",
+-                         _contentFile.getAbsolutePath()));
+- 
+-             // In rare cases (when exceptions are thrown while the request
+-             // is decoded), cleanup() may be called multiple times.
+- 
+-             _contentFile = null;
+-         }
+- 
+-     }
+-     
+-     
+      /**
+!      *  Leverages {@link File} to convert the full file path and extract
+!      *  the name.
+       * 
+       **/
+!     
+!     public String getFileName()
+!     {
+!   		File file = new File(_filePath);
+!   		
+!   		return file.getName();
+!     }
+! 
+!     public String getContentType()
+!     {
+!         return _contentType;
+!     }
+  
+! }
+\ No newline at end of file
+--- 1,201 ----
+! /*
+!  *  ====================================================================
+!  *  The Apache Software License, Version 1.1
+!  *
+!  *  Copyright (c) 2002 The Apache Software Foundation.  All rights
+!  *  reserved.
+!  *
+!  *  Redistribution and use in source and binary forms, with or without
+!  *  modification, are permitted provided that the following conditions
+!  *  are met:
+!  *
+!  *  1. Redistributions of source code must retain the above copyright
+!  *  notice, this list of conditions and the following disclaimer.
+!  *
+!  *  2. Redistributions in binary form must reproduce the above copyright
+!  *  notice, this list of conditions and the following disclaimer in
+!  *  the documentation and/or other materials provided with the
+!  *  distribution.
+!  *
+!  *  3. The end-user documentation included with the redistribution,
+!  *  if any, must include the following acknowledgment:
+!  *  "This product includes software developed by the
+!  *  Apache Software Foundation (http://www.apache.org/)."
+!  *  Alternately, this acknowledgment may appear in the software itself,
+!  *  if and wherever such third-party acknowledgments normally appear.
+!  *
+!  *  4. The names "Apache" and "Apache Software Foundation" and
+!  *  "Apache Tapestry" must not be used to endorse or promote products
+!  *  derived from this software without prior written permission. For
+!  *  written permission, please contact apache@apache.org.
+!  *
+!  *  5. Products derived from this software may not be called "Apache",
+!  *  "Apache Tapestry", nor may "Apache" appear in their name, without
+!  *  prior written permission of the Apache Software Foundation.
+!  *
+!  *  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+!  *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+!  *  OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+!  *  DISCLAIMED.  IN NO EVENT SHALL THE APACHE SOFTWARE FOUNDATION OR
+!  *  ITS CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+!  *  SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+!  *  LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+!  *  USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+!  *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+!  *  OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+!  *  OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+!  *  SUCH DAMAGE.
+!  *  ====================================================================
+!  *
+!  *  This software consists of voluntary contributions made by many
+!  *  individuals on behalf of the Apache Software Foundation.  For more
+!  *  information on the Apache Software Foundation, please see
+!  *  <http://www.apache.org/>.
+   */
+  package org.apache.tapestry.multipart;
+  
+  import java.io.File;
+  import java.io.IOException;
+  import java.io.InputStream;
+  
++ import org.apache.tapestry.ApplicationRuntimeException;
++ import org.apache.tapestry.request.IUploadFile;
++ 
++ import org.apache.commons.fileupload.DefaultFileItem;
++ import org.apache.commons.fileupload.FileItem;
+  import org.apache.commons.logging.Log;
+  import org.apache.commons.logging.LogFactory;
+  
+  
+  /**
+   *  Portion of a multi-part request representing an uploaded file.
+   *
+!  *  @author Joe Panico
+!  *  @version $Id: UploadPart.java,v 1.10 2003/01/13 03:33:23 hlship Exp $
+   *  @since 2.0.1
+   *
+   **/
+! public class UploadPart extends Object 
+! 	implements IUploadFile, IPart
+  {
+! 	private static final Log LOG =
+! 		LogFactory.getLog(UploadPart.class);
+! 		
+! 	FileItem _fileItem;
+! 	
+! 	public UploadPart(FileItem fileItem)
+! 	{
+! 		if( fileItem != null)
+! 		{
+! 			_fileItem = fileItem;
+! 		}
+! 		else
+! 		{
+! 			String aMessage = "UploadPart(FileItem) does not accept null args";
+! 			throw new IllegalArgumentException( aMessage);
+! 		}
+! 	}
+! 	
+! 	public static UploadPart newInstance(
+! 		String path,
+! 		String name,
+! 		String contentType,
+! 		int requestSize,
+! 		int threshold)
+! 	{
+! 		UploadPart newInstance = null;
+! 		FileItem aFileItem =
+! 			DefaultFileItem.newInstance(
+! 				path,
+! 				name,
+! 				contentType,
+! 				requestSize,
+! 				threshold);
+! 		
+! 		if( aFileItem != null)
+! 		{
+! 			newInstance = new UploadPart( aFileItem);
+! 		}
+! 		return newInstance;
+! 	}
+!                                        
+! 	/**
+! 	 * @see net.sf.tapestry.IUploadFile#getContentType()
+! 	 */
+! 	public String getContentType()
+! 	{
+! 		return _fileItem.getContentType();
+! 	}
+  
+!     /**
+!      *  Leverages {@link File} to convert the full file path and extract
+!      *  the name.
+!      * 
+!      **/
+! 	public String getFileName()
+! 	{
+!   		File aFile = new File( this.getFilePath() );
+!   		
+!   		return aFile.getName();
+! 	}
+  
+  	/**
+  	 *  @since 2.0.4
+  	 * 
+  	 **/
+! 	public String getFilePath()
+! 	{
+! 		return _fileItem.getName();
+! 	}
+  
+  	/**
+! 	 * @see net.sf.tapestry.IUploadFile#getStream()
+! 	 */
+! 	public InputStream getStream()
+! 	{
+! 		InputStream getStream = null;
+! 		
+! 		try
+! 		{
+! 			getStream = _fileItem.getInputStream();
+! 		}
+! 		catch (IOException e)
+! 		{
+! 			LOG.warn("getStream", e);
+! 			
+! 			throw new ApplicationRuntimeException(
+! 				"Unable to open uploaded file",
+! 				e);
+! 		}
+! 		
+! 		return getStream;
+! 	}
+  
+! 	/**
+! 	 * The current implementation does not truncate. Parts that are too
+! 	 * large cause a decode failure
+! 	 */
+! 	public boolean isTruncated()
+! 	{
+! 		return false;
+! 	}
+  
+      /**
+!      *  Deletes the external content file, if one exists.
+       * 
+       **/
+! 	public void cleanup()
+! 	{
+! 		_fileItem.delete();
+! 		// unfortunately FileItem.delete() does not signal success, so
+! 		// we rely on a little more internal knowledge than is ideal
+! 		File aStorageLocation = _fileItem.getStoreLocation();
+! 		if( (aStorageLocation != null) && (aStorageLocation.exists()) )
+! 		{
+! 			String aMessage = "Unable to delete FileItem: " + _fileItem;
+! 			
+! 			throw new ApplicationRuntimeException(aMessage);
+! 		}
+! 	}
+  
+! }

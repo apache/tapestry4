@@ -78,4 +78,14 @@ href="/c22/app?service=direct/0/Home/start"
 		
 	</request>
 	
+	<request
+		content-type="multipart/form-data; boundary=---------------------------eldorado" 
+		content-path="context22/page-home.request">	
+		
+		<assert-output name="Title">
+<![CDATA[
+<title>Home</title>
+]]>	
+		</assert-output>
+	</request>
 </mock-test>

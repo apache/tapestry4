@@ -70,19 +70,19 @@ import java.util.List;
 
 public class ValuePart implements IPart
 {
-    private int count;
+    private int _count;
     // Stores either String or List of String
-    private Object value;
+    private Object _value;
 
     public ValuePart(String value)
     {
-        count = 1;
-        this.value = value;
+        _count = 1;
+        _value = value;
     }
 
     public int getCount()
     {
-        return count;
+        return _count;
     }
 
     /**
@@ -92,10 +92,10 @@ public class ValuePart implements IPart
 
     public String getValue()
     {
-        if (count == 1)
-            return (String) value;
+        if (_count == 1)
+            return (String) _value;
 
-        List l = (List) value;
+        List l = (List) _value;
 
         return (String) l.get(0);
     }
@@ -108,30 +108,30 @@ public class ValuePart implements IPart
 
     public String[] getValues()
     {
-        if (count == 1)
-            return new String[] {(String) value };
+        if (_count == 1)
+            return new String[] {(String) _value };
 
-        List l = (List) value;
+        List l = (List) _value;
 
-        return (String[]) l.toArray(new String[count]);
+        return (String[]) l.toArray(new String[_count]);
     }
 
     public void add(String newValue)
     {
-        if (count == 1)
+        if (_count == 1)
         {
             List l = new ArrayList();
-            l.add(value);
+            l.add(_value);
             l.add(newValue);
 
-            value = l;
-            count++;
+            _value = l;
+            _count++;
             return;
         }
 
-        List l = (List) value;
+        List l = (List) _value;
         l.add(newValue);
-        count++;
+        _count++;
     }
 
     /**

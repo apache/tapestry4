@@ -79,16 +79,15 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.tapestry.ApplicationServlet;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.multipart.IMultipartDecoder;
+import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.multipart.DefaultMultipartDecoder;
+import org.apache.tapestry.multipart.IMultipartDecoder;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.util.IRenderDescription;
-import org.apache.tapestry.util.StringSplitter;
 
 /**
  *  This class encapsulates all the relevant data for one request cycle of an
@@ -141,7 +140,6 @@ public class RequestContext implements IRender
 
     private static class DefaultRequestDecoder implements IRequestDecoder
     {
-
         public DecodedRequest decodeRequest(HttpServletRequest request)
         {
             DecodedRequest result = new DecodedRequest();
@@ -153,21 +151,9 @@ public class RequestContext implements IRender
 
             return result;
         }
-
     }
 
     private static final Log LOG = LogFactory.getLog(RequestContext.class);
-
-
-    /**
-     *   Key used to obtain an extension from the application specification.  The extension,
-     *   if it exists, implements {@link IRequestDecoder}.
-     * 
-     *   @since 2.2
-     * 
-     **/
-
-    public static final String REQUEST_DECODER_EXTENSION_NAME = "org.apache.tapestry.request-decoder";
 
     private HttpSession _session;
     private HttpServletRequest _request;
@@ -191,44 +177,14 @@ public class RequestContext implements IRender
     private boolean _evenRow;
 
     /**
-     * Identifies which characters are safe in a URL, and do not need any encoding.
-     *
-     **/
-
-    private static BitSet _safe;
-
-    static {
-        int i;
-        _safe = new BitSet(256);
-
-        for (i = 'a'; i <= 'z'; i++)
-            _safe.set(i);
-
-        for (i = 'A'; i <= 'Z'; i++)
-            _safe.set(i);
-
-        for (i = '0'; i <= '9'; i++)
-            _safe.set(i);
-
-        _safe.set('.');
-        _safe.set('-');
-        _safe.set('_');
-        _safe.set('*');
-    }
-
-    /**
-     * Used to quickly convert a 8 bit character value to a hex string.
-     **/
-
-    private static final char HEX[] =
-        { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F' };
-
-    /**
      * Creates a <code>RequestContext</code> from its components.
      *
      **/
 
-    public RequestContext(ApplicationServlet servlet, HttpServletRequest request, HttpServletResponse response)
+    public RequestContext(
+        ApplicationServlet servlet,
+        HttpServletRequest request,
+        HttpServletResponse response)
         throws IOException
     {
         _servlet = servlet;
@@ -240,7 +196,7 @@ public class RequestContext implements IRender
 
         if (_request != null && DefaultMultipartDecoder.isMultipartRequest(request))
         {
-            _decoder = createMultipartDecoder(request);
+            _decoder = obtainMultipartDecoder(servlet, request);
             _decoder.decode(request);
         }
     }
@@ -252,15 +208,31 @@ public class RequestContext implements IRender
      *  {@link IMultipartDecoder#decode(HttpServletRequest)} on the
      *  returned object.
      * 
+     *  <p>
+     *  This implementation checks for application extension
+     *  {@link Tapestry#MULTIPART_DECODER_EXTENSION_NAME}.  If that is not
+     *  defined, a shared instance of {@link DefaultMultipartDecoder}
+     *  is returned.  
+     *
+     * 
      *  @see ApplicationServlet#createRequestContext(HttpServletRequest, HttpServletResponse)
-     *  @since 2.3
+     *  @since 2.4
      * 
      **/
-    
-    protected IMultipartDecoder createMultipartDecoder(HttpServletRequest request)
-    throws IOException
+
+    protected IMultipartDecoder obtainMultipartDecoder(
+        ApplicationServlet servlet,
+        HttpServletRequest request)
+        throws IOException
     {
-        return new DefaultMultipartDecoder();
+        IApplicationSpecification spec = servlet.getApplicationSpecification();
+
+        if (spec.checkExtension(Tapestry.MULTIPART_DECODER_EXTENSION_NAME))
+            return (IMultipartDecoder) spec.getExtension(
+                Tapestry.MULTIPART_DECODER_EXTENSION_NAME,
+                IMultipartDecoder.class);
+
+        return DefaultMultipartDecoder.getSharedInstance();
     }
 
     /**
@@ -301,41 +273,6 @@ public class RequestContext implements IRender
         pair(writer, name, new Date(value));
     }
 
-    /**
-     * Encodes a <code>java.awt.Color</code> in the standard HTML
-     * format: a pound sign ('#'), followed by six hex digits for
-     * specifying the red, green and blue components of the color.
-     *
-     **/
-
-    public static String encodeColor(Color color)
-    {
-        char[] buffer;
-        int component;
-
-        buffer = new char[7];
-        buffer[0] = '#';
-
-        // Red
-
-        component = color.getRed();
-        buffer[1] = HEX[component >> 4];
-        buffer[2] = HEX[component & 0x0F];
-
-        // Green
-
-        component = color.getGreen();
-        buffer[3] = HEX[component >> 4];
-        buffer[4] = HEX[component & 0x0F];
-
-        // Blue
-        component = color.getBlue();
-        buffer[5] = HEX[component >> 4];
-        buffer[6] = HEX[component & 0x0F];
-
-        return new String(buffer);
-    }
-
     /** @since 2.2 **/
 
     private DecodedRequest getDecodedRequest()
@@ -346,10 +283,13 @@ public class RequestContext implements IRender
         IApplicationSpecification spec = _servlet.getApplicationSpecification();
         IRequestDecoder decoder = null;
 
-        if (!spec.checkExtension(REQUEST_DECODER_EXTENSION_NAME))
+        if (!spec.checkExtension(Tapestry.REQUEST_DECODER_EXTENSION_NAME))
             decoder = new DefaultRequestDecoder();
         else
-            decoder = (IRequestDecoder) spec.getExtension(REQUEST_DECODER_EXTENSION_NAME, IRequestDecoder.class);
+            decoder =
+                (IRequestDecoder) spec.getExtension(
+                    Tapestry.REQUEST_DECODER_EXTENSION_NAME,
+                    IRequestDecoder.class);
 
         _decodedRequest = decoder.decodeRequest(_request);
 
@@ -414,22 +354,6 @@ public class RequestContext implements IRender
     public String getRequestURI()
     {
         return getDecodedRequest().getRequestURI();
-    }
-
-    /**
-     *  Forwards the request to a new resource, typically a JSP.
-     * 
-     *  @deprecated To be removed in 2.3.
-     * 
-     **/
-
-    public void forward(String path) throws ServletException, IOException
-    {
-        RequestDispatcher dispatcher;
-
-        dispatcher = _servlet.getServletContext().getRequestDispatcher(path);
-
-        dispatcher.forward(_request, _response);
     }
 
     /**
@@ -510,7 +434,7 @@ public class RequestContext implements IRender
     }
 
     /**
-     * Gets a named {@link Cookie}>.
+     * Gets a named {@link Cookie}.
      *
      * @param name The name of the Cookie.
      * @return The Cookie, or null if no Cookie with that
@@ -558,7 +482,7 @@ public class RequestContext implements IRender
     public String getParameter(String name)
     {
         if (_decoder != null)
-            return _decoder.getString(name);
+            return _decoder.getString(_request, name);
 
         return _request.getParameter(name);
     }
@@ -569,7 +493,7 @@ public class RequestContext implements IRender
      *  @since 2.3
      * 
      **/
-    
+
     public Object getAttribute(String name)
     {
         return _request.getAttribute(name);
@@ -588,7 +512,7 @@ public class RequestContext implements IRender
         // Note: this may not be quite how we want it to work; we'll have to see.
 
         if (_decoder != null)
-            return _decoder.getStrings(name);
+            return _decoder.getStrings(_request, name);
 
         return _request.getParameterValues(name);
     }
@@ -607,7 +531,7 @@ public class RequestContext implements IRender
         if (_decoder == null)
             return null;
 
-        return _decoder.getUploadFile(name);
+        return _decoder.getUploadFile(_request, name);
     }
 
     /**
@@ -620,7 +544,7 @@ public class RequestContext implements IRender
     public void cleanup()
     {
         if (_decoder != null)
-            _decoder.cleanup();
+            _decoder.cleanup(_request);
     }
 
     /**
@@ -798,15 +722,12 @@ public class RequestContext implements IRender
 
     public void redirect(String path) throws IOException
     {
-        String absolutePath;
-        String encodedURL;
-
         // Now a little magic to convert path into a complete URL. The Servlet
         // 2.2 API does this automatically.
 
-        absolutePath = getAbsoluteURL(path);
+        String absolutePath = getAbsoluteURL(path);
 
-        encodedURL = _response.encodeRedirectURL(absolutePath);
+        String encodedURL = _response.encodeRedirectURL(absolutePath);
 
         _response.sendRedirect(encodedURL);
     }
