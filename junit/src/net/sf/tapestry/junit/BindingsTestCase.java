@@ -25,14 +25,20 @@
 
 package net.sf.tapestry.junit;
 
+import java.util.HashMap;
+
 import junit.framework.AssertionFailedError;
 
+import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.BindingException;
 import net.sf.tapestry.IBinding;
+import net.sf.tapestry.IPage;
 import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.IResourceResolver;
 import net.sf.tapestry.NullValueForBindingException;
 import net.sf.tapestry.ReadOnlyBindingException;
 import net.sf.tapestry.binding.AbstractBinding;
+import net.sf.tapestry.binding.ExpressionBinding;
 import net.sf.tapestry.binding.FieldBinding;
 import net.sf.tapestry.binding.StaticBinding;
 import net.sf.tapestry.engine.ResourceResolver;
@@ -51,6 +57,8 @@ public class BindingsTestCase extends TapestryTestCase
     public static final String STRING_FIELD = "stringField";
 
     public static final Object NULL_FIELD = null;
+    
+    private IResourceResolver _resolver = new ResourceResolver(this);
 
     private static class TestBinding extends AbstractBinding
     {
@@ -68,6 +76,55 @@ public class BindingsTestCase extends TapestryTestCase
 
     }
 
+    public class BoundPage extends MockPage
+    {
+        private boolean _booleanValue;
+        private int _intValue;
+        private double _doubleValue;
+        private Object _objectValue;
+        
+        public boolean getBooleanValue()
+        {
+            return _booleanValue;
+        }
+
+        public double getDoubleValue()
+        {
+            return _doubleValue;
+        }
+
+        public int getIntValue()
+        {
+            return _intValue;
+        }
+
+        public Object getObjectValue()
+        {
+            return _objectValue;
+        }
+
+        public void setBooleanValue(boolean booleanValue)
+        {
+            _booleanValue = booleanValue;
+        }
+
+        public void setDoubleValue(double doubleValue)
+        {
+            _doubleValue = doubleValue;
+        }
+
+        public void setIntValue(int intValue)
+        {
+            _intValue = intValue;
+        }
+
+        public void setObjectValue(Object objectValue)
+        {
+            _objectValue = objectValue;
+        }
+
+    }    
+
     public BindingsTestCase(String name)
     {
         super(name);
@@ -76,7 +133,7 @@ public class BindingsTestCase extends TapestryTestCase
     public void testGetObject()
     {
         IBinding binding =
-            new FieldBinding(new ResourceResolver(this), "net.sf.tapestry.junit.BindingsTestCase.STRING_FIELD");
+            new FieldBinding(_resolver, "net.sf.tapestry.junit.BindingsTestCase.STRING_FIELD");
 
         assertEquals("Object", STRING_FIELD, binding.getObject());
     }
@@ -84,7 +141,7 @@ public class BindingsTestCase extends TapestryTestCase
     public void testToString()
     {
         IBinding binding =
-            new FieldBinding(new ResourceResolver(this), "net.sf.tapestry.junit.BindingsTestCase.STRING_FIELD");
+            new FieldBinding(_resolver, "net.sf.tapestry.junit.BindingsTestCase.STRING_FIELD");
 
         assertEquals(
             "String value (before access)",
@@ -101,14 +158,14 @@ public class BindingsTestCase extends TapestryTestCase
 
     public void testJavaLang()
     {
-        IBinding binding = new FieldBinding(new ResourceResolver(this), "Boolean.TRUE");
+        IBinding binding = new FieldBinding(_resolver, "Boolean.TRUE");
 
         assertEquals("Object", Boolean.TRUE, binding.getObject());
     }
 
     public void testMissingClass()
     {
-        IBinding binding = new FieldBinding(new ResourceResolver(this), "foo.bar.Baz.FIELD");
+        IBinding binding = new FieldBinding(_resolver, "foo.bar.Baz.FIELD");
 
         try
         {
@@ -128,7 +185,7 @@ public class BindingsTestCase extends TapestryTestCase
     public void testMissingField()
     {
         IBinding binding =
-            new FieldBinding(new ResourceResolver(this), "net.sf.tapestry.junit.BindingsTestCase.MISSING_FIELD");
+            new FieldBinding(_resolver, "net.sf.tapestry.junit.BindingsTestCase.MISSING_FIELD");
 
         try
         {
@@ -149,7 +206,7 @@ public class BindingsTestCase extends TapestryTestCase
     public void testInstanceAccess()
     {
         IBinding binding =
-            new FieldBinding(new ResourceResolver(this), "net.sf.tapestry.junit.BindingsTestCase.INSTANCE_FIELD");
+            new FieldBinding(_resolver, "net.sf.tapestry.junit.BindingsTestCase.INSTANCE_FIELD");
 
         try
         {
@@ -467,4 +524,121 @@ public class BindingsTestCase extends TapestryTestCase
             assertEquals("Binding", binding, ex.getBinding());
         }
     }
+    
+    public void testExpressionBinding()
+    {
+        IPage page = new MockPage();
+        
+        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "page");
+        
+        assertEquals("Expression property", "page", binding.getExpression());
+        assertEquals("Root property", page, binding.getRoot()); 
+        assertEquals("Object property", page, binding.getObject());              
+    }
+    
+    public void testMalformedOGNLExpression()
+    {
+        IPage page = new MockPage();
+        
+        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "zip flob boff");
+        
+        try
+        {
+            binding.getObject();
+            
+            throw new AssertionFailedError("Unreachable.");
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            checkException(ex, "Malformed OGNL");
+            checkException(ex, "zip flob boff");
+        }
+    }
+    
+    public void testUnknownProperty()
+    {
+        IPage page = new MockPage();
+        
+        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "tigris");
+        
+        try
+        {
+            binding.getObject();
+            
+            throw new AssertionFailedError("Unreachable.");
+        }
+        catch (BindingException ex)
+        {
+            checkException(ex, "Unable to resolve expression");
+            checkException(ex, "tigris");
+        }
+    }
+    
+    public void testUpdateReadonlyProperty()
+    {
+         IPage page = new MockPage();
+        
+        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "bindings");
+        
+        try
+        {
+            binding.setObject(new HashMap());
+            
+            throw new AssertionFailedError("Unreachable.");
+        }
+        catch (BindingException ex)
+        {
+            checkException(ex, "Unable to update expression");
+            checkException(ex, "bindings");
+        }
+       
+    }
+    
+    public void testUpdateBoolean()
+    {
+        BoundPage page = new BoundPage();
+        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "booleanValue");
+        
+        binding.setBoolean(true);
+        
+        assertEquals(true, page.getBooleanValue());
+        
+        binding.setBoolean(false);
+        
+        assertEquals(false, page.getBooleanValue());
+    }
+    
+    public void testUpdateInt()
+    {
+        BoundPage page = new BoundPage();
+        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "intValue");
+        
+        binding.setInt(275);
+        
+        assertEquals(275, page.getIntValue());
+    }
+    
+    public void testUpdateDouble()
+    {
+        BoundPage page = new BoundPage();
+        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "doubleValue");
+        
+        binding.setDouble(3.14);
+        
+        assertEquals(3.14, page.getDoubleValue(), 0.0);
+    }
+    
+    public void testUpdateObject()
+    {
+        BoundPage page = new BoundPage();
+        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "objectValue");
+        
+        Object object = new HashMap();
+        
+        binding.setObject(object);
+        
+        assertEquals(object, page.getObjectValue());
+    }            
+    
+    
 }

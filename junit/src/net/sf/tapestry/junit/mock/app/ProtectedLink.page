@@ -4,18 +4,16 @@
 	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
 	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 	
-<page-specification class="net.sf.tapestry.junit.mock.app.Guard">
+<page-specification class="net.sf.tapestry.junit.mock.app.ProtectedLink">
 
   <component id="border" type="lib:Border">
-  	<static-binding name="title">Guard</static-binding>
+  	<static-binding name="title">ProtectedLink</static-binding>
   </component>
   
   <component id="link" type="DirectLink">
   	<binding name="listener" expression="listeners.linkClicked"/>
-  </component>
-   
-  <component id="insertCallback" type="Insert">
-  	<binding name="value" expression="callback"/>
+  	<binding name="stateful" expression="false"/>
+  	<binding name="parameters" expression="{ 6, 13, 1999}"/>
   </component>
    
 </page-specification>

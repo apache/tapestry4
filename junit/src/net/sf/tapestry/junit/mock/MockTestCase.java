@@ -127,4 +127,30 @@ public class MockTestCase extends TapestryTestCase
     {
         attempt("/net/sf/tapestry/junit/mock/TestValidate.xml");
     }
+    
+    /**
+     *  Tests the use of {@link net.sf.tapestry.callback.DirectCallback}
+     *  to protect a link.
+     * 
+     *  @since 2.3
+     * 
+     **/
+    
+    public void testProtectedLink()
+    throws Exception
+    {
+        attempt("/net/sf/tapestry/junit/mock/TestProtectedLink.xml");
+    }
+    
+    /**
+     *  Tests {@link net.sf.tapestry.StaleLinkException} with
+     *  DirectLink (ActionLink and Form to come).
+     * 
+     **/
+    
+    public void testStaleLinkException()
+    throws Exception
+    {
+        attempt("/net/sf/tapestry/junit/mock/TestStaleSessionException.xml");
+    }
 }
