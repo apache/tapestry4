@@ -44,12 +44,27 @@ import net.sf.tapestry.Tapestry;
  *
  *  <p>The AdaptorRegistry caches the results of search; a subsequent search for the
  *  same subject class will be resolved immediately.
+ * 
+ *  <p>AdaptorRegistry does a minor tweak of the "natural" inheritance.
+ *  Normally, the parent class of an object array (i.e., <code>Foo[]</code>) is
+ *  simply <code>Object</code>, even though you may assign 
+ *  <code>Foo[]</code> to a variable of type <code>Object[]</code>.  AdaptorRegistry
+ *  "fixes" this by searching for <code>Object[]</code> as if it was the superclass of
+ *  any object array.  This means that the search path for <code>Foo[]</code> is
+ *  <code>Foo[]</code>, <code>Object[]</code>, then a couple of interfaces 
+ *  {@link java.lang.Cloneable, {@link java.io.Serializable}, etc. that are\
+ *  implicitily implemented by arrarys), and then, finally, <code>Object</code>
+ * 
+ *  <p>
+ *  This tweak doesn't apply to scalar arrays, since scalar arrays may <em>not</em>
+ *  be assigned to <code>Object[]</code>. 
  *
  *  <p>This class is thread safe.
  *
  *
  *  @version $Id$
  *  @author Howard Lewis Ship
+ * 
  **/
 
 public class AdaptorRegistry
@@ -193,7 +208,7 @@ public class AdaptorRegistry
 
             // Advance up to the next superclass
 
-            searchClass = searchClass.getSuperclass();
+            searchClass = getSuperclass(searchClass);
 
         }
 
@@ -232,6 +247,28 @@ public class AdaptorRegistry
 
         throw new IllegalArgumentException(
             Tapestry.getString("AdaptorRegistry.adaptor-not-found", subjectClass.getName()));
+    }
+
+	/**
+	 *  Returns the superclass of the given class, with a single tweak:  If the 
+	 *  search class is an array class, and the component type is an object class
+	 *  (but not Object), then the simple Object array class is returned.  This reflects
+	 *  the fact that an array of any class may be assignable to <code>Object[]</code>,
+	 *  even though the superclass of an array is always simply <code>Object</code>.
+	 * 
+	 **/
+	
+    private Class getSuperclass(Class searchClass)
+    {
+    	if (searchClass.isArray())
+    	{
+    		Class componentType = searchClass.getComponentType();
+    		
+    		if (!componentType.isPrimitive() && componentType != Object.class)
+    			return Object[].class;
+    	}
+
+        return searchClass.getSuperclass();
     }
 
     public synchronized String toString()
