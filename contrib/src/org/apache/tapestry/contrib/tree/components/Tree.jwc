@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+
+<component-specification class="org.apache.tapestry.contrib.tree.components.Tree"
+    allow-body="yes" allow-informal-parameters="yes">
+
+    <parameter name="sessionStateManager"
+        type="org.apache.tapestry.contrib.tree.model.ITreeSessionStateManager"
+        direction="custom" required="no"/>
+
+    <parameter name="sessionStoreManager"
+        type="org.apache.tapestry.contrib.tree.model.ISessionStoreManager"
+        direction="custom" required="no"/>
+
+    <parameter name="treeModel"
+        type="org.apache.tapestry.contrib.tree.model.ITreeModel"
+        direction="custom" required="yes">
+    </parameter>
+
+    <parameter name="treeStateListener"
+        type="org.apache.tapestry.contrib.tree.model.ITreeStateListener"
+        direction="custom" required="no">
+    </parameter>
+
+    <parameter name="closeNodeImage" type="org.apache.tapestry.IAsset"
+               required="no" direction="in"/>
+    <parameter name="openNodeImage" type="org.apache.tapestry.IAsset"
+               required="no" direction="in"/>
+
+    <parameter name="showNodeImages" type="boolean" required="no"
+               direction="custom"/>
+    <parameter name="makeNodeDirect" type="boolean" required="no"
+               direction="custom"/>
+    <parameter name="nodeRenderFactory"
+               type="org.apache.tapestry.contrib.tree.model.INodeRenderFactory"
+               required="no" direction="custom"/>
+
+    <component id="treeView" type="TreeView">
+        <inherited-binding name="sessionStateManager" parameter-name="sessionStateManager"/>
+        <inherited-binding name="sessionStoreManager" parameter-name="sessionStoreManager"/>
+        <inherited-binding name="treeModel" parameter-name="treeModel"/>
+        <inherited-binding name="treeStateListener" parameter-name="treeStateListener"/>
+    </component>
+
+    <component id="treeData" type="TreeDataView">
+        <binding name="treeView" expression='components.treeView'/>
+        <!--inherited-binding name="value" parameter-name="value"/-->
+    </component>
+
+    <component id="treeNodeValue" type="TreeNodeView">
+        <inherited-binding name="closeNodeImage" parameter-name="closeNodeImage"/>
+        <inherited-binding name="openNodeImage" parameter-name="openNodeImage"/>
+        <inherited-binding name="showNodeImages" parameter-name="showNodeImages"/>
+        <inherited-binding name="makeNodeDirect" parameter-name="makeNodeDirect"/>
+        <inherited-binding name="nodeRenderFactory" parameter-name="nodeRenderFactory"/>
+
+        <binding name="treeDataView" expression='components.treeData'/>
+    </component>
+
+</component-specification>

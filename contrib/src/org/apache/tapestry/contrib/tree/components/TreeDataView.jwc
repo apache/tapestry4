@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+
+<component-specification class="org.apache.tapestry.contrib.tree.components.TreeDataView"
+    allow-body="yes" allow-informal-parameters="yes">
+
+    <parameter name="treeView"
+               type="org.apache.tapestry.contrib.tree.components.TreeView"
+               required="yes" direction="custom"/>
+
+    <parameter name="value" type="java.lang.Object" required="no" direction="custom"/>
+
+    <component id="wrapped" type="RenderBody"/>
+</component-specification>

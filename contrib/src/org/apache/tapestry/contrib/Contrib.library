@@ -40,4 +40,19 @@
 
   <component-type type="PopupLink" specification-path="popup/PopupLink.jwc"/>
 
+    <component-type type="TreeDataView"
+        specification-path="/org/apache/tapestry/contrib/tree/components/TreeDataView.jwc"/>
+    <component-type type="TreeNodeView"
+        specification-path="/org/apache/tapestry/contrib/tree/components/TreeNodeView.jwc"/>
+    <component-type type="TreeView"
+        specification-path="/org/apache/tapestry/contrib/tree/components/TreeView.jwc"/>
+    <component-type type="TreeTableDataView"
+        specification-path="/org/apache/tapestry/contrib/tree/components/table/TreeTableDataView.jwc"/>
+    <component-type type="TreeTable"
+        specification-path="/org/apache/tapestry/contrib/tree/components/table/TreeTable.jwc"/>
+    <component-type type="TreeTableNodeViewDelegator"
+        specification-path="/org/apache/tapestry/contrib/tree/components/table/TreeTableNodeViewDelegator.jwc"/>
+    <page name="TreeNodeViewPage" specification-path="/org/apache/tapestry/contrib/tree/components/TreeNodeViewPage.page"/>
+
+    <page name="TreeTableNodeViewPage" specification-path="/org/apache/tapestry/contrib/tree/components/table/TreeTableNodeViewPage.page"/>
 </library-specification>
