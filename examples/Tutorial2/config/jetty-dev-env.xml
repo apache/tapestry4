@@ -9,7 +9,7 @@
   <Call name="addListener">
     <Arg>
       <New class="org.mortbay.http.SocketListener">
-        <Set name="Port">8081</Set>
+        <Set name="Port">8080</Set>
         <Set name="MinThreads">1</Set>
         <Set name="MaxThreads">10</Set>
         <Set name="MaxIdleTimeMs">50000</Set>
