@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.util.io;
 
+import org.apache.tapestry.services.DataSqueezer;
+
 /**
  *  Squeezes a {@link Integer}.  This adaptor claims all the digits as prefix
  *  characters, so its the very simplest conversion of all!

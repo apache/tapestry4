@@ -25,7 +25,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.form.AbstractFormComponent;
 import org.apache.tapestry.request.RequestContext;
-import org.apache.tapestry.util.io.DataSqueezer;
+import org.apache.tapestry.services.DataSqueezer;
 
 /**
  *  A conditional element on a page which will render its wrapped elements

@@ -18,8 +18,10 @@ import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.engine.IComponentClassEnhancer;
 import org.apache.tapestry.engine.IPageSource;
 import org.apache.tapestry.engine.IPropertySource;
+import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.services.ComponentMessagesSource;
+import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.services.ObjectPool;
 import org.apache.tapestry.services.ResetEventCoordinator;
@@ -28,22 +30,55 @@ import org.apache.tapestry.spec.IApplicationSpecification;
 
 /**
  * Allows access to selected HiveMind services.
- *
+ * 
  * @author Howard Lewis Ship
  * @since 3.1
  */
 public class InfrastructureImpl implements Infrastructure
 {
-	private IApplicationSpecification _applicationSpecification;
+    private IApplicationSpecification _applicationSpecification;
+
     private IPropertySource _applicationPropertySource;
+
     private ResetEventCoordinator _resetEventCoordinator;
+
     private ComponentMessagesSource _componentMessagesSource;
+
     private TemplateSource _templateSource;
+
     private ISpecificationSource _specificationSource;
+
     private ObjectPool _objectPool;
+
     private IComponentClassEnhancer _componentClassEnhancer;
+
     private IPageSource _pageSource;
+
     private ClassResolver _classResolver;
+
+    private DataSqueezer _dataSqueezer;
+    
+    private IScriptSource _scriptSource;
+
+    public IScriptSource getScriptSource()
+    {
+        return _scriptSource;
+    }
+    
+    public void setScriptSource(IScriptSource scriptSource)
+    {
+        _scriptSource = scriptSource;
+    }
+    
+    public DataSqueezer getDataSqueezer()
+    {
+        return _dataSqueezer;
+    }
+
+    public void setDataSqueezer(DataSqueezer dataSqueezer)
+    {
+        _dataSqueezer = dataSqueezer;
+    }
 
     public void setApplicationPropertySource(IPropertySource source)
     {
@@ -54,7 +89,7 @@ public class InfrastructureImpl implements Infrastructure
     {
         return _applicationPropertySource;
     }
-    
+
     public ComponentMessagesSource getComponentMessagesSource()
     {
         return _componentMessagesSource;

@@ -17,6 +17,7 @@ package org.apache.tapestry.util.io;
 import java.io.IOException;
 
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.util.ComponentAddress;
 
 /**

@@ -26,6 +26,8 @@
   <sub-module descriptor="tapestry.parse.xml"/>
   <sub-module descriptor="tapestry.enhance.xml"/>
   <sub-module descriptor="tapestry.page.xml"/>
+  <sub-module descriptor="tapestry.data.xml"/>
+  <sub-module descriptor="tapestry.script.xml"/>
   
   <service-point id="ClasspathResourceFactory" interface="org.apache.tapestry.services.ClasspathResourceFactory">
   
@@ -40,8 +42,7 @@
     
     A kind of "clearing house" of other services. The Infrastructure is provided to the
     IEngine instance via the InvokeEngineTerminator service (using an HttpServletRequest
-    attribute).  The engine can then get the other services it depends upon.  Ultimately,
-    Infrastructure may be removed and the entire IEngine interface may go away!
+    attribute).  The engine can then get the other services it depends upon.
     
     <invoke-factory>
       <construct class="org.apache.tapestry.services.impl.InfrastructureImpl">
@@ -54,6 +55,8 @@
         <set-service property="objectPool" service-id="GlobalObjectPool"/>
         <set-service property="componentClassEnhancer" service-id="tapestry.enhance.ComponentClassEnhancer"/>
         <set-service property="pageSource" service-id="tapestry.page.PageSource"/>
+        <set-service property="dataSqueezer" service-id="tapestry.data.DataSqueezer"/>
+        <set-service property="scriptSource" service-id="tapestry.script.ScriptSource"/>
       </construct>
     </invoke-factory>
     

@@ -18,6 +18,7 @@ import java.io.IOException;
 
 import org.apache.commons.lang.enum.Enum;
 import org.apache.commons.lang.enum.EnumUtils;
+import org.apache.tapestry.services.DataSqueezer;
 
 /**
  *  Adaptor for {@link Enum} classes.
