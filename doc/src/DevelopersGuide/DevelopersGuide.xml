@@ -3342,7 +3342,8 @@ The application specification begins with an XML header:
   engine-class="<replaceable>engine-class</replaceable>"&gt; <co id="engine.appspec.engine-class"/>
   [ &lt;<link linkend="components.spec.description">description</link> ...&gt; ...] <co id="engine.appspec.description"/>
   [ &lt;<link linkend="components.spec.property">property</link> ...&gt; ...] <co id="engine.appspec.property"/>
-  [ &lt;<link linkend="engine.spec.page">page</link> ...&gt; ...] <co id="engine.appspec.page"/>
+  [ &lt;<link linkend="engine.spec.service">service</link> ... &gt; ...] 
+  [ &lt;<link linkend="engine.spec.page">page</link> ...&gt; ...] 
   [ &lt;<link linkend="engine.spec.component-alias">component-alias</link> ...&gt; ...]
 &lt;/application&gt;
 </programlisting>
@@ -3376,6 +3377,32 @@ The application specification begins with an XML header:
           </calloutlist>
         </para>
       </section>
+      
+      <section id="engine.spec.service">
+      <title>
+      	<sgmltag class="starttag">service</sgmltag> element</title>
+      	
+<para>
+Included in some applications that wish to declare new engine services, or override the default services
+provided by the framework.
+</para>
+
+<figure>
+<title>Application Specification: <sgmltag class="starttag">service</sgmltag> element</title>
+<programlisting>
+&lt;service 
+  name="<replaceable>name</replaceable>"
+  class="<replaceable>java-class</replaceable>"/&gt;
+</programlisting>
+</figure>
+
+<para>
+Each <sgmltag class="starttag">service</sgmltag> element allows a service name to be associated
+with a Java class, which must implement the &IEngineService; interface.
+</para>
+
+      </section>
+      
       <section id="engine.spec.page">
         <title>
           <sgmltag class="starttag">page</sgmltag> element</title>

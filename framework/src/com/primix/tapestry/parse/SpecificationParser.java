@@ -796,6 +796,12 @@ public class SpecificationParser extends AbstractDocumentParser
 				convertProperty_2(specification, node);
 				continue;
 			}
+			
+			if (isElement(node, "service"))
+			{
+				convertService(specification, node);
+				continue;
+			}
 		}
 
 		return specification;
@@ -1157,5 +1163,18 @@ public class SpecificationParser extends AbstractDocumentParser
 		String name = getAttribute(node, "name");
 
 		spec.addReservedParameterName(name);
+	}
+	
+	/**
+	 *  @since 1.0.9
+	 * 
+	 **/
+	
+	private void convertService(ApplicationSpecification spec, Node node)
+	{
+		String name = getAttribute(node, "name");
+		String className = getAttribute(node, "class");
+		
+		spec.addService(name, className);
 	}
 }

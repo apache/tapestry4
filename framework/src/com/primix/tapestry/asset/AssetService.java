@@ -41,6 +41,7 @@ import com.primix.tapestry.Gesture;
 import com.primix.tapestry.IAsset;
 import com.primix.tapestry.IComponent;
 import com.primix.tapestry.IEngine;
+import com.primix.tapestry.IEngineServiceView;
 import com.primix.tapestry.IMonitor;
 import com.primix.tapestry.IRequestCycle;
 import com.primix.tapestry.IResourceResolver;
@@ -56,9 +57,9 @@ import com.primix.tapestry.engine.AbstractService;
  *
  *  <p>The retrieval part is directly linked to {@link PrivateAsset}.
  *  The service responds to a URL that encodes the path of a resource
- *  within the classpath.  The {@link #service(IRequestCycle,
- *  ResponseOutputStream)} method reads the resource and streams it
- *  out.
+ *  within the classpath.  The 
+ *  {@link #service(IEngineServiceView, IRequestCycle, ResponseOutputStream)} 
+ *  method reads the resource and streams it out.
  *
  *  <p>TBD: Security issues.  Should only be able to retrieve a
  *  resource that was previously registerred in some way
@@ -72,7 +73,6 @@ import com.primix.tapestry.engine.AbstractService;
 public class AssetService extends AbstractService
 {
 	private String servletPath;
-	private IResourceResolver resolver;
 
 	/**
 	 *  Defaults MIME types, by extension, used when the servlet container
@@ -93,13 +93,7 @@ public class AssetService extends AbstractService
 		mimeTypes.put("html", "text/html");
 	}
 
-	private static final int BUFFER_SIZE = 1024;
-
-	public AssetService(IEngine engine)
-	{
-		servletPath = engine.getServletPath();
-		resolver = engine.getResourceResolver();
-	}
+	private static final int BUFFER_SIZE = 10240;
 
 	/**
 	 *  Builds a {@link Gesture} for a {@link PrivateAsset}.
@@ -118,7 +112,7 @@ public class AssetService extends AbstractService
 			throw new ApplicationRuntimeException(
 			Tapestry.getString("service-single-parameter", ASSET_SERVICE));
 
-		return assembleGesture(servletPath, ASSET_SERVICE, parameters, null);
+		return assembleGesture(cycle, ASSET_SERVICE, parameters, null);
 	}
 
 	public String getName()
@@ -156,18 +150,13 @@ public class AssetService extends AbstractService
 	 *
 	 */
 
-	public boolean service(IRequestCycle cycle, ResponseOutputStream output)
+	public boolean service(IEngineServiceView engine, IRequestCycle cycle, ResponseOutputStream output)
 		throws ServletException, IOException, RequestCycleException
 	{
-
 		RequestContext context = cycle.getRequestContext();
 		String resourcePath = context.getParameter(CONTEXT_QUERY_PARMETER_NAME);
 
-		IMonitor monitor = cycle.getMonitor();
-		if (monitor != null)
-			monitor.serviceBegin("asset", resourcePath);
-
-		URL resourceURL = resolver.getResource(resourcePath);
+		URL resourceURL = cycle.getEngine().getResourceResolver().getResource(resourcePath);
 
 		if (resourceURL == null)
 			throw new ApplicationRuntimeException(
@@ -215,9 +204,6 @@ public class AssetService extends AbstractService
 		}
 
 		input.close();
-
-		if (monitor != null)
-			monitor.serviceEnd("asset");
 
 		// The IEngine is responsible for closing the ResponseOutputStream
 		// Return false, to indicate that no server side state could have changed.

@@ -368,9 +368,15 @@ public class ListenerMap
 			catch (InvocationTargetException ex)
 			{
 				Throwable inner = ex.getTargetException();
+
 				if (inner instanceof RequestCycleException)
 					throw (RequestCycleException) inner;
 
+				// Edit out the InvocationTargetException, if possible.
+				
+				if (inner instanceof RuntimeException)
+					throw (RuntimeException)inner;
+				
 				throw ex;
 			}
 		}
@@ -380,6 +386,9 @@ public class ListenerMap
 		}
 		catch (Exception ex)
 		{
+			// Catch InvocationTargetException or, preferrably,
+			// the inner exception here (if its a runtime exception).
+			
 			throw new ApplicationRuntimeException(
 				Tapestry.getString(
 					"ListenerMap.unable-to-invoke-method",

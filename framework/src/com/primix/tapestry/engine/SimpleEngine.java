@@ -199,7 +199,7 @@ public class SimpleEngine extends AbstractEngine
 		if (recorders == null)
 			return null;
 
-		return (PageRecorder) recorders.get(pageName);
+		return (IPageRecorder) recorders.get(pageName);
 	}
 
 	public IPageRecorder createPageRecorder(String pageName, IRequestCycle cycle)

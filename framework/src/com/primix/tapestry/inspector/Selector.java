@@ -28,6 +28,8 @@ package com.primix.tapestry.inspector;
 
 import com.primix.tapestry.*;
 import com.primix.tapestry.form.*;
+import com.primix.tapestry.spec.ApplicationSpecification;
+
 import java.util.*;
 
 /**
@@ -66,20 +68,17 @@ public class Selector extends BaseComponent
 
 	public IPropertySelectionModel getPageModel()
 	{
-		List sortedPageNames;
-		String[] pageNames;
+		ApplicationSpecification spec = page.getEngine().getSpecification();
+		
+		Collection sortedPageNames =
+			spec.getPageNames();
+			
+		String[] pageNames =
+			(String[])sortedPageNames.toArray(new String[sortedPageNames.size()]);
 
-		sortedPageNames =
-			new ArrayList(page.getEngine().getSpecification().getPageNames());
-
-		Collections.sort(sortedPageNames);
-
-		pageNames = new String[sortedPageNames.size()];
-		pageNames = (String[]) sortedPageNames.toArray(pageNames);
-
-		// It would be nice to cache this between request cycles ... but this same
-		// component may be used for a different application in a subsequent cycle,
-		// in which case the page names wouldn't match.  
+		// This should be cached for later, but there's the possibility that
+		// the application specification may be dynamically modified in a running
+		// application.
 
 		return new StringPropertySelectionModel(pageNames);
 	}

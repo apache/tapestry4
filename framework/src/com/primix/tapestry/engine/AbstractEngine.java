@@ -55,6 +55,7 @@ import com.primix.tapestry.IComponent;
 import com.primix.tapestry.IDirect;
 import com.primix.tapestry.IEngine;
 import com.primix.tapestry.IEngineService;
+import com.primix.tapestry.IEngineServiceView;
 import com.primix.tapestry.IMonitor;
 import com.primix.tapestry.IPage;
 import com.primix.tapestry.IPageRecorder;
@@ -133,7 +134,7 @@ import com.primix.tapestry.util.prop.PropertyHelper;
  */
 
 public abstract class AbstractEngine
-	implements IEngine, Externalizable, HttpSessionBindingListener
+	implements IEngine, IEngineServiceView, Externalizable, HttpSessionBindingListener
 {
 	private static final Category CAT = Category.getInstance(AbstractEngine.class);
 
@@ -238,7 +239,7 @@ public abstract class AbstractEngine
 	 */
 
 	protected static final String TEMPLATE_SOURCE_NAME =
-		"com.primix.tapestry.DefaultTemplateSource";
+		"com.primix.tapestry.TemplateSource";
 
 	/**
 	 *  Servlet context attribute name for the default {@link ISpecificationSource}
@@ -247,7 +248,7 @@ public abstract class AbstractEngine
 	 */
 
 	protected static final String SPECIFICATION_SOURCE_NAME =
-		"com.primix.tapestry.DefaultSpecificationSource";
+		"com.primix.tapestry.SpecificationSource";
 
 	/**
 	 * Servlet context attribute name for the {@link Pool} used to obtain
@@ -276,7 +277,7 @@ public abstract class AbstractEngine
 	 *
 	 */
 
-	protected transient PageSource pageSource;
+	protected transient IPageSource pageSource;
 
 	/**
 	 *  If true (set from JVM system parameter
@@ -303,268 +304,22 @@ public abstract class AbstractEngine
 
 	private transient IResourceResolver resolver;
 
-	private class ActionService extends AbstractService
-	{
-		public boolean service(IRequestCycle cycle, ResponseOutputStream output)
-			throws RequestCycleException, ServletException, IOException
-		{
-			serviceAction(cycle, getServiceContext(cycle.getRequestContext()), output);
-
-			return true;
-		}
-
-		private String[] serviceContext;
-
-		public Gesture buildGesture(
-			IRequestCycle cycle,
-			IComponent component,
-			String[] parameters)
-		{
-			if (parameters == null || parameters.length != 1)
-				throw new IllegalArgumentException(
-					Tapestry.getString("service-single-parameter", ACTION_SERVICE));
-
-			IPage componentPage = component.getPage();
-			IPage responsePage = cycle.getPage();
-			int length;
-
-			if (componentPage == responsePage)
-				length = 3;
-			else
-				length = 4;
-
-			String[] serviceContext = new String[length];
-
-			int i = 0;
-
-			serviceContext[i++] = responsePage.getName();
-			serviceContext[i++] = parameters[0];
-
-			// Because of Block/InsertBlock, the component may not be on
-			// the same page as the response page and we need to make
-			// allowances for this.
-
-			if (componentPage != responsePage)
-				serviceContext[i++] = componentPage.getName();
-
-			serviceContext[i++] = component.getIdPath();
-
-			return assembleGesture(getServletPath(), ACTION_SERVICE, serviceContext, null);
-		}
-
-		public String getName()
-		{
-			return ACTION_SERVICE;
-		}
-	}
-
-	private class PageService extends AbstractService
-	{
-		public boolean service(IRequestCycle cycle, ResponseOutputStream output)
-			throws RequestCycleException, ServletException, IOException
-		{
-			servicePage(cycle, getServiceContext(cycle.getRequestContext()), output);
-
-			return true;
-		}
-
-		public Gesture buildGesture(
-			IRequestCycle cycle,
-			IComponent component,
-			String[] parameters)
-		{
-			if (parameters == null || parameters.length != 1)
-				throw new IllegalArgumentException(
-					Tapestry.getString("service-single-parameter", PAGE_SERVICE));
-
-			return assembleGesture(getServletPath(), PAGE_SERVICE, parameters, null);
-		}
-
-		public String getName()
-		{
-			return PAGE_SERVICE;
-		}
-	}
-
-	private class HomeService extends AbstractService
-	{
-		public boolean service(IRequestCycle cycle, ResponseOutputStream output)
-			throws RequestCycleException, ServletException, IOException
-		{
-			IMonitor monitor = cycle.getMonitor();
-
-			if (monitor != null)
-				monitor.serviceBegin(HOME_SERVICE, null);
-
-			IPage home = cycle.getPage(HOME_PAGE);
-
-			home.validate(cycle);
-
-			// If it validates, then render it.
-
-			cycle.setPage(home);
-			render(cycle, output);
-
-			if (monitor != null)
-				monitor.serviceEnd(HOME_SERVICE);
-
-			return true;
-		}
-
-		public Gesture buildGesture(
-			IRequestCycle cycle,
-			IComponent component,
-			String[] parameters)
-		{
-			if (parameters != null && parameters.length > 0)
-				throw new IllegalArgumentException(
-					Tapestry.getString("service-no-parameters", HOME_SERVICE));
-
-			return assembleGesture(getServletPath(), HOME_SERVICE, null, null);
-		}
-
-		public String getName()
-		{
-			return HOME_SERVICE;
-		}
-	}
-
-	private class RestartService extends AbstractService
-	{
-		public boolean service(IRequestCycle cycle, ResponseOutputStream output)
-			throws RequestCycleException, IOException, ServletException
-		{
-			IMonitor monitor = cycle.getMonitor();
-
-			if (monitor != null)
-				monitor.serviceBegin(RESTART_SERVICE, null);
-
-			restart(cycle);
-
-			if (monitor != null)
-				monitor.serviceEnd(RESTART_SERVICE);
-
-			return false;
-		}
-
-		public Gesture buildGesture(
-			IRequestCycle cycle,
-			IComponent component,
-			String[] parameters)
-		{
-			if (parameters != null && parameters.length > 0)
-				throw new IllegalArgumentException(
-					Tapestry.getString("service-no-parameters", RESTART_SERVICE));
-
-			return assembleGesture(getServletPath(), RESTART_SERVICE, null, null);
-		}
-
-		public String getName()
-		{
-			return RESTART_SERVICE;
-		}
-	}
 
 	/**
-	 *  Used during testing to force reloads of templates and
-	 *  specifications.
-	 *
-	 */
+	 *  Map from service name to service instance.
+	 * 
+	 *  @since 1.0.9
+	 * 
+	 **/
+	
+	private transient Map serviceMap;
 
-	private class ResetService extends AbstractService
-	{
-		private String[] serviceContext = new String[1];
+	protected static final String SERVICE_MAP_NAME = "com.primix.tapestry.ServiceMap";
+	
 
-		public boolean service(IRequestCycle cycle, ResponseOutputStream output)
-			throws RequestCycleException, IOException, ServletException
-		{
-			serviceReset(cycle, getServiceContext(cycle.getRequestContext()), output);
 
-			return false;
-		}
 
-		public Gesture buildGesture(
-			IRequestCycle cycle,
-			IComponent component,
-			String[] parameters)
-		{
-			if (parameters != null && parameters.length > 0)
-				throw new IllegalArgumentException(
-					Tapestry.getString("service-no-parameters", RESET_SERVICE));
-
-			serviceContext[0] = component.getPage().getName();
-
-			return assembleGesture(getServletPath(), RESET_SERVICE, serviceContext, null);
-		}
-
-		public String getName()
-		{
-			return RESET_SERVICE;
-		}
-	}
-
-	private class DirectService extends AbstractService
-	{
-		private StringBuffer buffer;
-
-		public boolean service(IRequestCycle cycle, ResponseOutputStream output)
-			throws RequestCycleException, IOException, ServletException
-		{
-			RequestContext context = cycle.getRequestContext();
-
-			serviceDirect(
-				cycle,
-				getServiceContext(context),
-				getParameters(context),
-				output);
-
-			return true;
-		}
-
-		private String[] normalContext = new String[2];
-		private String[] extendedContext = new String[3];
-
-		public Gesture buildGesture(
-			IRequestCycle cycle,
-			IComponent component,
-			String[] parameters)
-		{
-			String[] context;
-
-			// New since 1.0.1, we use the component to determine
-			// the page, not the cycle.  Through the use of tricky
-			// things such as Block/InsertBlock, it is possible 
-			// that a component from a page different than
-			// the response page will render.
-			// In 1.0.6, we start to record *both* the render page
-			// and the component page (if different), as the extended
-			// context.
-
-			IPage renderPage = cycle.getPage();
-			IPage componentPage = component.getPage();
-
-			if (renderPage == componentPage)
-			{
-				normalContext[0] = componentPage.getName();
-				normalContext[1] = component.getIdPath();
-				context = normalContext;
-			}
-			else
-			{
-				extendedContext[0] = renderPage.getName();
-				extendedContext[1] = componentPage.getName();
-				extendedContext[2] = component.getIdPath();
-				context = extendedContext;
-			}
-
-			return assembleGesture(getServletPath(), DIRECT_SERVICE, context, parameters);
-		}
-
-		public String getName()
-		{
-			return DIRECT_SERVICE;
-		}
-	}
+	
 
 	/**
 	 *  Sets the Exception page's exception property, then renders the Exception page.
@@ -590,7 +345,7 @@ public abstract class AbstractEngine
 
 			cycle.setPage(exceptionPage);
 
-			render(cycle, output);
+			renderResponse(cycle, output);
 
 		}
 		catch (Throwable ex)
@@ -652,59 +407,6 @@ public abstract class AbstractEngine
 	protected abstract void cleanupAfterRequest(IRequestCycle cycle);
 
 	/**
-	 *  Invoked by {@link #getService(String)} to construct a named service.  This method
-	 *  should return a new instance of the named service, or null if the
-	 *  application doesn't implement the named service.
-	 *
-	 *  This seems a little awkward, but the idea is to avoid creating the service
-	 *  object until it is needed, since once created they have the lifecycle of the
-	 *  application object, which can be quite long.  I don't know that its worth
-	 *  the cycles to create a more involved solution -- for example, extend the
-	 *  interface so that a pooled service object could be bound temporarily to
-	 *  a specific instance of the engine.  Best to just leave this alone.
-	 *
-	 *  <p>Subclasses should overide this method, but must also invoke it to provide
-	 *  the services provided by AbstractEngine:
-	 *  <ul>
-	 *  <li>action
-	 *  <li>asset
-	 *  <li>home
-	 *  <li>direct
-	 *  <li>page
-	 *  <li>restart
-	 *  <li>reset  (if JVM system property 
-	 *  <code>com.primix.tapestry.enable-reset-service</code> is true)
-	 *  </ul>
-	 *
-	 */
-
-	protected IEngineService constructService(String name)
-	{
-		if (name.equals(IEngineService.ACTION_SERVICE))
-			return new ActionService();
-
-		if (name.equals(IEngineService.ASSET_SERVICE))
-			return new AssetService(this);
-
-		if (name.equals(IEngineService.HOME_SERVICE))
-			return new HomeService();
-
-		if (name.equals(IEngineService.DIRECT_SERVICE))
-			return new DirectService();
-
-		if (name.equals(IEngineService.PAGE_SERVICE))
-			return new PageService();
-
-		if (name.equals(IEngineService.RESTART_SERVICE))
-			return new RestartService();
-
-		if (name.equals(IEngineService.RESET_SERVICE) && resetServiceEnabled)
-			return new ResetService();
-
-		return null;
-	}
-
-	/**
 	 *  Extends the description of the class generated by {@link #toString()}.
 	 *  If a subclass adds additional instance variables that should be described
 	 *  in the instance description, it may overide this method.  Subclasses
@@ -763,30 +465,17 @@ public abstract class AbstractEngine
 	}
 
 	/**
-	 *  Returns a service with the given name, constructing it 
-	 *  (via {@link #constructService(String)} if necessary.
+	 *  Returns a service with the given name.  Services are created by the
+	 *  first call to {@link #setupForRequest(RequestContext)}.
 	 */
 
 	public IEngineService getService(String name)
 	{
-		IEngineService result = null;
-
-		if (services != null)
-			result = (IEngineService) services.get(name);
-
-		if (result != null)
-			return result;
-
-		result = constructService(name);
-
+		IEngineService result = (IEngineService)serviceMap.get(name);
+	
 		if (result == null)
 			throw new ApplicationRuntimeException(
 				Tapestry.getString("AbstractEngine.unknown-service", name));
-
-		if (services == null)
-			services = new HashMap(MAP_SIZE);
-
-		services.put(name, result);
 
 		return result;
 	}
@@ -798,7 +487,7 @@ public abstract class AbstractEngine
 
 	/**
 	 * Returns the context path, the prefix to apply to any URLs so that they
-	 * are recognizing as belonging to the Servlet 2.2 context.
+	 * are recognized as belonging to the Servlet 2.2 context.
 	 *
 	 *  @see ContextAsset
 	 */
@@ -887,18 +576,11 @@ public abstract class AbstractEngine
 
 		cycle.setPage(pageName);
 
-		render(cycle, out);
+		renderResponse(cycle, out);
 	}
 
-	/**
-	 *  Invoked to render an actual result page (as opposed to a rewind).
-	 *
-	 * <p>Invokes {@link IRequestCycle#commitPageChanges()} before rendering the
-	 * page.
-	 *
-	 */
 
-	protected void render(IRequestCycle cycle, ResponseOutputStream output)
+	public void renderResponse(IRequestCycle cycle, ResponseOutputStream output)
 		throws RequestCycleException, ServletException, IOException
 	{
 		IResponseWriter writer;
@@ -964,7 +646,7 @@ public abstract class AbstractEngine
 	 *
 	 */
 
-	protected void restart(IRequestCycle cycle) throws IOException
+	public void restart(IRequestCycle cycle) throws IOException
 	{
 
 		RequestContext context = cycle.getRequestContext();
@@ -1046,6 +728,9 @@ public abstract class AbstractEngine
 			throw new ServletException(ex.getMessage(), ex);
 		}
 
+
+		IEngineService service = null;
+
 		try
 		{
 			try
@@ -1056,11 +741,14 @@ public abstract class AbstractEngine
 				if (Tapestry.isNull(serviceName))
 					serviceName = IEngineService.HOME_SERVICE;
 
-				IEngineService service = getService(serviceName);
-
+				service = getService(serviceName);
+				
 				cycle.setService(service);
 
-				return service.service(cycle, output);
+				if (monitor != null)
+					monitor.serviceBegin(service.getName(), context.getRequest().getRequestURI());
+
+				return service.service(this, cycle, output);
 			}
 			catch (PageRedirectException ex)
 			{
@@ -1077,6 +765,11 @@ public abstract class AbstractEngine
 			catch (StaleSessionException ex)
 			{
 				handleStaleSessionException(ex, cycle, output);
+			}
+			finally
+			{
+				if (monitor != null)
+					monitor.serviceEnd(service.getName());
 			}
 		}
 		catch (Exception ex)
@@ -1181,296 +874,23 @@ public abstract class AbstractEngine
 		redirect(STALE_SESSION_PAGE, cycle, output, ex);
 	}
 
-	/**
-	 *  Processes an 'action' URL.
-	 *  <ul>
-	 *  <li>The specified page is loaded and rolled back to its prior state.
-	 *  <li>{@link IRequestCycle#rewindPage(String, IComponent)} is invoked, 
-	 *  to rewind the page to
-	 *  the target action id and target component id path,
-	 *  by going through the motions of
-	 *  rendering again.
-	 *  <li>{@link #render(IRequestCycle, ResponseOutputStream)} is invoked, to render
-	 *  the response page.
-	 *  </ul>
-	 *
-	 */
-
-	protected void serviceAction(
-		IRequestCycle cycle,
-		String[] serviceContext,
-		ResponseOutputStream output)
-		throws RequestCycleException, ServletException, IOException
-	{
-		IAction action = null;
-		String componentPageName;
-		int count = 0;
-
-		if (serviceContext != null)
-			count = serviceContext.length;
-
-		if (count != 3 && count != 4)
-			throw new ApplicationRuntimeException(
-				Tapestry.getString("AbstractEngine.action-context-parameters"));
-
-		int i = 0;
-		String pageName = serviceContext[i++];
-		String targetActionId = serviceContext[i++];
-
-		if (count == 3)
-			componentPageName = pageName;
-		else
-			componentPageName = serviceContext[i++];
-
-		String targetIdPath = serviceContext[i++];
-
-		IMonitor monitor = cycle.getMonitor();
-		if (monitor != null)
-			monitor.serviceBegin(
-				IEngineService.ACTION_SERVICE,
-				pageName + "/" + targetActionId);
-
-		IPage page = cycle.getPage(pageName);
-
-		IPage componentPage = cycle.getPage(componentPageName);
-		IComponent component = componentPage.getNestedComponent(targetIdPath);
-
-		try
-		{
-			action = (IAction) component;
-		}
-		catch (ClassCastException ex)
-		{
-			throw new RequestCycleException(
-				Tapestry.getString(
-					"AbstractEngine.action-component-wrong-type",
-					component.getExtendedId()),
-				component,
-				ex);
-		}
-
-		if (action.getRequiresSession())
-		{
-			HttpSession session = cycle.getRequestContext().getSession();
-
-			if (session == null || session.isNew())
-				throw new StaleSessionException();
-		}
-
-		// Allow the page to validate that the user is allowed to visit.  This is simple
-		// protection from malicious users who hack the URLs directly, or make inappropriate
-		// use of the back button. 
-
-		// Note that we validate the page that rendered the response which (again, due to
-		// Block/InsertBlock) is not necessarily the page that contains the component.
-
-		page.validate(cycle);
-
-		// Setup the page for the rewind, then do the rewind.
-
-		cycle.setPage(page);
-		cycle.rewindPage(targetActionId, action);
-
-		// During the rewind, a component may change the page.  This will take
-		// effect during the second render, which renders the HTML response.
-
-		// Render the response.
-
-		render(cycle, output);
-
-		if (monitor != null)
-			monitor.serviceEnd(IEngineService.ACTION_SERVICE);
-
-	}
-
-	/**
-	 *  Processes a 'direct' URL.
-	 *  <ul>
-	 *  <li>The specified page is loaded and rolled back to its prior state.
-	 *  <li>The referenced component is located and cast to {@link IDirect}.
-	 *  <li>{@link IDirect#trigger(IRequestCycle, String[])} is invoked to trigger the
-	 *  behaviour associated with the component.
-	 *  <li>{@link #render(IRequestCycle,ResponseOutputStream)} is invoked to
-	 *  render the response page.
-	 *  </ul>
-	 *
-	 */
-
-	protected void serviceDirect(
-		IRequestCycle cycle,
-		String[] serviceContext,
-		String[] parameters,
-		ResponseOutputStream output)
-		throws RequestCycleException, ServletException, IOException
-	{
-		IDirect direct;
-		IMonitor monitor = cycle.getMonitor();
-		int count = 0;
-		String componentPageName;
-		IPage componentPage;
-
-		if (serviceContext != null)
-			count = serviceContext.length;
-
-		if (count != 2 && count != 3)
-			throw new ApplicationRuntimeException(
-				Tapestry.getString("AbstractEngine.direct-context-parameters"));
-
-		int i = 0;
-		String pageName = serviceContext[i++];
-
-		if (count == 2)
-			componentPageName = pageName;
-		else
-			componentPageName = serviceContext[i++];
-
-		String componentPath = serviceContext[i++];
-
-		if (monitor != null)
-			monitor.serviceBegin(
-				IEngineService.DIRECT_SERVICE,
-				componentPageName + "/" + componentPath);
-
-		IPage page = cycle.getPage(pageName);
-
-		// Allow the page to validate that the user is allowed to visit.  This is simple
-		// protection from malicious users who hack the URLs directly, or make inappropriate
-		// use of the back button. 
-		// Using Block/InsertBlock, it is possible that the component is on a different page
-		// than the render page.  The render page is validated, not necessaily the component
-		// page.
-
-		page.validate(cycle);
-		cycle.setPage(page);
-
-		if (count == 2)
-			componentPage = page;
-		else
-			componentPage = cycle.getPage(componentPageName);
-
-		IComponent component = componentPage.getNestedComponent(componentPath);
-
-		try
-		{
-			direct = (IDirect) component;
-		}
-		catch (ClassCastException ex)
-		{
-			throw new RequestCycleException(
-				Tapestry.getString(
-					"AbstractEngine.direct-component-wrong-type",
-					component.getExtendedId()),
-				component,
-				ex);
-		}
-
-		direct.trigger(cycle, parameters);
-
-		// Render the response.  This will be the response page (the first element in the context)
-		// unless the direct (or its delegate) changes it.
-
-		render(cycle, output);
-
-		if (monitor != null)
-			monitor.serviceEnd(IEngineService.DIRECT_SERVICE);
-	}
-
-	/**
-	 * Processes a 'page' URL.
-	 *
-	 */
-
-	protected void servicePage(
-		IRequestCycle cycle,
-		String[] serviceContext,
-		ResponseOutputStream output)
-		throws RequestCycleException, ServletException, IOException
-	{
-		RequestContext context = cycle.getRequestContext();
-
-		if (serviceContext == null || serviceContext.length != 1)
-			throw new ApplicationRuntimeException(
-				Tapestry.getString("service-single-parameter", IEngineService.PAGE_SERVICE));
-
-		String pageName = serviceContext[0];
-
-		IMonitor monitor = cycle.getMonitor();
-		if (monitor != null)
-			monitor.serviceBegin(IEngineService.PAGE_SERVICE, pageName);
-
-		// At one time, the page service required a session, but that is no longer necessary.
-		// User's can now bookmark pages within a Tapestry application.  Pages
-		// can implement validate() and throw a PageRedirectException if they don't
-		// want to be accessed this way.  For example, most applications have a concept
-		// of a "login" and have a fe pages that don't require the user to be logged in,
-		// and other pages that do.  The protected pages should redirect to a login page.
-
-		IPage page = cycle.getPage(pageName);
-
-		// Allow the page to validate that the user is allowed to visit.  This is simple
-		// protection from malicious users who hack the URLs directly, or make inappropriate
-		// use of the back button. 
-
-		page.validate(cycle);
-
-		cycle.setPage(page);
-
-		render(cycle, output);
-
-		if (monitor != null)
-			monitor.serviceEnd(IEngineService.PAGE_SERVICE);
-	}
-
-	/**
-	 * <p>Clears the cache of pages, specifications and templates.
-	 *
-	 */
-
-	protected void serviceReset(
-		IRequestCycle cycle,
-		String[] serviceContext,
-		ResponseOutputStream output)
-		throws RequestCycleException, ServletException, IOException
-	{
-		if (serviceContext == null || serviceContext.length != 1)
-			throw new ApplicationRuntimeException(
-				Tapestry.getString("service-single-parameter", IEngineService.RESET_SERVICE));
-
-		String pageName = serviceContext[0];
-
-		IMonitor monitor = cycle.getMonitor();
-
-		if (monitor != null)
-			monitor.serviceBegin(IEngineService.RESET_SERVICE, pageName);
-
-		clearCachedData();
-
-		IPage page = cycle.getPage(pageName);
-
-		page.validate(cycle);
-
-		cycle.setPage(page);
-
-		// Render the same page (that contained the reset link).
-
-		render(cycle, output);
-
-		if (monitor != null)
-			monitor.serviceEnd(IEngineService.RESET_SERVICE);
-	}
-
+	
+	
+	
+	
 	/**
 	 *  Discards all cached pages, component specifications and templates.
 	 *
 	 *  @since 1.0.1
 	 */
 
-	protected void clearCachedData()
+	public void clearCachedData()
 	{
 		pageSource.reset();
 		specificationSource.reset();
 		templateSource.reset();
 		scriptSource.reset();
+		helperBeanPool.clear();
 	}
 
 	/**
@@ -1514,6 +934,7 @@ public abstract class AbstractEngine
 	 *  <li>{@link ISpecificationSource}
 	 *  <li>{@link IPageSource}
 	 *  <li>Helper object {@link Pool}
+	 *  <li>Service {@link Map}
 	 *  </ul>
 	 *
 	 *  <p>Subclasses should invoke this implementation first, then perform their
@@ -1567,7 +988,7 @@ public abstract class AbstractEngine
 
 			if (templateSource == null)
 			{
-				templateSource = new DefaultTemplateSource(getResourceResolver());
+				templateSource = createTemplateSource();
 
 				servletContext.setAttribute(name, templateSource);
 			}
@@ -1581,8 +1002,7 @@ public abstract class AbstractEngine
 
 			if (specificationSource == null)
 			{
-				specificationSource =
-					new DefaultSpecificationSource(getResourceResolver(), specification);
+				specificationSource = createSpecificationSource();
 
 				servletContext.setAttribute(name, specificationSource);
 			}
@@ -1592,11 +1012,11 @@ public abstract class AbstractEngine
 		{
 			String name = PAGE_SOURCE_NAME + "." + applicationName;
 
-			pageSource = (PageSource) servletContext.getAttribute(name);
+			pageSource = (IPageSource) servletContext.getAttribute(name);
 
 			if (pageSource == null)
 			{
-				pageSource = new PageSource(getResourceResolver());
+				pageSource = createPageSource();
 
 				servletContext.setAttribute(name, pageSource);
 			}
@@ -1610,7 +1030,7 @@ public abstract class AbstractEngine
 
 			if (scriptSource == null)
 			{
-				scriptSource = new DefaultScriptSource(getResourceResolver());
+				scriptSource = createScriptSource();
 
 				servletContext.setAttribute(name, scriptSource);
 			}
@@ -1628,6 +1048,81 @@ public abstract class AbstractEngine
 				servletContext.setAttribute(name, helperBeanPool);
 			}
 		}
+		
+		if (serviceMap == null)
+		{
+			String name = SERVICE_MAP_NAME + "." + applicationName;
+			
+			serviceMap = (Map)servletContext.getAttribute(name);
+			
+			if (serviceMap == null)
+			{
+				serviceMap = createServiceMap();
+				
+				servletContext.setAttribute(name, serviceMap);
+			}
+		}
+	}
+
+	/**
+	 *  Invoked from {@link #setupForRequest(RequestContext)} to provide
+	 *  an instance of {@link IScriptSource} that will be stored into
+	 *  the {@link ServletContext}.  Subclasses may override this method
+	 *  to provide a different implementation.
+	 * 
+	 *  
+	 *  @returns an instance of {@link DefaultScriptSource}
+	 *  @since 1.0.9
+	 **/
+
+	protected IScriptSource createScriptSource()
+	{
+		return new DefaultScriptSource(getResourceResolver());
+	}
+
+	/**
+	 *  Invoked from {@link #setupForRequest(RequestContext)} to provide
+	 *  an instance of {@link IPageSource} that will be stored into
+	 *  the {@link ServletContext}.  Subclasses may override this method
+	 *  to provide a different implementation.
+	 * 
+	 *  @returns an instance of {@link PageSource}
+	 *  @since 1.0.9
+	 **/
+
+	protected IPageSource createPageSource()
+	{
+		return new PageSource(getResourceResolver());
+	}
+
+	/**
+	 *  Invoked from {@link #setupForRequest(RequestContext)} to provide
+	 *  an instance of {@link ISpecificationSource} that will be stored into
+	 *  the {@link ServletContext}.  Subclasses may override this method
+	 *  to provide a different implementation.
+	 * 
+	 *  @returns an instance of {@link DefaultSpecificationSource}
+	 *  @since 1.0.9
+	 **/
+
+	protected ISpecificationSource createSpecificationSource()
+	{
+		return new DefaultSpecificationSource(getResourceResolver(), specification);
+	}
+
+	/**
+	 *  Invoked from {@link #setupForRequest(RequestContext)} to provide
+	 *  an instance of {@link ITemplateSource} that will be stored into
+	 *  the {@link ServletContext}.  Subclasses may override this method
+	 *  to provide a different implementation.
+	 * 
+	 *  @returns an instance of {@link DefaultTemplateSource}
+	 *  @since 1.0.9
+	 **/
+
+	protected ITemplateSource createTemplateSource()
+	{
+		return new DefaultTemplateSource(getResourceResolver());
 	}
 
 	/**
@@ -1939,5 +1434,75 @@ public abstract class AbstractEngine
 				ioEx);
 		}
 
+	}
+	
+	/**
+	 *  Creates a Map of all the services available to the application.
+	 * 
+	 *  <p>Note: the Map returned is not synchronized, on the theory that returned
+	 *  map is not further modified and therefore threadsafe.
+	 * 
+	 **/
+	
+	private Map createServiceMap()
+	{
+		if (CAT.isDebugEnabled())
+			CAT.debug("Creating service map.");
+			
+		HashMap result = new HashMap();
+		IResourceResolver resolver = getResourceResolver();
+		
+		Iterator i = specification.getServiceNames().iterator();
+		
+		while (i.hasNext())
+		{
+			String name = (String)i.next();
+			String className = specification.getServiceClassName(name);
+			
+			if (CAT.isDebugEnabled())
+				CAT.debug("Creating service " + name + " as instance of " + className);
+				
+			Class serviceClass = resolver.findClass(className);
+			
+				try {
+					IEngineService service = (IEngineService)serviceClass.newInstance();
+					String serviceName = service.getName();
+					
+					if (!service.getName().equals(name))
+						throw new ApplicationRuntimeException(
+						Tapestry.getString("AbstractEngine.service-name-mismatch",
+						name, serviceClass, serviceName));
+					
+					service.setHelperBeanPool(helperBeanPool);
+					
+					result.put(serviceName, service);
+				} 
+				catch(InstantiationException ex) 
+				{
+					String message = 
+						Tapestry.getString("AbstractEngine.unable-to-instantiate-service",
+							name, className);
+							
+					CAT.error(message, ex);
+					
+					throw new ApplicationRuntimeException(message, ex);
+				}
+				catch(IllegalAccessException ex) 
+				{
+					String message = 
+						Tapestry.getString("AbstractEngine.unable-to-instantiate-service",
+							name, className);
+							
+					CAT.error(message, ex);
+					
+					throw new ApplicationRuntimeException(message, ex);
+				}
+		}
+		
+		// Result should not be modified after this point, for threadsafety issues.
+		// We could wrap it in an unmodifiable, but for efficiency we don't.
+		
+		return result;
+					
 	}
 }

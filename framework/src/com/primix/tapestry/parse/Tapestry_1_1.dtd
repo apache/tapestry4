@@ -36,7 +36,7 @@ Attributes:
   name: A textual name used to uniquely identify the application.
   engine-class:  The Java class to instantiate as the application engine.
 -->
-<!ELEMENT application (description*, property*, page, (page|component-alias)*)>
+<!ELEMENT application (description*, property*, (page|component-alias|service)*)>
 <!ATTLIST application
   name CDATA #REQUIRED
   engine-class CDATA #REQUIRED
@@ -318,6 +318,26 @@ by the component and may not be affected by informal parameters.
 <!ATTLIST reserved-parameter
   name CDATA #REQUIRED
 >
+
+<!-- =======================================================
+Element: service
+Appears in: application
+
+Defines an engine service.  You may override the default
+set of engine services or provide completely new services.
+
+Attributes:
+  name: The name of the service.
+  class: The Java class to instantiate for the service.
+
+-->
+
+<!ELEMENT service EMPTY>
+<!ATTLIST service
+  name CDATA #REQUIRED
+  class CDATA #REQUIRED
+>
+
 <!-- =======================================================
 Element: set-property
 Appears in: bean
