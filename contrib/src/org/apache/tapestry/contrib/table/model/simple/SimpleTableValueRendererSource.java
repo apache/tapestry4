@@ -96,7 +96,7 @@ public class SimpleTableValueRendererSource implements ITableRendererSource
 
 		Object objValue = objSimpleColumn.getColumnValue(objRow);
 		if (objValue == null)
-			objValue = EMPTY_REPRESENTATION;
+			return new RenderString(EMPTY_REPRESENTATION, true);
 
 		return new RenderString(objValue.toString());
 	}
