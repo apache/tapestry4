@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE script PUBLIC 
+  "-//Howard Ship//Tapestry Script 1.1//EN"
+  "http://tapestry.sf.net/dtd/Script_1_1.dtd">
+  
+<!--
+
+Input symbols:
+  name: The Button component the script is to be attached to.
+  
+-->
+<script>
+
+<let key="displayName">
+  ${displayField.name}
+</let>
+<let key="returnName">
+  ${returnField.name}
+</let>
+
+<let key="buttonName">
+  ${button.name}
+</let>
+
+<let key="formName">
+  ${displayField.form.name}
+</let>
+
+<let key="formPath">
+  document.${formName}
+</let>
+
+<let key="buttonPath">
+  ${formPath}.${buttonName}
+</let>
+
+<let key="displayPath">
+  ${formPath}.${displayName}
+</let>
+
+<let key="returnPath">
+  ${formPath}.${returnName}
+</let>
+
+<let key="functionName"> 
+  onClick_${buttonName}
+</let>
+
+<let key="hideFunctionName"> 
+  onClick_${displayName}
+</let>
+
+<body>
+ function ${functionName}() 
+ {
+        fPopCalendar(${displayPath},${displayPath},${returnPath}, popCal);        
+ }
+ 
+ function ${hideFunctionName}() 
+ {
+        fHideCalendar();
+ }
+</body>
+
+<initialization>
+ ${buttonPath}.attachEvent("onclick", ${functionName});
+ ${displayPath}.attachEvent("onclick", ${hideFunctionName});
+</initialization>
+
+</script>
+

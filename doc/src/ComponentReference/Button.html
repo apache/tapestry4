@@ -2,16 +2,16 @@
 <!-- $Id$ --> 
 <html>
 <head>
-<title>Submit</title>
+<title>Button</title>
 <link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
 </head>
 <body>
 
 <table border="0" cellpadding="0" cellspacing="0" width="100%">
  <tr>
-  <td align="left"><A href="Shell.html"><IMG alt=Shell src="common-images/prev.png"></A></td>  
+  <td align="left"><A href="Body.html"><IMG alt="Body" src="common-images/prev.png"></A></td>  
   <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></A></td>  
-  <td align="right"><A href="TextArea.html"><IMG alt=TextArea src="common-images/next.png"></A></td>  
+  <td align="right"><A href="Checkbox.html"><IMG alt="Checkbox" src="common-images/next.png"></A></td>  
  <tr>
  <tr>
   <td colspan="3"><hr></td>  
@@ -25,12 +25,12 @@
  <td>
   <table>
 	 <tr>
-	  <td><font size="+2"><b>Submit</b></font></td>
+	  <td><font size="+2"><b>Button</b></font></td>
 	 </tr>
 	 <tr>
 	  <td>
-		 <A href="../api/net/sf/tapestry/form/Submit.html">
-		 net.sf.tapestry.form.Submit</A>
+		 <A href="../api/net/sf/tapestry/form/Button.html">
+		 net.sf.tapestry.form.Button</A>
 		</td>
 	 </tr>
   </table>
@@ -38,7 +38,7 @@
  <td>
   <table align="right" valign="middle" bgcolor="#c0c0c0" cellspacing="8">
 	 <tr>
-	  <td><input type="submit" value="Submit"></td>
+	  <td><input type="button" value="Button"></td>
 	 </tr>
   </table>
  </td>
@@ -54,28 +54,10 @@
  <td colspan="2">
   <b>Description</b>
 	<br>
-  Provides a HTML form submission element &lt;input type="submit"&gt;. 
-	The Submit component must be wrapped by a <A href="Form.html">Form</A>.  
+  Provides a HTML form button element &lt;input type="button"&gt;. 
+	The Button component must be wrapped by a <A href="Form.html">Form</A>.  
   <p>
-  This component is generally only used when the form has multiple submit 
-  buttons, and it is important for the application to know which one was 
-  pressed. You may also want to use 
-  <A href="ImageSubmit.html">ImageSubmit</A> which accomplishes 
-            much the same thing, but uses a graphic image instead. 
-            <P>In typical use, the application needs to know which Submit was 
-            the one clicked by the user. This can be accomplished in two ways: 
-            <UL>
-              <LI>Use the <B>selected</B> and <B>tag</B> parameters to identify 
-              the button. 
-              <LI>Use the <B>listener</B> to perform an operation directly 
-            </LI></UL>
-            <P>If a listener is used, it will be invoked as the Submit component 
-            is rewound. In addition, the <A href="Form.html">Form</A>'s listener 
-            will always be invoked. 
-            <P>Use the first method if you need to be sure that the entire form 
-            has rewound before any logic specific to the ImageSubmit is 
-            triggered. </P>
-             
+  This component is useful for attaching JavaScript onclick event handlers.             
  </td>
 </tr>
 
@@ -83,19 +65,9 @@
  <td colspan="2">
   <b>See Also</b>
 	<br>
-	<A href="Button.html">Button</A>, 
 	<A href="Form.html">Form</A>, 
-	<A href="Checkbox.html">Checkbox</A>, 
-	<A href="Hidden.html">Hidden</A>, 
-	<A href="ImageSubmit.html">ImageSubmit</A>, 
-	<A href="ListEdit.html">ListEdit</A>, 
-	<A href="Option.html">Option</A>, 
-	<A href="Radio.html">Radio</A>, 
-	<A href="RadioGroup.html">RadioGroup</A>, 
-	<A href="Select.html">Select</A>, 
-	<a href="TextArea.html">TextArea</a>, 
-	<A href="TextField.html">TextField</A>, 
-	<A href="ValidField.html">ValidField</A>
+	<A href="Script.html">Script</A>, 
+	<A href="Submit.html">Submit</A> 
  </td>
 </tr>
 
@@ -170,9 +142,8 @@
     <u>before</u> the listener is notified.
  		</td>
    </tr>
-	</table><BR>Body: 
-            <STRONG>removed</STRONG><BR>Informal parameters: 
-            <STRONG>allowed</STRONG>
+	</table><BR>Body: <STRONG>removed</STRONG><BR>
+  Informal parameters: <STRONG>allowed</STRONG>
     <br>
   Reserved parameters: "name", "type"  
  </td>
@@ -355,9 +326,9 @@ public class ComplexSubmit extends BasePage {
  <td colspan="3"><hr></td>  
 </tr>
 <tr>
- <td align="left"><A href="Shell.html"><IMG alt=Shell src="common-images/prev.png"></A></td>  
+ <td align="left"><A href="Body.html"><IMG alt="Body" src="common-images/prev.png"></A></td>  
  <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></A></td>  
- <td align="right"><A href="TextArea.html"><IMG alt=TextArea src="common-images/next.png"></A></td>  
+ <td align="right"><A href="Checkbox.html"><IMG alt="Checkbox" src="common-images/next.png"></A></td>  
 </tr></TBODY></TABLE>
 
 </body>
