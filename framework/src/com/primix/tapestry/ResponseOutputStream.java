@@ -3,6 +3,7 @@ package com.primix.tapestry;
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
+import com.primix.tapestry.components.Body;
 
 /*
  * Tapestry Web Application Framework
@@ -33,7 +34,7 @@ import javax.servlet.http.*;
  */
 
 /**
- *  A special output stream works with a <code>HttpServletResponse</code>, buffering
+ *  A special output stream works with a {@link HttpServletResponse}, buffering
  *  data so as to defer opening the response's output stream.
  *
  *  <p>A <code>ResponseOutputStream</code> must be closed specially, using
@@ -50,6 +51,9 @@ import javax.servlet.http.*;
  * and its crew.  This would save on the number of conversions between characters and
  * bytes.
  *
+ * <p>In fact, this is now even less useful, because the {@link Body} component (which will
+ * be used on virtually all Tapestry pages), buffers its wrapped contents.
+ *
  *  @author Howard Ship
  *  @version $Id$
  */
@@ -58,11 +62,11 @@ import javax.servlet.http.*;
 public class ResponseOutputStream extends OutputStream
 {
 	/**
-	*  Default size for the buffer (8 KB).
+	*  Default size for the buffer (2000 bytes).
 	*
 	*/
 
-	public static final int DEFAULT_SIZE = 8192;
+	public static final int DEFAULT_SIZE = 2000;
 
 	private int pos;
 	private int maxSize;

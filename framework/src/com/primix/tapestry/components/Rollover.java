@@ -200,7 +200,6 @@ public class Rollover extends AbstractComponent
 		boolean enabled;
 		String imageName = null;
 		String script;
-		String serviceLinkName;
 
 		body = Body.get(cycle);
 		if (body == null)
@@ -245,7 +244,6 @@ public class Rollover extends AbstractComponent
 
 		if (dynamic)
 		{
-			serviceLinkName = serviceLink.getName(cycle);
 			uniqueId = body.getUniqueId();
 
 			if (focusURL == null)
@@ -257,7 +255,7 @@ public class Rollover extends AbstractComponent
 			onMouseOverName = "onMouseOver_" + uniqueId;
 			onMouseOutName = "onMouseOut_" + uniqueId;
 			onLoadName = "onLoad_" + uniqueId;
-			imageName = "image_" + uniqueId;
+			imageName = "rollover_" + uniqueId;
 
 			focusImageName = "focus_" + uniqueId;
 			blurImageName = "blur_" + uniqueId;
@@ -267,8 +265,6 @@ public class Rollover extends AbstractComponent
 
 			if (dynamic)
 			{
-				setupRolloverFunction(body, cycle);
-			
 				script = 
 					"  function " + onMouseOverName + "()\n" +
 					"  {\n" +
@@ -286,12 +282,19 @@ public class Rollover extends AbstractComponent
 					";\n" +
 					"  }";
 					
+				// Add this to the scripting block at the top of the page.
+				
 				body.addOtherScript(script);
 				
-				body.addOtherScript(
-				"  setupTapestryRollover('" + serviceLinkName + "', " +
-					onMouseOverName + ", " + onMouseOutName + ");");
+				// Add attributes to the link to control mouse over/out.
+				// Because the script is written before the <body> tag,
+				// there won't be any timing issues (such as cause
+				// bug #113893).
 				
+				serviceLink.setAttribute("onMouseOver",
+						"javascript:" + onMouseOverName + "();");
+				serviceLink.setAttribute("onMouseOut",
+						"javascript:" + onMouseOutName + "();");
 			}
 		}
 
@@ -300,52 +303,13 @@ public class Rollover extends AbstractComponent
 		writer.attribute("src", imageURL);
 
 		writer.attribute("border", 0);
-
-		if (dynamic)
-			writer.attribute("name", imageName);
+		writer.attribute("name", imageName);
 
 		generateAttributes(cycle, writer, reservedNames);
 
 		writer.closeTag();
 
 		writer.setCompressed(compressed);
-	}
-
-	private void setupRolloverFunction(Body body, IRequestCycle cycle)
-	{
-		String name = "com.primix.tapestry.component.Rollover.function-tag";
-		String script;
-		
-		if (cycle.getAttribute(name) != null)
-			return;
-		
-		
-		// Note: most of this is support for Netscape Navigator;
-		// under Internet Explorer, we could simplify most of this
-		// down to "document.all." + linkName.
-		
-		// Cross-browser madness.  IE supports 'id' and 'name' properties,
-		// but NN only supports 'name'.
-		
-		script = 
-			"  function setupTapestryRollover(linkName, mouseOverHandler, mouseOutHandler)\n" +
-			"  {\n" +
-//			"    window.alert('setupTapestryRollover(' + linkName + ')');\n" +
-			"    for (var i = document.links.length - 1; i >= 0; i--)\n" +
-			"    {\n" +
-			"      if (linkName == document.links[i].name)\n" +
-			"      {\n" +
-			"        document.links[i].onmouseover = mouseOverHandler;\n" +
-			"        document.links[i].onmouseout = mouseOutHandler;\n" +
-			"        return;\n" +
-			"      }\n" +
-			"    }\n" +
-			"    window.alert('setupTapestryRollover: Link ' + linkName + ' not found.');\n" +
-			"  }\n";
-			
-		body.addOtherScript(script);
-		
-		cycle.setAttribute(name, Boolean.TRUE);			
 	}
 
 	public void setBlurBinding(IBinding newBlur)

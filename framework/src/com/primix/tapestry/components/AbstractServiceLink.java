@@ -66,7 +66,9 @@ public abstract class AbstractServiceLink
 	private String anchorValue;
 
 	private boolean rendering;
-	private String name;
+
+	private static final int MAP_SIZE = 3;
+	private Map attributes;
 
 	public AbstractServiceLink(IPage page, IComponent container, String name,
 		ComponentSpecification specification)
@@ -191,35 +193,18 @@ public abstract class AbstractServiceLink
 	}
 
 	/**
-	 *  Returns the name of the link, which is set by the containing {@link Body}.
-	 *  This is used by wrapped components, such as {@link Rollover}, to make
-	 *  references to the link.  A name is not assigned to this component
-	 *  until this method is invoked.
-	 *
-	 *  <p>The name is used to supply an <code>name</id> HTML attribute during
-	 *  rendering.
+	 *  Record an attribute (typically, from a wrapped component such
+	 *  as a {@link Rollover}).
 	 *
 	 */
 	 
-	public String getName(IRequestCycle cycle)
-	throws RequestCycleException
+	public void setAttribute(String attributeName, String attributeValue)
 	{
-		Body body;
+		if (attributes == null)
+			attributes = new HashMap(MAP_SIZE);
 		
-		if (name != null)
-			return name;
-		
-		body = Body.get(cycle);
-		if (body == null)
-			throw new RequestCycleException(
-			"May not invoke getName(String) unless " +
-			"the service link component is wrapped by a Body component.",
-			this, cycle);
-			
-		name = "link_" + body.getUniqueId();
-		
-		return name;
-	}
+		attributes.put(attributeName, attributeValue);
+	}	
 
 	/**
 	 *  Renders the link.  This is somewhat complicated, because a
@@ -228,8 +213,8 @@ public abstract class AbstractServiceLink
 	 *  itself actually renders.
 	 *
 	 *  <p>This is to support components such as {@link Rollover}, which
-	 *  must specify some attributes of the service link (indirectly,
-	 *  via {@link #getName(IRequestCycle)}) as they render in order to
+	 *  must specify some attributes of the service link 
+	 *  as they render in order to
 	 *  create some client-side JavaScript that works.  Thus the
 	 *  service link renders its wrapped components into
 	 *  a temporary buffer, then renders its own HTML.
@@ -253,8 +238,7 @@ public abstract class AbstractServiceLink
 		try
 		{
 			rendering = true;
-			name = null;
-			
+
 			cycle.setAttribute(ATTRIBUTE_NAME, this);
 
 			setup(cycle);
@@ -285,15 +269,10 @@ public abstract class AbstractServiceLink
 
 			if (enabled)
 			{
-				// Write the name.  This is used with Rollover and JavaScript
-				// to find the link and set its event handlers ... it has
-				// the unwanted side-effect of making the links into
-				// anchors (i.e., link targets).  Just put it down
-				// to cross-browser madness.
+				// Write any attributes specified by wrapped components.
 				
-				if (name != null)
-					writer.attribute("name", name);
-					
+				writeAttributes(writer);
+
 				// Generate additional attributes from informal parameters.
 
 				generateAttributes(cycle, writer, reservedNames);
@@ -313,7 +292,26 @@ public abstract class AbstractServiceLink
 		finally
 		{
 			rendering = false;
-			name = null;
+			attributes = null;
 		}
+	}
+	
+	private void writeAttributes(IResponseWriter writer)
+	{
+		Map.Entry entry;
+		Iterator i;
+		
+		if (attributes == null)
+			return;
+		
+		i = attributes.entrySet().iterator();
+		
+		while (i.hasNext())
+		{
+			entry = (Map.Entry)i.next();
+			
+			writer.attribute((String)entry.getKey(), (String)entry.getValue());
+		}
+			
 	}
 }

@@ -59,11 +59,11 @@ public interface IServiceLink extends IComponent
     public boolean isEnabled();
 	
 	/**
-	 *  Returns the name assigned to the service link by the containing {@link Body}
-	 *  component.
+	 *  Allows a component to set additional attributes.  This is used by
+	 *  {@link Rollover} to set mouse over and mouse out handlers on
+	 *  the {@link IServiceLink} that wraps it.
 	 *
 	 */
-
-	public String getName(IRequestCycle cycle)
-	throws RequestCycleException;
+	 
+	public void setAttribute(String attributeName, String attributeValue);
 }
