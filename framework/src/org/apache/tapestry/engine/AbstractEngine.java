@@ -1447,6 +1447,11 @@ public abstract class AbstractEngine
                 // Servlet API 2.2 compatibility
                 // Behave okay if the setCharacterEncoding() method is unavailable
             }
+            catch (AbstractMethodError e)
+            {
+                // Servlet API 2.2 compatibility
+                // Behave okay if the setCharacterEncoding() method is unavailable
+            }
         }
     }
 
