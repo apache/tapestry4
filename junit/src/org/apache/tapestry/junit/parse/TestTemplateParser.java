@@ -278,7 +278,7 @@ public class TestTemplateParser extends TestCase
         TemplateToken[] tokens = run("AllStatic.html");
 
         assertTokenCount(tokens, 1);
-        assertTextToken(tokens[0], 0, 184);
+        assertTextToken(tokens[0], 0, 172);
     }
 
     public void testSingleEmptyTag() throws TemplateParseException
