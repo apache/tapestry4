@@ -55,6 +55,7 @@
 
 package org.apache.tapestry.wml;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IMarkupWriter;
@@ -86,7 +87,7 @@ public abstract class Timer extends AbstractComponent
             writer.attribute("name", getName());
 
             String value = readValue();
-            if (value != null)
+            if (StringUtils.isNotEmpty(value))
                 writer.attribute("value", value);
             else
                 writer.attribute("value", "0");

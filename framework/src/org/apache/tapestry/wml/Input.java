@@ -55,6 +55,7 @@
 
 package org.apache.tapestry.wml;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IMarkupWriter;
@@ -89,11 +90,11 @@ public abstract class Input extends AbstractComponent
             writer.attribute("name", getName());
 
 			String title = getTitle();
-			if (title != null)
+			if (StringUtils.isNotEmpty(title))
 				writer.attribute("title", title);
 
 			String format = getFormat();
-            if (format != null)
+            if (StringUtils.isNotEmpty(format))
 				writer.attribute("format", format);
 
             boolean emptyok = isEmptyok();
@@ -103,7 +104,7 @@ public abstract class Input extends AbstractComponent
 			renderInformalParameters(writer, cycle);
 
 			String value = readValue();
-			if (value != null)
+			if (StringUtils.isNotEmpty(value))
 				writer.attribute("value", value);
 
 			writer.closeTag();

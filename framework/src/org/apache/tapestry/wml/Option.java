@@ -55,6 +55,7 @@
 
 package org.apache.tapestry.wml;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
@@ -89,7 +90,7 @@ public abstract class Option extends AbstractComponent {
             writer.begin("option");
 
             String value = getValue();
-            if (value != null)
+            if (StringUtils.isNotEmpty(value))
                 writer.attribute("value", value);
 
             renderInformalParameters(writer, cycle);
