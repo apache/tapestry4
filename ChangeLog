@@ -1,6 +1,7 @@
 * Apr 3 2001 hship
 
-Add the 3rd part libraries to CVS.
+Add the 3rd party libraries to CVS.
+Simplify top-level Makefile (w.r.t. 3rd party libraries).
 
 * Mar 9 2001 hship
 

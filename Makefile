@@ -1,7 +1,7 @@
 # Master Makefile for the source tree
 # $Id$
 
-distribution: clean copy-external-jars install javadoc
+distribution: clean install javadoc
 	@$(RECURSE) clean create-archives
 
 # The job of this Makefile is to re-invoke make in various subdirectories.
@@ -26,34 +26,8 @@ JAVADOC_MODULES := \
 	examples/VlibBeans \
 	examples/Vlib
 
-# A list of Jar files redistributed with Tapestry.  xerces, gnu-regexp
-# ejb and log4j are needed to build Tapestry; the rest are needed
-# for the tutorials and demos.  Note that org.apache.jasper.jar is
-# ony needed to run the JSP portion of the Primix Virtual Library
-# demo.
-
-EXTERNAL_JARS := \
-	xerces.jar \
-	gnu-regexp.jar \
-	com.mortbay.jetty.jar \
-	javax.servlet.jar \
-	org.apache.jasper.jar \
-	ejb.jar \
-	log4j.jar
-
-# This reflects my personal build work area structure.
-# C:/Work/Tapestry is my work area and I create new releases
-# by checking out the Tapestry module to
-# C:/Work/Export/Tapestry-x-x-x
-
-EXTERNAL_LIB_DIR = ../../Tapestry/lib
 
 LOCAL_LIB_DIR = lib
-
-copy-external-jars:
-	$(call NOTE, Copying external JARs ...)
-	@$(MKDIRS) $(LOCAL_LIB_DIR)
-	$(CP) $(foreach _jar,$(EXTERNAL_JARS),$(EXTERNAL_LIB_DIR)/$(_jar)) $(LOCAL_LIB_DIR)
 
 # REINVOKE needs to specify a TARGET (used by the reinvoke
 # rule).
@@ -138,4 +112,4 @@ create-archives:
 
 
 .PHONY: javadoc create-archives reinvoke
-.PHONY: clean install copy-external-jars distribution
+.PHONY: clean install distribution
