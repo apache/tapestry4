@@ -68,15 +68,15 @@ import org.apache.tapestry.vlib.AdminPage;
 
 public abstract class TransferBooksSelect extends AdminPage
 {
-    public abstract Integer getFromUserPK();
-    public abstract Integer getToUserPK();
+    public abstract Integer getFromUserId();
+    public abstract Integer getToUserId();
 
     public void formSubmit(IRequestCycle cycle)
     {
-        Integer fromUserPK = getFromUserPK();
-        Integer toUserPK = getToUserPK();
+        Integer fromUserId = getFromUserId();
+        Integer toUserId = getToUserId();
 
-        if (fromUserPK.equals(toUserPK))
+        if (fromUserId.equals(toUserId))
         {
             setError(getString("select-different-users"));
             return;
@@ -84,7 +84,7 @@ public abstract class TransferBooksSelect extends AdminPage
 
         TransferBooksTransfer next = (TransferBooksTransfer) cycle.getPage("TransferBooksTransfer");
 
-        next.activate(cycle, fromUserPK, toUserPK);
+        next.activate(cycle, fromUserId, toUserId);
     }
 
 }

@@ -125,7 +125,7 @@ public abstract class BorrowedBooks
     private void runQuery()
     {
         Visit visit = (Visit) getVisit();
-         Integer userPK = visit.getUserPK();
+         Integer userPK = visit.getUserId();
         
          VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
         

@@ -102,7 +102,7 @@ public abstract class AbstractEntityBean implements EntityBean
      *
      **/
 
-    private transient Context environment;
+    private transient Context _environment;
 
     public void setEntityContext(EntityContext context)
     {
@@ -119,27 +119,27 @@ public abstract class AbstractEntityBean implements EntityBean
      *
      **/
 
-    protected Object getEnvironmentObject(String name, Class objectClass) throws RemoteException, NamingException
+    protected Object getEnvironmentObject(String name, Class objectClass)
+        throws RemoteException, NamingException
     {
-        Object raw;
-        Object result;
-        Context initial;
+        Object result = null;
 
-        if (environment == null)
+        if (_environment == null)
         {
-            initial = new InitialContext();
-            environment = (Context) initial.lookup("java:comp/env");
+            Context initial = new InitialContext();
+            _environment = (Context) initial.lookup("java:comp/env");
         }
 
-        raw = environment.lookup(name);
+        Object raw = _environment.lookup(name);
 
         try
         {
             result = PortableRemoteObject.narrow(raw, objectClass);
         }
-        catch (ClassCastException e)
+        catch (ClassCastException ex)
         {
-            throw new RemoteException("Could not narrow " + raw + " (" + name + ") to class " + objectClass + ".");
+            throw new RemoteException(
+                "Could not narrow " + raw + " (" + name + ") to class " + objectClass + ".");
         }
 
         return result;
@@ -200,24 +200,22 @@ public abstract class AbstractEntityBean implements EntityBean
 
     protected Integer allocateKey() throws RemoteException
     {
-        Context initial;
-        Context environment;
         IKeyAllocator allocator;
-        Object raw;
 
         if (_keyAllocatorHome == null)
         {
             try
             {
-                initial = new InitialContext();
-                environment = (Context) initial.lookup("java:comp/env");
+                Context initial = new InitialContext();
+                Context environment = (Context) initial.lookup("java:comp/env");
 
-                raw = environment.lookup("ejb/KeyAllocator");
-                _keyAllocatorHome = (IKeyAllocatorHome) PortableRemoteObject.narrow(raw, IKeyAllocatorHome.class);
+                Object raw = environment.lookup("ejb/KeyAllocator");
+                _keyAllocatorHome =
+                    (IKeyAllocatorHome) PortableRemoteObject.narrow(raw, IKeyAllocatorHome.class);
             }
-            catch (NamingException e)
+            catch (NamingException ex)
             {
-                throw new XEJBException("Unable to locate IKeyAllocatorHome.", e);
+                throw new XEJBException("Unable to locate IKeyAllocatorHome.", ex);
             }
         }
 
@@ -228,9 +226,11 @@ public abstract class AbstractEntityBean implements EntityBean
         {
             allocator = _keyAllocatorHome.create();
         }
-        catch (CreateException e)
+        catch (CreateException ex)
         {
-            throw new RemoteException("Unable to create a KeyAllocator from " + _keyAllocatorHome + ".", e);
+            throw new RemoteException(
+                "Unable to create a KeyAllocator from " + _keyAllocatorHome + ".",
+                ex);
         }
 
         // Finally, invoke the method that gets a key.
@@ -322,7 +322,7 @@ public abstract class AbstractEntityBean implements EntityBean
 
     protected void setContext(EntityContext context)
     {
-        this._context = context;
+        _context = context;
     }
 
     protected EntityContext geEntityContext()

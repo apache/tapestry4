@@ -8,11 +8,13 @@
   
   <property name="page-type" value="Search"/>
   
-  <property-specification name="searchTitle" type="java.lang.String"/>
-  <property-specification name="searchPublisherPK" type="java.lang.Integer"/>
   <property-specification name="error" type="java.lang.String"/>
   <property-specification name="message" type="java.lang.String"/>
-  <property-specification name="searchAuthor" type="java.lang.String"/>	
-
+  
+  <property-specification name="title" type="java.lang.String"/>
+  <property-specification name="author" type="java.lang.String"/>
+  <property-specification name="ownerId" type="java.lang.Integer"/>	
+  <property-specification name="publisherId" type="java.lang.Integer"/>
+  
 </page-specification>
 

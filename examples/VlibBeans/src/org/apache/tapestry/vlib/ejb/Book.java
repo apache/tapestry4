@@ -73,14 +73,14 @@ import java.sql.Timestamp;
 
 public class Book implements Serializable
 {
-    private static final long serialVersionUID = 4762562744970539598L;
+    private static final long serialVersionUID = -3423550323411938995L;
     
     /**
      *  Column index for the Book's primary key.
      *
      **/
 
-    public static final int PRIMARY_KEY_COLUMN = 0;
+    public static final int ID_COLUMN = 0;
 
     /**
      *  Column index for the book title.
@@ -91,7 +91,7 @@ public class Book implements Serializable
 
     public static final int DESCRIPTION_COLUMN = 2;
     public static final int ISBN_COLUMN = 3;
-    public static final int OWNER_PK_COLUMN = 4;
+    public static final int OWNER_ID_COLUMN = 4;
 
     /**
      *  Column index for a presentable version of the holder's name.
@@ -102,9 +102,9 @@ public class Book implements Serializable
 
     public static final int OWNER_NAME_COLUMN = 5;
 
-    public static final int HOLDER_PK_COLUMN = 6;
+    public static final int HOLDER_ID_COLUMN = 6;
     public static final int HOLDER_NAME_COLUMN = 7;
-    public static final int PUBLISHER_PK_COLUMN = 8;
+    public static final int PUBLISHER_ID_COLUMN = 8;
     public static final int PUBLISHER_NAME_COLUMN = 9;
     public static final int AUTHOR_COLUMN = 10;
 
@@ -143,9 +143,9 @@ public class Book implements Serializable
         return columns[index];
     }
 
-    public Integer getPrimaryKey()
+    public Integer getId()
     {
-        return (Integer) get(PRIMARY_KEY_COLUMN);
+        return (Integer) get(ID_COLUMN);
     }
 
     public String getTitle()
@@ -163,9 +163,9 @@ public class Book implements Serializable
         return (String) get(ISBN_COLUMN);
     }
 
-    public Integer getOwnerPrimaryKey()
+    public Integer getOwnerId()
     {
-        return (Integer) get(OWNER_PK_COLUMN);
+        return (Integer) get(OWNER_ID_COLUMN);
     }
 
     public String getOwnerName()
@@ -173,9 +173,9 @@ public class Book implements Serializable
         return (String) get(OWNER_NAME_COLUMN);
     }
 
-    public Integer getHolderPrimaryKey()
+    public Integer getHolderId()
     {
-        return (Integer) get(HOLDER_PK_COLUMN);
+        return (Integer) get(HOLDER_ID_COLUMN);
     }
 
     public String getHolderName()
@@ -183,9 +183,9 @@ public class Book implements Serializable
         return (String) get(HOLDER_NAME_COLUMN);
     }
 
-    public Integer getPublisherPrimaryKey()
+    public Integer getPublisherId()
     {
-        return (Integer) get(PUBLISHER_PK_COLUMN);
+        return (Integer) get(PUBLISHER_ID_COLUMN);
     }
 
     public String getPublisherName()
@@ -208,7 +208,7 @@ public class Book implements Serializable
         StringBuffer buffer;
 
         buffer = new StringBuffer("Book[");
-        buffer.append(get(PRIMARY_KEY_COLUMN));
+        buffer.append(get(ID_COLUMN));
         buffer.append(' ');
         buffer.append(get(TITLE_COLUMN));
         buffer.append(']');
@@ -224,7 +224,7 @@ public class Book implements Serializable
 
     public boolean isBorrowed()
     {
-        return !get(HOLDER_PK_COLUMN).equals(get(OWNER_PK_COLUMN));
+        return !get(HOLDER_ID_COLUMN).equals(get(OWNER_ID_COLUMN));
     }
 
     public boolean isHidden()

@@ -43,6 +43,8 @@
 		>
 		<war warfile="${root.lib.dir}/${vlib.war}" webxml="context/WEB-INF/web.xml">
 			<fileset dir="context">
+				<exclude name="**/Thumbs.db"/>
+				<exclude name="**/*.jbf"/>
 				<exclude name="WEB-INF/web.xml"/>
 			</fileset>
 			<!-- <webinf dir="context/WEB-INF"/> -->

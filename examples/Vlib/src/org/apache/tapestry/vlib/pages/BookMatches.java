@@ -63,6 +63,7 @@ import org.apache.tapestry.vlib.IErrorProperty;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.components.Browser;
 import org.apache.tapestry.vlib.ejb.IBookQuery;
+import org.apache.tapestry.vlib.ejb.MasterQueryParameters;
 import org.apache.tapestry.vlib.ejb.SortColumn;
 import org.apache.tapestry.vlib.ejb.SortOrdering;
 
@@ -90,32 +91,18 @@ public abstract class BookMatches extends BasePage
 
     public abstract boolean isDescending();
 
-    public abstract void setAuthor(String author);
+    public abstract MasterQueryParameters getQueryParameters();
 
-    public abstract String getAuthor();
-
-    public abstract void setTitle(String title);
-
-    public abstract String getTitle();
-
-    public abstract void setPublisherPK(Integer publisherPK);
-
-    public abstract Integer getPublisherPK();
+    public abstract void setQueryParameters(MasterQueryParameters queryParameters);
 
     /**
      *  Invoked by the {@link Home} page to perform a query.
      *
      **/
 
-    public void performQuery(String title, String author, Integer publisherPK, IRequestCycle cycle)
+    public void performQuery(MasterQueryParameters parameters, IRequestCycle cycle)
     {
-
-        // Store these values for later, when we need to redo the same query
-        // with different sorting.
-
-        setTitle(title);
-        setAuthor(author);
-        setPublisherPK(publisherPK);
+        setQueryParameters(parameters);
 
         int count = executeQuery(cycle);
 
@@ -151,9 +138,7 @@ public abstract class BookMatches extends BasePage
             setBookQuery(query);
         }
 
-        String title = getTitle();
-        String author = getAuthor();
-        Integer publisherPK = getPublisherPK();
+        MasterQueryParameters parameters = getQueryParameters();
 
         SortOrdering ordering = new SortOrdering(getSortColumn(), isDescending());
 
@@ -163,7 +148,7 @@ public abstract class BookMatches extends BasePage
 
             try
             {
-                return query.masterQuery(title, author, publisherPK, ordering);
+                return query.masterQuery(parameters, ordering);
             }
             catch (RemoteException ex)
             {

@@ -68,131 +68,113 @@ import java.sql.Timestamp;
 
 public class Person implements Serializable
 {
-    private static final long serialVersionUID = 4191736656532597561L;
-    
-	private Object[] columns;
+    private static final long serialVersionUID = 37148852625594728L;
 
-	public static final int PRIMARY_KEY_COLUMN = 0;
-	public static final int FIRST_NAME_COLUMN = 1;
-	public static final int LAST_NAME_COLUMN = 2;
-	public static final int EMAIL_COLUMN = 3;
-	public static final int VERIFIED_COLUMN = 4;
-	public static final int LOCKED_OUT_COLUMN = 5;
-	public static final int ADMIN_COLUMN = 6;
-	public static final int AUTHORIZATION_CODE_COLUMN = 7;
-	public static final int LAST_ACCESS_COLUMN = 8;
+    private Object[] columns;
 
-	public static final int N_COLUMNS = 9;
+    public static final int ID_COLUMN = 0;
+    public static final int FIRST_NAME_COLUMN = 1;
+    public static final int LAST_NAME_COLUMN = 2;
+    public static final int EMAIL_COLUMN = 3;
+    public static final int LOCKED_OUT_COLUMN = 4;
+    public static final int ADMIN_COLUMN = 5;
+    public static final int LAST_ACCESS_COLUMN = 6;
 
-	public Person(Object[] columns)
-	{
-		if (columns == null)
-			throw new IllegalArgumentException("Must provide a non-null columns.");
+    public static final int N_COLUMNS = 7;
 
-		if (columns.length != N_COLUMNS)
-			throw new IllegalArgumentException("Wrong number of columns for a Person.");
+    public Person(Object[] columns)
+    {
+        if (columns == null)
+            throw new IllegalArgumentException("Must provide a non-null columns.");
 
-		this.columns = new Object[N_COLUMNS];
-		System.arraycopy(columns, 0, this.columns, 0, N_COLUMNS);
-	}
+        if (columns.length != N_COLUMNS)
+            throw new IllegalArgumentException("Wrong number of columns for a Person.");
 
-	public Integer getPrimaryKey()
-	{
-		return (Integer) columns[PRIMARY_KEY_COLUMN];
-	}
+        this.columns = new Object[N_COLUMNS];
+        System.arraycopy(columns, 0, this.columns, 0, N_COLUMNS);
+    }
 
-	public String getFirstName()
-	{
-		return (String) columns[FIRST_NAME_COLUMN];
-	}
+    public Integer getId()
+    {
+        return (Integer) columns[ID_COLUMN];
+    }
 
-	public String getLastName()
-	{
-		return (String) columns[LAST_NAME_COLUMN];
-	}
+    public String getFirstName()
+    {
+        return (String) columns[FIRST_NAME_COLUMN];
+    }
 
-	public String getEmail()
-	{
-		return (String) columns[EMAIL_COLUMN];
-	}
+    public String getLastName()
+    {
+        return (String) columns[LAST_NAME_COLUMN];
+    }
 
-	public String getNaturalName()
-	{
-		if (columns[FIRST_NAME_COLUMN] == null)
-			return (String) columns[LAST_NAME_COLUMN];
+    public String getEmail()
+    {
+        return (String) columns[EMAIL_COLUMN];
+    }
 
-		return (String) columns[FIRST_NAME_COLUMN]
-			+ " "
-			+ (String) columns[LAST_NAME_COLUMN];
-	}
+    public String getNaturalName()
+    {
+        if (columns[FIRST_NAME_COLUMN] == null)
+            return (String) columns[LAST_NAME_COLUMN];
 
-	public Timestamp getLastAccess()
-	{
-		return (Timestamp) columns[LAST_ACCESS_COLUMN];
-	}
+        return (String) columns[FIRST_NAME_COLUMN] + " " + (String) columns[LAST_NAME_COLUMN];
+    }
 
-	public String toString()
-	{
-		StringBuffer buffer;
+    public Timestamp getLastAccess()
+    {
+        return (Timestamp) columns[LAST_ACCESS_COLUMN];
+    }
 
-		buffer = new StringBuffer("Person[");
+    public String toString()
+    {
+        StringBuffer buffer;
 
-		if (columns[FIRST_NAME_COLUMN] != null)
-		{
-			buffer.append((String) columns[FIRST_NAME_COLUMN]);
-			buffer.append(' ');
-		}
+        buffer = new StringBuffer("Person[");
 
-		buffer.append((String) columns[LAST_NAME_COLUMN]);
-		buffer.append(']');
+        if (columns[FIRST_NAME_COLUMN] != null)
+        {
+            buffer.append((String) columns[FIRST_NAME_COLUMN]);
+            buffer.append(' ');
+        }
 
-		return buffer.toString();
-	}
+        buffer.append((String) columns[LAST_NAME_COLUMN]);
+        buffer.append(']');
 
-	public boolean isAdmin()
-	{
-		return getBit(ADMIN_COLUMN);
-	}
+        return buffer.toString();
+    }
 
-	public void setAdmin(boolean value)
-	{
-		setBit(ADMIN_COLUMN, value);
-	}
+    public boolean isAdmin()
+    {
+        return getBit(ADMIN_COLUMN);
+    }
 
-	public boolean isLockedOut()
-	{
-		return getBit(LOCKED_OUT_COLUMN);
-	}
+    public void setAdmin(boolean value)
+    {
+        setBit(ADMIN_COLUMN, value);
+    }
 
-	public void setLockedOut(boolean value)
-	{
-		setBit(LOCKED_OUT_COLUMN, value);
-	}
+    public boolean isLockedOut()
+    {
+        return getBit(LOCKED_OUT_COLUMN);
+    }
 
-	public boolean isVerified()
-	{
-		return getBit(VERIFIED_COLUMN);
-	}
+    public void setLockedOut(boolean value)
+    {
+        setBit(LOCKED_OUT_COLUMN, value);
+    }
 
-	public void setVerified(boolean value)
-	{
-		setBit(VERIFIED_COLUMN, value);
-	}
+    private void setBit(int column, boolean value)
+    {
+        columns[column] = value ? Boolean.TRUE : Boolean.FALSE;
+    }
 
-	private void setBit(int column, boolean value)
-	{
-		columns[column] = value ? Boolean.TRUE : Boolean.FALSE;
-	}
+    private boolean getBit(int column)
+    {
+        Boolean b = (Boolean) columns[column];
 
-	private boolean getBit(int column)
-	{
-		Boolean b = (Boolean) columns[column];
+        return b.booleanValue();
+    }
 
-		return b.booleanValue();
-	}
-
-	public String getAuthorizationCode()
-	{
-		return (String) columns[AUTHORIZATION_CODE_COLUMN];
-	}
 }

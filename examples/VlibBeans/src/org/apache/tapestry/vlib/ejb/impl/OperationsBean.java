@@ -64,29 +64,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 import javax.ejb.CreateException;
-import javax.ejb.EJBException;
 import javax.ejb.FinderException;
 import javax.ejb.RemoveException;
 import javax.ejb.SessionBean;
 import javax.ejb.SessionContext;
-import javax.jms.DeliveryMode;
-import javax.jms.JMSException;
-import javax.jms.Queue;
-import javax.jms.QueueConnection;
-import javax.jms.QueueConnectionFactory;
-import javax.jms.QueueSender;
-import javax.jms.QueueSession;
-import javax.jms.Session;
-import javax.jms.TextMessage;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 import javax.sql.DataSource;
 
+import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.contrib.ejb.XCreateException;
 import org.apache.tapestry.contrib.ejb.XEJBException;
 import org.apache.tapestry.contrib.ejb.XRemoveException;
@@ -96,7 +86,6 @@ import org.apache.tapestry.vlib.ejb.Book;
 import org.apache.tapestry.vlib.ejb.BorrowException;
 import org.apache.tapestry.vlib.ejb.IBook;
 import org.apache.tapestry.vlib.ejb.IBookHome;
-import org.apache.tapestry.vlib.ejb.IMailMessageConstants;
 import org.apache.tapestry.vlib.ejb.IPerson;
 import org.apache.tapestry.vlib.ejb.IPersonHome;
 import org.apache.tapestry.vlib.ejb.IPublisher;
@@ -119,22 +108,13 @@ import org.apache.tapestry.vlib.ejb.SortOrdering;
  *
  **/
 
-public class OperationsBean implements SessionBean, IMailMessageConstants
+public class OperationsBean implements SessionBean
 {
-    private SessionContext context;
-    private transient Context environment;
-    private transient IBookHome bookHome;
-    private transient IPersonHome personHome;
-    private transient IPublisherHome publisherHome;
-
-    private QueueSender mailQueueSender;
-    private QueueSession mailQueueSession;
-
-    public static final String MAIL_QUEUE_JNDI_NAME = "queue/Vlib-MailQueue";
-
-    private static final int MAIL_QUEUE_PRIORITY = 4;
-
-    private final static int MAP_SIZE = 7;
+    private SessionContext _context;
+    private transient Context _environment;
+    private transient IBookHome _bookHome;
+    private transient IPersonHome _personHome;
+    private transient IPublisherHome _publisherHome;
 
     /**
      *  Data source, retrieved from the ENC property 
@@ -142,7 +122,7 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
      *
      **/
 
-    private transient DataSource dataSource;
+    private transient DataSource _dataSource;
 
     /**
      *  Sets up the bean.  Locates the {@link DataSource} for the bean
@@ -158,7 +138,7 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
         try
         {
             initial = new InitialContext();
-            environment = (Context) initial.lookup("java:comp/env");
+            _environment = (Context) initial.lookup("java:comp/env");
         }
         catch (NamingException e)
         {
@@ -167,7 +147,7 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
 
         try
         {
-            dataSource = (DataSource) environment.lookup("jdbc/dataSource");
+            _dataSource = (DataSource) _environment.lookup("jdbc/dataSource");
         }
         catch (NamingException e)
         {
@@ -176,26 +156,10 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
         }
     }
 
-    /**
-     *  Closes the mail queue session, if it has been opened.
-     *
-     **/
-
     public void ejbRemove()
     {
-        try
-        {
-            // Closing a session closes any
-            // producers created with it.
-
-            if (mailQueueSession != null)
-                mailQueueSession.close();
-        }
-        catch (Exception ex)
-        {
-            System.err.println("Failure removing Operations bean: " + ex.getMessage());
-        }
     }
+
     /**
      *  Does nothing, not invoked in stateless session beans.
      **/
@@ -206,7 +170,7 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
 
     public void setSessionContext(SessionContext value)
     {
-        context = value;
+        _context = value;
     }
 
     /**
@@ -221,50 +185,38 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
     /**
      *  Finds the book and borrower (by thier primary keys) and updates the book.
      *
-     *  <p>The attributes of the borrowed book is returned.
+     *  <p>The {@link Book} value object is returned.
      *
      **/
 
-    public Book borrowBook(Integer bookPrimaryKey, Integer borrowerPrimaryKey)
+    public Book borrowBook(Integer bookId, Integer borrowerId)
         throws FinderException, RemoteException, BorrowException
     {
         IBookHome bookHome = getBookHome();
         IPersonHome personHome = getPersonHome();
 
-        IBook book = bookHome.findByPrimaryKey(bookPrimaryKey);
+        IBook book = bookHome.findByPrimaryKey(bookId);
 
         if (!book.getLendable())
             throw new BorrowException("Book may not be borrowed.");
 
         // Verify that the borrower exists.
 
-        IPerson borrower = personHome.findByPrimaryKey(borrowerPrimaryKey);
+        personHome.findByPrimaryKey(borrowerId);
 
         // TBD: Check that borrower has authenticated
 
         // findByPrimaryKey() throws an exception if the EJB doesn't exist,
         // so we're safe.
 
-        IPerson owner = personHome.findByPrimaryKey(book.getOwnerPK());
+        personHome.findByPrimaryKey(book.getOwnerId());
 
         // Here's the real work; just setting the holder of the book
         // to be the borrower.
 
-        book.setHolderPK(borrowerPrimaryKey);
+        book.setHolderId(borrowerId);
 
-        sendMail(
-            owner.getEmail(),
-            "Book borrow notification.",
-            "Your book, '"
-                + book.getTitle()
-                + "',\n"
-                + "has been borrowed by "
-                + borrower.getNaturalName()
-                + " <"
-                + borrower.getEmail()
-                + ">.\n");
-
-        return getBook(bookPrimaryKey);
+        return getBook(bookId);
     }
 
     /**
@@ -313,7 +265,7 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
         if (publisher == null)
             publisher = publisherHome.create(publisherName);
 
-        attributes.put("publisherPK", publisher.getPrimaryKey());
+        attributes.put("publisherId", publisher.getPrimaryKey());
 
         return addBook(attributes);
     }
@@ -323,15 +275,15 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
      *
      *  <p>Returns the updated book.
      *
-     *  @param bookPK The primary key of the book to update.
+     *  @param bookId The primary key of the book to update.
      *  
      **/
 
-    public void updateBook(Integer bookPK, Map attributes) throws FinderException, RemoteException
+    public void updateBook(Integer bookId, Map attributes) throws FinderException, RemoteException
     {
         IBookHome bookHome = getBookHome();
 
-        IBook book = bookHome.findByPrimaryKey(bookPK);
+        IBook book = bookHome.findByPrimaryKey(bookId);
 
         book.updateEntityAttributes(attributes);
     }
@@ -347,7 +299,7 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
      *  @throws CreateException if the {@link IPublisher} can not be created.
      **/
 
-    public void updateBook(Integer bookPK, Map attributes, String publisherName)
+    public void updateBook(Integer bookId, Map attributes, String publisherName)
         throws CreateException, FinderException, RemoteException
     {
         IPublisher publisher = null;
@@ -368,17 +320,17 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
 
         // Don't duplicate all that other code!
 
-        attributes.put("publisherPK", publisher.getPrimaryKey());
+        attributes.put("publisherId", publisher.getPrimaryKey());
 
-        updateBook(bookPK, attributes);
+        updateBook(bookId, attributes);
     }
 
-    public void updatePerson(Integer primaryKey, Map attributes)
+    public void updatePerson(Integer personId, Map attributes)
         throws FinderException, RemoteException
     {
         IPersonHome home = getPersonHome();
 
-        IPerson person = home.findByPrimaryKey(primaryKey);
+        IPerson person = home.findByPrimaryKey(personId);
 
         person.updateEntityAttributes(attributes);
     }
@@ -388,17 +340,14 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
         Connection connection = null;
         IStatement statement = null;
         ResultSet set = null;
-        StatementAssembly assembly;
-        Integer primaryKey;
-        String name;
-        List list;
-        Publisher[] result;
+
+        List list = new ArrayList();
 
         try
         {
             connection = getConnection();
 
-            assembly = new StatementAssembly();
+            StatementAssembly assembly = new StatementAssembly();
 
             assembly.newLine("SELECT PUBLISHER_ID, NAME");
             assembly.newLine("FROM PUBLISHER");
@@ -407,20 +356,19 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
             statement = assembly.createStatement(connection);
 
             set = statement.executeQuery();
-            list = new ArrayList();
 
             while (set.next())
             {
-                primaryKey = (Integer) set.getObject(1);
-                name = set.getString(2);
+                Integer primaryKey = (Integer) set.getObject(1);
+                String name = set.getString(2);
 
                 list.add(new Publisher(primaryKey, name));
             }
         }
-        catch (SQLException e)
+        catch (SQLException ex)
         {
-            e.printStackTrace();
-            throw new XEJBException("Could not fetch all Publishers.", e);
+            ex.printStackTrace();
+            throw new XEJBException("Could not fetch all Publishers.", ex);
         }
         finally
         {
@@ -429,9 +377,7 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
 
         // Convert from List to Publisher[]
 
-        result = new Publisher[list.size()];
-
-        return (Publisher[]) list.toArray(result);
+        return (Publisher[]) list.toArray(new Publisher[list.size()]);
     }
 
     /**
@@ -446,43 +392,37 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
         Connection connection = null;
         IStatement statement = null;
         ResultSet set = null;
-        StatementAssembly assembly;
-        List list;
-        Person[] result;
-        Object[] columns;
+
+        List list = new ArrayList();
 
         try
         {
             connection = getConnection();
 
-            assembly = buildBasePersonQuery();
+            StatementAssembly assembly = buildBasePersonQuery();
             assembly.newLine("ORDER BY LAST_NAME, FIRST_NAME");
 
             statement = assembly.createStatement(connection);
 
             set = statement.executeQuery();
-            list = new ArrayList();
-            columns = new Object[Person.N_COLUMNS];
+
+            Object[] columns = new Object[Person.N_COLUMNS];
 
             while (set.next())
             {
                 list.add(convertRowToPerson(set, columns));
             }
         }
-        catch (SQLException e)
+        catch (SQLException ex)
         {
-            throw new XEJBException("Could not fetch all Persons.", e);
+            throw new XEJBException("Could not fetch all Persons.", ex);
         }
         finally
         {
             close(connection, statement, set);
         }
 
-        // Convert from List to Person[]
-
-        result = new Person[list.size()];
-
-        return (Person[]) list.toArray(result);
+        return (Person[]) list.toArray(new Person[list.size()]);
     }
 
     /**
@@ -491,23 +431,22 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
      *  @throws FinderException if the Person does not exist.
      **/
 
-    public Person getPerson(Integer primaryKey) throws FinderException
+    public Person getPerson(Integer personId) throws FinderException
     {
         Connection connection = null;
         IStatement statement = null;
         ResultSet set = null;
-        Object[] columns;
+
         Person result = null;
-        StatementAssembly assembly;
 
         try
         {
             connection = getConnection();
 
-            assembly = buildBasePersonQuery();
+            StatementAssembly assembly = buildBasePersonQuery();
             assembly.newLine("WHERE ");
             assembly.add("PERSON_ID = ");
-            assembly.addParameter(primaryKey);
+            assembly.addParameter(personId);
             assembly.newLine("ORDER BY LAST_NAME, FIRST_NAME");
 
             statement = assembly.createStatement(connection);
@@ -515,15 +454,15 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
             set = statement.executeQuery();
 
             if (!set.next())
-                throw new FinderException("Person " + primaryKey + " does not exist.");
+                throw new FinderException("Person #" + personId + " does not exist.");
 
-            columns = new Object[Person.N_COLUMNS];
+            Object[] columns = new Object[Person.N_COLUMNS];
             result = convertRowToPerson(set, columns);
 
         }
-        catch (SQLException e)
+        catch (SQLException ex)
         {
-            throw new XEJBException("Unable to perform database query.", e);
+            throw new XEJBException("Unable to perform database query.", ex);
         }
         finally
         {
@@ -570,11 +509,11 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
         return result;
     }
 
-    public Map getPersonAttributes(Integer primaryKey) throws FinderException, RemoteException
+    public Map getPersonAttributes(Integer personId) throws FinderException, RemoteException
     {
         IPersonHome home = getPersonHome();
 
-        IPerson person = home.findByPrimaryKey(primaryKey);
+        IPerson person = home.findByPrimaryKey(personId);
 
         return person.getEntityAttributes();
     }
@@ -586,38 +525,37 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
      *
      **/
 
-    public Book getBook(Integer primaryKey) throws FinderException
+    public Book getBook(Integer bookId) throws FinderException
     {
         Connection connection = null;
         IStatement statement = null;
         ResultSet set = null;
-        Object[] columns;
+
         Book result = null;
-        StatementAssembly assembly;
 
         try
         {
             connection = getConnection();
 
-            assembly = buildBaseBookQuery();
+            StatementAssembly assembly = buildBaseBookQuery();
             assembly.addSep(" AND ");
             assembly.add("book.BOOK_ID = ");
-            assembly.addParameter(primaryKey);
+            assembly.addParameter(bookId);
 
             statement = assembly.createStatement(connection);
 
             set = statement.executeQuery();
 
             if (!set.next())
-                throw new FinderException("Book " + primaryKey + " does not exist.");
+                throw new FinderException("Book " + bookId + " does not exist.");
 
-            columns = new Object[Book.N_COLUMNS];
+            Object[] columns = new Object[Book.N_COLUMNS];
             result = convertRowToBook(set, columns);
 
         }
-        catch (SQLException e)
+        catch (SQLException ex)
         {
-            throw new XEJBException("Unable to perform database query.", e);
+            throw new XEJBException("Unable to perform database query.", ex);
         }
         finally
         {
@@ -627,11 +565,11 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
         return result;
     }
 
-    public Map getBookAttributes(Integer primaryKey) throws FinderException, RemoteException
+    public Map getBookAttributes(Integer bookId) throws FinderException, RemoteException
     {
         IBookHome home = getBookHome();
 
-        IBook book = home.findByPrimaryKey(primaryKey);
+        IBook book = home.findByPrimaryKey(bookId);
 
         return book.getEntityAttributes();
     }
@@ -665,11 +603,11 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
 
         IPerson person = home.create(attributes);
 
-        Integer primaryKey = (Integer) person.getPrimaryKey();
+        Integer personId = (Integer) person.getPrimaryKey();
 
         try
         {
-            return getPerson(primaryKey);
+            return getPerson(personId);
         }
         catch (FinderException ex)
         {
@@ -677,21 +615,21 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
         }
     }
 
-    public Book deleteBook(Integer bookPrimaryKey) throws RemoveException, RemoteException
+    public Book deleteBook(Integer bookId) throws RemoveException, RemoteException
     {
         IBookHome home = getBookHome();
         Book result = null;
 
         try
         {
-            result = getBook(bookPrimaryKey);
+            result = getBook(bookId);
         }
         catch (FinderException ex)
         {
             throw new XRemoveException(ex);
         }
 
-        home.remove(bookPrimaryKey);
+        home.remove(bookId);
 
         return result;
 
@@ -702,29 +640,29 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
      *
      **/
 
-    public void transferBooks(Integer newOwnerPrimaryKey, Integer[] books)
+    public void transferBooks(Integer newOwnerId, Integer[] bookIds)
         throws FinderException, RemoteException
     {
-        if (books == null)
+        if (bookIds == null)
             throw new RemoteException("Must supply non-null list of books to transfer.");
 
-        if (newOwnerPrimaryKey == null)
+        if (newOwnerId == null)
             throw new RemoteException("Must provide an owner for the books.");
 
         // Verify that the new owner exists.
 
         IPersonHome personHome = getPersonHome();
-        personHome.findByPrimaryKey(newOwnerPrimaryKey);
+        personHome.findByPrimaryKey(newOwnerId);
 
         // Direct SQL would be more efficient, but this'll probably do.
 
         IBookHome home = getBookHome();
 
-        for (int i = 0; i < books.length; i++)
+        for (int i = 0; i < bookIds.length; i++)
         {
-            IBook book = home.findByPrimaryKey(books[i]);
+            IBook book = home.findByPrimaryKey(bookIds[i]);
 
-            book.setOwnerPK(newOwnerPrimaryKey);
+            book.setOwnerId(newOwnerId);
         }
     }
 
@@ -737,7 +675,7 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
         {
             for (int i = 0; i < updated.length; i++)
             {
-                IPublisher publisher = home.findByPrimaryKey(updated[i].getPrimaryKey());
+                IPublisher publisher = home.findByPrimaryKey(updated[i].getId());
                 publisher.setName(updated[i].getName());
             }
         }
@@ -754,61 +692,40 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
     public void updatePersons(
         Person[] updated,
         Integer[] resetPassword,
+        String newPassword,
         Integer[] deleted,
-        Integer adminPK)
+        Integer adminId)
         throws FinderException, RemoveException, RemoteException
     {
         IPersonHome home = getPersonHome();
 
-        if (updated != null & updated.length > 0)
-        {
-            for (int i = 0; i < updated.length; i++)
-            {
-                Person u = updated[i];
-                IPerson person = home.findByPrimaryKey(updated[i].getPrimaryKey());
+        int count = Tapestry.size(updated);
 
-                person.setAdmin(u.isAdmin());
-                person.setLockedOut(u.isLockedOut());
-                person.setVerified(u.isVerified());
-            }
+        for (int i = 0; i < count; i++)
+        {
+            Person u = updated[i];
+            IPerson person = home.findByPrimaryKey(u.getId());
+
+            person.setAdmin(u.isAdmin());
+            person.setLockedOut(u.isLockedOut());
         }
 
-        if (resetPassword != null && resetPassword.length > 0)
+        count = Tapestry.size(resetPassword);
+
+        for (int i = 0; i < count; i++)
         {
-            Random r = new Random(System.currentTimeMillis());
-            long value = 0;
+            IPerson person = home.findByPrimaryKey(resetPassword[i]);
 
-            for (int i = 0; i < resetPassword.length; i++)
-            {
-                IPerson person = home.findByPrimaryKey(resetPassword[i]);
-
-                do
-                {
-                    value = ((value << 32) ^ r.nextLong());
-                    if (value < 0)
-                        value = -value;
-                    // Repeat until a magic number equivalent to seven digits
-                }
-                while (value < 2176782336l);
-
-                String password = Long.toString(value, Character.MAX_RADIX);
-
-                person.setPassword(password);
-
-                sendMail(
-                    person.getEmail(),
-                    "Virtual Library password reset.",
-                    "Your password for the Virtual Library has been reset to '" + password + "'.");
-            }
+            person.setPassword(newPassword);
         }
 
-        if (deleted != null && deleted.length > 0)
-        {
-            moveBooksFromDeletedPersons(deleted, adminPK);
+        count = Tapestry.size(deleted);
+        
+        if (count > 0)
+            moveBooksFromDeletedPersons(deleted, adminId);
 
-            for (int i = 0; i < deleted.length; i++)
-                home.remove(deleted[i]);
-        }
+        for (int i = 0; i < count; i++)
+            home.remove(deleted[i]);
     }
 
     /**
@@ -816,16 +733,16 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
      *
      **/
 
-    private void moveBooksFromDeletedPersons(Integer deleted[], Integer adminPK)
+    private void moveBooksFromDeletedPersons(Integer deletedPersonIds[], Integer adminId)
         throws RemoveException
     {
         StatementAssembly assembly = new StatementAssembly();
 
         assembly.add("UPDATE BOOK");
         assembly.newLine("SET OWNER_ID = ");
-        assembly.addParameter(adminPK);
+        assembly.addParameter(adminId);
         assembly.newLine("WHERE OWNER_ID IN (");
-        assembly.addParameterList(deleted, ", ");
+        assembly.addParameterList(deletedPersonIds, ", ");
         assembly.add(")");
 
         Connection connection = null;
@@ -869,17 +786,17 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
     {
         int column = 1;
 
-        columns[Book.PRIMARY_KEY_COLUMN] = set.getObject(column++);
+        columns[Book.ID_COLUMN] = set.getObject(column++);
         columns[Book.TITLE_COLUMN] = set.getString(column++);
         columns[Book.DESCRIPTION_COLUMN] = set.getString(column++);
         columns[Book.ISBN_COLUMN] = set.getString(column++);
-        columns[Book.OWNER_PK_COLUMN] = set.getObject(column++);
+        columns[Book.OWNER_ID_COLUMN] = set.getObject(column++);
         columns[Book.OWNER_NAME_COLUMN] =
             buildName(set.getString(column++), set.getString(column++));
-        columns[Book.HOLDER_PK_COLUMN] = set.getObject(column++);
+        columns[Book.HOLDER_ID_COLUMN] = set.getObject(column++);
         columns[Book.HOLDER_NAME_COLUMN] =
             buildName(set.getString(column++), set.getString(column++));
-        columns[Book.PUBLISHER_PK_COLUMN] = set.getObject(column++);
+        columns[Book.PUBLISHER_ID_COLUMN] = set.getObject(column++);
         columns[Book.PUBLISHER_NAME_COLUMN] = set.getString(column++);
         columns[Book.AUTHOR_COLUMN] = set.getString(column++);
         columns[Book.HIDDEN_COLUMN] = getBoolean(set, column++);
@@ -967,44 +884,44 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
         return result;
     }
 
-	/**
-	 *  Adds a sort ordering clause to the statement.  If ordering is null,
-	 *  orders by book title.
-	 * 
-	 *  @param assembly to update
-	 *  @param ordering defines the column to sort on, and the order (ascending or descending)
-	 *  @since 2.4
-	 * 
-	 *
-	 **/
-	
-	protected void addSortOrdering(StatementAssembly assembly, SortOrdering ordering)
-	{
-		if (ordering == null)
-		{
-			assembly.newLine("ORDER BY book.TITLE");
-			return;
-		}
-		
-		Map sorts =
-			ordering.isDescending() ? BOOK_SORT_DESCENDING : BOOK_SORT_ASCENDING;
-			
-		String term = (String)sorts.get(ordering.getColumn());
-		
-		assembly.newLine("ORDER BY ");
-		assembly.add(term);
-	}
+    /**
+     *  Adds a sort ordering clause to the statement.  If ordering is null,
+     *  orders by book title.
+     * 
+     *  @param assembly to update
+     *  @param ordering defines the column to sort on, and the order (ascending or descending)
+     *  @since 2.4
+     * 
+     *
+     **/
+
+    protected void addSortOrdering(StatementAssembly assembly, SortOrdering ordering)
+    {
+        if (ordering == null)
+        {
+            assembly.newLine("ORDER BY book.TITLE");
+            return;
+        }
+
+        Map sorts = ordering.isDescending() ? BOOK_SORT_DESCENDING : BOOK_SORT_ASCENDING;
+
+        String term = (String) sorts.get(ordering.getColumn());
+
+        assembly.newLine("ORDER BY ");
+        assembly.add(term);
+    }
 
     protected void addSubstringSearch(StatementAssembly assembly, String column, String value)
     {
-        String trimmed;
-
         if (value == null)
             return;
 
-        trimmed = value.trim();
+        String trimmed = value.trim();
         if (trimmed.length() == 0)
             return;
+
+        // Here's the McKoi dependency: LOWER() is a database-specific
+        // SQL function.
 
         assembly.addSep(" AND LOWER(");
         assembly.add(column);
@@ -1026,10 +943,10 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
             {
                 resultSet.close();
             }
-            catch (SQLException e)
+            catch (SQLException ex)
             {
                 System.out.println("Exception closing result set.");
-                e.printStackTrace();
+                ex.printStackTrace();
             }
         }
 
@@ -1039,10 +956,10 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
             {
                 statement.close();
             }
-            catch (SQLException e)
+            catch (SQLException ex)
             {
                 System.out.println("Exception closing statement.");
-                e.printStackTrace();
+                ex.printStackTrace();
             }
         }
 
@@ -1052,47 +969,43 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
             {
                 connection.close();
             }
-            catch (SQLException e)
+            catch (SQLException ex)
             {
                 System.out.println("Exception closing connection.");
-                e.printStackTrace();
+                ex.printStackTrace();
             }
         }
     }
 
     private IPersonHome getPersonHome()
     {
-        Object raw;
-
-        if (personHome == null)
+        if (_personHome == null)
         {
             try
             {
-                raw = environment.lookup("ejb/Person");
+                Object raw = _environment.lookup("ejb/Person");
 
-                personHome = (IPersonHome) PortableRemoteObject.narrow(raw, IPersonHome.class);
+                _personHome = (IPersonHome) PortableRemoteObject.narrow(raw, IPersonHome.class);
             }
-            catch (NamingException e)
+            catch (NamingException ex)
             {
-                throw new XEJBException("Could not lookup Person home interface.", e);
+                throw new XEJBException("Could not lookup Person home interface.", ex);
             }
 
         }
 
-        return personHome;
+        return _personHome;
     }
 
     private IPublisherHome getPublisherHome()
     {
-        Object raw;
-
-        if (publisherHome == null)
+        if (_publisherHome == null)
         {
             try
             {
-                raw = environment.lookup("ejb/Publisher");
+                Object raw = _environment.lookup("ejb/Publisher");
 
-                publisherHome =
+                _publisherHome =
                     (IPublisherHome) PortableRemoteObject.narrow(raw, IPublisherHome.class);
             }
             catch (NamingException e)
@@ -1102,20 +1015,18 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
 
         }
 
-        return publisherHome;
+        return _publisherHome;
     }
 
     private IBookHome getBookHome()
     {
-        Object raw;
-
-        if (bookHome == null)
+        if (_bookHome == null)
         {
             try
             {
-                raw = environment.lookup("ejb/Book");
+                Object raw = _environment.lookup("ejb/Book");
 
-                bookHome = (IBookHome) PortableRemoteObject.narrow(raw, IBookHome.class);
+                _bookHome = (IBookHome) PortableRemoteObject.narrow(raw, IBookHome.class);
             }
             catch (NamingException e)
             {
@@ -1124,7 +1035,7 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
 
         }
 
-        return bookHome;
+        return _bookHome;
     }
 
     /**
@@ -1136,7 +1047,7 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
     {
         try
         {
-            return dataSource.getConnection();
+            return _dataSource.getConnection();
         }
         catch (SQLException e)
         {
@@ -1151,7 +1062,7 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
         result = new StatementAssembly();
 
         result.newLine("SELECT PERSON_ID, FIRST_NAME, LAST_NAME, EMAIL, ");
-        result.newLine("  VERIFIED, LOCKED_OUT, ADMIN, AUTH_CODE, LAST_ACCESS");
+        result.newLine("   LOCKED_OUT, ADMIN, LAST_ACCESS");
         result.newLine("FROM PERSON");
 
         return result;
@@ -1168,14 +1079,12 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
     {
         int column = 1;
 
-        columns[Person.PRIMARY_KEY_COLUMN] = set.getObject(column++);
+        columns[Person.ID_COLUMN] = set.getObject(column++);
         columns[Person.FIRST_NAME_COLUMN] = set.getString(column++);
         columns[Person.LAST_NAME_COLUMN] = set.getString(column++);
         columns[Person.EMAIL_COLUMN] = set.getString(column++);
-        columns[Person.VERIFIED_COLUMN] = getBoolean(set, column++);
         columns[Person.LOCKED_OUT_COLUMN] = getBoolean(set, column++);
         columns[Person.ADMIN_COLUMN] = getBoolean(set, column++);
-        columns[Person.AUTHORIZATION_CODE_COLUMN] = set.getString(column++);
         columns[Person.LAST_ACCESS_COLUMN] = set.getTimestamp(column++);
 
         return new Person(columns);
@@ -1192,20 +1101,16 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
         Connection connection = null;
         IStatement statement = null;
         ResultSet set = null;
-        StatementAssembly assembly;
-        String trimmedEmail;
-        String trimmedFirstName;
-        String trimmedLastName;
 
-        trimmedEmail = email.trim().toLowerCase();
-        trimmedLastName = lastName.trim().toLowerCase();
-        trimmedFirstName = firstName.trim().toLowerCase();
+        String trimmedEmail = email.trim().toLowerCase();
+        String trimmedLastName = lastName.trim().toLowerCase();
+        String trimmedFirstName = firstName.trim().toLowerCase();
 
         try
         {
             connection = getConnection();
 
-            assembly = new StatementAssembly();
+            StatementAssembly assembly = new StatementAssembly();
             assembly.newLine("SELECT PERSON_ID");
             assembly.newLine("FROM PERSON");
             assembly.newLine("WHERE ");
@@ -1249,100 +1154,16 @@ public class OperationsBean implements SessionBean, IMailMessageConstants
         }
     }
 
-    public Book returnBook(Integer bookPrimaryKey) throws RemoteException, FinderException
+    public Book returnBook(Integer bookId) throws RemoteException, FinderException
     {
-        IBookHome bookHome;
-        IBook book;
+        IBookHome bookHome = getBookHome();
+        IBook book = bookHome.findByPrimaryKey(bookId);
 
-        bookHome = getBookHome();
-        book = bookHome.findByPrimaryKey(bookPrimaryKey);
+        Integer ownerPK = book.getOwnerId();
 
-        // Return the book ... that is, make its holder its owner.
+        book.setHolderId(ownerPK);
 
-        Integer borrowerPK = book.getHolderPK();
-        Integer ownerPK = book.getOwnerPK();
-
-        book.setHolderPK(ownerPK);
-
-        IPersonHome personHome = getPersonHome();
-        IPerson owner = personHome.findByPrimaryKey(ownerPK);
-        IPerson borrower = personHome.findByPrimaryKey(borrowerPK);
-
-        sendMail(
-            owner.getEmail(),
-            "Book return notification.",
-            borrower.getNaturalName()
-                + " <"
-                + borrower.getEmail()
-                + "> has returned your book,\n"
-                + "'"
-                + book.getTitle()
-                + "'.\n");
-
-        return getBook(bookPrimaryKey);
-    }
-
-    protected QueueSession getMailQueueSession() throws NamingException, JMSException
-    {
-        if (mailQueueSession == null)
-        {
-            Context context = new InitialContext();
-
-            QueueConnectionFactory factory =
-                (QueueConnectionFactory) context.lookup("QueueConnectionFactory");
-
-            QueueConnection connection = factory.createQueueConnection();
-
-            mailQueueSession = connection.createQueueSession(false, Session.AUTO_ACKNOWLEDGE);
-        }
-
-        return mailQueueSession;
-    }
-
-    protected QueueSender getMailQueueSender() throws NamingException, JMSException
-    {
-        if (mailQueueSender == null)
-        {
-            Context context = new InitialContext();
-
-            Queue queue = (Queue) context.lookup("queue/Vlib-MailQueue");
-
-            mailQueueSender = getMailQueueSession().createSender(queue);
-        }
-
-        return mailQueueSender;
-    }
-
-    protected void sendMail(String emailAddress, String subject, String content)
-        throws EJBException
-    {
-
-        // Sending mail is temporarily disabled
-
-        if (true)
-            return;
-
-        try
-        {
-            QueueSender sender = getMailQueueSender();
-
-            QueueSession session = getMailQueueSession();
-
-            TextMessage queueMessage = session.createTextMessage();
-            queueMessage.setStringProperty(EMAIL_ADDRESS, emailAddress);
-            queueMessage.setStringProperty(SUBJECT, subject);
-            queueMessage.setText(content);
-
-            sender.send(queueMessage, DeliveryMode.PERSISTENT, MAIL_QUEUE_PRIORITY, 0);
-        }
-        catch (NamingException ex)
-        {
-            throw new XEJBException(ex);
-        }
-        catch (JMSException ex)
-        {
-            throw new XEJBException(ex);
-        }
+        return getBook(bookId);
     }
 
 }

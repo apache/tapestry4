@@ -15,7 +15,7 @@
   <property-specification name="password1" type="java.lang.String"/>
   <property-specification name="password2" type="java.lang.String"/>
   
-  <bean name="delegate" class="org.apache.tapestry.vlib.SimpleValidationDelegate"/>
+   <bean name="delegate" class="org.apache.tapestry.vlib.VirtualLibraryDelegate"/>
   
   <bean name="validator" class="org.apache.tapestry.valid.StringValidator" lifecycle="page">
   	<set-property name="required" expression="true"/>

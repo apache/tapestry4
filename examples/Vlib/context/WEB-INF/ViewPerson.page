@@ -44,7 +44,7 @@
   </component>
 
   <component id="holderLink" type="PersonLink">
-    <binding name="primaryKey" expression="currentMatch.holderPrimaryKey"/>
+    <binding name="id" expression="currentMatch.holderId"/>
     <binding name="name" expression="currentMatch.holderName"/>
     <binding name="omit" expression="! currentMatch.borrowed"/>
   </component>

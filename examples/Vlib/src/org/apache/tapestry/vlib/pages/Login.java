@@ -189,7 +189,7 @@ public abstract class Login extends BasePage implements IErrorProperty
         ICallback callback = getCallback();
 
         if (callback == null)
-            cycle.setPage("MyLibrary");
+            cycle.setPage("Home");
         else
             callback.performCallback(cycle);
 

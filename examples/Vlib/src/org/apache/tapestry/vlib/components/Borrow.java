@@ -118,7 +118,7 @@ public abstract class Borrow extends BaseComponent
 
         // Otherwise, disabled the link if already holding it.
 
-        return visit.isLoggedInUser(book.getHolderPrimaryKey());
+        return visit.isLoggedInUser(book.getHolderId());
     }
 
     public void borrow(IRequestCycle cycle)
@@ -136,7 +136,7 @@ public abstract class Borrow extends BaseComponent
             try
             {
                 IOperations bean = vengine.getOperations();
-                Book book = bean.borrowBook(bookPK, visit.getUserPK());
+                Book book = bean.borrowBook(bookPK, visit.getUserId());
 
                 home.setMessage("Borrowed: " + book.getTitle());
 

@@ -79,7 +79,7 @@ import org.apache.tapestry.vlib.ejb.IOperations;
 
 public abstract class ConfirmBookDelete extends BasePage
 {
-    public abstract void setBookPrimaryKey(Integer key);
+    public abstract void setBookId(Integer bookId);
 
     public abstract void setBookTitle(String title);
 
@@ -90,9 +90,9 @@ public abstract class ConfirmBookDelete extends BasePage
      *
      **/
 
-    public void selectBook(Integer bookPK, IRequestCycle cycle)
+    public void selectBook(Integer bookId, IRequestCycle cycle)
     {
-        setBookPrimaryKey(bookPK);
+        setBookId(bookId);
 
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
@@ -102,7 +102,7 @@ public abstract class ConfirmBookDelete extends BasePage
             try
             {
                 IOperations operations = vengine.getOperations();
-                Book book = operations.getBook(bookPK);
+                Book book = operations.getBook(bookId);
 
                 setBookTitle(book.getTitle());
 
@@ -114,7 +114,7 @@ public abstract class ConfirmBookDelete extends BasePage
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure("Remote exception reading read book #" + bookPK + ".", ex, i++);
+                vengine.rmiFailure("Remote exception reading read book #" + bookId + ".", ex, i++);
             }
         }
 

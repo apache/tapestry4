@@ -15,6 +15,16 @@ DIV.error  {
 	border-width : 2px;
 }
 
+SPAN.invalid-field {
+  color: Red;
+}
+
+INPUT.error {
+  color: White;
+  background-color: Red;
+  font-weight: Bold;
+}
+
 DIV.message  {
 	font-weight : bold;
 	color : Blue;

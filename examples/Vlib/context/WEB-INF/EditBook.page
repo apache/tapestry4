@@ -8,7 +8,7 @@
   
   <property-specification name="error" type="java.lang.String"/>
   <property-specification name="attributes" type="java.util.Map"/>
-  <property-specification name="bookPrimaryKey" type="java.lang.Integer"/>
+  <property-specification name="bookId" type="java.lang.Integer"/>
   <property-specification name="publisherName" type="java.lang.String"/>
   
   <bean name="validator" class="org.apache.tapestry.valid.StringValidator" lifecycle="page">
@@ -29,7 +29,7 @@
   </component>
   
   <component id="inputPublisher" type="PropertySelection">
-    <binding name="value" expression="attributes.publisherPK"/>
+    <binding name="value" expression="attributes.publisherId"/>
     <binding name="model" expression="engine.publisherModel"/>
   </component>
   

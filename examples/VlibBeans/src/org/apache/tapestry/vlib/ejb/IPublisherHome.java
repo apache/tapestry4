@@ -83,10 +83,4 @@ public interface IPublisherHome extends EJBHome
 
     public IPublisher findByName(String name) throws FinderException, RemoteException;
 
-    /**
-     *  Finds all Publishers.
-     *
-     **/
-
-    public Collection findAll() throws FinderException, RemoteException;
 }

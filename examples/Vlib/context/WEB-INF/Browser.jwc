@@ -14,7 +14,6 @@
   
   <parameter name="element" type="java.lang.String" direction="in"/>
   
-  
   <property-specification name="resultCount" type="int" persistent="yes"/>
   <property-specification name="currentPage" type="int" persistent="yes"/>
   <property-specification name="pageCount" type="int" persistent="yes"/>

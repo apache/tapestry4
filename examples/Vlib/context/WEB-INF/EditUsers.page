@@ -10,12 +10,19 @@
   <property-specification name="error" type="java.lang.String"/>
   <property-specification name="user" type="org.apache.tapestry.vlib.ejb.Person"/>
   <property-specification name="listEditMap" type="org.apache.tapestry.vlib.pages.admin.UserListEditMap"/>
+  <property-specification name="password" type="java.lang.String"/>
   
   <component id="e" type="ListEdit">
   	<binding name="source" expression="listEditMap.keys"/>
   	<binding name="value" expression="listEditMap.key"/>
   	<binding name="listener" expression="listeners.synchronizeUser"/>
   	<static-binding name="element" value="tr"/>
+  </component>
+  
+  <component id="inputPassword" type="ValidField">
+    <binding name="value" expression="password"/>
+    <binding name="validator" expression="@org.apache.tapestry.valid.StringValidator@OPTIONAL"/>
+    <static-binding name="displayName" value="New Password"/>	
   </component>
 
 </page-specification>

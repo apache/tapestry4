@@ -16,27 +16,27 @@
     <tr>
       <th width="80" height="30"><span jwcid="@FieldLabel" field="ognl:components.inputTitle">Title</span></th>
       <td><span class="required-field">*</span></td>
-      <td width="420"><input jwcid="inputTitle" type="text" class="inputTextForm" size="50" maxlength="100"/>
+      <td width="420"><input jwcid="inputTitle" type="text" size="50" maxlength="100"/>
       </td>
     </tr>
     <tr>
       <th><span jwcid="@FieldLabel" field="ognl:components.inputAuthor">Author</span>
       	 <td><span class="required-field">*</span></td>
       </th>
-      <td><input jwcid="inputAuthor" type="text" class="inputTextForm" size="30" maxlength="60"/>
+      <td><input jwcid="inputAuthor" type="text" size="30" maxlength="60"/>
       </td>
     </tr>
     <tr>
       <th>ISBN</th>
       <td></td>
-      <td><input jwcid="inputISBN@TextField" value="ognl:attributes.ISBN" type="text" class="inputTextForm" maxlength="20" size="20"/>
+      <td><input jwcid="inputISBN@TextField" value="ognl:attributes.ISBN" type="text" maxlength="20" size="20"/>
       </td>
     </tr>
     <tr>
       <th><span jwcid="@FieldLabel" field="ognl:components.inputPublisherName">Publisher</span></th>
        <td><span class="required-field">*</span></td>
-      <td><select jwcid="inputPublisher@PropertySelection" value="ognl:attributes.publisherPK" model="ognl:engine.publisherModel"/>
-<input jwcid="inputPublisherName" type="text" class="inputTextForm" size="20" maxlength="40"/>
+      <td><select jwcid="inputPublisher@PropertySelection" value="ognl:attributes.publisherId" model="ognl:engine.publisherModel"/>
+<input jwcid="inputPublisherName" type="text" size="20" maxlength="40"/>
       </td>
     </tr>
     <tr>
@@ -48,7 +48,7 @@
     <tr>
       <th>Description</th>
       <td></td>
-      <td><textarea jwcid="inputDescription@TextArea" value="ognl:attributes.description" class="inputTextareaForm" cols="35" rows="8"></textarea>
+      <td><textarea jwcid="inputDescription@TextArea" value="ognl:attributes.description" cols="35" rows="8"></textarea>
       </td>
     </tr>
     <tr>

@@ -11,9 +11,9 @@
   <property-specification name="message" type="java.lang.String"/>
   <property-specification name="error" type="java.lang.String"/>
   
-  <property-specification name="fromUserPK" type="java.lang.Integer" persistent="yes"/>
+  <property-specification name="fromUserId" type="java.lang.Integer" persistent="yes"/>
   <property-specification name="fromUser" type="org.apache.tapestry.vlib.ejb.Person"/>
-  <property-specification name="toUserPK" type="java.lang.Integer" persistent="yes"/>
+  <property-specification name="toUserId" type="java.lang.Integer" persistent="yes"/>
   <property-specification name="toUser" type="org.apache.tapestry.vlib.ejb.Person"/>
   <property-specification name="userBookModel" type="org.apache.tapestry.form.IPropertySelectionModel"/>
   <property-specification name="selectedBooks" type="java.util.List"/>

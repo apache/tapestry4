@@ -86,27 +86,22 @@ public interface IBookQuery extends EJBObject
     /**
      *  Performs a query of books with the matching title and (optionally) publisher.
      *
-     *  @param title The title to be search for.  Any book with that contains this
-     *  value in its title attribute will be returned.  Use null to not limit the
-     *  search by title.
-     *  @param The author to search for, or null to not limit the search by author.  Any book
-     *  whose author contains this value as a substring will be included.
-     *  @param publisherPK The primary key of a publisher to limit results to, or null
-     *  to select for any publisher.
+     *  @param parameters defines subset of books to return.
+     *  @param sortOrdering order of items in result set.
      *
      **/
 
-    public int masterQuery(String title, String author, Integer publisherPK, SortOrdering sortOrdering) throws RemoteException;
+    public int masterQuery(MasterQueryParameters parameters, SortOrdering sortOrdering) throws RemoteException;
 
     /**
-     *  Queries on books owned by a given person, sorted by title.
+     *  Queries on books owned by a given person.
      *
      **/
 
     public int ownerQuery(Integer ownerPK, SortOrdering sortOrdering) throws RemoteException;
 
     /**
-     *  Queries on books held by a given person, sorted by title.
+     *  Queries on books held by a given person.
      *
      **/
 

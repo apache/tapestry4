@@ -107,20 +107,12 @@
         <field-name>lastName</field-name>
       </cmp-field>
       <cmp-field>
-        <description>If false, user is not verified to use the system (after registering).</description>
-        <field-name>verified</field-name>
-      </cmp-field>
-      <cmp-field>
         <description>If true, the user has been locked out of the system (for misconduct, or excessive invalid passwords).</description>
         <field-name>lockedOut</field-name>
       </cmp-field>
       <cmp-field>
         <description>If true, the user is an administrator, who has priviledged access to adminstrate books and users.</description>
         <field-name>admin</field-name>
-      </cmp-field>
-      <cmp-field>
-        <description>A code mailed to the user; the user is not verified until they can provide this code back.</description>
-        <field-name>authorizationCode</field-name>
       </cmp-field>
       <cmp-field>
       	<description>The time of last access to the system by the user; this is set when the user logs in.</description>
@@ -170,11 +162,11 @@
       </cmp-field>
       <cmp-field>
         <description>Relationship to Publisher entity.</description>
-        <field-name>publisherPK</field-name>
+        <field-name>publisherId</field-name>
       </cmp-field>
       <cmp-field>
         <description>Relationship to Person entity (holder of book).</description>
-        <field-name>holderPK</field-name>
+        <field-name>holderId</field-name>
       </cmp-field>
       <cmp-field>
         <description>ISBN of book.</description>
@@ -186,7 +178,7 @@
       </cmp-field>
       <cmp-field>
         <description>Relationship to Person entity (owner of book).</description>
-        <field-name>ownerPK</field-name>
+        <field-name>ownerId</field-name>
       </cmp-field>
       <cmp-field>
         <description>Title of book.</description>

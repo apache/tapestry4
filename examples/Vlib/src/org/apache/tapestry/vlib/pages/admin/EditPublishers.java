@@ -100,7 +100,7 @@ public abstract class EditPublishers extends AdminPage implements PageRenderList
 
         if (publisher == null)
         {
-            setError("The data submitted in the form is out of date.  Please try again.");
+            setError(getString("out-of-date"));
             throw new PageRedirectException(this);
         }
 
@@ -132,7 +132,7 @@ public abstract class EditPublishers extends AdminPage implements PageRenderList
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure("Unable to obtain list of publishers.", ex, i++);
+                vengine.rmiFailure(getString("read-failure"), ex, i++);
             }
         }
 
@@ -142,7 +142,7 @@ public abstract class EditPublishers extends AdminPage implements PageRenderList
 
         for (i = 0; i < count; i++)
         {
-            map.add(publishers[i].getPrimaryKey(), publishers[i]);
+            map.add(publishers[i].getId(), publishers[i]);
         }
 
         setListEditMap(map);
@@ -168,8 +168,8 @@ public abstract class EditPublishers extends AdminPage implements PageRenderList
 
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
-		int i = 0;
-		while (true)
+        int i = 0;
+        while (true)
         {
             try
             {
@@ -189,7 +189,7 @@ public abstract class EditPublishers extends AdminPage implements PageRenderList
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure("Remote exception updating publishers.", ex, i++);
+                vengine.rmiFailure(getString("update-failure"), ex, i++);
             }
         }
 

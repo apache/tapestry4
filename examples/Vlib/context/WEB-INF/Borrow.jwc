@@ -11,7 +11,7 @@
   <parameter name="book" type="org.apache.tapestry.vlib.ejb.Book" required="yes" direction="in"/>
     
   <component id="link" type="DirectLink">
-    <binding name="parameters" expression="book.primaryKey"/>
+    <binding name="parameters" expression="book.id"/>
     <binding name="listener" expression="listeners.borrow"/>
     <binding name="disabled" expression="linkDisabled"/>
   </component>

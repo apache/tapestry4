@@ -11,7 +11,7 @@
 	<property-specification name="personModel" type="org.apache.tapestry.form.IPropertySelectionModel"/>
 	<property-specification name="selectedBooks" type="java.util.List"/>
 
-	<property-specification name="targetUserPK" type="java.lang.Integer"/>
+	<property-specification name="targetUserId" type="java.lang.Integer"/>
 
     <component id="selectBooks" type="contrib:Palette">
       <binding name="sort" expression="@org.apache.tapestry.contrib.palette.SortMode@LABEL"/>\
@@ -22,7 +22,7 @@
     </component>
     
     <component id="selectTarget" type="PropertySelection">
-      <binding name="value" expression="targetUserPK"/>
+      <binding name="value" expression="targetUserId"/>
       <binding name="model" expression="personModel"/>
     </component>
 

@@ -91,16 +91,16 @@ public abstract class NewBook extends Protected implements PageRenderListener
     {
         Map attributes = getAttributes();
 
-        Integer publisherPK = (Integer) attributes.get("publisherPK");
+        Integer publisherId = (Integer) attributes.get("publisherId");
         String publisherName = getPublisherName();
 
-        if (publisherPK == null && Tapestry.isNull(publisherName))
+        if (publisherId == null && Tapestry.isNull(publisherName))
         {
             setErrorField("inputPublisherName", getString("need-publisher-name"));
             return;
         }
 
-        if (publisherPK != null && !Tapestry.isNull(publisherName))
+        if (publisherId != null && !Tapestry.isNull(publisherName))
         {
             setErrorField("inputPublisherName", getString("leave-publisher-name-empty"));
             return;
@@ -110,11 +110,11 @@ public abstract class NewBook extends Protected implements PageRenderListener
             return;
 
         Visit visit = (Visit) getVisit();
-        Integer userPK = visit.getUserPK();
+        Integer userId = visit.getUserId();
         VirtualLibraryEngine vengine = visit.getEngine();
 
-        attributes.put("ownerPK", userPK);
-        attributes.put("holderPK", userPK);
+        attributes.put("ownerId", userId);
+        attributes.put("holderId", userId);
 
         int i = 0;
         while (true)
@@ -124,7 +124,7 @@ public abstract class NewBook extends Protected implements PageRenderListener
 
                 IOperations operations = vengine.getOperations();
 
-                if (publisherPK != null)
+                if (publisherId != null)
                     operations.addBook(attributes);
                 else
                 {
@@ -154,7 +154,7 @@ public abstract class NewBook extends Protected implements PageRenderListener
 
         myLibrary.setMessage(formatString("added-book", attributes.get("title")));
 
-		myLibrary.activate(cycle);
+        myLibrary.activate(cycle);
     }
 
     public void pageBeginRender(PageEvent event)

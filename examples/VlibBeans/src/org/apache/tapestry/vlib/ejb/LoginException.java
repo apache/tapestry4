@@ -64,13 +64,13 @@ package org.apache.tapestry.vlib.ejb;
 
 public class LoginException extends Exception
 {
-    private boolean passwordError;
+    private boolean _passwordError;
 
     public LoginException(String message, boolean passwordError)
     {
         super(message);
 
-        this.passwordError = passwordError;
+        _passwordError = passwordError;
     }
 
     /**
@@ -82,7 +82,7 @@ public class LoginException extends Exception
 
     public boolean isPasswordError()
     {
-        return passwordError;
+        return _passwordError;
     }
 
 }

@@ -15,7 +15,7 @@ to the Virtual Library database, so that they may be borrowed by others.
 </span>
 </span>
 	
-<span jwcid="@Conditional" condition="ognl:components.browser.resultCount">
+<span jwcid="@Conditional" condition="ognl:components.browser.resultCount != 0">
 
 <table class="data">
 
@@ -33,9 +33,9 @@ to the Virtual Library database, so that they may be borrowed by others.
     </td>
     <td><span jwcid="@Insert" value="ognl:currentBook.publisherName">O'Reilly</span>
     </td>
-    <td><a jwcid="holderLink" href="#" class="clsDataBlue">Jim Moran</a>
+    <td><a jwcid="holderLink" href="#">Jim Moran</a>
     </td>
-    <td class="icon"><a jwcid="edit"><img jwcid="editRollover" src="images/edit.png" width="25" height="25" alt="[Edit]" border="0"/></a>&nbsp;<a jwcid="delete"><img jwcid="deleteRollover" src="images/delete.png" width="25" height="25" alt="[Delete]" border="0"/></a>
+    <td class="icon"><a jwcid="edit"><img jwcid="editRollover" src="images/edit.png" width="25" height="25" alt="Edit" border="0"/></a>&nbsp;<a jwcid="delete"><img jwcid="deleteRollover" src="images/delete.png" width="25" height="25" alt="Delete" border="0"/></a>
     </td>
   </tr>
  </table>

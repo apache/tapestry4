@@ -10,7 +10,7 @@
   
   <parameter name="name" type="java.lang.String" required="yes"/>
   
-  <parameter name="primaryKey" type="java.lang.Integer" required="yes"/>
+  <parameter name="id" type="java.lang.Integer" required="yes"/>
   
   <parameter name="omit" type="boolean" direction="in"/>
   
@@ -18,7 +18,7 @@
    
   <component id="link" type="ExternalLink">
     <static-binding name="page" value="ViewPerson"/>
-    <inherited-binding name="parameters" parameter-name="primaryKey"/>
+    <inherited-binding name="parameters" parameter-name="id"/>
     <inherited-binding name="class" parameter-name="class"/>
   </component>
   

@@ -53,22 +53,64 @@
  *
  */
 
-package org.apache.tapestry.vlib.ejb;
+package org.apache.tapestry.vlib;
 
-import java.rmi.RemoteException;
-
-import javax.ejb.CreateException;
-import javax.ejb.EJBHome;
+import org.apache.tapestry.IMarkupWriter;
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.form.IFormComponent;
+import org.apache.tapestry.valid.IValidator;
+import org.apache.tapestry.valid.ValidationDelegate;
 
 /**
- *  Home interface for {@link IMailSender}, a stateless session bean.
+ *  Implementation of {@link org.apache.tapestry.valid.IValidationDelegate} 
+ *  which uses the
+ *  correct CSS class when rendering errors.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
  * 
  **/
 
-public interface IMailSenderHome extends EJBHome
+public class VirtualLibraryDelegate extends ValidationDelegate
 {
-	public IMailSender create() throws CreateException, RemoteException;
+    public void writeLabelPrefix(
+        IFormComponent component,
+        IMarkupWriter writer,
+        IRequestCycle cycle)
+    {
+        if (isInError(component))
+        {
+            writer.begin("span");
+            writer.attribute("class", "invalid-field");
+        }
+    }
+
+    public void writeLabelSuffix(
+        IFormComponent component,
+        IMarkupWriter writer,
+        IRequestCycle cycle)
+    {
+        if (isInError(component))
+            writer.end();
+    }
+
+    public void writeAttributes(
+        IMarkupWriter writer,
+        IRequestCycle cycle,
+        IFormComponent component,
+        IValidator validator)
+    {
+        if (isInError())
+            writer.attribute("class", "error");
+    }
+
+
+    public void writeSuffix(
+        IMarkupWriter writer,
+        IRequestCycle cycle,
+        IFormComponent component,
+        IValidator validator)
+    {
+    }
+
 }
