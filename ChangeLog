@@ -1,3 +1,8 @@
+* Apr 18 2001
+
+[417065] Use JAXP instead of Xerces
+Rename the main Jar file from "Tapestry.jar" to "com.primix.tapestry.jar".
+
 * Apr 9 2001 hship
 
 Reorganize to allow Tutorial to be run directly from the top-level directory.

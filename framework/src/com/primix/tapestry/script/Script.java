@@ -2,6 +2,7 @@ package com.primix.tapestry.script;
 
 import com.primix.tapestry.*;
 import com.primix.tapestry.components.html.*;
+import com.primix.foundation.xml.*;
 import java.util.*;
 import java.io.*;
 import java.net.*;
@@ -285,7 +286,7 @@ extends AbstractComponent
 
 			return scriptParser.parse(stream, scriptPath);
 		}
-		catch (ScriptParseException ex)
+		catch (DocumentParseException ex)
 		{
 			throw new ApplicationRuntimeException(ex);
 		}

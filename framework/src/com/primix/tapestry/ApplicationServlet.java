@@ -6,6 +6,7 @@ import javax.servlet.*;
 import com.primix.tapestry.spec.*;
 import com.primix.tapestry.parse.*;
 import com.primix.foundation.exception.*;
+import com.primix.foundation.xml.*;
 import org.apache.log4j.*;
 
 /*
@@ -215,7 +216,7 @@ extends HttpServlet
 		{
 			specification = parser.parseApplicationSpecification(stream, path);
 		}
-		catch (SpecificationParseException ex)
+		catch (DocumentParseException ex)
 		{
 			show(ex);
 

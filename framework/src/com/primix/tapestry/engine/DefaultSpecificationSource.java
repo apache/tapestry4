@@ -5,6 +5,7 @@ import java.io.*;
 import com.primix.tapestry.*;
 import com.primix.tapestry.parse.*;
 import com.primix.tapestry.spec.*;
+import com.primix.foundation.xml.*;
 import java.util.*;
 import org.apache.log4j.*;
 
@@ -170,7 +171,7 @@ public class DefaultSpecificationSource
 		{
 			result = parser.parseComponentSpecification(inputStream, resourcePath);
 		}
-		catch (SpecificationParseException e)
+		catch (DocumentParseException e)
 		{
 			throw new ResourceUnavailableException("Could not parse specification " +
 				resourcePath + ".", e);

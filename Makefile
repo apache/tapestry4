@@ -34,7 +34,7 @@ JAVADOC_MODULES := \
 	examples/Vlib
 
 
-LOCAL_LIB_DIR = lib
+LIB_DIR := lib
 
 # REINVOKE needs to specify a TARGET (used by the reinvoke
 # rule).
@@ -77,7 +77,7 @@ SMALL_RELEASE := \
 	$(RELEASE_DIR)/images \
 	$(RELEASE_DIR)/doc/DevelopersGuide \
 	$(RELEASE_DIR)/doc/api \
-	$(RELEASE_DIR)/lib/Tapestry.jar \
+	$(RELEASE_DIR)/lib/com.primix.tapestry.jar \
 	$(RELEASE_DIR)/lib/gnu-regexp.jar
 
 # The medium release adds the JBE, JBE documentation
@@ -90,7 +90,7 @@ MEDIUM_RELEASE := \
 	$(RELEASE_DIR)/src
 
 # The full release adds all the documentation and documentation source,
-# plus all the examples, and bundles xerces, Jetty and etc.
+# plus all the examples, and bundles JAXP, Crimson, Jetty and etc.
 
 FULL_RELEASE = \
 	$(RELEASE_DIR)/ChangeLog \
@@ -126,13 +126,14 @@ dist: clean install javadoc
 
 		
 TUTORIAL_CLASSPATH := \
-	$(LOCAL_LIB_DIR)/Tapestry.jar \
-	$(LOCAL_LIB_DIR)/javax.servlet.jar \
-	$(LOCAL_LIB_DIR)/log4j.jar \
-	$(LOCAL_LIB_DIR)/xerces.jar \
-	$(LOCAL_LIB_DIR)/gnu-regexp.jar \
-	$(LOCAL_LIB_DIR)/com.mortbay.jetty.jar \
-	$(LOCAL_LIB_DIR)/ejb.jar
+	$(LIB_DIR)/com.primix.tapestry.jar \
+	$(LIB_DIR)/javax.servlet.jar \
+	$(LIB_DIR)/log4j.jar \
+	$(LIB_DIR)/javax.xml.jaxp.jar \
+	$(LIB_DIR)/org.apache.crimson.jar \
+	$(LIB_DIR)/gnu-regexp.jar \
+	$(LIB_DIR)/com.mortbay.jetty.jar \
+	$(LIB_DIR)/ejb.jar
 
 
 # Quick start for folks who download the full distribution (this Makefile

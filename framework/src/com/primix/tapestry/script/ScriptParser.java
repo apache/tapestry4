@@ -4,13 +4,13 @@ import com.primix.tapestry.*;
 import com.primix.tapestry.components.html.*;
 import com.primix.tapestry.spec.*;
 import com.primix.foundation.*;
-import org.apache.xerces.parsers.DOMParser;
+import com.primix.foundation.xml.*;
 import org.w3c.dom.*;
 import java.io.*;
 import java.util.*;
 import org.xml.sax.*;
 import org.apache.log4j.*;
- 
+
 /*
  * Tapestry Web Application Framework
  * Copyright (c) 2000, 2001 by Howard Ship and Primix
@@ -53,270 +53,176 @@ import org.apache.log4j.*;
  *  is used to add JavaScript that will be evaluated when the page finishes loading
  *  (i.e., from the HTML &lt;body&gt; element's onLoad event handler).
  *
- *  <p>This code has way too much in common (read: cut and paste) with
- *  {@link com.primix.tapestry.parse.SpecificationParser}.
- *
  *  @author Howard Ship
  *  @version $Id$
  */
 
 public class ScriptParser
-implements ErrorHandler, EntityResolver
+extends AbstractDocumentParser
 {
+
 	private static final Category CAT = Category.getInstance(ScriptParser.class.getName());
-	
-    private static final int MAP_SIZE = 11;
-	
-    private Map symbolCache;
+
+	private static final int MAP_SIZE = 11;
+
+	private Map symbolCache;
 
 	public ParsedScript parse(InputStream stream, String resourcePath)
-	throws ScriptParseException
+	throws DocumentParseException
 	{
-		return parse(new InputSource(stream), resourcePath);
+		InputSource source = new InputSource(stream);
+
+		try
+		{
+			Document document = parse(source, resourcePath, "script"); 
+
+			return build(document);
+
+		}
+		finally
+		{
+			setResourcePath(null);
+		}
 	}
-	
-    public ParsedScript parse(InputSource inputSource, String resourcePath)
-    throws ScriptParseException
-    {
-		if (CAT.isDebugEnabled())
-			CAT.debug("Parsing script from " + inputSource + " (" + resourcePath + ")");
-		
-	    Document document = parseDocument(inputSource, resourcePath); 
 
-	    return build(document, resourcePath);
-    }
 
-    public void warning(SAXParseException exception)
-    throws SAXException
-    {
-    	throw exception;
-    }
-    
-    public void error(SAXParseException exception)
-    throws SAXException
-    {
-    	throw exception;
-    }
-    
-    public void fatalError(SAXParseException exception)
-    throws SAXException
-    {
-    	throw exception;
-    }
-    	
-    /**
-     *  Handles the public reference <code>-//Primix Solutions//Tapestry Script 1.0//EN</code>
-     *  by resolving it to the input stream of the <code>Script_1_0.dtd</code>
-     *  resource.
-     *
-     */
-     
-    public InputSource resolveEntity(String publicId,
-                                 String systemId)
-                          throws SAXException,
-                                 IOException
-    {
-    	if (publicId.equals("-//Primix Solutions//Tapestry Script 1.0//EN"))
-    	{
-    		InputStream stream;
-    		
-    		stream = getClass().getResourceAsStream("Script_1_0.dtd");
+	public ScriptParser()
+	{		
+		register("-//Primix Solutions//Tapestry Script 1.0//EN", 
+			"Script_1_0.dtd");
+	}
 
-    		return new InputSource(stream);
-    	}
-    	
-    	// Use default behavior.
-    	
-    	return null;
-    }
 
-    private Document parseDocument(InputSource inputSource, String resourcePath)
-    throws ScriptParseException
-    {
-        DOMParser parser = null;
-    	
-    	try
-    	{
-    		parser = new DOMParser();
-    		parser.setErrorHandler(this);
-    		parser.setEntityResolver(this);
-    		
-    		// Turn on validation.  We use the setFeature() method since
-    		// it doesn't throw java.lang.Exception (!).
-    		
-    		parser.setFeature("http://xml.org/sax/features/validation", true);
-    		
-    		// We always traverse the entire tree.
-    		
-    		parser.setFeature("http://apache.org/xml/features/dom/defer-node-expansion", false);		
-    		    		
-    		parser.parse(inputSource);
-    		
-    		return parser.getDocument();
-    	}
-    	catch (SAXException se)
-    	{
-    		throw new ScriptParseException(
-    		    "Unable to parse " + resourcePath + ".", 
-    			resourcePath, parser.getLocator(), se);
-    	}
-    	catch (IOException ioe)
-    	{
-    		throw new ScriptParseException(
-    		    "Error reading " + resourcePath + ".",
-    		    resourcePath, parser.getLocator(), ioe);
-    	}
-    }
+	private ParsedScript build(Document document)
+	throws DocumentParseException
+	{
+		Element root;
+		Node child;
+		ParsedScript result = new ParsedScript(getResourcePath());
 
-    private ParsedScript build(Document document, String resourcePath)
-    throws ScriptParseException
-    {
-        Element root;
-        Node child;
-		ParsedScript result = new ParsedScript(resourcePath);
-   
-        root = document.getDocumentElement();
-        
-        if (!root.getTagName().equals("script"))
-        {
-    	    throw new ScriptParseException(
-    		    "Incorrect document type; expected script but received " + 
-    		    root.getTagName() + ".", resourcePath, null, null);
-        }
+		root = document.getDocumentElement();
 
-        for (child = root.getFirstChild(); child != null; child = child.getNextSibling())
-        {
+		for (child = root.getFirstChild(); child != null; child = child.getNextSibling())
+		{
 			if (isElement(child, "let"))
 			{
 				result.addToken(buildLet(child));
 				continue;
 			}
-			
-            if (isElement(child, "body"))
-            {
-                result.addToken(buildBody(child));
-                continue;
-            }
 
-            if (isElement(child, "initialization"))
-            {
-                result.addToken(buildInitialization(child));
-                continue;
-            }
+			if (isElement(child, "body"))
+			{
+				result.addToken(buildBody(child));
+				continue;
+			}
 
-            // Else, ignorable whitespace, I guess.
-        }
+			if (isElement(child, "initialization"))
+			{
+				result.addToken(buildInitialization(child));
+				continue;
+			}
+
+			// Else, ignorable whitespace, I guess.
+		}
 
 		return result;
-    }
-	
+	}
+
 	private IScriptToken buildLet(Node node)
+	throws DocumentParseException
 	{
 		Element element = (Element)node;
 		String key = element.getAttribute("key");
-		
+
 		IScriptToken token = new LetToken(key);
 		build(token, node);
-		
+
 		return token;
 	}
-	
+
 	private IScriptToken buildBody(Node node)
+	throws DocumentParseException
 	{
 		IScriptToken token = new BodyToken();
-		
+
 		build(token, node);
-		
+
 		return token;
 	}
-	
+
 	private IScriptToken buildInitialization(Node node)
+	throws DocumentParseException
 	{
 		IScriptToken token = new InitToken();
-		
+
 		build(token, node);
-		
+
 		return token;
 	}
-	
-	
-    private void build(IScriptToken token, Node node)
-    {
-        Node child;
-        CharacterData textNode;
-        String staticText;
-    
-        for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
-        {
-            // Completely ignore any comment nodes.
 
-            if (child.getNodeType() == Node.COMMENT_NODE)
-                continue;
 
-            // Currently, we support a single special markup, the
-            // <insert key="..."/>.
+	private void build(IScriptToken token, Node node)
+	throws DocumentParseException
+	{
+		Node child;
+		CharacterData textNode;
+		String staticText;
 
-    	    if (isElement(child, "insert"))
-    	    {
-                addSymbol(token, child);
-    		    continue;
-    	    }
+		for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
+		{
+			// Completely ignore any comment nodes.
 
-            // Have to assume it is a Text or CDATASection, both
-            // of which inherit from interface CharacterData
+			if (child.getNodeType() == Node.COMMENT_NODE)
+				continue;
 
-            textNode = (CharacterData)child;
-            staticText = textNode.getData();
+			// Currently, we support a single special markup, the
+			// <insert key="..."/>.
 
-            token.addToken(new StaticToken(staticText));
-        }
-    
-    }
+			if (isElement(child, "insert"))
+			{
+				addSymbol(token, child);
+				continue;
+			}
 
-    /**
-     *  Creates a {@link SymbolToken} for the current node
-     *  (which is an insert element node) and adds it as a child of the token.
+			// Have to assume it is a Text or CDATASection, both
+			// of which inherit from interface CharacterData
+
+			textNode = (CharacterData)child;
+			staticText = textNode.getData();
+
+			token.addToken(new StaticToken(staticText));
+		}
+
+	}
+
+	/**
+	*  Creates a {@link SymbolToken} for the current node
+	*  (which is an insert element node) and adds it as a child of the token.
 	 *  Uses a caching mechanism so
-     *  that it creates only one SymbolToken for each key referenced in the
-     *  script.
-     *
-     */
+	*  that it creates only one SymbolToken for each key referenced in the
+	*  script.
+	*
+	*/
 
-    private void addSymbol(IScriptToken token, Node node)
-    {
-        IScriptToken symbolToken = null;
-        Element element = (Element)node;
-        String key = element.getAttribute("key");
+	private void addSymbol(IScriptToken token, Node node)
+	{
+		IScriptToken symbolToken = null;
+		Element element = (Element)node;
+		String key = element.getAttribute("key");
 
-        if (symbolCache == null)
-        	symbolCache = new HashMap(MAP_SIZE);	
+		if (symbolCache == null)
+			symbolCache = new HashMap(MAP_SIZE);	
 		else
-            symbolToken = (IScriptToken)symbolCache.get(key);
+			symbolToken = (IScriptToken)symbolCache.get(key);
 
-        if (symbolToken == null)
-        {
-            symbolToken = new SymbolToken(key);
-            symbolCache.put(key, symbolToken);
-        }
+		if (symbolToken == null)
+		{
+			symbolToken = new SymbolToken(key);
+			symbolCache.put(key, symbolToken);
+		}
 
-        token.addToken(symbolToken);
-    }
-
-    private boolean isElement(Node node, String elementName)
-    {
-    	if (node.getNodeType() != Node.ELEMENT_NODE)
-    		return false;
-    	
-    	// Cast it to Element
-    	
-    	Element element = (Element)node;
-    	
-    	// Note:  Using Xerces 1.0.3 and deferred DOM loading on
-    	// (which is why it is explicitly turned off), this sometimes
-    	// throws a NullPointerException.
-    	
-    	return element.getTagName().equals(elementName);
-    
-    }	
+		token.addToken(symbolToken);
+	}
 
 }
+
