@@ -25,6 +25,7 @@
 
 package net.sf.tapestry;
 
+import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -165,26 +166,24 @@ public abstract class AbstractComponent implements IComponent
 
     private IBeanProvider beans;
 
+    /**
+     *  Manages setting and clearing parameter properties for the component.
+     * 
+     *  @since 2.0.3
+     * 
+     **/
 
-	/**
-	 *  Manages setting and clearing parameter properties for the component.
-	 * 
-	 *  @since 2.0.3
-	 * 
-	 **/
-	
-	private ParameterManager parameterManager;
-	
-	
-	/**
-	 *  Provides access to localized Strings for this component.
-	 * 
-	 *  @since 2.0.4
-	 * 
-	 **/
-	
-	private IComponentStrings strings;
-	
+    private ParameterManager parameterManager;
+
+    /**
+     *  Provides access to localized Strings for this component.
+     * 
+     *  @since 2.0.4
+     * 
+     **/
+
+    private IComponentStrings strings;
+
     public void addAsset(String name, IAsset asset)
     {
         if (assets == null)
@@ -247,8 +246,7 @@ public abstract class AbstractComponent implements IComponent
      *
      **/
 
-    public void finishLoad(IPageLoader loader, ComponentSpecification specification)
-        throws PageLoaderException
+    public void finishLoad(IPageLoader loader, ComponentSpecification specification) throws PageLoaderException
     {
         finishLoad();
     }
@@ -556,8 +554,7 @@ public abstract class AbstractComponent implements IComponent
     public void setContainer(IComponent value)
     {
         if (container != null)
-            throw new ApplicationRuntimeException(
-                Tapestry.getString("AbstractComponent.attempt-to-change-container"));
+            throw new ApplicationRuntimeException(Tapestry.getString("AbstractComponent.attempt-to-change-container"));
 
         container = value;
     }
@@ -614,8 +611,7 @@ public abstract class AbstractComponent implements IComponent
     public void setPage(IPage value)
     {
         if (page != null)
-            throw new ApplicationRuntimeException(
-                Tapestry.getString("AbstractComponent.attempt-to-change-page"));
+            throw new ApplicationRuntimeException(Tapestry.getString("AbstractComponent.attempt-to-change-page"));
 
         page = value;
     }
@@ -628,8 +624,7 @@ public abstract class AbstractComponent implements IComponent
     public void setSpecification(ComponentSpecification value)
     {
         if (specification != null)
-            throw new ApplicationRuntimeException(
-                Tapestry.getString("AbstractComponent.attempt-to-change-spec"));
+            throw new ApplicationRuntimeException(Tapestry.getString("AbstractComponent.attempt-to-change-spec"));
 
         specification = value;
     }
@@ -850,27 +845,26 @@ public abstract class AbstractComponent implements IComponent
     {
     }
 
-	/**
-	 *  The main method used to render the component.  
-	 *  Invokes {@link #prepareForRender(IRequestCycle)}, then
-	 *  {@link #renderComponent(IMarkupWriter, IRequestCycle)}.
-	 *  {@link #cleanupAfterRender(IRequestCycle)} is invoked in a 
-	 *  <code>finally</code> block.
-	 * 	 
-	 *  <p>Subclasses should not override this method; instead they
-	 *  will implement {@link #renderComponent(IMarkupWriter, IRequestCycle)}.
-	 * 
-	 *  @since 2.0.3
-	 * 
-	 **/
-	
-    public final void render(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
+    /**
+     *  The main method used to render the component.  
+     *  Invokes {@link #prepareForRender(IRequestCycle)}, then
+     *  {@link #renderComponent(IMarkupWriter, IRequestCycle)}.
+     *  {@link #cleanupAfterRender(IRequestCycle)} is invoked in a 
+     *  <code>finally</code> block.
+     * 	 
+     *  <p>Subclasses should not override this method; instead they
+     *  will implement {@link #renderComponent(IMarkupWriter, IRequestCycle)}.
+     * 
+     *  @since 2.0.3
+     * 
+     **/
+
+    public final void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
         try
         {
             prepareForRender(cycle);
-            
+
             renderComponent(writer, cycle);
         }
         finally
@@ -879,68 +873,122 @@ public abstract class AbstractComponent implements IComponent
         }
     }
 
-	/**
-	 *  Invoked by {@link #render(IMarkupWriter, IRequestCycle)}
-	 *  to prepare the component to render.  This implementation
-	 *  sets JavaBeans properties from matching bound parameters.
-	 *  Subclasses that override this method must invoke this
-	 *  implementation as well.
-	 * 
-	 *  @since 2.0.3
-	 * 
-	 **/
-	
-	protected void prepareForRender(IRequestCycle cycle)
-	throws RequestCycleException
-	{
-		if (parameterManager == null)
-			parameterManager = new ParameterManager(this);
-			
-		parameterManager.setParameters();   
-	}
-	
-	/**
-	 *  Invoked by {@link #render(IMarkupWriter, IRequestCycle)}
-	 *  to actually render the component (with any parameter values
-	 *  already set).  This is the method that subclasses must implement.
-	 * 
-	 *  @since 2.0.3
-	 * 
-	 **/
-	
-	protected abstract void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-	throws RequestCycleException;
-	
-	/**
-	 *  Invoked by {@link #render(IMarkupWriter, IRequestCycle)}
-	 *  after the component renders, to clear any parameters back to
-	 *  null (or 0, or false).  Primarily, this is used to ensure
-	 *  that the component doesn't hold onto any objects that could
-	 *  otherwise be garbage collected.
-	 * 
-	 *  <p>Subclasses may override this implementation, but must
-	 *  also invoke it.
-	 * 
-	 *  @since 2.0.3
-	 * 
-	 **/
-	
-	protected void cleanupAfterRender(IRequestCycle cycle)
-	{
-	    parameterManager.clearParameters();
-	}
-	
-	/**
-	 *  Obtains the {@link IComponentStrings} for this component
-	 *  (if necessary), and gets the string from it.
-	 * 
-	 **/
-	
-	public String getString(String key)
-	{
-	    if (strings == null)
-	    	strings = getPage().getEngine().getComponentStringsSource().getStrings(this);
-	    	
-	    return strings.getString(key);
-	}
+    /**
+     *  Invoked by {@link #render(IMarkupWriter, IRequestCycle)}
+     *  to prepare the component to render.  This implementation
+     *  sets JavaBeans properties from matching bound parameters.
+     *  Subclasses that override this method must invoke this
+     *  implementation as well.
+     * 
+     *  @since 2.0.3
+     * 
+     **/
+
+    protected void prepareForRender(IRequestCycle cycle) throws RequestCycleException
+    {
+        if (parameterManager == null)
+            parameterManager = new ParameterManager(this);
+
+        parameterManager.setParameters();
+    }
+
+    /**
+     *  Invoked by {@link #render(IMarkupWriter, IRequestCycle)}
+     *  to actually render the component (with any parameter values
+     *  already set).  This is the method that subclasses must implement.
+     * 
+     *  @since 2.0.3
+     * 
+     **/
+
+    protected abstract void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException;
+
+    /**
+     *  Invoked by {@link #render(IMarkupWriter, IRequestCycle)}
+     *  after the component renders, to clear any parameters back to
+     *  null (or 0, or false).  Primarily, this is used to ensure
+     *  that the component doesn't hold onto any objects that could
+     *  otherwise be garbage collected.
+     * 
+     *  <p>Subclasses may override this implementation, but must
+     *  also invoke it.
+     * 
+     *  @since 2.0.3
+     * 
+     **/
+
+    protected void cleanupAfterRender(IRequestCycle cycle)
+    
+    {
+        parameterManager.clearParameters();
+    }
+
+    /**
+     *  Obtains the {@link IComponentStrings} for this component
+     *  (if necessary), and gets the string from it.
+     * 
+     **/
+
+    public String getString(String key)
+    {
+        if (strings == null)
+            strings = getPage().getEngine().getComponentStringsSource().getStrings(this);
+
+        return strings.getString(key);
+    }
+
+    /**
+     *  Formats a string, using
+     *  {@link MessageFormat#format(java.lang.String, java.lang.Object[])}.
+     * 
+     *  @param key the key used to obtain a localized pattern using
+     *  {@link #getString(String)}
+     *  @param arguments passed to the formatter
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    public String formatString(String key, Object[] arguments)
+    {
+        String format = getString(key);
+
+        return MessageFormat.format(format, arguments);
+    }
+
+    /**
+     *  Convienience method for {@link #formatString(String, Object[])}
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    public String formatString(String key, Object argument)
+    {
+        return formatString(key, new Object[] { argument });
+    }
+
+    /**
+     *  Convienience method for {@link #formatString(String, Object[])}
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    public String formatString(String key, Object argument1, Object argument2)
+    {
+        return formatString(key, new Object[] { argument1, argument2 });
+    }
+
+    /**
+     *  Convienience method for {@link #formatString(String, Object[])}
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    public String formatString(String key, Object argument1, Object argument2, Object argument3)
+    {
+        return formatString(key, new Object[] { argument1, argument2, argument3 });
+    }
 }
