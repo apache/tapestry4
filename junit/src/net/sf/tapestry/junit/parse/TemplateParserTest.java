@@ -274,11 +274,11 @@ public class TemplateParserTest extends TestCase
 		runFailure("UnclosedOpenTag.html", "Tag <body> on line 4 is never closed.");
 	}
 
-	public void testMissignAttributeValueFailure()
+	public void testMissingAttributeValueFailure()
 	{
 		runFailure(
 			"MissingAttributeValue.html",
-			"Tag <img> is missing a value for attribute src on line 9.");
+			"Tag <img> on line 9 is missing a value for attribute src.");
 	}
 
 	public void testMissingJwcIdFailure()
@@ -295,7 +295,7 @@ public class TemplateParserTest extends TestCase
 	{
 		runFailure(
 			"MismatchedCloseTags.html",
-			"Closing tag </th> on line 9 does not have a matching opening tag.");
+			"Closing tag </th> on line 9 does not have a matching open tag.");
 	}
 
 	public void testInvalidDynamicNestingFailure()
