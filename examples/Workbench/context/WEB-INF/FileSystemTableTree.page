@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+
+
+<page-specification class="org.apache.tapestry.workbench.tree.examples.FileSystemTreeTable">
+
+
+    <component id="body" type="Body"/>
+
+    <component id="currentTime" type="Insert">
+        <binding name="value" expression='currentTime'/>
+    </component>
+
+    <component id="shell" type="Shell">
+        <binding name="stylesheet" expression='assets.stylesheet'/>
+        <static-binding name="title">Home</static-binding>
+    </component>
+
+    <component id="tree" type="contrib:TreeTable">
+        <binding name="nodeRenderFactory" expression='renderFactory'/>
+        <binding name="sessionStateManager" expression='sessionStateManager'/>
+        <binding name="treeModel" expression='treeModel'/>
+        <static-binding name="entriesPerTablePage">40</static-binding>
+        <binding name="tableColunms" expression='tableColumns'/>
+        <binding name="treeStateListener" expression='treeStateListener'/>
+    </component>
+
+    <component id="directoryTableView" type="DirectoryTableView">
+        <binding name="selectedFolderSource" expression='selectedFolderSource'/>
+    </component>
+</page-specification>
