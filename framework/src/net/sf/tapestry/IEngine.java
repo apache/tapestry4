@@ -324,4 +324,21 @@ public interface IEngine
     
     public void setRefreshing(boolean refreshing);
     
+    /**
+     *  Returns a {@link net.sf.tapestry.IPropertySource} that should be
+     *  used to obtain configuration data.  The returned source represents
+     *  a search path that includes (at a minimum):
+     *  
+     *  <ul>
+     *  <li>Properties of the {@link net.sf.tapestry.spec.ApplicationSpecification}
+     *  <li>Initial Parameters of servlet (configured in the <code>web.xml</code> deployment descriptor)
+     *  <li>Initial Parameter of the servlet context (also configured in <code>web.xml</code>)
+     *  <li>System properties (defined with the <code>-D</code> JVM command line parameter)
+     *  </ul>
+     * 
+     *  @since 2.3
+     **/
+    
+    public IPropertySource getPropertySource();
+    
 }
