@@ -9,7 +9,7 @@
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 	<tr>
-		<td height="45"><img src="web/images/spacer.gif" width="1" height="1"></td>
+		<td height="45"><IMG height=1 src="web/images/spacer.gif" width=1></td>
 	</tr>
 </table>
 
@@ -20,7 +20,7 @@
 
 <IMG height=44 src="web/images/ico_t.gif" width=44 align=absMiddle border=0>&nbsp;&nbsp;<IMG height=22 alt="" src="web/images/hd_tapestry.gif" width=100 align=absMiddle vspace=17 border=0>
 				
-	<h1>Release 1.0.8
+	<h1>Release 1.0.9
 
 </h1>			
 
@@ -39,133 +39,24 @@ to rebuild the JARs on different platforms and different compilers (JDK 1.2 and 
 <p>This product includes software developed by the Apache Software Foundation 
 (<a href="http://www.apache.org/">http://www.apache.org/</a>).
 
-<h2>Third party JARs</h2>
 
-Tapestry requires some third party JARs when it is compiled, as well as
-at  runtime. These files are are included in the distribution.
-<p>
-<table border="0">
-	<tr bgcolor="black">
-		<th><font color="white">JAR file</font>
-		</th>
-		<th><font color="white">Description</font>&lt;
-		</th>
-		<th><font color="white">Version</font>
-		</th>
-		<th><font color="white">License</font>
-		</th>
-		<th><font color="white">Location</font>&lt;
-		</th>
-	</tr>
-	<tr valign="top">
-		<td>com.mortbay.jetty.jar
-		</td>
-		<td>Jetty HTTP Servlet Server
-		</td>
-		<td>3.1.5
-		</td>
-		<td><A href="LICENSE.Jetty.html">Jetty License</A>
-			<td><a href="http://sourceforge.net/projects/jetty">
-			http://sourceforge.net/projects/jetty
-		</a>
-			</td>
-	</tr>
-	<tr valign="top" bgcolor="silver">
-		<td>ejb.jar
-		</td>
-		<td>EJB 1.1
-		</td>
-		<td>from jBoss 2.2.2
-		</td>
-		<td>Unknown license, probably LGPL</A>
-			<td>Copied from the
-	<a href="http://www.jboss.org">jBoss</a> distribution, which claims to
-	be open source (but neglects to provide a license).
-<p>This library is required to compile Tapestry and 
-      to compile and run the demos and tutorials.</p>
-			</td>
-	</tr>
 
-	<tr valign="top">
-		<td>javax.servlet.jar
-		</td>
-		<td>Servlet API 2.2 reference implementation
-		</td>
-		<td>2.2
-		</td>
-		<td><A href="LICENSE.javax.servlet.txt">Apache Software License, Version 1.1</A>
-			<td>Distributed with Jetty
-			</td>
-	</tr>
-	<tr valign="top"  bgcolor="silver">
-		<td>javax.xml.jaxp.jar
-		</td>
-		<td>Java API for XML Processing
-		</td>
-		<td>1.1
-		</td>
-		<td><A href="License.javax.xml.html">Sun Binary Code License</A>
-		</td>
-		<td>Distributed with Jetty
-		</td>
-	</tr>
-	
-	<tr valign="top">
-		<td>junit.jar</td>
-		<td>JUnit Testing Framework</td>
-		<td>3.6</td>
-		<td><a href="http://oss.software.ibm.com/developerworks/opensource/license10.html">IBM Public License</a>
-		</td>
-		<td>
-		<a href="http://www.junit.org">www.junit.org</a>
-		<p>This version is slightly modified to 
-		<a href="http://junit.sourceforge.net/doc/faq/faq.htm#ClassNotFoundException">exclude additional classes</a> related to XML 
-      parsing.</p>
-		   
-		</td>
-	</tr>
-	
-	<tr valign="top" bgcolor="silver">
-		<td>log4j-core.jar
-		</td>
-		<td>Logging Toolkit
-		</td>
-		<td>1.1.3
-		</td>
-		<td><A href="LICENSE.log4j.txt">Apache Software License, Version 1.1</A></A>
-			<td>Logging toolkit used by Tapestry framework classes.
-	More information at the <a href="http://jakarta.apache.org/log4j">log4j home page</a>.
-			</td>
-	</tr>
-	
-	
-	<tr valign="top">
-		<td>mckoidb.jar</td>
-		<td><a href="http://mckoi.com/database/">McKoi SQL Database</a></td>
-		<td>0.92 beta</td>
-		<td>GPL</td>
-		<td>Java SQL Database used for the Virtual Library demonstration.
-		</td>
-	</tr>
-	
-	<tr valign="top" bgcolor="silver">
-		<td>org.apache.crimson.jar
-		</td>
-		<td>Sun XML Parser
-		</td>
-		<td>1.1
-		</td>
-		<td><A href="License.javax.xml.html">Sun Binary Code License</A>
-		</td>
-		<td>Distributed with Jetty
-		</td>
-	</tr>
-	
-	<tr bgcolor="black">
-		<td colspan="5" height=1><IMG src="web/images/spacer.gif"></td>
-	</tr>
-</table>
 
+<P>
+<IMG height=12 src="web/images/dots_leftnav.gif" width=14>&nbsp;<A class=clsLeftNav href="#doc">Documentation</A>
+<br>
+<IMG height=12 src="web/images/dots_leftnav.gif" width=14>&nbsp;<A class=clsLeftNav href="#config">Configuration</A>
+<br>
+<IMG height=12 src="web/images/dots_leftnav.gif" width=14>&nbsp;<A class=clsLeftNav href="#jars">Third Party Jars</A>
+
+
+
+		<br><br>
+		.....................................................
+		<br><br>
+		
+		
+<a name="doc"></a>
 <h2>Documentation</h2>
 
 <p>Tapestry has quite a bit of documentation available.
@@ -185,6 +76,7 @@ at  runtime. These files are are included in the distribution.
 
 </ul>
 
+<a name="config"></a>
 <h2>Configuration</h2>
 
 <p>Tapestry is built using the
@@ -217,6 +109,124 @@ documentation, tutorials and Virtual Library.  You can access these with
 the URL 
 <a href="http://localhost/">http://localhost/</a>.
 
+<a name="jars"></a>
+<h2>Third party JARs</h2>
+
+Tapestry requires some third party JARs when it is compiled, as well as
+at  runtime. These files are are included in the distribution.
+<p>
+<table border="0">
+        
+	<tr bgcolor="black">
+		<th><font color="white">JAR file</font>
+		</th>
+		<th><font color="white">Version</font>
+		</th>
+		<th><font color="white">License</font>
+		</th>
+		<th><font color="white">Description</font>&lt;
+		</th>
+	</tr>
+	<tr valign="top">
+		<td>com.mortbay.jetty.jar
+		</td>
+	
+		<td>3.1.5
+		</td>
+		<td><A href="LICENSE.Jetty.html">Jetty License</A>
+			<td>Jetty HTTP Servlet Server, see <a href="http://sourceforge.net/projects/jetty">
+			http://sourceforge.net/projects/jetty
+		</a>
+			</td>
+	</tr>
+	<tr valign="top" bgcolor="silver">
+		<td>ejb.jar
+		</td>
+	
+		<td>from jBoss 2.2.2
+		</td>
+		<td>   LGPL</A>
+			<td>EJB 1.1 , copied from the
+	<a href="http://www.jboss.org">jBoss</a> distribution, which claims to
+	be open source (but neglects to provide a license).
+<p>This library is required to compile Tapestry and 
+      to compile and run the demos and tutorials.</p>
+			</td>
+	</tr>
+
+	<tr valign="top">
+		<td>javax.servlet.jar
+		</td>
+
+		<td>2.2
+		</td>
+		<td><A href="LICENSE.javax.servlet.txt">Apache Software License, Version 1.1</A>
+			<td>Servlet API 2.2 reference implementatio, 
+            distributed with Jetty
+			</td>
+	</tr>
+	<tr valign="top"  bgcolor="silver">
+		<td>javax.xml.jaxp.jar
+		</td>
+
+		<td>1.1
+		</td>
+		<td><A href="License.javax.xml.html">Sun Binary Code License</A>
+		</td>
+		<td>Java API for XML Processing , distributed with Jetty
+		</td>
+	</tr>
+	
+	<tr valign="top">
+		<td>junit.jar</td>
+
+		<td>3.7</td>
+		<td><a href="http://oss.software.ibm.com/developerworks/opensource/license10.html">IBM Public License</a>
+		</td>
+		<td>
+		JUnit 
+		Testing Framework, see&nbsp; 
+		<a href="http://www.junit.org">www.junit.org</a>
+		   
+		</td>
+	</tr>
+	
+	<tr valign="top" bgcolor="silver">
+		<td>log4j-core.jar
+		</td>
+		<td>1.1.3
+		</td>
+		<td><A href="LICENSE.log4j.txt">Apache Software License, Version 1.1</A></A>
+			<td>Logging Toolkit, logging toolkit used by Tapestry framework classes.
+	More information at the <a href="http://jakarta.apache.org/log4j">log4j home page</a>.
+			</td>
+	</tr>
+	
+	
+	<tr valign="top">
+		<td>mckoidb.jar</td>
+		<td>0.92 beta</td>
+		<td>GPL</td>
+		<td><A href="http://mckoi.com/database/">McKoi 
+            SQL Database</A>, Java SQL Database used for the Virtual Library demonstration.
+		</td>
+	</tr>
+	
+	<tr valign="top" bgcolor="silver">
+		<td>org.apache.crimson.jar
+		</td>
+		<td>1.1
+		</td>
+		<td><A href="License.javax.xml.html">Sun Binary Code License</A>
+		</td>
+		<td> Sun XML Parser, Distributed with Jetty
+		</td>
+	</tr>
+	
+	<tr bgcolor="black">
+		<td colspan="5" height=1><IMG src="web/images/spacer.gif"></td>
+	</tr>
+</table>
 
 
 		<br><br>
@@ -224,12 +234,7 @@ the URL
 		<br><br>
 
 <p>Tapestry is an open source project, hosted on the <a href="http://sf.net/project/?group_id=4754">SourceForge</a> and licensed
-under the <A href="License.html">GNU Lesser General Public License</A>.</p>
-
-
-</td>
-</tr>
-</table>
+under the <A href="License.html">GNU Lesser General Public License</A>.</p></td></tr></table>
 
 
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
@@ -251,7 +256,7 @@ under the <A href="License.html">GNU Lesser General Public License</A>.</p>
 		<td height="65">
 			<table width="724" border="0" cellspacing="0" cellpadding="3" bgcolor="#000000">
 				<tr height="65">
-					<td width="654" align="right" valign="bottom" class="clsFooter">&copy;2000-2002 Howard Lewis Ship.
+					<td width="654" align="right" valign="bottom" class="clsFooter">©2000-2002 Howard Lewis Ship.
 					All rights reserved.</td>
 					<td width="70">&nbsp;</td>
 				</tr>
