@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+
+<!-- Perform basic code coverage tests of Forms and form-related components using
+     the Register page. -->
+
+<mock-test>
+    <context name="mock"/>
+    <servlet name="app" class="org.apache.tapestry.ApplicationServlet">
+  		<init-parameter
+  			name="org.apache.tapestry.application-specification"
+  			value="/org/apache/tapestry/junit/mock/app/Mock.application"/>
+  	</servlet>
+  	  	
+  	<request>
+  		<parameter name="service" value="page"/>
+  		<parameter name="context" value="Register"/>
+  		
+  		<assert-output name="Title">
+<![CDATA[
+		<title>Register</title>
+]]>  		
+ 		</assert-output> 			
+ 		
+		<assert-output name="Initialization Scripting">
+<![CDATA[
+document.Form0.inputFirstName.focus();
+document.Form0.inputFirstName.select();
+document.Form0.onsubmit = onsubmit_Form0;
+]]>
+		</assert-output>
+		
+		<assert-output-matches name="Hidden Fields - Names" subgroup="1">
+<![CDATA[
+<input type="hidden" name="(.*?)" value="(.*?)"/>
+]]>
+			<match>service</match>
+			<match>context</match>
+			<match>sp</match>
+			<match>Form0</match>
+		</assert-output-matches>
+				
+		<assert-output-matches name="Hidden Fields - Values" subgroup="2">
+<![CDATA[
+<input type="hidden" name="(.*?)" value="(.*?)"/>
+]]>
+			<match>direct</match>
+			<match>0/Register/form</match>
+			<match>S0</match>
+			<match>inputFirstName,inputLastName,inputSex,inputAgeRange</match>
+		</assert-output-matches>
+			 	
+		<assert-output-matches name="Text Fields" subgroup="1">
+<![CDATA[
+<input type="text" name="(.*?)" (.*?)/>
+]]>
+			<match>inputFirstName</match>
+			<match>inputLastName</match>	
+		</assert-output-matches>
+		
+		<assert-output name="Radio Button - Male">
+<![CDATA[
+<input type="radio" name="inputSex" checked="checked" value="0"/> Male
+]]>
+		</assert-output>
+		
+		<assert-output name="Radio Button - Female">
+<![CDATA[
+<input type="radio" name="inputSex" value="1"/> Female	
+]]>
+		</assert-output>		
+			
+		<assert-output name="Age Select">
+<![CDATA[
+<select name="inputAgeRange">
+]]>
+		</assert-output>
+		
+		<assert-output-matches name="Option Values" subgroup="1">
+<![CDATA[
+<option value="(.*?)"( selected="selected")?>(.*?)</option>
+]]>
+			<match>0</match>
+			<match>1</match>
+			<match>2</match>
+			<match>3</match>
+			<match>4</match>
+		</assert-output-matches>
+		
+		<assert-output-matches name="Option Labels" subgroup="3">
+<![CDATA[
+<option value="(.*?)"( selected="selected")?>(.*?)</option>
+]]>
+			<match>Child (0 - 9)</match>
+			<match>Teen (10 - 17)</match>
+			<match>Adult (18 - 60)</match>
+			<match>Retiree (61 - 75)</match>
+			<match>Elderly (76+)</match>
+		</assert-output-matches>
+				
+		<assert-output-matches name="Selected Option" subgroup="1">
+<![CDATA[
+<option value="(.*?)" selected="selected"
+]]>
+			<match>2</match>
+		</assert-output-matches>												 		
+  	</request>
+  	
+  	<!-- Provoke an error by "submitting" the form but leaving some fields blank. -->
+  	
+  	<request>
+  		<parameter name="service" value="direct"/>
+  		<parameter name="context" value="0/Register/form"/>
+  		<parameter name="sp" value="S0"/>
+  		<parameter name="inputFirstName" value="Suzy"/>
+  		<parameter name="inputLastName" value=""/>
+  		<parameter name="inputSex" value="1"/>
+  		<parameter name="inputAgeRange" value="1"/>
+  		<parameter name="Form0" value="inputFirstName,inputLastName,inputSex,inputAgeRange"/>
+  		
+    		
+  		<assert-output name="Title">
+<![CDATA[
+		<title>Register</title>
+]]>  		
+ 		</assert-output>
+ 				
+		<assert-regexp name="Error Message">
+<![CDATA[
+<span class="error">\s*You must enter a value for Last Name\.\s*</span>
+]]>  		
+ 		</assert-regexp> 				
+
+		<!-- Check that the inputLastName field is the default -->
+		
+ 		<assert-output name="Default Field">
+<![CDATA[
+document.Form0.inputLastName.focus();
+document.Form0.inputLastName.select();		 				
+]]>  		
+ 		</assert-output>
+ 		 				
+  		<assert-output-matches name="Selected Option" subgroup="1">
+<![CDATA[
+<option value="(.*?)" selected="selected"
+]]>
+			<match>1</match>
+		</assert-output-matches>	
+		
+		<assert-output-matches name="Selected Radio" subgroup="1">
+<![CDATA[
+<input type="radio" name="inputSex" checked="checked" value="(.*?)"/>
+]]>
+			<match>1</match>
+		</assert-output-matches>
+		
+<!-- This can be tricky, the order in which the maxlength and size attributes
+     are emitted appears to be somewhat unpredictable between JDKs.
+     We'll need to add alternate tests to check that the values
+     are generated properly.. -->
+     		
+		<assert-regexp name="First Name">
+<![CDATA[
+<input type="text" name="inputFirstName" value="Suzy"(.*?)/>
+]]>
+		</assert-regexp>
+		
+		<assert-regexp name="Last Name">
+<![CDATA[
+<input type="text" name="inputLastName"(.*?)/>&nbsp;<font color="red">\*\*</font>
+]]>
+		</assert-regexp>				
+	</request>
+	
+	<request>
+  		<parameter name="service" value="direct"/>
+  		<parameter name="context" value="0/Register/form"/>
+  		<parameter name="sp" value="S0"/>
+  		<parameter name="inputFirstName" value="Suzy"/>
+  		<parameter name="inputLastName" value="Lewis Ship"/>
+  		<parameter name="inputSex" value="1"/>
+  		<parameter name="inputAgeRange" value="2"/>
+  		<parameter name="Form0" value="inputFirstName,inputLastName,inputSex,inputAgeRange"/>	
+  		
+  		
+  		<assert-output name="Title">
+<![CDATA[
+<title>Registration Confirmation</title>
+]]>  		
+		</assert-output>
+		
+		<assert-regexp name="First Name">
+<![CDATA[
+<th>First Name:</th>\s*<td>Suzy</td>
+]]>
+		</assert-regexp>
+		
+		<assert-regexp name="Last Name">
+<![CDATA[
+<th>Last Name:</th>\s*<td>Lewis Ship</td>
+]]>
+		</assert-regexp>	
+		
+		<assert-regexp name="Sex">
+<![CDATA[
+<th>Sex:</th>\s*<td>Female</td>
+]]>
+		</assert-regexp>	
+		
+		<assert-regexp name="Age">
+<![CDATA[
+<th>Age:</th>\s*<td>Adult \(18 \- 60\)</td>
+]]>
+		</assert-regexp>	
+									
+  	</request>		
+</mock-test>	

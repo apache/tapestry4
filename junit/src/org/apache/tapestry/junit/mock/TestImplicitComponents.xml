@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="mock"/>
+
+  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet">
+  		<init-parameter
+  			name="org.apache.tapestry.application-specification"
+  			value="/org/apache/tapestry/junit/mock/app/Mock.application"/>
+  	</servlet>
+       
+    <request>
+    	<parameter name="service" value="page"/>
+    	<parameter name="context" value="ImplicitComponents"/>
+ 	
+ 	
+ 		<assert-output name="Implicit Body component">
+<![CDATA[
+<title>Implicit Components</title>
+]]> 		
+ 		</assert-output>
+ 		
+ 	
+	  	<assert-output name="Implicit Insert component">
+<![CDATA[
+Application Name: JUnit Mock Application	
+]]>
+		</assert-output> 	
+					
+ 	    <assert-output-matches name="Foreach output" subgroup="1">
+<![CDATA[
+<li>\s*(.*?)\s*</li>
+]]>
+			<match>Alpha</match>
+			<match>Beta</match>
+			<match>Gamma</match>					
+		</assert-output-matches>
+	</request>
+			
+
+</mock-test>
+    	

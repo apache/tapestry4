@@ -5,11 +5,11 @@
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
 	
 	
-<page-specification class="net.sf.tapestry.junit.mock.c10.Home">
+<page-specification class="org.apache.tapestry.junit.mock.c10.Home">
 
-	<bean name="absoluteRenderer" class="net.sf.tapestry.link.AbsoluteLinkRenderer" lifecycle="page"/>
+	<bean name="absoluteRenderer" class="org.apache.tapestry.link.AbsoluteLinkRenderer" lifecycle="page"/>
 
-	<bean name="configuredRenderer" class="net.sf.tapestry.link.AbsoluteLinkRenderer" lifecycle="page">
+	<bean name="configuredRenderer" class="org.apache.tapestry.link.AbsoluteLinkRenderer" lifecycle="page">
 		<set-property name="port" expression="8080"/>
 		<set-property name="scheme" expression="&quot;https&quot;"/>
 		<set-property name="serverName" expression="&quot;myserver&quot;"/>	

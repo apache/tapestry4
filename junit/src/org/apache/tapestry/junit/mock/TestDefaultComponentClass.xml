@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="c7" root="context7"/>
+
+  	<servlet name="chatty" class="org.apache.tapestry.ApplicationServlet"/>
+  	
+
+	<request>
+  	  	  	
+  	  	  	
+		<assert-output name="Page Title">
+<![CDATA[		
+<title>Default Class</title>
+]]>
+		</assert-output>
+  	  	  	
+		<assert-output name="Page Class">
+Page class: org.apache.tapestry.html.BasePage
+	</assert-output>
+	
+	<assert-output name="Component Class">
+Hello!  I'm Chatty and my class is org.apache.tapestry.BaseComponent
+	</assert-output>
+ 
+  </request>
+  
+ </mock-test>

@@ -2,17 +2,17 @@
 <body jwcid="@Body">
 
 
-<form jwcid="form@Form" listener="[[ listeners.formSubmit ]]">
+<form jwcid="form@Form" listener="ognl:listeners.formSubmit">
 
 <p>Enter favorite colors:</p>
 	
 <table>
-<tr jwcid="e@ListEdit" element="tr" source="[[ sortedColorKeys ]]" value="[[ colorKey ]]">
-	<th><span jwcid="@Insert" value="[[ colorKey ]]">Color Label</span>:</th>
+<tr jwcid="e@ListEdit" element="tr" source="ognl:sortedColorKeys" value="ognl:colorKey">
+	<th><span jwcid="@Insert" value="ognl:colorKey">Color Label</span>:</th>
 	<td>
 		<select jwcid="inputColor@PropertySelection" 
-			value="[[ color ]]" 
-			model="[[ colorModel ]]">
+			value="ognl:color" 
+			model="ognl:colorModel">
 		<option>Red</option> <option>Green</option> <option>Blue</option>
 		</select>
 	</td>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="c2" root="context2"/>
+
+  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet">
+  		<init-parameter
+  			name="org.apache.tapestry.application-specification"
+  			value="/org/apache/tapestry/junit/mock/c2/C2.application"/>
+  	</servlet>      
+    
+
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="ImplicitComponents"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>ImplicitComponents Page</title>
+]]>
+		</assert-output>
+	
+		<assert-output name="CRoot output">
+This content provided by component CRoot.
+		</assert-output>
+		
+		<assert-output name="CWebInf output">
+This content provided by component CWebInf.
+		</assert-output>
+
+		<assert-output name="CWebInfApp output">
+This content provided by component CWebInfApp.
+		</assert-output>	
+		
+		<assert-output name="CApp output">
+This content provided by component CApp.
+		</assert-output>			
+		
+		<assert-output name="CRelative output">
+This content provided by component CRelative.
+		</assert-output>	
+						
+	</request>		
+						 	 	 
+</mock-test>
+    	

@@ -6,6 +6,6 @@
 
 <application>
 
-	<library id="contrib" specification-path="/net/sf/tapestry/contrib/Contrib.library"/>
+	<library id="contrib" specification-path="/org/apache/tapestry/contrib/Contrib.library"/>
 	
 </application>

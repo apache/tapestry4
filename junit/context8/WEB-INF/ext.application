@@ -5,5 +5,5 @@
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
 	
 <application>
-	<property name="net.sf.tapestry.template-extension" value="thtml"/>
+	<property name="org.apache.tapestry.template-extension" value="thtml"/>
 </application>

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="c17" root="context17"/>
+
+  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet"/>
+
+	<request>
+	
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Home</title>
+]]>	
+		</assert-output>
+		
+		<assert-output name="Normal TextField">
+<![CDATA[
+Normal: <input type="text" name="normal" size="20" maxlength="25" value="normal"/>
+]]>	
+		</assert-output>
+		
+		<assert-output name="Disabled TextField">
+<![CDATA[
+Disabled: <input type="text" disabled="disabled" name="disabled" value="disabled"/>
+]]>	
+		</assert-output>
+		
+		<assert-output name="Hidden TextField">
+<![CDATA[
+Hidden: <input type="password" name="hidden" value="hidden"/>
+]]>	
+		</assert-output>		
+	</request>
+	
+	<request>
+		<parameter name="service" value="direct"/>
+		<parameter name="context" value="0/Home/$Form"/>
+		<parameter name="sp" value="S0"/>
+		<parameter name="normal" value="updated-normal"/>
+		<parameter name="disabled" value="updated-normal"/>
+		<parameter name="hidden" value="updated-hidden"/>
+		<parameter name="Form0" value="normal,disabled,hidden"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Two</title>
+]]>
+		</assert-output>
+			
+		<assert-output name="Normal Field">
+Normal: [updated-normal]
+		</assert-output>
+		
+		<assert-output name="Disabled Field">
+Disabled: [disabled]
+		</assert-output>
+		
+		<assert-output name="Hidden Field">
+Hidden: [updated-hidden]	
+		</assert-output>
+	</request>
+	
+	<!-- Test rewind over TextField, because of action service. -->
+	
+	<request>
+		<parameter name="service" value="action"/>
+		<parameter name="context" value="0/Home/1/$Form_0"/>
+		<parameter name="Form1" value=""/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Home</title>
+]]>	
+		</assert-output>
+		
+		<assert-output name="Normal TextField">
+<![CDATA[
+Normal: <input type="text" name="normal" size="20" maxlength="25" value="normal"/>
+]]>	
+		</assert-output>
+		
+		<assert-output name="Disabled TextField">
+<![CDATA[
+Disabled: <input type="text" disabled="disabled" name="disabled" value="disabled"/>
+]]>	
+		</assert-output>
+		
+		<assert-output name="Hidden TextField">
+<![CDATA[
+Hidden: <input type="password" name="hidden" value="hidden"/>
+]]>	
+		</assert-output>	
+	
+	</request>
+	
+	<!-- Test a TextField not contained in a Form. -->
+	
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="Three"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Exception</title>
+]]>
+		</assert-output>
+		
+		<assert-output name="Exception Name">
+		org.apache.tapestry.RequestCycleException	
+		</assert-output>
+		
+		<assert-output name="Exception Message">
+		This component must be contained within a Form.
+		</assert-output>
+		
+		<assert-output name="Component Id">
+		[Three/$TextField]	
+		</assert-output>
+	</request>
+	
+	<!-- Test that forms may not be nested. -->
+	
+	<request>
+		<parameter name="service" value="page"/>
+		<parameter name="context" value="Four"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Exception</title>
+]]>			
+		</assert-output>	
+		
+		<assert-output name="Exception Name">
+		org.apache.tapestry.RequestCycleException
+		</assert-output>
+		
+		<assert-output name="Exception Message">
+		Forms may not be nested.
+		</assert-output>
+		
+		<assert-output name="Component Id">
+		[Four/inner]	
+		</assert-output>
+	</request>
+</mock-test>

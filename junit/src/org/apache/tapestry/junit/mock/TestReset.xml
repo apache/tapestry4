@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+
+<!-- Fill in some code-coverage gaps in the page service. -->
+
+<mock-test>
+    <context name="mock"/>
+
+  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet">
+  		<init-parameter
+  			name="org.apache.tapestry.application-specification"
+  			value="/org/apache/tapestry/junit/mock/simple/Simple.application"/>
+  	</servlet>
+    
+	<!-- Reset works just like page service. -->
+    
+    <request>
+    	<parameter name="service" value="reset"/>
+    	<parameter name="context" value="Home"/>
+
+	  	<assert-output name="English Language Check">
+<![CDATA[
+<title>JUnit Simple Home Page</title>
+]]>
+		</assert-output>
+		
+		<assert-output name="English Blurb">
+The start of the JUnit test suite: JUnit Simple Application.
+		</assert-output>
+	</request>		
+		
+	<!-- Test that the page name argument is honored.  Test
+	     fabrication of service URL for reset service. -->
+	     
+  	<request>
+  		<parameter name="service" value="reset"/>
+  		<parameter name="context" value="Two"/>
+  		
+	
+		<assert-output name="Reset Link">
+<![CDATA[		
+<a href="/mock/app?service=reset&amp;context=Two">reset caching</a>
+]]>
+		</assert-output>
+		  		
+	</request>	
+	
+	<!-- Test missing page -->
+	
+	<request>
+		<parameter name="service" value="reset"/>
+		<parameter name="context" value="Qbert"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Exception</title>
+]]>
+		</assert-output>
+		
+		<assert-output name="Error Message">
+Page 'Qbert' not found in application namespace.
+		</assert-output>
+				
+	</request>			
+	
+	<!-- Test wrong number of context parameters. -->
+	
+	<request>
+		<parameter name="service" value="reset"/>
+		
+		<assert-output name="Page Title">
+<![CDATA[
+<title>Exception</title>
+]]>
+		</assert-output>
+		
+		<assert-output name="Error Message">
+Service reset requires exactly one service parameter.
+		</assert-output>
+				
+	</request>		
+</mock-test>
+	    	

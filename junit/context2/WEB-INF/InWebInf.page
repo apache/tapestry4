@@ -6,5 +6,5 @@
 	
 <!-- Establishes a location from which the properties files may be located. -->
 	
-<page-specification class="net.sf.tapestry.html.BasePage"/>
+<page-specification class="org.apache.tapestry.html.BasePage"/>
 

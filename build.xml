@@ -8,26 +8,28 @@
 	<property file="${root.dir}/config/common.properties"/>
 	<property name="javadoc.dir" value="web/doc/api"/>
 	<property name="private.dir" value="private"/>
-	<!-- Names of distribution files.  Have to create the tar, then gzip it
-     afterwards.   tar + gzip results in a smaller distribution than
-     zip. -->
+	<path id="jetty.classpath">
+		<fileset dir="${jetty.dir}">
+			<include name="lib/javax.servlet.jar"/>
+			<include name="lib/org.mortbay.jetty-jdk12.jar"/>
+			<include name="ext/*.jar"/>
+		</fileset>
+	</path>
+	<path id="tapestry.ext.classpath">
+		<fileset dir="${tapestry.ext.dir}">
+			<include name="*.jar"/>
+		</fileset>
+	</path>
 	<path id="tutorial.classpath">
-		<pathelement location="${framework.jar}"/>
-		<pathelement location="${contrib.jar}"/>
-		<pathelement location="${lib.ext.dir}/javax.servlet.jar"/>
-		<pathelement location="${lib.ext.dir}/${commons-logging.jar}"/>
-		<pathelement location="${lib.ext.dir}/${commons-lang.jar}"/>
-		<pathelement location="${lib.ext.dir}/${log4j.jar}"/>
-		<pathelement location="${lib.ext.dir}/javax.xml.jaxp.jar"/>
-		<pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
-		<pathelement location="${lib.ext.dir}/${jetty.jar}"/>
-		<pathelement location="${lib.ext.dir}/${jakarta-oro.jar}"/>
-		<pathelement location="${lib.ext.dir}/${ognl.jar}"/>
-		<pathelement location="${lib.ext.dir}/${bsf.jar}"/>
-		<pathelement location="${lib.ext.dir}/${bcel.jar}"/>
+		<fileset dir="${lib.dir}">
+			<include name="${framework.jar}"/>
+			<include name="${contrib.jar}"/>
+			<include name="${ext.dir}/*.jar"/>
+			<include name="${runtime.dir}/*.jar"/>
+		</fileset>
 		<pathelement location="config"/>
 	</path>
-	<path id="full.classpath">
+	<path id="vlib.classpath">
 		<pathelement location="${vlibbeans.jar}"/>
 		<pathelement location="examples/VlibBeans/jboss"/>
 		<pathelement location="${jboss.client.dir}/jboss-j2ee.jar"/>
@@ -39,10 +41,7 @@
 		<ant dir="framework" target="clean"/>
 		<ant dir="contrib" target="clean"/>
 		<ant dir="junit" target="clean"/>
-		<ant dir="examples/wap" target="clean"/>
-		<ant dir="examples/Tutorial" target="clean"/>
-		<ant dir="examples/VlibBeans" target="clean"/>
-		<ant dir="examples/Vlib" target="clean"/>
+		<ant dir="examples" target="clean"/>
 		<ant dir="doc/src/Tutorial" target="clean"/>
 		<ant dir="doc/src/DevelopersGuide" target="clean"/>
 		<ant dir="doc/src/UsersGuide" target="clean"/>
@@ -61,18 +60,14 @@
 		</delete>
 		<delete dir="web/doc" quiet="true"/>
 	</target>
-	<target name="install" depends="check-for-jboss-dir"
+	<target name="install" depends="check-for-jboss-dir,check-for-jetty-dir"
 		description="Builds all frameworks and examples.">
 		<!-- Each project has its own definitions for many properties.
      	 inheritAll="false" ensures that definitions in this buildfile
      	 doesn't override definitions in each project's buildfile. -->
 		<ant dir="framework" target="install" inheritAll="false"/>
 		<ant dir="contrib" target="install" inheritAll="false"/>
-		<ant dir="examples/wap" target="install" inheritAll="false"/>
-		<ant dir="examples/Tutorial" target="install" inheritAll="false"/>
-		<ant dir="examples/VlibBeans" target="install" inheritAll="false"/>
-		<ant dir="examples/Vlib" target="install" inheritAll="false"/>
-		<ant dir="examples/VlibEAR" target="install" inheritAll="false"/>
+		<ant dir="examples" target="install" inheritAll="false"/>
 	</target>
 	<target name="documentation"
 		description="Builds the Tapestry documentation.">
@@ -262,9 +257,8 @@
 				<pathelement location="junit/src"/>
 			</sourcepath>
 			<classpath>
-				<path refid="full.classpath"/>
-				<pathelement location="${lib.ext.dir}/${mckoidb.jar}"/>
-				<pathelement location="${lib.ext.dir}/junit.jar"/>
+				<path refid="vlib.classpath"/>
+				<path refid="tapestry.ext.classpath"/>
 				<pathelement location="${jboss.lib.dir}/jboss-jmx.jar"/>
 				<pathelement location="${jboss.lib.dir}/jboss-system.jar"/>
 				<pathelement location="${jboss.lib.dir}/jboss-common.jar"/>
@@ -272,12 +266,17 @@
 			</classpath>
 		</javadoc>
 	</target>
-	<target name="run-tutorial" description="Runs the Tapestry Tutorial.">
+	<target name="run-tutorial" depends="check-for-jetty-dir"
+		description="Runs the Tapestry Tutorial.">
 		<delete dir="${private.dir}" quiet="true"/>
 		<mkdir dir="${private.dir}"/>
 		<echo>Running Tapestry Tutorial on port 8080 ...</echo>
-		<java classname="org.mortbay.jetty.Server"
-			classpathref="tutorial.classpath" fork="true" maxmemory="128MB">
+		<java classname="org.mortbay.jetty.Server" fork="true" maxmemory="128MB"
+			>
+			<classpath>
+				<path refid="tutorial.classpath"/>
+				<path refid="jetty.classpath"/>
+			</classpath>
 			<arg value="config/jetty-tutorial.xml"/>
 			<!-- Enable debugging when running the tutorial -->
 			<jvmarg line="-showversion -Xdebug -Xnoagent"/>
@@ -317,38 +316,9 @@
 		description="Configure the JBoss 3.0.4 server and setup the Tapestry database."
 		>
 		<mkdir dir="${tapestry.lib.dir}"/>
-		<!-- Delete old version of the frameworks. -->
-		<delete quiet="true">
-			<fileset dir="${tapestry.lib.dir}">
-				<!-- Match and exclude current versions -->
-				<exclude name="*tapestry*${framework.version}.jar"/>
-				<exclude name="${jakarta-oro.jar}"/>
-				<exclude name="${ognl.jar}"/>
-				<exclude name="${commons-lang.jar}"/>
-				<exclude name="${commons-logging.jar}"/>
-				<exclude name="${bsf.jar}"/>
-				<exclude name="${bcel.jar}"/>
-				<exclude name="${mckoidb.jar}"/>
-				<!-- Match and include out-of-date versions -->
-				<include name="*tapestry*jar"/>
-				<include name="jakarta-oro-*jar"/>
-				<include name="ognl*jar"/>
-				<include name="commons-logging*jar"/>
-				<include name="commons-lang*jar"/>
-				<include name="bsf*jar"/>
-				<include name="bcel*jar"/>
-				<include name="mckoidb*jar"/>
-			</fileset>
-		</delete>
 		<copy todir="${tapestry.lib.dir}" flatten="true">
-			<fileset dir="${lib.ext.dir}">
-				<include name="${mckoidb.jar}"/>
-				<include name="${jakarta-oro.jar}"/>
-				<include name="${ognl.jar}"/>
-				<include name="${commons-logging.jar}"/>
-				<include name="${commons-lang.jar}"/>
-				<include name="${bsf.jar}"/>
-				<include name="${bcel.jar}"/>
+			<fileset dir="${lib.dir}">
+				<include name="${ext.dir}/*.jar"/>
 			</fileset>
 			<fileset dir="${jboss.server.default.dir}/lib">
 				<!-- Could do a careful analysis of just what we need and copy only that,
@@ -408,6 +378,9 @@
 			<fileset dir="${lib.dir}">
 				<include name="*-${framework.version}.jar"/>
 			</fileset>
+			<fileset dir="${tapestry.ext.dir}">
+				<include name="*.jar"/>
+			</fileset>
 		</copy>
 	</target>
 	<target name="run-jboss" depends="deploy-jboss-demos"
@@ -442,22 +415,21 @@
 				value="false"/>
 		</java>
 	</target>
-	<target name="deploy-tomcat" depends="check-for-tomcat-dir"
+	<target name="deploy-tomcat"
+		depends="check-for-tomcat-dir,check-for-tapestry-ext-dir"
 		description="Deploys the tutorial application into Tomcat.">
 		<unjar src="lib/tutorial.war" dest="${tomcat.dir}/webapps/tutorial"/>
 		<property name="web.lib"
 			value="${tomcat.dir}/webapps/tutorial/WEB-INF/lib"/>
-		<copy file="${framework.jar}" todir="${web.lib}"/>
-		<copy file="${contrib.jar}" todir="${web.lib}"/>
-		<copy todir="${web.lib}">
-			<fileset dir="${lib.ext.dir}">
-				<include name="${commons-lang.jar}"/>
-				<include name="${commons-logging.jar}"/>
-				<include name="${jakarta-oro.jar}"/>
-				<include name="${log4j.jar}"/>
-				<include name="${ognl.jar}"/>
-				<include name="${bsf.jar}"/>
-				<include name="${bcel.jar}"/>
+		<copy todir="${web.lib}" flatten="true">
+			<fileset dir="${lib.dir}">
+				<include name="${framework.jar}"/>
+				<include name="${contrib.jar}"/>
+				<include name="${ext.dir}/*.jar"/>
+			</fileset>
+			<fileset dir="${tapestry.ext.dir}">
+				<include name="jfreechart*.jar"/>
+				<include name="jcommon*.jar"/>
 			</fileset>
 		</copy>
 	</target>
@@ -498,6 +470,25 @@
 			/>
 		<fail unless="exists.jython.dir"
 			message="Directory ${jython.dir} (jython.dir from config/build.properties) does not exist."
+			/>
+	</target>
+	<target name="check-for-jetty-dir">
+		<available property="exists.jetty.dir" type="dir" file="${jetty.dir}" />
+		<fail unless="jetty.dir"
+			message="Property jetty.dir not specified in config/build.properties."
+			/>
+		<fail unless="exists.jetty.dir"
+			message="Directory ${jetty.dir} (jetty.dir from config/build.properties) does not exist."
+			/>
+	</target>
+	<target name="check-for-tapestry-ext-dir">
+		<available property="exists.tapestry.ext.dir" type="dir"
+			file="${tapestry.ext.dir}" />
+		<fail unless="tapestry.ext.dir"
+			message="Property tapestry.ext.dir not specified in config/build.properties."
+			/>
+		<fail unless="exists.tapestry.ext.dir"
+			message="Directory ${tapestry.ext.dir} (tapestry.ext.dir from config/build.properties) does not exist."
 			/>
 	</target>
 </project>

@@ -73,16 +73,16 @@
   	<java fork="true" classname="junit.textui.TestRunner"
 		failonerror="true">
   		<classpath refid="junit.class.path"/>
-		<arg value="net.sf.tapestry.junit.TapestrySuite"/>
-		<sysproperty key="net.sf.tapestry.enable-reset-service" value="true"/>
+		<arg value="org.apache.tapestry.junit.TapestrySuite"/>
+		<sysproperty key="org.apache.tapestry.enable-reset-service" value="true"/>
   	</java>
   </target>
   
   <target name="gui" depends="compile" description="Run the JUnit GUI.">
   	<java fork="true" classname="junit.swingui.TestRunner">
   		<classpath refid="junit.class.path"/>
-		<arg value="net.sf.tapestry.junit.TapestrySuite"/>
-		<sysproperty key="net.sf.tapestry.enable-reset-service" value="true"/>
+		<arg value="org.apache.tapestry.junit.TapestrySuite"/>
+		<sysproperty key="org.apache.tapestry.enable-reset-service" value="true"/>
   	</java>
   	
   </target>
@@ -111,8 +111,8 @@
   	<java fork="true" classname="junit.textui.TestRunner"
 		failonerror="true">
   		<classpath refid="clover.class.path"/>
-		<arg value="net.sf.tapestry.junit.TapestrySuite"/>
-		<sysproperty key="net.sf.tapestry.enable-reset-service" value="true"/>
+		<arg value="org.apache.tapestry.junit.TapestrySuite"/>
+		<sysproperty key="org.apache.tapestry.enable-reset-service" value="true"/>
   	</java>
   	
   
@@ -121,9 +121,9 @@
   	<java fork="true" classname="junit.textui.TestRunner"
 		failonerror="true">
   		<classpath refid="clover.class.path"/>
-		<arg value="net.sf.tapestry.junit.TapestrySuite"/>
+		<arg value="org.apache.tapestry.junit.TapestrySuite"/>
 		<sysproperty key="log4j.configuration" value="log4j-slow.properties"/> 
-		<sysproperty key="net.sf.tapestry.enable-reset-service" value="true"/>
+		<sysproperty key="org.apache.tapestry.enable-reset-service" value="true"/>
   	</java>  	
   	
   	<antcall target="clover-report"/>

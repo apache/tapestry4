@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+	
+<page-specification class="org.apache.tapestry.junit.mock.app.Stale">
+
+  <component id="border" type="lib:Border">
+  	<static-binding name="title">StaleSession Test Page</static-binding>
+  </component>
+
+  <component id="directLink" type="DirectLink">
+  	<binding name="listener" expression="listeners.noop"/>
+  </component>
+  
+  <component id="actionLink" type="ActionLink">
+  	<binding name="listener" expression="listeners.noop"/>
+  </component>
+  
+  <component id="form" type="Form">
+  	<binding name="listener" expression="listeners.noop"/>
+  </component>
+  
+</page-specification>	

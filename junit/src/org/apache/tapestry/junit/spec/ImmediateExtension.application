@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE application PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+	
+<application name="Immediate Extension Instantiation">
+  
+  <extension name="immediate" 
+  	class="org.apache.tapestry.junit.spec.ImmediateExtension"
+  	immediate="yes"/>
+    
+</application>

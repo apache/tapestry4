@@ -4,12 +4,12 @@
   "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
 
-<page-specification class="net.sf.tapestry.junit.mock.c20.Home">
+<page-specification class="org.apache.tapestry.junit.mock.c20.Home">
 	
 	<property-specification name="text" type="java.lang.String" persistent="yes"/>
 	<property-specification name="mode"
-			type="net.sf.tapestry.html.InsertTextMode"
-			initial-value="@net.sf.tapestry.html.InsertTextMode@BREAK"
+			type="org.apache.tapestry.html.InsertTextMode"
+			initial-value="@org.apache.tapestry.html.InsertTextMode@BREAK"
 			persistent="yes"/>
 	<property-specification name="textAreaDisabled" type="boolean" persistent="yes"/>
 	
