@@ -1,3 +1,11 @@
+* Sep 28 2001 hship
+
+framework:
+- Include the framework version in the Shell's generator meta-tag.
+- Make the inspector's restart button start in a new window, not the inspector window
+
+[ #465749 ] invalid state -- HttpSession - restart service
+
 * Sep 24 2001 hship
 
 framework:

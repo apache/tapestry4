@@ -924,6 +924,11 @@ public abstract class AbstractEngine
 				// Otherwise, ignore it.
 			}
 		}
+
+		// Make isStateful() return false, so that the servlet doesn't
+		// try to store the engine back into the (now invalid) session.
+		
+		stateful = false;
 		
 		String url = context.getAbsoluteURL(servletPath);
 		
