@@ -134,15 +134,31 @@ public class Namespace implements INamespace
 
     public synchronized INamespace getChildNamespace(String id)
     {
-        INamespace result = (INamespace) _children.get(id);
+        String firstId = id;
+        String nextIds = null;
+        
+        // Split the id into first and next if it is a dot separated sequence
+        int index = id.indexOf('.');
+        if (index >= 0) {
+            firstId = id.substring(0, index);
+            nextIds = id.substring(index+1);
+        }
+
+        // Get the first namespace
+        INamespace result = (INamespace) _children.get(firstId);
 
         if (result == null)
         {
-            result = createNamespace(id);
+            result = createNamespace(firstId);
 
-            _children.put(id, result);
+            _children.put(firstId, result);
         }
 
+        // If the id is a dot separated sequence, recurse to find 
+        // the needed namespace
+        if (result != null && nextIds != null)
+            result = result.getChildNamespace(nextIds);
+        
         return result;
     }
 
