@@ -40,11 +40,12 @@ Tapestry Developers plan features, discuss and vote  on the
 	</section>
 	
 <section>
-		<title>Eric Hatcher</title>
+		<title>Erik Hatcher</title>
 		
-		Erik began by contributing Javadoc fixes (flagged by IDEA) and will hopefully contribute
-component and perhaps even core enhancements and bug fixes.
-
+		Erik began by contributing Javadoc fixes (flagged by IDEA) as he was
+        learning Tapestry.  He has added the OGNL type converter facility for
+        expression bindings and is active in making the Table component easy
+        to use.
 </section>
 
 <section>
