@@ -220,7 +220,9 @@ public interface IEngine
 
     /**
      *  Returns the globally shared application object. The global object is
-     *  stored in the servlet context.
+     *  stored in the servlet context and shared by all instances of the engine
+     *  for the same application (within the same JVM; the global is
+     *  <em>not</em> shared between nodes in a cluster).
      *
      *  <p>Returns the global object, if it exists, or null if not defined.
      *
@@ -262,35 +264,34 @@ public interface IEngine
 
     public boolean isStateful();
 
+    /**
+     *  Returns a shared object that allows components to find
+     *  their set of localized strings.
+     * 
+     *  @since 2.0.4
+     * 
+     **/
 
-	/**
-	 *  Returns a shared object that allows components to find
-	 *  their set of localized strings.
-	 * 
-	 *  @since 2.0.4
-	 * 
-	 **/
-	
-	public IComponentStringsSource getComponentStringsSource();
-    
+    public IComponentStringsSource getComponentStringsSource();
+
     /**
      *  Returns a shared instance of {@link net.sf.tapestry.util.io.DataSqueezer}.
      * 
      *  @since 2.2
      * 
      **/
-    
+
     public DataSqueezer getDataSqueezer();
-    
+
     /** 
      * 
      *  @see #setRefreshing(boolean)
      *  @since 2.2 
      * 
      **/
-    
+
     public boolean isRefreshing();
-    
+
     /** 
      * 
      *  Set by the application servlet just before the engine is
@@ -306,9 +307,9 @@ public interface IEngine
      *  @since 2.2
      * 
      **/
-    
+
     public void setRefreshing(boolean refreshing);
-    
+
     /**
      *  Returns a {@link net.sf.tapestry.IPropertySource} that should be
      *  used to obtain configuration data.  The returned source represents
@@ -323,7 +324,7 @@ public interface IEngine
      * 
      *  @since 2.3
      **/
-    
+
     public IPropertySource getPropertySource();
-    
+
 }

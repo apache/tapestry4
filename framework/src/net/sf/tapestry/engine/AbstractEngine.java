@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -155,13 +156,25 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
     private Object _visit;
 
     /**
-     *  The globally shared application object.
+     *  The globally shared application object.  Typically, this is created
+     *  when first needed, shared between sessions and engines, and
+     *  stored in the {@link ServletContext}.
      *
      *  @since 2.3
      *
      **/
 
     private transient Object _global;
+
+    /**
+     *  The base name for the servlet context key used to store
+     *  the application-defined Global object, if any.
+     * 
+     *  @since 2.3
+     * 
+     **/
+
+    public static final String GLOBAL_NAME = "net.sf.tapestry.global";
 
     /**
      *  The curent locale for the engine, which may be changed at any time.
@@ -1062,31 +1075,44 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
         if (_dataSqueezer == null)
         {
-            _dataSqueezer = (DataSqueezer) servletContext.getAttribute(DATA_SQUEEZER_NAME);
+            String name = DATA_SQUEEZER_NAME + "." + servletName;
+
+            _dataSqueezer = (DataSqueezer) servletContext.getAttribute(name);
 
             if (_dataSqueezer == null)
             {
                 _dataSqueezer = createDataSqueezer();
 
-                servletContext.setAttribute(DATA_SQUEEZER_NAME, _dataSqueezer);
+                servletContext.setAttribute(name, _dataSqueezer);
             }
         }
 
         if (_propertySource == null)
         {
-            _propertySource = (IPropertySource) servletContext.getAttribute(PROPERTY_SOURCE_NAME);
+            String name = PROPERTY_SOURCE_NAME + "." + servletName;
+
+            _propertySource = (IPropertySource) servletContext.getAttribute(name);
 
             if (_propertySource == null)
             {
                 _propertySource = createPropertySource(context);
 
-                servletContext.setAttribute(PROPERTY_SOURCE_NAME, _propertySource);
+                servletContext.setAttribute(name, _propertySource);
             }
         }
-        
+
         if (_global == null)
         {
-            _global = context.getGlobal();
+            String name = GLOBAL_NAME + "." + servletName;
+
+            _global = servletContext.getAttribute(name);
+
+            if (_global == null)
+            {
+                _global = createGlobal(context);
+
+                servletContext.setAttribute(name, _global);
+            }
         }
     }
 
@@ -1416,9 +1442,20 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         return result;
     }
 
+    /**
+     *  Returns the global object for the application.  The global object is created at the start
+     *  of the request ({@link #setupForRequest(RequestContext)} invokes {@link #createGlobal(RequestContext)} if needed),
+     *  and is stored into the {@link ServletContext}.  All instances of the engine for the application share
+     *  the global object; however, the global object is explicitly <em>not</em> replicated to other servers within
+     *  a cluster.
+     * 
+     *  @since 2.3
+     * 
+     **/
+    
     public Object getGlobal()
     {
-        return _global;    
+        return _global;
     }
 
     public IScriptSource getScriptSource()
@@ -1819,5 +1856,35 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         result.addSource(SystemPropertiesPropertySource.getInstance());
 
         return result;
+    }
+
+    /**
+     *  Creates the shared Global object.  This implementation looks for an configuration
+     *  property, <code>net.sf.tapestry.global-class</code>, and instantiates that class using a no-arguments
+     *  constructor.  If the property is not defined, a synchronized {@link java.util.HashMap} is created.
+     * 
+     *  @since 2.3
+     * 
+     **/
+
+    protected Object createGlobal(RequestContext context)
+    {
+        String className = _propertySource.getPropertyValue("net.sf.tapestry.global-class");
+
+        if (className == null)
+            return Collections.synchronizedMap(new HashMap());
+
+        Class globalClass = _resolver.findClass(className);
+
+        try
+        {
+            return globalClass.newInstance();
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("AbstractEngine.unable-to-instantiate-global", className),
+                ex);
+        }
     }
 }
