@@ -9,7 +9,7 @@
   Conditionally emulates an element and its attributes (if element is specified) and/or includes a block of content if a condition is met.
   </description>
   
-  <parameter name="condition" type="boolean" direction="in">
+  <parameter name="condition" type="boolean" direction="in" required="yes">
     <description>
     The condition to evaluate.
     </description>
@@ -25,8 +25,8 @@
 
   <parameter name="conditionValue" type="boolean">
     <description>
-    The value of the condition. During render this is a obtained from 
-    the condition parameter. Diring rewind it is the submited condition.
+    The value of the condition. During render this is obtained from
+    the condition parameter. During rewind it is the submitted condition.
     </description>
   </parameter>
 
