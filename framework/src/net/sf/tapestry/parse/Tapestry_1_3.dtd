@@ -340,8 +340,6 @@ be thought of as a specialized kind of library.
 
 -->
 <!ELEMENT library-specification %library-content;>
-<!ATTLIST library-specification
->
 
 <!-- =======================================================
 Element: page
