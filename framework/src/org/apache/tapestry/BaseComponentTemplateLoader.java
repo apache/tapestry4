@@ -118,9 +118,9 @@ public class BaseComponentTemplateLoader
     private static class LocalizedStringRender implements IRender
     {
         private IComponent _component;
-        private IComponentStrings _strings;
         private String _key;
         private Map _attributes;
+        private String _value;
         private boolean _raw;
 
         private LocalizedStringRender(IComponent component, LocalizationToken token)
@@ -152,15 +152,13 @@ public class BaseComponentTemplateLoader
                 }
             }
 
-            if (_strings == null)
-                _strings = _component.getStrings();
-
-            String value = _strings.getString(_key);
+            if (_value == null)
+                _value = _component.getString(_key);
 
             if (_raw)
-                writer.printRaw(value);
+                writer.printRaw(_value);
             else
-                writer.print(value);
+                writer.print(_value);
 
             if (_attributes != null)
                 writer.end();
@@ -314,7 +312,12 @@ public class BaseComponentTemplateLoader
     private IComponent createImplicitComponent(String id, String componentType, Location location)
     {
         IComponent result =
-            _pageLoader.createImplicitComponent(_requestCycle, _loadComponent, id, componentType, location);
+            _pageLoader.createImplicitComponent(
+                _requestCycle,
+                _loadComponent,
+                id,
+                componentType,
+                location);
 
         return result;
     }
