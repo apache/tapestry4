@@ -1,3 +1,9 @@
+* Apr 18 2001 hship
+
+Fixed synchronization in PropertyHelper.buildPropertyAccessors(), to make it
+easier to subclass.
+[411691] Improve subclassing of PropertyHelper.
+
 * Apr 17 2001 hship
 
 [417065] Use JAXP instead of Xerces
