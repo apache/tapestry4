@@ -13,6 +13,10 @@
 					<name>title</name>
 					<value>My Books</value>
 				</static-binding>
+				<static-binding>
+					<name>subtitle</name>
+					<value>My Books</value>
+				</static-binding>
 			</bindings>
 		</component>
 		<component>

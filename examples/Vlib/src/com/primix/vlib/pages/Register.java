@@ -38,7 +38,8 @@ import javax.rmi.*;
  */
 
 /**
- *  
+ * Invoked from the {@link Login} page, to allow a user to register
+ * into the system on-the-fly.
  *
  * @author Howard Ship
  * @version $Id$

@@ -13,6 +13,10 @@
 					<name>title</name>
 					<value>View Book</value>
 				</static-binding>
+				<binding>
+					<name>subtitle</name>
+					<property-path>book.title</property-path>
+				</binding>
 			</bindings>
 		</component>
 		<component>

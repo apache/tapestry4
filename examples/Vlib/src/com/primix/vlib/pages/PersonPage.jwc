@@ -13,6 +13,10 @@
 					<name>title</name>
 					<value>Book Inventory</value>
 				</static-binding>
+				<binding>
+					<name>subtitle</name>
+					<property-path>fullName</property-path>
+				</binding>
 			</bindings>
 		</component>
 		<component>

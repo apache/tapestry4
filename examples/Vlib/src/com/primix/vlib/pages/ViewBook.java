@@ -39,7 +39,7 @@ import com.primix.foundation.prop.*;
  */
 
 /**
- *  
+ *  Shows the details of a book, and allows the user to borrow it.
  *
  * @author Howard Ship
  * @version $Id$
