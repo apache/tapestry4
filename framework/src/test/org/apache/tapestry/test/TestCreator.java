@@ -16,7 +16,11 @@ package org.apache.tapestry.test;
 
 import java.util.List;
 
+import org.apache.hivemind.Messages;
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.AbstractComponent;
+import org.apache.tapestry.IComponent;
+import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
  * Tests for {@link org.apache.tapestry.test.Creator}.
@@ -124,5 +128,37 @@ public class TestCreator extends HiveMindTestCase
         { "title", "Hitchhiker's Guide" });
 
         assertEquals("Hitchhiker's Guide", ss.getTitle());
+    }
+
+    public void testSpecificationProperty()
+    {
+        IComponentSpecification spec = (IComponentSpecification) newMock(IComponentSpecification.class);
+
+        replayControls();
+
+        Creator c = new Creator();
+
+        IComponent component = (IComponent) c.newInstance(AbstractComponent.class, new Object[]
+        { "specification", spec });
+
+        assertSame(spec, component.getSpecification());
+
+        verifyControls();
+    }
+
+    public void testMessagesProperty()
+    {
+        Messages messages = (Messages) newMock(Messages.class);
+
+        replayControls();
+
+        Creator c = new Creator();
+
+        IComponent component = (IComponent) c.newInstance(AbstractComponent.class, new Object[]
+        { "messages", messages });
+
+        assertSame(messages, component.getMessages());
+
+        verifyControls();
     }
 }

@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.BaseLocatable;
 import org.apache.hivemind.util.Defense;
 import org.apache.hivemind.util.PropertyUtils;
@@ -749,5 +750,15 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     {
         if (_active)
             throw new UnsupportedOperationException(TapestryMessages.componentIsLocked(this));
+    }
+
+    public Messages getMessages()
+    {
+        throw new IllegalStateException(TapestryMessages.providedByEnhancement("getMessages"));
+    }
+
+    public IComponentSpecification getSpecification()
+    {
+        throw new IllegalStateException(TapestryMessages.providedByEnhancement("getSpecification"));
     }
 }
