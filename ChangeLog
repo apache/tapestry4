@@ -1,5 +1,11 @@
 * Jun 28 2001 hship
 
+Update documentation (mostly about the new HTML parser).
+
+[ #436631 ] RequestContext nullpointer exception (untested)
+
+* Jun 28 2001 hship
+
 Rewrite the template parser to not use GNU Regexp library and perform
 more powerful parsing.
 Remove the first and last parameters and properties from the Foreach component.

@@ -185,19 +185,84 @@ The &jwc-tag; element has two forms:
 	
 
 
-&start-listing;&lt;jwc id="<replaceable>component id</>"&gt;  <replaceable>body</>  &lt;/jwc&gt;&end-listing;
+&start-listing;
+&lt;jwc id="<replaceable>component id</>"&gt;  <replaceable>body</>  &lt;/jwc&gt;
+&end-listing;
 
 <para>or
 </>
 
 
-&start-listing;&lt;jwc id="<replaceable>component id</>"/&gt;&end-listing;
+&start-listing;
+&lt;jwc id="<replaceable>component id</>"/&gt;
+&end-listing;
 
 
 <para>
 The parser used by Tapestry is relatively forgiving about case 
 and white space.  Also, the component id can be enclosed in 
 double quotes (as above) or single quotes.
+</>
+
+<para>
+As unobtrusive as the &jwc-tag; tag is, it would be nice, in many cases,
+to simply indicate that part of the HTML template that appears static 
+will really be dynamic at runtime. 
+This is accomplished by adding a <varname>jwcid</> attribute to the tag.
+</>
+
+&start-listing;
+&lt;<replaceable>any</> jwcid="<replaceable>component id</>"&gt;  <replaceable>body</>  &lt;/<replaceable>any</>&gt;
+&end-listing;
+
+<para>or
+</>
+
+
+&start-listing;
+&lt;<replaceable>any</> jwcid="<replaceable>component id</>"/&gt;
+&end-listing;
+
+
+<para>
+When using the <varname>jwcid</> attribute, all other attributes are ignored by Tapestry
+<footnote>
+	<para>
+	At least through release 1.0.2.  A future release of Tapestry will likely collect
+	the attributes specified in the HTML and apply them as informal parameters 
+	to the component.
+	</>
+</>.  The ability to convert static HTML tags into dynamic tags is really to streamline the 
+integration process (whereby the efforts of HTML designers are 
+converted into Tapestry components and templates).
+</>
+
+<para>
+Tapestry divides the contents of the HTML template into three categories:
+<itemizedlist mark=bullet>
+	<listitem>
+		<para>
+		Static HTML, which passes through unchanged.
+		</>
+	</>
+	<listitem>
+		<para>
+		Tapestry components (&jwc-tag;, or tags with the <varname>jwcid</> attribute).
+		The related tags are removed, and the HTML is supplied by the actual
+		components.
+		</>
+	</>
+	<listitem>
+		<para>
+		HTML comments, which are simply removed
+		<footnote>
+			<para>
+			Through Tapestry release 1.0.1, HTML comments were treated like any other
+			static HTML.  Starting with release 1.0.2, they are removed.
+			</>
+		</>.
+		</>
+	</>
 </>
 
 <para>

@@ -98,6 +98,15 @@ Even read-only database data can be stored in the engine.  However, anything tha
 user must be stored in the visit object (or a persistent page property).
 </>
 
+<para>
+It is also important to not accidentally create the visit object.  Every page includes
+a <varname>visit</> property which will create the visit if it doesn't already exist.  This will,
+in turn, force the creation of an &HttpSession;.  On the other hand, the property path
+<varname>engine.visit</varname> will <emphasis>not</> create the visit object.
+To avoid creating the visit, you may need to wrap some of your HTML template inside
+a &Conditional; component whose condition parameter is bound to the property <varname>engine.visit</>.
+</>
+
 	</section>
 
 	<section id="coding.ejb">

@@ -835,14 +835,13 @@ public class RequestContext
 	
 	private void readCookieMap()
 	{
-		Cookie[] cookies;
-		int i;
-		
 		cookieMap = new HashMap(MAP_SIZE);
 		
-		cookies = request.getCookies();
-		for (i = 0; i < cookies.length; i++)
-			cookieMap.put(cookies[i].getName(), cookies[i]);
+		Cookie[] cookies = request.getCookies();
+		
+		if (cookies != null)
+			for (int i = 0; i < cookies.length; i++)
+				cookieMap.put(cookies[i].getName(), cookies[i]);
 	}
 	
 	/**
