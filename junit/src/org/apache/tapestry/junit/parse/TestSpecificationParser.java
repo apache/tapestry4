@@ -217,7 +217,7 @@ public class TestSpecificationParser extends TapestryTestCase
         checkList(
             "componentAliases",
             new String[] { "FirstComponent", "SecondComponent" },
-            spec.getComponentAliases());
+            spec.getComponentTypes());
 
         checkList("libraryIds", new String[] { "lib1", "lib2" }, spec.getLibraryIds());
     }
@@ -540,6 +540,7 @@ public class TestSpecificationParser extends TapestryTestCase
         String expectedScript =
             buildExpectedScript(
                 new String[] {
+                	"",
                     "if page.isFormInputValid():",
                     "  cycle.page = \"Results\"",
                     "else:",

@@ -11,8 +11,7 @@
 if page.isFormInputValid():
   cycle.page = "Results"
 else:
-  page.message = "Please fix errors before continuing.";  
-	</listener-binding>
+  page.message = "Please fix errors before continuing.";</listener-binding>
   </component>
   	  	
 </page-specification>

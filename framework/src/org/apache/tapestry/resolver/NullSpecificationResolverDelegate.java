@@ -53,70 +53,57 @@
  *
  */
 
-package org.apache.tapestry.junit.utils;
+package org.apache.tapestry.resolver;
 
-import junit.framework.TestCase;
-import org.apache.tapestry.AbstractComponent;
-import org.apache.tapestry.html.BasePage;
-import org.apache.tapestry.util.prop.PropertyFinder;
-import org.apache.tapestry.util.prop.PropertyInfo;
+import org.apache.tapestry.INamespace;
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.spec.ComponentSpecification;
 
 /**
- *  Tests the {@link org.apache.tapestry.util.prop.PropertyFinder}
- *  class.
+ *  Stand-in class used when the application fails to specify an actual delegate.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 2.2
+ *  @since 2.4
  *
  **/
 
-public class TestPropertyFinder extends TestCase
+public class NullSpecificationResolverDelegate implements ISpecificationResolverDelegate
 {
+    private static NullSpecificationResolverDelegate _shared;
 
-    public TestPropertyFinder(String name)
+    public static NullSpecificationResolverDelegate getSharedInstance()
     {
-        super(name);
+        if (_shared == null)
+            _shared = new NullSpecificationResolverDelegate();
+
+        return _shared;
     }
 
-    public void testReadOnlyProperty()
-    {
-        PropertyInfo i = PropertyFinder.getPropertyInfo(PublicBean.class, "syntheticProperty");
+    /**
+     *  Returns null.
+     * 
+     **/
 
-        assertEquals("syntheticProperty", i.getName());
-        assertEquals(double.class, i.getType());
-        assertEquals(true, i.isRead());
-        assertEquals(false, i.isReadWrite());
-        assertEquals(false, i.isWrite());
+    public ComponentSpecification findPageSpecification(
+        IRequestCycle cycle,
+        INamespace namespace,
+        String simplePageName)
+    {
+        return null;
     }
 
-    public void testReadWriteProperty()
+    /**
+     *  Returns null.
+     * 
+     **/
+
+    public ComponentSpecification findComponentSpecification(
+        IRequestCycle cycle,
+        INamespace namespace,
+        String type)
     {
-        PropertyInfo i = PropertyFinder.getPropertyInfo(AbstractComponent.class, "id");
-
-        assertEquals("id", i.getName());
-        assertEquals(String.class, i.getType());
-        assertEquals(true, i.isRead());
-        assertEquals(true, i.isReadWrite());
-        assertEquals(true, i.isWrite());
-    }
-
-    public void testInheritedProperty()
-    {
-        PropertyInfo i = PropertyFinder.getPropertyInfo(BasePage.class, "pageName");
-
-        assertEquals("pageName", i.getName());
-        assertEquals(String.class, i.getType());
-        assertEquals(true, i.isRead());
-        assertEquals(true, i.isReadWrite());
-        assertEquals(true, i.isWrite());
-    }
-
-    public void testUnknownProperty()
-    {
-        PropertyInfo i = PropertyFinder.getPropertyInfo(PublicBean.class, "fred");
-
-        assertNull(i);
+        return null;
     }
 
 }

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- $Id$ -->
+
+<mock-test>
+    <context name="c22" root="context22"/>
+
+  	<servlet name="app" class="org.apache.tapestry.ApplicationServlet"/>
+
+	<request>
+	
+		<assert-output name="Title">
+<![CDATA[
+<title>Home</title>
+]]>
+		</assert-output>
+		
+		<assert-output name="Link">
+href="/c22/app?service=direct/0/Home/start"
+		</assert-output>	
+		
+	</request>
+	
+	<request>
+		<parameter name="service" value="direct/0/Home/start"/>
+		
+		<assert-output name="Title">
+<![CDATA[
+<title>Exception</title>
+]]>	
+		</assert-output>	
+		
+		<assert-output name="Error Message">
+		Component 'Unknown' not found in application namespace.	
+		</assert-output>
+		
+		<assert name="Check">
+		request.session.getAttribute("type").equals("Unknown")		
+		</assert>
+		
+	</request>
+	
+	<request>
+		<parameter name="service" value="page/NotFound"/>
+		
+		<assert-output name="Title">
+<![CDATA[
+<title>Exception</title>
+]]>	
+		</assert-output>	
+		
+		<assert-output name="Error Message">
+		Page 'NotFound' not found in application namespace.	
+		</assert-output>
+		
+		<assert name="Check">
+		request.session.getAttribute("page").equals("NotFound")			
+		</assert>		
+		
+	</request>
+	
+	<request>
+		<parameter name="service" value="page/Three"/>
+		
+		<assert-output name="Title">
+<![CDATA[
+<title>Exception</title>
+]]>	
+		</assert-output>	
+		
+		<assert-output name="Error Message">
+		Could not find template for component Three/$NoTemplate in locale en.
+		</assert-output>
+		
+		<assert name="Check">
+		request.session.getAttribute("template").equals("context:/WEB-INF/NoTemplate.jwc")			
+		</assert>		
+		
+	</request>
+	
+</mock-test>

@@ -153,20 +153,9 @@
   <request>
   	<parameter name="service" value="page/lib:Properties"/>
   	
-  	<assert-output-matches name="Page properties" subgroup="1">
-<![CDATA[
-<td>(.*?)</td>
-]]>
-		<match>Name</match>
-		<match>Properties</match>
-		
-		<match>Page Name</match>
-		<match>lib:Properties</match>
-		
-		<match>Qualified Name</match>
-		<match>lib:Properties</match>	
-		
-	</assert-output-matches>
+  	<assert-output name="Page Name">
+  	Page Name: [lib:Properties]	
+  	</assert-output>
 	
   </request>	
   	

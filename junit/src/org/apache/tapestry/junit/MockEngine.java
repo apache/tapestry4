@@ -90,7 +90,6 @@ public class MockEngine implements IEngine
 {
     private IComponentStringsSource componentStringsSource;
 
-    private boolean _refreshing;
     private Pool _pool = new Pool();
     private String _servletPath;
 
@@ -204,16 +203,6 @@ public class MockEngine implements IEngine
     public DataSqueezer getDataSqueezer()
     {
         return null;
-    }
-
-    public boolean isRefreshing()
-    {
-        return _refreshing;
-    }
-
-    public void setRefreshing(boolean refreshing)
-    {
-        _refreshing = refreshing;
     }
 
     public IPropertySource getPropertySource()

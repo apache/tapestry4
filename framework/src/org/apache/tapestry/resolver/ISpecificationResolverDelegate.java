@@ -53,70 +53,61 @@
  *
  */
 
-package org.apache.tapestry.junit.utils;
+package org.apache.tapestry.resolver;
 
-import junit.framework.TestCase;
-import org.apache.tapestry.AbstractComponent;
-import org.apache.tapestry.html.BasePage;
-import org.apache.tapestry.util.prop.PropertyFinder;
-import org.apache.tapestry.util.prop.PropertyInfo;
+import org.apache.tapestry.INamespace;
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.spec.ComponentSpecification;
 
 /**
- *  Tests the {@link org.apache.tapestry.util.prop.PropertyFinder}
- *  class.
- *
+ *  Delegate interface used when a page or component specification
+ *  can not be found by the normal means.  This allows hooks
+ *  to support specifications from unusual locations, or generated
+ *  on the fly.
+ * 
+ *  <p>The delegate must be coded in a threadsafe manner.
+ * 
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 2.2
+ *  @since 2.4
  *
  **/
 
-public class TestPropertyFinder extends TestCase
+public interface ISpecificationResolverDelegate
 {
+    /**
+     *  Invoked by {@link PageSpecificationResolver} to find the indicated
+     *  page specification.  Returns
+     *  the specification, or null.  The specification, if returned, is not cached by Tapestry
+     *  (it is up to the delegate to cache the specification if desired).
+     * 
+     *  @parameter cycle used to gain access to framework and Servlet API objects
+     *  @parameter namespace the namespace containing the page
+     *  @parameter simplePageName the name of the page (without any namespace prefix)
+     * 
+     **/
 
-    public TestPropertyFinder(String name)
-    {
-        super(name);
-    }
+    public ComponentSpecification findPageSpecification(
+        IRequestCycle cycle,
+        INamespace namespace,
+        String simplePageName);
 
-    public void testReadOnlyProperty()
-    {
-        PropertyInfo i = PropertyFinder.getPropertyInfo(PublicBean.class, "syntheticProperty");
+    /**
+     *  Invoked by {@link PageSpecificationResolver} to find the indicated
+     *  component specification.  Returns
+     *  the specification, or null.  The specification, if returned, is not cached by Tapestry
+     *  (it is up to the delegate to cache the specification if desired).
+     * 
+     *  <p>The delegate must be coded in a threadsafe manner.
+     * 
+     *  @parameter cycle used to gain access to framework and Servlet API objects
+     *  @parameter namespace the namespace containing the component
+     *  @parameter type the component type (without any namespace prefix)
+     * 
+     **/
 
-        assertEquals("syntheticProperty", i.getName());
-        assertEquals(double.class, i.getType());
-        assertEquals(true, i.isRead());
-        assertEquals(false, i.isReadWrite());
-        assertEquals(false, i.isWrite());
-    }
-
-    public void testReadWriteProperty()
-    {
-        PropertyInfo i = PropertyFinder.getPropertyInfo(AbstractComponent.class, "id");
-
-        assertEquals("id", i.getName());
-        assertEquals(String.class, i.getType());
-        assertEquals(true, i.isRead());
-        assertEquals(true, i.isReadWrite());
-        assertEquals(true, i.isWrite());
-    }
-
-    public void testInheritedProperty()
-    {
-        PropertyInfo i = PropertyFinder.getPropertyInfo(BasePage.class, "pageName");
-
-        assertEquals("pageName", i.getName());
-        assertEquals(String.class, i.getType());
-        assertEquals(true, i.isRead());
-        assertEquals(true, i.isReadWrite());
-        assertEquals(true, i.isWrite());
-    }
-
-    public void testUnknownProperty()
-    {
-        PropertyInfo i = PropertyFinder.getPropertyInfo(PublicBean.class, "fred");
-
-        assertNull(i);
-    }
-
+    public ComponentSpecification findComponentSpecification(
+        IRequestCycle cycle,
+        INamespace namespace,
+        String type);
 }

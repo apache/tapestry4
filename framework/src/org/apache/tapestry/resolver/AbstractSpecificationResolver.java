@@ -65,6 +65,7 @@ import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.spec.ComponentSpecification;
+import org.apache.tapestry.spec.IApplicationSpecification;
 
 /**
  *  Base class for resolving a {@link org.apache.tapestry.spec.ComponentSpecification}
@@ -93,6 +94,8 @@ public class AbstractSpecificationResolver
 
     private IResourceLocation _webInfAppLocation;
 
+    private ISpecificationResolverDelegate _delegate;
+
     public AbstractSpecificationResolver(IRequestCycle cycle)
     {
         IEngine engine = cycle.getEngine();
@@ -101,11 +104,35 @@ public class AbstractSpecificationResolver
 
         _applicationRootLocation = Tapestry.getApplicationRootLocation(cycle);
 
-        String servletName = cycle.getRequestContext().getServlet().getServletConfig().getServletName();
+        String servletName =
+            cycle.getRequestContext().getServlet().getServletConfig().getServletName();
 
         _webInfLocation = _applicationRootLocation.getRelativeLocation("/WEB-INF/");
 
         _webInfAppLocation = _webInfLocation.getRelativeLocation(servletName + "/");
+
+        IApplicationSpecification specification = engine.getSpecification();
+
+        if (specification.checkExtension(Tapestry.SPECIFICATION_RESOLVER_DELEGATE_EXTENSION_NAME))
+            _delegate =
+                (ISpecificationResolverDelegate) engine.getSpecification().getExtension(
+                    Tapestry.SPECIFICATION_RESOLVER_DELEGATE_EXTENSION_NAME,
+                    ISpecificationResolverDelegate.class);
+        else
+            _delegate = NullSpecificationResolverDelegate.getSharedInstance();
+    }
+
+    /**
+     *  Returns the {@link ISpecificationResolverDelegate} instance registered
+     *  in the application specification as extension
+     *  {@link Tapestry#SPECIFICATION_RESOLVER_DELEGATE_EXTENSION_NAME},
+     *  or null if no such extension exists.
+     * 
+     **/
+
+    public ISpecificationResolverDelegate getDelegate()
+    {
+        return _delegate;
     }
 
     /**
@@ -190,7 +217,6 @@ public class AbstractSpecificationResolver
     {
         _specification = specification;
     }
-
 
     /**
      *  Clears the namespace, specification and simpleName properties.

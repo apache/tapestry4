@@ -82,11 +82,20 @@ import org.apache.tapestry.spec.ComponentSpecification;
  *  of the page, goes as follows:
  * 
  *  <ul>
+ *  <li>As declared in the application specification
  *  <li><i>type</i>.jwc in the same folder as the application specification
  *  <li><i>type</i> jwc in the WEB-INF/<i>servlet-name</i> directory of the context root
  *  <li><i>type</i>.jwc in WEB-INF
  *  <li><i>type</i>.jwc in the application root (within the context root)
-  *  </ul> 
+ *  <li>By searching the framework namespace
+ *  </ul> 
+ * 
+ *  The search for components in library namespaces is more abbreviated:
+ *  <li>As declared in the library specification
+ *  <li><i>type</i>.jwc in the same folder as the library specification
+ *  <li>By searching the framework namespace
+ *  </ul>
+ *
  * 
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -112,6 +121,7 @@ public class ComponentSpecificationResolver extends AbstractSpecificationResolve
      *  or the framework namespace
      *  (a search occurs in that order).
      * 
+     *  @param cycle current request cycle
      *  @param containerNamespace namespace that may contain
      *  a library referenced in the type
      *  @param type the component specification
@@ -120,11 +130,10 @@ public class ComponentSpecificationResolver extends AbstractSpecificationResolve
      * 
      *  @see #getNamespace()
      *  @see #getSpecification()
-     *  @throws PageLoaderException if the type cannot be resolved
      * 
      **/
 
-    public void resolve(INamespace containerNamespace, String type)
+    public void resolve(IRequestCycle cycle, INamespace containerNamespace, String type)
     {
         int colonx = type.indexOf(':');
 
@@ -133,26 +142,31 @@ public class ComponentSpecificationResolver extends AbstractSpecificationResolve
             String libraryId = type.substring(0, colonx);
             String simpleType = type.substring(colonx + 1);
 
-            resolve(containerNamespace, libraryId, simpleType);
+            resolve(cycle, containerNamespace, libraryId, simpleType);
         }
         else
-            resolve(containerNamespace, null, type);
+            resolve(cycle, containerNamespace, null, type);
     }
 
     /**
      *  Like {@link #resolve(INamespace, String)}, but used when the type has already
      *  been parsed into a library id and a simple type.
      * 
+     *  @param cycle current request cycle
      *  @param containerNamespace namespace that may contain
      *  a library referenced in the type
      *  @param libraryId the library id within the container namespace, or null
      *  @param type the component specification
-     *  to  find as a simple name
+     *  to  find as a simple name (without a library prefix)
      *  @throws ApplicationRuntimeException if the type cannot be resolved
      * 
      **/
 
-    public void resolve(INamespace containerNamespace, String libraryId, String type)
+    public void resolve(
+        IRequestCycle cycle,
+        INamespace containerNamespace,
+        String libraryId,
+        String type)
     {
         reset();
         _type = type;
@@ -172,7 +186,7 @@ public class ComponentSpecificationResolver extends AbstractSpecificationResolve
             return;
         }
 
-        searchForComponent();
+        searchForComponent(cycle);
 
         // If not found after search, check to see if it's in
         // the framework instead.
@@ -181,12 +195,15 @@ public class ComponentSpecificationResolver extends AbstractSpecificationResolve
         {
 
             throw new ApplicationRuntimeException(
-                Tapestry.getString("Namespace.no-such-component-type", type, namespace.getNamespaceId()));
+                Tapestry.getString(
+                    "Namespace.no-such-component-type",
+                    type,
+                    namespace.getNamespaceId()));
 
         }
     }
 
-    private void searchForComponent()
+    private void searchForComponent(IRequestCycle cycle)
     {
         INamespace namespace = getNamespace();
 
@@ -223,10 +240,17 @@ public class ComponentSpecificationResolver extends AbstractSpecificationResolve
         INamespace framework = getSpecificationSource().getFrameworkNamespace();
 
         if (framework.containsComponentType(_type))
+        {
             setSpecification(framework.getComponentSpecification(_type));
+            return;
+        }
+
+        ComponentSpecification specification =
+            getDelegate().findComponentSpecification(cycle, namespace, _type);
+
+        setSpecification(specification);
 
         // If not found by here, an exception will be thrown.
-
     }
 
     private boolean found(IResourceLocation location)
@@ -250,7 +274,13 @@ public class ComponentSpecificationResolver extends AbstractSpecificationResolve
         ComponentSpecification specification = getSpecification();
 
         if (LOG.isDebugEnabled())
-            LOG.debug("Installing component type " + _type + " into " + namespace + " as " + specification);
+            LOG.debug(
+                "Installing component type "
+                    + _type
+                    + " into "
+                    + namespace
+                    + " as "
+                    + specification);
 
         namespace.installComponentSpecification(_type, specification);
     }
