@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "./dtd/document-v12.dtd" [
+  <!ENTITY projectroot '../'>
+  <!ENTITY % links.ent SYSTEM "../links.ent">
+  <!ENTITY % common.ent SYSTEM "common.ent">
+  %links.ent;
+  %common.ent;
+  ]>
+<document>
+  <header>
+    <title>Localization</title>
+  </header>
+  <body>
+    <p> Proper localization is a pervasive aspects of web application development. Supporting users from different countries, with different languages, can be a tricky proposition ... it is more than just text that must be localized, but more subtle aspects of the application such as date and currency formats. It is also more than text ... in some cases, a localized application will want to change images or even color schemes. </p>
+    <p> Localization support in Tapestry is likewise pervasive. </p>
+    <section id="localization.component-catalog">
+      <title>Component Message Catalogs</title>
+      <p> The most fundamental aspect of localization in Tapestry are component message catalogs (remember that pages are components too). A message catalog is a mapping from a logical key (that may appear in Java code or in OGNL expressions) to a literal string. Tapestry message catalogs are similar to Java's ResourceBundle class, except there is more flexibility in the character set of the files, and the location of the files. </p>
+      <p> Each component <em>may</em> have a message catalog, consisting of a set of localized message properties files. </p>
+      <p> These files are stored with the page or component specification file. They are named the same as the specification file, but with a different extension (".properties" instead of ".jwc" or ".page"). </p>
+      <p> In addition, this is a <em>set</em> of files; a locale string may be inserted just before the extension. For example, <code>WEB-INF/Home_fr.properties</code> to contain the French language localization of the keys. </p>
+      <p> We'll describe how to use the message catalog shortly, but first some notes on how the message catalogs are read. </p>
+      <section id="localization.component-catalog.encoding">
+        <title>Properties file encoding</title>
+        <p> For Java's ResourceBundle, the properties files must be in UTF-8 character set. This can be problematic, as in non-western languages it is necessary to use Java's native2ascii tool to convert from non-native files into an ASCII encoding of UTF-8. </p>
+        <p> Tapestry can ready properties files in alternate character sets, but must be told what character set the file is encoded in (internally, the contents must be converted into standard multi-byte Unicode). </p>
+        <p> This is accomplished by providing some metadata inside the component (or page) specification. Metadata is specified using the &spec.meta; element. </p>
+        <p> The resolution of the character set is somewhat complicated; it is  possible that each properties file will use a different 
+          character set. At the same time, repetition is bad ... therefore it is possible to specify some of this information
+          in the namespace meta data (in the containing application or library specification) so that it can apply to all pages
+          and components within the namespace.</p>
+          
+        <p>
+          The basic key searched for is <code>org.apache.tapestry.messages-encoding</code>.  The value for this key
+          is the name of the charset for the properties file.
+        </p>
+        
+        <p>
+          However, the base key is modified to reflect the locale for the file being read; the locale string is appended
+          to the key; this <code>org.apache.tapestry.messages-encoding_fr</code> will define the character set for
+          the file <code>WEB-INF/Home_fr.properties</code>
+        </p>
+        
+        <p>
+          For each localization of the base key, a search of the following locations takes place.
+        </p>
+        <ul>
+          <li>The page or component specification.</li>
+          <li>The namespace specification for the namespace containing the page or component.</li>
+          <li>The <link href="configuration.html#configuration.search-path">application property search path</link></li>
+        </ul>
+        
+        <p>
+          Because localization of templates is similar to
+          localization of message properties files,
+          a second search occurs if the search for (variations of)
+          <code>org.apache.tapestry.messages-encoding</code> fails; this time for
+          <code>org.apache.tapestry.template-encoding</code> occurs (again, with variations
+          for each locale).
+        </p>
+        
+        <p>
+          The ultimate default for encoding character set is
+          ISO-8859-1; in other words, the same behavior as reading an ordinary
+          Java ResourceBundle.
+        </p>
+          
+      </section>
+    </section>
+    <!-- localization.component-catalog -->
+    <section id="localization.template-text">
+      <title>Template text localization</title>
+      <p>As described in <link href="template.html#template.directives.l10n">the discussion of Tapestry templates</link>, static text in an HTML template can be enclosed in a specialized &span; tag. </p>
+      
+    </section>
+    
+    <section id="localization.localized-templates">
+      <title>Localized templates</title>
+    </section>
+    
+    <section id="localization.message-binding">
+      <title>Using the message: binding prefix</title>
+    </section>
+    
+    <section id="localization.messages-property">
+      <title>Formatting messages</title>
+    </section>
+    
+    <section id="localization.engine-locale">
+      <title>Engine locale vs. page locale</title>
+    </section>
+  </body>
+</document>

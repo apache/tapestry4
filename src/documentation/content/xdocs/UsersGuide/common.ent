@@ -50,8 +50,6 @@
 <!ENTITY hivemind-descriptor		'<link href="site:hivemind">HiveMind module deployment descriptor</link>'>
 
 <!ENTITY configuration-property		'<link href="configuration.html#configuration.search-path">configuration property</link>'>
-<!ENTITY configuration.character-sets
-									'<link href="configuration.html#configuration.character-sets">Character Sets</link>'>
 <!ENTITY aso						'<link href="state.html#state.aso">application state object</link>'>
 									
 <!ENTITY init-parameter				'&lt;init-parameter&gt;'>

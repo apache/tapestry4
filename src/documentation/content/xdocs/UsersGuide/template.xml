@@ -504,29 +504,8 @@ for the running application.
 	 <title>Localization</title>
 	 
 <p>
-Tapestry includes a number of <link href="configuration.html#configuration.character-sets">localization features</link>
-localization features. An important part of which
-is to allow each page or component to have its own catalog of localized messages (modeled after the Java 
-ResourceBundle class).
-</p>	 
-
-<p>
-The page (or component) message catalog 	is a collection of .properties files
-that are stored with the page or component specification. They follow the same naming conventions 
-as for ResourceBundles, so component MyComponent (whose specification file
-is MyComponent.jwc) might have a default
-message file of MyComponent.properties, and a French translation as
-MyComponent_fr.properties.
-</p>
-
-<note>
-	On oft-requested feature for Tapestry is to have a global message catalog, and a way to
-	access that catalog from the individual pages and components. This would allow common messages
-	to be written (and translated) just once. This is a feature that may be added to Tapestry 3.1.	
-</note>
-
-<p>
-As we've seen, it is possible to access the messages for a page or component using the
+Tapestry includes a number of <link href="localization.html">localization features</link>
+localization features.  As we've seen, it is possible to access the messages for a page or component using the
 <code>message:</code>	 prefix on a component parameter.
 </p>
 
@@ -592,7 +571,8 @@ In rare cases, your message may have pre-formatted HTML inside it.  Normally, ou
 filtered, so that any reserved
 HTML characters in a message string are expanded to HTML entities.  For example,
 a &lt;	 will be expanded to &amp;lt; If this is not desired,
-add  the attribute value raw="yes" to the &span;. This defeats the filtering, and text in the message
+add  the attribute value <code>raw="yes"</code> to the &span;. 
+This defeats the filtering, and text in the message
 is passed through as-is.
 </p>
 
