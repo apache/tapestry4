@@ -66,6 +66,7 @@
     <!-- These can actually run in any order, so we don't specify before or after. -->
 
     <command id="inject-messages" object="service:InjectMessagesWorker"/>    
+    <command id="inject-specification" object="service:InjectSpecificationWorker"/>
     <command id="specified-property" object="service:SpecifiedPropertyWorker"/>
     <command id="parameter" object="service:ParameterPropertyWorker"/>
     <command id="inject" object="service:InjectWorker"/>
@@ -86,6 +87,16 @@
       <construct class="org.apache.tapestry.enhance.InjectMessagesWorker">
         <set-object property="componentMessagesSource" value="infrastructure:componentMessagesSource"/>
       </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <service-point id="InjectSpecificationWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+    
+    Injects the specification property into all components.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.enhance.InjectSpecificationWorker"/>
     </invoke-factory>
     
   </service-point>

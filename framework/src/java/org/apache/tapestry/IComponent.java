@@ -189,13 +189,6 @@ public interface IComponent extends IRender, LocationHolder
     public IComponentSpecification getSpecification();
 
     /**
-     * Sets the specification used by the component. This is write-once, an attempt to change it
-     * later will throw an {@link ApplicationRuntimeException}.
-     */
-
-    public void setSpecification(IComponentSpecification value);
-
-    /**
      * Invoked to make the receiver render its body (the elements and components its tag wraps
      * around, on its container's template). This method is public so that the
      * {@link org.apache.tapestry.components.RenderBody}component may operate.

@@ -475,7 +475,6 @@ public class PageLoader implements IPageLoader
                     null, null);
 
         result.setNamespace(namespace);
-        result.setSpecification(spec);
         result.setPage(page);
         result.setContainer(container);
         result.setId(id);
@@ -520,7 +519,6 @@ public class PageLoader implements IPageLoader
             result = (IPage) cc.newInstance();
 
             result.setNamespace(namespace);
-            result.setSpecification(spec);
             result.setPageName(pageName);
             result.setPage(result);
             result.setLocale(_locale);

@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.hivemind.ApplicationRuntimeException;
-import org.apache.hivemind.Messages;
 import org.apache.hivemind.impl.BaseLocatable;
 import org.apache.hivemind.util.Defense;
 import org.apache.hivemind.util.PropertyUtils;
@@ -44,12 +43,6 @@ import org.apache.tapestry.spec.IComponentSpecification;
 
 public abstract class AbstractComponent extends BaseLocatable implements IComponent
 {
-    /**
-     * The specification used to originally build the component.
-     */
-
-    private IComponentSpecification _specification;
-
     /**
      * The page that contains the component, possibly itself (if the component is in fact, a page).
      */
@@ -312,7 +305,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
     {
         Defense.notNull(name, "name");
 
-        return _specification.getParameter(name) != null;
+        return getSpecification().getParameter(name) != null;
     }
 
     /**
@@ -441,20 +434,6 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
         _page = value;
     }
 
-    public IComponentSpecification getSpecification()
-    {
-        return _specification;
-    }
-
-    public void setSpecification(IComponentSpecification value)
-    {
-        if (_specification != null)
-            throw new ApplicationRuntimeException(Tapestry
-                    .getMessage("AbstractComponent.attempt-to-change-spec"));
-
-        _specification = value;
-    }
-
     /**
      * Renders all elements wrapped by the receiver.
      */
@@ -545,7 +524,7 @@ public abstract class AbstractComponent extends BaseLocatable implements ICompon
         // Now, iterate over the formal parameters and add the formal parameters
         // that have a binding.
 
-        List names = _specification.getParameterNames();
+        List names = getSpecification().getParameterNames();
 
         int count = names.size();
 
