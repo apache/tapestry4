@@ -104,15 +104,14 @@ public abstract class FormConditional extends AbstractFormComponent
         String name = form.getElementId(this);
 
         boolean condition = getCondition(cycle, form, name);
-        boolean invert = getInvert(cycle, form, name);
 
         // call listener
         IActionListener listener = getListener();
         if (listener != null)
             listener.actionTriggered(this, cycle);
 
-        // render the component body only if the condition is different from the invert
-        if (condition != invert) {
+        // render the component body only if the condition is true
+        if (condition) {
             String element = getElement();
             
             boolean render = cycleRewinding && StringUtils.isNotEmpty(element);
@@ -151,29 +150,6 @@ public abstract class FormConditional extends AbstractFormComponent
             conditionValueBinding.setBoolean(condition);
         
         return condition;
-    }
-
-    private boolean getInvert(IRequestCycle cycle, IForm form, String name)
-    {
-        boolean invert;
-        
-        if (!cycle.isRewinding())
-        {
-            invert = getInvert();
-            writeValue(form, name, invert);
-        }
-        else
-        {
-            RequestContext context = cycle.getRequestContext();
-            String submittedConditions[] = context.getParameters(name);
-            invert = convertValue(submittedConditions[1]);
-        }
-
-        IBinding invertValueBinding = getInvertValueBinding();
-        if (invertValueBinding != null) 
-            invertValueBinding.setBoolean(invert);
-        
-        return invert;
     }
 
     private void writeValue(IForm form, String name, boolean value)
@@ -225,11 +201,9 @@ public abstract class FormConditional extends AbstractFormComponent
     }
 
     public abstract boolean getCondition();
-    public abstract boolean getInvert();
     public abstract String getElement();
 
     public abstract IBinding getConditionValueBinding();
-    public abstract IBinding getInvertValueBinding();
 
     public abstract IActionListener getListener();
 
