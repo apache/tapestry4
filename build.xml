@@ -39,6 +39,7 @@
 	<path refid="tutorial.classpath"/>
 </path>
 
+
 <target name="clean"
 	description="Cleans all sub-projects.">
 	<ant dir="framework" target="clean"/>
@@ -275,10 +276,35 @@
 		<package name="net.sf.tapestry.*"/>
 		<package name="tutorial.*"/>
 
-		<link href="http://java.sun.com/products/jdk/1.2/docs/api/"/>
-		<link href="http://java.sun.com/j2ee/sdk_1.2.1/techdocs/api/"/>
-		<link href="http://jakarta.apache.org/log4j/docs/api/"/>
-		<link href="http://www.junit.org/junit/javadoc/3.7/"/>
+		<link 
+			href="http://java.sun.com/products/jdk/1.2/docs/api/"
+			offline="true" 
+			packageListLoc="package-lists/jdk"/>
+			
+		<link 
+			href="http://java.sun.com/j2ee/sdk_1.2.1/techdocs/api/"
+			offline="true"
+			packageListLoc="package-lists/j2ee"/>
+			
+		<link 
+			href="http://jakarta.apache.org/log4j/docs/api/"
+			offline="true"
+			packageListLoc="package-lists/log4j"/>
+			
+		<link 
+			href="http://www.junit.org/junit/javadoc/3.7/"
+			offline="true"
+			packageListLoc="package-lists/junit"/>
+			
+		<link
+			href="http://www.object-refinery.com/jcommon/javadoc/"
+			offline="true"
+			packageListLoc="package-lists/jcommon"/>
+			
+		<link	
+			href="http://www.object-refinery.com/jfreechart/javadoc/"
+			offline="true"
+			packageListLoc="package-lists/jfreechart"/>						
 		  
 		<group title="Tapestry Framework" packages="net.sf.tapestry:net.sf.tapestry.*"/>
 		<group title="Tapestry Contributions Framework" packages="net.sf.tapestry.contrib.*"/>
@@ -300,6 +326,8 @@
 			<pathelement location="${lib.ext.dir}/mckoidb.jar"/>
 			<pathelement location="${lib.ext.dir}/junit.jar"/>
 			<pathelement location="${lib.ext.dir}/${jakarta-oro.jar}"/>
+			<pathelement location="${lib.ext.dir}/${jcommon.jar}"/>
+			<pathelement location="${lib.ext.dir}/${jfreechart.jar}"/>
 		    <pathelement location="${jboss.client.dir}/jboss-client.jar"/>
 		    <pathelement location="${jboss.client.dir}/jboss-j2ee.jar"/>
 		    <pathelement location="${jboss.lib.dir}/jboss-jmx.jar"/>    
