@@ -141,7 +141,7 @@ for using command line CVS are available at the &TapestryProjectPage;.
 	<title>Building Tapestry</title>
 	
 <para>
-Tapestry is built using &Ant; 1.4.  In addition,
+Tapestry is built using &Ant; 1.5.  In addition,
 Tapestry includes the necessary control files to allow
 development using the excellent open-source IDE, &Eclipse;.
 </para>
