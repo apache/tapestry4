@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE component-specification
+      PUBLIC "-//Howard Lewis Ship//Tapestry Specification 1.3//EN"
+      "http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+
+<component-specification class="tutorial.components.ArrayViewer" allow-body="no" allow-informal-parameters="yes">
+
+    <parameter
+        name="source"
+        java-type="java.lang.Object"
+        direction="in"
+        required="yes">
+    </parameter>
+    
+    <parameter
+        name="heading"
+        java-type="java.lang.String"
+        direction="in"
+        required="no">
+    </parameter>
+
+	<component id="elements" type="Foreach">
+		<inherited-binding name="source" parameter-name="source"/>
+	</component>	
+	
+	<component id="cells" type="Foreach">
+		<binding name="source" expression="components.elements.value"/>
+	</component>
+	
+	<component id="heading" type="InsertText">
+		<binding name="value" expression="getHeading()"/>
+	</component>
+	
+	<component id="cell" type="InsertText">
+		<binding name="value" expression="components.cells.value"/>
+	</component>
+
+</component-specification>
