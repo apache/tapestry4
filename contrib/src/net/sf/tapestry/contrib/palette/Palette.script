@@ -92,11 +92,11 @@ output symbols:
   document.all.<insert property-path="downButtonId"/>
 </let>
 
-<let key="moveUpFunction">
+<let key="moveUpFunctionName">
   moveup_<insert property-path="baseName"/>
 </let>
 
-<let key="moveDownFunction">
+<let key="moveDownFunctionName">
   movedown_<insert property-path="baseName"/>
 </let>
 
@@ -180,6 +180,9 @@ function palette_transfer_selections(source, target)
   var sourceOptions = source.options;
   var targetOptions = target.options;
   
+  var targetIndex = target.selectedIndex;
+  var offset = 0;
+  
   palette_clear_selections(target);
   
   for (var i = 0; i &lt; sourceOptions.length; i++)
@@ -189,7 +192,11 @@ function palette_transfer_selections(source, target)
     if (option.selected)
     {
       sourceOptions.remove(i);
-      targetOptions.add(option);
+  
+      if (targetIndex &lt; 0)
+      	targetOptions.add(option);
+      else
+        targetOptions.add(option, targetIndex + offset++);
       i--;
     }
   }
@@ -201,8 +208,40 @@ function <insert property-path="updateFunctionName"/>()
   <insert property-path="selectButtonPath"/>.disabled =
     <insert property-path="availablePath"/>.selectedIndex &lt; 0;
     
-  <insert property-path="deselectButtonPath"/>.disabled =
-    <insert property-path="selectedPath"/>.selectedIndex &lt; 0;
+
+  var selected = <insert property-path="selectedPath"/>;
+  var index = selected.selectedIndex;
+
+  var disabled = index &lt; 0;
+  <insert property-path="deselectButtonPath"/>.disabled = disabled;
+<if property-path="sortUser">
+
+  var upButton = <insert property-path="upButtonPath"/>;
+  var downButton = <insert property-path="downButtonPath"/>;
+  
+  if (disabled)
+  {
+    upButton.disabled = true;
+    downButton.disabled = true;
+    return;
+  }
+  
+  <!-- Search for a second selected item -->
+  
+  for (var i = index + 1; i &lt; selected.options.length; i++)
+  {
+    <!-- Found a second selected option, so disable the buttons. -->
+    if (selected.options[i].selected)
+    {
+      upButton.disabled = true;
+      downButton.disabled = true;
+      return;
+    }  
+  }
+  
+  upButton.disabled = (index == 0);
+  downButton.disabled = (index == selected.options.length - 1);  
+</if>  
 }
 
 function <insert property-path="selectFunctionName"/>()
@@ -245,6 +284,35 @@ function <insert property-path="formSubmitFunctionName"/>()
   return true;
 }
 
+
+<if property-path="sortUser">
+function <insert property-path="moveUpFunctionName"/>()
+{
+  var element = <insert property-path="selectedPath"/>;
+  var targetIndex = element.selectedIndex - 1;
+  var options = element.options;
+  var option = options[element.selectedIndex];
+
+  options.remove(element.selectedIndex);
+  options.add(option, targetIndex);
+  
+  <insert property-path="updateFunctionName"/>();
+}
+
+function <insert property-path="moveDownFunctionName"/>()
+{
+  var element = <insert property-path="selectedPath"/>;
+  var targetIndex = element.selectedIndex + 1;
+  var options = element.options; 
+  var option = options[element.selectedIndex];
+
+  options.remove(element.selectedIndex);
+  options.add(option, targetIndex);
+  
+  <insert property-path="updateFunctionName"/>();
+}
+</if>
+
 </body>
 
 <initialization>
@@ -255,6 +323,10 @@ function <insert property-path="formSubmitFunctionName"/>()
 <insert property-path="availablePath"/>.ondblclick = <insert property-path="selectFunctionName"/>;
 <insert property-path="selectButtonPath"/>.onclick = <insert property-path="selectFunctionName"/>;
 <insert property-path="deselectButtonPath"/>.onclick = <insert property-path="deselectFunctionName"/>;
+<if property-path="sortUser">
+<insert property-path="upButtonPath"/>.onclick = <insert property-path="moveUpFunctionName"/>;
+<insert property-path="downButtonPath"/>.onclick = <insert property-path="moveDownFunctionName"/>;
+</if>
 
 <insert property-path="updateFunctionName"/>();
 

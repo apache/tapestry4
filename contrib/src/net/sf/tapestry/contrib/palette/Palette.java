@@ -332,7 +332,7 @@ public class Palette
 		if (form == null)
 			throw new RequestCycleException("Palette component must be wrapped by a Form.", this);
 		
-		name = form.getNextElementId("Palette");
+		name = form.getElementId(this);
 		
 		if (form.isRewinding())
 		{
@@ -428,6 +428,9 @@ public class Palette
 		
 		if (sort == SortMode.VALUE)
 			symbols.put("sortValue", Boolean.TRUE);
+		
+		if (sort == SortMode.USER)	
+			symbols.put("sortUser", Boolean.TRUE);
 		
 		try
 		{

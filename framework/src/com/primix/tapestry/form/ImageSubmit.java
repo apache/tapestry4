@@ -27,7 +27,7 @@
  */
 
 package com.primix.tapestry.form;
-                                                  
+
 import com.primix.tapestry.*;
 import java.awt.Point;
 
@@ -136,81 +136,81 @@ public class ImageSubmit extends AbstractFormComponent
 	private IBinding tagBinding;
 	private Object staticTagValue;
 	private String name;
-
+	
 	public String getName()
 	{
 		return name;
 	}
-
+	
 	private static final String[] reservedNames = 
-		{ "type", "name", "border", "src" };
-
+	{ "type", "name", "border", "src" };
+	
 	public void setImageBinding(IBinding value)
 	{
 		imageBinding = value;
 	}
-
+	
 	public IBinding getImageBinding()
 	{
 		return imageBinding;
 	}
-
+	
 	public void setPointBinding(IBinding value)
 	{
 		pointBinding = value;
 	}
-
+	
 	public IBinding getPointBinding()
 	{
 		return pointBinding;
 	}
-
+	
 	public IBinding getDisabledBinding()
 	{
 		return disabledBinding;
 	}
-
+	
 	public void setDisabledBinding(IBinding value)
 	{
 		disabledBinding = value;
 	}
-
+	
 	public IBinding getDisabledImageBinding()
 	{
 		return disabledImageBinding;
 	}
-
+	
 	public void setDisabledImageBinding(IBinding value)
 	{
 		disabledImageBinding = value;
 	}
-
+	
 	public void setSelectedBinding(IBinding value)
 	{
 		selectedBinding = value;
 	}
-
+	
 	public IBinding getSelectedBinding()
 	{
 		return selectedBinding;
 	}
-
+	
 	public void setTagBinding(IBinding value)
 	{
 		tagBinding = value;
-
+		
 		if (value.isStatic())
 			staticTagValue = value.getObject();
 	}
-
+	
 	public IBinding getTagBinding()
 	{
 		return tagBinding;
 	}
-
-
+	
+	
 	public void render(IResponseWriter writer, IRequestCycle cycle)
-	throws RequestCycleException
+		throws RequestCycleException
 	{
 		Form form;
 		boolean rewinding;
@@ -223,87 +223,87 @@ public class ImageSubmit extends AbstractFormComponent
 		String imageURL;
 		boolean disabled = false;
 		Object tagValue = staticTagValue;
-
+		
 		form = getForm(cycle);
-
-			rewinding = form.isRewinding();
-
-			name = form.getNextElementId("ImageButton");
-
+		
+		rewinding = form.isRewinding();
+		
+		name = form.getElementId(this);
+		
 		if (disabledBinding != null)
 			disabled = disabledBinding.getBoolean();
-
+		
 		if (rewinding)
 		{
 			// If disabled, do nothing.
-
+			
 			if (disabled)
 				return;
-
-				context = cycle.getRequestContext();
-
+			
+			context = cycle.getRequestContext();
+			
 			// Image clicks get submitted as two request parameters: 
 			// foo.x and foo.y
-
+			
 			parameterName = name + ".x";
-
-				value = context.getParameter(parameterName);
-
+			
+			value = context.getParameter(parameterName);
+			
 			if (value == null)
 				return;
-
+			
 			// The point parameter is not really used, unless the
 			// ImageButton is used for its original purpose (as a kind
 			// of image map).  In modern usage, we only care about
 			// whether the user clicked on the image (and thus submitted
 			// the form), not where in the image the user actually clicked.
-
+			
 			if (pointBinding != null)
 			{
 				x = Integer.parseInt(value);
-
+				
 				parameterName = name + ".y";
 				value = context.getParameter(parameterName);
-
+				
 				y = Integer.parseInt(value);
-
+				
 				pointBinding.setObject(new Point(x, y));
 			}
-
+			
 			// Notify the application, by setting the select parameter
 			// to the tag parameter.
-
+			
 			if (selectedBinding == null)
 				return;
-
+			
 			if (tagBinding == null)
 				throw new RequestCycleException(
 					"The tag parameter is required if the selected parameter is bound.",
 					this);
-
-
+			
+			
 			// OK, now to notify the application code (via the parameters)
 			// that *this* ImageButton was selected.  We do this by applying
 			// a tag (presumably, specific to the ImageButton in question)
 			// to the selected binding.  When the containing Form's listener
 			// is invoked, it can determine which (if any) ImageButton
 			// (or Submit) was clicked.
-
-
+			
+			
 			if (tagValue == null)
 				tagValue = tagBinding.getObject();
-
+			
 			if (tagValue == null)
 				throw new RequiredParameterException(this, "tag", tagBinding);
-
+			
 			selectedBinding.setObject(tagValue);                        
 		}
-
+		
 		// Not rewinding, do the real render
-
+		
 		if (disabled && disabledImageBinding != null)
 			image = (IAsset)disabledImageBinding.getObject("disabledImage", IAsset.class);
-
+		
 		if (image == null)
 		{
 			image = (IAsset)imageBinding.getObject("image", IAsset.class);
@@ -311,25 +311,25 @@ public class ImageSubmit extends AbstractFormComponent
 			if (image == null)
 				throw new RequiredParameterException(this, "image", imageBinding);
 		}                                
-
+		
 		imageURL = image.buildURL(cycle);
-
+		
 		writer.beginEmpty("input");
 		writer.attribute("type", "image");
 		writer.attribute("name", name);
-
+		
 		if (disabled)
 			writer.attribute("disabled");
-
+		
 		// Netscape places a border unless you tell it otherwise.
 		// IE ignores the border attribute and never shows a border.
-
+		
 		writer.attribute("border", 0);
-
+		
 		writer.attribute("src", imageURL);
-
+		
 		generateAttributes(cycle, writer, reservedNames);
-
+		
 		writer.closeTag();
 	}        
 }

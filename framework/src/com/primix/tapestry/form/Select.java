@@ -183,7 +183,7 @@ public class Select extends AbstractFormComponent
 
 		// Used whether rewinding or not.
 
-		name = form.getNextElementId("Select");
+		name = form.getElementId(this);
 
 		if (disabledBinding == null)
 			disabled = false;

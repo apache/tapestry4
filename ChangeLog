@@ -1,5 +1,16 @@
 * Jun 15 2001 hship
 
+Framework:
+- Change how form element ids are generated.  They will now usually
+  match the component id, with a numeric suffix to ensure uniqueness.
+- Change how the Body component deals with preloaded images to work
+  better when the same image is used repeatedly.
+  
+Contrib:
+- Get basic manual ordering working in Palette component.
+  
+* Jun 15 2001 hship
+
 Create contrib project (net.sf.tapestry.contrib.jar).
 Create Palette component (not complete).
 Update Tutorial to make use of the Palette.

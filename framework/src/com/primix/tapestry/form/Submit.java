@@ -184,7 +184,7 @@ public class Submit extends AbstractFormComponent
 
 		rewinding = form.isRewinding();
 
-		name = form.getNextElementId("Submit");
+		name = form.getElementId(this);
 
 		if (disabledBinding != null)
 			disabled = disabledBinding.getBoolean();

@@ -295,9 +295,9 @@ public class Rollover extends AbstractComponent
 	{
 		String uniqueId = body.getUniqueId();
 		String focusImageURL = 
-			body.addImageInitialization("focus_" + uniqueId, focusURL);
+			body.getPreloadedImageReference(focusURL);
 		String blurImageURL = 
-			body.addImageInitialization("blur_" + uniqueId, blurURL);
+			body.getPreloadedImageReference(blurURL);
 
 		if (symbols == null)
 			symbols = new HashMap(MAP_SIZE);

@@ -111,13 +111,20 @@ public class Form
     private IBinding listenerBinding;
 	
     private boolean rewinding;
-    private int nextElementId = 0;
-    private StringBuffer buffer;
     private boolean rendering;
     private String name;
 	private IBinding statefulBinding;
 	private boolean staticStateful;
 	private boolean statefulValue;
+	
+	/**
+	 *  Number of element ids allocated.
+	 *
+	 *  @since 1.0.2
+	 *
+	 */
+	
+	private int elementCount;
 	
 	/**
 	 *  {@link Map}, keyed on {@link FormEventType}.  Values are either a String (the name
@@ -132,6 +139,15 @@ public class Form
 	
     private static final String[] reservedNames = { "action" };
 	
+	/**
+	 * A Map, keyed on component id, used to allocate new component ids.
+	 *
+	 * @since 1.0.2
+	 *
+	 */
+	
+	private Map allocatorMap;
+	
     /**
 	 *  Attribute name used with the request cycle; allows other components to locate
 	 *  the Form.
@@ -139,8 +155,29 @@ public class Form
 	 */
 	
     private static final String ATTRIBUTE_NAME = "com.primix.tapestry.active.Form";
+
+	/**
+	 *  Class used to allocate ids (used as form element names).
+	 *
+	 */
 	
-    /**
+    private static class IdAllocator
+	{
+		String baseId;
+		int index;
+		
+		IdAllocator(String baseId)
+		{
+			this.baseId = baseId;
+		}
+		
+		public String nextId()
+		{
+			return baseId + index++;
+		}
+	}
+	
+	/**
 	 *  Returns the currently active <code>Form</code>, or null if no <code>Form</code> is
 	 *  active.
 	 *
@@ -216,26 +253,42 @@ public class Form
 	}
 	
     /**
-	 *  Constructs a unique identifier (within the Form) from a prefix and a
-	 *  unique index.  The prefix typically corresponds to the component Class (i.e.
-	 *  "Text" or "Checkbox").
+	 *  Constructs a unique identifier (within the Form).  The identifier
+	 *  consists of the component's id, with an index number added to
+	 *  ensure uniqueness.
 	 *
+	 *  @since 1.0.2
 	 */
 	
-    public String getNextElementId(String prefix)
+    public String getElementId(IComponent component)
     {
-		if (buffer == null)
-			buffer = new StringBuffer();
-		else
+		if (allocatorMap == null)
+			allocatorMap = new HashMap();
+		
+		String baseId = component.getId();
+		String result = null;
+
+		IdAllocator allocator = (IdAllocator)allocatorMap.get(baseId);
+		
+		if (allocator == null)
 		{
-			buffer.setLength(0);
+			result = baseId;
+			allocator = new IdAllocator(baseId);
 		}
+		else
+			result = allocator.nextId();
 		
-		buffer.append(prefix);
-		buffer.append(nextElementId++);
+		// Record the allocated id.  This protects against degenerate
+		// names by the developer, such as 'foo' (in a Foreach) and
+		// 'foo0' elsewhere.
 		
-		return buffer.toString();
-    }
+		allocatorMap.put(result, allocator);
+		
+		elementCount++;
+		
+		return result;
+	}
+ 
 	
     /**
 	 *  Returns the name generated for the form.  This is used to faciliate
@@ -309,22 +362,29 @@ public class Form
 				generateAttributes(cycle, writer, reservedNames);
 			}
 			
-			nextElementId = 0;
+			elementCount = 0;
 			
 			rendering = true;
 			renderWrapped(writer, cycle);
 			
 			if (renderForm)
 			{
-				// What's this for?  It's part of checking for stale links.  We record
-				// the next action id into the form.  This ensures that the number
-				// of action ids within the form (when the form HTML is rendered)
-				// matches the expected number (when the form submission is processed).
+				// What's this for?  It's part of checking for stale links.  
+				// We record how many elements we allocated ids for.
+				// On rewind, we check that the same number of elements
+				// ids were allocated.  If the persistent state of the page or
+				// application changed between render (previous request cycle)
+				// and rewind (current request cycle), then
+				// this count might change.
+				//
+				// In some cases, state can change without changing this
+				// number -- hopefully, such changes are benign since we
+				// don't have a way to detect them.
 				
 				writer.beginEmpty("input");
 				writer.attribute("type", "hidden");
 				writer.attribute("name", name);
-				writer.attribute("value", nextElementId++);
+				writer.attribute("value", elementCount);
 				
 				writer.end("form");
 				
@@ -340,7 +400,7 @@ public class Form
 				actual = cycle.getRequestContext().getParameter(name);
 				
 				if (actual == null ||
-						Integer.parseInt(actual) != nextElementId++)
+						Integer.parseInt(actual) != elementCount)
 					throw new StaleLinkException(
 						"Incorrect number of elements with Form " + getExtendedId() + ".",
 						getPage());
@@ -371,9 +431,13 @@ public class Form
 		finally
 		{
 			rendering = false;
+			elementCount = 0;
 			
 			if (events != null)
 				events.clear();
+			
+			if (allocatorMap != null)
+				allocatorMap.clear();
 		}
     }
 	

@@ -86,85 +86,85 @@ public class Hidden extends AbstractFormComponent
 	private IBinding valueBinding;
 	private IBinding listenerBinding;
 	private String name;
-
+	
 	public String getName()
 	{
 		return name;
 	}
-
+	
 	public IBinding getValueBinding()
 	{
 		return valueBinding;
 	}
-
+	
 	public void setValueBinding(IBinding value)
 	{
 		valueBinding = value;
 	}
-
+	
 	public IBinding getListenerBinding()
 	{
 		return listenerBinding;
 	}
-
+	
 	public void setListenerBinding(IBinding value)
 	{
 		listenerBinding = value;
 	}
-
+	
 	public void render(IResponseWriter writer, IRequestCycle cycle)
-	throws RequestCycleException
+		throws RequestCycleException
 	{
 		Form form;
 		boolean formRewound;
 		String value;
 		IActionListener listener;
-
-			form = getForm(cycle);
+		
+		form = getForm(cycle);
 		formRewound = form.isRewinding();
-
-			name = form.getNextElementId("Hidden");
-
+		
+		name = form.getElementId(this);
+		
 		// If the form containing the Hidden isn't rewound, then render.
-
+		
 		if (!formRewound)
 		{
 			// Optimiziation: if the page is rewinding (some other action or
 			// form was submitted), then don't bother rendering.
-
+			
 			if (cycle.isRewinding())
 				return;
-
-				value = valueBinding.getString();
-
+			
+			value = valueBinding.getString();
+			
 			writer.beginEmpty("input");
 			writer.attribute("type", "hidden");
 			writer.attribute("name", name);
 			writer.attribute("value", value);
-
+			
 			return;
 		}
-
+		
 		value = cycle.getRequestContext().getParameter(name);
-
+		
 		// A listener is not always necessary ... it's easy to code
 		// the synchronization as a side-effect of the accessor method.
-
+		
 		valueBinding.setString(value);
-
+		
 		if (listenerBinding == null)
 			return;
-
+		
 		try
 		{
 			listener = (IActionListener)listenerBinding.getObject("listener",
-				IActionListener.class);
+					IActionListener.class);
 		}
 		catch (BindingException ex)
 		{
 			throw new RequestCycleException(this, ex);
 		}
-
+		
 		if (listener != null)
 			listener.actionTriggered(this, cycle);
 	}

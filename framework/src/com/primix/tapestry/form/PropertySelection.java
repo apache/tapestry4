@@ -259,7 +259,7 @@ public class PropertySelection extends AbstractFormComponent
 		if (model == null)
 			throw new RequiredParameterException(this, "model", modelBinding);
 		
-		name = form.getNextElementId("PropertySelection");
+		name = form.getElementId(this);
 		
 		if (rewinding)
 		{
