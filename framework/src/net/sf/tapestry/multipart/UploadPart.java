@@ -51,25 +51,38 @@ public class UploadPart implements IUploadFile, IPart
 
     private byte[] content;
     private File contentFile;
-    private String fileName;
+    private String filePath;
 
-    UploadPart(String fileName, byte[] content)
+    UploadPart(String filePath, byte[] content)
     {
-        this.fileName = fileName;
+        this.filePath = filePath;
         this.content = content;
     }
 
-    UploadPart(String fileName, File contentFile)
+    UploadPart(String filePath, File contentFile)
     {
-        this.fileName = fileName;
+        this.filePath = filePath;
         this.contentFile = contentFile;
     }
 
-    public String getFileName()
+	/**
+	 *  @since 2.0.4
+	 * 
+	 **/
+	
+    public String getFilePath()
     {
-        return fileName;
+        return filePath;
     }
 
+	/**
+	 *  Always returns false, at least so far.  Future enhancements
+	 *  may involve truncating the input if it exceeds a certain
+	 *  size or upload time (such things may be used for denial
+	 *  of service attacks).
+	 * 
+	 **/
+	
     public boolean isTruncated()
     {
         return false;
@@ -89,7 +102,7 @@ public class UploadPart implements IUploadFile, IPart
             throw new ApplicationRuntimeException(
                 Tapestry.getString(
                     "UploadPart.unable-to-open-content-file",
-                    fileName,
+                    filePath,
                     contentFile.getAbsolutePath()),
                 ex);
         }
@@ -122,4 +135,19 @@ public class UploadPart implements IUploadFile, IPart
         }
 
     }
+    
+    
+    /**
+     *  Leverages {@link File} to convert the full file path and extract
+     *  the name.
+     * 
+     **/
+    
+    public String getFileName()
+    {
+  		File file = new File(filePath);
+  		
+  		return file.getName();
+    }
+
 }

@@ -39,11 +39,24 @@ import java.io.InputStream;
 public interface IUploadFile
 {
 	/**
-	 *  Returns the name of the file that was uploaded.
+	 *  Returns the name of the file that was uploaded.  This
+	 *  is just the filename portion of the complete path.
 	 * 
 	 **/
 
 	public String getFileName();
+
+	/**
+	 *  Returns the complete path, as reported by the client
+	 *  browser.  Different browsers report different things
+	 *  here.
+	 * 
+	 * 
+	 *  @since 2.0.4
+	 * 
+	 **/
+	
+	public String getFilePath();
 
 	/**
 	 *  Returns true if the uploaded file was truncated.  In the current
