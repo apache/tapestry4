@@ -1,0 +1,17 @@
+$Id$
+
+This directory contains modified versions of the following distributions:
+
+Distribution                             Source
+=============================            =================================
+Jade 1.2.1					             http://www.jclark.com/jade/
+DocBook SGML DTD 4.1                     http://www.oasis-open.org/docbook/sgml/4.1/index.html
+DocBook Modular DSSSL style sheets 1,62  http://www.nwalsh.com/docbook/dsssl/
+
+The original distributions have been stripped down and re-archived using GNU tar.
+
+The missing ISO 8879:1986 entity sets have been obtained from http://www.oasis-open.org/cover/ISOEnts.zip,
+renamed slightly, and included with the DocBook DTD.
+
+Thd DocBook catalog has been modified to comment out the DTDDECL declarations that are not recognized by jade.
+	  

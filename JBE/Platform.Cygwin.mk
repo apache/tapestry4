@@ -52,5 +52,12 @@ PWD := $(TOOLS_DIR)/pwd.exe
 
 CD := cd
 
+# Used with DocBook
+
+OPENJADE := $(DOCBOOK_OPENJADE_DIR)/bin/openjade.exe
+OPENJADE_DISTRO = $(DOCBOOK_DIR)/openjade-1.3-1.tar.gz
+
+
+
 
 

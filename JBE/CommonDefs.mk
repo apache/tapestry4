@@ -61,6 +61,14 @@ MOD_RMI_CLASS_CATALOG = $(MOD_BUILD_DIR)/rmi-class-catalog
 
 RECURSE := $(MAKE) --no-builtin-rules --no-print-directory
 
+# Definitions needed by DocBook.mk
+
+DOCBOOK_DIR := $(SYS_MAKEFILE_DIR)/docbook
+
+DOCBOOK_OPENJADE_DIR  := $(DOCBOOK_DIR)/openjade
+DOCBOOK_DSSSL_DIR := $(DOCBOOK_DIR)/dsssl/docbook
+DOCBOOK_DTD_DIR := $(DOCBOOK_DIR)/dtd
+
 # Find out what out platform is.  Must set a value for SITE_PLATFORM.
 # The LocalConfig can set other things (such as locations of tools,
 # libraries, etc.)  It is optional.
@@ -99,6 +107,4 @@ JDK_DIR := $($(JDK_DIR_VAR))
 SYS_JDK_CONFIG_FILE := $(SYS_MAKEFILE_DIR)/JDK.$(FINAL_JDK_VENDOR)_$(SITE_PLATFORM).mk
 
 -include $(SYS_JDK_CONFIG_FILE)
-
--include $(CONFIG_DIR)/Common.mk
 
