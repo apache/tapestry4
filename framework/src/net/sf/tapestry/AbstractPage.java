@@ -368,6 +368,11 @@ public abstract class AbstractPage extends BaseComponent implements IPage
         return _visit;
     }
 
+    public Object getGlobal()
+    {
+        return _engine.getGlobal();
+    }
+
     public void addPageDetachListener(PageDetachListener listener)
     {
         addListener(PageDetachListener.class, listener);

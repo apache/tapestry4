@@ -249,6 +249,18 @@ public interface IPage extends IComponent
 
 	public Object getVisit();
 
+    /**
+     *  Returns the globally shared application object. The global object is
+     *  stored in the servlet context.
+     *
+     *  <p>Returns the global object, if it exists, or null if not defined.
+     *
+     *  @since 2.3
+     * 
+     **/
+
+    public Object getGlobal();
+
 	/**
 	 *  @since 1.0.5
 	 *

@@ -119,6 +119,11 @@ public class MockPage implements IPage
         return null;
     }
 
+    public Object getGlobal()
+    {
+        return null;
+    }
+
     public void addPageRenderListener(PageRenderListener listener)
     {
     }
