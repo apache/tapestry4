@@ -364,13 +364,16 @@ Contained by: component-specification
 Defines a formal parameter for the component.
 
 Attributes:
-  name: A unqiue name for the parameter.
+  name: A unique name for the parameter.
   type: The name of a Java class or primitive type expected by the parameter.
   required: If yes, then the parameter must be bound.  If no (the default),
     then the parameter is optional.
   property-name: The name to use, instead of the parameter name, for the
     JavaBean property connected to this parameter.
-  direction: The normal flow of data through the component.
+  direction: The normal flow of data through the component 
+  			(in, form, custom, auto).
+  default-value: Specifies the default value for the parameter, 
+  				if the parameter is not bound.
 -->
 <!ELEMENT parameter (description?)>
 <!ATTLIST parameter
@@ -419,7 +422,7 @@ Attributes:
 >
 <!-- =======================================================
 Element: property-specification
-Appears in: component-specification, component-specification
+Appears in: page-specification, component-specification
 
 Identifies a transient or persistent property.
 
@@ -428,7 +431,7 @@ Attributes:
   type: The type of the value, either the name of a scalar type,
     or the fully qualified name of a class.  If omitted,
     java.lang.Object is used.
-  persistant: If "yes", the value will be made persistant.  Default
+  persistent: If "yes", the value will be made persistant.  Default
     is "no".
   initial-value:  If provided, this is an OGNL expression used
     to initialize the property.  If not specified, the
