@@ -68,8 +68,12 @@ import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
  * 
- *  A version of the Any component that inherits the informal attributes of its parent
+ *  A version of the Any component that inherits the informal attributes of its parent.
+ *  This component has been deprecated in favour of the 'inherit-informal-parameters' 
+ *  tag that indicates that a particular component must inherit the informal parameters
+ *  of its parent. This tag is available in the page or component specification file.
  * 
+ *  @deprecated
  *  @version $Id$
  *  @author mindbridge
  *  @since 2.2
