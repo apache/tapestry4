@@ -102,6 +102,8 @@ public class SelectPropertySelectionRenderer
 
         writer.print(model.getLabel(index));
 
+        writer.end();
+        
         writer.println();
     }
 }
