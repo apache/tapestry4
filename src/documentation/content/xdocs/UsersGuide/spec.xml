@@ -1218,7 +1218,7 @@ with attributes and entities related to parameters removed.
 <p>&lt;page-specification&gt; Elements</p>
 <source>
   &spec.description; ?, 
-  (&spec.meta; | &spec.bean; | &spec.component; | &spec.asset; | &spec.property; | &spec.inject;)*
+  (&spec.meta; | &spec.bean; | &spec.component; | &spec.asset; | &spec.property; | &spec.inject; | &spec.inject-state;)*
 </source>
 
 
