@@ -7,17 +7,18 @@
     <classpathentry kind="src" path="examples/Tutorial/src"/>
     <classpathentry kind="src" path="examples/VlibBeans/src"/>
     <classpathentry kind="src" path="examples/Vlib/src"/>
-    <classpathentry kind="lib" path="lib/javax.servlet.jar"/>
-    <classpathentry kind="lib" path="lib/javax.xml.jaxp.jar"/>
-    <classpathentry kind="lib" path="lib/junit.jar"/>
-    <classpathentry kind="lib" path="lib/log4j-core.jar"/>
-    <classpathentry kind="lib" path="lib/org.apache.crimson.jar"/>
-    <classpathentry kind="lib" path="lib/org.mortbay.jetty.jar"/>
     <classpathentry kind="var" path="JBOSS_DIR/lib/jboss-jdbc_ext.jar"/>
     <classpathentry kind="var" path="JBOSS_DIR/lib/ext/jboss-j2ee.jar"/>
     <classpathentry kind="var" path="JBOSS_DIR/lib/ext/mail.jar"/>
     <classpathentry kind="var" path="JBOSS_DIR/lib/jmxri.jar"/>
     <classpathentry kind="var" path="JBOSS_DIR/lib/ext/jboss.jar"/>
-    <classpathentry kind="lib" path="lib/mckoidb.jar"/>
+    <classpathentry kind="lib" path="lib/ext/ejb.jar"/>
+    <classpathentry kind="lib" path="lib/ext/javax.servlet.jar"/>
+    <classpathentry kind="lib" path="lib/ext/javax.xml.jaxp.jar"/>
+    <classpathentry kind="lib" path="lib/ext/junit.jar"/>
+    <classpathentry kind="lib" path="lib/ext/log4j-core.jar"/>
+    <classpathentry kind="lib" path="lib/ext/mckoidb.jar"/>
+    <classpathentry kind="lib" path="lib/ext/org.apache.crimson.jar"/>
+    <classpathentry kind="lib" path="lib/ext/org.mortbay.jetty.jar"/>
     <classpathentry kind="output" path="bin"/>
 </classpath>
