@@ -37,7 +37,7 @@ import com.primix.tapestry.*;
  */ 
 
 public class BorderServlet extends ApplicationServlet
-{
+{ 
 	protected String getApplicationSpecificationPath()
 	{
 		return "/tutorial/border/Border.application";

@@ -35,6 +35,7 @@ EXEC_CLASSPATH = \
 	$(INSTALL_DIR)/gnu-regexp.jar \
 	$(INSTALL_DIR)/com.mortbay.jetty.jar \
 	$(INSTALL_DIR)/org.apache.jasper.jar \
+	$(INSTALL_DIR)/log4j.jar \
 	$(JBOSS_DIR)/conf/default \
 	$(JBOSS_DIR)/client/jboss-client.jar \
 	$(JDK_DIR)/lib/tools.jar

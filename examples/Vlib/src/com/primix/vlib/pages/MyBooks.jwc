@@ -24,24 +24,8 @@
 			<type>ShowError</type>
 		</component>
 		<component>
-			<id>ifMessage</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>message</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertMessage</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>message</property-path>
-				</binding>
-			</bindings>
+			<id>showMessage</id>
+			<type>ShowMessage</type>
 		</component>
 		<component>
 			<id>ifShowOwnedBooksHeader</id>
