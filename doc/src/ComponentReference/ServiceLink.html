@@ -88,6 +88,29 @@
     <th>Description</th>
   </tr>
   <tr>
+    <td>service</td>
+    <td>String</td>
+    <td>in</td>
+   	<td>yes</td>
+		<td>&nbsp;</td>
+		<td>The name of the 
+    <a href="../api/net/sf/tapestry/engine/IEngineService.html"><tt>EngineService</tt></a> 
+    to invoke.</td>
+	</tr>
+  <tr>
+    <td>parameters</td>
+    <td><tt>Object</tt>,<br>
+    	<tt>Object[]</tt> or<nr>
+    	<tt>List</tt></td>
+    <td>in</td>
+   	<td>no</td>
+		<td>&nbsp;</td>
+		<td>
+    An array of Objects to be encoded into the URL. These parameters will be 
+    decoded when the link is triggered.
+    </td>
+	</tr>
+  <tr>
     <td>disabled</td>
     <td>boolean</td>
     <td>in</td>
@@ -101,19 +124,6 @@
                   namespace prefix.</p> 
                    
           
-    </td>
-	</tr>
-  <tr>
-    <td>parameters</td>
-    <td><tt>Object</tt>,<br>
-    	<tt>Object[]</tt> or<nr>
-    	<tt>List</tt></td>
-    <td>in</td>
-   	<td>no</td>
-		<td>&nbsp;</td>
-		<td>
-    An array of Objects to be encoded into the URL. These parameters will be 
-    decoded when the link is triggered.
     </td>
 	</tr>
   <tr>
