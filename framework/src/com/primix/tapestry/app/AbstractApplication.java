@@ -490,7 +490,7 @@ public abstract class AbstractApplication
 	*
 	*/
 
-	public IApplicationService constructService(String name)
+	protected IApplicationService constructService(String name)
 	{
 		if (name.equals(IApplicationService.ACTION_SERVICE))
 			return new ActionService();
