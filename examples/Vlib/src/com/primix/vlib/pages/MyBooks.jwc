@@ -20,24 +20,8 @@
 			</bindings>
 		</component>
 		<component>
-			<id>ifError</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>error</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertError</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>error</property-path>
-				</binding>
-			</bindings>
+			<id>showError</id>
+			<type>ShowError</type>
 		</component>
 		<component>
 			<id>ifMessage</id>
@@ -60,7 +44,17 @@
 			</bindings>
 		</component>
 		<component>
-			<id>e-books</id>
+			<id>ifShowOwnedBooksHeader</id>
+			<type>Conditional</type>
+			<bindings>
+				<binding>
+					<name>condition</name>
+					<property-path>ownedBooks</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>e-owned</id>
 			<type>Foreach</type>
 			<bindings>
 				<binding>
@@ -74,17 +68,7 @@
 			</bindings>
 		</component>
 		<component>
-			<id>ifFirst</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>components.e-books.first</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertTitle</id>
+			<id>insertOwnedTitle</id>
 			<type>Insert</type>
 			<bindings>
 				<binding>
@@ -94,7 +78,7 @@
 			</bindings>
 		</component>
 		<component>
-			<id>insertAuthor</id>
+			<id>insertOwnedAuthor</id>
 			<type>Insert</type>
 			<bindings>
 				<binding>
@@ -104,7 +88,7 @@
 			</bindings>
 		</component>
 		<component>
-			<id>insertPublisher</id>
+			<id>insertOwnedPublisher</id>
 			<type>Insert</type>
 			<bindings>
 				<binding>
@@ -119,7 +103,7 @@
 			<bindings>
 				<binding>
 					<name>condition</name>
-					<property-path>showHolder</property-path>
+					<property-path>currentBook.borrowed</property-path>
 				</binding>
 			</bindings>
 		</component>
@@ -166,12 +150,104 @@
 			</bindings>
 		</component>
 		<component>
-			<id>ifLast</id>
+			<id>ifShowOwnedBooksTrailer</id>
 			<type>Conditional</type>
 			<bindings>
 				<binding>
 					<name>condition</name>
-					<property-path>components.e-books.last</property-path>
+					<property-path>ownedBooks</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>ifShowBorrowedBooksHeader</id>
+			<type>Conditional</type>
+			<bindings>
+				<binding>
+					<name>condition</name>
+					<property-path>borrowedBooks</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>e-borrowed</id>
+			<type>Foreach</type>
+			<bindings>
+				<binding>
+					<name>source</name>
+					<property-path>borrowedBooks</property-path>
+				</binding>
+				<binding>
+					<name>value</name>
+					<property-path>currentBook</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>bookLink</id>
+			<type>BookLink</type>
+			<bindings>
+				<binding>
+					<name>book</name>
+					<property-path>currentBook</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>insertBorrowedAuthor</id>
+			<type>Insert</type>
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>currentBook.author</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>insertBorrowedPublisher</id>
+			<type>Insert</type>
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>currentBook.publisherName</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>ownerLink</id>
+			<type>PersonLink</type>
+			<bindings>
+				<binding>
+					<name>name</name>
+					<property-path>currentBook.ownerName</property-path>
+				</binding>
+				<binding>
+					<name>primaryKey</name>
+					<property-path>currentBook.ownerPrimaryKey</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>return</id>
+			<type>Direct</type>
+			<bindings>
+				<binding>
+					<name>context</name>
+					<property-path>currentBook.primaryKey</property-path>
+				</binding>
+				<binding>
+					<name>listener</name>
+					<property-path>returnListener</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>ifShowBorrowedBooksTrailer</id>
+			<type>Conditional</type>
+			<bindings>
+				<binding>
+					<name>condition</name>
+					<property-path>borrowedBooks</property-path>
 				</binding>
 			</bindings>
 		</component>

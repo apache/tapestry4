@@ -928,6 +928,22 @@ public class OperationsBean implements SessionBean
 			close(connection, statement, set);
 		}
 	}
+
+    public IBook returnBook(Integer bookPrimaryKey)
+    throws RemoteException, FinderException
+    {
+        IBookHome bookHome;
+        IBook book;
+
+        bookHome = getBookHome();
+        book = bookHome.findByPrimaryKey(bookPrimaryKey);
+        
+        // Return the book ... that is, make its holder its owner.
+
+        book.setHolderPK(book.getOwnerPK());
+
+        return book;
+    }
 }  
 
 

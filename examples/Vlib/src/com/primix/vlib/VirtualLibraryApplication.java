@@ -75,10 +75,10 @@ public class VirtualLibraryApplication extends SimpleApplication
 	
 	private transient Context rootNamingContext;	
 	
-    private boolean killSession;
+    private transient boolean killSession;
 
-	private IPropertySelectionModel publisherModel;
-	private IPropertySelectionModel personModel;
+	private transient IPropertySelectionModel publisherModel;
+	private transient IPropertySelectionModel personModel;
 	
 	/**
 	 *   The name ("external") of a service that exposes books or 
@@ -532,56 +532,7 @@ public class VirtualLibraryApplication extends SimpleApplication
 	 * component should set its context to the primary key of the book to borrow.
 	 *
 	 */
-	 
-	public IDirectListener getBorrowListener()
-	{
-	    return new IDirectListener()
-	    {
-	        public void directTriggered(IComponent component, String[] context,
-	                IRequestCycle cycle)
-					throws RequestCycleException
-	        {
-				Integer bookPK;
-				
-				// The primary key of the book to borrow is encoded in the context.
-				bookPK = new Integer(context[0]);
-				
-				borrowBook(bookPK, cycle);
-	        }
-	    };
-	}
-	
-	private void borrowBook(Integer bookPK, IRequestCycle cycle)
-	throws RequestCycleException
-	{
-		IOperations bean;
-		Home home;
-		Integer borrowerPK;
-		IBook book;
-		home = (Home)cycle.getPage("Home");
-
-		bean = getOperations();				
-
-		try
-		{
-			book = bean.borrowBook(bookPK, userPK);
-
-			home.setMessage("Borrowed: " + book.getTitle());
-		}
-		catch (FinderException e)
-		{
-			throw new ApplicationRuntimeException(
-				"Unable to find book or user. ", e);
-		}
-		catch (RemoteException e)
-		{
-			throw new ApplicationRuntimeException(e);
-		}
-
-		cycle.setPage(home);				
-	}
-	
-
+	 	
 	/**
 	 *  Supports construction of the external service.
 	 *
@@ -659,4 +610,26 @@ public class VirtualLibraryApplication extends SimpleApplication
         fullUserName = null;
         killSession = true;
     }
+
+    /**
+     *  Writes the userPK property.
+     *
+     */
+
+    public void writeExternal(ObjectOutput out)
+    throws IOException
+    {
+        super.writeExternal(out);
+
+        out.writeObject(userPK);
+    }
+
+    public void readExternal(ObjectInput in)
+    throws IOException, ClassNotFoundException
+    {
+        super.readExternal(in);
+
+        userPK = (Integer)in.readObject();
+    }
+                        
 }

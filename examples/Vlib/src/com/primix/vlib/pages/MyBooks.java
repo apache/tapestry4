@@ -56,14 +56,21 @@ extends Protected
 {
 	private String message;
 	
-	private IBookQuery query;
+	private IBookQuery ownedQuery;
+    private Book[] ownedBooks;
+
+    private IBookQuery borrowedQuery;
+    private Book[] borrowedBooks;
 	
 	private Book currentBook;
 	
 	public void detachFromApplication()
 	{
 		message = null;
-		query = null;
+		ownedQuery = null;
+        ownedBooks = null;
+        borrowedQuery = null;
+        borrowedBooks = null;
 		currentBook = null;
 
 		super.detachFromApplication();
@@ -73,7 +80,7 @@ extends Protected
      *  A dirty little secret of Tapestry and page recorders:  persistent
      *  properties must be set before the render (when this method is invoked)
      *  and can't change during the render.  We force
-     *  the creation of the {@link #getQuery() query property} that will
+     *  the creation of the queries that will
      *  be referenced later.
      *
      */
@@ -81,30 +88,36 @@ extends Protected
     public void beginResponse(IResponseWriter writer, IRequestCycle cycle) 
     throws RequestCycleException
     {
-        getQuery();
+        getOwnedQuery();
+        getBorrowedQuery();
     }
 
-    public void setQuery(IBookQuery value)
+    public void setOwnedQuery(IBookQuery value)
     {
-        query = value;
+        ownedQuery = value;
 
-        fireObservedChange("query", query);
+        fireObservedChange("ownedQuery", ownedQuery);
     }
 
-	/**
-	 *  Gets a reference to the book query session bean, restoring it from
-	 *  the handle if necessary, or even creating it.
-	 *
-	 */
-	 
-	public IBookQuery getQuery()
+    /**
+     *  Gets the query object responsible for the finding books owned by the user.
+     *
+     */
+
+	public IBookQuery getOwnedQuery()
 	{
+		
+		if (ownedQuery == null)
+            setOwnedQuery(getNewQuery());
+
+        return ownedQuery;
+	}
+
+    private IBookQuery getNewQuery()
+    {
 		IBookQueryHome home;
 		VirtualLibraryApplication app;
-		
-		if (query != null)
-			return query;
-		
+
 		// Create a new query.
 		
 		app = (VirtualLibraryApplication)application;
@@ -112,9 +125,7 @@ extends Protected
 			
 		try
 		{
-			query = home.create();
-
-            fireObservedChange("query", query);			
+			return home.create();
 		}
 		catch (CreateException e)
 		{
@@ -125,10 +136,23 @@ extends Protected
 			throw new ApplicationRuntimeException(e.getMessage(), e);
 		}
 		
-		return query;
 	}
 			
+    public void setBorrowedQuery(IBookQuery value)
+    {
+        borrowedQuery = value;
+
+        fireObservedChange("borrowedQuery", value);
+    }
 	
+    public IBookQuery getBorrowedQuery()
+    {
+        if (borrowedQuery == null)
+            setBorrowedQuery(getNewQuery());
+
+        return borrowedQuery;
+    }
+
 	/**
 	 *  Gets the results of the query, the list of books owned by the user.
 	 *
@@ -136,28 +160,55 @@ extends Protected
 	 		
 	public Book[] getOwnedBooks()
 	{
-		IBookQuery query;
-		int count;
-		VirtualLibraryApplication app;
+        if (ownedBooks == null)
+        {
+	        VirtualLibraryApplication app = (VirtualLibraryApplication)application;
+	        IBookQuery query;
+	        int count;
+	
+	        query = getOwnedQuery();
+	
+	        try
+	        {
+		        count = query.ownerQuery(app.getUserPK());
 		
-		query = getQuery();
-		app = (VirtualLibraryApplication)application;
-		
-		try
-		{
-			// This means that we do a new query every time we visit the page.
-			// That may not be necessary, in which case, we should
-			// do something smart about caching and cache clearing.
-			
-			count = query.ownerQuery(app.getUserPK());
-			
-			return query.get(0, count);
-		}
-		catch (RemoteException e)
-		{
-			throw new ApplicationRuntimeException("Could not find owned books: " + e, e);
-		}
+		        ownedBooks =  query.get(0, count);
+	        }
+	        catch (RemoteException e)
+	        {
+		        throw new ApplicationRuntimeException("Could not find owned books: " + e, e);
+	        }
+        }
+
+        return ownedBooks;
 	}
+
+
+    public Book[] getBorrowedBooks()
+    {
+        if (borrowedBooks == null)
+        {
+            VirtualLibraryApplication app = (VirtualLibraryApplication)application;
+            IBookQuery query;
+            int count;
+
+            query = getBorrowedQuery();
+    
+            try
+            {
+    	        count = query.borrowerQuery(app.getUserPK());
+    	
+    	        borrowedBooks =  query.get(0, count);
+            }
+            catch (RemoteException e)
+            {
+    	        throw new ApplicationRuntimeException("Could not find borrowed books: " + e, e);
+            }
+        }
+
+        return borrowedBooks;
+    }
+
 
 	/**
 	 *  Updates the currentBook dynamic page property.
@@ -254,36 +305,67 @@ extends Protected
 		};
 	}
 
-	/**
-	 *  Should the holder be displayed on the page?  Only if the holder is someone
-	 *  else than the owner.  The owner will always be the logged in user (that's
-	 *  the point of the MyBooks page).
-	 *
-	 */
-	 
-	public boolean getShowHolder()
-	{
-		Integer ownerPK;
-		Integer holderPK;
-		
-		ownerPK = currentBook.getOwnerPrimaryKey();
-		holderPK = currentBook.getHolderPrimaryKey();
-		
-		return ! ownerPK.equals(holderPK);
-	}
+    /**
+     *  Listener used to return a book.
+     *
+     */
+
+    public IDirectListener getReturnListener()
+    {
+        return new IDirectListener()
+        {
+    	    public void directTriggered(IComponent component, String[] context,
+    			    IRequestCycle cycle)
+    	    {
+                Integer bookPK;
+
+                bookPK = new Integer(context[0]);
+
+                returnBook(bookPK);
+      	    }
+        };
+    }
+
+    private void returnBook(Integer bookPK)
+    {
+        VirtualLibraryApplication app = (VirtualLibraryApplication)application;
+        IOperations operations;
+        IBook book;
+
+        operations = app.getOperations();
+
+        try
+        {
+            book = operations.returnBook(bookPK);
+
+            setMessage("Returned book: " + book.getTitle());
+        }
+        catch (FinderException ex)
+        {
+            setError("Could not return book: " + ex.getMessage());
+            return;
+        }
+        catch (RemoteException ex)
+        {
+            throw new ApplicationRuntimeException(ex);
+        }
+    }
+    
 	
  	/**
-	 *  Removes the book query bean, if the handle to the bean
-	 *  is non-null.
-	 *
+	 *  Removes the book query beans.
 	 */
 	 
  	public void cleanupPage()
  	{
 		try
 		{
-			if (query != null)
-			    query.remove();
+			if (ownedQuery != null)
+			    ownedQuery.remove();
+
+            if (borrowedQuery != null)
+                borrowedQuery.remove();
+
 		}
 		catch (RemoveException e)
 		{

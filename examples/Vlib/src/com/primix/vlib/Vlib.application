@@ -68,4 +68,8 @@
 		<alias>ShowError</alias>
 		<specification-path>/com/primix/vlib/components/ShowError.jwc</specification-path>
 	</component-alias>
+	<component-alias>
+		<alias>Borrow</alias>
+		<specification-path>/com/primix/vlib/components/Borrow.jwc</specification-path>
+	</component-alias>
 </application>

@@ -35,14 +35,12 @@ ifeq ("$(JBOSS_DIR)","")
 	before configuring jBoss.)
 endif	
 	@$(ECHO) "\n*** Installing Primix Vlib database ... ***\n"
-	$(RM) -r $(JBOSS_DIR)/db/vlib
-	$(MKDIRS) $(JBOSS_DIR)/db/vlib
-	$(CAT) jboss/vlib.tar.gz | ($(CD) $(JBOSS_DIR)/db/vlib && $(TAR) xz)
-	$(CP) jboss/vlib.properties $(JBOSS_CONF_DIR)
+	@$(CAT) jboss/vlib.tar.gz | ($(CD) $(JBOSS_DIR)/db && $(TAR) xz)
+	@$(CP) jboss/vlib.properties $(JBOSS_CONF_DIR)
 	@$(ECHO) "\n*** Splicing changes to jboss.conf ... ***\n"
-	$(call JBE_SPLICE,PrimixVlib,$(JBOSS_CONF_DIR)/jboss.conf,jboss/jboss.conf.splice)
+	@$(call JBE_SPLICE,PrimixVlib,$(JBOSS_CONF_DIR)/jboss.conf,jboss/jboss.conf.splice)
 	@$(ECHO) "\n*** Splicing changes to jboss.jcml ... ***\n"
-	$(call JBE_SPLICE,PrimixVlib,$(JBOSS_CONF_DIR)/jboss.jcml,jboss/jboss.jcml.splice, \
+	@$(call JBE_SPLICE,PrimixVlib,$(JBOSS_CONF_DIR)/jboss.jcml,jboss/jboss.jcml.splice, \
 		-before \</server\>)
 	@$(ECHO) "\n*** Setting up JNDI properties ... ***\n"
 	@$(CP) --force jboss/jndi.properties $(JBOSS_CONF_DIR)

@@ -1,3 +1,10 @@
+* Dec 26 2000 hship
+
+Add a "borrowed books" listing to the MyBooks page, with a quick button to return books to their owners.
+Add a Borrow component to create a link for borrowing a book.
+Other reorgs and cleanups.
+Provide larger (30 book) started Vlib database.
+
 * Dec 22 2000 hship
 
 Simplify some Vlib pages, now that Tapestry supports conversion between EJBObject and Handle automatically.

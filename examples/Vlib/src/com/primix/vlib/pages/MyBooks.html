@@ -1,17 +1,14 @@
 <jwc id="border">
 <!-- $Id$ -->
 
-<jwc id="ifError">
-<font color=red><jwc id="insertError"/></font>
-</jwc>
+<jwc id="showError"/>
 
 <jwc id="ifMessage">
 <p><font size=+1><jwc id="insertMessage"/></font>
 </jwc>
 
-<jwc id="e-books">
 
-<jwc id="ifFirst">
+<jwc id="ifShowOwnedBooksHeader">
 <table>
   <tr>
     <th>Title</th>
@@ -23,10 +20,12 @@
   </tr>
 </jwc>
 
+<jwc id="e-owned">
+
   <tr>
-     <td><jwc id="insertTitle"/></td>
-	 <td><jwc id="insertAuthor"/></td>
-	 <td><jwc id="insertPublisher"/></td>
+     <td><jwc id="insertOwnedTitle"/></td>
+	 <td><jwc id="insertOwnedAuthor"/></td>
+	 <td><jwc id="insertOwnedPublisher"/></td>
 	 <td>
 <jwc id="ifShowHolder">
 	<jwc id="holderLink"/>
@@ -35,12 +34,46 @@
 	 <td><jwc id="edit">[Edit]</jwc></td>
 	 <td><jwc id="delete">[Delete]</jwc></td>
   </tr>
-<jwc id="ifLast">
+
+</jwc>
+
+<jwc id="ifShowOwnedBooksTrailer">
 </table>
 </jwc>
 
+<jwc id="ifShowBorrowedBooksHeader">
+
+<hr>
+
+<p>Borrowed books:
+
+<table>
+  <tr>
+    <th>Title</th>
+	<th>Author</th>
+	<th>Publisher</th>
+	<th>Owner</th>
+	<th></th>
+
 </jwc>
 
+<jwc id="e-borrowed">
+
+  <tr>
+	<td><jwc id="bookLink"/></td>
+	<td><jwc id="insertBorrowedAuthor"/></td>
+	<td><jwc id="insertBorrowedPublisher"/></td>
+	<td><jwc id="ownerLink"/></td>
+	<td><jwc id="return">[Return]</jwc></td>
+  </tr>
+
+</jwc>
+
+<jwc id="ifShowBorrowedBooksTrailer">
+</table>
+</jwc>
+
+<p>
 <jwc id="addNewBook">[Add new Book]</jwc>
 <jwc id="editProfile">[Edit User Profile]</jwc>
 
