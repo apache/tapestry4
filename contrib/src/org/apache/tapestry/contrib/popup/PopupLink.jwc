@@ -18,7 +18,7 @@
         <binding name="features" expression="features"/>
 	</component>
 
-  	<component id="link" type="Any">
+  	<component id="link" type="Any" inherit-informal-parameters="yes">
         <binding name="element" expression='"a"'/>
         <binding name="href" expression='"javascript:" + popupFunctionName + "();"'/>
   	</component>
