@@ -26,6 +26,7 @@
 package net.sf.tapestry.form;
 
 import java.sql.Date;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.Map;
@@ -47,7 +48,8 @@ import net.sf.tapestry.RequestCycleException;
  */
 public class DatePicker extends BaseComponent
 {
-
+    private static final SimpleDateFormat JS_DATE_FORMAT = new SimpleDateFormat("MMM dd, yyyy");
+    private static final SimpleDateFormat SQL_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
     private static final String FIRST_USE_ATTRIBUTE_KEY = "net.sf.tapestry.DatePicker-first";
 
     private Date _value = new Date(System.currentTimeMillis());
@@ -55,54 +57,54 @@ public class DatePicker extends BaseComponent
     private SimpleDateFormat _dateFormat = new SimpleDateFormat("dd MMM yyyy");
     private boolean _firstTime;
 
-    public IBinding getValueBinding()
+    public String getFormat()
     {
-        return _valueBinding;
+        return _dateFormat.toPattern();
     }
 
-    public void setValueBinding(IBinding value)
+    public void setFormat(String format)
     {
-        _valueBinding = value;
+        _dateFormat = new SimpleDateFormat(format);
     }
 
-    public Date readValue()
+    /**
+     *  Return a JavaScript Date format <tt>String</tt> value "MMM, dd, yyyy"
+     * 
+     *  @return a JavaScript Date format <tt>String</tt> value []
+     * 
+     **/
+    public String getJavaScriptValue()
     {
-        return (Date) (_valueBinding.getObject());
+        return (_value != null) ? JS_DATE_FORMAT.format(_value) : "";
     }
 
-    public void updateValue(Date value)
-    {
-        _valueBinding.setObject(value);
+    public void setJavaScriptValue(String v)
+    {        
     }
 
     public String getText()
     {
-        return _dateFormat.format(_value);
+        return (_value != null) ? _dateFormat.format(_value) : "";
     }
 
     public void setText(String text)
     {
-        // ignore
-    }
-
-    /**
-     *  @return a <tt>String</tt> long value for the date
-     * 
-     **/
-    public String getLongValue()
-    {
-        return Long.toString(_value.getTime());
-    }
-
-    /**
-     *  <tt>setLongValue</tt> sets the long value of the date
-     *
-     *  @param v a <tt>String</tt> value
-     * 
-     **/
-    public void setLongValue(String v)
-    {
-        setValue(new Date(Long.parseLong(v)));
+        if (text.length() >= 6) 
+        {
+            try 
+            {
+                java.util.Date date = _dateFormat.parse(text);    
+                setValue(Date.valueOf(SQL_DATE_FORMAT.format(date)));
+            }
+            catch (ParseException pe)
+            {
+                setValue(null);    
+            }
+        }
+        else
+        {
+            setValue(null);    
+        }
     }
 
     public Date getValue()
@@ -113,17 +115,17 @@ public class DatePicker extends BaseComponent
     public void setValue(Date value)
     {
         _value = value;
-        updateValue(_value);
+        _valueBinding.setObject(value);
     }
 
-    public void setFormat(String format)
+    public IBinding getValueBinding()
     {
-        _dateFormat = new SimpleDateFormat(format);
+        return _valueBinding;
     }
 
-    public String getFormat()
+    public void setValueBinding(IBinding value)
     {
-        return _dateFormat.toPattern();
+        _valueBinding = value;
     }
 
     /**
