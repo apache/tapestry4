@@ -235,7 +235,7 @@ public class ComponentClassFactory
         {
             try
             {
-                String typeName = translateClassName(type, true);
+                String typeName = translateClassName(type);
                 result = _resolver.findClass(typeName);
             }
             catch (Exception ex)
@@ -252,27 +252,33 @@ public class ComponentClassFactory
         return result;
     }
 
-    // this method and its static Map should go into a utility class somewhere  
-    protected String translateClassName(String type, boolean toplevel)
+    /**
+     *  Translates types from standard Java format to Java VM format.
+     *  For example, java.util.Locale remains java.util.Locale, but
+     *  int[][] is translated to [[I and java.lang.Object[] to 
+     *  [Ljava.lang.Object;   
+     *  This method and its static Map should go into a utility class
+     */   
+    protected String translateClassName(String type)
     {
-        // if it is an array name reformat it in the way Java expects it
-        if (type.endsWith("[]")) {
-            String subtype = type.substring(0, type.length() - 2);
-            return "[" + translateClassName(subtype, false); 
-        }
-        
-        // if not an array and at the top level of the recursion, 
-        // return the type as it is  
-        if (toplevel) 
+        // if it is not an array, just return the type itself
+        if (!type.endsWith("[]"))
             return type;
 
-        // test for a primitive type
+        // if it is an array, convert it to JavaVM-style format
+        StringBuffer javaType = new StringBuffer(); 
+        while (type.endsWith("[]")) {
+            javaType.append("[");
+            type = type.substring(0, type.length() - 2);
+        }
+        
         String primitiveIdentifier = (String) _primitiveTypes.get(type); 
         if (primitiveIdentifier != null)
-            return primitiveIdentifier;
-        
-        // a normal java class 
-        return "L" + type + ";";
+            javaType.append(primitiveIdentifier);
+        else
+            javaType.append("L" + type + ";");
+
+        return javaType.toString();
     }
 
     protected void checkPropertyType(PropertyDescriptor pd, Class propertyType, ILocation location)
@@ -533,6 +539,5 @@ public class ComponentClassFactory
         }
         return _enhancedClass;
     }
-
 
 }
