@@ -1,3 +1,8 @@
+* Oct 13 2000 hship
+
+Reorganized how Body and Rollover components work together, slightly, so that less Javascript
+has to be stored in memory during the rendering of the Body's wrapped elements.
+
 * Oct 11 2000 hship
 
 Change the interface for IPage and IComponent to allow a no-arguments constructor, and deprecate

@@ -44,10 +44,23 @@ import java.util.*;
 
 public class Body extends AbstractComponent
 {
+    // Lines related to image initialization
 	private List imageLines;
+	
+    // Unique id number, used for naming DOM items in the HTML.
+
 	private int uniqueId;
-	private List otherScript;
-    private List otherInitialization;
+
+    // Lines that belong inside the onLoad event handler for the <body> tag.
+	private List otherInitialization;
+
+    // The writer initially passed to render() ... wrapped elements render
+    // into a nested response writer.
+
+    private IResponseWriter outerWriter;
+       
+    // Set to true when the script element is first opened.
+    private boolean openScript;
 
 	private static final String ATTRIBUTE_NAME = 
 		"com.primix.tapestry.components.Body";
@@ -93,8 +106,7 @@ public class Body extends AbstractComponent
 	/**
 	 *  Adds additional scripting code to the page.  This code
 	 *  will be added to a large block of scripting code at the
-	 *  end of the page (i.e., the end of the <code>Body</code>'s
-	 *  contribution).
+	 *  top of the page (i.e., the before the &lt;body&gt; tag).
 	 *
 	 *  <p>This is typically used to add some form of JavaScript
 	 *  event handler to a page.  For example, the
@@ -113,10 +125,10 @@ public class Body extends AbstractComponent
 	 
 	public void addOtherScript(String script)
 	{
-		if (otherScript == null)
-			otherScript = new ArrayList();
-		
-		otherScript.add(script);
+        if (!openScript)
+            startScript();
+
+        outerWriter.printRaw(script);
 	}
 		
 	 
@@ -168,6 +180,8 @@ public class Body extends AbstractComponent
 		imageLines = null;
         otherInitialization = null;
 		uniqueId = 0;
+		outerWriter = writer;
+        openScript = false;
 
 		try
 		{
@@ -175,9 +189,11 @@ public class Body extends AbstractComponent
 
 			renderWrapped(nested, cycle);
 
-			// Write the script (i.e., just before the <body> tag.
+			// Write the script (i.e., just before the <body> tag).
+            // If an onLoad event handler was needed, its name is
+            // returned.
 			
-			onLoadName = writeScript(writer);
+			onLoadName = writeScript();
 			
 			// Start the body tag.
 			
@@ -198,17 +214,43 @@ public class Body extends AbstractComponent
 		finally
 		{
 			imageLines = null;
-			otherScript = null;
-            otherInitialization = null;
+			otherInitialization = null;
+            outerWriter = null;
+            openScript = false;
 		}
 
 	}
 
+    private void startScript()
+    {
+	    outerWriter.begin("script");
+	    outerWriter.attribute("language", "javascript");
+
+	    outerWriter.printRaw("<!--\n");
+
+        openScript = true;
+    }
+
+    private void endScript()
+    {
+        if (openScript)
+        {
+            // Now, close the HTML comment (used to fake out archaic browsers) and
+            // the <script> element.`
+
+            outerWriter.printRaw("\n\n// -->");
+        
+            outerWriter.end(); // <script>
+        }
+
+        openScript = false;
+    }
+
+
 	/**
 	*  Writes a script that initializes any images and calls any
 	*  additional JavaScript functions, as set by {@link
-	*  #addImageInitialization(String, String)} and {@link
-	*  #addOtherScript(String)}.
+	*  #addImageInitialization(String, String)}.
 	*
     *  <p>The script is written just before the &lt;body&gt; tag.
     *
@@ -219,81 +261,58 @@ public class Body extends AbstractComponent
 	*/
 
 
-	protected String writeScript(IResponseWriter writer)
+	protected String writeScript()
 	{
 		Iterator i;
         String result = null;
 
-		// Write no script if there's no tapestry images or
-		// other script initializations.
-		
-		if (imageLines == null && 
-		    otherScript == null && 
-		    otherInitialization == null)
-			return null;
-
-        writer.begin("script");
-        writer.attribute("language", "javascript");
-
-        writer.printRaw("<!--\n\n");
-
-		if (imageLines != null)
-        {
-
-			writer.printRaw("  var tapestry_preload = new Array();\n" +
-			                "  if (document.images)\n" +
-	                        "  {\n");
-
-			i = imageLines.iterator();
-			while (i.hasNext())
-			{
-				writer.printRaw("    ");
-				writer.printRaw((String)i.next());
-				writer.printRaw(";\n");
-			}
-
-			writer.printRaw("  }");
-		}
-
-
-		// If there are other scripts (from Rollovers, or whatever),
-		// emit them now.
-		
-		if (otherScript != null)
-		{
-			i = otherScript.iterator();
-			while (i.hasNext())
-			{
-				writer.printRaw("\n\n");
-				writer.printRaw((String)i.next());
-			}
-		}
-
         if (otherInitialization != null)
         {
+            if (!openScript)
+                startScript();
+
             result = "onLoad_" + getIdPath().replace('.', '_');
 
-            writer.printRaw("\n\n" +
-                            "  function " + result + "()\n" +
-                            "  {\n");
+            outerWriter.printRaw("\n\n" +
+                            "function " + result + "()\n" +
+                            "{\n");
 
             i = otherInitialization.iterator();
             while (i.hasNext())
             {
-                writer.printRaw("    ");
-                writer.printRaw((String)i.next());
-                writer.printRaw(";\n");
+                outerWriter.printRaw("  ");
+                outerWriter.printRaw((String)i.next());
+                outerWriter.printRaw(";\n");
             }
 
-            writer.printRaw("  }");
+            outerWriter.printRaw("}");
         }
 
-		// Now, close the HTML comment (used to fake out archaic browsers) and
-		// the <script> element.`
+        // Write no script if there's no tapestry images or
+        // other script initializations.
+        
+        if (imageLines != null)
+        {
+            if (!openScript)
+                startScript();
 
-		writer.printRaw("\n\n// -->");
-		
-		writer.end(); // <script>
+        	outerWriter.printRaw("\n\n" +
+        	    "var tapestry_preload = new Array();\n" +
+                "if (document.images)\n" +
+                "{\n");
+
+        	i = imageLines.iterator();
+        	while (i.hasNext())
+        	{
+        		outerWriter.printRaw("  ");
+        		outerWriter.printRaw((String)i.next());
+        		outerWriter.printRaw(";\n");
+        	}
+
+        	outerWriter.printRaw("}");
+        }
+
+        endScript();
 
         return result;
 	}
