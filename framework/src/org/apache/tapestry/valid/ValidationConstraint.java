@@ -125,6 +125,16 @@ public class ValidationConstraint extends Enum
     public static final ValidationConstraint TOO_LARGE = new ValidationConstraint("TOO_LARGE");
 
     /**
+     *  Indicates an error in a string that does not fulfill a pattern.
+     * 
+     *  @since 3.0
+     * 
+     **/
+
+    public static final ValidationConstraint PATTERN_MISMATCH =
+        new ValidationConstraint("PATTERN_MISMATCH");
+
+    /**
      *  Indicates a consistency error, usually between too different fields.
      * 
      *  @since 3.0
