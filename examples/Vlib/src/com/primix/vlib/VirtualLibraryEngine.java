@@ -62,14 +62,8 @@ import javax.servlet.http.HttpSession;
 public class VirtualLibraryEngine
 	extends SimpleEngine
 {
-	public VirtualLibraryEngine()
-	{
-		super();
-		
-		debugEnabled = Boolean.getBoolean("com.primix.vlib.debug-enabled");
-	}
-	
-	private transient boolean debugEnabled;
+	private static boolean debugEnabled
+		= Boolean.getBoolean("com.primix.vlib.debug-enabled");
 	
     private transient boolean killSession;
 	
