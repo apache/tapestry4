@@ -1682,7 +1682,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
     public DataSqueezer createDataSqueezer()
     {
-        return new DataSqueezer();
+        return new DataSqueezer(_resolver);
     }
 
     /**

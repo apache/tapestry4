@@ -41,6 +41,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 
 import net.sf.tapestry.spec.ComponentSpecification;
+import net.sf.tapestry.util.AdaptorRegistry;
 import net.sf.tapestry.util.Decorator;
 import net.sf.tapestry.util.StringSplitter;
 import net.sf.tapestry.util.prop.IPublicBean;
@@ -81,7 +82,7 @@ public final class Tapestry
      * 
      **/
 
-    private static ResourceBundle strings;
+    private static ResourceBundle _strings;
 
     /**
      *  A {@link Map} that links Locale names (as in {@link Locale#toString()} to
@@ -90,13 +91,13 @@ public final class Tapestry
      *
      **/
 
-    private static final Map localeMap = new HashMap();
+    private static final Map _localeMap = new HashMap();
 
     static {
         Locale[] locales = Locale.getAvailableLocales();
         for (int i = 0; i < locales.length; i++)
         {
-            localeMap.put(locales[i].toString(), locales[i]);
+            _localeMap.put(locales[i].toString(), locales[i]);
         }
     }
 
@@ -105,13 +106,13 @@ public final class Tapestry
     }
 
     /**
-     *  A {@link Decorator} used to coerce arbitrary objects
+     *  A {@link net.sf.tapestry.util.AdaptorRegistry} used to coerce arbitrary objects
      *  to boolean values.
      *
      *  @see #evaluateBoolean(Object)
      **/
 
-    private static final Decorator booleanDecorator = new Decorator();
+    private static final AdaptorRegistry _booleanAdaptors = new AdaptorRegistry();
 
     private static abstract class BoolAdaptor
     {
@@ -181,14 +182,14 @@ public final class Tapestry
     }
 
     static {
-        booleanDecorator.register(Boolean.class, new BooleanAdaptor());
-        booleanDecorator.register(Number.class, new NumberAdaptor());
-        booleanDecorator.register(Collection.class, new CollectionAdaptor());
-        booleanDecorator.register(String.class, new StringAdaptor());
+        _booleanAdaptors.register(Boolean.class, new BooleanAdaptor());
+        _booleanAdaptors.register(Number.class, new NumberAdaptor());
+        _booleanAdaptors.register(Collection.class, new CollectionAdaptor());
+        _booleanAdaptors.register(String.class, new StringAdaptor());
 
         // Register a default, catch-all adaptor.
 
-        booleanDecorator.register(Object.class, new BoolAdaptor()
+        _booleanAdaptors.register(Object.class, new BoolAdaptor()
         {
             public boolean coerce(Object value)
             {
@@ -198,12 +199,12 @@ public final class Tapestry
     }
 
     /**
-     *  {@link Decorator} used to extract an {@link Iterator} from
+     *  {@link AdaptorRegistry} used to extract an {@link Iterator} from
      *  an arbitrary object.
      *
      **/
 
-    private static Decorator iteratorDecorator = new Decorator();
+    private static AdaptorRegistry _iteratorAdaptors = new AdaptorRegistry();
 
     private abstract static class IteratorAdaptor
     {
@@ -216,7 +217,7 @@ public final class Tapestry
     }
 
     static {
-        iteratorDecorator.register(Iterator.class, new IteratorAdaptor()
+        _iteratorAdaptors.register(Iterator.class, new IteratorAdaptor()
         {
             public Iterator coerce(Object value)
             {
@@ -224,7 +225,7 @@ public final class Tapestry
             }
         });
 
-        iteratorDecorator.register(Collection.class, new IteratorAdaptor()
+        _iteratorAdaptors.register(Collection.class, new IteratorAdaptor()
         {
             public Iterator coerce(Object value)
             {
@@ -237,7 +238,7 @@ public final class Tapestry
             }
         });
 
-        iteratorDecorator.register(Object.class, new IteratorAdaptor()
+        _iteratorAdaptors.register(Object.class, new IteratorAdaptor()
         {
             public Iterator coerce(Object value)
             {
@@ -341,7 +342,7 @@ public final class Tapestry
             return array.length > 0;
         }
 
-        BoolAdaptor adaptor = (BoolAdaptor) booleanDecorator.getAdaptor(valueClass);
+        BoolAdaptor adaptor = (BoolAdaptor) _booleanAdaptors.getAdaptor(valueClass);
 
         return adaptor.coerce(value);
     }
@@ -381,7 +382,7 @@ public final class Tapestry
             return l.iterator();
         }
 
-        IteratorAdaptor adaptor = (IteratorAdaptor) iteratorDecorator.getAdaptor(valueClass);
+        IteratorAdaptor adaptor = (IteratorAdaptor) _iteratorAdaptors.getAdaptor(valueClass);
 
         return adaptor.coerce(value);
     }
@@ -398,9 +399,9 @@ public final class Tapestry
     {
         Locale result = null;
 
-        synchronized (localeMap)
+        synchronized (_localeMap)
         {
-            result = (Locale) localeMap.get(s);
+            result = (Locale) _localeMap.get(s);
         }
 
         if (result == null)
@@ -430,9 +431,9 @@ public final class Tapestry
                     throw new IllegalArgumentException("Unable to convert '" + s + "' to a Locale.");
             }
 
-            synchronized (localeMap)
+            synchronized (_localeMap)
             {
-                localeMap.put(s, result);
+                _localeMap.put(s, result);
             }
 
         }
@@ -474,10 +475,10 @@ public final class Tapestry
 
     public static String getString(String key, Object[] args)
     {
-        if (strings == null)
-            strings = ResourceBundle.getBundle("net.sf.tapestry.TapestryStrings");
+        if (_strings == null)
+            _strings = ResourceBundle.getBundle("net.sf.tapestry.TapestryStrings");
 
-        String pattern = strings.getString(key);
+        String pattern = _strings.getString(key);
 
         if (args == null)
             return pattern;
