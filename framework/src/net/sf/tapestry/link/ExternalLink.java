@@ -64,36 +64,20 @@ public class ExternalLink extends GestureLink
 
     protected Object[] getServiceParameters(IRequestCycle cycle)
     {
-        Object[] serviceParameters = null;
+        Object[] pageParameters = DirectLink.constructServiceParameters(_parameters);
         
-        if (_parameters == null) 
-        {
-            serviceParameters = new Object[] { _targetPage };
-        } 
-        else  if (_parameters instanceof Object[]) 
-        {
-            Object[] parameters = (Object[]) _parameters;
-            
-            serviceParameters =  new Object[parameters.length + 1];           
-            serviceParameters[0] = _targetPage;
-    
-            System.arraycopy(parameters, 0, serviceParameters, 1, parameters.length);
-        } 
-        else if (_parameters instanceof List)
-        {
-            List serviceList = new ArrayList();
-            serviceList.add(_targetPage);
-            serviceList.addAll((List) _parameters);
-            serviceParameters = serviceList.toArray();
-        }
-        else 
-        {
-            serviceParameters = new Object[] { _targetPage, _parameters };
-        }
-
-        return serviceParameters;        
+        if (pageParameters == null)
+        return new Object[] { _targetPage  };
+        
+        Object[] parameters = new Object[pageParameters.length + 1];
+        
+        parameters[0] = _targetPage;
+        
+        System.arraycopy(pageParameters, 0, parameters, 1, pageParameters.length);
+        
+        return parameters;
     }
-
+        
     public Object getParameters()
     {
         return _parameters;
