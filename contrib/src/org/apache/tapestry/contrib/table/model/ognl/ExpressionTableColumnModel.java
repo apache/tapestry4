@@ -67,7 +67,7 @@ public class ExpressionTableColumnModel extends SimpleTableColumnModel
     /**
      * Constructs a table column model containting OGNL expression columns. <br>
      * The data for the columns is provided in the form of a string array,
-     * where the info of each column is stored in two consequtive fields in 
+     * where the info of each column is stored in two consecutive fields in
      * the array, hence its size must be even. The expected info is the following:
      * <ul>
      *   <li> Column Name
@@ -84,7 +84,7 @@ public class ExpressionTableColumnModel extends SimpleTableColumnModel
     /**
      * Constructs a table column model containting OGNL expression columns. <br>
      * The data for the columns is provided in the form of a string array,
-     * where the info of each column is stored in four consequtive fields in 
+     * where the info of each column is stored in four consecutive fields in
      * the array, hence its size must be divisible by 4. <br>
      * The expected info is the following:
      * <ul>
