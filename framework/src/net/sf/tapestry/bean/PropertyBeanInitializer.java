@@ -47,7 +47,7 @@ import ognl.OgnlException;
 
 public class PropertyBeanInitializer extends AbstractBeanInitializer
 {
-    private String _expression;
+    protected String _expression;
 
     public PropertyBeanInitializer(String propertyName, String expression)
     {

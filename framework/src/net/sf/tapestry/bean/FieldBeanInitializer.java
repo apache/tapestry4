@@ -43,8 +43,8 @@ import net.sf.tapestry.Tapestry;
 
 public class FieldBeanInitializer extends AbstractBeanInitializer
 {
-    private String _fieldName;
-    private Object _fieldValue;
+    protected String _fieldName;
+    protected Object _fieldValue;
     private boolean _fieldResolved = false;
 
     public FieldBeanInitializer(String propertyName, String fieldName)

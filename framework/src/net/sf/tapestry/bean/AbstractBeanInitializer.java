@@ -43,7 +43,7 @@ import ognl.OgnlException;
 
 abstract public class AbstractBeanInitializer implements IBeanInitializer
 {
-    private String _propertyName;
+    protected String _propertyName;
 
     public AbstractBeanInitializer(String propertyName)
     {
