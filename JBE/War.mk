@@ -47,9 +47,13 @@ default: war
 include $(SYS_MAKEFILE_DIR)/ModuleRules.mk
 
 module-initialize:
-	@$(MKDIRS) $(MOD_CLASS_DIR) $(WAR_LIB_DIR) $(MOD_META_INF_DIR)
+	@$(MKDIRS) $(MOD_CLASS_DIR) $(MOD_META_INF_DIR) $(WAR_LIB_DIR)
 
-war: $(JAR_FILE)
+war: setup-catalogs
+	@$(RECURSE) POST_SETUP=t inner-war
+
+inner-war: $(JAR_FILE)
+	@$(TOUCH) $(DUMMY_FILE)
 
 $(MOD_DIRTY_JAR_STAMP_FILE): $(WAR_CONTEXT_STAMP_FILE) $(WAR_LIB_STAMP_FILE) $(WAR_WEB_INF_STAMP_FILE)
 
@@ -115,7 +119,7 @@ else
 $(WAR_CONTEXT_STAMP_FILE):
 endif
 
-.PHONY: default war
+.PHONY: default war inner-war
 
 
 

@@ -56,7 +56,11 @@ JBOSS_DEPLOY_DIR := $(JBOSS_DIR)/deploy
 
 DEPLOY_JAR := $(JBOSS_DEPLOY_DIR)/$(JAR_FILE)
 
-deploy: $(DEPLOY_JAR)
+deploy: setup-catalogs
+	@$(RECURSE) POST_SETUP=t inner-deploy
+	
+inner-deploy: $(DEPLOY_JAR)
+	@$(TOUCH) $(DUMMY_FILE)
 
 $(DEPLOY_JAR): $(JAR_FILE)
 	@$(ECHO) "\n*** Deploying $(JAR_FILE) ... ***\n"
@@ -68,3 +72,5 @@ $(DEPLOY_JAR): $(JAR_FILE)
 
 run-ejx:
 	$(CD) $(JBOSS_DIR)/bin ; $(JAVA) -jar ejx.jar 
+
+.PHONY: deploy inner-deploy
