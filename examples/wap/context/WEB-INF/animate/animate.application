@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE application PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+
+<application name="Animate Wap Example" engine-class="org.apache.tapestry.wml.WMLEngine">
+
+    <property name="org.apache.tapestry.template-extension" value="wml"/>
+
+    <library id="wml" specification-path="/org/apache/tapestry/wml/WML.library"/>
+
+</application>
