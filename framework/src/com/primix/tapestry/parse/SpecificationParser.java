@@ -654,6 +654,12 @@ implements ErrorHandler, EntityResolver
 				convertBinding(contained, child, BindingType.INHERITED, "parameter-name");
 				continue;
 			}
+
+            if (isElement(child, "field-binding"))
+            {
+                convertBinding(contained, child, BindingType.FIELD, "field-name");
+                continue;
+            }
 		}
 	}
 	
@@ -796,7 +802,7 @@ implements ErrorHandler, EntityResolver
 
 	/**
 	 *  Returns the value of an {@link Element} node.  That is, all the {@link Text}
-	 *  nodes appended together.
+	 *  nodes appended together.  Invokes trim() to remove leading and trailing spaces.
 	 *
 	 */
 	 
@@ -818,7 +824,7 @@ implements ErrorHandler, EntityResolver
 			buffer.append(text.getData());
 		}
 		
-		result = buffer.toString();
+		result = buffer.toString().trim();
 		buffer.setLength(0);
 		
 		return result;

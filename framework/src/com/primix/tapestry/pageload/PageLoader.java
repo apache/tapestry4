@@ -144,12 +144,7 @@ public class PageLoader
 			type = bspec.getType();
 			bindingValue = bspec.getValue();
 
-			if (type == BindingType.STATIC)
-				binding = new StaticBinding(bindingValue);
-			else if (type == BindingType.DYNAMIC)
-				binding = new PropertyBinding(container, bindingValue);
-			else
-				binding = container.getBinding(bindingValue);		
+            binding = convert(type, bindingValue, container);
 
 			if (binding != null)
 				component.setBinding(name, binding);
@@ -175,6 +170,25 @@ public class PageLoader
 
 	}
     
+    private IBinding convert(BindingType type, String bindingValue,
+            IComponent container)
+    {
+        if (type == BindingType.DYNAMIC)
+    	    return new PropertyBinding(container, bindingValue);
+
+        if (type == BindingType.STATIC)
+    	    return new StaticBinding(bindingValue);
+
+        if (type == BindingType.FIELD)
+            return new FieldBinding(resolver, bindingValue);
+
+        // Otherwise, its an inherited binding.  Dig it out of the container.
+        // This may return null if the container doesn't have the named binding.
+
+    	return  container.getBinding(bindingValue);		
+
+    }
+
 	/**
 	*  Sets up a component.  This involves:
 	*  <ul>

@@ -1,31 +1,22 @@
 <?xml version="1.0"?>
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
-	"http://tapestry.primix.com/dtd/Tapestry_1_0.dtd">
-	
+	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
 <specification>
 	<class>com.primix.tapestry.BaseComponent</class>
-	
 	<allow-body>no</allow-body>
-		
 	<parameters>
 		<allow-informal-parameters>no</allow-informal-parameters>
-
-
 		<!-- Actually, com.primix.foundation.exception.ExceptionDescription[] -->
-		
 		<parameter>
 			<name>exceptions</name>
 			<required>yes</required>
 		</parameter>
 	</parameters>
-	
 	<components>
-		
 		<component>
 			<id>e-exception</id>
 			<type>Foreach</type>
-			
 			<bindings>
 				<inherited-binding>
 					<name>source</name>
@@ -33,11 +24,9 @@
 				</inherited-binding>
 			</bindings>
 		</component>
-			
 		<component>
 			<id>insertClass</id>
 			<type>Insert</type>
-			
 			<bindings>
 				<binding>
 					<name>value</name>
@@ -45,11 +34,9 @@
 				</binding>
 			</bindings>
 		</component>
-		
 		<component>
 			<id>insertMessage</id>
 			<type>Insert</type>
-			
 			<bindings>
 				<binding>
 					<name>value</name>
@@ -57,11 +44,9 @@
 				</binding>
 			</bindings>
 		</component>
-		
 		<component>
 			<id>e-property</id>
 			<type>Foreach</type>
-			
 			<bindings>
 				<binding>
 					<name>source</name>
@@ -69,11 +54,9 @@
 				</binding>
 			</bindings>
 		</component>
-
 		<component>
 			<id>insertPropertyName</id>
 			<type>Insert</type>
-			
 			<bindings>
 				<binding>
 					<name>value</name>
@@ -81,11 +64,9 @@
 				</binding>
 			</bindings>
 		</component>
-		
 		<component>
 			<id>insertPropertyValue</id>
 			<type>Insert</type>
-			
 			<bindings>
 				<binding>
 					<name>value</name>
@@ -93,11 +74,9 @@
 				</binding>
 			</bindings>
 		</component>
-
 		<component>
 			<id>ifLast</id>
 			<type>Conditional</type>
-			
 			<bindings>
 				<binding>
 					<name>condition</name>
@@ -105,30 +84,24 @@
 				</binding>
 			</bindings>
 		</component>
-		
 		<component>
 			<id>ifNotLast</id>
 			<type>Conditional</type>
-			
 			<bindings>
 				<binding>
 					<name>condition</name>
 					<property-path>components.e-exception.last</property-path>
 				</binding>
-				
-				<static-binding>
+				<field-binding>
 					<name>invert</name>
-					<value>true</value>
-				</static-binding>
+					<field-name>Boolean.TRUE</field-name>
+				</field-binding>
 			</bindings>
 		</component>
-
 		<!-- The stack is only traced for the last (deepest) exception. -->
-		
 		<component>
 			<id>e-stack</id>
 			<type>Foreach</type>
-			
 			<bindings>
 				<binding>
 					<name>source</name>
@@ -136,17 +109,15 @@
 				</binding>
 			</bindings>
 		</component>
-			
 		<component>
 			<id>insertStackTrace</id>
 			<type>Insert</type>
-			
 			<bindings>
 				<binding>
 					<name>value</name>
 					<property-path>components.e-stack.value</property-path>
 				</binding>
 			</bindings>
-		</component>	
+		</component>
 	</components>
 </specification>

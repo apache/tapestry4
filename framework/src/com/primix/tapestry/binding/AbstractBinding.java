@@ -156,6 +156,47 @@ public abstract class AbstractBinding implements IBinding
 	}
 
 	/**
+	*  @throws ReadOnlyBindingException always.
+	*
+	*/
+
+	public void setBoolean(boolean value) throws ReadOnlyBindingException
+	{
+		throw new ReadOnlyBindingException(this);
+	}
+
+	/**
+	*  @throws ReadOnlyBindingException always.
+	*
+	*/
+
+	public void setInt(int value) throws ReadOnlyBindingException
+	{
+		throw new ReadOnlyBindingException(this);
+	}
+
+	/**
+	*  @throws ReadOnlyBindingException always.
+	*
+	*/
+
+	public void setString(String value) throws ReadOnlyBindingException
+	{
+		throw new ReadOnlyBindingException(this);
+	}
+
+	/**
+	*  @throws ReadOnlyBindingException always.
+	*
+	*/
+
+
+	public void setValue(Object value) throws ReadOnlyBindingException
+	{
+		throw new ReadOnlyBindingException(this);
+	}
+
+	/**
 	*  Default implementation: returns false.
 	*
 	*/
