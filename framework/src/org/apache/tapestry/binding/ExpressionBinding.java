@@ -57,6 +57,8 @@ package org.apache.tapestry.binding;
 
 import java.util.Map;
 
+import ognl.Ognl;
+import ognl.OgnlException;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IResourceResolver;
@@ -66,8 +68,6 @@ import org.apache.tapestry.spec.BeanLifecycle;
 import org.apache.tapestry.spec.BeanSpecification;
 import org.apache.tapestry.util.StringSplitter;
 import org.apache.tapestry.util.prop.OgnlUtils;
-import ognl.Ognl;
-import ognl.OgnlException;
 
 /**
  *  Implements a dynamic binding, based on getting and fetching
@@ -312,7 +312,14 @@ public class ExpressionBinding extends AbstractBinding
 
         _initialized = true;
 
-        _parsedExpression = OgnlUtils.getParsedExpression(_expression);
+        try
+        {
+            _parsedExpression = OgnlUtils.getParsedExpression(_expression);
+        }
+        catch (Exception ex)
+        {
+            throw new BindingException(ex.getMessage(), this, ex);
+        }
 
         if (checkForConstant())
             return;
@@ -546,7 +553,7 @@ public class ExpressionBinding extends AbstractBinding
         initialize();
 
         if (_invariant)
-                  throw createReadOnlyBindingException(this);
+            throw createReadOnlyBindingException(this);
 
         try
         {

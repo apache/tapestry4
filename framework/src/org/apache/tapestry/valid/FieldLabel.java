@@ -56,7 +56,7 @@
 package org.apache.tapestry.valid;
 
 import org.apache.tapestry.AbstractComponent;
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
@@ -95,18 +95,26 @@ public abstract class FieldLabel extends AbstractComponent
         IFormComponent field = getField();
         String displayName = getDisplayName();
 
-        String finalDisplayName = (displayName != null) ? displayName : field.getDisplayName();
+        if (displayName == null)
+        {
+            if (field == null)
+                throw Tapestry.createRequiredParameterException(this, "field");
 
-        if (finalDisplayName == null)
-            throw new ApplicationRuntimeException(
+            displayName = field.getDisplayName();
+        }
+
+        if (displayName == null)
+            throw new BindingException(
                 Tapestry.getString("FieldLabel.no-display-name", field.getExtendedId()),
-                this);
+                this,
+                getBinding("field"),
+                null);
 
         IValidationDelegate delegate = Form.get(cycle).getDelegate();
 
         delegate.writeLabelPrefix(field, writer, cycle);
 
-        writer.print(finalDisplayName);
+        writer.print(displayName);
 
         delegate.writeLabelSuffix(field, writer, cycle);
     }

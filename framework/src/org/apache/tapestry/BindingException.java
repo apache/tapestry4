@@ -84,7 +84,21 @@ public class BindingException extends ApplicationRuntimeException
         IBinding binding,
         Throwable rootCause)
     {
-        super(message, component, binding.getLocation(), rootCause);
+        this(message, component, null, binding, rootCause);
+    }
+
+    public BindingException(
+        String message,
+        IComponent component,
+        Location location,
+        IBinding binding,
+        Throwable rootCause)
+    {
+        super(
+            message,
+            component,
+            Tapestry.findLocation(new Object[] { location, binding, component }),
+            rootCause);
 
         _binding = binding;
     }
