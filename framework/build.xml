@@ -39,8 +39,8 @@
 		<ibiblio-dependency artifact="commons-fileupload" version="1.0"                 group="commons-fileupload"/>    
     <ibiblio-dependency artifact="commons-lang"       version="2.0"                 group="commons-lang"/>
     <ibiblio-dependency artifact="commons-logging"    version="1.0.4"               group="commons-logging"/>
-    <ibiblio-dependency artifact="hivemind"           version="1.0-rc-1"            group="hivemind"/>
-    <ibiblio-dependency artifact="hivemind-lib"       version="1.0-rc-1"            group="hivemind"/>
+    <ibiblio-dependency artifact="hivemind"           version="1.0-rc-2-snapshot"   group="hivemind"/>
+    <ibiblio-dependency artifact="hivemind-lib"       version="1.0-rc-2-snapshot"   group="hivemind"/>
     <ibiblio-dependency artifact="oro"                version="2.0.6"               group="oro"/>
 		<ibiblio-dependency artifact="javassist"          version="2.6"                 group="jboss"/>
 		<ibiblio-dependency artifact="servletapi"         version="2.3"                 group="servletapi"/>

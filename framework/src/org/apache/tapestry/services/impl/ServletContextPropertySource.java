@@ -12,34 +12,30 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.services;
+package org.apache.tapestry.services.impl;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServlet;
 
-import org.apache.tapestry.spec.IApplicationSpecification;
+import org.apache.tapestry.engine.IPropertySource;
 
 /**
- * A "global" holder for the servlet, servlet context and application specification.
- * 
+ * Searches for property values in the servlet context's init parameters.
+ *
  * @author Howard Lewis Ship
  * @since 3.1
  */
-public interface ApplicationGlobals
+public class ServletContextPropertySource implements IPropertySource
 {
-    /**
-     * Invoked by the servlet at init(), after parsing the application specification.
-     */
-    void store(HttpServlet servlet, IApplicationSpecification applicationSpecification);
+    private ServletContext _context;
 
-    HttpServlet getServlet();
+    public String getPropertyValue(String propertyName)
+    {
+        return _context.getInitParameter(propertyName);
+    }
 
-    IApplicationSpecification getSpecification();
+    public void setContext(ServletContext context)
+    {
+        _context = context;
+    }
 
-    ServletContext getContext();
-    
-    String getServletName();
-    
-    ServletConfig getServletConfig();
 }

@@ -28,13 +28,13 @@ import java.util.StringTokenizer;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tapestry.ApplicationServlet;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
@@ -112,10 +112,11 @@ public class RequestContext implements IRender
     private HttpSession _session;
     private HttpServletRequest _request;
     private HttpServletResponse _response;
-    private ApplicationServlet _servlet;
+    private HttpServlet _servlet;
     private DecodedRequest _decodedRequest;
     private IMultipartDecoder _decoder;
     private boolean _decoded;
+    private IApplicationSpecification _specification;
 
     /**
      * A mapping of the cookies available in the request.
@@ -137,14 +138,16 @@ public class RequestContext implements IRender
      **/
 
     public RequestContext(
-        ApplicationServlet servlet,
+        HttpServlet servlet,
         HttpServletRequest request,
-        HttpServletResponse response)
+        HttpServletResponse response,
+        IApplicationSpecification specification)
         throws IOException
     {
         _servlet = servlet;
         _request = request;
         _response = response;
+        _specification = specification;
 
         // All three parameters may be null if created from
         // AbstractEngine.cleanupEngine().
@@ -176,14 +179,12 @@ public class RequestContext implements IRender
      **/
 
     protected IMultipartDecoder obtainMultipartDecoder(
-        ApplicationServlet servlet,
+        HttpServlet servlet,
         HttpServletRequest request)
         throws IOException
     {
-        IApplicationSpecification spec = servlet.getApplicationSpecification();
-
-        if (spec.checkExtension(Tapestry.MULTIPART_DECODER_EXTENSION_NAME))
-            return (IMultipartDecoder) spec.getExtension(
+        if (_specification.checkExtension(Tapestry.MULTIPART_DECODER_EXTENSION_NAME))
+            return (IMultipartDecoder) _specification.getExtension(
                 Tapestry.MULTIPART_DECODER_EXTENSION_NAME,
                 IMultipartDecoder.class);
 
@@ -235,14 +236,13 @@ public class RequestContext implements IRender
         if (_decodedRequest != null)
             return _decodedRequest;
 
-        IApplicationSpecification spec = _servlet.getApplicationSpecification();
         IRequestDecoder decoder = null;
 
-        if (!spec.checkExtension(Tapestry.REQUEST_DECODER_EXTENSION_NAME))
+        if (!_specification.checkExtension(Tapestry.REQUEST_DECODER_EXTENSION_NAME))
             decoder = new DefaultRequestDecoder();
         else
             decoder =
-                (IRequestDecoder) spec.getExtension(
+                (IRequestDecoder) _specification.getExtension(
                     Tapestry.REQUEST_DECODER_EXTENSION_NAME,
                     IRequestDecoder.class);
 
@@ -535,7 +535,7 @@ public class RequestContext implements IRender
         return result;
     }
 
-    public ApplicationServlet getServlet()
+    public HttpServlet getServlet()
     {
         return _servlet;
     }
@@ -1072,7 +1072,8 @@ public class RequestContext implements IRender
      **/
     private IMultipartDecoder getDecoder()
     {
-        if (_decoder != null && !_decoded) {
+        if (_decoder != null && !_decoded)
+        {
             _decoder.decode(_request);
             _decoded = true;
         }
@@ -1090,6 +1091,14 @@ public class RequestContext implements IRender
     {
         _decoder = decoder;
         _decoded = false;
+    }
+
+    /**
+     * @since 3.1 --- but probably pretty temporary!
+     */
+    public IApplicationSpecification getApplicationSpecification()
+    {
+        return _specification;
     }
 
 }

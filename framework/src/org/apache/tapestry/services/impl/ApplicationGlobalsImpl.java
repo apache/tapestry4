@@ -14,6 +14,7 @@
 
 package org.apache.tapestry.services.impl;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 
@@ -58,4 +59,10 @@ public class ApplicationGlobalsImpl implements ApplicationGlobals
 	{
 		return _servlet.getServletName();
 	}
+	
+    public ServletConfig getServletConfig()
+    {
+        return _servlet.getServletConfig();
+    }
+
 }

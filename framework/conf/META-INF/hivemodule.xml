@@ -109,19 +109,19 @@
   </contribution>
   
   <service-point id="EnginePool" interface="org.apache.tapestry.services.ObjectPool">
-    <create-instance class="org.apache.tapestry.services.impl.ObjectPool"/>
+    <create-instance class="org.apache.tapestry.services.impl.ObjectPoolImpl"/>
   </service-point>
   
-  <service-point id="ServletInfo" interface="org.apache.tapestry.services.ServletInfo">
+  <service-point id="RequestGlobals" interface="org.apache.tapestry.services.RequestGlobals">
     Stores the request and response for the current thread.
     
-    <create-instance class="org.apache.tapestry.services.impl.ServletInfoImpl" model="threaded"/>
+    <create-instance class="org.apache.tapestry.services.impl.RequestGlobalsImpl" model="threaded"/>
   </service-point>
   
-  <service-point id="ServletInfoInitializer" interface="org.apache.tapestry.services.RequestServicerFilter">
+  <service-point id="RequestGlobalsInitializer" interface="org.apache.tapestry.services.RequestServicerFilter">
     <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.ServletInfoInitializer">
-        <set-service property="servletInfo" service-id="ServletInfo"/>
+      <construct class="org.apache.tapestry.services.impl.RequestGlobalsInitializer">
+        <set-service property="requestGlobals" service-id="RequestGlobals"/>
       </construct>
     </invoke-factory>
   </service-point>
@@ -129,10 +129,10 @@
   <service-point id="HttpServletRequest" interface="javax.servlet.http.HttpServletRequest">
     
     Exposes the current thread's HttpServletRequest as a service. The request is actually
-    stored in the ServletInfo service.
+    stored in the RequestGlobals service.
     
     <invoke-factory service-id="hivemind.lib.ServicePropertyFactory">
-      <constuct service-id="ServletInfo" property="request"/>
+      <construct service-id="RequestGlobals" property="request"/>
     </invoke-factory>
   </service-point>
   
@@ -157,9 +157,9 @@
       <construct class="org.apache.tapestry.services.impl.CookieSourceImpl">
         <set-service property="request" service-id="HttpServletRequest"/>
       </construct>
-    </invoke-factory>
-    
+    </invoke-factory>    
   </service-point>
+  
   <service-point id="EngineManager" interface="org.apache.tapestry.services.EngineManager">
     Obtains an IEngine implementation for the current request, either from a pool of
     such engine instance, from a factory, or from the HttpSession.
@@ -168,7 +168,7 @@
       <construct class="org.apache.tapestry.services.impl.EngineManagerImpl">
         <set-service property="enginePool" service-id="EnginePool"/>
         <set-service property="request" service-id="HttpServletRequest"/>
-        <set-object property="servletName" object="service-property:ApplicationGlobals:servletName"/>
+        <set-object property="servletName" value="service-property:ApplicationGlobals:servletName"/>
         <set-service property="engineFactory" service-id="EngineFactory"/>
         <set-service property="localeExtractor" service-id="LocaleExtractor"/>
       </construct>
@@ -182,15 +182,14 @@
     <invoke-factory>
       <construct class="org.apache.tapestry.services.impl.EngineFactoryImpl">
         <set-service property="applicationSpecification" service-id="ApplicationSpecification"/>
-        <set property="defaultEngineClassName"
-            value="${org.apache.tapestry.engine-class}"/>
+        <set-object property="defaultEngineClassName" value="global-property:org.apache.tapestry.engine-class"/>
       </construct>
     </invoke-factory>
     
   </service-point>
   
   <contribution configuration-id="hivemind.FactoryDefaults">
-    <default key="org.apache.tapestry.engine-class" value="org.apache.tapestry.engine.BaseEngine"/>
+    <default symbol="org.apache.tapestry.engine-class" value="org.apache.tapestry.engine.BaseEngine"/>
   </contribution>
   
   <service-point id="RequestServicerPipeline" interface="org.apache.tapestry.services.RequestServicer">
@@ -203,6 +202,21 @@
     </invoke-factory>    
   </service-point>
   
+  <service-point id="InvokeEngineTerminator" interface="org.apache.tapestry.services.RequestServicer">
+    
+    Terminator service for the RequestServicerPipeline. This locates an IEngine instance that
+    can take control of the request.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.InvokeEngineTerminator">
+        <set-service property="engineManager" service-id="EngineManager"/>
+        <set-object property="specification" value="service-property:ApplicationGlobals:specification"/>
+        <set-object property="servlet" value="service-property:ApplicationGlobals:servlet"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
   <configuration-point id="RequestServicerPipeline" schema-id="hivemind.lib.Pipeline">
     
     A pipeline for processing an incoming request.
@@ -210,6 +224,117 @@
   </configuration-point>
   
   <contribution configuration-id="RequestServicerPipeline">
-    <filter name="ServletInfoInitializer" before="*" object="service:ServletInfoInitializer"/>
+    <filter name="RequestGlobalsInitializer" before="*" object="service:RequestGlobalsInitializer"/>
+    <terminator object="service:InvokeEngineTerminator"/>
+  </contribution>
+  
+  
+  
+  <configuration-point id="GlobalPropertySources">
+    
+    Specifies a sequence of property sources used to resolve global application configuration data, which may
+    be in web.xml (servlet init parameters or servlet
+    context init parameters), or provided as HiveMind substitution symbol.
+    
+    <schema>
+      <element name="source">
+        
+        <attribute name="name" required="true">
+          The name of the contribution, used to control ordering.
+        </attribute>
+        
+        <attribute name="before">
+          List of sources that should process before this source.
+        </attribute>
+        
+        <attribute name="after">
+          List of sources that should process after this source.
+        </attribute>
+        
+        <attribute name="object" translator="object">
+          The object or service that implements the IPropertySource interface.
+        </attribute>
+        
+        <conversion class="org.apache.tapestry.services.impl.PropertySourceContribution">
+          <map property="source" attribute="object"/>
+        </conversion>
+        
+      </element>
+    </schema>
+  </configuration-point>
+  
+  <service-point id="GlobalPropertySource" interface="org.apache.tapestry.engine.IPropertySource">
+    
+    Service point of obtaining configuration data resolved using GlobalPropertySourcePipeline
+    configuration point.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.PropertySourceImpl">
+        <set-configuration property="contributions" configuration-id="GlobalPropertySources"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <service-point id="ServletPropertySource" interface="org.apache.tapestry.engine.IPropertySource">
+    
+    Searches for properties in the application servlets' configuration.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.ServletPropertySource">
+        <set-object property="servletConfig" value="service-property:ApplicationGlobals:servletConfig"/>
+      </construct>
+    </invoke-factory>    
+  </service-point>
+  
+  <service-point id="ServletContextPropertySource" interface="org.apache.tapestry.engine.IPropertySource">
+    
+    Searches the servlet context for properties.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.ServletContextPropertySource">
+        <set-object property="context" value="service-property:ApplicationGlobals:context"/>
+      </construct>
+    </invoke-factory>
+  </service-point>
+  
+  <service-point id="SymbolSourcesPropertySource" interface="org.apache.tapestry.engine.IPropertySource">
+    
+    Bridges into HiveMind's symbol sources to resolve configuration properties.
+    
+    <!-- This is tricky, we need to use a custom builder factory. -->
+    
+    <invoke-factory service-id="SymbolSourcesPropertySourceFactory"/>
+    
+  </service-point>
+  
+  <service-point id="SymbolSourcesPropertySourceFactory" interface="org.apache.hivemind.ServiceImplementationFactory" parameters-occurs="none">
+    
+    A special-purpose ServiceImplementationFactory used just to create the SymbolSourcesPropertySource service.
+    
+    <create-instance class="org.apache.tapestry.services.impl.SymbolSourcesPropertySourceFactory"/>
+  </service-point>
+  
+  <contribution configuration-id="GlobalPropertySources">
+    <source name="servlet" object="service:ServletPropertySource"/>
+    <source name="context" object="service:ServletContextPropertySource" after="servlet"/>
+    <source name="symbols" object="service:SymbolSourcesPropertySource" after="context"/>
+  </contribution>
+  
+  <service-point id="GlobalPropertyObjectProvider" interface="org.apache.hivemind.service.ObjectProvider">
+    
+    An object provider based on obtaining global properties from the GlobalPropertySource
+    service.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.GlobalPropertyObjectProvider">
+        <set-service property="source" service-id="GlobalPropertySource"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <contribution configuration-id="hivemind.ObjectProviders">
+    <provider prefix="global-property" service-id="GlobalPropertyObjectProvider"/>
   </contribution>
 </module>

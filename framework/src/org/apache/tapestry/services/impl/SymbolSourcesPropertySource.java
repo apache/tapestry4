@@ -12,22 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.services;
+package org.apache.tapestry.services.impl;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.apache.hivemind.internal.Module;
+import org.apache.tapestry.engine.IPropertySource;
 
 /**
- * Access point for thread-local information about the current
- * request.
+ * Property source that bridges to HiveMind Symbol Sources.
  *
  * @author Howard Lewis Ship
+ * @since 3.1
  */
-public interface ServletInfo
+public class SymbolSourcesPropertySource implements IPropertySource
 {
-    public void store(HttpServletRequest request, HttpServletResponse response);
+    private Module _module;
 
-    public HttpServletRequest getRequest();
+    public SymbolSourcesPropertySource(Module module)
+    {
+        _module = module;
+    }
 
-    public HttpServletResponse getResponse();
+    /**
+     * Invokes {@link Module#getSymbolValue(java.lang.String)}.
+     */
+    public String getPropertyValue(String propertyName)
+    {
+        return _module.getSymbolValue(propertyName);
+    }
+
 }

@@ -16,7 +16,8 @@ package org.apache.tapestry.engine;
 
 import java.util.ResourceBundle;
 
-import org.apache.tapestry.ApplicationServlet;
+import javax.servlet.http.HttpServlet;
+
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.util.DelegatingPropertySource;
@@ -61,19 +62,20 @@ public class DefaultPropertySource implements IPropertySource
         "org.apache.tapestry.property-source";
 
     private IPropertySource _degatingPropertySource;
-    
-	/**
-	 * Creates a new default property source for looking up application-specific
-	 * properties. The search order of the property source is shown in the
-	 * documentation of this class.
-	 * 
-	 * @param context the request context for which this property source will be created
-	 */
-	public DefaultPropertySource(RequestContext context) {
+
+    /**
+     * Creates a new default property source for looking up application-specific
+     * properties. The search order of the property source is shown in the
+     * documentation of this class.
+     * 
+     * @param context the request context for which this property source will be created
+     */
+    public DefaultPropertySource(RequestContext context)
+    {
         DelegatingPropertySource result = new DelegatingPropertySource();
 
-        ApplicationServlet servlet = context.getServlet();
-        IApplicationSpecification spec = servlet.getApplicationSpecification();
+        HttpServlet servlet = context.getServlet();
+        IApplicationSpecification spec = context.getApplicationSpecification();
 
         result.addSource(new PropertyHolderPropertySource(spec));
         result.addSource(new ServletPropertySource(servlet.getServletConfig()));
@@ -99,13 +101,13 @@ public class DefaultPropertySource implements IPropertySource
         result.addSource(new ResourceBundlePropertySource(bundle));
 
         _degatingPropertySource = result;
-	}
-	
-	/**
-	 * @see org.apache.tapestry.engine.IPropertySource#getPropertyValue(java.lang.String)
-	 */
-	public String getPropertyValue(String propertyName)
-	{
-		return _degatingPropertySource.getPropertyValue(propertyName);
-	}
+    }
+
+    /**
+     * @see org.apache.tapestry.engine.IPropertySource#getPropertyValue(java.lang.String)
+     */
+    public String getPropertyValue(String propertyName)
+    {
+        return _degatingPropertySource.getPropertyValue(propertyName);
+    }
 }
