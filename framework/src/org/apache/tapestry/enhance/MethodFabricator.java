@@ -61,6 +61,8 @@ import java.util.List;
 import org.apache.tapestry.Tapestry;
 import org.apache.bcel.classfile.Method;
 import org.apache.bcel.generic.ClassGen;
+import org.apache.bcel.generic.CompoundInstruction;
+import org.apache.bcel.generic.Instruction;
 import org.apache.bcel.generic.InstructionHandle;
 import org.apache.bcel.generic.InstructionList;
 import org.apache.bcel.generic.LocalVariableGen;
@@ -161,6 +163,26 @@ public class MethodFabricator
     {
         return _instructionList;
     }
+
+    /**
+     *  Convienience method for adding instructions.
+     * 
+     **/
+
+    public InstructionHandle append(Instruction instruction)
+    {
+        return _instructionList.append(instruction);
+    }
+
+	/**
+	 *  Convienience method for adding instructions.
+	 * 
+	 **/
+	
+	public InstructionHandle append(CompoundInstruction instruction)
+	{
+		return _instructionList.append(instruction);
+	}
 
     /**
      *  Commits the method; this is invoked last.  It updates
