@@ -1178,11 +1178,13 @@ public class RequestContext implements IRender
 
     /**
      *  Invokes {@link #write(IMarkupWriter)}, which is used for debugging.
+     *  Does nothing if the cycle is rewinding.
      *
      **/
 
     public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
-        write(writer);
+        if (!cycle.isRewinding())
+            write(writer);
     }
 }

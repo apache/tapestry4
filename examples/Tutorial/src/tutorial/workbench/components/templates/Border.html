@@ -23,17 +23,24 @@
 
 <br>
 
+      <form jwcid="form">
+      
 <table class="requestDebug" cellspacing=0>
   <tr class="control">
     <td>
-      <form jwcid="form">
+
         <input type=checkbox jwcid="inputRequestDebug"/>
         <span key="prompt.display-request-debug">Display Request Debug Information</span>
-      </form>
+  
     </td>
+    
+    <td align="right">
+    <input type=checkbox jwcid="inputDisableInspector"/> Disable Inspector
+    </td>
+    
   </tr>
   <tr class="data">
-    <td>
+    <td colspan="2">
       <span jwcid="ifRequestDebug">
         <span jwcid="displayRequestDebug"/>
       </span>
@@ -41,6 +48,8 @@
   </tr>
 </table>
 
+    </form>
+    
 <p>
 &copy; 2000-2002 <a href="mailto:hship@users.sf.net">Howard M. Lewis Ship</a>.
 

@@ -17,7 +17,7 @@
   
   <parameter name="listener" 
   	java-type="net.sf.tapestry.IActionListener" 
-  	required="yes"
+  	required="no"
   	direction="in">
     <description>
   	Object invoked when the form is submitted, after all form components have responded

@@ -36,6 +36,8 @@ validate_${form.name}_${field.name}
 function ${function}()
 {
   var field = document.${form.name}.${field.name};
+ 
+<!--
   
   var matches = field.value.match(/${formatExpression}/);
     
@@ -50,6 +52,10 @@ function ${function}()
   var value = matches[0];
   
   window.alert("value=" + value);
+  
+-->
+
+  var value = field.value;
   
 <if expression="validator.required">
   if (value.length == 0)

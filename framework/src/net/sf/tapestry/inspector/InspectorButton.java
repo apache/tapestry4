@@ -63,6 +63,8 @@ import net.sf.tapestry.html.Body;
 
 public class InspectorButton extends BaseComponent implements IDirect
 {
+    private boolean _disabled = false;
+    
     /**
      *  Gets the listener for the link component.
      *
@@ -84,7 +86,7 @@ public class InspectorButton extends BaseComponent implements IDirect
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
-        if (cycle.isRewinding())
+        if (_disabled || cycle.isRewinding())
             return;
 
         IEngine engine = getPage().getEngine();
@@ -122,4 +124,15 @@ public class InspectorButton extends BaseComponent implements IDirect
         
         super.renderComponent(writer, cycle);
     }
+    
+    public boolean isDisabled()
+    {
+        return _disabled;
+    }
+
+    public void setDisabled(boolean disabled)
+    {
+        _disabled = disabled;
+    }
+
 }

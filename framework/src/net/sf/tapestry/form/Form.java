@@ -358,7 +358,8 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
             if (actual == null || Integer.parseInt(actual) != _elementCount)
                 throw new StaleLinkException(Tapestry.getString("Form.bad-element-count", getExtendedId()), getPage());
 
-            _listener.actionTriggered(this, cycle);
+            if (_listener != null)
+                _listener.actionTriggered(this, cycle);
 
             // Abort the rewind render.
 

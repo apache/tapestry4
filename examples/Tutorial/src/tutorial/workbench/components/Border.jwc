@@ -50,9 +50,7 @@
   
   <component id="renderBody" type="RenderBody"/>
   
-  <component id="form" type="Form">
-    <binding name="listener" expression="listeners.formListener"/>
-  </component>
+  <component id="form" type="Form"/>
   
   <component id="inputRequestDebug" type="Checkbox">
     <binding name="selected" expression="page.visit.requestDebug"/>
@@ -60,6 +58,13 @@
     	javascript:this.form.submit();
     </static-binding>
   </component>
+  
+  <component id="inputDisableInspector" type="Checkbox">
+    <binding name="selected" expression="page.visit.disableInspector"/>
+    <static-binding name="onclick">
+    	javascript:this.form.submit();
+    </static-binding>
+  </component>  
   
   <component id="ifRequestDebug" type="Conditional">
   	<binding name="condition" expression="page.visit.requestDebug"/>
@@ -69,7 +74,9 @@
     <binding name="delegate" expression="page.requestCycle.requestContext"/>
   </component>
   
-  <component id="inspector" type="InspectorButton"/>
+  <component id="inspector" type="InspectorButton">
+  	<binding name="disabled" expression="page.visit.disableInspector"/>
+  </component>
 
   <private-asset name="$template" resource-path="&here;/templates/Border.html"/>
 
