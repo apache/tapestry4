@@ -140,7 +140,7 @@ public class ExternalService extends AbstractService
 
         if (context == null || context.length != 1)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("service-single-parameter", EXTERNAL_SERVICE));
+                Tapestry.getString("service-single-context-parameter", EXTERNAL_SERVICE));
 
         String pageName = context[0];
         
