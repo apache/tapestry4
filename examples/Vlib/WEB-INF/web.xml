@@ -7,9 +7,11 @@
   <servlet>
     <servlet-name>vlib</servlet-name>
     <servlet-class>com.primix.vlib.VirtualLibraryServlet</servlet-class>
-    <load-on-startup/>
+  	<load-on-startup>0</load-on-startup>
   </servlet>
+
   <!--The single mapping used for the Tapestry application-->
+
   <servlet-mapping>
     <servlet-name>vlib</servlet-name>
     <url-pattern>/app</url-pattern>
