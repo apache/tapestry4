@@ -1,11 +1,8 @@
 package com.primix.vlib.jsp;
 
 import com.primix.servlet.*;
-import javax.ejb.*;
-import com.primix.vlib.ejb.*;
-import java.util.*;
+import java.io.*;
 import javax.servlet.*;
-import com.primix.tapestry.ApplicationRuntimeException;
 
 /*
  * Tapestry Web Application Framework
@@ -36,23 +33,21 @@ import com.primix.tapestry.ApplicationRuntimeException;
  */
 
 /**
- *  Servlet for the {@link HomeDelegate} page.  Should be mapped
- *  to the URI <code>/home/*</code>.
+ *  Interface that describes a page that can be "called back" after
+ *  the user logs in (or registers on the fly).
  *
  *  @version $Id$
  *  @author Howard Ship
  */
  
-public class HomeServlet extends GatewayServlet
+public interface ILoginCallback
 {
 	/**
-	 *  Returns an instance of {@link HomeDelegate}, either one previously
-	 *  stored in the {@link HttpSession}, or a fresh instance.
+	 *  Method invoked by the {@link LoginDelegate} after the user
+	 *  succesfully logs into the virtual library.
 	 *
 	 */
 	 
-	protected IService getDelegate(RequestContext context)
-	{
-		return HomeDelegate.get(context);
-	}
+	public void postLogin(RequestContext context)
+	throws IOException, ServletException;
 }

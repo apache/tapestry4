@@ -43,44 +43,12 @@ import javax.rmi.*;
  *  Controller for the Login page.  An instance is stored in the {@link HttpSession},
  *  and persists until the user succesfully logs in.
  *
- *  <p>TBD:  Mechanism for directing to the appropriate page after logging in.
- *
  *  @version $Id$
  *  @author Howard Ship
  */
  
-public class LoginDelegate extends BookQueryDelegate
+public class LoginDelegate extends VlibDelegate
 {
-	/**
-	 *  Name of text field used to enter the user's email.
-	 *
-	 */
-	 
-	public static final String EMAIL_NAME = "email";
-	
-	
-	/**
-	 *  Name of the text field used to enter the password..
-	 *
-	 */
-	 
-	public static final String PASSWORD_NAME = "password";
-
-																			
-	/**
-	 *  Name ("<code>com.primix.vlib-jsp.Login.email</code>") of a HTTP cookie
-	 *  used to remember the user's email address on subsequent
-	 *  visits.
-	 *
-	 */
-	 
-	public static final String COOKIE_NAME  = "com.primix.vlib-jsp.Login.email";
-
-	private final static int ONE_WEEK = 7 * 24 * 60 * 60;
-	 
-	private transient String error;
-	private transient String defaultEmail;
-	
 	private final static String SESSION_ATTRIBUTE_NAME = "pages.login";
 
 	/**
@@ -113,6 +81,42 @@ public class LoginDelegate extends BookQueryDelegate
 		
 		return result;	
 	}
+		/**
+	 *  Name of text field used to enter the user's email.
+	 *
+	 */
+	 
+	public static final String EMAIL_NAME = "email";
+	
+	
+	/**
+	 *  Name of the text field used to enter the password..
+	 *
+	 */
+	 
+	public static final String PASSWORD_NAME = "password";
+
+																			
+	/**
+	 *  Name ("<code>com.primix.vlib-jsp.Login.email</code>") of a HTTP cookie
+	 *  used to remember the user's email address on subsequent
+	 *  visits.
+	 *
+	 */
+	 
+	public static final String COOKIE_NAME  = "com.primix.vlib-jsp.Login.email";
+
+	private final static int ONE_WEEK = 7 * 24 * 60 * 60;
+	 
+	private transient String error;
+	private transient String defaultEmail;
+	
+	/**
+	 *  Object to be invoked once the login is complete.
+	 *
+	 */
+	
+	private ILoginCallback callback;
 	
 	public String getError()
 	{
@@ -127,6 +131,16 @@ public class LoginDelegate extends BookQueryDelegate
 	public String getDefaultEmail()
 	{
 		return defaultEmail;
+	}
+	
+	public void setCallback(ILoginCallback value)
+	{
+		callback = value;
+	}
+	
+	public ILoginCallback getCallback()
+	{
+		return callback;
 	}
 	
 	public void service(RequestContext context) throws ServletException, IOException
@@ -155,6 +169,14 @@ public class LoginDelegate extends BookQueryDelegate
 		{
 			application.cleanup();
 		}
+	}
+	
+	public void performLogin(ILoginCallback callback, RequestContext context)
+	throws IOException, ServletException
+	{
+		this.callback = callback;
+		
+		forward("/jsp/Login.jsp", "Login", null, context);
 	}
 	
 	private void setDefaultEmail(RequestContext context)
@@ -212,7 +234,7 @@ public class LoginDelegate extends BookQueryDelegate
 	{
 		String email;
 		Cookie cookie;
-				
+
 		try
 		{
 			email = person.getEmail();
@@ -235,11 +257,22 @@ public class LoginDelegate extends BookQueryDelegate
 		
 		context.addCookie(cookie);
 
-		// TBD:  Get to the right page!
+		// If not specified otherwise, use the MyBooks page
+		// as the place to go after logging in.
 		
-		// For the moment, return to the home page.
+		if (callback == null)
+			callback = MyBooksDelegate.get(context);
 		
-		forward("/jsp/Home.jsp", "Primix Virtual Library", null, context);
+		// Inform the callback that the user has logged in.
+		// There are certainly some issues if the callback
+		// throws an exception!
+
+		callback.postLogin(context);
+
+		// No longer need the information in this page, remove it
+		// from the session.
+		
+		context.removeSessionAttribute(SESSION_ATTRIBUTE_NAME);
 		
 		return true;
 		

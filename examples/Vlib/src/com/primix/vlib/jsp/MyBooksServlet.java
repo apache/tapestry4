@@ -36,23 +36,23 @@ import com.primix.tapestry.ApplicationRuntimeException;
  */
 
 /**
- *  Servlet for the {@link HomeDelegate} page.  Should be mapped
- *  to the URI <code>/home/*</code>.
+ *  Servlet for the {@link MyBooksDelegate} page.  Should be mapped
+ *  to the URI <code>/mybooks/*</code>.
  *
  *  @version $Id$
  *  @author Howard Ship
  */
  
-public class HomeServlet extends GatewayServlet
+public class MyBooksServlet extends GatewayServlet
 {
 	/**
-	 *  Returns an instance of {@link HomeDelegate}, either one previously
+	 *  Returns an instance of {@link MyBooksDelegate}, either one previously
 	 *  stored in the {@link HttpSession}, or a fresh instance.
 	 *
 	 */
 	 
 	protected IService getDelegate(RequestContext context)
 	{
-		return HomeDelegate.get(context);
+		return MyBooksDelegate.get(context);
 	}
 }

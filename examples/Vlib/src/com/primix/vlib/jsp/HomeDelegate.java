@@ -239,5 +239,23 @@ public class HomeDelegate extends BookQueryDelegate
 		writer.end();
 		
 	}
+	
+	/**
+	 *  Checks the book to see if the [Borrow] button should be
+	 *  enabled.  Returns true if the user has logged in, and isn't
+	 *  already the holder of the book.
+	 *
+	 */
+	 
+	public boolean getEnableBorrow(Book book)
+	{
+		if (!application.isUserLoggedIn())
+			return false;
+
+		// Otherwise, can only borrow it if not already holding it.
+
+		return ! application.isLoggedInUser(book.getHolderPrimaryKey());
+		
+	}
 
 }

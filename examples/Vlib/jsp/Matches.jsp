@@ -32,15 +32,20 @@
 		Integer holderPK = book.getHolderPrimaryKey();
 	
 		writer.begin("a");
-		writer.attribute("href", "/view/" + book.getPrimaryKey());
+		writer.attribute("href", 
+			response.encodeURL("/view/" + book.getPrimaryKey()));
 		writer.print(book.getTitle());
 		writer.end();
+		
+		// Use writer.print() because we don't know what invalid
+		// chars may be in the author, publisher, etc.
+		
 %></td>
-		<td><%= book.getAuthor() %></td>
-		<td><%= book.getPublisherName() %></td>
+		<td><%  writer.print(book.getAuthor()); %></td>
+		<td><%  writer.print(book.getPublisherName()); %></td>
 		<td><%
 		writer.begin("a");
-		writer.attribute("href", "/person/" + ownerPK);
+		writer.attribute("href", response.encodeURL("/person/" + ownerPK));
 		writer.print(book.getOwnerName());
 		writer.end();
 %>
@@ -50,7 +55,7 @@
 		if (! ownerPK.equals(holderPK))
 		{
 			writer.begin("a");
-			writer.attribute("href", "/person/" + holderPK);
+			writer.attribute("href", response.encodeURL("/person/" + holderPK));
 			writer.print(book.getHolderName());
 			writer.end();
 		}
@@ -58,12 +63,13 @@
 		</td>
 		<td>
 <% 
-		boolean enableBorrow = ! vlib.isLoggedInUser(holderPK);
+		boolean enableBorrow = delegate.getEnableBorrow(book);
 	
 		if (enableBorrow)
 		{
 			writer.begin("a");
-			writer.attribute("href", "/home/borrow/" + book.getPrimaryKey());
+			writer.attribute("href", 
+				response.encodeURL("/home/borrow/" + book.getPrimaryKey()));
 			writer.closeTag();
 		}
 %>[ Borrow ]
