@@ -53,7 +53,7 @@
 
     <reserved-parameter name="href"/>
 
-  <inject name="directService" object="engine-service:direct"/>	
-  <inject name="actionService" object="engine-service:action"/>
+  <inject property="directService" object="engine-service:direct"/>	
+  <inject property="actionService" object="engine-service:action"/>
       
 </component-specification>

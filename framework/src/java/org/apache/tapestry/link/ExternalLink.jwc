@@ -42,6 +42,6 @@
   	
   <reserved-parameter name="href"/>
   
-  <inject name="externalService" object="engine-service:external"/>
+  <inject property="externalService" object="engine-service:external"/>
     
 </component-specification>

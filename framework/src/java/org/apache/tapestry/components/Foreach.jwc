@@ -46,5 +46,5 @@
         </description>
     </parameter>
     
-    <inject name="valueConverter" object="service:tapestry.coerce.ValueConverter"/>
+    <inject property="valueConverter" object="service:tapestry.coerce.ValueConverter"/>
 </component-specification>

@@ -883,12 +883,12 @@ public class TestSpecificationParser extends TapestryTestCase
 
         InjectSpecification i1 = (InjectSpecification) l.get(0);
 
-        assertEquals("fred", i1.getName());
+        assertEquals("fred", i1.getProperty());
         assertEquals("flintstone", i1.getObjectReference());
         assertNotNull(i1.getLocation());
 
         InjectSpecification i2 = (InjectSpecification) l.get(1);
-        assertEquals("barney", i2.getName());
+        assertEquals("barney", i2.getProperty());
         assertEquals("rubble", i2.getObjectReference());
         assertNotNull(i2.getLocation());
     }
