@@ -70,6 +70,8 @@
 		  	<include name="*.ear"/>
 		</fileset>
 	</delete>
+	<delete dir="doc/Tutorial"/>
+	<delete dir="doc/DevelopersGuide"/>
 </target>
 
 <target name="install"
@@ -90,8 +92,8 @@
 
 <target name="documentation"
 	description="Builds the Tapestry documentation.">
-	<ant dir="doc/src/Tutorial" target="install"/>
-	<ant dir="doc/src/DevelopersGuide" target="install"/>
+	<ant dir="doc/src/Tutorial" target="install" inheritAll="false"/>
+	<ant dir="doc/src/DevelopersGuide" target="install" inheritAll="false"/>
 </target>
 
 <target name="junit"
@@ -189,7 +191,9 @@
 	      of building a .tar.gz because the disto is smaller than an equivalent .zip file.
 	   -->
 	 
-	<tar basedir="${dist.root.dir}" tarfile="${dist.tar}" includes="${dist.base}/**" longfile="gnu"/>
+	<tar basedir="${dist.root.dir}" tarfile="${dist.tar}" includes="${dist.base}/**" 
+
+longfile="gnu"/>
 	 
 	<!-- Zip up the TAR file -->
 	 
