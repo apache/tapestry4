@@ -1,6 +1,7 @@
 package com.primix.foundation.pool;
 
 import java.util.*; 
+import org.log4j.*;
 
 /*
  * Tapestry Web Application Framework
@@ -48,106 +49,144 @@ import java.util.*;
 
 public class Pool
 {
-    private static final int MAP_SIZE = 23;
+	private static final Category CAT = Category.getInstance(Pool.class.getName());
 
-    /**
-     *  Creates a new Pool using the default map size.  Creation of the map is deferred.
-     *
-     */
+	private static final int MAP_SIZE = 23;
 
-    public Pool()
-    {
-    }
+	/**
+	*  Creates a new Pool using the default map size.  Creation of the map is deferred.
+	*
+	*/
 
-    /**
-     *  Creates a new Pool using the specified map size.  The map is created immediately.
-     *
-     */
+	public Pool()
+	{
+	}
 
-    public Pool(int mapSize)
-    {
-        map = new HashMap(mapSize);
-    }
+	/**
+	*  Creates a new Pool using the specified map size.  The map is created immediately.
+	*
+	*/
 
+	public Pool(int mapSize)
+	{
+		map = new HashMap(mapSize);
+	}
 
-    /**
-     *  A map of PoolLists, keyed on an arbitrary object.
-     *
-     */
+	/**
+	*  A map of PoolLists, keyed on an arbitrary object.
+	*
+	*/
 
-    private Map map;
+	private Map map;
 
-    /**
-     *  Returns a previously pooled object with the given key, or null if no
-     *  such object exists.  Getting an object from a Pool removes it from the Pool,
-     *  but it can later be re-added with {@link #add(Object,Object)}.
-     *
-     */
+	/**
+	*  Returns a previously pooled object with the given key, or null if no
+	*  such object exists.  Getting an object from a Pool removes it from the Pool,
+	*  but it can later be re-added with {@link #add(Object,Object)}.
+	*
+	*/
 
-    public Object get(Object key)
-    {
-        PoolList list;
+	public Object get(Object key)
+	{
+		PoolList list;
+		Object result = null;
 
-        if (map == null)
-            return null;
+		if (map != null)
+		{
+			synchronized (map)
+			{
+				list = (PoolList)map.get(key);
+			}
 
+			if (list != null)
+				result = list.get();
+		}
 
-        synchronized (map)
-        {
-            list = (PoolList)map.get(key);
-        }
+		if (CAT.isDebugEnabled())
+			CAT.debug("Retrieved " + result + " for " + key);
 
-        if (list == null)
-            return null;
+		return result;	
+	}
 
-        return list.get();
-    }
+	/**
+	*  Adds an object to the pool for later retrieval.
+	*
+	*/
 
-    /**
-     *  Adds an object to the pool for later retrieval.
-     *
-     */
+	public void add(Object key, Object object)
+	{
+		PoolList list;
 
-    public void add(Object key, Object object)
-    {
-        PoolList list;
+		if (map == null)
+		{
+			synchronized(this)
+			{
+				if (map == null)
+					map = new HashMap(MAP_SIZE);
+			}
+		}
 
-        if (map == null)
-        {
-            synchronized(this)
-            {
-                if (map == null)
-                    map = new HashMap(MAP_SIZE);
-            }
-        }
+		synchronized(map)
+		{
+			list = (PoolList)map.get(key);
 
-        synchronized(map)
-        {
-            list = (PoolList)map.get(key);
+			if (list == null)
+			{
+				list = new PoolList();
+				map.put(key, list);
+			}
 
-            if (list == null)
-            {
-                list = new PoolList();
-                map.put(key, list);
-            }
+			list.add(object);
+		}
+		
+		if (CAT.isDebugEnabled())
+			CAT.debug("Added " + object + " for " + key);
+	}
 
-            list.add(object);
-        }
-    }
+	/**
+	*  Removes all previously pooled objects from this Pool.
+	*
+	*/
 
-    /**
-     *  Removes all previously pooled objects from this Pool.
-     *
-     */
+	public void clear()
+	{
+		if (map != null)
+		{
+			synchronized(map)
+			{
+				map.clear();
+			}
+		}
+		
+		if (CAT.isDebugEnabled())
+			CAT.debug("Cleared");
+	}
 
-    public void clear()
-    {
-        if (map != null)
-        {
-            synchronized(map)
-            {
-                map.clear();
-            }
-        }
-    }
+	public String toString()
+	{
+		if (map == null)
+			return super.toString();
+
+		StringBuffer buffer = new StringBuffer();
+
+		buffer.append("Pool[");
+
+		synchronized(map)
+		{
+			Iterator i = map.entrySet().iterator();
+			while (i.hasNext())
+			{
+				Map.Entry entry = (Map.Entry)i.next();
+				
+				buffer.append(' ');
+				buffer.append(entry.getKey());
+				buffer.append('=');
+				buffer.append(entry.getValue());
+			}
+		}
+
+		buffer.append(']');
+
+		return buffer.toString();
+	}
 }

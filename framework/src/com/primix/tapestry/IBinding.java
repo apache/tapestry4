@@ -1,8 +1,10 @@
 package com.primix.tapestry;
 
+import java.util.*;
+
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ * Copyright (c) 2000, 2001 by Howard Ship and Primix Solutions
  *
  * Primix Solutions
  * One Arsenal Marketplace
@@ -51,10 +53,12 @@ public interface IBinding
      *  The following rules are used to perform the coercion:
      *  <ul>
      *  <li>null is always false
-     *  <li>A <code>Boolean</code> value is self-evident
-     *  <li>A <code>Number</code> value is true if non-zero
-     *  <li>A <code>String</code> value is true if non-empty and contains
-     *  non-whitespace characters.
+     *  <li>A {@link Boolean} value is self-evident
+     *  <li>A {@link Number} value is true if non-zero
+     *  <li>A {@link String} value is true if non-empty and contains
+     *  non-whitespace characters
+	 *  <li>Any {@link Collection} value is true if it has a non-zero
+	 *  {@link Collection#size() size}
      *  <li>Any array type is true if it has a non-zero length
      *  <li>Any other non-null value is true
      *  </ul>

@@ -110,6 +110,11 @@ public class Inspector extends BasePage
 		return view == View.ENGINE;
 	}
 	
+	public boolean isViewLogging()
+	{
+		return view == View.LOGGING;
+	}
+	
 	/**
 	 *  Method invoked by the {@link ShowInspector} component, 
 	 *  to begin inspecting a page.

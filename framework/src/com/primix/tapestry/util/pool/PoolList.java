@@ -90,4 +90,9 @@ class PoolList
 
         array[count++] = object;            
     }
+
+	public String toString()
+	{
+		return "PoolList[" + count + "]";
+	}
 }

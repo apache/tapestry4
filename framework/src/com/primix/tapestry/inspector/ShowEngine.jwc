@@ -9,6 +9,36 @@
 	</parameters>
 	<components>
 		<component>
+			<id>insertApplicationName</id>
+			<type>Insert</type>
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>page.engine.specification.name</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>insertContextPath</id>
+			<type>Insert</type>
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>page.engine.contextPath</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>insertServletPrefix</id>
+			<type>Insert</type>
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>page.engine.servletPrefix</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
 			<id>insertEngineClass</id>
 			<type>Insert</type>
 			<bindings>
@@ -63,6 +93,62 @@
 			</bindings>
 		</component>
 		<component>
+			<id>restart</id>
+			<type>Service</type>
+			<bindings>
+				<field-binding>
+					<name>service</name>
+					<field-name>com.primix.tapestry.IEngineService.RESTART_SERVICE</field-name>
+				</field-binding>
+			</bindings>
+		</component>
+		<component>
+			<id>restartButton</id>
+			<type>Rollover</type>
+			<bindings>
+				<binding>
+					<name>image</name>
+					<property-path>assets.restart</property-path>
+				</binding>
+				<binding>
+					<name>focus</name>
+					<property-path>assets.restart-focus</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>reset</id>
+			<type>Service</type>
+			<bindings>
+				<field-binding>
+					<name>service</name>
+					<field-name>com.primix.tapestry.IEngineService.RESET_SERVICE</field-name>
+				</field-binding>
+				<binding>
+					<name>enabled</name>
+					<property-path>page.engine.resetServiceEnabled</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>resetButton</id>
+			<type>Rollover</type>
+			<bindings>
+				<binding>
+					<name>image</name>
+					<property-path>assets.reset</property-path>
+				</binding>
+				<binding>
+					<name>focus</name>
+					<property-path>assets.reset-focus</property-path>
+				</binding>
+				<binding>
+					<name>disabled</name>
+					<property-path>assets.reset-disabled</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
 			<id>insertByteCount</id>
 			<type>Insert</type>
 			<bindings>
@@ -93,4 +179,26 @@
 			</bindings>
 		</component>
 	</components>
+	<assets>
+		<private-asset>
+			<name>reset</name>
+			<resource-path>/com/primix/tapestry/inspector/Reset_Np1.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>reset-focus</name>
+			<resource-path>/com/primix/tapestry/inspector/Reset_NRp2.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>reset-disabled</name>
+			<resource-path>/com/primix/tapestry/inspector/Reset_Np1_disabled.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>restart</name>
+			<resource-path>/com/primix/tapestry/inspector/Restart_Np1.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>restart-focus</name>
+			<resource-path>/com/primix/tapestry/inspector/Restart_NRp2.gif</resource-path>
+		</private-asset>
+	</assets>
 </specification>

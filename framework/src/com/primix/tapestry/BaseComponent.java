@@ -4,6 +4,7 @@ import com.primix.tapestry.spec.ComponentSpecification;
 import com.primix.tapestry.event.*;
 import com.primix.tapestry.parse.*;
 import java.util.*;
+import org.log4j.*;
 
 /*
  * Tapestry Web Application Framework
@@ -46,6 +47,8 @@ extends AbstractComponent
 	protected static final int OUTER_INIT_SIZE = 5;
 	protected int outerCount = 0;
 	protected IRender[] outer;
+
+	private static final Category CAT  = Category.getInstance(BaseComponent.class.getName());
 
 	/**
 	*  Adds an element as an outer element for the receiver.  Outer
@@ -107,6 +110,9 @@ extends AbstractComponent
 		boolean check = true;
 		Set seenIds = new HashSet();
 	
+		if (CAT.isDebugEnabled())
+			CAT.debug(this + " reading template");
+			
 		try
 		{
 	    	templateSource = getPage().getEngine().getTemplateSource();
@@ -233,6 +239,9 @@ extends AbstractComponent
 				this, cycle);
 
 		checkAllComponentsReferenced(seenIds, cycle);
+		
+		if (CAT.isDebugEnabled())
+			CAT.debug(this + " finished reading template");
 	}
 
 	private void checkAllComponentsReferenced(Set seenIds, IRequestCycle cycle)
@@ -309,14 +318,17 @@ extends AbstractComponent
 	public void render(IResponseWriter writer, IRequestCycle cycle)
 	throws RequestCycleException
 	{
-		int i;
-
+		if (CAT.isDebugEnabled())
+			CAT.debug("Begin render " + getExtendedId());
+			
 		if (outer == null)
 			readTemplate(cycle);
 
-		for (i = 0; i < outerCount; i++)
+		for (int i = 0; i < outerCount; i++)
 			outer[i].render(writer, cycle);
 
+		if (CAT.isDebugEnabled())
+			CAT.debug("End render " + getExtendedId());
 	}
 }
 

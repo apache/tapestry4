@@ -6,6 +6,7 @@ import java.io.*;
 import com.primix.tapestry.spec.*;
 import com.primix.tapestry.*;
 import java.util.*;
+import org.log4j.*;
 
 /*
  * Tapestry Web Application Framework
@@ -48,6 +49,9 @@ import java.util.*;
 
 public class ContextAsset implements IAsset
 {
+	private static final Category CAT = 
+		Category.getInstance(ContextAsset.class.getName());
+		
     private static class Localization
     {
         String assetPath;
@@ -158,6 +162,9 @@ public class ContextAsset implements IAsset
                 return result;
         }
 
+		if (CAT.isDebugEnabled())
+			CAT.debug("Searching for localization of context resource " + assetPath);
+
         dotx = assetPath.lastIndexOf('.');
         suffix = assetPath.substring(dotx);
 
@@ -216,6 +223,10 @@ public class ContextAsset implements IAsset
                     {
                         localizations.put(locale, result);
                     }
+
+                    if (CAT.isDebugEnabled())
+                    	CAT.debug("Found " + assetPath);
+            
 
                     return result;
                 }

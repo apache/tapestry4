@@ -1,3 +1,12 @@
+* Jan 8 2001 hship
+
+Begin adding log4j support.
+Add a Logging page to the Tapestry Inspector.
+Add logging support to ApplicationServlet.
+Added buttons for restarting and resetting to the Engine view of the Inspector.
+Add method IEngine.isDebugServiceEnabled().
+Change the EJBObject <--> Handle swap to be during serialization, not normal storage.
+
 * Jan 4 2001 hship
 
 Optimize PropertyBindings, simplifying property paths when possible.

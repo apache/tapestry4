@@ -155,6 +155,11 @@ implements ILifecycle
 		{
 			informalParameterNames = new ArrayList(names);
 
+			// Remove the names of any formal parameters.  This leaves
+			// just the names of informal parameters (informal parameters
+			// are any parameters/bindings that don't match a formal parameter
+			// name).
+			
 			names = inspectedSpecification.getParameterNames();
 			if (names != null)
 				informalParameterNames.removeAll(names);

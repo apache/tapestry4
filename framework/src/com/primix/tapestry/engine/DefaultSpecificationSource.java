@@ -6,6 +6,7 @@ import com.primix.tapestry.*;
 import com.primix.tapestry.parse.*;
 import com.primix.tapestry.spec.*;
 import java.util.*;
+import org.log4j.*;
 
 /*
  * Tapestry Web Application Framework
@@ -53,6 +54,9 @@ import java.util.*;
 public class DefaultSpecificationSource 
     implements ISpecificationSource
 {
+	private static final Category CAT = 
+		Category.getInstance(DefaultSpecificationSource.class.getName());
+	
 	private IResourceResolver resolver;
 	protected ApplicationSpecification specification;
 
@@ -137,6 +141,9 @@ public class DefaultSpecificationSource
 		ComponentSpecification result = null;
 		URL URL;
 		InputStream inputStream;
+
+		if (CAT.isDebugEnabled())
+			CAT.debug("Parsing component specification " + resourcePath);
 
 		URL = resolver.getResource(resourcePath);
 

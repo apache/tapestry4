@@ -1,10 +1,11 @@
 package com.primix.tapestry.binding;
 
 import com.primix.tapestry.*;
+import java.util.*;
 
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ * Copyright (c) 2000, 2001 by Howard Ship and Primix Solutions
  *
  * Primix Solutions
  * One Arsenal Marketplace
@@ -40,30 +41,30 @@ import com.primix.tapestry.*;
 
 public abstract class AbstractBinding implements IBinding
 {
-    /**
-     *  Cooerces the raw value into a true or false, according to the
-     *  rules set by {@link IBinding#getBoolean()}.
-     *
-     *  <p>The trick is to determine the best order for checks and to perform
-     *  the checks as efficiently as possible.  I honestly don't know if
-     *  instanceof is more efficient than catch ClassCastException.
-     *
-     */
+	/**
+	*  Cooerces the raw value into a true or false, according to the
+	*  rules set by {@link IBinding#getBoolean()}.
+	*
+	*  <p>The trick is to determine the best order for checks and to perform
+	*  the checks as efficiently as possible.  I honestly don't know if
+	*  instanceof is more efficient than catch ClassCastException.
+	*
+	*/
 
 	public boolean getBoolean()
 	{
 		Object value;
-        Class valueClass;
+		Class valueClass;
 
 		value = getValue();
 
 		if (value == null)
 			return false;
 
-        valueClass = value.getClass();
-    
-        if (valueClass == Boolean.class)
-        {
+		valueClass = value.getClass();
+
+		if (valueClass == Boolean.class)
+		{
 			Boolean booleanValue = (Boolean)value;
 			return booleanValue.booleanValue();
 		}
@@ -78,34 +79,41 @@ public abstract class AbstractBinding implements IBinding
 			// Not Number, maybe String
 		}
 
-        if (valueClass == String.class)
-        {
-		    try
-		    {
-			    int i;
-			    char ch;
-			    char[] data = ((String)value).toCharArray();
+		if (Collection.class.isAssignableFrom(valueClass))
+		{
+			Collection collection = (Collection)value;
 
-			    for (i = 0;; i++)
-			    {
-				    if (!Character.isWhitespace(data[i]))
-					    return true;
-			    }
-		    }
-		    catch (IndexOutOfBoundsException e)
-		    {
-			    // Hit end-of-string before finding a non-whitespace character
+			return collection.size() > 0;
+		}
 
-			    return false;
-		    }
-        }
+		if (valueClass == String.class)
+		{
+			try
+			{
+				int i;
+				char ch;
+				char[] data = ((String)value).toCharArray();
 
-        if (valueClass.isArray())
-        {
-            Object[] array = (Object[])value;
+				for (i = 0;; i++)
+				{
+					if (!Character.isWhitespace(data[i]))
+						return true;
+				}
+			}
+			catch (IndexOutOfBoundsException e)
+			{
+				// Hit end-of-string before finding a non-whitespace character
 
-            return array.length > 0;
-        }
+				return false;
+			}
+		}
+
+		if (valueClass.isArray())
+		{
+			Object[] array = (Object[])value;
+
+			return array.length > 0;
+		}
 
 		// The value is true because it is not null.
 
@@ -120,13 +128,13 @@ public abstract class AbstractBinding implements IBinding
 		if (raw == null)
 			throw new NullValueForBindingException(this);
 
-        if (raw instanceof Number)
-        {
+		if (raw instanceof Number)
+		{
 			return ((Number)raw).intValue();
 		}
 
-        if (raw instanceof Boolean)
-        {
+		if (raw instanceof Boolean)
+		{
 			return ((Boolean)raw).booleanValue() 
 			? 1 
 				: 0;
@@ -137,30 +145,30 @@ public abstract class AbstractBinding implements IBinding
 		return Integer.parseInt((String)raw);
 	}
 
-    public double getDouble()
-    {
-        Object raw;
+	public double getDouble()
+	{
+		Object raw;
 
-        raw = getValue();
-        if (raw == null)
-    	    throw new NullValueForBindingException(this);
+		raw = getValue();
+		if (raw == null)
+			throw new NullValueForBindingException(this);
 
-        if (raw instanceof Number)
-        {
-    	    return ((Number)raw).doubleValue();
-        }
+		if (raw instanceof Number)
+		{
+			return ((Number)raw).doubleValue();
+		}
 
-        if (raw instanceof Boolean)
-        {
-    	    return ((Boolean)raw).booleanValue() 
-    	    ? 1 
-    		    : 0;
-        }
+		if (raw instanceof Boolean)
+		{
+			return ((Boolean)raw).booleanValue() 
+			? 1 
+				: 0;
+		}
 
-        // Save parsing for last.  This may also throw a number format exception.
+		// Save parsing for last.  This may also throw a number format exception.
 
-        return Double.parseDouble((String)raw);
-    }
+		return Double.parseDouble((String)raw);
+	}
 
 	/**
 	*  Gets the value for the binding.  If null, returns null,

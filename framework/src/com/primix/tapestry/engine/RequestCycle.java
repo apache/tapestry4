@@ -10,7 +10,7 @@ import com.primix.tapestry.components.*;
 
 /*
  * Tapestry Web Application Framework
- * Copyright (c) 2000 by Howard Ship and Primix Solutions
+ * Copyright (c) 2000, 2001 by Howard Ship and Primix Solutions
  *
  * Primix Solutions
  * One Arsenal Marketplace
@@ -72,13 +72,13 @@ public class RequestCycle
 	*/
 
 	private Map loadedPages;
-	
+
 	/**
 	 * A mapping of page recorders for the current request cycle.
 	 * Key is the page name, value is the {@link IPageRecorder} instance.
 	 *
 	 */
-	 
+
 	private Map loadedRecorders;
 
 	private boolean rewinding = false;
@@ -117,7 +117,7 @@ public class RequestCycle
 		Iterator i = loadedPages.values().iterator();
 
 		while (i.hasNext())
-        {
+		{
 			IPage page = (IPage)i.next();
 
 			source.releasePage(page);
@@ -174,8 +174,8 @@ public class RequestCycle
 		IPageRecorder recorder;
 		IPageSource pageSource;
 
-        if (name == null)
-            throw new NullPointerException("Parameter name may not be null in RequestCycle.getPage().");
+		if (name == null)
+			throw new NullPointerException("Parameter name may not be null in RequestCycle.getPage().");
 
 		if (monitor != null)
 			monitor.pageLoadBegin(name);
@@ -197,26 +197,26 @@ public class RequestCycle
 					name + ".", e);
 			}
 
-            // Get the recorder that will eventually observe and record
-            // changes to persistent properties of the page.
+			// Get the recorder that will eventually observe and record
+			// changes to persistent properties of the page.
 
 			recorder = getPageRecorder(name);
 
 			// Have it rollback the page to the prior state.  Note that
-            // the page has a null observer at this time.
+			// the page has a null observer at this time.
 
 			recorder.rollback(result);
-			
+
 			// Now, have the page use the recorder for any future
-            // property changes.
+			// property changes.
 
 			result.setChangeObserver(recorder);
 
-            // And, if this recorder observed changes in a prior request cycle
-            // (and was locked after committing in that cycle), it's time
-            // to unlock.
+			// And, if this recorder observed changes in a prior request cycle
+			// (and was locked after committing in that cycle), it's time
+			// to unlock.
 
-            recorder.setLocked(false);
+			recorder.setLocked(false);
 
 			if (loadedPages == null)
 				loadedPages = new HashMap(MAP_SIZE);
@@ -237,27 +237,27 @@ public class RequestCycle
 	 *  invoked to get (or create) the page recorder.
 	 *
 	 */
-	 
+
 	protected IPageRecorder getPageRecorder(String name)
 	{
 		IPageRecorder result = null;
-		
+
 		if (loadedRecorders != null)
 			result = (IPageRecorder)loadedRecorders.get(name);
-		
+
 		if (result != null)
 			return result;
-			
+
 		result = engine.getPageRecorder(name);
-			
+
 		if (loadedRecorders == null)
 			loadedRecorders = new HashMap(MAP_SIZE);
-			
+
 		loadedRecorders.put(name, result);
-		
+
 		return result;
 	}
-		
+
 	public RequestContext getRequestContext()
 	{
 		return requestContext;
@@ -278,14 +278,14 @@ public class RequestCycle
 
 		if (actionId != targetActionId)
 			return false;
-		
+
 		// OK, we're there, is the page is good order?
-		
+
 		if (component.getIdPath().equals(targetIdPath))
 			return true;
-			
+
 		// Woops.  Mismatch.
-		
+
 		throw new StaleLinkException(component, this, 
 			Integer.toString(targetActionId), targetIdPath);
 	}
@@ -328,30 +328,30 @@ public class RequestCycle
 		{
 			page.renderPage(writer, this);
 
-		}
+			}
 		catch (RequestCycleException e)
 		{
 			// RenderExceptions don't need to be wrapped.
-			throw e;
-		}
+throw e;
+			}
 		catch (ApplicationRuntimeException e)
 		{
 		    // Nothing much to add here.
 
-		    throw e;
-		}
+			throw e;
+			}
 		catch (Throwable e)
 		{
 			// But wrap other exceptions in a RequestCycleException ... this
 			// will ensure that some of the context is available.
 
 			throw new RequestCycleException(e.getMessage(), page, this, e);
-		}
+			}
 		finally
 		{
 			actionId = 0;
 			targetActionId = 0;
-		}
+			}
 
 		if (monitor != null)
 		    monitor.pageRenderEnd(pageName);
@@ -451,8 +451,8 @@ public class RequestCycle
 	{
 		page = getPage(name);
 	}
-	
-  /**
+
+	/**
 	*  Invokes {@link IPageRecorder#commit()} on each page recorder loaded
 	*  during the request cycle.
 	*

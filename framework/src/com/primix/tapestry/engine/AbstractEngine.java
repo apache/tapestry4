@@ -14,6 +14,7 @@ import com.primix.tapestry.pageload.*;
 import com.primix.tapestry.asset.*;
 import java.net.*;
 import javax.servlet.http.*;
+import org.log4j.*;
 
 /*
  * Tapestry Web Application Framework
@@ -76,18 +77,26 @@ import javax.servlet.http.*;
 public abstract class AbstractEngine
     implements IEngine, Externalizable, HttpSessionBindingListener
 {
-    protected transient String contextPath;
-    protected transient String servletPrefix;
+	private static final Category CAT = Category.getInstance(AbstractEngine.class.getName());
+	
+    private transient String contextPath;
+    private transient String servletPrefix;
     private transient String clientAddress;
     private transient String sessionId;
+	
     /**
     *  An object used to contain application-specific server side state.
     *
     */
 
-    protected Object visit;
+    private Object visit;
 
-    protected Locale locale;
+	/**
+	 *  The current locale for the engine, which may be changed at any time.
+	 *
+	 */
+	 
+    private Locale locale;
 
     /**
     *  The specification for the application, which
@@ -408,7 +417,7 @@ public abstract class AbstractEngine
             // Worst case scenario.  The exception page itself is broken, leaving
             // us with no option but to write the cause to the output.
 
-            reportException("Unable to process client request", cause);
+            reportException("Unable to process client request.", cause);
 
             // Also, write the exception thrown when redendering the exception
             // page, so that can get fixed as well.
@@ -688,6 +697,9 @@ public abstract class AbstractEngine
         boolean discard = true;
         IPage page;
 
+		if (CAT.isDebugEnabled())
+			CAT.debug("Begin render response.");
+			
         // Commit all changes and ignore further changes.
 
         page = cycle.getPage();
@@ -758,6 +770,9 @@ public abstract class AbstractEngine
         IRequestCycle cycle;
         ResponseOutputStream output = null;
         IMonitor monitor;
+
+		if (CAT.isInfoEnabled())
+			CAT.info("Begin service " + context.getRequest().getRequestURI());
 
         if (specification == null)
             specification = context.getServlet().getApplicationSpecification();
@@ -838,6 +853,9 @@ public abstract class AbstractEngine
                 output.forceClose();
 
             cleanupAfterRequest(cycle);
+			
+			if (CAT.isInfoEnabled())
+				CAT.info("End service");
 
         }
 
@@ -1047,7 +1065,7 @@ public abstract class AbstractEngine
     }
 
     /**
-    * <p>Clears the cache of pages, specifications and template.
+    * <p>Clears the cache of pages, specifications and templates.
     *
     */
 
@@ -1370,13 +1388,16 @@ public abstract class AbstractEngine
     {
         String visitClassName;
         Class visitClass;
-
+		
         visitClassName = specification.getProperty(VISIT_CLASS_PROPERTY_NAME);
         if (visitClassName == null)
             throw new ApplicationRuntimeException(
                 "Could not create visit object because property " +
                 VISIT_CLASS_PROPERTY_NAME + 
                 " was not specified in the application specification.");
+
+		if (CAT.isDebugEnabled())
+			CAT.debug("Creating visit object as instance of " + visitClassName);
 
         visitClass = resolver.findClass(visitClassName);
 

@@ -138,5 +138,25 @@
 			<name>ENGINE-banner</name>
 			<resource-path>/com/primix/tapestry/inspector/Engine_NBanner.gif</resource-path>
 		</private-asset>
+		<private-asset>
+			<name>LOGGING</name>
+			<resource-path>/com/primix/tapestry/inspector/Logging_Np1.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>LOGGING-selected</name>
+			<resource-path>/com/primix/tapestry/inspector/Logging_Hp3.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>LOGGING-focus</name>
+			<resource-path>/com/primix/tapestry/inspector/Logging_NRp2.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>LOGGING-selected-focus</name>
+			<resource-path>/com/primix/tapestry/inspector/Logging_HRp4.gif</resource-path>
+		</private-asset>
+		<private-asset>
+			<name>LOGGING-banner</name>
+			<resource-path>/com/primix/tapestry/inspector/Logging_NBanner.gif</resource-path>
+		</private-asset>
 	</assets>
 </specification>

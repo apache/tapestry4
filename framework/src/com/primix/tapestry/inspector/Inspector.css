@@ -18,6 +18,12 @@ A:Active  {}
 
 A:Hover  {}
 
+SPAN.error
+{
+		color: Red;
+		font-weight: bold;
+}
+
 BODY  {
 	font-family: "Trebuchet MS", sans-serif;
 }
