@@ -17,20 +17,32 @@
   <component id="body" type="Body"/>
   
   <component id="eachPage" type="Foreach">
-    <static-binding name="element">td</static-binding>
     <binding name="source" property-path="pageTabNames"/>
     <binding name="value" property-path="pageName"/>
   </component>
+  
+  <component id="leftTabImage" type="Image">
+  	<binding name="image" property-path="leftTabAsset"/>
+  </component>
+  
+  <component id="tabCell" type="Any">
+  	<static-binding name="element">td</static-binding>
+  	<binding name="background" property-path="midTabAsset"/>
+  </component> 
+ 
   
   <component id="pageLink" type="Direct">
     <binding name="listener" property-path="listeners.selectPage"/>
     <binding name="context" property-path="pageName"/>
     <field-binding name="stateful" field-name="Boolean.FALSE"/>
   </component>
+ 
+  <component id="insertPageTitle" type="Insert">
+  	<binding name="value" property-path="pageTitle"/>
+  </component>
   
-  <component id="pageRollover" type="Rollover">
-    <binding name="image" property-path="pageImage"/>
-    <binding name="focus" property-path="pageFocusImage"/>
+  <component id="rightTabImage" type="Image">
+  	<binding name="image" property-path="rightTabAsset"/>
   </component>
   
   <component id="insertWrapped" type="InsertWrapped"/>
@@ -56,24 +68,12 @@
   
   <component id="showInspector" type="ShowInspector"/>
 
-  <private-asset name="Home-active" resource-path="&here;/Home.gif"/>
-  <private-asset name="Home-inactive" resource-path="&here;/Home-inactive.gif"/>
-  <private-asset name="Home-focus" resource-path="&here;/Home-hover.gif"/>
-  <private-asset name="Home-inactive-focus" resource-path="&here;/Home-inactive-hover.gif"/>
+  <private-asset name="activeLeft" resource-path="&here;/tab-active-left.gif"/>
+  <private-asset name="activeMid" resource-path="&here;/tab-active-mid.gif"/>
+  <private-asset name="activeRight" resource-path="&here;/tab-active-right.gif"/>
   
-  <private-asset name="Palette-active" resource-path="&here;/Palette.gif"/>
-  <private-asset name="Palette-inactive" resource-path="&here;/Palette-inactive.gif"/>
-  <private-asset name="Palette-focus" resource-path="&here;/Palette-hover.gif"/>
-  <private-asset name="Palette-inactive-focus" resource-path="&here;/Palette-inactive-hover.gif"/>
-
-  <private-asset name="Localization-active" resource-path="&here;/Localization.gif"/>
-  <private-asset name="Localization-inactive" resource-path="&here;/Localization-inactive.gif"/>
-  <private-asset name="Localization-focus" resource-path="&here;/Localization-hover.gif"/>
-  <private-asset name="Localization-inactive-focus" resource-path="&here;/Localization-inactive-hover.gif"/>
-
-  <private-asset name="Fields-active" resource-path="&here;/Fields.gif"/>
-  <private-asset name="Fields-inactive" resource-path="&here;/Fields-inactive.gif"/>
-  <private-asset name="Fields-focus" resource-path="&here;/Fields-hover.gif"/>
-  <private-asset name="Fields-inactive-focus" resource-path="&here;/Fields-inactive-hover.gif"/>
+  <private-asset name="inactiveLeft" resource-path="&here;/tab-inactive-left.gif"/>
+  <private-asset name="inactiveMid" resource-path="&here;/tab-inactive-mid.gif"/>
+  <private-asset name="inactiveRight" resource-path="&here;/tab-inactive-right.gif"/>
 
  </specification>
