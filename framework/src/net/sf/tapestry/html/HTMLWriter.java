@@ -78,13 +78,13 @@ public class HTMLWriter extends AbstractMarkupWriter
     }
 
     /**
-     *  Creates a default writer for content type "text/html".
+     *  Creates a default writer for content type "text/html; charset=utf-8".
      * 
      **/
 
     public HTMLWriter(OutputStream outputStream)
     {
-        this("text/html", outputStream);
+        this("text/html; charset=utf-8", outputStream);
     }
 
     public IMarkupWriter getNestedWriter()
