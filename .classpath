@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-    <classpathentry kind="var" path="JRE_LIB" sourcepath="JRE_SRC"/>
-    <classpathentry kind="lib" path="config"/>
-    <classpathentry kind="src" path="junit/src"/>
-    <classpathentry kind="src" path="contrib/src/java"/>
-    <classpathentry kind="src" path="framework/src/java"/>
-    <classpathentry kind="var" path="JYTHON_DIR/jython.jar"/>
-    <classpathentry kind="lib" path="ext-package/lib/bsf-2.3.0.jar"/>
-    <classpathentry kind="lib" path="ext-package/lib/commons-codec-1.2.jar"/>
-    <classpathentry kind="lib" path="ext-package/lib/commons-fileupload-1.0.jar"/>
-    <classpathentry kind="lib" path="ext-package/lib/commons-lang-2.0.jar"/>
-    <classpathentry kind="lib" path="ext-package/lib/commons-logging-1.0.3.jar"/>
-    <classpathentry kind="lib" path="ext-package/lib/easymock-1.1.jar"/>
-    <classpathentry kind="lib" path="ext-package/lib/javassist-2.6.jar"/>
-    <classpathentry kind="lib" path="ext-package/lib/jdom-b8.jar"/>
-    <classpathentry kind="lib" path="ext-package/lib/junit-3.8.1.jar"/>
-    <classpathentry kind="lib" path="ext-package/lib/log4j-1.2.7.jar"/>
-    <classpathentry kind="lib" path="ext-package/lib/ognl-2.6.3.jar"/>
-    <classpathentry kind="lib" path="ext-package/lib/oro-2.0.6.jar"/>
-    <classpathentry kind="lib" path="ext-package/lib/servletapi-2.3.jar"/>
-    <classpathentry kind="lib" path="ext-package/lib/jboss-j2ee-3.2.1.jar"/>
-    <classpathentry kind="lib"
-        path="ext-package/lib/hivemind-1.0-rc-2-snapshot.jar" sourcepath="C:/workspace/jakarta-hivemind/framework/src/java"/>
-    <classpathentry kind="lib" path="ext-package/lib/hivemind-lib-1.0-rc-2-snapshot.jar"/>
-    <classpathentry kind="lib" path="framework/src/descriptor"/>
-    <classpathentry kind="output" path="bin"/>
+	<classpathentry exported="true" kind="var" path="CLOVER_RUNTIME"/>
+	<classpathentry sourcepath="JRE_SRC" kind="var" path="JRE_LIB"/>
+	<classpathentry kind="lib" path="config"/>
+	<classpathentry kind="src" path="junit/src"/>
+	<classpathentry kind="src" path="contrib/src/java"/>
+	<classpathentry kind="src" path="framework/src/java"/>
+	<classpathentry kind="var" path="JYTHON_DIR/jython.jar"/>
+	<classpathentry kind="lib" path="ext-package/lib/bsf-2.3.0.jar"/>
+	<classpathentry kind="lib" path="ext-package/lib/commons-codec-1.2.jar"/>
+	<classpathentry kind="lib" path="ext-package/lib/commons-fileupload-1.0.jar"/>
+	<classpathentry kind="lib" path="ext-package/lib/commons-lang-2.0.jar"/>
+	<classpathentry kind="lib" path="ext-package/lib/commons-logging-1.0.3.jar"/>
+	<classpathentry kind="lib" path="ext-package/lib/easymock-1.1.jar"/>
+	<classpathentry kind="lib" path="ext-package/lib/javassist-2.6.jar"/>
+	<classpathentry kind="lib" path="ext-package/lib/jdom-b8.jar"/>
+	<classpathentry kind="lib" path="ext-package/lib/junit-3.8.1.jar"/>
+	<classpathentry kind="lib" path="ext-package/lib/log4j-1.2.7.jar"/>
+	<classpathentry kind="lib" path="ext-package/lib/ognl-2.6.3.jar"/>
+	<classpathentry kind="lib" path="ext-package/lib/oro-2.0.6.jar"/>
+	<classpathentry kind="lib" path="ext-package/lib/servletapi-2.3.jar"/>
+	<classpathentry kind="lib" path="ext-package/lib/jboss-j2ee-3.2.1.jar"/>
+	<classpathentry sourcepath="C:/workspace/jakarta-hivemind/framework/src/java" kind="lib" path="ext-package/lib/hivemind-1.0-rc-2-snapshot.jar"/>
+	<classpathentry kind="lib" path="ext-package/lib/hivemind-lib-1.0-rc-2-snapshot.jar"/>
+	<classpathentry kind="lib" path="framework/src/descriptor"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>

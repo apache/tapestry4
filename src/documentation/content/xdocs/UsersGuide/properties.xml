@@ -439,7 +439,7 @@ Object that parses and caches script specifications.
 	<td>
 	The specification which defines this component.	Often used to access
 	meta data defined in the component's specification using the
-	&spec.property; element.
+	&spec.meta; element.
 	</td>
 </tr>
 

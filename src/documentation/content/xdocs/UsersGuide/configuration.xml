@@ -233,7 +233,7 @@ the search path for configuration properties is:
 
 <ul>
 	<li>
-		As a &spec.property; of the &spec.application; (in the application specification,
+		As a &spec.meta; of the &spec.application; (in the application specification,
 		if the application uses one).
 	</li>
 	<li>
@@ -299,7 +299,7 @@ currently used in Tapestry:
 	
 	<p>
 	This configuration property does not follow the normal search path rules.  The
-	&spec.property; must be provided in the &spec.page-specification; or &spec.component-specification;.
+	&spec.meta; must be provided in the &spec.page-specification; or &spec.component-specification;.
 	If no value is found there, the immediate containing &spec.application; or
 	&spec.library-specification; is checked.  If still not found, the default is used.
 	</p>
@@ -653,21 +653,21 @@ standard one and allows specific components to use other character sets:
 	
 <ul>
 	<li>
-		As a &spec.property; of the &spec.page-specification; or the &spec.component-specification; 
+		As a &spec.meta; of the &spec.page-specification; or the &spec.component-specification; 
 		(in the page or component specification). 
 		<p>
 		This configuration will apply only to the page or component where it is defined.
 		</p>
 	</li>
 	<li>
-		As a &spec.property; of the &spec.library-specification; 
+		As a &spec.meta; of the &spec.library-specification; 
 		(in the library specification, if the components are included in a library). 
 		<p>
 		This configuration will apply to all pages and components in the library.
 		</p>
 	</li>
 	<li>
-		As a &spec.property; of the &spec.application; (in the application specification,
+		As a &spec.meta; of the &spec.application; (in the application specification,
 		if the application uses one).
 	</li>
 	<li>
