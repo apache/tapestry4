@@ -60,7 +60,7 @@ public class EnhancementWorklistImpl implements EnhancementWorklist
     public Class createEnhancedSubclass()
     {
         ClassFab classFab =
-            _classFactory.newClass(_className, _parentClass, new FalseModule(_classResolver));
+            _classFactory.newClass(_className, _parentClass, _classResolver.getClassLoader());
 
         performEnhancement(classFab);
 
