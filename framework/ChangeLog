@@ -1,5 +1,9 @@
 * Dec 28 2000 hship
 
+Woops!  Moved the logic for creating the visit object to AbstractApplication.
+
+* Dec 28 2000 hship
+
 Change SimpleApplication to create the visit object based on a class specified in the application specification.
 
 * Dec 28 2000 hship
