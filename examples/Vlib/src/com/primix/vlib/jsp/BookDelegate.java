@@ -129,20 +129,4 @@ public class BookDelegate extends VlibDelegate
 		return book;
 	}
 	
-	/**
-	 *  Returns true if the holder of the book is not the borrower, and should
-	 *  be displayed.
-	 *
-	 */
-	 
-	public boolean getShowHolder()
-	{
-		Integer ownerPK;
-		Integer holderPK;
-		
-		ownerPK = book.getOwnerPrimaryKey();
-		holderPK = book.getHolderPrimaryKey();
-		
-		return !ownerPK.equals(holderPK);
-	}
 }

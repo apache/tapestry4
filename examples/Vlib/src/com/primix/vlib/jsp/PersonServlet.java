@@ -49,7 +49,7 @@ public class PersonServlet extends VlibServlet
 	 
 	protected IService getDelegate(RequestContext context)
 	{
-		return HomeDelegate.get(context);
+		return PersonDelegate.get(context);
 	}
 	
 	public static void writeLink(RequestContext context, HTMLWriter writer,

@@ -61,16 +61,7 @@ public class Logout extends BasePage implements ILifecycle
 
 		app = (VirtualLibraryApplication)application;
 
-		app.setUser(null);
+		app.logout();
 	}
 	
-	/**
-	 *  Invalidates the current {@link HttpSession}.
-	 *
-	 */
-	 			   
-	public void cleanupAfterRender(IRequestCycle cycle)
-	{
-		cycle.getRequestContext().getSession().invalidate();
-	}
 }

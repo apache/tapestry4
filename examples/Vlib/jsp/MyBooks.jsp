@@ -50,9 +50,7 @@
 	 <td><% writer.print(book.getPublisherName()); %></td>
 	 <td>
 <%
-	boolean showHolder = delegate.getShowHolder(book);
-	
-	if (showHolder)
+	if (application.showHolder(book))
 		PersonServlet.writeLink(context, writer,
 				book.getHolderPrimaryKey(),
 				book.getHolderName());
