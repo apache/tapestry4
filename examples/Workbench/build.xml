@@ -30,19 +30,19 @@
     <project-dependency artifact="tapestry"            use="run"/>
     <project-dependency artifact="tapestry-contrib"    use="run"/>
 
-    <ibiblio-dependency artifact="bsf"                version="2.3.0"               group="bsf"               use="run"/>
-    <ibiblio-dependency artifact="commons-codec"      version="1.2"                 group="commons-codec"     use="run"/>
-		<ibiblio-dependency artifact="commons-fileupload" version="1.0"                 group="commons-fileupload" use="run"/>        
-    <ibiblio-dependency artifact="commons-lang"       version="2.0"                 group="commons-lang"      use="run"/>
-    <ibiblio-dependency artifact="commons-logging"    version="1.0.4"               group="commons-logging"   use="run"/>
+    <ibiblio-dependency artifact="bsf"                version="${bsf.version}"      group="bsf"               use="run"/>
+    <ibiblio-dependency artifact="commons-codec"      version="${codec.version}"    group="commons-codec"     use="run"/>
+		<ibiblio-dependency artifact="commons-fileupload" version="${fileupload.version}" group="commons-fileupload" use="run"/>        
+    <ibiblio-dependency artifact="commons-lang"       version="${lang.version}"     group="commons-lang"      use="run"/>
+    <ibiblio-dependency artifact="commons-logging"    version="${logging.version}"  group="commons-logging"   use="run"/>
     
     <ibiblio-dependency artifact="hivemind"           version="${hivemind.version}" group="hivemind"          use="run"/>
     <ibiblio-dependency artifact="hivemind-lib"       version="${hivemind.version}" group="hivemind"          use="run"/>
 		<ibiblio-dependency artifact="javassist"          version="${javassist.version}"  group="jboss"           use="run"/>
-		<ibiblio-dependency artifact="log4j"              version="1.2.7"               group="log4j"             use="test"/>
-    <ibiblio-dependency artifact="ognl"               version="2.6.3"               group="ognl"              use="run"/>
-    <ibiblio-dependency artifact="oro"                version="2.0.6"               group="oro"               use="run"/>
-		<ibiblio-dependency artifact="servletapi"         version="2.3"                 group="servletapi"/>
+		<ibiblio-dependency artifact="log4j"              version="${log4j.version}"    group="log4j"             use="test"/>
+    <ibiblio-dependency artifact="ognl"               version="${ognl.version}"     group="ognl"/>
+    <ibiblio-dependency artifact="oro"                version="${oro.version}"      group="oro"               use="run"/>
+		<ibiblio-dependency artifact="servletapi"         version="${servlet.version}"  group="servletapi"/>
 
  
     <!-- This isn't actually uploaded to Maven yet! -->
