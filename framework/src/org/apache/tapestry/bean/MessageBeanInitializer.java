@@ -68,7 +68,7 @@ import org.apache.tapestry.IComponent;
  * 
  **/
 
-public class StringBeanInitializer extends AbstractBeanInitializer
+public class MessageBeanInitializer extends AbstractBeanInitializer
 {
     protected String _key;
 	

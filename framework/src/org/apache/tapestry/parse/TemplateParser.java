@@ -162,7 +162,7 @@ public class TemplateParser
      * 
      **/
 
-    public static final String LOCALIZATION_KEY_PREFIX = "string:";
+    public static final String LOCALIZATION_KEY_PREFIX = "message:";
 
     /**
      *  A "magic" component id that causes the tag with the id and its entire

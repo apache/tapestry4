@@ -1,8 +1,14 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0"?>
 <!-- $Id$ -->
 <!DOCTYPE page-specification PUBLIC 
   "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+     	
+<page-specification>
+
+	<bean name="fred" class="java.util.HashMap">
+		<set-message-property name="barney" key="rubble"/>
+	</bean>
 	
-<page-specification/>
+</page-specification>
 

@@ -366,7 +366,7 @@ public abstract class MyPage extends &BasePage;
 <![CDATA[
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE page-specification PUBLIC 
-	"-//Howard Lewis Ship//Tapestry Specification 1.4//EN" 
+	"-//Howard Lewis Ship//Tapestry Specification 3.0//EN" 
 	"http://tapestry.sf.net/dtd/Tapestry_1_4.dtd">
 	
 <page-specification class="MyPage">
