@@ -49,8 +49,7 @@ import java.rmi.*;
 public class PersonPage extends BasePage
 implements IExternalPage
 {
-	private transient IBookQuery bookQuery;
-	private Handle bookQueryHandle;
+	private IBookQuery bookQuery;
 	private Book currentMatch;
 	private int matchCount;
 	private String email;
@@ -58,14 +57,13 @@ implements IExternalPage
 	
 	public void detachFromApplication()
 	{
-		super.detachFromApplication();
-		
 		bookQuery = null;
-		bookQueryHandle = null;
 		currentMatch = null;
 		matchCount = 0;
 		email = null;
 		fullName = null;
+
+		super.detachFromApplication();
 	}
 	
 	public String getEmail()
@@ -119,23 +117,7 @@ implements IExternalPage
 		matchCount = value;
 	}
 	
-	public Handle getBookQueryHandle()
-	{
-		return bookQueryHandle;
-	}
-	
-	/**
-	 *  Sets the handle of the {@link IBookQuery} session bean used to
-	 *  locate books owned by the person.
-	 *
-	 */
-	 
-	public void setBookQueryHandle(Handle value)
-	{
-		bookQueryHandle = value;
-		fireObservedChange("bookQueryHandle", value);
-	}
-	
+
 	/**
 	 *  Gets the {@link IBookQuery} session bean that contains
 	 *  the books owned by the user, restoring it from the
@@ -152,25 +134,22 @@ implements IExternalPage
 		{
 			try
 			{
-				if (bookQueryHandle != null)
-				{
-					bookQuery = (IBookQuery)PortableRemoteObject.narrow(
-												bookQueryHandle.getEJBObject(),
-												IBookQuery.class); 
-					return bookQuery;
-				}
-			
-				// No existing handle, so time to create a new bean.
-				
+
 				app = (VirtualLibraryApplication)application;
 				
 				home = app.getBookQueryHome();
 				
-				setBookQuery(home.create());
+				bookQuery = home.create();
+
+                fireObservedChange("bookQuery", bookQuery);
 			}
-			catch (Throwable t)
+            catch (CreateException ex)
+            {
+                throw new ApplicationRuntimeException(ex);
+            }
+			catch (RemoteException ex)
 			{
-				throw new ApplicationRuntimeException(t);
+				throw new ApplicationRuntimeException(ex);
 			}
 		}
 
@@ -186,18 +165,8 @@ implements IExternalPage
 	public void setBookQuery(IBookQuery value)
 	{
 		bookQuery = value;
-		
-		try
-		{
-			if (value == null)
-				setBookQueryHandle(null);
-			else	
-				setBookQueryHandle(value.getHandle());
-		}
-		catch (RemoteException e)
-		{
-			throw new ApplicationRuntimeException(e);
-		}
+
+        fireObservedChange("bookQuery", bookQuery);
 	}
 	
 	/**
@@ -261,9 +230,9 @@ implements IExternalPage
 			
 			return query.get(0, count);
 		}
-		catch (Throwable t)
+		catch (RemoteException ex)
 		{
-			throw new ApplicationRuntimeException(t);
+			throw new ApplicationRuntimeException(ex);
 		}
 	}
 	
@@ -318,20 +287,18 @@ implements IExternalPage
 	 
 	public void cleanupPage()
 	{
-		if (bookQueryHandle == null)
-			return;
-		
 		try
 		{
-			getBookQuery().remove();
+			if (bookQuery != null)
+			    bookQuery.remove();
 		}
-		catch (RemoveException e)
+		catch (RemoveException ex)
 		{
-			throw new ApplicationRuntimeException(e);
+			throw new ApplicationRuntimeException(ex);
 		}
-		catch (RemoteException e)
+		catch (RemoteException ex)
 		{
-			throw new ApplicationRuntimeException(e);
+			throw new ApplicationRuntimeException(ex);
 		}
 		
 		super.cleanupPage();

@@ -51,43 +51,46 @@ import javax.rmi.*;
  */
 
 
-public class MyBooks extends Protected
+public class MyBooks
+extends Protected
 {
 	private String message;
 	
-	private Handle handle;
 	private IBookQuery query;
 	
 	private Book currentBook;
 	
 	public void detachFromApplication()
 	{
-		super.detachFromApplication();
-		
 		message = null;
-		handle = null;
 		query = null;
 		currentBook = null;
-	}
-	
-	/**
-	 *  Updates the handle persistent page property, used to back the
-	 *  book query.
-	 *
-	 */
-	 
-	public void setHandle(Handle value)
-	{
-		handle = value;
-		
-		fireObservedChange("handle", value);
-	}
 
-	public Handle getHandle()
-	{
-		return handle;
+		super.detachFromApplication();
 	}
 	
+    /**
+     *  A dirty little secret of Tapestry and page recorders:  persistent
+     *  properties must be set before the render (when this method is invoked)
+     *  and can't change during the render.  We force
+     *  the creation of the {@link #getQuery() query property} that will
+     *  be referenced later.
+     *
+     */
+
+    public void beginResponse(IResponseWriter writer, IRequestCycle cycle) 
+    throws RequestCycleException
+    {
+        getQuery();
+    }
+
+    public void setQuery(IBookQuery value)
+    {
+        query = value;
+
+        fireObservedChange("query", query);
+    }
+
 	/**
 	 *  Gets a reference to the book query session bean, restoring it from
 	 *  the handle if necessary, or even creating it.
@@ -102,20 +105,6 @@ public class MyBooks extends Protected
 		if (query != null)
 			return query;
 		
-		if (handle != null)
-		{
-			try
-			{
-				query = (IBookQuery)handle.getEJBObject();
-			}
-			catch (RemoteException e)
-			{
-				throw new ApplicationRuntimeException(e.getMessage(), e);
-			}
-			
-			return query;
-		}
-		
 		// Create a new query.
 		
 		app = (VirtualLibraryApplication)application;
@@ -124,10 +113,8 @@ public class MyBooks extends Protected
 		try
 		{
 			query = home.create();
-			
-			// Record the handle for the query in the page persistent property.
-			
-			setHandle(query.getHandle());
+
+            fireObservedChange("query", query);			
 		}
 		catch (CreateException e)
 		{
@@ -293,12 +280,10 @@ public class MyBooks extends Protected
 	 
  	public void cleanupPage()
  	{
-		if (handle == null)
-			return;
-		
 		try
 		{
-			getQuery().remove();
+			if (query != null)
+			    query.remove();
 		}
 		catch (RemoveException e)
 		{

@@ -60,7 +60,6 @@ public class BookBean extends AbstractEntityBean
 	public String title;
 	public String description;
 	public String ISBN;
-	public int lendCount;
 	public int rating;
 	
 	// CMP fields that shadow relationships
@@ -73,9 +72,9 @@ public class BookBean extends AbstractEntityBean
 	{
 		return new String[] 
 		{
-			"title", "description", "ISBN", "lendCount", 
+			"title", "description", "ISBN",  
 			"holderPK", "ownerPK", "publisherPK",
-			"author", "rating"
+			"author",
 		};
 	}
 	
@@ -113,24 +112,7 @@ public class BookBean extends AbstractEntityBean
 		ISBN = value;
 		dirty = true;
 	}
-	
-	public int getLendCount()
-	{
-		return lendCount;
-	}
-	
-	public void setLendCount(int value)
-	{
-		lendCount = value;
-		dirty = true;
-	}
-	
-	public void incrementLendCount()
-	{
-		lendCount++;
-		dirty = true;
-	}
-	
+		
 	public String getTitle()
 	{
 		return title;
@@ -181,17 +163,6 @@ public class BookBean extends AbstractEntityBean
 		return publisherPK;
 	}
 
-	public int getRating()
-	{
-		return rating;
-	}
-	
-	public void setRating(int value)
-	{
-		rating = value;
-		dirty = true;
-	}
-
 	/**
 	 *  Nulls-out the owner and holder properties; the Owner and Holder
 	 *  will be determined in the accessor.
@@ -227,7 +198,6 @@ public class BookBean extends AbstractEntityBean
 		
 		bookId = allocateKey();
 		description = null;
-		lendCount = 0;
 		
 		// Rating really isn't implemented yet.
 		

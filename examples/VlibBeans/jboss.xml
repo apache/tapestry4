@@ -3,6 +3,23 @@
 <jboss>
      <secure>true</secure>
      <container-configurations>
+       <container-configuration configuration-class="org.jboss.ejb.deployment.StatefulSessionContainerConfiguration">
+	 <container-name>Vlib Stateful Config</container-name>
+	 <call-logging>true</call-logging>
+	 <container-invoker>org.jboss.ejb.plugins.jrmp13.server.JRMPContainerInvoker</container-invoker>
+	 <instance-pool>org.jboss.ejb.plugins.StatefulSessionInstancePool</instance-pool>
+	 <instance-cache>org.jboss.ejb.plugins.StatefulSessionInstanceCache</instance-cache>
+	 <persistence-manager>org.jboss.ejb.plugins.StatefulSessionFilePersistenceManager</persistence-manager>
+	 <transaction-manager></transaction-manager>
+	 <authentication-module></authentication-module>
+	 <role-mapping-manager></role-mapping-manager>
+	 <container-invoker-conf>
+	   <Optimized>false</Optimized>
+	 </container-invoker-conf>
+	 <container-cache-conf>
+	   <cache-policy>org.jboss.ejb.plugins.NoPassivationCachePolicy</cache-policy>
+	 </container-cache-conf>
+       </container-configuration>
        <container-configuration configuration-class="org.jboss.ejb.deployment.StatelessSessionContainerConfiguration">
 	 <container-name>Vlib Stateless Config</container-name>
 	 <call-logging>true</call-logging>
@@ -14,7 +31,7 @@
 	 <authentication-module></authentication-module>
 	 <role-mapping-manager></role-mapping-manager>
 	 <container-invoker-conf>
-	   <Optimized>true</Optimized>
+	   <Optimized>false</Optimized>
 	 </container-invoker-conf>
 	 <container-pool-conf>
 	   <MaximumSize>100</MaximumSize>
@@ -32,7 +49,7 @@
 	 <authentication-module></authentication-module>
 	 <role-mapping-manager></role-mapping-manager>
 	 <container-invoker-conf>
-	   <Optimized>true</Optimized>
+	   <Optimized>false</Optimized>
 	 </container-invoker-conf>
 	 <container-cache-conf>
 	   <cache-policy>org.jboss.ejb.plugins.NoPassivationCachePolicy</cache-policy>
@@ -43,28 +60,11 @@
 	 </container-pool-conf>
 	 <commit-option>A</commit-option>
        </container-configuration>
-       <container-configuration configuration-class="org.jboss.ejb.deployment.StatefulSessionContainerConfiguration">
-	 <container-name>Vlib Stateful Config</container-name>
-	 <call-logging>true</call-logging>
-	 <container-invoker>org.jboss.ejb.plugins.jrmp13.server.JRMPContainerInvoker</container-invoker>
-	 <instance-pool></instance-pool>
-	 <instance-cache>org.jboss.ejb.plugins.StatefulSessionInstanceCache</instance-cache>
-	 <persistence-manager>org.jboss.ejb.plugins.StatefulSessionFilePersistenceManager</persistence-manager>
-	 <transaction-manager></transaction-manager>
-	 <authentication-module></authentication-module>
-	 <role-mapping-manager></role-mapping-manager>
-	 <container-invoker-conf>
-	   <Optimized>true</Optimized>
-	 </container-invoker-conf>
-	 <container-cache-conf>
-	   <cache-policy>org.jboss.ejb.plugins.NoPassivationCachePolicy</cache-policy>
-	 </container-cache-conf>
-       </container-configuration>
      </container-configurations>
      <resource-managers>
        <resource-manager res-class="org.jboss.ejb.deployment.JDBCResource">
 	 <res-name>jdbc/dataSource</res-name>
-	 <res-jndi-name>DefaultDS</res-jndi-name>
+	 <res-jndi-name>PrimixVlib</res-jndi-name>
        </resource-manager>
      </resource-managers>
      <enterprise-beans>
@@ -73,6 +73,10 @@
 	 <jndi-name>vlib/Operations</jndi-name>
 	 <configuration-name>Vlib Stateless Config</configuration-name>
 	 <ejb-ref>
+	   <ejb-ref-name>ejb/Publisher</ejb-ref-name>
+	   <jndi-name>vlib/Publisher</jndi-name>
+	 </ejb-ref>
+	 <ejb-ref>
 	   <ejb-ref-name>ejb/Book</ejb-ref-name>
 	   <jndi-name>vlib/Book</jndi-name>
 	 </ejb-ref>
@@ -80,19 +84,6 @@
 	   <ejb-ref-name>ejb/Person</ejb-ref-name>
 	   <jndi-name>vlib/Person</jndi-name>
 	 </ejb-ref>
-	 <ejb-ref>
-	   <ejb-ref-name>ejb/Publisher</ejb-ref-name>
-	   <jndi-name>vlib/Publisher</jndi-name>
-	 </ejb-ref>
-	 <resource-ref>
-	   <res-ref-name>jdbc/dataSource</res-ref-name>
-	   <resource-name>jdbc/dataSource</resource-name>
-	 </resource-ref>
-       </session>
-       <session>
-	 <ejb-name>KeyAllocator</ejb-name>
-	 <jndi-name>vlib/KeyAllocator</jndi-name>
-	 <configuration-name>Vlib Stateless Config</configuration-name>
 	 <resource-ref>
 	   <res-ref-name>jdbc/dataSource</res-ref-name>
 	   <resource-name>jdbc/dataSource</resource-name>
@@ -107,6 +98,24 @@
 	   <resource-name>jdbc/dataSource</resource-name>
 	 </resource-ref>
        </session>
+       <session>
+	 <ejb-name>KeyAllocator</ejb-name>
+	 <jndi-name>vlib/KeyAllocator</jndi-name>
+	 <configuration-name>Vlib Stateless Config</configuration-name>
+	 <resource-ref>
+	   <res-ref-name>jdbc/dataSource</res-ref-name>
+	   <resource-name>jdbc/dataSource</resource-name>
+	 </resource-ref>
+       </session>
+       <entity>
+	 <ejb-name>Book</ejb-name>
+	 <jndi-name>vlib/Book</jndi-name>
+	 <configuration-name>Vlib Entity Bean</configuration-name>
+	 <ejb-ref>
+	   <ejb-ref-name>ejb/KeyAllocator</ejb-ref-name>
+	   <jndi-name>vlib/KeyAllocator</jndi-name>
+	 </ejb-ref>
+       </entity>
        <entity>
 	 <ejb-name>Person</ejb-name>
 	 <jndi-name>vlib/Person</jndi-name>
@@ -119,15 +128,6 @@
        <entity>
 	 <ejb-name>Publisher</ejb-name>
 	 <jndi-name>vlib/Publisher</jndi-name>
-	 <configuration-name>Vlib Entity Bean</configuration-name>
-	 <ejb-ref>
-	   <ejb-ref-name>ejb/KeyAllocator</ejb-ref-name>
-	   <jndi-name>vlib/KeyAllocator</jndi-name>
-	 </ejb-ref>
-       </entity>
-       <entity>
-	 <ejb-name>Book</ejb-name>
-	 <jndi-name>vlib/Book</jndi-name>
 	 <configuration-name>Vlib Entity Bean</configuration-name>
 	 <ejb-ref>
 	   <ejb-ref-name>ejb/KeyAllocator</ejb-ref-name>

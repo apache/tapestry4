@@ -16,11 +16,14 @@ META_RESOURCES = *.xml
 JAVADOC_DIR = ../../javadoc
 
 JAVADOC_OPT = \
-	-version -author -windowtitle "Primix Virtual Library - Enterprise JavaBeans" \
-	-link http://java.sun.com/products/jdk/1.2/docs/api \
+	-version -author \
+	-windowtitle "Primix Virtual Library - Enterprise JavaBeans" \
+	-link http://java.sun.com/j2se/1.3/docs/api \
 	-link http://java.sun.com/j2ee/j2sdkee/techdocs/api
 
 include $(SYS_MAKEFILE_DIR)/jBoss.mk
+
+JBOSS_CONF_DIR = $(JBOSS_DIR)/conf/default
 
 # Rule to configure the jBoss server for the VlibBeans
 # demo.
@@ -30,18 +33,21 @@ ifeq ("$(JBOSS_DIR)","")
 	@$(ECHO) "You must set JBOSS_DIR (in $(SYS_MAKEFILE_DIR)/config/LocalConfig.mk)"
 	@$(ECHO) "before configuring jBoss."
 else
-	@$(ECHO) "\n*** Installing Hypersonic SQL database data ... ***\n"
-	@$(MKDIRS) $(JBOSS_DIR)/db/hypersonic
-	@$(CP) jboss/default.script $(JBOSS_DIR)/db/hypersonic
+	@$(ECHO) "\n*** Installing Primix Vlib database ... ***\n"
+	$(RM) -r $(JBOSS_DIR)/db/vlib
+	$(MKDIRS) $(JBOSS_DIR)/db/vlib
+	$(CAT) jboss/vlib.tar.gz | ($(CD) $(JBOSS_DIR)/db/vlib && $(TAR) xz)
+	$(CP) jboss/vlib.properties $(JBOSS_CONF_DIR)
+	@$(ECHO) "\n*** Splicing changes to jboss.conf ... ***\n"
+	$(call JBE_SPLICE,PrimixVlib,$(JBOSS_CONF_DIR)/jboss.conf,jboss/jboss.conf.splice)
+	@$(ECHO) "\n*** Splicing changes to jboss.jcml ... ***\n"
+	$(call JBE_SPLICE,PrimixVlib,$(JBOSS_CONF_DIR)/jboss.jcml,jboss/jboss.jcml.splice, \
+		-before \</server\>)
 	@$(ECHO) "\n*** Setting up JNDI properties ... ***\n"
-	@$(CP) --force jboss/jndi.properties $(JBOSS_DIR)/conf/default
+	@$(CP) --force jboss/jndi.properties $(JBOSS_CONF_DIR)
 	@$(ECHO) "\n*** Copying runtime libraries ... ***\n"
 	@$(CP) --force $(INSTALL_DIR)/Tapestry.jar $(JBOSS_DIR)/lib/ext
 	@$(ECHO) "\n*** jBoss is ready to run ***\n"
 endif
-
-run: deploy
-	@$(ECHO) "\n*** Running jBoss ... ***\n"
-	$(CD) $(JBOSS_DIR)/bin ; $(JAVA) -jar run.jar
 
 

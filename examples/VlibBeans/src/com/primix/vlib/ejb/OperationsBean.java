@@ -155,7 +155,6 @@ public class OperationsBean implements SessionBean
 		// so we're safe.
 		
 		book.setHolderPK(borrowerPrimaryKey);
-		book.incrementLendCount();
 		
 		return book;
 	}
@@ -622,7 +621,6 @@ public class OperationsBean implements SessionBean
 		columns[Book.TITLE_COLUMN] = set.getString(column++);
 		columns[Book.DESCRIPTION_COLUMN] = set.getString(column++);
 		columns[Book.ISBN_COLUMN] = set.getString(column++);
-		columns[Book.LEND_COUNT_COLUMN] = set.getObject(column++);
 		columns[Book.OWNER_PK_COLUMN] = set.getObject(column++);
 		columns[Book.OWNER_NAME_COLUMN] = 
 			buildName(set.getString(column++), set.getString(column++));
@@ -632,7 +630,6 @@ public class OperationsBean implements SessionBean
 		columns[Book.PUBLISHER_PK_COLUMN] = set.getObject(column++);
 		columns[Book.PUBLISHER_NAME_COLUMN] = set.getString(column++);
 		columns[Book.AUTHOR_COLUMN] = set.getString(column++);
-		columns[Book.RATING_COLUMN] = set.getObject(column++);
 		
 		return new Book(columns);
 	}
@@ -655,11 +652,10 @@ public class OperationsBean implements SessionBean
 	private static final String[] bookSelectColumns =
 	{
 		"book.BOOK_ID", "book.TITLE", "book.DESCRIPTION", "book.ISBN",
-		"book.LEND_COUNT",
 		"owner.PERSON_ID", "owner.FIRST_NAME", "owner.LAST_NAME",
 		"holder.PERSON_ID", "holder.FIRST_NAME", "holder.LAST_NAME",
 		"publisher.PUBLISHER_ID", "publisher.NAME",
-		"book.AUTHOR", "book.RATING"
+		"book.AUTHOR"
 	};
 	
 	private static final String[] bookAliasColumns =
@@ -704,7 +700,7 @@ public class OperationsBean implements SessionBean
 			return;
 		
 		assembly.addSep(" AND ");
-		assembly.addParameter("LCASE(" + column + ") LIKE ?",
+		assembly.addParameter("LOWER (" + column + ") LIKE ?",
 				 "%" + trimmed.toLowerCase() + "%");	
 	}
 	
@@ -896,7 +892,7 @@ public class OperationsBean implements SessionBean
 			assembly.newLine("FROM PERSON");
 			assembly.newLine("WHERE ");
 			
-			assembly.addParameter("LCASE (EMAIL) = ?", trimmedEmail);
+			assembly.addParameter("LOWER  (EMAIL) = ?", trimmedEmail);
 			
 			statement = assembly.createStatement(connection);
 			set = statement.executeQuery();
@@ -911,9 +907,9 @@ public class OperationsBean implements SessionBean
 			assembly.newLine("FROM PERSON");
 			assembly.newLine("WHERE ");
 
-			assembly.addParameter("LCASE (FIRST_NAME) = ?", trimmedFirstName);
+			assembly.addParameter("LOWER  (FIRST_NAME) = ?", trimmedFirstName);
 			assembly.addSep(" AND ");
-			assembly.addParameter("LCASE (LAST_NAME) = ?", trimmedLastName);
+			assembly.addParameter("LOWER  (LAST_NAME) = ?", trimmedLastName);
 			
 			statement = assembly.createStatement(connection);
 			set = statement.executeQuery();
