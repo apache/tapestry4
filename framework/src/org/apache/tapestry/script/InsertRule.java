@@ -55,38 +55,40 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.tapestry.ILocatable;
-
+import org.apache.tapestry.util.xml.RuleDirectedParser;
+import org.xml.sax.Attributes;
 
 /**
- *  Defines the responsibilities of a template token used by a
- *  {@link org.apache.tapestry.IScript}.
+ * Constructs an {@link org.apache.tapestry.script.InsertToken}
+ * from an &lt;insert&gt; element, which contains full content.
+ * &lt;insert&gt; is a throwback to the 1.0 and 1.1 DTDs.
  *
- *  @author Howard Lewis Ship
- *  @version $Id$
- * 
- **/
-
-public interface IScriptToken extends ILocatable
+ * @author Howard Lewis Ship
+ * @version $Id$
+ * @since 3.0
+ */
+class InsertRule extends AbstractTokenRule
 {
-	/**
-	 *  Invoked to have the token
-	 *  add its text to the buffer.  A token may need access
-	 *  to the symbols in order to produce its output.
-	 *
-	 *  <p>Top level tokens (such as BodyToken) can expect that
-	 *  buffer will be null.
-	 *
-	 **/
 
-	public void write(StringBuffer buffer, ScriptSession session);
+    public void endElement(RuleDirectedParser parser)
+    {
+        parser.pop();
+    }
 
-	/**
-	 *  Invoked during parsing to add the token parameter as a child
-	 *  of this token.
-	 *
-	 *  @since 0.2.9
-	 **/
+    public void startElement(RuleDirectedParser parser, Attributes attributes)
+    {
+        // property-path is really an OGNL expression.
+        String expression = getAttribute(attributes, "property-path");
 
-	public void addToken(IScriptToken token);
+        // Was called key in the 1.0 DTD
+        if (expression == null)
+            expression = getAttribute(attributes, "key");
+
+        IScriptToken token = new InsertToken(expression, parser.getLocation());
+
+        addToParent(parser, token);
+
+        parser.push(token);
+    }
+
 }

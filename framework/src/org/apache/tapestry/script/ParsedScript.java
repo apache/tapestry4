@@ -60,9 +60,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.tapestry.ILocation;
+import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IScript;
-import org.apache.tapestry.ScriptSession;
+import org.apache.tapestry.IScriptProcessor;
 
 /**
  *  A top level container for a number of {@link IScriptToken script tokens}.
@@ -73,14 +75,15 @@ import org.apache.tapestry.ScriptSession;
  * 
  **/
 
-public class ParsedScript implements IScript
+public class ParsedScript extends AbstractToken implements IScript
 {
     private IResourceLocation _scriptLocation;
-    private List _tokens = new ArrayList();
 
-    public ParsedScript(IResourceLocation scriptLocation)
+    public ParsedScript(ILocation location)
     {
-        _scriptLocation = scriptLocation;
+ 		super(location);
+ 		
+ 		_scriptLocation = location.getResourceLocation();
     }
 
     public IResourceLocation getScriptLocation()
@@ -88,23 +91,22 @@ public class ParsedScript implements IScript
         return _scriptLocation;
     }
 
-    public void addToken(IScriptToken token)
+	/**
+	 * Creates the {@link ScriptSession} and invokes 
+	 * {@link AbstractToken#writeChildren(StringBuffer, ScriptSession)}.
+	 */
+    public void execute(IRequestCycle cycle, IScriptProcessor processor, Map symbols)
     {
-        _tokens.add(token);
+        ScriptSession session = new ScriptSession(_scriptLocation, cycle, processor, symbols);
+		writeChildren(null, session);
+    }
+    
+    /** 
+     * Does nothing; never invoked. 
+     */
+    public void write(StringBuffer buffer, ScriptSession session)
+    {
+
     }
 
-    public ScriptSession execute(Map symbols)
-    {
-        ScriptSession result = new ScriptSession(_scriptLocation, symbols);
-        Iterator i = _tokens.iterator();
-
-        while (i.hasNext())
-        {
-            IScriptToken token = (IScriptToken) i.next();
-
-            token.write(null, result);
-        }
-
-        return result;
-    }
 }

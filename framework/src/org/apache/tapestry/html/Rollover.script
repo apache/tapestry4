@@ -2,8 +2,8 @@
 <!-- $Id$ -->
 
 <!DOCTYPE script PUBLIC 
-	"-//Howard Lewis Ship//Tapestry Script 1.2//EN"
-	"http://tapestry.sf.net/dtd/Script_1_2.dtd">
+	"-//Apache Software Foundation//Tapestry Script Specification 1.3//EN"
+	"http://jakarta.apache.org/tapestry/dtd/Script_1_3.dtd">
 
 <script>
 <!-- 
@@ -22,13 +22,10 @@ onMouseOutName - name of mouse out function
 
 -->
 
-<input-symbol key="uniqueId" class="java.lang.String" required="yes"/>
+<input-symbol key="imageName" class="java.lang.String" required="yes"/>
 <input-symbol key="focusImageURL" class="java.lang.String" required="yes"/>
 <input-symbol key="blurImageURL" class="java.lang.String" required="yes"/>
 
-<let key="imageName">
-	rollover_${uniqueId}
-</let>
 
 <let key="onMouseOverName">
 	focus_${imageName}

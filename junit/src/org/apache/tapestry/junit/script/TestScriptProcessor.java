@@ -53,40 +53,80 @@
  *
  */
 
-package org.apache.tapestry.script;
+package org.apache.tapestry.junit.script;
 
-import org.apache.tapestry.ILocatable;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.tapestry.IResourceLocation;
+import org.apache.tapestry.IScriptProcessor;
+import org.apache.tapestry.util.IdAllocator;
 
 /**
- *  Defines the responsibilities of a template token used by a
- *  {@link org.apache.tapestry.IScript}.
+ * Used by {@link org.apache.tapestry.junit.script.TestScript}.
  *
- *  @author Howard Lewis Ship
- *  @version $Id$
- * 
+ * @author Howard Lewis Ship
+ * @version $Id$
+ * @since 3.0
  **/
-
-public interface IScriptToken extends ILocatable
+public class TestScriptProcessor implements IScriptProcessor
 {
-	/**
-	 *  Invoked to have the token
-	 *  add its text to the buffer.  A token may need access
-	 *  to the symbols in order to produce its output.
-	 *
-	 *  <p>Top level tokens (such as BodyToken) can expect that
-	 *  buffer will be null.
-	 *
-	 **/
+    private StringBuffer _body;
+    private StringBuffer _initialization;
+    private List _externalScripts;
+    private IdAllocator _idAllocator = new IdAllocator();
 
-	public void write(StringBuffer buffer, ScriptSession session);
+    public void addBodyScript(String script)
+    {
+        if (_body == null)
+            _body = new StringBuffer();
 
-	/**
-	 *  Invoked during parsing to add the token parameter as a child
-	 *  of this token.
-	 *
-	 *  @since 0.2.9
-	 **/
+        _body.append(script);
+    }
 
-	public void addToken(IScriptToken token);
+	public String getBody()
+	{
+		if (_body == null)
+			return null;
+			
+			return _body.toString();
+	}
+
+    public void addInitializationScript(String script)
+    {
+        if (_initialization == null)
+            _initialization = new StringBuffer();
+
+        _initialization.append(script);
+    }
+
+	public String getInitialization()
+	{
+		if (_initialization == null)return null;
+		
+		return _initialization.toString();
+	}
+
+    public void addExternalScript(IResourceLocation scriptLocation)
+    {
+        if (_externalScripts == null)
+            _externalScripts = new ArrayList();
+
+        _externalScripts.add(scriptLocation);
+    }
+    
+    public IResourceLocation[] getExternalScripts()
+    {
+    	if (_externalScripts == null)return null;
+    	
+    	int count = _externalScripts.size();
+    	
+    	return (IResourceLocation[])_externalScripts.toArray(new IResourceLocation[count]);
+    }
+
+    public String getUniqueString(String baseValue)
+    {
+    	return _idAllocator.allocateId(baseValue);
+    }
+
 }

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!DOCTYPE script PUBLIC
+  "-//Apache Software Foundation//Tapestry Script Specification 1.3//EN"
+	"http://jakarta.apache.org/tapestry/dtd/Script_1_3.dtd">
+
+<script>
+
+<let key="alpha" unique="yes">
+	Alpha	
+</let>
+
+<let key="beta" unique="yes">
+	Alpha	
+</let>
+
+<let key="gamma" unique="yes">
+	Alpha	
+</let>
+
+</script>

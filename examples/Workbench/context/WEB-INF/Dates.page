@@ -13,5 +13,7 @@
 		<binding name="features" expression='"top=200,left=100,resizable=yes,scrollbars=yes"'/>
 	</component>
 	
+	<property-specification name="includeWeek" type="boolean" persistent="yes"/>
+	
 </page-specification>
 

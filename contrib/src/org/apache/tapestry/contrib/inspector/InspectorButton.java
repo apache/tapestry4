@@ -66,12 +66,12 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IScript;
-import org.apache.tapestry.ScriptSession;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.html.Body;
+import org.apache.tapestry.script.ScriptSession;
 
 /**
  *  Component that can be placed into application pages that will launch
@@ -134,16 +134,14 @@ public class InspectorButton extends BaseComponent implements IDirect
 
         symbols.put("URL", link.getURL());
 
-        ScriptSession scriptSession = script.execute(symbols);
+		Body body = Body.get(cycle);
 
-        Body body = Body.get(cycle);
+		 if (body == null)
+			 throw new ApplicationRuntimeException(
+				 Tapestry.getString("InspectorButton.must-be-contained-by-body"),
+				 this);
 
-        if (body == null)
-            throw new ApplicationRuntimeException(
-                Tapestry.getString("InspectorButton.must-be-contained-by-body"),
-                this);
-
-        body.process(scriptSession);
+		script.execute(cycle, body, symbols);
 
         // Now, go render the rest from the template.
 

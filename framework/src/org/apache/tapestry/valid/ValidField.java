@@ -189,8 +189,8 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
 
         String fullName = "document." + formName + "." + textFieldName;
 
-        body.addOtherInitialization(fullName + ".focus();");
-        body.addOtherInitialization(fullName + ".select();");
+        body.addInitializationScript(fullName + ".focus();");
+        body.addInitializationScript(fullName + ".select();");
 
         // Put a marker in, indicating that the selected field is known.
 

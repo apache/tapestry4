@@ -55,38 +55,33 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.tapestry.ILocatable;
-
+import org.apache.tapestry.util.xml.RuleDirectedParser;
+import org.xml.sax.Attributes;
 
 /**
- *  Defines the responsibilities of a template token used by a
- *  {@link org.apache.tapestry.IScript}.
+ * Constructs an {@link org.apache.tapestry.script.InitToken}
+ * from an &lt;initialization&gt; element, which
+ * contains full content.
  *
- *  @author Howard Lewis Ship
- *  @version $Id$
- * 
- **/
-
-public interface IScriptToken extends ILocatable
+ * @author Howard Lewis Ship
+ * @version $Id$
+ * @since 3.0
+ */
+public class InitRule extends AbstractTokenRule
 {
-	/**
-	 *  Invoked to have the token
-	 *  add its text to the buffer.  A token may need access
-	 *  to the symbols in order to produce its output.
-	 *
-	 *  <p>Top level tokens (such as BodyToken) can expect that
-	 *  buffer will be null.
-	 *
-	 **/
 
-	public void write(StringBuffer buffer, ScriptSession session);
+    public void endElement(RuleDirectedParser parser)
+    {
+		parser.pop();
+    }
 
-	/**
-	 *  Invoked during parsing to add the token parameter as a child
-	 *  of this token.
-	 *
-	 *  @since 0.2.9
-	 **/
+    public void startElement(RuleDirectedParser parser, Attributes attributes)
+    {
+		IScriptToken token = new InitToken(parser.getLocation());
+		
+		addToParent(parser, token);
+		
+		parser.push(token);
+    }
 
-	public void addToken(IScriptToken token);
 }

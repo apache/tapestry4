@@ -69,9 +69,9 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IScript;
-import org.apache.tapestry.ScriptSession;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IScriptSource;
+import org.apache.tapestry.script.ScriptSession;
 
 /**
  *  Works with the {@link Body} component to add a script (and perhaps some initialization) 
@@ -175,8 +175,6 @@ public abstract class Script extends AbstractComponent
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
-        ScriptSession session;
-
         if (!cycle.isRewinding())
         {
             Body body = Body.get(cycle);
@@ -188,9 +186,7 @@ public abstract class Script extends AbstractComponent
 
             _symbols = getInputSymbols();
 
-            session = getParsedScript(cycle).execute(_symbols);
-
-            body.process(session);
+            getParsedScript(cycle).execute(cycle, body, _symbols);
         }
 
         // Render the body of the Script;

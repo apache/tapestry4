@@ -60,16 +60,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.IScript;
-import org.apache.tapestry.ScriptSession;
+import org.apache.tapestry.junit.MockRequestCycle;
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.resource.ClasspathResourceLocation;
 import org.apache.tapestry.script.ScriptParser;
+import org.apache.tapestry.script.ScriptSession;
 import org.apache.tapestry.util.DefaultResourceResolver;
 import org.apache.tapestry.util.xml.DocumentParseException;
 
@@ -85,6 +85,7 @@ import org.apache.tapestry.util.xml.DocumentParseException;
 
 public class TestScript extends TapestryTestCase
 {
+    private TestScriptProcessor _processor = new TestScriptProcessor();
 
     public TestScript(String name)
     {
@@ -101,17 +102,16 @@ public class TestScript extends TapestryTestCase
         IResourceLocation classLocation = new ClasspathResourceLocation(resolver, classAsPath);
         IResourceLocation scriptLocation = classLocation.getRelativeLocation(file);
 
-        IScript result = parser.parse(scriptLocation);
-
-        return result;
+        return parser.parse(scriptLocation);
     }
 
-    private ScriptSession execute(String file, Map symbols)
-        throws DocumentParseException, IOException
+    private IScript execute(String file, Map symbols) throws DocumentParseException, IOException
     {
         IScript script = read(file);
 
-        return script.execute(symbols);
+        script.execute(new MockRequestCycle(), _processor, symbols);
+
+        return script;
     }
 
     private void assertSymbol(Map symbols, String key, Object expected)
@@ -128,12 +128,24 @@ public class TestScript extends TapestryTestCase
 
     public void testSimple() throws Exception
     {
-        ScriptSession session = execute("simple.script", null);
+        execute("simple.script", null);
 
-        assertEquals("body", "\nBODY\n", session.getBody());
-        assertEquals("initialization", "\nINITIALIZATION\n", session.getInitialization());
-        assertNull("", session.getIncludedScripts());
+        assertEquals("body", "\nBODY\n", _processor.getBody());
+        assertEquals("initialization", "\nINITIALIZATION\n", _processor.getInitialization());
+        assertNull(_processor.getExternalScripts());
     }
+
+	/**
+	 * Test the &lt;unique&gt; element, new in the 1.3 DTD
+	 * @since 3.0
+	 */
+	
+	public void testUnique() throws Exception
+	{
+		execute("unique.script", null);
+		
+		assertEquals("body", "Block1\n\n\nBlock4", _processor.getBody().trim());
+	}
 
     /**
      *  Test omitting body and initialization, ensure they return null.
@@ -142,10 +154,10 @@ public class TestScript extends TapestryTestCase
 
     public void testEmpty() throws Exception
     {
-        ScriptSession session = execute("empty.script", null);
+        execute("empty.script", null);
 
-        assertNull("body", session.getBody());
-        assertNull("initialization", session.getInitialization());
+        assertNull("body", _processor.getBody());
+        assertNull("initialization", _processor.getInitialization());
     }
 
     /**
@@ -160,15 +172,13 @@ public class TestScript extends TapestryTestCase
         Map symbols = new HashMap();
         symbols.put("inputSymbol", inputSymbol);
 
-        ScriptSession session = execute("let.script", symbols);
+        execute("let.script", symbols);
 
         // Unlike body, the let element trims whitespace.
 
         String outputSymbol = "output: " + inputSymbol;
 
         assertEquals("Output symbol", outputSymbol, symbols.get("outputSymbol"));
-
-        assertSame("Session symbols", symbols, session.getSymbols());
     }
 
     /**
@@ -208,6 +218,22 @@ public class TestScript extends TapestryTestCase
         assertSymbol(symbols, "output_array_empty", "");
         assertSymbol(symbols, "output_number_zero", "");
         assertSymbol(symbols, "output_number_nonzero", "NUMBER-NON-ZERO");
+    }
+    
+    /**
+     * Test the unique attribute on the &lt;let&gt; element.  New in
+     * the 1.3 DTD
+     * @since 3.0
+     */
+    public void testUniqueLet() throws Exception
+    {
+    	Map symbols = new HashMap();
+    	
+    	execute("unique-let.script", symbols);
+    	
+    	assertSymbol(symbols, "alpha", "Alpha");
+    	assertSymbol(symbols, "beta", "Alpha_0");
+    	assertSymbol(symbols, "gamma", "Alpha_1");
     }
 
     /**
@@ -277,11 +303,20 @@ public class TestScript extends TapestryTestCase
 
     public void testIncludeScript() throws Exception
     {
-        ScriptSession session = execute("include-script.script", null);
+        IScript script = execute("include-script.script", null);
 
-        List expected = Arrays.asList(new String[] { "first", "second", "third" });
+        IResourceLocation scriptLocation = script.getScriptLocation();
 
-        assertEquals("included scripts", expected, session.getIncludedScripts());
+        IResourceLocation[] expected =
+            new IResourceLocation[] {
+                scriptLocation.getRelativeLocation("first"),
+                scriptLocation.getRelativeLocation("second"),
+                scriptLocation.getRelativeLocation("third")};
+
+        assertEquals(
+            "included scripts",
+            Arrays.asList(expected),
+            Arrays.asList(_processor.getExternalScripts()));
     }
 
     public void testAntSyntax() throws Exception
@@ -398,5 +433,17 @@ public class TestScript extends TapestryTestCase
             checkException(ex, "key");
         }
 
+    }
+    
+    /**
+     * A bunch of quickies to push up the code coverage numbers.
+     */
+    public void testCheats()
+    throws Exception
+    {
+		IScript script = execute("simple.script", null);
+		
+		ScriptSession session = new ScriptSession(script.getScriptLocation(), null, null, null);
+		assertEquals("ScriptSession[" + script.getScriptLocation() + "]",  session.toString());
     }
 }

@@ -8,23 +8,39 @@ This page is used to demonstrate the DatePicker component.
 
 <table valign="middle">
  <tr>
-  <td>Start Date:</td> <td><input jwcid="@DatePicker" value="ognl:startDate"/></td> <td>&nbsp;<a href="" jwcid="helpLink">PopupLink Help</a></td>
+ 	<td></td>
+ 	<td><input type="checkbox" jwcid="@Checkbox" selected="ognl:includeWeek"
+ 		onclick="javascript:this.form.submit();"/>
+ 		Include weeks in DatePicker UI.
+ 		</td>
+ 	</tr>
+ <tr>
+  <td>Start Date:</td>
+  <td><input jwcid="@DatePicker" includeWeek="ognl:includeWeek" value="ognl:startDate"/></td> <td>&nbsp;<a href="" jwcid="helpLink">PopupLink Help</a></td>
  </tr>
  <tr>
-  <td>End Date:</td> <td><input jwcid="@DatePicker" value="ognl:endDate"/></td>
+  <td>End Date:</td>
+  <td><input jwcid="@DatePicker" includeWeek="ognl:includeWeek" value="ognl:endDate"/></td>
  </tr>
  <tr>
-  <td colspan="2">&nbsp;</td>
- </tr>
- <tr>
-  <td colspan="2" align="right"><input type="submit" value="Submit"/></td>
+  <td></td>
+  <td><input type="submit" value="Submit"/></td>
  </tr>
 </table>
 
 </form>
 
 <u>Submitted Dates</u><br/>
-Start date: <span jwcid="@Insert" value="ognl:startDate"/><br/>
-End date: <span jwcid="@Insert" value="ognl:endDate"/>
 
+<table valign="middle">
+	<tr>
+<th>Start date:</th>
+<td> <span jwcid="@Insert" value="ognl:startDate"/></td>
+</tr>
+	<tr>
+<th>End date:</th> 
+	<td>
+		<span jwcid="@Insert" value="ognl:endDate"/>
+		</td></tr>
+</table>
 </span>

@@ -59,7 +59,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.tapestry.ScriptSession;
+import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.tapestry.ILocation;
+import org.apache.tapestry.IResourceResolver;
+import org.apache.tapestry.util.prop.OgnlUtils;
 
 /**
  *  Base class for creating tokens which may contain other tokens.
@@ -72,14 +75,26 @@ import org.apache.tapestry.ScriptSession;
 
 abstract class AbstractToken implements IScriptToken
 {
-    private List tokens;
+    private List _tokens;
+    private ILocation _location;
+    private IResourceResolver _resolver;
+
+    protected AbstractToken(ILocation location)
+    {
+        _location = location;
+    }
+
+    public ILocation getLocation()
+    {
+        return _location;
+    }
 
     public void addToken(IScriptToken token)
     {
-        if (tokens == null)
-            tokens = new ArrayList();
+        if (_tokens == null)
+            _tokens = new ArrayList();
 
-        tokens.add(token);
+        _tokens.add(token);
     }
 
     /**
@@ -90,16 +105,36 @@ abstract class AbstractToken implements IScriptToken
 
     protected void writeChildren(StringBuffer buffer, ScriptSession session)
     {
-        if (tokens == null)
+        if (_tokens == null)
             return;
 
-        Iterator i = tokens.iterator();
+        Iterator i = _tokens.iterator();
 
         while (i.hasNext())
         {
             IScriptToken token = (IScriptToken) i.next();
 
             token.write(buffer, session);
+        }
+    }
+
+    /**
+     * Evaluates the expression against the session's symbols, using
+     * {@link OgnlUtils#get(String, ClassResolver, Object)} and
+     * returns the result.
+     */
+    protected Object evaluate(String expression, ScriptSession session)
+    {
+        if (_resolver == null)
+            _resolver = session.getRequestCycle().getEngine().getResourceResolver();
+
+        try
+        {
+            return OgnlUtils.get(expression, _resolver, session.getSymbols());
+        }
+        catch (Exception ex)
+        {
+            throw new ApplicationRuntimeException(ex.getMessage(), _location, ex);
         }
     }
 }

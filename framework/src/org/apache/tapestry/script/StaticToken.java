@@ -55,7 +55,8 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.tapestry.ScriptSession;
+import org.apache.tapestry.ILocation;
+
 
 /**
  *  A token for static portions of the template.
@@ -65,13 +66,15 @@ import org.apache.tapestry.ScriptSession;
  *
  **/
 
-class StaticToken implements IScriptToken
+class StaticToken extends AbstractToken
 {
-    private String text;
+    private String _text;
 
-    StaticToken(String text)
+    StaticToken(String text, ILocation location	)
     {
-        this.text = text;
+    	super(location);
+    	
+        _text = text;
     }
 
     /**
@@ -81,7 +84,7 @@ class StaticToken implements IScriptToken
 
     public void write(StringBuffer buffer, ScriptSession session)
     {
-        buffer.append(text);
+        buffer.append(_text);
     }
 
     public void addToken(IScriptToken token)

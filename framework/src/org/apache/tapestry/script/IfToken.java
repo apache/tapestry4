@@ -57,8 +57,9 @@ package org.apache.tapestry.script;
 
 import java.util.Map;
 
+import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.tapestry.ILocation;
 import org.apache.tapestry.IResourceResolver;
-import org.apache.tapestry.ScriptSession;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.prop.OgnlUtils;
 
@@ -75,20 +76,18 @@ class IfToken extends AbstractToken
 {
     private boolean _condition;
     private String _expression;
-    private IResourceResolver _resolver;
 
-    IfToken(boolean condition, String expression, IResourceResolver resolver)
+    IfToken(boolean condition, String expression, ILocation location)
     {
+        super(location);
+
         _condition = condition;
         _expression = expression;
-        _resolver = resolver;
     }
 
     private boolean evaluate(ScriptSession session)
     {
-        Map symbols = session.getSymbols();
-
-        Object value = OgnlUtils.get(_expression, _resolver, symbols);
+        Object value = evaluate(_expression, session);
 
         return Tapestry.evaluateBoolean(value);
     }

@@ -55,13 +55,13 @@
 
 package org.apache.tapestry.util.xml;
 
+import org.apache.tapestry.ILocatable;
+import org.apache.tapestry.ILocation;
 import org.apache.tapestry.IResourceLocation;
 
 /**
  *  Exception thrown if there is any kind of error validating a string
  *  during document parsing
- *
- *  @see AbstractDocumentParser
  *
  *  @author Geoffrey Longman
  *  @version $Id$
@@ -69,7 +69,7 @@ import org.apache.tapestry.IResourceLocation;
  *
  **/
 
-public class InvalidStringException extends DocumentParseException
+public class InvalidStringException extends DocumentParseException implements ILocatable
 {
     private String _invalidString;
 
@@ -83,9 +83,15 @@ public class InvalidStringException extends DocumentParseException
         _invalidString = invalidString;
     }
 
+    public InvalidStringException(String message, String invalidString, ILocation location)
+    {
+        super(message, location == null ? null : location.getResourceLocation(), location, null);
+
+        _invalidString = invalidString;
+    }
+
     public String getInvalidString()
     {
         return _invalidString;
     }
-
 }

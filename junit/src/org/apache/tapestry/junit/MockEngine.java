@@ -74,6 +74,7 @@ import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.engine.ITemplateSource;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.spec.IApplicationSpecification;
+import org.apache.tapestry.util.DefaultResourceResolver;
 import org.apache.tapestry.util.io.DataSqueezer;
 import org.apache.tapestry.util.pool.Pool;
 
@@ -88,6 +89,7 @@ import org.apache.tapestry.util.pool.Pool;
 
 public class MockEngine implements IEngine
 {
+    private IResourceResolver _resolver;
     private IComponentStringsSource componentStringsSource;
 
     private Pool _pool = new Pool();
@@ -158,7 +160,10 @@ public class MockEngine implements IEngine
 
     public IResourceResolver getResourceResolver()
     {
-        return null;
+        if (_resolver == null)
+            _resolver = new DefaultResourceResolver();
+
+        return _resolver;
     }
 
     public Object getVisit()

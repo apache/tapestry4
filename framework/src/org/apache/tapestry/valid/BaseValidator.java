@@ -68,7 +68,6 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IScript;
-import org.apache.tapestry.ScriptSession;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.form.FormEventType;
@@ -334,16 +333,14 @@ public abstract class BaseValidator implements IValidator
 
         IScript script = source.getScript(location);
 
-        ScriptSession session = script.execute(finalSymbols);
+		Body body = Body.get(cycle);
 
-        Body body = Body.get(cycle);
-
-        if (body == null)
-            throw new ApplicationRuntimeException(
-                Tapestry.getString("ValidField.must-be-contained-by-body"),
-                field);
-
-        body.process(session);
+		if (body == null)
+			throw new ApplicationRuntimeException(
+				Tapestry.getString("ValidField.must-be-contained-by-body"),
+				field);
+				
+        script.execute(cycle, body, finalSymbols);
 
         String functionName = (String) finalSymbols.get(FUNCTION_SYMBOL);
 

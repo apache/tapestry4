@@ -91,7 +91,7 @@
   		</assert-output>
   			
   		<assert-output name="Composite Method">
-function onClick_Link0 ()
+function onClick_Link ()
 {
   eventHandler1();
   eventHandler2();
@@ -101,7 +101,7 @@ function onClick_Link0 ()
 		
 		<assert-output name="Link">
 <![CDATA[
-<a href="/c10/app?service=direct/0/Four/link" onClick="javascript:onClick_Link0();">
+<a href="/c10/app?service=direct/0/Four/link" onClick="javascript:onClick_Link();">
 ]]>	
 		</assert-output>
   		  			

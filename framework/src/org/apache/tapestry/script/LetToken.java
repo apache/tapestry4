@@ -57,7 +57,7 @@ package org.apache.tapestry.script;
 
 import java.util.Map;
 
-import org.apache.tapestry.ScriptSession;
+import org.apache.tapestry.ILocation;
 
 /**
  *  Allows for the creation of new symbols that can be used in the script
@@ -75,11 +75,15 @@ import org.apache.tapestry.ScriptSession;
 class LetToken extends AbstractToken
 {
     private String _key;
+    private boolean _unique;
     private int _bufferLengthHighwater = 20;
 
-    public LetToken(String key)
+    public LetToken(String key, boolean unique, ILocation location)
     {
+        super(location);
+
         _key = key;
+        _unique = unique;
     }
 
     public void write(StringBuffer buffer, ScriptSession session)
@@ -94,7 +98,13 @@ class LetToken extends AbstractToken
         // Store the symbol back into the root set of symbols.
 
         Map symbols = session.getSymbols();
-        symbols.put(_key, buffer.toString().trim());
+
+        String value = buffer.toString().trim();
+
+        if (_unique)
+            value = session.getProcessor().getUniqueString(value);
+
+        symbols.put(_key, value);
 
         // Store the buffer length from this run for the next run, since its
         // going to be approximately the right size.

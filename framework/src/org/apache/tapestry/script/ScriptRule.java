@@ -53,106 +53,32 @@
  *
  */
 
-package org.apache.tapestry;
+package org.apache.tapestry.script;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import org.apache.tapestry.util.xml.BaseRule;
+import org.apache.tapestry.util.xml.RuleDirectedParser;
+import org.xml.sax.Attributes;
 
 /**
- *  The result of executing a script, the session is used during the parsing
- *  process as well.  Following {@link IScript#execute(Map)}, the session
- *  provides access to output symbols as well as the body and initialization
- *  blocks created by the script tokens.
+ * Rule for &lt;script&gt; element.  Creates a {@link org.apache.tapestry.script.ParsedScript}.
  *
- *  @author Howard Lewis Ship
- *  @version $Id$
- *  @since 0.2.9
- * 
- **/
-
-public class ScriptSession
+ * @author Howard Lewis Ship
+ * @version $Id$
+ * @since 3.0
+ */
+public class ScriptRule extends BaseRule
 {
-    private IResourceLocation _scriptLocation;
-    private Map _symbols;
-    private String _body;
-    private String _initialization;
 
-    /**
-     *  List of included scripts.
-     *
-     *  @since 1.0.5
-     *
-     **/
-
-    private List _includes;
-
-    public ScriptSession(IResourceLocation scriptPath, Map symbols)
+    public void endElement(RuleDirectedParser parser)
     {
-        _scriptLocation = scriptPath;
-        _symbols = symbols;
+        parser.pop();
     }
 
-    public IResourceLocation getScriptPath()
+    public void startElement(RuleDirectedParser parser, Attributes attributes)
     {
-        return _scriptLocation;
+        ParsedScript script = new ParsedScript(parser.getLocation());
+
+        parser.push(script);
     }
 
-    public Map getSymbols()
-    {
-        return _symbols;
-    }
-
-    /**
-     *  Returns a list of scripts included by the
-     *  the executed script.  These are not URLs, they
-     *  are resource paths (i.e., in the classpath).
-     *
-     *  @since 1.0.5
-     *
-     **/
-
-    public List getIncludedScripts()
-    {
-        return _includes;
-    }
-
-    public void addIncludedScript(String resourcePath)
-    {
-        if (_includes == null)
-            _includes = new ArrayList();
-
-        _includes.add(resourcePath);
-    }
-
-    public void setBody(String value)
-    {
-        _body = value;
-    }
-
-    public String getBody()
-    {
-        return _body;
-    }
-
-    public String getInitialization()
-    {
-        return _initialization;
-    }
-
-    public void setInitialization(String value)
-    {
-        _initialization = value;
-    }
-
-    public String toString()
-    {
-        StringBuffer buffer = new StringBuffer();
-
-        buffer.append("ScriptSession[");
-        buffer.append(_scriptLocation);
-        buffer.append(']');
-
-        return buffer.toString();
-    }
 }

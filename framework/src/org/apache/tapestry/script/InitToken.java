@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.tapestry.ScriptSession;
+import org.apache.tapestry.ILocation;
 
 /**
  *  Generates a String from its child tokens, then applies it
@@ -71,6 +71,11 @@ class InitToken extends AbstractToken
 {
     private int _bufferLengthHighwater = 100;
 
+    public InitToken(ILocation location)
+    {
+        super(location);
+    }
+
     public void write(StringBuffer buffer, ScriptSession session)
     {
         if (buffer != null)
@@ -80,7 +85,7 @@ class InitToken extends AbstractToken
 
         writeChildren(buffer, session);
 
-        session.setInitialization(buffer.toString());
+        session.getProcessor().addInitializationScript(buffer.toString());
 
         // Store the buffer length from this run for the next run, since its
         // going to be approximately the right size.
