@@ -17,10 +17,11 @@ LOCAL_CLASSPATH = \
 
 INSTALL_DIR = ../../lib
 
-JAVADOC_DIR = ../../javadoc
+JAVADOC_DIR = javadoc
 
 JAVADOC_OPT = \
 	-version -author -windowtitle "Primix Virtual Library - Presentation Layer" \
+	-link http://tapestry.primix.com/doc/api \
 	-link http://java.sun.com/j2se/1.3/docs/api \
 	-link http://java.sun.com/j2ee/j2sdkee/techdocs/api
 
@@ -39,10 +40,11 @@ EXEC_CLASSPATH = \
 	$(JDK_DIR)/lib/tools.jar
 
 run: default
-	$(JAVA) -classpath "$(call JBE_CANONICALIZE,-classpath $(EXEC_CLASSPATH))" \
-	-Dcom.primix.tapestry.enable-reset-service=true \
-	-Dorg.xml.sax.parser=org.apache.xerces.parsers.SAXParser \
-	com.mortbay.Jetty.Server jetty.xml
+	@$(ECHO) "\n*** Running Jetty for Vlib ... ***\n"
+	$(call EXEC_JAVA,$(EXEC_CLASSPATH), \
+		-Dcom.primix.tapestry.enable-reset-service=true \
+		-Dorg.xml.sax.parser=org.apache.xerces.parsers.SAXParser \
+		com.mortbay.Jetty.Server jetty.xml)
 
 
 
