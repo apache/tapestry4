@@ -1036,9 +1036,108 @@ element has no attributes.
 </section> <!-- spec.library-specification -->
 
 <section id="spec.page">
+	<title><sgmltag class="starttag">page</sgmltag> element</title>
+
+<para>
+Appears in: &spec.application; and &spec.library-specification;
+</para>
+
+<para>
+Defines a page within an application (or contributed by a library).
+Relates a logical name for the page to the path to the page's specification file.
+</para>
+
+<figure>
+	<title><sgmltag class="starttag">page</sgmltag> Attributes</title>
+<informaltable>
+<tgroup cols="5">
+<thead>
+<row>
+  <entry>Name</entry>
+  <entry>Type</entry>
+  <entry>Required ?</entry>
+  <entry>Default Value</entry>
+  <entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+	<entry>name</entry>
+	<entry>string</entry>
+	<entry>yes</entry>
+	<entry/>
+	<entry>The name for the page, which must start with a letter,
+	and may contain letters, numbers, underscores and the dash
+	character.
+	</entry>
+</row>
+<row>
+	<entry>specification-path</entry>
+	<entry>string</entry>
+	<entry>yes</entry>
+	<entry>
+	The complete resource path to the page's specification.
+	</entry>
+</row>
+</tbody>
+</tgroup>
+</informaltable>
+</figure>
+
 </section> <!-- spec.page -->
 
 <section id="spec.page-specification">
+	<title><sgmltag class="starttag">page-specification</sgmltag> element</title>
+
+<para>
+<emphasis>root element</emphasis>
+</para>
+
+<para>
+Defines a page within an application (or a library).  The 
+<sgmltag class="starttag">page-specification</sgmltag>
+is a subset of &spec.component-specification;
+with attributes and entities related to parameters removed.
+</para>
+
+
+<figure>
+	<title><sgmltag class="starttag">page-specification</sgmltag> Attributes</title>
+<informaltable>
+<tgroup cols="5">
+<thead>
+<row>
+  <entry>Name</entry>
+  <entry>Type</entry>
+  <entry>Required ?</entry>
+  <entry>Default Value</entry>
+  <entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+	<entry>class</entry>
+	<entry>string</entry>
+	<entry>yes</entry>
+	<entry/>
+	<entry>The Java class to instantiate, which must implement the
+	interface &IPage;.  Typically, this is
+	&BasePage; or a subclass of it.</entry>
+</row>
+</tbody>
+</tgroup>
+</informaltable>
+</figure>
+
+<figure>
+	<title><sgmltag class="starttag">page-specification</sgmltag> Elements</title>
+<literallayout>
+  &spec.description; *, &spec.property; *,
+  (&spec.bean; | &spec.component; | &spec.external-asset; | &spec.context-asset; | &spec.private-asset;)*
+</literallayout>
+</figure>
+
+
 </section> <!-- spec.page-specification -->
 
 <section id="spec.parameter">
