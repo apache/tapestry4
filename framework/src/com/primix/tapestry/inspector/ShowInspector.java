@@ -111,8 +111,9 @@ public class ShowInspector
 
 		IEngineService service = page.getEngine().getService(IEngineService.DIRECT_SERVICE);
 		Gesture g = service.buildGesture(cycle, this, null);
+		String URL = cycle.encodeURL(g.getFullURL(cycle));
 		
-		symbols.put("URL", g.getFullURL(cycle));
+		symbols.put("URL", URL);
 
 		HttpSession session = cycle.getRequestContext().getSession();
 		
@@ -144,28 +145,6 @@ public class ShowInspector
 		body.process(scriptSession);
 
 		super.render(writer, cycle);
-	}
-
-	/**
-	 *  Returns the URL of the movie, with an additional query parameter of URL,
-	 *  as <code>javascript:ti_raiseInspector();</code>.
-	 *
-	 *  @since 1.0.5
-	 *
-	 */
-	
-	public String getMovieURL()
-	{
-		if (movieURL == null)
-		{
-			IAsset movie = getAsset("movie");
-			
-			String baseURL = movie.buildURL(page.getRequestCycle());
-			
-			movieURL = baseURL + "?URL=javascript:ti_raiseInspector();";
-		}
-		
-		return movieURL;
 	}
 
 	

@@ -1,5 +1,19 @@
 * Sep 21 2001 hship
 
+framework:
+- Use SetVariable() method to setup the inspector movie URL variable
+  rather than sue the query parameter option (which conflicts
+  with real query parameters used for dynamically downloaded
+  private assets).  This is broken in Navigator 6, however.
+
+tutorial:
+- Turn off static export of private assets, to allow for
+  testing.
+  
+[ #463198 ] inspector movie url error
+
+* Sep 21 2001 hship
+
 Add a test of the RedirectException to the tutorial.
 
 [ #463539 ] Cookie sniffer fails in RequestContext
