@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!-- 
+   Copyright 2005 The Apache Software Foundation
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+
+<module id="tapestry.multipart" version="3.1.0" package="org.apache.tapestry.multipart">
+  
+  Support for multipart/form-data encoded requests used for file uploads.
+  
+  <service-point id="MultipartDecoder" interface="MultipartDecoder">
+    
+    Service responsible for parsing and decoding multipart form submissions. 
+    
+    <create-instance class="MultipartDecoderImpl" model="threaded"/>
+    
+  </service-point>
+  
+  <service-point id="MultipartDecoderFilter" interface="org.apache.tapestry.services.RequestServicerFilter">
+    
+    Identifies upload requests and passes them to the MultipartDecoder service
+    for decoding.
+    
+    <invoke-factory>
+      <construct class="MultipartDecoderFilter">
+        <set-service property="decoder" service-id="MultipartDecoder"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <contribution configuration-id="tapestry.request.RequestServicerPipeline">
+    <filter name="MultipartDecoderFilter" object="service:MultipartDecoderFilter"/>
+  </contribution>
+  
+</module>

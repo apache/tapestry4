@@ -30,7 +30,7 @@ import org.apache.tapestry.request.IUploadFile;
  * @author Joe Panico
  * @since 2.0.1
  */
-public class UploadPart extends Object implements IUploadFile, IPart
+public class UploadPart extends Object implements IUploadFile
 {
     private FileItem _fileItem;
 
@@ -73,9 +73,9 @@ public class UploadPart extends Object implements IUploadFile, IPart
         }
         catch (IOException ex)
         {
-            throw new ApplicationRuntimeException(Tapestry.format(
-                    "UploadPart.unable-to-open-content-file",
-                    _fileItem.getName()), ex);
+            throw new ApplicationRuntimeException(MultipartMessages.unableToOpenContentFile(
+                    this,
+                    ex), ex);
         }
     }
 

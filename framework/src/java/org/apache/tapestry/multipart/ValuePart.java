@@ -18,17 +18,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *  A portion of a multipart request that stores a value, or values, for
- *  a parameter.
- *
- *  @author Howard Lewis Ship
- *  @since 2.0.1
- *
- **/
+ * A portion of a multipart request that stores a value, or values, for a parameter.
+ * 
+ * @author Howard Lewis Ship
+ * @since 2.0.1
+ */
 
-public class ValuePart implements IPart
+public class ValuePart
 {
     private int _count;
+
     // Stores either String or List of String
     private Object _value;
 
@@ -44,9 +43,8 @@ public class ValuePart implements IPart
     }
 
     /**
-     *  Returns the value, or the first value (if multi-valued).
-     * 
-     **/
+     * Returns the value, or the first value (if multi-valued).
+     */
 
     public String getValue()
     {
@@ -59,15 +57,15 @@ public class ValuePart implements IPart
     }
 
     /**
-     *  Returns the values as an array of strings.  If there is only one value,
-     *  it is returned wrapped as a single element array.
-     * 
-     **/
+     * Returns the values as an array of strings. If there is only one value, it is returned wrapped
+     * as a single element array.
+     */
 
     public String[] getValues()
     {
         if (_count == 1)
-            return new String[] {(String) _value };
+            return new String[]
+            { (String) _value };
 
         List l = (List) _value;
 
@@ -93,9 +91,8 @@ public class ValuePart implements IPart
     }
 
     /**
-     *  Does nothing.
-     * 
-     **/
+     * Does nothing.
+     */
 
     public void cleanup()
     {

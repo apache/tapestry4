@@ -40,6 +40,7 @@
   <sub-module descriptor="tapestry.asset.xml"/>
   <sub-module descriptor="tapestry.persist.xml"/>
   <sub-module descriptor="tapestry.state.xml"/>
+  <sub-module descriptor="tapestry.multipart.xml"/>
   
   <service-point id="ClasspathResourceFactory" interface="ClasspathResourceFactory">
   

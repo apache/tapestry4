@@ -694,20 +694,6 @@ MyExtension myExtension = (MyExtension) specification.getExtension("myExtension"
 	(perhaps in a database), or constructed on the fly.
   </td></tr>
 
-
- 
-<tr><td>org.apache.tapestry.multipart-decoder </td> <td>&IMultipartDecoder;</td>
-
-<td>
-Allows an alternate object to be responsible for decoding multipart requests (context
-type multipart/form-data, used for file uploads).  Generally, this is used to
-configure an instance of &DefaultMultipartDecoder; with non-default values for
-the maximum upload size, threshold size (number of bytes before a temporary file is created
-to store the) and repository directory (where temporary files are stored).	
-</td></tr>
-
-
-
 <tr><td>org.apache.tapestry.ognl-type-converter</td> <td>ognl.TypeConverter</td>
 
 <td>
