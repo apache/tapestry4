@@ -17,6 +17,7 @@ package org.apache.tapestry.junit.mock;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.*;
 
 import javax.servlet.ServletOutputStream;
@@ -274,7 +275,14 @@ public class MockResponse implements HttpServletResponse
     	if (_outputByteStream == null)
     		return null;
     		
-        return _outputByteStream.toString();
+        try {
+            String encoding = _request.getCharacterEncoding();
+            return new String(_outputByteStream.toByteArray(), encoding);
+        }
+        catch (UnsupportedEncodingException e) {
+            // use the default encoding if the provided one is unsupported
+            return _outputByteStream.toString();
+        }
     }
 
 	public byte[] getResponseBytes()
