@@ -223,7 +223,7 @@ page ... the services take into account page and location when formulating URLs.
 </p>
 
 <p>
-The <!-- link linkend="state.visit">Visit</link --> Visit object
+The <link href="state.html#state.visit">Visit object</link>
 is an application-defined object that acts as a focal point
 for all server-side state (not associated with any single page).  Individual applications define for themselves
 the class of the Visit object.  The Visit is stored as a property of the Engine, and so is ultimately
@@ -231,7 +231,8 @@ stored persistently in the HttpSession.
 </p>
 
 <p>
-The <!-- link linkend="state.global">Global</link --> Global object is also application-specific. It stores information
+The <link href="state.html#state.global">Global object</link>
+is also application-specific. It stores information
 global to the entire application, independent of any particular user or session. A common use for the Global
 object is to centralize logic that performs JNDI lookups of session EJBs.
 </p>

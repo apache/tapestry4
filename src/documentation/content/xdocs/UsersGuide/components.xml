@@ -48,7 +48,7 @@ a <link href="#components.libraries">component library</link>.
 <p>
 All the techniques used with pages work with components as well ... pages are a specialized kind
 of Tapestry component. This includes
-<!-- link linkend="state.page-properties" -->specified properties<!-- /link --> 
+<link href="state.html#state.page-properties">specified properties</link>
 	 (including persistent properties)
 and &listener-method;s.
 </p>
@@ -356,7 +356,8 @@ will update the connected parameter. This is a much more natural approach, but r
 </p>
 
 <p>
-As with <!-- link linkend="state.page-properties" -->specified properties<!-- /link -->, Tapestry will fabricate an enhanced subclass with
+As with <link href="state.html#state.page-properties">specified properties</link>, 
+Tapestry will fabricate an enhanced subclass with
 the necessary instance variables, accessor methods, and cleanup code.
 </p>
 	
