@@ -14,7 +14,11 @@
 
 package org.apache.tapestry.services;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.engine.IPageSource;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.engine.IScriptSource;
@@ -132,12 +136,47 @@ public interface Infrastructure
      */
 
     public RequestCycleFactory getRequestCycleFactory();
+
+    /**
+     * Accesses application state objects (Visit and Global from Tapestry 3.0, but now more can be
+     * created).
+     */
+
+    public ApplicationStateManager getApplicationStateManager();
+
+    /**
+     * Returns the request for the current request.
+     */
+
+    public HttpServletRequest getRequest();
+
+    /**
+     * Returns the response for the current request.
+     */
+
+    public HttpServletResponse getResponse();
+
+    /**
+     * Returns the context path, which identifies the application within the application server.
+     * Context path should be used as a prefix for any URLs generated. The context path may be the
+     * empty string, and will not end in a slash (servlet paths should start with a slash).
+     */
+
+    public String getContextPath();
+
+    /**
+     * Returns the application's id; a unique name that is incorporated into various session
+     * attribute keys and into certain paths when searching for resources. For a servlet-based
+     * Tapestry application, the id is the name of the servlet.
+     */
+
+    public String getApplicationId();
     
     /**
-     * Accesses application state objects (Visit and Global from Tapestry 3.0, but now
-     * more can be created).
+     * Returns the root context resource, which is the  starting point when looking for
+     * resources within the application.
      * 
      */
     
-    public ApplicationStateManager getApplicationStateManager();
+    public Resource getContextRoot();
 }

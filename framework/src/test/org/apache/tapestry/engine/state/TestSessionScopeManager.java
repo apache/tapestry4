@@ -95,7 +95,7 @@ public class TestSessionScopeManager extends HiveMindTestCase
 
         SessionScopeManager m = new SessionScopeManager();
         m.setRequest(request);
-        m.setApplicationName("myapp");
+        m.setApplicationId("myapp");
 
         assertEquals(false, m.exists("fred"));
 
@@ -111,7 +111,7 @@ public class TestSessionScopeManager extends HiveMindTestCase
 
         SessionScopeManager m = new SessionScopeManager();
         m.setRequest(request);
-        m.setApplicationName("testapp");
+        m.setApplicationId("testapp");
 
         assertEquals(true, m.exists("fred"));
 
@@ -128,7 +128,7 @@ public class TestSessionScopeManager extends HiveMindTestCase
 
         SessionScopeManager m = new SessionScopeManager();
         m.setRequest(request);
-        m.setApplicationName("testapp");
+        m.setApplicationId("testapp");
 
         assertSame(stateObject, m.get("fred", null));
 
@@ -154,7 +154,7 @@ public class TestSessionScopeManager extends HiveMindTestCase
 
         SessionScopeManager m = new SessionScopeManager();
         m.setRequest(request);
-        m.setApplicationName("myapp");
+        m.setApplicationId("myapp");
 
         assertSame(stateObject, m.get("fred", factory));
 
@@ -176,7 +176,7 @@ public class TestSessionScopeManager extends HiveMindTestCase
 
         SessionScopeManager m = new SessionScopeManager();
         m.setRequest(request);
-        m.setApplicationName("myapp");
+        m.setApplicationId("myapp");
 
         m.store("fred", stateObject);
 
@@ -196,7 +196,7 @@ public class TestSessionScopeManager extends HiveMindTestCase
 
         SessionScopeManager m = new SessionScopeManager();
         m.setRequest(request);
-        m.setApplicationName("myapp");
+        m.setApplicationId("myapp");
 
         m.store("fred", null);
 

@@ -84,7 +84,7 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener
 
     /** @since 2.2 */
 
-    private Resource _applicationRoot;
+    private Resource _contextRoot;
 
     /** @since 3.0 */
 
@@ -94,24 +94,10 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener
 
     private IPropertySource _applicationPropertySource;
 
-    /** @since 3.1 */
-
-    private ServletContext _context;
-
-    /** @since 3.1 */
-
-    private HttpServletRequest _request;
 
     /** @since 3.1 */
 
     private ComponentSpecificationResolver _componentSpecificationResolver;
-
-    public void initializeService()
-    {
-        String servletPath = _request.getServletPath();
-
-        _applicationRoot = new ContextResource(_context, servletPath);
-    }
 
     /**
      * Clears the template cache. This is used during debugging.
@@ -232,7 +218,7 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener
         if (_log.isDebugEnabled())
             _log.debug("Checking for " + templateBaseName + " in application root");
 
-        Resource baseLocation = _applicationRoot.getRelativeResource(templateBaseName);
+        Resource baseLocation = _contextRoot.getRelativeResource(templateBaseName);
         Resource localizedLocation = baseLocation.getLocalization(locale);
 
         if (localizedLocation == null)
@@ -516,23 +502,14 @@ public class TemplateSourceImpl implements TemplateSource, ResetEventListener
 
     /** @since 3.1 */
 
-    public void setContext(ServletContext context)
-    {
-        _context = context;
-    }
-
-    /** @since 3.1 */
-
-    public void setRequest(HttpServletRequest request)
-    {
-        _request = request;
-    }
-
-    /** @since 3.1 */
-
     public void setComponentSpecificationResolver(ComponentSpecificationResolver resolver)
     {
         _componentSpecificationResolver = resolver;
     }
 
+    /** @since 3.1 */
+    public void setContextRoot(Resource contextRoot)
+    {
+        _contextRoot = contextRoot;
+    }
 }

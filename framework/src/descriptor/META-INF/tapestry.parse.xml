@@ -78,8 +78,7 @@
         <set-object property="applicationPropertySource" 
                        value="infrastructure:applicationPropertySource"/>
         <set-service property="delegate" service-id="TemplateSourceDelegate"/>
-        <set-service property="request" service-id="tapestry.globals.HttpServletRequest"/>
-        <set-object property="context" value="service-property:tapestry.globals.ApplicationGlobals:context"/>
+        <set-object property="contextRoot" value="infrastructure:contextRoot"/>
         <set-service property="componentSpecificationResolver" service-id="tapestry.page.ComponentSpecificationResolver"/>
         <event-listener service-id="tapestry.ResetEventCoordinator"/>
       </construct>

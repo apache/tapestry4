@@ -28,7 +28,7 @@
         <set-object property="dataSqueezer" value="infrastructure:dataSqueezer"/>
         <set-configuration property="contributions" configuration-id="ServiceEncoders"/>
         <set-object property="servletPath" value="app-property:org.apache.tapestry.servlet-path"/>
-        <set-object property="contextPath" value="service-property:tapestry.globals.HttpServletRequest:contextPath"/>
+        <set-object property="contextPath" value="infrastructure:contextPath"/>
       </construct>
     </invoke-factory>
     

@@ -94,7 +94,7 @@ public class TestSessionPropertyPersistenceStrategy extends HiveMindTestCase
 
         SessionPropertyPersistenceStrategy s = new SessionPropertyPersistenceStrategy();
 
-        s.setApplicationName("myapp");
+        s.setApplicationId("myapp");
         s.setRequest(request);
 
         s.store("Home", null, "foo", value);
@@ -113,7 +113,7 @@ public class TestSessionPropertyPersistenceStrategy extends HiveMindTestCase
 
         SessionPropertyPersistenceStrategy s = new SessionPropertyPersistenceStrategy();
 
-        s.setApplicationName("myapp");
+        s.setApplicationId("myapp");
         s.setRequest(request);
 
         s.store("Help", null, "bar", null);
@@ -134,7 +134,7 @@ public class TestSessionPropertyPersistenceStrategy extends HiveMindTestCase
 
         SessionPropertyPersistenceStrategy s = new SessionPropertyPersistenceStrategy();
 
-        s.setApplicationName("gloop");
+        s.setApplicationId("gloop");
         s.setRequest(request);
 
         s.store("Nerf", "zip.zap", "spaz", value);
@@ -165,7 +165,7 @@ public class TestSessionPropertyPersistenceStrategy extends HiveMindTestCase
 
         SessionPropertyPersistenceStrategy s = new SessionPropertyPersistenceStrategy();
         s.setRequest(request);
-        s.setApplicationName("myapp");
+        s.setApplicationId("myapp");
 
         Collection actual = s.getStoredChanges("Help", null);
 
@@ -184,7 +184,7 @@ public class TestSessionPropertyPersistenceStrategy extends HiveMindTestCase
 
         SessionPropertyPersistenceStrategy s = new SessionPropertyPersistenceStrategy();
         s.setRequest(request);
-        s.setApplicationName("myapp");
+        s.setApplicationId("myapp");
 
         Collection actual = s.getStoredChanges("Help", null);
 
@@ -209,7 +209,7 @@ public class TestSessionPropertyPersistenceStrategy extends HiveMindTestCase
 
         SessionPropertyPersistenceStrategy s = new SessionPropertyPersistenceStrategy();
         s.setRequest(request);
-        s.setApplicationName("myapp");
+        s.setApplicationId("myapp");
 
         Collection actual = s.getStoredChanges("Help", null);
 
@@ -261,7 +261,7 @@ public class TestSessionPropertyPersistenceStrategy extends HiveMindTestCase
 
         SessionPropertyPersistenceStrategy s = new SessionPropertyPersistenceStrategy();
         s.setRequest(request);
-        s.setApplicationName("myapp");
+        s.setApplicationId("myapp");
 
         s.discardStoredChanges("Home", null);
 

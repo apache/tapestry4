@@ -28,11 +28,11 @@ public class SessionScopeManager implements StateObjectPersistenceManager
 {
     private HttpServletRequest _request;
 
-    private String _applicationName;
+    private String _applicationId;
 
     private String buildKey(String objectName)
     {
-        return "state:" + _applicationName + ":" + objectName;
+        return "state:" + _applicationId + ":" + objectName;
     }
 
     /**
@@ -81,9 +81,9 @@ public class SessionScopeManager implements StateObjectPersistenceManager
             session.setAttribute(key, stateObject);
     }
 
-    public void setApplicationName(String applicationName)
+    public void setApplicationId(String applicationName)
     {
-        _applicationName = applicationName;
+        _applicationId = applicationName;
     }
 
     public void setRequest(HttpServletRequest request)

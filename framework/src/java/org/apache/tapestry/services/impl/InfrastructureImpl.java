@@ -14,7 +14,13 @@
 
 package org.apache.tapestry.services.impl;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.Resource;
+import org.apache.hivemind.util.ContextResource;
 import org.apache.tapestry.engine.IPageSource;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.engine.IScriptSource;
@@ -74,6 +80,14 @@ public class InfrastructureImpl implements Infrastructure
     private RequestCycleFactory _requestCycleFactory;
 
     private ApplicationStateManager _applicationStateManager;
+
+    private HttpServletRequest _request;
+
+    private HttpServletResponse _response;
+    
+    private ServletContext _context;
+
+    private String _applicationId;
 
     public IScriptSource getScriptSource()
     {
@@ -244,5 +258,50 @@ public class InfrastructureImpl implements Infrastructure
     public void setApplicationStateManager(ApplicationStateManager applicationStateManager)
     {
         _applicationStateManager = applicationStateManager;
+    }
+
+    public HttpServletRequest getRequest()
+    {
+        return _request;
+    }
+
+    public void setRequest(HttpServletRequest request)
+    {
+        _request = request;
+    }
+
+    public HttpServletResponse getResponse()
+    {
+        return _response;
+    }
+
+    public void setResponse(HttpServletResponse response)
+    {
+        _response = response;
+    }
+
+    public String getContextPath()
+    {
+        return _request.getContextPath();
+    }
+
+    public String getApplicationId()
+    {
+        return _applicationId;
+    }
+
+    public void setApplicationId(String applicationId)
+    {
+        _applicationId = applicationId;
+    }
+    
+    public void setContext(ServletContext context)
+    {
+        _context = context;
+    }
+    
+    public Resource getContextRoot()
+    {
+        return new ContextResource(_context, "/");
     }
 }

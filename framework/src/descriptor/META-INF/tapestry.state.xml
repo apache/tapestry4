@@ -169,8 +169,8 @@
     
     <invoke-factory>
       <construct class="org.apache.tapestry.engine.state.SessionScopeManager">
-        <set-service property="request" service-id="tapestry.globals.HttpServletRequest"/>
-        <set-object property="applicationName" value="service-property:tapestry.globals.ApplicationGlobals:servletName"/>
+        <set-object property="request" value="infrastructure:request"/>
+        <set-object property="applicationName" value="infrastructure:applicationId"/>
       </construct>
     </invoke-factory>
   </service-point>

@@ -23,13 +23,12 @@ import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
- *  Base class for resolving a {@link org.apache.tapestry.spec.IComponentSpecification}
- *  for a particular page or component, within a specified 
- *  {@link org.apache.tapestry.INamespace}.  In some cases, a search is necessary.
- *
- *  @author Howard Lewis Ship
- *  @since 3.0
- *
+ * Base class for resolving a {@link org.apache.tapestry.spec.IComponentSpecification}for a
+ * particular page or component, within a specified {@link org.apache.tapestry.INamespace}. In some
+ * cases, a search is necessary.
+ * 
+ * @author Howard Lewis Ship
+ * @since 3.0
  */
 
 public class AbstractSpecificationResolver
@@ -42,31 +41,31 @@ public class AbstractSpecificationResolver
 
     /** Set by container */
     private ISpecificationSource _specificationSource;
-    private ISpecificationResolverDelegate _delegate;
-    private String _servletName;
-    private ServletContext _context;
 
-    /** Initializes in initializeService() */
-    private Resource _applicationRootLocation;
+    private ISpecificationResolverDelegate _delegate;
+
+    private String _applicationId;
+
+    private Resource _contextRoot;
+
+    /** Initialized in initializeService() */
+
     private Resource _webInfLocation;
+
     private Resource _webInfAppLocation;
 
     public void initializeService()
     {
-        _applicationRootLocation = new ContextResource(_context, "/");
+        _webInfLocation = _contextRoot.getRelativeResource("WEB-INF/");
 
-        _webInfLocation = _applicationRootLocation.getRelativeResource("WEB-INF/");
-
-        _webInfAppLocation = _webInfLocation.getRelativeResource(_servletName + "/");
+        _webInfAppLocation = _webInfLocation.getRelativeResource(_applicationId + "/");
     }
 
     /**
-     *  Returns the {@link ISpecificationResolverDelegate} instance registered
-     *  in the application specification as extension
-     *  {@link Tapestry#SPECIFICATION_RESOLVER_DELEGATE_EXTENSION_NAME},
-     *  or null if no such extension exists.
-     * 
-     **/
+     * Returns the {@link ISpecificationResolverDelegate}instance registered in the application
+     * specification as extension {@link Tapestry#SPECIFICATION_RESOLVER_DELEGATE_EXTENSION_NAME},
+     * or null if no such extension exists.
+     */
 
     public ISpecificationResolverDelegate getDelegate()
     {
@@ -74,20 +73,22 @@ public class AbstractSpecificationResolver
     }
 
     /**
-     *  Returns the location of the servlet, within the
-     *  servlet context.
-     * 
-     **/
+     * Returns the location of the servlet, within the servlet context.
+     */
 
-    protected Resource getApplicationRootLocation()
+    protected Resource getContextRoot()
     {
-        return _applicationRootLocation;
+        return _contextRoot;
+    }
+
+    public void setContextRoot(Resource contextRoot)
+    {
+        _contextRoot = contextRoot;
     }
 
     /**
-     *  Invoked in subclasses to identify the resolved namespace.
-     * 
-     **/
+     * Invoked in subclasses to identify the resolved namespace.
+     */
 
     protected void setNamespace(INamespace namespace)
     {
@@ -95,9 +96,8 @@ public class AbstractSpecificationResolver
     }
 
     /**
-     *  Returns the resolve namespace.
-     * 
-     **/
+     * Returns the resolve namespace.
+     */
 
     public INamespace getNamespace()
     {
@@ -105,9 +105,8 @@ public class AbstractSpecificationResolver
     }
 
     /**
-     *  Returns the specification source for the running application.
-     * 
-     **/
+     * Returns the specification source for the running application.
+     */
 
     protected ISpecificationSource getSpecificationSource()
     {
@@ -115,9 +114,8 @@ public class AbstractSpecificationResolver
     }
 
     /**
-     *  Returns the location of /WEB-INF/, in the servlet context.
-     * 
-     **/
+     * Returns the location of /WEB-INF/, in the servlet context.
+     */
 
     protected Resource getWebInfLocation()
     {
@@ -125,10 +123,9 @@ public class AbstractSpecificationResolver
     }
 
     /**
-     *  Returns the location of the application-specific subdirectory, under
-     *  /WEB-INF/, in the servlet context.
-     * 
-     **/
+     * Returns the location of the application-specific subdirectory, under /WEB-INF/, in the
+     * servlet context.
+     */
 
     protected Resource getWebInfAppLocation()
     {
@@ -136,9 +133,8 @@ public class AbstractSpecificationResolver
     }
 
     /**
-     *  Returns the resolved specification.
-     * 
-     **/
+     * Returns the resolved specification.
+     */
 
     public IComponentSpecification getSpecification()
     {
@@ -146,10 +142,8 @@ public class AbstractSpecificationResolver
     }
 
     /**
-     *  Invoked in subclass to set the final specification the initial
-     *  inputs are resolved to.
-     * 
-     **/
+     * Invoked in subclass to set the final specification the initial inputs are resolved to.
+     */
 
     protected void setSpecification(IComponentSpecification specification)
     {
@@ -157,9 +151,8 @@ public class AbstractSpecificationResolver
     }
 
     /**
-     *  Clears the namespace and specification properties.
-     * 
-     **/
+     * Clears the namespace and specification properties.
+     */
 
     protected void reset()
     {
@@ -174,15 +167,9 @@ public class AbstractSpecificationResolver
     }
 
     /** @since 3.1 */
-    public void setContext(ServletContext context)
+    public void setApplicationId(String applicationId)
     {
-        _context = context;
-    }
-
-    /** @since 3.1 */
-    public void setServletName(String name)
-    {
-        _servletName = name;
+        _applicationId = applicationId;
     }
 
     /** @since 3.1 */
