@@ -57,58 +57,92 @@ package org.apache.tapestry.util;
 
 import java.util.Locale;
 
-import org.apache.tapestry.IResourceResolver;
+import org.apache.tapestry.engine.IPropertySource;
 
 /**
- *  
- *  Searches for a localization of a
- *  particular resource in the classpath (using
- *  a {@link org.apache.tapestry.IResourceResolver}. 
+ *  A PropertySource extending the DelegatingPropertySources and adding the 
+ *  capability of searching for localized versions of the desired property.
+ *  Useful when peoperties related to localization are needed.
  * 
- *
- *  @author Howard Lewis Ship
+ *  @author mindbridge
  *  @version $Id$
  *  @since 3.0
- *
- **/
-
-public class LocalizedResourceFinder
+ */
+public class LocalizedPropertySource extends DelegatingPropertySource
 {
-    private IResourceResolver _resolver;
-
-    public LocalizedResourceFinder(IResourceResolver resolver)
+    private Locale _locale;
+    
+    /**
+     *  Creates a LocalizedPropertySource with the default locale
+     */
+    public LocalizedPropertySource()
     {
-        _resolver = resolver;
+        this(Locale.getDefault());
     }
 
     /**
-     *  Resolves the resource, returning a path representing
-     *  the closest match (with respect to the provided locale).
-     *  Returns null if no match.
-     * 
-     *  <p>The provided path is split into a base path
-     *  and a suffix (at the last period character).  The locale
-     *  will provide different suffixes to the base path
-     *  and the first match is returned.
-     * 
-     **/
-    
-    public LocalizedResource resolve(String resourcePath, Locale locale)
+     *  Creates a LocalizedPropertySource with the provided locale
+     */
+    public LocalizedPropertySource(Locale locale)
     {
-        int dotx = resourcePath.lastIndexOf('.');
-        String basePath = resourcePath.substring(0, dotx);
-        String suffix = resourcePath.substring(dotx);
+        super();
+        setLocale(locale);
+    }
 
-        LocalizedNameGenerator generator = new LocalizedNameGenerator(basePath, locale, suffix);
+    /**
+     *  Creates a LocalizedPropertySource with the default locale and the provided delegate
+     */
+    public LocalizedPropertySource(IPropertySource delegate)
+    {
+        this(Locale.getDefault(), delegate);
+    }
+
+    /**
+     *  Creates a LocalizedPropertySource with the provided locale and delegate
+     */
+    public LocalizedPropertySource(Locale locale, IPropertySource delegate)
+    {
+        super(delegate);
+        setLocale(locale);
+    }
+
+
+    /**
+     * @return the locale currently used 
+     */
+    public Locale getLocale()
+    {
+        return _locale;
+    }
+
+    /**
+     * @param locale the locale currently used
+     */
+    public void setLocale(Locale locale)
+    {
+        _locale = locale;
+    }
+
+    
+    /**
+     *  Examines the properties localized using the provided locale in the order
+     *  of more specific to more general and returns the first that has a value. 
+     *  @see org.apache.tapestry.util.DelegatingPropertySource#getPropertyValue(java.lang.String)
+     */
+    public String getPropertyValue(String propertyName)
+    {
+        LocalizedNameGenerator generator = new LocalizedNameGenerator(propertyName, getLocale(), "");
 
         while (generator.more())
         {
-            String candidatePath = generator.next();
+            String candidateName = generator.next();
 
-            if (_resolver.getResource(candidatePath) != null)
-                return new LocalizedResource(candidatePath, generator.getCurrentLocale());
+            String value = super.getPropertyValue(candidateName); 
+            if (value != null)
+                return value;
         }
 
         return null;
     }
+
 }

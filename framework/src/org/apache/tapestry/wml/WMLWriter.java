@@ -112,12 +112,37 @@ public class WMLWriter extends AbstractMarkupWriter
 
     public WMLWriter(OutputStream stream)
     {
-        this("text/vnd.wap.wml", stream);
+        this(stream, "UTF-8");
+    }
+
+    /**
+     * 
+     * @param stream the output stream where to write the text
+     * @param encoding the encoding to be used to generate the output
+     * @since 3.0
+     * 
+     **/
+    public WMLWriter(OutputStream stream, String encoding)
+    {
+        this("text/vnd.wap.wml", encoding, stream);
     }
 
     public WMLWriter(String contentType, OutputStream stream)
     {
         super(safe, entities, contentType, stream);
+    }
+
+    /**
+     * 
+     * @param mimeType the MIME type to be used to generate the content type
+     * @param encoding the encoding to be used to generate the output
+     * @param stream the output stream where to write the text
+     * @since 3.0
+     * 
+     **/
+    public WMLWriter(String mimeType, String encoding, OutputStream stream)
+    {
+        super(safe, entities, mimeType, encoding, stream);
     }
 
     protected WMLWriter(String contentType)

@@ -92,7 +92,7 @@ public class LocalizedContextResourceFinder
      * 
      **/
 
-    public String resolve(String contextPath, Locale locale)
+    public LocalizedResource resolve(String contextPath, Locale locale)
     {
         int dotx = contextPath.lastIndexOf('.');
         String basePath = contextPath.substring(0, dotx);
@@ -105,7 +105,7 @@ public class LocalizedContextResourceFinder
             String candidatePath = generator.next();
 
             if (isExistingResource(candidatePath))
-                return candidatePath;
+                return new LocalizedResource(candidatePath, generator.getCurrentLocale());
         }
 
         return null;

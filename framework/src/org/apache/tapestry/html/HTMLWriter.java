@@ -118,6 +118,11 @@ public class HTMLWriter extends AbstractMarkupWriter
         super(safe, entities, contentType, outputStream);
     }
 
+    public HTMLWriter(String contentType, String encoding, OutputStream outputStream)
+    {
+        super(safe, entities, contentType, encoding, outputStream);
+    }
+
     protected HTMLWriter(String contentType)
     {
         super(safe, entities, contentType);
@@ -130,7 +135,12 @@ public class HTMLWriter extends AbstractMarkupWriter
 
     public HTMLWriter(OutputStream outputStream)
     {
-        this("text/html; charset=utf-8", outputStream);
+        this(outputStream, "UTF-8");
+    }
+
+    public HTMLWriter(OutputStream outputStream, String encoding)
+    {
+        this("text/html", encoding, outputStream);
     }
 
     public IMarkupWriter getNestedWriter()

@@ -55,6 +55,8 @@
 
 package org.apache.tapestry.resource;
 
+import java.util.Locale;
+
 import org.apache.tapestry.IResourceLocation;
 
 public abstract class AbstractResourceLocation implements IResourceLocation
@@ -62,10 +64,17 @@ public abstract class AbstractResourceLocation implements IResourceLocation
     private String _path;
     private String _name;
     private String _folderPath;
+    private Locale _locale;
 
     protected AbstractResourceLocation(String path)
     {
+        this(path, null);
+    }
+
+    protected AbstractResourceLocation(String path, Locale locale)
+    {
         _path = path;
+        _locale = locale;
     }
 
     public String getName()
@@ -99,6 +108,12 @@ public abstract class AbstractResourceLocation implements IResourceLocation
     {
         return _path;
     }
+
+    public Locale getLocale()
+    {
+        return _locale;
+    }
+
 
     protected abstract IResourceLocation buildNewResourceLocation(String path);
 

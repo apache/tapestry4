@@ -59,6 +59,7 @@ import java.io.Externalizable;
 import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -215,6 +216,24 @@ public abstract class AbstractEngine
      **/
 
     public static final String GLOBAL_NAME = "org.apache.tapestry.global";
+
+    /**
+     *  The name of the application property that will be used to
+     *  determine the encoding to use when generating the output
+     * 
+     *  @since 3.0
+     **/ 
+         
+    public static final String OUTPUT_ENCODING_PROPERTY_NAME = "org.apache.tapestry.output-encoding"; 
+
+    /**
+     *  The default encoding that will be used when generating the output. 
+     *  It is used if no output encoding property has been specified.
+     * 
+     *  @since 3.0
+     */ 
+         
+    public static final String DEFAULT_OUTPUT_ENCODING = "UTF-8"; 
 
     /**
      *  The curent locale for the engine, which may be changed at any time.
@@ -1209,10 +1228,6 @@ public abstract class AbstractEngine
         else
             _sessionId = null;
 
-        _clientAddress = request.getRemoteHost();
-        if (_clientAddress == null)
-            _clientAddress = request.getRemoteAddr();
-
         // servletPath is null, so this means either we're doing the
         // first request in this session, or we're handling a subsequent
         // request in another JVM (i.e. another server in the cluster).
@@ -1395,6 +1410,27 @@ public abstract class AbstractEngine
                 servletContext.setAttribute(name, _global);
             }
         }
+
+
+        String encoding = request.getCharacterEncoding();
+        if (encoding == null) {
+            encoding = getOutputEncoding();
+            try
+            {
+                request.setCharacterEncoding(encoding);
+            }
+            catch (UnsupportedEncodingException e)
+            {
+                throw new IllegalArgumentException(
+                    Tapestry.format("AbstractEngine.illegal-encoding", encoding));            
+            }
+        }
+        
+
+        _clientAddress = request.getRemoteHost();
+        if (_clientAddress == null)
+            _clientAddress = request.getRemoteAddr();
+
     }
 
     /**
@@ -2266,5 +2302,45 @@ public abstract class AbstractEngine
     public void valueUnbound(HttpSessionBindingEvent arg0)
     {
     }
+
+
+    /**
+     * 
+     *  The encoding to be used if none has been defined using the output encoding property.
+     *  Override this method to change the default.
+     * 
+     *  @return the default output encoding
+     *  @since 3.0
+     * 
+     **/
+    protected String getDefaultOutputEncoding()
+    {
+        return DEFAULT_OUTPUT_ENCODING; 
+    }
+
+
+    /**
+     * 
+     *  Returns the encoding to be used to generate the servlet responses and 
+     *  accept the servlet requests.
+     * 
+     *  The encoding is defined using the org.apache.tapestry.output-encoding 
+     *  and is UTF-8 by default    
+     * 
+     *  @since 3.0
+     *  @see org.apache.tapestry.IEngine#getOutputEncoding()
+     * 
+     **/
+    public String getOutputEncoding()
+    {
+        IPropertySource source = getPropertySource();
+
+        String encoding = source.getPropertyValue(OUTPUT_ENCODING_PROPERTY_NAME);
+        if (encoding == null)
+            encoding = getDefaultOutputEncoding();
+
+        return encoding;
+    }
+
 
 }

@@ -80,7 +80,7 @@ public class Deck extends AbstractPage
      **/
     public IMarkupWriter getResponseWriter(OutputStream out)
     {
-        return new WMLWriter(out);
+        return new WMLWriter(out, getOutputEncoding());
     }
 
 }

@@ -67,6 +67,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.LocalizedContextResourceFinder;
+import org.apache.tapestry.util.LocalizedResource;
 
 /**
  *  Implementation of {@link org.apache.tapestry.IResourceLocation}
@@ -87,7 +88,12 @@ public class ContextResourceLocation extends AbstractResourceLocation
 
     public ContextResourceLocation(ServletContext context, String path)
     {
-        super(path);
+        this(context, path, null);
+    }
+
+    public ContextResourceLocation(ServletContext context, String path, Locale locale)
+    {
+        super(path, locale);
 
         _context = context;
     }
@@ -103,7 +109,13 @@ public class ContextResourceLocation extends AbstractResourceLocation
         LocalizedContextResourceFinder finder = new LocalizedContextResourceFinder(_context);
 
         String path = getPath();
-        String localizedPath = finder.resolve(path, locale);
+        LocalizedResource localizedResource = finder.resolve(path, locale);
+
+        if (localizedResource == null)
+            return null;
+
+        String localizedPath = localizedResource.getResourcePath();
+        Locale pathLocale = localizedResource.getResourceLocale();
 
         if (localizedPath == null)
             return null;
@@ -111,7 +123,7 @@ public class ContextResourceLocation extends AbstractResourceLocation
         if (path.equals(localizedPath))
             return this;
 
-        return new ContextResourceLocation(_context, localizedPath);
+        return new ContextResourceLocation(_context, localizedPath, pathLocale);
     }
 
     public URL getResourceURL()

@@ -141,6 +141,15 @@ public abstract class AbstractPage extends BaseComponent implements IPage
      **/
 
     private EventListenerList _listenerList;
+    
+    
+    /**
+     *  The output encoding to be used when rendering this page.
+     *  This value is cached from the engine.
+     *
+     *  @since 3.0
+     **/
+    private String _outputEncoding;
 
     /**
      *  Standard constructor; invokes {@link #initialize()}
@@ -592,4 +601,17 @@ public abstract class AbstractPage extends BaseComponent implements IPage
         }
     }
 
+    /**
+     *  Returns the output encoding to be used when rendering this page.
+     *  This value is usually cached from the Engine.
+     * 
+     *  @since 3.0
+     **/
+    protected String getOutputEncoding()
+    {
+        if (_outputEncoding == null)
+            _outputEncoding = getEngine().getOutputEncoding();
+        
+        return _outputEncoding;
+    }
 }

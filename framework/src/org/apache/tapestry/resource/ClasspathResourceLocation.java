@@ -61,6 +61,7 @@ import java.util.Locale;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IResourceResolver;
+import org.apache.tapestry.util.LocalizedResource;
 import org.apache.tapestry.util.LocalizedResourceFinder;
 
 /**
@@ -80,7 +81,12 @@ public class ClasspathResourceLocation extends AbstractResourceLocation
 
     public ClasspathResourceLocation(IResourceResolver resolver, String path)
     {
-        super(path);
+        this(resolver, path, null);
+    }
+
+    public ClasspathResourceLocation(IResourceResolver resolver, String path, Locale locale)
+    {
+        super(path, locale);
 
         _resolver = resolver;
     }
@@ -96,7 +102,13 @@ public class ClasspathResourceLocation extends AbstractResourceLocation
         String path = getPath();
         LocalizedResourceFinder finder = new LocalizedResourceFinder(_resolver);
 
-        String localizedPath = finder.resolve(path, locale);
+        LocalizedResource localizedResource = finder.resolve(path, locale);
+
+        if (localizedResource == null)
+            return null;
+
+        String localizedPath = localizedResource.getResourcePath();
+        Locale pathLocale = localizedResource.getResourceLocale();
 
         if (localizedPath == null)
             return null;
@@ -104,7 +116,7 @@ public class ClasspathResourceLocation extends AbstractResourceLocation
         if (path.equals(localizedPath))
             return this;
 
-        return new ClasspathResourceLocation(_resolver, localizedPath);
+        return new ClasspathResourceLocation(_resolver, localizedPath, pathLocale);
     }
 
     /**

@@ -140,4 +140,16 @@ public interface IResourceLocation
      **/
     
     public String getPath();
+
+    /**
+     *  Returns the locale for which this resource has been localized 
+     *  or null if the resource has not been localized. This should 
+     *  only be used when the type of resource is known.
+     * 
+     *  This locale is the same or more general than the locale for which localization 
+     *  was requested. For example, if the requested locale was en_US, but only the file 
+     *  Home_en was found, this locale returned would be en. 
+     **/
+    
+    public Locale getLocale();
 }

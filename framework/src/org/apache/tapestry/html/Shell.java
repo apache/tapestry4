@@ -125,6 +125,15 @@ public abstract class Shell extends AbstractComponent
             writer.attribute("content", generatorContent);
             writer.println();
 
+            if (getRenderContentType()) {
+                // This should not be necessary (the HTTP content type should be sufficient), 
+                // but some browsers require it for some reason
+                writer.beginEmpty("meta");
+                writer.attribute("http-equiv", "Content-Type");
+                writer.attribute("content", writer.getContentType());
+                writer.println();
+            }
+
             writer.begin("title");
 
             writer.print(getTitle());
@@ -223,6 +232,8 @@ public abstract class Shell extends AbstractComponent
     public abstract void setDTD(String DTD);
 
     public abstract Object getStylesheets();
+
+    public abstract boolean getRenderContentType();
 
     /**
      * Sets the DTD parameter property to its default value.
