@@ -48,21 +48,41 @@ public abstract class SimpleTableColumn implements ITableColumn, Serializable
 	private boolean m_bSortable;
 	private Comparator m_objComparator;
 
+	/**
+	 * Creates a SimpleTableColumn
+	 * @param strColumnName the identifying name and display name of the column
+	 */
 	public SimpleTableColumn(String strColumnName)
 	{
 		this(strColumnName, strColumnName);
 	}
 
+	/**
+     * Creates a SimpleTableColumn
+	 * @param strColumnName the identifying name and display name of the column
+	 * @param bSortable whether the column is sortable
+	 */
 	public SimpleTableColumn(String strColumnName, boolean bSortable)
 	{
 		this(strColumnName, strColumnName, bSortable);
 	}
 
+	/**
+     * Creates a SimpleTableColumn
+	 * @param strColumnName the identifying name of the column
+	 * @param strDisplayName the display name of the column
+	 */
 	public SimpleTableColumn(String strColumnName, String strDisplayName)
 	{
 		this(strColumnName, strDisplayName, false);
 	}
 
+	/**
+     * Creates a SimpleTableColumn
+	 * @param strColumnName the identifying name of the column
+	 * @param strDisplayName the display name of the column
+	 * @param bSortable whether the column is sortable
+	 */
 	public SimpleTableColumn(
 		String strColumnName,
 		String strDisplayName,
@@ -83,6 +103,12 @@ public abstract class SimpleTableColumn implements ITableColumn, Serializable
 		return m_strColumnName;
 	}
 
+	/**
+	 * Returns the display name of the column that will be used 
+     * in the table header.<br>
+     * Override for internationalization.
+	 * @return String the display name of the column
+	 */
 	public String getDisplayName()
 	{
 		return m_strDisplayName;
@@ -109,6 +135,11 @@ public abstract class SimpleTableColumn implements ITableColumn, Serializable
 		m_objComparator = objComparator;
 	}
 
+	/**
+	 * Extracts the value of the column from the row object
+	 * @param objRow the row object
+	 * @return Object the column value
+	 */
 	public Object getColumnValue(Object objRow)
     {
         return objRow.toString();
@@ -147,7 +178,11 @@ public abstract class SimpleTableColumn implements ITableColumn, Serializable
 		ITableModelSource objSource,
 		Object objRow)
 	{
-		return new RenderString(getColumnValue(objRow).toString());
+        Object objValue = getColumnValue(objRow);
+        if (objValue == null)
+            objValue = "";
+
+		return new RenderString(objValue.toString());
 	}
 
 	private class DefaultComparator implements Comparator, Serializable
