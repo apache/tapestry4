@@ -71,19 +71,19 @@ public class Home extends BasePage {
 	 */
 	public void timeListener(IRequestCycle cycle) throws RequestCycleException {
 		System.err.println("TIME LISTENER METHOD CALLED");
-		pageTime = DateFormat.getDateTimeInstance().format(new Date());
-	}
-	
-	public String getPageTime() {
-		return pageTime;
-	}
-	
-	/**
-	 * @see net.sf.tapestry.AbstractPage#detach()
-	 */
-	public void detach() {
-		pageTime = null;
-	}
+        pageTime = DateFormat.getDateTimeInstance().format(new Date());
+    }
 
-	private String pageTime;
+    public String getPageTime() {
+        return pageTime;
+    }
+
+    /**
+     * @see net.sf.tapestry.AbstractPage#detach()
+     */
+    public void detach() {
+        pageTime = null;
+    }
+
+    private String pageTime;
 }

@@ -25,7 +25,7 @@
 	</component>
 	
 	<component id="dateOfBirth" type="ValidField">
-		<binding name="value" expression="visit.dateOfBirth"/>
+		<binding name="value" expression="visit.dateOfBirthAsString"/>
         <binding name="validator" expression='beans.stringValidator'/>
         <static-binding name="displayName">Date of birth</static-binding>
 	</component>
