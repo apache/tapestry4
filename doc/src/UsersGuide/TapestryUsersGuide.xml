@@ -41,9 +41,9 @@
 <!ENTITY spec.reserved-parameter '<link linkend="spec.reserved-parameter"><sgmltag class="starttag">reserved-parameter</sgmltag></link>'>
 <!ENTITY spec.service '<link linkend="spec.service"><sgmltag class="starttag">service</sgmltag></link>'>
 <!ENTITY spec.set-property '<link linkend="spec.set-property"><sgmltag class="starttag">set-property</sgmltag></link>'>
-<!ENTITY spec.set-string-property '<link linkend="spec.set-string-property"><sgmltag class="starttag">set-string-property</sgmltag></link>'>
+<!ENTITY spec.set-message-property '<link linkend="spec.set-message-property"><sgmltag class="starttag">set-message-property</sgmltag></link>'>
 <!ENTITY spec.static-binding '<link linkend="spec.static-binding"><sgmltag class="starttag">static-binding</sgmltag></link>'>
-<!ENTITY spec.string-binding '<link linkend="spec.string-binding"><sgmltag class="starttag">string-binding</sgmltag></link>'>
+<!ENTITY spec.message-binding '<link linkend="spec.message-binding"><sgmltag class="starttag">message-binding</sgmltag></link>'>
 
 
 <!-- Script specification entities -->
@@ -58,8 +58,9 @@
 <!ENTITY script-spec.let '<link linkend="script-spec.let"><sgmltag class="starttag">let</sgmltag></link>'>
 <!ENTITY script-spec.script '<link linkend="script-spec.script"><sgmltag class="starttag">script</sgmltag></link>'>
 <!ENTITY script-spec.set '<link linkend="script-spec.set"><sgmltag class="starttag">set</sgmltag></link>'>
-
-<!ENTITY script-spec.full-content '<replaceable>text</replaceable> | &script-spec.foreach; | &script-spec.if; | &script-spec.if-not;'>
+<!ENTITY script-spec.unique '<link linkend="script-spec.unique"><sgmltag class="starttag">unique</sgmltag></link>'>
+	
+<!ENTITY script-spec.full-content '<replaceable>text</replaceable> | &script-spec.foreach; | &script-spec.if; | &script-spec.if-not; | &script-spec.unique;'>
 
 
 <!ENTITY WEB-INF '<filename>WEB-INF</filename>'>

@@ -5,11 +5,11 @@
 The DTD for Tapestry application, library, page and component specifications.
 Associated with the public identifier:
 
-	-//Apache Software Foundation//Tapestry Specification 1.4//EN
+	-//Apache Software Foundation//Tapestry Specification 3.0//EN
 	
 The canonical location for the DTD is:
 
-	http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd
+	http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd
 
 For application specifications, the root element is application.
 
@@ -26,6 +26,7 @@ This DTD is backwards compatible with the 1.3 DTD, with the following exceptions
 - added value attribute to <static-binding>
 - added value attribute to <property>
 - renamed <component-alias> to <component-type>
+- rename <set-string-property> to <set-message-property>
 - added <listener-binding> element
 - added <property-specification> element
 - renamed java-type to type inside <parameter>
@@ -95,7 +96,7 @@ The bean may have its properties set.  Properties are set on both
 newly instantiated beans, and beans that are retrieved from a pool.
 
 -->
-<!ELEMENT bean (description?, property*, (set-property | set-string-property)*)>
+<!ELEMENT bean (description?, property*, (set-property | set-message-property)*)>
 <!ATTLIST bean
 	name CDATA #REQUIRED
 	class CDATA #REQUIRED
@@ -155,7 +156,7 @@ Attribute:
 
 The Tapestry page loader ensures that either type or copy-of is specified, but not both.
 -->
-<!ELEMENT component (property*, (binding | inherited-binding | listener-binding | static-binding | string-binding)*)>
+<!ELEMENT component (property*, (binding | inherited-binding | listener-binding | static-binding | message-binding)*)>
 <!ATTLIST component
 	id ID #REQUIRED
 	type CDATA #IMPLIED
@@ -491,7 +492,7 @@ Attributes:
 	expression CDATA #IMPLIED
 >
 <!-- =======================================================
-Element: set-string-property
+Element: set-message-property
 Appears in: bean
 
 A localized string.
@@ -500,8 +501,8 @@ Attributes:
   key:  Sets a property of a string from a localized string.
 
 -->
-<!ELEMENT set-string-property EMPTY>
-<!ATTLIST set-string-property
+<!ELEMENT set-message-property EMPTY>
+<!ATTLIST set-message-property
 	name CDATA #REQUIRED
 	key CDATA #REQUIRED
 >
@@ -524,10 +525,10 @@ Attributes:
 	value CDATA #IMPLIED
 >
 <!-- =======================================================
-Element: string-binding
+Element: message-binding
 Appears in: component
 
-Binds a parameter of the component to a localized string of
+Binds a parameter of the component to a localized message of
 its container.
 
 Attributes:
@@ -535,8 +536,8 @@ Attributes:
   key: The key used to access a localized string.
   
 -->
-<!ELEMENT string-binding EMPTY>
-<!ATTLIST string-binding
+<!ELEMENT message-binding EMPTY>
+<!ATTLIST message-binding
 	name CDATA #REQUIRED
 	key CDATA #REQUIRED
 >

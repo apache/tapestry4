@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
 <!DOCTYPE page-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
   
 <page-specification class="org.apache.tapestry.vlib.pages.admin.EditUsers">
 

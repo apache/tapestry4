@@ -58,7 +58,7 @@ package org.apache.tapestry.junit.parse;
 import java.util.Map;
 
 import org.apache.tapestry.ILocatable;
-import org.apache.tapestry.bean.StringBeanInitializer;
+import org.apache.tapestry.bean.MessageBeanInitializer;
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.spec.BindingType;
 import org.apache.tapestry.spec.IApplicationSpecification;
@@ -106,6 +106,22 @@ public class TestSpecificationParser extends TapestryTestCase
     public void testStringBinding() throws Exception
     {
         IComponentSpecification spec = parseComponent("TestStringBinding.jwc");
+
+        IBindingSpecification bs = spec.getComponent("hello").getBinding("value");
+
+        assertEquals("type", BindingType.STRING, bs.getType());
+        assertEquals("key", "label.hello", bs.getValue());
+
+        checkLine(bs, 10);
+    }
+
+    /**
+     * Test new (in 3.0) &lt;message-binding&gt; element. 
+     */
+
+    public void tesMessageBinding() throws Exception
+    {
+        IComponentSpecification spec = parseComponent("TestMessageBinding.jwc");
 
         IBindingSpecification bs = spec.getComponent("hello").getBinding("value");
 
@@ -541,7 +557,7 @@ public class TestSpecificationParser extends TapestryTestCase
         String expectedScript =
             buildExpectedScript(
                 new String[] {
-                	"",
+                    "",
                     "if page.isFormInputValid():",
                     "  cycle.page = \"Results\"",
                     "else:",
@@ -645,21 +661,36 @@ public class TestSpecificationParser extends TapestryTestCase
 
         IBeanSpecification bs = spec.getBeanSpecification("fred");
         checkLine(bs, 9);
-        StringBeanInitializer i = (StringBeanInitializer) bs.getInitializers().get(0);
+        MessageBeanInitializer i = (MessageBeanInitializer) bs.getInitializers().get(0);
 
         assertEquals("barney", i.getPropertyName());
         assertEquals("rubble", i.getKey());
         checkLine(i, 10);
     }
-    
+
+    /** @since 3.0 **/
+
+    public void testMessageBeanInitializer() throws Exception
+    {
+        IComponentSpecification spec = parsePage("MessageBeanInitializer.page");
+
+        IBeanSpecification bs = spec.getBeanSpecification("fred");
+        checkLine(bs, 9);
+        MessageBeanInitializer i = (MessageBeanInitializer) bs.getInitializers().get(0);
+
+        assertEquals("barney", i.getPropertyName());
+        assertEquals("rubble", i.getKey());
+        checkLine(i, 10);
+    }
+
     public void testInheritInformalParameters() throws Exception
     {
         IComponentSpecification spec = parseComponent("TestInheritInformal.jwc");
-        
+
         IContainedComponent border = spec.getComponent("border");
         assertEquals(border.getInheritInformalParameters(), false);
 
         IContainedComponent textField = spec.getComponent("textField");
         assertEquals(textField.getInheritInformalParameters(), true);
-   }
+    }
 }

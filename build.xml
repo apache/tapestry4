@@ -82,7 +82,8 @@
 		description="Run the JUnit test suite for Tapestry.">
 		<ant dir="junit" target="run" inheritAll="false"/>
 	</target>
-	<target name="clover" depends="check-for-clover-dir,check-for-jython-dir,check-for-jetty-dir"
+	
+	<target name="clover" depends="check-for-clover-dir,check-for-jython-dir"
 		description="Execute the JUnit tests and generate Code Coverage report."
 		>
 		<ant dir="junit" target="clover" inheritAll="false"/>

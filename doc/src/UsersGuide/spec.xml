@@ -26,40 +26,40 @@ used in Tapestry.
 	<entry>Application</entry>
 	<entry>application</entry>
 	<entry>&spec.application;</entry>
-	<entry><literal>-//Apache Software Foundation//Tapestry Specification 1.4//EN</literal></entry>
-	<entry><literal>http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd</literal></entry>
+	<entry><literal>-//Apache Software Foundation//Tapestry Specification 3.0//EN</literal></entry>
+	<entry><literal>http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd</literal></entry>
 </row>
 
 <row>
 	<entry>Page</entry>
 	<entry>page</entry>
 	<entry>&spec.page-specification;</entry>
-	<entry><literal>-//Apache Software Foundation//Tapestry Specification 1.4//EN</literal></entry>
-	<entry><literal>http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd</literal></entry>
+	<entry><literal>-//Apache Software Foundation//Tapestry Specification 3.0//EN</literal></entry>
+	<entry><literal>http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd</literal></entry>
 </row>
 
 <row>
 	<entry>Component</entry>
 	<entry>jwc</entry>
 	<entry>&spec.component-specification;</entry>
-	<entry><literal>-//Apache Software Foundation//Tapestry Specification 1.4//EN</literal></entry>
-	<entry><literal>http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd</literal></entry>
+	<entry><literal>-//Apache Software Foundation//Tapestry Specification 3.0//EN</literal></entry>
+	<entry><literal>http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd</literal></entry>
 </row>
 
 <row>
 	<entry>Library</entry>
 	<entry>library</entry>
 	<entry>&spec.library-specification;</entry>
-	<entry><literal>-//Apache Software Foundation//Tapestry Specification 1.4//EN</literal></entry>
-	<entry><literal>http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd</literal></entry>
+	<entry><literal>-//Apache Software Foundation//Tapestry Specification 3.0//EN</literal></entry>
+	<entry><literal>http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd</literal></entry>
 </row>
 
 <row>
 	<entry>Script</entry>
 	<entry>script</entry>
 	<entry>&script-spec.script;</entry>
-	<entry><literal>-//Howard Lewis Ship//Tapestry Script 1.2//EN</literal></entry>
-	<entry><literal>http://tapestry.sf.net/dtd/Tapestry_1_2.dtd</literal></entry>
+	<entry><literal>-//Apache Software Foundation//Tapestry Script Specification 3.0//EN</literal></entry>
+	<entry><literal>http://jakarta.apache.org/tapestry/dtd/Script_3_0.dtd</literal></entry>
 </row>
 
 </tbody>
@@ -202,7 +202,7 @@ be stored in a page.
 
 <para>
 Beans must be public classes with a default (no arguments) constructor. Properties of the bean
-may be configured using the &spec.set-property; and &spec.set-string-property; elements.
+may be configured using the &spec.set-property; and &spec.set-message-property; elements.
 </para>
 
 <figure>
@@ -251,7 +251,7 @@ may be configured using the &spec.set-property; and &spec.set-string-property; e
 	<title><sgmltag class="starttag">bean</sgmltag> Elements</title>
 <literallayout>
   &spec.description; ?, &spec.property; *,
-  (&spec.set-property; | &spec.set-string-property;) *
+  (&spec.set-property; | &spec.set-message-property;) *
 </literallayout>
 </figure>
 
@@ -317,68 +317,6 @@ of single and double quotes).
 </figure>
 
 </section> <!-- spec.binding -->
-
-<section id="spec.configure">
-	<title><sgmltag class="starttag">configure</sgmltag> element</title>
-
-<para>
-Appears in: &spec.extension;
-</para>
-
-<para>
-Allows a JavaBeans property of the extension to be set from a statically defined value.  The
-<sgmltag class="starttag">configure</sgmltag> element
-wraps around the static value.  The value is trimmed of leading and trailing
-whitespace and optionally converted to a specified type before being assigned
-to the property.
-</para>
-
-<figure>
-	<title><sgmltag class="starttag">configure</sgmltag> Attributes</title>
-<informaltable>
-<tgroup cols="5">
-<thead>
-<row>
-  <entry>Name</entry>
-  <entry>Type</entry>
-  <entry>Required ?</entry>
-  <entry>Default Value</entry>
-  <entry>Description</entry>
-</row>
-</thead>
-<tbody>
-<row>
-	<entry>property-name</entry>
-	<entry>string</entry>
-	<entry>yes</entry>
-	<entry/>
-	<entry>The name of the extension property to configure.</entry>
-</row>
-<row>
-	<entry>type</entry>
-	<entry><literal>boolean|int|long|double|String</literal></entry>
-	<entry>no</entry>
-	<entry><literal>String</literal></entry>
-	<entry>The conversion to apply to the value.</entry>
-</row>
-<row>
-	<entry>value</entry>
-	<entry/>
-	<entry>no</entry>
-	<entry/>
-	<entry>The value to configure, which will be converted before being assigned
-	to the property.  If not provided, the character data wrapped by the element
-	is used instead.
-	</entry>
-</row>
-</tbody>
-</tgroup>
-</informaltable>
-</figure>
-
-
-
-</section> <!-- spec.configure -->
 
 <section id="spec.component">
 	<title><sgmltag class="starttag">component</sgmltag> element</title>
@@ -462,7 +400,7 @@ containing library or application.
 	<title><sgmltag class="starttag">component</sgmltag> Elements</title>
 <literallayout>
   &spec.property; *,
-  (&spec.binding; | &spec.inherited-binding; | &spec.listener-binding; | &spec.static-binding; | &spec.string-binding;) *
+  (&spec.binding; | &spec.inherited-binding; | &spec.listener-binding; | &spec.static-binding; | &spec.message-binding;) *
 </literallayout>
 </figure>
 
@@ -607,6 +545,70 @@ and elements related to parameters.
 
 
 </section> <!-- spec.component-specification -->
+
+<section id="spec.configure">
+	<title><sgmltag class="starttag">configure</sgmltag> element</title>
+
+<para>
+Appears in: &spec.extension;
+</para>
+
+<para>
+Allows a JavaBeans property of the extension to be set from a statically defined value.  The
+<sgmltag class="starttag">configure</sgmltag> element
+wraps around the static value.  The value is trimmed of leading and trailing
+whitespace and optionally converted to a specified type before being assigned
+to the property.
+</para>
+
+<figure>
+	<title><sgmltag class="starttag">configure</sgmltag> Attributes</title>
+<informaltable>
+<tgroup cols="5">
+<thead>
+<row>
+  <entry>Name</entry>
+  <entry>Type</entry>
+  <entry>Required ?</entry>
+  <entry>Default Value</entry>
+  <entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+	<entry>property-name</entry>
+	<entry>string</entry>
+	<entry>yes</entry>
+	<entry/>
+	<entry>The name of the extension property to configure.</entry>
+</row>
+<row>
+	<entry>type</entry>
+	<entry><literal>boolean|int|long|double|String</literal></entry>
+	<entry>no</entry>
+	<entry><literal>String</literal></entry>
+	<entry>The conversion to apply to the value.</entry>
+</row>
+<row>
+	<entry>value</entry>
+	<entry/>
+	<entry>no</entry>
+	<entry/>
+	<entry>The value to configure, which will be converted before being assigned
+	to the property.  If not provided, the character data wrapped by the element
+	is used instead.
+	</entry>
+</row>
+</tbody>
+</tgroup>
+</informaltable>
+</figure>
+
+
+
+</section> <!-- spec.configure -->
+
+
 
 <section id="spec.context-asset">
 	<title><sgmltag class="starttag">context-asset</sgmltag> element</title>
@@ -955,59 +957,7 @@ element has no attributes.
 
 </section> <!-- spec.library-specification -->
 
-<section id="spec.page">
-	<title><sgmltag class="starttag">page</sgmltag> element</title>
 
-<para>
-Appears in: &spec.application; and &spec.library-specification;
-</para>
-
-<para>
-Defines a page within an application (or contributed by a library).
-Relates a logical name for the page to the path to the page's specification file.
-</para>
-
-<figure>
-	<title><sgmltag class="starttag">page</sgmltag> Attributes</title>
-<informaltable>
-<tgroup cols="5">
-<thead>
-<row>
-  <entry>Name</entry>
-  <entry>Type</entry>
-  <entry>Required ?</entry>
-  <entry>Default Value</entry>
-  <entry>Description</entry>
-</row>
-</thead>
-<tbody>
-<row>
-	<entry>name</entry>
-	<entry>string</entry>
-	<entry>yes</entry>
-	<entry/>
-	<entry>The name for the page, which must start with a letter,
-	and may contain letters, numbers, underscores and the dash
-	character.
-	</entry>
-</row>
-<row>
-	<entry>specification-path</entry>
-	<entry>string</entry>
-	<entry>yes</entry>
-	<entry/>
-	<entry>
-	The path to the page's specification, which may be absolute
-	 (start with a leading slash), or relative to the application or library
-	 specification.
-	</entry>
-</row>
-</tbody>
-</tgroup>
-</informaltable>
-</figure>
-
-</section> <!-- spec.page -->
 
 <section id="spec.listener-binding">
 	<title><sgmltag class="starttag">listener-binding</sgmltag> element</title>
@@ -1087,6 +1037,113 @@ may be obtained.
 
 </section> <!-- spec.listener-binding -->
 
+
+<section id="spec.message-binding">
+	<title><sgmltag class="starttag">message-binding</sgmltag> element</title>
+
+<para>
+Appears in: &spec.component;
+</para>
+
+<para>
+Binds a parameter of an embedded component to a localized
+string of its containing page or component.
+</para>
+
+<para>
+In an instantiated component, bindings can be accessed with
+the OGNL expression <literal>bindings.<replaceable>name</replaceable></literal>.
+</para>
+
+
+<figure>
+	<title><sgmltag class="starttag">message-binding</sgmltag> Attributes</title>
+<informaltable>
+<tgroup cols="5">
+<thead>
+<row>
+  <entry>Name</entry>
+  <entry>Type</entry>
+  <entry>Required ?</entry>
+  <entry>Default Value</entry>
+  <entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+	<entry>name</entry>
+	<entry>string</entry>
+	<entry>yes</entry>
+	<entry/>
+	<entry>The name of the parameter to bind.</entry>
+</row>
+<row>
+	<entry>key</entry>
+	<entry>string</entry>
+	<entry>yes</entry>
+	<entry/>
+	<entry>The localized property key to retrieve.
+	</entry>
+</row>
+</tbody>
+</tgroup>
+</informaltable>
+</figure>
+</section> <!-- spec.message-binding -->
+
+<section id="spec.page">
+	<title><sgmltag class="starttag">page</sgmltag> element</title>
+
+<para>
+Appears in: &spec.application; and &spec.library-specification;
+</para>
+
+<para>
+Defines a page within an application (or contributed by a library).
+Relates a logical name for the page to the path to the page's specification file.
+</para>
+
+<figure>
+	<title><sgmltag class="starttag">page</sgmltag> Attributes</title>
+<informaltable>
+<tgroup cols="5">
+<thead>
+<row>
+  <entry>Name</entry>
+  <entry>Type</entry>
+  <entry>Required ?</entry>
+  <entry>Default Value</entry>
+  <entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+	<entry>name</entry>
+	<entry>string</entry>
+	<entry>yes</entry>
+	<entry/>
+	<entry>The name for the page, which must start with a letter,
+	and may contain letters, numbers, underscores and the dash
+	character.
+	</entry>
+</row>
+<row>
+	<entry>specification-path</entry>
+	<entry>string</entry>
+	<entry>yes</entry>
+	<entry/>
+	<entry>
+	The path to the page's specification, which may be absolute
+	 (start with a leading slash), or relative to the application or library
+	 specification.
+	</entry>
+</row>
+</tbody>
+</tgroup>
+</informaltable>
+</figure>
+
+</section> <!-- spec.page -->
 
 <section id="spec.page-specification">
 	<title><sgmltag class="starttag">page-specification</sgmltag> element</title>
@@ -1581,6 +1638,55 @@ a package prefix in front of the name) to avoid name collisions.
 
 </section> <!-- spec.service -->
 
+<section id="spec.set-message-property">
+	<title><sgmltag class="starttag">set-message-property</sgmltag> element</title>
+
+<para>
+Appears in: &spec.bean;
+</para>
+
+<para>
+Allows a property of a helper bean to be set to a localized string
+value of its containing page or component.
+</para>
+
+
+<figure>
+	<title><sgmltag class="starttag">set-message-property</sgmltag> Attributes</title>
+<informaltable>
+<tgroup cols="5">
+<thead>
+<row>
+  <entry>Name</entry>
+  <entry>Type</entry>
+  <entry>Required ?</entry>
+  <entry>Default Value</entry>
+  <entry>Description</entry>
+</row>
+</thead>
+<tbody>
+<row>
+	<entry>name</entry>
+	<entry>string</entry>
+	<entry>yes</entry>
+	<entry/>
+	<entry>The name of the helper bean property to set.</entry>
+</row>
+<row>
+	<entry>key</entry>
+	<entry>string</entry>
+	<entry>yes</entry>
+	<entry/>
+	<entry>A string property key of the containing page or component.
+	</entry>
+</row>
+</tbody>
+</tgroup>
+</informaltable>
+</figure>
+
+</section> <!-- spec.set-message-property -->
+
 <section id="spec.set-property">
 	<title><sgmltag class="starttag">set-property</sgmltag> element</title>
 	
@@ -1637,54 +1743,7 @@ itself.
 
 </section> <!-- spec.set-property -->
 
-<section id="spec.set-string-property">
-	<title><sgmltag class="starttag">set-string-property</sgmltag> element</title>
 
-<para>
-Appears in: &spec.bean;
-</para>
-
-<para>
-Allows a property of a helper bean to be set to a localized string
-value of its containing page or component.
-</para>
-
-
-<figure>
-	<title><sgmltag class="starttag">set-string-property</sgmltag> Attributes</title>
-<informaltable>
-<tgroup cols="5">
-<thead>
-<row>
-  <entry>Name</entry>
-  <entry>Type</entry>
-  <entry>Required ?</entry>
-  <entry>Default Value</entry>
-  <entry>Description</entry>
-</row>
-</thead>
-<tbody>
-<row>
-	<entry>name</entry>
-	<entry>string</entry>
-	<entry>yes</entry>
-	<entry/>
-	<entry>The name of the helper bean property to set.</entry>
-</row>
-<row>
-	<entry>key</entry>
-	<entry>string</entry>
-	<entry>yes</entry>
-	<entry/>
-	<entry>A string property key of the containing page or component.
-	</entry>
-</row>
-</tbody>
-</tgroup>
-</informaltable>
-</figure>
-
-</section> <!-- spec.set-string-property -->
 
 <section id="spec.static-binding">
 	<title><sgmltag class="starttag">static-binding</sgmltag> element</title>
@@ -1745,58 +1804,5 @@ the OGNL expression <literal>bindings.<replaceable>name</replaceable></literal>.
 
 
 </section> <!-- spec.static-binding -->
-
-<section id="spec.string-binding">
-	<title><sgmltag class="starttag">string-binding</sgmltag> element</title>
-
-<para>
-Appears in: &spec.component;
-</para>
-
-<para>
-Binds a parameter of an embedded component to a localized
-string of its containing page or component.
-</para>
-
-<para>
-In an instantiated component, bindings can be accessed with
-the OGNL expression <literal>bindings.<replaceable>name</replaceable></literal>.
-</para>
-
-
-<figure>
-	<title><sgmltag class="starttag">string-binding</sgmltag> Attributes</title>
-<informaltable>
-<tgroup cols="5">
-<thead>
-<row>
-  <entry>Name</entry>
-  <entry>Type</entry>
-  <entry>Required ?</entry>
-  <entry>Default Value</entry>
-  <entry>Description</entry>
-</row>
-</thead>
-<tbody>
-<row>
-	<entry>name</entry>
-	<entry>string</entry>
-	<entry>yes</entry>
-	<entry/>
-	<entry>The name of the parameter to bind.</entry>
-</row>
-<row>
-	<entry>key</entry>
-	<entry>string</entry>
-	<entry>yes</entry>
-	<entry/>
-	<entry>The localized property key to retrieve.
-	</entry>
-</row>
-</tbody>
-</tgroup>
-</informaltable>
-</figure>
-</section> <!-- spec.string-binding -->
 
 </appendix>

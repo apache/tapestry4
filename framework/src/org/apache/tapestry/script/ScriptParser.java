@@ -108,8 +108,8 @@ public class ScriptParser
         "-//Howard Lewis Ship//Tapestry Script 1.2//EN";
 
     /** @since 3.0 */
-    public static final String SCRIPT_DTD_1_3_PUBLIC_ID =
-        "-//Apache Software Foundation//Tapestry Script Specification 1.3//EN";
+    public static final String SCRIPT_DTD_3_0_PUBLIC_ID =
+        "-//Apache Software Foundation//Tapestry Script Specification 3.0//EN";
 
     public ScriptParser(IResourceResolver resolver)
     {
@@ -125,8 +125,8 @@ public class ScriptParser
             SCRIPT_DTD_1_2_PUBLIC_ID,
             "/org/apache/tapestry/script/Script_1_2.dtd");
         _parser.registerEntity(
-            SCRIPT_DTD_1_3_PUBLIC_ID,
-            "/org/apache/tapestry/script/Script_1_3.dtd");
+            SCRIPT_DTD_3_0_PUBLIC_ID,
+            "/org/apache/tapestry/script/Script_3_0.dtd");
 
         _parser.addRule("script", new ScriptRule());
         _parser.addRule("let", new LetRule());

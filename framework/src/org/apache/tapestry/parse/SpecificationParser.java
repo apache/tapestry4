@@ -101,11 +101,13 @@ import org.xml.sax.SAXParseException;
  * </tr>
  *
  *  <tr valign="top">
- *  <td>1.4</td>
- *  <td><code>-//Howard Lewis Ship//Tapestry Specification 1.3//EN</code></td>
- * <td><code>http://tapestry.sf.net/dtd/Tapestry_1_3.dtd</code></td>
+ *  <td>3.0</td>
+ *  <td><code>-//Howard Lewis Ship//Tapestry Specification 3.0//EN</code></td>
+ * <td><code>http://tapestry.sf.net/dtd/Tapestry_3_0.dtd</code></td>
  *  <td>
  *  Version of specification introduced in release 3.0.
+ *  <br/>
+ *  Note: Future DTD versions will track Tapestry release numbers.
  * </td>
  * </tr>
  * 
@@ -126,10 +128,10 @@ public class SpecificationParser
     public static final String TAPESTRY_DTD_1_3_PUBLIC_ID =
         "-//Howard Lewis Ship//Tapestry Specification 1.3//EN";
 
-    /** @since 2.2 **/
+    /** @since 3.0 **/
 
-    public static final String TAPESTRY_DTD_1_4_PUBLIC_ID =
-        "-//Apache Software Foundation//Tapestry Specification 1.4//EN";
+    public static final String TAPESTRY_DTD_3_0_PUBLIC_ID =
+        "-//Apache Software Foundation//Tapestry Specification 3.0//EN";
 
     /**
      *  Like modified property name, but allows periods in the name as
@@ -424,7 +426,7 @@ public class SpecificationParser
     {
         public ILocationHolder create()
         {
-            return _factory.createStringBeanInitializer();
+            return _factory.createMessageBeanInitializer();
         }
     }
 
@@ -849,11 +851,11 @@ public class SpecificationParser
         result.addRule("*/property", new SetMetaPropertyRule());
 
         result.register(TAPESTRY_DTD_1_3_PUBLIC_ID, getURL("Tapestry_1_3.dtd"));
-        result.register(TAPESTRY_DTD_1_4_PUBLIC_ID, getURL("Tapestry_1_4.dtd"));
+        result.register(TAPESTRY_DTD_3_0_PUBLIC_ID, getURL("Tapestry_3_0.dtd"));
 
         result.addDocumentRule(
             new ValidatePublicIdRule(
-                new String[] { TAPESTRY_DTD_1_3_PUBLIC_ID, TAPESTRY_DTD_1_4_PUBLIC_ID },
+                new String[] { TAPESTRY_DTD_1_3_PUBLIC_ID, TAPESTRY_DTD_3_0_PUBLIC_ID },
                 rootElement));
 
         result.setValidating(true);
@@ -946,7 +948,7 @@ public class SpecificationParser
         digester.addCallParam(pattern, 1, "specification-path");
 
         // <component-alias>
-        // From 1.3 DTD, replaced with <component-type> in 1.4 DTD
+        // From 1.3 DTD, replaced with <component-type> in 3.0 DTD
 
         pattern = rootElementName + "/component-alias";
         digester.addValidate(
@@ -1144,6 +1146,7 @@ public class SpecificationParser
         digester.addSetNext(pattern, "addInitializer");
 
         // <set-string-property> inside <bean>
+        // This is for compatibility with the 1.3 DTD
 
         pattern = rootElementName + "/bean/set-string-property";
 
@@ -1155,6 +1158,18 @@ public class SpecificationParser
 
         digester.addSetNext(pattern, "addInitializer");
 
+		// It's now set-message-property in the 3.0 DTD
+		
+		pattern = rootElementName + "/bean/set-message-property";
+
+		digester.addRule(pattern, new CreateStringBeanInitializerRule());
+		digester.addSetLimitedProperties(
+			pattern,
+			new String[] { "name", "key" },
+			new String[] { "propertyName", "key" });
+
+		digester.addSetNext(pattern, "addInitializer");
+		
         // <component>
 
         pattern = rootElementName + "/component";
@@ -1190,7 +1205,7 @@ public class SpecificationParser
         digester.addConnectChild(pattern, "setBinding", "name");
 
         // <field-binding> inside <component>
-        // For compatibility with 1.3 DTD only, removed in 1.4 DTD
+        // For compatibility with 1.3 DTD only, removed in 3.0 DTD
 
         pattern = rootElementName + "/component/field-binding";
 
@@ -1218,6 +1233,7 @@ public class SpecificationParser
         digester.addConnectChild(pattern, "setBinding", "name");
 
         // <string-binding> inside <component>
+        // Maintained just for 1.3 DTD compatibility
 
         pattern = rootElementName + "/component/string-binding";
 
@@ -1225,6 +1241,15 @@ public class SpecificationParser
         digester.addInitializeProperty(pattern, "type", BindingType.STRING);
         digester.addSetLimitedProperties(pattern, "key", "value");
         digester.addConnectChild(pattern, "setBinding", "name");
+        
+        // Renamed to <message-binding> in the 3.0 DTD
+        
+		pattern = rootElementName + "/component/message-binding";
+
+		digester.addRule(pattern, createBindingSpecificationRule);
+		digester.addInitializeProperty(pattern, "type", BindingType.STRING);
+		digester.addSetLimitedProperties(pattern, "key", "value");
+		digester.addConnectChild(pattern, "setBinding", "name");        
 
         // <listener-binding> inside <component>
 

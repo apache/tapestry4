@@ -78,18 +78,19 @@ public interface IScript
     public IResourceLocation getScriptLocation();
 
     /**
-     *  Executes the script, which will read and modify the symbols {@link Map}, and return
-     *  a {@link ScriptSession} that can be used to obtain results.
+     * Executes the script, which will read and modify the symbols {@link Map}.  The
+     * script works with the {@link IScriptProcessor} to get the generated JavaScript
+     * included on the page.
      * 
-     *  @param cycle the current request cycle
-     *  @param an object that processes the results of the script, typically
-     *  an instance of {@link org.apache.tapestry.html.Body}
-     *  @param symbols Map of input symbols; execution of the script may modify the map,
-     *  creating new output symbols
+     * @param cycle the current request cycle
+     * @param processor an object that processes the results of the script, typically
+     * an instance of {@link org.apache.tapestry.html.Body}
+     * @param symbols Map of input symbols; execution of the script may modify the map,
+     * creating new output symbols
      * 
-     *  @see org.apache.tapestry.html.Body#get(IRequestCycle)
+     * @see org.apache.tapestry.html.Body#get(IRequestCycle)
      *
-     **/
+     */
 
     public void execute(IRequestCycle cycle, IScriptProcessor processor, Map symbols);
 }

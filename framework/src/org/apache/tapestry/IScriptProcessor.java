@@ -62,14 +62,15 @@ package org.apache.tapestry;
  * @author Howard Lewis Ship
  * @version $Id$
  * @since 3.0
- **/
+ * @see org.apache.tapestry.html.Body
+ */
 
 public interface IScriptProcessor
 {
 	/**
-	 *  Adds scripting code to the main body.  During the render, multiple scripts may
-	 *  render multiple bodies; all are concatinated together to form
-	 *  a single block.
+	 * Adds scripting code to the main body.  During the render, multiple scripts may
+	 * render multiple bodies; all are concatinated together to form
+	 * a single block.
 	 */
 	
 	public void addBodyScript(String script);
