@@ -1,118 +1,109 @@
 <?xml version="1.0"?>
 <!-- $Id$ -->
-<project name="Virtual Library Demo" default="install">
-
-  <property name="root.dir" value="../.."/>
-  <property file="${root.dir}/config/Version.properties"/>
-  <property file="${root.dir}/config/build.properties"/>
-  <property file="${root.dir}/config/common.properties"/>
-  
-  <path id="project.class.path">
-    <pathelement location="${jboss.client.dir}/jboss-j2ee.jar"/>
-    <pathelement location="${lib.ext.dir}/javax.servlet.jar"/>
-    <pathelement location="${lib.ext.dir}/${commons-logging.jar}"/>
-	<pathelement location="${lib.ext.dir}/${commons-lang.jar}"/>        
-    <pathelement location="${lib.ext.dir}/javax.xml.jaxp.jar"/>
-    <pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
-    <pathelement location="${lib.ext.dir}/${ognl.jar}"/>
-    <pathelement location="${lib.ext.dir}/${bsf.jar}"/>	
-    <pathelement location="${lib.ext.dir}/${bcel.jar}"/>   
-    <pathelement location="${framework.jar}"/>
-    <pathelement location="${contrib.jar}"/>
-    <pathelement location="${vlibbeans.jar}"/>
-    <pathelement location="${lib.ext.dir}/${jakarta-oro.jar}"/>    
-  </path>
-  
-  <property name="private.dir" value="private"/>
-
-  <target name="init">
-    <mkdir dir="${classes.dir}"/>
-  </target>
-
-  <target name="clean">
-    <delete dir="${classes.dir}" quiet="true"/>
-    <delete dir="${private.dir}" quiet="true"/>
-  </target>
-
-  <target name="compile" depends="init" description="Compile all classes in the framework.">
-    <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="on" target="1.1">
-      <classpath refid="project.class.path"/>
-    </javac>
-  </target>
-    
-  <target name="install" depends="compile" description="Compile all classes and build the installed WAR including all package resources.">
-    <war warfile="${vlib.war}" webxml="context/WEB-INF/web.xml">
-      <fileset dir="context">
-        <exclude name="WEB-INF/web.xml"/>
-      </fileset>
-     
-      <!-- <webinf dir="context/WEB-INF"/> -->
-     
-      <classes dir="${classes.dir}"/>
-      
-      <!-- Pick up a few non-class resources from source directory.
+<project name="Virtual Library Example" default="install">
+	<property name="root.dir" value="../.."/>
+	<property file="${root.dir}/config/Version.properties"/>
+	<property file="${root.dir}/config/build.properties"/>
+	<property file="${root.dir}/config/common.properties"/>
+	<path id="jetty.classpath">
+		<fileset dir="${jetty.dir}">
+			<include name="**/javax.*.jar"/>
+		</fileset>
+	</path>
+	<path id="compile.classpath">
+		<fileset dir="${lib.dir}">
+			<include name="${framework.jar}"/>
+			<include name="${contrib.jar}"/>
+			<include name="${vlibbeans.jar}"/>
+			<include name="${ext.dir}/*.jar"/>
+		</fileset>
+		<path refid="jetty.classpath"/>
+		<fileset dir="${tapestry.ext.dir}">
+			<include name="*.jar"/>
+		</fileset>
+		<pathelement location="${jboss.client.dir}/jboss-j2ee.jar"/>
+	</path>
+	<property name="private.dir" value="private"/>
+	<target name="init">
+		<mkdir dir="${classes.dir}"/>
+	</target>
+	<target name="clean">
+		<delete dir="${classes.dir}" quiet="true"/>
+		<delete dir="${private.dir}" quiet="true"/>
+	</target>
+	<target name="compile" depends="init"
+		description="Compile all classes in the framework.">
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" debug="on"
+			target="1.1">
+			<classpath refid="compile.classpath"/>
+		</javac>
+	</target>
+	<target name="install" depends="compile"
+		description="Compile all classes and build the installed WAR including all package resources."
+		>
+		<war warfile="${lib.dir}/${vlib.war}" webxml="context/WEB-INF/web.xml">
+			<fileset dir="context">
+				<exclude name="WEB-INF/web.xml"/>
+			</fileset>
+			<!-- <webinf dir="context/WEB-INF"/> -->
+			<classes dir="${classes.dir}"/>
+			<!-- Pick up a few non-class resources from source directory.
       	   This includes a few specifications, scripts, and such.  -->
-      	   
-      <classes dir="${src.dir}">
-        <exclude name="**/*.java"/>
-        <exclude name="**/package.html"/>
-      </classes>
-    </war>
-  </target>
-
-  <target name="run" description="Run the Vlib application." depends="install">
-    <delete dir="${private.dir}" quiet="true"/>
-    <mkdir dir="${private.dir}"/>
-    
-    <java classname="org.mortbay.jetty.Server" fork="true">
-      <classpath>
-
-      	<!-- Favor files in src over copies in classes -->
-      	<pathelement location="${src.dir}"/>
-      	
-        <pathelement location="${classes.dir}"/>
-
-        <pathelement location="${lib.ext.dir}/${jetty.jar}"/>
-        <pathelement location="${lib.ext.dir}/${log4j.jar}"/>         
-        <!-- Runtime client libraries -->
-        <pathelement location="${jboss.lib.dir}/jboss-common.jar"/>   
-        <pathelement location="${jboss.lib.dir}/jboss-system.jar"/>                
-        <pathelement location="${jboss.client.dir}/jboss-client.jar"/>
-        <pathelement location="${jboss.client.dir}/jbosssx-client.jar"/>
-        <pathelement location="${jboss.client.dir}/jnp-client.jar"/>
-        <pathelement location="${jboss.client.dir}/jnet.jar"/>
-        
-        <path refid="project.class.path"/>
-        <pathelement location="${root.dir}/config"/>
-        
-      </classpath>
-
-      <arg value="jetty.xml"/>
-
-      <sysproperty key="net.sf.tapestry.enable-reset-service" value="true"/>
-      <sysproperty key="net.sf.tapestry.vlib.debug-enabled" value="true"/>
-      
-      <!-- Enable debugging on port 20150 --> 
-       
-      <jvmarg line="-showversion -Xdebug -Xnoagent"/>
-      <jvmarg line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20150"/>
-      <sysproperty key="java.compiler" value="NONE"/>     
-       
-      <sysproperty key="net.sf.tapestry.disable-caching" value="true"/>
-      <sysproperty key="net.sf.tapestry.enable-reset-service" value="true"/>
-
-	  <sysproperty key="net.sf.tapestry.asset.dir" value="${private.dir}"/>
-	  <sysproperty key="net.sf.tapestry.asset.URL" value="/${private.dir}"/>
-
-      <!-- JNDI Configuration for JBoss -->
-      
-      <sysproperty key="java.naming.factory.initial" value="org.jnp.interfaces.NamingContextFactory"/>
-      <sysproperty key="java.naming.factory.url.pkgs" value="org.jboss.naming:org.jnp.interfaces"/>
-      <sysproperty key="java.naming.provider.url" value="localhost:1099"/>
-
-	  <sysproperty key="org.mortbay.util.FileResource.checkAliases" value="false"/>      
-   </java>
-  </target>
-
+			<classes dir="${src.dir}">
+				<exclude name="**/*.java"/>
+				<exclude name="**/package.html"/>
+			</classes>
+		</war>
+	</target>
+	<target name="run" description="Run the Vlib application." depends="install"
+		>
+		<delete dir="${private.dir}" quiet="true"/>
+		<mkdir dir="${private.dir}"/>
+		<java classname="org.mortbay.jetty.Server" fork="true">
+			<classpath>
+				<!-- Favor files in src over copies in classes -->
+				<pathelement location="${src.dir}"/>
+				<pathelement location="${classes.dir}"/>
+				<pathelement
+					location="${jetty.dir}/lib/org.mortbay.jetty-jdk12.jar"/>
+				<fileset dir="${lib.dir}">
+					<include name="${runtime.dir}/*.jar"/>
+				</fileset>
+				<!-- Runtime client libraries -->
+				<pathelement location="${jboss.lib.dir}/jboss-common.jar"/>
+				<pathelement location="${jboss.lib.dir}/jboss-system.jar"/>
+				<pathelement location="${jboss.client.dir}/jboss-client.jar"/>
+				<pathelement location="${jboss.client.dir}/jbosssx-client.jar"/>
+				<pathelement location="${jboss.client.dir}/jnp-client.jar"/>
+				<pathelement location="${jboss.client.dir}/jnet.jar"/>
+				<path refid="compile.classpath"/>
+				<pathelement location="${root.dir}/config"/>
+			</classpath>
+			<arg value="jetty.xml"/>
+			<sysproperty key="net.sf.tapestry.enable-reset-service" value="true"
+				/>
+			<sysproperty key="net.sf.tapestry.vlib.debug-enabled" value="true"/>
+			<!-- Enable debugging on port 20150 -->
+			<jvmarg line="-showversion -Xdebug -Xnoagent"/>
+			<jvmarg
+				line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20150"
+				/>
+			<sysproperty key="java.compiler" value="NONE"/>
+			<sysproperty key="net.sf.tapestry.disable-caching" value="true"/>
+			<sysproperty key="net.sf.tapestry.enable-reset-service" value="true"
+				/>
+			<sysproperty key="net.sf.tapestry.asset.dir" value="${private.dir}"
+				/>
+			<sysproperty key="net.sf.tapestry.asset.URL" value="/${private.dir}"
+				/>
+			<!-- JNDI Configuration for JBoss -->
+			<sysproperty key="java.naming.factory.initial"
+				value="org.jnp.interfaces.NamingContextFactory"/>
+			<sysproperty key="java.naming.factory.url.pkgs"
+				value="org.jboss.naming:org.jnp.interfaces"/>
+			<sysproperty key="java.naming.provider.url" value="localhost:1099"/>
+			<sysproperty key="org.mortbay.util.FileResource.checkAliases"
+				value="false"/>
+		</java>
+	</target>
 </project>
-

@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id: Script_1_2.dtd,v 1.3 2002/09/16 19:33:02 hship Exp $ -->
+<!--
+
+DTD for the files used with the ScriptParser class and Script component.  
+This is recognized with the public identifier:
+
+	-//Howard Lewis Ship//Tapestry Script 1.2//EN
+
+The canonical location for the DTD is:
+
+	http://tapestry.sf.net/dtd/Script_1_2.dtd
+
+The root element is always script.
+	
+-->
+<!-- =======================================================
+
+Entity: full-content
+
+Identifies the contents of most of the other elements.
+
+-->
+<!ENTITY % full-content "(#PCDATA | foreach | if | if-not)*">
+<!-- =======================================================
+
+Element: body
+Contained by: script
+
+Allows a mix of text and insert elements.  This text is added to
+the large scripting block just before the <body> tag.
+-->
+<!ELEMENT body %full-content;>
+<!-- =======================================================
+
+Element: foreach
+Appears in: %full-content;
+
+Iterates over a list of items; this is modeled after the
+Foreach component.  No iteration occurs if the value
+from the property path is null.
+
+Attributes:
+  key: Defines the symbol into which each succesive value is stored.
+  expression: The source of values, as an OGNL expression rooted in the symbols Map.
+-->
+<!ELEMENT foreach %full-content;>
+<!ATTLIST foreach
+  key CDATA #REQUIRED
+  expression CDATA #REQUIRED
+>
+
+<!-- =======================================================
+Element: include-script
+Contained by: script
+
+Inserts a reference to an external, static, JavaScript file.
+
+Attributes:
+  resource-path: The path to the script within the classpath.
+-->
+<!ELEMENT include-script EMPTY>
+<!ATTLIST include-script
+  resource-path CDATA #REQUIRED
+>
+
+<!-- =======================================================
+
+Element: if
+Appears in: %full-content;
+
+Creates a conditional portion of the script; The body of the element 
+is only included if the expression evaulates to true.
+
+Attributes:
+  expression: The trigger expression, as an OGNL expression rooted in 
+    the symbols Map.
+
+-->
+<!ELEMENT if %full-content;>
+<!ATTLIST if
+  expression CDATA #REQUIRED
+>
+<!-- =======================================================
+
+Element: if-not
+Appears in: %full-content;
+
+Creates a conditional portion of the script; The body of the element 
+is only included if the property-path evaulates to false.
+
+Attributes:
+  expression: The trigger expression, as an OGNL expression rooted in 
+    the symbols Map.
+
+-->
+<!ELEMENT if-not %full-content;>
+<!ATTLIST if-not
+  expression CDATA #REQUIRED
+>
+<!-- =======================================================
+Element: initialization
+Contained by: script
+
+Text in this block is added to the event handler for the <body>
+tag's onLoad event.
+-->
+<!ELEMENT initialization %full-content;>
+
+
+
+<!-- =======================================================
+Element: input-symbol
+Contained by: script
+
+Defines an input symbol used by the script.
+Attributes:
+  key: The name of the symbol.
+  class:  If specified, the exected class or interface for the symbol.
+  required: If yes, then the symbol must be non-null.
+-->
+
+<!ELEMENT input-symbol EMPTY>
+<!ATTLIST input-symbol
+  key CDATA #REQUIRED
+  class CDATA #IMPLIED
+  required (yes|no) "no"
+>
+
+<!-- =======================================================
+
+Element: let
+Contained by: script
+
+Used to create a new symbol.
+
+-->
+<!ELEMENT let %full-content;>
+<!ATTLIST let
+  key CDATA #REQUIRED
+>
+<!-- =======================================================
+
+Element: script
+
+Root element.
+
+Allows zero or more let elements (to establish new symbols),
+followed by a body and/or initialization element.
+
+-->
+<!ELEMENT script (include-script*, input-symbol*, 
+	(let | set)*, body?, initialization?)>
+
+
+<!-- =======================================================
+
+Element: set
+Contained by: script
+
+Creates a new symbol as the result of evaluating an OGNL expression.
+
+-->
+<!ELEMENT set EMPTY>
+<!ATTLIST set
+  key CDATA #REQUIRED
+  expression CDATA #REQUIRED
+>

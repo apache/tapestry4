@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+	
+<page-specification class="org.apache.tapestry.contrib.inspector.Inspector">
+
+  <property-specification name="view" type="org.apache.tapestry.contrib.inspector.View"
+  		persistent="yes"
+  		initial-value="@org.apache.tapestry.contrib.inspector.View@SPECIFICATION"/>
+  <property-specification name="inspectedPageName" type="java.lang.String" persistent="yes"/>
+  <property-specification name="inspectedIdPath" type="java.lang.String" persistent="yes"/>
+  
+  <private-asset name="stylesheet" resource-path="Inspector.css"/>
+
+</page-specification>

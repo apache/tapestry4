@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<project name="Tapestry Workbench Example" default="install">
+	<property name="root.dir" value="../.."/>
+	<property file="${root.dir}/config/Version.properties"/>
+	<property file="${root.dir}/config/build.properties"/>
+	<property file="${root.dir}/config/common.properties"/>
+	<path id="jetty.classpath">
+		<fileset dir="${jetty.dir}">
+			<include name="**/javax.*.jar"/>
+		</fileset>
+	</path>
+	<path id="compile.classpath">
+		<fileset dir="${lib.dir}">
+			<include name="${framework.jar}"/>
+			<include name="${contrib.jar}"/>
+			<include name="${ext.dir}/*.jar"/>
+		</fileset>
+		<path refid="jetty.classpath"/>
+		<fileset dir="${tapestry.ext.dir}">
+			<include name="*.jar"/>
+		</fileset>
+		<pathelement location="${jboss.client.dir}/jboss-client.jar"/>
+		<pathelement location="${jboss.client.dir}/jboss-j2ee.jar"/>
+		<pathelement location="${jboss.lib.dir}/jboss-jmx.jar"/>
+		<pathelement location="${jboss.lib.dir}/jboss-system.jar"/>
+		<pathelement location="${jboss.lib.dir}/jboss-common.jar"/>
+	</path>
+	<target name="init">
+		<mkdir dir="${classes.dir}"/>
+	</target>
+	<target name="clean">
+		<delete dir="${classes.dir}"/>
+	</target>
+	<target name="compile" depends="init"
+		description="Compile all classes in the tutorial.">
+		<javac srcdir="${src.dir}" destdir="${classes.dir}" debug="on"
+			target="1.1">
+			<classpath refid="compile.classpath"/>
+		</javac>
+	</target>
+	<target name="install" depends="compile"
+		description="Compile all classes and build the installed WAR.">
+		<war warfile="${lib.dir}/${workbench.war}"
+			webxml="context/WEB-INF/web.xml">
+			<fileset dir="context">
+				<exclude name="WEB-INF/web.xml"/>
+			</fileset>
+			<classes dir="${classes.dir}"/>
+			<classes dir="${src.dir}">
+				<exclude name="**/*.java"/>
+				<exclude name="**/package.html"/>
+			</classes>
+		</war>
+	</target>
+	<target name="run" description="Run the Tutorial application."
+		depends="compile">
+		<java classname="org.mortbay.jetty.Server" fork="true">
+			<classpath>
+				<!-- Favor files in src over copies in classes -->
+				<pathelement location="${src.dir}"/>
+				<path refid="compile.classpath"/>
+				<path refid="jetty.classpath"/>
+				<pathelement
+					location="${jetty.dir}/lib/org.mortbay.jetty-jdk12.jar"/>
+				<fileset dir="${lib.dir}">
+					<include name="${runtime.dir}/*.jar"/>
+				</fileset>
+				<pathelement location="${root.dir}/config"/>
+			</classpath>
+			<arg value="jetty.xml"/>
+			<!-- Enable debugging on port 20150 -->
+			<jvmarg line="-showversion -Xdebug -Xnoagent"/>
+			<jvmarg
+				line="-Xrunjdwp:transport=dt_socket,suspend=n,server=y,address=20150"
+				/>
+			<sysproperty key="java.compiler" value="NONE"/>
+			<sysproperty key="net.sf.tapestry.disable-caching" value="true"/>
+			<sysproperty key="net.sf.tapestry.enable-reset-service" value="true"
+				/>
+			<sysproperty key="org.mortbay.util.FileResource.checkAliases"
+				value="false"/>
+		</java>
+	</target>
+</project>

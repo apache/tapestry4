@@ -11,7 +11,7 @@
 <span jwcid="$content$">
 <span jwcid="@Shell" 
 	title="Virtual Library: Application Unavailable"
-	stylesheet="[[ assets.stylesheet ]]">
+	stylesheet="ognl:assets.stylesheet">
 
 <body jwcid="@Body" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0" bgcolor="#8e9cd1">
 
@@ -29,11 +29,11 @@ The Virtual Library application is temporarily unavailable due to
 system errors.  You may attempt to 
 <a jwcid="@ServiceLink" service="restart">restart the application</a>.				
 				
-<span jwcid="@Conditional" condition="[[ engine.debugEnabled ]]">
+<span jwcid="@Conditional" condition="ognl:engine.debugEnabled">
 
-<span jwcid="@ExceptionDisplay" exceptions="[[ exceptions ]]"/>
+<span jwcid="@ExceptionDisplay" exceptions="ognl:exceptions"/>
 
-<span jwcid="@Delegator" delegate="[[ requestCycle.requestContext ]]"/>
+<span jwcid="@Delegator" delegate="ognl:requestCycle.requestContext"/>
 
 <span jwcid="@InspectorButton"/>
 

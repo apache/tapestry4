@@ -1,0 +1,32 @@
+<span jwcid="@Border">
+
+<p>This page demonstrates that Tapestry can interoperate with
+traditional web applications.  A listener method may redirect
+to either an internal resource within the same
+web application, or to an external URL.
+
+<p>
+Examples:
+
+<ul>
+<li><a href="#" jwcid="@DirectLink" listener="ognl:listeners.redirectInternal">Forward to internal resource</a>  (redirect-target.html)
+<li><a href="#" jwcid="@DirectLink" listener="ognl:listeners.redirectExternal">Redirect to external URL</a>  (http://jakarta.apache.org/proposals/tapestry)
+</ul>
+
+<p>
+
+The code for both these cases is very simple:
+<pre>
+    public void redirectInternal(IRequestCycle cycle)
+    throws RequestCycleException
+    {
+        throw new RedirectException("redirect-target.html");
+    }
+    
+    public void redirectExternal(IRequestCycle cycle)
+    throws RequestCycleException
+    {
+        throw new RedirectException("http://jakarta.apache.org/proposals/tapestry");
+    }
+</pre>
+</span>

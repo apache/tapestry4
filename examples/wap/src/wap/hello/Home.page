@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!-- $Id: Home.jwc,v 1.2 2002/05/02 12:18:39 hship Exp $ -->
-<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
-<specification class="net.sf.tapestry.wml.Deck"/>

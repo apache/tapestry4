@@ -6,11 +6,7 @@
   <display-name>Tapestry Virtual Library Demo</display-name>
   <servlet>
     <servlet-name>vlib</servlet-name>
-    <servlet-class>net.sf.tapestry.ApplicationServlet</servlet-class>
-    <init-param>
-    	<param-name>net.sf.tapestry.application-specification</param-name>
-    	<param-value>/net/sf/tapestry/vlib/Vlib.application</param-value>
-    </init-param>
+    <servlet-class>org.apache.tapestry.ApplicationServlet</servlet-class>
   	<load-on-startup>0</load-on-startup>
   </servlet>
   

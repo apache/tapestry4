@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+  
+<component-specification class="org.apache.tapestry.form.Button" allow-body="no">
+
+  <description>
+  Creates a labeled button within a form.
+  </description>
+
+  <parameter name="label" type="java.lang.String" direction="in"/>
+  <parameter name="disabled" type="boolean" direction="in"/>
+  <parameter name="selected"/>
+  
+  <reserved-parameter name="name"/>
+  <reserved-parameter name="type"/>
+
+</component-specification>

@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+
+<page-specification class="org.apache.tapestry.workbench.fields.Fields">
+
+  <bean name="delegate" class="org.apache.tapestry.workbench.WorkbenchValidationDelegate"/>
+
+  <bean name="dateValidator" lifecycle="render" class="net.sf.tapestry.valid.DateValidator">
+  	<set-property name="required" expression="true"/>
+  	<set-property name="clientScriptingEnabled" expression="clientValidationEnabled"/>
+  </bean>
+
+  <bean name="intValidator" lifecycle="render" class="net.sf.tapestry.valid.NumberValidator">
+  	<set-property name="required" expression="true"/>
+  	<set-property name="minimum" expression="@org.apache.tapestry.workbench.fields.Fields@INT_MIN"/>
+  	<set-property name="maximum" expression="@org.apache.tapestry.workbench.fields.Fields@INT_MAX"/>
+  	<set-property name="clientScriptingEnabled" expression="clientValidationEnabled"/>
+  	<set-property name="valueType">"int"</set-property>
+  </bean>
+
+  <bean name="doubleValidator" lifecycle="render" class="net.sf.tapestry.valid.NumberValidator">
+  	<set-property name="required" expression="true"/>
+  	<set-property name="minimum" expression="@org.apache.tapestry.workbench.fields.Fields@DOUBLE_MIN"/>
+  	<set-property name="maximum" expression="@org.apache.tapestry.workbench.fields.Fields@DOUBLE_MAX"/>
+  	<set-property name="clientScriptingEnabled" expression="clientValidationEnabled"/>
+  	<set-property name="valueType">"double"</set-property>
+  </bean>
+
+
+  <bean name="bigDecimalValidator" lifecycle="render" class="net.sf.tapestry.valid.NumberValidator">
+  	<set-property name="required" expression="true"/>
+  	<set-property name="minimum" expression="@org.apache.tapestry.workbench.fields.Fields@DECIMAL_MIN"/>
+  	<set-property name="maximum" expression="@org.apache.tapestry.workbench.fields.Fields@DECIMAL_MAX"/>
+  	<set-property name="clientScriptingEnabled" expression="clientValidationEnabled"/>
+  	<set-property name="valueType">"java.math.BigDecimal"</set-property>
+  </bean>
+
+  <bean name="longValidator" lifecycle="render" class="net.sf.tapestry.valid.NumberValidator">
+  	<set-property name="required" expression="true"/>
+  	<set-property name="minimum" expression="@org.apache.tapestry.workbench.fields.Fields@LONG_MIN"/>
+  	<set-property name="maximum" expression="@org.apache.tapestry.workbench.fields.Fields@LONG_MAX"/>
+  	<set-property name="clientScriptingEnabled" expression="clientValidationEnabled"/>
+  	<set-property name="valueType">"long"</set-property>
+  </bean>
+
+  <bean name="stringValidator" lifecycle="render" class="net.sf.tapestry.valid.StringValidator">
+  	<set-property name="required" expression="true"/>
+  	<set-property name="minimumLength" expression="@org.apache.tapestry.workbench.fields.Fields@STRING_MIN_LENGTH"/>
+  	<set-property name="clientScriptingEnabled" expression="clientValidationEnabled"/>
+  </bean>
+
+  <bean name="emailValidator" lifecycle="render" class="net.sf.tapestry.valid.EmailValidator">
+  	<set-property name="required" expression="true"/>
+  	<set-property name="minimumLength" expression='6'/>
+  	<set-property name="clientScriptingEnabled" expression="clientValidationEnabled"/>
+  </bean>
+  
+  <component id="inputEnabled" type="Checkbox">
+    <binding name="selected" expression="clientValidationEnabled"/> 
+    <static-binding name="onclick">
+    	javascript:this.form.submit();
+    </static-binding>    
+  </component>
+  
+  <component id="showError" type="ShowError">
+     <binding name="delegate" expression="beans.delegate"/>
+  </component>
+
+  <component id="inputDate" type="ValidField">
+    <binding name="validator" expression="beans.dateValidator"/>
+    <binding name="value" expression="visit.dateValue"/>
+    <static-binding name="displayName" value="Date Field"/>
+  </component>
+
+  <component id="inputInt" type="ValidField">
+    <binding name="validator" expression="beans.intValidator"/>
+    <binding name="value" expression="visit.intValue"/>
+    <static-binding name="displayName" value="Integer Field"/>
+  </component>
+
+  <component id="inputDouble" type="ValidField">
+    <binding name="validator" expression="beans.doubleValidator"/>
+    <binding name="value" expression="visit.doubleValue"/>
+    <static-binding name="displayName" value="Double Field"/>
+  </component>
+
+  <component id="inputBigDecimal" type="ValidField">
+   <binding name="value" expression="visit.bigDecimalValue"/>
+    <binding name="validator" expression="beans.bigDecimalValidator"/>
+    <static-binding name="displayName" value="Big Decimal Field"/>
+  </component>
+
+  <component id="inputLong" type="ValidField">
+    <binding name="value" expression="visit.longValue"/>
+    <binding name="validator" expression="beans.longValidator"/>
+    <static-binding name="displayName" value="Long Field"/>
+  </component>
+
+  <component id="inputString" type="ValidField">
+    <binding name="value" expression="visit.stringValue"/>
+    <binding name="validator" expression="beans.stringValidator"/>
+    <static-binding name="displayName" value="String Field"/>
+  </component>
+
+  <component id="inputEmail" type="ValidField">
+    <binding name="value" expression="visit.emailValue"/>
+    <binding name="validator" expression="beans.emailValidator"/>
+    <static-binding name="displayName" value="Email Field"/>
+  </component>
+
+  <context-asset name="continue" path="images/Continue.gif"/>
+
+</page-specification>
+

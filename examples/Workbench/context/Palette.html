@@ -1,0 +1,38 @@
+<span jwcid="@Border">
+
+<p>The Palette component is used to collect multiple selections, items are selected
+in the left column (available) and moved to the right column (selected).  The component
+can be configured to keep the items sorted by their visible label, their
+hidden value, or manually sorted.  Items are moved between columns using the buttons,
+or by double clicking.
+
+<form jwcid="@Form" listener="ognl:listeners.formSubmit">
+
+<table class="form">
+	<tr>
+		<th>Sort Mode:</th>
+		<td><input jwcid="inputColorSort"/></td>
+	</tr>
+	<tr>
+		<th>Colors:</th>
+		<td><input jwcid="inputColor"/></td>
+	</tr>
+	<tr>
+		<td></td>
+		<td><input jwcid="update"/>
+			<input jwcid="continue"/></td>
+	</tr>
+</table>
+
+</form>
+
+<p>
+Obviously, there's a whole lot of JavaScript running on the client side.  However, there
+are no arbitrary limits; you can have as many Palettes in a form as you want, or have multiple
+forms and multiple Palettes.  Tapestry uses a sophisticated method of generating custom JavaScript
+from a template.
+
+<p>You can also customize the images used for the buttons and the titles above the
+two selection columns.
+
+</span>

@@ -5,7 +5,7 @@
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
   
 <component-specification 
-	class="net.sf.tapestry.vlib.components.PersonLink" 
+	class="org.apache.tapestry.vlib.components.PersonLink" 
 	allow-body="no" 
 	allow-informal-parameters="no">
   

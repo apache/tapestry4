@@ -1,0 +1,14 @@
+<!-- $Id$ -->
+
+<span jwcid="@Conditional" condition="ognl:bindings.delegate.object.hasErrors">
+
+<table class="inputerror">
+<tr valign=top>
+ <td><img src="images/Warning.gif" width="42" height="41"/></td>
+ <td class="message">
+  <span jwcid="@Delegator" delegate="ognl:bindings.delegate.object.firstError">Error message goes here.</span>
+  </td>
+</tr>
+</table>
+
+</span>

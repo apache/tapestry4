@@ -60,11 +60,11 @@
 <span jwcid="@ShowError"/>
 <span jwcid="@ShowMessage"/>
 
-<span jwcid="@Conditional" condition="[[ components.browser.resultCount == 0 ]]">
+<span jwcid="@Conditional" condition="ognl:components.browser.resultCount == 0">
 No borrowed books.
 </span>
 
-<span jwcid="@Conditional" condition="[[ components.browser.resultCount != 0 ]]">
+<span jwcid="@Conditional" condition="ognl:components.browser.resultCount != 0">
 
 <span jwcid="browser">
 				
@@ -73,7 +73,7 @@ No borrowed books.
 		<tr>
 			<td height="20" colspan="6">
 			<span class="clsBold">
-				<span jwcid="@Insert" value="[[ components.browser.resultCount ]]">10</span>
+				<span jwcid="@Insert" value="ognl:components.browser.resultCount">10</span>
 				Borrowed Books</span>
 			</td>
 		</tr>
@@ -90,18 +90,18 @@ No borrowed books.
 			<td colspan="6" rowspan="5" valign="top" bgcolor="#4b5887">
 				<table width="100%" border="0" cellspacing="2" cellpadding="2"> -->
 					<tr jwcid="e" bgcolor="#ffffff">
-						<td><a jwcid="@BookLink" book="[[ currentBook ]]" href="#" class="clsDataBlue">DocBook:The Definitive Guide</a></td>
-						<td><span jwcid="@Insert" value="[[ currentBook.author ]]">Walsh &#38; Muellner</span></td>
-						<td><span jwcid="@Insert" value="[[ currentBook.publisherName ]]">O'Reilly</span></td>
+						<td><a jwcid="@BookLink" book="ognl:currentBook" href="#" class="clsDataBlue">DocBook:The Definitive Guide</a></td>
+						<td><span jwcid="@Insert" value="ognl:currentBook.author">Walsh &#38; Muellner</span></td>
+						<td><span jwcid="@Insert" value="ognl:currentBook.publisherName">O'Reilly</span></td>
 						<td><a jwcid="@PersonLink"
-						name="[[ currentBook.ownerName ]]"
-						primaryKey="[[ currentBook.ownerPrimaryKey ]]"
+						name="ognl:currentBook.ownerName"
+						primaryKey="ognl:currentBook.ownerPrimaryKey"
 						class="clsDataBlue"
 						href="#">Jim Moran</a></td>
 						<td width="43" bgcolor="#4b5887" align="center">
 						<a jwcid="@DirectLink" 
-						parameters="[[ currentBook.primaryKey ]]"
-						listener="[[ listeners.returnBook ]]"
+						parameters="ognl:currentBook.primaryKey"
+						listener="ognl:listeners.returnBook"
 						href="#"><img src="images/icon_return.gif" alt="[Return]" width="21" height="16" border="0" vspace="2"></a></td>
 					</tr>
 					<tr bgcolor="#ffffff" jwcid="$remove$">

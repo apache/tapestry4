@@ -4,11 +4,11 @@
   "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
 	
-<page-specification class="net.sf.tapestry.vlib.pages.EditProfile">
+<page-specification class="org.apache.tapestry.vlib.pages.EditProfile">
 
   <property name="page-type">library</property>
  
-  <bean name="validator" class="net.sf.tapestry.valid.StringValidator" lifecycle="page">
+  <bean name="validator" class="org.apache.tapestry.valid.StringValidator" lifecycle="page">
   	<set-property name="required" expression="true"/>
   	<set-property name="clientScriptingEnabled" expression="true"/>
   </bean>
@@ -67,7 +67,7 @@
     <static-binding name="displayName">Password</static-binding>
     <binding name="displayWidth" expression="20"/>
     <binding name="maximumLength" expression="20"/>  
-    <binding name="validator" expression="@net.sf.tapestry.valid.StringValidator@OPTIONAL"/>
+    <binding name="validator" expression="@org.apache.tapestry.valid.StringValidator@OPTIONAL"/>
     <binding name="hidden" expression="true"/>
   </component>
 
@@ -80,7 +80,7 @@
     <static-binding name="displayName">Password (again)</static-binding>
     <binding name="displayWidth" expression="20"/>
     <binding name="maximumLength" expression="20"/>  
-    <binding name="validator" expression="@net.sf.tapestry.valid.StringValidator@OPTIONAL"/>
+    <binding name="validator" expression="@org.apache.tapestry.valid.StringValidator@OPTIONAL"/>
     <binding name="hidden" expression="true"/>
   </component>
   

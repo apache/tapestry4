@@ -1,22 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE application PUBLIC 
-	"-//Sun Microsystems, Inc.//DTD J2EE Application 1.2//EN" 
-	"http://java.sun.com/j2ee/dtds/application_1_2.dtd">
-	
+<!DOCTYPE application PUBLIC "-//Sun Microsystems, Inc.//DTD J2EE Application
+	1.2//EN" "http://java.sun.com/j2ee/dtds/application_1_2.dtd">
 <application>
 	<display-name>Virtual Library Application</display-name>
-	
 	<module>
 		<ejb>VlibBeans.jar</ejb>
 	</module>
-
-
 	<module>
 		<web>
-			<web-uri>Vlib.war</web-uri>
+			<web-uri>vlib.war</web-uri>
 			<context-root>vlib</context-root>
 		</web>
 	</module>
-	
 </application>

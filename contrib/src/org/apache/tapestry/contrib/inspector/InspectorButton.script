@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE script PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Script 1.2//EN"
+	"http://tapestry.sf.net/dtd/Script_1_2.dtd">
+<!--
+
+Adds scripting support for the ShowInspector component.
+
+Prefixes all variables and functions with "ti_" (for Tapestry Inspector).
+
+Expects that the Inspector is inside a <div> named "tapestryInspector".
+
+Input symbols:
+ URL - The complete URL needed for to raise the Inspector
+ 
+-->
+<script>
+
+<include-script resource-path="/org/apache/tapestry/html/PracticalBrowserSniffer.js"/>
+
+<input-symbol key="URL" class="java.lang.String" required="yes"/>
+
+<body>
+var ti = new Object();
+
+ti.oldX = 0;
+ti.oldY = 0;
+
+function ti_positionInspector()
+{
+  var object;
+  var width;
+  var height;
+
+  if (navigator.family == "nn4")
+  {
+    object = document.tapestryInspector;
+    width = innerWidth + pageXOffset;  <!-- Doesn't properly account for scrollbars! -->
+    height = innerHeight + pageYOffset;
+  }
+  else
+  {
+    object = document.getElementById("tapestryInspector");
+    
+	if (navigator.OS == "mac")
+	{
+	  width = document.body.offsetWidth;
+	  height = document.body.offsetWidth;
+	}
+	else if (navigator.family == "gecko")
+	{
+      width = innerWidth + pageXOffset; 
+      height = innerHeight + pageYOffset;
+	}
+	else
+	{
+	  // IE 5, 6? on PC
+	  width = document.body.clientWidth  + document.body.scrollLeft;
+	  height = document.body.clientHeight + document.body.scrollTop;
+	}
+  }
+   	
+  // The width/height of the animation, plus
+  // a couple of pixels of border.
+  
+  var indent = 65;
+  
+  var x = width - indent;
+  var y = height - indent;
+
+  if (navigator.family == "nn4")
+  {
+    if (x != ti.oldX || y != ti.oldY)
+    {
+      object.moveTo(x, y);
+      object.visibility = "visible";
+    }
+  }
+  else
+  {
+    if (x != ti.oldX)
+    {
+       object.style.left = x + "px";
+       ti.oldX = x;
+    }
+    if (y != ti.oldY)
+    {
+    	object.style.top = y + "px";
+    	ti.oldY = y;
+    }
+
+ 	object.style.visibility = "visible";  
+  }
+
+
+    
+  // Reposition it every quarter second.
+  
+  window.setTimeout("ti_positionInspector()", 250);
+}
+
+function ti_raiseInspector()
+{
+  var newWindow = window.open(
+  	"${URL}",
+  	"TapestryInspector",
+  	"titlebar,resizable,scrollbars,width=700,height=600");
+  	
+  newWindow.focus();
+}
+</body>
+
+<initialization>
+ti_positionInspector();
+</initialization>
+
+</script>

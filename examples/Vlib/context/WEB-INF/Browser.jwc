@@ -6,9 +6,9 @@
 	
 <component-specification 
 	allow-informal-parameters="no" 
-	class="net.sf.tapestry.vlib.components.Browser">
+	class="org.apache.tapestry.vlib.components.Browser">
 
-  <parameter name="query" required="yes" type="net.sf.tapestry.vlib.IBookQuery"/>
+  <parameter name="query" required="yes" type="org.apache.tapestry.vlib.IBookQuery"/>
  
 </component-specification>
 

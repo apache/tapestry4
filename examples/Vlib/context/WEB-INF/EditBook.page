@@ -4,11 +4,11 @@
   "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
   
-<page-specification class="net.sf.tapestry.vlib.pages.EditBook">
+<page-specification class="org.apache.tapestry.vlib.pages.EditBook">
 
   <property name="page-type">library</property>
   
-  <bean name="validator" class="net.sf.tapestry.valid.StringValidator" lifecycle="page">
+  <bean name="validator" class="org.apache.tapestry.valid.StringValidator" lifecycle="page">
   	<set-property name="required" expression="true"/>
   	<set-property name="clientScriptingEnabled" expression="true"/>
   </bean>
@@ -76,7 +76,7 @@
     <binding name="displayWidth" expression="20"/>
     <binding name="value" expression="publisherName"/>
     <static-binding name="displayName">Publisher</static-binding>
-    <binding name="validator" expression="@net.sf.tapestry.valid.StringValidator@OPTIONAL"/>
+    <binding name="validator" expression="@org.apache.tapestry.valid.StringValidator@OPTIONAL"/>
   </component>
   
   <component id="inputDescription" type="TextArea">

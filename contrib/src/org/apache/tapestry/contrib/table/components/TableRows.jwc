@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+	
+<component-specification class="org.apache.tapestry.contrib.table.components.TableRows" 
+	allow-body="yes" allow-informal-parameters="yes">
+	
+	<description>
+	</description>
+  
+	<parameter name="row" 
+		type="Object" 
+		required="no"
+		direction="custom"/>
+
+	<parameter name="value" 
+		type="Object" 
+		required="no"
+		direction="custom"/>
+
+	<parameter name="element" 
+		type="java.lang.String" 
+		required="no"
+		direction="custom"/>
+
+	<component id="iterRows" type="Foreach">
+		<binding name="source" expression="tableRowsIterator"/>
+		<binding name="value" expression="tableRow"/>
+	</component>
+  
+	<component id="informal" type="InheritInformalAny">
+		<binding name="element" expression="element"/>
+	</component>
+  
+	<component id="wrapped" type="RenderBody"/>
+  
+</component-specification>

@@ -1,0 +1,30 @@
+<!-- $Id$ -->
+
+<span jwcid="@Border">
+
+This page is used to demonstrate the DatePicker component.
+
+<form jwcid="@Form">
+
+<table valign="middle">
+ <tr>
+  <td>Start Date:</td> <td><input jwcid="@DatePicker" value="ognl:startDate"/></td> <td>&nbsp;<a href="" jwcid="helpLink">PopupLink Help</a></td>
+ </tr>
+ <tr>
+  <td>End Date:</td> <td><input jwcid="@DatePicker" value="ognl:endDate"/></td>
+ </tr>
+ <tr>
+  <td colspan="2">&nbsp;</td>
+ </tr>
+ <tr>
+  <td colspan="2" align="right"><input type="submit" value="Submit"/></td>
+ </tr>
+</table>
+
+</form>
+
+<u>Submitted Dates</u><br/>
+Start date: <span jwcid="@Insert" value="ognl:startDate"/><br/>
+End date: <span jwcid="@Insert" value="ognl:endDate"/>
+
+</span>
