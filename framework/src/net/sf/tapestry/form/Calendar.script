@@ -40,10 +40,11 @@ function initialize_calendar()
 	txt += "</TD></TR>";
 	txt += "</TABLE>";
 
-	popCal.innerHTML = txt;
-	
-	tbSelMonth = popCal.getElementsByTagName("select").item(0);
-	tbSelYear = popCal.getElementsByTagName("select").item(1);		
+    var popCalendar = document.getElementById("popCal");
+	popCalendar.innerHTML = txt;
+
+	tbSelMonth = popCalendar.getElementsByTagName("select").item(0);
+	tbSelYear = popCalendar.getElementsByTagName("select").item(1);		
 }
 ]]>
 </body>
