@@ -31,6 +31,7 @@ package com.primix.tapestry;
 import com.primix.tapestry.spec.*;
 import com.primix.tapestry.util.*;
 import java.util.*;
+import java.io.*;
 
 /**
  *  A placeholder for a number of (static) methods that don't belong elsewhere.
@@ -419,6 +420,27 @@ public final class Tapestry
 		return result;
 	
 	}
+
+	/** 
+	 *  Closes the stream (if not null), ignoring any {@link IOException} thrown.
+	 *
+	 *  @since 1.0.2
+	 *
+	 */
 	
+	public static void close(InputStream stream)
+	{
+		if (stream != null)
+		{
+			try
+			{
+				stream.close();
+			}
+			catch (IOException ex)
+			{
+				// Ignore.
+			}
+		}
+	}
 }
 

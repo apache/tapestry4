@@ -91,7 +91,13 @@ public class ScriptParser
 		register(SCRIPT_DTD_1_1_PUBLIC_ID, "Script_1_1.dtd");
 	}
 	
-	public ParsedScript parse(InputStream stream, String resourcePath)
+	/**
+	 *  Parses the given input stream to produce a parsed script,
+	 *  ready to execute.
+	 *
+	 */
+	
+	public IScript parse(InputStream stream, String resourcePath)
 		throws DocumentParseException
 	{
 		InputSource source = new InputSource(stream);
@@ -109,11 +115,7 @@ public class ScriptParser
 		}
 	}
 	
-	
-
-	
-	
-	private ParsedScript build(Document document)
+	private IScript build(Document document)
 		throws DocumentParseException
 	{
 		ParsedScript result = new ParsedScript(getResourcePath()); 

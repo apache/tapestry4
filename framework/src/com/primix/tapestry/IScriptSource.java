@@ -26,49 +26,27 @@
  *
  */
 
-package com.primix.tapestry.script;
+package com.primix.tapestry;
 
 /**
- *  Exception thrown during the execution of a {@link ParsedScript}.
+ *  Provides access to an {@link IScript}.
  *
  *  @author Howard Ship
  *  @version $Id$
- *  @since 0.2.9
+ *  @since 1.0.2
  */
- 
-public class ScriptException extends Exception
+
+
+public interface IScriptSource
 {
-	private Throwable rootCause;
-	private IScriptToken token;
-	private ScriptSession session;
-
-	public ScriptException(String message, IScriptToken token, ScriptSession session,
-		Throwable rootCause)
-	{
-		super(message);
-
-			this.token = token;
-		this.session = session;
-		this.rootCause = rootCause;
-	}
+	public IScript getScript(String resourcePath)
+		throws ResourceUnavailableException;
 	
-	public ScriptException(String message, IScriptToken token, ScriptSession session)
-	{
-		this(message, token, session, null);
-	}
+	/**
+	 *  Invoked to clear any cached data.
+	 *
+	 */
 	
-	public Throwable getRootCause()
-	{
-		return rootCause;
-	}
-	
-	public IScriptToken getToken()
-	{
-		return token;
-	}
-	
-	public ScriptSession getSession()
-	{
-		return session;
-	}
+	public void reset();
 }
+

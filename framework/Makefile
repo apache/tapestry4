@@ -55,3 +55,10 @@ JAVADOC_OPT = \
 
 include $(SYS_MAKEFILE_DIR)/Jar.mk
 
+
+# This is a convienince for me (hship) to install latest copies of the DTDs.
+
+install-dtds:
+	/usr/bin/scp `$(FIND) $(FINAL_SOURCE_DIR) -name \*.dtd -print` \
+	hship@shell.sf.net:/home/groups/t/ta/tapestry/htdocs/dtd
+	

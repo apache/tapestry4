@@ -28,6 +28,8 @@
 
 package com.primix.tapestry.script;
 
+import com.primix.tapestry.*;
+
 /**
  *  Generates a String from its child tokens, then applies it
  *  to {@link ScriptSession#setInitialization(String)}.

@@ -26,10 +26,9 @@
  *
  */
 
-package com.primix.tapestry.script;
+package com.primix.tapestry.html;
 
 import com.primix.tapestry.*;
-import com.primix.tapestry.html.*;
 import com.primix.tapestry.util.xml.*;
 import java.util.*;
 import java.io.*;
@@ -59,17 +58,6 @@ import org.apache.log4j.*;
  *  <td>The path of a resource (on the classpath) containing the script.</td>
  * </tr>
  *
- * <tr>
- *  <td>cautious</td>
- *  <td>boolean</td>
- *  <td>R</td>
- *  <td>no</td>
- *  <td>false</td>
- *  <td>If false (the default), then the {@link ParsedScript} is maintained
- *  across request cycles without question.  If true, then a check is made
- *  that the script parameter and {@link ParsedScript} are in agreement
- *  (and a new {@link ParsedScript} is obtained if needed).</td>
- *  </tr>
  *
  * <tr>
  *  <td>symbols</td>
@@ -105,8 +93,7 @@ extends AbstractComponent
 
 	private IBinding symbolsBinding;
 
-	private ParsedScript parsedScript;
-	private ScriptParser scriptParser;
+	private IScript script;
 
 	public void setScriptBinding(IBinding value)
 	{
@@ -222,94 +209,35 @@ extends AbstractComponent
 	/**
 	*  Gets the {@link ParsedScript} for the correct script.
 	*
-	*  <p>The ParsedScript is cached between invocations; once constructed, it will
-	*  be re-used for all future request cycles, unless this Script component
-	*  is configured to be cautious.
-	*
-	*  <p>When cautious, the script parameter is checked and, if it doesn't match
-	*  the script last parsed (i.e., the script that matches the generator), then
-	*  the current ParsedScript is discarded and a new one built, using
-	*  the new value of the script parameter.
 	*
 	*/
 
-	public ParsedScript getParsedScript()
+	private IScript getParsedScript(IRequestCycle cycle)
+		throws ResourceUnavailableException, RequiredParameterException
 	{
-		String scriptPath;
-
-		if (parsedScript != null && ! isCautious())
-			return parsedScript;
-
-		scriptPath = (String)scriptBinding.getObject("script", String.class);
+		// If cached (because the script binding is static), then return
+		// the cached value.
+		
+		if (script != null)
+			return script;
+		
+		String scriptPath = scriptBinding.getString();
 
 		if (scriptPath == null)
-			throw new NullValueForBindingException(scriptBinding);
-
-		// If this script is different than the last script parsed by this
-		// component, then throw it away and parse again (using the new script).
-
-
-		if (parsedScript != null &&
-			!parsedScript.getScriptPath().equals(scriptPath))
-			parsedScript = null;
-
-		if (parsedScript == null)
-			parsedScript = buildParsedScript(scriptPath);
-			
-		return parsedScript;
-	}
-
-	private ParsedScript buildParsedScript(String scriptPath)
-	{
-		IResourceResolver resolver = page.getEngine().getResourceResolver();
-		URL scriptURL;
-		InputStream stream = null;
-
-		if (CAT.isDebugEnabled())
-			CAT.debug("Reading script from resource " + scriptPath);
-			
-		scriptURL = resolver.getResource(scriptPath);
+			throw new RequiredParameterException(this, "script", scriptBinding);
 		
-		if (scriptURL == null)
-			throw new ApplicationRuntimeException
-				("Unable to locate script resource " + scriptPath + " in classpath.");
-
-		if (scriptParser == null)
-			scriptParser = new ScriptParser();
+		IEngine engine = cycle.getEngine();
+		IScriptSource source = engine.getScriptSource();
 			
-		try
-		{
-			stream = scriptURL.openStream();
-
-			return scriptParser.parse(stream, scriptPath);
-		}
-		catch (DocumentParseException ex)
-		{
-			throw new ApplicationRuntimeException(ex);
-		}
-		catch (IOException ex)
-		{
-			throw new ApplicationRuntimeException
-				("Unable to open stream for " + scriptURL + ".", ex);
-		}
-		finally
-		{
-			close(stream);
-		}
-
-	}
-
-	private void close(InputStream stream)
-	{
-		try
-		{
-			if (stream != null)
-				stream.close();
-		}
-		catch (IOException ex)
-		{
-			// Ignore.
-		}
+		IScript result = source.getScript(scriptPath);
+		
+		// If the script path is unchanging, then we can hold a reference to
+		// the script for next time.
+		
+		if (scriptBinding.isStatic())
+			script = result;
+		
+		return result;
 	}
 
 	public void render(IResponseWriter writer, IRequestCycle cycle)
@@ -329,9 +257,13 @@ extends AbstractComponent
 
 		try
 		{
-			session = getParsedScript().execute(getSymbols());
+			session = getParsedScript(cycle).execute(getSymbols());
 		}
 		catch (ScriptException ex)
+		{
+			throw new RequestCycleException(this, ex);
+		}
+		catch (ResourceUnavailableException ex)
 		{
 			throw new RequestCycleException(this, ex);
 		}
