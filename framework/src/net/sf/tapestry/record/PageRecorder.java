@@ -302,7 +302,7 @@ public abstract class PageRecorder implements IPageRecorder
 
         ServletContext context = servlet.getServletContext();
 
-        String name = VALUE_PERSISTER_EXTENSION_NAME + "." + servletName;
+        String name = VALUE_PERSISTER_EXTENSION_NAME + ":" + servletName;
 
         _persister = (IValuePersister) context.getAttribute(name);
 
