@@ -26,6 +26,11 @@
  *
  */
 
+package tutorial.hangman;
+
+import java.io.*;
+import java.util.*;
+
 /**
  *
  *  Visit information for the Hangman Application.
@@ -34,11 +39,6 @@
  *  @author Howard Ship
  *
  */ 
-
-package tutorial.hangman;
-
-import java.io.*;
-import java.util.*;
 
 public class Visit
 implements Serializable

@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.vlib.ejb;
+
+import java.io.*;
+
 /**
  *  A light-weight, read-only version of the {@link IPublisher} bean.
  *
@@ -33,10 +37,6 @@
  *  @author Howard Ship
  *
  */
-
-package com.primix.vlib.ejb;
-
-import java.io.*;
 
 public class Publisher implements Serializable
 {

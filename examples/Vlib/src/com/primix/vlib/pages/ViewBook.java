@@ -25,14 +25,6 @@
  *
  */
 
-/**
- *  Shows the details of a book, and allows the user to borrow it.
- *
- * @author Howard Ship
- * @version $Id$
- */
-
-
 package com.primix.vlib.pages;
 
 import com.primix.tapestry.components.*;
@@ -43,6 +35,14 @@ import javax.ejb.*;
 import java.util.*;
 import java.rmi.*;
 import javax.rmi.*;
+
+/**
+ *  Shows the details of a book, and allows the user to borrow it.
+ *
+ * @author Howard Ship
+ * @version $Id$
+ */
+
 
 public class ViewBook extends BasePage
 implements IExternalPage

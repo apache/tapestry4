@@ -26,6 +26,13 @@
  *
  */
 
+package com.primix.vlib.ejb;
+
+import javax.ejb.*;
+import java.rmi.*;
+import java.util.*;
+import com.primix.tapestry.util.ejb.*;
+
 /**
  *  Implementation of the Publisher entity.
  *
@@ -39,13 +46,6 @@
  *
  */
  
-package com.primix.vlib.ejb;
-
-import javax.ejb.*;
-import java.rmi.*;
-import java.util.*;
-import com.primix.tapestry.util.ejb.*;
-
 public class PublisherBean extends AbstractEntityBean
 {
 	// Primary Key

@@ -26,18 +26,18 @@
  *
  */
 
+package tutorial.locale;
+
+import com.primix.tapestry.*;
+import com.primix.tapestry.components.*;
+import java.util.*;
+
 /**
  *
  *  @version $Id$
  *  @author Howard Ship
  *
  */ 
-
-package tutorial.locale;
-
-import com.primix.tapestry.*;
-import com.primix.tapestry.components.*;
-import java.util.*;
 
 public class Change
 extends BasePage

@@ -25,16 +25,6 @@
  *
  */
 
-/**
- * Displays the book inventory list for a single {@link IPerson}, showing
- * what books are owned by the person, who has them borrowed, etc.  If the
- * user is logged in, then books can be borrowed from this page as well.
- *
- * @author Howard Ship
- * @version $Id$
- */
-
-
 package com.primix.vlib.pages;
 
 import com.primix.tapestry.components.*;
@@ -45,6 +35,16 @@ import javax.ejb.*;
 import java.util.*;
 import javax.rmi.*;
 import java.rmi.*;
+
+/**
+ * Displays the book inventory list for a single {@link IPerson}, showing
+ * what books are owned by the person, who has them borrowed, etc.  If the
+ * user is logged in, then books can be borrowed from this page as well.
+ *
+ * @author Howard Ship
+ * @version $Id$
+ */
+
 
 public class PersonPage extends BasePage
 implements IExternalPage

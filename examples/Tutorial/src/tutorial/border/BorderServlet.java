@@ -26,15 +26,15 @@
  *
  */
 
+package tutorial.border;
+
+import com.primix.tapestry.*;
+
 /**
  *  @version $Id$
  *  @author Howard Ship
  *
  */ 
-
-package tutorial.border;
-
-import com.primix.tapestry.*;
 
 public class BorderServlet extends ApplicationServlet
 { 

@@ -26,6 +26,10 @@
  *
  */
 
+package tutorial.hangman;
+
+import com.primix.tapestry.*;
+
 /**
  *
  *  The home page for the hangman application, allows a new game to
@@ -35,10 +39,6 @@
  *  @author Howard Ship
  *
  */ 
-
-package tutorial.hangman;
-
-import com.primix.tapestry.*;
 
 public class Home
 extends BasePage

@@ -25,6 +25,13 @@
  *
  */
 
+package com.primix.vlib.components;
+
+import com.primix.tapestry.components.*;
+import com.primix.tapestry.*;
+import com.primix.vlib.*;
+import com.primix.vlib.pages.*;
+
 /**
  *  The standard Border component, which provides the title of the page,
  *  the link to {@link MyBooks}, the {@link Login} page and the {@link Logout}
@@ -33,13 +40,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.vlib.components;
-
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.*;
-import com.primix.vlib.*;
-import com.primix.vlib.pages.*;
 
 public class Border extends BaseComponent
 {	

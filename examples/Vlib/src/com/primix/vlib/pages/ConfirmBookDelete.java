@@ -25,15 +25,6 @@
  *
  */
 
-/**
- * Presents a confirmation page before deleting a book.  If the user
- * selects "yes", the book is deleted; otherwise the user is returned
- * to the {@link MyBooks} page.
- *
- * @author Howard Ship
- * @version $Id$
- */
-
 package com.primix.vlib.pages;
 
 import com.primix.tapestry.components.*;
@@ -45,6 +36,16 @@ import java.util.*;
 import java.rmi.*;
 import javax.rmi.*;
 import com.primix.tapestry.util.prop.*;
+
+/**
+ * Presents a confirmation page before deleting a book.  If the user
+ * selects "yes", the book is deleted; otherwise the user is returned
+ * to the {@link MyBooks} page.
+ *
+ * @author Howard Ship
+ * @version $Id$
+ */
+
 
 public class ConfirmBookDelete extends BasePage
 {

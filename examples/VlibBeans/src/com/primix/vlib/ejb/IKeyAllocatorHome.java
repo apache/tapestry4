@@ -26,6 +26,13 @@
  *
  */
 
+package com.primix.vlib.ejb;
+
+import javax.ejb.*;
+import java.rmi.*;
+import javax.rmi.*;
+import javax.naming.*;
+
 /**
  *  Home interface to the {@link KeyAllocatorBean} stateless
  *  session bean.
@@ -35,13 +42,6 @@
  *
  */
  
-package com.primix.vlib.ejb;
-
-import javax.ejb.*;
-import java.rmi.*;
-import javax.rmi.*;
-import javax.naming.*;
-
 public interface IKeyAllocatorHome extends EJBHome
 {
 	public IKeyAllocator create()

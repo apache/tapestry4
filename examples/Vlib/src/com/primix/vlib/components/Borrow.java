@@ -25,6 +25,16 @@
  *
  */
 
+package com.primix.vlib.components;
+
+import com.primix.tapestry.components.*;
+import com.primix.tapestry.*;
+import com.primix.vlib.*;
+import com.primix.vlib.pages.*;
+import com.primix.vlib.ejb.*;
+import java.rmi.*;
+import javax.ejb.*;
+
 /**
  *  Implements the Borrow link that appears on many pages.
  *
@@ -50,16 +60,6 @@
  *  @version $Id$
  *
  */
-
-package com.primix.vlib.components;
-
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.*;
-import com.primix.vlib.*;
-import com.primix.vlib.pages.*;
-import com.primix.vlib.ejb.*;
-import java.rmi.*;
-import javax.ejb.*;
 
 public class Borrow
 extends BaseComponent

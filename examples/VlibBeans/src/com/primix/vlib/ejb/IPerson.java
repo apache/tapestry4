@@ -26,6 +26,12 @@
  *
  */
 
+package com.primix.vlib.ejb;
+
+import javax.ejb.*;
+import java.rmi.*;
+import java.util.*;
+
 /** 
  *  Remote interface for the {@link PersonBean} entity bean.
  *
@@ -34,12 +40,6 @@
  *
  */
  
-package com.primix.vlib.ejb;
-
-import javax.ejb.*;
-import java.rmi.*;
-import java.util.*;
-
 public interface IPerson extends IEntityBean
 {
 	public void setLastName(String value)

@@ -26,15 +26,6 @@
  *
  */
 
-/**
- *  Provides basic support for the entity context, empty or minimal
- *  implementations of the required methods, and some utilties.
- *  
- *  @version $Id$
- *  @author Howard Ship
- *
- */
- 
 package com.primix.vlib.ejb;
 
 import javax.ejb.*;
@@ -45,6 +36,15 @@ import java.util.*;
 import com.primix.tapestry.util.prop.*;
 import com.primix.tapestry.util.ejb.*;
 
+/**
+ *  Provides basic support for the entity context, empty or minimal
+ *  implementations of the required methods, and some utilties.
+ *  
+ *  @version $Id$
+ *  @author Howard Ship
+ *
+ */
+ 
 public abstract class AbstractEntityBean implements EntityBean
 {
 	/**

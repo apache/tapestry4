@@ -26,6 +26,10 @@
  *
  */
 
+package com.primix.vlib;
+
+import com.primix.tapestry.*;
+
 /**
  *
  *  @version $Id$
@@ -33,10 +37,6 @@
  *
  */
  
-
-package com.primix.vlib;
-
-import com.primix.tapestry.*;
 
 public class VirtualLibraryServlet extends ApplicationServlet
 {

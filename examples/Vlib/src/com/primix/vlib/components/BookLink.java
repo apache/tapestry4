@@ -25,6 +25,17 @@
  *
  */
 
+package com.primix.vlib.components;
+
+import com.primix.tapestry.components.*;
+import com.primix.tapestry.*;
+import com.primix.vlib.ejb.*;
+
+// Appease Javadoc
+import com.primix.vlib.pages.ViewBook;
+import com.primix.vlib.pages.PersonPage;
+
+
 /**
  *  Creates a link to the {@link ViewBook} page using the external service.
  *
@@ -46,16 +57,6 @@
  * @author Howard Ship
  * @version $Id$
  */
-
-package com.primix.vlib.components;
-
-import com.primix.tapestry.components.*;
-import com.primix.tapestry.*;
-import com.primix.vlib.ejb.*;
-
-// To appease Javadoc
-import com.primix.vlib.pages.ViewBook;
-import com.primix.vlib.pages.PersonPage;
 
 public class BookLink extends BaseComponent
 {

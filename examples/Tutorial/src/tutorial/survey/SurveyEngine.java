@@ -26,17 +26,17 @@
  *
  */
 
-/**
- *  @version $Id$
- *  @author Howard Ship
- *
- */ 
-
 package tutorial.survey;
 
 import com.primix.tapestry.*;
 import com.primix.tapestry.engine.*;
 import javax.servlet.*;
+
+/**
+ *  @version $Id$
+ *  @author Howard Ship
+ *
+ */ 
 
 public class SurveyEngine extends SimpleEngine
 {

@@ -28,15 +28,15 @@
  */
 
 
+package tutorial.hangman;
+
+import com.primix.tapestry.*;
+
 /**
  *  @version $Id$
  *  @author Howard Ship
  *
  */ 
-
-package tutorial.hangman;
-
-import com.primix.tapestry.*;
 
 public class HangmanServlet extends ApplicationServlet
 {

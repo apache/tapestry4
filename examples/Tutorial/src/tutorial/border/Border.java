@@ -26,16 +26,16 @@
  *
  */
 
+package tutorial.border;
+
+import java.util.*;
+import com.primix.tapestry.*;
+
 /**
  *  @version $Id$
  *  @author Howard Ship
  *
  */ 
-
-package tutorial.border;
-
-import java.util.*;
-import com.primix.tapestry.*;
 
 public class Border extends BaseComponent
 {

@@ -26,18 +26,6 @@
  *
  */
 
-/**
- *  The visit object for the {@link VirtualLibraryEngine}.
- *
- *  Primarily, this is used to access the home interfaces and EJB instances, and
- *  to identify who the logged in user is.
- *
- *
- *  @author Howard Ship
- *  @version $Id$
- *
- */
-
 package com.primix.vlib;
 
 import com.primix.tapestry.*;
@@ -52,6 +40,18 @@ import com.primix.vlib.pages.*;
 import javax.servlet.*;
 import java.io.*;
 import java.net.*;
+
+/**
+ *  The visit object for the {@link VirtualLibraryEngine}.
+ *
+ *  Primarily, this is used to access the home interfaces and EJB instances, and
+ *  to identify who the logged in user is.
+ *
+ *
+ *  @author Howard Ship
+ *  @version $Id$
+ *
+ */
 
 public class Visit
 implements Serializable

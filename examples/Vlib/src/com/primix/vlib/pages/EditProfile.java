@@ -25,13 +25,6 @@
  *
  */
 
-/**
- * Edit's a user's profile:  names, email and password.  
- *
- * @author Howard Ship
- * @version $Id$
- */
-
 package com.primix.vlib.pages;
 
 import com.primix.tapestry.components.*;
@@ -44,9 +37,15 @@ import java.util.*;
 import java.rmi.*;
 import javax.rmi.*;
 
-// To appease Javadoc
+// Appease Javadoc
 import com.primix.tapestry.valid.ValidatingTextField;
 
+/**
+ * Edit's a user's profile:  names, email and password.  
+ *
+ * @author Howard Ship
+ * @version $Id$
+ */
 
 public class EditProfile
 extends Protected

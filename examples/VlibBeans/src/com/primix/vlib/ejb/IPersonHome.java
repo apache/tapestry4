@@ -26,6 +26,12 @@
  *
  */
 
+package com.primix.vlib.ejb;
+
+import javax.ejb.*;
+import java.rmi.*;
+import java.util.*;
+
 /**
  *  Home interface for the {@link PersonBean} entity bean.
  *
@@ -34,12 +40,6 @@
  *
  */
  
-package com.primix.vlib.ejb;
-
-import javax.ejb.*;
-import java.rmi.*;
-import java.util.*;
-
 public interface IPersonHome extends EJBHome
 {
 	public IPerson create(String lastName, String firstName, String email, String password)

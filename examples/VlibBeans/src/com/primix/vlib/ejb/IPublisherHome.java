@@ -26,6 +26,12 @@
  *
  */
 
+package com.primix.vlib.ejb;
+
+import javax.ejb.*;
+import java.rmi.*;
+import java.util.*;
+
 /**
  *  Home interface for the {@link PublisherBean} entity bean.
  *
@@ -34,12 +40,6 @@
  *
  */
  
-package com.primix.vlib.ejb;
-
-import javax.ejb.*;
-import java.rmi.*;
-import java.util.*;
-
 public interface IPublisherHome extends EJBHome
 {
 	public IPublisher create(String name)

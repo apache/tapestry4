@@ -26,6 +26,17 @@
  *
  */
 
+package com.primix.vlib.ejb;
+
+import javax.ejb.*;
+import java.rmi.*;
+import java.util.*;
+import javax.sql.*;
+import java.sql.*;
+import javax.naming.*;
+import com.primix.tapestry.util.jdbc.*;
+import com.primix.tapestry.util.ejb.*;
+
 /**
  *  Implementation of a stateful session bean used to query the {@link IBook}
  *  entity and cache the results.  It can then download the results, in chunks,
@@ -43,17 +54,6 @@
  *  @author Howard Ship
  *
  */
-
-package com.primix.vlib.ejb;
-
-import javax.ejb.*;
-import java.rmi.*;
-import java.util.*;
-import javax.sql.*;
-import java.sql.*;
-import javax.naming.*;
-import com.primix.tapestry.util.jdbc.*;
-import com.primix.tapestry.util.ejb.*;
 
 public class BookQueryBean extends OperationsBean
 {

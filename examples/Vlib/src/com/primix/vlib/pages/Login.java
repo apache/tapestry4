@@ -25,16 +25,6 @@
  *
  */
 
-/**
- *  Allows the user to login, by providing email address and password.
- *  After succesfully logging in, a cookie is placed on the client browser
- *  that provides the default email address for future logins (the cookie
- *  persists for a week).
- *
- * @author Howard Ship
- * @version $Id$
- */
-
 package com.primix.vlib.pages;
 
 import com.primix.tapestry.components.*;
@@ -46,6 +36,16 @@ import com.primix.vlib.*;
 import javax.ejb.*;
 import java.rmi.*;
 import javax.servlet.http.*;
+
+/**
+ *  Allows the user to login, by providing email address and password.
+ *  After succesfully logging in, a cookie is placed on the client browser
+ *  that provides the default email address for future logins (the cookie
+ *  persists for a week).
+ *
+ * @author Howard Ship
+ * @version $Id$
+ */
 
 public class Login 
 extends BasePage

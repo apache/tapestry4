@@ -26,16 +26,16 @@
  *
  */
 
+package tutorial.adder;
+
+import com.primix.tapestry.*;
+import java.util.*;
+
 /**
  *  @version $Id$
  *  @author Howard Ship
  *
  */ 
-
-package tutorial.adder;
-
-import com.primix.tapestry.*;
-import java.util.*;
 
 public class Home extends BasePage
 {

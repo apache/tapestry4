@@ -26,6 +26,12 @@
  *
  */
 
+package com.primix.vlib.ejb;
+
+import javax.ejb.*;
+import java.rmi.*;
+import java.util.*;
+
 /** 
  *  Defines the remove interface for an entity which can download and upload
  *  a subset of its properties as a {@link Map}.
@@ -35,12 +41,6 @@
  *
  */
  
-package com.primix.vlib.ejb;
-
-import javax.ejb.*;
-import java.rmi.*;
-import java.util.*;
-
 public interface IEntityBean extends EJBObject
 {
     /**

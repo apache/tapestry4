@@ -26,6 +26,8 @@
  *
  */
 
+package tutorial.hangman;
+
 /**
  *
  *  Exception thrown if a guess is in error.
@@ -34,8 +36,6 @@
  *  @author Howard Ship
  *
  */ 
-
-package tutorial.hangman;
 
 public class GameException 
 extends Exception
