@@ -76,5 +76,9 @@
 				</binding>
 			</bindings>
 		</component>
+		<component>
+			<id>wrapped</id>
+			<type>InsertWrapped</type>
+		</component>
 	</components>
 </specification>

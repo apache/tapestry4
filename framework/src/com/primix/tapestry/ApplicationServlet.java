@@ -165,7 +165,7 @@ abstract public class ApplicationServlet extends HttpServlet
 	 *
 	 */
 	 
-	public void init(ServletConfig config)
+	public void init()
 	throws ServletException
 	{
 		String path;
@@ -174,8 +174,6 @@ abstract public class ApplicationServlet extends HttpServlet
 		InputStream stream;
 		SpecificationParser parser;
 
-		super.init(config);
-		
 		path = getApplicationSpecificationPath();
 
 		// Make sure we locate the specification using our

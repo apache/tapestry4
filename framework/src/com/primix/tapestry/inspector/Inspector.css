@@ -42,8 +42,21 @@ TABLE.inspector-data TR.even TD  {
 	text-align : left;
 }
 
-TABLE.inspector-data 
+TABLE.inspector-data,
+TABLE.selector
 {
+	font-size: 9pt;
+	font-family: "Trebuchet MS", sans-serif;
+}
+
+TABLE.selector TD.page-link
+{
+	font-style: italic;
+}
+
+TABLE.selector TD
+{
+	verticle-align: center;
 }
 
 TABLE.inspector-data TR.heading TH,
@@ -51,7 +64,7 @@ TABLE.template TH
 {
 	text-align: center;
 	color : White;
-	background-color : Black;
+	background-color : "#330066";
 	font-weight: bold;
 }
 

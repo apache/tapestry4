@@ -1,3 +1,10 @@
+* Sep 10 2000 hship
+
+Add new view to the Inspector:  Properties.
+Improve CSS for the Inspector (conistent fonts and colors between images and HTML text).
+Change inspector to not automatically switch to the Specification page when a new page is selected.
+[113893] Rollover causes minor JavaScript problems
+
 * Sep 8 2000 hship
 
 Started ChangeLog for Tapestry, some time after release 0.1.3.
