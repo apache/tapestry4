@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<!DOCTYPE script PUBLIC
+	"-//Apache Software Foundation//Tapestry Script Specification 3.0//EN"
+	"http://jakarta.apache.org/tapestry/dtd/Script_3_0.dtd">
+<!-- 
+
+  Creates a script for validating that a field matches a required pattern.
+  
+  Input symbols:
+     field, form, validator:  As normal for a validation script.
+	 requiredMessage: Message to display if the field is required yet blank.
+	 patternNotMatchedMessage: Message to display if the field does not fulfill the required pattern.
+     
+-->
+	
+<script>
+
+<include-script resource-path="/org/apache/tapestry/valid/Validator.js"/>
+
+<input-symbol key="field" class="org.apache.tapestry.valid.ValidField" required="yes"/>
+<input-symbol key="form" class="org.apache.tapestry.IForm" required="yes"/>
+<input-symbol key="validator" class="org.apache.tapestry.valid.PatternValidator" required="yes"/>
+<input-symbol key="requiredMessage" class="java.lang.String"/>
+<input-symbol key="patternNotMatchedMessage" class="java.lang.String" required="yes"/>
+
+<let key="function" unique="yes">
+    validate_${field.name}
+</let>
+
+<let key="pattern" unique="yes">
+    pattern_${field.name}
+</let>
+
+<body>
+var ${pattern} = new RegExp("${validator.escapedPatternString}");
+
+function ${function}()
+{
+    var field = document.${form.name}.${field.name};
+<if expression="validator.required">
+    if (field.value.length == 0)
+        return validator_invalid_field(field, "${requiredMessage}");
+</if>
+    if (field.value.length &gt; 0 &amp;&amp; !${pattern}.test(field.value))
+        return validator_invalid_field(field, "${patternNotMatchedMessage}");
+
+    return true;
+}
+</body>
+
+</script>
