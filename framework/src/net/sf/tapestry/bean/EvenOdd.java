@@ -23,7 +23,7 @@
 // Lesser General Public License for more details.
 //
 
-package net.sf.tapestry.helper;
+package net.sf.tapestry.bean;
 
 /**
  *  Used to emit a stream of alteranting string values: "even", "odd", etc.  This
