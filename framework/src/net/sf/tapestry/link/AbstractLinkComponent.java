@@ -88,21 +88,9 @@ import net.sf.tapestry.html.Body;
 
 public abstract class AbstractLinkComponent extends AbstractComponent implements ILinkComponent
 {
-    private boolean _disabled;
-    private ILinkRenderer _renderer = DefaultLinkRenderer.SHARED_INSTANCE;
-    private String _anchor;
-
     private Map _eventHandlers;
 
-    public boolean isDisabled()
-    {
-        return _disabled;
-    }
-
-    public void setDisabled(boolean disabled)
-    {
-        _disabled = disabled;
-    }
+    public abstract boolean isDisabled();
 
     /**
      *  Adds an event handler (typically, from a wrapped component such
@@ -154,7 +142,7 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
-        _renderer.renderLink(writer, cycle, this);
+        getRenderer().renderLink(writer, cycle, this);
     }
 
     protected void cleanupAfterRender(IRequestCycle cycle)
@@ -239,17 +227,9 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
 
     /** @since 2.4 **/
 
-    public ILinkRenderer getRenderer()
-    {
-        return _renderer;
-    }
+    public abstract ILinkRenderer getRenderer();
 
-    /** @since 2.4 **/
-
-    public void setRenderer(ILinkRenderer renderer)
-    {
-        _renderer = renderer;
-    }
+    public abstract void setRenderer(ILinkRenderer renderer);
 
     public void renderAdditionalAttributes(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
@@ -270,24 +250,23 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
      * 
      **/
 
-    protected ILink getLink(
-        IRequestCycle cycle,
-        String serviceName,
-        Object[] serviceParameters)
+    protected ILink getLink(IRequestCycle cycle, String serviceName, Object[] serviceParameters)
     {
         IEngineService service = cycle.getEngine().getService(serviceName);
 
         return service.getLink(cycle, this, serviceParameters);
     }
-    
-    public String getAnchor()
+
+    public abstract String getAnchor();
+
+    public ILink getLink(IRequestCycle cycle) throws RequestCycleException
     {
-        return _anchor;
+        return null;
     }
 
-    public void setAnchor(String anchor)
+    protected void finishLoad()
     {
-        _anchor = anchor;
+        setRenderer(DefaultLinkRenderer.SHARED_INSTANCE);
     }
 
 }

@@ -74,21 +74,9 @@ import net.sf.tapestry.util.io.DataSqueezer;
  * 
  **/
 
-public class Hidden extends AbstractFormComponent
+public abstract class Hidden extends AbstractFormComponent
 {
-    private IBinding _valueBinding;
-    private IActionListener _listener;
     private String _name;
-
-    /**
-     *  If true, the value is encoded using a DataSqueezer.  If false,
-     *  the value must be a String and is not encoded.
-     * 
-     *  @since 2.2
-     * 
-     **/
-
-    private boolean _encode = true;
 
     public String getName()
     {
@@ -114,9 +102,9 @@ public class Hidden extends AbstractFormComponent
 
             String externalValue = null;
 
-            if (_encode)
+            if (getEncode())
             {
-                Object value = _valueBinding.getObject();
+                Object value = getValueBinding().getObject();
 
                 try
                 {
@@ -128,7 +116,7 @@ public class Hidden extends AbstractFormComponent
                 }
             }
             else
-                externalValue = (String) _valueBinding.getObject("value", String.class);
+                externalValue = (String) getValueBinding().getObject("value", String.class);
 
             writer.beginEmpty("input");
             writer.attribute("type", "hidden");
@@ -141,7 +129,7 @@ public class Hidden extends AbstractFormComponent
         String externalValue = cycle.getRequestContext().getParameter(_name);
         Object value = null;
 
-        if (_encode)
+        if (getEncode())
         {
             try
             {
@@ -158,10 +146,12 @@ public class Hidden extends AbstractFormComponent
         // A listener is not always necessary ... it's easy to code
         // the synchronization as a side-effect of the accessor method.
 
-        _valueBinding.setObject(value);
+        getValueBinding().setObject(value);
 
-        if (_listener != null)
-            _listener.actionTriggered(this, cycle);
+IActionListener listener = getListener();
+
+        if (listener != null)
+            listener.actionTriggered(this, cycle);
     }
 
     /** @since 2.2 **/
@@ -171,25 +161,11 @@ public class Hidden extends AbstractFormComponent
         return getPage().getEngine().getDataSqueezer();
     }
 
-    public IActionListener getListener()
-    {
-        return _listener;
-    }
+    public abstract IActionListener getListener();
 
-    public void setListener(IActionListener listener)
-    {
-        _listener = listener;
-    }
 
-    public IBinding getValueBinding()
-    {
-        return _valueBinding;
-    }
+    public abstract IBinding getValueBinding();
 
-    public void setValueBinding(IBinding valueBinding)
-    {
-        _valueBinding = valueBinding;
-    }
 
     /**
      * 
@@ -214,16 +190,6 @@ public class Hidden extends AbstractFormComponent
      * 
      **/
 
-    public boolean getEncode()
-    {
-        return _encode;
-    }
-
-    /** @since 2.2 **/
-
-    public void setEncode(boolean encode)
-    {
-        _encode = encode;
-    }
+    public abstract boolean getEncode();
 
 }

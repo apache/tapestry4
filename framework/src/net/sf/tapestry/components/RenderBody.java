@@ -64,8 +64,6 @@ import net.sf.tapestry.RequestCycleException;
  *  Renders the text and components wrapped by a component.
  *
  *  [<a href="../../../../../ComponentReference/RenderBody.html">Component Reference</a>]
- *
- *  <p>Prior to release 2.2, this component was named <b>RenderBody</b>.
  * 
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -81,7 +79,8 @@ public class RenderBody extends AbstractComponent
      *
      **/
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
     {
         IComponent container = getContainer();
 

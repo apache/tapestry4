@@ -80,63 +80,34 @@ import net.sf.tapestry.RequiredParameterException;
  *  @version $Id$
  **/
 
-public class ImageSubmit extends AbstractFormComponent
+public abstract class ImageSubmit extends AbstractFormComponent
 {
-    private IAsset _image;
-    private IAsset _disabledImage;
-    private Object _tag;
+
     private String _name;
-    private String _nameOverride;
-    private IActionListener _listener;
-    private boolean _disabled;
 
-    private IBinding _pointBinding;
-    
-    /** 
-     * 
-     *  Can't use a "form" direction parameter, because updates
-     *  the binding before invoking the listener.
-     * 
-     **/
-    
-    private IBinding _selectedBinding;
+    public abstract IBinding getPointBinding();
 
-    public void setPointBinding(IBinding value)
-    {
-        _pointBinding = value;
-    }
+    public abstract IBinding getSelectedBinding();
 
-    public IBinding getPointBinding()
-    {
-        return _pointBinding;
-    }
-
-    public void setSelectedBinding(IBinding value)
-    {
-        _selectedBinding = value;
-    }
-
-    public IBinding getSelectedBinding()
-    {
-        return _selectedBinding;
-    }
-
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
     {
         IForm form = getForm(cycle);
 
         boolean rewinding = form.isRewinding();
 
-        if (_nameOverride == null)
+        String nameOverride = getNameOverride();
+
+        if (nameOverride == null)
             _name = form.getElementId(this);
         else
-            _name = form.getElementId(this, _nameOverride);
+            _name = form.getElementId(this, nameOverride);
 
         if (rewinding)
         {
             // If disabled, do nothing.
 
-            if (_disabled)
+            if (isDisabled())
                 return;
 
             RequestContext context = cycle.getRequestContext();
@@ -157,7 +128,9 @@ public class ImageSubmit extends AbstractFormComponent
             // whether the user clicked on the image (and thus submitted
             // the form), not where in the image the user actually clicked.
 
-            if (_pointBinding != null)
+            IBinding pointBinding = getPointBinding();
+
+            if (pointBinding != null)
             {
                 int x = Integer.parseInt(value);
 
@@ -166,24 +139,31 @@ public class ImageSubmit extends AbstractFormComponent
 
                 int y = Integer.parseInt(value);
 
-                _pointBinding.setObject(new Point(x, y));
+                pointBinding.setObject(new Point(x, y));
             }
 
             // Notify the application, by setting the select parameter
             // to the tag parameter.
 
-            if (_selectedBinding != null)
-                _selectedBinding.setObject(_tag);
+            IBinding selectedBinding = getSelectedBinding();
 
-            if (_listener != null)
-                _listener.actionTriggered(this, cycle);
+            if (selectedBinding != null)
+                selectedBinding.setObject(getTag());
+
+            IActionListener listener = getListener();
+
+            if (listener != null)
+                listener.actionTriggered(this, cycle);
 
             return;
         }
 
         // Not rewinding, do the real render
 
-        IAsset finalImage = (_disabled && _disabledImage != null) ? _disabledImage : _image;
+        boolean disabled = isDisabled();
+        IAsset disabledImage = getDisabledImage();
+
+        IAsset finalImage = (disabled && disabledImage != null) ? disabledImage : getImage();
 
         String imageURL = finalImage.buildURL(cycle);
 
@@ -191,7 +171,7 @@ public class ImageSubmit extends AbstractFormComponent
         writer.attribute("type", "image");
         writer.attribute("name", _name);
 
-        if (_disabled)
+        if (disabled)
             writer.attribute("disabled");
 
         // NN4 places a border unless you tell it otherwise.
@@ -206,76 +186,28 @@ public class ImageSubmit extends AbstractFormComponent
         writer.closeTag();
     }
 
-    public boolean isDisabled()
-    {
-        return _disabled;
-    }
+    public abstract boolean isDisabled();
 
-    public void setDisabled(boolean disabled)
-    {
-        _disabled = disabled;
-    }
+    public abstract IAsset getDisabledImage();
 
-    public IAsset getDisabledImage()
-    {
-        return _disabledImage;
-    }
+    public abstract IAsset getImage();
 
-    public void setDisabledImage(IAsset disabledImage)
-    {
-        _disabledImage = disabledImage;
-    }
-
-    public IAsset getImage()
-    {
-        return _image;
-    }
-
-    public void setImage(IAsset image)
-    {
-        _image = image;
-    }
-
-    public IActionListener getListener()
-    {
-        return _listener;
-    }
-
-    public void setListener(IActionListener listener)
-    {
-        _listener = listener;
-    }
+    public abstract IActionListener getListener();
 
     public String getName()
     {
         return _name;
     }
 
-    public Object getTag()
-    {
-        return _tag;
-    }
+    public abstract Object getTag();
 
-    public void setTag(Object tag)
-    {
-        _tag = tag;
-    }
-
-    public String getNameOverride()
-    {
-        return _nameOverride;
-    }
-
-    public void setNameOverride(String nameOverride)
-    {
-        _nameOverride = nameOverride;
-    }
+    public abstract String getNameOverride();
 
     protected void prepareForRender(IRequestCycle cycle) throws RequestCycleException
     {
         super.prepareForRender(cycle);
-        
-        if (_image == null)
+
+        if (getImage() == null)
             throw new RequiredParameterException(this, "image", getBinding("image"));
     }
 

@@ -249,6 +249,16 @@ public final class Tapestry
     public static final String LINK_COMPONENT_ATTRIBUTE_NAME = "net.sf.tapestry.active-link-component";
     	
     /**
+     *  Suffix appended to a parameter name to form the name of a property that stores the
+     *  binding for the parameter.
+     * 
+     *  @since 2.4
+     * 
+     **/
+    
+    public static final String PARAMETER_PROPERTY_NAME_SUFFIX = "Binding";	
+    	
+    /**
      *  Prevent instantiation.
      *
      **/

@@ -87,14 +87,9 @@ import net.sf.tapestry.components.LinkEventType;
  * 
  **/
 
-public class Rollover extends AbstractComponent
+public abstract class Rollover extends AbstractComponent
 {
     private IScript _parsedScript;
-
-    private IAsset _image;
-    private IAsset _blur;
-    private IAsset _focus;
-    private IAsset _disabled;
 
     /**
      *  Converts an {@link IAsset} binding into a usable URL.  Returns null
@@ -143,16 +138,16 @@ public class Rollover extends AbstractComponent
 
         if (linkDisabled)
         {
-            imageURL = getAssetURL(_disabled, cycle);
+            imageURL = getAssetURL(getDisabled(), cycle);
 
             if (imageURL == null)
-                imageURL = getAssetURL(_image, cycle);
+                imageURL = getAssetURL(getImage(), cycle);
         }
         else
         {
-            imageURL = getAssetURL(_image, cycle);
-            focusURL = getAssetURL(_focus, cycle);
-            blurURL = getAssetURL(_blur, cycle);
+            imageURL = getAssetURL(getImage(), cycle);
+            focusURL = getAssetURL(getFocus(), cycle);
+            blurURL = getAssetURL(getBlur(), cycle);
 
             dynamic = (focusURL != null) || (blurURL != null);
         }
@@ -231,12 +226,8 @@ public class Rollover extends AbstractComponent
         // there won't be any timing issues (such as cause
         // bug #113893).
 
-        link.addEventHandler(
-            LinkEventType.MOUSE_OVER,
-            (String) symbols.get("onMouseOverName"));
-        link.addEventHandler(
-            LinkEventType.MOUSE_OUT,
-            (String) symbols.get("onMouseOutName"));
+        link.addEventHandler(LinkEventType.MOUSE_OVER, (String) symbols.get("onMouseOverName"));
+        link.addEventHandler(LinkEventType.MOUSE_OUT, (String) symbols.get("onMouseOutName"));
 
         String imageName = (String) symbols.get("imageName");
 
@@ -247,44 +238,11 @@ public class Rollover extends AbstractComponent
 
     }
 
-    public IAsset getBlur()
-    {
-        return _blur;
-    }
+    public abstract IAsset getBlur();
 
-    public void setBlur(IAsset blur)
-    {
-        _blur = blur;
-    }
+    public abstract IAsset getDisabled();
 
-    public IAsset getDisabled()
-    {
-        return _disabled;
-    }
+    public abstract IAsset getFocus();
 
-    public void setDisabled(IAsset disabled)
-    {
-        _disabled = disabled;
-    }
-
-    public IAsset getFocus()
-    {
-        return _focus;
-    }
-
-    public void setFocus(IAsset focus)
-    {
-        _focus = focus;
-    }
-
-    public IAsset getImage()
-    {
-        return _image;
-    }
-
-    public void setImage(IAsset image)
-    {
-        _image = image;
-    }
-
+    public abstract IAsset getImage();
 }

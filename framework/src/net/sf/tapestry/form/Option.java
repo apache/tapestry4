@@ -73,16 +73,8 @@ import net.sf.tapestry.Tapestry;
  * 
  **/
 
-public class Option extends AbstractComponent
+public abstract class Option extends AbstractComponent
 {
-    private IBinding _selectedBinding;
-    private String _label;
-
-    public IBinding getSelectedBinding()
-    {
-        return _selectedBinding;
-    }
-
     /**
      *  Renders the &lt;option&gt; element, or responds when the form containing the element 
      *  is submitted (by checking {@link Form#isRewinding()}.
@@ -111,7 +103,7 @@ public class Option extends AbstractComponent
         if (rewinding)
         {
             if (!select.isDisabled())
-                _selectedBinding.setBoolean(select.isSelected(value));
+                getSelectedBinding().setBoolean(select.isSelected(value));
 
             renderBody(writer, cycle);
         }
@@ -121,15 +113,15 @@ public class Option extends AbstractComponent
 
             writer.attribute("value", value);
 
-            if (_selectedBinding.getBoolean())
+            if (getSelectedBinding().getBoolean())
                 writer.attribute("selected");
 
             generateAttributes(writer, cycle);
 
-            if (_label != null)
-            {
-                writer.print(_label);
-            }
+            String label = getLabel();
+
+            if (label != null)
+                writer.print(label);
 
             renderBody(writer, cycle);
 
@@ -138,19 +130,7 @@ public class Option extends AbstractComponent
 
     }
 
-    public void setSelectedBinding(IBinding value)
-    {
-        _selectedBinding = value;
-    }
-    
-    public String getLabel()
-    {
-        return _label;
-    }
+    public abstract IBinding getSelectedBinding();
 
-    public void setLabel(String label)
-    {
-        _label = label;
-    }
-
+    public abstract String getLabel();
 }

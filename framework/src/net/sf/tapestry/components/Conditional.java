@@ -70,11 +70,8 @@ import net.sf.tapestry.RequestCycleException;
  * 
  **/
 
-public class Conditional extends AbstractComponent
+public abstract class Conditional extends AbstractComponent
 {
-	private boolean _condition;
-	private boolean _invert;
-	
     /**
      *  Renders its wrapped components only if the condition is true (technically,
      *  if condition matches invert).
@@ -83,28 +80,10 @@ public class Conditional extends AbstractComponent
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
-      if (_condition != _invert)
+      if (getCondition() != getInvert())
             renderBody(writer, cycle);
     }
     
-    public boolean getCondition()
-    {
-        return _condition;
-    }
-
-    public void setCondition(boolean condition)
-    {
-        _condition = condition;
-    }
-
-    public boolean getInvert()
-    {
-        return _invert;
-    }
-
-    public void setInvert(boolean invert)
-    {
-        _invert = invert;
-    }
-
+    public abstract boolean getCondition();
+    public abstract boolean getInvert();
 }

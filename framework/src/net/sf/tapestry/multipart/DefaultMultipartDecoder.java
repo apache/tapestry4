@@ -273,6 +273,8 @@ public class DefaultMultipartDecoder implements IMultipartDecoder
 
         boolean last = readIntoStream(input, boundary, uploadStream);
 
+		uploadStream.close();
+
         File file = uploadStream.getContentFile();
 
         UploadPart p;

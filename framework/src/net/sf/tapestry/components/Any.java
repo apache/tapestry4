@@ -69,16 +69,16 @@ import net.sf.tapestry.RequestCycleException;
  * 
  **/
 
-public class Any extends AbstractComponent
+public abstract class Any extends AbstractComponent
 {
-    private String _element;
-
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
+    	String element = getElement();
+    	
         if (!cycle.isRewinding())
         {
-            writer.begin(_element);
+            writer.begin(element);
 
             generateAttributes(writer, cycle);
         }
@@ -87,19 +87,10 @@ public class Any extends AbstractComponent
 
         if (!cycle.isRewinding())
         {
-            writer.end(_element);
+            writer.end(element);
         }
 
     }
 
-    public String getElement()
-    {
-        return _element;
-    }
-
-    public void setElement(String element)
-    {
-        _element = element;
-    }
-
+    public abstract String getElement();
 }

@@ -49,5 +49,5 @@
   </parameter>
 
   <reserved-parameter name="action"/>
-  
+
 </component-specification>

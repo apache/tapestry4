@@ -143,7 +143,7 @@ import net.sf.tapestry.valid.ValidField;
  *
  **/
 
-public class NumericField extends ValidField
+public abstract class NumericField extends ValidField
 {
     private IBinding minimumBinding;
     private IBinding maximumBinding;

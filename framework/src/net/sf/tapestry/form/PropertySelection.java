@@ -87,16 +87,9 @@ import net.sf.tapestry.Tapestry;
  *
  **/
 
-public class PropertySelection extends AbstractFormComponent
+public abstract class PropertySelection extends AbstractFormComponent
 {
-    /** @since 2.2 **/
-    private Object _value;
-    private IPropertySelectionRenderer _renderer;
-    private IPropertySelectionModel _model;
-    private boolean _disabled;
-
     private String _name;
-    private boolean _submitOnChange;
 
     /**
      *  A shared instance of {@link SelectPropertySelectionRenderer}.
@@ -104,7 +97,8 @@ public class PropertySelection extends AbstractFormComponent
      * 
      **/
 
-    public static final IPropertySelectionRenderer DEFAULT_SELECT_RENDERER = new SelectPropertySelectionRenderer();
+    public static final IPropertySelectionRenderer DEFAULT_SELECT_RENDERER =
+        new SelectPropertySelectionRenderer();
 
     /**
      *  A shared instance of {@link RadioPropertySelectionRenderer}.
@@ -112,8 +106,8 @@ public class PropertySelection extends AbstractFormComponent
      * 
      **/
 
-    public static final IPropertySelectionRenderer DEFAULT_RADIO_RENDERER = new RadioPropertySelectionRenderer();
-
+    public static final IPropertySelectionRenderer DEFAULT_RADIO_RENDERER =
+        new RadioPropertySelectionRenderer();
 
     /**
      *  Returns the name assigned to this PropertySelection by the {@link Form}
@@ -127,16 +121,6 @@ public class PropertySelection extends AbstractFormComponent
     }
 
     /**
-     *  Returns true if this PropertySelection's disabled parameter yields true.
-     *  The corresponding HTML control(s) should be disabled.
-     **/
-
-    public boolean isDisabled()
-    {
-        return _disabled;
-    }
-
-    /**
      *  Renders the component, much of which is the responsiblity
      *  of the {@link IPropertySelectionRenderer renderer}.  The possible options,
      *  thier labels, and the values to be encoded in the form are provided
@@ -144,11 +128,14 @@ public class PropertySelection extends AbstractFormComponent
      *
      **/
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
     {
         IForm form = getForm(cycle);
         if (form == null)
-            throw new RequestCycleException(Tapestry.getString("must-be-wrapped-by-form", "PropertySelection"), this);
+            throw new RequestCycleException(
+                Tapestry.getString("must-be-wrapped-by-form", "PropertySelection"),
+                this);
 
         boolean rewinding = form.isRewinding();
 
@@ -158,31 +145,33 @@ public class PropertySelection extends AbstractFormComponent
         {
             // If disabled, ignore anything that comes up from the client.
 
-            if (_disabled)
+            if (isDisabled())
                 return;
 
             String optionValue = cycle.getRequestContext().getParameter(_name);
 
-          _value = (optionValue == null) ? null : _model.translateValue(optionValue);
+            Object value = (optionValue == null) ? null : getModel().translateValue(optionValue);
+
+            setValue(value);
 
             return;
         }
 
-        // Support for 2.2 style renderer.  This goes in 2.3.
+        IPropertySelectionRenderer renderer = getRenderer();
 
-        if (_renderer != null)
+        if (renderer != null)
         {
-            renderWithRenderer(writer, cycle, _renderer);
+            renderWithRenderer(writer, cycle, renderer);
             return;
         }
 
         writer.begin("select");
         writer.attribute("name", _name);
 
-        if (_disabled)
+        if (isDisabled())
             writer.attribute("disabled");
 
-        if (_submitOnChange)
+        if (getSubmitOnChange())
             writer.attribute("onchange", "javascript:this.form.submit();");
 
         // Apply informal attributes.
@@ -191,28 +180,31 @@ public class PropertySelection extends AbstractFormComponent
 
         writer.println();
 
-        int count = _model.getOptionCount();
+        IPropertySelectionModel model = getModel();
+
+        int count = model.getOptionCount();
         boolean foundSelected = false;
         boolean selected = false;
+        Object value = getValue();
 
         for (int i = 0; i < count; i++)
         {
-            Object option = _model.getOption(i);
+            Object option = model.getOption(i);
 
             if (!foundSelected)
             {
-                selected = isEqual(option, _value);
+                selected = isEqual(option, value);
                 if (selected)
                     foundSelected = true;
             }
 
             writer.begin("option");
-            writer.attribute("value", _model.getValue(i));
+            writer.attribute("value", model.getValue(i));
 
             if (selected)
                 writer.attribute("selected");
 
-            writer.print(_model.getLabel(i));
+            writer.print(model.getLabel(i));
 
             writer.end();
 
@@ -231,28 +223,35 @@ public class PropertySelection extends AbstractFormComponent
      * 
      **/
 
-    private void renderWithRenderer(IMarkupWriter writer, IRequestCycle cycle, IPropertySelectionRenderer renderer)
+    private void renderWithRenderer(
+        IMarkupWriter writer,
+        IRequestCycle cycle,
+        IPropertySelectionRenderer renderer)
         throws RequestCycleException
     {
         renderer.beginRender(this, writer, cycle);
 
-        int count = _model.getOptionCount();
+        IPropertySelectionModel model = getModel();
+
+        int count = model.getOptionCount();
 
         boolean foundSelected = false;
         boolean selected = false;
 
+        Object value = getValue();
+
         for (int i = 0; i < count; i++)
         {
-            Object option = _model.getOption(i);
+            Object option = model.getOption(i);
 
             if (!foundSelected)
             {
-                selected = isEqual(option, _value);
+                selected = isEqual(option, value);
                 if (selected)
                     foundSelected = true;
             }
 
-            renderer.renderOption(this, writer, cycle, _model, option, i, selected);
+            renderer.renderOption(this, writer, cycle, model, option, i, selected);
 
             selected = false;
         }
@@ -280,57 +279,27 @@ public class PropertySelection extends AbstractFormComponent
         return left.equals(right);
     }
 
-    public void setDisabled(boolean disabled)
-    {
-        _disabled = disabled;
-    }
+    public abstract IPropertySelectionModel getModel();
 
-    public IPropertySelectionModel getModel()
-    {
-        return _model;
-    }
-
-    public void setModel(IPropertySelectionModel model)
-    {
-        _model = model;
-    }
-
-    public IPropertySelectionRenderer getRenderer()
-    {
-        return _renderer;
-    }
-
-    public void setRenderer(IPropertySelectionRenderer renderer)
-    {
-        _renderer = renderer;
-    }
+    public abstract IPropertySelectionRenderer getRenderer();
 
     /** @since 2.2 **/
 
-    public boolean getSubmitOnChange()
-    {
-        return _submitOnChange;
-    }
+    public abstract boolean getSubmitOnChange();
 
     /** @since 2.2 **/
 
-    public void setSubmitOnChange(boolean submitOnChange)
-    {
-        _submitOnChange = submitOnChange;
-    }
+    public abstract Object getValue();
 
     /** @since 2.2 **/
-    
-    public Object getValue()
-    {
-        return _value;
-    }
 
-    /** @since 2.2 **/
-    
-    public void setValue(Object value)
-    {
-        _value = value;
-    }
+    public abstract void setValue(Object value);
+
+    /**
+     *  Returns true if this PropertySelection's disabled parameter yields true.
+     *  The corresponding HTML control(s) should be disabled.
+     **/
+
+    public abstract boolean isDisabled();
 
 }

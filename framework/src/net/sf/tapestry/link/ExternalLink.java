@@ -74,11 +74,8 @@ import net.sf.tapestry.engine.ILink;
  *
  **/
 
-public class ExternalLink extends AbstractLinkComponent
+public abstract class ExternalLink extends AbstractLinkComponent
 {
-    private Object _parameters;
-    private String _targetPage;
-
     public ILink getLink(IRequestCycle cycle) throws RequestCycleException
     {
         return getLink(cycle, Tapestry.EXTERNAL_SERVICE, getServiceParameters());
@@ -86,38 +83,22 @@ public class ExternalLink extends AbstractLinkComponent
 
     private Object[] getServiceParameters()
     {
-        Object[] pageParameters = DirectLink.constructServiceParameters(_parameters);
+        Object[] pageParameters = DirectLink.constructServiceParameters(getParameters());
+        String targetPage = getTargetPage();
 
         if (pageParameters == null)
-            return new Object[] { _targetPage };
+            return new Object[] { targetPage };
 
         Object[] parameters = new Object[pageParameters.length + 1];
 
-        parameters[0] = _targetPage;
+        parameters[0] = targetPage;
 
         System.arraycopy(pageParameters, 0, parameters, 1, pageParameters.length);
 
         return parameters;
     }
 
-    public Object getParameters()
-    {
-        return _parameters;
-    }
+    public abstract Object getParameters();
 
-    public void setParameters(Object parameters)
-    {
-        _parameters = parameters;
-    }
-
-    public String getTargetPage()
-    {
-        return _targetPage;
-    }
-
-    public void setTargetPage(String targetPage)
-    {
-        _targetPage = targetPage;
-    }
-
+    public abstract String getTargetPage();
 }

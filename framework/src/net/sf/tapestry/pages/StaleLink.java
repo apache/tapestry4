@@ -66,25 +66,7 @@ import net.sf.tapestry.html.BasePage;
  *
  **/
 
-public class StaleLink extends BasePage
+public abstract class StaleLink extends BasePage
 {
-    private String _message;
-    
-    public void detach()
-    {
-        _message = null;
-        
-        super.detach();
-    }
-    
-    public String getMessage()
-    {
-        return _message;
-    }
-
-    public void setMessage(String message)
-    {
-        _message = message;
-    }
-
+    public abstract void setMessage(String message);
 }

@@ -80,10 +80,8 @@ import net.sf.tapestry.Tapestry;
  * 
  **/
 
-public class Select extends AbstractFormComponent
+public abstract class Select extends AbstractFormComponent
 {
-    private boolean _multiple;
-    private boolean _disabled;
     private boolean _rewinding;
     private boolean _rendering;
 
@@ -111,26 +109,10 @@ public class Select extends AbstractFormComponent
         return (Select) cycle.getAttribute(ATTRIBUTE_NAME);
     }
 
-	public void setDisabled(boolean disabled)
-	{
-		_disabled = disabled;
-	}
-
-    public boolean isDisabled()
-    {
-        return _disabled;
-    }
-
-    public boolean isMultiple()
-    {
-        return _multiple;
-    }
-
-    public void setMultiple(boolean newValue)
-    {
-        _multiple = newValue;
-    }
-
+    public abstract boolean isDisabled();
+    
+    public abstract boolean isMultiple();
+    
     public boolean isRewinding()
     {
         if (!_rendering)
@@ -190,10 +172,10 @@ public class Select extends AbstractFormComponent
 
             writer.attribute("name", _name);
 
-            if (_multiple)
+            if (isMultiple())
                 writer.attribute("multiple");
 
-            if (_disabled)
+            if (isDisabled())
                 writer.attribute("disabled");
 
             generateAttributes(writer, cycle);

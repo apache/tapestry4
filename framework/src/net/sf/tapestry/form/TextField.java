@@ -67,27 +67,17 @@ import net.sf.tapestry.IBinding;
  * 
  **/
 
-public class TextField extends AbstractTextField
+public abstract class TextField extends AbstractTextField
 {
-    private IBinding _valueBinding;
-    
-    public IBinding getValueBinding()
-    {
-        return _valueBinding;
-    }
-
-    public void setValueBinding(IBinding value)
-    {
-        _valueBinding = value;
-    }
+    public abstract IBinding getValueBinding();
 
     public String readValue()
     {
-        return _valueBinding.getString();
+        return getValueBinding().getString();
     }
 
     public void updateValue(String value)
     {
-        _valueBinding.setString(value);
+        getValueBinding().setString(value);
     }
 }

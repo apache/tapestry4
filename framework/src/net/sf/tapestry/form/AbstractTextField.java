@@ -73,11 +73,6 @@ import net.sf.tapestry.RequestCycleException;
 
 public abstract class AbstractTextField extends AbstractFormComponent
 {
-    private int _displayWidth;
-    private int _maximumLength;
-    private boolean _hidden;
-    private boolean _disabled;
-
     private String _name;
 
     public String getName()
@@ -115,7 +110,7 @@ public abstract class AbstractTextField extends AbstractFormComponent
 
         if (rewinding)
         {
-            if (!_disabled)
+            if (!isDisabled())
             {
                 value = cycle.getRequestContext().getParameter(_name);
 
@@ -127,18 +122,21 @@ public abstract class AbstractTextField extends AbstractFormComponent
 
         writer.beginEmpty("input");
 
-        writer.attribute("type", _hidden ? "password" : "text");
+        writer.attribute("type", isHidden() ? "password" : "text");
 
-        if (_disabled)
+        if (isDisabled())
             writer.attribute("disabled");
 
         writer.attribute("name", _name);
 
-        if (_displayWidth != 0)
-            writer.attribute("size", _displayWidth);
+		int displayWidth = getDisplayWidth();
+		int maximumLength = getMaximumLength();
 
-        if (_maximumLength != 0)
-            writer.attribute("maxlength", _maximumLength);
+        if (displayWidth != 0)
+            writer.attribute("size", displayWidth);
+
+        if (maximumLength != 0)
+            writer.attribute("maxlength", maximumLength);
 
         value = readValue();
         if (value != null)
@@ -182,45 +180,11 @@ public abstract class AbstractTextField extends AbstractFormComponent
 
     abstract protected String readValue() throws RequestCycleException;
 
-    public boolean getHidden()
-    
-    {
-        return _hidden;
-    }
+    public abstract boolean isHidden();
 
-    public void setHidden(boolean hidden)
-    {
-        _hidden = hidden;
-    }
+    public abstract boolean isDisabled();
 
-    public boolean isDisabled()
-    {
-        return _disabled;
-    }
+    public abstract int getDisplayWidth();
 
-    public void setDisabled(boolean disabled)
-    {
-        _disabled = disabled;
-    }
-
-    public int getDisplayWidth()
-    {
-        return _displayWidth;
-    }
-
-    public void setDisplayWidth(int displayWidth)
-    {
-        _displayWidth = displayWidth;
-    }
-
-    public int getMaximumLength()
-    {
-        return _maximumLength;
-    }
-
-    public void setMaximumLength(int maximumLength)
-    {
-        _maximumLength = maximumLength;
-    }
-
+    public abstract int getMaximumLength();
 }

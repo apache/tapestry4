@@ -70,7 +70,7 @@ import net.sf.tapestry.RequestCycleException;
  * 
  **/
 
-public class Delegator extends AbstractComponent
+public abstract class Delegator extends AbstractComponent
 {
 	private IRender _delegate;
 
@@ -82,18 +82,11 @@ public class Delegator extends AbstractComponent
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
-        if (_delegate != null)
-        	_delegate.render(writer, cycle);
+    	IRender delegate = getDelegate();
+    	
+        if (delegate != null)
+        	delegate.render(writer, cycle);
     }
     
-    public IRender getDelegate()
-    {
-        return _delegate;
-    }
-
-    public void setDelegate(IRender delegate)
-    {
-        _delegate = delegate;
-    }
-
+    public abstract IRender getDelegate();
 }

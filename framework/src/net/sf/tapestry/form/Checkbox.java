@@ -70,13 +70,8 @@ import net.sf.tapestry.RequestCycleException;
  * 
  **/
 
-public class Checkbox extends AbstractFormComponent
+public abstract class Checkbox extends AbstractFormComponent
 {
-    private boolean _disabled;
-
-    /**  @since 2.2 **/
-    private boolean _selected;
-
     private String _name;
 
     public String getName()
@@ -94,7 +89,8 @@ public class Checkbox extends AbstractFormComponent
      *
      **/
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+        throws RequestCycleException
     {
         IForm form = getForm(cycle);
 
@@ -106,7 +102,7 @@ public class Checkbox extends AbstractFormComponent
         {
             String value = cycle.getRequestContext().getParameter(_name);
 
-            _selected = (value != null);
+            setSelected((value != null));
 
             return;
         }
@@ -116,10 +112,10 @@ public class Checkbox extends AbstractFormComponent
 
         writer.attribute("name", _name);
 
-        if (_disabled)
+        if (isDisabled())
             writer.attribute("disabled");
 
-        if (_selected)
+        if (isSelected())
             writer.attribute("checked");
 
         generateAttributes(writer, cycle);
@@ -127,28 +123,14 @@ public class Checkbox extends AbstractFormComponent
         writer.closeTag();
     }
 
-    public boolean isDisabled()
-    {
-        return _disabled;
-    }
-
-    public void setDisabled(boolean disabled)
-    {
-        _disabled = disabled;
-    }
+    public abstract boolean isDisabled();
 
     /** @since 2.2 **/
 
-    public boolean isSelected()
-    {
-        return _selected;
-    }
+    public abstract boolean isSelected();
 
     /** @since 2.2 **/
 
-    public void setSelected(boolean selected)
-    {
-        _selected = selected;
-    }
+    public abstract void setSelected(boolean selected);
 
 }

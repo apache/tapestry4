@@ -84,26 +84,13 @@ import net.sf.tapestry.Tapestry;
  * 
  **/
 
-public class Foreach extends AbstractComponent
+public abstract class Foreach extends AbstractComponent
 {
-    private Object _source;
-    private IBinding _valueBinding;
-    private IBinding _indexBinding;
-	private String _element;
-
     private Object _value;
     private int _index;
     private boolean _rendering;
 
-    public IBinding getIndexBinding()
-    {
-        return _indexBinding;
-    }
-
-    public void setIndexBinding(IBinding value)
-    {
-        _indexBinding = value;
-    }
+    public abstract IBinding getIndexBinding();
 
 
     /**
@@ -119,16 +106,15 @@ public class Foreach extends AbstractComponent
 
     protected Iterator getSourceData()
     {
- 		if (_source == null)
+    	Object source = getSource();
+    	
+ 		if (source == null)
  			return null;
  		
-        return Tapestry.coerceToIterator(_source);
+        return Tapestry.coerceToIterator(source);
     }
 
-    public IBinding getValueBinding()
-    {
-        return _valueBinding;
-    }
+    public abstract IBinding getValueBinding();
 
     /**
      *  Gets the source binding and iterates through
@@ -151,6 +137,10 @@ public class Foreach extends AbstractComponent
             _rendering = true;
             _value = null;
             _index = 0;
+            
+            IBinding indexBinding = getIndexBinding();
+            IBinding valueBinding = getValueBinding();
+            String element = getElement();
 
             boolean hasNext = dataSource.hasNext();
 
@@ -159,21 +149,21 @@ public class Foreach extends AbstractComponent
                 _value = dataSource.next();
                 hasNext = dataSource.hasNext();
 
-                if (_indexBinding != null)
-                    _indexBinding.setInt(_index);
+                if (indexBinding != null)
+                    indexBinding.setInt(_index);
 
-                if (_valueBinding != null)
-                    _valueBinding.setObject(_value);
+                if (valueBinding != null)
+                    valueBinding.setObject(_value);
 
-                if (_element != null)
+                if (element != null)
                 {
-                    writer.begin(_element);
+                    writer.begin(element);
                     generateAttributes(writer, cycle);
                 }
 
                 renderBody(writer, cycle);
 
-                if (_element != null)
+                if (element != null)
                     writer.end();
 
                 _index++;
@@ -184,11 +174,6 @@ public class Foreach extends AbstractComponent
             _value = null;
             _rendering = false;
         }
-    }
-
-    public void setValueBinding(IBinding value)
-    {
-        _valueBinding = value;
     }
 
     /**
@@ -206,25 +191,9 @@ public class Foreach extends AbstractComponent
         return _value;
     }
 
-    public String getElement()
-    {
-        return _element;
-    }
+    public abstract String getElement();
 
-    public void setElement(String element)
-    {
-        _element = element;
-    }
-
-    public Object getSource()
-    {
-        return _source;
-    }
-
-    public void setSource(Object source)
-    {
-        _source = source;
-    }
+    public abstract Object getSource();
 
     /**
      *  The index number, within the {@link #getSource() source}, of the

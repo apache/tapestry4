@@ -85,14 +85,14 @@ public class UploadPart implements IUploadFile, IPart
     private String _filePath;
     private String _contentType;
 
-    UploadPart(String filePath, String contentType, byte[] content)
+    public UploadPart(String filePath, String contentType, byte[] content)
     {
         _filePath = filePath;
         _contentType = contentType;
         _content = content;
     }
 
-    UploadPart(String filePath, String contentType, File contentFile)
+    public UploadPart(String filePath, String contentType, File contentFile)
     {
         _filePath = filePath;
         _contentType = contentType;        

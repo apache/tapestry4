@@ -73,10 +73,8 @@ import net.sf.tapestry.engine.ILink;
  *
  **/
 
-public class Frame extends AbstractComponent
+public abstract class Frame extends AbstractComponent
 {
-    private String _targetPage;
-
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
@@ -86,7 +84,7 @@ public class Frame extends AbstractComponent
         IEngine engine = cycle.getEngine();
         IEngineService pageService = engine.getService(Tapestry.PAGE_SERVICE);
 
-        ILink link = pageService.getLink(cycle, this, new String[] { _targetPage });
+        ILink link = pageService.getLink(cycle, this, new String[] { getTargetPage() });
 
         writer.beginEmpty("frame");
         writer.attribute("src", link.getURL());
@@ -96,14 +94,7 @@ public class Frame extends AbstractComponent
         writer.closeTag();
     }
 
-    public String getTargetPage()
-    {
-        return _targetPage;
-    }
+    public abstract String getTargetPage();
 
-    public void setTargetPage(String targetPage)
-    {
-        _targetPage = targetPage;
-    }
-
+    public abstract void setTargetPage(String targetPage);
 }
