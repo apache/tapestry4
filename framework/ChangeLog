@@ -1,8 +1,15 @@
+* Apr 17 2001 hship
+
+[417065] Use JAXP instead of Xerces
+Convert to latest Jetty; convert dependency on Xerces to JAXP 1.1 and use
+light-weight Crimson instead of Xerces.
+Create com.primix.foundation.xml.AbstractDocumentParser.
+
 * Apr 9 2001 hship
 
 Keep the buffer and parameters live in a StatementAssembly even after
 creating the IStatement (useful for debugging).
-[ #414879 ] ClassCastException / PropertyHelper
+[414879] ClassCastException / PropertyHelper
 
 * Apr 4 2001 hship
 

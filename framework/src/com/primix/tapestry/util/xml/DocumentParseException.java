@@ -1,4 +1,4 @@
-package com.primix.tapestry.script;
+package com.primix.foundation.xml;
 
 import org.xml.sax.*;
 
@@ -32,17 +32,17 @@ import org.xml.sax.*;
 
 /**
  *  Exception thrown if there is any kind of error parsing the
- *  Script XML document.  This is basically a cut-and-paste of
- *  {@link com.primix.tapestry.parse.SpecificationParseException}.
+ *  an XML document. 
  *
- *  @see ScriptParser
+ *  @see AbstractDocumentParser
  *
  *  @author Howard Ship
  *  @version $Id$
+ *  @since 0.2.10
  *
  */
 
-public class ScriptParseException
+public class DocumentParseException
 extends Exception
 {
 	private Throwable rootCause;
@@ -50,37 +50,49 @@ extends Exception
     private int column;
     private String resourcePath;
 
-    public ScriptParseException(String message, Throwable rootCause)
+    public DocumentParseException(String message, Throwable rootCause)
     {
-        this(message, null, null, rootCause);
+        this(message, null,  rootCause);
     }
 
-    public ScriptParseException(String message, String resourcePath,
-                Locator locator, Throwable rootCause)
+    public DocumentParseException(String message, SAXParseException rootCause)
+    {
+        this(message, null, rootCause);
+    }
+
+
+    public DocumentParseException(String message, String resourcePath, Throwable rootCause)
     {
         super(message);
 
         this.resourcePath = resourcePath;
         
-        if (locator != null)
-        {
-            lineNumber = locator.getLineNumber();
-            column  = locator.getColumnNumber();
-        }
-
         this.rootCause = rootCause;
     }
 
-    public ScriptParseException(String message)
+    public DocumentParseException(String message, String resourcePath, SAXParseException rootCause)
+    {
+		this(message, resourcePath, (Throwable)rootCause);
+		
+		lineNumber = rootCause.getLineNumber();
+		column = rootCause.getColumnNumber();
+    }
+	
+    public DocumentParseException(String message)
     {
         super(message);
     }
 
-    public ScriptParseException(Throwable rootCause)
+    public DocumentParseException(Throwable rootCause)
     {
         this(rootCause.getMessage(), rootCause);
     }
 
+	public DocumentParseException(SAXParseException rootCause)
+	{
+		this(rootCause.getMessage(), (Throwable)rootCause);
+	}
+	
     public Throwable getRootCause()
     {
         return rootCause;

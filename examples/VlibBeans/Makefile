@@ -1,19 +1,19 @@
 # $Id$
 
-PACKAGES = com.primix.vlib.ejb
+PACKAGES := com.primix.vlib.ejb
 
-PROJECT_NAME = VlibBeans
+PROJECT_NAME := VlibBeans
 
-PROJ_CLASSPATH = \
-	$(INSTALL_DIR)/Tapestry.jar 
+INSTALL_DIR := ../../lib
 
-INSTALL_DIR = ../../lib
+PROJ_CLASSPATH := \
+	$(INSTALL_DIR)/com.primix.tapestry.jar
 
-META_RESOURCES = *.xml
+META_RESOURCES := *.xml
 
-JAVADOC_DIR = javadoc
+JAVADOC_DIR := javadoc
 
-JAVADOC_OPT = \
+JAVADOC_OPT := \
 	-version -author \
 	-windowtitle "Primix Virtual Library - Enterprise JavaBeans" \
 	-link http://tapestry.primix.com/doc/api \
@@ -27,7 +27,7 @@ include $(SYS_MAKEFILE_DIR)/jBoss.mk
 JBOSS_CONF_DIR = $(JBOSS_DIR)/conf/default
 
 RUNTIME_LIBRARIES := \
-	$(INSTALL_DIR)/Tapestry.jar \
+	$(PROJ_CLASSPATH) \
 	$(INSTALL_DIR)/gnu-regexp.jar \
 	$(INSTALL_DIR)/log4j.jar
 	
@@ -37,7 +37,7 @@ RUNTIME_LIBRARIES := \
 configure-jboss:  setup-jbe-util
 ifeq ("$(JBOSS_DIR)","")
 	$(error You must set JBOSS_DIR (in $(SYS_MAKEFILE_DIR)/config/LocalConfig.mk) \
-	before configuring jBoss.)
+	before configuring jBoss)
 endif	
 	$(call NOTE, Installing Primix Vlib database ...)
 	$(CAT) jboss/vlib.tar.gz | \

@@ -5,6 +5,7 @@ import com.primix.tapestry.components.*;
 import com.primix.tapestry.components.html.*;
 import com.primix.tapestry.components.html.link.*;
 import com.primix.tapestry.script.*;
+import com.primix.foundation.xml.*;
 import java.io.*;
 import java.util.*;
 
@@ -285,7 +286,7 @@ public class Rollover extends AbstractComponent
 
 						parsedScript = new ScriptParser().parse(stream, SCRIPT_RESOURCE);
 						}
-                    catch (ScriptParseException ex)
+                    catch (DocumentParseException ex)
                     {
                         throw new ApplicationRuntimeException(ex);
 						}

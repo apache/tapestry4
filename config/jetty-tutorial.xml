@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- $Id$ -->
-
-<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure 1.0//EN"
- "http://jetty.mortbay.com/configure_1_0.dtd">
+<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure 1.1//EN"
+ "http://jetty.mortbay.com/configure_1_1.dtd">
 <!--
   This configuration file is used to allow the Tutorial to be run directly from
   the main distribution directory (i.e., without having to build the frameworks).
   -->
-
 <Configure class="com.mortbay.HTTP.HttpServer">
   <Call name="addListener">
     <Arg>
@@ -19,19 +17,14 @@
       </New>
     </Arg>
   </Call>
-
   <!-- This writes a log of each incoming request to the default output, which makes
        it easier to see what Tapestry and Jetty are up to. -->
-
   <Set name="LogSink">
     <New class="com.mortbay.Util.WriterLogSink"/>
   </Set>
-
-
   <Call name="addWebApplication">
     <Arg>/tutorial/*</Arg>
     <Arg>lib/Tutorial.war</Arg>
     <Arg/>
   </Call>
-
 </Configure>

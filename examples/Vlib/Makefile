@@ -2,36 +2,37 @@
 
 PROJECT_NAME = Vlib
 
-PACKAGES = \
+PACKAGES := \
 	com.primix.servlet \
 	com.primix.vlib \
 	com.primix.vlib.pages \
 	com.primix.vlib.components \
 	com.primix.vlib.jsp
 
+INSTALL_DIR := ../../lib
+
 PROJ_CLASSPATH = \
 	$(JBOSS_DIR)/client/ejb.jar \
 	$(INSTALL_DIR)/javax.servlet.jar \
-	$(INSTALL_DIR)/Tapestry.jar \
+	$(INSTALL_DIR)/com.primix.tapestry.jar \
 	$(INSTALL_DIR)/VlibBeans.jar
 
-INSTALL_DIR = ../../lib
+JAVADOC_DIR := javadoc
 
-JAVADOC_DIR = javadoc
-
-JAVADOC_OPT = \
+JAVADOC_OPT := \
 	-version -author -windowtitle "Primix Virtual Library - Presentation Layer" \
 	-link http://tapestry.primix.com/doc/api \
 	-link http://java.sun.com/j2se/1.3/docs/api \
 	-link http://java.sun.com/j2ee/j2sdkee/techdocs/api
 
-CONTEXT_RESOURCES = index.html jsp
+CONTEXT_RESOURCES := index.html jsp
 
 include $(SYS_MAKEFILE_DIR)/War.mk
 
-EXEC_CLASSPATH = \
+EXEC_CLASSPATH := \
 	$(PROJ_CLASSPATH) \
-	$(INSTALL_DIR)/xerces.jar \
+	$(INSTALL_DIR)/javax.xml.jaxp.jar \
+	$(INSTALL_DIR)/org.apache.crimson.jar \
 	$(INSTALL_DIR)/gnu-regexp.jar \
 	$(INSTALL_DIR)/com.mortbay.jetty.jar \
 	$(INSTALL_DIR)/org.apache.jasper.jar \

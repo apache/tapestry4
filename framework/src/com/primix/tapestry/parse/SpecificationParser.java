@@ -3,11 +3,11 @@ package com.primix.tapestry.parse;
 import com.primix.tapestry.*;
 import com.primix.tapestry.spec.*;
 import com.primix.foundation.*;
-import org.apache.xerces.parsers.DOMParser;
 import org.w3c.dom.*;
 import java.io.*;
 import java.util.*;
 import org.xml.sax.*;
+import com.primix.foundation.xml.*;
  
 /*
  * Tapestry Web Application Framework
@@ -48,772 +48,526 @@ import org.xml.sax.*;
  */
  
 public class SpecificationParser
-implements ErrorHandler, EntityResolver
+extends AbstractDocumentParser
 {
-    private DOMParser parser;
-    private String resourcePath;
+	static private final Map booleanMap;
 
-    static private final Map booleanMap;
+	// Identify all the different acceptible values.
 
-    // Identify all the different acceptible values.
+	static
+	{
+		booleanMap = new HashMap(13);
 
-    static
-    {
-        booleanMap = new HashMap(13);
+		booleanMap.put("true", Boolean.TRUE);
+		booleanMap.put("t", Boolean.TRUE);
+		booleanMap.put("1", Boolean.TRUE);
+		booleanMap.put("y", Boolean.TRUE);
+		booleanMap.put("yes", Boolean.TRUE);
+		booleanMap.put("on", Boolean.TRUE);
 
-        booleanMap.put("true", Boolean.TRUE);
-        booleanMap.put("t", Boolean.TRUE);
-        booleanMap.put("1", Boolean.TRUE);
-        booleanMap.put("y", Boolean.TRUE);
-        booleanMap.put("yes", Boolean.TRUE);
-        booleanMap.put("on", Boolean.TRUE);
-
-        booleanMap.put("false", Boolean.FALSE);
-        booleanMap.put("f", Boolean.FALSE);
-        booleanMap.put("0", Boolean.FALSE);
-        booleanMap.put("off", Boolean.FALSE);
-        booleanMap.put("no", Boolean.FALSE);
-        booleanMap.put("n", Boolean.FALSE);
-    }
-
-    /**
-    *  Parses an input stream containing a component specification and assembles
-    *  a {@link ComponentSpecification} from it.
-    *
-    *  @throws SpecificationParseException if the input stream cannot be fully
-    *  parsed or contains invalid data.
-    *
-    */
-
-    public ComponentSpecification parseComponentSpecification(InputStream input, 
-        String resourcePath)
-    throws SpecificationParseException
-    {
-        Document document;
-
-        this.resourcePath = resourcePath;
-		
-		try
-		{
-			document = parse(input, "specification");
-
-            return convertComponentSpecification(document);
-            }
-		finally
-		{
-			this.resourcePath = null;
-            }
+		booleanMap.put("false", Boolean.FALSE);
+		booleanMap.put("f", Boolean.FALSE);
+		booleanMap.put("0", Boolean.FALSE);
+		booleanMap.put("off", Boolean.FALSE);
+		booleanMap.put("no", Boolean.FALSE);
+		booleanMap.put("n", Boolean.FALSE);
 	}
 
-    /**
-    *  Parses an input stream containing an application specification and assembles
-    *  a {@link ApplicationSpecification} from it.
-    *
-    *  @throws SpecificationParseException if the input stream cannot be fully
-    *  parsed or contains invalid data.
-    *
-    */
+	/**
+	*  Parses an input stream containing a component specification and assembles
+	*  a {@link ComponentSpecification} from it.
+	*
+	*  @throws DocumentParseException if the input stream cannot be fully
+	*  parsed or contains invalid data.
+	*
+	*/
 
-    public ApplicationSpecification parseApplicationSpecification(InputStream input,
-        String resourcePath)
-    throws SpecificationParseException
-    {
-        Document document;
+	public ComponentSpecification parseComponentSpecification(InputStream input, 
+		String resourcePath)
+	throws DocumentParseException
+	{
+		Document document;
 
-        this.resourcePath = resourcePath;
-		
 		try
 		{
-			document = parse(input, "application");
+			document = parse(new InputSource(input), resourcePath, "specification");
 
-            return convertApplicationSpecification(document);
-            }
+			return convertComponentSpecification(document);
+			}
 		finally
 		{
-			this.resourcePath = null;
-            }
+			setResourcePath(null);
+			}
 	}
 
-    private Document parse(InputStream input, String rootElementName)
-    throws SpecificationParseException
-    {
-        InputSource source;
-        Document document;
-        Element root;
-        boolean error = false;
-		
+	/**
+	*  Parses an input stream containing an application specification and assembles
+	*  a {@link ApplicationSpecification} from it.
+	*
+	*  @throws DocumentParseException if the input stream cannot be fully
+	*  parsed or contains invalid data.
+	*
+	*/
+
+	public ApplicationSpecification parseApplicationSpecification(InputStream input,
+		String resourcePath)
+	throws DocumentParseException
+	{
+		Document document;
+
 		try
 		{
-			if (parser == null)
+			document = parse(new InputSource(input), resourcePath, "application");
+
+			return convertApplicationSpecification(document);
+			}
+		finally
+		{
+			setResourcePath(null);
+			}
+	}
+
+
+	public SpecificationParser()
+	{
+		register("-//Primix Solutions//Tapestry Specification 1.0//EN", 
+				 "Tapestry_1_0.dtd");
+	}
+
+	private ComponentSpecification convertComponentSpecification(Document document)
+	throws DocumentParseException
+	{
+		Element root;
+		Node node;
+		ComponentSpecification result;
+
+		result = new ComponentSpecification();
+
+		root = document.getDocumentElement();
+
+		for (node = root.getFirstChild(); node != null; node = node.getNextSibling())
+		{
+			if (isElement(node, "class"))
 			{
-				parser = new DOMParser();
-                parser.setErrorHandler(this);
-                parser.setEntityResolver(this);
+				result.setComponentClassName(getValue(node));
+				continue;
+			}
 
-                // Turn on validation.  We use the setFeature() method since
-                // it doesn't throw java.lang.Exception (!).
+			if (isElement(node, "allow-body"))
+			{
+				result.setAllowBody(getBooleanValue(node));
+				continue;
+			}
 
-                parser.setFeature("http://xml.org/sax/features/validation", true);
+			if (isElement(node, "parameters"))
+			{
+				convertParameters(result, node);
+				continue;
+			}
 
-                // Leave ignorable whitespace (i.e., whitespace around tags) out
-                // of the DOM tree.
+			if (isElement(node, "components"))
+			{
+				convertComponents(result, node);
+				continue;
+			}
 
-                parser.setFeature("http://apache.org/xml/features/dom/include-ignorable-whitespace", 
-                    false);
+			if (isElement(node, "assets"))
+			{
+				convertAssets(result, node);
+				continue;
+			}
 
-                // We always traverse the entire tree.
+			if (isElement(node, "properties"))
+			{
+				convertProperties(result, node);
+				continue;
+			}
 
-                parser.setFeature("http://apache.org/xml/features/dom/defer-node-expansion", false);		
-                }
-			
-			source = new InputSource(input);
+		}
 
-            parser.parse(source);
-
-            document = parser.getDocument();
-
-            root = document.getDocumentElement();
-            if (!root.getTagName().equals(rootElementName))
-            {
-                throw new SpecificationParseException(
-                    "Incorrect document type; expected " + rootElementName + 
-                    " but received " + root.getTagName() + ".", resourcePath,
-                    null, null);
-            }
-
-            return document;
-            }
-		catch (SAXException se)
-		{
-			error = true;
-
-            throw new SpecificationParseException("Unable to parse " + resourcePath + ".", 
-                resourcePath, parser.getLocator(), se);
-            }
-		catch (IOException ioe)
-		{
-			error = true;
-
-            throw new SpecificationParseException("Error reading " + resourcePath + ".",
-                resourcePath, parser.getLocator(), ioe);
-            }
-		finally
-		{
-			if (error)
-				parser = null;	
-            else
-            {
-                try
-                {
-                    parser.reset();	
-                }
-                catch (Exception e)
-                {
-                    parser = null;
-                }
-            }
-            }	
+		return result;
 	}
 
-    public void warning(SAXParseException exception)
-    throws SAXException
-    {
-        throw exception;
-    }
-
-    public void error(SAXParseException exception)
-    throws SAXException
-    {
-        throw exception;
-    }
-
-    public void fatalError(SAXParseException exception)
-    throws SAXException
-    {
-        throw exception;
-    }
-
-    /**
-    *  Handles the public reference <code>-//Primix Solutions//Tapestry Specification 1.0//EN</code>
-    *  by resolving it to the input stream of the <code>Tapestry_1_0.dtd</code>
-    *  resource.
-    *
-    */
-
-    public InputSource resolveEntity(String publicId,
-        String systemId)
-    throws SAXException,
-    IOException
-    {
-
-        if (publicId.equals("-//Primix Solutions//Tapestry Specification 1.0//EN"))
-        {
-            InputStream stream;
-
-            stream = getClass().getResourceAsStream("Tapestry_1_0.dtd");
-
-            return new InputSource(stream);
-        }
-
-        // Use default behavior.
-
-        return null;
-    }
-
-    private ComponentSpecification convertComponentSpecification(Document document)
-    throws SpecificationParseException
-    {
-        Element root;
-        Node node;
-        ComponentSpecification result;
-
-        result = new ComponentSpecification();
-
-        root = document.getDocumentElement();
-
-        for (node = root.getFirstChild(); node != null; node = node.getNextSibling())
-        {
-            if (isElement(node, "class"))
-            {
-                result.setComponentClassName(getValue(node));
-                continue;
-            }
-
-            if (isElement(node, "allow-body"))
-            {
-                result.setAllowBody(getBooleanValue(node));
-                continue;
-            }
-
-            if (isElement(node, "parameters"))
-            {
-                convertParameters(result, node);
-                continue;
-            }
-
-            if (isElement(node, "components"))
-            {
-                convertComponents(result, node);
-                continue;
-            }
-
-            if (isElement(node, "assets"))
-            {
-                convertAssets(result, node);
-                continue;
-            }
-
-            if (isElement(node, "properties"))
-            {
-                convertProperties(result, node);
-                continue;
-            }
-
-        }
-
-        return result;
-    }
-
-    private ApplicationSpecification convertApplicationSpecification(Document document)
-    throws SpecificationParseException
-    {
-        Element root;
-        Node node;
-        ApplicationSpecification specification;
-
-        specification = new ApplicationSpecification();
-
-        root = document.getDocumentElement();
-
-        for (node = root.getFirstChild(); node != null; node = node.getNextSibling())
-        {
-            if (isElement(node, "name"))
-            {
-                specification.setName(getValue(node));
-                continue;
-            }
-
-            if (isElement(node, "engine-class"))
-            {
-                specification.setEngineClassName(getValue(node));
-                continue;
-            }
-
-            if (isElement(node, "page"))
-            {
-                convertPage(specification, node);
-                continue;
-            }
-
-            if (isElement(node, "component-alias"))
-            {
-                convertComponentAlias(specification, node);
-                continue;
-            }
-
-            if (isElement(node, "properties"))
-            {
-                convertProperties(specification, node);
-                continue;
-            }
-        }
-
-        return specification;
-    }
-
-    private void convertPage(ApplicationSpecification specification, Node node)
-    throws SpecificationParseException
-    {
-        Node child;
-        String name = null;
-        PageSpecification page;
-
-        page = new PageSpecification();
-
-        for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
-        {
-            if (isElement(child, "name"))
-            {
-                name = getValue(child);
-                continue;
-            }
-
-            if (isElement(child, "specification-path"))
-            {
-                page.setSpecificationPath(getValue(child));
-                continue;
-            }
-
-        }
-
-        specification.setPageSpecification(name, page);
-    }
-
-    private void convertComponentAlias(ApplicationSpecification specification, Node node)
-    throws SpecificationParseException
-    {
-        Node child;
-        String alias = null;
-        String path = null;
-
-        for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
-        {
-            if (isElement(child, "alias"))
-            {
-                alias = getValue(child);
-                continue;
-            }
-
-            if (isElement(child, "specification-path"))
-            {
-                path = getValue(child);
-                continue;
-            }
-        }
-
-        specification.setComponentAlias(alias, path);
-
-    }
-
-    private void convertParameters(ComponentSpecification specification, Node node)
-    throws SpecificationParseException
-    {
-        Node child;
-
-        for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
-        {
-            if (isElement(child, "allow-informal-parameters"))
-            {
-                specification.setAllowInformalParameters(getBooleanValue(child));
-                continue;
-            }
-
-            if (isElement(child, "parameter"))
-            {
-                convertParameter(specification, child);
-                continue;
-            }
-        }
-    }
-
-    private void convertParameter(ComponentSpecification specification, Node node)
-    throws SpecificationParseException
-    {
-        Node child;
-        String name = null;
-        ParameterSpecification parameter;
-
-        parameter = new ParameterSpecification();
-
-        for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
-        {
-            if (isElement(child, "name"))
-            {
-                name = getValue(child);
-                continue;
-            }
-
-            if (isElement(child, "java-type"))
-            {
-                parameter.setType(getValue(child));
-                continue;
-            }
-
-            if (isElement(child, "required"))
-            {
-                parameter.setRequired(getBooleanValue(child));
-                continue;
-            }
-        }
-
-        specification.addParameter(name, parameter);
-
-    }
-
-    private void convertComponents(ComponentSpecification specification, Node node)
-    throws SpecificationParseException
-    {
-        Node child;
-
-        for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
-        {
-            if (isElement(child, "component"))
-            {
-                convertComponent(specification, child);
-                continue;
-            }
-        }
-    }
-
-    private void convertComponent(ComponentSpecification specification, Node node)
-    throws SpecificationParseException
-    {
-        ContainedComponent contained;
-        Node child;
-        String id = null;
-
-        contained = new ContainedComponent();
-
-        for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
-        {
-            if (isElement(child, "id"))
-            {
-                id = getId(child);
-                continue;
-            }
-
-            if (isElement(child, "type"))
-            {
-                contained.setType(getValue(child));
-                continue;
-            }
-
-            if (isElement(child, "bindings"))
-            {
-                convertBindings(contained, child);
-                continue;
-            }
-
-        }
-
-        specification.addComponent(id, contained);
-    }
-
-    private void convertBindings(ContainedComponent contained, Node node)
-    throws SpecificationParseException
-    {
-        Node child;
-
-        for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
-        {
-            if (isElement(child, "binding"))
-            {
-                convertBinding(contained, child, BindingType.DYNAMIC, "property-path");
-                continue;
-            }
-
-            if (isElement(child, "static-binding"))
-            {
-                convertBinding(contained, child, BindingType.STATIC, "value");
-                continue;
-            }
-
-            if (isElement(child, "inherited-binding"))
-            {
-                convertBinding(contained, child, BindingType.INHERITED, "parameter-name");
-                continue;
-            }
-
-            if (isElement(child, "field-binding"))
-            {
-                convertBinding(contained, child, BindingType.FIELD, "field-name");
-                continue;
-            }
-        }
-    }
-
-    private void convertBinding(ContainedComponent contained, Node node,
-        BindingType type, String innerElementName)
-    throws SpecificationParseException
-    {
-        Node child;
-        String name = null;
-        String value = null;
-
-        for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
-        {
-            if (isElement(child, "name"))
-            {
-                name = getValue(child);
-                continue;
-            }
-
-            if (isElement(child, innerElementName))
-            {
-                value = getValue(child);
-                continue;
-            }
-        }
-
-        contained.setBinding(name, new BindingSpecification(type, value));	
-    }
-
-    private void convertAssets(ComponentSpecification specification, Node node)
-    throws SpecificationParseException
-    {
-        Node child;
-
-        for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
-        {
-            // <internal-asset> has been deprecated, replaced with
-            // <context-asset>
-
-            if (isElement(child, "internal-asset") ||
-                isElement(child, "context-asset"))
-            {
-                convertAsset(specification, child, AssetType.CONTEXT, "path");
-                continue;
-            }
-
-            if (isElement(child, "external-asset"))
-            {
-                convertAsset(specification, child,  AssetType.EXTERNAL, "URL");
-                continue;
-            }
-
-            if (isElement(child, "private-asset"))
-            {
-                convertAsset(specification, child, AssetType.PRIVATE, "resource-path");
-                continue;
-            }
-        }
-    }
-
-    private void convertAsset(ComponentSpecification specification, Node node,
-        AssetType type, String innerElementName)
-    throws SpecificationParseException
-    {
-        Node child;
-        String name = null;
-        String path = null;
-
-        for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
-        {
-            if (isElement(child, "name"))
-            {
-                name = getValue(child);
-                continue;
-            }
-
-            if (isElement(child, innerElementName))
-            {
-                path = getValue(child);
-                continue;
-            }
-        }
-
-        specification.addAsset(name, new AssetSpecification(type, path));
-    }
-
-    private void convertProperties(IPropertyHolder holder, Node node)
-    throws SpecificationParseException
-    {
-        Node child;
-
-        for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
-        {
-            if (isElement(child, "property"))
-            {
-                convertProperty(holder, child);
-                continue;
-            }
-        }
-    }
-
-    private void convertProperty(IPropertyHolder holder, Node node)
-    throws SpecificationParseException
-    {
-        Node child;
-        String name = null;
-        String value = null;
-
-        for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
-        {
-            if (isElement(child, "name"))
-            {
-                name = getValue(child);
-                continue;
-            }
-
-            if (isElement(child, "value"))
-            {
-                value = getValue(child);
-                continue;
-            }
-        }
-
-        holder.setProperty(name, value);
-    }
-
-    private boolean isElement(Node node, String elementName)
-    throws SpecificationParseException
-    {
-        if (node.getNodeType() != Node.ELEMENT_NODE)
-            return false;
-
-        // Cast it to Element
-
-        Element element = (Element)node;
-
-        // Note:  Using Xerces 1.0.3 and deferred DOM loading
-        // (which is explicitly turned off), this sometimes
-        // throws a NullPointerException.
-
-        return element.getTagName().equals(elementName);
-
-    }	
-
-    /**
-    *  Returns the value of an {@link Element} node.  That is, all the {@link Text}
-    *  nodes appended together.  Invokes trim() to remove leading and trailing spaces.
-    *
-    */
-
-    private String getValue(Node node)
-    {
-        String result;
-        Node child;
-        Text text;
-        StringBuffer buffer;
-
-        buffer = new StringBuffer();
-
-        for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
-        {
-            text = (Text)child;
-
-            buffer.append(text.getData());
-        }
-
-        result = buffer.toString().trim();
-
-        return result;
-    }
-
-    /**
-    *  Returns the value of an {@link Element} node (via {@link #getValue(Node)}),
-    *  but then validates that the result is a good identifier (starts with a
-    *  letter, contains letters, numbers, dashes, underscore).
-    *
-    */
-
-    private String getId(Node node)
-    throws SpecificationParseException
-    {
-        String result = getValue(node);
-        char[] array = result.toCharArray();
-        char ch;
-        boolean fail = false;
-
-        for (int i = 0; i < array.length; i++)
-        {
-            ch = array[i];
-
-            if (i == 0)
-                fail = ! Character.isLetter(ch);
-            else
-            {
-                fail = ! (Character.isLetter(ch) ||
-                    Character.isDigit(ch) ||
-                    ch == '-' ||
-                    ch == '_');
-            }
-
-            if (fail)
-                throw new SpecificationParseException
-                    (result + " is not a valid identifier (in element " +
-                    getNodePath(node.getParentNode()) + ").",
-                    resourcePath, null, null);
-        }
-
-        return result;
-    }
-
-    private boolean getBooleanValue(Node node)
-    throws SpecificationParseException
-    {
-        String key;
-        Boolean value;
-
-        key = getValue(node).toLowerCase();
-
-        value = (Boolean)booleanMap.get(key);
-
-        if (value == null)
-            throw new SpecificationParseException(
-                key + " can't be converted to boolean (in element " +
-                getNodePath(node.getParentNode()) + ").",
-                resourcePath, null, null);
-
-        return value.booleanValue();
-    }
-
-    private String getNodePath(Node node)
-    {
-        String[] path;
-        int count = 0;
-        int i;
-        boolean first = true;
-        String result;
-        StringBuffer buffer;
-        int length = 0;
-        String nodeName;
-
-        path = new String[20];
-        while (node != null)
-        {
-            nodeName = node.getNodeName();
-            path[count++] = nodeName;
-            node = node.getParentNode();
-
-            length += nodeName.length() + 1;
-        }
-
-        buffer = new StringBuffer(length);
-
-        for (i = count - 1; i >= 0; i--)
-        {
-            if (first)
-                first = false;
-            else
-                buffer.append('.');
-
-            buffer.append(path[i]);
-        }
-
-        result = buffer.toString();
-
-        return result;
-    }		
+	private ApplicationSpecification convertApplicationSpecification(Document document)
+	throws DocumentParseException
+	{
+		Element root;
+		Node node;
+		ApplicationSpecification specification;
+
+		specification = new ApplicationSpecification();
+
+		root = document.getDocumentElement();
+
+		for (node = root.getFirstChild(); node != null; node = node.getNextSibling())
+		{
+			if (isElement(node, "name"))
+			{
+				specification.setName(getValue(node));
+				continue;
+			}
+
+			if (isElement(node, "engine-class"))
+			{
+				specification.setEngineClassName(getValue(node));
+				continue;
+			}
+
+			if (isElement(node, "page"))
+			{
+				convertPage(specification, node);
+				continue;
+			}
+
+			if (isElement(node, "component-alias"))
+			{
+				convertComponentAlias(specification, node);
+				continue;
+			}
+
+			if (isElement(node, "properties"))
+			{
+				convertProperties(specification, node);
+				continue;
+			}
+		}
+
+		return specification;
+	}
+
+	private void convertPage(ApplicationSpecification specification, Node node)
+	throws DocumentParseException
+	{
+		Node child;
+		String name = null;
+		PageSpecification page;
+
+		page = new PageSpecification();
+
+		for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
+		{
+			if (isElement(child, "name"))
+			{
+				name = getValue(child);
+				continue;
+			}
+
+			if (isElement(child, "specification-path"))
+			{
+				page.setSpecificationPath(getValue(child));
+				continue;
+			}
+
+		}
+
+		specification.setPageSpecification(name, page);
+	}
+
+	private void convertComponentAlias(ApplicationSpecification specification, Node node)
+	throws DocumentParseException
+	{
+		Node child;
+		String alias = null;
+		String path = null;
+
+		for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
+		{
+			if (isElement(child, "alias"))
+			{
+				alias = getValue(child);
+				continue;
+			}
+
+			if (isElement(child, "specification-path"))
+			{
+				path = getValue(child);
+				continue;
+			}
+		}
+
+		specification.setComponentAlias(alias, path);
+
+	}
+
+	private void convertParameters(ComponentSpecification specification, Node node)
+	throws DocumentParseException
+	{
+		Node child;
+
+		for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
+		{
+			if (isElement(child, "allow-informal-parameters"))
+			{
+				specification.setAllowInformalParameters(getBooleanValue(child));
+				continue;
+			}
+
+			if (isElement(child, "parameter"))
+			{
+				convertParameter(specification, child);
+				continue;
+			}
+		}
+	}
+
+	private void convertParameter(ComponentSpecification specification, Node node)
+	throws DocumentParseException
+	{
+		Node child;
+		String name = null;
+		ParameterSpecification parameter;
+
+		parameter = new ParameterSpecification();
+
+		for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
+		{
+			if (isElement(child, "name"))
+			{
+				name = getValue(child);
+				continue;
+			}
+
+			if (isElement(child, "java-type"))
+			{
+				parameter.setType(getValue(child));
+				continue;
+			}
+
+			if (isElement(child, "required"))
+			{
+				parameter.setRequired(getBooleanValue(child));
+				continue;
+			}
+		}
+
+		specification.addParameter(name, parameter);
+
+	}
+
+	private void convertComponents(ComponentSpecification specification, Node node)
+	throws DocumentParseException
+	{
+		Node child;
+
+		for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
+		{
+			if (isElement(child, "component"))
+			{
+				convertComponent(specification, child);
+				continue;
+			}
+		}
+	}
+
+	private void convertComponent(ComponentSpecification specification, Node node)
+	throws DocumentParseException
+	{
+		ContainedComponent contained;
+		Node child;
+		String id = null;
+
+		contained = new ContainedComponent();
+
+		for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
+		{
+			if (isElement(child, "id"))
+			{
+				id = getId(child);
+				continue;
+			}
+
+			if (isElement(child, "type"))
+			{
+				contained.setType(getValue(child));
+				continue;
+			}
+
+			if (isElement(child, "bindings"))
+			{
+				convertBindings(contained, child);
+				continue;
+			}
+
+		}
+
+		specification.addComponent(id, contained);
+	}
+
+	private void convertBindings(ContainedComponent contained, Node node)
+	throws DocumentParseException
+	{
+		Node child;
+
+		for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
+		{
+			if (isElement(child, "binding"))
+			{
+				convertBinding(contained, child, BindingType.DYNAMIC, "property-path");
+				continue;
+			}
+
+			if (isElement(child, "static-binding"))
+			{
+				convertBinding(contained, child, BindingType.STATIC, "value");
+				continue;
+			}
+
+			if (isElement(child, "inherited-binding"))
+			{
+				convertBinding(contained, child, BindingType.INHERITED, "parameter-name");
+				continue;
+			}
+
+			if (isElement(child, "field-binding"))
+			{
+				convertBinding(contained, child, BindingType.FIELD, "field-name");
+				continue;
+			}
+		}
+	}
+
+	private void convertBinding(ContainedComponent contained, Node node,
+		BindingType type, String innerElementName)
+	throws DocumentParseException
+	{
+		Node child;
+		String name = null;
+		String value = null;
+
+		for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
+		{
+			if (isElement(child, "name"))
+			{
+				name = getValue(child);
+				continue;
+			}
+
+			if (isElement(child, innerElementName))
+			{
+				value = getValue(child);
+				continue;
+			}
+		}
+
+		contained.setBinding(name, new BindingSpecification(type, value));	
+	}
+
+	private void convertAssets(ComponentSpecification specification, Node node)
+	throws DocumentParseException
+	{
+		Node child;
+
+		for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
+		{
+			// <internal-asset> has been deprecated, replaced with
+			// <context-asset>
+
+			if (isElement(child, "internal-asset") ||
+				isElement(child, "context-asset"))
+			{
+				convertAsset(specification, child, AssetType.CONTEXT, "path");
+				continue;
+			}
+
+			if (isElement(child, "external-asset"))
+			{
+				convertAsset(specification, child,  AssetType.EXTERNAL, "URL");
+				continue;
+			}
+
+			if (isElement(child, "private-asset"))
+			{
+				convertAsset(specification, child, AssetType.PRIVATE, "resource-path");
+				continue;
+			}
+		}
+	}
+
+	private void convertAsset(ComponentSpecification specification, Node node,
+		AssetType type, String innerElementName)
+	throws DocumentParseException
+	{
+		Node child;
+		String name = null;
+		String path = null;
+
+		for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
+		{
+			if (isElement(child, "name"))
+			{
+				name = getValue(child);
+				continue;
+			}
+
+			if (isElement(child, innerElementName))
+			{
+				path = getValue(child);
+				continue;
+			}
+		}
+
+		specification.addAsset(name, new AssetSpecification(type, path));
+	}
+
+	private void convertProperties(IPropertyHolder holder, Node node)
+	throws DocumentParseException
+	{
+		Node child;
+
+		for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
+		{
+			if (isElement(child, "property"))
+			{
+				convertProperty(holder, child);
+				continue;
+			}
+		}
+	}
+
+	private void convertProperty(IPropertyHolder holder, Node node)
+	throws DocumentParseException
+	{
+		Node child;
+		String name = null;
+		String value = null;
+
+		for (child = node.getFirstChild(); child != null; child = child.getNextSibling())
+		{
+			if (isElement(child, "name"))
+			{
+				name = getValue(child);
+				continue;
+			}
+
+			if (isElement(child, "value"))
+			{
+				value = getValue(child);
+				continue;
+			}
+		}
+
+		holder.setProperty(name, value);
+	}
+
+
+	private boolean getBooleanValue(Node node)
+	throws DocumentParseException
+	{
+		String key;
+		Boolean value;
+
+		key = getValue(node).toLowerCase();
+
+		value = (Boolean)booleanMap.get(key);
+
+		if (value == null)
+			throw new DocumentParseException(
+				key + " can't be converted to boolean (in element " +
+				getNodePath(node.getParentNode()) + ").",
+				getResourcePath(), null);
+
+		return value.booleanValue();
+	}
 
 }
+
