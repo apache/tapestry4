@@ -48,12 +48,11 @@ import com.primix.foundation.*;
  * the instance is stored within the {@link HttpSession}, all page state information
  * will be carried along to other servers in the cluster.
  *
- * <p>TBD:  A custom serialization method could be very useful.  It seems to me that
- * in a real application, the page recorders
- * ({@link SimplePageRecorder}) will be the only large objects in the
- * session.  They are also mostly Strings, and will compress nicely.  We could implement
- * a <code>writeObject()</code> method that writes the recorders more effeciently.
- * Also, the recorders themselves could serialize themselves more efficiently.
+ *  <p>SimpleApplications are usually used without subclassing.  Instead, a 
+ *  visit object is specified.  To facilitate this, the application specification
+ *  may include a property, <code>com.primix.tapestry.visit-class</code>
+ *  which is the class of an object to instantiate when a visit is needed.  See
+ *  {@link #createVisit()} for more details.
  *
  *  @author Howard Ship
  *  @version $Id$
@@ -63,6 +62,14 @@ import com.primix.foundation.*;
  
 public class SimpleApplication extends AbstractApplication
 {
+    /**
+     *  The name of the application specification property used to specify the
+     *  class of the visit object.
+     *
+     */
+
+    public static final String VISIT_CLASS_PROPERTY_NAME = "com.primix.tapestry.visit-class";
+
 	private final static int MAP_SIZE = 3;
 
 	private Map recorders;
@@ -233,5 +240,39 @@ public class SimpleApplication extends AbstractApplication
 
 		return result;
 	}
+
+    /**
+     *  Creates a new visit object by looking up the name of the class
+     *  in the application specification.
+     *
+     *  <p>Subclasses may want to override this method if some other means
+     *  of instantiating a visit object is required.
+     */
+
+    public Object createVisit()
+    {
+        String visitClassName;
+        Class visitClass;
+
+        visitClassName = specification.getProperty(VISIT_CLASS_PROPERTY_NAME);
+        if (visitClassName == null)
+            throw new ApplicationRuntimeException(
+            "Could not create visit object because property " +
+            VISIT_CLASS_PROPERTY_NAME + " was not specified in the application specification.");
+
+        visitClass = getResourceResolver().findClass(visitClassName);
+
+        try
+        {
+            return visitClass.newInstance();
+        }
+        catch (Throwable t)
+        {
+            throw new ApplicationRuntimeException(
+                "Unable to instantiate visit object from class " +
+                visitClassName + ".", t);
+        }
+
+    }
 
 }
