@@ -8,9 +8,9 @@
 # Watertown, MA 02472
 # http://www.primix.com
 # mailto:hship@primix.com
-# 
+#
 # This library is free software.
-# 
+#
 # You may redistribute it and/or modify it under the terms of the GNU
 # Lesser General Public License as published by the Free Software Foundation.
 #
@@ -35,7 +35,7 @@ default: documentation
 include $(SYS_MAKEFILE_DIR)/CommonDefs.mk
 include $(SYS_MAKEFILE_DIR)/CommonRules.mk
 
-DOCBOOK_XSL_DIR := $(DOCBOOK_DIR)/docbook-xsl-1.42
+DOCBOOK_XSL_DIR := $(DOCBOOK_DIR)/docbook-xsl-1.44
 DOCBOOK_DTD_DIR := $(DOCBOOK_DIR)/docbookx412
 
 HTML_DIR := html
@@ -47,7 +47,7 @@ HTML_PACKAGE_FILE := $(basename $(MAIN_DOCUMENT)).tar.gz
 DISTRO_STAMP_FILE := $(DOCBOOK_DIR)/.distro-stamp
 
 DOCBOOK_DISTROS := \
-	$(DOCBOOK_DIR)/docbook-xsl-1.42.tar.gz \
+	$(DOCBOOK_DIR)/docbook-xsl-1.44.tar.gz \
 	$(DOCBOOK_DIR)/docbkx412.tar.gz
 
 initialize: setup-jbe-util $(DISTRO_STAMP_FILE)
@@ -74,7 +74,7 @@ XSL_CLASSPATH := \
  	$(XALAN_DIR)/bin/xalan.jar
  	
 MOD_HTML_OPTS := \
-  -param use.id.as.filename 1 
+  -param use.id.as.filename 1
   
 ifdef USE_STANDARD_IMAGES
 
@@ -146,7 +146,7 @@ ifeq "$(FINAL_HTML_INSTALL_DIR)" ""
 endif
 	$(call NOTE, Installing HTML documentation to $(FINAL_HTML_INSTALL_DIR) ...)
 	@$(MKDIRS) $(FINAL_HTML_INSTALL_DIR)
-	@$(call COPY_TREE, $(HTML_DIR), . , $(FINAL_HTML_INSTALL_DIR))	
+	@$(call COPY_TREE, $(HTML_DIR), . , $(FINAL_HTML_INSTALL_DIR))
 
 package-html: $(HTML_PACKAGE_FILE)
 
@@ -155,7 +155,7 @@ $(HTML_PACKAGE_FILE): html
 	$(GNUTAR) czf $(HTML_PACKAGE_FILE) --directory=$(HTML_DIR) .
 
 # Rules for dealing with DOCUMENT_RESOURCES, generally images (or directories of images)
-# that should be included with the generated HTML. 
+# that should be included with the generated HTML.
 
 ifneq "$(DOCUMENT_RESOURCES)" ""
 FINAL_DOCUMENT_RESOURCES := \
