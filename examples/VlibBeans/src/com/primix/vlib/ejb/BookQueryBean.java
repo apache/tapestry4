@@ -7,6 +7,7 @@ import javax.sql.*;
 import java.sql.*;
 import javax.naming.*;
 import com.primix.foundation.jdbc.*;
+import com.primix.foundation.ejb.*;
 
 /*
  * Tapestry Web Application Framework
@@ -74,7 +75,7 @@ public class BookQueryBean implements SessionBean
 	 *
 	 */
 	 
-	private BookQueryResult[] results;
+	private Book[] results;
 	
 	/**
 	 *  Activates the bean.  Gets the DataSource from the environment.
@@ -93,7 +94,7 @@ public class BookQueryBean implements SessionBean
 		}
 		catch (NamingException e)
 		{
-			throw new EJBException("Could not lookup environment: " + e);
+			throw new XEJBException("Could not lookup environment.", e);
 		}
 			
 		try
@@ -102,7 +103,7 @@ public class BookQueryBean implements SessionBean
 		}
 		catch (NamingException e)
 		{
-			throw new EJBException("Could not lookup data source: " + e);
+			throw new XEJBException("Could not lookup data source.", e);
 		}
 
 	}
@@ -156,7 +157,7 @@ public class BookQueryBean implements SessionBean
 		}
 		catch (SQLException e)
 		{
-			throw new EJBException("Unable to get database connection from pool: " + e);
+			throw new XEJBException("Unable to get database connection from pool.", e);
 		}
 	}
 	
@@ -170,14 +171,14 @@ public class BookQueryBean implements SessionBean
 		return results.length;
 	}	
 	
-	public BookQueryResult[] get(int offset, int length)
+	public Book[] get(int offset, int length)
 	{
-		BookQueryResult[] result;
+		Book[] result;
 		
 		// Create a new array and copy the requested
 		// results into it.
 		
-		result = new BookQueryResult[length];
+		result = new Book[length];
 		System.arraycopy(results, offset, result, 0, length);
 		
 		return result;
@@ -202,7 +203,7 @@ public class BookQueryBean implements SessionBean
 			}
 			catch (SQLException e)
 			{
-				throw new EJBException("Unable to create query statement: " + e);
+				throw new XEJBException("Unable to create query statement.", e);
 			}
 			
 			processQuery(statement);
@@ -240,7 +241,7 @@ public class BookQueryBean implements SessionBean
 			}
 			catch (SQLException e)
 			{
-				throw new EJBException("Unable to create query statement: " + e);
+				throw new XEJBException("Unable to create query statement.", e);
 			}
 			
 			processQuery(statement);
@@ -278,7 +279,7 @@ public class BookQueryBean implements SessionBean
 			}
 			catch (SQLException e)
 			{
-				throw new EJBException("Unable to create query statement: " + e);
+				throw new XEJBException("Unable to create query statement.", e);
 			}
 			
 			processQuery(statement);
@@ -303,7 +304,7 @@ public class BookQueryBean implements SessionBean
 		}
 		catch (SQLException e)
 		{
-			throw new EJBException("Unable to execute query: " + e);
+			throw new XEJBException("Unable to execute query.", e);
 		}
 		
 		try
@@ -312,7 +313,7 @@ public class BookQueryBean implements SessionBean
 		}
 		catch (SQLException e)
 		{
-			throw new EJBException("Unable to process query results: " + e);
+			throw new XEJBException("Unable to process query results.", e);
 		}
 		finally
 		{
@@ -328,7 +329,7 @@ public class BookQueryBean implements SessionBean
 		int column;
 		
 		list = new ArrayList();
-		columns = new Object[BookQueryResult.N_COLUMNS];
+		columns = new Object[Book.N_COLUMNS];
 		
 		while (set.next())
 		{
@@ -338,28 +339,28 @@ public class BookQueryBean implements SessionBean
 			
 			column = 1;
 			
-			columns[BookQueryResult.PRIMARY_KEY_COLUMN] =
+			columns[Book.PRIMARY_KEY_COLUMN] =
 				set.getObject(column++);
-			columns[BookQueryResult.TITLE_COLUMN] = set.getString(column++);
-			columns[BookQueryResult.DESCRIPTION_COLUMN] = set.getString(column++);
-			columns[BookQueryResult.ISBN_COLUMN] = set.getString(column++);
-			columns[BookQueryResult.LEND_COUNT_COLUMN] = set.getObject(column++);
-			columns[BookQueryResult.OWNER_PK_COLUMN] = set.getObject(column++);
-			columns[BookQueryResult.OWNER_NAME_COLUMN] = 
+			columns[Book.TITLE_COLUMN] = set.getString(column++);
+			columns[Book.DESCRIPTION_COLUMN] = set.getString(column++);
+			columns[Book.ISBN_COLUMN] = set.getString(column++);
+			columns[Book.LEND_COUNT_COLUMN] = set.getObject(column++);
+			columns[Book.OWNER_PK_COLUMN] = set.getObject(column++);
+			columns[Book.OWNER_NAME_COLUMN] = 
 				buildName(set.getString(column++), set.getString(column++));
-			columns[BookQueryResult.HOLDER_PK_COLUMN] = set.getObject(column++);
-			columns[BookQueryResult.HOLDER_NAME_COLUMN] =
+			columns[Book.HOLDER_PK_COLUMN] = set.getObject(column++);
+			columns[Book.HOLDER_NAME_COLUMN] =
 				buildName(set.getString(column++), set.getString(column++));
-			columns[BookQueryResult.PUBLISHER_PK_COLUMN] = set.getObject(column++);
-			columns[BookQueryResult.PUBLISHER_NAME_COLUMN] = set.getString(column++);
-			columns[BookQueryResult.AUTHOR_COLUMN] = set.getString(column++);
-			columns[BookQueryResult.RATING_COLUMN] = set.getObject(column++);
+			columns[Book.PUBLISHER_PK_COLUMN] = set.getObject(column++);
+			columns[Book.PUBLISHER_NAME_COLUMN] = set.getString(column++);
+			columns[Book.AUTHOR_COLUMN] = set.getString(column++);
+			columns[Book.RATING_COLUMN] = set.getObject(column++);
 			
-			list.add(new BookQueryResult(columns));
+			list.add(new Book(columns));
 		}
 		
-		results = new BookQueryResult[list.size()];
-		results = (BookQueryResult[])list.toArray(results);	
+		results = new Book[list.size()];
+		results = (Book[])list.toArray(results);	
 	}
 	
 	private String buildName(String firstName, String lastName)

@@ -53,7 +53,7 @@ public class MyBooks extends BasePage
 	private Handle handle;
 	private IBookQuery query;
 	
-	private BookQueryResult currentBook;
+	private Book currentBook;
 	
 	public MyBooks(IApplication application, ComponentSpecification componentSpecification)
 	{
@@ -131,7 +131,7 @@ public class MyBooks extends BasePage
 	}
 			
 			
-	public BookQueryResult[] getOwnedBooks()
+	public Book[] getOwnedBooks()
 	{
 		IBookQuery query;
 		int count;
@@ -152,12 +152,12 @@ public class MyBooks extends BasePage
 		}
 	}
 
-	public void setCurrentBook(BookQueryResult value)
+	public void setCurrentBook(Book value)
 	{
 		currentBook = value;
 	}
 	
-	public BookQueryResult getCurrentBook()
+	public Book getCurrentBook()
 	{
 		return currentBook;
 	}
@@ -189,6 +189,13 @@ public class MyBooks extends BasePage
 			public void directTriggered(IComponent component, String[] context,
 					IRequestCycle cycle)
 			{
+				EditBook page;
+				Integer bookPK;
+				
+				bookPK = new Integer(context[0]);
+				page = (EditBook)cycle.getPage("EditBook");
+				
+				page.beginEdit(bookPK, cycle);
 			}
 		};
 	}

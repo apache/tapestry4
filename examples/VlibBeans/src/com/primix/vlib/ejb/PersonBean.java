@@ -3,6 +3,7 @@ package com.primix.vlib.ejb;
 import javax.ejb.*;
 import java.rmi.*;
 import java.util.*;
+import com.primix.foundation.ejb.*;
 
 /*
  * Tapestry Web Application Framework
@@ -112,7 +113,7 @@ public class PersonBean extends AbstractEntityBean
 	
 	
 	public Integer ejbCreate(String lastName, String firstName, String password)
-	throws CreateException, RemoteException
+	throws RemoteException
 	{
 		this.lastName = lastName;
 		this.firstName = firstName;
@@ -127,7 +128,6 @@ public class PersonBean extends AbstractEntityBean
 	}
 
 	public void ejbPostCreate(String lastName, String firstName, String password)
-	throws CreateException, RemoteException
 	{
 		// Do nothing
 	}

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- edited with XML Spy v3.0 NT (http://www.xmlspy.com) by Howard Ship (Primix Solutions) -->
+<!--$Id$-->
 <!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"  "http://tapestry.primix.com/dtd/Tapestry_1_0.dtd">
 <specification>
-	<class>com.primix.tapestry.BaseComponent</class>
+	<class>com.primix.vlib.components.Border</class>
 	<parameters>
 		<allow-informal-parameters>no</allow-informal-parameters>
 		<parameter>
@@ -41,7 +42,7 @@
 			<bindings>
 				<binding>
 					<name>listener</name>
-					<property-path>page.application.myBooksListener</property-path>
+					<property-path>myBooksListener</property-path>
 				</binding>
 				<binding>
 					<name>enabled</name>
@@ -99,7 +100,7 @@
 			<bindings>
 				<binding>
 					<name>listener</name>
-					<property-path>page.application.logoutListener</property-path>
+					<property-path>logoutListener</property-path>
 				</binding>
 			</bindings>
 		</component>

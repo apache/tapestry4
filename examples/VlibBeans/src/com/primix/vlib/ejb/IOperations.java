@@ -66,6 +66,7 @@ public interface IOperations extends EJBObject
 	throws CreateException, RemoteException;
 
 
+
 	/**
 	 *  Adds a book, which will be owned and help by the specified owner.
 	 *
@@ -78,7 +79,28 @@ public interface IOperations extends EJBObject
 	 
 	public IBook addBook(Integer ownerPK, String title, String author, String ISBN,
 						 String description, String publisherName)
-	throws CreateException, RemoteException;	
+	throws CreateException, RemoteException;
+		
+	/**
+	 *  Updates a book to an existing publisher.
+	 *
+	 *  <p>Returns the updated book.
+	 */
+
+	public IBook updateBook(Integer bookPK, String title, String author, String ISBN, 
+						 	String description, Integer holderPK, Integer publisherPK)
+	throws FinderException, RemoteException;
+
+	/**
+	 *  Updates a book for a unknown publisher.
+	 *
+	 *  <p>Returns the updated book.
+	 */
+
+	public IBook updateBook(Integer bookPK, String title, String author, String ISBN, 
+						 	String description, Integer holderPK, String publisherName)
+	throws CreateException, FinderException, RemoteException;
+
 
 	/**
 	 *  Retrieves the light-weight version of all {@link IPublisher} beans, sorted by name.
@@ -86,5 +108,14 @@ public interface IOperations extends EJBObject
 	 */
 	 
 	public Publisher[] getPublishers()
+	throws RemoteException;	
+
+	/**
+	 *  Retrieves the light-weight version of all the {@link IPerson} beans, sorted
+	 *  by last name, then by first name.
+	 *
+	 */
+	 
+	public Person[] getPersons()
 	throws RemoteException;	
 }

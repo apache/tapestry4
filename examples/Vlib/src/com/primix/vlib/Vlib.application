@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XML Spy v3.0 NT (http://www.xmlspy.com) by Howard Ship (Primix Solutions) -->
+<!-- $Id$ -->
 <!DOCTYPE application PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"  "http://tapestry.primix.com/dtd/Tapestry_1_0.dtd">
 <application>
 	<name>Primix Virtual Library</name>
@@ -26,6 +26,10 @@
 	<page>
 		<name>NewBook</name>
 		<specification-path>/com/primix/vlib/pages/NewBook.jwc</specification-path>
+	</page>
+	<page>
+		<name>EditBook</name>
+		<specification-path>/com/primix/vlib/pages/EditBook.jwc</specification-path>
 	</page>
 	<component-alias>
 		<alias>Border</alias>
