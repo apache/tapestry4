@@ -79,6 +79,7 @@ public class ValidSuite
         suite.addTest(new TestSuite(TestValidationDelegate.class));
         suite.addTest(new TestSuite(TestEmailValidator.class));
         suite.addTest(new TestSuite(TestPatternValidator.class));
+		suite.addTest(new TestSuite(TestUrlValidator.class));
 
         return suite;
     }
