@@ -278,7 +278,7 @@ public class TestTemplateParser extends TestCase
         TemplateToken[] tokens = run("AllStatic.html");
 
         assertTokenCount(tokens, 1);
-        assertTextToken(tokens[0], 0, 172);
+        assertTextToken(tokens[0], 0, 184);
     }
 
     public void testSingleEmptyTag() throws TemplateParseException
@@ -509,9 +509,9 @@ public class TestTemplateParser extends TestCase
         TemplateToken[] tokens = run("BasicLocalization.html");
 
         assertTokenCount(tokens, 3);
-        assertTextToken(tokens[0], 0, 37);
+        assertTextToken(tokens[0], 0, 35);
         assertLocalizationToken(tokens[1], "the.localization.key", null);
-        assertTextToken(tokens[2], 93, 122);
+        assertTextToken(tokens[2], 89, 117);
     }
 
     /**
@@ -557,9 +557,9 @@ public class TestTemplateParser extends TestCase
         TemplateToken[] tokens = run("EmptyLocalization.html");
 
         assertTokenCount(tokens, 3);
-        assertTextToken(tokens[0], 0, 64);
+        assertTextToken(tokens[0], 0, 62);
         assertLocalizationToken(tokens[1], "empty.localization", null);
-        assertTextToken(tokens[2], 101, 127);
+        assertTextToken(tokens[2], 97, 122);
     }
 
     /**
