@@ -12,10 +12,10 @@ import net.sf.tapestry.junit.TapestryTestCase;
  * 
  **/
 
-public class SimpleMockTest extends TapestryTestCase
+public class MockTestCase extends TapestryTestCase
 {
 
-    public SimpleMockTest(String name)
+    public MockTestCase(String name)
     {
         super(name);
     }
@@ -30,7 +30,12 @@ public class SimpleMockTest extends TapestryTestCase
         return tester;
     }
 
-    public void testInitialRequest()
+    /**
+     *  Test basics including the PageLink and DirectLink (w/o parameters).
+     * 
+     **/
+    
+    public void testSimple()
     throws Exception
     {
         attempt("/net/sf/tapestry/junit/mock/simple/Simple.xml");

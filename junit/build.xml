@@ -129,7 +129,7 @@
 		<arg line="--outputdir ${clover.report.dir}"/>
 		<arg line="--showSrc"/>
 		<arg line="--initstring ${clover.initstring}"/>
-		<arg line="--title 'Tapestry Release ${framework.version}'"/>
+		<arg line="--title 'Release ${framework.version}'"/>
   	</java>
   			    
   </target>

@@ -20,7 +20,7 @@ public class MockSuite
     {
         TestSuite suite = new TestSuite("Mock Servlet API Suite");
     
-        suite.addTestSuite(SimpleMockTest.class);
+        suite.addTestSuite(MockTestCase.class);
         
         return suite;
     }
