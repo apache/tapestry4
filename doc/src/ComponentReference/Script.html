@@ -148,7 +148,7 @@
 
 <table class="examples" cellpadding="4">
 <form>
-              <TBODY>
+
  <tr>
   <td>Username:</td><td><input size="12" 
                ></td>
@@ -161,16 +161,15 @@
  </tr>
 </form></table>
 
-<pre>
-&lt;body jwcid="body"&gt;
-&lt;span jwcid="<span class="jwcid">formFocusScript</span>"/&gt;
-&lt;form jwcid="loginForm"&gt;
+            <pre>
+&lt;body jwcid="@<a href="Body.html">Body</a>"&gt;
+&lt;span jwcid="<span class="jwcid">@<a href="Script.html">Script</a></span>" script=&quot;/com/mycorp/scripts/FormFocus.script&quot;/&gt;
+&lt;form jwcid="@<a href="Form.html">Form</a>" listener="ognl:listener.formSubmit"&gt;
  &lt;table cellpadding=
   "4"&gt;
-   &lt;tr&gt;&lt;td&gt;Username:&lt;/td&gt;&lt;td&gt;&lt;input jwcid="usernameTextField" size=
-  "12"/&gt;&lt;/td&gt;
+   &lt;tr&gt;&lt;td&gt;Username:&lt;/td&gt;&lt;td&gt;&lt;input jwcid="@<a href="TextField.html">TextField</a>" value="ognl:visit.username" size="12"/&gt;&lt;/td&gt;
   &lt;/tr&gt;
-   &lt;tr&gt;&lt;td&gt;Password:&lt;/td&gt;&lt;td&gt;&lt;input jwcid="passwordTextField" size="12"/&gt;&lt;/td&gt;
+   &lt;tr&gt;&lt;td&gt;Password:&lt;/td&gt;&lt;td&gt;&lt;input jwcid="@<a href="TextField.html">TextField</a>" value="ognl:visit.password" hidden=&quot;ognl:true&quot; size="12"/&gt;&lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr align="right"&gt;
    &lt;td colspan="2"&gt;&lt;input type="submit" value="Login"/&gt;&lt;/td&gt;
@@ -180,31 +179,10 @@
 &lt;/body&gt;
 
 
-&lt;component id="body" type="<A href="Body.html">Body</a>"/&gt;
-
-&lt;component id="loginForm" type="<A href="Form.html">Form</a>"&gt;
-    &lt;binding name="listener" expression="listener.formSubmit"/&gt;
-&lt;/component&gt;
-
-&lt;component id="usernameTextField" type="<A href="TextField.html">TextField</a>"&gt;
-    &lt;binding name="value" expression="visit.username"/&gt;
-&lt;/component&gt;
-
-&lt;component id="passwordTextField" type="<A href="TextField.html">TextField</a>"&gt;
-    &lt;binding name="value" expression="visit.password"/&gt;
-    &lt;field-binding name="hidden" field-name="Boolean.TRUE"/&gt;
-&lt;/component&gt;
-
-&lt;component id="<span class="jwcid">formFocusScript</span>" type="<A href="Script.html">Script</a>"&gt;
-    &lt;static-binding name="script"&gt;/com/mycorp/scripts/FormFocus.script&lt;/static-binding&gt;
-&lt;/component&gt;
-
-
 &lt;!-- Sets the focus to the first form element which is not hidden and not disabled. --&gt; 
 &lt;!-- /com/mycorp/scripts/FormFocus.script --&gt; 
 &lt;?xml version="1.0" encoding="UTF-8"?&gt;
-&lt;!DOCTYPE script PUBLIC "-//Howard Ship//Tapestry Script 1.1//EN"
-	"http://tapestry.sf.net/dtd/Script_1_1.dtd"&gt;
+&lt;!DOCTYPE script PUBLIC<br>	&quot;-//Howard Lewis Ship//Tapestry Script 1.2//EN&quot;<br>	&quot;http://tapestry.sf.net/dtd/Script_1_2.dtd&quot;&gt;<br>
 &lt;script&gt;
   &lt;body&gt;
 <b>&lt;![CDATA[</b> 
@@ -227,7 +205,8 @@ function setFocus() {
   &lt;/initialization&gt;
 &lt;/script&gt;
 </pre>
-</td></tr>
+          </td>
+        </tr>
 
 <tr>
  <td colspan="2"><hr></td>  
@@ -246,38 +225,28 @@ function setFocus() {
    resolved by the <A href="Script.html">Script</a> component.  
   <p>
 
-<pre>
-&lt;body jwcid="body"&gt;
-&lt;form jwcid="loginForm"&gt;
+            <pre>
+&lt;body jwcid="@<a href="Body.html">Body</a>"&gt;
+&lt;form jwcid="@<a href="Form.html">Form</a>" listener="ognl:listener.formSubmit"&gt;
  &lt;table cellpadding=
   "4"&gt;
-   &lt;tr&gt;&lt;td&gt;Username:&lt;/td&gt;&lt;td&gt;&lt;input jwcid="usernameTextField" size=
-  "12"/&gt;&lt;/td&gt;
+   &lt;tr&gt;&lt;td&gt;Username:&lt;/td&gt;&lt;td&gt;&lt;input jwcid="usernameTextField@<a href="TextField.html">TextField</a>" value="ognl:visit.username" size="12"/&gt;&lt;/td&gt;
   &lt;/tr&gt;
-   &lt;tr&gt;&lt;td&gt;Password:&lt;/td&gt;&lt;td&gt;&lt;input jwcid="passwordTextField" size="12"/&gt;&lt;/td&gt;
+   &lt;tr&gt;&lt;td&gt;Password:&lt;/td&gt;&lt;td&gt;&lt;input jwcid="@<a href="TextField.html">TextField</a>" value="ognl:visit.password" hidden=&quot;ognl:true&quot; size="12"/&gt;&lt;/td&gt;
   &lt;/tr&gt;
   &lt;tr align="right"&gt;
    &lt;td colspan="2"&gt;&lt;input type="submit" value="Login"/&gt;&lt;/td&gt;
   &lt;/tr&gt;
  &lt;/table&gt;
- &lt;span jwcid="<span class="jwcid">inputFocusScript</span>"/&gt;
+ &lt;span jwcid="<span class="jwcid">@<a href="Script.html">Script</a></span>" script=&quot;/com/mycorp/scripts/FormFocus.script&quot; <b>component</b>="ognl:components.usernameTextField"/&gt;
 &lt;/form&gt;
 &lt;/body&gt;
-
-
-&lt;component id="<span class="jwcid">inputFocusScript</span>" type="<A href="Script.html">Script</a>"&gt;
-    &lt;binding name="<b>component</b>" expression="components.usernameTextField"/&gt;
-    &lt;static-binding name="script"&gt;/com/mycorp/scripts/InputFocus.script&lt;/static-binding&gt;
-&lt;/component&gt;
 
 
 &lt;!-- Sets the focus to the specified input field if not hidden and not disabled. --&gt; 
 &lt;!-- /com/mycorp/scripts/InputFocus.script --&gt; 
 &lt;?xml version="1.0"?&gt;
-&lt;!DOCTYPE script PUBLIC 
-	"-//Howard Ship//Tapestry Script 1.1//EN"
-	"http://tapestry.sf.net/dtd/Script_1_1.dtd"&gt;
-
+&lt;!DOCTYPE script PUBLIC<br>	&quot;-//Howard Lewis Ship//Tapestry Script 1.2//EN&quot;<br>	&quot;http://tapestry.sf.net/dtd/Script_1_2.dtd&quot;&gt;<br>
 &lt;!--
 Selects the specified form input field on body load if the input type is not 
 "hidden" and the input field is not disabled.
@@ -285,11 +254,18 @@ Selects the specified form input field on body load if the input type is not
 Input symbols:
   component: the component input field to give focus
 --&gt;
+
+&lt;input-symbol key=&quot;<b>component</b>&quot; class=&quot;org.apache.tapestry.form.AbstractFormComponent&quot; required=&quot;yes&quot;/&gt;<br>
+&lt;let key=&quot;formObject&quot;&gt;<br>	document.${<b>component</b>.form.name}<br>&lt;/let&gt;</pre>
+            <pre>
+&lt;let key=&quot;componentObject&quot;&gt;<br>	${formObject}.${<b>component</b>.name}<br>&lt;/let&gt;</pre>
+            <pre></pre>
+            <pre>
 &lt;script&gt;
 
 &lt;body&gt;
 function setFocus() {
-    var inputField = document.${<b>component</b>.form.name}.${<b>component</b>.name};
+    var inputField = ${componentObject.name};
 
     if (inputField.type != "hidden") {
         if (inputField.disabled != true) {
@@ -306,9 +282,9 @@ function setFocus() {
 &lt;/initialization&gt;
 
 &lt;/script&gt;
-</pre> 
- 
- </td></tr>
+</pre>
+          </td>
+        </tr>
 </table></TD></TR>
 <tr>
  <td colspan="3"><hr></td>  
@@ -317,7 +293,7 @@ function setFocus() {
  <td align="left"><A href="Rollover.html"><IMG alt=Rollover src="common-images/prev.png"></a></td>  
  <td align="middle"><A href="index.html"><IMG alt="Component Index" src="common-images/home.png" ></a></td>  
  <td align="right"><A href="Select.html"><IMG alt=Select src="common-images/next.png"></a></td>  
-</tr></TBODY></TABLE>
+</tr></TABLE>
 
 </body>
 </html>

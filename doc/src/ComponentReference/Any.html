@@ -119,7 +119,7 @@
 </tr>
 </table>
 
-<pre>&lt;?xml version="1.0" encoding="ISO-8859-1" ?&gt; 
+            <pre>&lt;?xml version="1.0" encoding="ISO-8859-1" ?&gt; 
 &lt;order-list&gt;
  &lt;span jwcid="@<a href="Foreach.html">Foreach</a>" source="ognl:orderItemList" value=&quot;ognl:orderItem&quot;&gt;
   &lt;span jwcid="<span class="jwcid">orderItem</span>" element="order-item"&gt; 
@@ -147,10 +147,9 @@ public class OrderItemsXML extends BasePage {
         orderItem = value;        
     }
 
-    public void detach() {
+    protected void initialize() {
         orderItemList = null;
         orderItem = null;
-        super.detach();
     }
 }
 
@@ -183,8 +182,8 @@ public class OrderItem {
     public String getDescription() { return description; }
 }
 </pre>
-
- </td></tr></table>
+          </td>
+        </tr></table>
 </td></tr>
 <tr>
  <td colspan="3"><hr></td>  

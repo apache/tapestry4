@@ -229,26 +229,13 @@
 </table>
   
 <pre>
-&lt;form jwcid="form"&gt;
-  &lt;img jwcid="<span class="jwcid">standardSubmit</span>" alt="Standard Submit"/&gt;
-  &lt;img jwcid="<span class="jwcid">urgentSubmit</span>" alt="Urgent Submit"/&gt;
+&lt;form jwcid="@<a href="Form.html">Form</a>"&gt;
+  &lt;img jwcid="<span class="jwcid">@<a href="ImageSubmit.html">ImageSubmit</a></span>" image="ognl:assets.standardImage" listener="ognl:listeners.standardSubmit" alt="Standard Submit"/&gt;
+  &lt;img jwcid="<span class="jwcid">@<a href="ImageSubmit.html">ImageSubmit</a></span>" image="ognl:assets.urgentImage" listener="ognl:listeners.urgentSubmit" alt="Urgent Submit"/&gt;
 &lt;/form&gt;
 
 
-&lt;component id="form" type="<A href="Form.html">Form</a>"/&gt;
-
-&lt;component id="<span class="jwcid">standardSubmit</span>" type="<A href="ImageSubmit.html">ImageSubmit</a>"&gt;
-    &lt;binding name="image" expression="assets.standardImage"/&gt;
-    &lt;binding name="listener" expression="listeners.standardSubmit"/&gt;
-&lt;/component&gt;
-
-&lt;component id="<span class="jwcid">urgentSubmit</span>" type="<A href="ImageSubmit.html">ImageSubmit</a>"&gt;
-    &lt;binding name="image" expression="assets.urgentImage"/&gt;
-    &lt;binding name="listener" expression="listeners.urgentSubmit"/&gt;
-&lt;/component&gt;
-
 &lt;private-asset name="standardImage" resource-path="/com/mycorp/intray-green.png"/&gt;
-
 &lt;private-asset name="urgentImage" resource-path="/com/mycorp/intray-red.png"/&gt;
 
 
@@ -270,7 +257,8 @@ public class FormPage extends BasePage {
       
  </td>
 </tr>
-</tr>
+</TBODY>
+</table></tr>
 
 <tr>
  <td colspan="2"><hr></td>  
@@ -292,7 +280,7 @@ public class FormPage extends BasePage {
   </table>
  </td>
 </tr>
-</table></TD></TR></TBODY></TABLE>
+</table>
 
 </body>
 </html>

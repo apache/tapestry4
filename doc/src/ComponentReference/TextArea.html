@@ -156,29 +156,18 @@
   </table>
 <p>		
 
-<pre>
+            <pre>
 &lt;table valign="middle"&gt;
-&lt;form&gt;
+&lt;form jwcid=&quot;@<a href="Form.html">Form</a>&quot; listener="ognl:listeners.formSubmit"&gt;
  &lt;tr&gt;
   &lt;td&gt;Your Comments&lt;/td&gt;
-  &lt;td&gt;&lt;textarea jwcid="<span class="jwcid">commentsText</span>"/&gt;&lt;/td&gt;
+  &lt;td&gt;&lt;textarea jwcid="<span class="jwcid">@<a href="#">TextArea</a></span>" value="ognl:comments" columns="ognl:columns" rows="ognl:rows"/&gt;&lt;/td&gt;
  &lt;/tr&gt;
  &lt;tr align="right"&gt;
   &lt;td colspan="2"&gt;&lt;input type="submit" value="Submit"/&gt;&lt;/td&gt;
  &lt;/tr&gt;
 &lt;/form&gt;
 &lt;/table&gt;
-
-
-&lt;component id="form" type="<A href="Form.html">Form</A>"&gt;
-    &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
-&lt;/component&gt;
-  
-&lt;component id="<span class="jwcid">commentsText</span>" type="<a href="#">TextArea</a>"&gt;
-    &lt;binding name="value" expression="comments"/&gt;
-    &lt;binding name="columns" expression="columns"/&gt;
-    &lt;binding name="rows" expression="rows"/&gt;
-&lt;/component&gt;
 
 
 public class CustomerCommentsPage extends BasePage {
@@ -202,14 +191,13 @@ public class CustomerCommentsPage extends BasePage {
 
     public int getRows() { return rows; }
 
-    public void detach() {
+    protected void initialize() {
         comments = COMMENTS;
-        super.detach();
     }        
 }
 </pre>
-
- </td></tr></table>
+          </td>
+        </tr></table>
 </td></tr>
 <tr>
  <td colspan="3"><hr></td>  

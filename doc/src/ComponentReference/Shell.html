@@ -186,7 +186,7 @@
 </tr>
 </table>
 		
-<pre>
+            <pre>
 &lt;html&gt;
 &lt;head&gt;
  &lt;link rel="stylesheet" type="text/css" <b>href="../../style.css"</b> title="style"&gt;
@@ -194,30 +194,19 @@
 &lt;/head&gt;
 
 &lt;span jwcid="$content$"&gt;
-&lt;span jwcid="<span class="jwcid">shell</span>" title="MyCorp Customer Login"&gt;
-&lt;body jwcid="body"&gt;
+&lt;span jwcid="<span class="jwcid">@<a href="Shell.html">Shell</a></span>" stylesheet="ognl:assets.stylesheet" title="MyCorp Customer Login"&gt;
+&lt;body jwcid="@<a href="Body.html">Body</a>"&gt;
 
 &lt;h1&gt;Customer Login&lt;/h1&gt;
 Welcome to MyCorp's Customer Portal secure login page.
 &lt;p&gt;
-&lt;span jwcid="insertDailyMessage"/&gt;
+&lt;span jwcid="@<a href="Insert.html">Insert</a>" value="ognl:dailyMessage" class="ognl:messageClass"/&gt;
 
 &lt;/body&gt;
 &lt;/span&gt;
 &lt;/span&gt;
 &lt;/html&gt;
 
-
-&lt;component id="<span class="jwcid">shell</span>" type="<A href="Shell.html">Shell</A>"&gt;
-   &lt;binding name="stylesheet" expression="assets.stylesheet"/&gt;
-&lt;/component&gt;
-
-&lt;component id="body" type="<A href="Body.html">Body</A>"/&gt;
-
-&lt;component id="insertDailyMessage" type="<A href="Insert.html">Insert</A>"&gt;
-   &lt;binding name="value" expression="dailyMessage"/&gt;
-   &lt;binding name="class" expression="messageClass"/&gt;
-&lt;/component&gt;
 
 &lt;private-asset name="stylesheet" resource-path="/com/mycorp/pages/style.css"/&gt;
 
@@ -232,15 +221,14 @@ public class CustomerLoginPage extends BasePage {
     
     public String getMessageClass() { return messageClass; }
     
-    public void detach() {
+    protected void initialize() {
         dailyMessage = null;
         messageClass = null;
-        super.detach();
     }
 }
 </pre>
-
- </td></tr></table>
+          </td>
+        </tr></table>
 </td></tr>
 <tr>
  <td colspan="3"><hr></td>  

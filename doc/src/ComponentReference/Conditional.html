@@ -126,7 +126,7 @@ John Smith is a Manager with <font color="red"><b>no</b></font> staff.
 </tr>
 </table>
 		
-<pre>
+            <pre>
 &lt;span jwcid="@<a href="Insert.html">Insert</a>" value="ognl:fullName"/&gt;
 &lt;span jwcid="<span class="jwcid">@<a href="Conditional.html">Conditional</a></span>" condition="ognl:manager"&gt; is a Manager
  &lt;span jwcid="<span class="jwcid">@<a href="Conditional.html">Conditional</a></span>" condition="ognl:staffList.empty"&gt; with staff.&lt;/span&gt;
@@ -159,16 +159,15 @@ public class EnquiryPage extends BasePage {
         staffList = value;  
     }
 
-    public void detach() {
+    protected void initialize() {
         fullName = null;
         isManager = false;
         staffList = null;
-        super.detach();
     }
 }
 </pre>
-
- </td></tr></table>
+          </td>
+        </tr></table>
 </td></tr>
 <tr>
  <td colspan="3"><hr></td>  

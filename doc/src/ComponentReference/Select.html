@@ -156,13 +156,13 @@
 </table>
 
 <pre>
-&lt;form jwcid="form"&gt;
+&lt;form jwcid="@<a href="Form.html">Form</a>" listener="ognl:listeners.formSubmit"&gt;
  Select a color
- &lt;input jwcid="<span class="jwcid">colorSelect</span>&gt;"&gt;
-  &lt;span jwcid="colorForeach"&gt;
-   &lt;option jwcid="colorOption"/&gt;
+ &lt;select jwcid="<span class="jwcid">@<a href="Select.html">Select</a></span>" multiple=&quot;ognl:true&quot;&gt;
+  &lt;span jwcid="@<a href="Foreach.html">Foreach</a>" source="ognl:visit.colorList" value="ognl:visit.currentColor"&gt;
+   &lt;option jwcid="@<a href="Option.html">Option</a>" selected="ognl:visit.currentColor.selected" label="ognl:visit.currentColor.label"/&gt;
   &lt;/span&gt;
- &lt;/input&gt;
+ &lt;/select&gt;
 &lt;/form&gt;	
 </pre>
  </td>
@@ -173,26 +173,6 @@
 	 This example uses a pre-existing collection as the source of the <A href="Option.html">Option</a> list. The
 	 <A href="Foreach.html">Foreach</a> is used to iterate through the list, rendering multiple HTML option
 	 elements on the way.
-   <p>
-<pre>
-&lt;component id="form" type="<A href="Form.html">Form</a>"&gt;
-    &lt;binding name="listener" expression="listeners.formSubmit"/&gt;
-&lt;/component&gt;
-    
-&lt;component id="colorForeach" type="<A href="Foreach.html">Foreach</a>"&gt;
-    &lt;binding name="source" expression="visit.colorList"/&gt;
-    &lt;binding name="value" expression="visit.currentColor"/&gt;
-&lt;/component&gt;
-
-&lt;component id="<span class="jwcid">colorSelect</span>" type="<A href="Select.html">Select</a>"&gt;
-    &lt;field-binding name="multiple" field-name="Boolean.TRUE"/&gt;
-&lt;/component&gt;
-    
-&lt;component id="colorOption" type="<A href="Option.html">Option</a>"&gt;
-    &lt;binding name="selected" expression="visit.currentColor.selected"/&gt;
-    &lt;binding name="label" expression="visit.currentColor.label"/&gt;
-&lt;/component&gt;
-	</pre>
  </td>  
 </tr>
 

@@ -37,7 +37,7 @@
   <table align="right" valign="middle" bgcolor="#c0c0c0" cellspacing="8">
 	 <tr>
 	  <td>
-		 <input type="checkbox" checked>checkbox</input>
+		 <input type="checkbox" checked>checkbox
 		</td>
 	 </tr>
   </table>
@@ -125,7 +125,7 @@
  </tr>
 </table>
 		
-<pre>
+            <pre>
 &lt;form jwcid="@<a href="Form.html">Form</a>" listener="ognl:listeners.formSubmit"&gt;
  &lt;input type="checkbox" jwcid="<span class="jwcid">@<a href="Checkbox.html">Checkbox</a></span>" selected="ognl:contactRep" disabled="ognl:staff"/&gt; Contact Sales Rep
 &lt;/form&gt;
@@ -144,10 +144,9 @@ public class EnquiryPage extends BasePage {
 
     public boolean isStaff() { return isStaff; }
    
-    public void detach() {
+    protected void initialize() {
         contactRep = false;
         isStaff = false;
-        super.detach();
     }
 
     public void formSubmit(RequestCycle cycle) {
@@ -157,8 +156,8 @@ public class EnquiryPage extends BasePage {
     }
 }
 </pre>
-
- </td></tr></table>
+          </td>
+        </tr></table>
 </td></tr>
 <tr>
  <td colspan="3"><hr></td>  
