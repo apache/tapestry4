@@ -57,14 +57,16 @@
   <p>
   JavaScript must be enabled in the client browser to use this component. 
   <p>
-  Note a rendering feature/bug of Internet Explorer occurs when a HTML 
-  &lt;select&gt; is located inside the DatePicker's popup calendar region.
-  The HTML &lt;select&gt; will render through the popup calendar, obscuring part
-  of the popup calendar. In these situation organize the form's UI layout so
-  this does not occur. This behavior does not occur with the HTML 
-  &lt;input&gt; and &lt;textarea&gt; elements. 
+  Note a rendering feature of Netscape and Internet Explorer gives the HTML 
+  &lt;select&gt; element the highest Z-level index. The HTML &lt;select&gt; 
+  cannot be covered by other elements. If a &lt;select&gt; is located inside 
+  the DatePicker's popup calendar region, the &lt;select&gt; will render through 
+  the popup calendar obscuring part of the calendar. In these situation 
+  organize the form's UI layout so this does not occur.
  </td>
 </tr>
+Both Netscape and IE give combo / drop
+down boxes, highest Z-level index and cannot be covered.
 
 <tr>
  <td colspan="2">
