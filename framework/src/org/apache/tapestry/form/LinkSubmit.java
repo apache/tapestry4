@@ -81,6 +81,13 @@ public abstract class LinkSubmit extends AbstractFormComponent
             {
                 Body body = Body.get(cycle);
 
+				if (body == null)
+				    throw new ApplicationRuntimeException(
+				        Tapestry.format("must-be-contained-by-body", "LinkSubmit"),
+				        this,
+				        null,
+				        null);
+				        				
                 // make sure the submit function is on the page (once)
                 if (cycle.getAttribute(ATTRIBUTE_FUNCTION_NAME) == null)
                 {
