@@ -95,7 +95,7 @@
     <invoke-factory model="primitive">
       <construct class="ActionRequestServicerToWebRequestServicerBridge">
         <set-service property="portletRequestGlobals" service-id="PortletRequestGlobals"/>
-        <set-service property="webRequestServicer" service-id="tapestry.request.WebRequestServicerPipeline"/>
+        <set-service property="webRequestServicer" service-id="tapestry.request.WebRequestServicer"/>
       </construct>
     </invoke-factory>
     
@@ -130,7 +130,7 @@
     <invoke-factory model="primitive">
       <construct class="RenderRequestServicerToWebRequestServicerBridge">
         <set-service property="portletRequestGlobals" service-id="PortletRequestGlobals"/>
-        <set-service property="webRequestServicer" service-id="tapestry.request.WebRequestServicerPipeline"/>
+        <set-service property="webRequestServicer" service-id="tapestry.request.WebRequestServicer"/>
       </construct>
     </invoke-factory>
     
