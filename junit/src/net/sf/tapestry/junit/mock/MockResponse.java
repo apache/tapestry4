@@ -81,6 +81,8 @@ public class MockResponse implements HttpServletResponse
     private ServletOutputStream _outputStream;
     private List _cookies = new ArrayList();
 
+    private String _redirectLocation;
+
     private class ServletOutputStreamImpl extends ServletOutputStream
     {
         private ServletOutputStreamImpl()
@@ -177,6 +179,18 @@ public class MockResponse implements HttpServletResponse
         if (_commited)
             throw new IllegalStateException("sendRedirect() when committed.");
 
+		if (location.endsWith("/FAIL_IO"))
+			throw new IOException("Forced IOException in MockResponse.sendRedirect().");
+
+        _redirectLocation = location;
+
+        _commited = true;
+
+    }
+
+    public String getRedirectLocation()
+    {
+        return _redirectLocation;
     }
 
     public void setDateHeader(String name, long value)
@@ -282,7 +296,10 @@ public class MockResponse implements HttpServletResponse
 
     public void end() throws IOException
     {
-        _outputStream.close();
+    	// For redirects, we may never open an output stream.
+    	
+        if (_outputStream != null)
+            _outputStream.close();
     }
 
     /**

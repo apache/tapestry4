@@ -124,6 +124,7 @@ public class MockTester
     private ApplicationServlet _servlet;
     private MockRequest _request;
     private MockResponse _response;
+    private int _requestNumber = 0;
     private Map _ognlContext;
 
     /**
@@ -182,6 +183,8 @@ public class MockTester
         {
             Element request = (Element) l.get(i);
 
+			_requestNumber = i + 1;
+			
             executeRequest(request);
         }
     }
@@ -439,7 +442,8 @@ public class MockTester
         if (result)
             return;
 
-        throw new AssertionFailedError(name + ": Expression '" + expression + "' was not true.");
+        throw new AssertionFailedError(
+            buildTestName(name) + ": Expression '" + expression + "' was not true.");
 
     }
 
@@ -597,7 +601,10 @@ public class MockTester
         System.err.println(text);
 
         throw new AssertionFailedError(
-            name + ": Response does not contain regular expression '" + pattern + "'.");
+            buildTestName(name)
+                + ": Response does not contain regular expression '"
+                + pattern
+                + "'.");
     }
 
     private void matchSubstring(String name, String text, String substring)
@@ -608,7 +615,7 @@ public class MockTester
         System.err.println(text);
 
         throw new AssertionFailedError(
-            name + ": Response does not contain string '" + substring + "'.");
+            buildTestName(name) + ": Response does not contain string '" + substring + "'.");
     }
 
     private void executeOutputMatchesAssertions(Element request) throws DocumentParseException
@@ -657,7 +664,8 @@ public class MockTester
             if (i >= count)
             {
                 System.err.println(outputString);
-                throw new AssertionFailedError(name + ": Too many matches for '" + pattern + "'.");
+                throw new AssertionFailedError(
+                    buildTestName(name) + ": Too many matches for '" + pattern + "'.");
             }
 
             Element e = (Element) l.get(i);
@@ -668,7 +676,14 @@ public class MockTester
             {
                 System.err.println(outputString);
                 throw new AssertionFailedError(
-                    name + "[" + i + "]: Expected '" + expected + "' but got '" + actual + "'.");
+                    buildTestName(name)
+                        + "["
+                        + i
+                        + "]: Expected '"
+                        + expected
+                        + "' but got '"
+                        + actual
+                        + "'.");
             }
 
             i++;
@@ -678,7 +693,7 @@ public class MockTester
         {
             System.err.println(outputString);
             throw new AssertionFailedError(
-                name
+                buildTestName(name)
                     + ": Too few matches for '"
                     + pattern
                     + "' (expected "
@@ -718,7 +733,8 @@ public class MockTester
                 return;
 
             throw new AssertionFailedError(
-                "Response cookie '"
+                buildTestName(name)
+                    + ": Response cookie '"
                     + name
                     + "': expected '"
                     + value
@@ -727,7 +743,13 @@ public class MockTester
                     + "'.");
         }
 
-        throw new AssertionFailedError("Could not find cookie named '" + name + "' in response.");
+        throw new AssertionFailedError(
+            buildTestName(name) + ": Could not find cookie named '" + name + "' in response.");
+    }
+
+    private String buildTestName(String name)
+    {
+        return "Request #" + _requestNumber + "/" + name;
     }
 
 }

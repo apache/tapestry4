@@ -80,13 +80,13 @@ import javax.servlet.ServletException;
 public class MockContext extends AttributeHolder implements ServletContext, IInitParameterHolder
 {
     private MockSession _session;
-    
+
     /**
      *  Directory, relative to the current directory (i.e., System property user.dir)
      *  that is the context root.
      * 
      **/
-    
+
     private String _rootDirectory = "context";
     private String _servletContextName = "test";
     private Map _initParameters = new HashMap();
@@ -118,25 +118,25 @@ public class MockContext extends AttributeHolder implements ServletContext, IIni
 
     public URL getResource(String path) throws MalformedURLException
     {
-        if (path == null || ! path.startsWith("/"))
-        throw new MalformedURLException("Not a valid context path.");
-        
+        if (path == null || !path.startsWith("/"))
+            throw new MalformedURLException("Not a valid context path.");
+
         StringBuffer buffer = new StringBuffer();
-        
+
         buffer.append(System.getProperty("user.dir"));
-        buffer.append("/");       
+        buffer.append("/");
         buffer.append(_rootDirectory);
-        
+
         // Path has a leading slash
-        
+
         buffer.append(path);
-                    
+
         File file = new File(buffer.toString());
-        
+
         if (file.exists())
             return file.toURL();
-            
-        return null;                                     
+
+        return null;
     }
 
     public InputStream getResourceAsStream(String path)
@@ -144,10 +144,10 @@ public class MockContext extends AttributeHolder implements ServletContext, IIni
         try
         {
             URL url = getResource(path);
-            
+
             if (url == null)
                 return null;
-                
+
             return url.openStream();
         }
         catch (MalformedURLException ex)
@@ -160,9 +160,28 @@ public class MockContext extends AttributeHolder implements ServletContext, IIni
         }
     }
 
+    /**
+     *  Gets a dispatcher for the given path.  Path should be a relative path (relative
+     *  to the context).  A special case:  "NULL" returns null (i.e., when a 
+     *  dispatcher can't be found).
+     * 
+     **/
+
     public RequestDispatcher getRequestDispatcher(String path)
     {
-        return null;
+        if (path.endsWith("/NULL"))
+            return null;
+
+        StringBuffer buffer = new StringBuffer(_rootDirectory);
+        buffer.append(path);
+
+        // Simulate the handling of directories by serving the index.html
+        // in the directory.
+
+        if (path.endsWith("/"))
+            buffer.append("index.html");
+
+        return new MockRequestDispatcher(buffer.toString());
     }
 
     public RequestDispatcher getNamedDispatcher(String name)
@@ -240,7 +259,7 @@ public class MockContext extends AttributeHolder implements ServletContext, IIni
 
         return _session;
     }
-    
+
     public MockSession getSession()
     {
         return _session;
