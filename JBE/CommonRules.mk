@@ -30,9 +30,21 @@
 # A stamp file is used to determine whether any of the Java sources have changed; 
 # if so ALL of them are recompiled.
 
-JBE_UTIL_STAMP = $(SYS_MAKEFILE_DIR)/.jbe_util_stamp
+JBE_UTIL_STAMP = $(SYS_MAKEFILE_DIR)/com/primix/jbe/.build_stamp
 
-setup-jbe-util: $(JBE_UTIL_STAMP)
+check-jdk:
+ifeq "$(JAVAC)" ""
+	$(error JAVAC is not defined.  This is usually a configuration error in \
+		your choice of JDK Vendor ('$(FINAL_JDK_VENDOR)') \
+		or JDK Platform ('$(FINAL_JDK_PLATFORM)'), or you must provide \
+		a JDK configuration file $(SYS_JDK_CONFIG_FILE))
+endif
+ifeq "$(JDK_DIR)" ""
+	$(error The JDK_DIR is not defined.  You must provide a definition for \
+		variable $(JDK_DIR_VAR) in config/LocalConfig.mk)
+endif
+
+setup-jbe-util: check-jdk $(JBE_UTIL_STAMP)
 
 $(JBE_UTIL_STAMP): $(SYS_MAKEFILE_DIR)/com/primix/jbe/*.java
 	@$(ECHO) "\n*** Compiling JBE Utility ... ***\n";
@@ -57,4 +69,14 @@ JBE_UTIL = $(JAVA) -classpath $(SYS_MAKEFILE_DIR) com.primix.jbe.Util
 
 JBE_CANONICALIZE = $(shell $(JBE_UTIL) canonicalize $(strip $(1)))
 
-.PHONY: setup-jbe-util
+# Command for running a Java command
+# Usage
+#	$(call EXEC_JAVA,classpath,options)
+#
+# classpath is a space seperated list of stuff for the classpath.
+# options is passed as is to $(JAVAC), it should include JVM options,
+# the main class and and program options.
+
+EXEC_JAVA = $(JAVA) -classpath "$(call JBE_CANONICALIZE,-classpath $(1))" $(2)
+
+.PHONY: setup-jbe-util check-jdk

@@ -41,6 +41,11 @@
 # You may specify options for ejbc using SITE_EJBC_OPT or EJBC_OPT.
 # -keepgenerated is pretty useful.
 
+# WebLogic should always be compiled using Sun's JDK 1.2.2
+
+MOD_JDK_VENDOR = Sun
+MOD_JDK_RELEASE = 1.2.2
+
 # All WebLogic module musthave these two files, which will be installed
 # into the  META-INF directory of the JAR.
 
@@ -57,7 +62,7 @@ module-install: $(INSTALL_DIR)/$(DEPLOY_JAR_FILE)
 
 $(INSTALL_DIR)/$(DEPLOY_JAR_FILE): $(DEPLOY_JAR_FILE)
 ifeq "$(INSTALL_DIR)" ""
-	$(error JBE Error: Must set INSTALL_DIR in Makefile)
+	$(error Must define INSTALL_DIR in Makefile)
 endif
 	@$(ECHO) "\n*** Installing $(DEPLOY_JAR_FILE) to $(INSTALL_DIR) ... ***\n"
 	@$(CP) -f $(DEPLOY_JAR_FILE) $(INSTALL_DIR)
@@ -76,8 +81,7 @@ WEBLOGIC_CLASSPATH := \
 
 MOD_CLASSPATH := $(WEBLOGIC_CLASSPATH)
 
-EJBC_CLASSPATH = $(call JBE_CANONICALIZE,-classpath \
-						$(WEBLOGIC_CLASSPATH) $(SITE_CLASSPATH) $(LOCAL_CLASSPATH))
+EJBC_CLASSPATH = $(WEBLOGIC_CLASSPATH) $(SITE_CLASSPATH) $(LOCAL_CLASSPATH)
 
 FINAL_EJBC_OPT := $(strip $(SITE_EJBC_OPT) $(EJBC_OPT))
 
@@ -90,5 +94,5 @@ FINAL_EJBC_OPT := $(strip $(SITE_EJBC_OPT) $(EJBC_OPT))
 $(DEPLOY_JAR_FILE): $(JAR_FILE) $(filter %.jar %.zip,$(LOCAL_CLASSPATH))
 	@$(ECHO) "\n*** Creating $(DEPLOY_JAR_FILE) ... ***\n"
 	$(CD) $(MOD_BUILD_DIR) ; \
-	$(JAVA) -classpath "$(EJBC_CLASSPATH)" \
-	weblogic.ejbc $(FINAL_EJBC_OPT) ../$(JAR_FILE) ../$(DEPLOY_JAR_FILE) 
+	$(call EXEC_JAVA,$(EJBC_CLASSPATH), \
+		weblogic.ejbc $(FINAL_EJBC_OPT) ../$(JAR_FILE) ../$(DEPLOY_JAR_FILE))

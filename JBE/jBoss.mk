@@ -73,4 +73,13 @@ $(DEPLOY_JAR): $(JAR_FILE)
 run-ejx:
 	$(CD) $(JBOSS_DIR)/bin ; $(JAVA) -jar ejx.jar 
 
-.PHONY: deploy inner-deploy
+# 
+# Convienience for running jBoss.
+#
+
+run: deploy
+	@$(ECHO) "\n*** Running jBoss ... ***\n"
+	$(CD) $(JBOSS_DIR)/bin ; $(JAVA) -jar run.jar
+
+
+.PHONY: deploy inner-deploy run-ejx run

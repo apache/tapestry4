@@ -60,7 +60,7 @@ inner-jar: $(JAR_FILE)
 
 $(JAR_FILE): $(MOD_DIRTY_JAR_STAMP_FILE)
 ifeq "$(MODULE_NAME)" ""
-	$(error JBE Error: Must set MODULE_NAME in Makefile)
+	$(error Must define MODULE_NAME in Makefile)
 endif
 	@$(ECHO) "\n*** Building $(JAR_FILE) ... ***\n"
 	$(JAR) cf $(JAR_FILE) -C $(MOD_CLASS_DIR) .
@@ -74,10 +74,10 @@ jar-install: $(INSTALL_DIR)/$(JAR_FILE)
 
 $(INSTALL_DIR)/$(JAR_FILE): $(JAR_FILE)
 ifeq "$(INSTALL_DIR)" ""
-	$(error JBE Error: Must set INSTALL_DIR in Makefile)
+	$(error Must define INSTALL_DIR in Makefile)
 endif
 ifeq "$(MODULE_NAME)" ""
-	$(error JBE Error: Must set MODULE_NAME in Makefile)
+	$(error Must define MODULE_NAME in Makefile)
 endif
 	@$(ECHO) "\n*** Installing $(JAR_FILE) to $(INSTALL_DIR) ***\n"
 	@$(CP) $(JAR_FILE) -f $(INSTALL_DIR)

@@ -41,7 +41,6 @@ SYS_BUILD_DIR_NAME := .build
 
 CONFIG_DIR := $(SYS_MAKEFILE_DIR)/config
 
-
 # A file which contains the names of all Java files (relative to the
 # module directory).  Built by the refresh-catalog rule.
  
@@ -75,10 +74,36 @@ include $(CONFIG_DIR)/SiteConfig.mk
 
 include $(SYS_MAKEFILE_DIR)/Platform.$(SITE_PLATFORM).mk
 
-# Find out the information specific to the JDK.   SITE_JDK was just
-# set by CONFIG_DIR/SiteConfig.mk.
+# Assume building on Win32 unless overriden (usually in config/SiteConfig.mk).
 
-include $(SYS_MAKEFILE_DIR)/JDK.$(SITE_JDK).mk
+FINAL_JDK_PLATFORM := $(firstword $(SITE_JDK_PLATFORM) Win32)
+
+# Determine the JDK Vendor, which may be specified in the project
+# Makefile as JDK_VENDOR, in the module Makefile as MOD_JDK_VENDOR,
+# in config/SiteConfig.mk as SITE_JDK_VENDOR or simply default to Sun
+
+FINAL_JDK_VENDOR := $(firstword $(JDK_VENDOR) $(MOD_JDK_VENDOR) $(SITE_JDK_VENDOR) Sun)
+
+# The release is the most likely thing to override.
+# In the project Makefile as JDK_RELEASE
+# In the module as  MOD_JDK_RELEASE
+# As a site default as SITE_JDK_RELEASE in config/SiteConfig.mk
+# Or the default is 1.3
+
+FINAL_JDK_RELEASE := $(firstword $(JDK_RELEASE) $(MOD_JDK_RELEASE) \
+	$(SITE_JDK_RELEASE) 1.3)
+
+# Now calculate the JDK_DIR
+
+JDK_DIR_VAR := JDK_$(FINAL_JDK_VENDOR)_$(FINAL_JDK_RELEASE)_DIR
+JDK_DIR := $($(JDK_DIR_VAR))
+
+# Optionally include it ... if it doesn't exist, we'll catch the error
+# in the check-jdk rule defined in CommonRules.mk
+
+SYS_JDK_CONFIG_FILE := $(SYS_MAKEFILE_DIR)/JDK.$(FINAL_JDK_VENDOR)_$(FINAL_JDK_PLATFORM).mk
+
+-include $(SYS_JDK_CONFIG_FILE)
 
 -include $(CONFIG_DIR)/Common.mk
 

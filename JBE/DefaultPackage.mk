@@ -5,6 +5,6 @@
 
 JAVA_FILES = *.java
 
-RESOURCE_FILES = *.jwc *.application *.html *.properties
+RESOURCE_FILES = *.jwc *.application *.html *.properties *.script
 
 include $(SYS_MAKEFILE_DIR)/Package.mk
