@@ -21,7 +21,7 @@
   
   <Call name="addWebApplication">
     <Arg>/tutorial</Arg>
-    <Arg>lib/Tutorial.war</Arg>
+    <Arg>lib/tutorial.war</Arg>
     <Arg>config/webdefault.xml</Arg>
     <Arg type="boolean">false</Arg>
   </Call>
