@@ -89,6 +89,8 @@ import org.apache.tapestry.vlib.ejb.Person;
 public abstract class EditUsers extends AdminPage implements PageRenderListener
 {
     public abstract String getPassword();
+    
+    public abstract void setPassword(String password);
 
     public abstract UserListEditMap getListEditMap();
 
@@ -113,8 +115,7 @@ public abstract class EditUsers extends AdminPage implements PageRenderListener
 
     public void pageBeginRender(PageEvent event)
     {
-        if (getListEditMap() == null)
-            setupListEditMap();
+        setupListEditMap();
     }
 
     public void pageEndRender(PageEvent event)
@@ -184,6 +185,7 @@ public abstract class EditUsers extends AdminPage implements PageRenderListener
         Integer[] deletedUserIds = toArray(map.getDeletedKeys());
 
         String password = getPassword();
+        setPassword(null);
 
         if (Tapestry.isNull(password) && Tapestry.size(resetPasswordUserIds) != 0)
         {
@@ -222,11 +224,7 @@ public abstract class EditUsers extends AdminPage implements PageRenderListener
             }
         }
 
-		// Force a requery
-		
-		setListEditMap(null);
         setMessage(getString("users-updated"));
-
     }
 
     private Integer[] toArray(Collection c)

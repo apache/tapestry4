@@ -8,23 +8,15 @@
 	allow-body="no" 
 	allow-informal-parameters="no">
   
-  <parameter name="name" type="java.lang.String" required="yes"/>
+  <parameter name="name" type="java.lang.String" required="yes" direction="in"/>
   
-  <parameter name="id" type="java.lang.Integer" required="yes"/>
+  <parameter name="id" type="java.lang.Integer" required="yes" direction="in" property-name="personId"/>
   
   <parameter name="omit" type="boolean" direction="in"/>
-  
-  <parameter name="class" type="java.lang.String"/>
    
   <component id="link" type="ExternalLink">
     <static-binding name="page" value="ViewPerson"/>
-    <inherited-binding name="parameters" parameter-name="id"/>
-    <inherited-binding name="class" parameter-name="class"/>
-  </component>
-  
-  <component id="insertPersonName" type="Insert">
-    <inherited-binding name="value" parameter-name="name"/>
-  </component>
-  
+    <binding name="parameters" expression="personId"/>
+  </component>  
   
 </component-specification>

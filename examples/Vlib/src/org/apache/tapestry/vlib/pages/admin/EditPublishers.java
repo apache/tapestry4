@@ -141,9 +141,7 @@ public abstract class EditPublishers extends AdminPage implements PageRenderList
         int count = Tapestry.size(publishers);
 
         for (i = 0; i < count; i++)
-        {
             map.add(publishers[i].getId(), publishers[i]);
-        }
 
         setListEditMap(map);
     }

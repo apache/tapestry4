@@ -3,7 +3,7 @@
 <span jwcid="$content$">
 
 <span jwcid="@Conditional" condition="ognl:! omit">
-<a jwcid="link"><span jwcid="insertPersonName">Some Damn Fool</span></a>
+<a jwcid="link"><span jwcid="@Insert" value="ognl:name">Joe User</span></a>
 </span>
 
 <span jwcid="@Conditional" condition="ognl:omit">
