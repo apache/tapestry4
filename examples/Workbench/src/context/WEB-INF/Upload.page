@@ -23,6 +23,9 @@
 
   <bean name="delegate" class="org.apache.tapestry.workbench.WorkbenchValidationDelegate"/>
   
+  <property name="showAscii" persist="session"/>
+  <property name="bytesPerLine" persist="session"/>
+  
   <component id="inputWidth" type="PropertySelection">
   	<binding name="value" value="ognl:bytesPerLine"/>
   	<binding name="model" value="ognl:bytesPerLineModel"/>

@@ -116,6 +116,6 @@
     
     <component id="renderBody" type="RenderBody"/>
     
-    <inject name="modelSource" object="service:tapestry.contrib.TableColumnModelSource"/>
+    <inject property="modelSource" object="service:tapestry.contrib.TableColumnModelSource"/>
     
 </component-specification>

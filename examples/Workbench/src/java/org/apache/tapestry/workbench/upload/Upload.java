@@ -16,7 +16,6 @@ package org.apache.tapestry.workbench.upload;
 
 import org.apache.hivemind.HiveMind;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.IPropertySelectionModel;
 import org.apache.tapestry.form.StringPropertySelectionModel;
@@ -31,32 +30,23 @@ import org.apache.tapestry.valid.ValidationConstraint;
  * @author Howard Lewis Ship
  */
 
-public class Upload extends BasePage
+public abstract class Upload extends BasePage
 {
+    public abstract IUploadFile getFile();
+
+    public abstract boolean isShowAscii();
+
+    public abstract String getBytesPerLine();
+
     private static final String[] bytesPerLineOptions = new String[]
     { "8", "16", "24", "32", "40", "48" };
 
-    private static final String DEFAULT_BPL = "16";
-
-    private String bytesPerLine = DEFAULT_BPL;
-
-    private boolean showAscii;
-
-    private IUploadFile file;
-
     private IPropertySelectionModel bplModel;
-
-    public void detach()
-    {
-        bytesPerLine = DEFAULT_BPL;
-        showAscii = false;
-        file = null;
-
-        super.detach();
-    }
 
     public void formSubmit(IRequestCycle cycle)
     {
+        IUploadFile file = getFile();
+
         if (HiveMind.isBlank(file.getFileName()))
         {
             IValidationDelegate delegate = (IValidationDelegate) getBeans().getBean("delegate");
@@ -68,31 +58,7 @@ public class Upload extends BasePage
 
         UploadResults results = (UploadResults) cycle.getPage("UploadResults");
 
-        results.activate(file, showAscii, Integer.parseInt(bytesPerLine), cycle);
-    }
-
-    public String getBytesPerLine()
-    {
-        return bytesPerLine;
-    }
-
-    public void setBytesPerLine(String bytesPerLine)
-    {
-        this.bytesPerLine = bytesPerLine;
-
-        Tapestry.fireObservedChange(this, "bytesPerLine", bytesPerLine);
-    }
-
-    public boolean getShowAscii()
-    {
-        return showAscii;
-    }
-
-    public void setShowAscii(boolean showAscii)
-    {
-        this.showAscii = showAscii;
-
-        Tapestry.fireObservedChange(this, "showAscii", new Boolean(showAscii));
+        results.activate(file, isShowAscii(), Integer.parseInt(getBytesPerLine()), cycle);
     }
 
     public IPropertySelectionModel getBytesPerLineModel()
@@ -102,20 +68,4 @@ public class Upload extends BasePage
 
         return bplModel;
     }
-
-    public IUploadFile getFile()
-    {
-        return file;
-    }
-
-    public void setFile(IUploadFile file)
-    {
-        this.file = file;
-    }
-
-    public void setMessage(String message)
-    {
-
-    }
-
 }

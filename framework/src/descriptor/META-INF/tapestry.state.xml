@@ -170,7 +170,7 @@
     <invoke-factory>
       <construct class="org.apache.tapestry.engine.state.SessionScopeManager">
         <set-object property="request" value="infrastructure:request"/>
-        <set-object property="applicationName" value="infrastructure:applicationId"/>
+        <set-object property="applicationId" value="infrastructure:applicationId"/>
       </construct>
     </invoke-factory>
   </service-point>
