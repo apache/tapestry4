@@ -77,4 +77,10 @@ ${z} ${i}
 </foreach>
 </let>
 
+<let key="outputCollectionIndexOnly">
+<foreach index="i" expression="input.collection">
+${i}
+</foreach>
+</let>
+
 </script>
