@@ -17,10 +17,9 @@ package org.apache.tapestry.contrib.palette;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponent;
@@ -28,7 +27,6 @@ import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
-import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IScript;
@@ -223,32 +221,22 @@ public abstract class Palette extends BaseComponent implements IFormComponent
      *  provide proper names for some of the HTML elements (&lt;select&gt; and
      *  &lt;button&gt; elements, etc.).
      *
-     **/
+     */
 
     private Map _symbols;
 
     /**
-     *  Contains the text for the second &lt;select&gt; element, that provides
-     *  the available elements.
-     *
-     **/
-
-    private IMarkupWriter _availableWriter;
-
-    /**
-     *  Contains the text for the first &lt;select&gt; element, that
-     *  provides the selected elements.
-     *
-     **/
-
-    private IMarkupWriter _selectedWriter;
-
-    /**
      *  A cached copy of the script used with the component.
      *
-     **/
+     */
 
     private IScript _script;
+
+    /** @since 3.0 **/
+    public abstract void setAvailableColumn(PaletteColumn column);
+
+    /** @since 3.0 **/
+    public abstract void setSelectedColumn(PaletteColumn column);
 
     protected void finishLoad()
     {
@@ -318,10 +306,7 @@ public abstract class Palette extends BaseComponent implements IFormComponent
                 FormEventType.SUBMIT,
                 (String) _symbols.get("formSubmitFunctionName"));
 
-            // Buffer up the HTML for the left and right selects (the available
-            // items and the selected items).
-
-            bufferSelects(writer);
+            constructColumns();
         }
 
         super.renderComponent(writer, cycle);
@@ -329,9 +314,10 @@ public abstract class Palette extends BaseComponent implements IFormComponent
 
     protected void cleanupAfterRender(IRequestCycle cycle)
     {
-        _availableWriter = null;
-        _selectedWriter = null;
         _symbols = null;
+
+        setAvailableColumn(null);
+        setSelectedColumn(null);
 
         super.cleanupAfterRender(cycle);
     }
@@ -340,8 +326,7 @@ public abstract class Palette extends BaseComponent implements IFormComponent
      *  Executes the associated script, which generates all the JavaScript to
      *  support this Palette.
      *
-     **/
-
+     */
     private void runScript(IRequestCycle cycle)
     {
         // Get the script, if not already gotten.  Scripts are re-entrant, so it is
@@ -388,8 +373,7 @@ public abstract class Palette extends BaseComponent implements IFormComponent
      *  Extracts its asset URL, sets it up for
      *  preloading, and assigns the preload reference as a script symbol.
      *
-     **/
-
+     */
     private void setImage(Body body, IRequestCycle cycle, String symbolName, IAsset asset)
     {
         String URL = asset.buildURL(cycle);
@@ -404,34 +388,36 @@ public abstract class Palette extends BaseComponent implements IFormComponent
     }
 
     /**
-     *  Buffers the two &lt;select&gt;s, each in its own nested {@link IMarkupWriter}.
-     *  The idea is to run through the property selection model just once, assigning
-     *  each item to one or the other &lt;select&gt;.
+     *  Constructs a pair of {@link PaletteColumn}s: the available and selected options.
      *
-     **/
-
-    private void bufferSelects(IMarkupWriter writer)
+     */
+    private void constructColumns()
     {
         // Build a Set around the list of selected items.
 
         List selected = getSelected();
 
-        Set selectedSet = selected == null ? Collections.EMPTY_SET : new HashSet(selected);
+        if (selected == null)
+            selected = Collections.EMPTY_LIST;
 
-        _selectedWriter = writer.getNestedWriter();
-        _availableWriter = writer.getNestedWriter();
+        SortMode sortMode = getSort();
 
-        _selectedWriter.begin("select");
-        _selectedWriter.attribute("multiple", "multiple");
-        _selectedWriter.attribute("size", getRows());
-        _selectedWriter.attribute("name", getName());
-        _selectedWriter.println();
+        boolean sortUser = sortMode == SortMode.USER;
 
-        _availableWriter.begin("select");
-        _availableWriter.attribute("multiple", "multiple");
-        _availableWriter.attribute("size", getRows());
-        _availableWriter.attribute("name", (String) _symbols.get("availableName"));
-        _availableWriter.println();
+        List selectedOptions = null;
+
+        if (sortUser)
+        {
+            int count = selected.size();
+            selectedOptions = new ArrayList(count);
+
+            for (int i = 0; i < count; i++)
+                selectedOptions.add(null);
+        }
+
+        PaletteColumn availableColumn =
+            new PaletteColumn((String) _symbols.get("availableName"), getRows());
+        PaletteColumn selectedColumn = new PaletteColumn(getName(), getRows());
 
         // Each value specified in the model will go into either the selected or available
         // lists.
@@ -439,68 +425,55 @@ public abstract class Palette extends BaseComponent implements IFormComponent
         IPropertySelectionModel model = getModel();
 
         int count = model.getOptionCount();
+
         for (int i = 0; i < count; i++)
         {
-            IMarkupWriter w = _availableWriter;
-
             Object optionValue = model.getOption(i);
 
-            if (selectedSet.contains(optionValue))
-                w = _selectedWriter;
+            PaletteOption o = new PaletteOption(model.getValue(i), model.getLabel(i));
 
-            w.begin("option");
-            w.attribute("value", model.getValue(i));
-            w.print(model.getLabel(i));
-            w.end(); // <option>
-            w.println();
+            int index = selected.indexOf(optionValue);
+            boolean isSelected = index >= 0;
+
+            if (sortUser && isSelected)
+            {
+                selectedOptions.set(index, o);
+                continue;
+            }
+
+            PaletteColumn c = isSelected ? selectedColumn : availableColumn;
+
+            c.addOption(o);
         }
 
-        // Close the <select> tags
-
-        _selectedWriter.end();
-        _availableWriter.end();
-    }
-
-    /**
-     *  Renders the available select by closing the nested writer for the available
-     *  selects.
-     *
-     **/
-
-    public IRender getAvailableSelectDelegate()
-    {
-        return new IRender()
+        if (sortUser)
         {
-            public void render(IMarkupWriter writer, IRequestCycle cycle)
+        	Iterator i = selectedOptions.iterator();
+        	while (i.hasNext())
             {
-                if (_availableWriter != null)
-                    _availableWriter.close();
-                _availableWriter = null;
+                PaletteOption o = (PaletteOption) i.next();
+                selectedColumn.addOption(o);
             }
-        };
-    }
+        }
 
-    /**
-     *  Like {@link #getAvailableSelectDelegate()}, but for the right, selected, column.
-     *
-     **/
-
-    public IRender getSelectedSelectDelegate()
-    {
-        return new IRender()
+        if (sortMode == SortMode.VALUE)
         {
-            public void render(IMarkupWriter writer, IRequestCycle cycle)
+            availableColumn.sortByValue();
+            selectedColumn.sortByValue();
+        }
+        else
+            if (sortMode == SortMode.LABEL)
             {
-                if (_selectedWriter != null)
-                    _selectedWriter.close();
-                _selectedWriter = null;
+                availableColumn.sortByLabel();
+                selectedColumn.sortByLabel();
             }
-        };
+
+        setAvailableColumn(availableColumn);
+        setSelectedColumn(selectedColumn);
     }
 
     private void handleSubmission(IRequestCycle cycle)
     {
-
         RequestContext context = cycle.getRequestContext();
         String[] values = context.getParameters(getName());
 
@@ -531,8 +504,7 @@ public abstract class Palette extends BaseComponent implements IFormComponent
     /**
      *  Returns null, but may make sense to implement a displayName parameter.
      * 
-     **/
-
+     */
     public String getDisplayName()
     {
         return null;
@@ -595,7 +567,7 @@ public abstract class Palette extends BaseComponent implements IFormComponent
      * 
      *  @since 2.2
      * 
-     **/
+     */
 
     public boolean isDisabled()
     {

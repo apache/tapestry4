@@ -215,6 +215,31 @@ NextGen) be released as version number 3.0.
  Removed the out-of-date Tutorial.	
  </action>
 
+<action type="fix" dev="HLS" fixes-bug="18288">
+Palette doesn't retain user-specified sort order  	
+</action>
+
+<action type="fix" dev="HLS" fixes-bug="23544">
+Don't use <code>request.getRemoteHost()</code> since that requires
+an expensive reverse DNS lookup.
+</action>
+
+<action type="fix" dev="HLS" fixes-bug="27071" due-to="basile.chandesris">
+Fix typos and inaccuracies in the 3.0 DTD comments.
+</action>
+
+<action type="fix" dev="HLS" fixes-bug="27202,27203,27227" due-to="Jamie Orchard-Hays">
+Fix logic in client-side validation.	
+</action>
+
+<action type="fix" dev="HLS" fixes-bug="27110" due-to="Karel Miarka">
+DatePicker doesn't use the current Locale in its formatter	
+</action>
+
+<action type="update" dev="HLS">
+Update DatePicker to use a graphic icon to hide and show the calendar.	
+</action>
+
  </release>
   	
   
@@ -484,10 +509,7 @@ DatePicker now allows informal attributes that will be applied to the field.
 Fixed one more place where the encoding needs to be set
 </action>
 
-<action type="fix" dev="HLS" fixes-bug="23544">
-Don't use <code>request.getRemoteHost()</code> since that requires
-an expensive reverse DNS lookup.
-</action>
+
 
 			</release>
 		</changes>
