@@ -1,3 +1,7 @@
+* Mar 19 2001 hship
+
+[409751] Action encodes URL wrong
+
 * Mar 7 2001 hship
 
 [406819] handleXXX methods should be protected
