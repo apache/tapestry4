@@ -51,61 +51,74 @@ import com.primix.tapestry.*;
 public interface IValidationDelegate
 {
     /**
-     *  The error notification method, invoked during the rewind phase
-     *  (that is, while HTTP parameters are being extracted from the request
-     *  and assigned to various object properties).  
-     *
-     *  <p>Typically, the listener simply arrainges
-     *  to present the defaultErrorMessage to the user (as part of the HTML
-     *  response).  Finicky listeners may, instead, use the constraint and
-     *  displayName (from the field) to form their own error message.
-     *
-     *  @param field the field to which the update applies to.
-     *  @param constraint the {@link ValidationConstraint} which was violated.
-     *  @param defaultErrorMessage a default, localized, error message.
-     *
-     */
-
+	 *  The error notification method, invoked during the rewind phase
+	 *  (that is, while HTTP parameters are being extracted from the request
+	 *  and assigned to various object properties).  
+	 *
+	 *  <p>Typically, the listener simply arrainges
+	 *  to present the defaultErrorMessage to the user (as part of the HTML
+	 *  response).  Finicky listeners may, instead, use the constraint and
+	 *  displayName (from the field) to form their own error message.
+	 *
+	 *  @param field the field to which the update applies to.
+	 *  @param constraint the {@link ValidationConstraint} which was violated.
+	 *  @param defaultErrorMessage a default, localized, error message.
+	 *
+	 */
+	
     public void invalidField(IValidatingTextField field, 
-        ValidationConstraint constraint,
-        String defaultErrorMessage);
-
+			ValidationConstraint constraint,
+			String defaultErrorMessage);
+	
     /**
-     *  Invoked before the field is rendered, if the field is in error.
-     *
-     */
-
+	 *  Invoked before the field is rendered, if the field is in error.
+	 *
+	 */
+	
     public void writeErrorPrefix(IValidatingTextField field,
-                IResponseWriter writer, IRequestCycle cycle)
-    throws RequestCycleException;
-
+			IResponseWriter writer, IRequestCycle cycle)
+		throws RequestCycleException;
+	
+	/**
+	 *  Invoked just before the &lt;input type=text&gt; element is closed.
+	 *  The delete can write additional attributes.  This is often used
+	 *  to set the CSS class of the field so that it can be displayed 
+	 *  differently, if in error (or required).
+	 *
+	 *  @since 1.0.5
+	 */
+	
+	public void writeAttributes(IValidatingTextField field,
+			IResponseWriter writer, IRequestCycle cycle)
+		throws RequestCycleException;
+	
     /**
-     *  Invoked after the field is rendered, if the field is in error.
-     *
-     */
-
+	 *  Invoked after the field is rendered, if the field is in error.
+	 *
+	 */
+	
     public void writeErrorSuffix(IValidatingTextField field,
-                IResponseWriter writer, IRequestCycle cycle)
-    throws RequestCycleException;
-
+			IResponseWriter writer, IRequestCycle cycle)
+		throws RequestCycleException;
+	
     /**
-     *  Invoked by a {@link FieldLabel} just before writing the name
-     *  of the field.
-     *
-     */
-
+	 *  Invoked by a {@link FieldLabel} just before writing the name
+	 *  of the field.
+	 *
+	 */
+	
     public void writeLabelPrefix(IValidatingTextField field, IResponseWriter writer,
-                IRequestCycle cycle)
-    throws RequestCycleException;
-
+			IRequestCycle cycle)
+		throws RequestCycleException;
+	
     /**
-     *  Invoked by a {@link FieldLabel} just after writing the name
-     *  of the field.
-     *
-     */
-
+	 *  Invoked by a {@link FieldLabel} just after writing the name
+	 *  of the field.
+	 *
+	 */
+	
     public void writeLabelSuffix(IValidatingTextField field, IResponseWriter writer,
-                IRequestCycle cycle)
-    throws RequestCycleException;
+			IRequestCycle cycle)
+		throws RequestCycleException;
 }
 

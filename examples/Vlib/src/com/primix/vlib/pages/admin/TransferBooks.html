@@ -1,22 +1,22 @@
-<jwc id="border">
+<span jwcid="border">
 <!-- $Id$ -->
 
-<jwc id="showMessage"/>
+<span jwcid="showMessage"/>
 
-<jwc id="showError"/>
+<span jwcid="showError"/>
 
 <p>Select a source and target user.
 
-<jwc id="selectForm">
+<form jwcid="selectForm">
 
 <table>
 	<tr>
 		<th>Move from:</th>
-		<td><jwc id="selectFrom"/></td>
+		<td><select jwcid="selectFrom"/></td>
 	</tr>
 	<tr>
 		<th>Move to:</th>
-		<td><jwc id="selectTo"/></td>
+		<td><select jwcid="selectTo"/></td>
 	</tr>
 	<tr>
 		<td></td>
@@ -24,21 +24,32 @@
 	</tr>
 </table>
 
-</jwc>
+</form>
 
-<jwc id="ifSelectionsOk">
+<span jwcid="ifSelectionsOk">
 
 <p>Select available books and move them to the "Selected" column
-on the left.
+on the right.
 
-<jwc id="xferForm">
+<form jwcid="xferForm">
 
-<jwc id="selectBooks"/>
+<span jwcid="selectBooks"/>
 
 <br><input type="submit" value="Transfer">
 
-</jwc>
+<span jwcid="availableTitleBlock">
 
-</jwc>
+Books owned by <span jwcid="insertFromName"/>
+</span>
 
-</jwc>
+<span jwcid="selectedTitleBlock">
+Books to transfer to <span jwcid="insertToName"/>
+</span>
+
+
+</form>
+
+</span>
+
+</span>
+

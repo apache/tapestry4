@@ -164,4 +164,15 @@ public interface IBinding
      */
  
     public void setObject(Object value);
+	
+	/**
+	 *  Returns the type of the binding.  For static bindings, returns
+	 *  the actual type stored (this will be String for most static bindings,
+	 *  or the actual type of a field, for field bindings).
+	 *
+	 *  @since 1.0.5
+	 *
+	 */
+	
+	public Class getType();
 }

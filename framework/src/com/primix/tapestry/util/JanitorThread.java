@@ -33,7 +33,7 @@ import java.lang.ref.*;
 
 /**
  *  A basic kind of janitor, an object that periodically invokes
- *  {@link IJanitor#executeJanitor()} on a set of objects.
+ *  {@link ICleanable#executeJanitor()} on a set of objects.
  *
  *  <p>The JanitorThread holds a <em>weak reference</em> to
  *  the objects it operates on.
@@ -51,10 +51,20 @@ public class JanitorThread extends Thread
 	 *
 	 */
 	
-	public static final long DEFAULT_SLEEP_MILLIS = 30 * 1024;
+	public static final long DEFAULT_INTERVAL_MILLIS = 30 * 1024;
 	
-	private long sleepMillis = DEFAULT_SLEEP_MILLIS;
+	private long interval = DEFAULT_INTERVAL_MILLIS;
+	private boolean lockInterval = false;
 	
+	private static JanitorThread shared = null;
+	
+	/**
+	 *  A {@link List} of {@link WeakReference}s to {@link IJanitor} instances.
+	 *
+	 */
+	
+	private List references = new ArrayList();
+
 	/**
 	 *  Creates a new daemon Janitor.
 	 *
@@ -79,7 +89,15 @@ public class JanitorThread extends Thread
 		setPriority(MIN_PRIORITY);
 	}
 	
-	private static JanitorThread shared = null;
+	/**
+	 *  Returns a shared instance of JanitorThread.  In most cases,
+	 *  the shared instance should be used, rather than creating
+	 *  a new instance; the exception being when particular
+	 *  scheduling is of concern.  It is also bad policy to
+	 *  change the sleep interval on the shared janitor
+	 *  (though nothing prevents this, either).
+	 *
+	 */
 	
 	public static JanitorThread getSharedJanitorThread()
 	{
@@ -90,6 +108,7 @@ public class JanitorThread extends Thread
 				if (shared == null)
 				{
 					shared = new JanitorThread("Shared-JanitorThread");
+					shared.lockInterval = true;
 					
 					shared.start();
 				}
@@ -99,26 +118,30 @@ public class JanitorThread extends Thread
 		return shared;
 	}
 	
-	/**
-	 *  A {@link List} of {@link WeakReference}s to {@link IJanitor} instances.
-	 *
-	 */
 	
-	private List references = new ArrayList();
-	
-	public long getSleepMillis()
+	public long getInterval()
 	{
-		return sleepMillis;
+		return interval;
 	}
 	
 	/**
 	 *  Updates the property, then interrupts the thread.
 	 *
+	 *  @param the interval, in milliseconds, between sweeps.
+	 *
+	 *  @throws IllegalStateException always, if the receiver is the shared JanitorThread
+	 *  @throws IllegalArgumentException if value is less than 1
 	 */
 	
-	public void setSleepMillis(long value)
+	public void setInterval(long value)
 	{
-		sleepMillis = value;
+		if (lockInterval)
+			throw new IllegalStateException("The interval for this janitor thread is locked.");
+		
+		if (value < 1)
+			throw new IllegalArgumentException("The interval for a janitor thread may not be less than 1 millisecond.");
+		
+		interval = value;
 		
 		interrupt();
 	}
@@ -148,7 +171,7 @@ public class JanitorThread extends Thread
 	 *
 	 */
 	
-	protected void invokeTargets()
+	protected void sweep()
 	{
 		synchronized(references)
 		{
@@ -178,7 +201,7 @@ public class JanitorThread extends Thread
 	{
 		try
 		{
-			sleep(sleepMillis);
+			sleep(interval);
 		}
 		catch (InterruptedException ex)
 		{
@@ -188,7 +211,7 @@ public class JanitorThread extends Thread
 	
 	/**
 	 *  Alternates between {@link #waitForNextPass()} and
-	 *  {@link #invokeTargets}.
+	 *  {@link #sweep()}.
 	 *
 	 */
 	
@@ -198,7 +221,26 @@ public class JanitorThread extends Thread
 		{
 			waitForNextPass();
 			
-			invokeTargets();
+			sweep();
 		}
+	}
+	
+	public String toString()
+	{
+		StringBuffer buffer = new StringBuffer("JanitorThread@");
+		buffer.append(Integer.toHexString(hashCode()));
+		
+		buffer.append("[interval=");
+		buffer.append(interval);
+		
+		buffer.append(" count=");
+		synchronized(references)
+		{
+			buffer.append(references.size());
+		}
+		
+		buffer.append(']');
+		
+		return buffer.toString();
 	}
 }

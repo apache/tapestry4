@@ -94,4 +94,23 @@ td.clsDataTable	{
 	border-style:solid;
 	background:#ffffff;
 }
+
+TABLE.tapestry-palette TH
+{
+  font-weight: bold;
+  color: white;
+  background-color: #4b5887;
+}
+
+TABLE.tapestry-palette SELECT
+{
+  width: 200;
+}
+
+TABLE.tapestry-palette TD.controls
+{
+   text-align: center;
+}
+
+
 /* Primix-JMoran2001 */

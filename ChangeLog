@@ -1,3 +1,29 @@
+* Aug 23 2001 hship
+
+framework:
+- Fix Javadoc errors and improve documentation.
+- Clean up JanitorTask and ICleanup a bit.
+- NumericField can now work when its value is
+  bound to null, it reads the property type through
+  the binding.
+- Bunch of fixes to support NumericField, such as adding
+  IBinding.getType().
+- Change the page loader to check for, and prevent, components
+  from implementing IPage (since that can screw a bunch of
+  things up).
+
+
+tutorial:
+- Fix minor issue in valid tutorial (Home.sortMode was resetting to NONE not USER).
+
+vlib:
+- Fix exception thrown after logging in from the ViewBook page.
+- Improve look and feel on the admin.TransferBooks page.
+- Fix broken links (to Jetty and SourceForge)
+
+[ #448578 ] allow null values in NumericField
+[ #453485 ] Check for IPage
+
 * Aug 21 2001 hship
 
 contrib:

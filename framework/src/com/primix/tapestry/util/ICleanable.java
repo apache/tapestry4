@@ -30,8 +30,11 @@ package com.primix.tapestry.util;
 
 /**
  *  An interface implemented by objects that can be
- *  cleaned up.  The object implementing the interface
- *  should analyze the objects it references, and release
+ *  cleaned up, which is to say, can release unneeded
+ *  object references.  This is useful for many classes which
+ *  provide a pooling or caching function.  Over time, 
+ *  some pooled or cached objects may no longer be useful
+ *  to keep and can be released. 
  *  references to unneeded objects.
  *  This interface is the bridge between
  *  the {@link JanitorThread} class and an object that

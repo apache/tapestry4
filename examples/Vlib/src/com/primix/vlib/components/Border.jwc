@@ -8,6 +8,7 @@
 
   <parameter name="title" java-type="java.lang.String"/>
   <parameter name="subtitle" java-type="java.lang.String"/>
+  <parameter name="simpleTitle" java-type="boolean"/>
   
   <component id="shell" type="Shell">
     <binding name="title" property-path="windowTitle"/>
@@ -88,6 +89,11 @@
     <static-binding name="page">Logout</static-binding>
   </component>
 
+  <component id="ifImageTitle" type="Conditional">
+  	<inherited-binding name="condition" parameter-name="simpleTitle"/>
+  	<field-binding name="invert" field-name="Boolean.TRUE"/>
+  </component>
+  
   <component id="ifLibraryPage" type="Conditional">
     <binding name="condition" property-path="libraryPage"/>
   </component>
@@ -98,6 +104,14 @@
 
   <component id="subheaderImage" type="Image">
     <binding name="image" property-path="subheader"/>
+  </component>
+  
+  <component id="ifSimpleTitle" type="Conditional">
+  	<inherited-binding name="condition" parameter-name="simpleTitle"/>
+  </component>
+  
+  <component id="insertSimpleTitle" type="Insert">
+    <inherited-binding name="value" parameter-name="title"/>
   </component>
   
   <component id="insertWrapped" type="InsertWrapped"/>

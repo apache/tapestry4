@@ -180,10 +180,25 @@ public abstract class AbstractTextField extends AbstractFormComponent
 		
 		generateAttributes(cycle, writer, reservedNames);
 		
+		beforeCloseTag(writer, cycle);
+		
 		writer.closeTag();
 		
 	}
 
+	/**
+	 *  Invoked from {@link #render(IResponseWriter, IRequestCycle)}
+	 *  just before the tag is closed.  This implementation does nothing,
+	 *  subclasses may override.
+	 *
+	 */
+	
+	protected void beforeCloseTag(IResponseWriter writer, IRequestCycle cycle)
+		throws RequestCycleException
+	{
+		// Do nothing.
+	}
+	
 	/**
 	 *  Invoked by {@link #render(IResponseWriter writer, IRequestCycle cycle)}
 	 *  when a value is obtained from the

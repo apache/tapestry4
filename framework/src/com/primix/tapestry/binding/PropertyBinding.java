@@ -340,6 +340,33 @@ public class PropertyBinding extends AbstractBinding
 		
     }
 	
+	/**
+	 *  Follows the property path to determine the type.
+	 *
+	 *  @since 1.0.5
+	 *
+	 */
+	
+	public Class getType()
+	{
+		if (helper == null)
+			setupHelper();
+		
+		try
+		{
+			
+			if (simple)
+				return helper.getAccessor(root, propertyPath).getType();
+			
+			return helper.getAccessorPath(root, splitPropertyPath).getType();
+		}
+		catch (Throwable ex)
+		{
+			throw new BindingException("Unable to get type of property " + propertyPath + " of " + root + ".",
+					this, ex);
+		}
+	}
+	
     /**
 	 *  Returns the a String representing the property path.  This includes
 	 *  the {@link IComponent#getExtendedId() extended id} of the root component
