@@ -37,8 +37,8 @@ import java.util.Map;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 import net.sf.tapestry.ComponentAddress;
+import net.sf.tapestry.DefaultResourceResolver;
 import net.sf.tapestry.IResourceResolver;
-import net.sf.tapestry.engine.ResourceResolver;
 import net.sf.tapestry.spec.BeanLifecycle;
 import net.sf.tapestry.util.io.DataSqueezer;
 import net.sf.tapestry.util.io.ISqueezeAdaptor;
@@ -54,7 +54,8 @@ import net.sf.tapestry.util.prop.OgnlUtils;
 
 public class TestDataSqueezer extends TestCase
 {
-    private DataSqueezer s = new DataSqueezer(new ResourceResolver(this));
+    private IResourceResolver _resolver = new DefaultResourceResolver();
+    private DataSqueezer s = new DataSqueezer(_resolver);
 
     public TestDataSqueezer(String name)
     {
@@ -287,7 +288,7 @@ public class TestDataSqueezer extends TestCase
 
     public void testCustom() throws IOException
     {
-        DataSqueezer ds = new DataSqueezer(new ResourceResolver(this), new ISqueezeAdaptor[] { new BHSqueezer()});
+        DataSqueezer ds = new DataSqueezer(_resolver, new ISqueezeAdaptor[] { new BHSqueezer()});
 
         attempt(new BooleanHolder(true), "BT", ds);
         attempt(new BooleanHolder(false), "BF", ds);
@@ -396,7 +397,7 @@ public class TestDataSqueezer extends TestCase
         // System.out.println("This classloader = " + getClass().getClassLoader());
         // System.out.println("Visit classloader = " + visit.getClass().getClassLoader());
 
-        IResourceResolver resolver = new ResourceResolver(visit);
+        IResourceResolver resolver = new DefaultResourceResolver(visit.getClass().getClassLoader());
 
         String stringValue = Long.toHexString(System.currentTimeMillis());
 

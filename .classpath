@@ -14,7 +14,6 @@
     <classpathentry kind="lib" path="lib/ext/javax.xml.jaxp.jar"/>
     <classpathentry kind="lib" path="lib/ext/junit.jar"/>
     <classpathentry kind="lib" path="lib/ext/mckoidb.jar"/>
-    <classpathentry kind="lib" path="lib/ext/ognl-2.1.4-opt.jar"/>
     <classpathentry kind="lib" path="lib/ext/commons-logging-1.0.2.jar"/>
     <classpathentry kind="lib" path="lib/ext/org.apache.crimson.jar"/>
     <classpathentry kind="var" path="JBOSS_DIR/client/jboss-j2ee.jar"/>
@@ -26,5 +25,6 @@
     <classpathentry kind="var" path="JBOSS_DIR/lib/jboss-system.jar"/>
     <classpathentry kind="var" path="JBOSS_DIR/lib/jboss-common.jar"/>
     <classpathentry kind="lib" path="lib/ext/commons-lang-1.0.jar"/>
+    <classpathentry kind="lib" path="lib/ext/ognl-2.2.2-opt.jar"/>
     <classpathentry kind="output" path="bin"/>
 </classpath>

@@ -690,6 +690,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
 
     public boolean service(RequestContext context) throws ServletException, IOException
     {
+        ApplicationServlet servlet = context.getServlet();
         RequestCycle cycle = null;
         ResponseOutputStream output = null;
         IMonitor monitor;
@@ -698,7 +699,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
             LOG.info("Begin service " + context.getRequestURI());
 
         if (_specification == null)
-            _specification = context.getServlet().getApplicationSpecification();
+            _specification = servlet.getApplicationSpecification();
 
         // The servlet invokes setLocale() before invoking service().  We want
         // to ignore that setLocale() ... that is, not force a cookie to be
@@ -707,7 +708,7 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         _localeChanged = false;
 
         if (_resolver == null)
-            _resolver = _specification.getResourceResolver();
+            _resolver = servlet.getResourceResolver();
 
         try
         {

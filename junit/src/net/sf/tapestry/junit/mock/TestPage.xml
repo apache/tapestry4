@@ -7,7 +7,12 @@
 
 <mock-test>
     <context name="mock"/>
-  	<servlet name="app" class="net.sf.tapestry.junit.mock.simple.SimpleServlet"/>
+
+  	<servlet name="app" class="net.sf.tapestry.ApplicationServlet">
+  		<init-parameter
+  			name="net.sf.tapestry.application-specification"
+  			value="/net/sf/tapestry/junit/mock/simple/Simple.application"/>
+  	</servlet>
     
     <!-- Handle unknown page -->
     

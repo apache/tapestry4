@@ -38,10 +38,11 @@ import java.util.Map;
 
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
+
+import net.sf.tapestry.DefaultResourceResolver;
 import net.sf.tapestry.IScript;
 import net.sf.tapestry.ScriptException;
 import net.sf.tapestry.ScriptSession;
-import net.sf.tapestry.engine.ResourceResolver;
 import net.sf.tapestry.script.ScriptParser;
 import net.sf.tapestry.util.xml.DocumentParseException;
 
@@ -65,7 +66,7 @@ public class ScriptTest extends TestCase
 
     private IScript read(String file) throws IOException, DocumentParseException
     {
-        ScriptParser parser = new ScriptParser(new ResourceResolver(this));
+        ScriptParser parser = new ScriptParser(new DefaultResourceResolver());
 
         InputStream stream = getClass().getResourceAsStream(file);
 
