@@ -142,7 +142,7 @@ public class TreeTableDataView extends BaseComponent implements ITreeRowSource, 
                 Object objChild = iter.next();
                 Object objChildUID = objTreeModel.getTreeDataModel().getUniqueKey(objChild, objParentUID);
                 boolean bChildLast = !iter.hasNext();
-                if(!bChildLast)
+                if(bChildLast)
             		nRowPossiotionType = TreeRowObject.LAST_ROW;
             	else
                 	nRowPossiotionType = TreeRowObject.MIDDLE_ROW;
