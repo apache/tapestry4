@@ -127,15 +127,4 @@
     
   <!-- FOP is gagging on something in the FAQ. -->
   
-  <appendix id="faq">
-    <title>Frequently Asked Questions</title>
-    
-    <para>
-    The FAQ is currently on hiatus due to problems related
-    to generating a PDF version of this document.  This should
-    be resolved before the final release of Tapestry 2.2.
-    </para>
-    
-   </appendix>
-  
 </book>

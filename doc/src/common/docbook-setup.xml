@@ -22,7 +22,7 @@ problems using Team support inside the Eclipse IDE.
 
 <!-- Base name for the XSL distribution. -->
 
-<property name="docbook.xsl.base" value="docbook-xsl-1.54.1"/>
+<property name="docbook.xsl.base" value="docbook-xsl-1.55.0"/>
 
 <property name="docbook.dtd.dir" value="../common/${docbook.dtd.base}"/>
 <property name="docbook.xsl.dir" value="../common/${docbook.xsl.base}"/>
@@ -169,9 +169,6 @@ Converting Flow Objects to PDF ...
 	</java>      
 
 </target>
-
-<!-- saxon.jar must be set in the Ant lib directory -->
-
 
 <!-- Invoked using antcall, setting the property root.filename -->
 

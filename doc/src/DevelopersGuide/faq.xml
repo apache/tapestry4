@@ -332,53 +332,7 @@ a class loader issue.
       
  
       
-<qandaentry>
-	<question>
-		<para>None of my code compiles!  What happened to everything in 
-		the <filename class="directory">com.primix.tapestry</filename>
-		package?
-		</para>
-	</question>
-	<answer>
-		<para>
-		Between Tapestry release 2.0.0 and 2.1
-		a signficant number of changes occurred,
-		including renaming everything <filename class="directory">com.primix.tapestry.*</filename>
-		to <filename class="directory">net.sf.tapestry.*</filename>.
-		</para>
-		
-		<para>
-		This is to mark the fact that the principal author of Tapestry, and Primix, had gone
-		their seperate ways.
-		</para>
-		
-		<para>
-		In addition, a few things were moved or renamed:
 
-	<itemizedlist mark="opencircle">
-          <listitem>
-            <para>
-              <filename>com.primix.tapestry.BasePage</filename> moved to
-              <filename>net.sf.tapestry.html.BasePage</filename>
-            </para>
-            </listitem>
-           <listitem>
-           <para>
-           	<filename>com.primix.tapestry.IResponseWriter</filename>
-           	renamed to
-           	<filename>net.sf.tapestry.IMarkupWriter</filename>
-           	</para>
-           </listitem>
-           <listitem>
-           	<para>	
-           	<filename>com.primix.tapestry.IDirectListener</filename>
-			deleted
-			</para>
-			</listitem>
-           </itemizedlist> 		
-		</para>
-		</answer>
-	</qandaentry>
 	
 <qandaentry>
 <question>
