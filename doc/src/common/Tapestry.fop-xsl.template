@@ -16,8 +16,6 @@
      
 <xsl:import href="@docbook.xsl.base@/fo/docbook.xsl"/>
 
-<xsl:param name="chunk.first.sections" select="1"/>
-  
 <!-- Enable shading of verbatim blocks, such as programlisting. -->
  
 <xsl:param name="shade.verbatim" select="1"/>
@@ -30,13 +28,18 @@
 <xsl:param name="admon.graphics" select="1"/>
 <xsl:param name="admon.graphics.path">common-images/</xsl:param>
 
-<xsl:param name="callout.graphics" select="1"/>
-<xsl:param name="callout.graphics.path">standard-images/callouts/</xsl:param>
+<xsl:param name="callout.graphics" select="0"/>
+<xsl:param name="callout.unicode" select="1"/>
 
-<!-- The Tapestry documentation is inside a frameset and we want to keep the
-     frameset even when the use clicks a link "outside" the documentation.  -->
-     
-<xsl:param name="ulink.target">_self</xsl:param>
+<xsl:param name="variablelist.as.blocks" select="1"/>
+<xsl:param name="ulink.show" select="0"/>
+
+<xsl:attribute-set name="verbatim.properties">
+     <xsl:attribute name="space-before.minimum">0.8em</xsl:attribute>
+      <xsl:attribute name="space-before.optimum">1em</xsl:attribute>
+      <xsl:attribute name="space-before.maximum">1.2em</xsl:attribute>
+      <xsl:attribute name="text-align">start</xsl:attribute>
+</xsl:attribute-set>
 
 </xsl:stylesheet>
 
