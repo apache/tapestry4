@@ -299,8 +299,8 @@ public class ImageSubmit extends AbstractFormComponent
 
 		// Not rewinding, do the real render
 
-		if (disabled)
-			image = (IAsset)disabledImageBinding.getObject("disabled", IAsset.class);
+		if (disabled && disabledImageBinding != null)
+			image = (IAsset)disabledImageBinding.getObject("disabledImage", IAsset.class);
 
 		if (image == null)
 		{

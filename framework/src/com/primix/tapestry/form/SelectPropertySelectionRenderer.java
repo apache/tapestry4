@@ -49,6 +49,15 @@ implements IPropertySelectionRenderer
 		super();
 	}
 
+	/**
+	 *  This method is deprecated; the behavior can be better
+	 *  achieved by using a {@link com.primix.tapestry.script.Script} component
+	 *  to provide the necessary <code>onChange</code> handler.
+	 *
+	 *  @deprecated
+	 *
+	 */
+	 
 	public SelectPropertySelectionRenderer(boolean immediateSubmit)
 	{
 		this.immediateSubmit = immediateSubmit;
@@ -59,6 +68,7 @@ implements IPropertySelectionRenderer
 	 *  If so, changing the value of the &lt;select&gt; causes the form containing
 	 *  it to be submitted.
 	 *
+	 *  @deprecated
 	 */
 
 	public boolean getImmediateSubmit()
@@ -70,7 +80,7 @@ implements IPropertySelectionRenderer
 	 *  Writes the &lt;select&gt; element.  If the
 	 *  {@link PropertySelection} is {@link PropertySelection#isDisabled() disabled}
 	 *  then a <code>disabled</code> attribute is written into the tag
-	 *  (though Navigator may ignore this).
+	 *  (though Navigator will ignore this).
 	 *
 	 */
 
@@ -84,6 +94,8 @@ implements IPropertySelectionRenderer
 		if (component.isDisabled())
 			writer.attribute("disabled");
 			
+		// We're in the process of removing this immediateSubmit business.
+		
 		if (immediateSubmit)
 			writer.attribute("onChange", "javascript:this.form.submit();");
 		
@@ -95,7 +107,8 @@ implements IPropertySelectionRenderer
 	 *
 	 */
 
-	public void endRender(PropertySelection component, IResponseWriter writer, IRequestCycle cycle) throws RequestCycleException
+	public void endRender(PropertySelection component, IResponseWriter writer, IRequestCycle cycle)
+	throws RequestCycleException
 	{
 		writer.end(); // <select>
 	}

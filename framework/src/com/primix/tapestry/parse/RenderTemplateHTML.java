@@ -60,9 +60,14 @@ public class RenderTemplateHTML implements IRender
 			
 		if (length == 0)
 			return;
-			
-		if (!cycle.isRewinding())
-			writer.printRaw(templateData, offset, length);
+
+		// At one time, we would check to see if the cycle was rewinding and
+		// only invoke printRaw() if it was.  However, that slows down
+		// normal rendering (microscopically) and, with the new
+		// NullResponseWriter class, the "cost" of invoking cycle.isRewinding()
+		// is approximately the same as the "cost" of invoking writer.printRaw().
+					
+		writer.printRaw(templateData, offset, length);
 	}
 	
 	/**

@@ -97,8 +97,8 @@ public interface IComponent extends IRender
      *  Returns a {@link Collection} of the names of all bindings (which includes
      *  bindings for both formal and informal parameters).
      *
-     *  <P>The return value is unmodifiable, and may be null if the component has
-     *  no parameters bound.
+     *  <p>The return value is unmodifiable.  It will be null for a {@link IPage page},
+	 *  or may simply be empty for a component with no bindings.
      *
      */
 

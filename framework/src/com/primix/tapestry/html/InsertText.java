@@ -54,6 +54,7 @@ import java.io.*;
  *  <tr>
  *      <td>mode</td>
  *      <td>{@link InsertTextMode}</td>
+ *		<td>R</td>
  *      <td>no</td>
  *      <td>{@link InsertTextMode#BREAK}</td>
  *      <td>Defines how each line will be emitted.
