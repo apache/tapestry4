@@ -22,6 +22,7 @@
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
 // Lesser General Public License for more details.
 //
+
 package net.sf.tapestry.junit.parse;
 
 import java.io.InputStream;
@@ -341,5 +342,30 @@ public class SpecificationParserTest extends TestCase
             checkException(ex, "Invalid$Component");
             checkException(ex, "alias");
         }
-    }             
+    }   
+    
+    /**
+     *  Test invalid extension name.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public void testInvalidExtensionName()
+    throws Exception
+    {
+        try
+        {
+            ApplicationSpecification spec = 
+                parseApp("InvalidExtensionName.application");
+                
+             throw new AssertionFailedError("Should not be able to parse document.");
+        }
+        catch (DocumentParseException ex)
+        {
+            checkException(ex, "Invalid$Extension");
+            checkException(ex, "extension name");
+        }
+    }      
+              
 }
