@@ -1,69 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE script PUBLIC 
-  "-//Howard Ship//Tapestry Script 1.1//EN"
-  "http://tapestry.sf.net/dtd/Script_1_1.dtd">
+<!DOCTYPE script PUBLIC
+	"-//Howard Lewis Ship//Tapestry Script 1.2//EN"
+	"http://tapestry.sf.net/dtd/Script_1_2.dtd">
   
-<!--
-Input symbols:
-  displayField: the date display form text field
-  name:         the calendar popup button
-  returnField:  the value return Hidden form field
--->
 <script>
 
-<let key="displayName">
-  ${displayField.name}
-</let>
-<let key="returnName">
-  ${returnField.name}
+<input-symbol key="dateField" class="net.sf.tapestry.form.TextField" required="yes"/>
+<input-symbol key="popupButton" class="net.sf.tapestry.form.Button" required="yes"/>
+<input-symbol key="dateHidden" class="net.sf.tapestry.form.Hidden" required="yes"/>
+
+<let key="formName"> 
+  ${dateField.form.name}
 </let>
 
-<let key="buttonName">
-  ${button.name}
-</let>
-
-<let key="formName">
-  ${displayField.form.name}
-</let>
-
-<let key="formPath">
-  document.${formName}
-</let>
-
-<let key="buttonPath">
-  ${formPath}.${buttonName}
-</let>
-
-<let key="displayPath">
-  ${formPath}.${displayName}
-</let>
-
-<let key="returnPath">
-  ${formPath}.${returnName}
-</let>
-
-<let key="functionName"> 
-  onClick_${buttonName}
+<let key="popupFunctionName"> 
+  onClick_${popupButton.name}
 </let>
 
 <let key="hideFunctionName"> 
-  onClick_${displayName}
+  onClick_${dateField.name}
 </let>
 
 <body>
-function ${functionName}() 
+function ${popupFunctionName}() 
 {
-       fPopCalendar(${displayPath},${displayPath},${returnPath}, popCal);        
+    // See Calendar.js  
+    fPopCalendar(document.${formName}.${dateField.name}, 
+                 document.${formName}.${dateField.name}, 
+                 document.${formName}.${dateHidden.name}, 
+                 popCal);        
 } 
 function ${hideFunctionName}() 
 {
-        fHideCalendar();
+    // See Calendar.js  
+    fHideCalendar();
 }
 </body>
 
 <initialization>
-${buttonPath}.attachEvent("onclick", ${functionName});
-${displayPath}.attachEvent("onclick", ${hideFunctionName});
+document.${formName}.${popupButton.name}.attachEvent("onclick", ${popupFunctionName});
+document.${formName}.${dateField.name}.attachEvent("onclick", ${hideFunctionName});
 </initialization>
 
 </script>

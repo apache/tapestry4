@@ -9,22 +9,26 @@
   <parameter name="value" direction="custom" java-type="java.util.Date" required="yes"/>
   <parameter name="format" direction="in" java-type="java.lang.String" required="no"/>
 
-  <component id="dateShow" type="TextField">
+  <component id="dateField" type="TextField">
        	<binding name="value" expression="text"/>
         <binding name="format" expression="format"/>
         <static-binding name="readonly">true</static-binding>
   </component>
 
-  <component id="dateSubmit" type="Hidden">
+  <component id="dateHidden" type="Hidden">
        	<binding name="value" expression="longValue"/>
        	<field-binding name="datasqueeze" field-name="Boolean.FALSE"/>
   </component>
 
-  <component id="button" type="Button">
-       	<static-binding name="value">V</static-binding>
+  <component id="datePickerScript" type="Script">
+        <static-binding name="script">/net/sf/tapestry/form/DatePicker.script</static-binding>
+        <static-binding name="language">JScript</static-binding>
+        <binding name="dateField" expression="components.dateField"/>
+        <binding name="popupButton" expression="components.popupButton"/>
+        <binding name="dateHidden" expression="components.dateHidden"/>
   </component>
 
-  <component id="firstTime" type="Conditional">
+  <component id="ifFirstTime" type="Conditional">
        	<binding name="condition" expression="firstTime"/>
   </component>
 
@@ -32,12 +36,8 @@
         <static-binding name="script">/net/sf/tapestry/form/Calendar.script</static-binding>
   </component>
         
-  <component id="datePickerScript" type="Script">
-        <static-binding name="script">/net/sf/tapestry/form/DatePicker.script</static-binding>
-        <static-binding name="language">JScript</static-binding>
-        <binding name="displayField" expression="components.dateShow"/>
-        <binding name="returnField" expression="components.dateSubmit"/>
-        <binding name="button" expression="components.button"/>
+  <component id="popupButton" type="Button">
+       	<static-binding name="value">V</static-binding>
   </component>
 
 </component-specification>
