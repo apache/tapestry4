@@ -152,7 +152,7 @@ public class BaseComponentTemplateLoader
             }
 
             if (_value == null)
-                _value = _component.getString(_key);
+                _value = _component.getMessage(_key);
 
             if (_raw)
                 writer.printRaw(_value);
@@ -233,7 +233,7 @@ public class BaseComponentTemplateLoader
 
         if (_stackx != 0)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("BaseComponent.unbalance-open-tags"),
+                Tapestry.getMessage("BaseComponent.unbalance-open-tags"),
                 _loadComponent);
 
         checkAllComponentsReferenced();
@@ -278,7 +278,7 @@ public class BaseComponentTemplateLoader
 
         if (_seenIds.contains(id))
             throw new ApplicationRuntimeException(
-                Tapestry.getString(
+                Tapestry.format(
                     "BaseComponent.multiple-component-references",
                     _loadComponent.getExtendedId(),
                     id),
@@ -333,7 +333,7 @@ public class BaseComponentTemplateLoader
 
         if (_stackx <= 0)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("BaseComponent.unbalanced-close-tags"),
+                Tapestry.getMessage("BaseComponent.unbalanced-close-tags"),
                 _loadComponent,
                 token.getLocation(),
                 null);
@@ -431,7 +431,7 @@ public class BaseComponentTemplateLoader
         {
             if (component.getBinding(name) != null)
                 throw new ApplicationRuntimeException(
-                    Tapestry.getString(
+                    Tapestry.format(
                         "BaseComponent.dupe-template-expression",
                         name,
                         component.getExtendedId(),
@@ -444,7 +444,7 @@ public class BaseComponentTemplateLoader
         {
             if (!spec.getAllowInformalParameters())
                 throw new ApplicationRuntimeException(
-                    Tapestry.getString(
+                    Tapestry.format(
                         "BaseComponent.template-expression-for-informal-parameter",
                         name,
                         component.getExtendedId(),
@@ -458,7 +458,7 @@ public class BaseComponentTemplateLoader
 
             if (spec.isReservedParameterName(name))
                 throw new ApplicationRuntimeException(
-                    Tapestry.getString(
+                    Tapestry.format(
                         "BaseComponent.template-expression-for-reserved-parameter",
                         name,
                         component.getExtendedId(),
@@ -505,7 +505,7 @@ public class BaseComponentTemplateLoader
         {
             if (component.getBinding(name) != null)
                 throw new ApplicationRuntimeException(
-                    Tapestry.getString(
+                    Tapestry.format(
                         "BaseComponent.dupe-string",
                         name,
                         component.getExtendedId(),
@@ -518,7 +518,7 @@ public class BaseComponentTemplateLoader
         {
             if (!spec.getAllowInformalParameters())
                 throw new ApplicationRuntimeException(
-                    Tapestry.getString(
+                    Tapestry.format(
                         "BaseComponent.template-expression-for-informal-parameter",
                         name,
                         component.getExtendedId(),
@@ -532,7 +532,7 @@ public class BaseComponentTemplateLoader
 
             if (spec.isReservedParameterName(name))
                 throw new ApplicationRuntimeException(
-                    Tapestry.getString(
+                    Tapestry.format(
                         "BaseComponent.template-expression-for-reserved-parameter",
                         name,
                         component.getExtendedId(),
@@ -623,7 +623,7 @@ public class BaseComponentTemplateLoader
                 : "BaseComponent.missing-component-spec-multi";
 
         StringBuffer buffer =
-            new StringBuffer(Tapestry.getString(key, _loadComponent.getExtendedId()));
+            new StringBuffer(Tapestry.format(key, _loadComponent.getExtendedId()));
 
         Iterator i = ids.iterator();
         int j = 1;
@@ -636,7 +636,7 @@ public class BaseComponentTemplateLoader
                 if (j == count)
                 {
                     buffer.append(' ');
-                    buffer.append(Tapestry.getString("BaseComponent.and"));
+                    buffer.append(Tapestry.getMessage("BaseComponent.and"));
                     buffer.append(' ');
                 }
                 else
@@ -655,7 +655,7 @@ public class BaseComponentTemplateLoader
     protected ApplicationRuntimeException createBodylessComponentException(IComponent component)
     {
         return new ApplicationRuntimeException(
-            Tapestry.getString("BaseComponentTemplateLoader.bodyless-component"),
+            Tapestry.getMessage("BaseComponentTemplateLoader.bodyless-component"),
             component);
     }
 }

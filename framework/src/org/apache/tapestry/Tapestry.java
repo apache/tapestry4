@@ -943,7 +943,7 @@ public final class Tapestry
      * 
      **/
 
-    public static String getString(String key, Object[] args)
+    public static String format(String key, Object[] args)
     {
         if (_strings == null)
             _strings = ResourceBundle.getBundle("org.apache.tapestry.TapestryStrings");
@@ -957,49 +957,49 @@ public final class Tapestry
     }
 
     /**
-     *  Convienience method for invoking {@link #getString(String, Object[])}.
+     *  Convienience method for invoking {@link #format(String, Object[])}.
      * 
-     *  @since 1.0.8
+     *  @since 3.0
      **/
 
-    public static String getString(String key)
+    public static String getMessage(String key)
     {
-        return getString(key, null);
+        return format(key, null);
+    }
+
+    /**
+     *  Convienience method for invoking {@link #format(String, Object[])}.
+     * 
+     *  @since 3.0
+     **/
+
+    public static String format(String key, Object arg)
+    {
+        return format(key, new Object[] { arg });
+    }
+
+    /**
+     *  Convienience method for invoking {@link #format(String, Object[])}.
+     * 
+     *  @since 3.0
+     * 
+     **/
+
+    public static String format(String key, Object arg1, Object arg2)
+    {
+        return format(key, new Object[] { arg1, arg2 });
     }
 
     /**
      *  Convienience method for invoking {@link #getString(String, Object[])}.
      * 
-     *  @since 1.0.8
-     **/
-
-    public static String getString(String key, Object arg)
-    {
-        return getString(key, new Object[] { arg });
-    }
-
-    /**
-     *  Convienience method for invoking {@link #getString(String, Object[])}.
-     * 
-     *  @since 1.0.8
+     *  @since 3.0
      * 
      **/
 
-    public static String getString(String key, Object arg1, Object arg2)
+    public static String format(String key, Object arg1, Object arg2, Object arg3)
     {
-        return getString(key, new Object[] { arg1, arg2 });
-    }
-
-    /**
-     *  Convienience method for invoking {@link #getString(String, Object[])}.
-     * 
-     *  @since 1.0.8
-     * 
-     **/
-
-    public static String getString(String key, Object arg1, Object arg2, Object arg3)
-    {
-        return getString(key, new Object[] { arg1, arg2, arg3 });
+        return format(key, new Object[] { arg1, arg2, arg3 });
     }
 
     private static final String UNKNOWN_VERSION = "Unknown";
@@ -1140,7 +1140,7 @@ public final class Tapestry
             return null;
 
         if (array.length % 2 != 0)
-            throw new IllegalArgumentException(getString("Tapestry.even-sized-array"));
+            throw new IllegalArgumentException(getMessage("Tapestry.even-sized-array"));
 
         Map result = new HashMap();
 
@@ -1178,10 +1178,11 @@ public final class Tapestry
     }
 
     /**
-     *  Given a Class, creates a presentable name for the class, even if the
-     *  class is a scalar type or Array type.
+     * Given a Class, creates a presentable name for the class, even if the
+     * class is a scalar type or Array type.
      * 
-     **/
+     * @since 3.0
+     */
 
     public static String getClassName(Class subject)
     {
@@ -1233,7 +1234,7 @@ public final class Tapestry
 
     public static BindingException createNullBindingException(IBinding binding)
     {
-        return new BindingException(getString("null-value-for-binding"), binding);
+        return new BindingException(getMessage("null-value-for-binding"), binding);
     }
 
     /** @since 3.0 **/
@@ -1244,7 +1245,7 @@ public final class Tapestry
         ILocation location)
     {
         return new ApplicationRuntimeException(
-            getString("no-such-component", component.getExtendedId(), id),
+            format("no-such-component", component.getExtendedId(), id),
             component,
             location,
             null);
@@ -1257,7 +1258,7 @@ public final class Tapestry
         String parameterName)
     {
         return new BindingException(
-            getString("required-parameter", parameterName, component.getExtendedId()),
+            format("required-parameter", parameterName, component.getExtendedId()),
             component,
             component.getBinding(parameterName),
             null);
@@ -1270,7 +1271,7 @@ public final class Tapestry
         String propertyName)
     {
         return new ApplicationRuntimeException(
-            getString("render-only-property", propertyName, component.getExtendedId()),
+            format("render-only-property", propertyName, component.getExtendedId()),
             component);
     }
 
@@ -1333,7 +1334,7 @@ public final class Tapestry
             return;
 
         throw new ApplicationRuntimeException(
-            Tapestry.getString(
+            Tapestry.format(
                 "Tapestry.missing-method-invocation",
                 object.getClass().getName(),
                 methodName));

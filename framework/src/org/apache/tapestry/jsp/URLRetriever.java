@@ -103,7 +103,7 @@ public class URLRetriever
 
         if (dispatcher == null)
             throw new JspException(
-                Tapestry.getString("URLRetriever.unable-to-find-dispatcher", servletPath));
+                Tapestry.format("URLRetriever.unable-to-find-dispatcher", servletPath));
 
         request.setAttribute(Tapestry.TAG_SUPPORT_SERVICE_ATTRIBUTE, _serviceName);
         request.setAttribute(Tapestry.TAG_SUPPORT_PARAMETERS_ATTRIBUTE, _serviceParameters);
@@ -117,13 +117,13 @@ public class URLRetriever
         catch (IOException ex)
         {
             throw new JspException(
-                Tapestry.getString("URLRetriever.io-exception", servletPath, ex.getMessage()),
+                Tapestry.format("URLRetriever.io-exception", servletPath, ex.getMessage()),
                 ex);
         }
         catch (ServletException ex)
         {
             throw new JspException(
-                Tapestry.getString("URLRetriever.servlet-exception", servletPath, ex.getMessage()),
+                Tapestry.format("URLRetriever.servlet-exception", servletPath, ex.getMessage()),
                 ex);
         }
         finally

@@ -529,7 +529,7 @@ public class TemplateParser
         {
             if (_cursor >= length)
                 throw new TemplateParseException(
-                    Tapestry.getString(
+                    Tapestry.format(
                         "TemplateParser.comment-not-ended",
                         Integer.toString(startLine)),
                     new Location(_resourceLocation, startLine));
@@ -618,7 +618,7 @@ public class TemplateParser
                         : "TemplateParser.unclosed-tag";
 
                 throw new TemplateParseException(
-                    Tapestry.getString(key, tagName, Integer.toString(startLine)),
+                    Tapestry.format(key, tagName, Integer.toString(startLine)),
                     startLocation);
             }
 
@@ -718,7 +718,7 @@ public class TemplateParser
 
                     if (ch == '/' || ch == '>')
                         throw new TemplateParseException(
-                            Tapestry.getString(
+                            Tapestry.format(
                                 "TemplateParser.missing-attribute-value",
                                 tagName,
                                 Integer.toString(_line),
@@ -806,7 +806,7 @@ public class TemplateParser
         {
             if (_ignoring)
                 throw new TemplateParseException(
-                    Tapestry.getString(
+                    Tapestry.format(
                         "TemplateParser.component-may-not-be-ignored",
                         tagName,
                         Integer.toString(startLine)),
@@ -907,7 +907,7 @@ public class TemplateParser
 
         if (_ignoring && !isRemoveId)
             throw new TemplateParseException(
-                Tapestry.getString(
+                Tapestry.format(
                     "TemplateParser.component-may-not-be-ignored",
                     tagName,
                     Integer.toString(startLine)),
@@ -946,7 +946,7 @@ public class TemplateParser
             {
                 if (!_patternMatcher.matches(jwcId, _simpleIdPattern))
                     throw new TemplateParseException(
-                        Tapestry.getString(
+                        Tapestry.format(
                             "TemplateParser.component-id-invalid",
                             tagName,
                             Integer.toString(startLine),
@@ -955,7 +955,7 @@ public class TemplateParser
 
                 if (!_delegate.getKnownComponent(jwcId))
                     throw new TemplateParseException(
-                        Tapestry.getString(
+                        Tapestry.format(
                             "TemplateParser.unknown-component-id",
                             tagName,
                             Integer.toString(startLine),
@@ -975,7 +975,7 @@ public class TemplateParser
 
         if (_ignoring && ignoreBody)
             throw new TemplateParseException(
-                Tapestry.getString(
+                Tapestry.format(
                     "TemplateParser.nested-ignore",
                     tagName,
                     Integer.toString(startLine)),
@@ -1020,7 +1020,7 @@ public class TemplateParser
     {
         if (_ignoring)
             throw new TemplateParseException(
-                Tapestry.getString(
+                Tapestry.format(
                     "TemplateParser.content-block-may-not-be-ignored",
                     tagName,
                     Integer.toString(startLine)),
@@ -1028,7 +1028,7 @@ public class TemplateParser
 
         if (emptyTag)
             throw new TemplateParseException(
-                Tapestry.getString(
+                Tapestry.format(
                     "TemplateParser.content-block-may-not-be-empty",
                     tagName,
                     Integer.toString(startLine)),
@@ -1143,7 +1143,7 @@ public class TemplateParser
         {
             if (_cursor >= length)
                 throw new TemplateParseException(
-                    Tapestry.getString(
+                    Tapestry.format(
                         "TemplateParser.incomplete-close-tag",
                         Integer.toString(startLine)),
                     startLocation);
@@ -1170,7 +1170,7 @@ public class TemplateParser
 
             if (tag._mustBalance)
                 throw new TemplateParseException(
-                    Tapestry.getString(
+                    Tapestry.format(
                         "TemplateParser.improperly-nested-close-tag",
                         new Object[] {
                             tagName,
@@ -1184,7 +1184,7 @@ public class TemplateParser
 
         if (stackPos < 0)
             throw new TemplateParseException(
-                Tapestry.getString(
+                Tapestry.format(
                     "TemplateParser.unmatched-close-tag",
                     tagName,
                     Integer.toString(startLine)),

@@ -210,7 +210,7 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
 
         if (_assets.containsKey(name))
             throw new IllegalArgumentException(
-                Tapestry.getString("ComponentSpecification.duplicate-asset", this, name));
+                Tapestry.format("ComponentSpecification.duplicate-asset", this, name));
 
         _assets.put(name, asset);
     }
@@ -227,7 +227,7 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
 
         if (_components.containsKey(id))
             throw new IllegalArgumentException(
-                Tapestry.getString("ComponentSpecification.duplicate-component", this, id));
+                Tapestry.format("ComponentSpecification.duplicate-component", this, id));
 
         _components.put(id, component);
     }
@@ -245,7 +245,7 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
 
         if (_parameters.containsKey(name))
             throw new IllegalArgumentException(
-                Tapestry.getString("ComponentSpecification.duplicate-parameter", this, name));
+                Tapestry.format("ComponentSpecification.duplicate-parameter", this, name));
 
         _parameters.put(name, spec);
 
@@ -395,7 +395,7 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
         else
             if (_beans.containsKey(name))
                 throw new IllegalArgumentException(
-                    Tapestry.getString("ComponentSpecification.duplicate-bean", this, name));
+                    Tapestry.format("ComponentSpecification.duplicate-bean", this, name));
 
         _beans.put(name, specification);
     }
@@ -606,7 +606,7 @@ public class ComponentSpecification extends LocatablePropertyHolder implements I
 
         if (_propertySpecifications.containsKey(name))
             throw new IllegalArgumentException(
-                Tapestry.getString(
+                Tapestry.format(
                     "ComponentSpecification.duplicate-property-specification",
                     this,
                     name));

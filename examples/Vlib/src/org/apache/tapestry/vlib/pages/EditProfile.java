@@ -163,7 +163,7 @@ public abstract class EditProfile extends ActivatePage implements PageRenderList
 
         if (Tapestry.isNull(password1) != Tapestry.isNull(password2))
         {
-            setErrorField("inputPassword1", getString("enter-password-twice"));
+            setErrorField("inputPassword1", getMessage("enter-password-twice"));
 
             return;
         }
@@ -172,7 +172,7 @@ public abstract class EditProfile extends ActivatePage implements PageRenderList
         {
             if (!password1.equals(password2))
             {
-                setErrorField("inputPassword1", getString("password-must-match"));
+                setErrorField("inputPassword1", getMessage("password-must-match"));
                 return;
             }
 

@@ -87,7 +87,7 @@ public class ResetService extends AbstractService
     {
         if (Tapestry.size(parameters) != 0)
             throw new IllegalArgumentException(
-                Tapestry.getString("service-no-parameters", Tapestry.RESET_SERVICE));
+                Tapestry.format("service-no-parameters", Tapestry.RESET_SERVICE));
 
         String[] context = new String[1];
         context[0] = component.getPage().getPageName();
@@ -110,7 +110,7 @@ public class ResetService extends AbstractService
 
         if (Tapestry.size(context) != 1)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("service-single-parameter", Tapestry.RESET_SERVICE));
+                Tapestry.format("service-single-parameter", Tapestry.RESET_SERVICE));
 
         String pageName = context[0];
 

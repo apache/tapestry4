@@ -119,7 +119,7 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageRen
         if (model.getOptionCount() == 0)
         {
             IErrorProperty page = (IErrorProperty) cycle.getPage();
-            page.setError(formatString("user-has-no-books", fromUser.getNaturalName()));
+            page.setError(format("user-has-no-books", fromUser.getNaturalName()));
             return;
         }
 
@@ -169,7 +169,7 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageRen
 
         if (count == 0)
         {
-            setError(getString("no-books-selected"));
+            setError(getMessage("no-books-selected"));
             return;
         }
 
@@ -202,7 +202,7 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageRen
         Person fromUser = getFromUser();
         IMessageProperty selectPage = (TransferBooksSelect) cycle.getPage("TransferBooksSelect");
         selectPage.setMessage(
-            formatString(
+            format(
                 "transfered-books",
                 Integer.toString(count),
                 fromUser.getNaturalName(),
@@ -252,7 +252,7 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageRen
     private Person readPerson(Integer personId)
     {
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-        
+
         return vengine.readPerson(personId);
     }
 }

@@ -102,7 +102,7 @@ public class ExtensionSpecification
     {
         if (_configuration.containsKey(propertyName))
             throw new IllegalArgumentException(
-                Tapestry.getString(
+                Tapestry.format(
                     "ExtensionSpecification.duplicate-property",
                     this,
                     propertyName));
@@ -141,7 +141,7 @@ public class ExtensionSpecification
         catch (Exception ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("ExtensionSpecification.bad-class", _className),
+                Tapestry.format("ExtensionSpecification.bad-class", _className),
                 getLocation(),
                 ex);
         }

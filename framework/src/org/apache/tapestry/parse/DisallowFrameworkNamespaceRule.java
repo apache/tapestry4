@@ -79,7 +79,7 @@ public class DisallowFrameworkNamespaceRule extends AbstractSpecificationRule
 
         if (id.equals(INamespace.FRAMEWORK_NAMESPACE))
             throw new DocumentParseException(
-                Tapestry.getString(
+                Tapestry.format(
                     "SpecificationParser.framework-library-id-is-reserved",
                     INamespace.FRAMEWORK_NAMESPACE),
                 getResourceLocation());

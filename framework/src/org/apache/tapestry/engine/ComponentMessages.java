@@ -58,10 +58,10 @@ package org.apache.tapestry.engine;
 import java.text.MessageFormat;
 import java.util.Properties;
 
-import org.apache.tapestry.IStrings;
+import org.apache.tapestry.IMessages;
 
 /**
- *  Implementation of {@link org.apache.tapestry.IStrings}.  This is basically
+ *  Implementation of {@link org.apache.tapestry.IMessages}.  This is basically
  *  a wrapper around an instance of {@link Properties}.  This ensures
  *  that the properties are, in fact, read-only (which ensures that
  *  they don't have to be synchronized).
@@ -72,21 +72,21 @@ import org.apache.tapestry.IStrings;
  *
  **/
 
-public class ComponentStrings implements IStrings
+public class ComponentMessages implements IMessages
 {
     private Properties _properties;
 
-    public ComponentStrings(Properties properties)
+    public ComponentMessages(Properties properties)
     {
         _properties = properties;
     }
 
-    public String getString(String key, String defaultValue)
+    public String getMessage(String key, String defaultValue)
     {
         return _properties.getProperty(key, defaultValue);
     }
 
-    public String getString(String key)
+    public String getMessage(String key)
     {
         String result = _properties.getProperty(key);
 
@@ -113,7 +113,7 @@ public class ComponentStrings implements IStrings
 
     public String format(String key, Object[] arguments)
     {
-        String pattern = getString(key);
+        String pattern = getMessage(key);
 
         return MessageFormat.format(pattern, arguments);
     }

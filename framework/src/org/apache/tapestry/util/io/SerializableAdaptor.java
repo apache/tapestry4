@@ -202,7 +202,7 @@ class SerializableAdaptor implements ISqueezeAdaptor
             // The message is the name of the class.
 
             throw new IOException(
-                Tapestry.getString("SerializableAdaptor.class-not-found", ex.getMessage()));
+                Tapestry.format("SerializableAdaptor.class-not-found", ex.getMessage()));
         }
         finally
         {
@@ -261,7 +261,7 @@ class SerializableAdaptor implements ISqueezeAdaptor
             return CH_63;
 
         throw new IOException(
-            Tapestry.getString("SerializableAdaptor.unable-to-convert", Integer.toString(sixBit)));
+            Tapestry.format("SerializableAdaptor.unable-to-convert", Integer.toString(sixBit)));
     }
 
     public static byte[] decode(String string) throws IOException
@@ -316,7 +316,7 @@ class SerializableAdaptor implements ISqueezeAdaptor
             return 0;
 
         throw new IOException(
-            Tapestry.getString(
+            Tapestry.format(
                 "SerializableAdaptor.unable-to-interpret-char",
                 new String(new char[] { c })));
     }

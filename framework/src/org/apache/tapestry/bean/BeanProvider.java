@@ -190,7 +190,7 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageRend
 
         if (spec == null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString(
+                Tapestry.format(
                     "BeanProvider.bean-not-defined",
                     _component.getExtendedId(),
                     name));
@@ -249,7 +249,7 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageRend
         {
 
             throw new ApplicationRuntimeException(
-                Tapestry.getString(
+                Tapestry.format(
                     "BeanProvider.instantiation-error",
                     new Object[] {
                         beanName,

@@ -88,7 +88,7 @@ public class StaleLinkException extends ApplicationRuntimeException
     public StaleLinkException(IComponent component, String targetActionId, String targetIdPath)
     {
         super(
-            Tapestry.getString(
+            Tapestry.format(
                 "StaleLinkException.action-mismatch",
                 new String[] { targetActionId, component.getIdPath(), targetIdPath }),
             component,
@@ -110,7 +110,7 @@ public class StaleLinkException extends ApplicationRuntimeException
     public StaleLinkException(IPage page, String targetActionId, String targetIdPath)
     {
         this(
-            Tapestry.getString(
+            Tapestry.format(
                 "StaleLinkException.component-mismatch",
                 targetActionId,
                 targetIdPath),

@@ -168,7 +168,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
 
         if (_libraries.containsKey(id))
             throw new IllegalArgumentException(
-                Tapestry.getString("LibrarySpecification.duplicate-child-namespace-id", id));
+                Tapestry.format("LibrarySpecification.duplicate-child-namespace-id", id));
 
         _libraries.put(id, path);
     }
@@ -190,7 +190,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
 
         if (_pages.containsKey(name))
             throw new IllegalArgumentException(
-                Tapestry.getString("LibrarySpecification.duplicate-page-name", name));
+                Tapestry.format("LibrarySpecification.duplicate-page-name", name));
 
         _pages.put(name, path);
     }
@@ -207,7 +207,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
 
         if (_components.containsKey(alias))
             throw new IllegalArgumentException(
-                Tapestry.getString("LibrarySpecification.duplicate-component-alias", alias));
+                Tapestry.format("LibrarySpecification.duplicate-component-alias", alias));
 
         _components.put(alias, path);
     }
@@ -244,7 +244,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
 
         if (_services.containsKey(name))
             throw new IllegalArgumentException(
-                Tapestry.getString("LibrarySpecification.duplicate-service-name", name));
+                Tapestry.format("LibrarySpecification.duplicate-service-name", name));
 
         _services.put(name, className);
     }
@@ -322,7 +322,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
 
         if (_extensions.containsKey(name))
             throw new IllegalArgumentException(
-                Tapestry.getString("LibrarySpecification.duplicate-extension-name", this, name));
+                Tapestry.format("LibrarySpecification.duplicate-extension-name", this, name));
 
         _extensions.put(name, extension);
     }
@@ -391,7 +391,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
 
         if (spec == null)
             throw new IllegalArgumentException(
-                Tapestry.getString("LibrarySpecification.no-such-extension", name));
+                Tapestry.format("LibrarySpecification.no-such-extension", name));
 
         if (result == null)
         {
@@ -436,7 +436,7 @@ public class LibrarySpecification extends LocatablePropertyHolder implements ILi
                 : "LibrarySpecification.extension-not-a-subclass";
 
         throw new ApplicationRuntimeException(
-            Tapestry.getString(key, name, extensionClass.getName(), typeConstraint.getName()),
+            Tapestry.format(key, name, extensionClass.getName(), typeConstraint.getName()),
             location,
             null);
     }

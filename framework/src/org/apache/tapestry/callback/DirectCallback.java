@@ -146,7 +146,7 @@ public class DirectCallback implements ICallback
         catch (ClassCastException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("DirectCallback.wrong-type", component.getExtendedId()),
+                Tapestry.format("DirectCallback.wrong-type", component.getExtendedId()),
                 component,
                 null,
                 ex);

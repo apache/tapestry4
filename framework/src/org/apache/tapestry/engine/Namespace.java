@@ -286,12 +286,12 @@ public class Namespace implements INamespace
     public String getNamespaceId()
     {
         if (_frameworkNamespace)
-            return Tapestry.getString("Namespace.framework-namespace");
+            return Tapestry.getMessage("Namespace.framework-namespace");
 
         if (_applicationNamespace)
-            return Tapestry.getString("Namespace.application-namespace");
+            return Tapestry.getMessage("Namespace.application-namespace");
 
-        return Tapestry.getString("Namespace.nested-namespace", getExtendedId());
+        return Tapestry.format("Namespace.nested-namespace", getExtendedId());
     }
 
     /**
@@ -307,7 +307,7 @@ public class Namespace implements INamespace
 
         if (path == null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("Namespace.no-such-page", name, getNamespaceId()));
+                Tapestry.format("Namespace.no-such-page", name, getNamespaceId()));
 
         IResourceLocation location = getSpecificationLocation().getRelativeLocation(path);
 
@@ -320,7 +320,7 @@ public class Namespace implements INamespace
 
         if (path == null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("Namespace.no-such-alias", type, getNamespaceId()));
+                Tapestry.format("Namespace.no-such-alias", type, getNamespaceId()));
 
         IResourceLocation location = getSpecificationLocation().getRelativeLocation(path);
 
@@ -333,7 +333,7 @@ public class Namespace implements INamespace
 
         if (path == null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("Namespace.library-id-not-found", id, getNamespaceId()));
+                Tapestry.format("Namespace.library-id-not-found", id, getNamespaceId()));
 
         IResourceLocation location = getSpecificationLocation().getRelativeLocation(path);
 

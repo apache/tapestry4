@@ -337,7 +337,7 @@ public abstract class BaseValidator implements IValidator
 
 		if (body == null)
 			throw new ApplicationRuntimeException(
-				Tapestry.getString("ValidField.must-be-contained-by-body"),
+				Tapestry.getMessage("ValidField.must-be-contained-by-body"),
 				field);
 				
         script.execute(cycle, body, finalSymbols);

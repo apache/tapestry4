@@ -139,7 +139,7 @@ public abstract class Register extends BasePage implements IErrorProperty
 
         if (!password1.equals(password2))
         {
-            setErrorField("inputPassword1", getString("password-must-match"));
+            setErrorField("inputPassword1", getMessage("password-must-match"));
             return;
         }
 

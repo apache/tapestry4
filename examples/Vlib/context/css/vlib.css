@@ -121,6 +121,13 @@ TABLE.tapestry-palette SELECT
   width: 200px;
 }
 
+TABLE.tapestry-palette TD.controls
+{
+   text-align: center;
+   vertical-align: middle;
+   width: 60px;
+}
+
 TD.browser-summary {
   text-align: center;
   background-color: blue;

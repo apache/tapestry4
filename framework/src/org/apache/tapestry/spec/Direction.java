@@ -133,6 +133,6 @@ public class Direction extends Enum
     
     public String getDisplayName()
     {
-        return Tapestry.getString("Direction." + getName());
+        return Tapestry.getMessage("Direction." + getName());
     }
 }

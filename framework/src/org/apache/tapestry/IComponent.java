@@ -322,19 +322,33 @@ public interface IComponent extends IRender, ILocationHolder
         IComponentSpecification specification);
 
     /**
-     *  Returns a localized string.  Each component has an optional
-     *  set of localized strings that are read from properties
-     *  files on the classpath.
+     *  Returns a localized string message.  Each component has an optional
+     *  set of localized message strings that are read from properties
+     *  files.
      * 
-     *  @param key the key used to locate the string
-     *  @return the localized value for the key, or a placeholder
-     *  if no string is defined for the key
+     *  @param key the key used to locate the message
+     *  @return the localized message for the key, or a placeholder
+     *  if no message is defined for the key.
+     * 
      *  @since 2.0.4
-     * 
+     *  @deprecated To be removed in 3.1, use {@link #getMessage(String)}.
      **/
 
     public String getString(String key);
 
+    /**
+     *  Returns a localized string message.  Each component has an optional
+     *  set of localized message strings that are read from properties
+     *  files.
+     * 
+     *  @param key the key used to locate the message
+     *  @return the localized message for the key, or a placeholder
+     *  if no message is defined for the key.
+     * 
+     *  @since 3.0
+     **/
+
+    public String getMessage(String key);
     /**
      *  Returns component strings for the component.
      * 
@@ -342,7 +356,7 @@ public interface IComponent extends IRender, ILocationHolder
      * 
      **/
 
-    public IStrings getStrings();
+    public IMessages getMessages();
 
     /**
      *  Returns the {@link INamespace} in which the component was defined

@@ -96,13 +96,13 @@ public abstract class NewBook extends Protected implements PageRenderListener
 
         if (publisherId == null && Tapestry.isNull(publisherName))
         {
-            setErrorField("inputPublisherName", getString("need-publisher-name"));
+            setErrorField("inputPublisherName", getMessage("need-publisher-name"));
             return;
         }
 
         if (publisherId != null && !Tapestry.isNull(publisherName))
         {
-            setErrorField("inputPublisherName", getString("leave-publisher-name-empty"));
+            setErrorField("inputPublisherName", getMessage("leave-publisher-name-empty"));
             return;
         }
 
@@ -152,7 +152,7 @@ public abstract class NewBook extends Protected implements PageRenderListener
 
         MyLibrary myLibrary = (MyLibrary) cycle.getPage("MyLibrary");
 
-        myLibrary.setMessage(formatString("added-book", attributes.get("title")));
+        myLibrary.setMessage(format("added-book", attributes.get("title")));
 
         myLibrary.activate(cycle);
     }

@@ -61,7 +61,7 @@ import java.util.Map;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IStrings;
+import org.apache.tapestry.IMessages;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.INamespace;
@@ -237,7 +237,10 @@ public class TestingForm extends BaseLocatable implements IForm
         return null;
     }
 
-    public void finishLoad(IRequestCycle cycle, IPageLoader loader, IComponentSpecification specification)
+    public void finishLoad(
+        IRequestCycle cycle,
+        IPageLoader loader,
+        IComponentSpecification specification)
     {
     }
 
@@ -267,7 +270,7 @@ public class TestingForm extends BaseLocatable implements IForm
     {
     }
 
-    public IStrings getStrings()
+    public IMessages getMessages()
     {
         return null;
     }
@@ -280,6 +283,11 @@ public class TestingForm extends BaseLocatable implements IForm
     public void addHiddenValue(String name, String value)
     {
 
+    }
+
+    public String getMessage(String key)
+    {
+        return null;
     }
 
 }

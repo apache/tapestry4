@@ -221,7 +221,7 @@ public class ParameterManager
             if (propertyInfo == null)
             {
                 throw new ConnectedParameterException(
-                    Tapestry.getString(
+                    Tapestry.format(
                         "ParameterManager.no-accessor",
                         _component.getExtendedId(),
                         propertyName),
@@ -233,7 +233,7 @@ public class ParameterManager
             if (!propertyInfo.isReadWrite())
             {
                 throw new ConnectedParameterException(
-                    Tapestry.getString(
+                    Tapestry.format(
                         "ParameterManager.property-not-read-write",
                         _component.getExtendedId(),
                         propertyName),
@@ -250,7 +250,7 @@ public class ParameterManager
             if (parameterType == null)
             {
                 throw new ConnectedParameterException(
-                    Tapestry.getString(
+                    Tapestry.format(
                         "ParameterManager.java-type-not-specified",
                         name,
                         _component.getExtendedId()),
@@ -262,7 +262,7 @@ public class ParameterManager
             if (!propertyType.equals(parameterType))
             {
                 throw new ConnectedParameterException(
-                    Tapestry.getString(
+                    Tapestry.format(
                         "ParameterManager.type-mismatch",
                         new String[] {
                             name,
@@ -295,7 +295,7 @@ public class ParameterManager
                 catch (BindingException ex)
                 {
                     throw new ConnectedParameterException(
-                        Tapestry.getString(
+                        Tapestry.format(
                             "ParameterManager.static-initialization-failure",
                             propertyName,
                             _component.getExtendedId(),

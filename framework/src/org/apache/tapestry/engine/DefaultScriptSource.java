@@ -117,7 +117,7 @@ public class DefaultScriptSource implements IScriptSource
         catch (DocumentParseException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("DefaultScriptSource.unable-to-parse-script", location),
+                Tapestry.format("DefaultScriptSource.unable-to-parse-script", location),
                 ex);
         }
     }

@@ -102,7 +102,7 @@ public class ActionService extends AbstractService
     {
         if (parameters == null || parameters.length != 1)
             throw new IllegalArgumentException(
-                Tapestry.getString("service-single-parameter", Tapestry.ACTION_SERVICE));
+                Tapestry.format("service-single-parameter", Tapestry.ACTION_SERVICE));
 
         String stateful = cycle.getEngine().isStateful() ? STATEFUL_ON : STATEFUL_OFF;
         IPage componentPage = component.getPage();
@@ -147,7 +147,7 @@ public class ActionService extends AbstractService
 
         if (count != 4 && count != 5)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("ActionService.context-parameters"));
+                Tapestry.getMessage("ActionService.context-parameters"));
 
         boolean complex = count == 5;
 
@@ -179,7 +179,7 @@ public class ActionService extends AbstractService
         catch (ClassCastException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("ActionService.component-wrong-type", component.getExtendedId()),
+                Tapestry.format("ActionService.component-wrong-type", component.getExtendedId()),
                 component,
                 null,
                 ex);

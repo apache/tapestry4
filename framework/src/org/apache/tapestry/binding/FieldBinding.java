@@ -137,7 +137,7 @@ public class FieldBinding extends AbstractBinding
         dotx = fieldName.lastIndexOf('.');
 
         if (dotx < 0)
-            throw new BindingException(Tapestry.getString("invalid-field-name", fieldName), this);
+            throw new BindingException(Tapestry.format("invalid-field-name", fieldName), this);
 
         // Hm. Should validate that there's a dot!
 
@@ -155,7 +155,7 @@ public class FieldBinding extends AbstractBinding
         }
         catch (Throwable t)
         {
-            throw new BindingException(Tapestry.getString("unable-to-resolve-class", className), this, t);
+            throw new BindingException(Tapestry.format("unable-to-resolve-class", className), this, t);
         }
 
         try
@@ -164,7 +164,7 @@ public class FieldBinding extends AbstractBinding
         }
         catch (NoSuchFieldException ex)
         {
-            throw new BindingException(Tapestry.getString("field-not-defined", fieldName), this, ex);
+            throw new BindingException(Tapestry.format("field-not-defined", fieldName), this, ex);
         }
 
         // Get the value of the field.  null means look for it as a static
@@ -176,11 +176,11 @@ public class FieldBinding extends AbstractBinding
         }
         catch (IllegalAccessException ex)
         {
-            throw new BindingException(Tapestry.getString("illegal-field-acccess", fieldName), this, ex);
+            throw new BindingException(Tapestry.format("illegal-field-acccess", fieldName), this, ex);
         }
         catch (NullPointerException ex)
         {
-            throw new BindingException(Tapestry.getString("field-is-instance", fieldName), this, ex);
+            throw new BindingException(Tapestry.format("field-is-instance", fieldName), this, ex);
         }
 
         // Don't look for it again, even if the value is itself null.

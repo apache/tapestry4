@@ -206,7 +206,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
         catch (DocumentParseException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString(
+                Tapestry.format(
                     "DefaultSpecificationSource.unable-to-parse-specification",
                     resourceLocation),
                 ex);
@@ -231,7 +231,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
         catch (DocumentParseException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString(
+                Tapestry.format(
                     "DefaultSpecificationSource.unable-to-parse-specification",
                     resourceLocation),
                 ex);

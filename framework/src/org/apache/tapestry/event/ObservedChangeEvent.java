@@ -130,7 +130,7 @@ public class ObservedChangeEvent extends EventObject
 
         if (propertyName == null)
             throw new IllegalArgumentException(
-                Tapestry.getString("ObservedChangeEvent.null-property-name", component));
+                Tapestry.format("ObservedChangeEvent.null-property-name", component));
 
         _component = component;
         _propertyName = propertyName;

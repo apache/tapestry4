@@ -222,7 +222,7 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
         IPage result = null;
 
         if (name == null)
-            throw new NullPointerException(Tapestry.getString("RequestCycle.invalid-null-name"));
+            throw new NullPointerException(Tapestry.getMessage("RequestCycle.invalid-null-name"));
 
         if (_loadedPages != null)
             result = (IPage) _loadedPages.get(name);
@@ -478,7 +478,7 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
             // throw the RenderRewoundException.
 
             throw new StaleLinkException(
-                Tapestry.getString("RequestCycle.form-rewind-failure", form.getExtendedId()),
+                Tapestry.format("RequestCycle.form-rewind-failure", form.getExtendedId()),
                 form);
         }
         catch (RenderRewoundException ex)

@@ -146,13 +146,13 @@ public abstract class EditBook extends Protected implements PageRenderListener
 
         if (publisherId == null && Tapestry.isNull(publisherName))
         {
-            setErrorField("inputPublisherName", getString("need-publisher-name"));
+            setErrorField("inputPublisherName", getMessage("need-publisher-name"));
             return;
         }
 
         if (publisherId != null && !Tapestry.isNull(publisherName))
         {
-            setErrorField("inputPublisherName", getString("leave-publisher-name-empty"));
+            setErrorField("inputPublisherName", getMessage("leave-publisher-name-empty"));
             return;
         }
 
@@ -200,7 +200,7 @@ public abstract class EditBook extends Protected implements PageRenderListener
         }
 
         MyLibrary page = (MyLibrary) cycle.getPage("MyLibrary");
-        page.setMessage(formatString("updated-book", attributes.get("title")));
+        page.setMessage(format("updated-book", attributes.get("title")));
 		page.activate(cycle);
       
     }

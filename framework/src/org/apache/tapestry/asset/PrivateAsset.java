@@ -134,7 +134,7 @@ public class PrivateAsset extends AbstractAsset
         catch (Exception ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("PrivateAsset.resource-missing", location),
+                Tapestry.format("PrivateAsset.resource-missing", location),
                 ex);
         }
     }

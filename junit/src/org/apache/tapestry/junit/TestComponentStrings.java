@@ -78,7 +78,7 @@ public class TestComponentStrings extends TapestryTestCase
 
     private void check(IPage page, String key, String expected)
     {
-        String actual = page.getString(key);
+        String actual = page.getMessage(key);
 
         assertEquals("Key " + key, expected, actual);
     }

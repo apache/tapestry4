@@ -94,7 +94,7 @@ public class TextToken extends TemplateToken implements IRender
             || startIndex > templateData.length
             || endIndex > templateData.length)
             throw new IllegalArgumentException(
-                Tapestry.getString(
+                Tapestry.format(
                     "TextToken.range-error",
                     this,
                     Integer.toString(templateData.length)));
@@ -191,7 +191,7 @@ public class TextToken extends TemplateToken implements IRender
         }
         catch (IndexOutOfBoundsException ex)
         {
-            throw new RuntimeException(Tapestry.getString("TextToken.error-trimming", this));
+            throw new RuntimeException(Tapestry.format("TextToken.error-trimming", this));
         }
 
         // Ok, this isn't perfect.  I don't want to write into templateData[] even

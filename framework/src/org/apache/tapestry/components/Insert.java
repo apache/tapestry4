@@ -110,7 +110,7 @@ public abstract class Insert extends AbstractComponent
             catch (Exception ex)
             {
                 throw new ApplicationRuntimeException(
-                    Tapestry.getString("Insert.unable-to-format", value),
+                    Tapestry.format("Insert.unable-to-format", value),
                     this,
                     getFormatBinding().getLocation(),
                     ex);

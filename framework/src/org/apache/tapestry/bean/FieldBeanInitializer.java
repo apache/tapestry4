@@ -98,7 +98,7 @@ public class FieldBeanInitializer extends AbstractBeanInitializer
 
         if (dotx < 0)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("invalid-field-name", _fieldName));
+                Tapestry.format("invalid-field-name", _fieldName));
 
         String className = _fieldName.substring(0, dotx);
         String simpleFieldName = _fieldName.substring(dotx + 1);
@@ -117,7 +117,7 @@ public class FieldBeanInitializer extends AbstractBeanInitializer
         catch (Throwable t)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("unable-to-resolve-class", className),
+                Tapestry.format("unable-to-resolve-class", className),
                 t);
         }
 
@@ -130,7 +130,7 @@ public class FieldBeanInitializer extends AbstractBeanInitializer
         catch (NoSuchFieldException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("field-not-defined", _fieldName),
+                Tapestry.format("field-not-defined", _fieldName),
                 ex);
         }
 
@@ -144,13 +144,13 @@ public class FieldBeanInitializer extends AbstractBeanInitializer
         catch (IllegalAccessException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("illegal-field-access", _fieldName),
+                Tapestry.format("illegal-field-access", _fieldName),
                 ex);
         }
         catch (NullPointerException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("field-is-instance", _fieldName),
+                Tapestry.format("field-is-instance", _fieldName),
                 ex);
         }
 

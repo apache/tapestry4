@@ -158,7 +158,7 @@ public abstract class PageRecorder implements IPageRecorder
 
         if (_locked)
             throw new ApplicationRuntimeException(
-                Tapestry.getString(
+                Tapestry.format(
                     "PageRecorder.change-after-lock",
                     component.getPage().getPageName(),
                     propertyName,
@@ -166,7 +166,7 @@ public abstract class PageRecorder implements IPageRecorder
 
         if (propertyName == null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("PageRecorder.null-property-name", component.getExtendedId()));
+                Tapestry.format("PageRecorder.null-property-name", component.getExtendedId()));
 
         Object activeValue = event.getNewValue();
 
@@ -178,7 +178,7 @@ public abstract class PageRecorder implements IPageRecorder
         {
             t.printStackTrace();
             throw new ApplicationRuntimeException(
-                Tapestry.getString(
+                Tapestry.format(
                     "PageRecorder.unable-to-persist",
                     propertyName,
                     component.getExtendedId(),
@@ -244,7 +244,7 @@ public abstract class PageRecorder implements IPageRecorder
             catch (Throwable t)
             {
                 throw new ApplicationRuntimeException(
-                    Tapestry.getString(
+                    Tapestry.format(
                         "PageRecorder.unable-to-rollback",
                         new Object[] { propertyName, component, storedValue, t.getMessage()}),
                     t);

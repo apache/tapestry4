@@ -128,7 +128,7 @@ public class AssetService extends AbstractService
     {
         if (Tapestry.size(parameters) != 1)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("service-single-parameter", Tapestry.ASSET_SERVICE));
+                Tapestry.format("service-single-parameter", Tapestry.ASSET_SERVICE));
 
         // Service is stateless
 
@@ -176,7 +176,7 @@ public class AssetService extends AbstractService
 
         if (Tapestry.size(parameters) != 1)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("service-single-parameter", Tapestry.ASSET_SERVICE));
+                Tapestry.format("service-single-parameter", Tapestry.ASSET_SERVICE));
 
         String resourcePath = (String) parameters[0];
 
@@ -184,7 +184,7 @@ public class AssetService extends AbstractService
 
         if (resourceURL == null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("missing-resource", resourcePath));
+                Tapestry.format("missing-resource", resourcePath));
 
         URLConnection resourceConnection = resourceURL.openConnection();
 
@@ -245,7 +245,7 @@ public class AssetService extends AbstractService
         }
         catch (Throwable ex)
         {
-            String title = Tapestry.getString("AssetService.exception-report-title", resourcePath);
+            String title = Tapestry.format("AssetService.exception-report-title", resourcePath);
 
             engine.reportException(title, ex);
         }

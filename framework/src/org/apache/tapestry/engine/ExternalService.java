@@ -155,7 +155,7 @@ public class ExternalService extends AbstractService
     {
         if (parameters == null || parameters.length == 0)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("service-requires-parameters", Tapestry.EXTERNAL_SERVICE));
+                Tapestry.format("service-requires-parameters", Tapestry.EXTERNAL_SERVICE));
 
         String pageName = (String) parameters[0];
         String[] context = new String[] { pageName };
@@ -178,7 +178,7 @@ public class ExternalService extends AbstractService
 
         if (context == null || context.length != 1)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("service-single-context-parameter", Tapestry.EXTERNAL_SERVICE));
+                Tapestry.format("service-single-context-parameter", Tapestry.EXTERNAL_SERVICE));
 
         String pageName = context[0];
 
@@ -189,7 +189,7 @@ public class ExternalService extends AbstractService
         catch (ClassCastException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("ExternalService.page-not-compatible", pageName),
+                Tapestry.format("ExternalService.page-not-compatible", pageName),
                 ex);
         }
 

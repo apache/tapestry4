@@ -120,7 +120,7 @@ public class PropertyFinder
         catch (IntrospectionException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("PropertyFinder.unable-to-introspect-class", beanClass.getName()),
+                Tapestry.format("PropertyFinder.unable-to-introspect-class", beanClass.getName()),
                 ex);
         }
 

@@ -61,7 +61,7 @@ import java.util.Locale;
 import javax.servlet.ServletException;
 
 import org.apache.tapestry.engine.IComponentClassEnhancer;
-import org.apache.tapestry.engine.IComponentStringsSource;
+import org.apache.tapestry.engine.IComponentMessagesSource;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.IPageRecorder;
 import org.apache.tapestry.engine.IPageSource;
@@ -349,7 +349,7 @@ public interface IEngine
      * 
 	 **/
 	
-	public IComponentStringsSource getComponentStringsSource();
+	public IComponentMessagesSource getComponentMessagesSource();
 
     /**
      *  Returns a shared instance of {@link org.apache.tapestry.util.io.DataSqueezer}.

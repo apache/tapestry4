@@ -108,7 +108,7 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
 
         if (delegate == null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString(
+                Tapestry.format(
                     "ValidField.no-delegate",
                     getExtendedId(),
                     getForm().getExtendedId()),

@@ -104,7 +104,7 @@ public class RedirectFilter implements Filter
             _redirectPath = "/app";
 
         if (LOG.isInfoEnabled())
-            LOG.info(Tapestry.getString("RedirectServlet.redirect-path", _redirectPath));
+            LOG.info(Tapestry.format("RedirectServlet.redirect-path", _redirectPath));
     }
 
     public void destroy()
@@ -138,7 +138,7 @@ public class RedirectFilter implements Filter
             String path = hrequest.getContextPath() + _redirectPath;
 
             if (LOG.isInfoEnabled())
-                LOG.info(Tapestry.getString("RedirectServlet.redirecting", path));
+                LOG.info(Tapestry.format("RedirectServlet.redirecting", path));
 
             hresponse.sendRedirect(path);
             return;

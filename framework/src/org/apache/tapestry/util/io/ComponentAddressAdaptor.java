@@ -90,7 +90,7 @@ public class ComponentAddressAdaptor implements ISqueezeAdaptor
     {
         int separator = string.indexOf(SEPARATOR);
         if (separator < 0) 
-            throw new IOException(Tapestry.getString("ComponentAddressAdaptor.no-separator"));
+            throw new IOException(Tapestry.getMessage("ComponentAddressAdaptor.no-separator"));
 
         String pageName = string.substring(1, separator);
         String idPath = string.substring(separator + 1);

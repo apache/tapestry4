@@ -115,10 +115,10 @@ public class MultiKey implements Externalizable
         super();
 
         if (keys == null || keys.length == 0)
-            throw new IllegalArgumentException(Tapestry.getString("MultiKey.null-keys"));
+            throw new IllegalArgumentException(Tapestry.getMessage("MultiKey.null-keys"));
 
         if (keys[0] == null)
-            throw new IllegalArgumentException(Tapestry.getString("MultiKey.first-element-may-not-be-null"));
+            throw new IllegalArgumentException(Tapestry.getMessage("MultiKey.first-element-may-not-be-null"));
 
         if (makeCopy)
         {
@@ -147,7 +147,7 @@ public class MultiKey implements Externalizable
             return false;
 
         if (keys == null)
-            throw new IllegalStateException(Tapestry.getString("MultiKey.no-keys"));
+            throw new IllegalStateException(Tapestry.getMessage("MultiKey.no-keys"));
 
         // Would a hashCode check be worthwhile here?
 

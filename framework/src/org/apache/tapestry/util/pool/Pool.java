@@ -302,7 +302,7 @@ public class Pool implements ICleanable, IRenderDescription
             catch (Exception ex)
             {
                 throw new ApplicationRuntimeException(
-                    Tapestry.getString("Pool.unable-to-instantiate-instance", objectClass.getName()),
+                    Tapestry.format("Pool.unable-to-instantiate-instance", objectClass.getName()),
                     ex);
             }
         }

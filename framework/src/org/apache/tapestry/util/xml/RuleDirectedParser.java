@@ -152,7 +152,7 @@ public class RuleDirectedParser extends DefaultHandler
 
             if (url == null)
                 throw new DocumentParseException(
-                    Tapestry.getString("RuleDrivenParser.resource-missing", documentLocation),
+                    Tapestry.format("RuleDrivenParser.resource-missing", documentLocation),
                     documentLocation,
                     null,
                     null);
@@ -192,7 +192,7 @@ public class RuleDirectedParser extends DefaultHandler
         catch (IOException ex)
         {
             throw new DocumentParseException(
-                Tapestry.getString("RuleDrivenParser.unable-to-open-resource", url),
+                Tapestry.format("RuleDrivenParser.unable-to-open-resource", url),
                 _documentLocation,
                 null,
                 ex);
@@ -209,7 +209,7 @@ public class RuleDirectedParser extends DefaultHandler
         catch (Exception ex)
         {
             throw new DocumentParseException(
-                Tapestry.getString("RuleDrivenParser.parse-error", url, ex.getMessage()),
+                Tapestry.format("RuleDrivenParser.parse-error", url, ex.getMessage()),
                 _documentLocation,
                 getLocation(),
                 ex);
@@ -371,7 +371,7 @@ public class RuleDirectedParser extends DefaultHandler
 
         if (rule == null)
             throw new DocumentParseException(
-                Tapestry.getString("RuleDrivenParser.no-rule-for-element", localName),
+                Tapestry.format("RuleDrivenParser.no-rule-for-element", localName),
                 _documentLocation,
                 getLocation(),
                 null);
@@ -567,7 +567,7 @@ public class RuleDirectedParser extends DefaultHandler
         if (_matcher.matches(pattern, value))
             return;
 
-        throw new InvalidStringException(Tapestry.getString(errorKey, value), value, getLocation());
+        throw new InvalidStringException(Tapestry.format(errorKey, value), value, getLocation());
     }
 
     public IResourceLocation getDocumentLocation()

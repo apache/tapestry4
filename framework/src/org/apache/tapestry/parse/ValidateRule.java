@@ -101,7 +101,7 @@ public class ValidateRule extends AbstractSpecificationRule
             return;
 
         throw new InvalidStringException(
-            Tapestry.getString(_errorKey, value),
+            Tapestry.format(_errorKey, value),
             value,
             getResourceLocation());
     }

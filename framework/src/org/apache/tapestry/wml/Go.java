@@ -117,7 +117,7 @@ public abstract class Go extends Form
     public void setDelegate(IValidationDelegate delegate)
     {
         throw new ApplicationRuntimeException(
-            Tapestry.getString("unsupported-property", this, "delegate"));
+            Tapestry.format("unsupported-property", this, "delegate"));
     }
 
     protected String getTag()

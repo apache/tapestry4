@@ -292,7 +292,7 @@ public abstract class AbstractEngine
 
     protected static final String STRINGS_SOURCE_NAME = "org.apache.tapestry.StringsSource";
 
-    private transient IComponentStringsSource _stringsSource;
+    private transient IComponentMessagesSource _stringsSource;
 
     /**
      *  The name of the application specification property used to specify the
@@ -479,14 +479,14 @@ public abstract class AbstractEngine
             // us with no option but to write the cause to the output.
 
             reportException(
-                Tapestry.getString("AbstractEngine.unable-to-process-client-request"),
+                Tapestry.getMessage("AbstractEngine.unable-to-process-client-request"),
                 cause);
 
             // Also, write the exception thrown when redendering the exception
             // page, so that can get fixed as well.
 
             reportException(
-                Tapestry.getString("AbstractEngine.unable-to-present-exception-page"),
+                Tapestry.getMessage("AbstractEngine.unable-to-present-exception-page"),
                 ex);
 
             // And throw the exception.
@@ -600,7 +600,7 @@ public abstract class AbstractEngine
 
         if (result == null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("AbstractEngine.unknown-service", name));
+                Tapestry.format("AbstractEngine.unknown-service", name));
 
         return result;
     }
@@ -838,7 +838,7 @@ public abstract class AbstractEngine
         }
         catch (Exception ex)
         {
-            reportException(Tapestry.getString("AbstractEngine.unable-to-begin-request"), ex);
+            reportException(Tapestry.getMessage("AbstractEngine.unable-to-begin-request"), ex);
 
             throw new ServletException(ex.getMessage(), ex);
         }
@@ -938,7 +938,7 @@ public abstract class AbstractEngine
             }
             catch (Exception ex)
             {
-                reportException(Tapestry.getString("AbstractEngine.exception-during-cleanup"), ex);
+                reportException(Tapestry.getMessage("AbstractEngine.exception-during-cleanup"), ex);
             }
 
             if (_disableCaching)
@@ -950,7 +950,7 @@ public abstract class AbstractEngine
                 catch (Exception ex)
                 {
                     reportException(
-                        Tapestry.getString("AbstractEngine.exception-during-cache-clear"),
+                        Tapestry.getMessage("AbstractEngine.exception-during-cache-clear"),
                         ex);
                 }
             }
@@ -1008,7 +1008,7 @@ public abstract class AbstractEngine
                 }
 
                 throw new ApplicationRuntimeException(
-                    Tapestry.getString("AbstractEngine.validate-cycle", buffer.toString()));
+                    Tapestry.format("AbstractEngine.validate-cycle", buffer.toString()));
             }
 
             // Record that this page has been a target.
@@ -1337,7 +1337,7 @@ public abstract class AbstractEngine
         {
             String name = STRINGS_SOURCE_NAME + ":" + servletName;
 
-            _stringsSource = (IComponentStringsSource) servletContext.getAttribute(name);
+            _stringsSource = (IComponentMessagesSource) servletContext.getAttribute(name);
 
             if (_stringsSource == null)
             {
@@ -1400,9 +1400,9 @@ public abstract class AbstractEngine
      * 
      **/
 
-    public IComponentStringsSource createComponentStringsSource(RequestContext context)
+    public IComponentMessagesSource createComponentStringsSource(RequestContext context)
     {
-        return new DefaultStringsSource();
+        return new DefaultComponentMessagesSource();
     }
 
     /**
@@ -1495,7 +1495,7 @@ public abstract class AbstractEngine
         builder.append(
             "name",
             _specification == null
-                ? Tapestry.getString("AbstractEngine.unknown-specification")
+                ? Tapestry.getMessage("AbstractEngine.unknown-specification")
                 : _specification.getName());
 
         builder.append("dirty", _dirty);
@@ -1630,7 +1630,7 @@ public abstract class AbstractEngine
         catch (Throwable t)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("AbstractEngine.unable-to-instantiate-visit", visitClassName),
+                Tapestry.format("AbstractEngine.unable-to-instantiate-visit", visitClassName),
                 t);
         }
 
@@ -1734,7 +1734,7 @@ public abstract class AbstractEngine
 
             if (dispatcher == null)
                 throw new ApplicationRuntimeException(
-                    Tapestry.getString("AbstractEngine.unable-to-find-dispatcher", _location));
+                    Tapestry.format("AbstractEngine.unable-to-find-dispatcher", _location));
 
             try
             {
@@ -1743,13 +1743,13 @@ public abstract class AbstractEngine
             catch (ServletException ex)
             {
                 throw new ApplicationRuntimeException(
-                    Tapestry.getString("AbstractEngine.unable-to-forward", _location),
+                    Tapestry.format("AbstractEngine.unable-to-forward", _location),
                     ex);
             }
             catch (IOException ex)
             {
                 throw new ApplicationRuntimeException(
-                    Tapestry.getString("AbstractEngine.unable-to-forward", _location),
+                    Tapestry.format("AbstractEngine.unable-to-forward", _location),
                     ex);
             }
         }
@@ -1767,7 +1767,7 @@ public abstract class AbstractEngine
             catch (IOException ex)
             {
                 throw new ApplicationRuntimeException(
-                    Tapestry.getString("AbstractEngine.unable-to-redirect", _location),
+                    Tapestry.format("AbstractEngine.unable-to-redirect", _location),
                     ex);
             }
         }
@@ -1848,7 +1848,7 @@ public abstract class AbstractEngine
 
                 if (!service.getName().equals(name))
                     throw new ApplicationRuntimeException(
-                        Tapestry.getString(
+                        Tapestry.format(
                             "AbstractEngine.service-name-mismatch",
                             name,
                             className,
@@ -1862,7 +1862,7 @@ public abstract class AbstractEngine
             catch (InstantiationException ex)
             {
                 String message =
-                    Tapestry.getString(
+                    Tapestry.format(
                         "AbstractEngine.unable-to-instantiate-service",
                         name,
                         className);
@@ -1874,7 +1874,7 @@ public abstract class AbstractEngine
             catch (IllegalAccessException ex)
             {
                 String message =
-                    Tapestry.getString(
+                    Tapestry.format(
                         "AbstractEngine.unable-to-instantiate-service",
                         name,
                         className);
@@ -1929,7 +1929,7 @@ public abstract class AbstractEngine
      * 
      **/
 
-    public IComponentStringsSource getComponentStringsSource()
+    public IComponentMessagesSource getComponentMessagesSource()
     {
         return _stringsSource;
     }
@@ -2133,7 +2133,7 @@ public abstract class AbstractEngine
         catch (Exception ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("AbstractEngine.unable-to-instantiate-global", className),
+                Tapestry.format("AbstractEngine.unable-to-instantiate-global", className),
                 ex);
         }
     }

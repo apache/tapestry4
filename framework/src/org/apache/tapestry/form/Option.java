@@ -90,7 +90,7 @@ public abstract class Option extends AbstractComponent
         Select select = Select.get(cycle);
         if (select == null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("Option.must-be-contained-by-select"),
+                Tapestry.getMessage("Option.must-be-contained-by-select"),
                 this);
 
         // It isn't enough to know whether the cycle in general is rewinding, need to know

@@ -255,7 +255,7 @@ public class NumberValidator extends BaseValidator
 
         if (result == null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString(
+                Tapestry.format(
                     "NumberValidator.no-adaptor-for-field",
                     field,
                     _valueTypeClass.getName()));
@@ -421,7 +421,7 @@ public class NumberValidator extends BaseValidator
 
         if (typeClass == null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("NumberValidator.unknown-type", typeName));
+                Tapestry.format("NumberValidator.unknown-type", typeName));
 
         _valueTypeClass = typeClass;
     }

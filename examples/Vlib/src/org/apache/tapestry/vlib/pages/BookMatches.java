@@ -109,7 +109,7 @@ public abstract class BookMatches extends BasePage
         if (count == 0)
         {
             IMessageProperty page = (IMessageProperty) cycle.getPage();
-			page.setMessage(getString("no-matches"));
+			page.setMessage(getMessage("no-matches"));
             return;
         }
 

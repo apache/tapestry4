@@ -92,7 +92,7 @@ public abstract class Select extends AbstractComponent
 	protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
 	{
 		if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-			throw new ApplicationRuntimeException(Tapestry.getString("Select.may-not-nest"), this);
+			throw new ApplicationRuntimeException(Tapestry.getMessage("Select.may-not-nest"), this);
 
 		cycle.setAttribute(ATTRIBUTE_NAME, this);
 

@@ -263,7 +263,7 @@ public abstract class AbstractBinding implements IBinding
             type.isInterface() ? "AbstractBinding.wrong-interface" : "AbstractBinding.wrong-type";
 
         String message =
-            Tapestry.getString(
+            Tapestry.format(
                 key,
                 new Object[] { parameterName, result, resultClass.getName(), type.getName()});
 
@@ -280,7 +280,7 @@ public abstract class AbstractBinding implements IBinding
     protected BindingException createReadOnlyBindingException(IBinding binding)
     {
         return new BindingException(
-            Tapestry.getString("AbstractBinding.read-only-binding"),
+            Tapestry.getMessage("AbstractBinding.read-only-binding"),
             binding);
     }
 }

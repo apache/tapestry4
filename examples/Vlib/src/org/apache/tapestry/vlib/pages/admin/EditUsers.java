@@ -106,7 +106,7 @@ public abstract class EditUsers extends AdminPage implements PageRenderListener
 
         if (user == null)
         {
-            setError(getString("out-of-date"));
+            setError(getMessage("out-of-date"));
             throw new PageRedirectException(this);
         }
 
@@ -139,7 +139,7 @@ public abstract class EditUsers extends AdminPage implements PageRenderListener
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure(getString("read-failure"), ex, i++);
+                vengine.rmiFailure(getMessage("read-failure"), ex, i++);
             }
         }
 
@@ -185,7 +185,7 @@ public abstract class EditUsers extends AdminPage implements PageRenderListener
 
         if (Tapestry.isNull(password) && Tapestry.size(resetPasswordUserIds) != 0)
         {
-            setErrorField("inputPassword", getString("need-password"));
+            setErrorField("inputPassword", getMessage("need-password"));
             return;
         }
 
@@ -208,7 +208,7 @@ public abstract class EditUsers extends AdminPage implements PageRenderListener
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure(getString("update-failure"), ex, i++);
+                vengine.rmiFailure(getMessage("update-failure"), ex, i++);
             }
             catch (RemoveException ex)
             {
@@ -220,7 +220,7 @@ public abstract class EditUsers extends AdminPage implements PageRenderListener
             }
         }
 
-        setMessage(getString("users-updated"));
+        setMessage(getMessage("users-updated"));
     }
 
     private Integer[] toArray(Collection c)

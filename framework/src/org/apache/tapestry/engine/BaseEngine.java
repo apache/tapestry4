@@ -142,7 +142,7 @@ public class BaseEngine extends AbstractEngine
 
         if (recorder.isDirty())
             throw new ApplicationRuntimeException(
-                Tapestry.getString("BaseEngine.recorder-has-uncommited-changes", name));
+                Tapestry.format("BaseEngine.recorder-has-uncommited-changes", name));
 
         recorder.discard();
         _recorders.remove(name);
@@ -193,7 +193,7 @@ public class BaseEngine extends AbstractEngine
         {
             if (_recorders.containsKey(pageName))
                 throw new ApplicationRuntimeException(
-                    Tapestry.getString("BaseEngine.duplicate-page-recorder", pageName));
+                    Tapestry.format("BaseEngine.duplicate-page-recorder", pageName));
         }
 
         // Force the creation of the HttpSession

@@ -195,13 +195,13 @@ public abstract class MyLibrary
                 IOperations operations = vengine.getOperations();
                 Book book = operations.returnBook(bookId);
 
-                setMessage(formatString("returned-book", book.getTitle()));
+                setMessage(format("returned-book", book.getTitle()));
 
                 break;
             }
             catch (FinderException ex)
             {
-                setError(formatString("unable-to-return-book", ex.getMessage()));
+                setError(format("unable-to-return-book", ex.getMessage()));
                 return;
             }
             catch (RemoteException ex)

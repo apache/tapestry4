@@ -150,7 +150,7 @@ public class AdaptorRegistry
     {
         if (registrations.containsKey(registrationClass))
             throw new IllegalArgumentException(
-                Tapestry.getString(
+                Tapestry.format(
                     "AdaptorRegistry.duplicate-registration",
                     Tapestry.getClassName(registrationClass)));
 
@@ -302,7 +302,7 @@ public class AdaptorRegistry
         // No match?  That's rare ... and an error.
 
         throw new IllegalArgumentException(
-            Tapestry.getString(
+            Tapestry.format(
                 "AdaptorRegistry.adaptor-not-found",
                 Tapestry.getClassName(subjectClass)));
     }

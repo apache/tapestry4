@@ -218,7 +218,7 @@ public class ResponseOutputStream extends OutputStream
     private void open() throws IOException
     {
         if (_contentType == null)
-            throw new IOException(Tapestry.getString("ResponseOutputStream.content-type-not-set"));
+            throw new IOException(Tapestry.getMessage("ResponseOutputStream.content-type-not-set"));
 
         _response.setContentType(_contentType);
 

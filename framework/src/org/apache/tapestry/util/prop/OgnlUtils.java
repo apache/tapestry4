@@ -101,7 +101,7 @@ public class OgnlUtils
             catch (Exception ex)
             {
                 throw new ApplicationRuntimeException(
-                    Tapestry.getString("OgnlUtils.unable-to-parse-expression", expression),
+                    Tapestry.format("OgnlUtils.unable-to-parse-expression", expression),
                     ex);
             }
 
@@ -144,7 +144,7 @@ public class OgnlUtils
         catch (Exception ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString(
+                Tapestry.format(
                     "OgnlUtils.unable-to-update-expression",
                     "<parsed expression>",
                     target,
@@ -176,7 +176,7 @@ public class OgnlUtils
         catch (Exception ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString(
+                Tapestry.format(
                     "OgnlUtils.unable-to-read-expression",
                     "<parsed expression>",
                     object),

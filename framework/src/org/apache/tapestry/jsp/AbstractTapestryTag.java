@@ -195,7 +195,7 @@ public abstract class AbstractTapestryTag extends TagSupport
         catch (Throwable t)
         {
             throw new JspException(
-                Tapestry.getString(
+                Tapestry.format(
                     "AbstractTapestryTag.unable-to-evaluate-expression",
                     expression,
                     t.getMessage()),

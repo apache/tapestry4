@@ -80,9 +80,7 @@ import org.apache.tapestry.vlib.ejb.SortOrdering;
  * 
  **/
 
-public abstract class BorrowedBooks
-    extends ActivatePage
-    implements IMessageProperty
+public abstract class BorrowedBooks extends ActivatePage implements IMessageProperty
 {
     private Browser _browser;
 
@@ -99,23 +97,23 @@ public abstract class BorrowedBooks
         _browser = (Browser) getComponent("browser");
     }
 
-	public void activate(IRequestCycle cycle)
-	{
-		runQuery();
-		
-		cycle.activate(this);
-	}
+    public void activate(IRequestCycle cycle)
+    {
+        runQuery();
 
-	/**
-	 *  Invoked as listener method after the sortColumn or
-	 *  descending properties are changed.
-	 * 
-	 *  @param cycle
-	 *  @since 3.0
-	 * 
-	 *
-	 **/
-	
+        cycle.activate(this);
+    }
+
+    /**
+     *  Invoked as listener method after the sortColumn or
+     *  descending properties are changed.
+     * 
+     *  @param cycle
+     *  @since 3.0
+     * 
+     *
+     **/
+
     public void requery(IRequestCycle cycle)
     {
         runQuery();
@@ -124,39 +122,39 @@ public abstract class BorrowedBooks
     private void runQuery()
     {
         Visit visit = (Visit) getVisit();
-         Integer userPK = visit.getUserId();
-        
-         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
-        
-         SortOrdering ordering = new SortOrdering(getSortColumn(), isDescending());
-        
-         int i = 0;
-         while (true)
-         {
-        	 try
-        	 {
-        		 IBookQuery query = getBorrowedQuery();
-        
-        		 if (query == null)
-        		 {
-        			 query = vengine.createNewQuery();
-        			 setBorrowedQuery(query);
-        		 }
-        
-        		 int count = query.borrowerQuery(userPK, ordering);
-        
-        		 if (count != _browser.getResultCount())
-        			 _browser.initializeForResultCount(count);
-        
-        		 break;
-        	 }
-        	 catch (RemoteException ex)
-        	 {
-        		 vengine.rmiFailure("Remote exception finding borrowed books.", ex, i++);
-        
-        		 setBorrowedQuery(null);
-        	 }
-         }
+        Integer userPK = visit.getUserId();
+
+        VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
+
+        SortOrdering ordering = new SortOrdering(getSortColumn(), isDescending());
+
+        int i = 0;
+        while (true)
+        {
+            try
+            {
+                IBookQuery query = getBorrowedQuery();
+
+                if (query == null)
+                {
+                    query = vengine.createNewQuery();
+                    setBorrowedQuery(query);
+                }
+
+                int count = query.borrowerQuery(userPK, ordering);
+
+                if (count != _browser.getResultCount())
+                    _browser.initializeForResultCount(count);
+
+                break;
+            }
+            catch (RemoteException ex)
+            {
+                vengine.rmiFailure("Remote exception finding borrowed books.", ex, i++);
+
+                setBorrowedQuery(null);
+            }
+        }
     }
 
     /**
@@ -176,13 +174,13 @@ public abstract class BorrowedBooks
         {
             Book book = operations.returnBook(bookPK);
 
-            setMessage(formatString("returned-book", book.getTitle()));
-            
+            setMessage(format("returned-book", book.getTitle()));
+
             runQuery();
         }
         catch (FinderException ex)
         {
-            setError(formatString("unable-to-return-book", ex.getMessage()));
+            setError(format("unable-to-return-book", ex.getMessage()));
             return;
         }
         catch (RemoteException ex)
@@ -190,6 +188,5 @@ public abstract class BorrowedBooks
             throw new ApplicationRuntimeException(ex);
         }
     }
-
 
 }

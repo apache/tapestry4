@@ -205,7 +205,7 @@ public class ComponentClassFactory
         catch (IntrospectionException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString(
+                Tapestry.format(
                     "ComponentClassFactory.unable-to-introspect-class",
                     _componentClass.getName()),
                 ex);
@@ -289,7 +289,7 @@ public class ComponentClassFactory
             catch (Exception ex)
             {
                 throw new ApplicationRuntimeException(
-                    Tapestry.getString("ComponentClassFactory.bad-property-type", type),
+                    Tapestry.format("ComponentClassFactory.bad-property-type", type),
                     location,
                     ex);
             }
@@ -342,7 +342,7 @@ public class ComponentClassFactory
     {
         if (!pd.getPropertyType().equals(propertyType))
             throw new ApplicationRuntimeException(
-                Tapestry.getString(
+                Tapestry.format(
                     "ComponentClassFactory.property-type-mismatch",
                     new Object[] {
                         _componentClass.getName(),
@@ -376,7 +376,7 @@ public class ComponentClassFactory
 
         if (!isAbstract(write))
             throw new ApplicationRuntimeException(
-                Tapestry.getString(
+                Tapestry.format(
                     "ComponentClassFactory.non-abstract-write",
                     write.getDeclaringClass().getName(),
                     propertyName),
@@ -385,7 +385,7 @@ public class ComponentClassFactory
 
         if (!isAbstract(read))
             throw new ApplicationRuntimeException(
-                Tapestry.getString(
+                Tapestry.format(
                     "ComponentClassFactory.non-abstract-read",
                     read.getDeclaringClass().getName(),
                     propertyName),
@@ -667,7 +667,7 @@ public class ComponentClassFactory
 
         if (!ps.isRequired())
             throw new ApplicationRuntimeException(
-                Tapestry.getString("ComponentClassFactory.auto-must-be-required", parameterName),
+                Tapestry.format("ComponentClassFactory.auto-must-be-required", parameterName),
                 location,
                 null);
 

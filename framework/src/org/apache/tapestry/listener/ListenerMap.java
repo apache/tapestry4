@@ -204,7 +204,7 @@ public class ListenerMap
 
         if (method == null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("ListenerMap.object-missing-method", _target, name));
+                Tapestry.format("ListenerMap.object-missing-method", _target, name));
 
         return new SyntheticListener(method);
     }
@@ -325,7 +325,7 @@ public class ListenerMap
             // the inner exception here (if its a runtime exception).
 
             throw new ApplicationRuntimeException(
-                Tapestry.getString("ListenerMap.unable-to-invoke-method", method.getName(), target, ex.getMessage()),
+                Tapestry.format("ListenerMap.unable-to-invoke-method", method.getName(), target, ex.getMessage()),
                 ex);
         }
     }

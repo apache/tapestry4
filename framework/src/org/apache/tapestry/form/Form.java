@@ -253,7 +253,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
             if (_allocatedIdIndex >= _allocatedIds.size())
             {
                 throw new StaleLinkException(
-                    Tapestry.getString(
+                    Tapestry.format(
                         "Form.too-many-ids",
                         getExtendedId(),
                         Integer.toString(_allocatedIds.size()),
@@ -265,7 +265,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
             if (!result.equals(expected))
                 throw new StaleLinkException(
-                    Tapestry.getString(
+                    Tapestry.format(
                         "Form.id-mismatch",
                         new Object[] {
                             getExtendedId(),
@@ -317,7 +317,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("Form.forms-may-not-nest"),
+                Tapestry.getMessage("Form.forms-may-not-nest"),
                 this);
 
         cycle.setAttribute(ATTRIBUTE_NAME, this);
@@ -440,7 +440,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
                 String nextExpectedId = (String) _allocatedIds.get(_allocatedIdIndex);
 
                 throw new StaleLinkException(
-                    Tapestry.getString(
+                    Tapestry.format(
                         "Form.too-few-ids",
                         getExtendedId(),
                         Integer.toString(expected - _allocatedIdIndex),
@@ -513,7 +513,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
         if (body == null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("Form.needs-body-for-event-handlers"),
+                Tapestry.getMessage("Form.needs-body-for-event-handlers"),
                 this);
 
         Iterator i = _events.entrySet().iterator();
@@ -778,7 +778,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     {
         if (_encodingType != null && !_encodingType.equals(encodingType))
             throw new ApplicationRuntimeException(
-                Tapestry.getString(
+                Tapestry.format(
                     "Form.encoding-type-contention",
                     getExtendedId(),
                     _encodingType,

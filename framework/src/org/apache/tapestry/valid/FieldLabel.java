@@ -105,7 +105,7 @@ public abstract class FieldLabel extends AbstractComponent
 
         if (displayName == null)
             throw new BindingException(
-                Tapestry.getString("FieldLabel.no-display-name", field.getExtendedId()),
+                Tapestry.format("FieldLabel.no-display-name", field.getExtendedId()),
                 this,
                 getBinding("field"),
                 null);

@@ -225,7 +225,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
                     : "DefaultTemplateSource.no-template-for-component";
 
             throw new ApplicationRuntimeException(
-                Tapestry.getString(stringKey, component.getExtendedId(), locale),
+                Tapestry.format(stringKey, component.getExtendedId(), locale),
                 component,
                 component.getLocation(),
                 null);
@@ -354,7 +354,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
         catch (IOException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("DefaultTemplateSource.unable-to-read-template", asset),
+                Tapestry.format("DefaultTemplateSource.unable-to-read-template", asset),
                 ex);
         }
 
@@ -472,7 +472,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
         catch (TemplateParseException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("DefaultTemplateSource.unable-to-parse-template", location),
+                Tapestry.format("DefaultTemplateSource.unable-to-parse-template", location),
                 ex);
         }
 
@@ -519,7 +519,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
         catch (IOException ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("DefaultTemplateSource.unable-to-read-template", location),
+                Tapestry.format("DefaultTemplateSource.unable-to-read-template", location),
                 ex);
         }
         finally
