@@ -91,8 +91,8 @@
 		</component>
 				
 		<component>
-			<id>inspector</id>
-			<type>/tests/tapestry/Inspector.jwc</type>
+			<id>showInspector</id>
+			<type>ShowInspector</type>
 		</component>
 	</components>
 	
