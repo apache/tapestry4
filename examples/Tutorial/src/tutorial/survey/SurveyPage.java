@@ -111,7 +111,7 @@ public class SurveyPage extends BasePage
 				
 				// Jump to the results page to show the totals.
 				
-				cycle.setPage("home");
+				cycle.setPage("results");
 			}	
 		};
 	}
