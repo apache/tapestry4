@@ -38,12 +38,11 @@ import org.apache.tapestry.spec.IParameterSpecification;
 import org.apache.tapestry.spec.IPropertySpecification;
 
 /**
- *  Contains the logic for analyzing and enhancing a single component class.
- *  Internally, this class makes use of {@link IEnhancedClassFactory}.
- *
- *  @author Howard Lewis Ship
- *  @since 3.0
- *
+ * Contains the logic for analyzing and enhancing a single component class. Internally, this class
+ * makes use of {@link IEnhancedClassFactory}.
+ * 
+ * @author Howard Lewis Ship
+ * @since 3.0
  */
 
 public class ComponentClassFactory
@@ -51,46 +50,31 @@ public class ComponentClassFactory
     private static final Log LOG = LogFactory.getLog(ComponentClassFactory.class);
 
     /**
-     *  Package prefix used for classes that come out of the java. or javax. packages.
+     * Package prefix used for classes that come out of the java. or javax. packages.
      */
     private static final String ENHANCED_PACKAGE = "org.apache.tapestry.enhanced.";
 
     /**
-     *  UID used to generate new class names.
+     * UID used to generate new class names.
      */
     private static int _uid = 0;
 
-    /**
-     *  Mapping between a primitive type and its Java VM representation
-     *  Used for the encoding of array types
-     */
-    private static Map _primitiveTypes = new HashMap();
-
-    static {
-        _primitiveTypes.put("boolean", "Z");
-        _primitiveTypes.put("short", "S");
-        _primitiveTypes.put("int", "I");
-        _primitiveTypes.put("long", "J");
-        _primitiveTypes.put("float", "F");
-        _primitiveTypes.put("double", "D");
-        _primitiveTypes.put("char", "C");
-        _primitiveTypes.put("byte", "B");
-    }
-
     private EnhancementWorklist _worklist;
+
     private Map _beanProperties = new HashMap();
 
     private ClassResolver _resolver;
+
     private IComponentSpecification _specification;
+
     private Class _componentClass;
+
     private ClassFactory _classFactory;
+
     private JavaClassMapping _classMapping = new JavaClassMapping();
 
-    public ComponentClassFactory(
-        ClassResolver resolver,
-        IComponentSpecification specification,
-        Class componentClass,
-        ClassFactory classFactory)
+    public ComponentClassFactory(ClassResolver resolver, IComponentSpecification specification,
+            Class componentClass, ClassFactory classFactory)
     {
         _resolver = resolver;
         _specification = specification;
@@ -101,11 +85,10 @@ public class ComponentClassFactory
     }
 
     /**
-     * We synchronize this method to, hopefully, prevent multiple
-     * threads from introspecting any singe class at one time.
-     * The Introspector is not thread safe.  Unforunately, PropertyUtils, OGNL, here
-     * (and elsewhere?) may attempt to introspect at the same time ... we're safe
-     * as long as its not the same class being introspected.
+     * We synchronize this method to, hopefully, prevent multiple threads from introspecting any
+     * singe class at one time. The Introspector is not thread safe. Unforunately, PropertyUtils,
+     * OGNL, here (and elsewhere?) may attempt to introspect at the same time ... we're safe as long
+     * as its not the same class being introspected.
      */
     private synchronized void buildBeanProperties()
     {
@@ -118,9 +101,9 @@ public class ComponentClassFactory
         }
         catch (IntrospectionException ex)
         {
-            throw new ApplicationRuntimeException(
-                EnhanceMessages.unabelToIntrospectClass(_componentClass, ex),
-                ex);
+            throw new ApplicationRuntimeException(EnhanceMessages.unabelToIntrospectClass(
+                    _componentClass,
+                    ex), ex);
         }
 
         PropertyDescriptor[] descriptors = info.getPropertyDescriptors();
@@ -137,10 +120,8 @@ public class ComponentClassFactory
     }
 
     /**
-     *  Invokes {@link #scanForEnhancements()} to identify any
-     *  enhancements needed on the class, returning true
-     *  if there are any enhancements to be performed. 
-     * 
+     * Invokes {@link #scanForEnhancements()}to identify any enhancements needed on the class,
+     * returning true if there are any enhancements to be performed.
      */
 
     public boolean needsEnhancement()
@@ -173,7 +154,7 @@ public class ComponentClassFactory
     }
 
     /**
-     * @return true if m is not null and not abstract  
+     * @return true if m is not null and not abstract
      */
     public boolean isImplemented(Method m)
     {
@@ -184,13 +165,13 @@ public class ComponentClassFactory
     }
 
     /**
-     *  Given a class name, returns the corresponding class.  In addition,
-     *  scalar types, arrays of scalar types, java.lang.Object[] and
-     *  java.lang.String[] are supported.
+     * Given a class name, returns the corresponding class. In addition, scalar types, arrays of
+     * scalar types, java.lang.Object[] and java.lang.String[] are supported.
      * 
-     *  @param type to convert to a Class
-     *  @param location of the involved specification element (for exception reporting)
-     * 
+     * @param type
+     *            to convert to a Class
+     * @param location
+     *            of the involved specification element (for exception reporting)
      */
 
     public Class convertPropertyType(String type, Location location)
@@ -201,15 +182,13 @@ public class ComponentClassFactory
         {
             try
             {
-                String typeName = translateClassName(type);
+                String typeName = JavaTypeUtils.getJVMClassName(type);
                 result = _resolver.findClass(typeName);
             }
             catch (Exception ex)
             {
-                throw new ApplicationRuntimeException(
-                    EnhanceMessages.badPropertyType(type, ex),
-                    location,
-                    ex);
+                throw new ApplicationRuntimeException(EnhanceMessages.badPropertyType(type, ex),
+                        location, ex);
             }
 
             _classMapping.recordType(type, result);
@@ -218,55 +197,20 @@ public class ComponentClassFactory
         return result;
     }
 
-    /**
-     *  Translates types from standard Java format to Java VM format.
-     *  For example, java.util.Locale remains java.util.Locale, but
-     *  int[][] is translated to [[I and java.lang.Object[] to 
-     *  [Ljava.lang.Object;   
-     *  This method and its static Map should go into a utility class
-     */
-    private String translateClassName(String type)
-    {
-        // if it is not an array, just return the type itself
-        if (!type.endsWith("[]"))
-            return type;
-
-        // if it is an array, convert it to JavaVM-style format
-        StringBuffer javaType = new StringBuffer();
-        while (type.endsWith("[]"))
-        {
-            javaType.append("[");
-            type = type.substring(0, type.length() - 2);
-        }
-
-        String primitiveIdentifier = (String) _primitiveTypes.get(type);
-        if (primitiveIdentifier != null)
-            javaType.append(primitiveIdentifier);
-        else
-            javaType.append("L" + type + ";");
-
-        return javaType.toString();
-    }
-
-	private void checkPropertyType(PropertyDescriptor pd, Class propertyType, Location location)
+    private void checkPropertyType(PropertyDescriptor pd, Class propertyType, Location location)
     {
         if (!pd.getPropertyType().equals(propertyType))
-            throw new ApplicationRuntimeException(
-                EnhanceMessages.propertyTypeMismatch(
+            throw new ApplicationRuntimeException(EnhanceMessages.propertyTypeMismatch(
                     _componentClass,
                     pd.getName(),
                     pd.getPropertyType(),
-                    propertyType),
-                location,
-                null);
+                    propertyType), location, null);
     }
 
     /**
-     *  Checks to see that that class either doesn't provide the property, or does
-     *  but the accessor(s) are abstract.  Returns the name of the read accessor if found,
-     * or fabricates an appropriate name (if not). Returns null only if the property does
-     * not exist.
-     * 
+     * Checks to see that that class either doesn't provide the property, or does but the
+     * accessor(s) are abstract. Returns the name of the read accessor if found, or fabricates an
+     * appropriate name (if not). Returns null only if the property does not exist.
      */
 
     private String findReadMethodName(String propertyName, Class propertyType, Location location)
@@ -282,16 +226,12 @@ public class ComponentClassFactory
         Method read = d.getReadMethod();
 
         if (isImplemented(write))
-            throw new ApplicationRuntimeException(
-                EnhanceMessages.nonAbstractWrite(write.getDeclaringClass(), propertyName),
-                location,
-                null);
+            throw new ApplicationRuntimeException(EnhanceMessages.nonAbstractWrite(write
+                    .getDeclaringClass(), propertyName), location, null);
 
         if (isImplemented(read))
-            throw new ApplicationRuntimeException(
-                EnhanceMessages.nonAbstractRead(read.getDeclaringClass(), propertyName),
-                location,
-                null);
+            throw new ApplicationRuntimeException(EnhanceMessages.nonAbstractRead(read
+                    .getDeclaringClass(), propertyName), location, null);
 
         if (read != null)
             return read.getName();
@@ -299,7 +239,7 @@ public class ComponentClassFactory
         return CreateAccessorUtils.buildMethodName("get", propertyName);
     }
 
-	private boolean isMissingProperty(String propertyName)
+    private boolean isMissingProperty(String propertyName)
     {
         PropertyDescriptor pd = getPropertyDescriptor(propertyName);
 
@@ -307,13 +247,11 @@ public class ComponentClassFactory
     }
 
     /**
-     *  Invoked by {@link org.apache.tapestry.enhance.DefaultComponentClassEnhancer} to
-     *  create an enahanced
-     *  subclass of the component class.  This means creating a default constructor,
-     *  new fields, and new accessor and mutator methods.  Properties are created
-     *  for connected parameters, for all formal parameters (the binding property),
-     *  and for all specified parameters (which may be transient or persistent).
-     * 
+     * Invoked by {@link org.apache.tapestry.enhance.DefaultComponentClassEnhancer}to create an
+     * enahanced subclass of the component class. This means creating a default constructor, new
+     * fields, and new accessor and mutator methods. Properties are created for connected
+     * parameters, for all formal parameters (the binding property), and for all specified
+     * parameters (which may be transient or persistent).
      */
 
     public Class createEnhancedSubclass()
@@ -324,10 +262,7 @@ public class ComponentClassFactory
         String subclassName = worklist.getClassName();
 
         if (LOG.isDebugEnabled())
-            LOG.debug(
-                "Enhancing subclass of "
-                    + startClassName
-                    + " for "
+            LOG.debug("Enhancing subclass of " + startClassName + " for "
                     + _specification.getSpecificationLocation());
 
         Class result = worklist.createEnhancedSubclass();
@@ -339,26 +274,23 @@ public class ComponentClassFactory
     }
 
     /**
-     *  Invoked by {@link #needsEnhancement()} to find any enhancements
-     *  that may be needed.  Should create an {@link org.apache.tapestry.enhance.IEnhancer}
-     *  for each one, and add it to the queue.
-     * 
+     * Invoked by {@link #needsEnhancement()}to find any enhancements that may be needed. Should
+     * create an {@link org.apache.tapestry.enhance.IEnhancer}for each one, and add it to the
+     * queue.
      */
 
-	private void scanForEnhancements()
+    private void scanForEnhancements()
     {
         scanForParameterEnhancements();
         scanForSpecifiedPropertyEnhancements();
     }
 
     /**
-     *  Invoked by {@link #scanForEnhancements()} to locate
-     *  any enhancements needed for component parameters (this includes
-     *  binding properties and connected parameter property).
-     * 
+     * Invoked by {@link #scanForEnhancements()}to locate any enhancements needed for component
+     * parameters (this includes binding properties and connected parameter property).
      */
 
-	private void scanForParameterEnhancements()
+    private void scanForParameterEnhancements()
     {
         List names = _specification.getParameterNames();
         int count = names.size();
@@ -376,7 +308,7 @@ public class ComponentClassFactory
 
     }
 
-	private void scanForSpecifiedPropertyEnhancements()
+    private void scanForSpecifiedPropertyEnhancements()
     {
         List names = _specification.getPropertySpecificationNames();
         int count = names.size();
@@ -391,7 +323,7 @@ public class ComponentClassFactory
         }
     }
 
-	private void scanForBindingProperty(String parameterName, IParameterSpecification ps)
+    private void scanForBindingProperty(String parameterName, IParameterSpecification ps)
     {
         String propertyName = parameterName + Tapestry.PARAMETER_PROPERTY_NAME_SUFFIX;
         PropertyDescriptor pd = getPropertyDescriptor(propertyName);
@@ -414,7 +346,7 @@ public class ComponentClassFactory
         addEnhancer(enhancer);
     }
 
-	private void scanForParameterProperty(String parameterName, IParameterSpecification ps)
+    private void scanForParameterProperty(String parameterName, IParameterSpecification ps)
     {
         Direction direction = ps.getDirection();
 
@@ -440,48 +372,38 @@ public class ComponentClassFactory
 
         String readMethodName = findReadMethodName(propertyName, propertyType, location);
 
-        IEnhancer enhancer =
-            new CreatePropertyEnhancer(propertyName, propertyType, readMethodName, false);
+        IEnhancer enhancer = new CreatePropertyEnhancer(propertyName, propertyType, readMethodName,
+                false);
 
         addEnhancer(enhancer);
     }
 
-	private void addAutoParameterEnhancer(String parameterName, IParameterSpecification ps)
+    private void addAutoParameterEnhancer(String parameterName, IParameterSpecification ps)
     {
         Location location = ps.getLocation();
         String propertyName = ps.getPropertyName();
 
         if (!ps.isRequired() && ps.getDefaultValue() == null)
-            throw new ApplicationRuntimeException(
-                EnhanceMessages.autoMustBeRequired(propertyName),
-                location,
-                null);
+            throw new ApplicationRuntimeException(EnhanceMessages.autoMustBeRequired(propertyName),
+                    location, null);
 
         Class propertyType = convertPropertyType(ps.getType(), location);
 
         String readMethodName = findReadMethodName(propertyName, propertyType, location);
 
-        IEnhancer enhancer =
-            new CreateAutoParameterEnhancer(
-                propertyName,
-                parameterName,
-                propertyType,
-                readMethodName);
+        IEnhancer enhancer = new CreateAutoParameterEnhancer(propertyName, parameterName,
+                propertyType, readMethodName);
 
         addEnhancer(enhancer);
     }
 
-	private void addEnhancer(IEnhancer eh)
+    private void addEnhancer(IEnhancer eh)
     {
         if (_worklist == null)
         {
             String subclassName = constructEnhancedClassName();
 
-            _worklist =
-                new EnhancementWorklistImpl(
-                    subclassName,
-                    _componentClass,
-                    _resolver,
+            _worklist = new EnhancementWorklistImpl(subclassName, _componentClass, _resolver,
                     _classFactory);
         }
 
@@ -499,8 +421,8 @@ public class ComponentClassFactory
         String packageName = lastdot < 1 ? "" : startClassName.substring(0, lastdot + 1);
         String rawName = startClassName.substring(lastdot + 1);
 
-        // If the new class is located in a 'restricted' package, 
-        // use a neutral package name 
+        // If the new class is located in a 'restricted' package,
+        // use a neutral package name
 
         if (packageName.startsWith("java.") || packageName.startsWith("javax."))
             packageName = ENHANCED_PACKAGE;
@@ -508,7 +430,7 @@ public class ComponentClassFactory
         return packageName + "$" + rawName + "_" + generateUID();
     }
 
-	private void scanForSpecifiedProperty(IPropertySpecification ps)
+    private void scanForSpecifiedProperty(IPropertySpecification ps)
     {
         String propertyName = ps.getName();
         Location location = ps.getLocation();
@@ -526,11 +448,7 @@ public class ComponentClassFactory
 
         String readMethodName = findReadMethodName(propertyName, propertyType, location);
 
-        IEnhancer enhancer =
-            new CreatePropertyEnhancer(
-                propertyName,
-                propertyType,
-                readMethodName,
+        IEnhancer enhancer = new CreatePropertyEnhancer(propertyName, propertyType, readMethodName,
                 ps.isPersistent());
 
         addEnhancer(enhancer);

@@ -144,9 +144,19 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     public static final String LIBRARY_ID_PATTERN = Tapestry.SIMPLE_PROPERTY_NAME_PATTERN;
 
+    /** @since 3.1 */
     private final Log _log;
 
+    /** @since 3.1 */
     private final ErrorHandler _errorHandler;
+
+    /**
+     * Set to true if parsing the 3.1 DTD.
+     * 
+     * @since 3.1
+     */
+
+    private boolean _DTD_3_1;
 
     /**
      * Perl5 pattern for page names. Letter followed by letter, number, dash, underscore or period.
@@ -193,7 +203,13 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     private static final int STATE_BEAN = 4;
 
-    private static final int STATE_BINDING = 7;
+    /** Very different between 3.0 and 3.1 DTD */
+
+    private static final int STATE_BINDING_3_0 = 7;
+
+    /** @since 3.1 */
+
+    private static final int STATE_BINDING = 100;
 
     private static final int STATE_COMPONENT = 6;
 
@@ -225,6 +241,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     private static final int STATE_SET_PROPERTY = 5;
 
+    /** 3.0 DTD only */
     private static final int STATE_STATIC_BINDING = 9;
 
     /** @since 3.0 */
@@ -426,8 +443,8 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     }
 
     /**
-     * Special state for a number of types that can support the &lt;property&gt; (meta-data)
-     * element.
+     * Special state for a number of elements that can support the nested &lt;property&gt;
+     * (meta-data) element.
      */
 
     private void beginAllowProperty()
@@ -491,25 +508,27 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     private void beginComponent()
     {
-
         if (_elementName.equals("binding"))
         {
             enterBinding();
             return;
         }
 
+        // 3.0 DTD only
         if (_elementName.equals("static-binding"))
         {
             enterStaticBinding();
             return;
         }
 
+        // 3.0 DTD only
         if (_elementName.equals("message-binding"))
         {
             enterMessageBinding();
             return;
         }
 
+        // 3.0 DTD only
         if (_elementName.equals("inherited-binding"))
         {
             enterInheritedBinding();
@@ -615,7 +634,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
             return;
         }
 
-        // Holdback from the 3.0 DTD, now ignored.
+        // Holdover from the 3.0 DTD, now ignored.
 
         if (_elementName.equals("service"))
         {
@@ -778,6 +797,11 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
                 endSetProperty();
                 break;
 
+            case STATE_BINDING_3_0:
+
+                endBinding_3_0();
+                break;
+
             case STATE_BINDING:
 
                 endBinding();
@@ -817,7 +841,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
         pop();
     }
 
-    private void endBinding()
+    private void endBinding_3_0()
     {
         BindingSetter bs = (BindingSetter) peekObject();
 
@@ -955,6 +979,47 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
     private void enterBinding()
     {
+        if (!_DTD_3_1)
+        {
+            enterBinding_3_0();
+            return;
+        }
+
+        // 3.1 stuff
+
+        String name = getValidatedAttribute(
+                "name",
+                PARAMETER_NAME_PATTERN,
+                "invalid-parameter-name");
+        String value = getAttribute("value");
+
+        IContainedComponent cc = (IContainedComponent) peekObject();
+
+        BindingSetter bs = new BindingSetter(cc, name, value);
+
+        push(_elementName, bs, STATE_BINDING, false);
+    }
+
+    private void endBinding()
+    {
+        BindingSetter bs = (BindingSetter) peekObject();
+
+        String value = getExtendedValue(bs.getValue(), "value", true);
+
+        IBindingSpecification spec = _factory.createBindingSpecification();
+
+        spec.setType(BindingType.PREFIXED);
+        spec.setValue(value);
+
+        bs.apply(spec);
+    }
+
+    /**
+     * Handles a binding in a 3.0 DTD.
+     */
+
+    private void enterBinding_3_0()
+    {
         String name = getAttribute("name");
         String expression = getAttribute("expression");
 
@@ -962,7 +1027,7 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
 
         BindingSetter bs = new BindingSetter(cc, name, expression);
 
-        push(_elementName, bs, STATE_BINDING, false);
+        push(_elementName, bs, STATE_BINDING_3_0, false);
     }
 
     private void enterComponent()
@@ -1499,6 +1564,8 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     protected void resetParser()
     {
         _rootObject = null;
+        _DTD_3_1 = false;
+
         _attributes.clear();
     }
 
@@ -1509,7 +1576,10 @@ public class SpecificationParser extends AbstractParser implements ISpecificatio
     public InputSource resolveEntity(String publicId, String systemId) throws SAXException
     {
         if (TAPESTRY_DTD_3_1_PUBLIC_ID.equals(publicId))
+        {
+            _DTD_3_1 = true;
             return getDTDInputSource("Tapestry_3_1.dtd");
+        }
 
         if (TAPESTRY_DTD_3_0_PUBLIC_ID.equals(publicId))
             return getDTDInputSource("Tapestry_3_0.dtd");

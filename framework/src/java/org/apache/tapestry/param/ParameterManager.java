@@ -33,6 +33,7 @@ import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.enhance.JavaTypeUtils;
 import org.apache.tapestry.spec.Direction;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
@@ -309,6 +310,8 @@ public class ParameterManager
         if (result != null)
             return result;
 
-        return resolver.findClass(name);
+        // Convert array references into the format needed by the resolver.
+        
+        return resolver.findClass(JavaTypeUtils.getJVMClassName(name));
     }
 }

@@ -410,7 +410,7 @@ are presumed to be there only to support WYSIWYG preview.
 
 <para>
 Another conflict can occur when the HTML template specified an attribute that the component needs
-to render itself. For example, the &DirectLink; component generates a <literal>&lt;a&gt;</literal> tag,
+to render itself. For example, the &DirectLink; component generates a <literal> &lt;a&gt; </literal> tag,
 and needs to control the <literal>href</literal> attribute. However, for preview purposes, it often will 
 be written into the HTML template as:
 
