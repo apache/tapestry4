@@ -67,7 +67,7 @@ import net.sf.tapestry.util.prop.IPublicBean;
  *
  **/
 
-public class PublicBean implements IPublicBean
+public class PublicBean
 {
     private static Random r = new Random();
     
