@@ -27,7 +27,7 @@ package net.sf.tapestry.html;
 
 import java.io.OutputStream;
 
-import net.sf.tapestry.AbstractResponseWriter;
+import net.sf.tapestry.AbstractMarkupWriter;
 import net.sf.tapestry.IMarkupWriter;
 
 /**
@@ -44,7 +44,7 @@ import net.sf.tapestry.IMarkupWriter;
  *  @author Howard Lewis Ship
  **/
 
-public class HTMLWriter extends AbstractResponseWriter
+public class HTMLWriter extends AbstractMarkupWriter
 {
 
     private static final String[] entities = new String[64];

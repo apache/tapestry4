@@ -27,7 +27,7 @@ package net.sf.tapestry.wml;
 
 import java.io.OutputStream;
 
-import net.sf.tapestry.AbstractResponseWriter;
+import net.sf.tapestry.AbstractMarkupWriter;
 import net.sf.tapestry.IMarkupWriter;
 
 /**
@@ -52,7 +52,7 @@ import net.sf.tapestry.IMarkupWriter;
  * 
  **/
 
-public class WMLWriter extends AbstractResponseWriter
+public class WMLWriter extends AbstractMarkupWriter
 {
 
     private static final String[] entities = new String[64];

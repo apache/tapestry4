@@ -221,7 +221,7 @@ public class ExpressionBinding extends AbstractBinding
         catch (Throwable t)
         {
             throw new BindingException(
-                Tapestry.getString("PropertyBinding.unable-to-resolve-property", _expression, _root),
+                Tapestry.getString("ExpressionBinding.unable-to-resolve-expression", _expression, _root),
                 this,
                 t);
         }
@@ -475,7 +475,7 @@ public class ExpressionBinding extends AbstractBinding
         catch (Throwable ex)
         {
             throw new BindingException(
-                Tapestry.getString("PropertyBinding.unable-to-update-property", _expression, _root, value),
+                Tapestry.getString("ExpressionBinding.unable-to-update-expression", _expression, _root, value),
                 this,
                 ex);
         }
