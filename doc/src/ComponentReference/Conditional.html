@@ -1,3 +1,5 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- $Id$ --> 
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
@@ -120,25 +122,25 @@ John Smith is a Manager with <font color="red"><b>no</b></font> staff.
 &lt;/span&gt;
 
 
-&lt;component jwcid="insertName" type="<a href="Insert.html">Insert</a>"&gt;
+&lt;component id="insertName" type="<a href="Insert.html">Insert</a>"&gt;
    &lt;binding name="value" property-path="fullName"/&gt;
 &lt;/component&gt;
 
-&lt;component jwcid="<span class="jwcid">ifManager</span>" type="<a href="Conditional.html">Conditional</a>"&gt;
+&lt;component id="<span class="jwcid">ifManager</span>" type="<a href="Conditional.html">Conditional</a>"&gt;
    &lt;binding name="condition" property-path="manager"/&gt;
 &lt;/component&gt;
 
-&lt;component jwcid="<span class="jwcid">ifNotManager</span>" type="<a href="Conditional.html">Conditional</a>"&gt;
+&lt;component id="<span class="jwcid">ifNotManager</span>" type="<a href="Conditional.html">Conditional</a>"&gt;
    &lt;binding name="condition" property-path="manager"/&gt;
    &lt;static-binding name="invert"&gt;true&lt;/static-binding&gt;
 &lt;/component&gt;
 
-&lt;component jwcid="<span class="jwcid">ifHasStaff</span>" type="<a href="Conditional.html">Conditional</a>"&gt;
+&lt;component id="<span class="jwcid">ifHasStaff</span>" type="<a href="Conditional.html">Conditional</a>"&gt;
    &lt;binding name="condition" property-path="staff.empty"/&gt;
    &lt;static-binding name="invert"&gt;true&lt;/static-binding&gt;
 &lt;/component&gt;
 
-&lt;component jwcid="<span class="jwcid">ifHasNoStaff</span>" type="<a href="Conditional.html">Conditional</a>"&gt;
+&lt;component id="<span class="jwcid">ifHasNoStaff</span>" type="<a href="Conditional.html">Conditional</a>"&gt;
    &lt;binding name="condition" property-path="staff.empty"/&gt;
 &lt;/component&gt;
 
