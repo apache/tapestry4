@@ -11,12 +11,12 @@
  <td>
   <table>
 	 <tr>
-	  <td><font size="+2"><b>???</b></font></td>
+	  <td><font size="+2"><b>FieldLabel</b></font></td>
 	 </tr>
 	 <tr>
 	  <td>
-		 <a href="../api/net/sf/tapestry/???/???.html">
-		 net.sf.tapestry.???.???</a>
+		 <a href="../api/net/sf/tapestry/valid/FieldLabel.html">
+		 net.sf.tapestry.valid.FieldLabel</a>
 		</td>
 	 </tr>
   </table>
@@ -24,7 +24,7 @@
  <td>
   <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
 	 <tr>
-	  <td>Visual / Non Visual Component</td>
+	  <td><b>Field Label</b>&nbsp;<input type="text" size="10"/></td>
 	 </tr>
   </table>
  </td>
@@ -38,9 +38,14 @@
  <td colspan="2">
   <b>Description</b>
 	<br>
-  ???
+  A component, used with a <a href="ValidField.html">ValidField</a> that 
+  provides the label for the field.
   <p>
-  This component may wrap around other components and static HTML.<br> 
+  A <a href="api/net/sf/tapestry/valid/IValidationDelegate.html">delegate</a> 
+  object may be specified that will change the visual formatting of the label 
+  to reflect the state of the field, for instance, to make the label red when 
+  the field itself is in error.
+  <p>
   This component may NOT wrap around other components or static HTML. 
  </td>
 </tr>
@@ -49,8 +54,8 @@
  <td colspan="2">
   <b>See Also</b>
 	<br>
-	<a href="???.html">???</a>, 
-  <a href="???.html">???</a>
+	<a href="Form.html">Form</a>, 
+	<a href="ValidField.html">ValidField</a> 
  </td>
 </tr>
 
@@ -68,15 +73,31 @@
     <th>Description</th>
   </tr>
   <tr>
-    <td>???</td>
+    <td>field</td>
     <td>String</td>
     <td>in</td>
    	<td>yes</td>
 		<td>&nbsp;</td>
-		<td>???</td>
+		<td>The id of the <a href="../api/net/sf/tapestry/form/IFormComponent.html">
+    <tt>IFormComponent</tt></a> component to be labeled.
+    </td>
+	</tr>
+  <tr>
+    <td>displayName</td>
+    <td>String</td>
+    <td>in</td>
+   	<td>no</td>
+		<td>&nbsp;</td>
+		<td>
+    Allows the display name to be overriden from the value supplied by a 
+    <a href="../api/net/sf/tapestry/form/IFormComponent.html">
+    <tt>IFormComponent</tt></a>. Most implementation of <tt>IFormComponent</tt> 
+    provide a null displayName, and it is necessary to set one using this 
+    parameter. 
+    </td>
 	</tr>
 	</table>
-  Informal parameters: allowed<br>
+  Informal parameters: NOT allowed<br>
   Reserved parameters: none
  </td>
 </tr>
@@ -98,13 +119,13 @@
   <table width="100%">
    <tr>
     <td align="left">
-     <a href="???.html"><img src="common-images/prev.png" alt="Previous"/></a>
+     <a href="ExceptionDisplay.html"><img src="common-images/prev.png" alt="Previous"/></a>
     </td>  
     <td align="center">
      <a href="index.html"><img src="common-images/home.png" alt="Home"/></a>
     </td>  
     <td align="right">
-     <a href="???.html"><img src="common-images/next.png" alt="Next"/></a>
+     <a href="Foreach.html"><img src="common-images/next.png" alt="Next"/></a>
     </td>  
    <tr>
   </table>

@@ -1,0 +1,217 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- $Id$ --> 
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+
+<body>
+<table border="0" cellpadding="4" cellspacing="4" width="100%">
+<tr>
+ <td>
+  <table>
+	 <tr>
+	  <td><font size="+2"><b>Direct</b></font></td>
+	 </tr>
+	 <tr>
+	  <td>
+		 <a href="../api/net/sf/tapestry/link/Direct.html">
+		 net.sf.tapestry.link.Direct</a>
+		</td>
+	 </tr>
+  </table>
+ </td>
+ <td>
+  <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
+	 <tr>
+	  <td><a href="Direct.html"><font color="blue">Direct Link</font></a></td>
+	 </tr>
+  </table>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2"><hr></td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Description</b>
+	<br>
+  Creates a &lt;a&gt; hyperlink that notifies the component when the link is 
+  triggered. The link includes some context-specific data that is passed on to 
+  the component's listener. This is used in cases where the 
+  <a href="Action">Action</a> component can't be used (or is too inefficient).
+  <p>
+  See the Developers Guide <a href="../DevelopersGuide/cycle.listeners.html">
+  Action and Direct listeners</a> for a more complete description.  
+  <p>
+  This component may wrap around other components and static HTML. 
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>See Also</b>
+	<br>
+	<a href="Action.html">Action</a>, 
+  <a href="Page.html">Page</a>,
+  <a href="Service.html">Service</a>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Parameters</b>
+	<br>
+  <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+  <tr> 
+    <th>Name</th>
+    <th>Type</th>
+	  <th>Direction</th>
+    <th>Required</th> 
+    <th>Default</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>listener</td>
+    <td>
+     <a href="../api/net/sf/tapestry/IActionListener.html"><tt>IActionListener</tt></a>
+    </td>
+    <td>in</td>
+   	<td>yes</td>
+		<td>&nbsp;</td>
+		<td>Specifies an object that is notified when the link is clicked.</td>
+	</tr>
+  <tr>
+    <td>parameters</td>
+    <td>Object[]<br> 
+     <a href="http://java.sun.com/products/jdk/1.2/docs/api/java/util/List.html">
+     <tt>List</tt></a>    
+    </td>
+    <td>in</td>
+   	<td>no</td>
+		<td>&nbsp;</td>
+		<td>
+    An array of Strings to be encoded into the URL. These parameters will be 
+    decoded when the link is triggered. If the context is simply an Object, 
+    then toString() is invoked on it. It is assumed that the listener will be 
+    able to convert it back. 
+    <p>
+    In a web application built onto of Enterprise JavaBeans, the context is 
+    often the primary key of some Entity bean; typically such keys are Strings 
+    or Integers (which can be freely converted from String to Integer by the 
+    listener). 
+    <p>
+    A listener method can retrieve the parameters using 
+    <a href="/api/net/sf/tapestry/IRequestCycle.html#getServiceParameters()">
+    <tt>IRequestCycle.getServiceParameters()</tt></a>. 
+    <p>
+    Prior to release 2.2, the parameters were always type String. They may now 
+    be of any type; type will be maintained when the parameters are later 
+    retrieved by a listener. See 
+    <a href="../api/net/sf/tapestry/util/io/DataSqueezer.html"><tt>DataSqueezer
+    </tt></a> for more details. 
+    </td>
+	</tr>
+  <tr>
+    <td>disabled</td>
+    <td>boolean</td>
+    <td>in</td>
+   	<td>no</td>
+		<td>false</td>
+		<td>Controls whether the link is produced. If disabled, the portion of the 
+    template the link surrounds is still rendered, but not the link itself.
+    </td>
+	</tr>
+  <tr>
+    <td>stateful</td>
+    <td>boolean</td>
+    <td>in</td>
+   	<td>no</td>
+		<td>true</td>
+		<td>
+    If true (the default), then the component requires an active (i.e., non-new) 
+    <tt>HttpSession</tt> when triggered. Failing that, it throws a 
+    <a href="../api/net/sf/tapestry/StaleLinkException">
+    <tt>StaleLinkException</tt></a>. If false, then no check is necessary. The 
+    latter works well with links that encode all necessary state inside the URL 
+    itself.
+    </td>
+	</tr>
+  <tr>
+    <td>scheme</td>
+    <td>String</td>
+    <td>in</td>
+   	<td>no</td>
+		<td>&nbsp;</td>
+		<td>
+    If specified, then a longer URL (including scheme, server and possibly port) 
+    is generated using the specified scheme. Server is determined fromt he 
+    incoming request, and port is deterimined from the port paramter or the 
+    incoming request.     
+    </td>
+	</tr>
+  <tr>
+    <td>port</td>
+    <td>int</td>
+    <td>in</td>
+   	<td>no</td>
+		<td>&nbsp;</td>
+		<td>
+    If specified, then a longer URL (including scheme, server and port) is 
+    generated using the specified port. The server is determined from the 
+    incoming request, the scheme from the scheme paramter or the incoming 
+    request. 
+    </td>
+	</tr>
+  <tr>
+    <td>anchor</td>
+    <td>String</td>
+    <td>in</td>
+   	<td>no</td>
+		<td>&nbsp;</td>
+		<td>
+    The name of an anchor or element to link to. The final URL will have '#' 
+    and the anchor appended to it.
+    </td>
+	</tr>
+	</table>
+  Informal parameters: allowed<br>
+  Reserved parameters: "href"
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Examples</b>
+	<p>
+  This example is under construction.
+ </td>
+</tr>
+</tr>
+
+<tr>
+ <td colspan="2"><hr></td>  
+</tr>
+<tr>
+ <td colspan="2">
+  <table width="100%">
+   <tr>
+    <td align="left">
+     <a href="Delegator.html"><img src="common-images/prev.png" alt="Previous"/></a>
+    </td>  
+    <td align="center">
+     <a href="index.html"><img src="common-images/home.png" alt="Home"/></a>
+    </td>  
+    <td align="right">
+     <a href="ExceptionDisplay.html"><img src="common-images/next.png" alt="Next"/></a>
+    </td>  
+   <tr>
+  </table>
+ </td>
+</tr>
+</table>
+
+</body>
+</html>
