@@ -159,7 +159,11 @@ public class OperationsBean implements SessionBean
 		return book;
 	}
 	
-	
+	/**
+	 *  Adds a new book, verifying that the publisher and holder actually exist.
+	 *
+	 */
+	 
 	public IBook addBook(Integer ownerPK, String title, String author, String ISBN, String description,
 						 Integer publisherPK)
 	throws CreateException, RemoteException
@@ -475,6 +479,12 @@ public class OperationsBean implements SessionBean
 		return (Person[])list.toArray(result);
 	}
 	
+	/**
+	 *  Gets the {@link Person} for primary key.
+	 *
+	 *  @throws FinderException if the Person does not exist.
+	 */
+	 
 	public Person getPerson(Integer primaryKey)
 	throws FinderException
 	{
@@ -580,7 +590,6 @@ public class OperationsBean implements SessionBean
 		if (password == null ||
 			password.trim().length() == 0)
 				throw new RegistrationException("Must specify a password.");
-			
 			
 		home = getPersonHome();
 		
@@ -695,7 +704,7 @@ public class OperationsBean implements SessionBean
 	
 	/**
 	 *  Closes the resultSet (if not null), then the statement (if not null), 
-	 *  then the Connection (if not null).
+	 *  then the Connection (if not null).  Exceptions are written to System.out.
 	 *
 	 */
 	 

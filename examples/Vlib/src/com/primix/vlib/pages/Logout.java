@@ -3,6 +3,7 @@ package com.primix.vlib.pages;
 import com.primix.tapestry.components.*;
 import com.primix.tapestry.spec.*;
 import com.primix.tapestry.*;
+import com.primix.vlib.*;
 
 /*
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -32,7 +33,8 @@ import com.primix.tapestry.*;
  */
 
 /**
- *  
+ *  Logs the user out, invalidating the {@link HttpSession} and showing
+ *  a goodbye message.
  *
  * @author Howard Ship
  * @version $Id$
@@ -46,6 +48,27 @@ public class Logout extends BasePage implements ILifecycle
 		super(application, componentSpecification);
 	}
 	
+	/**
+	 *  Sets the application user to null.
+	 *
+	 */
+	 
+	public void beginResponse(IResponseWriter writer,
+	                          IRequestCycle cycle)
+	                   throws RequestCycleException
+	{
+		VirtualLibraryApplication app;
+
+		app = (VirtualLibraryApplication)application;
+
+		app.setUser(null);
+	}
+	
+	/**
+	 *  Invalidates the current {@link HttpSession}.
+	 *
+	 */
+	 			   
 	public void cleanupAfterRender(IRequestCycle cycle)
 	{
 		cycle.getRequestContext().getSession().invalidate();

@@ -68,7 +68,7 @@ public interface IPerson extends IEntityBean
 
 	/**
 	 *  Returns the natural concatination of the first and last name, or just
-	 *  the last name if there is not first name.
+	 *  the last name if there is no first name.
 	 *
 	 */
 	 

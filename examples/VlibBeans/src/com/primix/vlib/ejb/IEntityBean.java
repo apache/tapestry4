@@ -34,7 +34,7 @@ import java.util.*;
 
 /** 
  *  Defines the remove interface for an entity which can download and upload
- *  its properties.
+ *  a subset of its properties as a {@link Map}.
  *
  *  @version $Id$
  *  @author Howard Ship

@@ -134,7 +134,7 @@ public class DemoApplication extends SimpleApplication
 	*
 	*/
 
-	public IApplicationService constructService(String name)
+	protected IApplicationService constructService(String name)
 	{
 		if (name.equals("reset"))
 			return new ResetService();

@@ -33,7 +33,8 @@ import com.primix.vlib.pages.*;
  */
 
 /**
- *  Base page used for pages that should be protected by the Login page.
+ *  Base page used for pages that should be protected by the {@link Login} page.
+ *  If the user is not logged in, they are redirected to the Login page first.
  *  Also, implements an error property.
  *
  * @author Howard Ship
@@ -67,6 +68,13 @@ public class Protected extends BasePage
 		return error;
 	}
 	
+	/**
+	 *  Checks if the user is logged in ... if not, they are sent
+	 *  to the {@link Login} page before coming back to whatever this
+	 *  page is.
+	 *
+	 */
+	 
 	public void validate(IRequestCycle cycle)
 	throws RequestCycleException
 	{

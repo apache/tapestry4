@@ -4,6 +4,7 @@ import com.primix.tapestry.components.*;
 import com.primix.tapestry.spec.*;
 import com.primix.tapestry.*;
 import com.primix.vlib.*;
+import com.primix.vlib.pages.*;
 
 /*
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -33,7 +34,9 @@ import com.primix.vlib.*;
  */
 
 /**
- *  
+ *  The standard Border component, which provides the title of the page,
+ *  the link to {@link MyBooks}, the {@link Login} page and the {@link Logout}
+ *  page.
  *
  * @author Howard Ship
  * @version $Id$
@@ -47,23 +50,6 @@ public class Border extends BaseComponent
 		super(page, container, id, spec);
 	}
 	
- 	public IDirectListener getLogoutListener()
-	{
-		return new IDirectListener()
-		{
-			public void directTriggered(IComponent component, String[] context,
-					IRequestCycle cycle)
-			{
-				VirtualLibraryApplication app;
-				
-				app = (VirtualLibraryApplication)getPage().getApplication();
-				
-				app.setUser(null);
-				cycle.setPage("Logout");
-			}
-		};
-	}
-
 	/**
 	 *  Show the Logout button on all pages except the Logout page itself.
 	 *

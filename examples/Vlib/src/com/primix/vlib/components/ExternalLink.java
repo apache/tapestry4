@@ -72,6 +72,13 @@ public abstract class ExternalLink extends AbstractServiceLink
 		return primaryKeyBinding;
 	}
 	
+	/**
+	 *  Returns the appropriate context, which has two values.
+	 *  The first is the name of the page, the second is
+	 *  the primary key of the entity that page will display.
+	 *
+	 */
+	 
 	public String[] getContext(IRequestCycle cycle)
 	throws RequestCycleException
 	{

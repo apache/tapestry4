@@ -32,7 +32,7 @@ import com.primix.tapestry.*;
 
 /**
  *  Defines a page which may be referenced externally, using an Integer primary
- *  key.
+ *  key.  This is used by the external application service.
  *
  *  @version $Id$
  *  @author Howard Ship

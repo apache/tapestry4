@@ -67,6 +67,14 @@ public abstract class AbstractEntityBean implements EntityBean
 	private static final int MAP_SIZE = 11;
 	private PropertyHelper helper;
 	
+	private transient IKeyAllocatorHome keyAllocatorHome;
+
+	/**
+	 *  The environment naming context, which is configured for this bean
+	 *  in the deployment descriptor.
+	 *
+	 */
+	 
 	private Context environment;
 	
 	public void setEntityContext(EntityContext context)
@@ -91,8 +99,7 @@ public abstract class AbstractEntityBean implements EntityBean
 	}
 
 	/**
-	 *  Gets a named object from the bean's environment ("java:comp/env" relative
-	 *  to the initial naming context).
+	 *  Gets a named object from the bean's environment naming context.
 	 *
 	 */
 	 
@@ -176,23 +183,6 @@ public abstract class AbstractEntityBean implements EntityBean
 		dirty = false;
 	}
 	
-	public Object getPrimaryKey(EJBObject object, String name)
-	{
-		try
-		{
-            if (object == null)
-              return null;
-              
-			return object.getPrimaryKey();
-		}
-		catch (Exception e)
-		{
-			throw new XEJBException("Could not resolve primary key for " + name + ".", e);
-		}
-	}
-	
-	private transient IKeyAllocatorHome keyAllocatorHome;
-
 	/**
 	 *  Uses the KeyAllocator session bean to allocate a necessary key.
 	 *
@@ -245,7 +235,7 @@ public abstract class AbstractEntityBean implements EntityBean
 	
 	/**
 	 *  Implemented in subclasses to provide a list of property names to be included
-	 *  in the payload.
+	 *  in the entity attributes map.
 	 *
 	 */
 	 
@@ -253,11 +243,12 @@ public abstract class AbstractEntityBean implements EntityBean
 	
 	/**
 	 *  Returns a {@link Map} of the properties of the bean.  This Map is
-	 *  returned to the client, which is can be modified and then used to update
+	 *  returned to the client, where it can be modified and then used to update
 	 *  the entity bean in a single method
 	 *
 	 *  <p>The properties included in the Map are defined by the
-	 *  {@link #getAttributePropertyNames()} method.
+	 *  {@link #getAttributePropertyNames()} method, which is implemented
+	 *  by concrete subclasses.
 	 *
 	 */
 	 
@@ -288,7 +279,7 @@ public abstract class AbstractEntityBean implements EntityBean
 	}
 	
 	/**
-	 *  Updates the bean with property changes from the update Map.
+	 *  Updates the bean with property changes from the update {@link Map}.
 	 *  Only the keys defined by {@link #getAttributePropertyNames()} will be
 	 *  accessed (keys and values that are not in that list are ignored). 
 	 *

@@ -72,6 +72,12 @@ public class Matches extends BasePage
 		return matchCount;
 	}
 	
+	/**
+	 *  Sets the persistent matchCount property, the total number of
+	 *  matches in the result.
+	 *
+	 */
+	 
 	public void setMatchCount(int value)
 	{
 		matchCount = value;
@@ -84,12 +90,25 @@ public class Matches extends BasePage
 		return bookQueryHandle;
 	}
 	
+	/**
+	 *  Sets the persistent bookQueryHandle property, the {@link Handle}
+	 *  to the {@link IBookQuery} session bean.
+	 *
+	 */
+	 
 	public void setBookQueryHandle(Handle value)
 	{
 		bookQueryHandle = value;
 		fireObservedChange("bookQueryHandle", value);
 	}
 	
+	/**
+	 *  Gets the {@link IBookQuery} session bean for the query, which may
+	 *  involve restoring it from its handle, or
+	 *  even creating a new instance.
+	 *
+	 */
+	 
 	public IBookQuery getBookQuery()
 	{
 		VirtualLibraryApplication app;
@@ -124,6 +143,11 @@ public class Matches extends BasePage
 		return bookQuery;
 	}
 	
+	/**
+	 *  Sets the book query, and updates the bookQueryHandle property.
+	 *
+	 */
+	 
 	public void setBookQuery(IBookQuery value)
 	{
 		bookQuery = value;
@@ -141,6 +165,11 @@ public class Matches extends BasePage
 		}
 	}
 	
+	/**
+	 *  Invoked by the {@link Home} page to perform a query.
+	 *
+	 */
+	 
 	public void performQuery(String title, String author, Object publisherPK)
 	{
 		IBookQueryHome home;
@@ -161,6 +190,13 @@ public class Matches extends BasePage
 		
 	}
 	
+	/**
+	 * Gets the matches for the query ... in the future, this will be
+	 * part of a larger mechanism for presenting a paged view of
+	 * the matches.
+	 *
+	 */
+	 
 	public Book[] getMatches()
 	{
 		int count;
@@ -179,12 +215,17 @@ public class Matches extends BasePage
 			throw new ApplicationRuntimeException(t);
 		}
 	}
-	
+
 	public Book getCurrentMatch()
 	{
 		return currentMatch;
 	}
-	
+
+	/**
+	 *  Updates the dynamic currentMatch property.
+	 *
+	 */
+	 	
 	public void setCurrentMatch(Book value)
 	{
 		currentMatch = value;
@@ -207,6 +248,12 @@ public class Matches extends BasePage
 		return ! ownerPrimaryKey.equals(holderPrimaryKey);		
 	}
 	
+	/**
+	 *  Enables the borrow link if the user is logged in and isn't already
+	 *  holding onto the book.
+	 *
+	 */
+	 
 	public boolean getEnableBorrow()
 	{
 		VirtualLibraryApplication app;

@@ -34,7 +34,7 @@ import javax.naming.*;
  */
 
 /**
- *  Home interface to the {@link Operations} stateless
+ *  Home interface to the {@link OperationsBean} stateless
  *  session bean.
  *  
  *  @version $Id$

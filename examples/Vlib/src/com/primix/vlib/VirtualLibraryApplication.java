@@ -44,6 +44,12 @@ import java.net.*;
 
 /**
  *
+ *  The application class for the Primix Virtual Library.  Primarily,
+ *  this is used to access the home interfaces and EJB instances, and
+ *  to identify who the logged in user is.  It also provides the external
+ *  service, which allows the {@link ViewBook} and {@link PersonPage}
+ *  pages to be bookmarked.
+ *
  *  @version $Id$
  *  @author Howard Ship
  *
@@ -85,6 +91,22 @@ public class VirtualLibraryApplication extends SimpleApplication
 	}
 	
 	/**
+	 *  When using a standalone servlet container (such as Servlet Exec Debugger),
+	 *  set all the necessary system properties for locating the JNDI naming
+	 *  context and set an additional property, standalone, so that
+	 *  we know.
+	 *
+	 */
+	 
+	private static final boolean standaloneServletContainer 
+		= Boolean.getBoolean("standalone");
+	
+	// Includes a null option for searching without care to Publisher
+	
+	private IPropertySelectionModel publisherModel;
+	private IPropertySelectionModel personModel;
+	
+	/**
 	 *   The name ("external") of a service that exposes books or 
 	 *   persons in such as way that they are bookmarkable.
 	 *
@@ -95,7 +117,8 @@ public class VirtualLibraryApplication extends SimpleApplication
 	/**
 	 *  The external service is used to make the {@link ViewBook} and 
 	 *  {@link PersonPage} pages bookmarkable.  The URL will include the
-	 *  type of bookmark ("book" or "person") and the primary key of the {@link IBook}
+	 *  page (which must implement the {@link IExternalPage} interface),
+	 *  and the primary key of the {@link IBook}
 	 *  or {@link IPerson} EJB.
 	 *
 	 */
@@ -128,22 +151,6 @@ public class VirtualLibraryApplication extends SimpleApplication
         }
 		
 	}
-	
-	/**
-	 *  When using a standalone servlet container (such as Servlet Exec Debugger),
-	 *  set all the necessary system properties for locating the JNDI naming
-	 *  context and set an additional property, standalone, so that
-	 *  we know.
-	 *
-	 */
-	 
-	private static final boolean standaloneServletContainer 
-		= Boolean.getBoolean("standalone");
-	
-	// Includes a null option for searching without care to Publisher
-	
-	private IPropertySelectionModel publisherModel;
-	private IPropertySelectionModel personModel;
 	
 	public VirtualLibraryApplication(RequestContext context)
 	{
@@ -188,9 +195,13 @@ public class VirtualLibraryApplication extends SimpleApplication
         
 		publisherModel = null;
         personModel = null;
-        
 	}
 	
+	/**
+	 *  Gets the logged-in user, or null if the user is not logged in.
+	 *
+	 */
+	 
 	public IPerson getUser()
 	{
 		if (user != null)
@@ -215,6 +226,12 @@ public class VirtualLibraryApplication extends SimpleApplication
 		return user;
 	}
 	
+	/**
+	 *  Returns the primary key of the logged in user, or null if the
+	 *  user is not logged in.
+	 *
+	 */
+	 
 	public Integer getUserPK()
 	{
 		return userPK;
@@ -357,7 +374,13 @@ public class VirtualLibraryApplication extends SimpleApplication
 		
 		return environment;
 	}
-	
+
+	/**
+	 *  Changes the logged in user ... this is only invoked from the {@link Login}
+	 *  page.
+	 *
+	 */
+	 	
 	public void setUser(IPerson value)
 	{
 		user = value;
@@ -377,6 +400,12 @@ public class VirtualLibraryApplication extends SimpleApplication
 		}
 	}
 	
+	/**
+	 *  Returns the full name of the logged-in user, 
+	 *  i.e., from {@link IPerson#getNaturalName()}.
+	 *
+	 */
+	 
 	public String getFullUserName()
 	{
 		if (fullUserName == null)
@@ -396,13 +425,13 @@ public class VirtualLibraryApplication extends SimpleApplication
 	}
 	
 	/**
-	 *  Returns true if the user is known.
+	 *  Returns true if the user is logged in.
 	 *
 	 */
 	 
 	public boolean isUserLoggedIn()
 	{
-		return getUser() != null;
+		return userPK != null;
 	}
 	
 	public boolean isLoggedInUser(Integer primaryKey)
@@ -465,7 +494,7 @@ public class VirtualLibraryApplication extends SimpleApplication
 	
 	/**
 	 *  Used from pages that want to add a book.
-	 *  Gets the newBook page and sets it's returnPage property to point back to
+	 *  Gets the {@link NewBook} page and sets it's returnPage property to point back to
 	 *  the current page.
 	 *
 	 */
@@ -494,7 +523,7 @@ public class VirtualLibraryApplication extends SimpleApplication
 	 *  Invoked by pages after they perform an operation that changes the backend
 	 *  database in such a way that cached data is no longer valid.  Currently,
 	 *  this should be invoked after changing the user's profile, or adding
-	 *  a new Publisher entity.
+	 *  a new {@link IPublisher} entity.
 	 *
 	 */
 	 
@@ -506,6 +535,12 @@ public class VirtualLibraryApplication extends SimpleApplication
 		personModel = null;
 	}
 	
+	/**
+	 *  Returns a model that contains all the known Person's, sorted by last name,
+	 *  then first.  The label for the model matches the user's natural name.
+	 *
+	 */
+	 
 	public IPropertySelectionModel getPersonModel()
 	{
 		if (personModel == null)
@@ -545,8 +580,8 @@ public class VirtualLibraryApplication extends SimpleApplication
 	}
 	
 	/**
-	 *  Used from a couple of pages; allows a link to the user's own inventory.
-	 *  Context should have one element: the primary key of the person.
+	 *  Used from a couple of pages to actually borrow a book.  The {@link Direct}
+	 * component should set its context to the primary key of the book to borrow.
 	 *
 	 */
 	 
@@ -599,8 +634,12 @@ public class VirtualLibraryApplication extends SimpleApplication
 	}
 	
 
-	
-	public IApplicationService constructService(String name)
+	/**
+	 *  Supports construction of the external service.
+	 *
+	 */
+	 
+	protected IApplicationService constructService(String name)
 	{
 		if (name.equals("external"))
 			return new ExternalService();
@@ -608,9 +647,14 @@ public class VirtualLibraryApplication extends SimpleApplication
 		return super.constructService(name);
 	}	
 	
-		public void serviceExternal(IRequestCycle cycle, ResponseOutputStream output)
-		throws RequestCycleException, ServletException, IOException
-		{
+	/**
+	 *  Performs the actual servicing of the external service.
+	 *
+	 */
+	 
+	protected void serviceExternal(IRequestCycle cycle, ResponseOutputStream output)
+	throws RequestCycleException, ServletException, IOException
+	{
 		IMonitor monitor;
 		String pageName;
 		String key;
@@ -635,8 +679,9 @@ public class VirtualLibraryApplication extends SimpleApplication
 		}
 		catch (ClassCastException e)
 		{
-			throw new ApplicationRuntimeException("Page " + pageName + " may not be used with the " +
-			EXTERNAL_SERVICE + " service.");
+			throw new ApplicationRuntimeException("Page " + pageName + 
+				" may not be used with the " +
+				EXTERNAL_SERVICE + " service.");
 		}
 					
 		page.setup(primaryKey, cycle);

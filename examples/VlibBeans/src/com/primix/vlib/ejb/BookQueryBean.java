@@ -38,20 +38,17 @@ import com.primix.foundation.ejb.*;
  */
 
 /**
- *  Implementation of the KeyAllocator stateless session bean.
+ *  Implementation of a stateful session bean used to query the {@link IBook}
+ *  entity and cache the results.  It can then download the results, in chunks,
+ *  to the client ... this is used to support clients that which to display
+ *  the results a page at a time (with random access to the pages of results).
  *
- *  <p>We're cheating a little; they KeyAllocator does have
- *  state, it just doesn't get persisted ever.  Since the
- *  operation on it is atomic ("gimme a key") it doesn't
- *  need to have conversational state with its clients.
+ * <p>To avoid a lot of duplicate code for things like finding the JDBC {@link
+ *  Connection} and querying the {@link IBook} entity, we subclass from
+ * {@link OperationsBean}.
  *
- *  <p>The KeyAllocator records in the database the "next key
- *  to allocate".  When it needs a key, it allocates a block
- *  of keys (by advancing the next key by a some number).
- *
- *  <p>If the KeyAllocator instance is purged from the pool,
- *  then some number of keys that it has allocated will
- *  be lost.  Big deal.
+ *  @see IBookQuery
+ *  @see IBookQueryHome
  *
  *  @version $Id$
  *  @author Howard Ship
@@ -81,6 +78,11 @@ public class BookQueryBean extends OperationsBean
 		
 	// Business methods
 	
+	/**
+	 *  Returns the number of results from the most recent query.
+	 *
+	 */
+	 
 	public int getResultCount()
 	{
 		if (results == null)
@@ -89,6 +91,11 @@ public class BookQueryBean extends OperationsBean
 		return results.length;
 	}	
 	
+	/**
+	 *  Gets a subset of the results from the query.
+	 *
+	 */
+	 
 	public Book[] get(int offset, int length)
 	{
 		Book[] result;
@@ -102,6 +109,12 @@ public class BookQueryBean extends OperationsBean
 		return result;
 	}
 	
+	/**
+	 *  The master query is for querying by some mixture of title, author
+	 *  and publisher.
+	 *
+	 */
+	 
 	public int masterQuery(String title, String author, Object publisherPK)
 	{
 		IStatement statement = null;
@@ -174,7 +187,7 @@ public class BookQueryBean extends OperationsBean
 	}
 
 	/**
-	 *  Queries on books owned by a given person, sorted by title.
+	 *  Queries on books held (borrowed) by a given person, sorted by title.
 	 *
 	 */
 	 

@@ -39,16 +39,15 @@ import com.primix.foundation.prop.*;
  */
 
 /**
- *  
+ * Edit's a user's profile:  names, email and password.  
  *
  * @author Howard Ship
  * @version $Id$
  */
 
 
-public class EditProfile extends BasePage
+public class EditProfile extends Protected
 {
-	private String error;
 	private Map attributes;	
 	private String password1;
 	private String password2;
@@ -64,22 +63,11 @@ public class EditProfile extends BasePage
 	{
 		super.detachFromApplication();
 
-		error = null;
 		attributes = null;
 		password1 = null;
 		password2 = null;
 	}
 		
-	public void setError(String value)
-	{
-		error = value;
-	}
-	
-	public String getError()
-	{
-		return error;
-	}
-	
 	public String getPassword1()
 	{
 		return password1;
@@ -108,6 +96,12 @@ public class EditProfile extends BasePage
 		return attributes;
 	}	
 	
+	/**
+	 *  Invoked (from {@link MyBooks}) to begin editting the user's
+	 *  profile.
+	 *
+	 */
+	 
 	public void beginEdit(IRequestCycle cycle)
 	{
 		VirtualLibraryApplication app;
@@ -128,6 +122,13 @@ public class EditProfile extends BasePage
 		cycle.setPage(this);	
 	}
 	
+	/**
+	 *  Invoked when the form is submitted, validates the form and
+	 *  updates the {@link IPerson} for the user, before returning
+	 *  to {@link MyPage}.
+	 *
+	 */
+	 
 	public IActionListener getFormListener()
 	{
 		return new IActionListener()
@@ -182,6 +183,13 @@ public class EditProfile extends BasePage
 		
 		try
 		{
+			/**
+			 *  Note:  this allows the user to change thier e-mail
+			 *  such that it conflicts with another user!  Need yet-another
+			 *  IOperations method to perform the update!
+			 *
+			 */
+			 
 			app.getUser().updateEntityAttributes(attributes);
 		}
 		catch (RemoteException e)
