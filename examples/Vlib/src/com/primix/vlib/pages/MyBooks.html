@@ -5,7 +5,12 @@
 
 <jwc id="showMessage"/>
 
-<jwc id="ifShowOwnedBooksHeader">
+<jwc id="ifShowOwnedBooks">
+
+<h2>Owned Books</h2>
+
+<jwc id="ownedBooksBrowser">
+
 <table>
   <tr>
     <th>Title</th>
@@ -15,7 +20,6 @@
 	<th></th>
 	<th></th>
   </tr>
-</jwc>
 
 <jwc id="e-owned">
 
@@ -34,15 +38,15 @@
 
 </jwc>
 
-<jwc id="ifShowOwnedBooksTrailer">
 </table>
 </jwc>
+</jwc>
 
-<jwc id="ifShowBorrowedBooksHeader">
+<jwc id="ifShowBorrowedBooks">
 
-<hr>
+<h2>Borrowed books</h2>
 
-<p>Borrowed books:
+<jwc id="borrowedBooksBrowser">
 
 <table>
   <tr>
@@ -51,8 +55,6 @@
 	<th>Publisher</th>
 	<th>Owner</th>
 	<th></th>
-
-</jwc>
 
 <jwc id="e-borrowed">
 
@@ -66,12 +68,14 @@
 
 </jwc>
 
-<jwc id="ifShowBorrowedBooksTrailer">
+
 </table>
+
+</jwc>
 </jwc>
 
 <p>
-<jwc id="addNewBook">[Add new Book]</jwc>
+<jwc id="addNewBook">[Add new Book]</jwc> |
 <jwc id="editProfile">[Edit User Profile]</jwc>
 
 </jwc>

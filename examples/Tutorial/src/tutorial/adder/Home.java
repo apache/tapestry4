@@ -74,14 +74,18 @@ public class Home extends BasePage
 		super.detach();
 	}
 
+	public void beginResponse(IResponseWriter writer,
+                          IRequestCycle cycle)
+                   throws RequestCycleException
+	{
+		super.beginResponse(writer, cycle);
+		
+		if (items == null)
+			setItems(new ArrayList());
+	}
+	
 	public void addItem(double value)
 	{
-		if (items == null)
-		{
-			items = new ArrayList();
-			fireObservedChange("items", items);
-		}
-
 		items.add(new Double(value));
 
 		fireObservedChange();

@@ -31,6 +31,7 @@ import com.primix.tapestry.components.*;
 import com.primix.tapestry.*;
 import com.primix.vlib.ejb.*;
 import com.primix.vlib.*;
+import com.primix.vlib.components.*;
 import javax.ejb.*;
 import java.util.*;
 import javax.rmi.*;
@@ -48,35 +49,17 @@ public class Matches extends BasePage
 {
 	private IBookQuery bookQuery;
 	private Book currentMatch;
-	private int matchCount;
+	private Browser browser;
 	
 	public void detach()
 	{
-		super.detach();
-		
 		bookQuery = null;
 		currentMatch = null;
-		matchCount = 0;
-	}
-	
-	public int getMatchCount()
-	{
-		return matchCount;
-	}
-	
-	/**
-	 *  Sets the persistent matchCount property, the total number of
-	 *  matches in the result.
-	 *
-	 */
-	 
-	public void setMatchCount(int value)
-	{
-		matchCount = value;
 		
-		fireObservedChange("matchCount", value);
+		super.detach();
 	}
 	
+
 	/**
 	 *  Gets the {@link IBookQuery} session bean for the query, creating
      *  it fresh if necessary.
@@ -139,41 +122,18 @@ public class Matches extends BasePage
 		try
 		{
 			count = query.masterQuery(title, author, publisherPK);
-			setMatchCount(count);
 		}
 		catch (RemoteException ex)
 		{
 			throw new ApplicationRuntimeException(ex);
 		}
 		
+		if (browser == null)
+			browser = (Browser)getComponent("browser");
+		
+		browser.initializeForResultCount(count);	
 	}
 	
-	/**
-	 * Gets the matches for the query ... in the future, this will be
-	 * part of a larger mechanism for presenting a paged view of
-	 * the matches.
-	 *
-	 */
-	 
-	public Book[] getMatches()
-	{
-		int count;
-		IBookQuery query;
-		
-		try
-		{
-			query = getBookQuery();
-			
-			count = query.getResultCount();
-			
-			return query.get(0, count);
-		}
-		catch (RemoteException ex)
-		{
-			throw new ApplicationRuntimeException(ex);
-		}
-	}
-
 	public Book getCurrentMatch()
 	{
 		return currentMatch;
@@ -200,6 +160,8 @@ public class Matches extends BasePage
 		{
 			if (bookQuery != null)
 			    bookQuery.remove();
+			
+			bookQuery = null;
 		}
 		catch (RemoveException ex)
 		{

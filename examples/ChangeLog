@@ -1,3 +1,9 @@
+* Jun 8 2001 hship
+
+Vlib:
+- Add a new Browser component, used to page through book query results
+- Use the Browser on Matches and (twice) on MyBooks
+
 * Jun 7 2001 hship
 
 VlibBeans:
