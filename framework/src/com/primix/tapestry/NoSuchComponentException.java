@@ -40,12 +40,15 @@ import com.primix.tapestry.*;
 
 public class NoSuchComponentException extends RuntimeException
 {
-	private String name;
+	private String componentId;
 	private transient IComponent container;
 
-	public NoSuchComponentException(String name, IComponent container)
+	public NoSuchComponentException(String componentId, IComponent container)
 	{
-		this.name = name;
+		super("Component " + container.getExtendedId() + 
+			" does not contain a component '" + componentId + "'.");
+			
+		this.componentId = componentId;
 		this.container = container;
 	}
 
@@ -54,8 +57,8 @@ public class NoSuchComponentException extends RuntimeException
 		return container;
 	}
 
-	public String getName()
+	public String getComponentId()
 	{
-		return name;
+		return componentId;
 	}
 }

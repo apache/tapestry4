@@ -139,12 +139,42 @@ public class PropertyBinding extends AbstractBinding
 		return root;
 	}
 
+	/**
+	 *  Gets the value of the property path, with the assistance of a {@link PropertyHelper}.
+	 *
+	 *  @throws BindingException if an exception is thrown accessing the property.
+	 *
+	 */
+	 
 	public Object getValue()
 	{
 		if (setup)
 			setupHelper();
 
-		return helper.get(root, propertyPath);
+		try
+		{
+			return helper.get(root, propertyPath);
+		}
+		catch (Throwable e)
+		{
+			String message = e.getMessage();
+			StringBuffer buffer;
+			
+			buffer = new StringBuffer("Unable to resolve property ");
+			buffer.append(propertyPath);
+			buffer.append(" of ");
+			buffer.append(root);
+			
+			if (message == null)
+				buffer.append('.');
+			else
+			{
+				buffer.append(": ");
+				buffer.append(message);
+			}		
+
+			throw new BindingException(buffer.toString(), this, e);
+		}
 	}
 
 	/**

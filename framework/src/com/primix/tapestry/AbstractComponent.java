@@ -582,15 +582,15 @@ public abstract class AbstractComponent implements IComponent
 		return page.getChangeObserver();
 	}
 
-	public IComponent getComponent(String name)
+	public IComponent getComponent(String id)
 	{
 		IComponent result = null;
 
 		if (components != null)
-			result = (IComponent)components.get(name);
+			result = (IComponent)components.get(id);
 
 		if (result == null)
-			throw new NoSuchComponentException(name, this);
+			throw new NoSuchComponentException(id, this);
 
 		return result;
 	}
@@ -767,7 +767,7 @@ public abstract class AbstractComponent implements IComponent
 		if (components == null)
 			return null;	
 		
-		if (safeComponents != null)
+		if (safeComponents == null)
 			safeComponents = Collections.unmodifiableMap(components);
 			
 		return safeComponents;	
