@@ -28,13 +28,16 @@
 package com.primix.vlib.pages;
 
 import com.primix.tapestry.components.*;
+import com.primix.tapestry.spec.*;
 import com.primix.tapestry.*;
 import com.primix.vlib.ejb.*;
 import com.primix.vlib.*;
+import com.primix.vlib.components.*;
 import javax.ejb.*;
 import java.util.*;
 import java.rmi.*;
 import javax.rmi.*;
+
 
 /**
  *  Shows a list of the user's books, allowing books to be editted or
@@ -52,74 +55,102 @@ import javax.rmi.*;
 
 
 public class MyBooks
-extends Protected
+	extends Protected
 {
 	private String message;
-	
 	private IBookQuery ownedQuery;
-    private Book[] ownedBooks;
-
     private IBookQuery borrowedQuery;
-    private Book[] borrowedBooks;
 	
 	private Book currentBook;
+	
+	private Browser ownedBooksBrowser;
+	private Browser borrowedBooksBrowser;
 	
 	public void detach()
 	{
 		message = null;
 		ownedQuery = null;
-        ownedBooks = null;
-        borrowedQuery = null;
-        borrowedBooks = null;
+		borrowedQuery = null;
 		currentBook = null;
-
+		
 		super.detach();
 	}
 	
+	public void finishLoad(IPageLoader loader,
+			ComponentSpecification specification)
+		throws PageLoaderException
+	{
+		super.finishLoad(loader, specification);
+		
+		ownedBooksBrowser = (Browser)getComponent("ownedBooksBrowser");
+		borrowedBooksBrowser = (Browser)getComponent("borrowedBooksBrowser");
+	}
+	
     /**
-     *  A dirty little secret of Tapestry and page recorders:  persistent
-     *  properties must be set before the render (when this method is invoked)
-     *  and can't change during the render.  We force
-     *  the creation of the queries that will
-     *  be referenced later.
-     *
-     */
-
+	 *  A dirty little secret of Tapestry and page recorders:  persistent
+	 *  properties must be set before the render (when this method is invoked)
+	 *  and can't change during the render.  We force
+	 *  the creation of the queries and re-execute both of them whenever
+	 *  the MyBooks page is rendered.
+	 *
+	 */
+	
     public void beginResponse(IResponseWriter writer, IRequestCycle cycle) 
-    throws RequestCycleException
+		throws RequestCycleException
     {
-        getOwnedQuery();
-        getBorrowedQuery();
+		super.beginResponse(writer, cycle);
+		
+		Visit visit = (Visit)getVisit();
+		Integer userPK = visit.getUserPK();
+		
+		try
+		{
+			IBookQuery query = getOwnedQuery();
+			int count = query.ownerQuery(userPK);
+			
+			if (count != ownedBooksBrowser.getResultCount())
+				ownedBooksBrowser.initializeForResultCount(count);
+			
+			query = getBorrowedQuery();
+			count = query.borrowerQuery(userPK);
+			
+			if (count != borrowedBooksBrowser.getResultCount())
+				borrowedBooksBrowser.initializeForResultCount(count);
+		}
+		catch (RemoteException ex)
+		{
+			throw new ApplicationRuntimeException(ex);
+		}
     }
-
+	
     public void setOwnedQuery(IBookQuery value)
     {
-        ownedQuery = value;
-
-        fireObservedChange("ownedQuery", ownedQuery);
+		ownedQuery = value;
+		
+		fireObservedChange("ownedQuery", ownedQuery);
     }
-
+	
     /**
-     *  Gets the query object responsible for the finding books owned by the user.
-     *
-     */
-
+	 *  Gets the query object responsible for the finding books owned by the user.
+	 *
+	 */
+	
 	public IBookQuery getOwnedQuery()
 	{
 		
 		if (ownedQuery == null)
-            setOwnedQuery(getNewQuery());
-
-        return ownedQuery;
+			setOwnedQuery(getNewQuery());
+		
+		return ownedQuery;
 	}
-
+	
     private IBookQuery getNewQuery()
     {
 		// Create a new query.
 		
-        VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
+		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
 		IBookQueryHome home = vengine.getBookQueryHome();
-			
+		
 		try
 		{
 			return home.create();
@@ -134,78 +165,28 @@ extends Protected
 		}
 		
 	}
-			
+	
     public void setBorrowedQuery(IBookQuery value)
     {
-        borrowedQuery = value;
-
-        fireObservedChange("borrowedQuery", value);
+		borrowedQuery = value;
+		
+		fireObservedChange("borrowedQuery", value);
     }
 	
     public IBookQuery getBorrowedQuery()
     {
-        if (borrowedQuery == null)
-            setBorrowedQuery(getNewQuery());
-
-        return borrowedQuery;
-    }
-
-	/**
-	 *  Gets the results of the query, the list of books owned by the user.
-	 *
-	 */
-	 		
-	public Book[] getOwnedBooks()
-	{
-        if (ownedBooks == null)
-        {
-	        IBookQuery query = getOwnedQuery();
-	
-	        try
-	        {
-                Visit visit = (Visit)getVisit();
-		        int count = query.ownerQuery(visit.getUserPK());
+		if (borrowedQuery == null)
+			setBorrowedQuery(getNewQuery());
 		
-		        ownedBooks =  query.get(0, count);
-	        }
-	        catch (RemoteException e)
-	        {
-		        throw new ApplicationRuntimeException("Could not find owned books: " + e, e);
-	        }
-        }
-
-        return ownedBooks;
-	}
-
-
-    public Book[] getBorrowedBooks()
-    {
-        if (borrowedBooks == null)
-        {
-            IBookQuery query = getBorrowedQuery();
-    
-            try
-            {
-                Visit visit = (Visit)getVisit();
-    	        int count = query.borrowerQuery(visit.getUserPK());
-    	
-    	        borrowedBooks =  query.get(0, count);
-            }
-            catch (RemoteException e)
-            {
-    	        throw new ApplicationRuntimeException("Could not find borrowed books: " + e, e);
-            }
-        }
-
-        return borrowedBooks;
+		return borrowedQuery;
     }
-
-
+	
+	
 	/**
 	 *  Updates the currentBook dynamic page property.
 	 *
 	 */
-	 
+	
 	public void setCurrentBook(Book value)
 	{
 		currentBook = value;
@@ -215,7 +196,7 @@ extends Protected
 	{
 		return currentBook;
 	}
-
+	
 	public void setMessage(String value)
 	{
 		message = value;
@@ -225,13 +206,13 @@ extends Protected
 	{
 		return message;
 	}
-
+	
 	/**
 	 *  Listener that invokes the {@link EditProfile} page to allow a user
 	 *  to edit thier name, etc.
 	 *
 	 */
-	 
+	
 	public IDirectListener getEditProfileListener()
 	{
 		return new IDirectListener()
@@ -254,7 +235,7 @@ extends Protected
 	 *  <p>Note:  Could remove this if we change {@link EditBook} to
 	 *  implement a {@link IExternalPage}, but that would require
 	 */
-	 
+	
 	public IDirectListener getEditListener()
 	{
 		return new IDirectListener()
@@ -277,7 +258,7 @@ extends Protected
 	 *  Listener invoked to allow a user to delete a book.
 	 *
 	 */
-
+	
 	public IDirectListener getDeleteListener()
 	{
 		return new IDirectListener()
@@ -295,63 +276,63 @@ extends Protected
 			}
 		};
 	}
-
+	
     /**
-     *  Listener used to return a book.
-     *
-     */
-
+	 *  Listener used to return a book.
+	 *
+	 */
+	
     public IDirectListener getReturnListener()
     {
-        return new IDirectListener()
-        {
-    	    public void directTriggered(IDirect direct, String[] context,
-    			    IRequestCycle cycle)
-    	    {
-                Integer bookPK;
-
-                bookPK = new Integer(context[0]);
-
-                returnBook(bookPK);
-      	    }
-        };
+		return new IDirectListener()
+		{
+			public void directTriggered(IDirect direct, String[] context,
+					IRequestCycle cycle)
+			{
+				Integer bookPK;
+				
+				bookPK = new Integer(context[0]);
+				
+				returnBook(bookPK);
+			}
+		};
     }
-
+	
     private void returnBook(Integer bookPK)
     {
 		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
 		IOperations operations = vengine.getOperations();
-
-        try
-        {
-            IBook book = operations.returnBook(bookPK);
-
-            setMessage("Returned book: " + book.getTitle());
-        }
-        catch (FinderException ex)
-        {
-            setError("Could not return book: " + ex.getMessage());
-            return;
-        }
-        catch (RemoteException ex)
-        {
-            throw new ApplicationRuntimeException(ex);
-        }
+		
+		try
+		{
+			IBook book = operations.returnBook(bookPK);
+			
+			setMessage("Returned book: " + book.getTitle());
+		}
+		catch (FinderException ex)
+		{
+			setError("Could not return book: " + ex.getMessage());
+			return;
+		}
+		catch (RemoteException ex)
+		{
+			throw new ApplicationRuntimeException(ex);
+		}
     }
     
 	
     /**
-     *  Listener used to return a book.
-     *
-     */
-
+	 *  Listener used to return a book.
+	 *
+	 */
+	
     public IDirectListener getAddNewBookListener()
     {
-        return new IDirectListener()
-        {
-    	    public void directTriggered(IDirect direct, String[] context,
-    			    IRequestCycle cycle)
-    	    {
+		return new IDirectListener()
+		{
+			public void directTriggered(IDirect direct, String[] context,
+					IRequestCycle cycle)
+			{
 				NewBook page = (NewBook)cycle.getPage("NewBook");
 				
 				// Setup defaults for the new book.
@@ -359,24 +340,24 @@ extends Protected
 				page.getAttributes().put("lendable", Boolean.TRUE);
 				
 				cycle.setPage(page);
-      	    }
-        };
+			}
+		};
     }
 	
- 	/**
+	/**
 	 *  Removes the book query beans.
 	 */
-	 
- 	public void cleanupPage()
- 	{
+	
+	public void cleanupPage()
+	{
 		try
 		{
 			if (ownedQuery != null)
 			    ownedQuery.remove();
-
-            if (borrowedQuery != null)
-                borrowedQuery.remove();
-
+			
+			if (borrowedQuery != null)
+				borrowedQuery.remove();
+			
 		}
 		catch (RemoveException e)
 		{
@@ -388,5 +369,5 @@ extends Protected
 		}
 		
 		super.cleanupPage();
- 	}
+	}
 }

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id $ -->
+<!DOCTYPE specification PUBLIC 
+	"-//Howard Ship//Tapestry Specification 1.1//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd" [
+
+<!ENTITY listener '<binding name="listener" property-path="jumpListener"/>'>
+
+]>
+	
+<specification allow-informal-parameters="no" class="com.primix.vlib.components.Browser">
+
+  <parameter name="query" required="yes" java-type="com.primix.vlib.IBookQuery"/>
+  
+  <component id="insertPage" type="Insert">
+  	<binding name="value" property-path="currentPage"/>
+  </component>
+  
+  <component id="insertPageCount" type="Insert">
+  	<binding name="value" property-path="pageCount"/>
+  </component>
+  
+  <component id="insertWrapped" type="InsertWrapped"/>
+  
+  <component id="first" type="Direct">
+  	&listener;
+  	<static-binding name="context">1</static-binding>
+  </component>
+  
+  <component id="prev" type="Direct">
+    &listener;
+    <binding name="context" property-path="previousPage"/>
+  </component>
+  
+  <component id="e" type="Foreach">
+    <binding name="source" property-path="jumpPages"/>
+    <binding name="value" property-path="jumpPage"/>
+  </component>
+  
+  <component id="jump" type="Direct">
+    &listener;
+    <binding name="context" property-path="jumpPage"/>
+  </component>
+  
+  <component id="insertJumpPage" type="Insert">
+    <binding name="value" property-path="jumpPage"/>
+  </component>
+  
+  <component id="next" type="Direct">
+    &listener;
+    <binding name="context" property-path="nextPage"/>
+  </component>
+  
+  <component id="last" type="Direct">
+    &listener;
+    <binding name="context" property-path="pageCount"/>
+  </component>
+
+</specification>
+
