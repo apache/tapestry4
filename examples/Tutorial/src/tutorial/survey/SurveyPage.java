@@ -53,7 +53,7 @@ public class SurveyPage extends BasePage
 				new Race[] 
 				{
 					Race.CAUCASIAN, Race.AFRICAN, Race.ASIAN, Race.INUIT, Race.MARTIAN
-				}, getLocale(), "tutorial.survey.SurveyStrings", "Race");
+				},  getBundle("tutorial.survey.SurveyStrings"), "Race");
 				
 		return raceModel;
 	}
@@ -65,11 +65,15 @@ public class SurveyPage extends BasePage
 				new Sex[] 
 				{
 					Sex.MALE, Sex.FEMALE, Sex.TRANSGENDER, Sex.ASEXUAL	
-				}, getLocale(), "tutorial.survey.SurveyStrings", "Sex");
+				},  getBundle("tutorial.survey.SurveyStrings"), "Sex");
 				
 		return sexModel;
 	}	
 	
+    private ResourceBundle getBundle(String resourceName)
+    {
+        return ResourceBundle.getBundle(resourceName, getLocale());
+    }
 		
 	public IActionListener getFormListener()
 	{
