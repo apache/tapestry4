@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE specification PUBLIC 
+	"-//Primix Solutions//Tapestry Specification 1.0//EN"
+	"http://tapestry.primix.com/dtd/Tapestry_1_0.dtd">
+<!-- $Id$ -->
+
+<specification>
+	<class>com.primix.tapestry.BasePage</class>
+	
+	<component>
+		<id>border</id>
+		<type>Border</type>
+		
+		<static-binding>
+			<name>title</name>
+			<value>Bad Template Page</value>
+		</static-binding>
+	</component>
+	
+	
+</specification>
