@@ -43,6 +43,13 @@ import net.sf.tapestry.Tapestry;
 
 public class DirectCallback implements ICallback
 {
+    /**
+     *  @since 2.0.4
+     * 
+     **/
+
+    private static final long serialVersionUID = -8888847655917503471L;
+
     private String pageName;
     private String componentIdPath;
     private String[] parameters;

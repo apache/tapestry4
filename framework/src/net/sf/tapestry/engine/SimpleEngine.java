@@ -54,6 +54,13 @@ import net.sf.tapestry.record.SimplePageRecorder;
 
 public class SimpleEngine extends AbstractEngine
 {
+    /**
+     *  @since 2.0.4
+     * 
+     **/
+
+    private static final long serialVersionUID = -1658741363570905534L;
+
     private final static int MAP_SIZE = 3;
 
     private Map recorders;
@@ -64,7 +71,8 @@ public class SimpleEngine extends AbstractEngine
      *
      **/
 
-    public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException
+    public void readExternal(ObjectInput in)
+        throws IOException, ClassNotFoundException
     {
         int i, count;
         String pageName;

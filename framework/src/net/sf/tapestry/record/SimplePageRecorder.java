@@ -55,6 +55,13 @@ import net.sf.tapestry.PageRecorderCommitException;
 
 public class SimplePageRecorder extends PageRecorder implements Externalizable
 {
+    /**
+     *  @since 2.0.4
+     * 
+     **/
+
+    private static final long serialVersionUID = -2088018593972661079L;
+
     private final static int MAP_SIZE = 7;
 
     /**
