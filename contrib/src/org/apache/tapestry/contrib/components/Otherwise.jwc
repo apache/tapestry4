@@ -25,13 +25,15 @@
   and its attributes (if element is specified) .
   </description>
   
-  <parameter name="element" type="java.lang.String" direction="in" required="no">
+  <parameter name="element" type="java.lang.String" direction="in">
   	<description>
   	The element to emulate.
   	</description>
   </parameter>
 
   <reserved-parameter name="condition"/>
+
+  <reserved-parameter name="invert"/>
 
   <property-specification name="condition" type="boolean" initial-value="true"/>
   
