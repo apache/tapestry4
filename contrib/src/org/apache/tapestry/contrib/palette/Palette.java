@@ -213,32 +213,39 @@ import org.apache.tapestry.valid.IValidationDelegate;
  * the middle column, which contains the two or four buttons for moving selections
  * between the two columns.  The width and alignment of this column must be set
  * using CSS.  Additionally, CSS is commonly used to give the Palette columns
- * a fixed width, and to dress up the titles.  The Workbench demostration application
- * uses the following CSS entries:
+ * a fixed width, and to dress up the titles.  Here is an example of some CSS
+ * you can use to format the palette component:
  * 
  * <pre>
-TABLE.palette TH
-{
-  font-size: 9pt;
-  font-weight: bold;
-  color: white;
-  background-color: #330066;
-  text-align: center;
-}
-
-TABLE.palette SELECT
-{
-  font-weight: bold;
-  background-color: #839cd1;
-  width: 200px;
-}
-
-TABLE.palette TD.controls
-{
-   text-align: center;
-   vertical-align: middle;
-   width: 60px;
-}
+ * TABLE.tapestry-palette TH
+ * {
+ *   font-size: 9pt;
+ *   font-weight: bold;
+ *   color: white;
+ *   background-color: #330066;
+ *   text-align: center;
+ * }
+ *
+ * TD.available-cell SELECT
+ * {
+ *   font-weight: normal;
+ *   background-color: #FFFFFF;
+ *   width: 200px;
+ * }
+ * 
+ * TD.selected-cell SELECT
+ * {
+ *   font-weight: normal;
+ *   background-color: #FFFFFF;
+ *   width: 200px;
+ * }
+ * 
+ * TABLE.tapestry-palette TD.controls
+ * {
+ *   text-align: center;
+ *   vertical-align: middle;
+ *   width: 60px;
+ * }
  *  </pre>
  *
  *  @author Howard Lewis Ship
