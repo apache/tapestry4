@@ -60,4 +60,12 @@ public interface IPageSource
      */
  
     public void releasePage(IPage page);
+
+    /**
+     *  Invoked to have the source clear any internal cache.  This is most often
+     *  used when debugging an application.
+     *
+     */
+
+    public void reset();
 }

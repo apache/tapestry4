@@ -1,5 +1,11 @@
 * Nov 1 2000 hship
 
+Change the reset component to not wipe out the session, simply force a refresh of all HTML templates and
+component specifications.  It now encodes the currency page as well.
+Fix some Javadoc errors.
+
+* Nov 1 2000 hship
+
 Merge PrimixFoundation into Tapestry.  Keeping them seperate had little value.
 Change EnumPropertySelectionModel to require that the ResourceBundle be passed in
 (since it can't always resolve the bundle, due to classloader issues).

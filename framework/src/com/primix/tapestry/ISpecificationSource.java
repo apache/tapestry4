@@ -53,4 +53,12 @@ public interface ISpecificationSource
  
     public ComponentSpecification getSpecification(String type)
         throws ResourceUnavailableException;
+
+    /**
+     *  Invoked to have the source clear any internal cache.  This is most often
+     *  used when debugging an application.
+     *
+     */
+
+    public void reset();
 }

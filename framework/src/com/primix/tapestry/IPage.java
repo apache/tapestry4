@@ -4,6 +4,7 @@ import java.util.Locale;
 import com.primix.tapestry.event.*;
 import com.primix.tapestry.spec.ComponentSpecification;
 import java.io.OutputStream;
+import javax.servlet.http.HttpSession;
 
 /*
  * Tapestry Web Application Framework

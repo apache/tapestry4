@@ -90,7 +90,22 @@ public abstract class AbstractApplication
 
 	protected transient ApplicationSpecification specification;
 
+    /**
+     *  The source for template data. The template source is stored
+     *  in the {@link ServletContext} as a named attribute.
+     *  After de-serialization, the application can re-connect to
+     *  the template source (or create a new one).
+     *
+     */
+
 	protected transient ITemplateSource templateSource;
+
+    /**
+     *  The source for component specifications, stored in the
+     *  {@link ServletContext} (like {@link #templateSource}).
+     *
+     */
+
 
 	protected transient ISpecificationSource specificationSource;
 
@@ -127,7 +142,8 @@ public abstract class AbstractApplication
 
 	/**
 	*  The source for pages, which acts as a pool, but is capable of
-	*  creating pages as needed.
+	*  creating pages as needed.  Stored in the
+    *  {@link ServletContext}, like {@link #templateSource}.
 	*
 	*/
 
@@ -278,7 +294,7 @@ public abstract class AbstractApplication
 	}
 
 	/**
-	*  Used during testing to reset the server state, to force reloads of templates and
+	*  Used during testing to force reloads of templates and
 	*  specifications.
 	*
 	*/
@@ -288,17 +304,21 @@ public abstract class AbstractApplication
 		public void service(IRequestCycle cycle, ResponseOutputStream output)
 		throws RequestCycleException, IOException, ServletException
 		{
-			reset(cycle);
+			serviceReset(cycle, output);
 		}
 
 		public String buildURL(IRequestCycle cycle, IComponent component, 
 			String[] parameters)
 		{
+            String pageName;
+
 			if (parameters != null &&
 				parameters.length > 0)
 				throw new IllegalArgumentException("Service reset requires no parameters.");
 
-			return getServletPrefix() + "/" + RESET_SERVICE;
+            pageName = component.getPage().getName();
+
+			return getServletPrefix() + "/" + RESET_SERVICE + "/" + pageName;
 		}
 	}
 
@@ -1102,40 +1122,42 @@ public abstract class AbstractApplication
 	}
 
 	/**
-	*  Removes from the <code>ServletContext</code> the template
-	*  source, specification source, page source and application
-	*  specification, then invokes {@link #restart(IRequestCycle)} to
-	*  invalidate the session and redirects to the home page.
-	*
-	*  <p>Subclasses should perform their own restart before invoking
-	*  this implementation.
+    * <p>Clears the cache of pages, specifications and template.
 	*
 	*/
 
-	private void reset(IRequestCycle cycle)
-	throws IOException
+	private void serviceReset(IRequestCycle cycle, ResponseOutputStream output)
+	throws RequestCycleException, ServletException, IOException
 	{
 		RequestContext context;
 		ServletContext servletContext;
 		IMonitor monitor;
 		String name;
+        String pageName;
+        IPage page;
 
 		monitor = cycle.getMonitor();
 
+        context = cycle.getRequestContext();
+
+        pageName = context.getPathInfo(1);
+
 		if (monitor != null)
-			monitor.serviceBegin("reset", null);
+			monitor.serviceBegin("reset", pageName);
 
-		context = cycle.getRequestContext();
+        pageSource.reset();
+        specificationSource.reset();
+        templateSource.reset();
 
-		servletContext = context.getServlet().getServletContext();
+        page = cycle.getPage(pageName);
 
-		name = specification.getName();
+        page.validate(cycle);
 
-		servletContext.removeAttribute(TEMPLATE_SOURCE_NAME + "." + name);
-		servletContext.removeAttribute(SPECIFICATION_SOURCE_NAME + "." + name);
-		servletContext.removeAttribute(PAGE_SOURCE_NAME + "." + specification.getName());
+        cycle.setPage(page);
 
-		restart(cycle);
+        // Render the same page (that contained the reset link).
+
+        render(cycle, output);
 
 		if (monitor != null)
 			monitor.serviceEnd("reset");

@@ -63,7 +63,12 @@ public class DefaultTemplateSource
         this.resolver = resolver;
 	}
 
-	public void clear()
+	/**
+	*  Clears the template cache.  This is used during debugging.
+	*
+	*/
+
+	public void reset()
 	{
 		templates = null;
 	}
