@@ -22,20 +22,21 @@
 
   <schema id="EngineServices">
     
-    <element name="service">
-      
+    <element name="service" key-attribute="name">
+      <attribute name="name">
+        The name of the service; the service itself must
+        provide the same name from its getName() method.
+      </attribute>
       <attribute name="object" translator="object" required="true">
         
         Engine services are typically, but not definitively, HiveMind services (they
-        can be simple objects as well). The name of each service is obtained
-        from the service itself.
+        can be simple objects as well).
         
       </attribute>
       
-      <rules>
-        <push-attribute attribute="object"/>
-        <invoke-parent method="addElement"/>
-      </rules>
+      <conversion class="org.apache.tapestry.services.impl.EngineServiceContribution">
+        <map attribute="object" property="service"/>
+      </conversion>
       
     </element>
     
@@ -49,18 +50,18 @@
   </configuration-point>
   
   <contribution configuration-id="FactoryServices">
-    <service object="service:Home"/>
-    <service object="service:Action"/>
-    <service object="service:Direct"/>
-    <service object="service:Page"/>
-    <service object="service:Reset"/>
-    <service object="service:Restart"/>
-    <service object="service:Asset"/>
-	  <service object="service:External"/>
+    <service name="home" object="service:Home"/>
+    <service name="action" object="service:Action"/>
+    <service name="direct" object="service:Direct"/>
+    <service name="page" object="service:Page"/>
+    <service name="reset" object="service:Reset"/>
+    <service name="restart" object="service:Restart"/>
+    <service name="asset" object="service:Asset"/>
+	  <service name="external" object="service:External"/>
   </contribution>
 
   <service-point id="External" interface="IEngineService">
-    <invoke-factory model="primitive">
+    <invoke-factory>
       <construct class="ExternalService">
         <set-object property="responseRenderer" value="infrastructure:responseRenderer"/>
         <set-object property="linkFactory" value="infrastructure:linkFactory"/>
@@ -69,7 +70,7 @@
   </service-point>  
 
   <service-point id="Asset" interface="IEngineService">
-    <invoke-factory model="primitive">
+    <invoke-factory>
       <construct class="org.apache.tapestry.asset.AssetService">
         <set-object property="exceptionReporter" value="infrastructure:requestExceptionReporter"/>
         <set-service property="assetExternalizer" service-id="tapestry.asset.AssetExternalizer"/>
@@ -82,7 +83,7 @@
   </service-point>  
   
   <service-point id="Restart" interface="IEngineService">
-    <invoke-factory model="primitive">
+    <invoke-factory>
       <construct class="RestartService">
         <set-service property="builder" service-id="tapestry.request.AbsoluteURLBuilder"/>
         <set-service property="request" service-id="tapestry.globals.HttpServletRequest"/>
@@ -94,7 +95,7 @@
   </service-point>
   
   <service-point id="Home" interface="IEngineService">
-    <invoke-factory model="primitive">
+    <invoke-factory>
       <construct class="HomeService">
         <set-object property="responseRenderer" value="infrastructure:responseRenderer"/>
         <set-object property="linkFactory" value="infrastructure:linkFactory"/>
@@ -104,7 +105,7 @@
   </service-point>
   
   <service-point id="Action" interface="IEngineService">
-    <invoke-factory model="primitive">
+    <invoke-factory>
       <construct class="ActionService">
         <set-object property="responseRenderer" value="infrastructure:responseRenderer"/>
         <set-object property="request" value="infrastructure:request"/>
@@ -114,7 +115,7 @@
   </service-point>
   
   <service-point id="Direct" interface="IEngineService">
-    <invoke-factory model="primitive">
+    <invoke-factory>
       <construct class="DirectService">
         <set-object property="responseRenderer" value="infrastructure:responseRenderer"/>
         <set-object property="request" value="infrastructure:request"/>
@@ -124,7 +125,7 @@
   </service-point>
   
   <service-point id="Page" interface="IEngineService">
-    <invoke-factory model="primitive">
+    <invoke-factory>
       <construct class="PageService">
         <set-object property="responseRenderer" value="infrastructure:responseRenderer"/>
         <set-object property="linkFactory" value="infrastructure:linkFactory"/>
@@ -133,7 +134,7 @@
   </service-point>
   
   <service-point id="Reset" interface="IEngineService">
-    <invoke-factory model="primitive">
+    <invoke-factory>
       <construct class="ResetService">
         <set-object property="responseRenderer" value="infrastructure:responseRenderer"/>
         <set-service property="resetEventCoordinator" service-id="tapestry.ResetEventCoordinator"/>

@@ -20,7 +20,9 @@ import java.util.List;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ErrorLog;
+import org.apache.hivemind.Location;
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IEngineService;
 import org.easymock.MockControl;
 
@@ -32,55 +34,148 @@ import org.easymock.MockControl;
  */
 public class TestServiceMap extends HiveMindTestCase
 {
-    private IEngineService constructService(String name)
+    private IEngineService newService(String name)
     {
         MockControl control = newControl(IEngineService.class);
-        IEngineService result = (IEngineService) control.getMock();
+        IEngineService service = (IEngineService) control.getMock();
 
-        result.getName();
+        service.getName();
         control.setReturnValue(name);
+
+        return service;
+    }
+
+    private IEngineService newService()
+    {
+        return (IEngineService) newMock(IEngineService.class);
+    }
+
+    private IRequestCycle newCycle()
+    {
+        return (IRequestCycle) newMock(IRequestCycle.class);
+    }
+
+    private EngineServiceContribution constructService(String name, IEngineService service)
+    {
+        EngineServiceContribution result = new EngineServiceContribution();
+        result.setName(name);
+        result.setService(service);
 
         return result;
     }
 
     /**
      * Gets an application-defined and factory-defined service where there are no naming conflicts.
+     * Because ServiceMap now returns proxies, we have to do a little extra indirection to ensure
+     * that we get what's expected.
      */
-    public void testGetNoConflict()
+    public void testGetNoConflict() throws Exception
     {
-        IEngineService factory = constructService("factory");
-        IEngineService application = constructService("application");
+        IRequestCycle cycle1 = newCycle();
+        IRequestCycle cycle2 = newCycle();
+
+        IEngineService factory = newService("factory");
+        IEngineService application = newService("application");
+
+        EngineServiceContribution factoryc = constructService("factory", factory);
+        EngineServiceContribution applicationc = constructService("application", application);
+
+        factory.service(cycle1);
+        application.service(cycle2);
 
         replayControls();
 
         ServiceMapImpl m = new ServiceMapImpl();
 
-        m.setFactoryServices(Collections.singletonList(factory));
-        m.setApplicationServices(Collections.singletonList(application));
+        m.setFactoryServices(Collections.singletonList(factoryc));
+        m.setApplicationServices(Collections.singletonList(applicationc));
 
         m.initializeService();
 
-        assertSame(factory, m.getService("factory"));
-        assertSame(application, m.getService("application"));
+        m.getService("factory").service(cycle1);
+        m.getService("application").service(cycle2);
 
         verifyControls();
     }
 
-    public void testApplicationOverridesFactory()
+    public void testNameMismatch() throws Exception
     {
-        IEngineService factory = constructService("override");
-        IEngineService application = constructService("override");
+        IRequestCycle cycle = newCycle();
+        Location l = fabricateLocation(1289);
+
+        IEngineService service = newService("actual-name");
+
+        EngineServiceContribution contribution = constructService("expected-name", service);
+        contribution.setLocation(l);
 
         replayControls();
 
         ServiceMapImpl m = new ServiceMapImpl();
 
-        m.setFactoryServices(Collections.singletonList(factory));
-        m.setApplicationServices(Collections.singletonList(application));
+        m.setFactoryServices(Collections.singletonList(contribution));
+        m.setApplicationServices(Collections.EMPTY_LIST);
 
         m.initializeService();
 
-        assertSame(application, m.getService("override"));
+        IEngineService proxy = m.getService("expected-name");
+
+        try
+        {
+            proxy.service(cycle);
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertEquals(
+                    "Engine service EasyMock for interface org.apache.tapestry.engine.IEngineService is mapped to name 'expected-name' but indicates a name of 'actual-name'.",
+                    ex.getMessage());
+            assertSame(l, ex.getLocation());
+        }
+
+        verifyControls();
+    }
+
+    public void testGetServiceRepeated()
+    {
+        IEngineService application = newService();
+        EngineServiceContribution applicationc = constructService("application", application);
+
+        replayControls();
+
+        ServiceMapImpl m = new ServiceMapImpl();
+
+        m.setFactoryServices(Collections.EMPTY_LIST);
+        m.setApplicationServices(Collections.singletonList(applicationc));
+
+        m.initializeService();
+
+        IEngineService service = m.getService("application");
+        assertSame(service, m.getService("application"));
+
+        verifyControls();
+    }
+
+    public void testApplicationOverridesFactory() throws Exception
+    {
+        IRequestCycle cycle = newCycle();
+        IEngineService factory = newService();
+        IEngineService application = newService("override");
+
+        EngineServiceContribution factoryc = constructService("override", factory);
+        EngineServiceContribution applicationc = constructService("override", application);
+
+        application.service(cycle);
+
+        replayControls();
+
+        ServiceMapImpl m = new ServiceMapImpl();
+
+        m.setFactoryServices(Collections.singletonList(factoryc));
+        m.setApplicationServices(Collections.singletonList(applicationc));
+
+        m.initializeService();
+
+        m.getService("override").service(cycle);
 
         verifyControls();
     }
@@ -103,20 +198,41 @@ public class TestServiceMap extends HiveMindTestCase
         {
             assertEquals(ImplMessages.noSuchService("missing"), ex.getMessage());
         }
+
+        try
+        {
+            m.resolveEngineService("resolve-missing");
+            unreachable();
+        }
+        catch (ApplicationRuntimeException ex)
+        {
+            assertEquals(ImplMessages.noSuchService("resolve-missing"), ex.getMessage());
+
+        }
     }
 
-    public void testDuplicateName()
+    public void testDuplicateName() throws Exception
     {
-        IEngineService first = constructService("duplicate");
-        IEngineService second = constructService("duplicate");
+        Location l = fabricateLocation(37);
+        IRequestCycle cycle = newCycle();
+
+        IEngineService first = newService("duplicate");
+        IEngineService second = newService();
+
+        EngineServiceContribution firstc = constructService("duplicate", first);
+        firstc.setLocation(l);
+
+        EngineServiceContribution secondc = constructService("duplicate", second);
 
         List list = new ArrayList();
-        list.add(first);
-        list.add(second);
+        list.add(firstc);
+        list.add(secondc);
 
         ErrorLog log = (ErrorLog) newMock(ErrorLog.class);
 
-        log.error(ImplMessages.dupeService("duplicate", first), null, null);
+        first.service(cycle);
+
+        log.error(ImplMessages.dupeService("duplicate", firstc), l, null);
 
         replayControls();
 
@@ -128,7 +244,7 @@ public class TestServiceMap extends HiveMindTestCase
 
         m.initializeService();
 
-        assertSame(first, m.getService("duplicate"));
+        m.getService("duplicate").service(cycle);
 
         verifyControls();
     }
