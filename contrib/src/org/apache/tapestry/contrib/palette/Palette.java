@@ -209,6 +209,38 @@ import org.apache.tapestry.valid.IValidationDelegate;
  *
  * </table>
  *
+ * <p>A Palette requires some CSS entries to render correctly ... especially
+ * the middle column, which contains the two or four buttons for moving selections
+ * between the two columns.  The width and alignment of this column must be set
+ * using CSS.  Additionally, CSS is commonly used to give the Palette columns
+ * a fixed width, and to dress up the titles.  The Workbench demostration application
+ * uses the following CSS entries:
+ * 
+ * <pre>
+TABLE.palette TH
+{
+  font-size: 9pt;
+  font-weight: bold;
+  color: white;
+  background-color: #330066;
+  text-align: center;
+}
+
+TABLE.palette SELECT
+{
+  font-weight: bold;
+  background-color: #839cd1;
+  width: 200px;
+}
+
+TABLE.palette TD.controls
+{
+   text-align: center;
+   vertical-align: middle;
+   width: 60px;
+}
+ *  </pre>
+ *
  *  @author Howard Lewis Ship
  *  @version $Id$
  * 
@@ -252,7 +284,7 @@ public abstract class Palette extends BaseComponent implements IFormComponent
 
     private IScript _script;
 
-    public void finishLoad()
+    protected void finishLoad()
     {
         setSelectedTitleBlock((Block) getComponent("defaultSelectedTitleBlock"));
         setAvailableTitleBlock((Block) getComponent("defaultAvailableTitleBlock"));
@@ -269,7 +301,6 @@ public abstract class Palette extends BaseComponent implements IFormComponent
         setTableClass(DEFAULT_TABLE_CLASS);
         setRows(DEFAULT_ROWS);
         setSort(SortMode.NONE);
-        setControlsWidth(60);
     }
 
     public abstract String getName();
@@ -447,9 +478,10 @@ public abstract class Palette extends BaseComponent implements IFormComponent
             if (selectedSet.contains(optionValue))
                 w = _selectedWriter;
 
-            w.beginEmpty("option");
+            w.begin("option");
             w.attribute("value", model.getValue(i));
             w.print(model.getLabel(i));
+            w.end(); // <option>
             w.println();
         }
 
@@ -608,7 +640,4 @@ public abstract class Palette extends BaseComponent implements IFormComponent
 
     public abstract void setSelected(List selected);
 
-    /** @since 3.0 **/
-
-    public abstract void setControlsWidth(int controlsWidth);
 }

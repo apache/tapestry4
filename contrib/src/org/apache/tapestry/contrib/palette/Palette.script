@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <!-- $Id$ -->
-<!DOCTYPE script PUBLIC 
-	"-//Howard Lewis Ship//Tapestry Script 1.2//EN"
-	"http://tapestry.sf.net/dtd/Script_1_2.dtd">
+<!DOCTYPE script PUBLIC
+  "-//Apache Software Foundation//Tapestry Script Specification 1.3//EN"
+	"http://jakarta.apache.org/tapestry/dtd/Script_1_3.dtd">
 <script>
 <!-- 
 
@@ -36,7 +36,7 @@ output symbols:
 <include-script resource-path="/org/apache/tapestry/html/PracticalBrowserSniffer.js"/>
 <include-script resource-path="/org/apache/tapestry/contrib/palette/PaletteFunctions.js"/>
 
-<input-symbol key="palette" required="yes"/>
+<input-symbol key="palette" class="org.apache.tapestry.contrib.palette.Palette" required="yes"/>
 <input-symbol key="selectImage" class="java.lang.String" required="yes"/>
 <input-symbol key="selectDisabledImage" class="java.lang.String" required="yes"/>
 <input-symbol key="deselectImage" class="java.lang.String" required="yes"/>
@@ -55,12 +55,12 @@ output symbols:
 
 <!-- baseName - base name from which other names are generated -->
 
-<let key="baseName">
-  ${formName}_${name}
+<let key="baseName" unique="yes">
+  ${name}
 </let>
 
 <let key="buttons">
-  buttons_${baseName}
+  ${baseName}$buttons
 </let>
 
 <let key="selectDisabled">
@@ -80,7 +80,7 @@ output symbols:
 </let>
 
 <let key="availableName">
-  ${name}_avail
+  ${name}$avail
 </let>
 
 <let key="updateFunctionName">
@@ -108,7 +108,7 @@ output symbols:
 </let>
 
 <let key="selectImageName">
-  selectimage_${baseName}
+  ${baseName}$selectImage
 </let>
 
 <let key="selectImagePath">
@@ -116,7 +116,7 @@ output symbols:
 </let>
 
 <let key="deselectImageName">
-  deselectimage_${baseName}
+  ${baseName}$deselectImage
 </let>
 
 <let key="deselectImagePath">
@@ -145,7 +145,7 @@ output symbols:
 
 
 <let key="upImageName">
-  upimage_${baseName}
+  ${baseName}$upimage
 </let>
 
 <let key="upImagePath">
@@ -153,7 +153,7 @@ output symbols:
 </let>
 
 <let key="downImageName">
-  downimage_${baseName}
+  ${baseName}$downimage
 </let>
 
 <let key="downImagePath">
@@ -217,7 +217,7 @@ function ${updateFunctionName}()
 <if expression="sortUser">
 
   var upImage = ${upImagePath};
-  var downImage = ${downImagePath}
+  var downImage = ${downImagePath};
   
   ${upDisabled} = true;
   ${downDisabled} = true;

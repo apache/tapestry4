@@ -1,5 +1,5 @@
 // $Id: PaletteFunctions.js,v 1.3 2002/05/03 20:03:06 hship Exp $
-// Requires: /net/sf/tapestry/html/PracticalBrowserSniffer.js
+// Requires: /org/apache/tapestry/html/PracticalBrowserSniffer.js
 
 function palette_clear_selections(element)
 {
