@@ -16,6 +16,16 @@
 
   <component id="showMessage" type="ShowMessage"/>
 
+  <component id="ifNoBooks" type="Conditional">
+    <binding name="condition" property-path="components.browser.resultCount"/>
+    <field-binding name="invert" field-name="Boolean.TRUE"/>
+  </component>
+  
+  <component id="ifBooks" type="Conditional">
+    <binding name="condition" property-path="components.browser.resultCount"/>
+  </component>
+  
+
   <component id="browser" type="Browser">
   	<binding name="query" property-path="borrowedQuery"/>
   </component>
