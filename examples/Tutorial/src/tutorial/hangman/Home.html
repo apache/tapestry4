@@ -1,0 +1,49 @@
+<html>
+<head>
+<title>Tapestry Hangman</title>
+</head>
+<body>
+
+<h1>Tapestry Hangman</h1>
+
+This is the standard game of Hangman.  You must guess a word, a letter at a time.  If you make
+too many mistakes, you lose!
+
+<p>
+
+<jwc id="form">
+
+<jwc id="group">
+
+<jwc id="ifError">
+<font size=+2 color=red><jwc id="insertError"/></font>
+</jwc>
+
+<table>
+	<tr>
+		<td><jwc id="inputEasy"/></td>
+		<td>Easy game; you are allowed ten misses.</td>
+	</tr>
+
+	<tr>
+		<td><jwc id="inputMedium"/></td>
+		<td>Medium game; you are allowed five misses.</td>
+	</tr>
+
+	<tr>
+		<td><jwc id="inputHard"/></td>
+		<td>Hard game; you are only allowed three misses.</td>
+	</tr>
+
+	<tr>
+		<td></td>
+		<td><input type="submit" value="Play!"></td>
+	</tr>
+
+</table>
+
+</jwc>
+</jwc>
+
+</body>
+</html>

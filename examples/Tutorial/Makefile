@@ -5,7 +5,8 @@ PACKAGES = \
 	tutorial.simple \
 	tutorial.adder \
 	tutorial.border \
-	tutorial.survey
+	tutorial.survey \
+	tutorial.hangman
 
 LOCAL_CLASSPATH = \
 	$(INSTALL_DIR)/Tapestry.jar \
@@ -24,6 +25,7 @@ EXEC_CLASSPATH = \
 	$(INSTALL_DIR)/xerces.jar \
 	$(INSTALL_DIR)/gnu-regexp.jar \
 	$(INSTALL_DIR)/com.mortbay.jetty.jar \
+	$(INSTALL_DIR)/j2ee.jar
 
 run: setup-jbe-util
 	@$(ECHO) "\n*** Running Jetty for Tutorial ... ***\n"
