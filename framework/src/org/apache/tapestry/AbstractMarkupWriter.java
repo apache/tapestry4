@@ -382,7 +382,7 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
      *  {@link #begin(String)}
      *  and before any other kind of writing (which closes the tag).
      *
-     *  <p>The value may be null.
+     *  <p>The value may be null. A null value will be rendered as an empty string.
      *
      *  <p>Troublesome characters in the value are converted to thier GTML entities, much
      *  like a <code>print()</code> method, with the following exceptions:
@@ -410,13 +410,8 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
         _writer.print(name);
         _writer.print("=\"");
 
-        if (value == null)
+        if (value != null)
         {
-            _writer.print(name);
-        }
-        else
-        {
-
             int length = value.length();
 
             if (_buffer == null || _buffer.length < length)
