@@ -294,7 +294,7 @@ and not localized.
   <td>no</td>
   <td/>
   <td>
-    The name of a property into which the asset shoud be injected.
+    The name of a property into which the asset shoud be `ed.
   </td>
 </tr>
 
@@ -903,11 +903,12 @@ a global service to the application.
   <td>yes</td>
   <td/>
   <td>
-    The <em>locator</em> for the object to be injected.  A locator contains a prefix, such as "service:", which defines the
+    The <em>object reference</em> for the object to be injected.  An object
+    reference contains a prefix, such as "service:", which defines the
     type of object to locate.  The string following the prefix locates the specific object to be returned.
     &HiveMind; provides a 
     <link href="http://jakarta.apache.org/hivemind/hivemind/ObjectProviders.html">basic set of prefixes</link>;
-    Tapestry adds a few additional prefixes.
+    Tapestry adds <link href="hivemind.html#hivemind.inject">several additional prefixes</link>.
     
   </td>
 </tr>

@@ -35,7 +35,7 @@ public class TestMessageBinding extends BindingTestCase
 
         replayControls();
 
-        MessageBinding b = new MessageBinding(component, "param", "key", vc, fabricateLocation(12));
+        MessageBinding b = new MessageBinding("param", vc, fabricateLocation(12), component, "key");
 
         assertSame(component, b.getComponent());
         assertEquals("key", b.getKey());
@@ -54,7 +54,7 @@ public class TestMessageBinding extends BindingTestCase
 
         replayControls();
 
-        MessageBinding b = new MessageBinding(component, "param", "key", vc, fabricateLocation(12));
+        MessageBinding b = new MessageBinding("param", vc, fabricateLocation(12), component, "key");
 
         assertEquals("StringBinding[Foo/bar.baz key]", b.toString());
 
@@ -78,7 +78,7 @@ public class TestMessageBinding extends BindingTestCase
         mc.setReturnValue("value");
 
         replayControls();
-        MessageBinding b = new MessageBinding(component, "param", "key", vc, fabricateLocation(12));
+        MessageBinding b = new MessageBinding("param", vc, fabricateLocation(12), component, "key");
 
         assertEquals("value", b.getObject());
 

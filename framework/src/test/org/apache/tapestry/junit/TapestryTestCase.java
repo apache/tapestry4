@@ -70,7 +70,7 @@ public class TapestryTestCase extends HiveMindTestCase
         public IBinding createBinding(IComponent component, String description, String locator,
                 Location location)
         {
-            return new LiteralBinding(description, locator, _valueConverter, location);
+            return new LiteralBinding(description, _valueConverter, location, locator);
         }
     }
 

@@ -30,6 +30,6 @@ public class AssetBindingFactory extends AbstractBindingFactory
             Location location)
     {
 
-        return new AssetBinding(root, path, description, getValueConverter(), location);
+        return new AssetBinding(description, getValueConverter(), location, root, path);
     }
 }

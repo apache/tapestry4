@@ -290,8 +290,8 @@ public class PageLoader implements IPageLoader
 
         String description = PageloadMessages.parameterName(parameterName);
 
-        IBinding binding = new ListenerBinding(component.getContainer(), description, language,
-                spec.getScript(), _managerFactory, _valueConverter, spec.getLocation());
+        IBinding binding = new ListenerBinding(description, _valueConverter, spec.getLocation(),
+                component.getContainer(), language, spec.getScript(), _managerFactory);
 
         component.setBinding(parameterName, binding);
     }

@@ -118,6 +118,18 @@
     
   </service-point>  
 
+  <service-point id="HiveMindBindingFactory" interface="org.apache.tapestry.binding.BindingFactory">
+    
+    Creates bindings where the path is a HiveMind object reference.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.binding.HiveMindBindingFactory">
+        <set-service property="valueConverter" service-id="tapestry.coerce.ValueConverter"/>
+        <set-service property="injectedValueProvider" service-id="tapestry.InjectedValueProvider"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
   
   <configuration-point id="BindingFactories">
     
@@ -152,6 +164,7 @@
     <binding prefix="listener" service-id="ListenerBindingFactory"/>
     <binding prefix="component" service-id="ComponentBindingFactory"/>
     <binding prefix="state" service-id="StateBindingFactory"/>
+    <binding prefix="hivemind" service-id="HiveMindBindingFactory"/>
   </contribution>
   
   <service-point id="BindingSource" interface="org.apache.tapestry.binding.BindingSource">

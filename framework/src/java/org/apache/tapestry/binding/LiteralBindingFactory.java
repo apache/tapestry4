@@ -32,7 +32,7 @@ public class LiteralBindingFactory extends AbstractBindingFactory
     public IBinding createBinding(IComponent root, String description, String path,
             Location location)
     {
-        return new LiteralBinding(description, path, getValueConverter(), location);
+        return new LiteralBinding(description, getValueConverter(), location, path);
     }
 
 }

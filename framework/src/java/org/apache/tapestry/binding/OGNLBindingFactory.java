@@ -36,7 +36,7 @@ public class OGNLBindingFactory extends AbstractBindingFactory
     public IBinding createBinding(IComponent root, String description, String path,
             Location location)
     {
-        return new ExpressionBinding(root, description, path, getValueConverter(), location,
+        return new ExpressionBinding(description, location, getValueConverter(), root, path,
                 _expressionEvaluator, _expressionCache);
     }
 

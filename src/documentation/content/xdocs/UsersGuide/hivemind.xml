@@ -37,6 +37,13 @@
       <em>delegate</em> as much logic as possible out to HiveMind services. Listener methods should ideally do little 
       more than marshall together the correct information and pass it over to a service (this sidesteps most of the 
       issues with testing pages and components, which tend to be abstract). </p>
+      
+<warning>
+  Tapestry 3.1 is <strong>not compatible with HiveMind 1.0</strong>. Tapestry 3.1 may only be used with
+  HiveMind 1.1. The compatibility issues are related to the underlying Javassist library; HiveMind 1.0 and Tapestry 3.0
+  use one version of the library, HiveMind 1.1 and Tapestry 3.1 use a more recent version.
+</warning>     
+ 
     <section id="hivemind.inject">
       <title>Injecting Services</title>
       <p> But how to get access to those services? Tapestry allows you to <em>inject</em> your pages and components 
@@ -140,10 +147,10 @@ public abstract class MyPage extends BasePage
         package module deployment descriptors inside libraries or even in your application WAR. </p>
       <p> In addition, two other descriptors will be parsed if they exist: </p>
       <ul>
-        <li>/WEB-INF/<em>name</em>/hivemodule.xml</li>
+        <li>/WEB-INF/<em>applicationId</em>/hivemodule.xml</li>
         <li>/WEB-INF/hivemodule.xml</li>
       </ul>
-      <p> Both of these files exist in the web application context; the <em>name</em> is the name of the application 
+      <p> Both of these files exist in the web application context; the <em>applicationId</em> is the name of the application 
         servlet, as given in web.xml deployment descriptor (this is only useful in the very rare case that you package 
         more than one Tapestry application in a single web application). </p>
       <p> By subclassing ApplicationServlet and overriding the <code>constructRegistry()</code> method, you can easily 

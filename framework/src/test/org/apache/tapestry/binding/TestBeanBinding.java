@@ -48,7 +48,7 @@ public class TestBeanBinding extends HiveMindTestCase
 
         replayControls();
 
-        BeanBinding binding = new BeanBinding(component, "fred", "param", vc, l);
+        BeanBinding binding = new BeanBinding("param", vc, l, component, "fred");
 
         assertSame(bean, binding.getObject());
 

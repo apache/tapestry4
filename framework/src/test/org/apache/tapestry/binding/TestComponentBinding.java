@@ -40,8 +40,8 @@ public class TestComponentBinding extends BindingTestCase
 
         replayControls();
 
-        ComponentBinding b = new ComponentBinding(component, "foo", "param", vc,
-                fabricateLocation(2));
+        ComponentBinding b = new ComponentBinding("param", vc, fabricateLocation(2), component,
+                "foo");
 
         assertSame(component, b.getComponent());
         assertSame(nested, b.getObject());
