@@ -67,6 +67,7 @@ import java.util.Map;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 import org.apache.tapestry.IResourceResolver;
+import org.apache.tapestry.spec.AssetType;
 import org.apache.tapestry.spec.BeanLifecycle;
 import org.apache.tapestry.util.ComponentAddress;
 import org.apache.tapestry.util.DefaultResourceResolver;
@@ -176,6 +177,13 @@ public class TestDataSqueezer extends TestCase
         attempt("So long, sucker!", "SSo long, sucker!");
     }
 
+	/** @since 2.4 **/
+	
+	public void testEnum() throws IOException
+	{
+		attempt(AssetType.PRIVATE, "Eorg.apache.tapestry.spec.AssetType@PRIVATE");
+	}
+
     public void testComponentAddress() throws IOException 
     {
         ComponentAddress objAddress = new ComponentAddress("framework:DirectLink", "component.subcomponent");
@@ -234,8 +242,6 @@ public class TestDataSqueezer extends TestCase
 
     public void testSerializable() throws IOException
     {
-        attempt(BeanLifecycle.PAGE, s);
-        attempt(BeanLifecycle.REQUEST, s);
 
         Map map = new HashMap();
 

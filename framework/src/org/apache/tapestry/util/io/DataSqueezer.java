@@ -99,9 +99,9 @@ public class DataSqueezer
      *  Resource resolver used to deserialize classes.
      * 
      **/
-    
+
     private IResourceResolver _resolver;
-    
+
     /**
      *  Creates a new squeezer with the default set of adaptors.
      *
@@ -124,7 +124,7 @@ public class DataSqueezer
     public DataSqueezer(IResourceResolver resolver, ISqueezeAdaptor[] adaptors)
     {
         _resolver = resolver;
-        
+
         registerDefaultAdaptors();
 
         if (adaptors != null)
@@ -145,6 +145,7 @@ public class DataSqueezer
         new BooleanAdaptor().register(this);
         new SerializableAdaptor().register(this);
         new ComponentAddressAdaptor().register(this);
+        new EnumAdaptor().register(this);
     }
 
     /**
@@ -157,25 +158,19 @@ public class DataSqueezer
      *
      **/
 
-    public synchronized void register(
-        String prefix,
-        Class dataClass,
-        ISqueezeAdaptor adaptor)
+    public synchronized void register(String prefix, Class dataClass, ISqueezeAdaptor adaptor)
     {
         int prefixLength = prefix.length();
         int offset;
 
         if (prefixLength < 1)
-            throw new IllegalArgumentException(
-                Tapestry.getString("DataSqueezer.short-prefix"));
+            throw new IllegalArgumentException(Tapestry.getString("DataSqueezer.short-prefix"));
 
         if (dataClass == null)
-            throw new IllegalArgumentException(
-                Tapestry.getString("DataSqueezer.null-class"));
+            throw new IllegalArgumentException(Tapestry.getString("DataSqueezer.null-class"));
 
         if (adaptor == null)
-            throw new IllegalArgumentException(
-                Tapestry.getString("DataSqueezer.null-adaptor"));
+            throw new IllegalArgumentException(Tapestry.getString("DataSqueezer.null-adaptor"));
 
         for (int i = 0; i < prefixLength; i++)
         {
@@ -329,17 +324,17 @@ public class DataSqueezer
 
         return buffer.toString();
     }
-    
+
     /**
      *  Returns the resource resolver used with this squeezer.
      * 
      *  @since 2.2
      * 
      **/
-    
+
     public IResourceResolver getResolver()
     {
         return _resolver;
     }
-    
+
 }
