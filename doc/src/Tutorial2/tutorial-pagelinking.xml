@@ -1,0 +1,156 @@
+  	<section id="ex-pagelinking">
+  		<title>Page Linking</title>
+			<para>
+				This next application introduces page linking. The application contains just two pages. The first
+				is the Home page, the second is a page to be statically linked to.
+			</para>
+			<para>
+				The code for this example can be found in 
+				<filename class="directory">c:\Tapestry-x.x\examples\Tutorial\src\tutorial\pagelinking</filename>.
+			</para>
+			<para>
+			We will start by defining the pages in the application:
+      	<figure>
+        <title>The Application Specification</title>
+        <programlisting>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!-- $Id$ --&gt;
+&lt;!DOCTYPE application PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd"&gt;
+
+&lt;application name="Page Linking Tutorial" engine-class="net.sf.tapestry.engine.SimpleEngine"&gt;
+  &lt;page name="Home" specification-path="/tutorial/pagelinking/Home.page"/&gt;
+  &lt;page name="SecondPage" specification-path="/tutorial/pagelinking/SecondPage.page"/&gt;
+&lt;/application&gt;
+				</programlisting>				
+				</figure>
+			</para>
+			<para>
+			We have defined two pages (one is a required page, Home) - and provided Tapestry
+			with their specifications.
+			</para>
+			<para>
+			Here is the HTML for the Home page:
+      	<figure>
+        <title>The HTML Content (Home.html)</title>
+        <programlisting>
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"&gt;
+&lt;html&gt;
+&lt;head&gt;
+	&lt;title&gt;Page Linking Tutorial&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;h1&gt;The firt page&lt;/h1&gt;
+The link shown will take you to page two of this application.
+
+Click &lt;span jwcid="page2"&gt;here&lt;/span&gt; for the second page!
+
+&lt;/body&gt;
+&lt;/html&gt;
+				</programlisting>
+				</figure>
+				</para>
+				<para>
+				Now we need to tell Tapestry what kind of component <varname>page2</varname> is. In this case,
+				we want it to be a link to some other page in the application. Tapestry does this via the &PageLink;
+				component.
+				</para>
+				<para>
+				Here is the page specification:
+      	<figure>
+        <title>Home page specification</title>
+        <programlisting>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!-- $Id$ --&gt;
+&lt;!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd"&gt;
+
+&lt;page-specification class="net.sf.tapestry.html.BasePage"&gt;
+	&lt;component id="page2" type="PageLink"&gt;
+		&lt;static-binding name="page"&gt;SecondPage&lt;/static-binding&gt;
+	&lt;/component&gt;
+&lt;/page-specification&gt;
+				</programlisting>
+				</figure>
+				</para>
+				<para>
+				Here we specify that <varname>page2</varname> is a &pageLink; component. The example here
+				supplies the name of the destination page, which is defined in the application specification.
+				Note that in this case, the PageLink component outputs the content inside the %lt;span&gt;. 
+				Components that do this are said to <emphasis>render</emphasis> their body sections.
+				tag.
+				</para>
+				<para>
+				If a page has no dynamic functionality, it does not require it's own Java object.
+				Here, we have used <function>class=net.sf.tapestry.html.BasePage</function> to point to the standard
+				page implementation supplied by Tapestry. The same is also done for the second page.				
+				</para>
+				<para>
+				Now lets define the second page HTML:
+      	<figure>
+        <title>SecondPage HTML</title>
+        <programlisting>
+&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"&gt;
+&lt;html&gt;
+&lt;head&gt;
+	&lt;title&gt;Page Linking Tutorial (page 2)&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;h1&gt;Page Two&lt;/h1&gt;
+Well, here we are! 
+Click &lt;span jwcid="homePage"&gt;here&lt;/span&gt; to go back to the home page.
+
+&lt;/body&gt;
+&lt;/html&gt;				
+				</programlisting>
+				</figure>				
+				</para>
+				<para>
+				The page specification:
+      	<figure>
+        <title>SecondPage HTML</title>
+        <programlisting>
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!-- $Id$ --&gt;
+&lt;!DOCTYPE page-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd"&gt;
+
+&lt;page-specification class="net.sf.tapestry.html.BasePage"&gt;
+	&lt;component id="homePage" type="PageLink"&gt;
+		&lt;static-binding name="page"&gt;Home&lt;/static-binding&gt;
+	&lt;/component&gt;
+&lt;/page-specification&gt;				
+				</programlisting>
+				</figure>
+				</para>				
+				<para>
+				As with the first page, the <varname>jwcid</varname> is defined to be a PageLink
+				component, and the component is given the name of the home page.
+				</para>
+				<para>
+				Finally, if you are building this yourself, you will need to add to the <filename>web.xml</filename>
+				of your web project the following:
+      	<figure>
+        <title>Additional web.xml entries</title>
+        <programlisting>
+  &lt;servlet&gt;
+    &lt;servlet-name&gt;pagelinking&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;tutorial.pagelinking.PageLinkingServlet&lt;/servlet-class&gt;
+  	&lt;load-on-startup&gt;0&lt;/load-on-startup&gt;
+  &lt;/servlet&gt;
+
+...
+
+  &lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;pagelinking&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;/pagelinking&lt;/url-pattern&gt;
+  &lt;/servlet-mapping&gt;
+				</programlisting>
+				</figure>				
+				</para>
+  	</section>
+

@@ -93,17 +93,16 @@
 			</para>
   	</section>
 
-  	<section id="ex-pagelinking">
-  		<title>Page Linking</title>
+		&chapter-three-ex1;
+		
+		<section id="ex-actions">
+			<title>Simple Actions</title>
 			<para>
-				Show three page application, with home page, second page, and a redirect page - that perhaps goes somewhere
-				that the user has specified?
+			Show a page with multiple actions, each action implemented as a separate method.
+			If a checkbox/image can have an action (which I think it can), then show how these can be integrated as well.
+			If it's javascript related, leave until a later point.
 			</para>
-  	</section>
-
-  	<section id="ex-simpleaction">
-  		<title>Responding to actions</title>
-  	</section>
+		</section>
 
   </chapter>
 
