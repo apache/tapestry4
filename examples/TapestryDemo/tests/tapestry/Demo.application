@@ -9,7 +9,7 @@
 	<name>Tapestry Demonstration</name>
 	
 	<page>
-		<name>home</name>
+		<name>Home</name>
 		<specification-path>/tests/tapestry/HomePage.jwc</specification-path>
 	</page>
 
@@ -35,17 +35,17 @@
 	</page>
 	
 	<page>
-		<name>exception</name>
+		<name>Exception</name>
 		<specification-path>/tests/tapestry/ExceptionReport.jwc</specification-path>
 	</page>
 	
 	<page>
-		<name>stale-session</name>
+		<name>StaleSession</name>
 		<specification-path>/tests/tapestry/Timeout.jwc</specification-path>
 	</page>
 	
 	<page>
-		<name>stale-link</name>
+		<name>StaleLink</name>
 		<specification-path>/tests/tapestry/Stale.jwc</specification-path>
 	</page>
 
