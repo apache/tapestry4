@@ -167,7 +167,7 @@ public class VirtualLibraryApplication implements Serializable
 	throws ServletException
 	{
 		if (personHome == null)
-			personHome = (IPersonHome)findNamedObject("com.primix.vlib.Person", IPersonHome.class);
+			personHome = (IPersonHome)findNamedObject("vlib/Person", IPersonHome.class);
 		
 		return personHome;	
 	}
@@ -176,7 +176,7 @@ public class VirtualLibraryApplication implements Serializable
 	throws ServletException
 	{
 		if (publisherHome == null)
-		  publisherHome = (IPublisherHome)findNamedObject("com.primix.vlib.Publisher",
+		  publisherHome = (IPublisherHome)findNamedObject("vlib/Publisher",
 		  		IPublisherHome.class);
 		
 		return publisherHome;		
@@ -186,7 +186,7 @@ public class VirtualLibraryApplication implements Serializable
 	throws ServletException
 	{
 		if (bookHome == null)
-			bookHome = (IBookHome)findNamedObject("com.primix.vlib.Book", IBookHome.class);
+			bookHome = (IBookHome)findNamedObject("vlib/Book", IBookHome.class);
 		
 		return bookHome;	
 	}
@@ -195,7 +195,7 @@ public class VirtualLibraryApplication implements Serializable
 	throws ServletException
 	{
 		if (bookQueryHome == null)
-			bookQueryHome = (IBookQueryHome)findNamedObject("com.primix.vlib.BookQuery",
+			bookQueryHome = (IBookQueryHome)findNamedObject("vlib/BookQuery",
 				IBookQueryHome.class);
 		
 		return bookQueryHome;
@@ -205,7 +205,7 @@ public class VirtualLibraryApplication implements Serializable
 	throws ServletException
 	{
 		if (operationsHome == null)
-			operationsHome = (IOperationsHome)findNamedObject("com.primix.vlib.Operations",
+			operationsHome = (IOperationsHome)findNamedObject("vlib/Operations",
 				IOperationsHome.class);
 		
 		return operationsHome;

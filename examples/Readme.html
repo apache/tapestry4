@@ -31,8 +31,11 @@ and source code.</td></tr>
 <td>The main demonstration for Tapestry:  The <a href="Vlib/Virtual-Library.pdf">Primix Virtual Library</a>, a true
 database driven application.  Users register and then enter in information on the books they have ... others
 can search for books they need, borrow them and track, using the application, where books are.
-<p>Uses the VlibBeans EJBs to access the database, which is currently implemented
-using Cloudscape.
+<p>Uses the VlibBeans EJBs to access the database, which is a
+<a href="http://sourceforge.net/projects/hsql/">Hypersonic SQL</a> 
+database hosted by <a href="http://www.jboss.org">jBoss</a> open source
+application server.
+
 <p>In progress:  a parallel implementation of the Virtual Library using JSPs.  This will be used
 for side-by-side performance testing and to have a reasonable comparison of implementation effort
 between JSPs and Tapestry.
@@ -41,10 +44,7 @@ between JSPs and Tapestry.
 
 <tr>
 <th><a href="VlibBeans">VlibBeans</a></th>
-<td>EJBs used to access the Virtual Library database.  Implemented for WebLogic 5.1 SP 4 using 
-<a href="http://www.bea.com/products/weblogic/server/index.shtml">
-WebLogic</a>'s
-(pretty darn weak) container managed persistence.
+<td>EJBs used to access the Virtual Library database.
 </td>
 </tr>
 

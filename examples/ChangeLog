@@ -1,3 +1,9 @@
+* Nov 17 2000 hship
+
+Convert the VlibBeans over to jBoss.
+Fix some minor VlibBeans bugs.
+Add a few key classes from ServletUtils to Vlib.
+
 * Nov 7 2000 hship
 
 Convert the Vlib demo over to using Jetty.
