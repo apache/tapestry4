@@ -27,7 +27,7 @@
 
 include $(SYS_MAKEFILE_DIR)/CommonRules.mk
 
-clean: clean-root local-clean clean-packages
+clean: clean-root module-clean
 
 clean-root:
 	@$(ECHO) "\n*** Cleaning ... ***\n"
@@ -38,11 +38,9 @@ compile: setup-catalogs
 	
 copy-resources: setup-catalogs
 	@$(RECURSE) POST_SETUP=t inner-copy-resources
-	
-# Optimization rule used by Jar.mk to avoid recusively invoking Make twice.
 
-compile-and-copy-resources: setup-catalogs
-	@$(RECURSE) POST_SETUP=t inner-compile inner-copy-resources
+install: setup-catalogs
+	@$(RECURSE) POST_SETUP=t inner-install
 
 # Rule to force a rebuild of just the catalogs
 
@@ -53,6 +51,8 @@ catalog: initialize
 setup-catalogs: initialize
 	@$(RECURSE) SETUP_CATALOGS=t inner-setup-catalogs
 	
+initialize: module-initialize
+
 # The force rule forces a recompile of all Java classes
 
 force: setup-catalogs
@@ -92,7 +92,7 @@ FINAL_RMIC_OPT = $(strip \
 	$(LOCAL_RMIC_OPT) \
 	$(RMIC_OPT))
 	
-inner-compile: pre-compile $(MOD_JAVA_STAMP_FILE) $(RMI_STAMP_FILE) post-compile
+inner-compile: $(MOD_JAVA_STAMP_FILE) $(RMI_STAMP_FILE)
 	@$(TOUCH) $(DUMMY_FILE)
 	
 inner-copy-resources: $(MOD_META_STAMP_FILE) $(RESOURCE_STAMP_FILE)
@@ -111,10 +111,10 @@ ifneq "$(_JAVA_FILES)" ""
 	$(CD) $(FINAL_SOURCE_DIR) ; \
 	$(JAVAC) $(FINAL_JAVAC_OPT) $(patsubst $(FINAL_SOURCE_DIR)$(SLASH)%, \
 	  	%, $?)
-	@$(TOUCH) $@ $(MOD_DIRTY_JAR_STAMP_FILE)
 else
 	@$(ECHO) "\n*** Nothing to compile ***\n"
 endif
+	@$(TOUCH) $@
 
 # Read the catalog file
 
@@ -138,9 +138,24 @@ ifneq "$(_RMI_CLASS_NAMES)" ""
 		$(subst $(SLASH),$(DOT), \
 			$(subst .class,$(EMPTY), \
 				$(subst $(MOD_CLASS_DIR)$(SLASH),$(EMPTY), $?)))
-	@$(TOUCH) $(MOD_DIRTY_JAR_STAMP_FILE)
 endif
 	@$(TOUCH) $@
+
+# Whenever an operation changes something inside the Jar staging area, it touches
+# a stamp.  Whenever one of those stamps change, we touch the master-stamp (dirty jar)
+# to force the actual Jar to be rebuilt.
+# Additional pre-jar behaviours can be added by creating more dependencies
+# for $(MOD_DIRTY_JAR_STAMP_FILE)
+
+# Note:  for some reason (is this a make bug), if there are multiple
+# rules setting dependencies, then the command gets executed even though
+# $? is empty.  This occurs with War.mk and WebLogic.mk that need to
+# add additional dependencies to dirty jar stamp (to copy additional resources
+# and such).  Go figure.
+
+$(MOD_DIRTY_JAR_STAMP_FILE): $(RMI_STAMP_FILE) $(MOD_JAVA_STAMP_FILE) \
+	$(RESOURCE_STAMP_FILE) $(MOD_META_STAMP_FILE)
+	@$(if $?,$(TOUCH) $@)
 
 # The catalog file has the path name, including the relative
 # path to the source code root directory.  Like the Java files
@@ -156,7 +171,6 @@ ifneq "$(_RESOURCE_FILES)" ""
 	@$(CD) $(FINAL_SOURCE_DIR) ; \
 	$(CP) -f -P $(subst $(FINAL_SOURCE_DIR)$(SLASH),$(EMPTY),$?) \
 		 $(ABSOLUTE_CLASS_DIR)
-	@$(TOUCH) $(MOD_DIRTY_JAR_STAMP_FILE)
 endif
 	@$(TOUCH) $@
 
@@ -221,18 +235,16 @@ endif
 
 javadoc:
 ifeq "$(JAVADOC_DIR)" ""
-	@$(ECHO) JBE Error: Must set JAVADOC_DIR in Makefile
-else
+	$(error JBE Error: Must set JAVADOC_DIR in Makefile)
+endif
 ifeq "$(PACKAGES)" ""
-	@$(ECHO) JBE Error: Must define PACKAGES in Makefile
-else
+	$(error JBE Error: Must define PACKAGES in Makefile)
+endif
 	@$(ECHO) "\n*** Generating Javadoc ... ***\n"
 	@$(MKDIRS) $(FINAL_JAVADOC_DIR)
 	$(JAVADOC) -d $(FINAL_JAVADOC_DIR) -sourcepath $(FINAL_SOURCE_DIR) \
 	-classpath "$(call JBE_CANONICALIZE,-classpath $(MOD_CLASSPATH) $(LOCAL_CLASSPATH) $(MOD_CLASS_DIR))" \
 	$(JAVADOC_OPT) $(PACKAGES)
-endif
-endif
 
 	
 FINAL_META_RESOURCES := $(strip $(MOD_META_RESOURCES) $(META_RESOURCES))
@@ -251,13 +263,13 @@ initialize: setup-jbe-util
 
 # May be implemented
 
-.PHONY: local-clean
+.PHONY: module-clean
 
 .PHONY: inner-compile inner-copy-resources
-.PHONY: clean clean-root clean-packages
+.PHONY: clean clean-root
 .PHONY: setup-catalogs catalog-package
 .PHONY: compile copy-resources javadoc
 .PHONY: setup-jbe-util
 .PHONY: inner-setup-catalogs
-.PHONY: pre-compile post-compile
-.PHONY: compile-and-copy-resources
+.PHONY: install
+.PHONY: initialize module-initialize

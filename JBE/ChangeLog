@@ -1,3 +1,8 @@
+* Dec 15 2000 hship
+
+Lots of cleanups and improvements.  Simplified, reorganized and made things work
+properly with GNU Make 3.79.
+
 * Dec 11 2000 hship
 
 More cleanups and improvements; support some additional user-define pre- and post-
