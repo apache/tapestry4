@@ -45,7 +45,7 @@ public class Visit implements Serializable
      *
      **/
 
-    private String activeTabName = "Home";
+    private String _activeTabName = "Home";
 
     /**
      *  If true, then a detailed report about the request is appended
@@ -53,96 +53,110 @@ public class Visit implements Serializable
      *
      **/
 
-    private boolean requestDebug;
+    private boolean _requestDebug;
+
+
+    private boolean _disableInspector;
 
     /**
      *  Used by the Fields demo page.
      *
      **/
 
-    private Integer intValue;
-    private Double doubleValue;
-    private BigDecimal bigDecimalValue;
-    private Long longValue;
-    private Date dateValue;
-    private String stringValue;
+    private Integer _intValue;
+    private Double _doubleValue;
+    private BigDecimal _bigDecimalValue;
+    private Long _longValue;
+    private Date _dateValue;
+    private String _stringValue;
 
     public String getActiveTabName()
     {
-        return activeTabName;
+        return _activeTabName;
     }
 
     public void setActiveTabName(String value)
     {
-        activeTabName = value;
+        _activeTabName = value;
     }
 
     public void setRequestDebug(boolean value)
     {
-        requestDebug = value;
+        _requestDebug = value;
     }
 
     public boolean getRequestDebug()
     {
-        return requestDebug;
+        return _requestDebug;
     }
 
     public void setIntValue(Integer value)
     {
-        intValue = value;
+        _intValue = value;
     }
 
     public Integer getIntValue()
     {
-        return intValue;
+        return _intValue;
     }
 
     public BigDecimal getBigDecimalValue()
     {
-        return bigDecimalValue;
+        return _bigDecimalValue;
     }
 
     public void setBigDecimalValue(BigDecimal value)
     {
-        bigDecimalValue = value;
+        _bigDecimalValue = value;
     }
 
     public Double getDoubleValue()
     {
-        return doubleValue;
+        return _doubleValue;
     }
 
     public void setDoubleValue(Double value)
     {
-        doubleValue = value;
+        _doubleValue = value;
     }
 
     public Long getLongValue()
     {
-        return longValue;
+        return _longValue;
     }
 
     public void setLongValue(Long value)
     {
-        longValue = value;
+        _longValue = value;
     }
 
     public Date getDateValue()
     {
-        return dateValue;
+        return _dateValue;
     }
 
     public void setDateValue(Date value)
     {
-        dateValue = value;
+        _dateValue = value;
     }
     public String getStringValue()
     {
-        return stringValue;
+        return _stringValue;
     }
 
     public void setStringValue(String value)
     {
-        stringValue = value;
+        _stringValue = value;
     }
+    
+    public boolean getDisableInspector()
+    {
+        return _disableInspector;
+    }
+
+    public void setDisableInspector(boolean disableInspector)
+    {
+        _disableInspector = disableInspector;
+    }
+
 }

@@ -155,16 +155,4 @@ public class Border extends BaseComponent implements PageRenderListener
 
         cycle.setPage(newPageName);
     }
-
-    /**
-     *  Does nothing; the form is about updating the visit.requestDebug
-     *  property and nothing more.
-     *
-     **/
-
-    public void formListener(IRequestCycle cycle)
-    {
-    }
-
-
 }

@@ -62,14 +62,13 @@
   configuration. 
   <p>
   Typically, a InspectorButton is wrapped by a 
-            <A href="Conditional.html">Conditional</a> component, configured so that it only is displayed when some form of development mode flag is enabled.
+            <A href="Conditional.html">Conditional</A> component, configured so that it only is displayed when some form of development mode flag is enabled.
   <p>
   Pages incorporating a InspectorButton component must also include a 
   <A href="Body.html">Body</A> component.</p>
             <P>Prior to release 2.2, this component was named 
             <STRONG>ShowInspector</STRONG>.</P>
-             
- </td>
+</td>
 </tr>
 
 <tr>
@@ -80,12 +79,36 @@
 	<A href="ExceptionDisplay.html">ExceptionDisplay</A> 
  </td>
 </tr>
-
+			
 <tr>
  <td colspan="2">
-  <b>Parameters</b>
+  <b>Parameters</b> 
 	<br>
-  None
+  <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+  <tr> 
+    <th>Name</th>
+    <th>Type</th>
+	  <th>Direction</th>
+    <th>Required</th> 
+    <th>Default</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>disabled</td>
+    <td>boolean</td>
+    <td>in</td>
+   	<td>no</td>
+		<td>false</td>
+		<td>If true, the button does not appear.  This is the correct
+		configuration for a deployed application.
+		</td>
+	</tr>
+	</table>
+	
+
+             
+
+  
   <p>
   Body: <STRONG>removed</STRONG><BR>Informal 
             parameters: <STRONG>forbidden</STRONG><BR>Reserved parameters: 

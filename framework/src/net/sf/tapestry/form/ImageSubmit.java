@@ -157,7 +157,7 @@ public class ImageSubmit extends AbstractFormComponent
 
         IAsset finalImage = (_disabled && _disabledImage != null) ? _disabledImage : _image;
 
-        String imageURL = _image.buildURL(cycle);
+        String imageURL = finalImage.buildURL(cycle);
 
         writer.beginEmpty("input");
         writer.attribute("type", "image");

@@ -118,11 +118,9 @@
   
   <component id="renderBody" type="RenderBody"/>
 
-  <component id="ifShowInspector" type="Conditional">
-    <binding name="condition" expression="page.engine.debugEnabled"/>
+  <component id="inspectorButton" type="InspectorButton">
+    <binding name="disabled" expression="!page.engine.debugEnabled"/>
   </component>
-
-  <component id="inspectorButton" type="InspectorButton"/>
   
   <context-asset name="stylesheet" path="/scripts/style_virtlib_pcIE55.css"/>
   <context-asset name="dot" path="/images/dots_leftnav.gif"/>
