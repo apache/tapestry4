@@ -214,6 +214,9 @@ public class TablePages extends AbstractTableViewComponent
         ComponentAddress objAddress = (ComponentAddress) arrParameters[0];
         ITableModelSource objSource = (ITableModelSource) objAddress.findComponent(objCycle);
 		setCurrentPage(objSource, ((Integer) arrParameters[1]).intValue());
+
+        // ensure that the change is saved
+        objSource.fireObservedStateChange();
 	}
 
     public void setCurrentPage(ITableModelSource objSource, int nPage)  throws RequestCycleException

@@ -46,4 +46,12 @@ public interface ITableModelSource extends IComponent
 	 */
 	ITableModel getTableModel();
 
+	/**
+	 * Notifies the model source that the model state has changed, and 
+     * that it should consider saving it.<p>
+     * This method was added to allow using the table within a Block when 
+     * the pageBeginRender() listener of the implementation will not be called
+     * and automatic state storage will therefore be hard to implement.
+	 */
+    void fireObservedStateChange();
 }

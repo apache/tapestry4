@@ -101,11 +101,12 @@ public class TableRows extends AbstractTableViewComponent implements ITableRowSo
 	protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
+        Object objOldValue = cycle.getAttribute(ITableRowSource.TABLE_ROW_SOURCE_PROPERTY);
         cycle.setAttribute(ITableRowSource.TABLE_ROW_SOURCE_PROPERTY, this);
 
 		super.renderComponent(writer, cycle);
 
-        cycle.setAttribute(ITableRowSource.TABLE_ROW_SOURCE_PROPERTY, null);
+        cycle.setAttribute(ITableRowSource.TABLE_ROW_SOURCE_PROPERTY, objOldValue);
 	}
 
 

@@ -174,6 +174,14 @@ public class Table extends BaseComponent implements ITableModelSource
 		return getTableView().getTableModel();
 	}
 
+    /**
+     * @see net.sf.tapestry.contrib.table.model.ITableModelSource#fireObservedStateChange()
+     */
+    public void fireObservedStateChange()
+    {
+        getTableView().fireObservedStateChange();
+    }
+
 	/**
 	 * Resets the state of the component and forces it to load a new
      * TableModel from the tableModel binding the next time it renders.
