@@ -16,6 +16,11 @@
     <!-- Add more people here -->
   </developers>
   <votes>
+    <vote title="Tapestry 3.0.3" date="Mar 26 2005" dev="PF">
+      <motion> I finished patching/fixing all of the big issues identified with the last release.  With any luck, this will be the last release for the 3.0 branch. This vote will run for one week.  A +1 vote is to release Tapestry 3.0.3.  I will be able to start the release once the votes are tallied. </motion>
+      <response> PF, HK, MB, HLS, TS, DS, EH, GL: +1 </response>
+      <response> RLS: +0 </response>
+    </vote>
     <vote title="Tapestry 3.0.2" date="Feb 14 2005" dev="HLS">
       <motion> I think we should just be done with 3.0.2. All the bugs that are going to get fixed, have been. The next version of OGNL should just drop in, and since its not shipped with the framework anyway, its not a big deal. </motion>
       <response> HLS, PF, GL, RLS, DS, EH: +1 </response>
@@ -119,7 +124,7 @@
     -->
   </todo>
   <changes>
-    <release version="3.0.3" date="Unreleased">
+    <release version="3.0.3" date="Mar 26 2005">
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-278"> Fixes security flaw in asset service. </action>
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-230"> JanitorThread now terminates explicitly when servlet is destroyed.  Interruption properly terminates thread during sweep operation. </action>
       <action type="fix" dev="PF" fixes-bug="TAPESTRY-238"> Fixed bug preventing DatePicker calendar window from closing automatically if onchange event handler is not specified. </action>
