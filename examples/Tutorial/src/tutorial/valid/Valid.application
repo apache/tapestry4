@@ -2,16 +2,10 @@
 <!--$Id$-->
 <!DOCTYPE application PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN"
 	"http://tapestry.sourceforge.net/dtd/Tapestry_1_1.dtd">
-<application
-  name="Validating Text Fields"
-  engine-class="com.primix.tapestry.engine.SimpleEngine">
-
+<application name="Validating Text Fields" engine-class="com.primix.tapestry.engine.SimpleEngine">
+  <property name="com.primix.tapestry.visit-class">tutorial.valid.Visit</property>
   <page name="Home" specification-path="/tutorial/valid/Home.jwc"/>
   <page name="Show" specification-path="/tutorial/valid/Show.jwc"/>
-
   <component-alias type="Border" specification-path="/tutorial/valid/Border.jwc"/>
   <component-alias type="ShowError" specification-path="/tutorial/valid/ShowError.jwc"/>
-  
-  <property name="com.primix.tapestry.visit-class">tutorial.valid.Visit</property>
-
 </application>

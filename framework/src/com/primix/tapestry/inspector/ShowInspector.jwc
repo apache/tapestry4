@@ -1,66 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"  "http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-<specification>
-  <class>com.primix.tapestry.inspector.ShowInspector</class>
-  <allow-body>no</allow-body>
-  <parameters>
-    <allow-informal-parameters>no</allow-informal-parameters>
-  </parameters>
-  <components>
-    <component>
-      <id>link</id>
-      <type>Direct</type>
-      <bindings>
-        <binding>
-          <name>target</name>
-          <property-path>windowTarget</property-path>
-        </binding>
-        <binding>
-          <name>listener</name>
-          <property-path>listener</property-path>
-        </binding>
-        <inherited-binding>
-          <name>enabled</name>
-          <parameter-name>enabled</parameter-name>
-        </inherited-binding>
-      </bindings>
-    </component>
-    <component>
-      <id>button</id>
-      <type>Rollover</type>
-      <bindings>
-        <binding>
-          <name>image</name>
-          <property-path>assets.image</property-path>
-        </binding>
-        <binding>
-          <name>focus</name>
-          <property-path>assets.focus</property-path>
-        </binding>
-        <static-binding>
-          <name>alt</name>
-          <value>Show Inspector</value>
-        </static-binding>
-        <static-binding>
-          <name>width</name>
-          <value>40</value>
-        </static-binding>
-        <static-binding>
-          <name>height</name>
-          <value>40</value>
-        </static-binding>
-      </bindings>
-    </component>
-  </components>
-  <assets>
-    <private-asset>
-      <name>image</name>
-      <resource-path>/com/primix/tapestry/inspector/ShowInspector.gif</resource-path>
-    </private-asset>
-    <private-asset>
-      <name>focus</name>
-      <resource-path>/com/primix/tapestry/inspector/ShowInspector-focus.gif</resource-path>
-    </private-asset>
-  </assets>
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="com.primix.tapestry.inspector.ShowInspector" allow-body="no" allow-informal-parameters="no">
+  <component id="link" type="Direct">
+    <binding name="target" property-path="windowTarget"/>
+    <binding name="listener" property-path="listener"/>
+    <inherited-binding name="enabled" parameter-name="enabled"/>
+  </component>
+  <component id="button" type="Rollover">
+    <binding name="image" property-path="assets.image"/>
+    <binding name="focus" property-path="assets.focus"/>
+    <static-binding name="alt">Show Inspector</static-binding>
+    <static-binding name="width">40</static-binding>
+    <static-binding name="height">40</static-binding>
+  </component>
+  <private-asset name="image" resource-path="/com/primix/tapestry/inspector/ShowInspector.gif"/>
+  <private-asset name="focus" resource-path="/com/primix/tapestry/inspector/ShowInspector-focus.gif"/>
 </specification>

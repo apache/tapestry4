@@ -1,123 +1,37 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
-	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-<specification>
-  <class>com.primix.tapestry.BaseComponent</class>
-  <allow-body>no</allow-body>
-  <parameters>
-    <allow-informal-parameters>no</allow-informal-parameters>
-    <!-- Actually, com.primix.tapestry.util.exception.ExceptionDescription[] -->
-    <parameter>
-      <name>exceptions</name>
-      <required>yes</required>
-    </parameter>
-  </parameters>
-  <components>
-    <component>
-      <id>e-exception</id>
-      <type>Foreach</type>
-      <bindings>
-        <inherited-binding>
-          <name>source</name>
-          <parameter-name>exceptions</parameter-name>
-        </inherited-binding>
-      </bindings>
-    </component>
-    <component>
-      <id>insertClass</id>
-      <type>Insert</type>
-      <bindings>
-        <binding>
-          <name>value</name>
-          <property-path>components.e-exception.value.exceptionClassName</property-path>
-        </binding>
-      </bindings>
-    </component>
-    <component>
-      <id>insertMessage</id>
-      <type>Insert</type>
-      <bindings>
-        <binding>
-          <name>value</name>
-          <property-path>components.e-exception.value.message</property-path>
-        </binding>
-      </bindings>
-    </component>
-    <component>
-      <id>e-property</id>
-      <type>Foreach</type>
-      <bindings>
-        <binding>
-          <name>source</name>
-          <property-path>components.e-exception.value.properties</property-path>
-        </binding>
-      </bindings>
-    </component>
-    <component>
-      <id>insertPropertyName</id>
-      <type>Insert</type>
-      <bindings>
-        <binding>
-          <name>value</name>
-          <property-path>components.e-property.value.name</property-path>
-        </binding>
-      </bindings>
-    </component>
-    <component>
-      <id>insertPropertyValue</id>
-      <type>Insert</type>
-      <bindings>
-        <binding>
-          <name>value</name>
-          <property-path>components.e-property.value.value</property-path>
-        </binding>
-      </bindings>
-    </component>
-    <component>
-      <id>ifLast</id>
-      <type>Conditional</type>
-      <bindings>
-        <binding>
-          <name>condition</name>
-          <property-path>components.e-exception.last</property-path>
-        </binding>
-      </bindings>
-    </component>
-    <component>
-      <id>ifNotLast</id>
-      <type>Conditional</type>
-      <bindings>
-        <binding>
-          <name>condition</name>
-          <property-path>components.e-exception.last</property-path>
-        </binding>
-        <field-binding>
-          <name>invert</name>
-          <field-name>Boolean.TRUE</field-name>
-        </field-binding>
-      </bindings>
-    </component>
-    <!-- The stack is only traced for the last (deepest) exception. -->
-    <component>
-      <id>e-stack</id>
-      <type>Foreach</type>
-      <bindings>
-        <binding>
-          <name>source</name>
-          <property-path>components.e-exception.value.stackTrace</property-path>
-        </binding>
-      </bindings>
-    </component>
-    <component>
-      <id>insertStackTrace</id>
-      <type>Insert</type>
-      <bindings>
-        <binding>
-          <name>value</name>
-          <property-path>components.e-stack.value</property-path>
-        </binding>
-      </bindings>
-    </component>
-  </components>
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="com.primix.tapestry.BaseComponent" allow-body="no" allow-informal-parameters="no">
+  <parameter name="exceptions" required="yes"/>
+  <component id="e-exception" type="Foreach">
+    <inherited-binding name="source" parameter-name="exceptions"/>
+  </component>
+  <component id="insertClass" type="Insert">
+    <binding name="value" property-path="components.e-exception.value.exceptionClassName"/>
+  </component>
+  <component id="insertMessage" type="Insert">
+    <binding name="value" property-path="components.e-exception.value.message"/>
+  </component>
+  <component id="e-property" type="Foreach">
+    <binding name="source" property-path="components.e-exception.value.properties"/>
+  </component>
+  <component id="insertPropertyName" type="Insert">
+    <binding name="value" property-path="components.e-property.value.name"/>
+  </component>
+  <component id="insertPropertyValue" type="Insert">
+    <binding name="value" property-path="components.e-property.value.value"/>
+  </component>
+  <component id="ifLast" type="Conditional">
+    <binding name="condition" property-path="components.e-exception.last"/>
+  </component>
+  <component id="ifNotLast" type="Conditional">
+    <binding name="condition" property-path="components.e-exception.last"/>
+    <field-binding name="invert" field-name="Boolean.TRUE"/>
+  </component>
+  <component id="e-stack" type="Foreach">
+    <binding name="source" property-path="components.e-exception.value.stackTrace"/>
+  </component>
+  <component id="insertStackTrace" type="Insert">
+    <binding name="value" property-path="components.e-stack.value"/>
+  </component>
 </specification>

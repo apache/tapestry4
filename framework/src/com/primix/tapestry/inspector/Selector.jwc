@@ -1,84 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"  "http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-<specification>
-	<class>com.primix.tapestry.inspector.Selector</class>
-	<components>
-		<component>
-			<id>form</id>
-			<type>Form</type>
-			<bindings>
-				<binding>
-					<name>listener</name>
-					<property-path>formListener</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>selectPage</id>
-			<type>PropertySelection</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>page.inspectedPageName</property-path>
-				</binding>
-				<binding>
-					<name>renderer</name>
-					<property-path>pageRenderer</property-path>
-				</binding>
-				<binding>
-					<name>model</name>
-					<property-path>pageModel</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>page</id>
-			<type>Direct</type>
-			<bindings>
-				<binding>
-					<name>listener</name>
-					<property-path>page.selectComponentListener</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>e</id>
-			<type>Foreach</type>
-			<bindings>
-				<binding>
-					<name>source</name>
-					<property-path>crumbTrail</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>component</id>
-			<type>Direct</type>
-			<bindings>
-				<binding>
-					<name>context</name>
-					<property-path>components.e.value.idPath</property-path>
-				</binding>
-				<binding>
-					<name>listener</name>
-					<property-path>page.selectComponentListener</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertId</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>components.e.value.id</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>wrapped</id>
-			<type>InsertWrapped</type>
-		</component>
-	</components>
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="com.primix.tapestry.inspector.Selector">
+  <component id="form" type="Form">
+    <binding name="listener" property-path="formListener"/>
+  </component>
+  <component id="selectPage" type="PropertySelection">
+    <binding name="value" property-path="page.inspectedPageName"/>
+    <binding name="model" property-path="pageModel"/>
+  </component>
+  <component id="submitScript" type="Script">
+    <static-binding name="script">/com/primix/tapestry/form/SelectSubmit.script</static-binding>
+    <binding name="formName" property-path="components.form.name"/>
+    <binding name="selectName" property-path="components.selectPage.name"/>
+  </component>
+  <component id="page" type="Direct">
+    <binding name="listener" property-path="page.selectComponentListener"/>
+  </component>
+  <component id="e" type="Foreach">
+    <binding name="source" property-path="crumbTrail"/>
+  </component>
+  <component id="component" type="Direct">
+    <binding name="context" property-path="components.e.value.idPath"/>
+    <binding name="listener" property-path="page.selectComponentListener"/>
+  </component>
+  <component id="insertId" type="Insert">
+    <binding name="value" property-path="components.e.value.id"/>
+  </component>
+  <component id="wrapped" type="InsertWrapped"/>
 </specification>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE script PUBLIC "-//Primix Solutions//Tapestry Script 1.0//EN"
+	"http://tapestry.sourceforge.net/dtd/Script_1_0.dtd">
+<!--
+
+Adds a handler that forces the form containing a particular select form element
+to cause the containg form to submit when the select changes its value.
+
+Input symbols:
+  formName - the name of the form
+  selectName - the name of the select form element
+-->
+<script>
+<let key="formPath">
+	document.<insert key="formName"/>
+</let>
+<let key="selectPath">
+	<insert key="formPath"/>.<insert key="selectName"/>
+</let>
+<let key="functionName">
+  onChange_<insert key="formName"/>_<insert key="selectName"/>
+</let>
+<body>
+
+function <insert key="functionName"/>()
+{
+  <insert key="formPath"/>.submit();
+}
+
+</body>
+<initialization>
+
+<insert key="selectPath"/>.onchange = <insert key="functionName"/>
+
+</initialization>
+</script>

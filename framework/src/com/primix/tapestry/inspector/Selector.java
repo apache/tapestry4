@@ -138,17 +138,4 @@ public class Selector extends BaseComponent
 		return list;
 	}
 
-	/**
-	 *  Returns a shared instance of {@link SelectPropertySelectionRenderer} that
-	 *  is configured for immediate submit.
-	 *
-	 */
-
-	public IPropertySelectionRenderer getPageRenderer()
-	{
-		if (renderer == null)
-			renderer = new SelectPropertySelectionRenderer(true);
-
-		return renderer;	
-	}
 }

@@ -1,108 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"  "http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-<specification>
-	<class>com.primix.tapestry.inspector.ShowProperties</class>
-	<components>
-		<component>
-			<id>ifNoProperties</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>properties</property-path>
-				</binding>
-				<field-binding>
-					<name>invert</name>
-					<field-name>Boolean.TRUE</field-name>
-				</field-binding>
-			</bindings>
-		</component>
-		<component>
-			<id>ifHasProperties</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>properties</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>e</id>
-			<type>Foreach</type>
-			<bindings>
-				<binding>
-					<name>source</name>
-					<property-path>properties</property-path>
-				</binding>
-				<binding>
-					<name>value</name>
-					<property-path>change</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>evenOdd</id>
-			<type>/com/primix/tapestry/inspector/EvenOdd.jwc</type>
-		</component>
-		<component>
-			<id>select</id>
-			<type>Direct</type>
-			<bindings>
-				<binding>
-					<name>listener</name>
-					<property-path>page.selectComponentListener</property-path>
-				</binding>
-				<binding>
-					<name>context</name>
-					<property-path>change.componentPath</property-path>
-				</binding>
-				<binding>
-					<name>disabled</name>
-					<property-path>disableComponentLink</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertPath</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>change.componentPath</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertPropertyName</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>change.propertyName</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertValueClass</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>valueClassName</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertValue</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>change.newValue</property-path>
-				</binding>
-			</bindings>
-		</component>
-	</components>
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="com.primix.tapestry.inspector.ShowProperties">
+  <component id="ifNoProperties" type="Conditional">
+    <binding name="condition" property-path="properties"/>
+    <field-binding name="invert" field-name="Boolean.TRUE"/>
+  </component>
+  <component id="ifHasProperties" type="Conditional">
+    <binding name="condition" property-path="properties"/>
+  </component>
+  <component id="e" type="Foreach">
+    <binding name="source" property-path="properties"/>
+    <binding name="value" property-path="change"/>
+  </component>
+  <component id="evenOdd" type="/com/primix/tapestry/inspector/EvenOdd.jwc"/>
+  <component id="select" type="Direct">
+    <binding name="listener" property-path="page.selectComponentListener"/>
+    <binding name="context" property-path="change.componentPath"/>
+    <binding name="disabled" property-path="disableComponentLink"/>
+  </component>
+  <component id="insertPath" type="Insert">
+    <binding name="value" property-path="change.componentPath"/>
+  </component>
+  <component id="insertPropertyName" type="Insert">
+    <binding name="value" property-path="change.propertyName"/>
+  </component>
+  <component id="insertValueClass" type="Insert">
+    <binding name="value" property-path="valueClassName"/>
+  </component>
+  <component id="insertValue" type="Insert">
+    <binding name="value" property-path="change.newValue"/>
+  </component>
 </specification>

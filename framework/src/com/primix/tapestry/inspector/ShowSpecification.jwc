@@ -1,274 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"  "http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-<specification>
-	<class>com.primix.tapestry.inspector.ShowSpecification</class>
-	<components>
-		<component>
-			<id>insertSpecificationPath</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>inspectedSpecification.specificationResourcePath</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertJavaClass</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>inspectedComponent.class.name</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertAllowInformal</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>inspectedSpecification.allowInformalParameters</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertAllowBody</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>inspectedSpecification.allowBody</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>ifFormalParameters</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>formalParameterNames</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>e-formal</id>
-			<type>Foreach</type>
-			<bindings>
-				<binding>
-					<name>source</name>
-					<property-path>formalParameterNames</property-path>
-				</binding>
-				<binding>
-					<name>value</name>
-					<property-path>parameterName</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>evenOddFormal</id>
-			<type>/com/primix/tapestry/inspector/EvenOdd.jwc</type>
-		</component>
-		<component>
-			<id>insertFormalName</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>parameterName</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertFormalRequired</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>parameterSpecification.required</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertFormalType</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>parameterSpecification.type</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertFormalBinding</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>binding</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>ifInformalParameters</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>informalParameterNames</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>e-informal</id>
-			<type>Foreach</type>
-			<bindings>
-				<binding>
-					<name>source</name>
-					<property-path>informalParameterNames</property-path>
-				</binding>
-				<binding>
-					<name>value</name>
-					<property-path>parameterName</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>evenOddInformal</id>
-			<type>/com/primix/tapestry/inspector/EvenOdd.jwc</type>
-		</component>
-		<component>
-			<id>insertInformalName</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>parameterName</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertInformalBinding</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>binding</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>ifAssets</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>assetNames</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>e-asset</id>
-			<type>Foreach</type>
-			<bindings>
-				<binding>
-					<name>source</name>
-					<property-path>assetNames</property-path>
-				</binding>
-				<binding>
-					<name>value</name>
-					<property-path>assetName</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>evenOddAsset</id>
-			<type>/com/primix/tapestry/inspector/EvenOdd.jwc</type>
-		</component>
-		<component>
-			<id>insertAssetName</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>assetName</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertAssetValue</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>asset</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>ifComponents</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>sortedComponents</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>e-components</id>
-			<type>Foreach</type>
-			<bindings>
-				<binding>
-					<name>source</name>
-					<property-path>sortedComponents</property-path>
-				</binding>
-				<binding>
-					<name>value</name>
-					<property-path>component</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>evenOddComponent</id>
-			<type>/com/primix/tapestry/inspector/EvenOdd.jwc</type>
-		</component>
-		<component>
-			<id>selectComponent</id>
-			<type>Direct</type>
-			<bindings>
-				<binding>
-					<name>listener</name>
-					<property-path>page.selectComponentListener</property-path>
-				</binding>
-				<binding>
-					<name>context</name>
-					<property-path>component.idPath</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertComponentId</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>component.id</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertComponentType</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>componentType</property-path>
-				</binding>
-			</bindings>
-		</component>
-	</components>
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="com.primix.tapestry.inspector.ShowSpecification">
+  <component id="insertSpecificationPath" type="Insert">
+    <binding name="value" property-path="inspectedSpecification.specificationResourcePath"/>
+  </component>
+  <component id="insertJavaClass" type="Insert">
+    <binding name="value" property-path="inspectedComponent.class.name"/>
+  </component>
+  <component id="insertAllowInformal" type="Insert">
+    <binding name="value" property-path="inspectedSpecification.allowInformalParameters"/>
+  </component>
+  <component id="insertAllowBody" type="Insert">
+    <binding name="value" property-path="inspectedSpecification.allowBody"/>
+  </component>
+  <component id="ifFormalParameters" type="Conditional">
+    <binding name="condition" property-path="formalParameterNames"/>
+  </component>
+  <component id="e-formal" type="Foreach">
+    <binding name="source" property-path="formalParameterNames"/>
+    <binding name="value" property-path="parameterName"/>
+  </component>
+  <component id="evenOddFormal" type="/com/primix/tapestry/inspector/EvenOdd.jwc"/>
+  <component id="insertFormalName" type="Insert">
+    <binding name="value" property-path="parameterName"/>
+  </component>
+  <component id="insertFormalRequired" type="Insert">
+    <binding name="value" property-path="parameterSpecification.required"/>
+  </component>
+  <component id="insertFormalType" type="Insert">
+    <binding name="value" property-path="parameterSpecification.type"/>
+  </component>
+  <component id="insertFormalBinding" type="Insert">
+    <binding name="value" property-path="binding"/>
+  </component>
+  <component id="ifInformalParameters" type="Conditional">
+    <binding name="condition" property-path="informalParameterNames"/>
+  </component>
+  <component id="e-informal" type="Foreach">
+    <binding name="source" property-path="informalParameterNames"/>
+    <binding name="value" property-path="parameterName"/>
+  </component>
+  <component id="evenOddInformal" type="/com/primix/tapestry/inspector/EvenOdd.jwc"/>
+  <component id="insertInformalName" type="Insert">
+    <binding name="value" property-path="parameterName"/>
+  </component>
+  <component id="insertInformalBinding" type="Insert">
+    <binding name="value" property-path="binding"/>
+  </component>
+  <component id="ifAssets" type="Conditional">
+    <binding name="condition" property-path="assetNames"/>
+  </component>
+  <component id="e-asset" type="Foreach">
+    <binding name="source" property-path="assetNames"/>
+    <binding name="value" property-path="assetName"/>
+  </component>
+  <component id="evenOddAsset" type="/com/primix/tapestry/inspector/EvenOdd.jwc"/>
+  <component id="insertAssetName" type="Insert">
+    <binding name="value" property-path="assetName"/>
+  </component>
+  <component id="insertAssetValue" type="Insert">
+    <binding name="value" property-path="asset"/>
+  </component>
+  <component id="ifComponents" type="Conditional">
+    <binding name="condition" property-path="sortedComponents"/>
+  </component>
+  <component id="e-components" type="Foreach">
+    <binding name="source" property-path="sortedComponents"/>
+    <binding name="value" property-path="component"/>
+  </component>
+  <component id="evenOddComponent" type="/com/primix/tapestry/inspector/EvenOdd.jwc"/>
+  <component id="selectComponent" type="Direct">
+    <binding name="listener" property-path="page.selectComponentListener"/>
+    <binding name="context" property-path="component.idPath"/>
+  </component>
+  <component id="insertComponentId" type="Insert">
+    <binding name="value" property-path="component.id"/>
+  </component>
+  <component id="insertComponentType" type="Insert">
+    <binding name="value" property-path="componentType"/>
+  </component>
 </specification>

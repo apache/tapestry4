@@ -5,7 +5,7 @@
 The DTD for Tapestry application and component specifications.  
 Associated with the public identifier:
 
-	-//Howard Ship/Tapestry Specification 1.1//EN
+	-//Howard Ship//Tapestry Specification 1.1//EN
 	
 For application specifications, the root element is application.
 
@@ -28,7 +28,7 @@ Attributes:
   name: A textual name used to uniquely identify the application.
   engine-class:  The Java class to instantiate as the application engine.
 -->
-<!ELEMENT application (description*, page+, component-alias*, property*)>
+<!ELEMENT application (description*, property*, page+, component-alias*)>
 <!ATTLIST application
   name CDATA #REQUIRED
   engine-class CDATA #REQUIRED
@@ -242,7 +242,7 @@ Attributes:
   allow-informal-parameters:  If yes (the default), informal parameters (parameters that are not
     explictily defined) are allowed.
 -->
-<!ELEMENT specification (description*, parameter*, component*, (external-asset | context-asset | private-asset)*)>
+<!ELEMENT specification (description*, parameter*, property*, component*, (external-asset | context-asset | private-asset)*)>
 <!ATTLIST specification
   class CDATA #REQUIRED
   allow-body %attribute-flag; "yes"

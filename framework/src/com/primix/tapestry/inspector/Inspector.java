@@ -29,6 +29,9 @@ package com.primix.tapestry.inspector;
 
 import com.primix.tapestry.util.*;
 import com.primix.tapestry.*;
+import com.primix.tapestry.components.*;
+import com.primix.tapestry.spec.*;
+import java.util.*;
 
 /**
  *  The Tapestry Inspector page.
@@ -43,7 +46,27 @@ public class Inspector extends BasePage
 	private View view = View.SPECIFICATION;
 	private String inspectedPageName;
 	private String inspectedIdPath;
+	
+	private static final int MAP_SIZE = 7;
+	
+	private Map blocks;
+	
 
+	public void finishLoad(IPageLoader loader,
+                       ComponentSpecification specification)
+                throws PageLoaderException
+	{
+		super.finishLoad(loader, specification);
+		
+		blocks = new HashMap(MAP_SIZE);
+		
+		blocks.put(View.TEMPLATE, getComponent("templateBlock"));
+		blocks.put(View.SPECIFICATION, getComponent("specificationBlock"));
+		blocks.put(View.ENGINE, getComponent("engineBlock"));
+		blocks.put(View.PROPERTIES, getComponent("propertiesBlock"));
+		blocks.put(View.LOGGING, getComponent("loggingBlock"));
+	}
+	
 	public void detach()
 	{
 		view = View.SPECIFICATION;
@@ -89,31 +112,7 @@ public class Inspector extends BasePage
 		fireObservedChange("inspectedIdPath", value);
 	}
 	
-	public boolean isViewSpecification()
-	{
-		return view == View.SPECIFICATION;
-	}
-	
-	public boolean isViewTemplate()
-	{
-		return view == View.TEMPLATE;
-	}
-	
-	public boolean isViewProperties()
-	{
-		return view == View.PROPERTIES;
-	}
-	
-	public boolean isViewEngine()
-	{
-		return view == View.ENGINE;
-	}
-	
-	public boolean isViewLogging()
-	{
-		return view == View.LOGGING;
-	}
-	
+		
 	/**
 	 *  Method invoked by the {@link ShowInspector} component, 
 	 *  to begin inspecting a page.
@@ -185,4 +184,14 @@ public class Inspector extends BasePage
         return "Tapestry Inspector: " +
                 engine.getSpecification().getName();
     }
+	
+	/**
+	 *  Returns the {@link Block} for the currently selected view.
+	 *
+	 */
+	
+	public Block getBlockForView()
+	{
+		return (Block)blocks.get(view);
+	}
 }

@@ -1,44 +1,11 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
-<!DOCTYPE specification PUBLIC "-//Primix Solutions//Tapestry Specification 1.0//EN"
-	"http://tapestry.sourceforge.net/dtd/Tapestry_1_0.dtd">
-<specification>
-  <class>com.primix.tapestry.form.ImageSubmit</class>
-  <allow-body>no</allow-body>
-  <parameters>
-    <!-- The normal image to display. -->
-    <parameter>
-      <name>image</name>
-      <java-type>com.primix.tapestry.IAsset</java-type>
-      <required>yes</required>
-    </parameter>
-    <!-- The optional image to display when the button is
-			 disabled. -->
-    <parameter>
-      <name>disabledImage</name>
-      <java-type>com.primix.tapestry.IAsset</java-type>
-    </parameter>
-    <!-- If set to true, the button is disabled (and the alternate
-			 image, if any, is displayed. -->
-    <parameter>
-      <name>disabled</name>
-    </parameter>
-    <!-- Rarely used; allow the (x, y) location clicked within
-		     the image to be pushed back to the application.  -->
-    <parameter>
-      <name>point</name>
-      <java-type>java.awt.Point</java-type>
-    </parameter>
-    <!-- Bound to a property that is updated (with the tag) if the Submit button
-		     is clicked. -->
-    <parameter>
-      <name>selected</name>
-      <required>no</required>
-    </parameter>
-    <!-- A tag that is used when the Submit button is clicked. -->
-    <parameter>
-      <name>tag</name>
-      <required>no</required>
-    </parameter>
-  </parameters>
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+<specification class="com.primix.tapestry.form.ImageSubmit" allow-body="no">
+  <parameter name="image" java-type="com.primix.tapestry.IAsset" required="yes"/>
+  <parameter name="disabledImage" java-type="com.primix.tapestry.IAsset"/>
+  <parameter name="disabled"/>
+  <parameter name="point" java-type="java.awt.Point"/>
+  <parameter name="selected"/>
+  <parameter name="tag"/>
 </specification>
