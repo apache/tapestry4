@@ -27,7 +27,7 @@ function onChange_<insert key="formName"/>_<insert key="selectName"/>()
 	}
 	else
 	{
-		// disable only works with IE, not NN
+		// disabled only works with IE, not NN
 		field.disabled = true;
 		field.blur();
 		field.value = "";
@@ -36,7 +36,6 @@ function onChange_<insert key="formName"/>_<insert key="selectName"/>()
 
 </body>
 <initialization>
-
 <!-- Navigator is not documented to respond to the onChange event, but this works,
 	 so my documentation must be wrong. -->
 document.<insert key="formName"/>.<insert key="selectName"/>.onchange =

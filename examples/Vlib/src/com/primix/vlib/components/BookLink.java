@@ -72,7 +72,7 @@ public class BookLink extends BaseComponent
     public Book getBook()
     {
         if (book == null)
-            book = (Book)bookBinding.getValue();
+            book = (Book)bookBinding.getObject("book", Book.class);
 
         return book;
     }

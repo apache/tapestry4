@@ -41,7 +41,7 @@ EXEC_CLASSPATH = \
 	$(JDK_DIR)/lib/tools.jar
 
 run: default
-	@$(ECHO) "\n*** Running Jetty for Vlib ... ***\n"
+	$(call NOTE, Running Primix Virtual Library using Jetty ...)
 	$(call EXEC_JAVA,$(EXEC_CLASSPATH), \
 		-Xms128M -Xmx128M -showversion \
 		-Dcom.primix.tapestry.enable-reset-service=true \
