@@ -67,40 +67,26 @@ package org.apache.tapestry.spec;
 
 public class BindingSpecification extends BaseLocatable
 {
-    private BindingType type;
-    private String value;
-
-	/** @since 2.4 **/
+    private BindingType _type;
+    private String _value;
 	
-	public BindingSpecification()
-	{
-	}
-
-	/** @deprecated **/
-	
-    public BindingSpecification(BindingType type, String value)
-    {
-        this.type = type;
-        this.value = value;
-    }
-
     public BindingType getType()
     {
-        return type;
+        return _type;
     }
 
     public String getValue()
     {
-        return value;
+        return _value;
     }
 
-    public void setType(BindingType value)
+    public void setType(BindingType type)
     {
-        type = value;
+        _type = type;
     }
 
     public void setValue(String value)
     {
-        this.value = value;
+        _value = value;
     }
 }

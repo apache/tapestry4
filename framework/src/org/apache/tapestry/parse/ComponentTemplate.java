@@ -76,9 +76,9 @@ public class ComponentTemplate
      *
      **/
 
-    private char[] templateData;
+    private char[] _templateData;
 
-    private TemplateToken[] tokens;
+    private TemplateToken[] _tokens;
 
     /**
      *  Creates a new ComponentTemplate.
@@ -86,28 +86,30 @@ public class ComponentTemplate
      *  @param templateData The template data.  This is <em>not</em> copied, so
      *  the array passed in should not be modified further.
      *
-     *  @param tokens  The tokens making up the template.
+     *  @param tokens  The tokens making up the template.  This is also
+     *  retained (<em>not</em> copied), and so should not
+     *  be modified once passed to the constructor.
      *
      **/
 
     public ComponentTemplate(char[] templateData, TemplateToken[] tokens)
     {
-        this.templateData = templateData;
-        this.tokens = tokens;
+        _templateData = templateData;
+        _tokens = tokens;
     }
 
     public char[] getTemplateData()
     {
-        return templateData;
+        return _templateData;
     }
 
     public TemplateToken getToken(int index)
     {
-        return tokens[index];
+        return _tokens[index];
     }
 
     public int getTokenCount()
     {
-        return tokens.length;
+        return _tokens.length;
     }
 }

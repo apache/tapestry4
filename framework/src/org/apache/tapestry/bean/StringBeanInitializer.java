@@ -71,21 +71,7 @@ import org.apache.tapestry.IComponent;
 public class StringBeanInitializer extends AbstractBeanInitializer
 {
     protected String _key;
-
-	/** @since 2.4 **/
 	
-	public StringBeanInitializer()
-	{
-	}
-	
-	/** @deprecated **/
-	
-    public StringBeanInitializer(String propertyName, String key)
-    {
-        super(propertyName);
-
-        setKey(key);
-    }
 
     public void setBeanProperty(IBeanProvider provider, Object bean)
     {

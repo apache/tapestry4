@@ -93,7 +93,7 @@ public class ComponentAddress implements Serializable
      */
     public ComponentAddress(IComponent component)
     {
-        this(component.getPage().getName(), component.getIdPath());
+        this(component.getPage().getPageName(), component.getIdPath());
     }
 
     /**

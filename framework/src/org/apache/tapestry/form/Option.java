@@ -114,7 +114,7 @@ public abstract class Option extends AbstractComponent
             writer.attribute("value", value);
 
             if (getSelectedBinding().getBoolean())
-                writer.attribute("selected");
+                writer.attribute("selected", "selected");
 
             generateAttributes(writer, cycle);
 

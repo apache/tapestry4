@@ -77,13 +77,6 @@ public class FieldBeanInitializer extends AbstractBeanInitializer
     protected Object _fieldValue;
     private boolean _fieldResolved = false;
 
-    public FieldBeanInitializer(String propertyName, String fieldName)
-    {
-        super(propertyName);
-
-        _fieldName = fieldName;
-    }
-
     public void setBeanProperty(IBeanProvider provider, Object bean)
     {
         IResourceResolver resolver = provider.getResourceResolver();

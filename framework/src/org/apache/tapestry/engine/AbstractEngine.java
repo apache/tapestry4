@@ -889,7 +889,7 @@ public abstract class AbstractEngine
             }
             catch (RedirectException ex)
             {
-                redirectOut(cycle, ex);
+                handleRedirectException(cycle, ex);
             }
             catch (StaleLinkException ex)
             {
@@ -1706,22 +1706,6 @@ public abstract class AbstractEngine
     /**
      *  Invoked when a {@link RedirectException} is thrown during the processing of a request.
      *
-     *  @throws RequestCycleException if an {@link IOException} is thrown by the redirect
-     *
-     *  @since 1.0.6
-     *  @deprecated To be removed in 2.3.  
-     *  Override {@link #handleRedirectException(IRequestCycle, RedirectException)} instead.
-     *
-     **/
-
-    protected void redirectOut(IRequestCycle cycle, RedirectException ex)
-    {
-        handleRedirectException(cycle, ex);
-    }
-
-    /**
-     *  Invoked when a {@link RedirectException} is thrown during the processing of a request.
-     *
      *  @throws RequestCycleException if an {@link IOException},
      *  {@link ServletException} is thrown by the redirect, or if no
      *  {@link RequestDispatcher} can be found for local resource.
@@ -1946,31 +1930,6 @@ public abstract class AbstractEngine
       		return serviceData;
       		
       	return serviceData.substring(0, slashx);
-    }
-
-    /** 
-     *  Returns false.
-     *  
-     *  @deprecated With no replacement.  To be removed in 2.5.
-     *  @since 2.2 
-     * 
-     **/
-
-    public boolean isRefreshing()
-    {
-        return false;
-    }
-
-    /** 
-     *  Does nothing.
-     * 
-     *  @deprecated With no replacement.  To be removed in 2.5.
-     *  @since 2.2 
-     * 
-     **/
-
-    public void setRefreshing(boolean refreshing)
-    {
     }
 
     /** @since 2.3 **/

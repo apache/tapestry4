@@ -271,21 +271,6 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
         }
     }
 
-    /** @since 2.2 **/
-
-    private void close(InputStream stream)
-    {
-        try
-        {
-            if (stream != null)
-                stream.close();
-        }
-        catch (IOException ex)
-        {
-            // Ignore it.
-        }
-    }
-
     public synchronized String toString()
     {
         ToStringBuilder builder = new ToStringBuilder(this);
@@ -395,20 +380,6 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
         return result;
     }
 
-    public synchronized INamespace getNamespace(String id)
-    {
-        INamespace result = (INamespace) _namespaceCache.get(id);
-
-        if (result == null)
-        {
-            result = findNamespace(id);
-
-            _namespaceCache.put(id, result);
-        }
-
-        return result;
-    }
-
     /** @since 2.2 **/
 
     protected SpecificationParser getParser()
@@ -451,30 +422,4 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
         return _frameworkNamespace;
     }
 
-    /** 
-     * 
-     *  Finds or creates the namespace.
-     * 
-     *  @param id the id, or id path, of the namespace.
-     *  @return the namespace,
-     *  @throws ApplicationRuntimeException if the namespace does not exist
-     *  @since 2.2 
-     * 
-     **/
-
-    private INamespace findNamespace(String id)
-    {
-        StringSplitter splitter = new StringSplitter('.');
-
-        String idPath[] = splitter.splitToArray(id);
-
-        INamespace n = getApplicationNamespace();
-
-        for (int i = 0; i < idPath.length; i++)
-        {
-            n = n.getChildNamespace(idPath[i]);
-        }
-
-        return n;
-    }
 }

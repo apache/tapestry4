@@ -314,9 +314,7 @@ public class BaseComponentTemplateLoader
     private IComponent createImplicitComponent(String id, String componentType, Location location)
     {
         IComponent result =
-            _pageLoader.createImplicitComponent(_requestCycle, _loadComponent, id, componentType);
-
-        result.setLocation(location);
+            _pageLoader.createImplicitComponent(_requestCycle, _loadComponent, id, componentType, location);
 
         return result;
     }

@@ -70,13 +70,6 @@ public class StaticBeanInitializer extends AbstractBeanInitializer
 {
     protected Object _value;
 
-    public StaticBeanInitializer(String propertyName, Object value)
-    {
-        super(propertyName);
-
-        _value = value;
-    }
-
     public void setBeanProperty(IBeanProvider provider, Object bean)
     {
         setBeanProperty(provider.getResourceResolver(), bean, _value);

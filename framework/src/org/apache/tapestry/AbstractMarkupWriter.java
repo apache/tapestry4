@@ -254,23 +254,6 @@ public abstract class AbstractMarkupWriter implements IMarkupWriter
     }
 
     /**
-     * Simply prints the attribute name. This is used for
-     * idempotent attributes, such as 'disabled' in an
-     * &lt;input&gt;.
-     *
-     * <p>TBD: Check that name is legal.
-     *
-     *  @throws IllegalStateException if there is no open tag.
-     *  @deprecated To be removed in 2.3.  Use
-     *  {@link #attribute(String, String)} instead.
-     **/
-
-    public void attribute(String name)
-    {
-        attribute(name, name);
-    }
-
-    /**
      * Writes an integer attribute into the currently open tag.
      *
      * <p>TBD: Validate that name is legal.

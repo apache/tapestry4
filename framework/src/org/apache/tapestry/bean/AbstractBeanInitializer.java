@@ -72,20 +72,6 @@ abstract public class AbstractBeanInitializer extends BaseLocatable implements I
 {
     protected String _propertyName;
 
-    /** @since 2.4 **/
-
-    public AbstractBeanInitializer()
-    {
-    }
-
-    /** @deprecated **/
-
-    public AbstractBeanInitializer(String propertyName)
-    {
-        this();
-        setPropertyName(propertyName);
-    }
-
     public String getPropertyName()
     {
         return _propertyName;

@@ -467,7 +467,7 @@ public class PageLoader implements IPageLoader
 
                 String type = contained.getType();
 
-                _componentResolver.resolve(namespace, type);
+                _componentResolver.resolve(cycle, namespace, type);
 
                 ComponentSpecification componentSpecification =
                     _componentResolver.getSpecification();
@@ -481,9 +481,8 @@ public class PageLoader implements IPageLoader
                         container,
                         id,
                         componentSpecification,
-                        componentNamespace);
-
-                component.setLocation(contained.getLocation());
+                        componentNamespace,
+                        contained.getLocation());
 
                 // Add it, by name, to the container.
 
@@ -551,17 +550,18 @@ public class PageLoader implements IPageLoader
         IRequestCycle cycle,
         IComponent container,
         String componentId,
-        String componentType)
+        String componentType,
+        Location location)
     {
         IPage page = container.getPage();
 
-        _componentResolver.resolve(container.getNamespace(), componentType);
+        _componentResolver.resolve(cycle, container.getNamespace(), componentType);
 
         INamespace componentNamespace = _componentResolver.getNamespace();
         ComponentSpecification spec = _componentResolver.getSpecification();
 
         IComponent result =
-            instantiateComponent(page, container, componentId, spec, componentNamespace);
+            instantiateComponent(page, container, componentId, spec, componentNamespace, location);
 
         container.addComponent(result);
 
@@ -585,7 +585,8 @@ public class PageLoader implements IPageLoader
         IComponent container,
         String id,
         ComponentSpecification spec,
-        INamespace namespace)
+        INamespace namespace,
+        Location location)
     {
         IComponent result = null;
         String className = spec.getComponentClassName();
@@ -627,6 +628,7 @@ public class PageLoader implements IPageLoader
         result.setPage(page);
         result.setContainer(container);
         result.setId(id);
+        result.setLocation(location);
 
         _count++;
 
@@ -682,7 +684,6 @@ public class PageLoader implements IPageLoader
 
             result.setNamespace(namespace);
             result.setSpecification(spec);
-            result.setName(name);
             result.setPageName(pageName);
             result.setPage(result);
             result.setLocale(_locale);

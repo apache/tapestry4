@@ -230,7 +230,6 @@ public final class Tapestry
 
     public static final String SERVICE_QUERY_PARAMETER_NAME = "service";
 
-
     /**
      *  The query parameter for application specific parameters to the
      *  service (this is used with the direct service).  Each of these
@@ -287,6 +286,32 @@ public final class Tapestry
      **/
 
     public static final String PARAMETER_PROPERTY_NAME_SUFFIX = "Binding";
+
+    /**
+     *  Name of application extension used to resolve page and component
+     *  specifications that can't be located by the normal means.  The
+     *  extension must implement 
+     *  {@link org.apache.tapestry.resolver.ISpecificationResolverDelegate}.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public static final String SPECIFICATION_RESOLVER_DELEGATE_EXTENSION_NAME =
+        "org.apache.tapestry.specification-resolver-delegate";
+
+    /**
+     *  Name of application extension used to resolve page and component
+     *  templates that can't be located by the normal means.
+     *  The extension must implement
+     *  {@link org.apache.tapestry.engine.ITemplateSourceDelegate}.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public static final String TEMPLATE_SOURCE_DELEGATE_EXTENSION_NAME =
+        "org.apache.tapestry.template-source-delegate";
 
     /**
      *  Prevent instantiation.

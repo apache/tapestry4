@@ -430,13 +430,13 @@ public abstract class Palette extends BaseComponent implements IFormComponent
         _availableWriter = writer.getNestedWriter();
 
         _selectedWriter.begin("select");
-        _selectedWriter.attribute("multiple");
+        _selectedWriter.attribute("multiple", "multiple");
         _selectedWriter.attribute("size", getRows());
         _selectedWriter.attribute("name", getName());
         _selectedWriter.println();
 
         _availableWriter.begin("select");
-        _availableWriter.attribute("multiple");
+        _availableWriter.attribute("multiple", "multiple");
         _availableWriter.attribute("size", getRows());
         _availableWriter.attribute("name", (String) _symbols.get("availableName"));
         _availableWriter.println();

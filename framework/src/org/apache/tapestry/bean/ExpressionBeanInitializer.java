@@ -55,31 +55,48 @@
 
 package org.apache.tapestry.bean;
 
+import org.apache.tapestry.IBeanProvider;
+import org.apache.tapestry.IComponent;
+import org.apache.tapestry.IResourceResolver;
+import org.apache.tapestry.util.prop.OgnlUtils;
+
 /**
  * 
  *  Initializes a helper bean property from an OGNL expression (relative
  *  to the bean's {@link IComponent}).
- *
- *  <p>Replacement for {@link org.apache.tapestry.bean.PropertyBeanInitializer}.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
  *  @since 2.2
  *
  **/
-public class ExpressionBeanInitializer extends PropertyBeanInitializer
+
+public class ExpressionBeanInitializer extends AbstractBeanInitializer
 {
-	/** @since 2.4 **/
-	
-    public ExpressionBeanInitializer()
+    protected String _expression;
+
+    public void setBeanProperty(IBeanProvider provider, Object bean)
     {
+        IResourceResolver resolver = provider.getResourceResolver();
+        IComponent component = provider.getComponent();
+        
+        Object value = OgnlUtils.get(_expression, resolver, component);
+
+        setBeanProperty(resolver, bean, value);
     }
 
-	/** @deprecated **/
+	/** @since 2.4 **/
 	
-    public ExpressionBeanInitializer(String propertyName, String expression)
+    public String getExpression()
     {
-        super(propertyName, expression);
+        return _expression;
+    }
+
+	/** @since 2.4 **/
+	
+    public void setExpression(String expression)
+    {
+        _expression = expression;
     }
 
 }

@@ -78,7 +78,7 @@ import org.apache.tapestry.spec.ILibrarySpecification;
  *
  **/
 
-public interface INamespace
+public interface INamespace extends ILocatable
 {
     /**
      *  Reserved name of a the implicit Framework library.
@@ -209,30 +209,10 @@ public interface INamespace
      *  Returns true if the namespace contains the indicated component type.
      * 
      *  @param type a simple component type (no namespace prefix is allowed)
-     * 
-     *  @deprecated use {@link #containsComponentType(String)} instead.
-     *
-     **/
-
-    public boolean containsAlias(String type);
-
-    /**
-     *  Returns true if the namespace contains the indicated component type.
-     * 
-     *  @param type a simple component type (no namespace prefix is allowed)
      *
      **/
 
     public boolean containsComponentType(String type);
-
-    /**
-     *  Deprecated name for {@link #getComponentTypes()}.
-     * 
-     *  @deprecated use {@link #getComponentTypes()} instead.
-     * 
-     **/
-
-    public List getComponentAliases();
 
     /**
      *  Returns a sorted list of component types.  May return 

@@ -127,7 +127,7 @@ public abstract class Submit extends AbstractFormComponent{
         writer.attribute("name", name);
 
         if (isDisabled())
-            writer.attribute("disabled");
+            writer.attribute("disabled", "disabled");
 
         String label = getLabel();
 

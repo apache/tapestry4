@@ -105,10 +105,10 @@ public abstract class Checkbox extends AbstractFormComponent
         writer.attribute("name", name);
 
         if (isDisabled())
-            writer.attribute("disabled");
+            writer.attribute("disabled", "disabled");
 
         if (isSelected())
-            writer.attribute("checked");
+            writer.attribute("checked", "checked");
 
         generateAttributes(writer, cycle);
 

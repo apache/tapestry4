@@ -169,7 +169,7 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
 
         BSFManager bsf = obtainBSFManager(cycle);
 
-        String location = getLocation().toString();
+        Location location = getLocation();
 
         try
         {
@@ -179,7 +179,12 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
             bsf.declareBean("page", page, page.getClass());
             bsf.declareBean("cycle", cycle, cycle.getClass());
 
-            bsf.exec(_language, location, 0, 0, _script);
+            bsf.exec(
+                _language,
+                location.getResourceLocation().toString(),
+                location.getLineNumber(),
+                location.getLineNumber(),
+                _script);
         }
         catch (BSFException ex)
         {

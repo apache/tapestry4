@@ -151,7 +151,7 @@ public abstract class PropertySelection extends AbstractFormComponent
         writer.attribute("name", name);
 
         if (isDisabled())
-            writer.attribute("disabled");
+            writer.attribute("disabled", "disabled");
 
         if (getSubmitOnChange())
             writer.attribute("onchange", "javascript:this.form.submit();");
@@ -187,7 +187,7 @@ public abstract class PropertySelection extends AbstractFormComponent
             writer.attribute("value", model.getValue(i));
 
             if (selected)
-                writer.attribute("selected");
+                writer.attribute("selected", "selected");
 
             writer.print(model.getLabel(i));
 

@@ -111,22 +111,6 @@ public interface ISpecificationSource
     public void reset();
 
     /**
-     *  Returns a {@link INamespace} for the given id.
-     * 
-     *  @param id the name of the namespace, possibly as a dotted name
-     *  sequence.  Null for the application namespace, "framework"
-     *  for the framework namespace.
-     *  @return the namespace
-     *  @throws ApplicationRuntimeException if the namespace cannot
-     *  be located.
-     * 
-     *  @since 2.2
-     * 
-     **/
-
-    public INamespace getNamespace(String id);
-
-    /**
      *  Returns a {@link LibrarySpecification} with the given path.
      * 
      *  @param resourcePath the resource path of the specification
