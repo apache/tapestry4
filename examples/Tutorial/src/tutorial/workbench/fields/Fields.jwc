@@ -75,7 +75,7 @@
   <component id="border" type="Border"/>
 
   <component id="showError" type="ShowError">
-     <binding name="message" property-path="beans.delegate.firstError"/>
+     <binding name="delegate" property-path="beans.delegate"/>
   </component>
 
   <component id="form" type="Form">
