@@ -65,7 +65,7 @@
     <binding name="delegate" property-path="beans.delegate"/>
   </component>
   
-  <component id="inputDate" type="ValidatingTextField">
+  <component id="inputDate" type="ValidField">
     <binding name="delegate" property-path="beans.delegate"/>
     <binding name="validator" property-path="beans.dateValidator"/>
     <binding name="value" property-path="visit.dateValue"/>
@@ -78,7 +78,7 @@
     <binding name="delegate" property-path="beans.delegate"/>
   </component>
   
-  <component id="inputInt" type="ValidatingTextField">
+  <component id="inputInt" type="ValidField">
     <binding name="delegate" property-path="beans.delegate"/>
     <binding name="validator" property-path="beans.intValidator"/>
     <binding name="value" property-path="visit.intValue"/>
@@ -91,7 +91,7 @@
     <binding name="delegate" property-path="beans.delegate"/>
   </component>
   
-  <component id="inputDouble" type="ValidatingTextField">
+  <component id="inputDouble" type="ValidField">
     <binding name="delegate" property-path="beans.delegate"/>
     <binding name="validator" property-path="beans.doubleValidator"/>
     <binding name="value" property-path="visit.doubleValue"/>
@@ -103,7 +103,7 @@
     <binding name="delegate" property-path="beans.delegate"/>
   </component>
   
-  <component id="inputBigDecimal" type="ValidatingTextField">
+  <component id="inputBigDecimal" type="ValidField">
     <binding name="delegate" property-path="beans.delegate"/>
     <binding name="value" property-path="visit.bigDecimalValue"/>
     <binding name="validator" property-path="beans.bigDecimalValidator"/>
