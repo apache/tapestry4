@@ -110,15 +110,6 @@ public abstract class TextArea extends AbstractFormComponent
         if (isDisabled())
             writer.attribute("disabled", "disabled");
 
-        int rows = getRows();
-        int columns = getColumns();
-
-        if (rows != 0)
-            writer.attribute("rows", rows);
-
-        if (columns != 0)
-            writer.attribute("cols", columns);
-
         generateAttributes(writer, cycle);
 
         String value = getValue();
@@ -130,11 +121,7 @@ public abstract class TextArea extends AbstractFormComponent
 
     }
 
-    public abstract int getColumns();
-
     public abstract boolean isDisabled();
-
-    public abstract int getRows();
 
     public abstract String getValue();
 
