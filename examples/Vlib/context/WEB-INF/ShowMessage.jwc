@@ -4,6 +4,4 @@
   "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
 
-<component-specification
-	class="net.sf.tapestry.BaseComponent" 
-	allow-informal-parameters="no"/>
+<component-specification allow-informal-parameters="no"/>

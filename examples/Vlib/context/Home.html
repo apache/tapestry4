@@ -63,28 +63,28 @@
 				<span jwcid="@ShowMessage"/>
 				
 				
-				<form jwcid="@Form" listener="[[ listeners.search ]]">	
+				<form jwcid="@Form" listener="ognl:listeners.search">	
 					<table width="600" border="0" cellspacing="0" cellpadding="0">
 						<tr class="clsBold">
 							<td width="80" height="30">Title</td>
 							<td width="420">&nbsp;<input type="text" 
 							 jwcid="inputTitle@TextField" 
-							 value="[[ searchTitle ]]"
+							 value="ognl:searchTitle"
 							 displayWidth="30" maximumLength="100"
 							 class="inputTextForm"/></td>
 						</tr>
 						<tr class="clsBold">
 							<td height="30">Author</td>
 							<td>&nbsp;<input type="text" jwcid="inputAuthor@TextField"
-								value="[[ searchAuthor ]]"
+								value="ognl:searchAuthor"
 								displayWidth="30" maximumLength="100"
 							  class="inputTextForm"/></td>
 						</tr>
 						<tr class="clsBold">
 							<td height="30">Publisher</td>
 							<td>&nbsp;<select jwcid="inputPublisher@PropertySelection"
-							 value="[[ searchPublisherPK ]]"
-							 model="[[ engine.publisherModel ]]">
+							 value="ognl:searchPublisherPK"
+							 model="ognl:engine.publisherModel">
 									<option value="#">Choose a Publisher</option>
 									<option value="p1">Publisher 1</option>
 									<option value="p2">Publisher 2</option>

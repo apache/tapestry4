@@ -61,7 +61,7 @@
 <span jwcid="@Border" title="Add New Book">
 
 <span jwcid="@ShowError"/>
-<span jwcid="@ShowValidationError" delegate="[[ validationDelegate ]]"/>
+<span jwcid="@ShowValidationError" delegate="ognl:validationDelegate"/>
 
 				<form jwcid="form">	
 					<table width="600" border="0" cellspacing="0" cellpadding="0">
@@ -69,11 +69,11 @@
 							<td height="30" colspan="2">Required Fields*</td>
 						</tr>
 						<tr class="clsBold">
-							<td width="80" height="30"><span jwcid="@FieldLabel" field="[[ components.inputTitle ]]">Title</span>*</td>
+							<td width="80" height="30"><span jwcid="@FieldLabel" field="ognl:components.inputTitle">Title</span>*</td>
 							<td width="420">&nbsp;<input jwcid="inputTitle" type="text" class="inputTextForm" size="20"/></td>
 						</tr>
 						<tr class="clsBold">
-							<td height="30"><span jwcid="@FieldLabel" field="[[ components.inputAuthor ]]">Author</span>*</td>
+							<td height="30"><span jwcid="@FieldLabel" field="ognl:components.inputAuthor">Author</span>*</td>
 							<td>&nbsp;<input jwcid="inputAuthor" type="text" class="inputTextForm" size="20"/></td>
 						</tr>
 						<tr class="clsBold">
@@ -81,7 +81,7 @@
 							<td>&nbsp;<input jwcid="inputISBN" type="text" class="inputTextForm" size="20"/></td>
 						</tr>
 						<tr class="clsBold">
-							<td height="30"><span jwcid="@FieldLabel" field="[[ components.inputPublisherName ]]">Publisher</span>*</td>
+							<td height="30"><span jwcid="@FieldLabel" field="ognl:components.inputPublisherName">Publisher</span>*</td>
 							<td>&nbsp;<select jwcid="inputPublisher" name="publisher">
 									<option value="#">Choose a Publisher</option>
 									<option value="p1">Publisher 1</option>

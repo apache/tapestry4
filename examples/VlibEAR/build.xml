@@ -15,8 +15,8 @@
   	    <include name="META-INF/*"/>
   	  </fileset>
   	  <fileset dir="${lib.dir}">
-  	  	<include name="Vlib.war"/>
-  	  	<include name="VlibBeans.jar"/>
+  	  	<include name="${vlib.war}"/>
+  	  	<include name="${vlibbeans.jar}"/>
   	  </fileset>
   	</jar>
   

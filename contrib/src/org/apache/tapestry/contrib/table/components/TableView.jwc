@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+	
+<component-specification class="org.apache.tapestry.contrib.table.components.TableView" 
+	allow-body="yes" allow-informal-parameters="yes">
+	
+	<description>
+	</description>
+  
+	<parameter name="tableModel" 
+		type="org.apache.tapestry.contrib.table.model.ITableModel" 
+		required="yes"
+		direction="custom"/>
+  
+	<parameter name="tableSessionStateManager" 
+		type="org.apache.tapestry.contrib.table.model.ITableSessionStateManager" 
+		required="no"
+		direction="custom"/>
+  
+	<parameter name="tableSessionStoreManager" 
+		type="org.apache.tapestry.contrib.table.model.ITableSessionStoreManager" 
+		required="no"
+		direction="custom"/>
+
+	<parameter name="element" 
+		type="java.lang.String" 
+		required="no"
+		direction="custom"/>
+  
+	<component id="table" type="InheritInformalAny">
+		<binding name="element" expression="element"/>
+	</component>
+
+	<component id="insertWrapped" type="RenderBody"/>
+  
+</component-specification>

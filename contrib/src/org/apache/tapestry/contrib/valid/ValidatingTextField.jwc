@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+  
+<component-specification class="org.apache.tapestry.contrib.valid.ValidatingTextField" allow-body="no">
+
+  <parameter name="disabled" type="boolean" direction="in"/>  
+  <parameter name="hidden" type="boolean" direction="in"/>
+  <parameter name="displayWidth" type="int" direction="in"/>
+  <parameter name="maximumLength" type="int" direction="in"/>
+
+  <parameter name="text" type="java.lang.String" required="yes" direction="custom"/>
+  <parameter name="displayName" type="java.lang.String" required="yes" direction="custom" />
+  <parameter name="minimumLength" type="java.lang.Integer" direction="custom" />
+  <parameter name="required" direction="custom" />
+ 
+  <reserved-parameter name="type"/>
+  <reserved-parameter name="value"/>
+
+</component-specification>

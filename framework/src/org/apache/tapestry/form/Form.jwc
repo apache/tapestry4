@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+  
+<component-specification class="org.apache.tapestry.form.Form">
+
+  <description>
+  Used to implement an HTML form.
+  </description>
+
+  <parameter name="method" type="java.lang.String" direction="in">
+    <description>
+    The method used by the form when it is submitted, defaults to POST.
+    </description>
+  </parameter>
+  
+  <parameter name="listener" 
+  	type="org.apache.tapestry.IActionListener" 
+  	required="no"
+  	direction="in">
+    <description>
+  	Object invoked when the form is submitted, after all form components have responded
+  	to the submission.
+    </description>
+  </parameter>
+  
+  <parameter name="stateful" 
+  	type="boolean" 
+  	direction="custom">
+    <description>
+    If true (the default), then an active HttpSession is required.
+    </description>
+  </parameter>
+  
+  <parameter name="direct" type="boolean" direction="in">
+    <description>
+    If true (the default), then the more efficient direct service is used.
+    If false, then the action service is used.
+    </description>
+  </parameter>
+  
+  <parameter name="delegate" 
+  	type="org.apache.tapestry.valid.IValidationDelegate" direction="in">
+    <description>
+    Specifies the delegate to be used by fields to track input errors.
+    </description>
+  </parameter>
+
+  <reserved-parameter name="action"/>
+
+</component-specification>

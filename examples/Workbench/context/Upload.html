@@ -1,0 +1,46 @@
+<!-- $Id$ -->
+
+<span jwcid="$content$">
+
+<span jwcid="@Border">
+
+<p>The Upload component is used as a form element and allows files to be uploaded to Tapestry.  It can
+be freely mixed with other components in a form.
+
+<p>The following form allows you to upload a file and see a hexadecimal dump of it.
+
+<span jwcid="@ShowError" delegate="ognl:beans.delegate"/>
+
+<form jwcid="@Form" listener="ognl:listeners.formSubmit">
+
+<table class="form">
+	<tr>
+		<th>File:</th>
+		<td><input jwcid="@Upload" file="ognl:file" size="30"/></td>
+	</tr>
+	<tr>
+		<th>Options:</th>
+		<td>
+			<table class="form">
+				<tr>
+					<th><input jwcid="@Checkbox" selected="ognl:showAscii"/></th>
+					<td>Display ASCII</td>
+				</tr>
+				<tr>
+					<th><select jwcid="inputWidth"/></th>
+					<td>bytes per line</td>
+				</tr>
+			</table>
+	</tr>
+	
+	<tr>
+		<td></td>
+		<td><input jwcid="@ImageSubmit" image="ognl:assets.continue"/></td>
+	</tr>
+	
+</table>
+</form>
+
+</span>
+
+</span>

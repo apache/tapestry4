@@ -4,9 +4,9 @@
   "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
 	
-<component-specification class="net.sf.tapestry.BaseComponent" 
+<component-specification class="org.apache.tapestry.BaseComponent" 
 	allow-informal-parameters="no">
 
-  <parameter name="delegate" type="net.sf.tapestry.valid.IValidationDelegate" required="yes"/>
+  <parameter name="delegate" type="org.apache.tapestry.valid.IValidationDelegate" required="yes"/>
   
 </component-specification>

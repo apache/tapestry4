@@ -5,7 +5,7 @@
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
   
 <component-specification 
-	class="net.sf.tapestry.vlib.components.Border"
+	class="org.apache.tapestry.vlib.components.Border"
 	allow-informal-parameters="no">
 
   <parameter name="title" type="java.lang.String"/>

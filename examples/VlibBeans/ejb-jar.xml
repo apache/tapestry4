@@ -8,9 +8,9 @@
     <session>
       <display-name>KeyAllocator</display-name>
       <ejb-name>KeyAllocator</ejb-name>
-      <home>net.sf.tapestry.vlib.ejb.IKeyAllocatorHome</home>
-      <remote>net.sf.tapestry.vlib.ejb.IKeyAllocator</remote>
-      <ejb-class>net.sf.tapestry.vlib.ejb.impl.KeyAllocatorBean</ejb-class>
+      <home>org.apache.tapestry.vlib.ejb.IKeyAllocatorHome</home>
+      <remote>org.apache.tapestry.vlib.ejb.IKeyAllocator</remote>
+      <ejb-class>org.apache.tapestry.vlib.ejb.impl.KeyAllocatorBean</ejb-class>
       <session-type>Stateless</session-type>
       <transaction-type>Container</transaction-type>
       <env-entry>
@@ -29,9 +29,9 @@
     <session>
       <display-name>BookQuery</display-name>
       <ejb-name>BookQuery</ejb-name>
-      <home>net.sf.tapestry.vlib.ejb.IBookQueryHome</home>
-      <remote>net.sf.tapestry.vlib.ejb.IBookQuery</remote>
-      <ejb-class>net.sf.tapestry.vlib.ejb.impl.BookQueryBean</ejb-class>
+      <home>org.apache.tapestry.vlib.ejb.IBookQueryHome</home>
+      <remote>org.apache.tapestry.vlib.ejb.IBookQuery</remote>
+      <ejb-class>org.apache.tapestry.vlib.ejb.impl.BookQueryBean</ejb-class>
       <session-type>Stateful</session-type>
       <transaction-type>Container</transaction-type>
       <resource-ref>
@@ -43,28 +43,28 @@
     </session>
     <session>
       <ejb-name>Operations</ejb-name>
-      <home>net.sf.tapestry.vlib.ejb.IOperationsHome</home>
-      <remote>net.sf.tapestry.vlib.ejb.IOperations</remote>
-      <ejb-class>net.sf.tapestry.vlib.ejb.impl.OperationsBean</ejb-class>
+      <home>org.apache.tapestry.vlib.ejb.IOperationsHome</home>
+      <remote>org.apache.tapestry.vlib.ejb.IOperations</remote>
+      <ejb-class>org.apache.tapestry.vlib.ejb.impl.OperationsBean</ejb-class>
       <session-type>Stateless</session-type>
       <transaction-type>Container</transaction-type>
       <ejb-ref>
         <ejb-ref-name>ejb/Book</ejb-ref-name>
         <ejb-ref-type>Entity</ejb-ref-type>
-        <home>net.sf.tapestry.vlib.ejb.IBookHome</home>
-        <remote>net.sf.tapestry.vlib.ejb.IBook</remote>
+        <home>org.apache.tapestry.vlib.ejb.IBookHome</home>
+        <remote>org.apache.tapestry.vlib.ejb.IBook</remote>
       </ejb-ref>
       <ejb-ref>
         <ejb-ref-name>ejb/Person</ejb-ref-name>
         <ejb-ref-type>Entity</ejb-ref-type>
-        <home>net.sf.tapestry.vlib.ejb.IPersonHome</home>
-        <remote>net.sf.tapestry.vlib.ejb.IPerson</remote>
+        <home>org.apache.tapestry.vlib.ejb.IPersonHome</home>
+        <remote>org.apache.tapestry.vlib.ejb.IPerson</remote>
       </ejb-ref>
       <ejb-ref>
         <ejb-ref-name>ejb/Publisher</ejb-ref-name>
         <ejb-ref-type>Entity</ejb-ref-type>
-        <home>net.sf.tapestry.vlib.ejb.IPublisherHome</home>
-        <remote>net.sf.tapestry.vlib.ejb.IPublisher</remote>
+        <home>org.apache.tapestry.vlib.ejb.IPublisherHome</home>
+        <remote>org.apache.tapestry.vlib.ejb.IPublisher</remote>
       </ejb-ref>
       <resource-ref>
         <description>DataSource connected to the vlib database.</description>
@@ -77,9 +77,9 @@
     <entity>
       <display-name>Person</display-name>
       <ejb-name>Person</ejb-name>
-      <home>net.sf.tapestry.vlib.ejb.IPersonHome</home>
-      <remote>net.sf.tapestry.vlib.ejb.IPerson</remote>
-      <ejb-class>net.sf.tapestry.vlib.ejb.impl.PersonBean</ejb-class>
+      <home>org.apache.tapestry.vlib.ejb.IPersonHome</home>
+      <remote>org.apache.tapestry.vlib.ejb.IPerson</remote>
+      <ejb-class>org.apache.tapestry.vlib.ejb.impl.PersonBean</ejb-class>
       <persistence-type>Container</persistence-type>
       <prim-key-class>java.lang.Integer</prim-key-class>
       <reentrant>False</reentrant>
@@ -149,17 +149,17 @@
         <description/>
         <ejb-ref-name>ejb/KeyAllocator</ejb-ref-name>
         <ejb-ref-type>Session</ejb-ref-type>
-        <home>net.sf.tapestry.vlib.ejb.IKeyAllocatorHome</home>
-        <remote>net.sf.tapestry.vlib.ejb.IKeyAllocator</remote>
+        <home>org.apache.tapestry.vlib.ejb.IKeyAllocatorHome</home>
+        <remote>org.apache.tapestry.vlib.ejb.IKeyAllocator</remote>
       </ejb-ref>
     </entity>
     
     <entity>
       <display-name>Book</display-name>
       <ejb-name>Book</ejb-name>
-      <home>net.sf.tapestry.vlib.ejb.IBookHome</home>
-      <remote>net.sf.tapestry.vlib.ejb.IBook</remote>
-      <ejb-class>net.sf.tapestry.vlib.ejb.impl.BookBean</ejb-class>
+      <home>org.apache.tapestry.vlib.ejb.IBookHome</home>
+      <remote>org.apache.tapestry.vlib.ejb.IBook</remote>
+      <ejb-class>org.apache.tapestry.vlib.ejb.impl.BookBean</ejb-class>
       <persistence-type>Container</persistence-type>
       <prim-key-class>java.lang.Integer</prim-key-class>
       <reentrant>False</reentrant>
@@ -213,17 +213,17 @@
         <description/>
         <ejb-ref-name>ejb/KeyAllocator</ejb-ref-name>
         <ejb-ref-type>Session</ejb-ref-type>
-        <home>net.sf.tapestry.vlib.ejb.IKeyAllocatorHome</home>
-        <remote>net.sf.tapestry.vlib.ejb.IKeyAllocator</remote>
+        <home>org.apache.tapestry.vlib.ejb.IKeyAllocatorHome</home>
+        <remote>org.apache.tapestry.vlib.ejb.IKeyAllocator</remote>
       </ejb-ref>
     </entity>
 
     <entity>
       <display-name>Publisher</display-name>
       <ejb-name>Publisher</ejb-name>
-      <home>net.sf.tapestry.vlib.ejb.IPublisherHome</home>
-      <remote>net.sf.tapestry.vlib.ejb.IPublisher</remote>
-      <ejb-class>net.sf.tapestry.vlib.ejb.impl.PublisherBean</ejb-class>
+      <home>org.apache.tapestry.vlib.ejb.IPublisherHome</home>
+      <remote>org.apache.tapestry.vlib.ejb.IPublisher</remote>
+      <ejb-class>org.apache.tapestry.vlib.ejb.impl.PublisherBean</ejb-class>
       <persistence-type>Container</persistence-type>
       <prim-key-class>java.lang.Integer</prim-key-class>
       <reentrant>False</reentrant>
@@ -258,8 +258,8 @@
         <description/>
         <ejb-ref-name>ejb/KeyAllocator</ejb-ref-name>
         <ejb-ref-type>Session</ejb-ref-type>
-        <home>net.sf.tapestry.vlib.ejb.IKeyAllocatorHome</home>
-        <remote>net.sf.tapestry.vlib.ejb.IKeyAllocator</remote>
+        <home>org.apache.tapestry.vlib.ejb.IKeyAllocatorHome</home>
+        <remote>org.apache.tapestry.vlib.ejb.IKeyAllocator</remote>
       </ejb-ref>
     </entity>
     
@@ -267,7 +267,7 @@
     
     <message-driven>
       <ejb-name>MailQueue</ejb-name>
-      <ejb-class>net.sf.tapestry.vlib.ejb.impl.MailQueueBean</ejb-class>
+      <ejb-class>org.apache.tapestry.vlib.ejb.impl.MailQueueBean</ejb-class>
       <transaction-type>Bean</transaction-type>
       <message-selector/>
       <acknowledge-mode>AUTO_ACKNOWLEDGE</acknowledge-mode>
@@ -278,8 +278,8 @@
       <ejb-ref>
         <ejb-ref-name>ejb/MailSender</ejb-ref-name>
         <ejb-ref-type>Session</ejb-ref-type>
-        <home>net.sf.tapestry.vlib.ejb.IMailSenderHome</home>
-        <remote>net.sf.tapestry.vlib.ejb.IMailSender</remote>
+        <home>org.apache.tapestry.vlib.ejb.IMailSenderHome</home>
+        <remote>org.apache.tapestry.vlib.ejb.IMailSender</remote>
       </ejb-ref>
     </message-driven>
     

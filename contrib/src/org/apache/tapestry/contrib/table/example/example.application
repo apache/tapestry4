@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--$Id$-->
+<!DOCTYPE application PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+
+<application name="Table" engine-class="org.apache.tapestry.engine.SimpleEngine">
+
+    <page name="Home" specification-path="minimal/Home.page"/>
+
+	<library id="contrib" specification-path="/org/apache/tapestry/contrib/Contrib.library"/>
+	
+</application>

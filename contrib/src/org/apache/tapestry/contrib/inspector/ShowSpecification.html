@@ -1,0 +1,161 @@
+<!-- $Id$ -->
+
+<table>
+<tr valign=top>
+<td>
+
+<table class="inspector-data" width="100%">
+	<tr class="even">
+		<th>Specification Resource Location</th>
+		<td><span jwcid="@Insert" value="ognl:inspectedSpecification.specificationLocation"/>
+		<span jwcid="@ShowDescription" description="ognl:inspectedSpecification.description"/>
+		</td>
+	</tr>
+	
+	<tr class="odd">
+		<th>Java class</th>
+		<td><span jwcid="@Insert" value="ognl:inspectedComponent.getClass().getName()"/></td>
+	</tr>
+
+<span jwcid="@Conditional" condition="ognl:! inspectedSpecification.pageSpecification">
+
+	<tr class="even">
+		<th>Allow informal parameters</th>
+		<td><span jwcid="@Insert" value="ognl:inspectedSpecification.allowInformalParameters"/></td>
+	</tr>
+
+	<tr class="odd">
+		<th>Allow body</th>
+		<td><span jwcid="@Insert" value="ognl:inspectedSpecification.allowBody"/></td>
+	</tr>
+	
+</span>
+	
+</table>
+
+<span jwcid="@Conditional" condition="ognl:formalParameterNames">
+
+<table class="inspector-data" width="100%">
+	<tr class="heading">
+		<th colspan=4>Formal Parameters</th>
+	</tr>
+	<tr class="heading">
+		<th>Name</th> <th>Required</th> <th>Java type</th> <th>Binding</th>
+	</tr>
+
+	<tr jwcid="e_formal">
+		<td><span jwcid="@Insert" value="ognl:parameterName"/>
+		<span jwcid="@ShowDescription" description="ognl:parameterSpecification.description"/>
+		</td>
+		<td><span jwcid="@Insert" value="ognl:parameterSpecification.required"/></td>
+		<td><span jwcid="@Insert" value="ognl:parameterSpecification.type"/></td>
+		<td><span jwcid="@Insert" value="ognl:binding"/></td>
+	</tr>
+
+</table>
+</span>
+
+<span jwcid="@Conditional" condition="ognl:informalParameterNames">
+
+<table class="inspector-data" width="100%">
+	<tr class="heading">
+		<th colspan=2>Informal Parameters</th>
+	</tr>
+	<tr class="heading">
+		<th>Name</th> <th>Binding</th>
+	</tr>
+
+	<tr jwcid="e_informal">
+		<td><span jwcid="@Insert" value="ognl:parameterName"/></td>
+		<td><span jwcid="@Insert" value="ognl:binding"/></td>
+	</tr>
+
+</table>
+</span>
+
+<span jwcid="@Conditional" condition="ognl:assetNames">
+
+<table class="inspector-data"  width="100%">
+	<tr class="heading">
+		<th colspan=2>Assets</th>
+	</tr>
+	<tr class="heading">
+		<th>Name</th> <th>Asset</th>
+	</tr>
+
+	<tr jwcid="e_asset">
+		<td><span jwcid="@Insert" value="ognl:assetName"/></td>
+		<td><span jwcid="@Insert" value="ognl:asset"/></td>
+	</tr>
+
+
+</table>
+</span>
+
+<span jwcid="@Conditional" condition="ognl:sortedPropertyNames">
+
+<table class="inspector-data" width="100%">
+	<tr class="heading">
+		<th colspan=2>Properties</th>
+	</tr>
+	<tr class="heading">
+		<th>Name</th> <th>Property</th>
+	</tr>
+
+	<tr jwcid="e_property">
+		<th><span jwcid="@Insert" value="ognl:propertyName"/></th>
+		<td><span jwcid="@Insert" value="ognl:propertyValue"/></td>
+	</tr>
+
+</table>
+</span>
+
+<span jwcid="@Conditional" condition="ognl:beanNames">
+
+<table class="inspector-data" width="100%">
+	<tr class="heading">
+		<th colspan=3>Helper Beans</th>
+	</tr>
+	
+	<tr class="heading">
+		<th>Name</th> <th>Class</th> <th>Lifecycle</th>
+	</tr>
+	
+	<tr jwcid="e_bean">
+		<td><span jwcid="@Insert" value="ognl:beanName"/></td>
+		<td><span jwcid="@Insert" value="ognl:beanSpecification.className"/></td>
+		<td><span jwcid="@Insert" value="ognl:beanSpecification.lifecycle.name"/></td>
+	</tr>
+	
+</table>
+</span>
+
+</td>
+
+<td>
+<span jwcid="@Conditional" condition="ognl:sortedComponents">
+
+<table border="0" class="inspector-data">
+
+	<tr class="heading">
+		<th colspan=2>Embedded Components</th>
+	</tr>
+	<tr class="heading">
+		<th>Id</th> <th>Type</th>
+	</tr>
+
+	<tr jwcid="e_components">
+		<td>
+			<a jwcid="selectComponent"><span jwcid="@Insert" value="ognl:component.id"/></a>
+		</td>
+		<td>
+			<span jwcid="@Insert" value="ognl:componentType"/>
+		</td>
+	</tr>
+
+</table>
+</span>
+
+</td>
+</tr>
+</table>

@@ -4,7 +4,7 @@
   "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
   "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
 	
-<page-specification class="net.sf.tapestry.vlib.pages.Matches">
+<page-specification class="org.apache.tapestry.vlib.pages.Matches">
 
   <component id="border" type="Border">
     <static-binding name="title">Matching Books</static-binding>

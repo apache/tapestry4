@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE script PUBLIC
+	"-//Howard Lewis Ship//Tapestry Script 1.2//EN"
+	"http://tapestry.sf.net/dtd/Script_1_2.dtd">
+  
+<script>
+
+<include-script resource-path="/org/apache/tapestry/contrib/form/MaskEdit.js"/>
+
+<input-symbol key="maskEdit" class="org.apache.tapestry.form.TextField" required="yes"/>
+<input-symbol key="maskValue" class="org.apache.tapestry.form.Hidden" required="yes"/>
+
+<let key="formName">
+  ${maskEdit.form.name}
+</let>
+
+<let key="functionName">
+  ${maskEdit.name}_init
+</let>
+
+
+<body>
+function ${functionName}() {
+  initMask(document.${formName}.${maskEdit.name},
+           document.${formName}.${maskValue.name});
+}
+</body>
+
+<initialization>
+  ${functionName}();
+</initialization>
+
+</script>
+

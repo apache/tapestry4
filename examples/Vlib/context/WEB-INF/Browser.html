@@ -2,20 +2,20 @@
 
 <span jwcid="$content$">
 
-<span jwcid="@Conditional" condition="[[ resultCount > 0 ]]">
+<span jwcid="@Conditional" condition="ognl:resultCount > 0">
 
-<br>Showing <span jwcid="@Insert" value="[[ range ]]">X - Y</span>
+<br>Showing <span jwcid="@Insert" value="ognl:range">X - Y</span>
 
-<span jwcid="@Conditional" condition="[[ currentPage &gt; 1 ]]">
+<span jwcid="@Conditional" condition="ognl:currentPage &gt; 1">
 // <a jwcid="prev@DirectLink"
-	listener="[[ listeners.jump ]]"
-	parameters="[[ @@max(currentPage - 1, 1) ]]">prev</a>
+	listener="ognl:listeners.jump"
+	parameters="ognl:@@max(currentPage - 1, 1)">prev</a>
 </span>
 
-<span jwcid="@Conditional" condition="[[ currentPage &lt; pageCount ]]">
+<span jwcid="@Conditional" condition="ognl:currentPage &lt; pageCount">
 // <a jwcid="next@DirectLink"
-	listener="[[ listeners.jump ]]"
-	parameters="[[ @@min(currentPage + 1, pageCount) ]]">next</a>
+	listener="ognl:listeners.jump"
+	parameters="ognl:@@min(currentPage + 1, pageCount)">next</a>
 </span>
 
 <br>
