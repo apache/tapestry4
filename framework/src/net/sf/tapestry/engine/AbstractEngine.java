@@ -985,8 +985,6 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
      *
      * <p>The context path is retrieved from {@link HttpServletRequest#getContextPath()}.
      *
-     * <p>The global object is retrieved from {@link RequestContext#getGlobal()} method.
-     *
      * <p>The final path is available via the {@link #getServletPath()} method.
      *
      *  <p>In addition, this method locates and/or creates the:

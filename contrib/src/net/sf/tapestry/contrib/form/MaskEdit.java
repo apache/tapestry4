@@ -96,6 +96,7 @@ import net.sf.tapestry.IBinding;
  * [<a href="../../../../../ComponentReference/MaskEdit.html">Component Reference</a>]
  *
  * @author Malcolm Edgar
+ * @author Paul Geerts
  * @version $Id$
  * @since 2.3
  *
