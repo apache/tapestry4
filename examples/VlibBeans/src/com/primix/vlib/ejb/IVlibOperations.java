@@ -54,4 +54,29 @@ public interface IVlibOperations extends EJBObject
 	 
 	public IBook borrowBook(Integer bookPrimaryKey, Integer borrowerPrimaryKey)
 	throws FinderException, RemoteException;
+
+	/**
+	 *  Adds a book which will be owned and held by the specified owner.
+	 *
+	 *  <p>Returns the newly created book.
+	 */
+
+	public IBook addBook(Integer ownerPK, String title, String ISBN, String description,
+						 Integer publisherPK)
+	throws CreateException, RemoteException;
+
+
+	/**
+	 *  Adds a book, which will be owned and help by the specified owner.
+	 *
+	 * <p>The publisherName may either be the name of a known publisher, or
+	 * a new name.  A new {@link IPublisher} will be created as necessary.
+	 *
+	 * <p>Returns the newly created book.
+	 *
+	 */
+	 
+	public IBook addBook(Integer ownerPK, String title, String ISBN, String description,
+						 String publisherName)
+	throws CreateException, RemoteException;	
 }

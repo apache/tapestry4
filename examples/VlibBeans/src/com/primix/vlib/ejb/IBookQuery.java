@@ -70,4 +70,20 @@ public interface IBookQuery extends EJBObject
 	 
 	public int titleQuery(String title, Object publisherPK)
 	throws RemoteException;
+
+	/**
+	 *  Queries on books owned by a given person, sorted by title.
+	 *
+	 */
+	 
+	public int ownerQuery(Integer ownerPK)
+	throws RemoteException;
+	
+	/**
+	 *  Queries on books held by a given person, sorted by title.
+	 *
+	 */
+	 
+	public int holderQuery(Integer holderPK)
+	throws RemoteException;	
 }

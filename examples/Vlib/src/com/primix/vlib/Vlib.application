@@ -19,6 +19,10 @@
 		<name>matches</name>
 		<specification-path>/com/primix/vlib/pages/Matches.jwc</specification-path>
 	</page>
+	<page>
+		<name>mybooks</name>
+		<specification-path>/com/primix/vlib/pages/MyBooks.jwc</specification-path>
+	</page>
 	<component-alias>
 		<alias>Border</alias>
 		<specification-path>/com/primix/vlib/components/Border.jwc</specification-path>
