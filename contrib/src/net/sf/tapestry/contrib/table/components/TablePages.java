@@ -25,9 +25,7 @@
 
 package net.sf.tapestry.contrib.table.components;
 
-import java.awt.event.ComponentAdapter;
-
-import net.sf.tapestry.BaseComponent;
+import net.sf.tapestry.ComponentAddress;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
