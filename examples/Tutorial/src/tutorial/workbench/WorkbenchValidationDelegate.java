@@ -48,7 +48,7 @@ public class WorkbenchValidationDelegate
 		IRequestCycle cycle)
 		throws RequestCycleException
 	{
-		if (currentTracking != null)
+		if (isInError())
 			writer.attribute("class", "field-error");
 	}
 
@@ -56,7 +56,7 @@ public class WorkbenchValidationDelegate
 		IResponseWriter writer,
 		IRequestCycle cycle)
 	{
-		if (currentTracking != null)
+		if (isInError())
 		{
 			writer.print(" ");
 			writer.beginEmpty("img");

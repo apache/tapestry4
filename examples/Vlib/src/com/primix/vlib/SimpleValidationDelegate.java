@@ -67,7 +67,7 @@ public class SimpleValidationDelegate extends ValidationDelegate
 	public void writePrefix(IResponseWriter writer, IRequestCycle cycle)
 		throws RequestCycleException
 	{
-		if (currentTracking != null)
+		if (isInError())
 		{
 			writer.begin("span");
 			writer.attribute("class", "error");
@@ -78,7 +78,7 @@ public class SimpleValidationDelegate extends ValidationDelegate
 		IResponseWriter writer,
 		IRequestCycle cycle)
 	{
-		if (currentTracking != null)
+		if (isInError())
 			writer.end(); // <span>
 	}
 
