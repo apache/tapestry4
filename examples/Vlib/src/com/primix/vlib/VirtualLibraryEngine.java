@@ -492,4 +492,28 @@ public class VirtualLibraryEngine
 		
 	}
 
+	/**
+	 *  Creates a new {@link IBookQuery} EJB instance.
+	 *
+	 */
+	
+	public IBookQuery createNewQuery()
+    {
+		IBookQueryHome home = getBookQueryHome();
+		
+		try
+		{
+			return home.create();
+		}
+		catch (CreateException e)
+		{
+			throw new ApplicationRuntimeException("Could not create BookQuery bean: " + e, e);
+		}
+		catch (RemoteException e)
+		{
+			throw new ApplicationRuntimeException(e.getMessage(), e);
+		}
+		
+	}
+
 }

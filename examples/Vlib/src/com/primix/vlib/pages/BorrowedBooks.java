@@ -101,9 +101,9 @@ public class BorrowedBooks
 		
 		try
 		{
-			IBookQuery query =getBorrowedQuery();
+			IBookQuery query = getBorrowedQuery();
 			int count = query.borrowerQuery(userPK);
-
+			
 			if (count != browser.getResultCount())
 				browser.initializeForResultCount(count);
 		}
@@ -113,28 +113,6 @@ public class BorrowedBooks
 		}
     }
 		
-    private IBookQuery getNewQuery()
-    {
-		// Create a new query.
-		
-		VirtualLibraryEngine vengine = (VirtualLibraryEngine)engine;
-		IBookQueryHome home = vengine.getBookQueryHome();
-		
-		try
-		{
-			return home.create();
-		}
-		catch (CreateException e)
-		{
-			throw new ApplicationRuntimeException("Could not create BookQuery bean: " + e, e);
-		}
-		catch (RemoteException e)
-		{
-			throw new ApplicationRuntimeException(e.getMessage(), e);
-		}
-		
-	}
-	
     public void setBorrowedQuery(IBookQuery value)
     {
 		borrowedQuery = value;
@@ -145,7 +123,10 @@ public class BorrowedBooks
     public IBookQuery getBorrowedQuery()
     {
 		if (borrowedQuery == null)
-			setBorrowedQuery(getNewQuery());
+		{
+			VirtualLibraryEngine vengine = (VirtualLibraryEngine)getEngine();
+			setBorrowedQuery(vengine.createNewQuery());
+		}
 		
 		return borrowedQuery;
     }

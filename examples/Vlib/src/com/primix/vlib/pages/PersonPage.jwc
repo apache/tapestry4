@@ -17,13 +17,19 @@
     <binding name="value" property-path="email"/>
   </component>
   <component id="insertMatchCount" type="Insert">
-    <binding name="value" property-path="matchCount"/>
+    <binding name="value" property-path="components.browser.resultCount"/>
   </component>
-  <component id="ifShowHeader" type="Conditional">
-    <binding name="condition" property-path="matchCount"/>
+  
+  <component id="ifBooks" type="Conditional">
+    <binding name="condition" property-path="components.browser.resultCount"/>
   </component>
-  <component id="e-match" type="Foreach">
-    <binding name="source" property-path="matches"/>
+  
+  <component id="browser" type="Browser">
+    <binding name="query" property-path="query"/>
+  </component>
+  
+  <component id="e" type="Foreach">
+    <binding name="source" property-path="components.browser.pageResults"/>
     <binding name="value" property-path="currentMatch"/>
   </component>
   <component id="bookLink" type="BookLink">
@@ -45,7 +51,5 @@
   <component id="borrow" type="Borrow">
     <binding name="book" property-path="currentMatch"/>
   </component>
-  <component id="ifShowTrailer" type="Conditional">
-    <binding name="condition" property-path="matchCount"/>
-  </component>
+
 </specification>
