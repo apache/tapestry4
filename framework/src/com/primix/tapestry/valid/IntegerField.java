@@ -128,8 +128,7 @@ import java.text.*;
  *
  *	</table>
  *
- *  <p>May not contain a body.  May have informal parameters,
- *  which are applied to the underlying {@link TextField}.
+ *  <p>May not contain a body.  May have informal parameters.
  *
  *  @author Howard Ship
  *  @version $Id$

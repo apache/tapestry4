@@ -144,6 +144,19 @@ abstract public class ApplicationServlet
 		Boolean.getBoolean("com.primix.tapestry.store-engine");
 	
 	/**
+	 *  Invokes {@link #doService(HttpServletRequest, HttpServletResponse)}.
+	 *
+	 *  @since 1.0.6
+	 *
+	 */
+	
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+		throws IOException, ServletException
+	{
+		doService(request, response);
+	}
+	
+	/**
 	 * Handles the GET and POST requests. Performs the following:
 	 * <ul>
 	 * <li>Construct a {@link RequestContext}
@@ -152,7 +165,7 @@ abstract public class ApplicationServlet
 	 * </ul>
 	 */
 	
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
+	protected void doService(HttpServletRequest request, HttpServletResponse response)
 		throws IOException, ServletException
 	{
 		RequestContext context;
@@ -271,13 +284,15 @@ abstract public class ApplicationServlet
 	
 	
 	/**
-	 * Respond the same to a POST as to a GET.
+	 *  Invokes {@link #doService(HttpServletRequest, HttpServletResponse)}.
+	 *
+	 *
 	 */
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
 		throws IOException, ServletException
 	{
-		doGet(request, response);
+		doService(request, response);
 	}
 	
 	/**

@@ -254,7 +254,7 @@ public class MultiplePropertySelection extends AbstractFormComponent
 		// Check the renderer first
 		if (rendererBinding != null)
 			renderer = (IMultiplePropertySelectionRenderer)rendererBinding.getObject(
-				"renderer", IPropertySelectionRenderer.class);
+				"renderer", IMultiplePropertySelectionRenderer.class);
 		
 		if (renderer == null)
 			renderer = DEFAULT_CHECKBOX_RENDERER;

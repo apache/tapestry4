@@ -1,3 +1,29 @@
+* Sep 10 2001 hship
+
+doc:
+- Fix minor errors in Developer's Guide
+
+framework:
+- Fix error in IntegerField.jwc
+- Fix some incorrect JavaDoc comments
+- Create method ApplicationServlet.doService, which will make it easier
+  to analyze performance
+  
+contrib:
+- Fix error in MultiplePropertySelection (was using IPropertySelectionRenderer
+  not IMultiplePropertySelectionRenderer).
+
+vlib:
+- Add icons, CSS styles and support for info and warning messages
+
+tutorial, vlib, wap:
+- Fix DTD in web.xml (2.2 not 1.2)
+
+
+[ #460383 ] web.xml DTD wrong
+[ #460384 ] MultiPropertySelection render binding
+[ #460387 ] IntegerField.jwc wrong
+
 * Sep 4 2001 hship
 
 Release 1.0.5
