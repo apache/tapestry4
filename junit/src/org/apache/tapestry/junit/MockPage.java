@@ -70,6 +70,7 @@ import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.event.ChangeObserver;
 import org.apache.tapestry.event.PageDetachListener;
@@ -77,6 +78,7 @@ import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.event.PageValidateListener;
 import org.apache.tapestry.spec.BaseLocatable;
 import org.apache.tapestry.spec.IComponentSpecification;
+import org.apache.tapestry.util.prop.OgnlUtils;
 
 /**
  *  Fake implementation of {@link IPage} used during unit testing.
@@ -365,5 +367,14 @@ public class MockPage extends BaseLocatable implements IPage
     {
         return getString(key);
     }
+
+	public void setProperty(String propertyName, Object value)
+	{
+	}
+
+	public Object getProperty(String propertyName)
+	{
+		return null;
+	}
 
 }

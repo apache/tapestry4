@@ -377,4 +377,19 @@ public interface IComponent extends IRender, ILocationHolder
      **/
 
     public void setNamespace(INamespace namespace);
+    
+    /**
+     *  Sets a property of a component.
+     *  @param propertyName the property name
+     *  @param value the provided value
+     */
+	public void setProperty(String propertyName, Object value);
+	
+	/**
+	 *  Gets a property of a component.
+	 *  @param propertyName the property name
+	 *  @return Object the value of property
+	 */
+	public Object getProperty(String propertyName);
+
 }

@@ -23,13 +23,13 @@
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation", "Tapestry" 
+ * 4. The names "Apache" and "Apache Software Foundation", "Tapestry"
  *    must not be used to endorse or promote products derived from this
  *    software without prior written permission. For written
  *    permission, please contact apache@apache.org.
  *
- * 5. Products derived from this software may not be called "Apache" 
- *    or "Tapestry", nor may "Apache" or "Tapestry" appear in their 
+ * 5. Products derived from this software may not be called "Apache"
+ *    or "Tapestry", nor may "Apache" or "Tapestry" appear in their
  *    name, without prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -113,17 +113,16 @@ import org.apache.tapestry.util.SystemPropertiesPropertySource;
 import org.apache.tapestry.util.exception.ExceptionAnalyzer;
 import org.apache.tapestry.util.io.DataSqueezer;
 import org.apache.tapestry.util.pool.Pool;
-import org.apache.tapestry.util.prop.OgnlUtils;
 
 /**
  *  Basis for building real Tapestry applications.  Immediate subclasses
  *  provide different strategies for managing page state and other resources
- *  between request cycles.  
+ *  between request cycles.
  *
  *  Uses a shared instance of
  *  {@link ITemplateSource}, {@link ISpecificationSource},
  *  {@link IScriptSource} and {@link org.apache.tapestry.IComponentStringsSource}
- *  stored as attributes of the  {@link ServletContext} 
+ *  stored as attributes of the  {@link ServletContext}
  *  (they will be shared by all sessions).
  *
  *  <p>An application is designed to be very lightweight.
@@ -135,7 +134,7 @@ import org.apache.tapestry.util.prop.OgnlUtils;
  * can be restored inside {@link #setupForRequest(RequestContext)}.
  *
  *  <p>In practice, a subclass (usually {@link BaseEngine})
- *  is used without subclassing.  Instead, a 
+ *  is used without subclassing.  Instead, a
  *  visit object is specified.  To facilitate this, the application specification
  *  may include a property, <code>org.apache.tapestry.visit-class</code>
  *  which is the class name  to instantiate when a visit object is first needed.  See
@@ -164,7 +163,7 @@ import org.apache.tapestry.util.prop.OgnlUtils;
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- * 
+ *
  **/
 
 public abstract class AbstractEngine
@@ -174,7 +173,7 @@ public abstract class AbstractEngine
 
     /**
      *  @since 2.0.4
-     * 
+     *
      **/
 
     private static final long serialVersionUID = 6884834397673817117L;
@@ -211,9 +210,9 @@ public abstract class AbstractEngine
     /**
      *  The base name for the servlet context key used to store
      *  the application-defined Global object, if any.
-     * 
+     *
      *  @since 2.3
-     * 
+     *
      **/
 
     public static final String GLOBAL_NAME = "org.apache.tapestry.global";
@@ -221,7 +220,7 @@ public abstract class AbstractEngine
     /**
      *  The name of the application property that will be used to
      *  determine the encoding to use when generating the output
-     * 
+     *
      *  @since 3.0
      **/
 
@@ -229,9 +228,9 @@ public abstract class AbstractEngine
         "org.apache.tapestry.output-encoding";
 
     /**
-     *  The default encoding that will be used when generating the output. 
+     *  The default encoding that will be used when generating the output.
      *  It is used if no output encoding property has been specified.
-     * 
+     *
      *  @since 3.0
      */
 
@@ -293,7 +292,7 @@ public abstract class AbstractEngine
 
     private transient IScriptSource _scriptSource;
 
-    /** 
+    /**
      *  The name of the context attribute for the {@link IScriptSource} instance.
      *  The application's name is appended.
      *
@@ -306,9 +305,9 @@ public abstract class AbstractEngine
     /**
      *  The name of the context attribute for the {@link org.apache.tapestry.IComponentStringsSource}
      *  instance.  The application's name is appended.
-     * 
+     *
      *  @since 2.0.4
-     * 
+     *
      **/
 
     protected static final String STRINGS_SOURCE_NAME = "org.apache.tapestry.StringsSource";
@@ -353,9 +352,9 @@ public abstract class AbstractEngine
      *  of {@link DataSqueezer}.  The instance is actually shared
      *  between Tapestry applications within the same context
      *  (which will have the same ClassLoader).
-     * 
+     *
      *  @since 2.2
-     * 
+     *
      **/
 
     protected static final String DATA_SQUEEZER_NAME = "org.apache.tapestry.DataSqueezer";
@@ -397,7 +396,7 @@ public abstract class AbstractEngine
     /**
      *  Constant used to store a {@link org.apache.tapestry.util.IPropertyHolder}
      *  in the servlet context.
-     * 
+     *
      *  @since 2.3
      *
      **/
@@ -406,19 +405,19 @@ public abstract class AbstractEngine
 
     /**
      *  A shared instance of {@link IPropertySource}
-     *  
+     *
      *  @since 3.0
      *  @see #createPropertySource(RequestContext)
-     * 
+     *
      **/
 
     private transient IPropertySource _propertySource;
 
     /**
      *  Map from service name to service instance.
-     * 
+     *
      *  @since 1.0.9
-     * 
+     *
      **/
 
     private transient Map _serviceMap;
@@ -427,10 +426,10 @@ public abstract class AbstractEngine
 
     /**
      *  A shared instance of {@link Pool}.
-     * 
+     *
      *  @since 3.0
      *  @see #createPool(RequestContext)
-     * 
+     *
      **/
 
     private transient Pool _pool;
@@ -440,19 +439,19 @@ public abstract class AbstractEngine
     /**
      *  Name of a shared instance of {@link org.apache.tapestry.IComponentClassEnhancer}
      *  stored in the {@link ServletContext}.
-     * 
+     *
      *  @since 3.0
-     * 
+     *
      **/
 
     protected static final String ENHANCER_NAME = "org.apache.tapestry.ComponentClassEnhancer";
 
     /**
      *  A shared instance of {@link org.apache.tapestry.IComponentClassEnhancer}.
-     * 
+     *
      *  @since 3.0
      *  @see #createComponentClassEnhancer(RequestContext)
-     * 
+     *
      **/
 
     private transient IComponentClassEnhancer _enhancer;
@@ -461,17 +460,17 @@ public abstract class AbstractEngine
      *  Set to true when there is a (potential)
      *  change to the internal state of the engine, set
      *  to false when the engine is stored into the
-     *  {@link HttpSession}.  
-     * 
+     *  {@link HttpSession}.
+     *
      *  @since 3.0
-     * 
+     *
      **/
 
     private transient boolean _dirty;
 
     /**
      * The instance of {@link IMonitorFactory} used to create a monitor.
-     * 
+     *
      * @since 3.0
      */
 
@@ -495,7 +494,7 @@ public abstract class AbstractEngine
         {
             IPage exceptionPage = cycle.getPage(getExceptionPageName());
 
-            setProperty(exceptionPage, "exception", cause);
+            exceptionPage.setProperty("exception", cause);
 
             cycle.activate(exceptionPage);
 
@@ -565,7 +564,7 @@ public abstract class AbstractEngine
      *  does nothing.
      *
      *  @see #toString()
-     * 
+     *
      **/
 
     protected void extendDescription(ToStringBuilder builder)
@@ -591,12 +590,12 @@ public abstract class AbstractEngine
      * by the {@link RequestContext}.
      *
      * <p>The monitor is used to create a {@link RequestCycle}.
-     * 
+     *
      * <p>This implementation uses a {@link IMonitorFactory}
      * to create the monitor instance.  The factory
      * is provided as an application extension.  If the application
      * extension does not exist, {@link DefaultMonitorFactory} is used.
-     * 
+     *
      * <p>As of release 3.0, this method should <em>not</em> return null.
      *
      *
@@ -649,7 +648,7 @@ public abstract class AbstractEngine
      * are recognized as belonging to the Servlet 2.2 context.
      *
      *  @see org.apache.tapestry.asset.ContextAsset
-     * 
+     *
      **/
 
     public String getContextPath()
@@ -1002,9 +1001,9 @@ public abstract class AbstractEngine
      *  executing {@link IPage#validate(IRequestCycle)} on the target page
      *  (of the exception), until either a loop is found, or a page
      *  succesfully validates and can be activated.
-     * 
+     *
      *  <p>This should generally not be overriden in subclasses.
-     * 
+     *
      *  @since 3.0
      */
 
@@ -1071,9 +1070,9 @@ public abstract class AbstractEngine
      *  Invoked from {@link #service(RequestContext)} to create an instance of
      *  {@link IRequestCycle} for the current request.  This implementation creates
      *  an returns an instance of {@link RequestCycle}.
-     * 
+     *
      *  @since 3.0
-     * 
+     *
      **/
 
     protected IRequestCycle createRequestCycle(
@@ -1089,24 +1088,24 @@ public abstract class AbstractEngine
      *  is thrown by the {@link IEngineService service}.  This implementation
      *  sets the message property of the StaleLink page to the
      *  message provided in the exception,
-     *  then invokes 
+     *  then invokes
      *  {@link #redirect(String, IRequestCycle, ResponseOutputStream, RequestCycleException)}
      *  to render the StaleLink page.
      *
      *  <p>Subclasses may overide this method (without
      *  invoking this implementation).  A common practice
      *  is to present an error message on the application's
-     *  Home page.	
-     * 
-     *  <p>Alternately, the application may provide its own version of 
+     *  Home page.
+     *
+     *  <p>Alternately, the application may provide its own version of
      *  the StaleLink page, overriding
      *  the framework's implementation (probably a good idea, because the
-     *  default page hints at "application errors" and isn't localized).  
+     *  default page hints at "application errors" and isn't localized).
      *  The overriding StaleLink implementation must
      *  implement a message property of type String.
      *
      *  @since 0.2.10
-     * 
+     *
      **/
 
     protected void handleStaleLinkException(
@@ -1118,7 +1117,7 @@ public abstract class AbstractEngine
         String staleLinkPageName = getStaleLinkPageName();
         IPage page = cycle.getPage(staleLinkPageName);
 
-        setProperty(page, "message", ex.getMessage());
+        page.setProperty("message", ex.getMessage());
 
         redirect(staleLinkPageName, cycle, output, ex);
     }
@@ -1126,14 +1125,14 @@ public abstract class AbstractEngine
     /**
      *  Invoked by {@link #service(RequestContext)} if a {@link StaleSessionException}
      *  is thrown by the {@link IEngineService service}.  This implementation
-     *  invokes 
+     *  invokes
      *  {@link #redirect(String, IRequestCycle, ResponseOutputStream, RequestCycleException)}
      *  to render the StaleSession page.
      *
      *  <p>Subclasses may overide this method (without
      *  invoking this implementation).  A common practice
      *  is to present an eror message on the application's
-     *  Home page.	
+     *  Home page.
      *
      *  @since 0.2.10
      **/
@@ -1153,7 +1152,7 @@ public abstract class AbstractEngine
      *  as well.
      *
      *  @since 1.0.1
-     * 
+     *
      **/
 
     public void clearCachedData()
@@ -1209,7 +1208,7 @@ public abstract class AbstractEngine
      *  <ul>
      *  <li>{@link IComponentClassEnhancer}
      *  <li>{@link Pool}
-     *  <li>{@link ITemplateSource} 
+     *  <li>{@link ITemplateSource}
      *  <li>{@link ISpecificationSource}
      *  <li>{@link IPageSource}
      *  <li>{@link IEngineService} {@link Map}
@@ -1217,7 +1216,7 @@ public abstract class AbstractEngine
      *  <li>{@link IComponentStringsSource}
      *  <li>{@link IPropertySource}
      *  </ul>
-     * 
+     *
      *  <p>This order is important, because some of the later shared objects
      *  depend on some of the earlier shared objects already having
      *  been located or created
@@ -1445,13 +1444,13 @@ public abstract class AbstractEngine
     }
 
     /**
-     * 
+     *
      *  Invoked from {@link #setupForRequest(RequestContext)} to provide
      *  a new instance of {@link IComponentStringsSource}.
-     * 
+     *
      *  @return an instance of {@link DefaultStringsSource}
      *  @since 2.0.4
-     * 
+     *
      **/
 
     public IComponentMessagesSource createComponentStringsSource(RequestContext context)
@@ -1464,11 +1463,11 @@ public abstract class AbstractEngine
      *  an instance of {@link IScriptSource} that will be stored into
      *  the {@link ServletContext}.  Subclasses may override this method
      *  to provide a different implementation.
-     * 
-     *  
+     *
+     *
      *  @return an instance of {@link DefaultScriptSource}
      *  @since 1.0.9
-     * 
+     *
      **/
 
     protected IScriptSource createScriptSource(RequestContext context)
@@ -1481,10 +1480,10 @@ public abstract class AbstractEngine
      *  an instance of {@link IPageSource} that will be stored into
      *  the {@link ServletContext}.  Subclasses may override this method
      *  to provide a different implementation.
-     * 
+     *
      *  @return an instance of {@link PageSource}
      *  @since 1.0.9
-     * 
+     *
      **/
 
     protected IPageSource createPageSource(RequestContext context)
@@ -1497,7 +1496,7 @@ public abstract class AbstractEngine
      *  an instance of {@link ISpecificationSource} that will be stored into
      *  the {@link ServletContext}.  Subclasses may override this method
      *  to provide a different implementation.
-     * 
+     *
      *  @return an instance of {@link DefaultSpecificationSource}
      *  @since 1.0.9
      **/
@@ -1512,10 +1511,10 @@ public abstract class AbstractEngine
      *  an instance of {@link ITemplateSource} that will be stored into
      *  the {@link ServletContext}.  Subclasses may override this method
      *  to provide a different implementation.
-     * 
+     *
      *  @return an instance of {@link DefaultTemplateSource}
      *  @since 1.0.9
-     * 
+     *
      **/
 
     protected ITemplateSource createTemplateSource(RequestContext context)
@@ -1534,7 +1533,7 @@ public abstract class AbstractEngine
     }
 
     /**
-     *  Generates a description of the instance.  
+     *  Generates a description of the instance.
      *  Invokes {@link #extendDescription(StringBuffer)}
      *  to fill in details about the instance.
      *
@@ -1589,7 +1588,7 @@ public abstract class AbstractEngine
      *  the {@link #isDirty()} flag is set (because
      *  the engine can't tell what the caller will
      *  <i>do</i> with the visit).
-     * 
+     *
      **/
 
     public Object getVisit()
@@ -1603,12 +1602,12 @@ public abstract class AbstractEngine
     /**
      *  Gets the visit object, invoking {@link #createVisit(IRequestCycle)} to create
      *  it lazily if needed.  If cycle is null, the visit will not be lazily created.
-     * 
+     *
      *  <p>
      *  After creating the visit, but before returning,
      *  the {@link HttpSession} will be created, and
      *  {@link #setStateful()} will be invoked.
-     * 
+     *
      *  <p>
      *  Sets the {@link #isDirty()} flag, if the return value
      *  is not null.
@@ -1639,7 +1638,7 @@ public abstract class AbstractEngine
     /**
      *  Updates the visit object and
      *  sets the {@link #isDirty() dirty flag}.
-     * 
+     *
      **/
 
     public void setVisit(Object value)
@@ -1693,16 +1692,16 @@ public abstract class AbstractEngine
 
     /**
      *  Returns the global object for the application.  The global object is created at the start
-     *  of the request ({@link #setupForRequest(RequestContext)} invokes 
+     *  of the request ({@link #setupForRequest(RequestContext)} invokes
      *  {@link #createGlobal(RequestContext)} if needed),
-     *  and is stored into the {@link ServletContext}.  All instances of the engine for 
+     *  and is stored into the {@link ServletContext}.  All instances of the engine for
      *  the application share
-     *  the global object; however, the global object is explicitly <em>not</em> 
+     *  the global object; however, the global object is explicitly <em>not</em>
      *  replicated to other servers within
      *  a cluster.
-     * 
+     *
      *  @since 2.3
-     * 
+     *
      **/
 
     public Object getGlobal()
@@ -1853,10 +1852,10 @@ public abstract class AbstractEngine
 
     /**
      *  Creates a Map of all the services available to the application.
-     * 
+     *
      *  <p>Note: the Map returned is not synchronized, on the theory that returned
      *  map is not further modified and therefore threadsafe.
-     * 
+     *
      **/
 
     private Map createServiceMap()
@@ -1945,14 +1944,14 @@ public abstract class AbstractEngine
         return result;
     }
 
-    /** 
+    /**
      *  Locates all services in the namespace and adds key/value
      *  pairs to the map (name and class name).  Then recursively
      *  descendends into child namespaces to collect more
      *  service names.
-     * 
-     *  @since 2.2 
-     * 
+     *
+     *  @since 2.2
+     *
      **/
 
     private void addServices(INamespace namespace, Map map)
@@ -1980,7 +1979,7 @@ public abstract class AbstractEngine
 
     /**
      *  @since 2.0.4
-     * 
+     *
      **/
 
     public IComponentMessagesSource getComponentMessagesSource()
@@ -1990,7 +1989,7 @@ public abstract class AbstractEngine
 
     /**
      *  @since 2.2
-     * 
+     *
      **/
 
     public DataSqueezer getDataSqueezer()
@@ -1999,13 +1998,13 @@ public abstract class AbstractEngine
     }
 
     /**
-     * 
+     *
      *  Invoked from {@link #setupForRequest(RequestContext)} to create
      *  a {@link DataSqueezer} when needed (typically, just the very first time).
      *  This implementation returns a standard, new instance.
-     * 
+     *
      *  @since 2.2
-     * 
+     *
      **/
 
     public DataSqueezer createDataSqueezer()
@@ -2019,21 +2018,21 @@ public abstract class AbstractEngine
      *  pathInfo element to be the service name.  At some point in the future,
      *  the method of constructing and parsing URLs may be abstracted into
      *  a developer-selected class.
-     * 
+     *
      *  <p>Subclasses may override this method if the application defines
      *  specific services with unusual URL encoding rules.
-     * 
+     *
      *  <p>This implementation simply extracts the value for
      *  query parameter {@link Tapestry#SERVICE_QUERY_PARAMETER_NAME}
      *  and extracts the service name from that.
-     * 
+     *
      *  <p>
      *  For supporting the JSP tags, this method first
      *  checks for attribute {@link Tapestry#TAG_SUPPORT_SERVICE_ATTRIBUTE}.  If non-null,
      *  then {@link Tapestry#TAGSUPPORT_SERVICE} is returned.
-     * 
+     *
      *  @since 2.2
-     * 
+     *
      **/
 
     protected String extractServiceName(RequestContext context)
@@ -2087,10 +2086,10 @@ public abstract class AbstractEngine
 
     /**
      *  Name of an application extension that can provide configuration properties.
-     * 
+     *
      *  @see #createPropertySource(RequestContext)
      *  @since 2.3
-     * 
+     *
      **/
 
     private static final String EXTENSION_PROPERTY_SOURCE_NAME =
@@ -2101,7 +2100,7 @@ public abstract class AbstractEngine
      *  the servlet context.
      *  Subclasses may override this method to build thier
      *  own search path.
-     * 
+     *
      *  <p>If the application specification contains an extension
      *  named "org.apache.tapestry.property-source" it is inserted
      *  in the search path just before
@@ -2109,12 +2108,12 @@ public abstract class AbstractEngine
      *  hook at allow application-specific methods of obtaining
      *  configuration values (typically, from a database or from JMX,
      *  in some way).  Alternately, subclasses may
-     *  override this method to provide whatever search path 
+     *  override this method to provide whatever search path
      *  is appropriate.
-     * 
-     * 
+     *
+     *
      *  @since 2.3
-     * 
+     *
      **/
 
     protected IPropertySource createPropertySource(RequestContext context)
@@ -2152,13 +2151,13 @@ public abstract class AbstractEngine
 
     /**
      *  Creates the shared Global object.  This implementation looks for an configuration
-     *  property, <code>org.apache.tapestry.global-class</code>, and instantiates that class 
+     *  property, <code>org.apache.tapestry.global-class</code>, and instantiates that class
      *  using a no-arguments
-     *  constructor.  If the property is not defined, a synchronized 
+     *  constructor.  If the property is not defined, a synchronized
      *  {@link java.util.HashMap} is created.
-     * 
+     *
      *  @since 2.3
-     * 
+     *
      **/
 
     protected Object createGlobal(RequestContext context)
@@ -2183,26 +2182,15 @@ public abstract class AbstractEngine
     }
 
     /**
-     *  Sets a property of an object; this is used to initalize properties
-     *  of the Exception and StaleSession pages.
-     * 
-     **/
-
-    protected void setProperty(Object object, String propertyName, Object value)
-    {
-        OgnlUtils.set(propertyName, _resolver, object, value);
-    }
-
-    /** 
      *  Returns an new instance of {@link Pool}, with the standard
      *  set of adaptors, plus {@link BSFManagerPoolableAdaptor} for
      *  {@link BSFManager}.
-     * 
+     *
      *  <p>Subclasses may override this
      *  method to configure the Pool differently.
-     * 
-     *  @since 3.0 
-     * 
+     *
+     *  @since 3.0
+     *
      **/
 
     protected Pool createPool(RequestContext context)
@@ -2222,13 +2210,13 @@ public abstract class AbstractEngine
     }
 
     /**
-     * 
+     *
      *  Invoked from {@link #setupForRequest(RequestContext)}.  Creates
      *  a new instance of {@link DefaultComponentClassEnhancer}.  Subclasses
      *  may override to return a different object.
-     * 
+     *
      *  @since 3.0
-     * 
+     *
      **/
 
     protected IComponentClassEnhancer createComponentClassEnhancer(RequestContext context)
@@ -2248,9 +2236,9 @@ public abstract class AbstractEngine
      *  state since the last time it was stored
      *  into the {@link javax.servlet.http.HttpSession}.  Various
      *  events set this property to true.
-     * 
+     *
      *  @since 3.0
-     * 
+     *
      **/
 
     public boolean isDirty()
@@ -2260,12 +2248,12 @@ public abstract class AbstractEngine
 
     /**
      *  Invoked to set the dirty flag, indicating that the
-     *  engine should be stored into the 
+     *  engine should be stored into the
      *  {@link javax.servlet.http.HttpSession}.
-     * 
-     * 
+     *
+     *
      *  @since 3.0
-     * 
+     *
      **/
 
     protected void markDirty()
@@ -2276,14 +2264,14 @@ public abstract class AbstractEngine
         _dirty = true;
     }
 
-    /** 
-     * 
-     *  Clears the dirty flag when a engine is stored into the 
+    /**
+     *
+     *  Clears the dirty flag when a engine is stored into the
      *  {@link HttpSession}.
-     * 
-     * 
-     *  @since 3.0 
-     * 
+     *
+     *
+     *  @since 3.0
+     *
      **/
 
     public void valueBound(HttpSessionBindingEvent arg0)
@@ -2295,9 +2283,9 @@ public abstract class AbstractEngine
 
     /**
      *  Does nothing.
-     * 
+     *
      *  @since 3.0
-     * 
+     *
      **/
 
     public void valueUnbound(HttpSessionBindingEvent arg0)
@@ -2305,13 +2293,13 @@ public abstract class AbstractEngine
     }
 
     /**
-     * 
+     *
      *  The encoding to be used if none has been defined using the output encoding property.
      *  Override this method to change the default.
-     * 
+     *
      *  @return the default output encoding
      *  @since 3.0
-     * 
+     *
      **/
     protected String getDefaultOutputEncoding()
     {
@@ -2319,16 +2307,16 @@ public abstract class AbstractEngine
     }
 
     /**
-     * 
-     *  Returns the encoding to be used to generate the servlet responses and 
+     *
+     *  Returns the encoding to be used to generate the servlet responses and
      *  accept the servlet requests.
-     * 
-     *  The encoding is defined using the org.apache.tapestry.output-encoding 
-     *  and is UTF-8 by default    
-     * 
+     *
+     *  The encoding is defined using the org.apache.tapestry.output-encoding
+     *  and is UTF-8 by default
+     *
      *  @since 3.0
      *  @see org.apache.tapestry.IEngine#getOutputEncoding()
-     * 
+     *
      **/
     public String getOutputEncoding()
     {
