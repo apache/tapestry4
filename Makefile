@@ -23,7 +23,7 @@ JAVADOC_MODULES = \
 	Examples/VlibBeans
 
 # A list of Jar files redistributed with Tapestry.  xerces, gnu-regexp
-# and javax.servlet are needed to build Tapestry; the rest are needed
+# and j2ee are needed to build Tapestry; the rest are needed
 # for the tutorials and demos.
 
 EXTERNAL_JARS = \
@@ -31,7 +31,8 @@ EXTERNAL_JARS = \
 	gnu-regexp.jar \
 	com.mortbay.jetty.jar \
 	javax.servlet.jar \
-	org.apache.jasper.jar
+	org.apache.jasper.jar \
+	j2ee.jar
 
 # This reflects my personal build work area structure, where
 # I create a subdirectory and checkout all the files.
@@ -55,6 +56,8 @@ REINVOKE := \
 prepare-for-packaging:
 	@$(ECHO) "\n*** Removing Word documents from distribution ... ***\n"
 	@$(FIND) . -name \*.doc -print -exec $(RMDIRS) {} \;
+	@$(ECHO) "\n*** Removing non-distributable JARs ... ***\n"
+	@$(RM) $(LOCAL_LIB_DIR)/j2ee.jar
 
 install: 
 	$(REINVOKE) TARGET=install JAVAC_OPT=-g
