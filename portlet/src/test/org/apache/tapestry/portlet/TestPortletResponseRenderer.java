@@ -71,7 +71,7 @@ public class TestPortletResponseRenderer extends HiveMindTestCase
         PortletResponseRenderer renderer = new PortletResponseRenderer();
         renderer.setResponse(response);
 
-        renderer.renderResponse(cycle, null);
+        renderer.renderResponse(cycle);
 
         verifyControls();
     }

@@ -19,14 +19,14 @@ import org.apache.hivemind.impl.MessageFormatter;
 
 /**
  * Localized messages for the org.apache.tapestry.parse package.
- *
+ * 
  * @author Howard Lewis Ship
  * @since 3.1
  */
 class ParseMessages
 {
-    private static final MessageFormatter _formatter =
-        new MessageFormatter(ParseMessages.class, "ParseStrings");
+    private static final MessageFormatter _formatter = new MessageFormatter(ParseMessages.class,
+            "ParseStrings");
 
     public static String commentNotEnded(int line)
     {
@@ -46,10 +46,10 @@ class ParseMessages
     public static String missingAttributeValue(String tagName, int line, String attributeName)
     {
         return _formatter.format(
-            "missing-attribute-value",
-            tagName,
-            new Integer(line),
-            attributeName);
+                "missing-attribute-value",
+                tagName,
+                new Integer(line),
+                attributeName);
     }
 
     public static String componentMayNotBeIgnored(String tagName, int line)
@@ -87,15 +87,11 @@ class ParseMessages
         return _formatter.format("incomplete-close-tag", new Integer(line));
     }
 
-    public static String improperlyNestedCloseTag(
-        String tagName,
-        int closeLine,
-        String startTagName,
-        int startLine)
+    public static String improperlyNestedCloseTag(String tagName, int closeLine,
+            String startTagName, int startLine)
     {
-        return _formatter.format(
-            "improperly-nested-close-tag",
-            new Object[] { tagName, new Integer(closeLine), startTagName, new Integer(startLine)});
+        return _formatter.format("improperly-nested-close-tag", new Object[]
+        { tagName, new Integer(closeLine), startTagName, new Integer(startLine) });
     }
 
     public static String unmatchedCloseTag(String tagName, int line)
@@ -177,9 +173,14 @@ class ParseMessages
     {
         return _formatter.format("unknown-public-id", resource, publicId);
     }
-    
+
     public static String serviceElementNotSupported()
     {
         return _formatter.getMessage("service-element-not-supported");
+    }
+
+    public static String rangeError(TemplateToken token, int length)
+    {
+        return _formatter.format("range-error", token, new Integer(length));
     }
 }

@@ -21,7 +21,6 @@ import java.util.Map;
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
@@ -54,7 +53,7 @@ public class PageService implements IEngineService
 
     }
 
-    public void service(IRequestCycle cycle, ResponseOutputStream output) throws IOException
+    public void service(IRequestCycle cycle) throws IOException
     {
         String pageName = cycle.getParameter(ServiceConstants.PAGE);
 
@@ -67,7 +66,7 @@ public class PageService implements IEngineService
 
         cycle.activate(pageName);
 
-        _responseRenderer.renderResponse(cycle, output);
+        _responseRenderer.renderResponse(cycle);
     }
 
     public String getName()

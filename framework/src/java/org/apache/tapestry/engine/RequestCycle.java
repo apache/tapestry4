@@ -523,22 +523,6 @@ public class RequestCycle implements IRequestCycle
         _attributes.put(name, value);
     }
 
-    public void setPage(IPage value)
-    {
-        if (LOG.isDebugEnabled())
-            LOG.debug("Set page to " + value);
-
-        _page = value;
-    }
-
-    public void setPage(String name)
-    {
-        if (LOG.isDebugEnabled())
-            LOG.debug("Set page to " + name);
-
-        _page = getPage(name);
-    }
-
     /**
      * Invokes {@link IPageRecorder#commit()}on each page recorder loaded during the request cycle
      * (even recorders marked for discard).
@@ -600,6 +584,8 @@ public class RequestCycle implements IRequestCycle
 
     public void activate(IPage page)
     {
+        Defense.notNull(page, "page");
+
         if (LOG.isDebugEnabled())
             LOG.debug("Activating page " + page);
 
@@ -610,7 +596,7 @@ public class RequestCycle implements IRequestCycle
         Tapestry
                 .checkMethodInvocation(Tapestry.ABSTRACTPAGE_VALIDATE_METHOD_ID, "validate()", page);
 
-        setPage(page);
+        _page = page;
     }
 
     /** @since 3.1 */

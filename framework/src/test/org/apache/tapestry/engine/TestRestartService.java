@@ -60,7 +60,7 @@ public class TestRestartService extends TapestryTestCase
         s.setResponse(response);
         s.setServletPath("/app");
 
-        s.service(null, null);
+        s.service(null);
 
         verifyControls();
     }
@@ -97,7 +97,7 @@ public class TestRestartService extends TapestryTestCase
         s.setResponse(response);
         s.setServletPath("/tap");
 
-        s.service(null, null);
+        s.service(null);
 
         verifyControls();
     }
@@ -143,7 +143,7 @@ public class TestRestartService extends TapestryTestCase
         s.setLog(log);
         s.setServletPath("/app");
 
-        s.service(null, null);
+        s.service(null);
 
         verifyControls();
     }

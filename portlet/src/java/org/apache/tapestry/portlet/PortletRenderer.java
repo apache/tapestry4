@@ -14,8 +14,9 @@
 
 package org.apache.tapestry.portlet;
 
+import java.io.IOException;
+
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.request.ResponseOutputStream;
 
 /**
  * Service used to render a page within a portlet.
@@ -25,5 +26,6 @@ import org.apache.tapestry.request.ResponseOutputStream;
  */
 public interface PortletRenderer
 {
-    public void renderPage(IRequestCycle cycle, String pageName, ResponseOutputStream output);
+    public void renderPage(IRequestCycle cycle, String pageName)
+            throws IOException;
 }

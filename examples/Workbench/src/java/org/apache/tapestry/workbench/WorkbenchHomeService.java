@@ -18,7 +18,6 @@ import java.io.IOException;
 
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.HomeService;
-import org.apache.tapestry.request.ResponseOutputStream;
 
 /**
  * Special version of the home service used to reset the visit tab when re-entering the Tapestry
@@ -30,14 +29,14 @@ import org.apache.tapestry.request.ResponseOutputStream;
 
 public class WorkbenchHomeService extends HomeService
 {
-    public void service(IRequestCycle cycle, ResponseOutputStream output) throws IOException
+    public void service(IRequestCycle cycle) throws IOException
     {
         Visit visit = (Visit) cycle.getEngine().getVisit();
 
         if (visit != null)
             visit.setActiveTabName("Home");
 
-        super.service(cycle, output);
+        super.service(cycle);
     }
 
 }

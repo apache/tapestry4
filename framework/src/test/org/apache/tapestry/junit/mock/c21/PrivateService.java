@@ -19,7 +19,6 @@ import java.io.IOException;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
-import org.apache.tapestry.request.ResponseOutputStream;
 
 /**
  * Test case for service which can't be instantiated.
@@ -39,7 +38,7 @@ public class PrivateService implements IEngineService
         return null;
     }
 
-    public void service(IRequestCycle cycle, ResponseOutputStream output) throws IOException
+    public void service(IRequestCycle cycle) throws IOException
     {
     }
 

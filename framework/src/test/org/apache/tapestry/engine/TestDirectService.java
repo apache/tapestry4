@@ -25,7 +25,6 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.StaleSessionException;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
@@ -236,11 +235,9 @@ public class TestDirectService extends ServiceTestCase
 
         d.trigger(cycle);
 
-        ResponseOutputStream ros = new ResponseOutputStream(null);
-
         ResponseRenderer rr = newResponseRenderer();
 
-        rr.renderResponse(cycle, ros);
+        rr.renderResponse(cycle);
 
         replayControls();
 
@@ -248,7 +245,7 @@ public class TestDirectService extends ServiceTestCase
         ds.setLinkFactory(lf);
         ds.setResponseRenderer(rr);
 
-        ds.service(cycle, ros);
+        ds.service(cycle);
 
         verifyControls();
     }
@@ -306,11 +303,9 @@ public class TestDirectService extends ServiceTestCase
 
         d.trigger(cycle);
 
-        ResponseOutputStream ros = new ResponseOutputStream(null);
-
         ResponseRenderer rr = newResponseRenderer();
 
-        rr.renderResponse(cycle, ros);
+        rr.renderResponse(cycle);
 
         replayControls();
 
@@ -318,7 +313,7 @@ public class TestDirectService extends ServiceTestCase
         ds.setLinkFactory(lf);
         ds.setResponseRenderer(rr);
 
-        ds.service(cycle, ros);
+        ds.service(cycle);
 
         verifyControls();
     }
@@ -362,15 +357,13 @@ public class TestDirectService extends ServiceTestCase
         c.getLocation();
         cc.setReturnValue(l);
 
-        ResponseOutputStream ros = new ResponseOutputStream(null);
-
         replayControls();
 
         DirectService ds = new DirectService();
 
         try
         {
-            ds.service(cycle, ros);
+            ds.service(cycle);
             unreachable();
         }
         catch (ApplicationRuntimeException ex)
@@ -434,11 +427,9 @@ public class TestDirectService extends ServiceTestCase
 
         d.trigger(cycle);
 
-        ResponseOutputStream ros = new ResponseOutputStream(null);
-
         ResponseRenderer rr = newResponseRenderer();
 
-        rr.renderResponse(cycle, ros);
+        rr.renderResponse(cycle);
 
         replayControls();
 
@@ -447,7 +438,7 @@ public class TestDirectService extends ServiceTestCase
         ds.setResponseRenderer(rr);
         ds.setRequest(request);
 
-        ds.service(cycle, ros);
+        ds.service(cycle);
 
         verifyControls();
     }
@@ -499,8 +490,6 @@ public class TestDirectService extends ServiceTestCase
         page.getPageName();
         pagec.setReturnValue("ActivePage");
 
-        ResponseOutputStream ros = new ResponseOutputStream(null);
-
         replayControls();
 
         DirectService ds = new DirectService();
@@ -508,7 +497,7 @@ public class TestDirectService extends ServiceTestCase
 
         try
         {
-            ds.service(cycle, ros);
+            ds.service(cycle);
             unreachable();
         }
         catch (StaleSessionException ex)

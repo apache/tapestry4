@@ -19,7 +19,6 @@ import java.io.IOException;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
-import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.ServiceConstants;
 
 /**
@@ -39,11 +38,11 @@ public class RenderService implements IEngineService
         throw new UnsupportedOperationException(PortletMessages.unsupportedMethod("getLink"));
     }
 
-    public void service(IRequestCycle cycle, ResponseOutputStream output) throws IOException
+    public void service(IRequestCycle cycle) throws IOException
     {
         String pageName = cycle.getParameter(ServiceConstants.PAGE);
 
-        _portletRenderer.renderPage(cycle, pageName, output);
+        _portletRenderer.renderPage(cycle, pageName);
     }
 
     public String getName()

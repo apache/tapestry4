@@ -45,11 +45,11 @@
 			<match>name="Form0" value="$Select"</match>
 		</assert-output-matches>
 
-		<assert-output name="Select Tag">
+		<assert-regexp name="Select Tag">
 <![CDATA[
-<select name="$Select">	<option/>
+<select name="\$Select">\s+<option/>
 ]]>
-		</assert-output>
+		</assert-regexp>
 
 		<assert-output-matches name="Option Tags">
 <![CDATA[

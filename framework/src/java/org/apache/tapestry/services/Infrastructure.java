@@ -18,11 +18,13 @@ import java.util.Locale;
 
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Resource;
+import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.engine.IPageSource;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.engine.state.ApplicationStateManager;
+import org.apache.tapestry.markup.MarkupWriterSource;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.web.WebRequest;
 import org.apache.tapestry.web.WebResponse;
@@ -206,4 +208,6 @@ public interface Infrastructure
     public void setLocale(Locale value);
 
     public String getOutputEncoding();
+
+    public MarkupWriterSource getMarkupWriterSource();
 }

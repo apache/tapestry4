@@ -15,9 +15,12 @@
 package org.apache.tapestry.portlet;
 
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.PrintWriter;
 
 import javax.portlet.RenderResponse;
+
+import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.util.ContentType;
 
 /**
  * Wrapper around {@link javax.portlet.RenderResponse}&nbsp;to adapt it as
@@ -37,18 +40,17 @@ public class RenderWebResponse extends PortletWebResponse
         _renderResponse = renderResponse;
     }
 
-    public OutputStream getOutputStream() throws IOException
-    {
-        return _renderResponse.getPortletOutputStream();
-    }
-
     public void reset()
     {
         _renderResponse.reset();
     }
 
-    public void setContentType(String contentType)
+    public PrintWriter getPrintWriter(ContentType contentType) throws IOException
     {
-        _renderResponse.setContentType(contentType);
+        Defense.notNull(contentType, "contentType");
+
+        _renderResponse.setContentType(contentType.toString());
+
+        return _renderResponse.getWriter();
     }
 }

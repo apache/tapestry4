@@ -27,6 +27,7 @@
 	<import file="${hivebuild.dir}/jar-module.xml"/>
 	<import file="${hivebuild.dir}/javadoc-report.xml"/>
 	<import file="${hivebuild.dir}/clover-report.xml"/>  
+	<import file="${hivebuild.dir}/hivedoc-report.xml"/>    
   
 	<target name="compile-dependencies">
     <project-dependency artifact="tapestry"/>
@@ -38,6 +39,7 @@
     <ibiblio-dependency artifact="ognl"               version="${ognl.version}"     group="ognl"/>
     <ibiblio-dependency artifact="jboss-j2ee"         version="3.2.1"               group="jboss"/>
     <ibiblio-dependency artifact="commons-lang"       version="${lang.version}"     group="commons-lang"/>
+    <ibiblio-dependency artifact="oro"                version="${oro.version}"      group="oro"/>
     
     <!--
     <ibiblio-dependency artifact="bsf"                version="2.3.0"               group="bsf"/>

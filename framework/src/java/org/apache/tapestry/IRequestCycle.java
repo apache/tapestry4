@@ -72,8 +72,6 @@ public interface IRequestCycle
 
     /**
      * Returns the engine which is processing this request cycle.
-     * 
-     * @deprecated To be removed in 3.2
      */
 
     public IEngine getEngine();
@@ -162,24 +160,6 @@ public interface IRequestCycle
     public void setAttribute(String name, Object value);
 
     /**
-     * Sets the page to be rendered. This is called by a component during the rewind phase to
-     * specify an alternate page to render during the response phase.
-     * 
-     * @deprecated To be removed in 3.1. Use {@link #activate(IPage)}.
-     */
-
-    public void setPage(IPage page);
-
-    /**
-     * Sets the page to be rendered. This is called by a component during the rewind phase to
-     * specify an alternate page to render during the response phase.
-     * 
-     * @deprecated To be removed in 3.1. Use {@link #activate(String)}.
-     */
-
-    public void setPage(String name);
-
-    /**
      * Invoked just before rendering the response page to get all
      * {@link org.apache.tapestry.engine.IPageRecorder page recorders}touched in this request cycle
      * to commit their changes (save them to persistant storage).
@@ -190,8 +170,7 @@ public interface IRequestCycle
     public void commitPageChanges();
 
     /**
-     * Returns the service which initiated this request cycle. This may return null (very early
-     * during the request cycle) if the service has not yet been determined.
+     * Returns the service which initiated this request cycle.
      * 
      * @since 1.0.1
      */

@@ -31,9 +31,9 @@ import org.apache.tapestry.engine.BaseEngine;
 public class WMLEngine extends BaseEngine
 {
     protected void activateExceptionPage(IRequestCycle cycle,
-            org.apache.tapestry.request.ResponseOutputStream output, Throwable cause)
+            Throwable cause)
     {
-        super.activateExceptionPage(cycle, output, cause);
+        super.activateExceptionPage(cycle, cause);
         // Sometimes the exception page isn't enough
         reportException(
                 Tapestry.getMessage("AbstractEngine.unable-to-process-client-request"),

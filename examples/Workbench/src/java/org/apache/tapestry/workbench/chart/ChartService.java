@@ -15,10 +15,9 @@
 package org.apache.tapestry.workbench.chart;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
-
-import javax.servlet.ServletException;
 
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IComponent;
@@ -26,10 +25,11 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
-import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.RequestExceptionReporter;
 import org.apache.tapestry.services.ServiceConstants;
+import org.apache.tapestry.util.ContentType;
+import org.apache.tapestry.web.WebResponse;
 import org.jCharts.Chart;
 import org.jCharts.encoders.JPEGEncoder13;
 
@@ -52,6 +52,9 @@ public class ChartService implements IEngineService
     /** @since 3.1 */
     private LinkFactory _linkFactory;
 
+    /** @since 3.1 */
+    private WebResponse _response;
+
     public ILink getLink(IRequestCycle cycle, Object parameter)
     {
         Defense.isAssignable(parameter, IComponent.class, "parameter");
@@ -67,7 +70,7 @@ public class ChartService implements IEngineService
         return _linkFactory.constructLink(cycle, parameters, true);
     }
 
-    public void service(IRequestCycle cycle, ResponseOutputStream output) throws IOException
+    public void service(IRequestCycle cycle) throws IOException
     {
         String pageName = cycle.getParameter(ServiceConstants.PAGE);
         String componentId = cycle.getParameter(ServiceConstants.COMPONENT);
@@ -81,7 +84,7 @@ public class ChartService implements IEngineService
 
             Chart chart = provider.getChart();
 
-            output.setContentType("image/jpeg");
+            OutputStream output = _response.getOutputStream(new ContentType("image/jpeg"));
 
             // I've seen a few bits of wierdness (including a JVM crash) inside this code.
             // Hopefully, its a multi-threading problem that can be resolved
@@ -124,5 +127,11 @@ public class ChartService implements IEngineService
     public void setLinkFactory(LinkFactory linkFactory)
     {
         _linkFactory = linkFactory;
+    }
+
+    /** @since 3.1 */
+    public void setResponse(WebResponse response)
+    {
+        _response = response;
     }
 }

@@ -16,10 +16,12 @@ package org.apache.tapestry.portlet;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 
 import javax.portlet.PortletResponse;
 
 import org.apache.hivemind.util.Defense;
+import org.apache.tapestry.util.ContentType;
 import org.apache.tapestry.web.WebResponse;
 
 /**
@@ -39,9 +41,16 @@ public class PortletWebResponse implements WebResponse
         _portletResponse = portletResponse;
     }
 
-    public OutputStream getOutputStream() throws IOException
+    public OutputStream getOutputStream(ContentType contentType) throws IOException
     {
         unsupported("getOutputStream");
+
+        return null;
+    }
+
+    public PrintWriter getPrintWriter(ContentType contentType) throws IOException
+    {
+        unsupported("getPrintWriter");
 
         return null;
     }
@@ -54,11 +63,6 @@ public class PortletWebResponse implements WebResponse
     public void reset()
     {
         unsupported("reset");
-    }
-
-    public void setContentType(String contentType)
-    {
-        unsupported("setContentType");
     }
 
     public void setContentLength(int contentLength)

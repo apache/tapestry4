@@ -14,11 +14,16 @@
 
 package org.apache.tapestry.portlet;
 
+import java.io.CharArrayWriter;
+import java.io.PrintWriter;
+
 import org.apache.hivemind.test.HiveMindTestCase;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.request.ResponseOutputStream;
+import org.apache.tapestry.markup.MarkupWriterSource;
+import org.apache.tapestry.util.ContentType;
+import org.apache.tapestry.web.WebResponse;
 import org.easymock.MockControl;
 
 /**
@@ -34,13 +39,42 @@ public class TestPortletRenderer extends HiveMindTestCase
         return (IMarkupWriter) newMock(IMarkupWriter.class);
     }
 
-    private IPage newPage(IMarkupWriter writer, ResponseOutputStream output)
+    private PrintWriter newPrintWriter()
+    {
+        return new PrintWriter(new CharArrayWriter());
+    }
+
+    private WebResponse newWebResponse(ContentType contentType, PrintWriter writer)
+            throws Exception
+    {
+        MockControl control = newControl(WebResponse.class);
+        WebResponse response = (WebResponse) control.getMock();
+
+        response.getPrintWriter(contentType);
+        control.setReturnValue(writer);
+
+        return response;
+    }
+
+    private MarkupWriterSource newSource(PrintWriter printWriter, ContentType contentType,
+            IMarkupWriter writer)
+    {
+        MockControl control = newControl(MarkupWriterSource.class);
+        MarkupWriterSource source = (MarkupWriterSource) control.getMock();
+
+        source.newMarkupWriter(printWriter, contentType);
+        control.setReturnValue(writer);
+
+        return source;
+    }
+
+    private IPage newPage(ContentType contentType)
     {
         MockControl control = newControl(IPage.class);
         IPage page = (IPage) control.getMock();
 
-        page.getResponseWriter(output);
-        control.setReturnValue(writer);
+        page.getResponseContentType();
+        control.setReturnValue(contentType);
 
         return page;
     }
@@ -51,30 +85,37 @@ public class TestPortletRenderer extends HiveMindTestCase
         IRequestCycle cycle = (IRequestCycle) control.getMock();
 
         cycle.activate(pageName);
-        
+
         cycle.getPage();
         control.setReturnValue(page);
 
         return cycle;
     }
 
-    public void testSuccess()
+    public void testSuccess() throws Exception
     {
-        ResponseOutputStream output = new ResponseOutputStream(null);
+        ContentType ct = new ContentType("text/html");
+        PrintWriter pw = newPrintWriter();
+        WebResponse response = newWebResponse(ct, pw);
         IMarkupWriter writer = newWriter();
-        IPage page = newPage(writer, output);
+        MarkupWriterSource source = newSource(pw, ct, writer);
+        IPage page = newPage(ct);
+
         IRequestCycle cycle = newCycle("ZePage", page);
 
         cycle.renderPage(writer);
-        
+
         writer.close();
 
         replayControls();
 
-        PortletRenderer r = new PortletRendererImpl();
+        PortletRendererImpl r = new PortletRendererImpl();
+        r.setMarkupWriterSource(source);
+        r.setResponse(response);
 
-        r.renderPage(cycle, "ZePage", output);
+        r.renderPage(cycle, "ZePage");
 
         verifyControls();
     }
+
 }

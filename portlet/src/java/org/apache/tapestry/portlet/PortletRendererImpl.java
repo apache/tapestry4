@@ -15,11 +15,14 @@
 package org.apache.tapestry.portlet;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.request.ResponseOutputStream;
+import org.apache.tapestry.markup.MarkupWriterSource;
+import org.apache.tapestry.util.ContentType;
+import org.apache.tapestry.web.WebResponse;
 
 /**
  * The guts of rendering a page as a portlet response; used by
@@ -31,47 +34,37 @@ import org.apache.tapestry.request.ResponseOutputStream;
  */
 public class PortletRendererImpl implements PortletRenderer
 {
+    private WebResponse _response;
 
-    public void renderPage(IRequestCycle cycle, String pageName, ResponseOutputStream output)
+    private MarkupWriterSource _markupWriterSource;
+
+    public void renderPage(IRequestCycle cycle, String pageName)
+            throws IOException
     {
         cycle.activate(pageName);
-        
+
         IPage page = cycle.getPage();
 
-        IMarkupWriter writer = page.getResponseWriter(output);
+        ContentType contentType = page.getResponseContentType();
 
-        String contentType = writer.getContentType();
-        output.setContentType(contentType);
-        
-        boolean discard = true;
+        PrintWriter printWriter = _response.getPrintWriter(contentType);
 
-        try
-        {
-            cycle.renderPage(writer);
+        IMarkupWriter writer = _markupWriterSource.newMarkupWriter(printWriter, contentType);
 
-            discard = false;
-        }
-        finally
-        {
-            // Closing the writer closes its PrintWriter and a whole stack of
-            // java.io objects,
-            // which tend to stream a lot of output that eventually hits the
-            // ResponseOutputStream. If we are discarding output anyway (due to
-            // an exception
-            // getting thrown during the render), we can save ourselves some
-            // trouble
-            // by ignoring it.
+        cycle.renderPage(writer);
 
-            if (discard)
-                output.setDiscard(true);
-
-            writer.close();
-
-            if (discard)
-                output.setDiscard(false);
-        }
+        writer.close();
 
         // TODO: Trap errors and do some error reporting here?
     }
 
+    public void setMarkupWriterSource(MarkupWriterSource markupWriterSource)
+    {
+        _markupWriterSource = markupWriterSource;
+    }
+
+    public void setResponse(WebResponse response)
+    {
+        _response = response;
+    }
 }

@@ -24,7 +24,6 @@ import org.apache.tapestry.IExternalPage;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
@@ -134,7 +133,7 @@ public class ExternalService implements IEngineService
         return _linkFactory.constructLink(cycle, parameters, true);
     }
 
-    public void service(IRequestCycle cycle, ResponseOutputStream output) throws IOException
+    public void service(IRequestCycle cycle) throws IOException
     {
         String pageName = cycle.getParameter(ServiceConstants.PAGE);
         IPage rawPage = cycle.getPage(pageName);
@@ -160,7 +159,7 @@ public class ExternalService implements IEngineService
 
         page.activateExternalPage(parameters, cycle);
 
-        _responseRenderer.renderResponse(cycle, output);
+        _responseRenderer.renderResponse(cycle);
     }
 
     public String getName()

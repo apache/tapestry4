@@ -17,7 +17,6 @@ package org.apache.tapestry.portlet;
 import javax.portlet.ActionResponse;
 
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceConstants;
 
@@ -35,7 +34,7 @@ public class PortletResponseRenderer implements ResponseRenderer
 {
     private ActionResponse _response;
 
-    public void renderResponse(IRequestCycle cycle, ResponseOutputStream output)
+    public void renderResponse(IRequestCycle cycle)
     {
         String pageName = cycle.getPage().getPageName();
 

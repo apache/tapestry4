@@ -154,14 +154,11 @@ public abstract class ShowTemplate extends BaseComponent implements IDirect
 
     private void write(IMarkupWriter writer, TextToken token)
     {
-        int start = token.getStartIndex();
-        int end = token.getEndIndex();
-
         // Print the section of the template ... print() will
         // escape and invalid characters as HTML entities. Also,
         // we show the full stretch of text, not the trimmed version.
 
-        writer.print(token.getTemplateData(), start, end - start + 1);
+        writer.print(token.getTemplateDataAsString());
     }
 
     /** @since 3.0 * */

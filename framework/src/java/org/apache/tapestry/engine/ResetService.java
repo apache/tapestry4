@@ -20,7 +20,6 @@ import java.util.Map;
 
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.ResetEventCoordinator;
 import org.apache.tapestry.services.ResponseRenderer;
@@ -71,7 +70,7 @@ public class ResetService implements IEngineService
         return Tapestry.RESET_SERVICE;
     }
 
-    public void service(IRequestCycle cycle, ResponseOutputStream output) throws IOException
+    public void service(IRequestCycle cycle) throws IOException
     {
         String pageName = cycle.getParameter(ServiceConstants.PAGE);
 
@@ -82,7 +81,7 @@ public class ResetService implements IEngineService
 
         // Render the same page (that contained the reset link).
 
-        _responseRenderer.renderResponse(cycle, output);
+        _responseRenderer.renderResponse(cycle);
     }
 
     /** @since 3.1 */
