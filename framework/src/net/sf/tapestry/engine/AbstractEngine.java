@@ -74,6 +74,7 @@ import net.sf.tapestry.listener.ListenerMap;
 import net.sf.tapestry.pageload.PageSource;
 import net.sf.tapestry.spec.ApplicationSpecification;
 import net.sf.tapestry.util.exception.ExceptionAnalyzer;
+import net.sf.tapestry.util.io.DataSqueezer;
 import net.sf.tapestry.util.prop.PropertyHelper;
 
 /**
@@ -146,6 +147,10 @@ public abstract class AbstractEngine
     private transient String _sessionId;
     private transient boolean _stateful;
     private transient ListenerMap _listeners;
+    
+    /** @since 2.2 **/
+    
+    private transient DataSqueezer _dataSqueezer;
 
     /**
      *  An object used to contain application-specific server side state.
@@ -269,6 +274,19 @@ public abstract class AbstractEngine
 
     protected static final String PAGE_SOURCE_NAME = "net.sf.tapestry.PageSource";
 
+
+    /**
+     *  Servlet context attribute name for a shared instance
+     *  of {@link DataSqueezer}.  The instance is actually shared
+     *  between Tapestry applications within the same context
+     *  (which will have the same ClassLoader).
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    protected static final String DATA_SQUEEZER_NAME = "net.sf.tapestry.DataSqueezer";
+    
     /**
      *  The source for pages, which acts as a pool, but is capable of
      *  creating pages as needed.  Stored in the
@@ -1053,6 +1071,18 @@ public abstract class AbstractEngine
                 servletContext.setAttribute(name, _stringsSource);
             }
         }
+        
+        if (_dataSqueezer == null)
+        {
+            _dataSqueezer = (DataSqueezer)servletContext.getAttribute(DATA_SQUEEZER_NAME);
+            
+            if (_dataSqueezer == null)
+            {
+                _dataSqueezer = createDataSqueezer();
+                
+                servletContext.setAttribute(DATA_SQUEEZER_NAME, _dataSqueezer);
+            }
+        }
     }
 
     /**
@@ -1520,4 +1550,28 @@ public abstract class AbstractEngine
         return _stringsSource;
     }
 
+    /**
+     *  @since 2.2
+     * 
+     **/
+    
+    public DataSqueezer getDataSqueezer()
+    {
+        return _dataSqueezer;
+    }
+    
+    /**
+     * 
+     *  Invoked from {@link #setupForRequest(RequestContext)} to create
+     *  a {@link DataSqueezer} when needed (typically, just the very first time).
+     *  This implementation returns a standard, new instance.
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    public DataSqueezer createDataSqueezer()
+    {
+        return new DataSqueezer();
+    }
 }

@@ -8,7 +8,7 @@
   <property file="${root.dir}/config/common.properties"/>
   
   <path id="project.class.path">
-    <pathelement location="${lib.ext.dir}/ejb.jar"/>
+    <pathelement location="${jboss.client.dir}/jboss-j2ee.jar"/>
     <pathelement location="${lib.ext.dir}/javax.servlet.jar"/>
     <pathelement location="${lib.ext.dir}/log4j-core.jar"/>
     <pathelement location="${lib.ext.dir}/javax.xml.jaxp.jar"/>
@@ -71,9 +71,12 @@
 
         <pathelement location="${lib.ext.dir}/org.mortbay.jetty.jar"/>
         <!-- Runtime client libraries -->
+        <pathelement location="${jboss.lib.dir}/jboss-common.jar"/>   
+        <pathelement location="${jboss.lib.dir}/jboss-system.jar"/>                
         <pathelement location="${jboss.client.dir}/jboss-client.jar"/>
         <pathelement location="${jboss.client.dir}/jbosssx-client.jar"/>
         <pathelement location="${jboss.client.dir}/jnp-client.jar"/>
+        <pathelement location="${jboss.client.dir}/jnet.jar"/>
         
         <path refid="project.class.path"/>
         <pathelement location="${root.dir}/config"/>

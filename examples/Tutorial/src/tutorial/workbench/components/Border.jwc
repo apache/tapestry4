@@ -34,7 +34,7 @@
   
   <component id="pageLink" type="Direct">
     <binding name="listener" property-path="listeners.selectPage"/>
-    <binding name="context" property-path="pageName"/>
+    <binding name="parameters" property-path="pageName"/>
     <field-binding name="stateful" field-name="Boolean.FALSE"/>
   </component>
  

@@ -15,7 +15,7 @@
   
   <component id="yes" type="Direct">
     <binding name="listener" property-path="listeners.deleteBook"/>
-    <binding name="context" property-path="bookPrimaryKey"/>
+    <binding name="parameters" property-path="bookPrimaryKey"/>
   </component>
   
   <component id="no" type="Page">

@@ -41,6 +41,7 @@ import net.sf.tapestry.ISpecificationSource;
 import net.sf.tapestry.ITemplateSource;
 import net.sf.tapestry.RequestContext;
 import net.sf.tapestry.spec.ApplicationSpecification;
+import net.sf.tapestry.util.io.DataSqueezer;
 
 /**
  *  An implementation of {@link IEngine} used for unit testing.
@@ -161,6 +162,11 @@ public class MockEngine implements IEngine
     public void setComponentStringsSource(IComponentStringsSource componentStringsSource)
     {
         this.componentStringsSource = componentStringsSource;
+    }
+
+    public DataSqueezer getDataSqueezer()
+    {
+        return null;
     }
 
 }

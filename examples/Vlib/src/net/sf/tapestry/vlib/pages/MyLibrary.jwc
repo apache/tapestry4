@@ -60,12 +60,12 @@
 
   <component id="edit" type="Direct">
     <binding name="listener" property-path="listeners.editBook"/>
-    <binding name="context" property-path="currentBook.primaryKey"/>
+    <binding name="parameters" property-path="currentBook.primaryKey"/>
   </component>
 
   <component id="delete" type="Direct">
     <binding name="listener" property-path="listeners.deleteBook"/>
-    <binding name="context" property-path="currentBook.primaryKey"/>
+    <binding name="parameters" property-path="currentBook.primaryKey"/>
   </component>
  
 </specification>

@@ -101,10 +101,12 @@ import net.sf.tapestry.util.io.DataSqueezer;
  *
  *  <p>Informal parameters are allowed.  A body is allowed (and expected).
  *
- * <p>An instance of {@link DataSqueezer} is used to convert arbitrary objects into 
+ *  <p>An instance of {@link DataSqueezer} is used to convert arbitrary objects into 
  *  Strings and then back into objects.  However, for best efficiency, the list
  *  should be simple Strings or numeric types, typically a primary key or other
  *  identifier from which the rest of an object may be retrieved or constructed.
+ *  Serializable objects will work, but the resultant string can be 
+ *  very, very large.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -129,41 +131,41 @@ public class ListEdit extends AbstractComponent
 
     private static class ArraySource implements ISource
     {
-        Object[] array;
+        Object[] _array;
 
         ArraySource(Object[] array)
         {
-            this.array = array;
+            this._array = array;
         }
 
         public int getCount()
         {
-            return array.length;
+            return _array.length;
         }
 
         public Object get(int index)
         {
-            return array[index];
+            return _array[index];
         }
     }
 
     private static class ListSource implements ISource
     {
-        List list;
+        List _list;
 
         ListSource(List list)
         {
-            this.list = list;
+            this._list = list;
         }
 
         public int getCount()
         {
-            return list.size();
+            return _list.size();
         }
 
         public Object get(int index)
         {
-            return list.get(index);
+            return _list.get(index);
         }
     }
 
@@ -180,39 +182,30 @@ public class ListEdit extends AbstractComponent
         }
     }
 
-    private IBinding valueBinding;
-    private IBinding indexBinding;
+    private IBinding _valueBinding;
+    private IBinding _indexBinding;
 
-    private Object source;
-    private String element;
-
-    /**
-     *  The squeezer that converts values to and from Strings for storage in
-     *  hidden fields.  DataSqueezer is thread-safe so we can share this
-     *  across all instances.
-     *
-     **/
-
-    private static final DataSqueezer squeezer = new DataSqueezer();
+    private Object _source;
+    private String _element;
 
     public void setValueBinding(IBinding value)
     {
-        valueBinding = value;
+        _valueBinding = value;
     }
 
     public IBinding getValueBinding()
     {
-        return valueBinding;
+        return _valueBinding;
     }
 
     public void setIndexBinding(IBinding value)
     {
-        indexBinding = value;
+        _indexBinding = value;
     }
 
     public IBinding getIndexBinding()
     {
-        return indexBinding;
+        return _indexBinding;
     }
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
@@ -259,8 +252,8 @@ public class ListEdit extends AbstractComponent
 
         for (int i = 0; i < count; i++)
         {
-            if (indexBinding != null)
-                indexBinding.setInt(i);
+            if (_indexBinding != null)
+                _indexBinding.setInt(i);
 
             if (cycleRewinding)
                 value = extractValue(context, form.getElementId(this));
@@ -270,17 +263,17 @@ public class ListEdit extends AbstractComponent
                 writeValue(writer, form.getElementId(this), value);
             }
 
-            valueBinding.setObject(value);
+            _valueBinding.setObject(value);
 
-            if (element != null)
+            if (_element != null)
             {
-                writer.begin(element);
+                writer.begin(_element);
                 generateAttributes(writer, cycle);
             }
 
             renderWrapped(writer, cycle);
 
-            if (element != null)
+            if (_element != null)
                 writer.end();
         }
     }
@@ -292,7 +285,7 @@ public class ListEdit extends AbstractComponent
 
         try
         {
-            externalValue = squeezer.squeeze(value);
+            externalValue = getDataSqueezer().squeeze(value);
         }
         catch (IOException ex)
         {
@@ -316,7 +309,7 @@ public class ListEdit extends AbstractComponent
 
         try
         {
-            return squeezer.unsqueeze(value);
+            return getDataSqueezer().unsqueeze(value);
         }
         catch (IOException ex)
         {
@@ -329,38 +322,43 @@ public class ListEdit extends AbstractComponent
 
     private ISource getSourceData() throws RequestCycleException
     {
-        if (source == null)
+        if (_source == null)
             return new EmptySource();
 
-        if (source instanceof List)
-            return new ListSource((List) source);
+        if (_source instanceof List)
+            return new ListSource((List) _source);
 
-        if (source.getClass().isArray())
-            return new ArraySource((Object[]) source);
+        if (_source.getClass().isArray())
+            return new ArraySource((Object[]) _source);
 
         throw new RequestCycleException(
-            Tapestry.getString("ListEdit.unable-to-convert-source", source),
+            Tapestry.getString("ListEdit.unable-to-convert-source", _source),
             this);
     }
 
     public String getElement()
     {
-        return element;
+        return _element;
     }
 
     public void setElement(String element)
     {
-        this.element = element;
+        this._element = element;
     }
 
     public void setSource(Object source)
     {
-        this.source = source;
+        this._source = source;
     }
     
     public Object getSource()
     {
-        return source;
+        return _source;
+    }
+    
+    private DataSqueezer getDataSqueezer()
+    {
+        return getPage().getEngine().getDataSqueezer();
     }
 
 }

@@ -14,7 +14,7 @@
   
   <parameter name="value" 
   	required="yes" 
-  	java-type="java.lang.String"
+  	java-type="java.lang.Object"
   	direction="custom">
     <description>
     Value to save in the form.

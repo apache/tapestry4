@@ -12,13 +12,13 @@
 <component id="weekday" type="Direct">
   <binding name="listener" property-path="listeners.selectWeekday"/>
   <binding name="class" property-path="weekdayClass"/>
-  <static-binding name="context">0</static-binding>
+  <static-binding name="parameters">0</static-binding>
 </component>
 
 <component id="weekend" type="Direct">
   <binding name="listener" property-path="listeners.selectWeekend"/>
   <binding name="class" property-path="weekendClass"/>
-  <static-binding name="context">1</static-binding>
+  <static-binding name="parameters">1</static-binding>
 </component>
 
 <component id="insertForecast" type="Insert">
