@@ -90,7 +90,10 @@ public class Form extends AbstractFormComponent
 	private IBinding methodBinding;
 	private String methodValue;
 
-	protected boolean rewinding;
+	private boolean rewinding;
+	private int nextElementId = 0;
+	private StringBuffer buffer;
+	private boolean rendering;
 
 	private static final String[] reservedNames = { "action" };
 
@@ -113,7 +116,7 @@ public class Form extends AbstractFormComponent
 	*
 	*/
 
-		public static Form get(IRequestCycle cycle)
+	public static Form get(IRequestCycle cycle)
 	{
 		return (Form)cycle.getAttribute(ATTRIBUTE_NAME);
 	}
@@ -127,22 +130,49 @@ public class Form extends AbstractFormComponent
 	*  Indicates to any wrapped form components that they should respond to the form
 	*  submission.
 	*
+	*  @throws RenderOnlyPropertyException if not rendering.
 	*/
 
 	public boolean isRewinding()
 	{
+		if (!rendering)
+			throw new RenderOnlyPropertyException(this, "rewinding");
+			
 		return rewinding;
 	}
 
+	/**
+	 *  Constructs a unique identifier (within the Form) from a prefix and a
+	 *  unique index.  The prefix typically corresponds to the component Class (i.e.
+	 *  "Text" or "Checkbox").
+	 *
+	 */
+	 
+	public String getNextElementId(String prefix)
+	{
+		if (buffer == null)
+			buffer = new StringBuffer();
+		else
+		{
+			buffer.setLength(0);
+		}
+		
+		buffer.append(prefix);
+		buffer.append(nextElementId++);
+		
+		return buffer.toString();
+	}
+	
 	public void render(IResponseWriter writer, IRequestCycle cycle) throws RequestCycleException
 	{
 		String method = "post";
 		boolean rewound;
-		boolean rendering;
 		String URL;
 		IApplicationService service;
 		String actionId;
 		IActionListener listener;
+		String name;
+		boolean renderForm;
 
 		if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
 			throw new RequestCycleException("Forms may not be nested.", this, cycle);
@@ -150,13 +180,14 @@ public class Form extends AbstractFormComponent
 		cycle.setAttribute(ATTRIBUTE_NAME, this);
 
 		actionId = cycle.getNextActionId();
+		name = "Form" + actionId;
 
-		rendering = !cycle.isRewinding();
+		renderForm = !cycle.isRewinding();
 		rewound = cycle.isRewound(this);
 
 		rewinding = rewound;
 
-		if (rendering)
+		if (renderForm)
 		{
 			if (methodValue != null)
 				method = methodValue;
@@ -171,24 +202,53 @@ public class Form extends AbstractFormComponent
 			service = cycle.getApplication().
 			getService(IApplicationService.ACTION_SERVICE);
 
-			URL = service.buildURL(cycle, this, new String[]
-				{ actionId 
-			});
+			URL = service.buildURL(cycle, this, 
+				new String[] { actionId });
 
 			writer.attribute("action", cycle.encodeURL(URL));
 
 			generateAttributes(cycle, writer, reservedNames);
 		}
 
-		renderWrapped(writer, cycle);
-
-		if (rendering)
+		nextElementId = 0;
+		
+		try
 		{
+			rendering = true;
+			renderWrapped(writer, cycle);
+		}
+		finally
+		{
+			rendering = false;
+		}
+		
+		if (renderForm)
+		{
+			// What's this for?  It's part of checking for stale links.  We record
+			// the next action id into the form.  This ensures that the number
+			// of action ids within the form (when the form HTML is rendered)
+			// matches the expected number (when the form submission is processed).
+			
+			writer.beginOrphan("input");
+			writer.attribute("type", "hidden");
+			writer.attribute("name", name);
+			writer.attribute("value", nextElementId++);
+			
 			writer.end("form");
 		}
 
 		if (rewound)
 		{
+			String actual;
+			
+			actual = cycle.getRequestContext().getParameter(name);
+			
+			if (actual == null ||
+				Integer.parseInt(actual) != nextElementId++)
+				throw new StaleLinkException(
+					"Incorrect number of elements with Form " + getExtendedId() + ".",
+					getPage(), cycle);
+		
 			listener = getListener(cycle);
 
 			if (listener == null)

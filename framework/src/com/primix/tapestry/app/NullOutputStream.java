@@ -31,42 +31,26 @@ import java.io.*;
  */
 
 /**
- *  A special implementation of {@link Writer} used when
- *  the output is to be discarded.  This is used when the
- *  application is rewinding (responding to an action service URL).
+ * An output stream used to discard anything written to it.
  *
  * @author Howard Ship
  * @version $Id$
  */
 
-
-public class NullWriter extends Writer
+public class NullOutputStream extends OutputStream
 {
-    /**
-     *  Does nothing.
-     *
-     */
- 
-    public void close() throws IOException
-    {
-    }
+	public void write(byte[] b, int off, int len) throws IOException
+	{
+		// Do nothing	
+	}
 
-    /**
-     *  Does nothing.
-     *
-     */
-
-    public void flush() throws IOException
-    {
-    }
-
-    /**
-     *  Does nothing.
-     *
-     */
- 
-    public void write(char[] cbuf, int off, int len)
-	throws IOException
-    {
-    }
+	public void write(byte[] b) throws IOException
+	{
+		// Do nothing
+	}
+	
+	public void write(int b) throws IOException
+	{
+		// Do nothing
+	}
 }

@@ -390,7 +390,7 @@ public class RequestCycle
 		this.targetActionId = Integer.parseInt(targetActionId);
 		this.targetIdPath = targetIdPath;
 
-		writer  = new HTMLResponseWriter(new NullWriter());
+		writer  = new HTMLResponseWriter(new NullOutputStream());
 
 		try
 		{

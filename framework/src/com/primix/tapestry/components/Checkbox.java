@@ -165,7 +165,7 @@ public class Checkbox extends AbstractFormComponent
 
 		// Used whether rewinding or not.
 
-		name = "CheckBox" + cycle.getNextActionId();
+		name = form.getNextElementId("Checkbox");
 
 		if (staticDisabled)
 			disabled = disabledValue;

@@ -203,7 +203,7 @@ public class RadioGroup extends AbstractFormComponent
 
 		// Used whether rewinding or not.
 
-		name = "RadioGroup" + cycle.getNextActionId();
+		name = form.getNextElementId("RadioGroup");
 
 		if (disabledBinding == null)
 			disabled = false;
