@@ -42,7 +42,12 @@
     
     Service used to render a named page.
     
-    <create-instance class="PortletRendererImpl" model="primitive"/>
+    <invoke-factory model="primitive">
+      <construct class="PortletRendererImpl">
+        <set-object property="markupWriterSource" value="infrastructure:markupWriterSource"/>
+        <set-object property="response" value="infrastructure:response"/>       
+      </construct>
+    </invoke-factory>
   </service-point>
   
  <service-point id="Render" interface="org.apache.tapestry.engine.IEngineService">
