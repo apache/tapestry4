@@ -42,6 +42,51 @@ import net.sf.tapestry.event.PageEvent;
 import net.sf.tapestry.event.PageRenderListener;
 
 /**
+ * A low level Table component that wraps all other low level Table components.
+ * This component carries the {@link net.sf.tapestry.contrib.table.model.ITableModel}
+ * that is used by the other Table components. Please see the documentation of
+ * {@link net.sf.tapestry.contrib.table.model.ITableModel} if you need to know more
+ * about how a table is represented.
+ * <p>
+ * This component also handles the saving of the state of the model using an 
+ * {@link net.sf.tapestry.contrib.table.model.ITableSessionStateManager}
+ * to determine what part of the model is to be saved and an 
+ * {@see  net.sf.tapestry.contrib.table.model.ITableSessionStoreManager}
+ * to determine how to save it.
+ * <p>
+ * The first instance of the table model is taken from the tableModel binding.
+ * Just before the rendering phase the persistent state of the model is saved in
+ * the session. This process occurs in the following sequence:
+ * <ul>
+ * <li>The persistent state of the model is taken via the 
+ * {@link net.sf.tapestry.contrib.table.model.ITableSessionStateManager} that
+ * could be supplied using the tableSessionStateManager binding 
+ * (but has a default value and is therefore not required).
+ * <li>If the tableSessionStoreManager binding has not been bound, the persistent
+ * state is saved as a persistent page property. Otherwise the supplied
+ * {@see  net.sf.tapestry.contrib.table.model.ITableSessionStoreManager} is used
+ * to save the persistent state. Use of the 
+ * {@see  net.sf.tapestry.contrib.table.model.ITableSessionStoreManager} 
+ * is usually necessary when tables with the same model have to be used across 
+ * multiple pages, and hence the state has to be saved in the Visit, rather than
+ * a persistent page property.
+ * </ul>
+ * <p>
+ * Upon the beginning of a new request cycle when the table model is needed again,
+ * the process is performed in reverse:
+ * <ul>
+ * <li>If the tableSessionStoreManager binding has not been bound, the persistent
+ * state is loaded from the persistent page property. Otherwise the supplied
+ * {@see  net.sf.tapestry.contrib.table.model.ITableSessionStoreManager} is used
+ * to load the persistent state.
+ * <li>The table model is recreated using the 
+ * {@link net.sf.tapestry.contrib.table.model.ITableSessionStateManager}.
+ * <li>If the {@link net.sf.tapestry.contrib.table.model.ITableSessionStateManager}
+ * returns null, then a table model is taken from the tableModel binding. Thus, if
+ * the {@link net.sf.tapestry.contrib.table.model.common.NullTableSessionStateManager}
+ * is used, the table model would be taken from the tableModel binding every time.
+ * </ul>
+ * 
  * @author mindbridge
  * @version $Id$
  */

@@ -41,7 +41,7 @@ public interface ITableModelSource extends IComponent
     final static String TABLE_MODEL_SOURCE_PROPERTY = "net.sf.tapestry.contrib.table.model.ITableModelSource";
 
 	/**
-	 * Method getTableModel.
+	 * Returns the table model currently used
 	 * @return ITableModel the current table model
 	 */
 	ITableModel getTableModel();
