@@ -14,16 +14,22 @@
 
     <bean name="rowClass" class="org.apache.tapestry.bean.EvenOdd"/>
 
+	<property-specification name="currentLocale" type="java.util.Locale"/>
+	
+	<property-specification name="selectedLocales" type="java.util.Set" 
+		persistent="yes" initial-value="new java.util.HashSet()"/>
+
 	<component id="form" type="Form">
-		<binding name="listener" expression="listeners.formSubmit"/>
+		<!--binding name="listener" expression="listeners.formSubmit"/-->
 	</component>
 
 	<component id="checkbox" type="Checkbox">
 		<binding name="selected" expression="checkboxSelected"/>
 	</component>
 
-	<component id="submit" type="Submit">
+	<component id="submitButton" type="Submit">
 		<static-binding name="label" value="Select locales"/>
+		<binding name="listener" expression="listeners.selectLocales"/>
 	</component>
 
 	<component id="tableView" type="contrib:TableView">
@@ -33,8 +39,8 @@
 
 	<component id="tableColumns" type="contrib:TableColumns"/>
 
-	<component id="tableRows" type="contrib:TableRows">
-		<binding name="value" expression="currentLocale"/>
+	<component id="tableRows" type="contrib:TableFormRows">
+		<binding name="row" expression="currentLocale"/>
 		<binding name="class" expression="beans.rowClass.next"/>
 	</component>
 
