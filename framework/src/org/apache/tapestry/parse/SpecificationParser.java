@@ -60,12 +60,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.digester.Rule;
-import org.apache.commons.hivemind.ClassResolver;
-import org.apache.commons.hivemind.LocationHolder;
-import org.apache.commons.hivemind.Resource;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.LocationHolder;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.spec.AssetType;
 import org.apache.tapestry.spec.BeanLifecycle;

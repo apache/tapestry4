@@ -55,10 +55,10 @@
 
 package org.apache.tapestry.resolver;
 
-import org.apache.commons.hivemind.ApplicationRuntimeException;
-import org.apache.commons.hivemind.Resource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;

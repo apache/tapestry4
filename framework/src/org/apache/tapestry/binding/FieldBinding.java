@@ -57,8 +57,8 @@ package org.apache.tapestry.binding;
 
 import java.lang.reflect.Field;
 
-import org.apache.commons.hivemind.ClassResolver;
-import org.apache.commons.hivemind.Location;
+import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.Location;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.Tapestry;
 

@@ -55,10 +55,10 @@
 
 package org.apache.tapestry.util.xml;
 
-import org.apache.commons.hivemind.ApplicationRuntimeException;
-import org.apache.commons.hivemind.Location;
-import org.apache.commons.hivemind.Resource;
-import org.apache.commons.hivemind.impl.LocationImpl;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Location;
+import org.apache.hivemind.Resource;
+import org.apache.hivemind.impl.LocationImpl;
 import org.xml.sax.SAXParseException;
 
 /**

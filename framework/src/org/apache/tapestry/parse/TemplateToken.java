@@ -55,9 +55,9 @@
 
 package org.apache.tapestry.parse;
 
-import org.apache.commons.hivemind.Locatable;
-import org.apache.commons.hivemind.Location;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.hivemind.Locatable;
+import org.apache.hivemind.Location;
 
 /**
  *  Base class for a number of different types of tokens that can be extracted

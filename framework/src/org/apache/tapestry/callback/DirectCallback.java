@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.callback;
 
-import org.apache.commons.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IDirect;
 import org.apache.tapestry.IPage;

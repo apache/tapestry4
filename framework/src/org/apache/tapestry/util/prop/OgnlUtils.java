@@ -62,7 +62,7 @@ import ognl.ClassResolver;
 import ognl.DefaultClassResolver;
 import ognl.Ognl;
 
-import org.apache.commons.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.Tapestry;
 
 /**

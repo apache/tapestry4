@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.junit;
 
-import org.apache.commons.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.Tapestry;
 
 /**

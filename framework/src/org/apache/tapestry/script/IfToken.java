@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.commons.hivemind.Location;
+import org.apache.hivemind.Location;
 import org.apache.tapestry.Tapestry;
 
 /**

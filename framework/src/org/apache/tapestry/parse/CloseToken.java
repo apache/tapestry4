@@ -55,8 +55,8 @@
 
 package org.apache.tapestry.parse;
 
-import org.apache.commons.hivemind.Location;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.hivemind.Location;
 
 /**
  *  Represents the closing tag of a component element in the template.

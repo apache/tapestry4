@@ -73,7 +73,9 @@ import java.util.Set;
 
 import javax.servlet.ServletContext;
 
-import org.apache.commons.hivemind.*;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Location;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.resource.ContextResourceLocation;
 import org.apache.tapestry.spec.IComponentSpecification;

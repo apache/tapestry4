@@ -57,7 +57,8 @@ package org.apache.tapestry;
 
 import java.io.InputStream;
 
-import org.apache.commons.hivemind.*;
+import org.apache.hivemind.Locatable;
+import org.apache.hivemind.Resource;
 
 /**
  *  Representation of a asset (GIF, JPEG, etc.) that may be owned by a

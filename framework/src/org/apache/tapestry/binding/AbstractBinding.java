@@ -58,7 +58,7 @@ package org.apache.tapestry.binding;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.hivemind.Location;
+import org.apache.hivemind.Location;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.Tapestry;

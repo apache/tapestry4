@@ -60,7 +60,7 @@ import java.io.LineNumberReader;
 import java.io.Reader;
 import java.io.StringReader;
 
-import org.apache.commons.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;

@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.spec;
 
-import org.apache.commons.hivemind.LocationHolder;
+import org.apache.hivemind.LocationHolder;
 
 /**
  *  Defines a transient or persistant property of a component or page.  

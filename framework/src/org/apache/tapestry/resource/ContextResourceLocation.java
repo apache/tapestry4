@@ -61,12 +61,12 @@ import java.util.Locale;
 
 import javax.servlet.ServletContext;
 
-import org.apache.commons.hivemind.Resource;
-import org.apache.commons.hivemind.util.AbstractResource;
-import org.apache.commons.hivemind.util.LocalizedResource;
+import org.apache.hivemind.util.AbstractResource;
+import org.apache.hivemind.util.LocalizedResource;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.LocalizedContextResourceFinder;
 

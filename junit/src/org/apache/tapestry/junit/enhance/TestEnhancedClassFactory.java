@@ -55,9 +55,9 @@
 
 package org.apache.tapestry.junit.enhance;
 
-import org.apache.commons.hivemind.ApplicationRuntimeException;
-import org.apache.commons.hivemind.ClassResolver;
-import org.apache.commons.hivemind.impl.DefaultClassResolver;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.tapestry.enhance.IEnhancedClass;
 import org.apache.tapestry.enhance.IEnhancedClassFactory;
 import org.apache.tapestry.enhance.javassist.EnhancedClassFactory;

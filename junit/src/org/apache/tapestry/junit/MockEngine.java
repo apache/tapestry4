@@ -60,8 +60,8 @@ import java.util.Locale;
 
 import javax.servlet.ServletException;
 
-import org.apache.commons.hivemind.ClassResolver;
-import org.apache.commons.hivemind.impl.DefaultClassResolver;
+import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IComponentClassEnhancer;

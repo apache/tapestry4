@@ -62,14 +62,14 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.hivemind.ApplicationRuntimeException;
-import org.apache.commons.hivemind.ClassResolver;
-import org.apache.commons.hivemind.Location;
-import org.apache.commons.hivemind.Resource;
-import org.apache.commons.hivemind.util.ClasspathResource;
+import org.apache.hivemind.util.ClasspathResource;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.Location;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IBinding;

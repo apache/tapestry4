@@ -68,11 +68,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.hivemind.*;
-import org.apache.commons.hivemind.impl.DefaultClassResolver;
-import org.apache.commons.hivemind.util.ClasspathResource;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.Resource;
+import org.apache.hivemind.impl.DefaultClassResolver;
+import org.apache.hivemind.util.ClasspathResource;
 import org.apache.tapestry.engine.BaseEngine;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.parse.SpecificationParser;
@@ -86,7 +87,6 @@ import org.apache.tapestry.util.ServletPropertySource;
 import org.apache.tapestry.util.SystemPropertiesPropertySource;
 import org.apache.tapestry.util.exception.ExceptionAnalyzer;
 import org.apache.tapestry.util.pool.Pool;
-import org.apache.tapestry.util.prop.OgnlUtils;
 import org.apache.tapestry.util.xml.DocumentParseException;
 
 /**

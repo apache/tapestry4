@@ -55,8 +55,8 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.commons.hivemind.ClassResolver;
-import org.apache.commons.hivemind.Resource;
+import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.util.xml.DocumentParseException;
 import org.apache.tapestry.util.xml.RuleDirectedParser;

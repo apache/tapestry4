@@ -58,8 +58,8 @@ package org.apache.tapestry.contrib.inspector;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.hivemind.ApplicationRuntimeException;
-import org.apache.commons.hivemind.Resource;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IDirect;
 import org.apache.tapestry.IEngine;

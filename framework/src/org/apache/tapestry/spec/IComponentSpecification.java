@@ -58,9 +58,9 @@ package org.apache.tapestry.spec;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.commons.hivemind.LocationHolder;
-import org.apache.commons.hivemind.Locatable;
-import org.apache.commons.hivemind.Resource;
+import org.apache.hivemind.Locatable;
+import org.apache.hivemind.LocationHolder;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.util.IPropertyHolder;
 
 /**

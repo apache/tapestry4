@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.param;
 
-import org.apache.commons.hivemind.ClassResolver;
+import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IForm;

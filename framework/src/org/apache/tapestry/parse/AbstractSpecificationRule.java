@@ -57,9 +57,9 @@ package org.apache.tapestry.parse;
 
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.digester.Rule;
-import org.apache.commons.hivemind.Location;
-import org.apache.commons.hivemind.Resource;
 import org.apache.commons.lang.StringUtils;
+import org.apache.hivemind.Location;
+import org.apache.hivemind.Resource;
 import org.xml.sax.Attributes;
 
 /**

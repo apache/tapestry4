@@ -59,10 +59,10 @@ import java.util.Locale;
 
 import javax.servlet.ServletContext;
 
-import org.apache.commons.hivemind.ClassResolver;
-import org.apache.commons.hivemind.Resource;
-import org.apache.commons.hivemind.impl.DefaultClassResolver;
-import org.apache.commons.hivemind.util.ClasspathResource;
+import org.apache.hivemind.util.ClasspathResource;
+import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.Resource;
+import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.tapestry.junit.mock.MockContext;
 import org.apache.tapestry.resource.ContextResourceLocation;
 

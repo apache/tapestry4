@@ -68,7 +68,7 @@ import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 import ognl.ClassResolver;
 
-import org.apache.commons.hivemind.impl.DefaultClassResolver;
+import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.tapestry.spec.AssetType;
 import org.apache.tapestry.spec.BeanLifecycle;
 import org.apache.tapestry.util.ComponentAddress;

@@ -57,7 +57,7 @@ package org.apache.tapestry;
 
 import java.util.Map;
 
-import org.apache.commons.hivemind.*;
+import org.apache.hivemind.Resource;
 
 /**
  *  An object that can convert a set of symbols into a collection of JavaScript statements.

@@ -58,7 +58,7 @@ package org.apache.tapestry.vlib;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.form.IPropertySelectionModel;
 
 /**

@@ -55,8 +55,7 @@
 
 package org.apache.tapestry;
 
-import org.apache.commons.hivemind.*;
-import org.apache.commons.hivemind.*;
+import org.apache.hivemind.Locatable;
 
 /**
  *  A binding is the mechanism used to provide values for parameters of

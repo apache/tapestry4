@@ -59,8 +59,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.hivemind.ApplicationRuntimeException;
-import org.apache.commons.hivemind.Location;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Location;
 import org.apache.tapestry.util.prop.OgnlUtils;
 
 /**

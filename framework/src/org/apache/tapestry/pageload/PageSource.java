@@ -55,8 +55,8 @@
 
 package org.apache.tapestry.pageload;
 
-import org.apache.commons.hivemind.ClassResolver;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;

@@ -58,8 +58,8 @@ package org.apache.tapestry.asset;
 import java.io.InputStream;
 import java.net.URL;
 
-import org.apache.commons.hivemind.ApplicationRuntimeException;
-import org.apache.commons.hivemind.Location;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Location;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 

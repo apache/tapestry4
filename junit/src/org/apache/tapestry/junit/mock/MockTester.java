@@ -73,8 +73,8 @@ import junit.framework.AssertionFailedError;
 import ognl.Ognl;
 import ognl.OgnlException;
 
-import org.apache.commons.hivemind.ApplicationRuntimeException;
 import org.apache.commons.lang.StringUtils;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.MatchResult;
 import org.apache.oro.text.regex.Pattern;

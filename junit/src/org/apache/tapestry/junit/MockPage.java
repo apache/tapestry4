@@ -60,9 +60,9 @@ import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.commons.hivemind.ClassResolver;
-import org.apache.commons.hivemind.Messages;
-import org.apache.commons.hivemind.impl.BaseLocatable;
+import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.Messages;
+import org.apache.hivemind.impl.BaseLocatable;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;

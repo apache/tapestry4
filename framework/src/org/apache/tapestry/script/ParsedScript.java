@@ -57,8 +57,8 @@ package org.apache.tapestry.script;
 
 import java.util.Map;
 
-import org.apache.commons.hivemind.Location;
-import org.apache.commons.hivemind.Resource;
+import org.apache.hivemind.Location;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.IScriptProcessor;

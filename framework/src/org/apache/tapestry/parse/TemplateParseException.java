@@ -55,8 +55,8 @@
 
 package org.apache.tapestry.parse;
 
-import org.apache.commons.hivemind.Locatable;
-import org.apache.commons.hivemind.Location;
+import org.apache.hivemind.Locatable;
+import org.apache.hivemind.Location;
 
 /**
  *  Exception thrown indicating a problem parsing an HTML template.

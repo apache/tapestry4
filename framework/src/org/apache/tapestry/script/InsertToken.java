@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.commons.hivemind.Location;
+import org.apache.hivemind.Location;
 
 /**
  *  A token that writes the value of a property using a property path

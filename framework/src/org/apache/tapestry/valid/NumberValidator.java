@@ -60,7 +60,7 @@ import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;

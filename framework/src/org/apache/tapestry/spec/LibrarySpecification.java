@@ -62,11 +62,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.hivemind.ApplicationRuntimeException;
-import org.apache.commons.hivemind.ClassResolver;
-import org.apache.commons.hivemind.Location;
-import org.apache.commons.hivemind.Resource;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.Location;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.Tapestry;
 
 /**

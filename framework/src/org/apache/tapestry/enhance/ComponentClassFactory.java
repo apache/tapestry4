@@ -65,11 +65,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.hivemind.ApplicationRuntimeException;
-import org.apache.commons.hivemind.ClassResolver;
-import org.apache.commons.hivemind.Location;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.Location;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.spec.Direction;

@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.wap.quiz;
 
-import org.apache.commons.hivemind.Resource;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.ApplicationServlet;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IPropertySource;

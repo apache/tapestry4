@@ -62,10 +62,10 @@ import java.util.Locale;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
-import org.apache.commons.hivemind.ClassResolver;
-import org.apache.commons.hivemind.Resource;
-import org.apache.commons.hivemind.impl.DefaultClassResolver;
-import org.apache.commons.hivemind.util.ClasspathResource;
+import org.apache.hivemind.util.ClasspathResource;
+import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.Resource;
+import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.DefaultComponentMessagesSource;

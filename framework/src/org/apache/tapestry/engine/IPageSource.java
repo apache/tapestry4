@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.engine;
 
-import org.apache.commons.hivemind.ClassResolver;
+import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 

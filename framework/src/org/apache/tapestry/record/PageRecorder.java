@@ -58,8 +58,8 @@ package org.apache.tapestry.record;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.apache.commons.hivemind.ApplicationRuntimeException;
-import org.apache.commons.hivemind.ClassResolver;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.Tapestry;

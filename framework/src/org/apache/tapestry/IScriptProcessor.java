@@ -55,8 +55,7 @@
 
 package org.apache.tapestry;
 
-import org.apache.commons.hivemind.*;
-import org.apache.commons.hivemind.*;
+import org.apache.hivemind.Resource;
 
 /**
  * Defines methods needed by a {@link org.apache.tapestry.IScript} to

@@ -64,10 +64,10 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.apache.commons.hivemind.Location;
-import org.apache.commons.hivemind.Resource;
-import org.apache.commons.hivemind.impl.DefaultClassResolver;
-import org.apache.commons.hivemind.util.ClasspathResource;
+import org.apache.hivemind.util.ClasspathResource;
+import org.apache.hivemind.Location;
+import org.apache.hivemind.Resource;
+import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.tapestry.parse.AttributeType;
 import org.apache.tapestry.parse.ITemplateParserDelegate;
 import org.apache.tapestry.parse.LocalizationToken;

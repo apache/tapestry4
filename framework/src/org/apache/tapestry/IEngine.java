@@ -60,7 +60,7 @@ import java.util.Locale;
 
 import javax.servlet.ServletException;
 
-import org.apache.commons.hivemind.*;
+import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.engine.IComponentClassEnhancer;
 import org.apache.tapestry.engine.IComponentMessagesSource;
 import org.apache.tapestry.engine.IEngineService;

@@ -60,9 +60,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.hivemind.ApplicationRuntimeException;
-import org.apache.commons.hivemind.Resource;
-import org.apache.commons.hivemind.util.ClasspathResource;
+import org.apache.hivemind.util.ClasspathResource;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;

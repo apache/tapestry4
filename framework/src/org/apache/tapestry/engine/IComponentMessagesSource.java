@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.engine;
 
-import org.apache.commons.hivemind.Messages;
+import org.apache.hivemind.Messages;
 import org.apache.tapestry.IComponent;
 
 /**

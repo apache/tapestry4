@@ -59,7 +59,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-import org.apache.commons.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.request.IUploadFile;

@@ -57,7 +57,7 @@ package org.apache.tapestry.junit.parse;
 
 import java.util.Map;
 
-import org.apache.commons.hivemind.Locatable;
+import org.apache.hivemind.Locatable;
 import org.apache.tapestry.bean.MessageBeanInitializer;
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.spec.BindingType;

@@ -57,7 +57,7 @@ package org.apache.tapestry.parse;
 
 import java.util.Map;
 
-import org.apache.commons.hivemind.Location;
+import org.apache.hivemind.Location;
 
 /**
  *  Represents localized text from the template.

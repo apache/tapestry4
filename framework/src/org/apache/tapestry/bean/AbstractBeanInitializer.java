@@ -55,9 +55,9 @@
 
 package org.apache.tapestry.bean;
 
-import org.apache.commons.hivemind.ApplicationRuntimeException;
-import org.apache.commons.hivemind.ClassResolver;
-import org.apache.commons.hivemind.impl.BaseLocatable;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.impl.BaseLocatable;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.prop.OgnlUtils;
 

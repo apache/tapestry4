@@ -60,7 +60,7 @@ import javassist.CtClass;
 import javassist.LoaderClassPath;
 import javassist.NotFoundException;
 
-import org.apache.commons.hivemind.ClassResolver;
+import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.enhance.CodeGenerationException;
 import org.apache.tapestry.enhance.EnhancedClassLoader;
 import org.apache.tapestry.enhance.IEnhancedClass;

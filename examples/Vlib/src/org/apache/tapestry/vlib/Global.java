@@ -60,9 +60,9 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.rmi.PortableRemoteObject;
 
-import org.apache.commons.hivemind.ApplicationRuntimeException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.vlib.ejb.IBookQueryHome;
 import org.apache.tapestry.vlib.ejb.IOperationsHome;
 

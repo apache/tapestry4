@@ -58,7 +58,7 @@ package org.apache.tapestry.script;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.commons.hivemind.Location;
+import org.apache.hivemind.Location;
 import org.apache.tapestry.Tapestry;
 
 /**

@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.commons.hivemind.Locatable;
+import org.apache.hivemind.Locatable;
 
 
 /**

@@ -57,10 +57,10 @@ package org.apache.tapestry.binding;
 
 import org.apache.bsf.BSFException;
 import org.apache.bsf.BSFManager;
-import org.apache.commons.hivemind.ApplicationRuntimeException;
-import org.apache.commons.hivemind.Location;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Location;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IComponent;

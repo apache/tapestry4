@@ -67,13 +67,13 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.apache.commons.hivemind.ApplicationRuntimeException;
-import org.apache.commons.hivemind.Location;
-import org.apache.commons.hivemind.Resource;
-import org.apache.commons.hivemind.impl.LocationImpl;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Location;
+import org.apache.hivemind.Resource;
+import org.apache.hivemind.impl.LocationImpl;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.RegexpMatcher;
 import org.xml.sax.Attributes;

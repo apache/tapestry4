@@ -55,9 +55,9 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.commons.hivemind.Location;
-import org.apache.commons.hivemind.Resource;
-import org.apache.commons.hivemind.util.ClasspathResource;
+import org.apache.hivemind.util.ClasspathResource;
+import org.apache.hivemind.Location;
+import org.apache.hivemind.Resource;
 
 /**
  *  A token for included scripts.

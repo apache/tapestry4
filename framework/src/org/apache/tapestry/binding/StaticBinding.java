@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.binding;
 
-import org.apache.commons.hivemind.Location;
+import org.apache.hivemind.Location;
 
 /**
  * Stores a static (invariant) String as the value.

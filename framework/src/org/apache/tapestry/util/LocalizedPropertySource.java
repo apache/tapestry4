@@ -57,7 +57,7 @@ package org.apache.tapestry.util;
 
 import java.util.Locale;
 
-import org.apache.commons.hivemind.util.*;
+import org.apache.hivemind.util.*;
 import org.apache.tapestry.engine.IPropertySource;
 
 /**

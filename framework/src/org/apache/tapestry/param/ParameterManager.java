@@ -62,10 +62,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.hivemind.ClassResolver;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;

@@ -59,7 +59,7 @@ import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.Properties;
 
-import org.apache.commons.hivemind.Messages;
+import org.apache.hivemind.Messages;
 
 /**
  *  Implementation of {@link org.apache.tapestry.IMessages}.  This is basically

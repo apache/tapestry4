@@ -64,8 +64,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.hivemind.Resource;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.Tapestry;
 
 /**

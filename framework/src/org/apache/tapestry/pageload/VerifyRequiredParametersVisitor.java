@@ -57,7 +57,7 @@ package org.apache.tapestry.pageload;
 
 import java.util.Iterator;
 
-import org.apache.commons.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.spec.IComponentSpecification;

@@ -57,8 +57,8 @@ package org.apache.tapestry.bean;
 
 import java.lang.reflect.Field;
 
-import org.apache.commons.hivemind.ApplicationRuntimeException;
-import org.apache.commons.hivemind.ClassResolver;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.IBeanProvider;
 import org.apache.tapestry.Tapestry;
 

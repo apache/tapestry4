@@ -57,7 +57,7 @@ package org.apache.tapestry.script;
 
 import java.util.Map;
 
-import org.apache.commons.hivemind.Location;
+import org.apache.hivemind.Location;
 
 /**
  *  Allows for the creation of new symbols that can be used in the script

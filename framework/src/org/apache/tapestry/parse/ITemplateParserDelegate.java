@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.parse;
 
-import org.apache.commons.hivemind.Location;
+import org.apache.hivemind.Location;
 
 /**
  *  Provides a {@link TemplateParser} with additional information about

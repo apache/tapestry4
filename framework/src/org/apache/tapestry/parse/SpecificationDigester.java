@@ -60,10 +60,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.digester.Digester;
-import org.apache.commons.hivemind.Location;
-import org.apache.commons.hivemind.Resource;
-import org.apache.commons.hivemind.impl.LocationImpl;
 import org.apache.commons.lang.StringUtils;
+import org.apache.hivemind.Location;
+import org.apache.hivemind.Resource;
+import org.apache.hivemind.impl.LocationImpl;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.RegexpMatcher;
 import org.xml.sax.Attributes;

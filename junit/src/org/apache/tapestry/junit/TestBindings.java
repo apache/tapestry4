@@ -59,9 +59,9 @@ import java.util.HashMap;
 
 import junit.framework.AssertionFailedError;
 
-import org.apache.commons.hivemind.ApplicationRuntimeException;
-import org.apache.commons.hivemind.ClassResolver;
-import org.apache.commons.hivemind.impl.DefaultClassResolver;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;

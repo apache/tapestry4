@@ -59,7 +59,7 @@ import java.rmi.RemoteException;
 
 import javax.ejb.FinderException;
 
-import org.apache.commons.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.vlib.ActivatePage;
 import org.apache.tapestry.vlib.IMessageProperty;

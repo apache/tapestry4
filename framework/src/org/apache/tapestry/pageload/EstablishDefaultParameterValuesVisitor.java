@@ -57,7 +57,7 @@ package org.apache.tapestry.pageload;
 
 import java.util.Iterator;
 
-import org.apache.commons.hivemind.ClassResolver;
+import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.binding.ExpressionBinding;

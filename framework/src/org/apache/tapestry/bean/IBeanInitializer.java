@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.bean;
 
-import org.apache.commons.hivemind.LocationHolder;
+import org.apache.hivemind.LocationHolder;
 import org.apache.tapestry.IBeanProvider;
 
 /**

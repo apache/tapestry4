@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.spec;
 
-import org.apache.commons.hivemind.LocationHolder;
+import org.apache.hivemind.LocationHolder;
 
 /**
  *  Defines a formal parameter to a component.  An <code>IParameterSpecification</code>

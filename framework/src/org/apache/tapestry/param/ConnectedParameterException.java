@@ -55,8 +55,8 @@
 
 package org.apache.tapestry.param;
 
-import org.apache.commons.hivemind.ApplicationRuntimeException;
-import org.apache.commons.hivemind.Location;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Location;
 
 /**
  *  Identifies exceptions in connected parameters (parameters that

@@ -55,8 +55,8 @@
 
 package org.apache.tapestry.spec;
 
-import org.apache.commons.hivemind.LocationHolder;
-import org.apache.commons.hivemind.Location;
+import org.apache.hivemind.Location;
+import org.apache.hivemind.LocationHolder;
 import org.apache.tapestry.util.BasePropertyHolder;
 
 /**

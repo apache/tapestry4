@@ -57,7 +57,8 @@ package org.apache.tapestry;
 
 import java.util.List;
 
-import org.apache.commons.hivemind.*;
+import org.apache.hivemind.Locatable;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
 

@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.parse;
 
-import org.apache.commons.hivemind.Resource;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.xml.DocumentParseException;
 import org.xml.sax.Attributes;

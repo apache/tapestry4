@@ -60,8 +60,8 @@ import java.util.Map;
 import ognl.Ognl;
 import ognl.OgnlException;
 
-import org.apache.commons.hivemind.ClassResolver;
-import org.apache.commons.hivemind.Location;
+import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.Location;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.Tapestry;

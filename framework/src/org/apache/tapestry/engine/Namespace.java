@@ -63,10 +63,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.hivemind.ApplicationRuntimeException;
-import org.apache.commons.hivemind.Location;
-import org.apache.commons.hivemind.Resource;
-import org.apache.commons.hivemind.util.ClasspathResource;
+import org.apache.hivemind.util.ClasspathResource;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Location;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.spec.IComponentSpecification;

@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.resolver;
 
-import org.apache.commons.hivemind.Resource;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;

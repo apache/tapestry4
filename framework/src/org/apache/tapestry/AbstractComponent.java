@@ -65,10 +65,10 @@ import java.util.Map;
 
 import ognl.OgnlRuntime;
 
-import org.apache.commons.hivemind.ApplicationRuntimeException;
-import org.apache.commons.hivemind.ClassResolver;
-import org.apache.commons.hivemind.Messages;
-import org.apache.commons.hivemind.impl.BaseLocatable;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.Messages;
+import org.apache.hivemind.impl.BaseLocatable;
 import org.apache.tapestry.bean.BeanProvider;
 import org.apache.tapestry.bean.BeanProviderPropertyAccessor;
 import org.apache.tapestry.engine.IPageLoader;

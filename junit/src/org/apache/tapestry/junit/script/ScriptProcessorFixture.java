@@ -58,7 +58,7 @@ package org.apache.tapestry.junit.script;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.hivemind.Resource;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.IScriptProcessor;
 import org.apache.tapestry.util.IdAllocator;
 

@@ -55,8 +55,7 @@
 
 package org.apache.tapestry.spec;
 
-import org.apache.commons.hivemind.impl.*;
-import org.apache.commons.hivemind.impl.*;
+import org.apache.hivemind.impl.BaseLocatable;
 
 /**
  *  Defines a transient or persistant property of a component or page.  

@@ -59,7 +59,7 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 
-import org.apache.commons.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IExternalPage;
 import org.apache.tapestry.IRequestCycle;

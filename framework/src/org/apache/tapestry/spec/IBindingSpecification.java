@@ -55,8 +55,8 @@
 
 package org.apache.tapestry.spec;
 
-import org.apache.commons.hivemind.LocationHolder;
-import org.apache.commons.hivemind.Locatable;
+import org.apache.hivemind.Locatable;
+import org.apache.hivemind.LocationHolder;
 
 /**
  *  Stores a binding specification, which identifies the static value

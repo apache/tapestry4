@@ -57,7 +57,7 @@ package org.apache.tapestry.util.io;
 
 import java.io.IOException;
 
-import org.apache.commons.hivemind.ClassResolver;
+import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.AdaptorRegistry;
 

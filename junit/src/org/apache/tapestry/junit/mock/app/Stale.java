@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.junit.mock.app;
 
-import org.apache.commons.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.html.BasePage;
 

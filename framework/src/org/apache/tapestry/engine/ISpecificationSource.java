@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.engine;
 
-import org.apache.commons.hivemind.Resource;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;

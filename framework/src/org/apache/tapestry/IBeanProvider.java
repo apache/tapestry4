@@ -57,7 +57,7 @@ package org.apache.tapestry;
 
 import java.util.Collection;
 
-import org.apache.commons.hivemind.*;
+import org.apache.hivemind.ClassResolver;
 
 /**
  *  An object that provides a component with access to helper beans.

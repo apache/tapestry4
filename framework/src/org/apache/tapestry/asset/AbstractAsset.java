@@ -55,9 +55,9 @@
 
 package org.apache.tapestry.asset;
 
-import org.apache.commons.hivemind.Location;
-import org.apache.commons.hivemind.Resource;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.hivemind.Location;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.IAsset;
 
 /**

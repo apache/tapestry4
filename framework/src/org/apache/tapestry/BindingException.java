@@ -55,8 +55,9 @@
 
 package org.apache.tapestry;
 
-import org.apache.commons.hivemind.*;
-import org.apache.commons.hivemind.*;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.HiveMind;
+import org.apache.hivemind.Location;
 
 /**
  *  A general exception describing an {@link IBinding}
