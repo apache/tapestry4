@@ -72,11 +72,19 @@ public class StringBeanInitializer extends AbstractBeanInitializer
 {
     protected String _key;
 
+	/** @since 2.4 **/
+	
+	public StringBeanInitializer()
+	{
+	}
+	
+	/** @deprecated **/
+	
     public StringBeanInitializer(String propertyName, String key)
     {
         super(propertyName);
 
-        _key = key;
+        setKey(key);
     }
 
     public void setBeanProperty(IBeanProvider provider, Object bean)
@@ -86,4 +94,19 @@ public class StringBeanInitializer extends AbstractBeanInitializer
         
         setBeanProperty(provider.getResourceResolver(), bean, value);
     }
+    
+    /** @since 2.4 **/
+    
+    public String getKey()
+    {
+        return _key;
+    }
+
+	/** @since 2.4 **/
+	
+    public void setKey(String key)
+    {
+        _key = key;
+    }
+
 }

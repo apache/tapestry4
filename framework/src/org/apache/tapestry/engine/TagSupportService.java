@@ -57,7 +57,6 @@ package org.apache.tapestry.engine;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URLEncoder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -67,7 +66,6 @@ import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.html.HTMLWriter;
 import org.apache.tapestry.request.RequestContext;
@@ -104,7 +102,7 @@ public class TagSupportService implements IEngineService
         IEngineServiceView engine,
         IRequestCycle cycle,
         ResponseOutputStream output)
-        throws RequestCycleException, ServletException, IOException
+        throws ServletException, IOException
     {
         RequestContext context = cycle.getRequestContext();
         HttpServletRequest request = context.getRequest();

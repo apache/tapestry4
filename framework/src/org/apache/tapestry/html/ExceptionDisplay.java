@@ -59,7 +59,6 @@ import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.bean.EvenOdd;
 import org.apache.tapestry.util.exception.ExceptionDescription;
 
@@ -110,7 +109,6 @@ public class ExceptionDisplay extends BaseComponent
     }
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         ExceptionDescription[] exceptions =
             (ExceptionDescription[]) _exceptionsBinding.getObject(

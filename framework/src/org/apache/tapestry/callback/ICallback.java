@@ -58,7 +58,6 @@ package org.apache.tapestry.callback;
 import java.io.Serializable;
 
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 
 /**
  *  Defines a callback, an object which is used to invoke or reinvoke a method
@@ -84,5 +83,5 @@ public interface ICallback extends Serializable
      *
      **/
 
-    public void performCallback(IRequestCycle cycle) throws RequestCycleException;
+    public void performCallback(IRequestCycle cycle);
 }

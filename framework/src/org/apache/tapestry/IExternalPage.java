@@ -86,7 +86,6 @@ public interface IExternalPage extends IPage
      *  @param the current request cycle
      * 
      **/
-    
-    public void activateExternalPage(Object[] parameters, IRequestCycle cycle)
-    throws RequestCycleException;
+
+    public void activateExternalPage(Object[] parameters, IRequestCycle cycle);
 }

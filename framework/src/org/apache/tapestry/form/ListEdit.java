@@ -59,12 +59,12 @@ import java.io.IOException;
 import java.util.Iterator;
 
 import org.apache.tapestry.AbstractComponent;
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.util.io.DataSqueezer;
@@ -86,13 +86,12 @@ public abstract class ListEdit extends AbstractComponent
 {
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         Iterator i = null;
 
         IForm form = Form.get(cycle);
         if (form == null)
-            throw new RequestCycleException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString("must-be-wrapped-by-form", "ListEdit"),
                 this);
 
@@ -167,7 +166,6 @@ public abstract class ListEdit extends AbstractComponent
     }
 
     private void writeValue(IMarkupWriter writer, String name, Object value)
-        throws RequestCycleException
     {
         String externalValue;
 
@@ -177,7 +175,7 @@ public abstract class ListEdit extends AbstractComponent
         }
         catch (IOException ex)
         {
-            throw new RequestCycleException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString("ListEdit.unable-to-convert-value", value),
                 this,
                 ex);
@@ -190,7 +188,7 @@ public abstract class ListEdit extends AbstractComponent
         writer.println();
     }
 
-    private Object convertValue(String value) throws RequestCycleException
+    private Object convertValue(String value)
     {
         try
         {
@@ -198,7 +196,7 @@ public abstract class ListEdit extends AbstractComponent
         }
         catch (IOException ex)
         {
-            throw new RequestCycleException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString("ListEdit.unable-to-convert-string", value),
                 this,
                 ex);

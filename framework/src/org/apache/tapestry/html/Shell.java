@@ -63,7 +63,6 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
@@ -89,7 +88,6 @@ public abstract class Shell extends AbstractComponent
         "Tapestry Application Framework, version " + Tapestry.VERSION;
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         long startTime = 0;
 
@@ -170,7 +168,6 @@ public abstract class Shell extends AbstractComponent
     }
 
     private void writeRefresh(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         int refresh = getRefresh();
 

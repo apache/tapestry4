@@ -62,7 +62,6 @@ import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceLocation;
-import org.apache.tapestry.PageLoaderException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.spec.ComponentSpecification;
 
@@ -125,7 +124,7 @@ public class ComponentSpecificationResolver extends AbstractSpecificationResolve
      * 
      **/
 
-    public void resolve(INamespace containerNamespace, String type) throws PageLoaderException
+    public void resolve(INamespace containerNamespace, String type)
     {
         int colonx = type.indexOf(':');
 

@@ -63,8 +63,7 @@ import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
-import org.apache.tapestry.RequiredParameterException;
+import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.RequestContext;
 
 /**
@@ -91,12 +90,11 @@ public abstract class ImageSubmit extends AbstractFormComponent
     public abstract IBinding getSelectedBinding();
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         IForm form = getForm(cycle);
 
-		updateDelegate(form);
-		
+        updateDelegate(form);
+
         boolean rewinding = form.isRewinding();
 
         String nameOverride = getNameOverride();
@@ -206,12 +204,12 @@ public abstract class ImageSubmit extends AbstractFormComponent
 
     public abstract String getNameOverride();
 
-    protected void prepareForRender(IRequestCycle cycle) throws RequestCycleException
+    protected void prepareForRender(IRequestCycle cycle)
     {
         super.prepareForRender(cycle);
 
         if (getImage() == null)
-            throw new RequiredParameterException(this, "image", getBinding("image"));
+            throw Tapestry.createRequiredParameterException(this, "image");
     }
 
 }

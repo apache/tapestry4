@@ -57,7 +57,6 @@ package org.apache.tapestry.junit.mock.c13;
 
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.RedirectException;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.html.BasePage;
 
 /**
@@ -72,19 +71,16 @@ import org.apache.tapestry.html.BasePage;
 public class Home extends BasePage
 {
 	public void internalRedirect(IRequestCycle cycle)
-	throws RequestCycleException
 	{
 		throw new RedirectException("static/Warning.html");
 	}
 	
 	public void externalRedirect(IRequestCycle cycle)
-	throws RequestCycleException
 	{
 		throw new RedirectException("http://jakarta.apache.org/tapestry");
 	}
 	
 	public void nullRedirect(IRequestCycle cycle)
-	throws RequestCycleException
 	{
 		// Special value, stands in for any resource that can't be found
 		// resulting in the ServletContext returning null for the
@@ -94,7 +90,6 @@ public class Home extends BasePage
 	}
 
 	public void servletException(IRequestCycle cycle)
-	throws RequestCycleException
 	{
 		// Special value, forces a ServletException to be thrown
 		// from within RequestDispatcher.forward()
@@ -103,7 +98,6 @@ public class Home extends BasePage
 	}
 	
 	public void missing(IRequestCycle cycle)
-	throws RequestCycleException
 	{
 		// Specifying a missing file is an easy way to
 		// force an IOException ... note that the
@@ -115,13 +109,11 @@ public class Home extends BasePage
 	}
 	
 	public void index(IRequestCycle cycle)
-	throws RequestCycleException
 	{
 		throw new RedirectException(null);
 	}
 	
 	public void failExternal(IRequestCycle cycle)
-	throws RequestCycleException
 	{
 		throw new RedirectException("http://somehost/FAIL_IO");
 	}

@@ -56,7 +56,6 @@
 package org.apache.tapestry.link;
 
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.engine.ILink;
 
 /**
@@ -78,7 +77,7 @@ public abstract class GenericLink extends AbstractLinkComponent
 {
     public abstract String getHref();
 
-    public ILink getLink(IRequestCycle cycle) throws RequestCycleException
+    public ILink getLink(IRequestCycle cycle)
     {
         return new StaticLink(getHref());
     }

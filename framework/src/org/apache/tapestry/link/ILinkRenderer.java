@@ -57,7 +57,6 @@ package org.apache.tapestry.link;
 
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.components.ILinkComponent;
 
 /**
@@ -86,15 +85,11 @@ public interface ILinkRenderer
      * 
      *  <p>
      *  The renderer is expected to call back into the link component to handle
-     *  any informal parameters, and to handle events output.\
+     *  any informal parameters, and to handle events output.
      * 
      * 
      **/
 
-    public void renderLink(
-        IMarkupWriter writer,
-        IRequestCycle cycle,
-        ILinkComponent linkComponent)
-        throws RequestCycleException;
+    public void renderLink(IMarkupWriter writer, IRequestCycle cycle, ILinkComponent linkComponent);
 
 }

@@ -60,7 +60,6 @@ import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.RenderRewoundException;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.ILink;
 
@@ -99,7 +98,7 @@ public abstract class ActionLink extends AbstractLinkComponent implements IActio
         return statefulBinding.getBoolean();
     }
 
-    public ILink getLink(IRequestCycle cycle) throws RequestCycleException
+    public ILink getLink(IRequestCycle cycle)
     {
         String actionId = cycle.getNextActionId();
 

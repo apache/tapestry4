@@ -57,6 +57,7 @@ package org.apache.tapestry.param;
 
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IComponent;
+import org.apache.tapestry.Location;
 
 /**
  *  Identifies exceptions in connected parameters (parameters that
@@ -70,9 +71,9 @@ import org.apache.tapestry.IComponent;
 
 public class ConnectedParameterException extends ApplicationRuntimeException
 {
-    private IComponent component;
-    private String parameterName;
-    private String propertyName;
+    private transient IComponent _component;
+    private String _parameterName;
+    private String _propertyName;
 
     public ConnectedParameterException(
         String message,
@@ -90,25 +91,38 @@ public class ConnectedParameterException extends ApplicationRuntimeException
         String propertyName,
         Throwable rootCause)
     {
-        super(message, rootCause);
+        this(message, component, parameterName, propertyName, null, rootCause);
+    }
 
-        this.component = component;
-        this.parameterName = parameterName;
-        this.propertyName = propertyName;
+    /** @since 2.4 **/
+
+    public ConnectedParameterException(
+        String message,
+        IComponent component,
+        String parameterName,
+        String propertyName,
+        Location location,
+        Throwable rootCause)
+    {
+        super(message, location, rootCause);
+
+        _component = component;
+        _parameterName = parameterName;
+        _propertyName = propertyName;
     }
 
     public IComponent getComponent()
     {
-        return component;
+        return _component;
     }
 
     public String getParameterName()
     {
-        return parameterName;
+        return _parameterName;
     }
 
     public String getPropertyName()
     {
-        return propertyName;
+        return _propertyName;
     }
 }

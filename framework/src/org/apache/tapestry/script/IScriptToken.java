@@ -55,7 +55,6 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.tapestry.ScriptException;
 import org.apache.tapestry.ScriptSession;
 
 /**
@@ -79,8 +78,7 @@ public interface IScriptToken
 	 *
 	 **/
 
-	public void write(StringBuffer buffer, ScriptSession session)
-		throws ScriptException;
+	public void write(StringBuffer buffer, ScriptSession session);
 
 	/**
 	 *  Invoked during parsing to add the token parameter as a child

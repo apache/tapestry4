@@ -136,7 +136,7 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageRend
      *  @since 2.2
      * 
      **/
-    
+
     private Set _beanNames;
 
     public BeanProvider(IComponent component)
@@ -157,13 +157,13 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageRend
         if (_beanNames == null)
         {
             Collection c = _component.getSpecification().getBeanNames();
-            
+
             if (c == null || c.isEmpty())
                 _beanNames = Collections.EMPTY_SET;
             else
                 _beanNames = Collections.unmodifiableSet(new HashSet(c));
         }
-        
+
         return _beanNames;
     }
 
@@ -191,9 +191,12 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageRend
 
         if (spec == null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("BeanProvider.bean-not-defined", _component.getExtendedId(), name));
+                Tapestry.getString(
+                    "BeanProvider.bean-not-defined",
+                    _component.getExtendedId(),
+                    name));
 
-        bean = instantiateBean(spec);
+        bean = instantiateBean(name, spec);
 
         BeanLifecycle lifecycle = spec.getLifecycle();
 
@@ -227,7 +230,7 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageRend
         return bean;
     }
 
-    private Object instantiateBean(BeanSpecification spec)
+    private Object instantiateBean(String beanName, BeanSpecification spec)
     {
         String className = spec.getClassName();
         Object bean = null;
@@ -237,19 +240,25 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageRend
 
         // Do it the hard way!
 
-        Class beanClass = _resolver.findClass(className);
-
         try
         {
+            Class beanClass = _resolver.findClass(className);
+
             bean = beanClass.newInstance();
         }
-        catch (IllegalAccessException ex)
+        catch (Exception ex)
         {
-            throw new ApplicationRuntimeException(ex);
-        }
-        catch (InstantiationException ex)
-        {
-            throw new ApplicationRuntimeException(ex);
+
+            throw new ApplicationRuntimeException(
+                Tapestry.getString(
+                    "BeanProvider.instantiation-error",
+                    new Object[] {
+                        beanName,
+                        _component.getExtendedId(),
+                        className,
+                        ex.getMessage()}),
+                spec.getLocation(),
+                ex);
         }
 
         // OK, have the bean, have to initialize it.
@@ -343,7 +352,7 @@ public class BeanProvider implements IBeanProvider, PageDetachListener, PageRend
     }
 
     /** @since 2.2 **/
-    
+
     public boolean canProvideBean(String name)
     {
         return getBeanNames().contains(name);

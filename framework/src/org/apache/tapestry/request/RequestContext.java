@@ -84,7 +84,6 @@ import org.apache.tapestry.ApplicationServlet;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.multipart.IMultipartDecoder;
 import org.apache.tapestry.multipart.DefaultMultipartDecoder;
 import org.apache.tapestry.spec.IApplicationSpecification;
@@ -1254,7 +1253,7 @@ public class RequestContext implements IRender
      *
      **/
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    public void render(IMarkupWriter writer, IRequestCycle cycle)
     {
         if (!cycle.isRewinding())
             write(writer);

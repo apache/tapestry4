@@ -67,7 +67,7 @@ package org.apache.tapestry;
  * 
  **/
 
-public class StaleLinkException extends RequestCycleException
+public class StaleLinkException extends ApplicationRuntimeException
 {
     private transient IPage _page;
     private String _pageName;
@@ -76,7 +76,7 @@ public class StaleLinkException extends RequestCycleException
 
     public StaleLinkException()
     {
-        super();
+        super(null, null, null, null);
     }
 
     /**
@@ -91,11 +91,13 @@ public class StaleLinkException extends RequestCycleException
             Tapestry.getString(
                 "StaleLinkException.action-mismatch",
                 new String[] { targetActionId, component.getIdPath(), targetIdPath }),
-            component);
+            component,
+            null,
+            null);
 
         _page = component.getPage();
         _pageName = _page.getPageName();
-        
+
         _targetActionId = targetActionId;
         _targetIdPath = targetIdPath;
     }
@@ -108,7 +110,10 @@ public class StaleLinkException extends RequestCycleException
     public StaleLinkException(IPage page, String targetActionId, String targetIdPath)
     {
         this(
-            Tapestry.getString("StaleLinkException.component-mismatch", targetActionId, targetIdPath),
+            Tapestry.getString(
+                "StaleLinkException.component-mismatch",
+                targetActionId,
+                targetIdPath),
             page);
 
         _targetActionId = targetActionId;
@@ -117,13 +122,14 @@ public class StaleLinkException extends RequestCycleException
 
     public StaleLinkException(String message, IComponent component)
     {
-        super(message, component);
+        super(message, component, null, null);
     }
 
     public StaleLinkException(String message, IPage page)
     {
 
-        super(message, null);
+        super(message, page, null, null);
+
         _page = page;
 
         if (page != null)

@@ -58,7 +58,7 @@ package org.apache.tapestry.parse;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
+import org.apache.tapestry.Location;
 import org.apache.tapestry.Tapestry;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
@@ -85,9 +85,9 @@ public class TextToken extends TemplateToken implements IRender
     private int _length;
     private boolean _needsTrim = true;
 
-    public TextToken(char[] templateData, int startIndex, int endIndex)
+    public TextToken(char[] templateData, int startIndex, int endIndex, Location location)
     {
-        super(TokenType.TEXT);
+        super(TokenType.TEXT, location);
 
         if (startIndex < 0
             || endIndex < 0
@@ -111,7 +111,6 @@ public class TextToken extends TemplateToken implements IRender
     }
 
     public synchronized void render(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         if (_needsTrim)
         {

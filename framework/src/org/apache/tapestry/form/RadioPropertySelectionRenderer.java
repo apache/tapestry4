@@ -57,7 +57,6 @@ package org.apache.tapestry.form;
 
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 
 /**
  *  Implementation of {@link IPropertySelectionRenderer} that
@@ -77,7 +76,6 @@ public class RadioPropertySelectionRenderer implements IPropertySelectionRendere
      **/
 
     public void beginRender(PropertySelection component, IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         writer.begin("table");
         writer.attribute("border", 0);
@@ -91,7 +89,6 @@ public class RadioPropertySelectionRenderer implements IPropertySelectionRendere
      **/
 
     public void endRender(PropertySelection component, IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         writer.end(); // <table>
     }
@@ -110,7 +107,6 @@ public class RadioPropertySelectionRenderer implements IPropertySelectionRendere
         Object option,
         int index,
         boolean selected)
-        throws RequestCycleException
     {
         writer.begin("tr");
         writer.begin("td");

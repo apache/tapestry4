@@ -67,13 +67,13 @@ package org.apache.tapestry;
  *
  **/
 
-public class RedirectException extends RequestCycleException
+public class RedirectException extends ApplicationRuntimeException
 {
-	private String location;
+	private String _redirectLocation;
 
-	public RedirectException(String location)
+	public RedirectException(String redirectLocation)
 	{
-		this(null, location);
+		this(null, redirectLocation);
 	}
 
 	/** 
@@ -86,15 +86,15 @@ public class RedirectException extends RequestCycleException
 	 *
 	 **/
 
-	public RedirectException(String message, String location)
+	public RedirectException(String message, String redirectLocation)
 	{
 		super(message);
 
-		this.location = location;
+		_redirectLocation = redirectLocation;
 	}
 
-	public String getLocation()
+	public String getRedirectLocation()
 	{
-		return location;
+		return _redirectLocation;
 	}
 }

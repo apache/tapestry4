@@ -134,10 +134,10 @@ public interface IResourceLocation
     public IResourceLocation getRelativeLocation(String name);
     
     /**
-     *  Returns an {@link IAsset} for this resource location.
-     *  Should only be invoked on a base resource.
+     *  Returns the path that represents the resource.  This should 
+     *  only be used when the type of resource is known.
      * 
      **/
-        
-    public IAsset toAsset();
+    
+    public String getPath();
 }

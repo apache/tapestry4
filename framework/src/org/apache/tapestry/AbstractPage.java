@@ -330,7 +330,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
      *
      **/
 
-    public void renderPage(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    public void renderPage(IMarkupWriter writer, IRequestCycle cycle)
     {
         try
         {
@@ -342,10 +342,6 @@ public abstract class AbstractPage extends BaseComponent implements IPage
                 cycle.commitPageChanges();
 
             render(writer, cycle);
-        }
-        catch (PageRecorderCommitException ex)
-        {
-            throw new RequestCycleException(ex.getMessage(), null, ex);
         }
         finally
         {
@@ -381,7 +377,7 @@ public abstract class AbstractPage extends BaseComponent implements IPage
      *
      **/
 
-    public void validate(IRequestCycle cycle) throws RequestCycleException
+    public void validate(IRequestCycle cycle)
     {
         // Does nothing.
     }
@@ -393,7 +389,6 @@ public abstract class AbstractPage extends BaseComponent implements IPage
      **/
 
     public void beginResponse(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
     }
 

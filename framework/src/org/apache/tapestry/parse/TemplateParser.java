@@ -61,16 +61,17 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.PageLoaderException;
-import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.util.IdAllocator;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.MatchResult;
 import org.apache.oro.text.regex.Pattern;
 import org.apache.oro.text.regex.PatternMatcher;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
+import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.tapestry.IResourceLocation;
+import org.apache.tapestry.Location;
+import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.util.IdAllocator;
 
 /**
  *  Parses Tapestry templates, breaking them into a series of
@@ -161,7 +162,7 @@ public class TemplateParser
      **/
 
     public static final String LOCALIZATION_KEY_PREFIX = "string:";
-    
+
     /**
      *  A "magic" component id that causes the tag with the id and its entire
      *  body to be ignored during parsing.
@@ -261,7 +262,15 @@ public class TemplateParser
      *
      **/
 
-    private String _resourcePath;
+    private IResourceLocation _resourceLocation;
+
+    /**
+     *  Shared instance of {@link Location} used by
+     *  all {@link TextToken} instances in the template.
+     * 
+     **/
+
+    private Location _templateLocation;
 
     /**
      *  Local reference to the template data that is to be parsed.
@@ -390,7 +399,7 @@ public class TemplateParser
     public TemplateToken[] parse(
         char[] templateData,
         ITemplateParserDelegate delegate,
-        String resourcePath)
+        IResourceLocation resourceLocation)
         throws TemplateParseException
     {
         TemplateToken[] result = null;
@@ -398,7 +407,8 @@ public class TemplateParser
         try
         {
             _templateData = templateData;
-            _resourcePath = resourcePath;
+            _resourceLocation = resourceLocation;
+            _templateLocation = new Location(resourceLocation);
             _delegate = delegate;
             _ignoring = false;
             _line = 1;
@@ -411,7 +421,8 @@ public class TemplateParser
         {
             _delegate = null;
             _templateData = null;
-            _resourcePath = null;
+            _resourceLocation = null;
+            _templateLocation = null;
             _stack.clear();
             _tokens.clear();
             _attributes.clear();
@@ -514,8 +525,7 @@ public class TemplateParser
                     Tapestry.getString(
                         "TemplateParser.comment-not-ended",
                         Integer.toString(startLine)),
-                    startLine,
-                    _resourcePath);
+                    new Location(_resourceLocation, startLine));
 
             if (lookahead(COMMENT_END))
                 break;
@@ -538,7 +548,7 @@ public class TemplateParser
 
         if (_blockStart <= end)
         {
-            TemplateToken token = new TextToken(_templateData, _blockStart, end);
+            TemplateToken token = new TextToken(_templateData, _blockStart, end, _templateLocation);
 
             _tokens.add(token);
         }
@@ -561,6 +571,7 @@ public class TemplateParser
         boolean endOfTag = false;
         boolean emptyTag = false;
         int startLine = _line;
+        Location startLocation = new Location(_resourceLocation, startLine);
 
         advance();
 
@@ -601,8 +612,7 @@ public class TemplateParser
 
                 throw new TemplateParseException(
                     Tapestry.getString(key, tagName, Integer.toString(startLine)),
-                    startLine,
-                    _resourcePath);
+                    startLocation);
             }
 
             char ch = _templateData[_cursor];
@@ -706,8 +716,7 @@ public class TemplateParser
                                 tagName,
                                 Integer.toString(_line),
                                 attributeName),
-                            _line,
-                            _resourcePath);
+                            new Location(_resourceLocation, _line));
 
                     // Ignore whitespace between '=' and the attribute value.  Also, look
                     // for initial quote.
@@ -794,8 +803,7 @@ public class TemplateParser
                         "TemplateParser.component-may-not-be-ignored",
                         tagName,
                         Integer.toString(startLine)),
-                    startLine,
-                    _resourcePath);
+                    startLocation);
 
             // If the tag isn't empty, then create a Tag instance to ignore the
             // body of the tag.
@@ -833,7 +841,8 @@ public class TemplateParser
                     _attributes,
                     new String[] { LOCALIZATION_KEY_ATTRIBUTE_NAME, RAW_ATTRIBUTE_NAME });
 
-            TemplateToken token = new LocalizationToken(tagName, localizationKey, raw, attributes);
+            TemplateToken token =
+                new LocalizationToken(tagName, localizationKey, raw, attributes, startLocation);
 
             _tokens.add(token);
 
@@ -844,7 +853,7 @@ public class TemplateParser
 
         if (jwcId != null)
         {
-            processComponentStart(tagName, jwcId, emptyTag, startLine, cursorStart);
+            processComponentStart(tagName, jwcId, emptyTag, startLine, cursorStart, startLocation);
             return;
         }
 
@@ -876,7 +885,8 @@ public class TemplateParser
         String jwcId,
         boolean emptyTag,
         int startLine,
-        int cursorStart)
+        int cursorStart,
+        Location startLocation)
         throws TemplateParseException
     {
         if (jwcId.equalsIgnoreCase(CONTENT_ID))
@@ -894,8 +904,7 @@ public class TemplateParser
                     "TemplateParser.component-may-not-be-ignored",
                     tagName,
                     Integer.toString(startLine)),
-                startLine,
-                _resourcePath);
+                startLocation);
 
         String type = null;
         boolean allowBody = false;
@@ -921,22 +930,8 @@ public class TemplateParser
             if (jwcId == null)
                 jwcId = _idAllocator.allocateId("$" + simpleType);
 
-            try
-            {
-                allowBody = _delegate.getAllowBody(libraryId, simpleType);
-            }
-            catch (PageLoaderException ex)
-            {
-                throw new TemplateParseException(
-                    Tapestry.getString(
-                        "TemplateParser.unresolved-component-type",
-                        type,
-                        tagName,
-                        Integer.toString(startLine)),
-                    startLine,
-                    _resourcePath,
-                    ex);
-            }
+            allowBody = _delegate.getAllowBody(libraryId, simpleType);
+
         }
         else
         {
@@ -949,8 +944,7 @@ public class TemplateParser
                             tagName,
                             Integer.toString(startLine),
                             jwcId),
-                        startLine,
-                        _resourcePath);
+                        startLocation);
 
                 if (!_delegate.getKnownComponent(jwcId))
                     throw new TemplateParseException(
@@ -959,8 +953,7 @@ public class TemplateParser
                             tagName,
                             Integer.toString(startLine),
                             jwcId),
-                        startLine,
-                        _resourcePath);
+                        startLocation);
 
                 allowBody = _delegate.getAllowBody(jwcId);
 
@@ -979,8 +972,7 @@ public class TemplateParser
                     "TemplateParser.nested-ignore",
                     tagName,
                     Integer.toString(startLine)),
-                startLine,
-                _resourcePath);
+                new Location(_resourceLocation, startLine));
 
         if (!emptyTag)
             pushNewTag(tagName, startLine, isRemoveId, ignoreBody);
@@ -991,15 +983,13 @@ public class TemplateParser
 
         if (!isRemoveId)
         {
-            addOpenToken(tagName, jwcId, type);
+            addOpenToken(tagName, jwcId, type, startLocation);
 
             if (emptyTag)
-                _tokens.add(new CloseToken(tagName));
+                _tokens.add(new CloseToken(tagName, new Location(_resourceLocation, _line)));
         }
 
         advance();
-
-        return;
     }
 
     private void pushNewTag(String tagName, int startLine, boolean isRemoveId, boolean ignoreBody)
@@ -1027,8 +1017,7 @@ public class TemplateParser
                     "TemplateParser.content-block-may-not-be-ignored",
                     tagName,
                     Integer.toString(startLine)),
-                startLine,
-                _resourcePath);
+                new Location(_resourceLocation, startLine));
 
         if (emptyTag)
             throw new TemplateParseException(
@@ -1036,8 +1025,7 @@ public class TemplateParser
                     "TemplateParser.content-block-may-not-be-empty",
                     tagName,
                     Integer.toString(startLine)),
-                startLine,
-                _resourcePath);
+                new Location(_resourceLocation, startLine));
 
         _tokens.clear();
         _blockStart = -1;
@@ -1053,9 +1041,9 @@ public class TemplateParser
         advance();
     }
 
-    private void addOpenToken(String tagName, String jwcId, String type)
+    private void addOpenToken(String tagName, String jwcId, String type, Location location)
     {
-        OpenToken token = new OpenToken(tagName, jwcId, type);
+        OpenToken token = new OpenToken(tagName, jwcId, type, location);
         _tokens.add(token);
 
         if (_attributes.isEmpty())
@@ -1149,8 +1137,7 @@ public class TemplateParser
                     Tapestry.getString(
                         "TemplateParser.incomplete-close-tag",
                         Integer.toString(startLine)),
-                    startLine,
-                    _resourcePath);
+                    new Location(_resourceLocation, startLine));
 
             char ch = _templateData[_cursor];
 
@@ -1181,8 +1168,7 @@ public class TemplateParser
                             Integer.toString(startLine),
                             tag._tagName,
                             Integer.toString(tag._line)}),
-                    startLine,
-                    _resourcePath);
+                    new Location(_resourceLocation, startLine));
 
             stackPos--;
         }
@@ -1193,8 +1179,7 @@ public class TemplateParser
                     "TemplateParser.unmatched-close-tag",
                     tagName,
                     Integer.toString(startLine)),
-                startLine,
-                _resourcePath);
+                new Location(_resourceLocation, startLine));
 
         // Special case for the content tag
 
@@ -1214,7 +1199,7 @@ public class TemplateParser
         {
             addTextToken(cursorStart - 1);
 
-            _tokens.add(new CloseToken(tagName));
+            _tokens.add(new CloseToken(tagName, new Location(_resourceLocation, _line)));
         }
         else
         {

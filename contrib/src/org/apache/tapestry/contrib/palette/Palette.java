@@ -63,6 +63,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IEngine;
@@ -72,8 +73,6 @@ import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IScript;
-import org.apache.tapestry.RequestCycleException;
-import org.apache.tapestry.ScriptException;
 import org.apache.tapestry.ScriptSession;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.components.Block;
@@ -301,12 +300,13 @@ public abstract class Palette extends BaseComponent implements IFormComponent
     }
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         _form = Form.get(getPage().getRequestCycle());
 
         if (_form == null)
-            throw new RequestCycleException("Palette component must be wrapped by a Form.", this);
+            throw new ApplicationRuntimeException(
+                "Palette component must be wrapped by a Form.",
+                this);
 
         _name = _form.getElementId(this);
 
@@ -361,7 +361,7 @@ public abstract class Palette extends BaseComponent implements IFormComponent
      *
      **/
 
-    private void runScript(IRequestCycle cycle) throws RequestCycleException
+    private void runScript(IRequestCycle cycle)
     {
         ScriptSession session;
 
@@ -381,7 +381,9 @@ public abstract class Palette extends BaseComponent implements IFormComponent
 
         Body body = Body.get(cycle);
         if (body == null)
-            throw new RequestCycleException("Palette component must be wrapped by a Body.", this);
+            throw new ApplicationRuntimeException(
+                "Palette component must be wrapped by a Body.",
+                this);
 
         setImage(body, cycle, "selectImage", getSelectImage());
         setImage(body, cycle, "selectDisabledImage", getSelectDisabledImage());
@@ -398,17 +400,9 @@ public abstract class Palette extends BaseComponent implements IFormComponent
 
         _symbols.put("palette", this);
 
-        try
-        {
-            session = _script.execute(_symbols);
-        }
-        catch (ScriptException ex)
-        {
-            throw new RequestCycleException(this, ex);
-        }
+        session = _script.execute(_symbols);
 
         body.process(session);
-
     }
 
     /**
@@ -498,7 +492,6 @@ public abstract class Palette extends BaseComponent implements IFormComponent
         return new IRender()
         {
             public void render(IMarkupWriter writer, IRequestCycle cycle)
-                throws RequestCycleException
             {
                 _availableWriter.close();
                 _availableWriter = null;
@@ -516,7 +509,6 @@ public abstract class Palette extends BaseComponent implements IFormComponent
         return new IRender()
         {
             public void render(IMarkupWriter writer, IRequestCycle cycle)
-                throws RequestCycleException
             {
                 _selectedWriter.close();
                 _selectedWriter = null;
@@ -524,7 +516,7 @@ public abstract class Palette extends BaseComponent implements IFormComponent
         };
     }
 
-    private void handleSubmission(IRequestCycle cycle) throws RequestCycleException
+    private void handleSubmission(IRequestCycle cycle)
     {
 
         RequestContext context = cycle.getRequestContext();
@@ -536,8 +528,8 @@ public abstract class Palette extends BaseComponent implements IFormComponent
             return;
 
         List selected = new ArrayList(count);
-		IPropertySelectionModel model = getModel();
-		
+        IPropertySelectionModel model = getModel();
+
         for (int i = 0; i < count; i++)
         {
             String value = values[i];

@@ -64,7 +64,6 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.engine.AbstractService;
 import org.apache.tapestry.engine.IEngineServiceView;
 import org.apache.tapestry.engine.ILink;
@@ -113,7 +112,7 @@ public class ChartService extends AbstractService
         IEngineServiceView engine,
         IRequestCycle cycle,
         ResponseOutputStream output)
-        throws RequestCycleException, ServletException, IOException
+        throws ServletException, IOException
     {
         String context[] = getServiceContext(cycle.getRequestContext());
 

@@ -65,21 +65,26 @@
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry
-    internalArchive=&quot;/jakarta-tapestry/ext-dist/jcommon-0.6.4.jar&quot;
-    path=&quot;3&quot; type=&quot;2&quot;/&gt;
-"/>
-        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;runtimeClasspathEntry
     internalArchive=&quot;/jakarta-tapestry/ext-dist/jdom-b8.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry
-    internalArchive=&quot;/jakarta-tapestry/ext-dist/jfreechart-0.9.2.jar&quot;
+    internalArchive=&quot;/jakarta-tapestry/ext-dist/junit.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;
+"/>
+        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;runtimeClasspathEntry
+    internalArchive=&quot;/jakarta-tapestry/lib/ext/commons-beanutils-1.6.1.jar&quot;
     path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry
-    internalArchive=&quot;/jakarta-tapestry/ext-dist/junit.jar&quot; path=&quot;3&quot; type=&quot;2&quot;/&gt;
+    internalArchive=&quot;/jakarta-tapestry/lib/ext/commons-digester-1.4.jar&quot;
+    path=&quot;3&quot; type=&quot;2&quot;/&gt;
+"/>
+        <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;runtimeClasspathEntry
+    internalArchive=&quot;/jakarta-tapestry/examples/Workbench/lib/jCharts-0.6.0.jar&quot;
+    path=&quot;3&quot; type=&quot;2&quot;/&gt;
 "/>
         <listEntry value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
 &lt;runtimeClasspathEntry

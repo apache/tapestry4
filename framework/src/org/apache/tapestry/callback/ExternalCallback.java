@@ -55,9 +55,9 @@
 
 package org.apache.tapestry.callback;
 
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IExternalPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.Tapestry;
 
 /**
@@ -105,7 +105,7 @@ import org.apache.tapestry.Tapestry;
  *          _callback = callback;
  *      }
  *
- *      public void formSubmit(IRequestCycle cycle) throws RequestCycleException {
+ *      public void formSubmit(IRequestCycle cycle) {
  *          // Authentication code
  *          ..
  *   
@@ -166,7 +166,7 @@ public class ExternalCallback implements ICallback
      *
      **/
 
-    public void performCallback(IRequestCycle cycle) throws RequestCycleException
+    public void performCallback(IRequestCycle cycle)
     {        
         try
         {
@@ -178,9 +178,8 @@ public class ExternalCallback implements ICallback
         }
         catch (ClassCastException ex)
         {
-            throw new RequestCycleException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString("ExternalCallback.page-not-compatible", _pageName),
-                null,
                 ex);
         }
     }

@@ -55,8 +55,6 @@
 
 package org.apache.tapestry.spec;
 
-import org.apache.tapestry.util.BasePropertyHolder;
-
 /**
  *  Defines an internal, external or private asset.
  *
@@ -65,10 +63,18 @@ import org.apache.tapestry.util.BasePropertyHolder;
  *
  **/
 
-public class AssetSpecification extends BasePropertyHolder
+public class AssetSpecification extends LocatablePropertyHolder
 {
     private AssetType type;
     protected String path;
+
+    /** @since 2.4 **/
+
+    public AssetSpecification()
+    {
+    }
+
+    /** @deprecated **/
 
     public AssetSpecification(AssetType type, String path)
     {
@@ -91,4 +97,19 @@ public class AssetSpecification extends BasePropertyHolder
     {
         return type;
     }
+
+    /** @since 2.4 **/
+
+    public void setPath(String path)
+    {
+        this.path = path;
+    }
+
+    /** @since 2.4 **/
+
+    public void setType(AssetType type)
+    {
+        this.type = type;
+    }
+
 }

@@ -58,10 +58,10 @@ package org.apache.tapestry.workbench.chart;
 import java.io.InputStream;
 import java.util.Locale;
 
-import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.asset.AbstractAsset;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
 
@@ -74,13 +74,15 @@ import org.apache.tapestry.engine.ILink;
  * 
  **/
 
-public class ChartAsset implements IAsset
+public class ChartAsset extends AbstractAsset
 {
     private IEngineService _chartService;
     private IComponent _chartProvider;
 
     public ChartAsset(IRequestCycle cycle, IComponent chartProvider)
     {
+    	super(null, null);
+    	
         IEngine engine = cycle.getEngine();
 
         _chartService = engine.getService(ChartService.SERVICE_NAME);

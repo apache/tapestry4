@@ -60,8 +60,7 @@ import java.util.Map;
 
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IBinding;
-import org.apache.tapestry.NullValueForBindingException;
-import org.apache.tapestry.ReadOnlyBindingException;
+import org.apache.tapestry.Location;
 import org.apache.tapestry.Tapestry;
 
 /**
@@ -74,6 +73,10 @@ import org.apache.tapestry.Tapestry;
 
 public abstract class AbstractBinding implements IBinding
 {
+    /** @since 2.4 **/
+
+    private Location _location;
+
     /**
      *  A mapping from primitive types to wrapper types.
      * 
@@ -90,6 +93,18 @@ public abstract class AbstractBinding implements IBinding
         PRIMITIVE_TYPES.put(long.class, Long.class);
         PRIMITIVE_TYPES.put(float.class, Float.class);
         PRIMITIVE_TYPES.put(double.class, Double.class);
+    }
+
+    /** @since 2.4 **/
+
+    protected AbstractBinding(Location location)
+    {
+        _location = location;
+    }
+
+    public Location getLocation()
+    {
+        return _location;
     }
 
     /**
@@ -109,7 +124,7 @@ public abstract class AbstractBinding implements IBinding
 
         raw = getObject();
         if (raw == null)
-            throw new NullValueForBindingException(this);
+            throw Tapestry.createNullBindingException(this);
 
         if (raw instanceof Number)
         {
@@ -132,7 +147,7 @@ public abstract class AbstractBinding implements IBinding
 
         raw = getObject();
         if (raw == null)
-            throw new NullValueForBindingException(this);
+            throw Tapestry.createNullBindingException(this);
 
         if (raw instanceof Number)
         {
@@ -174,7 +189,7 @@ public abstract class AbstractBinding implements IBinding
 
     public void setBoolean(boolean value)
     {
-        throw new ReadOnlyBindingException(this);
+        throw createReadOnlyBindingException(this);
     }
 
     /**
@@ -184,7 +199,7 @@ public abstract class AbstractBinding implements IBinding
 
     public void setInt(int value)
     {
-        throw new ReadOnlyBindingException(this);
+        throw createReadOnlyBindingException(this);
     }
 
     /**
@@ -194,7 +209,7 @@ public abstract class AbstractBinding implements IBinding
 
     public void setDouble(double value)
     {
-        throw new ReadOnlyBindingException(this);
+        throw createReadOnlyBindingException(this);
     }
 
     /**
@@ -204,7 +219,7 @@ public abstract class AbstractBinding implements IBinding
 
     public void setString(String value)
     {
-        throw new ReadOnlyBindingException(this);
+        throw createReadOnlyBindingException(this);
     }
 
     /**
@@ -214,7 +229,7 @@ public abstract class AbstractBinding implements IBinding
 
     public void setObject(Object value)
     {
-        throw new ReadOnlyBindingException(this);
+        throw createReadOnlyBindingException(this);
     }
 
     /**
@@ -255,5 +270,14 @@ public abstract class AbstractBinding implements IBinding
     public boolean isWrapper(Class primitiveType, Class subjectClass)
     {
         return PRIMITIVE_TYPES.get(primitiveType).equals(subjectClass);
+    }
+
+    /** @since 2.4 **/
+
+    protected BindingException createReadOnlyBindingException(IBinding binding)
+    {
+        return new BindingException(
+            Tapestry.getString("AbstractBinding.read-only-binding"),
+            binding);
     }
 }

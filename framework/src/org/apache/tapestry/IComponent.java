@@ -58,7 +58,7 @@ package org.apache.tapestry;
 import java.util.Collection;
 import java.util.Map;
 
-import org.apache.tapestry.engine.*;
+import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.spec.ComponentSpecification;
 
 /**
@@ -73,7 +73,7 @@ import org.apache.tapestry.spec.ComponentSpecification;
  * 
  **/
 
-public interface IComponent extends IRender
+public interface IComponent extends IRender, ILocationHolder
 {
 
     /**
@@ -107,7 +107,6 @@ public interface IComponent extends IRender
      **/
 
     public void addBody(IRender element);
-
 
     /**
      *  Returns the asset map for the component, which may be empty but will not be null.
@@ -267,9 +266,8 @@ public interface IComponent extends IRender
      *  @since 2.2
      * 
      **/
-    
-    public void renderBody(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException;
+
+    public void renderBody(IMarkupWriter writer, IRequestCycle cycle);
 
     /**
      *  Adds a binding to a container.  Should only be called during the page
@@ -318,33 +316,35 @@ public interface IComponent extends IRender
      * 
      **/
 
-    public void finishLoad(IRequestCycle cycle, IPageLoader loader, ComponentSpecification specification)
-        throws PageLoaderException;
+    public void finishLoad(
+        IRequestCycle cycle,
+        IPageLoader loader,
+        ComponentSpecification specification);
 
-	/**
-	 *  Returns a localized string.  Each component has an optional
-	 *  set of localized strings that are read from properties
-	 *  files on the classpath.
-	 * 
-	 *  @param key the key used to locate the string
-	 *  @return the localized value for the key, or a placeholder
-	 *  if no string is defined for the key
-	 *  @since 2.0.4
-	 * 
-	 *  @deprecated Use {@link #getStrings()} instead.
-	 **/
-	
-	public String getString(String key);
-    
+    /**
+     *  Returns a localized string.  Each component has an optional
+     *  set of localized strings that are read from properties
+     *  files on the classpath.
+     * 
+     *  @param key the key used to locate the string
+     *  @return the localized value for the key, or a placeholder
+     *  if no string is defined for the key
+     *  @since 2.0.4
+     * 
+     *  @deprecated Use {@link #getStrings()} instead.
+     **/
+
+    public String getString(String key);
+
     /**
      *  Returns component strings for the component.
      * 
      *  @since 2.4
      * 
      **/
-    
+
     public IComponentStrings getStrings();
-    
+
     /**
      *  Returns the {@link INamespace} in which the component was defined
      *  (as an alias).  
@@ -352,9 +352,9 @@ public interface IComponent extends IRender
      *  @since 2.2
      * 
      **/
-    
+
     public INamespace getNamespace();
-    
+
     /**
      *  Sets the {@link INamespace} for the component.  The namespace
      *  should only be set once.
@@ -362,6 +362,6 @@ public interface IComponent extends IRender
      *  @since 2.2
      * 
      **/
-    
+
     public void setNamespace(INamespace namespace);
 }

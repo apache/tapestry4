@@ -57,7 +57,6 @@ package org.apache.tapestry.form;
 
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 
 /**
  *  Defines an object that works with a {@link PropertySelection} component
@@ -75,8 +74,7 @@ public interface IPropertySelectionRenderer
      *
      **/
 
-    public void beginRender(PropertySelection component, IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException;
+    public void beginRender(PropertySelection component, IMarkupWriter writer, IRequestCycle cycle);
 
     /**
      *  Invoked for each element obtained from the {@link IPropertySelectionModel model}.
@@ -90,14 +88,12 @@ public interface IPropertySelectionRenderer
         IPropertySelectionModel model,
         Object option,
         int index,
-        boolean selected)
-        throws RequestCycleException;
+        boolean selected);
 
     /**
      *  Ends the rendering of the {@link PropertySelection}.
      *
      **/
 
-    public void endRender(PropertySelection component, IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException;
+    public void endRender(PropertySelection component, IMarkupWriter writer, IRequestCycle cycle);
 }

@@ -58,7 +58,6 @@ package org.apache.tapestry.form;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.request.IUploadFile;
 
 /**
@@ -83,7 +82,6 @@ public abstract class Upload extends AbstractFormComponent
     }
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         IForm form = getForm(cycle);
 

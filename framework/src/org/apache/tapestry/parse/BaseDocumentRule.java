@@ -53,38 +53,42 @@
  *
  */
 
-package org.apache.tapestry;
+package org.apache.tapestry.parse;
+
+import org.xml.sax.Attributes;
 
 /**
- *  Exception thrown when a property of an {@link IComponent} is accessed that
- *  is only valid while the component is actually rendering (such properties
- *  are related to parameters, and satisfied by {@link IBinding bindings}.
+ *  Base implementation of {@link org.apache.tapestry.parse.IDocumentRule}.
  *
- *  @version $Id$
  *  @author Howard Lewis Ship
+ *  @version $Id$
+ *  @since 2.4
  *
  **/
-
-public class RenderOnlyPropertyException extends ApplicationRuntimeException
+public class BaseDocumentRule implements IDocumentRule
 {
-    private IComponent component;
-    private String propertyName;
-
-    public RenderOnlyPropertyException(IComponent component, String propertyName)
+	private SpecificationDigester _digester;
+	
+	public SpecificationDigester getDigester()
+	{
+		return _digester;
+	}
+	
+    public void setDigester(SpecificationDigester digester)
     {
-        super(Tapestry.getString("RenderOnlyPropertyException.message", propertyName, component));
-
-        this.component = component;
-        this.propertyName = propertyName;
+    	_digester = digester;
     }
 
-    public String getPropertyName()
+    public void startDocument(String namespace, String name, Attributes attributes) throws Exception
     {
-        return propertyName;
     }
 
-    public IComponent getComponent()
+    public void endDocument() throws Exception
     {
-        return component;
     }
+
+    public void finish() throws Exception
+    {
+    }
+
 }

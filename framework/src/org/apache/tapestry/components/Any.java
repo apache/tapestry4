@@ -58,7 +58,6 @@ package org.apache.tapestry.components;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 
 /**
  *  A component that can substitute for any HTML element.  
@@ -73,7 +72,6 @@ import org.apache.tapestry.RequestCycleException;
 public abstract class Any extends AbstractComponent
 {
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
     	String element = getElement();
     	

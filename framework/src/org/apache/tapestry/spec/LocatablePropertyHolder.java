@@ -53,41 +53,36 @@
  *
  */
 
-package org.apache.tapestry;
+package org.apache.tapestry.spec;
+
+import org.apache.tapestry.ILocationHolder;
+import org.apache.tapestry.Location;
+import org.apache.tapestry.util.BasePropertyHolder;
 
 /**
- *  A runtime exception thrown when an {@link IComponent} is asked for a contained
- *  component that does not exist.
+ *  Base class for implementing both
+ *  interfaces {@link org.apache.tapestry.util.IPropertyHolder} and
+ *  {@link org.apache.tapestry.ILocationHolder}.  This is
+ *  used by all the specification classes.
  *
- * @author Howard Lewis Ship
- * @version $Id$
+ *  @author Howard Lewis Ship
+ *  @version $Id$
+ *  @since 2.4
  *
  **/
 
-public class NoSuchComponentException extends RuntimeException
+public class LocatablePropertyHolder extends BasePropertyHolder implements ILocationHolder
 {
-	private String _componentId;
-	private transient IComponent _container;
+	private Location _location;
+	
+    public Location getLocation()
+    {
+        return _location;
+    }
 
-	public NoSuchComponentException(String componentId, IComponent container)
-	{
-		super(
-			Tapestry.getString(
-				"NoSuchComponentException.message",
-				container.getExtendedId(),
-				componentId));
+    public void setLocation(Location location)
+    {
+        _location = location;
+    }
 
-		_componentId = componentId;
-		_container = container;
-	}
-
-	public IComponent getContainer()
-	{
-		return _container;
-	}
-
-	public String getComponentId()
-	{
-		return _componentId;
-	}
 }

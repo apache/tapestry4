@@ -62,7 +62,6 @@ import java.util.Map;
 
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IScript;
-import org.apache.tapestry.ScriptException;
 import org.apache.tapestry.ScriptSession;
 
 /**
@@ -94,7 +93,7 @@ public class ParsedScript implements IScript
         _tokens.add(token);
     }
 
-    public ScriptSession execute(Map symbols) throws ScriptException
+    public ScriptSession execute(Map symbols)
     {
         ScriptSession result = new ScriptSession(_scriptLocation, symbols);
         Iterator i = _tokens.iterator();

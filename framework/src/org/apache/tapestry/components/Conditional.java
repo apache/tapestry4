@@ -58,7 +58,6 @@ package org.apache.tapestry.components;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 
 /**
  *  A conditional element on a page which will render its wrapped elements
@@ -79,7 +78,7 @@ public abstract class Conditional extends AbstractComponent
      *
      **/
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
       if (getCondition() != getInvert())
             renderBody(writer, cycle);

@@ -23,6 +23,11 @@ for connected parameters.</li>
 <li>Added connected parameter support for missing primitive types byte and char</li>
 <li>Added support for primitive arrays, java.lang.Object[], and java.lang.String[] for declared properties.</li>
 <li>Replaced JFreeChart with JCharts, due to licensing considerations.</li>
+<li>Refactored to use Jakarta Digester to parse specifications.</li>
+<li>Changed specification and template parsers to track locations of specification objects and attach them 
+to runtime objects and exceptions for error reporting purposes.</li>
+<li>Severely refactored exceptions, removing many exception classes and flattening all others
+ under ApplicationRuntimeException.</li>
 </ul>
 
 <h3>Release 2.4-alpha-4</h3>

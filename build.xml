@@ -19,21 +19,23 @@
 		</fileset>
 		<pathelement location="${env.JAVA_HOME}/lib/tools.jar"/>
 	</path>
+	
 	<path id="ext.dist.classpath">
 		<fileset dir="${ext.dist.dir}">
 			<include name="*.jar"/>
 		</fileset>
 	</path>
+	
 	<path id="workbench.classpath">
-		<fileset dir="${lib.dir}">
+		<fileset dir="${root.lib.dir}">
 			<include name="${framework.jar}"/>
 			<include name="${contrib.jar}"/>
 			<include name="${ext.dir}/*.jar"/>
 			<include name="${runtime.dir}/*.jar"/>
 		</fileset>
 		<pathelement location="config"/>
-		<path refid="ext.dist.classpath"/>
 	</path>
+	
 	<path id="vlib.classpath">
 		<pathelement location="${vlibbeans.jar}"/>
 		<pathelement location="examples/VlibBeans/jboss"/>
@@ -54,7 +56,7 @@
 		description="Cleans all subprojects and deletes installed frameworks and WARs."
 		>
 		<delete quiet="true">
-			<fileset dir="${lib.dir}">
+			<fileset dir="${root.lib.dir}">
 				<include name="*.jar"/>
 				<include name="*.war"/>
 				<include name="*.ear"/>
@@ -159,7 +161,7 @@
 			</filterset>
 		</copy>
 		<copy todir="${dist.dir}/lib">
-			<fileset dir="${lib.dir}">
+			<fileset dir="${root.lib.dir}">
 				<include name="${workbench.war}"/>
 				<include name="${vlib.ear}"/>
 				<include name="**/*.jar"/>
@@ -267,6 +269,7 @@
 			</classpath>
 		</javadoc>
 	</target>
+	
 	<target name="run-workbench" depends="check-for-jetty-dir"
 		description="Runs the Tapestry Workbench using Jetty.">
 		<delete dir="${private.dir}" quiet="true"/>
@@ -292,6 +295,7 @@
 			<sysproperty key="org.apache.tapestry.asset.URL" value="/private"/>
 		</java>
 	</target>
+	
 	<!-- ===================================================================================
 
 	 JBoss 3.0.4 auto configuration
@@ -319,7 +323,7 @@
 		<delete dir="${tapestry.lib.dir}" quiet="true"/>
 		<mkdir dir="${tapestry.lib.dir}"/>
 		<copy todir="${tapestry.lib.dir}" flatten="true">
-			<fileset dir="${lib.dir}">
+			<fileset dir="${root.lib.dir}">
 				<include name="*-${framework.version}.jar"/>
 				<include name="${ext.dir}/*.jar"/>
 			</fileset>
@@ -368,20 +372,23 @@
 			property="tapestry.db.exists"/>
 		<antcall target="unpack-tapestry-database"/>
 	</target>
+	
 	<target name="unpack-tapestry-database"
 		description="Unpacks the Tapestry demos database."
 		unless="tapestry.db.exists">
 		<unzip src="config/jboss/tapestry-db.zip" dest="${tapestry.db.dir}"/>
 	</target>
+	
 	<target name="deploy-jboss-demos" depends="check-for-jboss-dir"
 		description="Deploys the demos and Tapestry frameworks into JBoss.">
 		<copy todir="${tapestry.deploy.dir}">
-			<fileset dir="${lib.dir}">
+			<fileset dir="${root.lib.dir}">
 				<include name="${vlib.ear}"/>
 				<include name="${workbench.war}"/>
 			</fileset>
 		</copy>
 	</target>
+	
 	<target name="run-jboss" depends="deploy-jboss-demos"
 		description="Launch the JBoss application server.">
 		<delete dir="${tapestry.private.dir}" quiet="true"/>
@@ -426,17 +433,14 @@
 		<property name="web.lib"
 			value="${workbench.deploy.root.dir}/WEB-INF/lib"/>
 			
-		<unjar src="${lib.dir}/${workbench.war}" dest="${workbench.deploy.root.dir}"/>
+		<unjar src="${root.lib.dir}/${workbench.war}" dest="${workbench.deploy.root.dir}"/>
 
 		<copy todir="${web.lib}" flatten="true">
-			<fileset dir="${lib.dir}">
+			<fileset dir="${root.lib.dir}">
 				<include name="${framework.jar}"/>
 				<include name="${contrib.jar}"/>
 				<include name="${ext.dir}/*.jar"/>
 				<include name="${runtime.dir}/*.jar"/>
-			</fileset>
-			<fileset dir="${ext.dist.dir}">
-				<include name="jChart*.jar"/>
 			</fileset>
 		</copy>
 		

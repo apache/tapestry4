@@ -61,6 +61,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IEngine;
@@ -68,17 +70,12 @@ import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.PageLoaderException;
-import org.apache.tapestry.PageRecorderCommitException;
 import org.apache.tapestry.RenderRewoundException;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.StaleLinkException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.event.ChangeObserver;
 import org.apache.tapestry.event.ObservedChangeEvent;
 import org.apache.tapestry.request.RequestContext;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  *  Provides the logic for processing a single request cycle.  Provides access to
@@ -236,16 +233,7 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 
             IPageSource pageSource = _engine.getPageSource();
 
-            try
-            {
-                result = pageSource.getPage(this, name, _monitor);
-            }
-            catch (PageLoaderException ex)
-            {
-                throw new ApplicationRuntimeException(
-                    Tapestry.getString("RequestCycle.could-not-acquire-page", name),
-                    ex);
-            }
+            result = pageSource.getPage(this, name, _monitor);
 
             result.setRequestCycle(this);
 
@@ -404,7 +392,7 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
      *
      **/
 
-    public void renderPage(IMarkupWriter writer) throws RequestCycleException
+    public void renderPage(IMarkupWriter writer)
     {
         String pageName = _page.getPageName();
         _monitor.pageRenderBegin(pageName);
@@ -423,11 +411,6 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
             _page.renderPage(writer, this);
 
         }
-        catch (RequestCycleException ex)
-        {
-            // RenderExceptions don't need to be wrapped.
-            throw ex;
-        }
         catch (ApplicationRuntimeException ex)
         {
             // Nothing much to add here.
@@ -439,7 +422,7 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
             // But wrap other exceptions in a RequestCycleException ... this
             // will ensure that some of the context is available.
 
-            throw new RequestCycleException(ex.getMessage(), _page, ex);
+            throw new ApplicationRuntimeException(ex.getMessage(), _page, null, ex);
         }
         finally
         {
@@ -466,7 +449,7 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
      *  @since 1.0.2
      **/
 
-    public void rewindForm(IForm form, String targetActionId) throws RequestCycleException
+    public void rewindForm(IForm form, String targetActionId)
     {
         IPage page = form.getPage();
         String pageName = page.getPageName();
@@ -502,17 +485,17 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
         {
             // This is acceptible and expected.
         }
-        catch (RequestCycleException ex)
+        catch (ApplicationRuntimeException ex)
         {
             // RequestCycleExceptions don't need to be wrapped.
             throw ex;
         }
         catch (Throwable ex)
         {
-            // But wrap other exceptions in a RequestCycleException ... this
+            // But wrap other exceptions in a ApplicationRuntimeException ... this
             // will ensure that some of the context is available.
 
-            throw new RequestCycleException(ex.getMessage(), page, ex);
+            throw new ApplicationRuntimeException(ex.getMessage(), page, ex);
         }
         finally
         {
@@ -543,7 +526,6 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
      **/
 
     public void rewindPage(String targetActionId, IComponent targetComponent)
-        throws RequestCycleException
     {
         String pageName = _page.getPageName();
 
@@ -574,9 +556,9 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
         {
             // This is acceptible and expected.
         }
-        catch (RequestCycleException ex)
+        catch (ApplicationRuntimeException ex)
         {
-            // RequestCycleExceptions don't need to be wrapped.
+            // ApplicationRuntimeExceptions don't need to be wrapped.
             throw ex;
         }
         catch (Throwable ex)
@@ -584,7 +566,7 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
             // But wrap other exceptions in a RequestCycleException ... this
             // will ensure that some of the context is available.
 
-            throw new RequestCycleException(ex.getMessage(), _page, ex);
+            throw new ApplicationRuntimeException(ex.getMessage(), _page, ex);
         }
         finally
         {
@@ -631,7 +613,7 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
      *
      **/
 
-    public void commitPageChanges() throws PageRecorderCommitException
+    public void commitPageChanges()
     {
         if (LOG.isDebugEnabled())
             LOG.debug("Committing page changes");

@@ -11,15 +11,15 @@
 		</fileset>
 	</path>
 	<path id="compile.classpath">
-		<fileset dir="${lib.dir}">
+		<fileset dir="${root.lib.dir}">
 			<include name="${framework.jar}"/>
 			<include name="${contrib.jar}"/>
 			<include name="${ext.dir}/*.jar"/>
 		</fileset>
-		<path refid="jetty.classpath"/>
-		<fileset dir="${ext.dist.dir}">
-			<include name="*.jar"/>
+		<fileset dir="${lib.dir}">
+			<include name="*.jar"/>	
 		</fileset>
+		<path refid="jetty.classpath"/>
 		<pathelement location="${jboss.client.dir}/jboss-client.jar"/>
 		<pathelement location="${jboss.client.dir}/jboss-j2ee.jar"/>
 		<pathelement location="${jboss.lib.dir}/jboss-jmx.jar"/>
@@ -41,7 +41,7 @@
 	</target>
 	<target name="install" depends="compile"
 		description="Compile all classes and build the installed WAR.">
-		<war warfile="${lib.dir}/${workbench.war}"
+		<war warfile="${root.lib.dir}/${workbench.war}"
 			webxml="context/WEB-INF/web.xml">
 			<fileset dir="context">
 				<exclude name="WEB-INF/web.xml"/>
@@ -51,8 +51,12 @@
 				<exclude name="**/*.java"/>
 				<exclude name="**/package.html"/>
 			</classes>
+			<lib dir="${lib.dir}">
+				<include name="*.jar"/>
+			</lib>
 		</war>
 	</target>
+	
 	<target name="run" description="Run the Tutorial application."
 		depends="compile">
 		
@@ -73,7 +77,7 @@
 					<include name="lib/org.mortbay.jetty-jdk1.2.jar"/>
 				</fileset>
 
-				<fileset dir="${lib.dir}">
+				<fileset dir="${root.lib.dir}">
 					<include name="${runtime.dir}/*.jar"/>
 				</fileset>
 				<pathelement location="${root.dir}/config"/>

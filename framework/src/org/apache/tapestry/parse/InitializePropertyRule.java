@@ -53,96 +53,35 @@
  *
  */
 
-package org.apache.tapestry;
+package org.apache.tapestry.parse;
+
+import org.xml.sax.Attributes;
 
 /**
- *  Encapsulates exceptions that occur when loading a page and its components.
- *
+ *  Used to initialize a property of an object on the top of the digester stack.
+ *  This should come after the {@link org.apache.commons.digester.ObjectCreateRule}
+ *  (or variation) and before and property setting for the object.  Remember
+ *  that rules order matters with the digester.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- * 
+ *  @since 2.4
+ *
  **/
 
-public class PageLoaderException extends Exception
+public class InitializePropertyRule extends AbstractSpecificationRule
 {
-    private Throwable _rootCause;
-    private String _pageName;
-    private transient IComponent _component;
+    private String _propertyName;
+    private Object _value;
 
-    /** @since 2.4 **/
-    
-    public PageLoaderException(String message)
+    public InitializePropertyRule(String propertyName, Object value)
     {
-        this(message, (IComponent)null, null);
+        _propertyName = propertyName;
+        _value = value;
     }
 
-    /**
-     * @since 0.2.12
-     *
-     **/
-
-    public PageLoaderException(String message, Throwable rootCause)
+    public void begin(String namespace, String name, Attributes attributes) throws Exception
     {
-        this(message, (IComponent) null, rootCause);
-    }
-
-    /**
-     * @since 0.2.12
-     *
-     **/
-
-    public PageLoaderException(String message, IComponent component, Throwable rootCause)
-    {
-        super(message);
-
-        _rootCause = rootCause;
-        _component = component;
-
-        if (component != null)
-        {
-            IPage page = component.getPage();
-
-            if (page != null)
-                _pageName = page.getPageName();
-        }
-
-    }
-
-    /**
-     * @since 0.2.12
-     *
-     **/
-
-    public PageLoaderException(String message, IComponent component)
-    {
-        this(message, component, null);
-    }
-
-    /**
-     * @since 0.2.12
-     *
-     **/
-
-    public PageLoaderException(String message, String pageName, Throwable rootCause)
-    {
-        this(message, (IComponent) null, rootCause);
-
-        _pageName = pageName;
-    }
-
-    public IComponent getComponent()
-    {
-        return _component;
-    }
-
-    public String getPageName()
-    {
-        return _pageName;
-    }
-
-    public Throwable getRootCause()
-    {
-        return _rootCause;
+        setProperty(_propertyName, _value);
     }
 }

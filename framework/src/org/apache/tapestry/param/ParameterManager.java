@@ -69,7 +69,6 @@ import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceResolver;
-import org.apache.tapestry.RequiredParameterException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.Direction;
@@ -138,7 +137,7 @@ public class ParameterManager
      * 
      **/
 
-    public void setParameters(IRequestCycle cycle) throws RequiredParameterException
+    public void setParameters(IRequestCycle cycle)
     {
         if (_connectors == null)
             setup(cycle);
@@ -166,7 +165,7 @@ public class ParameterManager
             _connectors[i].resetParameter(cycle);
     }
 
-    private void setup(IRequestCycle cycle) throws RequiredParameterException
+    private void setup(IRequestCycle cycle)
     {
         boolean debug = LOG.isDebugEnabled();
 

@@ -59,8 +59,7 @@ import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
-import org.apache.tapestry.RequiredParameterException;
+import org.apache.tapestry.Tapestry;
 
 /**
  *  Used to insert an image.  To create a rollover image, use the
@@ -84,7 +83,6 @@ public abstract class Image extends AbstractComponent
      **/
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         // Doesn't contain a body so no need to do anything on rewind (assumes no
         // sideffects to accessor methods via bindings).
@@ -95,7 +93,7 @@ public abstract class Image extends AbstractComponent
         IAsset imageAsset = getImage();
 
         if (imageAsset == null)
-            throw new RequiredParameterException(this, "image", getBinding("image"));
+            throw Tapestry.createRequiredParameterException(this, "image");
 
         String imageURL = imageAsset.buildURL(cycle);
 

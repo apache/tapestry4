@@ -68,7 +68,6 @@ import javax.ejb.RemoveException;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.vlib.AdminPage;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
@@ -138,7 +137,7 @@ public class EditUsers extends AdminPage
         super.detach();
     }
 
-    public void beginResponse(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    public void beginResponse(IMarkupWriter writer, IRequestCycle cycle)
     {
         super.beginResponse(writer, cycle);
 

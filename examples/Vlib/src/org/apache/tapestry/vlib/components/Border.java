@@ -58,7 +58,6 @@ package org.apache.tapestry.vlib.components;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.callback.PageCallback;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
@@ -164,7 +163,7 @@ public class Border extends BaseComponent
         return WINDOW_TITLE + ": " + _subtitle;
     }
 
-    public void login(IRequestCycle cycle) throws RequestCycleException
+    public void login(IRequestCycle cycle)
     {
         Login login = (Login) cycle.getPage("Login");
 
@@ -178,7 +177,7 @@ public class Border extends BaseComponent
         cycle.setPage(login);
     }
 
-    public void logout(IRequestCycle cycle) throws RequestCycleException
+    public void logout(IRequestCycle cycle)
     {
         VirtualLibraryEngine engine = (VirtualLibraryEngine) getPage().getEngine();
 

@@ -61,7 +61,6 @@ import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.form.AbstractFormComponent;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.html.BasePage;
@@ -112,7 +111,7 @@ public class TestingField extends AbstractFormComponent implements IFormComponen
 	}
 
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
     }
 

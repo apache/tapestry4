@@ -56,7 +56,6 @@
 package org.apache.tapestry.junit.mock.app;
 
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.callback.ICallback;
 import org.apache.tapestry.html.BasePage;
 
@@ -106,7 +105,6 @@ public class Guard extends BasePage
     }
     
     public void linkClicked(IRequestCycle cycle)
-    throws RequestCycleException
     {
         setVisited(true);
         

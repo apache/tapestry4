@@ -58,7 +58,6 @@ package org.apache.tapestry.script;
 import java.util.Map;
 
 import org.apache.tapestry.IResourceResolver;
-import org.apache.tapestry.ScriptException;
 import org.apache.tapestry.ScriptSession;
 import org.apache.tapestry.util.prop.OgnlUtils;
 
@@ -93,7 +92,7 @@ class SetToken extends AbstractToken
      * 
      **/
     
-    public void write(StringBuffer buffer, ScriptSession session) throws ScriptException
+    public void write(StringBuffer buffer, ScriptSession session)
     {
         Map symbols = session.getSymbols();
 

@@ -124,7 +124,7 @@ public class BaseComponent extends AbstractComponent
      * 
      **/
 
-    private void readTemplate(IRequestCycle cycle, IPageLoader loader) throws PageLoaderException
+    private void readTemplate(IRequestCycle cycle, IPageLoader loader)
     {
         IPageSource pageSource = loader.getEngine().getPageSource();
 
@@ -149,7 +149,7 @@ public class BaseComponent extends AbstractComponent
      *   @since 2.0.3
      **/
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         if (LOG.isDebugEnabled())
             LOG.debug("Begin render " + getExtendedId());
@@ -171,7 +171,6 @@ public class BaseComponent extends AbstractComponent
      **/
 
     public void finishLoad(IRequestCycle cycle, IPageLoader loader, ComponentSpecification specification)
-        throws PageLoaderException
     {
         readTemplate(cycle, loader);
 

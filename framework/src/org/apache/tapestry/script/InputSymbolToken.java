@@ -55,7 +55,7 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.tapestry.ScriptException;
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.ScriptSession;
 import org.apache.tapestry.Tapestry;
 
@@ -83,17 +83,21 @@ class InputSymbolToken extends AbstractToken
         _required = required;
     }
 
-    public void write(StringBuffer buffer, ScriptSession session) throws ScriptException
+    public void write(StringBuffer buffer, ScriptSession session)
     {
         Object value = session.getSymbols().get(_key);
 
         if (_required && value == null)
-            throw new ScriptException(Tapestry.getString("InputSymbolToken.required", _key), session);
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("InputSymbolToken.required", _key));
 
         if (value != null && _class != null && !_class.isAssignableFrom(value.getClass()))
-            throw new ScriptException(
-                Tapestry.getString("InputSymbolToken.wrong-type", _key, value.getClass().getName(), _class.getName()),
-                session);
+            throw new ApplicationRuntimeException(
+                Tapestry.getString(
+                    "InputSymbolToken.wrong-type",
+                    _key,
+                    value.getClass().getName(),
+                    _class.getName()));
     }
 
 }

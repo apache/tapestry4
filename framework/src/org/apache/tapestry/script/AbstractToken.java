@@ -59,7 +59,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.apache.tapestry.ScriptException;
 import org.apache.tapestry.ScriptSession;
 
 /**
@@ -90,7 +89,6 @@ abstract class AbstractToken implements IScriptToken
      **/
 
     protected void writeChildren(StringBuffer buffer, ScriptSession session)
-        throws ScriptException
     {
         if (tokens == null)
             return;

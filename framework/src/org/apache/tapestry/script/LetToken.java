@@ -57,7 +57,6 @@ package org.apache.tapestry.script;
 
 import java.util.Map;
 
-import org.apache.tapestry.ScriptException;
 import org.apache.tapestry.ScriptSession;
 
 /**
@@ -84,7 +83,6 @@ class LetToken extends AbstractToken
     }
 
     public void write(StringBuffer buffer, ScriptSession session)
-        throws ScriptException
     {
         if (buffer != null)
             throw new IllegalArgumentException();

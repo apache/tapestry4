@@ -58,8 +58,6 @@ package org.apache.tapestry.form;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
-import org.apache.tapestry.Tapestry;
 
 /**
  *  A component used to render a drop-down list of options that
@@ -130,7 +128,6 @@ public abstract class PropertySelection extends AbstractFormComponent
      **/
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         IForm form = getForm(cycle);
 
@@ -226,7 +223,6 @@ public abstract class PropertySelection extends AbstractFormComponent
         IMarkupWriter writer,
         IRequestCycle cycle,
         IPropertySelectionRenderer renderer)
-        throws RequestCycleException
     {
         renderer.beginRender(this, writer, cycle);
 

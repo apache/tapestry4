@@ -63,11 +63,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.util.BasePropertyHolder;
 
 /**
  *  Specification for a library.  {@link org.apache.tapestry.spec.ApplicationSpecification}
@@ -79,7 +77,7 @@ import org.apache.tapestry.util.BasePropertyHolder;
  *
  **/
 
-public class LibrarySpecification extends BasePropertyHolder implements ILibrarySpecification
+public class LibrarySpecification extends LocatablePropertyHolder implements ILibrarySpecification
 {
     /**
      *  Resource resolver (used to instantiate extensions).

@@ -55,7 +55,6 @@
 
 package org.apache.tapestry.junit.valid;
 
-import junit.framework.TestCase;
 import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.valid.StringValidator;
 import org.apache.tapestry.valid.ValidationConstraint;

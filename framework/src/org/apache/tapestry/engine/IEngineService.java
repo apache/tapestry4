@@ -61,7 +61,6 @@ import javax.servlet.ServletException;
 
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.ResponseOutputStream;
 
@@ -198,7 +197,7 @@ public interface IEngineService
         IEngineServiceView engine,
         IRequestCycle cycle,
         ResponseOutputStream output)
-        throws RequestCycleException, ServletException, IOException;
+        throws ServletException, IOException;
 
     /**
      *  Returns the name of the service.

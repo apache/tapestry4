@@ -59,6 +59,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.tapestry.Location;
 
 /**
  *  Token representing the open tag for a component.  Components may be either
@@ -90,12 +91,13 @@ public class OpenToken extends TemplateToken
      *  parser for implicit components
      *  @param  componentType the type of component, if an implicit component, or null for
      *  a specified component
+     *  @param location location of tag represented by this token
      * 
      **/
 
-    public OpenToken(String tag, String id, String componentType)
+    public OpenToken(String tag, String id, String componentType, Location location)
     {
-        super(TokenType.OPEN);
+        super(TokenType.OPEN, location);
 
         _tag = tag;
         _id = id;

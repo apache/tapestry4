@@ -629,9 +629,9 @@ public class ApplicationServlet extends HttpServlet
     {
         try
         {
-            SpecificationParser parser = new SpecificationParser();
+            SpecificationParser parser = new SpecificationParser(_resolver);
 
-            return parser.parseApplicationSpecification(location, _resolver);
+            return parser.parseApplicationSpecification(location);
         }
         catch (DocumentParseException ex)
         {

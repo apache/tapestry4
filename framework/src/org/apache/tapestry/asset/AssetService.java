@@ -68,7 +68,6 @@ import javax.servlet.ServletException;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.AbstractService;
 import org.apache.tapestry.engine.IEngineServiceView;
@@ -173,7 +172,7 @@ public class AssetService extends AbstractService
         IEngineServiceView engine,
         IRequestCycle cycle,
         ResponseOutputStream output)
-        throws ServletException, IOException, RequestCycleException
+        throws ServletException, IOException
     {
         Object[] parameters = getParameters(cycle);
 

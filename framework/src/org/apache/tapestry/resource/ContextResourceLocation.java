@@ -61,14 +61,12 @@ import java.util.Locale;
 
 import javax.servlet.ServletContext;
 
-import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IResourceLocation;
-import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.asset.ContextAsset;
-import org.apache.tapestry.util.LocalizedContextResourceFinder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.tapestry.IResourceLocation;
+import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.util.LocalizedContextResourceFinder;
 
 /**
  *  Implementation of {@link org.apache.tapestry.IResourceLocation}
@@ -132,16 +130,6 @@ public class ContextResourceLocation extends AbstractResourceLocation
 
             return null;
         }
-    }
-
-    /**
-     *  Returns a new {@link org.apache.tapestry.asset.ContextAsset}.
-     * 
-     **/
-
-    public IAsset toAsset()
-    {
-        return new ContextAsset(getPath());
     }
 
     public String toString()

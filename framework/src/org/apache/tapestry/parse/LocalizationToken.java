@@ -57,6 +57,8 @@ package org.apache.tapestry.parse;
 
 import java.util.Map;
 
+import org.apache.tapestry.Location;
+
 /**
  *  Represents localized text from the template.
  *
@@ -84,12 +86,13 @@ public class LocalizationToken extends TemplateToken
      *  @param raw if true, then the localized value contains markup that should not be escaped
      *  @param attribute any additional attributes (beyond those used to define key and raw)
      *  that were specified.  This value is retained, not copied.
+     *  @param location location of the tag which defines this token
      * 
      **/
     
-    public LocalizationToken(String tag, String key, boolean raw, Map attributes)
+    public LocalizationToken(String tag, String key, boolean raw, Map attributes, Location location)
     {
-        super(TokenType.LOCALIZATION);
+        super(TokenType.LOCALIZATION, location);
         
         _tag = tag;
         _key = key;

@@ -21,9 +21,6 @@
 ]]>
 		</assert-output>
 					
-		<assert-output name="Error">
-Failed to acquire page NotPage.
-		</assert-output>
 				
 		<assert-output name="Error">
 Class java.lang.Object does not implement the IPage interface.

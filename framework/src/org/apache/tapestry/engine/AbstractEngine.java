@@ -61,7 +61,6 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -79,6 +78,10 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
 
+import org.apache.bsf.BSFManager;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.ApplicationServlet;
 import org.apache.tapestry.IEngine;
@@ -89,7 +92,6 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.PageRedirectException;
 import org.apache.tapestry.RedirectException;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.StaleLinkException;
 import org.apache.tapestry.StaleSessionException;
 import org.apache.tapestry.Tapestry;
@@ -109,10 +111,6 @@ import org.apache.tapestry.util.exception.ExceptionAnalyzer;
 import org.apache.tapestry.util.io.DataSqueezer;
 import org.apache.tapestry.util.pool.Pool;
 import org.apache.tapestry.util.prop.OgnlUtils;
-import org.apache.bsf.BSFManager;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  *  Basis for building real Tapestry applications.  Immediate subclasses
@@ -693,8 +691,8 @@ public abstract class AbstractEngine
         String pageName,
         IRequestCycle cycle,
         ResponseOutputStream out,
-        RequestCycleException exception)
-        throws IOException, RequestCycleException, ServletException
+        ApplicationRuntimeException exception)
+        throws IOException, ServletException
     {
         // Discard any output from the previous page.
 
@@ -708,7 +706,7 @@ public abstract class AbstractEngine
     }
 
     public void renderResponse(IRequestCycle cycle, ResponseOutputStream output)
-        throws RequestCycleException, ServletException, IOException
+        throws ServletException, IOException
     {
         if (LOG.isDebugEnabled())
             LOG.debug("Begin render response.");
@@ -855,7 +853,20 @@ public abstract class AbstractEngine
                 if (Tapestry.isNull(serviceName))
                     serviceName = Tapestry.HOME_SERVICE;
 
-                service = getService(serviceName);
+                // Must have a service to create the request cycle.
+                // Must have a request cycle to report an exception.
+
+                try
+                {
+                    service = getService(serviceName);
+                }
+                catch (Exception ex)
+                {
+                    service = getService(Tapestry.HOME_SERVICE);
+                    cycle = createRequestCycle(context, service, monitor);
+
+                    throw ex;
+                }
 
                 cycle = createRequestCycle(context, service, monitor);
 
@@ -910,7 +921,8 @@ public abstract class AbstractEngine
         }
         finally
         {
-            monitor.serviceEnd(service.getName());
+            if (service != null)
+                monitor.serviceEnd(service.getName());
 
             try
             {
@@ -999,7 +1011,7 @@ public abstract class AbstractEngine
         StaleLinkException ex,
         IRequestCycle cycle,
         ResponseOutputStream output)
-        throws IOException, ServletException, RequestCycleException
+        throws IOException, ServletException
     {
         IPage page = cycle.getPage(STALE_LINK_PAGE);
 
@@ -1027,7 +1039,7 @@ public abstract class AbstractEngine
         StaleSessionException ex,
         IRequestCycle cycle,
         ResponseOutputStream output)
-        throws IOException, ServletException, RequestCycleException
+        throws IOException, ServletException
     {
         redirect(STALE_SESSION_PAGE, cycle, output, ex);
     }
@@ -1632,7 +1644,7 @@ public abstract class AbstractEngine
             _internal = !(location.startsWith("/") || location.indexOf("://") > 0);
         }
 
-        public void process(IRequestCycle cycle) throws RequestCycleException
+        public void process(IRequestCycle cycle)
         {
             RequestContext context = cycle.getRequestContext();
 
@@ -1642,7 +1654,7 @@ public abstract class AbstractEngine
                 redirect(context);
         }
 
-        private void forward(RequestContext context) throws RequestCycleException
+        private void forward(RequestContext context)
         {
             HttpServletRequest request = context.getRequest();
             HttpServletResponse response = context.getResponse();
@@ -1650,7 +1662,7 @@ public abstract class AbstractEngine
             RequestDispatcher dispatcher = request.getRequestDispatcher("/" + _location);
 
             if (dispatcher == null)
-                throw new RequestCycleException(
+                throw new ApplicationRuntimeException(
                     Tapestry.getString("AbstractEngine.unable-to-find-dispatcher", _location));
 
             try
@@ -1659,21 +1671,19 @@ public abstract class AbstractEngine
             }
             catch (ServletException ex)
             {
-                throw new RequestCycleException(
+                throw new ApplicationRuntimeException(
                     Tapestry.getString("AbstractEngine.unable-to-forward", _location),
-                    null,
                     ex);
             }
             catch (IOException ex)
             {
-                throw new RequestCycleException(
+                throw new ApplicationRuntimeException(
                     Tapestry.getString("AbstractEngine.unable-to-forward", _location),
-                    null,
                     ex);
             }
         }
 
-        private void redirect(RequestContext context) throws RequestCycleException
+        private void redirect(RequestContext context)
         {
             HttpServletResponse response = context.getResponse();
 
@@ -1685,9 +1695,8 @@ public abstract class AbstractEngine
             }
             catch (IOException ex)
             {
-                throw new RequestCycleException(
+                throw new ApplicationRuntimeException(
                     Tapestry.getString("AbstractEngine.unable-to-redirect", _location),
-                    null,
                     ex);
             }
         }
@@ -1706,7 +1715,6 @@ public abstract class AbstractEngine
      **/
 
     protected void redirectOut(IRequestCycle cycle, RedirectException ex)
-        throws RequestCycleException
     {
         handleRedirectException(cycle, ex);
     }
@@ -1723,9 +1731,8 @@ public abstract class AbstractEngine
      **/
 
     protected void handleRedirectException(IRequestCycle cycle, RedirectException ex)
-        throws RequestCycleException
     {
-        String location = ex.getLocation();
+        String location = ex.getRedirectLocation();
 
         if (LOG.isDebugEnabled())
             LOG.debug("Redirecting to: " + location);

@@ -65,8 +65,6 @@ import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceResolver;
-import org.apache.tapestry.NullValueForBindingException;
-import org.apache.tapestry.ReadOnlyBindingException;
 import org.apache.tapestry.binding.AbstractBinding;
 import org.apache.tapestry.binding.ExpressionBinding;
 import org.apache.tapestry.binding.FieldBinding;
@@ -97,6 +95,8 @@ public class TestBindings extends TapestryTestCase
 
         private TestBinding(Object object)
         {
+        	super(null);
+        	
             _object = object;
         }
 
@@ -163,14 +163,14 @@ public class TestBindings extends TapestryTestCase
 
     public void testGetObject()
     {
-        IBinding binding = new FieldBinding(_resolver, "org.apache.tapestry.junit.TestBindings.STRING_FIELD");
+        IBinding binding = new FieldBinding(_resolver, "org.apache.tapestry.junit.TestBindings.STRING_FIELD", null);
 
         assertEquals("Object", STRING_FIELD, binding.getObject());
     }
 
     public void testToString()
     {
-        IBinding binding = new FieldBinding(_resolver, "org.apache.tapestry.junit.TestBindings.STRING_FIELD");
+        IBinding binding = new FieldBinding(_resolver, "org.apache.tapestry.junit.TestBindings.STRING_FIELD", null);
 
         assertEquals(
             "String value (before access)",
@@ -187,14 +187,14 @@ public class TestBindings extends TapestryTestCase
 
     public void testJavaLang()
     {
-        IBinding binding = new FieldBinding(_resolver, "Boolean.TRUE");
+        IBinding binding = new FieldBinding(_resolver, "Boolean.TRUE", null);
 
         assertEquals("Object", Boolean.TRUE, binding.getObject());
     }
 
     public void testMissingClass()
     {
-        IBinding binding = new FieldBinding(_resolver, "foo.bar.Baz.FIELD");
+        IBinding binding = new FieldBinding(_resolver, "foo.bar.Baz.FIELD", null);
 
         try
         {
@@ -213,7 +213,7 @@ public class TestBindings extends TapestryTestCase
 
     public void testMissingField()
     {
-        IBinding binding = new FieldBinding(_resolver, "org.apache.tapestry.junit.TestBindings.MISSING_FIELD");
+        IBinding binding = new FieldBinding(_resolver, "org.apache.tapestry.junit.TestBindings.MISSING_FIELD", null);
 
         try
         {
@@ -233,7 +233,7 @@ public class TestBindings extends TapestryTestCase
 
     public void testInstanceAccess()
     {
-        IBinding binding = new FieldBinding(_resolver, "org.apache.tapestry.junit.TestBindings.INSTANCE_FIELD");
+        IBinding binding = new FieldBinding(_resolver, "org.apache.tapestry.junit.TestBindings.INSTANCE_FIELD", null);
 
         try
         {
@@ -253,7 +253,7 @@ public class TestBindings extends TapestryTestCase
 
     public void testStaticBindingInt()
     {
-        IBinding binding = new StaticBinding("107");
+        IBinding binding = new StaticBinding("107", null);
 
         assertEquals("Int", 107, binding.getInt());
 
@@ -264,7 +264,7 @@ public class TestBindings extends TapestryTestCase
 
     public void testInvalidStaticBindingInt()
     {
-        IBinding binding = new StaticBinding("barney");
+        IBinding binding = new StaticBinding("barney", null);
 
         try
         {
@@ -280,7 +280,7 @@ public class TestBindings extends TapestryTestCase
 
     public void testInvalidStaticBindingDouble()
     {
-        IBinding binding = new StaticBinding("fred");
+        IBinding binding = new StaticBinding("fred", null);
 
         try
         {
@@ -296,7 +296,7 @@ public class TestBindings extends TapestryTestCase
 
     public void testStaticBindingDouble()
     {
-        IBinding binding = new StaticBinding("3.14");
+        IBinding binding = new StaticBinding("3.14", null);
 
         assertEquals("Double", 3.14, binding.getDouble(), 0.);
 
@@ -307,7 +307,7 @@ public class TestBindings extends TapestryTestCase
 
     public void testStaticBindingToString()
     {
-        IBinding binding = new StaticBinding("alfalfa");
+        IBinding binding = new StaticBinding("alfalfa", null);
 
         assertEquals("ToString", "StaticBinding[alfalfa]", binding.toString());
     }
@@ -316,7 +316,7 @@ public class TestBindings extends TapestryTestCase
     {
         String value = Long.toString(System.currentTimeMillis());
 
-        IBinding binding = new StaticBinding(value);
+        IBinding binding = new StaticBinding(value, null);
 
         assertEquals("Object", value, binding.getObject());
     }
@@ -329,7 +329,7 @@ public class TestBindings extends TapestryTestCase
         {
             binding.getInt();
         }
-        catch (NullValueForBindingException ex)
+        catch (BindingException ex)
         {
             assertEquals("Binding", binding, ex.getBinding());
         }
@@ -343,7 +343,7 @@ public class TestBindings extends TapestryTestCase
         {
             binding.getDouble();
         }
-        catch (NullValueForBindingException ex)
+        catch (BindingException ex)
         {
             assertEquals("Binding", binding, ex.getBinding());
         }
@@ -464,7 +464,7 @@ public class TestBindings extends TapestryTestCase
 
             throw new AssertionFailedError("Unreachable.");
         }
-        catch (ReadOnlyBindingException ex)
+        catch (BindingException ex)
         {
             assertEquals("Binding", binding, ex.getBinding());
         }
@@ -480,7 +480,7 @@ public class TestBindings extends TapestryTestCase
 
             throw new AssertionFailedError("Unreachable.");
         }
-        catch (ReadOnlyBindingException ex)
+        catch (BindingException ex)
         {
             assertEquals("Binding", binding, ex.getBinding());
         }
@@ -496,7 +496,7 @@ public class TestBindings extends TapestryTestCase
 
             throw new AssertionFailedError("Unreachable.");
         }
-        catch (ReadOnlyBindingException ex)
+        catch (BindingException ex)
         {
             assertEquals("Binding", binding, ex.getBinding());
         }
@@ -512,7 +512,7 @@ public class TestBindings extends TapestryTestCase
 
             throw new AssertionFailedError("Unreachable.");
         }
-        catch (ReadOnlyBindingException ex)
+        catch (BindingException ex)
         {
             assertEquals("Binding", binding, ex.getBinding());
         }
@@ -528,7 +528,7 @@ public class TestBindings extends TapestryTestCase
 
             throw new AssertionFailedError("Unreachable.");
         }
-        catch (ReadOnlyBindingException ex)
+        catch (BindingException ex)
         {
             assertEquals("Binding", binding, ex.getBinding());
         }
@@ -536,7 +536,7 @@ public class TestBindings extends TapestryTestCase
 
     public void testInvalidFieldName()
     {
-        IBinding binding = new FieldBinding(_resolver, "Baz");
+        IBinding binding = new FieldBinding(_resolver, "Baz", null);
 
         try
         {
@@ -556,7 +556,7 @@ public class TestBindings extends TapestryTestCase
     {
         IPage page = new MockPage();
 
-        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "page");
+        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "page", null);
 
         assertEquals("Expression property", "page", binding.getExpression());
         assertEquals("Root property", page, binding.getRoot());
@@ -567,7 +567,7 @@ public class TestBindings extends TapestryTestCase
     {
         IPage page = new MockPage();
 
-        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "zip flob boff");
+        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "zip flob boff", null);
 
         try
         {
@@ -585,7 +585,7 @@ public class TestBindings extends TapestryTestCase
     {
         IPage page = new MockPage();
 
-        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "tigris");
+        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "tigris", null);
 
         try
         {
@@ -604,7 +604,7 @@ public class TestBindings extends TapestryTestCase
     {
         IPage page = new MockPage();
 
-        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "bindings");
+        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "bindings", null);
 
         try
         {
@@ -623,7 +623,7 @@ public class TestBindings extends TapestryTestCase
     public void testUpdateBoolean()
     {
         BoundPage page = new BoundPage();
-        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "booleanValue");
+        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "booleanValue", null);
 
         binding.setBoolean(true);
 
@@ -637,7 +637,7 @@ public class TestBindings extends TapestryTestCase
     public void testUpdateInt()
     {
         BoundPage page = new BoundPage();
-        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "intValue");
+        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "intValue", null);
 
         binding.setInt(275);
 
@@ -647,7 +647,7 @@ public class TestBindings extends TapestryTestCase
     public void testUpdateDouble()
     {
         BoundPage page = new BoundPage();
-        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "doubleValue");
+        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "doubleValue", null);
 
         binding.setDouble(3.14);
 
@@ -657,7 +657,7 @@ public class TestBindings extends TapestryTestCase
     public void testUpdateObject()
     {
         BoundPage page = new BoundPage();
-        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "objectValue");
+        ExpressionBinding binding = new ExpressionBinding(_resolver, page, "objectValue", null);
 
         Object object = new HashMap();
 

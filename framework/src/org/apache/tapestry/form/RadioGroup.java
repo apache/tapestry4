@@ -55,12 +55,11 @@
 
 package org.apache.tapestry.form;
 
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RenderOnlyPropertyException;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.Tapestry;
 
 /**
@@ -119,7 +118,7 @@ public abstract class RadioGroup extends AbstractFormComponent
     public int getNextOptionId()
     {
         if (!_rendering)
-            throw new RenderOnlyPropertyException(this, "nextOptionId");
+            throw Tapestry.createRenderOnlyPropertyException(this, "nextOptionId");
 
         return _nextOptionId++;
     }
@@ -135,7 +134,7 @@ public abstract class RadioGroup extends AbstractFormComponent
     public boolean isRewinding()
     {
         if (!_rendering)
-            throw new RenderOnlyPropertyException(this, "rewinding");
+            throw  Tapestry.createRenderOnlyPropertyException(this, "rewinding");
 
         return _rewinding;
     }
@@ -150,7 +149,7 @@ public abstract class RadioGroup extends AbstractFormComponent
     public boolean isSelection(Object value)
     {
         if (!_rendering)
-            throw new RenderOnlyPropertyException(this, "selection");
+            throw  Tapestry.createRenderOnlyPropertyException(this, "selection");
 
         if (_selection == value)
             return true;
@@ -191,12 +190,12 @@ public abstract class RadioGroup extends AbstractFormComponent
      *
      **/
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         IForm form = getForm(cycle);
 
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-            throw new RequestCycleException(Tapestry.getString("RadioGroup.may-not-nest"), this);
+            throw new ApplicationRuntimeException(Tapestry.getString("RadioGroup.may-not-nest"), this);
 
         // It isn't enough to know whether the cycle in general is rewinding, need to know
         // specifically if the form which contains this component is rewinding.

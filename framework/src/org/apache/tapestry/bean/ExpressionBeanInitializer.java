@@ -69,7 +69,14 @@ package org.apache.tapestry.bean;
  **/
 public class ExpressionBeanInitializer extends PropertyBeanInitializer
 {
+	/** @since 2.4 **/
+	
+    public ExpressionBeanInitializer()
+    {
+    }
 
+	/** @deprecated **/
+	
     public ExpressionBeanInitializer(String propertyName, String expression)
     {
         super(propertyName, expression);

@@ -57,13 +57,10 @@ package org.apache.tapestry.link;
 
 import java.util.List;
 
-import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IDirect;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
-import org.apache.tapestry.RequiredParameterException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.ILink;
 
@@ -100,7 +97,7 @@ public abstract class DirectLink extends AbstractLinkComponent implements IDirec
         return statefulBinding.getBoolean();
     }
 
-    public ILink getLink(IRequestCycle cycle) throws RequestCycleException
+    public ILink getLink(IRequestCycle cycle)
     {
         return getLink(cycle, Tapestry.DIRECT_SERVICE, constructServiceParameters(getParameters()));
     }
@@ -152,7 +149,7 @@ public abstract class DirectLink extends AbstractLinkComponent implements IDirec
      * 
      **/
 
-    public void trigger(IRequestCycle cycle) throws RequestCycleException
+    public void trigger(IRequestCycle cycle)
     {
         IActionListener listener = getListener(cycle);
 
@@ -167,23 +164,15 @@ public abstract class DirectLink extends AbstractLinkComponent implements IDirec
      * 
      **/
 
-    private IActionListener getListener(IRequestCycle cycle) throws RequestCycleException
+    private IActionListener getListener(IRequestCycle cycle)
     {
-        IActionListener result;
         IBinding listenerBinding = getListenerBinding();
 
-        try
-        {
-            result = (IActionListener) listenerBinding.getObject("listener", IActionListener.class);
-
-        }
-        catch (BindingException ex)
-        {
-            throw new RequestCycleException(this, ex);
-        }
+        IActionListener result =
+            (IActionListener) listenerBinding.getObject("listener", IActionListener.class);
 
         if (result == null)
-            throw new RequiredParameterException(this, "listener", listenerBinding);
+            throw Tapestry.createRequiredParameterException(this, "listener");
 
         return result;
     }

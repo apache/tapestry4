@@ -57,11 +57,10 @@ package org.apache.tapestry.asset;
 
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Locale;
 
 import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.Location;
 import org.apache.tapestry.Tapestry;
 
 /**
@@ -73,12 +72,14 @@ import org.apache.tapestry.Tapestry;
  * 
  **/
 
-public class ExternalAsset implements IAsset
+public class ExternalAsset extends AbstractAsset
 {
     private String _URL;
 
-    public ExternalAsset(String URL)
+    public ExternalAsset(String URL, Location location)
     {
+    	super(null, location);
+    	
         _URL = URL;
     }
 
@@ -93,18 +94,6 @@ public class ExternalAsset implements IAsset
     }
 
     public InputStream getResourceAsStream(IRequestCycle cycle)
-    {
-        return getResourceAsStream(cycle, cycle.getPage().getLocale());
-    }
-
-    /**
-     *  Ignores the locale and attempts to get the stream to the external URL.
-     * 
-     *  @since 2.2
-     * 
-     **/
-
-    public InputStream getResourceAsStream(IRequestCycle cycle, Locale locale)
     {
         URL url;
 

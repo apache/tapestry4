@@ -58,11 +58,10 @@ package org.apache.tapestry.form;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RenderOnlyPropertyException;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.RequestContext;
 
@@ -117,7 +116,7 @@ public abstract class Select extends AbstractFormComponent
     public boolean isRewinding()
     {
         if (!_rendering)
-            throw new RenderOnlyPropertyException(this, "rewinding");
+            throw  Tapestry.createRenderOnlyPropertyException(this, "rewinding");
 
         return _rewinding;
     }
@@ -125,7 +124,7 @@ public abstract class Select extends AbstractFormComponent
     public String getNextOptionId()
     {
         if (!_rendering)
-            throw new RenderOnlyPropertyException(this, "nextOptionId");
+            throw Tapestry.createRenderOnlyPropertyException(this, "nextOptionId");
 
         // Return it as a hex value.
 
@@ -145,14 +144,14 @@ public abstract class Select extends AbstractFormComponent
      *  is submitted (by checking {@link IForm#isRewinding()}.
      **/
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         IForm form = getForm(cycle);
         
 		updateDelegate(form);
 		
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-            throw new RequestCycleException(Tapestry.getString("Select.may-not-nest"), this);
+            throw new ApplicationRuntimeException(Tapestry.getString("Select.may-not-nest"), this);
 
         // It isn't enough to know whether the cycle in general is rewinding, need to know
         // specifically if the form which contains this component is rewinding.

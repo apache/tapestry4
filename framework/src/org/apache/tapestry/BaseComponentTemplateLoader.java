@@ -65,6 +65,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.binding.ExpressionBinding;
+import org.apache.tapestry.binding.StaticBinding;
 import org.apache.tapestry.binding.StringBinding;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.engine.IPageSource;
@@ -130,7 +131,7 @@ public class BaseComponentTemplateLoader
             _attributes = token.getAttributes();
         }
 
-        public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+        public void render(IMarkupWriter writer, IRequestCycle cycle)
         {
             if (cycle.isRewinding())
                 return;
@@ -195,7 +196,7 @@ public class BaseComponentTemplateLoader
         _stack = new IComponent[template.getTokenCount()];
     }
 
-    public void process() throws PageLoaderException
+    public void process()
     {
         int count = _template.getTokenCount();
 
@@ -234,7 +235,7 @@ public class BaseComponentTemplateLoader
         // of date, too.
 
         if (_stackx != 0)
-            throw new PageLoaderException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString("BaseComponent.unbalance-open-tags"),
                 _loadComponent);
 
@@ -251,7 +252,7 @@ public class BaseComponentTemplateLoader
      * 
      **/
 
-    private void process(TextToken token) throws PageLoaderException
+    private void process(TextToken token)
     {
         if (_activeComponent == null)
         {
@@ -260,12 +261,12 @@ public class BaseComponentTemplateLoader
         }
 
         if (!_activeComponent.getSpecification().getAllowBody())
-            throw new BodylessComponentException(_activeComponent);
+            throw createBodylessComponentException(_activeComponent);
 
         _activeComponent.addBody(token);
     }
 
-    private void process(OpenToken token) throws PageLoaderException
+    private void process(OpenToken token)
     {
         String id = token.getId();
         IComponent component = null;
@@ -274,17 +275,19 @@ public class BaseComponentTemplateLoader
         if (componentType == null)
             component = getEmbeddedComponent(id);
         else
-            component = createImplicitComponent(id, componentType);
+            component = createImplicitComponent(id, componentType, token.getLocation());
 
         // Make sure the template contains each component only once.
 
         if (_seenIds.contains(id))
-            throw new PageLoaderException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString(
                     "BaseComponent.multiple-component-references",
                     _loadComponent.getExtendedId(),
                     id),
-                _loadComponent);
+                _loadComponent,
+                token.getLocation(),
+                null);
 
         _seenIds.add(id);
 
@@ -296,7 +299,7 @@ public class BaseComponentTemplateLoader
             // template parser does this check first).
 
             if (!_activeComponent.getSpecification().getAllowBody())
-                throw new BodylessComponentException(_activeComponent);
+                throw createBodylessComponentException(_activeComponent);
 
             _activeComponent.addBody(component);
         }
@@ -308,44 +311,32 @@ public class BaseComponentTemplateLoader
         _activeComponent = component;
     }
 
-    private IComponent createImplicitComponent(String id, String componentType)
-        throws PageLoaderException
+    private IComponent createImplicitComponent(String id, String componentType, Location location)
     {
-        return _pageLoader.createImplicitComponent(
-            _requestCycle,
-            _loadComponent,
-            id,
-            componentType);
+        IComponent result =
+            _pageLoader.createImplicitComponent(_requestCycle, _loadComponent, id, componentType);
+
+        result.setLocation(location);
+
+        return result;
     }
 
-    private IComponent getEmbeddedComponent(String id) throws PageLoaderException
+    private IComponent getEmbeddedComponent(String id)
     {
-        try
-        {
-            return _loadComponent.getComponent(id);
-
-        }
-        catch (NoSuchComponentException ex)
-        {
-            throw new PageLoaderException(
-                Tapestry.getString(
-                    "BaseComponent.undefined-embedded-component",
-                    _loadComponent.getExtendedId(),
-                    id),
-                _loadComponent,
-                ex);
-        }
+        return _loadComponent.getComponent(id);
     }
 
-    private void process(CloseToken token) throws PageLoaderException
+    private void process(CloseToken token)
     {
         // Again, this is pretty much impossible to reach because
         // the template parser does a great job.
 
         if (_stackx <= 0)
-            throw new PageLoaderException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString("BaseComponent.unbalanced-close-tags"),
-                _loadComponent);
+                _loadComponent,
+                token.getLocation(),
+                null);
 
         // Null and forget the top element on the stack.
 
@@ -372,7 +363,6 @@ public class BaseComponentTemplateLoader
      **/
 
     private void addTemplateBindings(IComponent component, OpenToken token)
-        throws PageLoaderException
     {
         Map attributes = token.getAttributesMap();
 
@@ -393,18 +383,23 @@ public class BaseComponentTemplateLoader
 
             if (type == AttributeType.OGNL_EXPRESSION)
             {
-                addExpressionBinding(component, spec, name, attribute.getValue());
+                addExpressionBinding(
+                    component,
+                    spec,
+                    name,
+                    attribute.getValue(),
+                    token.getLocation());
                 continue;
             }
 
             if (type == AttributeType.LOCALIZATION_KEY)
             {
-                addStringBinding(component, spec, name, attribute.getValue());
+                addStringBinding(component, spec, name, attribute.getValue(), token.getLocation());
                 continue;
             }
 
             if (type == AttributeType.LITERAL)
-                addStaticBinding(component, spec, name, attribute.getValue());
+                addStaticBinding(component, spec, name, attribute.getValue(), token.getLocation());
         }
     }
 
@@ -423,8 +418,8 @@ public class BaseComponentTemplateLoader
         IComponent component,
         ComponentSpecification spec,
         String name,
-        String expression)
-        throws PageLoaderException
+        String expression,
+        Location location)
     {
 
         // If matches a formal parameter name, allow it to be set
@@ -435,40 +430,50 @@ public class BaseComponentTemplateLoader
         if (isFormal)
         {
             if (component.getBinding(name) != null)
-                throw new PageLoaderException(
+                throw new ApplicationRuntimeException(
                     Tapestry.getString(
                         "BaseComponent.dupe-template-expression",
                         name,
                         component.getExtendedId(),
                         _loadComponent.getExtendedId()),
-                    component);
+                    component,
+                    location,
+                    null);
         }
         else
         {
             if (!spec.getAllowInformalParameters())
-                throw new PageLoaderException(
+                throw new ApplicationRuntimeException(
                     Tapestry.getString(
                         "BaseComponent.template-expression-for-informal-parameter",
                         name,
                         component.getExtendedId(),
                         _loadComponent.getExtendedId()),
-                    component);
+                    component,
+                    location,
+                    null);
 
             // If the name is reserved (matches a formal parameter
             // or reserved name, caselessly), then skip it.
 
             if (spec.isReservedParameterName(name))
-                throw new PageLoaderException(
+                throw new ApplicationRuntimeException(
                     Tapestry.getString(
                         "BaseComponent.template-expression-for-reserved-parameter",
                         name,
                         component.getExtendedId(),
                         _loadComponent.getExtendedId()),
-                    component);
+                    component,
+                    location,
+                    null);
         }
 
         IBinding binding =
-            new ExpressionBinding(_pageSource.getResourceResolver(), _loadComponent, expression);
+            new ExpressionBinding(
+                _pageSource.getResourceResolver(),
+                _loadComponent,
+                expression,
+                location);
 
         component.setBinding(name, binding);
     }
@@ -488,10 +493,9 @@ public class BaseComponentTemplateLoader
         IComponent component,
         ComponentSpecification spec,
         String name,
-        String localizationKey)
-        throws PageLoaderException
+        String localizationKey,
+        Location location)
     {
-
         // If matches a formal parameter name, allow it to be set
         // unless there's already a binding.
 
@@ -500,39 +504,45 @@ public class BaseComponentTemplateLoader
         if (isFormal)
         {
             if (component.getBinding(name) != null)
-                throw new PageLoaderException(
+                throw new ApplicationRuntimeException(
                     Tapestry.getString(
                         "BaseComponent.dupe-string",
                         name,
                         component.getExtendedId(),
                         _loadComponent.getExtendedId()),
-                    component);
+                    component,
+                    location,
+                    null);
         }
         else
         {
             if (!spec.getAllowInformalParameters())
-                throw new PageLoaderException(
+                throw new ApplicationRuntimeException(
                     Tapestry.getString(
                         "BaseComponent.template-expression-for-informal-parameter",
                         name,
                         component.getExtendedId(),
                         _loadComponent.getExtendedId()),
-                    component);
+                    component,
+                    location,
+                    null);
 
             // If the name is reserved (matches a formal parameter
             // or reserved name, caselessly), then skip it.
 
             if (spec.isReservedParameterName(name))
-                throw new PageLoaderException(
+                throw new ApplicationRuntimeException(
                     Tapestry.getString(
                         "BaseComponent.template-expression-for-reserved-parameter",
                         name,
                         component.getExtendedId(),
                         _loadComponent.getExtendedId()),
-                    component);
+                    component,
+                    location,
+                    null);
         }
 
-        IBinding binding = new StringBinding(_loadComponent, localizationKey);
+        IBinding binding = new StringBinding(_loadComponent, localizationKey, location);
 
         component.setBinding(name, binding);
     }
@@ -553,7 +563,8 @@ public class BaseComponentTemplateLoader
         IComponent component,
         ComponentSpecification spec,
         String name,
-        String staticValue)
+        String staticValue,
+        Location location)
     {
 
         if (component.getBinding(name) != null)
@@ -578,12 +589,12 @@ public class BaseComponentTemplateLoader
                 return;
         }
 
-        IBinding binding = _pageSource.getStaticBinding(staticValue);
+        IBinding binding = new StaticBinding(staticValue, location);
 
         component.setBinding(name, binding);
     }
 
-    private void checkAllComponentsReferenced() throws PageLoaderException
+    private void checkAllComponentsReferenced()
     {
         // First, contruct a modifiable copy of the ids of all expected components
         // (that is, components declared in the specification).
@@ -639,5 +650,12 @@ public class BaseComponentTemplateLoader
         buffer.append('.');
 
         LOG.error(buffer.toString());
+    }
+
+    protected ApplicationRuntimeException createBodylessComponentException(IComponent component)
+    {
+        return new ApplicationRuntimeException(
+            Tapestry.getString("BaseComponentTemplateLoader.bodyless-component"),
+            component);
     }
 }

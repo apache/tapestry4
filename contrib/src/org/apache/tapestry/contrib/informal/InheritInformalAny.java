@@ -64,7 +64,6 @@ import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.spec.ComponentSpecification;
 
 /**
@@ -139,7 +138,7 @@ public class InheritInformalAny extends AbstractComponent
 
     }
 
-    public void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    public void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         String strElement = m_objElementBinding.getObject().toString();
 

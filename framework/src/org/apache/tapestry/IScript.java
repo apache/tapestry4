@@ -83,6 +83,6 @@ public interface IScript
      *
      **/
 
-    public ScriptSession execute(Map symbols) throws ScriptException;
+    public ScriptSession execute(Map symbols);
 
 }

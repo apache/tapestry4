@@ -55,7 +55,6 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.tapestry.ScriptException;
 import org.apache.tapestry.ScriptSession;
 
 /**
@@ -73,7 +72,6 @@ class InitToken extends AbstractToken
     private int _bufferLengthHighwater = 100;
 
     public void write(StringBuffer buffer, ScriptSession session)
-        throws ScriptException
     {
         if (buffer != null)
             throw new IllegalArgumentException();

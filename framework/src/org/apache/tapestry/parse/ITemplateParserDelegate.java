@@ -55,8 +55,6 @@
 
 package org.apache.tapestry.parse;
 
-import org.apache.tapestry.PageLoaderException;
-
 /**
  *  Provides a {@link TemplateParser} with additional information about
  *  dynamic components.
@@ -86,7 +84,7 @@ public interface ITemplateParserDelegate
      **/
 
     public boolean getAllowBody(String componentId);
-    
+
     /**
      *  Used with implicit components to determine if the component
      *  allows a body or not.
@@ -99,7 +97,6 @@ public interface ITemplateParserDelegate
      *  @since 2.4
      * 
      **/
-    
-    public boolean getAllowBody(String libraryId, String type)
-    throws PageLoaderException;
+
+    public boolean getAllowBody(String libraryId, String type);
 }

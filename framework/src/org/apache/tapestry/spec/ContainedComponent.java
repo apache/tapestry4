@@ -60,8 +60,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.tapestry.util.BasePropertyHolder;
-
 /**
  * Defines a contained component.  This includes the information needed to
  * get the contained component's specification, as well as any bindings
@@ -72,7 +70,7 @@ import org.apache.tapestry.util.BasePropertyHolder;
  * 
  **/
 
-public class ContainedComponent extends BasePropertyHolder
+public class ContainedComponent extends LocatablePropertyHolder
 {
 	private String type;
 

@@ -62,7 +62,6 @@ import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.apache.tapestry.contrib.table.model.ITableColumnModel;
 import org.apache.tapestry.event.PageDetachListener;
@@ -177,7 +176,7 @@ public class TableColumns extends AbstractTableViewComponent implements PageDeta
         m_objArrowDownAsset = null;
     }
 
-	public Iterator getTableColumnIterator() throws RequestCycleException
+	public Iterator getTableColumnIterator()
 	{
 		ITableColumnModel objColumnModel =
 			getTableModelSource().getTableModel().getColumnModel();
@@ -206,7 +205,7 @@ public class TableColumns extends AbstractTableViewComponent implements PageDeta
             objColumnBinding.setObject(tableColumn);
 	}
 
-	public IRender getTableColumnRenderer() throws RequestCycleException
+	public IRender getTableColumnRenderer()
 	{
 		return getTableColumn().getColumnRenderer(
 			getPage().getRequestCycle(),
@@ -304,7 +303,6 @@ public class TableColumns extends AbstractTableViewComponent implements PageDeta
 	 * @see org.apache.tapestry.BaseComponent#renderComponent(IMarkupWriter, IRequestCycle)
 	 */
 	protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-		throws RequestCycleException
 	{
         Object oldValueUp = cycle.getAttribute(TABLE_COLUMN_ARROW_UP_ATTRIBUTE);
         Object oldValueDown = cycle.getAttribute(TABLE_COLUMN_ARROW_DOWN_ATTRIBUTE);

@@ -95,7 +95,7 @@ public abstract class AbstractResourceLocation implements IResourceLocation
         return buildNewResourceLocation(_folderPath + name);
     }
 
-    protected String getPath()
+    public String getPath()
     {
         return _path;
     }

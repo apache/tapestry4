@@ -59,7 +59,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.tapestry.IResourceResolver;
-import org.apache.tapestry.ScriptException;
 import org.apache.tapestry.ScriptSession;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.prop.OgnlUtils;
@@ -88,7 +87,7 @@ class ForeachToken extends AbstractToken
         _resolver = resolver;
     }
 
-    public void write(StringBuffer buffer, ScriptSession session) throws ScriptException
+    public void write(StringBuffer buffer, ScriptSession session)
     {
         Map symbols = session.getSymbols();
 

@@ -66,7 +66,6 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.PageRecorderCommitException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.util.StringSplitter;
@@ -169,7 +168,7 @@ public class SessionPageRecorder extends PageRecorder
      *
      **/
 
-    public void commit() throws PageRecorderCommitException
+    public void commit()
     {
         setDirty(false);
         setLocked(true);

@@ -53,52 +53,51 @@
  *
  */
 
-package org.apache.tapestry;
+package org.apache.tapestry.asset;
+
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.tapestry.IAsset;
+import org.apache.tapestry.IResourceLocation;
+import org.apache.tapestry.Location;
 
 /**
- *  Exception thrown when a resource is not available, because it is not
- *  found, or could not be used.  The latter case occurs with files which
- *  must be parsed or processed once located, such as component specification
- *  files.
+ *  Base class for {@link org.apache.tapestry.IAsset} implementations.  Provides
+ *  the location property.
  *
- *  @deprecated To be removed in 2.3.  No longer used; uses converted
- *  to {@link org.apache.tapestry.ApplicationRuntimeException}.
  *  @author Howard Lewis Ship
  *  @version $Id$
+ *  @since 2.4
+ *
  **/
 
-public class ResourceUnavailableException extends Exception
+public abstract class AbstractAsset implements IAsset
 {
-	private Throwable rootCause;
+	private IResourceLocation _resourceLocation;
+    private Location _location;
 
-	/**
-	*  Constructor when no underlying exception is known.
-	*
-	*  @param message Describes the resource and the reason it is unavailable.
-	*
-	*/
+    protected AbstractAsset(IResourceLocation resourceLocation, Location location)
+    {
+    	_resourceLocation = resourceLocation;
+        _location = location;
+    }
 
-	public ResourceUnavailableException(String message)
-	{
-		super(message);
-
-	}
-
-	/**
-	*  Standard constructor
-	*
-	*  @param message Describes the resource and the reason it is unavailable.
-	*  @param rootCause Exception which made the resource unavailable.
-	*/
-
-	public ResourceUnavailableException(String message, Throwable rootCause)
-	{
-		super(message);
-		this.rootCause = rootCause;
-	}
-
-	public Throwable getRootCause()
-	{
-		return rootCause;
-	}
+    public Location getLocation()
+    {
+        return _location;
+    }
+    
+    public IResourceLocation getResourceLocation()
+    {
+    	return _resourceLocation;
+    }
+    
+    public String toString()
+    {
+    	ToStringBuilder builder = new ToStringBuilder(this);
+    	
+    	builder.append("resourceLocation", _resourceLocation);
+    	builder.append("location", _location);
+    	
+    	return builder.toString();
+    }
 }

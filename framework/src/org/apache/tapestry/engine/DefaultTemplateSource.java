@@ -74,8 +74,6 @@ import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IResourceResolver;
-import org.apache.tapestry.NoSuchComponentException;
-import org.apache.tapestry.PageLoaderException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.parse.ComponentTemplate;
 import org.apache.tapestry.parse.ITemplateParserDelegate;
@@ -149,17 +147,17 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
             return _component.getSpecification().getComponent(componentId) != null;
         }
 
-        public boolean getAllowBody(String componentId) throws NoSuchComponentException
+        public boolean getAllowBody(String componentId)
         {
             IComponent embedded = _component.getComponent(componentId);
 
             if (embedded == null)
-                throw new NoSuchComponentException(componentId, _component);
+                throw Tapestry.createNoSuchComponentException(_component, componentId);
 
             return embedded.getSpecification().getAllowBody();
         }
 
-        public boolean getAllowBody(String libraryId, String type) throws PageLoaderException
+        public boolean getAllowBody(String libraryId, String type)
         {
             INamespace namespace = _component.getNamespace();
 
@@ -261,7 +259,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
         IAsset templateAsset = component.getAsset(TEMPLATE_ASSET_NAME);
 
         if (templateAsset != null)
-            return readTemplateFromAsset(cycle, component, templateAsset, locale);
+            return readTemplateFromAsset(cycle, component, templateAsset);
 
         String name = location.getName();
         int dotx = name.lastIndexOf('.');
@@ -308,10 +306,9 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
     private ComponentTemplate readTemplateFromAsset(
         IRequestCycle cycle,
         IComponent component,
-        IAsset asset,
-        Locale locale)
+        IAsset asset)
     {
-        InputStream stream = asset.getResourceAsStream(cycle, locale);
+        InputStream stream = asset.getResourceAsStream(cycle);
 
         char[] templateData = null;
 
@@ -328,7 +325,9 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
                 ex);
         }
 
-        return constructTemplateInstance(cycle, templateData, asset.toString(), component);
+        IResourceLocation resourceLocation = asset.getResourceLocation();
+
+        return constructTemplateInstance(cycle, templateData, resourceLocation, component);
     }
 
     /**
@@ -409,7 +408,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
         if (templateData == null)
             return null;
 
-        return constructTemplateInstance(cycle, templateData, location.toString(), component);
+        return constructTemplateInstance(cycle, templateData, location, component);
     }
 
     /** 
@@ -423,7 +422,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
     private synchronized ComponentTemplate constructTemplateInstance(
         IRequestCycle cycle,
         char[] templateData,
-        String location,
+        IResourceLocation location,
         IComponent component)
     {
         if (_parser == null)
@@ -552,13 +551,13 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
         return builder.toString();
     }
 
-	/**
-	 *  Checks for the {@link Tapestry#TEMPLATE_EXTENSION_PROPERTY} in the component's
-	 *  specification, then in the component's namespace's specification.  Returns
-	 *  {@link Tapestry#DEFAULT_TEMPLATE_EXTENSION} if not otherwise overriden.
-	 * 
-	 **/
-	
+    /**
+     *  Checks for the {@link Tapestry#TEMPLATE_EXTENSION_PROPERTY} in the component's
+     *  specification, then in the component's namespace's specification.  Returns
+     *  {@link Tapestry#DEFAULT_TEMPLATE_EXTENSION} if not otherwise overriden.
+     * 
+     **/
+
     private String getTemplateExtension(IComponent component)
     {
         String extension =

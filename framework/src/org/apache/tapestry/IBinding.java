@@ -70,7 +70,7 @@ package org.apache.tapestry;
  *  @version $Id$
  **/
 
-public interface IBinding
+public interface IBinding extends ILocatable
 {
     /**
      *  Invokes {@link #getObject()}, then coerces the value to a boolean.  

@@ -64,38 +64,33 @@ package org.apache.tapestry;
  *
  **/
 
-public class BindingException extends RuntimeException
+public class BindingException extends ApplicationRuntimeException
 {
     private transient IBinding _binding;
-    private Throwable _rootCause;
-
-    public BindingException(IBinding binding)
-    {
-        _binding = binding;
-    }
 
     public BindingException(String message, IBinding binding)
     {
-        super(message);
-
-        _binding = binding;
+        this(message, binding, null);
     }
 
     public BindingException(String message, IBinding binding, Throwable rootCause)
     {
-        super(message);
+        this(message, null, binding, rootCause);
+    }
+
+    public BindingException(
+        String message,
+        IComponent component,
+        IBinding binding,
+        Throwable rootCause)
+    {
+        super(message, component, binding.getLocation(), rootCause);
 
         _binding = binding;
-        _rootCause = rootCause;
     }
 
     public IBinding getBinding()
     {
         return _binding;
-    }
-
-    public Throwable getRootCause()
-    {
-        return _rootCause;
     }
 }

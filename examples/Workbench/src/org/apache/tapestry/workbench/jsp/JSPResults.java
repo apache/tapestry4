@@ -57,7 +57,6 @@ package org.apache.tapestry.workbench.jsp;
 
 import org.apache.tapestry.IExternalPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 
 /**
  *  Page accessible via the external link.
@@ -73,7 +72,6 @@ public abstract class JSPResults extends JSP implements IExternalPage
 	public abstract void setParameters(Object[] parameters);
 
     public void activateExternalPage(Object[] parameters, IRequestCycle cycle)
-        throws RequestCycleException
     {
     	setParameters(parameters);
     }

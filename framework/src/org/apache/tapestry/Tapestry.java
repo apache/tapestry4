@@ -1117,4 +1117,84 @@ public final class Tapestry
 
         return subject.getName();
     }
+
+    /**
+     *  Selects the first {@link org.apache.tapestry.Location} in an array of objects.
+     *  Skips over nulls.  The objects may be instances of
+     *  {Location or {@link org.apache.tapestry.ILocatable}.  May return null
+     *  if no Location found found.
+     * 
+     **/
+
+    public static Location findLocation(Object[] locations)
+    {
+        for (int i = 0; i < locations.length; i++)
+        {
+            Object location = locations[i];
+
+            if (location == null)
+                continue;
+
+            if (location instanceof Location)
+                return (Location) location;
+
+            if (location instanceof ILocatable)
+            {
+                ILocatable locatable = (ILocatable) location;
+                Location result = locatable.getLocation();
+
+                if (result != null)
+                    return result;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     *  Creates an exception indicating the binding value is null.
+     * 
+     *  @since 2.4 
+     * 
+     **/
+
+    public static BindingException createNullBindingException(IBinding binding)
+    {
+        return new BindingException(getString("null-value-for-binding"), binding);
+    }
+
+    /** @since 2.4 **/
+
+    public static ApplicationRuntimeException createNoSuchComponentException(
+        IComponent component,
+        String id)
+    {
+        return new ApplicationRuntimeException(
+            getString("no-such-component", component.getExtendedId(), id),
+            component);
+    }
+
+    /** @since 2.4 **/
+
+    public static BindingException createRequiredParameterException(
+        IComponent component,
+        String parameterName)
+    {
+        return new BindingException(
+            getString("required-parameter", parameterName, component.getExtendedId()),
+            component,
+            component.getBinding(parameterName),
+            null);
+    }
+
+    /** @since 2.4 **/
+
+    public static ApplicationRuntimeException createRenderOnlyPropertyException(
+        IComponent component,
+        String propertyName)
+    {
+        return new ApplicationRuntimeException(
+            getString("render-only-property", propertyName, component.getExtendedId()),
+            component);
+    }
 }

@@ -58,12 +58,10 @@ package org.apache.tapestry.resource;
 import java.net.URL;
 import java.util.Locale;
 
-import org.apache.tapestry.IAsset;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IResourceResolver;
-import org.apache.tapestry.asset.PrivateAsset;
 import org.apache.tapestry.util.LocalizedResourceFinder;
-import org.apache.commons.lang.builder.HashCodeBuilder;
 
 /**
  *  Implementation of {@link org.apache.tapestry.IResourceLocation}
@@ -117,16 +115,6 @@ public class ClasspathResourceLocation extends AbstractResourceLocation
     public URL getResourceURL()
     {
         return _resolver.getResource(getPath());
-    }
-
-    /**
-     *  Returns a {@link org.apache.tapestry.asset.PrivateAsset}.
-     * 
-     **/
-
-    public IAsset toAsset()
-    {
-        return new PrivateAsset(getPath());
     }
 
     public String toString()

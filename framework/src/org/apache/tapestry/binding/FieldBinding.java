@@ -59,6 +59,7 @@ import java.lang.reflect.Field;
 
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IResourceResolver;
+import org.apache.tapestry.Location;
 import org.apache.tapestry.Tapestry;
 
 /**
@@ -90,8 +91,10 @@ public class FieldBinding extends AbstractBinding
     private Object value;
     private IResourceResolver resolver;
 
-    public FieldBinding(IResourceResolver resolver, String fieldName)
+    public FieldBinding(IResourceResolver resolver, String fieldName, Location location)
     {
+    	super(location);
+    	
         this.resolver = resolver;
         this.fieldName = fieldName;
     }

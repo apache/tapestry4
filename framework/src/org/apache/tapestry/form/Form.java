@@ -62,6 +62,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.tapestry.AbstractComponent;
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
@@ -70,9 +71,7 @@ import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RenderOnlyPropertyException;
 import org.apache.tapestry.RenderRewoundException;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.StaleLinkException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IEngineService;
@@ -173,8 +172,8 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     public boolean isRewinding()
     {
         if (!_rendering)
-            throw new RenderOnlyPropertyException(this, "rewinding");
-
+            throw Tapestry.createRenderOnlyPropertyException(this, "rewinding");
+ 
         return _rewinding;
     }
 
@@ -214,7 +213,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
      *  @since 1.0.2
      **/
 
-    public String getElementId(IComponent component) throws RequestCycleException
+    public String getElementId(IComponent component)
     {
         return getElementId(component, component.getId());
     }
@@ -232,7 +231,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
      *
      **/
 
-    public String getElementId(IComponent component, String baseId) throws RequestCycleException
+    public String getElementId(IComponent component, String baseId)
     {
         String result = _elementIdAllocator.allocateId(baseId);
 
@@ -297,12 +296,14 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
 
     /** @since 2.4 **/
 
-    protected void prepareForRender(IRequestCycle cycle) throws RequestCycleException
+    protected void prepareForRender(IRequestCycle cycle)
     {
         super.prepareForRender(cycle);
 
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-            throw new RequestCycleException(Tapestry.getString("Form.forms-may-not-nest"), this);
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("Form.forms-may-not-nest"),
+                this);
 
         cycle.setAttribute(ATTRIBUTE_NAME, this);
     }
@@ -331,7 +332,6 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     }
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         String actionId = cycle.getNextActionId();
         _name = "Form" + actionId;
@@ -483,7 +483,6 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
     }
 
     private void emitEventHandlers(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         StringBuffer buffer = null;
 
@@ -493,7 +492,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
         Body body = Body.get(cycle);
 
         if (body == null)
-            throw new RequestCycleException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString("Form.needs-body-for-event-handlers"),
                 this);
 
@@ -580,7 +579,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
      * 
      **/
 
-    public void rewind(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    public void rewind(IMarkupWriter writer, IRequestCycle cycle)
     {
         render(writer, cycle);
     }
@@ -592,7 +591,7 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
      *
      **/
 
-    public void trigger(IRequestCycle cycle) throws RequestCycleException
+    public void trigger(IRequestCycle cycle)
     {
         Object[] parameters = cycle.getServiceParameters();
 
@@ -745,17 +744,16 @@ public abstract class Form extends AbstractComponent implements IForm, IDirect
         setDirect(true);
     }
 
-    public void setEncodingType(String encodingType) throws RequestCycleException
+    public void setEncodingType(String encodingType)
     {
         if (_encodingType != null && !_encodingType.equals(encodingType))
-            throw new RequestCycleException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString(
                     "Form.encoding-type-contention",
                     getExtendedId(),
                     _encodingType,
                     encodingType),
-                this,
-                null);
+                this);
 
         _encodingType = encodingType;
     }

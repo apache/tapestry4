@@ -57,7 +57,9 @@ package org.apache.tapestry.junit.parse;
 
 import java.util.Map;
 
+import org.apache.tapestry.bean.StringBeanInitializer;
 import org.apache.tapestry.junit.TapestryTestCase;
+import org.apache.tapestry.spec.BeanSpecification;
 import org.apache.tapestry.spec.BindingSpecification;
 import org.apache.tapestry.spec.BindingType;
 import org.apache.tapestry.spec.ComponentSpecification;
@@ -336,7 +338,7 @@ public class TestSpecificationParser extends TapestryTestCase
         }
         catch (DocumentParseException ex)
         {
-            checkException(ex, "Valid documents must have a <!DOCTYPE");
+            checkException(ex, "MissingDoctype.application does not define a public id");
         }
     }
 
@@ -568,7 +570,7 @@ public class TestSpecificationParser extends TapestryTestCase
 
             unreachable();
         }
-        catch (IllegalArgumentException ex)
+        catch (DocumentParseException ex)
         {
             checkException(ex, "already contains property specification for property 'bool'");
         }
@@ -590,5 +592,19 @@ public class TestSpecificationParser extends TapestryTestCase
                 ex,
                 "Element <binding> does not specify a value for attribute 'expression', or contain a body value.");
         }
+    }
+    
+    /** @since 2.4 **/
+    
+    public void testStringBeanInitializer()
+    throws Exception
+    {
+    	ComponentSpecification spec = parsePage("StringBeanInitializer.page");
+    	
+    	BeanSpecification bs = spec.getBeanSpecification("fred");
+    	StringBeanInitializer i = (StringBeanInitializer)bs.getInitializers().get(0);
+    	
+    	assertEquals("barney", i.getPropertyName());
+    	assertEquals("rubble", i.getKey());
     }
 }

@@ -57,14 +57,14 @@ package org.apache.tapestry.pageload;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IAsset;
@@ -76,10 +76,15 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IResourceResolver;
-import org.apache.tapestry.PageLoaderException;
+import org.apache.tapestry.Location;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.asset.ContextAsset;
+import org.apache.tapestry.asset.ExternalAsset;
+import org.apache.tapestry.asset.PrivateAsset;
 import org.apache.tapestry.binding.ExpressionBinding;
+import org.apache.tapestry.binding.FieldBinding;
 import org.apache.tapestry.binding.ListenerBinding;
+import org.apache.tapestry.binding.StaticBinding;
 import org.apache.tapestry.binding.StringBinding;
 import org.apache.tapestry.engine.IComponentClassEnhancer;
 import org.apache.tapestry.engine.IPageLoader;
@@ -90,6 +95,7 @@ import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.resolver.ComponentSpecificationResolver;
+import org.apache.tapestry.resource.ClasspathResourceLocation;
 import org.apache.tapestry.resource.ContextResourceLocation;
 import org.apache.tapestry.spec.AssetSpecification;
 import org.apache.tapestry.spec.AssetType;
@@ -101,9 +107,6 @@ import org.apache.tapestry.spec.ListenerBindingSpecification;
 import org.apache.tapestry.spec.ParameterSpecification;
 import org.apache.tapestry.spec.PropertySpecification;
 import org.apache.tapestry.util.prop.OgnlUtils;
-
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  *  Runs the process of building the component hierarchy for an entire page.
@@ -236,16 +239,10 @@ public class PageLoader implements IPageLoader
      *  @param spec The specification of the contained component.
      *  @param contained The contained component specification (from the container's
      *  {@link ComponentSpecification}).
-     *  @param propertyBindings a cache of {@link ExpressionBinding}s for the container
      *
      **/
 
-    private void bind(
-        IComponent container,
-        IComponent component,
-        ContainedComponent contained,
-        Map propertyBindings)
-        throws PageLoaderException
+    private void bind(IComponent container, IComponent component, ContainedComponent contained)
     {
         ComponentSpecification spec = component.getSpecification();
         boolean formalOnly = !spec.getAllowInformalParameters();
@@ -258,16 +255,19 @@ public class PageLoader implements IPageLoader
 
             boolean isFormal = spec.getParameter(name) != null;
 
+            BindingSpecification bspec = contained.getBinding(name);
+
             // If not allowing informal parameters, check that each binding matches
             // a formal parameter.
 
             if (formalOnly && !isFormal)
-                throw new PageLoaderException(
+                throw new ApplicationRuntimeException(
                     Tapestry.getString(
                         "PageLoader.formal-parameters-only",
                         component.getExtendedId(),
                         name),
                     component,
+                    bspec.getLocation(),
                     null);
 
             // If an informal parameter that conflicts with a reserved name, then
@@ -275,8 +275,6 @@ public class PageLoader implements IPageLoader
 
             if (!isFormal && spec.isReservedParameterName(name))
                 continue;
-
-            BindingSpecification bspec = contained.getBinding(name);
 
             // The type determines how to interpret the value:
             // As a simple static String
@@ -306,7 +304,7 @@ public class PageLoader implements IPageLoader
                 continue;
             }
 
-            IBinding binding = convert(type, bspec.getValue(), container, propertyBindings);
+            IBinding binding = convert(container, bspec);
 
             if (binding != null)
                 component.setBinding(name, binding);
@@ -323,7 +321,7 @@ public class PageLoader implements IPageLoader
      * 
      **/
 
-    private void verifyRequiredParameters(IComponent component) throws PageLoaderException
+    private void verifyRequiredParameters(IComponent component)
     {
         ComponentSpecification spec = component.getSpecification();
 
@@ -335,12 +333,13 @@ public class PageLoader implements IPageLoader
             ParameterSpecification parameterSpec = spec.getParameter(name);
 
             if (parameterSpec.isRequired() && component.getBinding(name) == null)
-                throw new PageLoaderException(
+                throw new ApplicationRuntimeException(
                     Tapestry.getString(
                         "PageLoader.required-parameter-not-bound",
                         name,
                         component.getExtendedId()),
                     component,
+                    parameterSpec.getLocation(),
                     null);
         }
 
@@ -359,47 +358,35 @@ public class PageLoader implements IPageLoader
         }
     }
 
-    private IBinding convert(
-        BindingType type,
-        String bindingValue,
-        IComponent container,
-        Map propertyBindings)
+    private IBinding convert(IComponent container, BindingSpecification spec)
     {
-        // The most common type.  propertyBindings is a cache of
-        // property bindings for the container, we re-use
-        // the bindings for the same property path.
+        BindingType type = spec.getType();
+        Location location = spec.getLocation();
+        String value = spec.getValue();
+
+        // The most common type. 
 
         if (type == BindingType.DYNAMIC)
-        {
-            IBinding result = (IBinding) propertyBindings.get(bindingValue);
-
-            if (result == null)
-            {
-                result = new ExpressionBinding(_resolver, container, bindingValue);
-                propertyBindings.put(bindingValue, result);
-            }
-
-            return result;
-        }
+            return new ExpressionBinding(_resolver, container, value, location);
 
         // String bindings are new in 2.0.4.  For the momement,
         // we don't even try to cache and share them ... they
         // are most often unique within a page.
 
         if (type == BindingType.STRING)
-            return new StringBinding(container, bindingValue);
+            return new StringBinding(container, value, location);
 
         // static and field bindings are pooled.  This allows the
         // same instance to be used with many components.
 
         if (type == BindingType.STATIC)
-            return _pageSource.getStaticBinding(bindingValue);
+            return new StaticBinding(value, location);
 
         // BindingType.FIELD is on the way out, it is in the
         // 1.3 DTD but not the 1.4 DTD.
 
         if (type == BindingType.FIELD)
-            return _pageSource.getFieldBinding(bindingValue);
+            return new FieldBinding(_resolver, value, location);
 
         // This code is unreachable, at least until a new type
         // of binding is created.
@@ -419,12 +406,6 @@ public class PageLoader implements IPageLoader
         String bindingName,
         ListenerBindingSpecification spec)
     {
-        String location =
-            Tapestry.getString(
-                "PageLoader.script-location",
-                bindingName,
-                component.getExtendedId());
-
         String language = spec.getLanguage();
 
         // If not provided in the page or component specification, then
@@ -435,7 +416,8 @@ public class PageLoader implements IPageLoader
                 _engine.getPropertySource().getPropertyValue(
                     "org.apache.tapestry.default-script-language");
 
-        IBinding binding = new ListenerBinding(component, language, location, spec.getScript());
+        IBinding binding =
+            new ListenerBinding(component, language, spec.getScript(), spec.getLocation());
 
         component.setBinding(bindingName, binding);
     }
@@ -464,7 +446,6 @@ public class PageLoader implements IPageLoader
         IComponent container,
         ComponentSpecification containerSpec,
         INamespace namespace)
-        throws PageLoaderException
     {
         _depth++;
         if (_depth > _maxDepth)
@@ -472,7 +453,6 @@ public class PageLoader implements IPageLoader
 
         List ids = new ArrayList(containerSpec.getComponentIds());
         int count = ids.size();
-        Map propertyBindings = new HashMap();
 
         try
         {
@@ -503,13 +483,15 @@ public class PageLoader implements IPageLoader
                         componentSpecification,
                         componentNamespace);
 
+                component.setLocation(container.getLocation());
+
                 // Add it, by name, to the container.
 
                 container.addComponent(component);
 
                 // Set up any bindings in the ContainedComponent specification
 
-                bind(container, component, contained, propertyBindings);
+                bind(container, component, contained);
 
                 // Now construct the component recusively; it gets its chance
                 // to create its subcomponents and set their bindings.
@@ -539,7 +521,7 @@ public class PageLoader implements IPageLoader
         }
         catch (RuntimeException ex)
         {
-            throw new PageLoaderException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString(
                     "PageLoader.unable-to-instantiate-component",
                     container.getExtendedId(),
@@ -566,7 +548,6 @@ public class PageLoader implements IPageLoader
         IComponent container,
         String componentId,
         String componentType)
-        throws PageLoaderException
     {
         IPage page = container.getPage();
 
@@ -601,7 +582,6 @@ public class PageLoader implements IPageLoader
         String id,
         ComponentSpecification spec,
         INamespace namespace)
-        throws PageLoaderException
     {
         IComponent result = null;
 
@@ -619,21 +599,23 @@ public class PageLoader implements IPageLoader
         }
         catch (ClassCastException ex)
         {
-            throw new PageLoaderException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString("PageLoader.class-not-component", className),
                 container,
+                spec.getLocation(),
                 ex);
         }
         catch (Exception ex)
         {
-            throw new PageLoaderException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString("PageLoader.unable-to-instantiate", className),
                 container,
+                spec.getLocation(),
                 ex);
         }
 
         if (result instanceof IPage)
-            throw new PageLoaderException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString("PageLoader.page-not-allowed", result.getExtendedId()),
                 result);
 
@@ -663,7 +645,6 @@ public class PageLoader implements IPageLoader
      **/
 
     private IPage instantiatePage(String name, INamespace namespace, ComponentSpecification spec)
-        throws PageLoaderException
     {
         IPage result = null;
 
@@ -679,7 +660,8 @@ public class PageLoader implements IPageLoader
                         + " does not specify a component class.");
 
             className =
-                _engine.getPropertySource().getPropertyValue("org.apache.tapestry.default-page-class");
+                _engine.getPropertySource().getPropertyValue(
+                    "org.apache.tapestry.default-page-class");
 
             if (className == null)
                 className = BasePage.class.getName();
@@ -700,19 +682,18 @@ public class PageLoader implements IPageLoader
             result.setPageName(pageName);
             result.setPage(result);
             result.setLocale(_locale);
+            result.setLocation(spec.getLocation());
         }
         catch (ClassCastException ex)
         {
-            throw new PageLoaderException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString("PageLoader.class-not-page", className),
-                name,
                 ex);
         }
         catch (Exception ex)
         {
-            throw new PageLoaderException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString("PageLoader.unable-to-instantiate", className),
-                name,
                 ex);
         }
 
@@ -741,7 +722,6 @@ public class PageLoader implements IPageLoader
         INamespace namespace,
         IRequestCycle cycle,
         ComponentSpecification specification)
-        throws PageLoaderException
     {
         IPage page = null;
 
@@ -880,24 +860,34 @@ public class PageLoader implements IPageLoader
     {
         AssetType type = spec.getType();
         String path = spec.getPath();
+        Location location = spec.getLocation();
 
         if (type == AssetType.EXTERNAL)
-            return _pageSource.getExternalAsset(path);
-
-        IResourceLocation baseLocation = null;
+            return new ExternalAsset(path, location);
 
         if (type == AssetType.PRIVATE)
-            baseLocation = specificationLocation;
-        else
-            baseLocation = _servletLocation;
+            return new PrivateAsset(
+                (ClasspathResourceLocation) findAsset(specificationLocation, path, location),
+                location);
 
-        // One known problem is that relative private assets for pages
-        // whose spec is in the context (not the classpath) will be computed
-        // wrong!  In fact, they'll be ContextAssets.
+        return new ContextAsset(
+            (ContextResourceLocation) findAsset(_servletLocation, path, location),
+            location);
+    }
 
+    private IResourceLocation findAsset(
+        IResourceLocation baseLocation,
+        String path,
+        Location location)
+    {
         IResourceLocation assetLocation = baseLocation.getRelativeLocation(path);
+        IResourceLocation localizedLocation = assetLocation.getLocalization(_locale);
 
-        return _pageSource.getAsset(assetLocation);
+        if (localizedLocation == null)
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("PageLoader.missing-asset", assetLocation, location));
+
+        return localizedLocation;
     }
 
     public IEngine getEngine()

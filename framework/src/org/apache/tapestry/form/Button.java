@@ -59,7 +59,6 @@ import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 
 /**
  *  Implements a component that manages an HTML &lt;input type=button&gt; form element.
@@ -96,7 +95,6 @@ public class Button extends AbstractFormComponent
 	}
 
 	protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-		throws RequestCycleException
 	{
 		IForm form = getForm(cycle);
 

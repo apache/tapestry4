@@ -58,7 +58,6 @@ package org.apache.tapestry.form;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 
 /**
  *  Base class for implementing various types of text input fields.
@@ -88,7 +87,6 @@ public abstract class AbstractTextField extends AbstractFormComponent
      **/
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         String value;
 
@@ -160,7 +158,6 @@ public abstract class AbstractTextField extends AbstractFormComponent
      **/
 
     protected void beforeCloseTag(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         // Do nothing.
     }
@@ -172,7 +169,7 @@ public abstract class AbstractTextField extends AbstractFormComponent
      *
      **/
 
-    abstract protected void updateValue(String value) throws RequestCycleException;
+    abstract protected void updateValue(String value);
 
     /**
      *  Invoked by {@link #render(IMarkupWriter writer, IRequestCycle cycle)}
@@ -181,7 +178,7 @@ public abstract class AbstractTextField extends AbstractFormComponent
      *  @return the current value for the field, as a String, or null.
      **/
 
-    abstract protected String readValue() throws RequestCycleException;
+    abstract protected String readValue();
 
     public abstract boolean isHidden();
 
