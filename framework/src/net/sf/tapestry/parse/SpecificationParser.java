@@ -30,11 +30,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
-
+import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.bean.IBeanInitializer;
 import net.sf.tapestry.spec.ApplicationSpecification;
@@ -53,6 +49,16 @@ import net.sf.tapestry.spec.SpecFactory;
 import net.sf.tapestry.util.IPropertyHolder;
 import net.sf.tapestry.util.xml.AbstractDocumentParser;
 import net.sf.tapestry.util.xml.DocumentParseException;
+import org.apache.oro.text.regex.MalformedPatternException;
+import org.apache.oro.text.regex.Pattern;
+import org.apache.oro.text.regex.PatternCompiler;
+import org.apache.oro.text.regex.PatternMatcher;
+import org.apache.oro.text.regex.Perl5Compiler;
+import org.apache.oro.text.regex.Perl5Matcher;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
 
 /**
  *  Used to parse an application or component specification into a
@@ -98,22 +104,143 @@ import net.sf.tapestry.util.xml.DocumentParseException;
 public class SpecificationParser extends AbstractDocumentParser
 {
 
-    public static final String TAPESTRY_DTD_1_1_PUBLIC_ID =
-        "-//Howard Ship//Tapestry Specification 1.1//EN";
-    public static final String TAPESTRY_DTD_1_2_PUBLIC_ID =
-        "-//Howard Lewis Ship//Tapestry Specification 1.2//EN";
+    public static final String TAPESTRY_DTD_1_1_PUBLIC_ID = "-//Howard Ship//Tapestry Specification 1.1//EN";
+    public static final String TAPESTRY_DTD_1_2_PUBLIC_ID = "-//Howard Lewis Ship//Tapestry Specification 1.2//EN";
 
+    /**
+     *  Perl5 pattern that parameter names must conform to.  
+     *  Letter, followed by letter, number or underscore.
+     *  Expects caseless comparison.
+     *  
+     * 
+     *  @since 2.2
+     * 
+     **/
+
+    public static final String PARAMETER_NAME_PATTERN = "^[a-z]\\w*$";
+
+
+    /**
+     *  Perl5 pattern that property names (that can be connected to
+     *  parameters) must conform to.  
+     *  Letter, followed by letter, number or underscore.
+     *  Expects caseless comparison.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public static final String PROPERTY_NAME_PATTERN = PARAMETER_NAME_PATTERN;
+    
+    /**
+     *  Perl5 pattern for page names.  Letter
+     *  followed by letter, number, dash, underscore or period.
+     *  Expects caseless comparison.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public static final String PAGE_NAME_PATTERN = "^[a-z](\\w|-|\\.)*$";
+
+    /**
+     *  Perl5 pattern for component aliases. 
+     *  Letter, followed by letter, number, dash, underscore or period.
+     *  Expects caseless comparison.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public static final String COMPONENT_ALIAS_PATTERN = PAGE_NAME_PATTERN;
+
+    /**
+     *  Perl5 pattern for helper bean names.  
+     *  Letter, followed by letter, number, underscore or dash.
+     *  Expects caseless comparison.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public static final String BEAN_NAME_PATTERN = "^[a-z](\\w|-)*$";
+
+
+    /**
+     *  Perl5 pattern for component ids.  Letter, followed by
+     *  letter, number, underscore or dash.  Expects caseless comparison.
+     * 
+     *  @since 2.2
+     * 
+     **/
+    
+    public static final String COMPONENT_ID_PATTERN = BEAN_NAME_PATTERN;
+   
+    /**
+     *  Perl5 pattern for asset names.  Letter, followed by
+     *  letter, number, underscore or dash.  Expects caseless comparison.
+     * 
+     *  @since 2.2
+     * 
+     **/
+        
+    public static final String ASSET_NAME_PATTERN = BEAN_NAME_PATTERN;
+    
+    /**
+     *  Perl5 pattern for service names.  Letter
+     *  followed by letter, number, dash, underscore or period.
+     *  Expects caseless comparison.
+     * 
+     *  @since 2.2
+     * 
+     **/
+        
+    public static final String SERVICE_NAME_PATTERN = PAGE_NAME_PATTERN;
+  
     /**
      *  We can share a single map for all the XML attribute to object conversions,
      *  since the keys are unique.
      * 
      **/
-    
-    private static final Map conversionMap = new HashMap();
-    
+
+    private static final Map _conversionMap = new HashMap();
+
     /** @since 1.0.9 **/
 
-    private SpecFactory factory;
+    private SpecFactory _factory;
+
+    /** 
+     * 
+     *  Compiler used to convert pattern strings into {@link Pattern}
+     *  instances.
+     * 
+     *  @since 2.2 
+     * 
+     **/
+
+    private PatternCompiler _patternCompiler;
+    
+    
+    /** 
+     * 
+     *  Matcher used to match patterns against input strings.
+     * 
+     *  @since 2.2 
+     * 
+     **/
+    
+    private PatternMatcher _matcher;
+    
+    /** 
+     * 
+     *  Map of compiled {@link Pattern}s, keyed on pattern
+     *  string.  Patterns are lazily compiled as needed.
+     * 
+     *  @since 2.2 
+     * 
+     **/
+    
+    private Map _compiledPatterns;
 
     private interface IConverter
     {
@@ -125,11 +252,10 @@ public class SpecificationParser extends AbstractDocumentParser
     {
         public Object convert(String value) throws DocumentParseException
         {
-            Object result = conversionMap.get(value.toLowerCase());
+            Object result = _conversionMap.get(value.toLowerCase());
 
             if (result == null)
-                throw new DocumentParseException(
-                    Tapestry.getString("SpecificationParser.fail-convert-boolean", value));
+                throw new DocumentParseException(Tapestry.getString("SpecificationParser.fail-convert-boolean", value));
 
             return result;
         }
@@ -145,9 +271,7 @@ public class SpecificationParser extends AbstractDocumentParser
             }
             catch (NumberFormatException ex)
             {
-                throw new DocumentParseException(
-                    Tapestry.getString("SpecificationParser.fail-convert-int", value),
-                    ex);
+                throw new DocumentParseException(Tapestry.getString("SpecificationParser.fail-convert-int", value), ex);
             }
         }
     }
@@ -180,39 +304,39 @@ public class SpecificationParser extends AbstractDocumentParser
     // Identify all the different acceptible values.
 
     static {
- 
-        conversionMap.put("true", Boolean.TRUE);
-        conversionMap.put("t", Boolean.TRUE);
-        conversionMap.put("1", Boolean.TRUE);
-        conversionMap.put("y", Boolean.TRUE);
-        conversionMap.put("yes", Boolean.TRUE);
-        conversionMap.put("on", Boolean.TRUE);
 
-        conversionMap.put("false", Boolean.FALSE);
-        conversionMap.put("f", Boolean.FALSE);
-        conversionMap.put("0", Boolean.FALSE);
-        conversionMap.put("off", Boolean.FALSE);
-        conversionMap.put("no", Boolean.FALSE);
-        conversionMap.put("n", Boolean.FALSE);
+        _conversionMap.put("true", Boolean.TRUE);
+        _conversionMap.put("t", Boolean.TRUE);
+        _conversionMap.put("1", Boolean.TRUE);
+        _conversionMap.put("y", Boolean.TRUE);
+        _conversionMap.put("yes", Boolean.TRUE);
+        _conversionMap.put("on", Boolean.TRUE);
 
-         conversionMap.put("none", BeanLifecycle.NONE);
-        conversionMap.put("request", BeanLifecycle.REQUEST);
-        conversionMap.put("page", BeanLifecycle.PAGE);
+        _conversionMap.put("false", Boolean.FALSE);
+        _conversionMap.put("f", Boolean.FALSE);
+        _conversionMap.put("0", Boolean.FALSE);
+        _conversionMap.put("off", Boolean.FALSE);
+        _conversionMap.put("no", Boolean.FALSE);
+        _conversionMap.put("n", Boolean.FALSE);
 
-        conversionMap.put("boolean", new BooleanConverter());
-        conversionMap.put("int", new IntConverter());
-        conversionMap.put("double", new DoubleConverter());
-        conversionMap.put("String", new StringConverter());
-        
-        conversionMap.put("in", Direction.IN);
-        conversionMap.put("custom", Direction.CUSTOM);
+        _conversionMap.put("none", BeanLifecycle.NONE);
+        _conversionMap.put("request", BeanLifecycle.REQUEST);
+        _conversionMap.put("page", BeanLifecycle.PAGE);
+
+        _conversionMap.put("boolean", new BooleanConverter());
+        _conversionMap.put("int", new IntConverter());
+        _conversionMap.put("double", new DoubleConverter());
+        _conversionMap.put("String", new StringConverter());
+
+        _conversionMap.put("in", Direction.IN);
+        _conversionMap.put("custom", Direction.CUSTOM);
     }
 
     public SpecificationParser()
     {
         register(TAPESTRY_DTD_1_1_PUBLIC_ID, "Tapestry_1_1.dtd");
         register(TAPESTRY_DTD_1_2_PUBLIC_ID, "Tapestry_1_2.dtd");
-        factory = new SpecFactory();
+        _factory = new SpecFactory();
     }
 
     /**
@@ -224,9 +348,7 @@ public class SpecificationParser extends AbstractDocumentParser
      *
      **/
 
-    public ComponentSpecification parseComponentSpecification(
-        InputStream input,
-        String resourcePath)
+    public ComponentSpecification parseComponentSpecification(InputStream input, String resourcePath)
         throws DocumentParseException
     {
         Document document;
@@ -252,9 +374,7 @@ public class SpecificationParser extends AbstractDocumentParser
      *
      **/
 
-    public ApplicationSpecification parseApplicationSpecification(
-        InputStream input,
-        String resourcePath)
+    public ApplicationSpecification parseApplicationSpecification(InputStream input, String resourcePath)
         throws DocumentParseException
     {
         Document document;
@@ -275,7 +395,7 @@ public class SpecificationParser extends AbstractDocumentParser
     {
         String key = getValue(node).toLowerCase();
 
-        Boolean value = (Boolean) conversionMap.get(key);
+        Boolean value = (Boolean) _conversionMap.get(key);
 
         if (value == null)
             throw new DocumentParseException(
@@ -294,37 +414,40 @@ public class SpecificationParser extends AbstractDocumentParser
 
         return attributeValue.equals("yes");
     }
-    
-	protected String getDTDVersion(Document document) {
-		
-      String publicId = document.getDoctype().getPublicId();
-          
-      String dtdVersion = null;
-      
-      if (publicId.equals(TAPESTRY_DTD_1_1_PUBLIC_ID)) {
-      	
-      	dtdVersion = "1.1";
-      	
-      } else if (publicId.equals(TAPESTRY_DTD_1_2_PUBLIC_ID)) {
-      	
-      	dtdVersion = "1.2";
-      	
-      }
-      return dtdVersion;
-    }    
 
-    private ApplicationSpecification convertApplicationSpecification(Document document)
-        throws DocumentParseException
+    protected String getDTDVersion(Document document)
+    {
+
+        String publicId = document.getDoctype().getPublicId();
+
+        String dtdVersion = null;
+
+        if (publicId.equals(TAPESTRY_DTD_1_1_PUBLIC_ID))
+        {
+
+            dtdVersion = "1.1";
+
+        }
+        else if (publicId.equals(TAPESTRY_DTD_1_2_PUBLIC_ID))
+        {
+
+            dtdVersion = "1.2";
+
+        }
+        return dtdVersion;
+    }
+
+    private ApplicationSpecification convertApplicationSpecification(Document document) throws DocumentParseException
     {
         Element root;
         Node node;
         ApplicationSpecification specification;
 
-        specification = factory.createApplicationSpecification();
-        
+        specification = _factory.createApplicationSpecification();
+
         String dtdVersion = getDTDVersion(document);
 
-		specification.setDTDVersion(dtdVersion); 
+        specification.setDTDVersion(dtdVersion);
 
         root = document.getDocumentElement();
 
@@ -367,20 +490,28 @@ public class SpecificationParser extends AbstractDocumentParser
     }
 
     private void convertPage(ApplicationSpecification specification, Node node)
+    throws DocumentParseException
     {
         String name = getAttribute(node, "name");
+        
+        validate(name, PAGE_NAME_PATTERN, 
+        "SpecificationParser.invalid-page-name");
+        
         String specificationPath = getAttribute(node, "specification-path");
 
-        PageSpecification page = factory.createPageSpecification(specificationPath);
+        PageSpecification page = _factory.createPageSpecification(specificationPath);
 
         specification.setPageSpecification(name, page);
     }
 
-    private void convertComponentAlias(
-        ApplicationSpecification specification,
-        Node node)
+    private void convertComponentAlias(ApplicationSpecification specification, Node node)
+    throws DocumentParseException
     {
         String type = getAttribute(node, "type");
+        
+        validate(type, COMPONENT_ALIAS_PATTERN,
+            "SpecificationParser.invalid-component-alias");
+        
         String path = getAttribute(node, "specification-path");
 
         specification.setComponentAlias(type, path);
@@ -394,24 +525,20 @@ public class SpecificationParser extends AbstractDocumentParser
         holder.setProperty(name, value);
     }
 
-    private ComponentSpecification convertComponentSpecification(Document document)
-        throws DocumentParseException
+    private ComponentSpecification convertComponentSpecification(Document document) throws DocumentParseException
     {
-        ComponentSpecification specification = factory.createComponentSpecification();
+        ComponentSpecification specification = _factory.createComponentSpecification();
         Element root = document.getDocumentElement();
-        
+
         String dtdVersion = getDTDVersion(document);
 
-		specification.setDTDVersion(dtdVersion); 
+        specification.setDTDVersion(dtdVersion);
 
         specification.setAllowBody(getBooleanAttribute(root, "allow-body"));
-        specification.setAllowInformalParameters(
-            getBooleanAttribute(root, "allow-informal-parameters"));
+        specification.setAllowInformalParameters(getBooleanAttribute(root, "allow-informal-parameters"));
         specification.setComponentClassName(getAttribute(root, "class"));
 
-        for (Node node = root.getFirstChild();
-            node != null;
-            node = node.getNextSibling())
+        for (Node node = root.getFirstChild(); node != null; node = node.getNextSibling())
         {
             if (isElement(node, "parameter"))
             {
@@ -471,14 +598,15 @@ public class SpecificationParser extends AbstractDocumentParser
         return specification;
     }
 
-    
-
-    private void convertParameter(ComponentSpecification specification, Node node)
-        throws DocumentParseException
+    private void convertParameter(ComponentSpecification specification, Node node) throws DocumentParseException
     {
-        ParameterSpecification param = factory.createParameterSpecification();
+        ParameterSpecification param = _factory.createParameterSpecification();
 
         String name = getAttribute(node, "name");
+
+validate(name, PARAMETER_NAME_PATTERN, 
+"SpecificationParser.invalid-parameter-name");
+
         param.setType(getAttribute(node, "java-type"));
         param.setRequired(getBooleanAttribute(node, "required"));
 
@@ -488,14 +616,19 @@ public class SpecificationParser extends AbstractDocumentParser
         // attribute doesn't exist), use the name of the parameter.
 
         if (propertyName == null)
+        {
             propertyName = name;
+            
+            validate(propertyName, PROPERTY_NAME_PATTERN,
+"SpecificationParser.invalid-property-name");
+        }            
 
         param.setPropertyName(propertyName);
 
-		String direction = getAttribute(node, "direction");
-		
-		if (direction != null)
-			param.setDirection((Direction)conversionMap.get(direction));			
+        String direction = getAttribute(node, "direction");
+
+        if (direction != null)
+            param.setDirection((Direction) _conversionMap.get(direction));
 
         specification.addParameter(name, param);
 
@@ -511,22 +644,23 @@ public class SpecificationParser extends AbstractDocumentParser
      *
      **/
 
-    private void convertBean(ComponentSpecification specification, Node node)
-        throws DocumentParseException
+    private void convertBean(ComponentSpecification specification, Node node) throws DocumentParseException
     {
         String name = getAttribute(node, "name");
+        
+        validate(name, BEAN_NAME_PATTERN,
+            "SpecificationParser.invalid-bean-name");
+            
         String className = getAttribute(node, "class");
         String lifecycleString = getAttribute(node, "lifecycle");
 
-        BeanLifecycle lifecycle = (BeanLifecycle) conversionMap.get(lifecycleString);
+        BeanLifecycle lifecycle = (BeanLifecycle) _conversionMap.get(lifecycleString);
 
-        BeanSpecification bspec = factory.createBeanSpecification(className, lifecycle);
+        BeanSpecification bspec = _factory.createBeanSpecification(className, lifecycle);
 
         specification.addBeanSpecification(name, bspec);
 
-        for (Node child = node.getFirstChild();
-            child != null;
-            child = child.getNextSibling())
+        for (Node child = node.getFirstChild(); child != null; child = child.getNextSibling())
         {
             if (isElement(child, "description"))
             {
@@ -544,16 +678,13 @@ public class SpecificationParser extends AbstractDocumentParser
 
     /** @since 1.0.5 **/
 
-    private void convertSetProperty(BeanSpecification spec, Node node)
-        throws DocumentParseException
+    private void convertSetProperty(BeanSpecification spec, Node node) throws DocumentParseException
     {
         String name = getAttribute(node, "name");
 
         // <set-property> contains either <static-value>, <field-value> or <property-value>
 
-        for (Node child = node.getFirstChild();
-            child != null;
-            child = child.getNextSibling())
+        for (Node child = node.getFirstChild(); child != null; child = child.getNextSibling())
         {
             if (isElement(child, "static-value"))
             {
@@ -577,61 +708,53 @@ public class SpecificationParser extends AbstractDocumentParser
 
     /** @since 1.0.8 **/
 
-    private void convertFieldValue(
-        BeanSpecification spec,
-        String propertyName,
-        Node node)
+    private void convertFieldValue(BeanSpecification spec, String propertyName, Node node)
     {
         String fieldName = getAttribute(node, "field-name");
-        IBeanInitializer iz =
-            factory.createFieldBeanInitializer(propertyName, fieldName);
+        IBeanInitializer iz = _factory.createFieldBeanInitializer(propertyName, fieldName);
 
         spec.addInitializer(iz);
     }
 
     /** @since 1.0.5 **/
 
-    private void convertPropertyValue(
-        BeanSpecification spec,
-        String propertyName,
-        Node node)
+    private void convertPropertyValue(BeanSpecification spec, String propertyName, Node node)
     {
         String propertyPath = getAttribute(node, "property-path");
-        IBeanInitializer iz =
-            factory.createPropertyBeanInitializer(propertyName, propertyPath);
+        IBeanInitializer iz = _factory.createPropertyBeanInitializer(propertyName, propertyPath);
 
         spec.addInitializer(iz);
     }
 
     /** @since 1.0.5 **/
 
-    private void convertStaticValue(
-        BeanSpecification spec,
-        String propertyName,
-        Node node)
+    private void convertStaticValue(BeanSpecification spec, String propertyName, Node node)
         throws DocumentParseException
     {
         String type = getAttribute(node, "type");
         String value = getValue(node);
 
-        IConverter converter = (IConverter) conversionMap.get(type);
+        IConverter converter = (IConverter) _conversionMap.get(type);
 
         if (converter == null)
             throw new DocumentParseException(
-                "Unknown <static-value> type: '" + type + "'.");
+            Tapestry.getString("SpecificationParser.unknown-static-value-type",
+            type), getResourcePath());
 
         Object staticValue = converter.convert(value);
 
-        IBeanInitializer iz =
-            factory.createStaticBeanInitializer(propertyName, staticValue);
+        IBeanInitializer iz = _factory.createStaticBeanInitializer(propertyName, staticValue);
 
         spec.addInitializer(iz);
     }
 
-    private void convertComponent(ComponentSpecification specification, Node node)
-        throws DocumentParseException
+    private void convertComponent(ComponentSpecification specification, Node node) throws DocumentParseException
     {
         String id = getAttribute(node, "id");
+        
+        validate(id, COMPONENT_ID_PATTERN, 
+            "SpecificationParser.invalid-component-id");
+        
         String type = getAttribute(node, "type");
         String copyOf = getAttribute(node, "copy-of");
         ContainedComponent c;
@@ -650,13 +773,11 @@ public class SpecificationParser extends AbstractDocumentParser
                     Tapestry.getString("SpecificationParser.missing-type-or-copy-of", id),
                     getResourcePath());
 
-            c = factory.createContainedComponent();
+            c = _factory.createContainedComponent();
             c.setType(type);
         }
 
-        for (Node child = node.getFirstChild();
-            child != null;
-            child = child.getNextSibling())
+        for (Node child = node.getFirstChild(); child != null; child = child.getNextSibling())
         {
             if (isElement(child, "binding"))
             {
@@ -681,9 +802,9 @@ public class SpecificationParser extends AbstractDocumentParser
                 convertStaticBinding(c, child);
                 continue;
             }
-            
+
             // <string-binding> added in release 2.0.4
-            
+
             if (isElement(child, "string-binding"))
             {
                 convertBinding(c, child, BindingType.STRING, "key");
@@ -694,15 +815,11 @@ public class SpecificationParser extends AbstractDocumentParser
         specification.addComponent(id, c);
     }
 
-    private void convertBinding(
-        ContainedComponent component,
-        Node node,
-        BindingType type,
-        String attributeName)
+    private void convertBinding(ContainedComponent component, Node node, BindingType type, String attributeName)
     {
         String name = getAttribute(node, "name");
         String value = getAttribute(node, attributeName);
-        BindingSpecification binding = factory.createBindingSpecification(type, value);
+        BindingSpecification binding = _factory.createBindingSpecification(type, value);
 
         component.setBinding(name, binding);
     }
@@ -711,15 +828,12 @@ public class SpecificationParser extends AbstractDocumentParser
     {
         String name = getAttribute(node, "name");
         String value = getValue(node);
-        BindingSpecification binding =
-            factory.createBindingSpecification(BindingType.STATIC, value);
+        BindingSpecification binding = _factory.createBindingSpecification(BindingType.STATIC, value);
 
         component.setBinding(name, binding);
     }
 
-    private ContainedComponent copyExistingComponent(
-        ComponentSpecification spec,
-        String id)
+    private ContainedComponent copyExistingComponent(ComponentSpecification spec, String id)
         throws DocumentParseException
     {
         ContainedComponent c = spec.getComponent(id);
@@ -728,7 +842,7 @@ public class SpecificationParser extends AbstractDocumentParser
                 Tapestry.getString("SpecificationParser.unable-to-copy", id),
                 getResourcePath());
 
-        ContainedComponent result = factory.createContainedComponent();
+        ContainedComponent result = _factory.createContainedComponent();
 
         result.setType(c.getType());
         result.setCopyOf(id);
@@ -744,15 +858,16 @@ public class SpecificationParser extends AbstractDocumentParser
         return result;
     }
 
-    private void convertAsset(
-        ComponentSpecification specification,
-        Node node,
-        AssetType type,
-        String attributeName)
+    private void convertAsset(ComponentSpecification specification, Node node, AssetType type, String attributeName)
+    throws DocumentParseException
     {
         String name = getAttribute(node, "name");
+        
+        validate(name, ASSET_NAME_PATTERN,
+            "SpecificationParser.invalid-asset-name");            
+        
         String value = getAttribute(node, attributeName);
-        AssetSpecification asset = factory.createAssetSpecification(type, value);
+        AssetSpecification asset = _factory.createAssetSpecification(type, value);
 
         specification.addAsset(name, asset);
     }
@@ -775,8 +890,13 @@ public class SpecificationParser extends AbstractDocumentParser
      **/
 
     private void convertService(ApplicationSpecification spec, Node node)
+    throws DocumentParseException
     {
         String name = getAttribute(node, "name");
+        
+        validate(name, SERVICE_NAME_PATTERN,
+            "SpecificationParser.invalid-service-name");
+        
         String className = getAttribute(node, "class");
 
         spec.addService(name, className);
@@ -790,7 +910,7 @@ public class SpecificationParser extends AbstractDocumentParser
 
     public void setFactory(SpecFactory factory)
     {
-        this.factory = factory;
+        this._factory = factory;
     }
 
     /**
@@ -802,6 +922,67 @@ public class SpecificationParser extends AbstractDocumentParser
 
     public SpecFactory getFactory()
     {
-        return factory;
+        return _factory;
+    }
+
+    /**
+     *  Validates that the input value matches against the specified
+     *  Perl5 pattern.  If valid, the method simply returns.
+     *  If not a match, then an error message is generated (using the
+     *  errorKey and the input value) and a
+     *  {@link DocumentParseException} is thrown.
+     * 
+     **/
+    
+    private void validate(String value, String pattern, String errorKey)
+    throws DocumentParseException
+    {
+        if (_compiledPatterns == null)
+            _compiledPatterns = new HashMap();
+            
+         Pattern compiled = (Pattern)_compiledPatterns.get(pattern);
+         
+         if (compiled == null)
+         {
+            compiled = compilePattern(pattern);
+            
+            _compiledPatterns.put(pattern, compiled);
+         }
+        
+        if (_matcher == null)
+            _matcher = new Perl5Matcher();
+            
+        if (_matcher.matches(value, compiled))
+            return;
+            
+        throw new DocumentParseException(
+            Tapestry.getString(errorKey, value),
+            getResourcePath());
+    }
+
+    /** 
+     * 
+     *  Returns a pattern compiled for single line matching, and
+     *  to be case insensitive.
+     * 
+     *  @since 2.2 
+     * 
+     **/
+
+    private Pattern compilePattern(String pattern)
+    {
+        if (_patternCompiler == null)
+            _patternCompiler = new Perl5Compiler();
+
+        try
+        {
+            return _patternCompiler.compile(
+                pattern,
+                Perl5Compiler.CASE_INSENSITIVE_MASK | Perl5Compiler.SINGLELINE_MASK);
+        }
+        catch (MalformedPatternException ex)
+        {
+            throw new ApplicationRuntimeException(ex);
+        }
     }
 }

@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN"
+	"http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
+	
+<specification class="net.sf.tapestry.html.BasePage">
+
+  <component id="border" type="Border"/>
+  
+  <private-asset name="validName" resource-path="/foo/bar/Baz.gif"/>
+  <private-asset name="in.valid" resource-path="/foo/bar/Fugo.gif"/>
+  
+</specification>

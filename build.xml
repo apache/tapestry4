@@ -26,6 +26,7 @@
 	<pathelement location="${lib.ext.dir}/org.apache.crimson.jar"/>
 	<pathelement location="${lib.ext.dir}/org.mortbay.jetty.jar"/>
 	<pathelement location="${lib.ext.dir}/ejb.jar"/>
+	<pathelement location="${lib.ext.dir}/${jakarta-oro.jar}"/>	
 	<pathelement location="config"/>
 </path>
 
@@ -298,6 +299,7 @@
 			<path refid="full.classpath"/>
 			<pathelement location="${lib.ext.dir}/mckoidb.jar"/>
 			<pathelement location="${lib.ext.dir}/junit.jar"/>
+			<pathelement location="${lib.ext.dir}/${jakarta-oro.jar}"/>
 		    <pathelement location="${jboss.client.dir}/jboss-client.jar"/>
 		    <pathelement location="${jboss.client.dir}/jboss-j2ee.jar"/>
 		    <pathelement location="${jboss.lib.dir}/jboss-jmx.jar"/>    
@@ -367,6 +369,7 @@
 		<fileset dir="${lib.dir}">
 			<include name="*-${framework.version}.jar"/>
 			<include name="ext/mckoidb.jar"/>
+			<include name="ext/${jakarta-oro.jar}"/>
 		</fileset>
 		<fileset dir="${jboss.server.default.dir}/lib">
 		
