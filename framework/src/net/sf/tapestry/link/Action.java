@@ -124,12 +124,12 @@ import net.sf.tapestry.RequestCycleException;
 
 public class Action extends GestureLink implements IAction
 {
-    private IActionListener listener;
-    private IBinding statefulBinding;
+    private IActionListener _listener;
+    private IBinding _statefulBinding;
 
     // Each instance gets its own context array.
 
-    private String[] context;
+    private String[] _serviceParameters;
 
 
     /**
@@ -146,10 +146,10 @@ public class Action extends GestureLink implements IAction
 
     public boolean getRequiresSession()
     {
-        if (statefulBinding == null)
+        if (_statefulBinding == null)
             return true;
             
-         return statefulBinding.getBoolean();
+         return _statefulBinding.getBoolean();
     }
 
     /**
@@ -162,7 +162,7 @@ public class Action extends GestureLink implements IAction
         return IEngineService.ACTION_SERVICE;
     }
 
-    protected String[] getContext(IRequestCycle cycle) throws RequestCycleException
+    protected String[] getServiceParameters(IRequestCycle cycle) throws RequestCycleException
     {
         String actionId;
  
@@ -170,38 +170,38 @@ public class Action extends GestureLink implements IAction
 
         if (cycle.isRewound(this))
         {
-            listener.actionTriggered(this, cycle);
+            _listener.actionTriggered(this, cycle);
 
             throw new RenderRewoundException(this);
         }
 
-        if (context == null)
-            context = new String[1];
+        if (_serviceParameters == null)
+            _serviceParameters = new String[1];
 
-        context[0] = actionId;
+        _serviceParameters[0] = actionId;
 
-        return context;
+        return _serviceParameters;
     }
     
     public IBinding getStatefulBinding()
     {
-        return statefulBinding;
+        return _statefulBinding;
     }
 
     public void setStatefulBinding(IBinding statefulBinding)
     {
-        this.statefulBinding = statefulBinding;
+        _statefulBinding = statefulBinding;
     }
 
 
     public IActionListener getListener()
     {
-        return listener;
+        return _listener;
     }
 
     public void setListener(IActionListener listener)
     {
-        this.listener = listener;
+        _listener = listener;
     }
 
 }

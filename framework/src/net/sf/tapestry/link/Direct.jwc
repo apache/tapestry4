@@ -15,13 +15,19 @@
   	required="yes"
   	direction="custom"/>
   	
-  <parameter name="context" java-type="java.lang.Object" direction="in">
+  <parameter name="parameters" java-type="java.lang.Object" direction="in">
     <description>
-    A object or string, or array of objects and strings, encoded into the URL
+    A object or string, or array of objects or strings, encoded into the URL
     as service parameters.
     </description>
   </parameter>
   
+  <parameter name="context" java-type="java.lang.Object" direction="in">
+    <description>
+	Deprecated name for parameters.
+    </description>
+  </parameter>
+    
   <parameter name="stateful" java-type="boolean" direction="custom"/>
   
   <parameter name="disabled"

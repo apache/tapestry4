@@ -24,7 +24,7 @@
   
   <component id="selectComponent" type="Direct">
     <binding name="listener" property-path="page.listeners.selectComponent"/>
-    <binding name="context" property-path="change.componentPath"/>
+    <binding name="parameters" property-path="change.componentPath"/>
     <binding name="disabled" property-path="disableComponentLink"/>
   </component>
   
@@ -62,7 +62,7 @@
   
   <component id="selectExplorePath" type="Direct">
     <binding name="listener" property-path="listeners.selectExplorePath"/>
-    <binding name="context" property-path="components.explorePath.value.path"/>
+    <binding name="parameters" property-path="components.explorePath.value.path"/>
   </component>
   
   <component id="insertExploreProperty" type="Insert">
@@ -89,7 +89,7 @@
   
   <component id="exploreProperty" type="Direct">
     <binding name="listener" property-path="listeners.selectExplorePath"/>
-    <binding name="context" property-path="components.accessors.value.propertyPath"/> 
+    <binding name="parameters" property-path="components.accessors.value.propertyPath"/> 
   </component>
   
   <component id="insertPropertyName" type="Insert">

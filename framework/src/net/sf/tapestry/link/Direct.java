@@ -38,6 +38,8 @@ import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.RequiredParameterException;
 import net.sf.tapestry.StaleSessionException;
+import net.sf.tapestry.Tapestry;
+import org.apache.log4j.Category;
 
 /**
  *  A component for creating a link using the direct service; used for actions that
@@ -62,7 +64,7 @@ import net.sf.tapestry.StaleSessionException;
  *  <td>Specifies an object that is notified when the link is clicked.</td> </tr>
  *
  *  <tr>
- *  <td>context</td>
+ *  <td>parameters</td>
  *  <td>String[] <br> List (of String) <br> String <br>Object</td>
  *  <td>in</td>
  *  <td>no</td>
@@ -73,9 +75,28 @@ import net.sf.tapestry.StaleSessionException;
  *  it.  It is assumed that the listener will be able to convert it back.
  *  <p>In a web application built onto of Enterprise JavaBeans, the context is
  *  often the primary key of some Entity bean; typically such keys are Strings or
- *  Integers (which can be freely converted from String to Integer by the listener).</td>
+ *  Integers (which can be freely converted from String to Integer by the listener).
+ * 
+ *  <p>
+ *  A listener method can retrieve the parameters
+ *  using {@link net.sf.tapestry.IRequestCycle#getServiceParameters()}.
+ * 
+ *  <p>A {@link net.sf.tapestry.util.io.DataSqueezer} may be used to encode
+ *  objects into Strings and vice-versa.
+ * 
+ * </td>
  *  </tr>
  *
+  *  <tr>
+ *  <td>context</td>
+ *  <td>String[] <br> List (of String) <br> String <br>Object</td>
+ *  <td>in</td>
+ *  <td>no</td>
+ *  <td>&nbsp;</td>
+ *  <td>A deprecated name for <b>parameters</b>, this will generate warnings
+ *  in 2.2 and be removed in a later release.
+ *  </td>
+ *  </tr> 
  * <tr>
  *   <td>disabled</td> 
  *   <td>boolean</td> 
@@ -144,18 +165,21 @@ import net.sf.tapestry.StaleSessionException;
 
 public class Direct extends GestureLink implements IDirect
 {
-    private IBinding listenerBinding;
-    private Object context;
-    private IBinding statefulBinding;
+    private static final Category CAT = Category.getInstance(Direct.class);
+
+    private IBinding _listenerBinding;
+    private Object _parameters;
+    private IBinding _statefulBinding;
+    private boolean _warning = true;
 
     public void setStatefulBinding(IBinding value)
     {
-        statefulBinding = value;
+        _statefulBinding = value;
     }
 
     public IBinding getStatefulBinding()
     {
-        return statefulBinding;
+        return _statefulBinding;
     }
 
     /**
@@ -167,10 +191,10 @@ public class Direct extends GestureLink implements IDirect
 
     public boolean isStateful()
     {
-        if (statefulBinding == null)
+        if (_statefulBinding == null)
             return true;
 
-        return statefulBinding.getBoolean();
+        return _statefulBinding.getBoolean();
     }
 
     /**
@@ -183,9 +207,9 @@ public class Direct extends GestureLink implements IDirect
         return IEngineService.DIRECT_SERVICE;
     }
 
-    protected String[] getContext(IRequestCycle cycle)
+    protected String[] getServiceParameters(IRequestCycle cycle)
     {
-        return constructContext(context);
+        return constructContext(_parameters);
     }
 
     /**
@@ -256,12 +280,12 @@ public class Direct extends GestureLink implements IDirect
 
     public IBinding getListenerBinding()
     {
-        return listenerBinding;
+        return _listenerBinding;
     }
 
     public void setListenerBinding(IBinding value)
     {
-        listenerBinding = value;
+        _listenerBinding = value;
     }
 
     /**
@@ -276,7 +300,7 @@ public class Direct extends GestureLink implements IDirect
 
         try
         {
-            result = (IActionListener) listenerBinding.getObject("listener", IActionListener.class);
+            result = (IActionListener) _listenerBinding.getObject("listener", IActionListener.class);
 
         }
         catch (BindingException ex)
@@ -285,19 +309,49 @@ public class Direct extends GestureLink implements IDirect
         }
 
         if (result == null)
-            throw new RequiredParameterException(this, "listener", listenerBinding);
+            throw new RequiredParameterException(this, "listener", _listenerBinding);
 
         return result;
     }
 
+    /** @since 2.2 **/
+    
+    public Object getParameters()
+    {
+        return _parameters;
+    }
+
+    /** @since 2.2. **/
+    
+    public void setParameters(Object context)
+    {
+        _parameters = context;
+    }
+
+    /**
+     *  @deprecated use {@link #getParameters().
+     * 
+     **/
+
     public Object getContext()
     {
-        return context;
+        return getParameters();
     }
+
+    /**
+     *  @deprecated use {@link #setParameters(Object)}.
+     * 
+     **/
 
     public void setContext(Object context)
     {
-        this.context = context;
-    }
+        if (_warning)
+        {
+            CAT.warn(Tapestry.getString("deprecated-component-param", getExtendedId(), "context", "parameters"));
 
+            _warning = false;
+        }
+
+        setParameters(context);
+    }
 }

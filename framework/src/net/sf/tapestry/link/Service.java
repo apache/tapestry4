@@ -25,8 +25,9 @@
 
 package net.sf.tapestry.link;
 
-import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IRequestCycle;
+import net.sf.tapestry.Tapestry;
+import org.apache.log4j.Category;
 
 /**
  *  A component for creating a link for an arbitrary {@link net.sf.tapestry.IEngineService
@@ -64,7 +65,7 @@ import net.sf.tapestry.IRequestCycle;
  *
  *
  *  <tr>
- *  <td>context</td>
+ *  <td>parameters</td>
  *  <td>String[] <br> List (of String) <br> String <br>Object</td>
  *  <td>in</td>
  *  <td>no</td>
@@ -78,6 +79,16 @@ import net.sf.tapestry.IRequestCycle;
  *  Integers (which can be freely converted from String to Integer by the listener).</td>
  * </tr>
  *
+ *  <tr>
+ *  <td>context</td>
+ *  <td>String[] <br> List (of String) <br> String <br>Object</td>
+ *  <td>in</td>
+ *  <td>no</td>
+ *  <td>&nbsp;</td>
+ *  <td>Deprecated name for <b>parameters</b>.  This will emit warnings in
+ *  2.2 and be removed in a later release entirely.</td>
+ * </tr> 
+ * 
  * <tr>
  *		<td>scheme</td>
  *		<td>{@link String}</td>
@@ -123,16 +134,19 @@ import net.sf.tapestry.IRequestCycle;
 
 public class Service extends GestureLink
 {
-    private String service;
-    private Object context;
-    
+    private static final Category CAT = Category.getInstance(Service.class);
+
+    private String _service;
+    private Object _parameters;
+    private boolean _warning = true;
+
     /**
      *  Returns name of the service specified by the service parameter.
      **/
 
     protected String getServiceName()
     {
-        return service;
+        return _service;
     }
 
     /** 
@@ -140,31 +154,58 @@ public class Service extends GestureLink
      *  from the context parameter (which may be an object, array of Strings or List of Strings).
      * 
      **/
-    
-    protected String[] getContext(IRequestCycle cycle)
+
+    protected String[] getServiceParameters(IRequestCycle cycle)
     {
-        return Direct.constructContext(context);
-        
+        return Direct.constructContext(_parameters);
+
     }
-    
+
+    /**
+     *  @deprecated use {@link #getParameters().
+     * 
+     **/
+
     public Object getContext()
     {
-        return context;
+        return getParameters();
     }
+
+    /**
+     *  @deprecated use {@link #setParameters(Object)}.
+     * 
+     **/
 
     public void setContext(Object context)
     {
-        this.context = context;
+        if (_warning)
+        {
+            CAT.warn(Tapestry.getString("deprecated-component-param", getExtendedId(), "context", "parameters"));
+
+            _warning = false;
+        }
+
+        setParameters(context);
     }
 
     public String getService()
     {
-        return service;
+        return _service;
     }
 
     public void setService(String service)
     {
-        this.service = service;
+        this._service = service;
+    }
+
+    public Object getParameters()
+    {
+        return _parameters;
+    }
+
+    public void setParameters(Object parameters)
+    {
+        _parameters = parameters;
     }
 
 }

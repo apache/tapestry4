@@ -120,7 +120,7 @@
 
   <component id="selectComponent" type="Direct">
     <binding name="listener" property-path="page.listeners.selectComponent"/>
-    <binding name="context" property-path="component.idPath"/>
+    <binding name="parameters" property-path="component.idPath"/>
   </component>
 
   <component id="insertComponentId" type="Insert">
