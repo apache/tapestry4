@@ -339,6 +339,7 @@ public abstract class Body extends AbstractComponent implements IScriptProcessor
 
         writer.begin("script");
         writer.attribute("language", "JavaScript");
+        writer.attribute("type", "text/javascript");
         writer.printRaw("<!--");
 
         if (any(_imageInitializations))
