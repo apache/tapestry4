@@ -79,7 +79,7 @@
                 <td>model</td>
                 <td> <A href="../api/org/apache/tapestry/form/IPropertySelectionModel.html"><tt>IPropertySelectionModel</tt></a> 
                 </td>
-                <td>in</td>
+                <td>auto</td>
                 <td>no</td>
                 <td>&nbsp;</td>
                 <td> The model provides a list of possible labels, and matches 
@@ -99,24 +99,24 @@
              </pre>
             <p>Specification</p>
 			<pre>       &lt;page-specification class=&quot;org.apache.tapestry.wap.quiz.Home&quot;&gt;
-            &lt;component id=&quot;username&quot; type=&quot;wml:Postfield&quot;&gt;
+            &lt;component id=&quot;username&quot; type=&quot;<a href="wml.Postfield.html">wml:Postfield</a>&quot;&gt;
               &lt;binding name=&quot;value&quot; expression=&quot;username&quot;/&gt;
               &lt;binding name=&quot;name&quot; expression=&quot;components.userInput.name&quot;/&gt;
             &lt;/component&gt;
-            &lt;component id=&quot;level&quot; type=&quot;wml:SelectionField&quot;&gt;
+            &lt;component id=&quot;level&quot; type=&quot;<a href="wml.SelectionField.html">wml:SelectionField</a>&quot;&gt;
               &lt;binding name=&quot;value&quot; expression=&quot;level&quot;/&gt;
-              &lt;binding name=&quot;model&quot; expression=&quot;@org.apache.tapestry.wap.quiz.Home@LEVEL_MODEL&quot;/&gt;
+              &lt;binding name=&quot;model&quot; expression=&quot;components.selectLevel.model&quot;/&gt;
               &lt;binding name=&quot;name&quot; expression=&quot;components.selectLevel.name&quot;/&gt;
             &lt;/component&gt;
-            &lt;component id=&quot;userInput&quot; type=&quot;wml:Input&quot;&gt;
+            &lt;component id=&quot;userInput&quot; type=&quot;<a href="wml.Input.html">wml:Input</a>&quot;&gt;
               &lt;static-binding name=&quot;name&quot;&gt;username&lt;/static-binding&gt;
               &lt;binding name=&quot;value&quot; expression=&quot;username&quot;/&gt;
               &lt;/component&gt;
-            &lt;component id=&quot;selectLevel&quot; type=&quot;wml:PropertySelection&quot;&gt;
+            &lt;component id=&quot;selectLevel&quot; type=&quot;<a href="wml.PropertySelection.html">wml:PropertySelection</a>&quot;&gt;
               &lt;static-binding name=&quot;name&quot;&gt;level&lt;/static-binding&gt;
               &lt;binding name=&quot;model&quot; expression=&quot;@org.apache.tapestry.wap.quiz.Home@LEVEL_MODEL&quot;/&gt;
               &lt;/component&gt;
-            &lt;component id=&quot;go&quot; type=&quot;wml:Go&quot;&gt;
+            &lt;component id=&quot;go&quot; type=&quot;<a href="wml.Go.html">wml:Go</a>&quot;&gt;
               &lt;binding name=&quot;stateful&quot; expression=&quot;false&quot;/&gt;
               &lt;binding name=&quot;listener&quot; expression=&quot;listeners.start&quot;/&gt;
               &lt;/component&gt;
