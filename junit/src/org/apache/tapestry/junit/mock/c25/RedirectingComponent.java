@@ -66,15 +66,6 @@ import org.apache.tapestry.event.PageValidateListener;
 public class RedirectingComponent extends BaseComponent implements PageValidateListener
 {
 
-    /**
-	 * @see org.apache.tapestry.AbstractComponent#finishLoad()
-	 */
-	protected void finishLoad()
-	{
-		super.finishLoad();
-        getPage().addPageValidateListener(this);
-	}
-
 	/**
 	 * @see org.apache.tapestry.event.PageValidateListener#pageValidate(org.apache.tapestry.event.PageEvent)
 	 */
