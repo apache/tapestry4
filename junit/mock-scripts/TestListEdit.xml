@@ -23,7 +23,7 @@
 			<match>name="service" value="direct/0/ListEdit/form"</match>
 			<match>name="sp" value="S0"</match>
 			<match>name="Form0" value="e,inputColor,inputColor_0,inputColor_1"</match>			
-			<match>name="e" value="Clothing"</match>
+			<match>name="e" value="SClothing"</match>
 			<match>name="e" value="SEye Color"</match>
 			<match>name="e" value="SFood"</match>
 		</assert-output-matches>
@@ -124,8 +124,8 @@
 			<match>name="sp" value="S0"</match>
 			<match>name="Form0" value="e"</match>			
 			<match>name="e" value="SFred"</match>
-			<match>name="e" value="Dino"</match>
-			<match>name="e" value="Wilma"</match>
+			<match>name="e" value="SDino"</match>
+			<match>name="e" value="SWilma"</match>
 		</assert-output-matches>			
 	</request>
 	

@@ -411,6 +411,7 @@ public class MockTester
     private void executeAssertions(Element request) throws DocumentParseException
     {
         executeOutputAssertions(request);
+        executeNoOutputAssertions(request);
         executeRegexpAssertions(request);
         executeExpressionAssertions(request);
         executeOutputMatchesAssertions(request);
@@ -562,6 +563,40 @@ public class MockTester
 
     }
 
+    /**
+         *  Handles &lt;assert-no-output&gt; elements inside &lt;request&gt;.
+         *  Checks that a substring appears in the output.
+         *  Content of element is the substring to search for.
+         *  <p>
+         *  Attribute name is used in error messages.
+         * 
+         **/
+
+    private void executeNoOutputAssertions(Element request) throws DocumentParseException
+    {
+        String outputString = null;
+
+        List assertions = request.getChildren("assert-no-output");
+        int count = assertions.size();
+
+        for (int i = 0; i < count; i++)
+        {
+            Element a = (Element) assertions.get(i);
+
+            String name = a.getAttributeValue("name");
+            String substring = a.getTextTrim();
+
+            if (Tapestry.isNull(substring))
+                throw new DocumentParseException("Substring is null in " + a);
+
+            if (outputString == null)
+                outputString = _response.getOutputString();
+
+            matchNoSubstring(name, outputString, substring);
+        }
+
+    }
+
     private PatternMatcher getMatcher()
     {
         if (_matcher == null)
@@ -626,6 +661,20 @@ public class MockTester
 
         throw new AssertionFailedError(
             buildTestName(name) + ": Response does not contain string '" + substring + "'.");
+    }
+
+    private void matchNoSubstring(String name, String text, String substring)
+    {
+        if (text == null)
+            throw new AssertionFailedError(buildTestName(name) + " : Response is null.");
+
+        if (text.indexOf(substring) < 0)
+            return;
+
+        System.err.println(text);
+
+        throw new AssertionFailedError(
+            buildTestName(name) + ": Response contains string '" + substring + "'.");
     }
 
     private void executeOutputMatchesAssertions(Element request) throws DocumentParseException

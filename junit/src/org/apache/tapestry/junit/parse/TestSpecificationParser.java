@@ -651,4 +651,15 @@ public class TestSpecificationParser extends TapestryTestCase
         assertEquals("rubble", i.getKey());
         checkLine(i, 10);
     }
+    
+    public void testInheritInformalParameters() throws Exception
+    {
+        IComponentSpecification spec = parseComponent("TestInheritInformal.jwc");
+        
+        IContainedComponent border = spec.getComponent("border");
+        assertEquals(border.getInheritInformalParameters(), false);
+
+        IContainedComponent textField = spec.getComponent("textField");
+        assertEquals(textField.getInheritInformalParameters(), true);
+   }
 }

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+	
+<component-specification class="org.apache.tapestry.html.BasePage">
+
+  <!-- inherit-informal-parameters should be false (no) by default -->
+  <component id="border" type="Border"/>
+  
+  <component id="textField" type="TextField" inherit-informal-parameters="yes"/>
+  
+</component-specification>

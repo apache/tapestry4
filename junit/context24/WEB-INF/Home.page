@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE page-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 1.4//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_1_4.dtd">
+
+<page-specification>
+	
+	<component id="superImage" type="SuperImage">
+	  <binding name="image" expression="assets.imageAsset"/>
+
+	  <!-- this has to be passed down to Image as an informal parameter -->
+	  <binding name="width" expression="250"/>
+	</component>
+	
+	<external-asset name="imageAsset" URL="http://the.wall/" />
+	
+</page-specification>

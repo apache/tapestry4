@@ -74,6 +74,7 @@ import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.event.ChangeObserver;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageRenderListener;
+import org.apache.tapestry.event.PageValidateListener;
 import org.apache.tapestry.spec.BaseLocatable;
 import org.apache.tapestry.spec.IComponentSpecification;
 
@@ -351,5 +352,13 @@ public class MockPage extends BaseLocatable implements IPage
     public void addPageDetachListener(PageDetachListener listener)
     {
     }
+    
+	public void addPageValidateListener(PageValidateListener listener)
+	{
+	}
+
+	public void removePageValidateListener(PageValidateListener listener)
+	{
+	}
 
 }
