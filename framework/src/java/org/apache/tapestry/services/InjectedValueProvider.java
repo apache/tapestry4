@@ -27,13 +27,13 @@ public interface InjectedValueProvider
      * module will always be the Tapestry module (which means that most service ids or
      * configurations will have to be fully qualified.
      * 
-     * @param locator
-     *            the value to obtain, with a leading prefix indicating type (i.e., "service:",
-     *            "configuration:", etc.
+     * @param objectReference
+     *            the reference to the HiveMind object to obtain, with a leading prefix indicating
+     *            type (i.e., "service:", "configuration:", etc.
      * @param location
      *            the location of the value, used if an error must be reported.
      * @return the value
      */
 
-    public Object obtainValue(String locator, Location location);
+    public Object obtainValue(String objectReference, Location location);
 }
