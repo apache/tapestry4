@@ -86,7 +86,7 @@ extends BaseComponent
     public Book getBook()
     {
         if (book == null)
-            book = (Book)bookBinding.getValue();
+            book = (Book)bookBinding.getObject("book", Book.class);
 
         if (book == null)
             throw new NullValueForBindingException(bookBinding);

@@ -30,7 +30,7 @@ EXEC_CLASSPATH = \
 	$(INSTALL_DIR)/ejb.jar
 
 run: install
-	@$(ECHO) "\n*** Running Jetty for Tutorial ... ***\n"
+	$(call NOTE, Running Jetty for Tutorial ...)
 	$(call EXEC_JAVA,$(EXEC_CLASSPATH), \
 		-Dorg.xml.sax.parser=org.apache.xerces.parsers.SAXParser \
 		com.mortbay.Jetty.Server jetty.xml)

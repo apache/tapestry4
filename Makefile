@@ -46,7 +46,7 @@ EXTERNAL_LIB_DIR = ../../../lib
 LOCAL_LIB_DIR = ../lib
 
 copy-external-jars:
-	@$(ECHO) "\n*** Copying external JARs ... ***\n"
+	$(call NOTE, Copying external JARs ...)
 	@$(MKDIRS) $(LOCAL_LIB_DIR)
 	@$(CP) $(foreach _jar,$(EXTERNAL_JARS),$(EXTERNAL_LIB_DIR)/$(_jar)) $(LOCAL_LIB_DIR)
 
@@ -57,7 +57,7 @@ REINVOKE := \
 	@$(RECURSE) reinvoke
 	
 prepare-for-packaging:
-	@$(ECHO) "\n*** Copying licenses and Readme to root ...***\n"
+	$(call NOTE, Copying licenses and Readme to root ...)
 	$(TAR) --create LICENSE* *.html ChangeLog images | \
 		($(CD) .. && $(TAR) --extract)
 
@@ -74,7 +74,7 @@ reinvoke:
 	done
 
 javadoc:
-	@$(ECHO) "\n*** Rebuilding Javadoc ... ***\n"
+	$(call NOTE, Rebuilding Javadoc ...)
 	@for module in $(JAVADOC_MODULES) ; do \
 		$(ECHO) "\n*** Making javadoc in $$module ... ***\n" ; \
        $(RECURSE) -C $$module javadoc || exit 2 ; \
@@ -122,12 +122,12 @@ FULL_RELEASE = \
 	$(RELEASE_DIR)/Examples
 
 create-archives: prepare-for-packaging
-	@$(ECHO) "\n*** Creating full distribution archive ... ***\n"
+	$(call NOTE, Creating full distribution archive ...)
 	@$(RM) -f ..\$(RELEASE_DIR)-*.gz 
 	$(CD) ../.. ; $(TAR) czf $(RELEASE_DIR)-full.tar.gz $(FULL_RELEASE)
-	@$(ECHO) "\n*** Creating small distribution archive ... ***\n"
+	$(call NOTE, Creating small distribution archive ...)
 	$(CD) ../.. ; $(TAR) czf $(RELEASE_DIR)-small.tar.gz $(SMALL_RELEASE)
-	@$(ECHO) "\n*** Creating medium distribution archive ... ***\n"
+	$(call NOTE, Creating medium distribution archive ...)
 	$(CD) ../.. ; $(TAR) czf $(RELEASE_DIR)-medium.tar.gz $(MEDIUM_RELEASE)
 
 

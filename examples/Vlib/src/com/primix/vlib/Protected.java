@@ -98,7 +98,8 @@ implements IErrorProperty
 	{
 		Visit visit = (Visit)getVisit();
 		
-		if (visit.isUserLoggedIn())
+		if (visit != null &&
+			visit.isUserLoggedIn())
 			return;
 		
 		// User not logged in ... redirect through the Login page.
