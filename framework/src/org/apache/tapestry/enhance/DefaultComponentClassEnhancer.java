@@ -62,13 +62,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.bcel.classfile.JavaClass;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IComponentClassEnhancer;
+import org.apache.tapestry.enhance.javassist.EnhancedClassFactory;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
@@ -91,12 +91,17 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
 
     private Map _cachedClasses = new HashMap();
     private IResourceResolver _resolver;
-    private EnhanceClassLoader _classLoader;
+    private IEnhancedClassFactory _factory;
 
     public DefaultComponentClassEnhancer(IResourceResolver resolver)
     {
         _resolver = resolver;
-        _classLoader = new EnhanceClassLoader(_resolver.getClassLoader());
+        _factory = createEnhancedClassFactory();
+    }
+    
+    protected IEnhancedClassFactory createEnhancedClassFactory()
+    {
+        return new EnhancedClassFactory(getResourceResolver());
     }
 
     public synchronized void reset()
@@ -153,15 +158,24 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
             throw new ApplicationRuntimeException(ex.getMessage(), specification.getLocation(), ex);
         }
 
-        ComponentClassFactory factory = createComponentClassFactory(specification, result);
-
-        if (factory.needsEnhancement())
+        try
         {
-            JavaClass javaClass = factory.createEnhancedSubclass();
-
-            result = _classLoader.defineClass(javaClass);
-
-            validateEnhancedClass(result, className, specification);
+            ComponentClassFactory factory = createComponentClassFactory(specification, result);
+            
+            if (factory.needsEnhancement())
+            {
+                result = factory.createEnhancedSubclass();
+            
+                validateEnhancedClass(result, className, specification);
+            }
+        }
+        catch (CodeGenerationException e)
+        {
+            throw new ApplicationRuntimeException(
+                Tapestry.format(
+                    "ComponentClassFactory.code-generation-error",
+                    className),
+                e);
         }
 
         return result;
@@ -180,7 +194,7 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
         IComponentSpecification specification,
         Class componentClass)
     {
-        return new ComponentClassFactory(_resolver, specification, componentClass);
+        return new ComponentClassFactory(_resolver, specification, componentClass, _factory);
     }
 
     /**
@@ -206,7 +220,7 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
         Set implementedMethods = new HashSet();
         Class current = subject;
  
-         while (true)
+        while (true)
         {
             Method m = checkForAbstractMethods(current, implementedMethods);
 

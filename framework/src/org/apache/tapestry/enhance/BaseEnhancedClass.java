@@ -55,19 +55,61 @@
 
 package org.apache.tapestry.enhance;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
- *  Defines an object which may work with a 
- *  {@link org.apache.tapestry.enhance.ComponentClassFactory}
- *  to create an enhancement to a class.  These enhancements are
- *  typically in the form of adding new fields and methods.
  *
- *  @author Howard Lewis Ship
+ *  @author Mindbridge
  *  @version $Id$
  *  @since 3.0
  *
- **/
-
-public interface IEnhancer
+ */
+public abstract class BaseEnhancedClass implements IEnhancedClass
 {
-    public void performEnhancement(IEnhancedClass enhancedClass);
+
+    /**
+     *  List of {@link IEnhancer}.
+     * 
+     **/
+    private List _enhancers;
+
+    protected List getEnhancers()
+    {
+        return _enhancers;
+    }
+
+    protected void addEnhancer(IEnhancer enhancer)
+    {
+        if (_enhancers == null)
+            _enhancers = new ArrayList();
+
+        _enhancers.add(enhancer);
+    }
+
+    /**
+     * @see org.apache.tapestry.enhance.IEnhancedClass#hasModifications()
+     */
+    public boolean hasModifications()
+    {
+        return _enhancers != null && !_enhancers.isEmpty();
+    }
+
+    public void performEnhancement()
+    {
+        List enhancers = getEnhancers();
+        
+        if (enhancers == null)
+            return;
+
+        int count = enhancers.size();
+
+        for (int i = 0; i < count; i++)
+        {
+            IEnhancer enhancer = (IEnhancer) enhancers.get(i);
+
+            enhancer.performEnhancement(this);
+        }
+    }
+
 }

@@ -56,18 +56,16 @@
 package org.apache.tapestry.enhance;
 
 /**
- *  Defines an object which may work with a 
- *  {@link org.apache.tapestry.enhance.ComponentClassFactory}
- *  to create an enhancement to a class.  These enhancements are
- *  typically in the form of adding new fields and methods.
- *
- *  @author Howard Lewis Ship
+ *  An interface defining the factory for creation of new objects representing 
+ *  an enhanced class. This object is used essentially as a singleton -- there is
+ *  typically only one instance of it in the system. Common functionality, such as
+ *  caches, can be stored here.
+ * 
+ *  @author Mindbridge
  *  @version $Id$
  *  @since 3.0
- *
- **/
-
-public interface IEnhancer
+ */
+public interface IEnhancedClassFactory
 {
-    public void performEnhancement(IEnhancedClass enhancedClass);
+    IEnhancedClass createEnhancedClass(String className, Class parentClass);
 }
