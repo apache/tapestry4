@@ -330,6 +330,10 @@ public class SalesPage extends BasePage {
     public void setCustomer(Customer value) {
         customer = value;
     }
+
+    protected void initialize() {
+        customer = null;
+    }
     
     public void customerSelectAction(IRequestCycle cycle) {
         Visit visit = (Visit) getVisit();        
@@ -344,11 +348,6 @@ public class SalesPage extends BasePage {
         Object[] parameters = cycle.getServiceParameters();
         Customer customer = visit.findCustomerByPrimaryKey((Integer) parameters[0]);
         visit.deleteCustomer(customer);
-    }
-
-    public void detach() {
-        customer = null;
-        super.detach();
     }
 }
 

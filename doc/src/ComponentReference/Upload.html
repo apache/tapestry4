@@ -103,9 +103,12 @@
     Note Netscape Navigator 4 will ignore this attribute.  
 		</td>
 	</tr>
-	</table><BR>Body: <STRONG>removed</STRONG><BR>
+	</table>
+  <p>
+  Body: <STRONG>removed</STRONG><BR>
   Informal parameters: <STRONG>allowed</STRONG><br>
   Reserved parameters: "name", "type"
+  </p>
  </td>
 </tr>
 
@@ -290,10 +293,9 @@ public class UploadPage extends BasePage {
         }
     }
 
-    public void detach() {
+    protected void initialize() {
         file = null;
         serverFile = null;
-        super.detach();
     }
 }
 </pre>

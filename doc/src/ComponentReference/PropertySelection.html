@@ -215,9 +215,8 @@ public class DetailsPage extends BasePage {
         gender = value;
     }
    
-    public void detach() {
+    protected void initialize() {
         gender = null;
-        super.detach();
     }   
 
     public void formSubmit(IRequestCycle cycle) {   
@@ -318,10 +317,9 @@ public class PurchagePage extends BasePage {
         fireObservedChange("itemSelectionModel", value);
     }
 
-    public void detach() {
+    protected void initialize() {
         clothingItem = null;
         itemSelectionModel = null;
-        super.detach();
     }
 
     public void formSubmit(IRequestCycle cycle) {

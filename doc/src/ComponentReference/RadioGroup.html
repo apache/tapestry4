@@ -200,9 +200,8 @@ public OrderPage extends BasePage {
       return orderSize;
    }
    
-   public void detach() {
+   protected void initialize() {
       orderSize = MEDIUM;
-      super.detach();
    }
 
    public formSubmit(IRequestCycle cycle) {

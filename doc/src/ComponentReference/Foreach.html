@@ -245,10 +245,9 @@ public class SalesPage extends BasePage {
         customer = value;
     }
 
-    public void detach() {
+    protected void initialize() {
         customerList = null;
         customer = null;
-        super.detach();
     }
 }
 

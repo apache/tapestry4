@@ -180,11 +180,10 @@ public class EnquiryPage extends BasePage {
         staffList = value;  
     }
 
-    public void detach() {
+    protected void initialize() {
         fullName = null;
         isManager = false;
         staffList = null;
-        super.detach();
     }
 }
 </pre>
