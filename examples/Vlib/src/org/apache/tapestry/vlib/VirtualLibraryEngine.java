@@ -59,10 +59,7 @@ import java.rmi.RemoteException;
 
 import javax.ejb.CreateException;
 import javax.ejb.FinderException;
-import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.naming.NamingException;
-import javax.rmi.PortableRemoteObject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpSession;
 
@@ -105,15 +102,7 @@ public class VirtualLibraryEngine extends BaseEngine
 
     private transient boolean _killSession;
 
-    // Home interfaces are static, such that they are only
-    // looked up once (JNDI lookup is very expensive).
-
-    private static IBookQueryHome _bookQueryHome;
-    private static IOperationsHome _operationsHome;
     private transient IOperations _operations;
-
-    private static Context _rootNamingContext;
-
     private transient IPropertySelectionModel _publisherModel;
     private transient IPropertySelectionModel _personModel;
 
@@ -182,24 +171,6 @@ public class VirtualLibraryEngine extends BaseEngine
         return DEBUG_ENABLED;
     }
 
-    public IBookQueryHome getBookQueryHome()
-    {
-        if (_bookQueryHome == null)
-            _bookQueryHome =
-                (IBookQueryHome) findNamedObject("vlib/BookQuery", IBookQueryHome.class);
-
-        return _bookQueryHome;
-    }
-
-    public IOperationsHome getOperationsHome()
-    {
-        if (_operationsHome == null)
-            _operationsHome =
-                (IOperationsHome) findNamedObject("vlib/Operations", IOperationsHome.class);
-
-        return _operationsHome;
-    }
-
     /**
      *  Returns an instance of the Vlib Operations beans, which is a stateless
      *  session bean for performing certain operations.
@@ -210,6 +181,8 @@ public class VirtualLibraryEngine extends BaseEngine
 
     public IOperations getOperations()
     {
+        Global global = (Global) getGlobal();
+
         if (_operations == null)
         {
             int i = 0;
@@ -217,7 +190,7 @@ public class VirtualLibraryEngine extends BaseEngine
             {
                 try
                 {
-                    IOperationsHome home = getOperationsHome();
+                    IOperationsHome home = global.getOperationsHome();
 
                     _operations = home.create();
 
@@ -235,59 +208,6 @@ public class VirtualLibraryEngine extends BaseEngine
         }
 
         return _operations;
-    }
-
-    public Object findNamedObject(String name, Class expectedClass)
-    {
-        Object result = null;
-
-        int i = 0;
-        while (true)
-        {
-            try
-            {
-                Object raw = getRootNamingContext().lookup(name);
-
-                result = PortableRemoteObject.narrow(raw, expectedClass);
-
-                break;
-            }
-            catch (ClassCastException ex)
-            {
-                throw new ApplicationRuntimeException(
-                    "Object " + name + " is not type " + expectedClass.getName() + ".",
-                    ex);
-            }
-            catch (NamingException ex)
-            {
-                namingFailure("Unable to resolve object " + name + ".", ex, i++);
-            }
-        }
-
-        return result;
-    }
-
-    public Context getRootNamingContext()
-    {
-        if (_rootNamingContext == null)
-        {
-            int i = 0;
-            while (true)
-            {
-                try
-                {
-                    _rootNamingContext = new InitialContext();
-
-                    break;
-                }
-                catch (NamingException ex)
-                {
-                    namingFailure("Unable to locate root naming context.", ex, i++);
-                }
-            }
-        }
-
-        return _rootNamingContext;
     }
 
     /**
@@ -337,7 +257,7 @@ public class VirtualLibraryEngine extends BaseEngine
         // Add in the actual publishers.  They are sorted by name.
 
         for (i = 0; i < publishers.length; i++)
-            model.add(publishers[i].getPrimaryKey(), publishers[i].getName());
+            model.add(publishers[i].getId(), publishers[i].getName());
 
         return model;
     }
@@ -364,12 +284,12 @@ public class VirtualLibraryEngine extends BaseEngine
     public IPropertySelectionModel getPersonModel()
     {
         if (_personModel == null)
-            _personModel = buildPersonModel();
+            _personModel = buildPersonModel(false);
 
         return _personModel;
     }
 
-    private IPropertySelectionModel buildPersonModel()
+    public IPropertySelectionModel buildPersonModel(boolean includeEmpty)
     {
         Person[] persons = null;
 
@@ -392,8 +312,11 @@ public class VirtualLibraryEngine extends BaseEngine
 
         EntitySelectionModel model = new EntitySelectionModel();
 
+        if (includeEmpty)
+            model.add(null, "");
+
         for (i = 0; i < persons.length; i++)
-            model.add(persons[i].getPrimaryKey(), persons[i].getNaturalName());
+            model.add(persons[i].getId(), persons[i].getNaturalName());
 
         return model;
 
@@ -406,12 +329,14 @@ public class VirtualLibraryEngine extends BaseEngine
 
     public IBookQuery createNewQuery()
     {
+        Global global = (Global) getGlobal();
+
         IBookQuery result = null;
 
         int i = 0;
         while (true)
         {
-            IBookQueryHome home = getBookQueryHome();
+            IBookQueryHome home = global.getBookQueryHome();
 
             try
             {
@@ -488,28 +413,13 @@ public class VirtualLibraryEngine extends BaseEngine
         throw new ApplicationRuntimeException(message, ex);
     }
 
-    /**
-     *  As with {@link #rmiFailure(String, RemoteException, int)}, but for
-     * {@link NamingException}.
-     *
-     **/
-
-    public void namingFailure(String message, NamingException ex, int attempt)
-    {
-        LOG.error(message, ex);
-
-        clearEJBs();
-
-        if (attempt > 0)
-            punt(message, ex);
-    }
-
     private void clearEJBs()
     {
-        _bookQueryHome = null;
+        Global global = (Global) getGlobal();
+
+        global.clear();
+
         _operations = null;
-        _operationsHome = null;
-        _rootNamingContext = null;
     }
 
     /**

@@ -5,16 +5,16 @@
 <ul>
 	<li>Admin: If checked, the user is an administrator.</li>
 	<li>Locked Out: If checked, the user will not be allowed to login.</li>
-	<li>Reset Password:  If checked, the system will assign a new password to the user and mail them
-that password.</li>
+	<li>Change Password:  If checked, the a new password will be assigned to the user.</li>
 	<li>Delete:  If checked, the user will be irrevocably removed from the Virtual Library database.
 Any books owned by the user will be transferred to the current user.</li>
 </ul>
 
 <span jwcid="@ShowMessage"/>
 <span jwcid="@ShowError"/>
+<span jwcid="@ShowValidationError" delegate="ognl:validationDelegate"/>
 
-<form jwcid="@Form" listener="ognl:listeners.updateUsers">
+<form jwcid="@Form" listener="ognl:listeners.updateUsers" delegate="ognl:validationDelegate">
 	
   <table width="100%" class="data">
     <tr>
@@ -24,7 +24,7 @@ Any books owned by the user will be transferred to the current user.</li>
       </th>
       <th>Locked&nbsp;Out
       </th>
-      <th>Reset&nbsp;Password
+      <th>Change&nbsp;Password
       </th>
       <th>Delete
       </th>
@@ -43,10 +43,18 @@ Any books owned by the user will be transferred to the current user.</li>
       <td class="checkbox"><input type="checkbox" jwcid="inputDelete@Checkbox" selected="ognl:listEditMap.deleted"/>
       </td>
     </tr>
-    <tr>
-    <td class="control"><input type="image" src="images/update.png" width="52" height="20" alt="Update"/>
-    </td>	
-    </tr>
+  </table>
+  
+  <table class="form">
+  <tr>
+  	<th><span jwcid="@FieldLabel" field="ognl:components.inputPassword"/></th>	
+  	<td><input type="text" jwcid="inputPassword" size="20" maxlength="20"/></td>
+  </tr>
+  <tr>
+  	<td></td>	
+  	<td><input type="image" src="images/update.png" width="52" height="20" alt="Update"/></td>
+  </tr>
+  
   </table>
 </form>
 </body>

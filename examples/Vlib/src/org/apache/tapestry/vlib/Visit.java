@@ -80,7 +80,7 @@ public class Visit implements Serializable
      **/
 
     private transient Person _user;
-    private Integer _userPK;
+    private Integer _userId;
 
     /**
      *  Set when the user first logs in.  This is the time of their previous
@@ -124,10 +124,10 @@ public class Visit implements Serializable
         if (_user != null)
             return _user;
 
-        if (_userPK == null)
+        if (_userId == null)
             return null;
 
-        _user = _engine.readPerson(_userPK);
+        _user = _engine.readPerson(_userId);
 
         return _user;
     }
@@ -138,9 +138,9 @@ public class Visit implements Serializable
      *
      **/
 
-    public Integer getUserPK()
+    public Integer getUserId()
     {
-        return _userPK;
+        return _userId;
     }
 
     /**
@@ -153,12 +153,12 @@ public class Visit implements Serializable
     {
         _lastAccess = null;
         _user = value;
-        _userPK = null;
+        _userId = null;
 
         if (_user == null)
             return;
 
-        _userPK = _user.getPrimaryKey();
+        _userId = _user.getId();
 
         _lastAccess = _user.getLastAccess();
     }
@@ -170,7 +170,7 @@ public class Visit implements Serializable
 
     public boolean isUserLoggedIn()
     {
-        return _userPK != null;
+        return _userId != null;
     }
 
     /**
@@ -181,15 +181,15 @@ public class Visit implements Serializable
 
     public boolean isUserLoggedOut()
     {
-        return _userPK == null;
+        return _userId == null;
     }
 
-    public boolean isLoggedInUser(Integer primaryKey)
+    public boolean isLoggedInUser(Integer id)
     {
-        if (_userPK == null)
+        if (_userId == null)
             return false;
 
-        return _userPK.equals(primaryKey);
+        return _userId.equals(id);
     }
 
     /**

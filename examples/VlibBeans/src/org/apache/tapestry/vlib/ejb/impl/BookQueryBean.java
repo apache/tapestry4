@@ -65,6 +65,7 @@ import org.apache.tapestry.contrib.ejb.XEJBException;
 import org.apache.tapestry.contrib.jdbc.IStatement;
 import org.apache.tapestry.contrib.jdbc.StatementAssembly;
 import org.apache.tapestry.vlib.ejb.Book;
+import org.apache.tapestry.vlib.ejb.MasterQueryParameters;
 import org.apache.tapestry.vlib.ejb.SortOrdering;
 
 /**
@@ -94,7 +95,7 @@ public class BookQueryBean extends OperationsBean
      *
      **/
 
-    private Book[] results;
+    private Book[] _results;
 
     /**
      *  Releases any results.
@@ -103,7 +104,7 @@ public class BookQueryBean extends OperationsBean
 
     public void ejbRemove()
     {
-        results = null;
+        _results = null;
     }
 
     // Business methods
@@ -115,10 +116,10 @@ public class BookQueryBean extends OperationsBean
 
     public int getResultCount()
     {
-        if (results == null)
+        if (_results == null)
             return 0;
 
-        return results.length;
+        return _results.length;
     }
 
     /**
@@ -133,7 +134,7 @@ public class BookQueryBean extends OperationsBean
         if (offset < 0)
             return null;
 
-        int finalLength = Math.min(length, results.length - offset);
+        int finalLength = Math.min(length, _results.length - offset);
 
         if (finalLength < 0)
             return null;
@@ -142,7 +143,7 @@ public class BookQueryBean extends OperationsBean
         // results into it.
 
         result = new Book[finalLength];
-        System.arraycopy(results, offset, result, 0, finalLength);
+        System.arraycopy(_results, offset, result, 0, finalLength);
 
         return result;
     }
@@ -153,18 +154,14 @@ public class BookQueryBean extends OperationsBean
      *
      **/
 
-    public int masterQuery(
-        String title,
-        String author,
-        Integer publisherPK,
-        SortOrdering sortOrdering)
+    public int masterQuery(MasterQueryParameters parameters, SortOrdering sortOrdering)
     {
         IStatement statement = null;
         Connection connection = null;
 
         // Forget any current results.
 
-        results = null;
+        _results = null;
 
         try
         {
@@ -172,7 +169,7 @@ public class BookQueryBean extends OperationsBean
 
             try
             {
-                statement = buildMasterQuery(connection, title, author, publisherPK, sortOrdering);
+                statement = buildMasterQuery(connection, parameters, sortOrdering);
             }
             catch (SQLException ex)
             {
@@ -195,14 +192,14 @@ public class BookQueryBean extends OperationsBean
      *
      **/
 
-    public int ownerQuery(Integer ownerPK, SortOrdering sortOrdering)
+    public int ownerQuery(Integer ownerId, SortOrdering sortOrdering)
     {
         IStatement statement = null;
         Connection connection = null;
 
         // Forget any current results.
 
-        results = null;
+        _results = null;
 
         try
         {
@@ -210,7 +207,7 @@ public class BookQueryBean extends OperationsBean
 
             try
             {
-                statement = buildPersonQuery(connection, "owner.PERSON_ID", ownerPK, sortOrdering);
+                statement = buildPersonQuery(connection, "owner.PERSON_ID", ownerId, sortOrdering);
             }
             catch (SQLException ex)
             {
@@ -233,14 +230,14 @@ public class BookQueryBean extends OperationsBean
      *
      **/
 
-    public int holderQuery(Integer holderPK, SortOrdering sortOrdering)
+    public int holderQuery(Integer holderId, SortOrdering sortOrdering)
     {
         IStatement statement = null;
         Connection connection = null;
 
         // Forget any current results.
 
-        results = null;
+        _results = null;
 
         try
         {
@@ -249,7 +246,7 @@ public class BookQueryBean extends OperationsBean
             try
             {
                 statement =
-                    buildPersonQuery(connection, "holder.PERSON_ID", holderPK, sortOrdering);
+                    buildPersonQuery(connection, "holder.PERSON_ID", holderId, sortOrdering);
             }
             catch (SQLException ex)
             {
@@ -267,14 +264,14 @@ public class BookQueryBean extends OperationsBean
         return getResultCount();
     }
 
-    public int borrowerQuery(Integer borrowerPK, SortOrdering sortOrdering)
+    public int borrowerQuery(Integer borrowerId, SortOrdering sortOrdering)
     {
         IStatement statement = null;
         Connection connection = null;
 
         // Forget any current results.
 
-        results = null;
+        _results = null;
 
         try
         {
@@ -282,7 +279,7 @@ public class BookQueryBean extends OperationsBean
 
             try
             {
-                statement = buildBorrowerQuery(connection, borrowerPK, sortOrdering);
+                statement = buildBorrowerQuery(connection, borrowerId, sortOrdering);
             }
             catch (SQLException ex)
             {
@@ -329,35 +326,32 @@ public class BookQueryBean extends OperationsBean
 
     private void processQueryResults(ResultSet set) throws SQLException
     {
-        List list;
-        Object[] columns;
-        Book book;
-
-        list = new ArrayList();
-        columns = new Object[Book.N_COLUMNS];
+        List list = new ArrayList();
+        Object[] columns = new Object[Book.N_COLUMNS];
 
         while (set.next())
         {
-            book = convertRowToBook(set, columns);
+            Book book = convertRowToBook(set, columns);
 
             list.add(book);
         }
 
-        results = new Book[list.size()];
-        results = (Book[]) list.toArray(results);
+        _results = new Book[list.size()];
+        _results = (Book[]) list.toArray(_results);
     }
 
     private IStatement buildMasterQuery(
         Connection connection,
-        String title,
-        String author,
-        Integer publisherPK,
+        MasterQueryParameters parameters,
         SortOrdering ordering)
         throws SQLException
     {
-        StatementAssembly assembly;
-
-        assembly = buildBaseBookQuery();
+        String title = parameters.getTitle();
+        String author = parameters.getAuthor();
+        Integer publisherId = parameters.getPublisherId();
+        Integer ownerId = parameters.getOwnerId();
+	
+        StatementAssembly assembly = buildBaseBookQuery();
 
         addSubstringSearch(assembly, "book.TITLE", title);
         addSubstringSearch(assembly, "book.AUTHOR", author);
@@ -367,11 +361,18 @@ public class BookQueryBean extends OperationsBean
         assembly.addSep(" AND ");
         assembly.add("book.HIDDEN = 0");
 
-        if (publisherPK != null)
+        if (publisherId != null)
         {
             assembly.addSep(" AND ");
             assembly.add("book.PUBLISHER_ID = ");
-            assembly.addParameter(publisherPK);
+            assembly.addParameter(publisherId);
+        }
+        
+        if (ownerId != null)
+        {
+        	assembly.addSep(" AND ");
+        	assembly.add("book.OWNER_ID = ");
+        	assembly.addParameter(ownerId);
         }
 
         addSortOrdering(assembly, ordering);
@@ -382,18 +383,16 @@ public class BookQueryBean extends OperationsBean
     private IStatement buildPersonQuery(
         Connection connection,
         String personColumn,
-        Integer personPK,
+        Integer personId,
         SortOrdering sortOrdering)
         throws SQLException
     {
-        StatementAssembly assembly;
-
-        assembly = buildBaseBookQuery();
+        StatementAssembly assembly = buildBaseBookQuery();
 
         assembly.addSep(" AND ");
         assembly.add(personColumn);
         assembly.add(" = ");
-        assembly.addParameter(personPK);
+        assembly.addParameter(personId);
 
         addSortOrdering(assembly, sortOrdering);
 
@@ -402,19 +401,17 @@ public class BookQueryBean extends OperationsBean
 
     private IStatement buildBorrowerQuery(
         Connection connection,
-        Integer borrowerPK,
+        Integer borrowerId,
         SortOrdering sortOrdering)
         throws SQLException
     {
-        StatementAssembly assembly;
-
-        assembly = buildBaseBookQuery();
+        StatementAssembly assembly = buildBaseBookQuery();
 
         // Get books held by the borrower but not owned by the borrower.
 
         assembly.addSep(" AND ");
         assembly.add("book.HOLDER_ID = ");
-        assembly.addParameter(borrowerPK);
+        assembly.addParameter(borrowerId);
         assembly.addSep(" AND ");
         assembly.add("book.HOLDER_ID <> book.OWNER_ID");
 

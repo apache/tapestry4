@@ -23,19 +23,19 @@
         <sql-type>VARCHAR(100)</sql-type>
       </cmp-field>
       <cmp-field>
-        <field-name>holderPK</field-name>
+        <field-name>holderId</field-name>
         <column-name>HOLDER_ID</column-name>
         <jdbc-type>INTEGER</jdbc-type>
         <sql-type>INTEGER</sql-type>
       </cmp-field>
       <cmp-field>
-        <field-name>publisherPK</field-name>
+        <field-name>publisherId</field-name>
         <column-name>PUBLISHER_ID</column-name>
         <jdbc-type>INTEGER</jdbc-type>
         <sql-type>INTEGER</sql-type>
       </cmp-field>
       <cmp-field>
-        <field-name>ownerPK</field-name>
+        <field-name>ownerId</field-name>
         <column-name>OWNER_ID</column-name>
         <jdbc-type>INTEGER</jdbc-type>
         <sql-type>INTEGER</sql-type>
@@ -46,7 +46,6 @@
         <jdbc-type>VARCHAR</jdbc-type>
         <sql-type>VARCHAR(100)</sql-type>
       </cmp-field>
-     
       <cmp-field>
         <field-name>description</field-name>
         <column-name>DESCRIPTION</column-name>
@@ -119,22 +118,10 @@
         <sql-type>VARCHAR(30)</sql-type>
       </cmp-field>
       <cmp-field>
-        <field-name>verified</field-name>
-        <column-name>VERIFIED</column-name>
-        <jdbc-type>BIT</jdbc-type>
-        <sql-type>BIT</sql-type>
-      </cmp-field>
-      <cmp-field>
         <field-name>lockedOut</field-name>
         <column-name>LOCKED_OUT</column-name>
         <jdbc-type>BIT</jdbc-type>
         <sql-type>BIT</sql-type>
-      </cmp-field>
-      <cmp-field>
-        <field-name>authorizationCode</field-name>
-        <column-name>AUTH_CODE</column-name>
-        <jdbc-type>VARCHAR</jdbc-type>
-        <sql-type>VARCHAR(100)</sql-type>
       </cmp-field>
       <cmp-field>
         <field-name>admin</field-name>

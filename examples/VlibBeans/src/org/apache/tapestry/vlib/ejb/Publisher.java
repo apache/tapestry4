@@ -67,25 +67,25 @@ import java.io.Serializable;
 
 public class Publisher implements Serializable
 {
-    private static final long serialVersionUID = -4137036147085472403L;
+    private static final long serialVersionUID = -2843992788128325821L;
     
-    private Integer primaryKey;
-    private String name;
+    private Integer _id;
+    private String _name;
 
-    public Publisher(Integer primaryKey, String name)
+    public Publisher(Integer id, String name)
     {
-        this.primaryKey = primaryKey;
-        this.name = name;
+        _id = id;
+        _name = name;
     }
 
-    public Integer getPrimaryKey()
+    public Integer getId()
     {
-        return primaryKey;
+        return _id;
     }
 
     public String getName()
     {
-        return name;
+        return _name;
     }
 
     /**
@@ -98,7 +98,7 @@ public class Publisher implements Serializable
 
     public void setName(String value)
     {
-        name = value;
+        _name = value;
     }
 
     public String toString()
@@ -106,9 +106,9 @@ public class Publisher implements Serializable
         StringBuffer buffer;
 
         buffer = new StringBuffer("Publisher[");
-        buffer.append(primaryKey);
+        buffer.append(_id);
         buffer.append(' ');
-        buffer.append(name);
+        buffer.append(_name);
         buffer.append(']');
 
         return buffer.toString();

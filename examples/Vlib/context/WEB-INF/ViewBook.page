@@ -9,13 +9,13 @@
   <property-specification name="book" type="org.apache.tapestry.vlib.ejb.Book" persistent="yes"/>
   
   <component id="ownerLink" type="PersonLink">
-    <binding name="primaryKey" expression="book.ownerPrimaryKey"/>
+    <binding name="id" expression="book.ownerId"/>
     <binding name="name" expression="book.ownerName"/>
   </component>
 
   
   <component id="holderLink" type="PersonLink">
-    <binding name="primaryKey" expression="book.holderPrimaryKey"/>
+    <binding name="id" expression="book.holderId"/>
     <binding name="name" expression="book.holderName"/>
   </component>
 

@@ -87,9 +87,9 @@ public abstract class EditBook extends Protected implements PageRenderListener
 
     public abstract String getPublisherName();
 
-    public abstract Integer getBookPrimaryKey();
+    public abstract Integer getBookId();
 
-    public abstract void setBookPrimaryKey(Integer value);
+    public abstract void setBookId(Integer bookId);
 
     /**
      *  Invoked (from {@link MyLibrary}) to begin editting a book.
@@ -98,9 +98,9 @@ public abstract class EditBook extends Protected implements PageRenderListener
      *
      **/
 
-    public void beginEdit(Integer bookPK, IRequestCycle cycle)
+    public void beginEdit(Integer bookId, IRequestCycle cycle)
     {
-        setBookPrimaryKey(bookPK);
+        setBookId(bookId);
 
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
@@ -113,7 +113,7 @@ public abstract class EditBook extends Protected implements PageRenderListener
 
                 IOperations operations = vengine.getOperations();
 
-                setAttributes(operations.getBookAttributes(bookPK));
+                setAttributes(operations.getBookAttributes(bookId));
 
                 break;
             }
@@ -127,7 +127,7 @@ public abstract class EditBook extends Protected implements PageRenderListener
             catch (RemoteException ex)
             {
                 vengine.rmiFailure(
-                    "Remote exception setting up page for book #" + bookPK + ".",
+                    "Remote exception setting up page for book #" + bookId + ".",
                     ex,
                     i++);
             }
@@ -145,16 +145,16 @@ public abstract class EditBook extends Protected implements PageRenderListener
     {
         Map attributes = getAttributes();
 
-        Integer publisherPK = (Integer) attributes.get("publisherPK");
+        Integer publisherId = (Integer) attributes.get("publisherId");
         String publisherName = getPublisherName();
 
-        if (publisherPK == null && Tapestry.isNull(publisherName))
+        if (publisherId == null && Tapestry.isNull(publisherName))
         {
             setErrorField("inputPublisherName", getString("need-publisher-name"));
             return;
         }
 
-        if (publisherPK != null && !Tapestry.isNull(publisherName))
+        if (publisherId != null && !Tapestry.isNull(publisherName))
         {
             setErrorField("inputPublisherName", getString("leave-publisher-name-empty"));
             return;
@@ -169,7 +169,7 @@ public abstract class EditBook extends Protected implements PageRenderListener
 
         Visit visit = (Visit) getVisit();
         VirtualLibraryEngine vengine = visit.getEngine();
-        Integer bookPK = getBookPrimaryKey();
+        Integer bookId = getBookId();
 
         int i = 0;
         while (true)
@@ -178,11 +178,11 @@ public abstract class EditBook extends Protected implements PageRenderListener
 
             try
             {
-                if (publisherPK != null)
-                    bean.updateBook(bookPK, attributes);
+                if (publisherId != null)
+                    bean.updateBook(bookId, attributes);
                 else
                 {
-                    bean.updateBook(bookPK, attributes, publisherName);
+                    bean.updateBook(bookId, attributes, publisherName);
                     visit.clearCache();
                 }
 
@@ -198,7 +198,7 @@ public abstract class EditBook extends Protected implements PageRenderListener
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure("Remote exception updating book #" + bookPK + ".", ex, i++);
+                vengine.rmiFailure("Remote exception updating book #" + bookId + ".", ex, i++);
 
                 continue;
             }

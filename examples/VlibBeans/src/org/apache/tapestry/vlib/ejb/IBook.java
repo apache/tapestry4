@@ -84,15 +84,17 @@ public interface IBook extends IEntityBean
 
     public String getISBN() throws RemoteException;
 
-    public void setOwnerPK(Integer value) throws RemoteException;
+    public void setOwnerId(Integer value) throws RemoteException;
 
-    public Integer getOwnerPK() throws RemoteException;
+    public Integer getOwnerId() throws RemoteException;
 
-    public void setHolderPK(Integer value) throws RemoteException;
+    public void setHolderId(Integer value) throws RemoteException;
 
-    public Integer getHolderPK() throws RemoteException;
+    public Integer getHolderId() throws RemoteException;
 
-    public void setPublisherPK(Integer value) throws RemoteException;
+    public void setPublisherId(Integer value) throws RemoteException;
+    
+    public Integer getPublisherId() throws RemoteException;
 
     public boolean getHidden() throws RemoteException;
 

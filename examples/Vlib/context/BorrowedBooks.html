@@ -29,9 +29,9 @@
     </td>
     <td><span jwcid="@Insert" value="ognl:currentBook.publisherName">O'Reilly</span>
     </td>
-    <td><a jwcid="@PersonLink" name="ognl:currentBook.ownerName" primaryKey="ognl:currentBook.ownerPrimaryKey" class="clsDataBlue" href="#">Jim Moran</a>
+    <td><a jwcid="@PersonLink" name="ognl:currentBook.ownerName" id="ognl:currentBook.ownerId" class="clsDataBlue" href="#">Jim Moran</a>
     </td>
-    <td class="icon"><a jwcid="@DirectLink" parameters="ognl:currentBook.primaryKey" listener="ognl:listeners.returnBook" href="#"><img jwcid="returnRollover" src="images/return.png" alt="[Return]" width="25" height="26" border="0"/></a>
+    <td class="icon"><a jwcid="@DirectLink" parameters="ognl:currentBook.id" listener="ognl:listeners.returnBook" href="#"><img jwcid="returnRollover" src="images/return.png" alt="Return" width="25" height="26" border="0"/></a>
     </td>
   </tr>
 </table>

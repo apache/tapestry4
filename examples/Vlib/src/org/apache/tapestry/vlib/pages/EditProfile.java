@@ -111,7 +111,7 @@ public abstract class EditProfile extends Protected implements PageRenderListene
         Visit visit = (Visit) getVisit();
         VirtualLibraryEngine vengine = visit.getEngine();
 
-        Integer primaryKey = visit.getUserPK();
+        Integer userId = visit.getUserId();
         Map attributes = null;
 
         int i = 0;
@@ -121,7 +121,7 @@ public abstract class EditProfile extends Protected implements PageRenderListene
             {
                 IOperations operations = vengine.getOperations();
 
-                attributes = operations.getPersonAttributes(primaryKey);
+                attributes = operations.getPersonAttributes(userId);
 
                 break;
             }
@@ -182,7 +182,7 @@ public abstract class EditProfile extends Protected implements PageRenderListene
 
         Visit visit = (Visit) getVisit();
         VirtualLibraryEngine vengine = visit.getEngine();
-        Integer primaryKey = visit.getUserPK();
+        Integer userId = visit.getUserId();
 
         int i = 0;
         while (true)
@@ -198,7 +198,7 @@ public abstract class EditProfile extends Protected implements PageRenderListene
 
                 IOperations operations = vengine.getOperations();
 
-                operations.updatePerson(primaryKey, attributes);
+                operations.updatePerson(userId, attributes);
                 break;
             }
             catch (FinderException ex)

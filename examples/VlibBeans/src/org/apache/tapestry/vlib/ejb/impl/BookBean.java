@@ -82,9 +82,9 @@ public abstract class BookBean extends AbstractEntityBean
             "title",
             "description",
             "ISBN",
-            "holderPK",
-            "ownerPK",
-            "publisherPK",
+            "holderId",
+            "ownerId",
+            "publisherId",
             "author",
             "hidden",
             "lendable",
@@ -111,17 +111,17 @@ public abstract class BookBean extends AbstractEntityBean
 
     public abstract void setTitle(String value);
 
-    public abstract Integer getHolderPK();
+    public abstract Integer getHolderId();
 
-    public abstract void setHolderPK(Integer value);
+    public abstract void setHolderId(Integer value);
     
-    public abstract Integer getOwnerPK() throws RemoteException;
+    public abstract Integer getOwnerId() throws RemoteException;
 
-    public abstract void setOwnerPK(Integer value);
+    public abstract void setOwnerId(Integer value);
 
-    public abstract void setPublisherPK(Integer value);
+    public abstract void setPublisherId(Integer value);
 
-    public abstract Integer getPublisherPK();
+    public abstract Integer getPublisherId();
 
     public abstract boolean getHidden();
 

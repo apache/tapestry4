@@ -11,8 +11,8 @@
   <property-specification name="message" type="java.lang.String"/>
   <property-specification name="error" type="java.lang.String"/>
   
-  <property-specification name="fromUserPK" type="java.lang.Integer" persistent="yes"/>
-  <property-specification name="toUserPK" type="java.lang.Integer" persistent="yes"/>
+  <property-specification name="fromUserId" type="java.lang.Integer" persistent="yes"/>
+  <property-specification name="toUserId" type="java.lang.Integer" persistent="yes"/>
   
 </page-specification>
 

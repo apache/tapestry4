@@ -92,18 +92,6 @@ public interface IPerson extends IEntityBean
 
 	public void setLockedOut(boolean value) throws RemoteException;
 
-	public boolean getVerified() throws RemoteException;
-
-	public void setVerified(boolean value) throws RemoteException;
-
-	/**
-	 *  Returns the natural concatination of the first and last name, or just
-	 *  the last name if there is no first name.
-	 *
-	 **/
-
-	public String getNaturalName() throws RemoteException;
-
 	public void setLastAccess(Timestamp value) throws RemoteException;
 
 	public Timestamp getLastAccess() throws RemoteException;

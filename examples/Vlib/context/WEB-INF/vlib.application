@@ -8,6 +8,8 @@
 	name="Virtual Library" 
 	engine-class="org.apache.tapestry.vlib.VirtualLibraryEngine">
    
+  <property name="org.apache.tapestry.global-class" value="org.apache.tapestry.vlib.Global"/>
+   
   <library id="contrib" specification-path="/org/apache/tapestry/contrib/Contrib.library"/>
   	
 </application>

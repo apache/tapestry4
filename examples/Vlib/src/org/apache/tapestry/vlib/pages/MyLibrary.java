@@ -140,7 +140,7 @@ public abstract class MyLibrary
     private void runQuery()
     {
         Visit visit = (Visit) getVisit();
-        Integer userPK = visit.getUserPK();
+        Integer userId = visit.getUserId();
 
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
@@ -159,7 +159,7 @@ public abstract class MyLibrary
                     setOwnedQuery(query);
                 }
 
-                int count = query.ownerQuery(userPK, ordering);
+                int count = query.ownerQuery(userId, ordering);
 
                 if (count != _browser.getResultCount())
                     _browser.initializeForResultCount(count);
@@ -183,10 +183,10 @@ public abstract class MyLibrary
     public void editBook(IRequestCycle cycle)
     {
         Object[] parameters = cycle.getServiceParameters();
-        Integer bookPK = (Integer) parameters[0];
+        Integer bookId = (Integer) parameters[0];
         EditBook page = (EditBook) cycle.getPage("EditBook");
 
-        page.beginEdit(bookPK, cycle);
+        page.beginEdit(bookId, cycle);
     }
 
     /**
@@ -197,13 +197,13 @@ public abstract class MyLibrary
     public void deleteBook(IRequestCycle cycle)
     {
         Object[] parameters = cycle.getServiceParameters();
-        Integer bookPK = (Integer) parameters[0];
+        Integer bookId = (Integer) parameters[0];
 
         ConfirmBookDelete page = (ConfirmBookDelete) cycle.getPage("ConfirmBookDelete");
-        page.selectBook(bookPK, cycle);
+        page.selectBook(bookId, cycle);
     }
 
-    private void returnBook(Integer bookPK)
+    private void returnBook(Integer bookId)
     {
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
@@ -213,7 +213,7 @@ public abstract class MyLibrary
             try
             {
                 IOperations operations = vengine.getOperations();
-                Book book = operations.returnBook(bookPK);
+                Book book = operations.returnBook(bookId);
 
                 setMessage(formatString("returned-book", book.getTitle()));
 

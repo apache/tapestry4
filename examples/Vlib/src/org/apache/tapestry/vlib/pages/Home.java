@@ -59,6 +59,7 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.vlib.IErrorProperty;
 import org.apache.tapestry.vlib.IMessageProperty;
+import org.apache.tapestry.vlib.ejb.MasterQueryParameters;
 
 /**
  *  The home page for the application, it's primary purpose is
@@ -71,22 +72,27 @@ import org.apache.tapestry.vlib.IMessageProperty;
 public abstract class Home extends BasePage implements IErrorProperty, IMessageProperty
 {
 
-	public abstract String getSearchTitle();
+    public abstract String getTitle();
 
-	public abstract String getSearchAuthor();
+    public abstract String getAuthor();
 
-	public abstract Integer getSearchPublisherPK();
+    public abstract Integer getPublisherId();
 
-	/**
-	 *  Invokes {@link Matches#performQuery(String,String,Object,IRequestCycle)}.
-	 *
-	 **/
+    public abstract Integer getOwnerId();
 
-	public void search(IRequestCycle cycle)
-	{
-		BookMatches matches = (BookMatches) cycle.getPage("BookMatches");
+    /**
+     *  Invokes {@link BookMatches#performQuery(MasterQueryParameters, IRequestCycle)}.
+     * 
+     **/
 
-		matches.performQuery(getSearchTitle(), getSearchAuthor(), getSearchPublisherPK(), cycle);
-	}
+    public void search(IRequestCycle cycle)
+    {
+        BookMatches matches = (BookMatches) cycle.getPage("BookMatches");
+
+        MasterQueryParameters parameters =
+            new MasterQueryParameters(getTitle(), getAuthor(), getOwnerId(), getPublisherId());
+
+        matches.performQuery(parameters, cycle);
+    }
 
 }

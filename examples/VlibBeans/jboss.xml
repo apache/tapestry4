@@ -7,15 +7,6 @@
       <res-jndi-name>java:/McKoiDB</res-jndi-name>
     </resource-manager>
     
-    <!--
-    
-    <resource-manager>
-      <res-name>vlib/Mail</res-name>
-      <res-jndi-name>java:/vlib/Mail</res-jndi-name>
-    </resource-manager>
-    
-    -->
-    
   </resource-managers>
   <enterprise-beans>
     <session>
@@ -55,14 +46,6 @@
       </resource-ref>
     </session>
     
-    <!--
-    
-    <session>
-      <ejb-name>MailSender</ejb-name>
-      <jndi-name>vlib/MailSender</jndi-name>
-    </session>
-    
-    -->
     
     <entity>
       <ejb-name>Book</ejb-name>
@@ -88,20 +71,7 @@
         <jndi-name>vlib/KeyAllocator</jndi-name>
       </ejb-ref>
     </entity>
-    
-    <!--
-    
-    <message-driven>
-      <ejb-name>MailQueue</ejb-name>
-      <configuration-name>Standard Message Driven Bean</configuration-name>
-      <destination-jndi-name>queue/Vlib-MailQueue</destination-jndi-name>
-      <ejb-ref>
-        <ejb-ref-name>ejb/MailSender</ejb-ref-name>
-        <jndi-name>vlib/MailSender</jndi-name>
-      </ejb-ref>
-    </message-driven>
-    
-    -->
+   
     
   </enterprise-beans>
 </jboss>

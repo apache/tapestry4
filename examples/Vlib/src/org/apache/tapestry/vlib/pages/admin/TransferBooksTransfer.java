@@ -92,13 +92,13 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageRen
 
     public abstract void setFromUser(Person fromUser);
 
-    public abstract Integer getFromUserPK();
+    public abstract Integer getFromUserId();
 
-    public abstract void setFromUserPK(Integer fromUserPK);
+    public abstract void setFromUserId(Integer fromUserId);
 
-    public abstract Integer getToUserPK();
+    public abstract Integer getToUserId();
 
-    public abstract void setToUserPK(Integer toUserPK);
+    public abstract void setToUserId(Integer toUserId);
 
     public abstract Person getToUser();
 
@@ -110,9 +110,9 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageRen
 
     public abstract void setUserBookModel(IPropertySelectionModel userBookModel);
 
-    public void activate(IRequestCycle cycle, Integer fromUserPK, Integer toUserPK)
+    public void activate(IRequestCycle cycle, Integer fromUserId, Integer toUserId)
     {
-        Person fromUser = readPerson(fromUserPK);
+        Person fromUser = readPerson(fromUserId);
 
         IPropertySelectionModel model = buildUserBookModel(fromUser);
 
@@ -123,10 +123,10 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageRen
             return;
         }
 
-        setFromUserPK(fromUserPK);
+        setFromUserId(fromUserId);
         setFromUser(fromUser);
 
-        setToUserPK(toUserPK);
+        setToUserId(toUserId);
 
         setUserBookModel(model);
 
@@ -146,7 +146,7 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageRen
 
         if (fromUser == null)
         {
-            fromUser = readPerson(getFromUserPK());
+            fromUser = readPerson(getFromUserId());
             setFromUser(fromUser);
         }
 
@@ -156,7 +156,7 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageRen
         Person toUser = getToUser();
         if (toUser == null)
         {
-            toUser = readPerson(getToUserPK());
+            toUser = readPerson(getToUserId());
             setToUser(toUser);
         }
     }
@@ -189,7 +189,7 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageRen
             {
                 IOperations operations = vengine.getOperations();
 
-                operations.transferBooks(toUser.getPrimaryKey(), keys);
+                operations.transferBooks(toUser.getId(), keys);
 
                 break;
             }
@@ -228,7 +228,7 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageRen
             {
                 IBookQuery query = vengine.createNewQuery();
 
-                int count = query.ownerQuery(user.getPrimaryKey(), null);
+                int count = query.ownerQuery(user.getId(), null);
 
                 if (count > 0)
                     books = query.get(0, count);
@@ -248,15 +248,15 @@ public abstract class TransferBooksTransfer extends AdminPage implements PageRen
 
         if (books != null)
             for (i = 0; i < books.length; i++)
-                model.add(books[i].getPrimaryKey(), books[i].getTitle());
+                model.add(books[i].getId(), books[i].getTitle());
 
         return model;
     }
 
-    private Person readPerson(Integer primaryKey)
+    private Person readPerson(Integer personId)
     {
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
         
-        return vengine.readPerson(primaryKey);
+        return vengine.readPerson(personId);
     }
 }

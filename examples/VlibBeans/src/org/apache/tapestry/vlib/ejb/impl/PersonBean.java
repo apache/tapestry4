@@ -84,10 +84,8 @@ public abstract class PersonBean extends AbstractEntityBean
 			"lastName",
 			"email",
 			"password",
-			"verified",
 			"lockedOut",
 			"admin",
-			"authorizationCode",
 			"lastAccess" };
 	}
 
@@ -111,10 +109,6 @@ public abstract class PersonBean extends AbstractEntityBean
 
 	public abstract String getPassword();
 
-	public abstract void setVerified(boolean value);
-
-	public abstract boolean getVerified();
-
 	public abstract void setLockedOut(boolean value);
 
 	public abstract boolean getLockedOut();
@@ -123,17 +117,12 @@ public abstract class PersonBean extends AbstractEntityBean
 
 	public abstract boolean getAdmin();
 
-	public abstract String getAuthorizationCode();
-
-	public abstract void setAuthorizationCode(String value);
-
 	public abstract void setLastAccess(Timestamp value);
 
 	public abstract Timestamp getLastAccess();
 
 	public Integer ejbCreate(Map attributes) throws CreateException, RemoteException
 	{
-        setVerified(true);
         updateEntityAttributes(attributes);
         
         setPersonId(allocateKey());
@@ -144,16 +133,5 @@ public abstract class PersonBean extends AbstractEntityBean
 	public void ejbPostCreate(Map attributes)
 	{
 		// Do nothing
-	}
-
-	public String getNaturalName()
-	{
-        String firstName = getFirstName();
-        String lastName = getLastName();
-        
-		if (firstName == null)
-			return lastName;
-
-		return firstName + " " + lastName;
 	}
 }

@@ -8,12 +8,12 @@
  
   <property name="page-type">MyLibrary</property>
   
-  <property-specification name="bookPrimaryKey" type="java.lang.Integer"/>
+  <property-specification name="bookId" type="java.lang.Integer"/>
   <property-specification name="bookTitle" type="java.lang.String"/>
   
   <component id="confirm" type="DirectLink">
     <binding name="listener" expression="listeners.deleteBook"/>
-    <binding name="parameters" expression="bookPrimaryKey"/>
+    <binding name="parameters" expression="bookId"/>
   </component>
   
   <component id="confirmRollover" type="Rollover">

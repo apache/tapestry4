@@ -16,23 +16,27 @@ give it back eventually!
   <table class="form">
     <tr>
       <th>Title</th>
-      <td><input type="text" jwcid="inputTitle@TextField" value="ognl:searchTitle" displaywidth="30" maximumlength="100" class="inputTextForm"/>
+      <td><input type="text" jwcid="inputTitle@TextField" value="ognl:title" displaywidth="30" maximumlength="100"/>
       </td>
     </tr>
     <tr>
       <th>Author</th>
-      <td><input type="text" jwcid="inputAuthor@TextField" value="ognl:searchAuthor" displaywidth="30" maximumlength="100" class="inputTextForm"/>
+      <td><input type="text" jwcid="inputAuthor@TextField" value="ognl:author" displaywidth="30" maximumlength="100"/>
       </td>
     </tr>
     <tr>
+    	<th>Book Owner</th>	
+    	<td><select jwcid="inputOwner@PropertySelection" value="ognl:ownerId" model="ognl:engine.buildPersonModel(true)"/></td>
+    </tr>
+    <tr>
       <th>Publisher</th>
-      <td><select jwcid="inputPublisher@PropertySelection" value="ognl:searchPublisherPK" model="ognl:engine.publisherModel"/>
+      <td><select jwcid="inputPublisher@PropertySelection" value="ognl:publisherId" model="ognl:engine.publisherModel"/>
 		</td>
 	</tr>
 	<tr>
 		<td></td>
 		<td>
-	<input type="image" src="images/search.png" width="46" height="20" border="0"/>
+	<input type="image" src="images/search.png" width="46" height="20" border="0" alt="Search"/>
       </td>
     </tr>
   </table>

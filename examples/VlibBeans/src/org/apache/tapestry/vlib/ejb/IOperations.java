@@ -81,7 +81,7 @@ public interface IOperations extends EJBObject
      *
      **/
 
-    public Book borrowBook(Integer bookPrimaryKey, Integer borrowerPrimaryKey)
+    public Book borrowBook(Integer bookdId, Integer borrowerId)
         throws BorrowException, FinderException, RemoteException;
 
     /**
@@ -110,14 +110,14 @@ public interface IOperations extends EJBObject
      *
      **/
 
-    public void updateBook(Integer bookPK, Map attributes) throws FinderException, RemoteException;
+    public void updateBook(Integer bookId, Map attributes) throws FinderException, RemoteException;
 
     /**
      *  Updates a book for a unknown publisher.
      *
      **/
 
-    public void updateBook(Integer bookPK, Map attributes, String publisherName)
+    public void updateBook(Integer bookId, Map attributes, String publisherName)
         throws CreateException, FinderException, RemoteException;
 
     /**
@@ -125,7 +125,7 @@ public interface IOperations extends EJBObject
      *
      **/
 
-    public void updatePerson(Integer personPK, Map attributes) throws FinderException, RemoteException;
+    public void updatePerson(Integer personId, Map attributes) throws FinderException, RemoteException;
 
     /**
      *  Retrieves the light-weight version of all {@link IPublisher} beans, sorted by name.
@@ -149,7 +149,7 @@ public interface IOperations extends EJBObject
      *
      **/
 
-    public Person getPerson(Integer primaryKey) throws FinderException, RemoteException;
+    public Person getPerson(Integer personId) throws FinderException, RemoteException;
 
     /**
      *  Attempts to login the user in.
@@ -167,7 +167,7 @@ public interface IOperations extends EJBObject
      *
      **/
 
-    public Map getPersonAttributes(Integer primaryKey) throws FinderException, RemoteException;
+    public Map getPersonAttributes(Integer personId) throws FinderException, RemoteException;
 
     /**
      *  Retrieves a single {@link Book} by its primary key.  Returns the
@@ -177,14 +177,14 @@ public interface IOperations extends EJBObject
      *
      **/
 
-    public Book getBook(Integer primaryKey) throws FinderException, RemoteException;
+    public Book getBook(Integer bookId) throws FinderException, RemoteException;
 
     /**
      *  Retrieves the attributes of a {@link IBook} as a {@link Map}.
      *
      **/
 
-    public Map getBookAttributes(Integer primaryKey) throws FinderException, RemoteException;
+    public Map getBookAttributes(Integer bookId) throws FinderException, RemoteException;
 
     /**
      *  Attempts to register a new user, first checking that the
@@ -203,7 +203,7 @@ public interface IOperations extends EJBObject
      *
      **/
 
-    public Book returnBook(Integer bookPrimaryKey) throws RemoteException, FinderException;
+    public Book returnBook(Integer bookId) throws RemoteException, FinderException;
 
     /**
      *  Deletes a Book.
@@ -211,14 +211,14 @@ public interface IOperations extends EJBObject
      *  @return the Book as it was before being deleted.
      **/
 
-    public Book deleteBook(Integer bookPrimaryKey) throws RemoveException, RemoteException;
+    public Book deleteBook(Integer bookId) throws RemoveException, RemoteException;
 
     /**
      *  Transfers a number of books to a new owner.
      *
      **/
 
-    public void transferBooks(Integer newOwnerPrimaryKey, Integer[] books)
+    public void transferBooks(Integer newOwnerId, Integer[] bookIds)
         throws FinderException, RemoteException;
 
     /**
@@ -243,7 +243,6 @@ public interface IOperations extends EJBObject
      *  <ul>
      *	<li>admin
      *	<li>lockedOut
-     *	<li>verified
      *	</ul>
      *
      * <p>Explicitly, names and email addresses may not be changed.
@@ -253,9 +252,10 @@ public interface IOperations extends EJBObject
      *  @param updated a list of persons to update.  May be null or empty.
      *  @param resetPassword  a list of primary keys; corresponding Persons will
      *  have thier password reset.  May be null or empty.
+     *  @param newPassword the password to be set for each user in resetPassword 
      *  @param deleted a list of persons to delete.  Books owned by any of these persons
      *  are transfered to the administrator.  May be null or empty.
-     *  @param adminPk the administrator performing the operation; books may be transferred
+     *  @param adminId the administrator performing the operation; books may be transferred
      *  to this person.
      *
      **/
@@ -263,8 +263,9 @@ public interface IOperations extends EJBObject
     public void updatePersons(
         Person[] updated,
         Integer[] resetPassword,
+        String newPassword,
         Integer[] deleted,
-        Integer adminPK)
+        Integer adminId)
         throws FinderException, RemoveException, RemoteException;
 
 }

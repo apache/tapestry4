@@ -148,7 +148,7 @@ public abstract class ViewPerson extends BasePage implements IExternalPage
 
             try
             {
-                int count = query.ownerQuery(person.getPrimaryKey(), ordering);
+                int count = query.ownerQuery(person.getId(), ordering);
 
                 _browser.initializeForResultCount(count);
 

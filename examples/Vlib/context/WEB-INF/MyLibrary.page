@@ -36,14 +36,14 @@
   </component>
   
   <component id="holderLink" type="PersonLink">
-    <binding name="primaryKey" expression="currentBook.holderPrimaryKey"/>
+    <binding name="id" expression="currentBook.holderId"/>
     <binding name="name" expression="currentBook.holderName"/>
     <binding name="omit" expression="! currentBook.borrowed"/>
   </component>
 
   <component id="edit" type="DirectLink">
     <binding name="listener" expression="listeners.editBook"/>
-    <binding name="parameters" expression="currentBook.primaryKey"/>
+    <binding name="parameters" expression="currentBook.id"/>
   </component>
 
   <component id="editRollover" type="Rollover">
@@ -53,7 +53,7 @@
 
   <component id="delete" type="DirectLink">
     <binding name="listener" expression="listeners.deleteBook"/>
-    <binding name="parameters" expression="currentBook.primaryKey"/>
+    <binding name="parameters" expression="currentBook.id"/>
   </component>
   
   <component id="deleteRollover" type="Rollover">

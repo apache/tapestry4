@@ -88,6 +88,8 @@ import org.apache.tapestry.vlib.ejb.Person;
 
 public abstract class EditUsers extends AdminPage implements PageRenderListener
 {
+    public abstract String getPassword();
+
     public abstract UserListEditMap getListEditMap();
 
     public abstract void setListEditMap(UserListEditMap listEditMap);
@@ -102,7 +104,7 @@ public abstract class EditUsers extends AdminPage implements PageRenderListener
 
         if (user == null)
         {
-            setError("The data submitted in the form is out of date.  Please try again.");
+            setError(getString("out-of-date"));
             throw new PageRedirectException(this);
         }
 
@@ -111,14 +113,15 @@ public abstract class EditUsers extends AdminPage implements PageRenderListener
 
     public void pageBeginRender(PageEvent event)
     {
-        readUsers();
+        if (getListEditMap() == null)
+            setupListEditMap();
     }
 
     public void pageEndRender(PageEvent event)
     {
     }
 
-    private void readUsers()
+    private void setupListEditMap()
     {
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
         Person[] users = null;
@@ -136,14 +139,14 @@ public abstract class EditUsers extends AdminPage implements PageRenderListener
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure("Unable to retrieve list of users.", ex, i++);
+                vengine.rmiFailure(getString("read-failure"), ex, i++);
             }
         }
 
         UserListEditMap map = new UserListEditMap();
 
         for (i = 0; i < users.length; i++)
-            map.add(users[i].getPrimaryKey(), users[i]);
+            map.add(users[i].getId(), users[i]);
 
         setListEditMap(map);
     }
@@ -165,12 +168,20 @@ public abstract class EditUsers extends AdminPage implements PageRenderListener
 
         List updatedUsers = map.getValues();
 
-        Person[] updated = (Person[]) updatedUsers.toArray(new Person[updatedUsers.size()]);
+        Person[] updatedUserIds = (Person[]) updatedUsers.toArray(new Person[updatedUsers.size()]);
 
-        Integer[] resetPasswordArray = toArray(map.getResetPasswordKeys());
-        Integer[] deleted = toArray(map.getDeletedKeys());
+        Integer[] resetPasswordUserIds = toArray(map.getResetPasswordKeys());
+        Integer[] deletedUserIds = toArray(map.getDeletedKeys());
 
-        Integer adminPK = visit.getUserPK();
+        String password = getPassword();
+
+        if (Tapestry.isNull(password) && Tapestry.size(resetPasswordUserIds) != 0)
+        {
+            setErrorField("inputPassword", getString("need-password"));
+            return;
+        }
+
+        Integer adminId = visit.getUserId();
 
         int i = 0;
         while (true)
@@ -179,12 +190,18 @@ public abstract class EditUsers extends AdminPage implements PageRenderListener
             {
                 IOperations operations = vengine.getOperations();
 
-                operations.updatePersons(updated, resetPasswordArray, deleted, adminPK);
+                // TODO: collect and use a password!
+                operations.updatePersons(
+                    updatedUserIds,
+                    resetPasswordUserIds,
+                    password,
+                    deletedUserIds,
+                    adminId);
                 break;
             }
             catch (RemoteException ex)
             {
-                vengine.rmiFailure("Unable to update users.", ex, i++);
+                vengine.rmiFailure(getString("update-failure"), ex, i++);
             }
             catch (RemoveException ex)
             {
@@ -196,7 +213,7 @@ public abstract class EditUsers extends AdminPage implements PageRenderListener
             }
         }
 
-        setMessage("Users updated.");
+        setMessage(getString("users-updated"));
 
     }
 

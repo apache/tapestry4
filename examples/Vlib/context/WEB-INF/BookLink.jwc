@@ -12,7 +12,7 @@
   
   <component id="link" type="ExternalLink">
     <static-binding name="page" value="ViewBook"/>
-    <binding name="parameters" expression="book.primaryKey"/>
+    <binding name="parameters" expression="book.id"/>
   </component>
    
 </component-specification>

@@ -85,7 +85,7 @@ public abstract class Protected extends BasePage implements IErrorProperty
     public IValidationDelegate getValidationDelegate()
     {
         if (_validationDelegate == null)
-            _validationDelegate = new SimpleValidationDelegate();
+            _validationDelegate = new VirtualLibraryDelegate();
 
         return _validationDelegate;
     }
