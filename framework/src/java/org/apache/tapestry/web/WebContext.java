@@ -12,26 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.container;
+package org.apache.tapestry.web;
 
-import org.apache.hivemind.impl.MessageFormatter;
+import java.net.URL;
 
 /**
+ * A representation of a set of servlets (or portlets) packaged together as a web application
+ * archive. Attributes stored within the context are global to all 'lets (but not distributed across
+ * a server cluster).
+ * 
  * @author Howard M. Lewis Ship
- * @since 3.1
  */
-class ContainerMessages
+public interface WebContext extends AttributeHolder, InitializationParameterHolder
 {
-    private static final MessageFormatter _formatter = new MessageFormatter(
-            ContainerMessages.class, "ContainerStrings");
+    /**
+     * Returns a URL to the resource that is mapped to a specified path. The path must begin with a
+     * "/" and is interpreted as relative to the current context root.
+     */
 
-    public static String streamOpenError(String contentType, Throwable cause)
-    {
-        return _formatter.format("stream-open-error", contentType, cause);
-    }
-
-    public static String errorGettingResource(String path, Throwable ex)
-    {
-        return _formatter.format("error-getting-resource", path, ex);
-    }
+    public URL getResource(String path);
 }

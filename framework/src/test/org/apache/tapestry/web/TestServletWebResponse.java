@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.container;
+package org.apache.tapestry.web;
 
 import java.io.IOException;
 
@@ -21,15 +21,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.web.ServletWebResponse;
 import org.easymock.MockControl;
 
 /**
- * Tests for {@link org.apache.tapestry.container.ServletContainerResponse}.
+ * Tests for {@link org.apache.tapestry.web.ServletWebResponse}.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class TestServletContainerResponse extends HiveMindTestCase
+public class TestServletWebResponse extends HiveMindTestCase
 {
     private static class MockServletOutputStream extends ServletOutputStream
     {
@@ -40,7 +41,6 @@ public class TestServletContainerResponse extends HiveMindTestCase
 
     public void testGetOutputStream() throws Exception
     {
-
         MockControl control = newControl(HttpServletResponse.class);
         HttpServletResponse response = (HttpServletResponse) control.getMock();
 
@@ -52,9 +52,9 @@ public class TestServletContainerResponse extends HiveMindTestCase
 
         replayControls();
 
-        ServletContainerResponse scr = new ServletContainerResponse(response);
+        ServletWebResponse swr = new ServletWebResponse(response);
 
-        assertSame(stream, scr.getOutputStream("foo/bar"));
+        assertSame(stream, swr.getOutputStream("foo/bar"));
 
         verifyControls();
     }
@@ -72,11 +72,11 @@ public class TestServletContainerResponse extends HiveMindTestCase
 
         replayControls();
 
-        ServletContainerResponse scr = new ServletContainerResponse(response);
+        ServletWebResponse swr = new ServletWebResponse(response);
 
         try
         {
-            scr.getOutputStream("foo/bar");
+            swr.getOutputStream("foo/bar");
             unreachable();
         }
         catch (ApplicationRuntimeException ex)

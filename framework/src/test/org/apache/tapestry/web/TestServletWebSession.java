@@ -12,20 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.container;
+package org.apache.tapestry.web;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.tapestry.web.ServletWebSession;
+import org.apache.tapestry.web.WebSession;
 import org.easymock.MockControl;
 
 /**
+ * Tests for {@link org.apache.tapestry.web.ServletWebSession}.
+ * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class TestContainerSession extends BaseContainerTestCase
+public class TestServletWebSession extends BaseWebTestCase
 {
     public void testGetAttributeNames()
     {
@@ -37,9 +40,9 @@ public class TestContainerSession extends BaseContainerTestCase
 
         replayControls();
 
-        ContainerSession cs = new ServletContainerSession(session);
+        WebSession ws = new ServletWebSession(session);
 
-        List l = cs.getAttributeNames();
+        List l = ws.getAttributeNames();
 
         checkList(l);
 
@@ -58,9 +61,9 @@ public class TestContainerSession extends BaseContainerTestCase
 
         replayControls();
 
-        ContainerSession cs = new ServletContainerSession(session);
+        WebSession ws = new ServletWebSession(session);
 
-        assertSame(attribute, cs.getAttribute("attr"));
+        assertSame(attribute, ws.getAttribute("attr"));
 
         verifyControls();
     }
@@ -76,9 +79,9 @@ public class TestContainerSession extends BaseContainerTestCase
 
         replayControls();
 
-        ContainerSession cs = new ServletContainerSession(session);
+        WebSession ws = new ServletWebSession(session);
 
-        cs.setAttribute("name", attribute);
+        ws.setAttribute("name", attribute);
 
         verifyControls();
     }
@@ -92,9 +95,26 @@ public class TestContainerSession extends BaseContainerTestCase
 
         replayControls();
 
-        ContainerSession cs = new ServletContainerSession(session);
+        WebSession ws = new ServletWebSession(session);
 
-        cs.setAttribute("tonull", null);
+        ws.setAttribute("tonull", null);
+
+        verifyControls();
+    }
+
+    public void testGetId()
+    {
+        MockControl control = newControl(HttpSession.class);
+        HttpSession session = (HttpSession) control.getMock();
+
+        session.getId();
+        control.setReturnValue("abc");
+
+        replayControls();
+
+        WebSession ws = new ServletWebSession(session);
+
+        assertEquals("abc", ws.getId());
 
         verifyControls();
     }

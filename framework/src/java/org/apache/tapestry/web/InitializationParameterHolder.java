@@ -12,40 +12,35 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.container;
+package org.apache.tapestry.web;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
 import java.util.List;
 
-import org.apache.hivemind.util.Defense;
-
 /**
+ * Defines methods for accessing initialization parameters.
+ * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class ContainerUtils
+public interface InitializationParameterHolder
 {
     /**
-     * Converts an Enumeration of Strings into an unmodifiable List of Strings, sorted into
-     * ascending order.
+     * Returns a sorted list of the names of all initialization parameters (which may be the empty
+     * list).
+     * 
+     * @return List of String
      */
 
-    public static List toSortedList(Enumeration e)
-    {
-        Defense.notNull(e, "e");
+    public List getInitParameterNames();
 
-        List list = new ArrayList();
-        while (e.hasMoreElements())
-            list.add(e.nextElement());
+    /**
+     * Returns the value of the named parameter, or null if the reciever does not have such a
+     * parameter.
+     * 
+     * @param name
+     *            the name of the parameter to retrieve
+     * @return the corresponding value, or null
+     */
 
-        if (list.isEmpty())
-            return Collections.EMPTY_LIST;
-
-        Collections.sort(list);
-
-        return Collections.unmodifiableList(list);
-    }
-
+    public String getInitParameterValue(String name);
 }

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.container;
+package org.apache.tapestry.web;
 
 import java.util.Locale;
 
@@ -20,17 +20,17 @@ import org.apache.hivemind.util.LocalizedNameGenerator;
 import org.apache.hivemind.util.LocalizedResource;
 
 /**
- * Finds localized resources within a {@link org.apache.tapestry.container.ContainerContext}..
+ * Finds localized resources within a {@link org.apache.tapestry.web.WebContext}..
  * 
  * @author Howard Lewis Ship
  * @since 3.1
  */
 
-public class LocalizedContainerContextResourceFinder
+public class LocalizedWebContextResourceFinder
 {
-    private ContainerContext _context;
+    private WebContext _context;
 
-    public LocalizedContainerContextResourceFinder(ContainerContext context)
+    public LocalizedWebContextResourceFinder(WebContext context)
     {
         _context = context;
     }

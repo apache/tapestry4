@@ -18,13 +18,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Iterator;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.hivemind.util.Defense;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.util.StringSplitter;
+import org.apache.tapestry.web.WebRequest;
+import org.apache.tapestry.web.WebSession;
 
 /**
  * The most basic {@link org.apache.tapestry.record.PropertyPersistenceStrategy}, which stores
@@ -41,7 +43,7 @@ public class SessionPropertyPersistenceStrategy implements PropertyPersistenceSt
 
     private String _applicationId;
 
-    private HttpServletRequest _request;
+    private WebRequest _request;
 
     private StringSplitter _splitter = new StringSplitter(',');
 
@@ -50,7 +52,7 @@ public class SessionPropertyPersistenceStrategy implements PropertyPersistenceSt
         Defense.notNull(pageName, "pageName");
         Defense.notNull(propertyName, "propertyName");
 
-        HttpSession session = _request.getSession(true);
+        WebSession session = _request.getSession(true);
 
         StringBuffer buffer = new StringBuffer();
 
@@ -69,17 +71,14 @@ public class SessionPropertyPersistenceStrategy implements PropertyPersistenceSt
 
         String key = buffer.toString();
 
-        if (newValue == null)
-            session.removeAttribute(key);
-        else
-            session.setAttribute(key, newValue);
+        session.setAttribute(key, newValue);
     }
 
     public Collection getStoredChanges(String pageName, IRequestCycle cycle)
     {
         Defense.notNull(pageName, "pageName");
 
-        HttpSession session = _request.getSession(false);
+        WebSession session = _request.getSession(false);
 
         if (session == null)
             return Collections.EMPTY_LIST;
@@ -88,10 +87,10 @@ public class SessionPropertyPersistenceStrategy implements PropertyPersistenceSt
 
         String prefix = _applicationId + "," + pageName + ",";
 
-        Enumeration e = session.getAttributeNames();
-        while (e.hasMoreElements())
+        Iterator i = session.getAttributeNames().iterator();
+        while (i.hasNext())
         {
-            String key = (String) e.nextElement();
+            String key = (String) i.next();
 
             if (key.startsWith(prefix))
             {
@@ -121,20 +120,20 @@ public class SessionPropertyPersistenceStrategy implements PropertyPersistenceSt
     {
         Defense.notNull(pageName, "pageName");
 
-        HttpSession session = _request.getSession(false);
+        WebSession session = _request.getSession(false);
 
         if (session == null)
             return;
 
         String prefix = _applicationId + "," + pageName + ",";
 
-        Enumeration e = session.getAttributeNames();
-        while (e.hasMoreElements())
+        Iterator i = session.getAttributeNames().iterator();
+        while (i.hasNext())
         {
-            String key = (String) e.nextElement();
+            String key = (String) i.next();
 
             if (key.startsWith(prefix))
-                session.removeAttribute(key);
+                session.setAttribute(key, null);
         }
     }
 
@@ -143,7 +142,7 @@ public class SessionPropertyPersistenceStrategy implements PropertyPersistenceSt
         _applicationId = applicationName;
     }
 
-    public void setRequest(HttpServletRequest request)
+    public void setRequest(WebRequest request)
     {
         _request = request;
     }

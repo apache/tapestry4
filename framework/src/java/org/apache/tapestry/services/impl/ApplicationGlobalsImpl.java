@@ -18,9 +18,9 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 
-import org.apache.tapestry.container.ContainerContext;
 import org.apache.tapestry.services.ApplicationGlobals;
 import org.apache.tapestry.spec.IApplicationSpecification;
+import org.apache.tapestry.web.WebContext;
 
 /**
  * Implementation of {@link ApplicationGlobals}.
@@ -36,7 +36,7 @@ public class ApplicationGlobalsImpl implements ApplicationGlobals
 
     private IApplicationSpecification _specification;
 
-    private ContainerContext _containerContext;
+    private WebContext _webContext;
 
     public void store(HttpServlet servlet, IApplicationSpecification applicationSpecification)
     {
@@ -70,13 +70,13 @@ public class ApplicationGlobalsImpl implements ApplicationGlobals
         return _servlet.getServletConfig();
     }
 
-    public ContainerContext getContainerContext()
+    public WebContext getWebContext()
     {
-        return _containerContext;
+        return _webContext;
     }
 
-    public void store(ContainerContext context)
+    public void store(WebContext context)
     {
-        _containerContext = context;
+        _webContext = context;
     }
 }

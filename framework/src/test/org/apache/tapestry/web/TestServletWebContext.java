@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.container;
+package org.apache.tapestry.web;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -20,15 +20,17 @@ import java.util.List;
 
 import javax.servlet.ServletContext;
 
+import org.apache.tapestry.web.ServletWebContext;
+import org.apache.tapestry.web.WebContext;
 import org.easymock.MockControl;
 
 /**
- * Tests for {@link org.apache.tapestry.container.ServletContainerContext}.
+ * Tests for {@link org.apache.tapestry.web.ServletWebContext}.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class TestServletContainerContext extends BaseContainerTestCase
+public class TestServletWebContext extends BaseWebTestCase
 {
 
     public void testGetInitParameterNames()
@@ -41,9 +43,9 @@ public class TestServletContainerContext extends BaseContainerTestCase
 
         replayControls();
 
-        ContainerContext cc = new ServletContainerContext(context);
+        WebContext wc = new ServletWebContext(context);
 
-        List l = cc.getInitParameterNames();
+        List l = wc.getInitParameterNames();
 
         checkList(l);
 
@@ -62,9 +64,9 @@ public class TestServletContainerContext extends BaseContainerTestCase
 
         replayControls();
 
-        ContainerContext cc = new ServletContainerContext(context);
+        WebContext wc = new ServletWebContext(context);
 
-        assertSame(value, cc.getInitParameterValue("artist"));
+        assertSame(value, wc.getInitParameterValue("artist"));
 
         verifyControls();
     }
@@ -79,9 +81,9 @@ public class TestServletContainerContext extends BaseContainerTestCase
 
         replayControls();
 
-        ContainerContext cc = new ServletContainerContext(context);
+        WebContext wc = new ServletWebContext(context);
 
-        List l = cc.getAttributeNames();
+        List l = wc.getAttributeNames();
 
         checkList(l);
 
@@ -100,9 +102,9 @@ public class TestServletContainerContext extends BaseContainerTestCase
 
         replayControls();
 
-        ContainerContext cc = new ServletContainerContext(context);
+        WebContext wc = new ServletWebContext(context);
 
-        assertSame(attribute, cc.getAttribute("attr"));
+        assertSame(attribute, wc.getAttribute("attr"));
 
         verifyControls();
     }
@@ -118,9 +120,9 @@ public class TestServletContainerContext extends BaseContainerTestCase
 
         replayControls();
 
-        ContainerContext cc = new ServletContainerContext(context);
+        WebContext wc = new ServletWebContext(context);
 
-        cc.setAttribute("name", attribute);
+        wc.setAttribute("name", attribute);
 
         verifyControls();
     }
@@ -134,9 +136,9 @@ public class TestServletContainerContext extends BaseContainerTestCase
 
         replayControls();
 
-        ContainerContext cc = new ServletContainerContext(context);
+        WebContext wc = new ServletWebContext(context);
 
-        cc.setAttribute("tonull", null);
+        wc.setAttribute("tonull", null);
 
         verifyControls();
     }
@@ -153,9 +155,9 @@ public class TestServletContainerContext extends BaseContainerTestCase
 
         replayControls();
 
-        ContainerContext cc = new ServletContainerContext(context);
+        WebContext wc = new ServletWebContext(context);
 
-        assertSame(url, cc.getResource("/tapestry"));
+        assertSame(url, wc.getResource("/tapestry"));
 
         verifyControls();
     }
@@ -171,12 +173,12 @@ public class TestServletContainerContext extends BaseContainerTestCase
         control.setThrowable(t);
 
         replayControls();
-     
-        interceptLogging(ServletContainerContext.class.getName());
-        
-        ContainerContext cc = new ServletContainerContext(context);
 
-        assertNull(cc.getResource("/tapestry"));
+        interceptLogging(ServletWebContext.class.getName());
+
+        WebContext wc = new ServletWebContext(context);
+
+        assertNull(wc.getResource("/tapestry"));
 
         verifyControls();
 

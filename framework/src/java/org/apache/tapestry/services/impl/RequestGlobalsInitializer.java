@@ -20,11 +20,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.tapestry.container.ServletContainerRequest;
-import org.apache.tapestry.container.ServletContainerResponse;
 import org.apache.tapestry.services.RequestGlobals;
 import org.apache.tapestry.services.RequestServicer;
 import org.apache.tapestry.services.RequestServicerFilter;
+import org.apache.tapestry.web.ServletWebRequest;
+import org.apache.tapestry.web.ServletWebResponse;
 
 /**
  * A {@link org.apache.tapestry.services.RequestServicerFilter}threaded early onto the pipeline,
@@ -49,7 +49,7 @@ public class RequestGlobalsInitializer implements RequestServicerFilter
     {
         _requestGlobals.store(request, response);
 
-        _requestGlobals.store(new ServletContainerRequest(request), new ServletContainerResponse(
+        _requestGlobals.store(new ServletWebRequest(request), new ServletWebResponse(
                 response));
 
         servicer.service(request, response);

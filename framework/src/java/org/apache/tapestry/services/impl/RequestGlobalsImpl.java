@@ -17,9 +17,9 @@ package org.apache.tapestry.services.impl;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.tapestry.container.ContainerRequest;
-import org.apache.tapestry.container.ContainerResponse;
 import org.apache.tapestry.services.RequestGlobals;
+import org.apache.tapestry.web.WebRequest;
+import org.apache.tapestry.web.WebResponse;
 
 /**
  * Wrapper around {@link org.apache.hivemind.service.ThreadLocalStorage}used to store and retrieve
@@ -30,23 +30,22 @@ import org.apache.tapestry.services.RequestGlobals;
  */
 public class RequestGlobalsImpl implements RequestGlobals
 {
+    private WebRequest _webRequest;
 
-    private ContainerRequest _containerRequest;
-
-    private ContainerResponse _containerResponse;
+    private WebResponse _webResponse;
 
     private HttpServletRequest _request;
 
     private HttpServletResponse _response;
 
-    public ContainerRequest getContainerRequest()
+    public WebRequest getWebRequest()
     {
-        return _containerRequest;
+        return _webRequest;
     }
 
-    public ContainerResponse getContainerResponse()
+    public WebResponse getWebResponse()
     {
-        return _containerResponse;
+        return _webResponse;
     }
 
     public HttpServletRequest getRequest()
@@ -59,10 +58,10 @@ public class RequestGlobalsImpl implements RequestGlobals
         return _response;
     }
 
-    public void store(ContainerRequest request, ContainerResponse response)
+    public void store(WebRequest request, WebResponse response)
     {
-        _containerRequest = request;
-        _containerResponse = response;
+        _webRequest = request;
+        _webResponse = response;
     }
 
     public void store(HttpServletRequest request, HttpServletResponse response)

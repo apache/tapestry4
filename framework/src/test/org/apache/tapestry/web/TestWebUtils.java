@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.container;
+package org.apache.tapestry.web;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,14 +20,15 @@ import java.util.Enumeration;
 import java.util.List;
 
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.web.WebUtils;
 
 /**
- * Tests for {@link org.apache.tapestry.container.ContainerUtils}.
+ * Tests for {@link org.apache.tapestry.web.WebUtils}.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class TestContainerUtils extends HiveMindTestCase
+public class TestWebUtils extends HiveMindTestCase
 {
     public void testToSortedList()
     {
@@ -36,7 +37,7 @@ public class TestContainerUtils extends HiveMindTestCase
         l.add("Barney");
         Enumeration e = Collections.enumeration(l);
 
-        l = ContainerUtils.toSortedList(e);
+        l = WebUtils.toSortedList(e);
 
         assertEquals(2, l.size());
         assertEquals("Barney", l.get(0));
@@ -60,7 +61,7 @@ public class TestContainerUtils extends HiveMindTestCase
         List l = new ArrayList();
         Enumeration e = Collections.enumeration(l);
 
-        List sorted = ContainerUtils.toSortedList(e);
+        List sorted = WebUtils.toSortedList(e);
 
         assertSame(Collections.EMPTY_LIST, sorted);
     }

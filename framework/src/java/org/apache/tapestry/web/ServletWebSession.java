@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.container;
+package org.apache.tapestry.web;
 
 import java.util.List;
 
@@ -22,16 +22,16 @@ import org.apache.hivemind.util.Defense;
 
 /**
  * Adapts {@link javax.servlet.http.HttpSession}&nbsp; as
- * {@link org.apache.tapestry.container.ContainerSession}.
+ * {@link org.apache.tapestry.web.WebSession}.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class ServletContainerSession implements ContainerSession
+public class ServletWebSession implements WebSession
 {
     private final HttpSession _httpSession;
 
-    public ServletContainerSession(HttpSession session)
+    public ServletWebSession(HttpSession session)
     {
         Defense.notNull(session, "session");
 
@@ -40,7 +40,7 @@ public class ServletContainerSession implements ContainerSession
 
     public List getAttributeNames()
     {
-        return ContainerUtils.toSortedList(_httpSession.getAttributeNames());
+        return WebUtils.toSortedList(_httpSession.getAttributeNames());
     }
 
     public Object getAttribute(String name)
@@ -56,4 +56,8 @@ public class ServletContainerSession implements ContainerSession
             _httpSession.setAttribute(name, attribute);
     }
 
+    public String getId()
+    {
+        return _httpSession.getId();
+    }
 }

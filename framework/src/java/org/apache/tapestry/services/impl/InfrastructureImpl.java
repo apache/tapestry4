@@ -19,10 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.hivemind.ClassResolver;
 import org.apache.hivemind.Resource;
-import org.apache.tapestry.container.ContainerContext;
-import org.apache.tapestry.container.ContainerContextResource;
-import org.apache.tapestry.container.ContainerRequest;
-import org.apache.tapestry.container.ContainerResponse;
 import org.apache.tapestry.engine.IPageSource;
 import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.engine.IScriptSource;
@@ -41,6 +37,10 @@ import org.apache.tapestry.services.ResponseRenderer;
 import org.apache.tapestry.services.ServiceMap;
 import org.apache.tapestry.services.TemplateSource;
 import org.apache.tapestry.spec.IApplicationSpecification;
+import org.apache.tapestry.web.WebContextResource;
+import org.apache.tapestry.web.WebContext;
+import org.apache.tapestry.web.WebRequest;
+import org.apache.tapestry.web.WebResponse;
 
 /**
  * Allows access to selected HiveMind services.
@@ -90,15 +90,15 @@ public class InfrastructureImpl implements Infrastructure
 
     private HttpServletResponse _response;
 
-    private ContainerContext _context;
+    private WebContext _context;
 
     private String _applicationId;
 
     private ComponentPropertySource _componentPropertySource;
 
-    private ContainerRequest _containerRequest;
+    private WebRequest _containerRequest;
 
-    private ContainerResponse _containerResponse;
+    private WebResponse _containerResponse;
 
     public IScriptSource getScriptSource()
     {
@@ -306,14 +306,14 @@ public class InfrastructureImpl implements Infrastructure
         _applicationId = applicationId;
     }
 
-    public void setContext(ContainerContext context)
+    public void setContext(WebContext context)
     {
         _context = context;
     }
 
     public Resource getContextRoot()
     {
-        return new ContainerContextResource(_context, "/");
+        return new WebContextResource(_context, "/");
     }
 
     public IPropertySource getGlobalPropertySource()
@@ -336,22 +336,22 @@ public class InfrastructureImpl implements Infrastructure
         _componentPropertySource = componentPropertySource;
     }
 
-    public ContainerRequest getContainerRequest()
+    public WebRequest getWebRequest()
     {
         return _containerRequest;
     }
 
-    public void setContainerRequest(ContainerRequest containerRequest)
+    public void setContainerRequest(WebRequest containerRequest)
     {
         _containerRequest = containerRequest;
     }
 
-    public ContainerResponse getContainerResponse()
+    public WebResponse getWebResponse()
     {
         return _containerResponse;
     }
 
-    public void setContainerResponse(ContainerResponse containerResponse)
+    public void setContainerResponse(WebResponse containerResponse)
     {
         _containerResponse = containerResponse;
     }

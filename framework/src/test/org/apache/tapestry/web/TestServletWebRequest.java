@@ -12,26 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.container;
+package org.apache.tapestry.web;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.hivemind.test.HiveMindTestCase;
 import org.easymock.MockControl;
 
 /**
- * Tests for {@link org.apache.tapestry.container.ServletContainerRequest}.
+ * Tests for {@link org.apache.tapestry.web.ServletWebRequest}.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public class TestServletContainerRequest extends BaseContainerTestCase
+public class TestServletWebRequest extends BaseWebTestCase
 {
     public void testGetParameterNames()
     {
@@ -43,9 +39,9 @@ public class TestServletContainerRequest extends BaseContainerTestCase
 
         replayControls();
 
-        ContainerRequest cr = new ServletContainerRequest(request);
+        WebRequest wr = new ServletWebRequest(request);
 
-        List l = cr.getParameterNames();
+        List l = wr.getParameterNames();
 
         checkList(l);
 
@@ -64,9 +60,9 @@ public class TestServletContainerRequest extends BaseContainerTestCase
 
         replayControls();
 
-        ContainerRequest cr = new ServletContainerRequest(request);
+        WebRequest wr = new ServletWebRequest(request);
 
-        assertSame(value, cr.getParameterValue("artist"));
+        assertSame(value, wr.getParameterValue("artist"));
 
         verifyControls();
     }
@@ -83,9 +79,9 @@ public class TestServletContainerRequest extends BaseContainerTestCase
 
         replayControls();
 
-        ContainerRequest cr = new ServletContainerRequest(request);
+        WebRequest wr = new ServletWebRequest(request);
 
-        assertSame(values, cr.getParameterValues("artist"));
+        assertSame(values, wr.getParameterValues("artist"));
 
         verifyControls();
     }
@@ -100,9 +96,9 @@ public class TestServletContainerRequest extends BaseContainerTestCase
 
         replayControls();
 
-        ContainerRequest cr = new ServletContainerRequest(request);
+        WebRequest wr = new ServletWebRequest(request);
 
-        assertEquals("/foo", cr.getContextPath());
+        assertEquals("/foo", wr.getContextPath());
 
         verifyControls();
     }
@@ -117,9 +113,9 @@ public class TestServletContainerRequest extends BaseContainerTestCase
 
         replayControls();
 
-        ContainerRequest cr = new ServletContainerRequest(request);
+        WebRequest wr = new ServletWebRequest(request);
 
-        List l = cr.getAttributeNames();
+        List l = wr.getAttributeNames();
 
         checkList(l);
 
@@ -137,9 +133,9 @@ public class TestServletContainerRequest extends BaseContainerTestCase
 
         replayControls();
 
-        ContainerRequest cr = new ServletContainerRequest(request);
+        WebRequest wr = new ServletWebRequest(request);
 
-        assertSame(attribute, cr.getAttribute("attr"));
+        assertSame(attribute, wr.getAttribute("attr"));
 
         verifyControls();
     }
@@ -155,9 +151,9 @@ public class TestServletContainerRequest extends BaseContainerTestCase
 
         replayControls();
 
-        ContainerRequest cr = new ServletContainerRequest(request);
+        WebRequest wr = new ServletWebRequest(request);
 
-        cr.setAttribute("name", attribute);
+        wr.setAttribute("name", attribute);
 
         verifyControls();
     }
@@ -171,9 +167,9 @@ public class TestServletContainerRequest extends BaseContainerTestCase
 
         replayControls();
 
-        ContainerRequest cr = new ServletContainerRequest(request);
+        WebRequest wr = new ServletWebRequest(request);
 
-        cr.setAttribute("tonull", null);
+        wr.setAttribute("tonull", null);
 
         verifyControls();
     }
@@ -188,24 +184,24 @@ public class TestServletContainerRequest extends BaseContainerTestCase
         request.getSession(false);
         control.setReturnValue(null);
 
-        // Get it, doesn't exist, create false
+        // Get it, doesn't exist, wreate false
 
         replayControls();
 
-        ContainerRequest cr = new ServletContainerRequest(request);
+        WebRequest wr = new ServletWebRequest(request);
 
-        assertNull(cr.getSession(false));
+        assertNull(wr.getSession(false));
 
         verifyControls();
 
         request.getSession(true);
         control.setReturnValue(session);
 
-        // #2: Get it, create is true, it is created.
+        // #2: Get it, wreate is true, it is wreated.
 
         replayControls();
 
-        ContainerSession cs = cr.getSession(true);
+        WebSession cs = wr.getSession(true);
 
         verifyControls();
 
@@ -214,7 +210,7 @@ public class TestServletContainerRequest extends BaseContainerTestCase
 
         replayControls();
 
-        assertSame(cs, cr.getSession(false));
+        assertSame(cs, wr.getSession(false));
 
         verifyControls();
     }

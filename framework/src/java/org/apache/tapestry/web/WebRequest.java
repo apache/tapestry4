@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.container;
+package org.apache.tapestry.web;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ import java.util.List;
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public interface ContainerRequest extends AttributeHolder
+public interface WebRequest extends AttributeHolder
 {
     /**
      * Returns the names of all query parameters for this request. Note that this may return an
@@ -73,7 +73,7 @@ public interface ContainerRequest extends AttributeHolder
     public String getContextPath();
 
     /**
-     * Returns the current {@link ContainerSession}associated with this request, possibly creating
+     * Returns the current {@link WebSession}associated with this request, possibly creating
      * it if it does not already exist. If create is false and the request has no valid session,
      * this method returns null. To make sure the session is properly maintained, you must call this
      * method <em>before</em> the response is committed.
@@ -82,5 +82,5 @@ public interface ContainerRequest extends AttributeHolder
      *            if true, the session will be created and returned if it does not already exist
      * @returns The session, or null if it does not exist (and create is false)
      */
-    public ContainerSession getSession(boolean create);
+    public WebSession getSession(boolean create);
 }

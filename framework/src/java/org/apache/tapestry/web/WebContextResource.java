@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package org.apache.tapestry.container;
+package org.apache.tapestry.web;
 
 import java.net.URL;
 import java.util.Locale;
@@ -27,24 +27,24 @@ import org.apache.hivemind.util.LocalizedResource;
 
 /**
  * Implementation of {@link org.apache.hivemind.Resource}for resources found within a
- * {@link org.apache.tapestry.container.ContainerContext}.
+ * {@link org.apache.tapestry.web.WebContext}.
  * 
  * @author Howard Lewis Ship
  * @since 3.1
  */
 
-public class ContainerContextResource extends AbstractResource
+public class WebContextResource extends AbstractResource
 {
-    private static final Log LOG = LogFactory.getLog(ContainerContextResource.class);
+    private static final Log LOG = LogFactory.getLog(WebContextResource.class);
 
-    private ContainerContext _context;
+    private WebContext _context;
 
-    public ContainerContextResource(ContainerContext context, String path)
+    public WebContextResource(WebContext context, String path)
     {
         this(context, path, null);
     }
 
-    public ContainerContextResource(ContainerContext context, String path, Locale locale)
+    public WebContextResource(WebContext context, String path, Locale locale)
     {
         super(path, locale);
 
@@ -52,13 +52,13 @@ public class ContainerContextResource extends AbstractResource
     }
 
     /**
-     * Locates the resource using {@link LocalizedContainerContextResourceFinder}and
+     * Locates the resource using {@link LocalizedWebContextResourceFinder}and
      * {@link ServletContext#getResource(java.lang.String)}.
      */
 
     public Resource getLocalization(Locale locale)
     {
-        LocalizedContainerContextResourceFinder finder = new LocalizedContainerContextResourceFinder(
+        LocalizedWebContextResourceFinder finder = new LocalizedWebContextResourceFinder(
                 _context);
 
         String path = getPath();
@@ -76,7 +76,7 @@ public class ContainerContextResource extends AbstractResource
         if (path.equals(localizedPath))
             return this;
 
-        return new ContainerContextResource(_context, localizedPath, pathLocale);
+        return new WebContextResource(_context, localizedPath, pathLocale);
     }
 
     public URL getResourceURL()
@@ -96,7 +96,7 @@ public class ContainerContextResource extends AbstractResource
 
     protected Resource newResource(String path)
     {
-        return new ContainerContextResource(_context, path);
+        return new WebContextResource(_context, path);
     }
 
 }

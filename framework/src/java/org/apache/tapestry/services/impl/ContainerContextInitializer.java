@@ -17,14 +17,14 @@ package org.apache.tapestry.services.impl;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServlet;
 
-import org.apache.tapestry.container.ContainerContext;
-import org.apache.tapestry.container.ServletContainerContext;
 import org.apache.tapestry.services.ApplicationGlobals;
 import org.apache.tapestry.services.ApplicationInitializer;
+import org.apache.tapestry.web.ServletWebContext;
+import org.apache.tapestry.web.WebContext;
 
 /**
  * Gets the context from the servlet, creates a
- * {@link org.apache.tapestry.container.ServletContainerContext}, and stores that into the
+ * {@link org.apache.tapestry.web.ServletWebContext}, and stores that into the
  * {@link org.apache.tapestry.services.ApplicationGlobals}.
  * 
  * @author Howard M. Lewis Ship
@@ -37,7 +37,7 @@ public class ContainerContextInitializer implements ApplicationInitializer
     public void initialize(HttpServlet servlet)
     {
         ServletContext servletContext = servlet.getServletContext();
-        ContainerContext context = new ServletContainerContext(servletContext);
+        WebContext context = new ServletWebContext(servletContext);
 
         _globals.store(context);
     }
