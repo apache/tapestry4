@@ -26,40 +26,41 @@
  *
  */
 
-package com.primix.tapestry.script;
-
-import com.primix.tapestry.*;
+package com.primix.tapestry;
 
 /**
- *  Defines the responsibilities of a template token used by a
- *  {@link ParsedScript} ... that is, how the token
- *  can assist in generating output.
+ *  Exception thrown during the execution of a {@link IScript}.
  *
  *  @author Howard Ship
  *  @version $Id$
+ *  @since 0.2.9
  */
 
-public interface IScriptToken
+public class ScriptException extends Exception
 {
-    /**
-     *  Invoked to have the token
-     *  add its text to the buffer.  A token may need access
-     *  to the symbols in order to produce its output.
-	 *
-	 *  <p>Top level tokens (such as BodyToken) can expect that
-	 *  buffer will be null.
-     *
-     */
-
-    public void write(StringBuffer buffer, ScriptSession session)
-	throws ScriptException;
+	private Throwable rootCause;
+	private ScriptSession session;
 	
-	/**
-	 *  Invoked during parsing to add the token parameter as a child
-	 *  of this token.
-	 *
-	 *  @since 0.2.9
-	 */
-	 
-	public void addToken(IScriptToken token);	
+	public ScriptException(String message, ScriptSession session, Throwable rootCause)
+	{
+		super(message);
+		
+		this.session = session;
+		this.rootCause = rootCause;
+	}
+	
+	public ScriptException(String message, ScriptSession session)
+	{
+		this(message, session, null);
+	}
+	
+	public Throwable getRootCause()
+	{
+		return rootCause;
+	}
+	
+	public ScriptSession getSession()
+	{
+		return session;
+	}
 }

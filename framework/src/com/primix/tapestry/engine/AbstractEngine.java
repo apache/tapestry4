@@ -160,6 +160,26 @@ public abstract class AbstractEngine
 	
 	protected transient ISpecificationSource specificationSource;
 	
+	/**
+	 *  The source for parsed scripts, again, stored in the
+	 * {@link ServletContext}.
+	 *
+	 * @since 1.0.2
+	 */
+	
+	private transient IScriptSource scriptSource;
+	
+	/** 
+	 *  The name of the context attribute for the {@link IScriptSource} instance.
+	 *  The application's name is appended.
+	 *
+	 *  @since 1.0.2
+	 *
+	 */
+	
+	protected static final String SCRIPT_SOURCE_NAME = 
+		"com.primix.tapestry.DefaultScriptSource";
+	
 	private transient Map services;
 	
 	private static final int MAP_SIZE = 7;
@@ -1365,6 +1385,7 @@ public abstract class AbstractEngine
 		pageSource.reset();
 		specificationSource.reset();
 		templateSource.reset();
+		scriptSource.reset();
 	}
 	
 	/**
@@ -1416,7 +1437,6 @@ public abstract class AbstractEngine
 	
 	protected void setupForRequest(RequestContext context)
 	{
-		String name;
 		HttpServlet servlet = context.getServlet();
 		ServletContext servletContext = servlet.getServletContext();
 		HttpServletRequest request = context.getRequest();
@@ -1453,42 +1473,61 @@ public abstract class AbstractEngine
 		
 		if (templateSource == null)
 		{
-			name = TEMPLATE_SOURCE_NAME + "." + applicationName;
+			String name = TEMPLATE_SOURCE_NAME + "." + applicationName;
 			
 			templateSource = 
 				(ITemplateSource)servletContext.getAttribute(name);
 			
 			if (templateSource == null)
+			{
 				templateSource = new DefaultTemplateSource(getResourceResolver());
-			
-			servletContext.setAttribute(name, templateSource);
+				
+				servletContext.setAttribute(name, templateSource);
+			}
 		}
 		
 		if (specificationSource == null)
 		{
-			name = SPECIFICATION_SOURCE_NAME + "." + applicationName;
+			String name = SPECIFICATION_SOURCE_NAME + "." + applicationName;
 			
 			specificationSource = 
 				(ISpecificationSource)servletContext.getAttribute(name);
 			
 			if (specificationSource == null)
+			{
 				specificationSource = 
 					new DefaultSpecificationSource(getResourceResolver(), 
 						specification);
-			
-			servletContext.setAttribute(name, specificationSource);
+				
+				servletContext.setAttribute(name, specificationSource);
+			}
 		}
 		
 		if (pageSource == null)
 		{
-			name = PAGE_SOURCE_NAME + "." + applicationName;
+			String name = PAGE_SOURCE_NAME + "." + applicationName;
 			
 			pageSource = (PageSource)servletContext.getAttribute(name);
 			
-			if (pageSource == null)
+			if (pageSource == null) {
 				pageSource = new PageSource(getResourceResolver());
+				
+				servletContext.setAttribute(name, pageSource);
+			}
+		}
+		
+		if (scriptSource == null)
+		{
+			String name = SCRIPT_SOURCE_NAME + "." + applicationName;
 			
-			servletContext.setAttribute(name, pageSource);
+			scriptSource = (IScriptSource)servletContext.getAttribute(name);
+			
+			if (scriptSource == null)
+			{
+				scriptSource = new DefaultScriptSource(getResourceResolver());
+				
+				servletContext.setAttribute(name, scriptSource);
+			}
 		}
 	}
 	
@@ -1712,5 +1751,10 @@ public abstract class AbstractEngine
 		cycle.getRequestContext().createSession();
 		
 		return result;
+	}
+	
+	public IScriptSource getScriptSource()
+	{
+		return scriptSource;
 	}
 }

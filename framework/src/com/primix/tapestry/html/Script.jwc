@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id$ -->
 <!DOCTYPE specification PUBLIC "-//Howard Ship//Tapestry Specification 1.1//EN" "http://tapestry.sf.net/dtd/Tapestry_1_1.dtd">
-<specification class="com.primix.tapestry.script.Script" allow-body="no">
+<specification class="com.primix.tapestry.html.Script" allow-body="no">
   <parameter name="script" java-type="java.lang.String" required="yes"/>
-  <parameter name="cautious"/>
   <parameter name="symbols" java-type="java.util.Map"/>
 </specification>

@@ -28,6 +28,7 @@
 
 package com.primix.tapestry.script;
 
+import com.primix.tapestry.*;
 import java.util.*;
 
 /**

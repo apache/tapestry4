@@ -26,40 +26,39 @@
  *
  */
 
-package com.primix.tapestry.script;
+package com.primix.tapestry;
 
-import com.primix.tapestry.*;
+import java.util.*;
 
 /**
- *  Defines the responsibilities of a template token used by a
- *  {@link ParsedScript} ... that is, how the token
- *  can assist in generating output.
+ *  An object that can convert a set of symbols into a collection of JavaScript statements.
+ *
+ *  <p>IScript implementation must be threadsafe.
  *
  *  @author Howard Ship
  *  @version $Id$
+ *  @since 1.0.2
  */
 
-public interface IScriptToken
-{
-    /**
-     *  Invoked to have the token
-     *  add its text to the buffer.  A token may need access
-     *  to the symbols in order to produce its output.
-	 *
-	 *  <p>Top level tokens (such as BodyToken) can expect that
-	 *  buffer will be null.
-     *
-     */
 
-    public void write(StringBuffer buffer, ScriptSession session)
-	throws ScriptException;
+public interface IScript
+{
+	/**
+	 *  Returns a string representing where the script was loaded from.
+	 *
+	 */
+	
+	public String getScriptPath();
 	
 	/**
-	 *  Invoked during parsing to add the token parameter as a child
-	 *  of this token.
+	 *  Executes the script, which will read and modify the symbols {@link Map}, and return
+	 *  a {@link ScriptSession} that can be used to obtain results.
 	 *
-	 *  @since 0.2.9
 	 */
-	 
-	public void addToken(IScriptToken token);	
+	
+	public ScriptSession execute(Map symbols)
+		throws ScriptException;
+	
+	
 }
+

@@ -254,4 +254,14 @@ public interface IEngine
 	 */
 	
 	public boolean isResetServiceEnabled();
+	
+	/**
+	 *  Returns a source for parsed {@link IScript}s.  The source is typically
+	 *  shared between all sessions.
+	 *
+	 *  @since 1.0.2
+	 *
+	 */
+	
+	public IScriptSource getScriptSource();
 }

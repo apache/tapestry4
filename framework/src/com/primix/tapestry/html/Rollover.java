@@ -31,9 +31,6 @@ package com.primix.tapestry.html;
 
 import com.primix.tapestry.*;
 import com.primix.tapestry.components.*;
-import com.primix.tapestry.script.*;
-import com.primix.tapestry.util.xml.*;
-import java.io.*;
 import java.util.*;
 
 // Appease Javadoc
@@ -41,12 +38,14 @@ import com.primix.tapestry.link.*;
 
 /**
  *  Combines an {@link Action} with an &lt;img&gt; and JavaScript code
- *  to create a rollover effect that work with both Netscape Navigator and 
+ *  to create a rollover effect that works with both Netscape Navigator and 
  *  Internet Explorer.
  *
  *  A <code>Rollover</code> must be contained within a {@link Body} and within
- *  an {@link IActionListener} (the JavaScript handlers for dealing with mouse
- *  movement are applied to the &lt;a&gt; created by the {@link IActionListener}).
+ *  an {@link IActionListener}.  The JavaScript handlers for dealing with mouse
+ *  movement are applied to the &lt;a&gt; created by the {@link IActionListener}.  For compatibility
+ *  with Netscape 4, the handlers are attached using HTML attributes (it would cleaner
+ *  and easier to do so using the DOM).
  *
  * <table border=1>
  * <tr> 
@@ -116,7 +115,7 @@ public class Rollover extends AbstractComponent
 {
 	// Shared by all instances of Rollover
 
-	private static ParsedScript parsedScript;
+	private static IScript parsedScript;
 
 	// Symbols used when generating the script.
 
@@ -255,6 +254,10 @@ public class Rollover extends AbstractComponent
 			{
 				imageName = writeScript(body, serviceLink, focusURL, blurURL);
 			}
+			catch (ResourceUnavailableException ex)
+			{
+				throw new RequestCycleException(this, ex);
+			}
 			catch (ScriptException ex)
 			{
 				throw new RequestCycleException(this, ex);
@@ -271,55 +274,24 @@ public class Rollover extends AbstractComponent
 
 	private static final String SCRIPT_RESOURCE = "Rollover.script";
 
-	private ParsedScript getParsedScript()
+	private IScript getParsedScript()
+		throws ResourceUnavailableException
 	{
 		if (parsedScript == null)
 		{
-			synchronized (Rollover.class)
-			{
-				if (parsedScript == null)
-				{
-					InputStream stream = null;
-
-                    try
-                    {
-                        stream = getClass().getResourceAsStream(SCRIPT_RESOURCE);
-
-						parsedScript = new ScriptParser().parse(stream, SCRIPT_RESOURCE);
-						}
-                    catch (DocumentParseException ex)
-                    {
-                        throw new ApplicationRuntimeException(ex);
-						}
-                    finally
-                    {
-                        close(stream);
-						}
-                }
-			}
+			IEngine engine = getPage().getEngine();
+			IScriptSource source = engine.getScriptSource();
+			
+			parsedScript = source.getScript("/com/primix/tapestry/html/Rollover.script");
 		}
-
+		
 		return parsedScript;
 	}
 
-	private void close(InputStream stream)
-	{
-		if (stream != null)
-		{
-			try
-			{
-				stream.close();
-			}
-			catch (IOException ex)
-			{
-				// ignore.
-			}
-		}
-	}
 
 	private String writeScript(Body body, IServiceLink link,
 		String focusURL, String blurURL)
-		throws ScriptException
+		throws ResourceUnavailableException, ScriptException
 	{
 		String uniqueId = body.getUniqueId();
 		String focusImageURL = 

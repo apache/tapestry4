@@ -38,7 +38,7 @@ import com.primix.tapestry.valid.*;
 import com.primix.tapestry.util.exception.*;
 import com.primix.tapestry.util.*;
 import com.primix.tapestry.inspector.*;
-import com.primix.tapestry.script.*;
+
 
 /**
  *  Defines the configuration for a Tapestry application.
@@ -138,7 +138,7 @@ public class ApplicationSpecification
 		defaultComponentMap.put("FieldLabel",
 				"/com/primix/tapestry/valid/FieldLabel.jwc");
 		defaultComponentMap.put("Script",
-				"/com/primix/tapestry/script/Script.jwc");
+				"/com/primix/tapestry/html/Script.jwc");
 		defaultComponentMap.put("Block",
 				"/com/primix/tapestry/components/Block.jwc");
 		defaultComponentMap.put("InsertBlock",
@@ -291,7 +291,7 @@ public class ApplicationSpecification
 	 *		<td>{@link Rollover} </td> </tr>
 	 *
 	 * <tr>
-	 *       <td>/com/primix/tapestry/script/Script.jwc</td>
+	 *       <td>/com/primix/tapestry/html/Script.jwc</td>
 	 *       <td>{@link Script}</td>
 	 * </tr>
 	 * <tr>

@@ -30,6 +30,7 @@ package com.primix.tapestry.script;
 
 import java.util.*;
 import java.io.*;
+import com.primix.tapestry.*;
 import com.primix.tapestry.util.prop.*;
 
 /**

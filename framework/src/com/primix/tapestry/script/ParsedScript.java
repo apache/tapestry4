@@ -28,6 +28,7 @@
 
 package com.primix.tapestry.script;
 
+import com.primix.tapestry.*;
 import java.util.*;
 
 /**
@@ -37,8 +38,9 @@ import java.util.*;
  *  @version $Id$
  *  @since 0.2.9
  */
- 
-public class ParsedScript
+
+public class ParsedScript 
+	implements IScript
 {
 	private String scriptPath;
 	
@@ -60,7 +62,7 @@ public class ParsedScript
 	}
 	
 	public ScriptSession execute(Map symbols)
-	throws ScriptException
+		throws ScriptException
 	{
 		ScriptSession result = new ScriptSession(scriptPath, symbols);
 		Iterator i = tokens.iterator();
