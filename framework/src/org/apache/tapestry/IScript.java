@@ -16,6 +16,8 @@ package org.apache.tapestry;
 
 import java.util.Map;
 
+import org.apache.hivemind.Resource;
+
 /**
  *  An object that can convert a set of symbols into a collection of JavaScript statements.
  *
@@ -34,7 +36,7 @@ public interface IScript
      *
      **/
 
-    public IResourceLocation getScriptLocation();
+    public Resource getScriptResource();
 
     /**
      * Executes the script, which will read and modify the symbols {@link Map}.  The

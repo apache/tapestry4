@@ -16,7 +16,7 @@ package org.apache.tapestry.enhance;
 
 import java.security.ProtectionDomain;
 
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.Tapestry;
 
 /**

@@ -20,7 +20,7 @@ import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
 
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.request.IUploadFile;

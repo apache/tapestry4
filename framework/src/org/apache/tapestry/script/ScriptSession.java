@@ -16,8 +16,8 @@ package org.apache.tapestry.script;
 
 import java.util.Map;
 
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IScriptProcessor;
 
 /**
@@ -36,11 +36,11 @@ public class ScriptSession
 {
     private IRequestCycle _cycle;
     private IScriptProcessor _processor;
-    private IResourceLocation _scriptLocation;
+    private Resource _scriptLocation;
     private Map _symbols;
 
     public ScriptSession(
-        IResourceLocation scriptLocation,
+        Resource scriptLocation,
         IRequestCycle cycle,
         IScriptProcessor processor,
         Map symbols)
@@ -51,7 +51,7 @@ public class ScriptSession
         _symbols = symbols;
     }
 
-    public IResourceLocation getScriptPath()
+    public Resource getScriptPath()
     {
         return _scriptLocation;
     }

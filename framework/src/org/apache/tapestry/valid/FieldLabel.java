@@ -14,8 +14,8 @@
 
 package org.apache.tapestry.valid;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.AbstractComponent;
-import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;

@@ -14,6 +14,8 @@
 
 package org.apache.tapestry;
 
+import org.apache.hivemind.ApplicationRuntimeException;
+
 /**
  *  A special subclass of {@link ApplicationRuntimeException} that can be thrown
  *  when a component has determined that the state of the page has been

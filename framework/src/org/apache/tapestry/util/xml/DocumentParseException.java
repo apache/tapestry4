@@ -14,10 +14,10 @@
 
 package org.apache.tapestry.util.xml;
 
-import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.ILocation;
-import org.apache.tapestry.IResourceLocation;
-import org.apache.tapestry.Location;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Location;
+import org.apache.hivemind.Resource;
+import org.apache.hivemind.impl.LocationImpl;
 import org.xml.sax.SAXParseException;
 
 /**
@@ -34,21 +34,21 @@ import org.xml.sax.SAXParseException;
 
 public class DocumentParseException extends ApplicationRuntimeException
 {
-    private IResourceLocation _documentLocation;
+    private Resource _documentLocation;
 
     public DocumentParseException(String message, Throwable rootCause)
     {
         this(message, null, null, rootCause);
     }
 
-    public DocumentParseException(String message, IResourceLocation documentLocation)
+    public DocumentParseException(String message, Resource documentLocation)
     {
         this(message, documentLocation, null);
     }
 
     public DocumentParseException(
         String message,
-        IResourceLocation documentLocation,
+        Resource documentLocation,
         Throwable rootCause)
     {
         this(message, documentLocation, null, rootCause);
@@ -56,8 +56,8 @@ public class DocumentParseException extends ApplicationRuntimeException
 
     public DocumentParseException(
         String message,
-        IResourceLocation documentLocation,
-        ILocation location,
+        Resource documentLocation,
+        Location location,
         Throwable rootCause)
     {
         super(message, null, location, rootCause);
@@ -67,7 +67,7 @@ public class DocumentParseException extends ApplicationRuntimeException
 
     public DocumentParseException(
         String message,
-        IResourceLocation documentLocation,
+        Resource documentLocation,
         SAXParseException rootCause)
     {
         this(
@@ -76,7 +76,7 @@ public class DocumentParseException extends ApplicationRuntimeException
             rootCause == null
                 || documentLocation == null
                     ? null
-                    : new Location(
+                    : new LocationImpl(
                         documentLocation,
                         rootCause.getLineNumber(),
                         rootCause.getColumnNumber()),
@@ -98,7 +98,7 @@ public class DocumentParseException extends ApplicationRuntimeException
         this(rootCause.getMessage(), (Throwable) rootCause);
     }
 
-    public IResourceLocation getDocumentLocation()
+    public Resource getDocumentLocation()
     {
         return _documentLocation;
     }

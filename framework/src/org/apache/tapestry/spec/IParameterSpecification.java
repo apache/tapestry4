@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.spec;
 
-import org.apache.tapestry.ILocationHolder;
+import org.apache.hivemind.LocationHolder;
 
 /**
  *  Defines a formal parameter to a component.  An <code>IParameterSpecification</code>
@@ -25,7 +25,7 @@ import org.apache.tapestry.ILocationHolder;
  * @author glongman@intelligentworks.com
  * @version $Id$
  */
-public interface IParameterSpecification extends ILocationHolder
+public interface IParameterSpecification extends LocationHolder
 {
     /**
      *  Returns the class name of the expected type of the parameter.  The default value

@@ -32,6 +32,7 @@ import junit.framework.AssertionFailedError;
 import ognl.Ognl;
 import ognl.OgnlException;
 
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.MatchResult;
 import org.apache.oro.text.regex.Pattern;
@@ -40,7 +41,6 @@ import org.apache.oro.text.regex.PatternMatcher;
 import org.apache.oro.text.regex.PatternMatcherInput;
 import org.apache.oro.text.regex.Perl5Compiler;
 import org.apache.oro.text.regex.Perl5Matcher;
-import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.ApplicationServlet;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.xml.DocumentParseException;

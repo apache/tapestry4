@@ -16,6 +16,8 @@ package org.apache.tapestry;
 
 import java.util.Collection;
 
+import org.apache.hivemind.ClassResolver;
+
 /**
  *  An object that provides a component with access to helper beans.
  *  Helper beans are JavaBeans associated with a page or component
@@ -76,7 +78,7 @@ public interface IBeanProvider
 	 * 
 	 **/
 	
-	public IResourceResolver getResourceResolver();
+	public ClassResolver getClassResolver();
 	
 }
 

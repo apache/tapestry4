@@ -14,6 +14,8 @@
 
 package org.apache.tapestry;
 
+import org.apache.hivemind.ApplicationRuntimeException;
+
 /**
  *  Exception thrown to force a redirection to an arbitrary location.
  *  This is used when, after processing a request (such as a form

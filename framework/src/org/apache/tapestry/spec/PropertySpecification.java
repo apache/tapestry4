@@ -13,6 +13,9 @@
 // limitations under the License.
 
 package org.apache.tapestry.spec;
+
+import org.apache.hivemind.impl.BaseLocatable;
+
 /**
  *  Defines a transient or persistant property of a component or page.  
  *  A {@link org.apache.tapestry.engine.IComponentClassEnhancer} uses this information

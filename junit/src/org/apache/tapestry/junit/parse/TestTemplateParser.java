@@ -23,8 +23,10 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.apache.tapestry.ILocation;
-import org.apache.tapestry.IResourceLocation;
+import org.apache.hivemind.util.ClasspathResource;
+import org.apache.hivemind.Location;
+import org.apache.hivemind.Resource;
+import org.apache.hivemind.impl.DefaultClassResolver;
 import org.apache.tapestry.parse.AttributeType;
 import org.apache.tapestry.parse.ITemplateParserDelegate;
 import org.apache.tapestry.parse.LocalizationToken;
@@ -35,8 +37,6 @@ import org.apache.tapestry.parse.TemplateParser;
 import org.apache.tapestry.parse.TemplateToken;
 import org.apache.tapestry.parse.TextToken;
 import org.apache.tapestry.parse.TokenType;
-import org.apache.tapestry.resource.ClasspathResourceLocation;
-import org.apache.tapestry.util.DefaultResourceResolver;
 
 /**
  *  Tests for the Tapestry HTML template parser.
@@ -55,12 +55,12 @@ public class TestTemplateParser extends TestCase
             return true;
         }
 
-        public boolean getAllowBody(String componentId, ILocation location)
+        public boolean getAllowBody(String componentId, Location location)
         {
             return true;
         }
 
-        public boolean getAllowBody(String libraryId, String type, ILocation location)
+        public boolean getAllowBody(String libraryId, String type, Location location)
         {
             return true;
         }
@@ -75,7 +75,7 @@ public class TestTemplateParser extends TestCase
     protected TemplateToken[] run(
         char[] templateData,
         ITemplateParserDelegate delegate,
-        IResourceLocation location)
+        Resource location)
         throws TemplateParseException
     {
         return new TemplateParser().parse(templateData, delegate, location);
@@ -84,7 +84,7 @@ public class TestTemplateParser extends TestCase
     protected TemplateToken[] run(
         InputStream stream,
         ITemplateParserDelegate delegate,
-        IResourceLocation location)
+        Resource location)
         throws TemplateParseException
     {
         StringBuffer buffer = new StringBuffer();
@@ -124,8 +124,8 @@ public class TestTemplateParser extends TestCase
         String thisClassName = getClass().getName();
         String thisPath = "/" + thisClassName.replace('.', '/') + "/" + file;
 
-        IResourceLocation location =
-            new ClasspathResourceLocation(new DefaultResourceResolver(), thisPath);
+        Resource location =
+            new ClasspathResource(new DefaultClassResolver(), thisPath);
 
         InputStream stream = getClass().getResourceAsStream(file);
 
@@ -376,12 +376,12 @@ public class TestTemplateParser extends TestCase
                 return !componentId.equals("row");
             }
 
-            public boolean getAllowBody(String componentId, ILocation location)
+            public boolean getAllowBody(String componentId, Location location)
             {
                 return true;
             }
 
-            public boolean getAllowBody(String libraryId, String type, ILocation location)
+            public boolean getAllowBody(String libraryId, String type, Location location)
             {
                 return true;
             }
@@ -419,12 +419,12 @@ public class TestTemplateParser extends TestCase
                 return true;
             }
 
-            public boolean getAllowBody(String id, ILocation location)
+            public boolean getAllowBody(String id, Location location)
             {
                 return id.equals("form");
             }
 
-            public boolean getAllowBody(String libraryId, String type, ILocation location)
+            public boolean getAllowBody(String libraryId, String type, Location location)
             {
                 return true;
             }

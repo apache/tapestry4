@@ -24,8 +24,8 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.IResourceResolver;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IComponentClassEnhancer;
 import org.apache.tapestry.enhance.javassist.EnhancedClassFactory;
@@ -50,7 +50,7 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
      **/
 
     private Map _cachedClasses;
-    private IResourceResolver _resolver;
+    private ClassResolver _resolver;
     private IEnhancedClassFactory _factory;
     private boolean _disableValidation;
 
@@ -59,7 +59,7 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
      * @param disableValidation if true, then validation (of unimplemented abstract methods)
      * is skipped
      */
-    public DefaultComponentClassEnhancer(IResourceResolver resolver, boolean disableValidation)
+    public DefaultComponentClassEnhancer(ClassResolver resolver, boolean disableValidation)
     {
         _cachedClasses = Collections.synchronizedMap(new HashMap());
         _resolver = resolver;
@@ -78,7 +78,7 @@ public class DefaultComponentClassEnhancer implements IComponentClassEnhancer
         _factory.reset();
     }
 
-    public IResourceResolver getResourceResolver()
+    public ClassResolver getResourceResolver()
     {
         return _resolver;
     }

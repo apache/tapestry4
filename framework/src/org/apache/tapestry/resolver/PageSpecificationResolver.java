@@ -16,10 +16,10 @@ package org.apache.tapestry.resolver;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -139,13 +139,13 @@ public class PageSpecificationResolver extends AbstractSpecificationResolver
 
         String expectedName = _simpleName + ".page";
 
-        IResourceLocation namespaceLocation = namespace.getSpecificationLocation();
+        Resource namespaceLocation = namespace.getSpecificationLocation();
 
         // See if there's a specification file in the same folder
         // as the library or application specification that's
         // supposed to contain the page.
 
-        if (found(namespaceLocation.getRelativeLocation(expectedName)))
+        if (found(namespaceLocation.getRelativeResource(expectedName)))
             return;
 
         if (namespace.isApplicationNamespace())
@@ -153,21 +153,21 @@ public class PageSpecificationResolver extends AbstractSpecificationResolver
 
             // The application namespace gets some extra searching.
 
-            if (found(getWebInfAppLocation().getRelativeLocation(expectedName)))
+            if (found(getWebInfAppLocation().getRelativeResource(expectedName)))
                 return;
 
-            if (found(getWebInfLocation().getRelativeLocation(expectedName)))
+            if (found(getWebInfLocation().getRelativeResource(expectedName)))
                 return;
 
-            if (found(getApplicationRootLocation().getRelativeLocation(expectedName)))
+            if (found(getApplicationRootLocation().getRelativeResource(expectedName)))
                 return;
 
             // The wierd one ... where we see if there's a template in the application root location.
 
             String templateName = _simpleName + "." + getTemplateExtension();
 
-            IResourceLocation templateLocation =
-                getApplicationRootLocation().getRelativeLocation(templateName);
+            Resource templateLocation =
+                getApplicationRootLocation().getRelativeResource(templateName);
 
             if (templateLocation.getResourceURL() != null)
             {
@@ -204,7 +204,7 @@ public class PageSpecificationResolver extends AbstractSpecificationResolver
         setSpecification(specification);
     }
 
-    private void setupImplicitPage(IResourceLocation location)
+    private void setupImplicitPage(Resource location)
     {
         if (LOG.isDebugEnabled())
             LOG.debug("Found HTML template at " + location);
@@ -218,7 +218,7 @@ public class PageSpecificationResolver extends AbstractSpecificationResolver
         install();
     }
 
-    private boolean found(IResourceLocation location)
+    private boolean found(Resource location)
     {
         if (LOG.isDebugEnabled())
             LOG.debug("Checking: " + location);

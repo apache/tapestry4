@@ -14,8 +14,8 @@
 
 package org.apache.tapestry.parse;
 
-import org.apache.tapestry.ILocatable;
-import org.apache.tapestry.ILocation;
+import org.apache.hivemind.Locatable;
+import org.apache.hivemind.Location;
 
 /**
  *  Exception thrown indicating a problem parsing an HTML template.
@@ -25,9 +25,9 @@ import org.apache.tapestry.ILocation;
  * 
  **/
 
-public class TemplateParseException extends Exception implements ILocatable
+public class TemplateParseException extends Exception implements Locatable
 {
-    private ILocation _location;
+    private Location _location;
     private Throwable _rootCause;
 
     public TemplateParseException(String message)
@@ -35,12 +35,12 @@ public class TemplateParseException extends Exception implements ILocatable
         this(message, null, null);
     }
 
-    public TemplateParseException(String message, ILocation location)
+    public TemplateParseException(String message, Location location)
     {
         this(message, location, null);
     }
 
-    public TemplateParseException(String message, ILocation location, Throwable rootCause)
+    public TemplateParseException(String message, Location location, Throwable rootCause)
     {
         super(message);
 
@@ -50,7 +50,7 @@ public class TemplateParseException extends Exception implements ILocatable
 
     }
 
-    public ILocation getLocation()
+    public Location getLocation()
     {
         return _location;
     }

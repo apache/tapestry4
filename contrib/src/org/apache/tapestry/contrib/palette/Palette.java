@@ -21,14 +21,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.components.Block;
@@ -337,10 +337,10 @@ public abstract class Palette extends BaseComponent implements IFormComponent
             IEngine engine = getPage().getEngine();
             IScriptSource source = engine.getScriptSource();
 
-            IResourceLocation scriptLocation =
-                getSpecification().getSpecificationLocation().getRelativeLocation("Palette.script");
+            Resource scriptResource =
+                getSpecification().getSpecificationLocation().getRelativeResource("Palette.script");
 
-            _script = source.getScript(scriptLocation);
+            _script = source.getScript(scriptResource);
         }
 
         Body body = Body.get(cycle);

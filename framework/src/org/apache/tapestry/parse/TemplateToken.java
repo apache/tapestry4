@@ -15,8 +15,8 @@
 package org.apache.tapestry.parse;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.tapestry.ILocatable;
-import org.apache.tapestry.ILocation;
+import org.apache.hivemind.Locatable;
+import org.apache.hivemind.Location;
 
 /**
  *  Base class for a number of different types of tokens that can be extracted
@@ -29,12 +29,12 @@ import org.apache.tapestry.ILocation;
  * 
  **/
 
-public abstract class TemplateToken implements ILocatable
+public abstract class TemplateToken implements Locatable
 {
     private TokenType _type;
-    private ILocation _location;
+    private Location _location;
 
-    protected TemplateToken(TokenType type, ILocation location)
+    protected TemplateToken(TokenType type, Location location)
     {
         _type = type;
         _location = location;
@@ -45,7 +45,7 @@ public abstract class TemplateToken implements ILocatable
         return _type;
     }
     
-    public ILocation getLocation()
+    public Location getLocation()
     {
     	return _location;
     }

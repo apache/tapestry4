@@ -14,6 +14,10 @@
 
 package org.apache.tapestry;
 
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.HiveMind;
+import org.apache.hivemind.Location;
+
 /**
  *  A general exception describing an {@link IBinding}
  *  and an {@link IComponent}.
@@ -41,14 +45,14 @@ public class BindingException extends ApplicationRuntimeException
     public BindingException(
         String message,
         Object component,
-        ILocation location,
+        Location location,
         IBinding binding,
         Throwable rootCause)
     {
         super(
             message,
             component,
-            Tapestry.findLocation(new Object[] { location, binding, component }),
+            HiveMind.findLocation(new Object[] { location, binding, component }),
             rootCause);
 
         _binding = binding;

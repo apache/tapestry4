@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.junit.mock.wml;
 
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.wml.Deck;
 

@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.tapestry.ILocation;
+import org.apache.hivemind.Location;
 import org.apache.tapestry.IRequestCycle;
 
 /**
@@ -30,7 +30,7 @@ import org.apache.tapestry.IRequestCycle;
 
 class UniqueToken extends AbstractToken
 {
-    public UniqueToken(ILocation location)
+    public UniqueToken(Location location)
     {
         super(location);
     }
@@ -39,7 +39,7 @@ class UniqueToken extends AbstractToken
     {
         IRequestCycle cycle = session.getRequestCycle();
 
-        ILocation location = getLocation();
+        Location location = getLocation();
         String tag = "<unique> " + location.toString();
 
         if (cycle.getAttribute(tag) != null)

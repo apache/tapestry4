@@ -17,10 +17,11 @@ package org.apache.tapestry.junit.valid;
 import java.util.Collection;
 import java.util.Map;
 
+import org.apache.hivemind.Messages;
+import org.apache.hivemind.impl.BaseLocatable;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IMessages;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.INamespace;
@@ -30,7 +31,6 @@ import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.form.FormEventType;
 import org.apache.tapestry.form.IFormComponent;
-import org.apache.tapestry.spec.BaseLocatable;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.valid.IValidationDelegate;
 
@@ -229,7 +229,7 @@ public class MockForm extends BaseLocatable implements IForm
     {
     }
 
-    public IMessages getMessages()
+    public Messages getMessages()
     {
         return null;
     }
@@ -243,27 +243,27 @@ public class MockForm extends BaseLocatable implements IForm
     {
 
     }
-    
+
     /**
-	 * @see org.apache.tapestry.IForm#addHiddenValue(java.lang.String, java.lang.String, java.lang.String)
-	 */
-	public void addHiddenValue(String name, String id, String value) {
+     * @see org.apache.tapestry.IForm#addHiddenValue(java.lang.String, java.lang.String, java.lang.String)
+     */
+    public void addHiddenValue(String name, String id, String value)
+    {
 
-	}
-
+    }
 
     public String getMessage(String key)
     {
         return null;
     }
 
-	public void setProperty(String propertyName, Object value)
-	{		
-	}
+    public void setProperty(String propertyName, Object value)
+    {
+    }
 
-	public Object getProperty(String propertyName)
-	{
-		return null;
-	}
+    public Object getProperty(String propertyName)
+    {
+        return null;
+    }
 
 }

@@ -14,9 +14,9 @@
 
 package org.apache.tapestry.engine;
 
+import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IResourceResolver;
 
 /**
  *  Abstracts the process of loading pages from thier specifications as
@@ -70,6 +70,6 @@ public interface IPageSource
      * 
      **/
     
-    public IResourceResolver getResourceResolver();
+    public ClassResolver getResourceResolver();
         
 }

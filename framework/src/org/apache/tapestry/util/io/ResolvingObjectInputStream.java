@@ -19,7 +19,7 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectStreamClass;
 
-import org.apache.tapestry.IResourceResolver;
+import org.apache.hivemind.ClassResolver;
 
 /**
  *  Specialized subclass of {@link java.io.ObjectInputStream}
@@ -35,9 +35,9 @@ import org.apache.tapestry.IResourceResolver;
 
 public class ResolvingObjectInputStream extends ObjectInputStream
 {
-    private IResourceResolver _resolver;
+    private ClassResolver _resolver;
 
-    public ResolvingObjectInputStream(IResourceResolver resolver, InputStream input) throws IOException
+    public ResolvingObjectInputStream(ClassResolver resolver, InputStream input) throws IOException
     {
         super(input);
 

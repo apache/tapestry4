@@ -14,8 +14,8 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.tapestry.IResourceLocation;
-import org.apache.tapestry.IResourceResolver;
+import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.util.xml.DocumentParseException;
 import org.apache.tapestry.util.xml.RuleDirectedParser;
@@ -70,7 +70,7 @@ public class ScriptParser
     public static final String SCRIPT_DTD_3_0_PUBLIC_ID =
         "-//Apache Software Foundation//Tapestry Script Specification 3.0//EN";
 
-    public ScriptParser(IResourceResolver resolver)
+    public ScriptParser(ClassResolver resolver)
     {
         _parser = new RuleDirectedParser();
 
@@ -110,7 +110,7 @@ public class ScriptParser
      *
      **/
 
-    public IScript parse(IResourceLocation resourceLocation) throws DocumentParseException
+    public IScript parse(Resource resourceLocation) throws DocumentParseException
     {
         return (IScript) _parser.parse(resourceLocation);
     }

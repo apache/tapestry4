@@ -16,8 +16,8 @@ package org.apache.tapestry.spec;
 
 import java.util.List;
 
-import org.apache.tapestry.ILocatable;
-import org.apache.tapestry.ILocationHolder;
+import org.apache.hivemind.Locatable;
+import org.apache.hivemind.LocationHolder;
 import org.apache.tapestry.bean.IBeanInitializer;
 import org.apache.tapestry.util.IPropertyHolder;
 
@@ -27,7 +27,7 @@ import org.apache.tapestry.util.IPropertyHolder;
  * @author glongman@intelligentworks.com
  * @version $Id$
  */
-public interface IBeanSpecification extends IPropertyHolder, ILocationHolder, ILocatable
+public interface IBeanSpecification extends IPropertyHolder, LocationHolder, Locatable
 {
     public abstract String getClassName();
     public abstract BeanLifecycle getLifecycle();

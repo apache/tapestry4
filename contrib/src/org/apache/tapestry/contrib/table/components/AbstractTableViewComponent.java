@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.contrib.table.components;
 
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.contrib.table.model.ITableModelSource;

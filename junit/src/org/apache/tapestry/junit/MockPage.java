@@ -19,10 +19,11 @@ import java.util.Collection;
 import java.util.Locale;
 import java.util.Map;
 
+import org.apache.hivemind.Messages;
+import org.apache.hivemind.impl.BaseLocatable;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.IMessages;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.INamespace;
@@ -34,7 +35,6 @@ import org.apache.tapestry.event.ChangeObserver;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.event.PageValidateListener;
-import org.apache.tapestry.spec.BaseLocatable;
 import org.apache.tapestry.spec.IComponentSpecification;
 
 /**
@@ -303,7 +303,7 @@ public class MockPage extends BaseLocatable implements IPage
         return null;
     }
 
-    public IMessages getMessages()
+    public Messages getMessages()
     {
         return _engine.getComponentMessagesSource().getMessages(this);
     }

@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.tapestry.ILocation;
+import org.apache.hivemind.Location;
 
 
 /**
@@ -31,7 +31,7 @@ class BodyToken extends AbstractToken
 {
     private int _bufferLengthHighwater = 100;
 
-	public BodyToken(ILocation location)
+	public BodyToken(Location location)
 	{
 		super(location);
 	}

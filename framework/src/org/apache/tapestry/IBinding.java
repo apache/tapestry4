@@ -14,6 +14,8 @@
 
 package org.apache.tapestry;
 
+import org.apache.hivemind.Locatable;
+
 /**
  *  A binding is the mechanism used to provide values for parameters of
  *  specific {@link IComponent} instances. The component doesn't
@@ -29,7 +31,7 @@ package org.apache.tapestry;
  *  @version $Id$
  **/
 
-public interface IBinding extends ILocatable
+public interface IBinding extends Locatable
 {
     /**
      *  Invokes {@link #getObject()}, then coerces the value to a boolean.  

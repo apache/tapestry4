@@ -28,15 +28,15 @@ import java.util.Map;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Location;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IEngine;
-import org.apache.tapestry.ILocation;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.parse.ComponentTemplate;
 import org.apache.tapestry.parse.ITemplateParserDelegate;
@@ -98,7 +98,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
 
     /** @since 2.2 **/
 
-    private IResourceLocation _applicationRootLocation;
+    private Resource _applicationRootLocation;
 
     /** @since 3.0 **/
 
@@ -122,7 +122,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
             return _component.getSpecification().getComponent(componentId) != null;
         }
 
-        public boolean getAllowBody(String componentId, ILocation location)
+        public boolean getAllowBody(String componentId, Location location)
         {
             IComponent embedded = _component.getComponent(componentId);
 
@@ -132,7 +132,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
             return embedded.getSpecification().getAllowBody();
         }
 
-        public boolean getAllowBody(String libraryId, String type, ILocation location)
+        public boolean getAllowBody(String libraryId, String type, Location location)
         {
             INamespace namespace = _component.getNamespace();
 
@@ -168,7 +168,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
     public ComponentTemplate getTemplate(IRequestCycle cycle, IComponent component)
     {
         IComponentSpecification specification = component.getSpecification();
-        IResourceLocation specificationLocation = specification.getSpecificationLocation();
+        Resource specificationLocation = specification.getSpecificationLocation();
 
         Locale locale = component.getPage().getLocale();
 
@@ -253,7 +253,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
 
     private ComponentTemplate findTemplate(
         IRequestCycle cycle,
-        IResourceLocation location,
+        Resource location,
         IComponent component,
         Locale locale)
     {
@@ -289,9 +289,9 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
         if (_applicationRootLocation == null)
             _applicationRootLocation = Tapestry.getApplicationRootLocation(cycle);
 
-        IResourceLocation baseLocation =
-            _applicationRootLocation.getRelativeLocation(templateBaseName);
-        IResourceLocation localizedLocation = baseLocation.getLocalization(locale);
+        Resource baseLocation =
+            _applicationRootLocation.getRelativeResource(templateBaseName);
+        Resource localizedLocation = baseLocation.getLocalization(locale);
 
         if (localizedLocation == null)
             return null;
@@ -328,7 +328,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
                 ex);
         }
 
-        IResourceLocation resourceLocation = asset.getResourceLocation();
+        Resource resourceLocation = asset.getResourceLocation();
 
         return constructTemplateInstance(cycle, templateData, resourceLocation, component);
     }
@@ -344,7 +344,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
 
     private ComponentTemplate findStandardTemplate(
         IRequestCycle cycle,
-        IResourceLocation location,
+        Resource location,
         IComponent component,
         String templateBaseName,
         Locale locale)
@@ -356,9 +356,9 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
                     + " in locale "
                     + locale.getDisplayName());
 
-        IResourceLocation baseTemplateLocation = location.getRelativeLocation(templateBaseName);
+        Resource baseTemplateLocation = location.getRelativeResource(templateBaseName);
 
-        IResourceLocation localizedTemplateLocation = baseTemplateLocation.getLocalization(locale);
+        Resource localizedTemplateLocation = baseTemplateLocation.getLocalization(locale);
 
         if (localizedTemplateLocation == null)
             return null;
@@ -376,7 +376,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
 
     private ComponentTemplate getOrParseTemplate(
         IRequestCycle cycle,
-        IResourceLocation location,
+        Resource location,
         IComponent component)
     {
 
@@ -404,7 +404,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
 
     private ComponentTemplate parseTemplate(
         IRequestCycle cycle,
-        IResourceLocation location,
+        Resource location,
         IComponent component)
     {
         String encoding = getTemplateEncoding(cycle, component, location.getLocale());
@@ -427,7 +427,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
     private synchronized ComponentTemplate constructTemplateInstance(
         IRequestCycle cycle,
         char[] templateData,
-        IResourceLocation location,
+        Resource location,
         IComponent component)
     {
         if (_parser == null)
@@ -462,7 +462,7 @@ public class DefaultTemplateSource implements ITemplateSource, IRenderDescriptio
      *
      **/
 
-    private char[] readTemplate(IResourceLocation location, String encoding)
+    private char[] readTemplate(Resource location, String encoding)
     {
         if (LOG.isDebugEnabled())
             LOG.debug("Reading template " + location);

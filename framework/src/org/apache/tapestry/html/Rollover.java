@@ -17,13 +17,13 @@ package org.apache.tapestry.html;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.AbstractComponent;
-import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IScript;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.components.ILinkComponent;
@@ -147,8 +147,8 @@ public abstract class Rollover extends AbstractComponent
             IEngine engine = getPage().getEngine();
             IScriptSource source = engine.getScriptSource();
 
-            IResourceLocation scriptLocation =
-                getSpecification().getSpecificationLocation().getRelativeLocation(
+            Resource scriptLocation =
+                getSpecification().getSpecificationLocation().getRelativeResource(
                     "Rollover.script");
 
             _parsedScript = source.getScript(scriptLocation);

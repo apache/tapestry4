@@ -14,6 +14,8 @@
 
 package org.apache.tapestry.spec;
 
+import org.apache.hivemind.impl.BaseLocatable;
+
 /**
  *  Defines a formal parameter to a component.  A <code>IParameterSpecification</code>
  *  is contained by a {@link IComponentSpecification}.

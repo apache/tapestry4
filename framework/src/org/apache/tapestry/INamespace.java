@@ -16,6 +16,8 @@ package org.apache.tapestry;
 
 import java.util.List;
 
+import org.apache.hivemind.Locatable;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
 
@@ -37,7 +39,7 @@ import org.apache.tapestry.spec.ILibrarySpecification;
  *
  **/
 
-public interface INamespace extends ILocatable
+public interface INamespace extends Locatable
 {
     /**
      *  Reserved name of a the implicit Framework library.
@@ -232,7 +234,7 @@ public interface INamespace extends ILocatable
      * 
      **/
 
-    public IResourceLocation getSpecificationLocation();
+    public Resource getSpecificationLocation();
 
     /**
      *  Returns true if the namespace is the special

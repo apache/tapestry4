@@ -14,6 +14,8 @@
 
 package org.apache.tapestry;
 
+import org.apache.hivemind.Resource;
+
 /**
  * Defines methods needed by a {@link org.apache.tapestry.IScript} to
  * execute.
@@ -47,7 +49,7 @@ public interface IScriptProcessor
 	 * that external scripts are only loaded a single time per page.
 	 */
 	
-	public void addExternalScript(IResourceLocation location);
+	public void addExternalScript(Resource resource);
 	
 	/**
 	 * Ensures that the given string is unique.  The string

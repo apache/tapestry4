@@ -14,9 +14,9 @@
 
 package org.apache.tapestry.util.xml;
 
-import org.apache.tapestry.ILocatable;
-import org.apache.tapestry.ILocation;
-import org.apache.tapestry.IResourceLocation;
+import org.apache.hivemind.Locatable;
+import org.apache.hivemind.Location;
+import org.apache.hivemind.Resource;
 
 /**
  *  Exception thrown if there is any kind of error validating a string
@@ -28,23 +28,23 @@ import org.apache.tapestry.IResourceLocation;
  *
  **/
 
-public class InvalidStringException extends DocumentParseException implements ILocatable
+public class InvalidStringException extends DocumentParseException implements Locatable
 {
     private String _invalidString;
 
     public InvalidStringException(
         String message,
         String invalidString,
-        IResourceLocation resourceLocation)
+        Resource resourceLocation)
     {
         super(message, resourceLocation);
 
         _invalidString = invalidString;
     }
 
-    public InvalidStringException(String message, String invalidString, ILocation location)
+    public InvalidStringException(String message, String invalidString, Location location)
     {
-        super(message, location == null ? null : location.getResourceLocation(), location, null);
+        super(message, location == null ? null : location.getResource(), location, null);
 
         _invalidString = invalidString;
     }

@@ -21,20 +21,19 @@ import java.util.Locale;
 import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
+import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.Resource;
+import org.apache.hivemind.impl.DefaultClassResolver;
+import org.apache.hivemind.util.ClasspathResource;
 import org.apache.tapestry.IPage;
-import org.apache.tapestry.IResourceLocation;
-import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.DefaultComponentMessagesSource;
 import org.apache.tapestry.engine.IComponentMessagesSource;
 import org.apache.tapestry.parse.SpecificationParser;
-import org.apache.tapestry.resource.ClasspathResourceLocation;
-
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
-import org.apache.tapestry.util.DefaultResourceResolver;
 import org.apache.tapestry.util.IPropertyHolder;
 
 /**
@@ -51,11 +50,11 @@ public class TapestryTestCase extends TestCase
     protected static final boolean IS_JDK13 =
         System.getProperty("java.specification.version").equals("1.3");
 
-    private IResourceResolver _resolver = new DefaultResourceResolver();
+    private ClassResolver _resolver = new DefaultClassResolver();
 
     protected IPage createPage(String specificationPath, Locale locale)
     {
-        IResourceLocation location = new ClasspathResourceLocation(_resolver, specificationPath);
+        Resource specResource = new ClasspathResource(_resolver, specificationPath);
 
         IComponentMessagesSource source = new DefaultComponentMessagesSource();
         MockEngine engine = new MockEngine();
@@ -65,9 +64,9 @@ public class TapestryTestCase extends TestCase
         result.setEngine(engine);
         result.setLocale(locale);
 
-  		// TODO the SpecFactory in SpecificationParser should be used in some way to create an IComponentSpecification!
-        IComponentSpecification spec = new ComponentSpecification(); 
-        spec.setSpecificationLocation(location);
+        // TODO the SpecFactory in SpecificationParser should be used in some way to create an IComponentSpecification!
+        IComponentSpecification spec = new ComponentSpecification();
+        spec.setSpecificationLocation(specResource);
         result.setSpecification(spec);
 
         return result;
@@ -77,7 +76,7 @@ public class TapestryTestCase extends TestCase
     {
         SpecificationParser parser = new SpecificationParser(_resolver);
 
-        IResourceLocation location = getSpecificationResourceLocation(simpleName);
+        Resource location = getSpecificationResourceLocation(simpleName);
 
         return parser.parseComponentSpecification(location);
     }
@@ -86,7 +85,7 @@ public class TapestryTestCase extends TestCase
     {
         SpecificationParser parser = new SpecificationParser(_resolver);
 
-        IResourceLocation location = getSpecificationResourceLocation(simpleName);
+        Resource location = getSpecificationResourceLocation(simpleName);
 
         return parser.parsePageSpecification(location);
     }
@@ -95,27 +94,26 @@ public class TapestryTestCase extends TestCase
     {
         SpecificationParser parser = new SpecificationParser(_resolver);
 
-        IResourceLocation location = getSpecificationResourceLocation(simpleName);
+        Resource location = getSpecificationResourceLocation(simpleName);
 
         return parser.parseApplicationSpecification(location);
     }
 
-    protected IResourceLocation getSpecificationResourceLocation(String simpleName)
+    protected Resource getSpecificationResourceLocation(String simpleName)
     {
         String adjustedClassName = "/" + getClass().getName().replace('.', '/') + ".class";
 
-        IResourceLocation classResourceLocation =
-            new ClasspathResourceLocation(_resolver, adjustedClassName);
+        Resource classResource =
+            new ClasspathResource(_resolver, adjustedClassName);
 
-        IResourceLocation appSpecLocation = classResourceLocation.getRelativeLocation(simpleName);
-        return appSpecLocation;
+        return classResource.getRelativeResource(simpleName);
     }
 
     protected ILibrarySpecification parseLib(String simpleName) throws Exception
     {
         SpecificationParser parser = new SpecificationParser(_resolver);
 
-        IResourceLocation location = getSpecificationResourceLocation(simpleName);
+        Resource location = getSpecificationResourceLocation(simpleName);
 
         return parser.parseLibrarySpecification(location);
     }

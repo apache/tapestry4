@@ -17,10 +17,10 @@ package org.apache.tapestry.asset;
 import java.io.InputStream;
 import java.net.URL;
 
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Location;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IEngine;
-import org.apache.tapestry.ILocation;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.resource.ContextResourceLocation;
@@ -37,7 +37,7 @@ public class ContextAsset extends AbstractAsset implements IAsset
 {
     private String _resolvedURL;
 
-    public ContextAsset(ContextResourceLocation resourceLocation, ILocation location)
+    public ContextAsset(ContextResourceLocation resourceLocation, Location location)
     {
         super(resourceLocation, location);
     }

@@ -18,7 +18,7 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IExternalPage;
 import org.apache.tapestry.IRequestCycle;
@@ -104,8 +104,8 @@ import org.apache.tapestry.request.ResponseOutputStream;
  * @author Howard Lewis Ship
  * @author Malcolm Edgar
  * @since 2.2
- *  
- **/
+ * @version $Id$
+ */
 
 public class ExternalService extends AbstractService
 {

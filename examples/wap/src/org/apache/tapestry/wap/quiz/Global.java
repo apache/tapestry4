@@ -14,15 +14,6 @@
 
 package org.apache.tapestry.wap.quiz;
 
-import org.apache.tapestry.ApplicationServlet;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IResourceLocation;
-import org.apache.tapestry.engine.IPropertySource;
-import org.apache.tapestry.request.RequestContext;
-import org.apache.tapestry.resource.ContextResourceLocation;
-import org.apache.tapestry.util.StringSplitter;
-
-import javax.servlet.ServletContext;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -32,6 +23,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.ServletContext;
+
+import org.apache.hivemind.Resource;
+import org.apache.tapestry.ApplicationServlet;
+import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.engine.IPropertySource;
+import org.apache.tapestry.request.RequestContext;
+import org.apache.tapestry.resource.ContextResourceLocation;
+import org.apache.tapestry.util.StringSplitter;
 
 /**
  *  Global object for the Quiz application.
@@ -157,13 +158,13 @@ public class Global implements Serializable
 
         switch (questionSet)
         {
-            case EASY_QUESTIONS:
+            case EASY_QUESTIONS :
                 list = easyQuestions;
                 break;
-            case MEDIUM_QUESTIONS:
+            case MEDIUM_QUESTIONS :
                 list = mediumQuestions;
                 break;
-            default:
+            default :
                 list = hardQuestions;
                 break;
         }
@@ -191,11 +192,11 @@ public class Global implements Serializable
     {
         switch (questionSet)
         {
-            case EASY_QUESTIONS:
+            case EASY_QUESTIONS :
                 return easyQuestions.size();
-            case MEDIUM_QUESTIONS:
+            case MEDIUM_QUESTIONS :
                 return mediumQuestions.size();
-            default:
+            default :
                 return hardQuestions.size();
         }
     }
@@ -208,11 +209,24 @@ public class Global implements Serializable
             ApplicationServlet servlet = requestContext.getServlet();
             ServletContext context = servlet.getServletContext();
             IPropertySource propertySource = cycle.getEngine().getPropertySource();
-            IResourceLocation webInfLocation = new ContextResourceLocation(context, "/WEB-INF/");
-            IResourceLocation webInfAppLocation = webInfLocation.getRelativeLocation(servlet.getServletName() + "/");
-            readQuestions(easyQuestions, webInfAppLocation, propertySource.getPropertyValue("easyquestionsfile"));
-            readQuestions(mediumQuestions, webInfAppLocation, propertySource.getPropertyValue("mediumquestiosfile"));
-            readQuestions(hardQuestions, webInfAppLocation, propertySource.getPropertyValue("hardquestionsfile"));
+
+            Resource webInfLocation = new ContextResourceLocation(context, "/WEB-INF/");
+
+            Resource webInfAppLocation =
+                webInfLocation.getRelativeResource(servlet.getServletName() + "/");
+
+            readQuestions(
+                easyQuestions,
+                webInfAppLocation,
+                propertySource.getPropertyValue("easyquestionsfile"));
+            readQuestions(
+                mediumQuestions,
+                webInfAppLocation,
+                propertySource.getPropertyValue("mediumquestiosfile"));
+            readQuestions(
+                hardQuestions,
+                webInfAppLocation,
+                propertySource.getPropertyValue("hardquestionsfile"));
             points = new int[10];
             names = new String[10];
             for (int i = 0; i <= 9; i++)
@@ -238,15 +252,18 @@ public class Global implements Serializable
         reader = new BufferedReader(new FileReader(questionsFile));
         while ((line = reader.readLine()) != null)
         {
-            if (line.trim().equals("")) break;
+            if (line.trim().equals(""))
+                break;
             questions.add(line);
         }
     }
 
-    private void readQuestions(List questions, IResourceLocation location, String filename)
+    private void readQuestions(List questions, Resource folder, String filename)
     {
-        IResourceLocation result = location.getRelativeLocation(filename);
-        URL url = result.getResourceURL();
+        Resource resource = folder.getRelativeResource(filename);
+
+        URL url = resource.getResourceURL();
+
         try
         {
             readQuestions(questions, url.getFile());

@@ -18,7 +18,7 @@ import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.Properties;
 
-import org.apache.tapestry.IMessages;
+import org.apache.hivemind.Messages;
 
 /**
  *  Implementation of {@link org.apache.tapestry.IMessages}.  This is basically
@@ -32,7 +32,7 @@ import org.apache.tapestry.IMessages;
  *
  **/
 
-public class ComponentMessages implements IMessages
+public class ComponentMessages implements Messages
 {
     private Properties _properties;
     private Locale _locale;

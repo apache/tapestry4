@@ -17,7 +17,7 @@ package org.apache.tapestry.junit.script;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.tapestry.IResourceLocation;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.IScriptProcessor;
 import org.apache.tapestry.util.IdAllocator;
 
@@ -66,21 +66,21 @@ public class MockScriptProcessor implements IScriptProcessor
 		return _initialization.toString();
 	}
 
-    public void addExternalScript(IResourceLocation scriptLocation)
+    public void addExternalScript(Resource scriptResource)
     {
         if (_externalScripts == null)
             _externalScripts = new ArrayList();
 
-        _externalScripts.add(scriptLocation);
+        _externalScripts.add(scriptResource);
     }
     
-    public IResourceLocation[] getExternalScripts()
+    public Resource[] getExternalScripts()
     {
     	if (_externalScripts == null)return null;
     	
     	int count = _externalScripts.size();
     	
-    	return (IResourceLocation[])_externalScripts.toArray(new IResourceLocation[count]);
+    	return (Resource[])_externalScripts.toArray(new Resource[count]);
     }
 
     public String getUniqueString(String baseValue)

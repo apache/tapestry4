@@ -14,8 +14,8 @@
 
 package org.apache.tapestry.engine;
 
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.INamespace;
-import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
 
@@ -44,7 +44,7 @@ public interface ISpecificationSource
      * 
      **/
 
-    public IComponentSpecification getComponentSpecification(IResourceLocation specificationLocation);
+    public IComponentSpecification getComponentSpecification(Resource specificationLocation);
 
     /**
      *  Retrieves a component specification, parsing it as necessary.
@@ -59,7 +59,7 @@ public interface ISpecificationSource
      * 
      **/
 
-    public IComponentSpecification getPageSpecification(IResourceLocation specificationLocation);
+    public IComponentSpecification getPageSpecification(Resource specificationLocation);
 
     /**
      *  Invoked to have the source clear any internal cache.  This is most often
@@ -81,7 +81,7 @@ public interface ISpecificationSource
      * 
      **/
 
-    public ILibrarySpecification getLibrarySpecification(IResourceLocation specificationLocation);
+    public ILibrarySpecification getLibrarySpecification(Resource specificationLocation);
 
     /**
      *  Returns the {@link INamespace} for the application.

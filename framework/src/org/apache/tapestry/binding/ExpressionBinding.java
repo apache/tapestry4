@@ -20,10 +20,10 @@ import ognl.Ognl;
 import ognl.OgnlException;
 import ognl.TypeConverter;
 
+import org.apache.hivemind.ClassResolver;
+import org.apache.hivemind.Location;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.ILocation;
-import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.spec.BeanLifecycle;
 import org.apache.tapestry.spec.IBeanSpecification;
@@ -137,7 +137,7 @@ public class ExpressionBinding extends AbstractBinding
 
     private boolean _initialized;
 
-    private IResourceResolver _resolver;
+    private ClassResolver _resolver;
 
     /**
      *  The OGNL context for this binding.  It is retained
@@ -154,10 +154,10 @@ public class ExpressionBinding extends AbstractBinding
      **/
 
     public ExpressionBinding(
-        IResourceResolver resolver,
+        ClassResolver resolver,
         IComponent root,
         String expression,
-        ILocation location)
+        Location location)
     {
         super(location);
 
@@ -200,7 +200,7 @@ public class ExpressionBinding extends AbstractBinding
         {
             return Ognl.getValue(_parsedExpression, getOgnlContext(), _root);
         }
-        catch (OgnlException t)
+        catch (Throwable t)
         {
             throw new BindingException(
                 Tapestry.format(
@@ -225,7 +225,7 @@ public class ExpressionBinding extends AbstractBinding
     private Map getOgnlContext()
     {
         if (_context == null)
-            _context = Ognl.createDefaultContext(_root, _resolver);
+            _context = Ognl.createDefaultContext(_root, OgnlUtils.getOgnlClassResolver());
 
         if (_root.getPage() != null)
         {
@@ -400,7 +400,7 @@ public class ExpressionBinding extends AbstractBinding
     {
         try
         {
-            if (Ognl.isConstant(_parsedExpression, getOgnlContext()))
+            if (OgnlUtils.isConstant(_parsedExpression))
             {
                 _invariant = true;
 
@@ -409,7 +409,7 @@ public class ExpressionBinding extends AbstractBinding
                 return true;
             }
         }
-        catch (OgnlException ex)
+        catch (Exception ex)
         {
             throw new BindingException(
                 Tapestry.format(
@@ -538,7 +538,7 @@ public class ExpressionBinding extends AbstractBinding
      *
      *  @throws BindingException if the property can't be updated (typically
      *  due to an security problem, or a missing mutator method).
-     *  @throws BindingException if the binding is invariant.
+     *  @throws ReadOnlyBindingException if the binding is invariant.
      **/
 
     public void setObject(Object value)
@@ -552,7 +552,7 @@ public class ExpressionBinding extends AbstractBinding
         {
             Ognl.setValue(_parsedExpression, getOgnlContext(), _root, value);
         }
-        catch (OgnlException ex)
+        catch (Throwable ex)
         {
             throw new BindingException(
                 Tapestry.format(

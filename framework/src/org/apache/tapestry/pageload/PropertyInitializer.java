@@ -14,12 +14,9 @@
 
 package org.apache.tapestry.pageload;
 
-import ognl.Ognl;
-
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Location;
 import org.apache.tapestry.IComponent;
-import org.apache.tapestry.ILocation;
-import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEvent;
@@ -34,35 +31,32 @@ import org.apache.tapestry.util.prop.OgnlUtils;
  *  @author Howard Lewis Ship
  *  @version $Id$
  *  @since 3.0
- **/
+ */
 
 public class PropertyInitializer implements PageDetachListener
 {
-    private IResourceResolver _resolver;
     private IComponent _component;
     private String _propertyName;
     private String _expression;
     private boolean _invariant;
     private Object _value;
-    private ILocation _location;
+    private Location _location;
 
     public PropertyInitializer(
-        IResourceResolver resolver,
         IComponent component,
         String propertyName,
         String expression,
-        ILocation location)
+        Location location)
     {
-        _resolver = resolver;
         _component = component;
         _propertyName = propertyName;
         _expression = expression;
         _location = location;
-
+        
         prepareInvariant();
     }
 
-    public void prepareInvariant()
+    private void prepareInvariant()
     {
         _invariant = false;
 
@@ -75,14 +69,14 @@ public class PropertyInitializer implements PageDetachListener
             if (Tapestry.isBlank(_expression))
             {
                 _invariant = true;
-                _value = OgnlUtils.get(_propertyName, _resolver, _component);
+                _value = OgnlUtils.get(_propertyName, _component);
             }
             else
-                if (Ognl.isConstant(_expression, Ognl.createDefaultContext(_component, _resolver)))
+                if (OgnlUtils.isConstant(_expression))
                 {
                     // If the expression is a constant, evaluate it and remember the value 
                     _invariant = true;
-                    _value = OgnlUtils.get(_expression, _resolver, _component);
+                    _value = OgnlUtils.get(_expression, _component);
                 }
         }
         catch (Exception ex)
@@ -103,11 +97,11 @@ public class PropertyInitializer implements PageDetachListener
         try
         {
             if (_invariant)
-                OgnlUtils.set(_propertyName, _resolver, _component, _value);
+                OgnlUtils.set(_propertyName, _component, _value);
             else
             {
-                Object value = OgnlUtils.get(_expression, _resolver, _component);
-                OgnlUtils.set(_propertyName, _resolver, _component, value);
+                Object value = OgnlUtils.get(_expression, _component);
+                OgnlUtils.set(_propertyName, _component, value);
             }
         }
         catch (Exception ex)

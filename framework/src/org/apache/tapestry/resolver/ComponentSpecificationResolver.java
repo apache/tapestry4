@@ -16,11 +16,11 @@ package org.apache.tapestry.resolver;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.ILocation;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Location;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.spec.IComponentSpecification;
 
@@ -103,7 +103,7 @@ public class ComponentSpecificationResolver extends AbstractSpecificationResolve
         IRequestCycle cycle,
         INamespace containerNamespace,
         String type,
-        ILocation location)
+        Location location)
     {
         int colonx = type.indexOf(':');
 
@@ -138,7 +138,7 @@ public class ComponentSpecificationResolver extends AbstractSpecificationResolve
         INamespace containerNamespace,
         String libraryId,
         String type,
-        ILocation location)
+        Location location)
     {
         reset();
         _type = type;
@@ -182,12 +182,12 @@ public class ComponentSpecificationResolver extends AbstractSpecificationResolve
             LOG.debug("Resolving unknown component '" + _type + "' in " + namespace);
 
         String expectedName = _type + ".jwc";
-        IResourceLocation namespaceLocation = namespace.getSpecificationLocation();
+        Resource namespaceLocation = namespace.getSpecificationLocation();
 
         // Look for appropriate file in same folder as the library (or application)
         // specificaiton.
 
-        if (found(namespaceLocation.getRelativeLocation(expectedName)))
+        if (found(namespaceLocation.getRelativeResource(expectedName)))
             return;
 
         if (namespace.isApplicationNamespace())
@@ -195,13 +195,13 @@ public class ComponentSpecificationResolver extends AbstractSpecificationResolve
 
             // The application namespace gets some extra searching.
 
-            if (found(getWebInfAppLocation().getRelativeLocation(expectedName)))
+            if (found(getWebInfAppLocation().getRelativeResource(expectedName)))
                 return;
 
-            if (found(getWebInfLocation().getRelativeLocation(expectedName)))
+            if (found(getWebInfLocation().getRelativeResource(expectedName)))
                 return;
 
-            if (found(getApplicationRootLocation().getRelativeLocation(expectedName)))
+            if (found(getApplicationRootLocation().getRelativeResource(expectedName)))
                 return;
         }
 
@@ -224,7 +224,7 @@ public class ComponentSpecificationResolver extends AbstractSpecificationResolve
         // If not found by here, an exception will be thrown.
     }
 
-    private boolean found(IResourceLocation location)
+    private boolean found(Resource location)
     {
         if (LOG.isDebugEnabled())
             LOG.debug("Checking: " + location);

@@ -22,12 +22,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.ILocation;
+import org.apache.hivemind.util.ClasspathResource;
+import org.apache.hivemind.ApplicationRuntimeException;
+import org.apache.hivemind.Location;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.INamespace;
-import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.resource.ClasspathResourceLocation;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
 
@@ -268,7 +268,7 @@ public class Namespace implements INamespace
             throw new ApplicationRuntimeException(
                 Tapestry.format("Namespace.no-such-page", name, getNamespaceId()));
 
-        IResourceLocation location = getSpecificationLocation().getRelativeLocation(path);
+        Resource location = getSpecificationLocation().getRelativeResource(path);
 
         return _specificationSource.getPageSpecification(location);
     }
@@ -281,7 +281,7 @@ public class Namespace implements INamespace
             throw new ApplicationRuntimeException(
                 Tapestry.format("Namespace.no-such-alias", type, getNamespaceId()));
 
-        IResourceLocation location = getSpecificationLocation().getRelativeLocation(path);
+        Resource location = getSpecificationLocation().getRelativeResource(path);
 
         return _specificationSource.getComponentSpecification(location);
     }
@@ -294,7 +294,7 @@ public class Namespace implements INamespace
             throw new ApplicationRuntimeException(
                 Tapestry.format("Namespace.library-id-not-found", id, getNamespaceId()));
 
-        IResourceLocation location = getSpecificationLocation().getRelativeLocation(path);
+        Resource location = getSpecificationLocation().getRelativeResource(path);
 
         // Ok, an absolute path to a library for an application whose specification
         // is in the context root is problematic, cause getRelativeLocation()
@@ -302,7 +302,7 @@ public class Namespace implements INamespace
         // following little kludge:
 
         if (location.getResourceURL() == null && path.startsWith("/"))
-            location = new ClasspathResourceLocation(_specification.getResourceResolver(), path);
+            location = new ClasspathResource(_specification.getResourceResolver(), path);
 
         ILibrarySpecification ls = _specificationSource.getLibrarySpecification(location);
 
@@ -328,7 +328,7 @@ public class Namespace implements INamespace
 
     /** @since 3.0 **/
 
-    public IResourceLocation getSpecificationLocation()
+    public Resource getSpecificationLocation()
     {
         return _specification.getSpecificationLocation();
     }
@@ -384,7 +384,7 @@ public class Namespace implements INamespace
 
     /** @since 3.0 **/
 
-    public ILocation getLocation()
+    public Location getLocation()
     {
         if (_specification == null)
             return null;

@@ -16,6 +16,7 @@ package org.apache.tapestry.util;
 
 import java.util.Locale;
 
+import org.apache.hivemind.util.LocalizedNameGenerator;
 import org.apache.tapestry.engine.IPropertySource;
 
 /**

@@ -17,7 +17,7 @@ package org.apache.tapestry.contrib.popup;
 import java.io.UnsupportedEncodingException;
 
 import org.apache.commons.codec.net.URLCodec;
-import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.Tapestry;

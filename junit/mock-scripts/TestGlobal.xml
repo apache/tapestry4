@@ -63,7 +63,7 @@
         </assert-output>
 
         <assert-output name="Inner Exception Name">
-        org.apache.tapestry.ApplicationRuntimeException
+        org.apache.hivemind.ApplicationRuntimeException
         </assert-output>
 
         <assert-output name="Class Name">

@@ -15,9 +15,9 @@
 package org.apache.tapestry.asset;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.hivemind.Location;
+import org.apache.hivemind.Resource;
 import org.apache.tapestry.IAsset;
-import org.apache.tapestry.ILocation;
-import org.apache.tapestry.IResourceLocation;
 
 /**
  *  Base class for {@link org.apache.tapestry.IAsset} implementations.  Provides
@@ -31,21 +31,21 @@ import org.apache.tapestry.IResourceLocation;
 
 public abstract class AbstractAsset implements IAsset
 {
-	private IResourceLocation _resourceLocation;
-    private ILocation _location;
+	private Resource _resourceLocation;
+    private Location _location;
 
-    protected AbstractAsset(IResourceLocation resourceLocation, ILocation location)
+    protected AbstractAsset(Resource resourceLocation, Location location)
     {
     	_resourceLocation = resourceLocation;
         _location = location;
     }
 
-    public ILocation getLocation()
+    public Location getLocation()
     {
         return _location;
     }
     
-    public IResourceLocation getResourceLocation()
+    public Resource getResourceLocation()
     {
     	return _resourceLocation;
     }

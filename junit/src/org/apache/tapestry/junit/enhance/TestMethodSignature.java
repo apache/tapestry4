@@ -16,8 +16,7 @@ package org.apache.tapestry.junit.enhance;
 
 import java.lang.reflect.Method;
 
-import org.apache.tapestry.AbstractComponent;
-import org.apache.tapestry.BaseComponent;
+import org.apache.tapestry.*;
 import org.apache.tapestry.enhance.MethodSignature;
 import org.apache.tapestry.junit.TapestryTestCase;
 

@@ -23,11 +23,11 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.hivemind.ClassResolver;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.spec.Direction;
 import org.apache.tapestry.spec.IComponentSpecification;
@@ -133,7 +133,7 @@ public class ParameterManager
 
         List list = new ArrayList();
         IComponentSpecification spec = _component.getSpecification();
-        IResourceResolver resolver = _component.getPage().getEngine().getResourceResolver();
+        ClassResolver resolver = _component.getPage().getEngine().getClassResolver();
 
         IParameterConnector disabledConnector = null;
 
@@ -340,7 +340,7 @@ public class ParameterManager
         return new ObjectParameterConnector(component, parameterName, binding, requiredType);
     }
 
-    private Class getType(String name, IResourceResolver resolver)
+    private Class getType(String name, ClassResolver resolver)
     {
         if (Tapestry.isBlank(name))
             return null;
