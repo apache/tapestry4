@@ -54,7 +54,7 @@
 					<value>30</value>
 				</static-binding>
 				<static-binding>
-					<name>maximumWidth</name>
+					<name>maximumLength</name>
 					<value>30</value>
 				</static-binding>
 				<binding>
@@ -72,7 +72,7 @@
 					<value>30</value>
 				</static-binding>
 				<static-binding>
-					<name>maximumWidth</name>
+					<name>maximumLength</name>
 					<value>30</value>
 				</static-binding>
 				<binding>
@@ -90,7 +90,7 @@
 					<value>30</value>
 				</static-binding>
 				<static-binding>
-					<name>maximumWidth</name>
+					<name>maximumLength</name>
 					<value>60</value>
 				</static-binding>
 				<binding>
@@ -108,7 +108,7 @@
 					<value>20</value>
 				</static-binding>
 				<static-binding>
-					<name>maximumWidth</name>
+					<name>maximumLength</name>
 					<value>20</value>
 				</static-binding>
 				<static-binding>
@@ -130,13 +130,12 @@
 					<value>20</value>
 				</static-binding>
 				<static-binding>
-					<name>maximumWidth</name>
+					<name>maximumLength</name>
 					<value>20</value>
 				</static-binding>
 				<static-binding>
 					<name>hidden</name>
 					<value>true</value>
-		
 				</static-binding>
 				<binding>
 					<name>text</name>
