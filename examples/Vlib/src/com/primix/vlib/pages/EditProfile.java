@@ -147,27 +147,8 @@ public class EditProfile extends Protected
 		cycle.setPage(this);
 	}
 
-	/**
-	 *  Invoked when the form is submitted, validates the form and
-	 *  updates the {@link IPerson} for the user, before returning
-	 *  to {@link MyLibrary}.
-	 *
-	 */
 
-	public IActionListener getFormListener()
-	{
-		return new IActionListener()
-		{
-			public void actionTriggered(IComponent component, IRequestCycle cycle)
-			{
-				// Update the current user, or set an error message.
-
-				updateProfile(cycle);
-			}
-		};
-	}
-
-	private void updateProfile(IRequestCycle cycle)
+	public void updateProfile(IRequestCycle cycle)
 	{
 		if (cancel)
 		{

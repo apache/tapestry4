@@ -25,13 +25,13 @@
     <binding name="delegate" property-path="validationDelegate"/>
   </component>
   
-  <component id="inputTitle" type="ValidatingTextField">
-    <binding name="text" property-path="attributes.title"/>
+  <component id="inputTitle" type="ValidField">
+    <binding name="value" property-path="attributes.title"/>
     <static-binding name="maximumLength">100</static-binding>
     <static-binding name="displayWidth">50</static-binding>
     <static-binding name="displayName">Title</static-binding>
     <binding name="delegate" property-path="validationDelegate"/>
-    <field-binding name="required" field-name="Boolean.TRUE"/>
+    <field-binding name="validator" field-name="com.primix.tapestry.valid.StringValidator.REQUIRED"/>
   </component>
   
   <component id="labelAuthor" type="FieldLabel">
@@ -39,10 +39,10 @@
     <binding name="delegate" property-path="validationDelegate"/>
   </component>
   
-  <component id="inputAuthor" type="ValidatingTextField">
-    <binding name="text" property-path="attributes.author"/>
+  <component id="inputAuthor" type="ValidField">
+    <binding name="value" property-path="attributes.author"/>
     <binding name="delegate" property-path="validationDelegate"/>
-    <field-binding name="required" field-name="Boolean.TRUE"/>
+    <field-binding name="validator" field-name="com.primix.tapestry.valid.StringValidator.REQUIRED"/>
     <static-binding name="maximumLength">30</static-binding>
     <static-binding name="displayWidth">30</static-binding>
     <static-binding name="displayName">Author</static-binding>
@@ -52,6 +52,7 @@
     <static-binding name="maximumLength">20</static-binding>
     <static-binding name="displayWidth">20</static-binding>
     <binding name="text" property-path="attributes.ISBN"/>
+    <field-binding name="validator" field-name="com.primix.tapestry.valid.StringValidator.OPTIONAL"/>
   </component>
   
   <component id="labelPublisher" type="FieldLabel">
@@ -64,12 +65,13 @@
     <binding name="model" property-path="engine.publisherModel"/>
   </component>
   
-  <component id="inputPublisherName" type="ValidatingTextField">
+  <component id="inputPublisherName" type="ValidField">
     <static-binding name="maximumLength">40</static-binding>
     <static-binding name="displayWidth">20</static-binding>
-    <binding name="text" property-path="publisherName"/>
+    <binding name="value" property-path="publisherName"/>
     <binding name="delegate" property-path="validationDelegate"/>
-    <static-binding name="displayName">Publisher Name</static-binding>
+    <field-binding name="validator" field-name="com.primix.tapestry.valid.StringValidator.OPTIONAL"/>
+    <static-binding name="displayName">Publisher</static-binding>
   </component>
   
   <component id="inputDescription" type="Text">
@@ -85,17 +87,6 @@
   <component id="inputLendable" type="Checkbox">
   	<binding name="selected" property-path="attributes.lendable"/>
   </component>
-  
-  <!-- Temporarily removed
-  
-  <component id="cancel" type="Submit">
-  	<static-binding name="label">Cancel</static-binding>
-  	<binding name="selected" property-path="cancel"/>
-  	<field-binding name="tag" field-name="Boolean.TRUE"/>
-  </component>
-  
-  -->
-  
   
   <component id="publisherScript" type="Script">
     <static-binding name="script">/com/primix/vlib/pages/Publisher.script</static-binding>

@@ -185,7 +185,7 @@ public class TransferBooks extends AdminPage
 
 		if (count == 0)
 		{
-			setMessage("No books selected.");
+			setError("No books selected.");
 			return;
 		}
 
