@@ -2,7 +2,7 @@
 # $Id$
 
 distribution: clean copy-external-jars install javadoc
-	@$(RECURSE) clean prepare-for-packaging
+	@$(RECURSE) clean prepare-for-packaging create-archive
 
 # The job of this Makefile is to re-invoke make in various subdirectories.
 
@@ -79,4 +79,19 @@ javadoc:
        $(RECURSE) -C $$module javadoc || exit 2 ; \
 	done
 
-.PHONY: javadoc
+# Get the last piece of the current directory, which will be
+# something like Tapestry-x.y.z
+
+RELEASE_DIR = $(notdir $(CURDIR))
+
+ARCHIVE_NAME = $(RELEASE_DIR).tar.gz
+
+# Create the archive in the directory above this one.
+
+create-archive: prepare-for-packaging
+	@$(ECHO) "\n*** Creating distribution archive $(ARCHIVE_NAME) ... ***\n"
+	@$(RM) -f ..\$(ARCHIVE_NAME)
+	$(CD) .. ; $(TAR) czf $(ARCHIVE_NAME) $(RELEASE_DIR)
+
+.PHONY: javadoc create-archive prepare-for-packaging reinvoke
+.PHONY: clean install copy-external-jars distribution
