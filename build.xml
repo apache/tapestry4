@@ -13,19 +13,9 @@
 
 <property name="private.dir" value="private"/>
 
-<!-- Directory to put distributions into -->
-
-<property name="dist.root.dir" value="dist"/>
-
-<property name="dist.base" value="Tapestry-${framework.version}"/>
-
-<property name="dist.dir" value="${dist.root.dir}/${dist.base}"/>
-
 <!-- Names of distribution files.  Have to create the tar, then gzip it
      afterwards.   tar + gzip results in a smaller distribution than
      zip. -->
-<property name="dist.tar" value="${dist.dir}.tar"/>
-<property name="dist.tar.gz" value="${dist.tar}.gz"/>
 
 <path id="tutorial.classpath">
 	<pathelement location="${framework.jar}"/>
@@ -118,6 +108,12 @@
 
 <target name="build-dist" description="Builds the Tapestry distribution files.">
 
+	<!-- Directory to put distributions into -->
+	
+	<property name="dist.root.dir" value="dist"/>
+	<property name="dist.base" value="Tapestry-${framework.version}"/>	
+	<property name="dist.dir" value="${dist.root.dir}/${dist.base}"/>
+
 	<!-- Delete and recreate the base directory. -->
  
 	<delete dir="${dist.dir}" quiet="true"/>
@@ -137,7 +133,6 @@
 
 			<include name="web/**"/>
 			<include name="config/**"/>
-			<include name="doc/**"/>
 			<include name="lib/**"/>
 			<!-- Exclude class files left around by IDEs. -->
 			<exclude name="**/*.class"/>
@@ -147,13 +142,6 @@
 			      
 			<exclude name="**/*.psp"/>
 			<exclude name="**/*.jbf"/>
-			
-			<!-- Exclude the source for the documentation. Starting with 1.0.7,
-			     we only include the output for the documentation, not the
-			     source.  This keeps us from duplicating the images as well,
-			     which really shrinks the distribution size. -->
-			
-			<exclude name="doc/src/**"/>
 			
 			<!-- Don't include build.properties; that's specific to this build
 			     environment.  We ship a sample file instead. -->
@@ -172,7 +160,7 @@
 	<!-- The Readme.html file and several of the web pages
 		 include a version number; copy w/ filtering. -->
 	 
-	<copy todir="${dist.dir}">
+	<copy todir="${dist.dir}" includeEmptyDirs="false">
 		<fileset dir=".">
 			<include name="Readme.html"/>
 			<include name="web/*.html"/>
@@ -180,6 +168,25 @@
 		<filterset>
 			<filter token="VERSION" value="${framework.version}"/>
 		</filterset>
+	</copy>
+	
+	<property name="web.dir" value="${dist.dir}/web"/>
+	
+	<copy todir="${web.dir}" includeEmptyDirs="false">
+		<fileset dir=".">
+			<include name="doc/**"/>
+			<exclude name="doc/src/**"/>
+		</fileset>
+	</copy>
+	
+	<property name="dtd.dir" value="${web.dir}/dtd"/>
+	
+	<mkdir dir="${dtd.dir}"/>
+	
+	<copy todir="${dtd.dir}" flatten="true">
+		<fileset dir="framework/src">
+			<include name="**/*.dtd"/>
+		</fileset>
 	</copy>
 	   
 	<!-- Jar up the source code for the frameworks. -->
@@ -195,8 +202,10 @@
 	<jar jarfile="${dist.src.dir}/examples-src.jar" basedir="examples"/>
 	
 	<!-- Pack the directory (relative to ${dist.dir}), into a TAR file.  We go to the extra work
-	      of building a .tar.gz because the disto is smaller than an equivalent .zip file.
+	      of building a .tar.gz because the distro is smaller than an equivalent .zip file.
 	   -->
+	<property name="dist.tar" value="${dist.dir}.tar"/>
+	<property name="dist.tar.gz" value="${dist.tar}.gz"/>
 	 
 	<tar basedir="${dist.root.dir}" 
 		tarfile="${dist.tar}" 
@@ -211,6 +220,16 @@
 	   final .tar.gz file. -->
 	   
 	<delete file="${dist.tar}"/>
+	
+	<!-- Create the web distribution (to be put up at SourceForge) -->
+	
+	<property name="web.tar" value="${dist.root.dir}/Tapestry-Web-${framework.version}.tar"/>
+	<property name="web.tar.gz" value="${web.tar}.gz"/>
+	
+	<tar basedir="${web.dir}" tarfile="${web.tar}" longfile="gnu"/>
+	<gzip src="${web.tar}" zipfile="${web.tar.gz}"/>
+	<delete file="${web.tar}"/>
+	
 	<delete dir="${dist.dir}"/>
  
 </target>
