@@ -26,6 +26,8 @@
 	<property name="module" value="jakarta-tapestry"/>
 	<property name="work.dir" value="${export.dir}/${module}"/>
 	
+	<property file="build.properties"/>
+	
 	<target name="setup" description="Sets up the directory, gets the files via CVS.">
 		<delete dir="${export.dir}" quiet="true"/>
 		<mkdir dir="${export.dir}"/>
@@ -33,19 +35,18 @@
 			tag="${tag}" package="${module}"
 			dest="${export.dir}"  
 			cvsroot=":pserver:anoncvs@cvs.apache.org:/home/cvspublic"/>
-			
-		<copy todir="${work.dir}/ext-dist">
-			<fileset dir="${ext.dist.src.dir}>
-				<include name="*.jar"/>
-				<include name="*.zip"/>
-			</fileset>	
-		</copy>
 	</target>
 	
 	
 	<target name="build" description="Builds the distribution.">
 		<copy file="build.properties"
 			todir="${work.dir}/config"/>
+		<copy todir="${work.dir}/ext-dist">
+			<fileset dir="${ext.dist.src.dir}">
+				<include name="*.jar"/>
+				<include name="*.zip"/>
+			</fileset>	
+		</copy>
 		<ant inheritAll="false" dir="${work.dir}" target="dist"/>
 		<copy todir=".">
 		  <fileset dir="${work.dir}/dist">

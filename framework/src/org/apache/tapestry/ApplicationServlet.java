@@ -70,16 +70,15 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import org.apache.tapestry.engine.*;
 import org.apache.tapestry.engine.BaseEngine;
+import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.parse.SpecificationParser;
-import org.apache.tapestry.request.*;
+import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.resource.ClasspathResourceLocation;
 import org.apache.tapestry.resource.ContextResourceLocation;
 import org.apache.tapestry.spec.ApplicationSpecification;
 import org.apache.tapestry.spec.IApplicationSpecification;
-import org.apache.tapestry.util.*;
+import org.apache.tapestry.util.DefaultResourceResolver;
 import org.apache.tapestry.util.DelegatingPropertySource;
 import org.apache.tapestry.util.ServletContextPropertySource;
 import org.apache.tapestry.util.ServletPropertySource;
@@ -133,7 +132,8 @@ public class ApplicationServlet extends HttpServlet
 
     /** @since 2.3 **/
 
-    private static final String APP_SPEC_PATH_PARAM = "org.apache.tapestry.application-specification";
+    private static final String APP_SPEC_PATH_PARAM =
+        "org.apache.tapestry.application-specification";
 
     /**
      *  Name of the cookie written to the client web browser to
@@ -677,7 +677,7 @@ public class ApplicationServlet extends HttpServlet
 
     protected String getApplicationSpecificationPath() throws ServletException
     {
-        return getInitParameter("org.apache.tapestry.application-specification");
+        return getInitParameter(APP_SPEC_PATH_PARAM);
     }
 
     /**

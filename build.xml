@@ -152,11 +152,10 @@
 		</copy>
 		<copy todir="${dist.dir}/lib">
 			<fileset dir="${lib.dir}">
-				<exclude name="ext/junit.jar"/>
-				<exclude name="ext/jcommon*.jar"/>
-				<exclude name="ext/jfreechart*.jar"/>
-				<exclude name="${vlib.war}"/>
-				<exclude name="${vlibbeans.war}"/>
+				<include name="${workbench.war}"/>
+				<include name="${vlib.ear}"/>
+				<include name="**/*.jar"/>
+				<exclude name="${vlibbeans.jar}"/>
 			</fileset>
 		</copy>
 		<copy todir="${dist.dir}">
