@@ -36,10 +36,22 @@ validate_${field.name}
 function ${function}()
 {
   var field = document.${form.name}.${field.name}; 
-  var value = field.value;  
+  var stringValue = field.value;  
 <if expression="validator.required">
-  if (value.length == 0)
+  if (stringValue.length == 0)
      return validator_invalid_field(field, "${requiredMessage}");
+</if>
+<if-not expression="validator.required">
+  if (stringValue.length == 0)
+     return true;
+</if-not>
+  var value = stringValue * 1;
+  if (isNaN(value))
+      return validator_invalid_field(field, "${formatMessage}");
+<if expression="validator.integerNumber">
+  var regex = /\./;
+  if (stringValue.search(regex) != -1)
+      return validator_invalid_field(field, "${formatMessage}");
 </if>
 <if expression="validator.minimum != null">
   if (value &lt; ${validator.minimum})

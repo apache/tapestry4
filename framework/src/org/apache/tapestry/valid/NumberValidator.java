@@ -58,7 +58,9 @@ package org.apache.tapestry.valid;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IMarkupWriter;
@@ -110,6 +112,8 @@ public class NumberValidator extends BaseValidator
         TYPES.put("java.math.BigDecimal", BigDecimal.class);
     }
 
+    private static final Set INT_TYPES = new HashSet();
+
     private Class _valueTypeClass = int.class;
 
     private boolean _zeroIsNull;
@@ -119,11 +123,15 @@ public class NumberValidator extends BaseValidator
     private String _scriptPath = "/org/apache/tapestry/valid/NumberValidator.script";
 
     private String _invalidNumericFormatMessage;
+    private String _invalidIntegerFormatMessage;
     private String _numberTooSmallMessage;
     private String _numberTooLargeMessage;
     private String _numberRangeMessage;
 
     private static AdaptorRegistry _numberAdaptors = new AdaptorRegistry();
+
+    private final static int NUMBER_TYPE_INTEGER    = 0;
+    private final static int NUMBER_TYPE_REAL       = 1;
 
     private static abstract class NumberAdaptor
     {
@@ -136,6 +144,16 @@ public class NumberValidator extends BaseValidator
 
         abstract public Number parse(String value);
 
+        /**
+         *  Indicates the type of the number represented -- integer or real.
+         *  The information is used to build the client-side validator.  
+         *  This method could return a boolean, but returns an int to allow
+         *  future extensions of the validator.
+         *   
+         *  @return one of the predefined number types
+         **/
+        abstract public int getNumberType();
+
         public int compare(Number left, Number right)
         {
             Comparable lc = (Comparable) left;
@@ -144,7 +162,23 @@ public class NumberValidator extends BaseValidator
         }
     }
 
-    private static class ByteAdaptor extends NumberAdaptor
+    private static abstract class IntegerNumberAdaptor extends NumberAdaptor
+    {
+        public int getNumberType()
+        {
+            return NUMBER_TYPE_INTEGER;
+        }
+    }
+
+    private static abstract class RealNumberAdaptor extends NumberAdaptor
+    {
+        public int getNumberType()
+        {
+            return NUMBER_TYPE_REAL;
+        }
+    }
+
+    private static class ByteAdaptor extends IntegerNumberAdaptor
     {
         public Number parse(String value)
         {
@@ -152,7 +186,7 @@ public class NumberValidator extends BaseValidator
         }
     }
 
-    private static class ShortAdaptor extends NumberAdaptor
+    private static class ShortAdaptor extends IntegerNumberAdaptor
     {
         public Number parse(String value)
         {
@@ -160,7 +194,7 @@ public class NumberValidator extends BaseValidator
         }
     }
 
-    private static class IntAdaptor extends NumberAdaptor
+    private static class IntAdaptor extends IntegerNumberAdaptor
     {
         public Number parse(String value)
         {
@@ -168,7 +202,7 @@ public class NumberValidator extends BaseValidator
         }
     }
 
-    private static class LongAdaptor extends NumberAdaptor
+    private static class LongAdaptor extends IntegerNumberAdaptor
     {
         public Number parse(String value)
         {
@@ -176,7 +210,7 @@ public class NumberValidator extends BaseValidator
         }
     }
 
-    private static class FloatAdaptor extends NumberAdaptor
+    private static class FloatAdaptor extends RealNumberAdaptor
     {
         public Number parse(String value)
         {
@@ -184,7 +218,7 @@ public class NumberValidator extends BaseValidator
         }
     }
 
-    private static class DoubleAdaptor extends FloatAdaptor
+    private static class DoubleAdaptor extends RealNumberAdaptor
     {
         public Number parse(String value)
         {
@@ -192,7 +226,7 @@ public class NumberValidator extends BaseValidator
         }
     }
 
-    private static class BigDecimalAdaptor extends FloatAdaptor
+    private static class BigDecimalAdaptor extends RealNumberAdaptor
     {
         public Number parse(String value)
         {
@@ -200,7 +234,7 @@ public class NumberValidator extends BaseValidator
         }
     }
 
-    private static class BigIntegerAdaptor extends NumberAdaptor
+    private static class BigIntegerAdaptor extends IntegerNumberAdaptor
     {
         public Number parse(String value)
         {
@@ -363,7 +397,10 @@ public class NumberValidator extends BaseValidator
         if (isRequired())
             symbols.put("requiredMessage", buildRequiredMessage(field));
 
-        symbols.put("formatMessage", buildInvalidNumericFormatMessage(field));
+        if (isIntegerNumber())
+            symbols.put("formatMessage", buildInvalidIntegerFormatMessage(field));
+        else
+            symbols.put("formatMessage", buildInvalidNumericFormatMessage(field));
 
         if (_minimum != null || _maximum != null)
             symbols.put("rangeMessage", buildRangeMessage(field));
@@ -455,6 +492,13 @@ public class NumberValidator extends BaseValidator
 
     /** @since 3.0 */
 
+    public String getInvalidIntegerFormatMessage()
+    {
+        return _invalidIntegerFormatMessage;
+    }
+
+    /** @since 3.0 */
+
     public String getNumberRangeMessage()
     {
         return _numberRangeMessage;
@@ -486,6 +530,18 @@ public class NumberValidator extends BaseValidator
         _invalidNumericFormatMessage = string;
     }
 
+    /** 
+     * Overrides the <code>invalid-int-format</code> bundle key.
+     * Parameter {0} is the display name of the field.
+     * 
+     * @since 3.0
+     */
+
+    public void setInvalidIntegerFormatMessage(String string)
+    {
+        _invalidIntegerFormatMessage = string;
+    }
+
     /** @since 3.0 */
 
     protected String buildInvalidNumericFormatMessage(IFormComponent field)
@@ -494,6 +550,19 @@ public class NumberValidator extends BaseValidator
             getPattern(
                 getInvalidNumericFormatMessage(),
                 "invalid-numeric-format",
+                field.getPage().getLocale());
+
+        return formatString(pattern, field.getDisplayName());
+    }
+
+    /** @since 3.0 */
+
+    protected String buildInvalidIntegerFormatMessage(IFormComponent field)
+    {
+        String pattern =
+            getPattern(
+                getInvalidIntegerFormatMessage(),
+                "invalid-int-format",
                 field.getPage().getLocale());
 
         return formatString(pattern, field.getDisplayName());
@@ -568,4 +637,14 @@ public class NumberValidator extends BaseValidator
         return formatString(pattern, field.getDisplayName(), _minimum);
     }
 
+    /** @since 3.0 */
+    
+    public boolean isIntegerNumber()
+    {
+        NumberAdaptor result = (NumberAdaptor) _numberAdaptors.getAdaptor(_valueTypeClass);
+        if (result == null)
+            return false;
+        
+        return result.getNumberType() == NUMBER_TYPE_INTEGER;
+    }
 }
