@@ -33,7 +33,7 @@ import org.apache.tapestry.util.RegexpMatcher;
  * a {@link org.apache.tapestry.test.ScriptDescriptor).
  *
  * @author Howard Lewis Ship
- * @version $Id$
+ * @since 3.1
  */
 public class ScriptedTestSession
 {

@@ -29,9 +29,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  *
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.1
- * 
  */
 
 public class MockResponse implements HttpServletResponse

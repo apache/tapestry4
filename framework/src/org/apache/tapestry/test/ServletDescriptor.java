@@ -19,6 +19,12 @@ import java.util.Map;
 
 import org.apache.hivemind.impl.BaseLocatable;
 
+/**
+ * 
+ *
+ * @author Howard Lewis Ship
+ * @since 3.1
+ */
 public class ServletDescriptor extends BaseLocatable
 {
     private String _name;

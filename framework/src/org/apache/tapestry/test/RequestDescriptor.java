@@ -27,7 +27,7 @@ import org.apache.hivemind.impl.BaseLocatable;
  * 
  *
  * @author Howard Lewis Ship
- * @version $Id$
+ * @since 3.1
  */
 public class RequestDescriptor extends BaseLocatable
 {

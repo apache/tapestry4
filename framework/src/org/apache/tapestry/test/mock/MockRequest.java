@@ -38,7 +38,6 @@ import javax.servlet.http.HttpSession;
  *
  *
  * @author Howard Lewis Ship
- * @version $Id$
  * @since 3.1
  */
 

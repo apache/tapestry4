@@ -1,21 +1,22 @@
-//Copyright 2004 The Apache Software Foundation
+//  Copyright 2004 The Apache Software Foundation
 //
-//Licensed under the Apache License, Version 2.0 (the "License");
-//you may not use this file except in compliance with the License.
-//You may obtain a copy of the License at
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
 //
-//	http://www.apache.org/licenses/LICENSE-2.0
+//     http://www.apache.org/licenses/LICENSE-2.0
 //
-//Unless required by applicable law or agreed to in writing, software
-//distributed under the License is distributed on an "AS IS" BASIS,
-//WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//See the License for the specific language governing permissions and
-//limitations under the License.
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 package org.apache.tapestry.test;
 
 import org.apache.hivemind.Location;
 import org.apache.hivemind.impl.MessageFormatter;
+import org.apache.hivemind.service.ClassFabUtils;
 
 /**
  * Container of static methods to format logging and exception messages, used
@@ -81,5 +82,33 @@ public final class ScriptMessages
                 location,
                 new Integer(expectedCount),
                 new Integer(actualCount)});
+    }
+
+    public static String wrongTypeForEnhancement(Class type)
+    {
+        return _formatter.format(
+            "wrong-type-for-enhancement",
+            ClassFabUtils.getJavaClassName(type));
+    }
+
+    public static String classNotAbstract(Class type)
+    {
+        return _formatter.format("class-not-abstract", type.getName());
+    }
+
+    public static String unableToIntrospect(Class type, Throwable cause)
+    {
+        return _formatter.format(
+            "unable-to-introspect",
+            type.getName(),
+            _formatter.extractMessage(cause));
+    }
+
+    public static String unableToInstantiate(Class abstractClass, Throwable cause)
+    {
+        return _formatter.format(
+            "unable-to-instantiate",
+            abstractClass.getName(),
+            _formatter.extractMessage(cause));
     }
 }
