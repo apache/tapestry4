@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- $Id$ --> 
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="Tapestry.css" title="style">
+</head>
+
+<body>
+<table border="0" cellpadding="4" cellspacing="4" width="100%">
+<tr>
+ <td>
+  <table>
+	 <tr>
+	  <td><font size="+2"><b>InsertText</b></font></td>
+	 </tr>
+	 <tr>
+	  <td>
+		 <a href="../api/net/sf/tapestry/html/InsertText.html">
+		 net.sf.tapestry.html.InsertText</a>
+		</td>
+	 </tr>
+  </table>
+ </td>
+ <td>
+  <table align="right" valign="middle" bgcolor="#c0c0c0" cellpadding="8">
+	 <tr>
+	  <td>Visual Component</td>
+	 </tr>
+  </table>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2"><hr></td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Description</b>
+	<br>
+  Inserts multiline text, inserting &lt;br&gt; tags between each line, or
+  adding &lt;p&gt; tags around each line.
+  <p>
+  A line is considered to be terminated by any one of a line feed '\n', a 
+  carriage return '\r', or a carriage return followed immediately by a 
+  linefeed "\r\n".
+  <p>
+  This component may NOT wrap around other components or static HTML. 
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>See Also</b>
+	<br>
+	<a href="Block.html">Block</a>, 
+  <a href="Insert.html">Insert</a>,
+  <a href="InsertBlock.html">InsertBlock</a>,
+  <a href="InsertWrapped.html">InsertWrapped</a>
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Parameters</b>
+	<br>
+  <table border="1" cellpadding="4" cellspacing="4" class="parameters">
+  <tr> 
+    <th>Name</th>
+    <th>Type</th>
+	  <th>Direction</th>
+    <th>Required</th> 
+    <th>Default</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>value</td>
+    <td>String</td>
+    <td>in</td>
+   	<td>no</td>
+		<td>&nbsp;</td>
+		<td>The text to be inserted. If not provided, no output is written.</td>
+	</tr>
+  <tr>
+    <td>mode</td>
+    <td>
+     <a href="/api/net/sf/tapestry/html/InsertTextMode.html">
+     <tt>InsertTextMode</tt></a>
+    </td>
+    <td>in</td>
+   	<td>no</td>
+		<td>
+     <a href="api/net/sf/tapestry/html/InsertTextMode.html#BREAK">
+     <tt>InsertTextMode.BREAK</tt></a>
+    </td>
+		<td>Identifies how to break apart lines for display [BREAK | PARAGRAPH].</td>
+	</tr>
+	</table>
+  Informal parameters: NOT allowed<br>
+  Reserved parameters: none
+ </td>
+</tr>
+
+<tr>
+ <td colspan="2">
+  <b>Examples</b>
+	<p>
+  This example is under construction.
+ </td>
+</tr>
+</tr>
+
+<tr>
+ <td colspan="2"><hr></td>  
+</tr>
+<tr>
+ <td colspan="2">
+  <table width="100%">
+   <tr>
+    <td align="left">
+     <a href="InsertBlock.html"><img src="common-images/prev.png" alt="Previous"/></a>
+    </td>  
+    <td align="center">
+     <a href="index.html"><img src="common-images/home.png" alt="Home"/></a>
+    </td>  
+    <td align="right">
+     <a href="InsertWrapped.html"><img src="common-images/next.png" alt="Next"/></a>
+    </td>  
+   <tr>
+  </table>
+ </td>
+</tr>
+</table>
+
+</body>
+</html>
