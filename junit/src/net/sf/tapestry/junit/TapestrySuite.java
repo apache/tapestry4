@@ -13,6 +13,7 @@ import net.sf.tapestry.junit.utils.TestDataSqueezer;
 import net.sf.tapestry.junit.utils.TestEnum;
 import net.sf.tapestry.junit.utils.TestIdAllocator;
 import net.sf.tapestry.junit.utils.TestLocalizedNameGenerator;
+import net.sf.tapestry.junit.utils.TestPool;
 import net.sf.tapestry.junit.utils.TestPropertyFinder;
 import net.sf.tapestry.junit.utils.TestPublicBean;
 import net.sf.tapestry.junit.valid.ValidSuite;
@@ -27,22 +28,23 @@ import net.sf.tapestry.junit.valid.ValidSuite;
 
 public class TapestrySuite extends TestSuite
 {
-	public static Test suite()
-	{
-		TestSuite suite = new TestSuite();
+    public static Test suite()
+    {
+        TestSuite suite = new TestSuite();
 
         suite.addTestSuite(TestAdaptorRegistry.class);
+        suite.addTestSuite(TestPool.class);
         suite.addTestSuite(TestLocalizedNameGenerator.class);
         suite.addTestSuite(TestResourceLocation.class);
         suite.addTestSuite(TestPublicBean.class);
         suite.addTestSuite(TestPropertyFinder.class);
         suite.addTestSuite(TestListenerMap.class);
         suite.addTestSuite(TestIdAllocator.class);
-		suite.addTestSuite(ComponentStringsTest.class);
-		suite.addTestSuite(TemplateParserTest.class);
-		suite.addTestSuite(SpecificationParserTest.class);
+        suite.addTestSuite(ComponentStringsTest.class);
+        suite.addTestSuite(TemplateParserTest.class);
+        suite.addTestSuite(SpecificationParserTest.class);
         suite.addTestSuite(TestApplicationSpecification.class);
-		suite.addTest(ValidSuite.suite());        
+        suite.addTest(ValidSuite.suite());
         suite.addTestSuite(TestEnum.class);
         suite.addTestSuite(TestDataSqueezer.class);
         suite.addTestSuite(ScriptTest.class);
@@ -52,7 +54,7 @@ public class TapestrySuite extends TestSuite
         suite.addTestSuite(ComponentTest.class);
         suite.addTestSuite(MockTestCase.class);
 
-		return suite;
-	}
+        return suite;
+    }
 
 }
