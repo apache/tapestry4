@@ -104,10 +104,10 @@ public class TreeDataView extends BaseComponent implements ITreeRowSource{
     public void walkTree(Object objParent, Object objParentUID, int nDepth,
                          ITreeModel objTreeModel, IMarkupWriter writer,
                          IRequestCycle cycle, int nRowPossiotionType, int[] arrConnectImages, boolean bLast) {
+        m_nTreeDeep = nDepth;
     	int nNumberOfChildren = objTreeModel.getTreeDataModel().getChildCount(objParent);
     	boolean bLeaf = (nNumberOfChildren == 0) ? true : false;
 		m_objTreeRowObject = new TreeRowObject(objParent, objParentUID, nDepth, bLeaf, nRowPossiotionType, arrConnectImages);
-        m_nTreeDeep = nDepth;
 
         super.renderComponent(writer, cycle);
 

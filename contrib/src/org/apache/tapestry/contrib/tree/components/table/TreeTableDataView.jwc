@@ -30,6 +30,10 @@
                type="org.apache.tapestry.util.ComponentAddress"
                required="no" direction="custom"/>
 
+    <parameter name="nodeRenderFactory"
+               type="org.apache.tapestry.contrib.tree.components.INodeRenderFactory"
+               required="no" direction="custom"/>
+    
 	<parameter name="entriesPerTablePage" 
 		type="int" 
 		required="no"
@@ -48,6 +52,10 @@
 		<binding name="tableSessionStateManager" expression="tableSessionStateManager"/>
 		<binding name="row" expression="treeRowObject"/>
         <binding name="rowsClass" expression='beans.tableClass.next'/>
+        <static-binding name="class">treetable</static-binding>
+        <static-binding name="cellspacing">0</static-binding>
+        <static-binding name="cellpadding">0</static-binding>
+        <static-binding name="width">*</static-binding>
 	</component>
 
 </component-specification>
