@@ -66,12 +66,6 @@ public interface IPerson extends IEntityBean
 	public String getEmail()
 	throws RemoteException;	
 
-	public Collection getHeldBooks()
-	throws FinderException, RemoteException;	
-
-	public Collection getOwnedBooks()
-	throws FinderException, RemoteException;	
-
 	/**
 	 *  Returns the natural concatination of the first and last name, or just
 	 *  the last name if there is not first name.

@@ -80,38 +80,8 @@ public class PublisherBean extends AbstractEntityBean
 		return null;
 	}
 	
-	public Collection getBooks()
-	throws RemoteException, FinderException
-	{
-		return getBookHome().findByPublisher(getSelf());
-	}
-	
 	public void ejbPostCreate(String name)
 	{
 		// Do nothing
-	}
-	
-	private transient IBookHome bookHome;
-	
-	private IBookHome getBookHome()
-	{
-		if (bookHome != null)
-			return bookHome;
-		
-		try
-		{
-			bookHome = (IBookHome)getEnvironmentObject("ejb/Book", IBookHome.class);
-		}
-		catch (Exception e)
-		{
-			throw new EJBException(e);
-		}
-		
-		return bookHome;
-	}
-	
-	private IPublisher getSelf()
-	{
-		return (IPublisher)context.getEJBObject();
 	}
 }

@@ -2,7 +2,8 @@ package com.primix.vlib.ejb;
 
 import javax.ejb.*;
 import java.rmi.*;
-import java.util.*;
+import javax.rmi.*;
+import javax.naming.*;
 
 /*
  * Tapestry Web Application Framework
@@ -33,21 +34,24 @@ import java.util.*;
  */
 
 /**
- *  Home interface for the {@link PersonBean} entity bean.
- *
+ *  Remote interface to the {@link VlibOperations} stateless
+ *  session bean.  A repository for simple operations such as
+ *  adding a new book or borrowing an existing book.
+ *  
  *  @version $Id$
  *  @author Howard Ship
  *
  */
- 
-public interface IPersonHome extends EJBHome
-{
-	public IPerson create(String lastName, String firstName, String password)
-	throws CreateException, RemoteException;
-	
-	public IPerson findByPrimaryKey(Integer key)
-	throws FinderException, RemoteException;	
 
-	public IPerson findByEmail(String email)
-	throws FinderException, RemoteException;	
+public interface IVlibOperations extends EJBObject
+{
+	/**
+	 *  Locates the book and the borrower, then sets the holder of the book
+	 *  to the borrower and increments the lend count on the book.
+	 *
+	 *  <p>The borrowed book is returned.
+	 */
+	 
+	public IBook borrowBook(Integer bookPrimaryKey, Integer borrowerPrimaryKey)
+	throws FinderException, RemoteException;
 }

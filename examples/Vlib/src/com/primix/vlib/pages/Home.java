@@ -48,6 +48,8 @@ public class Home extends BasePage
 {
 	private String searchTitle;
 	private Object searchPublisherPK;
+	private String error;
+	private String message;
 	
 	public Home(IApplication application, ComponentSpecification componentSpecification)
 	{
@@ -60,6 +62,8 @@ public class Home extends BasePage
 		
 		searchTitle = null;
 		searchPublisherPK = null;
+		error = null;
+		message = null;
 	}
 	
 	public String getSearchTitle()
@@ -84,6 +88,26 @@ public class Home extends BasePage
 		searchPublisherPK = value;
 		
 		fireObservedChange("searchPublisherPK", value);
+	}
+
+	public void setError(String value)
+	{
+		error = value;
+	}
+	
+	public String getError()
+	{
+		return error;
+	}
+	
+	public void setMessage(String value)
+	{
+		message = value;
+	}
+	
+	public String getMessage()
+	{
+		return message;
 	}
 
 	

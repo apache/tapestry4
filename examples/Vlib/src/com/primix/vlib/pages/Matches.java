@@ -8,6 +8,7 @@ import com.primix.vlib.*;
 import javax.ejb.*;
 import java.util.*;
 import javax.rmi.*;
+import java.rmi.*;
 
 /*
  * Copyright (c) 2000 by Howard Ship and Primix Solutions
@@ -189,21 +190,6 @@ public class Matches extends BasePage
 		currentMatch = value;
 	}
 	
-	public String getBookPrimaryKey()
-	{
-		return currentMatch.getPrimaryKey().toString();
-	}
-	
-	public String getOwnerPrimaryKey()
-	{
-		return currentMatch.getOwnerPrimaryKey().toString();
-	}
-	
-	public String getHolderPrimaryKey()
-	{
-		return currentMatch.getHolderPrimaryKey().toString();
-	}
-	
 	public IDirectListener getBookDetailListener()
 	{
 		return new IDirectListener()
@@ -228,4 +214,72 @@ public class Matches extends BasePage
 		};
 	}
 	
+	public boolean getEnableBorrowBookLink()
+	{
+		VirtualLibraryApplication app;
+      
+		app = (VirtualLibraryApplication)application;
+        
+        // Can't borrow until logged in.
+        
+        if (!app.isUserLoggedIn())
+            return false;
+ 
+ 		// Otherwise, can only borrow it if not already holding it.
+		
+		return ! app.isLoggedInUser(currentMatch.getHolderPrimaryKey());
+	}
+    
+    public IDirectListener getBorrowBookListener()
+    {
+        return new IDirectListener()
+        {
+            public void directTriggered(IComponent component, String[] context,
+                    IRequestCycle cycle)
+					throws RequestCycleException
+            {
+				Integer bookPK;
+				
+				// The primary key of the book to borrow is encoded in the context.
+				bookPK = new Integer(context[0]);
+
+				borrowBook(bookPK, cycle);
+            }
+        };
+    }
+
+	private void borrowBook(Integer bookPK, IRequestCycle cycle)
+	throws RequestCycleException
+	{
+		VirtualLibraryApplication app;
+		IVlibOperations bean;
+		Home home;
+		Integer borrowerPK;
+		IBook book;
+
+		app = (VirtualLibraryApplication)application;
+
+		home = (Home)cycle.getPage("home");
+
+		bean = app.getOperations();				
+
+		borrowerPK = app.getUserPK();
+
+		try
+		{
+			book = bean.borrowBook(bookPK, borrowerPK);
+
+			home.setMessage("Borrowed: " + book.getTitle());
+		}
+		catch (FinderException e)
+		{
+			home.setError("Unable to locate book or user: " + e);
+		}
+		catch (RemoteException e)
+		{
+			throw new ApplicationRuntimeException("Could not borrow book: " + e, e);
+		}
+
+		cycle.setPage(home);				
+	}
 }

@@ -40,6 +40,32 @@
 				<res-auth>Container</res-auth>
 			</resource-ref>
 		</session>
+		<session>
+			<ejb-name>VlibOperations</ejb-name>
+			<home>com.primix.vlib.ejb.IVlibOperationsHome</home>
+			<remote>com.primix.vlib.ejb.IVlibOperations</remote>
+			<ejb-class>com.primix.vlib.ejb.VlibOperationsBean</ejb-class>
+			<session-type>Stateless</session-type>
+			<transaction-type>Container</transaction-type>
+			<ejb-ref>
+				<ejb-ref-name>ejb/Book</ejb-ref-name>
+				<ejb-ref-type>Entity</ejb-ref-type>
+				<home>com.primix.vlib.ejb.IBookHome</home>
+				<remote>com.primix.vlib.ejb.IBook</remote>
+			</ejb-ref>
+			<ejb-ref>
+				<ejb-ref-name>ejb/Person</ejb-ref-name>
+				<ejb-ref-type>Entity</ejb-ref-type>
+				<home>com.primix.vlib.ejb.IPersonHome</home>
+				<remote>com.primix.vlib.ejb.IPerson</remote>
+			</ejb-ref>
+			<ejb-ref>
+				<ejb-ref-name>ejb/Publisher</ejb-ref-name>
+				<ejb-ref-type>Entity</ejb-ref-type>
+				<home>com.primix.vlib.ejb.IPublisherHome</home>
+				<remote>com.primix.vlib.ejb.IPublisher</remote>
+			</ejb-ref>
+		</session>
 		<entity>
 			<display-name>Person</display-name>
 			<ejb-name>Person</ejb-name>
@@ -50,18 +76,23 @@
 			<prim-key-class>java.lang.Integer</prim-key-class>
 			<reentrant>False</reentrant>
 			<cmp-field>
+				<description>email address; must be unique, used as login identifier</description>
 				<field-name>email</field-name>
 			</cmp-field>
 			<cmp-field>
+				<description>secret password</description>
 				<field-name>password</field-name>
 			</cmp-field>
 			<cmp-field>
+				<description>first (individual) name</description>
 				<field-name>firstName</field-name>
 			</cmp-field>
 			<cmp-field>
+				<description>primary key</description>
 				<field-name>personId</field-name>
 			</cmp-field>
 			<cmp-field>
+				<description>last (family) name</description>
 				<field-name>lastName</field-name>
 			</cmp-field>
 			<primkey-field>personId</primkey-field>
@@ -71,13 +102,6 @@
 				<ejb-ref-type>Session</ejb-ref-type>
 				<home>com.primix.vlib.ejb.IKeyAllocatorHome</home>
 				<remote>com.primix.vlib.ejb.IKeyAllocator</remote>
-			</ejb-ref>
-			<ejb-ref>
-				<description/>
-				<ejb-ref-name>ejb/Book</ejb-ref-name>
-				<ejb-ref-type>Session</ejb-ref-type>
-				<home>com.primix.vlib.ejb.IBookHome</home>
-				<remote>com.primix.vlib.ejb.IBook</remote>
 			</ejb-ref>
 		</entity>
 		<entity>
@@ -90,6 +114,7 @@
 			<prim-key-class>java.lang.Integer</prim-key-class>
 			<reentrant>False</reentrant>
 			<cmp-field>
+				<description>Long description of book.</description>
 				<field-name>description</field-name>
 			</cmp-field>
 			<cmp-field>
@@ -101,9 +126,11 @@
 				<field-name>holderPK</field-name>
 			</cmp-field>
 			<cmp-field>
+				<description>ISBN of book.</description>
 				<field-name>ISBN</field-name>
 			</cmp-field>
 			<cmp-field>
+				<description>Primary key.</description>
 				<field-name>bookId</field-name>
 			</cmp-field>
 			<cmp-field>
@@ -111,9 +138,11 @@
 				<field-name>ownerPK</field-name>
 			</cmp-field>
 			<cmp-field>
+				<description>Number of times book has been lent/borrowed.</description>
 				<field-name>lendCount</field-name>
 			</cmp-field>
 			<cmp-field>
+				<description>Title of book.</description>
 				<field-name>title</field-name>
 			</cmp-field>
 			<primkey-field>bookId</primkey-field>
@@ -123,20 +152,6 @@
 				<ejb-ref-type>Session</ejb-ref-type>
 				<home>com.primix.vlib.ejb.IKeyAllocatorHome</home>
 				<remote>com.primix.vlib.ejb.IKeyAllocator</remote>
-			</ejb-ref>
-			<ejb-ref>
-				<description/>
-				<ejb-ref-name>ejb/Person</ejb-ref-name>
-				<ejb-ref-type>Entity</ejb-ref-type>
-				<home>com.primix.vlib.ejb.IPersonHome</home>
-				<remote>com.primix.vlib.ejb.IPerson</remote>
-			</ejb-ref>
-			<ejb-ref>
-				<description/>
-				<ejb-ref-name>ejb/Publisher</ejb-ref-name>
-				<ejb-ref-type>Entity</ejb-ref-type>
-				<home>com.primix.vlib.ejb.IPublisherHome</home>
-				<remote>com.primix.vlib.ejb.IPublisher</remote>
 			</ejb-ref>
 		</entity>
 		<entity>
@@ -162,13 +177,6 @@
 				<home>com.primix.vlib.ejb.IKeyAllocatorHome</home>
 				<remote>com.primix.vlib.ejb.IKeyAllocator</remote>
 			</ejb-ref>
-			<ejb-ref>
-				<description/>
-				<ejb-ref-name>ejb/Book</ejb-ref-name>
-				<ejb-ref-type>Entity</ejb-ref-type>
-				<home>com.primix.vlib.ejb.IBookHome</home>
-				<remote>com.primix.vlib.ejb.IBook</remote>
-			</ejb-ref>
 		</entity>
 	</enterprise-beans>
 	<assembly-descriptor>
@@ -191,6 +199,10 @@
 			</method>
 			<method>
 				<ejb-name>BookQuery</ejb-name>
+				<method-name>*</method-name>
+			</method>
+			<method>
+				<ejb-name>VlibOperations</ejb-name>
 				<method-name>*</method-name>
 			</method>
 			<trans-attribute>Required</trans-attribute>

@@ -21,5 +21,9 @@
 			<ejb-ref-name>ejb/BookQuery</ejb-ref-name>
 			<jndi-name>com.primix.vlib.BookQuery</jndi-name>
 		</ejb-reference-description>
+		<ejb-reference-description>
+			<ejb-ref-name>ejb/VlibOperations</ejb-ref-name>
+			<jndi-name>com.primix.vlib.VlibOperations</jndi-name>
+		</ejb-reference-description>
 	</reference-descriptor>
 </weblogic-web-app>

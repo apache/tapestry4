@@ -16,6 +16,27 @@
 		<jndi-name>com.primix.vlib.KeyAllocator</jndi-name>
 	</weblogic-enterprise-bean>
 	<weblogic-enterprise-bean>
+		<ejb-name>VlibOperations</ejb-name>
+		<clustering-descriptor>
+			<stateless-bean-methods-are-idempotent>true</stateless-bean-methods-are-idempotent>
+		</clustering-descriptor>
+		<reference-descriptor>
+			<ejb-reference-description>
+				<ejb-ref-name>ejb/Person</ejb-ref-name>
+				<jndi-name>com.primix.vlib.Person</jndi-name>
+			</ejb-reference-description>
+			<ejb-reference-description>
+				<ejb-ref-name>ejb/Book</ejb-ref-name>
+				<jndi-name>com.primix.vlib.Book</jndi-name>
+			</ejb-reference-description>
+			<ejb-reference-description>
+				<ejb-ref-name>ejb/Publisher</ejb-ref-name>
+				<jndi-name>com.primix.vlib.Publisher</jndi-name>
+			</ejb-reference-description>
+		</reference-descriptor>
+		<jndi-name>com.primix.vlib.VlibOperations</jndi-name>
+	</weblogic-enterprise-bean>
+	<weblogic-enterprise-bean>
 		<ejb-name>BookQuery</ejb-name>
 		<reference-descriptor>
 			<resource-description>
@@ -45,10 +66,6 @@
 				<ejb-ref-name>ejb/KeyAllocator</ejb-ref-name>
 				<jndi-name>com.primix.vlib.KeyAllocator</jndi-name>
 			</ejb-reference-description>
-			<ejb-reference-description>
-				<ejb-ref-name>ejb/Book</ejb-ref-name>
-				<jndi-name>com.primix.vlib.Book</jndi-name>
-			</ejb-reference-description>
 		</reference-descriptor>
 		<jndi-name>com.primix.vlib.Person</jndi-name>
 	</weblogic-enterprise-bean>
@@ -72,14 +89,6 @@
 				<ejb-ref-name>ejb/KeyAllocator</ejb-ref-name>
 				<jndi-name>com.primix.vlib.KeyAllocator</jndi-name>
 			</ejb-reference-description>
-			<ejb-reference-description>
-				<ejb-ref-name>ejb/Person</ejb-ref-name>
-				<jndi-name>com.primix.vlib.Person</jndi-name>
-			</ejb-reference-description>
-			<ejb-reference-description>
-				<ejb-ref-name>ejb/Publisher</ejb-ref-name>
-				<jndi-name>com.primix.vlib.Publisher</jndi-name>
-			</ejb-reference-description>
 		</reference-descriptor>
 		<jndi-name>com.primix.vlib.Book</jndi-name>
 	</weblogic-enterprise-bean>
@@ -102,10 +111,6 @@
 			<ejb-reference-description>
 				<ejb-ref-name>ejb/KeyAllocator</ejb-ref-name>
 				<jndi-name>com.primix.vlib.KeyAllocator</jndi-name>
-			</ejb-reference-description>
-			<ejb-reference-description>
-				<ejb-ref-name>ejb/Book</ejb-ref-name>
-				<jndi-name>com.primix.vlib.Book</jndi-name>
 			</ejb-reference-description>
 		</reference-descriptor>
 		<jndi-name>com.primix.vlib.Publisher</jndi-name>
