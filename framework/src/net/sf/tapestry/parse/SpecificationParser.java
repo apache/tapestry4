@@ -653,6 +653,14 @@ public class SpecificationParser extends AbstractDocumentParser
                 convertStaticBinding(c, child);
                 continue;
             }
+            
+            // <string-binding> added in release 2.0.4
+            
+            if (isElement(child, "string-binding"))
+            {
+                convertBinding(c, child, BindingType.STRING, "key");
+                continue;
+            }
         }
 
         specification.addComponent(id, c);

@@ -46,6 +46,7 @@ import net.sf.tapestry.PageLoaderException;
 import net.sf.tapestry.ResourceUnavailableException;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.binding.PropertyBinding;
+import net.sf.tapestry.binding.StringBinding;
 import net.sf.tapestry.spec.AssetSpecification;
 import net.sf.tapestry.spec.AssetType;
 import net.sf.tapestry.spec.BindingSpecification;
@@ -223,6 +224,14 @@ public class PageLoader implements IPageLoader
 
             return result;
         }
+
+
+		// String bindings are new in 2.0.4.  For the momement,
+		// we don't even try to cache and share them ... they
+		// are most often unique within a page.
+		
+		if (type == BindingType.STRING)
+			return new StringBinding(container, bindingValue);
 
         // static and field bindings are pooled.  This allows the
         // same instance to be used with many components.

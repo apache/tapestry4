@@ -12,6 +12,7 @@
 <!ENTITY Iterator "<classname>Iterator</classname>">
 <!ENTITY List "<classname>List</classname>">
 <!ENTITY Map "<classname>Map</classname>">
+<!ENTITY ResourceBundle "<classname>ResourceBundle</classname>">
 <!ENTITY ServletContext "<classname>ServletContext</classname>">
 <!ENTITY String "<classname>String</classname>">
 

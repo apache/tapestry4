@@ -175,6 +175,16 @@ public abstract class AbstractComponent implements IComponent
 	
 	private ParameterManager parameterManager;
 	
+	
+	/**
+	 *  Provides access to localized Strings for this component.
+	 * 
+	 *  @since 2.0.4
+	 * 
+	 **/
+	
+	private IComponentStrings strings;
+	
     public void addAsset(String name, IAsset asset)
     {
         if (assets == null)
@@ -918,5 +928,19 @@ public abstract class AbstractComponent implements IComponent
 	protected void cleanupAfterRender(IRequestCycle cycle)
 	{
 	    parameterManager.clearParameters();
+	}
+	
+	/**
+	 *  Obtains the {@link IComponentStrings} for this component
+	 *  (if necessary), and gets the string from it.
+	 * 
+	 **/
+	
+	public String getString(String key)
+	{
+	    if (strings == null)
+	    	strings = getPage().getEngine().getComponentStringsSource().getStrings(this);
+	    	
+	    return strings.getString(key);
 	}
 }

@@ -274,4 +274,17 @@ public interface IComponent extends IRender
     public void finishLoad(IPageLoader loader, ComponentSpecification specification)
         throws PageLoaderException;
 
+	/**
+	 *  Returns a localized string.  Each component has an optional
+	 *  set of localized strings that are read from properties
+	 *  files on the classpath.
+	 * 
+	 *  @param key the key used to locate the string
+	 *  @return the localized value for the key, or a placeholder
+	 *  if no string is defined for the key
+	 *  @since 2.0.4
+	 * 
+	 **/
+	
+	public String getString(String key);
 }
