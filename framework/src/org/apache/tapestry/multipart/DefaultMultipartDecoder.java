@@ -182,7 +182,8 @@ public class DefaultMultipartDecoder implements IMultipartDecoder
         request.setAttribute(PART_MAP_ATTRIBUTE_NAME, partMap);
 
         // The encoding that will be used to decode the string parameters
-        // It should NOT be null at this point
+        // It should NOT be null at this point, but it may be 
+        // if the older Servlet API 2.2 is used
         String encoding = request.getCharacterEncoding();
 
         // DiskFileUpload is not quite threadsafe, so we create a new instance

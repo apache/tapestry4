@@ -88,6 +88,10 @@ public interface ITemplateSource
     public static final String TEMPLATE_ASSET_NAME = "$template";
 
     /**
+     *  Name of the component parameter that will be automatically bound to
+     *  the HTML tag that is used to insert the component in the parent template.
+     *  If the parent component does not have a template (i.e. it extends 
+     *  AbstractComponent, not BaseComponent), then this parameter is bound to null.
      * 
      *  @since 3.0
      * 
