@@ -44,6 +44,7 @@
   	<static-binding name="displayName">Value</static-binding>
   	<binding name="value" expression="plotValue.value"/>
   	<binding name="validator" expression="beans.intValidator"/>
+  	<static-binding name="type">int</static-binding>
   </component>
   
   <component id="inputMarked" type="Checkbox">

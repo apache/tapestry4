@@ -23,14 +23,14 @@
   <component id="e" type="Foreach">
     <binding name="source" expression="unused"/>
   </component>
-  <component id="guess" type="Direct">
+  <component id="guess" type="DirectLink">
     <binding name="listener" expression="listeners.makeGuess"/>
     <binding name="parameters" expression="components.e.value"/>
   </component>
   <component id="insertLetter" type="Insert">
     <binding name="value" expression="components.e.value"/>
   </component>
-  <component id="giveUp" type="Page">
+  <component id="giveUp" type="PageLink">
     <static-binding name="page">Failed</static-binding>
   </component>
 </page-specification>

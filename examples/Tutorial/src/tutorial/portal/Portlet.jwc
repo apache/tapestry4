@@ -23,7 +23,7 @@
 	<static-binding name="width">450px</static-binding>
 </component>
 
-<component id="changeState" type="Action">
+<component id="changeState" type="ActionLink">
 	<binding name="listener" expression="changeStateListener"/>
 </component>
 
@@ -35,7 +35,7 @@
 	<binding name="alt" expression="changeStateLabel"/>
 </component>
 
-<component id="close" type="Action">
+<component id="close" type="ActionLink">
 	<inherited-binding name="listener" parameter-name="closeListener"/>
 </component>
 
@@ -51,7 +51,7 @@
   <binding name="value" expression="model.title"/>
 </component>
 
-<component id="insertBodyBlock" type="InsertBlock">
+<component id="renderBodyBlock" type="RenderBlock">
   <binding name="block" expression="bodyBlock"/>
 </component>
 

@@ -49,7 +49,7 @@ import net.sf.tapestry.util.StringSplitter;
 public class Border extends BaseComponent implements PageRenderListener
 {
     /**
-     *  Page name updated in loop.
+     *  PageLink name updated in loop.
      *
      **/
 

@@ -20,7 +20,7 @@
   	<binding name="value" expression="fileDump"/>
   </component>
   
-  <component id="back" type="Page">
+  <component id="back" type="PageLink">
   	<static-binding name="page">Upload</static-binding>
   </component>
   

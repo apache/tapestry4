@@ -8,11 +8,11 @@
 
   <component id="border" type="Border"/>
   
-  <component id="internal" type="Direct">
+  <component id="internal" type="DirectLink">
   	<binding name="listener" expression="listeners.redirectInternal"/>
   </component>
   
-  <component id="external" type="Direct">
+  <component id="external" type="DirectLink">
   	<binding name="listener" expression="listeners.redirectExternal"/>
   </component>
   

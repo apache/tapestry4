@@ -8,7 +8,7 @@
   <component id="insertWord" type="Insert">
     <binding name="value" expression="visit.game.word"/>
   </component>
-  <component id="startAgain" type="Page">
+  <component id="startAgain" type="PageLink">
     <static-binding name="page">Home</static-binding>
   </component>
 </page-specification>

@@ -48,7 +48,7 @@
   	<binding name="image" expression="rightTabAsset"/>
   </component>
   
-  <component id="insertWrapped" type="InsertWrapped"/>
+  <component id="renderBody" type="RenderBody"/>
   
   <component id="form" type="Form">
     <binding name="listener" expression="listeners.formListener"/>
@@ -69,7 +69,7 @@
     <binding name="delegate" expression="page.requestCycle.requestContext"/>
   </component>
   
-  <component id="showInspector" type="ShowInspector"/>
+  <component id="inspector" type="InspectorButton"/>
 
   <private-asset name="$template" resource-path="&here;/templates/Border.html"/>
 

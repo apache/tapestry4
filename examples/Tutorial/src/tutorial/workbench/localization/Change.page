@@ -12,7 +12,7 @@
     <binding name="value" expression="localeName"/>
   </component>
   
-  <component id="back" type="Page">
+  <component id="back" type="PageLink">
     <static-binding name="page">Localization</static-binding>
   </component>
   

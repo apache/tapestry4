@@ -40,11 +40,11 @@
 
   <component id="backRollover" type="Rollover">
     <binding name="image" expression="assets.back"/>
-    <binding name="focus" expression="assets.back-focus"/>
+    <binding name="focus" expression="assets.backFocus"/>
   </component>
 
   <context-asset name="back" path="/images/workbench/Back.gif"/>
-  <context-asset name="back-focus" path="/images/workbench/Back-focus.gif"/>
+  <context-asset name="backFocus" path="/images/workbench/Back-focus.gif"/>
 
 </page-specification>
 
