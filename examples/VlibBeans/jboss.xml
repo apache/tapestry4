@@ -4,7 +4,7 @@
   <resource-managers>
     <resource-manager res-class="org.jboss.ejb.deployment.JDBCResource">
       <res-name>jdbc/dataSource</res-name>
-      <res-jndi-name>java:/PrimixVlib</res-jndi-name>
+      <res-jndi-name>java:/McKoiDB</res-jndi-name>
     </resource-manager>
     
     <!--

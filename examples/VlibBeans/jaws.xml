@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="Cp1252"?>
 <jaws>
-  <datasource>java:/PrimixVlib</datasource>
-  <type-mappings>InstantDB</type-mappings>
+  <datasource>java:/McKoiDB</datasource>
+  
+    <!-- Actually, the type mappings are still for InstantDB, but they only
+         appear to be used when the CMP code creates the tables, which
+         isn't an issue here. -->
+         
+  <type-mappings>McKoiDB</type-mappings>
   <enterprise-beans>
     <entity>
       <ejb-name>Book</ejb-name>
