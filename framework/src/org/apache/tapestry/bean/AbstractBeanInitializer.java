@@ -56,6 +56,7 @@
 package org.apache.tapestry.bean;
 
 import org.apache.tapestry.IResourceResolver;
+import org.apache.tapestry.spec.BaseLocatable;
 import org.apache.tapestry.util.prop.OgnlUtils;
 
 /**
@@ -67,18 +68,34 @@ import org.apache.tapestry.util.prop.OgnlUtils;
  * 
  **/
 
-abstract public class AbstractBeanInitializer implements IBeanInitializer
+abstract public class AbstractBeanInitializer extends BaseLocatable implements IBeanInitializer
 {
     protected String _propertyName;
 
+    /** @since 2.4 **/
+
+    public AbstractBeanInitializer()
+    {
+    }
+
+    /** @deprecated **/
+
     public AbstractBeanInitializer(String propertyName)
     {
-        _propertyName = propertyName;
+        this();
+        setPropertyName(propertyName);
     }
 
     public String getPropertyName()
     {
         return _propertyName;
+    }
+
+    /** @since 2.4 **/
+
+    public void setPropertyName(String propertyName)
+    {
+        _propertyName = propertyName;
     }
 
     protected void setBeanProperty(IResourceResolver resolver, Object bean, Object value)

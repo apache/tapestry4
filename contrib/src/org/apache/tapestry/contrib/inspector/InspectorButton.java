@@ -58,6 +58,7 @@ package org.apache.tapestry.contrib.inspector;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IDirect;
 import org.apache.tapestry.IEngine;
@@ -65,8 +66,6 @@ import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IScript;
-import org.apache.tapestry.RequestCycleException;
-import org.apache.tapestry.ScriptException;
 import org.apache.tapestry.ScriptSession;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IEngineService;
@@ -99,7 +98,7 @@ public class InspectorButton extends BaseComponent implements IDirect
      *  @since 1.0.5
      **/
 
-    public void trigger(IRequestCycle cycle) throws RequestCycleException
+    public void trigger(IRequestCycle cycle)
     {
         String name = getNamespace().constructQualifiedName("Inspector");
 
@@ -115,7 +114,6 @@ public class InspectorButton extends BaseComponent implements IDirect
      **/
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         if (_disabled || cycle.isRewinding())
             return;
@@ -136,21 +134,12 @@ public class InspectorButton extends BaseComponent implements IDirect
 
         symbols.put("URL", link.getURL());
 
-        ScriptSession scriptSession = null;
-
-        try
-        {
-            scriptSession = script.execute(symbols);
-        }
-        catch (ScriptException ex)
-        {
-            throw new RequestCycleException(this, ex);
-        }
+        ScriptSession scriptSession = script.execute(symbols);
 
         Body body = Body.get(cycle);
 
         if (body == null)
-            throw new RequestCycleException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString("InspectorButton.must-be-contained-by-body"),
                 this);
 

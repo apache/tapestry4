@@ -58,7 +58,6 @@ package org.apache.tapestry.components;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 
 /**
  * An implementation of IRender that renders a Block component.
@@ -114,7 +113,6 @@ public class BlockRenderer implements IRender
 	 * @see org.apache.tapestry.IRender#render(IMarkupWriter, IRequestCycle)
 	 */
 	public void render(IMarkupWriter writer, IRequestCycle cycle)
-		throws RequestCycleException
 	{
 		m_objBlock.renderBody(writer, cycle);
 	}

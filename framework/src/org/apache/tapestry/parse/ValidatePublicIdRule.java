@@ -53,45 +53,68 @@
  *
  */
 
-package org.apache.tapestry;
+package org.apache.tapestry.parse;
+
+import org.apache.tapestry.IResourceLocation;
+import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.util.xml.DocumentParseException;
+import org.xml.sax.Attributes;
 
 /**
- *  Exception thown when an {@link IBinding} required by a component does not
- *  exist, or when the value for the binding is null (and the component
- *  requires a non-null value).
+ *  Rule used to validate the public id of the document, ensuring that
+ *  it is not null, and that it matches an expected value.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
+ *  @since 2.4
+ *
  **/
 
-public class RequiredParameterException extends RequestCycleException
+public class ValidatePublicIdRule extends BaseDocumentRule
 {
-	private String parameterName;
-	private transient IBinding binding;
+    private String[] _publicIds;
+    private String _rootElement;
 
-	public RequiredParameterException(
-		IComponent component,
-		String parameterName,
-		IBinding binding)
-	{
-		super(
-			Tapestry.getString(
-				"RequiredParameterException.message",
-				parameterName,
-				component.getExtendedId()),
-			component);
+    public ValidatePublicIdRule(String[] publicIds, String rootElement)
+    {
+        _publicIds = publicIds;
+        _rootElement = rootElement;
+    }
 
-		this.parameterName = parameterName;
-		this.binding = binding;
-	}
+    public void startDocument(String namespace, String name, Attributes attributes)
+        throws Exception
+    {
+        SpecificationDigester digester = getDigester();
+        IResourceLocation location = digester.getResourceLocation();
 
-	public String getParameterName()
-	{
-		return parameterName;
-	}
+        String publicId = digester.getPublicId();
 
-	public IBinding getBinding()
-	{
-		return binding;
-	}
+        if (publicId == null)
+            throw new DocumentParseException(
+                Tapestry.getString("ValidatePublicIdRule.no-public-id", location),
+                location);
+
+        for (int i = 0; i < _publicIds.length; i++)
+        {
+            if (_publicIds[i].equals(publicId))
+            {
+
+                if (!name.equals(_rootElement))
+                    throw new DocumentParseException(
+                        Tapestry.getString(
+                            "AbstractDocumentParser.incorrect-document-type",
+                            _rootElement,
+                            name),
+                        location);
+
+                return;
+            }
+
+        }
+
+        throw new DocumentParseException(
+            Tapestry.getString("AbstractDocumentParser.unknown-public-id", location, publicId),
+            location);
+    }
+
 }

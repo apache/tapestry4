@@ -61,7 +61,6 @@ import javax.servlet.http.Cookie;
 
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.callback.ICallback;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.html.BasePage;
@@ -195,7 +194,7 @@ public class Login extends BasePage implements IErrorProperty
      *
      **/
 
-    public void attemptLogin(IRequestCycle cycle) throws RequestCycleException
+    public void attemptLogin(IRequestCycle cycle)
     {
         // An error, from a validation field, may already have occured.
 
@@ -240,7 +239,7 @@ public class Login extends BasePage implements IErrorProperty
      **/
 
     public void loginUser(Person person, IRequestCycle cycle)
-        throws RequestCycleException, RemoteException
+        throws RemoteException
     {
         String email = person.getEmail();
 

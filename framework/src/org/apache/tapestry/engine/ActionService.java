@@ -65,7 +65,6 @@ import org.apache.tapestry.IAction;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.StaleSessionException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.ResponseOutputStream;
@@ -135,7 +134,7 @@ public class ActionService extends AbstractService
         IEngineServiceView engine,
         IRequestCycle cycle,
         ResponseOutputStream output)
-        throws RequestCycleException, ServletException, IOException
+        throws ServletException, IOException
     {
         IAction action = null;
         String componentPageName;
@@ -175,9 +174,10 @@ public class ActionService extends AbstractService
         }
         catch (ClassCastException ex)
         {
-            throw new RequestCycleException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString("ActionService.component-wrong-type", component.getExtendedId()),
                 component,
+                null,
                 ex);
         }
 

@@ -53,27 +53,84 @@
  *
  */
 
-package org.apache.tapestry;
+package org.apache.tapestry.junit;
+
+import org.apache.tapestry.ILocatable;
+import org.apache.tapestry.Location;
+import org.apache.tapestry.Tapestry;
 
 /**
- *  Thrown when an attempt is made to update through a read-only binding (i.e,
- *  {@link StaticBinding}.
+ *  Tests the method {@link org.apache.tapestry.Tapestry#findLocation(Object[])}.
  *
- *  @see IBinding
+ *  @author Howard Lewis Ship
+ *  @version $Id$
+ *  @since 2.4
  *
- * @author Howard Lewis Ship
- * @version $Id$
  **/
 
-public class ReadOnlyBindingException extends BindingException
+public class TestTapestryFindLocation extends TapestryTestCase
 {
-	public ReadOnlyBindingException(IBinding binding)
-	{
-		super(binding);
-	}
+    private static class TestLocatable implements ILocatable
+    {
+        private Location _l;
 
-	public ReadOnlyBindingException(String message, IBinding binding)
-	{
-		super(message, binding);
-	}
+        TestLocatable(Location l)
+        {
+            _l = l;
+        }
+
+        public Location getLocation()
+        {
+            return _l;
+        }
+    }
+
+    public TestTapestryFindLocation(String name)
+    {
+        super(name);
+    }
+
+    public void testEmpty()
+    {
+        assertNull(Tapestry.findLocation(new Object[] {
+        }));
+    }
+
+    public void testAllNull()
+    {
+        assertNull(Tapestry.findLocation(new Object[] { null, null, null }));
+    }
+
+    public void testOrdering()
+    {
+        Location l1 = new Location(null);
+        Location l2 = new Location(null);
+
+        assertSame(l1, Tapestry.findLocation(new Object[] { l1, l2 }));
+    }
+
+    public void testLocatable()
+    {
+        Location l1 = new Location(null);
+        ILocatable l2 = new TestLocatable(l1);
+
+        assertSame(l1, Tapestry.findLocation(new Object[] { l2 }));
+    }
+
+    public void testNullLocatable()
+    {
+        Location l1 = new Location(null);
+        ILocatable l2 = new TestLocatable(null);
+        ILocatable l3 = new TestLocatable(l1);
+
+        assertSame(l1, Tapestry.findLocation(new Object[] { l2, l3 }));
+    }
+
+    public void testSkipOther()
+    {
+        Location l1 = new Location(null);
+
+        assertSame(l1, Tapestry.findLocation(new Object[] { this, "Hello", l1, "Goodbye" }));
+    }
+
 }

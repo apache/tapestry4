@@ -21,6 +21,10 @@
     <classpathentry kind="var" path="JETTY_DIR/ext/crimson.jar"/>
     <classpathentry kind="lib" path="ext-dist/jdom-b8.jar"/>
     <classpathentry kind="lib" path="ext-dist/junit.jar"/>
-    <classpathentry kind="lib" path="ext-dist/jCharts-0.6.0.jar"/>
+    <classpathentry kind="lib" path="lib/ext/commons-beanutils-1.6.1.jar"/>
+    <classpathentry kind="lib" path="lib/ext/commons-digester-1.4.jar"
+        rootpath="commons-digester-1.4.1-src/src/java" sourcepath="C:/Documents and Settings/Howard/Desktop/Downloads/Apache/commons-digester-1.4.1-src.zip"/>
+    <classpathentry kind="lib" path="examples/Workbench/lib/jCharts-0.6.0.jar"/>
+    <classpathentry kind="lib" path="lib/ext/commons-collections-2.1.jar"/>
     <classpathentry kind="output" path="bin"/>
 </classpath>

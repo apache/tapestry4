@@ -57,7 +57,9 @@ package org.apache.tapestry.util.xml;
 
 import org.xml.sax.SAXParseException;
 
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IResourceLocation;
+import org.apache.tapestry.Location;
 
 /**
  *  Exception thrown if there is any kind of error parsing the
@@ -71,57 +73,60 @@ import org.apache.tapestry.IResourceLocation;
  *
  **/
 
-public class DocumentParseException extends Exception
+public class DocumentParseException extends ApplicationRuntimeException
 {
-    private Throwable _rootCause;
-    private int _lineNumber;
-    private int _column;
-    private IResourceLocation _resourceLocation;
+    private IResourceLocation _documentLocation;
 
     public DocumentParseException(String message, Throwable rootCause)
     {
-        this(message, null, rootCause);
+        this(message, null, null, rootCause);
     }
 
-    public DocumentParseException(String message, IResourceLocation resourceLocation)
+    public DocumentParseException(String message, IResourceLocation documentLocation)
     {
-        this(message, resourceLocation, null);
-    }
-
-    public DocumentParseException(String message, SAXParseException rootCause)
-    {
-        this(message, null, rootCause);
+        this(message, documentLocation, null);
     }
 
     public DocumentParseException(
         String message,
-        IResourceLocation resourceLocation,
+        IResourceLocation documentLocation,
         Throwable rootCause)
     {
-        super(message);
-
-        _resourceLocation = resourceLocation;
-
-        _rootCause = rootCause;
+        this(message, documentLocation, null, rootCause);
     }
 
     public DocumentParseException(
         String message,
-        IResourceLocation resourceLocation,
+        IResourceLocation documentLocation,
+        Location location,
+        Throwable rootCause)
+    {
+        super(message, null, location, rootCause);
+
+        _documentLocation = documentLocation;
+    }
+
+    public DocumentParseException(
+        String message,
+        IResourceLocation documentLocation,
         SAXParseException rootCause)
     {
-        this(message, resourceLocation, (Throwable) rootCause);
-
-        if (rootCause != null)
-        {
-            _lineNumber = rootCause.getLineNumber();
-            _column = rootCause.getColumnNumber();
-        }
+        this(
+            message,
+            documentLocation,
+            rootCause == null
+                || documentLocation == null
+                    ? null
+                    : new Location(
+                        documentLocation,
+                        rootCause.getLineNumber(),
+                        rootCause.getColumnNumber()),
+            rootCause);
     }
 
     public DocumentParseException(String message)
     {
-        super(message);
+        this(message, null, null, null);
     }
 
     public DocumentParseException(Throwable rootCause)
@@ -134,24 +139,8 @@ public class DocumentParseException extends Exception
         this(rootCause.getMessage(), (Throwable) rootCause);
     }
 
-    public Throwable getRootCause()
+    public IResourceLocation getDocumentLocation()
     {
-        return _rootCause;
+        return _documentLocation;
     }
-
-    public int getLineNumber()
-    {
-        return _lineNumber;
-    }
-
-    public int getColumn()
-    {
-        return _column;
-    }
-
-    public IResourceLocation getResourceLocation()
-    {
-        return _resourceLocation;
-    }
-
 }

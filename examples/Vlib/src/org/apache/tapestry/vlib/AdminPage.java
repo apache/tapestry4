@@ -57,7 +57,6 @@ package org.apache.tapestry.vlib;
 
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRedirectException;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.callback.PageCallback;
 import org.apache.tapestry.vlib.pages.Login;
 
@@ -90,7 +89,7 @@ public class AdminPage extends Protected
         _message = value;
     }
 
-    public void validate(IRequestCycle cycle) throws RequestCycleException
+    public void validate(IRequestCycle cycle)
     {
         Visit visit = (Visit) getEngine().getVisit();
 

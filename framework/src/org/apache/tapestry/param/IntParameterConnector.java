@@ -58,7 +58,6 @@ package org.apache.tapestry.param;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequiredParameterException;
 
 /**
  *  Connects a parameter to an int property.
@@ -83,7 +82,7 @@ public class IntParameterConnector extends AbstractParameterConnector
      * 
      **/
 
-    public void setParameter(IRequestCycle cycle) throws RequiredParameterException
+    public void setParameter(IRequestCycle cycle)
     {
         if (shouldSetPropertyValue(cycle))
         {

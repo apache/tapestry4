@@ -59,7 +59,6 @@ import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 
 /**
  *  Renders the text and components wrapped by a component.
@@ -81,7 +80,6 @@ public class RenderBody extends AbstractComponent
      **/
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         IComponent container = getContainer();
 

@@ -57,7 +57,6 @@ package org.apache.tapestry.contrib.form;
 
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.form.IPropertySelectionModel;
 
 /**
@@ -82,7 +81,6 @@ public class CheckBoxMultiplePropertySelectionRenderer
         MultiplePropertySelection component,
         IMarkupWriter writer,
         IRequestCycle cycle)
-        throws RequestCycleException
     {
         writer.begin("table");
         writer.attribute("border", 0);
@@ -99,7 +97,6 @@ public class CheckBoxMultiplePropertySelectionRenderer
         MultiplePropertySelection component,
         IMarkupWriter writer,
         IRequestCycle cycle)
-        throws RequestCycleException
     {
         writer.end(); // <table>
     }
@@ -118,7 +115,6 @@ public class CheckBoxMultiplePropertySelectionRenderer
         Object option,
         int index,
         boolean selected)
-        throws RequestCycleException
     {
         writer.begin("tr");
         writer.begin("td");

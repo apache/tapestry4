@@ -56,7 +56,6 @@
 package org.apache.tapestry.param;
 
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequiredParameterException;
 
 /**
  *  Define a type of connector between a binding of a component and a JavaBeans
@@ -81,8 +80,7 @@ public interface IParameterConnector
      * 
      **/
     
-	public void setParameter(IRequestCycle cycle)
-	throws RequiredParameterException;
+	public void setParameter(IRequestCycle cycle);
 	
 	/**
 	 *  Clears the parameters to a null, 0 or false value

@@ -59,7 +59,6 @@ import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 
 /** 
  *  Prevents its contents from being rendered until triggered by
@@ -98,7 +97,7 @@ public class Block extends AbstractComponent
      *
      **/
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         // Nothing!
     }

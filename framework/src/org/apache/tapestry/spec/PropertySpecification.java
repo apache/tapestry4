@@ -65,7 +65,7 @@ package org.apache.tapestry.spec;
  * 
  **/
 
-public class PropertySpecification
+public class PropertySpecification extends BaseLocatable
 {
 	private String _name;
 	private String _type = "java.lang.Object";

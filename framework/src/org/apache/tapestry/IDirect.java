@@ -65,28 +65,26 @@ package org.apache.tapestry;
 
 public interface IDirect extends IComponent
 {
-	/**
-	 *  Invoked by the direct service to have the component peform
-	 *  the appropriate action.  The {@link DirectLink} component will
-	 *  notify its listener.
-	 *
-	 **/
+    /**
+     *  Invoked by the direct service to have the component peform
+     *  the appropriate action.  The {@link DirectLink} component will
+     *  notify its listener.
+     *
+     **/
 
-	public void trigger(IRequestCycle cycle)
-		throws RequestCycleException;
-        
-     /**
-      *  Invoked by the direct service to query the component as to
-      *  whether it is stateful.  If stateful and no 
-      *  {@link HttpSession} is active, then a 
-      *  {@link org.apache.tapestry.StaleSessionException} is
-      *  thrown by the service.
-      * 
-      *  @since 2.3
-      * 
-      **/
-     
+    public void trigger(IRequestCycle cycle);
+
+    /**
+     *  Invoked by the direct service to query the component as to
+     *  whether it is stateful.  If stateful and no 
+     *  {@link HttpSession} is active, then a 
+     *  {@link org.apache.tapestry.StaleSessionException} is
+     *  thrown by the service.
+     * 
+     *  @since 2.3
+     * 
+     **/
+
     public boolean isStateful();
-     
-    
+
 }

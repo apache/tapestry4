@@ -59,7 +59,7 @@ import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
+
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
@@ -77,14 +77,12 @@ import org.apache.tapestry.engine.ILink;
 public abstract class Frame extends AbstractComponent
 {
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         if (cycle.isRewinding())
             return;
 
         IEngine engine = cycle.getEngine();
         IEngineService pageService = engine.getService(Tapestry.PAGE_SERVICE);
-
         ILink link = pageService.getLink(cycle, this, new String[] { getTargetPage() });
 
         writer.beginEmpty("frame");

@@ -61,9 +61,7 @@ import java.util.Iterator;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IPage;
-import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceResolver;
-import org.apache.tapestry.PageRecorderCommitException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IPageRecorder;
 import org.apache.tapestry.event.ObservedChangeEvent;
@@ -96,7 +94,7 @@ public abstract class PageRecorder implements IPageRecorder
      *
      **/
 
-    public abstract void commit() throws PageRecorderCommitException;
+    public abstract void commit();
 
     /**
      *  Returns a <code>Collection</code> of 

@@ -60,13 +60,12 @@ import java.util.Collections;
 import java.util.List;
 
 import junit.framework.AssertionFailedError;
+
+import ognl.Ognl;
 import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.listener.ListenerMap;
-import ognl.Ognl;
 
 /**
  *  Tests the {@link org.apache.tapestry.listener.ListenerMap} and
@@ -94,16 +93,12 @@ public class TestListenerMap extends TapestryTestCase
             return null;
         }
 
-        public void notQuiteListenerMethod(IRequestCycle cycle) throws BindingException
-        {
-        }
-
         public void actualListenerMethod(IRequestCycle cycle)
         {
             invokeCount++;
         }
 
-        public void listenerThrows(IRequestCycle cycle) throws RequestCycleException
+        public void listenerThrows(IRequestCycle cycle)
         {
             invokeCount++;
         }
@@ -116,13 +111,9 @@ public class TestListenerMap extends TapestryTestCase
         {
         }
 
-        public void tooManyExceptionsThrown(IRequestCycle cycle) throws RequestCycleException, BindingException
+        public void invokeAndThrow(IRequestCycle cycle)
         {
-        }
-
-        public void invokeAndThrow(IRequestCycle cycle) throws RequestCycleException
-        {
-            throw new RequestCycleException("From invokeAndThrow");
+            throw new ApplicationRuntimeException("From invokeAndThrow");
         }
 
         public void invokeAndThrowRuntime(IRequestCycle cycle)
@@ -161,9 +152,9 @@ public class TestListenerMap extends TapestryTestCase
         {
             l.actionTriggered(null, null);
         }
-        catch (RequestCycleException ex)
+        catch (ApplicationRuntimeException ex)
         {
-            throw new AssertionFailedError("Unexpected RequestCycleException.");
+            throw new AssertionFailedError("Unexpected ApplicationRuntimeException.");
         }
 
         assertEquals("Invoke count.", count + 1, listener.invokeCount);
@@ -188,7 +179,11 @@ public class TestListenerMap extends TapestryTestCase
 
         checkList(
             "Method names.",
-            new String[] { "actualListenerMethod", "invokeAndThrow", "invokeAndThrowRuntime", "listenerThrows" },
+            new String[] {
+                "actualListenerMethod",
+                "invokeAndThrow",
+                "invokeAndThrowRuntime",
+                "listenerThrows" },
             names);
     }
 
@@ -259,7 +254,7 @@ public class TestListenerMap extends TapestryTestCase
 
             throw new AssertionFailedError("Unreachable.");
         }
-        catch (RequestCycleException ex)
+        catch (ApplicationRuntimeException ex)
         {
             checkException(ex, "From invokeAndThrow");
         }
@@ -308,25 +303,6 @@ public class TestListenerMap extends TapestryTestCase
         IActionListener listener = (IActionListener) m.getListener("actualListenerMethod");
 
         assertSame("Listener", listener, m.getListener("actualListenerMethod"));
-    }
-
-    public void testInvalidMethod() throws Exception
-    {
-        Listener l = new Listener();
-        ListenerMap m = new ListenerMap(l);
-
-        try
-        {
-            m.getListener("notQuiteListenerMethod");
-
-            throw new AssertionFailedError("Unreachable.");
-        }
-        catch (ApplicationRuntimeException ex)
-        {
-            checkException(
-                ex,
-                "Object TestListenerMap.Listener[0] does not implement a listener method named 'notQuiteListenerMethod'.");
-        }
     }
 
 }

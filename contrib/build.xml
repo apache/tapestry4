@@ -11,7 +11,7 @@
 		</fileset>
 	</path>
 	<path id="project.classpath">
-		<fileset dir="${lib.dir}">
+		<fileset dir="${root.lib.dir}">
 			<include name="${framework.jar}"/>
 			<include name="${ext.dir}/*.jar"/>
 		</fileset>
@@ -37,7 +37,7 @@
 	<target name="install" depends="compile"
 		description="Compile all classes and build the installed JAR including all package resources."
 		>
-		<jar jarfile="${lib.dir}/${contrib.jar}">
+		<jar jarfile="${root.lib.dir}/${contrib.jar}">
 			<fileset dir="${classes.dir}"/>
 			<fileset dir="${src.dir}">
 				<exclude name="**/*.java"/>

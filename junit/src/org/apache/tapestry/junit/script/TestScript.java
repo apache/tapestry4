@@ -63,14 +63,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import junit.framework.AssertionFailedError;
-import junit.framework.TestCase;
-
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.IScript;
-import org.apache.tapestry.ScriptException;
 import org.apache.tapestry.ScriptSession;
+import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.resource.ClasspathResourceLocation;
 import org.apache.tapestry.script.ScriptParser;
 import org.apache.tapestry.util.DefaultResourceResolver;
@@ -86,7 +83,7 @@ import org.apache.tapestry.util.xml.DocumentParseException;
  *
  **/
 
-public class TestScript extends TestCase
+public class TestScript extends TapestryTestCase
 {
 
     public TestScript(String name)
@@ -109,7 +106,8 @@ public class TestScript extends TestCase
         return result;
     }
 
-    private ScriptSession execute(String file, Map symbols) throws ScriptException, DocumentParseException, IOException
+    private ScriptSession execute(String file, Map symbols)
+        throws DocumentParseException, IOException
     {
         IScript script = read(file);
 
@@ -193,7 +191,7 @@ public class TestScript extends TestCase
         input.put("array_empty", new Integer[0]);
         input.put("number_zero", new Long(0));
         input.put("number_nonzero", new Integer(1));
-        
+
         Map symbols = new HashMap();
         symbols.put("input", input);
 
@@ -323,7 +321,7 @@ public class TestScript extends TestCase
         {
             execute("invalid-key-let.script", new HashMap());
 
-            throw new AssertionFailedError("Exception expected.");
+            unreachable();
         }
         catch (DocumentParseException ex)
         {
@@ -337,20 +335,12 @@ public class TestScript extends TestCase
         {
             execute("invalid-key-Set.script", new HashMap());
 
-            throw new AssertionFailedError("Exception expected.");
+            unreachable();
         }
         catch (DocumentParseException ex)
         {
             checkException(ex, "key");
         }
-    }
-
-    private void checkException(Exception ex, String string)
-    {
-        if (ex.getMessage().indexOf(string) >= 0)
-            return;
-
-        throw new AssertionFailedError("Exception " + ex + " does not contain sub-string '" + string + "'.");
     }
 
     public void testInputSymbolClass() throws Exception
@@ -362,9 +352,9 @@ public class TestScript extends TestCase
 
             execute("input-symbol-class.script", symbols);
 
-            throw new AssertionFailedError("Exception expected.");
+            unreachable();
         }
-        catch (ScriptException ex)
+        catch (Exception ex)
         {
             checkException(ex, "Integer");
             checkException(ex, "Long");
@@ -387,9 +377,9 @@ public class TestScript extends TestCase
         {
             execute("input-symbol-required.script", new HashMap());
 
-            throw new AssertionFailedError("Exception expected.");
+            unreachable();
         }
-        catch (ScriptException ex)
+        catch (Exception ex)
         {
             checkException(ex, "required");
         }
@@ -401,7 +391,7 @@ public class TestScript extends TestCase
         {
             execute("input-symbol-invalid-key.script", new HashMap());
 
-            throw new AssertionFailedError("Exception expected.");
+            unreachable();
         }
         catch (DocumentParseException ex)
         {

@@ -55,25 +55,14 @@
 
 package org.apache.tapestry.pageload;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.lang.builder.ToStringBuilder;
-
-import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IResourceResolver;
-import org.apache.tapestry.PageLoaderException;
-import org.apache.tapestry.asset.ExternalAsset;
-import org.apache.tapestry.binding.FieldBinding;
-import org.apache.tapestry.binding.StaticBinding;
 import org.apache.tapestry.engine.IMonitor;
 import org.apache.tapestry.engine.IPageSource;
-import org.apache.tapestry.resolver.*;
+import org.apache.tapestry.resolver.PageSpecificationResolver;
 import org.apache.tapestry.util.MultiKey;
 import org.apache.tapestry.util.pool.Pool;
 
@@ -88,23 +77,9 @@ import org.apache.tapestry.util.pool.Pool;
  *  and are later returned to the pool using {@link #releasePage(IPage)}.
  *
  *
- *  <p>In addition, this class acts as a cache of serveral common
- *  objects:
- *  <ul>
- *  <li>{@link FieldBinding}
- *  <li>{@link StaticBinding}
- *  <li>{@link ExternalAsset}
- *  <li>{@link ContextAsset}
- *  <li>{@link PrivateAsset}
- *  </ul>
- *
- *  <p>This caching allows common objects to be created once, and
- *  used across all components and pages.  Without pooling, objects would often be duplicated.
- *
- *
- * <p>TBD: Pooled pages stay forever.  Need a strategy for cleaning up the pool,
- * tracking which pages have been in the pool the longest, etc.  A mechanism
- * for reporting pool statistics would be useful.
+ *  <p>TBD: Pooled pages stay forever.  Need a strategy for cleaning up the pool,
+ *  tracking which pages have been in the pool the longest, etc.  A mechanism
+ *  for reporting pool statistics would be useful.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
@@ -119,18 +94,6 @@ public class PageSource implements IPageSource
      **/
 
     private static final String PAGE_LOADER_POOL_KEY = "org.apache.tapestry.PageLoader";
-
-    private Map _fieldBindings = new HashMap();
-    private Map _staticBindings = new HashMap();
-
-    /**
-     *  Map of {@link IAsset}.  Some entries use a string as a key (for extenal assets).
-     *  The rest use a {@link org.apache.tapestry.IResourceLocation} as a key
-     *  (for private and context assets).
-     * 
-     **/
-
-    private Map _assets = new HashMap();
 
     private IResourceResolver _resolver;
 
@@ -157,8 +120,6 @@ public class PageSource implements IPageSource
     public PageSource(IEngine engine)
     {
         _resolver = engine.getResourceResolver();
-        ;
-
         _pool = engine.getPool();
     }
 
@@ -206,7 +167,7 @@ public class PageSource implements IPageSource
      *
      **/
 
-    public IPage getPage(IRequestCycle cycle, String pageName, IMonitor monitor) throws PageLoaderException
+    public IPage getPage(IRequestCycle cycle, String pageName, IMonitor monitor)
     {
         IEngine engine = cycle.getEngine();
         Object key = buildKey(engine, pageName);
@@ -307,114 +268,19 @@ public class PageSource implements IPageSource
 
     public synchronized void reset()
     {
-        _fieldBindings.clear();
-        _staticBindings.clear();
-        _assets.clear();
+        _pool.clear();
     }
 
-    /**
-     *  Gets a field binding for the named field (the name includes the class name
-     *  and the field).  If no such binding exists, then one is created, otherwise
-     *  the existing binding is returned. 
-     *
-     **/
 
-    public synchronized IBinding getFieldBinding(String fieldName)
-    {
-        IBinding result = (IBinding) _fieldBindings.get(fieldName);
-
-        if (result == null)
-        {
-            result = new FieldBinding(_resolver, fieldName);
-
-            _fieldBindings.put(fieldName, result);
-        }
-
-        return result;
-    }
-
-    /**
-     *  Like {@link #getFieldBinding(String)}, except for {@link StaticBinding}s.
-     *
-     **/
-
-    public synchronized IBinding getStaticBinding(String value)
-    {
-        IBinding result = (IBinding) _staticBindings.get(value);
-
-        if (result == null)
-        {
-            result = new StaticBinding(value);
-
-            _staticBindings.put(value, result);
-        }
-
-        return result;
-    }
-
-    public synchronized IAsset getExternalAsset(String URL)
-    {
-        IAsset result = (IAsset) _assets.get(URL);
-
-        if (result == null)
-        {
-            result = new ExternalAsset(URL);
-            _assets.put(URL, result);
-        }
-
-        return result;
-    }
-
-    public synchronized IAsset getAsset(IResourceLocation location)
-    {
-        IAsset result = (IAsset) _assets.get(location);
-
-        if (result == null)
-        {
-            result = location.toAsset();
-
-            _assets.put(location, result);
-        }
-
-        return result;
-
-    }
 
     public String toString()
     {
         ToStringBuilder builder = new ToStringBuilder(this);
 
         builder.append("pool", _pool);
-        builder.append("assets", _assets);
-        builder.append("fieldBindings", _fieldBindings);
-        builder.append("staticBindings", _staticBindings);
         builder.append("resolver", _resolver);
 
         return builder.toString();
-    }
-
-    private void extend(StringBuffer buffer, Map map, String label)
-    {
-        if (map == null)
-            return;
-
-        int count;
-
-        synchronized (map)
-        {
-            count = map.size();
-        }
-
-        if (count == 0)
-            return;
-
-        char ch = buffer.charAt(buffer.length() - 1);
-        if (ch != ' ' && ch != '[')
-            buffer.append(", ");
-
-        buffer.append(count);
-        buffer.append(" cached ");
-        buffer.append(label);
     }
 
 }

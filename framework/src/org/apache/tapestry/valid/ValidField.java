@@ -55,11 +55,11 @@
 
 package org.apache.tapestry.valid;
 
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.form.AbstractTextField;
 import org.apache.tapestry.form.Form;
@@ -119,13 +119,12 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
      **/
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         IValidationDelegate delegate = getForm().getDelegate();
         IValidator validator = getValidator();
 
         if (delegate == null)
-            throw new RequestCycleException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString(
                     "ValidField.no-delegate",
                     getExtendedId(),
@@ -164,7 +163,6 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
      **/
 
     protected void beforeCloseTag(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         IValidator validator = getValidator();
 
@@ -212,7 +210,7 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
         cycle.setAttribute(SELECTED_ATTRIBUTE_NAME, Boolean.TRUE);
     }
 
-    protected String readValue() throws RequestCycleException
+    protected String readValue()
     {
         IValidationDelegate delegate = getForm().getDelegate();
 
@@ -228,7 +226,7 @@ public abstract class ValidField extends AbstractTextField implements IFormCompo
         return result;
     }
 
-    protected void updateValue(String value) throws RequestCycleException
+    protected void updateValue(String value)
     {
         Object objectValue = null;
         IValidationDelegate delegate = getForm().getDelegate();

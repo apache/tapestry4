@@ -61,7 +61,6 @@ import javax.ejb.CreateException;
 
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.valid.IValidationDelegate;
@@ -185,7 +184,7 @@ public class Register extends BasePage implements IErrorProperty
         delegate.record(new ValidatorException(message));
     }
 
-    public void attemptRegister(IRequestCycle cycle) throws RequestCycleException
+    public void attemptRegister(IRequestCycle cycle)
     {
         IValidationDelegate delegate = getValidationDelegate();
 

@@ -66,7 +66,6 @@ import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageEvent;
@@ -172,7 +171,6 @@ public class ShowEngine extends BaseComponent implements PageDetachListener
         return new IRender()
         {
             public void render(IMarkupWriter writer, IRequestCycle cycle)
-                throws RequestCycleException
             {
                 dumpSerializedEngine(writer);
             }

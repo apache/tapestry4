@@ -66,7 +66,7 @@ package org.apache.tapestry.spec;
  * 
  **/
 
-public class ParameterSpecification
+public class ParameterSpecification extends BaseLocatable
 {
     private boolean required = false;
     private String type;

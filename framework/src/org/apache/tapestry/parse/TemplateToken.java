@@ -57,6 +57,8 @@ package org.apache.tapestry.parse;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.tapestry.ILocatable;
+import org.apache.tapestry.Location;
 
 /**
  *  Base class for a number of different types of tokens that can be extracted
@@ -69,18 +71,25 @@ import org.apache.commons.lang.builder.ToStringStyle;
  * 
  **/
 
-public abstract class TemplateToken
+public abstract class TemplateToken implements ILocatable
 {
     private TokenType _type;
+    private Location _location;
 
-    protected TemplateToken(TokenType type)
+    protected TemplateToken(TokenType type, Location location)
     {
         _type = type;
+        _location = location;
     }
 
     public TokenType getType()
     {
         return _type;
+    }
+    
+    public Location getLocation()
+    {
+    	return _location;
     }
 
     public String toString()
@@ -88,6 +97,7 @@ public abstract class TemplateToken
         ToStringBuilder builder = new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE);
 
         builder.append("type", _type.getName());
+        builder.append("location", _location);
 
         extendDescription(builder);
 

@@ -61,7 +61,6 @@ import javax.servlet.ServletException;
 
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.IEngineServiceView;
 import org.apache.tapestry.engine.ILink;
@@ -79,7 +78,7 @@ public class NameMismatchService implements IEngineService
         IEngineServiceView engine,
         IRequestCycle cycle,
         ResponseOutputStream output)
-        throws RequestCycleException, ServletException, IOException
+        throws ServletException, IOException
     {
         return false;
     }

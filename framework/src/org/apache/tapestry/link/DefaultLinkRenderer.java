@@ -55,9 +55,9 @@
 
 package org.apache.tapestry.link;
 
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.components.ILinkComponent;
 import org.apache.tapestry.engine.ILink;
@@ -83,12 +83,11 @@ public class DefaultLinkRenderer implements ILinkRenderer
     public static final ILinkRenderer SHARED_INSTANCE = new DefaultLinkRenderer();
 
     public void renderLink(IMarkupWriter writer, IRequestCycle cycle, ILinkComponent linkComponent)
-        throws RequestCycleException
     {
         IMarkupWriter wrappedWriter = null;
 
         if (cycle.getAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME) != null)
-            throw new RequestCycleException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString("AbstractLinkComponent.no-nesting"),
                 linkComponent);
 

@@ -59,7 +59,6 @@ import java.util.Iterator;
 
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IRender;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.contrib.table.model.ITableColumn;
 import org.apache.tapestry.contrib.table.model.ITableColumnModel;
 
@@ -118,7 +117,7 @@ public class TableValues extends AbstractTableRowComponent
 	// Transient
 	private ITableColumn m_objTableColumn;
 
-	public Iterator getTableColumnIterator() throws RequestCycleException
+	public Iterator getTableColumnIterator()
 	{
 		ITableColumnModel objColumnModel =
 			getTableModelSource().getTableModel().getColumnModel();
@@ -147,7 +146,7 @@ public class TableValues extends AbstractTableRowComponent
             objColumnBinding.setObject(tableColumn);
 	}
 
-	public IRender getTableValueRenderer() throws RequestCycleException
+	public IRender getTableValueRenderer()
 	{
 		Object objRow = getTableRowSource().getTableRow();
 		return getTableColumn().getValueRenderer(

@@ -53,45 +53,34 @@
  *
  */
 
-package org.apache.tapestry;
+package org.apache.tapestry.spec;
 
-import org.apache.tapestry.engine.*;
+import org.apache.tapestry.ILocationHolder;
+import org.apache.tapestry.Location;
 
 /**
- *  Exception thrown when an {@link IPageRecorder} is unable to
- *  {@link IPageRecorder#commit()} its changes to external storage.
+ *  Base class for classes which implement
+ *  {@link org.apache.tapestry.ILocationHolder}.
+ * 
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
+ *  @since 2.4
+ *
  **/
 
-public class PageRecorderCommitException extends Exception
+public class BaseLocatable implements ILocationHolder
 {
-    private transient IPageRecorder pageRecorder;
-    private Throwable rootCause;
-
-    public PageRecorderCommitException(String message, IPageRecorder pageRecorder)
+	private Location _location;
+	
+    public void setLocation(Location location)
     {
-        super(message);
-
-        this.pageRecorder = pageRecorder;
+    	_location = location;
     }
 
-    public PageRecorderCommitException(String message, IPageRecorder pageRecorder, Throwable rootCause)
+    public Location getLocation()
     {
-        super(message);
-
-        this.pageRecorder = pageRecorder;
-        this.rootCause = rootCause;
+        return _location;
     }
 
-    public IPageRecorder getPageRecorder()
-    {
-        return pageRecorder;
-    }
-
-    public Throwable getRootCause()
-    {
-        return rootCause;
-    }
 }

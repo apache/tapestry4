@@ -61,8 +61,7 @@ import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
-import org.apache.tapestry.RequiredParameterException;
+import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.form.AbstractFormComponent;
 import org.apache.tapestry.form.IPropertySelectionModel;
 
@@ -205,7 +204,6 @@ public class MultiplePropertySelection extends AbstractFormComponent
      **/
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         IForm form = getForm(cycle);
 
@@ -218,7 +216,7 @@ public class MultiplePropertySelection extends AbstractFormComponent
         List selectedList = (List) selectedListBinding.getObject("selectedList", List.class);
 
         if (selectedList == null)
-            throw new RequiredParameterException(this, "selectedList", selectedListBinding);
+            throw Tapestry.createRequiredParameterException(this, "selectedList");
 
         // Handle the form processing first.
         if (rewinding)

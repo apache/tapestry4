@@ -60,7 +60,7 @@ import java.util.Map;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IResourceResolver;
-import org.apache.tapestry.ReadOnlyBindingException;
+import org.apache.tapestry.Location;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.spec.BeanLifecycle;
 import org.apache.tapestry.spec.BeanSpecification;
@@ -191,8 +191,14 @@ public class ExpressionBinding extends AbstractBinding
      * 
      **/
 
-    public ExpressionBinding(IResourceResolver resolver, IComponent root, String expression)
+    public ExpressionBinding(
+        IResourceResolver resolver,
+        IComponent root,
+        String expression,
+        Location location)
     {
+        super(location);
+
         _resolver = resolver;
         _root = root;
         _expression = expression;
@@ -235,7 +241,10 @@ public class ExpressionBinding extends AbstractBinding
         catch (Throwable t)
         {
             throw new BindingException(
-                Tapestry.getString("ExpressionBinding.unable-to-resolve-expression", _expression, _root),
+                Tapestry.getString(
+                    "ExpressionBinding.unable-to-resolve-expression",
+                    _expression,
+                    _root),
                 this,
                 t);
         }
@@ -394,7 +403,7 @@ public class ExpressionBinding extends AbstractBinding
             if (Ognl.isConstant(_parsedExpression, getOgnlContext()))
             {
                 _invariant = true;
-                
+
                 _cachedValue = resolveProperty();
 
                 return true;
@@ -403,7 +412,10 @@ public class ExpressionBinding extends AbstractBinding
         catch (Exception ex)
         {
             throw new BindingException(
-                Tapestry.getString("ExpressionBinding.unable-to-resolve-expression", _expression, _root),
+                Tapestry.getString(
+                    "ExpressionBinding.unable-to-resolve-expression",
+                    _expression,
+                    _root),
                 this,
                 ex);
         }
@@ -461,7 +473,10 @@ public class ExpressionBinding extends AbstractBinding
         catch (OgnlException ex)
         {
             throw new BindingException(
-                Tapestry.getString("ExpressionBinding.unable-to-resolve-expression", _expression, _root),
+                Tapestry.getString(
+                    "ExpressionBinding.unable-to-resolve-expression",
+                    _expression,
+                    _root),
                 this,
                 ex);
         }
@@ -531,7 +546,7 @@ public class ExpressionBinding extends AbstractBinding
         initialize();
 
         if (_invariant)
-            throw new ReadOnlyBindingException(this);
+                  throw createReadOnlyBindingException(this);
 
         try
         {
@@ -540,7 +555,11 @@ public class ExpressionBinding extends AbstractBinding
         catch (Throwable ex)
         {
             throw new BindingException(
-                Tapestry.getString("ExpressionBinding.unable-to-update-expression", _expression, _root, value),
+                Tapestry.getString(
+                    "ExpressionBinding.unable-to-update-expression",
+                    _expression,
+                    _root,
+                    value),
                 this,
                 ex);
         }

@@ -61,8 +61,6 @@ import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.PageRecorderCommitException;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.StaleLinkException;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.IMonitor;
@@ -148,12 +146,11 @@ public class MockRequestCycle implements IRequestCycle
     {
     }
 
-    public void renderPage(IMarkupWriter writer) throws RequestCycleException
+    public void renderPage(IMarkupWriter writer)
     {
     }
 
     public void rewindPage(String targetActionId, IComponent targetComponent)
-        throws RequestCycleException
     {
     }
 
@@ -169,7 +166,7 @@ public class MockRequestCycle implements IRequestCycle
     {
     }
 
-    public void commitPageChanges() throws PageRecorderCommitException
+    public void commitPageChanges()
     {
     }
 
@@ -178,7 +175,7 @@ public class MockRequestCycle implements IRequestCycle
         return null;
     }
 
-    public void rewindForm(IForm form, String targetActionId) throws RequestCycleException
+    public void rewindForm(IForm form, String targetActionId)
     {
     }
 

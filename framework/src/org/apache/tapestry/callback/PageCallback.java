@@ -57,7 +57,6 @@ package org.apache.tapestry.callback;
 
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 
 /**
  *  Simple callback for returning to a page.
@@ -75,7 +74,7 @@ import org.apache.tapestry.RequestCycleException;
  *  <pre>
  *  public class Home extends BasePage {
  * 
- *      public void validate(IRequestCycle cycle) throws RequestCycleException {            
+ *      public void validate(IRequestCycle cycle) {            
  *          Visit visit = (Visit) getVisit();
  *      
  *          if (!visit.isAuthenticated()) {
@@ -96,7 +95,7 @@ import org.apache.tapestry.RequestCycleException;
  *          _callback = callback;
  *      }
  *
- *      public void formSubmit(IRequestCycle cycle) throws RequestCycleException {
+ *      public void formSubmit(IRequestCycle cycle) {
  *          // Authentication code
  *          ..
  *   
@@ -149,7 +148,7 @@ public class PageCallback implements ICallback
      *
      **/
 
-    public void performCallback(IRequestCycle cycle) throws RequestCycleException
+    public void performCallback(IRequestCycle cycle)
     {
         cycle.setPage(_pageName);
     }

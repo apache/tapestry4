@@ -60,7 +60,6 @@ import java.util.Iterator;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.contrib.table.model.ITableModel;
 import org.apache.tapestry.contrib.table.model.ITableRowSource;
 
@@ -117,33 +116,32 @@ public class TableRows extends AbstractTableViewComponent implements ITableRowSo
     private IBinding m_objRowBinding = null;
     private IBinding m_objValueBinding = null;
 
-	// Transient
-	private Object m_objTableRow;
+    // Transient
+    private Object m_objTableRow;
 
+    public Iterator getTableRowsIterator()
+    {
+        ITableModel objTableModel = getTableModelSource().getTableModel();
+        return objTableModel.getCurrentPageRows();
+    }
 
-	public Iterator getTableRowsIterator() throws RequestCycleException
-	{
-		ITableModel objTableModel = getTableModelSource().getTableModel();
-		return objTableModel.getCurrentPageRows();
-	}
+    /**
+     * Returns the tableRow.
+     * @return Object
+     */
+    public Object getTableRow()
+    {
+        return m_objTableRow;
+    }
 
-	/**
-	 * Returns the tableRow.
-	 * @return Object
-	 */
-	public Object getTableRow()
-	{
-		return m_objTableRow;
-	}
+    /**
+     * Sets the tableRow.
+     * @param tableRow The tableRow to set
+     */
+    public void setTableRow(Object tableRow)
+    {
+        m_objTableRow = tableRow;
 
-	/**
-	 * Sets the tableRow.
-	 * @param tableRow The tableRow to set
-	 */
-	public void setTableRow(Object tableRow)
-	{
-		m_objTableRow = tableRow;
-        
         IBinding objRowBinding = getRowBinding();
         if (objRowBinding != null)
             objRowBinding.setObject(tableRow);
@@ -151,7 +149,7 @@ public class TableRows extends AbstractTableViewComponent implements ITableRowSo
         IBinding objValueBinding = getValueBinding();
         if (objValueBinding != null)
             objValueBinding.setObject(tableRow);
-	}
+    }
 
     /**
      * Returns the valueBinding.
@@ -220,18 +218,16 @@ public class TableRows extends AbstractTableViewComponent implements ITableRowSo
     }
 
     /**
-	 * @see org.apache.tapestry.BaseComponent#renderComponent(IMarkupWriter, IRequestCycle)
-	 */
-	protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-		throws RequestCycleException
-	{
+     * @see org.apache.tapestry.BaseComponent#renderComponent(IMarkupWriter, IRequestCycle)
+     */
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
+    {
         Object objOldValue = cycle.getAttribute(ITableRowSource.TABLE_ROW_SOURCE_ATTRIBUTE);
         cycle.setAttribute(ITableRowSource.TABLE_ROW_SOURCE_ATTRIBUTE, this);
 
-		super.renderComponent(writer, cycle);
+        super.renderComponent(writer, cycle);
 
         cycle.setAttribute(ITableRowSource.TABLE_ROW_SOURCE_ATTRIBUTE, objOldValue);
-	}
-
+    }
 
 }

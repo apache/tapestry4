@@ -63,31 +63,73 @@ package org.apache.tapestry;
  *  @version $Id$
  **/
 
-public class ApplicationRuntimeException extends RuntimeException
+public class ApplicationRuntimeException extends RuntimeException implements ILocatable
 {
-    private Throwable rootCause;
+    private Throwable _rootCause;
+    private transient Location _location;
+    private IComponent _component;
+
+	public ApplicationRuntimeException(IComponent component, Throwable rootCause)
+	{
+		this(rootCause.getMessage(), component, null, rootCause);
+	}
 
     public ApplicationRuntimeException(Throwable rootCause)
     {
-        super(rootCause.getMessage());
-
-        this.rootCause = rootCause;
+        super(rootCause.getMessage(), rootCause);
     }
 
     public ApplicationRuntimeException(String message)
     {
-        super(message);
+        this(message, null, null, null);
     }
 
     public ApplicationRuntimeException(String message, Throwable rootCause)
     {
+        this(message, null, null, rootCause);
+    }
+    
+    public ApplicationRuntimeException(String message, IComponent component)
+    {
+    	this(message, component, null, null);
+    }
+
+    public ApplicationRuntimeException(String message, IComponent component, Throwable ex)
+    {
+    	this(message, component, null, ex);
+    }
+    
+    public ApplicationRuntimeException(
+        String message,
+        IComponent component,
+        Location location,
+        Throwable rootCause)
+    {
         super(message);
 
-        this.rootCause = rootCause;
+        _rootCause = rootCause;
+        _component = component;
+
+        _location = Tapestry.findLocation(new Object[] { location, rootCause, component });
+    }
+
+    public ApplicationRuntimeException(String message, Location location, Throwable rootCause)
+    {
+        this(message, null, location, rootCause);
     }
 
     public Throwable getRootCause()
     {
-        return rootCause;
+        return _rootCause;
+    }
+
+    public Location getLocation()
+    {
+        return _location;
+    }
+
+    public IComponent getComponent()
+    {
+        return _component;
     }
 }

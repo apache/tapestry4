@@ -61,7 +61,6 @@ import javax.ejb.FinderException;
 
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.vlib.Protected;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
@@ -119,7 +118,6 @@ public class MyLibrary extends Protected
      **/
 
     public void beginResponse(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         super.beginResponse(writer, cycle);
 

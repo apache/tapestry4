@@ -59,7 +59,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.tapestry.bean.IBeanInitializer;
-import org.apache.tapestry.util.BasePropertyHolder;
 
 /**
  *  A specification of a helper bean for a component.
@@ -70,7 +69,7 @@ import org.apache.tapestry.util.BasePropertyHolder;
  * 
  **/
 
-public class BeanSpecification extends BasePropertyHolder
+public class BeanSpecification extends LocatablePropertyHolder
 {
     protected String className;
     protected BeanLifecycle lifecycle;
@@ -84,6 +83,10 @@ public class BeanSpecification extends BasePropertyHolder
      **/
 
     protected List initializers;
+
+    public BeanSpecification()
+    {
+    }
 
     public BeanSpecification(String className, BeanLifecycle lifecycle)
     {
@@ -157,4 +160,19 @@ public class BeanSpecification extends BasePropertyHolder
     {
         description = desc;
     }
+
+    /** @since 2.4 **/
+
+    public void setClassName(String className)
+    {
+        this.className = className;
+    }
+    
+    /** @since 2.4 **/
+    
+    public void setLifecycle(BeanLifecycle lifecycle)
+    {
+        this.lifecycle = lifecycle;
+    }
+
 }

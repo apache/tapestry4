@@ -75,11 +75,19 @@ public class PropertyBeanInitializer extends AbstractBeanInitializer
 {
     protected String _expression;
 
+	/** @since 2.4 **/
+	
+	public PropertyBeanInitializer()
+	{
+	}
+	
+	/** @deprecated **/
+	
     public PropertyBeanInitializer(String propertyName, String expression)
     {
         super(propertyName);
 
-        _expression = expression;
+        setExpression(expression);
     }
 
     public void setBeanProperty(IBeanProvider provider, Object bean)
@@ -90,6 +98,20 @@ public class PropertyBeanInitializer extends AbstractBeanInitializer
         Object value = OgnlUtils.get(_expression, resolver, component);
 
         setBeanProperty(resolver, bean, value);
+    }
+
+	/** @since 2.4 **/
+	
+    public String getExpression()
+    {
+        return _expression;
+    }
+
+	/** @since 2.4 **/
+	
+    public void setExpression(String expression)
+    {
+        _expression = expression;
     }
 
 }

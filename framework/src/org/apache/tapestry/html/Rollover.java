@@ -59,15 +59,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.tapestry.AbstractComponent;
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IScript;
-import org.apache.tapestry.RequestCycleException;
-import org.apache.tapestry.RequiredParameterException;
-import org.apache.tapestry.ScriptException;
 import org.apache.tapestry.ScriptSession;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.components.ILinkComponent;
@@ -98,7 +96,7 @@ public abstract class Rollover extends AbstractComponent
      *
      **/
 
-    protected String getAssetURL(IAsset asset, IRequestCycle cycle) throws RequestCycleException
+    protected String getAssetURL(IAsset asset, IRequestCycle cycle)
     {
         if (asset == null)
             return null;
@@ -107,7 +105,6 @@ public abstract class Rollover extends AbstractComponent
     }
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         // No body, so we skip it all if not rewinding (assumes no side effects on
         // accessors).
@@ -123,7 +120,7 @@ public abstract class Rollover extends AbstractComponent
 
         Body body = Body.get(cycle);
         if (body == null)
-            throw new RequestCycleException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString("Rollover.must-be-contained-by-body"),
                 this);
 
@@ -131,7 +128,7 @@ public abstract class Rollover extends AbstractComponent
             (ILinkComponent) cycle.getAttribute(Tapestry.LINK_COMPONENT_ATTRIBUTE_NAME);
 
         if (serviceLink == null)
-            throw new RequestCycleException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString("Rollover.must-be-contained-by-link"),
                 this);
 
@@ -154,8 +151,8 @@ public abstract class Rollover extends AbstractComponent
         }
 
         if (imageURL == null)
-            throw new RequiredParameterException(this, "image", null);
-
+            throw Tapestry.createRequiredParameterException(this, "image");
+ 
         writer.beginEmpty("img");
 
         writer.attribute("src", imageURL);
@@ -170,14 +167,7 @@ public abstract class Rollover extends AbstractComponent
             if (blurURL == null)
                 blurURL = imageURL;
 
-            try
-            {
-                imageName = writeScript(body, serviceLink, focusURL, blurURL);
-            }
-            catch (ScriptException ex)
-            {
-                throw new RequestCycleException(this, ex);
-            }
+            imageName = writeScript(body, serviceLink, focusURL, blurURL);
 
             writer.attribute("name", imageName);
         }
@@ -206,7 +196,6 @@ public abstract class Rollover extends AbstractComponent
     }
 
     private String writeScript(Body body, ILinkComponent link, String focusURL, String blurURL)
-        throws ScriptException
     {
         String uniqueId = body.getUniqueId();
         String focusImageURL = body.getPreloadedImageReference(focusURL);

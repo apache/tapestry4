@@ -56,7 +56,6 @@
 package org.apache.tapestry.link;
 
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.engine.ILink;
 
 /**
@@ -74,7 +73,7 @@ import org.apache.tapestry.engine.ILink;
 
 public abstract class ServiceLink extends AbstractLinkComponent
 {
-    public ILink getLink(IRequestCycle cycle) throws RequestCycleException
+    public ILink getLink(IRequestCycle cycle)
     {
         Object[] parameters = DirectLink.constructServiceParameters(getParameters());
 

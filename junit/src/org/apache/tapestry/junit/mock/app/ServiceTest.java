@@ -57,7 +57,6 @@ package org.apache.tapestry.junit.mock.app;
 
 import org.apache.tapestry.IExternalPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.junit.mock.lib.Dumper;
 
@@ -68,7 +67,7 @@ public class ServiceTest extends BasePage implements IExternalPage
         return new Object[] { "Sopranos", new Integer(20705), new Double(22./ 7.)};
     }
 
-    public void activateExternalPage(Object[] parameters, IRequestCycle cycle) throws RequestCycleException
+    public void activateExternalPage(Object[] parameters, IRequestCycle cycle)
     {
         Dumper dumper = (Dumper) cycle.getPage("lib:Dumper");
 

@@ -58,7 +58,6 @@ package org.apache.tapestry.form;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 
 /**
  *  Implements a component that manages an HTML &lt;input type=checkbox&gt;
@@ -91,7 +90,6 @@ public abstract class Checkbox extends AbstractFormComponent
      **/
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         IForm form = getForm(cycle);
 

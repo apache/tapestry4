@@ -58,9 +58,10 @@ package org.apache.tapestry.components;
 import java.text.Format;
 
 import org.apache.tapestry.AbstractComponent;
+import org.apache.tapestry.ApplicationRuntimeException;
+import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.Tapestry;
 
 /**
@@ -75,13 +76,14 @@ import org.apache.tapestry.Tapestry;
 
 public abstract class Insert extends AbstractComponent
 {
+    public abstract IBinding getFormatBinding();
+
     /**
      *  Prints its value parameter, possibly formatted by its format parameter.
      *
      **/
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         if (cycle.isRewinding())
             return;
@@ -107,9 +109,10 @@ public abstract class Insert extends AbstractComponent
             }
             catch (Exception ex)
             {
-                throw new RequestCycleException(
+                throw new ApplicationRuntimeException(
                     Tapestry.getString("Insert.unable-to-format", value),
                     this,
+                    getFormatBinding().getLocation(),
                     ex);
             }
         }

@@ -70,13 +70,12 @@ import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.PageLoaderException;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.event.ChangeObserver;
 import org.apache.tapestry.event.PageCleanupListener;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageRenderListener;
+import org.apache.tapestry.spec.BaseLocatable;
 import org.apache.tapestry.spec.ComponentSpecification;
 
 /**
@@ -88,7 +87,7 @@ import org.apache.tapestry.spec.ComponentSpecification;
  *
  **/
 
-public class MockPage implements IPage
+public class MockPage extends BaseLocatable implements IPage
 {
     private IEngine _engine;
     private Locale locale;
@@ -132,7 +131,7 @@ public class MockPage implements IPage
     {
     }
 
-    public void renderPage(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    public void renderPage(IMarkupWriter writer, IRequestCycle cycle)
     {
     }
 
@@ -144,7 +143,7 @@ public class MockPage implements IPage
     {
     }
 
-    public void validate(IRequestCycle cycle) throws RequestCycleException
+    public void validate(IRequestCycle cycle) 
     {
     }
 
@@ -153,7 +152,7 @@ public class MockPage implements IPage
         return null;
     }
 
-    public void beginResponse(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    public void beginResponse(IMarkupWriter writer, IRequestCycle cycle)
     {
     }
 
@@ -289,7 +288,6 @@ public class MockPage implements IPage
     }
 
     public void finishLoad(IRequestCycle cycle, IPageLoader loader, ComponentSpecification specification)
-        throws PageLoaderException
     {
     }
 
@@ -305,7 +303,7 @@ public class MockPage implements IPage
         return _engine.getComponentStringsSource().getStrings(this).getString(key);
     }
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    public void render(IMarkupWriter writer, IRequestCycle cycle)
     {
     }
 
@@ -347,7 +345,7 @@ public class MockPage implements IPage
     {
     }
 
-    public void renderBody(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    public void renderBody(IMarkupWriter writer, IRequestCycle cycle)
     {
     }
 

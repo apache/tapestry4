@@ -55,7 +55,6 @@
 
 package org.apache.tapestry;
 
-import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -64,18 +63,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import ognl.OgnlRuntime;
 import org.apache.tapestry.bean.BeanProvider;
 import org.apache.tapestry.bean.BeanProviderPropertyAccessor;
-import org.apache.tapestry.engine.*;
+import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.event.ChangeObserver;
 import org.apache.tapestry.event.ObservedChangeEvent;
 import org.apache.tapestry.event.PageDetachListener;
 import org.apache.tapestry.event.PageRenderListener;
 import org.apache.tapestry.listener.ListenerMap;
 import org.apache.tapestry.param.ParameterManager;
+import org.apache.tapestry.spec.BaseLocatable;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.util.prop.OgnlUtils;
-import ognl.OgnlRuntime;
 
 /**
  *  Abstract base class implementing the {@link IComponent} interface.
@@ -85,7 +85,7 @@ import ognl.OgnlRuntime;
  * 
  **/
 
-public abstract class AbstractComponent implements IComponent
+public abstract class AbstractComponent extends BaseLocatable implements IComponent
 {
     static {
         // Register the BeanProviderHelper to provide access to the
@@ -295,7 +295,6 @@ public abstract class AbstractComponent implements IComponent
         IRequestCycle cycle,
         IPageLoader loader,
         ComponentSpecification specification)
-        throws PageLoaderException
     {
         if (this instanceof PageDetachListener)
             _page.addPageDetachListener((PageDetachListener) this);
@@ -533,7 +532,9 @@ public abstract class AbstractComponent implements IComponent
             result = (IComponent) _components.get(id);
 
         if (result == null)
-            throw new NoSuchComponentException(id, this);
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("no-such-component", this, id),
+                this);
 
         return result;
     }
@@ -633,7 +634,7 @@ public abstract class AbstractComponent implements IComponent
      *
      **/
 
-    public void renderBody(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    public void renderBody(IMarkupWriter writer, IRequestCycle cycle)
     {
         for (int i = 0; i < _bodyCount; i++)
             _body[i].render(writer, cycle);
@@ -850,7 +851,6 @@ public abstract class AbstractComponent implements IComponent
      **/
 
     public final void render(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         try
         {
@@ -875,7 +875,7 @@ public abstract class AbstractComponent implements IComponent
      * 
      **/
 
-    protected void prepareForRender(IRequestCycle cycle) throws RequestCycleException
+    protected void prepareForRender(IRequestCycle cycle)
     {
         if (_parameterManager == null)
         {
@@ -900,8 +900,7 @@ public abstract class AbstractComponent implements IComponent
      * 
      **/
 
-    protected abstract void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException;
+    protected abstract void renderComponent(IMarkupWriter writer, IRequestCycle cycle);
 
     /**
      *  Invoked by {@link #render(IMarkupWriter, IRequestCycle)}
@@ -919,7 +918,6 @@ public abstract class AbstractComponent implements IComponent
      **/
 
     protected void cleanupAfterRender(IRequestCycle cycle)
-    
     {
         if (_parameterManager != null)
             _parameterManager.resetParameters(cycle);
@@ -1041,5 +1039,4 @@ public abstract class AbstractComponent implements IComponent
     {
         return _bodyCount;
     }
-
 }

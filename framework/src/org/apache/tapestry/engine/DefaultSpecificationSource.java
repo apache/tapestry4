@@ -230,7 +230,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
 
         try
         {
-            return getParser().parseLibrarySpecification(resourceLocation, _resolver);
+            return getParser().parseLibrarySpecification(resourceLocation);
         }
         catch (DocumentParseException ex)
         {
@@ -416,7 +416,7 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
         SpecificationParser result = (SpecificationParser) _pool.retrieve(PARSER_POOL_KEY);
 
         if (result == null)
-            result = new SpecificationParser();
+            result = new SpecificationParser(_resolver);
 
         return result;
     }

@@ -55,9 +55,9 @@
 
 package org.apache.tapestry.contrib.table.components;
 
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.contrib.table.model.ITableModelSource;
 
 /**
@@ -66,22 +66,22 @@ import org.apache.tapestry.contrib.table.model.ITableModelSource;
  */
 public class AbstractTableViewComponent extends BaseComponent
 {
-	public ITableModelSource getTableModelSource() throws RequestCycleException
-	{
-		IRequestCycle objCycle = getPage().getRequestCycle();
+    public ITableModelSource getTableModelSource()
+    {
+        IRequestCycle objCycle = getPage().getRequestCycle();
 
-		ITableModelSource objSource =
-			(ITableModelSource) objCycle.getAttribute(
-				ITableModelSource.TABLE_MODEL_SOURCE_ATTRIBUTE);
+        ITableModelSource objSource =
+            (ITableModelSource) objCycle.getAttribute(
+                ITableModelSource.TABLE_MODEL_SOURCE_ATTRIBUTE);
 
-		if (objSource == null)
-			throw new RequestCycleException(
-				"The component "
-					+ getId()
-					+ " must be contained within an ITableModelSource component, such as TableView",
-				this);
+        if (objSource == null)
+            throw new ApplicationRuntimeException(
+                "The component "
+                    + getId()
+                    + " must be contained within an ITableModelSource component, such as TableView",
+                this);
 
-		return objSource;
-	}
+        return objSource;
+    }
 
 }

@@ -69,19 +69,19 @@ package org.apache.tapestry;
  *
  **/
 
-public class StaleSessionException extends RequestCycleException
+public class StaleSessionException extends ApplicationRuntimeException
 {
     private transient IPage _page;
     private String _pageName;
 
     public StaleSessionException()
     {
-        super();
+        this(null, null);
     }
 
     public StaleSessionException(String message, IPage page)
     {
-        super(message, null, null);
+        super(message, page);
         _page = page;
 
         if (page != null)

@@ -61,9 +61,9 @@ import java.io.Reader;
 import java.io.StringReader;
 
 import org.apache.tapestry.AbstractComponent;
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.Tapestry;
 
 /**
@@ -87,7 +87,6 @@ import org.apache.tapestry.Tapestry;
 public abstract class InsertText extends AbstractComponent
 {
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         String value = getValue();
 
@@ -123,7 +122,7 @@ public abstract class InsertText extends AbstractComponent
         }
         catch (IOException ex)
         {
-            throw new RequestCycleException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString("InsertText.conversion-error"),
                 this,
                 ex);

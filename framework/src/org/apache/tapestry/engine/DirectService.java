@@ -65,7 +65,6 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IDirect;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.StaleSessionException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.RequestContext;
@@ -134,7 +133,7 @@ public class DirectService extends AbstractService
     }
 
     public boolean service(IEngineServiceView engine, IRequestCycle cycle, ResponseOutputStream output)
-        throws RequestCycleException, ServletException, IOException
+        throws ServletException, IOException
     {
         IDirect direct;
         int count = 0;
@@ -187,7 +186,7 @@ public class DirectService extends AbstractService
         }
         catch (ClassCastException ex)
         {
-            throw new RequestCycleException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString("DirectService.component-wrong-type", component.getExtendedId()),
                 component,
                 ex);

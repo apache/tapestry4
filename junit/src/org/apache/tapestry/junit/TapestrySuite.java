@@ -60,6 +60,7 @@ import junit.framework.TestSuite;
 
 import org.apache.tapestry.junit.enhance.TestClassFabricator;
 import org.apache.tapestry.junit.mock.MockTestCase;
+import org.apache.tapestry.junit.parse.TestLocation;
 import org.apache.tapestry.junit.parse.TestSpecificationParser;
 import org.apache.tapestry.junit.parse.TestTemplateParser;
 import org.apache.tapestry.junit.script.TestScript;
@@ -72,6 +73,7 @@ import org.apache.tapestry.junit.utils.TestIdAllocator;
 import org.apache.tapestry.junit.utils.TestLocalizedNameGenerator;
 import org.apache.tapestry.junit.utils.TestPool;
 import org.apache.tapestry.junit.utils.TestPropertyFinder;
+import org.apache.tapestry.junit.utils.TestRegexpMatcher;
 import org.apache.tapestry.junit.valid.ValidSuite;
 
 /**
@@ -88,6 +90,7 @@ public class TapestrySuite extends TestSuite
     {
         TestSuite suite = new TestSuite();
 
+		suite.addTestSuite(TestTapestryFindLocation.class);
 		suite.addTestSuite(TestStaticLink.class);
 		suite.addTestSuite(TestEngineServiceLink.class);
         suite.addTestSuite(TestAdaptorRegistry.class);
@@ -100,6 +103,7 @@ public class TapestrySuite extends TestSuite
         suite.addTestSuite(TestIdAllocator.class);
         suite.addTestSuite(TestComponentStrings.class);
         suite.addTestSuite(TestTemplateParser.class);
+        suite.addTestSuite(TestLocation.class);
         suite.addTestSuite(TestSpecificationParser.class);
         suite.addTestSuite(TestApplicationSpecification.class);
         suite.addTest(ValidSuite.suite());
@@ -113,6 +117,7 @@ public class TapestrySuite extends TestSuite
         suite.addTestSuite(TestComponent.class);
         suite.addTestSuite(TestClassFabricator.class);
         suite.addTestSuite(TestTapestryGetClassName.class);
+        suite.addTestSuite(TestRegexpMatcher.class);
         suite.addTest(MockTestCase.suite());
 
         return suite;

@@ -59,14 +59,14 @@ import org.apache.bsf.BSFException;
 import org.apache.bsf.BSFManager;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.BindingException;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
+import org.apache.tapestry.Location;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.util.pool.Pool;
 
@@ -89,14 +89,14 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
 
     private String _language;
     private String _script;
-    private String _location;
     private IComponent _component;
 
-    public ListenerBinding(IComponent component, String language, String location, String script)
+    public ListenerBinding(IComponent component, String language, String script, Location location)
     {
+        super(location);
+
         _component = component;
         _language = language;
-        _location = location;
         _script = script;
     }
 
@@ -112,12 +112,16 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
 
     public int getInt()
     {
-        throw new BindingException(Tapestry.getString("ListenerBinding.invalid-access", "getInt()"), this);
+        throw new BindingException(
+            Tapestry.getString("ListenerBinding.invalid-access", "getInt()"),
+            this);
     }
 
     public double getDouble()
     {
-        throw new BindingException(Tapestry.getString("ListenerBinding.invalid-access", "getDouble()"), this);
+        throw new BindingException(
+            Tapestry.getString("ListenerBinding.invalid-access", "getDouble()"),
+            this);
 
     }
 
@@ -157,13 +161,15 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
      * 
      **/
 
-    public void actionTriggered(IComponent component, IRequestCycle cycle) throws RequestCycleException
+    public void actionTriggered(IComponent component, IRequestCycle cycle)
     {
         boolean debug = LOG.isDebugEnabled();
 
         long startTime = debug ? System.currentTimeMillis() : 0;
 
         BSFManager bsf = obtainBSFManager(cycle);
+
+        String location = getLocation().toString();
 
         try
         {
@@ -173,13 +179,14 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
             bsf.declareBean("page", page, page.getClass());
             bsf.declareBean("cycle", cycle, cycle.getClass());
 
-            bsf.exec(_language, _location, 0, 0, _script);
+            bsf.exec(_language, location, 0, 0, _script);
         }
         catch (BSFException ex)
         {
-            String message = Tapestry.getString("ListenerBinding.bsf-exception", _location, ex.getMessage());
+            String message =
+                Tapestry.getString("ListenerBinding.bsf-exception", location, ex.getMessage());
 
-            throw new RequestCycleException(message, _component, ex);
+            throw new ApplicationRuntimeException(message, _component, getLocation(), ex);
         }
         finally
         {
@@ -196,7 +203,8 @@ public class ListenerBinding extends AbstractBinding implements IActionListener
             {
                 long endTime = System.currentTimeMillis();
 
-                LOG.debug("Execution of \"" + _location + "\" took " + (endTime - startTime) + " millis");
+                LOG.debug(
+                    "Execution of \"" + location + "\" took " + (endTime - startTime) + " millis");
             }
         }
     }

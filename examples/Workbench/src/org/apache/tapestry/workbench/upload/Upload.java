@@ -56,7 +56,6 @@
 package org.apache.tapestry.workbench.upload;
 
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.form.IPropertySelectionModel;
@@ -96,7 +95,7 @@ public class Upload extends BasePage
 		super.detach();
 	}
 
-	public void formSubmit(IRequestCycle cycle) throws RequestCycleException
+	public void formSubmit(IRequestCycle cycle)
 	{
 		if (Tapestry.isNull(file.getFileName()))
 		{

@@ -59,7 +59,6 @@ import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.engine.NullWriter;
 
 /**
@@ -78,7 +77,7 @@ public class TestComponent extends TapestryTestCase
     {
         private boolean rendered = false;
 
-        public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+        public void render(IMarkupWriter writer, IRequestCycle cycle)
         {
             rendered = true;
         }
@@ -93,7 +92,6 @@ public class TestComponent extends TapestryTestCase
         }
         
         void testRenderComponent(IMarkupWriter write, IRequestCycle cycle)
-        throws RequestCycleException
         {
             renderComponent(write, cycle);
         }

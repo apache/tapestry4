@@ -61,7 +61,6 @@ import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.contrib.table.model.ITableModel;
 import org.apache.tapestry.contrib.table.model.ITableModelSource;
 import org.apache.tapestry.contrib.table.model.ITableSessionStateManager;
@@ -448,7 +447,6 @@ public class TableView
 	 * @see org.apache.tapestry.BaseComponent#renderComponent(IMarkupWriter, IRequestCycle)
 	 */
 	protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-		throws RequestCycleException
 	{
         Object objOldValue = cycle.getAttribute(ITableModelSource.TABLE_MODEL_SOURCE_ATTRIBUTE);
         cycle.setAttribute(ITableModelSource.TABLE_MODEL_SOURCE_ATTRIBUTE, this);

@@ -63,16 +63,15 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.tapestry.AbstractComponent;
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IResourceResolver;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.ScriptSession;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.engine.IPageSource;
+import org.apache.tapestry.asset.PrivateAsset;
 import org.apache.tapestry.resource.ClasspathResourceLocation;
 
 /**
@@ -279,13 +278,12 @@ public abstract class Body extends AbstractComponent
     }
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         IMarkupWriter nested;
         String onLoadName;
 
         if (cycle.getAttribute(ATTRIBUTE_NAME) != null)
-            throw new RequestCycleException(Tapestry.getString("Body.may-not-nest"), this);
+            throw new ApplicationRuntimeException(Tapestry.getString("Body.may-not-nest"), this);
 
         cycle.setAttribute(ATTRIBUTE_NAME, this);
 
@@ -434,17 +432,15 @@ public abstract class Body extends AbstractComponent
 
         IRequestCycle cycle = getPage().getRequestCycle();
         IEngine engine = getPage().getEngine();
-        IPageSource source = engine.getPageSource();
-        IResourceResolver resolver = engine.getResourceResolver();
+		IResourceResolver resolver = engine.getResourceResolver();
 
         Iterator i = includes.iterator();
         while (i.hasNext())
         {
             String path = (String) i.next();
 
-            IResourceLocation location = new ClasspathResourceLocation(resolver, path);
-
-            IAsset asset = source.getAsset(location);
+            IAsset asset = new PrivateAsset(new ClasspathResourceLocation(resolver, path), null);
+            
             String URL = asset.buildURL(cycle);
 
             includeScript(URL);

@@ -53,45 +53,48 @@
  *
  */
 
-package org.apache.tapestry;
+package org.apache.tapestry.parse;
+
+import java.util.Map;
+
+import org.xml.sax.Attributes;
 
 /**
- *  Exception thrown during the execution of a {@link IScript}.
+ *  Rule that applies a conversion of a string value from an attribute into
+ *  an object value before assigning it to the property.  This is used
+ *  to translate values from strings to
+ *  {@link org.apache.commons.lang.enum.Enum}s.
  *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 0.2.9
- * 
+ *  @since 2.4
+ *
  **/
 
-public class ScriptException extends Exception
+public class SetConvertedPropertyRule extends AbstractSpecificationRule
 {
-	private Throwable rootCause;
-	private ScriptSession session;
+    private Map _map;
+    private String _attributeName;
+    private String _propertyName;
 
-	public ScriptException(
-		String message,
-		ScriptSession session,
-		Throwable rootCause)
-	{
-		super(message);
+    public SetConvertedPropertyRule(Map map, String attributeName, String propertyName)
+    {
+        _map = map;
+        _attributeName = attributeName;
+        _propertyName = propertyName;
+    }
 
-		this.session = session;
-		this.rootCause = rootCause;
-	}
+    public void begin(String namespace, String name, Attributes attributes) throws Exception
+    {
+        String attributeValue = getValue(attributes, _attributeName);
+        if (attributeValue == null)
+            return;
 
-	public ScriptException(String message, ScriptSession session)
-	{
-		this(message, session, null);
-	}
+        Object propertyValue = _map.get(attributeValue);
 
-	public Throwable getRootCause()
-	{
-		return rootCause;
-	}
+        // Check for null here?
 
-	public ScriptSession getSession()
-	{
-		return session;
-	}
+        setProperty(_propertyName, propertyValue);
+    }
+
 }

@@ -60,7 +60,6 @@ import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceResolver;
-import org.apache.tapestry.RequiredParameterException;
 import org.apache.tapestry.form.Form;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.spec.Direction;
@@ -146,7 +145,7 @@ public abstract class AbstractParameterConnector implements IParameterConnector
      *  @see IBinding#getObject(String, Class)
      **/
 
-    protected Object getBindingValue(Class requiredType) throws RequiredParameterException
+    protected Object getBindingValue(Class requiredType)
     {
         Object result;
 

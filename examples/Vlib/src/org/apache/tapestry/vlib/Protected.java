@@ -57,7 +57,6 @@ package org.apache.tapestry.vlib;
 
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.PageRedirectException;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.callback.PageCallback;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.html.BasePage;
@@ -133,7 +132,7 @@ public class Protected extends BasePage implements IErrorProperty
      *
      **/
 
-    public void validate(IRequestCycle cycle) throws RequestCycleException
+    public void validate(IRequestCycle cycle)
     {
         Visit visit = (Visit) getVisit();
 

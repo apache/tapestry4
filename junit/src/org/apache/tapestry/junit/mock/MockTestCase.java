@@ -57,11 +57,7 @@ package org.apache.tapestry.junit.mock;
 
 import java.io.File;
 
-import junit.framework.Assert;
-import junit.framework.AssertionFailedError;
 import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestResult;
 import junit.framework.TestSuite;
 
 import org.apache.tapestry.junit.TapestryTestCase;

@@ -12,7 +12,7 @@
 		</fileset>
 	</path>
 	<path id="project.class.path">
-		<fileset dir="${lib.dir}">
+		<fileset dir="${root.lib.dir}">
 			<include name="${ext.dir}/*.jar"/>
 		</fileset>
 		<path refid="jetty.classpath"/>
@@ -35,7 +35,7 @@
 		>
 		<copy file="${root.dir}/config/Version.properties"
 			todir="${classes.dir}/org/apache/tapestry"/>
-		<jar jarfile="${lib.dir}/${framework.jar}">
+		<jar jarfile="${root.lib.dir}/${framework.jar}">
 			<fileset dir="${classes.dir}"/>
 			<fileset dir="${src.dir}">
 				<exclude name="**/*.java"/>

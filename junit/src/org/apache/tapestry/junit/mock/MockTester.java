@@ -616,6 +616,9 @@ public class MockTester
 
     private void matchSubstring(String name, String text, String substring)
     {
+        if (text == null)
+            throw new AssertionFailedError(buildTestName(name) + " : Response is null.");
+
         if (text.indexOf(substring) >= 0)
             return;
 

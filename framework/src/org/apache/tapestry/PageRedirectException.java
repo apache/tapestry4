@@ -64,15 +64,13 @@ package org.apache.tapestry;
  *  @version $Id$
  **/
 
-public class PageRedirectException extends RequestCycleException
+public class PageRedirectException extends ApplicationRuntimeException
 {
-    private String targetPageName;
+    private String _targetPageName;
 
     public PageRedirectException(String targetPageName)
     {
-        super();
-
-        this.targetPageName = targetPageName;
+		this(targetPageName, null, targetPageName);
     }
 
     public PageRedirectException(IPage page)
@@ -82,8 +80,7 @@ public class PageRedirectException extends RequestCycleException
 
     public PageRedirectException(String message, IComponent component, String targetPageName)
     {
-        super(message, component);
-        this.targetPageName = targetPageName;
+		this(message, component, null, targetPageName);
     }
 
     public PageRedirectException(
@@ -92,20 +89,18 @@ public class PageRedirectException extends RequestCycleException
         Throwable rootCause,
         String targetPageName)
     {
-        super(message, component, rootCause);
+        super(message, component, null, rootCause);
 
-        this.targetPageName = targetPageName;
+        _targetPageName = targetPageName;
     }
 
     public PageRedirectException(String message, String targetPageName)
     {
-        super(message);
-
-        this.targetPageName = targetPageName;
+    	this(message, null, targetPageName);
     }
 
     public String getTargetPageName()
     {
-        return targetPageName;
+        return _targetPageName;
     }
 }

@@ -74,11 +74,9 @@ public class ListenerBindingSpecification extends BindingSpecification
 {
     protected String _language;
     
-    public ListenerBindingSpecification(String language, String script)
+    public ListenerBindingSpecification()
     {
-        super(BindingType.LISTENER, script);
-        
-        _language = language;
+    	setType(BindingType.LISTENER);
     }
     
     public String getLanguage()
@@ -90,4 +88,10 @@ public class ListenerBindingSpecification extends BindingSpecification
     {
         return getValue();
     }
+    
+    public void setLanguage(String language)
+    {
+        _language = language;
+    }
+
 }

@@ -64,7 +64,6 @@ import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.html.Body;
 
@@ -93,7 +92,6 @@ public abstract class DatePicker extends AbstractFormComponent
     public abstract boolean isDisabled();
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         IForm form = getForm(cycle);
 

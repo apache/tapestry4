@@ -55,11 +55,11 @@
 
 package org.apache.tapestry.callback;
 
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IDirect;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.Tapestry;
 
 /**
@@ -133,7 +133,7 @@ public class DirectCallback implements ICallback
      *
      **/
 
-    public void performCallback(IRequestCycle cycle) throws RequestCycleException
+    public void performCallback(IRequestCycle cycle)
     {
         IPage page = cycle.getPage(_pageName);
         IComponent component = page.getNestedComponent(_componentIdPath);
@@ -145,9 +145,10 @@ public class DirectCallback implements ICallback
         }
         catch (ClassCastException ex)
         {
-            throw new RequestCycleException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString("DirectCallback.wrong-type", component.getExtendedId()),
                 component,
+                null,
                 ex);
         }
 

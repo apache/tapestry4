@@ -198,7 +198,7 @@ public interface IRequestCycle
      *
      **/
 
-    public void renderPage(IMarkupWriter writer) throws RequestCycleException;
+    public void renderPage(IMarkupWriter writer);
 
     /**
      *  Rewinds a page and executes some form of action when the
@@ -208,8 +208,7 @@ public interface IRequestCycle
      *
      **/
 
-    public void rewindPage(String targetActionId, IComponent targetComponent)
-        throws RequestCycleException;
+    public void rewindPage(String targetActionId, IComponent targetComponent);
 
     /**
      *  Allows a temporary object to be stored in the request cycle,
@@ -250,7 +249,7 @@ public interface IRequestCycle
      *  @see IPageRecorder#commit()
      **/
 
-    public void commitPageChanges() throws PageRecorderCommitException;
+    public void commitPageChanges();
 
     /**
      *  Returns the service which initiated this request cycle.  This may return
@@ -269,7 +268,7 @@ public interface IRequestCycle
      *  @since 1.0.2
      **/
 
-    public void rewindForm(IForm form, String targetActionId) throws RequestCycleException;
+    public void rewindForm(IForm form, String targetActionId);
 
     /**
      *  Much like {@link IEngine#forgetPage(String)}, but the page stays active and can even

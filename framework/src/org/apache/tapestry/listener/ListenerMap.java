@@ -67,7 +67,6 @@ import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.Tapestry;
 import ognl.OgnlRuntime;
 
@@ -135,14 +134,14 @@ public class ListenerMap
             _method = method;
         }
 
-        private void invoke(IRequestCycle cycle) throws RequestCycleException
+        private void invoke(IRequestCycle cycle)
         {
             Object[] args = new Object[] { cycle };
 
             invokeTargetMethod(_target, _method, args);
         }
 
-        public void actionTriggered(IComponent component, IRequestCycle cycle) throws RequestCycleException
+        public void actionTriggered(IComponent component, IRequestCycle cycle)
         {
             invoke(cycle);
         }
@@ -275,13 +274,6 @@ public class ListenerMap
             if (!parmTypes[0].equals(IRequestCycle.class))
                 continue;
 
-            Class[] exceptions = m.getExceptionTypes();
-            if (exceptions.length > 1)
-                continue;
-
-            if (exceptions.length == 1 && !exceptions[0].equals(RequestCycleException.class))
-                continue;
-
             // Ha!  Passed all tests.
 
             result.put(m.getName(), m);
@@ -297,7 +289,7 @@ public class ListenerMap
      *
      **/
 
-    private static void invokeTargetMethod(Object target, Method method, Object[] args) throws RequestCycleException
+    private static void invokeTargetMethod(Object target, Method method, Object[] args)
     {
         if (LOG.isDebugEnabled())
             LOG.debug("Invoking listener method " + method + " on " + target);
@@ -312,8 +304,8 @@ public class ListenerMap
             {
                 Throwable inner = ex.getTargetException();
 
-                if (inner instanceof RequestCycleException)
-                    throw (RequestCycleException) inner;
+                if (inner instanceof ApplicationRuntimeException)
+                    throw (ApplicationRuntimeException) inner;
 
                 // Edit out the InvocationTargetException, if possible.
 
@@ -323,7 +315,7 @@ public class ListenerMap
                 throw ex;
             }
         }
-        catch (RequestCycleException ex)
+        catch (ApplicationRuntimeException ex)
         {
             throw ex;
         }

@@ -70,18 +70,17 @@ package org.apache.tapestry;
 
 public interface IRender
 {
-	/**
-	 *  The principal rendering/rewinding method.  This will cause
-	 *  the receiving component to render its top level elements (HTML
-	 *  text and components).
-	 *
-	 *  <p>Renderring and rewinding are the exact same process.  The
-	 *  same code that renders must be able to restore state by going
-	 *  through the exact same operations (even though the output is
-	 *  discarded).
-	 *
-	 **/
+    /**
+     *  The principal rendering/rewinding method.  This will cause
+     *  the receiving component to render its top level elements (HTML
+     *  text and components).
+     *
+     *  <p>Renderring and rewinding are the exact same process.  The
+     *  same code that renders must be able to restore state by going
+     *  through the exact same operations (even though the output is
+     *  discarded).
+     *
+     **/
 
-	public void render(IMarkupWriter writer, IRequestCycle cycle)
-		throws RequestCycleException;
+    public void render(IMarkupWriter writer, IRequestCycle cycle);
 }

@@ -65,10 +65,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.util.BasePropertyHolder;
 
 /**
  *  A specification for a component, as read from an XML specification file.
@@ -99,7 +97,7 @@ import org.apache.tapestry.util.BasePropertyHolder;
  *
  **/
 
-public class ComponentSpecification extends BasePropertyHolder
+public class ComponentSpecification extends LocatablePropertyHolder
 {
     private String _componentClassName;
 

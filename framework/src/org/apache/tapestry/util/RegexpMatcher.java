@@ -53,23 +53,83 @@
  *
  */
 
-package org.apache.tapestry;
+package org.apache.tapestry.util;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.oro.text.regex.MalformedPatternException;
+import org.apache.oro.text.regex.Pattern;
+import org.apache.oro.text.regex.PatternCompiler;
+import org.apache.oro.text.regex.PatternMatcher;
+import org.apache.oro.text.regex.Perl5Compiler;
+import org.apache.oro.text.regex.Perl5Matcher;
+import org.apache.tapestry.ApplicationRuntimeException;
 
 /**
- *  Indicates that an {@link IBinding} could not retrieve a
- *  non-null value.  This is used when coercing certain the value to
- *  another type, such as <code>int</code>.
+ *  Streamlines the interface to ORO by implicitly constructing the
+ *  necessary compilers and matchers, and by
+ *  caching compiled patterns.
  *
- * @see IBinding
+ *  @author Howard Lewis Ship
+ *  @version $Id$
+ *  @since 2.4
  *
- * @author Howard Lewis Ship
- * @version $Id$
- */
+ **/
 
-public class NullValueForBindingException extends BindingException
+public class RegexpMatcher
 {
-	public NullValueForBindingException(IBinding binding)
-	{
-		super(binding);
-	}
+    private PatternCompiler _patternCompiler;
+
+    private PatternMatcher _matcher;
+
+    private Map _compiledPatterns = new HashMap();
+
+    protected Pattern compilePattern(String pattern)
+    {
+        if (_patternCompiler == null)
+            _patternCompiler = new Perl5Compiler();
+
+        try
+        {
+            return _patternCompiler.compile(pattern, Perl5Compiler.SINGLELINE_MASK);
+        }
+        catch (MalformedPatternException ex)
+        {
+            throw new ApplicationRuntimeException(ex);
+        }
+    }
+
+    protected Pattern getCompiledPattern(String pattern)
+    {
+        Pattern result = (Pattern) _compiledPatterns.get(pattern);
+
+        if (result == null)
+        {
+            result = compilePattern(pattern);
+            _compiledPatterns.put(pattern, result);
+        }
+
+        return result;
+    }
+
+    /**
+     *  Clears any previously compiled patterns.
+     * 
+     **/
+
+    public void clear()
+    {
+        _compiledPatterns.clear();
+    }
+
+    public boolean matches(String pattern, String input)
+    {
+        Pattern compiledPattern = getCompiledPattern(pattern);
+
+        if (_matcher == null)
+            _matcher = new Perl5Matcher();
+
+        return _matcher.matches(input, compiledPattern);
+    }
 }

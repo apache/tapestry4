@@ -63,7 +63,6 @@ import java.util.List;
 import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.valid.IValidationDelegate;
@@ -106,7 +105,6 @@ public class ChartPage extends BasePage implements IChartProvider
      **/
 
     public void beginResponse(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         getPlotValues();
     }

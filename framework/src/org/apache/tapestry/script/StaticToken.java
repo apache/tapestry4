@@ -55,7 +55,6 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.tapestry.ScriptException;
 import org.apache.tapestry.ScriptSession;
 
 /**
@@ -81,7 +80,6 @@ class StaticToken implements IScriptToken
      **/
 
     public void write(StringBuffer buffer, ScriptSession session)
-        throws ScriptException
     {
         buffer.append(text);
     }

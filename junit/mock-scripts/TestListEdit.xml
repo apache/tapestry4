@@ -95,7 +95,7 @@
 		</assert-output>
 		
 		<assert-output name="Exception">
-		org.apache.tapestry.RequestCycleException
+		org.apache.tapestry.ApplicationRuntimeException
 		</assert-output>
 		
 		<assert-output name="Outer Message">

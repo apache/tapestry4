@@ -57,7 +57,6 @@ package org.apache.tapestry.workbench;
 
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.valid.IValidator;
 import org.apache.tapestry.valid.ValidationDelegate;
@@ -77,7 +76,6 @@ public class WorkbenchValidationDelegate extends ValidationDelegate
         IRequestCycle cycle,
         IFormComponent component,
         IValidator validator)
-        throws RequestCycleException
     {
         if (isInError())
             writer.attribute("class", "field-error");
@@ -103,7 +101,6 @@ public class WorkbenchValidationDelegate extends ValidationDelegate
         IFormComponent component,
         IMarkupWriter writer,
         IRequestCycle cycle)
-        throws RequestCycleException
     {
         if (isInError(component))
         {
@@ -116,7 +113,6 @@ public class WorkbenchValidationDelegate extends ValidationDelegate
         IFormComponent component,
         IMarkupWriter writer,
         IRequestCycle cycle)
-        throws RequestCycleException
     {
         if (isInError(component))
             writer.end(); // <span>

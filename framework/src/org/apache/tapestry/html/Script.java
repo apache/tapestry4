@@ -61,17 +61,14 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.apache.tapestry.AbstractComponent;
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IScript;
-import org.apache.tapestry.RequestCycleException;
-import org.apache.tapestry.RequiredParameterException;
-import org.apache.tapestry.ScriptException;
 import org.apache.tapestry.ScriptSession;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IScriptSource;
@@ -148,12 +145,12 @@ public abstract class Script extends AbstractComponent
      *
      **/
 
-    private IScript getParsedScript(IRequestCycle cycle) throws RequestCycleException
+    private IScript getParsedScript(IRequestCycle cycle)
     {
         String scriptPath = getScriptPath();
 
         if (scriptPath == null)
-            throw new RequiredParameterException(this, "scriptPath", getBinding("scriptPath"));
+            throw Tapestry.createRequiredParameterException(this, "scriptPath");
 
         IEngine engine = cycle.getEngine();
         IScriptSource source = engine.getScriptSource();
@@ -171,13 +168,12 @@ public abstract class Script extends AbstractComponent
         }
         catch (RuntimeException ex)
         {
-            throw new RequestCycleException(this, ex);
+            throw new ApplicationRuntimeException(this, ex);
         }
 
     }
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         ScriptSession session;
 
@@ -186,20 +182,13 @@ public abstract class Script extends AbstractComponent
             Body body = Body.get(cycle);
 
             if (body == null)
-                throw new RequestCycleException(
+                throw new ApplicationRuntimeException(
                     Tapestry.getString("Script.must-be-contained-by-body"),
                     this);
 
             _symbols = getInputSymbols();
 
-            try
-            {
-                session = getParsedScript(cycle).execute(_symbols);
-            }
-            catch (ScriptException ex)
-            {
-                throw new RequestCycleException(this, ex);
-            }
+            session = getParsedScript(cycle).execute(_symbols);
 
             body.process(session);
         }

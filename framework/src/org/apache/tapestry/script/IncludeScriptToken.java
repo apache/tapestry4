@@ -55,7 +55,6 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.tapestry.ScriptException;
 import org.apache.tapestry.ScriptSession;
 
 /**
@@ -77,7 +76,6 @@ class IncludeScriptToken extends AbstractToken
     }
 
     public void write(StringBuffer buffer, ScriptSession session)
-        throws ScriptException
     {
         session.addIncludedScript(resourcePath);
     }

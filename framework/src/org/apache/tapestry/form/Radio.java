@@ -56,9 +56,9 @@
 package org.apache.tapestry.form;
 
 import org.apache.tapestry.AbstractComponent;
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.Tapestry;
 
 /**
@@ -87,12 +87,14 @@ public abstract class Radio extends AbstractComponent
      *
      **/
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
 
         RadioGroup group = RadioGroup.get(cycle);
         if (group == null)
-            throw new RequestCycleException(Tapestry.getString("Radio.must-be-contained-by-group"), this);
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("Radio.must-be-contained-by-group"),
+                this);
 
         // The group determines rewinding from the form.
 

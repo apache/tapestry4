@@ -58,7 +58,6 @@ package org.apache.tapestry.junit.mock.c12;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 
 /**
  *  Used to verify that the enhancer creates a property 
@@ -75,7 +74,6 @@ public abstract class InsertInteger extends AbstractComponent
 	public abstract int getIntValue();
 	
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
     	writer.print(getIntValue());
     }

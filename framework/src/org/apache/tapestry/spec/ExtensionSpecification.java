@@ -62,12 +62,9 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.util.BasePropertyHolder;
 import org.apache.tapestry.util.prop.OgnlUtils;
 
 /**
@@ -81,7 +78,7 @@ import org.apache.tapestry.util.prop.OgnlUtils;
  * 
  **/
 
-public class ExtensionSpecification extends BasePropertyHolder
+public class ExtensionSpecification extends LocatablePropertyHolder
 {
     private static final Log LOG = LogFactory.getLog(ExtensionSpecification.class);
 

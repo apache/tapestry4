@@ -68,10 +68,9 @@ import org.apache.tapestry.INamespace;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.PageLoaderException;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.form.FormEventType;
+import org.apache.tapestry.spec.BaseLocatable;
 import org.apache.tapestry.spec.ComponentSpecification;
 import org.apache.tapestry.valid.IValidationDelegate;
 
@@ -84,7 +83,7 @@ import org.apache.tapestry.valid.IValidationDelegate;
  *
  **/
 
-public class TestingForm implements IForm
+public class TestingForm extends BaseLocatable implements IForm
 {
     private String _name;
 
@@ -98,7 +97,7 @@ public class TestingForm implements IForm
         _name = name;
     }
 
-    public void rewind(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    public void rewind(IMarkupWriter writer, IRequestCycle cycle)
     {
     }
 
@@ -224,7 +223,7 @@ public class TestingForm implements IForm
     {
     }
 
-    public void renderWrapped(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    public void renderWrapped(IMarkupWriter writer, IRequestCycle cycle)
     {
     }
 
@@ -238,7 +237,6 @@ public class TestingForm implements IForm
     }
 
     public void finishLoad(IRequestCycle cycle, IPageLoader loader, ComponentSpecification specification)
-        throws PageLoaderException
     {
     }
 
@@ -247,7 +245,7 @@ public class TestingForm implements IForm
         return null;
     }
 
-    public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    public void render(IMarkupWriter writer, IRequestCycle cycle)
     {
     }
 
@@ -264,7 +262,7 @@ public class TestingForm implements IForm
     {
     }
 
-    public void renderBody(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    public void renderBody(IMarkupWriter writer, IRequestCycle cycle)
     {
     }
 
@@ -273,7 +271,7 @@ public class TestingForm implements IForm
         return null;
     }
 
-    public void setEncodingType(String encodingType) throws RequestCycleException
+    public void setEncodingType(String encodingType)
     {
     }
 

@@ -56,7 +56,6 @@
 package org.apache.tapestry;
 
 import java.io.InputStream;
-import java.util.Locale;
 
 /**
  *  Representation of a asset (GIF, JPEG, etc.) that may be owned by a
@@ -73,7 +72,7 @@ import java.util.Locale;
  *
  **/
 
-public interface IAsset
+public interface IAsset extends ILocatable
 {
     /**
      *  Returns a URL for the asset, ready to be inserted into the output HTML.
@@ -99,15 +98,9 @@ public interface IAsset
     public InputStream getResourceAsStream(IRequestCycle cycle);
     
     /**
-     *  Accesses the localized version of the resource (if possible) and
-     *  returns it as an input stream.
-     * 
-     *  @throws ApplicationRuntimeException if the asset does not exist, or
-     *  can't be read.
-     * 
-     *  @since 2.2
+     *  Returns the underlying location of the asset.
      * 
      **/
     
-    public InputStream getResourceAsStream(IRequestCycle cycle, Locale locale);
+    public IResourceLocation getResourceLocation();
 }

@@ -61,8 +61,6 @@ import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RenderOnlyPropertyException;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.Tapestry;
 
 /**
@@ -123,7 +121,7 @@ public abstract class Foreach extends AbstractComponent
      *
      **/
 
-    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+    protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
     {
         Iterator dataSource = getSourceData();
 
@@ -187,8 +185,8 @@ public abstract class Foreach extends AbstractComponent
     public Object getValue()
     {
         if (!_rendering)
-            throw new RenderOnlyPropertyException(this, "value");
-
+            throw Tapestry.createRenderOnlyPropertyException(this, "value");
+  
         return _value;
     }
 
@@ -209,7 +207,7 @@ public abstract class Foreach extends AbstractComponent
     public int getIndex()
     {
         if (!_rendering)
-            throw new RenderOnlyPropertyException(this, "index");
+            throw Tapestry.createRenderOnlyPropertyException(this, "index");
         
         return _index;
     }

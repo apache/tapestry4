@@ -56,9 +56,9 @@
 package org.apache.tapestry.valid;
 
 import org.apache.tapestry.AbstractComponent;
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.form.Form;
 import org.apache.tapestry.form.IFormComponent;
@@ -88,7 +88,6 @@ public abstract class FieldLabel extends AbstractComponent
     **/
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         if (cycle.isRewinding())
             return;
@@ -99,7 +98,7 @@ public abstract class FieldLabel extends AbstractComponent
         String finalDisplayName = (displayName != null) ? displayName : field.getDisplayName();
 
         if (finalDisplayName == null)
-            throw new RequestCycleException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString("FieldLabel.no-display-name", field.getExtendedId()),
                 this);
 

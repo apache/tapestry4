@@ -229,7 +229,7 @@
 		</assert-output>
 		
 		<assert-output name="Exception Name">
-		org.apache.tapestry.RequestCycleException
+		org.apache.tapestry.ApplicationRuntimeException
 		</assert-output>
 		
 		<assert-output name="Exception Messge">
@@ -252,7 +252,7 @@
 		</assert-output>
 		
 		<assert-output name="Exception Name">
-		org.apache.tapestry.RequestCycleException
+		org.apache.tapestry.ApplicationRuntimeException
 		</assert-output>
 		
 		<assert-output name="Exception Messge">
@@ -275,7 +275,7 @@
 		</assert-output>
 		
 		<assert-output name="Exception Name">
-		org.apache.tapestry.RequestCycleException
+		org.apache.tapestry.ApplicationRuntimeException
 		</assert-output>
 		
 		<assert-output name="Exception Messge">

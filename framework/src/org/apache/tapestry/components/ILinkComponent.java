@@ -58,7 +58,6 @@ package org.apache.tapestry.components;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.engine.ILink;
 
 /**
@@ -115,7 +114,7 @@ public interface ILinkComponent extends IComponent
      * 
      **/
 
-    public ILink getLink(IRequestCycle cycle) throws RequestCycleException;
+    public ILink getLink(IRequestCycle cycle);
 
     /**
      *  Invoked (by the {@link org.apache.tapestry.link.ILinkRenderer})
@@ -127,6 +126,5 @@ public interface ILinkComponent extends IComponent
      * 
      **/
 
-    public void renderAdditionalAttributes(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException;
+    public void renderAdditionalAttributes(IMarkupWriter writer, IRequestCycle cycle);
 }

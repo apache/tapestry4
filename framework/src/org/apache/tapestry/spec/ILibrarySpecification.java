@@ -58,6 +58,7 @@ package org.apache.tapestry.spec;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.tapestry.ILocationHolder;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.util.IPropertyHolder;
@@ -72,7 +73,7 @@ import org.apache.tapestry.util.IPropertyHolder;
  *
  **/
 
-public interface ILibrarySpecification extends IPropertyHolder
+public interface ILibrarySpecification extends IPropertyHolder, ILocationHolder
 {
 
     /**

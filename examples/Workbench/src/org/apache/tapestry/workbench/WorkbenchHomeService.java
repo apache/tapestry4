@@ -60,7 +60,6 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.engine.HomeService;
 import org.apache.tapestry.engine.IEngineServiceView;
 import org.apache.tapestry.request.ResponseOutputStream;
@@ -79,7 +78,7 @@ public class WorkbenchHomeService extends HomeService
 {
 
     public boolean service(IEngineServiceView engine, IRequestCycle cycle, ResponseOutputStream output)
-        throws RequestCycleException, ServletException, IOException
+        throws ServletException, IOException
     {
         Visit visit = (Visit) engine.getVisit();
 

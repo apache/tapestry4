@@ -58,7 +58,6 @@ package org.apache.tapestry.junit.mock.c10;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.components.ILinkComponent;
 import org.apache.tapestry.components.LinkEventType;
 
@@ -76,7 +75,7 @@ public class ThreeFour extends Home
 	private class LinkContentRender implements IRender
 	{
 	
-        public void render(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
+        public void render(IMarkupWriter writer, IRequestCycle cycle)
         {
         	renderLinkContent(writer, cycle);
         }

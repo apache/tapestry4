@@ -58,7 +58,6 @@ package org.apache.tapestry.form;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 
 /**
  *  Implements a component that manages an HTML &lt;textarea&gt; form element.
@@ -87,7 +86,6 @@ public abstract class TextArea extends AbstractFormComponent
      **/
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         IForm form = getForm(cycle);
 

@@ -59,7 +59,6 @@ import java.util.Collection;
 
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.PageRecorderCommitException;
 import org.apache.tapestry.event.ChangeObserver;
 
 /**
@@ -111,7 +110,7 @@ public interface IPageRecorder extends ChangeObserver
      * 
      **/
 
-    public void commit() throws PageRecorderCommitException;
+    public void commit();
 
     /**
      *  Returns a {@link Collection} of {@link IPageChange} objects that represent

@@ -57,20 +57,15 @@ package org.apache.tapestry.asset;
 
 import java.io.InputStream;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 
 import org.apache.tapestry.ApplicationRuntimeException;
-import org.apache.tapestry.IAsset;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IResourceResolver;
+import org.apache.tapestry.IResourceLocation;
+import org.apache.tapestry.Location;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
-import org.apache.tapestry.util.LocalizedResourceFinder;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.tapestry.resource.ClasspathResourceLocation;
 
 /**
  *  An implementation of {@link IAsset} for localizable assets within
@@ -84,23 +79,14 @@ import org.apache.commons.logging.LogFactory;
  * 
  **/
 
-public class PrivateAsset implements IAsset
+public class PrivateAsset extends AbstractAsset
 {
-    private static final Log LOG = LogFactory.getLog(PrivateAsset.class);
 
     private AssetExternalizer _externalizer;
 
-    private String _resourcePath;
-
-    /**
-     *  Map, keyed on Locale, value is the localized resourcePath (as a String)
-     **/
-
-    private Map _localizations;
-
-    public PrivateAsset(String resourcePath)
+    public PrivateAsset(ClasspathResourceLocation resourceLocation, Location location)
     {
-        _resourcePath = resourcePath;
+        super(resourceLocation, location);
     }
 
     /**
@@ -113,12 +99,12 @@ public class PrivateAsset implements IAsset
 
     public String buildURL(IRequestCycle cycle)
     {
-        String localizedResourcePath = findLocalization(cycle, cycle.getPage().getLocale());
-
         if (_externalizer == null)
             _externalizer = AssetExternalizer.get(cycle);
 
-        String externalURL = _externalizer.getURL(localizedResourcePath);
+        String path = getResourceLocation().getPath();
+
+        String externalURL = _externalizer.getURL(path);
 
         if (externalURL != null)
             return externalURL;
@@ -126,7 +112,7 @@ public class PrivateAsset implements IAsset
         // Otherwise, the service is responsible for dynamically retrieving the
         // resource.
 
-        String[] parameters = new String[] { localizedResourcePath };
+        String[] parameters = new String[] { path };
 
         IEngineService service = cycle.getEngine().getService(Tapestry.ASSET_SERVICE);
 
@@ -137,73 +123,20 @@ public class PrivateAsset implements IAsset
 
     public InputStream getResourceAsStream(IRequestCycle cycle)
     {
-        return getResourceAsStream(cycle, cycle.getPage().getLocale());
-    }
+        IResourceLocation location = getResourceLocation();
 
-    public InputStream getResourceAsStream(IRequestCycle cycle, Locale locale)
-    {
         try
         {
-            IResourceResolver resolver = cycle.getEngine().getResourceResolver();
-
-            URL url = resolver.getResource(findLocalization(cycle, locale));
+            URL url = location.getResourceURL();
 
             return url.openStream();
         }
         catch (Exception ex)
         {
             throw new ApplicationRuntimeException(
-                Tapestry.getString("PrivateAsset.resource-missing", _resourcePath),
+                Tapestry.getString("PrivateAsset.resource-missing", location),
                 ex);
         }
-    }
-
-    /**
-     *  Poke around until we find the localized version of the asset.
-     *
-     *  <p>A lot of this is cut-and-paste from DefaultTemplateSource.  I haven't
-     *  come up with a good, general, efficient way to do this search without
-     *  a huge amount of mechanism.
-     *
-     **/
-
-    private synchronized String findLocalization(IRequestCycle cycle, Locale locale)
-    {
-        if (_localizations == null)
-            _localizations = new HashMap();
-
-        String result = (String) _localizations.get(locale);
-        if (result != null)
-            return result;
-
-        if (LOG.isDebugEnabled())
-            LOG.debug(
-                "Searching for localization of private asset "
-                    + _resourcePath
-                    + " in locale "
-                    + locale.getDisplayName());
-
-        IResourceResolver resolver = cycle.getEngine().getResourceResolver();
-
-        LocalizedResourceFinder finder = new LocalizedResourceFinder(resolver);
-
-        String localizedPath = finder.resolve(_resourcePath, locale);
-
-        if (localizedPath == null)
-            throw new ApplicationRuntimeException(
-                Tapestry.getString("PrivateAsset.resource-unavailable", _resourcePath, locale));
-
-        _localizations.put(locale, localizedPath);
-
-        if (LOG.isDebugEnabled())
-            LOG.debug("Found " + localizedPath);
-
-        return localizedPath;
-    }
-
-    public String toString()
-    {
-        return "PrivateAsset[" + _resourcePath + "]";
     }
 
 }

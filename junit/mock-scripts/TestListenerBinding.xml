@@ -101,7 +101,7 @@ Message: Component was clicked.
 		</assert-output>
 		
 		<assert-output name="Invalid Script Error Message">
-Unable to execute listener script "'listener' listener script for component Two/invalidScriptLink": exception from Jython
+		Unable to execute listener script "context:/WEB-INF/Two.page, line 18": exception from Jython
 		</assert-output>		
 	</request>
 
@@ -118,7 +118,7 @@ Unable to execute listener script "'listener' listener script for component Two/
 		</assert-output>
 		
 		<assert-output name="Unknown Language Error Message">
-Unable to execute listener script "'listener' listener script for component Two/unknownLanguageLink": unsupported language: DoesNotExist.
+			Unable to execute listener script "context:/WEB-INF/Two.page, line 28": unsupported language: DoesNotExist
 		</assert-output>		
 	</request>
 			  

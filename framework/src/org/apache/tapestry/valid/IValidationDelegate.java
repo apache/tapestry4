@@ -60,7 +60,6 @@ import java.util.List;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.form.IFormComponent;
 
 /**
@@ -255,8 +254,7 @@ public interface IValidationDelegate
         IMarkupWriter writer,
         IRequestCycle cycle,
         IFormComponent component,
-        IValidator validator)
-        throws RequestCycleException;
+        IValidator validator);
 
     /**
      *  Invoked just before the &lt;input&gt; element is closed.
@@ -271,8 +269,7 @@ public interface IValidationDelegate
         IMarkupWriter writer,
         IRequestCycle cycle,
         IFormComponent component,
-        IValidator validator)
-        throws RequestCycleException;
+        IValidator validator);
 
     /**
      *  Invoked after the form component is rendered, so that the
@@ -284,8 +281,7 @@ public interface IValidationDelegate
         IMarkupWriter writer,
         IRequestCycle cycle,
         IFormComponent component,
-        IValidator validator)
-        throws RequestCycleException;
+        IValidator validator);
 
     /**
      *  Invoked by a {@link FieldLabel} just before writing the name
@@ -296,8 +292,7 @@ public interface IValidationDelegate
     public void writeLabelPrefix(
         IFormComponent component,
         IMarkupWriter writer,
-        IRequestCycle cycle)
-        throws RequestCycleException;
+        IRequestCycle cycle);
 
     /**
      *  Invoked by a {@link FieldLabel} just after writing the name
@@ -308,8 +303,7 @@ public interface IValidationDelegate
     public void writeLabelSuffix(
         IFormComponent component,
         IMarkupWriter writer,
-        IRequestCycle cycle)
-        throws RequestCycleException;
+        IRequestCycle cycle);
 
     /**
      *   Returns true if any form component has errors.

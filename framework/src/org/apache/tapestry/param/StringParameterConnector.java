@@ -58,7 +58,6 @@ package org.apache.tapestry.param;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequiredParameterException;
 
 /**
  *  Creates a connection between a parameter and a property of type {@link String}.
@@ -72,7 +71,10 @@ import org.apache.tapestry.RequiredParameterException;
 public class StringParameterConnector extends AbstractParameterConnector
 {
 
-    protected StringParameterConnector(IComponent component, String parameterName, IBinding binding)
+    protected StringParameterConnector(
+        IComponent component,
+        String parameterName,
+        IBinding binding)
     {
         super(component, parameterName, binding);
     }
@@ -83,7 +85,7 @@ public class StringParameterConnector extends AbstractParameterConnector
      * 
      **/
 
-    public void setParameter(IRequestCycle cycle) throws RequiredParameterException
+    public void setParameter(IRequestCycle cycle)
     {
         if (shouldSetPropertyValue(cycle))
             setPropertyValue(getBinding().getString());

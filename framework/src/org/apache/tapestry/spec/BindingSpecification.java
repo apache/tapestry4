@@ -57,7 +57,7 @@ package org.apache.tapestry.spec;
 
 /**
  *  Stores a binding specification, which identifies the static value
- *  or nested property name for the binding.  The name of the binding (which
+ *  or OGNL expression for the binding.  The name of the binding (which
  *  matches a bindable property of the contined component) is implicitly known.
  *
  *  @author Howard Lewis Ship
@@ -65,11 +65,19 @@ package org.apache.tapestry.spec;
  * 
  **/
 
-public class BindingSpecification
+public class BindingSpecification extends BaseLocatable
 {
     private BindingType type;
     private String value;
 
+	/** @since 2.4 **/
+	
+	public BindingSpecification()
+	{
+	}
+
+	/** @deprecated **/
+	
     public BindingSpecification(BindingType type, String value)
     {
         this.type = type;

@@ -55,13 +55,9 @@
 
 package org.apache.tapestry.engine;
 
-import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IResourceResolver;
-import org.apache.tapestry.PageLoaderException;
 
 /**
  *  Abstracts the process of loading pages from thier specifications as
@@ -90,7 +86,7 @@ public interface IPageSource
      *
      **/
 
-    public IPage getPage(IRequestCycle cycle, String pageName, IMonitor monitor) throws PageLoaderException;
+    public IPage getPage(IRequestCycle cycle, String pageName, IMonitor monitor);
 
     /**
      *  Invoked after the engine is done with the page
@@ -109,44 +105,6 @@ public interface IPageSource
 
     public void reset();
 
-    /**
-     *  Gets a field binding for the named field (the name includes the class name
-     *  and the field).  If no such binding exists, then one is created, otherwise
-     *  the existing binding is returned. 
-     *
-     *  @since 1.0.2
-     * 
-     **/
-
-    public IBinding getFieldBinding(String fieldName);
-
-    /**
-     *  Like {@link #getFieldBinding(String)}, except for static bindings.
-     *
-     *  @since 1.0.2
-     * 
-     **/
-
-    public IBinding getStaticBinding(String value);
-
-    /**
-     *  Gets a cached asset.
-     *
-     *  @since 1.0.2
-     *
-     **/
-
-    public IAsset getExternalAsset(String URL);
-
-    /**
-     *  Gets a cached asset.
-     *
-     *  @since 1.0.2
-     *
-     **/
-
-    public IAsset getAsset(IResourceLocation location);
-    
     /**
      * 
      *  @since 2.4

@@ -64,7 +64,6 @@ import org.apache.tapestry.IDirect;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IEngineService;
 import org.apache.tapestry.engine.ILink;
@@ -108,7 +107,6 @@ public class ShowTemplate extends BaseComponent implements IDirect
         return new IRender()
         {
             public void render(IMarkupWriter writer, IRequestCycle cycle)
-                throws RequestCycleException
             {
                 writeTemplate(writer, cycle);
             }

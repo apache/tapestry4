@@ -63,8 +63,7 @@ import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.NullValueForBindingException;
-import org.apache.tapestry.RequestCycleException;
+import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.vlib.VirtualLibraryEngine;
 import org.apache.tapestry.vlib.Visit;
 import org.apache.tapestry.vlib.ejb.Book;
@@ -125,7 +124,7 @@ public class Borrow extends BaseComponent
             book = (Book) bookBinding.getObject("book", Book.class);
 
         if (book == null)
-            throw new NullValueForBindingException(bookBinding);
+            throw Tapestry.createNullBindingException(bookBinding);
 
         return book;
     }
@@ -164,7 +163,7 @@ public class Borrow extends BaseComponent
         return visit.isLoggedInUser(book.getHolderPrimaryKey());
     }
 
-    public void borrow(IRequestCycle cycle) throws RequestCycleException
+    public void borrow(IRequestCycle cycle)
     {
         Object[] parameters = cycle.getServiceParameters();
         Integer bookPK = (Integer)parameters[0];

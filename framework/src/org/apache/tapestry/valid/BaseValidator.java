@@ -61,14 +61,13 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IForm;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IScript;
-import org.apache.tapestry.RequestCycleException;
-import org.apache.tapestry.ScriptException;
 import org.apache.tapestry.ScriptSession;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IScriptSource;
@@ -249,7 +248,6 @@ public abstract class BaseValidator implements IValidator
         IFormComponent field,
         IMarkupWriter writer,
         IRequestCycle cycle)
-        throws RequestCycleException
     {
     }
 
@@ -279,7 +277,6 @@ public abstract class BaseValidator implements IValidator
         IRequestCycle cycle,
         IFormComponent field,
         Map symbols)
-        throws RequestCycleException
     {
         IEngine engine = field.getPage().getEngine();
         IScriptSource source = engine.getScriptSource();
@@ -296,21 +293,12 @@ public abstract class BaseValidator implements IValidator
 
         IScript script = source.getScript(location);
 
-        ScriptSession session;
-
-        try
-        {
-            session = script.execute(finalSymbols);
-        }
-        catch (ScriptException ex)
-        {
-            throw new RequestCycleException(ex.getMessage(), field, ex);
-        }
+        ScriptSession session = script.execute(finalSymbols);
 
         Body body = Body.get(cycle);
 
         if (body == null)
-            throw new RequestCycleException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString("ValidField.must-be-contained-by-body"),
                 field);
 

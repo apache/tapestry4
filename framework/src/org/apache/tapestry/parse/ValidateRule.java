@@ -53,21 +53,57 @@
  *
  */
 
-package org.apache.tapestry;
+package org.apache.tapestry.parse;
+
+import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.util.RegexpMatcher;
+import org.apache.tapestry.util.xml.InvalidStringException;
+import org.xml.sax.Attributes;
 
 /**
- *  Exception thrown when a template has a body-less {@link IComponent} wraps
- *  any content.  The exception is thrown by the container object.
+ *  Validates that an attribute matches a specified pattern.
  *
- *  @author Howard Ship
+ *  @author Howard Lewis Ship
  *  @version $Id$
+ *  @since 2.4
  *
  **/
 
-public class BodylessComponentException extends PageLoaderException
+public class ValidateRule extends AbstractSpecificationRule
 {
-    public BodylessComponentException(IComponent component)
+    private RegexpMatcher _matcher;
+    private String _attributeName;
+    private String _pattern;
+    private String _errorKey;
+
+	public ValidateRule(RegexpMatcher matcher, String attributeName, String pattern, String errorKey)
+	{
+		_matcher = matcher;
+		_attributeName = attributeName;
+		_pattern = pattern;
+		_errorKey = errorKey;
+	}
+
+	/**
+	 *  Validates that the attribute, if provided, matches the pattern.
+	 * 
+	 *  @throws InvalidStringException if the value does not match the pattern.
+	 * 
+	 **/
+	
+    public void begin(String namespace, String name, Attributes attributes) throws Exception
     {
-        super(Tapestry.getString("BodylessComponentException.message"), component);
+        String value = getValue(attributes, _attributeName);
+        if (value == null)
+            return;
+
+        if (_matcher.matches(_pattern, value))
+            return;
+
+        throw new InvalidStringException(
+            Tapestry.getString(_errorKey, value),
+            value,
+            getResourceLocation());
     }
+
 }

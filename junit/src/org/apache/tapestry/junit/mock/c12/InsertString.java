@@ -58,7 +58,6 @@ package org.apache.tapestry.junit.mock.c12;
 import org.apache.tapestry.AbstractComponent;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 
 /**
  *  A simplified version of the Insert component that requires a parameter
@@ -74,7 +73,6 @@ public abstract class InsertString extends AbstractComponent
 	public abstract String getString();
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
     	writer.print(getString());
     }

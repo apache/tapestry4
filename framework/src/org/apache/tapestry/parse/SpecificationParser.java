@@ -55,45 +55,35 @@
 
 package org.apache.tapestry.parse;
 
+import java.net.URL;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
-import org.apache.tapestry.INamespace;
+import org.apache.commons.digester.Rule;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.tapestry.ILocationHolder;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.Tapestry;
-import org.apache.tapestry.bean.IBeanInitializer;
-import org.apache.tapestry.engine.ITemplateSource;
-import org.apache.tapestry.spec.AssetSpecification;
 import org.apache.tapestry.spec.AssetType;
 import org.apache.tapestry.spec.BeanLifecycle;
-import org.apache.tapestry.spec.BeanSpecification;
-import org.apache.tapestry.spec.BindingSpecification;
 import org.apache.tapestry.spec.BindingType;
 import org.apache.tapestry.spec.ComponentSpecification;
-import org.apache.tapestry.spec.ContainedComponent;
 import org.apache.tapestry.spec.Direction;
 import org.apache.tapestry.spec.ExtensionSpecification;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
-import org.apache.tapestry.spec.ListenerBindingSpecification;
-import org.apache.tapestry.spec.ParameterSpecification;
-import org.apache.tapestry.spec.PropertySpecification;
 import org.apache.tapestry.spec.SpecFactory;
-import org.apache.tapestry.util.IPropertyHolder;
 import org.apache.tapestry.util.xml.AbstractDocumentParser;
 import org.apache.tapestry.util.xml.DocumentParseException;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXParseException;
 
 /**
  *  Used to parse an application or component specification into a
  *  {@link ApplicationSpecification} or {@link ComponentSpecification}.
- *  This may someday be revised to use
- *  Java XML Binding (once JAXB is available), or
- *  to use Jakarta's Digester.
  *
  *
  *  <table border=1
@@ -128,8 +118,10 @@ import org.w3c.dom.Node;
  * 
  **/
 
-public class SpecificationParser extends AbstractDocumentParser
+public class SpecificationParser
 {
+    private static final Log LOG = LogFactory.getLog(SpecificationParser.class);
+
     /** @since 2.2 **/
 
     public static final String TAPESTRY_DTD_1_3_PUBLIC_ID =
@@ -187,6 +179,8 @@ public class SpecificationParser extends AbstractDocumentParser
     /**
      *  Perl5 pattern for component alias. 
      *  Letter, followed by letter, number, or underscore.
+     *  This is used to validate component types registered
+     *  in the application or library specifications.
      * 
      *  @since 2.2
      * 
@@ -219,14 +213,15 @@ public class SpecificationParser extends AbstractDocumentParser
 
     /**
      *  Perl5 pattern for asset names.  Letter, followed by
-     *  letter, number or underscore.
+     *  letter, number or underscore.  Also allows
+     *  the special "$template" value.
      * 
      *  @since 2.2
      * 
      **/
 
     public static final String ASSET_NAME_PATTERN =
-        AbstractDocumentParser.SIMPLE_PROPERTY_NAME_PATTERN;
+        "(\\$template)|(" + AbstractDocumentParser.SIMPLE_PROPERTY_NAME_PATTERN + ")";
 
     /**
      *  Perl5 pattern for service names.  Letter
@@ -274,11 +269,45 @@ public class SpecificationParser extends AbstractDocumentParser
      * 
      **/
 
-    private static final Map _conversionMap = new HashMap();
+    private static final Map CONVERSION_MAP = new HashMap();
 
     /** @since 1.0.9 **/
 
     private SpecFactory _factory;
+
+    /** 
+     *   Digester used for component specifications.
+     * 
+     *  @since 2.4 
+     * 
+     **/
+
+    private SpecificationDigester _componentDigester;
+
+    /**
+     *  Digestger used for page specifications.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    private SpecificationDigester _pageDigester;
+
+    /**
+     *  Digester use for library specifications.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    private SpecificationDigester _libraryDigester;
+
+    /**
+     *  @since 2.4 
+     * 
+     **/
+
+    private IResourceResolver _resolver;
 
     private interface IConverter
     {
@@ -290,7 +319,7 @@ public class SpecificationParser extends AbstractDocumentParser
     {
         public Object convert(String value) throws DocumentParseException
         {
-            Object result = _conversionMap.get(value.toLowerCase());
+            Object result = CONVERSION_MAP.get(value.toLowerCase());
 
             if (result == null || !(result instanceof Boolean))
                 throw new DocumentParseException(
@@ -359,6 +388,200 @@ public class SpecificationParser extends AbstractDocumentParser
         }
     }
 
+    /** 
+     *  Base class for creating locatable objects using the 
+     *  {@link SpecFactory}.
+     * 
+     **/
+
+    private abstract static class SpecFactoryCreateRule extends AbstractSpecificationRule
+    {
+        /**
+         *  Implement in subclass to create correct locatable object.
+         * 
+         **/
+
+        public abstract ILocationHolder create();
+
+        public void begin(String namespace, String name, Attributes attributes) throws Exception
+        {
+        	ILocationHolder holder = create();
+        	
+        	holder.setLocation(getLocation());
+        	
+            digester.push(holder);
+        }
+
+        public void end(String namespace, String name) throws Exception
+        {
+            digester.pop();
+        }
+
+    }
+
+    private class CreateExpressionBeanInitializerRule extends SpecFactoryCreateRule
+    {
+        public ILocationHolder create()
+        {
+            return _factory.createExpressionBeanInitializer();
+        }
+    }
+
+    private class CreateStringBeanInitializerRule extends SpecFactoryCreateRule
+    {
+        public ILocationHolder create()
+        {
+            return _factory.createStringBeanInitializer();
+        }
+    }
+
+    private class CreateContainedComponentRule extends SpecFactoryCreateRule
+    {
+        public ILocationHolder create()
+        {
+            return _factory.createContainedComponent();
+        }
+    }
+
+    private class CreateParameterSpecificationRule extends SpecFactoryCreateRule
+    {
+        public ILocationHolder create()
+        {
+            return _factory.createParameterSpecification();
+        }
+    }
+
+    private class CreateComponentSpecificationRule extends SpecFactoryCreateRule
+    {
+        public ILocationHolder create()
+        {
+            return _factory.createComponentSpecification();
+        }
+    }
+
+    private class CreateBindingSpecificationRule extends SpecFactoryCreateRule
+    {
+        public ILocationHolder create()
+        {
+            return _factory.createBindingSpecification();
+        }
+    }
+
+    private class CreateBeanSpecificationRule extends SpecFactoryCreateRule
+    {
+        public ILocationHolder create()
+        {
+            return _factory.createBeanSpecification();
+        }
+    }
+
+    private class CreateListenerBindingSpecificationRule extends SpecFactoryCreateRule
+    {
+        public ILocationHolder create()
+        {
+            return _factory.createListenerBindingSpecification();
+        }
+    }
+
+    private class CreateAssetSpecificationRule extends SpecFactoryCreateRule
+    {
+        public ILocationHolder create()
+        {
+            return _factory.createAssetSpecification();
+        }
+    }
+
+    private class CreatePropertySpecificationRule extends SpecFactoryCreateRule
+    {
+        public ILocationHolder create()
+        {
+            return _factory.createPropertySpecification();
+        }
+    }
+
+    private class CreateApplicationSpecificationRule extends SpecFactoryCreateRule
+    {
+        public ILocationHolder create()
+        {
+            return _factory.createApplicationSpecification();
+        }
+    }
+
+    private class CreateLibrarySpecificationRule extends SpecFactoryCreateRule
+    {
+        public ILocationHolder create()
+        {
+            return _factory.createLibrarySpecification();
+        }
+    }
+
+    private class CreateExtensionSpecificationRule extends SpecFactoryCreateRule
+    {
+        public ILocationHolder create()
+        {
+            return _factory.createExtensionSpecification();
+        }
+    }
+
+    private class ProcessExtensionConfigurationRule extends AbstractSpecificationRule
+    {
+        private String _value;
+        private String _propertyName;
+        private IConverter _converter;
+
+        public void begin(String namespace, String name, Attributes attributes) throws Exception
+        {
+            _propertyName = getValue(attributes, "property-name");
+            _value = getValue(attributes, "value");
+
+            String type = getValue(attributes, "type");
+
+            _converter = (IConverter) CONVERSION_MAP.get(type);
+
+            if (_converter == null)
+                throw new DocumentParseException(
+                    Tapestry.getString("SpecificationParser.unknown-static-value-type", type),
+                    getResourceLocation());
+
+        }
+
+        public void body(String namespace, String name, String text) throws Exception
+        {
+            if (Tapestry.isNull(text))
+                return;
+
+            if (_value != null)
+                throw new DocumentParseException(
+                    Tapestry.getString("SpecificationParser.no-attribute-and-body", "value", name),
+                    getResourceLocation());
+
+            _value = text.trim();
+        }
+
+        public void end(String namespace, String name) throws Exception
+        {
+            if (_value == null)
+                throw new DocumentParseException(
+                    Tapestry.getString(
+                        "SpecificationParser.required-extended-attribute",
+                        name,
+                        "value"),
+                    getResourceLocation());
+
+            Object objectValue = _converter.convert(_value);
+
+            ExtensionSpecification top = (ExtensionSpecification) digester.peek();
+
+            top.addConfiguration(_propertyName, objectValue);
+
+            _converter = null;
+            _value = null;
+            _propertyName = null;
+
+        }
+
+    }
+
     // Identify all the different acceptible values.
     // We continue to sneak by with a single map because
     // there aren't conflicts;  when we have 'foo' meaning
@@ -367,41 +590,39 @@ public class SpecificationParser extends AbstractDocumentParser
 
     static {
 
-        _conversionMap.put("true", Boolean.TRUE);
-        _conversionMap.put("t", Boolean.TRUE);
-        _conversionMap.put("1", Boolean.TRUE);
-        _conversionMap.put("y", Boolean.TRUE);
-        _conversionMap.put("yes", Boolean.TRUE);
-        _conversionMap.put("on", Boolean.TRUE);
+        CONVERSION_MAP.put("true", Boolean.TRUE);
+        CONVERSION_MAP.put("t", Boolean.TRUE);
+        CONVERSION_MAP.put("1", Boolean.TRUE);
+        CONVERSION_MAP.put("y", Boolean.TRUE);
+        CONVERSION_MAP.put("yes", Boolean.TRUE);
+        CONVERSION_MAP.put("on", Boolean.TRUE);
 
-        _conversionMap.put("false", Boolean.FALSE);
-        _conversionMap.put("f", Boolean.FALSE);
-        _conversionMap.put("0", Boolean.FALSE);
-        _conversionMap.put("off", Boolean.FALSE);
-        _conversionMap.put("no", Boolean.FALSE);
-        _conversionMap.put("n", Boolean.FALSE);
+        CONVERSION_MAP.put("false", Boolean.FALSE);
+        CONVERSION_MAP.put("f", Boolean.FALSE);
+        CONVERSION_MAP.put("0", Boolean.FALSE);
+        CONVERSION_MAP.put("off", Boolean.FALSE);
+        CONVERSION_MAP.put("no", Boolean.FALSE);
+        CONVERSION_MAP.put("n", Boolean.FALSE);
 
-        _conversionMap.put("none", BeanLifecycle.NONE);
-        _conversionMap.put("request", BeanLifecycle.REQUEST);
-        _conversionMap.put("page", BeanLifecycle.PAGE);
-        _conversionMap.put("render", BeanLifecycle.RENDER);
+        CONVERSION_MAP.put("none", BeanLifecycle.NONE);
+        CONVERSION_MAP.put("request", BeanLifecycle.REQUEST);
+        CONVERSION_MAP.put("page", BeanLifecycle.PAGE);
+        CONVERSION_MAP.put("render", BeanLifecycle.RENDER);
 
-        _conversionMap.put("boolean", new BooleanConverter());
-        _conversionMap.put("int", new IntConverter());
-        _conversionMap.put("double", new DoubleConverter());
-        _conversionMap.put("String", new StringConverter());
-        _conversionMap.put("long", new LongConverter());
+        CONVERSION_MAP.put("boolean", new BooleanConverter());
+        CONVERSION_MAP.put("int", new IntConverter());
+        CONVERSION_MAP.put("double", new DoubleConverter());
+        CONVERSION_MAP.put("String", new StringConverter());
+        CONVERSION_MAP.put("long", new LongConverter());
 
-        _conversionMap.put("in", Direction.IN);
-        _conversionMap.put("form", Direction.FORM);
-        _conversionMap.put("custom", Direction.CUSTOM);
+        CONVERSION_MAP.put("in", Direction.IN);
+        CONVERSION_MAP.put("form", Direction.FORM);
+        CONVERSION_MAP.put("custom", Direction.CUSTOM);
     }
 
-    public SpecificationParser()
+    public SpecificationParser(IResourceResolver resolver)
     {
-        register(TAPESTRY_DTD_1_3_PUBLIC_ID, "Tapestry_1_3.dtd");
-        register(TAPESTRY_DTD_1_4_PUBLIC_ID, "Tapestry_1_4.dtd");
-
+        _resolver = resolver;
         _factory = new SpecFactory();
     }
 
@@ -417,17 +638,80 @@ public class SpecificationParser extends AbstractDocumentParser
     public ComponentSpecification parseComponentSpecification(IResourceLocation resourceLocation)
         throws DocumentParseException
     {
-        Document document;
+        if (_componentDigester == null)
+            _componentDigester = constructComponentDigester();
 
         try
         {
-            document = parse(resourceLocation, "component-specification");
+            ComponentSpecification result =
+                (ComponentSpecification) parse(_componentDigester, resourceLocation);
 
-            return convertComponentSpecification(document, false);
+            result.setSpecificationLocation(resourceLocation);
+
+            return result;
+        }
+        catch (DocumentParseException ex)
+        {
+            _componentDigester = null;
+
+            throw ex;
+        }
+    }
+
+    /**
+     *  Parses a resource using a particular digester.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    protected Object parse(SpecificationDigester digester, IResourceLocation location)
+        throws DocumentParseException
+    {
+        try
+        {
+            if (LOG.isDebugEnabled())
+                LOG.debug("Parsing " + location);
+
+            URL url = location.getResourceURL();
+
+            if (url == null)
+                throw new DocumentParseException(
+                    Tapestry.getString("AbstractDocumentParser.missing-resource", location),
+                    location);
+
+            InputSource source = new InputSource(url.toExternalForm());
+
+            digester.setResourceLocation(location);
+
+            Object result = digester.parse(source);
+
+            if (LOG.isDebugEnabled())
+                LOG.debug("Result: " + result);
+
+            return result;
+        }
+        catch (SAXParseException ex)
+        {
+            throw new DocumentParseException(ex);
+        }
+        catch (DocumentParseException ex)
+        {
+            throw ex;
+        }
+        catch (Exception ex)
+        {
+            throw new DocumentParseException(
+                Tapestry.getString(
+                    "SpecificationParser.error-reading-resource",
+                    location,
+                    ex.getMessage()),
+                location,
+                ex);
         }
         finally
         {
-            setResourceLocation(null);
+            digester.setResourceLocation(null);
         }
     }
 
@@ -445,24 +729,23 @@ public class SpecificationParser extends AbstractDocumentParser
     public ComponentSpecification parsePageSpecification(IResourceLocation resourceLocation)
         throws DocumentParseException
     {
+        if (_pageDigester == null)
+            _pageDigester = constructPageDigester();
+
         try
         {
-            Document document = parse(resourceLocation, "page-specification");
+            ComponentSpecification result =
+                (ComponentSpecification) parse(_pageDigester, resourceLocation);
 
-            ComponentSpecification result = convertComponentSpecification(document, true);
-
-            result.setPageSpecification(true);
-
-            // Set defaults
-
-            result.setAllowBody(true);
-            result.setAllowInformalParameters(false);
+            result.setSpecificationLocation(resourceLocation);
 
             return result;
         }
-        finally
+        catch (DocumentParseException ex)
         {
-            setResourceLocation(null);
+            _pageDigester = null;
+
+            throw ex;
         }
     }
 
@@ -475,21 +758,21 @@ public class SpecificationParser extends AbstractDocumentParser
      *
      **/
 
-    public IApplicationSpecification parseApplicationSpecification(
-        IResourceLocation resourceLocation,
-        IResourceResolver resolver)
+    public IApplicationSpecification parseApplicationSpecification(IResourceLocation resourceLocation)
         throws DocumentParseException
     {
-        try
-        {
-            Document document = parse(resourceLocation, "application");
 
-            return convertApplicationSpecification(document, resolver);
-        }
-        finally
-        {
-            setResourceLocation(null);
-        }
+        // Use a one-shot digester, because you only parse the app spec
+        // once.
+
+        IApplicationSpecification result =
+            (IApplicationSpecification) parse(constructApplicationDigester(), resourceLocation);
+
+        result.setResourceResolver(_resolver);
+        result.setSpecificationLocation(resourceLocation);
+        result.instantiateImmediateExtensions();
+
+        return result;
     }
 
     /**
@@ -503,676 +786,29 @@ public class SpecificationParser extends AbstractDocumentParser
      *
      **/
 
-    public ILibrarySpecification parseLibrarySpecification(
-        IResourceLocation resourceLocation,
-        IResourceResolver resolver)
+    public ILibrarySpecification parseLibrarySpecification(IResourceLocation resourceLocation)
         throws DocumentParseException
     {
+        if (_libraryDigester == null)
+            _libraryDigester = constructLibraryDigester();
+
         try
         {
-            Document document = parse(resourceLocation, "library-specification");
+            ILibrarySpecification result =
+                (ILibrarySpecification) parse(_libraryDigester, resourceLocation);
 
-            return convertLibrarySpecification(document, resolver);
+            result.setResourceResolver(_resolver);
+            result.setSpecificationLocation(resourceLocation);
+            result.instantiateImmediateExtensions();
+
+            return result;
         }
-        finally
+        catch (DocumentParseException ex)
         {
-            setResourceLocation(null);
+            _libraryDigester = null;
+
+            throw ex;
         }
-    }
-
-    private boolean getBooleanAttribute(Node node, String attributeName)
-    {
-        String attributeValue = getAttribute(node, attributeName);
-
-        return attributeValue.equals("yes");
-    }
-
-    protected IApplicationSpecification convertApplicationSpecification(
-        Document document,
-        IResourceResolver resolver)
-        throws DocumentParseException
-    {
-        IApplicationSpecification specification = _factory.createApplicationSpecification();
-
-        Element root = document.getDocumentElement();
-
-        specification.setName(getAttribute(root, "name"));
-        specification.setEngineClassName(getAttribute(root, "engine-class"));
-
-        processLibrarySpecification(document, specification, resolver);
-
-        return specification;
-    }
-
-    /** @since 2.2 **/
-
-    protected ILibrarySpecification convertLibrarySpecification(
-        Document document,
-        IResourceResolver resolver)
-        throws DocumentParseException
-    {
-        ILibrarySpecification specification = _factory.createLibrarySpecification();
-
-        processLibrarySpecification(document, specification, resolver);
-
-        return specification;
-    }
-
-    /**
-     *  Processes the embedded elements inside a LibrarySpecification.
-     * 
-     *  @since 2.2
-     * 
-     **/
-
-    private void processLibrarySpecification(
-        Document document,
-        ILibrarySpecification specification,
-        IResourceResolver resolver)
-        throws DocumentParseException
-    {
-        specification.setPublicId(document.getDoctype().getPublicId());
-        specification.setSpecificationLocation(getResourceLocation());
-        specification.setResourceResolver(resolver);
-
-        Element root = document.getDocumentElement();
-
-        for (Node node = root.getFirstChild(); node != null; node = node.getNextSibling())
-        {
-            if (isElement(node, "page"))
-            {
-                convertPage(specification, node);
-                continue;
-            }
-
-            // component-type is in DTD 1.4, component-alias in DTD 1.3
-
-            if (isElement(node, "component-alias") || isElement(node, "component-type"))
-            {
-                convertComponentType(specification, node);
-                continue;
-            }
-
-            if (isElement(node, "property"))
-            {
-                convertProperty(specification, node);
-                continue;
-            }
-
-            if (isElement(node, "service"))
-            {
-                convertService(specification, node);
-                continue;
-            }
-
-            if (isElement(node, "description"))
-            {
-                specification.setDescription(getValue(node));
-                continue;
-            }
-
-            if (isElement(node, "library"))
-            {
-                convertLibrary(specification, node);
-                continue;
-            }
-
-            if (isElement(node, "extension"))
-            {
-                convertExtension(specification, node);
-                continue;
-            }
-        }
-
-        specification.instantiateImmediateExtensions();
-    }
-
-    /**  @since 2.2 **/
-
-    private void convertLibrary(ILibrarySpecification specification, Node node)
-        throws DocumentParseException
-    {
-        String id = getAttribute(node, "id");
-
-        validate(id, LIBRARY_ID_PATTERN, "SpecificationParser.invalid-library-id");
-
-        if (id.equals(INamespace.FRAMEWORK_NAMESPACE))
-            throw new DocumentParseException(
-                Tapestry.getString(
-                    "SpecificationParser.framework-library-id-is-reserved",
-                    INamespace.FRAMEWORK_NAMESPACE),
-                getResourceLocation());
-
-        String specificationPath = getAttribute(node, "specification-path");
-
-        specification.setLibrarySpecificationPath(id, specificationPath);
-    }
-
-    private void convertPage(ILibrarySpecification specification, Node node)
-        throws DocumentParseException
-    {
-        String name = getAttribute(node, "name");
-
-        validate(name, PAGE_NAME_PATTERN, "SpecificationParser.invalid-page-name");
-
-        String specificationPath = getAttribute(node, "specification-path");
-
-        specification.setPageSpecificationPath(name, specificationPath);
-    }
-
-    private void convertComponentType(ILibrarySpecification specification, Node node)
-        throws DocumentParseException
-    {
-        String type = getAttribute(node, "type");
-
-        validate(type, COMPONENT_ALIAS_PATTERN, "SpecificationParser.invalid-component-type");
-
-        String path = getAttribute(node, "specification-path");
-
-        specification.setComponentSpecificationPath(type, path);
-    }
-
-    private void convertProperty(IPropertyHolder holder, Node node) throws DocumentParseException
-    {
-        String name = getAttribute(node, "name");
-
-        // Starting in DTD 1.4, the value may be specified
-        // as an attribute.  Only if that is null do we
-        // extract the node's value.
-
-        String value = getExtendedAttribute(node, "value", true);
-
-        holder.setProperty(name, value);
-    }
-
-    protected ComponentSpecification convertComponentSpecification(Document document, boolean isPage)
-        throws DocumentParseException
-    {
-        ComponentSpecification specification = _factory.createComponentSpecification();
-        Element root = document.getDocumentElement();
-
-        specification.setPublicId(document.getDoctype().getPublicId());
-        specification.setSpecificationLocation(getResourceLocation());
-
-        // Only components specify these two attributes.  For pages they either can't be specified.
-
-        if (!isPage)
-        {
-            specification.setAllowBody(getBooleanAttribute(root, "allow-body"));
-            specification.setAllowInformalParameters(
-                getBooleanAttribute(root, "allow-informal-parameters"));
-        }
-
-        specification.setComponentClassName(getAttribute(root, "class"));
-
-        for (Node node = root.getFirstChild(); node != null; node = node.getNextSibling())
-        {
-            if (isElement(node, "parameter"))
-            {
-                convertParameter(specification, node);
-                continue;
-            }
-
-            if (isElement(node, "reserved-parameter"))
-            {
-                if (isPage)
-                    throw new DocumentParseException(
-                        Tapestry.getString(
-                            "SpecificationParser.not-allowed-for-page",
-                            "reserved-parameter"),
-                        getResourceLocation());
-
-                convertReservedParameter(specification, node);
-                continue;
-            }
-
-            if (isElement(node, "bean"))
-            {
-                convertBean(specification, node);
-                continue;
-            }
-
-            if (isElement(node, "component"))
-            {
-                convertComponent(specification, node);
-                continue;
-            }
-
-            if (isElement(node, "external-asset"))
-            {
-                convertAsset(specification, node, AssetType.EXTERNAL, "URL");
-                continue;
-            }
-
-            if (isElement(node, "context-asset"))
-            {
-                convertAsset(specification, node, AssetType.CONTEXT, "path");
-                continue;
-            }
-
-            if (isElement(node, "private-asset"))
-            {
-                convertAsset(specification, node, AssetType.PRIVATE, "resource-path");
-                continue;
-            }
-
-            if (isElement(node, "property"))
-            {
-                convertProperty(specification, node);
-                continue;
-            }
-
-            if (isElement(node, "description"))
-            {
-                specification.setDescription(getValue(node));
-                continue;
-            }
-
-            if (isElement(node, "property-specification"))
-            {
-                convertPropertySpecification(specification, node);
-                continue;
-            }
-        }
-
-        return specification;
-    }
-
-    private void convertParameter(ComponentSpecification specification, Node node)
-        throws DocumentParseException
-    {
-        ParameterSpecification param = _factory.createParameterSpecification();
-
-        String name = getAttribute(node, "name");
-
-        validate(name, PARAMETER_NAME_PATTERN, "SpecificationParser.invalid-parameter-name");
-
-        String type = getAttribute(node, "type");
-
-        // The attribute was called "java-type" in the 1.3 and earlier DTD
-
-        if (type == null)
-            type = getAttribute(node, "java-type");
-
-        if (type == null)
-            type = "java.lang.Object";
-
-        param.setType(type);
-
-        param.setRequired(getBooleanAttribute(node, "required"));
-
-        String propertyName = getAttribute(node, "property-name");
-
-        // If not specified, use the name of the parameter.
-
-        if (propertyName == null)
-        {
-            propertyName = name;
-
-            validate(
-                propertyName,
-                PROPERTY_NAME_PATTERN,
-                "SpecificationParser.invalid-property-name");
-        }
-
-        param.setPropertyName(propertyName);
-
-        String direction = getAttribute(node, "direction");
-
-        if (direction != null)
-            param.setDirection((Direction) _conversionMap.get(direction));
-
-        specification.addParameter(name, param);
-
-        Node child = node.getFirstChild();
-        if (child != null && isElement(child, "description"))
-        {
-            param.setDescription(getValue(child));
-        }
-    }
-
-    /**
-     *  @since 1.0.4
-     *
-     **/
-
-    private void convertBean(ComponentSpecification specification, Node node)
-        throws DocumentParseException
-    {
-        String name = getAttribute(node, "name");
-
-        validate(name, BEAN_NAME_PATTERN, "SpecificationParser.invalid-bean-name");
-
-        String className = getAttribute(node, "class");
-        String lifecycleString = getAttribute(node, "lifecycle");
-
-        BeanLifecycle lifecycle = (BeanLifecycle) _conversionMap.get(lifecycleString);
-
-        BeanSpecification bspec = _factory.createBeanSpecification(className, lifecycle);
-
-        specification.addBeanSpecification(name, bspec);
-
-        for (Node child = node.getFirstChild(); child != null; child = child.getNextSibling())
-        {
-            if (isElement(child, "description"))
-            {
-                bspec.setDescription(getValue(child));
-                continue;
-            }
-
-            if (isElement(child, "property"))
-            {
-                convertProperty(bspec, child);
-                continue;
-            }
-
-            if (isElement(child, "set-property"))
-            {
-                convertSetProperty(bspec, child);
-                continue;
-            }
-
-            if (isElement(child, "set-string-property"))
-            {
-                convertSetStringProperty(bspec, child);
-                continue;
-            }
-        }
-    }
-
-    /**
-     *  This is a new simplified version structured around OGNL, in the 1.3 DTD.
-     * 
-     *  @since 2.2
-     * 
-     **/
-
-    private void convertSetProperty(BeanSpecification spec, Node node)
-        throws DocumentParseException
-    {
-        String name = getAttribute(node, "name");
-        String expression =  getExtendedAttribute(node, "expression", true);
-
-        IBeanInitializer iz = _factory.createExpressionBeanInitializer(name, expression);
-
-        spec.addInitializer(iz);
-    }
-
-    /**
-     *  String properties in the 1.3 DTD are handled a little differently.
-     * 
-     *  @since 2.2
-     * 
-     **/
-
-    private void convertSetStringProperty(BeanSpecification spec, Node node)
-        throws DocumentParseException
-    {
-        String name = getAttribute(node, "name");
-        String key = getAttribute(node, "key");
-
-        IBeanInitializer iz = _factory.createStringBeanInitializer(name, key);
-
-        spec.addInitializer(iz);
-    }
-
-    /** @since 1.0.8 **/
-
-    private void convertFieldValue(BeanSpecification spec, String propertyName, Node node)
-    {
-        String fieldName = getAttribute(node, "field-name");
-        IBeanInitializer iz = _factory.createFieldBeanInitializer(propertyName, fieldName);
-
-        spec.addInitializer(iz);
-    }
-
-    /**
-     *  @since 2.2
-     * 
-     **/
-
-    private void convertExpressionValue(BeanSpecification spec, String propertyName, Node node)
-    {
-        String expression = getAttribute(node, "expression");
-        IBeanInitializer iz = _factory.createExpressionBeanInitializer(propertyName, expression);
-
-        spec.addInitializer(iz);
-    }
-
-    /** @since 1.0.5 **/
-
-    private void convertStaticValue(BeanSpecification spec, String propertyName, Node node)
-        throws DocumentParseException
-    {
-        String type = getAttribute(node, "type");
-        String value = getValue(node);
-
-        IConverter converter = (IConverter) _conversionMap.get(type);
-
-        if (converter == null)
-            throw new DocumentParseException(
-                Tapestry.getString("SpecificationParser.unknown-static-value-type", type),
-                getResourceLocation());
-
-        Object staticValue = converter.convert(value);
-
-        IBeanInitializer iz = _factory.createStaticBeanInitializer(propertyName, staticValue);
-
-        spec.addInitializer(iz);
-    }
-
-    private void convertComponent(ComponentSpecification specification, Node node)
-        throws DocumentParseException
-    {
-        String id = getAttribute(node, "id");
-
-        validate(id, COMPONENT_ID_PATTERN, "SpecificationParser.invalid-component-id");
-
-        String type = getAttribute(node, "type");
-        String copyOf = getAttribute(node, "copy-of");
-        ContainedComponent c;
-
-        if (type != null && copyOf != null)
-            throw new DocumentParseException(
-                Tapestry.getString("SpecificationParser.both-type-and-copy-of", id),
-                getResourceLocation());
-
-        if (copyOf != null)
-            c = copyExistingComponent(specification, copyOf);
-        else
-        {
-            if (type == null)
-                throw new DocumentParseException(
-                    Tapestry.getString("SpecificationParser.missing-type-or-copy-of", id),
-                    getResourceLocation());
-
-            // In prior versions, its more free-form, because you can specify the path to
-            // a component as well.  In version 3, you must use an alias and define it
-            // in a library.
-
-            validate(type, COMPONENT_TYPE_PATTERN, "SpecificationParser.invalid-component-type");
-
-            c = _factory.createContainedComponent();
-            c.setType(type);
-        }
-
-        for (Node child = node.getFirstChild(); child != null; child = child.getNextSibling())
-        {
-            if (isElement(child, "binding"))
-            {
-                convertBinding(c, child, BindingType.DYNAMIC, "expression");
-                continue;
-            }
-
-            // Field binding is in 1.3 DTD, but removed from 1.4
-
-            if (isElement(child, "field-binding"))
-            {
-                convertBinding(c, child, BindingType.FIELD, "field-name");
-                continue;
-            }
-
-            if (isElement(child, "listener-binding"))
-            {
-                convertListenerBinding(c, child);
-                continue;
-            }
-
-            if (isElement(child, "inherited-binding"))
-            {
-                convertBinding(c, child, BindingType.INHERITED, "parameter-name");
-                continue;
-            }
-
-            if (isElement(child, "static-binding"))
-            {
-                convertBinding(c, child, BindingType.STATIC, "value");
-                continue;
-            }
-
-            // <string-binding> added in release 2.0.4
-
-            if (isElement(child, "string-binding"))
-            {
-                convertBinding(c, child, BindingType.STRING, "key");
-                continue;
-            }
-
-            if (isElement(child, "property"))
-            {
-                convertProperty(c, child);
-                continue;
-            }
-        }
-
-        specification.addComponent(id, c);
-    }
-
-    private void convertBinding(
-        ContainedComponent component,
-        Node node,
-        BindingType type,
-        String attributeName)
-        throws DocumentParseException
-    {
-        String name = getAttribute(node, "name");
-
-        String value = getExtendedAttribute(node, attributeName, true);
-
-        BindingSpecification binding = _factory.createBindingSpecification(type, value);
-
-        component.setBinding(name, binding);
-    }
-
-    private void convertListenerBinding(ContainedComponent component, Node node)
-    {
-        String name = getAttribute(node, "name");
-        String language = getAttribute(node, "language");
-
-        // The script itself is the character data wrapped by the element.
-
-        String script = getValue(node);
-
-        ListenerBindingSpecification binding =
-            _factory.createListenerBindingSpecification(language, script);
-
-        component.setBinding(name, binding);
-    }
-
-    private ContainedComponent copyExistingComponent(ComponentSpecification spec, String id)
-        throws DocumentParseException
-    {
-        ContainedComponent c = spec.getComponent(id);
-        if (c == null)
-            throw new DocumentParseException(
-                Tapestry.getString("SpecificationParser.unable-to-copy", id),
-                getResourceLocation());
-
-        ContainedComponent result = _factory.createContainedComponent();
-
-        result.setType(c.getType());
-        result.setCopyOf(id);
-
-        Iterator i = c.getBindingNames().iterator();
-        while (i.hasNext())
-        {
-            String name = (String) i.next();
-            BindingSpecification binding = c.getBinding(name);
-            result.setBinding(name, binding);
-        }
-
-        return result;
-    }
-
-    private void convertAsset(
-        ComponentSpecification specification,
-        Node node,
-        AssetType type,
-        String attributeName)
-        throws DocumentParseException
-    {
-        String name = getAttribute(node, "name");
-
-        // As a special case, allow the exact value through (even though
-        // it is not, technically, a valid asset name).
-
-        if (!name.equals(ITemplateSource.TEMPLATE_ASSET_NAME))
-            validate(name, ASSET_NAME_PATTERN, "SpecificationParser.invalid-asset-name");
-
-        String value = getAttribute(node, attributeName);
-        AssetSpecification asset = _factory.createAssetSpecification(type, value);
-
-        specification.addAsset(name, asset);
-
-        processPropertiesInNode(asset, node);
-    }
-
-    /**
-     *  Used in several places where an element's only possible children are
-     *  &lt;property&gt; elements.
-     * 
-     **/
-
-    private void processPropertiesInNode(IPropertyHolder holder, Node node)
-        throws DocumentParseException
-    {
-        for (Node child = node.getFirstChild(); child != null; child = child.getNextSibling())
-        {
-            if (isElement(child, "property"))
-            {
-                convertProperty(holder, child);
-                continue;
-            }
-        }
-    }
-
-    /**
-     *  @since 1.0.5
-     *
-     **/
-
-    private void convertReservedParameter(ComponentSpecification spec, Node node)
-    {
-        String name = getAttribute(node, "name");
-
-        spec.addReservedParameterName(name);
-    }
-
-    /**
-     *  @since 1.0.9
-     * 
-     **/
-
-    private void convertService(ILibrarySpecification spec, Node node)
-        throws DocumentParseException
-    {
-        String name = getAttribute(node, "name");
-
-        validate(name, SERVICE_NAME_PATTERN, "SpecificationParser.invalid-service-name");
-
-        String className = getAttribute(node, "class");
-
-        spec.setServiceClassName(name, className);
     }
 
     /**
@@ -1198,127 +834,480 @@ public class SpecificationParser extends AbstractDocumentParser
         return _factory;
     }
 
-    /** @since 2.2 **/
-
-    private void convertExtension(ILibrarySpecification specification, Node node)
-        throws DocumentParseException
-    {
-        String name = getAttribute(node, "name");
-        String className = getAttribute(node, "class");
-        boolean immediate = getBooleanAttribute(node, "immediate");
-
-        validate(name, EXTENSION_NAME_PATTERN, "SpecificationParser.invalid-extension-name");
-
-        ExtensionSpecification exSpec = _factory.createExtensionSpecification();
-
-        exSpec.setClassName(className);
-        exSpec.setImmediate(immediate);
-
-        specification.addExtensionSpecification(name, exSpec);
-
-        for (Node child = node.getFirstChild(); child != null; child = child.getNextSibling())
-        {
-            if (isElement(child, "configure"))
-            {
-                convertConfigure(exSpec, child);
-                continue;
-            }
-
-            if (isElement(child, "property"))
-            {
-                convertProperty(exSpec, child);
-                continue;
-            }
-        }
-    }
-
-    /** @since 2.2 **/
-
-    private void convertConfigure(ExtensionSpecification spec, Node node)
-        throws DocumentParseException
-    {
-        String propertyName = getAttribute(node, "property-name");
-        String type = getAttribute(node, "type");
-
-        String value = getExtendedAttribute(node, "value", true);
-
-        validate(propertyName, PROPERTY_NAME_PATTERN, "SpecificationParser.invalid-property-name");
-
-        IConverter converter = (IConverter) _conversionMap.get(type);
-
-        if (converter == null)
-            throw new DocumentParseException(
-                Tapestry.getString("SpecificationParser.unknown-static-value-type", type),
-                getResourceLocation());
-
-        Object objectValue = converter.convert(value);
-
-        spec.addConfiguration(propertyName, objectValue);
-    }
-
-    /** @since 2.4 **/
-
-    private void convertPropertySpecification(ComponentSpecification spec, Node node)
-        throws DocumentParseException
-    {
-        PropertySpecification ps = _factory.createPropertySpecification();
-
-        String name = getAttribute(node, "name");
-
-        validate(name, PROPERTY_NAME_PATTERN, "SpecificationParser.invalid-property-name");
-
-        ps.setName(name);
-
-        String type = getExtendedAttribute(node, "type", false);
-
-        if (!Tapestry.isNull(type))
-            ps.setType(type);
-
-        boolean persistent = getBooleanAttribute(node, "persistent");
-
-        ps.setPersistent(persistent);
-
-        ps.setInitialValue(getExtendedAttribute(node, "initial-value", false));
-
-        spec.addPropertySpecification(ps);
-    }
-
-    /** 
-     *  Used with many elements that allow a value to be specified as either
-     *  an attribute, or as wrapped character data.  This handles that case,
-     *  and makes it an error to specify both.
+    /**
+     *  Constructs a digester, registerring the known DTDs and the
+     *  global rules (for &lt;property&gt; and &lt;description&gt;).
      * 
-     * @since 2.4 
+     *  @since 2.4
      * 
      **/
 
-    protected String getExtendedAttribute(Node node, String attributeName, boolean required)
-        throws DocumentParseException
+    protected SpecificationDigester constructBaseDigester(String rootElement)
     {
-        String attributeValue = getAttribute(node, attributeName);
-        boolean nullAttributeValue = Tapestry.isNull(attributeValue);
-        String bodyValue = getValue(node);
-        boolean nullBodyValue = Tapestry.isNull(bodyValue);
+        SpecificationDigester result = new SpecificationDigester();
 
-        if (!nullAttributeValue && !nullBodyValue)
-            throw new DocumentParseException(
-                Tapestry.getString(
-                    "SpecificationParser.no-attribute-and-body",
-                    attributeName,
-                    node.getNodeName()),
-                getResourceLocation());
+        // <description>
 
-        if (required && nullAttributeValue && nullBodyValue)
-            throw new DocumentParseException(
-                Tapestry.getString(
-                    "SpecificationParser.required-extended-attribute",
-                    node.getNodeName(),
-                    attributeName),
-                getResourceLocation());
+        result.addBeanPropertySetter("*/description", "description");
 
-        if (nullAttributeValue)
-            return bodyValue;
+        // <property> 
 
-        return attributeValue;
+        result.addRule("*/property", new SetMetaPropertyRule());
+
+        result.register(TAPESTRY_DTD_1_3_PUBLIC_ID, getURL("Tapestry_1_3.dtd"));
+        result.register(TAPESTRY_DTD_1_4_PUBLIC_ID, getURL("Tapestry_1_4.dtd"));
+
+        result.addDocumentRule(
+            new ValidatePublicIdRule(
+                new String[] { TAPESTRY_DTD_1_3_PUBLIC_ID, TAPESTRY_DTD_1_4_PUBLIC_ID },
+                rootElement));
+
+        result.setValidating(true);
+
+        return result;
+
+    }
+
+    /**
+     *  Constructs a digester configued to parse application specifications.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    protected SpecificationDigester constructApplicationDigester()
+    {
+        SpecificationDigester result = constructBaseDigester("application");
+
+        String pattern = "application";
+
+        result.addRule(pattern, new CreateApplicationSpecificationRule());
+        result.addSetLimitedProperties(
+            pattern,
+            new String[] { "name", "engine-class" },
+            new String[] { "name", "engineClassName" });
+        result.addRule(pattern, new SetPublicIdRule());
+
+        configureLibraryCommon(result, "application");
+
+        return result;
+    }
+
+    /**
+     *  Constructs a digester configured to parse library specifications.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    protected SpecificationDigester constructLibraryDigester()
+    {
+        SpecificationDigester result = constructBaseDigester("library-specification");
+
+        String pattern = "library-specification";
+
+        result.addRule(pattern, new CreateLibrarySpecificationRule());
+        result.addRule(pattern, new SetPublicIdRule());
+
+        // Has no attributes
+
+        configureLibraryCommon(result, "library-specification");
+
+        return result;
+    }
+
+    /**
+     *  Configures a digester to parse the common elements of
+     *  a &lt;application&gt; or &lt;library-specification&gt;.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    protected void configureLibraryCommon(SpecificationDigester digester, String rootElementName)
+    {
+        String pattern = rootElementName + "/page";
+
+        // <page>
+
+        digester.addValidate(
+            pattern,
+            "name",
+            PAGE_NAME_PATTERN,
+            "SpecificationParser.invalid-page-name");
+        digester.addCallMethod(pattern, "setPageSpecificationPath", 2);
+        digester.addCallParam(pattern, 0, "name");
+        digester.addCallParam(pattern, 1, "specification-path");
+
+        // <component-type>
+
+        pattern = rootElementName + "/component-type";
+        digester.addValidate(
+            pattern,
+            "type",
+            COMPONENT_ALIAS_PATTERN,
+            "SpecificationParser.invalid-component-type");
+        digester.addCallMethod(pattern, "setComponentSpecificationPath", 2);
+        digester.addCallParam(pattern, 0, "type");
+        digester.addCallParam(pattern, 1, "specification-path");
+
+        // <component-alias>
+        // From 1.3 DTD, replaced with <component-type> in 1.4 DTD
+
+        pattern = rootElementName + "/component-alias";
+        digester.addValidate(
+            pattern,
+            "type",
+            COMPONENT_ALIAS_PATTERN,
+            "SpecificationParser.invalid-component-type");
+        digester.addCallMethod(pattern, "setComponentSpecificationPath", 2);
+        digester.addCallParam(pattern, 0, "type");
+        digester.addCallParam(pattern, 1, "specification-path");
+
+        // <service>
+
+        pattern = rootElementName + "/service";
+
+        digester.addValidate(
+            pattern,
+            "name",
+            SERVICE_NAME_PATTERN,
+            "SpecificationParser.invalid-service-name");
+        digester.addCallMethod(pattern, "setServiceClassName", 2);
+        digester.addCallParam(pattern, 0, "name");
+        digester.addCallParam(pattern, 1, "class");
+
+        // <library>
+
+        pattern = rootElementName + "/library";
+
+        digester.addValidate(
+            pattern,
+            "id",
+            LIBRARY_ID_PATTERN,
+            "SpecificationParser.invalid-library-id");
+        digester.addRule(pattern, new DisallowFrameworkNamespaceRule());
+        digester.addCallMethod(pattern, "setLibrarySpecificationPath", 2);
+        digester.addCallParam(pattern, 0, "id");
+        digester.addCallParam(pattern, 1, "specification-path");
+
+        // <extension>
+
+        pattern = rootElementName + "/extension";
+
+        digester.addRule(pattern, new CreateExtensionSpecificationRule());
+        digester.addValidate(
+            pattern,
+            "name",
+            EXTENSION_NAME_PATTERN,
+            "SpecificationParser.invalid-extension-name");
+        digester.addSetBooleanProperty(pattern, "immediate", "immediate");
+        digester.addSetLimitedProperties(pattern, "class", "className");
+        digester.addConnectChild(pattern, "addExtensionSpecification", "name");
+
+        // <configure> within <extension>
+
+        pattern = rootElementName + "/extension/configure";
+        digester.addValidate(
+            pattern,
+            "property-name",
+            PROPERTY_NAME_PATTERN,
+            "SpecificationParser.invalid-property-name");
+        digester.addRule(pattern, new ProcessExtensionConfigurationRule());
+
+    }
+
+    /**
+     *  Returns a digester configured to parse page specifications.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    protected SpecificationDigester constructPageDigester()
+    {
+        SpecificationDigester result = constructBaseDigester("page-specification");
+
+        // <page-specification>
+
+        String pattern = "page-specification";
+
+        result.addRule(pattern, new CreateComponentSpecificationRule());
+        result.addRule(pattern, new SetPublicIdRule());
+        result.addInitializeProperty(pattern, "pageSpecification", Boolean.TRUE);
+        result.addInitializeProperty(pattern, "allowBody", Boolean.TRUE);
+        result.addInitializeProperty(pattern, "allowInformalParameters", Boolean.FALSE);
+        result.addSetLimitedProperties(pattern, "class", "componentClassName");
+
+        configureCommon(result, "page-specification");
+
+        return result;
+    }
+
+    /**
+     *  Returns a digester configured to parse component specifications.
+     * 
+     **/
+
+    protected SpecificationDigester constructComponentDigester()
+    {
+        SpecificationDigester result = constructBaseDigester("component-specification");
+
+        // <component-specification>
+
+        String pattern = "component-specification";
+
+        result.addRule(pattern, new CreateComponentSpecificationRule());
+        result.addRule(pattern, new SetPublicIdRule());
+
+        result.addSetBooleanProperty(pattern, "allow-body", "allowBody");
+        result.addSetBooleanProperty(
+            pattern,
+            "allow-informal-parameters",
+            "allowInformalParameters");
+        result.addSetLimitedProperties(pattern, "class", "componentClassName");
+
+        // TODO: publicId
+
+        // <parameter>
+
+        pattern = "component-specification/parameter";
+
+        result.addRule(pattern, new CreateParameterSpecificationRule());
+        result.addValidate(
+            pattern,
+            "name",
+            PARAMETER_NAME_PATTERN,
+            "SpecificationParser.invalid-parameter-name");
+
+        result.addValidate(
+            pattern,
+            "property-name",
+            PROPERTY_NAME_PATTERN,
+            "SpecificationParser.invalid-property-name");
+
+        // We use a slight kludge to set the default propertyName from the 
+        // name attribute.  If the spec includes a property-name attribute, that
+        // will overwrite the default property name).
+        // Remember that digester rule order counts!
+
+        result.addSetLimitedProperties(pattern, "name", "propertyName");
+        
+        // java-type is a holdover from the 1.3 DTD and will eventually be removed.
+        
+        result.addSetLimitedProperties(
+            pattern,
+            new String[] { "property-name", "type", "java-type" },
+            new String[] { "propertyName", "type", "type" });
+
+        result.addSetBooleanProperty(pattern, "required", "required");
+
+        result.addSetConvertedProperty(pattern, CONVERSION_MAP, "direction", "direction");
+
+        result.addConnectChild(pattern, "addParameter", "name");
+
+        // <reserved-parameter>
+
+        pattern = "component-specification/reserved-parameter";
+
+        result.addCallMethod(pattern, "addReservedParameterName", 1);
+        result.addCallParam(pattern, 0, "name");
+
+        configureCommon(result, "component-specification");
+
+        return result;
+    }
+
+    /**
+     *  Configure the common elements shared by both &lt;page-specification&gt;
+     *  and &lt;component-specification&gt;.
+     * 
+     **/
+
+    protected void configureCommon(SpecificationDigester digester, String rootElementName)
+    {
+        // <bean>
+
+        String pattern = rootElementName + "/bean";
+
+        digester.addRule(pattern, new CreateBeanSpecificationRule());
+        digester.addValidate(
+            pattern,
+            "name",
+            BEAN_NAME_PATTERN,
+            "SpecificationParser.invalid-bean-name");
+        digester.addSetConvertedProperty(pattern, CONVERSION_MAP, "lifecycle", "lifecycle");
+        digester.addSetLimitedProperties(pattern, "class", "className");
+        digester.addConnectChild(pattern, "addBeanSpecification", "name");
+
+        // <set-property> inside <bean>
+
+        pattern = rootElementName + "/bean/set-property";
+
+        digester.addRule(pattern, new CreateExpressionBeanInitializerRule());
+        digester.addSetLimitedProperties(pattern, "name", "propertyName");
+        digester.addSetExtendedProperty(pattern, "expression", "expression", true);
+        digester.addSetNext(pattern, "addInitializer");
+
+        // <set-string-property> inside <bean>
+
+        pattern = rootElementName + "/bean/set-string-property";
+
+        digester.addRule(pattern, new CreateStringBeanInitializerRule());
+        digester.addSetLimitedProperties(
+            pattern,
+            new String[] { "name", "key" },
+            new String[] { "propertyName", "key" });
+
+        digester.addSetNext(pattern, "addInitializer");
+
+        // <component>
+
+        pattern = rootElementName + "/component";
+
+        digester.addRule(pattern, new CreateContainedComponentRule());
+        digester.addValidate(
+            pattern,
+            "id",
+            COMPONENT_ID_PATTERN,
+            "SpecificationParser.invalid-component-id");
+        digester.addValidate(
+            pattern,
+            "type",
+            COMPONENT_TYPE_PATTERN,
+            "SpecificationParser.invalid-component-type");
+        digester.addSetLimitedProperties(pattern, "type", "type");
+        digester.addRule(pattern, new ComponentCopyOfRule());
+        digester.addConnectChild(pattern, "addComponent", "id");
+
+        // <binding> inside <component>
+
+        pattern = rootElementName + "/component/binding";
+
+        Rule createBindingSpecificationRule = new CreateBindingSpecificationRule();
+
+        digester.addRule(pattern, createBindingSpecificationRule);
+        digester.addInitializeProperty(pattern, "type", BindingType.DYNAMIC);
+        digester.addSetExtendedProperty(pattern, "expression", "value", true);
+        digester.addConnectChild(pattern, "setBinding", "name");
+
+        // <field-binding> inside <component>
+        // For compatibility with 1.3 DTD only, removed in 1.4 DTD
+
+        pattern = rootElementName + "/component/field-binding";
+
+        digester.addRule(pattern, createBindingSpecificationRule);
+        digester.addInitializeProperty(pattern, "type", BindingType.FIELD);
+        digester.addSetExtendedProperty(pattern, "field-name", "value", true);
+        digester.addConnectChild(pattern, "setBinding", "name");
+
+        // <inherited-binding> inside <component>
+
+        pattern = rootElementName + "/component/inherited-binding";
+
+        digester.addRule(pattern, createBindingSpecificationRule);
+        digester.addInitializeProperty(pattern, "type", BindingType.INHERITED);
+        digester.addSetLimitedProperties(pattern, "parameter-name", "value");
+        digester.addConnectChild(pattern, "setBinding", "name");
+
+        // <static-binding> inside <component>
+
+        pattern = rootElementName + "/component/static-binding";
+
+        digester.addRule(pattern, createBindingSpecificationRule);
+        digester.addInitializeProperty(pattern, "type", BindingType.STATIC);
+        digester.addSetExtendedProperty(pattern, "value", "value", true);
+        digester.addConnectChild(pattern, "setBinding", "name");
+
+        // <string-binding> inside <component>
+
+        pattern = rootElementName + "/component/string-binding";
+
+        digester.addRule(pattern, createBindingSpecificationRule);
+        digester.addInitializeProperty(pattern, "type", BindingType.STRING);
+        digester.addSetLimitedProperties(pattern, "key", "value");
+        digester.addConnectChild(pattern, "setBinding", "name");
+
+        // <listener-binding> inside <component>
+
+        pattern = rootElementName + "/component/listener-binding";
+
+        digester.addRule(pattern, new CreateListenerBindingSpecificationRule());
+        digester.addSetLimitedProperties(pattern, "language", "language");
+        digester.addBeanPropertySetter(pattern, "value");
+        digester.addConnectChild(pattern, "setBinding", "name");
+
+        // <external-asset>
+
+        pattern = rootElementName + "/external-asset";
+
+        Rule createAssetSpecificationRule = new CreateAssetSpecificationRule();
+
+        digester.addRule(pattern, createAssetSpecificationRule);
+        digester.addInitializeProperty(pattern, "type", AssetType.EXTERNAL);
+        digester.addValidate(
+            pattern,
+            "name",
+            ASSET_NAME_PATTERN,
+            "SpecificationParser.invalid-asset-name");
+        digester.addSetLimitedProperties(pattern, "URL", "path");
+        digester.addConnectChild(pattern, "addAsset", "name");
+
+        // <context-asset>
+
+        pattern = rootElementName + "/context-asset";
+
+        digester.addRule(pattern, createAssetSpecificationRule);
+        digester.addInitializeProperty(pattern, "type", AssetType.CONTEXT);
+        digester.addValidate(
+            pattern,
+            "name",
+            ASSET_NAME_PATTERN,
+            "SpecificationParser.invalid-asset-name");
+
+        // TODO: $template$
+
+        digester.addSetLimitedProperties(pattern, "path", "path");
+        digester.addConnectChild(pattern, "addAsset", "name");
+
+        // <private-asset>
+
+        pattern = rootElementName + "/private-asset";
+
+        digester.addRule(pattern, createAssetSpecificationRule);
+        digester.addInitializeProperty(pattern, "type", AssetType.PRIVATE);
+        digester.addValidate(
+            pattern,
+            "name",
+            ASSET_NAME_PATTERN,
+            "SpecificationParser.invalid-asset-name");
+
+        // TODO: $template$
+
+        digester.addSetLimitedProperties(pattern, "resource-path", "path");
+        digester.addConnectChild(pattern, "addAsset", "name");
+
+        // <property-specification>
+
+        pattern = rootElementName + "/property-specification";
+
+        digester.addRule(pattern, new CreatePropertySpecificationRule());
+        digester.addValidate(
+            pattern,
+            "name",
+            PROPERTY_NAME_PATTERN,
+            "SpecificationParser.invalid-property-name");
+        digester.addSetLimitedProperties(
+            pattern,
+            new String[] { "name", "type" },
+            new String[] { "name", "type" });
+        digester.addSetBooleanProperty(pattern, "persistent", "persistent");
+        digester.addSetExtendedProperty(pattern, "initial-value", "initialValue", false);
+        digester.addSetNext(pattern, "addPropertySpecification");
+    }
+
+    private String getURL(String resource)
+    {
+        return getClass().getResource(resource).toExternalForm();
     }
 }

@@ -57,7 +57,6 @@ package org.apache.tapestry.workbench;
 
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.RedirectException;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.html.BasePage;
 
 /**
@@ -71,13 +70,11 @@ import org.apache.tapestry.html.BasePage;
 public class Redirect extends BasePage
 {
     public void redirectInternal(IRequestCycle cycle)
-    throws RequestCycleException
     {
         throw new RedirectException("redirect-target.html");
     }
     
     public void redirectExternal(IRequestCycle cycle)
-    throws RequestCycleException
     {
         throw new RedirectException("http://jakarta.apache.org/proposals/tapestry");
     }

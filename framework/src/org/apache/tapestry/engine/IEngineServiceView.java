@@ -61,7 +61,6 @@ import javax.servlet.ServletException;
 
 import org.apache.tapestry.IEngine;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.request.ResponseOutputStream;
 
 /**
@@ -84,7 +83,7 @@ public interface IEngineServiceView extends IEngine
      **/
 
     public void renderResponse(IRequestCycle cycle, ResponseOutputStream output)
-        throws RequestCycleException, ServletException, IOException;
+        throws ServletException, IOException;
 
     /**
      *  Invoked to restart the application from start; this most frequently follows

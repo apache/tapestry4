@@ -64,6 +64,7 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
+import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.parse.AttributeType;
 import org.apache.tapestry.parse.ITemplateParserDelegate;
 import org.apache.tapestry.parse.LocalizationToken;
@@ -74,6 +75,8 @@ import org.apache.tapestry.parse.TemplateParser;
 import org.apache.tapestry.parse.TemplateToken;
 import org.apache.tapestry.parse.TextToken;
 import org.apache.tapestry.parse.TokenType;
+import org.apache.tapestry.resource.ClasspathResourceLocation;
+import org.apache.tapestry.util.DefaultResourceResolver;
 
 /**
  *  Tests for the Tapestry HTML template parser.
@@ -112,16 +115,16 @@ public class TestTemplateParser extends TestCase
     protected TemplateToken[] run(
         char[] templateData,
         ITemplateParserDelegate delegate,
-        String resourcePath)
+        IResourceLocation location)
         throws TemplateParseException
     {
-        return new TemplateParser().parse(templateData, delegate, resourcePath);
+        return new TemplateParser().parse(templateData, delegate, location);
     }
 
     protected TemplateToken[] run(
         InputStream stream,
         ITemplateParserDelegate delegate,
-        String resourcePath)
+        IResourceLocation location)
         throws TemplateParseException
     {
         StringBuffer buffer = new StringBuffer();
@@ -147,7 +150,7 @@ public class TestTemplateParser extends TestCase
             fail("Unable to read from stream.");
         }
 
-        return run(buffer.toString().toCharArray(), delegate, resourcePath);
+        return run(buffer.toString().toCharArray(), delegate, location);
     }
 
     protected TemplateToken[] run(String file) throws TemplateParseException
@@ -158,12 +161,18 @@ public class TestTemplateParser extends TestCase
     protected TemplateToken[] run(String file, ITemplateParserDelegate delegate)
         throws TemplateParseException
     {
+        String thisClassName = getClass().getName();
+        String thisPath = "/" + thisClassName.replace('.', '/') + "/" + file;
+
+        IResourceLocation location =
+            new ClasspathResourceLocation(new DefaultResourceResolver(), thisPath);
+
         InputStream stream = getClass().getResourceAsStream(file);
 
         if (stream == null)
             throw new TemplateParseException("File " + file + " not found.");
 
-        return run(stream, delegate, file);
+        return run(stream, delegate, location);
     }
 
     private Map buildMap(String[] input)
@@ -269,7 +278,7 @@ public class TestTemplateParser extends TestCase
         catch (TemplateParseException ex)
         {
             assertEquals(message, ex.getMessage());
-            assertEquals(file, ex.getResourcePath());
+            assertTrue(ex.getLocation().toString().indexOf(file) > 0);
         }
     }
 

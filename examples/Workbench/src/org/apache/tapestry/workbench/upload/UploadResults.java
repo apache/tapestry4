@@ -61,8 +61,8 @@ import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
 
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.html.BasePage;
 import org.apache.tapestry.request.IUploadFile;
 import org.apache.tapestry.util.io.BinaryDumpOutputStream;
@@ -77,123 +77,125 @@ import org.apache.tapestry.util.io.BinaryDumpOutputStream;
 
 public class UploadResults extends BasePage
 {
-	private IUploadFile file;
-	private String fileDump;
-	
-	public void detach()
-	{
-		file = null;
-		fileDump = null;
-		
-		super.detach();
-	}
-	
-	public IUploadFile getFile()
-	{
-		return file;
-	}
-	
-	public String getFileDump()
-	{
-		return fileDump;
-	}
-	
-	public void activate(IUploadFile file, boolean showAscii, int bytesPerLine, IRequestCycle cycle)
-	throws RequestCycleException
-	{
-		this.file = file;
-		
-		StringWriter writer = null;
-		BinaryDumpOutputStream out = null;
-		InputStream in = null;
-		
-		try
-		{
-			in = file.getStream();
-			
-			writer = new StringWriter();
-			out = new BinaryDumpOutputStream(writer);
-			
-			out.setShowAscii(showAscii);
-			out.setBytesPerLine(bytesPerLine)			;
-			
-			byte[] buffer = new byte[1000];
-			
-			while (true)
-			{
-				int length = in.read(buffer);
-				
-				if (length < 0)
-					break;
-					
-				out.write(buffer, 0, length);				
-			}
-			
-			
-			in.close();
-			in = null;
-			
-			out.close();
-			out = null;
-			
-			fileDump = writer.getBuffer().toString();
-			
-			writer.close();
-			writer = null;		
-		}
-		catch (IOException ex)
-		{
-			throw new RequestCycleException("Unable to display file.", this, ex);
-		}
-		finally
-		{
-			close(in);
-			close(out);
-			close(writer);
-		}
-	
-		cycle.setPage(this);
-	}
+    private IUploadFile file;
+    private String fileDump;
 
-	private void close(InputStream stream)
-	{
-		if (stream != null)
-		{
-			try 
-			{
-				stream.close();
-			}
-			catch (IOException ex) 
-			{
-			}
-		}
-	}
+    public void detach()
+    {
+        file = null;
+        fileDump = null;
 
-	private void close(OutputStream stream)
-	{
-		if (stream != null)
-		{
-			try 
-			{
-				stream.close();
-			}
-			catch (IOException ex) 
-			{
-			}
-		}
-	}	
-	
-	private void close(Writer writer)
-	{
-		if (writer != null)
-		{
-			try 
-			{
-				writer.close();
-			}
-			catch (IOException ex) 
-			{
-			}
-		}
-	}			
+        super.detach();
+    }
+
+    public IUploadFile getFile()
+    {
+        return file;
+    }
+
+    public String getFileDump()
+    {
+        return fileDump;
+    }
+
+    public void activate(
+        IUploadFile file,
+        boolean showAscii,
+        int bytesPerLine,
+        IRequestCycle cycle)
+    {
+        this.file = file;
+
+        StringWriter writer = null;
+        BinaryDumpOutputStream out = null;
+        InputStream in = null;
+
+        try
+        {
+            in = file.getStream();
+
+            writer = new StringWriter();
+            out = new BinaryDumpOutputStream(writer);
+
+            out.setShowAscii(showAscii);
+            out.setBytesPerLine(bytesPerLine);
+
+            byte[] buffer = new byte[1000];
+
+            while (true)
+            {
+                int length = in.read(buffer);
+
+                if (length < 0)
+                    break;
+
+                out.write(buffer, 0, length);
+            }
+
+            in.close();
+            in = null;
+
+            out.close();
+            out = null;
+
+            fileDump = writer.getBuffer().toString();
+
+            writer.close();
+            writer = null;
+        }
+        catch (IOException ex)
+        {
+            throw new ApplicationRuntimeException("Unable to display file.", this, null, ex);
+        }
+        finally
+        {
+            close(in);
+            close(out);
+            close(writer);
+        }
+
+        cycle.setPage(this);
+    }
+
+    private void close(InputStream stream)
+    {
+        if (stream != null)
+        {
+            try
+            {
+                stream.close();
+            }
+            catch (IOException ex)
+            {
+            }
+        }
+    }
+
+    private void close(OutputStream stream)
+    {
+        if (stream != null)
+        {
+            try
+            {
+                stream.close();
+            }
+            catch (IOException ex)
+            {
+            }
+        }
+    }
+
+    private void close(Writer writer)
+    {
+        if (writer != null)
+        {
+            try
+            {
+                writer.close();
+            }
+            catch (IOException ex)
+            {
+            }
+        }
+    }
 }

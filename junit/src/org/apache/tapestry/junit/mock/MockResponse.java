@@ -312,6 +312,9 @@ public class MockResponse implements HttpServletResponse
 
     public String getOutputString()
     {
+    	if (_outputByteStream == null)
+    		return null;
+    		
         return _outputByteStream.toString();
     }
 

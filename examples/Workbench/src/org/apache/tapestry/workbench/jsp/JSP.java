@@ -57,14 +57,22 @@ package org.apache.tapestry.workbench.jsp;
 
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.RedirectException;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.html.BasePage;
+
+/**
+ *  Used to redirect to the TapestryTags.jsp page.
+ * 
+ *
+ *  @author Howard Lewis Ship
+ *  @version $Id$
+ *  @since 2.4
+ *
+ **/
 
 public class JSP extends BasePage
 {
-	public void launch(IRequestCycle cycle)
-	throws RequestCycleException
-	{
-		throw new RedirectException("TapestryTags.jsp");
-	}
+    public void launch(IRequestCycle cycle)
+    {
+        throw new RedirectException("TapestryTags.jsp");
+    }
 }

@@ -105,7 +105,9 @@ public class SpecFactory
     }
 
     /**
-     * Creates a concrete instance of {@link AssetSpecification}.
+     *  Creates a concrete instance of {@link AssetSpecification}.
+     * 
+     *  @deprecated
      **/
 
     public AssetSpecification createAssetSpecification(AssetType type, String path)
@@ -113,8 +115,22 @@ public class SpecFactory
         return new AssetSpecification(type, path);
     }
 
+	/**
+	 *  Returns a new instance of {@link AssetSpecification}.
+	 * 
+	 *  @since 2.4
+	 * 
+	 **/
+	
+	public AssetSpecification createAssetSpecification()
+	{
+		return new AssetSpecification();
+	}
+
     /**
-     * Creates a concrete instance of {@link BeanSpecification}.
+     *  Creates a concrete instance of {@link BeanSpecification}.
+     * 
+     *  @deprecated
      **/
 
     public BeanSpecification createBeanSpecification(String className, BeanLifecycle lifecycle)
@@ -122,8 +138,23 @@ public class SpecFactory
         return new BeanSpecification(className, lifecycle);
     }
 
+	/**
+	 *  Creates a new instance of {@link BeanSpecification}.
+	 * 
+	 *  @since 2.4
+	 * 
+	 **/
+	
+	public BeanSpecification createBeanSpecification()
+	{
+		return new BeanSpecification();
+	}
+
     /**
      * Creates a concrete instance of {@link BindingSpecification}.
+     * 
+     *  @deprecated
+     * 
      **/
 
     public BindingSpecification createBindingSpecification(BindingType type, String value)
@@ -131,19 +162,22 @@ public class SpecFactory
         return new BindingSpecification(type, value);
     }
 
+	public BindingSpecification createBindingSpecification()
+	{
+		return new BindingSpecification();
+	}
+
     /**
      *  Creates a new instance of {@link ListenerBindingSpecification} for the
      *  given language (which is option) and script.
      * 
      *  @since 2.4
-     * 
+     *  
      **/
 
-    public ListenerBindingSpecification createListenerBindingSpecification(
-        String language,
-        String script)
+    public ListenerBindingSpecification createListenerBindingSpecification()
     {
-        return new ListenerBindingSpecification(language, script);
+        return new ListenerBindingSpecification();
     }
 
     /**
@@ -186,12 +220,30 @@ public class SpecFactory
         return new ExpressionBeanInitializer(propertyName, expression);
     }
 
-    /** @since 2.2 **/
+    /** 
+     * 
+     *  @deprecated
+     * 
+     *  @since 2.2 
+     * 
+     **/
 
     public IBeanInitializer createExpressionBeanInitializer(String propertyName, String expression)
     {
         return new ExpressionBeanInitializer(propertyName, expression);
     }
+
+	/**
+	 *  Creates a new instance of {@link ExpressionBeanInitializer}.
+	 * 
+	 *  @since 2.4
+	 * 
+	 **/
+	
+	public IBeanInitializer createExpressionBeanInitializer()
+	{
+		return new ExpressionBeanInitializer();
+	}
 
     /**
      * Creates a concrete instance of {@link IBeanInitializer}.
@@ -222,13 +274,25 @@ public class SpecFactory
      *  Default implementation returns an instance of {@link org.apache.tapestry.bean.StringBeanInitializer}.
      * 
      *  @since 2.2
-     * 
+     *  @deprecated
      **/
 
     public IBeanInitializer createStringBeanInitializer(String propertyName, String key)
     {
         return new StringBeanInitializer(propertyName, key);
     }
+
+	/**
+	 *  Returns a new instance of {@link StringBeanInitializer}.
+	 * 
+	 *  @since 2.4
+	 * 
+	 **/
+	
+	public IBeanInitializer createStringBeanInitializer()
+	{
+		return new StringBeanInitializer();
+	}
 
     /**
      *  Creates a concrete instance of {@link org.apache.tapestry.spec.ExtensionSpecification}.

@@ -65,7 +65,6 @@ import java.util.Map;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.form.IFormComponent;
 
@@ -111,7 +110,6 @@ public class ValidationDelegate implements IValidationDelegate
         IFormComponent component,
         IMarkupWriter writer,
         IRequestCycle cycle)
-        throws RequestCycleException
     {
         if (isInError(component))
         {
@@ -131,7 +129,6 @@ public class ValidationDelegate implements IValidationDelegate
         IFormComponent component,
         IMarkupWriter writer,
         IRequestCycle cycle)
-        throws RequestCycleException
     {
         if (isInError(component))
         {
@@ -353,7 +350,6 @@ public class ValidationDelegate implements IValidationDelegate
         IRequestCycle cycle,
         IFormComponent component,
         IValidator validator)
-        throws RequestCycleException
     {
     }
 
@@ -367,7 +363,6 @@ public class ValidationDelegate implements IValidationDelegate
         IRequestCycle cycle,
         IFormComponent component,
         IValidator validator)
-        throws RequestCycleException
     {
     }
 
@@ -383,7 +378,6 @@ public class ValidationDelegate implements IValidationDelegate
         IRequestCycle cycle,
         IFormComponent component,
         IValidator validator)
-        throws RequestCycleException
     {
         if (isInError())
         {

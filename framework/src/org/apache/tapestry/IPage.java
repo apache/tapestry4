@@ -216,7 +216,7 @@ public interface IPage extends IComponent
      *
      **/
 
-    public void renderPage(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException;
+    public void renderPage(IMarkupWriter writer, IRequestCycle cycle);
 
     /**
      *  Invoked before a partial render of the page occurs
@@ -270,7 +270,7 @@ public interface IPage extends IComponent
      *
      **/
 
-    public void validate(IRequestCycle cycle) throws RequestCycleException;
+    public void validate(IRequestCycle cycle);
 
     /**
      *  Invoked to create a response writer appropriate to the page
@@ -293,8 +293,7 @@ public interface IPage extends IComponent
      *
      **/
 
-    public void beginResponse(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException;
+    public void beginResponse(IMarkupWriter writer, IRequestCycle cycle);
 
     /**
      *  Returns the current {@link IRequestCycle}.  This is set when the

@@ -89,7 +89,7 @@ public interface IForm extends IAction
      *
      **/
 
-    public void rewind(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException;
+    public void rewind(IMarkupWriter writer, IRequestCycle cycle);
 
     /**
      *  Adds an additional event handler.  The type determines when the
@@ -114,7 +114,7 @@ public interface IForm extends IAction
      * 
      **/
 
-    public String getElementId(IComponent component) throws RequestCycleException;
+    public String getElementId(IComponent component);
 
     /**
      *  Constructs a unique identifier from the base id.  If possible, the
@@ -134,7 +134,7 @@ public interface IForm extends IAction
      *
      **/
 
-    public String getElementId(IComponent component, String baseId) throws RequestCycleException;
+    public String getElementId(IComponent component, String baseId);
 
     /**
      * Returns the name of the form.
@@ -176,6 +176,5 @@ public interface IForm extends IAction
      * 
      **/
     
-    public void setEncodingType(String encodingType)
-    throws RequestCycleException;
+    public void setEncodingType(String encodingType);
 }

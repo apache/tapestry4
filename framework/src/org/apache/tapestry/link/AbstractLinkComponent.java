@@ -62,9 +62,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.tapestry.AbstractComponent;
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.RequestCycleException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.components.ILinkComponent;
 import org.apache.tapestry.components.LinkEventType;
@@ -140,7 +140,6 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
      **/
 
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         getRenderer().renderLink(writer, cycle, this);
     }
@@ -153,7 +152,6 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
     }
 
     protected void writeEventHandlers(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         String name = null;
 
@@ -163,7 +161,7 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
         Body body = Body.get(cycle);
 
         if (body == null)
-            throw new RequestCycleException(
+            throw new ApplicationRuntimeException(
                 Tapestry.getString("AbstractLinkComponent.events-need-body"),
                 this);
 
@@ -185,7 +183,6 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
         String name,
         String attributeName,
         Object value)
-        throws RequestCycleException
     {
         String wrapperFunctionName;
 
@@ -232,7 +229,6 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
     public abstract void setRenderer(ILinkRenderer renderer);
 
     public void renderAdditionalAttributes(IMarkupWriter writer, IRequestCycle cycle)
-        throws RequestCycleException
     {
         writeEventHandlers(writer, cycle);
 
@@ -259,7 +255,7 @@ public abstract class AbstractLinkComponent extends AbstractComponent implements
 
     public abstract String getAnchor();
 
-    public ILink getLink(IRequestCycle cycle) throws RequestCycleException
+    public ILink getLink(IRequestCycle cycle)
     {
         return null;
     }

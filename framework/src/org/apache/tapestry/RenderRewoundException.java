@@ -64,10 +64,10 @@ package org.apache.tapestry;
  * @version $Id$
  **/
 
-public class RenderRewoundException extends RequestCycleException
+public class RenderRewoundException extends ApplicationRuntimeException
 {
 	public RenderRewoundException(IComponent component)
 	{
-		super(null, component);
+		super(null, component, null, null);
 	}
 }

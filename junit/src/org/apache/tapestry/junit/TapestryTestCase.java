@@ -118,7 +118,7 @@ public class TapestryTestCase extends TestCase
 
     protected ComponentSpecification parseComponent(String simpleName) throws Exception
     {
-        SpecificationParser parser = new SpecificationParser();
+        SpecificationParser parser = new SpecificationParser(_resolver);
 
         IResourceLocation location = getSpecificationResourceLocation(simpleName);
 
@@ -127,7 +127,7 @@ public class TapestryTestCase extends TestCase
 
     protected ComponentSpecification parsePage(String simpleName) throws Exception
     {
-        SpecificationParser parser = new SpecificationParser();
+        SpecificationParser parser = new SpecificationParser(_resolver);
 
         IResourceLocation location = getSpecificationResourceLocation(simpleName);
 
@@ -136,11 +136,11 @@ public class TapestryTestCase extends TestCase
 
     protected IApplicationSpecification parseApp(String simpleName) throws Exception
     {
-        SpecificationParser parser = new SpecificationParser();
+        SpecificationParser parser = new SpecificationParser(_resolver);
 
         IResourceLocation location = getSpecificationResourceLocation(simpleName);
 
-        return parser.parseApplicationSpecification(location, _resolver);
+        return parser.parseApplicationSpecification(location);
     }
 
     protected IResourceLocation getSpecificationResourceLocation(String simpleName)
@@ -156,11 +156,11 @@ public class TapestryTestCase extends TestCase
 
     protected ILibrarySpecification parseLib(String simpleName) throws Exception
     {
-        SpecificationParser parser = new SpecificationParser();
+        SpecificationParser parser = new SpecificationParser(_resolver);
 
         IResourceLocation location = getSpecificationResourceLocation(simpleName);
 
-        return parser.parseLibrarySpecification(location, _resolver);
+        return parser.parseLibrarySpecification(location);
     }
 
     protected void checkList(String propertyName, String[] expected, String[] actual)
