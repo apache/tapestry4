@@ -16,8 +16,8 @@
 -->
 
 <!DOCTYPE component-specification PUBLIC
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN"
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN"
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 
 <component-specification class="org.apache.tapestry.valid.FieldLabel"
 	allow-body="no"
@@ -27,19 +27,19 @@
   Labels a ValidField.
   </description>
 
-  <parameter name="field" type="org.apache.tapestry.form.IFormComponent" required="yes" direction="in"/>
+  <parameter name="field" required="yes"/>
 
-  <parameter name="displayName" type="java.lang.String" direction="in">
-      <description>
-          Optional.  Defaults to the displayName of the associated field.
-      </description>
+  <parameter name="displayName">
+    <description>
+      Optional.  Defaults to the displayName of the associated field.
+    </description>
   </parameter>
 
-  <parameter name="raw" type="boolean" direction="in">
-      <description>
-        If false (the default), then HTML characters in the value are escaped.  If
-        true, then value is emitted exactly as is.
-      </description>
+  <parameter name="raw">
+    <description>
+      If false (the default), then HTML characters in the value are escaped.  If
+      true, then value is emitted exactly as is.
+    </description>
   </parameter>
 
 </component-specification>

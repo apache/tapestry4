@@ -16,8 +16,8 @@
 -->
 
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 
 <component-specification class="org.apache.tapestry.components.Delegator"
     allow-body="no" 
@@ -27,7 +27,7 @@
   Delegates rendering to an object that implements the IRender interface.
   </description>
 
-  <parameter name="delegate" type="org.apache.tapestry.IRender" direction="in">
+  <parameter name="delegate">
     <description>
     The object which will perform the render.
     </description>
