@@ -108,6 +108,30 @@ function ti_raiseInspector()
 </body>
 
 <initialization>
+var movie;
+
+switch (navigator.family)
+{
+
+case "nn4": 
+	movie = document.layers.tapestryInspector.document.embeds.tapestryInspectorMovie;
+	break;
+	
+case "gecko":
+
+	movie = document.embeds.tapestryInspectorMovie;
+	// Returns an instance of HTMLEmbedElement, but still
+	// can't invoke SetVariable on it.
+	// See http://www.macromedia.com/support/flash/ts/documents/mozilla_fscommand.htm
+	break;
+	
+default:
+	movie = document.getElementById("tapestryInspectorMovie");
+	break;
+}
+		
+movie.SetVariable("URL", "javascript:ti_raiseInspector();"); 
+
 ti_positionInspector();
 </initialization>
 
