@@ -7,27 +7,21 @@
 to expose listener <em>methods</em> instead of listener <em>properties</em>.
 
 <p>
-Normally, a listener property must be an object that implements either
-{@link net.sf.tapestry.IActionListener} or
-{@link net.sf.tapestry.IDirectListener}.  This can be cumbersome, in practice, as it
+Normally, a listener property must be an object that implement
+{@link net.sf.tapestry.IActionListener}.  This can be cumbersome, in practice, as it
 typically involves creating an anonymous inner class.
 
 <p>
 Using this mechanism, classes can instead implement listener <em>methods</em>.
-A listener method takes one of two forms:
+A listener method takes the form:
 
-<ul>
-	<li><code>public void <em>method-name</em>({@link net.sf.tapestry.IRequestCycle} cycle) 
-	<br>throws {@link net.sf.tapestry.RequestCycleException}</code>
-	<li><code>public void <em>method-name</em>(String[] context, 
-	{@link net.sf.tapestry.IRequestCycle} cycle)
-	<br>throws {@link net.sf.tapestry.RequestCycleException}</code>
-</ul>
+<pre>
+public void <em>method-name</em>({@link net.sf.tapestry.IRequestCycle} cycle) 
+throws {@link net.sf.tapestry.RequestCycleException}</code>
+</pre>
 
-<p>The first option can act like either an {@link net.sf.tapestry.IActionListener} or
-a {@link net.sf.tapestry.IDirectListener}, the second must be a
-{@link net.sf.tapestry.IDirectListener}.  In both cases, the <code>throws</code>
-clause is optional.
+<p>The <code>throws</code> clause is optional, but may not throw any 
+additional exceptions.
 
 <p>Tapestry will create an appropriate listener object that will invoke the
 corresponding method.
