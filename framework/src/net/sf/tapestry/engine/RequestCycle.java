@@ -193,7 +193,6 @@ public class RequestCycle implements IRequestCycle, ChangeObserver
 
         if (result == null)
         {
-            ISpecificationSource specSource = _engine.getSpecificationSource();
             IPageSource pageSource = _engine.getPageSource();
 
             try

@@ -13,8 +13,6 @@ import net.sf.tapestry.spec.LibrarySpecification;
 import net.sf.tapestry.spec.ParameterSpecification;
 import net.sf.tapestry.util.xml.DocumentParseException;
 
-
-
 /**
  *  Tests the specification parser (which reads page and component
  *  specifications).  Came into being somewhat late, so it just
@@ -94,7 +92,7 @@ public class SpecificationParserTest extends TapestryTestCase
     {
         try
         {
-            ComponentSpecification spec = parseComponent("InvalidParameterName.jwc");
+            parseComponent("InvalidParameterName.jwc");
 
             throw new AssertionFailedError("Should not be able to parse document.");
         }
@@ -116,7 +114,7 @@ public class SpecificationParserTest extends TapestryTestCase
     {
         try
         {
-            ComponentSpecification spec = parseComponent("InvalidComponentId.jwc");
+            parseComponent("InvalidComponentId.jwc");
 
             throw new AssertionFailedError("Should not be able to parse document.");
         }
@@ -138,7 +136,7 @@ public class SpecificationParserTest extends TapestryTestCase
     {
         try
         {
-            ILibrarySpecification spec = parseLib("InvalidLibraryId.library");
+            parseLib("InvalidLibraryId.library");
 
             throw new AssertionFailedError("Should not be able to parse document.");
         }
@@ -155,29 +153,19 @@ public class SpecificationParserTest extends TapestryTestCase
      *  @since 2.2
      * 
      **/
-    
+
     public void testValidLibrary() throws Exception
     {
         ILibrarySpecification spec = parseLib("ValidLibrary.library");
-        
-        checkList("serviceNames",
-            new String[] { "service1", "service2" },
-            spec.getServiceNames());
-            
-        checkList("pageNames", 
-            new String[] { "FirstPage", "SecondPage" },
-            spec.getPageNames());
-            
-        checkList("componentAliases",
-            new String[] { "FirstComponent", "SecondComponent" },
-            spec.getComponentAliases());
-            
-        checkList("libraryIds",
-            new String[] { "lib1", "lib2" },
-            spec.getLibraryIds());
-    } 
-    
-    
+
+        checkList("serviceNames", new String[] { "service1", "service2" }, spec.getServiceNames());
+
+        checkList("pageNames", new String[] { "FirstPage", "SecondPage" }, spec.getPageNames());
+
+        checkList("componentAliases", new String[] { "FirstComponent", "SecondComponent" }, spec.getComponentAliases());
+
+        checkList("libraryIds", new String[] { "lib1", "lib2" }, spec.getLibraryIds());
+    }
 
     /**
      *  Test invalid parameter name.
@@ -190,7 +178,7 @@ public class SpecificationParserTest extends TapestryTestCase
     {
         try
         {
-            ComponentSpecification spec = parseComponent("InvalidAssetName.jwc");
+            parseComponent("InvalidAssetName.jwc");
 
             throw new AssertionFailedError("Should not be able to parse document.");
         }
@@ -212,7 +200,7 @@ public class SpecificationParserTest extends TapestryTestCase
     {
         try
         {
-            IApplicationSpecification spec = parseApp("InvalidPageName.application");
+            parseApp("InvalidPageName.application");
 
             throw new AssertionFailedError("Should not be able to parse document.");
 
@@ -223,23 +211,21 @@ public class SpecificationParserTest extends TapestryTestCase
             checkException(ex, "page name");
         }
     }
-        
+
     /**
      *  Test invalid service name.
      * 
      *  @since 2.2
      * 
      **/
-    
-    public void testInvalidServiceName()
-    throws Exception
+
+    public void testInvalidServiceName() throws Exception
     {
         try
         {
-            IApplicationSpecification spec = 
-                parseApp("InvalidServiceName.application");
-                
-             throw new AssertionFailedError("Should not be able to parse document.");
+            parseApp("InvalidServiceName.application");
+
+            throw new AssertionFailedError("Should not be able to parse document.");
         }
         catch (DocumentParseException ex)
         {
@@ -247,53 +233,49 @@ public class SpecificationParserTest extends TapestryTestCase
             checkException(ex, "service");
         }
     }
-        
+
     /**
      *  Test invalid service name.
      * 
      *  @since 2.2
      * 
      **/
-    
-    public void testInvalidComponentAlias()
-    throws Exception
+
+    public void testInvalidComponentAlias() throws Exception
     {
         try
         {
-            IApplicationSpecification spec =  
-                parseApp("InvalidComponentAlias.application");
-                
-             throw new AssertionFailedError("Should not be able to parse document.");
+            parseApp("InvalidComponentAlias.application");
+
+            throw new AssertionFailedError("Should not be able to parse document.");
         }
         catch (DocumentParseException ex)
         {
             checkException(ex, "Invalid$Component");
             checkException(ex, "alias");
         }
-    }   
-    
+    }
+
     /**
      *  Test invalid extension name.
      * 
      *  @since 2.2
      * 
      **/
-    
-    public void testInvalidExtensionName()
-    throws Exception
+
+    public void testInvalidExtensionName() throws Exception
     {
         try
         {
-            IApplicationSpecification spec = 
-                parseApp("InvalidExtensionName.application");
-                
-             throw new AssertionFailedError("Should not be able to parse document.");
+            parseApp("InvalidExtensionName.application");
+
+            throw new AssertionFailedError("Should not be able to parse document.");
         }
         catch (DocumentParseException ex)
         {
             checkException(ex, "Invalid$Extension");
             checkException(ex, "extension name");
         }
-    }      
-              
+    }
+
 }

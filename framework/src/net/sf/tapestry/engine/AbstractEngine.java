@@ -1253,7 +1253,6 @@ public abstract class AbstractEngine implements IEngine, IEngineServiceView, Ext
         if (activePageNames.isEmpty())
             return;
 
-        ISpecificationSource specSource = getSpecificationSource();
         IPageSource source = getPageSource();
 
         // A bit of a hack, used only when cleaning up the engine and any pages

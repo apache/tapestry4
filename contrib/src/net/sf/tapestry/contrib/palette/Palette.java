@@ -284,8 +284,6 @@ public class Palette extends BaseComponent implements IFormComponent
 
         // Lots of work to produce JavaScript and HTML for this sucker.
 
-        String formName = _form.getName();
-
         _symbols = new HashMap(MAP_SIZE);
 
         runScript(cycle);

@@ -238,10 +238,6 @@ public class ResponseOutputStream extends OutputStream
 
     public void write(byte b[], int off, int len) throws IOException
     {
-        int i;
-        int newSize;
-        byte[] newBuffer;
-
         if (len == 0 || _discard)
             return;
 

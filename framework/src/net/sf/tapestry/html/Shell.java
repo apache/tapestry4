@@ -124,7 +124,6 @@ public class Shell extends AbstractComponent
         // Here comes the tricky part ... have to assemble a complete URL
         // for the current page.
 
-        RequestContext context = cycle.getRequestContext();
         IEngineService pageService = cycle.getEngine().getService(IEngineService.PAGE_SERVICE);
         String pageName = getPage().getName();
 

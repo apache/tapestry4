@@ -145,8 +145,6 @@ public class MockTester
         _response.end();
 
         executeAssertions(request);
-
-        Cookie[] cookies = _request.getCookies();
     }
 
     private void parse() throws JDOMException, DocumentParseException

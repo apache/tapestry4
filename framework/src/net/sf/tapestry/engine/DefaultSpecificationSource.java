@@ -49,8 +49,6 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
     private IResourceResolver _resolver;
     private IApplicationSpecification _specification;
 
-    private SpecificationParser _parser;
-
     private INamespace _applicationNamespace;
     private INamespace _frameworkNamespace;
 
@@ -139,9 +137,9 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
         try
         {
             if (asPage)
-                result = _parser.parsePageSpecification(inputStream, resourcePath);
+                result = parser.parsePageSpecification(inputStream, resourcePath);
             else
-                result = _parser.parseComponentSpecification(inputStream, resourcePath);
+                result = parser.parseComponentSpecification(inputStream, resourcePath);
         }
         catch (DocumentParseException ex)
         {
@@ -165,8 +163,6 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
             LOG.debug("Parsing library specification " + resourcePath);
 
         InputStream inputStream = openSpecification(resourcePath);
-
-        SpecificationParser parser = getParser();
 
         try
         {
@@ -354,12 +350,9 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
 
     /** @since 2.2 **/
 
-    private synchronized SpecificationParser getParser()
+    private SpecificationParser getParser()
     {
-        if (_parser == null)
-            _parser = new SpecificationParser();
-
-        return _parser;
+        return new SpecificationParser();
     }
 
     public synchronized INamespace getApplicationNamespace()

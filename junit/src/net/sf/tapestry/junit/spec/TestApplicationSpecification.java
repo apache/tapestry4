@@ -50,7 +50,7 @@ public class TestApplicationSpecification extends TapestryTestCase
     {
         assertEquals("instanceCount", 0, ImmediateExtension.getInstanceCount());
         
-        IApplicationSpecification a = parseApp("ImmediateExtension.application");
+        parseApp("ImmediateExtension.application");
         
         assertEquals("instanceCount", 1, ImmediateExtension.getInstanceCount());
     }

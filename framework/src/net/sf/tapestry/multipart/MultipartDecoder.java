@@ -86,9 +86,7 @@ public class MultipartDecoder
 
     private void decode(HttpServletRequest request)
     {
-        boolean debug = LOG.isDebugEnabled();
-
-        String contentType = request.getContentType();
+         String contentType = request.getContentType();
         int pos = contentType.indexOf(BOUNDARY);
 
         String boundaryString = "--" + contentType.substring(pos + BOUNDARY.length());

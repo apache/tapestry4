@@ -36,23 +36,19 @@ public class Image extends AbstractComponent
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
-        String imageURL = null;
-        int border = 0;
-        IAsset imageAsset;
-
         // Doesn't contain a body so no need to do anything on rewind (assumes no
         // sideffects to accessor methods via bindings).
 
         if (cycle.isRewinding())
             return;
 
-        imageURL = _image.buildURL(cycle);
+        String imageURL = _image.buildURL(cycle);
 
         writer.beginEmpty("img");
 
         writer.attribute("src", imageURL);
 
-        writer.attribute("border", border);
+        writer.attribute("border", 0);
 
         generateAttributes(writer, cycle);
 

@@ -130,10 +130,6 @@ public class PrivateAsset implements IAsset
                     + " in locale "
                     + locale.getDisplayName());
 
-        int dotx = _resourcePath.lastIndexOf('.');
-        String basePath = _resourcePath.substring(0, dotx);
-        String suffix = _resourcePath.substring(dotx);
-
         IResourceResolver resolver = cycle.getEngine().getResourceResolver();
 
         LocalizedResourceFinder finder = new LocalizedResourceFinder(resolver);

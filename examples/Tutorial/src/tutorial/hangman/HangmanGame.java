@@ -100,7 +100,6 @@ public class HangmanGame implements Serializable
 
 	public void guess(char letter) throws GameException
 	{
-		int index;
 		boolean found = false;
 
 		used[letter - 'A'] = true;

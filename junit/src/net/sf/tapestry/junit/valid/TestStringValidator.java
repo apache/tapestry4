@@ -44,7 +44,7 @@ public class TestStringValidator extends TestCase
 
 		try
 		{
-			Object result = v.toObject(new TestingField("requiredField"), "");
+			v.toObject(new TestingField("requiredField"), "");
 
 			fail("Exception expected.");
 		}

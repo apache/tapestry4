@@ -360,8 +360,6 @@ public class PageSource implements IPageSource, IRenderDescription
         extend(buffer, _contextAssets, "context assets");
         extend(buffer, _privateAssets, "private assets");
 
-        int lastChar = buffer.length() - 1;
-
         buffer.append(']');
 
         return buffer.toString();

@@ -149,8 +149,6 @@ public class ValidField extends AbstractTextField implements IField, IFormCompon
                 Tapestry.getString("ValidField.no-delegate", getExtendedId(), getForm().getExtendedId()),
                 this);
 
-        String displayName = null;
-
         boolean rendering = !cycle.isRewinding();
 
         delegate.setFormComponent(this);
