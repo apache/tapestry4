@@ -309,5 +309,20 @@ public class BasePage extends BaseComponent implements IPage
 	{
 		return requestCycle;
 	}
+	
+	/**
+	 *  Invokes {@link ILifecycle#cleanupComponent()} on any lifecycle components.
+	 *
+	 *  <p>Subclasses may override, but should invoke this implementation.
+	 *
+	 */
+	 
+	public void cleanupPage()
+	{
+		int i;
+		
+		for (i = 0; i < lifecycleComponentCount; i++)
+			lifecycleComponents[i].cleanupComponent();	
+	}
 }
 

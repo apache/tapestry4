@@ -100,13 +100,6 @@ public class Conditional extends AbstractComponent
 	*  Render's its wrapped components only if the condition is true (techincally,
 	*  if condition matches invert).
 	*
-	*  <table border=1>
-	*  <tr> <th colspan=4>Binding access</th> </tr>
-	*  <tr> <th colspan=2> Render cycle </th> <th colspan=2> Rewind cycle </th> </tr>
-	*  <tr> <th> Binding </th> <th> R/W </th> <th> Binding </th> <th> R/W </th> </tr>
-	*  <tr> <td> condition </td> <td>R</td> <td> condition </td> <td>R</td> </tr>
-	*	<tr> <td> invert </td> <td>R</td> <td> invert </td> <td>R</td> </tr>
-	*  </table>
 	*/
 
 	public void render(IResponseWriter writer, IRequestCycle cycle) throws RequestCycleException

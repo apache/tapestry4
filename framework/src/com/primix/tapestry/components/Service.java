@@ -33,8 +33,10 @@ import java.util.*;
  */
 
 /**
- *  A component for creating a link for an arbitrary service that uses
- *  no parameters.  
+ *  A component for creating a link for an arbitrary {@link IApplicationService
+ *  application service}.  A Service component can emulate an {@link Action},
+ *  {@link Page} or {@link Direct} component, but is most often used in
+ *  conjunction with an application-specific service.  
  *
  * <table border=1>
 
@@ -48,11 +50,32 @@ import java.util.*;
  *		<td>The name of the service.</td>  </tr>
  *
  * <tr>
- *   <td>enabled</td> <td>boolean</td> <td>R</td> <td>No</td> <td>true</td>
+ *   <td>enabled</td> <td>boolean</td> <td>R</td> <td>no</td> <td>true</td>
  *   <td>Controls whether the link is produced.  If disabled, the portion of the template
  *  the link surrounds is still rendered, but not the link itself.
  *  </td></tr>
  *
+  * <tr>
+ *   <td>enabled</td> <td>boolean</td> <td>R</td> <td>no</td> <td>true</td>
+ *   <td>Controls whether the link is produced.  If disabled, the portion of the template
+ *  the link surrounds is still rendered, but not the link itself.
+ *  </td></tr>
+ *
+ *
+ *  <tr>
+ *  <td>context</td>
+ *  <td>String[] <br> List (of String) <br> String <br>Object</td>
+ *  <td>R</td>
+ *  <td>no</td>
+ *  <td>&nbsp;</td>
+ *  <td>An array of Strings to be encoded into the URL.  These parameters will
+ *  be decoded when the link is triggered.
+ *  <p>If the context is simply an Object, then <code>toString()</code> is invoked on
+ it.  It is assumed that the listener will be able to convert it back.
+ *  <p>In a web application built onto of Enterprise JavaBeans, the context is
+ *  often the primary key of some Entity bean; typically such keys are Strings or
+ *  Integers (which can be freely converted from String to Integer by the listener).</td>
+ * </tr>
  *
  * <tr>
  *		<td>anchor</td>
@@ -77,6 +100,7 @@ public class Service extends AbstractServiceLink
 {
 	private IBinding serviceBinding;
 	private String serviceValue;
+	private IBinding contextBinding;
 
 	public Service(IPage page, IComponent container, String name,
 		ComponentSpecification specification)
@@ -107,6 +131,22 @@ public class Service extends AbstractServiceLink
 
 		if (value.isStatic())
 			serviceValue = value.getString();
+	}
+	
+	public IBinding getContextBinding()
+	{
+		return contextBinding;
+	}
+	
+	public void setContextBinding(IBinding value)
+	{
+		contextBinding = value;
+	}
+	
+
+	protected String[] getContext(IRequestCycle cycle)
+	{
+		return Direct.getContext(contextBinding);
 	}
 }
 

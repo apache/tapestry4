@@ -199,4 +199,15 @@ public interface IPage extends IComponent
 	 */
 	 
 	public IRequestCycle getRequestCycle();	
+	
+	/**
+	 *  Invoked when the application terminates (that is, when the {@link HttpSession}
+	 *  containing the application is invalidated or times out).  This gives
+	 *  the page to release any additional resources it may have ... in particular,
+	 *  it allows a page to remove stateful session EJBs it may be using.
+	 *
+	 *  <p>Invokes {@link ILifecycle#cleanupComponent()} on any lifecycle components.
+	 */
+	 
+	public void cleanupPage();
 }

@@ -119,16 +119,27 @@ public class Direct extends AbstractServiceLink
 	}
 
 	protected String[] getContext(IRequestCycle cycle)
-	throws RequestCycleException
+	{
+		return getContext(contextBinding);
+	}
+	
+	/**
+	 *  Converts a binding to a context (an array of Strings).
+	 *  This is used by the {@link Direct} and {@link Service}
+	 *  components.
+	 *
+	 */
+	 
+	public static String[] getContext(IBinding binding)
 	{
 		Object raw;
 		String[] context;
 		Vector v;
 
-		if (contextBinding == null)
+		if (binding == null)
 			return null;
 
-		raw = contextBinding.getValue();
+		raw = binding.getValue();
 
 		if (raw == null)
 			return null;

@@ -109,13 +109,14 @@ public class BaseComponent extends AbstractComponent
 		int i, count;
 		IComponent[] componentStack;
 		int stackx = 0;
-		String name;
+		String id;
 		IComponent component;
 		IComponent activeComponent = null;
 		ComponentTemplate componentTemplate;
 		IRender element;
 		ITemplateSource templateSource;
 		boolean check = true;
+		Set seenIds = new HashSet();
 	
 		try
 		{
@@ -169,24 +170,32 @@ public class BaseComponent extends AbstractComponent
 
 			if (type == TokenType.OPEN)
 			{
-				name = token.getId();
-
-				// Could use a sanity check here that we only see a name once.
+				id = token.getId();
 
 				try
 				{
-					component = getComponent(name);
+					component = getComponent(id);
 
 					check = true;
 				}
 				catch (NoSuchComponentException e)
 				{
 					throw new RequestCycleException(
-						"Error in template: Component " +
+						"Template for component " +
 						getExtendedId() +
-						" does not contain a component '" +
-						name + "'.", this, cycle, e);
+						" references undefined embedded component " +
+						id + ".", this, cycle, e);
 				}
+
+				// Make sure the template contains each component only once.
+				
+				if (seenIds.contains(id))
+					throw new RequestCycleException(
+						"Template for component " + getExtendedId() +
+						" contains multiple references to embedded component " +
+						id + ".");
+						
+				seenIds.add(id);
 
 				if (activeComponent == null)
 					addOuter(component);
@@ -234,8 +243,64 @@ public class BaseComponent extends AbstractComponent
 				"Not all <jwc> tags closed in template.",
 				this, cycle);
 
+		checkAllComponentsReferenced(seenIds, cycle);
 	}
 
+	private void checkAllComponentsReferenced(Set seenIds, IRequestCycle cycle)
+	throws RequestCycleException
+	{
+		Set ids;
+		StringBuffer buffer;
+		int count;
+		int j = 0;
+		Iterator i;
+		
+		// First, contruct a modifiable copy of the ids of all expected components
+		// (that is, components declared in the specification).
+		
+		ids = getComponents().keySet();
+		
+		// If the seen ids ... ids referenced in the template, matches
+		// all the ids in the specification then we're fine.
+		
+		if (seenIds.containsAll(ids))
+			return;
+		
+		// Create a modifiable copy.  Remove the ids that are referenced in
+		// the template.  The remainder are worthy of note.
+		
+		ids = new HashSet(ids);	
+		ids.removeAll(seenIds);
+		
+		count = ids.size();
+		
+		buffer = new StringBuffer("Template for component ");
+		buffer.append(getExtendedId());
+		buffer.append("does not reference embedded component");
+		if (count > 0)
+			buffer.append('s');
+		
+		i = ids.iterator();
+		while (i.hasNext())
+		{
+			j++;
+			
+			if (j == 1)
+				buffer.append(": ");
+			else
+				if (j == count)
+					buffer.append(" and ");
+				else
+					buffer.append(", ");
+					
+			buffer.append(i.next());
+		}	
+		
+		buffer.append('.');
+		
+		throw new RequestCycleException(buffer.toString(), this, cycle);
+	}
+			
 	/**
 	*  Renders the top level components contained by the receiver.
 	*

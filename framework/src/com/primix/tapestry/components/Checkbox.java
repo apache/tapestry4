@@ -124,25 +124,6 @@ public class Checkbox extends AbstractFormComponent
 	*  Under Tapestry, it makes more sense to have different names and a fixed value.
 	*  For a checkbox, we only care about whether the name appears as a request parameter.
 	*
-	*  <table border=1>
-	*  <tr> <th colspan=2>&lt;input&gt; attributes</th> </tr>
-	*  <tr>  <th>Attribute</th>  <th>Value</th> </tr>
-	*  <tr>  <td>type</td> <td>checkbox </td> </tr>
-	*  <tr>  <td>name</td>  <td>from {@link IRequestCycle#getNextActionId()}</td> </tr>
-	*  <tr>  <td>disabled</td>  <td>ommited, unless the <code>disabled</code> property is
-	* 	true.  </td> </tr>
-	*  <tr> <td>checked</td> <td>from <code>checked</code> property</td> </tr>
-	*  <tr> <td><i>other</i> <td>from extra bindings</td> </tr>
-	*  </table>
-	*
-	*  <table border=1>
-	*  <tr> <th colspan=4>Binding access</th> </tr>
-	*  <tr> <th colspan=2> Render cycle </th> <th colspan=2> Rewind cycle </th> </tr>
-	*  <tr> <th> Binding </th> <th> R/W </th> <th> Binding </th> <th> R/W </th> </tr>
-	*  <tr> <td> disabled </td> <td>R</td> <td> disabled </td> <td>R</td> </tr>
-	*	<tr> <td> checked </td> <td>R</td> <td> checked </td> <td>W</td> </tr>
-	*  <tr> <td> <i>other</i> <td>R</td>  <td> listener </td> <td>R</td> </tr>
-	*  </table>
 	**/
 
 	public void render(IResponseWriter writer, IRequestCycle cycle) 

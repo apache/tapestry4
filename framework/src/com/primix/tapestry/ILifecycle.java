@@ -114,4 +114,13 @@ public interface ILifecycle
      */
  
     public void reset();
+	
+	/**
+	 *  Invoked from {@link IPage#cleanupPage()} to cleanup any long-held resources
+	 *  (typically, stateful session EJBs) that the component may have a reference
+	 *  to.
+	 *
+	 */
+	 
+	public void cleanupComponent();
 }
