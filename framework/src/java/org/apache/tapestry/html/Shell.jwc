@@ -32,13 +32,13 @@
     </description>
   </parameter>
   
-  <parameter name="stylesheet">
+  <parameter name="stylesheet" default-binding="asset">
     <description>
     If specified, provides an external stylesheet for the page.
     </description>
   </parameter>
   
-  <parameter name="stylesheets">
+  <parameter name="stylesheets" default-binding="ognl">
   	<description>
   	Array or collection of stylesheet assets.
   	</description>	

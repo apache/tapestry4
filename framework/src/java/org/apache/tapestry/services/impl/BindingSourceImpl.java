@@ -54,26 +54,26 @@ public class BindingSourceImpl implements BindingSource
         }
     }
 
-    public IBinding createBinding(IComponent component, String bindingDescription, String reference,
-            Location location)
+    public IBinding createBinding(IComponent component, String bindingDescription,
+            String reference, String defaultPrefix, Location location)
     {
-        BindingFactory factory = _literalBindingFactory;
+        String prefix = defaultPrefix;
         String path = reference;
 
         int colonx = reference.indexOf(':');
 
         if (colonx > 1)
         {
-            String prefix = reference.substring(0, colonx);
+            prefix = reference.substring(0, colonx);
 
-            BindingFactory prefixedFactory = (BindingFactory) _factoryMap.get(prefix);
-
-            if (prefixedFactory != null)
-            {
-                factory = prefixedFactory;
+            if (_factoryMap.containsKey(prefix))
                 path = reference.substring(colonx + 1);
-            }
         }
+
+        BindingFactory factory = (BindingFactory) _factoryMap.get(prefix);
+
+        if (factory == null)
+            factory = _literalBindingFactory;
 
         return factory.createBinding(component, bindingDescription, path, location);
     }

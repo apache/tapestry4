@@ -67,7 +67,7 @@ public class TapestryTestCase extends HiveMindTestCase
     {
 
         public IBinding createBinding(IComponent component, String description, String reference,
-                Location location)
+                String defaultBindingType, Location location)
         {
             return new LiteralBinding(description, _valueConverter, location, reference);
         }
@@ -155,11 +155,23 @@ public class TapestryTestCase extends HiveMindTestCase
                 + string + "'.");
     }
 
+    private static ValueConverter _sharedValueConverter;
+
     protected ValueConverter createValueConverter()
     {
-        Registry r = RegistryBuilder.constructDefaultRegistry();
+        // Only build the Registry the first time this is called. The same Registry
+        // can then be used for any remaining calls.
 
-        return (ValueConverter) r
-                .getService("tapestry.coerce.ValueConverter", ValueConverter.class);
+        if (_sharedValueConverter == null)
+        {
+
+            Registry r = RegistryBuilder.constructDefaultRegistry();
+
+            _sharedValueConverter = (ValueConverter) r.getService(
+                    "tapestry.coerce.ValueConverter",
+                    ValueConverter.class);
+        }
+
+        return _sharedValueConverter;
     }
 }

@@ -16,24 +16,22 @@
 -->
 
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 	
-<component-specification 
-	class="org.apache.tapestry.BaseComponent" 
-	allow-informal-parameters="no">
+<component-specification allow-informal-parameters="no">
 	
-  <parameter name="title" type="java.lang.String" required="yes"/>
+  <parameter name="title" required="yes" default-binding="literal"/>
 	
   <component id="shell" type="Shell">
-    <inherited-binding name="title" parameter-name="title"/>
-    <binding name="stylesheet" expression="assets.style"/>
+    <binding name="title" value="title"/>
+    <binding name="stylesheet" value="asset:style"/>
   </component>
   
   <component id="body" type="Body"/>
   
   <component id="renderBody" type="RenderBody"/>
   
-  <private-asset name="style" resource-path="/org/apache/tapestry/junit/mock/lib/style.css"/>
+  <asset name="style" path="/org/apache/tapestry/junit/mock/lib/style.css"/>
   
 </component-specification>	

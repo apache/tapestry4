@@ -25,19 +25,19 @@
   A text input field that can validate input.
   </description>
 
-  <parameter name="value" required="yes"/>
+  <parameter name="value" required="yes" default-binding="ognl"/>
   
-  <parameter name="disabled"/>
+  <parameter name="disabled" default-binding="ognl"/>
   
-  <parameter name="hidden"/>
+  <parameter name="hidden" default-binding="ognl"/>
     
-  <parameter name="validator" required="yes">
+  <parameter name="validator" required="yes" default-binding="ognl">
     <description>
     Converts value to a string and parses strings back into object values.
     </description>
   </parameter>
     
-  <parameter name="displayName" required="yes">
+  <parameter name="displayName" required="yes" default-binding="literal">
     <description>
     Name used by FieldLabel and when generating validation error messages.
     </description>

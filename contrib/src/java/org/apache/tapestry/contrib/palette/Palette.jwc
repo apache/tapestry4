@@ -16,8 +16,8 @@
 -->
 
 <!DOCTYPE component-specification PUBLIC 
-  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
-  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  "-//Apache Software Foundation//Tapestry Specification 3.1//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_1.dtd">
 	
 <component-specification class="org.apache.tapestry.contrib.palette.Palette" 
 	allow-body="no" allow-informal-parameters="no">
@@ -27,62 +27,77 @@
   </description>
   
   <parameter name="selectedTitleBlock" 
-  	type="org.apache.tapestry.components.Block" 
-  	required="no"
-  	direction="in"/>
-  
+    default-value="defaultSelectedTitleBlock"
+    default-binding="component"/>
+    
   <parameter name="availableTitleBlock" 
-   	type="org.apache.tapestry.components.Block" 
-   	required="no"
-   	direction="in"/>
+    default-value="defaultAvailableTitleBlock"
+    default-binding="component"/>
    	
   <parameter name="model" 
-  	type="org.apache.tapestry.form.IPropertySelectionModel" 
   	required="yes"
-  	direction="in"/>
+    default-binding="ognl"/>
   
-  <parameter name="selected" type="java.util.List" 
-  	required="yes" direction="form"/>
+  <parameter name="selected"
+  	required="yes" 
+    default-binding="ognl"/>
   
-  <parameter name="sort" 
-  	type="org.apache.tapestry.contrib.palette.SortMode" 
-  	required="no"
-  	direction="in"/>
+  <parameter name="sort"
+      default-value="@org.apache.tapestry.contrib.palette.SortMode@NONE"
+      default-binding="ognl"/>
   
-  <parameter name="rows" 
-   	type="int" 
-   	required="no"
-   	direction="in"/>
+  <parameter name="rows"
+    default-value="10"
+    default-binding="ognl"/>
   
   <parameter name="tableClass" 
-  	type="java.lang.String" 
-  	required="no"
-  	direction="in"/>
+	default-binding="literal"
+	default-value="tapestry-palette"/> 
   
+  <parameter name="selectImage" 
+    default-binding="asset"
+    default-value="Select"/>
   
-  <parameter name="selectImage" type="org.apache.tapestry.IAsset" direction="in"/>
-  <parameter name="selectDisabledImage" type="org.apache.tapestry.IAsset" direction="in"/>
-  <parameter name="deselectImage" type="org.apache.tapestry.IAsset" direction="in"/>
-  <parameter name="deselectDisabledImage" type="org.apache.tapestry.IAsset" direction="in"/>
-  <parameter name="upImage" type="org.apache.tapestry.IAsset" direction="in"/>
-  <parameter name="upDisabledImage" type="org.apache.tapestry.IAsset" direction="in"/>
-  <parameter name="downImage" type="org.apache.tapestry.IAsset" direction="in"/>
-  <parameter name="downDisabledImage" type="org.apache.tapestry.IAsset" direction="in"/>
-    
-  <property-specification name="name" type="java.lang.String"/>
-  <property-specification name="form" type="org.apache.tapestry.IForm"/>
+  <parameter name="disabledImage"
+	default-binding="asset"
+	default-value="Disabled"/>
   
-  <property-specification name="selectedColumn" type="org.apache.tapestry.contrib.palette.PaletteColumn"/>
-  <property-specification name="availableColumn" type="org.apache.tapestry.contrib.palette.PaletteColumn"/>
+  <parameter name="deselectImage"
+	default-binding="asset"
+	default-value="Deselect"/>
   
+  <parameter name="selectDisabledImage"
+	default-binding="asset"
+	default-value="SelectDisabled"/> 
+
   
-  <private-asset name="Select" resource-path="select_right.gif"/>
-  <private-asset name="SelectDisabled" resource-path="select_right_off.gif"/>
-  <private-asset name="Deselect" resource-path="deselect_left.gif"/>
-  <private-asset name="DeselectDisabled" resource-path="deselect_left_off.gif"/>
-  <private-asset name="Up" resource-path="move_up.gif"/>
-  <private-asset name="UpDisabled" resource-path="move_up_off.gif"/>
-  <private-asset name="Down" resource-path="move_down.gif"/>
-  <private-asset name="DownDisabled" resource-path="move_down_off.gif"/>
+  <parameter name="deselectDisabledImage"
+  	default-binding="asset"
+ 	default-value="DeselectDisabled"/>
+  
+  <parameter name="upImage" 
+  	default-binding="asset"
+  	default-value="Up"/>
+  
+  <parameter name="upDisabledImage"
+  	default-binding="asset"
+    default-value="UpDisabled"/>
+  
+  <parameter name="downImage"
+   	default-binding="asset"
+    default-value="Down"/>
+  
+  <parameter name="downDisabledImage"
+   	default-binding="asset"
+    default-value="DownDisabled"/>    
+  
+  <asset name="Select" path="select_right.gif"/>
+  <asset name="SelectDisabled" path="select_right_off.gif"/>
+  <asset name="Deselect" path="deselect_left.gif"/>
+  <asset name="DeselectDisabled" path="deselect_left_off.gif"/>
+  <asset name="Up" path="move_up.gif"/>
+  <asset name="UpDisabled" path="move_up_off.gif"/>
+  <asset name="Down" path="move_down.gif"/>
+  <asset name="DownDisabled" path="move_down_off.gif"/>
   
 </component-specification>

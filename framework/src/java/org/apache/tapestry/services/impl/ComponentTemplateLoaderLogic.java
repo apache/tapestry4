@@ -29,7 +29,9 @@ import org.apache.tapestry.IRender;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.ITemplateComponent;
 import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.binding.BindingConstants;
 import org.apache.tapestry.binding.BindingSource;
+import org.apache.tapestry.binding.BindingUtils;
 import org.apache.tapestry.binding.LiteralBinding;
 import org.apache.tapestry.engine.IPageLoader;
 import org.apache.tapestry.parse.CloseToken;
@@ -278,10 +280,20 @@ public class ComponentTemplateLoaderLogic
 
                 String description = ImplMessages.templateParameterName(name);
 
+                // For informal parameters, or formal parameters that don't define a default binding
+                // type,
+                // treat the value as a literal.
+
+                String defaultBindingType = BindingUtils.getDefaultBindingType(
+                        spec,
+                        name,
+                        BindingConstants.LITERAL_PREFIX);
+
                 IBinding binding = _bindingSource.createBinding(
                         _loadComponent,
                         description,
                         value,
+                        defaultBindingType,
                         token.getLocation());
 
                 addBinding(component, spec, name, binding);
@@ -299,6 +311,7 @@ public class ComponentTemplateLoaderLogic
                     component,
                     TemplateSource.TEMPLATE_TAG_PARAMETER_NAME,
                     token.getTag(),
+                    BindingConstants.LITERAL_PREFIX,
                     token.getLocation());
 
             addBinding(component, spec, TemplateSource.TEMPLATE_TAG_PARAMETER_NAME, binding);

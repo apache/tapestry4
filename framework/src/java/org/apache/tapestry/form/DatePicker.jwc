@@ -24,11 +24,11 @@
 	allow-informal-parameters="yes" 
 	allow-body="no">
 
-  <parameter name="value" required="yes"/>
-  <parameter name="format" required="no"/>
-  <parameter name="disabled"/>
-  <parameter name="includeWeek"/>
-  <parameter name="icon" default-value="asset:defaultIcon"/>
+  <parameter name="value" required="yes" default-binding="ognl"/>
+  <parameter name="format" required="no" default-binding="ognl"/>
+  <parameter name="disabled" default-binding="ognl"/>
+  <parameter name="includeWeek" default-binding="ognl"/>
+  <parameter name="icon" default-value="defaultIcon" default-binding="asset"/>
 
   <asset name="defaultIcon" path="DatePickerIcon.png"/>
   

@@ -45,7 +45,7 @@
 
 <!ENTITY imageroot					'&projectroot;images/UsersGuide'>
 
-<!ENTITY binding-reference			'<link href="template.html#templates.components.parameters">binding reference</link>'>
+<!ENTITY binding-reference			'<link href="bindings.html">binding reference</link>'>
 <!ENTITY listener-method			'listener method'>
 <!ENTITY hivemind-descriptor		'<link href="site:hivemind">HiveMind module deployment descriptor</link>'>
 

@@ -145,7 +145,7 @@ any existing tag.  For example:
     <span jwcid="border">
     
       Hello,
-      <span jwcid="@Insert" value="ognl:user.name">Joe User</span>
+      <span jwcid="@Insert" value="user.name">Joe User</span>
     </span>
   </body>
 </html>]]></source>
@@ -250,8 +250,9 @@ would have ids <code>$Insert$0</code>, <code>$Insert$1</code>, etc.
 </p>
 
 <p>
-A component's id must only be unique within its immediate container.  Pages are top-level containers, but
-components can also contain other components. 
+A component's id must only be unique within its immediate container. 
+ Pages are top-level containers, but
+components may have their own templates, and so can also contain other components. 
 </p>
 
 
@@ -260,7 +261,7 @@ Implicit components can also have a specific id, by placing the id in front of t
 </p>
 
 <source><![CDATA[
-  <span jwcid="insert@Insert" value="ognl:user.name">Joe User</span>
+  <span jwcid="insert@Insert" value="user.name">Joe User</span>
 ]]></source>
 
 <p>
@@ -288,110 +289,66 @@ the component with new ids.
 		<title>Specifying parameters</title>
 		
 <p>
-Component parameters may always be specified in the page or component 
-specification, using the &spec.binding; element. Prior to Tapestry 3.0, that
-was the only way ... but with 3.0, it is possible to specify parameters directly within the
-HTML template.
-</p>	
-	
-<p>
-Using either style of component (declared or implicit), parameters of the component may be <em>bound</em>
-by adding attributes to the tag.
-Most attributes bind parameters to a literal value, the exact value provided in the attribute.
+Components are configured by <em><link href="binding.html">binding</link></em> their parameters.  In
+a page or component specification, the &spec.binding; element is used to
+bind component parameters.
 </p>
 
 <p>
-Prefixing an attribute value with <code>ognl:</code>	 indicates that the value
-is really an &OGNL; expression.
+Inside an HTML template, attributes of the tag are used to bind parameters. This can be
+very succinct.  In some cases where an &OGNL; expression is used, the
+value can become quite long or complex ... in which case, converting the component
+to be a declared component (that is, defined in the page or component specification) and
+using the &spec.binding; element will be more manageable.
+</p>
+
+
+<p>
+Tapestry will <em>merge</em> together parameter bindings in the specification with
+those provided directly in the template.  Generally speaking, conflicts (the same
+parameter bound in both places) will be an error.  The exception
+is when the parameter bound in the HTML template, as an attribute, is a literal string
+value ... in which case, Tapestry assumes that the attribute value is
+there for WYSIWYG purposes and is quietly ignored.
+</p>
+
+
+<p>
+Components may have both <em>formal</em> and <em>informal</em> parameters.  The component
+specification defines each formal parameters using the &spec.parameter; element, and a component
+indicates whether it accepts or rejects informal parameters with
+the allow-informal-parameters attribute of the &spec.component-specification; element.
 </p>
 
 <p>
-Prefixing an attribute value with <code>message:</code> indicates that the value
-is really a key used to obtain a localized message. 
-Every page, and every component, is allowed to have its own set of messages (stored
-in a set of .properties files), and the <code>message:</code> prefix allows access
-to the localized messages stored in the files.
+Informal parameters are <em>not</em> limited to simply strings; using 
+&binding-reference; prefixes, it is possible for them to be expression, assets, or
+anything else.
 </p>
 
 <p>
-Starting with Tapestry 3.1, several additional prefixes are available:
+If a component does not allow informal parameters, then attempting to bind
+any parameters (beyond the formal set of parameters for the component) is an error.
+The exception to this is literal values in the template, which are (again)
+assumed to be there for WYSIWYG purposes, and quietly ignored.
 </p>
 
-<table>
-  <tr>
-    <th>Prefix</th>
-    <th>Description</th>
-    <th>Example</th>
-    <th>OGNL Equivalent</th>
-  </tr>
-  
-  <tr>
-    <td>asset</td>
-    <td>References an asset of the component.</td>
-    <td>asset:stylesheet </td>
-    <td>ognl:assets.stylesheet</td>
-  </tr>
-  
-  <tr>
-    <td>bean</td>
-    <td>References a named bean (defined by a &spec.bean; element).</td>
-    <td>bean:validationDelegate</td>
-    <td>ognl:beans.validationDelegate</td>
-  </tr>
-  
-  <tr>
-    <td>component</td>
-    <td>References a nested component with the provided component id.</td>
-    <td>component:form</td>
-    <td>ognl:components.form</td>
-  </tr>
-  
-  <tr>
-    <td>hivemind</td>
-    <td>References a HiveMind object, much like &spec.inject;.</td>
-    <td>hivemind:service:app.MyService</td>
-    <td/>
-  </tr>
-  
-  <tr>
-    <td>listener</td>
-    <td>The name of a listener method.</td>
-    <td>listener:formSubmit</td>
-    <td>ognl:listeners.formSubmit</td>
-  </tr>
-  
-  <tr>
-    <td>literal</td>
-    <td>Used to "escape" a binding prefix, marking the suffix as a literal value.</td>
-    <td>literal:ognl:not-an-expression</td>
-    <td></td>
-  </tr>
-  
-  <tr>
-    <td>message</td>
-    <td>References a localized message from the component's message catalog.</td>
-    <td>message:page-title</td>
-    <td>ognl:messages.getMessage("page-title")</td>
-  </tr>
-  
-  <tr>
-    <td>ognl</td>
-    <td>An OGNL expression to be evaluated.</td>
-    <td>ognl:engine.visit.admin</td>    
-    <td></td>
-  </tr>
-  
-  <tr>
-    <td>state</td>
-    <td>True of false dependening on whether the named &aso; exists.</td>
-    <td>state:visit</td>
-    <td></td>
-  </tr>
-</table>
+<p>
+Two final notes about informal parameters:
+</p>
 
-<note>
-  You can define your own prefixes by contributing into the tapestry.bindings.BindingFactories configuration point.
-</note>
+<ul>
+  <li>Informal parameters in the template are assumed to be literal strings
+    unless they have a binding prefix (i.e., "ognl:", "message:", or
+    so forth).</li>
+  <li>
+    Informal parameters are normally converted to string values and
+    added as additional attributes in the output markup.  A special case
+    is when the value for an informal parameter is an &IAsset;
+    (possibly specified with the "asset:" prefix), in which case the
+    attribute value will be the <em>URL</em> for the asset.
+  </li>
+</ul>
 
 <section>
 <title>Seperation of Concerns</title>	

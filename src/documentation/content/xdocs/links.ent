@@ -90,8 +90,9 @@
 
 <!ENTITY PageAttachListener 		'<link href="&apiroot;/event/PageAttachListener.html">PageAttachListener</link>'>
 <!ENTITY PageDetachListener 		'<link href="&apiroot;/event/PageDetachListener.html">PageDetachListener</link>'>
-<!ENTITY PageBeginRenderListener 	'<link href="&apiroot;/event/PageBeginRenderListener.html">PageEndRenderListener</link>'>
-<!ENTITY PageEndRenderListener 		'<link href="&apiroot;/event/PageEndRenderListener.html">PageBeginRenderListener</link>'>
+<!ENTITY PageBeginRenderListener 	'<link href="&apiroot;/event/PageBeginRenderListener.html">PageBeginRenderListener</link>'>
+<!ENTITY PageEndRenderListener 		'<link href="&apiroot;/event/PageEndRenderListener.html">PageEndRenderListener</link>'>
+<!ENTITY PageRenderListener 		'<link href="&apiroot;/event/PageRenderListener.html">PageRenderListener</link>'>
 <!ENTITY PageAttachListener 		'<link href="&apiroot;/event/PageAttachListener.html">PageAttachListener</link>'>
 <!ENTITY PageValidateListener 		'<link href="&apiroot;/event/PageValidateListener.html">PageValidateListener</link>'>
 

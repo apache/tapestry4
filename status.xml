@@ -54,7 +54,7 @@
   </todo>
   <changes>
     <release version="3.1-alpha-2" date="unreleased">
-      <action type="update" dev="HLS"> Upgrade to HiveMind 1.1-alpha-3-snapshot. </action>
+      <action type="update" dev="HLS"> Upgrade to HiveMind 1.1-alpha-4-snapshot. </action>
       <action type="update" dev="HLS"> Coordinate Locale changes with the hivemind.ThreadLocale service. </action>
       <action type="add" dev="HLS"> Add lookup mechanism to determine page class from page name. </action>
       <action type="add" dev="HLS"> Allow the name of the initial page to be overriden using the org.apache.tapestry.home-page application property. </action>
@@ -62,6 +62,19 @@
       <action type="add" dev="HLS"> Add asset-encoding that encodes and decodes a friendly URL for the asset service. </action>
       <action type="update" dev="HLS"> Add an extra level of indirection, so that engine services can be wired together using the engine-service: object provider. </action>
       <action type="add" dev="HLS"> Add methods to IMarkupWriter that allow filtering to be specified using a parameter. </action>
+      <action type="add" dev="HLS" fixes-bug="TAPESTRY-291"> Allow component parameters to have a default binding type. </action>
+    </release>
+    <release version="3.0.3" date="Mar 26 2005">
+      <action type="fix" dev="PF" fixes-bug="TAPESTRY-278"> Fixes security flaw in asset service. </action>
+      <action type="fix" dev="PF" fixes-bug="TAPESTRY-230"> JanitorThread now terminates explicitly when servlet is destroyed.  Interruption properly terminates thread during sweep operation. </action>
+      <action type="fix" dev="PF" fixes-bug="TAPESTRY-238"> Fixed bug preventing DatePicker calendar window from closing automatically if onchange event handler is not specified. </action>
+      <action type="fix" dev="PF" fixes-bug="TAPESTRY-277"> DatePicker onchange event now only fires when date changes. </action>
+      <action type="fix" dev="PF" due-to="Xi Ping Wang" fixes-bug="TAPESTRY-255"> Patch for bad translation in ValidationStrings_zh_TW.properties </action>
+      <action type="fix" dev="PF" due-to="Xi Ping Wang" fixes-bug="TAPESTRY-251"> Patch for bad translation in ValidationStrings_zh_CN.properties </action>
+      <action type="fix" dev="PF" due-to="Michael Hamilton" fixes-bug="TAPESTRY-1"> Fixed incorrect test for enabling rendering of element in FormConditional component. </action>
+      <action type="fix" dev="PF" due-to="Markus Wiederkehr" fixes-bug="TAPESTRY-283"> Fixes missing type attribute of script tag in Body component. </action>
+      <action type="fix" dev="PF" due-to="Matthew Mead" fixed-bug="TAPESTRY-284"> Fixes improper engine cleanup when client aborts a request. </action>
+      <action type="update" dev="PF"> Build scripts are now Java 1.5 friendly. </action>
     </release>
     <release version="3.1-alpha-1" date="Feb 21 2005">
       <action type="update" dev="HLS"> Remove dependencies on Jakarta digester, collections and beanutils. Add dependency on Jakarta HiveMind. </action>
@@ -220,6 +233,11 @@
     </release>
   </changes>
   <votes>
+    <vote title="Tapestry 3.0.3" date="Mar 26 2005" dev="PF">
+      <motion> I finished patching/fixing all of the big issues identified with the last release.  With any luck, this will be the last release for the 3.0 branch. This vote will run for one week.  A +1 vote is to release Tapestry 3.0.3.  I will be able to start the release once the votes are tallied. </motion>
+      <response> PF, HK, MB, HLS, TS, DS, EH, GL: +1 </response>
+      <response> RLS: +0 </response>
+    </vote>
     <vote title="Tapestry 3.1-alpha-1" date="Feb 15 2005" dev="HLS">
       <motion>I think it's high time we provide people with a peek at 3.1. The code base has stabilized quite a bit in the last week or two, and although there's a huge amount of work to come, I think the community would benefit from an easy preview of what's coming. This will also be a chance to work through the release checklist I prepared last week.</motion>
       <response>HLS, EH, HK, PF, RLS, DS, GL, TSV: +1 </response>

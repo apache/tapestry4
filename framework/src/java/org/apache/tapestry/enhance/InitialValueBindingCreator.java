@@ -17,6 +17,7 @@ package org.apache.tapestry.enhance;
 import org.apache.hivemind.Location;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
+import org.apache.tapestry.binding.BindingConstants;
 import org.apache.tapestry.binding.BindingSource;
 
 /**
@@ -59,6 +60,6 @@ public class InitialValueBindingCreator
 
     public IBinding createBinding(IComponent component)
     {
-        return _bindingSource.createBinding(component, _description, _initialValue, _location);
+        return _bindingSource.createBinding(component, _description, _initialValue, BindingConstants.OGNL_PREFIX, _location);
     }
 }

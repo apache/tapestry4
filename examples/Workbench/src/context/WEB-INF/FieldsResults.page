@@ -22,8 +22,8 @@
 <page-specification>
 
   <component id="backRollover" type="Rollover">
-    <binding name="image" value="asset:back"/>
-    <binding name="focus" value="asset:backFocus"/>
+    <binding name="image" value="back"/>
+    <binding name="focus" value="backFocus"/>
   </component>
 
   <asset name="back" path="images/Back.gif"/>

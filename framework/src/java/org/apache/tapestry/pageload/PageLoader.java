@@ -34,7 +34,9 @@ import org.apache.tapestry.IPage;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.ITemplateComponent;
 import org.apache.tapestry.asset.AssetSource;
+import org.apache.tapestry.binding.BindingConstants;
 import org.apache.tapestry.binding.BindingSource;
+import org.apache.tapestry.binding.BindingUtils;
 import org.apache.tapestry.binding.ExpressionBinding;
 import org.apache.tapestry.binding.ListenerBinding;
 import org.apache.tapestry.coerce.ValueConverter;
@@ -247,18 +249,32 @@ public class PageLoader implements IPageLoader
 
             String description = PageloadMessages.parameterName(name);
 
-            IBinding binding = convert(container, description, bspec);
+            // For informal parameters, or formal parameters that fail to specify a default binding
+            // type, use OGNL.
+
+            String defaultBindingType = BindingUtils.getDefaultBindingType(
+                    spec,
+                    name,
+                    BindingConstants.OGNL_PREFIX);
+
+            IBinding binding = convert(container, description, defaultBindingType, bspec);
 
             component.setBinding(name, binding);
         }
     }
 
-    private IBinding convert(IComponent container, String description, IBindingSpecification spec)
+    private IBinding convert(IComponent container, String description, String defaultBindingType,
+            IBindingSpecification spec)
     {
         Location location = spec.getLocation();
-        String locator = spec.getValue();
+        String bindingReference = spec.getValue();
 
-        return _bindingSource.createBinding(container, description, locator, location);
+        return _bindingSource.createBinding(
+                container,
+                description,
+                bindingReference,
+                defaultBindingType,
+                location);
     }
 
     /**

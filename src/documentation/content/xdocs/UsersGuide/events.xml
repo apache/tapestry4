@@ -48,7 +48,7 @@ multiple interfaces.
     <th>Notes</th>
   </tr>
   <tr>
-    <td>&PageAttachListener;;</td>
+    <td>&PageAttachListener;</td>
     <td>When a page is first attached to the current request.  After
       the page's persistent properties have been rolled back.</td>
     <td>
@@ -78,7 +78,7 @@ multiple interfaces.
     <td/>
   </tr>
   <tr>
-    <td>&PageDetachListener;;</td>
+    <td>&PageDetachListener;</td>
     <td>As the page is detached from the request and returned to the shared page
       pool.</td>
     <td>
@@ -88,5 +88,11 @@ multiple interfaces.
   </tr>
 </table>
     
+<note>
+  Tapestry 3.0 defined a single &PageRenderListener; interface instead of
+  &PageBeginRenderListener; and &PageEndRenderListener;. This is still supported in 3.1 (it
+  has been redefined as extending the other two interfaces), but will likely be removed
+  in a future release.
+</note>
 </body>
 </document>

@@ -6,8 +6,11 @@ Check that values in the HTML template do not override
 bindings in the specification.
 </p>
 
-
-Static over Static: <span jwcid="insertArtist" value="M. C. Escher"/>
+<!-- TAPESTRY-291 as made this more complicated; the Insert component now considers
+     simple values, even in the HTML template, as OGNL expressions.  For this test,
+     where we check that non-literal bindings in the spec override literal bindings from
+     the HTML template, we have to work a little harder than before. -->
+Static over Static: <span jwcid="insertArtist" value="literal:M. C. Escher"/>
 	
 
 </body>	

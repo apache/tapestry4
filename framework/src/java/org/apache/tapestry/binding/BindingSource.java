@@ -41,11 +41,12 @@ public interface BindingSource
      * as a kind of context for certain types of bindings (for example, the root object when
      * evaluating OGNL expressions).
      * @param description {@link IBinding#getDescription() description} for the new binding
-     * @param reference the binding reference used to create the binding, possibly including a prefix to define the type. A default
-     * binding factory ({@link LiteralBindingFactory}) is used when the prefix is missing
+     * @param reference the binding reference used to create the binding, possibly including a prefix to define the type.
+     * If the reference does not include a prefix, then  the defaultBindingType is used as the prefix
+     * @param defaultbindingType binding type to use when no prefix is provided in the reference
      * or doesn't match a known binding factory.
      * @param location location used to report errors in the binding
      */
     public IBinding createBinding(IComponent component, String description, String reference,
-            Location location);
+            String defaultBindingType, Location location);
 }

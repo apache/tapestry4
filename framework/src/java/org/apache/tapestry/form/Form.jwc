@@ -25,33 +25,33 @@
   Used to implement an HTML form.
   </description>
 
-  <parameter name="method" default-value="post">
+  <parameter name="method" default-value="post" default-binding="literal">
     <description>
     The method used by the form when it is submitted, defaults to POST.
     </description>
   </parameter>
   
-  <parameter name="listener">
+  <parameter name="listener" default-binding="listener">
     <description>
   	Object invoked when the form is submitted, after all form components have responded
   	to the submission.
     </description>
   </parameter>
   
-  <parameter name="stateful" default-value="true">
+  <parameter name="stateful" default-value="true" default-binding="ognl">
     <description>
     If true (the default), then an active HttpSession is required.
     </description>
   </parameter>
   
-  <parameter name="direct" default-value="true">
+  <parameter name="direct" default-value="true" default-binding="ognl">
     <description>
     If true (the default), then the more efficient direct service is used.
     If false, then the action service is used.
     </description>
   </parameter>
   
-  <parameter name="delegate">
+  <parameter name="delegate" default-binding="ognl">
     <description>
     Specifies the delegate to be used by fields to track input errors.
     </description>

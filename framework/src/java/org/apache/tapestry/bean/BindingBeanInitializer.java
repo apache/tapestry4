@@ -19,6 +19,7 @@ import org.apache.hivemind.util.PropertyUtils;
 import org.apache.tapestry.IBeanProvider;
 import org.apache.tapestry.IBinding;
 import org.apache.tapestry.IComponent;
+import org.apache.tapestry.binding.BindingConstants;
 import org.apache.tapestry.binding.BindingSource;
 
 /**
@@ -72,6 +73,7 @@ public class BindingBeanInitializer extends AbstractBeanInitializer
                     component,
                     description,
                     _bindingReference,
+                    BindingConstants.OGNL_PREFIX,
                     getLocation());
         }
 

@@ -25,13 +25,13 @@
         The go element declares a go task, indicating navigation to a URI.
     </description>
 
-    <parameter name="method" default-value="post">
+    <parameter name="method" default-value="post" default-binding="literal">
         <description>
             The method used by the form when it is submitted, defaults to POST.
         </description>
     </parameter>
 
-    <parameter name="listener">
+    <parameter name="listener" default-binding="listener">
         <description>
             Object invoked when the form is submitted, after all form components have responded
             to the submission.

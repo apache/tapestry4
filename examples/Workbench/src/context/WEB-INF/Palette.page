@@ -27,19 +27,19 @@
   </component>
   
   <component id="inputColor" type="contrib:Palette">
-    <binding name="model" value="ognl:colorModel"/>
-    <binding name="selected" value="ognl:selectedColors"/>
-    <binding name="sort" value="ognl:sort"/>
+    <binding name="model" value="colorModel"/>
+    <binding name="selected" value="selectedColors"/>
+    <binding name="sort" value="sort"/>
     <binding name="tableClass" value="palette"/>
   </component>
   
   <component id="update" type="ImageSubmit">
-    <binding name="image" value="asset:update"/>
+    <binding name="image" value="update"/>
   </component>
   
   <component id="continue" type="ImageSubmit">
-  	<binding name="image" value="asset:continue"/>
-  	<binding name="listener" value="listener:advance"/>
+  	<binding name="image" value="continue"/>
+  	<binding name="listener" value="advance"/>
   </component>
  
    <asset name="continue" path="images/Continue.gif"/>

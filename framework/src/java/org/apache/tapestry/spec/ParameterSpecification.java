@@ -31,14 +31,17 @@ public class ParameterSpecification extends BaseLocatable implements IParameterS
 
     private String _type;
 
-    /** @since 1.0.9 * */
+    /** @since 1.0.9 */
     private String _description;
 
-    /** @since 2.0.3 * */
+    /** @since 2.0.3 */
     private String _propertyName;
 
-    /** @since 3.0 * */
-    private String _defaultValue = null;
+    /** @since 3.0 */
+    private String _defaultValue;
+
+    /** @since 3.1 */
+    private String _defaultBindingType;
 
     /**
      * Returns the class name of the expected type of the parameter. The default value is
@@ -131,4 +134,15 @@ public class ParameterSpecification extends BaseLocatable implements IParameterS
         _defaultValue = defaultValue;
     }
 
+    /** @since 1.1 */
+    public String getDefaultBindingType()
+    {
+        return _defaultBindingType;
+    }
+
+    /** @since 1.1 */
+    public void setDefaultBindingType(String defaultBindingType)
+    {
+        _defaultBindingType = defaultBindingType;
+    }
 }
