@@ -54,9 +54,10 @@ $(JBE_CLASS_FILES): $(SYS_MAKEFILE_DIR)/com/primix/jbe/*.java
 	@$(TOUCH) $@
 
 # Note, for this to work, SYS_MAKEFILE_DIR must use only forward slashes. Either
-# GNU Make or JAVA is eating the backslashes under NT.
+# GNU Make or JAVA is eating the backslashes under NT.  JAVA_CLASSIC_OPT is only
+# defined under for Sun Cygwin (the -classic option doesn't exist for Solaris).
 
-JBE_UTIL := $(JAVA) -classic -classpath $(SYS_MAKEFILE_DIR) com.primix.jbe.Util 
+JBE_UTIL := $(JAVA) $(JAVA_CLASSIC_OPT) -classpath $(SYS_MAKEFILE_DIR) com.primix.jbe.Util 
 
 # Command for accessing the JBE utility.
 # Usage:

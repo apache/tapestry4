@@ -39,39 +39,57 @@ import java.util.*;
  *  @author Howard Ship
  *
  */
- 
+
 public interface IPerson extends IEntityBean
 {
 	public void setLastName(String value)
-	throws RemoteException;
-
+		throws RemoteException;
+	
 	public String getLastName()
-	throws RemoteException;
+		throws RemoteException;
 	
 	public void setFirstName(String value)
-	throws RemoteException;
+		throws RemoteException;
 	
 	public String getFirstName()
-	throws RemoteException;
+		throws RemoteException;
 	
 	public void setPassword(String value)
-	throws RemoteException;
+		throws RemoteException;
 	
 	public String getPassword()
-	throws RemoteException;
+		throws RemoteException;
 	
 	public void setEmail(String value)
-	throws RemoteException;
+		throws RemoteException;
 	
 	public String getEmail()
-	throws RemoteException;	
+		throws RemoteException;	
+	
+	public boolean isAdmin()
+		throws RemoteException;
+	
+	public void setAdmin(boolean value) 
+		throws RemoteException;
+	
+	public boolean isLockedOut()
+		throws RemoteException;
+	
+	public void setLockedOut(boolean value)
+		throws RemoteException;
+	
+	public boolean isVerified()
+		throws RemoteException;
+	
+	public void setVerified(boolean value)
+		throws RemoteException;
 
 	/**
 	 *  Returns the natural concatination of the first and last name, or just
 	 *  the last name if there is no first name.
 	 *
 	 */
-	 
+	
 	public String getNaturalName()
-	throws RemoteException;	
+		throws RemoteException;	
 }

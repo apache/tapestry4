@@ -80,6 +80,7 @@
       <tuned-updates>true</tuned-updates>
       <read-only>false</read-only>
       <time-out>300</time-out>
+      <debug>true</debug>
       <cmp-field>
         <field-name>email</field-name>
         <column-name>EMAIL</column-name>

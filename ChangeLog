@@ -1,3 +1,21 @@
+* Aug 3 2001 hship
+
+JBE:
+- Only use -classic option under Cygwin
+- Fix DocBook to work with replacement HTML templates
+
+doc:
+- Use Tapestry.xsl template, which restores grey background for programlisting, etc. 
+- Update JBE documentation to describe how to use HTML Stylesheet with DocBook
+
+contrib:
+- Provide final version of move_up.gif for Palette component
+
+vlib/vlibbeans:
+- Add support for the admin.EditUsers page
+
+[ #446951 ] JBE on Solaris
+
 * Aug 2 2001 hship
 
 doc:

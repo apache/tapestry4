@@ -35,6 +35,9 @@ JDK_BIN_DIR := $(JDK_DIR)/bin
 
 JAVAC := $(JDK_BIN_DIR)/javac
 JAVA := $(JDK_BIN_DIR)/java
+
+JAVA_CLASSIC_OPT := -classic
+
 JAR := $(JDK_BIN_DIR)/jar
 JAVADOC := $(JDK_BIN_DIR)/javadoc
 RMIC := $(JDK_BIN_DIR)/rmic

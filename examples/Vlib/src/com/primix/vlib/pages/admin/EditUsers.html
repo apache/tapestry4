@@ -1,6 +1,33 @@
-<jwc id="border">
+<span jwcid="border">
 <!-- $Id$ -->
 
-<h1>Not Yet Implemented</h1>
+<span jwcid="showMessage"/>
 
-</jwc>
+<form jwcid="form">
+
+<table>
+	<tr>
+		<th>User</th>
+		<th>E-Mail</th>
+		<th>Admin</th>
+		<th>Locked Out</th>
+		<th>Reset Password</th>
+		<th>Delete</th>
+	</tr>
+<span jwcid="e">
+	<tr>
+		<td><span jwcid="insertUser"/></td>
+		<td><span jwcid="insertEmail"/></td>
+		<td><input type=checkbox jwcid="inputAdmin"/></td>
+		<td><input type=checkbox jwcid="inputLockedOut"/></td>
+		<td><input type=checkbox jwcid="inputResetPassword"/></td>
+		<td><input type=checkbox jwcid="inputDelete"/></td>
+	</tr>
+</span>
+</table>
+
+<p><input type=submit value="Update">
+
+</form>
+
+</span>

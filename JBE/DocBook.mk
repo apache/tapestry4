@@ -101,7 +101,23 @@ MOD_HTML_OPTS += \
 	-param callout.graphics.path standard-images/callouts/
 endif
 
-FINAL_HTML_TEMPLATE := $(firstword $(HTML_TEMPLATE) $(DOCBOOK_XSL_DIR)/html/chunk.xsl)
+# If the user specifies a stylesheet, then we copy and edit it
+
+ifneq "$(HTML_STYLESHEET)" ""
+
+MARKED_STYLESHEET := $(SYS_BUILD_DIR_NAME)/marked.xsl
+
+FINAL_HTML_STYLESHEET := $(MARKED_STYLESHEET)
+
+$(MARKED_STYLESHEET): $(HTML_STYLESHEET)
+	$(call NOTE, Generating $@ from $? ...)
+	@$(SED) \
+	  $(SED_EXPRESSION_OPT) "s/##DOCBOOK_XSL_DIR##/$(subst $(SLASH),$(BACKSLASH)$(SLASH),$(DOCBOOK_XSL_DIR))/g" \
+	 $? > $@
+	 
+else
+FINAL_HTML_STYLESHEET := $(DOCBOOK_XSL_DIR)/html/chunk.xsl
+endif
 
 $(HTML_STAMP_FILE): $(DOCUMENT_RESOURCE_STAMP_FILE)  \
 	$(MAIN_DOCUMENT) $(FINAL_HTML_STYLESHEET) $(OTHER_DOC_FILES)
@@ -111,7 +127,7 @@ $(HTML_STAMP_FILE): $(DOCUMENT_RESOURCE_STAMP_FILE)  \
 		-Xms256mb -Xmx512mb \
 		org.apache.xalan.xslt.Process -HTML \
 			-in $(MAIN_DOCUMENT)  \
-			-xsl $(FINAL_HTML_TEMPLATE)  \
+			-xsl $(FINAL_HTML_STYLESHEET)  \
 			-param base.dir $(HTML_DIR)/ \
 			-param root.filename $(basename $(MAIN_DOCUMENT)) \
 			$(MOD_HTML_OPTS) $(HTML_XSLT_OPTS))

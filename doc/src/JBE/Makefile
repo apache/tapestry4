@@ -2,6 +2,7 @@
 
 MAIN_DOCUMENT =	JBE.xml
 
+HTML_STYLESHEET := ../common/Tapestry.xsl
 
 HTML_INSTALL_DIR := ../../JBE
 

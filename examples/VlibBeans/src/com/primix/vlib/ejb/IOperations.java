@@ -224,5 +224,32 @@ public interface IOperations
 	
 	public void updatePublishers(Publisher[] updated, Integer[] deleted)
 		throws FinderException, RemoveException, RemoteException;
+	
+	
+	/**
+	 * Updates a list of Persons.  Main functionality is to allow 
+	 * an administrator to edit the following attributes of a Person:
+	 *  <ul>
+	 *	<li>admin
+	 *	<li>lockedOut
+	 *	<li>verified
+	 *	</ul>
+	 *
+	 * <p>Explicitly, names and email addresses may not be changed.
+	 *
+	 * <p>In addition, users may be deleted entirely, or may have their password reset.
+	 *
+	 *  @param updated a list of persons to update.  May be null or empty.
+	 *  @param resetPassword  a list of primary keys; corresponding Persons will
+	 *  have thier password reset.  May be null or empty.
+	 *  @param deleted a list of persons to delete.  Books owned by any of these persons
+	 *  are transfered to the administrator.  May be null or empty.
+	 *  @param adminPk the administrator performing the operation; books may be transferred
+	 *  to this person.
+	 *
+	 */
+	
+	public void updatePersons(Person[] updated, Integer[] resetPassword, Integer[] deleted, Integer adminPK)
+		throws FinderException, RemoveException, RemoteException;
 
 }
