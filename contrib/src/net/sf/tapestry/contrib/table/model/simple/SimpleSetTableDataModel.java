@@ -37,9 +37,10 @@ import net.sf.tapestry.contrib.table.model.common.AbstractTableDataModel;
 import net.sf.tapestry.contrib.table.model.common.ArrayIterator;
 
 /**
- * @author mindbridge
- *
- */
+ *  @author mindbridge
+ *  @version $Id$
+ **/
+
 public class SimpleSetTableDataModel extends AbstractTableDataModel implements Serializable
 {
     private Set m_setRows;
@@ -49,17 +50,11 @@ public class SimpleSetTableDataModel extends AbstractTableDataModel implements S
         m_setRows = setRows;
     }
 
-    /**
-     * @see net.sf.tapestry.contrib.table.model.ITableDataModel#getRowCount()
-     */
     public int getRowCount()
     {
         return m_setRows.size();
     }
 
-    /**
-     * @see net.sf.tapestry.contrib.table.model.ITableDataModel#getRows(int, int)
-     */
     public Iterator getRows()
     {
         return m_setRows.iterator();
@@ -72,7 +67,8 @@ public class SimpleSetTableDataModel extends AbstractTableDataModel implements S
      */
     public void addRow(Object objRow)
     {
-        if (m_setRows.contains(objRow)) return;
+        if (m_setRows.contains(objRow))
+            return;
         m_setRows.add(objRow);
 
         CTableDataModelEvent objEvent = new CTableDataModelEvent();
@@ -94,7 +90,8 @@ public class SimpleSetTableDataModel extends AbstractTableDataModel implements S
      */
     public void removeRow(Object objRow)
     {
-        if (!m_setRows.contains(objRow)) return;
+        if (!m_setRows.contains(objRow))
+            return;
         m_setRows.remove(objRow);
 
         CTableDataModelEvent objEvent = new CTableDataModelEvent();

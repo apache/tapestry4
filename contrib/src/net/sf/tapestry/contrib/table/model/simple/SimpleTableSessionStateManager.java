@@ -39,41 +39,29 @@ import net.sf.tapestry.contrib.table.model.ITableSessionStateManager;
  * @version $Id$
  * @author mindbridge
  */
-public class SimpleTableSessionStateManager
-	implements ITableSessionStateManager
+public class SimpleTableSessionStateManager implements ITableSessionStateManager
 {
-	private ITableDataModel m_objDataModel;
-	private ITableColumnModel m_objColumnModel;
+    private ITableDataModel m_objDataModel;
+    private ITableColumnModel m_objColumnModel;
 
-	public SimpleTableSessionStateManager(
-		ITableDataModel objDataModel,
-		ITableColumnModel objColumnModel)
-	{
-		m_objDataModel = objDataModel;
-		m_objColumnModel = objColumnModel;
-	}
+    public SimpleTableSessionStateManager(ITableDataModel objDataModel, ITableColumnModel objColumnModel)
+    {
+        m_objDataModel = objDataModel;
+        m_objColumnModel = objColumnModel;
+    }
 
-	/**
-	 * @see net.sf.tapestry.contrib.table.model.ITableSessionManager#getSessionState(ITableModel)
-	 */
-	public Serializable getSessionState(ITableModel objModel)
-	{
-		SimpleTableModel objSimpleModel = (SimpleTableModel) objModel;
-		return objSimpleModel.getState();
-	}
+    public Serializable getSessionState(ITableModel objModel)
+    {
+        SimpleTableModel objSimpleModel = (SimpleTableModel) objModel;
+        return objSimpleModel.getState();
+    }
 
-	/**
-	 * @see net.sf.tapestry.contrib.table.model.ITableSessionManager#recreateTableModel(Object)
-	 */
-	public ITableModel recreateTableModel(Serializable objState)
-	{
-		if (objState == null)
-			return null;
-		SimpleTableState objSimpleState = (SimpleTableState) objState;
-		return new SimpleTableModel(
-			m_objDataModel,
-			m_objColumnModel,
-			objSimpleState);
-	}
+    public ITableModel recreateTableModel(Serializable objState)
+    {
+        if (objState == null)
+            return null;
+        SimpleTableState objSimpleState = (SimpleTableState) objState;
+        return new SimpleTableModel(m_objDataModel, m_objColumnModel, objSimpleState);
+    }
 
 }
