@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN"
+	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
+
+<component-specification class="net.sf.tapestry.form.MaskEdit" allow-informal-parameters="no">
+
+  <parameter name="mask" direction="in" java-type="java.lang.String" required="yes"/>
+  <parameter name="value" direction="custom" java-type="java.lang.String" required="yes"/>
+  <parameter name="disabled" direction="in" java-type="boolean" required="no"/>
+  
+  <component id="maskEdit" type="TextField">
+    <binding name="value" expression="value"/>
+    <binding name="maxlength" expression="mask.length()"/>
+    <binding name="size" expression="mask.length()"/>        
+    <binding name="disabled" expression="disabled"/>
+  </component>
+
+  <component id="maskValue" type="Hidden">
+    <binding name="value" expression="mask"/>
+    <binding name="encode" expression="false"/>
+  </component>
+
+  <component id="maskEditScript" type="Script">
+    <binding name="maskEdit" expression="components.maskEdit"/>
+    <binding name="maskValue" expression="components.maskValue"/>
+    <binding name="script" expression='"/net/sf/tapestry/form/MaskEdit.script"'/>
+  </component>
+        
+</component-specification>
