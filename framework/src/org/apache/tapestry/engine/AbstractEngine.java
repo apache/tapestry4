@@ -61,6 +61,7 @@ import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -1909,12 +1910,20 @@ public abstract class AbstractEngine
      *  <p>This implementation simply extracts the value for
      *  query parameter {@link Tapestry#SERVICE_QUERY_PARAMETER_NAME}.
      * 
+     *  <p>
+     *  For supporting the JSP tags, this method first
+     *  checks for attribute {@link Tapestry#TAG_SUPPORT_SERVICE_ATTRIBUTE}.  If non-null,
+     *  then {@link Tapestry#TAGSUPPORT_SERVICE} is returned.
+     * 
      *  @since 2.2
      * 
      **/
 
     protected String extractServiceName(RequestContext context)
     {
+        if (context.getRequest().getAttribute(Tapestry.TAG_SUPPORT_SERVICE_ATTRIBUTE) != null)
+            return Tapestry.TAGSUPPORT_SERVICE;
+
         return context.getParameter(Tapestry.SERVICE_QUERY_PARAMETER_NAME);
     }
 

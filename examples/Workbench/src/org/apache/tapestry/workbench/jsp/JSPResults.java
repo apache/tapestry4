@@ -53,118 +53,29 @@
  *
  */
 
-package org.apache.tapestry.workbench.components;
+package org.apache.tapestry.workbench.jsp;
 
-import org.apache.tapestry.BaseComponent;
-import org.apache.tapestry.IAsset;
+import org.apache.tapestry.IExternalPage;
 import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.event.PageRenderListener;
-import org.apache.tapestry.util.StringSplitter;
-import org.apache.tapestry.workbench.Visit;
+import org.apache.tapestry.RequestCycleException;
 
 /**
- *  Common navigational border for the Workbench tutorial.
- * 
+ *  Page accessible via the external link.
+ *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 1.0.7
+ *  @since 2.4
  *
  **/
 
-public abstract class Border extends BaseComponent implements PageRenderListener
+public abstract class JSPResults extends JSP implements IExternalPage
 {
+	public abstract void setParameters(Object parameters);
 
-    /**
-     * Array of page names, read from the Strings file; this is the same
-     * regardless of localization, so it is static (shared by all).
-     * 
-     **/
-
-    private static String[] _tabOrder;
-
-    public void pageBeginRender(PageEvent event)
+    public void activateExternalPage(Object[] parameters, IRequestCycle cycle)
+        throws RequestCycleException
     {
-        Visit visit = (Visit) getPage().getEngine().getVisit(event.getRequestCycle());
-
-        setActivePageName(visit.getActiveTabName());
-
-        if (_tabOrder == null)
-        {
-            String tabOrderValue = getStrings().getString("tabOrder");
-
-            StringSplitter splitter = new StringSplitter(' ');
-
-            _tabOrder = splitter.splitToArray(tabOrderValue);
-        }
+    	setParameters(parameters);
     }
 
-    public void pageEndRender(PageEvent event)
-    {
-    }
-
-    /**
-     *  Returns the logical names of the pages accessible via the
-     *  navigation bar, in appopriate order.
-     *
-     **/
-
-    public String[] getPageTabNames()
-    {
-        return _tabOrder;
-    }
-
-    public abstract void setPageName(String value);
-    
-    public abstract String getPageName();
-
-	public abstract void setActivePageName(String activePageName);
-	
-	public abstract String getActivePageName();
-	
-	public boolean isActivePage()
-	{
-		return getPageName().equals(getActivePageName());
-	}
-
-    public String getPageTitle()
-    {
-        // Need to check for synchronization issues, but I think
-        // ResourceBundle is safe.
-
-        return getStrings().getString(getPageName());
-    }
-
-    public IAsset getLeftTabAsset()
-    {
-        String name = isActivePage() ? "activeLeft" : "inactiveLeft";
-
-        return getAsset(name);
-    }
-
-    public IAsset getMidTabAsset()
-    {
-        String name = isActivePage() ? "activeMid" : "inactiveMid";
-
-        return getAsset(name);
-    }
-
-    public IAsset getRightTabAsset()
-    {
-        String name = isActivePage() ? "activeRight" : "inactiveRight";
-
-        return getAsset(name);
-    }
-
-    public void selectPage(IRequestCycle cycle)
-    {
-        Object[] parameters = cycle.getServiceParameters();
-        String newPageName = (String) parameters[0];
-
-        Visit visit = (Visit) getPage().getEngine().getVisit(cycle);
-
-        visit.setActiveTabName(newPageName);
-
-        cycle.setPage(newPageName);
-    }
 }

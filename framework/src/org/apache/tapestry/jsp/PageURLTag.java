@@ -53,44 +53,38 @@
  *
  */
 
-package org.apache.tapestry.workbench.fields;
+package org.apache.tapestry.jsp;
 
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.html.BasePage;
+import javax.servlet.jsp.JspException;
+
+import org.apache.tapestry.Tapestry;
 
 /**
- *  PageLink to demonstrate various form element components.
+ *  Inserts just the URL for a page service request into the output.
  *
  *  @author Howard Lewis Ship
- *  @version Forms.java,v 1.1 2002/08/23 22:18:31 hship Exp
- *  @since 2.2
- * 
+ *  @version $Id$
+ *  @since 2.4
+ *
  **/
 
-public class Forms extends BasePage
+public class PageURLTag extends AbstractURLTag
 {
-    private String _favoriteColor;
- 
-    public void detach()
+	private String _page;	
+
+    protected URLRetriever getURLRetriever() throws JspException
     {
-        _favoriteColor = null;
-        
-        super.detach();
-    }   
-    
-    public String getFavoriteColor()
-    {
-        return _favoriteColor;
+        return new URLRetriever(pageContext, Tapestry.PAGE_SERVICE, new String[] { _page });
     }
 
-    public void setFavoriteColor(String favoriteColor)
+    public String getPage()
     {
-        _favoriteColor = favoriteColor;
+        return _page;
     }
 
-    public void formSubmit(IRequestCycle cycle)
+    public void setPage(String page)
     {
-        // Do nothing, redisplay this page.
+        _page = page;
     }
 
 }

@@ -53,118 +53,83 @@
  *
  */
 
-package org.apache.tapestry.workbench.components;
+package org.apache.tapestry.jsp;
 
-import org.apache.tapestry.BaseComponent;
-import org.apache.tapestry.IAsset;
-import org.apache.tapestry.IRequestCycle;
-import org.apache.tapestry.event.PageEvent;
-import org.apache.tapestry.event.PageRenderListener;
-import org.apache.tapestry.util.StringSplitter;
-import org.apache.tapestry.workbench.Visit;
+import java.io.IOException;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.jsp.JspException;
+import javax.servlet.jsp.PageContext;
+
+import org.apache.tapestry.Tapestry;
 
 /**
- *  Common navigational border for the Workbench tutorial.
- * 
+ *  Encapsulates the process of calling into the Tapestry servlet to retrieve
+ *  a URL.
+ *
  *  @author Howard Lewis Ship
  *  @version $Id$
- *  @since 1.0.7
+ *  @since 2.4
  *
  **/
-
-public abstract class Border extends BaseComponent implements PageRenderListener
+public class URLRetriever
 {
+    private PageContext _pageContext;
+    private String _serviceName;
+    private Object[] _serviceParameters;
+
+    public URLRetriever(PageContext pageContext, String serviceName, Object[] serviceParameters)
+    {
+        _pageContext = pageContext;
+        _serviceName = serviceName;
+        _serviceParameters = serviceParameters;
+    }
 
     /**
-     * Array of page names, read from the Strings file; this is the same
-     * regardless of localization, so it is static (shared by all).
+     *  Invokes the servlet to retrieve the URL.  The URL is inserted
+     *  into the output (as with
+     *  {@link RequestDispatcher#include(javax.servlet.ServletRequest, javax.servlet.ServletResponse)}). 
      * 
-     **/
-
-    private static String[] _tabOrder;
-
-    public void pageBeginRender(PageEvent event)
-    {
-        Visit visit = (Visit) getPage().getEngine().getVisit(event.getRequestCycle());
-
-        setActivePageName(visit.getActiveTabName());
-
-        if (_tabOrder == null)
-        {
-            String tabOrderValue = getStrings().getString("tabOrder");
-
-            StringSplitter splitter = new StringSplitter(' ');
-
-            _tabOrder = splitter.splitToArray(tabOrderValue);
-        }
-    }
-
-    public void pageEndRender(PageEvent event)
-    {
-    }
-
-    /**
-     *  Returns the logical names of the pages accessible via the
-     *  navigation bar, in appopriate order.
      *
      **/
 
-    public String[] getPageTabNames()
+    public void insertURL(String servletPath) throws JspException
     {
-        return _tabOrder;
-    }
+        ServletRequest request = _pageContext.getRequest();
 
-    public abstract void setPageName(String value);
-    
-    public abstract String getPageName();
+        RequestDispatcher dispatcher = request.getRequestDispatcher(servletPath);
 
-	public abstract void setActivePageName(String activePageName);
-	
-	public abstract String getActivePageName();
-	
-	public boolean isActivePage()
-	{
-		return getPageName().equals(getActivePageName());
-	}
+        if (dispatcher == null)
+            throw new JspException(
+                Tapestry.getString("URLRetriever.unable-to-find-dispatcher", servletPath));
 
-    public String getPageTitle()
-    {
-        // Need to check for synchronization issues, but I think
-        // ResourceBundle is safe.
+        request.setAttribute(Tapestry.TAG_SUPPORT_SERVICE_ATTRIBUTE, _serviceName);
+        request.setAttribute(Tapestry.TAG_SUPPORT_PARAMETERS_ATTRIBUTE, _serviceParameters);
 
-        return getStrings().getString(getPageName());
-    }
+        try
+        {
+            _pageContext.getOut().flush();
 
-    public IAsset getLeftTabAsset()
-    {
-        String name = isActivePage() ? "activeLeft" : "inactiveLeft";
+            dispatcher.include(request, _pageContext.getResponse());
+        }
+        catch (IOException ex)
+        {
+            throw new JspException(
+                Tapestry.getString("URLRetriever.io-exception", servletPath, ex.getMessage()),
+                ex);
+        }
+        catch (ServletException ex)
+        {
+            throw new JspException(
+                Tapestry.getString("URLRetriever.servlet-exception", servletPath, ex.getMessage()),
+                ex);
+        }
+        finally
+        {
+            request.removeAttribute(Tapestry.TAG_SUPPORT_SERVICE_ATTRIBUTE);
+            request.removeAttribute(Tapestry.TAG_SUPPORT_PARAMETERS_ATTRIBUTE);
+        }
 
-        return getAsset(name);
-    }
-
-    public IAsset getMidTabAsset()
-    {
-        String name = isActivePage() ? "activeMid" : "inactiveMid";
-
-        return getAsset(name);
-    }
-
-    public IAsset getRightTabAsset()
-    {
-        String name = isActivePage() ? "activeRight" : "inactiveRight";
-
-        return getAsset(name);
-    }
-
-    public void selectPage(IRequestCycle cycle)
-    {
-        Object[] parameters = cycle.getServiceParameters();
-        String newPageName = (String) parameters[0];
-
-        Visit visit = (Visit) getPage().getEngine().getVisit(cycle);
-
-        visit.setActiveTabName(newPageName);
-
-        cycle.setPage(newPageName);
     }
 }

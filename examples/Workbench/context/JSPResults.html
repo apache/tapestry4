@@ -1,0 +1,23 @@
+<span jwcid="@Border">
+
+<p>
+This page was invoked from a JSP.	
+</p>
+
+<span jwcid="@Conditional" condition="ognl:parameters">
+	
+<p>Parameters:
+<ul>
+<li jwcid="@Foreach" element="li" source="ognl:parameters" value="ognl:parameter">
+(<span jwcid="@Insert" value="ognl:parameter.class.getName()">java.lang.Object</span>)
+<span jwcid="@Insert" value="ognl:parameter"/>	
+</li>	
+</ul>	
+</p>	
+
+</span>
+	
+<p><a href="#" jwcid="@DirectLink" listener="ognl:listeners.launch">Return to the JSP page.</a>
+</p>
+
+</span>

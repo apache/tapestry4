@@ -91,32 +91,69 @@ import org.apache.tapestry.util.StringSplitter;
 
 public final class Tapestry
 {
-	/**
-	 *  The name ("action") of a service that allows behavior to be associated with
-	 *  an {@link IAction} component, such as {@link ActionLink} or {@link Form}.
-	 *  
-	 *  <p>This service is used with actions that are tied to the
-	 *  dynamic state of the page, and which require a rewind of the page.
-	 *
-	 **/
+    /**
+     *  Name of a request attribute used with the
+     *  {@link #TAGSUPPORT_SERVICE} service.  The attribute
+     *  defines the underlying service to for which a URL will be generated.
+     * 
+     *  @since 2.4
+     * 
+     **/
 
-	public final static String ACTION_SERVICE = "action";
+    public final static String TAG_SUPPORT_SERVICE_ATTRIBUTE =
+        "org.apache.tapestry.tagsupport.service";
 
-	/**
-	 *  The name ("direct") of a service that allows stateless behavior for an {@link
-	 *  DirectLink} component.
-	 *
-	 *  <p>This service rolls back the state of the page but doesn't
-	 *  rewind the the dynamic state of the page the was the action
-	 *  service does, which is more efficient but less powerful.
-	 *
-	 *  <p>An array of String parameters may be included with the
-	 *  service URL; these will be made available to the {@link DirectLink}
-	 *  component's listener.
-	 *
-	 **/
+    /**
+     *  Name of a request attribute used with the
+     *  {@link #TAGSUPPORT_SERVICE} service.  The attribute
+     *  defines an array of objects to be converted into
+     *  service parameters (i.e., for use with the
+     *  {@link #EXTERNAL_SERVICE}).
+     * 
+     *  @since 2.4
+     * 
+     **/
 
-	public final static String DIRECT_SERVICE = "direct";
+    public final static String TAG_SUPPORT_PARAMETERS_ATTRIBUTE =
+        "org.apache.tapestry.tagsupport.parameters";
+
+    /**
+     *  Service used to support rendering of JSP tags.  tagsupport is provided
+     *  with a service and service parameters via request attributes
+     *  and creates a URI from the result, which is output to the response.
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public static final String TAGSUPPORT_SERVICE = "tagsupport";
+
+    /**
+     *  The name ("action") of a service that allows behavior to be associated with
+     *  an {@link IAction} component, such as {@link ActionLink} or {@link Form}.
+     *  
+     *  <p>This service is used with actions that are tied to the
+     *  dynamic state of the page, and which require a rewind of the page.
+     *
+     **/
+
+    public final static String ACTION_SERVICE = "action";
+
+    /**
+     *  The name ("direct") of a service that allows stateless behavior for an {@link
+     *  DirectLink} component.
+     *
+     *  <p>This service rolls back the state of the page but doesn't
+     *  rewind the the dynamic state of the page the was the action
+     *  service does, which is more efficient but less powerful.
+     *
+     *  <p>An array of String parameters may be included with the
+     *  service URL; these will be made available to the {@link DirectLink}
+     *  component's listener.
+     *
+     **/
+
+    public final static String DIRECT_SERVICE = "direct";
 
     /**
      *  The name ("external") of a service that a allows {@link IExternalPage} to be selected.
@@ -133,114 +170,115 @@ public final class Tapestry
 
     public final static String EXTERNAL_SERVICE = "external";
 
-	/**
-	 *  The name ("page") of a service that allows a new page to be selected.
-	 *  Associated with a {@link PageLink} component.
-	 *
-	 *  <p>The service requires a single parameter:  the name of the target page.
-	 **/
+    /**
+     *  The name ("page") of a service that allows a new page to be selected.
+     *  Associated with a {@link PageLink} component.
+     *
+     *  <p>The service requires a single parameter:  the name of the target page.
+     **/
 
-	public final static String PAGE_SERVICE = "page";
+    public final static String PAGE_SERVICE = "page";
 
-	/**
-	 *  The name ("home") of a service that jumps to the home page.  A stand-in for
-	 *  when no service is provided, which is typically the entrypoint
-	 *  to the application.
-	 *
-	 **/
+    /**
+     *  The name ("home") of a service that jumps to the home page.  A stand-in for
+     *  when no service is provided, which is typically the entrypoint
+     *  to the application.
+     *
+     **/
 
-	public final static String HOME_SERVICE = "home";
+    public final static String HOME_SERVICE = "home";
 
-	/**
-	 *  The name ("restart") of a service that invalidates the session and restarts
-	 *  the application.  Typically used just
-	 *  to recover from an exception.
-	 *
-	 **/
+    /**
+     *  The name ("restart") of a service that invalidates the session and restarts
+     *  the application.  Typically used just
+     *  to recover from an exception.
+     *
+     **/
 
-	public static final String RESTART_SERVICE = "restart";
+    public static final String RESTART_SERVICE = "restart";
 
-	/**
-	 *  The name ("asset") of a service used to access internal assets.
-	 *
-	 **/
+    /**
+     *  The name ("asset") of a service used to access internal assets.
+     *
+     **/
 
-	public static final String ASSET_SERVICE = "asset";
+    public static final String ASSET_SERVICE = "asset";
 
-	/**
-	 *  The name ("reset") of a service used to clear cached template
-	 *  and specification data and remove all pooled pages.
-	 *  This is only used when debugging as
-	 *  a quick way to clear the out cached data, to allow updated
-	 *  versions of specifications and templates to be loaded (without
-	 *  stopping and restarting the servlet container).
-	 *
-	 *  <p>This service is only available if the Java system property
-	 *  <code>org.apache.tapestry.enable-reset-service</code>
-	 *  is set to <code>true</code>.
-	 * 
-	 **/
-
-	public static final String RESET_SERVICE = "reset";
-
-	/**
-	 *  Query parameter that identfies the service for the
-     *  request.
-	 *
-	 *  @since 1.0.3
+    /**
+     *  The name ("reset") of a service used to clear cached template
+     *  and specification data and remove all pooled pages.
+     *  This is only used when debugging as
+     *  a quick way to clear the out cached data, to allow updated
+     *  versions of specifications and templates to be loaded (without
+     *  stopping and restarting the servlet container).
+     *
+     *  <p>This service is only available if the Java system property
+     *  <code>org.apache.tapestry.enable-reset-service</code>
+     *  is set to <code>true</code>.
      * 
-	 **/
+     **/
 
-	public static final String SERVICE_QUERY_PARAMETER_NAME = "service";
+    public static final String RESET_SERVICE = "reset";
 
-	/**
-	 *  The query parameter for additional context needed by the
-	 *  service.  This is used to store things like the page name or component id.
-	 *  When there are multiple pieces of data, they are seperated by
-	 *  slashes.  Not all services use a context.
-	 *
-	 *  @since 1.0.3
- 	 *
-	 **/
+    /**
+     *  Query parameter that identfies the service for the
+     *  request.
+     *
+     *  @since 1.0.3
+     * 
+     **/
 
-	public static final String CONTEXT_QUERY_PARMETER_NAME = "context";
+    public static final String SERVICE_QUERY_PARAMETER_NAME = "service";
 
-	/**
-	 *  The query parameter for application specific parameters to the
-	 *  service (this is used with the direct service).  Each of these
-	 *  values is encoded with {@link java.net.URLEncoder#encode(String)} before
-	 *  being added to the URL.  Multiple values are handle by repeatedly
+    /**
+     *  The query parameter for additional context needed by the
+     *  service.  This is used to store things like the page name or component id.
+     *  When there are multiple pieces of data, they are seperated by
+     *  slashes.  Not all services use a context.
+     *
+     *  @since 1.0.3
+    	 *
+     **/
+
+    public static final String CONTEXT_QUERY_PARMETER_NAME = "context";
+
+    /**
+     *  The query parameter for application specific parameters to the
+     *  service (this is used with the direct service).  Each of these
+     *  values is encoded with {@link java.net.URLEncoder#encode(String)} before
+     *  being added to the URL.  Multiple values are handle by repeatedly
      *  establishing key/value pairs (this is a change from behavior in 
      *  2.1 and earlier).
-	 *
-	 *  @since 1.0.3
+     *
+     *  @since 1.0.3
      * 
-	 **/
+     **/
 
-	public static final String PARAMETERS_QUERY_PARAMETER_NAME = "sp";
-		
-	/**
-	 *  Property name used to get the extension used for templates.  This
-	 *  may be set in the page or component specification, or in the page (or
-	 *  component's) immediate container (library or application specification).
-	 *  Unlike most properties, value isn't inherited all the way up the chain.
-	 *  The default template extension is "html".
-	 * 
-	 *  @since 2.4
-	 * 
-	 **/
-	
-	public static final String TEMPLATE_EXTENSION_PROPERTY = "org.apache.tapestry.template-extension";
-	
-	/**
-	 *  The default extension for templates, "html".
-	 * 
-	 *  @since 2.4
-	 * 
-	 **/
-	
-	public static final String DEFAULT_TEMPLATE_EXTENSION = "html";
-	
+    public static final String PARAMETERS_QUERY_PARAMETER_NAME = "sp";
+
+    /**
+     *  Property name used to get the extension used for templates.  This
+     *  may be set in the page or component specification, or in the page (or
+     *  component's) immediate container (library or application specification).
+     *  Unlike most properties, value isn't inherited all the way up the chain.
+     *  The default template extension is "html".
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public static final String TEMPLATE_EXTENSION_PROPERTY =
+        "org.apache.tapestry.template-extension";
+
+    /**
+     *  The default extension for templates, "html".
+     * 
+     *  @since 2.4
+     * 
+     **/
+
+    public static final String DEFAULT_TEMPLATE_EXTENSION = "html";
+
     /**
      *  The name of an {@link org.apache.tapestry.IRequestCycle} attribute in which the
      *  currently rendering {@link org.apache.tapestry.components.ILinkComponent}
@@ -248,8 +286,9 @@ public final class Tapestry
      *
      **/
 
-    public static final String LINK_COMPONENT_ATTRIBUTE_NAME = "org.apache.tapestry.active-link-component";
-    	
+    public static final String LINK_COMPONENT_ATTRIBUTE_NAME =
+        "org.apache.tapestry.active-link-component";
+
     /**
      *  Suffix appended to a parameter name to form the name of a property that stores the
      *  binding for the parameter.
@@ -257,9 +296,9 @@ public final class Tapestry
      *  @since 2.4
      * 
      **/
-    
-    public static final String PARAMETER_PROPERTY_NAME_SUFFIX = "Binding";	
-    	
+
+    public static final String PARAMETER_PROPERTY_NAME_SUFFIX = "Binding";
+
     /**
      *  Prevent instantiation.
      *
@@ -727,7 +766,7 @@ public final class Tapestry
      * <tr><td>{@link Iterator}</td> <td>Returned as-is.</td>
      * <tr><td>{@link Collection}</td> <td>Iterator returned, or null
      *  if the Collection is empty</td> </tr>
-
+    
      * <tr><td>Any other</td> <td>{@link Iterator} for singleton collection returned</td> </tr>
      * <tr><td>null</td> <td>null returned</td> </tr>
      * </table>
@@ -1063,5 +1102,19 @@ public final class Tapestry
         // there's no need.
 
         return new ContextResourceLocation(servletContext, servletPath);
+    }
+
+    /**
+     *  Given a Class, creates a presentable name for the class, even if the
+     *  class is a scalar type or Array type.
+     * 
+     **/
+
+    public static String getClassName(Class subject)
+    {
+        if (subject.isArray())
+            return getClassName(subject.getComponentType()) + "[]";
+
+        return subject.getName();
     }
 }

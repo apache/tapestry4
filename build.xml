@@ -8,12 +8,15 @@
 	<property file="${root.dir}/config/common.properties"/>
 	<property name="javadoc.dir" value="web/doc/api"/>
 	<property name="private.dir" value="private"/>
+	<property environment="env"/>
+	
 	<path id="jetty.classpath">
 		<fileset dir="${jetty.dir}">
 			<include name="lib/javax.servlet.jar"/>
 			<include name="lib/org.mortbay.jetty-jdk1.2.jar"/>
 			<include name="ext/*.jar"/>
 		</fileset>
+		<pathelement location="${env.JAVA_HOME}/lib/tools.jar"/>
 	</path>
 	<path id="ext.dist.classpath">
 		<fileset dir="${ext.dist.dir}">
