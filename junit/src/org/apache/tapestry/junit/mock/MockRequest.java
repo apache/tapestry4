@@ -114,6 +114,12 @@ public class MockRequest extends AttributeHolder implements HttpServletRequest
     private List _cookies = new ArrayList();
     private String _contentPath;
 
+    /**
+     *  This can be stored within the header, but doing it this way emulates a browser that 
+     *  does not put the encoding in the request, which appears to be the general case. 
+     **/
+    private String _encoding = null;
+
     public MockRequest(MockContext servletContext, String servletPath)
     {
         _servletContext = servletContext;
@@ -265,11 +271,12 @@ public class MockRequest extends AttributeHolder implements HttpServletRequest
 
     public String getCharacterEncoding()
     {
-        return null;
+        return _encoding;
     }
 
     public void setCharacterEncoding(String arg0) throws UnsupportedEncodingException
     {
+        _encoding = arg0;
     }
 
     public int getContentLength()
