@@ -23,13 +23,13 @@
  *    Alternately, this acknowledgment may appear in the software itself,
  *    if and wherever such third-party acknowledgments normally appear.
  *
- * 4. The names "Apache" and "Apache Software Foundation", "Tapestry" 
+ * 4. The names "Apache" and "Apache Software Foundation", "Tapestry"
  *    must not be used to endorse or promote products derived from this
  *    software without prior written permission. For written
  *    permission, please contact apache@apache.org.
  *
- * 5. Products derived from this software may not be called "Apache" 
- *    or "Tapestry", nor may "Apache" or "Tapestry" appear in their 
+ * 5. Products derived from this software may not be called "Apache"
+ *    or "Tapestry", nor may "Apache" or "Tapestry" appear in their
  *    name, without prior written permission of the Apache Software Foundation.
  *
  * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
@@ -57,7 +57,7 @@ package org.apache.tapestry;
 
 /**
  *  General wrapper for any exception (normal or runtime) that may occur during
- *  runtime processing for the application.  This is exception is used
+ *  runtime processing for the application.  This exception is used
  *  when the intent is to communicate a low-level failure to the user or
  *  developer; it is not expected to be caught.  The {@link #getCause() rootCause}
  *  property is a <em>nested</em> exception (Tapestry supported this concept
