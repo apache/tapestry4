@@ -38,7 +38,6 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionBindingEvent;
 import javax.servlet.http.HttpSessionBindingListener;
 
-import org.apache.bsf.BSFManager;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -61,13 +60,15 @@ import org.apache.tapestry.listener.ListenerMap;
 import org.apache.tapestry.pageload.PageSource;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.request.ResponseOutputStream;
-import org.apache.tapestry.services.*;
+import org.apache.tapestry.services.ComponentMessagesSource;
 import org.apache.tapestry.services.Infrastructure;
-import org.apache.tapestry.services.impl.*;
+import org.apache.tapestry.services.ObjectPool;
+import org.apache.tapestry.services.TemplateSource;
+import org.apache.tapestry.services.impl.ComponentMessagesSourceImpl;
+import org.apache.tapestry.services.impl.TemplateSourceImpl;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.util.exception.ExceptionAnalyzer;
 import org.apache.tapestry.util.io.DataSqueezer;
-import org.apache.tapestry.util.pool.Pool;
 
 /**
  *  Basis for building real Tapestry applications.  Immediate subclasses
@@ -322,18 +323,6 @@ public abstract class AbstractEngine
     private transient Map _serviceMap;
 
     protected static final String SERVICE_MAP_NAME = "org.apache.tapestry.ServiceMap";
-
-    /**
-     *  A shared instance of {@link Pool}.
-     *
-     *  @since 3.0
-     *  @see #createPool(RequestContext)
-     *
-     **/
-
-    private transient Pool _pool;
-
-    protected static final String POOL_NAME = "org.apache.tapestry.Pool";
 
     /**
      *  Name of a shared instance of {@link org.apache.tapestry.engine.IComponentClassEnhancer}
@@ -1066,7 +1055,6 @@ public abstract class AbstractEngine
     {
     	_infrastructure.getResetEventCoordinator().fireResetEvent();
     	
-        _pool.clear();
         _pageSource.reset();
         _scriptSource.reset();
         _enhancer.reset();
@@ -1194,20 +1182,6 @@ public abstract class AbstractEngine
                 _enhancer = createComponentClassEnhancer(context);
 
                 servletContext.setAttribute(name, _enhancer);
-            }
-        }
-
-        if (_pool == null)
-        {
-            String name = POOL_NAME + ":" + servletName;
-
-            _pool = (Pool) servletContext.getAttribute(name);
-
-            if (_pool == null)
-            {
-                _pool = createPool(context);
-
-                servletContext.setAttribute(name, _pool);
             }
         }
 
@@ -1964,32 +1938,11 @@ public abstract class AbstractEngine
         }
     }
 
-    /**
-     *  Returns an new instance of {@link Pool}, with the standard
-     *  set of adaptors, plus {@link BSFManagerPoolableAdaptor} for
-     *  {@link BSFManager}.
-     *
-     *  <p>Subclasses may override this
-     *  method to configure the Pool differently.
-     *
-     *  @since 3.0
-     *
-     **/
-
-    protected Pool createPool(RequestContext context)
-    {
-        Pool result = new Pool();
-
-        result.registerAdaptor(BSFManager.class, new BSFManagerPoolableAdaptor());
-
-        return result;
-    }
-
     /** @since 3.0 **/
 
-    public Pool getPool()
+    public ObjectPool getPool()
     {
-        return _pool;
+        return _infrastructure.getObjectPool();
     }
 
     /**

@@ -32,16 +32,16 @@ import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.services.ComponentMessagesSource;
+import org.apache.tapestry.services.ObjectPool;
 import org.apache.tapestry.services.TemplateSource;
+import org.apache.tapestry.services.impl.ObjectPoolImpl;
 import org.apache.tapestry.spec.IApplicationSpecification;
 import org.apache.tapestry.util.io.DataSqueezer;
-import org.apache.tapestry.util.pool.Pool;
 
 /**
  *  An implementation of {@link IEngine} used for unit testing.
  *
  *  @author Howard Lewis Ship
- *  @version $Id$
  *  @since 2.0.4
  *
  **/
@@ -51,7 +51,7 @@ public class MockEngine implements IEngine
     private ClassResolver _resolver;
     private ComponentMessagesSource componentStringsSource;
 
-    private Pool _pool = new Pool();
+    private ObjectPool _pool = new ObjectPoolImpl();
     private String _servletPath;
     private IApplicationSpecification applicationSpecification;
 
@@ -180,7 +180,7 @@ public class MockEngine implements IEngine
         return null;
     }
 
-    public Pool getPool()
+    public ObjectPool getPool()
     {
         return _pool;
     }

@@ -23,8 +23,8 @@ import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.engine.IMonitor;
 import org.apache.tapestry.engine.IPageSource;
 import org.apache.tapestry.resolver.PageSpecificationResolver;
+import org.apache.tapestry.services.ObjectPool;
 import org.apache.tapestry.util.MultiKey;
-import org.apache.tapestry.util.pool.Pool;
 
 /**
  *  A source for pages for a particular application.  Each application
@@ -73,7 +73,7 @@ public class PageSource implements IPageSource
      *
      **/
 
-    private Pool _pool;
+    private ObjectPool _pool;
 
     public PageSource(IEngine engine)
     {
@@ -129,7 +129,7 @@ public class PageSource implements IPageSource
     {
         IEngine engine = cycle.getEngine();
         Object key = buildKey(engine, pageName);
-        IPage result = (IPage) _pool.retrieve(key);
+        IPage result = (IPage) _pool.get(key);
 
         if (result == null)
         {
@@ -186,7 +186,7 @@ public class PageSource implements IPageSource
 
     protected PageLoader getPageLoader(IRequestCycle cycle)
     {
-        PageLoader result = (PageLoader) _pool.retrieve(PAGE_LOADER_POOL_KEY);
+        PageLoader result = (PageLoader) _pool.get(PAGE_LOADER_POOL_KEY);
 
         if (result == null)
             result = new PageLoader(cycle);
@@ -218,7 +218,7 @@ public class PageSource implements IPageSource
     protected PageSpecificationResolver getPageSpecificationResolver(IRequestCycle cycle)
     {
         PageSpecificationResolver result =
-            (PageSpecificationResolver) _pool.retrieve(PAGE_SPECIFICATION_RESOLVER_KEY);
+            (PageSpecificationResolver) _pool.get(PAGE_SPECIFICATION_RESOLVER_KEY);
 
         if (result == null)
             result = new PageSpecificationResolver(cycle);
@@ -258,12 +258,12 @@ public class PageSource implements IPageSource
     /**
      *  Invoked (during testing primarily) to release the entire pool
      *  of pages, and the caches of bindings and assets.
-     *
-     **/
+     *  TODO: Probably remove this!
+     */
 
     public synchronized void reset()
     {
-        _pool.clear();
+        // _pool.clear();
     }
 
     public String toString()

@@ -19,6 +19,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.tapestry.event.ResetEventListener;
 import org.apache.tapestry.services.ObjectPool;
 
 /**
@@ -32,7 +33,7 @@ import org.apache.tapestry.services.ObjectPool;
  * @author Howard Lewis Ship
  * @since 3.1
  */
-public class ObjectPoolImpl implements ObjectPool
+public class ObjectPoolImpl implements ObjectPool, ResetEventListener
 {
     /**
      * Pool of Lists (of pooled objects), keyed on arbitrary key.
@@ -60,6 +61,11 @@ public class ObjectPoolImpl implements ObjectPool
         }
 
         pooled.add(value);
+    }
+
+    public synchronized void resetDidOccur()
+    {
+        _pool.clear();
     }
 
 }

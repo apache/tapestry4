@@ -22,7 +22,14 @@
   a collection of loosely bound services.
   
   <service-point id="EnginePool" interface="org.apache.tapestry.services.ObjectPool">
-    <create-instance class="org.apache.tapestry.services.impl.ObjectPoolImpl"/>
+    
+    Contains engine instances, keyed on locale, ready for use in the current request.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.ObjectPoolImpl">
+        <event-listener service-id="tapestry.ResetEventCoordinator"/>
+      </construct>
+    </invoke-factory> 
   </service-point>  
   
   <service-point id="LocaleExtractor" interface="org.apache.tapestry.services.LocaleExtractor">

@@ -24,7 +24,7 @@ import org.apache.tapestry.engine.IPropertySource;
  * @author Howard Lewis Ship
  * @since 3.1
  */
-public class PropertySourceContribution extends BaseLocatable implements IPropertySource
+public class PropertySourceContribution extends BaseLocatable
 {
     private String _name;
     private String _before;
@@ -66,9 +66,9 @@ public class PropertySourceContribution extends BaseLocatable implements IProper
         _source = source;
     }
 
-    public String getPropertyValue(String propertyName)
+    public IPropertySource getSource()
     {
-        return _source.getPropertyValue(propertyName);
+        return _source;
     }
 
 }

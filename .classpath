@@ -23,5 +23,6 @@
     <classpathentry kind="lib"
         path="ext-package/lib/hivemind-1.0-rc-2-snapshot.jar" sourcepath="C:/workspace/jakarta-hivemind/framework/src/java"/>
     <classpathentry kind="lib" path="ext-package/lib/hivemind-lib-1.0-rc-2-snapshot.jar"/>
+    <classpathentry kind="lib" path="framework/src/descriptor"/>
     <classpathentry kind="output" path="bin"/>
 </classpath>

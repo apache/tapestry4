@@ -48,6 +48,7 @@
         <set-service property="resetEventCoordinator" service-id="ResetEventCoordinator"/>
         <set-service property="templateSource" service-id="tapestry.parse.TemplateSource"/>
         <set-service property="specificationSource" service-id="tapestry.parse.SpecificationSource"/>
+        <set-service property="objectPool" service-id="GlobalObjectPool"/>
       </construct>
     </invoke-factory>
     
@@ -88,6 +89,20 @@
     <create-instance class="org.apache.tapestry.services.impl.ResetEventCoordinatorImpl"/>
   </service-point>
   
+  <service-point id="GlobalObjectPool" interface="org.apache.tapestry.services.ObjectPool">
+    
+    A general purpose object pool used throughout the application. Care should be
+    taken to ensure that keys are sufficiently unique.  This service will likely
+    be removed soon; replaced with a number of more individual object pools
+    (as necessary).
+     
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.ObjectPoolImpl">
+        <event-listener service-id="ResetEventCoordinator"/>
+      </construct>
+    </invoke-factory> 
+  </service-point> 
+  
   
   <service-point id="ComponentMessagesSource" interface="org.apache.tapestry.services.ComponentMessagesSource">
     
@@ -96,10 +111,29 @@
     <invoke-factory>
       <construct class="org.apache.tapestry.services.impl.ComponentMessagesSourceImpl">
         <event-listener service-id="ResetEventCoordinator"/>
-        <set-object property="applicationPropertySource" value="service-property:Infrastructure:applicationPropertySource"/>
+        <set-object property="applicationPropertySource" value="infrastructure:applicationPropertySource"/>
       </construct>
     </invoke-factory>
     
   </service-point>
+  
+  <service-point id="InfrastructureObjectProvider" interface="org.apache.hivemind.service.ObjectProvider">
+    
+    ObjectProvider mapped to prefix "infrastructure:", the locator is the name of a property of the
+    Infratructure service.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.services.impl.InfrastructureObjectProvider">
+        <set-service property="infrastructure" service-id="Infrastructure"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
+  
+  <contribution configuration-id="hivemind.ObjectProviders">
+    <provider prefix="infrastructure" service-id="InfrastructureObjectProvider"/>
+  </contribution>
+  
+  
   
 </module>
