@@ -247,7 +247,7 @@ public class ImageSubmit extends AbstractFormComponent
         super.prepareForRender(cycle);
         
         if (_image == null)
-            throw new RequiredParameterException(this, "image", getBinding("image"))
+            throw new RequiredParameterException(this, "image", getBinding("image"));
     }
 
 }
