@@ -3,7 +3,7 @@
   <para>Welcome to Tapestry!</para>
   <para>
     Tapestry is an application framework for developing web applications.  It uses
-    a component object model to represent the pages of a web application.  This is 
+    a component object model to represent the pages of a web application.  This is
     similar to spirit to using the Java Swing component object model to build GUIs.
   </para>
   <para>
@@ -22,39 +22,39 @@
     examples along the way to assist you in learning how the framework is used.
 
     The remainder of the tutorial provides useful information on advanced topics including component creation,
-    usage of the component inspector, EJB support, and optimizations.  
+    usage of the component inspector, EJB support, and optimizations.
   </para>
-  
+
   <para>
-    
+
   </para>
 
   <section id="working-with-tapestry">
     <title>Working with Tapestry</title>
     <para>
-      The goal of Tapestry is to eliminate most of the coding in a web application.  Under Tapestry, 
-      nearly all code is directly related to application functionality, with very little "plumbing".  If you 
-      have previously developed a web application using Microsoft Active Server Pages, JavaServer 
-      Pages or Java Servlets, you may take for granted all the plumbing:  writing servlets, assembling 
+      The goal of Tapestry is to eliminate most of the coding in a web application.  Under Tapestry,
+      nearly all code is directly related to application functionality, with very little "plumbing".  If you
+      have previously developed a web application using Microsoft Active Server Pages, JavaServer
+      Pages or Java Servlets, you may take for granted all the plumbing:  writing servlets, assembling
       URLs, parsing URLs, managing objects inside the &HttpSession;, etc.
     </para>
     <para>
-      Tapestry takes care of nearly all of that, for free.  It allows for the development of rich, highly 
+      Tapestry takes care of nearly all of that, for free.  It allows for the development of rich, highly
       interactive applications.
     </para>
     <para>
       Before you get into the wonders of Tapestry, you will need to setup your development
-      environment such that you are able to both run the provided tutorial applications, 
-      and also such that you are able to 
+      environment such that you are able to both run the provided tutorial applications,
+      and also such that you are able to
       compile and run the code that you develop while moving through this tutorial.
     </para>
   </section>
 
   <section id="environment-setup">
     <title>Setting up the environment</title>
-    
+
     <para>
-      This document expects that you will have extracted the full Tapestry distribution to your 
+      This document expects that you will have extracted the full Tapestry distribution to your
       <filename class="directory">C:</filename> drive
       <footnote>
         <para>
@@ -80,23 +80,23 @@
       <filename>src/examples-src.jar</filename>.  A precompiled WAR file,
       <filename>lib/tutorial.war</filename> is included in the distribution.
     </para>
-    
-    
+
+
     <para>
       The Tapestry distribution includes an &Ant; build file that allows the
       Tutorial to be directly executed.  Ant release 1.5 is required.
     </para>
-    
+
     <para>
       From the Tapestry root directory,
       execute the command <command>ant -emacs run-tutorial</command>, which will launch the
       Jetty server for the Tutorial.
     </para>
     <para>
-      Once Jetty is running, you can access the Tutorials using the URL 
+      Once Jetty is running, you can access the Tutorials using the URL
       <ulink url="http://localhost:8080/tutorial">
 	<filename>http://localhost:8080/tutorial</filename>
-      </ulink>. 
+      </ulink>.
       You should do this now, in order to check that your
       environment is setup correctly so far.
     </para>
@@ -108,9 +108,9 @@
 	</imageobject>
       </mediaobject>
     </figure>
-    
+
     Tapestry can exist in any Servlet (v2.1 +) compatible container,
-    for example JBoss. If you wish to deploy and run the tutorial in 
+    for example JBoss. If you wish to deploy and run the tutorial in
     an alternative environment please see <xref linkend="integration"/>
   </section>
 
@@ -123,8 +123,11 @@
     </para>
 
     <para>
-      Within the Tutorial directory, you will find the files necessary 
-      to build the environment, within <filename>tutorial-environment.zip</filename>.
+      Within the Tutorial directory, you will find the files necessary
+      to build the environment, within 
+				<ulink url="doc/Tutorial2/tutorial-environment.zip">
+				<filename>tutorial-environment.zip</filename>.
+				</ulink>
       This includes a build file capable of:
       <orderedlist>
 	<listitem>Compiling the code</listitem>
@@ -137,7 +140,7 @@
       To setup your environment, perform the following steps:
       <orderedlist>
 	<listitem>The first step is to create a directory for your example code.
-	  This tutorial uses <filename class="directory">C:\TapestryExample</filename>. 
+	  This tutorial uses <filename class="directory">C:\TapestryExample</filename>.
 	  <footnote>As before, it is assumed that if you are using a non-Windows environment,
 	    that you have the knowledge necessary to translate the paths</footnote>
 	</listitem>
@@ -171,20 +174,20 @@
 	<listitem>
 	  <para>
 	    Go to a command console, to the directory you will be using
-	    for development. In the case of this tutorial, that is 
+	    for development. In the case of this tutorial, that is
 	    <filename class="directory">C:\TapestryExample</filename>
 	    and type 'ant'. If all goes will, you will see a message saying that the build was successful.
 	  </para>
 	</listitem>
 	<listitem>
 	  <para>
-	    Type 'ant run', and then open a web browser to 
+	    Type 'ant run', and then open a web browser to
 	    <ulink url="http://localhost:8081/learn-tapestry">
 	      <filename>http://localhost:8081/learn-tapestry</filename>
 	    </ulink>
 	    <footnote>
-	      Note that this is intentionally a 
-	      different port number from the tapestry tutorial example itself. 
+	      Note that this is intentionally a
+	      different port number from the tapestry tutorial example itself.
 	      It means you can run both at once if you wish.
 	    </footnote>
 	  </para>
