@@ -27,7 +27,7 @@
 	<import file="${hivebuild.dir}/javadoc-report.xml"/>
 	<import file="${hivebuild.dir}/clover-report.xml"/>  
   
-	<target name="compile">
+	<target name="compile-dependencies">
     <project-dependency artifact="tapestry"/>
 
     <ibiblio-dependency artifact="commons-logging"    version="${logging.version}"  group="commons-logging"/>
@@ -46,8 +46,6 @@
 		<ibiblio-dependency artifact="javassist"          version="2.6"                 group="jboss"/>
 		<ibiblio-dependency artifact="servletapi"         version="2.3"                 group="servletapi"/>
     -->
-     
-		<default-compile/> 
 	</target>	
   
 </project>

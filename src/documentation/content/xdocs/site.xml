@@ -28,7 +28,6 @@
     
     <project label="Tapestry">
       <home label="Home" href="index.html"/>
-      <quotes label="Quotes" href="quotes.html"/>
       <faq label="FAQ" href="faq.html"/>
       <todo label="TODO" href="todo.html"/>
       <changes label="Change Log" href="changes.html"/>
