@@ -136,7 +136,7 @@ public class Form extends AbstractComponent implements IForm, IDirect, PageDetac
 
         IdAllocator(String baseId)
         {
-            this.baseId = baseId;
+            this.baseId = baseId + "_";
         }
 
         public String nextId()
