@@ -38,6 +38,18 @@ PRE  {
 	font-size : 12px;
 }
 
+
+SPAN.hyper-em
+{
+	font-style: italic;
+	font-weight: bold;
+	color: red;
+}
+
+SPAN.note
+{
+	font-style: italic;
+}
 DIV.right-side-quote  {
 	text-align : left;
 	float : right;
