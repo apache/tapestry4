@@ -96,3 +96,59 @@ SPAN.jwc-id
 }
 
 	
+
+
+TABLE.request-context-border  {
+	border-width : 1;
+	border-color : Black;
+	font-size: 9pt;
+}
+
+SPAN.request-context-object  {
+	font-weight : bold;
+	text-align : left;
+	font-size: 12pt;
+}
+
+TR.request-context-section TH  {
+	text-align : center;
+	color : White;
+	background-color : "#330066";
+}
+
+TR.request-context-header TH  {
+	text-align : center;
+	color : White;
+	background-color : "#330066";
+}
+
+TABLE.request-context-object TR.odd TD  {
+	text-align : left;
+	color : Black;
+	background-color : Silver;
+}
+
+TABLE.request-context-object TR.odd TH  {
+	color : Black;
+	background-color : Silver;
+	text-align : right;
+}
+
+TABLE.request-context-object TR.even TD  {
+	text-align : left;
+}
+
+TABLE.request-context-object TR.even TH  {
+	text-align : right;
+}
+
+TABLE.request-context-object  {
+	width : 100%;
+	font-size: 9pt;
+}
+
+TABLE.request-context-object TR  {
+	vertical-align : text-top;
+}
+
+

@@ -104,25 +104,5 @@
 				</binding>
 			</bindings>
 		</component>
-		<component>
-			<id>insertByteCount</id>
-			<type>Insert</type>
-			<bindings>
-				<binding>
-					<name>value</name>
-					<property-path>engineByteCount</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>insertSerializedEngine</id>
-			<type>Delegator</type>
-			<bindings>
-				<binding>
-					<name>delegate</name>
-					<property-path>engineDumpDelegate</property-path>
-				</binding>
-			</bindings>
-		</component>
 	</components>
 </specification>

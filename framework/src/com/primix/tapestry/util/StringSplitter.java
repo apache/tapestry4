@@ -113,6 +113,19 @@ public class StringSplitter
 			length = 0;
 		}
 
+		// Special case:  if the string contains no delimiters
+		// then it isn't really split.  Wrap the input string
+		// in an array and return.  This is a little optimization
+		// to prevent a new String instance from being
+		// created unnecessarily.
+		
+		if (start == 0 && length == buffer.length)
+		{
+			result = new String[1];
+			result[0] = value;
+			return result;
+		}
+		
 		// If the string is all delimiters, then this
 		// will result in a single empty token.
 

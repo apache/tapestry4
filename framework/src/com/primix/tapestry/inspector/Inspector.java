@@ -95,11 +95,6 @@ public class Inspector extends BasePage
 		return view == View.SPECIFICATION;
 	}
 	
-	public boolean isViewComponents()
-	{
-		return view == View.COMPONENTS;
-	}
-	
 	public boolean isViewTemplate()
 	{
 		return view == View.TEMPLATE;
@@ -108,6 +103,11 @@ public class Inspector extends BasePage
 	public boolean isViewProperties()
 	{
 		return view == View.PROPERTIES;
+	}
+	
+	public boolean isViewEngine()
+	{
+		return view == View.ENGINE;
 	}
 	
 	/**

@@ -1,5 +1,11 @@
 * Jan 4 2001 hship
 
+Optimize PropertyBindings, simplifying property paths when possible.
+Make StringSplitter recognize when a string cannot be split.
+Reorganize the Inspector a bit.
+
+* Jan 4 2001 hship
+
 [127536] Class load error for .wars 
 
 * Jan 3 2001 hship

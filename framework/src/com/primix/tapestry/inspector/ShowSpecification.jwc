@@ -45,6 +45,16 @@
 			</bindings>
 		</component>
 		<component>
+			<id>ifFormalParameters</id>
+			<type>Conditional</type>
+			<bindings>
+				<binding>
+					<name>condition</name>
+					<property-path>formalParameterNames</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
 			<id>e-formal</id>
 			<type>Foreach</type>
 			<bindings>
@@ -55,16 +65,6 @@
 				<binding>
 					<name>value</name>
 					<property-path>parameterName</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>ifFirstFormal</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>components.e-formal.first</property-path>
 				</binding>
 			</bindings>
 		</component>
@@ -113,12 +113,12 @@
 			</bindings>
 		</component>
 		<component>
-			<id>ifLastFormal</id>
+			<id>ifInformalParameters</id>
 			<type>Conditional</type>
 			<bindings>
 				<binding>
 					<name>condition</name>
-					<property-path>components.e-formal.last</property-path>
+					<property-path>informalParameterNames</property-path>
 				</binding>
 			</bindings>
 		</component>
@@ -133,16 +133,6 @@
 				<binding>
 					<name>value</name>
 					<property-path>parameterName</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>ifFirstInformal</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>components.e-informal.first</property-path>
 				</binding>
 			</bindings>
 		</component>
@@ -171,12 +161,12 @@
 			</bindings>
 		</component>
 		<component>
-			<id>ifLastInformal</id>
+			<id>ifAssets</id>
 			<type>Conditional</type>
 			<bindings>
 				<binding>
 					<name>condition</name>
-					<property-path>components.e-informal.last</property-path>
+					<property-path>assetNames</property-path>
 				</binding>
 			</bindings>
 		</component>
@@ -191,16 +181,6 @@
 				<binding>
 					<name>value</name>
 					<property-path>assetName</property-path>
-				</binding>
-			</bindings>
-		</component>
-		<component>
-			<id>ifFirstAsset</id>
-			<type>Conditional</type>
-			<bindings>
-				<binding>
-					<name>condition</name>
-					<property-path>components.e-asset.first</property-path>
 				</binding>
 			</bindings>
 		</component>
@@ -229,12 +209,64 @@
 			</bindings>
 		</component>
 		<component>
-			<id>ifLastAsset</id>
+			<id>ifComponents</id>
 			<type>Conditional</type>
 			<bindings>
 				<binding>
 					<name>condition</name>
-					<property-path>components.e-asset.last</property-path>
+					<property-path>sortedComponents</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>e-components</id>
+			<type>Foreach</type>
+			<bindings>
+				<binding>
+					<name>source</name>
+					<property-path>sortedComponents</property-path>
+				</binding>
+				<binding>
+					<name>value</name>
+					<property-path>component</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>evenOddComponent</id>
+			<type>/com/primix/tapestry/inspector/EvenOdd.jwc</type>
+		</component>
+		<component>
+			<id>selectComponent</id>
+			<type>Direct</type>
+			<bindings>
+				<binding>
+					<name>listener</name>
+					<property-path>page.selectComponentListener</property-path>
+				</binding>
+				<binding>
+					<name>context</name>
+					<property-path>component.idPath</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>insertComponentId</id>
+			<type>Insert</type>
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>component.id</property-path>
+				</binding>
+			</bindings>
+		</component>
+		<component>
+			<id>insertComponentType</id>
+			<type>Insert</type>
+			<bindings>
+				<binding>
+					<name>value</name>
+					<property-path>componentType</property-path>
 				</binding>
 			</bindings>
 		</component>
