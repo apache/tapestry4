@@ -10,7 +10,7 @@
 			<bindings>
 				<static-binding>
 					<name>title</name>
-					<value>Logout</value>
+					<value>Goodbye</value>
 				</static-binding>
 			</bindings>
 		</component>

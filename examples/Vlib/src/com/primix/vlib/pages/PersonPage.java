@@ -38,7 +38,9 @@ import java.rmi.*;
  */
 
 /**
- *  Run's queries and displays matches.
+ * Displays the book inventory list for a single {@link IPerson}, showing
+ * what books are owned by the person, who has them borrowed, etc.  If the
+ * user is logged in, then books can be borrowed from this page as well.
  *
  * @author Howard Ship
  * @version $Id$
@@ -82,10 +84,14 @@ implements IExternalPage
 		return "mailto:" + email;
 	}
 	
+	/**
+	 *  Sets the email transient page property.
+	 *
+	 */
+	 
 	public void setEmail(String value)
 	{
 		email = value;
-		fireObservedChange("email", value);
 	}
 		
 	public String getFullName()
@@ -93,11 +99,14 @@ implements IExternalPage
 		return fullName;
 	}
 	
+	/**
+	 *  Sets the fullName transient page property.
+	 *
+	 */
+	
 	public void setFullName(String value)
 	{
 		fullName = value;
-		
-		fireObservedChange("fullName", value);
 	}
 	
 	public int getMatchCount()
@@ -105,11 +114,15 @@ implements IExternalPage
 		return matchCount;
 	}
 	
+	/**
+	 *  Sets the matchCount transient page property.  This is set when
+	 *  the onwer query is run.
+	 *
+	 */
+	 
 	public void setMatchCount(int value)
 	{
 		matchCount = value;
-		
-		fireObservedChange("matchCount", value);
 	}
 	
 	public Handle getBookQueryHandle()
@@ -117,12 +130,25 @@ implements IExternalPage
 		return bookQueryHandle;
 	}
 	
+	/**
+	 *  Sets the handle of the {@link IBookQuery} session bean used to
+	 *  locate books owned by the person.
+	 *
+	 */
+	 
 	public void setBookQueryHandle(Handle value)
 	{
 		bookQueryHandle = value;
 		fireObservedChange("bookQueryHandle", value);
 	}
 	
+	/**
+	 *  Gets the {@link IBookQuery} session bean that contains
+	 *  the books owned by the user, restoring it from the
+	 *  handle property, or creating it fresh as needed.
+	 *
+	 */
+	 
 	public IBookQuery getBookQuery()
 	{
 		VirtualLibraryApplication app;
@@ -157,6 +183,12 @@ implements IExternalPage
 		return bookQuery;
 	}
 	
+	/**
+	 *  Sets the bookQuery transient page property, which also sets
+	 *  the handle persistent page property.
+	 *
+	 */
+	 
 	public void setBookQuery(IBookQuery value)
 	{
 		bookQuery = value;
@@ -174,6 +206,12 @@ implements IExternalPage
 		}
 	}
 	
+	/**
+	 *  Invoked by the external service to being viewing the
+	 *  identified person.
+	 *
+	 */
+	 
 	public void setup(Integer personPK, IRequestCycle cycle)
 	{
 		VirtualLibraryApplication app;

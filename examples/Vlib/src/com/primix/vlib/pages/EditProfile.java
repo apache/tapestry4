@@ -98,7 +98,9 @@ public class EditProfile extends Protected
 	
 	/**
 	 *  Invoked (from {@link MyBooks}) to begin editting the user's
-	 *  profile.
+	 *  profile.  We get the entity attributes from the {@link IPerson},
+	 *  and store them in the attributes page property, ready to provide
+	 *  default values to the {@link TextField} components.
 	 *
 	 */
 	 

@@ -41,6 +41,12 @@ import javax.rmi.*;
  *  Shows a list of the user's books, allowing books to be editted or
  *  even deleted.
  *
+ *  <p>Note that, unlike elsewhere, book titles do not link to the
+ * {@link ViewBook} page.  It seems to me there would be a conflict between
+ * that behavior and the edit behavior; making the book titles not be links
+ *  removes the ambiguity over what happens when the book title is clicked
+ *  (view vs. edit).
+ *
  * @author Howard Ship
  * @version $Id$
  */
