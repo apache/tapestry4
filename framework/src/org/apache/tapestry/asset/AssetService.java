@@ -38,8 +38,8 @@ import org.apache.tapestry.request.ResponseOutputStream;
  *
  *  <p>The retrieval part is directly linked to {@link PrivateAsset}.
  *  The service responds to a URL that encodes the path of a resource
- *  within the classpath.  The 
- *  {@link #service(IEngineServiceView, IRequestCycle, ResponseOutputStream)} 
+ *  within the classpath.  The
+ *  {@link #service(IEngineServiceView, IRequestCycle, ResponseOutputStream)}
  *  method reads the resource and streams it out.
  *
  *  <p>TBD: Security issues.  Should only be able to retrieve a
@@ -86,7 +86,7 @@ public class AssetService extends AbstractService
     {
         if (Tapestry.size(parameters) != 2)
             throw new ApplicationRuntimeException(
-                Tapestry.format("service-single-parameter", Tapestry.ASSET_SERVICE));
+                Tapestry.format("service-incorrect-parameter-count", Tapestry.ASSET_SERVICE, new Integer(2)));
 
         // Service is stateless
 
@@ -146,13 +146,13 @@ public class AssetService extends AbstractService
                 Tapestry.format("missing-resource", resourcePath));
 
         String actualChecksum = engine.getResourceChecksumSource().getChecksum(resourceURL);
-        
+
         if (!actualChecksum.equals(checksum))
         {
             throw new ApplicationRuntimeException(
                 Tapestry.format("AssetService.checksum-failure", checksum, resourcePath));
         }
-        
+
         URLConnection resourceConnection = resourceURL.openConnection();
 
         ServletContext servletContext = cycle.getRequestContext().getServlet().getServletContext();
