@@ -3,6 +3,7 @@ package net.sf.tapestry;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -186,35 +187,206 @@ public final class Tapestry
         abstract public Iterator coerce(Object value);
     }
 
+    private static class DefaultIteratorAdaptor extends IteratorAdaptor
+    {
+        public Iterator coerce(Object value)
+        {
+            return (Iterator) value;
+        }
+
+    }
+
+    private static class CollectionIteratorAdaptor extends IteratorAdaptor
+    {
+        public Iterator coerce(Object value)
+        {
+            Collection c = (Collection) value;
+
+            if (c.size() == 0)
+                return null;
+
+            return c.iterator();
+        }
+    }
+
+    private static class ObjectIteratorAdaptor extends IteratorAdaptor
+    {
+        public Iterator coerce(Object value)
+        {
+            return Collections.singleton(value).iterator();
+        }
+    }
+
+    private static class ObjectArrayIteratorAdaptor extends IteratorAdaptor
+    {
+        public Iterator coerce(Object value)
+        {
+            Object[] array = (Object[]) value;
+
+            if (array.length == 0)
+                return null;
+
+            return Arrays.asList(array).iterator();
+        }
+    }
+
+    private static class BooleanArrayIteratorAdaptor extends IteratorAdaptor
+    {
+        public Iterator coerce(Object value)
+        {
+            boolean[] array = (boolean[]) value;
+
+            if (array.length == 0)
+                return null;
+
+            List l = new ArrayList(array.length);
+
+            for (int i = 0; i < array.length; i++)
+                l.add(array[i] ? Boolean.TRUE : Boolean.FALSE);
+
+            return l.iterator();
+        }
+    }
+
+    private static class ByteArrayIteratorAdaptor extends IteratorAdaptor
+    {
+        public Iterator coerce(Object value)
+        {
+            byte[] array = (byte[]) value;
+
+            if (array.length == 0)
+                return null;
+
+            List l = new ArrayList(array.length);
+
+            for (int i = 0; i < array.length; i++)
+                l.add(new Byte(array[i]));
+
+            return l.iterator();
+        }
+    }
+
+    private static class CharArrayIteratorAdaptor extends IteratorAdaptor
+    {
+        public Iterator coerce(Object value)
+        {
+            char[] array = (char[]) value;
+
+            if (array.length == 0)
+                return null;
+
+            List l = new ArrayList(array.length);
+
+            for (int i = 0; i < array.length; i++)
+                l.add(new Character(array[i]));
+
+            return l.iterator();
+        }
+    }
+
+    private static class ShortArrayIteratorAdaptor extends IteratorAdaptor
+    {
+        public Iterator coerce(Object value)
+        {
+            short[] array = (short[]) value;
+
+            if (array.length == 0)
+                return null;
+
+            List l = new ArrayList(array.length);
+
+            for (int i = 0; i < array.length; i++)
+                l.add(new Short(array[i]));
+
+            return l.iterator();
+        }
+    }
+
+    private static class IntArrayIteratorAdaptor extends IteratorAdaptor
+    {
+        public Iterator coerce(Object value)
+        {
+            int[] array = (int[]) value;
+
+            if (array.length == 0)
+                return null;
+
+            List l = new ArrayList(array.length);
+
+            for (int i = 0; i < array.length; i++)
+                l.add(new Integer(array[i]));
+
+            return l.iterator();
+        }
+    }
+
+    private static class LongArrayIteratorAdaptor extends IteratorAdaptor
+    {
+        public Iterator coerce(Object value)
+        {
+            long[] array = (long[]) value;
+
+            if (array.length == 0)
+                return null;
+
+            List l = new ArrayList(array.length);
+
+            for (int i = 0; i < array.length; i++)
+                l.add(new Long(array[i]));
+
+            return l.iterator();
+        }
+    }
+
+    private static class FloatArrayIteratorAdaptor extends IteratorAdaptor
+    {
+        public Iterator coerce(Object value)
+        {
+            float[] array = (float[]) value;
+
+            if (array.length == 0)
+                return null;
+
+            List l = new ArrayList(array.length);
+
+            for (int i = 0; i < array.length; i++)
+                l.add(new Float(array[i]));
+
+            return l.iterator();
+        }
+    }
+
+    private static class DoubleArrayIteratorAdaptor extends IteratorAdaptor
+    {
+        public Iterator coerce(Object value)
+        {
+            double[] array = (double[]) value;
+
+            if (array.length == 0)
+                return null;
+
+            List l = new ArrayList(array.length);
+
+            for (int i = 0; i < array.length; i++)
+                l.add(new Double(array[i]));
+
+            return l.iterator();
+        }
+    }
+
     static {
-        _iteratorAdaptors.register(Iterator.class, new IteratorAdaptor()
-        {
-            public Iterator coerce(Object value)
-            {
-                return (Iterator) value;
-            }
-        });
-
-        _iteratorAdaptors.register(Collection.class, new IteratorAdaptor()
-        {
-            public Iterator coerce(Object value)
-            {
-                Collection c = (Collection) value;
-
-                if (c.size() == 0)
-                    return null;
-
-                return c.iterator();
-            }
-        });
-
-        _iteratorAdaptors.register(Object.class, new IteratorAdaptor()
-        {
-            public Iterator coerce(Object value)
-            {
-                return Collections.singleton(value).iterator();
-            }
-        });
+        _iteratorAdaptors.register(Iterator.class, new DefaultIteratorAdaptor());
+        _iteratorAdaptors.register(Collection.class, new CollectionIteratorAdaptor());
+        _iteratorAdaptors.register(Object.class, new ObjectIteratorAdaptor());
+        _iteratorAdaptors.register(Object[].class, new ObjectArrayIteratorAdaptor());
+        _iteratorAdaptors.register(boolean[].class, new BooleanArrayIteratorAdaptor());
+        _iteratorAdaptors.register(byte[].class, new ByteArrayIteratorAdaptor());
+        _iteratorAdaptors.register(char[].class, new CharArrayIteratorAdaptor());
+        _iteratorAdaptors.register(short[].class, new ShortArrayIteratorAdaptor());
+        _iteratorAdaptors.register(int[].class, new IntArrayIteratorAdaptor());
+        _iteratorAdaptors.register(long[].class, new LongArrayIteratorAdaptor());
+        _iteratorAdaptors.register(float[].class, new FloatArrayIteratorAdaptor());
+        _iteratorAdaptors.register(double[].class, new DoubleArrayIteratorAdaptor());
     }
 
     /**
@@ -322,12 +494,14 @@ public final class Tapestry
      *
      *  <table border=1>
      * 	<tr><th>Input Class</th> <th>Result</th> </tr>
-     * <tr><td>Object array</td> <td>Converted to a {@link List} and iterator returned.
-     * null returned if the array is empty.</td>
+     * <tr><td>array</td> <td>Converted to a {@link List} and iterator returned.
+     * null returned if the array is empty.  This works with both object arrays and
+     *  arrays of scalars. </td>
      * </tr>
      * <tr><td>{@link Iterator}</td> <td>Returned as-is.</td>
      * <tr><td>{@link Collection}</td> <td>Iterator returned, or null
      *  if the Collection is empty</td> </tr>
+
      * <tr><td>Any other</td> <td>{@link Iterator} for singleton collection returned</td> </tr>
      * <tr><td>null</td> <td>null returned</td> </tr>
      * </table>
@@ -339,20 +513,7 @@ public final class Tapestry
         if (value == null)
             return null;
 
-        Class valueClass = value.getClass();
-        if (valueClass.isArray())
-        {
-            Object[] array = (Object[]) value;
-
-            if (array.length == 0)
-                return null;
-
-            List l = Arrays.asList(array);
-
-            return l.iterator();
-        }
-
-        IteratorAdaptor adaptor = (IteratorAdaptor) _iteratorAdaptors.getAdaptor(valueClass);
+        IteratorAdaptor adaptor = (IteratorAdaptor) _iteratorAdaptors.getAdaptor(value.getClass());
 
         return adaptor.coerce(value);
     }
@@ -398,7 +559,8 @@ public final class Tapestry
 
                 default :
 
-                    throw new IllegalArgumentException("Unable to convert '" + s + "' to a Locale.");
+                    throw new IllegalArgumentException(
+                        "Unable to convert '" + s + "' to a Locale.");
             }
 
             synchronized (_localeMap)
