@@ -125,14 +125,12 @@ public class URLRetriever
         catch (IOException ex)
         {
             throw new JspException(
-                Tapestry.format("URLRetriever.io-exception", servletPath, ex.getMessage()),
-                ex);
+                Tapestry.format("URLRetriever.io-exception", servletPath, ex.getMessage()));
         }
         catch (ServletException ex)
         {
             throw new JspException(
-                Tapestry.format("URLRetriever.servlet-exception", servletPath, ex.getMessage()),
-                ex);
+                Tapestry.format("URLRetriever.servlet-exception", servletPath, ex.getMessage()));
         }
         finally
         {

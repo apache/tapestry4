@@ -198,8 +198,7 @@ public abstract class AbstractTapestryTag extends TagSupport
                 Tapestry.format(
                     "AbstractTapestryTag.unable-to-evaluate-expression",
                     expression,
-                    t.getMessage()),
-                t);
+                    t.getMessage()));
         }
     }
 }

@@ -152,7 +152,7 @@ public class MockSession extends AttributeHolder implements HttpSession
         if (value instanceof HttpSessionBindingListener)
         {
             HttpSessionBindingListener listener = (HttpSessionBindingListener) value;
-            HttpSessionBindingEvent event = new HttpSessionBindingEvent(this, name, value);
+            HttpSessionBindingEvent event = new HttpSessionBindingEvent(this, name);
 
             listener.valueBound(event);
         }
