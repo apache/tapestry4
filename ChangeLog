@@ -1,3 +1,11 @@
+* Apr 23 2001
+
+Use the smaller log4j-core.jar instead of the full log4j.jar.
+Use version 1.0.4 of log4j.
+Strip out the JSP version of the Primix Virtual Library.
+Correct Javadoc path for Log4j (it must have moved on their site).
+No longer distribute Jasper (from the Jetty distro) since we don't use JSPs anymore.
+
 * Apr 18 2001
 
 Remove last few references to Xerces.
