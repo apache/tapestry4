@@ -78,7 +78,7 @@ public final class Tapestry
      */
 
     public final static String TAG_SUPPORT_SERVLET_PATH_ATTRIBUTE =
-        "org.apach.tapestry.tagsupport.servlet-path";
+        "org.apache.tapestry.tagsupport.servlet-path";
 
     /**
      *  Name of a request attribute used with the
