@@ -15,7 +15,9 @@
             <include name="*.jar"/>
             <include name="${ext.dir}/*.jar"/>
 		</fileset>
-		<pathelement location="${servlet.jar.path}"/>
+		<fileset dir="${root.lib.dir}">
+			<include name="${servlet.dir}/*.jar"/>
+		</fileset>
 	</path>
 	<target name="init">
 		<mkdir dir="${classes.dir}"/>

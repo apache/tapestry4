@@ -73,7 +73,8 @@
 		<delete dir="${build.dir}" quiet="true"/>
 	</target>
 	
-	<target name="install" description="Builds all frameworks and examples.">
+	<target name="install" description="Builds all frameworks and examples." 
+		depends="download-ext-install">
 		<!-- Each project has its own definitions for many properties.
      	 inheritAll="false" ensures that definitions in this buildfile
      	 doesn't override definitions in each project's buildfile. -->
@@ -82,7 +83,7 @@
 		<ant dir="examples" target="install" inheritAll="false"/>
 	</target>
 	
-	<target name="documentation"
+	<target name="documentation" depends="download-ext-doc"
 		description="Builds the Tapestry documentation.">
 		<ant dir="doc/src" target="install" inheritAll="false"/>
 		
@@ -91,7 +92,7 @@
 		<antcall target="site" inheritall="true"/>
 	</target>
 
-	<target name="junit" depends="check-for-jython-dir"
+	<target name="junit" depends="check-for-jython-dir,download-ext-junit"
 		description="Run the JUnit test suite for Tapestry.">
 		<ant dir="junit" target="run" inheritAll="false"/>
 	</target>
@@ -322,8 +323,9 @@
 			<classpath>
 				<path refid="vlib.classpath"/>
 				<path refid="ext.dist.classpath"/>
-				<pathelement location="${servlet.jar.path}"/>
-				<pathelement location="${j2ee.jar.path}"/>
+				<fileset dir="${root.lib.dir}">
+					<include name="${servlet.dir}/*.jar"/>
+				</fileset>
 			</classpath>
 		</javadoc>
 	</target>
@@ -533,22 +535,155 @@
 			/>
 	</target>
 	
-	<target name="check-for-forrest-home">
-	  <available property="exists.forrest.home" type="dir" file="${forrest.home}"/>
-	  <fail unless="forrest.home"
-	        message="Property forrest.home not specified in config/build.properties."/>
-	  <fail unless="exists.forrest.home"
-	        message="Director ${forrest.home} (forrest.home from confrig/build.properties) does not exist."/>
+	<target name="check-for-forrest-dir" depends="check-defined-forrest-dir, check-downloaded-forrest">
 	</target>
 	
-	
-  <target name="site" depends="check-for-forrest-home" description="Generates static HTML documentation">
-    <ant antfile="${forrest.home}/forrest.antproxy.xml" target="site"/>
-  </target>
+	<target name="site" description="Generates static HTML documentation" depends="check-for-forrest-dir">
+		<ant antfile="${installed.forrest.dir}/forrest.antproxy.xml" target="site">
+			<property name="forrest.home" value="${installed.forrest.dir}"/>
+		</ant>
+	</target>
 
+	<target name="validate" depends="check-for-forrest-dir" description="Validates XML documentation files">
+		<ant antfile="${installed.forrest.home}/forrest.antproxy.xml" target="validate"/>
+	</target>
 
-  <target name="validate" depends="check-for-forrest-home" description="Validates XML documentation files">
-    <ant antfile="${forrest.home}/forrest.antproxy.xml" target="validate"/>
-  </target>
+	<target name="check-defined-forrest-dir" if="forrest.dir">
+		<available property="exists.forrest.dir" type="dir" file="${forrest.dir}"/>
+		<fail unless="exists.forrest.dir"
+	        message="Directory ${forrest.dir} (forrest.dir from config/build.properties) does not exist."/>
+		<property name="installed.forrest.dir" value="${forrest.dir}"/>
+	</target>		
 	
+	<target name="check-downloaded-forrest" unless="forrest.home" depends="proxyflags" 
+		description="Download forrest package">
+		<echo message="Property forrest.dir not specified in config/build.properties"/>
+		<echo message="Downloading Forrest"/>
+		<antcall target="downloadzip">
+			<param name="sourcefile" value="${forrestdl.loc}"/>
+			<param name="dlfile" value="${forrestdl.ant.xml}"/>
+			<param name="destdir" value="${base.path}"/>
+		</antcall>
+		<property name="installed.forrest.dir" value="${forrestdl.home}"/>
+	</target>
+
+	<target name="download-ext-install" 
+		depends="download-ext-framework, download-ext-examples" 
+		description="Download binary packages for the install target"/>
+
+	<target name="download-ext-framework" depends="proxyflags" 
+		description="Download binary packages for compiling the framework" >
+		<mkdir dir="${base.path}" />
+    	
+		<antcall target="installgz">
+			<param name="sourcefile" value="${jdom.loc}"/>
+			<param name="dlfile" value="${jdom.jar}"/>
+			<param name="destfile" value="${jdom.ext.jar}"/>
+			<param name="destdir" value="${base.path}"/>
+		</antcall>
+	</target>
+
+	<target name="download-ext-examples" depends="proxyflags" 
+		description="Download binary packages for compiling the examples" >
+		<mkdir dir="${base.path}" />
+    
+		<antcall target="installzip">
+			<param name="sourcefile" value="${mckoi.loc}"/>
+			<param name="dlfile" value="${mckoi.jar}"/>
+			<param name="destfile" value="${mckoi.ext.jar}"/>
+			<param name="destdir" value="${base.path}"/>
+		</antcall>
+	</target>
+
+	<target name="download-ext-junit" depends="proxyflags" 
+		description="Download binary packages for compiling the unit tests" >
+		<mkdir dir="${base.path}" />
+    
+		<antcall target="installzip">
+			<param name="sourcefile" value="${junit.loc}"/>
+			<param name="dlfile" value="${junit.jar}"/>
+			<param name="destfile" value="${junit.ext.jar}"/>
+			<param name="destdir" value="${base.path}"/>
+		</antcall>
+
+		<antcall target="installgz">
+			<param name="sourcefile" value="${jdom.loc}"/>
+			<param name="dlfile" value="${jdom.jar}"/>
+			<param name="destfile" value="${jdom.ext.jar}"/>
+			<param name="destdir" value="${base.path}"/>
+		</antcall>
+	</target>
+
+	<target name="download-ext-doc" depends="proxyflags" 
+		description="Download binary packages for compiling the documentation" >
+		<mkdir dir="${base.path}" />
+    
+		<antcall target="downloadfile">
+			<param name="sourcefile" value="${docbookxml.loc}"/>
+			<param name="destfile" value="${docbookxml.file}"/>
+		</antcall>
+
+		<antcall target="downloadfile">
+			<param name="sourcefile" value="${docbookxsl.loc}"/>
+			<param name="destfile" value="${docbookxsl.file}"/>
+		</antcall>
+	</target>
+
+	<target name="installgz" unless="exist" depends="setproxy,testexistdest">
+		<antcall target="downloadgz"/>
+		<copy file="${dlfile}" tofile="${destfile}"/>
+	</target>
+  
+	<target name="downloadgz" unless="exist" depends="setproxy,testexist">
+		<!-- Download and extract the package -->
+		<get src="${sourcefile}" dest="${base.path}/file.tar.gz" />
+		<gunzip src="${base.path}/file.tar.gz" dest="${base.path}/file.tar"/>
+		<untar src="${base.path}/file.tar" dest="${base.path}"/>
+		<delete file="${base.path}/file.tar"/>
+		<delete file="${base.path}/file.tar.gz"/>
+	</target>
+
+	<target name="installzip" unless="exist" depends="setproxy,testexistdest">
+		<antcall target="downloadzip"/>
+		<copy file="${dlfile}" tofile="${destfile}"/>
+	</target>
+  
+	<target name="downloadzip" unless="exist" depends="setproxy,testexist">
+		<!-- Download and extract the package -->
+		<get src="${sourcefile}" dest="${base.path}/file.zip" />
+		<mkdir dir="${destdir}" />
+		<unzip src="${base.path}/file.zip" dest="${destdir}"/>
+		<delete file="${base.path}/file.zip"/>
+	</target>
+
+	<target name="downloadfile" unless="exist" depends="setproxy,testexistdest">
+		<!-- Download extract the file -->
+		<mkdir dir="${destdir}" />
+		<get src="${sourcefile}" dest="${destfile}" />
+	</target>
+
+	<target name="proxyflags">
+		<!-- check proxy parameters. -->
+		<condition property="useproxy">
+			<equals arg1="${proxy.use}" arg2="on" />
+		</condition>
+	</target>
+
+	<target name="setproxy"  if="useproxy">
+		<taskdef name="setproxy"
+			classname="org.apache.tools.ant.taskdefs.optional.net.SetProxy" />
+		<setproxy proxyhost="${proxy.host}" proxyport="${proxy.port}"/> 
+		<echo message="Using ${proxy.host}:${proxy.port} to download ${sourcefile}"/>
+	</target>
+
+	<target name="testexistdest">
+		<echo message="Testing  for ${destfile}"/>
+		<available file="${destfile}" property="exist"/>
+	</target>
+
+	<target name="testexist">
+		<echo message="Testing  for ${dlfile}"/>
+		<available file="${dlfile}" property="exist"/>
+	</target>
+
 </project>

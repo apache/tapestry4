@@ -10,7 +10,9 @@
 		<fileset dir="${root.lib.dir}">
 			<include name="${ext.dir}/*.jar"/>
 		</fileset>
-		<pathelement path="${servlet.jar.path}"/>
+		<fileset dir="${root.lib.dir}">
+			<include name="${servlet.dir}/*.jar"/>
+		</fileset>
 	</path>
 	<target name="init">
 		<mkdir dir="${classes.dir}"/>
@@ -19,17 +21,7 @@
 		<delete dir="${classes.dir}"/>
 	</target>
 
-    <target name="check-servlet-jar">
-        <available property="exists.servlet.jar" type="file" file="${servlet.jar.path}" />
-        <fail unless="servlet.jar.path"
-              message="Property servlet.jar.path not specified in config/build.properties."
-        />
-        <fail unless="exists.servlet.jar"
-              message="JAR ${servlet.jar.path} (servlet.jar.path from config/build.properties) does not exist."
-        />
-    </target>
-
-	<target name="compile" depends="init,check-servlet-jar"
+	<target name="compile" depends="init"
 		description="Compile all classes in the framework.">
 		<javac srcdir="${src.dir}" destdir="${classes.dir}" debug="on"
 			target="1.1">

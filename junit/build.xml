@@ -33,7 +33,9 @@
   		<include name="*.jar"/>
   	</fileset>
     <pathelement location="${jython.dir}/jython.jar"/>
-    <pathelement  location="${servlet.jar.path}"/>
+		<fileset dir="${root.lib.dir}">
+			<include name="${servlet.dir}/*.jar"/>
+		</fileset>
   </path>
 
   <target name="init">
