@@ -425,6 +425,24 @@ public class TestHTMLDescriptionReceiver extends BaseDescribeTestCase
         verifyControls();
     }
 
+    public void testDescribeAlternate()
+    {
+        IMarkupWriter writer = newWriter();
+        DescribableAdapter adapter = newAdapter();
+
+        Object alternate = new Object();
+
+        HTMLDescriptionReceiver dr = new HTMLDescriptionReceiver(writer, adapter);
+
+        adapter.describeObject(alternate, dr);
+
+        replayControls();
+
+        dr.describeAlternate(alternate);
+
+        verifyControls();
+    }
+
     public void testIntegration() throws Exception
     {
         IMarkupWriter writer = newWriter();

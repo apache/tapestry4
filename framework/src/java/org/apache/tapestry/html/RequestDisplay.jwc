@@ -27,8 +27,8 @@
   Displays an HTML representation of the request, session, context and servlet.
   </description>
   
-  <inject property="request" object="service:tapestry.globals.HttpServletRequest"/>
-  <inject property="context" object="service:tapestry.globals.ServletContext"/>
-  <inject property="servlet" object="service-property:tapestry.globals.ApplicationGlobals:servlet"/>  
+  <inject property="request" object="service:tapestry.globals.WebRequest"/>
+  <inject property="context" object="service:tapestry.globals.WebContext"/>
+  <inject property="activator" object="service-property:tapestry.globals.ApplicationGlobals:activator"/>  
 
 </component-specification>

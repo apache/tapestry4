@@ -40,24 +40,24 @@
     
   </service-point>
   
-  <service-point id="ServletPropertySource" interface="IPropertySource">
+  <service-point id="WebActivatorPropertySource" interface="IPropertySource">
     
-    Searches for properties in the application servlets' configuration.
+    Searches for properties in the web activator's (i.e. HttpServlet's) configuration.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.ServletPropertySource">
-        <set-object property="servletConfig" value="service-property:tapestry.globals.ApplicationGlobals:servletConfig"/>
-      </construct>
+      <construct class="org.apache.tapestry.services.impl.InitializationParameterHolderPropertySource">
+        <set-object property="holder" value="service-property:tapestry.globals.ApplicationGlobals:activator"/>
+      </construct>  
     </invoke-factory>    
   </service-point>
   
-  <service-point id="ServletContextPropertySource" interface="IPropertySource">
+  <service-point id="WebContextPropertySource" interface="IPropertySource">
     
-    Searches the servlet context for properties.
+    Searches the WebContext (i.e., ServletContext) for properties.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.ServletContextPropertySource">
-        <set-object property="context" value="service-property:tapestry.globals.ApplicationGlobals:context"/>
+      <construct class="org.apache.tapestry.services.impl.InitializationParameterHolderPropertySource">
+        <set-service property="holder" service-id="tapestry.globals.WebContext"/>
       </construct>
     </invoke-factory>
   </service-point>
@@ -72,7 +72,8 @@
     
   </service-point>
   
-  <service-point id="SymbolSourcesPropertySourceFactory" interface="org.apache.hivemind.ServiceImplementationFactory" parameters-occurs="none">
+  <service-point id="SymbolSourcesPropertySourceFactory" interface="org.apache.hivemind.ServiceImplementationFactory" 
+    parameters-occurs="none" visibility="private">
     
     A special-purpose ServiceImplementationFactory used just to create the SymbolSourcesPropertySource service.
     
@@ -80,8 +81,8 @@
   </service-point>
   
   <contribution configuration-id="GlobalPropertySources">
-    <command id="servlet" object="service:ServletPropertySource"/>
-    <command id="context" object="service:ServletContextPropertySource" after="servlet"/>
+    <command id="activator" object="service:WebActivatorPropertySource"/>
+    <command id="context" object="service:WebContextPropertySource" after="activator"/>
     <command id="symbols" object="service:SymbolSourcesPropertySource" after="context"/>
   </contribution>
   
@@ -122,10 +123,10 @@
   
   <contribution configuration-id="ApplicationPropertySources">
     <command id="app-spec" object="service:ApplicationSpecificationPropertySource"/>
-    <command id="servlet" object="service:ServletPropertySource" after="app-spec"/>
-    <command id="context" object="service:ServletContextPropertySource" after="servlet"/>
+    <command id="activator" object="service:WebActivatorPropertySource" after="app-spec"/>
+    <command id="context" object="service:WebContextPropertySource" after="activator"/>
     <command id="delegate" object="service:DelegatePropertySource" after="context"/>
-    <command id="symbols" object="service:SymbolSourcesPropertySource" after="context"/>
+    <command id="symbols" object="service:SymbolSourcesPropertySource" after="delegate"/>
   </contribution>
   
   <service-point id="ApplicationSpecificationPropertySource" interface="IPropertySource">
@@ -133,8 +134,8 @@
     Obtains property values from application specification meta-data.
     
     <invoke-factory>
-      <construct class="org.apache.tapestry.services.impl.ApplicationSpecificationPropertySource">
-        <set-object property="specification" value="infrastructure:applicationSpecification"/>
+      <construct class="org.apache.tapestry.util.PropertyHolderPropertySource">
+        <object>infrastructure:applicationSpecification</object>
       </construct>
     </invoke-factory>
     

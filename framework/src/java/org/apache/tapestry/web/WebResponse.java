@@ -51,4 +51,6 @@ public interface WebResponse
     public void reset();
 
     public void setContentType(String contentType);
+
+    public void setContentLength(int contentLength);
 }

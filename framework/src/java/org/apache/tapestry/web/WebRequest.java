@@ -16,6 +16,8 @@ package org.apache.tapestry.web;
 
 import java.util.List;
 
+import org.apache.tapestry.describe.Describable;
+
 /**
  * Contains information about the current request, including URLs, schemes, parameters, properties
  * and attributes.
@@ -23,7 +25,7 @@ import java.util.List;
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
-public interface WebRequest extends AttributeHolder
+public interface WebRequest extends AttributeHolder, Describable
 {
     /**
      * Returns the names of all query parameters for this request. Note that this may return an

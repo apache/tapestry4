@@ -16,32 +16,31 @@ package org.apache.tapestry.asset;
 
 import java.util.Locale;
 
-import javax.servlet.ServletContext;
-
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.Location;
 import org.apache.hivemind.Resource;
-import org.apache.hivemind.util.ContextResource;
 import org.apache.tapestry.IAsset;
+import org.apache.tapestry.web.WebContext;
+import org.apache.tapestry.web.WebContextResource;
 
 /**
- * For the moment, all "context:" prefixed asset paths are interpreted relative to the servlet
- * context (the web application's root folder).
+ * For the moment, all "context:" prefixed asset paths are interpreted relative to the web context
+ * (the web application's root folder).
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
  */
 public class ContextAssetFactory implements AssetFactory
 {
-    private ServletContext _servletContext;
+    private WebContext _context;
 
     private String _contextPath;
 
-    private ContextResource _servletRoot;
+    private Resource _servletRoot;
 
     public void initializeService()
     {
-        _servletRoot = new ContextResource(_servletContext, "/");
+        _servletRoot = new WebContextResource(_context, "/");
     }
 
     public IAsset createAsset(Resource baseResource, String path, Locale locale, Location location)
@@ -53,12 +52,12 @@ public class ContextAssetFactory implements AssetFactory
             throw new ApplicationRuntimeException(AssetMessages.missingAsset(path, _servletRoot),
                     location, null);
 
-        return new ContextAsset(_contextPath, (ContextResource) localized, location);
+        return new ContextAsset(_contextPath, localized, location);
     }
 
-    public void setServletContext(ServletContext servletContext)
+    public void setContext(WebContext context)
     {
-        _servletContext = servletContext;
+        _context = context;
     }
 
     public void setContextPath(String contextPath)

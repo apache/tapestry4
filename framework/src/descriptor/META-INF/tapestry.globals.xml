@@ -74,14 +74,15 @@
     </invoke-factory>
   </service-point>  
   
-  <service-point id="ServletContext" interface="javax.servlet.ServletContext">
+  <service-point id="WebContext" interface="org.apache.tapestry.web.WebContext">
     
-    Exposes the global ServletContext instance as a service.
+    Exposes the global WebContext (a wrapper around the Servlet or Portlet context)
+    as a service.
     
     <invoke-factory service-id="hivemind.lib.ServicePropertyFactory">
-      <construct service-id="ApplicationGlobals" property="context"/>
+      <construct service-id="ApplicationGlobals" property="webContext"/>
     </invoke-factory>
     
-  </service-point> 
+  </service-point>
   
 </module>

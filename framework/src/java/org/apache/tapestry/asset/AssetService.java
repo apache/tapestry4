@@ -22,9 +22,7 @@ import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.hivemind.ApplicationRuntimeException;
 import org.apache.hivemind.ClassResolver;
@@ -39,6 +37,8 @@ import org.apache.tapestry.request.ResponseOutputStream;
 import org.apache.tapestry.services.LinkFactory;
 import org.apache.tapestry.services.RequestExceptionReporter;
 import org.apache.tapestry.services.ServiceConstants;
+import org.apache.tapestry.web.WebContext;
+import org.apache.tapestry.web.WebResponse;
 
 /**
  * A service for building URLs to and accessing {@link org.apache.tapestry.IAsset}s. Most of the
@@ -68,10 +68,10 @@ public class AssetService implements IEngineService
     private LinkFactory _linkFactory;
 
     /** @since 3.1 */
-    private ServletContext _servletContext;
+    private WebContext _context;
 
     /** @since 3.1 */
-    private HttpServletResponse _servletResponse;
+    private WebResponse _response;
 
     /** @since 3.1 */
     private ResourceDigestSource _digestSource;
@@ -153,15 +153,20 @@ public class AssetService implements IEngineService
         return Tapestry.ASSET_SERVICE;
     }
 
-    private static String getMimeType(String path)
+    private String getMimeType(String path)
     {
-        int dotx = path.lastIndexOf('.');
-        String key = path.substring(dotx + 1).toLowerCase();
-
-        String result = (String) _mimeTypes.get(key);
+        String result = _context.getMimeType(path);
 
         if (result == null)
-            result = "text/plain";
+        {
+            int dotx = path.lastIndexOf('.');
+            String key = path.substring(dotx + 1).toLowerCase();
+
+            result = (String) _mimeTypes.get(key);
+
+            if (result == null)
+                result = "text/plain";
+        }
 
         return result;
     }
@@ -213,11 +218,11 @@ public class AssetService implements IEngineService
             // on support from the application server (represented
             // here by the servletContext).
 
-            String contentType = _servletContext.getMimeType(resourcePath);
+            String contentType = getMimeType(resourcePath);
             int contentLength = resourceConnection.getContentLength();
 
             if (contentLength > 0)
-                _servletResponse.setContentLength(contentLength);
+                _response.setContentLength(contentLength);
 
             // Set the content type. If the servlet container doesn't
             // provide it, try and guess it by the extension.
@@ -280,15 +285,15 @@ public class AssetService implements IEngineService
     }
 
     /** @since 3.1 */
-    public void setServletContext(ServletContext servletContext)
+    public void setContext(WebContext context)
     {
-        _servletContext = servletContext;
+        _context = context;
     }
 
     /** @since 3.1 */
-    public void setServletResponse(HttpServletResponse servletResponse)
+    public void setResponse(WebResponse response)
     {
-        _servletResponse = servletResponse;
+        _response = response;
     }
 
     /** @since 3.1 */

@@ -2,10 +2,10 @@
 <span jwcid="@Describe" object="ognl:request"/>
 
 <span jwcid="@Conditional" condition="ognl:request.getSession(false) != null">
-<span jwcid="@Describe" object="ognl:request.session"/>
+<span jwcid="@Describe" object="ognl:request.getSession(false)"/>
 </span>
 
-<span jwcid="@Describe" object="ognl:servlet"/>
+<span jwcid="@Describe" object="ognl:activator"/>
 <span jwcid="@Describe" object="ognl:context"/>
 
 <span jwcid="@Delegator" delegate="ognl:systemPropertiesRenderer"/> 

@@ -23,6 +23,9 @@ import org.apache.tapestry.IMarkupWriter;
 /**
  * Implementation of {@link org.apache.tapestry.describe.DescriptionReceiver}that produces HTML
  * output using a {@link org.apache.tapestry.IMarkupWriter}.
+ * <p>
+ * TODO: Make {@link #describeAlternate(Object)}&nbsp;exclusive with the other methods
+ * {@link #title(String)},{@link #property(String, Object)}, etc.
  * 
  * @author Howard M. Lewis Ship
  * @since 3.1
@@ -63,6 +66,11 @@ public class HTMLDescriptionReceiver implements DescriptionReceiver
         _adapter.describeObject(object, this);
 
         finishUp(object);
+    }
+
+    public void describeAlternate(Object alternate)
+    {
+        _adapter.describeObject(alternate, this);
     }
 
     void finishUp(Object object)
