@@ -179,7 +179,7 @@ public class UrlValidator extends BaseValidator {
 	protected boolean isValidUrl(String url) {
 		boolean bIsValid;
 		try {
-			URL oUrl = new URL(url);
+			new URL(url);
 			bIsValid = true;
 		} catch (MalformedURLException mue) {
 			bIsValid = false;
