@@ -12,7 +12,6 @@
   
   <component id="link" type="DirectLink">
   	<binding name="listener" expression="listeners.linkClicked"/>
-  	<binding name="stateful" expression="false"/>
   	<binding name="parameters" expression="{ 6, 13, 1999}"/>
   </component>
    

@@ -20,7 +20,6 @@
   <component id="form" type="Form">
     <binding name="listener" expression="listeners.attemptLogin"/>
     <binding name="delegate" expression="validationDelegate"/>
-    <binding name="stateful" expression="false"/>
   </component>
    
   <component id="showError" type="ShowError"/>

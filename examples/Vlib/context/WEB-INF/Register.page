@@ -26,7 +26,6 @@
   <component id="form" type="Form">
     <binding name="listener" expression="listeners.attemptRegister"/>
     <binding name="delegate" expression="validationDelegate"/>
-    <binding name="stateful" expression="false"/>
   </component>
   
   <component id="inputFirstName" type="TextField">

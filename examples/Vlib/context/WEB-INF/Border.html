@@ -61,13 +61,11 @@
 					<span jwcid="@Conditional" condition="[[ loggedIn ]]">
 						<a jwcid="@DirectLink" 
 							listener="[[ listeners.logout]]"
-						   	stateful="[[ false ]]"
 						   	href="#" class="clsLeftNav">Logout</a>
 					</span>
 					
 					<span jwcid="@Conditional" condition="[[ !loggedIn ]]">
 						<a jwcid="@DirectLink" 
-						stateful="[[ false ]]"
 						listener="[[ listeners.login ]]" 
 						href="#" class="clsLeftNav">Login</a>
 					</span>
