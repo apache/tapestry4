@@ -2,7 +2,11 @@
 
 <table jwcid="table">
   <tr>
-  	<th id="selectedTitle"><jwc id="insertSelectedTitleBlock"/></th>
+  	<th>
+ <span jwcid="insertLeftHeader"/>
+ <span jwcid="defaultSelectedTitleBlock">
+Selected
+</span></th>
   	<td class="controls" rowspan=2>
   	    <a jwcid="selectButton"><img jwcid="selectImage" alt="[Select]" width=41 height=21/></a>
     <br>
@@ -16,19 +20,19 @@
     </span>
     
     </td>
-  	<th id="availableTitle"><jwc id="insertAvailableTitleBlock"/></th>
+  	<th>
+<span jwcid="insertRightHeader"/>
+<span jwcid="defaultAvailableTitleBlock">
+Available
+</span>
+    </th>
   </tr>
   <tr>
-    <td class="selected"><select jwcid="selected"/></td>
-    <td class="available"><select jwcid="available"/></td>
+    <td><select jwcid="leftSelect"/></td>
+    <td><select jwcid="rightSelect"/></td>
   </tr>
 </table>
 
-<jwc id="defaultSelectedTitleBlock">
-Selected
-</jwc>
 
-<jwc id="defaultAvailableTitleBlock">
-Available
-</jwc>
+
 

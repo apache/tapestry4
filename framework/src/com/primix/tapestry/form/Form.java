@@ -329,15 +329,35 @@ public class Form
 	 *  consists of the component's id, with an index number added to
 	 *  ensure uniqueness.
 	 *
+	 *  <p>Simply invokes {@link #getElementId(String)} with the component's id.
+	 *
+	 *
 	 *  @since 1.0.2
 	 */
 	
     public String getElementId(IComponent component)
     {
+		return getElementId(component.getId());
+	}
+
+	/**
+	 *  Constructs a unique identifier from the base id.  If possible, the
+	 *  id is used as-is.  Otherwise, a unique identifier is appended
+	 *  to the id.
+	 *
+	 *  <p>This method is provided simply so that some components
+	 * ({@link ImageSubmit}) have more specific control over
+	 *  their names.
+	 *
+	 *  @since 1.0.3
+	 *
+	 */
+	
+	public String getElementId(String baseId)
+	{
 		if (allocatorMap == null)
 			allocatorMap = new HashMap();
 		
-		String baseId = component.getId();
 		String result = null;
 		
 		IdAllocator allocator = (IdAllocator)allocatorMap.get(baseId);

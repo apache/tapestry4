@@ -112,13 +112,46 @@ import java.util.*;
  *
  * <tr>
  *  <td>availableTitleBlock</td>
-*  <td>{@link Block}</td>
+ *  <td>{@link Block}</td>
  *  </td>R</td> <td>no</td> <td>"Available"</td>
  *  <td>As with selectedTitleBlock, but for the left column, of items
  *  which are available to be selected.  The default is the word
  *  <code>Available</code>. </td> </tr>
  *
+ *  <tr>
+ *		<td>mirror</td>
+ *		<td>bool</td>
+ *		<td>R</td>
+ *		<td>false</td>
+ *		<td>If true, then the normal orientation of the
+ *  Palette is changed, such that the list of available items
+ *  is on the LEFT and the selected items are on the RIGHT.  This
+ *  may involve selecting alternate images for the select and de-select
+ *  buttons since they incorporate arrows. </td> </tr>
+ *
  * <tr>
+ *	<td>selectImage
+ * <br>selectDisabledImage
+ * <br>deselectImage
+ * <br>deselectDisabledImage
+ * <br>upImage
+ * <br>upDisabledImage
+ * <br>downImage
+ * <br>downDisabledImage
+ *  </td>
+ *  <td>{@link IAsset}</td>
+ *	<td>R</td>
+ *	<td>no</td> <td>&nbsp;</td>
+ *  <td>If any of these are provided then they override the default images provided
+ *  with the component.  This allows the look and feel to be customized relatively easily.
+ *  Note that for the first four (selectImage through deselectImage), the images provided
+ *  must coordinate with the mirror parameter; that is, if mirror is true, then the images
+ *  should have an arrow pointing right for select and left for deselect.  When using the
+ *  default images, the component automatically selects an internal image appropriate
+ *  for mirroring.
+ *		</td> </tr>
+ *
+ * </table>
  *
  *  @author Howard Ship
  *  @version $Id$
@@ -132,7 +165,7 @@ public class Palette
 	private static final int DEFAULT_ROWS= 10;
 	private static final int MAP_SIZE = 7;
 	private static final String SKIP_KEY = 
-			"net.sf.tapestry.contrib.palette.SkipBaseFunctions";
+		"net.sf.tapestry.contrib.palette.SkipBaseFunctions";
 	private static final String DEFAULT_TABLE_CLASS = "tapestry-palette";
 	
 	private IBinding tableClassBinding;
@@ -150,6 +183,11 @@ public class Palette
 	private IBinding sortBinding;
 	private SortMode staticSort;
 	private SortMode sort;
+	
+	private IBinding mirrorBinding;
+	private boolean staticMirror;
+	private boolean mirrorValue;
+	private boolean mirrored;
 	
 	private Block defaultSelectedTitleBlock;
 	private Block defaultAvailableTitleBlock;
@@ -186,6 +224,14 @@ public class Palette
 	private IResponseWriter availableWriter;
 	
 	/**
+	 *  Contains the text for the first &lt;select&gt; element, that
+	 *  provides the selected elements.
+	 *
+	 */
+	
+	private IResponseWriter selectedWriter;
+	
+	/**
 	 *  A cached copy if the script used with the component.
 	 *
 	 */
@@ -199,6 +245,20 @@ public class Palette
 		defaultAvailableTitleBlock = (Block)getComponent("defaultAvailableTitleBlock");
 		
 		super.finishLoad(loader, spec);
+	}
+	
+	public void setMirrorBinding(IBinding value)
+	{
+		mirrorBinding = value;
+		
+		staticMirror = value.isStatic();
+		if (staticMirror)
+			mirrorValue = value.getBoolean();
+	}
+	
+	public IBinding getMirrorBinding()
+	{
+		return mirrorBinding;
 	}
 	
 	public void setTableClassBinding(IBinding value)
@@ -354,6 +414,16 @@ public class Palette
 		if (sort == null)
 			sort = SortMode.NONE;
 		
+		mirrored = false;
+		
+		if (mirrorBinding != null)
+		{
+			if (staticMirror)
+				mirrored = mirrorValue;
+			else
+				mirrored = mirrorBinding.getBoolean();
+		}
+		
 		// Lots of work to produce JavaScript and HTML for this sucker.
 		
 		String formName = form.getName();
@@ -376,6 +446,11 @@ public class Palette
 		form.addEventHandler(FormEventType.SUBMIT, 
 								(String)symbols.get("formSubmitFunctionName"));
 		
+		// Buffer up the HTML for the left and right selects (the selected
+		// items and the available items).
+		
+		bufferSelects(writer);
+		
 		try
 		{
 			super.render(writer, cycle);
@@ -383,6 +458,7 @@ public class Palette
 		finally
 		{
 			availableWriter = null;
+			selectedWriter = null;
 			form = null;
 			sort = null;
 			
@@ -421,10 +497,10 @@ public class Palette
 			throw new RequestCycleException("Palette component must be wrapped by a Body.", this);
 		
 		
-		setImage(symbols, body, cycle, "selectImage", "Select");
-		setImage(symbols, body, cycle, "selectDisabledImage", "Select-dis");
-		setImage(symbols, body, cycle, "deselectImage", "Deselect");
-		setImage(symbols, body, cycle, "deselectDisabledImage", "Deselect-dis");
+		setImage(symbols, body, cycle, "selectImage", "Select", "SelectM");
+		setImage(symbols, body, cycle, "selectDisabledImage", "Select-dis", "SelectM-dis");
+		setImage(symbols, body, cycle, "deselectImage", "Deselect", "DeselectM");
+		setImage(symbols, body, cycle, "deselectDisabledImage", "Deselect-dis", "DeselectM-dis");
 		
 		if (cycle.getAttribute(SKIP_KEY) == null)
 			symbols.put("includeBaseFunctions", Boolean.TRUE);
@@ -438,10 +514,10 @@ public class Palette
 		if (sort == SortMode.USER)
 		{
 			symbols.put("sortUser", Boolean.TRUE);
-			setImage(symbols, body, cycle, "upImage", "Up");
-			setImage(symbols, body, cycle, "upDisabledImage", "Up-dis");
-			setImage(symbols, body, cycle, "downImage", "Down");
-			setImage(symbols, body, cycle, "downDisabledImage", "Down-dis");
+			setImage(symbols, body, cycle, "upImage", "Up", null);
+			setImage(symbols, body, cycle, "upDisabledImage", "Up-dis", null);
+			setImage(symbols, body, cycle, "downImage", "Down", null);
+			setImage(symbols, body, cycle, "downDisabledImage", "Down-dis", null);
 		}
 		
 		try
@@ -463,10 +539,39 @@ public class Palette
 		cycle.setAttribute(SKIP_KEY, Boolean.TRUE);
 	}
 	
-	private void setImage(Map symbols, Body body, IRequestCycle cycle, 
-			String symbolName, String assetName)
+	private IAsset getAsset(String symbolName, String assetName, String mirrorAssetName)
 	{
-		IAsset asset = getAsset(assetName);
+		IAsset result = null;
+		IBinding binding = getBinding(symbolName);
+		
+		if (binding != null)
+			result = (IAsset)binding.getObject(symbolName, IAsset.class);
+		
+		if (result == null)
+		{
+			String finalAssetName = assetName;
+			
+			if (mirrored && mirrorAssetName != null)
+				finalAssetName = mirrorAssetName;
+			
+			result = getAsset(finalAssetName);
+		}	
+		
+		return result;
+	}
+	
+	/**
+	 *  Gets the asset (first looking for a parameter with the symbolName, then
+	 *  using the default asset), extracts its URL, sets it up for 
+	 *  preloading, and assigns the preload reference as a script symbol.
+	 *
+	 */
+	
+	private void setImage(Map symbols, Body body, IRequestCycle cycle, 
+			String symbolName, String assetName, String mirrorAssetName)
+	{
+		IAsset asset = getAsset(symbolName, assetName, mirrorAssetName);
+		
 		String URL = asset.buildURL(cycle);
 		String reference = body.getPreloadedImageReference(URL);
 		
@@ -478,72 +583,86 @@ public class Palette
 		return symbols;
 	}
 	
-	public Block getSelectedTitleBlock()
+	private Block getHeaderBlock(boolean selected)
 	{
 		Block result = null;
+		String bindingName = null;
+		IBinding binding = null;
 		
-		if (selectedTitleBlockBinding != null)
-			result = (Block)selectedTitleBlockBinding.getObject("selectedTitleBlock", Block.class);
-		
-		if (result == null)
-			result = defaultSelectedTitleBlock;
-		
-		return result;
-	}
-	
-	public Block getAvailableTitleBlock()
-	{
-		Block result = null;
-		
-		if (availableTitleBlockBinding != null)
-			result = (Block)availableTitleBlockBinding.getObject("availableTitleBlock",
-					Block.class);
-		
-		if (result == null)
-			result = defaultAvailableTitleBlock;
-		
-		return result;
-	}
-	
-	public IRender getSelectedDelegate()
-	{
-		return new IRender()
+		if (selected)
 		{
-			public void render(IResponseWriter writer, IRequestCycle cycle)
-				throws RequestCycleException
-			{
-				renderSelected(writer, cycle);
-			}
-		};
+			bindingName = "selectedTitleBlock";
+			binding = selectedTitleBlockBinding;
+		}
+		else
+		{
+			bindingName = "availableTitleBlock";
+			binding = availableTitleBlockBinding;
+		}
+		
+		if (binding != null)
+			result = (Block)binding.getObject(bindingName, Block.class);
+		
+		if (result == null)
+		{
+			return selected 
+				? defaultSelectedTitleBlock
+				: defaultAvailableTitleBlock;
+		}
+		
+		return result;			
 	}
 	
 	/**
-	 *  Renders the selected &lt;select&gt; normally, but also creates a nested
-	 *  response writer that will later be used to render the available &lt;select&gt;.
-	 *  This allows for just a single pass through the {@link IPropertySelectionModel}.
+	 *  Returns the selected header block if mirrored, or the available
+	 *  header block normally.
 	 *
 	 */
 	
-	private void renderSelected(IResponseWriter writer, IRequestCycle cycle)
-		throws RequestCycleException
+	public Block getRightHeaderBlock()
+	{
+		return getHeaderBlock(mirrored);
+	}
+	
+	/**
+	 *  Returns the available header block if mirrored, or the selected
+	 *  header block normally.
+	 *
+	 */
+	
+	public Block getLeftHeaderBlock()
+	{
+		// Return the selected block normally, or the available block if mirrored.
+		return getHeaderBlock(!mirrored);
+	}
+	
+	/**
+	 *  Buffers the two &lt;select&gt;s, each in its own nested {@link IResponseWriter}.
+	 *  The idea is to run through the property selection model just once, assigning
+	 *  each item to one or the other &lt;select&gt;.
+	 *
+	 */
+	
+	private void bufferSelects(IResponseWriter writer)
 	{
 		List selected = (List)selectedBinding.getObject("selected", List.class);
 		IPropertySelectionModel model = 
 			(IPropertySelectionModel)modelBinding.getObject("model", IPropertySelectionModel.class);
 		
 		int rows = getRows();
-	
+		
 		// Build a Set around the list of selected items.
 		
 		Set selectedSet = new HashSet(selected);
 		
+		selectedWriter = writer.getNestedWriter();
 		availableWriter = writer.getNestedWriter();
 		
-		writer.begin("select");
-		writer.attribute("multiple");
-		writer.attribute("size", rows);
-		writer.attribute("name", name);
-		writer.println();
+		selectedWriter.begin("select");
+		selectedWriter.attribute("multiple");
+		selectedWriter.attribute("size", rows);
+		selectedWriter.attribute("name", name);
+		selectedWriter.println();
 		
 		availableWriter.begin("select");
 		availableWriter.attribute("multiple");
@@ -562,7 +681,7 @@ public class Palette
 			Object optionValue = model.getOption(i);
 			
 			if (selectedSet.contains(optionValue))
-				w = writer;
+				w = selectedWriter;
 			
 			w.beginEmpty("option");
 			w.attribute("value", model.getValue(i));
@@ -572,22 +691,48 @@ public class Palette
 		
 		// Close the <select> tags
 		
-		writer.end();
+		selectedWriter.end();
 		availableWriter.end();
 	}
 	
-	public IRender getAvailableDelegate()
+	public IRender getLeftSelectDelegate()
 	{
 		return new IRender()
 		{
 			public void render(IResponseWriter writer, IRequestCycle cycle)
 				throws RequestCycleException
 			{
-				// availabeWriter was created inside renderSelected().
-				
-				availableWriter.close();
-				
-				availableWriter = null;
+				if (mirrored)
+				{
+					availableWriter.close();
+					availableWriter = null;
+				}
+				else
+				{
+					selectedWriter.close();
+					selectedWriter = null;
+				}
+			}
+		};
+	}
+	
+	public IRender getRightSelectDelegate()
+	{
+		return new IRender()
+		{
+			public void render(IResponseWriter writer, IRequestCycle cycle)
+				throws RequestCycleException
+			{
+				if (mirrored)
+				{
+					selectedWriter.close();
+					selectedWriter = null;
+				}
+				else
+				{
+					availableWriter.close();
+					availableWriter = null;
+				}
 			}
 		};
 	}
@@ -599,6 +744,7 @@ public class Palette
 		IPropertySelectionModel model = 
 			(IPropertySelectionModel)modelBinding.getObject("model", IPropertySelectionModel.class);
 		
+		// Remove any values currently in the List
 		selected.clear();
 		
 		RequestContext context = cycle.getRequestContext();
@@ -615,10 +761,30 @@ public class Palette
 			selected.add(option);
 		}
 	}
-
+	
 	public boolean isSortUser()
 	{
 		return sort == SortMode.USER;
+	}
+	
+	public IAsset getSelectImage()
+	{
+		return getAsset("selectImage", "Select", "SelectM");
+	}
+	
+	public IAsset getDeselectImage()
+	{
+		return getAsset("deselectImage", "Deselect", "DeselectM");
+	}
+	
+	public IAsset getUpImage()
+	{
+		return getAsset("upImage", "Up", null);
+	}
+	
+	public IAsset getDownImage()
+	{
+		return getAsset("downImage", "Down", null);
 	}
 }
 
