@@ -27,13 +27,75 @@ package net.sf.tapestry.binding;
 
 import net.sf.tapestry.BindingException;
 import net.sf.tapestry.IComponent;
+import net.sf.tapestry.ReadOnlyBindingException;
 import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.spec.BeanLifecycle;
+import net.sf.tapestry.spec.BeanSpecification;
 import net.sf.tapestry.util.prop.PropertyHelper;
 
 /**
  *  Implements a dynamic binding, based on getting and fetching
  *  values using JavaBeans property access.
  *
+ *  <p><b>Optimization of the Property Path</b>
+ * 
+ *  <p>There's a lot of room for optimization here because we can
+ *  count on some portions of the nested property name to be
+ *  effectively static.  Note that we type the root object as
+ *  {@link IComponent}.  We have some expectations that
+ *  certain properties of the root (and properties reachable from the root)
+ *  will be constant for the lifetime of the binding.  For example, 
+ *  components never change thier page or container.  This means
+ *  that certain property prefixes can be optimized:
+ *
+ *  <ul>
+ *  <li>page
+ *  <li>container
+ *  <li>components.<i>name</i>
+ *  </ul>
+ *
+ *  <p>This means that once a PropertyBinding has been triggered, 
+ *  the {@link #toString()} method may return different values for the root
+ *  component and the property path than was originally set.
+ *
+ *  <p>Another option (much more involved) is to replace the
+ *  dynamic property access, which depends upon reflection (i.e.,
+ *  the <code>Method</code> class), with dynamically generated
+ *  bytecodes.  This has been done before, to create <a
+ *  href="http://java.sun.com/products/jfc/tsc/articles/generic-listener/index.html">
+ *  dynamic adapter classes</a>.
+ *
+ *  <p>These operate orders-of-magnitude faster, though there is
+ *  the question of building the bytecodes (non trivial!) and all
+ *  the other classloader and security issues.
+ *
+ *  <p>In the meantime, no optimization is done.
+ * 
+ * 
+ *  <p><b>Identifying Invariants</b>
+ * 
+ *  <p>Most property paths are fully dynamic; they must be
+ *  resolved each time they are accessed.  This can be somewhat inefficient.
+ *  Tapestry can identify certain paths as invariant:
+ * 
+ *  <ul>
+ *  <li>A component within the page hierarchy 
+ *  <li>An {@link net.sf.tapestry.IAsset} from then assets map (property <code>assets</code>)
+ *  <li>A {@link net.sf.tapestry.IActionListener}
+ *  from the listener map (property <code>listeners</code>)
+ *  <li>A bean with a {@link net.sf.tapestry.spec.BeanLifecycle#PAGE}
+ *  lifecycle (property <code>beans</code>)
+ *  <li>A binding (property <code>bindings</code>)
+ *  </ul>
+ * 
+ *  <p>
+ *  These optimizations have some inherent dangers; they assume that
+ *  the components have not overidden the specified properties;
+ *  the lasat one (concerning helper beans) assumes that the
+ *  component does inherit from {@link net.sf.tapestry.AbstractComponent}.
+ *  If this becomes a problem in the future, it may be necessary to
+ *  have the component itself involved in these determinations.
+ *  
  *  @author Howard Lewis Ship
  *  @version $Id$
  * 
@@ -84,40 +146,29 @@ public class PropertyBinding extends AbstractBinding
     private boolean simple = false;
 
     /**
+     *  If true, then the binding is invariant, and cachedValue
+     *  is the ultimate value.
+     * 
+     *  @since 2.0.4
+     * 
+     **/
+
+    private boolean invariant = false;
+
+    /**
+     *  Stores the cached value for the binding, if invariant
+     *  is true.
+     * 
+     *  @since 2.0.4
+     * 
+     **/
+
+    private Object cachedValue;
+
+    /**
      *  Creates a {@link PropertyBinding} from the root object
      *  and a nested property name.
-     *
-     *  <p>There's a lot of room for optimization here because we can
-     *  count on some portions of the nested property name to be
-     *  effectively static.  Note that we type the root object as
-     *  {@link IComponent}.  We have some expectations that
-     *  certain properties of the root (and properties reachable from the root)
-     *  will be constant for the lifetime of the binding.  For example, 
-     *  components never change thier page or container.  This means
-     *  that certain property prefixes can be optimized:
-     *
-     * <ul>
-     * <li>page
-     * <li>container
-     * <li>components.<i>name</i>
-     * </ul>
-     *
-     * <p>This means that once a PropertyBinding has been triggered, 
-     * the {@link #toString()} method may return different values for the root
-     * component and the property path than was originally set.
-     *
-     * <p>Another option (much more involved) is to replace the
-     * dynamic property access, which depends upon reflection (i.e.,
-     * the <code>Method</code> class), with dynamically generated
-     * bytecodes.  This has been done before, to create <a
-     * href="http://java.sun.com/products/jfc/tsc/articles/generic-listener/index.html">
-     * dynamic adapter classes</a>.
-     *
-     * <p>These operate orders-of-magnitude faster, though there is
-     * the question of building the bytecodes (non trivial!) and all
-     * the other classloader and security issues.
-     *
-     * <p>In the meantime, no optimization is done.
+     * 
      **/
 
     public PropertyBinding(IComponent root, String propertyPath)
@@ -149,14 +200,26 @@ public class PropertyBinding extends AbstractBinding
         if (helper == null)
             setupHelper();
 
+        if (invariant)
+            return cachedValue;
+
+        return resolveProperty();
+
+    }
+
+    /**
+     *  Invoked to resolve the property to an object value.  This is
+     *  used when getting the value of a dynamic binding, or
+     *  to cache the value of an invariant binding.
+     * 
+     *  @since 2.0.4
+     * 
+     **/
+
+    private Object resolveProperty()
+    {
         try
         {
-            // In certain cases, the property path is to an IComponent
-            // instance directly and that's that!
-
-            if (propertyPath == null)
-                return root;
-
             if (simple)
                 return helper.get(root, propertyPath);
             else
@@ -165,23 +228,25 @@ public class PropertyBinding extends AbstractBinding
         catch (Throwable ex)
         {
             throw new BindingException(
-                Tapestry.getString("PropertyBinding.unable-to-resolve-property", propertyPath, root),
+                Tapestry.getString(
+                    "PropertyBinding.unable-to-resolve-property",
+                    propertyPath,
+                    root),
                 this,
                 ex);
         }
     }
 
-    
     /**
      *  Returns false.
      * 
      *  @since 2.0.3
      * 
      **/
-    
+
     public boolean isInvariant()
     {
-        return false;
+        return invariant;
     }
 
     public void setBoolean(boolean value)
@@ -205,7 +270,8 @@ public class PropertyBinding extends AbstractBinding
     }
 
     /**
-     *  Sets up the helper object, but also optimizes the property path.
+     *  Sets up the helper object, but also optimizes the property path
+     *  and determines if the binding is invarant.
      *
      **/
 
@@ -218,7 +284,8 @@ public class PropertyBinding extends AbstractBinding
         // We then optimize what we can from the path.  This will
         // shorten the property path and, in some cases, eliminate
         // it (if the property path was to an IComponent).
-
+        // We also check to see if the binding can be an invariant.
+        
         split = PropertyHelper.splitPropertyPath(propertyPath);
 
         for (i = 0; i < split.length; i++)
@@ -252,6 +319,8 @@ public class PropertyBinding extends AbstractBinding
             break;
         }
 
+        helper = PropertyHelper.forInstance(root);
+        
         // We'ver removed some or all of the initial elements of split
         // but have to account for anthing left over.
 
@@ -264,6 +333,9 @@ public class PropertyBinding extends AbstractBinding
 
             simple = true;
             propertyPath = null;
+
+            invariant = true;
+            cachedValue = root;
         }
         else if (count == 1)
         {
@@ -271,6 +343,9 @@ public class PropertyBinding extends AbstractBinding
 
             simple = true;
             propertyPath = split[i];
+            
+            // None of the invariant checks work with a single element
+            // property path.
         }
         else
         {
@@ -293,9 +368,72 @@ public class PropertyBinding extends AbstractBinding
 
             propertyPath = buffer.toString();
 
+            checkInvariant();
         }
 
-        helper = PropertyHelper.forInstance(root);
+    }
+
+    /**
+     *  Checks to see if the binding can be converted to an invariant.
+     * 
+     **/
+
+    private void checkInvariant()
+    {
+        if (splitPropertyPath == null ||
+        	splitPropertyPath.length != 2)
+        		return;
+        		
+        String first = splitPropertyPath[0];
+        
+        if (first.equals("listeners"))
+        {
+			invariant = true;
+			
+			// Could cast to AbstractComponent, get listenersMap, etc.,
+			// but this is easier.
+			
+			cachedValue = resolveProperty();
+			return;
+        }
+        
+        if (first.equals("assets"))
+        {
+            String name = splitPropertyPath[1];
+            
+            invariant = true;
+            cachedValue = root.getAsset(name);
+            return;
+        }
+        
+        if (first.equals("beans"))
+        {
+            String name = splitPropertyPath[1];
+            
+            BeanSpecification bs = root.getSpecification().getBeanSpecification(name);
+            
+            if (bs == null || bs.getLifecycle() != BeanLifecycle.PAGE)
+            	return;
+            	
+            // Again, could cast to AbstractComponent, but this
+            // is easier.
+            	
+            invariant = true;
+            cachedValue = resolveProperty();
+            return;
+        }
+        
+        if (first.equals("bindings"))
+        {
+            String name = splitPropertyPath[1];
+            
+            invariant = true;
+            cachedValue = root.getBinding(name);
+            return;
+        }
+        
+        // Not a recognized pattern for conversion
+        // to invariant.
     }
 
     /**
@@ -303,12 +441,16 @@ public class PropertyBinding extends AbstractBinding
      *
      *  @throws BindingException if the property can't be updated (typically
      *  due to an security problem, or a missing mutator method).
+     *  @throws ReadOnlyBindingException if the binding is invariant.
      **/
 
     public void setObject(Object value)
     {
         if (helper == null)
             setupHelper();
+
+        if (invariant)
+            throw new ReadOnlyBindingException(this);
 
         try
         {
@@ -320,7 +462,11 @@ public class PropertyBinding extends AbstractBinding
         catch (Throwable ex)
         {
             throw new BindingException(
-                Tapestry.getString("PropertyBinding.unable-to-update-property", propertyPath, root, value),
+                Tapestry.getString(
+                    "PropertyBinding.unable-to-update-property",
+                    propertyPath,
+                    root,
+                    value),
                 this,
                 ex);
         }
@@ -350,7 +496,10 @@ public class PropertyBinding extends AbstractBinding
         catch (Throwable ex)
         {
             throw new BindingException(
-                Tapestry.getString("PropertyBinding.unable-to-resolve-type", propertyPath, root),
+                Tapestry.getString(
+                    "PropertyBinding.unable-to-resolve-type",
+                    propertyPath,
+                    root),
                 this,
                 ex);
         }
@@ -375,6 +524,12 @@ public class PropertyBinding extends AbstractBinding
         {
             buffer.append(' ');
             buffer.append(propertyPath);
+        }
+
+        if (invariant)
+        {
+            buffer.append(" cachedValue=");
+            buffer.append(cachedValue);
         }
 
         buffer.append(']');
