@@ -7,6 +7,8 @@
 <page-specification class="org.apache.tapestry.wml.pages.WMLException">
   
   <property name="org.apache.tapestry.template-extension" value="wml"/>
+  
+  <property-specification name="current" type="org.apache.tapestry.util.exception.ExceptionDescription"/>
 
   <component id="restart" type="ServiceLink">
     <binding name="service" expression="@org.apache.tapestry.Tapestry@RESTART_SERVICE"/>
@@ -14,7 +16,7 @@
 
   <component id="foreachProperty" type="Foreach">
   	<static-binding name="element" value="tr"/>
-    <binding name="source" expression="exception.properties"/>
+    <binding name="source" expression="current.properties"/>
   </component>
 
 </page-specification>

@@ -70,7 +70,6 @@ import org.apache.tapestry.wml.Deck;
 public class WMLException extends Deck 
 {
 	private ExceptionDescription[] _exceptions;
-	private ExceptionDescription _exception;
 
 	public void initialize()
 	{
@@ -89,15 +88,5 @@ public class WMLException extends Deck
 		analyzer = new ExceptionAnalyzer();
 
 		_exceptions = analyzer.analyze(value);
-	}
-
-	public void setException(ExceptionDescription value)
-	{
-		_exception = value;
-	}
-
-	public ExceptionDescription getException()
-	{
-		return _exception;
 	}
 }
