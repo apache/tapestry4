@@ -41,8 +41,8 @@ package net.sf.tapestry;
 
 public class StaleSessionException extends RequestCycleException
 {
-    private transient IPage page;
-    private String pageName;
+    private transient IPage _page;
+    private String _pageName;
 
     public StaleSessionException()
     {
@@ -52,15 +52,15 @@ public class StaleSessionException extends RequestCycleException
     public StaleSessionException(String message, IPage page)
     {
         super(message, null, null);
-        this.page = page;
+        _page = page;
 
         if (page != null)
-            pageName = page.getName();
+            _pageName = page.getName();
     }
 
     public String getPageName()
     {
-        return pageName;
+        return _pageName;
     }
 
     /**
@@ -70,6 +70,6 @@ public class StaleSessionException extends RequestCycleException
 
     public IPage getPage()
     {
-        return page;
+        return _page;
     }
 }

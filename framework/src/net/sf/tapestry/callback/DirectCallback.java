@@ -64,14 +64,14 @@ public class DirectCallback implements ICallback
 
         if (_parameters != null)
         {
-            char sep = ' ';
+            String sep = " ";
 
             for (int i = 0; i < _parameters.length; i++)
             {
                 buffer.append(sep);
                 buffer.append(_parameters[i]);
 
-                sep = '/';
+                sep = ", ";
             }
         }
 

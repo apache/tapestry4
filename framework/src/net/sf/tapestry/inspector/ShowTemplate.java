@@ -282,4 +282,15 @@ public class ShowTemplate extends BaseComponent implements IDirect
             inspector.setView(View.SPECIFICATION);
     }
 
+    /**
+     *  Always returns true.
+     * 
+     *  @since 2.3
+     * 
+     **/
+    
+    public boolean isStateful()
+    {
+        return true;
+    }
 }

@@ -134,5 +134,18 @@ public class InspectorButton extends BaseComponent implements IDirect
     {
         _disabled = disabled;
     }
+    
+    /**
+     *  Always returns false.
+     * 
+     *  @since 2.3
+     * 
+     **/
+    
+    public boolean isStateful()
+    {
+        return false;
+    }
+    
 
 }

@@ -46,4 +46,19 @@ public interface IDirect extends IComponent
 
 	public void trigger(IRequestCycle cycle)
 		throws RequestCycleException;
+        
+     /**
+      *  Invoked by the direct service to query the component as to
+      *  whether it is stateful.  If stateful and no 
+      *  {@link HttpSession} is active, then a 
+      *  {@link net.sf.tapestry.StaleSessionException} is
+      *  thrown by the service.
+      * 
+      *  @since 2.3
+      * 
+      **/
+     
+    public boolean isStateful();
+     
+    
 }

@@ -28,6 +28,7 @@ package net.sf.tapestry.engine;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpSession;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.Gesture;
@@ -39,6 +40,7 @@ import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestContext;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.ResponseOutputStream;
+import net.sf.tapestry.StaleSessionException;
 import net.sf.tapestry.Tapestry;
 
 /**
@@ -144,6 +146,17 @@ public class DirectService extends AbstractService
                 component,
                 ex);
         }
+
+        if (direct.isStateful())
+        {
+            HttpSession session = cycle.getRequestContext().getSession();
+
+            if (session == null || session.isNew())
+                throw new StaleSessionException(
+                Tapestry.getString("DirectService.stale-session-exception", direct.getExtendedId()),
+                direct.getPage());
+        }
+
 
         Object[] parameters = getParameters(cycle);
 

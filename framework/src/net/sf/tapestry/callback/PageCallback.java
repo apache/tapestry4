@@ -47,31 +47,31 @@ public class PageCallback implements ICallback
 
     private static final long serialVersionUID = -3286806776105690068L;
 
-    private String pageName;
+    private String _pageName;
 
     public PageCallback(String pageName)
     {
-        this.pageName = pageName;
+        _pageName = pageName;
     }
 
     public PageCallback(IPage page)
     {
-        pageName = page.getName();
+        this(page.getName());
     }
 
     public String toString()
     {
-        return "PageCallback[" + pageName + "]";
+        return "PageCallback[" + _pageName + "]";
     }
 
     /**
-     *  Invokes {@link IRequestCycle#setPage(String)} to identify the previously
+     *  Invokes {@link IRequestCycle#setPage(String)} to select the previously
      *  identified page as the response page.
      *
      **/
 
     public void performCallback(IRequestCycle cycle) throws RequestCycleException
     {
-        cycle.setPage(pageName);
+        cycle.setPage(_pageName);
     }
 }

@@ -26,9 +26,8 @@
   </parameter>
   
   <parameter name="stateful" 
-  	property-name="statefulMode"
   	java-type="boolean" 
-  	direction="in">
+  	direction="custom">
     <description>
     If true (the default), then an active HttpSession is required.
     </description>
