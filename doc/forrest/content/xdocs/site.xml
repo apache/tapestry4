@@ -28,7 +28,7 @@ See http://xml.apache.org/forrest/linking.html for more info
     <faq label="FAQ" href="faq.html"/>
     <todo label="TODO" href="todo.html"/>
     <changes label="Change Log" href="changes.html"/>
-    <wiki label="Wiki" href="http://tapestry.sourceforge.net/wiki/"/>
+    <wiki label="Wiki" href="http://wiki.apache.org/jakarta-tapestry/"/>
     <dev label="Developers" href="dev.html"/>
     <clover label="Clover Report" href="doc/clover/index.html"/>
     </tapestry>
