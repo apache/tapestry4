@@ -287,6 +287,15 @@ Fix TestMocks to not use JDK 1.4 API.
 Automatically download external dependencies (such as Forrest and McKoi DB).	
 </action>
 
+<action type="fix" dev="HK" due-to="Anatol Pomazau">
+DatePicker positioning problem fixed.
+</action>
+
+<action type="fix" dev="HK" fixes-bug="24336">
+Automatic rendering of the maxlength and size attributes have been removed.
+DatePicker now allows informal attributes that will be applied to the field.
+</action>
+
 			</release>
 		</changes>
 	</status>
