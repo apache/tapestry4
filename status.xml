@@ -275,6 +275,9 @@ used with the component.
 Component parameters with direction 'form' should not allow static bindings.
 </action>
 
+<action type="fix" dev="HK" fixes-bug="26599">
+Fixed NPE in PatternValidator.toString().
+</action>
 
 			</release>
 		</changes>
