@@ -1,11 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- $Id: Home.page,v 1.6 2002/05/13 14:00:37 scornflake Exp $ -->
-<!DOCTYPE page-specification PUBLIC 
-	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN" 
+<!DOCTYPE page-specification PUBLIC
+	"-//Howard Lewis Ship//Tapestry Specification 1.3//EN"
 	"http://tapestry.sf.net/dtd/Tapestry_1_3.dtd">
 
-<page-specification class="net.sf.tapestry.html.BasePage">
+<page-specification class="tutorial.pagelinking.SecondPage">
 	<component id="homePage" type="PageLink">
 		<static-binding name="page">Home</static-binding>
 	</component>
+
+    <component id="form" type="Form">
+        <binding name="stateful" expression="false"/>
+    </component>
+
+    <component id="result" type="InsertText">
+        <binding name="value" expression="result"/>
+    </component>
+
+    <component id="linkListener" type="DirectLink">
+        <binding name="listener" expression="listeners.linkListener"/>
+        <binding name="stateful" expression="false"/>
+    </component>
+
+    <component id="buttonListener" type="Submit">
+        <binding name="listener" expression="listeners.buttonListener"/>
+    </component>
 </page-specification>
