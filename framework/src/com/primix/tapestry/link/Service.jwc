@@ -14,7 +14,7 @@
 			<name>context</name>
 		</parameter>
 		<parameter>
-			<name>enabled</name>
+			<name>disabled</name>
 		</parameter>
 		<parameter>
 			<name>scheme</name>

@@ -86,6 +86,8 @@ implements IPropertySelectionRenderer
 			
 		if (immediateSubmit)
 			writer.attribute("onChange", "javascript:this.form.submit();");
+		
+		writer.println();	
 	}
 
 	/**
@@ -113,6 +115,8 @@ implements IPropertySelectionRenderer
 		if (selected)
 			writer.attribute("selected");
 
-		writer.print(model.getLabel(index));	
+		writer.print(model.getLabel(index));
+		
+		writer.println();	
 	}
 }

@@ -1,3 +1,12 @@
+* Feb 12 2001 hship
+
+Replace NullOutputStream with NullResponseWriter.
+Minor formatting changes (for readability) to certain component's output.
+Standardize of "disabled" (with a default of false) for all components (there was
+previously a mix of "enabled" and "disabled").
+Simplify the ShowInspector component (remove the parameters that allow its image
+to be customized).
+
 * Feb 9 2001 hship
 
 Have RequestContext implement IRender.

@@ -125,8 +125,8 @@
 					<field-name>com.primix.tapestry.IEngineService.RESET_SERVICE</field-name>
 				</field-binding>
 				<binding>
-					<name>enabled</name>
-					<property-path>page.engine.resetServiceEnabled</property-path>
+					<name>disabled</name>
+					<property-path>resetServiceDisabled</property-path>
 				</binding>
 			</bindings>
 		</component>

@@ -101,13 +101,13 @@ implements ILifecycle
 	}
 
 	/**
-	 *  Returns true if the current change has a non-null component path.
+	 *  Returns true if the current change has a null component path.
 	 *
 	 */
 
-	public boolean getEnableComponentLink()
+	public boolean getDisableComponentLink()
 	{
-		return change.getComponentPath() != null;
+		return change.getComponentPath() == null;
 	}
 
 	/**

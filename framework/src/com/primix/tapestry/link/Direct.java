@@ -63,7 +63,7 @@ import java.util.*;
  * </tr>
  *
  * <tr>
- *   <td>enabled</td> <td>boolean</td> <td>R</td> <td>No</td> <td>true</td>
+ *   <td>disabled</td> <td>boolean</td> <td>R</td> <td>No</td> <td>true</td>
  *   <td>Controls whether the link is produced.  If disabled, the portion of the template
  *  the link surrounds is still rendered, but not the link itself.
  *  </td></tr>
