@@ -1,0 +1,714 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+   Copyright 2004 The Apache Software Foundation
+  
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+  
+       http://www.apache.org/licenses/LICENSE-2.0
+  
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<!DOCTYPE document PUBLIC "-//APACHE//DTD Documentation V1.2//EN" "./dtd/document-v12.dtd"
+[
+	<!ENTITY projectroot '../'>
+	<!ENTITY % links.ent SYSTEM "../links.ent">
+  <!ENTITY % common.ent SYSTEM "common.ent">
+	%links.ent;
+  %common.ent;
+]>
+<document>
+  <header>
+	<title>Configuring Tapestry</title>
+	</header>
+  
+<body>
+
+<warning>
+  Configuration is the area of greatest change between Tapestry 3.0 and Tapestry 3.1. Tapestry 3.1 has been
+  restructured around &HiveMind;, which includes a very rich environment for services and
+  configurations.
+</warning>	
+  
+  
+<p>
+Tapestry is designed to operate on a variety of different JVMs and versions of 
+the Java Servlet API. Below you can find the list of supported and 
+tested configurations:
+</p>
+	
+<dl>  
+  <dt>Java 1.2.2</dt>
+  <dd>
+	Operates correctly. Requires the Xerces parser to be in the classpath 
+	(usually provided by the servlet container).
+  </dd>
+  
+	<dt>Java 1.3.x</dt>
+
+  <dd>
+	Operates correctly. Requires the Xerces parser to be in the classpath
+	(usually provided by the servlet container).
+  </dd>
+
+	<dt>Java 1.4.x (recommended)</dt>
+	
+
+  <dd>
+	Operates correctly.
+  </dd>
+</dl>
+
+
+
+<p>
+  Supported Java Servlet API Versions:
+</p>
+	
+<dl>
+	<dt>Java Servlet API 2.2</dt>
+	
+  <dd>
+	Operates correctly with minor exceptions related to character encoding 
+	of the requests due to the limitations of the Servlet API version.
+  </dd>
+	
+  <dt>Java Servlet API 2.3 (recommended)</dt>
+	
+  <dd>
+	Operates correctly.
+  </dd>
+</dl>
+	
+  
+
+<section id="configuration.deployment-descriptor">
+	<title>Web deployment descriptor</title>
+	
+<p>
+All Tapestry applications make use of the &ApplicationServlet; class as their
+servlet; it is rarely necessary to create a subclass. A typical web.xml configuration
+maps the servlet to the /app path, and adds a servlet filter (discussed shortly):
+</p>
+
+
+<source><![CDATA[
+<?xml version="1.0"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd">
+<web-app>
+  <display-name>My Application</display-name>
+  <servlet>
+    <servlet-name>myapp</servlet-name>
+    <servlet-class>org.apache.tapestry.ApplicationServlet</servlet-class> 
+    <load-on-startup>0</load-on-startup>
+  </servlet>
+  
+  <servlet-mapping>
+    <servlet-name>myapp</servlet-name>
+    <url-pattern>/app</url-pattern> 
+  </servlet-mapping>
+  
+  <filter> 
+    <filter-name>redirect</filter-name>
+    <filter-class>org.apache.tapestry.RedirectFilter</filter-class>
+  </filter>
+	
+  <filter-mapping>
+    <filter-name>redirect</filter-name>
+    <url-pattern>/</url-pattern>
+  </filter-mapping>
+
+  <session-config>
+  	<session-timeout>15</session-timeout>
+  </session-config>
+    
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+</web-app>
+]]>
+</source>
+
+	<p>
+	The servlet class should always be &ApplicationServlet;.  There's rarely
+	a need to create a subclass; Tapestry has many other hooks for extending the
+	application.
+	</p>
+<p>
+It is generally a good idea to specify 
+&lt;load-on-startup&gt;, this causes
+the servlet container to instantitate and initialize the the application servlet, which in turn,
+reads the Tapestry application specification. Many common development errors will be spotted immediately,
+rather than when the first application request arrives.
+</p>	
+
+	<p>
+	The servlet is mapped to /app within the context.  The context
+	itself has a path, determined by the application server and based on the name of the WAR file.
+	
+	The client web browser will see the Tapestry application
+	as http://<em>host</em>/<em>war-name</em>/app.
+	</p>
+	
+	<p>
+	Using /app as the URL is a common convention when creating
+	Tapestry applications, but is not a requirement. The framework will adapt to whatever mapping
+	you select.
+	</p>
+
+<p>
+The &RedirectFilter; filter sends a client redirect to the user when they access the web application context. The filter
+sends a client redirect to the user's browser, directing them to the application servlet. In this way,
+the "public" URL for an application can be http://myserver/mycontext/ when, in fact,
+the real address is http://myserver/mycontext/app.
+</p>	
+
+<p>
+On initialization, the Tapestry servlet will locate its
+application specification; a file that identifies details about the
+application, the pages and components within it, and any
+component libraries it uses.  Tapestry provides a great deal of
+flexibility on where the specification is stored; trivial Tapestry
+applications can operate without an application specification.
+</p>
+
+<fixme author="HLS">
+This documentation is out of date with respect to &HiveMind;.  In 3.1, the servlet will create and initialize a HiveMind Registry.
+</fixme>
+
+<p>
+The specification is normally
+stored under WEB-INF.  In fact, Tapestry performs a search to find the specification:
+</p>
+
+<ul>
+<li>
+	On the classpath, as defined by the org.apache.tapestry.application-specification
+	&configuration-property;.
+</li>
+<li>
+	As /WEB-INF/<em>name</em>/<em>name</em>.application.
+	The <em>name</em> is the servlet name.  This location
+	is only used in the rare case of a single WAR containing multiple Tapestry
+	applications.
+</li>
+<li>
+	As /WEB-INF/<em>name</em>.application.
+	Again, <em>name</em> is the
+	servlet name.  This is the standard location.
+</li>
+</ul>
+
+<p>
+If the application specification still can not be found, then an empty, "stand in"
+application specification is used. This is perfectly acceptible ... an application specification is typically
+needed only when an application makes use of component libraries, or requires some other kind of customization
+only possible with an application specification.
+</p>
+	
+	
+</section>  <!-- configuration.deployment-descriptor -->
+
+<section id="configuration.search-path">
+	<title>Configuration Search Path</title>
+	
+<p>
+Tapestry occasionally must obtain a value for a configuration property.    These configuration
+properties are items that are frequently optional, and don't fit into any particular
+specification.  Many are related to the runtime environment, such as which class to instantiate as the
+Visit object.
+</p>
+
+<p>
+Tapestry
+is very flexible about where values for such properties may be obtained.  In general,
+the search path for configuration properties is:
+</p>
+
+<ul>
+	<li>
+		As a &spec.property; of the &spec.application; (in the application specification,
+		if the application uses one).
+	</li>
+	<li>
+		As an &init-parameter;
+		for the servlet, in the web application deployment descriptor.
+	</li>
+	<li>
+		As an &init-parameter;
+		for the servlet context, also in the web application deployment descriptor.
+	</li>
+	<li>
+		As a JVM system property.
+	</li>
+	<li>
+		Hard-coded "factory" defaults (for some properties). These are accessed as 
+    &HiveMind; symbols.
+	</li>
+</ul>
+
+<p>
+It is expected that some configurations are not defined at any level; those will
+return null.
+</p>
+
+
+<p>
+Applications are free to leverage this lookup mechanism as well.  &IEngine; defines
+a propertySource property (of type &IPropertySource;)
+that can be used to perform such lookups.
+</p>
+
+<p>
+Applications may also want to change or augment
+the default search path; this is accomplished by overriding
+&AbstractEngine; method <code>createPropertySource()</code>.  For example,
+some configuration data could be drawn from a database.
+</p>
+
+<fixme author="HLS">
+  The previous paragraph is out of date; extension of the search path will
+  involve a HiveMind contribution, details to be provided.
+</fixme>
+		
+<p>
+The following are all the configuration values
+currently used in Tapestry:
+</p>
+	
+<table>
+  <tr>
+    <th>Property</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+	<td>org.apache.tapestry.template-extension</td>
+	
+	<td>
+	Overrides the default extension used to locate templates for pages or components.
+	The default extension is "html", this configuration property 
+	allows overrides where appropriate.  For example,
+	an application that produces WML may want to override this to "wml".
+
+	
+	<p>
+	This configuration property does not follow the normal search path rules.  The
+	&spec.property; must be provided in the &spec.page-specification; or &spec.component-specification;.
+	If no value is found there, the immediate containing &spec.application; or
+	&spec.library-specification; is checked.  If still not found, the default is used.
+	</p>
+	
+	</td>
+  </tr>
+  
+  <tr>
+
+	
+
+	<td>org.apache.tapestry.asset.dir, org.apache.tapestry.asset.URL</td>
+	
+  <td>
+	These two values are used to handle private assets.  Private assets are assets
+	that are stored on the classpath, and not normally visible to client web browsers.
+
+	
+	<p>
+	By specifying these two configuration values, Tapestry can export private assets
+	to a directory that is visible to the client web browser.  The URL
+	value should map to the directory specified by the dir value.
+	</p>
+  </td>
+  
+  </tr>
+
+
+  <tr>
+	<td>org.apache.tapestry.visit-class</td>
+	
+  <td>
+	The fully qualified class name to instantiate as the 
+	<link href="index.html#intro.engine-service-visit">Visit object</link>.
+	
+	<p>
+	If not specified, an instance of HashMap will be created.
+	</p>
+	
+  </td>
+  </tr>
+
+
+  <tr>
+
+	<td>org.apache.tapestry.default-page-class</td>
+	
+  <td>
+	By default, any page that omits the
+	class attribute (in its &spec.page-specification;)
+	will be instantiated as &BasePage;.  If this is not desired,
+	the default may be overridden by specifying a fully
+	qualified class name.
+  </td>
+
+</tr>
+
+<tr>
+	<td>org.apache.tapestry.engine-class</td>
+	
+  <td>
+	The fully qualified class name to instantiate as the application engine.
+	This configuration value is only used when the 
+	application specification does not exist, or fails to
+	specify a class.  By default, &BaseEngine; is used if this configuration
+	value is also left unspecified.
+  </td>
+</tr>
+
+<tr>
+	<td>org.apache.tapestry.enhance.disable-abstract-method-validation</td>	
+	
+  <td>
+	Used to trigger a work around for a bug in IBM's JDK 1.3.1. This particular JDK reports <em>all</em> methods
+	of an abstract class as abstract, even if they are, in fact, concrete. This causes spurious errors
+	about unimplemented abstract methods. Specifying true for this property
+	disables checks for unimplemented abstract methods.
+  </td>
+</tr>
+
+<tr>
+	<td>org.apache.tapestry.global-class</td>
+	
+  <td>
+	The fully qualified class name to instantiate as the engine global
+	property.  The Global object is much like Visit object, 
+	except that it is shared by all instances
+	of the application engine rather than being private to any particular session.
+	If not specified, a synchronized instance of HashMap is used.
+  </td>
+</tr>
+
+<tr>
+	<td>org.apache.tapestry.default-script-language</td>
+	
+  <td>
+	The name of a &BSF;-supported language, used when a
+	&spec.listener-binding; element does not specify
+	a language.  If not overridden, the default is "jython".
+  </td>
+	
+	</tr>
+
+<tr>
+
+	<td>org.apache.tapestry.enable-reset-service</td>
+	
+  <td>
+	If not specified as "true", then the reset service
+	will be non-functional.  The reset service is used to force
+	the running Tapestry application to discard all cached data (including
+	templates, specifications, pooled objects and more).  This must
+	be explicitly enabled, and should only be used in development (in production,
+	it is too easily exploited as a denial of service attack).
+	
+	<p>
+	Unlike most other configuration values, this must be specified
+	as a JVM system property.
+	</p>
+  </td>
+</tr>
+
+<tr>
+	<td>org.apache.tapestry.disable-caching</td>
+	
+  <td>
+	If specified (as "true"), then the framework will discard all cached data
+	(specifications, templates, pooled objects, etc.) at the end of each request cycle.
+	
+	<p>
+	This slows down request handling by a noticable amount, but is very
+	useful in development; it means that changes to templates and specifications
+	are immediately visible to the application.  It also helps identify
+	any errors in managing persistent page state.
+	</p>
+	
+	<p>
+	This should never be enabled in production; the performance hit is too large.
+	Unlike most other configuration values, this must be specified
+	as a JVM system property.
+	</p>
+  </td>
+</tr>
+
+
+<tr>
+	<td>org.apache.tapestry.output-encoding</td>
+	
+  <td>
+	Defines the character set used by the application to encode its HTTP responses. 
+	This is also the character set that the application assumes that the browser uses 
+	when submitting data unless it is not specified differently in the HTTP request.
+
+	<p>
+	The default for this configuration property is UTF-8. 
+	Normally there is no need to modify this value since UTF-8 allows almost all
+	characters to be correctly encoded and displayed.
+	</p>
+  </td>
+
+</tr>
+
+<tr>
+	<td>org.apache.tapestry.template-encoding</td>
+	
+  <td>
+	Defines the character set used by the application templates. 
+	The default value is ISO-8859-1. 
+
+	
+	<p>
+	Please see the &configuration.character-sets; section for more information.
+	</p>
+  </td>
+</tr>
+</table>
+
+</section>  <!-- configuration.search-path -->
+
+<section id="configuration.extensions">
+	<title>Application extensions</title>
+  
+<warning>
+  Application extensions are deprecated as of release 3.1.  The use of &HiveMind; services and
+  contributions eliminates the need for extensions.
+</warning>  
+	
+<p>Tapestry is designed for flexibility; this extends beyond simply 
+configuring the framework, and encompasses actually replacing or augmenting the implementation
+of the framework.  If Tapestry doesn't do what you want it to, there are multiple paths
+for extending, changing and overriding its normal behavior.
+  In some cases,
+	it is necessary to subclass framework classes in order to alter behavior, but in
+	many cases, it is possible to use an application extension.
+	</p>
+	
+<p>
+	Application extensions are JavaBeans declared in the application specification using
+	the &spec.extension; element.  Each extension consists of a name, a Java class
+	to instantiate, and an optional configuration (that is, properties of the
+	bean may be set).  The framework has a finite number of extension points.  If an extension
+	bean with the correct name exists, it will be used at that extension point.
+	</p>
+	
+	<p>
+	Your application may have its own set of extensions not related to Tapestry framework extension points.
+	For example, you might have an application extension referenced from multiple pages to perform common
+	operations such as JNDI lookups.	
+	</p>
+	
+	<p>
+	You may access application extensions via the engine's specification property. For example:
+	</p>
+  
+<source>
+&IEngine; engine = getEngine();
+&IApplicationSpecification; specification = engine.getSpecification();
+	
+MyExtension myExtension = (MyExtension) specification.getExtension("myExtension");	
+</source>
+	
+	
+	<p>
+	Each application extension used with an framework extension point must implement an interface particular
+	to the extension point.
+	</p>
+	
+<table>
+  <tr>
+    <th>Extension Name</th>
+    <th>Type</th>
+    <th>Description</th>
+  </tr>
+	<tr><td>org.apache.tapestry.property-source </td> <td>&IPropertySource;</td>
+
+  <td>
+		This extension
+		is fit into the configuration property search path, after the servlet context, but
+		before JVM system properties.  A typical use would be to access some set of configuration
+		properties stored in a database.
+  </td></tr>
+
+
+
+	<tr><td>org.apache.tapestry.request-decoder </td> <td>&IRequestDecoder;</td>
+  <td>
+		A request decoder is used
+		to identify the actual server name, server port, scheme and request URI for the
+		request.  In some configurations, a firewall may invalidate the values provided by
+		the actual HttpServletRequest (the values reflect the internal server forwarded
+		to by the firewall, not the actual values used by the external client).  A
+		request decoder knows how to determine the actual values.
+    </td></tr>
+	
+
+
+	<tr><td>org.apache.tapestry.monitor-factory </td> <td>&IMonitorFactory;</td>
+
+	<td>An object that is used to create &IMonitor; instances.  Monitors
+		are informed about key application events (such as loading a page)
+		during the processing of a request.
+
+	
+	<p>
+	The factory may create a new instance for the request, or may simply
+	provide access to a shared instance.	
+	</p>
+	
+	<p>
+	If not specified, a default implementation is used (&DefaultMonitorFactory;).	
+	</p>
+  </td></tr>
+
+
+
+	<tr><td>org.apache.tapestry.specification-resolver-delegate </td> <td>&ISpecificationResolverDelegate;</td>
+	
+  <td>
+	An object which is used to find page and component specifications that are not located
+	using the default search rules.  The use of this is open-ended, but is generally
+	useful in very advanced scenarios where specifications are stored externally
+	(perhaps in a database), or constructed on the fly.
+  </td></tr>
+
+
+
+	<tr><td>org.apache.tapestry.template-source-delegate </td> <td>&ITemplateSourceDelegate;</td>
+	
+  <td>
+	An object which is used to find page or component templates that are not located
+	using the default search rules. The use of this is open-ended, but is generally
+	useful in very advanced scenarios where templates are stored externally
+	(perhaps in a database), or constructed on the fly.
+  </td></tr>
+
+
+ 
+<tr><td>org.apache.tapestry.multipart-decoder </td> <td>&IMultipartDecoder;</td>
+
+<td>
+Allows an alternate object to be responsible for decoding multipart requests (context
+type multipart/form-data, used for file uploads).  Generally, this is used to
+configure an instance of &DefaultMultipartDecoder; with non-default values for
+the maximum upload size, threshold size (number of bytes before a temporary file is created
+to store the) and repository directory (where temporary files are stored).	
+</td></tr>
+
+
+
+<tr><td>org.apache.tapestry.ognl-type-converter</td> <td>ognl.TypeConverter</td>
+
+<td>
+Specifies an implementation of ognl.TypeConverter to be used for expression bindings.
+See OGNL's <link href="http://www.ognl.org/2.6.3/Documentation/html/typeConversion.html">Type 
+	Converter documentation</link> 
+for further information on implementing a custom type converter.
+</td></tr>
+
+</table>
+
+</section>  <!-- configuration.extensions -->
+
+
+
+<section id="configuration.character-sets">
+	<title>Character Sets</title>
+
+<p>
+Tapestry is designed to make the web application localization easy and 
+offers the ability to define different localized templates for the same component.
+For example, Home.html would be the default template of the Home page, however
+Home_fr.html would be used in all French locales, while Home_zh_CN.html would be used in
+China and Home_zh_TW.html would be used in Taiwan.
+</p>
+
+<p>
+Web developers and designers in different countries tend to use different character sets 
+for the templates they produce. English, German, French templates are typically produced in
+ISO-8859-1, Russian templates often use KOI8-R, and Chinese texts are normally written in Big5.
+Tapestry allows the application to configure the character set used in its templates 
+and makes it possible to use different character sets for templates associated with 
+different components and different locales.
+</p>
+
+<p>
+The character set of a template is defined using the 
+org.apache.tapestry.template-encoding
+&configuration-property;. The search path of this property is slightly different then the
+standard one and allows specific components to use other character sets:
+</p>
+	
+<ul>
+	<li>
+		As a &spec.property; of the &spec.page-specification; or the &spec.component-specification; 
+		(in the page or component specification). 
+		<p>
+		This configuration will apply only to the page or component where it is defined.
+		</p>
+	</li>
+	<li>
+		As a &spec.property; of the &spec.library-specification; 
+		(in the library specification, if the components are included in a library). 
+		<p>
+		This configuration will apply to all pages and components in the library.
+		</p>
+	</li>
+	<li>
+		As a &spec.property; of the &spec.application; (in the application specification,
+		if the application uses one).
+	</li>
+	<li>
+		As an &init-parameter;
+		for the servlet, in the web application deployment descriptor.
+	</li>
+	<li>
+		As an &init-parameter;
+		for the servlet context, also in the web application deployment descriptor.
+	</li>
+	<li>
+		As a JVM system property.
+	</li>
+	<li>
+		The hard-coded default "ISO-8859-1".
+	</li>
+</ul>
+	
+<p>
+Tapestry also makes it possible to define the character set used by the templates specific 
+to a particular locale by appending the locale to the property name above. 
+As an example, the 
+org.apache.tapestry.template-encoding_ru configuration property would define
+the character set used by the Russian templates, such as Home_ru.html. 
+This allows templates for different locales to use different character sets, 
+even though they are in the same application. 
+For example, it is possible for all Russian templates in the application to use the KOI8-R 
+character set and all Chinese templates to use Big5 at the same time.
+</p>
+
+<p>
+The character sets used by the templates do not reflect in any way on the character set 
+Tapestry uses to encode its response to the browser. The character sets are used when reading
+the template to translate it appropriately into Unicode.
+The output character set is defined by the 
+org.apache.tapestry.output-encoding &configuration-property;.
+</p>
+
+	
+</section>	<!-- configuration.character-sets -->
+
+
+</body>
+</document>

@@ -24,7 +24,7 @@
 ]>
 <document>
   <header>
-    <title>Users Guide - Page and component templates</title>
+    <title>Page and component templates</title>
   </header>
 
 <body>
@@ -79,7 +79,7 @@ for a page specification.  Such a page may still use the special Tapestry attrib
 </p>
 
 <p>
-Finally, with some <!-- link linkend="configuration.search-path">minor configuration</link -->	minor configuration
+Finally, with some <link href="configuration.html#configuration.search-path">minor configuration</link>
 it is possible to change the extension used for templates. For example, if you are developing a WML
 application, you may wish to name your files with the extension .wml.
 </p>
@@ -425,7 +425,7 @@ for the running application.
 	 <title>Localization</title>
 	 
 <p>
-Tapestry includes a number of <!-- link linkend="configuration.character-sets">localization features</link -->
+Tapestry includes a number of <link href="configuration.html#configuration.character-sets">localization features</link>
 localization features. An important part of which
 is to allow each page or component to have its own catalog of localized messages (modeled after the Java 
 ResourceBundle class).
