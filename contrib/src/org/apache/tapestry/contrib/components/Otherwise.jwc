@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  
+<component-specification class="org.apache.tapestry.contrib.components.When">
+  <description>
+  Otherwise is just a When component that always tries to render its body and/or emulate an element 
+  and its attributes (if element is specified) .
+  </description>
+  
+  <parameter name="element" type="java.lang.String" direction="in" required="no">
+  	<description>
+  	The element to emulate.
+  	</description>
+  </parameter>
+
+  <property-specification name="condition" type="boolean" initial-value="true"/>
+  
+</component-specification>

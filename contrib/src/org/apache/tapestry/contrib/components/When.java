@@ -53,61 +53,75 @@
  *
  */
 
-package org.apache.tapestry.components;
+package org.apache.tapestry.contrib.components;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.tapestry.AbstractComponent;
+import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IMarkupWriter;
 import org.apache.tapestry.IRequestCycle;
+import org.apache.tapestry.Tapestry;
+import org.apache.tapestry.components.Conditional;
 
 /**
- *  A conditional element on a page which will render its wrapped elements
- *  zero or one times.
+ *  Represents an alternative whithin a {@link Choose} component. 
+ *  The default alternative is described by the Otherwise component.
  *
- *  [<a href="../../../../../ComponentReference/Conditional.html">Component Reference</a>]
+ *  [<a href="../../../../../../ComponentReference/contrib.When.html">Component Reference</a>]
  *
- *  @author Howard Lewis Ship, David Solis
+ *  @author David Solis
  *  @version $Id$
  * 
  **/
-
-public abstract class Conditional extends AbstractComponent 
+public abstract class When extends Conditional
 {
+	/** Parent of this component. */
+	
+	private Choose _choose;
+
 	/**
-	 *  Renders its wrapped components only if the condition is true (technically,
-	 *  if condition matches invert). 
-	 *  Additionally, if element is specified, can emulate that HTML element if condition is met
+	 *  Renders its wrapped components only if the condition is true and its parent {@link Choose}
+	 *  allows it. In addition, if element is specified, can emulate that HTML element.
 	 *
 	 **/
 
 	protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) 
 	{
-		if (evaluateCondition()) 
-		{
-			String element = getElement();
-			
-			boolean render = !cycle.isRewinding() && StringUtils.isNotEmpty(element);
-			
-			if (render)
-			{
-				writer.begin(element);
-				renderInformalParameters(writer, cycle);
-			}
+		Choose choose = getChoose();
 
-			renderBody(writer, cycle);
-			
-			if (render)
-				writer.end(element);
+		if (choose == null)
+			throw new ApplicationRuntimeException(Tapestry.getMessage("When.must-be-contained-by-choose"), this);
+
+		
+		if (!choose.isConditionMet() && getCondition())
+		{
+			choose.setConditionMet(true);
+			super.renderComponent(writer, cycle);
 		}
 	}
 	
 	protected boolean evaluateCondition()
 	{
-		return getCondition() != getInvert();
+		return true;
 	}
 
-	public abstract boolean getCondition();
-	public abstract boolean getInvert();
+	public boolean getInvert()
+	{
+		// This component doesn't require invert parameter.
+		return false;
+	}
+	
+	/**
+	 *  @return Choose
+	 */
+	public Choose getChoose() {
+		return _choose;
+	}
 
-	public abstract String getElement();
+	/**
+	 *  Sets the choose.
+	 *  @param value The choose to set
+	 */
+	public void setChoose(Choose value) {
+		_choose = value;
+	}
+
 }

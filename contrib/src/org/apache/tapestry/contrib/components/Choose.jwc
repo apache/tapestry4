@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- $Id$ -->
+<!DOCTYPE component-specification PUBLIC 
+  "-//Apache Software Foundation//Tapestry Specification 3.0//EN" 
+  "http://jakarta.apache.org/tapestry/dtd/Tapestry_3_0.dtd">
+  
+<component-specification class="org.apache.tapestry.contrib.components.Choose" allow-informal-parameters="no">
+
+  <description>
+  Provides the context for mutually exclusive conditional evaluation.
+  </description>
+  
+  <property-specification name="conditionMet" type="boolean" initial-value="false"/>
+  
+</component-specification>
