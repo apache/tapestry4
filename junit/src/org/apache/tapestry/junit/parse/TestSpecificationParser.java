@@ -25,6 +25,7 @@ import org.apache.tapestry.spec.IBeanSpecification;
 import org.apache.tapestry.spec.IBindingSpecification;
 import org.apache.tapestry.spec.IComponentSpecification;
 import org.apache.tapestry.spec.IContainedComponent;
+import org.apache.tapestry.spec.IExtensionSpecification;
 import org.apache.tapestry.spec.ILibrarySpecification;
 import org.apache.tapestry.spec.IListenerBindingSpecification;
 import org.apache.tapestry.spec.IParameterSpecification;
@@ -40,8 +41,7 @@ import org.apache.tapestry.util.xml.DocumentParseException;
  *  @author Howard Lewis Ship
  *  @version $Id$
  *  @since 2.0.4
- *
- **/
+ */
 
 public class TestSpecificationParser extends TapestryTestCase
 {
@@ -191,6 +191,8 @@ public class TestSpecificationParser extends TapestryTestCase
             spec.getComponentTypes());
 
         checkList("libraryIds", new String[] { "lib1", "lib2" }, spec.getLibraryIds());
+
+        assertNotNull(spec.getSpecificationLocation());
     }
 
     /**
@@ -360,6 +362,8 @@ public class TestSpecificationParser extends TapestryTestCase
         assertNull(spec.getEngineClassName());
         assertNull(spec.getName());
         checkLine(spec, 25);
+
+        assertNotNull(spec.getSpecificationLocation());
     }
 
     /**
@@ -388,6 +392,9 @@ public class TestSpecificationParser extends TapestryTestCase
 
         assertNull(spec.getComponentClassName());
         checkLine(spec, 22);
+
+        assertEquals(false, spec.isPageSpecification());
+        assertNotNull(spec.getSpecificationLocation());
     }
 
     /**
@@ -402,6 +409,9 @@ public class TestSpecificationParser extends TapestryTestCase
 
         assertNull(spec.getComponentClassName());
         checkLine(spec, 22);
+
+        assertEquals(true, spec.isPageSpecification());
+        assertNotNull(spec.getSpecificationLocation());
     }
 
     /**
@@ -513,7 +523,6 @@ public class TestSpecificationParser extends TapestryTestCase
         String expectedScript =
             buildExpectedScript(
                 new String[] {
-                    "",
                     "if page.isFormInputValid():",
                     "  cycle.page = \"Results\"",
                     "else:",
@@ -648,5 +657,282 @@ public class TestSpecificationParser extends TapestryTestCase
 
         IContainedComponent textField = spec.getComponent("textField");
         assertEquals(textField.getInheritInformalParameters(), true);
+    }
+
+    /** @since 3.1 **/
+
+    public void testConfigureExtension() throws Exception
+    {
+        IApplicationSpecification spec = parseApp("ConfigureExtension.application");
+        IExtensionSpecification es = spec.getExtensionSpecification("my-extension");
+
+        assertEquals(new Long(-227), es.getConfiguration().get("long"));
+        assertEquals(new Double(22.7), es.getConfiguration().get("double"));
+        assertEquals(Boolean.TRUE, es.getConfiguration().get("boolean"));
+        assertEquals("An extended string.", es.getConfiguration().get("string"));
+    }
+
+    public void testConfigureExtensionProperty() throws Exception
+    {
+        IApplicationSpecification spec = parseApp("ConfigureExtension.application");
+        IExtensionSpecification es = spec.getExtensionSpecification("my-extension");
+
+        assertEquals("my-value", es.getProperty("my-property"));
+    }
+
+    /** @since 3.1 **/
+
+    public void testConfigureBadBoolean() throws Exception
+    {
+        try
+        {
+            parseApp("ConfigureBadBoolean.application");
+            unreachable();
+        }
+        catch (DocumentParseException ex)
+        {
+            checkException(ex, "Could not convert 'sure!' to boolean.");
+        }
+    }
+
+    /** @since 3.1 **/
+
+    public void testConfigureBadDouble() throws Exception
+    {
+        try
+        {
+            parseApp("ConfigureBadDouble.application");
+            unreachable();
+        }
+        catch (DocumentParseException ex)
+        {
+            checkException(ex, "Could not convert 'nogo!' to double.");
+        }
+    }
+
+    /** @since 3.1 **/
+
+    public void testConfigureBadLong() throws Exception
+    {
+        try
+        {
+            parseApp("ConfigureBadLong.application");
+            unreachable();
+        }
+        catch (DocumentParseException ex)
+        {
+            checkException(ex, "Could not convert 'nogo!' to long.");
+        }
+    }
+
+    /**
+     * 
+     * Tests the DTD 1.3 &lt;field-binding&gt; element.
+     * 
+     * @since 3.1
+     */
+
+    public void testComponentFieldBinding() throws Exception
+    {
+        IComponentSpecification cs = parseComponent("ComponentFieldBinding.jwc");
+
+        IContainedComponent cc = cs.getComponent("insertVersion");
+
+        IBindingSpecification b = cc.getBinding("value");
+
+        assertEquals(BindingType.FIELD, b.getType());
+        assertEquals("org.apache.tapestry.Tapestry.VERSION", b.getValue());
+        assertNotNull(b.getLocation());
+    }
+
+    /** @since 3.1 **/
+
+    public void testComponentProperty() throws Exception
+    {
+        IComponentSpecification cs = parseComponent("ComponentProperty.jwc");
+
+        IContainedComponent cc = cs.getComponent("body");
+
+        assertEquals("my-value", cc.getProperty("my-property"));
+    }
+
+    /** @since 3.1 **/
+
+    public void testBeanDescription() throws Exception
+    {
+        IComponentSpecification cs = parseComponent("BeanDescription.jwc");
+        IBeanSpecification bs = cs.getBeanSpecification("mybean");
+
+        assertEquals("Description of mybean.", bs.getDescription());
+        assertNotNull(bs.getLocation());
+    }
+
+    /** @since 3.1 **/
+
+    public void testBeanProperty() throws Exception
+    {
+        IComponentSpecification cs = parseComponent("BeanDescription.jwc");
+        IBeanSpecification bs = cs.getBeanSpecification("mybean");
+
+        assertEquals("myvalue", bs.getProperty("myproperty"));
+    }
+
+    /** @since 3.1 **/
+
+    public void testLibraryDescription() throws Exception
+    {
+        ILibrarySpecification ls = parseLib("LibraryDescription.library");
+
+        assertEquals("Often, these are just placeholders.", ls.getDescription());
+    }
+
+    /** @since 3.1 **/
+
+    public void testPageDescription() throws Exception
+    {
+        IComponentSpecification spec = parsePage("PageDescription.page");
+
+        assertEquals("Description of this page.", spec.getDescription());
+    }
+
+    /**
+     * Excercies the check that the correct root element is used.
+     * 
+     * @since 3.1
+     */
+
+    public void testRootElementMismatch() throws Exception
+    {
+        try
+        {
+            parseComponent("NulledPage.page");
+            unreachable();
+        }
+        catch (Exception ex)
+        {
+            checkException(
+                ex,
+                "Incorrect document type; expected page-specification but received component-specification.");
+        }
+    }
+
+    /**
+     * Checks to make sure that a application or library may not
+     * defined a lbirary with id 'framework'.
+     * 
+     * @since 3.1
+     */
+
+    public void testLibraryFrameworkNamespace() throws Exception
+    {
+        try
+        {
+            parseLib("LibraryFrameworkNamespace.library");
+            unreachable();
+        }
+        catch (Exception ex)
+        {
+            checkException(ex, "The library id 'framework' is reserved and may not be used.");
+        }
+    }
+
+    /**
+     * Tests that a &lt;component&gt; element may not have both type and
+     * copy-of attributes.
+     * 
+     * @since 3.1
+     */
+
+    public void testComponentWithTypeAndCopyOf() throws Exception
+    {
+        try
+        {
+            parseComponent("ComponentWithTypeAndCopyOf.jwc");
+            unreachable();
+        }
+        catch (Exception ex)
+        {
+            checkException(
+                ex,
+                "Contained component bad contains both type and copy-of attributes.");
+        }
+    }
+
+    /**
+     * Tests that &lt;component&gt; must have either type or copy-of
+     * attribute.
+     * 
+     * @since 3.1
+     */
+
+    public void testComponentWithoutType() throws Exception
+    {
+        try
+        {
+            parseComponent("ComponentWithoutType.jwc");
+            unreachable();
+        }
+        catch (Exception ex)
+        {
+            checkException(
+                ex,
+                "Contained component bad does not specify attribute type or copy-of.");
+        }
+    }
+
+    /**
+     * Tests the use of copy-of attribute inside &lt;component&gt;.
+     * 
+     * @since 3.1
+     */
+
+    public void testComponentCopyOf() throws Exception
+    {
+        IComponentSpecification cs = parseComponent("ComponentCopyOf.jwc");
+
+        IContainedComponent source = cs.getComponent("source");
+        IContainedComponent copy = cs.getComponent("copy");
+        IContainedComponent override = cs.getComponent("override");
+
+        assertEquals("Insert", source.getType());
+        assertEquals("Insert", copy.getType());
+        assertEquals("Insert", override.getType());
+
+        IBindingSpecification b = source.getBinding("value");
+
+        assertEquals(BindingType.DYNAMIC, b.getType());
+        assertEquals("date", b.getValue());
+
+        assertSame(b, copy.getBinding("value"));
+
+        IBindingSpecification b2 = override.getBinding("value");
+        assertEquals("tomorrow", b2.getValue());
+
+        b = copy.getBinding("foo");
+
+        assertSame(b, override.getBinding("foo"));
+
+        b = copy.getBinding("formatter");
+
+        assertSame(b, override.getBinding("formatter"));
+    }
+
+    /**
+     * And here's what happens when copy-of doesn't match
+     * a known component.
+     * 
+     * @since 3.1
+     */
+    public void testComponentBadCopy()
+    {
+        try
+        {
+            parseComponent("ComponentBadCopy.jwc");
+            unreachable();
+        }
+        catch (Exception ex)
+        {
+            checkException(ex, "Unable to copy component missing, which does not exist.");
+        }
     }
 }
