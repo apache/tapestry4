@@ -53,7 +53,23 @@
 	<br>
   A form element used to handle file uploads.  The uploaded file is represented 
   by an instance of <a href="../api/org/apache/tapestry/request/IUploadFile.html">IUploadFile</a>.
+  By default the upload component limits the size of uploads to 10,000,000 bytes.  To
+  alter this limit you can add the following to your *.application specification:
 
+<pre>
+  &lt;extension name="org.apache.tapestry.multipart-decoder"
+      class="org.apache.tapestry.multipart.DefaultMultipartDecoder"&gt;
+    &lt;configure property-name="maxSize" type="double" value="134217728"/&gt;
+        &lt;!-- where the value is the maximum size you want to allow --&gt;
+  &lt;/extension&gt;
+</pre>
+  <br>
+  Alternatively you can use:
+<pre>
+  DefaultMultipartDecoder.getSharedInstance().setMaxSize(12345678);
+</pre>
+  <br>
+  Setting the size to -1 will remove any limit checking.
           </td>
 </tr>
 
