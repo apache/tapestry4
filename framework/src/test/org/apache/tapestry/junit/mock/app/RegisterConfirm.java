@@ -25,7 +25,7 @@ import org.apache.tapestry.html.BasePage;
  * @since 2.3
  */
 
-public class RegisterConfirm extends BasePage
+public abstract class RegisterConfirm extends BasePage
 {
     private ResourceBundle _ageRangeStrings;
 

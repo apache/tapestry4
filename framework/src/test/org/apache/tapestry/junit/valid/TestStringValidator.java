@@ -14,7 +14,7 @@
 
 package org.apache.tapestry.junit.valid;
 
-import org.apache.tapestry.junit.TapestryTestCase;
+import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.valid.StringValidator;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidatorException;
@@ -26,75 +26,109 @@ import org.apache.tapestry.valid.ValidatorException;
  * @since 1.0.8
  */
 
-public class TestStringValidator extends TapestryTestCase
+public class TestStringValidator extends BaseValidatorTestCase
 {
     private StringValidator v = new StringValidator();
 
     public void testToString()
     {
+        IFormComponent field = newField();
+
+        replayControls();
+
         String in = "Foo";
-        String out = v.toString(new MockField("myField"), in);
+        String out = v.toString(field, in);
 
         assertEquals("Result.", in, out);
+
+        verifyControls();
     }
 
     public void testToStringNull()
     {
-        String out = v.toString(new MockField("nullField"), null);
+        IFormComponent field = newField();
+
+        replayControls();
+
+        String out = v.toString(field, null);
 
         assertNull("Null expected.", out);
+
+        verifyControls();
     }
 
     public void testToObjectRequiredFail()
     {
+        IFormComponent field = newField("requiredField");
+
+        replayControls();
+
         v.setRequired(true);
 
         try
         {
-            v.toObject(new MockField("requiredField"), "");
+            v.toObject(field, "");
 
-            fail("Exception expected.");
+            unreachable();
         }
         catch (ValidatorException ex)
         {
             assertEquals("You must enter a value for requiredField.", ex.getMessage());
             assertEquals(ValidationConstraint.REQUIRED, ex.getConstraint());
         }
+
+        verifyControls();
     }
 
     public void testOverrideRequiredMessage()
     {
+        IFormComponent field = newField("overrideMessage");
+
+        replayControls();
+
         v.setRequired(true);
         v.setRequiredMessage("Gimme a value for {0} you bastard.");
 
         try
         {
-            v.toObject(new MockField("overrideMessage"), "");
+            v.toObject(field, "");
         }
         catch (ValidatorException ex)
         {
             assertEquals("Gimme a value for overrideMessage you bastard.", ex.getMessage());
         }
+
+        verifyControls();
     }
 
     public void testToObjectRequiredPass() throws ValidatorException
     {
+        IFormComponent field = newField();
+
+        replayControls();
+
         v.setRequired(true);
 
-        Object result = v.toObject(new MockField("requiredField"), "stuff");
+        Object result = v.toObject(field, "stuff");
 
         assertEquals("Result.", "stuff", result);
+
+        verifyControls();
     }
 
     public void testToObjectMinimumFail()
     {
+        IFormComponent field = newField("minimumLength");
+
+        replayControls();
+
         v.setMinimumLength(10);
 
         try
         {
-            v.toObject(new MockField("minimumLength"), "short");
+            v.toObject(field, "abc");
 
-            fail("Exception expected.");
+            unreachable();
         }
         catch (ValidatorException ex)
         {
@@ -102,17 +136,23 @@ public class TestStringValidator extends TapestryTestCase
                     .getMessage());
             assertEquals(ValidationConstraint.MINIMUM_WIDTH, ex.getConstraint());
         }
+
+        verifyControls();
     }
 
     public void testOverrideMinimumMessage()
     {
+        IFormComponent field = newField("overrideMessage");
+
+        replayControls();
+
         v.setMinimumLength(10);
         v
                 .setMinimumLengthMessage("You really think less than 10 characters for {0} is gonna cut it?");
 
         try
         {
-            v.toObject(new MockField("overrideMessage"), "");
+            v.toObject(field, "");
         }
         catch (ValidatorException ex)
         {
@@ -124,13 +164,19 @@ public class TestStringValidator extends TapestryTestCase
 
     public void testToObjectMinimumPass() throws ValidatorException
     {
+        IFormComponent field = newField();
+
+        replayControls();
+
         v.setMinimumLength(10);
 
         String in = "ambidexterous";
 
-        Object out = v.toObject(new MockField("minimum"), in);
+        Object out = v.toObject(field, in);
 
         assertEquals("Result", in, out);
+
+        verifyControls();
     }
 
     /**
@@ -139,13 +185,18 @@ public class TestStringValidator extends TapestryTestCase
 
     public void testToObjectMinimumNull() throws ValidatorException
     {
+        IFormComponent field = newField();
+
+        replayControls();
+
         v.setMinimumLength(10);
 
         String in = "";
 
-        Object out = v.toObject(new MockField("minimum"), in);
+        Object out = v.toObject(field, in);
 
         assertNull("Result", out);
-    }
 
+        verifyControls();
+    }
 }

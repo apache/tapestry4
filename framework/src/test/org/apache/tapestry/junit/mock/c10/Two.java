@@ -21,7 +21,7 @@ package org.apache.tapestry.junit.mock.c10;
  * @since 3.0
  */
 
-public class Two extends Home
+public abstract class Two extends Home
 {
 
 }

@@ -25,7 +25,6 @@ import org.apache.tapestry.engine.IPropertySource;
 import org.apache.tapestry.engine.IScriptSource;
 import org.apache.tapestry.engine.ISpecificationSource;
 import org.apache.tapestry.request.RequestContext;
-import org.apache.tapestry.services.ComponentMessagesSource;
 import org.apache.tapestry.spec.IApplicationSpecification;
 
 /**
@@ -155,16 +154,6 @@ public interface IEngine
      */
 
     public IScriptSource getScriptSource();
-
-    /**
-     * Returns a shared object that allows components to find their set of localized strings.
-     * 
-     * @since 2.0.4
-     * @see org.apache.tapestry.engine.AbstractEngine#createComponentStringsSource(RequestContext)
-     * @deprecated To be removed in 3.2.
-     */
-
-    public ComponentMessagesSource getComponentMessagesSource();
 
     /**
      * Returns a {@link org.apache.tapestry.engine.IPropertySource}that should be used to obtain

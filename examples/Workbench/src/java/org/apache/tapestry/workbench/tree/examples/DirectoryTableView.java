@@ -31,7 +31,7 @@ import org.apache.tapestry.workbench.tree.examples.fsmodel.SFObject;
 /**
  * @author ceco
  */
-public class DirectoryTableView extends BaseComponent implements PageDetachListener
+public abstract class DirectoryTableView extends BaseComponent implements PageDetachListener
 {
 
     private ITableModel m_objTableModel = null;

@@ -25,28 +25,35 @@ import org.apache.tapestry.html.BasePage;
 
 /**
  * Simple example page.
- *
+ * 
  * @version $Revision$
  */
-public class SimpleTree extends BasePage {
+public abstract class SimpleTree extends BasePage
+{
     private ITreeDataModel treeDataModel;
+
     private ITreeModel treeModel;
+
     private Object value;
 
-    public SimpleTree() {
+    public SimpleTree()
+    {
     }
 
-    public void attach(IEngine value) {
+    public void attach(IEngine value)
+    {
         super.attach(value);
     }
 
-    public void detach() {
+    public void detach()
+    {
         super.detach();
         treeDataModel = null;
         value = null;
     }
 
-    public void init() {
+    public void init()
+    {
         TestTreeNode objParent = new TestTreeNode("Parent");
 
         TestTreeNode objChild1 = new TestTreeNode("Child1");
@@ -67,12 +74,15 @@ public class SimpleTree extends BasePage {
         treeModel = new SimpleTreeModel(treeDataModel);
     }
 
-    public Date getCurrentTime() {
+    public Date getCurrentTime()
+    {
         return new Date();
     }
 
-    public ITreeModel getTreeModel() {
-        if(treeModel == null) {
+    public ITreeModel getTreeModel()
+    {
+        if (treeModel == null)
+        {
             init();
         }
         return treeModel;
@@ -80,17 +90,22 @@ public class SimpleTree extends BasePage {
 
     /**
      * Returns the value.
+     * 
      * @return Object
      */
-    public Object getValue() {
+    public Object getValue()
+    {
         return value;
     }
 
     /**
      * Sets the value.
-     * @param value The value to set
+     * 
+     * @param value
+     *            The value to set
      */
-    public void setValue(Object value) {
+    public void setValue(Object value)
+    {
         this.value = value;
     }
 }

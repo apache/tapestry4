@@ -34,7 +34,7 @@ import org.apache.tapestry.util.ComponentAddress;
 
 /**
  */
-public class TreeView extends BaseComponent
+public abstract class TreeView extends BaseComponent
     implements PageDetachListener, PageRenderListener, ITreeModelSource {
 
     private static final Log LOG = LogFactory.getLog(TreeView.class);

@@ -26,7 +26,7 @@ import org.apache.tapestry.workbench.WorkbenchValidationDelegate;
  * @since 1.0.7
  */
 
-public class Fields extends BasePage
+public abstract class Fields extends BasePage
 {
     public static final int INT_MIN = 5;
 

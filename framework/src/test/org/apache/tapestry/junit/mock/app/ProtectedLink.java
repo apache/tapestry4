@@ -28,7 +28,7 @@ import org.apache.tapestry.html.BasePage;
  * @since 2.3
  */
 
-public class ProtectedLink extends BasePage
+public abstract class ProtectedLink extends BasePage
 {
     public void linkClicked(IRequestCycle cycle)
     {

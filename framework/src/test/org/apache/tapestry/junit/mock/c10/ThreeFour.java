@@ -27,7 +27,7 @@ import org.apache.tapestry.components.LinkEventType;
  * @since 3.0
  */
 
-public class ThreeFour extends Home
+public abstract class ThreeFour extends Home
 {
 
     private class LinkContentRender implements IRender

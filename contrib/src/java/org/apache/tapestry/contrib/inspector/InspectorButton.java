@@ -44,7 +44,7 @@ import org.apache.tapestry.html.Body;
  * @author Howard Lewis Ship
  */
 
-public class InspectorButton extends BaseComponent implements IDirect
+public abstract class InspectorButton extends BaseComponent implements IDirect
 {
     private boolean _disabled = false;
 

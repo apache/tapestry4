@@ -24,7 +24,7 @@ import org.apache.tapestry.html.BasePage;
  * @author Howard Lewis Ship
  */
 
-public class Redirect extends BasePage
+public abstract class Redirect extends BasePage
 {
     public void redirectInternal(IRequestCycle cycle)
     {

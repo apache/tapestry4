@@ -15,6 +15,7 @@
 package org.apache.tapestry.pageload;
 
 import org.apache.hivemind.test.HiveMindTestCase;
+import org.apache.tapestry.test.Creator;
 
 /**
  * Tests {@link org.apache.tapestry.pageload.PropertyReinitializer}.
@@ -25,7 +26,8 @@ public class TestPropertyReinitializer extends HiveMindTestCase
 {
     public void testSuccess()
     {
-        ComponentFixture c = new ComponentFixture();
+        Creator creator = new Creator();
+        ComponentFixture c = (ComponentFixture) creator.newInstance(ComponentFixture.class);
 
         c.setStringProperty("initial-value");
 

@@ -25,7 +25,7 @@ import org.apache.tapestry.html.BasePage;
  * @since 2.3
  */
 
-public class Stale extends BasePage
+public abstract class Stale extends BasePage
 {
     public void noop(IRequestCycle cycle)
     {

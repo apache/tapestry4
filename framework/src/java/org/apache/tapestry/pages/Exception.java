@@ -25,7 +25,7 @@ import org.apache.tapestry.util.exception.ExceptionDescription;
  * 
  **/
 
-public class Exception extends BasePage
+public abstract class Exception extends BasePage
 {
     private ExceptionDescription[] _exceptions;
 

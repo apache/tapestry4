@@ -18,7 +18,6 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import org.apache.tapestry.form.IFormComponent;
-import org.apache.tapestry.junit.TapestryTestCase;
 import org.apache.tapestry.valid.NumberValidator;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidatorException;
@@ -30,14 +29,19 @@ import org.apache.tapestry.valid.ValidatorException;
  * @since 1.0.8
  */
 
-public class TestNumberValidator extends TapestryTestCase
+public class TestNumberValidator extends BaseValidatorTestCase
 {
     private NumberValidator v = new NumberValidator();
 
-    private void testPassThru(String displayName, Class valueTypeClass, Number input)
-            throws ValidatorException
+    private void testPassThru(Class valueTypeClass, Number input) throws ValidatorException
     {
-        testPassThru(new MockField(displayName), valueTypeClass, input);
+        IFormComponent field = newField();
+
+        replayControls();
+
+        testPassThru(field, valueTypeClass, input);
+
+        verifyControls();
     }
 
     private void testPassThru(IFormComponent field, Class valueTypeClass, Number input)
@@ -54,32 +58,32 @@ public class TestNumberValidator extends TapestryTestCase
 
     public void testShort() throws ValidatorException
     {
-        testPassThru("testShort", Short.class, new Short((short) 1000));
+        testPassThru(Short.class, new Short((short) 1000));
     }
 
     public void testInteger() throws ValidatorException
     {
-        testPassThru("testInteger", Integer.class, new Integer(373));
+        testPassThru(Integer.class, new Integer(373));
     }
 
     public void testByte() throws ValidatorException
     {
-        testPassThru("testByte", Byte.class, new Byte((byte) 131));
+        testPassThru(Byte.class, new Byte((byte) 131));
     }
 
     public void testFloat() throws ValidatorException
     {
-        testPassThru("testFloat", Float.class, new Float(3.1415));
+        testPassThru(Float.class, new Float(3.1415));
     }
 
     public void testDouble() throws ValidatorException
     {
-        testPassThru("testDouble", Double.class, new Double(348348.484854848));
+        testPassThru(Double.class, new Double(348348.484854848));
     }
 
     public void testLong() throws ValidatorException
     {
-        testPassThru("testLong", Long.class, new Long(37373218723l));
+        testPassThru(Long.class, new Long(37373218723l));
     }
 
     public void testInRange() throws ValidatorException
@@ -87,17 +91,21 @@ public class TestNumberValidator extends TapestryTestCase
         v.setMinimum(new Integer(100));
         v.setMaximum(new Integer(200));
 
-        testPassThru("testInRange", Integer.class, new Integer(150));
+        testPassThru(Integer.class, new Integer(150));
     }
 
     public void testUnderMinimum()
     {
+        IFormComponent field = newField("testUnderMinimum");
+
+        replayControls();
+
         v.setMinimum(new Integer(100));
         v.setMaximum(new Integer(200));
 
         try
         {
-            testPassThru("testUnderMinimum", Integer.class, new Integer(50));
+            testPassThru(field, Integer.class, new Integer(50));
 
             unreachable();
         }
@@ -106,32 +114,44 @@ public class TestNumberValidator extends TapestryTestCase
             assertEquals("testUnderMinimum must not be smaller than 100.", ex.getMessage());
             assertEquals(ValidationConstraint.TOO_SMALL, ex.getConstraint());
         }
+
+        verifyControls();
     }
 
     public void testOverrideNumberTooSmallMessage()
     {
+        IFormComponent field = newField("underMinimum");
+
+        replayControls();
+
         v.setMinimum(new Integer(100));
         v.setNumberTooSmallMessage("Anything under 100 for {0} is worth jack.");
 
         try
         {
-            testPassThru("underMinimum", Integer.class, new Integer(50));
+            testPassThru(field, Integer.class, new Integer(50));
             unreachable();
         }
         catch (ValidatorException ex)
         {
             assertEquals("Anything under 100 for underMinimum is worth jack.", ex.getMessage());
         }
+
+        verifyControls();
     }
 
     public void testOverMaximum()
     {
+        IFormComponent field = newField("overMaximum");
+
+        replayControls();
+
         v.setMinimum(new Integer(100));
         v.setMaximum(new Integer(200));
 
         try
         {
-            testPassThru("overMaximum", Integer.class, new Integer(250));
+            testPassThru(field, Integer.class, new Integer(250));
 
             unreachable();
         }
@@ -140,16 +160,22 @@ public class TestNumberValidator extends TapestryTestCase
             assertEquals("overMaximum must not be larger than 200.", ex.getMessage());
             assertEquals(ValidationConstraint.TOO_LARGE, ex.getConstraint());
         }
+
+        verifyControls();
     }
 
     public void testOverrideNumberTooLargeMessage()
     {
+        IFormComponent field = newField("overMaximum");
+
+        replayControls();
+
         v.setMaximum(new Integer(200));
         v.setNumberTooLargeMessage("You think I want a value larger than {1} for {0}?");
 
         try
         {
-            testPassThru("overMaximum", Integer.class, new Integer(1000));
+            testPassThru(field, Integer.class, new Integer(1000));
             unreachable();
         }
         catch (ValidatorException ex)
@@ -157,12 +183,16 @@ public class TestNumberValidator extends TapestryTestCase
             assertEquals("You think I want a value larger than 200 for overMaximum?", ex
                     .getMessage());
         }
+
+        verifyControls();
     }
 
     public void testInvalidFormat()
     {
         v.setValueTypeClass(Integer.class);
-        IFormComponent field = new MockField("invalidFormat");
+        IFormComponent field = newField("invalidFormat");
+
+        replayControls();
 
         try
         {
@@ -174,6 +204,8 @@ public class TestNumberValidator extends TapestryTestCase
             assertEquals("invalidFormat must be a numeric value.", ex.getMessage());
             assertEquals(ValidationConstraint.NUMBER_FORMAT, ex.getConstraint());
         }
+
+        verifyControls();
     }
 
     public void testOverrideInvalidNumericFormatMessage()
@@ -181,7 +213,9 @@ public class TestNumberValidator extends TapestryTestCase
         v.setValueTypeClass(Integer.class);
         v.setInvalidNumericFormatMessage("Dude, gimme a number for {0}.");
 
-        IFormComponent field = new MockField("invalidFormat");
+        IFormComponent field = newField("invalidFormat");
+
+        replayControls();
 
         try
         {
@@ -193,17 +227,19 @@ public class TestNumberValidator extends TapestryTestCase
             assertEquals("Dude, gimme a number for invalidFormat.", ex.getMessage());
             assertEquals(ValidationConstraint.NUMBER_FORMAT, ex.getConstraint());
         }
+
+        verifyControls();
     }
 
     public void testBigInteger() throws ValidatorException
     {
-        testPassThru("testBigInteger", BigInteger.class, new BigInteger(
+        testPassThru(BigInteger.class, new BigInteger(
                 "234905873490587234905724908252390487590234759023487523489075"));
     }
 
     public void testBigDecimal() throws ValidatorException
     {
-        testPassThru("testBigDecimal", BigDecimal.class, new BigDecimal(
+        testPassThru(BigDecimal.class, new BigDecimal(
                 "-29574923857342908743.29058734289734907543289752345897234590872349085"));
     }
 

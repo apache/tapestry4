@@ -23,7 +23,7 @@ import org.apache.tapestry.html.BasePage;
  * @since 3.0
  */
 
-public class Two extends BasePage
+public abstract class Two extends BasePage
 {
     private String _message;
 

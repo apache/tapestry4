@@ -23,7 +23,7 @@ import org.apache.tapestry.html.BasePage;
  * @since 3.0
  */
 
-public class ListEditArray extends BasePage
+public abstract class ListEditArray extends BasePage
 {
     public String[] getItems()
     {

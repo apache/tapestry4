@@ -24,7 +24,7 @@ import org.apache.tapestry.html.BasePage;
  * @since 2.3
  */
 
-public class ProtectedLinkResult extends BasePage
+public abstract class ProtectedLinkResult extends BasePage
 {
     private Object[] _parameters;
 

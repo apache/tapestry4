@@ -40,7 +40,7 @@ import org.apache.tapestry.spec.IParameterSpecification;
  *
  **/
 
-public class ShowSpecification extends BaseComponent implements PageRenderListener
+public abstract class ShowSpecification extends BaseComponent implements PageRenderListener
 {
     private IComponent _inspectedComponent;
     private IComponentSpecification _inspectedSpecification;

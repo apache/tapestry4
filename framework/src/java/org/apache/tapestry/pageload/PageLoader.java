@@ -658,6 +658,10 @@ public class PageLoader implements IPageLoader
      * after {@link IComponent#finishLoad(IRequestCycle, IPageLoader, IComponentSpecification)}is
      * invoked. This iterates over any {@link org.apache.tapestry.spec.IPropertySpecification}s for
      * the component, create an initializer for each.
+     * 
+     * <p>
+     * TODO: This logic should be moved into {@link org.apache.tapestry.enhance.SpecifiedPropertyWorker}.
+     * 
      */
 
     private void createPropertyInitializers(IPage page, IComponent component,

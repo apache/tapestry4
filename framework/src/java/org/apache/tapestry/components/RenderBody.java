@@ -28,7 +28,7 @@ import org.apache.tapestry.IRequestCycle;
  * 
  **/
 
-public class RenderBody extends AbstractComponent
+public abstract class RenderBody extends AbstractComponent
 {
     /**
      *  Finds this <code>RenderBody</code>'s container, and invokes

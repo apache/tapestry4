@@ -64,25 +64,31 @@
   <contribution configuration-id="EnhancementWorkers">
     
     <!-- These can actually run in any order, so we don't specify before or after. -->
-    
-    <command id="specified-property" object="service:SpecifiedPropertyWorker" before="abstract-property"/>
-    <command id="parameter" object="service:ParameterPropertyWorker" before="abstract-property"/>
-    <command id="inject" object="service:InjectWorker" before="abstract-property"/>
-    <command id="inject-state" object="service:InjectStateWorker" before="abstract-property"/>
-    <command id="inject-component" object="service:InjectComponentWorker" before="abstract-property"/>
-    <command id="inject-bean" object="service:InjectBeanWorker" before="abstract-property"/>
-    <command id="inject-asset" object="service:InjectAssetWorker" before="abstract-property"/>
+
+    <command id="inject-messages" object="service:InjectMessagesWorker"/>    
+    <command id="specified-property" object="service:SpecifiedPropertyWorker"/>
+    <command id="parameter" object="service:ParameterPropertyWorker"/>
+    <command id="inject" object="service:InjectWorker"/>
+    <command id="inject-state" object="service:InjectStateWorker"/>
+    <command id="inject-component" object="service:InjectComponentWorker"/>
+    <command id="inject-bean" object="service:InjectBeanWorker"/>
+    <command id="inject-asset" object="service:InjectAssetWorker"/>
         
-    <!-- This should be second to last, or at least, after all other workers have 
-         added and claimed any properties they are going to. -->
-    
-    <command id="abstract-property" object="service:AbstractPropertyWorker"/>
-    
-    <!-- This needs to be absolutely last -->
-    
-    <command id="force-non-abstract" after="*" object="instance:org.apache.tapestry.enhance.ForceNonAbstractWorker"/>
+    <command id="abstract-property" object="service:AbstractPropertyWorker" after="*"/>
     
   </contribution>
+  
+  <service-point id="InjectMessagesWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
+    
+    Injects the messages property into all components.
+    
+    <invoke-factory>
+      <construct class="org.apache.tapestry.enhance.InjectMessagesWorker">
+        <set-object property="componentMessagesSource" value="infrastructure:componentMessagesSource"/>
+      </construct>
+    </invoke-factory>
+    
+  </service-point>
   
   <service-point id="SpecifiedPropertyWorker" interface="org.apache.tapestry.enhance.EnhancementWorker">
     

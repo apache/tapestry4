@@ -23,7 +23,7 @@ import org.apache.tapestry.html.BasePage;
  * @since 1.0.7
  */
 
-public class PaletteResults extends BasePage
+public abstract class PaletteResults extends BasePage
 {
     private List selectedColors;
 

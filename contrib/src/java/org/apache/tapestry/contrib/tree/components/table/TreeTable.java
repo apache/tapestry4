@@ -24,7 +24,7 @@ import org.apache.tapestry.util.ComponentAddress;
 /**
  * @author ceco
  */
-public class TreeTable extends BaseComponent implements ITreeComponent{
+public abstract class TreeTable extends BaseComponent implements ITreeComponent{
 
 	/**
 	 * 

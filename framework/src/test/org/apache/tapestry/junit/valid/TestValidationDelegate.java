@@ -16,8 +16,7 @@ package org.apache.tapestry.junit.valid;
 
 import java.util.List;
 
-import junit.framework.TestCase;
-
+import org.apache.tapestry.IForm;
 import org.apache.tapestry.IRender;
 import org.apache.tapestry.form.IFormComponent;
 import org.apache.tapestry.valid.IFieldTracking;
@@ -25,6 +24,7 @@ import org.apache.tapestry.valid.RenderString;
 import org.apache.tapestry.valid.ValidationConstraint;
 import org.apache.tapestry.valid.ValidationDelegate;
 import org.apache.tapestry.valid.ValidatorException;
+import org.easymock.MockControl;
 
 /**
  * Test the class {@link ValidationDelegate}.
@@ -33,14 +33,41 @@ import org.apache.tapestry.valid.ValidatorException;
  * @since 1.0.8
  */
 
-public class TestValidationDelegate extends TestCase
+public class TestValidationDelegate extends BaseValidatorTestCase
 {
-    private ValidationDelegate d = new ValidationDelegate();
-
-    public TestValidationDelegate(String name)
+    private IForm newForm(int count)
     {
-        super(name);
+        MockControl control = newControl(IForm.class);
+
+        IForm form = (IForm) control.getMock();
+
+        form.getName();
+        control.setReturnValue("TheForm", count);
+
+        return form;
     }
+
+    private IFormComponent newField(String displayName, String name, IForm form)
+    {
+        MockControl control = newControl(IFormComponent.class);
+        IFormComponent field = (IFormComponent) control.getMock();
+
+        field.getForm();
+        control.setReturnValue(form);
+
+        field.getName();
+        control.setReturnValue(name);
+
+        field.getDisplayName();
+        control.setReturnValue(displayName, 2);
+
+        field.getForm();
+        control.setReturnValue(form);
+
+        return field;
+    }
+
+    private ValidationDelegate d = new ValidationDelegate();
 
     public void testHasErrorsEmpty()
     {
@@ -54,10 +81,28 @@ public class TestValidationDelegate extends TestCase
 
     public void testInvalidInput()
     {
-        IFormComponent f = new MockField("testAdd");
+        IForm form = newForm(3);
+
+        MockControl control = newControl(IFormComponent.class);
+        IFormComponent field = (IFormComponent) control.getMock();
+
+        field.getForm();
+        control.setReturnValue(form, 2);
+
+        field.getName();
+        control.setReturnValue("testAdd");
+
+        field.getForm();
+        control.setReturnValue(form);
+
+        field.getName();
+        control.setReturnValue("testAdd");
+
+        replayControls();
+
         String errorMessage = "Need a bigger one.";
 
-        d.setFormComponent(f);
+        d.setFormComponent(field);
         d.recordFieldInputValue("Bad Stuff");
         d.record(new ValidatorException(errorMessage, ValidationConstraint.TOO_LARGE));
 
@@ -67,7 +112,7 @@ public class TestValidationDelegate extends TestCase
 
         IFieldTracking t = (IFieldTracking) fieldTracking.get(0);
 
-        assertEquals(f, t.getComponent());
+        assertSame(field, t.getComponent());
         checkRender(errorMessage, t);
         assertEquals("testAdd", t.getFieldName());
         assertEquals("Bad Stuff", t.getInput());
@@ -75,15 +120,34 @@ public class TestValidationDelegate extends TestCase
 
         assertTrue(d.getHasErrors());
         assertEquals(errorMessage, ((RenderString) (d.getFirstError())).getString());
+
+        verifyControls();
     }
 
     public void testValidatorErrorRenderer()
     {
-        IFormComponent f = new MockField("testValidatorErrorRenderer");
+        IForm form = newForm(3);
+
+        MockControl control = newControl(IFormComponent.class);
+        IFormComponent field = (IFormComponent) control.getMock();
+
+        field.getForm();
+        control.setReturnValue(form, 2);
+
+        field.getName();
+        control.setReturnValue("testValidatorErrorRenderer");
+
+        field.getForm();
+        control.setReturnValue(form);
+
+        field.getName();
+        control.setReturnValue("testValidatorErrorRenderer");
+
+        replayControls();
 
         IRender errorRenderer = new RenderString("Just don't like it.");
 
-        d.setFormComponent(f);
+        d.setFormComponent(field);
         d.recordFieldInputValue("Bad Stuff");
         d.record(new ValidatorException("Just don't like it.", errorRenderer,
                 ValidationConstraint.CONSISTENCY));
@@ -94,21 +158,34 @@ public class TestValidationDelegate extends TestCase
 
         IFieldTracking t = (IFieldTracking) fieldTracking.get(0);
 
-        assertEquals(f, t.getComponent());
-        assertEquals(errorRenderer, t.getErrorRenderer());
+        assertSame(field, t.getComponent());
+        assertSame(errorRenderer, t.getErrorRenderer());
         assertEquals("testValidatorErrorRenderer", t.getFieldName());
         assertEquals("Bad Stuff", t.getInput());
         assertEquals(ValidationConstraint.CONSISTENCY, t.getConstraint());
 
         assertTrue(d.getHasErrors());
-        assertEquals(errorRenderer, d.getFirstError());
+        assertSame(errorRenderer, d.getFirstError());
+
+        verifyControls();
     }
 
     public void testNoError()
     {
-        IFormComponent f = new MockField("testNoError");
+        IForm form = newForm(2);
 
-        d.setFormComponent(f);
+        MockControl control = newControl(IFormComponent.class);
+        IFormComponent field = (IFormComponent) control.getMock();
+
+        field.getForm();
+        control.setReturnValue(form, 2);
+
+        field.getName();
+        control.setReturnValue("input");
+
+        replayControls();
+
+        d.setFormComponent(field);
         d.recordFieldInputValue("Futurama");
 
         List fieldTracking = d.getFieldTracking();
@@ -116,21 +193,34 @@ public class TestValidationDelegate extends TestCase
 
         IFieldTracking t = (IFieldTracking) fieldTracking.get(0);
 
-        assertEquals(f, t.getComponent());
-        assertEquals(null, t.getErrorRenderer());
+        assertSame(field, t.getComponent());
+        assertNull(t.getErrorRenderer());
         assertEquals(false, t.isInError());
         assertEquals("Futurama", t.getInput());
-        assertEquals(null, t.getConstraint());
+        assertNull(t.getConstraint());
 
         assertEquals(false, d.getHasErrors());
         assertNull(d.getFirstError());
+
+        verifyControls();
     }
 
     public void testUnassociatedErrors()
     {
-        IFormComponent f = new MockField("testUnassociatedErrors");
+        IForm form = newForm(2);
 
-        d.setFormComponent(f);
+        MockControl control = newControl(IFormComponent.class);
+        IFormComponent field = (IFormComponent) control.getMock();
+
+        field.getForm();
+        control.setReturnValue(form, 2);
+
+        field.getName();
+        control.setReturnValue("input");
+
+        replayControls();
+
+        d.setFormComponent(field);
         d.recordFieldInputValue("Bender");
 
         d.setFormComponent(null);
@@ -143,10 +233,10 @@ public class TestValidationDelegate extends TestCase
 
         IFieldTracking t0 = (IFieldTracking) fieldTracking.get(0);
         assertEquals(false, t0.isInError());
-        assertEquals(f, t0.getComponent());
+        assertSame(field, t0.getComponent());
 
         IFieldTracking t1 = (IFieldTracking) fieldTracking.get(1);
-        assertEquals(null, t1.getComponent());
+        assertNull(t1.getComponent());
         assertEquals(true, t1.isInError());
         checkRender("Overload!", t1);
 
@@ -159,6 +249,8 @@ public class TestValidationDelegate extends TestCase
         trackings = d.getAssociatedTrackings();
         assertEquals(1, trackings.size());
         assertEquals(t0, trackings.get(0));
+
+        verifyControls();
     }
 
     private void checkRender(String errorMessage, IFieldTracking tracking)
@@ -175,9 +267,47 @@ public class TestValidationDelegate extends TestCase
 
     public void testMultipleInvalidInput()
     {
-        IFormComponent f1 = new MockField("input1");
+        IForm form = newForm(6);
+
+        MockControl c1 = newControl(IFormComponent.class);
+        IFormComponent f1 = (IFormComponent) c1.getMock();
+
+        MockControl c2 = newControl(IFormComponent.class);
+        IFormComponent f2 = (IFormComponent) c2.getMock();
+
+        f1.getForm();
+        c1.setReturnValue(form, 2);
+
+        f1.getName();
+        c1.setReturnValue("monty");
+
+        f1.getForm();
+        c1.setReturnValue(form);
+
+        f1.getName();
+        c1.setReturnValue("monty");
+
+        f2.getForm();
+        c2.setReturnValue(form);
+
+        f2.getName();
+        c2.setReturnValue("python");
+
+        f2.getForm();
+        c2.setReturnValue(form);
+
+        f2.getName();
+        c2.setReturnValue("python");
+
+        f2.getForm();
+        c2.setReturnValue(form);
+
+        f2.getName();
+        c2.setReturnValue("python");
+
+        replayControls();
+
         String e1 = "And now for something completely different.";
-        IFormComponent f2 = new MockField("input2");
         String e2 = "A man with three buttocks.";
 
         d.setFormComponent(f1);
@@ -193,20 +323,69 @@ public class TestValidationDelegate extends TestCase
 
         IFieldTracking t = (IFieldTracking) fieldTracking.get(0);
 
-        assertEquals(f1, t.getComponent());
+        assertSame(f1, t.getComponent());
         checkRender(e1, t);
 
         t = (IFieldTracking) fieldTracking.get(1);
         assertEquals("Python", t.getInput());
         checkRender(e2, t);
-        assertEquals(f2, t.getComponent());
+        assertSame(f2, t.getComponent());
+
+        verifyControls();
     }
 
     public void testReset()
     {
-        IFormComponent f1 = new MockField("input1");
+        IForm form = newForm(8);
+
+        MockControl c1 = newControl(IFormComponent.class);
+        IFormComponent f1 = (IFormComponent) c1.getMock();
+
+        MockControl c2 = newControl(IFormComponent.class);
+        IFormComponent f2 = (IFormComponent) c2.getMock();
+
+        f1.getForm();
+        c1.setReturnValue(form, 2);
+
+        f1.getName();
+        c1.setReturnValue("monty");
+
+        f1.getForm();
+        c1.setReturnValue(form);
+
+        f1.getName();
+        c1.setReturnValue("monty");
+
+        f2.getForm();
+        c2.setReturnValue(form);
+
+        f2.getName();
+        c2.setReturnValue("python");
+
+        f2.getForm();
+        c2.setReturnValue(form);
+
+        f2.getName();
+        c2.setReturnValue("python");
+
+        f2.getForm();
+        c2.setReturnValue(form);
+
+        f2.getName();
+        c2.setReturnValue("python");
+
+        f1.getForm();
+        c1.setReturnValue(form);
+
+        f1.getName();
+        c1.setReturnValue("monty");
+
+        f1.getForm();
+        c1.setReturnValue(form);
+
+        replayControls();
+
         String e1 = "And now for something completely different.";
-        IFormComponent f2 = new MockField("input2");
         String e2 = "A man with three buttocks.";
 
         d.setFormComponent(f1);
@@ -229,13 +408,59 @@ public class TestValidationDelegate extends TestCase
         assertEquals("Python", t.getInput());
         checkRender(e2, t);
         assertEquals(f2, t.getComponent());
+
+        verifyControls();
     }
 
     public void testResetAll()
     {
-        IFormComponent f1 = new MockField("input1");
+        IForm form = newForm(8);
+
+        MockControl c1 = newControl(IFormComponent.class);
+        IFormComponent f1 = (IFormComponent) c1.getMock();
+
+        MockControl c2 = newControl(IFormComponent.class);
+        IFormComponent f2 = (IFormComponent) c2.getMock();
+
+        f1.getForm();
+        c1.setReturnValue(form, 2);
+
+        f1.getName();
+        c1.setReturnValue("monty");
+
+        f1.getForm();
+        c1.setReturnValue(form);
+
+        f1.getName();
+        c1.setReturnValue("monty");
+
+        f2.getForm();
+        c2.setReturnValue(form);
+
+        f2.getName();
+        c2.setReturnValue("python");
+
+        f2.getForm();
+        c2.setReturnValue(form);
+
+        f2.getName();
+        c2.setReturnValue("python");
+
+        f2.getForm();
+        c2.setReturnValue(form);
+
+        f2.getName();
+        c2.setReturnValue("python");
+
+        f1.getForm();
+        c1.setReturnValue(form);
+
+        f2.getForm();
+        c2.setReturnValue(form);
+
+        replayControls();
+
         String e1 = "And now for something completely different.";
-        IFormComponent f2 = new MockField("input2");
         String e2 = "A man with three buttocks.";
 
         d.setFormComponent(f1);
@@ -254,5 +479,7 @@ public class TestValidationDelegate extends TestCase
 
         assertEquals(false, d.getHasErrors());
         assertNull(d.getFirstError());
+
+        verifyControls();
     }
 }

@@ -22,7 +22,7 @@ import org.apache.tapestry.html.BasePage;
  * @author Howard Lewis Ship
  */
 
-public class LocalizationChange extends BasePage
+public abstract class LocalizationChange extends BasePage
 {
     private String localeName;
 

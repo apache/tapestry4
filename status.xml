@@ -138,6 +138,7 @@
       <action type="update" dev="HLS"> Add property attribute to &lt;component&gt;, &lt;bean&gt; and &lt;asset&gt; and add enhancement workers to inject these objects as properties. </action>
       <action type="update" dev="HLS"> Add hivemind: binding prefix. </action>
       <action type="update" dev="HLS" fixes-bug="TAPESTRY-262"> Support more boolean values. </action>
+      <action type="update" dev="HLS"> Inject Messages into components; this means that all Tapestry page and component classes are abstract. </action>
     </release>
     <release version="3.0" date="Apr 18 2004">
       <action type="fix" dev="HLS" fixes-bug="28345"> Workbench/Upload exception when no file specified </action>

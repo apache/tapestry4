@@ -25,7 +25,6 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.logging.Log;
@@ -47,7 +46,6 @@ import org.apache.tapestry.TapestryConstants;
 import org.apache.tapestry.listener.ListenerMap;
 import org.apache.tapestry.request.RequestContext;
 import org.apache.tapestry.request.ResponseOutputStream;
-import org.apache.tapestry.services.ComponentMessagesSource;
 import org.apache.tapestry.services.DataSqueezer;
 import org.apache.tapestry.services.Infrastructure;
 import org.apache.tapestry.spec.IApplicationSpecification;
@@ -748,15 +746,6 @@ public abstract class AbstractEngine implements IEngine
         RedirectAnalyzer analyzer = new RedirectAnalyzer(location);
 
         analyzer.process(cycle);
-    }
-
-    /**
-     * @since 2.0.4
-     */
-
-    public ComponentMessagesSource getComponentMessagesSource()
-    {
-        return _infrastructure.getComponentMessagesSource();
     }
 
     /**

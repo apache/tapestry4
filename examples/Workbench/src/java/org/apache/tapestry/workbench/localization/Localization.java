@@ -25,7 +25,7 @@ import org.apache.tapestry.html.BasePage;
  * @since 1.0.7
  */
 
-public class Localization extends BasePage
+public abstract class Localization extends BasePage
 {
     private IPropertySelectionModel localeModel;
 

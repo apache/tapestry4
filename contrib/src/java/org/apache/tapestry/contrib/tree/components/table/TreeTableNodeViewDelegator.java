@@ -23,7 +23,7 @@ import org.apache.tapestry.contrib.table.model.ITableRendererListener;
 /**
  * @author ceco
  */
-public class TreeTableNodeViewDelegator extends BaseComponent implements ITableRendererListener{
+public abstract class TreeTableNodeViewDelegator extends BaseComponent implements ITableRendererListener{
 
 	/**
 	 * 

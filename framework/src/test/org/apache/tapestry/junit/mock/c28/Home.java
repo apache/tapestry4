@@ -20,7 +20,7 @@ import java.util.StringTokenizer;
 import org.apache.tapestry.IRequestCycle;
 import org.apache.tapestry.html.BasePage;
 
-public class Home extends BasePage
+public abstract class Home extends BasePage
 {
     public void changeLocale(IRequestCycle cycle)
     {

@@ -27,7 +27,7 @@ import org.apache.tapestry.html.BasePage;
  * @since 3.0
  */
 
-public class Assets extends BasePage
+public abstract class Assets extends BasePage
 {
     public void selectFrench(IRequestCycle cycle)
     {

@@ -30,7 +30,7 @@ import org.apache.tapestry.IMarkupWriter;
  * 
  **/
 
-public class Deck extends AbstractPage
+public abstract class Deck extends AbstractPage
 {
     /**
      *  Returns a new {@link WMLWriter}.

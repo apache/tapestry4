@@ -30,7 +30,7 @@ import org.apache.tapestry.html.BasePage;
  * @author Howard Lewis Ship
  */
 
-public class Palette extends BasePage
+public abstract class Palette extends BasePage
 {
     private List _selectedColors;
 
