@@ -26,6 +26,7 @@
 package net.sf.tapestry.components;
 
 import net.sf.tapestry.AbstractComponent;
+import net.sf.tapestry.IComponent;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
@@ -44,6 +45,12 @@ import net.sf.tapestry.RequestCycleException;
  *
  *  <p>Using Blocks, the blocks can be provided as parameters to the super
  *  component.
+ * 
+ *  <p>The inserter property gives the components inside the block access to
+ *  the component (typically an {@link InsertBlock}) that inserted the block,
+ *  including access to ints informal bindings which allows components contained
+ *  by the Block to be passed parameters.  Note - it is the responsibility of the
+ *  inserting component to set itself as the Block's inserter.
  *
  *  @version $Id$
  *  @author Howard Lewis Ship
@@ -53,6 +60,8 @@ import net.sf.tapestry.RequestCycleException;
 
 public class Block extends AbstractComponent
 {
+	private IComponent inserter;
+
     /**
      *  Does nothing; the idea of a Block is to defer the rendering of
      *  the body of the block until an {@link InsertBlock} forces it
@@ -63,5 +72,15 @@ public class Block extends AbstractComponent
     protected void renderComponent(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
         // Nothing!
+    }
+    
+    public IComponent getInserter()
+    {
+    	return this.inserter;
+    }
+    
+    public void setInserter(IComponent value)
+    {
+    	this.inserter = value;
     }
 }
