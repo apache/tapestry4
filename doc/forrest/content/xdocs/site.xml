@@ -19,7 +19,7 @@ See http://xml.apache.org/forrest/linking.html for more info
 
 <site label="Tapestry" href="" xmlns="http://apache.org/forrest/linkmap/1.0" tab="">
     <tapestry label="Tapestry">
-    <home label="HOME" href="index.html"/>
+    <home label="Home" href="index.html"/>
     <api label="API" href="doc/api/index.html"/>
     <new label="What's New" href="new.html"/>
     <quotes label="Quotes" href="quotes.html"/>
@@ -46,6 +46,16 @@ See http://xml.apache.org/forrest/linking.html for more info
         <item label="Tapestry and HiveMind Blog"
         	href="http://javatapestry.blogspot.com"/>
     </info>
+    
+    <downloads label="Downloads">
+      <item label="Binary" href="http://jakarta.apache.org/site/binindex.cgi#Milestone Builds"/>
+      <item label="Source" href="http://jakarta.apache.org/site/sourceindex.cgi#Milestone Source Drops"/>
+    </downloads>
+    
+    <related label="Related Projects">
+    	<item label="Spindle" href="http://spindle.sourceforge.net/"/>
+    	<item label="Tacos" href="http://sf.net/projects/tacos/"/>
+    </related>
     
     <whole label="Whole Site">
         <item label="WholeSite (HTML)"       href="site.html"/>

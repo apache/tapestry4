@@ -79,3 +79,8 @@ div#banner {
 .crumbSeparator
 {
 }
+
+SPAN.codefrag
+{
+  font-family: monospace;
+}
