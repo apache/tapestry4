@@ -255,7 +255,7 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
      * 
      *  <p>
      *  Currently, you may have at most one error per <em>field</em>
-     *  (not difference between field and component), but any number of
+     *  (note the difference between field and component), but any number of
      *  unassociated errors.
      * 
      *  <p>
@@ -321,17 +321,17 @@ public class ValidationDelegate implements IValidationDelegate, IPoolable
         tracking.setConstraint(constraint);
     }
 
-    public void writePrefix(IMarkupWriter writer, IRequestCycle cycle)
+    public void writePrefix(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component, IValidator validator)
         throws RequestCycleException
     {
     }
 
-    public void writeAttributes(IMarkupWriter writer, IRequestCycle cycle)
+    public void writeAttributes(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component, IValidator validator)
         throws RequestCycleException
     {
     }
 
-    public void writeSuffix(IMarkupWriter writer, IRequestCycle cycle)
+    public void writeSuffix(IMarkupWriter writer, IRequestCycle cycle, IFormComponent component, IValidator validator)
         throws RequestCycleException
     {
         if (isInError())

@@ -57,9 +57,7 @@ package net.sf.tapestry.vlib.pages;
 import java.rmi.RemoteException;
 
 import javax.ejb.FinderException;
-import javax.ejb.RemoveException;
 
-import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IExternalPage;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.html.BasePage;
@@ -155,8 +153,8 @@ public class PersonPage extends BasePage implements IExternalPage
 
     public void activateExternalPage(Object[] parameters, IRequestCycle cycle)
     {
-        Integer personPK = (Integer)parameters[0];
-        
+        Integer personPK = (Integer) parameters[0];
+
         VirtualLibraryEngine vengine = (VirtualLibraryEngine) getEngine();
 
         for (int i = 0; i < 2; i++)
@@ -177,7 +175,9 @@ public class PersonPage extends BasePage implements IExternalPage
             }
             catch (FinderException e)
             {
-                vengine.presentError("Person " + personPK + " not found in database.", getRequestCycle());
+                vengine.presentError(
+                    "Person " + personPK + " not found in database.",
+                    getRequestCycle());
             }
             catch (RemoteException ex)
             {
@@ -203,31 +203,6 @@ public class PersonPage extends BasePage implements IExternalPage
     public boolean getOmitHolderLink()
     {
         return !currentMatch.isBorrowed();
-    }
-
-    /**
-     *  Removes the book query bean, if the handle to the bean
-     *  is non-null.
-     *
-     **/
-
-    public void cleanupPage()
-    {
-        try
-        {
-            if (query != null)
-                query.remove();
-        }
-        catch (RemoveException ex)
-        {
-            throw new ApplicationRuntimeException(ex);
-        }
-        catch (RemoteException ex)
-        {
-            throw new ApplicationRuntimeException(ex);
-        }
-
-        super.cleanupPage();
     }
 
 }

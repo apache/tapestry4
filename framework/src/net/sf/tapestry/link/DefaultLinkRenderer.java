@@ -59,7 +59,6 @@ import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.components.ILinkComponent;
-import net.sf.tapestry.engine.EngineServiceLink;
 import net.sf.tapestry.engine.ILink;
 
 /**

@@ -58,7 +58,7 @@ import java.util.List;
 
 import junit.framework.TestCase;
 import net.sf.tapestry.IRender;
-import net.sf.tapestry.valid.IField;
+import net.sf.tapestry.form.IFormComponent;
 import net.sf.tapestry.valid.IFieldTracking;
 import net.sf.tapestry.valid.RenderString;
 import net.sf.tapestry.valid.ValidationConstraint;
@@ -96,7 +96,7 @@ public class TestValidationDelegate extends TestCase
 
 	public void testInvalidInput()
 	{
-		IField f = new TestingField("testAdd");
+		IFormComponent f = new TestingField("testAdd");
 		String errorMessage = "Need a bigger one.";
 
 		d.setFormComponent(f);
@@ -131,9 +131,9 @@ public class TestValidationDelegate extends TestCase
 
 	public void testMultipleInvalidInput()
 	{
-		IField f1 = new TestingField("input1");
+		IFormComponent f1 = new TestingField("input1");
 		String e1 = "And now for something completely different.";
-		IField f2 = new TestingField("input2");
+		IFormComponent f2 = new TestingField("input2");
 		String e2 = "A man with three buttocks.";
 
 		d.setFormComponent(f1);
@@ -158,9 +158,9 @@ public class TestValidationDelegate extends TestCase
 
 	public void testReset()
 	{
-		IField f1 = new TestingField("input1");
+		IFormComponent f1 = new TestingField("input1");
 		String e1 = "And now for something completely different.";
-		IField f2 = new TestingField("input2");
+		IFormComponent f2 = new TestingField("input2");
 		String e2 = "A man with three buttocks.";
 
 		d.setFormComponent(f1);
@@ -185,9 +185,9 @@ public class TestValidationDelegate extends TestCase
 
 	public void testResetAll()
 	{
-		IField f1 = new TestingField("input1");
+		IFormComponent f1 = new TestingField("input1");
 		String e1 = "And now for something completely different.";
-		IField f2 = new TestingField("input2");
+		IFormComponent f2 = new TestingField("input2");
 		String e2 = "A man with three buttocks.";
 
 		d.setFormComponent(f1);
@@ -195,7 +195,6 @@ public class TestValidationDelegate extends TestCase
 
 		d.setFormComponent(f2);
 		d.record(new ValidatorException(e2, null, "Python"));
-		;
 
 		d.setFormComponent(f1);
 		d.reset();

@@ -54,8 +54,6 @@
  */
 package tutorial.portal;
 
-import net.sf.tapestry.util.prop.IPublicBean;
-
 /**
  *  Encapsulates some data about a Slashdot story.
  *
@@ -64,10 +62,10 @@ import net.sf.tapestry.util.prop.IPublicBean;
  *
  **/
 
-public class SlashdotStory implements IPublicBean
+public class SlashdotStory
 {
-	public String title;
-	public String URL;
-	public String author;
-	public String date;
+    public String title;
+    public String URL;
+    public String author;
+    public String date;
 }

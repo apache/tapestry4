@@ -18,6 +18,7 @@
   	<set-property name="minimum" expression="@tutorial.workbench.fields.Fields@INT_MIN"/>
   	<set-property name="maximum" expression="@tutorial.workbench.fields.Fields@INT_MAX"/>
   	<set-property name="clientScriptingEnabled" expression="clientValidationEnabled"/>
+  	<set-property name="valueType">"int"</set-property>
   </bean>
 
   <bean name="doubleValidator" lifecycle="render" class="net.sf.tapestry.valid.NumberValidator">
@@ -25,6 +26,7 @@
   	<set-property name="minimum" expression="@tutorial.workbench.fields.Fields@DOUBLE_MIN"/>
   	<set-property name="maximum" expression="@tutorial.workbench.fields.Fields@DOUBLE_MAX"/>
   	<set-property name="clientScriptingEnabled" expression="clientValidationEnabled"/>
+  	<set-property name="valueType">"double"</set-property>
   </bean>
 
 
@@ -33,6 +35,7 @@
   	<set-property name="minimum" expression="@tutorial.workbench.fields.Fields@DECIMAL_MIN"/>
   	<set-property name="maximum" expression="@tutorial.workbench.fields.Fields@DECIMAL_MAX"/>
   	<set-property name="clientScriptingEnabled" expression="clientValidationEnabled"/>
+  	<set-property name="valueType">"java.math.BigDecimal"</set-property>
   </bean>
 
   <bean name="longValidator" lifecycle="render" class="net.sf.tapestry.valid.NumberValidator">
@@ -40,6 +43,7 @@
   	<set-property name="minimum" expression="@tutorial.workbench.fields.Fields@LONG_MIN"/>
   	<set-property name="maximum" expression="@tutorial.workbench.fields.Fields@LONG_MAX"/>
   	<set-property name="clientScriptingEnabled" expression="clientValidationEnabled"/>
+  	<set-property name="valueType">"long"</set-property>
   </bean>
 
   <bean name="stringValidator" lifecycle="render" class="net.sf.tapestry.valid.StringValidator">
@@ -75,28 +79,24 @@
     <binding name="validator" expression="beans.intValidator"/>
     <binding name="value" expression="visit.intValue"/>
     <static-binding name="displayName" value="Integer Field"/>
-    <static-binding name="type" value="Integer"/>
   </component>
 
   <component id="inputDouble" type="ValidField">
     <binding name="validator" expression="beans.doubleValidator"/>
     <binding name="value" expression="visit.doubleValue"/>
     <static-binding name="displayName" value="Double Field"/>
-    <static-binding name="type" value="Double"/>
   </component>
 
   <component id="inputBigDecimal" type="ValidField">
    <binding name="value" expression="visit.bigDecimalValue"/>
     <binding name="validator" expression="beans.bigDecimalValidator"/>
     <static-binding name="displayName" value="Big Decimal Field"/>
-    <static-binding name="type" value="java.math.BigDecimal"/>
   </component>
 
   <component id="inputLong" type="ValidField">
     <binding name="value" expression="visit.longValue"/>
     <binding name="validator" expression="beans.longValidator"/>
     <static-binding name="displayName" value="Long Field"/>
-    <static-binding name="type" value="Long"/>
   </component>
 
   <component id="inputString" type="ValidField">

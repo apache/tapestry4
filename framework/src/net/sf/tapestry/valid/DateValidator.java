@@ -67,6 +67,7 @@ import java.util.Map;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.form.IFormComponent;
 
 /**
  *  Provides input validation for strings treated as dates.  In addition,
@@ -126,7 +127,7 @@ public class DateValidator extends BaseValidator
         return _displayFormat;
     }
 
-    public String toString(IField file, Object value)
+    public String toString(IFormComponent file, Object value)
     {
         if (value == null)
             return null;
@@ -137,13 +138,13 @@ public class DateValidator extends BaseValidator
 
         // DateFormat is not threadsafe, so guard access to it.
 
-        synchronized(format)
+        synchronized (format)
         {
             return format.format(date);
         }
     }
 
-    public Object toObject(IField field, String value) throws ValidatorException
+    public Object toObject(IFormComponent field, String value) throws ValidatorException
     {
         if (checkRequired(field, value))
             return null;
@@ -251,10 +252,13 @@ public class DateValidator extends BaseValidator
      * 
      **/
 
-    public void renderValidatorContribution(IField field, IMarkupWriter writer, IRequestCycle cycle)
+    public void renderValidatorContribution(
+        IFormComponent field,
+        IMarkupWriter writer,
+        IRequestCycle cycle)
         throws RequestCycleException
     {
-        if (! (isClientScriptingEnabled() && isRequired()))
+        if (!(isClientScriptingEnabled() && isRequired()))
             return;
 
         Map symbols = new HashMap();

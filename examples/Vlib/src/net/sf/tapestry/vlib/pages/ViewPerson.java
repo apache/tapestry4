@@ -57,9 +57,7 @@ package net.sf.tapestry.vlib.pages;
 import java.rmi.RemoteException;
 
 import javax.ejb.FinderException;
-import javax.ejb.RemoveException;
 
-import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.IExternalPage;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.html.BasePage;
@@ -205,31 +203,6 @@ public class ViewPerson extends BasePage implements IExternalPage
     public boolean getOmitHolderLink()
     {
         return !currentMatch.isBorrowed();
-    }
-
-    /**
-     *  Removes the book query bean, if the handle to the bean
-     *  is non-null.
-     *
-     **/
-
-    public void cleanupPage()
-    {
-        try
-        {
-            if (query != null)
-                query.remove();
-        }
-        catch (RemoveException ex)
-        {
-            throw new ApplicationRuntimeException(ex);
-        }
-        catch (RemoteException ex)
-        {
-            throw new ApplicationRuntimeException(ex);
-        }
-
-        super.cleanupPage();
     }
 
 }

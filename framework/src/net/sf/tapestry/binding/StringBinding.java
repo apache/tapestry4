@@ -96,7 +96,7 @@ public class StringBinding extends AbstractBinding
 
     public Object getObject()
     {
-        return _component.getString(_key);
+        return _component.getStrings().getString(_key);
     }
 
     /**

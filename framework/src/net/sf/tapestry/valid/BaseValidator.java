@@ -72,6 +72,7 @@ import net.sf.tapestry.ScriptException;
 import net.sf.tapestry.ScriptSession;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.form.FormEventType;
+import net.sf.tapestry.form.IFormComponent;
 import net.sf.tapestry.html.Body;
 import net.sf.tapestry.resource.ClasspathResourceLocation;
 
@@ -185,7 +186,8 @@ public abstract class BaseValidator implements IValidator
 
     protected String getString(String key, Locale locale, Object[] args)
     {
-        ResourceBundle strings = ResourceBundle.getBundle("net.sf.tapestry.valid.ValidationStrings", locale);
+        ResourceBundle strings =
+            ResourceBundle.getBundle("net.sf.tapestry.valid.ValidationStrings", locale);
 
         String pattern = strings.getString(key);
 
@@ -223,7 +225,7 @@ public abstract class BaseValidator implements IValidator
      * 
      **/
 
-    protected boolean checkRequired(IField field, String value) throws ValidatorException
+    protected boolean checkRequired(IFormComponent field, String value) throws ValidatorException
     {
         boolean isNull = Tapestry.isNull(value);
 
@@ -243,7 +245,10 @@ public abstract class BaseValidator implements IValidator
      * 
      **/
 
-    public void renderValidatorContribution(IField field, IMarkupWriter writer, IRequestCycle cycle)
+    public void renderValidatorContribution(
+        IFormComponent field,
+        IMarkupWriter writer,
+        IRequestCycle cycle)
         throws RequestCycleException
     {
     }
@@ -269,7 +274,11 @@ public abstract class BaseValidator implements IValidator
      * 
      **/
 
-    protected void processValidatorScript(String scriptPath, IRequestCycle cycle, IField field, Map symbols)
+    protected void processValidatorScript(
+        String scriptPath,
+        IRequestCycle cycle,
+        IFormComponent field,
+        Map symbols)
         throws RequestCycleException
     {
         IEngine engine = field.getPage().getEngine();
@@ -282,7 +291,8 @@ public abstract class BaseValidator implements IValidator
         finalSymbols.put(FORM_SYMBOL, form);
         finalSymbols.put(VALIDATOR_SYMBOL, this);
 
-        IResourceLocation location = new ClasspathResourceLocation(engine.getResourceResolver(), scriptPath);
+        IResourceLocation location =
+            new ClasspathResourceLocation(engine.getResourceResolver(), scriptPath);
 
         IScript script = source.getScript(location);
 
@@ -300,7 +310,9 @@ public abstract class BaseValidator implements IValidator
         Body body = Body.get(cycle);
 
         if (body == null)
-            throw new RequestCycleException(Tapestry.getString("ValidField.must-be-contained-by-body"), field);
+            throw new RequestCycleException(
+                Tapestry.getString("ValidField.must-be-contained-by-body"),
+                field);
 
         body.process(session);
 

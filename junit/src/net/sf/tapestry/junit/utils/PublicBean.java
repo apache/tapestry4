@@ -56,8 +56,6 @@ package net.sf.tapestry.junit.utils;
 
 import java.util.Random;
 
-import net.sf.tapestry.util.prop.IPublicBean;
-
 /**
  *  Bean used by {@link net.sf.tapestry.junit.utils.TestPublicBean}.
  *

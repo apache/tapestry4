@@ -54,6 +54,7 @@
  */
 package net.sf.tapestry.engine;
 
+import java.text.MessageFormat;
 import java.util.Properties;
 
 import net.sf.tapestry.IComponentStrings;
@@ -72,26 +73,48 @@ import net.sf.tapestry.IComponentStrings;
 
 public class ComponentStrings implements IComponentStrings
 {
-	private Properties properties;
-	
-	public ComponentStrings(Properties properties)
-	{
-	    this.properties = properties;
-	}
-	
+    private Properties _properties;
+
+    public ComponentStrings(Properties properties)
+    {
+        _properties = properties;
+    }
+
     public String getString(String key, String defaultValue)
-		{
-		    return  properties.getProperty(key, defaultValue);
+    {
+        return _properties.getProperty(key, defaultValue);
     }
 
     public String getString(String key)
     {
-		String result = properties.getProperty(key);
-		
-		if (result == null)
-			result = "[" + key.toUpperCase() + "]";
-			
-		return result;
+        String result = _properties.getProperty(key);
+
+        if (result == null)
+            result = "[" + key.toUpperCase() + "]";
+
+        return result;
+    }
+
+    public String format(String key, Object argument1, Object argument2, Object argument3)
+    {
+        return format(key, new Object[] { argument1, argument2, argument3 });
+    }
+
+    public String format(String key, Object argument1, Object argument2)
+    {
+        return format(key, new Object[] { argument1, argument2 });
+    }
+
+    public String format(String key, Object argument)
+    {
+        return format(key, new Object[] { argument });
+    }
+
+    public String format(String key, Object[] arguments)
+    {
+        String pattern = getString(key);
+
+        return MessageFormat.format(pattern, arguments);
     }
 
 }

@@ -145,7 +145,7 @@ public class BaseComponentTemplateLoader
                 }
             }
 
-            String value = _component.getString(_key);
+            String value = _component.getStrings().getString(_key);
 
             if (_raw)
                 writer.printRaw(value);

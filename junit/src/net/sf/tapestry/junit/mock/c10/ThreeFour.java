@@ -60,7 +60,6 @@ import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.components.ILinkComponent;
 import net.sf.tapestry.components.LinkEventType;
-import net.sf.tapestry.html.BasePage;
 
 /**
  *  Used on a page to test links and Body. 

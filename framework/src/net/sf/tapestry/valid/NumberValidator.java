@@ -65,6 +65,7 @@ import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.Tapestry;
+import net.sf.tapestry.form.IFormComponent;
 import net.sf.tapestry.util.AdaptorRegistry;
 
 /**
@@ -79,6 +80,39 @@ import net.sf.tapestry.util.AdaptorRegistry;
 
 public class NumberValidator extends BaseValidator
 {
+    private static final Map TYPES = new HashMap();
+
+    static {
+        TYPES.put("boolean", boolean.class);
+        TYPES.put("Boolean", Boolean.class);
+        TYPES.put("java.lang.Boolean", Boolean.class);
+        TYPES.put("char", char.class);
+        TYPES.put("Character", Character.class);
+        TYPES.put("java.lang.Character", Character.class);
+        TYPES.put("short", short.class);
+        TYPES.put("Short", Short.class);
+        TYPES.put("java.lang.Short", Short.class);
+        TYPES.put("int", int.class);
+        TYPES.put("Integer", Integer.class);
+        TYPES.put("java.lang.Integer", Integer.class);
+        TYPES.put("long", long.class);
+        TYPES.put("Long", Long.class);
+        TYPES.put("java.lang.Long", Long.class);
+        TYPES.put("float", float.class);
+        TYPES.put("Float", Float.class);
+        TYPES.put("java.lang.Float", Float.class);
+        TYPES.put("byte", byte.class);
+        TYPES.put("Byte", Byte.class);
+        TYPES.put("java.lang.Byte", Byte.class);
+        TYPES.put("double", double.class);
+        TYPES.put("Double", Double.class);
+        TYPES.put("java.lang.Double", Double.class);
+        TYPES.put("java.math.BigInteger", BigInteger.class);
+        TYPES.put("java.math.BigDecimal", BigDecimal.class);
+    }
+
+    private Class _valueTypeClass = int.class;
+    
     private boolean _zeroIsNull;
     private Number _minimum;
     private Number _maximum;
@@ -143,7 +177,7 @@ public class NumberValidator extends BaseValidator
         public Number parse(String value)
         {
             return new Float(value);
-        }      
+        }
     }
 
     private static class DoubleAdaptor extends FloatAdaptor
@@ -179,23 +213,23 @@ public class NumberValidator extends BaseValidator
         NumberAdaptor doubleAdaptor = new DoubleAdaptor();
 
         _numberAdaptors.register(Byte.class, byteAdaptor);
-        _numberAdaptors.register(Byte.TYPE, byteAdaptor);
+        _numberAdaptors.register(byte.class, byteAdaptor);
         _numberAdaptors.register(Short.class, shortAdaptor);
-        _numberAdaptors.register(Short.TYPE, shortAdaptor);
+        _numberAdaptors.register(short.class, shortAdaptor);
         _numberAdaptors.register(Integer.class, intAdaptor);
-        _numberAdaptors.register(Integer.TYPE, intAdaptor);
+        _numberAdaptors.register(int.class, intAdaptor);
         _numberAdaptors.register(Long.class, longAdaptor);
-        _numberAdaptors.register(Long.TYPE, longAdaptor);
+        _numberAdaptors.register(long.class, longAdaptor);
         _numberAdaptors.register(Float.class, floatAdaptor);
-        _numberAdaptors.register(Float.TYPE, floatAdaptor);
+        _numberAdaptors.register(float.class, floatAdaptor);
         _numberAdaptors.register(Double.class, doubleAdaptor);
-        _numberAdaptors.register(Double.TYPE, doubleAdaptor);
+        _numberAdaptors.register(double.class, doubleAdaptor);
 
         _numberAdaptors.register(BigDecimal.class, new BigDecimalAdaptor());
         _numberAdaptors.register(BigInteger.class, new BigIntegerAdaptor());
     }
 
-    public String toString(IField field, Object value)
+    public String toString(IFormComponent field, Object value)
     {
         if (value == null)
             return null;
@@ -211,20 +245,21 @@ public class NumberValidator extends BaseValidator
         return value.toString();
     }
 
-    private NumberAdaptor getAdaptor(IField field)
+    private NumberAdaptor getAdaptor(IFormComponent field)
     {
-        Class valueType = field.getValueType();
-
-        NumberAdaptor result = (NumberAdaptor) _numberAdaptors.getAdaptor(valueType);
+        NumberAdaptor result = (NumberAdaptor) _numberAdaptors.getAdaptor(_valueTypeClass);
 
         if (result == null)
             throw new ApplicationRuntimeException(
-                Tapestry.getString("NumberValidator.no-adaptor-for-field", field, valueType.getName()));
+                Tapestry.getString(
+                    "NumberValidator.no-adaptor-for-field",
+                    field,
+                    _valueTypeClass.getName()));
 
         return result;
     }
 
-    public Object toObject(IField field, String value) throws ValidatorException
+    public Object toObject(IFormComponent field, String value) throws ValidatorException
     {
         if (checkRequired(field, value))
             return null;
@@ -239,7 +274,10 @@ public class NumberValidator extends BaseValidator
         catch (NumberFormatException ex)
         {
             String errorMessage =
-                getString("invalid-numeric-format", field.getPage().getLocale(), field.getDisplayName());
+                getString(
+                    "invalid-numeric-format",
+                    field.getPage().getLocale(),
+                    field.getDisplayName());
 
             throw new ValidatorException(errorMessage, ValidationConstraint.NUMBER_FORMAT, value);
         }
@@ -247,7 +285,11 @@ public class NumberValidator extends BaseValidator
         if (_minimum != null && adaptor.compare(result, _minimum) < 0)
         {
             String errorMessage =
-                getString("number-too-small", field.getPage().getLocale(), field.getDisplayName(), _minimum);
+                getString(
+                    "number-too-small",
+                    field.getPage().getLocale(),
+                    field.getDisplayName(),
+                    _minimum);
 
             throw new ValidatorException(errorMessage, ValidationConstraint.TOO_SMALL, value);
         }
@@ -255,7 +297,11 @@ public class NumberValidator extends BaseValidator
         if (_maximum != null && adaptor.compare(result, _maximum) > 0)
         {
             String errorMessage =
-                getString("number-too-large", field.getPage().getLocale(), field.getDisplayName(), _maximum);
+                getString(
+                    "number-too-large",
+                    field.getPage().getLocale(),
+                    field.getDisplayName(),
+                    _maximum);
 
             throw new ValidatorException(errorMessage, ValidationConstraint.TOO_LARGE, value);
         }
@@ -315,7 +361,10 @@ public class NumberValidator extends BaseValidator
      * 
      **/
 
-    public void renderValidatorContribution(IField field, IMarkupWriter writer, IRequestCycle cycle)
+    public void renderValidatorContribution(
+        IFormComponent field,
+        IMarkupWriter writer,
+        IRequestCycle cycle)
         throws RequestCycleException
     {
         if (!isClientScriptingEnabled())
@@ -345,7 +394,10 @@ public class NumberValidator extends BaseValidator
     private String buildRangeMessage(String displayName, Locale locale)
     {
         if (_minimum != null && _maximum != null)
-            return getString("number-range", locale, new Object[] { displayName, _minimum, _maximum });
+            return getString(
+                "number-range",
+                locale,
+                new Object[] { displayName, _minimum, _maximum });
 
         if (_minimum != null)
             return getString("number-too-small", locale, displayName, _minimum);
@@ -357,7 +409,7 @@ public class NumberValidator extends BaseValidator
      *  @since 2.2
      * 
      **/
-    
+
     public String getScriptPath()
     {
         return _scriptPath;
@@ -372,10 +424,49 @@ public class NumberValidator extends BaseValidator
      *  @since 2.2
      * 
      **/
-    
+
     public void setScriptPath(String scriptPath)
     {
         _scriptPath = scriptPath;
     }
+
+    /** Sets the value type from a string type name.  The name may be
+     *  a scalar numeric type, a fully qualified class name, or the name
+     *  of a numeric wrapper type from java.lang (with the package name omitted).
+     * 
+     * @since 2.4 
+     * 
+     **/
+
+    public void setValueType(String typeName)
+    {
+        Class typeClass = (Class) TYPES.get(typeName);
+
+        if (typeClass == null)
+            throw new ApplicationRuntimeException(
+                Tapestry.getString("NumberValidator.unknown-type", typeName));
+
+		_valueTypeClass = typeClass;
+    }
+
+	/** @since 2.4 **/
+	
+	public void setValueTypeClass(Class valueTypeClass)
+	{
+		_valueTypeClass = valueTypeClass;
+	}
+	
+	/** 
+	 *  
+	 *  Returns the value type to convert strings back into.  The default is int.
+	 * 
+	 *  @since 2.4 
+	 * 
+	 **/
+	
+	public Class getValueTypeClass()
+	{
+		return _valueTypeClass;
+	}
 
 }

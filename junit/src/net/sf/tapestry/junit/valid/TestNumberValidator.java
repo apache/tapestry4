@@ -58,7 +58,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 import junit.framework.TestCase;
-import net.sf.tapestry.valid.IField;
+
+import net.sf.tapestry.form.IFormComponent;
 import net.sf.tapestry.valid.NumberValidator;
 import net.sf.tapestry.valid.ValidatorException;
 
@@ -80,14 +81,17 @@ public class TestNumberValidator extends TestCase
         super(name);
     }
 
-    private void testPassThru(String displayName, Class valueType, Number input)
+    private void testPassThru(String displayName, Class valueTypeClass, Number input)
         throws ValidatorException
     {
-        testPassThru(new TestingField(displayName, valueType), input);
+        testPassThru(new TestingField(displayName), valueTypeClass, input);
     }
 
-    private void testPassThru(IField field, Number input) throws ValidatorException
+    private void testPassThru(IFormComponent field, Class valueTypeClass, Number input)
+        throws ValidatorException
     {
+        v.setValueTypeClass(valueTypeClass);
+
         String s = v.toString(field, input);
 
         Object o = v.toObject(field, s);

@@ -72,7 +72,6 @@ import net.sf.tapestry.RequestCycleException;
 import net.sf.tapestry.ResponseOutputStream;
 import net.sf.tapestry.Tapestry;
 import net.sf.tapestry.engine.AbstractService;
-import net.sf.tapestry.engine.EngineServiceLink;
 import net.sf.tapestry.engine.ILink;
 
 /**

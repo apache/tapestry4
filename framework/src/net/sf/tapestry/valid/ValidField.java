@@ -54,11 +54,6 @@
  */
 package net.sf.tapestry.valid;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.HashMap;
-import java.util.Map;
-
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IForm;
 import net.sf.tapestry.IMarkupWriter;
@@ -88,40 +83,8 @@ import net.sf.tapestry.html.Body;
  *
  **/
 
-public abstract class ValidField extends AbstractTextField implements IField, IFormComponent
+public abstract class ValidField extends AbstractTextField implements IFormComponent
 {
-    private static final Map TYPES = new HashMap();
-
-    static {
-        TYPES.put("boolean", boolean.class);
-        TYPES.put("Boolean", Boolean.class);
-        TYPES.put("java.lang.Boolean", Boolean.class);
-        TYPES.put("char", char.class);
-        TYPES.put("Character", Character.class);
-        TYPES.put("java.lang.Character", Character.class);
-        TYPES.put("short", short.class);
-        TYPES.put("Short", Short.class);
-        TYPES.put("java.lang.Short", Short.class);
-        TYPES.put("int", int.class);
-        TYPES.put("Integer", Integer.class);
-        TYPES.put("java.lang.Integer", Integer.class);
-        TYPES.put("long", long.class);
-        TYPES.put("Long", Long.class);
-        TYPES.put("java.lang.Long", Long.class);
-        TYPES.put("float", float.class);
-        TYPES.put("Float", Float.class);
-        TYPES.put("java.lang.Float", Float.class);
-        TYPES.put("byte", byte.class);
-        TYPES.put("Byte", Byte.class);
-        TYPES.put("java.lang.Byte", Byte.class);
-        TYPES.put("double", double.class);
-        TYPES.put("Double", Double.class);
-        TYPES.put("java.lang.Double", Double.class);
-        TYPES.put("java.math.BigInteger", BigInteger.class);
-        TYPES.put("java.math.BigDecimal", BigDecimal.class);
-    }
-
-
     /** @since 2.2 **/
 
     private Class _valueType;
@@ -158,6 +121,7 @@ public abstract class ValidField extends AbstractTextField implements IField, IF
         throws RequestCycleException
     {
         IValidationDelegate delegate = getForm().getDelegate();
+        IValidator validator = getValidator();
 
         if (delegate == null)
             throw new RequestCycleException(
@@ -172,12 +136,12 @@ public abstract class ValidField extends AbstractTextField implements IField, IF
         delegate.setFormComponent(this);
 
         if (rendering)
-            delegate.writePrefix(writer, cycle);
+            delegate.writePrefix(writer, cycle, this, validator);
 
         super.renderComponent(writer, cycle);
 
         if (rendering)
-            delegate.writeSuffix(writer, cycle);
+            delegate.writeSuffix(writer, cycle, this, validator);
 
         // If rendering and there's either an error in the field,
         // or the field is required but the value is currently null,
@@ -202,9 +166,11 @@ public abstract class ValidField extends AbstractTextField implements IField, IF
     protected void beforeCloseTag(IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
-        getValidator().renderValidatorContribution(this, writer, cycle);
+    	IValidator validator = getValidator();
+    	
+        validator.renderValidatorContribution(this, writer, cycle);
 
-        getForm().getDelegate().writeAttributes(writer, cycle);
+        getForm().getDelegate().writeAttributes(writer, cycle, this, validator);
     }
 
     private static final String SELECTED_ATTRIBUTE_NAME =
@@ -282,36 +248,9 @@ public abstract class ValidField extends AbstractTextField implements IField, IF
     }
 
     public abstract IValidator getValidator();
-    
-    /** @since 2.2. **/
+   
 
-    public abstract String getTypeName();
-    
-    public Class getValueType()
-    {
-        if (_valueType == null)
-            _valueType = resolveType();
 
-        return _valueType;
-    }
-
-    private Class resolveType()
-    {
-    	String typeName = getTypeName();
-    	
-        if (typeName == null)
-            throw new NullPointerException(Tapestry.getString("ValidField.no-type", this));
-
-        synchronized (TYPES)
-        {
-            Class result = (Class) TYPES.get(typeName);
-
-            if (result != null)
-                return result;
-        }
-
-        return getPage().getEngine().getResourceResolver().findClass(typeName);
-    }
 
     protected void cleanupAfterRender(IRequestCycle cycle)
     {

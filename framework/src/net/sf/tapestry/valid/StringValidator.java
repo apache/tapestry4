@@ -61,6 +61,7 @@ import java.util.Map;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IRequestCycle;
 import net.sf.tapestry.RequestCycleException;
+import net.sf.tapestry.form.IFormComponent;
 
 /**
  *  Simple validation of strings, to enforce required, and minimum length
@@ -138,7 +139,7 @@ public class StringValidator extends BaseValidator
         super(required);
     }
 
-    public String toString(IField field, Object value)
+    public String toString(IFormComponent field, Object value)
     {
         if (value == null)
             return null;
@@ -146,7 +147,7 @@ public class StringValidator extends BaseValidator
         return value.toString();
     }
 
-    public Object toObject(IField field, String input) throws ValidatorException
+    public Object toObject(IFormComponent field, String input) throws ValidatorException
     {
         if (checkRequired(field, input))
             return null;
@@ -182,7 +183,7 @@ public class StringValidator extends BaseValidator
      * 
      **/
 
-    public void renderValidatorContribution(IField field, IMarkupWriter writer, IRequestCycle cycle)
+    public void renderValidatorContribution(IFormComponent field, IMarkupWriter writer, IRequestCycle cycle)
         throws RequestCycleException
     {
         if (!isClientScriptingEnabled())

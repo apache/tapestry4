@@ -74,8 +74,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionBindingEvent;
-import javax.servlet.http.HttpSessionBindingListener;
 
 import net.sf.tapestry.ApplicationRuntimeException;
 import net.sf.tapestry.ApplicationServlet;
@@ -88,7 +86,6 @@ import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.IMonitor;
 import net.sf.tapestry.INamespace;
 import net.sf.tapestry.IPage;
-import net.sf.tapestry.IPageRecorder;
 import net.sf.tapestry.IPageSource;
 import net.sf.tapestry.IPropertySource;
 import net.sf.tapestry.IRequestCycle;

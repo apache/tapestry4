@@ -58,8 +58,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.sf.tapestry.Tapestry;
-
-import org.apache.bcel.Constants;
 import org.apache.bcel.classfile.Method;
 import org.apache.bcel.generic.ClassGen;
 import org.apache.bcel.generic.InstructionHandle;

@@ -890,7 +890,7 @@ public class SpecificationParser extends AbstractDocumentParser
         throws DocumentParseException
     {
         String name = getAttribute(node, "name");
-        String expression = getAttribute(node, "expression");
+        String expression =  getExtendedAttribute(node, "expression", true);
 
         IBeanInitializer iz = _factory.createExpressionBeanInitializer(name, expression);
 

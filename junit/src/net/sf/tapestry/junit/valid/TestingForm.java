@@ -60,6 +60,7 @@ import java.util.Map;
 import net.sf.tapestry.IAsset;
 import net.sf.tapestry.IBinding;
 import net.sf.tapestry.IComponent;
+import net.sf.tapestry.IComponentStrings;
 import net.sf.tapestry.IForm;
 import net.sf.tapestry.IMarkupWriter;
 import net.sf.tapestry.INamespace;
@@ -264,6 +265,11 @@ public class TestingForm implements IForm
 
     public void renderBody(IMarkupWriter writer, IRequestCycle cycle) throws RequestCycleException
     {
+    }
+
+    public IComponentStrings getStrings()
+    {
+        return null;
     }
 
 }

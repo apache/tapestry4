@@ -923,18 +923,27 @@ public abstract class AbstractComponent implements IComponent
             _parameterManager.resetParameters(cycle);
     }
 
+    /** @since 2.4 **/
+
+    public IComponentStrings getStrings()
+    {
+        if (_strings == null)
+            _strings = getPage().getEngine().getComponentStringsSource().getStrings(this);
+
+        return _strings;
+    }
+
     /**
      *  Obtains the {@link IComponentStrings} for this component
      *  (if necessary), and gets the string from it.
+     * 
+     *  @deprecated Use {@link IComponentStrings#getString(String)} instead.
      * 
      **/
 
     public String getString(String key)
     {
-        if (_strings == null)
-            _strings = getPage().getEngine().getComponentStringsSource().getStrings(this);
-
-        return _strings.getString(key);
+        return getStrings().getString(key);
     }
 
     /**
@@ -946,50 +955,51 @@ public abstract class AbstractComponent implements IComponent
      *  @param arguments passed to the formatter
      * 
      *  @since 2.2
+     *  @deprecated Use {@link IComponentStrings#formatString(String, Object[])} instead.
      * 
      **/
 
     public String formatString(String key, Object[] arguments)
     {
-        String format = getString(key);
-
-        return MessageFormat.format(format, arguments);
+        return getStrings().format(key, arguments);
     }
 
     /**
      *  Convienience method for {@link #formatString(String, Object[])}
      * 
      *  @since 2.2
+     *  @deprecated Use {@link IComponentStrings#format(String, Object)} instead.
      * 
      **/
 
     public String formatString(String key, Object argument)
     {
-        return formatString(key, new Object[] { argument });
+        return getStrings().format(key, argument);
     }
 
     /**
      *  Convienience method for {@link #formatString(String, Object[])}
      * 
      *  @since 2.2
-     * 
+     *  @deprecated Use {@link IComponentStrings#format(String, Object, Object)} instead.
      **/
 
     public String formatString(String key, Object argument1, Object argument2)
     {
-        return formatString(key, new Object[] { argument1, argument2 });
+        return getStrings().format(key, argument1, argument2);
     }
 
     /**
      *  Convienience method for {@link #formatString(String, Object[])}
      * 
      *  @since 2.2
+     *  @deprecated Use {@link IComponentStrings#format(String, Object, Object, Object)} instead.
      * 
      **/
 
     public String formatString(String key, Object argument1, Object argument2, Object argument3)
     {
-        return formatString(key, new Object[] { argument1, argument2, argument3 });
+        return getStrings().format(key, new Object[] { argument1, argument2, argument3 });
     }
 
     public INamespace getNamespace()

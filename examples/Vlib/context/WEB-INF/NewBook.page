@@ -8,6 +8,10 @@
 
   <property name="page-type">library</property>
   
+  <bean name="required" class="net.sf.tapestry.valid.StringValidator" lifecycle="page">
+    <set-property name="required" expression="true"/>
+    <set-property name="clientScriptingEnabled" expression="true"/>
+  </bean>
   
   <component id="form" type="Form">
     <binding name="listener" expression="listeners.addBook"/>
@@ -21,12 +25,12 @@
     <static-binding name="maximumLength" value="100"/>
     <static-binding name="displayWidth" value="50"/>
     <static-binding name="displayName" value="Title"/>
-    <binding name="validator" expression="@net.sf.tapestry.valid.StringValidator@REQUIRED"/>
+    <binding name="validator" expression="beans.required"/>
   </component>
   
   <component id="inputAuthor" type="ValidField">
     <binding name="value" expression="attributes.author"/>
-    <binding name="validator" expression="@net.sf.tapestry.valid.StringValidator@REQUIRED"/>    
+    <binding name="validator" expression="beans.required"/>    
     <static-binding name="maximumLength" value="60"/>
     <static-binding name="displayWidth" value="30"/>
     <static-binding name="displayName" value="Author"/>
@@ -36,7 +40,6 @@
     <static-binding name="maximumLength" value="20"/>
     <static-binding name="displayWidth" value="20"/>
     <binding name="value" expression="attributes.ISBN"/>
-    <binding name="validator" expression="@net.sf.tapestry.valid.StringValidator@OPTIONAL"/>    
   </component>
   
   

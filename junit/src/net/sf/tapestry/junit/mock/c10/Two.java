@@ -54,9 +54,6 @@
  */
 package net.sf.tapestry.junit.mock.c10;
 
-import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.html.BasePage;
-
 /**
  *  Another placeholder class; page Two tests the check that ensures
  *  that links are not nested.
