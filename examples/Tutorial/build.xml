@@ -29,14 +29,14 @@
     <delete dir="${classes.dir}"/>
   </target>
 
-  <target name="compile" depends="init" description="Compile all classes in the framework.">
+  <target name="compile" depends="init" description="Compile all classes in the tutorial.">
     <javac srcdir="${src.dir}" destdir="${classes.dir}" debug="on" target="1.1">
       <classpath refid="project.class.path"/>
     </javac>
   </target>
   
   
-  <target name="install" depends="compile" description="Compile all classes and build the installed WAR including all package resources.">
+  <target name="install" depends="compile" description="Compile all classes and build the installed WAR.">
      <war warfile="${tutorial.war}" webxml="WEB-INF/web.xml">
 
       <fileset dir=".">
