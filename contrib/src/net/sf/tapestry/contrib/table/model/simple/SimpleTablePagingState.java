@@ -5,7 +5,8 @@ import java.io.Serializable;
 import net.sf.tapestry.contrib.table.model.ITablePagingState;
 
 /**
- * A minimal implementation of ITablePagingState
+ * A minimal implementation of 
+ * {@link net.sf.tapestry.contrib.table.model.ITablePagingState}.
  * 
  * @version $Id$
  * @author mindbridge

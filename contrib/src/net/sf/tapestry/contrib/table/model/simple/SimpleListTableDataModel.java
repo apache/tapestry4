@@ -14,7 +14,8 @@ import net.sf.tapestry.contrib.table.model.common.AbstractTableDataModel;
 import net.sf.tapestry.contrib.table.model.common.ArrayIterator;
 
 /**
- * A minimal implementation of the ITableDataModel interface
+ * A minimal list implementation of the 
+ * {@link net.sf.tapestry.contrib.table.model.ITableDataModel} interface
  * 
  * @version $Id$
  * @author mindbridge

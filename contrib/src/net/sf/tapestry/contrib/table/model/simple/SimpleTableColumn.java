@@ -3,25 +3,20 @@ package net.sf.tapestry.contrib.table.model.simple;
 import java.io.Serializable;
 import java.util.Comparator;
 
-import net.sf.tapestry.INamespace;
-import net.sf.tapestry.IPage;
-import net.sf.tapestry.IRender;
-import net.sf.tapestry.IRequestCycle;
-import net.sf.tapestry.contrib.table.model.ITableColumn;
-import net.sf.tapestry.contrib.table.model.ITableModelSource;
-import net.sf.tapestry.valid.RenderString;
+import net.sf.tapestry.contrib.table.model.common.AbstractTableColumn;
 
 /**
+ * A simple minimal implementation of the 
+ * {@link net.sf.tapestry.contrib.table.model.ITableColumn} interface that
+ * provides all the basic services for displaying a column.
+ * 
  * @version $Id$
  * @author mindbridge
- *
  */
-public abstract class SimpleTableColumn implements ITableColumn, Serializable
+public class SimpleTableColumn extends AbstractTableColumn
 {
-	private String m_strColumnName;
 	private String m_strDisplayName;
-	private boolean m_bSortable;
-	private Comparator m_objComparator;
+	private ITableColumnEvaluator m_objEvaluator;
 
 	/**
 	 * Creates a SimpleTableColumn
@@ -33,7 +28,7 @@ public abstract class SimpleTableColumn implements ITableColumn, Serializable
 	}
 
 	/**
-     * Creates a SimpleTableColumn
+	 * Creates a SimpleTableColumn
 	 * @param strColumnName the identifying name and display name of the column
 	 * @param bSortable whether the column is sortable
 	 */
@@ -43,7 +38,21 @@ public abstract class SimpleTableColumn implements ITableColumn, Serializable
 	}
 
 	/**
-     * Creates a SimpleTableColumn
+	 * Creates a SimpleTableColumn
+	 * @param strColumnName the identifying name and display name of the column
+	 * @param bSortable whether the column is sortable
+     * @param objEvaluator the evaluator to extract the column value from the row
+	 */
+	public SimpleTableColumn(
+		String strColumnName,
+        ITableColumnEvaluator objEvaluator,
+		boolean bSortable)
+	{
+		this(strColumnName, strColumnName, objEvaluator, bSortable);
+	}
+
+	/**
+	 * Creates a SimpleTableColumn
 	 * @param strColumnName the identifying name of the column
 	 * @param strDisplayName the display name of the column
 	 */
@@ -53,7 +62,7 @@ public abstract class SimpleTableColumn implements ITableColumn, Serializable
 	}
 
 	/**
-     * Creates a SimpleTableColumn
+	 * Creates a SimpleTableColumn
 	 * @param strColumnName the identifying name of the column
 	 * @param strDisplayName the display name of the column
 	 * @param bSortable whether the column is sortable
@@ -63,25 +72,34 @@ public abstract class SimpleTableColumn implements ITableColumn, Serializable
 		String strDisplayName,
 		boolean bSortable)
 	{
-		m_strColumnName = strColumnName;
-		m_strDisplayName = strDisplayName;
-		m_bSortable = bSortable;
-
-		setComparator(new DefaultComparator());
+		this(strColumnName, strDisplayName, null, bSortable);
 	}
 
 	/**
-	 * @see net.sf.tapestry.contrib.table.model.ITableColumn#getColumnName()
+	 * Creates a SimpleTableColumn
+	 * @param strColumnName the identifying name of the column
+	 * @param strDisplayName the display name of the column
+	 * @param bSortable whether the column is sortable
+     * @param objEvaluator the evaluator to extract the column value from the row
 	 */
-	public String getColumnName()
+	public SimpleTableColumn(
+		String strColumnName,
+		String strDisplayName,
+		ITableColumnEvaluator objEvaluator,
+		boolean bSortable)
 	{
-		return m_strColumnName;
+		super(strColumnName, bSortable, null);
+		setComparator(new DefaultComparator());
+		setDisplayName(strDisplayName);
+		setColumnRendererSource(new SimpleTableColumnRendererSource());
+		setValueRendererSource(new SimpleTableValueRendererSource());
+		setEvaluator(objEvaluator);
 	}
 
 	/**
 	 * Returns the display name of the column that will be used 
-     * in the table header.
-     * Override for internationalization.
+	 * in the table header.
+	 * Override for internationalization.
 	 * @return String the display name of the column
 	 */
 	public String getDisplayName()
@@ -90,24 +108,30 @@ public abstract class SimpleTableColumn implements ITableColumn, Serializable
 	}
 
 	/**
-	 * @see net.sf.tapestry.contrib.table.model.ITableColumn#getSortable()
+	 * Sets the displayName.
+	 * @param displayName The displayName to set
 	 */
-	public boolean getSortable()
+	public void setDisplayName(String displayName)
 	{
-		return m_bSortable;
+		m_strDisplayName = displayName;
 	}
 
 	/**
-	 * @see net.sf.tapestry.contrib.table.model.ITableColumn#getComparator()
+	 * Returns the evaluator.
+	 * @return ITableColumnEvaluator
 	 */
-	public Comparator getComparator()
+	public ITableColumnEvaluator getEvaluator()
 	{
-		return m_objComparator;
+		return m_objEvaluator;
 	}
 
-	protected void setComparator(Comparator objComparator)
+	/**
+	 * Sets the evaluator.
+	 * @param evaluator The evaluator to set
+	 */
+	public void setEvaluator(ITableColumnEvaluator evaluator)
 	{
-		m_objComparator = objComparator;
+		m_objEvaluator = evaluator;
 	}
 
 	/**
@@ -116,48 +140,13 @@ public abstract class SimpleTableColumn implements ITableColumn, Serializable
 	 * @return Object the column value
 	 */
 	public Object getColumnValue(Object objRow)
-    {
-        return objRow.toString();
-    }
-
-	/**
-	 * @see net.sf.tapestry.contrib.table.model.ITableColumn#getColumnRenderer(IRequestCycle, ITableModelSource)
-	 */
-	public IRender getColumnRenderer(
-		IRequestCycle objCycle,
-		ITableModelSource objSource)
 	{
-		// to be implemented
-		//return new RenderString(getDisplayName());
-		INamespace objNamespace = objSource.getNamespace();
-		String strNamespace = objNamespace.getExtendedId();
-		if (strNamespace == null)
-			strNamespace = "";
-		else
-			strNamespace = strNamespace + ":";
+		ITableColumnEvaluator objEvaluator = getEvaluator();
+		if (objEvaluator != null)
+			return objEvaluator.getColumnValue(this, objRow);
 
-		IPage objPage =
-			objCycle.getPage(strNamespace + "SimpleTableColumnPage");
-		ISimpleTableColumnRenderer objRenderer =
-			(ISimpleTableColumnRenderer) objPage.getComponent(
-				"tableColumnComponent");
-		objRenderer.initializeColumnRenderer(this, objSource);
-		return objRenderer;
-	}
-
-	/**
-	 * @see net.sf.tapestry.contrib.table.model.ITableColumn#getValueRenderer(IRequestCycle, ITableModelSource, Object)
-	 */
-	public IRender getValueRenderer(
-		IRequestCycle objCycle,
-		ITableModelSource objSource,
-		Object objRow)
-	{
-        Object objValue = getColumnValue(objRow);
-        if (objValue == null)
-            objValue = "";
-
-		return new RenderString(objValue.toString());
+		// default fallback
+		return objRow.toString();
 	}
 
 	private class DefaultComparator implements Comparator, Serializable
@@ -177,4 +166,5 @@ public abstract class SimpleTableColumn implements ITableColumn, Serializable
 			return ((Comparable) objValue1).compareTo(objValue2);
 		}
 	}
+
 }

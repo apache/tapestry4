@@ -33,7 +33,7 @@ import net.sf.tapestry.contrib.table.model.ITableRowSource;
  * </tr>
  *
  * <tr>
- *  <td>value</td>
+ *  <td>row</td>
  *  <td>Object</td>
  *  <td>out</td>
  *  <td>no</td>
@@ -60,6 +60,7 @@ public class TableRows extends AbstractTableViewComponent implements ITableRowSo
 {
     // Binding
     private IBinding m_objElementBinding = null;
+    private IBinding m_objRowBinding = null;
     private IBinding m_objValueBinding = null;
 
 	// Transient
@@ -89,10 +90,32 @@ public class TableRows extends AbstractTableViewComponent implements ITableRowSo
 	{
 		m_objTableRow = tableRow;
         
+        IBinding objRowBinding = getRowBinding();
+        if (objRowBinding != null)
+            objRowBinding.setObject(tableRow);
+
         IBinding objValueBinding = getValueBinding();
         if (objValueBinding != null)
             objValueBinding.setObject(tableRow);
 	}
+
+    /**
+     * Returns the valueBinding.
+     * @return IBinding
+     */
+    public IBinding getRowBinding()
+    {
+        return m_objRowBinding;
+    }
+
+    /**
+     * Sets the valueBinding.
+     * @param valueBinding The valueBinding to set
+     */
+    public void setRowBinding(IBinding valueBinding)
+    {
+        m_objRowBinding = valueBinding;
+    }
 
     /**
      * Returns the valueBinding.

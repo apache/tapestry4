@@ -8,8 +8,9 @@ import net.sf.tapestry.contrib.table.model.ITableModel;
 import net.sf.tapestry.contrib.table.model.ITableSessionStateManager;
 
 /**
- * A ITableSessionStateManager implementation that saves 
- * only the paging and sorting state of the table model into the session.
+ * A {@link net.sf.tapestry.contrib.table.model.ITableSessionStateManager} 
+ * implementation that saves only the paging and sorting state of the table model 
+ * into the session.
  * 
  * @version $Id$
  * @author mindbridge

@@ -5,7 +5,8 @@ import java.io.Serializable;
 import net.sf.tapestry.contrib.table.model.ITableSortingState;
 
 /**
- * A minimal implementation of ITableSortingState
+ * A minimal implementation of 
+ * {@link net.sf.tapestry.contrib.table.model.ITableSortingState}
  * 
  * @version $Id$
  * @author mindbridge

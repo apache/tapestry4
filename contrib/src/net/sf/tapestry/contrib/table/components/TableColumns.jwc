@@ -10,6 +10,11 @@
 	<description>
 	</description>
   
+	<parameter name="column" 
+		java-type="net.sf.tapestry.contrib.table.model.ITableColumn" 
+		required="no"
+		direction="custom"/>
+
 	<parameter name="element" 
 		java-type="java.lang.String" 
 		required="no"

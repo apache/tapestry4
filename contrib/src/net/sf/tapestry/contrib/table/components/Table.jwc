@@ -30,6 +30,16 @@
 		required="no"
 		direction="custom"/>
   
+	<parameter name="column" 
+		java-type="net.sf.tapestry.contrib.table.model.ITableColumn" 
+		required="no"
+		direction="custom"/>
+
+	<parameter name="row" 
+		java-type="Object" 
+		required="no"
+		direction="custom"/>
+
 	<parameter name="arrowUpAsset" 
 		java-type="net.sf.tapestry.IAsset" 
 		required="no"
@@ -83,10 +93,12 @@
 	</component>
 
 	<component id="tableColumns" type="TableColumns">
+		<inherited-binding name="column" parameter-name="column"/>
 		<inherited-binding name="class" parameter-name="columnsClass"/>
 	</component>
 
 	<component id="tableRows" type="TableRows">
+		<inherited-binding name="row" parameter-name="row"/>
 		<inherited-binding name="class" parameter-name="rowsClass"/>
 	</component>
 

@@ -37,6 +37,15 @@ import net.sf.tapestry.event.PageEvent;
  * </tr>
  *
  * <tr>
+ *  <td>column</td>
+ *  <td>net.sf.tapestry.contrib.table.model.ITableColumn</td>
+ *  <td>out</td>
+ *  <td>no</td>
+ *  <td>&nbsp;</td>
+ *  <td align="left">The object representing the current column.</td> 
+ * </tr>
+ *
+ * <tr>
  *  <td>element</td>
  *  <td>String</td>
  *  <td>in</td>
@@ -78,6 +87,7 @@ public class TableColumns extends AbstractTableViewComponent implements PageDeta
         "net.sf.tapestry.contrib.table.components.TableColumns.arrowDown";
     
     // Bindings (custom)
+    private IBinding m_objColumnBinding = null;
     private IBinding m_objElementBinding = null;
 
     // Bindings (in)
@@ -137,6 +147,10 @@ public class TableColumns extends AbstractTableViewComponent implements PageDeta
 	public void setTableColumn(ITableColumn tableColumn)
 	{
 		m_objTableColumn = tableColumn;
+
+        IBinding objColumnBinding = getColumnBinding();
+        if (objColumnBinding != null)
+            objColumnBinding.setObject(tableColumn);
 	}
 
 	public IRender getTableColumnRenderer() throws RequestCycleException
@@ -145,6 +159,24 @@ public class TableColumns extends AbstractTableViewComponent implements PageDeta
 			getPage().getRequestCycle(),
 			getTableModelSource());
 	}
+
+    /**
+     * Returns the valueBinding.
+     * @return IBinding
+     */
+    public IBinding getColumnBinding()
+    {
+        return m_objColumnBinding;
+    }
+
+    /**
+     * Sets the valueBinding.
+     * @param valueBinding The valueBinding to set
+     */
+    public void setColumnBinding(IBinding valueBinding)
+    {
+        m_objColumnBinding = valueBinding;
+    }
 
     /**
      * Returns the elementBinding.

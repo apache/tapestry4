@@ -17,7 +17,7 @@ import net.sf.tapestry.contrib.table.model.common.ArrayIterator;
 import net.sf.tapestry.contrib.table.model.common.ReverseComparator;
 
 /**
- * A simple generic table model implementation 
+ * A simple generic table model implementation.
  * 
  * @version $Id$
  * @author mindbridge
