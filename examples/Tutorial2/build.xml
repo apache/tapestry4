@@ -54,6 +54,7 @@
     <copy todir="${classes.dir}">
         <fileset dir="${src.dir}">
 	  <include name="**/*.page"/>
+	  <include name="**/*.jwc"/>
 	  <include name="**/*.html"/>
 	  <include name="**/*.application"/>
 	</fileset>
