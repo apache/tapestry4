@@ -55,9 +55,6 @@
 
 package org.apache.tapestry.engine;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -240,34 +237,6 @@ public class DefaultSpecificationSource implements ISpecificationSource, IRender
                 ex);
         }
 
-    }
-
-    /** @since 2.2 **/
-
-    private InputStream openSpecification(IResourceLocation resourceLocation)
-    {
-        URL URL = resourceLocation.getResourceURL();
-
-        if (URL == null)
-        {
-            throw new ApplicationRuntimeException(
-                Tapestry.getString(
-                    "DefaultSpecificationSource.unable-to-locate-specification",
-                    resourceLocation));
-        }
-
-        try
-        {
-            return URL.openStream();
-        }
-        catch (IOException ex)
-        {
-            throw new ApplicationRuntimeException(
-                Tapestry.getString(
-                    "DefaultSpecificationSource.unable-to-open-specification",
-                    resourceLocation),
-                ex);
-        }
     }
 
     public synchronized String toString()

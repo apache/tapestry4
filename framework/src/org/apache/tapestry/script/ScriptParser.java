@@ -55,8 +55,6 @@
 
 package org.apache.tapestry.script;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.IResourceLocation;
 import org.apache.tapestry.IResourceResolver;
 import org.apache.tapestry.IScript;
@@ -99,8 +97,6 @@ import org.apache.tapestry.util.xml.RuleDirectedParser;
 
 public class ScriptParser
 {
-    private static final Log LOG = LogFactory.getLog(ScriptParser.class);
-
     private RuleDirectedParser _parser;
 
     public static final String SCRIPT_DTD_1_0_PUBLIC_ID =

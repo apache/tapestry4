@@ -65,8 +65,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUpload;
 import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.Tapestry;
 import org.apache.tapestry.request.IUploadFile;
@@ -91,8 +89,6 @@ import org.apache.tapestry.request.IUploadFile;
  **/
 public class DefaultMultipartDecoder implements IMultipartDecoder
 {
-    private static final Log LOG = LogFactory.getLog(DefaultMultipartDecoder.class);
-
     /**
      *  Request attribute key used to store the part map for this request.
      *  The part map is created in {@link #decode(HttpServletRequest)}.  By storing

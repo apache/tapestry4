@@ -68,12 +68,11 @@ import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
-import junit.framework.AssertionFailedError;
 
+import junit.framework.AssertionFailedError;
 import ognl.Ognl;
 import ognl.OgnlException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.MatchResult;
 import org.apache.oro.text.regex.Pattern;
@@ -114,8 +113,6 @@ import org.jdom.input.SAXBuilder;
 
 public class MockTester
 {
-    private static final Log LOG = LogFactory.getLog(MockTester.class);
-
     private String _path;
     private Document _document;
     private MockContext _context;

@@ -56,7 +56,6 @@
 package org.apache.tapestry.enhance;
 
 import org.apache.bcel.generic.Type;
-import org.apache.tapestry.ILocation;
 
 /**
  *  Creates a new property of a particular type in the enhanced subclass.  May optionally
