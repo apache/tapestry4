@@ -70,11 +70,6 @@ import org.apache.tapestry.util.RegexpMatcher;
 public class TestRegexpMatcher extends TapestryTestCase
 {
 
-    public TestRegexpMatcher(String name)
-    {
-        super(name);
-    }
-
     public void testMatch()
     {
         RegexpMatcher m = new RegexpMatcher();

@@ -68,10 +68,6 @@ import org.apache.tapestry.util.ContentType;
 
 public class TestContentType extends TapestryTestCase
 {
-    public TestContentType(String name)
-    {
-        super(name);
-    }
 
     public void testParsing1() throws Exception
     {

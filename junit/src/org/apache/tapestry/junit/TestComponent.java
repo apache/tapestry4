@@ -97,11 +97,6 @@ public class TestComponent extends TapestryTestCase
         }
     }
 
-    public TestComponent(String name)
-    {
-        super(name);
-    }
-
     /** 
      *  Test the ability of {@link org.apache.tapestry.BaseComponent#addOuter(IRender)}
      *  to add a large number of objects.

@@ -69,53 +69,47 @@ import org.apache.tapestry.link.StaticLink;
 
 public class TestStaticLink extends TapestryTestCase
 {
-	private static final String URL = "http://host/path";
-	
-		ILink l = new StaticLink(URL);
-		
+    private static final String URL = "http://host/path";
 
-    public TestStaticLink(String name)
+    ILink l = new StaticLink(URL);
+
+    public void testURL()
     {
-        super(name);
+        assertEquals(URL, l.getURL());
     }
 
-	public void testURL()
-	{
-		assertEquals(URL, l.getURL());
-	}
-	
-	public void testAbsoluteURL()
-	{
-		assertEquals(URL, l.getAbsoluteURL());
-	}
+    public void testAbsoluteURL()
+    {
+        assertEquals(URL, l.getAbsoluteURL());
+    }
 
-	public void testURLWithAnchor()
-	{
-		assertEquals(URL, l.getURL(null, false));
-		assertEquals(URL + "#anchor", l.getURL("anchor", false));
-		assertEquals(URL + "#feeble", l.getURL("feeble", true));
-	}
-	
-	public void testAbsoluteURLWithParameters()
-	{
-		assertEquals(URL + "#anchor", l.getAbsoluteURL("scheme", "server", 8080, "anchor", false));
-	}
-	
-	public void testGetParameterNames()
-	{
-		assertEquals(null, l.getParameterNames());
-	}
-	
-	public void testGetParameterValues()
-	{
-		try
-		{
-			l.getParameterValues("any");
-			
-			unreachable();
-		}
-		catch (IllegalArgumentException ex)
-		{
-		}
-	}
+    public void testURLWithAnchor()
+    {
+        assertEquals(URL, l.getURL(null, false));
+        assertEquals(URL + "#anchor", l.getURL("anchor", false));
+        assertEquals(URL + "#feeble", l.getURL("feeble", true));
+    }
+
+    public void testAbsoluteURLWithParameters()
+    {
+        assertEquals(URL + "#anchor", l.getAbsoluteURL("scheme", "server", 8080, "anchor", false));
+    }
+
+    public void testGetParameterNames()
+    {
+        assertEquals(null, l.getParameterNames());
+    }
+
+    public void testGetParameterValues()
+    {
+        try
+        {
+            l.getParameterValues("any");
+
+            unreachable();
+        }
+        catch (IllegalArgumentException ex)
+        {
+        }
+    }
 }

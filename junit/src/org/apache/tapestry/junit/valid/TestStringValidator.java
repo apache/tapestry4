@@ -73,11 +73,6 @@ public class TestStringValidator extends TapestryTestCase
 {
     private StringValidator v = new StringValidator();
 
-    public TestStringValidator(String name)
-    {
-        super(name);
-    }
-
     public void testToString()
     {
         String in = "Foo";

@@ -76,11 +76,6 @@ public class TestMocks extends TapestryTestCase
 {
     public static final String SCRIPTS_DIR = "mock-scripts";
 
-    public TestMocks(String name)
-    {
-        super(name);
-    }
-
     protected void runTest() throws Throwable
     {
         String path = SCRIPTS_DIR + "/" + getName();
@@ -114,7 +109,9 @@ public class TestMocks extends TapestryTestCase
 
             if (name.endsWith(".xml"))
             {
-                Test test = new TestMocks(name);
+                TestMocks test = new TestMocks();
+
+                test.setName(name);
 
                 suite.addTest(test);
             }

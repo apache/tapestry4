@@ -71,11 +71,6 @@ import org.apache.tapestry.spec.Direction;
 public class TestListEditMap extends TapestryTestCase
 {
 
-    public TestListEditMap(String name)
-    {
-        super(name);
-    }
-
     private ListEditMap create()
     {
         ListEditMap m = new ListEditMap();
@@ -91,7 +86,7 @@ public class TestListEditMap extends TapestryTestCase
     {
         ListEditMap m = create();
 
-		assertEquals("custom", m.getKey());
+        assertEquals("custom", m.getKey());
 
         checkList("keys", new Object[] { "in", "auto", "custom" }, m.getKeys());
         checkList(

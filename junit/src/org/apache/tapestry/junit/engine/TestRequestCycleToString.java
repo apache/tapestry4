@@ -69,11 +69,6 @@ import org.apache.tapestry.junit.TapestryTestCase;
 public class TestRequestCycleToString extends TapestryTestCase
 {
 
-    public TestRequestCycleToString(String name)
-    {
-        super(name);
-    }
-
     private String toString(Object object)
     {
         String raw = object.toString();

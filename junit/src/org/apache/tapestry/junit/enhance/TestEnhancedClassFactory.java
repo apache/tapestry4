@@ -76,13 +76,6 @@ import org.apache.tapestry.util.prop.OgnlUtils;
 
 public class TestEnhancedClassFactory extends TapestryTestCase
 {
-
-    public TestEnhancedClassFactory(String name)
-    {
-        super(name);
-    }
-
-
     /**
      *  Test the ability to create a class that implements a read/write property.
      * 
@@ -111,7 +104,6 @@ public class TestEnhancedClassFactory extends TapestryTestCase
 
         assertEquals("Holder name property.", value, actual);
     }
-
 
     public void testCreateFailure()
     {

@@ -81,11 +81,6 @@ public class TestResourceLocation extends TapestryTestCase
     private ServletContext _context = new MockContext();
     private IResourceResolver _resolver = new DefaultResourceResolver();
 
-    public TestResourceLocation(String name)
-    {
-        super(name);
-    }
-
     public void testContextEquals()
     {
         IResourceLocation l1 = new ContextResourceLocation(_context, "/images/back.png");

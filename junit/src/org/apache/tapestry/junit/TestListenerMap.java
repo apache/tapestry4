@@ -60,8 +60,8 @@ import java.util.Collections;
 import java.util.List;
 
 import junit.framework.AssertionFailedError;
-
 import ognl.Ognl;
+
 import org.apache.tapestry.ApplicationRuntimeException;
 import org.apache.tapestry.IActionListener;
 import org.apache.tapestry.IRequestCycle;
@@ -133,11 +133,6 @@ public class TestListenerMap extends TapestryTestCase
         {
             invokeCount++;
         }
-    }
-
-    public TestListenerMap(String name)
-    {
-        super(name);
     }
 
     private void attempt(String methodName, Listener listener, ListenerMap map)

@@ -93,11 +93,6 @@ public class TestDateValidator extends TapestryTestCase
         return calendar.getTime();
     }
 
-    public TestDateValidator(String name)
-    {
-        super(name);
-    }
-
     public void testToStringNull()
     {
         String out = v.toString(null, null);

@@ -83,11 +83,6 @@ public class TestLocation extends TapestryTestCase
 
     private IResourceLocation _location = new ContextResourceLocation(null, "/WEB-INF/foo.bar");
 
-    public TestLocation(String name)
-    {
-        super(name);
-    }
-
     public void testNoNumbers()
     {
         ILocation l = new Location(_location);

@@ -57,7 +57,8 @@ package org.apache.tapestry.junit.enhance;
 
 import java.lang.reflect.Method;
 
-import org.apache.tapestry.*;
+import org.apache.tapestry.AbstractComponent;
+import org.apache.tapestry.BaseComponent;
 import org.apache.tapestry.enhance.MethodSignature;
 import org.apache.tapestry.junit.TapestryTestCase;
 
@@ -72,11 +73,6 @@ import org.apache.tapestry.junit.TapestryTestCase;
  **/
 public class TestMethodSignature extends TapestryTestCase
 {
-
-    public TestMethodSignature(String name)
-    {
-        super(name);
-    }
 
     private MethodSignature build(Class subject, String methodName)
     {
@@ -95,14 +91,14 @@ public class TestMethodSignature extends TapestryTestCase
 
     public void testEquals()
     {
-    	// No parameters
+        // No parameters
         MethodSignature m1 = build(Object.class, "hashCode");
         MethodSignature m2 = build(Integer.class, "hashCode");
-        
+
         // With parameters
-		MethodSignature m3 = build(AbstractComponent.class, "renderComponent");
-		MethodSignature m4 = build(BaseComponent.class, "renderComponent");
-		
+        MethodSignature m3 = build(AbstractComponent.class, "renderComponent");
+        MethodSignature m4 = build(BaseComponent.class, "renderComponent");
+
         assertEquals(true, m1.equals(m2));
         assertEquals(true, m3.equals(m4));
     }
@@ -128,9 +124,9 @@ public class TestMethodSignature extends TapestryTestCase
 
         assertEquals(true, m1.hashCode() == m2.hashCode());
         assertEquals(true, m3.hashCode() == m4.hashCode());
-        
+
         // Different signatures should have different hashcode
-        
+
         assertEquals(true, m1.hashCode() != m3.hashCode());
     }
 

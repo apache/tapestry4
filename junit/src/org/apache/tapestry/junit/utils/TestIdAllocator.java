@@ -70,11 +70,6 @@ import org.apache.tapestry.util.IdAllocator;
 public class TestIdAllocator extends TapestryTestCase
 {
 
-    public TestIdAllocator(String name)
-    {
-        super(name);
-    }
-
     public void testSimple()
     {
         IdAllocator a = new IdAllocator();

@@ -72,14 +72,7 @@ import org.apache.tapestry.valid.ValidatorException;
 
 public class TestUrlValidator extends TapestryTestCase
 {
-	private UrlValidator v = new UrlValidator();
-	
-	/**
-	 * @param name
-	 */
-	public TestUrlValidator(String name) {
-		super(name);
-	}
+    private UrlValidator v = new UrlValidator();
 
     public void testValidUrl() throws ValidatorException
     {
@@ -97,16 +90,13 @@ public class TestUrlValidator extends TapestryTestCase
         catch (ValidatorException ex)
         {
             assertEquals(ValidationConstraint.URL_FORMAT, ex.getConstraint());
-            assertEquals(
-                "Invalid URL.",
-                ex.getMessage());
+            assertEquals("Invalid URL.", ex.getMessage());
         }
     }
 
     public void testOverrideInvalidUrlFormatMessage()
     {
-        v.setInvalidUrlFormatMessage(
-            "Try a valid URL (for {0}), like \"http://www.google.com\"");
+        v.setInvalidUrlFormatMessage("Try a valid URL (for {0}), like \"http://www.google.com\"");
 
         try
         {
@@ -152,19 +142,20 @@ public class TestUrlValidator extends TapestryTestCase
             assertEquals("URLs must be at least 20 characters.", ex.getMessage());
         }
     }
-    
+
     public void testDisallowedProtocol()
     {
-    		v.setAllowedProtocols("http,https");
-    		
-    		try
-    		{
-    				v.toObject(new MockField("short"), "ftp://ftp.test.com");
+        v.setAllowedProtocols("http,https");
+
+        try
+        {
+            v.toObject(new MockField("short"), "ftp://ftp.test.com");
             unreachable();
-    		}
-    		catch (ValidatorException ex) {
-    				assertEquals(ValidationConstraint.DISALLOWED_PROTOCOL, ex.getConstraint());
-    				assertEquals("Disallowed protocol - protocol must be http or https.", ex.getMessage());
-    		}
+        }
+        catch (ValidatorException ex)
+        {
+            assertEquals(ValidationConstraint.DISALLOWED_PROTOCOL, ex.getConstraint());
+            assertEquals("Disallowed protocol - protocol must be http or https.", ex.getMessage());
+        }
     }
 }

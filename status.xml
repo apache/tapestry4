@@ -242,6 +242,10 @@ Update all copyrights for 2004.
 Add download links.	
 </action>
 
+<action type="update" dev="HLS">
+Remove unncessary constructor from test case classes.	
+</action>
+
 
 			</release>
 		</changes>

@@ -88,11 +88,6 @@ public class TestScript extends TapestryTestCase
 {
     private MockScriptProcessor _processor = new MockScriptProcessor();
 
-    public TestScript(String name)
-    {
-        super(name);
-    }
-
     private IScript read(String file) throws IOException, DocumentParseException
     {
         IResourceResolver resolver = new DefaultResourceResolver();

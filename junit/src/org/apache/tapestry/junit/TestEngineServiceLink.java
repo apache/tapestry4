@@ -330,11 +330,6 @@ public class TestEngineServiceLink extends TapestryTestCase
 
     }
 
-    public TestEngineServiceLink(String name)
-    {
-        super(name);
-    }
-
     private MockRequestCycle create(String servletPath) throws Exception
     {
         MockContext servletContext = new MockContext();
@@ -411,8 +406,7 @@ public class TestEngineServiceLink extends TapestryTestCase
 
         checkList(
             "parameterNames",
-            new String[] {
-                Tapestry.SERVICE_QUERY_PARAMETER_NAME },
+            new String[] { Tapestry.SERVICE_QUERY_PARAMETER_NAME },
             l.getParameterNames());
 
         checkList(
@@ -436,7 +430,7 @@ public class TestEngineServiceLink extends TapestryTestCase
                 new String[] { "One Two", "Three Four" },
                 true);
 
-		assertEquals("/alpha/bravo?service=myservice&sp=One+Two&sp=Three+Four", l.getURL());
+        assertEquals("/alpha/bravo?service=myservice&sp=One+Two&sp=Three+Four", l.getURL());
 
         checkList(
             "parameterNames",

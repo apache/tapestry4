@@ -73,11 +73,6 @@ import org.apache.tapestry.Tapestry;
 public class TestTapestryCoerceToIterator extends TapestryTestCase
 {
 
-    public TestTapestryCoerceToIterator(String name)
-    {
-        super(name);
-    }
-
     private void check(Object[] expected, Object input)
     {
         Iterator i = Tapestry.coerceToIterator(input);

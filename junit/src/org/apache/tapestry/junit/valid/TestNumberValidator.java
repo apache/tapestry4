@@ -77,11 +77,6 @@ public class TestNumberValidator extends TapestryTestCase
 {
     private NumberValidator v = new NumberValidator();
 
-    public TestNumberValidator(String name)
-    {
-        super(name);
-    }
-
     private void testPassThru(String displayName, Class valueTypeClass, Number input)
         throws ValidatorException
     {

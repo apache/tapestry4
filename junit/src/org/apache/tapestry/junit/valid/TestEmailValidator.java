@@ -73,11 +73,6 @@ public class TestEmailValidator extends TapestryTestCase
 {
     private EmailValidator v = new EmailValidator();
 
-    public TestEmailValidator(String name)
-    {
-        super(name);
-    }
-
     public void testValidEmail() throws ValidatorException
     {
         Object result = v.toObject(new MockField("email"), "foo@bar.com");

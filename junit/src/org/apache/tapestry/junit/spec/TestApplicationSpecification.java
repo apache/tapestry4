@@ -74,11 +74,6 @@ import org.apache.tapestry.spec.IExtensionSpecification;
 public class TestApplicationSpecification extends TapestryTestCase
 {
 
-    public TestApplicationSpecification(String name)
-    {
-        super(name);
-    }
-
     public void testBasicExtension() throws Exception
     {
         IApplicationSpecification spec = parseApp("BasicExtension.application");

@@ -75,11 +75,6 @@ public class TestPatternValidator extends TapestryTestCase
     PatternValidator pv = new PatternValidator();
     IFormComponent pf = new MockField("PatternField");
 
-    public TestPatternValidator(String name)
-    {
-        super(name);
-    }
-
     private void positiveTest(String input) throws ValidatorException
     {
         Object result = pv.toObject(pf, input);
@@ -133,7 +128,7 @@ public class TestPatternValidator extends TapestryTestCase
 
         try
         {
-           pv.toObject(pf, "06514");
+            pv.toObject(pf, "06514");
             unreachable();
         }
         catch (ApplicationRuntimeException e)
