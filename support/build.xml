@@ -44,7 +44,9 @@
 
 		<copy file="build.properties" todir="${work.dir}/config"/>
 		
-		<ant inheritAll="false" dir="${work.dir}" target="dist"/>
+		<ant inheritAll="false" dir="${work.dir}" target="dist">
+			<property name="ext.dist.dir" location="ext-dist"/>
+		</ant>
 		
 		<property file="${work.dir}/config/Version.properties"/>
 
